@@ -4,21 +4,7 @@
   "license": "GPLv3",
   "simTitleStringKey": "CIRCUIT_CONSTRUCTION_KIT_BASICS/circuit-construction-kit-basics.name",
   "phetLibs": [
-    "circuit-construction-kit-basics",
-    "assert",
-    "axon",
-    "babel",
-    "brand",
-    "chipper",
-    "dot",
-    "joist",
-    "kite",
-    "phet-core",
-    "phetcommon",
-    "scenery",
-    "scenery-phet",
-    "sherpa",
-    "sun"
+    "circuit-construction-kit-basics"
   ],
   "repository": {
     "type": "git",
