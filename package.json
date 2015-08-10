@@ -2,6 +2,7 @@
   "name": "circuit-construction-kit-basics",
   "version": "1.0.0-dev.1",
   "license": "GPLv3",
+  "requirejsNamespace": "CIRCUIT_CONSTRUCTION_KIT_BASICS",
   "simTitleStringKey": "CIRCUIT_CONSTRUCTION_KIT_BASICS/circuit-construction-kit-basics.name",
   "phetLibs": [
     "circuit-construction-kit-basics"
