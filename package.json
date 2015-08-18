@@ -15,9 +15,6 @@
   },
   "phet": {
     "requirejsNamespace": "CIRCUIT_CONSTRUCTION_KIT_BASICS",
-    "simTitleStringKey": "CIRCUIT_CONSTRUCTION_KIT_BASICS/circuit-construction-kit-basics.name",
-    "phetLibs": [
-      "circuit-construction-kit-basics"
-    ]
+    "simTitleStringKey": "CIRCUIT_CONSTRUCTION_KIT_BASICS/circuit-construction-kit-basics.name"
   }
 }
