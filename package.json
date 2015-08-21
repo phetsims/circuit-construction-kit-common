@@ -14,7 +14,6 @@
     "requirejs": "~2.1.8"
   },
   "phet": {
-    "requirejsNamespace": "CIRCUIT_CONSTRUCTION_KIT_BASICS",
-    "simTitleStringKey": "CIRCUIT_CONSTRUCTION_KIT_BASICS/circuit-construction-kit-basics.name"
+    "requirejsNamespace": "CIRCUIT_CONSTRUCTION_KIT_BASICS"
   }
 }
