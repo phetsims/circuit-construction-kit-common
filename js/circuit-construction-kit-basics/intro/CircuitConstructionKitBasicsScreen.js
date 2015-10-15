@@ -8,8 +8,8 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CircuitConstructionKitBasicsModel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuit-construction-kit-basics/model/CircuitConstructionKitBasicsModel' );
-  var CircuitConstructionKitBasicsScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuit-construction-kit-basics/view/CircuitConstructionKitBasicsScreenView' );
+  var CircuitConstructionKitBasicsModel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuit-construction-kit-basics/intro/model/CircuitConstructionKitBasicsModel' );
+  var CircuitConstructionKitBasicsScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuit-construction-kit-basics/intro/view/CircuitConstructionKitBasicsScreenView' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Screen = require( 'JOIST/Screen' );
 

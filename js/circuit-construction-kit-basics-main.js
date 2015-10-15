@@ -9,7 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CircuitConstructionKitBasicsScreen = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuit-construction-kit-basics/CircuitConstructionKitBasicsScreen' );
+  var CircuitConstructionKitBasicsScreen = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuit-construction-kit-basics/intro/CircuitConstructionKitBasicsScreen' );
   var Sim = require( 'JOIST/Sim' );
   var SimLauncher = require( 'JOIST/SimLauncher' );
 
