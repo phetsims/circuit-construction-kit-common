@@ -10,6 +10,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
+  var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Circuit' );
 
   /**
    * @constructor
@@ -17,6 +18,7 @@ define( function( require ) {
   function CircuitConstructionKitBasicsModel() {
 
     PropertySet.call( this, {} );
+    this.circuit = new Circuit();
   }
 
   return inherit( PropertySet, CircuitConstructionKitBasicsModel, {

@@ -11,6 +11,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
+  var CircuitNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitNode' );
 
   /**
    * @param {CircuitConstructionKitBasicsModel} circuitConstructionKitBasicsModel
@@ -29,6 +30,8 @@ define( function( require ) {
       bottom: this.layoutBounds.maxY - 10
     } );
     this.addChild( resetAllButton );
+
+    this.addChild( new CircuitNode( circuitConstructionKitBasicsModel.circuit ) );
   }
 
   return inherit( ScreenView, CircuitConstructionKitBasicsScreenView, {
