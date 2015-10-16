@@ -1,4 +1,6 @@
 (function() {
+  'use strict';
+  
   module( 'Circuit Construction Kit: Basics' );
 
   test( 'Just checking', function() {
