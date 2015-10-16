@@ -32,10 +32,30 @@ define( function( require ) {
         var targets = snapContext.getAvailableTargets( wire, terminalPositionProperty );
         if ( targets.length > 0 ) {
 
-          //choose the 1st one arbitrarily
+          // choose the 1st one arbitrarily
           terminalPositionProperty.set( targets[ 0 ].terminalPositionProperty.get() );
         }
+
+        snapContext.wireTerminalDragged( wire, terminalPositionProperty );
+      },
+      endDrag: function( event ) {
+
+        // check for available nearby nodes to snap to
+        var targets = snapContext.getAvailableTargets( wire, terminalPositionProperty );
+        if ( targets.length > 0 ) {
+
+          terminalPositionProperty.set( targets[ 0 ].terminalPositionProperty.get() );
+
+          // connect the terminals
+          snapContext.connect(
+            wire,
+            terminalPositionProperty,
+            targets[ 0 ].branch,
+            targets[ 0 ].terminalPositionProperty
+          );
+        }
       }
+
     } );
     this.addInputListener( this.movableDragHandler );
   }

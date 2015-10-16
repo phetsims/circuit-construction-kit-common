@@ -25,20 +25,35 @@ define( function( require ) {
   }
 
   return inherit( Object, SnapContext, {
+
+    wireTerminalDragged: function( wire, terminalPositionProperty ) {
+      this.circuit.wireTerminalDragged( wire, terminalPositionProperty );
+    },
+
+    // @public
+    connect: function( wire1, terminalPositionProperty1, wire2, terminalPositionProperty2 ) {
+      this.circuit.connect( wire1, terminalPositionProperty1, wire2, terminalPositionProperty2 );
+    },
+
+    // @public
     getAvailableTargets: function( wire, terminalPositionProperty ) {
       var targets = [];
       for ( var i = 0; i < this.circuit.wires.length; i++ ) {
         var circuitWire = this.circuit.wires.get( i );
         if ( wire !== circuitWire ) {
 
-          if ( terminalPositionProperty.get().distance( circuitWire.startTerminalPositionProperty.get() ) < distanceThreshold ) {
+          var closeEnough1 = terminalPositionProperty.get().distance( circuitWire.startTerminalPositionProperty.get() ) < distanceThreshold;
+          var isConnected1 = this.circuit.isConnected( circuitWire, circuitWire.startTerminalPositionProperty, wire, terminalPositionProperty );
+          if ( closeEnough1 && !isConnected1 ) {
             targets.push( {
               branch: circuitWire,
               terminalPositionProperty: circuitWire.startTerminalPositionProperty
             } );
           }
 
-          if ( terminalPositionProperty.get().distance( circuitWire.endTerminalPositionProperty.get() ) < distanceThreshold ) {
+          var closeEnough2 = terminalPositionProperty.get().distance( circuitWire.endTerminalPositionProperty.get() ) < distanceThreshold;
+          var isConnected2 = this.circuit.isConnected( circuitWire, circuitWire.endTerminalPositionProperty, wire, terminalPositionProperty );
+          if ( closeEnough2 && !isConnected2 ) {
             targets.push( {
               branch: circuitWire,
               terminalPositionProperty: circuitWire.endTerminalPositionProperty
