@@ -16,7 +16,6 @@ define( function( require ) {
   var SnapContext = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/SnapContext' );
   var Connection = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Connection' );
   var OOCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/modified-nodal-analysis/OOCircuit' );
-  var ObjectOrientedMNA = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/modified-nodal-analysis/ObjectOrientedMNA' );
 
   /**
    *
@@ -43,7 +42,7 @@ define( function( require ) {
 
       // These are just to keep lint from complaining, so that we can load these dependencies into the module system
       // for qunit tests
-      ObjectOrientedMNA.solve( new OOCircuit() );
+      new OOCircuit().solve();
     },
 
     // @public

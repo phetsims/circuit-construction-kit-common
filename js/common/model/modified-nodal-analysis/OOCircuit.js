@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var LinearCircuitSolution = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/modified-nodal-analysis/LinearCircuitSolution' );
 
   /**
    *
@@ -21,5 +22,9 @@ define( function( require ) {
 
   circuitConstructionKitBasics.register( 'OOCircuit', OOCircuit );
 
-  return inherit( Object, OOCircuit, {} );
+  return inherit( Object, OOCircuit, {
+    solve: function() {
+      return new LinearCircuitSolution();
+    }
+  } );
 } );

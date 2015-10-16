@@ -4,7 +4,6 @@
   'use strict';
 
   var OOCircuit = phet.circuitConstructionKitBasics.OOCircuit;
-  var ObjectOrientedMNA = phet.circuitConstructionKitBasics.ObjectOrientedMNA;
   var LinearCircuitSolution = phet.circuitConstructionKitBasics.LinearCircuitSolution;
 
   module( 'Circuit Construction Kit: Basics' );
@@ -17,7 +16,7 @@
 
     battery.desiredCurrent = 1.0;
     var desiredSolution = new LinearCircuitSolution( voltageMap, [ battery ] );
-    var solution = ObjectOrientedMNA.solve( circuit );
+    var solution = circuit.solve( circuit );
     console.log( 'solution = ' + solution );
     console.log( 'desiredSolution = ' + desiredSolution );
     equal( true, solution.approxEquals( desiredSolution ) );
