@@ -25,5 +25,14 @@ define( function( require ) {
     } );
   }
 
-  return inherit( PropertySet, Wire );
+  return inherit( PropertySet, Wire, {
+    getOppositeTerminalPositionProperty: function( terminalPositionProperty ) {
+      assert && assert( terminalPositionProperty === this.startTerminalPositionProperty ||
+                        terminalPositionProperty === this.endTerminalPositionProperty );
+
+      return terminalPositionProperty === this.startTerminalPositionProperty ?
+             this.endTerminalPositionProperty :
+             this.startTerminalPositionProperty;
+    }
+  } );
 } );

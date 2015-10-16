@@ -46,6 +46,14 @@ define( function( require ) {
       }
     },
 
+    // If the proposed connection was made, would the wires overlap?  If so, do not allow them to connect.
+    wouldOverlap: function( wire1, terminalPositionProperty1, wire2, terminalPositionProperty2 ) {
+      return this.isConnected(
+        wire1, wire1.getOppositeTerminalPositionProperty( terminalPositionProperty1 ),
+        wire2, wire2.getOppositeTerminalPositionProperty( terminalPositionProperty2 )
+      );
+    },
+
     isConnected: function( wire1, terminalPositionProperty1, wire2, terminalPositionProperty2 ) {
 
       // see if any pre-existing connections will work

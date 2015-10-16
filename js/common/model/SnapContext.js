@@ -44,7 +44,8 @@ define( function( require ) {
 
           var closeEnough1 = terminalPositionProperty.get().distance( circuitWire.startTerminalPositionProperty.get() ) < distanceThreshold;
           var isConnected1 = this.circuit.isConnected( circuitWire, circuitWire.startTerminalPositionProperty, wire, terminalPositionProperty );
-          if ( closeEnough1 && !isConnected1 ) {
+          var wouldOverlap1 = this.circuit.wouldOverlap( circuitWire, circuitWire.startTerminalPositionProperty, wire, terminalPositionProperty );
+          if ( closeEnough1 && !isConnected1 && !wouldOverlap1 ) {
             targets.push( {
               branch: circuitWire,
               terminalPositionProperty: circuitWire.startTerminalPositionProperty
@@ -53,7 +54,8 @@ define( function( require ) {
 
           var closeEnough2 = terminalPositionProperty.get().distance( circuitWire.endTerminalPositionProperty.get() ) < distanceThreshold;
           var isConnected2 = this.circuit.isConnected( circuitWire, circuitWire.endTerminalPositionProperty, wire, terminalPositionProperty );
-          if ( closeEnough2 && !isConnected2 ) {
+          var wouldOverlap2 = this.circuit.wouldOverlap( circuitWire, circuitWire.endTerminalPositionProperty, wire, terminalPositionProperty );
+          if ( closeEnough2 && !isConnected2 && !wouldOverlap2 ) {
             targets.push( {
               branch: circuitWire,
               terminalPositionProperty: circuitWire.endTerminalPositionProperty
