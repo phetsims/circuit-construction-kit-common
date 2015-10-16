@@ -13,7 +13,6 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var WireTerminalNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/WireTerminalNode' );
   var Line = require( 'SCENERY/nodes/Line' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
   /**
