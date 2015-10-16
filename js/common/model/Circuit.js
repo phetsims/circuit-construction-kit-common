@@ -15,6 +15,8 @@ define( function( require ) {
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Wire' );
   var SnapContext = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/SnapContext' );
   var Connection = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Connection' );
+  var OOCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/modified-nodal-analysis/OOCircuit' );
+  var ObjectOrientedMNA = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/modified-nodal-analysis/ObjectOrientedMNA' );
 
   /**
    *
@@ -35,6 +37,14 @@ define( function( require ) {
   }
 
   return inherit( Object, Circuit, {
+
+    // @public
+    solve: function() {
+
+      // These are just to keep lint from complaining, so that we can load these dependencies into the module system
+      // for qunit tests
+      ObjectOrientedMNA.solve( new OOCircuit() );
+    },
 
     // @public
     wireTerminalDragged: function( wire, terminalPositionProperty ) {
