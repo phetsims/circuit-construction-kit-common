@@ -12,6 +12,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var ObservableArray = require( 'AXON/ObservableArray' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Wire' );
+  var SnapContext = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/SnapContext' );
 
   /**
    *
@@ -20,7 +21,13 @@ define( function( require ) {
   function Circuit() {
     this.wires = new ObservableArray();
     this.wires.push( new Wire() );
+    this.wires.push( new Wire() );
+    this.wires.push( new Wire() );
   }
 
-  return inherit( Object, Circuit );
+  return inherit( Object, Circuit, {
+    getSnapContext: function() {
+      return new SnapContext( this );
+    }
+  } );
 } );

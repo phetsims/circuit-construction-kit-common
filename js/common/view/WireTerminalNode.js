@@ -17,7 +17,7 @@ define( function( require ) {
    *
    * @constructor
    */
-  function WireTerminalNode( wire, terminalPositionProperty ) {
+  function WireTerminalNode( snapContext, wire, terminalPositionProperty ) {
     this.wire = wire;
     var wireTerminalNode = this;
     Circle.call( this, 20, { fill: 'gray', cursor: 'pointer' } );
@@ -25,7 +25,18 @@ define( function( require ) {
       wireTerminalNode.center = terminalPosition;
     } );
 
-    this.movableDragHandler = new MovableDragHandler( terminalPositionProperty, {} );
+    this.movableDragHandler = new MovableDragHandler( terminalPositionProperty, {
+      onDrag: function( event ) {
+
+        // check for available nearby nodes to snap to
+        var targets = snapContext.getAvailableTargets( wire, terminalPositionProperty );
+        if ( targets.length > 0 ) {
+
+          //choose the 1st one arbitrarily
+          terminalPositionProperty.set( targets[ 0 ].terminalPositionProperty.get() );
+        }
+      }
+    } );
     this.addInputListener( this.movableDragHandler );
   }
 

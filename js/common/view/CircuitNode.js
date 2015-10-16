@@ -21,7 +21,7 @@ define( function( require ) {
     Node.call( this );
     var circuitNode = this;
     var createWireNode = function( wire ) {
-      circuitNode.addChild( new WireNode( wire ) );
+      circuitNode.addChild( new WireNode( circuit.getSnapContext(), wire ) );
     };
     circuit.wires.addItemAddedListener( createWireNode );
     circuit.wires.forEach( createWireNode );

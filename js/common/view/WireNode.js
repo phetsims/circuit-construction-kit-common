@@ -20,7 +20,7 @@ define( function( require ) {
    *
    * @constructor
    */
-  function WireNode( wire ) {
+  function WireNode( snapContext, wire ) {
     this.wire = wire;
 
     Node.call( this );
@@ -37,10 +37,10 @@ define( function( require ) {
     wire.endTerminalPositionProperty.link( function( endTerminalPosition ) {
       line.setPoint2( endTerminalPosition );
     } );
-    var startWireTerminalNode = new WireTerminalNode( wire, wire.startTerminalPositionProperty );
+    var startWireTerminalNode = new WireTerminalNode( snapContext, wire, wire.startTerminalPositionProperty );
     this.addChild( startWireTerminalNode );
 
-    var endWireTerminalNode = new WireTerminalNode( wire, wire.endTerminalPositionProperty );
+    var endWireTerminalNode = new WireTerminalNode( snapContext, wire, wire.endTerminalPositionProperty );
     this.addChild( endWireTerminalNode );
 
     line.addInputListener( new SimpleDragHandler( {
