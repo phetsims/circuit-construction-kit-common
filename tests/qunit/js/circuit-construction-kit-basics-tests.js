@@ -54,4 +54,23 @@
     // same magnitude as battery: positive because current flows from node 1 to 0
     equal( approxEquals( solution.getCurrent( resistor ), 2 ), true, 'current through resistor should be 2.0 Amps' );
   } );
+
+  test( 'test_an_unconnected_resistor_shouldnt_cause_problems', function() {
+    var battery = { node0: 0, node1: 1, voltage: 4.0 };
+    var resistor1 = { node0: 1, node1: 0, resistance: 4.0 };
+    var resistor2 = { node0: 2, node1: 3, resistance: 100 };
+    var circuit = new OOCircuit( [ battery ], [ resistor1, resistor2 ], [] );
+    var desiredSolution = new LinearCircuitSolution( {
+      0: 0,
+      1: 4,
+      2: 0,
+      3: 0
+    }, [
+      _.extend( {}, battery, { currentSolution: 1.0 } ),
+      _.extend( {}, resistor1, { currentSolution: -1.0 } ),
+      _.extend( {}, resistor2, { currentSolution: 0.0 } )
+    ] );
+    var solution = circuit.solve();
+    equal( solution.approxEquals( desiredSolution ), true, 'solutions should match' );
+  } );
 })();

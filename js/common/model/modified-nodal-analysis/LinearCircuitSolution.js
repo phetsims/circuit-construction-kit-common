@@ -21,7 +21,7 @@ define( function( require ) {
   function LinearCircuitSolution( nodeVoltages, elements ) {
     for ( var i = 0; i < elements.length; i++ ) {
       var e = elements[ i ];
-      assert && assert( typeof e.node0 === 'number' && typeof e.node1 === 'number' )
+      assert && assert( typeof e.node0 === 'number' && typeof e.node1 === 'number' );
     }
     this.nodeVoltages = nodeVoltages;
     this.elements = elements;

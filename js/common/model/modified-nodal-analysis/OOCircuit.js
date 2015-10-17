@@ -325,9 +325,8 @@ define( function( require ) {
         visited[ n ] = true;
         for ( var i = 0; i < this.getElements().length; i++ ) {
           var e = this.getElements()[ i ];
-          var oppositeNode = getOpposite( e, n );
-          if ( elementContainsNode( e, n ) && !visited[ oppositeNode ] ) {
-            toVisit[ oppositeNode ] = true;
+          if ( elementContainsNode( e, n ) && !visited[ getOpposite( e, n ) ] ) {
+            toVisit[ getOpposite( e, n ) ] = true;
           }
         }
         delete toVisit[ n ];
