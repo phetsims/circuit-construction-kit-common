@@ -199,7 +199,8 @@ define( function( require ) {
      * @param node
      * @returns {Array}
      */
-    getIncomingCurrentTerms: function( node ) { // return ArrayList<Term> 
+    getIncomingCurrentTerms: function( node ) { // return ArrayList<Term>
+      assert && assert( typeof node === 'number' )
       var nodeTerms = [];
       for ( var i = 0; i < this.batteries.length; i++ ) {
         var battery = this.batteries[ i ];
@@ -239,14 +240,16 @@ define( function( require ) {
           nodeTerms.push( new Term( 1, new UnknownCurrent( b ) ) );
         }
       }
+      var r;
       for ( i = 0; i < this.resistors.length; i++ ) {
-        var r = this.resistors[ i ];
+        r = this.resistors[ i ];
         // Treat resistors with R=0 as having unknown current and v1=v2
         if ( r.node0 === node && r.resistance === 0 ) {
           nodeTerms.push( new Term( 1, new UnknownCurrent( r ) ) );
         }
       }
       for ( i = 0; i < this.resistors.length; i++ ) {
+        r = this.resistors[ i ];
         if ( r.node0 === node && r.resistance !== 0 ) {
           nodeTerms.push( new Term( -1 / r.resistance, new UnknownVoltage( r.node1 ) ) );
           nodeTerms.push( new Term( 1 / r.resistance, new UnknownVoltage( r.node0 ) ) );

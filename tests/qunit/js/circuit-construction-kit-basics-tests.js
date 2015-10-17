@@ -22,7 +22,7 @@
     var solution = circuit.solve();
     console.log( 'solution = ', solution );
     console.log( 'desiredSolution = ', desiredSolution );
-    equal( true, solution.approxEquals( desiredSolution ), 'solutions instances should match' );
+    equal( true, solution.approxEquals( desiredSolution, equal ), 'solutions instances should match' );
 
     var currentThroughResistor = solution.getCurrent( resistor );
     equal( approxEquals( currentThroughResistor, 1.0 ), true, 'current should be 1 amp through the resistor' ); // should be flowing forward through resistor
@@ -37,7 +37,7 @@
       1: 4
     }, [ _.extend( {}, battery, { currentSolution: 2.0 } ) ] );
     var solution = circuit.solve();
-    equal( solution.approxEquals( desiredSolution ), true, 'solution should match' );
+    equal( solution.approxEquals( desiredSolution, equal ), true, 'solution should match' );
   } );
 
 
@@ -49,7 +49,7 @@
       0: 0,
       1: 4
     }, [ _.extend( {}, battery, { currentSolution: 2 } ) ] );
-    equal( solution.approxEquals( desiredSolution ), true, 'solution should match' );
+    equal( solution.approxEquals( desiredSolution, equal ), true, 'solution should match' );
 
     // same magnitude as battery: positive because current flows from node 1 to 0
     equal( approxEquals( solution.getCurrent( resistor ), 2 ), true, 'current through resistor should be 2.0 Amps' );
@@ -66,11 +66,9 @@
       2: 0,
       3: 0
     }, [
-      _.extend( {}, battery, { currentSolution: 1.0 } ),
-      _.extend( {}, resistor1, { currentSolution: -1.0 } ),
-      _.extend( {}, resistor2, { currentSolution: 0.0 } )
+      _.extend( {}, battery, { currentSolution: 1.0 } )
     ] );
     var solution = circuit.solve();
-    equal( solution.approxEquals( desiredSolution ), true, 'solutions should match' );
+    equal( solution.approxEquals( desiredSolution, equal ), true, 'solutions should match' );
   } );
 })();

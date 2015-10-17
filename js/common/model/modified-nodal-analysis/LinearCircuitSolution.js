@@ -32,14 +32,25 @@ define( function( require ) {
   var numberApproxEquals = function( a, b ) {
     return Math.abs( a - b ) < 1E-6;
   };
+
+  var round = function( x ) {
+    return Math.round( x * 1E6 ) / 1E6;
+  };
   return inherit( Object, LinearCircuitSolution, {
-    approxEquals: function( linearCircuitSolution ) {
+    /**
+     * Compare two solutions, and provide detailed qunit equal test if equal is provided
+     * @param linearCircuitSolution
+     * @param {function} equal from qunit
+     * @returns {boolean}
+     */
+    approxEquals: function( linearCircuitSolution, equal ) {
       var myKeys = _.keys( this.nodeVoltages );
       var otherKeys = _.keys( linearCircuitSolution.nodeVoltages );
       var difference = _.difference( myKeys, otherKeys );
       assert && assert( difference.length === 0, 'wrong structure for compared solution' );
       for ( var i = 0; i < myKeys.length; i++ ) {
         var key = myKeys[ i ];
+        equal && equal( round( this.getNodeVoltage( key ) ), round( linearCircuitSolution.getNodeVoltage( key ) ), ('node voltages[' + i + '] should match') );
         if ( !numberApproxEquals( this.getNodeVoltage( key ), linearCircuitSolution.getNodeVoltage( key ) ) ) {
           return false;
         }
