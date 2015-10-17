@@ -78,9 +78,23 @@
     var circuit = new OOCircuit( [], [ resistor ], [ currentSource ] );
     var voltageMap = {
       0: 0,
-      1: -10 * 4 // This is negative since traversing across the resistor should yield a negative voltage, see http://en.wikipedia.org/wiki/Current_source
+      1: -39.999996 // This is negative since traversing across the resistor should yield a negative voltage, see http://en.wikipedia.org/wiki/Current_source
     };
     var desiredSolution = new LinearCircuitSolution( voltageMap, [] );
+    var solution = circuit.solve();
+    equal( solution.approxEquals( desiredSolution, equal ), true, 'solutions should match' );
+  } );
+
+  test( 'test_current_should_be_reversed_when_voltage_is_reversed', function() {
+    var battery = { node0: 0, node1: 1, voltage: -4 };
+    var resistor = { node0: 1, node1: 0, resistance: 2 };
+    var circuit = new OOCircuit( [ battery ], [ resistor ], [] );
+    var voltageMap = {
+      0: 0,
+      1: -4
+    };
+
+    var desiredSolution = new LinearCircuitSolution( voltageMap, [ _.extend( {}, battery, { currentSolution: -2 } ) ] );
     var solution = circuit.solve();
     equal( solution.approxEquals( desiredSolution, equal ), true, 'solutions should match' );
   } );
