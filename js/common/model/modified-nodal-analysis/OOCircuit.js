@@ -281,7 +281,6 @@ define( function( require ) {
       var remaining = this.getNodeSet(); // A separate copy
       var referenceNodes = {};
       while ( _.size( remaining ) > 0 ) {
-        console.log( 'creating reference nodes, remaining = ' + _.keys( remaining ) );
         var sorted = this.doSort( _.keys( remaining ) );
         referenceNodes[ sorted[ 0 ] ] = true;
         var connected = _.keys( this.getConnectedNodes( sorted[ 0 ] ) );
@@ -292,7 +291,6 @@ define( function( require ) {
 
         for ( var i = 0; i < connected.length; i++ ) {
           var c = connected[ i ];
-          console.log( 'removing ' + c );
           delete remaining[ c ];
         }
       }
