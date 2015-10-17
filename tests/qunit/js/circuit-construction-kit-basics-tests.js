@@ -71,4 +71,17 @@
     var solution = circuit.solve();
     equal( solution.approxEquals( desiredSolution, equal ), true, 'solutions should match' );
   } );
+
+  test( 'test_current_source_should_provide_current', function() {
+    var currentSource = { node0: 0, node1: 1, current: 10 };
+    var resistor = { node0: 1, node1: 0, resistance: 4 };
+    var circuit = new OOCircuit( [], [ resistor ], [ currentSource ] );
+    var voltageMap = {
+      0: 0,
+      1: -10 * 4 // This is negative since traversing across the resistor should yield a negative voltage, see http://en.wikipedia.org/wiki/Current_source
+    };
+    var desiredSolution = new LinearCircuitSolution( voltageMap, [] );
+    var solution = circuit.solve();
+    equal( solution.approxEquals( desiredSolution, equal ), true, 'solutions should match' );
+  } );
 })();
