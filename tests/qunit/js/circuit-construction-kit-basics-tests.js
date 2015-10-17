@@ -40,4 +40,18 @@
     equal( solution.approxEquals( desiredSolution ), true, 'solution should match' );
   } );
 
+
+  test( 'test_should_be_able_to_obtain_current_for_a_resistor', function() {
+    var battery = { node0: 0, node1: 1, voltage: 4.0 };
+    var resistor = { node0: 1, node1: 0, resistance: 2.0 };
+    var solution = new OOCircuit( [ battery ], [ resistor ], [] ).solve();
+    var desiredSolution = new LinearCircuitSolution( {
+      0: 0,
+      1: 4
+    }, [ _.extend( {}, battery, { currentSolution: 2 } ) ] );
+    equal( solution.approxEquals( desiredSolution ), true, 'solution should match' );
+
+    // same magnitude as battery: positive because current flows from node 1 to 0
+    equal( approxEquals( solution.getCurrent( resistor ), 2 ), true, 'current through resistor should be 2.0 Amps' );
+  } );
 })();
