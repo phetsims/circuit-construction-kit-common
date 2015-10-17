@@ -1,7 +1,7 @@
 // Copyright 2002-2015, University of Colorado Boulder
 
 /**
- *
+ * This class represents a sparse solution containing only the solved unknowns in MNA.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -14,9 +14,13 @@ define( function( require ) {
 
   /**
    *
+   * @param {object.<number,number>} nodeVoltages
+   * @param {element[]} elements, with currentSolution
    * @constructor
    */
-  function LinearCircuitSolution() {
+  function LinearCircuitSolution( nodeVoltages, elements ) {
+    this.nodeVoltages = nodeVoltages;
+    this.elements = elements;
   }
 
   circuitConstructionKitBasics.register( 'LinearCircuitSolution', LinearCircuitSolution );
@@ -27,6 +31,10 @@ define( function( require ) {
     },
     getCurrent: function() {
       return 0;
+    },
+    getNodeVoltage: function( node ) {
+      return this.nodeVoltages[ node ];
     }
+
   } );
 } );
