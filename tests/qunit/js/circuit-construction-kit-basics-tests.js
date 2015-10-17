@@ -18,14 +18,26 @@
     var circuit = new OOCircuit( [ battery ], [ resistor ], [] );
     var voltageMap = { 0: 0.0, 1: 4.0 };
 
-    battery.desiredCurrent = 1.0;
     var desiredSolution = new LinearCircuitSolution( voltageMap, [ battery ] );
-    var solution = circuit.solve( circuit );
+    var solution = circuit.solve();
     console.log( 'solution = ', solution );
     console.log( 'desiredSolution = ', desiredSolution );
     equal( true, solution.approxEquals( desiredSolution ), 'solutions instances should match' );
 
     var currentThroughResistor = solution.getCurrent( resistor );
-    equal( approxEquals( currentThroughResistor, 1.0 ), true, 'current should be 1 amp throgh the resistor' ); // should be flowing forward through resistor
+    equal( approxEquals( currentThroughResistor, 1.0 ), true, 'current should be 1 amp through the resistor' ); // should be flowing forward through resistor
   } );
+
+  test( 'test_battery_resistor_circuit_should_have_correct_voltages_and_currents_for_a_simple_circuit_ii', function() {
+    var battery = { node0: 0, node1: 1, voltage: 4.0 };
+    var resistor = { node0: 1, node1: 0, resistance: 2.0 };
+    var circuit = new OOCircuit( [ battery ], [ resistor ], [] );
+    var desiredSolution = new LinearCircuitSolution( {
+      0: 0,
+      1: 4
+    }, [ _.extend( {}, battery, { currentSolution: 2.0 } ) ] );
+    var solution = circuit.solve();
+    equal( solution.approxEquals( desiredSolution ), true, 'solution should match' );
+  } );
+
 })();
