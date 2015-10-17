@@ -17,6 +17,17 @@ define( function( require ) {
   // constants
   var debug = true;
 
+  // TODO: Does lodash help here?
+  var getIndexByEquals = function( array, element ) {
+    for ( var i = 0; i < array.length; i++ ) {
+      var e = array[ i ];
+      if ( e.equals( element ) ) {
+        return i;
+      }
+    }
+    return -1;
+  };
+
   /**
    *
    * @param {number} coefficient
@@ -55,6 +66,7 @@ define( function( require ) {
    * @constructor
    */
   function UnknownVoltage( node ) {
+    assert && assert( typeof node === 'number', 'nodes should be numbers' );
     this.node = node;
   }
 
@@ -82,13 +94,14 @@ define( function( require ) {
    * @param {number} row
    * @param {Matrix} a
    * @param {Matrix} z
-   * @param {IndexMap} getIndex
+   * @param {function} getIndex
    */
   Equation.prototype.stamp = function( row, a, z, getIndex ) {
     z.set( row, 0, this.rhs );
     for ( var i = 0; i < this.terms.length; i++ ) {
       var term = this.terms[ i ];
-      a.set( row, getIndex( term.variable ), term.coefficient + a.get( row, getIndex( term.variable ) ) );
+      var index = getIndex( term.variable );
+      a.set( row, index, term.coefficient + a.get( row, index ) );
     }
   };
 
@@ -222,7 +235,9 @@ define( function( require ) {
       var nodeTerms = [];
       for ( var i = 0; i < this.batteries.length; i++ ) {
         var b = this.batteries[ i ];
-        nodeTerms.push( new Term( 1, new UnknownCurrent( b ) ) );
+        if ( b.node0 === node ) {
+          nodeTerms.push( new Term( 1, new UnknownCurrent( b ) ) );
+        }
       }
       for ( i = 0; i < this.resistors.length; i++ ) {
         var r = this.resistors[ i ];
@@ -245,6 +260,7 @@ define( function( require ) {
      * @param {number} node
      */
     getCurrentConservationTerms: function( node ) {
+      assert && assert( typeof node === 'number' );
       return this.getIncomingCurrentTerms( node ).concat( this.getOutgoingCurrentTerms( node ) );
     },
 
@@ -327,7 +343,7 @@ define( function( require ) {
       //reference node in each connected component has a voltage of 0.0
       for ( var i = 0; i < this.getReferenceNodes().length; i++ ) {
         var n = this.getReferenceNodes()[ i ];
-        list.push( new Equation( 0, [ new Term( 1, new UnknownVoltage( n ) ) ] ) );
+        list.push( new Equation( 0, [ new Term( 1, new UnknownVoltage( parseInt( n ) ) ) ] ) );
       }
 
       //for each node, charge is conserved
@@ -357,8 +373,9 @@ define( function( require ) {
 
     getUnknownVoltages: function() {
       var v = [];
-      for ( var i = 0; i < this.getNodeSet().length; i++ ) {
-        var node = this.getNodeSet()[ i ];
+      var nodes = _.keys( this.getNodeSet() );
+      for ( var i = 0; i < nodes.length; i++ ) {
+        var node = parseInt( nodes[ i ] );
         v.push( new UnknownVoltage( node ) );
       }
       return v;
@@ -386,13 +403,17 @@ define( function( require ) {
 
     solve: function() {
       var equations = this.getEquations();
+
       var A = new Matrix( equations.length, this.getNumVars() );
       var z = new Matrix( equations.length, 1 );
       var unknowns = this.getUnknowns();
       for ( var i = 0; i < equations.length; i++ ) {
         var equation = equations[ i ];
         equation.stamp( i, A, z, function( unknown ) {
-          return unknowns.indexOf( unknown );
+
+          var index = getIndexByEquals( unknowns, unknown );
+          assert && assert( index >= 0, 'unknown was missing' );
+          return index;
         } );// TODO: could be sped up, perhaps just set the index on the unknowns themselves?
       }
 
@@ -403,10 +424,14 @@ define( function( require ) {
         console.log( A.toString() );
         console.log( 'z=' );
         console.log( z.toString() );
-        console.log( 'unknowns=\n' + this.getUnknowns().join( '\n' ) );
+        console.log( 'unknowns=\n' + this.getUnknowns().map( function( u ) {return u.toString();} ).join( '\n' ) );
       }
 
       var x = A.solve( z );
+      if ( debug ) {
+        console.log( 'x=' );
+        console.log( x.toString() );
+      }
 
       var voltageMap = {};
       for ( i = 0; i < this.getUnknownVoltages().length; i++ ) {

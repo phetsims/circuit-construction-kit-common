@@ -17,8 +17,8 @@
     battery.desiredCurrent = 1.0;
     var desiredSolution = new LinearCircuitSolution( voltageMap, [ battery ] );
     var solution = circuit.solve( circuit );
-    console.log( 'solution = ' + solution );
-    console.log( 'desiredSolution = ' + desiredSolution );
+    console.log( 'solution = ', solution );
+    console.log( 'desiredSolution = ', desiredSolution );
     equal( true, solution.approxEquals( desiredSolution ) );
 
     var currentThroughResistor = solution.getCurrent( resistor );
