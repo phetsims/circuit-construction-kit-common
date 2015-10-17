@@ -19,22 +19,84 @@ define( function( require ) {
    * @constructor
    */
   function LinearCircuitSolution( nodeVoltages, elements ) {
+    for ( var i = 0; i < elements.length; i++ ) {
+      var e = elements[ i ];
+      assert && assert( typeof e.node0 === 'number' && typeof e.node1 === 'number' )
+    }
     this.nodeVoltages = nodeVoltages;
     this.elements = elements;
   }
 
   circuitConstructionKitBasics.register( 'LinearCircuitSolution', LinearCircuitSolution );
 
+  var numberApproxEquals = function( a, b ) {
+    return Math.abs( a - b ) < 1E-6;
+  };
   return inherit( Object, LinearCircuitSolution, {
-    approxEquals: function() {
+    approxEquals: function( linearCircuitSolution ) {
+      var myKeys = _.keys( this.nodeVoltages );
+      var otherKeys = _.keys( linearCircuitSolution.nodeVoltages );
+      var difference = _.difference( myKeys, otherKeys );
+      assert && assert( difference.length === 0, 'wrong structure for compared solution' );
+      for ( var i = 0; i < myKeys.length; i++ ) {
+        var key = myKeys[ i ];
+        if ( !numberApproxEquals( this.getNodeVoltage( key ), linearCircuitSolution.getNodeVoltage( key ) ) ) {
+          return false;
+        }
+      }
+
+      if ( !this.hasAllCurrents( linearCircuitSolution ) ) {
+        return false;
+      }
+      if ( !linearCircuitSolution.hasAllCurrents( this ) ) {
+        return false;
+      }
+      return true;
+    },
+    /**
+     * For equality testing, make sure all of the specified elements and currents match ours
+     * @param linearCircuitSolution
+     */
+    hasAllCurrents: function( linearCircuitSolution ) {
+      for ( var i = 0; i < linearCircuitSolution.elements.length; i++ ) {
+        var element = linearCircuitSolution.elements[ i ];
+        if ( !this.hasMatchingElement( element ) ) {
+          return false;
+        }
+      }
+      return true;
+    },
+    hasMatchingElement: function( element ) {
+      for ( var i = 0; i < this.elements.length; i++ ) {
+        var e = this.elements[ i ];
+        if ( e.node0 === element.node0 && e.node1 === element.node1 && numberApproxEquals( e.currentSolution, element.currentSolution ) ) {
+          return true;
+        }
+      }
       return false;
     },
-    getCurrent: function() {
-      return 0;
+    getCurrent: function( e ) {
+
+      //if it was a battery or resistor (of R=0), look up the answer
+      for ( var i = 0; i < this.elements.length; i++ ) {
+        var element = this.elements[ i ];
+        if ( element.node0 === e.node0 && element.node1 === e.node1 ) {
+
+          // TODO: Is this correct?
+          if ( element.resistance === e.resistance || element.voltage === e.voltage ) {
+            return element.currentSolution;
+          }
+        }
+      }
+
+      //else compute based on V=IR
+      return -this.getVoltage( e ) / e.resistance;
     },
     getNodeVoltage: function( node ) {
       return this.nodeVoltages[ node ];
+    },
+    getVoltage: function( e ) {
+      return this.nodeVoltages[ e.node1 ] - this.nodeVoltages[ e.node0 ];
     }
-
   } );
 } );

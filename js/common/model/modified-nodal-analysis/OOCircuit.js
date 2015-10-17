@@ -401,6 +401,7 @@ define( function( require ) {
       return this.getUnknownCurrents().concat( this.getUnknownVoltages() );
     },
 
+    // TODO: Why call this.getUnknowns so many times? (applies elsewhere in this file)
     solve: function() {
       var equations = this.getEquations();
 
@@ -436,15 +437,17 @@ define( function( require ) {
       var voltageMap = {};
       for ( i = 0; i < this.getUnknownVoltages().length; i++ ) {
         var nodeVoltage = this.getUnknownVoltages()[ i ];
-        voltageMap[ nodeVoltage.node ] = x.get( this.getUnknowns().indexOf( nodeVoltage ), 0 );
+        voltageMap[ nodeVoltage.node ] = x.get( getIndexByEquals( unknowns, nodeVoltage ), 0 );
       }
       var unknownCurrents = this.getUnknownCurrents();
       for ( i = 0; i < unknownCurrents.length; i++ ) {
         var currentVar = unknownCurrents[ i ];
-        currentVar.element.currentSolution = x.get( this.getUnknowns().indexOf( currentVar ) ); // TODO: Why call this.getUnknowns so many times?
+        currentVar.element.currentSolution = x.get( getIndexByEquals( unknowns, currentVar ), 0 );
       }
 
-      return new LinearCircuitSolution( voltageMap, unknownCurrents );
+      return new LinearCircuitSolution( voltageMap, unknownCurrents.map( function( u ) {
+        return u.element;
+      } ) );
     }
   } );
 } );
