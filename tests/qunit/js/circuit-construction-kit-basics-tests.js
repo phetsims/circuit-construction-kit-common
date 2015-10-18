@@ -8,6 +8,8 @@
 
   module( 'Circuit Construction Kit: Basics' );
 
+  var FUDGE = 0.000001;
+
   var approxEquals = function( a, b ) {
     return Math.abs( a - b ) < 1E-6;
   };
@@ -107,9 +109,9 @@
     var voltageMap = {
 
       // TODO: What to do about these numerical issues that are larger than 1E6
-      0: 0.000001,
-      1: -3.999999,
-      2: -7.999999
+      0: 0 + FUDGE,
+      1: -4 + FUDGE,
+      2: -8 + FUDGE
     };
     var desiredSolution = new LinearCircuitSolution( voltageMap, [
       _.extend( {}, battery1, { currentSolution: -4 } ),
@@ -128,7 +130,7 @@
     var voltageMap = {
       0: 0,
       1: 5,
-      2: 2.500001
+      2: 2.5 + FUDGE
     };
     var desiredSolution = new LinearCircuitSolution( voltageMap, [
       _.extend( {}, battery, { currentSolution: 5 / 20.0 } )
@@ -148,7 +150,7 @@
     var voltageMap = {
       0: 0,
       1: 4,
-      2: -0.000001
+      2: 0 - FUDGE
     };
     var desiredSolution = new LinearCircuitSolution( voltageMap, [
       _.extend( {}, battery, { currentSolution: 1.0 } )
@@ -195,7 +197,6 @@
     equal( solution.approxEquals( desiredSolution, equal ), true, 'solutions should match' );
   } );
 
-  var FUDGE = 0.000001;
   test( 'test_resistors_in_parallel_should_have_harmonic_mean_of_resistance', function() {
     var V = 9.0;
     var R1 = 5.0;
