@@ -1,7 +1,7 @@
 // Copyright 2002-2015, University of Colorado Boulder
 
 /**
- *
+ * TODO: Once more of the port is complete, rename this to MNACircuit.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -224,7 +224,7 @@ define( function( require ) {
      * @returns {Array}
      */
     getIncomingCurrentTerms: function( node ) { // return ArrayList<Term>
-      assert && assert( typeof node === 'number' )
+      assert && assert( typeof node === 'number' );
       var nodeTerms = [];
       for ( var i = 0; i < this.batteries.length; i++ ) {
         var battery = this.batteries[ i ];

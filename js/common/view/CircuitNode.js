@@ -12,6 +12,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/WireNode' );
+  var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/BatteryNode' );
 
   /**
    *
@@ -20,11 +21,18 @@ define( function( require ) {
   function CircuitNode( circuit ) {
     Node.call( this );
     var circuitNode = this;
-    var createWireNode = function( wire ) {
+
+    var addWireNode = function( wire ) {
       circuitNode.addChild( new WireNode( circuit.getSnapContext(), wire ) );
     };
-    circuit.wires.addItemAddedListener( createWireNode );
-    circuit.wires.forEach( createWireNode );
+    circuit.wires.addItemAddedListener( addWireNode );
+    circuit.wires.forEach( addWireNode );
+
+    var addBatteryNode = function( battery ) {
+      circuitNode.addChild( new BatteryNode( circuit.getSnapContext(), battery ) );
+    };
+    circuit.batteries.addItemAddedListener( addBatteryNode );
+    circuit.batteries.forEach( addBatteryNode );
   }
 
   return inherit( Node, CircuitNode );

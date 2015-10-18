@@ -13,6 +13,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var ObservableArray = require( 'AXON/ObservableArray' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Wire' );
+  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Battery' );
   var SnapContext = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/SnapContext' );
   var Connection = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Connection' );
   var OOCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/modified-nodal-analysis/OOCircuit' );
@@ -26,10 +27,15 @@ define( function( require ) {
     // The wires in the circuit
     this.wires = new ObservableArray();
 
+    // The batteries
+    this.batteries = new ObservableArray();
+
     // Some wires for testing
     this.wires.push( new Wire() );
     this.wires.push( new Wire() );
     this.wires.push( new Wire() );
+
+    this.batteries.push( new Battery() );
 
     // Keep track of which terminals are connected to other terminals
     this.connections = new ObservableArray();
