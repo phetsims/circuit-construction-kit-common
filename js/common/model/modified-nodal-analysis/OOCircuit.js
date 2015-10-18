@@ -120,6 +120,30 @@ define( function( require ) {
    * @constructor
    */
   function OOCircuit( batteries, resistors, currentSources ) {
+    assert( batteries, 'batteries should be defined' );
+    assert( resistors, 'resistors should be defined' );
+    assert( currentSources, 'currentSources should be defined' );
+
+    if ( assert ) {
+      for ( var i = 0; i < batteries.length; i++ ) {
+        var battery = batteries[ i ];
+        assert && assert( typeof battery.node0 === 'number' );
+        assert && assert( typeof battery.node1 === 'number' );
+        assert && assert( typeof battery.voltage === 'number' );
+      }
+      for ( i = 0; i < resistors.length; i++ ) {
+        var resistor = resistors[ i ];
+        assert && assert( typeof resistor.node0 === 'number' );
+        assert && assert( typeof resistor.node1 === 'number' );
+        assert && assert( typeof resistor.resistance === 'number' );
+      }
+      for ( i = 0; i < currentSources.length; i++ ) {
+        var currentSource = currentSources[ i ];
+        assert && assert( typeof currentSource.node0 === 'number' );
+        assert && assert( typeof currentSource.node1 === 'number' );
+        assert && assert( typeof currentSource.current === 'number' );
+      }
+    }
     this.batteries = batteries;
     this.resistors = resistors;
     this.currentSources = currentSources;

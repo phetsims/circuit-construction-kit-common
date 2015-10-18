@@ -55,12 +55,10 @@ define( function( require ) {
         var key = myKeys[ i ];
         equal && equal( round( this.getNodeVoltage( key ) ), round( linearCircuitSolution.getNodeVoltage( key ) ), ('node voltages[' + i + '] should match') );
         if ( !numberApproxEquals( this.getNodeVoltage( key ), linearCircuitSolution.getNodeVoltage( key ) ) ) {
-          debugger;
           return false;
         }
       }
 
-      debugger;
       if ( !this.hasAllCurrents( linearCircuitSolution ) ) {
         return false;
       }

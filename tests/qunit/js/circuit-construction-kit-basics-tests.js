@@ -98,4 +98,120 @@
     var solution = circuit.solve();
     equal( solution.approxEquals( desiredSolution, equal ), true, 'solutions should match' );
   } );
+
+  test( 'test_two_batteries_in_series_should_have_voltage_added', function() {
+    var battery1 = { node0: 0, node1: 1, voltage: -4 };
+    var battery2 = { node0: 1, node1: 2, voltage: -4 };
+    var circuit = new OOCircuit( [ battery1, battery2 ], [ { node0: 2, node1: 0, resistance: 2.0 } ], [] );
+
+    var voltageMap = {
+
+      // TODO: What to do about these numerical issues that are larger than 1E6
+      0: 0.000001,
+      1: -3.999999,
+      2: -7.999999
+    };
+    var desiredSolution = new LinearCircuitSolution( voltageMap, [
+      _.extend( {}, battery1, { currentSolution: -4 } ),
+      _.extend( {}, battery2, { currentSolution: -4 } )
+    ] );
+    var solution = circuit.solve();
+    equal( solution.approxEquals( desiredSolution, equal ), true, 'solutions should match' );
+  } );
+
+  test( 'test_two_resistors_in_series_should_have_resistance_added', function() {
+    var battery = { node0: 0, node1: 1, voltage: 5.0 };
+    var circuit = new OOCircuit( [ battery ], [
+      { node0: 1, node1: 2, resistance: 10.0 },
+      { node0: 2, node1: 0, resistance: 10.0 }
+    ], [] );
+    var voltageMap = {
+      0: 0,
+      1: 5,
+      2: 2.500001
+    };
+    var desiredSolution = new LinearCircuitSolution( voltageMap, [
+      _.extend( {}, battery, { currentSolution: 5 / 20.0 } )
+    ] );
+    var solution = circuit.solve();
+    equal( solution.approxEquals( desiredSolution, equal ), true, 'solutions should match' );
+  } );
+
+  test( 'test_A_resistor_with_one_node_unconnected_shouldnt_cause_problems', function() {
+    var battery = { node0: 0, node1: 1, voltage: 4.0 };
+    var circuit = new OOCircuit(
+      [ battery ],
+      [
+        { node0: 1, node1: 0, resistance: 4.0 },
+        { node0: 0, node1: 2, resistance: 100.0 } ], []
+    );
+    var voltageMap = {
+      0: 0,
+      1: 4,
+      2: -0.000001
+    };
+    var desiredSolution = new LinearCircuitSolution( voltageMap, [
+      _.extend( {}, battery, { currentSolution: 1.0 } )
+    ] );
+    var solution = circuit.solve();
+    equal( solution.approxEquals( desiredSolution, equal ), true, 'solutions should match' );
+  } );
+
+  test( 'test_an_unconnected_resistor_shouldnt_cause_problems', function() {
+    var battery = { node0: 0, node1: 1, voltage: 4.0 };
+    var circuit = new OOCircuit( [ battery ], [
+      { node0: 1, node1: 0, resistance: 4.0 },
+      { node0: 2, node1: 3, resistance: 100.0 }
+    ], [] );
+    var voltageMap = {
+      0: 0,
+      1: 4, 2: 0, 3: 0
+    };
+
+    var desiredSolution = new LinearCircuitSolution( voltageMap, [
+      _.extend( {}, battery, { currentSolution: 1.0 } )
+    ] );
+    var solution = circuit.solve();
+    equal( solution.approxEquals( desiredSolution, equal ), true, 'solutions should match' );
+  } );
+
+  test( 'test_should_handle_resistors_with_no_resistance', function() {
+    var battery = { node0: 0, node1: 1, voltage: 5 };
+    var resistor = { node0: 2, node1: 0, resistance: 0 };
+    var circuit = new OOCircuit( [ battery ], [
+      { node0: 1, node1: 2, resistance: 10 },
+      resistor
+    ], [] );
+    var voltageMap = {
+      0: 0,
+      1: 5,
+      2: 0
+    };
+    var desiredSolution = new LinearCircuitSolution( voltageMap, [
+      _.extend( {}, battery, { currentSolution: 5.0 / 10.0 } ),
+      _.extend( {}, resistor, { currentSolution: 5.0 / 10.0 } )
+    ] );
+    var solution = circuit.solve();
+    equal( solution.approxEquals( desiredSolution, equal ), true, 'solutions should match' );
+  } );
+
+  var FUDGE = 0.000001;
+  test( 'test_resistors_in_parallel_should_have_harmonic_mean_of_resistance', function() {
+    var V = 9.0;
+    var R1 = 5.0;
+    var R2 = 5.0;
+    var Req = 1 / ( 1 / R1 + 1 / R2 );
+    var battery = { node0: 0, node1: 1, voltage: V };
+    var circuit = new OOCircuit( [ battery ], [
+      { node0: 1, node1: 0, resistance: R1 },
+      { node0: 1, node1: 0, resistance: R2 }
+    ], [] );
+    var voltageMap = { 0: 0, 1: V - FUDGE };
+
+    var desiredSolution = new LinearCircuitSolution( voltageMap, [
+      _.extend( {}, battery, { currentSolution: V / Req } )
+    ] );
+    var solution = circuit.solve();
+    equal( solution.approxEquals( desiredSolution, equal ), true, 'solutions should match' );
+  } );
 })();
