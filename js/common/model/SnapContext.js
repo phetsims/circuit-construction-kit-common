@@ -38,8 +38,10 @@ define( function( require ) {
     // @public
     getAvailableTargets: function( wire, terminalPositionProperty ) {
       var targets = [];
-      for ( var i = 0; i < this.circuit.wires.length; i++ ) {
-        var circuitWire = this.circuit.wires.get( i );
+
+      var components = this.circuit.wires.getArray().concat( this.circuit.batteries.getArray() ).concat( this.circuit.lightBulbs.getArray() );
+      for ( var i = 0; i < components.length; i++ ) {
+        var circuitWire = components[ i ];
         if ( wire !== circuitWire ) {
 
           var closeEnough1 = terminalPositionProperty.get().distance( circuitWire.startTerminalPositionProperty.get() ) < distanceThreshold;

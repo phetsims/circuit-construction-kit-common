@@ -13,6 +13,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/WireNode' );
   var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/BatteryNode' );
+  var LightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/LightBulbNode' );
 
   /**
    *
@@ -33,6 +34,12 @@ define( function( require ) {
     };
     circuit.batteries.addItemAddedListener( addBatteryNode );
     circuit.batteries.forEach( addBatteryNode );
+
+    var addLightBulbNode = function( lightBulb ) {
+      circuitNode.addChild( new LightBulbNode( circuit.getSnapContext(), lightBulb ) );
+    };
+    circuit.lightBulbs.addItemAddedListener( addLightBulbNode );
+    circuit.lightBulbs.forEach( addLightBulbNode );
   }
 
   return inherit( Node, CircuitNode );

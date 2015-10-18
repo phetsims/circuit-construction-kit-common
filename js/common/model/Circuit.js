@@ -14,6 +14,7 @@ define( function( require ) {
   var ObservableArray = require( 'AXON/ObservableArray' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Wire' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Battery' );
+  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/LightBulb' );
   var SnapContext = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/SnapContext' );
   var Connection = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Connection' );
   var OOCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/modified-nodal-analysis/OOCircuit' );
@@ -24,11 +25,9 @@ define( function( require ) {
    */
   function Circuit() {
 
-    // The wires in the circuit
     this.wires = new ObservableArray();
-
-    // The batteries
     this.batteries = new ObservableArray();
+    this.lightBulbs = new ObservableArray();
 
     // Some wires for testing
     this.wires.push( new Wire() );
@@ -36,6 +35,8 @@ define( function( require ) {
     this.wires.push( new Wire() );
 
     this.batteries.push( new Battery() );
+
+    this.lightBulbs.push( new LightBulb() );
 
     // Keep track of which terminals are connected to other terminals
     this.connections = new ObservableArray();

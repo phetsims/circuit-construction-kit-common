@@ -16,11 +16,11 @@ define( function( require ) {
    *
    * @constructor
    */
-  function Battery( voltage ) {
+  function LightBulb( voltage ) {
     FixedLengthComponent.call( this, 146, {
       voltage: voltage
     } );
   }
 
-  return inherit( FixedLengthComponent, Battery );
+  return inherit( FixedLengthComponent, LightBulb );
 } );

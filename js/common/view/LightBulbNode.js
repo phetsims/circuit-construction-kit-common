@@ -16,16 +16,16 @@ define( function( require ) {
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
 
   // images
-  var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/battery.png' );
+  var lightBulbImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/light-bulb.png' );
 
   /**
    *
    * @constructor
    */
-  function BatteryNode( snapContext, battery ) {
-    var imageNode = new Image( batteryImage );
+  function LightBulbNode( snapContext, lightBulb ) {
+    var imageNode = new Image( lightBulbImage );
 
-    battery.startTerminalPositionProperty.link( function( startTerminalPosition ) {
+    lightBulb.startTerminalPositionProperty.link( function( startTerminalPosition ) {
       imageNode.leftCenter = startTerminalPosition;
     } );
     Node.call( this, {
@@ -35,7 +35,7 @@ define( function( require ) {
       ]
     } );
 
-    var terminalPositionProperty = battery.startTerminalPositionProperty;
+    var terminalPositionProperty = lightBulb.startTerminalPositionProperty;
     this.movableDragHandler = new MovableDragHandler( terminalPositionProperty, {
       onDrag: function( event ) {
 
@@ -70,7 +70,7 @@ define( function( require ) {
     this.addInputListener( this.movableDragHandler );
   }
 
-  circuitConstructionKitBasics.register( 'BatteryNode', BatteryNode );
+  circuitConstructionKitBasics.register( 'LightBulbNode', LightBulbNode );
 
-  return inherit( Node, BatteryNode );
+  return inherit( Node, LightBulbNode );
 } );
