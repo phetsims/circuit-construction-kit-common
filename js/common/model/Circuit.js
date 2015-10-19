@@ -29,6 +29,9 @@ define( function( require ) {
     this.batteries = new ObservableArray();
     this.lightBulbs = new ObservableArray();
 
+    // Keep track of which terminals are connected to other terminals
+    this.connections = new ObservableArray();
+
     // Some wires for testing
     this.wires.push( new Wire() );
     this.wires.push( new Wire() );
@@ -37,9 +40,6 @@ define( function( require ) {
     this.batteries.push( new Battery() );
 
     this.lightBulbs.push( new LightBulb() );
-
-    // Keep track of which terminals are connected to other terminals
-    this.connections = new ObservableArray();
   }
 
   return inherit( Object, Circuit, {
