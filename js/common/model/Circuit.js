@@ -37,9 +37,9 @@ define( function( require ) {
     this.wires.push( new Wire() );
     this.wires.push( new Wire() );
 
-    this.batteries.push( new Battery() );
-
     this.lightBulbs.push( new LightBulb() );
+    
+    this.batteries.push( new Battery() );
   }
 
   return inherit( Object, Circuit, {

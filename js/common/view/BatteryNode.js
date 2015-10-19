@@ -14,6 +14,8 @@ define( function( require ) {
   var Image = require( 'SCENERY/nodes/Image' );
   var Node = require( 'SCENERY/nodes/Node' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
+  var FixedLengthTerminalNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/FixedLengthTerminalNode' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // images
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/battery.png' );
@@ -25,13 +27,31 @@ define( function( require ) {
   function BatteryNode( snapContext, battery ) {
     var imageNode = new Image( batteryImage );
 
-    battery.startTerminalPositionProperty.link( function( startTerminalPosition ) {
-      imageNode.leftCenter = startTerminalPosition;
+    //battery.startTerminalPositionProperty.link( function( startTerminalPosition ) {
+    //  imageNode.leftCenter = startTerminalPosition;
+    //} );
+    // TODO: multilink?
+    battery.angleProperty.link( function( angle ) {
+      imageNode.rotation = angle;
     } );
+    battery.multilink( [ 'startTerminalPosition', 'angle' ], function( startTerminalPosition, angle ) {
+
+      // TODO: Simplify this matrix math.
+      imageNode.resetTransform();
+      imageNode.rotateAround( new Vector2( 0, 0 ), angle );
+      imageNode.x = startTerminalPosition.x;
+      imageNode.y = startTerminalPosition.y;
+      imageNode.translate( 0, -batteryImage[ 0 ].height / 2 );
+    } );
+
+    var startTerminalNode = new FixedLengthTerminalNode( snapContext, battery, battery.startTerminalPositionProperty );
+    var endTerminalNode = new FixedLengthTerminalNode( snapContext, battery, battery.endTerminalPositionProperty );
     Node.call( this, {
       cursor: 'pointer',
       children: [
-        imageNode
+        imageNode,
+        startTerminalNode,
+        endTerminalNode
       ]
     } );
 
@@ -67,7 +87,7 @@ define( function( require ) {
         //}
       }
     } );
-    this.addInputListener( this.movableDragHandler );
+    imageNode.addInputListener( this.movableDragHandler );
   }
 
   circuitConstructionKitBasics.register( 'BatteryNode', BatteryNode );

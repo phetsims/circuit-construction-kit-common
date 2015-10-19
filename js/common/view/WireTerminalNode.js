@@ -12,6 +12,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
+  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
 
   /**
    *
@@ -20,7 +21,7 @@ define( function( require ) {
   function WireTerminalNode( snapContext, wire, terminalPositionProperty ) {
     this.wire = wire;
     var wireTerminalNode = this;
-    Circle.call( this, 20, { fill: 'gray', cursor: 'pointer' } );
+    Circle.call( this, 20, CircuitConstructionKitBasicsConstants.terminalNodeAttributes );
     terminalPositionProperty.link( function( terminalPosition ) {
       wireTerminalNode.center = terminalPosition;
     } );
