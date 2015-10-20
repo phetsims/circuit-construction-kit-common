@@ -14,7 +14,6 @@ define( function( require ) {
   var Circle = require( 'SCENERY/nodes/Circle' );
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-  var Vector2 = require( 'DOT/Vector2' );
 
   /**
    *
