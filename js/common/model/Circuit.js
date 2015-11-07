@@ -1,4 +1,4 @@
-// Copyright 2002-2015, University of Colorado Boulder
+// Copyright 2015, University of Colorado Boulder
 
 /**
  * A collection of circuit components in the play area, not necessarily connected.  (For instance it could be 2 logical
