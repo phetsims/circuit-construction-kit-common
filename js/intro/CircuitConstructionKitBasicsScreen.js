@@ -14,7 +14,7 @@ define( function( require ) {
   var Screen = require( 'JOIST/Screen' );
 
   // strings
-  var circuitConstructionKitBasicsSimString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_BASICS/circuit-construction-kit-basics.title' );
+  var circuitConstructionKitBasicsTitleString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_BASICS/circuit-construction-kit-basics.title' );
 
   /**
    * @constructor
@@ -25,7 +25,7 @@ define( function( require ) {
     //If there are multiple screens, then the icon must be provided here.
     var icon = null;
 
-    Screen.call( this, circuitConstructionKitBasicsSimString, icon,
+    Screen.call( this, circuitConstructionKitBasicsTitleString, icon,
       function() { return new CircuitConstructionKitBasicsModel(); },
       function( model ) { return new CircuitConstructionKitBasicsScreenView( model ); },
       { backgroundColor: 'white' }

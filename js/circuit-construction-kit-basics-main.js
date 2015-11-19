@@ -14,7 +14,7 @@ define( function( require ) {
   var SimLauncher = require( 'JOIST/SimLauncher' );
 
   // strings
-  var simTitle = require( 'string!CIRCUIT_CONSTRUCTION_KIT_BASICS/circuit-construction-kit-basics.title' );
+  var circuitConstructionKitBasicsTitleString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_BASICS/circuit-construction-kit-basics.title' );
 
   var simOptions = {
     credits: {
@@ -40,7 +40,7 @@ define( function( require ) {
   // however, when running the unit tests we don't also want to launch the simulation.
   if ( !window.circuitConstructionKitBasicsTestSuite ) {
     SimLauncher.launch( function() {
-      var sim = new Sim( simTitle, [ new CircuitConstructionKitBasicsScreen() ], simOptions );
+      var sim = new Sim( circuitConstructionKitBasicsTitleString, [ new CircuitConstructionKitBasicsScreen() ], simOptions );
       sim.start();
     } );
   }
