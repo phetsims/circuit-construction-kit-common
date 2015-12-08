@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var ObservableArray = require( 'AXON/ObservableArray' );
+  var DerivedProperty = require( 'AXON/DerivedProperty' );
 
   /**
    *
@@ -44,7 +45,9 @@ define( function( require ) {
     setPosition: function( position ) {
       for ( var i = 0; i < this.elements.getArray().length; i++ ) {
         var element = this.elements.getArray()[ i ];
-        element.terminalPositionProperty.set( position );
+        if ( !(element.terminalPositionProperty instanceof DerivedProperty) ) {
+          element.terminalPositionProperty.set( position );
+        }
       }
     }
   } );
