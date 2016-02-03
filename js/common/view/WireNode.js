@@ -44,18 +44,18 @@ define( function( require ) {
 
     line.addInputListener( new SimpleDragHandler( {
       start: function( event ) {
-        startWireTerminalNode.movableDragHandler.forwardStartEvent( event );
-        endWireTerminalNode.movableDragHandler.forwardStartEvent( event );
+        startWireTerminalNode.movableDragHandler.handleForwardedStartEvent( event );
+        endWireTerminalNode.movableDragHandler.handleForwardedStartEvent( event );
       },
       drag: function( event ) {
 
-        startWireTerminalNode.movableDragHandler.forwardDragEvent( event );
-        endWireTerminalNode.movableDragHandler.forwardDragEvent( event );
+        startWireTerminalNode.movableDragHandler.handleForwardedDragEvent( event );
+        endWireTerminalNode.movableDragHandler.handleForwardedDragEvent( event );
       },
       end: function( event ) {
 
-        startWireTerminalNode.movableDragHandler.forwardEndEvent( event );
-        endWireTerminalNode.movableDragHandler.forwardEndEvent( event );
+        startWireTerminalNode.movableDragHandler.handleForwardedEndEvent( event );
+        endWireTerminalNode.movableDragHandler.handleForwardedEndEvent( event );
       }
     } ) );
   }
