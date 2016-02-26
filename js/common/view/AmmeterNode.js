@@ -15,10 +15,17 @@ define( function( require ) {
 
   // images
   var ammeterBody = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/ammeter_body.png' );
+  var ammeterProbe = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/ammeter_probe.png' );
 
   function AmmeterNode() {
+    var ammeterBodyNode = new Image( ammeterBody );
+    var ammeterProbeNode = new Image( ammeterProbe, {
+      scale: 0.6,
+      left: ammeterBodyNode.centerX,
+      bottom: ammeterBodyNode.top - 20
+    } );
     Node.call( this, {
-      children: [ new Image( ammeterBody ) ]
+      children: [ ammeterBodyNode, ammeterProbeNode ]
     } );
   }
 

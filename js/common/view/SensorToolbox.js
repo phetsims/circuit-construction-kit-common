@@ -21,13 +21,15 @@ define( function( require ) {
     var toolIconLength = CircuitConstructionKitBasicsConstants.toolboxIconLength;
 
     var voltmeterNodeIcon = new VoltmeterNode();
-    voltmeterNodeIcon.mutate( { scale: toolIconLength / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height ) } );
+    var voltmeterIconSizeIncrease = 1.3;
+    voltmeterNodeIcon.mutate( { scale: toolIconLength * voltmeterIconSizeIncrease / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height ) } );
 
     var ammeterNodeIcon = new AmmeterNode();
     ammeterNodeIcon.mutate( { scale: toolIconLength / Math.max( ammeterNodeIcon.width, ammeterNodeIcon.height ) } );
 
     CircuitConstructionKitBasicsPanel.call( this, new HBox( {
       spacing: CircuitConstructionKitBasicsConstants.toolboxItemSpacing,
+      align: 'bottom',
       children: [
         voltmeterNodeIcon,
         ammeterNodeIcon
