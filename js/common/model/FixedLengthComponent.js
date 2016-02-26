@@ -17,9 +17,9 @@ define( function( require ) {
    *
    * @constructor
    */
-  function FixedLengthComponent( length, propertySetMap ) {
+  function FixedLengthComponent( length, position, propertySetMap ) {
     PropertySet.call( this, _.extend( {
-      position: new Vector2(), // The center of the component, in screen coordinates
+      position: position, // The center of the component, in screen coordinates
       angle: 0 // rotation in radians
     }, propertySetMap ) );
 

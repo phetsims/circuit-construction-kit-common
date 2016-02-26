@@ -16,9 +16,9 @@ define( function( require ) {
    *
    * @constructor
    */
-  function Resistor( voltage ) {
-    FixedLengthComponent.call( this, 146, {
-      voltage: voltage
+  function Resistor( position, resistance ) {
+    FixedLengthComponent.call( this, 146, position, {
+      resistance: resistance
     } );
   }
 

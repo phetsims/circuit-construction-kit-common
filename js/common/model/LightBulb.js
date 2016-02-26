@@ -16,9 +16,9 @@ define( function( require ) {
    *
    * @constructor
    */
-  function LightBulb( voltage ) {
-    FixedLengthComponent.call( this, 146, {
-      voltage: voltage
+  function LightBulb( position, resistance ) {
+    FixedLengthComponent.call( this, 146, position, {
+      resistance: resistance
     } );
   }
 

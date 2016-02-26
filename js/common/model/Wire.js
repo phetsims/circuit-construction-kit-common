@@ -17,10 +17,10 @@ define( function( require ) {
    *
    * @constructor
    */
-  function Wire() {
+  function Wire( position ) {
     PropertySet.call( this, {
-      startTerminalPosition: new Vector2(),
-      endTerminalPosition: new Vector2( 100, 0 ),
+      startTerminalPosition: new Vector2( position.x - 50, position.y ),
+      endTerminalPosition: new Vector2( position.x + 50, position.y ),
       resistance: 0
     } );
   }

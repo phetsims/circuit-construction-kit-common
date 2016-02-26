@@ -16,8 +16,8 @@ define( function( require ) {
    *
    * @constructor
    */
-  function Battery( voltage ) {
-    FixedLengthComponent.call( this, 146, {
+  function Battery( position, voltage ) {
+    FixedLengthComponent.call( this, 146, position, {
       voltage: voltage
     } );
   }
