@@ -36,7 +36,7 @@ define( function( require ) {
       ]
     } );
 
-    var terminalPositionProperty = resistor.startTerminalPositionProperty;
+    //var terminalPositionProperty = resistor.startTerminalPositionProperty;
     this.movableDragHandler = new MovableDragHandler( resistor.positionProperty, {
       onDrag: function( event ) {
 
