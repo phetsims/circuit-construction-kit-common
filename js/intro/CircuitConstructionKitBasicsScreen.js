@@ -25,10 +25,12 @@ define( function( require ) {
     //If there are multiple screens, then the icon must be provided here.
     var icon = null;
 
-    Screen.call( this, circuitConstructionKitBasicsTitleString, icon,
-      function() { return new CircuitConstructionKitBasicsModel(); },
-      function( model ) { return new CircuitConstructionKitBasicsScreenView( model ); },
-      { backgroundColor: 'white' }
+    Screen.call( this, circuitConstructionKitBasicsTitleString, icon, function() {
+        return new CircuitConstructionKitBasicsModel();
+      }, function( model ) {
+        return new CircuitConstructionKitBasicsScreenView( model );
+      },
+      { backgroundColor: '#c6dbf9' }
     );
   }
 
