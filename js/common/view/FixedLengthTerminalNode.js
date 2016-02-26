@@ -47,27 +47,22 @@ define( function( require ) {
           component.angleProperty.set( proposedAngle );
 
           // step toward the mouse
-          //console.log( distanceFromMouse );
           component.startTerminalPositionProperty.set( component.startTerminalPositionProperty.get().plus( location.minus( terminalPositionProperty.get() ) ) );
         }
         else {
 
-          // Want to set the terminalPositionProperty to be at location, but we are prevented because the object
-          // is fixed length, so rotate it to the desired position.
-          component.angleProperty.set( proposedAngle );
-
-          // step toward the mouse
-          //console.log( distanceFromMouse );
-          component.startTerminalPositionProperty.set( component.startTerminalPositionProperty.get().plus( location.minus( terminalPositionProperty.get() ) ) );
-
           // Keep the opposite terminal at the same location and rotate the object
-          //var pivot1 = component.getOppositeTerminalPositionProperty( terminalPositionProperty ).get();
-          //component.angleProperty.set( proposedAngle + Math.PI );
-          //
-          //// The opposite terminal has moved after changing the angle, we must find out how far it has moved
-          //// and translate everything back
-          //var pivot2 = component.getOppositeTerminalPositionProperty( terminalPositionProperty ).get();
-          //terminalPositionProperty.set( terminalPositionProperty.get().minusXY( pivot2.x - pivot1.x, pivot2.y - pivot1.y ) );
+          var startTerminalPosition = component.getOppositeTerminalPositionProperty( terminalPositionProperty ).get();
+          component.angleProperty.set( proposedAngle + Math.PI );
+
+          // The opposite terminal has moved after changing the angle, we must find out how far it has moved
+          // and translate everything back
+          var pivot2 = component.getOppositeTerminalPositionProperty( terminalPositionProperty ).get();
+          var endTerminalPosition = terminalPositionProperty.get().minusXY(
+            pivot2.x - startTerminalPosition.x,
+            pivot2.y - startTerminalPosition.y
+          );
+          terminalPositionProperty.set( endTerminalPosition );
         }
       },
       end: function() {}
