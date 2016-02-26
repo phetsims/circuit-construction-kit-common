@@ -12,13 +12,13 @@ define( function( require ) {
   var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var CircuitConstructionKitBasicsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitConstructionKitBasicsPanel' );
   var VBox = require( 'SCENERY/nodes/VBox' );
-  var Text = require( 'SCENERY/nodes/Text' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Battery' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/LightBulb' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Wire' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Resistor' );
   var Line = require( 'SCENERY/nodes/Line' );
   var Image = require( 'SCENERY/nodes/Image' );
+  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
 
   // images
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/battery.png' );
@@ -74,17 +74,18 @@ define( function( require ) {
     var circuit = circuitConstructionKitBasicsModel.circuit;
     var circuitNode = circuitConstructionKitBasicsScreenView.circuitNode;
 
-    var iconWidth = 60;
+    var iconWidth = CircuitConstructionKitBasicsConstants.toolboxIconLength;
+    var wireNode = new Line( 0, 0, iconWidth, 0, {
+      stroke: 'black',
+      lineWidth: 10,
+      cursor: 'pointer',
+      strokePickable: true,
+      scale: 1
+    } );
     CircuitConstructionKitBasicsPanel.call( this, new VBox( {
-      spacing: 30,
+      spacing: CircuitConstructionKitBasicsConstants.toolboxItemSpacing,
       children: [
-        new Line( 0, 0, iconWidth, 0, {
-          stroke: 'black',
-          lineWidth: 20,
-          cursor: 'pointer',
-          strokePickable: true,
-          scale: 1
-        } )
+        wireNode.mutate( { scale: iconWidth / Math.max( wireNode.width, wireNode.height ) } )
           .addInputListener( createToolIconInputListener(
             function( position ) { return new Wire( position ); },
             circuit.wires,
@@ -93,7 +94,7 @@ define( function( require ) {
           ) ),
         new Image( batteryImage, {
           cursor: 'pointer',
-          scale: iconWidth / batteryImage[ 0 ].width
+          scale: iconWidth / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height )
         } )
           .addInputListener( createToolIconInputListener(
             function( position ) { return new Battery( position ); },
@@ -103,7 +104,7 @@ define( function( require ) {
           ) ),
         new Image( lightBulbImage, {
           cursor: 'pointer',
-          scale: iconWidth / lightBulbImage[ 0 ].height // constrained by being too tall, not too wide
+          scale: iconWidth / Math.max( lightBulbImage[ 0 ].width, lightBulbImage[ 0 ].height ) // constrained by being too tall, not too wide
         } )
           .addInputListener( createToolIconInputListener(
             function( position ) { return new LightBulb( position ); },
@@ -113,7 +114,7 @@ define( function( require ) {
           ) ),
         new Image( resistorImage, {
           cursor: 'pointer',
-          scale: iconWidth / resistorImage[ 0 ].width
+          scale: iconWidth / Math.max( resistorImage[ 0 ].width, resistorImage[ 0 ].height )
         } )
           .addInputListener( createToolIconInputListener(
             function( position ) { return new Resistor( position ); },
