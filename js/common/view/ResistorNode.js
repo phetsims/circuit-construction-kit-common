@@ -37,7 +37,7 @@ define( function( require ) {
     } );
 
     var terminalPositionProperty = resistor.startTerminalPositionProperty;
-    this.movableDragHandler = new MovableDragHandler( terminalPositionProperty, {
+    this.movableDragHandler = new MovableDragHandler( resistor.positionProperty, {
       onDrag: function( event ) {
 
         // check for available nearby nodes to snap to

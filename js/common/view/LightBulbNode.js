@@ -36,8 +36,7 @@ define( function( require ) {
       ]
     } );
 
-    var terminalPositionProperty = lightBulb.startTerminalPositionProperty;
-    this.movableDragHandler = new MovableDragHandler( terminalPositionProperty, {
+    this.movableDragHandler = new MovableDragHandler( lightBulb.positionProperty, {
       onDrag: function( event ) {
 
         // check for available nearby nodes to snap to
