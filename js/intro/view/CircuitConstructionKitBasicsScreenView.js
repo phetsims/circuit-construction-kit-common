@@ -12,6 +12,7 @@ define( function( require ) {
   var ScreenView = require( 'JOIST/ScreenView' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var CircuitNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitNode' );
+  var CircuitComponentToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitComponentToolbox' );
 
   /**
    * @param {CircuitConstructionKitBasicsModel} circuitConstructionKitBasicsModel
@@ -39,6 +40,9 @@ define( function( require ) {
         bottom: -dy + height - 10
       } );
     } );
+
+    var circuitComponentToolbox = new CircuitComponentToolbox();
+    this.addChild( circuitComponentToolbox );
   }
 
   return inherit( ScreenView, CircuitConstructionKitBasicsScreenView, {
