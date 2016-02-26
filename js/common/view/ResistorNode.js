@@ -14,6 +14,8 @@ define( function( require ) {
   var Image = require( 'SCENERY/nodes/Image' );
   var Node = require( 'SCENERY/nodes/Node' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
+  var FixedLengthTerminalNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/FixedLengthTerminalNode' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // images
   var resistorImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/resistor.png' );
@@ -26,13 +28,26 @@ define( function( require ) {
     this.resistor = resistor;
     var imageNode = new Image( resistorImage );
 
-    resistor.startTerminalPositionProperty.link( function( startTerminalPosition ) {
-      imageNode.leftCenter = startTerminalPosition;
+    resistor.angleProperty.link( function( angle ) {
+      imageNode.rotation = angle;
     } );
+    resistor.multilink( [ 'startTerminalPosition', 'angle' ], function( startTerminalPosition, angle ) {
+
+      // TODO: Simplify this matrix math.
+      imageNode.resetTransform();
+      imageNode.rotateAround( new Vector2( 0, 0 ), angle );
+      imageNode.x = startTerminalPosition.x;
+      imageNode.y = startTerminalPosition.y;
+      imageNode.translate( 0, -resistorImage[ 0 ].height / 2 );
+    } );
+    var startTerminalNode = new FixedLengthTerminalNode( snapContext, resistor, true );
+    var endTerminalNode = new FixedLengthTerminalNode( snapContext, resistor, false );
     Node.call( this, {
       cursor: 'pointer',
       children: [
-        imageNode
+        imageNode,
+        startTerminalNode,
+        endTerminalNode
       ]
     } );
 

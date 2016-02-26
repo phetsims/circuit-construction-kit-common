@@ -14,6 +14,8 @@ define( function( require ) {
   var Image = require( 'SCENERY/nodes/Image' );
   var Node = require( 'SCENERY/nodes/Node' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
+  var FixedLengthTerminalNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/FixedLengthTerminalNode' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // images
   var lightBulbImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/light-bulb.png' );
@@ -26,13 +28,26 @@ define( function( require ) {
     this.lightBulb = lightBulb;
     var imageNode = new Image( lightBulbImage );
 
-    lightBulb.startTerminalPositionProperty.link( function( startTerminalPosition ) {
-      imageNode.leftCenter = startTerminalPosition;
+    lightBulb.angleProperty.link( function( angle ) {
+      imageNode.rotation = angle;
     } );
+    lightBulb.multilink( [ 'startTerminalPosition', 'angle' ], function( startTerminalPosition, angle ) {
+
+      // TODO: Simplify this matrix math.
+      imageNode.resetTransform();
+      imageNode.rotateAround( new Vector2( 0, 0 ), angle );
+      imageNode.x = startTerminalPosition.x;
+      imageNode.y = startTerminalPosition.y;
+      imageNode.translate( 0, -lightBulbImage[ 0 ].height / 2 );
+    } );
+    var startTerminalNode = new FixedLengthTerminalNode( snapContext, lightBulb, true );
+    var endTerminalNode = new FixedLengthTerminalNode( snapContext, lightBulb, false );
     Node.call( this, {
       cursor: 'pointer',
       children: [
-        imageNode
+        imageNode,
+        startTerminalNode,
+        endTerminalNode
       ]
     } );
 
