@@ -42,7 +42,7 @@ define( function( require ) {
     var endWireTerminalNode = new WireTerminalNode( snapContext, wire, wire.endTerminalPositionProperty );
     this.addChild( endWireTerminalNode );
 
-    line.addInputListener( new SimpleDragHandler( {
+    this.movableDragHandler = new SimpleDragHandler( {
       start: function( event ) {
         startWireTerminalNode.movableDragHandler.handleForwardedStartEvent( event );
         endWireTerminalNode.movableDragHandler.handleForwardedStartEvent( event );
@@ -57,7 +57,8 @@ define( function( require ) {
         startWireTerminalNode.movableDragHandler.handleForwardedEndEvent( event );
         endWireTerminalNode.movableDragHandler.handleForwardedEndEvent( event );
       }
-    } ) );
+    } );
+    line.addInputListener( this.movableDragHandler );
   }
 
   return inherit( Node, WireNode );

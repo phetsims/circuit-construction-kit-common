@@ -15,6 +15,8 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Battery' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/LightBulb' );
+  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Wire' );
+  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Resistor' );
 
   /**
    * @param {CircuitConstructionKitBasicsModel} circuitConstructionKitBasicsModel
@@ -28,8 +30,15 @@ define( function( require ) {
     var circuitComponentToolbox = this;
     // From: https://github.com/phetsims/scenery-phet/issues/195#issuecomment-186300071
     // @jonathanolson and I looked into the way Charges and Fields just calls startDrag(event) on the play area drag listener (which adds a listener to the pointer, in the usual SimpleDragHandler way), and it seems like a good pattern. I will try this pattern for Circuit Construction Kit, when I am working on the toolbox listeners.
-    var batteryIcon = new Text( 'battery', { fontSize: 28 } );
 
+    /**
+     *
+     * @param {Function} createComponent - given a view location, create a circuit component
+     * @param {ObservableArray.<Object>} modelList - list of circuit components the new component should be added to
+     * @param {Array.<Node>} viewList - list of nodes where the newly created circuit component node will be found
+     * @param {Function} getCircuitComponentFromNode - function that gets a model element from a node
+     * @returns {{down: down}}
+     */
     var createToolIconInputListener = function( createComponent, modelList, viewList, getCircuitComponentFromNode ) {
       return {
         down: function( event ) {
@@ -44,43 +53,50 @@ define( function( require ) {
           var viewPosition = circuitComponentToolbox.globalToParentPoint( event.pointer.point );
           var component = createComponent( viewPosition );
           modelList.add( component );
-          var matchedBatteryNodes = viewList.filter( function( componentNode ) {
+          var matchedNodes = viewList.filter( function( componentNode ) {
             return getCircuitComponentFromNode( componentNode ) === component;
           } );
-          assert && assert( matchedBatteryNodes.length === 1, 'should have found the one and only node for this battery' );
-          var batteryNode = matchedBatteryNodes[ 0 ];
-          batteryNode.movableDragHandler.startDrag( event );
+          assert && assert( matchedNodes.length === 1, 'should have found the one and only node for this battery' );
+          var componentNode = matchedNodes[ 0 ];
+          componentNode.movableDragHandler.startDrag( event );
         }
       };
     };
-    batteryIcon.addInputListener( createToolIconInputListener(
-      function() {
-        return new Battery();
-      },
-      circuitConstructionKitBasicsModel.circuit.batteries,
-      circuitConstructionKitBasicsScreenView.circuitNode.batteryNodes,
-      function( batteryNode ) {
-        return batteryNode.battery;
-      }
-    ) );
 
-    var lightBulbIcon = new Text( 'lightbulb', { fontSize: 28 } );
-    lightBulbIcon.addInputListener( createToolIconInputListener(
-      function() {
-        return new LightBulb();
-      },
-      circuitConstructionKitBasicsModel.circuit.lightBulbs,
-      circuitConstructionKitBasicsScreenView.circuitNode.lightBulbNodes,
-      function( lightBulbNode ) {
-        return lightBulbNode.lightBulb;
-      }
-    ) );
+    // Convenience vars.  TODO: Just pass these in as main constructor if no other parts of circuitConstructionKitBasicsModel or circuitConstructionKitBasicsScreenView are needed?
+    var circuit = circuitConstructionKitBasicsModel.circuit;
+    var circuitNode = circuitConstructionKitBasicsScreenView.circuitNode;
+
     CircuitConstructionKitBasicsPanel.call( this, new VBox( {
       children: [
-        new Text( 'wire', { fontSize: 28 } ),
-        batteryIcon,
-        lightBulbIcon,
+        new Text( 'wire', { fontSize: 28 } )
+          .addInputListener( createToolIconInputListener(
+            function() { return new Wire(); },
+            circuit.wires,
+            circuitNode.wireNodes,
+            function( wireNode ) { return wireNode.wire; }
+          ) ),
+        new Text( 'battery', { fontSize: 28 } )
+          .addInputListener( createToolIconInputListener(
+            function() { return new Battery(); },
+            circuit.batteries,
+            circuitNode.batteryNodes,
+            function( batteryNode ) { return batteryNode.battery; }
+          ) ),
+        new Text( 'lightbulb', { fontSize: 28 } )
+          .addInputListener( createToolIconInputListener(
+            function() { return new LightBulb(); },
+            circuit.lightBulbs,
+            circuitNode.lightBulbNodes,
+            function( lightBulbNode ) { return lightBulbNode.lightBulb; }
+          ) ),
         new Text( 'resistor', { fontSize: 28 } )
+          .addInputListener( createToolIconInputListener(
+            function() { return new Resistor(); },
+            circuit.resistors,
+            circuitNode.resistorNodes,
+            function( resistorNode ) { return resistorNode.resistor; }
+          ) )
       ]
     } ) );
   }

@@ -14,6 +14,7 @@ define( function( require ) {
   var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/WireNode' );
   var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/BatteryNode' );
   var LightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/LightBulbNode' );
+  var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ResistorNode' );
 
   /**
    *
@@ -23,14 +24,18 @@ define( function( require ) {
     Node.call( this );
     var circuitNode = this;
 
+    this.batteryNodes = [];
+    this.lightBulbNodes = [];
+    this.wireNodes = [];
+    this.resistorNodes = [];
+
     var addWireNode = function( wire ) {
-      circuitNode.addChild( new WireNode( circuit.getSnapContext(), wire ) );
+      var wireNode = new WireNode( circuit.getSnapContext(), wire );
+      circuitNode.wireNodes.push( wireNode );
+      circuitNode.addChild( wireNode );
     };
     circuit.wires.addItemAddedListener( addWireNode );
     circuit.wires.forEach( addWireNode );
-
-    this.batteryNodes = [];
-    this.lightBulbNodes = [];
 
     var addBatteryNode = function( battery ) {
       var batteryNode = new BatteryNode( circuit.getSnapContext(), battery );
@@ -47,6 +52,14 @@ define( function( require ) {
     };
     circuit.lightBulbs.addItemAddedListener( addLightBulbNode );
     circuit.lightBulbs.forEach( addLightBulbNode );
+
+    var addResistorNode = function( resistor ) {
+      var resistorNode = new ResistorNode( circuit.getSnapContext(), resistor );
+      circuitNode.resistorNodes.push( resistorNode );
+      circuitNode.addChild( resistorNode );
+    };
+    circuit.resistors.addItemAddedListener( addResistorNode );
+    circuit.resistors.forEach( addResistorNode );
   }
 
   return inherit( Node, CircuitNode );
