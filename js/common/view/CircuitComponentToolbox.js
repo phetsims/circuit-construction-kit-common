@@ -74,7 +74,7 @@ define( function( require ) {
     var circuit = circuitConstructionKitBasicsModel.circuit;
     var circuitNode = circuitConstructionKitBasicsScreenView.circuitNode;
 
-    var iconWidth = 100;
+    var iconWidth = 60;
     CircuitConstructionKitBasicsPanel.call( this, new VBox( {
       spacing: 30,
       children: [
