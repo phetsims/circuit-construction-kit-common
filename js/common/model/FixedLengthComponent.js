@@ -23,9 +23,7 @@ define( function( require ) {
       angle: 0
     }, propertySetMap ) );
 
-    this.addDerivedProperty(
-      'endTerminalPosition',
-      [ 'startTerminalPosition', 'angle' ],
+    this.addDerivedProperty( 'endTerminalPosition', [ 'startTerminalPosition', 'angle' ],
       function( startTerminalPosition, angle ) {
         return startTerminalPosition.plus( Vector2.createPolar( length, angle ) );
       } );

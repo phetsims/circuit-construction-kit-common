@@ -20,7 +20,7 @@ define( function( require ) {
   function Wire() {
     PropertySet.call( this, {
       startTerminalPosition: new Vector2(),
-      endTerminalPosition: new Vector2( 100, 100 ),
+      endTerminalPosition: new Vector2( 100, 0 ),
       resistance: 0
     } );
   }
