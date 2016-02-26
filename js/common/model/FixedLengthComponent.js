@@ -19,13 +19,19 @@ define( function( require ) {
    */
   function FixedLengthComponent( length, propertySetMap ) {
     PropertySet.call( this, _.extend( {
-      startTerminalPosition: new Vector2(),
-      angle: 0
+      position: new Vector2(), // The center of the component, in screen coordinates
+      angle: 0 // rotation in radians
     }, propertySetMap ) );
 
-    this.addDerivedProperty( 'endTerminalPosition', [ 'startTerminalPosition', 'angle' ],
-      function( startTerminalPosition, angle ) {
-        return startTerminalPosition.plus( Vector2.createPolar( length, angle ) );
+    // Treat start and end symmetrically as derived properties
+    this.addDerivedProperty( 'startTerminalPosition', [ 'position', 'angle' ],
+      function( position, angle ) {
+        return position.plus( Vector2.createPolar( length / 2, angle + Math.PI ) );
+      } );
+
+    this.addDerivedProperty( 'endTerminalPosition', [ 'position', 'angle' ],
+      function( position, angle ) {
+        return position.plus( Vector2.createPolar( length / 2, angle ) );
       } );
   }
 

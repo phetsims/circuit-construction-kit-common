@@ -17,11 +17,16 @@ define( function( require ) {
 
   /**
    *
+   * @param snapContext
+   * @param {FixedLengthComponent} component
+   * @param {boolean} isStart
    * @constructor
    */
-  function FixedLengthTerminalNode( snapContext, component, terminalPositionProperty ) {
+  function FixedLengthTerminalNode( snapContext, component, isStart ) {
     var fixedLengthTerminalNode = this;
     Circle.call( this, 20, CircuitConstructionKitBasicsConstants.terminalNodeAttributes );
+    var terminalPositionProperty = isStart ? component.startTerminalPositionProperty : component.endTerminalPositionProperty;
+    var oppositePositionProperty = (!isStart) ? component.startTerminalPositionProperty : component.endTerminalPositionProperty;
     terminalPositionProperty.link( function( terminalPosition ) {
       fixedLengthTerminalNode.center = terminalPosition;
     } );
@@ -38,32 +43,13 @@ define( function( require ) {
 
         var location = fixedLengthTerminalNode.globalToParentPoint( event.pointer.point ).minus( startOffset );
 
-        var proposedAngle = location.minus( component.getOppositeTerminalPositionProperty( terminalPositionProperty ).get() ).angle();
+        var proposedAngle = location.minus( oppositePositionProperty.get() ).angle() + (isStart ? Math.PI : 0);
 
-        if ( component.endTerminalPositionProperty === terminalPositionProperty ) {
+        // Rotate about the center
+        component.angleProperty.set( proposedAngle );
 
-          // Want to set the terminalPositionProperty to be at location, but we are prevented because the object
-          // is fixed length, so rotate it to the desired position.
-          component.angleProperty.set( proposedAngle );
-
-          // step toward the mouse
-          component.startTerminalPositionProperty.set( component.startTerminalPositionProperty.get().plus( location.minus( terminalPositionProperty.get() ) ) );
-        }
-        else {
-
-          // Keep the opposite terminal at the same location and rotate the object
-          var startTerminalPosition = component.getOppositeTerminalPositionProperty( terminalPositionProperty ).get();
-          component.angleProperty.set( proposedAngle + Math.PI );
-
-          // The opposite terminal has moved after changing the angle, we must find out how far it has moved
-          // and translate everything back
-          var pivot2 = component.getOppositeTerminalPositionProperty( terminalPositionProperty ).get();
-          var endTerminalPosition = terminalPositionProperty.get().minusXY(
-            pivot2.x - startTerminalPosition.x,
-            pivot2.y - startTerminalPosition.y
-          );
-          terminalPositionProperty.set( endTerminalPosition );
-        }
+        // translate toward the mouse
+        component.position.set( component.position.plus( location.minus( terminalPositionProperty.get() ) ) );
       },
       end: function() {}
     } ) );

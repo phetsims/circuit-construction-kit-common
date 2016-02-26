@@ -45,8 +45,8 @@ define( function( require ) {
       imageNode.translate( 0, -batteryImage[ 0 ].height / 2 );
     } );
 
-    var startTerminalNode = new FixedLengthTerminalNode( snapContext, battery, battery.startTerminalPositionProperty );
-    var endTerminalNode = new FixedLengthTerminalNode( snapContext, battery, battery.endTerminalPositionProperty );
+    var startTerminalNode = new FixedLengthTerminalNode( snapContext, battery, true );
+    var endTerminalNode = new FixedLengthTerminalNode( snapContext, battery, false );
     Node.call( this, {
       cursor: 'pointer',
       children: [
@@ -56,8 +56,7 @@ define( function( require ) {
       ]
     } );
 
-    var terminalPositionProperty = battery.startTerminalPositionProperty;
-    this.movableDragHandler = new MovableDragHandler( terminalPositionProperty, {
+    this.movableDragHandler = new MovableDragHandler( battery.positionProperty, {
       onDrag: function( event ) {
 
         // check for available nearby nodes to snap to
