@@ -43,7 +43,7 @@ define( function( require ) {
     this.events.on( 'layoutFinished', function( dx, dy, width, height ) {
 
       // Float the resetAllButton to the bottom right
-      var inset = 10;
+      var inset = 14;
       resetAllButton.mutate( {
         right: -dx + width - inset,
         bottom: -dy + height - inset
