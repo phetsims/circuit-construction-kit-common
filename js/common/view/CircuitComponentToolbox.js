@@ -17,6 +17,13 @@ define( function( require ) {
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/LightBulb' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Wire' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Resistor' );
+  var Line = require( 'SCENERY/nodes/Line' );
+  var Image = require( 'SCENERY/nodes/Image' );
+
+  // images
+  var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/battery.png' );
+  var lightBulbImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/light-bulb.png' );
+  var resistorImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/resistor.png' );
 
   /**
    * @param {CircuitConstructionKitBasicsModel} circuitConstructionKitBasicsModel
@@ -67,30 +74,44 @@ define( function( require ) {
     var circuit = circuitConstructionKitBasicsModel.circuit;
     var circuitNode = circuitConstructionKitBasicsScreenView.circuitNode;
 
+    var iconWidth = 100;
     CircuitConstructionKitBasicsPanel.call( this, new VBox( {
+      spacing: 30,
       children: [
-        new Text( 'wire', { fontSize: 28 } )
+        new Line( 0, 0, iconWidth, 0, {
+          stroke: 'black',
+          lineWidth: 20,
+          cursor: 'pointer',
+          strokePickable: true,
+          scale: 1
+        } )
           .addInputListener( createToolIconInputListener(
             function() { return new Wire(); },
             circuit.wires,
             circuitNode.wireNodes,
             function( wireNode ) { return wireNode.wire; }
           ) ),
-        new Text( 'battery', { fontSize: 28 } )
+        new Image( batteryImage, {
+          scale: iconWidth / batteryImage[ 0 ].width
+        } )
           .addInputListener( createToolIconInputListener(
             function() { return new Battery(); },
             circuit.batteries,
             circuitNode.batteryNodes,
             function( batteryNode ) { return batteryNode.battery; }
           ) ),
-        new Text( 'lightbulb', { fontSize: 28 } )
+        new Image( lightBulbImage, {
+          scale: iconWidth / lightBulbImage[ 0 ].height // constrained by being too tall, not too wide
+        } )
           .addInputListener( createToolIconInputListener(
             function() { return new LightBulb(); },
             circuit.lightBulbs,
             circuitNode.lightBulbNodes,
             function( lightBulbNode ) { return lightBulbNode.lightBulb; }
           ) ),
-        new Text( 'resistor', { fontSize: 28 } )
+        new Image( resistorImage, {
+          scale: iconWidth / resistorImage[ 0 ].width
+        } )
           .addInputListener( createToolIconInputListener(
             function() { return new Resistor(); },
             circuit.resistors,
