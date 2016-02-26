@@ -92,6 +92,7 @@ define( function( require ) {
             function( wireNode ) { return wireNode.wire; }
           ) ),
         new Image( batteryImage, {
+          cursor: 'pointer',
           scale: iconWidth / batteryImage[ 0 ].width
         } )
           .addInputListener( createToolIconInputListener(
@@ -101,6 +102,7 @@ define( function( require ) {
             function( batteryNode ) { return batteryNode.battery; }
           ) ),
         new Image( lightBulbImage, {
+          cursor: 'pointer',
           scale: iconWidth / lightBulbImage[ 0 ].height // constrained by being too tall, not too wide
         } )
           .addInputListener( createToolIconInputListener(
@@ -110,6 +112,7 @@ define( function( require ) {
             function( lightBulbNode ) { return lightBulbNode.lightBulb; }
           ) ),
         new Image( resistorImage, {
+          cursor: 'pointer',
           scale: iconWidth / resistorImage[ 0 ].width
         } )
           .addInputListener( createToolIconInputListener(
