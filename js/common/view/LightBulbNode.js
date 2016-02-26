@@ -23,6 +23,7 @@ define( function( require ) {
    * @constructor
    */
   function LightBulbNode( snapContext, lightBulb ) {
+    this.lightBulb = lightBulb;
     var imageNode = new Image( lightBulbImage );
 
     lightBulb.startTerminalPositionProperty.link( function( startTerminalPosition ) {

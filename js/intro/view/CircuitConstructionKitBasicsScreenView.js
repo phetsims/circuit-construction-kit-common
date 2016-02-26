@@ -60,11 +60,11 @@ define( function( require ) {
       } );
     } );
 
-    this.circuitConstructionKitBasicsModel.circuit.batteries.addItemAddedListener( function( battery ) {
-      //var batteryNode = new BatteryNode();
-      //circuitConstructionKitBasicsScreenView.addChild( batteryNode );
-
-    } );
+    //this.circuitConstructionKitBasicsModel.circuit.batteries.addItemAddedListener( function( battery ) {
+    //  //var batteryNode = new BatteryNode();
+    //  //circuitConstructionKitBasicsScreenView.addChild( batteryNode );
+    //
+    //} );
   }
 
   return inherit( ScreenView, CircuitConstructionKitBasicsScreenView, {

@@ -30,6 +30,8 @@ define( function( require ) {
     circuit.wires.forEach( addWireNode );
 
     this.batteryNodes = [];
+    this.lightBulbNodes = [];
+
     var addBatteryNode = function( battery ) {
       var batteryNode = new BatteryNode( circuit.getSnapContext(), battery );
       circuitNode.batteryNodes.push( batteryNode );
@@ -39,7 +41,9 @@ define( function( require ) {
     circuit.batteries.forEach( addBatteryNode );
 
     var addLightBulbNode = function( lightBulb ) {
-      circuitNode.addChild( new LightBulbNode( circuit.getSnapContext(), lightBulb ) );
+      var lightBulbNode = new LightBulbNode( circuit.getSnapContext(), lightBulb );
+      circuitNode.lightBulbNodes.push( lightBulbNode );
+      circuitNode.addChild( lightBulbNode );
     };
     circuit.lightBulbs.addItemAddedListener( addLightBulbNode );
     circuit.lightBulbs.forEach( addLightBulbNode );
