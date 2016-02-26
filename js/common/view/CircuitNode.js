@@ -29,8 +29,11 @@ define( function( require ) {
     circuit.wires.addItemAddedListener( addWireNode );
     circuit.wires.forEach( addWireNode );
 
+    this.batteryNodes = [];
     var addBatteryNode = function( battery ) {
-      circuitNode.addChild( new BatteryNode( circuit.getSnapContext(), battery ) );
+      var batteryNode = new BatteryNode( circuit.getSnapContext(), battery );
+      circuitNode.batteryNodes.push( batteryNode );
+      circuitNode.addChild( batteryNode );
     };
     circuit.batteries.addItemAddedListener( addBatteryNode );
     circuit.batteries.forEach( addBatteryNode );

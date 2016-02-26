@@ -12,9 +12,9 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var ObservableArray = require( 'AXON/ObservableArray' );
-  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Wire' );
-  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Battery' );
-  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/LightBulb' );
+  //var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Wire' );
+  //var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Battery' );
+  //var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/LightBulb' );
   var SnapContext = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/SnapContext' );
   var Connection = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Connection' );
   var OOCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/modified-nodal-analysis/OOCircuit' );
@@ -33,13 +33,13 @@ define( function( require ) {
     this.connections = new ObservableArray();
 
     // Some wires for testing
-    this.wires.push( new Wire() );
-    this.wires.push( new Wire() );
-    this.wires.push( new Wire() );
-
-    this.lightBulbs.push( new LightBulb() );
-    
-    this.batteries.push( new Battery() );
+    //this.wires.push( new Wire() );
+    //this.wires.push( new Wire() );
+    //this.wires.push( new Wire() );
+    //
+    //this.lightBulbs.push( new LightBulb() );
+    //
+    //this.batteries.push( new Battery() );
   }
 
   return inherit( Object, Circuit, {

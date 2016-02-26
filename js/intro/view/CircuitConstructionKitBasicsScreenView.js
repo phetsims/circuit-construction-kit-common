@@ -20,6 +20,7 @@ define( function( require ) {
    * @constructor
    */
   function CircuitConstructionKitBasicsScreenView( circuitConstructionKitBasicsModel ) {
+    this.circuitConstructionKitBasicsModel = circuitConstructionKitBasicsModel;
 
     ScreenView.call( this );
 
@@ -31,13 +32,13 @@ define( function( require ) {
     } );
     this.addChild( resetAllButton );
 
-    this.addChild( new CircuitNode( circuitConstructionKitBasicsModel.circuit ) );
-
-    var circuitComponentToolbox = new CircuitComponentToolbox();
-    this.addChild( circuitComponentToolbox );
-
+    this.circuitNode = new CircuitNode( circuitConstructionKitBasicsModel.circuit );
+    var circuitComponentToolbox = new CircuitComponentToolbox( circuitConstructionKitBasicsModel, this );
     var sensorToolbox = new SensorToolbox();
+
     this.addChild( sensorToolbox );
+    this.addChild( circuitComponentToolbox );
+    this.addChild( this.circuitNode );
 
     this.events.on( 'layoutFinished', function( dx, dy, width, height ) {
 
@@ -58,6 +59,12 @@ define( function( require ) {
         top: -dy + inset
       } );
     } );
+
+    this.circuitConstructionKitBasicsModel.circuit.batteries.addItemAddedListener( function( battery ) {
+      //var batteryNode = new BatteryNode();
+      //circuitConstructionKitBasicsScreenView.addChild( batteryNode );
+
+    } );
   }
 
   return inherit( ScreenView, CircuitConstructionKitBasicsScreenView, {
@@ -66,5 +73,10 @@ define( function( require ) {
     step: function( dt ) {
       //TODO Handle view animation here.
     }
+
+    // @public
+    //addBattery: function( position ) {
+    //  this.circuitConstructionKitBasicsModel.circuit.batteries.add( new Battery() );
+    //}
   } );
 } );

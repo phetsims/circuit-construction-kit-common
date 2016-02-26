@@ -25,6 +25,7 @@ define( function( require ) {
    * @constructor
    */
   function BatteryNode( snapContext, battery ) {
+    this.battery = battery;
     var imageNode = new Image( batteryImage );
 
     //battery.startTerminalPositionProperty.link( function( startTerminalPosition ) {
