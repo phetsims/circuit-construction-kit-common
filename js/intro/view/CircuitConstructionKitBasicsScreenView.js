@@ -25,13 +25,20 @@ define( function( require ) {
     var resetAllButton = new ResetAllButton( {
       listener: function() {
         circuitConstructionKitBasicsModel.reset();
-      },
-      right: this.layoutBounds.maxX - 10,
-      bottom: this.layoutBounds.maxY - 10
+      }
     } );
     this.addChild( resetAllButton );
 
     this.addChild( new CircuitNode( circuitConstructionKitBasicsModel.circuit ) );
+
+    this.events.on( 'layoutFinished', function( dx, dy, width, height ) {
+
+      // Float the resetAllButton to the bottom right
+      resetAllButton.mutate( {
+        right: -dx + width - 10,
+        bottom: -dy + height - 10
+      } );
+    } );
   }
 
   return inherit( ScreenView, CircuitConstructionKitBasicsScreenView, {
