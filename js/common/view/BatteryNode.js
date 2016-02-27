@@ -28,10 +28,6 @@ define( function( require ) {
     this.battery = battery;
     var imageNode = new Image( batteryImage );
 
-    //battery.startTerminalPositionProperty.link( function( startTerminalPosition ) {
-    //  imageNode.leftCenter = startTerminalPosition;
-    //} );
-    // TODO: multilink?
     battery.angleProperty.link( function( angle ) {
       imageNode.rotation = angle;
     } );
