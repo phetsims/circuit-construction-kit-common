@@ -15,6 +15,7 @@ define( function( require ) {
   var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/BatteryNode' );
   var LightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/LightBulbNode' );
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ResistorNode' );
+  var ConnectionNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ConnectionNode' );
 
   /**
    *
@@ -60,6 +61,13 @@ define( function( require ) {
     };
     circuit.resistors.addItemAddedListener( addResistorNode );
     circuit.resistors.forEach( addResistorNode );
+
+    var addConnectionNode = function( connection ) {
+      var connectionNode = new ConnectionNode( circuit.getSnapContext(), connection );
+      circuitNode.addChild( connectionNode );
+    };
+    circuit.connections.addItemAddedListener( addConnectionNode );
+    circuit.connections.forEach( addConnectionNode );
   }
 
   return inherit( Node, CircuitNode );

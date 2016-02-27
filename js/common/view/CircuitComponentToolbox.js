@@ -76,7 +76,7 @@ define( function( require ) {
 
     var iconWidth = CircuitConstructionKitBasicsConstants.toolboxIconLength;
     var wireNode = new Line( 0, 0, iconWidth, 0, {
-      stroke: 'black',
+      stroke: CircuitConstructionKitBasicsConstants.wireColor,
       lineWidth: 10,
       cursor: 'pointer',
       strokePickable: true,

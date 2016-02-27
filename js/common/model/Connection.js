@@ -12,6 +12,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var ObservableArray = require( 'AXON/ObservableArray' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
+  var Property = require( 'AXON/Property' );
 
   /**
    *
@@ -19,14 +20,20 @@ define( function( require ) {
    */
   function Connection() {
     this.elements = new ObservableArray();
+    this.positionProperty = new Property();
   }
 
   return inherit( Object, Connection, {
+
+    get position() {
+      return this.positionProperty.value;
+    },
 
     // @public
     // chainable
     addBranch: function( branch, terminalPositionProperty ) {
       this.elements.add( { branch: branch, terminalPositionProperty: terminalPositionProperty } );
+      this.positionProperty.value = terminalPositionProperty.value;
       return this;
     },
 
@@ -49,6 +56,7 @@ define( function( require ) {
           element.terminalPositionProperty.set( position );
         }
       }
+      this.positionProperty.value = position;
     }
   } );
 } );

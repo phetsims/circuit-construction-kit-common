@@ -14,6 +14,7 @@ define( function( require ) {
   var WireTerminalNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/WireTerminalNode' );
   var Line = require( 'SCENERY/nodes/Line' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
 
   /**
    *
@@ -24,7 +25,7 @@ define( function( require ) {
 
     Node.call( this );
     var line = new Line( 0, 0, 100, 100, {
-      stroke: 'black',
+      stroke: CircuitConstructionKitBasicsConstants.wireColor,
       lineWidth: 20,
       cursor: 'pointer',
       strokePickable: true
