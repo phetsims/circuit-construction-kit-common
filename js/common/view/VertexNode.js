@@ -45,17 +45,16 @@ define( function( require ) {
     this.movableDragHandler = new MovableDragHandler( vertex.positionProperty, {
       onDrag: function( event ) {
 
-        // Is there a nearby vertex this one could snap to?
+        // Is there a nearby vertex this one could snap to?  If so, move to its location temporarily.
         var targetVertex = circuit.getDropTarget( vertex );
         if ( targetVertex ) {
 
-          // choose the 1st one arbitrarily
           vertex.positionProperty.set( targetVertex.positionProperty.get() );
         }
       },
       endDrag: function( event ) {
 
-        // Is there a nearby vertex this one could snap to?
+        // Is there a nearby vertex this one could snap to?  If so, connect to it.
         var targetVertex = circuit.getDropTarget( vertex );
         if ( targetVertex ) {
 
