@@ -55,8 +55,7 @@ define( function( require ) {
       var edgeCount = 0;
       var circuitElements = this.getCircuitElements();
       for ( var i = 0; i < circuitElements.length; i++ ) {
-        var circuitElement = circuitElements[ i ];
-        if ( circuitElement.containsVertex( vertex ) ) {
+        if ( circuitElements[ i ].containsVertex( vertex ) ) {
           edgeCount++;
         }
       }
