@@ -70,24 +70,6 @@ define( function( require ) {
       new OOCircuit().solve();
     },
 
-    // @public
-    wireTerminalDragged: function( wire, terminalPositionProperty ) {
-      for ( var i = 0; i < this.vertices.getArray().length; i++ ) {
-        var vertex = this.vertices.getArray()[ i ];
-        if ( vertex.isConnectedTo( wire, terminalPositionProperty ) ) {
-          vertex.setPosition( terminalPositionProperty.get() );
-        }
-      }
-    },
-
-    // If the proposed vertex was made, would the wires overlap?  If so, do not allow them to connect.
-    wouldOverlap: function( wire1, terminalPositionProperty1, wire2, terminalPositionProperty2 ) {
-      return this.isConnected(
-        wire1, wire1.getOppositeTerminalPositionProperty( terminalPositionProperty1 ),
-        wire2, wire2.getOppositeTerminalPositionProperty( terminalPositionProperty2 )
-      );
-    },
-
     isConnected: function( wire1, terminalPositionProperty1, wire2, terminalPositionProperty2 ) {
 
       // see if any pre-existing vertices will work
