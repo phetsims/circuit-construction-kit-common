@@ -28,6 +28,7 @@ define( function( require ) {
     // Keep track of which terminals are connected to other terminals
     // This is redundant (connections tracked in the elements above), but a central point for
     // observing creation/deletion of vertices for showing VertexNodes
+    // @public (read-only, elements-read-only)
     this.vertices = new ObservableArray();
 
     // When a new component is added to a circuit, it has two unconnected vertices
@@ -39,9 +40,28 @@ define( function( require ) {
     this.batteries.addItemAddedListener( addVertices );
     this.lightBulbs.addItemAddedListener( addVertices );
     this.resistors.addItemAddedListener( addVertices );
+
+    circuit.vertices.addItemAddedListener( function( vertex ) {
+      var filtered = circuit.vertices.filter( function( candidateVertex ) {
+        return vertex === candidateVertex;
+      } );
+      assert && assert( filtered.length === 1, 'should only have one copy of each vertex' );
+    } );
   }
 
   return inherit( Object, Circuit, {
+
+    countCircuitElements: function( vertex ) {
+      var edgeCount = 0;
+      var circuitElements = this.getCircuitElements();
+      for ( var i = 0; i < circuitElements.length; i++ ) {
+        var circuitElement = circuitElements[ i ];
+        if ( circuitElement.containsVertex( vertex ) ) {
+          edgeCount++;
+        }
+      }
+      return edgeCount;
+    },
 
     // @public
     solve: function() {
@@ -80,10 +100,18 @@ define( function( require ) {
       }
     },
 
-    // @public
+    /**
+     * Connect the vertices, merging vertex2 into vertex1 and deleting vertex2
+     * @param {Vertex} vertex1
+     * @param {Vertex} vertex2
+     * @public
+     */
     connect: function( vertex1, vertex2 ) {
-
-      // TODO: delete one of the vertices, and replace all usages with the other
+      var circuitElements = this.getCircuitElements();
+      for ( var i = 0; i < circuitElements.length; i++ ) {
+        circuitElements[ i ].connectCircuitElement( vertex1, vertex2 );
+      }
+      this.vertices.remove( vertex2 );
     },
 
     // The only way for two vertices to be adjacent is for them to be the start/end of a single CircuitElement

@@ -73,6 +73,18 @@ define( function( require ) {
       circuitNode.addChild( vertexNode );
     };
     circuit.vertices.addItemAddedListener( addVertexNode );
+    circuit.vertices.addItemRemovedListener( function( vertex ) {
+      var vertexNode = circuitNode.getVertexNode( vertex );
+
+      circuitNode.removeChild( vertexNode );
+
+      var index = circuitNode.vertexNodes.indexOf( vertexNode );
+      if ( index > -1 ) {
+        circuitNode.vertexNodes.splice( index, 1 );
+      }
+
+      assert && assert( circuitNode.getVertexNode( vertex ) === null, 'vertex node should have been removed' );
+    } );
     circuit.vertices.forEach( addVertexNode );
   }
 

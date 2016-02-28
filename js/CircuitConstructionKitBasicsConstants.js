@@ -22,7 +22,6 @@ define( function( require ) {
   circuitConstructionKitBasics.register( 'CircuitConstructionKitBasicsConstants', CircuitConstructionKitBasicsConstants );
 
   return inherit( Object, CircuitConstructionKitBasicsConstants, {}, {
-    terminalNodeAttributes: { stroke: 'black', lineWidth: 3, lineDash: [ 8, 6 ], cursor: 'pointer' },
     vertexNodeAttributes: { stroke: 'black', lineWidth: 3, cursor: 'pointer' },
     toolboxIconLength: 60, // Width or height for icons in the control panel
     toolboxItemSpacing: 30,

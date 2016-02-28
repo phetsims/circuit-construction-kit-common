@@ -20,10 +20,19 @@ define( function( require ) {
    * @constructor
    */
   function VertexNode( circuit, vertex ) {
+    var vertexNode = this;
     this.vertex = vertex;
     //Circle.call( this, 20, { fill: CircuitConstructionKitBasicsConstants.wireColor } );
-    Circle.call( this, 20, CircuitConstructionKitBasicsConstants.terminalNodeAttributes );
-    var vertexNode = this;
+
+    // Start as a dotted line, becomes solid when connected to >1 component.
+    Circle.call( this, 20, { stroke: 'black', lineWidth: 3, lineDash: [ 8, 6 ], cursor: 'pointer' } );
+
+    var updateShape = function() {
+      var edgeCount = circuit.countCircuitElements( vertex );
+      vertexNode.fill = edgeCount > 1 ? CircuitConstructionKitBasicsConstants.wireColor : null;
+    };
+    circuit.vertices.addItemAddedListener( updateShape );
+    circuit.vertices.addItemRemovedListener( updateShape );
     vertex.positionProperty.link( function( position ) {
       vertexNode.center = position;
     } );
