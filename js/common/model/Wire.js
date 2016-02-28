@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
-  var Vector2 = require( 'DOT/Vector2' );
+  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Vertex' );
 
   /**
    *
@@ -19,20 +19,11 @@ define( function( require ) {
    */
   function Wire( position ) {
     PropertySet.call( this, {
-      startTerminalPosition: new Vector2( position.x - 50, position.y ),
-      endTerminalPosition: new Vector2( position.x + 50, position.y ),
+      startVertex: new Vertex( position.x - 50, position.y ),
+      endVertex: new Vertex( position.x + 50, position.y ),
       resistance: 0
     } );
   }
 
-  return inherit( PropertySet, Wire, {
-    getOppositeTerminalPositionProperty: function( terminalPositionProperty ) {
-      assert && assert( terminalPositionProperty === this.startTerminalPositionProperty ||
-                        terminalPositionProperty === this.endTerminalPositionProperty );
-
-      return terminalPositionProperty === this.startTerminalPositionProperty ?
-             this.endTerminalPositionProperty :
-             this.startTerminalPositionProperty;
-    }
-  } );
+  return inherit( PropertySet, Wire );
 } );

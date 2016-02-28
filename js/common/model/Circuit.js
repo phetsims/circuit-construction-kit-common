@@ -13,7 +13,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var ObservableArray = require( 'AXON/ObservableArray' );
   var SnapContext = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/SnapContext' );
-  var Connection = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Connection' );
+  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Vertex' );
   var OOCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/modified-nodal-analysis/OOCircuit' );
 
   /**
@@ -21,14 +21,26 @@ define( function( require ) {
    * @constructor
    */
   function Circuit() {
-
+    var circuit = this;
     this.wires = new ObservableArray();
     this.batteries = new ObservableArray();
     this.lightBulbs = new ObservableArray();
     this.resistors = new ObservableArray();
 
     // Keep track of which terminals are connected to other terminals
-    this.connections = new ObservableArray();
+    // This is redundant (connections tracked in the elements above), but a central point for
+    // observing creation/deletion of vertices for showing VertexNodes
+    this.vertices = new ObservableArray();
+
+    // When a new component is added to a circuit, it has two unconnected vertices
+    var addVertices = function( circuitElement ) {
+      circuit.vertices.add( circuitElement.startVertex );
+      circuit.vertices.add( circuitElement.endVertex );
+    };
+    this.wires.addItemAddedListener( addVertices );
+    this.batteries.addItemAddedListener( addVertices );
+    this.lightBulbs.addItemAddedListener( addVertices );
+    this.resistors.addItemAddedListener( addVertices );
   }
 
   return inherit( Object, Circuit, {
@@ -43,15 +55,15 @@ define( function( require ) {
 
     // @public
     wireTerminalDragged: function( wire, terminalPositionProperty ) {
-      for ( var i = 0; i < this.connections.getArray().length; i++ ) {
-        var connection = this.connections.getArray()[ i ];
-        if ( connection.isConnectedTo( wire, terminalPositionProperty ) ) {
-          connection.setPosition( terminalPositionProperty.get() );
+      for ( var i = 0; i < this.vertices.getArray().length; i++ ) {
+        var vertex = this.vertices.getArray()[ i ];
+        if ( vertex.isConnectedTo( wire, terminalPositionProperty ) ) {
+          vertex.setPosition( terminalPositionProperty.get() );
         }
       }
     },
 
-    // If the proposed connection was made, would the wires overlap?  If so, do not allow them to connect.
+    // If the proposed vertex was made, would the wires overlap?  If so, do not allow them to connect.
     wouldOverlap: function( wire1, terminalPositionProperty1, wire2, terminalPositionProperty2 ) {
       return this.isConnected(
         wire1, wire1.getOppositeTerminalPositionProperty( terminalPositionProperty1 ),
@@ -61,10 +73,10 @@ define( function( require ) {
 
     isConnected: function( wire1, terminalPositionProperty1, wire2, terminalPositionProperty2 ) {
 
-      // see if any pre-existing connections will work
-      for ( var i = 0; i < this.connections.getArray().length; i++ ) {
-        var connection = this.connections.getArray()[ i ];
-        if ( connection.isConnectedTo( wire1, terminalPositionProperty1 ) && connection.isConnectedTo( wire2, terminalPositionProperty2 ) ) {
+      // see if any pre-existing vertices will work
+      for ( var i = 0; i < this.vertices.getArray().length; i++ ) {
+        var vertex = this.vertices.getArray()[ i ];
+        if ( vertex.isConnectedTo( wire1, terminalPositionProperty1 ) && vertex.isConnectedTo( wire2, terminalPositionProperty2 ) ) {
           return true;
         }
       }
@@ -75,22 +87,22 @@ define( function( require ) {
 
       var connected = false;
 
-      // see if any pre-existing connections will work
-      for ( var i = 0; i < this.connections.getArray().length; i++ ) {
-        var connection = this.connections.getArray()[ i ];
-        if ( connection.isConnectedTo( wire1, terminalPositionProperty1 ) ) {
-          connection.addBranch( wire2, terminalPositionProperty2 );
+      // see if any pre-existing vertices will work
+      for ( var i = 0; i < this.vertices.getArray().length; i++ ) {
+        var vertex = this.vertices.getArray()[ i ];
+        if ( vertex.isConnectedTo( wire1, terminalPositionProperty1 ) ) {
+          vertex.addBranch( wire2, terminalPositionProperty2 );
           connected = true;
           break;
         }
-        else if ( connection.isConnectedTo( wire2, terminalPositionProperty2 ) ) {
-          connection.addBranch( wire1, terminalPositionProperty1 );
+        else if ( vertex.isConnectedTo( wire2, terminalPositionProperty2 ) ) {
+          vertex.addBranch( wire1, terminalPositionProperty1 );
           connected = true;
           break;
         }
       }
       if ( !connected ) {
-        this.connections.add( new Connection()
+        this.vertices.add( new Vertex()
           .addBranch( wire1, terminalPositionProperty1 )
           .addBranch( wire2, terminalPositionProperty2 )
         );

@@ -26,6 +26,19 @@ define( function( require ) {
 
   return inherit( Object, SnapContext, {
 
+    // Wires are a flexible length and hence the start and end junctions can be treated independently
+    // EXCEPT FOR not being able to attach to the same terminal
+    startDragWire: function( event, wire ) {},
+    dragWire: function( event, wire ) {
+      this.dragWireTerminal( event, wire, wire.startTerminalPosition );
+      this.dragWireTerminal( event, wire, wire.endTerminalPosition );
+    },
+    endDragWire: function( event, wire ) {},
+
+    dragWireTerminal: function( event, wire, wireTerminalPosition ) {
+      this.wireTerminalDragged( wire, wireTerminalPosition );
+    },
+
     wireTerminalDragged: function( wire, terminalPositionProperty ) {
       this.circuit.wireTerminalDragged( wire, terminalPositionProperty );
     },

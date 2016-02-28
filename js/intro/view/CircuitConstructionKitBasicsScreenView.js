@@ -59,12 +59,6 @@ define( function( require ) {
         top: -dy + inset
       } );
     } );
-
-    //this.circuitConstructionKitBasicsModel.circuit.batteries.addItemAddedListener( function( battery ) {
-    //  //var batteryNode = new BatteryNode();
-    //  //circuitConstructionKitBasicsScreenView.addChild( batteryNode );
-    //
-    //} );
   }
 
   return inherit( ScreenView, CircuitConstructionKitBasicsScreenView, {
@@ -73,10 +67,5 @@ define( function( require ) {
     step: function( dt ) {
       //TODO Handle view animation here.
     }
-
-    // @public
-    //addBattery: function( position ) {
-    //  this.circuitConstructionKitBasicsModel.circuit.batteries.add( new Battery() );
-    //}
   } );
 } );

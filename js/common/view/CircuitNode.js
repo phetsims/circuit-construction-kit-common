@@ -15,7 +15,7 @@ define( function( require ) {
   var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/BatteryNode' );
   var LightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/LightBulbNode' );
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ResistorNode' );
-  var ConnectionNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ConnectionNode' );
+  var VertexNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/VertexNode' );
 
   /**
    *
@@ -29,11 +29,16 @@ define( function( require ) {
     this.lightBulbNodes = [];
     this.wireNodes = [];
     this.resistorNodes = [];
+    this.vertexNodes = [];
 
     var addWireNode = function( wire ) {
-      var wireNode = new WireNode( circuit.getSnapContext(), wire );
+      var wireNode = new WireNode( circuitNode, wire );
       circuitNode.wireNodes.push( wireNode );
       circuitNode.addChild( wireNode );
+
+      // Vertices should be in front
+      circuitNode.getVertexNode( wire.startVertex ).moveToFront();
+      circuitNode.getVertexNode( wire.endVertex ).moveToFront();
     };
     circuit.wires.addItemAddedListener( addWireNode );
     circuit.wires.forEach( addWireNode );
@@ -62,13 +67,24 @@ define( function( require ) {
     circuit.resistors.addItemAddedListener( addResistorNode );
     circuit.resistors.forEach( addResistorNode );
 
-    var addConnectionNode = function( connection ) {
-      var connectionNode = new ConnectionNode( circuit.getSnapContext(), connection );
-      circuitNode.addChild( connectionNode );
+    var addVertexNode = function( vertex ) {
+      var vertexNode = new VertexNode( circuit.getSnapContext(), vertex );
+      circuitNode.vertexNodes.push( vertexNode );
+      circuitNode.addChild( vertexNode );
     };
-    circuit.connections.addItemAddedListener( addConnectionNode );
-    circuit.connections.forEach( addConnectionNode );
+    circuit.vertices.addItemAddedListener( addVertexNode );
+    circuit.vertices.forEach( addVertexNode );
   }
 
-  return inherit( Node, CircuitNode );
+  return inherit( Node, CircuitNode, {
+    getVertexNode: function( vertex ) {
+      for ( var i = 0; i < this.vertexNodes.length; i++ ) {
+        var vertexNode = this.vertexNodes[ i ];
+        if ( vertexNode.vertex === vertex ) {
+          return vertexNode;
+        }
+      }
+      return null;
+    }
+  } );
 } );

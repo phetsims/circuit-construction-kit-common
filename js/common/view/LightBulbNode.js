@@ -14,8 +14,8 @@ define( function( require ) {
   var Image = require( 'SCENERY/nodes/Image' );
   var Node = require( 'SCENERY/nodes/Node' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
-  var FixedLengthTerminalNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/FixedLengthTerminalNode' );
   var Vector2 = require( 'DOT/Vector2' );
+  var Property = require( 'AXON/Property' );
 
   // images
   var lightBulbImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/light-bulb.png' );
@@ -28,58 +28,26 @@ define( function( require ) {
     this.lightBulb = lightBulb;
     var imageNode = new Image( lightBulbImage );
 
-    lightBulb.angleProperty.link( function( angle ) {
-      imageNode.rotation = angle;
-    } );
-    lightBulb.multilink( [ 'startTerminalPosition', 'angle' ], function( startTerminalPosition, angle ) {
-
+    Property.multilink( [ lightBulb.startVertex.positionProperty, lightBulb.endVertex.positionProperty ], function( startPosition, endPosition ) {
+      var angle = endPosition.minus( startPosition ).angle();// TODO: speed up maths
       // TODO: Simplify this matrix math.
       imageNode.resetTransform();
       imageNode.rotateAround( new Vector2( 0, 0 ), angle );
-      imageNode.x = startTerminalPosition.x;
-      imageNode.y = startTerminalPosition.y;
+      imageNode.x = startPosition.x;
+      imageNode.y = startPosition.y;
       imageNode.translate( 0, -lightBulbImage[ 0 ].height / 2 );
     } );
-    var startTerminalNode = new FixedLengthTerminalNode( snapContext, lightBulb, true );
-    var endTerminalNode = new FixedLengthTerminalNode( snapContext, lightBulb, false );
     Node.call( this, {
       cursor: 'pointer',
       children: [
-        imageNode,
-        startTerminalNode,
-        endTerminalNode
+        imageNode
       ]
     } );
 
-    this.movableDragHandler = new MovableDragHandler( lightBulb.positionProperty, {
+    this.movableDragHandler = new MovableDragHandler( lightBulb.startVertex.positionProperty, {
       onDrag: function( event ) {
-
-        // check for available nearby nodes to snap to
-        //var targets = snapContext.getAvailableTargets( wire, terminalPositionProperty );
-        //if ( targets.length > 0 ) {
-        //
-        //  // choose the 1st one arbitrarily
-        //  terminalPositionProperty.set( targets[ 0 ].terminalPositionProperty.get() );
-        //}
-        //
-        //snapContext.wireTerminalDragged( wire, terminalPositionProperty );
       },
       endDrag: function( event ) {
-
-        // check for available nearby nodes to snap to
-        //var targets = snapContext.getAvailableTargets( wire, terminalPositionProperty );
-        //if ( targets.length > 0 ) {
-        //
-        //  terminalPositionProperty.set( targets[ 0 ].terminalPositionProperty.get() );
-        //
-        //  // connect the terminals
-        //  snapContext.connect(
-        //    wire,
-        //    terminalPositionProperty,
-        //    targets[ 0 ].branch,
-        //    targets[ 0 ].terminalPositionProperty
-        //  );
-        //}
       }
     } );
     this.addInputListener( this.movableDragHandler );

@@ -23,7 +23,7 @@ define( function( require ) {
 
   return inherit( Object, CircuitConstructionKitBasicsConstants, {}, {
     terminalNodeAttributes: { stroke: 'black', lineWidth: 3, lineDash: [ 8, 6 ], cursor: 'pointer' },
-    connectionNodeAttributes: { stroke: 'black', lineWidth: 3, cursor: 'pointer' },
+    vertexNodeAttributes: { stroke: 'black', lineWidth: 3, cursor: 'pointer' },
     toolboxIconLength: 60, // Width or height for icons in the control panel
     toolboxItemSpacing: 30,
     wireColor: '#B87333'

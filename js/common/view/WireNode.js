@@ -11,7 +11,6 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var WireTerminalNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/WireTerminalNode' );
   var Line = require( 'SCENERY/nodes/Line' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
@@ -20,7 +19,7 @@ define( function( require ) {
    *
    * @constructor
    */
-  function WireNode( snapContext, wire ) {
+  function WireNode( circuitNode, wire ) {
     this.wire = wire;
 
     Node.call( this );
@@ -31,32 +30,32 @@ define( function( require ) {
       strokePickable: true
     } );
     this.addChild( line );
-    wire.startTerminalPositionProperty.link( function( startTerminalPosition ) {
-      line.setPoint1( startTerminalPosition );
-    } );
-    wire.endTerminalPositionProperty.link( function( endTerminalPosition ) {
-      line.setPoint2( endTerminalPosition );
-    } );
-    var startWireTerminalNode = new WireTerminalNode( snapContext, wire, wire.startTerminalPositionProperty );
-    this.addChild( startWireTerminalNode );
 
-    var endWireTerminalNode = new WireTerminalNode( snapContext, wire, wire.endTerminalPositionProperty );
-    this.addChild( endWireTerminalNode );
+    // There is a double nested property, since the vertex may change and the position may change
+    // TODO: Unlink old vertices
+    wire.startVertexProperty.link( function( newStartVertex, oldStartVertex ) {
+      newStartVertex.positionProperty.link( function( startPoint ) {
+        line.setPoint1( startPoint );
+      } );
+    } );
+    wire.endVertexProperty.link( function( newEndVertex, oldEndVertex ) {
+      newEndVertex.positionProperty.link( function( endPoint ) {
+        line.setPoint2( endPoint );
+      } );
+    } );
 
     this.movableDragHandler = new SimpleDragHandler( {
       start: function( event ) {
-        startWireTerminalNode.movableDragHandler.handleForwardedStartEvent( event );
-        endWireTerminalNode.movableDragHandler.handleForwardedStartEvent( event );
+        circuitNode.getVertexNode( wire.startVertex ).movableDragHandler.handleForwardedStartEvent( event );
+        circuitNode.getVertexNode( wire.endVertex ).movableDragHandler.handleForwardedStartEvent( event );
       },
       drag: function( event ) {
-
-        startWireTerminalNode.movableDragHandler.handleForwardedDragEvent( event );
-        endWireTerminalNode.movableDragHandler.handleForwardedDragEvent( event );
+        circuitNode.getVertexNode( wire.startVertex ).movableDragHandler.handleForwardedDragEvent( event );
+        circuitNode.getVertexNode( wire.endVertex ).movableDragHandler.handleForwardedDragEvent( event );
       },
       end: function( event ) {
-
-        startWireTerminalNode.movableDragHandler.handleForwardedEndEvent( event );
-        endWireTerminalNode.movableDragHandler.handleForwardedEndEvent( event );
+        circuitNode.getVertexNode( wire.startVertex ).movableDragHandler.handleForwardedEndEvent( event );
+        circuitNode.getVertexNode( wire.endVertex ).movableDragHandler.handleForwardedEndEvent( event );
       }
     } );
     line.addInputListener( this.movableDragHandler );
