@@ -24,13 +24,9 @@ define( function( require ) {
    *
    * @constructor
    */
-  function BatteryNode( snapContext, battery ) {
+  function BatteryNode( circuit, battery ) {
     this.battery = battery;
     var imageNode = new Image( batteryImage );
-
-    battery.angleProperty.link( function( angle ) {
-      imageNode.rotation = angle;
-    } );
 
     // TODO: Relink when start vertex changes
     Property.multilink( [ battery.startVertex.positionProperty, battery.endVertex.positionProperty ], function( startPosition, endPosition ) {

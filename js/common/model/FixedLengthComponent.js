@@ -11,31 +11,19 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
+  var CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/CircuitElement' );
 
   /**
    *
    * @constructor
    */
   function FixedLengthComponent( length, startVertex, endVertex, propertySetMap ) {
-    PropertySet.call( this, _.extend( {
-      angle: 0, // rotation in radians
-      startVertex: startVertex,
-      endVertex: endVertex
-    }, propertySetMap ) );
+    CircuitElement.call( this, startVertex, endVertex, propertySetMap );
+    this.length = length;
 
     // TODO: Derived properties for startPosition and endPosition, to encapsulate the
     // TODO: matter of switching vertices.
   }
 
-  return inherit( PropertySet, FixedLengthComponent, {
-    // TODO: Will we need getOppositeVertex?
-    //getOppositeTerminalPositionProperty: function( terminalPositionProperty ) {
-    //  assert && assert( terminalPositionProperty === this.startTerminalPositionProperty ||
-    //                    terminalPositionProperty === this.endTerminalPositionProperty );
-    //
-    //  return terminalPositionProperty === this.startTerminalPositionProperty ?
-    //         this.endTerminalPositionProperty :
-    //         this.startTerminalPositionProperty;
-    //}
-  } );
+  return inherit( PropertySet, FixedLengthComponent, {} );
 } );

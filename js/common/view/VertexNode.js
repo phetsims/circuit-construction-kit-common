@@ -19,7 +19,7 @@ define( function( require ) {
    *
    * @constructor
    */
-  function VertexNode( snapContext, vertex ) {
+  function VertexNode( circuit, vertex ) {
     this.vertex = vertex;
     //Circle.call( this, 20, { fill: CircuitConstructionKitBasicsConstants.wireColor } );
     Circle.call( this, 20, CircuitConstructionKitBasicsConstants.terminalNodeAttributes );
@@ -31,34 +31,23 @@ define( function( require ) {
     this.movableDragHandler = new MovableDragHandler( vertex.positionProperty, {
       onDrag: function( event ) {
 
-        //snapContext.dragTerminal( wire, terminalPositionProperty );
-        // check for available nearby nodes to snap to
-        //var targets = snapContext.getAvailableTargets( wire, vertex.positionProperty );
-        //if ( targets.length > 0 ) {
-        //
-        //  // choose the 1st one arbitrarily
-        //  vertex.positionProperty.set( targets[ 0 ].terminalPositionProperty.get() );
-        //}
+        // Is there a nearby vertex this one could snap to?
+        var targetVertex = circuit.getDropTarget( vertex );
+        if ( targetVertex ) {
 
-        //snapContext.wireTerminalDragged( wire, vertex.positionProperty );
+          // choose the 1st one arbitrarily
+          vertex.positionProperty.set( targetVertex.positionProperty.get() );
+        }
       },
       endDrag: function( event ) {
 
-        //snapContext.endDragTerminal( wire, terminalPositionProperty );
-        // check for available nearby nodes to snap to
-        //var targets = snapContext.getAvailableTargets( wire, terminalPositionProperty );
-        //if ( targets.length > 0 ) {
-        //
-        //  terminalPositionProperty.set( targets[ 0 ].terminalPositionProperty.get() );
-        //
-        //  // connect the terminals
-        //  snapContext.connect(
-        //    wire,
-        //    terminalPositionProperty,
-        //    targets[ 0 ].branch,
-        //    targets[ 0 ].terminalPositionProperty
-        //  );
-        //}
+        // Is there a nearby vertex this one could snap to?
+        var targetVertex = circuit.getDropTarget( vertex );
+        if ( targetVertex ) {
+
+          // connect
+          circuit.connect( vertex, targetVertex );
+        }
       }
 
     } );

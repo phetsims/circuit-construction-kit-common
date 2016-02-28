@@ -44,7 +44,7 @@ define( function( require ) {
     circuit.wires.forEach( addWireNode );
 
     var addBatteryNode = function( battery ) {
-      var batteryNode = new BatteryNode( circuit.getSnapContext(), battery );
+      var batteryNode = new BatteryNode( circuit, battery );
       circuitNode.batteryNodes.push( batteryNode );
       circuitNode.addChild( batteryNode );
     };
@@ -52,7 +52,7 @@ define( function( require ) {
     circuit.batteries.forEach( addBatteryNode );
 
     var addLightBulbNode = function( lightBulb ) {
-      var lightBulbNode = new LightBulbNode( circuit.getSnapContext(), lightBulb );
+      var lightBulbNode = new LightBulbNode( circuit, lightBulb );
       circuitNode.lightBulbNodes.push( lightBulbNode );
       circuitNode.addChild( lightBulbNode );
     };
@@ -60,7 +60,7 @@ define( function( require ) {
     circuit.lightBulbs.forEach( addLightBulbNode );
 
     var addResistorNode = function( resistor ) {
-      var resistorNode = new ResistorNode( circuit.getSnapContext(), resistor );
+      var resistorNode = new ResistorNode( circuit, resistor );
       circuitNode.resistorNodes.push( resistorNode );
       circuitNode.addChild( resistorNode );
     };
@@ -68,7 +68,7 @@ define( function( require ) {
     circuit.resistors.forEach( addResistorNode );
 
     var addVertexNode = function( vertex ) {
-      var vertexNode = new VertexNode( circuit.getSnapContext(), vertex );
+      var vertexNode = new VertexNode( circuit, vertex );
       circuitNode.vertexNodes.push( vertexNode );
       circuitNode.addChild( vertexNode );
     };

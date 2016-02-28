@@ -24,7 +24,7 @@ define( function( require ) {
    *
    * @constructor
    */
-  function LightBulbNode( snapContext, lightBulb ) {
+  function LightBulbNode( circuit, lightBulb ) {
     this.lightBulb = lightBulb;
     var imageNode = new Image( lightBulbImage );
 

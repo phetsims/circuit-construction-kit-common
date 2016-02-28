@@ -24,13 +24,9 @@ define( function( require ) {
    *
    * @constructor
    */
-  function ResistorNode( snapContext, resistor ) {
+  function ResistorNode( circuit, resistor ) {
     this.resistor = resistor;
     var imageNode = new Image( resistorImage );
-
-    resistor.angleProperty.link( function( angle ) {
-      imageNode.rotation = angle;
-    } );
 
     Property.multilink( [ resistor.startVertex.positionProperty, resistor.endVertex.positionProperty ], function( startPosition, endPosition ) {
       var angle = endPosition.minus( startPosition ).angle();// TODO: speed up maths

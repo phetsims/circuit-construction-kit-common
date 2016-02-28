@@ -12,7 +12,6 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var ObservableArray = require( 'AXON/ObservableArray' );
-  var SnapContext = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/SnapContext' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Vertex' );
   var OOCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/modified-nodal-analysis/OOCircuit' );
 
@@ -83,35 +82,62 @@ define( function( require ) {
     },
 
     // @public
-    connect: function( wire1, terminalPositionProperty1, wire2, terminalPositionProperty2 ) {
+    connect: function( vertex1, vertex2 ) {
 
-      var connected = false;
-
-      // see if any pre-existing vertices will work
-      for ( var i = 0; i < this.vertices.getArray().length; i++ ) {
-        var vertex = this.vertices.getArray()[ i ];
-        if ( vertex.isConnectedTo( wire1, terminalPositionProperty1 ) ) {
-          vertex.addBranch( wire2, terminalPositionProperty2 );
-          connected = true;
-          break;
-        }
-        else if ( vertex.isConnectedTo( wire2, terminalPositionProperty2 ) ) {
-          vertex.addBranch( wire1, terminalPositionProperty1 );
-          connected = true;
-          break;
-        }
-      }
-      if ( !connected ) {
-        this.vertices.add( new Vertex()
-          .addBranch( wire1, terminalPositionProperty1 )
-          .addBranch( wire2, terminalPositionProperty2 )
-        );
-      }
+      // TODO: delete one of the vertices, and replace all usages with the other
     },
 
-    // @public
-    getSnapContext: function() {
-      return new SnapContext( this );
+    // The only way for two vertices to be adjacent is for them to be the start/end of a single CircuitElement
+    isVertexAdjacent: function( a, b ) {
+      var circuitElements = this.getCircuitElements();
+      for ( var i = 0; i < circuitElements.length; i++ ) {
+        if ( circuitElements[ i ].hasBothVertices( a, b ) ) {
+          return true;
+        }
+      }
+      return false;
+    },
+
+    getCircuitElements: function() {
+      return this.wires.getArray().concat( this.batteries.getArray() ).concat( this.lightBulbs.getArray() );
+    },
+
+    /**
+     * A vertex has been dragged, is it a candidate for joining with other vertices?  If so, return the candidate
+     * vertex.  Otherwise, return null.
+     * @param {Vertex} vertex
+     * @returns {Vertex}
+     * @public
+     */
+    getDropTarget: function( vertex ) {
+      var circuit = this;
+
+      // Rules for a vertex connecting to another vertex.
+      // (1) A vertex may not connect to an adjacent vertex.
+      var candidateVertices = this.vertices.filter( function( candidateVertex ) {
+        return !circuit.isVertexAdjacent( vertex, candidateVertex );
+      } );
+
+      // (2) A vertex cannot connect to itself
+      candidateVertices = candidateVertices.filter( function( candidateVertex ) {
+        return candidateVertex !== vertex;
+      } );
+
+      // (3) a vertex must be within 100px (screen coordinates) of the other vertex
+      candidateVertices = candidateVertices.filter( function( candidateVertex ) {
+        return vertex.position.distance( candidateVertex.position ) < 100;
+      } );
+      if ( candidateVertices.length === 0 ) {
+        return null;
+      }
+      else {
+
+        // Find the closest match
+        var sorted = _.sortBy( candidateVertices.getArray(), function( candidateVertex ) {
+          return vertex.position.distance( candidateVertex.position );
+        } );
+        return sorted[ 0 ];
+      }
     }
   } );
 } );

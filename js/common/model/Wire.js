@@ -12,18 +12,17 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Vertex' );
+  var CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/CircuitElement' );
 
   /**
    *
    * @constructor
    */
   function Wire( position ) {
-    PropertySet.call( this, {
-      startVertex: new Vertex( position.x - 50, position.y ),
-      endVertex: new Vertex( position.x + 50, position.y ),
+    CircuitElement.call( this, new Vertex( position.x - 50, position.y ), new Vertex( position.x + 50, position.y ), {
       resistance: 0
     } );
   }
 
-  return inherit( PropertySet, Wire );
+  return inherit( CircuitElement, Wire );
 } );
