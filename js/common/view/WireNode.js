@@ -31,17 +31,22 @@ define( function( require ) {
     } );
     this.addChild( line );
 
+    var startListener = function( startPoint ) {
+      line.setPoint1( startPoint );
+    };
+
     // There is a double nested property, since the vertex may change and the position may change
-    // TODO: Unlink old vertices
     wire.startVertexProperty.link( function( newStartVertex, oldStartVertex ) {
-      newStartVertex.positionProperty.link( function( startPoint ) {
-        line.setPoint1( startPoint );
-      } );
+      oldStartVertex && oldStartVertex.positionProperty.unlink( startListener );
+      newStartVertex.positionProperty.link( startListener );
     } );
+
+    var endListener = function( endPoint ) {
+      line.setPoint2( endPoint );
+    };
     wire.endVertexProperty.link( function( newEndVertex, oldEndVertex ) {
-      newEndVertex.positionProperty.link( function( endPoint ) {
-        line.setPoint2( endPoint );
-      } );
+      oldEndVertex && oldEndVertex.positionProperty.unlink( endListener );
+      newEndVertex.positionProperty.link( endListener );
     } );
 
     this.movableDragHandler = new SimpleDragHandler( {

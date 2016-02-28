@@ -82,6 +82,7 @@ define( function( require ) {
       if ( index > -1 ) {
         circuitNode.vertexNodes.splice( index, 1 );
       }
+      vertexNode.dispose();
 
       assert && assert( circuitNode.getVertexNode( vertex ) === null, 'vertex node should have been removed' );
     } );

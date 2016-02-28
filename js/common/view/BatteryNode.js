@@ -16,6 +16,7 @@ define( function( require ) {
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var Vector2 = require( 'DOT/Vector2' );
   var Property = require( 'AXON/Property' );
+  var FixedLengthComponentNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/FixedLengthComponentNode' );
 
   // images
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/battery.png' );
@@ -26,37 +27,10 @@ define( function( require ) {
    */
   function BatteryNode( circuit, battery ) {
     this.battery = battery;
-    var imageNode = new Image( batteryImage );
-
-    // TODO: Relink when start vertex changes
-    Property.multilink( [ battery.startVertex.positionProperty, battery.endVertex.positionProperty ], function( startPosition, endPosition ) {
-      var angle = endPosition.minus( startPosition ).angle();// TODO: speed up maths
-      // TODO: Simplify this matrix math.
-      imageNode.resetTransform();
-      imageNode.rotateAround( new Vector2( 0, 0 ), angle );
-      imageNode.x = startPosition.x;
-      imageNode.y = startPosition.y;
-      imageNode.translate( 0, -batteryImage[ 0 ].height / 2 );
-    } );
-
-    Node.call( this, {
-      cursor: 'pointer',
-      children: [
-        imageNode
-      ]
-    } );
-
-    // TODO: startVertex can change
-    this.movableDragHandler = new MovableDragHandler( battery.startVertex.positionProperty, {
-      onDrag: function( event ) {
-      },
-      endDrag: function( event ) {
-      }
-    } );
-    imageNode.addInputListener( this.movableDragHandler );
+    FixedLengthComponentNode.call( this, circuit, battery, batteryImage );
   }
 
   circuitConstructionKitBasics.register( 'BatteryNode', BatteryNode );
 
-  return inherit( Node, BatteryNode );
+  return inherit( FixedLengthComponentNode, BatteryNode );
 } );

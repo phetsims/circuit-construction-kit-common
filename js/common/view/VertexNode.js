@@ -33,9 +33,14 @@ define( function( require ) {
     };
     circuit.vertices.addItemAddedListener( updateShape );
     circuit.vertices.addItemRemovedListener( updateShape );
-    vertex.positionProperty.link( function( position ) {
+    var updateVertexNodePosition = function( position ) {
       vertexNode.center = position;
-    } );
+    };
+    vertex.positionProperty.link( updateVertexNodePosition );
+
+    this.disposeVertexNode = function() {
+      vertex.positionProperty.unlink( updateVertexNodePosition );
+    };
 
     this.movableDragHandler = new MovableDragHandler( vertex.positionProperty, {
       onDrag: function( event ) {
@@ -65,5 +70,9 @@ define( function( require ) {
 
   circuitConstructionKitBasics.register( 'VertexNode', VertexNode );
 
-  return inherit( Circle, VertexNode );
+  return inherit( Circle, VertexNode, {
+    dispose: function() {
+      this.disposeVertexNode();
+    }
+  } );
 } );

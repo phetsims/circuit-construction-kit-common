@@ -93,6 +93,7 @@ define( function( require ) {
         circuitElements[ i ].connectCircuitElement( vertex1, vertex2 );
       }
       this.vertices.remove( vertex2 );
+      assert && assert( !vertex2.positionProperty.hasListeners(), 'Removed vertex should not have any listeners' );
     },
 
     // The only way for two vertices to be adjacent is for them to be the start/end of a single CircuitElement
