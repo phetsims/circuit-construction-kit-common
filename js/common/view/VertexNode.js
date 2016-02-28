@@ -13,7 +13,6 @@ define( function( require ) {
   var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
-  var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
   /**

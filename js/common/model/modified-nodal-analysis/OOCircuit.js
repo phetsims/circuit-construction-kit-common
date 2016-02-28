@@ -217,7 +217,7 @@ define( function( require ) {
     },
 
     /**
-     * Todo: does this get the signs right in all cases?
+     * TODO: does this get the signs right in all cases?
      * TODO: maybe signs here should depend on component orientation?
      * incoming current is negative, outgoing is positive
      * @param node

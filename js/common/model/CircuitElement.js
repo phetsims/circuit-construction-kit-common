@@ -25,9 +25,6 @@ define( function( require ) {
 
     // TODO: Derived properties for startPosition and endPosition, to encapsulate the
     // TODO: matter of switching vertices.??
-
-    // ???
-    //this.startPositionProperty = new DerivedProperty( [ this.startVertexProperty ], function() {} );
   }
 
   return inherit( PropertySet, CircuitElement, {

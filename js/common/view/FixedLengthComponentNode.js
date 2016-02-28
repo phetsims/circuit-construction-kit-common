@@ -23,7 +23,6 @@ define( function( require ) {
    * @constructor
    */
   function FixedLengthComponentNode( circuitNode, circuitElement, image ) {
-    var fixedLengthComponentNode = this;
     this.circuitElement = circuitElement;
     var imageNode = new Image( image );
 
