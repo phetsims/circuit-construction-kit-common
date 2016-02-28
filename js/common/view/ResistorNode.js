@@ -20,9 +20,9 @@ define( function( require ) {
    *
    * @constructor
    */
-  function ResistorNode( circuit, resistor ) {
+  function ResistorNode( circuitNode, resistor ) {
     this.resistor = resistor;
-    FixedLengthComponentNode.call( this, circuit, resistor, resistorImage );
+    FixedLengthComponentNode.call( this, circuitNode, resistor, resistorImage );
   }
 
   circuitConstructionKitBasics.register( 'ResistorNode', ResistorNode );

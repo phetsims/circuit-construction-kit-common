@@ -24,6 +24,9 @@ define( function( require ) {
   return inherit( Object, Vertex, {
     get position() {
       return this.positionProperty.value;
+    },
+    set position( v ) {
+      this.positionProperty.set( v );
     }
   } );
 } );

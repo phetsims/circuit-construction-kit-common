@@ -51,16 +51,16 @@ define( function( require ) {
 
     this.movableDragHandler = new SimpleDragHandler( {
       start: function( event ) {
-        circuitNode.getVertexNode( wire.startVertex ).movableDragHandler.handleForwardedStartEvent( event );
-        circuitNode.getVertexNode( wire.endVertex ).movableDragHandler.handleForwardedStartEvent( event );
+        circuitNode.startDrag( event, wire.startVertex );
+        circuitNode.startDrag( event, wire.endVertex );
       },
       drag: function( event ) {
-        circuitNode.getVertexNode( wire.startVertex ).movableDragHandler.handleForwardedDragEvent( event );
-        circuitNode.getVertexNode( wire.endVertex ).movableDragHandler.handleForwardedDragEvent( event );
+        circuitNode.drag( event, wire.startVertex );
+        circuitNode.drag( event, wire.endVertex );
       },
       end: function( event ) {
-        circuitNode.getVertexNode( wire.startVertex ).movableDragHandler.handleForwardedEndEvent( event );
-        circuitNode.getVertexNode( wire.endVertex ).movableDragHandler.handleForwardedEndEvent( event );
+        circuitNode.endDrag( event, wire.startVertex );
+        circuitNode.endDrag( event, wire.endVertex );
       }
     } );
     line.addInputListener( this.movableDragHandler );

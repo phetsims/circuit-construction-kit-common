@@ -20,9 +20,9 @@ define( function( require ) {
    *
    * @constructor
    */
-  function LightBulbNode( circuit, lightBulb ) {
+  function LightBulbNode( circuitNode, lightBulb ) {
     this.lightBulb = lightBulb;
-    FixedLengthComponentNode.call( this, circuit, lightBulb, lightBulbImage );
+    FixedLengthComponentNode.call( this, circuitNode, lightBulb, lightBulbImage );
   }
 
   circuitConstructionKitBasics.register( 'LightBulbNode', LightBulbNode );

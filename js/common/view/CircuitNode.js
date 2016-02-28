@@ -23,6 +23,7 @@ define( function( require ) {
    */
   function CircuitNode( circuit ) {
     Node.call( this );
+    this.circuit = circuit;
     var circuitNode = this;
 
     this.batteryNodes = [];
@@ -44,7 +45,7 @@ define( function( require ) {
     circuit.wires.forEach( addWireNode );
 
     var addBatteryNode = function( battery ) {
-      var batteryNode = new BatteryNode( circuit, battery );
+      var batteryNode = new BatteryNode( circuitNode, battery );
       circuitNode.batteryNodes.push( batteryNode );
       circuitNode.addChild( batteryNode );
     };
@@ -52,7 +53,7 @@ define( function( require ) {
     circuit.batteries.forEach( addBatteryNode );
 
     var addLightBulbNode = function( lightBulb ) {
-      var lightBulbNode = new LightBulbNode( circuit, lightBulb );
+      var lightBulbNode = new LightBulbNode( circuitNode, lightBulb );
       circuitNode.lightBulbNodes.push( lightBulbNode );
       circuitNode.addChild( lightBulbNode );
     };
@@ -60,7 +61,7 @@ define( function( require ) {
     circuit.lightBulbs.forEach( addLightBulbNode );
 
     var addResistorNode = function( resistor ) {
-      var resistorNode = new ResistorNode( circuit, resistor );
+      var resistorNode = new ResistorNode( circuitNode, resistor );
       circuitNode.resistorNodes.push( resistorNode );
       circuitNode.addChild( resistorNode );
     };
@@ -68,7 +69,7 @@ define( function( require ) {
     circuit.resistors.forEach( addResistorNode );
 
     var addVertexNode = function( vertex ) {
-      var vertexNode = new VertexNode( circuit, vertex );
+      var vertexNode = new VertexNode( circuitNode, vertex );
       circuitNode.vertexNodes.push( vertexNode );
       circuitNode.addChild( vertexNode );
     };
@@ -98,6 +99,36 @@ define( function( require ) {
         }
       }
       return null;
+    },
+    startDrag: function( event, vertex ) {
+      var vertexNode = this.getVertexNode( vertex ); // TODO: use event.currentTarget?
+      vertexNode.startOffset = vertexNode.globalToParentPoint( event.pointer.point ).minus( vertex.position );
+    },
+    drag: function( event, vertex ) {
+      // TODO: We need to track where it would be if not snapped.
+
+      var vertexNode = this.getVertexNode( vertex ); // TODO: Is this too expensive?  Probably!
+      var position = vertexNode.globalToParentPoint( event.pointer.point ).minus( vertexNode.startOffset );
+
+      // Is there a nearby vertex this one could snap to?  If so, move to its location temporarily.
+      var targetVertex = this.circuit.getDropTarget( vertex );
+      if ( targetVertex ) {
+
+        position = targetVertex.positionProperty.get();
+      }
+
+      // TODO: Keep in bounds
+      vertex.position = position;
+    },
+    endDrag: function( event, vertex ) {
+
+      // Is there a nearby vertex this one could snap to?  If so, connect to it.
+      var targetVertex = this.circuit.getDropTarget( vertex );
+      if ( targetVertex ) {
+
+        // connect
+        this.circuit.connect( vertex, targetVertex );
+      }
     }
   } );
 } );

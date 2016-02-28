@@ -16,12 +16,13 @@ define( function( require ) {
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var Vector2 = require( 'DOT/Vector2' );
   var Property = require( 'AXON/Property' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
   /**
    *
    * @constructor
    */
-  function FixedLengthComponentNode( circuit, circuitElement, image ) {
+  function FixedLengthComponentNode( circuitNode, circuitElement, image ) {
     var fixedLengthComponentNode = this;
     this.circuitElement = circuitElement;
     var imageNode = new Image( image );
@@ -52,7 +53,6 @@ define( function( require ) {
       ]
     } );
 
-    // TODO: startVertex can change
     this.movableDragHandler = new MovableDragHandler( circuitElement.startVertex.positionProperty, {
       onDrag: function( event ) {
       },
@@ -61,20 +61,19 @@ define( function( require ) {
     } );
     imageNode.addInputListener( this.movableDragHandler );
 
-    // Replace input listeners when battery joined
-    circuitElement.startVertexProperty.lazyLink( function( startVertex ) {
-      if ( fixedLengthComponentNode.movableDragHandler.dragging ) {
-        fixedLengthComponentNode.movableDragHandler.endDrag();
+    // Use whatever the start node currently is (it can changed), and let the circuit manage the dependent vertices
+    this.movableDragHandler = new SimpleDragHandler( {
+      start: function( event ) {
+        circuitNode.startDrag( event, circuitElement.startVertex );
+      },
+      drag: function( event ) {
+        circuitNode.drag( event, circuitElement.startVertex );
+      },
+      end: function( event ) {
+        circuitNode.endDrag( event, circuitElement.startVertex );
       }
-      imageNode.removeInputListener( fixedLengthComponentNode.movableDragHandler );
-      fixedLengthComponentNode.movableDragHandler = new MovableDragHandler( circuitElement.startVertex.positionProperty, {
-        onDrag: function( event ) {
-        },
-        endDrag: function( event ) {
-        }
-      } );
-      imageNode.addInputListener( fixedLengthComponentNode.movableDragHandler );
     } );
+    imageNode.addInputListener( this.movableDragHandler );
   }
 
   circuitConstructionKitBasics.register( 'FixedLengthComponentNode', FixedLengthComponentNode );

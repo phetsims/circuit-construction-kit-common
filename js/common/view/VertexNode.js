@@ -14,15 +14,17 @@ define( function( require ) {
   var Circle = require( 'SCENERY/nodes/Circle' );
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
   /**
    *
    * @constructor
    */
-  function VertexNode( circuit, vertex ) {
+  function VertexNode( circuitNode, vertex ) {
+    var circuit = circuitNode.circuit;
     var vertexNode = this;
     this.vertex = vertex;
-    //Circle.call( this, 20, { fill: CircuitConstructionKitBasicsConstants.wireColor } );
+    this.startOffset = null;// @public Will be added by CircuitNode during dragging, used for relative drag location.
 
     // Start as a dotted line, becomes solid when connected to >1 component.
     Circle.call( this, 20, { stroke: 'black', lineWidth: 3, lineDash: [ 8, 6 ], cursor: 'pointer' } );
@@ -42,27 +44,17 @@ define( function( require ) {
       vertex.positionProperty.unlink( updateVertexNodePosition );
     };
 
-    this.movableDragHandler = new MovableDragHandler( vertex.positionProperty, {
-      onDrag: function( event ) {
-
-        // Is there a nearby vertex this one could snap to?  If so, move to its location temporarily.
-        var targetVertex = circuit.getDropTarget( vertex );
-        if ( targetVertex ) {
-
-          vertex.positionProperty.set( targetVertex.positionProperty.get() );
-        }
+    // TODO: Rename
+    this.movableDragHandler = new SimpleDragHandler( {
+      start: function( event ) {
+        circuitNode.startDrag( event, vertex );
       },
-      endDrag: function( event ) {
-
-        // Is there a nearby vertex this one could snap to?  If so, connect to it.
-        var targetVertex = circuit.getDropTarget( vertex );
-        if ( targetVertex ) {
-
-          // connect
-          circuit.connect( vertex, targetVertex );
-        }
+      drag: function( event ) {
+        circuitNode.drag( event, vertex );
+      },
+      end: function( event ) {
+        circuitNode.endDrag( event, vertex );
       }
-
     } );
     this.addInputListener( this.movableDragHandler );
   }
