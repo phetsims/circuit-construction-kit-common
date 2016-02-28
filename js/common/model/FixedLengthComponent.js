@@ -25,5 +25,5 @@ define( function( require ) {
     // TODO: matter of switching vertices.
   }
 
-  return inherit( PropertySet, FixedLengthComponent, {} );
+  return inherit( CircuitElement, FixedLengthComponent, {} );
 } );
