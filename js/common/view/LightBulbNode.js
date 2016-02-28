@@ -11,11 +11,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
-  var Image = require( 'SCENERY/nodes/Image' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
-  var Vector2 = require( 'DOT/Vector2' );
-  var Property = require( 'AXON/Property' );
+  var FixedLengthComponentNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/FixedLengthComponentNode' );
 
   // images
   var lightBulbImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/light-bulb.png' );
@@ -26,34 +22,10 @@ define( function( require ) {
    */
   function LightBulbNode( circuit, lightBulb ) {
     this.lightBulb = lightBulb;
-    var imageNode = new Image( lightBulbImage );
-
-    Property.multilink( [ lightBulb.startVertex.positionProperty, lightBulb.endVertex.positionProperty ], function( startPosition, endPosition ) {
-      var angle = endPosition.minus( startPosition ).angle();// TODO: speed up maths
-      // TODO: Simplify this matrix math.
-      imageNode.resetTransform();
-      imageNode.rotateAround( new Vector2( 0, 0 ), angle );
-      imageNode.x = startPosition.x;
-      imageNode.y = startPosition.y;
-      imageNode.translate( 0, -lightBulbImage[ 0 ].height / 2 );
-    } );
-    Node.call( this, {
-      cursor: 'pointer',
-      children: [
-        imageNode
-      ]
-    } );
-
-    this.movableDragHandler = new MovableDragHandler( lightBulb.startVertex.positionProperty, {
-      onDrag: function( event ) {
-      },
-      endDrag: function( event ) {
-      }
-    } );
-    this.addInputListener( this.movableDragHandler );
+    FixedLengthComponentNode.call( this, circuit, lightBulb, lightBulbImage );
   }
 
   circuitConstructionKitBasics.register( 'LightBulbNode', LightBulbNode );
 
-  return inherit( Node, LightBulbNode );
+  return inherit( FixedLengthComponentNode, LightBulbNode );
 } );
