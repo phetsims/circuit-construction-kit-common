@@ -15,14 +15,20 @@ define( function( require ) {
   var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/VoltmeterNode' );
   var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/AmmeterNode' );
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
+  var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Voltmeter' );
 
-  function SensorToolbox() {
+  function SensorToolbox( voltmeterNode, voltmeterInputListener ) {
 
     var toolIconLength = CircuitConstructionKitBasicsConstants.toolboxIconLength;
 
-    var voltmeterNodeIcon = new VoltmeterNode();
+    var voltmeterNodeIcon = new VoltmeterNode( new Voltmeter() );
     var voltmeterIconSizeIncrease = 1.3;
     voltmeterNodeIcon.mutate( { scale: toolIconLength * voltmeterIconSizeIncrease / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height ) } );
+    voltmeterNodeIcon.addInputListener( {
+      down: function() {
+        voltmeterNode.voltmeter.visible = true;
+      }
+    } );
 
     var ammeterNodeIcon = new AmmeterNode();
     ammeterNodeIcon.mutate( { scale: toolIconLength / Math.max( ammeterNodeIcon.width, ammeterNodeIcon.height ) } );

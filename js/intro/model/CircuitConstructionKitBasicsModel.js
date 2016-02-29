@@ -11,6 +11,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
   var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Circuit' );
+  var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Voltmeter' );
 
   /**
    * @constructor
@@ -19,6 +20,7 @@ define( function( require ) {
 
     PropertySet.call( this, {} ); // TODO: Add settings like "show electrons", etc.
     this.circuit = new Circuit();
+    this.voltmeter = new Voltmeter();
   }
 
   return inherit( PropertySet, CircuitConstructionKitBasicsModel, {

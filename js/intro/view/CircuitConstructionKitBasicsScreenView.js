@@ -17,6 +17,8 @@ define( function( require ) {
   var SensorToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/SensorToolbox' );
   var Property = require( 'AXON/Property' );
   var Rectangle = require( 'DOT/Rectangle' );
+  var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/VoltmeterNode' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
   /**
    * @param {CircuitConstructionKitBasicsModel} circuitConstructionKitBasicsModel
@@ -35,9 +37,15 @@ define( function( require ) {
     } );
     this.addChild( resetAllButton );
 
+    var voltmeterNode = new VoltmeterNode( circuitConstructionKitBasicsModel.voltmeter );
+    var voltmeterInputListener = new SimpleDragHandler();
+    circuitConstructionKitBasicsModel.voltmeter.visibleProperty.link( function( visible ) {
+      voltmeterNode.visible = visible;
+    } );
+
     this.circuitNode = new CircuitNode( circuitConstructionKitBasicsModel.circuit );
     var circuitComponentToolbox = new CircuitComponentToolbox( circuitConstructionKitBasicsModel, this );
-    var sensorToolbox = new SensorToolbox();
+    var sensorToolbox = new SensorToolbox( voltmeterNode, voltmeterInputListener );
 
     this.addChild( sensorToolbox );
     this.addChild( circuitComponentToolbox );
@@ -72,6 +80,8 @@ define( function( require ) {
 
     var circuitElementEditPanel = new CircuitElementEditPanel( circuitConstructionKitBasicsModel.circuit.lastCircuitElementProperty, visibleBoundsProperty );
     this.addChild( circuitElementEditPanel );
+
+    this.addChild( voltmeterNode );
   }
 
   return inherit( ScreenView, CircuitConstructionKitBasicsScreenView, {
