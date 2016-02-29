@@ -13,6 +13,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var ObservableArray = require( 'AXON/ObservableArray' );
   var OOCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/modified-nodal-analysis/OOCircuit' );
+  var Property = require( 'AXON/Property' );
 
   /**
    *
@@ -24,6 +25,23 @@ define( function( require ) {
     this.batteries = new ObservableArray();
     this.lightBulbs = new ObservableArray();
     this.resistors = new ObservableArray();
+
+    // Re-solve the circuit when voltages or resistances change.
+    var solve = function() {
+      circuit.solve();
+    };
+
+    this.wires.addItemAddedListener( function( wire ) { wire.resistanceProperty.lazyLink( solve ); } );
+    this.wires.addItemRemovedListener( function( wire ) { wire.resistanceProperty.unlink( solve ); } );
+
+    this.batteries.addItemAddedListener( function( battery ) { battery.voltageProperty.lazyLink( solve ); } );
+    this.batteries.addItemRemovedListener( function( battery ) { battery.voltageProperty.unlink( solve ); } );
+
+    this.resistors.addItemAddedListener( function( resistor ) { resistor.resistanceProperty.lazyLink( solve ); } );
+    this.resistors.addItemRemovedListener( function( resistor ) { resistor.resistanceProperty.unlink( solve ); } );
+
+    this.lightBulbs.addItemAddedListener( function( lightBulb ) { lightBulb.resistanceProperty.lazyLink( solve ); } );
+    this.lightBulbs.addItemRemovedListener( function( lightBulb ) { lightBulb.resistanceProperty.unlink( solve ); } );
 
     // Keep track of which terminals are connected to other terminals
     // This is redundant (connections tracked in the elements above), but a central point for
@@ -49,11 +67,8 @@ define( function( require ) {
       assert && assert( filtered.length === 1, 'should only have one copy of each vertex' );
     } );
 
-    //var solve = function() {
-    //  circuit.solve();
-    //};
-    //circuit.vertices.addItemAddedListener( solve );
-    //circuit.vertices.addItemRemovedListener( solve );
+    // Keep track of the last circuit element the user manipulated, for showing additional controls
+    this.lastCircuitElementProperty = new Property( null );
   }
 
   return inherit( Object, Circuit, {

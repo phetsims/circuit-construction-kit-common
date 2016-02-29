@@ -13,7 +13,10 @@ define( function( require ) {
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var CircuitNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitNode' );
   var CircuitComponentToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitComponentToolbox' );
+  var CircuitElementEditPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementEditPanel' );
   var SensorToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/SensorToolbox' );
+  var Property = require( 'AXON/Property' );
+  var Rectangle = require( 'DOT/Rectangle' );
 
   /**
    * @param {CircuitConstructionKitBasicsModel} circuitConstructionKitBasicsModel
@@ -40,6 +43,7 @@ define( function( require ) {
     this.addChild( circuitComponentToolbox );
     this.addChild( this.circuitNode );
 
+    var visibleBoundsProperty = new Property( new Rectangle( 0, 0, this.layoutBounds.width, this.layoutBounds.height ) );
     this.events.on( 'layoutFinished', function( dx, dy, width, height ) {
 
       // Float the resetAllButton to the bottom right
@@ -58,7 +62,16 @@ define( function( require ) {
         right: -dx + width - inset,
         top: -dy + inset
       } );
+
+      circuitElementEditPanel.mutate( {
+        centerX: -dx + width / 2,
+        bottom: -dy + height - inset
+      } );
+      visibleBoundsProperty.set( new Rectangle( -dx, -dy, width, height ) );
     } );
+
+    var circuitElementEditPanel = new CircuitElementEditPanel( circuitConstructionKitBasicsModel.circuit.lastCircuitElementProperty, visibleBoundsProperty );
+    this.addChild( circuitElementEditPanel );
   }
 
   return inherit( ScreenView, CircuitConstructionKitBasicsScreenView, {

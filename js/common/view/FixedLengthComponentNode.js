@@ -64,6 +64,7 @@ define( function( require ) {
       },
       end: function( event ) {
         circuitNode.endDrag( event, circuitElement.startVertex );
+        circuitNode.circuit.lastCircuitElementProperty.set( circuitElement );
       }
     } );
     imageNode.addInputListener( this.inputListener );

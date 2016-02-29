@@ -29,7 +29,9 @@ define( function( require ) {
   var digitToColor = function( digit ) {
     assert && assert( digit >= 0 && digit < 10, 'digit should have been between 0 and 10' );
 
-    return colors[ digit ];
+    var color = colors[ digit ];
+    assert && assert( color, 'should be a color' );
+    return color;
   };
 
   function ResistorColors() {
@@ -39,13 +41,12 @@ define( function( require ) {
 
     toThreeColors: function( value ) {
       value = Math.round( value );
-
       //first 2 digits for value, third digit for scale.
       if ( value < 10 ) {
         return [ Color.black, digitToColor( value ), Color.black, Color.yellow ];
       }
       else if ( value < 100 ) {
-        return [ digitToColor( value / 10 ), digitToColor( value % 10 ), Color.black, Color.yellow ];
+        return [ digitToColor( Math.floor( value / 10 ) ), digitToColor( Math.floor( value % 10 ) ), Color.black, Color.yellow ];
       }
       else {
         var s = Util.toFixed( value, 0 );
