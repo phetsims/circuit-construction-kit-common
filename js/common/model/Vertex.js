@@ -20,7 +20,6 @@ define( function( require ) {
   function Vertex( x, y ) {
     PropertySet.call( this, {
       position: new Vector2( x, y ), // Where the vertex is and is shown
-      //snapped: false, // True if the vertex is showing a proposed connection at a different location
       unsnappedPosition: new Vector2( x, y ) // Where the vertex would be if it hadn't snapped
     } );
   }
