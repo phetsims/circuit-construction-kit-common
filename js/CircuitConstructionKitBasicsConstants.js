@@ -25,6 +25,7 @@ define( function( require ) {
     vertexNodeAttributes: { stroke: 'black', lineWidth: 3, cursor: 'pointer' },
     toolboxIconLength: 60, // Width or height for icons in the control panel
     toolboxItemSpacing: 30,
-    wireColor: '#B87333'
+    wireColor: '#B87333',
+    DEFAULT_RESISTANCE: 4.5
   } );
 } );

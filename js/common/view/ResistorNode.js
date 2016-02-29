@@ -32,13 +32,16 @@ define( function( require ) {
     var inset = 40;
     var availableBandSpace = imageWidth - 2 * inset;
     var remainingSpace = availableBandSpace - 4 * bandWidth;// max is 4 bands, even though they are not always shown
-    var bandSeparation = remainingSpace / 3;
+    var bandSeparation = remainingSpace / 4; // two spaces before last band
     var y = this.imageNode.height / 2;
     var colorBands = [
       new Rectangle( 0, 0, bandWidth, bandHeight, { x: inset + (bandWidth + bandSeparation) * 0, centerY: y } ),
       new Rectangle( 0, 0, bandWidth, bandHeight, { x: inset + (bandWidth + bandSeparation) * 1, centerY: y } ),
       new Rectangle( 0, 0, bandWidth, bandHeight, { x: inset + (bandWidth + bandSeparation) * 2, centerY: y } ),
-      new Rectangle( 0, 0, bandWidth, bandHeight, { x: inset + (bandWidth + bandSeparation) * 3, centerY: y } )
+      new Rectangle( 0, 0, bandWidth, bandHeight, {
+        x: inset + (bandWidth + bandSeparation) * 3 + bandSeparation,
+        centerY: y
+      } )
     ];
     var updateColorBands = function( resistance ) {
       var colors = ResistorColors.toThreeColors( resistance );

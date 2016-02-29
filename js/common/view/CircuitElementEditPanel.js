@@ -36,11 +36,11 @@ define( function( require ) {
       if ( selectedCircuitElement ) {
         if ( selectedCircuitElement instanceof Resistor || selectedCircuitElement instanceof LightBulb ) {
 
-          lastNumberControl = new NumberControl( 'Resistance', selectedCircuitElement.resistanceProperty, new Range( 0, 100, 4.5 ), {} );
+          lastNumberControl = new NumberControl( 'Resistance', selectedCircuitElement.resistanceProperty, new Range( 0, 100 ), {} );
           circuitElementEditPanel.addChild( lastNumberControl );
         }
         else if ( selectedCircuitElement instanceof Battery ) {
-          lastNumberControl = new NumberControl( 'Voltage', selectedCircuitElement.voltageProperty, new Range( 0, 100, 4.5 ), {} );
+          lastNumberControl = new NumberControl( 'Voltage', selectedCircuitElement.voltageProperty, new Range( 0, 100 ), {} );
           circuitElementEditPanel.addChild( lastNumberControl );
         }
         else {

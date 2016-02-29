@@ -19,6 +19,10 @@ define( function( require ) {
   var Line = require( 'SCENERY/nodes/Line' );
   var Image = require( 'SCENERY/nodes/Image' );
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
+  var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ResistorNode' );
+  var Vector2 = require( 'DOT/Vector2' );
+  var Node = require( 'SCENERY/nodes/Node' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   // images
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/battery.png' );
@@ -82,6 +86,10 @@ define( function( require ) {
       strokePickable: true,
       scale: 1
     } );
+
+    var resistorNode = new ResistorNode( circuitConstructionKitBasicsScreenView.circuitNode, new Resistor( new Vector2( 0, 0 ), CircuitConstructionKitBasicsConstants.DEFAULT_RESISTANCE ) );
+    resistorNode.pickable = false;
+
     CircuitConstructionKitBasicsPanel.call( this, new VBox( {
       spacing: CircuitConstructionKitBasicsConstants.toolboxItemSpacing,
       children: [
@@ -107,19 +115,26 @@ define( function( require ) {
           scale: iconWidth / Math.max( lightBulbImage[ 0 ].width, lightBulbImage[ 0 ].height ) // constrained by being too tall, not too wide
         } )
           .addInputListener( createToolIconInputListener(
-            function( position ) { return new LightBulb( position, 4.5 ); },
+            function( position ) { return new LightBulb( position, CircuitConstructionKitBasicsConstants.DEFAULT_RESISTANCE ); },
             circuit.lightBulbs,
             circuitNode.lightBulbNodes,
             function( lightBulbNode ) { return lightBulbNode.lightBulb; }
           ) ),
 
-        // TODO: Add color bands
-        new Image( resistorImage, {
+        new Node( {
+          children: [
+            resistorNode,
+
+            // Allow input events over the same area, even though resistorNode is not pickable
+            // TODO: option to resistorNode constructor that never adds input listeners in the 1st place
+            new Rectangle( resistorNode.bounds.minX, resistorNode.bounds.minY, resistorNode.bounds.width, resistorNode.bounds.height )
+          ],
+          pickable: true,
           cursor: 'pointer',
           scale: iconWidth / Math.max( resistorImage[ 0 ].width, resistorImage[ 0 ].height )
         } )
           .addInputListener( createToolIconInputListener(
-            function( position ) { return new Resistor( position, 4.5 ); },
+            function( position ) { return new Resistor( position, CircuitConstructionKitBasicsConstants.DEFAULT_RESISTANCE ); },
             circuit.resistors,
             circuitNode.resistorNodes,
             function( resistorNode ) { return resistorNode.resistor; }
