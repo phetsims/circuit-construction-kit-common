@@ -24,7 +24,6 @@ define( function( require ) {
    */
   function VertexNode( circuitNode, vertex ) {
     var circuit = circuitNode.circuit;
-    var vertexNode = this;
     this.vertex = vertex;
     this.startOffset = null;// @public Will be added by CircuitNode during dragging, used for relative drag location.
 

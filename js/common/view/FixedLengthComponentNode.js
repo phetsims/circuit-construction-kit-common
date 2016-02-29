@@ -23,7 +23,10 @@ define( function( require ) {
    */
   function FixedLengthComponentNode( circuitNode, circuitElement, image ) {
     this.circuitElement = circuitElement;
-    var imageNode = new Image( image );
+
+    // @protected (for ResistorNode to paint the color bands on)
+    this.imageNode = new Image( image );
+    var imageNode = this.imageNode;
 
     // TODO: Relink when start vertex changes
     var multilink = null;
