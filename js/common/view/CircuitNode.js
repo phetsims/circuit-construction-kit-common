@@ -122,6 +122,8 @@ define( function( require ) {
     },
     endDrag: function( event, vertex ) {
 
+      var vertexNode = this.getVertexNode( vertex ); // TODO: Is this too expensive?  Probably!
+
       // Is there a nearby vertex this one could snap to?  If so, connect to it.
       var targetVertex = this.circuit.getDropTarget( vertex );
       if ( targetVertex ) {
@@ -129,6 +131,9 @@ define( function( require ) {
         // connect
         this.circuit.connect( vertex, targetVertex );
       }
+
+      // Clear the start offset variable
+      vertexNode.startOffset = null;
     }
   } );
 } );
