@@ -40,7 +40,7 @@ define( function( require ) {
     circuit.vertices.addItemAddedListener( updateShape );
     circuit.vertices.addItemRemovedListener( updateShape );
 
-    this.addInputListener( new SimpleDragHandler( {
+    var simpleDragHandler = new SimpleDragHandler( {
       start: function( event ) {
         circuitNode.startDrag( event, vertex );
       },
@@ -50,7 +50,8 @@ define( function( require ) {
       end: function( event ) {
         circuitNode.endDrag( event, vertex );
       }
-    } ) );
+    } );
+    this.addInputListener( simpleDragHandler );
 
     var updateReadoutTextLocation = function() {
       voltageReadoutText.centerX = circleNode.centerX;
@@ -71,6 +72,9 @@ define( function( require ) {
     vertex.positionProperty.link( updateVertexNodePosition );
 
     this.disposeVertexNode = function() {
+      if ( simpleDragHandler.dragging ) {
+        simpleDragHandler.endDrag();
+      }
       vertex.positionProperty.unlink( updateVertexNodePosition );
     };
   }

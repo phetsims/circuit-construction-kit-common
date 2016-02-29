@@ -72,6 +72,16 @@ define( function( require ) {
   }
 
   return inherit( Object, Circuit, {
+    reset: function() {
+      this.lastCircuitElementProperty.reset();
+
+      this.wires.clear();
+      this.batteries.clear();
+      this.lightBulbs.clear();
+      this.resistors.clear();
+
+      this.vertices.clear();
+    },
 
     countCircuitElements: function( vertex ) {
       var edgeCount = 0;

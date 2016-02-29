@@ -22,6 +22,7 @@ define( function( require ) {
    * @constructor
    */
   function FixedLengthComponentNode( circuitNode, circuitElement, image ) {
+    var fixedLengthComponentNode = this;
     this.circuitElement = circuitElement;
 
     // @protected (for ResistorNode to paint the color bands on)
@@ -68,9 +69,20 @@ define( function( require ) {
       }
     } );
     imageNode.addInputListener( this.inputListener );
+
+    this.disposeFixedLengthComponentNode = function() {
+      if ( fixedLengthComponentNode.inputListener.dragging ) {
+        fixedLengthComponentNode.inputListener.endDrag();
+      }
+      multilink && multilink.dispose();
+    };
   }
 
   circuitConstructionKitBasics.register( 'FixedLengthComponentNode', FixedLengthComponentNode );
 
-  return inherit( Node, FixedLengthComponentNode );
+  return inherit( Node, FixedLengthComponentNode, {
+    dispose: function() {
+      this.disposeFixedLengthComponentNode();
+    }
+  } );
 } );

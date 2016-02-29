@@ -53,6 +53,21 @@ define( function( require ) {
     circuit.batteries.addItemAddedListener( addBatteryNode );
     circuit.batteries.forEach( addBatteryNode );
 
+    // TODO: Heavily duplicated with other removal listeners
+    circuit.batteries.addItemRemovedListener( function( battery ) {
+      var batteryNode = circuitNode.getBatteryNode( battery );
+
+      circuitNode.removeChild( batteryNode );
+
+      var index = circuitNode.batteryNodes.indexOf( batteryNode );
+      if ( index > -1 ) {
+        circuitNode.batteryNodes.splice( index, 1 );
+      }
+      batteryNode.dispose();
+
+      assert && assert( circuitNode.getBatteryNode( battery ) === null, 'should have been removed' );
+    } );
+
     var addLightBulbNode = function( lightBulb ) {
       var lightBulbNode = new LightBulbNode( circuitNode, lightBulb );
       circuitNode.lightBulbNodes.push( lightBulbNode );
@@ -60,6 +75,20 @@ define( function( require ) {
     };
     circuit.lightBulbs.addItemAddedListener( addLightBulbNode );
     circuit.lightBulbs.forEach( addLightBulbNode );
+    // TODO: Heavily duplicated with other removal listeners
+    circuit.lightBulbs.addItemRemovedListener( function( lightBulb ) {
+      var lightBulbNode = circuitNode.getLightBulbNode( lightBulb );
+
+      circuitNode.removeChild( lightBulbNode );
+
+      var index = circuitNode.lightBulbNodes.indexOf( lightBulbNode );
+      if ( index > -1 ) {
+        circuitNode.lightBulbNodes.splice( index, 1 );
+      }
+      lightBulbNode.dispose();
+
+      assert && assert( circuitNode.getLightBulbNode( lightBulb ) === null, 'should have been removed' );
+    } );
 
     var addResistorNode = function( resistor ) {
       var resistorNode = new ResistorNode( circuitNode, resistor );
@@ -68,6 +97,21 @@ define( function( require ) {
     };
     circuit.resistors.addItemAddedListener( addResistorNode );
     circuit.resistors.forEach( addResistorNode );
+
+    // TODO: Heavily duplicated with other removal listeners
+    circuit.resistors.addItemRemovedListener( function( resistor ) {
+      var resistorNode = circuitNode.getResistorNode( resistor );
+
+      circuitNode.removeChild( resistorNode );
+
+      var index = circuitNode.resistorNodes.indexOf( resistorNode );
+      if ( index > -1 ) {
+        circuitNode.resistorNodes.splice( index, 1 );
+      }
+      resistorNode.dispose();
+
+      assert && assert( circuitNode.getResistorNode( resistor ) === null, 'should have been removed' );
+    } );
 
     var addVertexNode = function( vertex ) {
       var vertexNode = new VertexNode( circuitNode, vertex );
@@ -92,6 +136,34 @@ define( function( require ) {
   }
 
   return inherit( Node, CircuitNode, {
+    // TODO: Duplicated
+    getLightBulbNode: function( lightBulb ) {
+      for ( var i = 0; i < this.lightBulbNodes.length; i++ ) {
+        var lightBulbNode = this.lightBulbNodes[ i ];
+        if ( lightBulbNode.lightBulb === lightBulb ) {
+          return lightBulbNode;
+        }
+      }
+      return null;
+    },
+    getBatteryNode: function( battery ) {
+      for ( var i = 0; i < this.batteryNodes.length; i++ ) {
+        var batteryNode = this.batteryNodes[ i ];
+        if ( batteryNode.battery === battery ) {
+          return batteryNode;
+        }
+      }
+      return null;
+    },
+    getResistorNode: function( resistor ) {
+      for ( var i = 0; i < this.resistorNodes.length; i++ ) {
+        var resistorNode = this.resistorNodes[ i ];
+        if ( resistorNode.resistor === resistor ) {
+          return resistorNode;
+        }
+      }
+      return null;
+    },
     getVertexNode: function( vertex ) {
       for ( var i = 0; i < this.vertexNodes.length; i++ ) {
         var vertexNode = this.vertexNodes[ i ];

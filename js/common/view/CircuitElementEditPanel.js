@@ -31,6 +31,7 @@ define( function( require ) {
     selectedCircuitElementProperty.link( function( selectedCircuitElement ) {
       lastNumberControl && lastNumberControl.dispose();
       lastNumberControl && circuitElementEditPanel.removeChild( lastNumberControl );
+      lastNumberControl = null;
 
       if ( selectedCircuitElement ) {
         if ( selectedCircuitElement instanceof Resistor || selectedCircuitElement instanceof LightBulb ) {

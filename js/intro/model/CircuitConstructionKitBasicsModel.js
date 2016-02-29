@@ -17,12 +17,16 @@ define( function( require ) {
    */
   function CircuitConstructionKitBasicsModel() {
 
-    PropertySet.call( this, {} );
+    PropertySet.call( this, {} ); // TODO: Add settings like "show electrons", etc.
     this.circuit = new Circuit();
   }
 
   return inherit( PropertySet, CircuitConstructionKitBasicsModel, {
 
+    reset: function() {
+      PropertySet.prototype.reset.call( this );
+      this.circuit.reset();
+    },
     //TODO Called by the animation loop. Optional, so if your model has no animation, please delete this.
     step: function( dt ) {
       //TODO Handle model animation here.
