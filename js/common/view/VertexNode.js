@@ -31,8 +31,7 @@ define( function( require ) {
     // Start as a dotted line, becomes solid when connected to >1 component.
     var circleNode = new Circle( 20, { stroke: 'black', lineWidth: 3, lineDash: [ 8, 6 ], cursor: 'pointer' } );
     Node.call( this, {
-      children: [ circleNode
-      ]
+      children: [ circleNode ]
     } );
 
     var updateShape = function() {
