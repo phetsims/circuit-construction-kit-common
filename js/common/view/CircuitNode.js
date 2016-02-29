@@ -110,6 +110,9 @@ define( function( require ) {
       var vertexNode = this.getVertexNode( vertex ); // TODO: Is this too expensive?  Probably!
       var position = vertexNode.globalToParentPoint( event.pointer.point ).minus( vertexNode.startOffset );
 
+      // Find all vertices connected by fixed length nodes.
+      var fixedVertices = this.circuit.findAllFixedVertices( vertex );
+
       // Is there a nearby vertex this one could snap to?  If so, move to its location temporarily.
       var targetVertex = this.circuit.getDropTarget( vertex );
       if ( targetVertex ) {
@@ -117,8 +120,15 @@ define( function( require ) {
         position = targetVertex.positionProperty.get();
       }
 
+      var delta = position.minus( vertex.position );
+      for ( var i = 0; i < fixedVertices.length; i++ ) {
+        var fixedVertex = fixedVertices[ i ];
+        fixedVertex.position = fixedVertex.position.plus( delta );
+      }
       // TODO: Keep in bounds
-      vertex.position = position;
+      //vertex.position = position;
+
+
     },
     endDrag: function( event, vertex ) {
 

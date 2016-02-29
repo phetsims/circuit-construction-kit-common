@@ -18,7 +18,7 @@ define( function( require ) {
    * @constructor
    */
   function Resistor( position, resistance ) {
-    FixedLengthComponent.call( this, 146, new Vertex( position.x - 50, position.y ), new Vertex( position.x + 50, position.y ), {
+    FixedLengthComponent.call( this, 146, new Vertex( position.x - 80, position.y ), new Vertex( position.x + 80, position.y ), {
       resistance: resistance
     } );
   }

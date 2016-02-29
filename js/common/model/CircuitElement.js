@@ -28,7 +28,15 @@ define( function( require ) {
   }
 
   return inherit( PropertySet, CircuitElement, {
-
+    getOppositeVertex: function( vertex ) {
+      assert && assert( this.containsVertex( vertex ), 'Missing vertex' );
+      if ( this.startVertex === vertex ) {
+        return this.endVertex;
+      }
+      else {
+        return this.startVertex;
+      }
+    },
     containsVertex: function( vertex ) {
       return this.startVertex === vertex || this.endVertex === vertex;
     },

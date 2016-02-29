@@ -108,7 +108,60 @@ define( function( require ) {
     },
 
     getCircuitElements: function() {
-      return this.wires.getArray().concat( this.batteries.getArray() ).concat( this.lightBulbs.getArray() );
+      return this.getFixedLengthCircuitElements().concat( this.wires.getArray() );
+    },
+
+    getFixedLengthCircuitElements: function() {
+      return this.batteries.getArray().concat( this.lightBulbs.getArray() ).concat( this.resistors.getArray() );
+    },
+
+    /**
+     * Find all adjacent vertices connected to the specified vertex by a fixed length component.
+     * @param {Vertex} vertex
+     */
+    getFixedNeighbors: function( vertex ) {
+      var circuitElements = this.getFixedLengthCircuitElements();
+      var fixedNeighbors = [];
+      for ( var i = 0; i < circuitElements.length; i++ ) {
+        var circuitElement = circuitElements[ i ];
+        if ( circuitElement.containsVertex( vertex ) ) {
+          fixedNeighbors.push( circuitElement.getOppositeVertex( vertex ) );
+        }
+      }
+      return fixedNeighbors;
+    },
+
+    /**
+     * Find the subgraph where all vertices are connected by FixedLengthComponents, not stretchy wires.
+     * @param {Vertex} vertex
+     */
+    findAllFixedVertices: function( vertex ) {
+      var fixedVertices = [ vertex ];
+      var toVisit = [ vertex ];
+      var visited = [];
+      while ( toVisit.length > 0 ) {
+
+        // Find the neighbors joined by a FixedLengthComponent, not a stretchy Wire
+        var currentVertex = toVisit[ toVisit.length - 1 ];
+        if ( visited.indexOf( currentVertex ) < 0 ) {
+          var neighbors = this.getFixedNeighbors( currentVertex );
+
+          for ( var i = 0; i < neighbors.length; i++ ) {
+            var neighbor = neighbors[ i ];
+
+            // If the node was already visited, don't visit again
+            if ( visited.indexOf( neighbor ) < 0 ) {
+              toVisit.push( neighbor );
+            }
+            if ( fixedVertices.indexOf( neighbor ) < 0 ) {
+              fixedVertices.push( neighbor );// TODO: is this duplicated?
+            }
+          }
+        }
+        visited.push( currentVertex );
+        toVisit.pop();
+      }
+      return fixedVertices;
     },
 
     /**
