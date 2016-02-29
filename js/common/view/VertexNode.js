@@ -43,8 +43,7 @@ define( function( require ) {
       vertex.positionProperty.unlink( updateVertexNodePosition );
     };
 
-    // TODO: Rename
-    this.movableDragHandler = new SimpleDragHandler( {
+    this.addInputListener( new SimpleDragHandler( {
       start: function( event ) {
         circuitNode.startDrag( event, vertex );
       },
@@ -54,8 +53,7 @@ define( function( require ) {
       end: function( event ) {
         circuitNode.endDrag( event, vertex );
       }
-    } );
-    this.addInputListener( this.movableDragHandler );
+    } ) );
   }
 
   circuitConstructionKitBasics.register( 'VertexNode', VertexNode );

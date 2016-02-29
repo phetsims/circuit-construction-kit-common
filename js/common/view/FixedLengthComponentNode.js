@@ -52,14 +52,6 @@ define( function( require ) {
       ]
     } );
 
-    this.movableDragHandler = new MovableDragHandler( circuitElement.startVertex.positionProperty, {
-      onDrag: function( event ) {
-      },
-      endDrag: function( event ) {
-      }
-    } );
-    imageNode.addInputListener( this.movableDragHandler );
-
     // Use whatever the start node currently is (it can changed), and let the circuit manage the dependent vertices
     this.movableDragHandler = new SimpleDragHandler( {
       start: function( event ) {
