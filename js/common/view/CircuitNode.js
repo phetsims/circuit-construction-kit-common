@@ -16,6 +16,7 @@ define( function( require ) {
   var LightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/LightBulbNode' );
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ResistorNode' );
   var VertexNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/VertexNode' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   /**
    *
@@ -104,49 +105,70 @@ define( function( require ) {
       var vertexNode = this.getVertexNode( vertex ); // TODO: use event.currentTarget?
       vertexNode.startOffset = vertexNode.globalToParentPoint( event.pointer.point ).minus( vertex.position );
     },
+    getAllDropTargets: function( vertices ) {
+      var allDropTargets = [];
+
+      for ( var i = 0; i < vertices.length; i++ ) {
+        var vertex = vertices[ i ];
+        var targetVertex = this.circuit.getDropTarget( vertex );
+        if ( targetVertex ) {
+          allDropTargets.push( { src: vertex, dst: targetVertex } );
+        }
+      }
+      return allDropTargets;
+    },
+    getBestDropTarget: function( vertices ) {
+      var allDropTargets = this.getAllDropTargets( vertices );
+      if ( allDropTargets ) {
+        var sorted = _.sortBy( allDropTargets, function( dropTarget ) {
+          return dropTarget.src.unsnappedPosition.distance( dropTarget.dst.position );
+        } );
+        return sorted[ 0 ];
+      }
+      else {
+        return null;
+      }
+    },
     drag: function( event, vertex ) {
 
       var vertexNode = this.getVertexNode( vertex ); // TODO: Is this too expensive?  Probably!
       var position = vertexNode.globalToParentPoint( event.pointer.point ).minus( vertexNode.startOffset );
 
-      // Translate the unsnapped position of the vertex, i.e. where it would be if no matches are proposed.
-      vertex.unsnappedPosition = position;
-
       // Find all vertices connected by fixed length nodes.
-      var fixedVertices = this.circuit.findAllFixedVertices( vertex );
+      var vertices = this.circuit.findAllFixedVertices( vertex );
 
-      // Is there a nearby vertex this one could snap to?  If so, move to its location temporarily.
-      // TODO: Find drop targets for *any* of the dragged vertices
-      var targetVertex = this.circuit.getDropTarget( vertex );
-      if ( targetVertex ) {
-
-        position = targetVertex.positionProperty.get();
+      // Update the unsnapped position of the entire subgraph, i.e. where it would be if no matches are proposed.
+      // Must do this before calling getBestDropTarget, because the unsnapped positions are used for target matching
+      var unsnappedDelta = position.minus( vertex.unsnappedPosition );
+      for ( var i = 0; i < vertices.length; i++ ) {
+        vertices[ i ].unsnappedPosition = vertices[ i ].unsnappedPosition.plus( unsnappedDelta );
       }
 
-      var delta = position.minus( vertex.position );
-      for ( var i = 0; i < fixedVertices.length; i++ ) {
-        var fixedVertex = fixedVertices[ i ];
-        fixedVertex.position = fixedVertex.position.plus( delta );
+      // Is there a nearby vertex any of these could snap to?  If so, move to its location temporarily.
+      // Find drop targets for *any* of the dragged vertices
+      var bestDropTarget = this.getBestDropTarget( vertices );
+      var delta = Vector2.ZERO;
+      if ( bestDropTarget ) {
+        delta = bestDropTarget.dst.position.minus( bestDropTarget.src.unsnappedPosition );
+      }
+
+      for ( i = 0; i < vertices.length; i++ ) {
+        vertices[ i ].position = vertices[ i ].unsnappedPosition.plus( delta );
       }
 
       // TODO: Keep in bounds
-      //vertex.position = position;
-
-
     },
     endDrag: function( event, vertex ) {
 
       var vertexNode = this.getVertexNode( vertex ); // TODO: Is this too expensive?  Probably!
 
-      // Is there a nearby vertex this one could snap to?  If so, connect to it.
-      var targetVertex = this.circuit.getDropTarget( vertex );
-      if ( targetVertex ) {
+      // Find all vertices connected by fixed length nodes.
+      var vertices = this.circuit.findAllFixedVertices( vertex );
 
-        // connect
-        this.circuit.connect( vertex, targetVertex );
+      var bestDropTarget = this.getBestDropTarget( vertices );
+      if ( bestDropTarget ) {
+        this.circuit.connect( bestDropTarget.src, bestDropTarget.dst );
       }
-
-      // Clear the start offset variable
       vertexNode.startOffset = null;
     }
   } );

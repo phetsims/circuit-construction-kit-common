@@ -196,6 +196,9 @@ define( function( require ) {
       // TODO: (4) reject any matches that result in circuit elements sharing a pair of vertices
       // TODO: which would cause the wires to lay across one another
 
+      // TODO: (5) a vertex cannot be connected to a fixed subgraph (no wire), we have already computed this,
+      // TODO: may as well pass it in for performance?
+
       if ( candidateVertices.length === 0 ) {
         return null;
       }
