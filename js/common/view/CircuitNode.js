@@ -45,6 +45,21 @@ define( function( require ) {
     circuit.wires.addItemAddedListener( addWireNode );
     circuit.wires.forEach( addWireNode );
 
+    // TODO: Heavily duplicated with other removal listeners
+    circuit.wires.addItemRemovedListener( function( wire ) {
+      var wireNode = circuitNode.getWireNode( wire );
+
+      circuitNode.removeChild( wireNode );
+
+      var index = circuitNode.wireNodes.indexOf( wireNode );
+      if ( index > -1 ) {
+        circuitNode.wireNodes.splice( index, 1 );
+      }
+      wireNode.dispose();
+
+      assert && assert( circuitNode.getWireNode( wire ) === null, 'should have been removed' );
+    } );
+
     var addBatteryNode = function( battery ) {
       var batteryNode = new BatteryNode( circuitNode, battery );
       circuitNode.batteryNodes.push( batteryNode );
@@ -136,6 +151,16 @@ define( function( require ) {
   }
 
   return inherit( Node, CircuitNode, {
+    // TODO: Duplicated
+    getWireNode: function( wire ) {
+      for ( var i = 0; i < this.wireNodes.length; i++ ) {
+        var wireNode = this.wireNodes[ i ];
+        if ( wireNode.wire === wire ) {
+          return wireNode;
+        }
+      }
+      return null;
+    },
     // TODO: Duplicated
     getLightBulbNode: function( lightBulb ) {
       for ( var i = 0; i < this.lightBulbNodes.length; i++ ) {

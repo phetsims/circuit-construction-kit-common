@@ -20,6 +20,7 @@ define( function( require ) {
    * @constructor
    */
   function WireNode( circuitNode, wire ) {
+    var wireNode = this;
     this.wire = wire;
 
     Node.call( this );
@@ -36,18 +37,20 @@ define( function( require ) {
     };
 
     // There is a double nested property, since the vertex may change and the position may change
-    wire.startVertexProperty.link( function( newStartVertex, oldStartVertex ) {
+    var updateStartVertex = function( newStartVertex, oldStartVertex ) {
       oldStartVertex && oldStartVertex.positionProperty.unlink( startListener );
       newStartVertex.positionProperty.link( startListener );
-    } );
+    };
+    wire.startVertexProperty.link( updateStartVertex );
 
     var endListener = function( endPoint ) {
       line.setPoint2( endPoint );
     };
-    wire.endVertexProperty.link( function( newEndVertex, oldEndVertex ) {
+    var updateEndVertex = function( newEndVertex, oldEndVertex ) {
       oldEndVertex && oldEndVertex.positionProperty.unlink( endListener );
       newEndVertex.positionProperty.link( endListener );
-    } );
+    };
+    wire.endVertexProperty.link( updateEndVertex );
 
     this.inputListener = new SimpleDragHandler( {
       start: function( event ) {
@@ -64,7 +67,17 @@ define( function( require ) {
       }
     } );
     line.addInputListener( this.inputListener );
+    this.disposeWireNode = function() {
+      wireNode.inputListener.dragging && wireNode.inputListener.endDrag();
+
+      wire.startVertexProperty.unlink( updateStartVertex );
+      wire.endVertexProperty.unlink( updateEndVertex );
+    };
   }
 
-  return inherit( Node, WireNode );
+  return inherit( Node, WireNode, {
+    dispose: function() {
+      this.disposeWireNode();
+    }
+  } );
 } );
