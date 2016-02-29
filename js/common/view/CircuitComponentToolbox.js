@@ -21,13 +21,10 @@ define( function( require ) {
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ResistorNode' );
   var Vector2 = require( 'DOT/Vector2' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   // images
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/battery.png' );
   var lightBulbImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/light-bulb.png' );
-  var resistorImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/resistor.png' );
 
   /**
    * @param {CircuitConstructionKitBasicsModel} circuitConstructionKitBasicsModel
@@ -120,18 +117,11 @@ define( function( require ) {
             function( lightBulbNode ) { return lightBulbNode.lightBulb; }
           ) ),
 
-        new Node( {
-          children: [
-            resistorNode,
-
-            // Allow input events over the same area, even though resistorNode is not pickable
-            // TODO: option to resistorNode constructor that never adds input listeners in the 1st place
-            //new Rectangle( resistorNode.bounds.minX, resistorNode.bounds.minY, resistorNode.bounds.width, resistorNode.bounds.height )
-          ],
-          pickable: true,
-          cursor: 'pointer',
-          scale: iconWidth / Math.max( resistorImage[ 0 ].width, resistorImage[ 0 ].height )
-        } )
+        resistorNode.mutate( {
+            pickable: true,
+            cursor: 'pointer',
+            scale: iconWidth / Math.max( resistorNode.width, resistorNode.height )
+          } )
           .addInputListener( createToolIconInputListener(
             function( position ) { return new Resistor( position, CircuitConstructionKitBasicsConstants.DEFAULT_RESISTANCE ); },
             circuit.resistors,
