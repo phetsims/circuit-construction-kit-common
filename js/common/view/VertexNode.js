@@ -37,7 +37,7 @@ define( function( require ) {
 
     var updateShape = function() {
       var edgeCount = circuit.countCircuitElements( vertex );
-      vertexNode.fill = edgeCount > 1 ? CircuitConstructionKitBasicsConstants.wireColor : null;
+      circleNode.fill = edgeCount > 1 ? CircuitConstructionKitBasicsConstants.wireColor : null;
     };
     circuit.vertices.addItemAddedListener( updateShape );
     circuit.vertices.addItemRemovedListener( updateShape );
