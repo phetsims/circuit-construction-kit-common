@@ -41,7 +41,11 @@ define( function( require ) {
       ]
     } );
 
-    this.movableDragHandler = new MovableDragHandler( voltmeter.bodyPositionProperty );
+    this.movableDragHandler = new MovableDragHandler( voltmeter.bodyPositionProperty, {
+      endDrag: function() {
+        voltmeter.droppedEmitter.emit1( bodyNode.globalBounds );
+      }
+    } );
     !options.icon && bodyNode.addInputListener( this.movableDragHandler );
   }
 

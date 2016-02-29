@@ -38,6 +38,11 @@ define( function( require ) {
     this.addChild( resetAllButton );
 
     var voltmeterNode = new VoltmeterNode( circuitConstructionKitBasicsModel.voltmeter );
+    circuitConstructionKitBasicsModel.voltmeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
+      if ( bodyNodeGlobalBounds.intersectsBounds( sensorToolbox.globalBounds ) ) {
+        circuitConstructionKitBasicsModel.voltmeter.visible = false;
+      }
+    } );
     var voltmeterInputListener = new SimpleDragHandler();
     circuitConstructionKitBasicsModel.voltmeter.visibleProperty.link( function( visible ) {
       voltmeterNode.visible = visible;
