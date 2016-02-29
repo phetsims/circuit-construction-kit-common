@@ -87,8 +87,7 @@ define( function( require ) {
       scale: 1
     } );
 
-    var resistorNode = new ResistorNode( circuitConstructionKitBasicsScreenView.circuitNode, new Resistor( new Vector2( 0, 0 ), CircuitConstructionKitBasicsConstants.DEFAULT_RESISTANCE ) );
-    resistorNode.pickable = false;
+    var resistorNode = new ResistorNode( circuitConstructionKitBasicsScreenView.circuitNode, new Resistor( new Vector2( 0, 0 ), CircuitConstructionKitBasicsConstants.DEFAULT_RESISTANCE ), { icon: true } );
 
     CircuitConstructionKitBasicsPanel.call( this, new VBox( {
       spacing: CircuitConstructionKitBasicsConstants.toolboxItemSpacing,
@@ -127,7 +126,7 @@ define( function( require ) {
 
             // Allow input events over the same area, even though resistorNode is not pickable
             // TODO: option to resistorNode constructor that never adds input listeners in the 1st place
-            new Rectangle( resistorNode.bounds.minX, resistorNode.bounds.minY, resistorNode.bounds.width, resistorNode.bounds.height )
+            //new Rectangle( resistorNode.bounds.minX, resistorNode.bounds.minY, resistorNode.bounds.width, resistorNode.bounds.height )
           ],
           pickable: true,
           cursor: 'pointer',

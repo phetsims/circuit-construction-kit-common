@@ -22,9 +22,9 @@ define( function( require ) {
    *
    * @constructor
    */
-  function ResistorNode( circuitNode, resistor ) {
+  function ResistorNode( circuitNode, resistor, options ) {
     this.resistor = resistor;
-    FixedLengthComponentNode.call( this, circuitNode, resistor, resistorImage );
+    FixedLengthComponentNode.call( this, circuitNode, resistor, resistorImage, options );
 
     var imageWidth = this.imageNode.width;
     var bandWidth = 10;
