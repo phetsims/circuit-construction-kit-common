@@ -60,7 +60,7 @@ define( function( require ) {
     var voltageReadoutText = new Text( '', { fontSize: 18, y: -60 } );
     this.addChild( voltageReadoutText );
     vertex.voltageProperty.link( function( voltage ) {
-      voltageReadoutText.setText( Util.toFixed( voltage, 3 ) );
+      voltageReadoutText.setText( Util.toFixed( voltage, 3 ) + 'V' );
       updateReadoutTextLocation();
     } );
 
