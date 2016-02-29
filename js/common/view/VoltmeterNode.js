@@ -26,6 +26,10 @@ define( function( require ) {
     var redProbeNode = new Image( redProbe, { scale: 0.67 * s } );
     var blackProbeNode = new Image( blackProbe, { scale: 0.67 * s } );
     var bodyNode = new Image( voltmeterBody, { scale: s } );
+    voltmeter.bodyPositionProperty.link( function( bodyPosition ) {
+      bodyNode.center = bodyPosition;
+    } );
+
     bodyNode.left = redProbeNode.right + 60 * s;
     blackProbeNode.left = bodyNode.right + 60 * s;
     bodyNode.top = 50 * s;
@@ -35,10 +39,6 @@ define( function( require ) {
         redProbeNode,
         blackProbeNode
       ]
-    } );
-
-    voltmeter.bodyPositionProperty.link( function( bodyPosition ) {
-      bodyNode.center = bodyPosition;
     } );
 
     this.movableDragHandler = new MovableDragHandler( voltmeter.bodyPositionProperty );
