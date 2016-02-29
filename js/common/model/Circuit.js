@@ -192,6 +192,10 @@ define( function( require ) {
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
         return vertex.unsnappedPosition.distance( candidateVertex.position ) < 100;
       } );
+
+      // TODO: (4) reject any matches that result in circuit elements sharing a pair of vertices
+      // TODO: which would cause the wires to lay across one another
+
       if ( candidateVertices.length === 0 ) {
         return null;
       }
