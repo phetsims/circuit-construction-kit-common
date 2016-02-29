@@ -170,6 +170,11 @@ define( function( require ) {
       var bestDropTarget = this.getBestDropTarget( vertices );
       if ( bestDropTarget ) {
         this.circuit.connect( bestDropTarget.src, bestDropTarget.dst );
+
+        // Set the new reference point for next drag
+        for ( var i = 0; i < vertices.length; i++ ) {
+          vertices[ i ].unsnappedPosition = vertices[ i ].position;
+        }
       }
       vertexNode.startOffset = null;
     }
