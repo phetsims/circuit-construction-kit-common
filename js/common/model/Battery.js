@@ -18,6 +18,7 @@ define( function( require ) {
    * @constructor
    */
   function Battery( position, voltage ) {
+    assert && assert( typeof voltage === 'number', 'voltage should be a number' );
     FixedLengthComponent.call( this, 146, new Vertex( position.x - 80, position.y ), new Vertex( position.x + 80, position.y ), {
       voltage: voltage
     } );

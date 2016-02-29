@@ -35,6 +35,7 @@ define( function( require ) {
     var addVertices = function( circuitElement ) {
       circuit.vertices.add( circuitElement.startVertex );
       circuit.vertices.add( circuitElement.endVertex );
+      circuit.solve();
     };
     this.wires.addItemAddedListener( addVertices );
     this.batteries.addItemAddedListener( addVertices );
@@ -47,6 +48,12 @@ define( function( require ) {
       } );
       assert && assert( filtered.length === 1, 'should only have one copy of each vertex' );
     } );
+
+    //var solve = function() {
+    //  circuit.solve();
+    //};
+    //circuit.vertices.addItemAddedListener( solve );
+    //circuit.vertices.addItemRemovedListener( solve );
   }
 
   return inherit( Object, Circuit, {
@@ -65,9 +72,42 @@ define( function( require ) {
     // @public
     solve: function() {
 
-      // These are just to keep lint from complaining, so that we can load these dependencies into the module system
-      // for qunit tests
-      new OOCircuit().solve();
+      var circuit = this;
+
+      // the index of vertex corresponds to position in list.
+      var batteries = this.batteries.map( function( battery ) {
+        return {
+          node0: circuit.vertices.indexOf( battery.startVertex ),
+          node1: circuit.vertices.indexOf( battery.endVertex ),
+          voltage: battery.voltage
+        };
+      } );
+
+      var resistors = this.resistors.map( function( resistor ) {
+        return {
+          node0: circuit.vertices.indexOf( resistor.startVertex ),
+          node1: circuit.vertices.indexOf( resistor.endVertex ),
+          resistance: resistor.resistance
+        };
+      } );
+      var wires = this.wires.map( function( wire ) {
+        return {
+          node0: circuit.vertices.indexOf( wire.startVertex ),
+          node1: circuit.vertices.indexOf( wire.endVertex ),
+          resistance: 0 // TODO: Wire resistance may be variable
+        };
+      } );
+      var bulbs = this.lightBulbs.map( function( lightBulb ) {
+        return {
+          node0: circuit.vertices.indexOf( lightBulb.startVertex ),
+          node1: circuit.vertices.indexOf( lightBulb.endVertex ),
+          resistance: lightBulb.resistance // TODO: Wire resistance may be variable
+        };
+      } );
+
+      var resistorAdapters = resistors.getArray().concat( wires.getArray() ).concat( bulbs.getArray() );
+      var solution = new OOCircuit( batteries.getArray(), resistorAdapters, [] ).solve();
+      console.log( solution );
     },
 
     isConnected: function( wire1, terminalPositionProperty1, wire2, terminalPositionProperty2 ) {
@@ -94,6 +134,9 @@ define( function( require ) {
       }
       this.vertices.remove( vertex2 );
       assert && assert( !vertex2.positionProperty.hasListeners(), 'Removed vertex should not have any listeners' );
+
+      // Update the physics
+      this.solve();
     },
 
     // The only way for two vertices to be adjacent is for them to be the start/end of a single CircuitElement

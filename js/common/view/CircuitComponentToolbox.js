@@ -97,7 +97,7 @@ define( function( require ) {
           scale: iconWidth / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height )
         } )
           .addInputListener( createToolIconInputListener(
-            function( position ) { return new Battery( position ); },
+            function( position ) { return new Battery( position, 9 ); },
             circuit.batteries,
             circuitNode.batteryNodes,
             function( batteryNode ) { return batteryNode.battery; }
@@ -107,7 +107,7 @@ define( function( require ) {
           scale: iconWidth / Math.max( lightBulbImage[ 0 ].width, lightBulbImage[ 0 ].height ) // constrained by being too tall, not too wide
         } )
           .addInputListener( createToolIconInputListener(
-            function( position ) { return new LightBulb( position ); },
+            function( position ) { return new LightBulb( position, 4.5 ); },
             circuit.lightBulbs,
             circuitNode.lightBulbNodes,
             function( lightBulbNode ) { return lightBulbNode.lightBulb; }
@@ -117,7 +117,7 @@ define( function( require ) {
           scale: iconWidth / Math.max( resistorImage[ 0 ].width, resistorImage[ 0 ].height )
         } )
           .addInputListener( createToolIconInputListener(
-            function( position ) { return new Resistor( position ); },
+            function( position ) { return new Resistor( position, 4.5 ); },
             circuit.resistors,
             circuitNode.resistorNodes,
             function( resistorNode ) { return resistorNode.resistor; }
