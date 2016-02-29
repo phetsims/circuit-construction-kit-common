@@ -14,6 +14,8 @@ define( function( require ) {
   var Circle = require( 'SCENERY/nodes/Circle' );
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var Text = require( 'SCENERY/nodes/Text' );
+  var Util = require( 'DOT/Util' );
 
   /**
    *
@@ -54,6 +56,13 @@ define( function( require ) {
         circuitNode.endDrag( event, vertex );
       }
     } ) );
+
+    // TODO: For debugging, remove when debugged.
+    var voltageReadoutText = new Text( '', { fontSize: 18, y: -60 } );
+    this.addChild( voltageReadoutText );
+    vertex.voltageProperty.link( function( voltage ) {
+      voltageReadoutText.setText( Util.toFixed( voltage, 3 ) );
+    } );
   }
 
   circuitConstructionKitBasics.register( 'VertexNode', VertexNode );

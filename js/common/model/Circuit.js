@@ -108,6 +108,11 @@ define( function( require ) {
       var resistorAdapters = resistors.getArray().concat( wires.getArray() ).concat( bulbs.getArray() );
       var solution = new OOCircuit( batteries.getArray(), resistorAdapters, [] ).solve();
       console.log( solution );
+
+      // Apply the node voltages to the vertices
+      for ( var i = 0; i < this.vertices.length; i++ ) {
+        this.vertices.get( i ).voltage = solution.nodeVoltages[ i ];
+      }
     },
 
     isConnected: function( wire1, terminalPositionProperty1, wire2, terminalPositionProperty2 ) {
