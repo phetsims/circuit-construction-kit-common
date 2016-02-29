@@ -16,6 +16,7 @@ define( function( require ) {
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
+  var Node = require( 'SCENERY/nodes/Node' );
 
   /**
    *
@@ -28,7 +29,11 @@ define( function( require ) {
     this.startOffset = null;// @public Will be added by CircuitNode during dragging, used for relative drag location.
 
     // Start as a dotted line, becomes solid when connected to >1 component.
-    Circle.call( this, 20, { stroke: 'black', lineWidth: 3, lineDash: [ 8, 6 ], cursor: 'pointer' } );
+    var circleNode = new Circle( 20, { stroke: 'black', lineWidth: 3, lineDash: [ 8, 6 ], cursor: 'pointer' } );
+    Node.call( this, {
+      children: [ circleNode
+      ]
+    } );
 
     var updateShape = function() {
       var edgeCount = circuit.countCircuitElements( vertex );
@@ -36,14 +41,6 @@ define( function( require ) {
     };
     circuit.vertices.addItemAddedListener( updateShape );
     circuit.vertices.addItemRemovedListener( updateShape );
-    var updateVertexNodePosition = function( position ) {
-      vertexNode.center = position;
-    };
-    vertex.positionProperty.link( updateVertexNodePosition );
-
-    this.disposeVertexNode = function() {
-      vertex.positionProperty.unlink( updateVertexNodePosition );
-    };
 
     this.addInputListener( new SimpleDragHandler( {
       start: function( event ) {
@@ -57,17 +54,32 @@ define( function( require ) {
       }
     } ) );
 
+    var updateReadoutTextLocation = function() {
+      voltageReadoutText.centerX = circleNode.centerX;
+      voltageReadoutText.bottom = circleNode.top - 10;
+    };
     // TODO: For debugging, remove when debugged.
     var voltageReadoutText = new Text( '', { fontSize: 18, y: -60 } );
     this.addChild( voltageReadoutText );
     vertex.voltageProperty.link( function( voltage ) {
       voltageReadoutText.setText( Util.toFixed( voltage, 3 ) );
+      updateReadoutTextLocation();
     } );
+
+    var updateVertexNodePosition = function( position ) {
+      circleNode.center = position;
+      updateReadoutTextLocation();
+    };
+    vertex.positionProperty.link( updateVertexNodePosition );
+
+    this.disposeVertexNode = function() {
+      vertex.positionProperty.unlink( updateVertexNodePosition );
+    };
   }
 
   circuitConstructionKitBasics.register( 'VertexNode', VertexNode );
 
-  return inherit( Circle, VertexNode, {
+  return inherit( Node, VertexNode, {
     dispose: function() {
       this.disposeVertexNode();
     }
