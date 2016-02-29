@@ -112,6 +112,8 @@ define( function( require ) {
             circuitNode.lightBulbNodes,
             function( lightBulbNode ) { return lightBulbNode.lightBulb; }
           ) ),
+
+        // TODO: Add color bands
         new Image( resistorImage, {
           cursor: 'pointer',
           scale: iconWidth / Math.max( resistorImage[ 0 ].width, resistorImage[ 0 ].height )
