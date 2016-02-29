@@ -10,9 +10,13 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   function Voltmeter() {
-    PropertySet.call( this, { visible: false } );
+    PropertySet.call( this, {
+      visible: false,
+      bodyPosition: new Vector2( 0, 0 )
+    } );
   }
 
   return inherit( PropertySet, Voltmeter, {} );

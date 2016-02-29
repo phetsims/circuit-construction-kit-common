@@ -18,18 +18,21 @@ define( function( require ) {
   var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Voltmeter' );
 
   function SensorToolbox( voltmeterNode, voltmeterInputListener ) {
-
+    var sensorToolbox = this;
     var toolIconLength = CircuitConstructionKitBasicsConstants.toolboxIconLength;
 
-    var voltmeterNodeIcon = new VoltmeterNode( new Voltmeter() );
+    var voltmeterNodeIcon = new VoltmeterNode( new Voltmeter(), { icon: true } );
     voltmeterNode.voltmeter.visibleProperty.link( function( visible ) {
       voltmeterNodeIcon.visible = !visible;
     } );
     var voltmeterIconSizeIncrease = 1.3;
     voltmeterNodeIcon.mutate( { scale: toolIconLength * voltmeterIconSizeIncrease / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height ) } );
     voltmeterNodeIcon.addInputListener( {
-      down: function() {
+      down: function( event ) {
+        var viewPosition = sensorToolbox.globalToParentPoint( event.pointer.point );
         voltmeterNode.voltmeter.visible = true;
+        voltmeterNode.voltmeter.bodyPosition = viewPosition;
+        voltmeterNode.movableDragHandler.startDrag( event );
       }
     } );
 

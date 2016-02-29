@@ -12,28 +12,37 @@ define( function( require ) {
   var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var Image = require( 'SCENERY/nodes/Image' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
 
   // images
   var voltmeterBody = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/voltmeter_body.png' );
   var redProbe = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/probe_red.png' );
   var blackProbe = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/probe_black.png' );
 
-  function VoltmeterNode( voltmeter ) {
+  function VoltmeterNode( voltmeter, options ) {
+    options = _.extend( { icon: false }, options );
     this.voltmeter = voltmeter;
     var s = 0.5;
     var redProbeNode = new Image( redProbe, { scale: 0.67 * s } );
     var blackProbeNode = new Image( blackProbe, { scale: 0.67 * s } );
-    var voltmeterBodyNode = new Image( voltmeterBody, { scale: s } );
-    voltmeterBodyNode.left = redProbeNode.right + 60 * s;
-    blackProbeNode.left = voltmeterBodyNode.right + 60 * s;
-    voltmeterBodyNode.top = 50 * s;
+    var bodyNode = new Image( voltmeterBody, { scale: s } );
+    bodyNode.left = redProbeNode.right + 60 * s;
+    blackProbeNode.left = bodyNode.right + 60 * s;
+    bodyNode.top = 50 * s;
     Node.call( this, {
       children: [
-        voltmeterBodyNode,
+        bodyNode,
         redProbeNode,
         blackProbeNode
       ]
     } );
+
+    voltmeter.bodyPositionProperty.link( function( bodyPosition ) {
+      bodyNode.center = bodyPosition;
+    } );
+
+    this.movableDragHandler = new MovableDragHandler( voltmeter.bodyPositionProperty );
+    !options.icon && bodyNode.addInputListener( this.movableDragHandler );
   }
 
   circuitConstructionKitBasics.register( 'VoltmeterNode', VoltmeterNode );
