@@ -65,7 +65,7 @@ define( function( require ) {
           } );
           assert && assert( matchedNodes.length === 1, 'should have found the one and only node for this battery' );
           var componentNode = matchedNodes[ 0 ];
-          componentNode.movableDragHandler.startDrag( event );
+          componentNode.inputListener.startDrag( event );
         }
       };
     };

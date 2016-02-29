@@ -105,15 +105,18 @@ define( function( require ) {
       vertexNode.startOffset = vertexNode.globalToParentPoint( event.pointer.point ).minus( vertex.position );
     },
     drag: function( event, vertex ) {
-      // TODO: We need to track where it would be if not snapped.
 
       var vertexNode = this.getVertexNode( vertex ); // TODO: Is this too expensive?  Probably!
       var position = vertexNode.globalToParentPoint( event.pointer.point ).minus( vertexNode.startOffset );
+
+      // Translate the unsnapped position of the vertex, i.e. where it would be if no matches are proposed.
+      vertex.unsnappedPosition = position;
 
       // Find all vertices connected by fixed length nodes.
       var fixedVertices = this.circuit.findAllFixedVertices( vertex );
 
       // Is there a nearby vertex this one could snap to?  If so, move to its location temporarily.
+      // TODO: Find drop targets for *any* of the dragged vertices
       var targetVertex = this.circuit.getDropTarget( vertex );
       if ( targetVertex ) {
 
@@ -125,6 +128,7 @@ define( function( require ) {
         var fixedVertex = fixedVertices[ i ];
         fixedVertex.position = fixedVertex.position.plus( delta );
       }
+
       // TODO: Keep in bounds
       //vertex.position = position;
 

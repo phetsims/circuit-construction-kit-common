@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var Property = require( 'AXON/Property' );
+  var PropertySet = require( 'AXON/PropertySet' );
   var Vector2 = require( 'DOT/Vector2' );
 
   /**
@@ -18,15 +18,12 @@ define( function( require ) {
    * @constructor
    */
   function Vertex( x, y ) {
-    this.positionProperty = new Property( new Vector2( x, y ) );
+    PropertySet.call( this, {
+      position: new Vector2( x, y ), // Where the vertex is and is shown
+      //snapped: false, // True if the vertex is showing a proposed connection at a different location
+      unsnappedPosition: new Vector2( x, y ) // Where the vertex would be if it hadn't snapped
+    } );
   }
 
-  return inherit( Object, Vertex, {
-    get position() {
-      return this.positionProperty.value;
-    },
-    set position( v ) {
-      this.positionProperty.set( v );
-    }
-  } );
+  return inherit( PropertySet, Vertex );
 } );

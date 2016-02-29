@@ -190,7 +190,7 @@ define( function( require ) {
 
       // (3) a vertex must be within 100px (screen coordinates) of the other vertex
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
-        return vertex.position.distance( candidateVertex.position ) < 100;
+        return vertex.unsnappedPosition.distance( candidateVertex.position ) < 100;
       } );
       if ( candidateVertices.length === 0 ) {
         return null;
@@ -199,7 +199,7 @@ define( function( require ) {
 
         // Find the closest match
         var sorted = _.sortBy( candidateVertices.getArray(), function( candidateVertex ) {
-          return vertex.position.distance( candidateVertex.position );
+          return vertex.unsnappedPosition.distance( candidateVertex.position );
         } );
         return sorted[ 0 ];
       }

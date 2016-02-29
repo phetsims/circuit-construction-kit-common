@@ -13,7 +13,6 @@ define( function( require ) {
   var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var Image = require( 'SCENERY/nodes/Image' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var Vector2 = require( 'DOT/Vector2' );
   var Property = require( 'AXON/Property' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
@@ -53,7 +52,7 @@ define( function( require ) {
     } );
 
     // Use whatever the start node currently is (it can changed), and let the circuit manage the dependent vertices
-    this.movableDragHandler = new SimpleDragHandler( {
+    this.inputListener = new SimpleDragHandler( {
       start: function( event ) {
         circuitNode.startDrag( event, circuitElement.startVertex );
       },
@@ -64,7 +63,7 @@ define( function( require ) {
         circuitNode.endDrag( event, circuitElement.startVertex );
       }
     } );
-    imageNode.addInputListener( this.movableDragHandler );
+    imageNode.addInputListener( this.inputListener );
   }
 
   circuitConstructionKitBasics.register( 'FixedLengthComponentNode', FixedLengthComponentNode );

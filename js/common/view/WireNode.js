@@ -49,7 +49,7 @@ define( function( require ) {
       newEndVertex.positionProperty.link( endListener );
     } );
 
-    this.movableDragHandler = new SimpleDragHandler( {
+    this.inputListener = new SimpleDragHandler( {
       start: function( event ) {
         circuitNode.startDrag( event, wire.startVertex );
         circuitNode.startDrag( event, wire.endVertex );
@@ -63,7 +63,7 @@ define( function( require ) {
         circuitNode.endDrag( event, wire.endVertex );
       }
     } );
-    line.addInputListener( this.movableDragHandler );
+    line.addInputListener( this.inputListener );
   }
 
   return inherit( Node, WireNode );
