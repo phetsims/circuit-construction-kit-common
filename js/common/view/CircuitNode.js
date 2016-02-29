@@ -101,10 +101,6 @@ define( function( require ) {
       }
       return null;
     },
-    startDrag: function( event, vertex ) {
-      var vertexNode = this.getVertexNode( vertex ); // TODO: use event.currentTarget?
-      vertexNode.startOffset = vertexNode.globalToParentPoint( event.pointer.point ).minus( vertex.position );
-    },
     getAllDropTargets: function( vertices ) {
       var allDropTargets = [];
 
@@ -129,6 +125,10 @@ define( function( require ) {
         return null;
       }
     },
+    startDrag: function( event, vertex ) {
+      var vertexNode = this.getVertexNode( vertex ); // TODO: use event.currentTarget?
+      vertexNode.startOffset = vertexNode.globalToParentPoint( event.pointer.point ).minus( vertex.unsnappedPosition );
+    },
     drag: function( event, vertex ) {
 
       var vertexNode = this.getVertexNode( vertex ); // TODO: Is this too expensive?  Probably!
@@ -149,7 +149,7 @@ define( function( require ) {
       var bestDropTarget = this.getBestDropTarget( vertices );
       var delta = Vector2.ZERO;
       if ( bestDropTarget ) {
-        delta = bestDropTarget.dst.position.minus( bestDropTarget.src.unsnappedPosition );
+        delta = bestDropTarget.dst.unsnappedPosition.minus( bestDropTarget.src.unsnappedPosition );
       }
 
       for ( i = 0; i < vertices.length; i++ ) {
