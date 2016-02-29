@@ -136,13 +136,15 @@ define( function( require ) {
      * @param {Vertex} vertex
      */
     findAllFixedVertices: function( vertex ) {
-      var fixedVertices = [ vertex ];
+      var fixedVertices = [];
       var toVisit = [ vertex ];
       var visited = [];
       while ( toVisit.length > 0 ) {
 
         // Find the neighbors joined by a FixedLengthComponent, not a stretchy Wire
-        var currentVertex = toVisit[ toVisit.length - 1 ];
+        var currentVertex = toVisit.pop();
+
+        // If we haven't visited it before, then explore it
         if ( visited.indexOf( currentVertex ) < 0 ) {
           var neighbors = this.getFixedNeighbors( currentVertex );
 
@@ -150,16 +152,17 @@ define( function( require ) {
             var neighbor = neighbors[ i ];
 
             // If the node was already visited, don't visit again
-            if ( visited.indexOf( neighbor ) < 0 ) {
+            if ( visited.indexOf( neighbor ) < 0 && toVisit.indexOf( neighbor ) < 0 ) {
               toVisit.push( neighbor );
-            }
-            if ( fixedVertices.indexOf( neighbor ) < 0 ) {
-              fixedVertices.push( neighbor );// TODO: is this duplicated?
             }
           }
         }
-        visited.push( currentVertex );
-        toVisit.pop();
+        if ( fixedVertices.indexOf( currentVertex ) < 0 ) {
+          fixedVertices.push( currentVertex );
+        }
+        if ( visited.indexOf( currentVertex ) < 0 ) {
+          visited.push( currentVertex );
+        }
       }
       return fixedVertices;
     },
