@@ -22,6 +22,9 @@ define( function( require ) {
     var toolIconLength = CircuitConstructionKitBasicsConstants.toolboxIconLength;
 
     var voltmeterNodeIcon = new VoltmeterNode( new Voltmeter() );
+    voltmeterNode.voltmeter.visibleProperty.link( function( visible ) {
+      voltmeterNodeIcon.visible = !visible;
+    } );
     var voltmeterIconSizeIncrease = 1.3;
     voltmeterNodeIcon.mutate( { scale: toolIconLength * voltmeterIconSizeIncrease / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height ) } );
     voltmeterNodeIcon.addInputListener( {
