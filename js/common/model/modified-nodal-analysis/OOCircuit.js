@@ -120,9 +120,9 @@ define( function( require ) {
    * @constructor
    */
   function OOCircuit( batteries, resistors, currentSources ) {
-    assert( batteries, 'batteries should be defined' );
-    assert( resistors, 'resistors should be defined' );
-    assert( currentSources, 'currentSources should be defined' );
+    assert && assert( batteries, 'batteries should be defined' );
+    assert && assert( resistors, 'resistors should be defined' );
+    assert && assert( currentSources, 'currentSources should be defined' );
 
     if ( assert ) {
       for ( var i = 0; i < batteries.length; i++ ) {
