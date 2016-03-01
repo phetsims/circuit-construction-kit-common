@@ -28,7 +28,9 @@ define( function( require ) {
     this.voltmeter = voltmeter;
     var s = 0.5;
     var redProbeNode = new Image( redProbe, { scale: 0.67 * s, cursor: 'pointer' } );
+    this.redProbeNode = redProbeNode;
     var blackProbeNode = new Image( blackProbe, { scale: 0.67 * s, cursor: 'pointer' } );
+    this.blackProbeNode = blackProbeNode;
     var readout = new Text( '?', { fontSize: 34 } );
     var textBox = new Rectangle( 0, 0, 140, 52, 10, 10, {
       lineWidth: 2, stroke: 'black', fill: 'white'

@@ -24,6 +24,7 @@ define( function( require ) {
    * @constructor
    */
   function CircuitConstructionKitBasicsScreenView( circuitConstructionKitBasicsModel ) {
+    var circuitConstructionKitBasicsScreenView = this;
     this.circuitConstructionKitBasicsModel = circuitConstructionKitBasicsModel;
 
     ScreenView.call( this );
@@ -85,9 +86,43 @@ define( function( require ) {
     this.addChild( circuitElementEditPanel );
 
     this.addChild( voltmeterNode );
+
+    // Detection for voltmeter probe + circuit collision is done in the view
+    var updateVoltmeter = function() {
+      var redConnection = circuitConstructionKitBasicsScreenView.getVoltage( voltmeterNode.redProbeNode );
+      var blackConnection = circuitConstructionKitBasicsScreenView.getVoltage( voltmeterNode.blackProbeNode );
+      if ( redConnection === null || blackConnection === null ) {
+        circuitConstructionKitBasicsModel.voltmeter.voltage = null;
+      }
+      else {
+        circuitConstructionKitBasicsModel.voltmeter.voltage = redConnection - blackConnection;
+      }
+
+    };
+    circuitConstructionKitBasicsModel.circuit.circuitChangedEmitter.addListener( updateVoltmeter );
+    circuitConstructionKitBasicsModel.voltmeter.redProbePositionProperty.link( updateVoltmeter );
+    circuitConstructionKitBasicsModel.voltmeter.blackProbePositionProperty.link( updateVoltmeter );
   }
 
   return inherit( ScreenView, CircuitConstructionKitBasicsScreenView, {
+
+    /**
+     * Find where the voltmeter probe node intersects the wire, for computing the voltage difference
+     * @param {Node} probeNode
+     * @private
+     */
+    getVoltage: function( probeNode ) {
+
+      // TODO: refine rules for collisions, could use model coordinates with view shapes
+      var globalPoint = probeNode.globalBounds.centerTop;
+      for ( var i = 0; i < this.circuitNode.vertexNodes.length; i++ ) {
+        var vertexNode = this.circuitNode.vertexNodes[ i ];
+        if ( vertexNode.globalBounds.containsPoint( globalPoint ) ) {
+          return vertexNode.vertex.voltage;
+        }
+      }
+      return null;
+    },
 
     //TODO Called by the animation loop. Optional, so if your view has no animation, please delete this.
     step: function( dt ) {
