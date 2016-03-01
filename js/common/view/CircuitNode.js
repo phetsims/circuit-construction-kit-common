@@ -105,6 +105,7 @@ define( function( require ) {
       assert && assert( circuitNode.getLightBulbNode( lightBulb ) === null, 'should have been removed' );
     } );
 
+    // TODO: When an item is dropped in the toolbox, remove it from the model
     var addResistorNode = function( resistor ) {
       var resistorNode = new ResistorNode( circuitNode, resistor );
       circuitNode.resistorNodes.push( resistorNode );
