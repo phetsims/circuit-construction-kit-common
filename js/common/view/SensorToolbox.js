@@ -17,7 +17,7 @@ define( function( require ) {
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
   var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Voltmeter' );
 
-  function SensorToolbox( voltmeterNode, voltmeterInputListener ) {
+  function SensorToolbox( voltmeterNode ) {
     var sensorToolbox = this;
     var toolIconLength = CircuitConstructionKitBasicsConstants.toolboxIconLength;
 
@@ -30,6 +30,7 @@ define( function( require ) {
     voltmeterNodeIcon.addInputListener( {
       down: function( event ) {
         var viewPosition = sensorToolbox.globalToParentPoint( event.pointer.point );
+        voltmeterNode.voltmeter.draggingTogether = true;
         voltmeterNode.voltmeter.visible = true;
         voltmeterNode.voltmeter.bodyPosition = viewPosition;
         voltmeterNode.movableDragHandler.startDrag( event );

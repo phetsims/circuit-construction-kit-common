@@ -43,14 +43,13 @@ define( function( require ) {
         circuitConstructionKitBasicsModel.voltmeter.visible = false;
       }
     } );
-    var voltmeterInputListener = new SimpleDragHandler();
     circuitConstructionKitBasicsModel.voltmeter.visibleProperty.link( function( visible ) {
       voltmeterNode.visible = visible;
     } );
 
     this.circuitNode = new CircuitNode( circuitConstructionKitBasicsModel.circuit );
     var circuitComponentToolbox = new CircuitComponentToolbox( circuitConstructionKitBasicsModel, this );
-    var sensorToolbox = new SensorToolbox( voltmeterNode, voltmeterInputListener );
+    var sensorToolbox = new SensorToolbox( voltmeterNode );
 
     this.addChild( sensorToolbox );
     this.addChild( circuitComponentToolbox );

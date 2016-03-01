@@ -23,30 +23,49 @@ define( function( require ) {
     options = _.extend( { icon: false }, options );
     this.voltmeter = voltmeter;
     var s = 0.5;
-    var redProbeNode = new Image( redProbe, { scale: 0.67 * s } );
-    var blackProbeNode = new Image( blackProbe, { scale: 0.67 * s } );
-    var bodyNode = new Image( voltmeterBody, { scale: s } );
+    var redProbeNode = new Image( redProbe, { scale: 0.67 * s, cursor: 'pointer' } );
+    var blackProbeNode = new Image( blackProbe, { scale: 0.67 * s, cursor: 'pointer' } );
+    var bodyNode = new Image( voltmeterBody, { scale: s, cursor: 'pointer' } );
     voltmeter.bodyPositionProperty.link( function( bodyPosition ) {
-      bodyNode.center = bodyPosition;
+      bodyNode.centerTop = bodyPosition;
     } );
 
-    bodyNode.left = redProbeNode.right + 60 * s;
-    blackProbeNode.left = bodyNode.right + 60 * s;
-    bodyNode.top = 50 * s;
+    voltmeter.redProbePositionProperty.link( function( redProbePosition ) {
+      redProbeNode.centerTop = redProbePosition;
+    } );
+
+    voltmeter.blackProbePositionProperty.link( function( blackProbePosition ) {
+      blackProbeNode.centerTop = blackProbePosition;
+    } );
+
+    voltmeter.bodyPositionProperty.link( function( bodyPosition ) {
+      if ( voltmeter.draggingTogether ) {
+        voltmeter.redProbePosition = voltmeter.bodyPosition.plusXY( -100, -30 );
+        voltmeter.blackProbePosition = voltmeter.bodyPosition.plusXY( 100, -30 );
+      }
+    } );
+
     Node.call( this, {
+      pickable: true,
       children: [
         bodyNode,
         redProbeNode,
         blackProbeNode
       ]
     } );
-
     this.movableDragHandler = new MovableDragHandler( voltmeter.bodyPositionProperty, {
       endDrag: function() {
         voltmeter.droppedEmitter.emit1( bodyNode.globalBounds );
+
+        // After dropping in the play area the probes move indepedently of the body
+        voltmeter.draggingTogether = false;
       }
     } );
     !options.icon && bodyNode.addInputListener( this.movableDragHandler );
+
+    !options.icon && redProbeNode.addInputListener( new MovableDragHandler( voltmeter.redProbePositionProperty, {} ) );
+
+    !options.icon && blackProbeNode.addInputListener( new MovableDragHandler( voltmeter.blackProbePositionProperty, {} ) );
   }
 
   circuitConstructionKitBasics.register( 'VoltmeterNode', VoltmeterNode );

@@ -16,7 +16,10 @@ define( function( require ) {
   function Voltmeter() {
     PropertySet.call( this, {
       visible: false,
-      bodyPosition: new Vector2( 0, 0 )
+      bodyPosition: new Vector2( 0, 0 ),
+      redProbePosition: new Vector2( 0, 0 ),
+      blackProbePosition: new Vector2( 0, 0 ),
+      draggingTogether: true // When the voltmeter is dragged from the toolbox, all pieces drag together as a single unit.
     } );
     this.droppedEmitter = new Emitter(); // Fire event when dropped
   }
