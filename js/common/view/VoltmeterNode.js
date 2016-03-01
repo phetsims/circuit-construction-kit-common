@@ -13,9 +13,12 @@ define( function( require ) {
   var Image = require( 'SCENERY/nodes/Image' );
   var Node = require( 'SCENERY/nodes/Node' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
+  var Text = require( 'SCENERY/nodes/Text' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
 
   // images
-  var voltmeterBody = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/voltmeter_body.png' );
+  var voltmeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/voltmeter_body.png' );
   var redProbe = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/probe_red.png' );
   var blackProbe = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/probe_black.png' );
 
@@ -25,7 +28,24 @@ define( function( require ) {
     var s = 0.5;
     var redProbeNode = new Image( redProbe, { scale: 0.67 * s, cursor: 'pointer' } );
     var blackProbeNode = new Image( blackProbe, { scale: 0.67 * s, cursor: 'pointer' } );
-    var bodyNode = new Image( voltmeterBody, { scale: s, cursor: 'pointer' } );
+    var readout = new Text( '?', { fontSize: 42 } );
+    var textBox = new Rectangle( 0, 0, 140, 52, 10, 10, {
+      lineWidth: 2, stroke: 'black', fill: 'white',
+      children: [ readout ]
+    } );
+    readout.centerX = textBox.centerX;
+    readout.bottom = textBox.bottom;
+    var bodyNode = new Image( voltmeterBodyImage, {
+      scale: s, cursor: 'pointer', children: [
+        new VBox( {
+          spacing: 6,
+          centerX: voltmeterBodyImage[ 0 ].width / 2,
+          centerY: voltmeterBodyImage[ 0 ].height / 2,
+          align: 'center',
+          children: [ new Text( 'Voltage', { fontSize: 42 } ), textBox ]
+        } )
+      ]
+    } );
     voltmeter.bodyPositionProperty.link( function( bodyPosition ) {
       bodyNode.centerTop = bodyPosition;
     } );
