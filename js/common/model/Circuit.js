@@ -146,7 +146,8 @@ define( function( require ) {
         return {
           node0: circuit.vertices.indexOf( lightBulb.startVertex ),
           node1: circuit.vertices.indexOf( lightBulb.endVertex ),
-          circuitElement: lightBulb.resistance // TODO: Wire resistance may be variable
+          resistance: lightBulb.resistance,
+          circuitElement: lightBulb // TODO: Wire resistance may be variable
         };
       } );
 
