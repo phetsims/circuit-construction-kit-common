@@ -242,8 +242,6 @@ define( function( require ) {
         vertices[ i ].unsnappedPosition = vertices[ i ].unsnappedPosition.plus( unsnappedDelta );
       }
 
-      // TODO: There is a hitch when dragging two connected batteries
-
       // Is there a nearby vertex any of these could snap to?  If so, move to its location temporarily.
       // Find drop targets for *any* of the dragged vertices
       var bestDropTarget = this.getBestDropTarget( vertices );
