@@ -114,6 +114,7 @@ define( function( require ) {
     getVoltage: function( probeNode ) {
 
       // TODO: refine rules for collisions, could use model coordinates with view shapes
+      // TODO: Collide with wires
       var globalPoint = probeNode.globalBounds.centerTop;
       for ( var i = 0; i < this.circuitNode.vertexNodes.length; i++ ) {
         var vertexNode = this.circuitNode.vertexNodes[ i ];

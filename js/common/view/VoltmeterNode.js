@@ -31,6 +31,8 @@ define( function( require ) {
     this.redProbeNode = redProbeNode;
     var blackProbeNode = new Image( blackProbe, { scale: 0.67 * s, cursor: 'pointer' } );
     this.blackProbeNode = blackProbeNode;
+
+    // TODO: Factor out readout region for reuse in ammeter
     var readout = new Text( '?', { fontSize: 34 } );
     var textBox = new Rectangle( 0, 0, 140, 52, 10, 10, {
       lineWidth: 2, stroke: 'black', fill: 'white'
@@ -90,7 +92,7 @@ define( function( require ) {
       endDrag: function() {
         voltmeter.droppedEmitter.emit1( bodyNode.globalBounds );
 
-        // After dropping in the play area the probes move indepedently of the body
+        // After dropping in the play area the probes move indepdently of the body
         voltmeter.draggingTogether = false;
       }
     } );
