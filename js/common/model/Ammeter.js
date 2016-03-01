@@ -12,13 +12,12 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var Meter = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Meter' );
 
-  function Voltmeter() {
+  function Ammeter() {
     Meter.call( this, {
-      voltage: null, // Null means no reading, otherwise {number} volts
-      redProbePosition: new Vector2( 0, 0 ),
-      blackProbePosition: new Vector2( 0, 0 )
+      current: null, // Null means no reading, otherwise {number} amps
+      probePosition: new Vector2( 0, 0 )
     } );
   }
 
-  return inherit( Meter, Voltmeter );
+  return inherit( Meter, Ammeter );
 } );

@@ -18,6 +18,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Rectangle = require( 'DOT/Rectangle' );
   var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/VoltmeterNode' );
+  var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/AmmeterNode' );
 
   /**
    * @param {CircuitConstructionKitBasicsModel} circuitConstructionKitBasicsModel
@@ -47,9 +48,19 @@ define( function( require ) {
       voltmeterNode.visible = visible;
     } );
 
+    var ammeterNode = new AmmeterNode( circuitConstructionKitBasicsModel.ammeter );
+    circuitConstructionKitBasicsModel.ammeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
+      if ( bodyNodeGlobalBounds.intersectsBounds( sensorToolbox.globalBounds ) ) {
+        circuitConstructionKitBasicsModel.ammeter.visible = false;
+      }
+    } );
+    circuitConstructionKitBasicsModel.ammeter.visibleProperty.link( function( visible ) {
+      ammeterNode.visible = visible;
+    } );
+
     this.circuitNode = new CircuitNode( circuitConstructionKitBasicsModel.circuit );
     var circuitComponentToolbox = new CircuitComponentToolbox( circuitConstructionKitBasicsModel, this );
-    var sensorToolbox = new SensorToolbox( voltmeterNode );
+    var sensorToolbox = new SensorToolbox( voltmeterNode, ammeterNode );
 
     this.addChild( sensorToolbox );
     this.addChild( circuitComponentToolbox );
@@ -86,6 +97,7 @@ define( function( require ) {
     this.addChild( circuitElementEditPanel );
 
     this.addChild( voltmeterNode );
+    this.addChild( ammeterNode );
 
     // Detection for voltmeter probe + circuit collision is done in the view
     var updateVoltmeter = function() {

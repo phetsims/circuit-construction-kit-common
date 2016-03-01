@@ -16,8 +16,9 @@ define( function( require ) {
   var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/AmmeterNode' );
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
   var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Voltmeter' );
+  var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Ammeter' );
 
-  function SensorToolbox( voltmeterNode ) {
+  function SensorToolbox( voltmeterNode, ammeterNode ) {
     var sensorToolbox = this;
     var toolIconLength = CircuitConstructionKitBasicsConstants.toolboxIconLength;
 
@@ -37,8 +38,20 @@ define( function( require ) {
       }
     } );
 
-    var ammeterNodeIcon = new AmmeterNode();
+    var ammeterNodeIcon = new AmmeterNode( new Ammeter(), { icon: true } );
+    ammeterNode.ammeter.visibleProperty.link( function( visible ) {
+      ammeterNodeIcon.visible = !visible;
+    } );
     ammeterNodeIcon.mutate( { scale: toolIconLength / Math.max( ammeterNodeIcon.width, ammeterNodeIcon.height ) } );
+    ammeterNodeIcon.addInputListener( {
+      down: function( event ) {
+        var viewPosition = sensorToolbox.globalToParentPoint( event.pointer.point );
+        ammeterNode.ammeter.draggingTogether = true;
+        ammeterNode.ammeter.visible = true;
+        ammeterNode.ammeter.bodyPosition = viewPosition;
+        ammeterNode.movableDragHandler.startDrag( event );
+      }
+    } );
 
     CircuitConstructionKitBasicsPanel.call( this, new HBox( {
       spacing: CircuitConstructionKitBasicsConstants.toolboxItemSpacing,
