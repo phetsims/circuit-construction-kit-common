@@ -17,10 +17,13 @@ define( function( require ) {
    * @constructor
    */
   function CircuitConstructionKitBasicsModel() {
-
+    var circuitConstructionKitBasicsModel = this;
     PropertySet.call( this, {} ); // TODO: Add settings like "show electrons", etc.
     this.circuit = new Circuit();
     this.voltmeter = new Voltmeter();
+    this.circuit.circuitChangedEmitter.addListener( function() {
+      circuitConstructionKitBasicsModel.voltmeter.voltage = 12.0;
+    } );
   }
 
   return inherit( PropertySet, CircuitConstructionKitBasicsModel, {

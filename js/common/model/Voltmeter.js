@@ -17,6 +17,7 @@ define( function( require ) {
     PropertySet.call( this, {
       visible: false,
       bodyPosition: new Vector2( 0, 0 ),
+      voltage: null, // Null means no reading, otherwise {number} volts
       redProbePosition: new Vector2( 0, 0 ),
       blackProbePosition: new Vector2( 0, 0 ),
       draggingTogether: true // When the voltmeter is dragged from the toolbox, all pieces drag together as a single unit.

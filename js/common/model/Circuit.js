@@ -14,6 +14,7 @@ define( function( require ) {
   var ObservableArray = require( 'AXON/ObservableArray' );
   var OOCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/modified-nodal-analysis/OOCircuit' );
   var Property = require( 'AXON/Property' );
+  var Emitter = require( 'AXON/Emitter' );
 
   /**
    *
@@ -60,11 +61,27 @@ define( function( require ) {
     this.lightBulbs.addItemAddedListener( addVertices );
     this.resistors.addItemAddedListener( addVertices );
 
+    // After the circuit physics is recomputed in solve(), some listeners need to update themselves, such as
+    // the voltmeter and ammeter
+    this.circuitChangedEmitter = new Emitter();
+
+    var circuitChangedEmitterFunction = function() {
+      circuit.circuitChangedEmitter.emit();
+    };
     circuit.vertices.addItemAddedListener( function( vertex ) {
+
+      // Observe the change in location of the vertices, to update the ammeter and voltmeter
+      vertex.positionProperty.link( circuitChangedEmitterFunction );
+
       var filtered = circuit.vertices.filter( function( candidateVertex ) {
         return vertex === candidateVertex;
       } );
       assert && assert( filtered.length === 1, 'should only have one copy of each vertex' );
+    } );
+
+    // Stop watching the vertex positions for updating the voltmeter and ammeter
+    circuit.vertices.addItemRemovedListener( function( vertex ) {
+      vertex.positionProperty.unlink( circuitChangedEmitterFunction );
     } );
 
     // Keep track of the last circuit element the user manipulated, for showing additional controls
@@ -138,6 +155,8 @@ define( function( require ) {
       for ( var i = 0; i < this.vertices.length; i++ ) {
         this.vertices.get( i ).voltage = solution.nodeVoltages[ i ];
       }
+
+      this.circuitChangedEmitter.emit();
     },
 
     isConnected: function( wire1, terminalPositionProperty1, wire2, terminalPositionProperty2 ) {

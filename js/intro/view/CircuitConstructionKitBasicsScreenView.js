@@ -18,7 +18,6 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Rectangle = require( 'DOT/Rectangle' );
   var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/VoltmeterNode' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
   /**
    * @param {CircuitConstructionKitBasicsModel} circuitConstructionKitBasicsModel
