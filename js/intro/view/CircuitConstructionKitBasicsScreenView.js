@@ -99,7 +99,7 @@ define( function( require ) {
     this.addChild( voltmeterNode );
     this.addChild( ammeterNode );
 
-    // Detection for voltmeter probe + circuit collision is done in the view
+    // Detection for voltmeter probe + circuit collision is done in the view since view bounds are used
     var updateVoltmeter = function() {
       var redConnection = circuitConstructionKitBasicsScreenView.getVoltage( voltmeterNode.redProbeNode );
       var blackConnection = circuitConstructionKitBasicsScreenView.getVoltage( voltmeterNode.blackProbeNode );
@@ -109,14 +109,41 @@ define( function( require ) {
       else {
         circuitConstructionKitBasicsModel.voltmeter.voltage = redConnection - blackConnection;
       }
-
     };
     circuitConstructionKitBasicsModel.circuit.circuitChangedEmitter.addListener( updateVoltmeter );
     circuitConstructionKitBasicsModel.voltmeter.redProbePositionProperty.link( updateVoltmeter );
     circuitConstructionKitBasicsModel.voltmeter.blackProbePositionProperty.link( updateVoltmeter );
+
+    // Detection for ammeter probe + circuit collision is done in the view since view bounds are used
+    var updateAmmeter = function() {
+      var current = circuitConstructionKitBasicsScreenView.getCurrent( ammeterNode.probeNode );
+      circuitConstructionKitBasicsModel.ammeter.current = current;
+    };
+    circuitConstructionKitBasicsModel.circuit.circuitChangedEmitter.addListener( updateAmmeter );
+    circuitConstructionKitBasicsModel.ammeter.probePositionProperty.link( updateAmmeter );
   }
 
   return inherit( ScreenView, CircuitConstructionKitBasicsScreenView, {
+
+    /**
+     * Find where the voltmeter probe node intersects the wire, for computing the voltage difference
+     * @param {Node} probeNode
+     * @private
+     */
+    getCurrent: function( probeNode ) {
+
+      // TODO: refine rules for collisions, could use model coordinates with view shapes
+      // TODO: Collide with wires
+      for ( var i = 0; i < this.circuitNode.wireNodes.length; i++ ) {
+        var wireNode = this.circuitNode.wireNodes[ i ];
+
+        // TODO: is this too expensive on iPad?
+        if ( wireNode.getStrokedShape().containsPoint( probeNode.center ) ) {
+          return wireNode.wire.current;
+        }
+      }
+      return null;
+    },
 
     /**
      * Find where the voltmeter probe node intersects the wire, for computing the voltage difference

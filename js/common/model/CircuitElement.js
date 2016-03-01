@@ -20,7 +20,8 @@ define( function( require ) {
     assert && assert( startVertex !== endVertex, 'vertices must be different' );
     PropertySet.call( this, _.extend( {
       startVertex: startVertex,
-      endVertex: endVertex
+      endVertex: endVertex,
+      current: 0
     }, propertySetMap ) );
 
     // TODO: Derived properties for startPosition and endPosition, to encapsulate the

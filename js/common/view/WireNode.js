@@ -24,16 +24,16 @@ define( function( require ) {
     this.wire = wire;
 
     Node.call( this );
-    var line = new Line( 0, 0, 100, 100, {
+    var lineNode = new Line( 0, 0, 100, 100, {
       stroke: CircuitConstructionKitBasicsConstants.wireColor,
       lineWidth: 20,
       cursor: 'pointer',
       strokePickable: true
     } );
-    this.addChild( line );
+    this.addChild( lineNode );
 
     var startListener = function( startPoint ) {
-      line.setPoint1( startPoint );
+      lineNode.setPoint1( startPoint );
     };
 
     // There is a double nested property, since the vertex may change and the position may change
@@ -44,7 +44,7 @@ define( function( require ) {
     wire.startVertexProperty.link( updateStartVertex );
 
     var endListener = function( endPoint ) {
-      line.setPoint2( endPoint );
+      lineNode.setPoint2( endPoint );
     };
     var updateEndVertex = function( newEndVertex, oldEndVertex ) {
       oldEndVertex && oldEndVertex.positionProperty.unlink( endListener );
@@ -66,18 +66,24 @@ define( function( require ) {
         circuitNode.endDrag( event, wire.endVertex );
       }
     } );
-    line.addInputListener( this.inputListener );
+    lineNode.addInputListener( this.inputListener );
     this.disposeWireNode = function() {
       wireNode.inputListener.dragging && wireNode.inputListener.endDrag();
 
       wire.startVertexProperty.unlink( updateStartVertex );
       wire.endVertexProperty.unlink( updateEndVertex );
     };
+
+    // TODO: Inherit Line?
+    this.lineNode = lineNode;
   }
 
   return inherit( Node, WireNode, {
     dispose: function() {
       this.disposeWireNode();
+    },
+    getStrokedShape: function() {
+      return this.lineNode.getStrokedShape();
     }
   } );
 } );

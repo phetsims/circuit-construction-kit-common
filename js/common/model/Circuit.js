@@ -121,7 +121,8 @@ define( function( require ) {
         return {
           node0: circuit.vertices.indexOf( battery.startVertex ),
           node1: circuit.vertices.indexOf( battery.endVertex ),
-          voltage: battery.voltage
+          voltage: battery.voltage,
+          circuitElement: battery
         };
       } );
 
@@ -129,21 +130,23 @@ define( function( require ) {
         return {
           node0: circuit.vertices.indexOf( resistor.startVertex ),
           node1: circuit.vertices.indexOf( resistor.endVertex ),
-          resistance: resistor.resistance
+          resistance: resistor.resistance,
+          circuitElement: resistor
         };
       } );
       var wires = this.wires.map( function( wire ) {
         return {
           node0: circuit.vertices.indexOf( wire.startVertex ),
           node1: circuit.vertices.indexOf( wire.endVertex ),
-          resistance: 0 // TODO: Wire resistance may be variable
+          resistance: 0,// TODO: Wire resistance may be variable
+          circuitElement: wire
         };
       } );
       var bulbs = this.lightBulbs.map( function( lightBulb ) {
         return {
           node0: circuit.vertices.indexOf( lightBulb.startVertex ),
           node1: circuit.vertices.indexOf( lightBulb.endVertex ),
-          resistance: lightBulb.resistance // TODO: Wire resistance may be variable
+          circuitElement: lightBulb.resistance // TODO: Wire resistance may be variable
         };
       } );
 
@@ -154,6 +157,11 @@ define( function( require ) {
       // Apply the node voltages to the vertices
       for ( var i = 0; i < this.vertices.length; i++ ) {
         this.vertices.get( i ).voltage = solution.nodeVoltages[ i ];
+      }
+
+      // Apply the branch currents
+      for ( i = 0; i < solution.elements.length; i++ ) {
+        solution.elements[ i ].circuitElement.current = solution.elements[ i ].currentSolution;
       }
 
       this.circuitChangedEmitter.emit();
