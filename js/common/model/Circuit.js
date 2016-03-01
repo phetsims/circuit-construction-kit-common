@@ -100,6 +100,18 @@ define( function( require ) {
       this.vertices.clear();
     },
 
+    getNeighborCircuitElements: function( vertex ) {
+      var neighbors = [];
+      var circuitElements = this.getCircuitElements();
+      for ( var i = 0; i < circuitElements.length; i++ ) {
+        if ( circuitElements[ i ].containsVertex( vertex ) ) {
+          neighbors.push( circuitElements[ i ] );
+        }
+      }
+      return neighbors;
+    },
+
+    // Duplicates work with the above method to avoid allocations.
     countCircuitElements: function( vertex ) {
       var edgeCount = 0;
       var circuitElements = this.getCircuitElements();

@@ -56,16 +56,17 @@ define( function( require ) {
       ]
     } );
 
-    // Use whatever the start node currently is (it can changed), and let the circuit manage the dependent vertices
+    // Use whatever the start node currently is (it can change), and let the circuit manage the dependent vertices
+    // TODO: Should not rotate when dragging by body
     this.inputListener = new SimpleDragHandler( {
       start: function( event ) {
-        circuitNode.startDrag( event, circuitElement.startVertex );
+        circuitNode.startDrag( event, circuitElement.endVertex );
       },
       drag: function( event ) {
-        circuitNode.drag( event, circuitElement.startVertex );
+        circuitNode.drag( event, circuitElement.endVertex );
       },
       end: function( event ) {
-        circuitNode.endDrag( event, circuitElement.startVertex );
+        circuitNode.endDrag( event, circuitElement.endVertex );
         circuitNode.circuit.lastCircuitElementProperty.set( circuitElement );
       }
     } );

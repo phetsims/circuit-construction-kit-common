@@ -17,6 +17,7 @@ define( function( require ) {
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ResistorNode' );
   var VertexNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/VertexNode' );
   var Vector2 = require( 'DOT/Vector2' );
+  var FixedLengthComponent = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/FixedLengthComponent' );
 
   /**
    *
@@ -231,6 +232,35 @@ define( function( require ) {
 
       var vertexNode = this.getVertexNode( vertex ); // TODO: Is this too expensive?  Probably!
       var position = vertexNode.globalToParentPoint( event.pointer.point ).minus( vertexNode.startOffset );
+
+      // If it is the edge of a fixed length component, the component rotates and moves toward the mouse
+      var neighbors = this.circuit.getNeighborCircuitElements( vertex );
+
+      // TODO: Fix this
+      if ( false && (neighbors.length === 1 && neighbors[ 0 ] instanceof FixedLengthComponent) ) {
+
+        vertex.position = position;
+        vertex.unsnappedPosition = position;
+
+        // recursively call drag on the opposite vertex, then tell it to rotate this one
+
+        var oppositeVertex = neighbors[ 0 ].getOppositeVertex( vertex );
+
+        // Find the new relative angle
+        var angle = vertex.position.minus( oppositeVertex.position ).angle();
+
+        // Maintain fixed length
+        var length = neighbors[ 0 ].length;
+        var relative = Vector2.createPolar( length, angle + Math.PI );
+        var oppositePosition = vertex.position.plus( relative );
+
+        oppositeVertex.position = oppositePosition;
+        oppositeVertex.unsnappedPosition = oppositePosition;
+
+        // TODO: Refactor so as not to have to make fake event
+        //this.drag({pointer:{point:position}})
+        return;
+      }
 
       // Find all vertices connected by fixed length nodes.
       var vertices = this.circuit.findAllFixedVertices( vertex );
