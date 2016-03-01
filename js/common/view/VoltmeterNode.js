@@ -14,9 +14,10 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Util = require( 'DOT/Util' );
+  var ProbeTextNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ProbeTextNode' );
+  var DerivedProperty = require( 'AXON/DerivedProperty' );
 
   // images
   var voltmeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/voltmeter_body.png' );
@@ -24,29 +25,16 @@ define( function( require ) {
   var blackProbe = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/probe_black.png' );
 
   function VoltmeterNode( voltmeter, options ) {
+    var voltmeterNode = this;
     options = _.extend( { icon: false }, options );
     this.voltmeter = voltmeter;
     var s = 0.5;
-    var redProbeNode = new Image( redProbe, { scale: 0.67 * s, cursor: 'pointer' } );
-    this.redProbeNode = redProbeNode;
-    var blackProbeNode = new Image( blackProbe, { scale: 0.67 * s, cursor: 'pointer' } );
-    this.blackProbeNode = blackProbeNode;
+    this.redProbeNode = new Image( redProbe, { scale: 0.67 * s, cursor: 'pointer' } );
+    this.blackProbeNode = new Image( blackProbe, { scale: 0.67 * s, cursor: 'pointer' } );
 
-    // TODO: Factor out readout region for reuse in ammeter
-    var readout = new Text( '?', { fontSize: 34 } );
-    var textBox = new Rectangle( 0, 0, 140, 52, 10, 10, {
-      lineWidth: 2, stroke: 'black', fill: 'white'
-    } );
-    voltmeter.voltageProperty.link( function( voltage ) {
-      readout.setText( voltage === null ? '?' : Util.toFixed( voltage, 2 ) + ' V' );
-      if ( voltage === null ) {
-        readout.centerX = textBox.centerX;
-      }
-      else {
-        readout.right = textBox.right - 10;
-      }
-      readout.bottom = textBox.bottom;
-    } );
+    var probeTextNode = new ProbeTextNode( new DerivedProperty( [ voltmeter.voltageProperty ], function( voltage ) {
+      return voltage === null ? '?' : Util.toFixed( voltage, 2 ) + ' V';
+    } ) );
 
     var bodyNode = new Image( voltmeterBodyImage, {
       scale: s, cursor: 'pointer', children: [
@@ -55,9 +43,7 @@ define( function( require ) {
           centerX: voltmeterBodyImage[ 0 ].width / 2,
           centerY: voltmeterBodyImage[ 0 ].height / 2,
           align: 'center',
-          children: [ new Text( 'Voltage', { fontSize: 42 } ), new Node( {
-            children: [ textBox, readout ]
-          } ) ]
+          children: [ new Text( 'Voltage', { fontSize: 42 } ), probeTextNode ]
         } )
       ]
     } );
@@ -66,17 +52,17 @@ define( function( require ) {
     } );
 
     voltmeter.redProbePositionProperty.link( function( redProbePosition ) {
-      redProbeNode.centerTop = redProbePosition;
+      voltmeterNode.redProbeNode.centerTop = redProbePosition;
     } );
 
     voltmeter.blackProbePositionProperty.link( function( blackProbePosition ) {
-      blackProbeNode.centerTop = blackProbePosition;
+      voltmeterNode.blackProbeNode.centerTop = blackProbePosition;
     } );
 
     voltmeter.bodyPositionProperty.link( function( bodyPosition ) {
       if ( voltmeter.draggingTogether ) {
-        voltmeter.redProbePosition = voltmeter.bodyPosition.plusXY( -100, -30 );
-        voltmeter.blackProbePosition = voltmeter.bodyPosition.plusXY( 100, -30 );
+        voltmeter.redProbePosition = bodyPosition.plusXY( -100, -30 );
+        voltmeter.blackProbePosition = bodyPosition.plusXY( 100, -30 );
       }
     } );
 
@@ -84,23 +70,21 @@ define( function( require ) {
       pickable: true,
       children: [
         bodyNode,
-        redProbeNode,
-        blackProbeNode
+        this.redProbeNode,
+        this.blackProbeNode
       ]
     } );
     this.movableDragHandler = new MovableDragHandler( voltmeter.bodyPositionProperty, {
       endDrag: function() {
         voltmeter.droppedEmitter.emit1( bodyNode.globalBounds );
 
-        // After dropping in the play area the probes move indepdently of the body
+        // After dropping in the play area the probes move independently of the body
         voltmeter.draggingTogether = false;
       }
     } );
     !options.icon && bodyNode.addInputListener( this.movableDragHandler );
-
-    !options.icon && redProbeNode.addInputListener( new MovableDragHandler( voltmeter.redProbePositionProperty, {} ) );
-
-    !options.icon && blackProbeNode.addInputListener( new MovableDragHandler( voltmeter.blackProbePositionProperty, {} ) );
+    !options.icon && this.redProbeNode.addInputListener( new MovableDragHandler( voltmeter.redProbePositionProperty, {} ) );
+    !options.icon && this.blackProbeNode.addInputListener( new MovableDragHandler( voltmeter.blackProbePositionProperty, {} ) );
   }
 
   circuitConstructionKitBasics.register( 'VoltmeterNode', VoltmeterNode );
