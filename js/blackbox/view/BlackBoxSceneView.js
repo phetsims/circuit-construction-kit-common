@@ -15,6 +15,7 @@ define( function( require ) {
   var ComboBox = require( 'SUN/ComboBox' );
   var Text = require( 'SCENERY/nodes/Text' );
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
+  var Node = require( 'SCENERY/nodes/Node' );
 
   /**
    * @param {BlackBoxSceneModel} blackBoxSceneModel
@@ -33,12 +34,17 @@ define( function( require ) {
       fontSize: 16
     };
 
+    // Workaround for https://github.com/phetsims/sun/issues/229 which puts the ComboBox popup behind the text for
+    // the warmup scene
+    this.comboBoxPopupLayer = new Node();
+    this.addChild( this.comboBoxPopupLayer );
+
     // Appears in each scene
     var comboBox = new ComboBox( [ {
       node: new Text( 'Warm-up', comboBoxTextOptions ), value: 'warmup'
     }, {
       node: new Text( 'Black Box 1', comboBoxTextOptions ), value: 'scene1'
-    } ], sceneProperty, this );
+    } ], sceneProperty, this.comboBoxPopupLayer );
     this.addChild( comboBox );
 
     this.circuitConstructionKitBasicsScreenViewLayoutCompletedEmitter.addListener( function( layoutDimensions ) {

@@ -39,8 +39,12 @@ define( function( require ) {
       questionText.centerX = -layoutDimensions.dx + layoutDimensions.width / 2;
       questionText.top = -layoutDimensions.dy + layoutDimensions.height / 6;
       tryToText.centerX = -layoutDimensions.dx + layoutDimensions.width / 2;
-      tryToText.bottom = -layoutDimensions.dy + layoutDimensions.height - 50;
+      tryToText.bottom = -layoutDimensions.dy + layoutDimensions.height - 80; // must be above the south controls
     } );
+
+    // Workaround for https://github.com/phetsims/sun/issues/229 which puts the ComboBox popup behind the text for
+    // the warmup scene
+    this.comboBoxPopupLayer.moveToFront();
   }
 
   return inherit( BlackBoxSceneView, WarmUpSceneView );
