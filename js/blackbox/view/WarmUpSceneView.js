@@ -11,7 +11,9 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var BlackBoxSceneView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/BlackBoxSceneView' );
+  var BlackBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/BlackBoxNode' );
   var MultiLineText = require( 'SCENERY_PHET/MultiLineText' );
+  var ScreenView = require( 'JOIST/ScreenView' );
 
   /**
    * @param {BlackBoxSceneModel} blackBoxSceneModel
@@ -23,24 +25,35 @@ define( function( require ) {
     var textOptions = {
       fontSize: 44
     };
-    var questionText = new MultiLineText( 'What circuit element(s) are\nin the black box?', textOptions );
-    var tryToText = new MultiLineText( 'Build a copy of the circuit element(s)\nin the black box', textOptions );
-
-    this.addChild( tryToText );
-    blackBoxSceneModel.modeProperty.link( function( mode ) {
-      tryToText.visible = mode === 'build';
-    } );
+    var questionText = new MultiLineText( 'What circuit element(s) are\nin the black box?', _.extend( {
+      centerX: ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2,
+      top: ScreenView.DEFAULT_LAYOUT_BOUNDS.height / 6
+    }, textOptions ) );
     blackBoxSceneModel.modeProperty.link( function( mode ) {
       questionText.visible = mode === 'investigate';
     } );
 
-    this.addChild( questionText );
-    this.circuitConstructionKitBasicsScreenViewLayoutCompletedEmitter.addListener( function( layoutDimensions ) {
-      questionText.centerX = -layoutDimensions.dx + layoutDimensions.width / 2;
-      questionText.top = -layoutDimensions.dy + layoutDimensions.height / 6;
-      tryToText.centerX = -layoutDimensions.dx + layoutDimensions.width / 2;
-      tryToText.bottom = -layoutDimensions.dy + layoutDimensions.height - 80; // must be above the south controls
+    var tryToText = new MultiLineText( 'Build a copy of the circuit element(s)\nin the black box', _.extend( {
+      centerX: ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2,
+      top: ScreenView.DEFAULT_LAYOUT_BOUNDS.height * 4 / 6
+    }, textOptions ) );
+    blackBoxSceneModel.modeProperty.link( function( mode ) {
+      tryToText.visible = mode === 'build';
     } );
+
+    this.addChild( tryToText );
+    this.addChild( questionText );
+
+    // Let the circuit elements move in front of the text
+    tryToText.moveToBack();
+    questionText.moveToBack();
+
+    this.addChild( new BlackBoxNode( 160, 100, {
+
+      // Assumes the default layout bounds are used
+      centerX: ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2,
+      centerY: ScreenView.DEFAULT_LAYOUT_BOUNDS.height / 2
+    } ) );
 
     // Workaround for https://github.com/phetsims/sun/issues/229 which puts the ComboBox popup behind the text for
     // the warmup scene
