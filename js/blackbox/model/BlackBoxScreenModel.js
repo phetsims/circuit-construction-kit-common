@@ -15,7 +15,9 @@ define( function( require ) {
    * @constructor
    */
   function BlackBoxScreenModel() {
-    CircuitConstructionKitBasicsModel.call( this );
+    CircuitConstructionKitBasicsModel.call( this, {
+      mode: 'investigate'
+    } );
   }
 
   return inherit( CircuitConstructionKitBasicsModel, BlackBoxScreenModel );

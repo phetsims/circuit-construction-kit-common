@@ -19,6 +19,7 @@ define( function( require ) {
   var Rectangle = require( 'DOT/Rectangle' );
   var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/VoltmeterNode' );
   var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/AmmeterNode' );
+  var Emitter = require( 'AXON/Emitter' );
 
   /**
    * @param {CircuitConstructionKitBasicsModel} circuitConstructionKitBasicsModel
@@ -27,7 +28,7 @@ define( function( require ) {
   function CircuitConstructionKitBasicsScreenView( circuitConstructionKitBasicsModel ) {
     var circuitConstructionKitBasicsScreenView = this;
     this.circuitConstructionKitBasicsModel = circuitConstructionKitBasicsModel;
-
+    this.circuitConstructionKitBasicsScreenViewLayoutCompletedEmitter = new Emitter();
     ScreenView.call( this );
 
     // Reset All button
@@ -40,7 +41,7 @@ define( function( require ) {
 
     var voltmeterNode = new VoltmeterNode( circuitConstructionKitBasicsModel.voltmeter );
     circuitConstructionKitBasicsModel.voltmeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
-      if ( bodyNodeGlobalBounds.intersectsBounds( sensorToolbox.globalBounds ) ) {
+      if ( bodyNodeGlobalBounds.intersectsBounds( circuitConstructionKitBasicsScreenView.sensorToolbox.globalBounds ) ) {
         circuitConstructionKitBasicsModel.voltmeter.visible = false;
       }
     } );
@@ -50,7 +51,7 @@ define( function( require ) {
 
     var ammeterNode = new AmmeterNode( circuitConstructionKitBasicsModel.ammeter );
     circuitConstructionKitBasicsModel.ammeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
-      if ( bodyNodeGlobalBounds.intersectsBounds( sensorToolbox.globalBounds ) ) {
+      if ( bodyNodeGlobalBounds.intersectsBounds( circuitConstructionKitBasicsScreenView.sensorToolbox.globalBounds ) ) {
         circuitConstructionKitBasicsModel.ammeter.visible = false;
       }
     } );
@@ -60,9 +61,11 @@ define( function( require ) {
 
     this.circuitNode = new CircuitNode( circuitConstructionKitBasicsModel.circuit );
     var circuitComponentToolbox = new CircuitComponentToolbox( circuitConstructionKitBasicsModel, this );
-    var sensorToolbox = new SensorToolbox( voltmeterNode, ammeterNode );
 
-    this.addChild( sensorToolbox );
+    // @protected - so that subclasses can add a layout component near it
+    this.sensorToolbox = new SensorToolbox( voltmeterNode, ammeterNode );
+
+    this.addChild( this.sensorToolbox );
     this.addChild( circuitComponentToolbox );
     this.addChild( this.circuitNode );
 
@@ -81,7 +84,7 @@ define( function( require ) {
         top: -dy + inset
       } );
 
-      sensorToolbox.mutate( {
+      circuitConstructionKitBasicsScreenView.sensorToolbox.mutate( {
         right: -dx + width - inset,
         top: -dy + inset
       } );
@@ -91,6 +94,8 @@ define( function( require ) {
         bottom: -dy + height - inset
       } );
       visibleBoundsProperty.set( new Rectangle( -dx, -dy, width, height ) );
+
+      circuitConstructionKitBasicsScreenView.circuitConstructionKitBasicsScreenViewLayoutCompletedEmitter.emit();
     } );
 
     var circuitElementEditPanel = new CircuitElementEditPanel( circuitConstructionKitBasicsModel.circuit.lastCircuitElementProperty, visibleBoundsProperty );

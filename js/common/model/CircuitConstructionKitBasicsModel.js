@@ -17,8 +17,8 @@ define( function( require ) {
   /**
    * @constructor
    */
-  function CircuitConstructionKitBasicsModel() {
-    PropertySet.call( this, {} ); // TODO: Add settings like "show electrons", etc.
+  function CircuitConstructionKitBasicsModel( additionalProperties ) {
+    PropertySet.call( this, _.extend( {}, additionalProperties ) ); // TODO: Add settings like "show electrons", etc.
     this.circuit = new Circuit();
     this.voltmeter = new Voltmeter();
     this.ammeter = new Ammeter();
