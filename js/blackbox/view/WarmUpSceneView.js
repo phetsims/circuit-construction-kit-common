@@ -25,6 +25,9 @@ define( function( require ) {
     var textOptions = {
       fontSize: 44
     };
+
+    // TODO: Maybe put the text in front with a partially transparent background, then fade it to the back?
+    // TODO: It got overlapped by many things after switching to 'build'
     var questionText = new MultiLineText( 'What circuit element(s) are\nin the black box?', _.extend( {
       centerX: ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2,
       top: ScreenView.DEFAULT_LAYOUT_BOUNDS.height / 6
