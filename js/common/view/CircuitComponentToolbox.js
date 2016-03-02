@@ -84,7 +84,7 @@ define( function( require ) {
       scale: 1
     } );
 
-    var resistorNode = new ResistorNode( circuitConstructionKitBasicsScreenView.circuitNode, new Resistor( new Vector2( 0, 0 ), CircuitConstructionKitBasicsConstants.DEFAULT_RESISTANCE ), { icon: true } );
+    var resistorNode = new ResistorNode( circuitConstructionKitBasicsScreenView.circuitNode, new Resistor( new Vector2( 0, 0 ), CircuitConstructionKitBasicsConstants.defaultResistance ), { icon: true } );
 
     CircuitConstructionKitBasicsPanel.call( this, new VBox( {
       spacing: CircuitConstructionKitBasicsConstants.toolboxItemSpacing,
@@ -111,7 +111,7 @@ define( function( require ) {
           scale: iconWidth / Math.max( lightBulbImage[ 0 ].width, lightBulbImage[ 0 ].height ) // constrained by being too tall, not too wide
         } )
           .addInputListener( createToolIconInputListener(
-            function( position ) { return new LightBulb( position, CircuitConstructionKitBasicsConstants.DEFAULT_RESISTANCE ); },
+            function( position ) { return new LightBulb( position, CircuitConstructionKitBasicsConstants.defaultResistance ); },
             circuit.lightBulbs,
             circuitNode.lightBulbNodes,
             function( lightBulbNode ) { return lightBulbNode.lightBulb; }
@@ -123,7 +123,7 @@ define( function( require ) {
             scale: iconWidth / Math.max( resistorNode.width, resistorNode.height )
           } )
           .addInputListener( createToolIconInputListener(
-            function( position ) { return new Resistor( position, CircuitConstructionKitBasicsConstants.DEFAULT_RESISTANCE ); },
+            function( position ) { return new Resistor( position, CircuitConstructionKitBasicsConstants.defaultResistance ); },
             circuit.resistors,
             circuitNode.resistorNodes,
             function( resistorNode ) { return resistorNode.resistor; }

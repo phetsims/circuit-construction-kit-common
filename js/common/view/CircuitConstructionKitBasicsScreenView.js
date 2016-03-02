@@ -20,6 +20,7 @@ define( function( require ) {
   var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/VoltmeterNode' );
   var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/AmmeterNode' );
   var Emitter = require( 'AXON/Emitter' );
+  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
 
   /**
    * @param {CircuitConstructionKitBasicsModel} circuitConstructionKitBasicsModel
@@ -73,7 +74,7 @@ define( function( require ) {
     this.events.on( 'layoutFinished', function( dx, dy, width, height ) {
 
       // Float the resetAllButton to the bottom right
-      var inset = 14;
+      var inset = CircuitConstructionKitBasicsConstants.layoutInset;
       resetAllButton.mutate( {
         right: -dx + width - inset,
         bottom: -dy + height - inset
@@ -95,7 +96,12 @@ define( function( require ) {
       } );
       visibleBoundsProperty.set( new Rectangle( -dx, -dy, width, height ) );
 
-      circuitConstructionKitBasicsScreenView.circuitConstructionKitBasicsScreenViewLayoutCompletedEmitter.emit();
+      circuitConstructionKitBasicsScreenView.circuitConstructionKitBasicsScreenViewLayoutCompletedEmitter.emit1( {
+        dx: dx,
+        dy: dy,
+        width: width,
+        height: height
+      } );
     } );
 
     var circuitElementEditPanel = new CircuitElementEditPanel( circuitConstructionKitBasicsModel.circuit.lastCircuitElementProperty, visibleBoundsProperty );
