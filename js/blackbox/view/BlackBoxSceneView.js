@@ -21,8 +21,8 @@ define( function( require ) {
    * @param {Property.<string>} sceneProperty - for switching screens
    * @constructor
    */
-  function BlackBoxScreenView( blackBoxSceneModel, sceneProperty ) {
-    var blackBoxScreenView = this;
+  function BlackBoxSceneView( blackBoxSceneModel, sceneProperty ) {
+    var BlackBoxSceneView = this;
     CircuitConstructionKitBasicsScreenView.call( this, blackBoxSceneModel );
 
     // Add "Investigate Circuit" and "Build Circuit" radio buttons under the sensor toolbox
@@ -42,13 +42,13 @@ define( function( require ) {
     this.addChild( comboBox );
 
     this.circuitConstructionKitBasicsScreenViewLayoutCompletedEmitter.addListener( function( layoutDimensions ) {
-      modeRadioButtonGroup.top = blackBoxScreenView.sensorToolbox.bottom + 20;
-      modeRadioButtonGroup.right = blackBoxScreenView.sensorToolbox.right;
+      modeRadioButtonGroup.top = BlackBoxSceneView.sensorToolbox.bottom + 20;
+      modeRadioButtonGroup.right = BlackBoxSceneView.sensorToolbox.right;
 
       comboBox.centerX = -layoutDimensions.dx + layoutDimensions.width / 2;
       comboBox.top = -layoutDimensions.dy + CircuitConstructionKitBasicsConstants.layoutInset;
     } );
   }
 
-  return inherit( CircuitConstructionKitBasicsScreenView, BlackBoxScreenView );
+  return inherit( CircuitConstructionKitBasicsScreenView, BlackBoxSceneView );
 } );

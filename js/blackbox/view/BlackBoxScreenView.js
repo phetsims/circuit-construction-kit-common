@@ -13,6 +13,7 @@ define( function( require ) {
   var BlackBoxSceneView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/BlackBoxSceneView' );
   var BlackBoxSceneModel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/model/BlackBoxSceneModel' );
   var ScreenView = require( 'JOIST/ScreenView' );
+  var WarmUpSceneView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/WarmUpSceneView' );
 
   /**
    * @param {BlackBoxScreenModel} blackBoxScreenModel
@@ -26,7 +27,12 @@ define( function( require ) {
 
       // Create the scene if it did not already exist
       if ( !sceneViews[ scene ] ) {
-        sceneViews[ scene ] = new BlackBoxSceneView( new BlackBoxSceneModel(), blackBoxScreenModel.sceneProperty );
+        if ( scene === 'warmup' ) {
+          sceneViews[ scene ] = new WarmUpSceneView( new BlackBoxSceneModel(), blackBoxScreenModel.sceneProperty );
+        }
+        else {
+          sceneViews[ scene ] = new BlackBoxSceneView( new BlackBoxSceneModel(), blackBoxScreenModel.sceneProperty );
+        }
       }
 
       // Update layout when the scene changes
