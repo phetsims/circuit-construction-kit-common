@@ -143,8 +143,7 @@ define( function( require ) {
      */
     getCurrent: function( probeNode ) {
 
-      // TODO: refine rules for collisions, could use model coordinates with view shapes
-      // TODO: Collide with wires
+      // TODO: Collide with vertices
       for ( var i = 0; i < this.circuitNode.wireNodes.length; i++ ) {
         var wireNode = this.circuitNode.wireNodes[ i ];
 
