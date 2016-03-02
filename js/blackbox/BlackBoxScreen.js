@@ -8,10 +8,11 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CircuitConstructionKitBasicsModel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/intro/model/CircuitConstructionKitBasicsModel' );
-  var CircuitConstructionKitBasicsScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/intro/view/CircuitConstructionKitBasicsScreenView' );
+  var BlackBoxScreenModel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/model/BlackBoxScreenModel' );
+  var BlackBoxScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/BlackBoxScreenView' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Screen = require( 'JOIST/Screen' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   // strings
   var circuitConstructionKitBasicsTitleString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_BASICS/circuit-construction-kit-basics.title' );
@@ -19,20 +20,20 @@ define( function( require ) {
   /**
    * @constructor
    */
-  function CircuitConstructionKitBasicsScreen() {
+  function BlackBoxScreen() {
 
     //If this is a single-screen sim, then no icon is necessary.
     //If there are multiple screens, then the icon must be provided here.
-    var icon = null;
+    var icon = new Rectangle( 0, 0, Screen.NAVBAR_ICON_SIZE.width, Screen.NAVBAR_ICON_SIZE.height, { fill: 'gray' } );
 
     Screen.call( this, circuitConstructionKitBasicsTitleString, icon, function() {
-        return new CircuitConstructionKitBasicsModel();
+        return new BlackBoxScreenModel();
       }, function( model ) {
-        return new CircuitConstructionKitBasicsScreenView( model );
+        return new BlackBoxScreenView( model );
       },
       { backgroundColor: '#c6dbf9' }
     );
   }
 
-  return inherit( Screen, CircuitConstructionKitBasicsScreen );
+  return inherit( Screen, BlackBoxScreen );
 } );

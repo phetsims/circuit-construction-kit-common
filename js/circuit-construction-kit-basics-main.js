@@ -9,7 +9,8 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CircuitConstructionKitBasicsScreen = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/intro/CircuitConstructionKitBasicsScreen' );
+  var ExploreScreen = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/explore/ExploreScreen' );
+  var BlackBoxScreen = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/BlackBoxScreen' );
   var Sim = require( 'JOIST/Sim' );
   var SimLauncher = require( 'JOIST/SimLauncher' );
 
@@ -40,7 +41,10 @@ define( function( require ) {
   // however, when running the unit tests we don't also want to launch the simulation.
   if ( !window.circuitConstructionKitBasicsTestSuite ) {
     SimLauncher.launch( function() {
-      var sim = new Sim( circuitConstructionKitBasicsTitleString, [ new CircuitConstructionKitBasicsScreen() ], simOptions );
+      var sim = new Sim( circuitConstructionKitBasicsTitleString, [
+        new ExploreScreen(),
+        new BlackBoxScreen()
+      ], simOptions );
       sim.start();
     } );
   }
