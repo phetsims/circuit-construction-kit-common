@@ -1,6 +1,7 @@
 // Copyright 2015, University of Colorado Boulder
 
 /**
+ * One scene for the black box screen, which focuses on a single black box.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

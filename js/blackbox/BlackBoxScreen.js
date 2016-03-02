@@ -1,6 +1,7 @@
 // Copyright 2015, University of Colorado Boulder
 
 /**
+ * The 'Black Box' screen.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

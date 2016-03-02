@@ -1,6 +1,7 @@
 // Copyright 2015, University of Colorado Boulder
 
 /**
+ * One scene focuses on one black box, and has a separate model + view because scenes are independent.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -13,7 +14,6 @@ define( function( require ) {
   var ModeRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/ModeRadioButtonGroup' );
   var ComboBox = require( 'SUN/ComboBox' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var Property = require( 'AXON/Property' );
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
 
   /**
