@@ -149,7 +149,7 @@ define( function( require ) {
         var wireNode = this.circuitNode.wireNodes[ i ];
 
         // TODO: is this too expensive on iPad?
-        if ( wireNode.getStrokedShape().containsPoint( probeNode.center ) ) {
+        if ( wireNode.getStrokedShape().containsPoint( probeNode.translation ) ) {
           return wireNode.wire.current;
         }
       }
