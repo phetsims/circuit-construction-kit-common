@@ -18,12 +18,11 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var ProbeNode = require( 'SCENERY_PHET/ProbeNode' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   // images
   var ammeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/ammeter_body.png' );
-
-  // TODO: Should we use ProbeNode from scenery-phet?
-  var ammeterProbeImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/ammeter_probe.png' );
 
   // TODO: Factor out things between AmmeterNode and VoltmeterNode
   function AmmeterNode( ammeter, options ) {
@@ -49,10 +48,21 @@ define( function( require ) {
       ]
 
     } );
-    this.probeNode = new Image( ammeterProbeImage, {
+    var handleWidth = 50;
+    this.probeNode = new ProbeNode( {
       cursor: 'pointer',
-      scale: 0.6 * s
+      sensorTypeFunction: ProbeNode.crosshairs(),
+      scale: s,
+      handleWidth: handleWidth,
+      color: '#2c2c2b', // The dark gray border
+      innerRadius: 43
     } );
+
+    // Add a decoration on the handle to match the color scheme
+    this.probeNode.addChild( new Rectangle( 0, 52, handleWidth * 0.72, 19, 6, 6, {
+      centerX: 0,
+      fill: '#e79547' // Match the orange of the ammeter image
+    } ) );
 
     Node.call( this, {
       children: [ bodyNode, this.probeNode ]
@@ -66,7 +76,7 @@ define( function( require ) {
     } );
     ammeter.bodyPositionProperty.link( function( bodyPosition ) {
       if ( ammeter.draggingTogether ) {
-        ammeter.probePosition = bodyPosition.plusXY( 80 / 2, -140 / 2 );
+        ammeter.probePosition = bodyPosition.plusXY( 80 / 2, -140 / 2 - 10 );
       }
     } );
 
