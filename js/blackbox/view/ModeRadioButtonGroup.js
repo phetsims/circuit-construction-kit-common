@@ -1,6 +1,7 @@
 // Copyright 2016, University of Colorado Boulder
 
 /**
+ * Radio buttons for choosing "Investigate Circuit" or "Build Circuit"
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
