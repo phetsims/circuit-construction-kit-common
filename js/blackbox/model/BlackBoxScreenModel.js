@@ -8,17 +8,17 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CircuitConstructionKitBasicsModel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/CircuitConstructionKitBasicsModel' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var PropertySet = require( 'AXON/PropertySet' );
 
   /**
    * @constructor
    */
   function BlackBoxScreenModel() {
-    CircuitConstructionKitBasicsModel.call( this, {
-      mode: 'investigate'
+    PropertySet.call( this, {
+      scene: 'warmup'
     } );
   }
 
-  return inherit( CircuitConstructionKitBasicsModel, BlackBoxScreenModel );
+  return inherit( PropertySet, BlackBoxScreenModel );
 } );

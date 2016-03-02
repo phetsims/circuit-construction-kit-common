@@ -1,0 +1,54 @@
+// Copyright 2015, University of Colorado Boulder
+
+/**
+ *
+ * @author Sam Reid (PhET Interactive Simulations)
+ */
+define( function( require ) {
+  'use strict';
+
+  // modules
+  var inherit = require( 'PHET_CORE/inherit' );
+  var CircuitConstructionKitBasicsScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitConstructionKitBasicsScreenView' );
+  var ModeRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/ModeRadioButtonGroup' );
+  var ComboBox = require( 'SUN/ComboBox' );
+  var Text = require( 'SCENERY/nodes/Text' );
+  var Property = require( 'AXON/Property' );
+  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
+
+  /**
+   * @param {BlackBoxSceneModel} blackBoxSceneModel
+   * @param {Property.<string>} sceneProperty - for switching screens
+   * @constructor
+   */
+  function BlackBoxScreenView( blackBoxSceneModel, sceneProperty ) {
+    var blackBoxScreenView = this;
+    CircuitConstructionKitBasicsScreenView.call( this, blackBoxSceneModel );
+
+    // Add "Investigate Circuit" and "Build Circuit" radio buttons under the sensor toolbox
+    var modeRadioButtonGroup = new ModeRadioButtonGroup( blackBoxSceneModel.modeProperty );
+    this.addChild( modeRadioButtonGroup );
+
+    var comboBoxTextOptions = {
+      fontSize: 16
+    };
+
+    // Appears in each scene
+    var comboBox = new ComboBox( [ {
+      node: new Text( 'Warm-up', comboBoxTextOptions ), value: 'warmup'
+    }, {
+      node: new Text( 'Black Box 1', comboBoxTextOptions ), value: 'scene1'
+    } ], sceneProperty, this );
+    this.addChild( comboBox );
+
+    this.circuitConstructionKitBasicsScreenViewLayoutCompletedEmitter.addListener( function( layoutDimensions ) {
+      modeRadioButtonGroup.top = blackBoxScreenView.sensorToolbox.bottom + 20;
+      modeRadioButtonGroup.right = blackBoxScreenView.sensorToolbox.right;
+
+      comboBox.centerX = -layoutDimensions.dx + layoutDimensions.width / 2;
+      comboBox.top = -layoutDimensions.dy + CircuitConstructionKitBasicsConstants.layoutInset;
+    } );
+  }
+
+  return inherit( CircuitConstructionKitBasicsScreenView, BlackBoxScreenView );
+} );

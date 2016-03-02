@@ -9,43 +9,44 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var CircuitConstructionKitBasicsScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitConstructionKitBasicsScreenView' );
-  var ModeRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/ModeRadioButtonGroup' );
-  var ComboBox = require( 'SUN/ComboBox' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var Property = require( 'AXON/Property' );
-  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
+  var BlackBoxSceneView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/BlackBoxSceneView' );
+  var BlackBoxSceneModel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/model/BlackBoxSceneModel' );
+  var ScreenView = require( 'JOIST/ScreenView' );
 
   /**
    * @param {BlackBoxScreenModel} blackBoxScreenModel
    * @constructor
    */
   function BlackBoxScreenView( blackBoxScreenModel ) {
+    ScreenView.call( this );
     var blackBoxScreenView = this;
-    CircuitConstructionKitBasicsScreenView.call( this, blackBoxScreenModel );
+    var sceneViews = {}; // Populated lazily, key = scene name
+    blackBoxScreenModel.sceneProperty.link( function( scene ) {
 
-    // Add "Investigate Circuit" and "Build Circuit" radio buttons under the sensor toolbox
-    var modeRadioButtonGroup = new ModeRadioButtonGroup( blackBoxScreenModel.modeProperty );
-    this.addChild( modeRadioButtonGroup );
+      // Create the scene if it did not already exist
+      if ( !sceneViews[ scene ] ) {
+        sceneViews[ scene ] = new BlackBoxSceneView( new BlackBoxSceneModel(), blackBoxScreenModel.sceneProperty );
+      }
 
-    var comboBoxTextOptions = {
-      fontSize: 16
-    };
-    var comboBox = new ComboBox( [ {
-      node: new Text( 'Warm-up', comboBoxTextOptions ), value: 'scene0'
-    }, {
-      node: new Text( 'Black Box 1', comboBoxTextOptions ), value: 'scene1'
-    } ], new Property( 'scene0' ), this );
-    this.addChild( comboBox );
+      // Update layout when the scene changes
+      blackBoxScreenView.updateAllSceneLayouts && blackBoxScreenView.updateAllSceneLayouts();
 
-    this.circuitConstructionKitBasicsScreenViewLayoutCompletedEmitter.addListener( function( layoutDimensions ) {
-      modeRadioButtonGroup.top = blackBoxScreenView.sensorToolbox.bottom + 20;
-      modeRadioButtonGroup.right = blackBoxScreenView.sensorToolbox.right;
+      // Show the selected scene
+      blackBoxScreenView.children = [ sceneViews[ scene ] ];
+    } );
 
-      comboBox.centerX = -layoutDimensions.dx + layoutDimensions.width / 2;
-      comboBox.top = -layoutDimensions.dy + CircuitConstructionKitBasicsConstants.layoutInset;
+    // Forward methods to the scene so they can update their layouts too
+    this.events.on( 'layoutFinished', function( dx, dy, width, height, scale ) {
+
+      // Store layout closure so that layout can be updated when scenes change
+      blackBoxScreenView.updateAllSceneLayouts = function() {
+        _.keys( sceneViews ).forEach( function( key ) {
+          sceneViews[ key ].events.trigger( 'layoutFinished', dx, dy, width, height, scale );
+        } );
+      };
+      blackBoxScreenView.updateAllSceneLayouts();
     } );
   }
 
-  return inherit( CircuitConstructionKitBasicsScreenView, BlackBoxScreenView );
+  return inherit( ScreenView, BlackBoxScreenView );
 } );
