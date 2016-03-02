@@ -44,8 +44,8 @@ define( function( require ) {
       tryToText.visible = mode === 'build';
     } );
 
-    this.addChild( tryToText );
     this.addChild( questionText );
+    this.addChild( tryToText );
 
     // Let the circuit elements move in front of the text
     tryToText.moveToBack();
