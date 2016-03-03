@@ -16,10 +16,10 @@ define( function( require ) {
    *
    * @constructor
    */
-  function Wire( startVertex, endVertex, resistance ) {
+  function Wire( startVertex, endVertex, resistance, options ) {
     CircuitElement.call( this, startVertex, endVertex, {
       resistance: resistance
-    } );
+    }, options );
   }
 
   return inherit( CircuitElement, Wire, {

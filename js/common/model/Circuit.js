@@ -374,13 +374,17 @@ define( function( require ) {
     fromStateObject: function( stateObject ) {
       var circuit = new Circuit();
       for ( var i = 0; i < stateObject.vertices.length; i++ ) {
-        circuit.vertices.add( new Vertex( stateObject.vertices[ i ].x, stateObject.vertices[ i ].y ) );
+        circuit.vertices.add( new Vertex( stateObject.vertices[ i ].x, stateObject.vertices[ i ].y, {
+          interactive: false
+        } ) );
       }
       for ( i = 0; i < stateObject.wires.length; i++ ) {
         circuit.wires.add( new Wire(
           circuit.vertices.get( stateObject.wires[ i ].startVertex ),
           circuit.vertices.get( stateObject.wires[ i ].endVertex ),
-          stateObject.wires[ i ].resistance
+          stateObject.wires[ i ].resistance, {
+            interactive: false // TODO: Is this the best way to proceed?  With "interactive" as an option?
+          }
         ) );
       }
       for ( i = 0; i < stateObject.batteries.length; i++ ) {

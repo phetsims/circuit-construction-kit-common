@@ -66,7 +66,7 @@ define( function( require ) {
         circuitNode.endDrag( event, wire.endVertex );
       }
     } );
-    lineNode.addInputListener( this.inputListener );
+    wire.interactive && lineNode.addInputListener( this.inputListener );
     this.disposeWireNode = function() {
       wireNode.inputListener.dragging && wireNode.inputListener.endDrag();
 

@@ -51,7 +51,7 @@ define( function( require ) {
         circuitNode.endDrag( event, vertex );
       }
     } );
-    this.addInputListener( simpleDragHandler );
+    vertex.interactive && this.addInputListener( simpleDragHandler );
 
     var updateReadoutTextLocation = function() {
       voltageReadoutText.centerX = circleNode.centerX;

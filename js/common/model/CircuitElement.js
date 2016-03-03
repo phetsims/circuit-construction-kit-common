@@ -16,8 +16,13 @@ define( function( require ) {
    *
    * @constructor
    */
-  function CircuitElement( startVertex, endVertex, propertySetMap ) {
+  function CircuitElement( startVertex, endVertex, propertySetMap, options ) {
     assert && assert( startVertex !== endVertex, 'vertices must be different' );
+
+    options = _.extend( {
+      interactive: true // false for Black Box elements
+    }, options );
+
     PropertySet.call( this, _.extend( {
       startVertex: startVertex,
       endVertex: endVertex,
@@ -26,6 +31,8 @@ define( function( require ) {
 
     // TODO: Derived properties for startPosition and endPosition, to encapsulate the
     // TODO: matter of switching vertices.??
+
+    this.interactive = options.interactive; // TODO: maybe move into PropertySet if it will be toggleable by the circuit creator
   }
 
   return inherit( PropertySet, CircuitElement, {
