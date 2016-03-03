@@ -61,6 +61,12 @@ define( function( require ) {
     hasBothVertices: function( vertex1, vertex2 ) {
       return (this.startVertex === vertex1 && this.endVertex === vertex2) ||
              (this.startVertex === vertex2 && this.endVertex === vertex1);
+    },
+    toStateObjectWithVertexIndices: function( getVertexIndex ) {
+      return {
+        startVertex: getVertexIndex( this.startVertex ),
+        endVertex: getVertexIndex( this.endVertex )
+      };
     }
   } );
 } );

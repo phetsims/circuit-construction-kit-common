@@ -17,11 +17,15 @@ define( function( require ) {
    *
    * @constructor
    */
-  function Wire( position ) {
-    CircuitElement.call( this, new Vertex( position.x - 50, position.y ), new Vertex( position.x + 50, position.y ), {
+  function Wire( startVertex, endVertex ) {
+    CircuitElement.call( this, startVertex, endVertex, {
       resistance: 0
     } );
   }
 
-  return inherit( CircuitElement, Wire );
+  return inherit( CircuitElement, Wire, {
+    toStateObjectWithVertexIndices: function( getVertexIndex ) {
+      return _.extend( { resistance: this.resistance }, CircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex ) );
+    }
+  } );
 } );

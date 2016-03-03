@@ -15,6 +15,11 @@ define( function( require ) {
   var OOCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/modified-nodal-analysis/OOCircuit' );
   var Property = require( 'AXON/Property' );
   var Emitter = require( 'AXON/Emitter' );
+  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Vertex' );
+  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Wire' );
+  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Battery' );
+  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/LightBulb' );
+  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Resistor' );
 
   /**
    *
@@ -54,6 +59,9 @@ define( function( require ) {
     var addVertices = function( circuitElement ) {
       circuit.vertices.add( circuitElement.startVertex );
       circuit.vertices.add( circuitElement.endVertex );
+
+      assert && assert( circuit.vertices.indexOf( circuitElement.startVertex ) >= 0, 'start vertex should appear in the list' );
+      assert && assert( circuit.vertices.indexOf( circuitElement.endVertex ) >= 0, 'end vertex should appear in the list' );
       circuit.solve();
     };
     this.wires.addItemAddedListener( addVertices );
@@ -125,6 +133,7 @@ define( function( require ) {
 
     // @public
     solve: function() {
+      console.log( JSON.stringify( this.toStateObject(), null, 2 ) );
 
       var circuit = this;
 
@@ -323,6 +332,60 @@ define( function( require ) {
         } );
         return sorted[ 0 ];
       }
+    },
+
+    // TODO: we may move this to phet-io
+    toStateObject: function() {
+      var circuit = this;
+      var getVertexIndex = function( vertex ) {
+        var vertexIndex = circuit.vertices.indexOf( vertex );
+        assert && assert( vertexIndex >= 0, 'vertex should have an index' );
+        return vertexIndex;
+      };
+
+      /**
+       * @param {ObservableArray.<CircuitElement>} circuitElements
+       * @returns {Array}
+       */
+      var getArray = function( circuitElements ) {
+        return circuitElements.map( function( element ) {
+          return element.toStateObjectWithVertexIndices( getVertexIndex );
+        } ).getArray();
+      };
+      return {
+        wires: getArray( this.wires ),
+        batteries: getArray( this.batteries ),
+        lightBulbs: getArray( this.lightBulbs ),
+        resistors: getArray( this.resistors ),
+        vertices: this.vertices.map( function( vertex ) {
+          return { x: vertex.position.x, y: vertex.position.y };
+        } ).getArray()
+      };
+    }
+  }, {
+
+    // TODO: we may move this to phet-io
+    fromStateObject: function( stateObject ) {
+
+      var circuit = new Circuit();
+      for ( var i = 0; i < stateObject.vertices.length; i++ ) {
+        circuit.vertices.add( new Vertex( stateObject.vertices[ i ].x, stateObject.vertices[ i ].y ) );
+      }
+      for ( i = 0; i < stateObject.wires.length; i++ ) {
+        circuit.wires.add( new Wire(
+          circuit.vertices.get( stateObject.wires[ i ].startVertex ),
+          circuit.vertices.get( stateObject.wires[ i ].endVertex )
+        ) );
+      }
+      for ( i = 0; i < stateObject.batteries.length; i++ ) {
+        circuit.batteries.add( new Battery(
+          circuit.vertices.get( stateObject.batteries[ i ].startVertex ),
+          circuit.vertices.get( stateObject.batteries[ i ].endVertex ),
+          stateObject.batteries[ i ].voltage
+        ) );
+      }
+      circuit.solve();
+      return circuit;
     }
   } );
 } );

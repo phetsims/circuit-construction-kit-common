@@ -23,5 +23,9 @@ define( function( require ) {
     } );
   }
 
-  return inherit( FixedLengthComponent, Resistor );
+  return inherit( FixedLengthComponent, Resistor, {
+    toStateObjectWithVertexIndices: function( getVertexIndex ) {
+      return _.extend( { resistance: this.resistance }, FixedLengthComponent.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex ) );
+    }
+  } );
 } );

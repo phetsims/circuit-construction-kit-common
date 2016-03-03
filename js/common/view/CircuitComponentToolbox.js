@@ -14,6 +14,7 @@ define( function( require ) {
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Battery' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/LightBulb' );
+  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Vertex' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Wire' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Resistor' );
   var Line = require( 'SCENERY/nodes/Line' );
@@ -91,7 +92,7 @@ define( function( require ) {
       children: [
         wireNode.mutate( { scale: iconWidth / Math.max( wireNode.width, wireNode.height ) } )
           .addInputListener( createToolIconInputListener(
-            function( position ) { return new Wire( position ); },
+            function( position ) { return new Wire( new Vertex( position.x - 50, position.y ), new Vertex( position.x + 50, position.y ) ); },
             circuit.wires,
             circuitNode.wireNodes,
             function( wireNode ) { return wireNode.wire; }

@@ -24,5 +24,13 @@ define( function( require ) {
     } );
   }
 
-  return inherit( FixedLengthComponent, Battery );
+  return inherit( FixedLengthComponent, Battery, {
+    toStateObjectWithVertexIndices: function( getVertexIndex ) {
+      return _.extend( {
+          voltage: this.voltage
+        },
+        FixedLengthComponent.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex )
+      );
+    }
+  } );
 } );

@@ -23,5 +23,9 @@ define( function( require ) {
     } );
   }
 
-  return inherit( FixedLengthComponent, LightBulb );
+  return inherit( FixedLengthComponent, LightBulb, {
+    toStateObjectWithVertexIndices: function( getVertexIndex ) {
+      return _.extend( { resistance: this.resistance }, FixedLengthComponent.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex ) );
+    }
+  } );
 } );
