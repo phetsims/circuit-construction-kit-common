@@ -367,11 +367,12 @@ define( function( require ) {
           return { x: vertex.position.x, y: vertex.position.y };
         } ).getArray()
       };
-    },
+    }
+  }, {
 
-    // TODO: Not sure if we should make this static or mutator
-    loadFromStateObject: function( stateObject ) {
-      var circuit = this;
+    // TODO: we may move this to phet-io
+    fromStateObject: function( stateObject ) {
+      var circuit = new Circuit();
       for ( var i = 0; i < stateObject.vertices.length; i++ ) {
         circuit.vertices.add( new Vertex( stateObject.vertices[ i ].x, stateObject.vertices[ i ].y ) );
       }
@@ -404,13 +405,7 @@ define( function( require ) {
         ) );
       }
       circuit.solve();
-    }
-  }, {
 
-    // TODO: we may move this to phet-io
-    fromStateObject: function( stateObject ) {
-      var circuit = new Circuit();
-      circuit.loadFromStateObject( stateObject );
       return circuit;
     }
   } );

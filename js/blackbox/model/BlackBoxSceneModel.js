@@ -15,9 +15,11 @@ define( function( require ) {
   /**
    * @constructor
    */
-  function BlackBoxSceneModel() {
+  function BlackBoxSceneModel( circuit ) {
     CircuitConstructionKitBasicsModel.call( this, {
       mode: 'investigate'
+    }, {
+      circuit: circuit
     } );
   }
 

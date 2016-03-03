@@ -28,7 +28,7 @@ define( function( require ) {
 
     // TODO: Maybe put the text in front with a partially transparent background, then fade it to the back?
     // TODO: It got overlapped by many things after switching to 'build'
-    var questionText = new MultiLineText( 'What circuit element(s) are\nin the black box?', _.extend( {
+    var questionText = new MultiLineText( 'What circuit is\nin the black box?', _.extend( {
       centerX: ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2,
       top: ScreenView.DEFAULT_LAYOUT_BOUNDS.height / 6
     }, textOptions ) );
@@ -36,7 +36,7 @@ define( function( require ) {
       questionText.visible = mode === 'investigate';
     } );
 
-    var tryToText = new MultiLineText( 'Build a copy of the circuit element(s)\nin the black box', _.extend( {
+    var tryToText = new MultiLineText( 'Build a circuit\nthat behaves the same', _.extend( {
       centerX: ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2,
       top: ScreenView.DEFAULT_LAYOUT_BOUNDS.height * 4 / 6
     }, textOptions ) );
@@ -50,30 +50,6 @@ define( function( require ) {
     // Let the circuit elements move in front of the text
     tryToText.moveToBack();
     questionText.moveToBack();
-
-    // A single wire behind the box.
-    blackBoxSceneModel.circuit.loadFromStateObject( {
-      wires: [
-        {
-          resistance: 0,
-          startVertex: 0,
-          endVertex: 1
-        }
-      ],
-      batteries: [],
-      lightBulbs: [],
-      resistors: [],
-      vertices: [
-        {
-          x: 416.8235294117648,
-          y: 306.70739064856707
-        },
-        {
-          x: 606.0180995475114,
-          y: 305.5490196078431
-        }
-      ]
-    } );
 
     this.addChild( new BlackBoxNode( 160, 100, {
 

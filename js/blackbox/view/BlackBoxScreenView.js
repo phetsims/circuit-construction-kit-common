@@ -14,6 +14,7 @@ define( function( require ) {
   var BlackBoxSceneModel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/model/BlackBoxSceneModel' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var WarmUpSceneView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/WarmUpSceneView' );
+  var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Circuit' );
 
   /**
    * @param {BlackBoxScreenModel} blackBoxScreenModel
@@ -28,10 +29,31 @@ define( function( require ) {
       // Create the scene if it did not already exist
       if ( !sceneViews[ scene ] ) {
         if ( scene === 'warmup' ) {
-          sceneViews[ scene ] = new WarmUpSceneView( new BlackBoxSceneModel(), blackBoxScreenModel.sceneProperty );
+          sceneViews[ scene ] = new WarmUpSceneView( new BlackBoxSceneModel( Circuit.fromStateObject( {
+            wires: [
+              {
+                resistance: 0,
+                startVertex: 0,
+                endVertex: 1
+              }
+            ],
+            batteries: [],
+            lightBulbs: [],
+            resistors: [],
+            vertices: [
+              {
+                x: 416.8235294117648,
+                y: 306.70739064856707
+              },
+              {
+                x: 606.0180995475114,
+                y: 305.5490196078431
+              }
+            ]
+          } ) ), blackBoxScreenModel.sceneProperty );
         }
         else {
-          sceneViews[ scene ] = new BlackBoxSceneView( new BlackBoxSceneModel(), blackBoxScreenModel.sceneProperty );
+          sceneViews[ scene ] = new BlackBoxSceneView( new BlackBoxSceneModel( new Circuit() ), blackBoxScreenModel.sceneProperty );
         }
       }
 

@@ -15,7 +15,7 @@ define( function( require ) {
    * @constructor
    */
   function ExploreScreenModel() {
-    CircuitConstructionKitBasicsModel.call( this );
+    CircuitConstructionKitBasicsModel.call( this, {} );
   }
 
   return inherit( CircuitConstructionKitBasicsModel, ExploreScreenModel );
