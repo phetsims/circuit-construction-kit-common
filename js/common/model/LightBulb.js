@@ -17,8 +17,8 @@ define( function( require ) {
    *
    * @constructor
    */
-  function LightBulb( position, resistance ) {
-    FixedLengthComponent.call( this, 146, new Vertex( position.x - 50, position.y ), new Vertex( position.x + 50, position.y ), {
+  function LightBulb( startVertex, endVertex, resistance ) {
+    FixedLengthComponent.call( this, 146, startVertex, endVertex, {
       resistance: resistance
     } );
   }

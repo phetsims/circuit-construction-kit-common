@@ -57,8 +57,15 @@ define( function( require ) {
 
     // When a new component is added to a circuit, it has two unconnected vertices
     var addVertices = function( circuitElement ) {
-      circuit.vertices.add( circuitElement.startVertex );
-      circuit.vertices.add( circuitElement.endVertex );
+
+      // Vertices may already exist for a Circuit when loading
+      if ( circuit.vertices.indexOf( circuitElement.startVertex ) < 0 ) {
+        circuit.vertices.add( circuitElement.startVertex );
+      }
+
+      if ( circuit.vertices.indexOf( circuitElement.endVertex ) < 0 ) {
+        circuit.vertices.add( circuitElement.endVertex );
+      }
 
       assert && assert( circuit.vertices.indexOf( circuitElement.startVertex ) >= 0, 'start vertex should appear in the list' );
       assert && assert( circuit.vertices.indexOf( circuitElement.endVertex ) >= 0, 'end vertex should appear in the list' );
@@ -360,20 +367,19 @@ define( function( require ) {
           return { x: vertex.position.x, y: vertex.position.y };
         } ).getArray()
       };
-    }
-  }, {
+    },
 
-    // TODO: we may move this to phet-io
-    fromStateObject: function( stateObject ) {
-
-      var circuit = new Circuit();
+    // TODO: Not sure if we should make this static or mutator
+    loadFromStateObject: function( stateObject ) {
+      var circuit = this;
       for ( var i = 0; i < stateObject.vertices.length; i++ ) {
         circuit.vertices.add( new Vertex( stateObject.vertices[ i ].x, stateObject.vertices[ i ].y ) );
       }
       for ( i = 0; i < stateObject.wires.length; i++ ) {
         circuit.wires.add( new Wire(
           circuit.vertices.get( stateObject.wires[ i ].startVertex ),
-          circuit.vertices.get( stateObject.wires[ i ].endVertex )
+          circuit.vertices.get( stateObject.wires[ i ].endVertex ),
+          stateObject.wires[ i ].resistance
         ) );
       }
       for ( i = 0; i < stateObject.batteries.length; i++ ) {
@@ -383,7 +389,28 @@ define( function( require ) {
           stateObject.batteries[ i ].voltage
         ) );
       }
+      for ( i = 0; i < stateObject.resistors.length; i++ ) {
+        circuit.resistors.add( new Resistor(
+          circuit.vertices.get( stateObject.resistors[ i ].startVertex ),
+          circuit.vertices.get( stateObject.resistors[ i ].endVertex ),
+          stateObject.resistors[ i ].resistance
+        ) );
+      }
+      for ( i = 0; i < stateObject.lightBulbs.length; i++ ) {
+        circuit.lightBulbs.add( new LightBulb(
+          circuit.vertices.get( stateObject.lightBulbs[ i ].startVertex ),
+          circuit.vertices.get( stateObject.lightBulbs[ i ].endVertex ),
+          stateObject.lightBulbs[ i ].resistance
+        ) );
+      }
       circuit.solve();
+    }
+  }, {
+
+    // TODO: we may move this to phet-io
+    fromStateObject: function( stateObject ) {
+      var circuit = new Circuit();
+      circuit.loadFromStateObject( stateObject );
       return circuit;
     }
   } );

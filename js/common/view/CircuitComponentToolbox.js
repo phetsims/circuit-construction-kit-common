@@ -85,14 +85,14 @@ define( function( require ) {
       scale: 1
     } );
 
-    var resistorNode = new ResistorNode( circuitConstructionKitBasicsScreenView.circuitNode, new Resistor( new Vector2( 0, 0 ), CircuitConstructionKitBasicsConstants.defaultResistance ), { icon: true } );
+    var resistorNode = new ResistorNode( circuitConstructionKitBasicsScreenView.circuitNode, new Resistor( new Vertex( -80, 0 ), new Vertex( -80, 0 ), CircuitConstructionKitBasicsConstants.defaultResistance ), { icon: true } );
 
     CircuitConstructionKitBasicsPanel.call( this, new VBox( {
       spacing: CircuitConstructionKitBasicsConstants.toolboxItemSpacing,
       children: [
         wireNode.mutate( { scale: iconWidth / Math.max( wireNode.width, wireNode.height ) } )
           .addInputListener( createToolIconInputListener(
-            function( position ) { return new Wire( new Vertex( position.x - 50, position.y ), new Vertex( position.x + 50, position.y ) ); },
+            function( position ) { return new Wire( new Vertex( position.x - 50, position.y ), new Vertex( position.x + 50, position.y ), 0 ); },
             circuit.wires,
             circuitNode.wireNodes,
             function( wireNode ) { return wireNode.wire; }
@@ -102,7 +102,7 @@ define( function( require ) {
           scale: iconWidth / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height )
         } )
           .addInputListener( createToolIconInputListener(
-            function( position ) { return new Battery( position, 9 ); },
+            function( position ) { return new Battery( new Vertex( position.x - 80, position.y ), new Vertex( position.x + 80, position.y ), 9.0 ); },
             circuit.batteries,
             circuitNode.batteryNodes,
             function( batteryNode ) { return batteryNode.battery; }
@@ -112,7 +112,7 @@ define( function( require ) {
           scale: iconWidth / Math.max( lightBulbImage[ 0 ].width, lightBulbImage[ 0 ].height ) // constrained by being too tall, not too wide
         } )
           .addInputListener( createToolIconInputListener(
-            function( position ) { return new LightBulb( position, CircuitConstructionKitBasicsConstants.defaultResistance ); },
+            function( position ) { return new LightBulb( new Vertex( position.x - 50, position.y ), new Vertex( position.x + 50, position.y ), CircuitConstructionKitBasicsConstants.defaultResistance ); },
             circuit.lightBulbs,
             circuitNode.lightBulbNodes,
             function( lightBulbNode ) { return lightBulbNode.lightBulb; }
@@ -124,7 +124,7 @@ define( function( require ) {
             scale: iconWidth / Math.max( resistorNode.width, resistorNode.height )
           } )
           .addInputListener( createToolIconInputListener(
-            function( position ) { return new Resistor( position, CircuitConstructionKitBasicsConstants.defaultResistance ); },
+            function( position ) { return new Resistor( new Vertex( position.x - 80, position.y ), new Vertex( position.x + 80, position.y ), CircuitConstructionKitBasicsConstants.defaultResistance ); },
             circuit.resistors,
             circuitNode.resistorNodes,
             function( resistorNode ) { return resistorNode.resistor; }

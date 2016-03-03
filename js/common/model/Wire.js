@@ -10,16 +10,15 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Vertex' );
   var CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/CircuitElement' );
 
   /**
    *
    * @constructor
    */
-  function Wire( startVertex, endVertex ) {
+  function Wire( startVertex, endVertex, resistance ) {
     CircuitElement.call( this, startVertex, endVertex, {
-      resistance: 0
+      resistance: resistance
     } );
   }
 

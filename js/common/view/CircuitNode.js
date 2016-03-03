@@ -40,8 +40,10 @@ define( function( require ) {
       circuitNode.addChild( wireNode );
 
       // Vertices should be in front
-      circuitNode.getVertexNode( wire.startVertex ).moveToFront();
-      circuitNode.getVertexNode( wire.endVertex ).moveToFront();
+      // HACK ALERT TODO TODO TODO
+      // The problem is that when loading from a state object the circuit element is created before the vertex nodes
+      circuitNode.getVertexNode( wire.startVertex ) && circuitNode.getVertexNode( wire.startVertex ).moveToFront();
+      circuitNode.getVertexNode( wire.endVertex ) && circuitNode.getVertexNode( wire.endVertex ).moveToFront();
     };
     circuit.wires.addItemAddedListener( addWireNode );
     circuit.wires.forEach( addWireNode );
