@@ -36,7 +36,7 @@ define( function( require ) {
       questionText.visible = mode === 'investigate';
     } );
 
-    var tryToText = new MultiLineText( 'Build a circuit\nthat behaves the same', _.extend( {
+    var tryToText = new MultiLineText( 'Build a circuit that\nbehaves the same way.', _.extend( {
       centerX: ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2,
       top: ScreenView.DEFAULT_LAYOUT_BOUNDS.height * 4 / 6
     }, textOptions ) );
