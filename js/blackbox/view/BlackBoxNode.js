@@ -27,5 +27,5 @@ define( function( require ) {
     this.mutate( options );
   }
 
-  return inherit( Node, BlackBoxNode, {} );
+  return inherit( Node, BlackBoxNode );
 } );

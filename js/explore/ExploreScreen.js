@@ -14,19 +14,17 @@ define( function( require ) {
   var Screen = require( 'JOIST/Screen' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
-  // strings
-  var circuitConstructionKitBasicsTitleString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_BASICS/circuit-construction-kit-basics.title' );
-
   /**
    * @constructor
    */
   function ExploreScreen() {
 
-    //If this is a single-screen sim, then no icon is necessary.
-    //If there are multiple screens, then the icon must be provided here.
-    var icon = new Rectangle( 0, 0, Screen.NAVBAR_ICON_SIZE.width, Screen.NAVBAR_ICON_SIZE.height, { fill: 'yellow' } );
+    var backgroundColor = '#c6dbf9';
+    var icon = new Rectangle( 0, 0, Screen.NAVBAR_ICON_SIZE.width, Screen.NAVBAR_ICON_SIZE.height, {
+      fill: backgroundColor
+    } );
 
-    Screen.call( this, circuitConstructionKitBasicsTitleString, icon, function() {
+    Screen.call( this, 'Explore', icon, function() {
         return new ExploreScreenModel();
       }, function( model ) {
         return new ExploreScreenView( model );
