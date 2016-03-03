@@ -15,7 +15,7 @@ define( function( require ) {
   var Matrix = require( 'DOT/Matrix' );
 
   // constants
-  var debug = true;
+  var debug = false;
 
   // TODO: Does lodash help here?
   var getIndexByEquals = function( array, element ) {
