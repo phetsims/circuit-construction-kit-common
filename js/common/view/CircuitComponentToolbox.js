@@ -133,5 +133,6 @@ define( function( require ) {
   }
 
   circuitConstructionKitBasics.register( 'CircuitComponentToolbox', CircuitComponentToolbox );
-  return inherit( CircuitConstructionKitBasicsPanel, CircuitComponentToolbox, {} );
+
+  return inherit( CircuitConstructionKitBasicsPanel, CircuitComponentToolbox );
 } );
