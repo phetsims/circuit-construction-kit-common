@@ -15,6 +15,10 @@ define( function( require ) {
 
   function BlackBoxNode( width, height, options ) {
     Node.call( this, {
+
+      // Don't let clicks go through the black box
+      pickable: true,
+
       children: [
         new Rectangle( 0, 0, width, height, 20, 20, { fill: 'black' } ),
         new Text( '?', { fontSize: 82, centerX: width / 2, centerY: height / 2, fill: 'white' } )

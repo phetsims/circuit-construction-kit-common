@@ -51,6 +51,30 @@ define( function( require ) {
     tryToText.moveToBack();
     questionText.moveToBack();
 
+    // A single wire behind the box.
+    blackBoxSceneModel.circuit.loadFromStateObject( {
+      wires: [
+        {
+          resistance: 0,
+          startVertex: 0,
+          endVertex: 1
+        }
+      ],
+      batteries: [],
+      lightBulbs: [],
+      resistors: [],
+      vertices: [
+        {
+          x: 416.8235294117648,
+          y: 306.70739064856707
+        },
+        {
+          x: 606.0180995475114,
+          y: 305.5490196078431
+        }
+      ]
+    } );
+
     this.addChild( new BlackBoxNode( 160, 100, {
 
       // Assumes the default layout bounds are used
