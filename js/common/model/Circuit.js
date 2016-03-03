@@ -104,7 +104,7 @@ define( function( require ) {
   }
 
   return inherit( Object, Circuit, {
-    reset: function() {
+    clear: function() {
       this.lastCircuitElementProperty.reset();
 
       this.wires.clear();
@@ -367,12 +367,14 @@ define( function( require ) {
           return { x: vertex.position.x, y: vertex.position.y };
         } ).getArray()
       };
-    }
-  }, {
+    },
 
-    // TODO: we may move this to phet-io
-    fromStateObject: function( stateObject ) {
-      var circuit = new Circuit();
+    /**
+     * This method loads a state into an existing circuit, which is likely clear()ed beforehand.
+     * @param stateObject
+     */
+    loadFromStateObject: function( stateObject ) {
+      var circuit = this;
       for ( var i = 0; i < stateObject.vertices.length; i++ ) {
         circuit.vertices.add( new Vertex( stateObject.vertices[ i ].x, stateObject.vertices[ i ].y, {
           interactive: false
@@ -409,7 +411,13 @@ define( function( require ) {
         ) );
       }
       circuit.solve();
+    }
+  }, {
 
+    // TODO: we may move this to phet-io
+    fromStateObject: function( stateObject ) {
+      var circuit = new Circuit();
+      circuit.loadFromStateObject( stateObject );
       return circuit;
     }
   } );

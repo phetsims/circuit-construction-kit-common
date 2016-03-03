@@ -21,6 +21,7 @@ define( function( require ) {
     options = _.extend( { circuit: null }, options );
     PropertySet.call( this, _.extend( {}, additionalProperties ) ); // TODO: Add settings like 'show electrons', etc.
     this.circuit = options.circuit || new Circuit();
+    this.initialCircuitState = this.circuit.toStateObject();
     this.voltmeter = new Voltmeter();
     this.ammeter = new Ammeter();
   }
@@ -29,9 +30,11 @@ define( function( require ) {
 
     reset: function() {
       PropertySet.prototype.reset.call( this );
-      this.circuit.reset();
+      this.circuit.clear();
       this.voltmeter.reset();
       this.ammeter.reset();
+
+      this.circuit.loadFromStateObject( this.initialCircuitState );
     },
     //TODO Called by the animation loop. Optional, so if your model has no animation, please delete this.
     step: function( dt ) {
