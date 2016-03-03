@@ -24,11 +24,12 @@ define( function( require ) {
     PropertySet.call( this, {
       position: new Vector2( x, y ), // {Vertex2} Where the vertex is and is shown
       unsnappedPosition: new Vector2( x, y ), // {Vector2} Where the vertex would be if it hadn't snapped for a proposed connection
-      voltage: 0 // {number} Relative voltage of the node, determined by Circuit.solve
-    } );
+      voltage: 0, // {number} Relative voltage of the node, determined by Circuit.solve
 
-    // @public - whether the Vertex can be dragged or moved by dragging another part of the circuit
-    this.interactive = options.interactive;
+      // @public - whether the Vertex can be dragged or moved by dragging another part of the circuit
+      // must be observable.  When two vertices are joined in Circuit.connect, non-interactivity propagates
+      interactive: options.interactive
+    } );
   }
 
   return inherit( PropertySet, Vertex );

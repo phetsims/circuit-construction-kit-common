@@ -23,6 +23,7 @@ define( function( require ) {
    * @constructor
    */
   function VertexNode( circuitNode, vertex ) {
+    var vertexNode = this;
     var circuit = circuitNode.circuit;
     this.vertex = vertex;
     this.startOffset = null;// @public Will be added by CircuitNode during dragging, used for relative drag location.
@@ -52,6 +53,9 @@ define( function( require ) {
       }
     } );
     vertex.interactive && this.addInputListener( simpleDragHandler );
+    vertex.interactiveProperty.link( function( interactive ) {
+      vertexNode.pickable = interactive;
+    } );
 
     var updateReadoutTextLocation = function() {
       voltageReadoutText.centerX = circleNode.centerX;

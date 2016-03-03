@@ -62,6 +62,11 @@ define( function( require ) {
       if ( this.endVertex === vertex2 ) {
         this.endVertex = vertex1;
       }
+
+      // Non-interactivity propagates, so that black box elements don't get attached to an interactive vertex
+      if ( !vertex2.interactive ) {
+        vertex1.interactive = false;
+      }
       assert && assert( this.startVertex !== this.endVertex, 'vertices must be different' );
     },
 
