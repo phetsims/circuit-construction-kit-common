@@ -184,7 +184,11 @@ define( function( require ) {
 
       // Apply the node voltages to the vertices
       for ( var i = 0; i < this.vertices.length; i++ ) {
-        this.vertices.get( i ).voltage = solution.nodeVoltages[ i ];
+
+        // For unconnected vertices, such as for the black box, they may not have an entry in the matrix, so just mark them
+        // as zero.  TODO: Voltmeter should only measure connected graphs
+        var v = typeof solution.nodeVoltages[ i ] === 'number' ? solution.nodeVoltages[ i ] : 0;
+        this.vertices.get( i ).voltage = v;
       }
 
       // Apply the branch currents
@@ -411,6 +415,22 @@ define( function( require ) {
         ) );
       }
       circuit.solve();
+    },
+
+    removeBlackBoxWires: function() {
+      var wires = [];
+      for ( var i = 0; i < this.wires.getArray().length; i++ ) {
+        var wire = this.wires.getArray()[ i ];
+        if ( !wire.interactive ) {
+          console.log( 'found non interactive wire' );
+          wires.push( wire );
+        }
+      }
+      for ( var k = 0; k < wires.length; k++ ) {
+        var w = wires[ k ];
+        this.wires.remove( w );
+      }
+      return wires;
     }
   }, {
 

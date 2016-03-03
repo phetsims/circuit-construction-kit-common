@@ -31,7 +31,9 @@ define( function( require ) {
     var s = 0.5;
     this.ammeter = ammeter;
     var probeTextNode = new ProbeTextNode( new DerivedProperty( [ ammeter.currentProperty ], function( current ) {
-      return current === null ? '?' : Util.toFixed( current, 2 ) + ' A';
+
+      // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
+      return current === null ? '?' : Util.toFixed( Math.abs( current ), 2 ) + ' A';
     } ) );
     var bodyNode = new Image( ammeterBodyImage, {
       scale: s,

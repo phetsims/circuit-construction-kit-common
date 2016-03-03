@@ -17,9 +17,19 @@ define( function( require ) {
    */
   function BlackBoxSceneModel( circuit ) {
     CircuitConstructionKitBasicsModel.call( this, {
-      mode: 'investigate'
+      mode: 'investigate' // or 'build'
     }, {
       circuit: circuit
+    } );
+
+    this.modeProperty.link( function( mode ) {
+
+      // When switching to build mode, remove all of the black box circuitry
+      if ( mode === 'build' ) {
+        circuit.removeBlackBoxWires();
+
+        // TODO: store and restore the removed parts
+      }
     } );
   }
 
