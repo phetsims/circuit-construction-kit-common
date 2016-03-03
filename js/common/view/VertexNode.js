@@ -52,7 +52,7 @@ define( function( require ) {
         circuitNode.endDrag( event, vertex );
       }
     } );
-    vertex.interactive && this.addInputListener( simpleDragHandler );
+    this.addInputListener( simpleDragHandler );
     vertex.interactiveProperty.link( function( interactive ) {
       vertexNode.pickable = interactive;
     } );
