@@ -20,6 +20,9 @@ define( function( require ) {
 
   /**
    *
+   * @param {CircuitNode} [circuitNode] optional, null for icons
+   * @param resistor
+   * @param options
    * @constructor
    */
   function ResistorNode( circuitNode, resistor, options ) {
