@@ -19,15 +19,21 @@ define( function( require ) {
 
   /**
    *
+   * @param circuitNode
+   * @param circuitElement
+   * @param image
+   * @param {number} imageScale - the scale factor to apply to the image for the size in the play area (icons are automatically scaled up)
+   * @param options
    * @constructor
    */
-  function FixedLengthComponentNode( circuitNode, circuitElement, image, options ) {
+  function FixedLengthComponentNode( circuitNode, circuitElement, image, imageScale, options ) {
     var fixedLengthComponentNode = this;
     options = _.extend( { icon: false }, options );
     this.circuitElement = circuitElement;
 
     // @protected (for ResistorNode to paint the color bands on)
     this.imageNode = new Image( image );
+
     var imageNode = this.imageNode;
 
     // TODO: Relink when start vertex changes
@@ -38,6 +44,7 @@ define( function( require ) {
         var angle = endPosition.minus( startPosition ).angle();// TODO: speed up maths
         // TODO: Simplify this matrix math.
         imageNode.resetTransform();
+        imageNode.mutate( { scale: imageScale } );
         imageNode.rotateAround( new Vector2( 0, 0 ), angle );
         imageNode.x = startPosition.x;
         imageNode.y = startPosition.y;

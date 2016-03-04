@@ -27,16 +27,17 @@ define( function( require ) {
    */
   function ResistorNode( circuitNode, resistor, options ) {
     this.resistor = resistor;
-    FixedLengthComponentNode.call( this, circuitNode, resistor, resistorImage, options );
+    var imageScale = 0.7;
+    FixedLengthComponentNode.call( this, circuitNode, resistor, resistorImage, imageScale, options );
 
-    var imageWidth = this.imageNode.width;
+    var imageWidth = this.imageNode.width / imageScale;
     var bandWidth = 10;
     var bandHeight = 40;
     var inset = 40;
     var availableBandSpace = imageWidth - 2 * inset;
     var remainingSpace = availableBandSpace - 4 * bandWidth;// max is 4 bands, even though they are not always shown
     var bandSeparation = remainingSpace / 4; // two spaces before last band
-    var y = this.imageNode.height / 2;
+    var y = this.imageNode.height / 2 / imageScale;
     var colorBands = [
       new Rectangle( 0, 0, bandWidth, bandHeight, { x: inset + (bandWidth + bandSeparation) * 0, centerY: y } ),
       new Rectangle( 0, 0, bandWidth, bandHeight, { x: inset + (bandWidth + bandSeparation) * 1, centerY: y } ),

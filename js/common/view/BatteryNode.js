@@ -22,7 +22,7 @@ define( function( require ) {
    */
   function BatteryNode( circuitNode, battery ) {
     this.battery = battery;
-    FixedLengthComponentNode.call( this, circuitNode, battery, batteryImage );
+    FixedLengthComponentNode.call( this, circuitNode, battery, batteryImage, 0.7 );
   }
 
   circuitConstructionKitBasics.register( 'BatteryNode', BatteryNode );

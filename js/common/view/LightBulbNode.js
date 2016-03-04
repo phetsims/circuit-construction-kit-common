@@ -22,7 +22,7 @@ define( function( require ) {
    */
   function LightBulbNode( circuitNode, lightBulb ) {
     this.lightBulb = lightBulb;
-    FixedLengthComponentNode.call( this, circuitNode, lightBulb, lightBulbImage );
+    FixedLengthComponentNode.call( this, circuitNode, lightBulb, lightBulbImage, 0.7 );
   }
 
   circuitConstructionKitBasics.register( 'LightBulbNode', LightBulbNode );
