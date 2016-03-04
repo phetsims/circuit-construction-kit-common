@@ -16,6 +16,7 @@ define( function( require ) {
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/LightBulb' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Battery' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var Text = require( 'SCENERY/nodes/Text' );
 
   function CircuitElementEditPanel( selectedCircuitElementProperty, visibleBoundsProperty ) {
     var circuitElementEditPanel = this;
@@ -46,6 +47,12 @@ define( function( require ) {
         else {
           lastNumberControl = null;
         }
+      }
+      else {
+        lastNumberControl = new Text( 'Tap circuit element to edit.', {
+          fontSize: 24
+        } );
+        circuitElementEditPanel.addChild( lastNumberControl );
       }
       updatePosition();
     } );
