@@ -66,6 +66,7 @@ define( function( require ) {
 
           vertex.selected = true;
 
+          // When the user clicks on anything else, deselect the vertex
           var deselect = function() {
             vertex.selected = false;
             event.pointer.removeInputListener( listener ); // Thanks, hoisting!
