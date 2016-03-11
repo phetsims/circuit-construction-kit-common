@@ -54,16 +54,12 @@ define( function( require ) {
       start: function( event ) {
         p = event.pointer.point;
         circuitNode.startDrag( event, vertex );
-        console.log( event.pointer.point.distance( p ) );
       },
       drag: function( event ) {
         circuitNode.drag( event, vertex );
-        console.log( event.pointer.point.distance( p ) );
       },
       end: function( event ) {
         circuitNode.endDrag( event, vertex );
-
-        console.log( event.pointer.point.distance( p ) );
 
         // Only show on a tap, not on every drag.
         if ( event.pointer.point.distance( p ) < TAP_THRESHOLD ) {
