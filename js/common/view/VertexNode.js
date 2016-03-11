@@ -65,6 +65,16 @@ define( function( require ) {
         if ( event.pointer.point.distance( p ) < TAP_THRESHOLD ) {
 
           vertex.selected = true;
+
+          var deselect = function() {
+            vertex.selected = false;
+            event.pointer.removeInputListener( listener ); // Thanks, hoisting!
+          };
+          var listener = {
+            mousedown: deselect,
+            touchdown: deselect
+          };
+          event.pointer.addInputListener( listener );
         }
       }
     } );
