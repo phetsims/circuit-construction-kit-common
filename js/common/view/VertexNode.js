@@ -46,7 +46,10 @@ define( function( require ) {
         scale: 0.85
       } ),
       minXMargin: 10,
-      minYMargin: 10
+      minYMargin: 10,
+      listener: function() {
+        circuit.cutVertex( vertex );
+      }
     } );
 
     vertex.selectedProperty.link( function( selected ) {

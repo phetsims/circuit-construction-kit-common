@@ -36,6 +36,22 @@ define( function( require ) {
   }
 
   return inherit( PropertySet, CircuitElement, {
+    /**
+     * Replace one of the vertices with a new one
+     * @param oldVertex
+     * @param newVertex
+     */
+    replaceVertex: function( oldVertex, newVertex ) {
+      assert && assert( oldVertex !== newVertex, 'Cannot replace with the same vertex' );
+      assert && assert( oldVertex === this.startVertex || oldVertex === this.endVertex, 'Cannot replace a nonexistent vertex' );
+      assert && assert( newVertex !== this.startVertex && newVertex !== this.endVertex, 'The new vertex shouldn\'t already be in the circuit element.' );
+      if ( oldVertex === this.startVertex ) {
+        this.startVertex = newVertex;
+      }
+      else {
+        this.endVertex = newVertex;
+      }
+    },
     getOppositeVertex: function( vertex ) {
       assert && assert( this.containsVertex( vertex ), 'Missing vertex' );
       if ( this.startVertex === vertex ) {

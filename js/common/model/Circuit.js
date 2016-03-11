@@ -117,6 +117,20 @@ define( function( require ) {
 
     /**
      * @param {Vertex} vertex
+     */
+    cutVertex: function( vertex ) {
+      var neighborCircuitElements = this.getNeighborCircuitElements( vertex );
+      for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
+        var circuitElement = neighborCircuitElements[ i ];
+        var newVertex = new Vertex( vertex.position.x, vertex.position.y );
+        circuitElement.replaceVertex( vertex, newVertex );
+        this.vertices.add( newVertex );
+      }
+      this.vertices.remove( vertex );
+    },
+
+    /**
+     * @param {Vertex} vertex
      * @returns {Array}
      */
     getNeighborCircuitElements: function( vertex ) {
