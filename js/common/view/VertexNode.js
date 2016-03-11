@@ -17,6 +17,8 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
+  var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
 
   // constants
   var TAP_THRESHOLD = 10; // Number of pixels (screen coordinates) that constitutes a tap instead of a drag
@@ -35,11 +37,28 @@ define( function( require ) {
     var dottedLineNode = new Circle( 20, { stroke: 'black', lineWidth: 3, lineDash: [ 8, 6 ], cursor: 'pointer' } );
     var highlightNode = new Circle( 30, { stroke: 'yellow', lineWidth: 4, pickable: false } );
 
+    var cutButton = new RoundPushButton( {
+      baseColor: 'yellow',
+      content: new FontAwesomeNode( 'cut', {
+        rotation: -Math.PI / 2, // scissors point up
+        scale: 0.85
+      } ),
+      minXMargin: 10,
+      minYMargin: 10
+    } );
+
     vertex.selectedProperty.link( function( selected ) {
+      selected && vertexNode.moveToFront();
       highlightNode.visible = selected;
+
+      var numberConnections = circuit.getNeighborCircuitElements( vertex ).length;
+      cutButton.visible = selected;
+
+      // Show a disabled button as a cue that the vertex could be cuttable, but it isnt right now.
+      cutButton.enabled = numberConnections > 1;
     } );
     Node.call( this, {
-      children: [ highlightNode, dottedLineNode ]
+      children: [ highlightNode, dottedLineNode, cutButton ]
     } );
 
     var updateShape = function() {
@@ -72,8 +91,8 @@ define( function( require ) {
             event.pointer.removeInputListener( listener ); // Thanks, hoisting!
           };
           var listener = {
-            mousedown: deselect,
-            touchdown: deselect
+            mouseup: deselect,
+            touchup: deselect
           };
           event.pointer.addInputListener( listener );
         }
@@ -88,6 +107,7 @@ define( function( require ) {
       voltageReadoutText.centerX = dottedLineNode.centerX;
       voltageReadoutText.bottom = dottedLineNode.top - 10;
     };
+
     // TODO: For debugging, remove when debugged.
     var voltageReadoutText = new Text( '', { fontSize: 18, y: -60 } );
     this.addChild( voltageReadoutText );
@@ -99,6 +119,7 @@ define( function( require ) {
     var updateVertexNodePosition = function( position ) {
       dottedLineNode.center = position;
       highlightNode.center = position;
+      cutButton.center = position.plusXY( 100, 0 );
       updateReadoutTextLocation();
     };
     vertex.positionProperty.link( updateVertexNodePosition );
