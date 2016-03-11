@@ -98,7 +98,9 @@ define( function( require ) {
         }
       }
     } );
-    this.addInputListener( simpleDragHandler );
+
+    // Don't permit dragging by the scissors or highlight
+    dottedLineNode.addInputListener( simpleDragHandler );
     vertex.interactiveProperty.link( function( interactive ) {
       vertexNode.pickable = interactive;
     } );
