@@ -39,7 +39,7 @@ define( function( require ) {
 
     var imageNode = this.imageNode;
 
-    // TODO: Relink when start vertex changes
+    // Relink when start vertex changes
     var multilink = null;
     var relink = function() {
       multilink && multilink.dispose();
@@ -62,8 +62,12 @@ define( function( require ) {
     circuitElement.endVertexProperty.lazyLink( relink );
 
     if ( circuitNode ) {
-      var highlightNode = new Rectangle( 0, 0, 10, 10, {
-        fill: 'yellow'
+      var inset = 2;
+      var highlightNode = new Rectangle( inset, inset, imageNode.width - inset * 2, imageNode.height - inset * 2, {
+        stroke: 'yellow',
+        lineWidth: 10,
+        scale: 1.0 / imageScale // TODO: Probably move the highlight to another node, so that its parent isn't image node
+                                // TODO: So that it can extend beyond the bounds without throwing off the layout
       } );
 
       imageNode.addChild( highlightNode );
@@ -94,9 +98,8 @@ define( function( require ) {
 
     if ( circuitNode ) {
       circuitNode.circuit.lastCircuitElementProperty.link( function( lastCircuitElement ) {
-        if ( lastCircuitElement === circuitElement ) {
-          highlightNode.visible = true;
-        }
+        var showHighlight = lastCircuitElement === circuitElement;
+        highlightNode.visible = showHighlight;
       } );
     }
 
