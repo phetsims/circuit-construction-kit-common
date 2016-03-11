@@ -16,10 +16,11 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var Property = require( 'AXON/Property' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   /**
    *
-   * @param circuitNode
+   * @param circuitNode - Null if an icon is created
    * @param circuitElement
    * @param image
    * @param {number} imageScale - the scale factor to apply to the image for the size in the play area (icons are automatically scaled up)
@@ -28,7 +29,9 @@ define( function( require ) {
    */
   function FixedLengthComponentNode( circuitNode, circuitElement, image, imageScale, options ) {
     var fixedLengthComponentNode = this;
-    options = _.extend( { icon: false }, options );
+    options = _.extend( {
+      icon: false
+    }, options );
     this.circuitElement = circuitElement;
 
     // @protected (for ResistorNode to paint the color bands on)
@@ -41,10 +44,12 @@ define( function( require ) {
     var relink = function() {
       multilink && multilink.dispose();
       multilink = Property.multilink( [ circuitElement.startVertex.positionProperty, circuitElement.endVertex.positionProperty ], function( startPosition, endPosition ) {
-        var angle = endPosition.minus( startPosition ).angle();// TODO: speed up maths
+        var angle = endPosition.minus( startPosition ).angle(); // TODO: speed up maths
         // TODO: Simplify this matrix math.
         imageNode.resetTransform();
-        imageNode.mutate( { scale: imageScale } );
+        imageNode.mutate( {
+          scale: imageScale
+        } );
         imageNode.rotateAround( new Vector2( 0, 0 ), angle );
         imageNode.x = startPosition.x;
         imageNode.y = startPosition.y;
@@ -55,6 +60,14 @@ define( function( require ) {
 
     circuitElement.startVertexProperty.lazyLink( relink );
     circuitElement.endVertexProperty.lazyLink( relink );
+
+    if ( circuitNode ) {
+      var highlightNode = new Rectangle( 0, 0, 10, 10, {
+        fill: 'yellow'
+      } );
+
+      imageNode.addChild( highlightNode );
+    }
 
     Node.call( this, {
       cursor: 'pointer',
@@ -78,6 +91,14 @@ define( function( require ) {
       }
     } );
     !options.icon && imageNode.addInputListener( this.inputListener );
+
+    if ( circuitNode ) {
+      circuitNode.circuit.lastCircuitElementProperty.link( function( lastCircuitElement ) {
+        if ( lastCircuitElement === circuitElement ) {
+          highlightNode.visible = true;
+        }
+      } );
+    }
 
     this.disposeFixedLengthComponentNode = function() {
       if ( fixedLengthComponentNode.inputListener.dragging ) {
