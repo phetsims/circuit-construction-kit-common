@@ -40,6 +40,8 @@ define( function( require ) {
       interactive: options.interactive,
 
       // @public - after the user taps on a vertex it becomes selected, highlighting it and showing a "cut" button
+      // Multiple vertices can be selected on an iPad, unlike CircuitElements, which can only have one vertex selected
+      // at a time.
       selected: false
     } );
   }
