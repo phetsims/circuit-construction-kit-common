@@ -115,6 +115,10 @@ define( function( require ) {
       this.vertices.clear();
     },
 
+    /**
+     * @param {Vertex} vertex
+     * @returns {Array}
+     */
     getNeighborCircuitElements: function( vertex ) {
       var neighbors = [];
       var circuitElements = this.getCircuitElements();

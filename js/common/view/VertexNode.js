@@ -19,9 +19,11 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // constants
   var TAP_THRESHOLD = 10; // Number of pixels (screen coordinates) that constitutes a tap instead of a drag
+  var DISTANCE_TO_CUT_BUTTON = 100; // How far (screen coordinates) the cut button appears from the vertex node
 
   /**
    *
@@ -53,6 +55,7 @@ define( function( require ) {
 
       var numberConnections = circuit.getNeighborCircuitElements( vertex ).length;
       cutButton.visible = selected;
+      selected && updateCutButtonPosition();
 
       // Show a disabled button as a cue that the vertex could be cuttable, but it isnt right now.
       cutButton.enabled = numberConnections > 1;
@@ -118,11 +121,25 @@ define( function( require ) {
       updateReadoutTextLocation();
     } );
 
+    var updateCutButtonPosition = function() {
+      var position = vertex.position;
+
+      var neighbors = circuit.getNeighborCircuitElements( vertex );
+
+      // Compute an unweighted sum of adjacent element directions, and point in the opposite direction
+      // so the button will appear in the least populated area.
+      var sumOfDirections = new Vector2();
+      for ( var i = 0; i < neighbors.length; i++ ) {
+        var vector = vertex.position.minus( neighbors[ i ].getOppositeVertex( vertex ).position ).normalized();
+        sumOfDirections.add( vector );
+      }
+      cutButton.center = position.plus( sumOfDirections.normalized().timesScalar( DISTANCE_TO_CUT_BUTTON ) );
+    };
     var updateVertexNodePosition = function( position ) {
       dottedLineNode.center = position;
       highlightNode.center = position;
-      cutButton.center = position.plusXY( 100, 0 );
       updateReadoutTextLocation();
+      updateCutButtonPosition();
     };
     vertex.positionProperty.link( updateVertexNodePosition );
 
