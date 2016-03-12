@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var FixedLengthComponent = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/FixedLengthComponent' );
+  var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/FixedLengthCircuitElement' );
 
   /**
    *
@@ -18,17 +18,17 @@ define( function( require ) {
    */
   function Battery( startVertex, endVertex, voltage ) {
     assert && assert( typeof voltage === 'number', 'voltage should be a number' );
-    FixedLengthComponent.call( this, 146, startVertex, endVertex, {
+    FixedLengthCircuitElement.call( this, 146, startVertex, endVertex, {
       voltage: voltage
     } );
   }
 
-  return inherit( FixedLengthComponent, Battery, {
+  return inherit( FixedLengthCircuitElement, Battery, {
     toStateObjectWithVertexIndices: function( getVertexIndex ) {
       return _.extend( {
           voltage: this.voltage
         },
-        FixedLengthComponent.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex )
+        FixedLengthCircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex )
       );
     }
   } );

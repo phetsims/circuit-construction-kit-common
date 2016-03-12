@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
-  var FixedLengthComponentNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/FixedLengthComponentNode' );
+  var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/FixedLengthCircuitElementNode' );
 
   // images
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/battery.png' );
@@ -22,10 +22,10 @@ define( function( require ) {
    */
   function BatteryNode( circuitNode, battery ) {
     this.battery = battery;
-    FixedLengthComponentNode.call( this, circuitNode, battery, batteryImage, 0.7 );
+    FixedLengthCircuitElementNode.call( this, circuitNode, battery, batteryImage, 0.7 );
   }
 
   circuitConstructionKitBasics.register( 'BatteryNode', BatteryNode );
 
-  return inherit( FixedLengthComponentNode, BatteryNode );
+  return inherit( FixedLengthCircuitElementNode, BatteryNode );
 } );

@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
-  var FixedLengthComponentNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/FixedLengthComponentNode' );
+  var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/FixedLengthCircuitElementNode' );
 
   // images
   var lightBulbImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/light-bulb.png' );
@@ -22,10 +22,10 @@ define( function( require ) {
    */
   function LightBulbNode( circuitNode, lightBulb ) {
     this.lightBulb = lightBulb;
-    FixedLengthComponentNode.call( this, circuitNode, lightBulb, lightBulbImage, 0.7 );
+    FixedLengthCircuitElementNode.call( this, circuitNode, lightBulb, lightBulbImage, 0.7 );
   }
 
   circuitConstructionKitBasics.register( 'LightBulbNode', LightBulbNode );
 
-  return inherit( FixedLengthComponentNode, LightBulbNode );
+  return inherit( FixedLengthCircuitElementNode, LightBulbNode );
 } );

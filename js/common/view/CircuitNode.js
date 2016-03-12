@@ -17,7 +17,7 @@ define( function( require ) {
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ResistorNode' );
   var VertexNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/VertexNode' );
   var Vector2 = require( 'DOT/Vector2' );
-  var FixedLengthComponent = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/FixedLengthComponent' );
+  var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/FixedLengthCircuitElement' );
 
   /**
    *
@@ -239,7 +239,7 @@ define( function( require ) {
       var neighbors = this.circuit.getNeighborCircuitElements( vertex );
 
       // TODO: Fix this
-      if ( false && (neighbors.length === 1 && neighbors[ 0 ] instanceof FixedLengthComponent) ) {
+      if ( false && (neighbors.length === 1 && neighbors[ 0 ] instanceof FixedLengthCircuitElement) ) {
 
         vertex.position = position;
         vertex.unsnappedPosition = position;

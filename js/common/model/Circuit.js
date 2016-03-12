@@ -288,7 +288,7 @@ define( function( require ) {
     },
 
     /**
-     * Find the subgraph where all vertices are connected by FixedLengthComponents, not stretchy wires.
+     * Find the subgraph where all vertices are connected by FixedLengthCircuitElements, not stretchy wires.
      * @param {Vertex} vertex
      */
     findAllFixedVertices: function( vertex ) {
@@ -297,7 +297,7 @@ define( function( require ) {
       var visited = [];
       while ( toVisit.length > 0 ) {
 
-        // Find the neighbors joined by a FixedLengthComponent, not a stretchy Wire
+        // Find the neighbors joined by a FixedLengthCircuitElement, not a stretchy Wire
         var currentVertex = toVisit.pop();
 
         // If we haven't visited it before, then explore it

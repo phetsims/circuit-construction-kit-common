@@ -16,7 +16,7 @@ define( function( require ) {
    *
    * @constructor
    */
-  function FixedLengthComponent( length, startVertex, endVertex, propertySetMap ) {
+  function FixedLengthCircuitElement( length, startVertex, endVertex, propertySetMap ) {
     CircuitElement.call( this, startVertex, endVertex, propertySetMap );
     this.length = length;
 
@@ -24,5 +24,5 @@ define( function( require ) {
     // TODO: matter of switching vertices.
   }
 
-  return inherit( CircuitElement, FixedLengthComponent );
+  return inherit( CircuitElement, FixedLengthCircuitElement );
 } );

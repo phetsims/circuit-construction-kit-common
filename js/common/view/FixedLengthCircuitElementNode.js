@@ -28,8 +28,8 @@ define( function( require ) {
    * @param options
    * @constructor
    */
-  function FixedLengthComponentNode( circuitNode, circuitElement, image, imageScale, options ) {
-    var fixedLengthComponentNode = this;
+  function FixedLengthCircuitElementNode( circuitNode, circuitElement, image, imageScale, options ) {
+    var fixedLengthCircuitElementNode = this;
     options = _.extend( {
       icon: false
     }, options );
@@ -127,19 +127,19 @@ define( function( require ) {
       } );
     }
 
-    this.disposeFixedLengthComponentNode = function() {
-      if ( fixedLengthComponentNode.inputListener.dragging ) {
-        fixedLengthComponentNode.inputListener.endDrag();
+    this.disposeFixedLengthCircuitElementNode = function() {
+      if ( fixedLengthCircuitElementNode.inputListener.dragging ) {
+        fixedLengthCircuitElementNode.inputListener.endDrag();
       }
       multilink && multilink.dispose();
     };
   }
 
-  circuitConstructionKitBasics.register( 'FixedLengthComponentNode', FixedLengthComponentNode );
+  circuitConstructionKitBasics.register( 'FixedLengthCircuitElementNode', FixedLengthCircuitElementNode );
 
-  return inherit( Node, FixedLengthComponentNode, {
+  return inherit( Node, FixedLengthCircuitElementNode, {
     dispose: function() {
-      this.disposeFixedLengthComponentNode();
+      this.disposeFixedLengthCircuitElementNode();
     }
   } );
 } );

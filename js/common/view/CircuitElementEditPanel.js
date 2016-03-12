@@ -17,6 +17,7 @@ define( function( require ) {
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Battery' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/FixedLengthCircuitElement' );
 
   function CircuitElementEditPanel( circuit, visibleBoundsProperty ) {
     var selectedCircuitElementProperty = circuit.lastCircuitElementProperty;
@@ -30,7 +31,13 @@ define( function( require ) {
     // Only show the instructions if there is a circuit component in the play area, so students don't try to tap
     // something in the toolbox.
     var listener = function() {
-      tapInstructionTextNode.visible = circuit.getCircuitElements().length > 0;
+      var circuitElements = circuit.getCircuitElements();
+
+      // Only fixed length circuit elements are editable
+      var fixedLengthElements = circuitElements.filter( function( circuitElement ) {
+        return circuitElement instanceof FixedLengthCircuitElement;
+      } );
+      tapInstructionTextNode.visible = fixedLengthElements.length > 0;
     };
     circuit.circuitElementDroppedEmitter.addListener( listener );
     listener(); // Update on startup, like link()

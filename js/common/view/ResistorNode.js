@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
-  var FixedLengthComponentNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/FixedLengthComponentNode' );
+  var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/FixedLengthCircuitElementNode' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var ResistorColors = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ResistorColors' );
 
@@ -28,7 +28,7 @@ define( function( require ) {
   function ResistorNode( circuitNode, resistor, options ) {
     this.resistor = resistor;
     var imageScale = 0.7;
-    FixedLengthComponentNode.call( this, circuitNode, resistor, resistorImage, imageScale, options );
+    FixedLengthCircuitElementNode.call( this, circuitNode, resistor, resistorImage, imageScale, options );
 
     var imageWidth = this.imageNode.imageWidth / imageScale;
     var bandWidth = 10;
@@ -65,9 +65,9 @@ define( function( require ) {
 
   circuitConstructionKitBasics.register( 'ResistorNode', ResistorNode );
 
-  return inherit( FixedLengthComponentNode, ResistorNode, {
+  return inherit( FixedLengthCircuitElementNode, ResistorNode, {
     dispose: function() {
-      FixedLengthComponentNode.prototype.dispose.call( this );
+      FixedLengthCircuitElementNode.prototype.dispose.call( this );
       this.disposeResistorNode();
     }
   } );

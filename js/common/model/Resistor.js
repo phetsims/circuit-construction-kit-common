@@ -10,21 +10,21 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var FixedLengthComponent = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/FixedLengthComponent' );
+  var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/FixedLengthCircuitElement' );
 
   /**
    *
    * @constructor
    */
   function Resistor( startVertex, endVertex, resistance ) {
-    FixedLengthComponent.call( this, 146, startVertex, endVertex, {
+    FixedLengthCircuitElement.call( this, 146, startVertex, endVertex, {
       resistance: resistance
     } );
   }
 
-  return inherit( FixedLengthComponent, Resistor, {
+  return inherit( FixedLengthCircuitElement, Resistor, {
     toStateObjectWithVertexIndices: function( getVertexIndex ) {
-      return _.extend( { resistance: this.resistance }, FixedLengthComponent.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex ) );
+      return _.extend( { resistance: this.resistance }, FixedLengthCircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex ) );
     }
   } );
 } );
