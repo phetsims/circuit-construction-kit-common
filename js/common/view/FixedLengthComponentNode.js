@@ -62,12 +62,15 @@ define( function( require ) {
     circuitElement.endVertexProperty.lazyLink( relink );
 
     if ( circuitNode ) {
-      var inset = 2;
+      var inset = -10;
       var highlightNode = new Rectangle( inset, inset, imageNode.width - inset * 2, imageNode.height - inset * 2, {
         stroke: 'yellow',
-        lineWidth: 10,
-        scale: 1.0 / imageScale // TODO: Probably move the highlight to another node, so that its parent isn't image node
-                                // TODO: So that it can extend beyond the bounds without throwing off the layout
+        lineWidth: 5,
+
+        // TODO: Probably move the highlight to another node, so that its parent isn't image node
+        // TODO: So that it can extend beyond the bounds without throwing off the layout
+        scale: 1.0 / imageScale,
+        pickable: false
       } );
 
       imageNode.addChild( highlightNode );
