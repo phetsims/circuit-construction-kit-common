@@ -18,6 +18,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/FixedLengthCircuitElement' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
 
   function CircuitElementEditPanel( circuit, visibleBoundsProperty ) {
     var selectedCircuitElementProperty = circuit.lastCircuitElementProperty;
@@ -56,13 +57,26 @@ define( function( require ) {
       lastNumberControl = null;
 
       if ( selectedCircuitElement ) {
+        var font = new PhetFont( 14 );
         if ( selectedCircuitElement instanceof Resistor || selectedCircuitElement instanceof LightBulb ) {
 
-          lastNumberControl = new NumberControl( 'Resistance', selectedCircuitElement.resistanceProperty, new Range( 0, 100 ), {} );
+          lastNumberControl = new NumberControl( 'Resistance', selectedCircuitElement.resistanceProperty, new Range( 0, 100 ), {
+            units: 'ohms',
+
+            // TODO: factor out options
+            titleFont: font,
+            valueFont: font,
+            decimalPlaces: 1
+          } );
           circuitElementEditPanel.addChild( lastNumberControl );
         }
         else if ( selectedCircuitElement instanceof Battery ) {
-          lastNumberControl = new NumberControl( 'Voltage', selectedCircuitElement.voltageProperty, new Range( 0, 100 ), {} );
+          lastNumberControl = new NumberControl( 'Voltage', selectedCircuitElement.voltageProperty, new Range( 0, 100 ), {
+            units: 'volts',
+            titleFont: font,
+            valueFont: font,
+            decimalPlaces: 1
+          } );
           circuitElementEditPanel.addChild( lastNumberControl );
         }
         else {
