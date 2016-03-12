@@ -104,7 +104,7 @@ define( function( require ) {
       } );
     } );
 
-    var circuitElementEditPanel = new CircuitElementEditPanel( circuitConstructionKitBasicsModel.circuit.lastCircuitElementProperty, visibleBoundsProperty );
+    var circuitElementEditPanel = new CircuitElementEditPanel( circuitConstructionKitBasicsModel.circuit, visibleBoundsProperty );
     this.addChild( circuitElementEditPanel );
 
     this.addChild( voltmeterNode );

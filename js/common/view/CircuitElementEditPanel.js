@@ -18,9 +18,23 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
 
-  function CircuitElementEditPanel( selectedCircuitElementProperty, visibleBoundsProperty ) {
+  function CircuitElementEditPanel( circuit, visibleBoundsProperty ) {
+    var selectedCircuitElementProperty = circuit.lastCircuitElementProperty;
     var circuitElementEditPanel = this;
     Node.call( this );
+
+    var tapInstructionTextNode = new Text( 'Tap circuit element to edit.', {
+      fontSize: 24
+    } );
+
+    // Only show the instructions if there is a circuit component in the play area, so students don't try to tap
+    // something in the toolbox.
+    var listener = function() {
+      tapInstructionTextNode.visible = circuit.getCircuitElements().length > 0;
+    };
+    circuit.circuitElementDroppedEmitter.addListener( listener );
+    listener(); // Update on startup, like link()
+
     this.addChild( new Rectangle( 0, 0, 10, 10, { fill: null } ) ); // blank spacer so layout doesn't exception out
     var updatePosition = function() {
       var visibleBounds = visibleBoundsProperty.get();
@@ -49,9 +63,7 @@ define( function( require ) {
         }
       }
       else {
-        lastNumberControl = new Text( 'Tap circuit element to edit.', {
-          fontSize: 24
-        } );
+        lastNumberControl = tapInstructionTextNode;
         circuitElementEditPanel.addChild( lastNumberControl );
       }
       updatePosition();

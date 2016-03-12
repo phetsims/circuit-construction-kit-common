@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
   var Image = require( 'SCENERY/nodes/Image' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Vector2 = require( 'DOT/Vector2' );
@@ -85,8 +86,10 @@ define( function( require ) {
 
     // Use whatever the start node currently is (it can change), and let the circuit manage the dependent vertices
     // TODO: Should not rotate when dragging by body
+    var p = null;
     this.inputListener = new SimpleDragHandler( {
       start: function( event ) {
+        p = event.pointer.point;
         circuitNode.startDrag( event, circuitElement.endVertex );
       },
       drag: function( event ) {
@@ -94,7 +97,25 @@ define( function( require ) {
       },
       end: function( event ) {
         circuitNode.endDrag( event, circuitElement.endVertex );
-        circuitNode.circuit.lastCircuitElementProperty.set( circuitElement );
+
+        // Only show on a tap, not on every drag.
+        // TODO: Copied with VertexNode
+        if ( event.pointer.point.distance( p ) < CircuitConstructionKitBasicsConstants.tapThreshold ) {
+
+          circuitNode.circuit.lastCircuitElementProperty.set( circuitElement );
+
+          // When the user clicks on anything else, deselect the vertex
+          // TODO: Don't deselect when dragging the slider to edit the component
+          var deselect = function() {
+            circuitNode.circuit.lastCircuitElementProperty.set( null );
+            event.pointer.removeInputListener( listener ); // Thanks, hoisting!
+          };
+          var listener = {
+            mouseup: deselect,
+            touchup: deselect
+          };
+          event.pointer.addInputListener( listener );
+        }
       }
     } );
     !options.icon && imageNode.addInputListener( this.inputListener );

@@ -22,7 +22,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   // constants
-  var TAP_THRESHOLD = 10; // Number of pixels (screen coordinates) that constitutes a tap instead of a drag
+
   var DISTANCE_TO_CUT_BUTTON = 100; // How far (screen coordinates) the cut button appears from the vertex node
 
   /**
@@ -87,7 +87,7 @@ define( function( require ) {
         circuitNode.endDrag( event, vertex );
 
         // Only show on a tap, not on every drag.
-        if ( event.pointer.point.distance( p ) < TAP_THRESHOLD ) {
+        if ( event.pointer.point.distance( p ) < CircuitConstructionKitBasicsConstants.TAP_THRESHOLD ) {
 
           vertex.selected = true;
 

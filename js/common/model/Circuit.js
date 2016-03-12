@@ -80,6 +80,9 @@ define( function( require ) {
     // the voltmeter and ammeter
     this.circuitChangedEmitter = new Emitter();
 
+    // Some actions only take place after an item has been dropped
+    this.circuitElementDroppedEmitter = new Emitter();
+
     var circuitChangedEmitterFunction = function() {
       circuit.circuitChangedEmitter.emit();
     };
