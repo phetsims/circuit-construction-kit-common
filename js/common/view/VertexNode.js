@@ -136,6 +136,9 @@ define( function( require ) {
         var vector = vertex.position.minus( neighbors[ i ].getOppositeVertex( vertex ).position ).normalized();
         sumOfDirections.add( vector );
       }
+      if ( sumOfDirections.magnitude() < 1E-6 ) {
+        sumOfDirections = new Vector2( 0, -1 ); // Show the scissors above
+      }
       cutButton.center = position.plus( sumOfDirections.normalized().timesScalar( DISTANCE_TO_CUT_BUTTON ) );
     };
     var updateVertexNodePosition = function( position ) {

@@ -21,6 +21,9 @@ define( function( require ) {
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/LightBulb' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Resistor' );
 
+  // constants
+  var DISTANCE_FOR_SNAP = 30;
+
   /**
    *
    * @constructor
@@ -343,7 +346,7 @@ define( function( require ) {
 
       // (3) a vertex must be within 100px (screen coordinates) of the other vertex
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
-        return vertex.unsnappedPosition.distance( candidateVertex.position ) < 100;
+        return vertex.unsnappedPosition.distance( candidateVertex.position ) < DISTANCE_FOR_SNAP;
       } );
 
       // TODO: (4) reject any matches that result in circuit elements sharing a pair of vertices
