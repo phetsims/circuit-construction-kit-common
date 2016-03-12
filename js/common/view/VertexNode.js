@@ -22,7 +22,6 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   // constants
-
   var DISTANCE_TO_CUT_BUTTON = 100; // How far (screen coordinates) the cut button appears from the vertex node
 
   /**
@@ -117,7 +116,11 @@ define( function( require ) {
     };
 
     // TODO: For debugging, remove when debugged.
-    var voltageReadoutText = new Text( '', { fontSize: 18, y: -60 } );
+    var voltageReadoutText = new Text( '', {
+      fontSize: 18,
+      y: -60,
+      pickable: false
+    } );
     this.addChild( voltageReadoutText );
     vertex.voltageProperty.link( function( voltage ) {
       voltageReadoutText.setText( Util.toFixed( voltage, 3 ) + 'V' );
