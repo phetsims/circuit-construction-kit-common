@@ -60,14 +60,15 @@ define( function( require ) {
       ammeterNode.visible = visible;
     } );
 
-    this.circuitNode = new CircuitNode( circuitConstructionKitBasicsModel.circuit );
-    var circuitElementToolbox = new CircuitElementToolbox( circuitConstructionKitBasicsModel, this );
+    // Pass the view into circuit node so that circuit elements can be dropped back into the toolbox
+    this.circuitNode = new CircuitNode( circuitConstructionKitBasicsModel.circuit, this );
+    this.circuitElementToolbox = new CircuitElementToolbox( circuitConstructionKitBasicsModel, this );
 
     // @protected - so that subclasses can add a layout circuit element near it
     this.sensorToolbox = new SensorToolbox( voltmeterNode, ammeterNode );
 
     this.addChild( this.sensorToolbox );
-    this.addChild( circuitElementToolbox );
+    this.addChild( this.circuitElementToolbox );
     this.addChild( this.circuitNode );
 
     var visibleBoundsProperty = new Property( new Rectangle( 0, 0, this.layoutBounds.width, this.layoutBounds.height ) );
@@ -80,7 +81,7 @@ define( function( require ) {
         bottom: -dy + height - inset
       } );
 
-      circuitElementToolbox.mutate( {
+      circuitConstructionKitBasicsScreenView.circuitElementToolbox.mutate( {
         left: -dx + inset,
         top: -dy + inset
       } );
@@ -135,6 +136,19 @@ define( function( require ) {
   }
 
   return inherit( ScreenView, CircuitConstructionKitBasicsScreenView, {
+
+    // TODO: Highlight the toolbox when something can drop over it.
+    canNodeDropInToolbox: function( circuitElementNode ) {
+      var isSingle = this.circuitConstructionKitBasicsModel.circuit.isSingle( circuitElementNode.circuitElement );
+      var inBounds = this.circuitElementToolbox.globalBounds.containsPoint( circuitElementNode.globalBounds.center );
+      return isSingle && inBounds;
+    },
+
+    dropCircuitElementNodeInToolbox: function( circuitElementNode ) {
+
+      // Only drop in the box if it was a single component, if connected to other things, do not
+      this.circuitConstructionKitBasicsModel.circuit.remove( circuitElementNode.circuitElement );
+    },
 
     /**
      * Find where the voltmeter probe node intersects the wire, for computing the voltage difference

@@ -20,9 +20,9 @@ define( function( require ) {
    *
    * @constructor
    */
-  function BatteryNode( circuitNode, battery ) {
+  function BatteryNode( circuitConstructionKitBasicsScreenView, circuitNode, battery ) {
     this.battery = battery;
-    FixedLengthCircuitElementNode.call( this, circuitNode, battery, batteryImage, 0.7 );
+    FixedLengthCircuitElementNode.call( this, circuitConstructionKitBasicsScreenView, circuitNode, battery, batteryImage, 0.7 );
   }
 
   circuitConstructionKitBasics.register( 'BatteryNode', BatteryNode );

@@ -126,13 +126,38 @@ define( function( require ) {
      */
     cutVertex: function( vertex ) {
       var neighborCircuitElements = this.getNeighborCircuitElements( vertex );
-      for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
-        var circuitElement = neighborCircuitElements[ i ];
-        var newVertex = new Vertex( vertex.position.x, vertex.position.y );
-        circuitElement.replaceVertex( vertex, newVertex );
-        this.vertices.add( newVertex );
+      if ( neighborCircuitElements.length === 1 ) {
+
+        // No need to cut an edge vertex
+        return;
       }
-      this.vertices.remove( vertex );
+      else {
+        for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
+          var circuitElement = neighborCircuitElements[ i ];
+          var newVertex = new Vertex( vertex.position.x, vertex.position.y );
+          circuitElement.replaceVertex( vertex, newVertex );
+          this.vertices.add( newVertex );
+        }
+        this.vertices.remove( vertex );
+      }
+    },
+
+    isSingle: function( circuitElement ) {
+      return this.getNeighborCircuitElements( circuitElement.startVertex ).length === 1 &&
+             this.getNeighborCircuitElements( circuitElement.endVertex ).length === 1;
+    },
+
+    remove: function( circuitElement ) {
+      this.cutVertex( circuitElement.startVertex );
+      this.cutVertex( circuitElement.endVertex );
+      var list = circuitElement instanceof Battery ? this.batteries :
+                 circuitElement instanceof Resistor ? this.resistors :
+                 circuitElement instanceof Wire ? this.wires :
+                 circuitElement instanceof LightBulb ? this.lightBulbs :
+                 null;
+      list.remove( circuitElement );
+      this.vertices.remove( circuitElement.startVertex );
+      this.vertices.remove( circuitElement.endVertex );
     },
 
     /**

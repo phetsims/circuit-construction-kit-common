@@ -25,10 +25,10 @@ define( function( require ) {
    * @param options
    * @constructor
    */
-  function ResistorNode( circuitNode, resistor, options ) {
+  function ResistorNode( circuitConstructionKitBasicsScreenView, circuitNode, resistor, options ) {
     this.resistor = resistor;
     var imageScale = 0.7;
-    FixedLengthCircuitElementNode.call( this, circuitNode, resistor, resistorImage, imageScale, options );
+    FixedLengthCircuitElementNode.call( this, circuitConstructionKitBasicsScreenView, circuitNode, resistor, resistorImage, imageScale, options );
 
     var imageWidth = this.imageNode.imageWidth / imageScale;
     var bandWidth = 10;

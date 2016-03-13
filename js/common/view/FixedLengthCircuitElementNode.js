@@ -22,6 +22,7 @@ define( function( require ) {
 
   /**
    *
+   * @param {CircuitConstructionKitBasicsScreenView} circuitConstructionKitBasicsScreenView
    * @param circuitNode - Null if an icon is created
    * @param circuitElement
    * @param image
@@ -29,7 +30,7 @@ define( function( require ) {
    * @param options
    * @constructor
    */
-  function FixedLengthCircuitElementNode( circuitNode, circuitElement, image, imageScale, options ) {
+  function FixedLengthCircuitElementNode( circuitConstructionKitBasicsScreenView, circuitNode, circuitElement, image, imageScale, options ) {
     var fixedLengthCircuitElementNode = this;
     options = _.extend( {
       icon: false
@@ -98,7 +99,11 @@ define( function( require ) {
       },
       end: function( event ) {
 
-        // TODO: if over the toolbox, then drop into it, and don't process further
+        // If over the toolbox, then drop into it, and don't process further
+        if ( circuitConstructionKitBasicsScreenView.canNodeDropInToolbox( fixedLengthCircuitElementNode ) ) {
+          circuitConstructionKitBasicsScreenView.dropCircuitElementNodeInToolbox( fixedLengthCircuitElementNode );
+          return;
+        }
 
         circuitNode.endDrag( event, circuitElement.endVertex );
 

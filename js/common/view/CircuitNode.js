@@ -21,9 +21,11 @@ define( function( require ) {
 
   /**
    *
+   * @param {Circuit} circuit
+   * @param {CircuitConstructionKitBasicsScreenView} circuitConstructionKitBasicsScreenView - for dropping circuit element back into the toolbox
    * @constructor
    */
-  function CircuitNode( circuit ) {
+  function CircuitNode( circuit, circuitConstructionKitBasicsScreenView ) {
     Node.call( this );
     this.circuit = circuit;
     var circuitNode = this;
@@ -64,7 +66,7 @@ define( function( require ) {
     } );
 
     var addBatteryNode = function( battery ) {
-      var batteryNode = new BatteryNode( circuitNode, battery );
+      var batteryNode = new BatteryNode( circuitConstructionKitBasicsScreenView, circuitNode, battery );
       circuitNode.batteryNodes.push( batteryNode );
       circuitNode.addChild( batteryNode );
     };
@@ -87,7 +89,7 @@ define( function( require ) {
     } );
 
     var addLightBulbNode = function( lightBulb ) {
-      var lightBulbNode = new LightBulbNode( circuitNode, lightBulb );
+      var lightBulbNode = new LightBulbNode( circuitConstructionKitBasicsScreenView, circuitNode, lightBulb );
       circuitNode.lightBulbNodes.push( lightBulbNode );
       circuitNode.addChild( lightBulbNode );
     };
@@ -110,7 +112,7 @@ define( function( require ) {
 
     // TODO: When an item is dropped in the toolbox, remove it from the model
     var addResistorNode = function( resistor ) {
-      var resistorNode = new ResistorNode( circuitNode, resistor );
+      var resistorNode = new ResistorNode( circuitConstructionKitBasicsScreenView, circuitNode, resistor );
       circuitNode.resistorNodes.push( resistorNode );
       circuitNode.addChild( resistorNode );
     };

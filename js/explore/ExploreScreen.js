@@ -43,7 +43,7 @@ define( function( require ) {
       strokePickable: true,
       scale: 1
     } );
-    var resistorNode = new ResistorNode( null, new Resistor( new Vertex( -80, 0 ), new Vertex( -80, 0 ), CircuitConstructionKitBasicsConstants.defaultResistance ), { icon: true } );
+    var resistorNode = new ResistorNode( null, null, new Resistor( new Vertex( -80, 0 ), new Vertex( -80, 0 ), CircuitConstructionKitBasicsConstants.defaultResistance ), { icon: true } );
     var battery = new Image( batteryImage );
     var lightBulb = new Image( lightBulbImage );
 

@@ -84,7 +84,7 @@ define( function( require ) {
       scale: 1
     } );
 
-    var resistorNode = new ResistorNode( null, new Resistor( new Vertex( -80, 0 ), new Vertex( -80, 0 ), CircuitConstructionKitBasicsConstants.defaultResistance ), { icon: true } );
+    var resistorNode = new ResistorNode( null, null, new Resistor( new Vertex( -80, 0 ), new Vertex( -80, 0 ), CircuitConstructionKitBasicsConstants.defaultResistance ), { icon: true } );
 
     CircuitConstructionKitBasicsPanel.call( this, new VBox( {
       spacing: CircuitConstructionKitBasicsConstants.toolboxItemSpacing,
