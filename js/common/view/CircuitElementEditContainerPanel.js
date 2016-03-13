@@ -24,9 +24,9 @@ define( function( require ) {
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
 
-  function CircuitElementEditPanel( circuit, visibleBoundsProperty ) {
+  function CircuitElementEditContainerPanel( circuit, visibleBoundsProperty ) {
     var selectedCircuitElementProperty = circuit.lastCircuitElementProperty;
-    var circuitElementEditPanel = this;
+    var circuitElementEditContainerPanel = this;
     Node.call( this );
 
     var tapInstructionTextNode = new Text( 'Tap circuit element to edit.', {
@@ -50,14 +50,14 @@ define( function( require ) {
     this.addChild( new Rectangle( 0, 0, 10, 10, { fill: null } ) ); // blank spacer so layout doesn't exception out
     var updatePosition = function() {
       var visibleBounds = visibleBoundsProperty.get();
-      circuitElementEditPanel.centerX = visibleBounds.centerX;
-      circuitElementEditPanel.bottom = visibleBounds.bottom - 14; // TODO: Factor out insets
+      circuitElementEditContainerPanel.centerX = visibleBounds.centerX;
+      circuitElementEditContainerPanel.bottom = visibleBounds.bottom - 14; // TODO: Factor out insets
     };
 
     var lastNumberControl = null;
     selectedCircuitElementProperty.link( function( selectedCircuitElement ) {
       lastNumberControl && lastNumberControl.dispose();
-      lastNumberControl && circuitElementEditPanel.removeChild( lastNumberControl );
+      lastNumberControl && circuitElementEditContainerPanel.removeChild( lastNumberControl );
       lastNumberControl = null;
 
       var font = new PhetFont( 14 );
@@ -99,7 +99,7 @@ define( function( require ) {
         lastNumberControl = tapInstructionTextNode;
       }
       if ( lastNumberControl !== null ) {
-        circuitElementEditPanel.addChild( lastNumberControl );
+        circuitElementEditContainerPanel.addChild( lastNumberControl );
       }
       updatePosition();
     } );
@@ -107,5 +107,5 @@ define( function( require ) {
     visibleBoundsProperty.link( updatePosition );
   }
 
-  return inherit( Node, CircuitElementEditPanel, {} );
+  return inherit( Node, CircuitElementEditContainerPanel, {} );
 } );

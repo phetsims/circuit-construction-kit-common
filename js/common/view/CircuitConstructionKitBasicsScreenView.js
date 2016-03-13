@@ -13,7 +13,7 @@ define( function( require ) {
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var CircuitNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitNode' );
   var CircuitElementToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementToolbox' );
-  var CircuitElementEditPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementEditPanel' );
+  var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementEditContainerPanel' );
   var SensorToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/SensorToolbox' );
   var Property = require( 'AXON/Property' );
   var Rectangle = require( 'DOT/Rectangle' );
@@ -91,7 +91,7 @@ define( function( require ) {
         top: -dy + inset
       } );
 
-      circuitElementEditPanel.mutate( {
+      circuitElementEditContainerPanel.mutate( {
         centerX: -dx + width / 2,
         bottom: -dy + height - inset
       } );
@@ -105,8 +105,8 @@ define( function( require ) {
       } );
     } );
 
-    var circuitElementEditPanel = new CircuitElementEditPanel( circuitConstructionKitBasicsModel.circuit, visibleBoundsProperty );
-    this.addChild( circuitElementEditPanel );
+    var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel( circuitConstructionKitBasicsModel.circuit, visibleBoundsProperty );
+    this.addChild( circuitElementEditContainerPanel );
 
     this.addChild( voltmeterNode );
     this.addChild( ammeterNode );
