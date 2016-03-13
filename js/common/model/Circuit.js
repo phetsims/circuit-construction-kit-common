@@ -1,7 +1,7 @@
 // Copyright 2015, University of Colorado Boulder
 
 /**
- * A collection of circuit components in the play area, not necessarily connected.  (For instance it could be 2 logical
+ * A collection of circuit elements in the play area, not necessarily connected.  (For instance it could be 2 logical
  * circuits).
  *
  * @author Sam Reid (PhET Interactive Simulations)
@@ -58,7 +58,7 @@ define( function( require ) {
     // @public (read-only, elements-read-only)
     this.vertices = new ObservableArray();
 
-    // When a new component is added to a circuit, it has two unconnected vertices
+    // When a new circuit element is added to a circuit, it has two unconnected vertices
     var addVertices = function( circuitElement ) {
 
       // Vertices may already exist for a Circuit when loading
@@ -272,7 +272,7 @@ define( function( require ) {
     },
 
     /**
-     * Find all adjacent vertices connected to the specified vertex by a fixed length component.
+     * Find all adjacent vertices connected to the specified vertex by a fixed length circuit element.
      * @param {Vertex} vertex
      */
     getFixedNeighbors: function( vertex ) {

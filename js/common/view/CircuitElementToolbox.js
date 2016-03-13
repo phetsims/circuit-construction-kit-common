@@ -33,21 +33,21 @@ define( function( require ) {
    *                                                      - and invoking a method on it (despite this breaking encapsulation)
    * @constructor
    */
-  function CircuitComponentToolbox( circuitConstructionKitBasicsModel, circuitConstructionKitBasicsScreenView ) {
+  function CircuitElementToolbox( circuitConstructionKitBasicsModel, circuitConstructionKitBasicsScreenView ) {
 
-    var circuitComponentToolbox = this;
+    var circuitElementToolbox = this;
     // From: https://github.com/phetsims/scenery-phet/issues/195#issuecomment-186300071
     // @jonathanolson and I looked into the way Charges and Fields just calls startDrag(event) on the play area drag listener (which adds a listener to the pointer, in the usual SimpleDragHandler way), and it seems like a good pattern. I will try this pattern for Circuit Construction Kit, when I am working on the toolbox listeners.
 
     /**
      *
-     * @param {Function} createComponent - given a view location, create a circuit component
-     * @param {ObservableArray.<Object>} modelList - list of circuit components the new component should be added to
-     * @param {Array.<Node>} viewList - list of nodes where the newly created circuit component node will be found
-     * @param {Function} getCircuitComponentFromNode - function that gets a model element from a node
+     * @param {Function} createElement - given a view location, create a circuit element
+     * @param {ObservableArray.<Object>} modelList - list of circuit elements the new element should be added to
+     * @param {Array.<Node>} viewList - list of nodes where the newly created circuit element node will be found
+     * @param {Function} getCircuitElementFromNode - function that gets a model element from a node
      * @returns {{down: down}}
      */
-    var createToolIconInputListener = function( createComponent, modelList, viewList, getCircuitComponentFromNode ) {
+    var createToolIconInputListener = function( createElement, modelList, viewList, getCircuitElementFromNode ) {
       return {
         down: function( event ) {
 
@@ -58,15 +58,15 @@ define( function( require ) {
           }
 
           // initial position of the pointer in the screenView coordinates
-          var viewPosition = circuitComponentToolbox.globalToParentPoint( event.pointer.point );
-          var component = createComponent( viewPosition );
-          modelList.add( component );
-          var matchedNodes = viewList.filter( function( componentNode ) {
-            return getCircuitComponentFromNode( componentNode ) === component;
+          var viewPosition = circuitElementToolbox.globalToParentPoint( event.pointer.point );
+          var circuitElement = createElement( viewPosition );
+          modelList.add( circuitElement );
+          var matchedNodes = viewList.filter( function( circuitElementNode ) {
+            return getCircuitElementFromNode( circuitElementNode ) === circuitElement;
           } );
           assert && assert( matchedNodes.length === 1, 'should have found the one and only node for this battery' );
-          var componentNode = matchedNodes[ 0 ];
-          componentNode.inputListener.startDrag( event );
+          var circuitElementNode = matchedNodes[ 0 ];
+          circuitElementNode.inputListener.startDrag( event );
         }
       };
     };
@@ -132,7 +132,7 @@ define( function( require ) {
     } ) );
   }
 
-  circuitConstructionKitBasics.register( 'CircuitComponentToolbox', CircuitComponentToolbox );
+  circuitConstructionKitBasics.register( 'CircuitElementToolbox', CircuitElementToolbox );
 
-  return inherit( CircuitConstructionKitBasicsPanel, CircuitComponentToolbox );
+  return inherit( CircuitConstructionKitBasicsPanel, CircuitElementToolbox );
 } );

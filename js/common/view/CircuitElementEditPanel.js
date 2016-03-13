@@ -29,7 +29,7 @@ define( function( require ) {
       fontSize: 24
     } );
 
-    // Only show the instructions if there is a circuit component in the play area, so students don't try to tap
+    // Only show the instructions if there is a circuit element in the play area, so students don't try to tap
     // something in the toolbox.
     var listener = function() {
       var circuitElements = circuit.getCircuitElements();

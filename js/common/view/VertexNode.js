@@ -34,7 +34,7 @@ define( function( require ) {
     this.vertex = vertex;
     this.startOffset = null;// @public - added by CircuitNode during dragging, used for relative drag location.
 
-    // Start as a dotted line, becomes solid when connected to >1 component.
+    // Start as a dotted line, becomes solid when connected to >1 element.
     var dottedLineNode = new Circle( 20, { stroke: 'black', lineWidth: 3, lineDash: [ 8, 6 ], cursor: 'pointer' } );
     var highlightNode = new Circle( 30, { stroke: 'yellow', lineWidth: 4, pickable: false } );
 

@@ -12,7 +12,7 @@ define( function( require ) {
   var ScreenView = require( 'JOIST/ScreenView' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var CircuitNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitNode' );
-  var CircuitComponentToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitComponentToolbox' );
+  var CircuitElementToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementToolbox' );
   var CircuitElementEditPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementEditPanel' );
   var SensorToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/SensorToolbox' );
   var Property = require( 'AXON/Property' );
@@ -60,14 +60,14 @@ define( function( require ) {
       ammeterNode.visible = visible;
     } );
 
-    var circuitComponentToolbox = new CircuitComponentToolbox( circuitConstructionKitBasicsModel, this );
-    this.circuitNode = new CircuitNode( circuitConstructionKitBasicsModel.circuit, circuitComponentToolbox );
+    this.circuitNode = new CircuitNode( circuitConstructionKitBasicsModel.circuit );
+    var circuitElementToolbox = new CircuitElementToolbox( circuitConstructionKitBasicsModel, this );
 
-    // @protected - so that subclasses can add a layout component near it
+    // @protected - so that subclasses can add a layout circuit element near it
     this.sensorToolbox = new SensorToolbox( voltmeterNode, ammeterNode );
 
     this.addChild( this.sensorToolbox );
-    this.addChild( circuitComponentToolbox );
+    this.addChild( circuitElementToolbox );
     this.addChild( this.circuitNode );
 
     var visibleBoundsProperty = new Property( new Rectangle( 0, 0, this.layoutBounds.width, this.layoutBounds.height ) );
@@ -80,7 +80,7 @@ define( function( require ) {
         bottom: -dy + height - inset
       } );
 
-      circuitComponentToolbox.mutate( {
+      circuitElementToolbox.mutate( {
         left: -dx + inset,
         top: -dy + inset
       } );

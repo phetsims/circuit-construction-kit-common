@@ -23,7 +23,7 @@ define( function( require ) {
    *
    * @constructor
    */
-  function CircuitNode( circuit, circuitElementToolbox ) {
+  function CircuitNode( circuit ) {
     Node.call( this );
     this.circuit = circuit;
     var circuitNode = this;
@@ -235,7 +235,7 @@ define( function( require ) {
       var vertexNode = this.getVertexNode( vertex ); // TODO: Is this too expensive?  Probably!
       var position = vertexNode.globalToParentPoint( event.pointer.point ).minus( vertexNode.startOffset );
 
-      // If it is the edge of a fixed length component, the component rotates and moves toward the mouse
+      // If it is the edge of a fixed length circuit element, the element rotates and moves toward the mouse
       var neighbors = this.circuit.getNeighborCircuitElements( vertex );
 
       // TODO: Fix this

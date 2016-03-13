@@ -218,7 +218,7 @@ define( function( require ) {
 
     /**
      * TODO: does this get the signs right in all cases?
-     * TODO: maybe signs here should depend on component orientation?
+     * TODO: maybe signs here should depend on circuit element orientation?
      * incoming current is negative, outgoing is positive
      * @param node
      * @returns {Array}
@@ -364,7 +364,7 @@ define( function( require ) {
     getEquations: function() {
       var list = [];
 
-      //reference node in each connected component has a voltage of 0.0
+      //reference node in each connected circuit element has a voltage of 0.0
       for ( var i = 0; i < this.getReferenceNodes().length; i++ ) {
         var n = this.getReferenceNodes()[ i ];
         list.push( new Equation( 0, [ new Term( 1, new UnknownVoltage( parseInt( n ) ) ) ] ) );
