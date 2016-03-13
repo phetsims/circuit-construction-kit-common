@@ -28,6 +28,7 @@ define( function( require ) {
     wireColor: '#B87333',
     defaultResistance: 4.5,
     layoutInset: 14,
-    tapThreshold: 10 // Number of pixels (screen coordinates) that constitutes a tap instead of a drag
+    tapThreshold: 10, // Number of pixels (screen coordinates) that constitutes a tap instead of a drag
+    fontAwesomeIconScale: 0.85 // Uniform scaling for all font awesome node button icons
   } );
 } );

@@ -19,6 +19,10 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/FixedLengthCircuitElement' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var HBox = require( 'SCENERY/nodes/HBox' );
+  var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
+  var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
+  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
 
   function CircuitElementEditPanel( circuit, visibleBoundsProperty ) {
     var selectedCircuitElementProperty = circuit.lastCircuitElementProperty;
@@ -66,16 +70,26 @@ define( function( require ) {
       if ( selectedCircuitElement ) {
         if ( selectedCircuitElement instanceof Resistor || selectedCircuitElement instanceof LightBulb ) {
 
-          lastNumberControl = new NumberControl( 'Resistance', selectedCircuitElement.resistanceProperty, new Range( 0, 100 ), _.extend( {
-            units: 'ohms'
-          }, numberControlOptions ) );
-          circuitElementEditPanel.addChild( lastNumberControl );
+          lastNumberControl = new HBox( {
+            spacing: 40,
+            align: 'bottom',
+            children: [
+              new NumberControl( 'Resistance', selectedCircuitElement.resistanceProperty, new Range( 0, 100 ), _.extend( {
+                units: 'ohms'
+              }, numberControlOptions ) ),
+              new RoundPushButton( {
+                baseColor: 'yellow',
+                content: new FontAwesomeNode( 'trash', {
+                  scale: CircuitConstructionKitBasicsConstants.fontAwesomeIconScale
+                } )
+              } )
+            ]
+          } );
         }
         else if ( selectedCircuitElement instanceof Battery ) {
           lastNumberControl = new NumberControl( 'Voltage', selectedCircuitElement.voltageProperty, new Range( 0, 100 ), _.extend( {
             units: 'volts'
           }, numberControlOptions ) );
-          circuitElementEditPanel.addChild( lastNumberControl );
         }
         else {
           lastNumberControl = null;
@@ -83,6 +97,8 @@ define( function( require ) {
       }
       else {
         lastNumberControl = tapInstructionTextNode;
+      }
+      if ( lastNumberControl !== null ) {
         circuitElementEditPanel.addChild( lastNumberControl );
       }
       updatePosition();

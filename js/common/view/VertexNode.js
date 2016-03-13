@@ -42,7 +42,7 @@ define( function( require ) {
       baseColor: 'yellow',
       content: new FontAwesomeNode( 'cut', {
         rotation: -Math.PI / 2, // scissors point up
-        scale: 0.85
+        scale: CircuitConstructionKitBasicsConstants.fontAwesomeIconScale
       } ),
       minXMargin: 10,
       minYMargin: 10,
