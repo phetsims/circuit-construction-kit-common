@@ -17,12 +17,26 @@ define( function( require ) {
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Util = require( 'DOT/Util' );
   var ProbeTextNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ProbeTextNode' );
+  var ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ProbeWireNode' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // images
   var voltmeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/voltmeter_body.png' );
   var redProbe = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/probe_red.png' );
   var blackProbe = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/probe_black.png' );
+
+  // constants
+
+  // measurements for the cubic curve for the wire nodes
+  var BODY_WIRE_LEAD_X = 45;
+  var BODY_LEAD_Y = 15;
+  var PROBE_LEAD_X = 0;
+  var PROBE_LEAD_Y = 40;
+
+  // unsigned measurements for the circles on the voltmeter body image, for where the probe wires connect
+  var PROBE_CONNECTION_POINT_DY = -18;
+  var PROBE_CONNECTION_POINT_DX = 8;
 
   function VoltmeterNode( voltmeter, options ) {
     var voltmeterNode = this;
@@ -47,16 +61,24 @@ define( function( require ) {
         } )
       ]
     } );
+
+    var redWireNode = new ProbeWireNode( 'red', new Vector2( -BODY_WIRE_LEAD_X, BODY_LEAD_Y ), new Vector2( PROBE_LEAD_X, PROBE_LEAD_Y ) );
+    var blackWireNode = new ProbeWireNode( 'black', new Vector2( BODY_WIRE_LEAD_X, BODY_LEAD_Y ), new Vector2( PROBE_LEAD_X, PROBE_LEAD_Y ) );
+
     voltmeter.bodyPositionProperty.link( function( bodyPosition ) {
       bodyNode.centerTop = bodyPosition;
+      redWireNode.setBodyPosition( bodyNode.centerBottom.plusXY( -PROBE_CONNECTION_POINT_DX, PROBE_CONNECTION_POINT_DY ) );
+      blackWireNode.setBodyPosition( bodyNode.centerBottom.plusXY( PROBE_CONNECTION_POINT_DX, PROBE_CONNECTION_POINT_DY ) );
     } );
 
     voltmeter.redProbePositionProperty.link( function( redProbePosition ) {
       voltmeterNode.redProbeNode.centerTop = redProbePosition;
+      redWireNode.setProbePosition( voltmeterNode.redProbeNode.centerBottom );
     } );
 
     voltmeter.blackProbePositionProperty.link( function( blackProbePosition ) {
       voltmeterNode.blackProbeNode.centerTop = blackProbePosition;
+      blackWireNode.setProbePosition( voltmeterNode.blackProbeNode.centerBottom );
     } );
 
     voltmeter.bodyPositionProperty.link( function( bodyPosition ) {
@@ -70,7 +92,10 @@ define( function( require ) {
       pickable: true,
       children: [
         bodyNode,
+        redWireNode,
         this.redProbeNode,
+
+        blackWireNode,
         this.blackProbeNode
       ]
     } );
