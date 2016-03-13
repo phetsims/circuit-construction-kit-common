@@ -56,27 +56,25 @@ define( function( require ) {
       lastNumberControl && circuitElementEditPanel.removeChild( lastNumberControl );
       lastNumberControl = null;
 
+      var font = new PhetFont( 14 );
+      var numberControlOptions = {
+        titleFont: font,
+        valueFont: font,
+        decimalPlaces: 1
+      };
+
       if ( selectedCircuitElement ) {
-        var font = new PhetFont( 14 );
         if ( selectedCircuitElement instanceof Resistor || selectedCircuitElement instanceof LightBulb ) {
 
-          lastNumberControl = new NumberControl( 'Resistance', selectedCircuitElement.resistanceProperty, new Range( 0, 100 ), {
-            units: 'ohms',
-
-            // TODO: factor out options
-            titleFont: font,
-            valueFont: font,
-            decimalPlaces: 1
-          } );
+          lastNumberControl = new NumberControl( 'Resistance', selectedCircuitElement.resistanceProperty, new Range( 0, 100 ), _.extend( {
+            units: 'ohms'
+          }, numberControlOptions ) );
           circuitElementEditPanel.addChild( lastNumberControl );
         }
         else if ( selectedCircuitElement instanceof Battery ) {
-          lastNumberControl = new NumberControl( 'Voltage', selectedCircuitElement.voltageProperty, new Range( 0, 100 ), {
-            units: 'volts',
-            titleFont: font,
-            valueFont: font,
-            decimalPlaces: 1
-          } );
+          lastNumberControl = new NumberControl( 'Voltage', selectedCircuitElement.voltageProperty, new Range( 0, 100 ), _.extend( {
+            units: 'volts'
+          }, numberControlOptions ) );
           circuitElementEditPanel.addChild( lastNumberControl );
         }
         else {
