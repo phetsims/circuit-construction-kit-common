@@ -10,19 +10,13 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var NumberControl = require( 'SCENERY_PHET/NumberControl' );
-  var Range = require( 'DOT/Range' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Resistor' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/LightBulb' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Battery' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/FixedLengthCircuitElement' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
-  var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
-  var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
-  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
+  var CircuitElementEditPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementEditPanel' );
 
   function CircuitElementEditContainerPanel( circuit, visibleBoundsProperty ) {
     var selectedCircuitElementProperty = circuit.lastCircuitElementProperty;
@@ -60,40 +54,12 @@ define( function( require ) {
       lastNumberControl && circuitElementEditContainerPanel.removeChild( lastNumberControl );
       lastNumberControl = null;
 
-      var font = new PhetFont( 14 );
-      var numberControlOptions = {
-        titleFont: font,
-        valueFont: font,
-        decimalPlaces: 1
-      };
-
       if ( selectedCircuitElement ) {
-        if ( selectedCircuitElement instanceof Resistor || selectedCircuitElement instanceof LightBulb ) {
-
-          lastNumberControl = new HBox( {
-            spacing: 40,
-            align: 'bottom',
-            children: [
-              new NumberControl( 'Resistance', selectedCircuitElement.resistanceProperty, new Range( 0, 100 ), _.extend( {
-                units: 'ohms'
-              }, numberControlOptions ) ),
-              new RoundPushButton( {
-                baseColor: 'yellow',
-                content: new FontAwesomeNode( 'trash', {
-                  scale: CircuitConstructionKitBasicsConstants.fontAwesomeIconScale
-                } )
-              } )
-            ]
-          } );
-        }
-        else if ( selectedCircuitElement instanceof Battery ) {
-          lastNumberControl = new NumberControl( 'Voltage', selectedCircuitElement.voltageProperty, new Range( 0, 100 ), _.extend( {
-            units: 'volts'
-          }, numberControlOptions ) );
-        }
-        else {
-          lastNumberControl = null;
-        }
+        var res = selectedCircuitElement instanceof Resistor || selectedCircuitElement instanceof LightBulb;
+        var bat = selectedCircuitElement instanceof Battery;
+        lastNumberControl = res ? new CircuitElementEditPanel( 'Resistance', 'ohms', selectedCircuitElement.resistanceProperty ) :
+                            bat ? new CircuitElementEditPanel( 'Voltage', 'volts', selectedCircuitElement.voltageProperty ) :
+                            null;
       }
       else {
         lastNumberControl = tapInstructionTextNode;
