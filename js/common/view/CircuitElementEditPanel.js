@@ -40,7 +40,9 @@ define( function( require ) {
           } ),
           listener: function() {
             circuit.remove( circuitElement );
-          }
+          },
+          minXMargin: 10,
+          minYMargin: 10
         } )
       ]
     } );

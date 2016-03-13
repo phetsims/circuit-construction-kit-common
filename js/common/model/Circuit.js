@@ -119,6 +119,9 @@ define( function( require ) {
       this.resistors.clear();
 
       this.vertices.clear();
+
+      // Update the physics
+      this.solve();
     },
 
     /**
@@ -140,6 +143,9 @@ define( function( require ) {
         }
         this.vertices.remove( vertex );
       }
+
+      // Update the physics
+      this.solve();
     },
 
     isSingle: function( circuitElement ) {
@@ -158,6 +164,9 @@ define( function( require ) {
       list.remove( circuitElement );
       this.vertices.remove( circuitElement.startVertex );
       this.vertices.remove( circuitElement.endVertex );
+
+      // Update the physics
+      this.solve();
     },
 
     /**
