@@ -20,9 +20,19 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var ProbeNode = require( 'SCENERY_PHET/ProbeNode' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ProbeWireNode' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // images
   var ammeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/ammeter_body.png' );
+
+  // constants
+  // measurements for the cubic curve for the wire nodes
+  var BODY_LEAD_Y = -30;
+  var PROBE_LEAD_Y = 15;
+
+  // unsigned measurements for the circles on the voltmeter body image, for where the probe wires connect
+  var PROBE_CONNECTION_POINT_DY = 8;
 
   // TODO: Factor out things between AmmeterNode and VoltmeterNode
   function AmmeterNode( ammeter, options ) {
@@ -30,11 +40,15 @@ define( function( require ) {
     options = _.extend( { icon: false }, options );
     var s = 0.5;
     this.ammeter = ammeter;
+
+    var blackWireNode = new ProbeWireNode( 'black', new Vector2( 0, BODY_LEAD_Y ), new Vector2( 0, PROBE_LEAD_Y ) );
+
     var probeTextNode = new ProbeTextNode( new DerivedProperty( [ ammeter.currentProperty ], function( current ) {
 
       // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
       return current === null ? '?' : Util.toFixed( Math.abs( current ), 2 ) + ' A';
     } ) );
+
     var bodyNode = new Image( ammeterBodyImage, {
       scale: s,
       cursor: 'pointer',
@@ -67,14 +81,16 @@ define( function( require ) {
     } ) );
 
     Node.call( this, {
-      children: [ bodyNode, this.probeNode ]
+      children: [ bodyNode, blackWireNode, this.probeNode ]
     } );
     ammeter.bodyPositionProperty.link( function( bodyPosition ) {
       bodyNode.centerTop = bodyPosition;
+      blackWireNode.setBodyPosition( bodyNode.centerTop.plusXY( 0, PROBE_CONNECTION_POINT_DY ) );
     } );
 
     ammeter.probePositionProperty.link( function( probePosition ) {
       ammeterNode.probeNode.centerTop = probePosition;
+      blackWireNode.setProbePosition( ammeterNode.probeNode.centerBottom );
     } );
     ammeter.bodyPositionProperty.link( function( bodyPosition ) {
       if ( ammeter.draggingTogether ) {
