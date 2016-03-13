@@ -57,8 +57,8 @@ define( function( require ) {
       if ( selectedCircuitElement ) {
         var res = selectedCircuitElement instanceof Resistor || selectedCircuitElement instanceof LightBulb;
         var bat = selectedCircuitElement instanceof Battery;
-        lastNumberControl = res ? new CircuitElementEditPanel( 'Resistance', 'ohms', selectedCircuitElement.resistanceProperty ) :
-                            bat ? new CircuitElementEditPanel( 'Voltage', 'volts', selectedCircuitElement.voltageProperty ) :
+        lastNumberControl = res ? new CircuitElementEditPanel( 'Resistance', 'ohms', selectedCircuitElement.resistanceProperty, circuit, selectedCircuitElement ) :
+                            bat ? new CircuitElementEditPanel( 'Voltage', 'volts', selectedCircuitElement.voltageProperty, circuit, selectedCircuitElement ) :
                             null;
       }
       else {

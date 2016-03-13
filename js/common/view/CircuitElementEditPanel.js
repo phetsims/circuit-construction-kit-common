@@ -17,7 +17,7 @@ define( function( require ) {
   var Range = require( 'DOT/Range' );
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
 
-  function CircuitElementEditPanel( title, units, valueProperty ) {
+  function CircuitElementEditPanel( title, units, valueProperty, circuit, circuitElement ) {
 
     var font = new PhetFont( 14 );
     var numberControlOptions = {
@@ -37,10 +37,12 @@ define( function( require ) {
           baseColor: 'yellow',
           content: new FontAwesomeNode( 'trash', {
             scale: CircuitConstructionKitBasicsConstants.fontAwesomeIconScale
-          } )
+          } ),
+          listener: function() {
+            circuit.remove( circuitElement );
+          }
         } )
       ]
-
     } );
   }
 
