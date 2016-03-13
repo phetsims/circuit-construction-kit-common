@@ -23,7 +23,7 @@ define( function( require ) {
    *
    * @constructor
    */
-  function CircuitNode( circuit ) {
+  function CircuitNode( circuit, circuitElementToolbox ) {
     Node.call( this );
     this.circuit = circuit;
     var circuitNode = this;

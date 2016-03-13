@@ -97,10 +97,13 @@ define( function( require ) {
         circuitNode.drag( event, circuitElement.endVertex );
       },
       end: function( event ) {
+
+        // TODO: if over the toolbox, then drop into it, and don't process further
+
         circuitNode.endDrag( event, circuitElement.endVertex );
 
-        // Only show on a tap, not on every drag.
-        // TODO: Copied with VertexNode
+        // Only show the editor when tapped tap, not on every drag.
+        // TODO: Shared code with VertexNode
         if ( event.pointer.point.distance( p ) < CircuitConstructionKitBasicsConstants.tapThreshold ) {
 
           circuitNode.circuit.lastCircuitElementProperty.set( circuitElement );

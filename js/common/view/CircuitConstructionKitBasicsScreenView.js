@@ -60,8 +60,8 @@ define( function( require ) {
       ammeterNode.visible = visible;
     } );
 
-    this.circuitNode = new CircuitNode( circuitConstructionKitBasicsModel.circuit );
     var circuitComponentToolbox = new CircuitComponentToolbox( circuitConstructionKitBasicsModel, this );
+    this.circuitNode = new CircuitNode( circuitConstructionKitBasicsModel.circuit, circuitComponentToolbox );
 
     // @protected - so that subclasses can add a layout component near it
     this.sensorToolbox = new SensorToolbox( voltmeterNode, ammeterNode );
