@@ -18,6 +18,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var CircuitElementEditPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementEditPanel' );
 
   /**
    *
@@ -105,10 +106,23 @@ define( function( require ) {
           circuitNode.circuit.lastCircuitElementProperty.set( circuitElement );
 
           // When the user clicks on anything else, deselect the vertex
-          // TODO: Don't deselect when dragging the slider to edit the component
-          var deselect = function() {
-            circuitNode.circuit.lastCircuitElementProperty.set( null );
-            event.pointer.removeInputListener( listener ); // Thanks, hoisting!
+          var deselect = function( event ) {
+
+            // Detect whether the user is hitting something pickable in the CircuitElementEditPanel
+            var circuitElementEditPanel = false;
+            for ( var i = 0; i < event.trail.nodes.length; i++ ) {
+              var trailNode = event.trail.nodes[ i ];
+              if ( trailNode instanceof CircuitElementEditPanel ) {
+                circuitElementEditPanel = true;
+              }
+            }
+
+            // If the user clicked outside of the CircuitElementEditPanel, then hide the edit panel and
+            // deselect the circuitElement
+            if ( !circuitElementEditPanel ) {
+              circuitNode.circuit.lastCircuitElementProperty.set( null );
+              event.pointer.removeInputListener( listener ); // Thanks, hoisting!
+            }
           };
           var listener = {
             mouseup: deselect,
