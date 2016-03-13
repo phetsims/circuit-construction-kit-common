@@ -307,7 +307,7 @@ define( function( require ) {
       vertexNode.startOffset = null;
 
       // Signify that something has been dropped in the play area.
-      // TODO: Don't signify this if something dropped in the toolbox
+      // TODO: Don't signify this if something dropped in the toolbox // TODO: Why not?
       this.circuit.circuitElementDroppedEmitter.emit();
     }
   } );
