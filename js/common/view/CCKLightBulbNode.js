@@ -1,7 +1,7 @@
 // Copyright 2015, University of Colorado Boulder
 
 /**
- *
+ * Named CCKLightBulbNode to avoid collisions with SCENERY_PHET/LightBulbNode
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
