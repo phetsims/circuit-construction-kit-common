@@ -14,6 +14,7 @@ define( function( require ) {
   var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/FixedLengthCircuitElementNode' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var ResistorColors = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ResistorColors' );
+  var Image = require( 'SCENERY/nodes/Image' );
 
   // images
   var resistorImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/resistor.png' );
@@ -28,16 +29,16 @@ define( function( require ) {
   function ResistorNode( circuitConstructionKitBasicsScreenView, circuitNode, resistor, options ) {
     this.resistor = resistor;
     var imageScale = 0.7;
-    FixedLengthCircuitElementNode.call( this, circuitConstructionKitBasicsScreenView, circuitNode, resistor, resistorImage, imageScale, options );
+    var resistorNode = new Image( resistorImage );
 
-    var imageWidth = this.imageNode.imageWidth / imageScale;
+    var imageWidth = resistorNode.imageWidth / imageScale;
     var bandWidth = 10;
     var bandHeight = 40;
     var inset = 40;
     var availableBandSpace = imageWidth * 0.75 - 2 * inset;
     var remainingSpace = availableBandSpace - 4 * bandWidth;// max is 4 bands, even though they are not always shown
     var bandSeparation = remainingSpace / 4; // two spaces before last band
-    var y = this.imageNode.imageHeight / 2 / imageScale - bandHeight / imageScale / 2;
+    var y = resistorNode.imageHeight / 2 / imageScale - bandHeight / imageScale / 2;
     var colorBands = [
       new Rectangle( 0, 0, bandWidth, bandHeight, { x: inset + (bandWidth + bandSeparation) * 0, y: y } ),
       new Rectangle( 0, 0, bandWidth, bandHeight, { x: inset + (bandWidth + bandSeparation) * 1, y: y } ),
@@ -55,9 +56,10 @@ define( function( require ) {
     };
     resistor.resistanceProperty.link( updateColorBands );
     for ( var i = 0; i < colorBands.length; i++ ) {
-      this.imageNode.addChild( colorBands[ i ] );
+      resistorNode.addChild( colorBands[ i ] );
     }
 
+    FixedLengthCircuitElementNode.call( this, circuitConstructionKitBasicsScreenView, circuitNode, resistor, resistorNode, imageScale, options );
     this.disposeResistorNode = function() {
       resistor.resistanceProperty.unlink( updateColorBands );
     };

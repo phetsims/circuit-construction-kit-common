@@ -12,7 +12,6 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
-  var Image = require( 'SCENERY/nodes/Image' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Vector2 = require( 'DOT/Vector2' );
   var Property = require( 'AXON/Property' );
@@ -21,26 +20,21 @@ define( function( require ) {
   var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementEditContainerPanel' );
 
   /**
-   *
    * @param {CircuitConstructionKitBasicsScreenView} circuitConstructionKitBasicsScreenView
    * @param circuitNode - Null if an icon is created
    * @param circuitElement
-   * @param image
-   * @param {number} imageScale - the scale factor to apply to the image for the size in the play area (icons are automatically scaled up)
+   * @param {Node} contentNode - the node that will display the component
+   * @param {number} contentScale - the scale factor to apply to the image for the size in the play area (icons are automatically scaled up)
    * @param options
    * @constructor
    */
-  function FixedLengthCircuitElementNode( circuitConstructionKitBasicsScreenView, circuitNode, circuitElement, image, imageScale, options ) {
+  function FixedLengthCircuitElementNode( circuitConstructionKitBasicsScreenView, circuitNode, circuitElement, contentNode,
+                                          contentScale, options ) {
     var fixedLengthCircuitElementNode = this;
     options = _.extend( {
       icon: false
     }, options );
     this.circuitElement = circuitElement;
-
-    // @protected (for ResistorNode to paint the color bands on)
-    this.imageNode = new Image( image );
-
-    var imageNode = this.imageNode;
 
     // Relink when start vertex changes
     var multilink = null;
@@ -49,14 +43,14 @@ define( function( require ) {
       multilink = Property.multilink( [ circuitElement.startVertex.positionProperty, circuitElement.endVertex.positionProperty ], function( startPosition, endPosition ) {
         var angle = endPosition.minus( startPosition ).angle(); // TODO: speed up maths
         // TODO: Simplify this matrix math.
-        imageNode.resetTransform();
-        imageNode.mutate( {
-          scale: imageScale
+        contentNode.resetTransform();
+        contentNode.mutate( {
+          scale: contentScale
         } );
-        imageNode.rotateAround( new Vector2( 0, 0 ), angle );
-        imageNode.x = startPosition.x;
-        imageNode.y = startPosition.y;
-        imageNode.translate( 0, -image[ 0 ].height / 2 );
+        contentNode.rotateAround( new Vector2( 0, 0 ), angle );
+        contentNode.x = startPosition.x;
+        contentNode.y = startPosition.y;
+        contentNode.translate( 0, -contentNode.height / 2 );
       } );
     };
     relink();
@@ -66,23 +60,23 @@ define( function( require ) {
 
     if ( circuitNode ) {
       var inset = -10;
-      var highlightNode = new Rectangle( inset, inset, imageNode.width - inset * 2, imageNode.height - inset * 2, {
+      var highlightNode = new Rectangle( inset, inset, contentNode.width - inset * 2, contentNode.height - inset * 2, {
         stroke: 'yellow',
         lineWidth: 5,
 
         // TODO: Probably move the highlight to another node, so that its parent isn't image node
         // TODO: So that it can extend beyond the bounds without throwing off the layout
-        scale: 1.0 / imageScale,
+        scale: 1.0 / contentScale,
         pickable: false
       } );
 
-      imageNode.addChild( highlightNode );
+      contentNode.addChild( highlightNode );
     }
 
     Node.call( this, {
       cursor: 'pointer',
       children: [
-        imageNode
+        contentNode
       ]
     } );
 
@@ -140,7 +134,7 @@ define( function( require ) {
         }
       }
     } );
-    !options.icon && imageNode.addInputListener( this.inputListener );
+    !options.icon && contentNode.addInputListener( this.inputListener );
 
     if ( circuitNode ) {
       circuitNode.circuit.lastCircuitElementProperty.link( function( lastCircuitElement ) {
