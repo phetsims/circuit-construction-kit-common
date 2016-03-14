@@ -233,11 +233,12 @@ define( function( require ) {
           node0: circuit.vertices.indexOf( lightBulb.startVertex ),
           node1: circuit.vertices.indexOf( lightBulb.endVertex ),
           resistance: lightBulb.resistance,
-          circuitElement: lightBulb // TODO: Wire resistance may be variable
+          circuitElement: lightBulb
         };
       } );
 
       var resistorAdapters = resistors.getArray().concat( wires.getArray() ).concat( bulbs.getArray() );
+
       var solution = new OOCircuit( batteries.getArray(), resistorAdapters, [] ).solve();
 
       // Apply the node voltages to the vertices
@@ -252,6 +253,16 @@ define( function( require ) {
       // Apply the branch currents
       for ( i = 0; i < solution.elements.length; i++ ) {
         solution.elements[ i ].circuitElement.current = solution.elements[ i ].currentSolution;
+      }
+
+      // For resistors with r!==0, we must use Ohm's Law to compute the current
+      for ( i = 0; i < resistorAdapters.length; i++ ) {
+        var resistorAdapter = resistorAdapters[ i ];
+        if ( resistorAdapter.resistance !== 0 ) {
+          var voltage = solution.nodeVoltages[ resistorAdapter.node1 ] - solution.nodeVoltages[ resistorAdapter.node0 ];
+          var current = -voltage / resistorAdapter.resistance;
+          resistorAdapter.circuitElement.current = current;
+        }
       }
 
       this.circuitChangedEmitter.emit();
