@@ -15,6 +15,7 @@ define( function( require ) {
   var LightBulbNode = require( 'SCENERY_PHET/LightBulbNode' );
   var Property = require( 'AXON/Property' );
   var Image = require( 'SCENERY/nodes/Image' );
+  var Util = require( 'DOT/Util' );
 
   // images
   var lightBulbImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/light-bulb.png' );
@@ -26,7 +27,13 @@ define( function( require ) {
   function CCKLightBulbNode( circuitConstructionKitBasicsScreenView, circuitNode, lightBulb ) {
     this.lightBulb = lightBulb;
     var imageNode = new Image( lightBulbImage );
-    imageNode.addChild( new LightBulbNode( new Property( 0.5 ), {
+    var brightnessProperty = new Property( 0.0 );
+    lightBulb.currentProperty.link( function( current ) {
+      var scaled = Math.abs( current ) / 20;
+      var clamped = Util.clamp( scaled, 0, 1 );
+      brightnessProperty.value = clamped;
+    } );
+    imageNode.addChild( new LightBulbNode( brightnessProperty, {
       scale: 3.5,
       centerX: imageNode.width / 2,
       centerY: imageNode.height / 2
