@@ -13,7 +13,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/WireNode' );
   var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/BatteryNode' );
-  var LightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/LightBulbNode' );
+  var CCKLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CCKLightBulbNode' );
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ResistorNode' );
   var VertexNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/VertexNode' );
   var Vector2 = require( 'DOT/Vector2' );
@@ -88,16 +88,16 @@ define( function( require ) {
       assert && assert( circuitNode.getBatteryNode( battery ) === null, 'should have been removed' );
     } );
 
-    var addLightBulbNode = function( lightBulb ) {
-      var lightBulbNode = new LightBulbNode( circuitConstructionKitBasicsScreenView, circuitNode, lightBulb );
+    var addCCKLightBulbNode = function( lightBulb ) {
+      var lightBulbNode = new CCKLightBulbNode( circuitConstructionKitBasicsScreenView, circuitNode, lightBulb );
       circuitNode.lightBulbNodes.push( lightBulbNode );
       circuitNode.addChild( lightBulbNode );
     };
-    circuit.lightBulbs.addItemAddedListener( addLightBulbNode );
-    circuit.lightBulbs.forEach( addLightBulbNode );
+    circuit.lightBulbs.addItemAddedListener( addCCKLightBulbNode );
+    circuit.lightBulbs.forEach( addCCKLightBulbNode );
     // TODO: Heavily duplicated with other removal listeners
     circuit.lightBulbs.addItemRemovedListener( function( lightBulb ) {
-      var lightBulbNode = circuitNode.getLightBulbNode( lightBulb );
+      var lightBulbNode = circuitNode.getCCKLightBulbNode( lightBulb );
 
       circuitNode.removeChild( lightBulbNode );
 
@@ -107,7 +107,7 @@ define( function( require ) {
       }
       lightBulbNode.dispose();
 
-      assert && assert( circuitNode.getLightBulbNode( lightBulb ) === null, 'should have been removed' );
+      assert && assert( circuitNode.getCCKLightBulbNode( lightBulb ) === null, 'should have been removed' );
     } );
 
     // TODO: When an item is dropped in the toolbox, remove it from the model
@@ -168,7 +168,7 @@ define( function( require ) {
       return null;
     },
     // TODO: Duplicated
-    getLightBulbNode: function( lightBulb ) {
+    getCCKLightBulbNode: function( lightBulb ) {
       for ( var i = 0; i < this.lightBulbNodes.length; i++ ) {
         var lightBulbNode = this.lightBulbNodes[ i ];
         if ( lightBulbNode.lightBulb === lightBulb ) {
