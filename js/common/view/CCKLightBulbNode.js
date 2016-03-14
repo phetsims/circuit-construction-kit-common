@@ -28,6 +28,12 @@ define( function( require ) {
     lightBulb.currentProperty.link( function( current ) {
       var scaled = Math.abs( current ) / 20;
       var clamped = Util.clamp( scaled, 0, 1 );
+
+      // Workaround for SCENERY_PHET/LightBulbNode which shows highlight even for current = 1E-16, so clamp it off
+      // see https://github.com/phetsims/scenery-phet/issues/225
+      if ( clamped < 1E-6 ) {
+        clamped = 0;
+      }
       brightnessProperty.value = clamped;
     } );
     var lightBulbNode = new LightBulbNode( brightnessProperty, {
@@ -48,7 +54,11 @@ define( function( require ) {
         lightBulbNode.rotateAround( new Vector2( 0, 0 ), angle );
         lightBulbNode.x = startPosition.x;
         lightBulbNode.y = startPosition.y;
-        lightBulbNode.translate( dist / 2 / contentScale, 0 );
+        lightBulbNode.translate( dist / 2 / contentScale, 10 );
+      },
+      highlightOptions: {
+        centerX: 0,
+        bottom: 10 / 2 // TODO: this must match the highlight inset
       }
     } );
   }

@@ -45,7 +45,8 @@ define( function( require ) {
         contentNode.x = startPosition.x;
         contentNode.y = startPosition.y;
         contentNode.translate( 0, -contentNode.height / 2 );
-      }
+      },
+      highlightOptions: {}
     }, options );
     this.circuitElement = circuitElement;
 
@@ -63,9 +64,10 @@ define( function( require ) {
     circuitElement.startVertexProperty.lazyLink( relink );
     circuitElement.endVertexProperty.lazyLink( relink );
 
+    // Add highlight (but not for icons)
     if ( circuitNode ) {
       var inset = -10;
-      var highlightNode = new Rectangle( inset, inset, contentNode.width - inset * 2, contentNode.height - inset * 2, {
+      var highlightNode = new Rectangle( inset, inset, contentNode.width - inset * 2, contentNode.height - inset * 2, _.extend( options.highlightOptions, {
         stroke: 'yellow',
         lineWidth: 5,
 
@@ -73,7 +75,7 @@ define( function( require ) {
         // TODO: So that it can extend beyond the bounds without throwing off the layout
         scale: 1.0 / contentScale,
         pickable: false
-      } );
+      } ) );
 
       contentNode.addChild( highlightNode );
     }
