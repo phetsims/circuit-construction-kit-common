@@ -32,15 +32,9 @@ define( function( require ) {
                                           contentScale, options ) {
     var fixedLengthCircuitElementNode = this;
     options = _.extend( {
-      icon: false
-    }, options );
-    this.circuitElement = circuitElement;
+      icon: false,
+      updateLayout: function( startPosition, endPosition ) {
 
-    // Relink when start vertex changes
-    var multilink = null;
-    var relink = function() {
-      multilink && multilink.dispose();
-      multilink = Property.multilink( [ circuitElement.startVertex.positionProperty, circuitElement.endVertex.positionProperty ], function( startPosition, endPosition ) {
         var angle = endPosition.minus( startPosition ).angle(); // TODO: speed up maths
         // TODO: Simplify this matrix math.
         contentNode.resetTransform();
@@ -51,7 +45,18 @@ define( function( require ) {
         contentNode.x = startPosition.x;
         contentNode.y = startPosition.y;
         contentNode.translate( 0, -contentNode.height / 2 );
-      } );
+      }
+    }, options );
+    this.circuitElement = circuitElement;
+
+    // Relink when start vertex changes
+    var multilink = null;
+    var relink = function() {
+      multilink && multilink.dispose();
+      multilink = Property.multilink( [
+        circuitElement.startVertex.positionProperty,
+        circuitElement.endVertex.positionProperty
+      ], options.updateLayout );
     };
     relink();
 

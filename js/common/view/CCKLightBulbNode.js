@@ -16,9 +16,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Image = require( 'SCENERY/nodes/Image' );
   var Util = require( 'DOT/Util' );
-
-  // images
-  var lightBulbImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/light-bulb.png' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   /**
    *
@@ -26,19 +24,33 @@ define( function( require ) {
    */
   function CCKLightBulbNode( circuitConstructionKitBasicsScreenView, circuitNode, lightBulb ) {
     this.lightBulb = lightBulb;
-    var imageNode = new Image( lightBulbImage );
     var brightnessProperty = new Property( 0.0 );
     lightBulb.currentProperty.link( function( current ) {
       var scaled = Math.abs( current ) / 20;
       var clamped = Util.clamp( scaled, 0, 1 );
       brightnessProperty.value = clamped;
     } );
-    imageNode.addChild( new LightBulbNode( brightnessProperty, {
-      scale: 3.5,
-      centerX: imageNode.width / 2,
-      centerY: imageNode.height / 2
-    } ) );
-    FixedLengthCircuitElementNode.call( this, circuitConstructionKitBasicsScreenView, circuitNode, lightBulb, imageNode, 0.7 );
+    var lightBulbNode = new LightBulbNode( brightnessProperty, {
+      scale: 3.5
+    } );
+    var contentScale = 2.5;
+    FixedLengthCircuitElementNode.call( this, circuitConstructionKitBasicsScreenView, circuitNode, lightBulb, lightBulbNode, contentScale, {
+      updateLayout: function( startPosition, endPosition ) {
+
+        // TODO: Duplicated somewhat with FixedLengthCircuitElementNode
+        var angle = endPosition.minus( startPosition ).angle(); // TODO: speed up maths
+        var dist = startPosition.distance( endPosition );
+        // TODO: Simplify this matrix math.
+        lightBulbNode.resetTransform();
+        lightBulbNode.mutate( {
+          scale: contentScale
+        } );
+        lightBulbNode.rotateAround( new Vector2( 0, 0 ), angle );
+        lightBulbNode.x = startPosition.x;
+        lightBulbNode.y = startPosition.y;
+        lightBulbNode.translate( dist / 2 / contentScale, 0 );
+      }
+    } );
   }
 
   circuitConstructionKitBasics.register( 'CCKLightBulbNode', CCKLightBulbNode );
