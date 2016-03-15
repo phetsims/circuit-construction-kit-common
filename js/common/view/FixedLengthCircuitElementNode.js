@@ -97,10 +97,10 @@ define( function( require ) {
     this.inputListener = new SimpleDragHandler( {
       start: function( event ) {
         p = event.pointer.point;
-        circuitNode.startDrag( event, circuitElement.endVertex );
+        circuitNode.startDrag( event.pointer.point, circuitElement.endVertex, false );
       },
       drag: function( event ) {
-        circuitNode.drag( event, circuitElement.endVertex );
+        circuitNode.drag( event.pointer.point, circuitElement.endVertex, false );
       },
       end: function( event ) {
 

@@ -228,41 +228,51 @@ define( function( require ) {
         return null;
       }
     },
-    startDrag: function( event, vertex ) {
-      var vertexNode = this.getVertexNode( vertex ); // TODO: use event.currentTarget?
-      vertexNode.startOffset = vertexNode.globalToParentPoint( event.pointer.point ).minus( vertex.unsnappedPosition );
-    },
-    drag: function( event, vertex ) {
+    startDrag: function( point, vertex, okToRotate ) {
+      console.log( 'startDrag', okToRotate );
 
+      // If it is the edge of a fixed length circuit element, the element rotates and moves toward the mouse
+      var neighbors = this.circuit.getNeighborCircuitElements( vertex );
+
+      var vertexNode = this.getVertexNode( vertex ); // TODO: use event.currentTarget?
+      if ( okToRotate && (neighbors.length === 1 && neighbors[ 0 ] instanceof FixedLengthCircuitElement) ) {
+        // recursively call drag on the opposite vertex, then tell it to rotate this one
+        var oppositeVertex = neighbors[ 0 ].getOppositeVertex( vertex );
+        this.startDrag( point, oppositeVertex, false );
+
+        vertexNode.startOffset = vertexNode.globalToParentPoint( point ).minus( vertex.unsnappedPosition );
+      }
+      else {
+        vertexNode.startOffset = vertexNode.globalToParentPoint( point ).minus( vertex.unsnappedPosition );
+      }
+    },
+    drag: function( point, vertex, okToRotate ) {
+      console.log( 'drag', okToRotate );
       var vertexNode = this.getVertexNode( vertex ); // TODO: Is this too expensive?  Probably!
-      var position = vertexNode.globalToParentPoint( event.pointer.point ).minus( vertexNode.startOffset );
+      var position = vertexNode.globalToParentPoint( point ).minus( vertexNode.startOffset );
 
       // If it is the edge of a fixed length circuit element, the element rotates and moves toward the mouse
       var neighbors = this.circuit.getNeighborCircuitElements( vertex );
 
       // TODO: Fix this
-      if ( false && (neighbors.length === 1 && neighbors[ 0 ] instanceof FixedLengthCircuitElement) ) {
-
-        vertex.position = position;
-        vertex.unsnappedPosition = position;
-
-        // recursively call drag on the opposite vertex, then tell it to rotate this one
+      if ( okToRotate && (neighbors.length === 1 && neighbors[ 0 ] instanceof FixedLengthCircuitElement) ) {
 
         var oppositeVertex = neighbors[ 0 ].getOppositeVertex( vertex );
 
-        // Find the new relative angle
-        var angle = vertex.position.minus( oppositeVertex.position ).angle();
+        // Find the new desired relative angle
+        var angle = position.minus( oppositeVertex.position ).angle();
 
-        // Maintain fixed length
+        // recursively call drag on the opposite vertex, then tell it to rotate this one
+        this.drag( point, oppositeVertex, false );
+
+        // Maintain fixed length and use the angle above to position the free vertex
         var length = neighbors[ 0 ].length;
-        var relative = Vector2.createPolar( length, angle + Math.PI );
-        var oppositePosition = vertex.position.plus( relative );
+        var relative = Vector2.createPolar( length, angle );
+        var p = oppositeVertex.position.plus( relative );
 
-        oppositeVertex.position = oppositePosition;
-        oppositeVertex.unsnappedPosition = oppositePosition;
+        vertex.position = p;
+        vertex.unsnappedPosition = p;
 
-        // TODO: Refactor so as not to have to make fake event
-        //this.drag({pointer:{point:position}})
         return;
       }
 

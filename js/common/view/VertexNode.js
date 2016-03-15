@@ -77,10 +77,10 @@ define( function( require ) {
     var simpleDragHandler = new SimpleDragHandler( {
       start: function( event ) {
         p = event.pointer.point;
-        circuitNode.startDrag( event, vertex );
+        circuitNode.startDrag( event.pointer.point, vertex, true );
       },
       drag: function( event ) {
-        circuitNode.drag( event, vertex );
+        circuitNode.drag( event.pointer.point, vertex, true );
       },
       end: function( event ) {
         circuitNode.endDrag( event, vertex );

@@ -54,12 +54,12 @@ define( function( require ) {
 
     this.inputListener = new SimpleDragHandler( {
       start: function( event ) {
-        circuitNode.startDrag( event, wire.startVertex );
-        circuitNode.startDrag( event, wire.endVertex );
+        circuitNode.startDrag( event.pointer.point, wire.startVertex, false );
+        circuitNode.startDrag( event.pointer.point, wire.endVertex, false );
       },
       drag: function( event ) {
-        circuitNode.drag( event, wire.startVertex );
-        circuitNode.drag( event, wire.endVertex );
+        circuitNode.drag( event.pointer.point, wire.startVertex, false );
+        circuitNode.drag( event.pointer.point, wire.endVertex, false );
       },
       end: function( event ) {
         circuitNode.endDrag( event, wire.startVertex );
