@@ -84,7 +84,7 @@ define( function( require ) {
       scale: 1
     } );
 
-    var resistorNode = new ResistorNode( null, null, new Resistor( new Vertex( -80, 0 ), new Vertex( -80, 0 ), CircuitConstructionKitBasicsConstants.defaultResistance ), { icon: true } );
+    var resistorNode = new ResistorNode( null, null, new Resistor( new Vertex( 0, 0 ), new Vertex( Resistor.RESISTOR_LENGTH, 0 ), CircuitConstructionKitBasicsConstants.defaultResistance ), { icon: true } );
 
     CircuitConstructionKitBasicsPanel.call( this, new VBox( {
       spacing: CircuitConstructionKitBasicsConstants.toolboxItemSpacing,
@@ -123,7 +123,12 @@ define( function( require ) {
             scale: iconWidth / Math.max( resistorNode.width, resistorNode.height )
           } )
           .addInputListener( createToolIconInputListener(
-            function( position ) { return new Resistor( new Vertex( position.x - 80 * 0.7, position.y ), new Vertex( position.x + 80 * 0.7, position.y ), CircuitConstructionKitBasicsConstants.defaultResistance ); },
+            function( position ) {
+              var resistorLength = Resistor.RESISTOR_LENGTH;// TODO: duplicated
+              var startVertex = new Vertex( position.x - resistorLength / 2, position.y );
+              var endVertex = new Vertex( position.x + resistorLength / 2, position.y );
+              return new Resistor( startVertex, endVertex, CircuitConstructionKitBasicsConstants.defaultResistance );
+            },
             circuit.resistors,
             circuitNode.resistorNodes,
             function( resistorNode ) { return resistorNode.resistor; }
