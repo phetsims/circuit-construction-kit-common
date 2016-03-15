@@ -19,7 +19,7 @@ define( function( require ) {
   var CircuitElementEditPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementEditPanel' );
 
   function CircuitElementEditContainerPanel( circuit, visibleBoundsProperty ) {
-    var selectedCircuitElementProperty = circuit.lastCircuitElementProperty;
+    var selectedCircuitElementProperty = circuit.selectedCircuitElementProperty;
     var circuitElementEditContainerPanel = this;
     Node.call( this );
 

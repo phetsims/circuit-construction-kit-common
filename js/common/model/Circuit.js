@@ -106,12 +106,12 @@ define( function( require ) {
     } );
 
     // Keep track of the last circuit element the user manipulated, for showing additional controls
-    this.lastCircuitElementProperty = new Property( null );
+    this.selectedCircuitElementProperty = new Property( null );
   }
 
   return inherit( Object, Circuit, {
     clear: function() {
-      this.lastCircuitElementProperty.reset();
+      this.selectedCircuitElementProperty.reset();
 
       this.wires.clear();
       this.batteries.clear();
@@ -164,6 +164,11 @@ define( function( require ) {
       list.remove( circuitElement );
       this.vertices.remove( circuitElement.startVertex );
       this.vertices.remove( circuitElement.endVertex );
+
+      // Clear the selected element property so that the Edit panel for the element will disappear
+      if ( this.selectedCircuitElementProperty.get() === circuitElement ) {
+        this.selectedCircuitElementProperty.set( null );
+      }
 
       // Update the physics
       this.solve();

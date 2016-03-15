@@ -116,7 +116,7 @@ define( function( require ) {
         // TODO: Shared code with VertexNode
         if ( event.pointer.point.distance( p ) < CircuitConstructionKitBasicsConstants.tapThreshold ) {
 
-          circuitNode.circuit.lastCircuitElementProperty.set( circuitElement );
+          circuitNode.circuit.selectedCircuitElementProperty.set( circuitElement );
 
           // When the user clicks on anything else, deselect the vertex
           var deselect = function( event ) {
@@ -133,7 +133,7 @@ define( function( require ) {
             // If the user clicked outside of the CircuitElementEditContainerPanel, then hide the edit panel and
             // deselect the circuitElement
             if ( !circuitElementEditContainerPanel ) {
-              circuitNode.circuit.lastCircuitElementProperty.set( null );
+              circuitNode.circuit.selectedCircuitElementProperty.set( null );
               event.pointer.removeInputListener( listener ); // Thanks, hoisting!
             }
           };
@@ -148,7 +148,7 @@ define( function( require ) {
     !options.icon && contentNode.addInputListener( this.inputListener );
 
     if ( circuitNode ) {
-      circuitNode.circuit.lastCircuitElementProperty.link( function( lastCircuitElement ) {
+      circuitNode.circuit.selectedCircuitElementProperty.link( function( lastCircuitElement ) {
         var showHighlight = lastCircuitElement === circuitElement;
         highlightNode.visible = showHighlight;
       } );
