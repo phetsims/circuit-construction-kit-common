@@ -13,7 +13,7 @@ define( function( require ) {
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/FixedLengthCircuitElement' );
 
   // constants
-  var RESISTOR_LENGTH = 146 * 0.75;
+  var RESISTOR_LENGTH = 110;
 
   /**
    *
