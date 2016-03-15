@@ -297,7 +297,7 @@ define( function( require ) {
       // Update the unsnapped position of the entire subgraph, i.e. where it would be if no matches are proposed.
       // Must do this before calling getBestDropTarget, because the unsnapped positions are used for target matching
       var unsnappedDelta = position.minus( vertex.unsnappedPosition );
-      for ( var i = 0; i < vertices.length; i++ ) {
+      for ( i = 0; i < vertices.length; i++ ) {
         vertices[ i ].unsnappedPosition = vertices[ i ].unsnappedPosition.plus( unsnappedDelta );
       }
 
