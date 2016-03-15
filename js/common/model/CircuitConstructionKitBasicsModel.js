@@ -35,10 +35,6 @@ define( function( require ) {
       this.ammeter.reset();
 
       this.circuit.loadFromStateObject( this.initialCircuitState );
-    },
-    //TODO Called by the animation loop. Optional, so if your model has no animation, please delete this.
-    step: function( dt ) {
-      //TODO Handle model animation here.
     }
   } );
 } );

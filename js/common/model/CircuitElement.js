@@ -29,8 +29,7 @@ define( function( require ) {
       current: 0
     }, propertySetMap ) );
 
-    // TODO: Derived properties for startPosition and endPosition, to encapsulate the
-    // TODO: matter of switching vertices.??
+    // TODO: Derived properties for startPosition and endPosition, to encapsulate the matter of switching vertices?
 
     this.interactive = options.interactive; // TODO: maybe move into PropertySet if it will be toggleable by the circuit creator
   }

@@ -125,7 +125,7 @@ define( function( require ) {
         termList.push( a.toTermString() );
       }
       var result = '' + termList.join( '+' ) + '=' + this.rhs;
-      return result.replace( '\\+\\-', '\\-' ); // TODO: This looks wrong
+      return result.replace( '\\+\\-', '\\-' );
     }
   } );
 

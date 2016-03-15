@@ -57,7 +57,7 @@ define( function( require ) {
       },
       highlightOptions: {
         centerX: 0,
-        bottom: 10 / 2 // TODO: this must match the highlight inset
+        bottom: 5 // TODO: this must match the highlight inset
       }
     } );
   }

@@ -53,6 +53,7 @@ define( function( require ) {
       scale: s,
       cursor: 'pointer',
       children: [
+
         // TODO: Move title to ProbeTextNode
         new VBox( {
           spacing: 6,
