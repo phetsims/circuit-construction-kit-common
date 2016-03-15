@@ -30,7 +30,7 @@ define( function( require ) {
       cursor: 'pointer',
       strokePickable: true
     } );
-    this.addChild( lineNode );
+    this.addChild( lineNode ); // TODO: extend Line
 
     var startListener = function( startPoint ) {
       lineNode.setPoint1( startPoint );
