@@ -249,7 +249,18 @@ define( function( require ) {
         var oppositeVertex = neighbors[ 0 ].getOppositeVertex( vertex );
 
         // Find the new relative angle
-        var angle = position.minus( oppositeVertex.position ).angle();
+        var angle;
+
+        if ( vertex.unsnappedPosition.x === vertex.position.x && vertex.unsnappedPosition.y === vertex.position.y ) {
+
+          // Rotate the way the element is going.
+          angle = position.minus( oppositeVertex.position ).angle();
+        }
+        else {
+
+          // Lock in the angle if a match is proposed, otherwise things rotate uncontrollably
+          angle = vertex.position.minus( oppositeVertex.position ).angle();
+        }
 
         // Maintain fixed length
         var length = neighbors[ 0 ].length;
