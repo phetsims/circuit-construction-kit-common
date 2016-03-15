@@ -31,6 +31,10 @@ define( function( require ) {
   function FixedLengthCircuitElementNode( circuitConstructionKitBasicsScreenView, circuitNode, circuitElement, contentNode,
                                           contentScale, options ) {
     var fixedLengthCircuitElementNode = this;
+
+    // Capture the original dimensions of the content node, without the highlight node
+    var contentNodeHeight = contentNode.height;
+
     options = _.extend( {
       icon: false,
       updateLayout: function( startPosition, endPosition ) {
@@ -44,7 +48,7 @@ define( function( require ) {
         contentNode.rotateAround( new Vector2( 0, 0 ), angle );
         contentNode.x = startPosition.x;
         contentNode.y = startPosition.y;
-        contentNode.translate( 0, -contentNode.height / 2 );
+        contentNode.translate( 0, -contentNodeHeight / 2 );
       },
       highlightOptions: {}
     }, options );
