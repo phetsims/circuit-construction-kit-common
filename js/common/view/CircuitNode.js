@@ -264,6 +264,7 @@ define( function( require ) {
         // recursively call drag on the opposite vertex, then tell it to rotate this one
 
         var oppositeVertex = neighbors[ 0 ].getOppositeVertex( vertex );
+        var oppositeVertexNode = this.getVertexNode( oppositeVertex );
 
         // Find the new relative angle
         var angle = vertex.position.minus( oppositeVertex.position ).angle();
@@ -277,7 +278,9 @@ define( function( require ) {
         oppositeVertex.unsnappedPosition = oppositePosition;
 
         // TODO: encode/decode bug
-        var fakePoint = vertexNode.parentToGlobalPoint( oppositeVertex.position );
+        // TODO: Also we need to invert this entire line: var position = vertexNode.globalToParentPoint( point ).minus( vertexNode.startOffset );
+        var fakePoint = vertexNode.parentToGlobalPoint( oppositePosition.plus( oppositeVertexNode.startOffset ) );
+        //var fakePoint = vertexNode.parentToGlobalPoint( oppositeVertex.position );
         this.drag( fakePoint, oppositeVertex, false, [ vertex, oppositeVertex ] ); // TODO: Also signify that this vertex is not to be moved again
 
         return;
