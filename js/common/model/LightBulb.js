@@ -12,12 +12,15 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/FixedLengthCircuitElement' );
 
+  // constants
+  var LIGHT_BULB_LENGTH = 80;
+
   /**
    *
    * @constructor
    */
   function LightBulb( startVertex, endVertex, resistance ) {
-    FixedLengthCircuitElement.call( this, 146, startVertex, endVertex, {
+    FixedLengthCircuitElement.call( this, LIGHT_BULB_LENGTH, startVertex, endVertex, {
       resistance: resistance
     } );
   }
@@ -26,5 +29,7 @@ define( function( require ) {
     toStateObjectWithVertexIndices: function( getVertexIndex ) {
       return _.extend( { resistance: this.resistance }, FixedLengthCircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex ) );
     }
+  }, {
+    LIGHT_BULB_LENGTH: LIGHT_BULB_LENGTH
   } );
 } );

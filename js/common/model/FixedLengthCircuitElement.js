@@ -17,11 +17,13 @@ define( function( require ) {
    * @constructor
    */
   function FixedLengthCircuitElement( length, startVertex, endVertex, propertySetMap ) {
+    var actualLength = startVertex.position.distance( endVertex.position );
+    assert && assert( Math.abs( length - actualLength ) < 1E-6, 'length should be ' + length );
+
     CircuitElement.call( this, startVertex, endVertex, propertySetMap );
     this.length = length;
 
-    // TODO: Derived properties for startPosition and endPosition, to encapsulate the
-    // TODO: matter of switching vertices.
+    // TODO: Derived properties for startPosition and endPosition, to encapsulate the matter of switching vertices.
   }
 
   return inherit( CircuitElement, FixedLengthCircuitElement );

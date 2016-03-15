@@ -12,13 +12,16 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/FixedLengthCircuitElement' );
 
+  // constants
+  var BATTERY_LENGTH = 102;
+
   /**
    *
    * @constructor
    */
   function Battery( startVertex, endVertex, voltage ) {
     assert && assert( typeof voltage === 'number', 'voltage should be a number' );
-    FixedLengthCircuitElement.call( this, 146, startVertex, endVertex, {
+    FixedLengthCircuitElement.call( this, BATTERY_LENGTH, startVertex, endVertex, {
       voltage: voltage
     } );
   }
@@ -31,5 +34,7 @@ define( function( require ) {
         FixedLengthCircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex )
       );
     }
+  }, {
+    BATTERY_LENGTH: BATTERY_LENGTH
   } );
 } );

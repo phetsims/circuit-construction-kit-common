@@ -20,10 +20,7 @@ define( function( require ) {
    * @constructor
    */
   function Resistor( startVertex, endVertex, resistance ) {
-    var length = startVertex.position.distance( endVertex.position );
-    assert && assert( Math.abs( length - RESISTOR_LENGTH ) < 1E-6, 'length should be ' + RESISTOR_LENGTH + ' or so' );
-
-    FixedLengthCircuitElement.call( this, length, startVertex, endVertex, {
+    FixedLengthCircuitElement.call( this, RESISTOR_LENGTH, startVertex, endVertex, {
       resistance: resistance
     } );
   }

@@ -101,7 +101,12 @@ define( function( require ) {
           scale: iconWidth / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height )
         } )
           .addInputListener( createToolIconInputListener(
-            function( position ) { return new Battery( new Vertex( position.x - 80 * 0.7, position.y ), new Vertex( position.x + 80 * 0.7, position.y ), 9.0 ); },
+            function( position ) {
+              var batteryLength = Battery.BATTERY_LENGTH;
+              var startVertex = new Vertex( position.x - batteryLength / 2, position.y );
+              var endVertex = new Vertex( position.x + batteryLength / 2, position.y );
+              return new Battery( startVertex, endVertex, 9.0 );
+            },
             circuit.batteries,
             circuitNode.batteryNodes,
             function( batteryNode ) { return batteryNode.battery; }
@@ -111,7 +116,12 @@ define( function( require ) {
           scale: iconWidth / Math.max( lightBulbImage[ 0 ].width, lightBulbImage[ 0 ].height ) // constrained by being too tall, not too wide
         } )
           .addInputListener( createToolIconInputListener(
-            function( position ) { return new LightBulb( new Vertex( position.x - 50 * 0.7, position.y ), new Vertex( position.x + 50 * 0.7, position.y ), CircuitConstructionKitBasicsConstants.defaultResistance ); },
+            function( position ) {
+              var lightBulbLength = LightBulb.LIGHT_BULB_LENGTH;
+              var startVertex = new Vertex( position.x - lightBulbLength / 2, position.y );
+              var endVertex = new Vertex( position.x + lightBulbLength / 2, position.y );
+              return new LightBulb( startVertex, endVertex, CircuitConstructionKitBasicsConstants.defaultResistance );
+            },
             circuit.lightBulbs,
             circuitNode.lightBulbNodes,
             function( lightBulbNode ) { return lightBulbNode.lightBulb; }
@@ -124,7 +134,7 @@ define( function( require ) {
           } )
           .addInputListener( createToolIconInputListener(
             function( position ) {
-              var resistorLength = Resistor.RESISTOR_LENGTH;// TODO: duplicated
+              var resistorLength = Resistor.RESISTOR_LENGTH;
               var startVertex = new Vertex( position.x - resistorLength / 2, position.y );
               var endVertex = new Vertex( position.x + resistorLength / 2, position.y );
               return new Resistor( startVertex, endVertex, CircuitConstructionKitBasicsConstants.defaultResistance );
