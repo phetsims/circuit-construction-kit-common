@@ -113,8 +113,8 @@ define( function( require ) {
 
     // Detection for voltmeter probe + circuit collision is done in the view since view bounds are used
     var updateVoltmeter = function() {
-      var redConnection = circuitConstructionKitBasicsScreenView.getVoltage( voltmeterNode.voltmeter.redProbePosition );
-      var blackConnection = circuitConstructionKitBasicsScreenView.getVoltage( voltmeterNode.voltmeter.blackProbePosition );
+      var redConnection = circuitConstructionKitBasicsScreenView.getVoltage( voltmeterNode.redProbeNode, voltmeterNode.voltmeter.redProbePosition );
+      var blackConnection = circuitConstructionKitBasicsScreenView.getVoltage( voltmeterNode.blackProbeNode, voltmeterNode.voltmeter.blackProbePosition );
       if ( redConnection === null || blackConnection === null ) {
         circuitConstructionKitBasicsModel.voltmeter.voltage = null;
       }
@@ -158,12 +158,27 @@ define( function( require ) {
     getCurrent: function( probeNode ) {
 
       // TODO: Collide with vertices
+      var hitWireNode = this.hitWireNode( probeNode );
+      if ( hitWireNode ) {
+        return hitWireNode.wire.current;
+      }
+      else {
+        return null;
+      }
+    },
+
+    /**
+     * Check for an intersection between a probeNode and a wire, return null if no hits.
+     * @param probeNode
+     * @returns {*}
+     */
+    hitWireNode: function( probeNode ) {
       for ( var i = 0; i < this.circuitNode.wireNodes.length; i++ ) {
         var wireNode = this.circuitNode.wireNodes[ i ];
 
         // TODO: is this too expensive on iPad?
         if ( wireNode.getStrokedShape().containsPoint( probeNode.translation ) ) {
-          return wireNode.wire.current;
+          return wireNode;
         }
       }
       return null;
@@ -174,11 +189,9 @@ define( function( require ) {
      * @param {Vector2} probePosition
      * @private
      */
-    getVoltage: function( probePosition ) {
-      // TODO: Pass in the node and check for collisions with wires
+    getVoltage: function( probeNode, probePosition ) {
 
-      // TODO: refine rules for collisions, could use model coordinates with view shapes
-      // TODO: Collide with wires
+      // Check for intersection with a vertex
       for ( var i = 0; i < this.circuitNode.vertexNodes.length; i++ ) {
         var vertexNode = this.circuitNode.vertexNodes[ i ];
         var position = vertexNode.vertex.position;
@@ -189,12 +202,16 @@ define( function( require ) {
           return vertexNode.vertex.voltage;
         }
       }
-      return null;
-    },
 
-    //TODO Called by the animation loop. Optional, so if your view has no animation, please delete this.
-    step: function( dt ) {
-      //TODO Handle view animation here.
+      // Check for intersection with a wire
+      var wireNode = this.hitWireNode( probeNode );
+      if ( wireNode ) {
+        // TODO: potentiometer: weight according to distance to the node
+        return (wireNode.wire.startVertex.voltage + wireNode.wire.endVertex.voltage) / 2;
+      }
+      else {
+        return null;
+      }
     }
   } );
 } );
