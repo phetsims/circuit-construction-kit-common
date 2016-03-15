@@ -246,8 +246,7 @@ define( function( require ) {
         vertexNode.startOffset = vertexNode.globalToParentPoint( point ).minus( vertex.unsnappedPosition );
       }
     },
-    drag: function( point, vertex, okToRotate, exclude ) {
-      exclude = exclude || [];
+    drag: function( point, vertex, okToRotate ) {
       console.log( 'drag', okToRotate );
       var vertexNode = this.getVertexNode( vertex ); // TODO: Is this too expensive?  Probably!
       var position = vertexNode.globalToParentPoint( point ).minus( vertexNode.startOffset );
@@ -261,10 +260,7 @@ define( function( require ) {
         vertex.position = position;
         vertex.unsnappedPosition = position;
 
-        // recursively call drag on the opposite vertex, then tell it to rotate this one
-
         var oppositeVertex = neighbors[ 0 ].getOppositeVertex( vertex );
-        var oppositeVertexNode = this.getVertexNode( oppositeVertex );
 
         // Find the new relative angle
         var angle = vertex.position.minus( oppositeVertex.position ).angle();
@@ -273,34 +269,44 @@ define( function( require ) {
         var length = neighbors[ 0 ].length;
         var relative = Vector2.createPolar( length, angle + Math.PI );
         var oppositePosition = vertex.position.plus( relative );
-
+        var originalOppositePosition = oppositeVertex.position;
         oppositeVertex.position = oppositePosition;
         oppositeVertex.unsnappedPosition = oppositePosition;
 
-        // TODO: encode/decode bug
-        // TODO: Also we need to invert this entire line: var position = vertexNode.globalToParentPoint( point ).minus( vertexNode.startOffset );
-        var fakePoint = vertexNode.parentToGlobalPoint( oppositePosition.plus( oppositeVertexNode.startOffset ) );
-        //var fakePoint = vertexNode.parentToGlobalPoint( oppositeVertex.position );
-        this.drag( fakePoint, oppositeVertex, false, [ vertex, oppositeVertex ] ); // TODO: Also signify that this vertex is not to be moved again
+        // Find all vertices connected by fixed length nodes.
+        var vertexSubset = this.circuit.findAllFixedVertices( vertex );
+        var exclude = [ vertex, oppositeVertex ];
+        for ( var i = 0; i < exclude.length; i++ ) {
+          var e = exclude[ i ];
+          var index = vertexSubset.indexOf( e );
+          if ( index > -1 ) {
+            vertexSubset.splice( index, 1 );
+          }
+        }
+
+        this.translateVertexGroup( vertexSubset, oppositePosition.minus( originalOppositePosition ) );
 
         return;
       }
 
       // Find all vertices connected by fixed length nodes.
       var vertices = this.circuit.findAllFixedVertices( vertex );
-      for ( var i = 0; i < exclude.length; i++ ) {
-        var e = exclude[ i ];
-        var index = vertices.indexOf( e );
-        if ( index > -1 ) {
-          vertices.splice( index, 1 );
-        }
-      }
-      vertices = _.without( vertices, exclude );
+
+      this.translateVertexGroup( vertices, position.minus( vertex.unsnappedPosition ) );
+
+      // TODO: Keep in bounds
+    },
+
+    /**
+     * Translate a group of vertices, used when dragging by a circuit element or by a one-neighbor vertex
+     * @param {Array.<Vertex>} vertices
+     * @param {Vector2} unsnappedDelta
+     */
+    translateVertexGroup: function( vertices, unsnappedDelta ) {
 
       // Update the unsnapped position of the entire subgraph, i.e. where it would be if no matches are proposed.
       // Must do this before calling getBestDropTarget, because the unsnapped positions are used for target matching
-      var unsnappedDelta = position.minus( vertex.unsnappedPosition );
-      for ( i = 0; i < vertices.length; i++ ) {
+      for ( var i = 0; i < vertices.length; i++ ) {
         vertices[ i ].unsnappedPosition = vertices[ i ].unsnappedPosition.plus( unsnappedDelta );
       }
 
@@ -315,8 +321,6 @@ define( function( require ) {
       for ( i = 0; i < vertices.length; i++ ) {
         vertices[ i ].position = vertices[ i ].unsnappedPosition.plus( delta );
       }
-
-      // TODO: Keep in bounds
     },
     endDrag: function( event, vertex ) {
 
