@@ -256,62 +256,51 @@ define( function( require ) {
         var relative = Vector2.createPolar( length, angle + Math.PI );
         var oppositePosition = position.plus( relative );
 
-        var unsnappedDelta = oppositePosition.minus( oppositeVertex.unsnappedPosition );
+        var rotationDelta = oppositePosition.minus( oppositeVertex.unsnappedPosition );
 
-        // Update the unsnapped position of the entire subgraph, i.e. where it would be if no matches are proposed.
-        // Must do this before calling getBestDropTarget, because the unsnapped positions are used for target matching
-        for ( var i = 0; i < vertices.length; i++ ) {
-          vertices[ i ].unsnappedPosition = vertices[ i ].unsnappedPosition.plus( unsnappedDelta );
-        }
-
-        // Rotate the end piece
-        vertex.unsnappedPosition = oppositeVertex.unsnappedPosition.minus( relative );
-
-        // Is there a nearby vertex any of these could snap to?  If so, move to its location temporarily.
-        // Find drop targets for *any* of the dragged vertices
-        var bestDropTarget = this.getBestDropTarget( [ vertex ] );
-        var delta = Vector2.ZERO;
-        if ( bestDropTarget ) {
-          delta = bestDropTarget.dst.unsnappedPosition.minus( bestDropTarget.src.unsnappedPosition );
-        }
-
-        for ( i = 0; i < vertices.length; i++ ) {
-          vertices[ i ].position = vertices[ i ].unsnappedPosition.plus( delta );
-        }
+        this.translateVertexGroup( vertex, vertices, rotationDelta, function() {
+          vertex.unsnappedPosition = oppositeVertex.unsnappedPosition.minus( relative );
+        }, [ vertex ] );
       }
       else {
-        var unsnappedDelta = position.minus( vertex.unsnappedPosition );
-        // Update the unsnapped position of the entire subgraph, i.e. where it would be if no matches are proposed.
-        // Must do this before calling getBestDropTarget, because the unsnapped positions are used for target matching
-        for ( var i = 0; i < vertices.length; i++ ) {
-          vertices[ i ].unsnappedPosition = vertices[ i ].unsnappedPosition.plus( unsnappedDelta );
-        }
-
-        // Is there a nearby vertex any of these could snap to?  If so, move to its location temporarily.
-        // Find drop targets for *any* of the dragged vertices
-        var bestDropTarget = this.getBestDropTarget( vertices );
-        var delta = Vector2.ZERO;
-        if ( bestDropTarget ) {
-          delta = bestDropTarget.dst.unsnappedPosition.minus( bestDropTarget.src.unsnappedPosition );
-        }
-
-        for ( i = 0; i < vertices.length; i++ ) {
-          vertices[ i ].position = vertices[ i ].unsnappedPosition.plus( delta );
-        }
+        var translationDelta = position.minus( vertex.unsnappedPosition );
+        this.translateVertexGroup( vertex, vertices, translationDelta, null, vertices );
       }
 
       // TODO: Keep in bounds
     },
 
-    ///**
-    // * Translate a group of vertices, used when dragging by a circuit element or by a one-neighbor vertex
-    // * @param {Array.<Vertex>} vertices
-    // * @param {Vector2} unsnappedDelta
-    // */
-    //translateVertexGroup: function( vertices, unsnappedDelta, attachableVertices, verticesToUpdateOnSnap ) {
-    //
-    //
-    //},
+    /**
+     * Translate a group of vertices, used when dragging by a circuit element or by a one-neighbor vertex
+     * @param {Vertex} vertex - the vertex being dragged
+     * @param {Array.<Vertex>} vertices - all the vertices in the group
+     * @param {Vector2} unsnappedDelta - how far to move the group
+     * @param {function|null} updatePositions - optional callback for updating positions after unsnapped positions updated
+     * @param {Array.<Vertex>} attachable - the nodes that are candidates for attachment
+     */
+    translateVertexGroup: function( vertex, vertices, unsnappedDelta, updatePositions, attachable ) {
+
+      // Update the unsnapped position of the entire subgraph, i.e. where it would be if no matches are proposed.
+      // Must do this before calling getBestDropTarget, because the unsnapped positions are used for target matching
+      for ( var i = 0; i < vertices.length; i++ ) {
+        vertices[ i ].unsnappedPosition = vertices[ i ].unsnappedPosition.plus( unsnappedDelta );
+      }
+
+      updatePositions && updatePositions();
+
+      // Is there a nearby vertex any of these could snap to?  If so, move to its location temporarily.
+      // Find drop targets for *any* of the dragged vertices
+      var bestDropTarget = this.getBestDropTarget( attachable );
+      var delta = Vector2.ZERO;
+      if ( bestDropTarget ) {
+        delta = bestDropTarget.dst.unsnappedPosition.minus( bestDropTarget.src.unsnappedPosition );
+      }
+
+      for ( i = 0; i < vertices.length; i++ ) {
+        vertices[ i ].position = vertices[ i ].unsnappedPosition.plus( delta );
+      }
+
+    },
     endDrag: function( event, vertex ) {
 
       var vertexNode = this.getVertexNode( vertex ); // TODO: Is this too expensive?  Probably!
