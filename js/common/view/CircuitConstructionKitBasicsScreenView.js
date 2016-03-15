@@ -113,8 +113,8 @@ define( function( require ) {
 
     // Detection for voltmeter probe + circuit collision is done in the view since view bounds are used
     var updateVoltmeter = function() {
-      var redConnection = circuitConstructionKitBasicsScreenView.getVoltage( voltmeterNode.redProbeNode );
-      var blackConnection = circuitConstructionKitBasicsScreenView.getVoltage( voltmeterNode.blackProbeNode );
+      var redConnection = circuitConstructionKitBasicsScreenView.getVoltage( voltmeterNode.voltmeter.redProbePosition );
+      var blackConnection = circuitConstructionKitBasicsScreenView.getVoltage( voltmeterNode.voltmeter.blackProbePosition );
       if ( redConnection === null || blackConnection === null ) {
         circuitConstructionKitBasicsModel.voltmeter.voltage = null;
       }
@@ -171,17 +171,21 @@ define( function( require ) {
 
     /**
      * Find where the voltmeter probe node intersects the wire, for computing the voltage difference
-     * @param {Node} probeNode
+     * @param {Vector2} probePosition
      * @private
      */
-    getVoltage: function( probeNode ) {
+    getVoltage: function( probePosition ) {
+      // TODO: Pass in the node and check for collisions with wires
 
       // TODO: refine rules for collisions, could use model coordinates with view shapes
       // TODO: Collide with wires
-      var globalPoint = probeNode.globalBounds.centerTop;
       for ( var i = 0; i < this.circuitNode.vertexNodes.length; i++ ) {
         var vertexNode = this.circuitNode.vertexNodes[ i ];
-        if ( vertexNode.globalBounds.containsPoint( globalPoint ) ) {
+        var position = vertexNode.vertex.position;
+        var radius = vertexNode.dottedLineNodeRadius;
+
+        var distance = probePosition.distance( position );
+        if ( distance <= radius ) {
           return vertexNode.vertex.voltage;
         }
       }
