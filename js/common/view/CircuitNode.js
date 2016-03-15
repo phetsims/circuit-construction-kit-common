@@ -229,32 +229,21 @@ define( function( require ) {
       }
     },
     startDrag: function( point, vertex, okToRotate ) {
-      console.log( 'startDrag', okToRotate );
 
       // If it is the edge of a fixed length circuit element, the element rotates and moves toward the mouse
-      var neighbors = this.circuit.getNeighborCircuitElements( vertex );
-
       var vertexNode = this.getVertexNode( vertex ); // TODO: use event.currentTarget?
-      if ( okToRotate && (neighbors.length === 1 && neighbors[ 0 ] instanceof FixedLengthCircuitElement) ) {
-        // recursively call drag on the opposite vertex, then tell it to rotate this one
-        var oppositeVertex = neighbors[ 0 ].getOppositeVertex( vertex );
-        this.startDrag( point, oppositeVertex, false );
-
-        vertexNode.startOffset = vertexNode.globalToParentPoint( point ).minus( vertex.unsnappedPosition );
-      }
-      else {
-        vertexNode.startOffset = vertexNode.globalToParentPoint( point ).minus( vertex.unsnappedPosition );
-      }
+      vertexNode.startOffset = vertexNode.globalToParentPoint( point ).minus( vertex.unsnappedPosition );
     },
     drag: function( point, vertex, okToRotate ) {
-      console.log( 'drag', okToRotate );
       var vertexNode = this.getVertexNode( vertex ); // TODO: Is this too expensive?  Probably!
       var position = vertexNode.globalToParentPoint( point ).minus( vertexNode.startOffset );
 
       // If it is the edge of a fixed length circuit element, the element rotates and moves toward the mouse
       var neighbors = this.circuit.getNeighborCircuitElements( vertex );
 
-      // TODO: Fix this
+      // Find all vertices connected by fixed length nodes.
+      var vertices = this.circuit.findAllFixedVertices( vertex );
+
       if ( okToRotate && (neighbors.length === 1 && neighbors[ 0 ] instanceof FixedLengthCircuitElement) ) {
 
         vertex.position = position;
@@ -284,15 +273,11 @@ define( function( require ) {
           }
         }
 
-        this.translateVertexGroup( vertexSubset, oppositePosition.minus( originalOppositePosition ) );
-
-        return;
+        this.translateVertexGroup( vertexSubset, oppositePosition.minus( originalOppositePosition ), [ vertex ], vertices );
       }
-
-      // Find all vertices connected by fixed length nodes.
-      var vertices = this.circuit.findAllFixedVertices( vertex );
-
-      this.translateVertexGroup( vertices, position.minus( vertex.unsnappedPosition ) );
+      else {
+        this.translateVertexGroup( vertices, position.minus( vertex.unsnappedPosition ), vertices, vertices );
+      }
 
       // TODO: Keep in bounds
     },
@@ -302,7 +287,7 @@ define( function( require ) {
      * @param {Array.<Vertex>} vertices
      * @param {Vector2} unsnappedDelta
      */
-    translateVertexGroup: function( vertices, unsnappedDelta ) {
+    translateVertexGroup: function( vertices, unsnappedDelta, attachableVertices, verticesToUpdateOnSnap ) {
 
       // Update the unsnapped position of the entire subgraph, i.e. where it would be if no matches are proposed.
       // Must do this before calling getBestDropTarget, because the unsnapped positions are used for target matching
@@ -312,14 +297,14 @@ define( function( require ) {
 
       // Is there a nearby vertex any of these could snap to?  If so, move to its location temporarily.
       // Find drop targets for *any* of the dragged vertices
-      var bestDropTarget = this.getBestDropTarget( vertices );
+      var bestDropTarget = this.getBestDropTarget( attachableVertices );
       var delta = Vector2.ZERO;
       if ( bestDropTarget ) {
         delta = bestDropTarget.dst.unsnappedPosition.minus( bestDropTarget.src.unsnappedPosition );
       }
 
-      for ( i = 0; i < vertices.length; i++ ) {
-        vertices[ i ].position = vertices[ i ].unsnappedPosition.plus( delta );
+      for ( i = 0; i < verticesToUpdateOnSnap.length; i++ ) {
+        verticesToUpdateOnSnap[ i ].position = verticesToUpdateOnSnap[ i ].unsnappedPosition.plus( delta );
       }
     },
     endDrag: function( event, vertex ) {
