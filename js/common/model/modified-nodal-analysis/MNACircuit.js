@@ -17,7 +17,14 @@ define( function( require ) {
   // constants
   var debug = false;
 
-  // TODO: Does lodash help here?
+  /**
+   * Find the index of an element in an array
+   * Could have used lodash's _.findIndex, but this will be called many times per frame and could be faster without
+   * lodash
+   * @param {Array} array
+   * @param {Object} element
+   * @returns {number} the index or -1 if not found
+   */
   var getIndexByEquals = function( array, element ) {
     for ( var i = 0; i < array.length; i++ ) {
       var e = array[ i ];
@@ -39,11 +46,12 @@ define( function( require ) {
     this.variable = variable;
   }
 
-  // TODO: use inherit?
-  Term.prototype.toTermString = function() {
-    var prefix = this.coefficient === 1 ? '' : ( ( this.coefficient === -1 ) ? '-' : this.coefficient + '*' );
-    return prefix + this.variable.toTermName();
-  };
+  inherit( Object, Term, {
+    toTermString: function() {
+      var prefix = this.coefficient === 1 ? '' : ( ( this.coefficient === -1 ) ? '-' : this.coefficient + '*' );
+      return prefix + this.variable.toTermName();
+    }
+  } );
 
   /**
    *
@@ -54,12 +62,14 @@ define( function( require ) {
     this.element = element;
   }
 
-  UnknownCurrent.prototype.toTermName = function() {
-    return 'I' + this.element.node0 + '_' + this.element.node1;
-  };
-  UnknownCurrent.prototype.equals = function( other ) {
-    return other.element === this.element;
-  };
+  inherit( Object, UnknownCurrent, {
+    toTermName: function() {
+      return 'I' + this.element.node0 + '_' + this.element.node1;
+    },
+    equals: function( other ) {
+      return other.element === this.element;
+    }
+  } );
 
   /**
    * @param {number} node
@@ -70,13 +80,14 @@ define( function( require ) {
     this.node = node;
   }
 
-  UnknownVoltage.prototype.toTermName = function() {
-    return 'V' + this.node;
-  };
-
-  UnknownVoltage.prototype.equals = function( other ) {
-    return other.node === this.node;
-  };
+  inherit( Object, UnknownVoltage, {
+    toTermName: function() {
+      return 'V' + this.node;
+    },
+    equals: function( other ) {
+      return other.node === this.node;
+    }
+  } );
 
   /**
    *
@@ -89,31 +100,34 @@ define( function( require ) {
     this.terms = terms;
   }
 
-  /**
-   *
-   * @param {number} row
-   * @param {Matrix} a
-   * @param {Matrix} z
-   * @param {function} getIndex
-   */
-  Equation.prototype.stamp = function( row, a, z, getIndex ) {
-    z.set( row, 0, this.rhs );
-    for ( var i = 0; i < this.terms.length; i++ ) {
-      var term = this.terms[ i ];
-      var index = getIndex( term.variable );
-      a.set( row, index, term.coefficient + a.get( row, index ) );
-    }
-  };
+  inherit( Object, Equation, {
 
-  Equation.prototype.toString = function() {
-    var termList = [];
-    for ( var i = 0; i < this.terms.length; i++ ) {
-      var a = this.terms[ i ];
-      termList.push( a.toTermString() );
+    /**
+     *
+     * @param {number} row
+     * @param {Matrix} a
+     * @param {Matrix} z
+     * @param {function} getIndex
+     */
+    stamp: function( row, a, z, getIndex ) {
+      z.set( row, 0, this.rhs );
+      for ( var i = 0; i < this.terms.length; i++ ) {
+        var term = this.terms[ i ];
+        var index = getIndex( term.variable );
+        a.set( row, index, term.coefficient + a.get( row, index ) );
+      }
+    },
+
+    toString: function() {
+      var termList = [];
+      for ( var i = 0; i < this.terms.length; i++ ) {
+        var a = this.terms[ i ];
+        termList.push( a.toTermString() );
+      }
+      var result = '' + termList.join( '+' ) + '=' + this.rhs;
+      return result.replace( '\\+\\-', '\\-' ); // TODO: This looks wrong
     }
-    var result = '' + termList.join( '+' ) + '=' + this.rhs;
-    return result.replace( '\\+\\-', '\\-' ); // TODO: This looks wrong
-  };
+  } );
 
   /**
    *
