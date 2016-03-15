@@ -1,7 +1,7 @@
 // Copyright 2015, University of Colorado Boulder
 
 /**
- * TODO: Once more of the port is complete, rename this to MNACircuit.
+ * Modified Nodal Analysis for a circuit.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -119,7 +119,7 @@ define( function( require ) {
    *
    * @constructor
    */
-  function OOCircuit( batteries, resistors, currentSources ) {
+  function MNACircuit( batteries, resistors, currentSources ) {
     assert && assert( batteries, 'batteries should be defined' );
     assert && assert( resistors, 'resistors should be defined' );
     assert && assert( currentSources, 'currentSources should be defined' );
@@ -149,7 +149,7 @@ define( function( require ) {
     this.currentSources = currentSources;
   }
 
-  circuitConstructionKitBasics.register( 'OOCircuit', OOCircuit );
+  circuitConstructionKitBasics.register( 'MNACircuit', MNACircuit );
 
   var resistorToString = function( resistor ) {
     return 'node' + resistor.node0 + ' -> node' + resistor.node1 + ' @ ' + resistor.resistance + ' Ohms';
@@ -173,7 +173,7 @@ define( function( require ) {
     }
   };
 
-  return inherit( Object, OOCircuit, {
+  return inherit( Object, MNACircuit, {
     toString: function() {
       return 'Circuit: resistors:' + this.resistors.map( function( r ) {
           return resistorToString( r );
