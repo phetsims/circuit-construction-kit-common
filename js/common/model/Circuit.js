@@ -189,6 +189,10 @@ define( function( require ) {
       return neighbors;
     },
 
+    hasOneNeighbor: function( vertex ) {
+      return this.getNeighborCircuitElements( vertex ).length === 1;
+    },
+
     // Duplicates work with the above method to avoid allocations.
     countCircuitElements: function( vertex ) {
       var edgeCount = 0;
@@ -203,7 +207,7 @@ define( function( require ) {
 
     // @public
     solve: function() {
-      //console.log( JSON.stringify( this.toStateObject(), null, 2 ) );
+      console.log( JSON.stringify( this.toStateObject(), null, 2 ) );
 
       var circuit = this;
 
@@ -294,7 +298,8 @@ define( function( require ) {
 
       // Keep the black box vertices
       // TODO: Rename "interactive"
-      if ( vertex1.interactive && !vertex2.interactive ) {
+      // TODO: Use blackBoxInterface vertices as the flag here, or move the check elsewhere
+      if ( vertex2.blackBoxInterface && !vertex1.blackBoxInterface ) {
         this.connect( vertex2, vertex1 );
       }
       else {
@@ -451,7 +456,26 @@ define( function( require ) {
         lightBulbs: getArray( this.lightBulbs ),
         resistors: getArray( this.resistors ),
         vertices: this.vertices.map( function( vertex ) {
-          return { x: vertex.position.x, y: vertex.position.y };
+
+          var v = {
+            x: vertex.position.x,
+            y: vertex.position.y
+          };
+
+          // Include any non-default options
+          // TODO: Move this to Vertex and make sure the defaults will be captured correctly, if defaults changed?
+          var options = {};
+          if ( vertex.blackBoxInterface ) {
+            options.blackBoxInterface = vertex.blackBoxInterface;
+          }
+          if ( !vertex.interactive ) {
+            options.interactive = vertex.interactive;
+          }
+          if ( _.keys( options ).length > 0 ) {
+            v.options = options;
+          }
+
+          return v;
         } ).getArray()
       };
     },
@@ -481,39 +505,45 @@ define( function( require ) {
      */
     loadFromStateObject: function( stateObject ) {
       var circuit = this;
+      var options = null;
       for ( var i = 0; i < stateObject.vertices.length; i++ ) {
-        circuit.vertices.add( new Vertex( stateObject.vertices[ i ].x, stateObject.vertices[ i ].y, {
-          interactive: false
-        } ) );
+        options = stateObject.vertices[ i ].options || {};
+        circuit.vertices.add( new Vertex( stateObject.vertices[ i ].x, stateObject.vertices[ i ].y, options ) );
       }
       for ( i = 0; i < stateObject.wires.length; i++ ) {
+        options = stateObject.wires[ i ].options || {};
         circuit.wires.add( new Wire(
           circuit.vertices.get( stateObject.wires[ i ].startVertex ),
           circuit.vertices.get( stateObject.wires[ i ].endVertex ),
-          stateObject.wires[ i ].resistance, {
-            interactive: false // TODO: Is this the best way to proceed?  With "interactive" as an option?
-          }
+          stateObject.wires[ i ].resistance,
+          options
         ) );
       }
       for ( i = 0; i < stateObject.batteries.length; i++ ) {
+        options = stateObject.batteries[ i ].options || {};
         circuit.batteries.add( new Battery(
           circuit.vertices.get( stateObject.batteries[ i ].startVertex ),
           circuit.vertices.get( stateObject.batteries[ i ].endVertex ),
-          stateObject.batteries[ i ].voltage
+          stateObject.batteries[ i ].voltage,
+          options
         ) );
       }
       for ( i = 0; i < stateObject.resistors.length; i++ ) {
+        options = stateObject.resistors[ i ].options || {};
         circuit.resistors.add( new Resistor(
           circuit.vertices.get( stateObject.resistors[ i ].startVertex ),
           circuit.vertices.get( stateObject.resistors[ i ].endVertex ),
-          stateObject.resistors[ i ].resistance
+          stateObject.resistors[ i ].resistance,
+          options
         ) );
       }
       for ( i = 0; i < stateObject.lightBulbs.length; i++ ) {
+        options = stateObject.lightBulbs[ i ].options || {};
         circuit.lightBulbs.add( new LightBulb(
           circuit.vertices.get( stateObject.lightBulbs[ i ].startVertex ),
           circuit.vertices.get( stateObject.lightBulbs[ i ].endVertex ),
-          stateObject.lightBulbs[ i ].resistance
+          stateObject.lightBulbs[ i ].resistance,
+          options
         ) );
       }
       circuit.solve();

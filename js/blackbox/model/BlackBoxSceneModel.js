@@ -27,7 +27,17 @@ define( function( require ) {
     var circuit = this.circuit;
 
     var removeBlackBoxContents = function( blackBoxCircuit ) {
+
+      // TODO: Don't remove the blackBoxInterface vertices
       circuit.removeCircuit( blackBoxCircuit );
+
+      // but don't remove the interface vertices
+      for ( var i = 0; i < blackBoxCircuit.vertices.getArray().length; i++ ) {
+        var vertex = blackBoxCircuit.vertices.getArray()[ i ];
+        if ( blackBoxCircuit.hasOneNeighbor( vertex ) ) {
+          circuit.vertices.add( vertex );
+        }
+      }
     };
     var addBlackBoxContents = function( blackBoxCircuit ) {
       circuit.addCircuit( blackBoxCircuit );
