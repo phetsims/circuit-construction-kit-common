@@ -291,15 +291,23 @@ define( function( require ) {
      * @public
      */
     connect: function( vertex1, vertex2 ) {
-      var circuitElements = this.getCircuitElements();
-      for ( var i = 0; i < circuitElements.length; i++ ) {
-        circuitElements[ i ].connectCircuitElement( vertex1, vertex2 );
-      }
-      this.vertices.remove( vertex2 );
-      assert && assert( !vertex2.positionProperty.hasListeners(), 'Removed vertex should not have any listeners' );
 
-      // Update the physics
-      this.solve();
+      // Keep the black box vertices
+      // TODO: Rename "interactive"
+      if ( vertex1.interactive && !vertex2.interactive ) {
+        this.connect( vertex2, vertex1 );
+      }
+      else {
+        var circuitElements = this.getCircuitElements();
+        for ( var i = 0; i < circuitElements.length; i++ ) {
+          circuitElements[ i ].connectCircuitElement( vertex1, vertex2 );
+        }
+        this.vertices.remove( vertex2 );
+        assert && assert( !vertex2.positionProperty.hasListeners(), 'Removed vertex should not have any listeners' );
+
+        // Update the physics
+        this.solve();
+      }
     },
 
     // The only way for two vertices to be adjacent is for them to be the start/end of a single CircuitElement
@@ -342,6 +350,7 @@ define( function( require ) {
      * @param {Vertex} vertex
      */
     findAllFixedVertices: function( vertex ) {
+      assert && assert( this.vertices.indexOf( vertex ) >= 0, 'Vertex wasn\'t in the model' );
       var fixedVertices = [];
       var toVisit = [ vertex ];
       var visited = [];
@@ -467,6 +476,7 @@ define( function( require ) {
 
     /**
      * This method loads a state into an existing circuit, which is likely clear()ed beforehand.
+     * NOTE: This also sets elements to be non-interactive
      * @param stateObject
      */
     loadFromStateObject: function( stateObject ) {
@@ -509,22 +519,6 @@ define( function( require ) {
       circuit.solve();
 
       return this;
-    },
-
-    removeBlackBoxWires: function() {
-      var wires = [];
-      for ( var i = 0; i < this.wires.getArray().length; i++ ) {
-        var wire = this.wires.getArray()[ i ];
-        if ( !wire.interactive ) {
-          console.log( 'found non interactive wire' );
-          wires.push( wire );
-        }
-      }
-      for ( var k = 0; k < wires.length; k++ ) {
-        var w = wires[ k ];
-        this.wires.remove( w );
-      }
-      return wires;
     }
   }, {
 
