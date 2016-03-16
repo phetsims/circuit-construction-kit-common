@@ -42,12 +42,12 @@ define( function( require ) {
             resistors: [],
             vertices: [
               {
-                x: 416.8235294117648,
-                y: 306.70739064856707
+                x: 416,
+                y: 305
               },
               {
-                x: 606.0180995475114,
-                y: 305.5490196078431
+                x: 606,
+                y: 305
               }
             ]
           } ) ), blackBoxScreenModel.sceneProperty );
