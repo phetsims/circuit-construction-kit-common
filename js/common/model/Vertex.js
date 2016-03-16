@@ -22,7 +22,8 @@ define( function( require ) {
    */
   function Vertex( x, y, options ) {
     options = _.extend( {
-      interactive: true // {boolean} whether the vertex can be dragged, false for Black Box elements
+      interactive: true, // {boolean} whether the vertex can be dragged, false for Black Box elements
+      blackBoxInterface: false // {boolean} whether the vertex is on the edge of a black box
     }, options );
     PropertySet.call( this, {
 
@@ -41,7 +42,7 @@ define( function( require ) {
       selected: false,
 
       // @public - Vertices on the black box interface persist between build/investigate, and cannot be moved/deleted
-      blackBoxInterface: false,
+      blackBoxInterface: options.blackBoxInterface,
 
       // @public - whether the Vertex can be dragged or moved by dragging another part of the circuit
       // must be observable.  When two vertices are joined in Circuit.connect, non-interactivity propagates

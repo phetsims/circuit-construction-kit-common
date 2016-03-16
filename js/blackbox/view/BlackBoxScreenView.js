@@ -29,7 +29,7 @@ define( function( require ) {
       // Create the scene if it did not already exist
       if ( !sceneViews[ scene ] ) {
         if ( scene === 'warmup' ) {
-          sceneViews[ scene ] = new WarmUpSceneView( new BlackBoxSceneModel( Circuit.fromStateObject( {
+          var trueBlackBoxCircuit = Circuit.fromStateObject( {
             wires: [
               {
                 resistance: 0,
@@ -43,14 +43,21 @@ define( function( require ) {
             vertices: [
               {
                 x: 416,
-                y: 305
+                y: 305,
+                options: {
+                  blackBoxInterface: true
+                }
               },
               {
                 x: 606,
-                y: 305
+                y: 305,
+                options: {
+                  blackBoxInterface: true
+                }
               }
             ]
-          } ) ), blackBoxScreenModel.sceneProperty );
+          } );
+          sceneViews[ scene ] = new WarmUpSceneView( new BlackBoxSceneModel( trueBlackBoxCircuit ), blackBoxScreenModel.sceneProperty );
         }
         else {
           sceneViews[ scene ] = new BlackBoxSceneView( new BlackBoxSceneModel( new Circuit() ), blackBoxScreenModel.sceneProperty );

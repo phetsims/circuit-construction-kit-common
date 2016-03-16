@@ -28,16 +28,19 @@ define( function( require ) {
 
     var removeBlackBoxContents = function( blackBoxCircuit ) {
 
-      // TODO: Don't remove the blackBoxInterface vertices
-      circuit.removeCircuit( blackBoxCircuit );
+      circuit.wires.removeAll( blackBoxCircuit.wires.getArray() );
+      circuit.lightBulbs.removeAll( blackBoxCircuit.lightBulbs.getArray() );
+      circuit.resistors.removeAll( blackBoxCircuit.resistors.getArray() );
+      circuit.batteries.removeAll( blackBoxCircuit.batteries.getArray() );
 
-      // but don't remove the interface vertices
-      for ( var i = 0; i < blackBoxCircuit.vertices.getArray().length; i++ ) {
-        var vertex = blackBoxCircuit.vertices.getArray()[ i ];
-        if ( blackBoxCircuit.hasOneNeighbor( vertex ) ) {
-          circuit.vertices.add( vertex );
+      // Remove the vertices but not those on the black box interface
+      for ( var i = 0; i < blackBoxCircuit.vertices.length; i++ ) {
+        var vertex = blackBoxCircuit.vertices.get( i );
+        if ( !vertex.blackBoxInterface ) {
+          circuit.vertices.remove( vertex );
         }
       }
+      circuit.solve();
     };
     var addBlackBoxContents = function( blackBoxCircuit ) {
       circuit.addCircuit( blackBoxCircuit );
