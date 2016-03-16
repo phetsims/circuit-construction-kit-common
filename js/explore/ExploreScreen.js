@@ -21,10 +21,11 @@ define( function( require ) {
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ResistorNode' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Vertex' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Resistor' );
+  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/LightBulb' );
+  var CCKLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CCKLightBulbNode' );
 
   // images
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/battery.png' );
-  var lightBulbImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/light-bulb.png' );
 
   /**
    * @constructor
@@ -45,18 +46,18 @@ define( function( require ) {
     } );
     var resistorNode = new ResistorNode( null, null, new Resistor( new Vertex( 0, 0 ), new Vertex( Resistor.RESISTOR_LENGTH, 0 ), CircuitConstructionKitBasicsConstants.defaultResistance ), { icon: true } );
     var battery = new Image( batteryImage );
-    var lightBulb = new Image( lightBulbImage );
+    var lightBulbNode = new CCKLightBulbNode( null, null, new LightBulb( new Vertex( 0, 0 ), new Vertex( LightBulb.LIGHT_BULB_LENGTH, 0 ), CircuitConstructionKitBasicsConstants.defaultResistance ), { icon: true } );
 
     var elementWidth = 50;
     resistorNode.mutate( { scale: elementWidth / resistorNode.width * 0.75 } );
     wireNode.mutate( { scale: elementWidth / wireNode.width * 0.7 } );
     battery.mutate( { scale: elementWidth / battery.width } );
-    lightBulb.mutate( { scale: elementWidth / lightBulb.width / 2 } );
+    lightBulbNode.mutate( { scale: elementWidth / lightBulbNode.width / 2 } );
     var vBox = new VBox( {
       spacing: 20,
       children: [ new HBox( { spacing: 20, children: [ wireNode, resistorNode ] } ), new HBox( {
         spacing: 20,
-        children: [ battery, lightBulb ]
+        children: [ battery, lightBulbNode ]
       } ) ]
     } );
     vBox.mutate( {

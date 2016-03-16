@@ -21,7 +21,7 @@ define( function( require ) {
    *
    * @constructor
    */
-  function CCKLightBulbNode( circuitConstructionKitBasicsScreenView, circuitNode, lightBulb ) {
+  function CCKLightBulbNode( circuitConstructionKitBasicsScreenView, circuitNode, lightBulb, options ) {
     this.lightBulb = lightBulb;
     var brightnessProperty = new Property( 0.0 );
     lightBulb.currentProperty.link( function( current ) {
@@ -39,7 +39,7 @@ define( function( require ) {
       scale: 3.5
     } );
     var contentScale = 2.5;
-    FixedLengthCircuitElementNode.call( this, circuitConstructionKitBasicsScreenView, circuitNode, lightBulb, lightBulbNode, contentScale, {
+    options = _.extend( {
       updateLayout: function( startPosition, endPosition ) {
 
         // TODO: Duplicated somewhat with FixedLengthCircuitElementNode
@@ -59,7 +59,8 @@ define( function( require ) {
         centerX: 0,
         bottom: 5 // TODO: this must match the highlight inset
       }
-    } );
+    }, options );
+    FixedLengthCircuitElementNode.call( this, circuitConstructionKitBasicsScreenView, circuitNode, lightBulb, lightBulbNode, contentScale, options );
   }
 
   circuitConstructionKitBasics.register( 'CCKLightBulbNode', CCKLightBulbNode );
