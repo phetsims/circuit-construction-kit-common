@@ -10,25 +10,41 @@ define( function( require ) {
 
   // modules
   var CircuitConstructionKitBasicsModel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/CircuitConstructionKitBasicsModel' );
+  var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Circuit' );
   var inherit = require( 'PHET_CORE/inherit' );
 
   /**
    * @constructor
    */
-  function BlackBoxSceneModel( circuit ) {
+  function BlackBoxSceneModel( trueBlackBoxCircuit ) {
+
     CircuitConstructionKitBasicsModel.call( this, {
       mode: 'investigate' // or 'build'
     }, {
-      circuit: circuit
+      circuit: new Circuit()
     } );
+    var userBlackBoxCircuit = new Circuit();
+    var circuit = this.circuit;
+
+    var removeBlackBoxContents = function( blackBoxCircuit ) {
+      circuit.removeCircuit( blackBoxCircuit );
+    };
+    var addBlackBoxContents = function( blackBoxCircuit ) {
+      circuit.addCircuit( blackBoxCircuit );
+    };
 
     this.modeProperty.link( function( mode ) {
 
       // When switching to build mode, remove all of the black box circuitry
+      // TODO: how to keep the external vertices?
       if ( mode === 'build' ) {
-        circuit.removeBlackBoxWires();
 
-        // TODO: store and restore the removed parts
+        removeBlackBoxContents( trueBlackBoxCircuit );
+        addBlackBoxContents( userBlackBoxCircuit );
+      }
+      else {
+        removeBlackBoxContents( userBlackBoxCircuit );
+        addBlackBoxContents( trueBlackBoxCircuit );
       }
     } );
   }
