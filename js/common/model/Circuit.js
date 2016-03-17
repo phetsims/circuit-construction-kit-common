@@ -480,24 +480,6 @@ define( function( require ) {
       };
     },
 
-    addCircuit: function( circuit ) {
-      this.vertices.addAll( circuit.vertices.getArray() );
-      this.wires.addAll( circuit.wires.getArray() );
-      this.resistors.addAll( circuit.resistors.getArray() );
-      this.batteries.addAll( circuit.batteries.getArray() );
-      this.lightBulbs.addAll( circuit.lightBulbs.getArray() );
-      this.solve();
-    },
-
-    removeCircuit: function( circuit ) {
-      this.vertices.removeAll( circuit.vertices.getArray() );
-      this.wires.removeAll( circuit.wires.getArray() );
-      this.resistors.removeAll( circuit.resistors.getArray() );
-      this.batteries.removeAll( circuit.batteries.getArray() );
-      this.lightBulbs.removeAll( circuit.lightBulbs.getArray() );
-      this.solve();
-    },
-
     /**
      * This method loads a state into an existing circuit, which is likely clear()ed beforehand.
      * NOTE: This also sets elements to be non-interactive

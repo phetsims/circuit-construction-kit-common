@@ -43,7 +43,18 @@ define( function( require ) {
       circuit.solve();
     };
     var addBlackBoxContents = function( blackBoxCircuit ) {
-      circuit.addCircuit( blackBoxCircuit );
+      // Add the vertices, but only if not already added
+      for ( var i = 0; i < blackBoxCircuit.vertices.length; i++ ) {
+        var vertex = blackBoxCircuit.vertices.get( i );
+        if ( circuit.vertices.indexOf( vertex ) === -1 ) {
+          circuit.vertices.add( vertex );
+        }
+      }
+      circuit.wires.addAll( blackBoxCircuit.wires.getArray() );
+      circuit.resistors.addAll( blackBoxCircuit.resistors.getArray() );
+      circuit.batteries.addAll( blackBoxCircuit.batteries.getArray() );
+      circuit.lightBulbs.addAll( blackBoxCircuit.lightBulbs.getArray() );
+      circuit.solve();
     };
 
     this.modeProperty.link( function( mode ) {
