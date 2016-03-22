@@ -13,6 +13,12 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
 
+  /**
+   * @param {number} width
+   * @param {number} height
+   * @param {Object} [options]
+   * @constructor
+   */
   function BlackBoxNode( width, height, options ) {
     Node.call( this, {
 
