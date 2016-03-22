@@ -1,6 +1,7 @@
 // Copyright 2016, University of Colorado Boulder
 
 /**
+ * Shows an empty box for "Build" mode.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
