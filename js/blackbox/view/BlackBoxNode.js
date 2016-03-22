@@ -1,6 +1,7 @@
 // Copyright 2016, University of Colorado Boulder
 
 /**
+ * The node that shows the black round rectangle with a question mark.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
