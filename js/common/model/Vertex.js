@@ -1,7 +1,7 @@
 // Copyright 2015, University of Colorado Boulder
 
 /**
- * A Vertex indicates the end of one or more CircuitElements.
+ * A Vertex indicates the end of one or more CircuitElements, or an open connection for the Black Box.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
