@@ -36,7 +36,7 @@ define( function( require ) {
       // {number} Relative voltage of the node, determined by Circuit.solve
       voltage: 0,
 
-      // @public - after the user taps on a vertex it becomes selected, highlighting it and showing a "cut" button
+      // @public - after the user taps on a vertex it becomes selected, highlighting it and showing a 'cut' button
       // Multiple vertices can be selected on an iPad, unlike CircuitElements, which can only have one vertex selected
       // at a time.
       selected: false,
