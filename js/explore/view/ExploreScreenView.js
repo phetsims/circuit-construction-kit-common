@@ -12,7 +12,7 @@ define( function( require ) {
   var CircuitConstructionKitBasicsScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitConstructionKitBasicsScreenView' );
 
   /**
-   * @param {CircuitConstructionKitBasicsModel} circuitConstructionKitBasicsModel
+   * @param {CircuitConstructionKitBasicsModel} circuitConstructionKitBasicsScreenModel
    * @constructor
    */
   function ExploreScreenView( circuitConstructionKitBasicsScreenModel ) {
