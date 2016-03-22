@@ -297,7 +297,7 @@ define( function( require ) {
     connect: function( vertex1, vertex2 ) {
 
       // Keep the black box vertices
-      // TODO: Rename "interactive"
+      // TODO: Rename 'interactive'
       // TODO: Use blackBoxInterface vertices as the flag here, or move the check elsewhere
       if ( vertex2.blackBoxInterface && !vertex1.blackBoxInterface ) {
         this.connect( vertex2, vertex1 );
