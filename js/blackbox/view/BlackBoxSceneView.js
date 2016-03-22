@@ -26,7 +26,7 @@ define( function( require ) {
     var BlackBoxSceneView = this;
     CircuitConstructionKitBasicsScreenView.call( this, blackBoxSceneModel );
 
-    // Add "Investigate Circuit" and "Build Circuit" radio buttons under the sensor toolbox
+    // Add 'Investigate Circuit' and 'Build Circuit' radio buttons under the sensor toolbox
     var modeRadioButtonGroup = new ModeRadioButtonGroup( blackBoxSceneModel.modeProperty );
     this.addChild( modeRadioButtonGroup );
 
