@@ -14,6 +14,9 @@ define( function( require ) {
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
 
+  // constants
+  var WIRE_LINE_WIDTH = 12; // screen coordinates
+
   /**
    *
    * @constructor
@@ -24,7 +27,7 @@ define( function( require ) {
 
     Line.call( this, 0, 0, 100, 100, {
       stroke: CircuitConstructionKitBasicsConstants.wireColor,
-      lineWidth: 20,
+      lineWidth: WIRE_LINE_WIDTH,
       cursor: 'pointer',
       strokePickable: true
     } );

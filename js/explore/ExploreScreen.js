@@ -39,7 +39,7 @@ define( function( require ) {
 
     var wireNode = new Line( 0, 0, 50, 0, {
       stroke: CircuitConstructionKitBasicsConstants.wireColor,
-      lineWidth: 10,
+      lineWidth: 6,
       cursor: 'pointer',
       strokePickable: true,
       scale: 1
