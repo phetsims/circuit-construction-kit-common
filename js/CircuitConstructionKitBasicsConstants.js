@@ -1,7 +1,7 @@
 // Copyright 2015, University of Colorado Boulder
 
 /**
- * Constants used in all of the sims/screens/scenes
+ * Constants used in all of the sims/screens/scenes.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
