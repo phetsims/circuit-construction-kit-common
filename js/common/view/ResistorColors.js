@@ -2,6 +2,7 @@
 
 /**
  * Ported directly from the Java.
+ * 
  * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {
