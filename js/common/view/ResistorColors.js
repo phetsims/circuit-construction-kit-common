@@ -14,6 +14,7 @@ define( function( require ) {
 
   var brown = new Color( 200, 150, 100 );
   var violet = new Color( 148, 0, 211 );
+  var gold = new Color( '#e8c920' );
   var colors = [
     Color.black,
     brown,
@@ -43,7 +44,7 @@ define( function( require ) {
       value = Math.round( value );
       //first 2 digits for value, third digit for scale.
       if ( value < 10 ) {
-        return [ Color.black, digitToColor( value ), Color.black, Color.yellow ];
+        return [ Color.black, digitToColor( value ), Color.black, gold ];
       }
       else if ( value < 100 ) {
         return [ digitToColor( Math.floor( value / 10 ) ), digitToColor( Math.floor( value % 10 ) ), Color.black, Color.yellow ];
@@ -57,11 +58,13 @@ define( function( require ) {
         var predicted = ( ( firstdigit * 10 + seconddig ) * Math.pow( 10, factor ) );
         var offby = ( value - predicted ) / predicted * 100;
         var tolerance = null;
+
+        // A gold tolerance band is 5% tolerance, silver is 10%
         if ( offby < 5 ) {
-          tolerance = Color.yellow;
+          tolerance = gold;
         }
         else if ( offby < 20 ) {
-          tolerance = Color.gray;
+          tolerance = new Color( 'silver' );
         }
         else {
           tolerance = null;
