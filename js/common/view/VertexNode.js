@@ -22,7 +22,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   // constants
-  var DISTANCE_TO_CUT_BUTTON = 100; // How far (screen coordinates) the cut button appears from the vertex node
+  var DISTANCE_TO_CUT_BUTTON = 70; // How far (screen coordinates) the cut button appears from the vertex node
 
   /**
    *
