@@ -118,22 +118,25 @@ define( function( require ) {
       vertexNode.pickable = interactive;
     } );
 
-    var updateReadoutTextLocation = function() {
-      voltageReadoutText.centerX = dottedLineNode.centerX;
-      voltageReadoutText.bottom = dottedLineNode.top - 10;
-    };
-
-    // TODO: For debugging, remove when debugged.
-    var voltageReadoutText = new Text( '', {
-      fontSize: 18,
-      y: -60,
-      pickable: false
-    } );
-    this.addChild( voltageReadoutText );
-    vertex.voltageProperty.link( function( voltage ) {
-      voltageReadoutText.setText( Util.toFixed( voltage, 3 ) + 'V' );
-      updateReadoutTextLocation();
-    } );
+    // Use a query parameter to turn on node voltage readouts for debugging.  In #22 we are discussing making this
+    // a user-visible option.
+    var showNodeVoltages = phet.chipper.getQueryParameter( 'showNodeVoltages' );
+    if ( showNodeVoltages ) {
+      var voltageReadoutText = new Text( '', {
+        fontSize: 18,
+        y: -60,
+        pickable: false
+      } );
+      this.addChild( voltageReadoutText );
+      var updateReadoutTextLocation = function() {
+        voltageReadoutText.centerX = dottedLineNode.centerX;
+        voltageReadoutText.bottom = dottedLineNode.top - 10;
+      };
+      vertex.voltageProperty.link( function( voltage ) {
+        voltageReadoutText.setText( Util.toFixed( voltage, 3 ) + 'V' );
+        updateReadoutTextLocation();
+      } );
+    }
 
     var updateCutButtonPosition = function() {
       var position = vertex.position;
@@ -155,7 +158,7 @@ define( function( require ) {
     var updateVertexNodePosition = function( position ) {
       dottedLineNode.center = position;
       highlightNode.center = position;
-      updateReadoutTextLocation();
+      updateReadoutTextLocation && updateReadoutTextLocation();
       updateCutButtonPosition();
     };
     vertex.positionProperty.link( updateVertexNodePosition );
