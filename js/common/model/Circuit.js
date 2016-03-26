@@ -137,7 +137,10 @@ define( function( require ) {
       else {
         for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
           var circuitElement = neighborCircuitElements[ i ];
-          var newVertex = new Vertex( vertex.position.x, vertex.position.y );
+          var options = {
+            draggable: circuitElement.interactive
+          };
+          var newVertex = new Vertex( vertex.position.x, vertex.position.y, options );
           circuitElement.replaceVertex( vertex, newVertex );
           this.vertices.add( newVertex );
         }
