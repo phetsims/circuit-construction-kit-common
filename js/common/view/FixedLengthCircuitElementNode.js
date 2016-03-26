@@ -65,6 +65,10 @@ define( function( require ) {
     };
     relink();
 
+    circuitElement.connectedEmitter.addListener( function() {
+      fixedLengthCircuitElementNode.moveToFront();
+    } );
+
     circuitElement.startVertexProperty.lazyLink( relink );
     circuitElement.endVertexProperty.lazyLink( relink );
 

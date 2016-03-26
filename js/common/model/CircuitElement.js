@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
+  var Emitter = require( 'AXON/Emitter' );
 
   /**
    *
@@ -28,6 +29,9 @@ define( function( require ) {
       endVertex: endVertex,
       current: 0
     }, propertySetMap ) );
+
+    // @public (read-only) - indicate when this circuit element has been connected
+    this.connectedEmitter = new Emitter();
 
     // TODO: Derived properties for startPosition and endPosition, to encapsulate the matter of switching vertices?
 

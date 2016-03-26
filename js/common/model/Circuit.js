@@ -306,6 +306,9 @@ define( function( require ) {
         var circuitElements = this.getCircuitElements();
         for ( var i = 0; i < circuitElements.length; i++ ) {
           circuitElements[ i ].connectCircuitElement( vertex1, vertex2 );
+          if ( circuitElements[ i ].containsVertex( vertex1 ) ) {
+            circuitElements[ i ].connectedEmitter.emit();
+          }
         }
         this.vertices.remove( vertex2 );
         assert && assert( !vertex2.positionProperty.hasListeners(), 'Removed vertex should not have any listeners' );
