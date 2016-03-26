@@ -33,6 +33,10 @@ define( function( require ) {
     // @public (read-only) - indicate when this circuit element has been connected
     this.connectedEmitter = new Emitter();
 
+    // @public (read-only) - indicate when an adjacent vertex has moved to front, so that the Circuit Element node can
+    // move to front too
+    this.vertexSelectedEmitter = new Emitter();
+
     // TODO: Derived properties for startPosition and endPosition, to encapsulate the matter of switching vertices?
 
     this.interactive = options.interactive; // TODO: maybe move into PropertySet if it will be toggleable by the circuit creator

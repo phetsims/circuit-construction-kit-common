@@ -68,6 +68,9 @@ define( function( require ) {
     circuitElement.connectedEmitter.addListener( function() {
       fixedLengthCircuitElementNode.moveToFront();
     } );
+    circuitElement.vertexSelectedEmitter.addListener( function() {
+      fixedLengthCircuitElementNode.moveToFront();
+    } );
 
     circuitElement.startVertexProperty.lazyLink( relink );
     circuitElement.endVertexProperty.lazyLink( relink );

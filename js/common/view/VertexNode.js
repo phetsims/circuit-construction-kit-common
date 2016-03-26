@@ -60,10 +60,21 @@ define( function( require ) {
     } );
 
     vertex.selectedProperty.link( function( selected ) {
-      selected && vertexNode.moveToFront();
+      var neighborCircuitElements = circuit.getNeighborCircuitElements( vertex );
+
+      if ( selected ) {
+
+        vertexNode.moveToFront();
+
+        // Adjacent components should be in front of the vertex, see #20
+        for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
+          neighborCircuitElements[ i ].vertexSelectedEmitter.emit();
+        }
+      }
       highlightNode.visible = selected;
 
-      var numberConnections = circuit.getNeighborCircuitElements( vertex ).length;
+
+      var numberConnections = neighborCircuitElements.length;
       cutButton.visible = selected;
       selected && updateCutButtonPosition();
 
