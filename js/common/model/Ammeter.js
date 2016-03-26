@@ -1,6 +1,7 @@
 // Copyright 2016, University of Colorado Boulder
 
 /**
+ * Model for the Ammeter, which adds the probe position and current readout
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

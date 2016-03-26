@@ -1,7 +1,7 @@
 // Copyright 2015, University of Colorado Boulder
 
 /**
- *
+ * The Battery is a circuit element that provides a fixed voltage difference.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

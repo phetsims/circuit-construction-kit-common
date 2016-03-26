@@ -1,7 +1,7 @@
 // Copyright 2015, University of Colorado Boulder
 
 /**
- * This class represents a sparse solution containing only the solved unknowns in MNA.
+ * This class represents a sparse solution containing only the solved variables in MNA.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -14,7 +14,6 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
 
   /**
-   *
    * @param {object.<number,number>} nodeVoltages
    * @param {element[]} elements, with currentSolution
    * @constructor
@@ -30,7 +29,6 @@ define( function( require ) {
 
   circuitConstructionKitBasics.register( 'LinearCircuitSolution', LinearCircuitSolution );
 
-  // TODO: I bumped this to 1E-5 to make test_current_source_should_provide_current pass, 
   // but perhaps we should get it back up to 1E6 again
   var numberApproxEquals = function( a, b ) {
     return Math.abs( a - b ) < 1E-6;
@@ -39,7 +37,9 @@ define( function( require ) {
   var round = function( x ) {
     return Util.roundSymmetric( x * 1E6 ) / 1E6;
   };
+
   return inherit( Object, LinearCircuitSolution, {
+
     /**
      * Compare two solutions, and provide detailed qunit equal test if equal is provided
      * @param linearCircuitSolution
@@ -67,6 +67,7 @@ define( function( require ) {
       }
       return true;
     },
+
     /**
      * For equality testing, make sure all of the specified elements and currents match ours
      * @param linearCircuitSolution
@@ -80,6 +81,7 @@ define( function( require ) {
       }
       return true;
     },
+
     hasMatchingElement: function( element ) {
       for ( var i = 0; i < this.elements.length; i++ ) {
         var e = this.elements[ i ];
@@ -89,6 +91,7 @@ define( function( require ) {
       }
       return false;
     },
+
     getCurrent: function( e ) {
 
       //if it was a battery or resistor (of R=0), look up the answer
@@ -106,9 +109,11 @@ define( function( require ) {
       //else compute based on V=IR
       return -this.getVoltage( e ) / e.resistance;
     },
+
     getNodeVoltage: function( node ) {
       return this.nodeVoltages[ node ];
     },
+    
     getVoltage: function( e ) {
       return this.nodeVoltages[ e.node1 ] - this.nodeVoltages[ e.node0 ];
     }
