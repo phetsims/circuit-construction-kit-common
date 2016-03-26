@@ -37,7 +37,7 @@ define( function( require ) {
       // Remove the vertices but not those on the black box interface
       for ( var i = 0; i < blackBoxCircuit.vertices.length; i++ ) {
         var vertex = blackBoxCircuit.vertices.get( i );
-        if ( vertex.attachable && !vertex.draggable ) {
+        if ( !vertex.draggable && !vertex.attachable ) {
           circuit.vertices.remove( vertex );
         }
       }
