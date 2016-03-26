@@ -12,6 +12,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
   var Vector2 = require( 'DOT/Vector2' );
+  var Emitter = require( 'AXON/Emitter' );
 
   // constants
   var DEFAULTS = {
@@ -51,6 +52,7 @@ define( function( require ) {
       // must be observable.  When two vertices are joined in Circuit.connect, non-interactivity propagates
       attachable: options.attachable
     } );
+    this.moveToFrontEmitter = new Emitter();
   }
 
   return inherit( PropertySet, Vertex, {}, {

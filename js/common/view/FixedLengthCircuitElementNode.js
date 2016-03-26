@@ -65,12 +65,13 @@ define( function( require ) {
     };
     relink();
 
-    circuitElement.connectedEmitter.addListener( function() {
+    var moveToFront = function() {
       fixedLengthCircuitElementNode.moveToFront();
-    } );
-    circuitElement.vertexSelectedEmitter.addListener( function() {
-      fixedLengthCircuitElementNode.moveToFront();
-    } );
+      fixedLengthCircuitElementNode.circuitElement.startVertex.moveToFrontEmitter.emit();
+      fixedLengthCircuitElementNode.circuitElement.endVertex.moveToFrontEmitter.emit();
+    };
+    circuitElement.connectedEmitter.addListener( moveToFront );
+    circuitElement.vertexSelectedEmitter.addListener( moveToFront );
 
     circuitElement.startVertexProperty.lazyLink( relink );
     circuitElement.endVertexProperty.lazyLink( relink );

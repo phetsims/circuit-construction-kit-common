@@ -81,6 +81,9 @@ define( function( require ) {
       var batteryNode = new BatteryNode( circuitConstructionKitBasicsScreenView, circuitNode, battery );
       circuitNode.batteryNodes.push( batteryNode );
       mainLayer.addChild( batteryNode );
+
+      circuitNode.getVertexNode( battery.startVertex ) && circuitNode.getVertexNode( battery.startVertex ).moveToFront();
+      circuitNode.getVertexNode( battery.endVertex ) && circuitNode.getVertexNode( battery.endVertex ).moveToFront();
     };
     circuit.batteries.addItemAddedListener( addBatteryNode );
     circuit.batteries.forEach( addBatteryNode );

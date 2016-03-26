@@ -35,13 +35,13 @@ define( function( require ) {
     this.startOffset = null;// @public - added by CircuitNode during dragging, used for relative drag location.
 
     // @public (read-only) - for hit testing with probes
-    this.dottedLineNodeRadius = 20;
+    this.dottedLineNodeRadius = 16;
 
     // Start as a dotted line, becomes solid when connected to >1 element.
     var dottedLineNode = new Circle( this.dottedLineNodeRadius, {
       stroke: 'black',
-      lineWidth: 3,
-      lineDash: [ 8, 6 ],
+      lineWidth: 1.3,
+      lineDash: [ 6, 4 ],
       cursor: 'pointer'
     } );
     var highlightNode = new Circle( 30, { stroke: 'yellow', lineWidth: 4, pickable: false } );
@@ -64,15 +64,14 @@ define( function( require ) {
 
       if ( selected ) {
 
-        vertexNode.moveToFront();
-
         // Adjacent components should be in front of the vertex, see #20
         for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
           neighborCircuitElements[ i ].vertexSelectedEmitter.emit();
         }
+
+        vertexNode.moveToFront();
       }
       highlightNode.visible = selected;
-
 
       var numberConnections = neighborCircuitElements.length;
       cutButton.visible = selected;
@@ -80,6 +79,9 @@ define( function( require ) {
 
       // Show a disabled button as a cue that the vertex could be cuttable, but it isn't right now.
       cutButton.enabled = numberConnections > 1;
+    } );
+    vertex.moveToFrontEmitter.addListener( function() {
+      vertexNode.moveToFront();
     } );
     Node.call( this, {
       children: [ highlightNode, dottedLineNode, cutButton ]
