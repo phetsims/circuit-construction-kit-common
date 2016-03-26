@@ -49,7 +49,7 @@ define( function( require ) {
     this.vertexNodes = [];
 
     var addWireNode = function( wire ) {
-      var wireNode = new WireNode( circuitNode, wire );
+      var wireNode = new WireNode( circuitConstructionKitBasicsScreenView, circuitNode, wire );
       circuitNode.wireNodes.push( wireNode );
       mainLayer.addChild( wireNode );
 

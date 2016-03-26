@@ -21,9 +21,10 @@ define( function( require ) {
    *
    * @constructor
    */
-  function WireNode( circuitNode, wire ) {
+  function WireNode( circuitConstructionKitBasicsScreenView, circuitNode, wire ) {
     var wireNode = this;
     this.wire = wire;
+    this.circuitElement = wire; // polymorphism with FixedLengthCircuitElementNode.  TODO: Common parent class?
 
     Line.call( this, 0, 0, 100, 100, {
       stroke: CircuitConstructionKitBasicsConstants.wireColor,
@@ -63,6 +64,13 @@ define( function( require ) {
         circuitNode.drag( event.pointer.point, wire.endVertex, false );
       },
       end: function( event ) {
+
+        // If over the toolbox, then drop into it, and don't process further
+        if ( circuitConstructionKitBasicsScreenView.canNodeDropInToolbox( wireNode ) ) {
+          circuitConstructionKitBasicsScreenView.dropCircuitElementNodeInToolbox( wireNode );
+          return;
+        }
+
         circuitNode.endDrag( event, wire.startVertex );
         circuitNode.endDrag( event, wire.endVertex );
       }
