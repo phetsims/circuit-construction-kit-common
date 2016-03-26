@@ -244,6 +244,14 @@ define( function( require ) {
       // Find all vertices connected by fixed length nodes.
       var vertices = this.circuit.findAllFixedVertices( vertex );
 
+      // If any of the vertices connected by fixed length nodes is immobile, then the entire subgraph cannot be moved
+      // TODO: How about being able to rotate a component attached to an undraggable vertex
+      for ( var i = 0; i < vertices.length; i++ ) {
+        if ( !vertices[ i ].draggable ) {
+          return;
+        }
+      }
+
       if ( okToRotate && neighbors.length === 1 && neighbors[ 0 ] instanceof FixedLengthCircuitElement ) {
 
         var oppositeVertex = neighbors[ 0 ].getOppositeVertex( vertex );
@@ -319,12 +327,19 @@ define( function( require ) {
       // Find all vertices connected by fixed length nodes.
       var vertices = this.circuit.findAllFixedVertices( vertex );
 
+      // If any of the vertices connected by fixed length nodes is immobile, then the entire subgraph cannot be moved
+      for ( var i = 0; i < vertices.length; i++ ) {
+        if ( !vertices[ i ].draggable ) {
+          return;
+        }
+      }
+
       var bestDropTarget = this.getBestDropTarget( vertices );
       if ( bestDropTarget ) {
         this.circuit.connect( bestDropTarget.src, bestDropTarget.dst );
 
         // Set the new reference point for next drag
-        for ( var i = 0; i < vertices.length; i++ ) {
+        for ( i = 0; i < vertices.length; i++ ) {
           vertices[ i ].unsnappedPosition = vertices[ i ].position;
         }
       }
