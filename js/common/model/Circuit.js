@@ -299,7 +299,7 @@ define( function( require ) {
       assert( vertex1.attachable && vertex2.attachable, 'both vertices should be attachable' );
 
       // Keep the black box vertices
-      if ( vertex2.draggable && !vertex2.draggable ) {
+      if ( vertex1.draggable && !vertex2.draggable ) {
         this.connect( vertex2, vertex1 );
       }
       else {
