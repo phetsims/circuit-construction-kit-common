@@ -96,13 +96,13 @@ define( function( require ) {
     var simpleDragHandler = new SimpleDragHandler( {
       start: function( event ) {
         p = event.pointer.point;
-        circuitNode.startDrag( event.pointer.point, vertex, true );
+        vertex.draggable && circuitNode.startDrag( event.pointer.point, vertex, true );
       },
       drag: function( event ) {
-        circuitNode.drag( event.pointer.point, vertex, true );
+        vertex.draggable && circuitNode.drag( event.pointer.point, vertex, true );
       },
       end: function( event ) {
-        circuitNode.endDrag( event, vertex );
+        vertex.draggable && circuitNode.endDrag( event, vertex );
 
         // Only show on a tap, not on every drag.
         if ( event.pointer.point.distance( p ) < CircuitConstructionKitBasicsConstants.tapThreshold ) {
@@ -125,9 +125,6 @@ define( function( require ) {
 
     // Don't permit dragging by the scissors or highlight
     dottedLineNode.addInputListener( simpleDragHandler );
-    vertex.draggableProperty.link( function( draggable ) {
-      vertexNode.pickable = draggable;
-    } );
 
     // Use a query parameter to turn on node voltage readouts for debugging.  In #22 we are discussing making this
     // a user-visible option.
