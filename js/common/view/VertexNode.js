@@ -67,7 +67,7 @@ define( function( require ) {
       cutButton.visible = selected;
       selected && updateCutButtonPosition();
 
-      // Show a disabled button as a cue that the vertex could be cuttable, but it isnt right now.
+      // Show a disabled button as a cue that the vertex could be cuttable, but it isn't right now.
       cutButton.enabled = numberConnections > 1;
     } );
     Node.call( this, {
