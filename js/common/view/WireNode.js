@@ -29,7 +29,8 @@ define( function( require ) {
       stroke: CircuitConstructionKitBasicsConstants.wireColor,
       lineWidth: WIRE_LINE_WIDTH,
       cursor: 'pointer',
-      strokePickable: true
+      strokePickable: true,
+      lineCap: 'round'
     } );
 
     var startListener = function( startPoint ) {
