@@ -16,16 +16,13 @@ define( function( require ) {
 
   function ModeRadioButtonGroup( modeProperty ) {
     var textOptions = { fontSize: 18 };
-    RadioButtonGroup.call( this, modeProperty, [
-      {
-        value: 'investigate',
-        node: new Text( 'Investigate Circuit', textOptions )
-      },
-      {
-        value: 'build',
-        node: new Text( 'Build Circuit', textOptions )
-      }
-    ], {
+    RadioButtonGroup.call( this, modeProperty, [ {
+      value: 'investigate',
+      node: new Text( 'Investigate Circuit', textOptions )
+    }, {
+      value: 'build',
+      node: new Text( 'Build Circuit', textOptions )
+    } ], {
       baseColor: 'white',
       buttonContentXMargin: 10,
       buttonContentYMargin: 15,

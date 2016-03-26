@@ -33,13 +33,13 @@ define( function( require ) {
     } );
     icon.addChild( blackBoxNode );
 
-
     Screen.call( this, 'Black Box', icon, function() {
         return new BlackBoxScreenModel();
       }, function( model ) {
         return new BlackBoxScreenView( model );
-      },
-      { backgroundColor: '#c6dbf9' }
+      }, {
+        backgroundColor: '#c6dbf9'
+      }
     );
   }
 

@@ -15,10 +15,6 @@ define( function( require ) {
 
   function WhiteBoxNode( width, height, options ) {
     Node.call( this, {
-
-      // Don't let clicks go through the black box
-      pickable: true,
-
       children: [
         new Rectangle( 0, 0, width, height, 20, 20, { stroke: 'gray', lineWidth: 2 } )
       ]

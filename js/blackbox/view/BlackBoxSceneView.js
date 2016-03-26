@@ -39,7 +39,7 @@ define( function( require ) {
     this.comboBoxPopupLayer = new Node();
     this.addChild( this.comboBoxPopupLayer );
 
-    // Appears in each scene
+    // A different ComboBox instance appears in each BlackBoxSceneView
     var comboBox = new ComboBox( [ {
       node: new Text( 'Warm-up', comboBoxTextOptions ), value: 'warmup'
     }, {
@@ -47,6 +47,7 @@ define( function( require ) {
     } ], sceneProperty, this.comboBoxPopupLayer );
     this.addChild( comboBox );
 
+    // Layout when the screen view size changed
     this.circuitConstructionKitBasicsScreenViewLayoutCompletedEmitter.addListener( function( layoutDimensions ) {
       modeRadioButtonGroup.top = BlackBoxSceneView.sensorToolbox.bottom + 20;
       modeRadioButtonGroup.right = BlackBoxSceneView.sensorToolbox.right;
