@@ -487,49 +487,48 @@ define( function( require ) {
 
     /**
      * This method loads a state into an existing circuit, which is likely clear()ed beforehand.
-     * NOTE: This also sets elements to be non-interactive
-     * @param stateObject
+     * @param circuitState
      */
-    loadFromStateObject: function( stateObject ) {
+    loadFromStateObject: function( circuitState ) {
       var circuit = this;
       var options = null;
-      for ( var i = 0; i < stateObject.vertices.length; i++ ) {
-        options = stateObject.vertices[ i ].options || {};
-        circuit.vertices.add( new Vertex( stateObject.vertices[ i ].x, stateObject.vertices[ i ].y, options ) );
+      for ( var i = 0; i < circuitState.vertices.length; i++ ) {
+        options = circuitState.vertices[ i ].options || {};
+        circuit.vertices.add( new Vertex( circuitState.vertices[ i ].x, circuitState.vertices[ i ].y, options ) );
       }
-      for ( i = 0; i < stateObject.wires.length; i++ ) {
-        options = stateObject.wires[ i ].options || {};
+      for ( i = 0; i < circuitState.wires.length; i++ ) {
+        options = circuitState.wires[ i ].options || {};
         circuit.wires.add( new Wire(
-          circuit.vertices.get( stateObject.wires[ i ].startVertex ),
-          circuit.vertices.get( stateObject.wires[ i ].endVertex ),
-          stateObject.wires[ i ].resistance,
+          circuit.vertices.get( circuitState.wires[ i ].startVertex ),
+          circuit.vertices.get( circuitState.wires[ i ].endVertex ),
+          circuitState.wires[ i ].resistance,
           options
         ) );
       }
-      for ( i = 0; i < stateObject.batteries.length; i++ ) {
-        options = stateObject.batteries[ i ].options || {};
+      for ( i = 0; i < circuitState.batteries.length; i++ ) {
+        options = circuitState.batteries[ i ].options || {};
         circuit.batteries.add( new Battery(
-          circuit.vertices.get( stateObject.batteries[ i ].startVertex ),
-          circuit.vertices.get( stateObject.batteries[ i ].endVertex ),
-          stateObject.batteries[ i ].voltage,
+          circuit.vertices.get( circuitState.batteries[ i ].startVertex ),
+          circuit.vertices.get( circuitState.batteries[ i ].endVertex ),
+          circuitState.batteries[ i ].voltage,
           options
         ) );
       }
-      for ( i = 0; i < stateObject.resistors.length; i++ ) {
-        options = stateObject.resistors[ i ].options || {};
+      for ( i = 0; i < circuitState.resistors.length; i++ ) {
+        options = circuitState.resistors[ i ].options || {};
         circuit.resistors.add( new Resistor(
-          circuit.vertices.get( stateObject.resistors[ i ].startVertex ),
-          circuit.vertices.get( stateObject.resistors[ i ].endVertex ),
-          stateObject.resistors[ i ].resistance,
+          circuit.vertices.get( circuitState.resistors[ i ].startVertex ),
+          circuit.vertices.get( circuitState.resistors[ i ].endVertex ),
+          circuitState.resistors[ i ].resistance,
           options
         ) );
       }
-      for ( i = 0; i < stateObject.lightBulbs.length; i++ ) {
-        options = stateObject.lightBulbs[ i ].options || {};
+      for ( i = 0; i < circuitState.lightBulbs.length; i++ ) {
+        options = circuitState.lightBulbs[ i ].options || {};
         circuit.lightBulbs.add( new LightBulb(
-          circuit.vertices.get( stateObject.lightBulbs[ i ].startVertex ),
-          circuit.vertices.get( stateObject.lightBulbs[ i ].endVertex ),
-          stateObject.lightBulbs[ i ].resistance,
+          circuit.vertices.get( circuitState.lightBulbs[ i ].startVertex ),
+          circuit.vertices.get( circuitState.lightBulbs[ i ].endVertex ),
+          circuitState.lightBulbs[ i ].resistance,
           options
         ) );
       }

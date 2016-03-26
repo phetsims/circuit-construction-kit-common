@@ -30,13 +30,14 @@ define( function( require ) {
       if ( !sceneViews[ scene ] ) {
         if ( scene === 'warmup' ) {
           var trueBlackBoxCircuit = Circuit.fromStateObject( {
-            wires: [
-              {
-                resistance: 0,
-                startVertex: 0,
-                endVertex: 1
+            wires: [ {
+              resistance: 0,
+              startVertex: 0,
+              endVertex: 1,
+              options: {
+                interactive: false
               }
-            ],
+            } ],
             batteries: [],
             lightBulbs: [],
             resistors: [],
