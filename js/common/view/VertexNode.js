@@ -44,7 +44,11 @@ define( function( require ) {
       lineDash: [ 6, 4 ],
       cursor: 'pointer'
     } );
-    var highlightNode = new Circle( 30, { stroke: 'yellow', lineWidth: 4, pickable: false } );
+    var highlightNode = new Circle( 30, {
+      stroke: CircuitConstructionKitBasicsConstants.highlightColor,
+      lineWidth: CircuitConstructionKitBasicsConstants.highlightLineWidth,
+      pickable: false
+    } );
 
     var cutButton = new RoundPushButton( {
       baseColor: 'yellow',

@@ -14,6 +14,8 @@ define( function( require ) {
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
   var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementEditContainerPanel' );
+  var Path = require( 'SCENERY/nodes/Path' );
+  var LineStyles = require( 'KITE/util/LineStyles' );
 
   // constants
   var WIRE_LINE_WIDTH = 12; // screen coordinates
@@ -27,16 +29,32 @@ define( function( require ) {
     this.wire = wire;
     this.circuitElement = wire; // polymorphism with FixedLengthCircuitElementNode.  TODO: Common parent class?
 
+    var highlightNode = new Path( null, {
+      stroke: CircuitConstructionKitBasicsConstants.highlightColor,
+      lineWidth: CircuitConstructionKitBasicsConstants.highlightLineWidth
+    } );
     Line.call( this, 0, 0, 100, 100, {
       stroke: CircuitConstructionKitBasicsConstants.wireColor,
       lineWidth: WIRE_LINE_WIDTH,
       cursor: 'pointer',
       strokePickable: true,
-      lineCap: 'round'
+      lineCap: 'round',
+      children: [
+        highlightNode
+      ]
+    } );
+
+    var strokeStyles = new LineStyles( {
+      lineWidth: 26,
+      lineCap: 'round',
+      lineJoin: 'round'
     } );
 
     var startListener = function( startPoint ) {
       wireNode.setPoint1( startPoint );
+      if ( highlightNode.visible ) {
+        highlightNode.shape = wireNode.shape.getStrokedShape( strokeStyles );
+      }
     };
 
     // There is a double nested property, since the vertex may change and the position may change
@@ -48,6 +66,9 @@ define( function( require ) {
 
     var endListener = function( endPoint ) {
       wireNode.setPoint2( endPoint );
+      if ( highlightNode.visible ) {
+        highlightNode.shape = wireNode.shape.getStrokedShape( strokeStyles );
+      }
     };
     var updateEndVertex = function( newEndVertex, oldEndVertex ) {
       oldEndVertex && oldEndVertex.positionProperty.unlink( endListener );
@@ -118,6 +139,16 @@ define( function( require ) {
       wire.startVertexProperty.unlink( updateStartVertex );
       wire.endVertexProperty.unlink( updateEndVertex );
     };
+
+    if ( circuitNode ) {
+      circuitNode.circuit.selectedCircuitElementProperty.link( function( lastCircuitElement ) {
+        var showHighlight = lastCircuitElement === wire;
+        highlightNode.visible = showHighlight;
+        if ( highlightNode.visible ) {
+          highlightNode.shape = wireNode.shape.getStrokedShape( strokeStyles );
+        }
+      } );
+    }
   }
 
   return inherit( Line, WireNode, {
