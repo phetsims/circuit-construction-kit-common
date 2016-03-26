@@ -16,6 +16,7 @@ define( function( require ) {
   var CCKLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CCKLightBulbNode' );
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ResistorNode' );
   var VertexNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/VertexNode' );
+  var SolderNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/SolderNode' );
   var Vector2 = require( 'DOT/Vector2' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/FixedLengthCircuitElement' );
 
@@ -26,10 +27,21 @@ define( function( require ) {
    * @constructor
    */
   function CircuitNode( circuit, circuitConstructionKitBasicsScreenView ) {
-    Node.call( this );
+    var solderLayer = new Node();
+    var mainLayer = new Node();
+    Node.call( this, {
+      children: [
+        solderLayer,
+        mainLayer // everything else
+      ]
+    } );
     this.circuit = circuit;
     var circuitNode = this;
 
+    // solder layer
+    this.solderNodes = [];
+
+    // in main layer
     this.batteryNodes = [];
     this.lightBulbNodes = [];
     this.wireNodes = [];
@@ -39,7 +51,7 @@ define( function( require ) {
     var addWireNode = function( wire ) {
       var wireNode = new WireNode( circuitNode, wire );
       circuitNode.wireNodes.push( wireNode );
-      circuitNode.addChild( wireNode );
+      mainLayer.addChild( wireNode );
 
       // Vertices should be in front
       // HACK ALERT TODO TODO TODO
@@ -54,7 +66,7 @@ define( function( require ) {
     circuit.wires.addItemRemovedListener( function( wire ) {
       var wireNode = circuitNode.getWireNode( wire );
 
-      circuitNode.removeChild( wireNode );
+      mainLayer.removeChild( wireNode );
 
       var index = circuitNode.wireNodes.indexOf( wireNode );
       if ( index > -1 ) {
@@ -68,7 +80,7 @@ define( function( require ) {
     var addBatteryNode = function( battery ) {
       var batteryNode = new BatteryNode( circuitConstructionKitBasicsScreenView, circuitNode, battery );
       circuitNode.batteryNodes.push( batteryNode );
-      circuitNode.addChild( batteryNode );
+      mainLayer.addChild( batteryNode );
     };
     circuit.batteries.addItemAddedListener( addBatteryNode );
     circuit.batteries.forEach( addBatteryNode );
@@ -77,7 +89,7 @@ define( function( require ) {
     circuit.batteries.addItemRemovedListener( function( battery ) {
       var batteryNode = circuitNode.getBatteryNode( battery );
 
-      circuitNode.removeChild( batteryNode );
+      mainLayer.removeChild( batteryNode );
 
       var index = circuitNode.batteryNodes.indexOf( batteryNode );
       if ( index > -1 ) {
@@ -91,7 +103,7 @@ define( function( require ) {
     var addCCKLightBulbNode = function( lightBulb ) {
       var lightBulbNode = new CCKLightBulbNode( circuitConstructionKitBasicsScreenView, circuitNode, lightBulb );
       circuitNode.lightBulbNodes.push( lightBulbNode );
-      circuitNode.addChild( lightBulbNode );
+      mainLayer.addChild( lightBulbNode );
     };
     circuit.lightBulbs.addItemAddedListener( addCCKLightBulbNode );
     circuit.lightBulbs.forEach( addCCKLightBulbNode );
@@ -99,7 +111,7 @@ define( function( require ) {
     circuit.lightBulbs.addItemRemovedListener( function( lightBulb ) {
       var lightBulbNode = circuitNode.getCCKLightBulbNode( lightBulb );
 
-      circuitNode.removeChild( lightBulbNode );
+      mainLayer.removeChild( lightBulbNode );
 
       var index = circuitNode.lightBulbNodes.indexOf( lightBulbNode );
       if ( index > -1 ) {
@@ -114,7 +126,7 @@ define( function( require ) {
     var addResistorNode = function( resistor ) {
       var resistorNode = new ResistorNode( circuitConstructionKitBasicsScreenView, circuitNode, resistor );
       circuitNode.resistorNodes.push( resistorNode );
-      circuitNode.addChild( resistorNode );
+      mainLayer.addChild( resistorNode );
     };
     circuit.resistors.addItemAddedListener( addResistorNode );
     circuit.resistors.forEach( addResistorNode );
@@ -123,7 +135,7 @@ define( function( require ) {
     circuit.resistors.addItemRemovedListener( function( resistor ) {
       var resistorNode = circuitNode.getResistorNode( resistor );
 
-      circuitNode.removeChild( resistorNode );
+      mainLayer.removeChild( resistorNode );
 
       var index = circuitNode.resistorNodes.indexOf( resistorNode );
       if ( index > -1 ) {
@@ -137,13 +149,16 @@ define( function( require ) {
     var addVertexNode = function( vertex ) {
       var vertexNode = new VertexNode( circuitNode, vertex );
       circuitNode.vertexNodes.push( vertexNode );
-      circuitNode.addChild( vertexNode );
+      mainLayer.addChild( vertexNode );
+
+      var solderNode = new SolderNode( circuitNode, vertex );
+      circuitNode.solderNodes.push( solderNode );
+      solderLayer.addChild( solderNode );
     };
     circuit.vertices.addItemAddedListener( addVertexNode );
     circuit.vertices.addItemRemovedListener( function( vertex ) {
       var vertexNode = circuitNode.getVertexNode( vertex );
-
-      circuitNode.removeChild( vertexNode );
+      mainLayer.removeChild( vertexNode );
 
       var index = circuitNode.vertexNodes.indexOf( vertexNode );
       if ( index > -1 ) {
@@ -152,6 +167,17 @@ define( function( require ) {
       vertexNode.dispose();
 
       assert && assert( circuitNode.getVertexNode( vertex ) === null, 'vertex node should have been removed' );
+
+      var solderNode = circuitNode.getSolderNode( vertex );
+      solderLayer.removeChild( solderNode );
+
+      var solderNodeIndex = circuitNode.solderNodes.indexOf( solderNode );
+      if ( solderNodeIndex > -1 ) {
+        circuitNode.solderNodes.splice( solderNodeIndex, 1 );
+      }
+      solderNode.dispose();
+
+      assert && assert( circuitNode.getSolderNode( vertex ) === null, 'solder node should have been removed' );
     } );
     circuit.vertices.forEach( addVertexNode );
   }
@@ -191,6 +217,15 @@ define( function( require ) {
         var resistorNode = this.resistorNodes[ i ];
         if ( resistorNode.resistor === resistor ) {
           return resistorNode;
+        }
+      }
+      return null;
+    },
+    getSolderNode: function( vertex ) {
+      for ( var i = 0; i < this.solderNodes.length; i++ ) {
+        var solderNode = this.solderNodes[ i ];
+        if ( solderNode.vertex === vertex ) {
+          return solderNode;
         }
       }
       return null;

@@ -13,7 +13,7 @@ define( function( require ) {
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/FixedLengthCircuitElement' );
 
   // constants
-  var LIGHT_BULB_LENGTH = 80;
+  var LIGHT_BULB_LENGTH = 60;
 
   /**
    *

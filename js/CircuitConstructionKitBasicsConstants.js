@@ -26,7 +26,7 @@ define( function( require ) {
     toolboxIconLength: 60, // Width or height for icons in the control panel
     toolboxItemSpacing: 30,
     wireColor: '#c47a68',
-    solderColor: '#cdb4b2',
+    solderColor: '#ae9f9e',
     defaultResistance: 4.5,
     layoutInset: 14,
     tapThreshold: 10, // Number of pixels (screen coordinates) that constitutes a tap instead of a drag

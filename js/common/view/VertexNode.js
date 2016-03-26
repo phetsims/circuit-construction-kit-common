@@ -85,12 +85,12 @@ define( function( require ) {
       children: [ highlightNode, dottedLineNode, cutButton ]
     } );
 
-    var updateShape = function() {
-      var edgeCount = circuit.countCircuitElements( vertex );
-      dottedLineNode.fill = edgeCount > 1 ? CircuitConstructionKitBasicsConstants.solderColor : null;
-    };
-    circuit.vertices.addItemAddedListener( updateShape );
-    circuit.vertices.addItemRemovedListener( updateShape );
+    // var updateShape = function() {
+    //   var edgeCount = circuit.countCircuitElements( vertex );
+    //   dottedLineNode.fill = edgeCount > 1 ? CircuitConstructionKitBasicsConstants.solderColor : null;
+    // };
+    // circuit.vertices.addItemAddedListener( updateShape );
+    // circuit.vertices.addItemRemovedListener( updateShape );
 
     var p = null;
     var simpleDragHandler = new SimpleDragHandler( {
