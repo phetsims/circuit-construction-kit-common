@@ -125,8 +125,8 @@ define( function( require ) {
 
     // Don't permit dragging by the scissors or highlight
     dottedLineNode.addInputListener( simpleDragHandler );
-    vertex.interactiveProperty.link( function( interactive ) {
-      vertexNode.pickable = interactive;
+    vertex.draggableProperty.link( function( draggable ) {
+      vertexNode.pickable = draggable;
     } );
 
     // Use a query parameter to turn on node voltage readouts for debugging.  In #22 we are discussing making this

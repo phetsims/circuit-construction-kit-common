@@ -45,14 +45,14 @@ define( function( require ) {
                 x: 416,
                 y: 305,
                 options: {
-                  blackBoxInterface: true
+                  draggable: false
                 }
               },
               {
                 x: 606,
                 y: 305,
                 options: {
-                  blackBoxInterface: true
+                  draggable: false
                 }
               }
             ]

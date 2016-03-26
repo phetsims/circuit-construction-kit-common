@@ -13,6 +13,12 @@ define( function( require ) {
   var PropertySet = require( 'AXON/PropertySet' );
   var Vector2 = require( 'DOT/Vector2' );
 
+  // constants
+  var DEFAULTS = {
+    draggable: true, // {boolean} whether the vertex can be dragged, false for Black Box elements
+    attachable: true // {boolean} false for Black box interior elements
+  };
+
   /**
    *
    * @param {number} x - position (screen coordinates) in x
@@ -21,10 +27,7 @@ define( function( require ) {
    * @constructor
    */
   function Vertex( x, y, options ) {
-    options = _.extend( {
-      interactive: true, // {boolean} whether the vertex can be dragged, false for Black Box elements
-      blackBoxInterface: false // {boolean} whether the vertex is on the edge of a black box
-    }, options );
+    options = _.extend( _.clone( DEFAULTS ), options );
     PropertySet.call( this, {
 
       // {Vertex2} Where the vertex is and is shown
@@ -42,14 +45,15 @@ define( function( require ) {
       selected: false,
 
       // @public - Vertices on the black box interface persist between build/investigate, and cannot be moved/deleted
-      blackBoxInterface: options.blackBoxInterface,
+      draggable: options.draggable,
 
       // @public - whether the Vertex can be dragged or moved by dragging another part of the circuit
       // must be observable.  When two vertices are joined in Circuit.connect, non-interactivity propagates
-      // TODO: I am considering renaming this to blackBoxInternal for clarity
-      interactive: options.interactive
+      attachable: options.attachable
     } );
   }
 
-  return inherit( PropertySet, Vertex );
+  return inherit( PropertySet, Vertex, {}, {
+    DEFAULTS: DEFAULTS
+  } );
 } );

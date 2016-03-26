@@ -296,10 +296,10 @@ define( function( require ) {
      */
     connect: function( vertex1, vertex2 ) {
 
+      assert( vertex1.attachable && vertex2.attachable, 'both vertices should be attachable' );
+
       // Keep the black box vertices
-      // TODO: Rename 'interactive'
-      // TODO: Use blackBoxInterface vertices as the flag here, or move the check elsewhere
-      if ( vertex2.blackBoxInterface && !vertex1.blackBoxInterface ) {
+      if ( vertex2.draggable && !vertex2.draggable ) {
         this.connect( vertex2, vertex1 );
       }
       else {
@@ -466,13 +466,15 @@ define( function( require ) {
           };
 
           // Include any non-default options
-          // TODO: Move this to Vertex and make sure the defaults will be captured correctly, if defaults changed?
+          var defaults = Vertex.DEFAULTS;
+
+          // Capture all non-default values for vertex options, if any
           var options = {};
-          if ( vertex.blackBoxInterface ) {
-            options.blackBoxInterface = vertex.blackBoxInterface;
+          if ( vertex.attachable !== defaults.attachable ) {
+            options.attachable = vertex.attachable;
           }
-          if ( !vertex.interactive ) {
-            options.interactive = vertex.interactive;
+          if ( vertex.draggable !== defaults.draggable ) {
+            options.draggable = vertex.draggable;
           }
           if ( _.keys( options ).length > 0 ) {
             v.options = options;
