@@ -2,6 +2,7 @@
 
 /**
  * Shows the silver solder at a connected vertex.  This is not interactive and is behind everything else.
+ * TODO: Some duplication with VertexNode
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
