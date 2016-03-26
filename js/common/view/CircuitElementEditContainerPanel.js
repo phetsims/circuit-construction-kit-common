@@ -13,6 +13,7 @@ define( function( require ) {
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Resistor' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/LightBulb' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Battery' );
+  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Wire' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/FixedLengthCircuitElement' );
@@ -32,7 +33,7 @@ define( function( require ) {
     var listener = function() {
       var circuitElements = circuit.getCircuitElements();
 
-      // Only fixed length circuit elements are editable
+      // Only fixed length circuit elements are editable, even though wires can be deleted
       var fixedLengthElements = circuitElements.filter( function( circuitElement ) {
         return circuitElement instanceof FixedLengthCircuitElement;
       } );
@@ -57,8 +58,10 @@ define( function( require ) {
       if ( selectedCircuitElement ) {
         var res = selectedCircuitElement instanceof Resistor || selectedCircuitElement instanceof LightBulb;
         var bat = selectedCircuitElement instanceof Battery;
+        var wir = selectedCircuitElement instanceof Wire;
         lastNumberControl = res ? new CircuitElementEditPanel( 'Resistance', 'ohms', selectedCircuitElement.resistanceProperty, circuit, selectedCircuitElement ) :
                             bat ? new CircuitElementEditPanel( 'Voltage', 'volts', selectedCircuitElement.voltageProperty, circuit, selectedCircuitElement ) :
+                            wir ? new CircuitElementEditPanel( 'Resistance', 'ohms', selectedCircuitElement.resistanceProperty, circuit, selectedCircuitElement, { numberControlEnabled: false } ) :
                             null;
       }
       else {
