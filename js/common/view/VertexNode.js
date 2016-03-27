@@ -82,7 +82,8 @@ define( function( require ) {
       selected && updateCutButtonPosition();
 
       // Show a disabled button as a cue that the vertex could be cuttable, but it isn't right now.
-      cutButton.enabled = numberConnections > 1;
+      var isConnectedBlackBoxVertex = numberConnections === 1 && !vertexNode.vertex.draggable;
+      cutButton.enabled = numberConnections > 1 || isConnectedBlackBoxVertex;
     } );
     vertex.moveToFrontEmitter.addListener( function() {
       vertexNode.moveToFront();

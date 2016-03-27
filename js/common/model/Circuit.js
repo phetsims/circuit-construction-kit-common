@@ -129,21 +129,29 @@ define( function( require ) {
      */
     cutVertex: function( vertex ) {
       var neighborCircuitElements = this.getNeighborCircuitElements( vertex );
-      if ( neighborCircuitElements.length === 1 ) {
+      if ( neighborCircuitElements.length === 0 ) {
 
-        // No need to cut an edge vertex
+        // No need to cut a solo vertex
         return;
       }
-      else {
-        for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
-          var circuitElement = neighborCircuitElements[ i ];
-          var options = {
-            draggable: circuitElement.interactive
-          };
-          var newVertex = new Vertex( vertex.position.x, vertex.position.y, options );
-          circuitElement.replaceVertex( vertex, newVertex );
-          this.vertices.add( newVertex );
-        }
+      if ( neighborCircuitElements.length === 1 && vertex.draggable ) {
+
+        // No need to cut an edge vertex, unless it is a single interactive wire connected to an undraggable vertex.
+        // This case appears in a black box when the user attached a wire to a black box interface vertex
+        return;
+      }
+      for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
+        var circuitElement = neighborCircuitElements[ i ];
+        var options = {
+          draggable: circuitElement.interactive
+        };
+        var newVertex = new Vertex( vertex.position.x, vertex.position.y, options );
+        circuitElement.replaceVertex( vertex, newVertex );
+        this.vertices.add( newVertex );
+      }
+
+      // Don't remove black box interface vertices
+      if ( vertex.draggable ) {
         this.vertices.remove( vertex );
       }
 
