@@ -28,8 +28,13 @@ define( function( require ) {
 
       // Create the scene if it did not already exist
       if ( !sceneViews[ scene ] ) {
+
+        // Use the same dimensions for every black box so the size doesn't indicate what could be inside
+        var blackBoxWidth = 250;
+        var blackBoxHeight = 250;
+
         if ( scene === 'warmup' ) {
-          sceneViews[ scene ] = new WarmUpSceneView( new BlackBoxSceneModel( Circuit.fromStateObject( {
+          sceneViews[ scene ] = new WarmUpSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
             wires: [ {
               resistance: 0,
               startVertex: 0,
@@ -54,7 +59,7 @@ define( function( require ) {
           } ) ), blackBoxScreenModel.sceneProperty );
         }
         else if ( scene === 'scene1' ) {
-          sceneViews[ scene ] = new BlackBoxSceneView( new BlackBoxSceneModel( Circuit.fromStateObject( {
+          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
             wires: [
               {
                 resistance: 0,
@@ -103,7 +108,7 @@ define( function( require ) {
           } ) ), blackBoxScreenModel.sceneProperty );
         }
         else if ( scene === 'scene2' ) {
-          sceneViews[ scene ] = new BlackBoxSceneView( new BlackBoxSceneModel( Circuit.fromStateObject( {
+          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
             wires: [
               {
                 resistance: 0,
@@ -152,7 +157,7 @@ define( function( require ) {
           } ) ), blackBoxScreenModel.sceneProperty );
         }
         else if ( scene === 'scene3' ) {
-          sceneViews[ scene ] = new BlackBoxSceneView( new BlackBoxSceneModel( Circuit.fromStateObject( {
+          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
             wires: [ {
               resistance: 0,
               startVertex: 0,
@@ -176,8 +181,65 @@ define( function( require ) {
             ]
           } ) ), blackBoxScreenModel.sceneProperty );
         }
+        else if ( scene === 'scene4' ) {
+          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
+              wires: [
+                {
+                  resistance: 0,
+                  startVertex: 0,
+                  endVertex: 1
+                },
+                {
+                  resistance: 0,
+                  startVertex: 2,
+                  endVertex: 3
+                },
+                {
+                  resistance: 0,
+                  startVertex: 4,
+                  endVertex: 5
+                }
+              ],
+              batteries: [],
+              lightBulbs: [],
+              resistors: [
+                {
+                  resistance: 10,
+                  startVertex: 1,
+                  endVertex: 2
+                }
+              ],
+              vertices: [
+                {
+                  x: 518.8888888888889,
+                  y: 255.07407407407413
+                },
+                {
+                  x: 500.2727579139597,
+                  y: 310.8613364625639
+                },
+                {
+                  x: 598.0444444444444,
+                  y: 361.26666666666677
+                },
+                {
+                  x: 679.5703703703705,
+                  y: 361.26666666666654
+                },
+                {
+                  x: 374.77037037037036,
+                  y: 357.4740740740741
+                },
+                {
+                  x: 448.2222222222222,
+                  y: 357.4740740740741
+                }
+              ]
+            }
+          ) ), blackBoxScreenModel.sceneProperty );
+        }
         else {
-          sceneViews[ scene ] = new BlackBoxSceneView( new BlackBoxSceneModel( new Circuit() ), blackBoxScreenModel.sceneProperty );
+          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( new Circuit() ), blackBoxScreenModel.sceneProperty );
         }
       }
 

@@ -27,7 +27,10 @@ define( function( require ) {
       pickable: true,
 
       children: [
-        new Rectangle( 0, 0, width, height, 20, 20, { fill: 'black', opacity: 0.1 } ),
+        new Rectangle( 0, 0, width, height, 20, 20, {
+          fill: 'black',
+          opacity: phet.chipper.getQueryParameter( 'dev' ) ? 0.2 : 1
+        } ),
         new Text( '?', { fontSize: 82, centerX: width / 2, centerY: height / 2, fill: 'white' } )
       ]
     } );

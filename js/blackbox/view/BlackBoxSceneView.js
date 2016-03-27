@@ -25,7 +25,7 @@ define( function( require ) {
    * @param {Property.<string>} sceneProperty - for switching screens
    * @constructor
    */
-  function BlackBoxSceneView( blackBoxSceneModel, sceneProperty ) {
+  function BlackBoxSceneView( blackBoxWidth, blackBoxHeight, blackBoxSceneModel, sceneProperty ) {
     var BlackBoxSceneView = this;
     CircuitConstructionKitBasicsScreenView.call( this, blackBoxSceneModel );
 
@@ -63,7 +63,7 @@ define( function( require ) {
       comboBox.top = -layoutDimensions.dy + CircuitConstructionKitBasicsConstants.layoutInset;
     } );
 
-    var blackBoxNode = new BlackBoxNode( 160, 100, {
+    var blackBoxNode = new BlackBoxNode( blackBoxWidth, blackBoxHeight, {
 
       // Assumes the default layout bounds are used
       centerX: ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2,
@@ -73,7 +73,7 @@ define( function( require ) {
       blackBoxNode.visible = mode === 'investigate';
     } );
 
-    var whiteBoxNode = new WhiteBoxNode( 160, 100, {
+    var whiteBoxNode = new WhiteBoxNode( blackBoxWidth, blackBoxHeight, {
 
       // Assumes the default layout bounds are used
       centerX: ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2,

@@ -19,8 +19,8 @@ define( function( require ) {
    * @param {Property.<string>} sceneProperty - for switching screens
    * @constructor
    */
-  function WarmUpSceneView( blackBoxSceneModel, sceneProperty ) {
-    BlackBoxSceneView.call( this, blackBoxSceneModel, sceneProperty );
+  function WarmUpSceneView( blackBoxWidth, blackBoxHeight, blackBoxSceneModel, sceneProperty ) {
+    BlackBoxSceneView.call( this, blackBoxWidth, blackBoxHeight, blackBoxSceneModel, sceneProperty );
     var textOptions = {
       fontSize: 44
     };
