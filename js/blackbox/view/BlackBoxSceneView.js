@@ -16,6 +16,9 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var BlackBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/BlackBoxNode' );
+  var WhiteBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/WhiteBoxNode' );
+  var ScreenView = require( 'JOIST/ScreenView' );
 
   /**
    * @param {BlackBoxSceneModel} blackBoxSceneModel
@@ -55,6 +58,33 @@ define( function( require ) {
       comboBox.centerX = -layoutDimensions.dx + layoutDimensions.width / 2;
       comboBox.top = -layoutDimensions.dy + CircuitConstructionKitBasicsConstants.layoutInset;
     } );
+
+    var blackBoxNode = new BlackBoxNode( 160, 100, {
+
+      // Assumes the default layout bounds are used
+      centerX: ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2,
+      centerY: ScreenView.DEFAULT_LAYOUT_BOUNDS.height / 2
+    } );
+    blackBoxSceneModel.modeProperty.link( function( mode ) {
+      blackBoxNode.visible = mode === 'investigate';
+    } );
+
+    var whiteBoxNode = new WhiteBoxNode( 160, 100, {
+
+      // Assumes the default layout bounds are used
+      centerX: ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2,
+      centerY: ScreenView.DEFAULT_LAYOUT_BOUNDS.height / 2
+    } );
+    blackBoxSceneModel.modeProperty.link( function( mode ) {
+      whiteBoxNode.visible = mode === 'build';
+    } );
+
+    this.addChild( blackBoxNode );
+    this.addChild( whiteBoxNode );
+
+    // Workaround for https://github.com/phetsims/sun/issues/229 which puts the ComboBox popup behind the text for
+    // the warmup scene
+    this.comboBoxPopupLayer.moveToFront();
   }
 
   return inherit( CircuitConstructionKitBasicsScreenView, BlackBoxSceneView );

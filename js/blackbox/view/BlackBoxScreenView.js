@@ -29,7 +29,7 @@ define( function( require ) {
       // Create the scene if it did not already exist
       if ( !sceneViews[ scene ] ) {
         if ( scene === 'warmup' ) {
-          var trueBlackBoxCircuit = Circuit.fromStateObject( {
+          sceneViews[ scene ] = new WarmUpSceneView( new BlackBoxSceneModel( Circuit.fromStateObject( {
             wires: [ {
               resistance: 0,
               startVertex: 0,
@@ -44,21 +44,63 @@ define( function( require ) {
             vertices: [
               {
                 x: 416,
-                y: 305,
-                options: {
-                  draggable: false
-                }
+                y: 305
               },
               {
                 x: 606,
+                y: 305
+              }
+            ]
+          } ) ), blackBoxScreenModel.sceneProperty );
+        }
+        else if ( scene === 'scene1' ) {
+          sceneViews[ scene ] = new BlackBoxSceneView( new BlackBoxSceneModel( Circuit.fromStateObject( {
+            wires: [
+              {
+                resistance: 0,
+                startVertex: 0,
+                endVertex: 2
+              },
+              {
+                resistance: 0,
+                startVertex: 3,
+                endVertex: 1
+              }
+            ],
+            batteries: [
+              {
+                voltage: 10,
+                startVertex: 2,
+                endVertex: 3
+              }
+            ],
+            lightBulbs: [],
+            resistors: [],
+            vertices: [
+              {
+                x: 416,
+                y: 305
+              },
+              {
+                x: 606,
+                y: 305
+              },
+              {
+                x: 463.3925925925927,
                 y: 305,
                 options: {
-                  draggable: false
+                  attachable: false
+                }
+              },
+              {
+                x: 565.3925925925927,
+                y: 305,
+                options: {
+                  attachable: false
                 }
               }
             ]
-          } );
-          sceneViews[ scene ] = new WarmUpSceneView( new BlackBoxSceneModel( trueBlackBoxCircuit ), blackBoxScreenModel.sceneProperty );
+          } ) ), blackBoxScreenModel.sceneProperty );
         }
         else {
           sceneViews[ scene ] = new BlackBoxSceneView( new BlackBoxSceneModel( new Circuit() ), blackBoxScreenModel.sceneProperty );

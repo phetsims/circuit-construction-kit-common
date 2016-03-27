@@ -11,8 +11,6 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var BlackBoxSceneView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/BlackBoxSceneView' );
-  var BlackBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/BlackBoxNode' );
-  var WhiteBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/WhiteBoxNode' );
   var MultiLineText = require( 'SCENERY_PHET/MultiLineText' );
   var ScreenView = require( 'JOIST/ScreenView' );
 
@@ -51,33 +49,6 @@ define( function( require ) {
     // Let the circuit elements move in front of the text
     tryToText.moveToBack();
     questionText.moveToBack();
-
-    var blackBoxNode = new BlackBoxNode( 160, 100, {
-
-      // Assumes the default layout bounds are used
-      centerX: ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2,
-      centerY: ScreenView.DEFAULT_LAYOUT_BOUNDS.height / 2
-    } );
-    blackBoxSceneModel.modeProperty.link( function( mode ) {
-      blackBoxNode.visible = mode === 'investigate';
-    } );
-
-    var whiteBoxNode = new WhiteBoxNode( 160, 100, {
-
-      // Assumes the default layout bounds are used
-      centerX: ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2,
-      centerY: ScreenView.DEFAULT_LAYOUT_BOUNDS.height / 2
-    } );
-    blackBoxSceneModel.modeProperty.link( function( mode ) {
-      whiteBoxNode.visible = mode === 'build';
-    } );
-
-    this.addChild( blackBoxNode );
-    this.addChild( whiteBoxNode );
-
-    // Workaround for https://github.com/phetsims/sun/issues/229 which puts the ComboBox popup behind the text for
-    // the warmup scene
-    this.comboBoxPopupLayer.moveToFront();
   }
 
   return inherit( BlackBoxSceneView, WarmUpSceneView );

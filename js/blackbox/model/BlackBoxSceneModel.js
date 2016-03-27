@@ -19,6 +19,11 @@ define( function( require ) {
    */
   function BlackBoxSceneModel( trueBlackBoxCircuit ) {
 
+    // When loading a black box circuit, none of the vertices should be draggable
+    for ( var i = 0; i < trueBlackBoxCircuit.vertices.length; i++ ) {
+      trueBlackBoxCircuit.vertices.get( i ).draggable = false;
+    }
+
     CircuitConstructionKitBasicsModel.call( this, {
       mode: 'investigate' // or 'build'
     }, {
