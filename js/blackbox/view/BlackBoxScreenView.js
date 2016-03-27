@@ -67,11 +67,60 @@ define( function( require ) {
                 endVertex: 1
               }
             ],
+            batteries: [],
+            lightBulbs: [],
+            resistors: [
+              {
+                resistance: 10,
+                startVertex: 2,
+                endVertex: 3
+              }
+            ],
+            vertices: [
+              {
+                x: 416,
+                y: 305,
+                options: {
+                  draggable: false
+                }
+              },
+              {
+                x: 606,
+                y: 305,
+                options: {
+                  draggable: false
+                }
+              },
+              {
+                x: 451.31111111111113,
+                y: 304.3777777777778
+              },
+              {
+                x: 561.3111111111111,
+                y: 304.3777777777778
+              }
+            ]
+          } ) ), blackBoxScreenModel.sceneProperty );
+        }
+        else if ( scene === 'scene2' ) {
+          sceneViews[ scene ] = new BlackBoxSceneView( new BlackBoxSceneModel( Circuit.fromStateObject( {
+            wires: [
+              {
+                resistance: 0,
+                startVertex: 0,
+                endVertex: 2
+              },
+              {
+                resistance: 0,
+                startVertex: 3,
+                endVertex: 1
+              }
+            ],
             batteries: [
               {
                 voltage: 10,
-                startVertex: 2,
-                endVertex: 3
+                startVertex: 3,
+                endVertex: 2
               }
             ],
             lightBulbs: [],
@@ -98,6 +147,31 @@ define( function( require ) {
                 options: {
                   attachable: false
                 }
+              }
+            ]
+          } ) ), blackBoxScreenModel.sceneProperty );
+        }
+        else if ( scene === 'scene3' ) {
+          sceneViews[ scene ] = new BlackBoxSceneView( new BlackBoxSceneModel( Circuit.fromStateObject( {
+            wires: [ {
+              resistance: 0,
+              startVertex: 0,
+              endVertex: 1,
+              options: {
+                interactive: false
+              }
+            } ],
+            batteries: [],
+            lightBulbs: [],
+            resistors: [],
+            vertices: [
+              {
+                x: 416,
+                y: 305
+              },
+              {
+                x: 606,
+                y: 305
               }
             ]
           } ) ), blackBoxScreenModel.sceneProperty );

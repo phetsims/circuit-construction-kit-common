@@ -47,6 +47,10 @@ define( function( require ) {
       node: new Text( 'Warm-up', comboBoxTextOptions ), value: 'warmup'
     }, {
       node: new Text( 'Black Box 1', comboBoxTextOptions ), value: 'scene1'
+    }, {
+      node: new Text( 'Black Box 2', comboBoxTextOptions ), value: 'scene2'
+    }, {
+      node: new Text( 'Black Box 3', comboBoxTextOptions ), value: 'scene3'
     } ], sceneProperty, this.comboBoxPopupLayer );
     this.addChild( comboBox );
 
