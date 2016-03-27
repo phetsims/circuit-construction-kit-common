@@ -43,15 +43,15 @@ define( function( require ) {
     this.addChild( this.comboBoxPopupLayer );
 
     // A different ComboBox instance appears in each BlackBoxSceneView
-    var comboBox = new ComboBox( [ {
+    var elements = [ {
       node: new Text( 'Warm-up', comboBoxTextOptions ), value: 'warmup'
-    }, {
-      node: new Text( 'Black Box 1', comboBoxTextOptions ), value: 'scene1'
-    }, {
-      node: new Text( 'Black Box 2', comboBoxTextOptions ), value: 'scene2'
-    }, {
-      node: new Text( 'Black Box 3', comboBoxTextOptions ), value: 'scene3'
-    } ], sceneProperty, this.comboBoxPopupLayer );
+    } ];
+    for ( var i = 1; i <= 11; i++ ) {
+      elements.push( {
+        node: new Text( 'Black Box ' + i, comboBoxTextOptions ), value: 'scene' + i
+      } );
+    }
+    var comboBox = new ComboBox( elements, sceneProperty, this.comboBoxPopupLayer );
     this.addChild( comboBox );
 
     // Layout when the screen view size changed
