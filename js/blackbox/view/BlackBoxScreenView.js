@@ -48,11 +48,11 @@ define( function( require ) {
             resistors: [],
             vertices: [
               {
-                x: 416,
+                x: 381,
                 y: 305
               },
               {
-                x: 606,
+                x: 641,
                 y: 305
               }
             ]
@@ -83,14 +83,14 @@ define( function( require ) {
             ],
             vertices: [
               {
-                x: 416,
+                x: 381,
                 y: 305,
                 options: {
                   draggable: false
                 }
               },
               {
-                x: 606,
+                x: 641,
                 y: 305,
                 options: {
                   draggable: false
@@ -132,11 +132,11 @@ define( function( require ) {
             resistors: [],
             vertices: [
               {
-                x: 416,
+                x: 381,
                 y: 305
               },
               {
-                x: 606,
+                x: 641,
                 y: 305
               },
               {
@@ -171,11 +171,11 @@ define( function( require ) {
             resistors: [],
             vertices: [
               {
-                x: 416,
+                x: 381,
                 y: 305
               },
               {
-                x: 606,
+                x: 641,
                 y: 305
               }
             ]
@@ -183,60 +183,650 @@ define( function( require ) {
         }
         else if ( scene === 'scene4' ) {
           sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
-              wires: [
-                {
-                  resistance: 0,
-                  startVertex: 0,
-                  endVertex: 1
-                },
-                {
-                  resistance: 0,
-                  startVertex: 2,
-                  endVertex: 3
-                },
-                {
-                  resistance: 0,
-                  startVertex: 4,
-                  endVertex: 5
+            wires: [
+              {
+                resistance: 0,
+                startVertex: 2,
+                endVertex: 3
+              },
+              {
+                resistance: 0,
+                startVertex: 4,
+                endVertex: 1
+              },
+              {
+                resistance: 0,
+                startVertex: 0,
+                endVertex: 5
+              }
+            ],
+            batteries: [],
+            lightBulbs: [],
+            resistors: [
+              {
+                resistance: 10,
+                startVertex: 3,
+                endVertex: 4
+              }
+            ],
+            vertices: [
+              {
+                x: 381,
+                y: 305,
+                options: {
+                  draggable: false
                 }
-              ],
-              batteries: [],
-              lightBulbs: [],
-              resistors: [
-                {
-                  resistance: 10,
-                  startVertex: 1,
-                  endVertex: 2
+              },
+              {
+                x: 641,
+                y: 305,
+                options: {
+                  draggable: false
                 }
-              ],
-              vertices: [
-                {
-                  x: 518.8888888888889,
-                  y: 255.07407407407413
-                },
-                {
-                  x: 500.2727579139597,
-                  y: 310.8613364625639
-                },
-                {
-                  x: 598.0444444444444,
-                  y: 361.26666666666677
-                },
-                {
-                  x: 679.5703703703705,
-                  y: 361.26666666666654
-                },
-                {
-                  x: 374.77037037037036,
-                  y: 357.4740740740741
-                },
-                {
-                  x: 448.2222222222222,
-                  y: 357.4740740740741
+              },
+              {
+                x: 508.6893353941268,
+                y: 178.18907779495106
+              },
+              {
+                x: 494.73089897821814,
+                y: 243.01287667140764
+              },
+              {
+                x: 575.7047913446678,
+                y: 317.4657393096343
+              },
+              {
+                x: 474.16074188562595,
+                y: 304.80422462648113
+              }
+            ]
+          } ) ), blackBoxScreenModel.sceneProperty );
+        }
+        else if ( scene === 'scene5' ) {
+          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
+            wires: [
+              {
+                resistance: 0,
+                startVertex: 2,
+                endVertex: 3
+              },
+              {
+                resistance: 0,
+                startVertex: 4,
+                endVertex: 1
+              },
+              {
+                resistance: 0,
+                startVertex: 0,
+                endVertex: 5
+              },
+              {
+                resistance: 0,
+                startVertex: 5,
+                endVertex: 4
+              }
+            ],
+            batteries: [],
+            lightBulbs: [],
+            resistors: [
+              {
+                resistance: 10,
+                startVertex: 3,
+                endVertex: 4
+              }
+            ],
+            vertices: [
+              {
+                x: 381,
+                y: 305,
+                options: {
+                  draggable: false
                 }
-              ]
-            }
-          ) ), blackBoxScreenModel.sceneProperty );
+              },
+              {
+                x: 641,
+                y: 305,
+                options: {
+                  draggable: false
+                }
+              },
+              {
+                x: 508.6893353941268,
+                y: 178.18907779495106,
+                options: {
+                  draggable: false
+                }
+              },
+              {
+                x: 494.73089897821814,
+                y: 243.01287667140764,
+                options: {
+                  draggable: false
+                }
+              },
+              {
+                x: 575.7047913446678,
+                y: 317.4657393096343,
+                options: {
+                  draggable: false
+                }
+              },
+              {
+                x: 474.16074188562595,
+                y: 304.80422462648113,
+                options: {
+                  draggable: false
+                }
+              }
+            ]
+          } ) ), blackBoxScreenModel.sceneProperty );
+        }
+        else if ( scene === 'scene6' ) {
+          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
+            wires: [
+              {
+                resistance: 0,
+                startVertex: 2,
+                endVertex: 3
+              },
+              {
+                resistance: 0,
+                startVertex: 0,
+                endVertex: 4
+              },
+              {
+                resistance: 0,
+                startVertex: 5,
+                endVertex: 1
+              }
+            ],
+            batteries: [],
+            lightBulbs: [],
+            resistors: [
+              {
+                resistance: 10,
+                startVertex: 3,
+                endVertex: 5
+              },
+              {
+                resistance: 15,
+                startVertex: 4,
+                endVertex: 5
+              }
+            ],
+            vertices: [
+              {
+                x: 381,
+                y: 305,
+                options: {
+                  draggable: false
+                }
+              },
+              {
+                x: 641,
+                y: 305,
+                options: {
+                  draggable: false
+                }
+              },
+              {
+                x: 508.6893353941268,
+                y: 178.18907779495106,
+                options: {
+                  draggable: false
+                }
+              },
+              {
+                x: 466.7932305597578,
+                y: 246.6736324433821
+              },
+              {
+                x: 436.2563281508843,
+                y: 315.1157323880298
+              },
+              {
+                x: 545.9709724238027,
+                y: 323.0338655055636
+              }
+            ]
+          } ) ), blackBoxScreenModel.sceneProperty );
+        }
+        else if ( scene === 'scene7' ) {
+          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
+            wires: [
+              {
+                resistance: 0,
+                startVertex: 0,
+                endVertex: 5
+              },
+              {
+                resistance: 0,
+                startVertex: 3,
+                endVertex: 2
+              },
+              {
+                resistance: 0,
+                startVertex: 4,
+                endVertex: 1
+              },
+              {
+                resistance: 0,
+                startVertex: 6,
+                endVertex: 7
+              }
+            ],
+            batteries: [],
+            lightBulbs: [],
+            resistors: [
+              {
+                resistance: 10,
+                startVertex: 3,
+                endVertex: 4
+              },
+              {
+                resistance: 25,
+                startVertex: 5,
+                endVertex: 6
+              }
+            ],
+            vertices: [
+              {
+                x: 381,
+                y: 305,
+                options: {
+                  draggable: false
+                }
+              },
+              {
+                x: 641,
+                y: 305,
+                options: {
+                  draggable: false
+                }
+              },
+              {
+                x: 508.6893353941268,
+                y: 178.18907779495106,
+                options: {
+                  draggable: false
+                }
+              },
+              {
+                x: 491.92597968069657,
+                y: 250.20948234155776
+              },
+              {
+                x: 580.837550793385,
+                y: 314.9762371025718
+              },
+              {
+                x: 448.30478955007254,
+                y: 306.68553459119494
+              },
+              {
+                x: 534.2197071006653,
+                y: 375.37779719969285
+              },
+              {
+                x: 516.6705370101597,
+                y: 435.9859700048379
+              }
+            ]
+          } ) ), blackBoxScreenModel.sceneProperty );
+        }
+        else if ( scene === 'scene8' ) {
+          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
+            wires: [
+              {
+                resistance: 0,
+                startVertex: 0,
+                endVertex: 6
+              },
+              {
+                resistance: 0,
+                startVertex: 5,
+                endVertex: 2
+              },
+              {
+                resistance: 0,
+                startVertex: 3,
+                endVertex: 1
+              },
+              {
+                resistance: 0,
+                startVertex: 5,
+                endVertex: 4
+              },
+              {
+                resistance: 0,
+                startVertex: 6,
+                endVertex: 5
+              }
+            ],
+            batteries: [],
+            lightBulbs: [],
+            resistors: [
+              {
+                resistance: 40,
+                startVertex: 5,
+                endVertex: 3
+              }
+            ],
+            vertices: [
+              {
+                x: 381,
+                y: 305,
+                options: {
+                  draggable: false
+                }
+              },
+              {
+                x: 641,
+                y: 305,
+                options: {
+                  draggable: false
+                }
+              },
+              {
+                x: 508.6893353941268,
+                y: 178.18907779495106,
+                options: {
+                  draggable: false
+                }
+              },
+              {
+                x: 598.67209360906,
+                y: 310.5176013986531
+              },
+              {
+                x: 516.6705370101597,
+                y: 435.9859700048379
+              },
+              {
+                x: 509.7605224963715,
+                y: 245.75084663763903
+              },
+              {
+                x: 448.30478955007254,
+                y: 306.68553459119494
+              }
+            ]
+          } ) ), blackBoxScreenModel.sceneProperty );
+        }
+        else if ( scene === 'scene9' ) {
+          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
+            wires: [
+              {
+                resistance: 0,
+                startVertex: 0,
+                endVertex: 4
+              },
+              {
+                resistance: 0,
+                startVertex: 5,
+                endVertex: 2
+              },
+              {
+                resistance: 0,
+                startVertex: 7,
+                endVertex: 1
+              },
+              {
+                resistance: 0,
+                startVertex: 6,
+                endVertex: 3
+              },
+              {
+                resistance: 0,
+                startVertex: 6,
+                endVertex: 7
+              }
+            ],
+            batteries: [],
+            lightBulbs: [],
+            resistors: [
+              {
+                resistance: 15,
+                startVertex: 5,
+                endVertex: 7
+              },
+              {
+                resistance: 10,
+                startVertex: 4,
+                endVertex: 5
+              }
+            ],
+            vertices: [
+              {
+                x: 381,
+                y: 305,
+                options: {
+                  draggable: false
+                }
+              },
+              {
+                x: 641,
+                y: 305,
+                options: {
+                  draggable: false
+                }
+              },
+              {
+                x: 508.6893353941268,
+                y: 178.18907779495106,
+                options: {
+                  draggable: false
+                }
+              },
+              {
+                x: 509.23947750362845,
+                y: 437.4721819061441
+              },
+              {
+                x: 429.7844303895079,
+                y: 301.9537616627625
+              },
+              {
+                x: 509.76052249637144,
+                y: 226.43009192065796
+              },
+              {
+                x: 511.2467343976777,
+                y: 312.6303821964199
+              },
+              {
+                x: 598.6720936090605,
+                y: 291.196846681672
+              }
+            ]
+          } ) ), blackBoxScreenModel.sceneProperty );
+        }
+        else if ( scene === 'scene10' ) {
+          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
+            wires: [
+              {
+                resistance: 0,
+                startVertex: 0,
+                endVertex: 5
+              },
+              {
+                resistance: 0,
+                startVertex: 4,
+                endVertex: 2
+              },
+              {
+                resistance: 0,
+                startVertex: 7,
+                endVertex: 1
+              },
+              {
+                resistance: 0,
+                startVertex: 6,
+                endVertex: 3
+              }
+            ],
+            batteries: [
+              {
+                voltage: 10,
+                startVertex: 4,
+                endVertex: 5
+              }
+            ],
+            lightBulbs: [],
+            resistors: [
+              {
+                resistance: 40,
+                startVertex: 4,
+                endVertex: 7
+              }
+            ],
+            vertices: [
+              {
+                x: 381,
+                y: 305,
+                options: {
+                  draggable: false
+                }
+              },
+              {
+                x: 641,
+                y: 305,
+                options: {
+                  draggable: false
+                }
+              },
+              {
+                x: 508.6893353941268,
+                y: 178.18907779495106,
+                options: {
+                  draggable: false
+                }
+              },
+              {
+                x: 509.23947750362845,
+                y: 437.4721819061441
+              },
+              {
+                x: 509.76052249637144,
+                y: 226.43009192065796
+              },
+              {
+                x: 429.54911989720756,
+                y: 289.4390666232742
+              },
+              {
+                x: 511.2467343976777,
+                y: 312.6303821964199
+              },
+              {
+                x: 598.6720936090605,
+                y: 291.196846681672
+              }
+            ]
+          } ) ), blackBoxScreenModel.sceneProperty );
+        }
+        else if ( scene === 'scene11' ) {
+          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
+            wires: [
+              {
+                resistance: 0,
+                startVertex: 0,
+                endVertex: 4
+              },
+              {
+                resistance: 0,
+                startVertex: 5,
+                endVertex: 2
+              },
+              {
+                resistance: 0,
+                startVertex: 7,
+                endVertex: 1
+              },
+              {
+                resistance: 0,
+                startVertex: 6,
+                endVertex: 3
+              },
+              {
+                resistance: 0,
+                startVertex: 7,
+                endVertex: 8
+              }
+            ],
+            batteries: [],
+            lightBulbs: [],
+            resistors: [
+              {
+                resistance: 5,
+                startVertex: 4,
+                endVertex: 5
+              },
+              {
+                resistance: 5,
+                startVertex: 4,
+                endVertex: 6
+              },
+              {
+                resistance: 10,
+                startVertex: 5,
+                endVertex: 7
+              },
+              {
+                resistance: 10,
+                startVertex: 6,
+                endVertex: 8
+              }
+            ],
+            vertices: [
+              {
+                x: 381,
+                y: 305,
+                options: {
+                  draggable: false
+                }
+              },
+              {
+                x: 641,
+                y: 305,
+                options: {
+                  draggable: false
+                }
+              },
+              {
+                x: 508.6893353941268,
+                y: 178.18907779495106,
+                options: {
+                  draggable: false
+                }
+              },
+              {
+                x: 509.23947750362845,
+                y: 437.4721819061441
+              },
+              {
+                x: 429.47373111984234,
+                y: 306.0820194162099
+              },
+              {
+                x: 509.76052249637144,
+                y: 230.8887276245767
+              },
+              {
+                x: 515.2404740840386,
+                y: 374.95919852013003
+              },
+              {
+                x: 592.4940785388161,
+                y: 303.38120105852477
+              },
+              {
+                x: 608.3992218798088,
+                y: 316.46605610903987
+              }
+            ]
+          } ) ), blackBoxScreenModel.sceneProperty );
         }
         else {
           sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( new Circuit() ), blackBoxScreenModel.sceneProperty );
