@@ -148,6 +148,18 @@ define( function( require ) {
         var newVertex = new Vertex( vertex.position.x, vertex.position.y, options );
         circuitElement.replaceVertex( vertex, newVertex );
         this.vertices.add( newVertex );
+
+        // Bump the vertices away from each other
+        var vertexGroup = this.findAllFixedVertices( newVertex );
+        var oppositeVertex = circuitElement.getOppositeVertex( newVertex );
+        var translation = oppositeVertex.position.minus( newVertex.position ).normalized().timesScalar( 30 );
+        for ( var j = 0; j < vertexGroup.length; j++ ) {
+          var v = vertexGroup[ j ];
+          if ( v.draggable ) {
+            v.position = v.position.plus( translation );
+            v.unsnappedPosition = v.position;
+          }
+        }
       }
 
       // Don't remove black box interface vertices
