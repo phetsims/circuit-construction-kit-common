@@ -22,7 +22,7 @@ define( function( require ) {
   function WarmUpSceneView( blackBoxWidth, blackBoxHeight, blackBoxSceneModel, sceneProperty ) {
     BlackBoxSceneView.call( this, blackBoxWidth, blackBoxHeight, blackBoxSceneModel, sceneProperty );
     var textOptions = {
-      fontSize: 44
+      fontSize: 34
     };
 
     // TODO: Maybe put the text in front with a partially transparent background, then fade it to the back?
@@ -37,7 +37,7 @@ define( function( require ) {
 
     var tryToText = new MultiLineText( 'Build a circuit that\nbehaves the same way.', _.extend( {
       centerX: ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2,
-      top: ScreenView.DEFAULT_LAYOUT_BOUNDS.height * 4 / 6
+      top: ScreenView.DEFAULT_LAYOUT_BOUNDS.height * 0.75
     }, textOptions ) );
     blackBoxSceneModel.modeProperty.link( function( mode ) {
       tryToText.visible = mode === 'build';
