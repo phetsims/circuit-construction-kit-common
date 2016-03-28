@@ -26,7 +26,7 @@ define( function( require ) {
     this.startOffset = null;// @public - added by CircuitNode during dragging, used for relative drag location.
 
     // @public (read-only) - for hit testing with probes
-    this.dottedLineNodeRadius = 14;
+    this.dottedLineNodeRadius = 11.2;
 
     // Start as a dotted line, becomes solid when connected to >1 element.
     var dottedLineNode = new Circle( this.dottedLineNodeRadius );
