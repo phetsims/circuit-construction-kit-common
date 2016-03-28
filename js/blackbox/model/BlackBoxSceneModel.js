@@ -65,8 +65,7 @@ define( function( require ) {
 
     this.modeProperty.link( function( mode ) {
 
-      // When switching to build mode, remove all of the black box circuitry
-      // TODO: how to keep the external vertices?
+      // When switching to build mode, remove all of the black box circuitry and vice-versa
       if ( mode === 'build' ) {
 
         removeBlackBoxContents( trueBlackBoxCircuit );

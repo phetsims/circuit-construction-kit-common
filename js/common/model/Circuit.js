@@ -439,6 +439,10 @@ define( function( require ) {
         return vertex.unsnappedPosition.distance( candidateVertex.position ) < DISTANCE_FOR_SNAP;
       } );
 
+      candidateVertices = candidateVertices.filter( function( candidateVertex ) {
+        return candidateVertex.attachable;
+      } );
+
       // TODO: (4) reject any matches that result in circuit elements sharing a pair of vertices
       // TODO: which would cause the wires to lay across one another
 
