@@ -597,24 +597,15 @@ define( function( require ) {
             vertices: [
               {
                 x: 381,
-                y: 305,
-                options: {
-                  draggable: false
-                }
+                y: 305
               },
               {
                 x: 641,
-                y: 305,
-                options: {
-                  draggable: false
-                }
+                y: 305
               },
               {
                 x: 508.6893353941268,
-                y: 178.18907779495106,
-                options: {
-                  draggable: false
-                }
+                y: 178.18907779495106
               },
               {
                 x: 509.23947750362845,
@@ -622,19 +613,31 @@ define( function( require ) {
               },
               {
                 x: 429.7844303895079,
-                y: 301.9537616627625
+                y: 301.9537616627625,
+                options: {
+                  attachable: false
+                }
               },
               {
                 x: 509.76052249637144,
-                y: 226.43009192065796
+                y: 226.43009192065796,
+                options: {
+                  attachable: false
+                }
               },
               {
                 x: 511.2467343976777,
-                y: 312.6303821964199
+                y: 312.6303821964199,
+                options: {
+                  attachable: false
+                }
               },
               {
                 x: 598.6720936090605,
-                y: 291.196846681672
+                y: 291.196846681672,
+                options: {
+                  attachable: false
+                }
               }
             ]
           } ) ), blackBoxScreenModel.sceneProperty );
