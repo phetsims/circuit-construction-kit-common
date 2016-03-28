@@ -352,36 +352,36 @@ define( function( require ) {
             vertices: [
               {
                 x: 381,
-                y: 305,
-                options: {
-                  draggable: false
-                }
+                y: 305
               },
               {
                 x: 641,
-                y: 305,
-                options: {
-                  draggable: false
-                }
+                y: 305
               },
               {
                 x: 508.6893353941268,
-                y: 178.18907779495106,
-                options: {
-                  draggable: false
-                }
+                y: 178.18907779495106
               },
               {
                 x: 466.7932305597578,
-                y: 246.6736324433821
+                y: 246.6736324433821,
+                options: {
+                  attachable: false
+                }
               },
               {
                 x: 436.2563281508843,
-                y: 315.1157323880298
+                y: 315.1157323880298,
+                options: {
+                  attachable: false
+                }
               },
               {
                 x: 545.9709724238027,
-                y: 323.0338655055636
+                y: 323.0338655055636,
+                options: {
+                  attachable: false
+                }
               }
             ]
           } ) ), blackBoxScreenModel.sceneProperty );
