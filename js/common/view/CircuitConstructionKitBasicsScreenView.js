@@ -32,14 +32,6 @@ define( function( require ) {
     this.circuitConstructionKitBasicsScreenViewLayoutCompletedEmitter = new Emitter();
     ScreenView.call( this );
 
-    // Reset All button
-    var resetAllButton = new ResetAllButton( {
-      listener: function() {
-        circuitConstructionKitBasicsModel.reset();
-      }
-    } );
-    this.addChild( resetAllButton );
-
     var voltmeterNode = new VoltmeterNode( circuitConstructionKitBasicsModel.voltmeter );
     circuitConstructionKitBasicsModel.voltmeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
       if ( bodyNodeGlobalBounds.intersectsBounds( circuitConstructionKitBasicsScreenView.sensorToolbox.globalBounds ) ) {
@@ -67,8 +59,16 @@ define( function( require ) {
     // @protected - so that subclasses can add a layout circuit element near it
     this.sensorToolbox = new SensorToolbox( voltmeterNode, ammeterNode );
 
-    this.addChild( this.sensorToolbox );
     this.addChild( this.circuitNode );
+    this.addChild( this.sensorToolbox );
+
+    // Reset All button
+    var resetAllButton = new ResetAllButton( {
+      listener: function() {
+        circuitConstructionKitBasicsModel.reset();
+      }
+    } );
+    this.addChild( resetAllButton );
 
     // Has to be interleaved in the circuit layering to support the black box, so that the toolbox can be behind
     // circuit elements but in front of the transparency overlay
