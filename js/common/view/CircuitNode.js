@@ -28,11 +28,14 @@ define( function( require ) {
    */
   function CircuitNode( circuit, circuitConstructionKitBasicsScreenView ) {
     var solderLayer = new Node();
-    var mainLayer = new Node();
+
+    // @public (read-only) so that additional Nodes may be interleaved
+    this.mainLayer = new Node();
+    var mainLayer = this.mainLayer;
     Node.call( this, {
       children: [
         solderLayer,
-        mainLayer // everything else
+        this.mainLayer // everything else
       ]
     } );
     this.circuit = circuit;

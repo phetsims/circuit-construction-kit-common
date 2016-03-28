@@ -19,6 +19,8 @@ define( function( require ) {
   var BlackBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/BlackBoxNode' );
   var WhiteBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/WhiteBoxNode' );
   var ScreenView = require( 'JOIST/ScreenView' );
+  var Shape = require( 'KITE/Shape' );
+  var Path = require( 'SCENERY/nodes/Path' );
 
   /**
    * @param {BlackBoxSceneModel} blackBoxSceneModel
@@ -26,7 +28,7 @@ define( function( require ) {
    * @constructor
    */
   function BlackBoxSceneView( blackBoxWidth, blackBoxHeight, blackBoxSceneModel, sceneProperty ) {
-    var BlackBoxSceneView = this;
+    var blackBoxSceneView = this;
     CircuitConstructionKitBasicsScreenView.call( this, blackBoxSceneModel );
 
     // Add 'Investigate Circuit' and 'Build Circuit' radio buttons under the sensor toolbox
@@ -56,8 +58,8 @@ define( function( require ) {
 
     // Layout when the screen view size changed
     this.circuitConstructionKitBasicsScreenViewLayoutCompletedEmitter.addListener( function( layoutDimensions ) {
-      modeRadioButtonGroup.top = BlackBoxSceneView.sensorToolbox.bottom + 20;
-      modeRadioButtonGroup.right = BlackBoxSceneView.sensorToolbox.right;
+      modeRadioButtonGroup.top = blackBoxSceneView.sensorToolbox.bottom + 20;
+      modeRadioButtonGroup.right = blackBoxSceneView.sensorToolbox.right;
 
       comboBox.centerX = -layoutDimensions.dx + layoutDimensions.width / 2;
       comboBox.top = -layoutDimensions.dy + CircuitConstructionKitBasicsConstants.layoutInset;
@@ -85,6 +87,35 @@ define( function( require ) {
 
     this.addChild( blackBoxNode );
     this.addChild( whiteBoxNode );
+
+    var screenInset = 1000;
+    var boxInset = 20;
+    var b = ScreenView.DEFAULT_LAYOUT_BOUNDS;
+    var w = whiteBoxNode.bounds;
+    var shape = new Shape()
+      .moveTo( b.minX - screenInset, b.minY - screenInset )
+      .lineTo( b.maxX + screenInset, b.minY - screenInset )
+      .lineTo( b.maxX + screenInset, b.maxY + screenInset )
+      .lineTo( b.minX - screenInset, b.maxY + screenInset )
+      .lineTo( b.minX - screenInset, b.minX + screenInset )
+
+      // Move inside and move the opposite direction to do a cutout
+      // TODO: fit to the curves for the rectangular box
+      .moveTo( w.minX - boxInset, w.minY - boxInset )
+      .lineTo( w.minX - boxInset, w.maxY + boxInset )
+      .lineTo( w.maxX + boxInset, w.maxY + boxInset )
+      .lineTo( w.maxX + boxInset, w.minY - boxInset )
+      .lineTo( w.minX - boxInset, w.minY - boxInset );
+    var transparencyOverlay = new Path( shape, { fill: 'black', opacity: 0.65 } );
+    blackBoxSceneModel.modeProperty.link( function( mode ) {
+      var isBuildBode = mode === 'build';
+      if ( isBuildBode ) {
+        transparencyOverlay.moveToFront();
+        blackBoxSceneView.circuitElementToolbox.moveToFront();
+      }
+      transparencyOverlay.visible = isBuildBode;
+    } );
+    this.circuitNode.mainLayer.addChild( transparencyOverlay );
 
     // Workaround for https://github.com/phetsims/sun/issues/229 which puts the ComboBox popup behind the text for
     // the warmup scene

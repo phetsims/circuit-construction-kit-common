@@ -68,8 +68,11 @@ define( function( require ) {
     this.sensorToolbox = new SensorToolbox( voltmeterNode, ammeterNode );
 
     this.addChild( this.sensorToolbox );
-    this.addChild( this.circuitElementToolbox );
     this.addChild( this.circuitNode );
+
+    // Has to be interleaved in the circuit layering to support the black box, so that the toolbox can be behind
+    // circuit elements but in front of the transparency overlay
+    this.circuitNode.mainLayer.addChild( this.circuitElementToolbox );
 
     var visibleBoundsProperty = new Property( new Rectangle( 0, 0, this.layoutBounds.width, this.layoutBounds.height ) );
     this.events.on( 'layoutFinished', function( dx, dy, width, height ) {
