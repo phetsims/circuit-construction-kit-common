@@ -105,16 +105,20 @@ define( function( require ) {
     this.inputListener = new SimpleDragHandler( {
       start: function( event ) {
         p = event.pointer.point;
-        circuitNode.startDrag( event.pointer.point, circuitElement.endVertex, false );
+        circuitElement.interactive && circuitNode.startDrag( event.pointer.point, circuitElement.endVertex, false );
       },
       drag: function( event ) {
-        circuitNode.drag( event.pointer.point, circuitElement.endVertex, false );
+        circuitElement.interactive && circuitNode.drag( event.pointer.point, circuitElement.endVertex, false );
       },
       end: function( event ) {
 
         // If over the toolbox, then drop into it, and don't process further
         if ( circuitConstructionKitBasicsScreenView.canNodeDropInToolbox( fixedLengthCircuitElementNode ) ) {
           circuitConstructionKitBasicsScreenView.dropCircuitElementNodeInToolbox( fixedLengthCircuitElementNode );
+          return;
+        }
+
+        if ( !circuitElement.interactive ) {
           return;
         }
 

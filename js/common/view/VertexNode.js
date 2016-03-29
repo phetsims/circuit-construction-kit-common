@@ -112,7 +112,7 @@ define( function( require ) {
         vertex.draggable && circuitNode.endDrag( event, vertex );
 
         // Only show on a tap, not on every drag.
-        if ( event.pointer.point.distance( p ) < CircuitConstructionKitBasicsConstants.tapThreshold ) {
+        if ( vertex.draggable && event.pointer.point.distance( p ) < CircuitConstructionKitBasicsConstants.tapThreshold ) {
 
           vertex.selected = true;
 

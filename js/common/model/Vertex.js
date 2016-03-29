@@ -46,7 +46,7 @@ define( function( require ) {
       selected: false,
 
       // @public - Vertices on the black box interface persist between build/investigate, and cannot be moved/deleted
-      draggable: options.draggable,
+      draggable: options.draggable, // TODO: This is like `interactive` in CircuitElemen
 
       // @public - whether the Vertex can be dragged or moved by dragging another part of the circuit
       // must be observable.  When two vertices are joined in Circuit.connect, non-interactivity propagates

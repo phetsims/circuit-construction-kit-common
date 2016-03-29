@@ -27,7 +27,8 @@ define( function( require ) {
     PropertySet.call( this, _.extend( {
       startVertex: startVertex,
       endVertex: endVertex,
-      current: 0
+      current: 0,
+      interactive: options.interactive // TODO: This is like `draggable` in Vertex
     }, propertySetMap ) );
 
     // @public (read-only) - indicate when this circuit element has been connected
@@ -38,8 +39,6 @@ define( function( require ) {
     this.vertexSelectedEmitter = new Emitter();
 
     // TODO: Derived properties for startPosition and endPosition, to encapsulate the matter of switching vertices?
-
-    this.interactive = options.interactive; // TODO: maybe move into PropertySet if it will be toggleable by the circuit creator
   }
 
   return inherit( PropertySet, CircuitElement, {

@@ -69,10 +69,31 @@ define( function( require ) {
       if ( mode === 'build' ) {
 
         removeBlackBoxContents( trueBlackBoxCircuit );
+
+        // Any draggable vertices that remain should be made unattachable and undraggable,
+        // so the user cannot update the circuit outside the box
+        circuit.vertices.forEach( function( vertex ) {
+          if ( vertex.draggable ) {
+            vertex.attachable = false;
+            vertex.draggable = false;
+          }
+        } );
+        circuit.circuitElements.forEach( function( circuitElement ) {
+          circuitElement.interactive = false;
+        } );
         addBlackBoxContents( userBlackBoxCircuit );
       }
       else {
         removeBlackBoxContents( userBlackBoxCircuit );
+
+        // Any attachable vertices outside the box should become attachable and draggable
+        circuit.vertices.forEach( function( vertex ) {
+          if ( vertex.attachable ) {
+            vertex.attachable = true;
+            vertex.draggable = true;
+          }
+        } );
+
         addBlackBoxContents( trueBlackBoxCircuit );
       }
     } );

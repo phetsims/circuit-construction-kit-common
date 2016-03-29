@@ -110,6 +110,13 @@ define( function( require ) {
   }
 
   return inherit( Object, Circuit, {
+    get circuitElements() {
+      return []
+        .concat( this.wires.getArray() )
+        .concat( this.batteries.getArray() )
+        .concat( this.lightBulbs.getArray() )
+        .concat( this.resistors.getArray() );
+    },
     clear: function() {
       this.selectedCircuitElementProperty.reset();
 
