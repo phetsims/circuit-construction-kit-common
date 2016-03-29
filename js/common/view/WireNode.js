@@ -45,6 +45,10 @@ define( function( require ) {
       ]
     } );
 
+    wire.interactiveProperty.link( function( interactive ) {
+      wireNode.pickable = interactive;
+    } );
+
     var strokeStyles = new LineStyles( {
       lineWidth: 26,
       lineCap: 'round',
