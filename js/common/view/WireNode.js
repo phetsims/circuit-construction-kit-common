@@ -82,18 +82,25 @@ define( function( require ) {
       start: function( event ) {
         p = event.pointer.point;
 
-        circuitNode.startDrag( event.pointer.point, wire.startVertex, false );
-        circuitNode.startDrag( event.pointer.point, wire.endVertex, false );
+        if ( wire.interactive ) {
+          circuitNode.startDrag( event.pointer.point, wire.startVertex, false );
+          circuitNode.startDrag( event.pointer.point, wire.endVertex, false );
+        }
       },
       drag: function( event ) {
-        circuitNode.drag( event.pointer.point, wire.startVertex, false );
-        circuitNode.drag( event.pointer.point, wire.endVertex, false );
+        if ( wire.interactive ) {
+          circuitNode.drag( event.pointer.point, wire.startVertex, false );
+          circuitNode.drag( event.pointer.point, wire.endVertex, false );
+        }
       },
       end: function( event ) {
 
         // If over the toolbox, then drop into it, and don't process further
         if ( circuitConstructionKitBasicsScreenView.canNodeDropInToolbox( wireNode ) ) {
           circuitConstructionKitBasicsScreenView.dropCircuitElementNodeInToolbox( wireNode );
+          return;
+        }
+        if ( !wire.interactive ) {
           return;
         }
 
