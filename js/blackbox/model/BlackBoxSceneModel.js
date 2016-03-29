@@ -46,7 +46,7 @@ define( function( require ) {
       // Remove the vertices but not those on the black box interface
       for ( var i = 0; i < blackBoxCircuit.vertices.length; i++ ) {
         var vertex = blackBoxCircuit.vertices.get( i );
-        if ( !vertex.draggable && !vertex.attachable ) {
+        if ( !vertex.blackBoxInterface ) {
           circuit.vertices.remove( vertex );
         }
       }
@@ -56,7 +56,7 @@ define( function( require ) {
       // Add the vertices, but only if not already added
       for ( var i = 0; i < blackBoxCircuit.vertices.length; i++ ) {
         var vertex = blackBoxCircuit.vertices.get( i );
-        if ( circuit.vertices.indexOf( vertex ) === -1 ) {
+        if ( !vertex.blackBoxInterface ) {
           circuit.vertices.add( vertex );
         }
       }
@@ -89,10 +89,13 @@ define( function( require ) {
         addBlackBoxContents( userBlackBoxCircuit );
       }
       else {
-        circuit.circuitElements.forEach(function(circuitElement){
-          // TODO: move interior elements to userBlackBoxCircuit
-        });
-
+        // move interior elements to userBlackBoxCircuit
+        userBlackBoxCircuit.clear();
+        circuit.vertices.forEach( function( v ) { if ( v.interactive && v.draggable ) {userBlackBoxCircuit.vertices.add( v );}} );
+        circuit.wires.forEach( function( wire ) { if ( wire.interactive ) { userBlackBoxCircuit.wires.add( wire ); } } );
+        circuit.batteries.forEach( function( b ) { if ( b.interactive ) { userBlackBoxCircuit.batteries.add( b ); } } );
+        circuit.lightBulbs.forEach( function( bulb ) { if ( bulb.interactive ) { userBlackBoxCircuit.lightBulbs.add( bulb ); } } );
+        circuit.resistors.forEach( function( r ) { if ( r.interactive ) { userBlackBoxCircuit.resistors.add( r ); } } );
         removeBlackBoxContents( userBlackBoxCircuit );
 
         // Any attachable vertices outside the box should become attachable and draggable
@@ -100,7 +103,7 @@ define( function( require ) {
           if ( !vertex.blackBoxInterface ) {
             vertex.draggable = true;
             vertex.attachable = true;
-            vertex.interactive = true; 
+            vertex.interactive = true;
           }
         } );
         circuit.circuitElements.forEach( function( circuitElement ) {
