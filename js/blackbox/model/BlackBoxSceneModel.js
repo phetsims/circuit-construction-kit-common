@@ -80,6 +80,7 @@ define( function( require ) {
           if ( !vertex.blackBoxInterface ) {
             vertex.attachable = false;
             vertex.draggable = false;
+            vertex.interactive = false;
           }
         } );
         circuit.circuitElements.forEach( function( circuitElement ) {
@@ -95,6 +96,7 @@ define( function( require ) {
           if ( !vertex.blackBoxInterface ) {
             vertex.draggable = true;
             vertex.attachable = true;
+            vertex.interactive = true; 
           }
         } );
         circuit.circuitElements.forEach( function( circuitElement ) {

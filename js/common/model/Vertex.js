@@ -17,7 +17,8 @@ define( function( require ) {
   // constants
   var DEFAULTS = {
     draggable: true, // {boolean} whether the vertex can be dragged, false for Black Box elements
-    attachable: true // {boolean} false for Black box interior elements
+    attachable: true, // {boolean} false for Black box interior elements
+    interactive: true // {boolean} Black box interface vertices can be interactive (tap to select) without being draggable
   };
 
   /**
@@ -45,8 +46,13 @@ define( function( require ) {
       // at a time.
       selected: false,
 
+      // TODO: Do we need all of these properties?  It seems there are relationships between draggable/interactive/attachable
+
       // @public - Vertices on the black box interface persist between build/investigate, and cannot be moved/deleted
-      draggable: options.draggable, // TODO: This is like `interactive` in CircuitElemen
+      draggable: options.draggable, // TODO: This is like `interactive` in CircuitElement
+
+      // @public - Black box interface vertices can be interactive (tap to select) without being draggable
+      interactive: options.interactive,
 
       // @public - whether the Vertex can be dragged or moved by dragging another part of the circuit
       // must be observable.  When two vertices are joined in Circuit.connect, non-interactivity propagates

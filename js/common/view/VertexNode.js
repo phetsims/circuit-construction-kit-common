@@ -92,6 +92,10 @@ define( function( require ) {
       children: [ highlightNode, dottedLineNode, cutButton ]
     } );
 
+    vertex.interactiveProperty.link( function( interactive ) {
+      vertexNode.pickable = interactive;
+    } );
+
     // var updateShape = function() {
     //   var edgeCount = circuit.countCircuitElements( vertex );
     //   dottedLineNode.fill = edgeCount > 1 ? CircuitConstructionKitBasicsConstants.solderColor : null;

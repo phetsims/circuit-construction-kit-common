@@ -99,6 +99,10 @@ define( function( require ) {
       ]
     } );
 
+    circuitElement.interactiveProperty.link( function( interactive ) {
+      fixedLengthCircuitElementNode.pickable = interactive;
+    } );
+
     // Use whatever the start node currently is (it can change), and let the circuit manage the dependent vertices
     // TODO: Should not rotate when dragging by body
     var p = null;
