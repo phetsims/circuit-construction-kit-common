@@ -31,7 +31,8 @@ define( function( require ) {
 
     var highlightNode = new Path( null, {
       stroke: CircuitConstructionKitBasicsConstants.highlightColor,
-      lineWidth: CircuitConstructionKitBasicsConstants.highlightLineWidth
+      lineWidth: CircuitConstructionKitBasicsConstants.highlightLineWidth,
+      pickable: false
     } );
     Line.call( this, 0, 0, 100, 100, {
       stroke: CircuitConstructionKitBasicsConstants.wireColor,
