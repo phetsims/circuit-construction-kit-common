@@ -89,6 +89,10 @@ define( function( require ) {
         addBlackBoxContents( userBlackBoxCircuit );
       }
       else {
+        circuit.circuitElements.forEach(function(circuitElement){
+          // TODO: move interior elements to userBlackBoxCircuit
+        });
+
         removeBlackBoxContents( userBlackBoxCircuit );
 
         // Any attachable vertices outside the box should become attachable and draggable
