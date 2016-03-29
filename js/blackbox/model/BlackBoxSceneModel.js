@@ -22,6 +22,10 @@ define( function( require ) {
     // When loading a black box circuit, none of the vertices should be draggable
     for ( var i = 0; i < trueBlackBoxCircuit.vertices.length; i++ ) {
       trueBlackBoxCircuit.vertices.get( i ).draggable = false;
+
+      if ( trueBlackBoxCircuit.vertices.get( i ).attachable ) {
+        trueBlackBoxCircuit.vertices.get( i ).blackBoxInterface = true; // TODO: No shadow classes
+      }
     }
 
     CircuitConstructionKitBasicsModel.call( this, {
@@ -73,7 +77,7 @@ define( function( require ) {
         // Any draggable vertices that remain should be made unattachable and undraggable,
         // so the user cannot update the circuit outside the box
         circuit.vertices.forEach( function( vertex ) {
-          if ( vertex.draggable ) {
+          if ( !vertex.blackBoxInterface ) {
             vertex.attachable = false;
             vertex.draggable = false;
           }
@@ -88,10 +92,13 @@ define( function( require ) {
 
         // Any attachable vertices outside the box should become attachable and draggable
         circuit.vertices.forEach( function( vertex ) {
-          if ( vertex.attachable ) {
-            vertex.attachable = true;
+          if ( !vertex.blackBoxInterface ) {
             vertex.draggable = true;
+            vertex.attachable = true;
           }
+        } );
+        circuit.circuitElements.forEach( function( circuitElement ) {
+          circuitElement.interactive = true;
         } );
 
         addBlackBoxContents( trueBlackBoxCircuit );
