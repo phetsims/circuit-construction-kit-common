@@ -126,6 +126,16 @@ define( function( require ) {
         // Voltmeter probes each hit things but they were not connected to each other through the circuit.
         circuitConstructionKitBasicsModel.voltmeter.voltage = null;
       }
+      else if ( redConnection !== null && !redConnection.vertex.attachable ) {
+
+        // Cannot read values inside the black box
+        circuitConstructionKitBasicsModel.voltmeter.voltage = null;
+      }
+      else if ( blackConnection !== null && !blackConnection.vertex.attachable ) {
+
+        // Cannot read values inside the black box
+        circuitConstructionKitBasicsModel.voltmeter.voltage = null;
+      }
       else {
         circuitConstructionKitBasicsModel.voltmeter.voltage = redConnection.voltage - blackConnection.voltage;
       }
@@ -219,6 +229,12 @@ define( function( require ) {
       // Check for intersection with a wire
       var wireNode = this.hitWireNode( probeNode );
       if ( wireNode ) {
+
+        // Don't connect to wires in the black box
+        if ( !wireNode.wire.interactive ) {
+          return null;
+        }
+
         // TODO: potentiometer: weight according to distance to the node
         return {
           vertex: wireNode.wire.startVertex,

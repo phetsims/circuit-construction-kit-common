@@ -28,6 +28,12 @@ define( function( require ) {
       }
     }
 
+    // All of the circuit elements should be non-interactive
+    for ( i = 0; i < trueBlackBoxCircuit.circuitElements.length; i++ ) {
+      var circuitElement = trueBlackBoxCircuit.circuitElements[ i ];
+      circuitElement.interactive = false;
+    }
+
     CircuitConstructionKitBasicsModel.call( this, {
       mode: 'investigate' // or 'build'
     }, {
