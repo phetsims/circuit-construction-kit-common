@@ -66,9 +66,13 @@ define( function( require ) {
     relink();
 
     var moveToFront = function() {
-      fixedLengthCircuitElementNode.moveToFront();
-      fixedLengthCircuitElementNode.circuitElement.startVertex.moveToFrontEmitter.emit();
-      fixedLengthCircuitElementNode.circuitElement.endVertex.moveToFrontEmitter.emit();
+
+      // Components outside the black box do not move in front of the overlay
+      if ( circuitElement.interactive ) {
+        fixedLengthCircuitElementNode.moveToFront();
+        fixedLengthCircuitElementNode.circuitElement.startVertex.moveToFrontEmitter.emit();
+        fixedLengthCircuitElementNode.circuitElement.endVertex.moveToFrontEmitter.emit();
+      }
     };
     circuitElement.connectedEmitter.addListener( moveToFront );
     circuitElement.vertexSelectedEmitter.addListener( moveToFront );
