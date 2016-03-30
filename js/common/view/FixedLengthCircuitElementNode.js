@@ -175,6 +175,7 @@ define( function( require ) {
         fixedLengthCircuitElementNode.inputListener.endDrag();
       }
       multilink && multilink.dispose();
+      multilink = null; // Mark null so it doesn't get disposed again in relink()
     };
   }
 
