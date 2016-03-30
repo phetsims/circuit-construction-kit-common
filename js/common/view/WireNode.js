@@ -63,9 +63,8 @@ define( function( require ) {
       lineCap: 'round'
     } );
 
-
     var lineNodeParent = new Node( {
-      children: [ lineNode ]
+      children: [ lineNode, highlightNode ]
     } );
 
     // @private
@@ -75,8 +74,7 @@ define( function( require ) {
     this.lineNode = lineNode;
     Node.call( this, {
       children: [
-        lineNodeParent,
-        highlightNode
+        lineNodeParent
       ]
     } );
 
@@ -94,7 +92,7 @@ define( function( require ) {
       lineNodeParent.setTranslation( startPoint.x, startPoint.y );
       endListener && endListener( wire.endVertex.position );
       if ( highlightNode.visible ) {
-        highlightNode.shape = wireNode.getStrokedShape( highlightStrokeStyles );
+        highlightNode.shape = wireNode.getHighlightStrokedShape( highlightStrokeStyles );
       }
     };
 
@@ -110,11 +108,11 @@ define( function( require ) {
       var deltaVector = endPoint.minus( wire.startVertex.position );
       lineNodeParent.setRotation( deltaVector.angle() );
       if ( highlightNode.visible ) {
-        highlightNode.shape = wireNode.getStrokedShape( highlightStrokeStyles );
+        highlightNode.shape = wireNode.getHighlightStrokedShape( highlightStrokeStyles );
       }
 
       // normal angle
-      var directionForNormalLighting = new Vector2( 167.67173252279636, 72.6241134751773 );
+      var directionForNormalLighting = new Vector2( 167.67173252279636, 72.6241134751773 ); // sampled manually
       var dot = directionForNormalLighting.dot( deltaVector );
 
       lineNode.stroke = dot < 0 ? reverseGradient : normalGradient;
@@ -202,7 +200,7 @@ define( function( require ) {
         var showHighlight = lastCircuitElement === wire;
         highlightNode.visible = showHighlight;
         if ( highlightNode.visible ) {
-          highlightNode.shape = wireNode.getStrokedShape( highlightStrokeStyles );
+          highlightNode.shape = wireNode.getHighlightStrokedShape( highlightStrokeStyles );
         }
       } );
     }
@@ -215,9 +213,14 @@ define( function( require ) {
       this.disposeWireNode();
     },
 
+    // @private
+    getHighlightStrokedShape: function( lineStyles ) {
+      return this.lineNode.shape.getStrokedShape( lineStyles );
+    },
+
     // @public
-    getStrokedShape: function( lineStyles ) {
-      return this.lineNode.getStrokedShape( lineStyles ).transformed( this.lineNodeParent.matrix );
+    getStrokedShape: function() {
+      return this.lineNode.getStrokedShape().transformed( this.lineNodeParent.matrix );
     }
   } );
 } );
