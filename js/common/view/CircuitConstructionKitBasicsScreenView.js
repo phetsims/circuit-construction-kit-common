@@ -194,8 +194,9 @@ define( function( require ) {
       for ( var i = 0; i < this.circuitNode.wireNodes.length; i++ ) {
         var wireNode = this.circuitNode.wireNodes[ i ];
 
+        // Don't connect to wires in the black box
         // TODO: is this too expensive on iPad?
-        if ( wireNode.getStrokedShape().containsPoint( probeNode.translation ) ) {
+        if ( !wireNode.wire.insideTrueBlackBox && wireNode.getStrokedShape().containsPoint( probeNode.translation ) ) {
           return wireNode;
         }
       }
@@ -229,11 +230,6 @@ define( function( require ) {
       // Check for intersection with a wire
       var wireNode = this.hitWireNode( probeNode );
       if ( wireNode ) {
-
-        // Don't connect to wires in the black box
-        if ( !wireNode.wire.interactive ) {
-          return null;
-        }
 
         // TODO: potentiometer: weight according to distance to the node
         return {

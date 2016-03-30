@@ -32,6 +32,7 @@ define( function( require ) {
     for ( i = 0; i < trueBlackBoxCircuit.circuitElements.length; i++ ) {
       var circuitElement = trueBlackBoxCircuit.circuitElements[ i ];
       circuitElement.interactive = false;
+      circuitElement.insideTrueBlackBox = true; // TODO: No shadow classes.
     }
 
     CircuitConstructionKitBasicsModel.call( this, {
