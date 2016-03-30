@@ -106,7 +106,7 @@ define( function( require ) {
       .lineTo( w.maxX + boxInset, w.maxY + boxInset )
       .lineTo( w.maxX + boxInset, w.minY - boxInset )
       .lineTo( w.minX - boxInset, w.minY - boxInset );
-    var transparencyOverlay = new Path( shape, { fill: 'black', opacity: 0.65 } );
+    var transparencyOverlay = new Path( shape, { fill: 'white', opacity: 0.5 } );
     blackBoxSceneModel.modeProperty.link( function( mode ) {
       var isBuildBode = mode === 'build';
       if ( isBuildBode ) {
