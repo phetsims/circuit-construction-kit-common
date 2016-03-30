@@ -16,6 +16,10 @@ define( function( require ) {
   var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementEditContainerPanel' );
   var Path = require( 'SCENERY/nodes/Path' );
   var LineStyles = require( 'KITE/util/LineStyles' );
+  var LinearGradient = require( 'SCENERY/util/LinearGradient' );
+  var Color = require( 'SCENERY/util/Color' );
+  var Node = require( 'SCENERY/nodes/Node' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // constants
   var WIRE_LINE_WIDTH = 12; // screen coordinates
@@ -34,13 +38,44 @@ define( function( require ) {
       lineWidth: CircuitConstructionKitBasicsConstants.highlightLineWidth,
       pickable: false
     } );
-    Line.call( this, 0, 0, 100, 100, {
-      stroke: CircuitConstructionKitBasicsConstants.wireColor,
+
+    // In order to show a gradient on the line, while still allowing the line to stretch (without stretching rounded
+    // ends), use a parent node to position and rotate the line, and keep the line the same width.
+    // This increases the complexity of the code, but allows us to use Line renderer with a constant gradient.
+    var normalGradient = new LinearGradient( 0, -WIRE_LINE_WIDTH / 2, 0, WIRE_LINE_WIDTH / 2 )
+      .addColorStop( 0.0, new Color( '#7b332b' ).brighterColor( 0.8 ) )
+      .addColorStop( 0.2, new Color( '#cd7767' ) )
+      .addColorStop( 0.3, new Color( '#f6bda0' ) )
+      .addColorStop( 1.0, new Color( '#3c0c08' ) );
+
+    // TODO: Factor out reverse gradient if we keep it
+    var reverseGradient = new LinearGradient( 0, -WIRE_LINE_WIDTH / 2, 0, WIRE_LINE_WIDTH / 2 )
+      .addColorStop( 1.0 - 1.0, new Color( '#3c0c08' ) )
+      .addColorStop( 1.0 - 0.3, new Color( '#f6bda0' ) )
+      .addColorStop( 1.0 - 0.2, new Color( '#cd7767' ) )
+      .addColorStop( 1.0 - 0.0, new Color( '#7b332b' ).brighterColor( 0.8 ) );
+
+    var lineNode = new Line( 0, 0, 100, 0, {
+      stroke: normalGradient,
       lineWidth: WIRE_LINE_WIDTH,
       cursor: 'pointer',
       strokePickable: true,
-      lineCap: 'round',
+      lineCap: 'round'
+    } );
+
+
+    var lineNodeParent = new Node( {
+      children: [ lineNode ]
+    } );
+
+    // @private
+    this.lineNodeParent = lineNodeParent;
+
+    // @private
+    this.lineNode = lineNode;
+    Node.call( this, {
       children: [
+        lineNodeParent,
         highlightNode
       ]
     } );
@@ -49,16 +84,17 @@ define( function( require ) {
       wireNode.pickable = interactive;
     } );
 
-    var strokeStyles = new LineStyles( {
+    var highlightStrokeStyles = new LineStyles( {
       lineWidth: 26,
       lineCap: 'round',
       lineJoin: 'round'
     } );
 
     var startListener = function( startPoint ) {
-      wireNode.setPoint1( startPoint );
+      lineNodeParent.setTranslation( startPoint.x, startPoint.y );
+      endListener && endListener( wire.endVertex.position );
       if ( highlightNode.visible ) {
-        highlightNode.shape = wireNode.shape.getStrokedShape( strokeStyles );
+        highlightNode.shape = wireNode.getStrokedShape( highlightStrokeStyles );
       }
     };
 
@@ -70,11 +106,20 @@ define( function( require ) {
     wire.startVertexProperty.link( updateStartVertex );
 
     var endListener = function( endPoint ) {
-      wireNode.setPoint2( endPoint );
+      lineNode.setPoint2( endPoint.distance( wire.startVertex.position ), 0 );
+      var deltaVector = endPoint.minus( wire.startVertex.position );
+      lineNodeParent.setRotation( deltaVector.angle() );
       if ( highlightNode.visible ) {
-        highlightNode.shape = wireNode.shape.getStrokedShape( strokeStyles );
+        highlightNode.shape = wireNode.getStrokedShape( highlightStrokeStyles );
       }
+
+      // normal angle
+      var directionForNormalLighting = new Vector2( 167.67173252279636, 72.6241134751773 );
+      var dot = directionForNormalLighting.dot( deltaVector );
+
+      lineNode.stroke = dot < 0 ? reverseGradient : normalGradient;
     };
+
     var updateEndVertex = function( newEndVertex, oldEndVertex ) {
       oldEndVertex && oldEndVertex.positionProperty.unlink( endListener );
       newEndVertex.positionProperty.link( endListener );
@@ -157,15 +202,22 @@ define( function( require ) {
         var showHighlight = lastCircuitElement === wire;
         highlightNode.visible = showHighlight;
         if ( highlightNode.visible ) {
-          highlightNode.shape = wireNode.shape.getStrokedShape( strokeStyles );
+          highlightNode.shape = wireNode.getStrokedShape( highlightStrokeStyles );
         }
       } );
     }
   }
 
-  return inherit( Line, WireNode, {
+  return inherit( Node, WireNode, {
+
+    // @public
     dispose: function() {
       this.disposeWireNode();
+    },
+
+    // @public
+    getStrokedShape: function( lineStyles ) {
+      return this.lineNode.getStrokedShape( lineStyles ).transformed( this.lineNodeParent.matrix );
     }
   } );
 } );
