@@ -2,7 +2,7 @@
 
 /**
  * Ported directly from the Java.
- * 
+ *
  * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {
@@ -15,7 +15,7 @@ define( function( require ) {
 
   var brown = new Color( 200, 150, 100 );
   var violet = new Color( 148, 0, 211 );
-  var gold = new Color( '#e8c920' );
+  var gold = new Color( '#e8c920' ).darkerColor( 0.75 );
   var colors = [
     Color.black,
     brown,
