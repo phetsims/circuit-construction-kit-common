@@ -235,6 +235,11 @@ define( function( require ) {
       return edgeCount;
     },
 
+    areVerticesConnected: function( vertex1, vertex2 ) {
+      var vertexGroup = this.findAllConnectedVertices( vertex1 );
+      return vertexGroup.indexOf( vertex2 ) >= 0;
+    },
+
     // @public
     solve: function() {
       // console.log( JSON.stringify( this.toStateObject(), null, 2 ) );
@@ -307,17 +312,6 @@ define( function( require ) {
       this.circuitChangedEmitter.emit();
     },
 
-    isConnected: function( wire1, terminalPositionProperty1, wire2, terminalPositionProperty2 ) {
-
-      // see if any pre-existing vertices will work
-      for ( var i = 0; i < this.vertices.getArray().length; i++ ) {
-        var vertex = this.vertices.getArray()[ i ];
-        if ( vertex.isConnectedTo( wire1, terminalPositionProperty1 ) && vertex.isConnectedTo( wire2, terminalPositionProperty2 ) ) {
-          return true;
-        }
-      }
-    },
-
     /**
      * Connect the vertices, merging vertex2 into vertex1 and deleting vertex2
      * @param {Vertex} vertex1
@@ -381,6 +375,61 @@ define( function( require ) {
         }
       }
       return fixedNeighbors;
+    },
+
+    /**
+     * Find all adjacent vertices connected to the specified vertex by any non-infinite resistance components (including wires)
+     * TODO: Duplicated with getFixedNeighbors
+     * @param {Vertex} vertex
+     */
+    getConnectedNeighbors: function( vertex ) {
+      var circuitElements = this.circuitElements;
+      var fixedNeighbors = [];
+      for ( var i = 0; i < circuitElements.length; i++ ) {
+        var circuitElement = circuitElements[ i ];
+        if ( circuitElement.containsVertex( vertex ) ) {
+          fixedNeighbors.push( circuitElement.getOppositeVertex( vertex ) );
+        }
+      }
+      return fixedNeighbors;
+    },
+
+    /**
+     * Find the subgraph where all vertices are connected by any kind of (non-infinite resistance) connections
+     * TODO: Duplicated with findAllFixedVertices
+     * @param {Vertex} vertex
+     */
+    findAllConnectedVertices: function( vertex ) {
+      assert && assert( this.vertices.indexOf( vertex ) >= 0, 'Vertex wasn\'t in the model' );
+      var fixedVertices = [];
+      var toVisit = [ vertex ];
+      var visited = [];
+      while ( toVisit.length > 0 ) {
+
+        // Find the neighbors joined by a FixedLengthCircuitElement, not a stretchy Wire
+        var currentVertex = toVisit.pop();
+
+        // If we haven't visited it before, then explore it
+        if ( visited.indexOf( currentVertex ) < 0 ) {
+          var neighbors = this.getConnectedNeighbors( currentVertex );
+
+          for ( var i = 0; i < neighbors.length; i++ ) {
+            var neighbor = neighbors[ i ];
+
+            // If the node was already visited, don't visit again
+            if ( visited.indexOf( neighbor ) < 0 && toVisit.indexOf( neighbor ) < 0 ) {
+              toVisit.push( neighbor );
+            }
+          }
+        }
+        if ( fixedVertices.indexOf( currentVertex ) < 0 ) {
+          fixedVertices.push( currentVertex );
+        }
+        if ( visited.indexOf( currentVertex ) < 0 ) {
+          visited.push( currentVertex );
+        }
+      }
+      return fixedVertices;
     },
 
     /**

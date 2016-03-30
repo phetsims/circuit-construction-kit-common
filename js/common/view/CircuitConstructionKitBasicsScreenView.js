@@ -116,13 +116,18 @@ define( function( require ) {
 
     // Detection for voltmeter probe + circuit collision is done in the view since view bounds are used
     var updateVoltmeter = function() {
-      var redConnection = circuitConstructionKitBasicsScreenView.getVoltage( voltmeterNode.redProbeNode, voltmeterNode.voltmeter.redProbePosition );
-      var blackConnection = circuitConstructionKitBasicsScreenView.getVoltage( voltmeterNode.blackProbeNode, voltmeterNode.voltmeter.blackProbePosition );
+      var redConnection = circuitConstructionKitBasicsScreenView.getVoltageConnection( voltmeterNode.redProbeNode, voltmeterNode.voltmeter.redProbePosition );
+      var blackConnection = circuitConstructionKitBasicsScreenView.getVoltageConnection( voltmeterNode.blackProbeNode, voltmeterNode.voltmeter.blackProbePosition );
       if ( redConnection === null || blackConnection === null ) {
         circuitConstructionKitBasicsModel.voltmeter.voltage = null;
       }
+      else if ( !circuitConstructionKitBasicsModel.circuit.areVerticesConnected( redConnection.vertex, blackConnection.vertex ) ) {
+
+        // Voltmeter probes each hit things but they were not connected to each other through the circuit.
+        circuitConstructionKitBasicsModel.voltmeter.voltage = null;
+      }
       else {
-        circuitConstructionKitBasicsModel.voltmeter.voltage = redConnection - blackConnection;
+        circuitConstructionKitBasicsModel.voltmeter.voltage = redConnection.voltage - blackConnection.voltage;
       }
     };
     circuitConstructionKitBasicsModel.circuit.circuitChangedEmitter.addListener( updateVoltmeter );
@@ -189,10 +194,12 @@ define( function( require ) {
 
     /**
      * Find where the voltmeter probe node intersects the wire, for computing the voltage difference
+     * @param {Image} probeNode - the probe node from the VoltmeterNode
      * @param {Vector2} probePosition
      * @private
+     * @return {Object} with vertex (for checking connectivity) and voltage (if connected)
      */
-    getVoltage: function( probeNode, probePosition ) {
+    getVoltageConnection: function( probeNode, probePosition ) {
 
       // Check for intersection with a vertex
       for ( var i = 0; i < this.circuitNode.vertexNodes.length; i++ ) {
@@ -202,7 +209,10 @@ define( function( require ) {
 
         var distance = probePosition.distance( position );
         if ( distance <= radius ) {
-          return vertexNode.vertex.voltage;
+          return {
+            vertex: vertexNode.vertex,
+            voltage: vertexNode.vertex.voltage
+          };
         }
       }
 
@@ -210,7 +220,10 @@ define( function( require ) {
       var wireNode = this.hitWireNode( probeNode );
       if ( wireNode ) {
         // TODO: potentiometer: weight according to distance to the node
-        return (wireNode.wire.startVertex.voltage + wireNode.wire.endVertex.voltage) / 2;
+        return {
+          vertex: wireNode.wire.startVertex,
+          voltage: (wireNode.wire.startVertex.voltage + wireNode.wire.endVertex.voltage) / 2
+        };
       }
       else {
         return null;
