@@ -166,8 +166,11 @@ define( function( require ) {
       // so the button will appear in the least populated area.
       var sumOfDirections = new Vector2();
       for ( var i = 0; i < neighbors.length; i++ ) {
-        var vector = vertex.position.minus( neighbors[ i ].getOppositeVertex( vertex ).position ).normalized();
-        sumOfDirections.add( vector );
+        var v = vertex.position.minus( neighbors[ i ].getOppositeVertex( vertex ).position );
+        if ( v.magnitude() > 0 ) {
+          var vector = v.normalized();
+          sumOfDirections.add( vector );
+        }
       }
       if ( sumOfDirections.magnitude() < 1E-6 ) {
         sumOfDirections = new Vector2( 0, -1 ); // Show the scissors above
