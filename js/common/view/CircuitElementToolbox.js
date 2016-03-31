@@ -17,11 +17,11 @@ define( function( require ) {
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Vertex' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Wire' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Resistor' );
-  var Line = require( 'SCENERY/nodes/Line' );
   var Image = require( 'SCENERY/nodes/Image' );
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ResistorNode' );
   var CCKLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CCKLightBulbNode' );
+  var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/WireNode' );
 
   // images
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/battery.png' );
@@ -76,13 +76,7 @@ define( function( require ) {
     var circuitNode = circuitConstructionKitBasicsScreenView.circuitNode;
 
     var iconWidth = CircuitConstructionKitBasicsConstants.toolboxIconLength;
-    var wireNode = new Line( 0, 0, iconWidth, 0, {
-      stroke: CircuitConstructionKitBasicsConstants.wireColor,
-      lineWidth: 6,
-      cursor: 'pointer',
-      strokePickable: true,
-      scale: 1
-    } );
+    var wireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ) );
 
     var resistorNode = new ResistorNode( null, null, new Resistor( new Vertex( 0, 0 ), new Vertex( Resistor.RESISTOR_LENGTH, 0 ), CircuitConstructionKitBasicsConstants.defaultResistance ), { icon: true } );
     var lightBulbNode = new CCKLightBulbNode( null, null, new LightBulb( new Vertex( 0, 0 ), new Vertex( LightBulb.LIGHT_BULB_LENGTH, 0 ), CircuitConstructionKitBasicsConstants.defaultResistance ), { icon: true } );

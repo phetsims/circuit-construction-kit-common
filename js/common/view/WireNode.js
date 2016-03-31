@@ -25,7 +25,9 @@ define( function( require ) {
   var WIRE_LINE_WIDTH = 12; // screen coordinates
 
   /**
-   *
+   * @param {CircuitConstructionKitBasicsScreenView|null} circuitConstructionKitBasicsScreenView - if null, this WireNode is just an icon
+   * @param {CircuitNode} circuitNode
+   * @param {Wire} wire
    * @constructor
    */
   function WireNode( circuitConstructionKitBasicsScreenView, circuitNode, wire ) {
@@ -36,7 +38,8 @@ define( function( require ) {
     var highlightNode = new Path( null, {
       stroke: CircuitConstructionKitBasicsConstants.highlightColor,
       lineWidth: CircuitConstructionKitBasicsConstants.highlightLineWidth,
-      pickable: false
+      pickable: false,
+      visible: false
     } );
 
     // In order to show a gradient on the line, while still allowing the line to stretch (without stretching rounded
@@ -187,7 +190,7 @@ define( function( require ) {
         }
       }
     } );
-    wire.interactive && wireNode.addInputListener( this.inputListener );
+    circuitConstructionKitBasicsScreenView && wireNode.addInputListener( this.inputListener );
     this.disposeWireNode = function() {
       wireNode.inputListener.dragging && wireNode.inputListener.endDrag();
 

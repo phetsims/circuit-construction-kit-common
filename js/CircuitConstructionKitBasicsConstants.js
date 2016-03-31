@@ -25,7 +25,6 @@ define( function( require ) {
     vertexNodeAttributes: { stroke: 'black', lineWidth: 3, cursor: 'pointer' },
     toolboxIconLength: 60, // Width or height for icons in the control panel
     toolboxItemSpacing: 30,
-    wireColor: '#c47a68',
     solderColor: '#ae9f9e',
     defaultResistance: 4.5,
     layoutInset: 14,
