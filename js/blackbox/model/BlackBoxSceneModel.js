@@ -26,6 +26,9 @@ define( function( require ) {
       if ( trueBlackBoxCircuit.vertices.get( i ).attachable ) {
         trueBlackBoxCircuit.vertices.get( i ).blackBoxInterface = true; // TODO: No shadow classes
       }
+      else {
+        trueBlackBoxCircuit.vertices.get( i ).insideTrueBlackBox = true; // TODO: No shadow classes
+      }
     }
 
     // All of the circuit elements should be non-interactive

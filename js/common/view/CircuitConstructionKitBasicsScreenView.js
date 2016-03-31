@@ -126,12 +126,12 @@ define( function( require ) {
         // Voltmeter probes each hit things but they were not connected to each other through the circuit.
         circuitConstructionKitBasicsModel.voltmeter.voltage = null;
       }
-      else if ( redConnection !== null && !redConnection.vertex.attachable ) {
+      else if ( redConnection !== null && redConnection.vertex.insideTrueBlackBox ) {
 
         // Cannot read values inside the black box
         circuitConstructionKitBasicsModel.voltmeter.voltage = null;
       }
-      else if ( blackConnection !== null && !blackConnection.vertex.attachable ) {
+      else if ( blackConnection !== null && blackConnection.vertex.insideTrueBlackBox ) {
 
         // Cannot read values inside the black box
         circuitConstructionKitBasicsModel.voltmeter.voltage = null;

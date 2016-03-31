@@ -366,36 +366,21 @@ define( function( require ) {
     },
 
     /**
-     * Find all adjacent vertices connected to the specified vertex by a fixed length circuit element.
+     * Find the neighbor vertices when looking at the given group of circuit elements
      * @param {Vertex} vertex
+     * @param {Array.<CircuitElement>} circuitElements
+     * @returns {Array.<Vertex>}
+     * @private
      */
-    getFixedNeighbors: function( vertex ) {
-      var circuitElements = this.getFixedLengthCircuitElements();
-      var fixedNeighbors = [];
+    getNeighbors: function( vertex, circuitElements ) {
+      var neighbors = [];
       for ( var i = 0; i < circuitElements.length; i++ ) {
         var circuitElement = circuitElements[ i ];
         if ( circuitElement.containsVertex( vertex ) ) {
-          fixedNeighbors.push( circuitElement.getOppositeVertex( vertex ) );
+          neighbors.push( circuitElement.getOppositeVertex( vertex ) );
         }
       }
-      return fixedNeighbors;
-    },
-
-    /**
-     * Find all adjacent vertices connected to the specified vertex by any non-infinite resistance components (including wires)
-     * TODO: Duplicated with getFixedNeighbors
-     * @param {Vertex} vertex
-     */
-    getConnectedNeighbors: function( vertex ) {
-      var circuitElements = this.circuitElements;
-      var fixedNeighbors = [];
-      for ( var i = 0; i < circuitElements.length; i++ ) {
-        var circuitElement = circuitElements[ i ];
-        if ( circuitElement.containsVertex( vertex ) ) {
-          fixedNeighbors.push( circuitElement.getOppositeVertex( vertex ) );
-        }
-      }
-      return fixedNeighbors;
+      return neighbors;
     },
 
     /**
@@ -415,7 +400,7 @@ define( function( require ) {
 
         // If we haven't visited it before, then explore it
         if ( visited.indexOf( currentVertex ) < 0 ) {
-          var neighbors = this.getConnectedNeighbors( currentVertex );
+          var neighbors = this.getNeighbors( currentVertex, this.circuitElements );
 
           for ( var i = 0; i < neighbors.length; i++ ) {
             var neighbor = neighbors[ i ];
@@ -452,7 +437,7 @@ define( function( require ) {
 
         // If we haven't visited it before, then explore it
         if ( visited.indexOf( currentVertex ) < 0 ) {
-          var neighbors = this.getFixedNeighbors( currentVertex );
+          var neighbors = this.getNeighbors( currentVertex, this.getFixedLengthCircuitElements() );
 
           for ( var i = 0; i < neighbors.length; i++ ) {
             var neighbor = neighbors[ i ];
