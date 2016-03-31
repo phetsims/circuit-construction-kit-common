@@ -103,6 +103,10 @@ define( function( require ) {
     // Stop watching the vertex positions for updating the voltmeter and ammeter
     circuit.vertices.addItemRemovedListener( function( vertex ) {
       vertex.positionProperty.unlink( circuitChangedEmitterFunction );
+      assert && assert(
+        !vertex.positionProperty.hasListener( circuitChangedEmitterFunction ),
+        'Listener should have been removed'
+      );
     } );
 
     // Keep track of the last circuit element the user manipulated, for showing additional controls
