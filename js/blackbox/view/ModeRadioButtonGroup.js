@@ -13,6 +13,7 @@ define( function( require ) {
   var RadioButtonGroup = require( 'SUN/buttons/RadioButtonGroup' );
   var Text = require( 'SCENERY/nodes/Text' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
+  var PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
 
   function ModeRadioButtonGroup( modeProperty ) {
     var textOptions = { fontSize: 18 };
@@ -26,7 +27,7 @@ define( function( require ) {
       baseColor: 'white',
       buttonContentXMargin: 10,
       buttonContentYMargin: 15,
-      selectedStroke: ResetAllButton.RESET_ALL_BUTTON_BASE_COLOR,
+      selectedStroke: PhetColorScheme.RESET_ALL_BUTTON_BASE_COLOR,
       selectedLineWidth: 2.5
     } );
   }
