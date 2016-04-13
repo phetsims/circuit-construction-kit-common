@@ -17,19 +17,5 @@ define( function( require ) {
     Panel.call( this, new NumberControl( 'Black Box Width' ), new Property() );
   }
 
-  //if ( phet.chipper.getQueryParameter( 'createBlackBox' ) ) {
-  //  var createBlackBoxControlPanel = new CreateBlackBoxControlPanel();
-  //  this.addChild( createBlackBoxControlPanel );
-  //
-  //  var inset = CircuitConstructionKitBasicsConstants.layoutInset;
-  //
-  //  this.events.on( 'layoutFinished', function( dx, dy, width, height ) {
-  //    circuitElementEditContainerPanel.mutate( {
-  //      x: -dx + inset,
-  //      bottom: -dy + height - inset
-  //    } );
-  //  } );
-  //}
-
   return inherit( Panel, CreateBlackBoxControlPanel, {} );
 } );
