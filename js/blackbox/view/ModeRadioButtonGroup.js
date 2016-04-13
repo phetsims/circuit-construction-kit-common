@@ -12,7 +12,6 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var RadioButtonGroup = require( 'SUN/buttons/RadioButtonGroup' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
 
   function ModeRadioButtonGroup( modeProperty ) {
