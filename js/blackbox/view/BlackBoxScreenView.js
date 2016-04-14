@@ -849,13 +849,10 @@ define( function( require ) {
       blackBoxScreenView.children = [ sceneViews[ scene ] ];
     } );
 
-    // Forward methods to the scene so they can update their layouts too
-    this.events.on( 'layoutFinished', function( dx, dy, width, height, scale ) {
-
-      // Store layout closure so that layout can be updated when scenes change
+    this.visibleBoundsProperty.link( function( visibleBounds ) {
       blackBoxScreenView.updateAllSceneLayouts = function() {
         _.keys( sceneViews ).forEach( function( key ) {
-          sceneViews[ key ].events.trigger( 'layoutFinished', dx, dy, width, height, scale );
+          sceneViews[ key ].visibleBoundsProperty.set( visibleBounds.copy() );
         } );
       };
       blackBoxScreenView.updateAllSceneLayouts();

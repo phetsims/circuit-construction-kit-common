@@ -15,8 +15,6 @@ define( function( require ) {
   var CircuitElementToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementToolbox' );
   var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementEditContainerPanel' );
   var SensorToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/SensorToolbox' );
-  var Property = require( 'AXON/Property' );
-  var Rectangle = require( 'DOT/Rectangle' );
   var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/VoltmeterNode' );
   var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/AmmeterNode' );
   var Emitter = require( 'AXON/Emitter' );
@@ -73,33 +71,36 @@ define( function( require ) {
     // Has to be interleaved in the circuit layering to support the black box, so that the toolbox can be behind
     // circuit elements but in front of the transparency overlay
     this.circuitNode.mainLayer.addChild( this.circuitElementToolbox );
-
-    var visibleBoundsProperty = new Property( new Rectangle( 0, 0, this.layoutBounds.width, this.layoutBounds.height ) );
-    this.events.on( 'layoutFinished', function( dx, dy, width, height ) {
+    var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel( circuitConstructionKitBasicsModel.circuit, this.visibleBoundsProperty );
+    this.visibleBoundsProperty.lazyLink( function( visibleBounds ) {
+      var dx = -visibleBounds.x;
+      var dy = -visibleBounds.y;
+      var width = visibleBounds.width;
+      var height = visibleBounds.height;
 
       // Float the resetAllButton to the bottom right
       var inset = CircuitConstructionKitBasicsConstants.layoutInset;
       resetAllButton.mutate( {
-        right: -dx + width - inset,
-        bottom: -dy + height - inset
+        right: visibleBounds.right - inset,
+        bottom: visibleBounds.bottom - inset
       } );
 
       circuitConstructionKitBasicsScreenView.circuitElementToolbox.mutate( {
-        left: -dx + inset,
-        top: -dy + inset
+        left: visibleBounds.left + inset,
+        top: visibleBounds.top + inset
       } );
 
       circuitConstructionKitBasicsScreenView.sensorToolbox.mutate( {
-        right: -dx + width - inset,
-        top: -dy + inset
+        right: visibleBounds.right - inset,
+        top: visibleBounds.top + inset
       } );
 
       circuitElementEditContainerPanel.mutate( {
-        centerX: -dx + width / 2,
-        bottom: -dy + height - inset
+        centerX: visibleBounds.centerX,
+        bottom: visibleBounds.bottom - inset
       } );
-      visibleBoundsProperty.set( new Rectangle( -dx, -dy, width, height ) );
 
+      // TODO: Can this be handled by adding a listener to the ScreenView.visibleBoundsProperty?
       circuitConstructionKitBasicsScreenView.circuitConstructionKitBasicsScreenViewLayoutCompletedEmitter.emit1( {
         dx: dx,
         dy: dy,
@@ -108,7 +109,6 @@ define( function( require ) {
       } );
     } );
 
-    var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel( circuitConstructionKitBasicsModel.circuit, visibleBoundsProperty );
     this.addChild( circuitElementEditContainerPanel );
 
     this.addChild( voltmeterNode );
