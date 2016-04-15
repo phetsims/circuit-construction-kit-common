@@ -34,7 +34,11 @@ define( function( require ) {
   // unsigned measurements for the circles on the voltmeter body image, for where the probe wires connect
   var PROBE_CONNECTION_POINT_DY = 8;
 
-  // TODO: Factor out things between AmmeterNode and VoltmeterNode
+  /**
+   * @param {Ammeter} ammeter
+   * @param {Object} [options]
+   * @constructor
+   */
   function AmmeterNode( ammeter, options ) {
     var ammeterNode = this;
     options = _.extend( { icon: false }, options );
