@@ -46,10 +46,11 @@ define( function( require ) {
       // at a time.
       selected: false,
 
-      // TODO: Do we need all of these properties?  It seems there are relationships between draggable/interactive/attachable
+      // Some of the following properties overlap somewhat.  For example, if 'insideTrueBlackBox' is true, then
+      // the interactive will be set to false when the circuit is in 'build' mode.
 
       // @public - Vertices on the black box interface persist between build/investigate, and cannot be moved/deleted
-      draggable: options.draggable, // TODO: This is like `interactive` in CircuitElement
+      draggable: options.draggable,
 
       // @public - Black box interface vertices can be interactive (tap to select) without being draggable
       interactive: options.interactive,

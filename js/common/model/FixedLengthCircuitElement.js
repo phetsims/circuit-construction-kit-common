@@ -22,8 +22,6 @@ define( function( require ) {
 
     CircuitElement.call( this, startVertex, endVertex, propertySetMap );
     this.length = length;
-
-    // TODO: Derived properties for startPosition and endPosition, to encapsulate the matter of switching vertices.
   }
 
   return inherit( CircuitElement, FixedLengthCircuitElement );

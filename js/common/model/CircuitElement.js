@@ -28,7 +28,9 @@ define( function( require ) {
       startVertex: startVertex,
       endVertex: endVertex,
       current: 0,
-      interactive: options.interactive, // TODO: This is like `draggable` in Vertex
+
+      // @public - can be edited and dragged
+      interactive: options.interactive,
 
       // @public - whether the circuit element is inside the true black box, not inside the user-created black box, on
       // the interface or outside of the black box
@@ -41,8 +43,6 @@ define( function( require ) {
     // @public (read-only) - indicate when an adjacent vertex has moved to front, so that the Circuit Element node can
     // move to front too
     this.vertexSelectedEmitter = new Emitter();
-
-    // TODO: Derived properties for startPosition and endPosition, to encapsulate the matter of switching vertices?
   }
 
   return inherit( PropertySet, CircuitElement, {
