@@ -469,8 +469,24 @@ define( function( require ) {
         return candidateVertex.attachable;
       } );
 
-      // TODO: (4) reject any matches that result in circuit elements sharing a pair of vertices
-      // TODO: which would cause the wires to lay across one another
+      // Reject any matches that result in circuit elements sharing a pair of vertices, which would cause
+      // the wires to lay across one another
+      candidateVertices = candidateVertices.filter( function( candidateVertex ) {
+
+        // if something else is already snapping to candidateVertex, then we cannot snap to it as well.
+        // check the neighbor vertices
+        for ( var i = 0; i < circuit.vertices.length; i++ ) {
+          var circuitVertex = circuit.vertices.get( i );
+          var adjacent = circuit.isVertexAdjacent( circuitVertex, vertex );
+
+          // If the adjacent vertex has the same position as the candidate vertex, that means it is already "snapped"
+          // there and hence another vertex should not snap there at the same time.
+          if ( adjacent && circuitVertex.position.equals( candidateVertex.position ) ) {
+            return false;
+          }
+        }
+        return true;
+      } );
 
       // TODO: (5) a vertex cannot be connected to a fixed subgraph (no wire), we have already computed this,
       // TODO: may as well pass it in for performance?
