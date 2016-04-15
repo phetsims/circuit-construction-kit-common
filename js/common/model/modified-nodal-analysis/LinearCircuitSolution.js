@@ -95,21 +95,28 @@ define( function( require ) {
     },
 
     /**
-     * @param {CircuitElement} e
+     * Used by the CCK test harness.
+     * @param {Object} e
      * @returns {number}
      */
     getCurrent: function( e ) {
 
-      //if it was a battery or resistor (of R=0), look up the answer
-      for ( var i = 0; i < this.elements.length; i++ ) {
-        var element = this.elements[ i ];
-        if ( element.node0 === e.node0 && element.node1 === e.node1 ) {
+      if ( typeof e.resistance !== 'number' || e.resistance === 0 ) {
 
-          // TODO: Is this correct?
-          if ( element.resistance === e.resistance || element.voltage === e.voltage ) {
-            return element.currentSolution;
+        //if it was a battery or resistor (of R=0), look up the answer from an equivalent component
+        for ( var i = 0; i < this.elements.length; i++ ) {
+          var element = this.elements[ i ];
+          if ( element.node0 === e.node0 && element.node1 === e.node1 ) {
+
+            var isEquivalentResistor = typeof element.resistance === 'number' && element.resistance === e.resistance;
+            var isEquivalentBattery = typeof element.voltage === 'number' && element.voltage === e.voltage;
+            if ( isEquivalentResistor || isEquivalentBattery ) {
+              return element.currentSolution;
+            }
           }
         }
+
+        assert && assert( false, 'should have found an equivalent component by now' );
       }
 
       //else compute based on V=IR
