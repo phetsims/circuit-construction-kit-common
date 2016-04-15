@@ -46,19 +46,17 @@ define( function( require ) {
     this.redProbeNode = new Image( redProbe, { scale: 0.67 * s, cursor: 'pointer' } );
     this.blackProbeNode = new Image( blackProbe, { scale: 0.67 * s, cursor: 'pointer' } );
 
-    var probeTextNode = new ProbeTextNode( new DerivedProperty( [ voltmeter.voltageProperty ], function( voltage ) {
+    var voltageReadoutProperty = new DerivedProperty( [ voltmeter.voltageProperty ], function( voltage ) {
       return voltage === null ? '?' : Util.toFixed( voltage, 2 ) + ' V';
-    } ) );
+    } );
+    var probeTextNode = new ProbeTextNode( voltageReadoutProperty, 'Voltage', {
+      centerX: voltmeterBodyImage[ 0 ].width / 2,
+      centerY: voltmeterBodyImage[ 0 ].height / 2,
+    } );
 
     var bodyNode = new Image( voltmeterBodyImage, {
       scale: s, cursor: 'pointer', children: [
-        new VBox( {
-          spacing: 6,
-          centerX: voltmeterBodyImage[ 0 ].width / 2,
-          centerY: voltmeterBodyImage[ 0 ].height / 2,
-          align: 'center',
-          children: [ new Text( 'Voltage', { fontSize: 42 } ), probeTextNode ]
-        } )
+        probeTextNode
       ]
     } );
 

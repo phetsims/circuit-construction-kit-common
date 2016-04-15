@@ -43,27 +43,22 @@ define( function( require ) {
 
     var blackWireNode = new ProbeWireNode( 'black', new Vector2( 0, BODY_LEAD_Y ), new Vector2( 0, PROBE_LEAD_Y ) );
 
-    var probeTextNode = new ProbeTextNode( new DerivedProperty( [ ammeter.currentProperty ], function( current ) {
+    var currentProperty = new DerivedProperty( [ ammeter.currentProperty ], function( current ) {
 
       // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
       return current === null ? '?' : Util.toFixed( Math.abs( current ), 2 ) + ' A';
-    } ) );
+    } );
+    var probeTextNode = new ProbeTextNode( currentProperty, 'Current', {
+      centerX: ammeterBodyImage[ 0 ].width / 2,
+      centerY: ammeterBodyImage[ 0 ].height / 2,
+    } );
 
     var bodyNode = new Image( ammeterBodyImage, {
       scale: s,
       cursor: 'pointer',
       children: [
-
-        // TODO: Move title to ProbeTextNode
-        new VBox( {
-          spacing: 6,
-          centerX: ammeterBodyImage[ 0 ].width / 2,
-          centerY: ammeterBodyImage[ 0 ].height / 2,
-          align: 'center',
-          children: [ new Text( 'Current', { fontSize: 42 } ), probeTextNode ]
-        } )
+        probeTextNode
       ]
-
     } );
     var handleWidth = 50;
     this.probeNode = new ProbeNode( {
