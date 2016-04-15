@@ -53,8 +53,10 @@ define( function( require ) {
       assert && assert( difference.length === 0, 'wrong structure for compared solution' );
       for ( var i = 0; i < myKeys.length; i++ ) {
         var key = myKeys[ i ];
-        equal && equal( round( this.getNodeVoltage( key ) ), round( linearCircuitSolution.getNodeVoltage( key ) ), ('node voltages[' + i + '] should match') );
-        if ( !numberApproxEquals( this.getNodeVoltage( key ), linearCircuitSolution.getNodeVoltage( key ) ) ) {
+        var closeEnough = numberApproxEquals( this.getNodeVoltage( key ), linearCircuitSolution.getNodeVoltage( key ) );
+        equal && equal( closeEnough, true, 'node voltages[' + i + '] should match. ' + this.getNodeVoltage( key ) + '!==' + linearCircuitSolution.getNodeVoltage( key ) );
+
+        if ( !closeEnough ) {
           return false;
         }
       }
