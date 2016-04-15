@@ -19,7 +19,6 @@ define( function( require ) {
 
   var simOptions = {
     credits: {
-      //TODO fill in proper credits, all of these fields are optional, see joist.AboutDialog
       leadDesign: '',
       softwareDevelopment: '',
       team: '',
