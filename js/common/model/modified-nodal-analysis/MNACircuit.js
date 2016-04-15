@@ -231,13 +231,13 @@ define( function( require ) {
     },
 
     /**
-     * TODO: does this get the signs right in all cases?
-     * TODO: maybe signs here should depend on circuit element orientation?
      * incoming current is negative, outgoing is positive
      * @param node
-     * @returns {Array}
+     * @returns {Array.<Term>}
      */
-    getIncomingCurrentTerms: function( node ) { // return ArrayList<Term>
+    getIncomingCurrentTerms: function( node ) {
+      // TODO: does this get the signs right in all cases?
+      // TODO: maybe signs here should depend on circuit element orientation?
       assert && assert( typeof node === 'number' );
       var nodeTerms = [];
       for ( var i = 0; i < this.batteries.length; i++ ) {
@@ -316,9 +316,9 @@ define( function( require ) {
     },
     /**
      * obtain one node for each connected component to have the reference voltage of 0.0
-     * TODO: This looks more expensive than necessary, what with all of the _.keys etc.
      */
     getReferenceNodes: function() {
+      // TODO: This looks more expensive than necessary, what with all of the _.keys etc.
       var remaining = this.getNodeSet(); // A separate copy
       var referenceNodes = {};
       while ( _.size( remaining ) > 0 ) {
