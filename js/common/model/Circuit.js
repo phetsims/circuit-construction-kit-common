@@ -385,10 +385,19 @@ define( function( require ) {
 
     /**
      * Find the subgraph where all vertices are connected by any kind of (non-infinite resistance) connections
-     * TODO: Duplicated with findAllFixedVertices
      * @param {Vertex} vertex
      */
     findAllConnectedVertices: function( vertex ) {
+      return this.searchVertices( vertex, this.circuitElements );
+    },
+
+    /**
+     * Find the subgraph where all vertices are connected, given the list of traversible circuit elements
+     * @param {Vertex} vertex
+     * @param {Array.<CircuitElement>} circuitElements
+     * @returns {Array.<Vertex>}
+     */
+    searchVertices: function( vertex, circuitElements ) {
       assert && assert( this.vertices.indexOf( vertex ) >= 0, 'Vertex wasn\'t in the model' );
       var fixedVertices = [];
       var toVisit = [ vertex ];
@@ -400,7 +409,7 @@ define( function( require ) {
 
         // If we haven't visited it before, then explore it
         if ( visited.indexOf( currentVertex ) < 0 ) {
-          var neighbors = this.getNeighbors( currentVertex, this.circuitElements );
+          var neighbors = this.getNeighbors( currentVertex, circuitElements );
 
           for ( var i = 0; i < neighbors.length; i++ ) {
             var neighbor = neighbors[ i ];
@@ -419,6 +428,7 @@ define( function( require ) {
         }
       }
       return fixedVertices;
+
     },
 
     /**
@@ -426,36 +436,7 @@ define( function( require ) {
      * @param {Vertex} vertex
      */
     findAllFixedVertices: function( vertex ) {
-      assert && assert( this.vertices.indexOf( vertex ) >= 0, 'Vertex wasn\'t in the model' );
-      var fixedVertices = [];
-      var toVisit = [ vertex ];
-      var visited = [];
-      while ( toVisit.length > 0 ) {
-
-        // Find the neighbors joined by a FixedLengthCircuitElement, not a stretchy Wire
-        var currentVertex = toVisit.pop();
-
-        // If we haven't visited it before, then explore it
-        if ( visited.indexOf( currentVertex ) < 0 ) {
-          var neighbors = this.getNeighbors( currentVertex, this.getFixedLengthCircuitElements() );
-
-          for ( var i = 0; i < neighbors.length; i++ ) {
-            var neighbor = neighbors[ i ];
-
-            // If the node was already visited, don't visit again
-            if ( visited.indexOf( neighbor ) < 0 && toVisit.indexOf( neighbor ) < 0 ) {
-              toVisit.push( neighbor );
-            }
-          }
-        }
-        if ( fixedVertices.indexOf( currentVertex ) < 0 ) {
-          fixedVertices.push( currentVertex );
-        }
-        if ( visited.indexOf( currentVertex ) < 0 ) {
-          visited.push( currentVertex );
-        }
-      }
-      return fixedVertices;
+      return this.searchVertices( vertex, this.getFixedLengthCircuitElements() );
     },
 
     /**
