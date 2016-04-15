@@ -489,8 +489,16 @@ define( function( require ) {
         return true;
       } );
 
-      // TODO: (5) a vertex cannot be connected to a fixed subgraph (no wire), we have already computed this,
-      // TODO: may as well pass it in for performance?
+      // (5) a vertex cannot be connected to its own fixed subgraph (no wire)
+      var fixedGroup = this.findAllFixedVertices( vertex );
+      candidateVertices = candidateVertices.filter( function( candidateVertex ) {
+        for ( var i = 0; i < fixedGroup.length; i++ ) {
+          if ( fixedGroup[ i ] === candidateVertex ) {
+            return false;
+          }
+        }
+        return true;
+      } );
 
       if ( candidateVertices.length === 0 ) {
         return null;
