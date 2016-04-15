@@ -89,7 +89,6 @@ define( function( require ) {
     this.addChild( whiteBoxNode );
 
     var screenInset = 1000;
-    var boxInset = 20;
     var b = ScreenView.DEFAULT_LAYOUT_BOUNDS;
     var w = whiteBoxNode.bounds;
     var shape = new Shape()
@@ -100,12 +99,11 @@ define( function( require ) {
       .lineTo( b.minX - screenInset, b.minX + screenInset )
 
       // Move inside and move the opposite direction to do a cutout
-      // TODO: fit to the curves for the rectangular box, with rounded corners
-      .moveTo( w.minX - boxInset, w.minY - boxInset )
-      .lineTo( w.minX - boxInset, w.maxY + boxInset )
-      .lineTo( w.maxX + boxInset, w.maxY + boxInset )
-      .lineTo( w.maxX + boxInset, w.minY - boxInset )
-      .lineTo( w.minX - boxInset, w.minY - boxInset );
+      .moveTo( w.minX, w.minY )
+      .lineTo( w.minX, w.maxY )
+      .lineTo( w.maxX, w.maxY )
+      .lineTo( w.maxX, w.minY )
+      .lineTo( w.minX, w.minY );
     var transparencyOverlay = new Path( shape, { fill: 'white', opacity: 0.5 } );
     blackBoxSceneModel.modeProperty.link( function( mode ) {
       var isBuildBode = mode === 'build';

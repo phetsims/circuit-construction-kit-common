@@ -16,7 +16,7 @@ define( function( require ) {
   function WhiteBoxNode( width, height, options ) {
     Node.call( this, {
       children: [
-        new Rectangle( 0, 0, width, height, 20, 20, { stroke: 'gray', lineWidth: 2 } )
+        new Rectangle( 0, 0, width, height, { stroke: 'gray', lineWidth: 2 } )
       ]
     } );
     this.mutate( options );
