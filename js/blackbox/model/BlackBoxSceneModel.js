@@ -24,10 +24,10 @@ define( function( require ) {
       trueBlackBoxCircuit.vertices.get( i ).draggable = false;
 
       if ( trueBlackBoxCircuit.vertices.get( i ).attachable ) {
-        trueBlackBoxCircuit.vertices.get( i ).blackBoxInterface = true; // TODO: No shadow classes
+        trueBlackBoxCircuit.vertices.get( i ).blackBoxInterface = true;
       }
       else {
-        trueBlackBoxCircuit.vertices.get( i ).insideTrueBlackBox = true; // TODO: No shadow classes
+        trueBlackBoxCircuit.vertices.get( i ).insideTrueBlackBox = true;
       }
     }
 
@@ -35,7 +35,7 @@ define( function( require ) {
     for ( i = 0; i < trueBlackBoxCircuit.circuitElements.length; i++ ) {
       var circuitElement = trueBlackBoxCircuit.circuitElements[ i ];
       circuitElement.interactive = false;
-      circuitElement.insideTrueBlackBox = true; // TODO: No shadow classes.
+      circuitElement.insideTrueBlackBox = true;
     }
 
     CircuitConstructionKitBasicsModel.call( this, {

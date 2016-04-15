@@ -56,7 +56,15 @@ define( function( require ) {
 
       // @public - whether the Vertex can be dragged or moved by dragging another part of the circuit
       // must be observable.  When two vertices are joined in Circuit.connect, non-interactivity propagates
-      attachable: options.attachable
+      attachable: options.attachable,
+
+      // @public - whether the vertex is on the edge of a black box.  This means it cannot be deleted, but it can be
+      // attached to
+      blackBoxInterface: false,
+
+      // @public - whether the vertex is inside the true black box, not inside the user-created black box, on the
+      // interface or outside of the black box
+      insideTrueBlackBox: false
     } );
     this.moveToFrontEmitter = new Emitter();
   }

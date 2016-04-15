@@ -28,7 +28,11 @@ define( function( require ) {
       startVertex: startVertex,
       endVertex: endVertex,
       current: 0,
-      interactive: options.interactive // TODO: This is like `draggable` in Vertex
+      interactive: options.interactive, // TODO: This is like `draggable` in Vertex
+
+      // @public - whether the circuit element is inside the true black box, not inside the user-created black box, on
+      // the interface or outside of the black box
+      insideTrueBlackBox: false
     }, propertySetMap ) );
 
     // @public (read-only) - indicate when this circuit element has been connected
