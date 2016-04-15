@@ -432,7 +432,6 @@ define( function( require ) {
       return this.getUnknownCurrents().concat( this.getUnknownVoltages() );
     },
 
-    // TODO: Why call this.getUnknowns so many times? (applies elsewhere in this file)
     solve: function() {
       var equations = this.getEquations();
 
@@ -446,7 +445,7 @@ define( function( require ) {
           var index = getIndexByEquals( unknowns, unknown );
           assert && assert( index >= 0, 'unknown was missing' );
           return index;
-        } );// TODO: could be sped up, perhaps just set the index on the unknowns themselves?
+        } );
       }
 
       if ( debug ) {
