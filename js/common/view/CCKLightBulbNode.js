@@ -45,6 +45,7 @@ define( function( require ) {
         // TODO: Duplicated somewhat with FixedLengthCircuitElementNode
         var angle = endPosition.minus( startPosition ).angle(); // TODO: speed up maths
         var dist = startPosition.distance( endPosition );
+
         // TODO: Simplify this matrix math.
         lightBulbNode.resetTransform();
         lightBulbNode.mutate( {

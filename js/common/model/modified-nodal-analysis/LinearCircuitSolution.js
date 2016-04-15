@@ -92,6 +92,10 @@ define( function( require ) {
       return false;
     },
 
+    /**
+     * @param {CircuitElement} e
+     * @returns {number}
+     */
     getCurrent: function( e ) {
 
       //if it was a battery or resistor (of R=0), look up the answer
@@ -113,7 +117,7 @@ define( function( require ) {
     getNodeVoltage: function( node ) {
       return this.nodeVoltages[ node ];
     },
-    
+
     getVoltage: function( e ) {
       return this.nodeVoltages[ e.node1 ] - this.nodeVoltages[ e.node0 ];
     }

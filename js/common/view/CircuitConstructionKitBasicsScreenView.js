@@ -175,7 +175,6 @@ define( function( require ) {
      */
     getCurrent: function( probeNode ) {
 
-      // TODO: Collide with vertices
       var hitWireNode = this.hitWireNode( probeNode );
       if ( hitWireNode ) {
         return hitWireNode.wire.current;

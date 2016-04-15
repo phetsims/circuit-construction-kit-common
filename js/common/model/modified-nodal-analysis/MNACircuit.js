@@ -221,7 +221,7 @@ define( function( require ) {
       for ( var i = 0; i < this.currentSources.length; i++ ) {
         var c = this.currentSources[ i ];
         if ( c.node1 === nodeIndex ) {
-          sum = sum - c.current;//positive current is entering the node//TODO: these signs seem backwards, shouldn't incoming current add?
+          sum = sum - c.current;//positive current is entering the node // TODO: these signs seem backwards, shouldn't incoming current add?
         }
         if ( c.node0 === nodeIndex ) {
           sum = sum + c.current;//positive current is leaving the node
