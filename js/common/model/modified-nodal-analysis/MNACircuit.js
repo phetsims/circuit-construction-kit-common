@@ -221,10 +221,10 @@ define( function( require ) {
       for ( var i = 0; i < this.currentSources.length; i++ ) {
         var c = this.currentSources[ i ];
         if ( c.node1 === nodeIndex ) {
-          sum = sum - c.current;//positive current is entering the node // TODO: these signs seem backwards, shouldn't incoming current add?
+          sum = sum - c.current; //positive current is entering the node, and the convention is for incoming current to be negative
         }
         if ( c.node0 === nodeIndex ) {
-          sum = sum + c.current;//positive current is leaving the node
+          sum = sum + c.current; //positive current is leaving the node, and the convention is for outgoing current to be positive
         }
       }
       return sum;
@@ -236,9 +236,7 @@ define( function( require ) {
      * @returns {Array.<Term>}
      */
     getIncomingCurrentTerms: function( node ) {
-      // TODO: does this get the signs right in all cases?
-      // TODO: maybe signs here should depend on circuit element orientation?
-      assert && assert( typeof node === 'number' );
+      assert && assert( typeof node === 'number', 'node should be a number' );
       var nodeTerms = [];
       for ( var i = 0; i < this.batteries.length; i++ ) {
         var battery = this.batteries[ i ];
