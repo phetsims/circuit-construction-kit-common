@@ -465,11 +465,12 @@ define( function( require ) {
         return vertex.unsnappedPosition.distance( candidateVertex.position ) < DISTANCE_FOR_SNAP;
       } );
 
+      // (4) a vertex must be attachable. Some black box vertices are not attachable, such as vertices hidden in the box
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
         return candidateVertex.attachable;
       } );
 
-      // Reject any matches that result in circuit elements sharing a pair of vertices, which would cause
+      // (5) Reject any matches that result in circuit elements sharing a pair of vertices, which would cause
       // the wires to lay across one another
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
 
