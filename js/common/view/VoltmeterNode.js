@@ -13,8 +13,6 @@ define( function( require ) {
   var Image = require( 'SCENERY/nodes/Image' );
   var Node = require( 'SCENERY/nodes/Node' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
   var Util = require( 'DOT/Util' );
   var ProbeTextNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ProbeTextNode' );
   var ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ProbeWireNode' );
@@ -51,7 +49,7 @@ define( function( require ) {
     } );
     var probeTextNode = new ProbeTextNode( voltageReadoutProperty, 'Voltage', {
       centerX: voltmeterBodyImage[ 0 ].width / 2,
-      centerY: voltmeterBodyImage[ 0 ].height / 2,
+      centerY: voltmeterBodyImage[ 0 ].height / 2
     } );
 
     var bodyNode = new Image( voltmeterBodyImage, {

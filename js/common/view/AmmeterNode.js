@@ -16,8 +16,6 @@ define( function( require ) {
   var ProbeTextNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ProbeTextNode' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var Util = require( 'DOT/Util' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
-  var Text = require( 'SCENERY/nodes/Text' );
   var ProbeNode = require( 'SCENERY_PHET/ProbeNode' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ProbeWireNode' );
@@ -54,7 +52,7 @@ define( function( require ) {
     } );
     var probeTextNode = new ProbeTextNode( currentProperty, 'Current', {
       centerX: ammeterBodyImage[ 0 ].width / 2,
-      centerY: ammeterBodyImage[ 0 ].height / 2,
+      centerY: ammeterBodyImage[ 0 ].height / 2
     } );
 
     var bodyNode = new Image( ammeterBodyImage, {
