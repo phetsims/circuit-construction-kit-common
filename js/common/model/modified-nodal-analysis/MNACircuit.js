@@ -303,6 +303,11 @@ define( function( require ) {
       return this.getIncomingCurrentTerms( node ).concat( this.getOutgoingCurrentTerms( node ) );
     },
 
+    /**
+     * Returns a object with true set for all keys that have a node in the circuit, such as:
+     * {0:true, 1:true, 2:true, 7:true}
+     * @returns {object}
+     */
     getNodeSet: function() {
       var nodeSet = {};
       for ( var i = 0; i < this.getElements().length; i++ ) {
@@ -312,21 +317,17 @@ define( function( require ) {
       }
       return nodeSet;
     },
+
     /**
-     * obtain one node for each connected component to have the reference voltage of 0.0
+     * Obtain one node for each connected component and select it to have the reference voltage of 0V
      */
     getReferenceNodes: function() {
-      // TODO: This looks more expensive than necessary, what with all of the _.keys etc.
       var remaining = this.getNodeSet(); // A separate copy
       var referenceNodes = {};
       while ( _.size( remaining ) > 0 ) {
-        var sorted = this.doSort( _.keys( remaining ) );
+        var sorted = _.sortBy( _.keys( remaining ) );
         referenceNodes[ sorted[ 0 ] ] = true;
         var connected = _.keys( this.getConnectedNodes( sorted[ 0 ] ) );
-
-        // TODO: remove connected nodes from remaining
-        // in Java this was
-        // remaining.removeAll( connected );
 
         for ( var i = 0; i < connected.length; i++ ) {
           var c = connected[ i ];
@@ -334,12 +335,6 @@ define( function( require ) {
         }
       }
       return _.keys( referenceNodes );
-    },
-    /**
-     * @param {number[]} objects
-     */
-    doSort: function( objects ) {
-      return _.sortBy( objects );
     },
 
     /**
