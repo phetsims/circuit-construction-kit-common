@@ -272,7 +272,7 @@ define( function( require ) {
         return {
           node0: circuit.vertices.indexOf( wire.startVertex ),
           node1: circuit.vertices.indexOf( wire.endVertex ),
-          resistance: 0,// TODO: Wire resistance may be variable
+          resistance: wire.resistance,
           circuitElement: wire
         };
       } );
