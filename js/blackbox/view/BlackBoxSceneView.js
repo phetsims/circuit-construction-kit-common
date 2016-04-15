@@ -100,7 +100,7 @@ define( function( require ) {
       .lineTo( b.minX - screenInset, b.minX + screenInset )
 
       // Move inside and move the opposite direction to do a cutout
-      // TODO: fit to the curves for the rectangular box
+      // TODO: fit to the curves for the rectangular box, with rounded corners
       .moveTo( w.minX - boxInset, w.minY - boxInset )
       .lineTo( w.minX - boxInset, w.maxY + boxInset )
       .lineTo( w.maxX + boxInset, w.maxY + boxInset )

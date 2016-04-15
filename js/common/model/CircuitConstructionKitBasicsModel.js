@@ -19,7 +19,9 @@ define( function( require ) {
    */
   function CircuitConstructionKitBasicsModel( additionalProperties, options ) {
     options = _.extend( { circuit: null }, options );
-    PropertySet.call( this, _.extend( {}, additionalProperties ) ); // TODO: Add settings like 'show electrons', etc.
+    PropertySet.call( this, _.extend( {
+      showElectrons: false
+    }, additionalProperties ) );
     this.circuit = options.circuit || new Circuit();
     this.initialCircuitState = this.circuit.toStateObject();
     this.voltmeter = new Voltmeter();

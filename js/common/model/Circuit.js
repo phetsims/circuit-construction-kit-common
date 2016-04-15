@@ -293,7 +293,7 @@ define( function( require ) {
       for ( var i = 0; i < this.vertices.length; i++ ) {
 
         // For unconnected vertices, such as for the black box, they may not have an entry in the matrix, so just mark them
-        // as zero.  TODO: Voltmeter should only measure connected graphs
+        // as zero.
         var v = typeof solution.nodeVoltages[ i ] === 'number' ? solution.nodeVoltages[ i ] : 0;
         this.vertices.get( i ).voltage = v;
       }
@@ -488,7 +488,6 @@ define( function( require ) {
       }
     },
 
-    // TODO: we may move this to phet-io
     toStateObject: function() {
       var circuit = this;
       var getVertexIndex = function( vertex ) {
@@ -591,7 +590,6 @@ define( function( require ) {
     }
   }, {
 
-    // TODO: we may move this to phet-io
     fromStateObject: function( stateObject ) {
       var circuit = new Circuit();
       circuit.loadFromStateObject( stateObject );
