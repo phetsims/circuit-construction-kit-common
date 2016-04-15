@@ -57,7 +57,7 @@ define( function( require ) {
       mainLayer.addChild( wireNode );
 
       // Vertices should be in front
-      // HACK ALERT TODO TODO TODO
+      // TODO HACK ALERT
       // The problem is that when loading from a state object the circuit element is created before the vertex nodes
       circuitNode.getVertexNode( wire.startVertex ) && circuitNode.getVertexNode( wire.startVertex ).moveToFront();
       circuitNode.getVertexNode( wire.endVertex ) && circuitNode.getVertexNode( wire.endVertex ).moveToFront();
@@ -387,7 +387,7 @@ define( function( require ) {
       vertexNode.startOffset = null;
 
       // Signify that something has been dropped in the play area.
-      // TODO: Don't signify this if something dropped in the toolbox // TODO: Why not?
+      // TODO: Don't signify this if something dropped in the toolbox.  Later: Why not?
       this.circuit.circuitElementDroppedEmitter.emit();
     }
   } );
