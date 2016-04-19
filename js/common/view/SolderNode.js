@@ -1,4 +1,4 @@
-// Copyright 2015, University of Colorado Boulder
+// Copyright 2015-2016, University of Colorado Boulder
 
 /**
  * Shows the silver solder at a connected vertex.  This is not interactive and is behind everything else.
