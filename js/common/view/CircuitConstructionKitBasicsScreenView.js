@@ -17,7 +17,6 @@ define( function( require ) {
   var SensorToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/SensorToolbox' );
   var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/VoltmeterNode' );
   var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/AmmeterNode' );
-  var Emitter = require( 'AXON/Emitter' );
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
 
   /**
@@ -27,7 +26,6 @@ define( function( require ) {
   function CircuitConstructionKitBasicsScreenView( circuitConstructionKitBasicsModel ) {
     var circuitConstructionKitBasicsScreenView = this;
     this.circuitConstructionKitBasicsModel = circuitConstructionKitBasicsModel;
-    this.circuitConstructionKitBasicsScreenViewLayoutCompletedEmitter = new Emitter();
     ScreenView.call( this );
 
     var voltmeterNode = new VoltmeterNode( circuitConstructionKitBasicsModel.voltmeter );
@@ -73,10 +71,6 @@ define( function( require ) {
     this.circuitNode.mainLayer.addChild( this.circuitElementToolbox );
     var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel( circuitConstructionKitBasicsModel.circuit, this.visibleBoundsProperty );
     this.visibleBoundsProperty.lazyLink( function( visibleBounds ) {
-      var dx = -visibleBounds.x;
-      var dy = -visibleBounds.y;
-      var width = visibleBounds.width;
-      var height = visibleBounds.height;
 
       // Float the resetAllButton to the bottom right
       var inset = CircuitConstructionKitBasicsConstants.layoutInset;
@@ -98,14 +92,6 @@ define( function( require ) {
       circuitElementEditContainerPanel.mutate( {
         centerX: visibleBounds.centerX,
         bottom: visibleBounds.bottom - inset
-      } );
-
-      // TODO: Can this be handled by adding a listener to the ScreenView.visibleBoundsProperty?
-      circuitConstructionKitBasicsScreenView.circuitConstructionKitBasicsScreenViewLayoutCompletedEmitter.emit1( {
-        dx: dx,
-        dy: dy,
-        width: width,
-        height: height
       } );
     } );
 

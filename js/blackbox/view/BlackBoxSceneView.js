@@ -57,12 +57,12 @@ define( function( require ) {
     this.addChild( comboBox );
 
     // Layout when the screen view size changed
-    this.circuitConstructionKitBasicsScreenViewLayoutCompletedEmitter.addListener( function( layoutDimensions ) {
+    this.visibleBoundsProperty.link( function( visibleBounds ) {
       modeRadioButtonGroup.top = blackBoxSceneView.sensorToolbox.bottom + 20;
       modeRadioButtonGroup.right = blackBoxSceneView.sensorToolbox.right;
 
-      comboBox.centerX = -layoutDimensions.dx + layoutDimensions.width / 2;
-      comboBox.top = -layoutDimensions.dy + CircuitConstructionKitBasicsConstants.layoutInset;
+      comboBox.centerX = visibleBounds.centerX;
+      comboBox.top = visibleBounds.top + CircuitConstructionKitBasicsConstants.layoutInset;
     } );
 
     var blackBoxNode = new BlackBoxNode( blackBoxWidth, blackBoxHeight, {
