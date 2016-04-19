@@ -179,7 +179,6 @@ define( function( require ) {
         var wireNode = this.circuitNode.wireNodes[ i ];
 
         // Don't connect to wires in the black box
-        // TODO: is this too expensive on iPad?
         if ( !wireNode.wire.insideTrueBlackBox && wireNode.getStrokedShape().containsPoint( probeNode.translation ) ) {
           return wireNode;
         }
