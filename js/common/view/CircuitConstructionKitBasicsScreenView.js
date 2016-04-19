@@ -141,7 +141,6 @@ define( function( require ) {
 
   return inherit( ScreenView, CircuitConstructionKitBasicsScreenView, {
 
-    // TODO: Highlight the toolbox when something can drop over it.
     canNodeDropInToolbox: function( circuitElementNode ) {
       var isSingle = this.circuitConstructionKitBasicsModel.circuit.isSingle( circuitElementNode.circuitElement );
       var inBounds = this.circuitElementToolbox.globalBounds.containsPoint( circuitElementNode.globalBounds.center );
