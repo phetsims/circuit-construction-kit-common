@@ -74,15 +74,22 @@ define( function( require ) {
     // Add highlight (but not for icons)
     if ( circuitNode ) {
       var inset = -10;
-      var highlightNode = new Rectangle( inset, inset, contentNode.width - inset * 2, contentNode.height - inset * 2, 8, 8, _.extend( options.highlightOptions, {
-        stroke: CircuitConstructionKitBasicsConstants.highlightColor,
-        lineWidth: CircuitConstructionKitBasicsConstants.highlightLineWidth,
+      var highlightNode = new Rectangle(
+        inset,
+        inset,
+        contentNode.width - inset * 2,
+        contentNode.height - inset * 2,
+        8,
+        8,
+        _.extend( options.highlightOptions, {
+          stroke: CircuitConstructionKitBasicsConstants.highlightColor,
+          lineWidth: CircuitConstructionKitBasicsConstants.highlightLineWidth,
 
-        // TODO: Probably move the highlight to another node, so that its parent isn't image node
-        // TODO: So that it can extend beyond the bounds without throwing off the layout
-        scale: 1.0 / contentScale,
-        pickable: false
-      } ) );
+          // TODO: Probably move the highlight to another node, so that its parent isn't image node
+          // TODO: So that it can extend beyond the bounds without throwing off the layout
+          scale: 1.0 / contentScale,
+          pickable: false
+        } ) );
 
       contentNode.addChild( highlightNode );
     }
