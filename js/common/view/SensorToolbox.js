@@ -18,7 +18,6 @@ define( function( require ) {
   var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Voltmeter' );
   var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Ammeter' );
 
-  // TODO: highlight the panel when a tool is going to be dropped in
   function SensorToolbox( voltmeterNode, ammeterNode ) {
     var sensorToolbox = this;
     var toolIconLength = CircuitConstructionKitBasicsConstants.toolboxIconLength;
