@@ -38,16 +38,7 @@ define( function( require ) {
     options = _.extend( {
       icon: false,
       updateLayout: function( startPosition, endPosition ) {
-
-        var angle = endPosition.minus( startPosition ).angle(); // TODO: speed up maths
-        // TODO: Simplify this matrix math.
-        contentNode.resetTransform();
-        contentNode.mutate( {
-          scale: contentScale
-        } );
-        contentNode.rotateAround( new Vector2( 0, 0 ), angle );
-        contentNode.x = startPosition.x;
-        contentNode.y = startPosition.y;
+        FixedLengthCircuitElementNode.updateNodeTransform( contentNode, startPosition, endPosition, contentScale );
         contentNode.translate( 0, -contentNodeHeight / 2 );
       },
       highlightOptions: {}
@@ -188,6 +179,25 @@ define( function( require ) {
   return inherit( Node, FixedLengthCircuitElementNode, {
     dispose: function() {
       this.disposeFixedLengthCircuitElementNode();
+    }
+  }, {
+    /**
+     * Update the transform of a node. This is followed by a type-specific step for finishing the translation.
+     * @param {Node} contentNode
+     * @param {Vector2} startPosition
+     * @param {Vector2} endPosition
+     * @param {number} contentScale
+     */
+    updateNodeTransform: function( contentNode, startPosition, endPosition, contentScale ) {
+      var angle = endPosition.minus( startPosition ).angle(); // TODO: speed up maths
+      // TODO: Simplify this matrix math.
+      contentNode.resetTransform();
+      contentNode.mutate( {
+        scale: contentScale
+      } );
+      contentNode.rotateAround( new Vector2( 0, 0 ), angle );
+      contentNode.x = startPosition.x;
+      contentNode.y = startPosition.y;
     }
   } );
 } );
