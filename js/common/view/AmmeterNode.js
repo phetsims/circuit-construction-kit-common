@@ -1,6 +1,8 @@
 // Copyright 2016, University of Colorado Boulder
 
 /**
+ * The user interface component with a single probe which reads current values from wires (not from vertices or
+ * FixedLengthCircuitElements).
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
