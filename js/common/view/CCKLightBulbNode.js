@@ -47,7 +47,9 @@ define( function( require ) {
       },
       highlightOptions: {
         centerX: 0,
-        bottom: 5 // TODO: this must match the highlight inset
+
+        // Offset the highlight vertically so it looks good, tuned manually
+        bottom: FixedLengthCircuitElementNode.HIGHLIGHT_INSET * 0.75
       }
     }, options );
     FixedLengthCircuitElementNode.call( this, circuitConstructionKitBasicsScreenView, circuitNode, lightBulb, lightBulbNode, contentScale, options );

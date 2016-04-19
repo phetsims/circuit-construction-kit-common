@@ -73,7 +73,7 @@ define( function( require ) {
 
     // Add highlight (but not for icons)
     if ( circuitNode ) {
-      var inset = -10;
+      var inset = -FixedLengthCircuitElementNode.HIGHLIGHT_INSET;
       var highlightNode = new Rectangle(
         inset,
         inset,
@@ -205,6 +205,7 @@ define( function( require ) {
       contentNode.rotateAround( new Vector2( 0, 0 ), angle );
       contentNode.x = startPosition.x;
       contentNode.y = startPosition.y;
-    }
+    },
+    HIGHLIGHT_INSET: 10
   } );
 } );
