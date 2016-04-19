@@ -18,6 +18,7 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/FixedLengthCircuitElement' );
   var CircuitElementEditPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementEditPanel' );
+  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
 
   function CircuitElementEditContainerPanel( circuit, visibleBoundsProperty ) {
     var selectedCircuitElementProperty = circuit.selectedCircuitElementProperty;
@@ -46,7 +47,7 @@ define( function( require ) {
     var updatePosition = function() {
       var visibleBounds = visibleBoundsProperty.get();
       circuitElementEditContainerPanel.centerX = visibleBounds.centerX;
-      circuitElementEditContainerPanel.bottom = visibleBounds.bottom - 14; // TODO: Factor out insets
+      circuitElementEditContainerPanel.bottom = visibleBounds.bottom - CircuitConstructionKitBasicsConstants.layoutInset;
     };
 
     var lastNumberControl = null;
