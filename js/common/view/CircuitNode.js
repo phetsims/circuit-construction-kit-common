@@ -208,7 +208,7 @@ define( function( require ) {
         return null;
       }
     },
-    startDrag: function( point, vertex, okToRotate ) {
+    startDrag: function( point, vertex ) {
 
       // If it is the edge of a fixed length circuit element, the element rotates and moves toward the mouse
       var vertexNode = this.getVertexNode( vertex ); // TODO: use event.currentTarget?
