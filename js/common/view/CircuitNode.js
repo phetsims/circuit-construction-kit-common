@@ -262,8 +262,6 @@ define( function( require ) {
         var translationDelta = position.minus( vertex.unsnappedPosition );
         this.translateVertexGroup( vertex, vertices, translationDelta, null, vertices );
       }
-
-      // TODO: Keep in bounds
     },
 
     /**
