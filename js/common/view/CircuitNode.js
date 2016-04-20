@@ -144,62 +144,46 @@ define( function( require ) {
   }
 
   return inherit( Node, CircuitNode, {
-    // TODO: Duplicated
-    getWireNode: function( wire ) {
-      for ( var i = 0; i < this.wireNodes.length; i++ ) {
-        var wireNode = this.wireNodes[ i ];
-        if ( wireNode.wire === wire ) {
-          return wireNode;
+
+    /**
+     * Get the CircuitElementNode for the corresponding CircuitElement
+     * @param {Array.<CircuitElementNode>} nodeArray - the list of nodes to search
+     * @param {CircuitElement} circuitElement
+     * @returns {CircuitElementNode|null}
+     */
+    getCircuitElementNode: function( nodeArray, circuitElement ) {
+      for ( var i = 0; i < nodeArray.length; i++ ) {
+        var circuitElementNode = nodeArray[ i ];
+        if ( circuitElementNode.circuitElement === circuitElement ) {
+          return circuitElementNode;
         }
       }
       return null;
     },
-    // TODO: Duplicated
-    getCCKLightBulbNode: function( lightBulb ) {
-      for ( var i = 0; i < this.lightBulbNodes.length; i++ ) {
-        var lightBulbNode = this.lightBulbNodes[ i ];
-        if ( lightBulbNode.lightBulb === lightBulb ) {
-          return lightBulbNode;
+
+    getWireNode: function( wire ) { return this.getCircuitElementNode( this.wireNodes, wire ); },
+    getCCKLightBulbNode: function( lightBulb ) { return this.getCircuitElementNode( this.lightBulbNodes, lightBulb ); },
+    getBatteryNode: function( battery ) { return this.getCircuitElementNode( this.batteryNodes, battery ); },
+    getResistorNode: function( resistor ) { return this.getCircuitElementNode( this.resistorNodes, resistor ); },
+
+    /**
+     * Get the Node for a vertex
+     * @param {Array.<Node>} nodeArray
+     * @param {Vertex} vertex
+     * @returns {Node|null}
+     */
+    getNodeForVertex: function( nodeArray, vertex ) {
+      for ( var i = 0; i < nodeArray.length; i++ ) {
+        var node = nodeArray[ i ];
+        if ( node.vertex === vertex ) {
+          return node;
         }
       }
       return null;
     },
-    getBatteryNode: function( battery ) {
-      for ( var i = 0; i < this.batteryNodes.length; i++ ) {
-        var batteryNode = this.batteryNodes[ i ];
-        if ( batteryNode.battery === battery ) {
-          return batteryNode;
-        }
-      }
-      return null;
-    },
-    getResistorNode: function( resistor ) {
-      for ( var i = 0; i < this.resistorNodes.length; i++ ) {
-        var resistorNode = this.resistorNodes[ i ];
-        if ( resistorNode.resistor === resistor ) {
-          return resistorNode;
-        }
-      }
-      return null;
-    },
-    getSolderNode: function( vertex ) {
-      for ( var i = 0; i < this.solderNodes.length; i++ ) {
-        var solderNode = this.solderNodes[ i ];
-        if ( solderNode.vertex === vertex ) {
-          return solderNode;
-        }
-      }
-      return null;
-    },
-    getVertexNode: function( vertex ) {
-      for ( var i = 0; i < this.vertexNodes.length; i++ ) {
-        var vertexNode = this.vertexNodes[ i ];
-        if ( vertexNode.vertex === vertex ) {
-          return vertexNode;
-        }
-      }
-      return null;
-    },
+    getSolderNode: function( vertex ) { return this.getNodeForVertex( this.solderNodes, vertex ); },
+    getVertexNode: function( vertex ) { return this.getNodeForVertex( this.vertexNodes, vertex ); },
+
     getAllDropTargets: function( vertices ) {
       var allDropTargets = [];
 
