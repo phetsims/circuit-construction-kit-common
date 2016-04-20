@@ -107,8 +107,6 @@ define( function( require ) {
     initializeCircuitElementType( CCKLightBulbNode, circuit.lightBulbs, circuitNode.lightBulbNodes, this.getCCKLightBulbNode.bind( this ) );
     initializeCircuitElementType( ResistorNode, circuit.resistors, circuitNode.resistorNodes, this.getResistorNode.bind( this ) );
 
-    // TODO: When an item is dropped in the toolbox, remove it from the model
-
     var addVertexNode = function( vertex ) {
       var vertexNode = new VertexNode( circuitNode, vertex );
       circuitNode.vertexNodes.push( vertexNode );
