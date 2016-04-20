@@ -297,7 +297,7 @@ define( function( require ) {
     },
     endDrag: function( event, vertex ) {
 
-      var vertexNode = this.getVertexNode( vertex ); // TODO: Is this too expensive?  Probably!
+      var vertexNode = this.getVertexNode( vertex );
 
       // Find all vertices connected by fixed length nodes.
       var vertices = this.circuit.findAllFixedVertices( vertex );
@@ -320,8 +320,7 @@ define( function( require ) {
       }
       vertexNode.startOffset = null;
 
-      // Signify that something has been dropped in the play area.
-      // TODO: Don't signify this if something dropped in the toolbox.  Later: Why not?
+      // Signify that something has been dropped in the play area, to show the edit panel (unless dropped in the toolbox)
       this.circuit.circuitElementDroppedEmitter.emit();
     }
   } );
