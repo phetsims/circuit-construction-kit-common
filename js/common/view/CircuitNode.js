@@ -51,6 +51,28 @@ define( function( require ) {
     this.resistorNodes = [];
     this.vertexNodes = [];
 
+    /**
+     * For each type of circuitElement, create a listener that can be used to remove the corresponding nodes
+     * @param {Array.<Node>} array - the list of nodes for that circuit element type, such as this.resistorNodes
+     * @param {Function} getter - function that returns a {Node} for a {CircuitElement}
+     * @returns {Function}
+     */
+    var createCircuitElementRemovedListener = function( array, getter ) {
+      return function( circuitElement ) {
+        var circuitElementNode = getter( circuitElement ); // like getBatteryNode(circuitElement)
+
+        mainLayer.removeChild( circuitElementNode );
+
+        var index = array.indexOf( circuitElementNode );
+        if ( index > -1 ) {
+          array.splice( index, 1 );
+        }
+        circuitElementNode.dispose();
+
+        assert && assert( getter( circuitElement ) === null, 'should have been removed' );
+      };
+    };
+
     // When loading from a state object, the vertices could have been added first.  If so, move them in front
     var moveVerticesToFront = function( circuitElement ) {
       circuitNode.getVertexNode( circuitElement.startVertex ) && circuitNode.getVertexNode( circuitElement.startVertex ).moveToFront();
@@ -65,21 +87,7 @@ define( function( require ) {
     };
     circuit.wires.addItemAddedListener( addWireNode );
     circuit.wires.forEach( addWireNode );
-
-    // TODO: Heavily duplicated with other removal listeners
-    circuit.wires.addItemRemovedListener( function( wire ) {
-      var wireNode = circuitNode.getWireNode( wire );
-
-      mainLayer.removeChild( wireNode );
-
-      var index = circuitNode.wireNodes.indexOf( wireNode );
-      if ( index > -1 ) {
-        circuitNode.wireNodes.splice( index, 1 );
-      }
-      wireNode.dispose();
-
-      assert && assert( circuitNode.getWireNode( wire ) === null, 'should have been removed' );
-    } );
+    circuit.wires.addItemRemovedListener( createCircuitElementRemovedListener( this.wireNodes, this.getWireNode.bind( this ) ) );
 
     var addBatteryNode = function( battery ) {
       var batteryNode = new BatteryNode( circuitConstructionKitBasicsScreenView, circuitNode, battery );
@@ -89,21 +97,7 @@ define( function( require ) {
     };
     circuit.batteries.addItemAddedListener( addBatteryNode );
     circuit.batteries.forEach( addBatteryNode );
-
-    // TODO: Heavily duplicated with other removal listeners
-    circuit.batteries.addItemRemovedListener( function( battery ) {
-      var batteryNode = circuitNode.getBatteryNode( battery );
-
-      mainLayer.removeChild( batteryNode );
-
-      var index = circuitNode.batteryNodes.indexOf( batteryNode );
-      if ( index > -1 ) {
-        circuitNode.batteryNodes.splice( index, 1 );
-      }
-      batteryNode.dispose();
-
-      assert && assert( circuitNode.getBatteryNode( battery ) === null, 'should have been removed' );
-    } );
+    circuit.batteries.addItemRemovedListener( createCircuitElementRemovedListener( this.batteryNodes, this.getBatteryNode.bind( this ) ) );
 
     var addCCKLightBulbNode = function( lightBulb ) {
       var lightBulbNode = new CCKLightBulbNode( circuitConstructionKitBasicsScreenView, circuitNode, lightBulb );
@@ -113,22 +107,9 @@ define( function( require ) {
     };
     circuit.lightBulbs.addItemAddedListener( addCCKLightBulbNode );
     circuit.lightBulbs.forEach( addCCKLightBulbNode );
-    // TODO: Heavily duplicated with other removal listeners
-    circuit.lightBulbs.addItemRemovedListener( function( lightBulb ) {
-      var lightBulbNode = circuitNode.getCCKLightBulbNode( lightBulb );
+    circuit.lightBulbs.addItemRemovedListener( createCircuitElementRemovedListener( this.lightBulbNodes, this.getCCKLightBulbNode.bind( this ) ) );
 
-      mainLayer.removeChild( lightBulbNode );
-
-      var index = circuitNode.lightBulbNodes.indexOf( lightBulbNode );
-      if ( index > -1 ) {
-        circuitNode.lightBulbNodes.splice( index, 1 );
-      }
-      lightBulbNode.dispose();
-
-      assert && assert( circuitNode.getCCKLightBulbNode( lightBulb ) === null, 'should have been removed' );
-    } );
-
-    // TODO: When an item is dropped in the toolbox, remove it from the model
+    // TODO: The code for each type is duplicated
     var addResistorNode = function( resistor ) {
       var resistorNode = new ResistorNode( circuitConstructionKitBasicsScreenView, circuitNode, resistor );
       circuitNode.resistorNodes.push( resistorNode );
@@ -137,21 +118,9 @@ define( function( require ) {
     };
     circuit.resistors.addItemAddedListener( addResistorNode );
     circuit.resistors.forEach( addResistorNode );
+    circuit.resistors.addItemRemovedListener( createCircuitElementRemovedListener( this.resistorNodes, this.getResistorNode.bind( this ) ) );
 
-    // TODO: Heavily duplicated with other removal listeners
-    circuit.resistors.addItemRemovedListener( function( resistor ) {
-      var resistorNode = circuitNode.getResistorNode( resistor );
-
-      mainLayer.removeChild( resistorNode );
-
-      var index = circuitNode.resistorNodes.indexOf( resistorNode );
-      if ( index > -1 ) {
-        circuitNode.resistorNodes.splice( index, 1 );
-      }
-      resistorNode.dispose();
-
-      assert && assert( circuitNode.getResistorNode( resistor ) === null, 'should have been removed' );
-    } );
+    // TODO: When an item is dropped in the toolbox, remove it from the model
 
     var addVertexNode = function( vertex ) {
       var vertexNode = new VertexNode( circuitNode, vertex );
