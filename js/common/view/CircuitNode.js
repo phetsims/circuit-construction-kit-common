@@ -27,6 +27,7 @@ define( function( require ) {
    * @constructor
    */
   function CircuitNode( circuit, circuitConstructionKitBasicsScreenView ) {
+    this.visibleBoundsProperty = circuitConstructionKitBasicsScreenView.visibleBoundsProperty;
     var solderLayer = new Node();
 
     // @public (read-only) so that additional Nodes may be interleaved
@@ -273,6 +274,18 @@ define( function( require ) {
      * @param {Array.<Vertex>} attachable - the nodes that are candidates for attachment
      */
     translateVertexGroup: function( vertex, vertices, unsnappedDelta, updatePositions, attachable ) {
+
+      var bounds = this.visibleBoundsProperty.get();
+
+      // Modify the delta to guarantee all vertices remain in bounds
+      for ( i = 0; i < vertices.length; i++ ) {
+        var proposedPosition = vertices[ i ].unsnappedPosition.plus( unsnappedDelta );
+        if ( !bounds.containsPoint( proposedPosition ) ) {
+          var closestPosition = bounds.getClosestPoint( proposedPosition.x, proposedPosition.y );
+          var keepInBoundsDelta = closestPosition.minus( proposedPosition );
+          unsnappedDelta = unsnappedDelta.plus( keepInBoundsDelta );
+        }
+      }
 
       // Update the unsnapped position of the entire subgraph, i.e. where it would be if no matches are proposed.
       // Must do this before calling getBestDropTarget, because the unsnapped positions are used for target matching
