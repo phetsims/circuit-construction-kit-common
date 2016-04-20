@@ -162,7 +162,6 @@ define( function( require ) {
      */
     updateNodeTransform: function( contentNode, startPosition, endPosition, contentScale ) {
       var angle = endPosition.minus( startPosition ).angle();
-      // TODO: Simplify this matrix math.
       contentNode.resetTransform();
       contentNode.mutate( {
         scale: contentScale
