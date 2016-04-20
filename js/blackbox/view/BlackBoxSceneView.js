@@ -39,11 +39,6 @@ define( function( require ) {
       fontSize: 16
     };
 
-    // Workaround for https://github.com/phetsims/sun/issues/229 which puts the ComboBox popup behind the text for
-    // the warmup scene
-    this.comboBoxPopupLayer = new Node();
-    this.addChild( this.comboBoxPopupLayer );
-
     // A different ComboBox instance appears in each BlackBoxSceneView
     var elements = [ {
       node: new Text( 'Warm-up', comboBoxTextOptions ), value: 'warmup'
@@ -53,7 +48,7 @@ define( function( require ) {
         node: new Text( 'Black Box ' + i, comboBoxTextOptions ), value: 'scene' + i
       } );
     }
-    var comboBox = new ComboBox( elements, sceneProperty, this.comboBoxPopupLayer );
+    var comboBox = new ComboBox( elements, sceneProperty, this );
     this.addChild( comboBox );
 
     // Layout when the screen view size changed
@@ -114,10 +109,6 @@ define( function( require ) {
       transparencyOverlay.visible = isBuildBode;
     } );
     this.circuitNode.mainLayer.addChild( transparencyOverlay );
-
-    // Workaround for https://github.com/phetsims/sun/issues/229 which puts the ComboBox popup behind the text for
-    // the warmup scene
-    this.comboBoxPopupLayer.moveToFront();
   }
 
   return inherit( CircuitConstructionKitBasicsScreenView, BlackBoxSceneView );
