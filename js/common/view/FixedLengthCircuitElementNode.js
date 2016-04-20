@@ -82,9 +82,6 @@ define( function( require ) {
         _.extend( options.highlightOptions, {
           stroke: CircuitConstructionKitBasicsConstants.highlightColor,
           lineWidth: CircuitConstructionKitBasicsConstants.highlightLineWidth,
-
-          // TODO: Probably move the highlight to another node, so that its parent isn't image node
-          // TODO: So that it can extend beyond the bounds without throwing off the layout
           scale: 1.0 / contentScale,
           pickable: false
         } ) );
