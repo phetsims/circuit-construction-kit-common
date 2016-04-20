@@ -153,9 +153,8 @@ define( function( require ) {
      */
     getCircuitElementNode: function( nodeArray, circuitElement ) {
       for ( var i = 0; i < nodeArray.length; i++ ) {
-        var circuitElementNode = nodeArray[ i ];
-        if ( circuitElementNode.circuitElement === circuitElement ) {
-          return circuitElementNode;
+        if ( nodeArray[ i ].circuitElement === circuitElement ) {
+          return nodeArray[ i ];
         }
       }
       return null;
@@ -174,9 +173,8 @@ define( function( require ) {
      */
     getNodeForVertex: function( nodeArray, vertex ) {
       for ( var i = 0; i < nodeArray.length; i++ ) {
-        var node = nodeArray[ i ];
-        if ( node.vertex === vertex ) {
-          return node;
+        if ( nodeArray[ i ].vertex === vertex ) {
+          return nodeArray[ i ];
         }
       }
       return null;
@@ -211,11 +209,11 @@ define( function( require ) {
     startDrag: function( point, vertex ) {
 
       // If it is the edge of a fixed length circuit element, the element rotates and moves toward the mouse
-      var vertexNode = this.getVertexNode( vertex ); // TODO: use event.currentTarget?
+      var vertexNode = this.getVertexNode( vertex );
       vertexNode.startOffset = vertexNode.globalToParentPoint( point ).minus( vertex.unsnappedPosition );
     },
     drag: function( point, vertex, okToRotate ) {
-      var vertexNode = this.getVertexNode( vertex ); // TODO: Is this too expensive?  Probably!
+      var vertexNode = this.getVertexNode( vertex );
       var position = vertexNode.globalToParentPoint( point ).minus( vertexNode.startOffset );
 
       // If it is the edge of a fixed length circuit element, the element rotates and moves toward the mouse
