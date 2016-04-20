@@ -101,7 +101,6 @@ define( function( require ) {
     } );
 
     // Use whatever the start node currently is (it can change), and let the circuit manage the dependent vertices
-    // TODO: Should not rotate when dragging by body
     var p = null;
     this.inputListener = new SimpleDragHandler( {
       start: function( event ) {
