@@ -223,7 +223,6 @@ define( function( require ) {
       var vertices = this.circuit.findAllFixedVertices( vertex );
 
       // If any of the vertices connected by fixed length nodes is immobile, then the entire subgraph cannot be moved
-      // TODO: How about being able to rotate a component attached to an undraggable vertex
       for ( var i = 0; i < vertices.length; i++ ) {
         if ( !vertices[ i ].draggable ) {
           return;
