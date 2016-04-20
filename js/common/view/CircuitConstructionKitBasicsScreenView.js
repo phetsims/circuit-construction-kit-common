@@ -214,7 +214,6 @@ define( function( require ) {
       var wireNode = this.hitWireNode( probeNode );
       if ( wireNode ) {
 
-        // TODO: potentiometer: weight according to distance to the node
         return {
           vertex: wireNode.wire.startVertex,
           voltage: (wireNode.wire.startVertex.voltage + wireNode.wire.endVertex.voltage) / 2
