@@ -51,8 +51,7 @@ define( function( require ) {
       return {
         down: function( event ) {
 
-          // Ignore non-left-mouse-button
-          // TODO: why? see https://github.com/phetsims/charges-and-fields/issues/76
+          // Ignore non-left-mouse-button, see #64
           if ( event.pointer.isMouse && event.domEvent.button !== 0 ) {
             return;
           }
