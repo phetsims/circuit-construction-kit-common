@@ -16,7 +16,6 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementEditContainerPanel' );
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementNode' );
 
   /**
@@ -129,37 +128,8 @@ define( function( require ) {
 
         circuitNode.endDrag( event, circuitElement.endVertex );
 
-        // Only show the editor when tapped tap, not on every drag.
-        // TODO: Shared code with VertexNode
-        if ( event.pointer.point.distance( p ) < CircuitConstructionKitBasicsConstants.tapThreshold ) {
-
-          circuitNode.circuit.selectedCircuitElementProperty.set( circuitElement );
-
-          // When the user clicks on anything else, deselect the vertex
-          var deselect = function( event ) {
-
-            // Detect whether the user is hitting something pickable in the CircuitElementEditContainerPanel
-            var circuitElementEditContainerPanel = false;
-            for ( var i = 0; i < event.trail.nodes.length; i++ ) {
-              var trailNode = event.trail.nodes[ i ];
-              if ( trailNode instanceof CircuitElementEditContainerPanel ) {
-                circuitElementEditContainerPanel = true;
-              }
-            }
-
-            // If the user clicked outside of the CircuitElementEditContainerPanel, then hide the edit panel and
-            // deselect the circuitElement
-            if ( !circuitElementEditContainerPanel ) {
-              circuitNode.circuit.selectedCircuitElementProperty.set( null );
-              event.pointer.removeInputListener( listener ); // Thanks, hoisting!
-            }
-          };
-          var listener = {
-            mouseup: deselect,
-            touchup: deselect
-          };
-          event.pointer.addInputListener( listener );
-        }
+        // Only show the editor when tapped, not on every drag.
+        fixedLengthCircuitElementNode.maybeSelect( event, circuitNode, p );
       }
     } );
     !options.icon && contentNode.addInputListener( this.inputListener );
