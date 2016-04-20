@@ -51,16 +51,17 @@ define( function( require ) {
     this.resistorNodes = [];
     this.vertexNodes = [];
 
+    // When loading from a state object, the vertices could have been added first.  If so, move them in front
+    var moveVerticesToFront = function( circuitElement ) {
+      circuitNode.getVertexNode( circuitElement.startVertex ) && circuitNode.getVertexNode( circuitElement.startVertex ).moveToFront();
+      circuitNode.getVertexNode( circuitElement.endVertex ) && circuitNode.getVertexNode( circuitElement.endVertex ).moveToFront();
+    };
+
     var addWireNode = function( wire ) {
       var wireNode = new WireNode( circuitConstructionKitBasicsScreenView, circuitNode, wire );
       circuitNode.wireNodes.push( wireNode );
       mainLayer.addChild( wireNode );
-
-      // Vertices should be in front
-      // TODO HACK ALERT
-      // The problem is that when loading from a state object the circuit element is created before the vertex nodes
-      circuitNode.getVertexNode( wire.startVertex ) && circuitNode.getVertexNode( wire.startVertex ).moveToFront();
-      circuitNode.getVertexNode( wire.endVertex ) && circuitNode.getVertexNode( wire.endVertex ).moveToFront();
+      moveVerticesToFront( wire );
     };
     circuit.wires.addItemAddedListener( addWireNode );
     circuit.wires.forEach( addWireNode );
@@ -84,9 +85,7 @@ define( function( require ) {
       var batteryNode = new BatteryNode( circuitConstructionKitBasicsScreenView, circuitNode, battery );
       circuitNode.batteryNodes.push( batteryNode );
       mainLayer.addChild( batteryNode );
-
-      circuitNode.getVertexNode( battery.startVertex ) && circuitNode.getVertexNode( battery.startVertex ).moveToFront();
-      circuitNode.getVertexNode( battery.endVertex ) && circuitNode.getVertexNode( battery.endVertex ).moveToFront();
+      moveVerticesToFront( battery );
     };
     circuit.batteries.addItemAddedListener( addBatteryNode );
     circuit.batteries.forEach( addBatteryNode );
@@ -110,6 +109,7 @@ define( function( require ) {
       var lightBulbNode = new CCKLightBulbNode( circuitConstructionKitBasicsScreenView, circuitNode, lightBulb );
       circuitNode.lightBulbNodes.push( lightBulbNode );
       mainLayer.addChild( lightBulbNode );
+      moveVerticesToFront( lightBulb );
     };
     circuit.lightBulbs.addItemAddedListener( addCCKLightBulbNode );
     circuit.lightBulbs.forEach( addCCKLightBulbNode );
@@ -133,6 +133,7 @@ define( function( require ) {
       var resistorNode = new ResistorNode( circuitConstructionKitBasicsScreenView, circuitNode, resistor );
       circuitNode.resistorNodes.push( resistorNode );
       mainLayer.addChild( resistorNode );
+      moveVerticesToFront( resistor );
     };
     circuit.resistors.addItemAddedListener( addResistorNode );
     circuit.resistors.forEach( addResistorNode );
