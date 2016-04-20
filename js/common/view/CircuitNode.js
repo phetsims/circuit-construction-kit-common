@@ -79,46 +79,33 @@ define( function( require ) {
       circuitNode.getVertexNode( circuitElement.endVertex ) && circuitNode.getVertexNode( circuitElement.endVertex ).moveToFront();
     };
 
-    var addWireNode = function( wire ) {
-      var wireNode = new WireNode( circuitConstructionKitBasicsScreenView, circuitNode, wire );
-      circuitNode.wireNodes.push( wireNode );
-      mainLayer.addChild( wireNode );
-      moveVerticesToFront( wire );
+    /**
+     * For each CircuitElement type, do the following:
+     * (a) Add nodes for pre-existing model elements
+     * (b) Add a listener that adds nodes when model elements are added
+     * (c) Add a listener that removes nodes when model elements are removed
+     *
+     * @param {function} CircuitElementNodeConstructor constructor for the node type, such as BatteryNode
+     * @param {ObservableArray.<CircuitElement>} modelObservableArray
+     * @param {Array.<CircuitElementNode>} nodeArray
+     * @param {function} getter, given a {CircuitElement}, return the corresponding {CircuitElementNode}
+     */
+    var initializeCircuitElementType = function( CircuitElementNodeConstructor, modelObservableArray, nodeArray, getter ) {
+      var addCircuitElement = function( circuitElement ) {
+        var circuitElementNode = new CircuitElementNodeConstructor( circuitConstructionKitBasicsScreenView, circuitNode, circuitElement );
+        nodeArray.push( circuitElementNode );
+        mainLayer.addChild( circuitElementNode );
+        moveVerticesToFront( circuitElement );
+      };
+      modelObservableArray.addItemAddedListener( addCircuitElement );
+      modelObservableArray.forEach( addCircuitElement );
+      modelObservableArray.addItemRemovedListener( createCircuitElementRemovedListener( nodeArray, getter ) );
     };
-    circuit.wires.addItemAddedListener( addWireNode );
-    circuit.wires.forEach( addWireNode );
-    circuit.wires.addItemRemovedListener( createCircuitElementRemovedListener( this.wireNodes, this.getWireNode.bind( this ) ) );
 
-    var addBatteryNode = function( battery ) {
-      var batteryNode = new BatteryNode( circuitConstructionKitBasicsScreenView, circuitNode, battery );
-      circuitNode.batteryNodes.push( batteryNode );
-      mainLayer.addChild( batteryNode );
-      moveVerticesToFront( battery );
-    };
-    circuit.batteries.addItemAddedListener( addBatteryNode );
-    circuit.batteries.forEach( addBatteryNode );
-    circuit.batteries.addItemRemovedListener( createCircuitElementRemovedListener( this.batteryNodes, this.getBatteryNode.bind( this ) ) );
-
-    var addCCKLightBulbNode = function( lightBulb ) {
-      var lightBulbNode = new CCKLightBulbNode( circuitConstructionKitBasicsScreenView, circuitNode, lightBulb );
-      circuitNode.lightBulbNodes.push( lightBulbNode );
-      mainLayer.addChild( lightBulbNode );
-      moveVerticesToFront( lightBulb );
-    };
-    circuit.lightBulbs.addItemAddedListener( addCCKLightBulbNode );
-    circuit.lightBulbs.forEach( addCCKLightBulbNode );
-    circuit.lightBulbs.addItemRemovedListener( createCircuitElementRemovedListener( this.lightBulbNodes, this.getCCKLightBulbNode.bind( this ) ) );
-
-    // TODO: The code for each type is duplicated
-    var addResistorNode = function( resistor ) {
-      var resistorNode = new ResistorNode( circuitConstructionKitBasicsScreenView, circuitNode, resistor );
-      circuitNode.resistorNodes.push( resistorNode );
-      mainLayer.addChild( resistorNode );
-      moveVerticesToFront( resistor );
-    };
-    circuit.resistors.addItemAddedListener( addResistorNode );
-    circuit.resistors.forEach( addResistorNode );
-    circuit.resistors.addItemRemovedListener( createCircuitElementRemovedListener( this.resistorNodes, this.getResistorNode.bind( this ) ) );
+    initializeCircuitElementType( WireNode, circuit.wires, circuitNode.wireNodes, this.getWireNode.bind( this ) );
+    initializeCircuitElementType( BatteryNode, circuit.batteries, circuitNode.batteryNodes, this.getBatteryNode.bind( this ) );
+    initializeCircuitElementType( CCKLightBulbNode, circuit.lightBulbs, circuitNode.lightBulbNodes, this.getCCKLightBulbNode.bind( this ) );
+    initializeCircuitElementType( ResistorNode, circuit.resistors, circuitNode.resistorNodes, this.getResistorNode.bind( this ) );
 
     // TODO: When an item is dropped in the toolbox, remove it from the model
 
