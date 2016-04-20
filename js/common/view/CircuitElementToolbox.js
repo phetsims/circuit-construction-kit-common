@@ -27,13 +27,11 @@ define( function( require ) {
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/battery.png' );
 
   /**
-   * @param {CircuitConstructionKitBasicsModel} circuitConstructionKitBasicsModel
-   * @param {CircuitConstructionKitBasicsScreenView} circuitConstructionKitBasicsScreenView - I considered passing a function here, but recalled arguments by
-   *                                                      - @jonathanolson and others about easier navigability of passing the object
-   *                                                      - and invoking a method on it (despite this breaking encapsulation)
+   * @param {Circuit} circuit
+   * @param {CircuitNode} circuitNode
    * @constructor
    */
-  function CircuitElementToolbox( circuitConstructionKitBasicsModel, circuitConstructionKitBasicsScreenView ) {
+  function CircuitElementToolbox( circuit, circuitNode ) {
 
     var circuitElementToolbox = this;
     // From: https://github.com/phetsims/scenery-phet/issues/195#issuecomment-186300071
@@ -69,10 +67,6 @@ define( function( require ) {
         }
       };
     };
-
-    // Convenience vars.  TODO: Just pass these in as main constructor if no other parts of circuitConstructionKitBasicsModel or circuitConstructionKitBasicsScreenView are needed?
-    var circuit = circuitConstructionKitBasicsModel.circuit;
-    var circuitNode = circuitConstructionKitBasicsScreenView.circuitNode;
 
     var iconWidth = CircuitConstructionKitBasicsConstants.toolboxIconLength;
     var wireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ) );

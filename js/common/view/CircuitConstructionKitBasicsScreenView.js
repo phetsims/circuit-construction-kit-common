@@ -50,7 +50,7 @@ define( function( require ) {
 
     // Pass the view into circuit node so that circuit elements can be dropped back into the toolbox
     this.circuitNode = new CircuitNode( circuitConstructionKitBasicsModel.circuit, this );
-    this.circuitElementToolbox = new CircuitElementToolbox( circuitConstructionKitBasicsModel, this );
+    this.circuitElementToolbox = new CircuitElementToolbox( circuitConstructionKitBasicsModel.circuit, this.circuitNode );
 
     // @protected - so that subclasses can add a layout circuit element near it
     this.sensorToolbox = new SensorToolbox( voltmeterNode, ammeterNode );
