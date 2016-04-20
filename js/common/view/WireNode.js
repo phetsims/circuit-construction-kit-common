@@ -45,18 +45,29 @@ define( function( require ) {
     // In order to show a gradient on the line, while still allowing the line to stretch (without stretching rounded
     // ends), use a parent node to position and rotate the line, and keep the line the same width.
     // This increases the complexity of the code, but allows us to use Line renderer with a constant gradient.
-    var normalGradient = new LinearGradient( 0, -WIRE_LINE_WIDTH / 2, 0, WIRE_LINE_WIDTH / 2 )
-      .addColorStop( 0.0, new Color( '#7b332b' ).brighterColor( 0.8 ) )
-      .addColorStop( 0.2, new Color( '#cd7767' ) )
-      .addColorStop( 0.3, new Color( '#f6bda0' ) )
-      .addColorStop( 1.0, new Color( '#3c0c08' ) );
 
-    // TODO: Factor out reverse gradient if we keep it
-    var reverseGradient = new LinearGradient( 0, -WIRE_LINE_WIDTH / 2, 0, WIRE_LINE_WIDTH / 2 )
-      .addColorStop( 1.0 - 1.0, new Color( '#3c0c08' ) )
-      .addColorStop( 1.0 - 0.3, new Color( '#f6bda0' ) )
-      .addColorStop( 1.0 - 0.2, new Color( '#cd7767' ) )
-      .addColorStop( 1.0 - 0.0, new Color( '#7b332b' ).brighterColor( 0.8 ) );
+    /**
+     * Create a LinearGradient for the wire, depending on the orientation relative to the shading (light comes from
+     * top left)
+     * @param {{point:number,color:Color}} array
+     * @param {function} op
+     * @returns {LinearGradient}
+     */
+    var createGradient = function( array, op ) {
+      var normalGradient = new LinearGradient( 0, -WIRE_LINE_WIDTH / 2, 0, WIRE_LINE_WIDTH / 2 );
+      array.forEach( function( element ) {normalGradient.addColorStop( op( element.point ), element.color );} );
+      return normalGradient;
+    };
+
+    var array = [
+      { point: 0.0, color: new Color( '#7b332b' ).brighterColor( 0.8 ) },
+      { point: 0.2, color: new Color( '#cd7767' ) },
+      { point: 0.3, color: new Color( '#f6bda0' ) },
+      { point: 1.0, color: new Color( '#3c0c08' ) }
+    ];
+
+    var normalGradient = createGradient( array, function( e ) {return e;} );
+    var reverseGradient = createGradient( array.reverse(), function( e ) {return 1.0 - e;} );
 
     var lineNode = new Line( 0, 0, 100, 0, {
       stroke: normalGradient,
