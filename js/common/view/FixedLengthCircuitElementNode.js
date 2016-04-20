@@ -18,6 +18,7 @@ define( function( require ) {
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementEditContainerPanel' );
+  var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementNode' );
 
   /**
    * @param {CircuitConstructionKitBasicsScreenView} circuitConstructionKitBasicsScreenView
@@ -43,7 +44,6 @@ define( function( require ) {
       },
       highlightOptions: {}
     }, options );
-    this.circuitElement = circuitElement;
 
     // Relink when start vertex changes
     var multilink = null;
@@ -94,7 +94,7 @@ define( function( require ) {
       contentNode.addChild( highlightNode );
     }
 
-    Node.call( this, {
+    CircuitElementNode.call( this, circuitElement, {
       cursor: 'pointer',
       children: [
         contentNode
@@ -183,7 +183,7 @@ define( function( require ) {
 
   circuitConstructionKitBasics.register( 'FixedLengthCircuitElementNode', FixedLengthCircuitElementNode );
 
-  return inherit( Node, FixedLengthCircuitElementNode, {
+  return inherit( CircuitElementNode, FixedLengthCircuitElementNode, {
     dispose: function() {
       this.disposeFixedLengthCircuitElementNode();
     }

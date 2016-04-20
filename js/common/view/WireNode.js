@@ -20,6 +20,7 @@ define( function( require ) {
   var Color = require( 'SCENERY/util/Color' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Vector2 = require( 'DOT/Vector2' );
+  var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementNode' );
 
   // constants
   var WIRE_LINE_WIDTH = 12; // screen coordinates
@@ -33,7 +34,6 @@ define( function( require ) {
   function WireNode( circuitConstructionKitBasicsScreenView, circuitNode, wire ) {
     var wireNode = this;
     this.wire = wire;
-    this.circuitElement = wire; // polymorphism with FixedLengthCircuitElementNode.  TODO: Common parent class?
 
     var highlightNode = new Path( null, {
       stroke: CircuitConstructionKitBasicsConstants.highlightColor,
@@ -86,7 +86,7 @@ define( function( require ) {
 
     // @private
     this.lineNode = lineNode;
-    Node.call( this, {
+    CircuitElementNode.call( this, wire, {
       children: [
         lineNodeParent
       ]
@@ -220,7 +220,7 @@ define( function( require ) {
     }
   }
 
-  return inherit( Node, WireNode, {
+  return inherit( CircuitElementNode, WireNode, {
 
     // @public
     dispose: function() {
