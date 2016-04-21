@@ -22,7 +22,7 @@ define( function( require ) {
       leadDesign: 'Amy Rouinfar',
       softwareDevelopment: 'Sam Reid',
       team: 'Michael Dubson, Ariel Paul, Kathy Perkins',
-      qualityAssurance: '',
+      qualityAssurance: 'Steele Dalton, Bryce Griebenow, Elise Morgan, Ben Roberts',
       graphicArts: 'Bryce Gruneich'
     }
   };
