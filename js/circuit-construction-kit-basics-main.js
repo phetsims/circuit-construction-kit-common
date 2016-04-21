@@ -19,12 +19,11 @@ define( function( require ) {
 
   var simOptions = {
     credits: {
-      leadDesign: '',
-      softwareDevelopment: '',
-      team: '',
+      leadDesign: 'Amy Rouinfar',
+      softwareDevelopment: 'Sam Reid',
+      team: 'Michael Dubson, Ariel Paul, Kathy Perkins',
       qualityAssurance: '',
-      graphicArts: '',
-      thanks: ''
+      graphicArts: 'Bryce Gruneich'
     }
   };
 
