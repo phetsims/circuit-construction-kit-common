@@ -50,7 +50,16 @@ define( function( require ) {
       align: 'bottom',
       children: children
     } );
+
+    this.disposeCircuitElementEditPanel = function() {
+      numberControl.dispose();
+    };
   }
 
-  return inherit( HBox, CircuitElementEditPanel, {} );
+  return inherit( HBox, CircuitElementEditPanel, {
+    dispose: function() {
+      this.disposeCircuitElementEditPanel();
+      HBox.prototype.dispose.call( this );
+    }
+  } );
 } );

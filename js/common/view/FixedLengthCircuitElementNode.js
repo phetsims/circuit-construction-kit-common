@@ -131,10 +131,11 @@ define( function( require ) {
     !options.icon && contentNode.addInputListener( this.inputListener );
 
     if ( circuitNode ) {
-      circuitNode.circuit.selectedCircuitElementProperty.link( function( lastCircuitElement ) {
+      var updateSelectionHighlight = function( lastCircuitElement ) {
         var showHighlight = lastCircuitElement === circuitElement;
         highlightNode.visible = showHighlight;
-      } );
+      };
+      circuitNode.circuit.selectedCircuitElementProperty.link( updateSelectionHighlight );
     }
 
     this.disposeFixedLengthCircuitElementNode = function() {
@@ -143,6 +144,8 @@ define( function( require ) {
       }
       multilink && multilink.dispose();
       multilink = null; // Mark null so it doesn't get disposed again in relink()
+
+      updateSelectionHighlight && circuitNode.circuit.selectedCircuitElementProperty.unlink( updateSelectionHighlight );
     };
   }
 
