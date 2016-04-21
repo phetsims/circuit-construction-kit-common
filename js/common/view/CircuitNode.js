@@ -142,6 +142,21 @@ define( function( require ) {
       assert && assert( circuitNode.getSolderNode( vertex ) === null, 'solder node should have been removed' );
     } );
     circuit.vertices.forEach( addVertexNode );
+
+    // When the screen is resized, move all vertices into view.
+    this.visibleBoundsProperty.link( function( visibleBounds ) {
+      for ( var i = 0; i < circuit.vertices.length; i++ ) {
+        var vertex = circuit.vertices.get( i );
+        if ( !visibleBounds.containsPoint( vertex.position ) ) {
+          var closestPoint = visibleBounds.getClosestPoint( vertex.position.x, vertex.position.y );
+          var delta = closestPoint.minus( vertex.position );
+
+          // Find all vertices connected by fixed length nodes.
+          var vertices = circuit.findAllFixedVertices( vertex );
+          circuitNode.translateVertexGroup( vertex, vertices, delta, null, [] );
+        }
+      }
+    } );
   }
 
   return inherit( Node, CircuitNode, {
