@@ -35,9 +35,10 @@ define( function( require ) {
 
     var tryToText = new MultiLineText( 'Build a circuit that\nbehaves the same way.', _.extend( {
       centerX: ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2,
-      top: ScreenView.DEFAULT_LAYOUT_BOUNDS.height * 0.75
+      top: ScreenView.DEFAULT_LAYOUT_BOUNDS.height / 6
     }, textOptions ) );
     blackBoxSceneModel.modeProperty.link( function( mode ) {
+      tryToText.moveToFront(); // So it doesn't become obscured by the partially transparent overlay
       tryToText.visible = mode === 'build';
     } );
 
