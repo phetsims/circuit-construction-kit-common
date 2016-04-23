@@ -35,31 +35,6 @@ define( function( require ) {
 
         if ( scene === 'warmup' ) {
           sceneViews[ scene ] = new WarmUpSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
-            wires: [ {
-              resistance: 0,
-              startVertex: 0,
-              endVertex: 1,
-              options: {
-                interactive: false
-              }
-            } ],
-            batteries: [],
-            lightBulbs: [],
-            resistors: [],
-            vertices: [
-              {
-                x: 381,
-                y: 305
-              },
-              {
-                x: 641,
-                y: 305
-              }
-            ]
-          } ) ), blackBoxScreenModel.sceneProperty );
-        }
-        else if ( scene === 'scene1' ) {
-          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
             wires: [
               {
                 resistance: 0,
@@ -107,7 +82,7 @@ define( function( require ) {
             ]
           } ) ), blackBoxScreenModel.sceneProperty );
         }
-        else if ( scene === 'scene2' ) {
+        else if ( scene === 'scene1' ) {
           sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
             wires: [
               {
@@ -156,7 +131,7 @@ define( function( require ) {
             ]
           } ) ), blackBoxScreenModel.sceneProperty );
         }
-        else if ( scene === 'scene3' ) {
+        else if ( scene === 'scene2' ) {
           sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
             wires: [ {
               resistance: 0,
@@ -181,7 +156,7 @@ define( function( require ) {
             ]
           } ) ), blackBoxScreenModel.sceneProperty );
         }
-        else if ( scene === 'scene4' ) {
+        else if ( scene === 'scene3' ) {
           sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
             wires: [
               {
@@ -246,7 +221,7 @@ define( function( require ) {
             ]
           } ) ), blackBoxScreenModel.sceneProperty );
         }
-        else if ( scene === 'scene5' ) {
+        else if ( scene === 'scene4' ) {
           sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
             wires: [
               {
@@ -316,7 +291,7 @@ define( function( require ) {
             ]
           } ) ), blackBoxScreenModel.sceneProperty );
         }
-        else if ( scene === 'scene6' ) {
+        else if ( scene === 'scene5' ) {
           sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
             wires: [
               {
@@ -386,7 +361,7 @@ define( function( require ) {
             ]
           } ) ), blackBoxScreenModel.sceneProperty );
         }
-        else if ( scene === 'scene7' ) {
+        else if ( scene === 'scene6' ) {
           sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
             wires: [
               {
@@ -472,7 +447,7 @@ define( function( require ) {
             ]
           } ) ), blackBoxScreenModel.sceneProperty );
         }
-        else if ( scene === 'scene8' ) {
+        else if ( scene === 'scene7' ) {
           sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
             wires: [
               {
@@ -551,7 +526,7 @@ define( function( require ) {
             ]
           } ) ), blackBoxScreenModel.sceneProperty );
         }
-        else if ( scene === 'scene9' ) {
+        else if ( scene === 'scene8' ) {
           sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
             wires: [
               {
@@ -642,7 +617,7 @@ define( function( require ) {
             ]
           } ) ), blackBoxScreenModel.sceneProperty );
         }
-        else if ( scene === 'scene10' ) {
+        else if ( scene === 'scene9' ) {
           sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
             wires: [
               {
@@ -729,7 +704,7 @@ define( function( require ) {
             ]
           } ) ), blackBoxScreenModel.sceneProperty );
         }
-        else if ( scene === 'scene11' ) {
+        else if ( scene === 'scene10' ) {
           sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
             wires: [
               {

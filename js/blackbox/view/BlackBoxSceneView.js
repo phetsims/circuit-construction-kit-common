@@ -42,7 +42,7 @@ define( function( require ) {
     var elements = [ {
       node: new Text( 'Warm-up', comboBoxTextOptions ), value: 'warmup'
     } ];
-    for ( var i = 1; i <= 11; i++ ) {
+    for ( var i = 1; i <= 10; i++ ) { // TODO: Don't hard code this max index
       elements.push( {
         node: new Text( 'Black Box ' + i, comboBoxTextOptions ), value: 'scene' + i
       } );
