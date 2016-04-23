@@ -63,7 +63,7 @@ define( function( require ) {
       }
     } );
 
-    vertex.selectedProperty.link( function( selected ) {
+    var updateSelected = function( selected ) {
       var neighborCircuitElements = circuit.getNeighborCircuitElements( vertex );
 
       if ( selected ) {
@@ -84,17 +84,20 @@ define( function( require ) {
       // Show a disabled button as a cue that the vertex could be cuttable, but it isn't right now.
       var isConnectedBlackBoxVertex = numberConnections === 1 && !vertexNode.vertex.draggable;
       cutButton.enabled = numberConnections > 1 || isConnectedBlackBoxVertex;
-    } );
-    vertex.moveToFrontEmitter.addListener( function() {
+    };
+    vertex.selectedProperty.link( updateSelected );
+    var updateMoveToFront = function() {
       vertexNode.moveToFront();
-    } );
+    };
+    vertex.moveToFrontEmitter.addListener( updateMoveToFront );
     Node.call( this, {
       children: [ highlightNode, dottedLineNode, cutButton ]
     } );
 
-    vertex.interactiveProperty.link( function( interactive ) {
+    var updatePickable = function( interactive ) {
       vertexNode.pickable = interactive;
-    } );
+    };
+    vertex.interactiveProperty.link( updatePickable );
 
     // var updateShape = function() {
     //   var edgeCount = circuit.countCircuitElements( vertex );
@@ -190,6 +193,9 @@ define( function( require ) {
         simpleDragHandler.endDrag();
       }
       vertex.positionProperty.unlink( updateVertexNodePosition );
+      vertex.selectedProperty.unlink( updateSelected );
+      vertex.interactiveProperty.unlink( updatePickable );
+      vertex.moveToFrontEmitter.removeListener( updateMoveToFront );
     };
   }
 
