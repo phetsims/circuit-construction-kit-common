@@ -96,9 +96,10 @@ define( function( require ) {
       ]
     } );
 
-    circuitElement.interactiveProperty.link( function( interactive ) {
+    var pickableListener = function( interactive ) {
       fixedLengthCircuitElementNode.pickable = interactive;
-    } );
+    };
+    circuitElement.interactiveProperty.link( pickableListener );
 
     // Use whatever the start node currently is (it can change), and let the circuit manage the dependent vertices
     var p = null;
@@ -146,6 +147,11 @@ define( function( require ) {
       multilink = null; // Mark null so it doesn't get disposed again in relink()
 
       updateSelectionHighlight && circuitNode.circuit.selectedCircuitElementProperty.unlink( updateSelectionHighlight );
+
+      circuitElement.connectedEmitter.removeListener( moveToFront );
+      circuitElement.vertexSelectedEmitter.removeListener( moveToFront );
+
+      circuitElement.interactiveProperty.unlink( pickableListener );
     };
   }
 

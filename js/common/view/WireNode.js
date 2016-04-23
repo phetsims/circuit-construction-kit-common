@@ -91,9 +91,10 @@ define( function( require ) {
       ]
     } );
 
-    wire.interactiveProperty.link( function( interactive ) {
+    var updatePickable = function( interactive ) {
       wireNode.pickable = interactive;
-    } );
+    };
+    wire.interactiveProperty.link( updatePickable );
 
     var highlightStrokeStyles = new LineStyles( {
       lineWidth: 26,
@@ -172,22 +173,30 @@ define( function( require ) {
       }
     } );
     circuitConstructionKitBasicsScreenView && wireNode.addInputListener( this.inputListener );
-    this.disposeWireNode = function() {
-      wireNode.inputListener.dragging && wireNode.inputListener.endDrag();
-
-      wire.startVertexProperty.unlink( updateStartVertex );
-      wire.endVertexProperty.unlink( updateEndVertex );
-    };
 
     if ( circuitNode ) {
-      circuitNode.circuit.selectedCircuitElementProperty.link( function( lastCircuitElement ) {
+      var updateHighlight = function( lastCircuitElement ) {
         var showHighlight = lastCircuitElement === wire;
         highlightNode.visible = showHighlight;
         if ( highlightNode.visible ) {
           highlightNode.shape = wireNode.getHighlightStrokedShape( highlightStrokeStyles );
         }
-      } );
+      };
+      circuitNode.circuit.selectedCircuitElementProperty.link( updateHighlight );
     }
+
+    this.disposeWireNode = function() {
+      wireNode.inputListener.dragging && wireNode.inputListener.endDrag();
+
+      wire.startVertexProperty.unlink( updateStartVertex );
+      wire.endVertexProperty.unlink( updateEndVertex );
+
+      updateHighlight && circuitNode.circuit.selectedCircuitElementProperty.unlink( updateHighlight );
+      wire.interactiveProperty.unlink( updatePickable );
+
+      wire.startVertex.positionProperty.unlink( startListener );
+      wire.endVertex.positionProperty.unlink( startListener );
+    };
   }
 
   return inherit( CircuitElementNode, WireNode, {
