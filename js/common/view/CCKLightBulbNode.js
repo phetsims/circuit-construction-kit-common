@@ -15,6 +15,7 @@ define( function( require ) {
   var LightBulbNode = require( 'SCENERY_PHET/LightBulbNode' );
   var Property = require( 'AXON/Property' );
   var Util = require( 'DOT/Util' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   /**
    *
@@ -40,10 +41,14 @@ define( function( require ) {
     var contentScale = 2.5;
     options = _.extend( {
       updateLayout: function( startPosition, endPosition ) {
-        FixedLengthCircuitElementNode.updateNodeTransform( lightBulbNode, startPosition, endPosition, contentScale );
-
-        var dist = startPosition.distance( endPosition );
-        lightBulbNode.translate( dist / 2 / contentScale, 10 );
+        var angle = endPosition.minus( startPosition ).angle() + Math.PI / 4;
+        lightBulbNode.resetTransform();
+        lightBulbNode.mutate( {
+          scale: contentScale
+        } );
+        lightBulbNode.rotateAround( new Vector2( 0, 0 ), angle );
+        lightBulbNode.x = startPosition.x;
+        lightBulbNode.y = startPosition.y;
       },
       highlightOptions: {
         centerX: 0,

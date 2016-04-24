@@ -22,9 +22,8 @@ define( function( require ) {
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Resistor' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Wire' );
   var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/WireNode' );
-  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/LightBulb' );
-  var CCKLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CCKLightBulbNode' );
-
+  var LightBulbNode = require( 'SCENERY_PHET/LightBulbNode' );
+  var Property = require( 'AXON/Property' );
   // images
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/battery.png' );
 
@@ -41,7 +40,7 @@ define( function( require ) {
     var wireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ) );
     var resistorNode = new ResistorNode( null, null, new Resistor( new Vertex( 0, 0 ), new Vertex( Resistor.RESISTOR_LENGTH, 0 ), CircuitConstructionKitBasicsConstants.defaultResistance ), { icon: true } );
     var battery = new Image( batteryImage );
-    var lightBulbNode = new CCKLightBulbNode( null, null, new LightBulb( new Vertex( 0, 0 ), new Vertex( LightBulb.LIGHT_BULB_LENGTH, 0 ), CircuitConstructionKitBasicsConstants.defaultResistance ), { icon: true } );
+    var lightBulbNode = new LightBulbNode( new Property( 0 ) );
 
     var elementWidth = 50;
     resistorNode.mutate( { scale: elementWidth / resistorNode.width * 0.75 } );

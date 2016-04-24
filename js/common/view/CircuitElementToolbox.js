@@ -20,8 +20,10 @@ define( function( require ) {
   var Image = require( 'SCENERY/nodes/Image' );
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ResistorNode' );
-  var CCKLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CCKLightBulbNode' );
   var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/WireNode' );
+  var Vector2 = require( 'DOT/Vector2' );
+  var LightBulbNode = require( 'SCENERY_PHET/LightBulbNode' );
+  var Property = require( 'AXON/Property' );
 
   // images
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/battery.png' );
@@ -72,7 +74,7 @@ define( function( require ) {
     var wireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ) );
 
     var resistorNode = new ResistorNode( null, null, new Resistor( new Vertex( 0, 0 ), new Vertex( Resistor.RESISTOR_LENGTH, 0 ), CircuitConstructionKitBasicsConstants.defaultResistance ), { icon: true } );
-    var lightBulbNode = new CCKLightBulbNode( null, null, new LightBulb( new Vertex( 0, 0 ), new Vertex( LightBulb.LIGHT_BULB_LENGTH, 0 ), CircuitConstructionKitBasicsConstants.defaultResistance ), { icon: true } );
+    var lightBulbNode = new LightBulbNode( new Property( 0 ) );
 
     CircuitConstructionKitBasicsPanel.call( this, new VBox( {
       spacing: CircuitConstructionKitBasicsConstants.toolboxItemSpacing,
@@ -106,9 +108,22 @@ define( function( require ) {
           } )
           .addInputListener( createToolIconInputListener(
             function( position ) {
-              var lightBulbLength = LightBulb.LIGHT_BULB_LENGTH;
-              var startVertex = new Vertex( position.x - lightBulbLength / 2, position.y );
-              var endVertex = new Vertex( position.x + lightBulbLength / 2, position.y );
+
+              var translation = new Vector2( 30, 10 );
+
+              // Connect at the side and bottom
+              var lightBulbLength = LightBulb.DISTANCE_BETWEEN_VERTICES;
+              var startPoint = new Vector2( position.x - lightBulbLength / 2, position.y ).plus( translation );
+              var endPoint = new Vector2( position.x, position.y + lightBulbLength / 4 ).plus( translation );
+
+              var delta = endPoint.minus( startPoint );
+              var angle = delta.angle();
+
+              endPoint = startPoint.plus( Vector2.createPolar( LightBulb.DISTANCE_BETWEEN_VERTICES, angle - Math.PI * 0.3975 ) );
+
+              var startVertex = new Vertex( startPoint.x, startPoint.y );
+              var endVertex = new Vertex( endPoint.x, endPoint.y );
+
               return new LightBulb( startVertex, endVertex, CircuitConstructionKitBasicsConstants.defaultResistance );
             },
             circuit.lightBulbs,

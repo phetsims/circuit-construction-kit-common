@@ -13,14 +13,14 @@ define( function( require ) {
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/FixedLengthCircuitElement' );
 
   // constants
-  var LIGHT_BULB_LENGTH = 60;
+  var DISTANCE_BETWEEN_VERTICES = 33;
 
   /**
    *
    * @constructor
    */
   function LightBulb( startVertex, endVertex, resistance ) {
-    FixedLengthCircuitElement.call( this, LIGHT_BULB_LENGTH, startVertex, endVertex, {
+    FixedLengthCircuitElement.call( this, DISTANCE_BETWEEN_VERTICES, startVertex, endVertex, {
       resistance: resistance
     } );
   }
@@ -30,6 +30,6 @@ define( function( require ) {
       return _.extend( { resistance: this.resistance }, FixedLengthCircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex ) );
     }
   }, {
-    LIGHT_BULB_LENGTH: LIGHT_BULB_LENGTH
+    DISTANCE_BETWEEN_VERTICES: DISTANCE_BETWEEN_VERTICES
   } );
 } );
