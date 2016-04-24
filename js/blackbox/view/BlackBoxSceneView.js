@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var CircuitConstructionKitBasicsScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitConstructionKitBasicsScreenView' );
+  var ChallengeSet = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/model/ChallengeSet' );
   var ModeRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/ModeRadioButtonGroup' );
   var ComboBox = require( 'SUN/ComboBox' );
   var Text = require( 'SCENERY/nodes/Text' );
@@ -42,9 +43,9 @@ define( function( require ) {
     var elements = [ {
       node: new Text( 'Warm-up', comboBoxTextOptions ), value: 'warmup'
     } ];
-    for ( var i = 1; i <= 10; i++ ) { // TODO: Don't hard code this max index
+    for ( var i = 0; i < ChallengeSet.challengeArray.length; i++ ) {
       elements.push( {
-        node: new Text( 'Black Box ' + i, comboBoxTextOptions ), value: 'scene' + i
+        node: new Text( 'Black Box ' + (i + 1), comboBoxTextOptions ), value: 'scene' + i
       } );
     }
     var comboBox = new ComboBox( elements, sceneProperty, this );
