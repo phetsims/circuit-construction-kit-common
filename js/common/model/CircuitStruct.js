@@ -1,8 +1,9 @@
 // Copyright 2016, University of Colorado Boulder
 
 /**
+ * The CircuitStruct keeps track of the Circuit components but without wiring up listeners or solving physics.
+ * It is necessary in order to keep track of black box state (user created circuit and black box circuit).
  *
- * TODO: Docs
  * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {
