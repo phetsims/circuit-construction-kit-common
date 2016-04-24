@@ -11,6 +11,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
   var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Circuit' );
+  var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/CircuitStruct' );
   var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Voltmeter' );
   var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Ammeter' );
 
@@ -36,7 +37,7 @@ define( function( require ) {
       this.voltmeter.reset();
       this.ammeter.reset();
 
-      var struct = Circuit.fromStateObject( this.initialCircuitState );
+      var struct = CircuitStruct.fromStateObject( this.initialCircuitState );
       this.circuit.loadFromCircuitStruct( struct );
     }
   } );

@@ -14,7 +14,7 @@ define( function( require ) {
   var BlackBoxSceneModel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/model/BlackBoxSceneModel' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var WarmUpSceneView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/WarmUpSceneView' );
-  var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Circuit' );
+  var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/CircuitStruct' );
 
   /**
    * @param {BlackBoxScreenModel} blackBoxScreenModel
@@ -34,7 +34,7 @@ define( function( require ) {
         var blackBoxHeight = 250;
 
         if ( scene === 'warmup' ) {
-          sceneViews[ scene ] = new WarmUpSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
+          sceneViews[ scene ] = new WarmUpSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( CircuitStruct.fromStateObject( {
             wires: [
               {
                 resistance: 0,
@@ -83,7 +83,7 @@ define( function( require ) {
           } ) ), blackBoxScreenModel.sceneProperty );
         }
         else if ( scene === 'scene1' ) {
-          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
+          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( CircuitStruct.fromStateObject( {
             wires: [
               {
                 resistance: 0,
@@ -132,7 +132,7 @@ define( function( require ) {
           } ) ), blackBoxScreenModel.sceneProperty );
         }
         else if ( scene === 'scene2' ) {
-          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
+          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( CircuitStruct.fromStateObject( {
             wires: [ {
               resistance: 0,
               startVertex: 0,
@@ -157,7 +157,7 @@ define( function( require ) {
           } ) ), blackBoxScreenModel.sceneProperty );
         }
         else if ( scene === 'scene3' ) {
-          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
+          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( CircuitStruct.fromStateObject( {
             wires: [
               {
                 resistance: 0,
@@ -222,7 +222,7 @@ define( function( require ) {
           } ) ), blackBoxScreenModel.sceneProperty );
         }
         else if ( scene === 'scene4' ) {
-          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
+          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( CircuitStruct.fromStateObject( {
             wires: [
               {
                 resistance: 0,
@@ -292,7 +292,7 @@ define( function( require ) {
           } ) ), blackBoxScreenModel.sceneProperty );
         }
         else if ( scene === 'scene5' ) {
-          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
+          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( CircuitStruct.fromStateObject( {
             wires: [
               {
                 resistance: 0,
@@ -362,7 +362,7 @@ define( function( require ) {
           } ) ), blackBoxScreenModel.sceneProperty );
         }
         else if ( scene === 'scene6' ) {
-          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
+          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( CircuitStruct.fromStateObject( {
             wires: [
               {
                 resistance: 0,
@@ -448,7 +448,7 @@ define( function( require ) {
           } ) ), blackBoxScreenModel.sceneProperty );
         }
         else if ( scene === 'scene7' ) {
-          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
+          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( CircuitStruct.fromStateObject( {
             wires: [
               {
                 resistance: 0,
@@ -527,7 +527,7 @@ define( function( require ) {
           } ) ), blackBoxScreenModel.sceneProperty );
         }
         else if ( scene === 'scene8' ) {
-          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
+          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( CircuitStruct.fromStateObject( {
             wires: [
               {
                 resistance: 0,
@@ -618,7 +618,7 @@ define( function( require ) {
           } ) ), blackBoxScreenModel.sceneProperty );
         }
         else if ( scene === 'scene9' ) {
-          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
+          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( CircuitStruct.fromStateObject( {
             wires: [
               {
                 resistance: 0,
@@ -705,7 +705,7 @@ define( function( require ) {
           } ) ), blackBoxScreenModel.sceneProperty );
         }
         else if ( scene === 'scene10' ) {
-          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( Circuit.fromStateObject( {
+          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( CircuitStruct.fromStateObject( {
             wires: [
               {
                 resistance: 0,

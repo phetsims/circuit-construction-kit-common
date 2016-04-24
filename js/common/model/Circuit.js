@@ -13,7 +13,6 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var ObservableArray = require( 'AXON/ObservableArray' );
   var MNACircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/modified-nodal-analysis/MNACircuit' );
-  var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/CircuitStruct' );
   var Property = require( 'AXON/Property' );
   var Emitter = require( 'AXON/Emitter' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Vertex' );
@@ -23,6 +22,7 @@ define( function( require ) {
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Resistor' );
 
   // constants
+  // TODO: Rename SNAP_RADIUS
   var DISTANCE_FOR_SNAP = 30;
 
   /**
@@ -570,54 +570,6 @@ define( function( require ) {
       circuitStruct.batteries.forEach( this.batteries.add.bind( this.batteries ) );
       circuitStruct.resistors.forEach( this.vertices.add.bind( this.vertices ) );
       circuitStruct.lightBulbs.forEach( this.lightBulbs.add.bind( this.lightBulbs ) );
-    }
-  }, {
-
-    // TODO: Move to CircuitStruct
-    fromStateObject: function( circuitState ) {
-      var circuit = new CircuitStruct( [], [], [], [], [] );
-      var options = null;
-      for ( var i = 0; i < circuitState.vertices.length; i++ ) {
-        options = circuitState.vertices[ i ].options || {};
-        circuit.vertices.push( new Vertex( circuitState.vertices[ i ].x, circuitState.vertices[ i ].y, options ) );
-      }
-      for ( i = 0; i < circuitState.wires.length; i++ ) {
-        options = circuitState.wires[ i ].options || {};
-        circuit.wires.push( new Wire(
-          circuit.vertices[ circuitState.wires[ i ].startVertex ],
-          circuit.vertices[ circuitState.wires[ i ].endVertex ],
-          circuitState.wires[ i ].resistance,
-          options
-        ) );
-      }
-      for ( i = 0; i < circuitState.batteries.length; i++ ) {
-        options = circuitState.batteries[ i ].options || {};
-        circuit.batteries.push( new Battery(
-          circuit.vertices[ circuitState.batteries[ i ].startVertex ],
-          circuit.vertices[ circuitState.batteries[ i ].endVertex ],
-          circuitState.batteries[ i ].voltage,
-          options
-        ) );
-      }
-      for ( i = 0; i < circuitState.resistors.length; i++ ) {
-        options = circuitState.resistors[ i ].options || {};
-        circuit.resistors.push( new Resistor(
-          circuit.vertices[ circuitState.resistors[ i ].startVertex ],
-          circuit.vertices[ circuitState.resistors[ i ].endVertex ],
-          circuitState.resistors[ i ].resistance,
-          options
-        ) );
-      }
-      for ( i = 0; i < circuitState.lightBulbs.length; i++ ) {
-        options = circuitState.lightBulbs[ i ].options || {};
-        circuit.lightBulbs.push( new LightBulb(
-          circuit.vertices[ circuitState.lightBulbs[ i ].startVertex ],
-          circuit.vertices[ circuitState.lightBulbs[ i ].endVertex ],
-          circuitState.lightBulbs[ i ].resistance,
-          options
-        ) );
-      }
-      return circuit;
     }
   } );
 } );
