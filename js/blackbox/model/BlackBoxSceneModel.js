@@ -3,6 +3,8 @@
 /**
  * One scene for the black box screen, which focuses on a single black box.
  *
+ * TODO: Resetting shouldn't delete the black box circuit.
+ *
  * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {
@@ -11,6 +13,7 @@ define( function( require ) {
   // modules
   var CircuitConstructionKitBasicsModel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/CircuitConstructionKitBasicsModel' );
   var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Circuit' );
+  var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/CircuitStruct' );
   var inherit = require( 'PHET_CORE/inherit' );
 
   /**
@@ -18,16 +21,17 @@ define( function( require ) {
    * @constructor
    */
   function BlackBoxSceneModel( trueBlackBoxCircuit ) {
+    assert && assert( trueBlackBoxCircuit instanceof CircuitStruct, 'circuit should be CircuitStruct' );
 
     // When loading a black box circuit, none of the vertices should be draggable
     for ( var i = 0; i < trueBlackBoxCircuit.vertices.length; i++ ) {
-      trueBlackBoxCircuit.vertices.get( i ).draggable = false;
+      trueBlackBoxCircuit.vertices[ i ].draggable = false;
 
-      if ( trueBlackBoxCircuit.vertices.get( i ).attachable ) {
-        trueBlackBoxCircuit.vertices.get( i ).blackBoxInterface = true;
+      if ( trueBlackBoxCircuit.vertices[ i ].attachable ) {
+        trueBlackBoxCircuit.vertices[ i ].blackBoxInterface = true;
       }
       else {
-        trueBlackBoxCircuit.vertices.get( i ).insideTrueBlackBox = true;
+        trueBlackBoxCircuit.vertices[ i ].insideTrueBlackBox = true;
       }
     }
 
@@ -43,19 +47,19 @@ define( function( require ) {
     }, {
       circuit: new Circuit()
     } );
-    var userBlackBoxCircuit = new Circuit();
+    var userBlackBoxCircuit = new CircuitStruct( [], [], [], [], [] );
     var circuit = this.circuit;
 
     var removeBlackBoxContents = function( blackBoxCircuit ) {
 
-      circuit.wires.removeAll( blackBoxCircuit.wires.getArray() );
-      circuit.lightBulbs.removeAll( blackBoxCircuit.lightBulbs.getArray() );
-      circuit.resistors.removeAll( blackBoxCircuit.resistors.getArray() );
-      circuit.batteries.removeAll( blackBoxCircuit.batteries.getArray() );
+      circuit.wires.removeAll( blackBoxCircuit.wires );
+      circuit.lightBulbs.removeAll( blackBoxCircuit.lightBulbs );
+      circuit.resistors.removeAll( blackBoxCircuit.resistors );
+      circuit.batteries.removeAll( blackBoxCircuit.batteries );
 
       // Remove the vertices but not those on the black box interface
       for ( var i = 0; i < blackBoxCircuit.vertices.length; i++ ) {
-        var vertex = blackBoxCircuit.vertices.get( i );
+        var vertex = blackBoxCircuit.vertices[ i ];
         if ( !vertex.blackBoxInterface ) {
           circuit.vertices.remove( vertex );
         }
@@ -65,15 +69,15 @@ define( function( require ) {
     var addBlackBoxContents = function( blackBoxCircuit ) {
       // Add the vertices, but only if not already added
       for ( var i = 0; i < blackBoxCircuit.vertices.length; i++ ) {
-        var vertex = blackBoxCircuit.vertices.get( i );
+        var vertex = blackBoxCircuit.vertices[ i ];
         if ( !vertex.blackBoxInterface ) {
           circuit.vertices.add( vertex );
         }
       }
-      circuit.wires.addAll( blackBoxCircuit.wires.getArray() );
-      circuit.resistors.addAll( blackBoxCircuit.resistors.getArray() );
-      circuit.batteries.addAll( blackBoxCircuit.batteries.getArray() );
-      circuit.lightBulbs.addAll( blackBoxCircuit.lightBulbs.getArray() );
+      circuit.wires.addAll( blackBoxCircuit.wires );
+      circuit.resistors.addAll( blackBoxCircuit.resistors );
+      circuit.batteries.addAll( blackBoxCircuit.batteries );
+      circuit.lightBulbs.addAll( blackBoxCircuit.lightBulbs );
       circuit.solve();
     };
 
@@ -101,11 +105,11 @@ define( function( require ) {
       else {
         // move interior elements to userBlackBoxCircuit
         userBlackBoxCircuit.clear();
-        circuit.vertices.forEach( function( v ) { if ( v.interactive && v.draggable ) {userBlackBoxCircuit.vertices.add( v );}} );
-        circuit.wires.forEach( function( wire ) { if ( wire.interactive ) { userBlackBoxCircuit.wires.add( wire ); } } );
-        circuit.batteries.forEach( function( b ) { if ( b.interactive ) { userBlackBoxCircuit.batteries.add( b ); } } );
-        circuit.lightBulbs.forEach( function( bulb ) { if ( bulb.interactive ) { userBlackBoxCircuit.lightBulbs.add( bulb ); } } );
-        circuit.resistors.forEach( function( r ) { if ( r.interactive ) { userBlackBoxCircuit.resistors.add( r ); } } );
+        circuit.vertices.forEach( function( v ) { if ( v.interactive && v.draggable ) {userBlackBoxCircuit.vertices.push( v );}} );
+        circuit.wires.forEach( function( wire ) { if ( wire.interactive ) { userBlackBoxCircuit.wires.push( wire ); } } );
+        circuit.batteries.forEach( function( b ) { if ( b.interactive ) { userBlackBoxCircuit.batteries.push( b ); } } );
+        circuit.lightBulbs.forEach( function( bulb ) { if ( bulb.interactive ) { userBlackBoxCircuit.lightBulbs.push( bulb ); } } );
+        circuit.resistors.forEach( function( r ) { if ( r.interactive ) { userBlackBoxCircuit.resistors.push( r ); } } );
         removeBlackBoxContents( userBlackBoxCircuit );
 
         // Any attachable vertices outside the box should become attachable and draggable

@@ -36,7 +36,8 @@ define( function( require ) {
       this.voltmeter.reset();
       this.ammeter.reset();
 
-      this.circuit.loadFromStateObject( this.initialCircuitState );
+      var struct = Circuit.fromStateObject( this.initialCircuitState );
+      this.circuit.loadFromCircuitStruct( struct );
     }
   } );
 } );

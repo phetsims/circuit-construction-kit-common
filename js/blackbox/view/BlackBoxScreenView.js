@@ -813,7 +813,7 @@ define( function( require ) {
           } ) ), blackBoxScreenModel.sceneProperty );
         }
         else {
-          sceneViews[ scene ] = new BlackBoxSceneView( blackBoxWidth, blackBoxHeight, new BlackBoxSceneModel( new Circuit() ), blackBoxScreenModel.sceneProperty );
+          assert && assert( false, 'no model found' );
         }
       }
 
