@@ -127,7 +127,17 @@ define( function( require ) {
         addBlackBoxContents( trueBlackBoxCircuit );
       }
     } );
+
+    this.resetBlackBoxSceneModel = function() {
+      addBlackBoxContents( trueBlackBoxCircuit );
+      userBlackBoxCircuit.clear();
+    };
   }
 
-  return inherit( CircuitConstructionKitBasicsModel, BlackBoxSceneModel );
+  return inherit( CircuitConstructionKitBasicsModel, BlackBoxSceneModel, {
+    reset: function() {
+      CircuitConstructionKitBasicsModel.prototype.reset.call( this );
+      this.resetBlackBoxSceneModel();
+    }
+  } );
 } );
