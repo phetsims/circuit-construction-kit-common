@@ -16,54 +16,54 @@ define( function( require ) {
   var WarmUpSceneView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/WarmUpSceneView' );
   var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/CircuitStruct' );
 
+  var warmupCircuitStateObject = {
+    wires: [
+      {
+        resistance: 0,
+        startVertex: 0,
+        endVertex: 2
+      },
+      {
+        resistance: 0,
+        startVertex: 3,
+        endVertex: 1
+      }
+    ],
+    batteries: [],
+    lightBulbs: [],
+    resistors: [
+      {
+        resistance: 10,
+        startVertex: 2,
+        endVertex: 3
+      }
+    ],
+    vertices: [
+      {
+        x: 381,
+        y: 305
+      },
+      {
+        x: 641,
+        y: 305
+      },
+      {
+        x: 451.31111111111113,
+        y: 304.3777777777778,
+        options: {
+          attachable: false
+        }
+      },
+      {
+        x: 561.3111111111111,
+        y: 304.3777777777778,
+        options: {
+          attachable: false
+        }
+      }
+    ]
+  };
   var circuitStateObjects = {
-    warmup: {
-      wires: [
-        {
-          resistance: 0,
-          startVertex: 0,
-          endVertex: 2
-        },
-        {
-          resistance: 0,
-          startVertex: 3,
-          endVertex: 1
-        }
-      ],
-      batteries: [],
-      lightBulbs: [],
-      resistors: [
-        {
-          resistance: 10,
-          startVertex: 2,
-          endVertex: 3
-        }
-      ],
-      vertices: [
-        {
-          x: 381,
-          y: 305
-        },
-        {
-          x: 641,
-          y: 305
-        },
-        {
-          x: 451.31111111111113,
-          y: 304.3777777777778,
-          options: {
-            attachable: false
-          }
-        },
-        {
-          x: 561.3111111111111,
-          y: 304.3777777777778,
-          options: {
-            attachable: false
-          }
-        }
-      ]
-    },
     scene1: {
       wires: [
         {
@@ -797,7 +797,7 @@ define( function( require ) {
           sceneViews[ scene ] = new WarmUpSceneView(
             blackBoxWidth,
             blackBoxHeight,
-            new BlackBoxSceneModel( CircuitStruct.fromStateObject( circuitStateObjects.warmup ) ),
+            new BlackBoxSceneModel( CircuitStruct.fromStateObject( warmupCircuitStateObject ) ),
             blackBoxScreenModel.sceneProperty
           );
         }
