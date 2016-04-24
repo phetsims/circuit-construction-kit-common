@@ -195,7 +195,7 @@ define( function( require ) {
       wire.interactiveProperty.unlink( updatePickable );
 
       wire.startVertex.positionProperty.unlink( startListener );
-      wire.endVertex.positionProperty.unlink( startListener );
+      wire.endVertex.positionProperty.unlink( endListener );
     };
   }
 
