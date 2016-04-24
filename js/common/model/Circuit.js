@@ -22,8 +22,7 @@ define( function( require ) {
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Resistor' );
 
   // constants
-  // TODO: Rename SNAP_RADIUS
-  var DISTANCE_FOR_SNAP = 30;
+  var SNAP_RADIUS = 30;
 
   /**
    *
@@ -464,7 +463,7 @@ define( function( require ) {
 
       // (3) a vertex must be within 100px (screen coordinates) of the other vertex
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
-        return vertex.unsnappedPosition.distance( candidateVertex.position ) < DISTANCE_FOR_SNAP;
+        return vertex.unsnappedPosition.distance( candidateVertex.position ) < SNAP_RADIUS;
       } );
 
       // (4) a vertex must be attachable. Some black box vertices are not attachable, such as vertices hidden in the box
