@@ -61,6 +61,22 @@ define( function( require ) {
 
     this.disposeSolderNode = function() {
       vertex.positionProperty.unlink( updateSolderNodePosition );
+
+      circuit.vertices.removeItemAddedListener( updateShape );
+      circuit.vertices.removeItemRemovedListener( updateShape );
+
+      // In Black Box, other wires can be detached from a vertex and this should also update the solder
+      circuit.batteries.removeItemAddedListener( updateShape );
+      circuit.batteries.removeItemRemovedListener( updateShape );
+
+      circuit.wires.removeItemAddedListener( updateShape );
+      circuit.wires.removeItemRemovedListener( updateShape );
+
+      circuit.resistors.removeItemAddedListener( updateShape );
+      circuit.resistors.removeItemRemovedListener( updateShape );
+
+      circuit.lightBulbs.removeItemAddedListener( updateShape );
+      circuit.lightBulbs.removeItemRemovedListener( updateShape );
     };
   }
 
