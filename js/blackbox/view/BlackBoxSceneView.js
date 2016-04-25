@@ -18,6 +18,7 @@ define( function( require ) {
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
   var BlackBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/BlackBoxNode' );
   var WhiteBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/WhiteBoxNode' );
+  var RevealButton = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/RevealButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var Shape = require( 'KITE/Shape' );
   var Path = require( 'SCENERY/nodes/Path' );
@@ -36,6 +37,9 @@ define( function( require ) {
     // Add 'Investigate Circuit' and 'Build Circuit' radio buttons under the sensor toolbox
     var modeRadioButtonGroup = new ModeRadioButtonGroup( blackBoxSceneModel.modeProperty );
     this.addChild( modeRadioButtonGroup );
+
+    var revealButton = new RevealButton( blackBoxSceneModel.revealingProperty );
+    this.addChild( revealButton );
 
     var comboBoxTextOptions = {
       fontSize: 16
@@ -58,6 +62,9 @@ define( function( require ) {
       modeRadioButtonGroup.top = blackBoxSceneView.sensorToolbox.bottom + 20;
       modeRadioButtonGroup.right = blackBoxSceneView.sensorToolbox.right;
 
+      revealButton.top = modeRadioButtonGroup.bottom + 10;
+      revealButton.right = modeRadioButtonGroup.right;
+
       comboBox.centerX = visibleBounds.centerX;
       comboBox.top = visibleBounds.top + CircuitConstructionKitBasicsConstants.layoutInset;
     } );
@@ -66,6 +73,9 @@ define( function( require ) {
 
       // Assumes the default layout bounds are used
       center: ScreenView.DEFAULT_LAYOUT_BOUNDS.center
+    } );
+    blackBoxSceneModel.revealingProperty.link( function( revealing ) {
+      blackBoxNode.opacity = revealing ? 0.2 : 1.0;
     } );
     blackBoxSceneModel.modeProperty.link( function( mode ) {
       blackBoxNode.visible = mode === 'investigate';

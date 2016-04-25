@@ -22,6 +22,7 @@ define( function( require ) {
    */
   function BlackBoxSceneModel( trueBlackBoxCircuit ) {
     assert && assert( trueBlackBoxCircuit instanceof CircuitStruct, 'circuit should be CircuitStruct' );
+    var blackBoxSceneModel = this;
 
     // When loading a black box circuit, none of the vertices should be draggable
     for ( var i = 0; i < trueBlackBoxCircuit.vertices.length; i++ ) {
@@ -43,9 +44,14 @@ define( function( require ) {
     }
 
     CircuitConstructionKitBasicsModel.call( this, {
-      mode: 'investigate' // or 'build'
+      mode: 'investigate', // or 'build'
+      revealing: false // true when the user is holding down the reveal button, and the answer is showing
     }, {
       circuit: new Circuit()
+    } );
+
+    this.revealingProperty.lazyLink( function( revealing ) {
+      blackBoxSceneModel.mode = revealing ? 'investigate' : 'build';
     } );
     var userBlackBoxCircuit = new CircuitStruct( [], [], [], [], [] );
     var circuit = this.circuit;
