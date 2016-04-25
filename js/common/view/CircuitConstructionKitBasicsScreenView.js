@@ -18,6 +18,7 @@ define( function( require ) {
   var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/VoltmeterNode' );
   var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/AmmeterNode' );
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
+  var Util = require( 'DOT/Util' );
 
   /**
    * @param {CircuitConstructionKitBasicsModel} circuitConstructionKitBasicsModel
@@ -220,9 +221,19 @@ define( function( require ) {
       var wireNode = this.hitWireNode( probeNode, 'centerTop' );
       if ( wireNode ) {
 
+        var startPoint = wireNode.wire.startVertex.position;
+        var endPoint = wireNode.wire.endVertex.position;
+        var segmentVector = endPoint.minus( startPoint );
+        var probeVector = probeNode.centerTop.minus( startPoint );
+
+        var distanceAlongSegment = probeVector.dot( segmentVector ) / segmentVector.magnitude() / segmentVector.magnitude();
+
+        assert && assert( distanceAlongSegment >= 0 && distanceAlongSegment <= 1, 'beyond the end of the wire' );
+        var voltageAlongWire = Util.linear( 0, 1, wireNode.wire.startVertex.voltage, wireNode.wire.endVertex.voltage, distanceAlongSegment );
+
         return {
           vertex: wireNode.wire.startVertex,
-          voltage: (wireNode.wire.startVertex.voltage + wireNode.wire.endVertex.voltage) / 2
+          voltage: voltageAlongWire
         };
       }
       else {
