@@ -104,28 +104,30 @@ define( function( require ) {
 
     // Detection for voltmeter probe + circuit collision is done in the view since view bounds are used
     var updateVoltmeter = function() {
-      var redConnection = circuitConstructionKitBasicsScreenView.getVoltageConnection( voltmeterNode.redProbeNode, voltmeterNode.voltmeter.redProbePosition );
-      var blackConnection = circuitConstructionKitBasicsScreenView.getVoltageConnection( voltmeterNode.blackProbeNode, voltmeterNode.voltmeter.blackProbePosition );
-      if ( redConnection === null || blackConnection === null ) {
-        circuitConstructionKitBasicsModel.voltmeter.voltage = null;
-      }
-      else if ( !circuitConstructionKitBasicsModel.circuit.areVerticesConnected( redConnection.vertex, blackConnection.vertex ) ) {
+      if ( circuitConstructionKitBasicsModel.voltmeter.visible ) {
+        var redConnection = circuitConstructionKitBasicsScreenView.getVoltageConnection( voltmeterNode.redProbeNode, voltmeterNode.voltmeter.redProbePosition );
+        var blackConnection = circuitConstructionKitBasicsScreenView.getVoltageConnection( voltmeterNode.blackProbeNode, voltmeterNode.voltmeter.blackProbePosition );
+        if ( redConnection === null || blackConnection === null ) {
+          circuitConstructionKitBasicsModel.voltmeter.voltage = null;
+        }
+        else if ( !circuitConstructionKitBasicsModel.circuit.areVerticesConnected( redConnection.vertex, blackConnection.vertex ) ) {
 
-        // Voltmeter probes each hit things but they were not connected to each other through the circuit.
-        circuitConstructionKitBasicsModel.voltmeter.voltage = null;
-      }
-      else if ( redConnection !== null && redConnection.vertex.insideTrueBlackBox ) {
+          // Voltmeter probes each hit things but they were not connected to each other through the circuit.
+          circuitConstructionKitBasicsModel.voltmeter.voltage = null;
+        }
+        else if ( redConnection !== null && redConnection.vertex.insideTrueBlackBox ) {
 
-        // Cannot read values inside the black box
-        circuitConstructionKitBasicsModel.voltmeter.voltage = null;
-      }
-      else if ( blackConnection !== null && blackConnection.vertex.insideTrueBlackBox ) {
+          // Cannot read values inside the black box
+          circuitConstructionKitBasicsModel.voltmeter.voltage = null;
+        }
+        else if ( blackConnection !== null && blackConnection.vertex.insideTrueBlackBox ) {
 
-        // Cannot read values inside the black box
-        circuitConstructionKitBasicsModel.voltmeter.voltage = null;
-      }
-      else {
-        circuitConstructionKitBasicsModel.voltmeter.voltage = redConnection.voltage - blackConnection.voltage;
+          // Cannot read values inside the black box
+          circuitConstructionKitBasicsModel.voltmeter.voltage = null;
+        }
+        else {
+          circuitConstructionKitBasicsModel.voltmeter.voltage = redConnection.voltage - blackConnection.voltage;
+        }
       }
     };
     circuitConstructionKitBasicsModel.circuit.circuitChangedEmitter.addListener( updateVoltmeter );

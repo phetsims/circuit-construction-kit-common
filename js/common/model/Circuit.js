@@ -146,40 +146,37 @@ define( function( require ) {
         // No need to cut a solo vertex
         return;
       }
-      var cuttableSingle = neighborCircuitElements.length === 1 && neighborCircuitElements[ 0 ].interactive && vertex.blackBoxInterface;
-      if ( neighborCircuitElements.length === 1 && !cuttableSingle ) {
-
-        // No need to cut an edge vertex, unless it is a single interactive wire connected to an undraggable vertex.
-        // This case appears in a black box when the user attached a wire to a black box interface vertex
-        return;
-      }
       for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
         var circuitElement = neighborCircuitElements[ i ];
-        var options = {
-          draggable: circuitElement.interactive,
-          interactive: true,
-          attachable: true,
-          blackBoxInterface: circuitElement.insideTrueBlackBox,
-          insideTrueBlackBox: false
-        };
-        var newVertex = new Vertex( vertex.position.x, vertex.position.y, options );
-        circuitElement.replaceVertex( vertex, newVertex );
-        this.vertices.add( newVertex );
+        if ( circuitElement.interactive ) {
+          var options = {
+            draggable: true,
+            interactive: true,
+            attachable: true,
+            blackBoxInterface: false,
+            insideTrueBlackBox: false
+          };
+          var newVertex = new Vertex( vertex.position.x, vertex.position.y, options );
+          circuitElement.replaceVertex( vertex, newVertex );
+          this.vertices.add( newVertex );
 
-        // Bump the vertices away from each other
-        var vertexGroup = this.findAllFixedVertices( newVertex );
-        var oppositeVertex = circuitElement.getOppositeVertex( newVertex );
-        var translation = oppositeVertex.position.minus( newVertex.position ).normalized().timesScalar( 30 );
-        for ( var j = 0; j < vertexGroup.length; j++ ) {
-          var v = vertexGroup[ j ];
-          if ( v.draggable ) {
-            v.position = v.position.plus( translation );
-            v.unsnappedPosition = v.position;
+          // Bump the vertices away from each other
+          var vertexGroup = this.findAllFixedVertices( newVertex );
+          var oppositeVertex = circuitElement.getOppositeVertex( newVertex );
+          var translation = oppositeVertex.position.minus( newVertex.position ).normalized().timesScalar( 30 );
+          for ( var j = 0; j < vertexGroup.length; j++ ) {
+            var v = vertexGroup[ j ];
+            if ( v.draggable ) {
+              v.position = v.position.plus( translation );
+              v.unsnappedPosition = v.position;
+            }
           }
         }
       }
 
-      this.vertices.remove( vertex );
+      if ( !vertex.blackBoxInterface ) {
+        this.vertices.remove( vertex );
+      }
 
       // Update the physics
       this.solve();
