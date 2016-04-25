@@ -81,7 +81,9 @@ define( function( require ) {
       children: [
         wireNode.mutate( { scale: iconWidth / Math.max( wireNode.width, wireNode.height ) } )
           .addInputListener( createToolIconInputListener(
-            function( position ) { return new Wire( new Vertex( position.x - 50, position.y ), new Vertex( position.x + 50, position.y ), 0 ); },
+            function( position ) {
+              return new Wire( new Vertex( position.x - 50, position.y ), new Vertex( position.x + 50, position.y ), CircuitConstructionKitBasicsConstants.defaultResistivity );
+            },
             circuit.wires,
             circuitNode.wireNodes,
             function( wireNode ) { return wireNode.wire; }

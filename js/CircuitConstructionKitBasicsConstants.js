@@ -31,6 +31,9 @@ define( function( require ) {
     tapThreshold: 10, // Number of pixels (screen coordinates) that constitutes a tap instead of a drag
     fontAwesomeIconScale: 0.85, // Uniform scaling for all font awesome node button icons
     highlightColor: 'yellow',
-    highlightLineWidth: 5
+    highlightLineWidth: 5,
+
+    defaultResistivity: 1E-4,
+    minimumResistance: 1E-8
   } );
 } );

@@ -53,7 +53,7 @@ define( function( require ) {
         circuit.wires.push( new Wire(
           circuit.vertices[ circuitState.wires[ i ].startVertex ],
           circuit.vertices[ circuitState.wires[ i ].endVertex ],
-          circuitState.wires[ i ].resistance,
+          circuitState.wires[ i ].resistivity,
           options
         ) );
       }
