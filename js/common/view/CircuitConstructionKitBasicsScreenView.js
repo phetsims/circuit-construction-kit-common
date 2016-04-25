@@ -165,7 +165,7 @@ define( function( require ) {
      */
     getCurrent: function( probeNode ) {
 
-      var hitWireNode = this.hitWireNode( probeNode );
+      var hitWireNode = this.hitWireNode( probeNode, 'translation' );
       if ( hitWireNode ) {
         return hitWireNode.wire.current;
       }
@@ -177,14 +177,15 @@ define( function( require ) {
     /**
      * Check for an intersection between a probeNode and a wire, return null if no hits.
      * @param probeNode
+     * @param {string} locationProperty - 'translation' for ammeter or 'centerTop' for voltmeter probes
      * @returns {*}
      */
-    hitWireNode: function( probeNode ) {
+    hitWireNode: function( probeNode, locationProperty ) {
       for ( var i = 0; i < this.circuitNode.wireNodes.length; i++ ) {
         var wireNode = this.circuitNode.wireNodes[ i ];
 
         // Don't connect to wires in the black box
-        if ( !wireNode.wire.insideTrueBlackBox && wireNode.getStrokedShape().containsPoint( probeNode.translation ) ) {
+        if ( !wireNode.wire.insideTrueBlackBox && wireNode.getStrokedShape().containsPoint( probeNode[ locationProperty ] ) ) {
           return wireNode;
         }
       }
@@ -216,7 +217,7 @@ define( function( require ) {
       }
 
       // Check for intersection with a wire
-      var wireNode = this.hitWireNode( probeNode );
+      var wireNode = this.hitWireNode( probeNode, 'centerTop' );
       if ( wireNode ) {
 
         return {
