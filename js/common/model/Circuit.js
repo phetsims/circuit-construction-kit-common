@@ -146,7 +146,8 @@ define( function( require ) {
         // No need to cut a solo vertex
         return;
       }
-      if ( neighborCircuitElements.length === 1 && vertex.draggable ) {
+      var cuttableSingle = neighborCircuitElements.length === 1 && neighborCircuitElements[ 0 ].interactive && vertex.blackBoxInterface;
+      if ( neighborCircuitElements.length === 1 && !cuttableSingle ) {
 
         // No need to cut an edge vertex, unless it is a single interactive wire connected to an undraggable vertex.
         // This case appears in a black box when the user attached a wire to a black box interface vertex
@@ -155,7 +156,11 @@ define( function( require ) {
       for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
         var circuitElement = neighborCircuitElements[ i ];
         var options = {
-          draggable: circuitElement.interactive
+          draggable: circuitElement.interactive,
+          interactive: true,
+          attachable: true,
+          blackBoxInterface: circuitElement.insideTrueBlackBox,
+          insideTrueBlackBox: false
         };
         var newVertex = new Vertex( vertex.position.x, vertex.position.y, options );
         circuitElement.replaceVertex( vertex, newVertex );
@@ -174,10 +179,7 @@ define( function( require ) {
         }
       }
 
-      // Don't remove black box interface vertices
-      if ( vertex.draggable ) {
-        this.vertices.remove( vertex );
-      }
+      this.vertices.remove( vertex );
 
       // Update the physics
       this.solve();
@@ -324,11 +326,11 @@ define( function( require ) {
      * @public
      */
     connect: function( vertex1, vertex2 ) {
-
       assert && assert( vertex1.attachable && vertex2.attachable, 'both vertices should be attachable' );
 
       // Keep the black box vertices
-      if ( vertex1.draggable && !vertex2.draggable ) {
+      if ( vertex2.blackBoxInterface ) {
+        assert && assert( !vertex1.blackBoxInterface, 'cannot attach black box interface vertex to black box interface vertex' );
         this.connect( vertex2, vertex1 );
       }
       else {

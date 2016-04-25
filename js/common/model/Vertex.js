@@ -21,6 +21,8 @@ define( function( require ) {
     interactive: true // {boolean} Black box interface vertices can be interactive (tap to select) without being draggable
   };
 
+  var counter = 0;
+
   /**
    *
    * @param {number} x - position (screen coordinates) in x
@@ -29,6 +31,7 @@ define( function( require ) {
    * @constructor
    */
   function Vertex( x, y, options ) {
+    this.index = counter++; // @private - For debugging
     options = _.extend( _.clone( DEFAULTS ), options );
     PropertySet.call( this, {
 
