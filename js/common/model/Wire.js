@@ -18,6 +18,7 @@ define( function( require ) {
    * @constructor
    */
   function Wire( startVertex, endVertex, resistivity, options ) {
+    assert && assert( typeof resistivity === 'number' && resistivity >= 0, 'bad value for resistivity: ' + resistivity );
     var wire = this;
     CircuitElement.call( this, startVertex, endVertex, {
       resistance: CircuitConstructionKitBasicsConstants.minimumResistance,
@@ -28,6 +29,7 @@ define( function( require ) {
       var length = wire.startVertex.position.minus( wire.endVertex.position ).magnitude();
       var javaLength = length / 990 * 15.120675866835684;
       wire.resistance = Math.max( CircuitConstructionKitBasicsConstants.minimumResistance, javaLength * wire.resistivity );
+      assert && assert( !isNaN( wire.resistance ) );
     };
 
     var updateStartVertex = function( newStartVertex, oldStartVertex ) {

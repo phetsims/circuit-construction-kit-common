@@ -7,15 +7,16 @@
 define( function( require ) {
   'use strict';
 
+  var resistivity = 1E-4;
   var warmupCircuitStateObject = {
     wires: [
       {
-        resistance: 0,
+        resistivity: resistivity,
         startVertex: 0,
         endVertex: 2
       },
       {
-        resistance: 0,
+        resistivity: resistivity,
         startVertex: 3,
         endVertex: 1
       }
@@ -58,12 +59,12 @@ define( function( require ) {
     {
       wires: [
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 0,
           endVertex: 2
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 3,
           endVertex: 1
         }
@@ -105,7 +106,7 @@ define( function( require ) {
 
     {
       wires: [ {
-        resistance: 0,
+        resistivity: resistivity,
         startVertex: 0,
         endVertex: 1,
         options: {
@@ -130,17 +131,17 @@ define( function( require ) {
     {
       wires: [
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 2,
           endVertex: 3
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 4,
           endVertex: 1
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 0,
           endVertex: 5
         }
@@ -194,22 +195,22 @@ define( function( require ) {
     {
       wires: [
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 2,
           endVertex: 3
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 4,
           endVertex: 1
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 0,
           endVertex: 5
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 5,
           endVertex: 4
         }
@@ -263,17 +264,17 @@ define( function( require ) {
     {
       wires: [
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 2,
           endVertex: 3
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 0,
           endVertex: 4
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 5,
           endVertex: 1
         }
@@ -332,22 +333,22 @@ define( function( require ) {
     {
       wires: [
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 0,
           endVertex: 5
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 3,
           endVertex: 2
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 4,
           endVertex: 1
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 6,
           endVertex: 7
         }
@@ -417,27 +418,27 @@ define( function( require ) {
     {
       wires: [
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 0,
           endVertex: 6
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 5,
           endVertex: 2
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 3,
           endVertex: 1
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 5,
           endVertex: 4
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 6,
           endVertex: 5
         }
@@ -495,27 +496,27 @@ define( function( require ) {
     {
       wires: [
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 0,
           endVertex: 4
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 5,
           endVertex: 2
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 7,
           endVertex: 1
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 6,
           endVertex: 3
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 6,
           endVertex: 7
         }
@@ -585,22 +586,22 @@ define( function( require ) {
     {
       wires: [
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 0,
           endVertex: 5
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 4,
           endVertex: 2
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 7,
           endVertex: 1
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 6,
           endVertex: 3
         }
@@ -671,27 +672,27 @@ define( function( require ) {
     {
       wires: [
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 0,
           endVertex: 4
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 5,
           endVertex: 2
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 7,
           endVertex: 1
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 6,
           endVertex: 3
         },
         {
-          resistance: 0,
+          resistivity: resistivity,
           startVertex: 7,
           endVertex: 8
         }
