@@ -45,7 +45,8 @@ define( function( require ) {
 
     CircuitConstructionKitBasicsModel.call( this, {
       mode: 'investigate', // or 'build'
-      revealing: false // true when the user is holding down the reveal button, and the answer is showing
+      revealing: false, // true when the user is holding down the reveal button, and the answer is showing
+      isRevealEnabled: false // true when the user has created a circuit for comparison with the black box (at least one terminal connected)
     }, {
       circuit: new Circuit()
     } );
@@ -55,6 +56,29 @@ define( function( require ) {
     } );
     var userBlackBoxCircuit = new CircuitStruct( [], [], [], [], [] );
     var circuit = this.circuit;
+
+    var userDidSomething = function() {
+      var count = 0;
+      var callback = function( element ) {
+        if ( element.interactive &&
+             (element.startVertex.blackBoxInterface || element.endVertex.blackBoxInterface)
+        ) {
+          count++;
+        }
+      };
+      circuit.wires.forEach( callback );
+      circuit.batteries.forEach( callback );
+      circuit.lightBulbs.forEach( callback );
+      circuit.resistors.forEach( callback );
+      return count > 0;
+    };
+
+    // Enable the reveal button if the user has done something in build mode.
+    circuit.circuitChangedEmitter.addListener( function() {
+      var builtSomething = blackBoxSceneModel.mode === 'build' && userDidSomething();
+      var revealEnabled = blackBoxSceneModel.revealing || builtSomething;
+      blackBoxSceneModel.isRevealEnabled = revealEnabled;
+    } );
 
     var removeBlackBoxContents = function( blackBoxCircuit ) {
 

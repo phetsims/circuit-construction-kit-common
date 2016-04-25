@@ -38,7 +38,7 @@ define( function( require ) {
     var modeRadioButtonGroup = new ModeRadioButtonGroup( blackBoxSceneModel.modeProperty );
     this.addChild( modeRadioButtonGroup );
 
-    var revealButton = new RevealButton( blackBoxSceneModel.revealingProperty );
+    var revealButton = new RevealButton( blackBoxSceneModel.revealingProperty, blackBoxSceneModel.isRevealEnabledProperty );
     this.addChild( revealButton );
 
     var comboBoxTextOptions = {
