@@ -63,8 +63,7 @@ define( function( require ) {
     var blackBoxNode = new BlackBoxNode( blackBoxWidth, blackBoxHeight, {
 
       // Assumes the default layout bounds are used
-      centerX: ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2,
-      centerY: ScreenView.DEFAULT_LAYOUT_BOUNDS.height / 2
+      center: ScreenView.DEFAULT_LAYOUT_BOUNDS.center
     } );
     blackBoxSceneModel.modeProperty.link( function( mode ) {
       blackBoxNode.visible = mode === 'investigate';
