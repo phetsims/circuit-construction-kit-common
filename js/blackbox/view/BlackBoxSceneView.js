@@ -79,8 +79,9 @@ define( function( require ) {
       whiteBoxNode.visible = mode === 'build';
     } );
 
-    this.addChild( blackBoxNode );
-    this.addChild( whiteBoxNode );
+    // Interleave the black/white box node in the nodes, so things may go in front of it.
+    this.circuitNode.mainLayer.addChild( blackBoxNode );
+    this.circuitNode.mainLayer.addChild( whiteBoxNode );
 
     var screenInset = 1000;
     var b = ScreenView.DEFAULT_LAYOUT_BOUNDS;
@@ -108,7 +109,18 @@ define( function( require ) {
       transparencyOverlay.visible = isBuildBode;
     } );
     this.circuitNode.mainLayer.addChild( transparencyOverlay );
+
+    // When reset, move the boxes in front of the black box circuit elements
+    this.resetBlackBoxSceneView = function() {
+      blackBoxNode.moveToFront();
+      whiteBoxNode.moveToFront();
+    };
   }
 
-  return inherit( CircuitConstructionKitBasicsScreenView, BlackBoxSceneView );
+  return inherit( CircuitConstructionKitBasicsScreenView, BlackBoxSceneView, {
+    reset: function() {
+      CircuitConstructionKitBasicsScreenView.prototype.reset.call( this );
+      this.resetBlackBoxSceneView();
+    }
+  } );
 } );

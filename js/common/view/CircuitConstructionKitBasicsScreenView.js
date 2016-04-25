@@ -62,6 +62,7 @@ define( function( require ) {
     var resetAllButton = new ResetAllButton( {
       listener: function() {
         circuitConstructionKitBasicsModel.reset();
+        circuitConstructionKitBasicsScreenView.reset();
       }
     } );
     this.addChild( resetAllButton );
@@ -141,6 +142,10 @@ define( function( require ) {
 
   return inherit( ScreenView, CircuitConstructionKitBasicsScreenView, {
 
+    //overrideable stub
+    reset: function() {
+
+    },
     canNodeDropInToolbox: function( circuitElementNode ) {
       var isSingle = this.circuitConstructionKitBasicsModel.circuit.isSingle( circuitElementNode.circuitElement );
       var inBounds = this.circuitElementToolbox.globalBounds.containsPoint( circuitElementNode.globalBounds.center );
