@@ -23,6 +23,8 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
 
   /**
+   * @param blackBoxWidth
+   * @param blackBoxHeight
    * @param {BlackBoxSceneModel} blackBoxSceneModel
    * @param {Property.<string>} sceneProperty - for switching screens
    * @constructor
@@ -107,6 +109,8 @@ define( function( require ) {
         blackBoxSceneView.circuitElementToolbox.moveToFront();
       }
       transparencyOverlay.visible = isBuildBode;
+      blackBoxNode.moveToFront();
+      whiteBoxNode.moveToFront();
     } );
     this.circuitNode.mainLayer.addChild( transparencyOverlay );
 
@@ -115,6 +119,7 @@ define( function( require ) {
       blackBoxNode.moveToFront();
       whiteBoxNode.moveToFront();
     };
+
   }
 
   return inherit( CircuitConstructionKitBasicsScreenView, BlackBoxSceneView, {
