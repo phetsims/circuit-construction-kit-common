@@ -12,11 +12,11 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
-  var Vector2 = require( 'DOT/Vector2' );
   var Property = require( 'AXON/Property' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementNode' );
+  var Matrix3 = require( 'DOT/Matrix3' );
 
   /**
    * @param {CircuitConstructionKitBasicsScreenView} circuitConstructionKitBasicsScreenView
@@ -34,18 +34,19 @@ define( function( require ) {
     // Capture the original dimensions of the content node, without the highlight node
     var contentNodeHeight = contentNode.height;
 
+    var scratchMatrix = new Matrix3();
+    var scratchMatrix2 = new Matrix3();
     options = _.extend( {
       icon: false,
       updateLayout: function( startPosition, endPosition ) {
         var angle = endPosition.minus( startPosition ).angle();
-        contentNode.resetTransform();
-        contentNode.mutate( {
-          scale: contentScale
-        } );
-        contentNode.rotateAround( new Vector2( 0, 0 ), angle );
-        contentNode.x = startPosition.x;
-        contentNode.y = startPosition.y;
-        contentNode.translate( 0, -contentNodeHeight / 2 );
+
+        // Update the node transform in a single step, see #66
+        scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
+          .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
+          .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) )
+          .multiplyMatrix( scratchMatrix2.setToTranslation( 0, -contentNodeHeight / 2 ) );
+        contentNode.setMatrix( scratchMatrix );
       },
       highlightOptions: {}
     }, options );
