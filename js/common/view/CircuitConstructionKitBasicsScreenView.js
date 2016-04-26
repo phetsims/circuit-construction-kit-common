@@ -229,6 +229,7 @@ define( function( require ) {
         var probeVector = probeNode.centerTop.minus( startPoint );
 
         var distanceAlongSegment = probeVector.dot( segmentVector ) / segmentVector.magnitude() / segmentVector.magnitude();
+        distanceAlongSegment = Util.clamp( distanceAlongSegment, 0, 1 );
 
         assert && assert( distanceAlongSegment >= 0 && distanceAlongSegment <= 1, 'beyond the end of the wire' );
         var voltageAlongWire = Util.linear( 0, 1, wireNode.wire.startVertex.voltage, wireNode.wire.endVertex.voltage, distanceAlongSegment );
