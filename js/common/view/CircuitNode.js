@@ -29,13 +29,15 @@ define( function( require ) {
   function CircuitNode( circuit, circuitConstructionKitBasicsScreenView ) {
     this.visibleBoundsProperty = circuitConstructionKitBasicsScreenView.visibleBoundsProperty;
 
+    this.highlightLayer = new Node();
+
     // @public (read-only) so that additional Nodes may be interleaved
-    // TODO: without a dedicated solderLayer, this intermediate node can be eliminated
     this.mainLayer = new Node();
     var mainLayer = this.mainLayer;
     Node.call( this, {
       children: [
-        this.mainLayer // everything else
+        this.mainLayer, // everything else
+        this.highlightLayer // highlights go in front of everything else
       ]
     } );
     this.circuit = circuit;

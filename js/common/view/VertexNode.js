@@ -91,8 +91,9 @@ define( function( require ) {
     };
     vertex.moveToFrontEmitter.addListener( updateMoveToFront );
     Node.call( this, {
-      children: [ highlightNode, dottedLineNode, cutButton ]
+      children: [ dottedLineNode, cutButton ]
     } );
+    circuitNode.highlightLayer.addChild( highlightNode );
 
     var updatePickable = function( interactive ) {
       vertexNode.pickable = interactive;
@@ -196,6 +197,8 @@ define( function( require ) {
       vertex.selectedProperty.unlink( updateSelected );
       vertex.interactiveProperty.unlink( updatePickable );
       vertex.moveToFrontEmitter.removeListener( updateMoveToFront );
+
+      circuitNode.highlightLayer.removeChild( highlightNode );
     };
   }
 

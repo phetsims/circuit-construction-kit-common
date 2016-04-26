@@ -77,8 +77,13 @@ define( function( require ) {
     } );
 
     var lineNodeParent = new Node( {
-      children: [ lineNode, highlightNode ]
+      children: [ lineNode ]
     } );
+    var highlightNodeParent = new Node( {
+      children: [ highlightNode ]
+    } );
+
+    circuitNode && circuitNode.highlightLayer.addChild( highlightNodeParent );
 
     // @private
     this.lineNodeParent = lineNodeParent;
@@ -104,6 +109,7 @@ define( function( require ) {
 
     var startListener = function( startPoint ) {
       lineNodeParent.setTranslation( startPoint.x, startPoint.y );
+      highlightNodeParent.setTranslation( startPoint.x, startPoint.y );
       endListener && endListener( wire.endVertex.position );
       if ( highlightNode.visible ) {
         highlightNode.shape = wireNode.getHighlightStrokedShape( highlightStrokeStyles );
@@ -121,6 +127,7 @@ define( function( require ) {
       lineNode.setPoint2( endPoint.distance( wire.startVertex.position ), 0 );
       var deltaVector = endPoint.minus( wire.startVertex.position );
       lineNodeParent.setRotation( deltaVector.angle() );
+      highlightNodeParent.setRotation( deltaVector.angle() );
       if ( highlightNode.visible ) {
         highlightNode.shape = wireNode.getHighlightStrokedShape( highlightStrokeStyles );
       }
@@ -196,6 +203,8 @@ define( function( require ) {
 
       wire.startVertex.positionProperty.unlink( startListener );
       wire.endVertex.positionProperty.unlink( endListener );
+
+      circuitNode && circuitNode.highlightLayer.removeChild( highlightNodeParent );
     };
   }
 

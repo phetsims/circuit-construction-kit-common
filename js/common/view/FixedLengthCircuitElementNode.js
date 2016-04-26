@@ -17,6 +17,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementNode' );
   var Matrix3 = require( 'DOT/Matrix3' );
+  var Node = require( 'SCENERY/nodes/Node' );
 
   /**
    * @param {CircuitConstructionKitBasicsScreenView} circuitConstructionKitBasicsScreenView
@@ -34,6 +35,8 @@ define( function( require ) {
     // Capture the original dimensions of the content node, without the highlight node
     var contentNodeHeight = contentNode.height;
 
+    var highlightParent = new Node();
+
     var scratchMatrix = new Matrix3();
     var scratchMatrix2 = new Matrix3();
     options = _.extend( {
@@ -47,6 +50,8 @@ define( function( require ) {
           .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) )
           .multiplyMatrix( scratchMatrix2.setToTranslation( 0, -contentNodeHeight / 2 ) );
         contentNode.setMatrix( scratchMatrix );
+
+        highlightNode && highlightParent.setMatrix( scratchMatrix.copy() );
       },
       highlightOptions: {}
     }, options );
@@ -94,7 +99,8 @@ define( function( require ) {
           pickable: false
         } ) );
 
-      contentNode.addChild( highlightNode );
+      highlightParent.children = [ highlightNode ];
+      circuitNode.highlightLayer.addChild( highlightParent );
     }
 
     CircuitElementNode.call( this, circuitElement, {
@@ -160,6 +166,8 @@ define( function( require ) {
       circuitElement.vertexSelectedEmitter.removeListener( moveToFront );
 
       circuitElement.interactiveProperty.unlink( pickableListener );
+
+      circuitNode && circuitNode.highlightLayer.removeChild( highlightParent );
     };
   }
 
