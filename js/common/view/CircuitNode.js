@@ -28,14 +28,13 @@ define( function( require ) {
    */
   function CircuitNode( circuit, circuitConstructionKitBasicsScreenView ) {
     this.visibleBoundsProperty = circuitConstructionKitBasicsScreenView.visibleBoundsProperty;
-    var solderLayer = new Node();
 
     // @public (read-only) so that additional Nodes may be interleaved
+    // TODO: without a dedicated solderLayer, this intermediate node can be eliminated
     this.mainLayer = new Node();
     var mainLayer = this.mainLayer;
     Node.call( this, {
       children: [
-        solderLayer,
         this.mainLayer // everything else
       ]
     } );
@@ -78,6 +77,9 @@ define( function( require ) {
     var moveVerticesToFront = function( circuitElement ) {
       circuitNode.getVertexNode( circuitElement.startVertex ) && circuitNode.getVertexNode( circuitElement.startVertex ).moveToFront();
       circuitNode.getVertexNode( circuitElement.endVertex ) && circuitNode.getVertexNode( circuitElement.endVertex ).moveToFront();
+
+      circuitNode.getVertexNode( circuitElement.startVertex ) && circuitNode.getSolderNode( circuitElement.startVertex ).moveToFront();
+      circuitNode.getVertexNode( circuitElement.endVertex ) && circuitNode.getSolderNode( circuitElement.endVertex ).moveToFront();
     };
 
     /**
@@ -109,13 +111,13 @@ define( function( require ) {
     initializeCircuitElementType( ResistorNode, circuit.resistors, circuitNode.resistorNodes, this.getResistorNode.bind( this ) );
 
     var addVertexNode = function( vertex ) {
+      var solderNode = new SolderNode( circuitNode, vertex );
+      circuitNode.solderNodes.push( solderNode );
+      mainLayer.addChild( solderNode );
+
       var vertexNode = new VertexNode( circuitNode, vertex );
       circuitNode.vertexNodes.push( vertexNode );
       mainLayer.addChild( vertexNode );
-
-      var solderNode = new SolderNode( circuitNode, vertex );
-      circuitNode.solderNodes.push( solderNode );
-      solderLayer.addChild( solderNode );
     };
     circuit.vertices.addItemAddedListener( addVertexNode );
     circuit.vertices.addItemRemovedListener( function( vertex ) {
@@ -131,7 +133,7 @@ define( function( require ) {
       assert && assert( circuitNode.getVertexNode( vertex ) === null, 'vertex node should have been removed' );
 
       var solderNode = circuitNode.getSolderNode( vertex );
-      solderLayer.removeChild( solderNode );
+      mainLayer.removeChild( solderNode );
 
       var solderNodeIndex = circuitNode.solderNodes.indexOf( solderNode );
       if ( solderNodeIndex > -1 ) {
