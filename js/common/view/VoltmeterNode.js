@@ -18,6 +18,7 @@ define( function( require ) {
   var ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ProbeWireNode' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var Vector2 = require( 'DOT/Vector2' );
+  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
 
   // images
   var voltmeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/voltmeter_body.png' );
@@ -38,7 +39,7 @@ define( function( require ) {
 
   function VoltmeterNode( voltmeter, options ) {
     var voltmeterNode = this;
-    options = _.extend( { icon: false }, options );
+    options = _.extend( { icon: false, visibleBoundsProperty: null }, options );
     this.voltmeter = voltmeter;
     var s = 0.5;
     this.redProbeNode = new Image( redProbe, { scale: 0.67 * s, cursor: 'pointer' } );
@@ -104,8 +105,24 @@ define( function( require ) {
       }
     } );
     !options.icon && bodyNode.addInputListener( this.movableDragHandler );
-    !options.icon && this.redProbeNode.addInputListener( new MovableDragHandler( voltmeter.redProbePositionProperty, {} ) );
-    !options.icon && this.blackProbeNode.addInputListener( new MovableDragHandler( voltmeter.blackProbePositionProperty, {} ) );
+    var redProbeDragHandler = new MovableDragHandler( voltmeter.redProbePositionProperty, {} );
+    !options.icon && this.redProbeNode.addInputListener( redProbeDragHandler );
+    var blackProbeDragHandler = new MovableDragHandler( voltmeter.blackProbePositionProperty, {} );
+    !options.icon && this.blackProbeNode.addInputListener( blackProbeDragHandler );
+
+    options.visibleBoundsProperty && options.visibleBoundsProperty.link( function( visibleBounds ) {
+
+      // Make sure at least a grabbable edge remains visible
+      visibleBounds = visibleBounds.eroded( CircuitConstructionKitBasicsConstants.dragBoundsErosion );
+
+      voltmeterNode.movableDragHandler.setDragBounds( visibleBounds );
+      redProbeDragHandler.setDragBounds( visibleBounds );
+      blackProbeDragHandler.setDragBounds( visibleBounds );
+
+      voltmeter.bodyPosition = visibleBounds.closestPointTo( voltmeter.bodyPosition );
+      voltmeter.redProbePosition = visibleBounds.closestPointTo( voltmeter.redProbePosition );
+      voltmeter.blackProbePosition = visibleBounds.closestPointTo( voltmeter.blackProbePosition );
+    } );
   }
 
   circuitConstructionKitBasics.register( 'VoltmeterNode', VoltmeterNode );

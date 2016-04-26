@@ -22,6 +22,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ProbeWireNode' );
   var Vector2 = require( 'DOT/Vector2' );
+  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
 
   // images
   var ammeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/ammeter_body.png' );
@@ -41,7 +42,7 @@ define( function( require ) {
    */
   function AmmeterNode( ammeter, options ) {
     var ammeterNode = this;
-    options = _.extend( { icon: false }, options );
+    options = _.extend( { icon: false, visibleBoundsProperty: null }, options );
     var s = 0.5;
     this.ammeter = ammeter;
 
@@ -107,7 +108,20 @@ define( function( require ) {
       }
     } );
     !options.icon && bodyNode.addInputListener( this.movableDragHandler );
-    !options.icon && this.probeNode.addInputListener( new MovableDragHandler( ammeter.probePositionProperty, {} ) );
+    var probeDragHandler = new MovableDragHandler( ammeter.probePositionProperty, {} );
+    !options.icon && this.probeNode.addInputListener( probeDragHandler );
+
+    options.visibleBoundsProperty && options.visibleBoundsProperty.link( function( visibleBounds ) {
+
+      // Make sure at least a grabbable edge remains visible
+      visibleBounds = visibleBounds.eroded( CircuitConstructionKitBasicsConstants.dragBoundsErosion );
+
+      ammeterNode.movableDragHandler.setDragBounds( visibleBounds );
+      probeDragHandler.setDragBounds( visibleBounds );
+
+      ammeter.bodyPosition = visibleBounds.closestPointTo( ammeter.bodyPosition );
+      ammeter.probePosition = visibleBounds.closestPointTo( ammeter.probePosition );
+    } );
   }
 
   circuitConstructionKitBasics.register( 'AmmeterNode', AmmeterNode );

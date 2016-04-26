@@ -34,6 +34,7 @@ define( function( require ) {
     highlightLineWidth: 5,
 
     defaultResistivity: 1E-4,
-    minimumResistance: 1E-8
+    minimumResistance: 1E-8,
+    dragBoundsErosion: 10 // How far to erode the visible bounds for keeping the probes in bounds.
   } );
 } );

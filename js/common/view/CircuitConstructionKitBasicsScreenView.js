@@ -29,7 +29,7 @@ define( function( require ) {
     this.circuitConstructionKitBasicsModel = circuitConstructionKitBasicsModel;
     ScreenView.call( this );
 
-    var voltmeterNode = new VoltmeterNode( circuitConstructionKitBasicsModel.voltmeter );
+    var voltmeterNode = new VoltmeterNode( circuitConstructionKitBasicsModel.voltmeter, { visibleBoundsProperty: this.visibleBoundsProperty } );
     circuitConstructionKitBasicsModel.voltmeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
       if ( bodyNodeGlobalBounds.intersectsBounds( circuitConstructionKitBasicsScreenView.sensorToolbox.globalBounds ) ) {
         circuitConstructionKitBasicsModel.voltmeter.visible = false;
@@ -39,7 +39,7 @@ define( function( require ) {
       voltmeterNode.visible = visible;
     } );
 
-    var ammeterNode = new AmmeterNode( circuitConstructionKitBasicsModel.ammeter );
+    var ammeterNode = new AmmeterNode( circuitConstructionKitBasicsModel.ammeter, { visibleBoundsProperty: this.visibleBoundsProperty } );
     circuitConstructionKitBasicsModel.ammeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
       if ( bodyNodeGlobalBounds.intersectsBounds( circuitConstructionKitBasicsScreenView.sensorToolbox.globalBounds ) ) {
         circuitConstructionKitBasicsModel.ammeter.visible = false;
