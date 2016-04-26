@@ -15,7 +15,7 @@ define( function( require ) {
   var LightBulbNode = require( 'SCENERY_PHET/LightBulbNode' );
   var Property = require( 'AXON/Property' );
   var Util = require( 'DOT/Util' );
-  var Vector2 = require( 'DOT/Vector2' );
+  var Matrix3 = require( 'DOT/Matrix3' );
 
   /**
    *
@@ -39,16 +39,17 @@ define( function( require ) {
       scale: 3.5
     } );
     var contentScale = 2.5;
+    var scratchMatrix = new Matrix3();
+    var scratchMatrix2 = new Matrix3();
     options = _.extend( {
       updateLayout: function( startPosition, endPosition ) {
         var angle = endPosition.minus( startPosition ).angle() + Math.PI / 4;
-        lightBulbNode.resetTransform();
-        lightBulbNode.mutate( {
-          scale: contentScale
-        } );
-        lightBulbNode.rotateAround( new Vector2( 0, 0 ), angle );
-        lightBulbNode.x = startPosition.x;
-        lightBulbNode.y = startPosition.y;
+
+        // Update the node transform in a single step, see #66
+        scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
+          .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
+          .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) );
+        lightBulbNode.setMatrix( scratchMatrix );
       },
       highlightOptions: {
         centerX: 0,
