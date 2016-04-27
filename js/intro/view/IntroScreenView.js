@@ -12,6 +12,7 @@ define( function( require ) {
   var CircuitConstructionKitBasicsScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitConstructionKitBasicsScreenView' );
   var Property = require( 'AXON/Property' );
   var DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/DisplayOptionsPanel' );
+  var SceneSelectionRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/intro/view/SceneSelectionRadioButtonGroup' );
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
 
   // constants
@@ -40,6 +41,13 @@ define( function( require ) {
     } );
     var displayOptionsPanel = new DisplayOptionsPanel( new Property( false ), new Property( false ), new Property( false ) );
     this.addChild( displayOptionsPanel );
+
+    var sceneSelectionRadioButtonGroup = new SceneSelectionRadioButtonGroup(
+      circuitConstructionKitBasicsScreenModel.selectedSceneProperty
+    );
+
+    this.addChild( sceneSelectionRadioButtonGroup );
+
     this.visibleBoundsProperty.link( function( visibleBounds ) {
       displayOptionsPanel.top = visibleBounds.top + inset;
       displayOptionsPanel.right = visibleBounds.right - inset;
@@ -55,6 +63,11 @@ define( function( require ) {
       introScreenView.circuitElementEditContainerPanel.mutate( {
         left: visibleBounds.left + inset,
         bottom: visibleBounds.bottom - inset
+      } );
+
+      sceneSelectionRadioButtonGroup.mutate( {
+        left: visibleBounds.left + inset,
+        top: visibleBounds.top + inset
       } );
     } );
   }

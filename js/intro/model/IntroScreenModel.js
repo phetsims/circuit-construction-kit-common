@@ -15,7 +15,9 @@ define( function( require ) {
    * @constructor
    */
   function IntroScreenModel() {
-    CircuitConstructionKitBasicsModel.call( this, {} );
+    CircuitConstructionKitBasicsModel.call( this, {
+      selectedScene: 0
+    } );
   }
 
   return inherit( CircuitConstructionKitBasicsModel, IntroScreenModel );
