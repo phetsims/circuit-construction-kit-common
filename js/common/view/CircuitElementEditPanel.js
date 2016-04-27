@@ -41,10 +41,13 @@ define( function( require ) {
       minXMargin: 10,
       minYMargin: 10
     } );
-    var children = options.numberControlEnabled ? [
-      numberControl,
-      roundPushButton
-    ] : [ roundPushButton ];
+    var children = [];
+    if ( options.numberControlEnabled ) {
+      children.push( numberControl );
+    }
+    if ( circuitElement.canBeDroppedInToolbox ) {
+      children.push( roundPushButton );
+    }
     HBox.call( this, {
       spacing: 40,
       align: 'bottom',
