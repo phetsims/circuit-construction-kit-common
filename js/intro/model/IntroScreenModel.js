@@ -1,24 +1,25 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
 /**
- *
+ * Keeps track of which scene is selected.
+ * 
  * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';
 
   // modules
-  var CircuitConstructionKitBasicsModel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/CircuitConstructionKitBasicsModel' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var PropertySet = require( 'AXON/PropertySet' );
 
   /**
    * @constructor
    */
   function IntroScreenModel() {
-    CircuitConstructionKitBasicsModel.call( this, {
+    PropertySet.call( this, {
       selectedScene: 0
     } );
   }
 
-  return inherit( CircuitConstructionKitBasicsModel, IntroScreenModel );
+  return inherit( PropertySet, IntroScreenModel );
 } );

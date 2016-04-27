@@ -1,6 +1,7 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
 /**
+ * Shows the selected scene, and relays the visible bounds to each IntroSceneNode.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -9,68 +10,38 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var CircuitConstructionKitBasicsScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitConstructionKitBasicsScreenView' );
-  var Property = require( 'AXON/Property' );
-  var DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/DisplayOptionsPanel' );
-  var SceneSelectionRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/intro/view/SceneSelectionRadioButtonGroup' );
-  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
-
-  // constants
-  var inset = CircuitConstructionKitBasicsConstants.layoutInset;
+  var IntroSceneNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/intro/view/IntroSceneNode' );
+  var ScreenView = require( 'JOIST/ScreenView' );
+  var IntroSceneModel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/intro/model/IntroSceneModel' );
 
   /**
-   * @param {CircuitConstructionKitBasicsModel} circuitConstructionKitBasicsScreenModel
+   * @param {CircuitConstructionKitBasicsModel} introScreenModel
    * @constructor
    */
-  function IntroScreenView( circuitConstructionKitBasicsScreenModel ) {
+  function IntroScreenView( introScreenModel ) {
     var introScreenView = this;
-    CircuitConstructionKitBasicsScreenView.call( this, circuitConstructionKitBasicsScreenModel, {
-      toolboxOrientation: 'horizontal',
-      getToolboxPosition: function( visibleBounds ) {
-        return {
-          centerX: visibleBounds.centerX,
-          bottom: visibleBounds.bottom - inset
-        };
-      },
-      getCircuitEditPanelLayoutPosition: function( visibleBounds ) {
-        return {
-          left: visibleBounds.left + inset,
-          bottom: visibleBounds.bottom - inset
-        };
-      }
-    } );
-    var displayOptionsPanel = new DisplayOptionsPanel( new Property( false ), new Property( false ), new Property( false ) );
-    this.addChild( displayOptionsPanel );
+    ScreenView.call( this );
 
-    var sceneSelectionRadioButtonGroup = new SceneSelectionRadioButtonGroup(
-      circuitConstructionKitBasicsScreenModel.selectedSceneProperty
-    );
-
-    this.addChild( sceneSelectionRadioButtonGroup );
+    var sceneNodes = {};
 
     this.visibleBoundsProperty.link( function( visibleBounds ) {
-      displayOptionsPanel.top = visibleBounds.top + inset;
-      displayOptionsPanel.right = visibleBounds.right - inset;
-
-      introScreenView.sensorToolbox.top = displayOptionsPanel.bottom + 10;
-      introScreenView.sensorToolbox.right = displayOptionsPanel.right;
-
-      introScreenView.circuitElementToolbox.mutate( {
-        centerX: visibleBounds.centerX,
-        bottom: visibleBounds.bottom - inset
+      _.values( sceneNodes ).forEach( function( sceneNode ) {
+        sceneNode.visibleBoundsProperty.set( visibleBounds );
       } );
+    } );
 
-      introScreenView.circuitElementEditContainerPanel.mutate( {
-        left: visibleBounds.left + inset,
-        bottom: visibleBounds.bottom - inset
-      } );
+    // The scene buttons are declared in each IntroSceneNode so that objects may be layered in front of them instead
+    // of getting lost behind them.
+    introScreenModel.selectedSceneProperty.link( function( selectedScene ) {
+      if ( !sceneNodes[ selectedScene ] ) {
+        var sceneNode = new IntroSceneNode( new IntroSceneModel( introScreenModel.selectedSceneProperty ) );
+        sceneNode.visibleBoundsProperty.set( introScreenView.visibleBoundsProperty.value );
+        sceneNodes[ selectedScene ] = sceneNode;
+      }
 
-      sceneSelectionRadioButtonGroup.mutate( {
-        left: visibleBounds.left + inset,
-        top: visibleBounds.top + inset
-      } );
+      introScreenView.children = [ sceneNodes[ selectedScene ] ];
     } );
   }
 
-  return inherit( CircuitConstructionKitBasicsScreenView, IntroScreenView );
+  return inherit( ScreenView, IntroScreenView );
 } );

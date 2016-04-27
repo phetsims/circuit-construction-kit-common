@@ -93,7 +93,7 @@ define( function( require ) {
 
     // @protected - so the subclass can set the layout
     this.circuitElementEditContainerPanel = circuitElementEditContainerPanel;
-    this.visibleBoundsProperty.lazyLink( function( visibleBounds ) {
+    this.visibleBoundsProperty.link( function( visibleBounds ) {
 
       // Float the resetAllButton to the bottom right
       resetAllButton.mutate( {
