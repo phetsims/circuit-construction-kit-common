@@ -23,7 +23,21 @@ define( function( require ) {
    */
   function IntroScreenView( circuitConstructionKitBasicsScreenModel ) {
     var introScreenView = this;
-    CircuitConstructionKitBasicsScreenView.call( this, circuitConstructionKitBasicsScreenModel, { toolboxOrientation: 'horizontal' } );
+    CircuitConstructionKitBasicsScreenView.call( this, circuitConstructionKitBasicsScreenModel, {
+      toolboxOrientation: 'horizontal',
+      getToolboxPosition: function( visibleBounds ) {
+        return {
+          centerX: visibleBounds.centerX,
+          bottom: visibleBounds.bottom - inset
+        };
+      },
+      getCircuitEditPanelLayoutPosition: function( visibleBounds ) {
+        return {
+          left: visibleBounds.left + inset,
+          bottom: visibleBounds.bottom - inset
+        };
+      }
+    } );
     var displayOptionsPanel = new DisplayOptionsPanel( new Property( false ), new Property( false ), new Property( false ) );
     this.addChild( displayOptionsPanel );
     this.visibleBoundsProperty.link( function( visibleBounds ) {

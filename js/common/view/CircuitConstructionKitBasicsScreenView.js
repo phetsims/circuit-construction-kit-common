@@ -20,6 +20,9 @@ define( function( require ) {
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
   var Util = require( 'DOT/Util' );
 
+  // constants
+  var inset = CircuitConstructionKitBasicsConstants.layoutInset;
+
   /**
    * @param {CircuitConstructionKitBasicsModel} circuitConstructionKitBasicsModel
    * @constructor
@@ -27,7 +30,16 @@ define( function( require ) {
   function CircuitConstructionKitBasicsScreenView( circuitConstructionKitBasicsModel, options ) {
     var circuitConstructionKitBasicsScreenView = this;
 
-    options = _.extend( { toolboxOrientation: 'vertical' }, options );
+    options = _.extend( {
+      toolboxOrientation: 'vertical',
+      getToolboxPosition: function( visibleBounds ) {
+        return {
+          left: visibleBounds.left + inset,
+          top: visibleBounds.top + inset
+        };
+      },
+      getCircuitEditPanelLayoutPosition: CircuitElementEditContainerPanel.GET_LAYOUT_POSITION
+    }, options );
     this.circuitConstructionKitBasicsModel = circuitConstructionKitBasicsModel;
     ScreenView.call( this );
 
@@ -75,32 +87,25 @@ define( function( require ) {
     // Has to be interleaved in the circuit layering to support the black box, so that the toolbox can be behind
     // circuit elements but in front of the transparency overlay
     this.circuitNode.mainLayer.addChild( this.circuitElementToolbox );
-    var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel( circuitConstructionKitBasicsModel.circuit, this.visibleBoundsProperty );
+    var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel( circuitConstructionKitBasicsModel.circuit, this.visibleBoundsProperty, {
+      getLayoutPosition: options.getCircuitEditPanelLayoutPosition
+    } );
 
     // @protected - so the subclass can set the layout
     this.circuitElementEditContainerPanel = circuitElementEditContainerPanel;
     this.visibleBoundsProperty.lazyLink( function( visibleBounds ) {
 
       // Float the resetAllButton to the bottom right
-      var inset = CircuitConstructionKitBasicsConstants.layoutInset;
       resetAllButton.mutate( {
         right: visibleBounds.right - inset,
         bottom: visibleBounds.bottom - inset
       } );
 
-      circuitConstructionKitBasicsScreenView.circuitElementToolbox.mutate( {
-        left: visibleBounds.left + inset,
-        top: visibleBounds.top + inset
-      } );
+      circuitConstructionKitBasicsScreenView.circuitElementToolbox.mutate( options.getToolboxPosition( visibleBounds ) );
 
       circuitConstructionKitBasicsScreenView.sensorToolbox.mutate( {
         right: visibleBounds.right - inset,
         top: visibleBounds.top + inset
-      } );
-
-      circuitElementEditContainerPanel.mutate( {
-        centerX: visibleBounds.centerX,
-        bottom: visibleBounds.bottom - inset
       } );
     } );
 
