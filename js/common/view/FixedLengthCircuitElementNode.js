@@ -170,9 +170,6 @@ define( function( require ) {
 
       circuitNode && circuitNode.highlightLayer.removeChild( highlightParent );
     };
-
-    // // @protected
-    // this.updateLayout = options.updateLayout;
   }
 
   circuitConstructionKitBasics.register( 'FixedLengthCircuitElementNode', FixedLengthCircuitElementNode );
