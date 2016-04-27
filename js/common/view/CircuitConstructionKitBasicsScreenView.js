@@ -25,6 +25,7 @@ define( function( require ) {
 
   /**
    * @param {CircuitConstructionKitBasicsModel} circuitConstructionKitBasicsModel
+   * @param {Object} [options]
    * @constructor
    */
   function CircuitConstructionKitBasicsScreenView( circuitConstructionKitBasicsModel, options ) {
@@ -32,6 +33,7 @@ define( function( require ) {
 
     options = _.extend( {
       toolboxOrientation: 'vertical',
+      numberOfBatteriesInToolbox: CircuitElementToolbox.NUMBER_OF_BATTERIES,
       getToolboxPosition: function( visibleBounds ) {
         return {
           left: visibleBounds.left + inset,
@@ -66,7 +68,8 @@ define( function( require ) {
     // Pass the view into circuit node so that circuit elements can be dropped back into the toolbox
     this.circuitNode = new CircuitNode( circuitConstructionKitBasicsModel.circuit, this );
     this.circuitElementToolbox = new CircuitElementToolbox( circuitConstructionKitBasicsModel.circuit, this.circuitNode, {
-      orientation: options.toolboxOrientation
+      orientation: options.toolboxOrientation,
+      numberOfBatteries: options.numberOfBatteriesInToolbox
     } );
 
     // @protected - so that subclasses can add a layout circuit element near it

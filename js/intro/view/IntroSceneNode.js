@@ -27,6 +27,7 @@ define( function( require ) {
     var introSceneNode = this;
     CircuitConstructionKitBasicsScreenView.call( this, circuitConstructionKitBasicsScreenModel, {
       toolboxOrientation: 'horizontal',
+      numberOfBatteriesInToolbox: 1,
       getToolboxPosition: function( visibleBounds ) {
         return {
           centerX: visibleBounds.centerX,

@@ -30,11 +30,15 @@ define( function( require ) {
   /**
    * @param {Circuit} circuit
    * @param {CircuitNode} circuitNode
+   * @param {Object} [options]
    * @constructor
    */
   function CircuitElementToolbox( circuit, circuitNode, options ) {
 
-    options = _.extend( { orientation: 'vertical' }, options );
+    options = _.extend( {
+      orientation: 'vertical',
+      numberOfBatteries: CircuitElementToolbox.NUMBER_OF_BATTERIES
+    }, options );
     var circuitElementToolbox = this;
     // From: https://github.com/phetsims/scenery-phet/issues/195#issuecomment-186300071
     // @jonathanolson and I looked into the way Charges and Fields just calls startDrag(event) on the play area drag listener (which adds a listener to the pointer, in the usual SimpleDragHandler way), and it seems like a good pattern. I will try this pattern for Circuit Construction Kit, when I am working on the toolbox listeners.
@@ -76,6 +80,23 @@ define( function( require ) {
     var resistorNode = new ResistorNode( null, null, new Resistor( new Vertex( 0, 0 ), new Vertex( Resistor.RESISTOR_LENGTH, 0 ), CircuitConstructionKitBasicsConstants.defaultResistance ), { icon: true } );
     var lightBulbNode = new LightBulbNode( new Property( 0 ) );
 
+    var batteryIcon = new Image( batteryImage, {
+      cursor: 'pointer',
+      scale: iconWidth / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height )
+    } ).addInputListener( createToolIconInputListener(
+      function( position ) {
+        var batteryLength = Battery.BATTERY_LENGTH;
+        var startVertex = new Vertex( position.x - batteryLength / 2, position.y );
+        var endVertex = new Vertex( position.x + batteryLength / 2, position.y );
+        return new Battery( startVertex, endVertex, 9.0 );
+      },
+      circuit.batteries,
+      circuitNode.batteryNodes,
+      function( batteryNode ) { return batteryNode.battery; }
+    ) );
+    circuit.batteries.lengthProperty.link( function( numberOfBatteriesInCircuit ) {
+      batteryIcon.visible = numberOfBatteriesInCircuit < options.numberOfBatteries;
+    } );
     CircuitConstructionKitBasicsPanel.call( this, new LayoutBox( {
       orientation: options.orientation,
       spacing: CircuitConstructionKitBasicsConstants.toolboxItemSpacing,
@@ -89,21 +110,7 @@ define( function( require ) {
             circuitNode.wireNodes,
             function( wireNode ) { return wireNode.wire; }
           ) ),
-        new Image( batteryImage, {
-          cursor: 'pointer',
-          scale: iconWidth / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height )
-        } )
-          .addInputListener( createToolIconInputListener(
-            function( position ) {
-              var batteryLength = Battery.BATTERY_LENGTH;
-              var startVertex = new Vertex( position.x - batteryLength / 2, position.y );
-              var endVertex = new Vertex( position.x + batteryLength / 2, position.y );
-              return new Battery( startVertex, endVertex, 9.0 );
-            },
-            circuit.batteries,
-            circuitNode.batteryNodes,
-            function( batteryNode ) { return batteryNode.battery; }
-          ) ),
+        batteryIcon,
         lightBulbNode.mutate( {
             pickable: true,
             cursor: 'pointer',
@@ -140,5 +147,7 @@ define( function( require ) {
 
   circuitConstructionKitBasics.register( 'CircuitElementToolbox', CircuitElementToolbox );
 
-  return inherit( CircuitConstructionKitBasicsPanel, CircuitElementToolbox );
+  return inherit( CircuitConstructionKitBasicsPanel, CircuitElementToolbox, {}, {
+    NUMBER_OF_BATTERIES: 10
+  } );
 } );
