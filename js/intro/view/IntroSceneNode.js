@@ -28,6 +28,9 @@ define( function( require ) {
     CircuitConstructionKitBasicsScreenView.call( this, circuitConstructionKitBasicsScreenModel, {
       toolboxOrientation: 'horizontal',
       numberOfBatteriesInToolbox: 1,
+      numberOfWiresInToolbox: 4,
+      numberOfLightBulbsInToolbox: 0,
+      numberOfResistorsInToolbox: 0,
       getToolboxPosition: function( visibleBounds ) {
         return {
           centerX: visibleBounds.centerX,

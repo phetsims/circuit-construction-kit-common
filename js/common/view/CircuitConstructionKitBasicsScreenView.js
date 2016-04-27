@@ -34,6 +34,9 @@ define( function( require ) {
     options = _.extend( {
       toolboxOrientation: 'vertical',
       numberOfBatteriesInToolbox: CircuitElementToolbox.NUMBER_OF_BATTERIES,
+      numberOfWiresInToolbox: CircuitElementToolbox.NUMBER_OF_WIRES,
+      numberOfLightBulbsInToolbox: CircuitElementToolbox.NUMBER_OF_LIGHT_BULBS,
+      numberOfResistorsInToolbox: CircuitElementToolbox.NUMBER_OF_RESISTORS,
       getToolboxPosition: function( visibleBounds ) {
         return {
           left: visibleBounds.left + inset,
@@ -69,7 +72,10 @@ define( function( require ) {
     this.circuitNode = new CircuitNode( circuitConstructionKitBasicsModel.circuit, this );
     this.circuitElementToolbox = new CircuitElementToolbox( circuitConstructionKitBasicsModel.circuit, this.circuitNode, {
       orientation: options.toolboxOrientation,
-      numberOfBatteries: options.numberOfBatteriesInToolbox
+      numberOfBatteries: options.numberOfBatteriesInToolbox,
+      numberOfWires: options.numberOfWiresInToolbox,
+      numberOfLightBulbs: options.numberOfLightBulbsInToolbox,
+      numberOfResistors: options.numberOfResistorsInToolbox
     } );
 
     // @protected - so that subclasses can add a layout circuit element near it

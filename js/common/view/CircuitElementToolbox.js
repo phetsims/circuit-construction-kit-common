@@ -37,7 +37,10 @@ define( function( require ) {
 
     options = _.extend( {
       orientation: 'vertical',
-      numberOfBatteries: CircuitElementToolbox.NUMBER_OF_BATTERIES
+      numberOfBatteries: CircuitElementToolbox.NUMBER_OF_BATTERIES,
+      numberOfWires: CircuitElementToolbox.NUMBER_OF_WIRES,
+      numberOfLightBulbs: CircuitElementToolbox.NUMBER_OF_LIGHT_BULBS,
+      numberOfResistors: CircuitElementToolbox.NUMBER_OF_RESISTORS
     }, options );
     var circuitElementToolbox = this;
     // From: https://github.com/phetsims/scenery-phet/issues/195#issuecomment-186300071
@@ -97,57 +100,68 @@ define( function( require ) {
     circuit.batteries.lengthProperty.link( function( numberOfBatteriesInCircuit ) {
       batteryIcon.visible = numberOfBatteriesInCircuit < options.numberOfBatteries;
     } );
+
+    var wireIcon = wireNode.mutate( { scale: iconWidth / Math.max( wireNode.width, wireNode.height ) } )
+      .addInputListener( createToolIconInputListener(
+        function( position ) {
+          return new Wire( new Vertex( position.x - 50, position.y ), new Vertex( position.x + 50, position.y ), CircuitConstructionKitBasicsConstants.defaultResistivity );
+        },
+        circuit.wires,
+        circuitNode.wireNodes,
+        function( wireNode ) { return wireNode.wire; }
+      ) );
+    circuit.wires.lengthProperty.link( function( numberOfWiresInCircuit ) {
+      wireIcon.visible = numberOfWiresInCircuit < options.numberOfWires;
+    } );
+
+    var lightBulbIcon = lightBulbNode.mutate( {
+        pickable: true,
+        cursor: 'pointer',
+        scale: iconWidth / Math.max( lightBulbNode.width, lightBulbNode.height ) // constrained by being too tall, not too wide
+      } )
+      .addInputListener( createToolIconInputListener(
+        function( position ) {
+          return LightBulb.createAtPosition( position );
+        },
+        circuit.lightBulbs,
+        circuitNode.lightBulbNodes,
+        function( lightBulbNode ) { return lightBulbNode.lightBulb; }
+      ) );
+    var resistorIcon = resistorNode.mutate( {
+        pickable: true,
+        cursor: 'pointer',
+        scale: iconWidth / Math.max( resistorNode.width, resistorNode.height )
+      } )
+      .addInputListener( createToolIconInputListener(
+        function( position ) {
+          var resistorLength = Resistor.RESISTOR_LENGTH;
+          var startVertex = new Vertex( position.x - resistorLength / 2, position.y );
+          var endVertex = new Vertex( position.x + resistorLength / 2, position.y );
+          return new Resistor( startVertex, endVertex, CircuitConstructionKitBasicsConstants.defaultResistance );
+        },
+        circuit.resistors,
+        circuitNode.resistorNodes,
+        function( resistorNode ) { return resistorNode.resistor; }
+      ) );
+
+    var children = [];
+    options.numberOfBatteries && children.push( batteryIcon );
+    options.numberOfWires && children.push( wireIcon );
+    options.numberOfLightBulbs && children.push( lightBulbIcon );
+    options.numberOfResistors && children.push( resistorIcon );
     CircuitConstructionKitBasicsPanel.call( this, new LayoutBox( {
       orientation: options.orientation,
       spacing: CircuitConstructionKitBasicsConstants.toolboxItemSpacing,
-      children: [
-        wireNode.mutate( { scale: iconWidth / Math.max( wireNode.width, wireNode.height ) } )
-          .addInputListener( createToolIconInputListener(
-            function( position ) {
-              return new Wire( new Vertex( position.x - 50, position.y ), new Vertex( position.x + 50, position.y ), CircuitConstructionKitBasicsConstants.defaultResistivity );
-            },
-            circuit.wires,
-            circuitNode.wireNodes,
-            function( wireNode ) { return wireNode.wire; }
-          ) ),
-        batteryIcon,
-        lightBulbNode.mutate( {
-            pickable: true,
-            cursor: 'pointer',
-            scale: iconWidth / Math.max( lightBulbNode.width, lightBulbNode.height ) // constrained by being too tall, not too wide
-          } )
-          .addInputListener( createToolIconInputListener(
-            function( position ) {
-              return LightBulb.createAtPosition( position );
-            },
-            circuit.lightBulbs,
-            circuitNode.lightBulbNodes,
-            function( lightBulbNode ) { return lightBulbNode.lightBulb; }
-          ) ),
-
-        resistorNode.mutate( {
-            pickable: true,
-            cursor: 'pointer',
-            scale: iconWidth / Math.max( resistorNode.width, resistorNode.height )
-          } )
-          .addInputListener( createToolIconInputListener(
-            function( position ) {
-              var resistorLength = Resistor.RESISTOR_LENGTH;
-              var startVertex = new Vertex( position.x - resistorLength / 2, position.y );
-              var endVertex = new Vertex( position.x + resistorLength / 2, position.y );
-              return new Resistor( startVertex, endVertex, CircuitConstructionKitBasicsConstants.defaultResistance );
-            },
-            circuit.resistors,
-            circuitNode.resistorNodes,
-            function( resistorNode ) { return resistorNode.resistor; }
-          ) )
-      ]
+      children: children
     } ) );
   }
 
   circuitConstructionKitBasics.register( 'CircuitElementToolbox', CircuitElementToolbox );
 
   return inherit( CircuitConstructionKitBasicsPanel, CircuitElementToolbox, {}, {
-    NUMBER_OF_BATTERIES: 10
+    NUMBER_OF_BATTERIES: 10,
+    NUMBER_OF_WIRES: 10,
+    NUMBER_OF_LIGHT_BULBS: 10,
+    NUMBER_OF_RESISTORS: 10
   } );
 } );
