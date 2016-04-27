@@ -19,12 +19,16 @@ define( function( require ) {
    * @constructor
    */
   function IntroScreenView( circuitConstructionKitBasicsScreenModel ) {
+    var introScreenView = this;
     CircuitConstructionKitBasicsScreenView.call( this, circuitConstructionKitBasicsScreenModel );
     var displayOptionsPanel = new DisplayOptionsPanel( new Property( false ), new Property( false ), new Property( false ) );
     this.addChild( displayOptionsPanel );
     this.visibleBoundsProperty.link( function( visibleBounds ) {
       displayOptionsPanel.top = visibleBounds.top + CircuitConstructionKitBasicsConstants.layoutInset;
       displayOptionsPanel.right = visibleBounds.right - CircuitConstructionKitBasicsConstants.layoutInset;
+
+      introScreenView.sensorToolbox.top = displayOptionsPanel.bottom + 10;
+      introScreenView.sensorToolbox.right = displayOptionsPanel.right;
     } );
   }
 
