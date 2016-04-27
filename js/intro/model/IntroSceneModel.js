@@ -23,7 +23,9 @@ define( function( require ) {
     this.selectedSceneProperty = selectedSceneProperty;
 
     // All of the intro scenes have a light bulb in the center of the screen.
-    this.circuit.lightBulbs.add( LightBulb.createAtPosition( layoutBounds.centerX, layoutBounds.centerY ) );
+    this.circuit.lightBulbs.add( LightBulb.createAtPosition( layoutBounds.center, {
+      canBeDroppedInToolbox: false
+    } ) );
   }
 
   return inherit( CircuitConstructionKitBasicsModel, IntroSceneModel );

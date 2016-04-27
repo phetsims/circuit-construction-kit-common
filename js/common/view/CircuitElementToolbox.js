@@ -111,7 +111,7 @@ define( function( require ) {
           } )
           .addInputListener( createToolIconInputListener(
             function( position ) {
-              return LightBulb.createAtPosition( position.x, position.y );
+              return LightBulb.createAtPosition( position );
             },
             circuit.lightBulbs,
             circuitNode.lightBulbNodes,

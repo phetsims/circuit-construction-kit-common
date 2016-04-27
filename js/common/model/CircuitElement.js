@@ -21,8 +21,10 @@ define( function( require ) {
     assert && assert( startVertex !== endVertex, 'vertices must be different' );
 
     options = _.extend( {
+      canBeDroppedInToolbox: true, // false in Circuit Construction Kit: Basics Intro screen
       interactive: true // false for Black Box elements
     }, options );
+    this.canBeDroppedInToolbox = options.canBeDroppedInToolbox;
 
     PropertySet.call( this, _.extend( {
       startVertex: startVertex,

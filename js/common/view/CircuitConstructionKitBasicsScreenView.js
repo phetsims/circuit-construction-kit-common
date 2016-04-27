@@ -164,7 +164,8 @@ define( function( require ) {
     canNodeDropInToolbox: function( circuitElementNode ) {
       var isSingle = this.circuitConstructionKitBasicsModel.circuit.isSingle( circuitElementNode.circuitElement );
       var inBounds = this.circuitElementToolbox.globalBounds.containsPoint( circuitElementNode.globalBounds.center );
-      return isSingle && inBounds;
+      var okToDrop = circuitElementNode.circuitElement.canBeDroppedInToolbox;
+      return isSingle && inBounds && okToDrop;
     },
 
     dropCircuitElementNodeInToolbox: function( circuitElementNode ) {

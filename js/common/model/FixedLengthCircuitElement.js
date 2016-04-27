@@ -16,11 +16,11 @@ define( function( require ) {
    *
    * @constructor
    */
-  function FixedLengthCircuitElement( length, startVertex, endVertex, propertySetMap ) {
+  function FixedLengthCircuitElement( length, startVertex, endVertex, additionalProperties, options ) {
     var actualLength = startVertex.position.distance( endVertex.position );
     assert && assert( Math.abs( length - actualLength ) < 1E-6, 'length should be ' + length );
 
-    CircuitElement.call( this, startVertex, endVertex, propertySetMap );
+    CircuitElement.call( this, startVertex, endVertex, additionalProperties, options );
     this.length = length;
   }
 

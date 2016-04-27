@@ -22,10 +22,10 @@ define( function( require ) {
    *
    * @constructor
    */
-  function LightBulb( startVertex, endVertex, resistance ) {
+  function LightBulb( startVertex, endVertex, resistance, options ) {
     FixedLengthCircuitElement.call( this, DISTANCE_BETWEEN_VERTICES, startVertex, endVertex, {
       resistance: resistance
-    } );
+    }, options );
   }
 
   return inherit( FixedLengthCircuitElement, LightBulb, {
@@ -34,8 +34,7 @@ define( function( require ) {
     }
   }, {
     DISTANCE_BETWEEN_VERTICES: DISTANCE_BETWEEN_VERTICES,
-    createAtPosition: function( x, y ) {
-      var position = new Vector2( x, y );
+    createAtPosition: function( position, options ) {
       var translation = new Vector2( 30, 10 );
 
       // Connect at the side and bottom
@@ -51,7 +50,7 @@ define( function( require ) {
       var startVertex = new Vertex( startPoint.x, startPoint.y );
       var endVertex = new Vertex( endPoint.x, endPoint.y );
 
-      return new LightBulb( startVertex, endVertex, CircuitConstructionKitBasicsConstants.defaultResistance );
+      return new LightBulb( startVertex, endVertex, CircuitConstructionKitBasicsConstants.defaultResistance, options );
     }
   } );
 } );
