@@ -76,6 +76,9 @@ define( function( require ) {
     // circuit elements but in front of the transparency overlay
     this.circuitNode.mainLayer.addChild( this.circuitElementToolbox );
     var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel( circuitConstructionKitBasicsModel.circuit, this.visibleBoundsProperty );
+
+    // @protected - so the subclass can set the layout
+    this.circuitElementEditContainerPanel = circuitElementEditContainerPanel;
     this.visibleBoundsProperty.lazyLink( function( visibleBounds ) {
 
       // Float the resetAllButton to the bottom right

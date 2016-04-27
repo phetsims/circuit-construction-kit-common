@@ -36,7 +36,6 @@ define( function( require ) {
   function CircuitElementToolbox( circuit, circuitNode, options ) {
 
     options = _.extend( { orientation: 'vertical' }, options );
-    console.log( options );
     var circuitElementToolbox = this;
     // From: https://github.com/phetsims/scenery-phet/issues/195#issuecomment-186300071
     // @jonathanolson and I looked into the way Charges and Fields just calls startDrag(event) on the play area drag listener (which adds a listener to the pointer, in the usual SimpleDragHandler way), and it seems like a good pattern. I will try this pattern for Circuit Construction Kit, when I am working on the toolbox listeners.
