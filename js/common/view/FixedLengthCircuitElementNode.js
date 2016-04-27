@@ -51,7 +51,6 @@ define( function( require ) {
           .multiplyMatrix( scratchMatrix2.setToTranslation( 0, -contentNodeHeight / 2 ) );
         contentNode.setMatrix( scratchMatrix );
 
-        highlightNode && highlightParent.setMatrix( scratchMatrix.copy() );
       },
       highlightOptions: {}
     }, options );
@@ -101,6 +100,8 @@ define( function( require ) {
 
       highlightParent.children = [ highlightNode ];
       circuitNode.highlightLayer.addChild( highlightParent );
+
+      this.highlightParent = highlightParent;
     }
 
     CircuitElementNode.call( this, circuitElement, {
@@ -169,6 +170,9 @@ define( function( require ) {
 
       circuitNode && circuitNode.highlightLayer.removeChild( highlightParent );
     };
+
+    // // @protected
+    // this.updateLayout = options.updateLayout;
   }
 
   circuitConstructionKitBasics.register( 'FixedLengthCircuitElementNode', FixedLengthCircuitElementNode );

@@ -22,6 +22,7 @@ define( function( require ) {
    * @constructor
    */
   function CCKLightBulbNode( circuitConstructionKitBasicsScreenView, circuitNode, lightBulb, options ) {
+    var cckLightBulbNode = this;
     this.lightBulb = lightBulb;
     var brightnessProperty = new Property( 0.0 );
     lightBulb.currentProperty.link( function( current ) {
@@ -41,16 +42,19 @@ define( function( require ) {
     var contentScale = 2.5;
     var scratchMatrix = new Matrix3();
     var scratchMatrix2 = new Matrix3();
-    options = _.extend( {
-      updateLayout: function( startPosition, endPosition ) {
-        var angle = endPosition.minus( startPosition ).angle() + Math.PI / 4;
+    var updateLayout = function( startPosition, endPosition ) {
+      var angle = endPosition.minus( startPosition ).angle() + Math.PI / 4;
 
-        // Update the node transform in a single step, see #66
-        scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
-          .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
-          .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) );
-        lightBulbNode.setMatrix( scratchMatrix );
-      },
+      // Update the node transform in a single step, see #66
+      scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
+        .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
+        .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) );
+      lightBulbNode.setMatrix( scratchMatrix );
+
+      cckLightBulbNode.highlightParent && cckLightBulbNode.highlightParent.setMatrix( scratchMatrix.copy() );
+    };
+    options = _.extend( {
+      updateLayout: updateLayout,
       highlightOptions: {
         centerX: 0,
 
@@ -59,6 +63,9 @@ define( function( require ) {
       }
     }, options );
     FixedLengthCircuitElementNode.call( this, circuitConstructionKitBasicsScreenView, circuitNode, lightBulb, lightBulbNode, contentScale, options );
+
+    // Set the initial location of the highlight, since it was not available in the supercall to updateLayout
+    updateLayout( lightBulb.startVertex.position, lightBulb.endVertex.position );
   }
 
   circuitConstructionKitBasics.register( 'CCKLightBulbNode', CCKLightBulbNode );
