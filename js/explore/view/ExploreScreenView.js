@@ -16,7 +16,7 @@ define( function( require ) {
    * @constructor
    */
   function ExploreScreenView( circuitConstructionKitBasicsScreenModel ) {
-    CircuitConstructionKitBasicsScreenView.call( this, circuitConstructionKitBasicsScreenModel, { toolboxOrientation: 'horizontal' } );
+    CircuitConstructionKitBasicsScreenView.call( this, circuitConstructionKitBasicsScreenModel, { toolboxOrientation: 'vertical' } );
   }
 
   return inherit( CircuitConstructionKitBasicsScreenView, ExploreScreenView );
