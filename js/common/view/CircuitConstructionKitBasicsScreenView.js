@@ -24,8 +24,10 @@ define( function( require ) {
    * @param {CircuitConstructionKitBasicsModel} circuitConstructionKitBasicsModel
    * @constructor
    */
-  function CircuitConstructionKitBasicsScreenView( circuitConstructionKitBasicsModel ) {
+  function CircuitConstructionKitBasicsScreenView( circuitConstructionKitBasicsModel, options ) {
     var circuitConstructionKitBasicsScreenView = this;
+
+    options = _.extend( { toolboxOrientation: 'vertical' }, options );
     this.circuitConstructionKitBasicsModel = circuitConstructionKitBasicsModel;
     ScreenView.call( this );
 
@@ -51,7 +53,9 @@ define( function( require ) {
 
     // Pass the view into circuit node so that circuit elements can be dropped back into the toolbox
     this.circuitNode = new CircuitNode( circuitConstructionKitBasicsModel.circuit, this );
-    this.circuitElementToolbox = new CircuitElementToolbox( circuitConstructionKitBasicsModel.circuit, this.circuitNode );
+    this.circuitElementToolbox = new CircuitElementToolbox( circuitConstructionKitBasicsModel.circuit, this.circuitNode, {
+      orientation: options.toolboxOrientation
+    } );
 
     // @protected - so that subclasses can add a layout circuit element near it
     this.sensorToolbox = new SensorToolbox( voltmeterNode, ammeterNode );

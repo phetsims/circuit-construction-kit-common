@@ -11,7 +11,6 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var CircuitConstructionKitBasicsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitConstructionKitBasicsPanel' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Battery' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/LightBulb' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Vertex' );
@@ -24,6 +23,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var LightBulbNode = require( 'SCENERY_PHET/LightBulbNode' );
   var Property = require( 'AXON/Property' );
+  var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
 
   // images
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/battery.png' );
@@ -33,8 +33,10 @@ define( function( require ) {
    * @param {CircuitNode} circuitNode
    * @constructor
    */
-  function CircuitElementToolbox( circuit, circuitNode ) {
+  function CircuitElementToolbox( circuit, circuitNode, options ) {
 
+    options = _.extend( { orientation: 'vertical' }, options );
+    console.log( options );
     var circuitElementToolbox = this;
     // From: https://github.com/phetsims/scenery-phet/issues/195#issuecomment-186300071
     // @jonathanolson and I looked into the way Charges and Fields just calls startDrag(event) on the play area drag listener (which adds a listener to the pointer, in the usual SimpleDragHandler way), and it seems like a good pattern. I will try this pattern for Circuit Construction Kit, when I am working on the toolbox listeners.
@@ -76,7 +78,8 @@ define( function( require ) {
     var resistorNode = new ResistorNode( null, null, new Resistor( new Vertex( 0, 0 ), new Vertex( Resistor.RESISTOR_LENGTH, 0 ), CircuitConstructionKitBasicsConstants.defaultResistance ), { icon: true } );
     var lightBulbNode = new LightBulbNode( new Property( 0 ) );
 
-    CircuitConstructionKitBasicsPanel.call( this, new VBox( {
+    CircuitConstructionKitBasicsPanel.call( this, new LayoutBox( {
+      orientation: options.orientation,
       spacing: CircuitConstructionKitBasicsConstants.toolboxItemSpacing,
       children: [
         wireNode.mutate( { scale: iconWidth / Math.max( wireNode.width, wireNode.height ) } )

@@ -32,7 +32,7 @@ define( function( require ) {
    */
   function BlackBoxSceneView( blackBoxWidth, blackBoxHeight, blackBoxSceneModel, sceneProperty ) {
     var blackBoxSceneView = this;
-    CircuitConstructionKitBasicsScreenView.call( this, blackBoxSceneModel );
+    CircuitConstructionKitBasicsScreenView.call( this, blackBoxSceneModel, { toolboxOrientation: 'vertical' } );
 
     // Add 'Investigate Circuit' and 'Build Circuit' radio buttons under the sensor toolbox
     var modeRadioButtonGroup = new ModeRadioButtonGroup( blackBoxSceneModel.modeProperty );

@@ -20,7 +20,7 @@ define( function( require ) {
    */
   function IntroScreenView( circuitConstructionKitBasicsScreenModel ) {
     var introScreenView = this;
-    CircuitConstructionKitBasicsScreenView.call( this, circuitConstructionKitBasicsScreenModel );
+    CircuitConstructionKitBasicsScreenView.call( this, circuitConstructionKitBasicsScreenModel, { toolboxOrientation: 'horizontal' } );
     var displayOptionsPanel = new DisplayOptionsPanel( new Property( false ), new Property( false ), new Property( false ) );
     this.addChild( displayOptionsPanel );
     this.visibleBoundsProperty.link( function( visibleBounds ) {
