@@ -22,11 +22,21 @@ define( function( require ) {
     // @public (read-only)
     this.selectedSceneProperty = selectedSceneProperty;
 
-    // All of the intro scenes have a light bulb in the center of the screen.
-    this.circuit.lightBulbs.add( LightBulb.createAtPosition( layoutBounds.center, {
-      canBeDroppedInToolbox: false
-    } ) );
+    // @private
+    this.layoutBounds = layoutBounds;
+
+    // set initial state (a light bulb)
+    this.reset();
   }
 
-  return inherit( CircuitConstructionKitBasicsModel, IntroSceneModel );
+  return inherit( CircuitConstructionKitBasicsModel, IntroSceneModel, {
+    reset: function() {
+      CircuitConstructionKitBasicsModel.prototype.reset.call( this );
+
+      // All of the intro scenes have a light bulb in the center of the screen.
+      this.circuit.lightBulbs.add( LightBulb.createAtPosition( this.layoutBounds.center, {
+        canBeDroppedInToolbox: false
+      } ) );
+    }
+  } );
 } );
