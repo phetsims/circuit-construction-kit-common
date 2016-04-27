@@ -10,6 +10,9 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var CircuitConstructionKitBasicsScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitConstructionKitBasicsScreenView' );
+  var Property = require( 'AXON/Property' );
+  var DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/DisplayOptionsPanel' );
+  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
 
   /**
    * @param {CircuitConstructionKitBasicsModel} circuitConstructionKitBasicsScreenModel
@@ -17,6 +20,12 @@ define( function( require ) {
    */
   function IntroScreenView( circuitConstructionKitBasicsScreenModel ) {
     CircuitConstructionKitBasicsScreenView.call( this, circuitConstructionKitBasicsScreenModel );
+    var displayOptionsPanel = new DisplayOptionsPanel( new Property( false ), new Property( false ), new Property( false ) );
+    this.addChild( displayOptionsPanel );
+    this.visibleBoundsProperty.link( function( visibleBounds ) {
+      displayOptionsPanel.top = visibleBounds.top + CircuitConstructionKitBasicsConstants.layoutInset;
+      displayOptionsPanel.right = visibleBounds.right - CircuitConstructionKitBasicsConstants.layoutInset;
+    } );
   }
 
   return inherit( CircuitConstructionKitBasicsScreenView, IntroScreenView );
