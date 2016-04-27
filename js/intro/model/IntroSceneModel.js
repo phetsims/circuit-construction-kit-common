@@ -11,15 +11,19 @@ define( function( require ) {
   // modules
   var CircuitConstructionKitBasicsModel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/CircuitConstructionKitBasicsModel' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/LightBulb' );
 
   /**
    * @constructor
    */
-  function IntroSceneModel( selectedSceneProperty ) {
+  function IntroSceneModel( layoutBounds, selectedSceneProperty ) {
     CircuitConstructionKitBasicsModel.call( this );
 
     // @public (read-only)
     this.selectedSceneProperty = selectedSceneProperty;
+
+    // All of the intro scenes have a light bulb in the center of the screen.
+    this.circuit.lightBulbs.add( LightBulb.createAtPosition( layoutBounds.centerX, layoutBounds.centerY ) );
   }
 
   return inherit( CircuitConstructionKitBasicsModel, IntroSceneModel );

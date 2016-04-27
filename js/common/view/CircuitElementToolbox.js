@@ -20,7 +20,6 @@ define( function( require ) {
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ResistorNode' );
   var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/WireNode' );
-  var Vector2 = require( 'DOT/Vector2' );
   var LightBulbNode = require( 'SCENERY_PHET/LightBulbNode' );
   var Property = require( 'AXON/Property' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
@@ -112,23 +111,7 @@ define( function( require ) {
           } )
           .addInputListener( createToolIconInputListener(
             function( position ) {
-
-              var translation = new Vector2( 30, 10 );
-
-              // Connect at the side and bottom
-              var lightBulbLength = LightBulb.DISTANCE_BETWEEN_VERTICES;
-              var startPoint = new Vector2( position.x - lightBulbLength / 2, position.y ).plus( translation );
-              var endPoint = new Vector2( position.x, position.y + lightBulbLength / 4 ).plus( translation );
-
-              var delta = endPoint.minus( startPoint );
-              var angle = delta.angle();
-
-              endPoint = startPoint.plus( Vector2.createPolar( LightBulb.DISTANCE_BETWEEN_VERTICES, angle - Math.PI * 0.3975 ) );
-
-              var startVertex = new Vertex( startPoint.x, startPoint.y );
-              var endVertex = new Vertex( endPoint.x, endPoint.y );
-
-              return new LightBulb( startVertex, endVertex, CircuitConstructionKitBasicsConstants.defaultResistance );
+              return LightBulb.createAtPosition( position.x, position.y );
             },
             circuit.lightBulbs,
             circuitNode.lightBulbNodes,

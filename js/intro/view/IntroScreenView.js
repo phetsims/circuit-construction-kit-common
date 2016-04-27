@@ -34,7 +34,7 @@ define( function( require ) {
     // of getting lost behind them.
     introScreenModel.selectedSceneProperty.link( function( selectedScene ) {
       if ( !sceneNodes[ selectedScene ] ) {
-        var sceneNode = new IntroSceneNode( new IntroSceneModel( introScreenModel.selectedSceneProperty ) );
+        var sceneNode = new IntroSceneNode( new IntroSceneModel( introScreenView.layoutBounds, introScreenModel.selectedSceneProperty ) );
         sceneNode.visibleBoundsProperty.set( introScreenView.visibleBoundsProperty.value );
         sceneNodes[ selectedScene ] = sceneNode;
       }
