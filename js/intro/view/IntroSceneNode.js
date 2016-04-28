@@ -20,16 +20,23 @@ define( function( require ) {
 
   /**
    * @param {CircuitConstructionKitBasicsModel} circuitConstructionKitBasicsScreenModel
+   * @param {Object} [options]
    * @constructor
    */
-  function IntroSceneNode( circuitConstructionKitBasicsScreenModel ) {
+  function IntroSceneNode( circuitConstructionKitBasicsScreenModel, options ) {
     var introSceneNode = this;
-    CircuitConstructionKitBasicsScreenView.call( this, circuitConstructionKitBasicsScreenModel, {
-      toolboxOrientation: 'horizontal',
+    options = _.extend( {
       numberOfBatteriesInToolbox: 1,
       numberOfWiresInToolbox: 4,
       numberOfLightBulbsInToolbox: 0,
-      numberOfResistorsInToolbox: 0,
+      numberOfResistorsInToolbox: 0
+    }, options );
+    CircuitConstructionKitBasicsScreenView.call( this, circuitConstructionKitBasicsScreenModel, {
+      toolboxOrientation: 'horizontal',
+      numberOfBatteriesInToolbox: options.numberOfBatteriesInToolbox,
+      numberOfWiresInToolbox: options.numberOfWiresInToolbox,
+      numberOfLightBulbsInToolbox: options.numberOfLightBulbsInToolbox,
+      numberOfResistorsInToolbox: options.numberOfResistorsInToolbox,
       getToolboxPosition: function( visibleBounds ) {
         return {
           centerX: visibleBounds.centerX,

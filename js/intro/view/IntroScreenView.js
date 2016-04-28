@@ -49,7 +49,27 @@ define( function( require ) {
 
     introScreenModel.selectedSceneProperty.link( function( selectedScene ) {
       if ( !sceneNodes[ selectedScene ] ) {
-        var sceneNode = new IntroSceneNode( new IntroSceneModel( introScreenView.layoutBounds, introScreenModel.selectedSceneProperty ) );
+        var options = {
+          0: {
+            numberOfBatteriesInToolbox: 1,
+            numberOfWiresInToolbox: 4,
+            numberOfLightBulbsInToolbox: 0,
+            numberOfResistorsInToolbox: 0
+          },
+          1: {
+            numberOfBatteriesInToolbox: 1,
+            numberOfWiresInToolbox: 4,
+            numberOfLightBulbsInToolbox: 0,
+            numberOfResistorsInToolbox: 0
+          },
+          2: {
+            numberOfBatteriesInToolbox: 1,
+            numberOfWiresInToolbox: 4,
+            numberOfLightBulbsInToolbox: 0,
+            numberOfResistorsInToolbox: 0
+          }
+        }[ selectedScene ];
+        var sceneNode = new IntroSceneNode( new IntroSceneModel( introScreenView.layoutBounds, introScreenModel.selectedSceneProperty ), options );
         sceneNode.visibleBoundsProperty.set( introScreenView.visibleBoundsProperty.value );
         sceneNodes[ selectedScene ] = sceneNode;
       }
