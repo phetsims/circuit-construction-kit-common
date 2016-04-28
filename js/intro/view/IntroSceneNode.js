@@ -26,14 +26,14 @@ define( function( require ) {
   function IntroSceneNode( circuitConstructionKitBasicsScreenModel, options ) {
     var introSceneNode = this;
     options = _.extend( {
-      numberOfBatteriesInToolbox: 1,
+      numberOfRightBatteriesInToolbox: 1,
       numberOfWiresInToolbox: 4,
       numberOfLightBulbsInToolbox: 0,
       numberOfResistorsInToolbox: 0
     }, options );
     CircuitConstructionKitBasicsScreenView.call( this, circuitConstructionKitBasicsScreenModel, {
       toolboxOrientation: 'horizontal',
-      numberOfBatteriesInToolbox: options.numberOfBatteriesInToolbox,
+      numberOfRightBatteriesInToolbox: options.numberOfRightBatteriesInToolbox,
       numberOfWiresInToolbox: options.numberOfWiresInToolbox,
       numberOfLightBulbsInToolbox: options.numberOfLightBulbsInToolbox,
       numberOfResistorsInToolbox: options.numberOfResistorsInToolbox,

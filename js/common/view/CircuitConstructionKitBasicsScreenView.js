@@ -38,7 +38,7 @@ define( function( require ) {
       // so that it may reset all scenes (including but not limited to this one).
       showResetAllButton: false,
       toolboxOrientation: 'vertical',
-      numberOfBatteriesInToolbox: CircuitElementToolbox.NUMBER_OF_BATTERIES,
+      numberOfRightBatteriesInToolbox: CircuitElementToolbox.NUMBER_OF_RIGHT_BATTERIES,
       numberOfWiresInToolbox: CircuitElementToolbox.NUMBER_OF_WIRES,
       numberOfLightBulbsInToolbox: CircuitElementToolbox.NUMBER_OF_LIGHT_BULBS,
       numberOfResistorsInToolbox: CircuitElementToolbox.NUMBER_OF_RESISTORS,
@@ -77,7 +77,7 @@ define( function( require ) {
     this.circuitNode = new CircuitNode( circuitConstructionKitBasicsModel.circuit, this );
     this.circuitElementToolbox = new CircuitElementToolbox( circuitConstructionKitBasicsModel.circuit, this.circuitNode, {
       orientation: options.toolboxOrientation,
-      numberOfBatteries: options.numberOfBatteriesInToolbox,
+      numberOfRightBatteries: options.numberOfRightBatteriesInToolbox,
       numberOfWires: options.numberOfWiresInToolbox,
       numberOfLightBulbs: options.numberOfLightBulbsInToolbox,
       numberOfResistors: options.numberOfResistorsInToolbox

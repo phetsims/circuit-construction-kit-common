@@ -37,7 +37,7 @@ define( function( require ) {
 
     options = _.extend( {
       orientation: 'vertical',
-      numberOfBatteries: CircuitElementToolbox.NUMBER_OF_BATTERIES,
+      numberOfRightBatteries: CircuitElementToolbox.NUMBER_OF_RIGHT_BATTERIES,
       numberOfWires: CircuitElementToolbox.NUMBER_OF_WIRES,
       numberOfLightBulbs: CircuitElementToolbox.NUMBER_OF_LIGHT_BULBS,
       numberOfResistors: CircuitElementToolbox.NUMBER_OF_RESISTORS
@@ -97,8 +97,8 @@ define( function( require ) {
       circuitNode.batteryNodes,
       function( batteryNode ) { return batteryNode.battery; }
     ) );
-    circuit.batteries.lengthProperty.link( function( numberOfBatteriesInCircuit ) {
-      batteryIcon.visible = numberOfBatteriesInCircuit < options.numberOfBatteries;
+    circuit.batteries.lengthProperty.link( function( numberOfRightBatteriesInCircuit ) {
+      batteryIcon.visible = numberOfRightBatteriesInCircuit < options.numberOfRightBatteries;
     } );
 
     var wireIcon = wireNode.mutate( { scale: iconWidth / Math.max( wireNode.width, wireNode.height ) } )
@@ -145,7 +145,7 @@ define( function( require ) {
       ) );
 
     var children = [];
-    options.numberOfBatteries && children.push( batteryIcon );
+    options.numberOfRightBatteries && children.push( batteryIcon );
     options.numberOfWires && children.push( wireIcon );
     options.numberOfLightBulbs && children.push( lightBulbIcon );
     options.numberOfResistors && children.push( resistorIcon );
@@ -159,7 +159,7 @@ define( function( require ) {
   circuitConstructionKitBasics.register( 'CircuitElementToolbox', CircuitElementToolbox );
 
   return inherit( CircuitConstructionKitBasicsPanel, CircuitElementToolbox, {}, {
-    NUMBER_OF_BATTERIES: 10,
+    NUMBER_OF_RIGHT_BATTERIES: 10,
     NUMBER_OF_WIRES: 10,
     NUMBER_OF_LIGHT_BULBS: 10,
     NUMBER_OF_RESISTORS: 10

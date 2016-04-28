@@ -51,19 +51,19 @@ define( function( require ) {
       if ( !sceneNodes[ selectedScene ] ) {
         var options = {
           0: {
-            numberOfBatteriesInToolbox: 1,
+            numberOfRightBatteriesInToolbox: 1,
             numberOfWiresInToolbox: 4,
             numberOfLightBulbsInToolbox: 0,
             numberOfResistorsInToolbox: 0
           },
           1: {
-            numberOfBatteriesInToolbox: 1,
+            numberOfRightBatteriesInToolbox: 1,
             numberOfWiresInToolbox: 4,
             numberOfLightBulbsInToolbox: 0,
             numberOfResistorsInToolbox: 0
           },
           2: {
-            numberOfBatteriesInToolbox: 1,
+            numberOfRightBatteriesInToolbox: 1,
             numberOfWiresInToolbox: 4,
             numberOfLightBulbsInToolbox: 0,
             numberOfResistorsInToolbox: 0
