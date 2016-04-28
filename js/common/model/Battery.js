@@ -19,11 +19,16 @@ define( function( require ) {
    *
    * @constructor
    */
-  function Battery( startVertex, endVertex, voltage ) {
+  function Battery( startVertex, endVertex, voltage, options ) {
     assert && assert( typeof voltage === 'number', 'voltage should be a number' );
+    options = _.extend( { initialOrientation: 'right' }, options );
     FixedLengthCircuitElement.call( this, BATTERY_LENGTH, startVertex, endVertex, {
       voltage: voltage
     } );
+
+    // @public (read-only) - track the initial state so the user can only create a certain number of "left" or "right" batteries
+    // from the toolbox.
+    this.initialOrientation = options.initialOrientation;
   }
 
   return inherit( FixedLengthCircuitElement, Battery, {

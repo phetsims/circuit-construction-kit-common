@@ -27,6 +27,9 @@ define( function( require ) {
   // images
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/battery.png' );
 
+  // constants
+  var batteryLength = Battery.BATTERY_LENGTH;
+
   /**
    * @param {Circuit} circuit
    * @param {CircuitNode} circuitNode
@@ -38,6 +41,7 @@ define( function( require ) {
     options = _.extend( {
       orientation: 'vertical',
       numberOfRightBatteries: CircuitElementToolbox.NUMBER_OF_RIGHT_BATTERIES,
+      numberOfLeftBatteries: CircuitElementToolbox.NUMBER_OF_LEFT_BATTERIES,
       numberOfWires: CircuitElementToolbox.NUMBER_OF_WIRES,
       numberOfLightBulbs: CircuitElementToolbox.NUMBER_OF_LIGHT_BULBS,
       numberOfResistors: CircuitElementToolbox.NUMBER_OF_RESISTORS
@@ -83,22 +87,47 @@ define( function( require ) {
     var resistorNode = new ResistorNode( null, null, new Resistor( new Vertex( 0, 0 ), new Vertex( Resistor.RESISTOR_LENGTH, 0 ), CircuitConstructionKitBasicsConstants.defaultResistance ), { icon: true } );
     var lightBulbNode = new LightBulbNode( new Property( 0 ) );
 
-    var batteryIcon = new Image( batteryImage, {
+    var countBatteries = function( initialOrientation ) {
+      return circuit.batteries.filter( function( battery ) {return battery.initialOrientation === initialOrientation;} ).length;
+    };
+    
+    var leftBatteryIcon = new Image( batteryImage, {
       cursor: 'pointer',
-      scale: iconWidth / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height )
+      scale: iconWidth / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height ),
+      rotation: Math.PI
     } ).addInputListener( createToolIconInputListener(
       function( position ) {
-        var batteryLength = Battery.BATTERY_LENGTH;
         var startVertex = new Vertex( position.x - batteryLength / 2, position.y );
         var endVertex = new Vertex( position.x + batteryLength / 2, position.y );
-        return new Battery( startVertex, endVertex, 9.0 );
+        return new Battery( endVertex, startVertex, 9.0, {
+          initialOrientation: 'left'
+        } );
       },
       circuit.batteries,
       circuitNode.batteryNodes,
       function( batteryNode ) { return batteryNode.battery; }
     ) );
-    circuit.batteries.lengthProperty.link( function( numberOfRightBatteriesInCircuit ) {
-      batteryIcon.visible = numberOfRightBatteriesInCircuit < options.numberOfRightBatteries;
+    circuit.batteries.lengthProperty.link( function() {
+      leftBatteryIcon.visible = countBatteries( 'left' ) < options.numberOfRightBatteries;
+    } );
+
+    var rightBatteryIcon = new Image( batteryImage, {
+      cursor: 'pointer',
+      scale: iconWidth / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height )
+    } ).addInputListener( createToolIconInputListener(
+      function( position ) {
+        var startVertex = new Vertex( position.x - batteryLength / 2, position.y );
+        var endVertex = new Vertex( position.x + batteryLength / 2, position.y );
+        return new Battery( startVertex, endVertex, 9.0, {
+          initialOrientation: 'right'
+        } );
+      },
+      circuit.batteries,
+      circuitNode.batteryNodes,
+      function( batteryNode ) { return batteryNode.battery; }
+    ) );
+    circuit.batteries.lengthProperty.link( function() {
+      rightBatteryIcon.visible = countBatteries( 'right' ) < options.numberOfRightBatteries;
     } );
 
     var wireIcon = wireNode.mutate( { scale: iconWidth / Math.max( wireNode.width, wireNode.height ) } )
@@ -145,7 +174,8 @@ define( function( require ) {
       ) );
 
     var children = [];
-    options.numberOfRightBatteries && children.push( batteryIcon );
+    options.numberOfLeftBatteries && children.push( leftBatteryIcon );
+    options.numberOfRightBatteries && children.push( rightBatteryIcon );
     options.numberOfWires && children.push( wireIcon );
     options.numberOfLightBulbs && children.push( lightBulbIcon );
     options.numberOfResistors && children.push( resistorIcon );

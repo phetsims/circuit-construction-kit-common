@@ -39,6 +39,7 @@ define( function( require ) {
       showResetAllButton: false,
       toolboxOrientation: 'vertical',
       numberOfRightBatteriesInToolbox: CircuitElementToolbox.NUMBER_OF_RIGHT_BATTERIES,
+      numberOfLeftBatteriesInToolbox: CircuitElementToolbox.NUMBER_OF_LEFT_BATTERIES,
       numberOfWiresInToolbox: CircuitElementToolbox.NUMBER_OF_WIRES,
       numberOfLightBulbsInToolbox: CircuitElementToolbox.NUMBER_OF_LIGHT_BULBS,
       numberOfResistorsInToolbox: CircuitElementToolbox.NUMBER_OF_RESISTORS,
@@ -78,6 +79,7 @@ define( function( require ) {
     this.circuitElementToolbox = new CircuitElementToolbox( circuitConstructionKitBasicsModel.circuit, this.circuitNode, {
       orientation: options.toolboxOrientation,
       numberOfRightBatteries: options.numberOfRightBatteriesInToolbox,
+      numberOfLeftBatteries: options.numberOfLeftBatteriesInToolbox,
       numberOfWires: options.numberOfWiresInToolbox,
       numberOfLightBulbs: options.numberOfLightBulbsInToolbox,
       numberOfResistors: options.numberOfResistorsInToolbox

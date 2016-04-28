@@ -27,6 +27,7 @@ define( function( require ) {
     var introSceneNode = this;
     options = _.extend( {
       numberOfRightBatteriesInToolbox: 1,
+      numberOfLeftBatteriesInToolbox: 0,
       numberOfWiresInToolbox: 4,
       numberOfLightBulbsInToolbox: 0,
       numberOfResistorsInToolbox: 0
@@ -34,6 +35,7 @@ define( function( require ) {
     CircuitConstructionKitBasicsScreenView.call( this, circuitConstructionKitBasicsScreenModel, {
       toolboxOrientation: 'horizontal',
       numberOfRightBatteriesInToolbox: options.numberOfRightBatteriesInToolbox,
+      numberOfLeftBatteriesInToolbox: options.numberOfLeftBatteriesInToolbox,
       numberOfWiresInToolbox: options.numberOfWiresInToolbox,
       numberOfLightBulbsInToolbox: options.numberOfLightBulbsInToolbox,
       numberOfResistorsInToolbox: options.numberOfResistorsInToolbox,
