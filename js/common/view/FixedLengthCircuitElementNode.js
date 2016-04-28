@@ -50,7 +50,7 @@ define( function( require ) {
           .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) )
           .multiplyMatrix( scratchMatrix2.setToTranslation( 0, -contentNodeHeight / 2 ) );
         contentNode.setMatrix( scratchMatrix );
-
+        highlightNode && highlightParent.setMatrix( scratchMatrix.copy() );
       },
       highlightOptions: {}
     }, options );
