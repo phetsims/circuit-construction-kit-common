@@ -154,6 +154,12 @@ define( function( require ) {
       circuitNode.circuit.selectedCircuitElementProperty.link( updateSelectionHighlight );
     }
 
+    // Update after the highlight exists
+    options.updateLayout(
+      circuitElement.startVertex.position,
+      circuitElement.endVertex.position
+    );
+
     this.disposeFixedLengthCircuitElementNode = function() {
       if ( fixedLengthCircuitElementNode.inputListener.dragging ) {
         fixedLengthCircuitElementNode.inputListener.endDrag();
