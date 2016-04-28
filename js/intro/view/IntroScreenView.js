@@ -13,6 +13,12 @@ define( function( require ) {
   var IntroSceneNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/intro/view/IntroSceneNode' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var IntroSceneModel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/intro/model/IntroSceneModel' );
+  var SceneSelectionRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/intro/view/SceneSelectionRadioButtonGroup' );
+  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
+  var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
+
+  // constants
+  var inset = CircuitConstructionKitBasicsConstants.layoutInset;
 
   /**
    * @param {CircuitConstructionKitBasicsModel} introScreenModel
@@ -24,14 +30,23 @@ define( function( require ) {
 
     var sceneNodes = {};
 
-    this.visibleBoundsProperty.link( function( visibleBounds ) {
-      _.values( sceneNodes ).forEach( function( sceneNode ) {
-        sceneNode.visibleBoundsProperty.set( visibleBounds );
-      } );
-    } );
+    var sceneSelectionRadioButtonGroup = new SceneSelectionRadioButtonGroup(
+      introScreenModel.selectedSceneProperty
+    );
 
-    // The scene buttons are declared in each IntroSceneNode so that objects may be layered in front of them instead
-    // of getting lost behind them.
+    // Reset All button
+    var resetAllButton = new ResetAllButton( {
+      listener: function() {
+        introScreenModel.reset();
+
+        _.values( sceneNodes ).forEach( function( sceneNode ) {
+          sceneNode.reset();
+          sceneNode.circuitConstructionKitBasicsModel.reset();
+        } );
+      }
+    } );
+    this.addChild( resetAllButton );
+
     introScreenModel.selectedSceneProperty.link( function( selectedScene ) {
       if ( !sceneNodes[ selectedScene ] ) {
         var sceneNode = new IntroSceneNode( new IntroSceneModel( introScreenView.layoutBounds, introScreenModel.selectedSceneProperty ) );
@@ -39,7 +54,29 @@ define( function( require ) {
         sceneNodes[ selectedScene ] = sceneNode;
       }
 
-      introScreenView.children = [ sceneNodes[ selectedScene ] ];
+      // scene selection buttons go in back so that circuit elements may go in front
+      introScreenView.children = [
+        resetAllButton,
+        sceneSelectionRadioButtonGroup,
+        sceneNodes[ selectedScene ]
+      ];
+    } );
+
+    this.visibleBoundsProperty.link( function( visibleBounds ) {
+      _.values( sceneNodes ).forEach( function( sceneNode ) {
+        sceneNode.visibleBoundsProperty.set( visibleBounds );
+      } );
+
+      sceneSelectionRadioButtonGroup.mutate( {
+        left: visibleBounds.left + inset,
+        top: visibleBounds.top + inset
+      } );
+
+      // Float the resetAllButton to the bottom right
+      resetAllButton.mutate( {
+        right: visibleBounds.right - inset,
+        bottom: visibleBounds.bottom - inset
+      } );
     } );
   }
 

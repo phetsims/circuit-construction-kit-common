@@ -13,7 +13,6 @@ define( function( require ) {
   var CircuitConstructionKitBasicsScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitConstructionKitBasicsScreenView' );
   var Property = require( 'AXON/Property' );
   var DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/DisplayOptionsPanel' );
-  var SceneSelectionRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/intro/view/SceneSelectionRadioButtonGroup' );
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
 
   // constants
@@ -48,13 +47,6 @@ define( function( require ) {
     this.addChild( displayOptionsPanel );
     displayOptionsPanel.moveToBack(); // Move behind elements added in the super, such as the sensors and circuit
 
-    var sceneSelectionRadioButtonGroup = new SceneSelectionRadioButtonGroup(
-      circuitConstructionKitBasicsScreenModel.selectedSceneProperty
-    );
-
-    this.addChild( sceneSelectionRadioButtonGroup );
-    sceneSelectionRadioButtonGroup.moveToBack(); // Move behind elements added in the super, such as the sensors and circuit
-
     this.visibleBoundsProperty.link( function( visibleBounds ) {
       displayOptionsPanel.top = visibleBounds.top + inset;
       displayOptionsPanel.right = visibleBounds.right - inset;
@@ -70,11 +62,6 @@ define( function( require ) {
       introSceneNode.circuitElementEditContainerPanel.mutate( {
         left: visibleBounds.left + inset,
         bottom: visibleBounds.bottom - inset
-      } );
-
-      sceneSelectionRadioButtonGroup.mutate( {
-        left: visibleBounds.left + inset,
-        top: visibleBounds.top + inset
       } );
     } );
   }

@@ -1,6 +1,7 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
 /**
+ * Node that represents a single scene or screen, with a circuit, toolbox, sensors, etc.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -10,7 +11,6 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var ScreenView = require( 'JOIST/ScreenView' );
-  var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var CircuitNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitNode' );
   var CircuitElementToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementToolbox' );
   var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementEditContainerPanel' );
@@ -19,6 +19,7 @@ define( function( require ) {
   var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/AmmeterNode' );
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
   var Util = require( 'DOT/Util' );
+  var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
 
   // constants
   var inset = CircuitConstructionKitBasicsConstants.layoutInset;
@@ -32,6 +33,10 @@ define( function( require ) {
     var circuitConstructionKitBasicsScreenView = this;
 
     options = _.extend( {
+
+      // When used as a scene, the reset all button is suppressed here, added in the screen
+      // so that it may reset all scenes (including but not limited to this one).
+      showResetAllButton: false,
       toolboxOrientation: 'vertical',
       numberOfBatteriesInToolbox: CircuitElementToolbox.NUMBER_OF_BATTERIES,
       numberOfWiresInToolbox: CircuitElementToolbox.NUMBER_OF_WIRES,
@@ -85,13 +90,15 @@ define( function( require ) {
     this.addChild( this.sensorToolbox );
 
     // Reset All button
-    var resetAllButton = new ResetAllButton( {
-      listener: function() {
-        circuitConstructionKitBasicsModel.reset();
-        circuitConstructionKitBasicsScreenView.reset();
-      }
-    } );
-    this.addChild( resetAllButton );
+    if ( options.showResetAllButton ) {
+      var resetAllButton = new ResetAllButton( {
+        listener: function() {
+          circuitConstructionKitBasicsModel.reset();
+          circuitConstructionKitBasicsScreenView.reset();
+        }
+      } );
+      this.addChild( resetAllButton );
+    }
 
     // Has to be interleaved in the circuit layering to support the black box, so that the toolbox can be behind
     // circuit elements but in front of the transparency overlay
@@ -105,10 +112,12 @@ define( function( require ) {
     this.visibleBoundsProperty.link( function( visibleBounds ) {
 
       // Float the resetAllButton to the bottom right
-      resetAllButton.mutate( {
-        right: visibleBounds.right - inset,
-        bottom: visibleBounds.bottom - inset
-      } );
+      if ( options.showResetAllButton ) {
+        resetAllButton.mutate( {
+          right: visibleBounds.right - inset,
+          bottom: visibleBounds.bottom - inset
+        } );
+      }
 
       circuitConstructionKitBasicsScreenView.circuitElementToolbox.mutate( options.getToolboxPosition( visibleBounds ) );
 
