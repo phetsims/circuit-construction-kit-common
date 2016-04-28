@@ -26,17 +26,20 @@ define( function( require ) {
     this.layoutBounds = layoutBounds;
 
     // set initial state (a light bulb)
-    this.reset();
+    this.setInitialState();
   }
 
   return inherit( CircuitConstructionKitBasicsModel, IntroSceneModel, {
-    reset: function() {
-      CircuitConstructionKitBasicsModel.prototype.reset.call( this );
-
+    setInitialState: function() {
       // All of the intro scenes have a light bulb in the center of the screen.
       this.circuit.lightBulbs.add( LightBulb.createAtPosition( this.layoutBounds.center, {
         canBeDroppedInToolbox: false
       } ) );
+    },
+    reset: function() {
+      CircuitConstructionKitBasicsModel.prototype.reset.call( this );
+
+      this.setInitialState();
     }
   } );
 } );
