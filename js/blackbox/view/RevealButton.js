@@ -8,6 +8,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var inherit = require( 'PHET_CORE/inherit' );
   var RoundMomentaryButton = require( 'SUN/buttons/RoundMomentaryButton' );
   var VBox = require( 'SCENERY/nodes/VBox' );
@@ -31,5 +32,7 @@ define( function( require ) {
     enabledProperty.linkAttribute( this, 'enabled' );
   }
 
-  return inherit( RoundMomentaryButton, RevealButton, {} );
+  circuitConstructionKitBasics.register( 'RevealButton', RevealButton );
+
+  return inherit( RoundMomentaryButton, RevealButton );
 } );

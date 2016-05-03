@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -37,5 +38,6 @@ define( function( require ) {
     this.mutate( options );
   }
 
+  circuitConstructionKitBasics.register( 'BlackBoxNode', BlackBoxNode );
   return inherit( Node, BlackBoxNode );
 } );

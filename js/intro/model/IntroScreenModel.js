@@ -2,13 +2,14 @@
 
 /**
  * Keeps track of which scene is selected.
- * 
+ *
  * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
 
@@ -21,5 +22,7 @@ define( function( require ) {
     } );
   }
 
+  circuitConstructionKitBasics.register( 'IntroScreenModel', IntroScreenModel );
+  
   return inherit( PropertySet, IntroScreenModel );
 } );

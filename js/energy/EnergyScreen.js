@@ -8,6 +8,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var EnergyScreenModel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/energy/model/EnergyScreenModel' );
   var EnergyScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/energy/view/EnergyScreenView' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -69,5 +70,7 @@ define( function( require ) {
     );
   }
 
+  circuitConstructionKitBasics.register( 'EnergyScreen', EnergyScreen );
+  
   return inherit( Screen, EnergyScreen );
 } );

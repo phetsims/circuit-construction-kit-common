@@ -8,6 +8,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var inherit = require( 'PHET_CORE/inherit' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var NumberControl = require( 'SCENERY_PHET/NumberControl' );
@@ -59,6 +60,8 @@ define( function( require ) {
     };
   }
 
+  circuitConstructionKitBasics.register( 'CircuitElementEditPanel', CircuitElementEditPanel );
+  
   return inherit( HBox, CircuitElementEditPanel, {
     dispose: function() {
       this.disposeCircuitElementEditPanel();

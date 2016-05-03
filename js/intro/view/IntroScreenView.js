@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var inherit = require( 'PHET_CORE/inherit' );
   var IntroSceneNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/intro/view/IntroSceneNode' );
   var ScreenView = require( 'JOIST/ScreenView' );
@@ -103,5 +104,7 @@ define( function( require ) {
     } );
   }
 
+  circuitConstructionKitBasics.register( 'IntroScreenView', IntroScreenView );
+  
   return inherit( ScreenView, IntroScreenView );
 } );

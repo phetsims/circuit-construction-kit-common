@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var CircuitNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitNode' );
@@ -175,6 +176,8 @@ define( function( require ) {
     circuitConstructionKitBasicsModel.ammeter.probePositionProperty.link( updateAmmeter );
   }
 
+  circuitConstructionKitBasics.register( 'CircuitConstructionKitBasicsScreenView', CircuitConstructionKitBasicsScreenView );
+  
   return inherit( ScreenView, CircuitConstructionKitBasicsScreenView, {
 
     //overrideable stub

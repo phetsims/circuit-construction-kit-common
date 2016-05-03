@@ -8,6 +8,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var inherit = require( 'PHET_CORE/inherit' );
   var VerticalCheckBoxGroup = require( 'SUN/VerticalCheckBoxGroup' );
   var CircuitConstructionKitBasicsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitConstructionKitBasicsPanel' );
@@ -28,5 +29,7 @@ define( function( require ) {
     CircuitConstructionKitBasicsPanel.call( this, content );
   }
 
-  return inherit( CircuitConstructionKitBasicsPanel, DisplayOptionsPanel, {} );
+  circuitConstructionKitBasics.register( 'DisplayOptionsPanel', DisplayOptionsPanel );
+
+  return inherit( CircuitConstructionKitBasicsPanel, DisplayOptionsPanel );
 } );

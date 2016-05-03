@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var BlackBoxScreenModel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/model/BlackBoxScreenModel' );
   var BlackBoxScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/BlackBoxScreenView' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -43,5 +44,6 @@ define( function( require ) {
     );
   }
 
+  circuitConstructionKitBasics.register( 'BlackBoxScreen', BlackBoxScreen );
   return inherit( Screen, BlackBoxScreen );
 } );

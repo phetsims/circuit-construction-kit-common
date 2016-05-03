@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var inherit = require( 'PHET_CORE/inherit' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/FixedLengthCircuitElement' );
 
@@ -31,6 +32,8 @@ define( function( require ) {
     this.initialOrientation = options.initialOrientation;
   }
 
+  circuitConstructionKitBasics.register( 'Battery', Battery );
+  
   return inherit( FixedLengthCircuitElement, Battery, {
     toStateObjectWithVertexIndices: function( getVertexIndex ) {
       return _.extend( {

@@ -11,6 +11,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var CircuitConstructionKitBasicsModel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/CircuitConstructionKitBasicsModel' );
   var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Circuit' );
   var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/CircuitStruct' );
@@ -164,6 +165,7 @@ define( function( require ) {
     };
   }
 
+  circuitConstructionKitBasics.register( 'BlackBoxSceneModel', BlackBoxSceneModel );
   return inherit( CircuitConstructionKitBasicsModel, BlackBoxSceneModel, {
     reset: function() {
       CircuitConstructionKitBasicsModel.prototype.reset.call( this );

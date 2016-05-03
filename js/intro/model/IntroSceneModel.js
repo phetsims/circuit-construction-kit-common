@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var CircuitConstructionKitBasicsModel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/CircuitConstructionKitBasicsModel' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/LightBulb' );
@@ -29,6 +30,8 @@ define( function( require ) {
     this.setInitialState();
   }
 
+  circuitConstructionKitBasics.register( 'IntroSceneModel', IntroSceneModel );
+  
   return inherit( CircuitConstructionKitBasicsModel, IntroSceneModel, {
     setInitialState: function() {
       // All of the intro scenes have a light bulb in the center of the screen.

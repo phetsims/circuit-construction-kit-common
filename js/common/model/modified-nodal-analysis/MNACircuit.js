@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var LinearCircuitSolution = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/modified-nodal-analysis/LinearCircuitSolution' );
@@ -163,8 +164,6 @@ define( function( require ) {
     this.currentSources = currentSources;
   }
 
-  circuitConstructionKitBasics.register( 'MNACircuit', MNACircuit );
-
   var resistorToString = function( resistor ) {
     return 'node' + resistor.node0 + ' -> node' + resistor.node1 + ' @ ' + resistor.resistance + ' Ohms';
   };
@@ -186,6 +185,7 @@ define( function( require ) {
       return element.node0;
     }
   };
+  circuitConstructionKitBasics.register( 'MNACircuit', MNACircuit );
 
   return inherit( Object, MNACircuit, {
     toString: function() {

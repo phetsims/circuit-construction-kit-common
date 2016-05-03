@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
 
@@ -26,12 +27,11 @@ define( function( require ) {
     this.elements = elements;
   }
 
-  circuitConstructionKitBasics.register( 'LinearCircuitSolution', LinearCircuitSolution );
-
   // but perhaps we should get it back up to 1E6 again
   var numberApproxEquals = function( a, b ) {
     return Math.abs( a - b ) < 1E-6;
   };
+  circuitConstructionKitBasics.register( 'LinearCircuitSolution', LinearCircuitSolution );
 
   return inherit( Object, LinearCircuitSolution, {
 

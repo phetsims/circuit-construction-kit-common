@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var inherit = require( 'PHET_CORE/inherit' );
   var BlackBoxSceneView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/BlackBoxSceneView' );
   var MultiLineText = require( 'SCENERY_PHET/MultiLineText' );
@@ -50,5 +51,6 @@ define( function( require ) {
     questionText.moveToBack();
   }
 
+  circuitConstructionKitBasics.register( 'WarmUpSceneView', WarmUpSceneView );
   return inherit( BlackBoxSceneView, WarmUpSceneView );
 } );

@@ -8,6 +8,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Resistor' );
@@ -86,6 +87,8 @@ define( function( require ) {
     visibleBoundsProperty.link( updatePosition );
   }
 
+  circuitConstructionKitBasics.register( 'CircuitElementEditContainerPanel', CircuitElementEditContainerPanel );
+  
   return inherit( Node, CircuitElementEditContainerPanel, {}, {
     GET_LAYOUT_POSITION: GET_LAYOUT_POSITION
   } );

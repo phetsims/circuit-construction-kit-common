@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Vertex' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Wire' );
@@ -25,6 +26,8 @@ define( function( require ) {
     this.batteries = batteries;
   }
 
+  circuitConstructionKitBasics.register( 'CircuitStruct', CircuitStruct );
+  
   return inherit( Object, CircuitStruct, {
     clear: function() {
       this.vertices.length = 0;

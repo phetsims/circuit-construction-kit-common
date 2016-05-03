@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var inherit = require( 'PHET_CORE/inherit' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/FixedLengthCircuitElement' );
   var Vector2 = require( 'DOT/Vector2' );
@@ -28,6 +29,8 @@ define( function( require ) {
     }, options );
   }
 
+  circuitConstructionKitBasics.register( 'LightBulb', LightBulb );
+  
   return inherit( FixedLengthCircuitElement, LightBulb, {
     toStateObjectWithVertexIndices: function( getVertexIndex ) {
       return _.extend( { resistance: this.resistance }, FixedLengthCircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex ) );

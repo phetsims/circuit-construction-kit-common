@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
   var Vector2 = require( 'DOT/Vector2' );
@@ -73,6 +74,8 @@ define( function( require ) {
     this.moveToFrontEmitter = new Emitter();
   }
 
+  circuitConstructionKitBasics.register( 'Vertex', Vertex );
+  
   return inherit( PropertySet, Vertex, {}, {
     DEFAULTS: DEFAULTS
   } );

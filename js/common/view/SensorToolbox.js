@@ -64,5 +64,6 @@ define( function( require ) {
   }
 
   circuitConstructionKitBasics.register( 'SensorToolbox', SensorToolbox );
+
   return inherit( CircuitConstructionKitBasicsPanel, SensorToolbox, {} );
 } );

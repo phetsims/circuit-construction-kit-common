@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
@@ -23,6 +24,8 @@ define( function( require ) {
     this.circuitElement = circuitElement;
   }
 
+  circuitConstructionKitBasics.register( 'CircuitElementNode', CircuitElementNode );
+  
   return inherit( Node, CircuitElementNode, {
     createDeselectFunctionListener: function( circuitNode ) {
       var deselect = function( event ) {

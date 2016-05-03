@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ObservableArray = require( 'AXON/ObservableArray' );
   var MNACircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/modified-nodal-analysis/MNACircuit' );
@@ -114,6 +115,8 @@ define( function( require ) {
     this.selectedCircuitElementProperty = new Property( null );
   }
 
+  circuitConstructionKitBasics.register( 'Circuit', Circuit );
+  
   return inherit( Object, Circuit, {
     get circuitElements() {
       return []

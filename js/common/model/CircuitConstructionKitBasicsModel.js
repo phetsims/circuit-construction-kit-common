@@ -8,6 +8,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
   var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Circuit' );
@@ -29,6 +30,8 @@ define( function( require ) {
     this.ammeter = new Ammeter();
   }
 
+  circuitConstructionKitBasics.register( 'CircuitConstructionKitBasicsModel', CircuitConstructionKitBasicsModel );
+  
   return inherit( PropertySet, CircuitConstructionKitBasicsModel, {
 
     reset: function() {

@@ -90,7 +90,7 @@ define( function( require ) {
     var countBatteries = function( initialOrientation ) {
       return circuit.batteries.filter( function( battery ) {return battery.initialOrientation === initialOrientation;} ).length;
     };
-    
+
     var leftBatteryIcon = new Image( batteryImage, {
       cursor: 'pointer',
       scale: iconWidth / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height ),

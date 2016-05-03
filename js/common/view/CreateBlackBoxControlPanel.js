@@ -8,6 +8,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Panel = require( 'SUN/Panel' );
   var NumberControl = require( 'SCENERY_PHET/NumberControl' );
@@ -17,5 +18,7 @@ define( function( require ) {
     Panel.call( this, new NumberControl( 'Black Box Width' ), new Property() );
   }
 
-  return inherit( Panel, CreateBlackBoxControlPanel, {} );
+  circuitConstructionKitBasics.register( 'CreateBlackBoxControlPanel', CreateBlackBoxControlPanel );
+
+  return inherit( Panel, CreateBlackBoxControlPanel );
 } );

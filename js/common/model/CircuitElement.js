@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
   var Emitter = require( 'AXON/Emitter' );
@@ -47,6 +48,8 @@ define( function( require ) {
     this.vertexSelectedEmitter = new Emitter();
   }
 
+  circuitConstructionKitBasics.register( 'CircuitElement', CircuitElement );
+  
   return inherit( PropertySet, CircuitElement, {
     /**
      * Replace one of the vertices with a new one

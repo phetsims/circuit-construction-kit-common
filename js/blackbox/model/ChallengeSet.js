@@ -7,6 +7,9 @@
 define( function( require ) {
   'use strict';
 
+  // modules
+  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  
   var resistivity = 1E-4;
   var warmupCircuitStateObject = {
     wires: [
