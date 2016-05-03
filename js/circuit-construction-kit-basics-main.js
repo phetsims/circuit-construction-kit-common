@@ -9,7 +9,6 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
   var IntroScreen = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/intro/IntroScreen' );
   var EnergyScreen = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/energy/EnergyScreen' );
   var LabScreen = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/lab/LabScreen' );
