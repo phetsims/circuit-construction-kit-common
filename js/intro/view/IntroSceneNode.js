@@ -9,22 +9,22 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var CircuitConstructionKitBasicsScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitConstructionKitBasicsScreenView' );
+  var CircuitConstructionKitScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitConstructionKitScreenView' );
   var Property = require( 'AXON/Property' );
-  var DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/DisplayOptionsPanel' );
-  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
+  var DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/DisplayOptionsPanel' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
 
   // constants
-  var inset = CircuitConstructionKitBasicsConstants.layoutInset;
+  var inset = CircuitConstructionKitConstants.layoutInset;
 
   /**
-   * @param {CircuitConstructionKitBasicsModel} circuitConstructionKitBasicsScreenModel
+   * @param {CircuitConstructionKitModel} circuitConstructionKitScreenModel
    * @param {Object} [options]
    * @constructor
    */
-  function IntroSceneNode( circuitConstructionKitBasicsScreenModel, options ) {
+  function IntroSceneNode( circuitConstructionKitScreenModel, options ) {
     var introSceneNode = this;
     options = _.extend( {
       numberOfRightBatteriesInToolbox: 1,
@@ -33,7 +33,7 @@ define( function( require ) {
       numberOfLightBulbsInToolbox: 0,
       numberOfResistorsInToolbox: 0
     }, options );
-    CircuitConstructionKitBasicsScreenView.call( this, circuitConstructionKitBasicsScreenModel, {
+    CircuitConstructionKitScreenView.call( this, circuitConstructionKitScreenModel, {
       toolboxOrientation: 'horizontal',
       numberOfRightBatteriesInToolbox: options.numberOfRightBatteriesInToolbox,
       numberOfLeftBatteriesInToolbox: options.numberOfLeftBatteriesInToolbox,
@@ -76,7 +76,7 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKitBasics.register( 'IntroSceneNode', IntroSceneNode );
-  
-  return inherit( CircuitConstructionKitBasicsScreenView, IntroSceneNode );
+  circuitConstructionKit.register( 'IntroSceneNode', IntroSceneNode );
+
+  return inherit( CircuitConstructionKitScreenView, IntroSceneNode );
 } );

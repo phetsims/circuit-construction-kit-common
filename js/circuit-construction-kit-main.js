@@ -9,14 +9,14 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var IntroScreen = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/intro/IntroScreen' );
-  var EnergyScreen = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/energy/EnergyScreen' );
-  var LabScreen = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/lab/LabScreen' );
+  var IntroScreen = require( 'CIRCUIT_CONSTRUCTION_KIT/intro/IntroScreen' );
+  var EnergyScreen = require( 'CIRCUIT_CONSTRUCTION_KIT/energy/EnergyScreen' );
+  var LabScreen = require( 'CIRCUIT_CONSTRUCTION_KIT/lab/LabScreen' );
   var Sim = require( 'JOIST/Sim' );
   var SimLauncher = require( 'JOIST/SimLauncher' );
 
   // strings
-  var circuitConstructionKitBasicsTitleString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_BASICS/circuit-construction-kit-basics.title' );
+  var circuitConstructionKitTitleString = require( 'string!CIRCUIT_CONSTRUCTION_KIT/circuit-construction-kit.title' );
 
   var simOptions = {
     credits: {
@@ -35,12 +35,12 @@ define( function( require ) {
     }, simOptions );
   }
 
-  // Circuit Construction Kit: Basics has unit tests for checking the mathematics for the Modified Nodal Analysis
+  // Circuit Construction Kit has unit tests for checking the mathematics for the Modified Nodal Analysis
   // algorithm.  In order to load the classes into an accessible namespace, the *-config.js and *-main.js are loaded
   // however, when running the unit tests we don't also want to launch the simulation.
-  if ( !window.circuitConstructionKitBasicsTestSuite ) {
+  if ( !window.circuitConstructionKitTestSuite ) {
     SimLauncher.launch( function() {
-      var sim = new Sim( circuitConstructionKitBasicsTitleString, [
+      var sim = new Sim( circuitConstructionKitTitleString, [
         new IntroScreen(),
         new EnergyScreen(),
         new LabScreen()

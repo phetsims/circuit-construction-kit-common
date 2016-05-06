@@ -8,7 +8,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
 
   var resistivity = 1E-4;
   var warmupCircuitStateObject = {
@@ -785,7 +785,7 @@ define( function( require ) {
     challengeArray: challengeArray
   };
 
-  circuitConstructionKitBasics.register( 'ChallengeSet', ChallengeSet );
+  circuitConstructionKit.register( 'ChallengeSet', ChallengeSet );
   
   return ChallengeSet;
 } );

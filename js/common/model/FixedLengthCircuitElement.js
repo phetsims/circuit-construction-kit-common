@@ -9,9 +9,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/CircuitElement' );
+  var CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/CircuitElement' );
 
   /**
    *
@@ -25,7 +25,7 @@ define( function( require ) {
     this.length = length;
   }
 
-  circuitConstructionKitBasics.register( 'FixedLengthCircuitElement', FixedLengthCircuitElement );
+  circuitConstructionKit.register( 'FixedLengthCircuitElement', FixedLengthCircuitElement );
   
   return inherit( CircuitElement, FixedLengthCircuitElement );
 } );

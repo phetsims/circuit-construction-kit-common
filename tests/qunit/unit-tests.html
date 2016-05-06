@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 
-  <title>Unit tests for Circuit Construction Kit: Basics</title>
+  <title>Unit tests for Circuit Construction Kit</title>
   <link rel="stylesheet" href="../../../sherpa/lib/qunit-1.14.0.css">
 
   <!-- CDN reference for now, so we don't pull in unneeded deps -->
@@ -14,14 +14,14 @@
   <script src="../../../sherpa/lib/lodash-2.4.1.min.js"></script>
   <script src="../../../chipper/js/initialize-globals.js"></script>
   <script type="text/javascript">
-    window.circuitConstructionKitBasicsTestSuite = true;
+    window.circuitConstructionKitTestSuite = true;
 
     window.assertions.enableAssert();
     window.assertions.enableAssertSlow();
   </script>
 
   <!-- <script src="../../dist/standalone/dot.min.js"></script> -->
-  <script data-main="../../js/circuit-construction-kit-basics-config.js"
+  <script data-main="../../js/circuit-construction-kit-config.js"
           src="../../../sherpa/lib/require-2.1.11.js"></script>
 
   <!-- Loads the code needed to run unit tests for each particular library/codebase -->
@@ -41,8 +41,8 @@
 <div id="qunit-fixture"></div>
 <script src="../../../sherpa/lib/qunit-1.14.0.js"></script>
 <script>
-  require( [ 'circuit-construction-kit-basics-config' ], function() {
-    require( [ 'circuit-construction-kit-basics-main', 'PHET_CORE/main', 'PHET_CORE/phetAllocation' ], function() {
+  require( [ 'circuit-construction-kit-config' ], function() {
+    require( [ 'circuit-construction-kit-main', 'PHET_CORE/main', 'PHET_CORE/phetAllocation' ], function() {
       runCCKTests( '.' );
     } );
   } );

@@ -11,10 +11,10 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
-  var CircuitConstructionKitBasicsModel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/CircuitConstructionKitBasicsModel' );
-  var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Circuit' );
-  var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/CircuitStruct' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var CircuitConstructionKitModel = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/CircuitConstructionKitModel' );
+  var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Circuit' );
+  var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/CircuitStruct' );
   var inherit = require( 'PHET_CORE/inherit' );
 
   /**
@@ -44,7 +44,7 @@ define( function( require ) {
       circuitElement.insideTrueBlackBox = true;
     }
 
-    CircuitConstructionKitBasicsModel.call( this, {
+    CircuitConstructionKitModel.call( this, {
       mode: 'investigate', // or 'build'
       revealing: false, // true when the user is holding down the reveal button, and the answer is showing
       isRevealEnabled: false // true when the user has created a circuit for comparison with the black box (at least one terminal connected)
@@ -165,10 +165,10 @@ define( function( require ) {
     };
   }
 
-  circuitConstructionKitBasics.register( 'BlackBoxSceneModel', BlackBoxSceneModel );
-  return inherit( CircuitConstructionKitBasicsModel, BlackBoxSceneModel, {
+  circuitConstructionKit.register( 'BlackBoxSceneModel', BlackBoxSceneModel );
+  return inherit( CircuitConstructionKitModel, BlackBoxSceneModel, {
     reset: function() {
-      CircuitConstructionKitBasicsModel.prototype.reset.call( this );
+      CircuitConstructionKitModel.prototype.reset.call( this );
       this.resetBlackBoxSceneModel();
     }
   } );

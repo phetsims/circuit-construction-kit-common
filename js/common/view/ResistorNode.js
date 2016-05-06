@@ -10,14 +10,14 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
-  var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/FixedLengthCircuitElementNode' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/FixedLengthCircuitElementNode' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var ResistorColors = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ResistorColors' );
+  var ResistorColors = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/ResistorColors' );
   var Image = require( 'SCENERY/nodes/Image' );
 
   // images
-  var resistorImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/resistor.png' );
+  var resistorImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT/resistor.png' );
 
   /**
    *
@@ -26,7 +26,7 @@ define( function( require ) {
    * @param options
    * @constructor
    */
-  function ResistorNode( circuitConstructionKitBasicsScreenView, circuitNode, resistor, options ) {
+  function ResistorNode( circuitConstructionKitScreenView, circuitNode, resistor, options ) {
     this.resistor = resistor;
     var imageScale = 0.7;
     var resistorNode = new Image( resistorImage );
@@ -60,13 +60,13 @@ define( function( require ) {
       resistorNode.addChild( colorBands[ i ] );
     }
 
-    FixedLengthCircuitElementNode.call( this, circuitConstructionKitBasicsScreenView, circuitNode, resistor, resistorNode, imageScale, options );
+    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, resistor, resistorNode, imageScale, options );
     this.disposeResistorNode = function() {
       resistor.resistanceProperty.unlink( updateColorBands );
     };
   }
 
-  circuitConstructionKitBasics.register( 'ResistorNode', ResistorNode );
+  circuitConstructionKit.register( 'ResistorNode', ResistorNode );
 
   return inherit( FixedLengthCircuitElementNode, ResistorNode, {
     dispose: function() {

@@ -8,10 +8,10 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
   var VerticalCheckBoxGroup = require( 'SUN/VerticalCheckBoxGroup' );
-  var CircuitConstructionKitBasicsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitConstructionKitBasicsPanel' );
+  var CircuitConstructionKitPanel = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitConstructionKitPanel' );
   var Text = require( 'SCENERY/nodes/Text' );
 
   function DisplayOptionsPanel( showElectronsProperty, conventionalCurrentProperty, showValuesProperty ) {
@@ -26,10 +26,10 @@ define( function( require ) {
       content: new Text( 'Values', textOptions ),
       property: showValuesProperty
     } ] );
-    CircuitConstructionKitBasicsPanel.call( this, content );
+    CircuitConstructionKitPanel.call( this, content );
   }
 
-  circuitConstructionKitBasics.register( 'DisplayOptionsPanel', DisplayOptionsPanel );
+  circuitConstructionKit.register( 'DisplayOptionsPanel', DisplayOptionsPanel );
 
-  return inherit( CircuitConstructionKitBasicsPanel, DisplayOptionsPanel );
+  return inherit( CircuitConstructionKitPanel, DisplayOptionsPanel );
 } );

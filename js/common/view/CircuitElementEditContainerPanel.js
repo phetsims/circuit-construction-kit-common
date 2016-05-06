@@ -8,24 +8,24 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Resistor' );
-  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/LightBulb' );
-  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Battery' );
-  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Wire' );
+  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Resistor' );
+  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/LightBulb' );
+  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Battery' );
+  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Wire' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/FixedLengthCircuitElement' );
-  var CircuitElementEditPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementEditPanel' );
-  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
+  var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/FixedLengthCircuitElement' );
+  var CircuitElementEditPanel = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitElementEditPanel' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
 
   // constants
   var GET_LAYOUT_POSITION = function( visibleBounds ) {
     return {
       centerX: visibleBounds.centerX,
-      bottom: visibleBounds.bottom - CircuitConstructionKitBasicsConstants.layoutInset
+      bottom: visibleBounds.bottom - CircuitConstructionKitConstants.layoutInset
     };
   };
 
@@ -87,7 +87,7 @@ define( function( require ) {
     visibleBoundsProperty.link( updatePosition );
   }
 
-  circuitConstructionKitBasics.register( 'CircuitElementEditContainerPanel', CircuitElementEditContainerPanel );
+  circuitConstructionKit.register( 'CircuitElementEditContainerPanel', CircuitElementEditContainerPanel );
   
   return inherit( Node, CircuitElementEditContainerPanel, {}, {
     GET_LAYOUT_POSITION: GET_LAYOUT_POSITION

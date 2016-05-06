@@ -8,19 +8,19 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var CircuitConstructionKitBasicsScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitConstructionKitBasicsScreenView' );
+  var CircuitConstructionKitScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitConstructionKitScreenView' );
 
   /**
-   * @param {CircuitConstructionKitBasicsModel} circuitConstructionKitBasicsScreenModel
+   * @param {CircuitConstructionKitModel} circuitConstructionKitScreenModel
    * @constructor
    */
-  function EnergyScreenView( circuitConstructionKitBasicsScreenModel ) {
-    CircuitConstructionKitBasicsScreenView.call( this, circuitConstructionKitBasicsScreenModel, { toolboxOrientation: 'horizontal' } );
+  function EnergyScreenView( circuitConstructionKitScreenModel ) {
+    CircuitConstructionKitScreenView.call( this, circuitConstructionKitScreenModel, { toolboxOrientation: 'horizontal' } );
   }
 
-  circuitConstructionKitBasics.register( 'EnergyScreenView', EnergyScreenView );
-  
-  return inherit( CircuitConstructionKitBasicsScreenView, EnergyScreenView );
+  circuitConstructionKit.register( 'EnergyScreenView', EnergyScreenView );
+
+  return inherit( CircuitConstructionKitScreenView, EnergyScreenView );
 } );

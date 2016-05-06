@@ -9,18 +9,18 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
-  var CircuitConstructionKitBasicsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitConstructionKitBasicsPanel' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var CircuitConstructionKitPanel = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitConstructionKitPanel' );
   var HBox = require( 'SCENERY/nodes/HBox' );
-  var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/VoltmeterNode' );
-  var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/AmmeterNode' );
-  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
-  var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Voltmeter' );
-  var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Ammeter' );
+  var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/VoltmeterNode' );
+  var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/AmmeterNode' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+  var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Voltmeter' );
+  var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Ammeter' );
 
   function SensorToolbox( voltmeterNode, ammeterNode ) {
     var sensorToolbox = this;
-    var toolIconLength = CircuitConstructionKitBasicsConstants.toolboxIconLength;
+    var toolIconLength = CircuitConstructionKitConstants.toolboxIconLength;
 
     var voltmeterNodeIcon = new VoltmeterNode( new Voltmeter(), { icon: true } );
     voltmeterNode.voltmeter.visibleProperty.link( function( visible ) {
@@ -53,8 +53,8 @@ define( function( require ) {
       }
     } );
 
-    CircuitConstructionKitBasicsPanel.call( this, new HBox( {
-      spacing: CircuitConstructionKitBasicsConstants.toolboxItemSpacing,
+    CircuitConstructionKitPanel.call( this, new HBox( {
+      spacing: CircuitConstructionKitConstants.toolboxItemSpacing,
       align: 'bottom',
       children: [
         voltmeterNodeIcon,
@@ -63,7 +63,7 @@ define( function( require ) {
     } ) );
   }
 
-  circuitConstructionKitBasics.register( 'SensorToolbox', SensorToolbox );
+  circuitConstructionKit.register( 'SensorToolbox', SensorToolbox );
 
-  return inherit( CircuitConstructionKitBasicsPanel, SensorToolbox, {} );
+  return inherit( CircuitConstructionKitPanel, SensorToolbox, {} );
 } );

@@ -9,11 +9,11 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
-  var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementEditContainerPanel' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+  var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitElementEditContainerPanel' );
 
   /**
    * @param {Object} [options]
@@ -24,7 +24,7 @@ define( function( require ) {
     this.circuitElement = circuitElement;
   }
 
-  circuitConstructionKitBasics.register( 'CircuitElementNode', CircuitElementNode );
+  circuitConstructionKit.register( 'CircuitElementNode', CircuitElementNode );
   
   return inherit( Node, CircuitElementNode, {
     createDeselectFunctionListener: function( circuitNode ) {
@@ -54,7 +54,7 @@ define( function( require ) {
     },
     maybeSelect: function( event, circuitNode, p ) {
 
-      if ( event.pointer.point.distance( p ) < CircuitConstructionKitBasicsConstants.tapThreshold ) {
+      if ( event.pointer.point.distance( p ) < CircuitConstructionKitConstants.tapThreshold ) {
 
         circuitNode.circuit.selectedCircuitElementProperty.set( this.circuitElement );
 

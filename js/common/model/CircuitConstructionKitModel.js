@@ -8,18 +8,18 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
-  var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Circuit' );
-  var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/CircuitStruct' );
-  var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Voltmeter' );
-  var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Ammeter' );
+  var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Circuit' );
+  var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/CircuitStruct' );
+  var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Voltmeter' );
+  var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Ammeter' );
 
   /**
    * @constructor
    */
-  function CircuitConstructionKitBasicsModel( additionalProperties, options ) {
+  function CircuitConstructionKitModel( additionalProperties, options ) {
     options = _.extend( { circuit: null }, options );
     PropertySet.call( this, _.extend( {
       showElectrons: false
@@ -30,9 +30,9 @@ define( function( require ) {
     this.ammeter = new Ammeter();
   }
 
-  circuitConstructionKitBasics.register( 'CircuitConstructionKitBasicsModel', CircuitConstructionKitBasicsModel );
-  
-  return inherit( PropertySet, CircuitConstructionKitBasicsModel, {
+  circuitConstructionKit.register( 'CircuitConstructionKitModel', CircuitConstructionKitModel );
+
+  return inherit( PropertySet, CircuitConstructionKitModel, {
 
     reset: function() {
       PropertySet.prototype.reset.call( this );

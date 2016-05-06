@@ -10,17 +10,17 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ObservableArray = require( 'AXON/ObservableArray' );
-  var MNACircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/modified-nodal-analysis/MNACircuit' );
+  var MNACircuit = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/modified-nodal-analysis/MNACircuit' );
   var Property = require( 'AXON/Property' );
   var Emitter = require( 'AXON/Emitter' );
-  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Vertex' );
-  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Wire' );
-  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Battery' );
-  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/LightBulb' );
-  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Resistor' );
+  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Vertex' );
+  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Wire' );
+  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Battery' );
+  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/LightBulb' );
+  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Resistor' );
 
   // constants
   var SNAP_RADIUS = 30;
@@ -115,7 +115,7 @@ define( function( require ) {
     this.selectedCircuitElementProperty = new Property( null );
   }
 
-  circuitConstructionKitBasics.register( 'Circuit', Circuit );
+  circuitConstructionKit.register( 'Circuit', Circuit );
   
   return inherit( Object, Circuit, {
     get circuitElements() {

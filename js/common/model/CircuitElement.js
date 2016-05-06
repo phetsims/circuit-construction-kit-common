@@ -9,7 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
   var Emitter = require( 'AXON/Emitter' );
@@ -22,7 +22,7 @@ define( function( require ) {
     assert && assert( startVertex !== endVertex, 'vertices must be different' );
 
     options = _.extend( {
-      canBeDroppedInToolbox: true, // false in Circuit Construction Kit: Basics Intro screen
+      canBeDroppedInToolbox: true, // false in Circuit Construction Kit Intro screen
       interactive: true // false for Black Box elements
     }, options );
     this.canBeDroppedInToolbox = options.canBeDroppedInToolbox;
@@ -48,7 +48,7 @@ define( function( require ) {
     this.vertexSelectedEmitter = new Emitter();
   }
 
-  circuitConstructionKitBasics.register( 'CircuitElement', CircuitElement );
+  circuitConstructionKit.register( 'CircuitElement', CircuitElement );
   
   return inherit( PropertySet, CircuitElement, {
     /**

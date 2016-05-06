@@ -10,18 +10,18 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
 
   /**
    *
    * @constructor
    */
-  function CircuitConstructionKitBasicsConstants() {
+  function CircuitConstructionKitConstants() {
   }
 
-  circuitConstructionKitBasics.register( 'CircuitConstructionKitBasicsConstants', CircuitConstructionKitBasicsConstants );
+  circuitConstructionKit.register( 'CircuitConstructionKitConstants', CircuitConstructionKitConstants );
 
-  return inherit( Object, CircuitConstructionKitBasicsConstants, {}, {
+  return inherit( Object, CircuitConstructionKitConstants, {}, {
     vertexNodeAttributes: { stroke: 'black', lineWidth: 3, cursor: 'pointer' },
     toolboxIconLength: 60, // Width or height for icons in the control panel
     toolboxItemSpacing: 30,

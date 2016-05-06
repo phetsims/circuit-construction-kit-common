@@ -9,9 +9,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/FixedLengthCircuitElementNode' );
+  var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/FixedLengthCircuitElementNode' );
   var LightBulbNode = require( 'SCENERY_PHET/LightBulbNode' );
   var Property = require( 'AXON/Property' );
   var Util = require( 'DOT/Util' );
@@ -21,7 +21,7 @@ define( function( require ) {
    *
    * @constructor
    */
-  function CCKLightBulbNode( circuitConstructionKitBasicsScreenView, circuitNode, lightBulb, options ) {
+  function CCKLightBulbNode( circuitConstructionKitScreenView, circuitNode, lightBulb, options ) {
     var cckLightBulbNode = this;
     this.lightBulb = lightBulb;
     var brightnessProperty = new Property( 0.0 );
@@ -62,13 +62,13 @@ define( function( require ) {
         bottom: FixedLengthCircuitElementNode.HIGHLIGHT_INSET * 0.75
       }
     }, options );
-    FixedLengthCircuitElementNode.call( this, circuitConstructionKitBasicsScreenView, circuitNode, lightBulb, lightBulbNode, contentScale, options );
+    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, lightBulbNode, contentScale, options );
 
     // Set the initial location of the highlight, since it was not available in the supercall to updateLayout
     updateLayout( lightBulb.startVertex.position, lightBulb.endVertex.position );
   }
 
-  circuitConstructionKitBasics.register( 'CCKLightBulbNode', CCKLightBulbNode );
+  circuitConstructionKit.register( 'CCKLightBulbNode', CCKLightBulbNode );
 
   return inherit( FixedLengthCircuitElementNode, CCKLightBulbNode );
 } );

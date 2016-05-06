@@ -9,35 +9,35 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
   var Path = require( 'SCENERY/nodes/Path' );
   var LineStyles = require( 'KITE/util/LineStyles' );
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
   var Color = require( 'SCENERY/util/Color' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Vector2 = require( 'DOT/Vector2' );
-  var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementNode' );
+  var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitElementNode' );
 
   // constants
   var WIRE_LINE_WIDTH = 12; // screen coordinates
 
   /**
-   * @param {CircuitConstructionKitBasicsScreenView|null} circuitConstructionKitBasicsScreenView - if null, this WireNode is just an icon
+   * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - if null, this WireNode is just an icon
    * @param {CircuitNode} circuitNode
    * @param {Wire} wire
    * @constructor
    */
-  function WireNode( circuitConstructionKitBasicsScreenView, circuitNode, wire ) {
+  function WireNode( circuitConstructionKitScreenView, circuitNode, wire ) {
     var wireNode = this;
     this.wire = wire;
 
     var highlightNode = new Path( null, {
-      stroke: CircuitConstructionKitBasicsConstants.highlightColor,
-      lineWidth: CircuitConstructionKitBasicsConstants.highlightLineWidth,
+      stroke: CircuitConstructionKitConstants.highlightColor,
+      lineWidth: CircuitConstructionKitConstants.highlightLineWidth,
       pickable: false,
       visible: false
     } );
@@ -165,8 +165,8 @@ define( function( require ) {
       end: function( event ) {
 
         // If over the toolbox, then drop into it, and don't process further
-        if ( circuitConstructionKitBasicsScreenView.canNodeDropInToolbox( wireNode ) ) {
-          circuitConstructionKitBasicsScreenView.dropCircuitElementNodeInToolbox( wireNode );
+        if ( circuitConstructionKitScreenView.canNodeDropInToolbox( wireNode ) ) {
+          circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( wireNode );
           return;
         }
         if ( !wire.interactive ) {
@@ -180,7 +180,7 @@ define( function( require ) {
         wireNode.maybeSelect( event, circuitNode, p );
       }
     } );
-    circuitConstructionKitBasicsScreenView && wireNode.addInputListener( this.inputListener );
+    circuitConstructionKitScreenView && wireNode.addInputListener( this.inputListener );
 
     if ( circuitNode ) {
       var updateHighlight = function( lastCircuitElement ) {
@@ -209,7 +209,7 @@ define( function( require ) {
     };
   }
 
-  circuitConstructionKitBasics.register( 'WireNode', WireNode );
+  circuitConstructionKit.register( 'WireNode', WireNode );
   
   return inherit( CircuitElementNode, WireNode, {
 

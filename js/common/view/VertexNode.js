@@ -10,9 +10,9 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var Circle = require( 'SCENERY/nodes/Circle' );
-  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
@@ -45,8 +45,8 @@ define( function( require ) {
       cursor: 'pointer'
     } );
     var highlightNode = new Circle( 30, {
-      stroke: CircuitConstructionKitBasicsConstants.highlightColor,
-      lineWidth: CircuitConstructionKitBasicsConstants.highlightLineWidth,
+      stroke: CircuitConstructionKitConstants.highlightColor,
+      lineWidth: CircuitConstructionKitConstants.highlightLineWidth,
       pickable: false
     } );
 
@@ -54,7 +54,7 @@ define( function( require ) {
       baseColor: 'yellow',
       content: new FontAwesomeNode( 'cut', {
         rotation: -Math.PI / 2, // scissors point up
-        scale: CircuitConstructionKitBasicsConstants.fontAwesomeIconScale
+        scale: CircuitConstructionKitConstants.fontAwesomeIconScale
       } ),
       minXMargin: 10,
       minYMargin: 10,
@@ -102,7 +102,7 @@ define( function( require ) {
 
     // var updateShape = function() {
     //   var edgeCount = circuit.countCircuitElements( vertex );
-    //   dottedLineNode.fill = edgeCount > 1 ? CircuitConstructionKitBasicsConstants.solderColor : null;
+    //   dottedLineNode.fill = edgeCount > 1 ? CircuitConstructionKitConstants.solderColor : null;
     // };
     // circuit.vertices.addItemAddedListener( updateShape );
     // circuit.vertices.addItemRemovedListener( updateShape );
@@ -120,7 +120,7 @@ define( function( require ) {
         vertex.draggable && circuitNode.endDrag( event, vertex );
 
         // Only show on a tap, not on every drag.
-        if ( vertex.interactive && event.pointer.point.distance( p ) < CircuitConstructionKitBasicsConstants.tapThreshold ) {
+        if ( vertex.interactive && event.pointer.point.distance( p ) < CircuitConstructionKitConstants.tapThreshold ) {
 
           vertex.selected = true;
 
@@ -202,7 +202,7 @@ define( function( require ) {
     };
   }
 
-  circuitConstructionKitBasics.register( 'VertexNode', VertexNode );
+  circuitConstructionKit.register( 'VertexNode', VertexNode );
 
   return inherit( Node, VertexNode, {
     dispose: function() {

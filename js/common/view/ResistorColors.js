@@ -9,7 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Color = require( 'SCENERY/util/Color' );
   var Util = require( 'DOT/Util' );
@@ -40,7 +40,7 @@ define( function( require ) {
   function ResistorColors() {
   }
 
-  circuitConstructionKitBasics.register( 'ResistorColors', ResistorColors );
+  circuitConstructionKit.register( 'ResistorColors', ResistorColors );
   
   return inherit( Object, ResistorColors, {}, {
 

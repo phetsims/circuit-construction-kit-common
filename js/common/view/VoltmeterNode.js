@@ -9,21 +9,21 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var Image = require( 'SCENERY/nodes/Image' );
   var Node = require( 'SCENERY/nodes/Node' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var Util = require( 'DOT/Util' );
-  var ProbeTextNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ProbeTextNode' );
-  var ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ProbeWireNode' );
+  var ProbeTextNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/ProbeTextNode' );
+  var ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/ProbeWireNode' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var Vector2 = require( 'DOT/Vector2' );
-  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
 
   // images
-  var voltmeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/voltmeter_body.png' );
-  var redProbe = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/probe_red.png' );
-  var blackProbe = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/probe_black.png' );
+  var voltmeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT/voltmeter_body.png' );
+  var redProbe = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT/probe_red.png' );
+  var blackProbe = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT/probe_black.png' );
 
   // constants
 
@@ -113,7 +113,7 @@ define( function( require ) {
     options.visibleBoundsProperty && options.visibleBoundsProperty.link( function( visibleBounds ) {
 
       // Make sure at least a grabbable edge remains visible
-      visibleBounds = visibleBounds.eroded( CircuitConstructionKitBasicsConstants.dragBoundsErosion );
+      visibleBounds = visibleBounds.eroded( CircuitConstructionKitConstants.dragBoundsErosion );
 
       voltmeterNode.movableDragHandler.setDragBounds( visibleBounds );
       redProbeDragHandler.setDragBounds( visibleBounds );
@@ -125,7 +125,7 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKitBasics.register( 'VoltmeterNode', VoltmeterNode );
+  circuitConstructionKit.register( 'VoltmeterNode', VoltmeterNode );
 
   return inherit( Node, VoltmeterNode, {} );
 } );

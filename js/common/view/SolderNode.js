@@ -10,9 +10,9 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var Circle = require( 'SCENERY/nodes/Circle' );
-  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
   var Node = require( 'SCENERY/nodes/Node' );
 
   /**
@@ -36,7 +36,7 @@ define( function( require ) {
 
     var updateShape = function() {
       var edgeCount = circuit.countCircuitElements( vertex );
-      dottedLineNode.fill = edgeCount > 1 ? CircuitConstructionKitBasicsConstants.solderColor : null;
+      dottedLineNode.fill = edgeCount > 1 ? CircuitConstructionKitConstants.solderColor : null;
     };
     circuit.vertices.addItemAddedListener( updateShape );
     circuit.vertices.addItemRemovedListener( updateShape );
@@ -80,7 +80,7 @@ define( function( require ) {
     };
   }
 
-  circuitConstructionKitBasics.register( 'SolderNode', SolderNode );
+  circuitConstructionKit.register( 'SolderNode', SolderNode );
 
   return inherit( Node, SolderNode, {
     dispose: function() {

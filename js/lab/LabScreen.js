@@ -8,25 +8,25 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
-  var LabScreenModel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/lab/model/LabScreenModel' );
-  var LabScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/lab/view/LabScreenView' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var LabScreenModel = require( 'CIRCUIT_CONSTRUCTION_KIT/lab/model/LabScreenModel' );
+  var LabScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT/lab/view/LabScreenView' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Screen = require( 'JOIST/Screen' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var Image = require( 'SCENERY/nodes/Image' );
-  var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ResistorNode' );
-  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Vertex' );
-  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Resistor' );
-  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Wire' );
-  var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/WireNode' );
+  var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/ResistorNode' );
+  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Vertex' );
+  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Resistor' );
+  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Wire' );
+  var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/WireNode' );
   var LightBulbNode = require( 'SCENERY_PHET/LightBulbNode' );
   var Property = require( 'AXON/Property' );
   // images
-  var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/battery.png' );
+  var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT/battery.png' );
 
   /**
    * @constructor
@@ -39,7 +39,7 @@ define( function( require ) {
     } );
 
     var wireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ) );
-    var resistorNode = new ResistorNode( null, null, new Resistor( new Vertex( 0, 0 ), new Vertex( Resistor.RESISTOR_LENGTH, 0 ), CircuitConstructionKitBasicsConstants.defaultResistance ), { icon: true } );
+    var resistorNode = new ResistorNode( null, null, new Resistor( new Vertex( 0, 0 ), new Vertex( Resistor.RESISTOR_LENGTH, 0 ), CircuitConstructionKitConstants.defaultResistance ), { icon: true } );
     var battery = new Image( batteryImage );
     var lightBulbNode = new LightBulbNode( new Property( 0 ) );
 
@@ -70,7 +70,7 @@ define( function( require ) {
     );
   }
 
-  circuitConstructionKitBasics.register( 'LabScreen', LabScreen );
+  circuitConstructionKit.register( 'LabScreen', LabScreen );
   
   return inherit( Screen, LabScreen );
 } );

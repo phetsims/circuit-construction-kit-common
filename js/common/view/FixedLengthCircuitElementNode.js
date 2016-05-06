@@ -10,17 +10,17 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
-  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
   var Property = require( 'AXON/Property' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementNode' );
+  var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitElementNode' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var Node = require( 'SCENERY/nodes/Node' );
 
   /**
-   * @param {CircuitConstructionKitBasicsScreenView} circuitConstructionKitBasicsScreenView
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
    * @param circuitNode - Null if an icon is created
    * @param circuitElement
    * @param {Node} contentNode - the node that will display the component
@@ -28,7 +28,7 @@ define( function( require ) {
    * @param options
    * @constructor
    */
-  function FixedLengthCircuitElementNode( circuitConstructionKitBasicsScreenView, circuitNode, circuitElement, contentNode,
+  function FixedLengthCircuitElementNode( circuitConstructionKitScreenView, circuitNode, circuitElement, contentNode,
                                           contentScale, options ) {
     var fixedLengthCircuitElementNode = this;
 
@@ -92,8 +92,8 @@ define( function( require ) {
         8,
         8,
         _.extend( options.highlightOptions, {
-          stroke: CircuitConstructionKitBasicsConstants.highlightColor,
-          lineWidth: CircuitConstructionKitBasicsConstants.highlightLineWidth,
+          stroke: CircuitConstructionKitConstants.highlightColor,
+          lineWidth: CircuitConstructionKitConstants.highlightLineWidth,
           scale: 1.0 / contentScale,
           pickable: false
         } ) );
@@ -129,8 +129,8 @@ define( function( require ) {
       end: function( event ) {
 
         // If over the toolbox, then drop into it, and don't process further
-        if ( circuitConstructionKitBasicsScreenView.canNodeDropInToolbox( fixedLengthCircuitElementNode ) ) {
-          circuitConstructionKitBasicsScreenView.dropCircuitElementNodeInToolbox( fixedLengthCircuitElementNode );
+        if ( circuitConstructionKitScreenView.canNodeDropInToolbox( fixedLengthCircuitElementNode ) ) {
+          circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( fixedLengthCircuitElementNode );
           return;
         }
 
@@ -178,7 +178,7 @@ define( function( require ) {
     };
   }
 
-  circuitConstructionKitBasics.register( 'FixedLengthCircuitElementNode', FixedLengthCircuitElementNode );
+  circuitConstructionKit.register( 'FixedLengthCircuitElementNode', FixedLengthCircuitElementNode );
 
   return inherit( CircuitElementNode, FixedLengthCircuitElementNode, {
     dispose: function() {

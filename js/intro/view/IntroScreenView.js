@@ -9,20 +9,20 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var IntroSceneNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/intro/view/IntroSceneNode' );
+  var IntroSceneNode = require( 'CIRCUIT_CONSTRUCTION_KIT/intro/view/IntroSceneNode' );
   var ScreenView = require( 'JOIST/ScreenView' );
-  var IntroSceneModel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/intro/model/IntroSceneModel' );
-  var SceneSelectionRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/intro/view/SceneSelectionRadioButtonGroup' );
-  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
+  var IntroSceneModel = require( 'CIRCUIT_CONSTRUCTION_KIT/intro/model/IntroSceneModel' );
+  var SceneSelectionRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT/intro/view/SceneSelectionRadioButtonGroup' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
 
   // constants
-  var inset = CircuitConstructionKitBasicsConstants.layoutInset;
+  var inset = CircuitConstructionKitConstants.layoutInset;
 
   /**
-   * @param {CircuitConstructionKitBasicsModel} introScreenModel
+   * @param {CircuitConstructionKitModel} introScreenModel
    * @constructor
    */
   function IntroScreenView( introScreenModel ) {
@@ -42,7 +42,7 @@ define( function( require ) {
 
         _.values( sceneNodes ).forEach( function( sceneNode ) {
           sceneNode.reset();
-          sceneNode.circuitConstructionKitBasicsModel.reset();
+          sceneNode.circuitConstructionKitModel.reset();
         } );
       }
     } );
@@ -104,7 +104,7 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKitBasics.register( 'IntroScreenView', IntroScreenView );
+  circuitConstructionKit.register( 'IntroScreenView', IntroScreenView );
   
   return inherit( ScreenView, IntroScreenView );
 } );

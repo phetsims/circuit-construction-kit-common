@@ -9,16 +9,16 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
-  var CircuitConstructionKitBasicsModel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/CircuitConstructionKitBasicsModel' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var CircuitConstructionKitModel = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/CircuitConstructionKitModel' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/LightBulb' );
+  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/LightBulb' );
 
   /**
    * @constructor
    */
   function IntroSceneModel( layoutBounds, selectedSceneProperty ) {
-    CircuitConstructionKitBasicsModel.call( this );
+    CircuitConstructionKitModel.call( this );
 
     // @public (read-only)
     this.selectedSceneProperty = selectedSceneProperty;
@@ -30,9 +30,9 @@ define( function( require ) {
     this.setInitialState();
   }
 
-  circuitConstructionKitBasics.register( 'IntroSceneModel', IntroSceneModel );
-  
-  return inherit( CircuitConstructionKitBasicsModel, IntroSceneModel, {
+  circuitConstructionKit.register( 'IntroSceneModel', IntroSceneModel );
+
+  return inherit( CircuitConstructionKitModel, IntroSceneModel, {
     setInitialState: function() {
       // All of the intro scenes have a light bulb in the center of the screen.
       this.circuit.lightBulbs.add( LightBulb.createAtPosition( this.layoutBounds.center, {
@@ -40,7 +40,7 @@ define( function( require ) {
       } ) );
     },
     reset: function() {
-      CircuitConstructionKitBasicsModel.prototype.reset.call( this );
+      CircuitConstructionKitModel.prototype.reset.call( this );
 
       this.setInitialState();
     }

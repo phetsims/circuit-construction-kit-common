@@ -3,10 +3,10 @@
 (function() {
   'use strict';
 
-  var MNACircuit = phet.circuitConstructionKitBasics.MNACircuit;
-  var LinearCircuitSolution = phet.circuitConstructionKitBasics.LinearCircuitSolution;
+  var MNACircuit = phet.circuitConstructionKit.MNACircuit;
+  var LinearCircuitSolution = phet.circuitConstructionKit.LinearCircuitSolution;
 
-  module( 'Circuit Construction Kit: Basics' );
+  module( 'Circuit Construction Kit' );
 
   var approxEquals = function( a, b ) {
     return Math.abs( a - b ) < 1E-6;

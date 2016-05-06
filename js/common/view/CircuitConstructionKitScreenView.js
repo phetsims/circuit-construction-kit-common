@@ -9,29 +9,29 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ScreenView = require( 'JOIST/ScreenView' );
-  var CircuitNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitNode' );
-  var CircuitElementToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementToolbox' );
-  var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitElementEditContainerPanel' );
-  var SensorToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/SensorToolbox' );
-  var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/VoltmeterNode' );
-  var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/AmmeterNode' );
-  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
+  var CircuitNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitNode' );
+  var CircuitElementToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitElementToolbox' );
+  var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitElementEditContainerPanel' );
+  var SensorToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/SensorToolbox' );
+  var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/VoltmeterNode' );
+  var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/AmmeterNode' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
   var Util = require( 'DOT/Util' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
 
   // constants
-  var inset = CircuitConstructionKitBasicsConstants.layoutInset;
+  var inset = CircuitConstructionKitConstants.layoutInset;
 
   /**
-   * @param {CircuitConstructionKitBasicsModel} circuitConstructionKitBasicsModel
+   * @param {CircuitConstructionKitModel} circuitConstructionKitModel
    * @param {Object} [options]
    * @constructor
    */
-  function CircuitConstructionKitBasicsScreenView( circuitConstructionKitBasicsModel, options ) {
-    var circuitConstructionKitBasicsScreenView = this;
+  function CircuitConstructionKitScreenView( circuitConstructionKitModel, options ) {
+    var circuitConstructionKitScreenView = this;
 
     options = _.extend( {
 
@@ -52,32 +52,32 @@ define( function( require ) {
       },
       getCircuitEditPanelLayoutPosition: CircuitElementEditContainerPanel.GET_LAYOUT_POSITION
     }, options );
-    this.circuitConstructionKitBasicsModel = circuitConstructionKitBasicsModel;
+    this.circuitConstructionKitModel = circuitConstructionKitModel;
     ScreenView.call( this );
 
-    var voltmeterNode = new VoltmeterNode( circuitConstructionKitBasicsModel.voltmeter, { visibleBoundsProperty: this.visibleBoundsProperty } );
-    circuitConstructionKitBasicsModel.voltmeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
-      if ( bodyNodeGlobalBounds.intersectsBounds( circuitConstructionKitBasicsScreenView.sensorToolbox.globalBounds ) ) {
-        circuitConstructionKitBasicsModel.voltmeter.visible = false;
+    var voltmeterNode = new VoltmeterNode( circuitConstructionKitModel.voltmeter, { visibleBoundsProperty: this.visibleBoundsProperty } );
+    circuitConstructionKitModel.voltmeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
+      if ( bodyNodeGlobalBounds.intersectsBounds( circuitConstructionKitScreenView.sensorToolbox.globalBounds ) ) {
+        circuitConstructionKitModel.voltmeter.visible = false;
       }
     } );
-    circuitConstructionKitBasicsModel.voltmeter.visibleProperty.link( function( visible ) {
+    circuitConstructionKitModel.voltmeter.visibleProperty.link( function( visible ) {
       voltmeterNode.visible = visible;
     } );
 
-    var ammeterNode = new AmmeterNode( circuitConstructionKitBasicsModel.ammeter, { visibleBoundsProperty: this.visibleBoundsProperty } );
-    circuitConstructionKitBasicsModel.ammeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
-      if ( bodyNodeGlobalBounds.intersectsBounds( circuitConstructionKitBasicsScreenView.sensorToolbox.globalBounds ) ) {
-        circuitConstructionKitBasicsModel.ammeter.visible = false;
+    var ammeterNode = new AmmeterNode( circuitConstructionKitModel.ammeter, { visibleBoundsProperty: this.visibleBoundsProperty } );
+    circuitConstructionKitModel.ammeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
+      if ( bodyNodeGlobalBounds.intersectsBounds( circuitConstructionKitScreenView.sensorToolbox.globalBounds ) ) {
+        circuitConstructionKitModel.ammeter.visible = false;
       }
     } );
-    circuitConstructionKitBasicsModel.ammeter.visibleProperty.link( function( visible ) {
+    circuitConstructionKitModel.ammeter.visibleProperty.link( function( visible ) {
       ammeterNode.visible = visible;
     } );
 
     // Pass the view into circuit node so that circuit elements can be dropped back into the toolbox
-    this.circuitNode = new CircuitNode( circuitConstructionKitBasicsModel.circuit, this );
-    this.circuitElementToolbox = new CircuitElementToolbox( circuitConstructionKitBasicsModel.circuit, this.circuitNode, {
+    this.circuitNode = new CircuitNode( circuitConstructionKitModel.circuit, this );
+    this.circuitElementToolbox = new CircuitElementToolbox( circuitConstructionKitModel.circuit, this.circuitNode, {
       orientation: options.toolboxOrientation,
       numberOfRightBatteries: options.numberOfRightBatteriesInToolbox,
       numberOfLeftBatteries: options.numberOfLeftBatteriesInToolbox,
@@ -96,8 +96,8 @@ define( function( require ) {
     if ( options.showResetAllButton ) {
       var resetAllButton = new ResetAllButton( {
         listener: function() {
-          circuitConstructionKitBasicsModel.reset();
-          circuitConstructionKitBasicsScreenView.reset();
+          circuitConstructionKitModel.reset();
+          circuitConstructionKitScreenView.reset();
         }
       } );
       this.addChild( resetAllButton );
@@ -106,7 +106,7 @@ define( function( require ) {
     // Has to be interleaved in the circuit layering to support the black box, so that the toolbox can be behind
     // circuit elements but in front of the transparency overlay
     this.circuitNode.mainLayer.addChild( this.circuitElementToolbox );
-    var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel( circuitConstructionKitBasicsModel.circuit, this.visibleBoundsProperty, {
+    var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel( circuitConstructionKitModel.circuit, this.visibleBoundsProperty, {
       getLayoutPosition: options.getCircuitEditPanelLayoutPosition
     } );
 
@@ -122,9 +122,9 @@ define( function( require ) {
         } );
       }
 
-      circuitConstructionKitBasicsScreenView.circuitElementToolbox.mutate( options.getToolboxPosition( visibleBounds ) );
+      circuitConstructionKitScreenView.circuitElementToolbox.mutate( options.getToolboxPosition( visibleBounds ) );
 
-      circuitConstructionKitBasicsScreenView.sensorToolbox.mutate( {
+      circuitConstructionKitScreenView.sensorToolbox.mutate( {
         right: visibleBounds.right - inset,
         top: visibleBounds.top + inset
       } );
@@ -137,55 +137,55 @@ define( function( require ) {
 
     // Detection for voltmeter probe + circuit collision is done in the view since view bounds are used
     var updateVoltmeter = function() {
-      if ( circuitConstructionKitBasicsModel.voltmeter.visible ) {
-        var redConnection = circuitConstructionKitBasicsScreenView.getVoltageConnection( voltmeterNode.redProbeNode, voltmeterNode.voltmeter.redProbePosition );
-        var blackConnection = circuitConstructionKitBasicsScreenView.getVoltageConnection( voltmeterNode.blackProbeNode, voltmeterNode.voltmeter.blackProbePosition );
+      if ( circuitConstructionKitModel.voltmeter.visible ) {
+        var redConnection = circuitConstructionKitScreenView.getVoltageConnection( voltmeterNode.redProbeNode, voltmeterNode.voltmeter.redProbePosition );
+        var blackConnection = circuitConstructionKitScreenView.getVoltageConnection( voltmeterNode.blackProbeNode, voltmeterNode.voltmeter.blackProbePosition );
         if ( redConnection === null || blackConnection === null ) {
-          circuitConstructionKitBasicsModel.voltmeter.voltage = null;
+          circuitConstructionKitModel.voltmeter.voltage = null;
         }
-        else if ( !circuitConstructionKitBasicsModel.circuit.areVerticesConnected( redConnection.vertex, blackConnection.vertex ) ) {
+        else if ( !circuitConstructionKitModel.circuit.areVerticesConnected( redConnection.vertex, blackConnection.vertex ) ) {
 
           // Voltmeter probes each hit things but they were not connected to each other through the circuit.
-          circuitConstructionKitBasicsModel.voltmeter.voltage = null;
+          circuitConstructionKitModel.voltmeter.voltage = null;
         }
         else if ( redConnection !== null && redConnection.vertex.insideTrueBlackBox ) {
 
           // Cannot read values inside the black box
-          circuitConstructionKitBasicsModel.voltmeter.voltage = null;
+          circuitConstructionKitModel.voltmeter.voltage = null;
         }
         else if ( blackConnection !== null && blackConnection.vertex.insideTrueBlackBox ) {
 
           // Cannot read values inside the black box
-          circuitConstructionKitBasicsModel.voltmeter.voltage = null;
+          circuitConstructionKitModel.voltmeter.voltage = null;
         }
         else {
-          circuitConstructionKitBasicsModel.voltmeter.voltage = redConnection.voltage - blackConnection.voltage;
+          circuitConstructionKitModel.voltmeter.voltage = redConnection.voltage - blackConnection.voltage;
         }
       }
     };
-    circuitConstructionKitBasicsModel.circuit.circuitChangedEmitter.addListener( updateVoltmeter );
-    circuitConstructionKitBasicsModel.voltmeter.redProbePositionProperty.link( updateVoltmeter );
-    circuitConstructionKitBasicsModel.voltmeter.blackProbePositionProperty.link( updateVoltmeter );
+    circuitConstructionKitModel.circuit.circuitChangedEmitter.addListener( updateVoltmeter );
+    circuitConstructionKitModel.voltmeter.redProbePositionProperty.link( updateVoltmeter );
+    circuitConstructionKitModel.voltmeter.blackProbePositionProperty.link( updateVoltmeter );
 
     // Detection for ammeter probe + circuit collision is done in the view since view bounds are used
     var updateAmmeter = function() {
-      var current = circuitConstructionKitBasicsScreenView.getCurrent( ammeterNode.probeNode );
-      circuitConstructionKitBasicsModel.ammeter.current = current;
+      var current = circuitConstructionKitScreenView.getCurrent( ammeterNode.probeNode );
+      circuitConstructionKitModel.ammeter.current = current;
     };
-    circuitConstructionKitBasicsModel.circuit.circuitChangedEmitter.addListener( updateAmmeter );
-    circuitConstructionKitBasicsModel.ammeter.probePositionProperty.link( updateAmmeter );
+    circuitConstructionKitModel.circuit.circuitChangedEmitter.addListener( updateAmmeter );
+    circuitConstructionKitModel.ammeter.probePositionProperty.link( updateAmmeter );
   }
 
-  circuitConstructionKitBasics.register( 'CircuitConstructionKitBasicsScreenView', CircuitConstructionKitBasicsScreenView );
-  
-  return inherit( ScreenView, CircuitConstructionKitBasicsScreenView, {
+  circuitConstructionKit.register( 'CircuitConstructionKitScreenView', CircuitConstructionKitScreenView );
+
+  return inherit( ScreenView, CircuitConstructionKitScreenView, {
 
     //overrideable stub
     reset: function() {
 
     },
     canNodeDropInToolbox: function( circuitElementNode ) {
-      var isSingle = this.circuitConstructionKitBasicsModel.circuit.isSingle( circuitElementNode.circuitElement );
+      var isSingle = this.circuitConstructionKitModel.circuit.isSingle( circuitElementNode.circuitElement );
       var inBounds = this.circuitElementToolbox.globalBounds.containsPoint( circuitElementNode.globalBounds.center );
       var okToDrop = circuitElementNode.circuitElement.canBeDroppedInToolbox;
       return isSingle && inBounds && okToDrop;
@@ -194,7 +194,7 @@ define( function( require ) {
     dropCircuitElementNodeInToolbox: function( circuitElementNode ) {
 
       // Only drop in the box if it was a single component, if connected to other things, do not
-      this.circuitConstructionKitBasicsModel.circuit.remove( circuitElementNode.circuitElement );
+      this.circuitConstructionKitModel.circuit.remove( circuitElementNode.circuitElement );
     },
 
     /**

@@ -8,7 +8,7 @@
 require.config( {
   // An array of dependencies to load. Useful when require is defined as a config object before require.js
   // is loaded, and you want to specify dependencies to load as soon as require() is defined.
-  deps: [ 'circuit-construction-kit-basics-main' ],
+  deps: [ 'circuit-construction-kit-main' ],
 
   // baseUrl: don't bother trying to set it here, it is overridden by data-main in the top-level HTML file
 
@@ -39,7 +39,7 @@ require.config( {
     TANDEM: '../../tandem/js',
 
     // this sim
-    CIRCUIT_CONSTRUCTION_KIT_BASICS: '.'
+    CIRCUIT_CONSTRUCTION_KIT: '.'
   },
 
   // optional cache buster to make browser refresh load all included scripts, can be disabled with ?cacheBuster=false

@@ -8,7 +8,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var NumberControl = require( 'SCENERY_PHET/NumberControl' );
@@ -16,7 +16,7 @@ define( function( require ) {
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var Range = require( 'DOT/Range' );
-  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
 
   function CircuitElementEditPanel( title, units, valueProperty, circuit, circuitElement, options ) {
     options = _.extend( { numberControlEnabled: true }, options );
@@ -34,7 +34,7 @@ define( function( require ) {
     var roundPushButton = new RoundPushButton( {
       baseColor: 'yellow',
       content: new FontAwesomeNode( 'trash', {
-        scale: CircuitConstructionKitBasicsConstants.fontAwesomeIconScale
+        scale: CircuitConstructionKitConstants.fontAwesomeIconScale
       } ),
       listener: function() {
         circuit.remove( circuitElement );
@@ -60,7 +60,7 @@ define( function( require ) {
     };
   }
 
-  circuitConstructionKitBasics.register( 'CircuitElementEditPanel', CircuitElementEditPanel );
+  circuitConstructionKit.register( 'CircuitElementEditPanel', CircuitElementEditPanel );
   
   return inherit( HBox, CircuitElementEditPanel, {
     dispose: function() {

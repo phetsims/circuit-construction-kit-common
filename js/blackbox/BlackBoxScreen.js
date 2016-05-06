@@ -9,13 +9,13 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
-  var BlackBoxScreenModel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/model/BlackBoxScreenModel' );
-  var BlackBoxScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/BlackBoxScreenView' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var BlackBoxScreenModel = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/model/BlackBoxScreenModel' );
+  var BlackBoxScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/view/BlackBoxScreenView' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Screen = require( 'JOIST/Screen' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var BlackBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/BlackBoxNode' );
+  var BlackBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/view/BlackBoxNode' );
 
   /**
    * @constructor
@@ -44,6 +44,6 @@ define( function( require ) {
     );
   }
 
-  circuitConstructionKitBasics.register( 'BlackBoxScreen', BlackBoxScreen );
+  circuitConstructionKit.register( 'BlackBoxScreen', BlackBoxScreen );
   return inherit( Screen, BlackBoxScreen );
 } );

@@ -9,17 +9,17 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var CircuitConstructionKitBasicsScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitConstructionKitBasicsScreenView' );
-  var ChallengeSet = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/model/ChallengeSet' );
-  var ModeRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/ModeRadioButtonGroup' );
+  var CircuitConstructionKitScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitConstructionKitScreenView' );
+  var ChallengeSet = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/model/ChallengeSet' );
+  var ModeRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/view/ModeRadioButtonGroup' );
   var ComboBox = require( 'SUN/ComboBox' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
-  var BlackBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/BlackBoxNode' );
-  var WhiteBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/WhiteBoxNode' );
-  var RevealButton = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/blackbox/view/RevealButton' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+  var BlackBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/view/BlackBoxNode' );
+  var WhiteBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/view/WhiteBoxNode' );
+  var RevealButton = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/view/RevealButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var Shape = require( 'KITE/Shape' );
   var Path = require( 'SCENERY/nodes/Path' );
@@ -33,7 +33,7 @@ define( function( require ) {
    */
   function BlackBoxSceneView( blackBoxWidth, blackBoxHeight, blackBoxSceneModel, sceneProperty ) {
     var blackBoxSceneView = this;
-    CircuitConstructionKitBasicsScreenView.call( this, blackBoxSceneModel, {
+    CircuitConstructionKitScreenView.call( this, blackBoxSceneModel, {
       toolboxOrientation: 'vertical',
       showResetAllButton: true
     } );
@@ -70,7 +70,7 @@ define( function( require ) {
       revealButton.right = modeRadioButtonGroup.right;
 
       comboBox.centerX = visibleBounds.centerX;
-      comboBox.top = visibleBounds.top + CircuitConstructionKitBasicsConstants.layoutInset;
+      comboBox.top = visibleBounds.top + CircuitConstructionKitConstants.layoutInset;
     } );
 
     var blackBoxNode = new BlackBoxNode( blackBoxWidth, blackBoxHeight, {
@@ -135,11 +135,11 @@ define( function( require ) {
     };
   }
 
-  circuitConstructionKitBasics.register( 'BlackBoxSceneView', BlackBoxSceneView );
-  
-  return inherit( CircuitConstructionKitBasicsScreenView, BlackBoxSceneView, {
+  circuitConstructionKit.register( 'BlackBoxSceneView', BlackBoxSceneView );
+
+  return inherit( CircuitConstructionKitScreenView, BlackBoxSceneView, {
     reset: function() {
-      CircuitConstructionKitBasicsScreenView.prototype.reset.call( this );
+      CircuitConstructionKitScreenView.prototype.reset.call( this );
       this.resetBlackBoxSceneView();
     }
   } );

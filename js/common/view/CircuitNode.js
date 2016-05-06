@@ -9,26 +9,26 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/WireNode' );
-  var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/BatteryNode' );
-  var CCKLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CCKLightBulbNode' );
-  var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ResistorNode' );
-  var VertexNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/VertexNode' );
-  var SolderNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/SolderNode' );
+  var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/WireNode' );
+  var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/BatteryNode' );
+  var CCKLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CCKLightBulbNode' );
+  var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/ResistorNode' );
+  var VertexNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/VertexNode' );
+  var SolderNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/SolderNode' );
   var Vector2 = require( 'DOT/Vector2' );
-  var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/FixedLengthCircuitElement' );
+  var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/FixedLengthCircuitElement' );
 
   /**
    *
    * @param {Circuit} circuit
-   * @param {CircuitConstructionKitBasicsScreenView} circuitConstructionKitBasicsScreenView - for dropping circuit element back into the toolbox
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - for dropping circuit element back into the toolbox
    * @constructor
    */
-  function CircuitNode( circuit, circuitConstructionKitBasicsScreenView ) {
-    this.visibleBoundsProperty = circuitConstructionKitBasicsScreenView.visibleBoundsProperty;
+  function CircuitNode( circuit, circuitConstructionKitScreenView ) {
+    this.visibleBoundsProperty = circuitConstructionKitScreenView.visibleBoundsProperty;
 
     this.highlightLayer = new Node();
 
@@ -98,7 +98,7 @@ define( function( require ) {
      */
     var initializeCircuitElementType = function( CircuitElementNodeConstructor, modelObservableArray, nodeArray, getter ) {
       var addCircuitElement = function( circuitElement ) {
-        var circuitElementNode = new CircuitElementNodeConstructor( circuitConstructionKitBasicsScreenView, circuitNode, circuitElement );
+        var circuitElementNode = new CircuitElementNodeConstructor( circuitConstructionKitScreenView, circuitNode, circuitElement );
         nodeArray.push( circuitElementNode );
         mainLayer.addChild( circuitElementNode );
         moveVerticesToFront( circuitElement );
@@ -164,7 +164,7 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKitBasics.register( 'CircuitNode', CircuitNode );
+  circuitConstructionKit.register( 'CircuitNode', CircuitNode );
   
   return inherit( Node, CircuitNode, {
 

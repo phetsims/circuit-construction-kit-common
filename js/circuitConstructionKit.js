@@ -11,5 +11,5 @@ define( function( require ) {
   // modules
   var Namespace = require( 'PHET_CORE/Namespace' );
 
-  return new Namespace( 'circuitConstructionKitBasics' );
+  return new Namespace( 'circuitConstructionKit' );
 } );

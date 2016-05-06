@@ -9,10 +9,10 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector2 = require( 'DOT/Vector2' );
-  var Meter = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Meter' );
+  var Meter = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Meter' );
 
   function Ammeter() {
     Meter.call( this, {
@@ -21,7 +21,7 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKitBasics.register( 'Ammeter', Ammeter );
+  circuitConstructionKit.register( 'Ammeter', Ammeter );
   
   return inherit( Meter, Ammeter );
 } );

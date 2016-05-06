@@ -9,7 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Text = require( 'SCENERY/nodes/Text' );
@@ -52,7 +52,7 @@ define( function( require ) {
     this.mutate( options );
   }
 
-  circuitConstructionKitBasics.register( 'ProbeTextNode', ProbeTextNode );
+  circuitConstructionKit.register( 'ProbeTextNode', ProbeTextNode );
   
   return inherit( VBox, ProbeTextNode );
 } );

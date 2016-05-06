@@ -8,7 +8,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
@@ -42,7 +42,7 @@ define( function( require ) {
     this.updateWireShape();
   }
 
-  circuitConstructionKitBasics.register( 'ProbeWireNode', ProbeWireNode );
+  circuitConstructionKit.register( 'ProbeWireNode', ProbeWireNode );
   
   return inherit( Path, ProbeWireNode, {
 

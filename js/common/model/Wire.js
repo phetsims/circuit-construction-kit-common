@@ -9,10 +9,10 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/CircuitElement' );
-  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
+  var CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/CircuitElement' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
 
   /**
    *
@@ -22,14 +22,14 @@ define( function( require ) {
     assert && assert( typeof resistivity === 'number' && resistivity >= 0, 'bad value for resistivity: ' + resistivity );
     var wire = this;
     CircuitElement.call( this, startVertex, endVertex, {
-      resistance: CircuitConstructionKitBasicsConstants.minimumResistance,
+      resistance: CircuitConstructionKitConstants.minimumResistance,
       resistivity: resistivity
     }, options );
 
     var updateResistance = function() {
       var length = wire.startVertex.position.minus( wire.endVertex.position ).magnitude();
       var javaLength = length / 990 * 15.120675866835684;
-      wire.resistance = Math.max( CircuitConstructionKitBasicsConstants.minimumResistance, javaLength * wire.resistivity );
+      wire.resistance = Math.max( CircuitConstructionKitConstants.minimumResistance, javaLength * wire.resistivity );
       assert && assert( !isNaN( wire.resistance ) );
     };
 
@@ -51,7 +51,7 @@ define( function( require ) {
     };
   }
 
-  circuitConstructionKitBasics.register( 'Wire', Wire );
+  circuitConstructionKit.register( 'Wire', Wire );
   
   return inherit( CircuitElement, Wire, {
     dispose: function() {

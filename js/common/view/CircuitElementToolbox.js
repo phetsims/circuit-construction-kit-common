@@ -9,23 +9,23 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var circuitConstructionKitBasics = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/circuitConstructionKitBasics' );
-  var CircuitConstructionKitBasicsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/CircuitConstructionKitBasicsPanel' );
-  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Battery' );
-  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/LightBulb' );
-  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Vertex' );
-  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Wire' );
-  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/model/Resistor' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var CircuitConstructionKitPanel = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitConstructionKitPanel' );
+  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Battery' );
+  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/LightBulb' );
+  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Vertex' );
+  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Wire' );
+  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Resistor' );
   var Image = require( 'SCENERY/nodes/Image' );
-  var CircuitConstructionKitBasicsConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/CircuitConstructionKitBasicsConstants' );
-  var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/ResistorNode' );
-  var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_BASICS/common/view/WireNode' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+  var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/ResistorNode' );
+  var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/WireNode' );
   var LightBulbNode = require( 'SCENERY_PHET/LightBulbNode' );
   var Property = require( 'AXON/Property' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
 
   // images
-  var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_BASICS/battery.png' );
+  var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT/battery.png' );
 
   // constants
   var batteryLength = Battery.BATTERY_LENGTH;
@@ -81,10 +81,10 @@ define( function( require ) {
       };
     };
 
-    var iconWidth = CircuitConstructionKitBasicsConstants.toolboxIconLength;
+    var iconWidth = CircuitConstructionKitConstants.toolboxIconLength;
     var wireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ) );
 
-    var resistorNode = new ResistorNode( null, null, new Resistor( new Vertex( 0, 0 ), new Vertex( Resistor.RESISTOR_LENGTH, 0 ), CircuitConstructionKitBasicsConstants.defaultResistance ), { icon: true } );
+    var resistorNode = new ResistorNode( null, null, new Resistor( new Vertex( 0, 0 ), new Vertex( Resistor.RESISTOR_LENGTH, 0 ), CircuitConstructionKitConstants.defaultResistance ), { icon: true } );
     var lightBulbNode = new LightBulbNode( new Property( 0 ) );
 
     var countBatteries = function( initialOrientation ) {
@@ -133,7 +133,7 @@ define( function( require ) {
     var wireIcon = wireNode.mutate( { scale: iconWidth / Math.max( wireNode.width, wireNode.height ) } )
       .addInputListener( createToolIconInputListener(
         function( position ) {
-          return new Wire( new Vertex( position.x - 50, position.y ), new Vertex( position.x + 50, position.y ), CircuitConstructionKitBasicsConstants.defaultResistivity );
+          return new Wire( new Vertex( position.x - 50, position.y ), new Vertex( position.x + 50, position.y ), CircuitConstructionKitConstants.defaultResistivity );
         },
         circuit.wires,
         circuitNode.wireNodes,
@@ -166,7 +166,7 @@ define( function( require ) {
           var resistorLength = Resistor.RESISTOR_LENGTH;
           var startVertex = new Vertex( position.x - resistorLength / 2, position.y );
           var endVertex = new Vertex( position.x + resistorLength / 2, position.y );
-          return new Resistor( startVertex, endVertex, CircuitConstructionKitBasicsConstants.defaultResistance );
+          return new Resistor( startVertex, endVertex, CircuitConstructionKitConstants.defaultResistance );
         },
         circuit.resistors,
         circuitNode.resistorNodes,
@@ -179,16 +179,16 @@ define( function( require ) {
     options.numberOfWires && children.push( wireIcon );
     options.numberOfLightBulbs && children.push( lightBulbIcon );
     options.numberOfResistors && children.push( resistorIcon );
-    CircuitConstructionKitBasicsPanel.call( this, new LayoutBox( {
+    CircuitConstructionKitPanel.call( this, new LayoutBox( {
       orientation: options.orientation,
-      spacing: CircuitConstructionKitBasicsConstants.toolboxItemSpacing,
+      spacing: CircuitConstructionKitConstants.toolboxItemSpacing,
       children: children
     } ) );
   }
 
-  circuitConstructionKitBasics.register( 'CircuitElementToolbox', CircuitElementToolbox );
+  circuitConstructionKit.register( 'CircuitElementToolbox', CircuitElementToolbox );
 
-  return inherit( CircuitConstructionKitBasicsPanel, CircuitElementToolbox, {}, {
+  return inherit( CircuitConstructionKitPanel, CircuitElementToolbox, {}, {
     NUMBER_OF_RIGHT_BATTERIES: 10,
     NUMBER_OF_WIRES: 10,
     NUMBER_OF_LIGHT_BULBS: 10,
