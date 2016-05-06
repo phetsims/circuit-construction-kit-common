@@ -239,7 +239,6 @@ define( function( require ) {
     // Vertices connected to the black box cannot be moved, but they can be rotated
     // @private
     rotateAboutFixedPivot: function( point, vertex, okToRotate, vertexNode, position, neighbors ) {
-
       if ( neighbors.length === 1 ) {
         var oppositeVertex = neighbors[ 0 ].getOppositeVertex( vertex );
         var delta = position.minus( oppositeVertex.position );
