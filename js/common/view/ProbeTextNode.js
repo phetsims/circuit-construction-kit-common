@@ -24,8 +24,10 @@ define( function( require ) {
    */
   function ProbeTextNode( textProperty, title, options ) {
 
-    var readout = new Text( '?', { fontSize: 34 } );
-    var textBox = new Rectangle( 0, 0, 140, 52, 10, 10, {
+    var rectangleWidth = 140;
+    
+    var readout = new Text( '?', { fontSize: 34, maxWidth: rectangleWidth - 20 } );
+    var textBox = new Rectangle( 0, 0, rectangleWidth, 52, 10, 10, {
       lineWidth: 2, stroke: 'black', fill: 'white'
     } );
 
@@ -53,6 +55,6 @@ define( function( require ) {
   }
 
   circuitConstructionKit.register( 'ProbeTextNode', ProbeTextNode );
-  
+
   return inherit( VBox, ProbeTextNode );
 } );
