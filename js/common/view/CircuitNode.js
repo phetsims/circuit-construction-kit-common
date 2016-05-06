@@ -165,7 +165,7 @@ define( function( require ) {
   }
 
   circuitConstructionKit.register( 'CircuitNode', CircuitNode );
-  
+
   return inherit( Node, CircuitNode, {
 
     /**
@@ -235,6 +235,20 @@ define( function( require ) {
       var vertexNode = this.getVertexNode( vertex );
       vertexNode.startOffset = vertexNode.globalToParentPoint( point ).minus( vertex.unsnappedPosition );
     },
+
+    // Vertices connected to the black box cannot be moved, but they can be rotated
+    // @private
+    rotateAboutFixedPivot: function( point, vertex, okToRotate, vertexNode, position, neighbors ) {
+
+      if ( neighbors.length === 1 ) {
+        var oppositeVertex = neighbors[ 0 ].getOppositeVertex( vertex );
+        var delta = position.minus( oppositeVertex.position );
+        var desiredAngle = delta.angle();
+        var length = neighbors[ 0 ].length;
+        vertex.unsnappedPosition = Vector2.createPolar( length, desiredAngle ).plus( oppositeVertex.position );
+        vertex.position = vertex.unsnappedPosition;
+      }
+    },
     drag: function( point, vertex, okToRotate ) {
       var vertexNode = this.getVertexNode( vertex );
       var position = vertexNode.globalToParentPoint( point ).minus( vertexNode.startOffset );
@@ -248,6 +262,8 @@ define( function( require ) {
       // If any of the vertices connected by fixed length nodes is immobile, then the entire subgraph cannot be moved
       for ( var i = 0; i < vertices.length; i++ ) {
         if ( !vertices[ i ].draggable ) {
+
+          this.rotateAboutFixedPivot( point, vertex, okToRotate, vertexNode, position, neighbors );
           return;
         }
       }
