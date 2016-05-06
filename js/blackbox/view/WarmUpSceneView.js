@@ -26,14 +26,6 @@ define( function( require ) {
       fontSize: 34
     };
 
-    var questionText = new MultiLineText( 'What circuit is\nin the black box?', _.extend( {
-      centerX: ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2,
-      top: ScreenView.DEFAULT_LAYOUT_BOUNDS.height / 6
-    }, textOptions ) );
-    blackBoxSceneModel.modeProperty.link( function( mode ) {
-      questionText.visible = mode === 'investigate';
-    } );
-
     var tryToText = new MultiLineText( 'Build a circuit that\nbehaves the same way.', _.extend( {
       centerX: ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2,
       top: ScreenView.DEFAULT_LAYOUT_BOUNDS.height / 6
@@ -43,12 +35,10 @@ define( function( require ) {
       tryToText.visible = mode === 'build';
     } );
 
-    this.addChild( questionText );
     this.addChild( tryToText );
 
     // Let the circuit elements move in front of the text
     tryToText.moveToBack();
-    questionText.moveToBack();
   }
 
   circuitConstructionKit.register( 'WarmUpSceneView', WarmUpSceneView );
