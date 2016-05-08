@@ -238,14 +238,27 @@ define( function( require ) {
 
     // Vertices connected to the black box cannot be moved, but they can be rotated
     // @private
-    rotateAboutFixedPivot: function( point, vertex, okToRotate, vertexNode, position, neighbors ) {
-      if ( neighbors.length === 1 ) {
-        var oppositeVertex = neighbors[ 0 ].getOppositeVertex( vertex );
-        var delta = position.minus( oppositeVertex.position );
-        var desiredAngle = delta.angle();
-        var length = neighbors[ 0 ].length;
-        vertex.unsnappedPosition = Vector2.createPolar( length, desiredAngle ).plus( oppositeVertex.position );
-        vertex.position = vertex.unsnappedPosition;
+    rotateAboutFixedPivot: function( point, vertex, okToRotate, vertexNode, position, neighbors, vertices ) {
+
+      // Don't traverse across the black box interface, or it would rotate objects on the other side
+      vertices = this.circuit.findAllFixedVertices( vertex, function( currentVertex, neighbor ) {return !currentVertex.blackBoxInterface;} );
+      var fixedNeighbors = neighbors.filter( function( neighbor ) {return neighbor.getOppositeVertex( vertex ).blackBoxInterface;} );
+      if ( fixedNeighbors.length === 1 ) {
+        var fixedNeighbor = fixedNeighbors[ 0 ];
+        var fixedVertex = fixedNeighbor.getOppositeVertex( vertex );
+        var desiredAngle = position.minus( fixedVertex.position ).angle();
+
+        var length = fixedNeighbor.length;
+        var indexOfFixedVertex = vertices.indexOf( fixedVertex );
+        vertices.splice( indexOfFixedVertex, 1 );
+
+        var dest = Vector2.createPolar( length, desiredAngle ).plus( fixedVertex.position );
+        var src = vertex.position;
+        var delta = dest.minus( src );
+        var relative = Vector2.createPolar( length, desiredAngle + Math.PI );
+        this.translateVertexGroup( vertex, vertices, delta, function() {
+          vertex.unsnappedPosition = fixedVertex.unsnappedPosition.minus( relative );
+        }, [ vertex ] );
       }
     },
     drag: function( point, vertex, okToRotate ) {
@@ -262,7 +275,7 @@ define( function( require ) {
       for ( var i = 0; i < vertices.length; i++ ) {
         if ( !vertices[ i ].draggable ) {
 
-          this.rotateAboutFixedPivot( point, vertex, okToRotate, vertexNode, position, neighbors );
+          this.rotateAboutFixedPivot( point, vertex, okToRotate, vertexNode, position, neighbors, vertices );
           return;
         }
       }

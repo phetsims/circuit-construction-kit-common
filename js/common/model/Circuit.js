@@ -116,7 +116,7 @@ define( function( require ) {
   }
 
   circuitConstructionKit.register( 'Circuit', Circuit );
-  
+
   return inherit( Object, Circuit, {
     get circuitElements() {
       return []
@@ -391,16 +391,17 @@ define( function( require ) {
      * @param {Vertex} vertex
      */
     findAllConnectedVertices: function( vertex ) {
-      return this.searchVertices( vertex, this.circuitElements );
+      return this.searchVertices( vertex, this.circuitElements, function() {return true;} );
     },
 
     /**
      * Find the subgraph where all vertices are connected, given the list of traversible circuit elements
      * @param {Vertex} vertex
      * @param {Array.<CircuitElement>} circuitElements
+     * @param {Function} okToVisit - rule that determines which vertices are OK to visit
      * @returns {Array.<Vertex>}
      */
-    searchVertices: function( vertex, circuitElements ) {
+    searchVertices: function( vertex, circuitElements, okToVisit ) {
       assert && assert( this.vertices.indexOf( vertex ) >= 0, 'Vertex wasn\'t in the model' );
       var fixedVertices = [];
       var toVisit = [ vertex ];
@@ -418,7 +419,7 @@ define( function( require ) {
             var neighbor = neighbors[ i ];
 
             // If the node was already visited, don't visit again
-            if ( visited.indexOf( neighbor ) < 0 && toVisit.indexOf( neighbor ) < 0 ) {
+            if ( visited.indexOf( neighbor ) < 0 && toVisit.indexOf( neighbor ) < 0 && okToVisit( currentVertex, neighbor ) ) {
               toVisit.push( neighbor );
             }
           }
@@ -437,9 +438,10 @@ define( function( require ) {
     /**
      * Find the subgraph where all vertices are connected by FixedLengthCircuitElements, not stretchy wires.
      * @param {Vertex} vertex
+     * @param {Function} okToVisit - rule that determines which vertices are OK to visit
      */
-    findAllFixedVertices: function( vertex ) {
-      return this.searchVertices( vertex, this.getFixedLengthCircuitElements() );
+    findAllFixedVertices: function( vertex, okToVisit ) {
+      return this.searchVertices( vertex, this.getFixedLengthCircuitElements(), okToVisit || function() {return true;} );
     },
 
     /**
