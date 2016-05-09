@@ -207,6 +207,11 @@ define( function( require ) {
       circuitNode.circuit.selectedCircuitElementProperty.link( updateHighlight );
     }
 
+    // Only show the wire if the switch is closed.
+    switchModel.closedProperty.link( function( closed ) {
+      wireNode.lineNode.visible = closed;
+    } );
+
     this.disposeSwitchNode = function() {
       wireNode.inputListener.dragging && wireNode.inputListener.endDrag();
 
