@@ -21,6 +21,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Vector2 = require( 'DOT/Vector2' );
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitElementNode' );
+  var CheckBox = require( 'SUN/CheckBox' );
 
   // constants
   var WIRE_LINE_WIDTH = 12; // screen coordinates
@@ -97,6 +98,9 @@ define( function( require ) {
       ]
     } );
 
+    var checkBox = CheckBox.createTextCheckBox( 'Closed', {}, switchModel.closedProperty, {} );
+    this.addChild( checkBox );
+
     var updatePickable = function( interactive ) {
       wireNode.pickable = interactive;
     };
@@ -108,6 +112,13 @@ define( function( require ) {
       lineJoin: 'round'
     } );
 
+    // Position the checkbox
+    var updateCheckBox = function() {
+      var center = switchModel.startVertex.position.plus( switchModel.endVertex.position ).timesScalar( 0.5 );
+      var normal = switchModel.endVertex.position.minus( switchModel.startVertex.position ).normalized().perpendicular().timesScalar( 50 );
+      checkBox.center = center.plus( normal );
+    };
+
     var startListener = function( startPoint ) {
       lineNodeParent.setTranslation( startPoint.x, startPoint.y );
       highlightNodeParent.setTranslation( startPoint.x, startPoint.y );
@@ -115,6 +126,7 @@ define( function( require ) {
       if ( highlightNode.visible ) {
         highlightNode.shape = wireNode.getHighlightStrokedShape( highlightStrokeStyles );
       }
+      updateCheckBox();
     };
 
     // There is a double nested property, since the vertex may change and the position may change
@@ -138,6 +150,8 @@ define( function( require ) {
       var dot = directionForNormalLighting.dot( deltaVector );
 
       lineNode.stroke = dot < 0 ? reverseGradient : normalGradient;
+
+      updateCheckBox();
     };
 
     var updateEndVertex = function( newEndVertex, oldEndVertex ) {
@@ -193,7 +207,7 @@ define( function( require ) {
       circuitNode.circuit.selectedCircuitElementProperty.link( updateHighlight );
     }
 
-    this.disposeWireNode = function() {
+    this.disposeSwitchNode = function() {
       wireNode.inputListener.dragging && wireNode.inputListener.endDrag();
 
       switchModel.startVertexProperty.unlink( updateStartVertex );
@@ -206,6 +220,7 @@ define( function( require ) {
       switchModel.endVertex.positionProperty.unlink( endListener );
 
       circuitNode && circuitNode.highlightLayer.removeChild( highlightNodeParent );
+      checkBox.dispose();
     };
   }
 
@@ -215,7 +230,7 @@ define( function( require ) {
 
     // @public
     dispose: function() {
-      this.disposeWireNode();
+      this.disposeSwitchNode();
     },
 
     // @private
