@@ -265,42 +265,33 @@ define( function( require ) {
 
       var circuit = this;
 
+      var toObject = function( circuitElement ) {
+        return {
+          node0: circuit.vertices.indexOf( circuitElement.startVertex ),
+          node1: circuit.vertices.indexOf( circuitElement.endVertex ),
+          circuitElement: circuitElement
+        };
+      };
+
       // the index of vertex corresponds to position in list.
       var batteries = this.batteries.map( function( battery ) {
-        return {
-          node0: circuit.vertices.indexOf( battery.startVertex ),
-          node1: circuit.vertices.indexOf( battery.endVertex ),
-          voltage: battery.voltage,
-          circuitElement: battery
-        };
+        return _.extend( toObject( battery ), { voltage: battery.voltage } );
       } );
-
       var resistors = this.resistors.map( function( resistor ) {
-        return {
-          node0: circuit.vertices.indexOf( resistor.startVertex ),
-          node1: circuit.vertices.indexOf( resistor.endVertex ),
-          resistance: resistor.resistance,
-          circuitElement: resistor
-        };
+        return _.extend( toObject( resistor ), { resistance: resistor.resistance } );
       } );
       var wires = this.wires.map( function( wire ) {
-        return {
-          node0: circuit.vertices.indexOf( wire.startVertex ),
-          node1: circuit.vertices.indexOf( wire.endVertex ),
-          resistance: wire.resistance,
-          circuitElement: wire
-        };
+        return _.extend( toObject( wire ), { resistance: wire.resistance } );
       } );
       var bulbs = this.lightBulbs.map( function( lightBulb ) {
-        return {
-          node0: circuit.vertices.indexOf( lightBulb.startVertex ),
-          node1: circuit.vertices.indexOf( lightBulb.endVertex ),
-          resistance: lightBulb.resistance,
-          circuitElement: lightBulb
-        };
+        return _.extend( toObject( lightBulb ), { resistance: lightBulb.resistance } );
+      } );
+      // TODO: correct modeling of switch topology?  Match with voltmeter/ammeter.
+      var switches = this.switches.map( function( switchModel ) {
+        return _.extend( toObject( switchModel ), { resistance: switchModel.resistance } );
       } );
 
-      var resistorAdapters = resistors.getArray().concat( wires.getArray() ).concat( bulbs.getArray() );
+      var resistorAdapters = resistors.getArray().concat( wires.getArray() ).concat( bulbs.getArray() ).concat( switches.getArray() );
 
       var solution = new MNACircuit( batteries.getArray(), resistorAdapters, [] ).solve();
 

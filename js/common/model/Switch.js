@@ -4,6 +4,7 @@
  *
  *
  * @author Sam Reid (PhET Interactive Simulations)
+ * TODO: Factor out duplicated code with Wire
  */
 define( function( require ) {
   'use strict';
@@ -13,6 +14,10 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/CircuitElement' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+
+  // constants
+  var OPEN_RESISTANCE = 1E11;
+  var MINIMUM_RESISTANCE = CircuitConstructionKitConstants.minimumResistance;
 
   /**
    *
@@ -30,7 +35,8 @@ define( function( require ) {
     var updateResistance = function() {
       var length = switchModel.startVertex.position.minus( switchModel.endVertex.position ).magnitude();
       var javaLength = length / 990 * 15.120675866835684;
-      switchModel.resistance = Math.max( CircuitConstructionKitConstants.minimumResistance, javaLength * switchModel.resistivity );
+      switchModel.resistance = switchModel.closed ? Math.max( MINIMUM_RESISTANCE, javaLength * switchModel.resistivity ) :
+                               OPEN_RESISTANCE;
       assert && assert( !isNaN( switchModel.resistance ) );
     };
 
@@ -50,6 +56,8 @@ define( function( require ) {
       switchModel.startVertex.unlink( updateResistance );
       switchModel.endVertex.unlink( updateResistance );
     };
+
+    this.closedProperty.link( updateResistance );
   }
 
   circuitConstructionKit.register( 'Switch', Switch );
