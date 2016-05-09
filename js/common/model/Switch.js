@@ -23,7 +23,8 @@ define( function( require ) {
     var switchModel = this;
     CircuitElement.call( this, startVertex, endVertex, {
       resistance: CircuitConstructionKitConstants.minimumResistance,
-      resistivity: resistivity
+      resistivity: resistivity,
+      closed: false
     }, options );
 
     var updateResistance = function() {

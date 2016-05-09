@@ -58,6 +58,9 @@ define( function( require ) {
     this.lightBulbs.addItemAddedListener( function( lightBulb ) { lightBulb.resistanceProperty.lazyLink( solve ); } );
     this.lightBulbs.addItemRemovedListener( function( lightBulb ) { lightBulb.resistanceProperty.unlink( solve ); } );
 
+    this.switches.addItemAddedListener( function( switchModel ) { switchModel.closedProperty.lazyLink( solve ); } );
+    this.switches.addItemRemovedListener( function( switchModel ) { switchModel.closedProperty.unlink( solve ); } );
+
     // Keep track of which terminals are connected to other terminals
     // This is redundant (connections tracked in the elements above), but a central point for
     // observing creation/deletion of vertices for showing VertexNodes
@@ -370,7 +373,7 @@ define( function( require ) {
     },
 
     getCircuitElements: function() {
-      return this.getFixedLengthCircuitElements().concat( this.wires.getArray() );
+      return this.getFixedLengthCircuitElements().concat( this.wires.getArray() ).concat( this.switches.getArray() );
     },
 
     getFixedLengthCircuitElements: function() {
@@ -549,6 +552,7 @@ define( function( require ) {
         batteries: getArray( this.batteries ),
         lightBulbs: getArray( this.lightBulbs ),
         resistors: getArray( this.resistors ),
+        switches: getArray( this.switches ),
         vertices: this.vertices.map( function( vertex ) {
 
           var v = {
@@ -579,6 +583,7 @@ define( function( require ) {
       this.clear();
       circuitStruct.vertices.forEach( this.vertices.add.bind( this.vertices ) );
       circuitStruct.wires.forEach( this.wires.add.bind( this.wires ) );
+      circuitStruct.switches.forEach( this.switches.add.bind( this.switches ) );
       circuitStruct.batteries.forEach( this.batteries.add.bind( this.batteries ) );
       circuitStruct.resistors.forEach( this.vertices.add.bind( this.vertices ) );
       circuitStruct.lightBulbs.forEach( this.lightBulbs.add.bind( this.lightBulbs ) );
