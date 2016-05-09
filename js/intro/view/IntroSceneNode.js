@@ -31,7 +31,8 @@ define( function( require ) {
       numberOfLeftBatteriesInToolbox: 0,
       numberOfWiresInToolbox: 4,
       numberOfLightBulbsInToolbox: 0,
-      numberOfResistorsInToolbox: 0
+      numberOfResistorsInToolbox: 0,
+      numberOfSwitchesInToolbox: 0
     }, options );
     CircuitConstructionKitScreenView.call( this, circuitConstructionKitScreenModel, {
       toolboxOrientation: 'horizontal',
@@ -40,6 +41,7 @@ define( function( require ) {
       numberOfWiresInToolbox: options.numberOfWiresInToolbox,
       numberOfLightBulbsInToolbox: options.numberOfLightBulbsInToolbox,
       numberOfResistorsInToolbox: options.numberOfResistorsInToolbox,
+      numberOfSwitchesInToolbox: options.numberOfSwitchesInToolbox,
       getToolboxPosition: function( visibleBounds ) {
         return {
           centerX: visibleBounds.centerX,

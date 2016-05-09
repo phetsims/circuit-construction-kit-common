@@ -20,6 +20,7 @@ define( function( require ) {
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Wire' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Battery' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/LightBulb' );
+  var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Switch' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Resistor' );
 
   // constants
@@ -32,6 +33,7 @@ define( function( require ) {
   function Circuit() {
     var circuit = this;
     this.wires = new ObservableArray();
+    this.switches = new ObservableArray();
     this.batteries = new ObservableArray();
     this.lightBulbs = new ObservableArray();
     this.resistors = new ObservableArray();
@@ -43,6 +45,9 @@ define( function( require ) {
 
     this.wires.addItemAddedListener( function( wire ) { wire.resistanceProperty.lazyLink( solve ); } );
     this.wires.addItemRemovedListener( function( wire ) { wire.resistanceProperty.unlink( solve ); } );
+
+    this.switches.addItemAddedListener( function( switchModel ) { switchModel.resistanceProperty.lazyLink( solve ); } );
+    this.switches.addItemRemovedListener( function( switchModel ) { switchModel.resistanceProperty.unlink( solve ); } );
 
     this.batteries.addItemAddedListener( function( battery ) { battery.voltageProperty.lazyLink( solve ); } );
     this.batteries.addItemRemovedListener( function( battery ) { battery.voltageProperty.unlink( solve ); } );
@@ -76,6 +81,7 @@ define( function( require ) {
       circuit.solve();
     };
     this.wires.addItemAddedListener( addVertices );
+    this.switches.addItemAddedListener( addVertices );
     this.batteries.addItemAddedListener( addVertices );
     this.lightBulbs.addItemAddedListener( addVertices );
     this.resistors.addItemAddedListener( addVertices );
@@ -121,6 +127,7 @@ define( function( require ) {
     get circuitElements() {
       return []
         .concat( this.wires.getArray() )
+        .concat( this.switches.getArray() )
         .concat( this.batteries.getArray() )
         .concat( this.lightBulbs.getArray() )
         .concat( this.resistors.getArray() );
@@ -129,6 +136,7 @@ define( function( require ) {
       this.selectedCircuitElementProperty.reset();
 
       this.wires.clear();
+      this.switches.clear();
       this.batteries.clear();
       this.lightBulbs.clear();
       this.resistors.clear();
@@ -197,6 +205,7 @@ define( function( require ) {
                  circuitElement instanceof Resistor ? this.resistors :
                  circuitElement instanceof Wire ? this.wires :
                  circuitElement instanceof LightBulb ? this.lightBulbs :
+                 circuitElement instanceof Switch ? this.switches :
                  null;
       list.remove( circuitElement );
       this.vertices.remove( circuitElement.startVertex );

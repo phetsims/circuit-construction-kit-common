@@ -15,6 +15,7 @@ define( function( require ) {
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/LightBulb' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Vertex' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Wire' );
+  var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Switch' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Resistor' );
   var Image = require( 'SCENERY/nodes/Image' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
@@ -44,7 +45,8 @@ define( function( require ) {
       numberOfLeftBatteries: CircuitElementToolbox.NUMBER_OF_LEFT_BATTERIES,
       numberOfWires: CircuitElementToolbox.NUMBER_OF_WIRES,
       numberOfLightBulbs: CircuitElementToolbox.NUMBER_OF_LIGHT_BULBS,
-      numberOfResistors: CircuitElementToolbox.NUMBER_OF_RESISTORS
+      numberOfResistors: CircuitElementToolbox.NUMBER_OF_RESISTORS,
+      numberOfSwitches: CircuitElementToolbox.NUMBER_OF_SWITCHES
     }, options );
     var circuitElementToolbox = this;
     // From: https://github.com/phetsims/scenery-phet/issues/195#issuecomment-186300071
@@ -74,7 +76,7 @@ define( function( require ) {
           var matchedNodes = viewList.filter( function( circuitElementNode ) {
             return getCircuitElementFromNode( circuitElementNode ) === circuitElement;
           } );
-          assert && assert( matchedNodes.length === 1, 'should have found the one and only node for this battery' );
+          assert && assert( matchedNodes.length === 1, 'should have found the one and only node for this element' );
           var circuitElementNode = matchedNodes[ 0 ];
           circuitElementNode.inputListener.startDrag( event );
         }
@@ -173,12 +175,27 @@ define( function( require ) {
         function( resistorNode ) { return resistorNode.resistor; }
       ) );
 
+    var switchWireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ) );
+    var switchIcon = switchWireNode.mutate( { scale: iconWidth / Math.max( switchWireNode.width, switchWireNode.height ) } )
+      .addInputListener( createToolIconInputListener(
+        function( position ) {
+          return new Switch( new Vertex( position.x - 50, position.y ), new Vertex( position.x + 50, position.y ), CircuitConstructionKitConstants.defaultResistivity );
+        },
+        circuit.switches,
+        circuitNode.switchNodes,
+        function( switchNode ) { return switchNode.switchModel; }
+      ) );
+    circuit.switches.lengthProperty.link( function( numberOfWiresInCircuit ) {
+      switchIcon.visible = numberOfWiresInCircuit < options.numberOfSwitches;
+    } );
+
     var children = [];
     options.numberOfLeftBatteries && children.push( leftBatteryIcon );
     options.numberOfRightBatteries && children.push( rightBatteryIcon );
     options.numberOfWires && children.push( wireIcon );
     options.numberOfLightBulbs && children.push( lightBulbIcon );
     options.numberOfResistors && children.push( resistorIcon );
+    options.numberOfSwitches && children.push( switchIcon );
     CircuitConstructionKitPanel.call( this, new LayoutBox( {
       orientation: options.orientation,
       spacing: CircuitConstructionKitConstants.toolboxItemSpacing,
@@ -193,6 +210,7 @@ define( function( require ) {
     NUMBER_OF_LEFT_BATTERIES: 10,
     NUMBER_OF_WIRES: 10,
     NUMBER_OF_LIGHT_BULBS: 10,
-    NUMBER_OF_RESISTORS: 10
+    NUMBER_OF_RESISTORS: 10,
+    NUMBER_OF_SWITCHES: 10
   } );
 } );

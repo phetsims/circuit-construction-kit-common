@@ -13,6 +13,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/WireNode' );
+  var SwitchNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/SwitchNode' );
   var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/BatteryNode' );
   var CCKLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CCKLightBulbNode' );
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/ResistorNode' );
@@ -52,6 +53,7 @@ define( function( require ) {
     this.lightBulbNodes = [];
     this.wireNodes = [];
     this.resistorNodes = [];
+    this.switchNodes = [];
     this.vertexNodes = [];
 
     /**
@@ -112,6 +114,7 @@ define( function( require ) {
     initializeCircuitElementType( BatteryNode, circuit.batteries, circuitNode.batteryNodes, this.getBatteryNode.bind( this ) );
     initializeCircuitElementType( CCKLightBulbNode, circuit.lightBulbs, circuitNode.lightBulbNodes, this.getCCKLightBulbNode.bind( this ) );
     initializeCircuitElementType( ResistorNode, circuit.resistors, circuitNode.resistorNodes, this.getResistorNode.bind( this ) );
+    initializeCircuitElementType( SwitchNode, circuit.switches, circuitNode.switchNodes, this.getSwitchNode.bind( this ) );
 
     var addVertexNode = function( vertex ) {
       var solderNode = new SolderNode( circuitNode, vertex );
@@ -187,6 +190,7 @@ define( function( require ) {
     getCCKLightBulbNode: function( lightBulb ) { return this.getCircuitElementNode( this.lightBulbNodes, lightBulb ); },
     getBatteryNode: function( battery ) { return this.getCircuitElementNode( this.batteryNodes, battery ); },
     getResistorNode: function( resistor ) { return this.getCircuitElementNode( this.resistorNodes, resistor ); },
+    getSwitchNode: function( switchModel ) { return this.getCircuitElementNode( this.switchNodes, switchModel ); },
 
     /**
      * Get the Node for a vertex

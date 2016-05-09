@@ -82,6 +82,7 @@ define( function( require ) {
       numberOfRightBatteries: options.numberOfRightBatteriesInToolbox,
       numberOfLeftBatteries: options.numberOfLeftBatteriesInToolbox,
       numberOfWires: options.numberOfWiresInToolbox,
+      numberOfSwitches: options.numberOfSwitchesInToolbox,
       numberOfLightBulbs: options.numberOfLightBulbsInToolbox,
       numberOfResistors: options.numberOfResistorsInToolbox
     } );

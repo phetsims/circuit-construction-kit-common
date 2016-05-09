@@ -56,21 +56,24 @@ define( function( require ) {
             numberOfRightBatteriesInToolbox: 1,
             numberOfWiresInToolbox: 4,
             numberOfLightBulbsInToolbox: 0,
-            numberOfResistorsInToolbox: 0
+            numberOfResistorsInToolbox: 0,
+            numberOfSwitchesInToolbox: 0
           },
           1: {
             numberOfLeftBatteriesInToolbox: 1,
             numberOfRightBatteriesInToolbox: 1,
             numberOfWiresInToolbox: 4,
             numberOfLightBulbsInToolbox: 0,
-            numberOfResistorsInToolbox: 0
+            numberOfResistorsInToolbox: 0,
+            numberOfSwitchesInToolbox: 0
           },
           2: {
             numberOfLeftBatteriesInToolbox: 1,
             numberOfRightBatteriesInToolbox: 1,
             numberOfWiresInToolbox: 4,
             numberOfLightBulbsInToolbox: 0,
-            numberOfResistorsInToolbox: 0
+            numberOfResistorsInToolbox: 0,
+            numberOfSwitchesInToolbox: 1
           }
         }[ selectedScene ];
         var sceneNode = new IntroSceneNode( new IntroSceneModel( introScreenView.layoutBounds, introScreenModel.selectedSceneProperty ), options );
@@ -105,6 +108,6 @@ define( function( require ) {
   }
 
   circuitConstructionKit.register( 'IntroScreenView', IntroScreenView );
-  
+
   return inherit( ScreenView, IntroScreenView );
 } );
