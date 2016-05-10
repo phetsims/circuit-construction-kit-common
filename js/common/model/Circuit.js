@@ -23,6 +23,7 @@ define( function( require ) {
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Switch' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Resistor' );
   var ConstantDensityLayout = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/ConstantDensityLayout' );
+  var ConstantDensityPropagator = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/ConstantDensityPropagator' );
 
   // constants
   var SNAP_RADIUS = 30;
@@ -42,6 +43,7 @@ define( function( require ) {
     this.electrons = new ObservableArray();
 
     this.constantDensityLayout = new ConstantDensityLayout( this, this.electrons );
+    this.constantDensityPropagator = new ConstantDensityPropagator( this, this.electrons );
 
     // TODO: This is just for debugging
     this.wires.addItemAddedListener( function( wire ) {
@@ -365,6 +367,9 @@ define( function( require ) {
         // Update the physics
         this.solve();
       }
+    },
+    step: function( dt ) {
+      this.constantDensityPropagator.step( dt );
     },
 
     // The only way for two vertices to be adjacent is for them to be the start/end of a single CircuitElement

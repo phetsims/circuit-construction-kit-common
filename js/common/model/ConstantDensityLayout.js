@@ -26,6 +26,8 @@ define( function( require ) {
   circuitConstructionKit.register( 'ConstantDensityLayout', ConstantDensityLayout );
 
   return inherit( Object, ConstantDensityLayout, {
+
+    // TODO: Whenever a branch moves, relayout all electrons in all connected branches.
     branchesMoved: function( branches ) {
       if ( !dolayout ) {
         return;

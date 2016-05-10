@@ -33,7 +33,9 @@ define( function( require ) {
   circuitConstructionKit.register( 'CircuitConstructionKitModel', CircuitConstructionKitModel );
 
   return inherit( PropertySet, CircuitConstructionKitModel, {
-
+    step: function( dt ) {
+      this.circuit.step( dt );
+    },
     reset: function() {
       PropertySet.prototype.reset.call( this );
       this.circuit.clear();

@@ -8,12 +8,15 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
 
   function SmoothData( windowSize ) {
     this.windowSize = windowSize;
     this.data = [];
   }
+
+  circuitConstructionKit.register( 'SmoothData', SmoothData );
 
   return inherit( Object, SmoothData, {
 

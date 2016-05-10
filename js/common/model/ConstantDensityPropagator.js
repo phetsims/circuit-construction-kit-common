@@ -8,6 +8,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
   var SmoothData = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/SmoothData' );
 
@@ -20,12 +21,7 @@ define( function( require ) {
   var speedScale = .01 / 0.03;
   var highestSoFar = null;//for debugging
 
-  var createCircuitLocation = function( branch, distance ) {
-    assert && assert( branch.containsScalarLocation( distance ), 'branch should contain distance' );
-    return { branch: branch, distance: distance, density: null };
-  };
-
-  function ConstantDensityPropagator( particleSet, circuit ) {
+  function ConstantDensityPropagator( circuit, particleSet ) {
     this.particleSet = particleSet;
     this.circuit = circuit;
     this.scale = 1;
@@ -34,6 +30,13 @@ define( function( require ) {
     this.percent = '100';
   }
 
+  var createCircuitLocation = function( branch, distance ) {
+    assert && assert( branch.containsScalarLocation( distance ), 'branch should contain distance' );
+    return { branch: branch, distance: distance, density: null };
+  };
+
+  circuitConstructionKit.register( 'ConstantDensityPropagator', ConstantDensityPropagator );
+  
   return inherit( Object, ConstantDensityPropagator, {
     step: function( dt ) {
       var maxCurrent = this.getMaxCurrent();
