@@ -30,13 +30,14 @@ define( function( require ) {
       if ( !dolayout ) {
         return;
       }
-      var bs = new BranchSet( this.circuit, branches );
-      for ( var i = 0; i < branches.length; i++ ) {
-        bs.addBranches( this.circuit.getStrongConnections( branches[ i ].getStartJunction() ) );
-        bs.addBranches( this.circuit.getStrongConnections( branches[ i ].getEndJunction() ) );
-      }
-      var torelayout = bs.getBranches();
-      this.layoutElectrons( torelayout );
+      var bs = [];
+      // var bs = new BranchSet( this.circuit, branches );
+      // for ( var i = 0; i < branches.length; i++ ) {
+      //   bs.addBranches( this.circuit.getStrongConnections( branches[ i ].getStartJunction() ) );
+      //   bs.addBranches( this.circuit.getStrongConnections( branches[ i ].getEndJunction() ) );
+      // }
+      // var torelayout = bs.getBranches();
+      this.layoutElectronsForBranches( bs );
     },
     layoutElectronsForBranches: function( branches ) {
       for ( var i = 0; i < branches.length; i++ ) {
