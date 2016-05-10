@@ -55,7 +55,7 @@ define( function( require ) {
     this.revealingProperty.lazyLink( function( revealing ) {
       blackBoxSceneModel.mode = revealing ? 'investigate' : 'build';
     } );
-    var userBlackBoxCircuit = new CircuitStruct( [], [], [], [], [] );
+    var userBlackBoxCircuit = new CircuitStruct( [], [], [], [], [], [] );
     var circuit = this.circuit;
 
     var userDidSomething = function() {

@@ -18,16 +18,17 @@ define( function( require ) {
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/LightBulb' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Resistor' );
 
-  function CircuitStruct( vertices, wires, resistors, lightBulbs, batteries ) {
+  function CircuitStruct( vertices, wires, resistors, lightBulbs, batteries, switches ) {
     this.vertices = vertices;
     this.wires = wires;
     this.resistors = resistors;
     this.lightBulbs = lightBulbs;
     this.batteries = batteries;
+    this.switches = switches;
   }
 
   circuitConstructionKit.register( 'CircuitStruct', CircuitStruct );
-  
+
   return inherit( Object, CircuitStruct, {
     clear: function() {
       this.vertices.length = 0;
@@ -35,17 +36,19 @@ define( function( require ) {
       this.batteries.length = 0;
       this.lightBulbs.length = 0;
       this.resistors.length = 0;
+      this.switches.length = 0;
     },
     get circuitElements() {
       return []
         .concat( this.wires )
         .concat( this.batteries )
         .concat( this.lightBulbs )
+        .concat( this.switches )
         .concat( this.resistors );
     }
   }, {
     fromStateObject: function( circuitState ) {
-      var circuit = new CircuitStruct( [], [], [], [], [] );
+      var circuit = new CircuitStruct( [], [], [], [], [], [] );
       var options = null;
       for ( var i = 0; i < circuitState.vertices.length; i++ ) {
         options = circuitState.vertices[ i ].options || {};
@@ -87,8 +90,16 @@ define( function( require ) {
           options
         ) );
       }
+      for ( i = 0; i < circuitState.switches.length; i++ ) {
+        options = circuitState.switches[ i ].options || {};
+        circuit.switches.push( new Switch(
+          circuit.vertices[ circuitState.switches[ i ].startVertex ],
+          circuit.vertices[ circuitState.switches[ i ].endVertex ],
+          circuitState.wires[ i ].resistivity,
+          options
+        ) );
+      }
       return circuit;
     }
-
   } );
 } );
