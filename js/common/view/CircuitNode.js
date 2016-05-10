@@ -168,7 +168,12 @@ define( function( require ) {
     } );
 
     circuit.electrons.addItemAddedListener( function( electron ) {
-      circuitNode.addChild( new ElectronNode( electron ) );
+      electron.node = new ElectronNode( electron );
+      circuitNode.addChild( electron.node );
+    } );
+    circuit.electrons.addItemRemovedListener( function( electron ) {
+      circuitNode.removeChild( electron.node );
+      electron.node = null;
     } );
   }
 

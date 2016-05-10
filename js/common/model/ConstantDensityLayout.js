@@ -8,19 +8,22 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Electron = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Electron' );
-  var BranchSet = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/BranchSet' );
+  // var BranchSet = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/BranchSet' );
 
   // constants
   var dolayout = true;
   var electronsVisible = true;
-  var ELECTRON_DX = 0.56 / 2; // TODO: Factor out
+  var ELECTRON_DX = 0.56 / 2 * 100; // TODO: Factor out
 
   function ConstantDensityLayout( circuit, particleSet ) {
     this.circuit = circuit;
     this.particleSet = particleSet;
   }
+
+  circuitConstructionKit.register( 'ConstantDensityLayout', ConstantDensityLayout );
 
   return inherit( Object, ConstantDensityLayout, {
     branchesMoved: function( branches ) {
@@ -41,12 +44,16 @@ define( function( require ) {
         this.layoutElectrons( branch );
       }
     },
-    layoutElectrons: function( branch ) {
-      this.particleSet.removeParticles( branch );
+    layoutElectrons: function( circuitElement ) {
+      var particlesInBranch = this.particleSet.filter( function( electron ) {
+        return electron.circuitElement === circuitElement;
+      } );
+      this.particleSet.removeAll( particlesInBranch.getArray() );
 
       if ( electronsVisible ) {
         var offset = ELECTRON_DX / 2;
-        var endingPoint = branch.getLength() - offset;
+        var endingPoint = circuitElement.length - offset;
+
         //compress or expand, but fix a particle at startingPoint and endingPoint.
         var L = endingPoint - offset;
         var desiredDensity = 1 / ELECTRON_DX;
@@ -58,7 +65,7 @@ define( function( require ) {
           integralNumberParticles = 0;
         }
         for ( var i = 0; i < integralNumberParticles; i++ ) {
-          this.particleSet.addParticle( new Electron( branch, i * dx + offset ) );
+          this.particleSet.add( new Electron( circuitElement, i * dx + offset ) );
         }
       }
 
