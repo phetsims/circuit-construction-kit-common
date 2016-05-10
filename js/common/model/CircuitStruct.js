@@ -17,6 +17,7 @@ define( function( require ) {
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Battery' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/LightBulb' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Resistor' );
+  var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Switch' );
 
   function CircuitStruct( vertices, wires, resistors, lightBulbs, batteries, switches ) {
     this.vertices = vertices;
