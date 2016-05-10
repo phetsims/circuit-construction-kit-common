@@ -22,6 +22,7 @@ define( function( require ) {
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/LightBulb' );
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Switch' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Resistor' );
+  var Electron = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Electron' );
 
   // constants
   var SNAP_RADIUS = 30;
@@ -37,6 +38,11 @@ define( function( require ) {
     this.batteries = new ObservableArray();
     this.lightBulbs = new ObservableArray();
     this.resistors = new ObservableArray();
+
+    this.electrons = new ObservableArray();
+
+    // TODO: This is just for debugging
+    this.wires.addItemAddedListener( function( wire ) { circuit.electrons.push( new Electron( wire, 50 ) ); } );
 
     // Re-solve the circuit when voltages or resistances change.
     var solve = function() {

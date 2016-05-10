@@ -21,6 +21,8 @@ define( function( require ) {
   function CircuitElement( startVertex, endVertex, propertySetMap, options ) {
     assert && assert( startVertex !== endVertex, 'vertices must be different' );
 
+    var circuitElement = this;
+
     options = _.extend( {
       canBeDroppedInToolbox: true, // false in Circuit Construction Kit Intro screen
       interactive: true // false for Black Box elements
@@ -46,10 +48,27 @@ define( function( require ) {
     // @public (read-only) - indicate when an adjacent vertex has moved to front, so that the Circuit Element node can
     // move to front too
     this.vertexSelectedEmitter = new Emitter();
+
+    // @public (read-only) - indicate when either vertex has moved
+    this.vertexMovedEmitter = new Emitter();
+
+    var vertexMoved = function() {
+      circuitElement.vertexMovedEmitter.emit();
+    };
+    var linkToVertex = function( vertex, oldVertex ) {
+      oldVertex && oldVertex.positionProperty.unlink( vertexMoved );
+      vertex.positionProperty.link( vertexMoved );
+
+      if ( !oldVertex || !oldVertex.position.equals( vertex.position ) ) {
+        circuitElement.vertexMovedEmitter.emit();
+      }
+    };
+    this.startVertexProperty.link( linkToVertex );
+    this.endVertexProperty.link( linkToVertex );
   }
 
   circuitConstructionKit.register( 'CircuitElement', CircuitElement );
-  
+
   return inherit( PropertySet, CircuitElement, {
     /**
      * Replace one of the vertices with a new one
@@ -107,6 +126,9 @@ define( function( require ) {
         startVertex: getVertexIndex( this.startVertex ),
         endVertex: getVertexIndex( this.endVertex )
       };
+    },
+    getPosition: function( distanceAlongWire ) {
+      return this.startVertex.position.blend( this.endVertex.position, distanceAlongWire / this.length );
     }
   } );
 } );

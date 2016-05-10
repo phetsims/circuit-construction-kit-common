@@ -49,10 +49,22 @@ define( function( require ) {
       wire.startVertex.unlink( updateResistance );
       wire.endVertex.unlink( updateResistance );
     };
+
+    var updateLength = function() {
+      wire.length = wire.startVertex.position.distance( wire.endVertex.position );
+      console.log( wire.length );
+    };
+
+    this.vertexMovedEmitter.addListener( function() {
+      updateResistance();
+      updateLength();
+    } );
+    updateResistance();
+    updateLength();
   }
 
   circuitConstructionKit.register( 'Wire', Wire );
-  
+
   return inherit( CircuitElement, Wire, {
     dispose: function() {
       this.disposeWire();

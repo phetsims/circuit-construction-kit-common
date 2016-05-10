@@ -9,6 +9,8 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
+  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var PropertySet = require( 'AXON/PropertySet' );
 
   function Electron( circuitElement, distance ) {
     assert && assert( _.isNumber( distance ), 'distance should be a number' );
@@ -16,22 +18,25 @@ define( function( require ) {
     var electron = this;
     this.circuitElement = circuitElement;
     this.distance = distance; // Distance along the circuit element, in pixels
-    this.position = null;
     this.radius = 0.1;
     this.deleted = false;
-    this.updatePosition();
-    circuitElement.addObserver( function() {
+    circuitElement.vertexMovedEmitter.addListener( function() {
       assert && assert( !electron.deleted, 'Electron was deleted' );
       electron.updatePosition();
     } );
+    PropertySet.call( this, {
+      position: null
+    } );
+    this.updatePosition();
   }
 
-  return inherit( Object, Electron, {
+  circuitConstructionKit.register( 'Electron', Electron );
+
+  return inherit( PropertySet, Electron, {
     updatePosition: function() {
       var position = this.circuitElement.getPosition( this.distance );
       assert && assert( !isNaN( position.x ) && !isNaN( position.y ), 'point was not a number' );
       this.position = position;
-      this.notifyObservers(); // TODO: emitter or position observer
     },
     setDistanceAlongWire: function( distance ) {
       assert && assert( !isNaN( distance ), 'electron position was not a number' );

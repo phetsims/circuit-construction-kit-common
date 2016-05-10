@@ -21,6 +21,7 @@ define( function( require ) {
   var SolderNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/SolderNode' );
   var Vector2 = require( 'DOT/Vector2' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/FixedLengthCircuitElement' );
+  var ElectronNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/ElectronNode' );
 
   /**
    *
@@ -164,6 +165,10 @@ define( function( require ) {
           circuitNode.translateVertexGroup( vertex, vertices, delta, null, [] );
         }
       }
+    } );
+
+    circuit.electrons.addItemAddedListener( function( electron ) {
+      circuitNode.addChild( new ElectronNode( electron ) );
     } );
   }
 
