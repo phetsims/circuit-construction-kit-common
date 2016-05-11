@@ -33,6 +33,7 @@ define( function( require ) {
         endVertex: 3
       }
     ],
+    switches: [],
     vertices: [
       {
         x: 381,
@@ -81,6 +82,7 @@ define( function( require ) {
       ],
       lightBulbs: [],
       resistors: [],
+      switches: [],
       vertices: [
         {
           x: 381,
@@ -119,6 +121,7 @@ define( function( require ) {
       batteries: [],
       lightBulbs: [],
       resistors: [],
+      switches: [],
       vertices: [
         {
           x: 381,
@@ -158,6 +161,7 @@ define( function( require ) {
           endVertex: 4
         }
       ],
+      switches: [],
       vertices: [
         {
           x: 381,
@@ -194,7 +198,6 @@ define( function( require ) {
         }
       ]
     },
-
     {
       wires: [
         {
@@ -227,6 +230,7 @@ define( function( require ) {
           endVertex: 4
         }
       ],
+      switches: [],
       vertices: [
         {
           x: 381,
@@ -296,6 +300,7 @@ define( function( require ) {
           endVertex: 5
         }
       ],
+      switches: [],
       vertices: [
         {
           x: 381,
@@ -370,6 +375,7 @@ define( function( require ) {
           endVertex: 6
         }
       ],
+      switches: [],
       vertices: [
         {
           x: 381,
@@ -455,6 +461,7 @@ define( function( require ) {
           endVertex: 3
         }
       ],
+      switches: [],
       vertices: [
         {
           x: 381,
@@ -538,6 +545,7 @@ define( function( require ) {
           endVertex: 5
         }
       ],
+      switches: [],
       vertices: [
         {
           x: 381,
@@ -624,6 +632,7 @@ define( function( require ) {
           endVertex: 7
         }
       ],
+      switches: [],
       vertices: [
         {
           x: 381,
@@ -724,6 +733,7 @@ define( function( require ) {
           endVertex: 8
         }
       ],
+      switches: [],
       vertices: [
         {
           x: 381,
