@@ -20,7 +20,7 @@ define( function( require ) {
 
   function ConstantDensityLayout( circuit ) {
     this.circuit = circuit;
-    this.particleSet = circuit.electrons; // TODO rename to electrons
+    this.electrons = circuit.electrons; 
   }
 
   circuitConstructionKit.register( 'ConstantDensityLayout', ConstantDensityLayout );
@@ -28,7 +28,7 @@ define( function( require ) {
   return inherit( Object, ConstantDensityLayout, {
     layoutElectrons: function( circuitElement ) {
       var particlesInBranch = this.circuit.getElectronsInCircuitElement( circuitElement );
-      this.particleSet.removeAll( particlesInBranch );
+      this.electrons.removeAll( particlesInBranch );
 
       if ( electronsVisible ) {
         var offset = ELECTRON_DX / 2;
@@ -45,7 +45,7 @@ define( function( require ) {
           integralNumberParticles = 0;
         }
         for ( var i = 0; i < integralNumberParticles; i++ ) {
-          this.particleSet.add( new Electron( circuitElement, i * dx + offset ) );
+          this.electrons.add( new Electron( circuitElement, i * dx + offset ) );
         }
       }
 

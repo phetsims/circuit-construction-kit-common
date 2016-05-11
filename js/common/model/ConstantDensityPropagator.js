@@ -67,7 +67,7 @@ define( function( require ) {
   };
 
   function ConstantDensityPropagator( circuit ) {
-    this.particleSet = circuit.electrons; // TODO rename to electrons
+    this.electrons = circuit.electrons;
     this.circuit = circuit;
     this.scale = 1;
     this.smoothData = new SmoothData( 30 );
@@ -111,8 +111,8 @@ define( function( require ) {
         percent = '1';
       }
       this.timeScalePercentString = percent;
-      for ( var i = 0; i < this.particleSet.length; i++ ) {
-        var e = this.particleSet.get( i );
+      for ( var i = 0; i < this.electrons.length; i++ ) {
+        var e = this.electrons.get( i );
         this.propagate( e, dt );
       }
 
@@ -132,12 +132,12 @@ define( function( require ) {
     },
     equalizeAll: function( dt ) {
       var indices = [];
-      for ( var i = 0; i < this.particleSet.length; i++ ) {
+      for ( var i = 0; i < this.electrons.length; i++ ) {
         indices.push( i );
       }
       _.shuffle( indices );
-      for ( i = 0; i < this.particleSet.length; i++ ) {
-        this.equalizeElectron( this.particleSet.get( indices[ i ] ), dt );
+      for ( i = 0; i < this.electrons.length; i++ ) {
+        this.equalizeElectron( this.electrons.get( indices[ i ] ), dt );
       }
     },
     equalizeElectron: function( electron, dt ) {
