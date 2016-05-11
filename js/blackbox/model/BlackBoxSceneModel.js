@@ -3,8 +3,6 @@
 /**
  * One scene for the black box screen, which focuses on a single black box.
  *
- * TODO: Resetting shouldn't delete the black box circuit.
- *
  * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {
