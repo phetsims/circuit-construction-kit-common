@@ -24,46 +24,46 @@ define( function( require ) {
   var timeScale = 100;
   var highestSoFar = null;//for debugging
 
-  var getUpperNeighborInBranch = function( circuit, myelectron ) {
-    var branchElectrons = circuit.getElectronsInCircuitElement( myelectron.circuitElement );
-    var upper = null;
-    var dist = Number.POSITIVE_INFINITY;
+  var getUpperNeighborInBranch = function( circuit, electron ) {
+    var branchElectrons = circuit.getElectronsInCircuitElement( electron.circuitElement );
+    var closestUpperNeighbor = null;
+    var closestDistance = Number.POSITIVE_INFINITY;
     for ( var i = 0; i < branchElectrons.length; i++ ) {
-      var electron = branchElectrons[ i ];
-      if ( electron !== myelectron ) {
-        var yourDist = electron.distance;
-        var myDist = myelectron.distance;
-        if ( yourDist > myDist ) {
-          var distance = yourDist - myDist;
-          if ( distance < dist ) {
-            dist = distance;
-            upper = electron;
+      var neighborElectron = branchElectrons[ i ];
+      if ( neighborElectron !== electron ) {
+        var neighborDistance = neighborElectron.distance;
+        var electronDistance = electron.distance;
+        if ( neighborDistance > electronDistance ) {
+          var distance = neighborDistance - electronDistance;
+          if ( distance < closestDistance ) {
+            closestDistance = distance;
+            closestUpperNeighbor = neighborElectron;
           }
         }
       }
     }
-    return upper;
+    return closestUpperNeighbor;
   };
 
-  var getLowerNeighborInBranch = function( circuit, myelectron ) {
-    var branchElectrons = circuit.getElectronsInCircuitElement( myelectron.circuitElement );
-    var lower = null;
-    var dist = Number.POSITIVE_INFINITY;
+  var getLowerNeighborInBranch = function( circuit, electron ) {
+    var branchElectrons = circuit.getElectronsInCircuitElement( electron.circuitElement );
+    var closestLowerNeighbor = null;
+    var closestDistance = Number.POSITIVE_INFINITY;
     for ( var i = 0; i < branchElectrons.length; i++ ) {
-      var electron = branchElectrons[ i ];
-      if ( electron !== myelectron ) {
-        var yourDist = electron.distance;
-        var myDist = myelectron.distance;
-        if ( yourDist < myDist ) {
-          var distance = myDist - yourDist;
-          if ( distance < dist ) {
-            dist = distance;
-            lower = electron;
+      var neighborElectron = branchElectrons[ i ];
+      if ( neighborElectron !== electron ) {
+        var neighborDistance = neighborElectron.distance;
+        var electronDistance = electron.distance;
+        if ( neighborDistance < electronDistance ) {
+          var distance = electronDistance - neighborDistance;
+          if ( distance < closestDistance ) {
+            closestDistance = distance;
+            closestLowerNeighbor = neighborElectron;
           }
         }
       }
     }
-    return lower;
+    return closestLowerNeighbor;
   };
 
   function ConstantDensityPropagator( circuit ) {
