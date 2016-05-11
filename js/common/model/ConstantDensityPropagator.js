@@ -169,9 +169,7 @@ define( function( require ) {
       }
       if ( dest >= 0 && dest <= electron.circuitElement.length ) {
         electron.distance = dest;
-        electron.updatePosition();
       }
-
     },
     propagate: function( e, dt ) {
       var x = e.distance;
@@ -189,7 +187,6 @@ define( function( require ) {
       var branch = e.circuitElement;
       if ( branch.containsScalarLocation( newX ) ) {
         e.distance = newX;
-        e.updatePosition();// TODO: combine these calls
       }
       else {
         //need a new branch.
