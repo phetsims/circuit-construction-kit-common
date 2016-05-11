@@ -29,6 +29,9 @@ define( function( require ) {
       position: null
     } );
     this.updatePosition();
+
+    // @public
+    this.node = null; // Support map for the view
   }
 
   circuitConstructionKit.register( 'Electron', Electron );

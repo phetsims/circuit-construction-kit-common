@@ -172,7 +172,9 @@ define( function( require ) {
       circuitNode.addChild( electron.node );
     } );
     circuit.electrons.addItemRemovedListener( function( electron ) {
-      circuitNode.removeChild( electron.node );
+
+      // TODO: Why is this sometimes undefined?
+      electron.node && circuitNode.removeChild( electron.node );
       electron.node = null;
     } );
   }
