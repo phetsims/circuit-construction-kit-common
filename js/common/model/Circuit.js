@@ -96,20 +96,29 @@ define( function( require ) {
     this.lightBulbs.addItemAddedListener( addVertices );
     this.resistors.addItemAddedListener( addVertices );
 
-    // TODO: This is just for debugging
     var addElectrons = function( circuitElement ) {
       circuit.constantDensityLayout.layoutElectrons( circuitElement );
 
-      // TODO: When any vertex moves, relayout all electrons within the connected component.
+      // When any vertex moves, relayout all electrons within the fixed-length connected component.
       circuitElement.vertexMovedEmitter.addListener( function() {
         circuit.constantDensityLayout.layoutElectrons( circuitElement );
       } );
+    };
+    var removeElectrons = function( circuitElement ) {
+      circuit.electrons.removeAll( circuit.getElectronsInCircuitElement( circuitElement ) );
+      // TODO: Remove the listener added above
     };
     this.wires.addItemAddedListener( addElectrons );
     this.switches.addItemAddedListener( addElectrons );
     this.batteries.addItemAddedListener( addElectrons );
     this.lightBulbs.addItemAddedListener( addElectrons );
     this.resistors.addItemAddedListener( addElectrons );
+
+    this.wires.addItemRemovedListener( removeElectrons );
+    this.switches.addItemRemovedListener( removeElectrons );
+    this.batteries.addItemRemovedListener( removeElectrons );
+    this.lightBulbs.addItemRemovedListener( removeElectrons );
+    this.resistors.addItemRemovedListener( removeElectrons );
 
     // After the circuit physics is recomputed in solve(), some listeners need to update themselves, such as
     // the voltmeter and ammeter
