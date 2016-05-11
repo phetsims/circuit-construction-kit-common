@@ -16,10 +16,10 @@ define( function( require ) {
   // constants
   var FIRE_CURRENT = 10;
   var MIN_CURRENT = Math.pow( 10, -10 );
-  var ELECTRON_DX = CircuitConstructionKitConstants.electronDX * 100;
+  var ELECTRON_DX = CircuitConstructionKitConstants.electronDX;
   var MAX_STEP = ELECTRON_DX * .43;
   var numEqualize = 2;
-  var speedScale = .01 / 0.03;
+  var speedScale = .01 / 0.03 * 100;
   var highestSoFar = null;//for debugging
 
   var getUpperNeighborInBranch = function( particleSet, myelectron ) {
@@ -82,7 +82,6 @@ define( function( require ) {
 
   return inherit( Object, ConstantDensityPropagator, {
     step: function( dt ) {
-      dt = dt * 100;// TODO: correct scaling for HTML5
       var maxCurrent = this.getMaxCurrent();
       var maxVelocity = maxCurrent * speedScale;
       var maxStep = maxVelocity * dt;
