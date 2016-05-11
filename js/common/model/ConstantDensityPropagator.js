@@ -20,7 +20,8 @@ define( function( require ) {
   var ELECTRON_DX = CircuitConstructionKitConstants.electronDX;
   var MAX_STEP = ELECTRON_DX * .43;
   var numEqualize = 2;
-  var speedScale = .01 / 0.03 * 100;
+  var speedScale = .01 / 0.03;
+  var timeScale = 100;
   var highestSoFar = null;//for debugging
 
   var getUpperNeighborInBranch = function( particleSet, myelectron ) {
@@ -85,6 +86,7 @@ define( function( require ) {
 
   return inherit( PropertySet, ConstantDensityPropagator, {
     step: function( dt ) {
+      dt = dt * timeScale;
       var maxCurrent = this.getMaxCurrent();
       var maxVelocity = maxCurrent * speedScale;
       var maxStep = maxVelocity * dt;
