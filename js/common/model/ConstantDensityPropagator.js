@@ -21,6 +21,48 @@ define( function( require ) {
   var speedScale = .01 / 0.03;
   var highestSoFar = null;//for debugging
 
+  var getUpperNeighborInBranch = function( particleSet, myelectron ) {
+    var branchElectrons = particleSet.filter( function( particle ) {return particle.circuitElement === myelectron.circuitElement;} ).getArray();
+    var upper = null;
+    var dist = Number.POSITIVE_INFINITY;
+    for ( var i = 0; i < branchElectrons.length; i++ ) {
+      var electron = branchElectrons[ i ];
+      if ( electron !== myelectron ) {
+        var yourDist = electron.distance;
+        var myDist = myelectron.distance;
+        if ( yourDist > myDist ) {
+          var distance = yourDist - myDist;
+          if ( distance < dist ) {
+            dist = distance;
+            upper = electron;
+          }
+        }
+      }
+    }
+    return upper;
+  };
+
+  var getLowerNeighborInBranch = function( particleSet, myelectron ) {
+    var branchElectrons = particleSet.filter( function( particle ) {return particle.circuitElement === myelectron.circuitElement;} ).getArray();
+    var lower = null;
+    var dist = Number.POSITIVE_INFINITY;
+    for ( var i = 0; i < branchElectrons.length; i++ ) {
+      var electron = branchElectrons[ i ];
+      if ( electron !== myelectron ) {
+        var yourDist = electron.distance;
+        var myDist = myelectron.distance;
+        if ( yourDist < myDist ) {
+          var distance = myDist - yourDist;
+          if ( distance < dist ) {
+            dist = distance;
+            lower = electron;
+          }
+        }
+      }
+    }
+    return lower;
+  };
+
   function ConstantDensityPropagator( circuit, particleSet ) {
     this.particleSet = particleSet;
     this.circuit = circuit;
@@ -36,9 +78,10 @@ define( function( require ) {
   };
 
   circuitConstructionKit.register( 'ConstantDensityPropagator', ConstantDensityPropagator );
-  
+
   return inherit( Object, ConstantDensityPropagator, {
     step: function( dt ) {
+      dt = dt * 100;// TODO: correct scaling for HTML5
       var maxCurrent = this.getMaxCurrent();
       var maxVelocity = maxCurrent * speedScale;
       var maxStep = maxVelocity * dt;
@@ -52,54 +95,55 @@ define( function( require ) {
       this.timeScalingPercentValue = this.smoothData.getAverage();
 
       this.percent = this.timeScalingPercentValue.toFixed( 2 );
-      if ( this.percent.equals( '0' ) ) {
+      if ( this.percent === '0' ) {
         this.percent = '1';
       }
       //todo add test for change before notify
-      this.notifyListeners();
-      for ( var i = 0; i < this.particleSet.numParticles(); i++ ) {
-        var e = this.particleSet.particleAt( i );
+      // this.notifyListeners(); // TODO: Commented out, was this doing something important?
+      for ( var i = 0; i < this.particleSet.length; i++ ) {
+        var e = this.particleSet.get( i );
         this.propagate( e, dt );
       }
 
       //maybe this should be done in random order, otherwise we may get artefacts.
       for ( i = 0; i < numEqualize; i++ ) {
-        this.equalize( dt );
+        this.equalizeAll( dt );
       }
     },
     getMaxCurrent: function() {
       var max = 0;
-      for ( var i = 0; i < this.circuit.numBranches(); i++ ) {
-        var current = this.circuit.branchAt( i ).getCurrent();
+      var circuitElements = this.circuit.getCircuitElements();
+      for ( var i = 0; i < circuitElements; i++ ) {
+        var current = circuitElements[ i ].current;
         max = Math.max( max, Math.abs( current ) );
       }
       return max;
     },
     equalizeAll: function( dt ) {
       var indices = [];
-      for ( var i = 0; i < this.particleSet.numParticles(); i++ ) {
+      for ( var i = 0; i < this.particleSet.length; i++ ) {
         indices.push( i );
       }
       _.shuffle( indices );
-      for ( i = 0; i < this.particleSet.numParticles(); i++ ) {
-        this.equalize( this.particleSet.particleAt( indices.get( i ) ), dt );
+      for ( i = 0; i < this.particleSet.length; i++ ) {
+        this.equalizeElectron( this.particleSet.get( indices[ i ] ), dt );
       }
     },
     equalizeElectron: function( electron, dt ) {
       //if it has a lower and upper neighbor, try to get the distance to each to be half of ELECTRON_DX
-      var upper = this.particleSet.getUpperNeighborInBranch( electron );
-      var lower = this.particleSet.getLowerNeighborInBranch( electron );
+      var upper = getUpperNeighborInBranch( this.particleSet, electron, electron.circuitElement );
+      var lower = getLowerNeighborInBranch( this.particleSet, electron, electron.circuitElement );
       if ( upper === null || lower === null ) {
         return;
       }
-      var sep = upper.getDistAlongWire() - lower.getDistAlongWire();
-      var myloc = electron.getDistAlongWire();
-      var midpoint = lower.getDistAlongWire() + sep / 2;
+      var sep = upper.distance - lower.distance;
+      var myloc = electron.distance;
+      var midpoint = lower.distance + sep / 2;
 
       var dest = midpoint;
       var distMoving = Math.abs( dest - myloc );
       var vec = dest - myloc;
-      var sameDirAsCurrent = vec > 0 && electron.getBranch().getCurrent() > 0;
+      var sameDirAsCurrent = vec > 0 && electron.circuitElement.current > 0;
       var myscale = 1000.0 / 30.0;//to have same scale as 3.17.00
       var correctionSpeed = .055 / numEqualize * myscale;
       if ( !sameDirAsCurrent ) {
@@ -120,15 +164,16 @@ define( function( require ) {
           dest = myloc + maxDX;
         }
       }
-      if ( dest >= 0 && dest <= electron.getBranch().getLength() ) {
-        electron.setDistAlongWire( dest );
+      if ( dest >= 0 && dest <= electron.circuitElement.length ) {
+        electron.distance = dest;
+        electron.updatePosition();
       }
 
     },
     propagate: function( e, dt ) {
       var x = e.distance;
       assert && assert( _.isNumber( x ), 'disance along wire should be a number' );
-      var current = e.getBranch().getCurrent();
+      var current = e.circuitElement.current;
 
       if ( current === 0 || Math.abs( current ) < MIN_CURRENT ) {
         return;
@@ -140,7 +185,8 @@ define( function( require ) {
       var newX = x + dx;
       var branch = e.circuitElement;
       if ( branch.containsScalarLocation( newX ) ) {
-        e.setDistanceAlongWire( newX );
+        e.distance = newX;
+        e.updatePosition();// TODO: combine these calls
       }
       else {
         //need a new branch.
@@ -151,18 +197,18 @@ define( function( require ) {
           under = true;
         }
         else {
-          overshoot = Math.abs( branch.getLength() - newX );
+          overshoot = Math.abs( branch.length - newX );
           under = false;
         }
         assert && assert( !isNaN( overshoot ), 'overshoot is NaN' );
-        assert && assert( overshoot < 0, 'overshoot is <0' );
+        assert && assert( overshoot >= 0, 'overshoot is <0' );
         var locationArray = this.getLocations( e, dt, overshoot, under );
         if ( locationArray.length === 0 ) {
           return;
         }
         //choose the branch with the furthest away electron
         var chosenCircuitLocation = this.chooseDestinationBranch( locationArray );
-        e.setLocation( chosenCircuitLocation.branch, Math.abs( chosenCircuitLocation.getX() ) );
+        e.setLocation( chosenCircuitLocation.branch, Math.abs( chosenCircuitLocation.distance ) );
       }
     },
     chooseDestinationBranch: function( circuitLocations ) {
@@ -179,24 +225,25 @@ define( function( require ) {
       return argmin;
     },
     getDensity: function( circuitLocation ) {
-      var branch = circuitLocation.getBranch();
-      return this.particleSet.getDensity( branch );
+      var branch = circuitLocation.branch;
+      var particles = this.particleSet.filter( function( particle ) {return particle.circuitElement === branch;} ); // TODO: Factor out
+      return particles.length / branch.length;
     },
     getLocations: function( electron, dt, overshoot, under ) {
-      var branch = electron.getBranch();
+      var branch = electron.circuitElement;
       var jroot = null;
       if ( under ) {
-        jroot = branch.getStartJunction();
+        jroot = branch.startVertex;
       }
       else {
-        jroot = branch.getEndJunction();
+        jroot = branch.endVertex;
       }
-      var adjacentBranches = this.circuit.getAdjacentBranches( jroot );
+      var adjacentBranches = this.circuit.getNeighborCircuitElements( jroot );
       var all = [];
       //keep only those with outgoing current.
       for ( var i = 0; i < adjacentBranches.length; i++ ) {
         var neighbor = adjacentBranches[ i ];
-        var current = neighbor.getCurrent();
+        var current = neighbor.current;
         if ( current > FIRE_CURRENT ) {
           current = FIRE_CURRENT;
         }
@@ -204,25 +251,25 @@ define( function( require ) {
           current = -FIRE_CURRENT;
         }
         var distAlongNew = null;
-        if ( current > 0 && neighbor.getStartJunction() === jroot ) {//start near the beginning.
+        if ( current > 0 && neighbor.startVertex === jroot ) {//start near the beginning.
           distAlongNew = overshoot;
-          if ( distAlongNew > neighbor.getLength() ) {
-            distAlongNew = neighbor.getLength();
+          if ( distAlongNew > neighbor.length ) {
+            distAlongNew = neighbor.length;
           }
           else if ( distAlongNew < 0 ) {
             distAlongNew = 0;
           }
           all.push( createCircuitLocation( neighbor, distAlongNew ) );
         }
-        else if ( current < 0 && neighbor.getEndJunction() === jroot ) {
-          distAlongNew = neighbor.getLength() - overshoot;
-          if ( distAlongNew > neighbor.getLength() ) {
-            distAlongNew = neighbor.getLength();
+        else if ( current < 0 && neighbor.endVertex === jroot ) {
+          distAlongNew = neighbor.length - overshoot;
+          if ( distAlongNew > neighbor.length ) {
+            distAlongNew = neighbor.length;
           }
           else if ( distAlongNew < 0 ) {
             distAlongNew = 0;
           }
-          all.add( createCircuitLocation( neighbor, distAlongNew ) );
+          all.push( createCircuitLocation( neighbor, distAlongNew ) );
         }
       }
       return all;

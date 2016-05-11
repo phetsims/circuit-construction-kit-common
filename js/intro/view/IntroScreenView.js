@@ -27,9 +27,10 @@ define( function( require ) {
    */
   function IntroScreenView( introScreenModel ) {
     var introScreenView = this;
+    this.introScreenModel = introScreenModel;
     ScreenView.call( this );
 
-    var sceneNodes = {};
+    this.sceneNodes = {};
 
     var sceneSelectionRadioButtonGroup = new SceneSelectionRadioButtonGroup(
       introScreenModel.selectedSceneProperty
@@ -40,7 +41,7 @@ define( function( require ) {
       listener: function() {
         introScreenModel.reset();
 
-        _.values( sceneNodes ).forEach( function( sceneNode ) {
+        _.values( introScreenView.sceneNodes ).forEach( function( sceneNode ) {
           sceneNode.reset();
           sceneNode.circuitConstructionKitModel.reset();
         } );
@@ -49,7 +50,7 @@ define( function( require ) {
     this.addChild( resetAllButton );
 
     introScreenModel.selectedSceneProperty.link( function( selectedScene ) {
-      if ( !sceneNodes[ selectedScene ] ) {
+      if ( !introScreenView.sceneNodes[ selectedScene ] ) {
         var options = {
           0: {
             numberOfLeftBatteriesInToolbox: 0,
@@ -78,19 +79,19 @@ define( function( require ) {
         }[ selectedScene ];
         var sceneNode = new IntroSceneNode( new IntroSceneModel( introScreenView.layoutBounds, introScreenModel.selectedSceneProperty ), options );
         sceneNode.visibleBoundsProperty.set( introScreenView.visibleBoundsProperty.value );
-        sceneNodes[ selectedScene ] = sceneNode;
+        introScreenView.sceneNodes[ selectedScene ] = sceneNode;
       }
 
       // scene selection buttons go in back so that circuit elements may go in front
       introScreenView.children = [
         resetAllButton,
         sceneSelectionRadioButtonGroup,
-        sceneNodes[ selectedScene ]
+        introScreenView.sceneNodes[ selectedScene ]
       ];
     } );
 
     this.visibleBoundsProperty.link( function( visibleBounds ) {
-      _.values( sceneNodes ).forEach( function( sceneNode ) {
+      _.values( introScreenView.sceneNodes ).forEach( function( sceneNode ) {
         sceneNode.visibleBoundsProperty.set( visibleBounds );
       } );
 
@@ -109,5 +110,9 @@ define( function( require ) {
 
   circuitConstructionKit.register( 'IntroScreenView', IntroScreenView );
 
-  return inherit( ScreenView, IntroScreenView );
+  return inherit( ScreenView, IntroScreenView, {
+    step: function( dt ) {
+      this.sceneNodes[ this.introScreenModel.selectedScene ].circuitConstructionKitScreenModel.step( dt );
+    }
+  } );
 } );

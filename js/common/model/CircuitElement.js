@@ -129,6 +129,9 @@ define( function( require ) {
     },
     getPosition: function( distanceAlongWire ) {
       return this.startVertex.position.blend( this.endVertex.position, distanceAlongWire / this.length );
+    },
+    containsScalarLocation: function( s ) {
+      return s >= 0 && s <= this.length;
     }
   } );
 } );

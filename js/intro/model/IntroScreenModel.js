@@ -23,6 +23,6 @@ define( function( require ) {
   }
 
   circuitConstructionKit.register( 'IntroScreenModel', IntroScreenModel );
-  
+
   return inherit( PropertySet, IntroScreenModel );
 } );

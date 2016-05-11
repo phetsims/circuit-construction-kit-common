@@ -25,6 +25,7 @@ define( function( require ) {
    * @constructor
    */
   function IntroSceneNode( circuitConstructionKitScreenModel, options ) {
+    this.circuitConstructionKitScreenModel = circuitConstructionKitScreenModel;
     var introSceneNode = this;
     options = _.extend( {
       numberOfRightBatteriesInToolbox: 1,

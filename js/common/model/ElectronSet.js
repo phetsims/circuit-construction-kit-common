@@ -1,6 +1,7 @@
 // Copyright 2016, University of Colorado Boulder
 
 /**
+ * TODO: Delete file
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -23,25 +24,21 @@ define( function( require ) {
     } );
   }
 
-  return inherit( Object, ElectronSet, {
-    getDensity: function( circuitElement ) {
-      return this.getParticles( circuitElement ).length / circuitElement.length;
+  return inherit( Object, ElectronSet, {}, {
+    getDensity: function( particleSet, circuitElement ) {
+      return particleSet.getParticles( circuitElement ).length / circuitElement.length;
     },
     clear: function() {
       this.particles.clear();
     },
-    getParticles: function( circuitElement ) {
-      return this.particles.filter( function( particle ) {return particle.circuitElement === circuitElement;} );
+    getParticles: function( particleSet, circuitElement ) {
+      return particleSet.particles.filter( function( particle ) {return particle.circuitElement === circuitElement;} );
     },
-    removeParticles: function( circuitElement ) {
-      this.particles.removeAll( this.getParticles( circuitElement ) );
+    removeParticles: function( particleSet, circuitElement ) {
+      particleSet.particles.removeAll( ElectronSet.getParticles( circuitElement ) );
     },
-    step: function( dt ) {
-      this.propagator.step( dt );
-    },
-
-    getUpperNeighborInBranch: function( myelectron ) {
-      var branchElectrons = this.getParticles( myelectron.circuitElement ).getArray();
+    getUpperNeighborInBranch: function( particleSet, myelectron ) {
+      var branchElectrons = particleSet.getParticles( myelectron.circuitElement ).getArray();
       var upper = null;
       var dist = Number.POSITIVE_INFINITY;
       for ( var i = 0; i < branchElectrons.length; i++ ) {
@@ -61,8 +58,8 @@ define( function( require ) {
       return upper;
     },
 
-    getLowerNeighborInBranch: function( myelectron ) {
-      var branchElectrons = this.getParticles( myelectron.circuitElement ).getArray();
+    getLowerNeighborInBranch: function( particleSet, myelectron ) {
+      var branchElectrons = particleSet.getParticles( myelectron.circuitElement ).getArray();
       var lower = null;
       var dist = Number.POSITIVE_INFINITY;
       for ( var i = 0; i < branchElectrons.length; i++ ) {

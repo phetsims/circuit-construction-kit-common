@@ -20,10 +20,11 @@ define( function( require ) {
     this.distance = distance; // Distance along the circuit element, in pixels
     this.radius = 0.1;
     this.deleted = false;
-    circuitElement.vertexMovedEmitter.addListener( function() {
+    this.observer = function() {
       assert && assert( !electron.deleted, 'Electron was deleted' );
       electron.updatePosition();
-    } );
+    };
+    circuitElement.vertexMovedEmitter.addListener( this.observer );
     PropertySet.call( this, {
       position: null
     } );
@@ -38,6 +39,8 @@ define( function( require ) {
       assert && assert( !isNaN( position.x ) && !isNaN( position.y ), 'point was not a number' );
       this.position = position;
     },
+
+    // TODO: use this method
     setDistanceAlongWire: function( distance ) {
       assert && assert( !isNaN( distance ), 'electron position was not a number' );
       assert && assert( !this.deleted, 'electron was already deleted' );
@@ -48,16 +51,16 @@ define( function( require ) {
       }
     },
     delete: function() {
-      this.branch.removeObserver( this.observer );
+      this.circuitElement.vertexMovedEmitter.removeListener( this.observer );
       this.deleted = true;
     },
     setLocation: function( circuitElement, distance ) {
       assert && assert( !isNaN( distance ), 'Distance was NaN' );
       assert && assert( circuitElement.containsScalarLocation( distance ), 'no location in branch' );
       if ( this.circuitElement !== circuitElement ) {
-        this.circuitElement.removeObserver( this.observer );
+        this.circuitElement.vertexMovedEmitter.removeListener( this.observer );
         this.circuitElement = circuitElement;
-        this.circuitElement.addObserver( this.observer );
+        this.circuitElement.vertexMovedEmitter.addListener( this.observer );
       }
       if ( this.distance !== distance ) {
         this.distance = distance;
