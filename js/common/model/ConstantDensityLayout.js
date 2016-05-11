@@ -26,27 +26,6 @@ define( function( require ) {
   circuitConstructionKit.register( 'ConstantDensityLayout', ConstantDensityLayout );
 
   return inherit( Object, ConstantDensityLayout, {
-
-    // TODO: Whenever a branch moves, relayout all electrons in all connected branches.
-    branchesMoved: function( branches ) {
-      if ( !dolayout ) {
-        return;
-      }
-      var bs = [];
-      // var bs = new BranchSet( this.circuit, branches );
-      // for ( var i = 0; i < branches.length; i++ ) {
-      //   bs.addBranches( this.circuit.getStrongConnections( branches[ i ].getStartJunction() ) );
-      //   bs.addBranches( this.circuit.getStrongConnections( branches[ i ].getEndJunction() ) );
-      // }
-      // var torelayout = bs.getBranches();
-      this.layoutElectronsForBranches( bs );
-    },
-    layoutElectronsForBranches: function( branches ) {
-      for ( var i = 0; i < branches.length; i++ ) {
-        var branch = branches[ i ];
-        this.layoutElectrons( branch );
-      }
-    },
     layoutElectrons: function( circuitElement ) {
       var particlesInBranch = this.particleSet.filter( function( electron ) {
         return electron.circuitElement === circuitElement;
