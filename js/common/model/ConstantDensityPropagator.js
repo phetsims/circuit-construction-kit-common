@@ -79,7 +79,14 @@ define( function( require ) {
 
   var createCircuitLocation = function( branch, distance ) {
     assert && assert( branch.containsScalarLocation( distance ), 'branch should contain distance' );
-    return { branch: branch, distance: distance, density: null };
+    return {
+      branch: branch,
+      distance: distance,
+      getDensity: function( particleSet ) {
+        var particles = particleSet.filter( function( particle ) {return particle.circuitElement === branch;} ); // TODO: Factor out
+        return particles.length / branch.length;
+      }
+    };
   };
 
   circuitConstructionKit.register( 'ConstantDensityPropagator', ConstantDensityPropagator );
@@ -218,18 +225,13 @@ define( function( require ) {
       var min = Number.POSITIVE_INFINITY;
       var argmin = null;
       for ( var i = 0; i < circuitLocations.length; i++ ) {
-        circuitLocations[ i ].density = this.getDensity( circuitLocations[ i ] );
-        if ( circuitLocations[ i ].density < min ) {
-          min = circuitLocations[ i ].density;
+        var density = circuitLocations[ i ].getDensity( this.particleSet );
+        if ( density < min ) {
+          min = density;
           argmin = circuitLocations[ i ];
         }
       }
       return argmin;
-    },
-    getDensity: function( circuitLocation ) {
-      var branch = circuitLocation.branch;
-      var particles = this.particleSet.filter( function( particle ) {return particle.circuitElement === branch;} ); // TODO: Factor out
-      return particles.length / branch.length;
     },
     getLocations: function( electron, dt, overshoot, under ) {
       var branch = electron.circuitElement;
