@@ -11,11 +11,12 @@ define( function( require ) {
   var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
   var SmoothData = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/SmoothData' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
 
   // constants
   var FIRE_CURRENT = 10;
   var MIN_CURRENT = Math.pow( 10, -10 );
-  var ELECTRON_DX = 0.56 / 2;
+  var ELECTRON_DX = CircuitConstructionKitConstants.electronDX * 100;
   var MAX_STEP = ELECTRON_DX * .43;
   var numEqualize = 2;
   var speedScale = .01 / 0.03;
@@ -130,6 +131,7 @@ define( function( require ) {
       }
     },
     equalizeElectron: function( electron, dt ) {
+
       //if it has a lower and upper neighbor, try to get the distance to each to be half of ELECTRON_DX
       var upper = getUpperNeighborInBranch( this.particleSet, electron, electron.circuitElement );
       var lower = getLowerNeighborInBranch( this.particleSet, electron, electron.circuitElement );

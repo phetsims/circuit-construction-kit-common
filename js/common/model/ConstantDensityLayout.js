@@ -11,11 +11,12 @@ define( function( require ) {
   var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Electron = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Electron' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
 
   // constants
   var dolayout = true;
   var electronsVisible = true;
-  var ELECTRON_DX = 0.56 / 2 * 100; // TODO: Factor out
+  var ELECTRON_DX = CircuitConstructionKitConstants.electronDX;
 
   function ConstantDensityLayout( circuit, particleSet ) {
     this.circuit = circuit;
