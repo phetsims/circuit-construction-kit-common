@@ -42,8 +42,8 @@ define( function( require ) {
 
     this.electrons = new ObservableArray();
 
-    this.constantDensityLayout = new ConstantDensityLayout( this, this.electrons );
-    this.constantDensityPropagator = new ConstantDensityPropagator( this, this.electrons );
+    this.constantDensityLayout = new ConstantDensityLayout( this );
+    this.constantDensityPropagator = new ConstantDensityPropagator( this );
 
     // Re-solve the circuit when voltages or resistances change.
     var solve = function() {
@@ -461,6 +461,15 @@ define( function( require ) {
       }
       return fixedVertices;
 
+    },
+
+    /**
+     *
+     * @param {CircuitElement} circuitElement
+     * @returns {Array}
+     */
+    getElectronsInCircuitElement: function( circuitElement ) {
+      return this.electrons.filter( function( electron ) { return electron.circuitElement === circuitElement; } ).getArray();
     },
 
     /**

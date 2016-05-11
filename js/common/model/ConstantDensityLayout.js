@@ -18,19 +18,17 @@ define( function( require ) {
   var electronsVisible = true;
   var ELECTRON_DX = CircuitConstructionKitConstants.electronDX;
 
-  function ConstantDensityLayout( circuit, particleSet ) {
+  function ConstantDensityLayout( circuit ) {
     this.circuit = circuit;
-    this.particleSet = particleSet;
+    this.particleSet = circuit.electrons; // TODO rename to electrons
   }
 
   circuitConstructionKit.register( 'ConstantDensityLayout', ConstantDensityLayout );
 
   return inherit( Object, ConstantDensityLayout, {
     layoutElectrons: function( circuitElement ) {
-      var particlesInBranch = this.particleSet.filter( function( electron ) {
-        return electron.circuitElement === circuitElement;
-      } );
-      this.particleSet.removeAll( particlesInBranch.getArray() );
+      var particlesInBranch = this.circuit.getElectronsInCircuitElement( circuitElement );
+      this.particleSet.removeAll( particlesInBranch );
 
       if ( electronsVisible ) {
         var offset = ELECTRON_DX / 2;

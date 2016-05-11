@@ -24,8 +24,8 @@ define( function( require ) {
   var timeScale = 100;
   var highestSoFar = null;//for debugging
 
-  var getUpperNeighborInBranch = function( particleSet, myelectron ) {
-    var branchElectrons = particleSet.filter( function( particle ) {return particle.circuitElement === myelectron.circuitElement;} ).getArray();
+  var getUpperNeighborInBranch = function( circuit, myelectron ) {
+    var branchElectrons = circuit.getElectronsInCircuitElement( myelectron.circuitElement );
     var upper = null;
     var dist = Number.POSITIVE_INFINITY;
     for ( var i = 0; i < branchElectrons.length; i++ ) {
@@ -45,8 +45,8 @@ define( function( require ) {
     return upper;
   };
 
-  var getLowerNeighborInBranch = function( particleSet, myelectron ) {
-    var branchElectrons = particleSet.filter( function( particle ) {return particle.circuitElement === myelectron.circuitElement;} ).getArray();
+  var getLowerNeighborInBranch = function( circuit, myelectron ) {
+    var branchElectrons = circuit.getElectronsInCircuitElement( myelectron.circuitElement );
     var lower = null;
     var dist = Number.POSITIVE_INFINITY;
     for ( var i = 0; i < branchElectrons.length; i++ ) {
@@ -66,8 +66,8 @@ define( function( require ) {
     return lower;
   };
 
-  function ConstantDensityPropagator( circuit, particleSet ) {
-    this.particleSet = particleSet;
+  function ConstantDensityPropagator( circuit ) {
+    this.particleSet = circuit.electrons; // TODO rename to electrons
     this.circuit = circuit;
     this.scale = 1;
     this.smoothData = new SmoothData( 30 );
@@ -82,8 +82,8 @@ define( function( require ) {
     return {
       branch: branch,
       distance: distance,
-      getDensity: function( particleSet ) {
-        var particles = particleSet.filter( function( particle ) {return particle.circuitElement === branch;} ); // TODO: Factor out
+      getDensity: function( circuit ) {
+        var particles = circuit.getElectronsInCircuitElement( branch );
         return particles.length / branch.length;
       }
     };
@@ -143,8 +143,8 @@ define( function( require ) {
     equalizeElectron: function( electron, dt ) {
 
       //if it has a lower and upper neighbor, try to get the distance to each to be half of ELECTRON_DX
-      var upper = getUpperNeighborInBranch( this.particleSet, electron, electron.circuitElement );
-      var lower = getLowerNeighborInBranch( this.particleSet, electron, electron.circuitElement );
+      var upper = getUpperNeighborInBranch( this.circuit, electron );
+      var lower = getLowerNeighborInBranch( this.circuit, electron );
       if ( upper === null || lower === null ) {
         return;
       }
@@ -225,7 +225,7 @@ define( function( require ) {
       var min = Number.POSITIVE_INFINITY;
       var argmin = null;
       for ( var i = 0; i < circuitLocations.length; i++ ) {
-        var density = circuitLocations[ i ].getDensity( this.particleSet );
+        var density = circuitLocations[ i ].getDensity( this.circuit );
         if ( density < min ) {
           min = density;
           argmin = circuitLocations[ i ];
