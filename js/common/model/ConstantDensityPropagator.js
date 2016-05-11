@@ -221,17 +221,16 @@ define( function( require ) {
       }
     },
     chooseDestinationBranch: function( circuitLocations ) {
-      // TODO: put the density in the location object
       var min = Number.POSITIVE_INFINITY;
-      var argmin = null;
+      var circuitLocationWithLowestDensity = null;
       for ( var i = 0; i < circuitLocations.length; i++ ) {
         var density = circuitLocations[ i ].getDensity( this.circuit );
         if ( density < min ) {
           min = density;
-          argmin = circuitLocations[ i ];
+          circuitLocationWithLowestDensity = circuitLocations[ i ];
         }
       }
-      return argmin;
+      return circuitLocationWithLowestDensity;
     },
     getLocations: function( electron, dt, overshoot, under ) {
       var branch = electron.circuitElement;
