@@ -11,7 +11,6 @@ define( function( require ) {
   var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Electron = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Electron' );
-  // var BranchSet = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/BranchSet' );
 
   // constants
   var dolayout = true;

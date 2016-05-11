@@ -45,16 +45,6 @@ define( function( require ) {
     this.constantDensityLayout = new ConstantDensityLayout( this, this.electrons );
     this.constantDensityPropagator = new ConstantDensityPropagator( this, this.electrons );
 
-    // TODO: This is just for debugging
-    this.wires.addItemAddedListener( function( wire ) {
-
-      circuit.constantDensityLayout.layoutElectrons( wire );
-      // circuit.electrons.push( new Electron( wire, 50 ) );
-      wire.vertexMovedEmitter.addListener( function() {
-        circuit.constantDensityLayout.layoutElectrons( wire );
-      } );
-    } );
-
     // Re-solve the circuit when voltages or resistances change.
     var solve = function() {
       circuit.solve();
@@ -105,6 +95,21 @@ define( function( require ) {
     this.batteries.addItemAddedListener( addVertices );
     this.lightBulbs.addItemAddedListener( addVertices );
     this.resistors.addItemAddedListener( addVertices );
+
+    // TODO: This is just for debugging
+    var addElectrons = function( circuitElement ) {
+      circuit.constantDensityLayout.layoutElectrons( circuitElement );
+
+      // TODO: When any vertex moves, relayout all electrons within the connected component.
+      circuitElement.vertexMovedEmitter.addListener( function() {
+        circuit.constantDensityLayout.layoutElectrons( circuitElement );
+      } );
+    };
+    this.wires.addItemAddedListener( addElectrons );
+    this.switches.addItemAddedListener( addElectrons );
+    this.batteries.addItemAddedListener( addElectrons );
+    this.lightBulbs.addItemAddedListener( addElectrons );
+    this.resistors.addItemAddedListener( addElectrons );
 
     // After the circuit physics is recomputed in solve(), some listeners need to update themselves, such as
     // the voltmeter and ammeter

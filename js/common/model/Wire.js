@@ -52,7 +52,6 @@ define( function( require ) {
 
     var updateLength = function() {
       wire.length = wire.startVertex.position.distance( wire.endVertex.position );
-      console.log( wire.length );
     };
 
     this.vertexMovedEmitter.addListener( function() {
