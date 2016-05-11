@@ -12,6 +12,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var SmoothData = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/SmoothData' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+  var PropertySet = require( 'AXON/PropertySet' );
 
   // constants
   var FIRE_CURRENT = 10;
@@ -70,7 +71,9 @@ define( function( require ) {
     this.scale = 1;
     this.smoothData = new SmoothData( 30 );
     this.timeScalingPercentValue = null;
-    this.percent = '100';
+    PropertySet.call( this, {
+      timeScalePercentString: '100'
+    } );
   }
 
   var createCircuitLocation = function( branch, distance ) {
@@ -80,7 +83,7 @@ define( function( require ) {
 
   circuitConstructionKit.register( 'ConstantDensityPropagator', ConstantDensityPropagator );
 
-  return inherit( Object, ConstantDensityPropagator, {
+  return inherit( PropertySet, ConstantDensityPropagator, {
     step: function( dt ) {
       var maxCurrent = this.getMaxCurrent();
       var maxVelocity = maxCurrent * speedScale;
@@ -94,12 +97,11 @@ define( function( require ) {
       this.smoothData.addData( this.scale * 100 );
       this.timeScalingPercentValue = this.smoothData.getAverage();
 
-      this.percent = this.timeScalingPercentValue.toFixed( 2 );
-      if ( this.percent === '0' ) {
-        this.percent = '1';
+      var percent = this.timeScalingPercentValue.toFixed( 2 );
+      if ( percent === '0' ) {
+        percent = '1';
       }
-      //todo add test for change before notify
-      // this.notifyListeners(); // TODO: Commented out, was this doing something important?
+      this.timeScalePercentString = percent;
       for ( var i = 0; i < this.particleSet.length; i++ ) {
         var e = this.particleSet.get( i );
         this.propagate( e, dt );
