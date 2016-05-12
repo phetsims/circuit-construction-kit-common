@@ -33,33 +33,20 @@ define( function( require ) {
       assert && assert( !isNaN( wire.resistance ) );
     };
 
-    var updateStartVertex = function( newStartVertex, oldStartVertex ) {
-      oldStartVertex && oldStartVertex.positionProperty.unlink( updateResistance );
-      newStartVertex.positionProperty.link( updateResistance );
-    };
-    this.startVertexProperty.link( updateStartVertex );
-
-    var updateEndVertex = function( newEndVertex, oldEndVertex ) {
-      oldEndVertex && oldEndVertex.positionProperty.unlink( updateResistance );
-      newEndVertex.positionProperty.link( updateResistance );
-    };
-    this.endVertexProperty.link( updateEndVertex );
-
     this.disposeWire = function() {
-      wire.startVertex.unlink( updateResistance );
-      wire.endVertex.unlink( updateResistance );
+      this.vertexMovedEmitter.removeListener( vertexMovedListener );
     };
 
     var updateLength = function() {
       wire.length = wire.startVertex.position.distance( wire.endVertex.position );
     };
 
-    this.vertexMovedEmitter.addListener( function() {
+    var vertexMovedListener = function() {
       updateResistance();
       updateLength();
-    } );
-    updateResistance();
-    updateLength();
+    };
+    this.vertexMovedEmitter.addListener( vertexMovedListener );
+    vertexMovedListener();
   }
 
   circuitConstructionKit.register( 'Wire', Wire );

@@ -40,24 +40,19 @@ define( function( require ) {
       assert && assert( !isNaN( switchModel.resistance ) );
     };
 
-    var updateStartVertex = function( newStartVertex, oldStartVertex ) {
-      oldStartVertex && oldStartVertex.positionProperty.unlink( updateResistance );
-      newStartVertex.positionProperty.link( updateResistance );
-    };
-    this.startVertexProperty.link( updateStartVertex );
-
-    var updateEndVertex = function( newEndVertex, oldEndVertex ) {
-      oldEndVertex && oldEndVertex.positionProperty.unlink( updateResistance );
-      newEndVertex.positionProperty.link( updateResistance );
-    };
-    this.endVertexProperty.link( updateEndVertex );
-
-    this.disposeSwitch = function() {
-      switchModel.startVertex.unlink( updateResistance );
-      switchModel.endVertex.unlink( updateResistance );
+    var updateLength = function() {
+      switchModel.length = switchModel.startVertex.position.distance( switchModel.endVertex.position );
     };
 
-    this.closedProperty.link( updateResistance );
+    var vertexMovedListener = function() {
+      updateResistance();
+      updateLength();
+    };
+    this.vertexMovedEmitter.addListener( vertexMovedListener );
+    vertexMovedListener();
+    this.closedProperty.link( function() {
+      updateResistance();
+    } );
   }
 
   circuitConstructionKit.register( 'Switch', Switch );

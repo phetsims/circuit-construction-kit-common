@@ -78,6 +78,7 @@ define( function( require ) {
   }
 
   var createCircuitLocation = function( branch, distance ) {
+    assert && assert( _.isNumber( distance ), 'distance should be a number' );
     assert && assert( branch.containsScalarLocation( distance ), 'branch should contain distance' );
     return {
       branch: branch,
