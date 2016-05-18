@@ -106,7 +106,6 @@ define( function( require ) {
     };
     var removeElectrons = function( circuitElement ) {
       circuit.electrons.removeAll( circuit.getElectronsInCircuitElement( circuitElement ) );
-      // TODO: Remove the listener added above
     };
     this.wires.addItemAddedListener( addElectrons );
     this.switches.addItemAddedListener( addElectrons );
