@@ -40,6 +40,7 @@ define( function( require ) {
     this.lightBulbs = new ObservableArray();
     this.resistors = new ObservableArray();
 
+    this.showElectronsProperty = new Property( false );
     this.electrons = new ObservableArray();
 
     this.constantDensityLayout = new ConstantDensityLayout( this );
@@ -97,12 +98,14 @@ define( function( require ) {
     this.resistors.addItemAddedListener( addVertices );
 
     var addElectrons = function( circuitElement ) {
-      circuit.constantDensityLayout.layoutElectrons( circuitElement );
-
-      // When any vertex moves, relayout all electrons within the fixed-length connected component.
-      circuitElement.vertexMovedEmitter.addListener( function() {
+      if ( circuit.showElectronsProperty.value ) {
         circuit.constantDensityLayout.layoutElectrons( circuitElement );
-      } );
+
+        // When any vertex moves, relayout all electrons within the fixed-length connected component.
+        circuitElement.vertexMovedEmitter.addListener( function() {
+          circuit.constantDensityLayout.layoutElectrons( circuitElement );
+        } );
+      }
     };
     var removeElectrons = function( circuitElement ) {
       circuit.electrons.removeAll( circuit.getElectronsInCircuitElement( circuitElement ) );
