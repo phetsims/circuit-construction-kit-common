@@ -213,7 +213,9 @@ define( function( require ) {
           var translation = oppositeVertex.position.minus( newVertex.position ).normalized().timesScalar( 30 );
           for ( var j = 0; j < vertexGroup.length; j++ ) {
             var v = vertexGroup[ j ];
-            if ( v.draggable ) {
+
+            // Only translate vertices that are movable and not connected to the black box interface by fixed length elements
+            if ( v.draggable && !this.hasFixedConnectionToBlackBoxInterfaceVertex( v ) ) {
               v.position = v.position.plus( translation );
               v.unsnappedPosition = v.position;
             }
@@ -227,6 +229,11 @@ define( function( require ) {
 
       // Update the physics
       this.solve();
+    },
+
+    hasFixedConnectionToBlackBoxInterfaceVertex: function( v ) {
+      var vertices = this.findAllFixedVertices( v );
+      return _.filter( vertices, function( v ) {return v.blackBoxInterface;} ).length > 0;
     },
 
     isSingle: function( circuitElement ) {
@@ -486,7 +493,7 @@ define( function( require ) {
     /**
      * Find the subgraph where all vertices are connected by FixedLengthCircuitElements, not stretchy wires.
      * @param {Vertex} vertex
-     * @param {Function} okToVisit - rule that determines which vertices are OK to visit
+     * @param {Function} [okToVisit] - rule that determines which vertices are OK to visit
      */
     findAllFixedVertices: function( vertex, okToVisit ) {
       return this.searchVertices( vertex, this.getFixedLengthCircuitElements(), okToVisit || function() {return true;} );
