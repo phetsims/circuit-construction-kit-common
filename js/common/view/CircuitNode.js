@@ -272,9 +272,12 @@ define( function( require ) {
         var src = vertex.position;
         var delta = dest.minus( src );
         var relative = Vector2.createPolar( length, desiredAngle + Math.PI );
+
+        // Do not propose attachments, since connections cannot be made from a rotation.
+        var attachable = [];
         this.translateVertexGroup( vertex, vertices, delta, function() {
           vertex.unsnappedPosition = fixedVertex.unsnappedPosition.minus( relative );
-        }, [ vertex ] );
+        }, attachable );
       }
     },
     drag: function( point, vertex, okToRotate ) {
