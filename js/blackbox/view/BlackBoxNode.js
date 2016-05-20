@@ -21,7 +21,14 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function BlackBoxNode( width, height, options ) {
+  function BlackBoxNode( width, height, revealingProperty, options ) {
+    var questionMarkTextNode = new Text( '?', {
+      fontSize: 82,
+      centerX: width / 2,
+      centerY: height / 2,
+      fill: 'white'
+    } );
+    revealingProperty.link( function( revealing ) {questionMarkTextNode.visible = !revealing;} );
     Node.call( this, {
 
       // Don't let clicks go through the black box
@@ -32,7 +39,7 @@ define( function( require ) {
           fill: 'black',
           opacity: phet.chipper.getQueryParameter( 'dev' ) ? 0.2 : 1
         } ),
-        new Text( '?', { fontSize: 82, centerX: width / 2, centerY: height / 2, fill: 'white' } )
+        questionMarkTextNode
       ]
     } );
     this.mutate( options );

@@ -73,7 +73,7 @@ define( function( require ) {
       comboBox.top = visibleBounds.top + CircuitConstructionKitConstants.layoutInset;
     } );
 
-    var blackBoxNode = new BlackBoxNode( blackBoxWidth, blackBoxHeight, {
+    var blackBoxNode = new BlackBoxNode( blackBoxWidth, blackBoxHeight, blackBoxSceneModel.revealingProperty, {
 
       // Assumes the default layout bounds are used
       center: ScreenView.DEFAULT_LAYOUT_BOUNDS.center

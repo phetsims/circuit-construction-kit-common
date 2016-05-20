@@ -16,6 +16,7 @@ define( function( require ) {
   var Screen = require( 'JOIST/Screen' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var BlackBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/view/BlackBoxNode' );
+  var Property = require( 'AXON/Property' );
 
   /**
    * @constructor
@@ -26,7 +27,7 @@ define( function( require ) {
     var icon = new Rectangle( 0, 0, Screen.NAVBAR_ICON_SIZE.width, Screen.NAVBAR_ICON_SIZE.height, {
       fill: backgroundColor
     } );
-    var blackBoxNode = new BlackBoxNode( 220, 160 );
+    var blackBoxNode = new BlackBoxNode( 220, 160, new Property( true ) );
     blackBoxNode.mutate( {
       scale: icon.width / blackBoxNode.bounds.width / 2,
       centerX: icon.centerX,
