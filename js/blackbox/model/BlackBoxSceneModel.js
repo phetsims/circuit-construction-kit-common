@@ -117,8 +117,8 @@ define( function( require ) {
 
         removeBlackBoxContents( trueBlackBoxCircuit );
 
-        // Any draggable vertices that remain should be made unattachable and undraggable,
-        // so the user cannot update the circuit outside the box
+        // Any draggable vertices that remain should be made unattachable and undraggable, so the user cannot update the
+        // circuit outside the box
         circuit.vertices.forEach( function( vertex ) {
           if ( !vertex.blackBoxInterface ) {
             vertex.attachable = false;
@@ -132,7 +132,8 @@ define( function( require ) {
         addBlackBoxContents( userBlackBoxCircuit );
       }
       else {
-        // move interior elements to userBlackBoxCircuit
+
+        // Switched to 'investigate'. Move interior elements to userBlackBoxCircuit
         userBlackBoxCircuit.clear();
         circuit.vertices.forEach( function( v ) { if ( v.interactive && v.draggable ) {userBlackBoxCircuit.vertices.push( v );}} );
         circuit.wires.forEach( function( wire ) { if ( wire.interactive ) { userBlackBoxCircuit.wires.push( wire ); } } );
