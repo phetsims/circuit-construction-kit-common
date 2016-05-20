@@ -66,6 +66,7 @@ define( function( require ) {
     var createCircuitElementRemovedListener = function( array, getter ) {
       return function( circuitElement ) {
         var circuitElementNode = getter( circuitElement ); // like getBatteryNode(circuitElement)
+        assert && assert( circuitElementNode, 'No circuit element node found for ' + circuitElement );
 
         mainLayer.removeChild( circuitElementNode );
 
@@ -280,6 +281,26 @@ define( function( require ) {
         }, attachable );
       }
     },
+
+    /**
+     * When switching from "build" -> "investigate", the black box circuit elements must be moved behind the black box
+     * or they will be visible in front of the black box.
+     */
+    moveTrueBlackBoxElementsToBack: function() {
+      var circuitElementNodeToBack = function( circuitElementNode ) {
+        circuitElementNode.circuitElement.insideTrueBlackBox && circuitElementNode.moveToBack();
+      };
+      var vertexNodeToBack = function( nodeWithVertex ) {
+        (nodeWithVertex.vertex.insideTrueBlackBox || nodeWithVertex.vertex.blackBoxInterface ) && nodeWithVertex.moveToBack();
+      };
+      this.solderNodes.forEach( vertexNodeToBack );
+      this.vertexNodes.forEach( vertexNodeToBack );
+      this.batteryNodes.forEach( circuitElementNodeToBack );
+      this.lightBulbNodes.forEach( circuitElementNodeToBack );
+      this.wireNodes.forEach( circuitElementNodeToBack );
+      this.resistorNodes.forEach( circuitElementNodeToBack );
+      this.switchNodes.forEach( circuitElementNodeToBack );
+    },
     drag: function( point, vertex, okToRotate ) {
       var vertexNode = this.getVertexNode( vertex );
       var position = vertexNode.globalToParentPoint( point ).minus( vertexNode.startOffset );
@@ -375,7 +396,6 @@ define( function( require ) {
       for ( i = 0; i < vertices.length; i++ ) {
         vertices[ i ].position = vertices[ i ].unsnappedPosition.plus( delta );
       }
-
     },
     endDrag: function( event, vertex ) {
 

@@ -122,9 +122,12 @@ define( function( require ) {
         transparencyOverlay.moveToFront();
         blackBoxSceneView.circuitElementToolbox.moveToFront();
       }
+      else {
+
+        // Move black box circuit elements to the back so they won't appear in front of the black box
+        blackBoxSceneView.circuitNode.moveTrueBlackBoxElementsToBack();
+      }
       transparencyOverlay.visible = isBuildBode;
-      blackBoxNode.moveToFront();
-      whiteBoxNode.moveToFront();
     } );
     this.circuitNode.mainLayer.addChild( transparencyOverlay );
 
