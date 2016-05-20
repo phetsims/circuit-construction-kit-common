@@ -21,17 +21,20 @@ define( function( require ) {
   var WhiteBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/view/WhiteBoxNode' );
   var RevealButton = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/view/RevealButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
-  var Shape = require( 'KITE/Shape' );
-  var Path = require( 'SCENERY/nodes/Path' );
+  var Color = require( 'SCENERY/util/Color' );
+
+  var fadedColor = new Color( '#e3edfc' );
+  var solidColor = new Color( '#c6dbf9' );// TODO: Factor me out
 
   /**
-   * @param blackBoxWidth
-   * @param blackBoxHeight
+   * @param {number} blackBoxWidth
+   * @param {number} blackBoxHeight
    * @param {BlackBoxSceneModel} blackBoxSceneModel
    * @param {Property.<string>} sceneProperty - for switching screens
+   * @param {Property.<Color>} backgroundColorProperty
    * @constructor
    */
-  function BlackBoxSceneView( blackBoxWidth, blackBoxHeight, blackBoxSceneModel, sceneProperty ) {
+  function BlackBoxSceneView( blackBoxWidth, blackBoxHeight, blackBoxSceneModel, sceneProperty, backgroundColorProperty ) {
     var blackBoxSceneView = this;
     CircuitConstructionKitScreenView.call( this, blackBoxSceneModel, {
       toolboxOrientation: 'vertical',
@@ -99,42 +102,25 @@ define( function( require ) {
     this.circuitNode.mainLayer.addChild( blackBoxNode );
     this.circuitNode.mainLayer.addChild( whiteBoxNode );
 
-    var screenInset = 1000;
-    var b = ScreenView.DEFAULT_LAYOUT_BOUNDS;
-    var w = whiteBoxNode.bounds;
-    var shape = new Shape()
-      .moveTo( b.minX - screenInset, b.minY - screenInset )
-      .lineTo( b.maxX + screenInset, b.minY - screenInset )
-      .lineTo( b.maxX + screenInset, b.maxY + screenInset )
-      .lineTo( b.minX - screenInset, b.maxY + screenInset )
-      .lineTo( b.minX - screenInset, b.minX + screenInset )
-
-      // Move inside and move the opposite direction to do a cutout
-      .moveTo( w.minX, w.minY )
-      .lineTo( w.minX, w.maxY )
-      .lineTo( w.maxX, w.maxY )
-      .lineTo( w.maxX, w.minY )
-      .lineTo( w.minX, w.minY );
-    var transparencyOverlay = new Path( shape, { fill: 'white', opacity: 0.5 } );
     blackBoxSceneModel.modeProperty.link( function( mode ) {
       var isBuildBode = mode === 'build';
+
+      backgroundColorProperty.set( isBuildBode ? fadedColor : solidColor );
       if ( isBuildBode ) {
-        transparencyOverlay.moveToFront();
         blackBoxSceneView.circuitElementToolbox.moveToFront();
       }
       else {
 
-        // Move black box circuit elements to the back so they won't appear in front of the black box
+        // investigate mode - move black box circuit elements to the back so they won't appear in front of the black box
         blackBoxSceneView.circuitNode.moveTrueBlackBoxElementsToBack();
       }
-      transparencyOverlay.visible = isBuildBode;
+      whiteBoxNode.moveToBack();
     } );
-    this.circuitNode.mainLayer.addChild( transparencyOverlay );
 
     // When reset, move the boxes in front of the black box circuit elements
     this.resetBlackBoxSceneView = function() {
       blackBoxNode.moveToFront();
-      whiteBoxNode.moveToFront();
+      whiteBoxNode.moveToBack();
     };
   }
 

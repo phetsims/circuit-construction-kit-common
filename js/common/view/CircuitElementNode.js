@@ -16,16 +16,23 @@ define( function( require ) {
   var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitElementEditContainerPanel' );
 
   /**
+   * @param {CircuitElement} circuitElement
    * @param {Object} [options]
    * @constructor
    */
   function CircuitElementNode( circuitElement, options ) {
+    var circuitElementNode = this;
     Node.call( this, options );
     this.circuitElement = circuitElement;
+
+    // TODO: Replace this with grayscale
+    this.circuitElement.interactiveProperty.link( function( interactive ) {
+      circuitElementNode.opacity = interactive ? 1 : 0.5;
+    } );
   }
 
   circuitConstructionKit.register( 'CircuitElementNode', CircuitElementNode );
-  
+
   return inherit( Node, CircuitElementNode, {
     createDeselectFunctionListener: function( circuitNode ) {
       var deselect = function( event ) {

@@ -17,13 +17,13 @@ define( function( require ) {
   function WhiteBoxNode( width, height, options ) {
     Node.call( this, {
       children: [
-        new Rectangle( 0, 0, width, height, { stroke: 'gray', lineWidth: 2 } )
+        new Rectangle( 0, 0, width, height, 20, 20, { stroke: 'black', lineWidth: 3, fill: '#c6dbf9' } )
       ]
     } );
     this.mutate( options );
   }
 
   circuitConstructionKit.register( 'WhiteBoxNode', WhiteBoxNode );
-  
+
   return inherit( Node, WhiteBoxNode );
 } );

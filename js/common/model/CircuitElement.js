@@ -16,6 +16,10 @@ define( function( require ) {
 
   /**
    *
+   * @param {Vertex} startVertex
+   * @param {Vertex} endVertex
+   * @param {Object} propertySetMap - additional properties to add to PropertySet
+   * @param {Object} [options]
    * @constructor
    */
   function CircuitElement( startVertex, endVertex, propertySetMap, options ) {

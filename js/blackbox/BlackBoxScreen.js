@@ -23,6 +23,7 @@ define( function( require ) {
    */
   function BlackBoxScreen() {
 
+    var blackBoxScreen = this;
     var backgroundColor = '#c6dbf9';
     var icon = new Rectangle( 0, 0, Screen.NAVBAR_ICON_SIZE.width, Screen.NAVBAR_ICON_SIZE.height, {
       fill: backgroundColor
@@ -38,7 +39,7 @@ define( function( require ) {
     Screen.call( this, 'Black Box', icon, function() {
         return new BlackBoxScreenModel();
       }, function( model ) {
-        return new BlackBoxScreenView( model );
+      return new BlackBoxScreenView( model, blackBoxScreen.backgroundColorProperty );
       }, {
         backgroundColor: '#c6dbf9'
       }

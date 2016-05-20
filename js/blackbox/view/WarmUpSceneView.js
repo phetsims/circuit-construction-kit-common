@@ -16,12 +16,15 @@ define( function( require ) {
   var ScreenView = require( 'JOIST/ScreenView' );
 
   /**
+   * @param {number} blackBoxWidth
+   * @param {number} blackBoxHeight
    * @param {BlackBoxSceneModel} blackBoxSceneModel
    * @param {Property.<string>} sceneProperty - for switching screens
+   * @param {Property.<Color>} backgroundColorProperty
    * @constructor
    */
-  function WarmUpSceneView( blackBoxWidth, blackBoxHeight, blackBoxSceneModel, sceneProperty ) {
-    BlackBoxSceneView.call( this, blackBoxWidth, blackBoxHeight, blackBoxSceneModel, sceneProperty );
+  function WarmUpSceneView( blackBoxWidth, blackBoxHeight, blackBoxSceneModel, sceneProperty, backgroundColorProperty ) {
+    BlackBoxSceneView.call( this, blackBoxWidth, blackBoxHeight, blackBoxSceneModel, sceneProperty, backgroundColorProperty );
     var textOptions = {
       fontSize: 34
     };

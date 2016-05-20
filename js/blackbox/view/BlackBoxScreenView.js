@@ -20,9 +20,10 @@ define( function( require ) {
 
   /**
    * @param {BlackBoxScreenModel} blackBoxScreenModel
+   * @param {Property.<Color>} backgroundColorProperty
    * @constructor
    */
-  function BlackBoxScreenView( blackBoxScreenModel ) {
+  function BlackBoxScreenView( blackBoxScreenModel, backgroundColorProperty ) {
     ScreenView.call( this );
     var blackBoxScreenView = this;
     var sceneViews = {}; // Populated lazily, key = scene name
@@ -40,7 +41,8 @@ define( function( require ) {
             blackBoxWidth,
             blackBoxHeight,
             new BlackBoxSceneModel( CircuitStruct.fromStateObject( ChallengeSet.warmupCircuitStateObject ) ),
-            blackBoxScreenModel.sceneProperty
+            blackBoxScreenModel.sceneProperty,
+            backgroundColorProperty
           );
         }
         else if ( scene.indexOf( 'scene' ) === 0 ) {
@@ -49,7 +51,8 @@ define( function( require ) {
             blackBoxWidth,
             blackBoxHeight,
             new BlackBoxSceneModel( CircuitStruct.fromStateObject( ChallengeSet.challengeArray[ index ] ) ),
-            blackBoxScreenModel.sceneProperty
+            blackBoxScreenModel.sceneProperty,
+            backgroundColorProperty
           );
         }
         else {
@@ -75,6 +78,6 @@ define( function( require ) {
   }
 
   circuitConstructionKit.register( 'BlackBoxScreenView', BlackBoxScreenView );
-  
+
   return inherit( ScreenView, BlackBoxScreenView );
 } );
