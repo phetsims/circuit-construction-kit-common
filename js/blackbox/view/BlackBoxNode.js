@@ -18,6 +18,7 @@ define( function( require ) {
   /**
    * @param {number} width
    * @param {number} height
+   * @param {Property.<boolean>} revealingProperty - true if the user is pressing the "reveal" button
    * @param {Object} [options]
    * @constructor
    */
