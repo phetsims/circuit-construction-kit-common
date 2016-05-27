@@ -14,6 +14,7 @@ define( function( require ) {
   var BlackBoxSceneView = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/view/BlackBoxSceneView' );
   var MultiLineText = require( 'SCENERY_PHET/MultiLineText' );
   var ScreenView = require( 'JOIST/ScreenView' );
+  var Property = require( 'AXON/Property' );
 
   /**
    * @param {number} blackBoxWidth
@@ -33,8 +34,8 @@ define( function( require ) {
       centerX: ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2,
       top: ScreenView.DEFAULT_LAYOUT_BOUNDS.height / 6
     }, textOptions ) );
-    blackBoxSceneModel.modeProperty.link( function( mode ) {
-      questionText.visible = mode === 'investigate';
+    Property.multilink( [ blackBoxSceneModel.modeProperty, blackBoxSceneModel.revealingProperty ], function( mode, revealing ) {
+      questionText.visible = !revealing && mode === 'investigate';
     } );
 
     var tryToText = new MultiLineText( 'Build a circuit that\nbehaves the same way.', _.extend( {
