@@ -13,6 +13,7 @@ define( function( require ) {
   var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitQueryParameters' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
@@ -143,7 +144,7 @@ define( function( require ) {
 
     // Use a query parameter to turn on node voltage readouts for debugging.  In #22 we are discussing making this
     // a user-visible option.
-    var showNodeVoltages = phet.chipper.getQueryParameter( 'showNodeVoltages' );
+    var showNodeVoltages = CircuitConstructionKitQueryParameters.showNodeVoltages;
     if ( showNodeVoltages ) {
       var voltageReadoutText = new Text( '', {
         fontSize: 18,

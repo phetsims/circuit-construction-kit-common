@@ -14,6 +14,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitQueryParameters' );
 
   /**
    * @param {number} width
@@ -38,7 +39,7 @@ define( function( require ) {
       children: [
         new Rectangle( 0, 0, width, height, 20, 20, {
           fill: 'black',
-          opacity: phet.chipper.getQueryParameter( 'dev' ) ? 0.2 : 1
+          opacity: CircuitConstructionKitQueryParameters.dev ? 0.2 : 1
         } ),
         questionMarkTextNode
       ]

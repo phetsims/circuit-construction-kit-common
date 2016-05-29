@@ -28,13 +28,6 @@ define( function( require ) {
     }
   };
 
-  // Appending '?dev' to the URL will enable developer-only features.
-  if ( phet.chipper.getQueryParameter( 'dev' ) ) {
-    simOptions = _.extend( {
-      // add dev-specific options here
-    }, simOptions );
-  }
-
   // Circuit Construction Kit has unit tests for checking the mathematics for the Modified Nodal Analysis
   // algorithm.  In order to load the classes into an accessible namespace, the *-config.js and *-main.js are loaded
   // however, when running the unit tests we don't also want to launch the simulation.
