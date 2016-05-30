@@ -1,7 +1,8 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
 /**
- *
+ * Model for the Explore Screen.
+ * 
  * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {
