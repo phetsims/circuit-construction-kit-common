@@ -18,7 +18,9 @@ define( function( require ) {
     // Show the voltage above each node, for debugging the circuit physics
     showNodeVoltages: !!getQueryParameter( 'showNodeVoltages' ),
 
-    dev: !!getQueryParameter( 'dev' )
+    dev: !!getQueryParameter( 'dev' ),
+
+    showPlayPauseButton: !!getQueryParameter( 'showPlayPauseButton' )
   };
 
   circuitConstructionKit.register( 'CircuitConstructionKitQueryParameters', CircuitConstructionKitQueryParameters );

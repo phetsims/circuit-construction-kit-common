@@ -21,6 +21,8 @@ define( function( require ) {
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
   var Util = require( 'DOT/Util' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
+  var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitQueryParameters' );
+  var PlayPauseButton = require( 'SCENERY_PHET/buttons/PlayPauseButton' );
 
   // constants
   var inset = CircuitConstructionKitConstants.layoutInset;
@@ -175,6 +177,19 @@ define( function( require ) {
     };
     circuitConstructionKitModel.circuit.circuitChangedEmitter.addListener( updateAmmeter );
     circuitConstructionKitModel.ammeter.probePositionProperty.link( updateAmmeter );
+
+    if ( CircuitConstructionKitQueryParameters.showPlayPauseButton ) {
+      var playPauseButton = new PlayPauseButton( circuitConstructionKitModel.runningProperty );
+      this.addChild( playPauseButton );
+      this.visibleBoundsProperty.link( function( visibleBounds ) {
+
+        // Float the playPauseButton to the bottom left
+        playPauseButton.mutate( {
+          left: visibleBounds.left + inset,
+          bottom: visibleBounds.bottom - inset
+        } );
+      } );
+    }
   }
 
   circuitConstructionKit.register( 'CircuitConstructionKitScreenView', CircuitConstructionKitScreenView );

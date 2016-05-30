@@ -16,7 +16,9 @@ define( function( require ) {
    * @constructor
    */
   function ExploreScreenModel() {
-    CircuitConstructionKitModel.call( this, {} );
+    CircuitConstructionKitModel.call( this, {
+      running: false // {boolean} @public changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
+    } );
   }
 
   circuitConstructionKit.register( 'ExploreScreenModel', ExploreScreenModel );

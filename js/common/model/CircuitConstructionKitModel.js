@@ -22,8 +22,13 @@ define( function( require ) {
   function CircuitConstructionKitModel( additionalProperties, options ) {
     options = _.extend( { circuit: null }, options );
     PropertySet.call( this, _.extend( {
-      showElectrons: false
+      showElectrons: false,
+      running: true // {boolean} @public changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
     }, additionalProperties ) );
+
+    // @public (read-only) These assignments provide improved highlighting and navigation in IntelliJ IDEA
+    this.runningProperty = this.runningProperty || null;
+
     this.circuit = options.circuit || new Circuit();
     this.initialCircuitState = this.circuit.toStateObject();
     this.voltmeter = new Voltmeter();

@@ -44,8 +44,9 @@ define( function( require ) {
 
     CircuitConstructionKitModel.call( this, {
       mode: 'investigate', // or 'build'
-      revealing: false, // true when the user is holding down the reveal button, and the answer is showing
-      isRevealEnabled: false // true when the user has created a circuit for comparison with the black box (at least one terminal connected)
+      revealing: false, // true when the user is holding down the reveal button, and the answer (inside the black box) is showing
+      isRevealEnabled: false, // true when the user has created a circuit for comparison with the black box (at least one terminal connected)
+      running: false // {boolean} @public changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
     }, {
       circuit: new Circuit()
     } );
