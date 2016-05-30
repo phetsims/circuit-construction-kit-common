@@ -185,7 +185,9 @@ define( function( require ) {
     circuitConstructionKitModel.ammeter.probePositionProperty.link( updateAmmeter );
 
     if ( CircuitConstructionKitQueryParameters.showPlayPauseButton ) {
-      var playPauseButton = new PlayPauseButton( circuitConstructionKitModel.runningProperty );
+      var playPauseButton = new PlayPauseButton( circuitConstructionKitModel.runningProperty, {
+        baseColor: '#33ff44' // the default blue fades into the background too much
+      } );
       this.addChild( playPauseButton );
       this.visibleBoundsProperty.link( function( visibleBounds ) {
 

@@ -21,11 +21,11 @@ define( function( require ) {
    *
    * @constructor
    */
-  function CCKLightBulbNode( circuitConstructionKitScreenView, circuitNode, lightBulb, options ) {
+  function CCKLightBulbNode( circuitConstructionKitScreenView, circuitNode, lightBulb, runningProperty, options ) {
     var cckLightBulbNode = this;
     this.lightBulb = lightBulb;
     var brightnessProperty = new Property( 0.0 );
-    lightBulb.currentProperty.link( function( current ) {
+    Property.multilink( [ lightBulb.currentProperty, runningProperty ], function( current, running ) {
       var scaled = Math.abs( current ) / 20;
       var clamped = Util.clamp( scaled, 0, 1 );
 
@@ -34,7 +34,7 @@ define( function( require ) {
       if ( clamped < 1E-6 ) {
         clamped = 0;
       }
-      brightnessProperty.value = clamped;
+      brightnessProperty.value = running ? clamped : 0;
     } );
     var lightBulbNode = new LightBulbNode( brightnessProperty, {
       scale: 3.5

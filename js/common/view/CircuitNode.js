@@ -31,6 +31,7 @@ define( function( require ) {
    */
   function CircuitNode( circuit, circuitConstructionKitScreenView ) {
     this.visibleBoundsProperty = circuitConstructionKitScreenView.visibleBoundsProperty;
+    var runningProperty = circuitConstructionKitScreenView.circuitConstructionKitModel.runningProperty;
 
     this.highlightLayer = new Node();
 
@@ -102,7 +103,7 @@ define( function( require ) {
      */
     var initializeCircuitElementType = function( CircuitElementNodeConstructor, modelObservableArray, nodeArray, getter ) {
       var addCircuitElement = function( circuitElement ) {
-        var circuitElementNode = new CircuitElementNodeConstructor( circuitConstructionKitScreenView, circuitNode, circuitElement );
+        var circuitElementNode = new CircuitElementNodeConstructor( circuitConstructionKitScreenView, circuitNode, circuitElement, runningProperty );
         nodeArray.push( circuitElementNode );
         mainLayer.addChild( circuitElementNode );
         moveVerticesToFront( circuitElement );
