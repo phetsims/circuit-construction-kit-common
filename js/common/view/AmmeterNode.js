@@ -23,7 +23,8 @@ define( function( require ) {
   var ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/ProbeWireNode' );
   var Vector2 = require( 'DOT/Vector2' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
-
+  var Property = require( 'AXON/Property' );
+  
   // images
   var ammeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT/ammeter_body.png' );
 
@@ -42,7 +43,11 @@ define( function( require ) {
    */
   function AmmeterNode( ammeter, options ) {
     var ammeterNode = this;
-    options = _.extend( { icon: false, visibleBoundsProperty: null }, options );
+    options = _.extend( {
+      icon: false,
+      visibleBoundsProperty: null,
+      runningProperty: new Property( true )
+    }, options );
     var s = 0.5;
     this.ammeter = ammeter;
 
@@ -53,7 +58,7 @@ define( function( require ) {
       // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
       return current === null ? '?' : Util.toFixed( Math.abs( current ), 2 ) + ' A';
     } );
-    var probeTextNode = new ProbeTextNode( currentProperty, 'Current', {
+    var probeTextNode = new ProbeTextNode( currentProperty, options.runningProperty, 'Current', {
       centerX: ammeterBodyImage[ 0 ].width / 2,
       centerY: ammeterBodyImage[ 0 ].height / 2
     } );

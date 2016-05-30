@@ -18,11 +18,14 @@ define( function( require ) {
   var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Voltmeter' );
   var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Ammeter' );
 
-  function SensorToolbox( voltmeterNode, ammeterNode ) {
+  function SensorToolbox( voltmeterNode, ammeterNode, runningProperty ) {
     var sensorToolbox = this;
     var toolIconLength = CircuitConstructionKitConstants.toolboxIconLength;
 
-    var voltmeterNodeIcon = new VoltmeterNode( new Voltmeter(), { icon: true } );
+    var voltmeterNodeIcon = new VoltmeterNode( new Voltmeter(), {
+      runningProperty: runningProperty,
+      icon: true
+    } );
     voltmeterNode.voltmeter.visibleProperty.link( function( visible ) {
       voltmeterNodeIcon.visible = !visible;
     } );
@@ -38,7 +41,10 @@ define( function( require ) {
       }
     } );
 
-    var ammeterNodeIcon = new AmmeterNode( new Ammeter(), { icon: true } );
+    var ammeterNodeIcon = new AmmeterNode( new Ammeter(), {
+      icon: true,
+      runningProperty: runningProperty
+    } );
     ammeterNode.ammeter.visibleProperty.link( function( visible ) {
       ammeterNodeIcon.visible = !visible;
     } );

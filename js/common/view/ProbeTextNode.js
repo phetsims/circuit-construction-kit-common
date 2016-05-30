@@ -17,15 +17,16 @@ define( function( require ) {
   var VBox = require( 'SCENERY/nodes/VBox' );
 
   /**
-   * @param {Property} textProperty - the text that should be displayed
+   * @param {Property.<string>} textProperty - the text that should be displayed
+   * @param {Property.<boolean>} runningProperty - true if the text should be displayed
    * @param {string} title - the title
    * @param {Object} [options]
    * @constructor
    */
-  function ProbeTextNode( textProperty, title, options ) {
+  function ProbeTextNode( textProperty, runningProperty, title, options ) {
 
     var rectangleWidth = 140;
-    
+
     var readout = new Text( '?', { fontSize: 34, maxWidth: rectangleWidth - 20 } );
     var textBox = new Rectangle( 0, 0, rectangleWidth, 52, 10, 10, {
       lineWidth: 2, stroke: 'black', fill: 'white'
@@ -44,6 +45,7 @@ define( function( require ) {
     var readoutNode = new Node( {
       children: [ textBox, readout ]
     } );
+    runningProperty.linkAttribute( readout, 'visible' );
 
     VBox.call( this, {
       spacing: 6,

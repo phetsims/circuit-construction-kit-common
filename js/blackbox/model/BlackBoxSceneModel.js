@@ -14,6 +14,7 @@ define( function( require ) {
   var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Circuit' );
   var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/CircuitStruct' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitQueryParameters' );
 
   /**
    * @param {Circuit} trueBlackBoxCircuit
@@ -46,7 +47,7 @@ define( function( require ) {
       mode: 'investigate', // or 'build'
       revealing: false, // true when the user is holding down the reveal button, and the answer (inside the black box) is showing
       isRevealEnabled: false, // true when the user has created a circuit for comparison with the black box (at least one terminal connected)
-      running: false // {boolean} @public changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
+      running: !CircuitConstructionKitQueryParameters.showPlayPauseButton // {boolean} @public changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
     }, {
       circuit: new Circuit()
     } );

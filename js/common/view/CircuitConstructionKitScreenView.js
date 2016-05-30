@@ -57,7 +57,10 @@ define( function( require ) {
     this.circuitConstructionKitModel = circuitConstructionKitModel;
     ScreenView.call( this );
 
-    var voltmeterNode = new VoltmeterNode( circuitConstructionKitModel.voltmeter, { visibleBoundsProperty: this.visibleBoundsProperty } );
+    var voltmeterNode = new VoltmeterNode( circuitConstructionKitModel.voltmeter, {
+      runningProperty: circuitConstructionKitModel.runningProperty,
+      visibleBoundsProperty: this.visibleBoundsProperty
+    } );
     circuitConstructionKitModel.voltmeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
       if ( bodyNodeGlobalBounds.intersectsBounds( circuitConstructionKitScreenView.sensorToolbox.globalBounds ) ) {
         circuitConstructionKitModel.voltmeter.visible = false;
@@ -67,7 +70,10 @@ define( function( require ) {
       voltmeterNode.visible = visible;
     } );
 
-    var ammeterNode = new AmmeterNode( circuitConstructionKitModel.ammeter, { visibleBoundsProperty: this.visibleBoundsProperty } );
+    var ammeterNode = new AmmeterNode( circuitConstructionKitModel.ammeter, {
+      visibleBoundsProperty: this.visibleBoundsProperty,
+      runningProperty: circuitConstructionKitModel.runningProperty
+    } );
     circuitConstructionKitModel.ammeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
       if ( bodyNodeGlobalBounds.intersectsBounds( circuitConstructionKitScreenView.sensorToolbox.globalBounds ) ) {
         circuitConstructionKitModel.ammeter.visible = false;
@@ -90,7 +96,7 @@ define( function( require ) {
     } );
 
     // @protected - so that subclasses can add a layout circuit element near it
-    this.sensorToolbox = new SensorToolbox( voltmeterNode, ammeterNode );
+    this.sensorToolbox = new SensorToolbox( voltmeterNode, ammeterNode, circuitConstructionKitModel.runningProperty );
 
     this.addChild( this.circuitNode );
     this.addChild( this.sensorToolbox );

@@ -19,6 +19,7 @@ define( function( require ) {
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var Vector2 = require( 'DOT/Vector2' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+  var Property = require( 'AXON/Property' );
 
   // images
   var voltmeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT/voltmeter_body.png' );
@@ -39,7 +40,11 @@ define( function( require ) {
 
   function VoltmeterNode( voltmeter, options ) {
     var voltmeterNode = this;
-    options = _.extend( { icon: false, visibleBoundsProperty: null }, options );
+    options = _.extend( {
+      icon: false,
+      visibleBoundsProperty: null,
+      runningProperty: new Property( true )
+    }, options );
     this.voltmeter = voltmeter;
     var s = 0.5;
     this.redProbeNode = new Image( redProbe, { scale: 0.67 * s, cursor: 'pointer' } );
@@ -48,7 +53,7 @@ define( function( require ) {
     var voltageReadoutProperty = new DerivedProperty( [ voltmeter.voltageProperty ], function( voltage ) {
       return voltage === null ? '?' : Util.toFixed( voltage, 2 ) + ' V';
     } );
-    var probeTextNode = new ProbeTextNode( voltageReadoutProperty, 'Voltage', {
+    var probeTextNode = new ProbeTextNode( voltageReadoutProperty, options.runningProperty, 'Voltage', {
       centerX: voltmeterBodyImage[ 0 ].width / 2,
       centerY: voltmeterBodyImage[ 0 ].height / 2
     } );
