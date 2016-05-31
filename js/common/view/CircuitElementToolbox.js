@@ -229,7 +229,7 @@ define( function( require ) {
   return inherit( CircuitConstructionKitPanel, CircuitElementToolbox, {}, {
     NUMBER_OF_RIGHT_BATTERIES: 10,
     NUMBER_OF_LEFT_BATTERIES: 10,
-    NUMBER_OF_WIRES: 10,
+    NUMBER_OF_WIRES: 20,
     NUMBER_OF_LIGHT_BULBS: 10,
     NUMBER_OF_RESISTORS: 10,
     NUMBER_OF_SWITCHES: 10
