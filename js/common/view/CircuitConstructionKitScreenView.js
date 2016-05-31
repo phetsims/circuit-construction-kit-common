@@ -23,6 +23,9 @@ define( function( require ) {
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitQueryParameters' );
   var PlayPauseButton = require( 'SCENERY_PHET/buttons/PlayPauseButton' );
+  var Node = require( 'SCENERY/nodes/Node' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
+  var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
 
   // constants
   var inset = CircuitConstructionKitConstants.layoutInset;
@@ -185,14 +188,31 @@ define( function( require ) {
     circuitConstructionKitModel.ammeter.probePositionProperty.link( updateAmmeter );
 
     if ( CircuitConstructionKitQueryParameters.showPlayPauseButton ) {
+      var open = new FontAwesomeNode( 'eye_open' );
+      var closed = new FontAwesomeNode( 'eye_close' );
+      var eyeballIcon = new Node( {
+        children: [ open, closed ]
+      } );
       var playPauseButton = new PlayPauseButton( circuitConstructionKitModel.runningProperty, {
         baseColor: '#33ff44' // the default blue fades into the background too much
       } );
-      this.addChild( playPauseButton );
+      circuitConstructionKitModel.runningProperty.link( function( running ) {
+        open.visible = running;
+        closed.visible = !running;
+      } );
+      var panel = new VBox( {
+        resize: false,
+        spacing: 10,
+        children: [
+          eyeballIcon,
+          playPauseButton
+        ]
+      } );
+      this.addChild( panel );
       this.visibleBoundsProperty.link( function( visibleBounds ) {
 
         // Float the playPauseButton to the bottom left
-        playPauseButton.mutate( {
+        panel.mutate( {
           left: visibleBounds.left + inset,
           bottom: visibleBounds.bottom - inset
         } );
