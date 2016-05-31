@@ -242,8 +242,6 @@ define( function( require ) {
     },
 
     remove: function( circuitElement ) {
-      this.cutVertex( circuitElement.startVertex );
-      this.cutVertex( circuitElement.endVertex );
       var list = circuitElement instanceof Battery ? this.batteries :
                  circuitElement instanceof Resistor ? this.resistors :
                  circuitElement instanceof Wire ? this.wires :
@@ -251,8 +249,17 @@ define( function( require ) {
                  circuitElement instanceof Switch ? this.switches :
                  null;
       list.remove( circuitElement );
-      this.vertices.remove( circuitElement.startVertex );
-      this.vertices.remove( circuitElement.endVertex );
+
+      // Delete orphaned vertices
+      if ( this.getNeighborCircuitElements( circuitElement.startVertex ).length === 0 ) {
+        this.vertices.remove( circuitElement.startVertex );
+      }
+
+      if ( this.getNeighborCircuitElements( circuitElement.endVertex ).length === 0 ) {
+        this.vertices.remove( circuitElement.endVertex );
+      }
+
+      circuitElement.dispose();
 
       // Clear the selected element property so that the Edit panel for the element will disappear
       if ( this.selectedCircuitElementProperty.get() === circuitElement ) {

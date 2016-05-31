@@ -69,11 +69,24 @@ define( function( require ) {
     };
     this.startVertexProperty.link( linkToVertex );
     this.endVertexProperty.link( linkToVertex );
+
+    this.disposeCircuitElement = function() {
+      circuitElement.startVertexProperty.unlink( linkToVertex );
+      circuitElement.endVertexProperty.unlink( linkToVertex );
+
+      circuitElement.startVertex.positionProperty.unlink( vertexMoved );
+      circuitElement.endVertex.positionProperty.unlink( vertexMoved );
+    };
   }
 
   circuitConstructionKit.register( 'CircuitElement', CircuitElement );
 
   return inherit( PropertySet, CircuitElement, {
+
+    dispose: function() {
+      this.disposeCircuitElement();
+    },
+
     /**
      * Replace one of the vertices with a new one
      * @param oldVertex
