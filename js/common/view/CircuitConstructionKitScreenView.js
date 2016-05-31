@@ -187,6 +187,7 @@ define( function( require ) {
     circuitConstructionKitModel.circuit.circuitChangedEmitter.addListener( updateAmmeter );
     circuitConstructionKitModel.ammeter.probePositionProperty.link( updateAmmeter );
 
+    // TODO: Move to a separate file
     if ( CircuitConstructionKitQueryParameters.showPlayPauseButton ) {
       var open = new FontAwesomeNode( 'eye_open' );
       var closed = new FontAwesomeNode( 'eye_close' );

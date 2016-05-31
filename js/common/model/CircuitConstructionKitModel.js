@@ -15,11 +15,13 @@ define( function( require ) {
   var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/CircuitStruct' );
   var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Voltmeter' );
   var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Ammeter' );
+  var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitQueryParameters' );
 
   /**
    * @constructor
    */
   function CircuitConstructionKitModel( additionalProperties, options ) {
+    var circuitConstructionKitModel = this;
     options = _.extend( { circuit: null }, options );
     PropertySet.call( this, _.extend( {
       showElectrons: false,
@@ -33,6 +35,13 @@ define( function( require ) {
     this.initialCircuitState = this.circuit.toStateObject();
     this.voltmeter = new Voltmeter();
     this.ammeter = new Ammeter();
+
+    // When the user manipulates something, hide the readouts
+    this.circuit.circuitChangedEmitter.addListener( function() {
+      if ( CircuitConstructionKitQueryParameters.showPlayPauseButton ) {
+        circuitConstructionKitModel.running = false;
+      }
+    } );
   }
 
   circuitConstructionKit.register( 'CircuitConstructionKitModel', CircuitConstructionKitModel );
