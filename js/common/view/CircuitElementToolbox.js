@@ -90,7 +90,9 @@ define( function( require ) {
     var lightBulbNode = new LightBulbNode( new Property( 0 ) );
 
     var countBatteries = function( initialOrientation ) {
-      return circuit.batteries.filter( function( battery ) {return battery.initialOrientation === initialOrientation;} ).length;
+      return circuit.batteries.filter( function( battery ) {
+        return battery.initialOrientation === initialOrientation && !battery.insideTrueBlackBox;
+      } ).length;
     };
 
     var leftBatteryIcon = new Image( batteryImage, {
@@ -141,15 +143,18 @@ define( function( require ) {
         circuitNode.wireNodes,
         function( wireNode ) { return wireNode.wire; }
       ) );
-    circuit.wires.lengthProperty.link( function( numberOfWiresInCircuit ) {
-      wireIcon.visible = numberOfWiresInCircuit < options.numberOfWires;
-    } );
+    var updateWireIcon = function() {
+      var numberOfCreatedWires = circuit.wires.filter( function( wire ) {return !wire.insideTrueBlackBox;} ).length;
+      wireIcon.visible = numberOfCreatedWires < options.numberOfWires;
+    };
+    circuit.wires.addItemRemovedListener( updateWireIcon );
+    circuit.wires.addItemAddedListener( updateWireIcon );
 
     var lightBulbIcon = lightBulbNode.mutate( {
-        pickable: true,
-        cursor: 'pointer',
-        scale: iconWidth / Math.max( lightBulbNode.width, lightBulbNode.height ) // constrained by being too tall, not too wide
-      } )
+      pickable: true,
+      cursor: 'pointer',
+      scale: iconWidth / Math.max( lightBulbNode.width, lightBulbNode.height ) // constrained by being too tall, not too wide
+    } )
       .addInputListener( createToolIconInputListener(
         function( position ) {
           return LightBulb.createAtPosition( position );
@@ -158,11 +163,18 @@ define( function( require ) {
         circuitNode.lightBulbNodes,
         function( lightBulbNode ) { return lightBulbNode.lightBulb; }
       ) );
+    var updateLightBulbIcon = function() {
+      var numberOfCreatedLightBulbs = circuit.lightBulbs.filter( function( lightBulb ) {return !lightBulb.insideTrueBlackBox;} ).length;
+      lightBulbIcon.visible = numberOfCreatedLightBulbs < options.numberOfLightBulbs;
+    };
+    circuit.lightBulbs.addItemRemovedListener( updateLightBulbIcon );
+    circuit.lightBulbs.addItemAddedListener( updateLightBulbIcon );
+
     var resistorIcon = resistorNode.mutate( {
-        pickable: true,
-        cursor: 'pointer',
-        scale: iconWidth / Math.max( resistorNode.width, resistorNode.height )
-      } )
+      pickable: true,
+      cursor: 'pointer',
+      scale: iconWidth / Math.max( resistorNode.width, resistorNode.height )
+    } )
       .addInputListener( createToolIconInputListener(
         function( position ) {
           var resistorLength = Resistor.RESISTOR_LENGTH;
@@ -174,6 +186,12 @@ define( function( require ) {
         circuitNode.resistorNodes,
         function( resistorNode ) { return resistorNode.resistor; }
       ) );
+    var updateResistorIcon = function() {
+      var numberOfCreatedResistors = circuit.resistors.filter( function( resistor ) {return !resistor.insideTrueBlackBox;} ).length;
+      resistorIcon.visible = numberOfCreatedResistors < options.numberOfResistors;
+    };
+    circuit.resistors.addItemRemovedListener( updateResistorIcon );
+    circuit.resistors.addItemAddedListener( updateResistorIcon );
 
     var switchWireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ) );
     var switchIcon = switchWireNode.mutate( { scale: iconWidth / Math.max( switchWireNode.width, switchWireNode.height ) } )
@@ -185,9 +203,12 @@ define( function( require ) {
         circuitNode.switchNodes,
         function( switchNode ) { return switchNode.switchModel; }
       ) );
-    circuit.switches.lengthProperty.link( function( numberOfWiresInCircuit ) {
-      switchIcon.visible = numberOfWiresInCircuit < options.numberOfSwitches;
-    } );
+    var updateSwitchIcon = function() {
+      var numberOfCreatedSwitches = circuit.switches.filter( function( s ) {return !s.insideTrueBlackBox;} ).length;
+      switchIcon.visible = numberOfCreatedSwitches < options.numberOfSwitches;
+    };
+    circuit.switches.addItemRemovedListener( updateSwitchIcon );
+    circuit.switches.addItemAddedListener( updateSwitchIcon );
 
     var children = [];
     options.numberOfLeftBatteries && children.push( leftBatteryIcon );
