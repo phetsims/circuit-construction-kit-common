@@ -37,6 +37,7 @@ define( function( require ) {
   function BlackBoxSceneView( blackBoxWidth, blackBoxHeight, blackBoxSceneModel, sceneProperty, backgroundColorProperty ) {
     var blackBoxSceneView = this;
     CircuitConstructionKitScreenView.call( this, blackBoxSceneModel, {
+      numberOfLeftBatteriesInToolbox: 0,
       toolboxOrientation: 'vertical',
       showResetAllButton: true
     } );

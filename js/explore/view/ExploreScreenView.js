@@ -18,6 +18,7 @@ define( function( require ) {
    */
   function ExploreScreenView( circuitConstructionKitScreenModel ) {
     CircuitConstructionKitScreenView.call( this, circuitConstructionKitScreenModel, {
+      numberOfLeftBatteriesInToolbox: 0,
       toolboxOrientation: 'vertical',
       showResetAllButton: true
     } );
