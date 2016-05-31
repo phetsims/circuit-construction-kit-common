@@ -52,7 +52,7 @@ define( function( require ) {
       } );
       tapInstructionTextNode.visible = fixedLengthElements.length > 0;
     };
-    circuit.circuitElementDroppedEmitter.addListener( listener );
+    circuit.vertexDroppedEmitter.addListener( listener );
     listener(); // Update on startup, like link()
 
     this.addChild( new Rectangle( 0, 0, 10, 10, { fill: null } ) ); // blank spacer so layout doesn't exception out

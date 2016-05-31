@@ -123,6 +123,19 @@ define( function( require ) {
       blackBoxNode.moveToFront();
       whiteBoxNode.moveToBack();
     };
+
+    // When dropping an object in "build mode", its vertices should pop inside the black box, see #113
+    blackBoxSceneModel.circuit.vertexDroppedEmitter.addListener( function( vertex ) {
+      if ( blackBoxSceneModel.mode === 'build' ) {
+
+        var closestPoint = blackBoxNode.bounds.closestPointTo( vertex.position );
+        var delta = closestPoint.minus( vertex.position );
+
+        // TODO: Simplify these lines for common use cases
+        var vertices = blackBoxSceneModel.circuit.findAllFixedVertices( vertex );
+        blackBoxSceneView.circuitNode.translateVertexGroup( vertex, vertices, delta, null, [] );
+      }
+    } );
   }
 
   circuitConstructionKit.register( 'BlackBoxSceneView', BlackBoxSceneView );
