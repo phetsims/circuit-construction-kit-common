@@ -16,12 +16,18 @@ define( function( require ) {
   var CircuitConstructionKitQueryParameters = {
 
     // Show the voltage above each node, for debugging the circuit physics
-    showNodeVoltages: !!getQueryParameter( 'showNodeVoltages' ),
+    vertexDisplay: getQueryParameter( 'vertexDisplay' ), // 'voltage' | 'index' | undefined
 
     dev: !!getQueryParameter( 'dev' ),
 
     showPlayPauseButton: !!getQueryParameter( 'showPlayPauseButton' )
   };
+
+  if ( CircuitConstructionKitQueryParameters.vertexDisplay ) {
+    assert && assert( CircuitConstructionKitQueryParameters.vertexDisplay === 'voltage' ||
+                      CircuitConstructionKitQueryParameters.vertexDisplay === 'index',
+      'illegal value for vertexDisplay: ' + CircuitConstructionKitQueryParameters.vertexDisplay );
+  }
 
   circuitConstructionKit.register( 'CircuitConstructionKitQueryParameters', CircuitConstructionKitQueryParameters );
 

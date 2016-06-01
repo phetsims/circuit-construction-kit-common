@@ -144,8 +144,8 @@ define( function( require ) {
 
     // Use a query parameter to turn on node voltage readouts for debugging.  In #22 we are discussing making this
     // a user-visible option.
-    var showNodeVoltages = CircuitConstructionKitQueryParameters.showNodeVoltages;
-    if ( showNodeVoltages ) {
+    var vertexDisplay = CircuitConstructionKitQueryParameters.vertexDisplay;
+    if ( vertexDisplay ) {
       var voltageReadoutText = new Text( '', {
         fontSize: 18,
         y: -60,
@@ -157,7 +157,8 @@ define( function( require ) {
         voltageReadoutText.bottom = dottedLineNode.top - 10;
       };
       vertex.voltageProperty.link( function( voltage ) {
-        voltageReadoutText.setText( Util.toFixed( voltage, 3 ) + 'V' );
+        var voltage = Util.toFixed( voltage, 3 ) + 'V';
+        voltageReadoutText.setText( vertexDisplay === 'voltage' ? voltage : vertex.index );
         updateReadoutTextLocation();
       } );
     }
