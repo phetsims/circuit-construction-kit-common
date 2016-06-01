@@ -567,6 +567,24 @@ define( function( require ) {
         return true;
       } );
 
+      // (7) a wire vertex cannot connect if its neighbor is already proposing a connection
+      candidateVertices = candidateVertices.filter( function( candidateVertex ) {
+        var neighbors = circuit.getNeighborCircuitElements( candidateVertex );
+        for ( var i = 0; i < neighbors.length; i++ ) {
+          var neighbor = neighbors[ i ];
+          var oppositeVertex = neighbor.getOppositeVertex( candidateVertex );
+
+          // is another node proposing a match to that node?
+          for ( var k = 0; k < circuit.vertices.length; k++ ) {
+            var v = circuit.vertices.get( k );
+            if ( v !== vertex && v !== oppositeVertex && v.position.equals( oppositeVertex.position ) ) {
+              return false;
+            }
+          }
+        }
+        return true;
+      } );
+
       if ( candidateVertices.length === 0 ) {
         return null;
       }
