@@ -527,7 +527,7 @@ define( function( require ) {
         return candidateVertex !== vertex;
       } );
 
-      // (3) a vertex must be within 100px (screen coordinates) of the other vertex
+      // (3) a vertex must be within SNAP_RADIUS (screen coordinates) of the other vertex
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
         return vertex.unsnappedPosition.distance( candidateVertex.position ) < SNAP_RADIUS;
       } );
@@ -538,7 +538,7 @@ define( function( require ) {
       } );
 
       // (5) Reject any matches that result in circuit elements sharing a pair of vertices, which would cause
-      // the wires to lay across one another
+      // the wires to lay across one another (one vertex was already shared)
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
 
         // if something else is already snapping to candidateVertex, then we cannot snap to it as well.
@@ -556,7 +556,7 @@ define( function( require ) {
         return true;
       } );
 
-      // (5) a vertex cannot be connected to its own fixed subgraph (no wire)
+      // (6) a vertex cannot be connected to its own fixed subgraph (no wire)
       var fixedGroup = this.findAllFixedVertices( vertex );
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
         for ( var i = 0; i < fixedGroup.length; i++ ) {
