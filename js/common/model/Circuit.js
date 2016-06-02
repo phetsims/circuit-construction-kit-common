@@ -24,6 +24,7 @@ define( function( require ) {
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Resistor' );
   var ConstantDensityLayout = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/ConstantDensityLayout' );
   var ConstantDensityPropagator = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/ConstantDensityPropagator' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // constants
   var SNAP_RADIUS = 30;
@@ -155,11 +156,67 @@ define( function( require ) {
 
     // Keep track of the last circuit element the user manipulated, for showing additional controls
     this.selectedCircuitElementProperty = new Property( null );
+
+    // When any vertex is dropped, check all vertices for intersection.  If any overlap, move them apart.
+    this.vertexDroppedEmitter.addListener( function() {
+      for ( var i = 0; i < circuit.vertices.length; i++ ) {
+        var v1 = circuit.vertices.get( i );
+        for ( var k = 0; k < circuit.vertices.length; k++ ) {
+          var v2 = circuit.vertices.get( k );
+          if ( i !== k ) {
+            if ( v2.unsnappedPosition.distance( v1.unsnappedPosition ) < 20 ) {
+              // TODO: May require rotating a fixed length component
+              console.log( 'too close!' );
+              circuit.moveVerticesApart( v1, v2 );
+              return; // Don't handle the same pair twice  // TODO: better way to do this.
+            }
+          }
+        }
+      }
+    } );
   }
 
   circuitConstructionKit.register( 'Circuit', Circuit );
 
   return inherit( Object, Circuit, {
+
+    // Two vertices were too close to each other, move them apart.
+    moveVerticesApart: function( v1, v2 ) {
+      // are they in the same fixed subgroup
+
+      var v1Group = this.findAllFixedVertices( v1 );
+      if ( v1Group.indexOf( v2 ) >= 0 ) {
+        console.log( 'they were in the same group, we\'ll have to rotate' );
+        console.log( 'moving ', v2.index );
+
+        var v1Neighbors = this.getNeighborVertices( v1 );
+        var v2Neighbors = this.getNeighborVertices( v2 );
+
+        // See if they share any neighbors.  If so, it can be used as a pivot point.
+        var union = _.union( v1Neighbors, v2Neighbors );
+
+        if ( union.length > 0 ) {
+          var pivotVertex = union[ 0 ];
+          console.log( 'selected pivot vertex: ' + pivotVertex.index );
+
+          // if there is a node with no other neighbors, rotate that one.  Otherwise we would have to rotate the entire
+          // subcircuit
+          if ( v1Neighbors.length === 1 ) {
+            this.rotateSingleVertex( v1, pivotVertex );
+          }
+          else if ( v2Neighbors.length === 2 ) {
+            this.rotateSingleVertex( v2, pivotVertex );
+          }
+          else {
+            console.log( 'nothing simple to rotate' );
+            // TODO: rotate the entire group unless they have a fixed connection other than the pivot
+          }
+        }
+      }
+      else {
+        // ok to translate
+      }
+    },
     get circuitElements() {
       return []
         .concat( this.wires.getArray() )
@@ -167,6 +224,14 @@ define( function( require ) {
         .concat( this.batteries.getArray() )
         .concat( this.lightBulbs.getArray() )
         .concat( this.resistors.getArray() );
+    },
+    rotateSingleVertex: function( vertex, pivotVertex ) {
+      var distanceFromVertex = vertex.position.distance( pivotVertex.position );
+      var angle = vertex.position.minus( pivotVertex.position ).angle();
+      var deltaAngle = Math.PI / 4;
+      var newPosition = pivotVertex.position.plus( Vector2.createPolar( distanceFromVertex, angle + deltaAngle ) );
+      vertex.unsnappedPosition = newPosition;
+      vertex.position = newPosition;
     },
     clear: function() {
       this.selectedCircuitElementProperty.reset();
@@ -424,8 +489,8 @@ define( function( require ) {
     /**
      * Find the neighbor vertices when looking at the given group of circuit elements
      * @param {Vertex} vertex
-     * @param {Array.<CircuitElement>} circuitElements
-     * @returns {Array.<Vertex>}
+     * @param {CircuitElement[]} circuitElements
+     * @returns {Vertex[]}
      * @private
      */
     getNeighbors: function( vertex, circuitElements ) {
@@ -437,6 +502,11 @@ define( function( require ) {
         }
       }
       return neighbors;
+    },
+
+    getNeighborVertices: function( vertex ) {
+      var neighborCircuitElements = this.getNeighborCircuitElements( vertex );
+      return this.getNeighbors( vertex, neighborCircuitElements );
     },
 
     /**
@@ -452,7 +522,7 @@ define( function( require ) {
      * @param {Vertex} vertex
      * @param {Array.<CircuitElement>} circuitElements
      * @param {Function} okToVisit - rule that determines which vertices are OK to visit
-     * @returns {Array.<Vertex>}
+     * @returns {Vertex[]}
      */
     searchVertices: function( vertex, circuitElements, okToVisit ) {
       assert && assert( this.vertices.indexOf( vertex ) >= 0, 'Vertex wasn\'t in the model' );
@@ -501,6 +571,7 @@ define( function( require ) {
      * Find the subgraph where all vertices are connected by FixedLengthCircuitElements, not stretchy wires.
      * @param {Vertex} vertex
      * @param {Function} [okToVisit] - rule that determines which vertices are OK to visit
+     * @return {Vertex[]}
      */
     findAllFixedVertices: function( vertex, okToVisit ) {
       return this.searchVertices( vertex, this.getFixedLengthCircuitElements(), okToVisit || function() {return true;} );
