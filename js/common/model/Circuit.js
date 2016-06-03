@@ -184,8 +184,6 @@ define( function( require ) {
 
       var v1Group = this.findAllFixedVertices( v1 );
       if ( v1Group.indexOf( v2 ) >= 0 || true ) { // TODO: Treat wires the same as fixed length components here?
-        console.log( 'they were in the same group, we\'ll have to rotate' );
-        console.log( 'moving ', v2.index );
 
         var v1Neighbors = this.getNeighborVertices( v1 );
         var v2Neighbors = this.getNeighborVertices( v2 );
@@ -197,8 +195,7 @@ define( function( require ) {
           this.rotateSingleVertex( v2, v2Neighbors[ 0 ] );
         }
         else {
-          console.log( 'nothing simple to rotate' );
-          // TODO: rotate the entire group unless they have a fixed connection other than the pivot
+          // TODO: rotate the entire group unless they have a fixed connection other than the pivot?
         }
       }
       else {
