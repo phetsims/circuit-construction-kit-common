@@ -193,7 +193,7 @@ define( function( require ) {
         var v2Neighbors = this.getNeighborVertices( v2 );
 
         // See if they share any neighbors.  If so, it can be used as a pivot point.
-        var union = _.union( v1Neighbors, v2Neighbors );
+        var union = _.intersection( v1Neighbors, v2Neighbors );
 
         if ( union.length > 0 ) {
           var pivotVertex = union[ 0 ];
@@ -654,6 +654,14 @@ define( function( require ) {
           }
         }
         return true;
+      } );
+
+      // (8) a wire vertex cannot double connect to an object, creating a tiny short circuit
+      candidateVertices = candidateVertices.filter( function( candidateVertex ) {
+        var candidateNeighbors = circuit.getNeighborVertices( candidateVertex );
+        var myNeighbors = circuit.getNeighborVertices( vertex );
+        var intersection = _.intersection( candidateNeighbors, myNeighbors );
+        return intersection.length === 0;
       } );
 
       if ( candidateVertices.length === 0 ) {
