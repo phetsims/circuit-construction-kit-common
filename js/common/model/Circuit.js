@@ -214,15 +214,46 @@ define( function( require ) {
         .concat( this.resistors.getArray() );
     },
 
-    // TODO: Rotate away from other vertices, not toward them.
+    // Rotate away from other vertices, not toward them.
     rotateSingleVertex: function( vertex, pivotVertex ) {
+      var searchAngle = Math.PI / 4;
+      this.rotateSingleVertexByAngle( vertex, pivotVertex, searchAngle );
+      var distance1 = this.closestDistanceToOtherVertex( vertex );
+      this.rotateSingleVertexByAngle( vertex, pivotVertex, -2 * searchAngle );
+      var distance2 = this.closestDistanceToOtherVertex( vertex );
+      if ( distance2 > distance1 ) {
+        // keep it, we're good.
+      }
+      else {
+
+        // go back to the best spot
+        this.rotateSingleVertexByAngle( vertex, pivotVertex, 2 * searchAngle );
+      }
+    },
+
+    rotateSingleVertexByAngle: function( vertex, pivotVertex, deltaAngle ) {
       var distanceFromVertex = vertex.position.distance( pivotVertex.position );
       var angle = vertex.position.minus( pivotVertex.position ).angle();
-      var deltaAngle = Math.PI / 4;
+
       var newPosition = pivotVertex.position.plus( Vector2.createPolar( distanceFromVertex, angle + deltaAngle ) );
       vertex.unsnappedPosition = newPosition;
       vertex.position = newPosition;
     },
+
+    closestDistanceToOtherVertex: function( vertex ) {
+      var closestDistance = null;
+      for ( var i = 0; i < this.vertices.length; i++ ) {
+        var v = this.vertices.get( i );
+        if ( v !== vertex ) {
+          var distance = v.position.distance( vertex.position );
+          if ( closestDistance === null || distance < closestDistance ) {
+            closestDistance = distance;
+          }
+        }
+      }
+      return closestDistance;
+    },
+
     clear: function() {
       this.selectedCircuitElementProperty.reset();
 
