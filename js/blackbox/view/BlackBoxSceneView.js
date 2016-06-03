@@ -23,8 +23,9 @@ define( function( require ) {
   var ScreenView = require( 'JOIST/ScreenView' );
   var Color = require( 'SCENERY/util/Color' );
 
-  var fadedColor = new Color( '#e3edfc' );
-  var solidColor = new Color( '#c6dbf9' );// TODO: Factor me out
+  // constants
+  var fadedColor = new Color( '#e3edfc' ); // TODO: Factor me out
+  var solidColor = CircuitConstructionKitConstants.backgroundColor;
 
   /**
    * @param {number} blackBoxWidth

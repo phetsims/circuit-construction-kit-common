@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var Color = require( 'SCENERY/util/Color' );
 
   /**
    *
@@ -36,6 +37,7 @@ define( function( require ) {
     defaultResistivity: 1E-4,
     minimumResistance: 1E-8,
     dragBoundsErosion: 10, // How far to erode the visible bounds for keeping the probes in bounds.
-    electronDX: 0.56 / 2 * 100
+    electronDX: 0.56 / 2 * 100, // TODO: Simplify
+    backgroundColor: new Color( '#c6dbf9' )
   } );
 } );

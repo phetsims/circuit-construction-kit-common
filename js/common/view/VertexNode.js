@@ -157,8 +157,8 @@ define( function( require ) {
         voltageReadoutText.bottom = dottedLineNode.top - 10;
       };
       vertex.voltageProperty.link( function( voltage ) {
-        var voltage = Util.toFixed( voltage, 3 ) + 'V';
-        voltageReadoutText.setText( vertexDisplay === 'voltage' ? voltage : vertex.index );
+        var voltageText = Util.toFixed( voltage, 3 ) + 'V';
+        voltageReadoutText.setText( vertexDisplay === 'voltage' ? voltageText : vertex.index );
         updateReadoutTextLocation();
       } );
     }

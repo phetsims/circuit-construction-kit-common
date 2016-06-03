@@ -17,6 +17,10 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var BlackBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/view/BlackBoxNode' );
   var Property = require( 'AXON/Property' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+
+  // constants
+  var backgroundColor = CircuitConstructionKitConstants.backgroundColor;
 
   /**
    * @constructor
@@ -24,7 +28,7 @@ define( function( require ) {
   function BlackBoxScreen() {
 
     var blackBoxScreen = this;
-    var backgroundColor = '#c6dbf9';
+
     var icon = new Rectangle( 0, 0, Screen.NAVBAR_ICON_SIZE.width, Screen.NAVBAR_ICON_SIZE.height, {
       fill: backgroundColor
     } );
@@ -41,7 +45,7 @@ define( function( require ) {
       }, function( model ) {
       return new BlackBoxScreenView( model, blackBoxScreen.backgroundColorProperty );
       }, {
-        backgroundColor: '#c6dbf9'
+      backgroundColor: backgroundColor
       }
     );
   }

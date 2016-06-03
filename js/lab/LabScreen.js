@@ -25,15 +25,18 @@ define( function( require ) {
   var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/WireNode' );
   var LightBulbNode = require( 'SCENERY_PHET/LightBulbNode' );
   var Property = require( 'AXON/Property' );
+
   // images
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT/battery.png' );
+
+  // constants
+  var backgroundColor = CircuitConstructionKitConstants.backgroundColor;
 
   /**
    * @constructor
    */
   function LabScreen() {
 
-    var backgroundColor = '#c6dbf9';
     var icon = new Rectangle( 0, 0, Screen.NAVBAR_ICON_SIZE.width, Screen.NAVBAR_ICON_SIZE.height, {
       fill: backgroundColor
     } );
@@ -65,12 +68,13 @@ define( function( require ) {
         return new LabScreenModel();
       }, function( model ) {
         return new LabScreenView( model );
-      },
-      { backgroundColor: '#c6dbf9' }
+      }, {
+        backgroundColor: backgroundColor
+      }
     );
   }
 
   circuitConstructionKit.register( 'LabScreen', LabScreen );
-  
+
   return inherit( Screen, LabScreen );
 } );
