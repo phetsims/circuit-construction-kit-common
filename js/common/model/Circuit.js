@@ -190,25 +190,15 @@ define( function( require ) {
         var v1Neighbors = this.getNeighborVertices( v1 );
         var v2Neighbors = this.getNeighborVertices( v2 );
 
-        // See if they share any neighbors.  If so, it can be used as a pivot point.
-        var union = _.intersection( v1Neighbors, v2Neighbors );
-
-        if ( union.length > 0 ) {
-          var pivotVertex = union[ 0 ];
-          console.log( 'selected pivot vertex: ' + pivotVertex.index );
-
-          // if there is a node with no other neighbors, rotate that one.  Otherwise we would have to rotate the entire
-          // subcircuit
-          if ( v1Neighbors.length === 1 ) {
-            this.rotateSingleVertex( v1, pivotVertex );
-          }
-          else if ( v2Neighbors.length === 1 ) {
-            this.rotateSingleVertex( v2, pivotVertex );
-          }
-          else {
-            console.log( 'nothing simple to rotate' );
-            // TODO: rotate the entire group unless they have a fixed connection other than the pivot
-          }
+        if ( v1Neighbors.length === 1 ) {
+          this.rotateSingleVertex( v1, v1Neighbors[ 0 ] );
+        }
+        else if ( v2Neighbors.length === 1 ) {
+          this.rotateSingleVertex( v2, v2Neighbors[ 0 ] );
+        }
+        else {
+          console.log( 'nothing simple to rotate' );
+          // TODO: rotate the entire group unless they have a fixed connection other than the pivot
         }
       }
       else {
@@ -223,6 +213,8 @@ define( function( require ) {
         .concat( this.lightBulbs.getArray() )
         .concat( this.resistors.getArray() );
     },
+
+    // TODO: Rotate away from other vertices, not toward them.
     rotateSingleVertex: function( vertex, pivotVertex ) {
       var distanceFromVertex = vertex.position.distance( pivotVertex.position );
       var angle = vertex.position.minus( pivotVertex.position ).angle();
