@@ -126,7 +126,10 @@ define( function( require ) {
 
     // When dropping an object in "build mode", its vertices should pop inside the black box, see #113
     blackBoxSceneModel.circuit.vertexDroppedEmitter.addListener( function( vertex ) {
-      if ( blackBoxSceneModel.mode === 'build' ) {
+
+      // If the wire connected to a black box vertex, then it may no longer exist in the model.
+      // In this case there is no need to move it inside the black box
+      if ( blackBoxSceneModel.circuit.containsVertex( vertex ) && blackBoxSceneModel.mode === 'build' ) {
 
         var closestPoint = blackBoxNode.bounds.closestPointTo( vertex.position );
         var delta = closestPoint.minus( vertex.position );

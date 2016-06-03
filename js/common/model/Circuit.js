@@ -177,6 +177,9 @@ define( function( require ) {
   circuitConstructionKit.register( 'Circuit', Circuit );
 
   return inherit( Object, Circuit, {
+    containsVertex: function( vertex ) {
+      return this.vertices.indexOf( vertex ) >= 0;
+    },
 
     // Two vertices were too close to each other, move them apart.
     moveVerticesApart: function( v1, v2 ) {
