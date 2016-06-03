@@ -24,7 +24,7 @@ define( function( require ) {
   var Color = require( 'SCENERY/util/Color' );
 
   // constants
-  var fadedColor = new Color( '#e3edfc' ); // TODO: Factor me out
+  var fadedColor = new Color( '#e3edfc' );
   var solidColor = CircuitConstructionKitConstants.backgroundColor;
 
   /**
