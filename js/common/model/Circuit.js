@@ -159,18 +159,22 @@ define( function( require ) {
 
     // When any vertex is dropped, check all vertices for intersection.  If any overlap, move them apart.
     this.vertexDroppedEmitter.addListener( function() {
-      for ( var i = 0; i < circuit.vertices.length; i++ ) {
-        var v1 = circuit.vertices.get( i );
-        for ( var k = 0; k < circuit.vertices.length; k++ ) {
-          var v2 = circuit.vertices.get( k );
-          if ( i !== k ) {
-            if ( v2.unsnappedPosition.distance( v1.unsnappedPosition ) < 20 ) {
-              circuit.moveVerticesApart( v1, v2 );
-              return; // Don't handle the same pair twice  // TODO: perhaps cycle several times until reaching a stable state
+
+      // TODO: schedule in the step() function or with phet timers
+      setTimeout( function() {
+        for ( var i = 0; i < circuit.vertices.length; i++ ) {
+          var v1 = circuit.vertices.get( i );
+          for ( var k = 0; k < circuit.vertices.length; k++ ) {
+            var v2 = circuit.vertices.get( k );
+            if ( i !== k ) {
+              if ( v2.unsnappedPosition.distance( v1.unsnappedPosition ) < 20 ) {
+                circuit.moveVerticesApart( v1, v2 );
+                return; // Don't handle the same pair twice  // TODO: perhaps cycle several times until reaching a stable state
+              }
             }
           }
         }
-      }
+      }, 100 );
     } );
   }
 
@@ -183,18 +187,18 @@ define( function( require ) {
 
     // Two vertices were too close to each other, move them apart.
     moveVerticesApart: function( v1, v2 ) {
-      // are they in the same fixed subgroup
 
+      // are they in the same fixed subgroup
       var v1Group = this.findAllFixedVertices( v1 );
       if ( v1Group.indexOf( v2 ) >= 0 || true ) { // TODO: Treat wires the same as fixed length components here?
 
         var v1Neighbors = this.getNeighborVertices( v1 );
         var v2Neighbors = this.getNeighborVertices( v2 );
 
-        if ( v1Neighbors.length === 1 ) {
+        if ( v1Neighbors.length === 1 && !v1.blackBoxInterface ) {
           this.rotateSingleVertex( v1, v1Neighbors[ 0 ] );
         }
-        else if ( v2Neighbors.length === 1 ) {
+        else if ( v2Neighbors.length === 1 && !v2.blackBoxInterface ) {
           this.rotateSingleVertex( v2, v2Neighbors[ 0 ] );
         }
         else {
@@ -661,6 +665,11 @@ define( function( require ) {
 
       // (7) a wire vertex cannot connect if its neighbor is already proposing a connection
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
+
+        // You can always attach to a black box interface
+        if ( candidateVertex.blackBoxInterface ) {
+          return true;
+        }
         var neighbors = circuit.getNeighborCircuitElements( candidateVertex );
         for ( var i = 0; i < neighbors.length; i++ ) {
           var neighbor = neighbors[ i ];
@@ -679,6 +688,11 @@ define( function( require ) {
 
       // (8) a wire vertex cannot double connect to an object, creating a tiny short circuit
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
+
+        // You can always attach to a black box interface
+        if ( candidateVertex.blackBoxInterface ) {
+          return true;
+        }
         var candidateNeighbors = circuit.getNeighborVertices( candidateVertex );
         var myNeighbors = circuit.getNeighborVertices( vertex );
         var intersection = _.intersection( candidateNeighbors, myNeighbors );
