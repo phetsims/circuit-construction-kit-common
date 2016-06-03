@@ -183,7 +183,7 @@ define( function( require ) {
       // are they in the same fixed subgroup
 
       var v1Group = this.findAllFixedVertices( v1 );
-      if ( v1Group.indexOf( v2 ) >= 0 ) {
+      if ( v1Group.indexOf( v2 ) >= 0 || true ) { // TODO: Treat wires the same as fixed length components here?
         console.log( 'they were in the same group, we\'ll have to rotate' );
         console.log( 'moving ', v2.index );
 
@@ -202,7 +202,7 @@ define( function( require ) {
           if ( v1Neighbors.length === 1 ) {
             this.rotateSingleVertex( v1, pivotVertex );
           }
-          else if ( v2Neighbors.length === 2 ) {
+          else if ( v2Neighbors.length === 1 ) {
             this.rotateSingleVertex( v2, pivotVertex );
           }
           else {
