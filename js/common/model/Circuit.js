@@ -165,10 +165,8 @@ define( function( require ) {
           var v2 = circuit.vertices.get( k );
           if ( i !== k ) {
             if ( v2.unsnappedPosition.distance( v1.unsnappedPosition ) < 20 ) {
-              // TODO: May require rotating a fixed length component
-              console.log( 'too close!' );
               circuit.moveVerticesApart( v1, v2 );
-              return; // Don't handle the same pair twice  // TODO: better way to do this.
+              return; // Don't handle the same pair twice  // TODO: perhaps cycle several times until reaching a stable state
             }
           }
         }
@@ -648,7 +646,7 @@ define( function( require ) {
           // is another node proposing a match to that node?
           for ( var k = 0; k < circuit.vertices.length; k++ ) {
             var v = circuit.vertices.get( k );
-            if ( v !== vertex && v !== oppositeVertex && v.position.equals( oppositeVertex.position ) ) {
+            if ( neighbor instanceof Wire && v !== vertex && v !== oppositeVertex && v.position.equals( oppositeVertex.position ) ) {
               return false;
             }
           }
