@@ -688,11 +688,6 @@ define( function( require ) {
 
       // (8) a wire vertex cannot double connect to an object, creating a tiny short circuit
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
-
-        // You can always attach to a black box interface
-        if ( candidateVertex.blackBoxInterface ) {
-          return true;
-        }
         var candidateNeighbors = circuit.getNeighborVertices( candidateVertex );
         var myNeighbors = circuit.getNeighborVertices( vertex );
         var intersection = _.intersection( candidateNeighbors, myNeighbors );
