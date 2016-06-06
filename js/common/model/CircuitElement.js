@@ -46,6 +46,8 @@ define( function( require ) {
       insideTrueBlackBox: false
     }, propertySetMap ) );
 
+    this.interactiveProperty = this.interactiveProperty || null;
+
     // @public (read-only) - indicate when this circuit element has been connected
     this.connectedEmitter = new Emitter();
 

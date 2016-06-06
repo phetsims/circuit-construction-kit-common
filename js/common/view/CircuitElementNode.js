@@ -21,19 +21,23 @@ define( function( require ) {
    * @constructor
    */
   function CircuitElementNode( circuitElement, options ) {
-    var circuitElementNode = this;
     Node.call( this, options );
     this.circuitElement = circuitElement;
-
-    // TODO: Replace this with grayscale
-    this.circuitElement.interactiveProperty.link( function( interactive ) {
-      circuitElementNode.opacity = interactive ? 1 : 0.5;
-    } );
+    this.updateOpacityOnInteractiveChange();
   }
 
   circuitConstructionKit.register( 'CircuitElementNode', CircuitElementNode );
 
   return inherit( Node, CircuitElementNode, {
+
+    // @protected
+    updateOpacityOnInteractiveChange: function() {
+      var circuitElementNode = this;
+      // TODO: Replace this with grayscale if we keep it
+      this.circuitElement.interactiveProperty.link( function( interactive ) {
+        circuitElementNode.opacity = interactive ? 1 : 0.5;
+      } );
+    },
     createDeselectFunctionListener: function( circuitNode ) {
       var deselect = function( event ) {
 

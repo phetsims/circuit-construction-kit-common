@@ -16,6 +16,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Util = require( 'DOT/Util' );
   var Matrix3 = require( 'DOT/Matrix3' );
+  var Image = require( 'SCENERY/nodes/Image' );
 
   /**
    *
@@ -36,7 +37,7 @@ define( function( require ) {
       }
       brightnessProperty.value = running ? clamped : 0;
     } );
-    var lightBulbNode = new LightBulbNode( brightnessProperty, {
+    this.lightBulbNode = new LightBulbNode( brightnessProperty, {
       scale: 3.5
     } );
     var contentScale = 2.5;
@@ -49,7 +50,7 @@ define( function( require ) {
       scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
         .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
         .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) );
-      lightBulbNode.setMatrix( scratchMatrix );
+      cckLightBulbNode.lightBulbNode.setMatrix( scratchMatrix );
 
       cckLightBulbNode.highlightParent && cckLightBulbNode.highlightParent.setMatrix( scratchMatrix.copy() );
     };
@@ -62,7 +63,7 @@ define( function( require ) {
         bottom: FixedLengthCircuitElementNode.HIGHLIGHT_INSET * 0.75
       }
     }, options );
-    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, lightBulbNode, contentScale, options );
+    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, this.lightBulbNode, contentScale, options );
 
     // Set the initial location of the highlight, since it was not available in the supercall to updateLayout
     updateLayout( lightBulb.startVertex.position, lightBulb.endVertex.position );
@@ -70,5 +71,23 @@ define( function( require ) {
 
   circuitConstructionKit.register( 'CCKLightBulbNode', CCKLightBulbNode );
 
-  return inherit( FixedLengthCircuitElementNode, CCKLightBulbNode );
+  return inherit( FixedLengthCircuitElementNode, CCKLightBulbNode, {
+
+    /**
+     * Maintain the opacity of the brightness lines while changing the opacity of the light bulb itself.
+     * @override
+     */
+    updateOpacityOnInteractiveChange: function() {
+      var cckLightBulbNode = this;
+      this.circuitElement.interactiveProperty.link( function( interactive ) {
+        if ( cckLightBulbNode.lightBulbNode ) {
+          cckLightBulbNode.lightBulbNode.children.forEach( function( child ) {
+            if ( child instanceof Image ) {
+              child.opacity = interactive ? 1 : 0.5;
+            }
+          } );
+        }
+      } );
+    }
+  } );
 } );
