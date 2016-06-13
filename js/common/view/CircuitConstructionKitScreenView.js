@@ -219,6 +219,7 @@ define( function( require ) {
         } );
       } );
     }
+    this.circuitConstructionKitModel = circuitConstructionKitModel;
   }
 
   circuitConstructionKit.register( 'CircuitConstructionKitScreenView', CircuitConstructionKitScreenView );
@@ -269,7 +270,12 @@ define( function( require ) {
         var wireNode = this.circuitNode.wireNodes[ i ];
 
         // Don't connect to wires in the black box
-        if ( !wireNode.wire.insideTrueBlackBox && wireNode.getStrokedShape().containsPoint( probeNode[ locationProperty ] ) ) {
+        var revealing = true;
+        var trueBlackBox = wireNode.wire.insideTrueBlackBox;
+        if ( trueBlackBox ) {
+          revealing = this.circuitConstructionKitModel.revealing;
+        }
+        if ( revealing && wireNode.getStrokedShape().containsPoint( probeNode[ locationProperty ] ) ) {
           return wireNode;
         }
       }
