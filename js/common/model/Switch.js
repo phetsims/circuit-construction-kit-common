@@ -50,17 +50,20 @@ define( function( require ) {
     };
     this.vertexMovedEmitter.addListener( vertexMovedListener );
     vertexMovedListener();
-    this.closedProperty.link( function() {
-      updateResistance();
-    } );
+    this.closedProperty.link( updateResistance );
+
+    this.disposeSwitch = function() {
+      switchModel.closedProperty.unlink( updateResistance );
+      switchModel.vertexMovedEmitter.removeListener( vertexMovedListener );
+    };
   }
 
   circuitConstructionKit.register( 'Switch', Switch );
 
   return inherit( CircuitElement, Switch, {
     dispose: function() {
-      this.disposeSwitch();
       CircuitElement.prototype.dispose.call( this );
+      this.disposeSwitch();
     },
     toStateObjectWithVertexIndices: function( getVertexIndex ) {
       return _.extend( {
