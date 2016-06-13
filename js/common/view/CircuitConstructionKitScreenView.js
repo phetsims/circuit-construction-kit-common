@@ -262,10 +262,10 @@ define( function( require ) {
     /**
      * Check for an intersection between a probeNode and a wire, return null if no hits.
      * @param probeNode
-     * @param {string} locationProperty - 'translation' for ammeter or 'centerTop' for voltmeter probes
+     * @param {string} locationString - 'translation' for ammeter or 'centerTop' for voltmeter probes
      * @returns {*}
      */
-    hitWireNode: function( probeNode, locationProperty ) {
+    hitWireNode: function( probeNode, locationString ) {
       for ( var i = 0; i < this.circuitNode.wireNodes.length; i++ ) {
         var wireNode = this.circuitNode.wireNodes[ i ];
 
@@ -275,7 +275,7 @@ define( function( require ) {
         if ( trueBlackBox ) {
           revealing = this.circuitConstructionKitModel.revealing;
         }
-        if ( revealing && wireNode.getStrokedShape().containsPoint( probeNode[ locationProperty ] ) ) {
+        if ( revealing && wireNode.getStrokedShape().containsPoint( probeNode[ locationString ] ) ) {
           return wireNode;
         }
       }
