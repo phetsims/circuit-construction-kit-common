@@ -189,31 +189,14 @@ define( function( require ) {
 
     // TODO: Move to a separate file
     if ( CircuitConstructionKitQueryParameters.showPlayPauseButton ) {
-      var open = new FontAwesomeNode( 'eye_open' );
-      var closed = new FontAwesomeNode( 'eye_close' );
-      var eyeballIcon = new Node( {
-        children: [ open, closed ]
-      } );
       var playPauseButton = new PlayPauseButton( circuitConstructionKitModel.runningProperty, {
         baseColor: '#33ff44' // the default blue fades into the background too much
       } );
-      circuitConstructionKitModel.runningProperty.link( function( running ) {
-        open.visible = running;
-        closed.visible = !running;
-      } );
-      var panel = new VBox( {
-        resize: false,
-        spacing: 10,
-        children: [
-          eyeballIcon,
-          playPauseButton
-        ]
-      } );
-      this.addChild( panel );
+      this.addChild( playPauseButton );
       this.visibleBoundsProperty.link( function( visibleBounds ) {
 
         // Float the playPauseButton to the bottom left
-        panel.mutate( {
+        playPauseButton.mutate( {
           left: visibleBounds.left + inset,
           bottom: visibleBounds.bottom - inset
         } );
