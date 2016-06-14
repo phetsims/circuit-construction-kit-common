@@ -135,26 +135,33 @@ define( function( require ) {
         // Find all the vertices that must be translated into the box, translating wires
         (function() {
           var vertices = blackBoxSceneModel.circuit.findAllConnectedVertices( vertex );
-          for ( var i = 0; i < vertices.length; i++ ) {
-            var vertexInGroup = vertices[ i ];
+          var connectedToBlackBox = vertices.filter( function( v ) {return v.blackBoxInterface;} ).length > 0;
+          if ( !connectedToBlackBox ) {
+            for ( var i = 0; i < vertices.length; i++ ) {
+              var vertexInGroup = vertices[ i ];
 
-            var closestPoint = blackBoxNode.bounds.closestPointTo( vertexInGroup.position );
-            var delta = closestPoint.minus( vertexInGroup.position );
+              var closestPoint = blackBoxNode.bounds.closestPointTo( vertexInGroup.position );
+              var delta = closestPoint.minus( vertexInGroup.position );
 
-            blackBoxSceneView.circuitNode.translateVertexGroup( vertexInGroup, vertices, delta, null, [] );
+              blackBoxSceneView.circuitNode.translateVertexGroup( vertexInGroup, vertices, delta, null, [] );
+            }
           }
         })();
 
         // Find all the vertices that must be translated into the box, shrinking wires
+        // TODO: Factor out
         (function() {
           var vertices = blackBoxSceneModel.circuit.findAllFixedVertices( vertex );
-          for ( var i = 0; i < vertices.length; i++ ) {
-            var vertexInGroup = vertices[ i ];
+          var connectedToBlackBox = vertices.filter( function( v ) {return v.blackBoxInterface;} ).length > 0;
+          if ( !connectedToBlackBox ) {
+            for ( var i = 0; i < vertices.length; i++ ) {
+              var vertexInGroup = vertices[ i ];
 
-            var closestPoint = blackBoxNode.bounds.closestPointTo( vertexInGroup.position );
-            var delta = closestPoint.minus( vertexInGroup.position );
+              var closestPoint = blackBoxNode.bounds.closestPointTo( vertexInGroup.position );
+              var delta = closestPoint.minus( vertexInGroup.position );
 
-            blackBoxSceneView.circuitNode.translateVertexGroup( vertexInGroup, vertices, delta, null, [] );
+              blackBoxSceneView.circuitNode.translateVertexGroup( vertexInGroup, vertices, delta, null, [] );
+            }
           }
         })();
       }
