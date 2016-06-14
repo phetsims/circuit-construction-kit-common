@@ -36,12 +36,18 @@ define( function( require ) {
     this.voltmeter = new Voltmeter();
     this.ammeter = new Ammeter();
 
-    // When the user manipulates something, hide the readouts
-    this.circuit.circuitChangedEmitter.addListener( function() {
-      if ( CircuitConstructionKitQueryParameters.showPlayPauseButton ) {
+    // When the user manipulates something, hide the readouts, see https://github.com/phetsims/circuit-construction-kit/issues/130
+    // When any of the following conditions occurs, hide the readouts:
+    // 1. More components are dragged out of the toolbox
+    // 2. Any vertex is broken
+    // 3. Component voltage/resistance is edited
+    if ( CircuitConstructionKitQueryParameters.showPlayPauseButton ) {
+      var pause = function() {
         circuitConstructionKitModel.running = false;
-      }
-    } );
+      };
+      this.circuit.vertices.lengthProperty.link( pause );
+      this.circuit.componentEditedEmitter.addListener( pause );
+    }
   }
 
   circuitConstructionKit.register( 'CircuitConstructionKitModel', CircuitConstructionKitModel );

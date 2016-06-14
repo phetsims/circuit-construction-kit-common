@@ -17,6 +17,7 @@ define( function( require ) {
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var Range = require( 'DOT/Range' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+  var Property = require( 'AXON/Property' );
 
   function CircuitElementEditPanel( title, units, valueProperty, circuit, circuitElement, options ) {
     options = _.extend( { numberControlEnabled: true }, options );
@@ -28,7 +29,24 @@ define( function( require ) {
       decimalPlaces: 1
     };
 
-    var numberControl = new NumberControl( title, valueProperty, new Range( 0, 100 ), _.extend( {
+    // Track whether the changes were from the user interface or from the model (e.g. the resistance of a wire
+    // changing when its length changes).
+    var proxy = new Property( valueProperty.value );
+    var changing = false;
+    proxy.lazyLink( function( value ) {
+      valueProperty.value = value;
+      if ( !changing ) {
+        circuit.componentEditedEmitter.emit();
+      }
+    } );
+    valueProperty.lazyLink( function( value ) {
+      changing = true;
+      proxy.value = value;
+      changing = false;
+    } );
+
+    // Create the controls using the proxy
+    var numberControl = new NumberControl( title, proxy, new Range( 0, 100 ), _.extend( {
       units: units
     }, numberControlOptions ) );
     var roundPushButton = new RoundPushButton( {
@@ -61,7 +79,7 @@ define( function( require ) {
   }
 
   circuitConstructionKit.register( 'CircuitElementEditPanel', CircuitElementEditPanel );
-  
+
   return inherit( HBox, CircuitElementEditPanel, {
     dispose: function() {
       this.disposeCircuitElementEditPanel();

@@ -130,6 +130,9 @@ define( function( require ) {
     // Some actions only take place after an item has been dropped
     this.vertexDroppedEmitter = new Emitter();
 
+    // Pass-through events
+    this.componentEditedEmitter = new Emitter();
+
     var circuitChangedEmitterFunction = function() {
       circuit.circuitChangedEmitter.emit();
     };
