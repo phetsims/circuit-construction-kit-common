@@ -52,6 +52,9 @@ define( function( require ) {
       circuit: new Circuit()
     } );
 
+    // For syntax highlighting and navigation
+    this.circuit = this.circuit || null;
+
     this.revealingProperty.lazyLink( function( revealing ) {
       blackBoxSceneModel.mode = revealing ? 'investigate' : 'build';
     } );
