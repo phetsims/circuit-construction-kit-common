@@ -60,13 +60,15 @@ define( function( require ) {
     // Add highlight (but not for icons)
     if ( circuitNode ) {
       var inset = -FixedLengthCircuitElementNode.HIGHLIGHT_INSET;
+      var w = options.contentWidth || contentNode.width;
+      var h = options.contentHeight || contentNode.height;
       var highlightNode = new Rectangle(
         inset,
         inset,
-        contentNode.width / contentScale - inset * 2,
-        contentNode.height / contentScale - inset * 2,
-        8,
-        8,
+        w / contentScale - inset * 2,
+        h / contentScale - inset * 2,
+        8 / contentScale,
+        8 / contentScale,
         _.extend( options.highlightOptions, {
           stroke: CircuitConstructionKitConstants.highlightColor,
           lineWidth: CircuitConstructionKitConstants.highlightLineWidth / contentScale / contentScale,

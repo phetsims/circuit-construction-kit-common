@@ -56,6 +56,10 @@ define( function( require ) {
     };
     options = _.extend( {
       updateLayout: updateLayout,
+
+      // Override the dimensions of the bulb node because the invisible rays contribute to the bounds.
+      contentWidth: 12,
+      contentHeight: 22,
       highlightOptions: {
         centerX: 0,
 
