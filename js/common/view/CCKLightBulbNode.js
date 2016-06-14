@@ -16,7 +16,6 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Util = require( 'DOT/Util' );
   var Matrix3 = require( 'DOT/Matrix3' );
-  var Image = require( 'SCENERY/nodes/Image' );
 
   /**
    *

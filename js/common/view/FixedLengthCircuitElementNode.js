@@ -18,7 +18,6 @@ define( function( require ) {
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitElementNode' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var Vector2 = require( 'DOT/Vector2' );
 
   /**
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
