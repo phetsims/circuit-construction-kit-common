@@ -32,11 +32,6 @@ define( function( require ) {
   function FixedLengthCircuitElementNode( circuitConstructionKitScreenView, circuitNode, circuitElement, contentNode,
                                           contentScale, options ) {
 
-    // TODO: Somehow the layout here assumes that the initial angle is zero.  If we set the angle to zero, then render
-    // the nodes then restore the vertex position. it kind of works.
-    var endVertexPosition = circuitElement.endVertex.position.copy();
-    var dist = circuitElement.startVertex.position.distance( circuitElement.endVertex.position );
-    circuitElement.endVertex.position = circuitElement.startVertex.position.plus( Vector2.createPolar( dist, 0 ) );
     var fixedLengthCircuitElementNode = this;
 
     // Capture the original dimensions of the content node, without the highlight node
@@ -61,6 +56,30 @@ define( function( require ) {
       },
       highlightOptions: {}
     }, options );
+
+    // Add highlight (but not for icons)
+    if ( circuitNode ) {
+      var inset = -FixedLengthCircuitElementNode.HIGHLIGHT_INSET;
+      var highlightNode = new Rectangle(
+        inset,
+        inset,
+        contentNode.width / contentScale - inset * 2,
+        contentNode.height / contentScale - inset * 2,
+        8,
+        8,
+        _.extend( options.highlightOptions, {
+          stroke: CircuitConstructionKitConstants.highlightColor,
+          lineWidth: CircuitConstructionKitConstants.highlightLineWidth / contentScale / contentScale,
+          scale: contentScale,
+          pickable: false
+        } )
+      );
+
+      highlightParent.children = [ highlightNode ];
+      circuitNode.highlightLayer.addChild( highlightParent );
+
+      this.highlightParent = highlightParent;
+    }
 
     // Relink when start vertex changes
     var multilink = null;
@@ -87,29 +106,6 @@ define( function( require ) {
 
     circuitElement.startVertexProperty.lazyLink( relink );
     circuitElement.endVertexProperty.lazyLink( relink );
-
-    // Add highlight (but not for icons)
-    if ( circuitNode ) {
-      var inset = -FixedLengthCircuitElementNode.HIGHLIGHT_INSET;
-      var highlightNode = new Rectangle(
-        inset,
-        inset,
-        contentNode.width - inset * 2,
-        contentNode.height - inset * 2,
-        8,
-        8,
-        _.extend( options.highlightOptions, {
-          stroke: CircuitConstructionKitConstants.highlightColor,
-          lineWidth: CircuitConstructionKitConstants.highlightLineWidth,
-          scale: 1.0 / contentScale,
-          pickable: false
-        } ) );
-
-      highlightParent.children = [ highlightNode ];
-      circuitNode.highlightLayer.addChild( highlightParent );
-
-      this.highlightParent = highlightParent;
-    }
 
     CircuitElementNode.call( this, circuitElement, {
       cursor: 'pointer',
@@ -161,9 +157,6 @@ define( function( require ) {
       circuitNode.circuit.selectedCircuitElementProperty.link( updateSelectionHighlight );
     }
 
-    circuitElement.endVertex.position = endVertexPosition;
-
-    // TODO: options.updateLayout doesn't seem optional
     // Update after the highlight exists
     options.updateLayout(
       circuitElement.startVertex.position,
