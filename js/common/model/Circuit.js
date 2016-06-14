@@ -344,11 +344,11 @@ define( function( require ) {
       list.remove( circuitElement );
 
       // Delete orphaned vertices
-      if ( this.getNeighborCircuitElements( circuitElement.startVertex ).length === 0 ) {
+      if ( this.getNeighborCircuitElements( circuitElement.startVertex ).length === 0 && !circuitElement.startVertex.blackBoxInterface ) {
         this.vertices.remove( circuitElement.startVertex );
       }
 
-      if ( this.getNeighborCircuitElements( circuitElement.endVertex ).length === 0 ) {
+      if ( this.getNeighborCircuitElements( circuitElement.endVertex ).length === 0 && !circuitElement.endVertex.blackBoxInterface ) {
         this.vertices.remove( circuitElement.endVertex );
       }
 
