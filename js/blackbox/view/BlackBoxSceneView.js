@@ -132,16 +132,31 @@ define( function( require ) {
       // In this case there is no need to move it inside the black box
       if ( blackBoxSceneModel.circuit.containsVertex( vertex ) && blackBoxSceneModel.mode === 'build' ) {
 
-        // Find all the vertices that must be translated into the box
-        var vertices = blackBoxSceneModel.circuit.findAllFixedVertices( vertex );
-        for ( var i = 0; i < vertices.length; i++ ) {
-          var vertexInGroup = vertices[ i ];
+        // Find all the vertices that must be translated into the box, translating wires
+        (function() {
+          var vertices = blackBoxSceneModel.circuit.findAllConnectedVertices( vertex );
+          for ( var i = 0; i < vertices.length; i++ ) {
+            var vertexInGroup = vertices[ i ];
 
-          var closestPoint = blackBoxNode.bounds.closestPointTo( vertexInGroup.position );
-          var delta = closestPoint.minus( vertexInGroup.position );
+            var closestPoint = blackBoxNode.bounds.closestPointTo( vertexInGroup.position );
+            var delta = closestPoint.minus( vertexInGroup.position );
 
-          blackBoxSceneView.circuitNode.translateVertexGroup( vertexInGroup, vertices, delta, null, [] );
-        }
+            blackBoxSceneView.circuitNode.translateVertexGroup( vertexInGroup, vertices, delta, null, [] );
+          }
+        })();
+
+        // Find all the vertices that must be translated into the box, shrinking wires
+        (function() {
+          var vertices = blackBoxSceneModel.circuit.findAllFixedVertices( vertex );
+          for ( var i = 0; i < vertices.length; i++ ) {
+            var vertexInGroup = vertices[ i ];
+
+            var closestPoint = blackBoxNode.bounds.closestPointTo( vertexInGroup.position );
+            var delta = closestPoint.minus( vertexInGroup.position );
+
+            blackBoxSceneView.circuitNode.translateVertexGroup( vertexInGroup, vertices, delta, null, [] );
+          }
+        })();
       }
     } );
   }
