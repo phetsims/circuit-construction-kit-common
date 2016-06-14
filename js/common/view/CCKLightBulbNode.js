@@ -35,6 +35,7 @@ define( function( require ) {
       if ( clamped < 1E-6 ) {
         clamped = 0;
       }
+      console.log( 'bpv', clamped );
       brightnessProperty.value = running ? clamped : 0;
     } );
     this.lightBulbNode = new LightBulbNode( brightnessProperty, {
@@ -82,16 +83,8 @@ define( function( require ) {
      * @override
      */
     updateOpacityOnInteractiveChange: function() {
-      var cckLightBulbNode = this;
-      this.circuitElement.interactiveProperty.link( function( interactive ) {
-        if ( cckLightBulbNode.lightBulbNode ) {
-          cckLightBulbNode.lightBulbNode.children.forEach( function( child ) {
-            if ( child instanceof Image ) {
-              child.opacity = interactive ? 1 : 0.5;
-            }
-          } );
-        }
-      } );
+
+      // TODO: Make the light bulb images look faded out.
     }
   } );
 } );
