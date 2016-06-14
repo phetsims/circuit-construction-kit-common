@@ -35,7 +35,6 @@ define( function( require ) {
       if ( clamped < 1E-6 ) {
         clamped = 0;
       }
-      console.log( 'bpv', clamped );
       brightnessProperty.value = running ? clamped : 0;
     } );
     this.lightBulbNode = new LightBulbNode( brightnessProperty, {
