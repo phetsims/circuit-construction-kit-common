@@ -708,10 +708,19 @@ define( function( require ) {
       if ( mode === 'build' ) {
         var connectedVertices = this.findAllConnectedVertices( vertex );
         candidateVertices = candidateVertices.filter( function( candidateVertex ) {
+
+          // Don't connect to vertices that might have snuck outside of the black box, say by a rotation.
+          if ( !candidateVertex.blackBoxInterface && !blackBoxBounds.containsPoint( candidateVertex.position ) ) {
+            return false;
+          }
+
           if ( candidateVertex.blackBoxInterface || blackBoxBounds.containsPoint( candidateVertex.position ) ) {
             for ( var i = 0; i < connectedVertices.length; i++ ) {
               var connectedVertex = connectedVertices[ i ];
-              if ( connectedVertex !== vertex && !blackBoxBounds.containsPoint( connectedVertex.position ) ) {
+              if ( connectedVertex.blackBoxInterface ) {
+                // OK for black box interface vertex to be slightly outside the box
+              }
+              else if ( connectedVertex !== vertex && !blackBoxBounds.containsPoint( connectedVertex.position ) ) {
                 return false;
               }
             }
