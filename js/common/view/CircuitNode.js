@@ -30,8 +30,9 @@ define( function( require ) {
    * @constructor
    */
   function CircuitNode( circuit, circuitConstructionKitScreenView ) {
+    this.circuitConstructionKitModel = circuitConstructionKitScreenView.circuitConstructionKitModel;
     this.visibleBoundsProperty = circuitConstructionKitScreenView.visibleBoundsProperty;
-    var runningProperty = circuitConstructionKitScreenView.circuitConstructionKitModel.runningProperty;
+    var runningProperty = this.circuitConstructionKitModel.runningProperty;
 
     this.highlightLayer = new Node();
 
@@ -228,7 +229,7 @@ define( function( require ) {
 
       for ( var i = 0; i < vertices.length; i++ ) {
         var vertex = vertices[ i ];
-        var targetVertex = this.circuit.getDropTarget( vertex );
+        var targetVertex = this.circuit.getDropTarget( vertex, this.circuitConstructionKitModel.mode, this.circuitConstructionKitModel.blackBoxBounds );
         if ( targetVertex ) {
           allDropTargets.push( { src: vertex, dst: targetVertex } );
         }

@@ -52,6 +52,9 @@ define( function( require ) {
       circuit: new Circuit()
     } );
 
+    // @public
+    this.blackBoxBounds = null; // {Bounds2} Filled in by the BlackBoxSceneView after the black box node is created and positioned
+
     // For syntax highlighting and navigation
     this.circuit = this.circuit || null;
 

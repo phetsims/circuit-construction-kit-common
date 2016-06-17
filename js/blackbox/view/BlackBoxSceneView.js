@@ -83,6 +83,7 @@ define( function( require ) {
       // Assumes the default layout bounds are used
       center: ScreenView.DEFAULT_LAYOUT_BOUNDS.center
     } );
+    blackBoxSceneModel.blackBoxBounds = blackBoxNode.bounds;
     blackBoxSceneModel.revealingProperty.link( function( revealing ) {
       blackBoxNode.opacity = revealing ? 0.2 : 1.0;
     } );
@@ -126,6 +127,7 @@ define( function( require ) {
     };
 
     // When dropping an object in "build mode", its vertices should pop inside the black box, see #113
+    // TODO: Let's move this to the model, and make the blackBoxNodeBounds available there.
     blackBoxSceneModel.circuit.vertexDroppedEmitter.addListener( function( vertex ) {
 
       // If the wire connected to a black box vertex, then it may no longer exist in the model.

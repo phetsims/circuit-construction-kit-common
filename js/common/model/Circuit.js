@@ -608,12 +608,18 @@ define( function( require ) {
     /**
      * A vertex has been dragged, is it a candidate for joining with other vertices?  If so, return the candidate
      * vertex.  Otherwise, return null.
-     * @param {Vertex} vertex
-     * @returns {Vertex}
+     * @param {Vertex} vertex - the dragged vertex
+     * @param {string} mode - the application mode 'build' | 'investigate' | undefined
+     * @param {Bounds2} blackBoxBounds - the bounds of the black box, if there is one
+     * @returns {Vertex} - the vertex it will be able to connect to, if dropped
      * @public
      */
-    getDropTarget: function( vertex ) {
+    getDropTarget: function( vertex, mode, blackBoxBounds ) {
       var circuit = this;
+
+      if ( mode === 'build' ) {
+        assert && assert( blackBoxBounds, 'bounds should be provided for build mode' )
+      }
 
       // Rules for a vertex connecting to another vertex.
       // (1) A vertex may not connect to an adjacent vertex.
@@ -656,10 +662,10 @@ define( function( require ) {
       } );
 
       // (6) a vertex cannot be connected to its own fixed subgraph (no wire)
-      var fixedGroup = this.findAllFixedVertices( vertex );
+      var fixedVertices = this.findAllFixedVertices( vertex );
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
-        for ( var i = 0; i < fixedGroup.length; i++ ) {
-          if ( fixedGroup[ i ] === candidateVertex ) {
+        for ( var i = 0; i < fixedVertices.length; i++ ) {
+          if ( fixedVertices[ i ] === candidateVertex ) {
             return false;
           }
         }
@@ -696,6 +702,26 @@ define( function( require ) {
         var intersection = _.intersection( candidateNeighbors, myNeighbors );
         return intersection.length === 0;
       } );
+
+      // (9) When in Black Box "build" mode (i.e. building inside the black box), a vertex user cannot connect to
+      // a black bax interface vertex if its other vertices would be outside of the black box.  See #136
+      if ( mode === 'build' ) {
+        var connectedVertices = this.findAllConnectedVertices( vertex );
+        candidateVertices = candidateVertices.filter( function( candidateVertex ) {
+          if ( candidateVertex.blackBoxInterface || blackBoxBounds.containsPoint( candidateVertex.position ) ) {
+            for ( var i = 0; i < connectedVertices.length; i++ ) {
+              var connectedVertex = connectedVertices[ i ];
+              if ( connectedVertex !== vertex && !blackBoxBounds.containsPoint( connectedVertex.position ) ) {
+                return false;
+              }
+            }
+          }
+          else {
+            return true;
+          }
+          return true;
+        } );
+      }
 
       if ( candidateVertices.length === 0 ) {
         return null;
