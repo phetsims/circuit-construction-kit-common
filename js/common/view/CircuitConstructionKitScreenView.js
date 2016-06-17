@@ -157,14 +157,14 @@ define( function( require ) {
           // Voltmeter probes each hit things but they were not connected to each other through the circuit.
           circuitConstructionKitModel.voltmeter.voltage = null;
         }
-        else if ( redConnection !== null && redConnection.vertex.insideTrueBlackBox ) {
+        else if ( redConnection !== null && redConnection.vertex.insideTrueBlackBox && !circuitConstructionKitModel.revealing ) {
 
-          // Cannot read values inside the black box
+          // Cannot read values inside the black box, unless "reveal" is being pressed
           circuitConstructionKitModel.voltmeter.voltage = null;
         }
-        else if ( blackConnection !== null && blackConnection.vertex.insideTrueBlackBox ) {
+        else if ( blackConnection !== null && blackConnection.vertex.insideTrueBlackBox && !circuitConstructionKitModel.revealing ) {
 
-          // Cannot read values inside the black box
+          // Cannot read values inside the black box, unless "reveal" is being pressed
           circuitConstructionKitModel.voltmeter.voltage = null;
         }
         else {
