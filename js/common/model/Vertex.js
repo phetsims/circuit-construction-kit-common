@@ -75,7 +75,7 @@ define( function( require ) {
   }
 
   circuitConstructionKit.register( 'Vertex', Vertex );
-  
+
   return inherit( PropertySet, Vertex, {}, {
     DEFAULTS: DEFAULTS
   } );

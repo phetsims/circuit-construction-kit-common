@@ -41,7 +41,7 @@ define( function( require ) {
   }
 
   circuitConstructionKit.register( 'ResistorColors', ResistorColors );
-  
+
   return inherit( Object, ResistorColors, {}, {
 
     toThreeColors: function( value ) {

@@ -33,7 +33,7 @@ define( function( require ) {
   }
 
   circuitConstructionKit.register( 'Battery', Battery );
-  
+
   return inherit( FixedLengthCircuitElement, Battery, {
     toStateObjectWithVertexIndices: function( getVertexIndex ) {
       return _.extend( {

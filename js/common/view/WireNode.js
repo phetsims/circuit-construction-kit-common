@@ -210,7 +210,7 @@ define( function( require ) {
   }
 
   circuitConstructionKit.register( 'WireNode', WireNode );
-  
+
   return inherit( CircuitElementNode, WireNode, {
 
     // @public

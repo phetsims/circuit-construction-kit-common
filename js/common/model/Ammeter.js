@@ -22,6 +22,6 @@ define( function( require ) {
   }
 
   circuitConstructionKit.register( 'Ammeter', Ammeter );
-  
+
   return inherit( Meter, Ammeter );
 } );

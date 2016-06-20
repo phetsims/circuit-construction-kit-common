@@ -796,6 +796,6 @@ define( function( require ) {
   };
 
   circuitConstructionKit.register( 'ChallengeSet', ChallengeSet );
-  
+
   return ChallengeSet;
 } );

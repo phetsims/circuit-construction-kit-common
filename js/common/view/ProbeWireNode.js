@@ -43,7 +43,7 @@ define( function( require ) {
   }
 
   circuitConstructionKit.register( 'ProbeWireNode', ProbeWireNode );
-  
+
   return inherit( Path, ProbeWireNode, {
 
     /**

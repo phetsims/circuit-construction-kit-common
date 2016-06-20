@@ -26,6 +26,6 @@ define( function( require ) {
   }
 
   circuitConstructionKit.register( 'FixedLengthCircuitElement', FixedLengthCircuitElement );
-  
+
   return inherit( CircuitElement, FixedLengthCircuitElement );
 } );

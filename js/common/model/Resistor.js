@@ -27,7 +27,7 @@ define( function( require ) {
   }
 
   circuitConstructionKit.register( 'Resistor', Resistor );
-  
+
   return inherit( FixedLengthCircuitElement, Resistor, {
       toStateObjectWithVertexIndices: function( getVertexIndex ) {
         return _.extend( { resistance: this.resistance }, FixedLengthCircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex ) );

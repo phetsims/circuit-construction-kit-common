@@ -33,6 +33,6 @@ define( function( require ) {
   }
 
   circuitConstructionKit.register( 'ModeRadioButtonGroup', ModeRadioButtonGroup );
-  
+
   return inherit( RadioButtonGroup, ModeRadioButtonGroup );
 } );

@@ -35,6 +35,6 @@ define( function( require ) {
   }
 
   circuitConstructionKit.register( 'SceneSelectionRadioButtonGroup', SceneSelectionRadioButtonGroup );
-  
+
   return inherit( RadioButtonGroup, SceneSelectionRadioButtonGroup );
 } );

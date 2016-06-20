@@ -88,7 +88,7 @@ define( function( require ) {
   }
 
   circuitConstructionKit.register( 'CircuitElementEditContainerPanel', CircuitElementEditContainerPanel );
-  
+
   return inherit( Node, CircuitElementEditContainerPanel, {}, {
     GET_LAYOUT_POSITION: GET_LAYOUT_POSITION
   } );

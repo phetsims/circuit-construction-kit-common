@@ -30,7 +30,7 @@ define( function( require ) {
   }
 
   circuitConstructionKit.register( 'LightBulb', LightBulb );
-  
+
   return inherit( FixedLengthCircuitElement, LightBulb, {
     toStateObjectWithVertexIndices: function( getVertexIndex ) {
       return _.extend( { resistance: this.resistance }, FixedLengthCircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex ) );

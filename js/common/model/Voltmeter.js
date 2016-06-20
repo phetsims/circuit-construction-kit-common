@@ -22,6 +22,6 @@ define( function( require ) {
   }
 
   circuitConstructionKit.register( 'Voltmeter', Voltmeter );
-  
+
   return inherit( Meter, Voltmeter );
 } );
