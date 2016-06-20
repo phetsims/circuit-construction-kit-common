@@ -44,10 +44,12 @@ define( function( require ) {
     } );
 
     // Add 'Investigate Circuit' and 'Build Circuit' radio buttons under the sensor toolbox
-    var modeRadioButtonGroup = new ModeRadioButtonGroup( blackBoxSceneModel.modeProperty );
+    var modeRadioButtonGroup = new ModeRadioButtonGroup( blackBoxSceneModel.modeProperty, tandem.createTandem( 'modeRadioButtonGroup' ) );
     this.addChild( modeRadioButtonGroup );
 
-    var revealButton = new RevealButton( blackBoxSceneModel.revealingProperty, blackBoxSceneModel.isRevealEnabledProperty );
+    var revealButton = new RevealButton( blackBoxSceneModel.revealingProperty, blackBoxSceneModel.isRevealEnabledProperty,
+      tandem.createTandem( 'revealButton' )
+    );
     this.addChild( revealButton );
 
     var comboBoxTextOptions = {
@@ -63,8 +65,10 @@ define( function( require ) {
         node: new Text( 'Black Box ' + (i + 1), comboBoxTextOptions ), value: 'scene' + i
       } );
     }
-    var comboBox = new ComboBox( elements, sceneProperty, this );
-    this.addChild( comboBox );
+    var sceneSelectionComboBox = new ComboBox( elements, sceneProperty, this, {
+      tandem: tandem.createTandem( 'sceneSelectionComboBox' )
+    } );
+    this.addChild( sceneSelectionComboBox );
 
     // Layout when the screen view size changed
     this.visibleBoundsProperty.link( function( visibleBounds ) {
@@ -74,8 +78,8 @@ define( function( require ) {
       revealButton.top = modeRadioButtonGroup.bottom + 10;
       revealButton.right = modeRadioButtonGroup.right;
 
-      comboBox.centerX = visibleBounds.centerX;
-      comboBox.top = visibleBounds.top + CircuitConstructionKitConstants.layoutInset;
+      sceneSelectionComboBox.centerX = visibleBounds.centerX;
+      sceneSelectionComboBox.top = visibleBounds.top + CircuitConstructionKitConstants.layoutInset;
     } );
 
     var blackBoxNode = new BlackBoxNode( blackBoxWidth, blackBoxHeight, blackBoxSceneModel.revealingProperty, {

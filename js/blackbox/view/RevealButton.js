@@ -15,9 +15,10 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
 
-  function RevealButton( revealingProperty, enabledProperty ) {
+  function RevealButton( revealingProperty, enabledProperty, tandem ) {
 
     RoundMomentaryButton.call( this, false, true, revealingProperty, {
+      tandem: tandem,
       baseColor: 'yellow',
       minXMargin: 15,
       minYMargin: 15,

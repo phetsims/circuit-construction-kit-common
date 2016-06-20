@@ -15,15 +15,18 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
 
-  function ModeRadioButtonGroup( modeProperty ) {
+  function ModeRadioButtonGroup( modeProperty, tandem ) {
     var textOptions = { fontSize: 18 };
     RadioButtonGroup.call( this, modeProperty, [ {
       value: 'investigate',
-      node: new Text( 'Investigate Circuit', textOptions )
+      node: new Text( 'Investigate Circuit', textOptions ),
+      tandem: tandem.createTandem( 'investigateCircuitButton' )
     }, {
       value: 'build',
-      node: new Text( 'Build Circuit', textOptions )
+      node: new Text( 'Build Circuit', textOptions ),
+      tandem: tandem.createTandem( 'buildCircuitButton' )
     } ], {
+      tandem: tandem,
       baseColor: 'white',
       buttonContentXMargin: 10,
       buttonContentYMargin: 15,
