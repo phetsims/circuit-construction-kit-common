@@ -24,7 +24,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function IntroSceneNode( circuitConstructionKitScreenModel, options ) {
+  function IntroSceneNode( circuitConstructionKitScreenModel, tandem, options ) {
     this.circuitConstructionKitScreenModel = circuitConstructionKitScreenModel;
     var introSceneNode = this;
     options = _.extend( {

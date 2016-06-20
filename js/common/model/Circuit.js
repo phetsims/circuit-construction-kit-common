@@ -618,7 +618,7 @@ define( function( require ) {
       var circuit = this;
 
       if ( mode === 'build' ) {
-        assert && assert( blackBoxBounds, 'bounds should be provided for build mode' )
+        assert && assert( blackBoxBounds, 'bounds should be provided for build mode' );
       }
 
       // Rules for a vertex connecting to another vertex.

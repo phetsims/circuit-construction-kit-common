@@ -16,7 +16,7 @@ define( function( require ) {
    * @param {CircuitConstructionKitModel} circuitConstructionKitScreenModel
    * @constructor
    */
-  function EnergyScreenView( circuitConstructionKitScreenModel ) {
+  function EnergyScreenView( circuitConstructionKitScreenModel, tandem ) {
     CircuitConstructionKitScreenView.call( this, circuitConstructionKitScreenModel, tandem, {
       toolboxOrientation: 'horizontal'
     } );
