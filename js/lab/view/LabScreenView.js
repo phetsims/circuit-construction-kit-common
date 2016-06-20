@@ -17,7 +17,9 @@ define( function( require ) {
    * @constructor
    */
   function LabScreenView( circuitConstructionKitScreenModel ) {
-    CircuitConstructionKitScreenView.call( this, circuitConstructionKitScreenModel, { toolboxOrientation: 'horizontal' } );
+    CircuitConstructionKitScreenView.call( this, circuitConstructionKitScreenModel, tandem, {
+      toolboxOrientation: 'horizontal'
+    } );
   }
 
   circuitConstructionKit.register( 'LabScreenView', LabScreenView );

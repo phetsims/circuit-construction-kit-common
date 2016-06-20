@@ -65,9 +65,9 @@ define( function( require ) {
     icon.addChild( vBox );
 
     Screen.call( this, 'Explore', icon, function() {
-        return new ExploreScreenModel();
+      return new ExploreScreenModel( tandem.createTandem( 'model' ) );
       }, function( model ) {
-        return new ExploreScreenView( model );
+      return new ExploreScreenView( model, tandem.createTandem( 'view' ) );
       }, {
       backgroundColor: CircuitConstructionKitConstants.backgroundColor,
       tandem: tandem

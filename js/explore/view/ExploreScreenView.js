@@ -16,8 +16,8 @@ define( function( require ) {
    * @param {CircuitConstructionKitModel} circuitConstructionKitScreenModel
    * @constructor
    */
-  function ExploreScreenView( circuitConstructionKitScreenModel ) {
-    CircuitConstructionKitScreenView.call( this, circuitConstructionKitScreenModel, {
+  function ExploreScreenView( circuitConstructionKitScreenModel, tandem ) {
+    CircuitConstructionKitScreenView.call( this, circuitConstructionKitScreenModel, tandem, {
       numberOfLeftBatteriesInToolbox: 0,
       toolboxOrientation: 'vertical',
       showResetAllButton: true

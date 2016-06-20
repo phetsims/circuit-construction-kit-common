@@ -32,7 +32,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function CircuitConstructionKitScreenView( circuitConstructionKitModel, options ) {
+  function CircuitConstructionKitScreenView( circuitConstructionKitModel, tandem, options ) {
     var circuitConstructionKitScreenView = this;
 
     options = _.extend( {
@@ -57,7 +57,7 @@ define( function( require ) {
     this.circuitConstructionKitModel = circuitConstructionKitModel;
     ScreenView.call( this );
 
-    var voltmeterNode = new VoltmeterNode( circuitConstructionKitModel.voltmeter, {
+    var voltmeterNode = new VoltmeterNode( circuitConstructionKitModel.voltmeter, tandem.createTandem( 'voltmeterNode' ), {
       runningProperty: circuitConstructionKitModel.runningProperty,
       visibleBoundsProperty: this.visibleBoundsProperty
     } );

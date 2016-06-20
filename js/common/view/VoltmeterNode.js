@@ -38,7 +38,7 @@ define( function( require ) {
   var PROBE_CONNECTION_POINT_DY = -18;
   var PROBE_CONNECTION_POINT_DX = 8;
 
-  function VoltmeterNode( voltmeter, options ) {
+  function VoltmeterNode( voltmeter, tandem, options ) {
     var voltmeterNode = this;
     options = _.extend( {
       icon: false,
@@ -102,6 +102,7 @@ define( function( require ) {
       ]
     } );
     this.movableDragHandler = new MovableDragHandler( voltmeter.bodyPositionProperty, {
+      tandem: tandem.createTandem( 'movableDragHandler' ),
       endDrag: function() {
         voltmeter.droppedEmitter.emit1( bodyNode.globalBounds );
 

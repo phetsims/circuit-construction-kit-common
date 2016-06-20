@@ -22,7 +22,7 @@ define( function( require ) {
     var sensorToolbox = this;
     var toolIconLength = CircuitConstructionKitConstants.toolboxIconLength;
 
-    var voltmeterNodeIcon = new VoltmeterNode( new Voltmeter(), {
+    var voltmeterNodeIcon = new VoltmeterNode( new Voltmeter(), tandem, {
       runningProperty: runningProperty,
       icon: true
     } );

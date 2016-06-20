@@ -35,7 +35,7 @@ define( function( require ) {
       numberOfResistorsInToolbox: 0,
       numberOfSwitchesInToolbox: 0
     }, options );
-    CircuitConstructionKitScreenView.call( this, circuitConstructionKitScreenModel, {
+    CircuitConstructionKitScreenView.call( this, circuitConstructionKitScreenModel, tandem, {
       toolboxOrientation: 'horizontal',
       numberOfRightBatteriesInToolbox: options.numberOfRightBatteriesInToolbox,
       numberOfLeftBatteriesInToolbox: options.numberOfLeftBatteriesInToolbox,
