@@ -111,9 +111,13 @@ define( function( require ) {
       }
     } );
     !options.icon && bodyNode.addInputListener( this.movableDragHandler );
-    var redProbeDragHandler = new MovableDragHandler( voltmeter.redProbePositionProperty, {} );
+    var redProbeDragHandler = new MovableDragHandler( voltmeter.redProbePositionProperty, {
+      tandem: tandem.createTandem( 'redProbeDragHandler' )
+    } );
     !options.icon && this.redProbeNode.addInputListener( redProbeDragHandler );
-    var blackProbeDragHandler = new MovableDragHandler( voltmeter.blackProbePositionProperty, {} );
+    var blackProbeDragHandler = new MovableDragHandler( voltmeter.blackProbePositionProperty, {
+      tandem: tandem.createTandem( 'blackProbeDragHandler' )
+    } );
     !options.icon && this.blackProbeNode.addInputListener( blackProbeDragHandler );
 
     options.visibleBoundsProperty && options.visibleBoundsProperty.link( function( visibleBounds ) {
