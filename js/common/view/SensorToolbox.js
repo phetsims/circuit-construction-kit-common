@@ -18,11 +18,11 @@ define( function( require ) {
   var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Voltmeter' );
   var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Ammeter' );
 
-  function SensorToolbox( voltmeterNode, ammeterNode, runningProperty ) {
+  function SensorToolbox( voltmeterNode, ammeterNode, runningProperty, tandem ) {
     var sensorToolbox = this;
     var toolIconLength = CircuitConstructionKitConstants.toolboxIconLength;
 
-    var voltmeterNodeIcon = new VoltmeterNode( new Voltmeter(), tandem, {
+    var voltmeterNodeIcon = new VoltmeterNode( new Voltmeter(), tandem.createTandem( 'voltmeterNodeIcon' ), {
       runningProperty: runningProperty,
       icon: true
     } );

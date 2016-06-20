@@ -104,20 +104,22 @@ define( function( require ) {
       }
     } );
 
-    this.movableDragHandler = new MovableDragHandler( ammeter.bodyPositionProperty, {
-      tandem: tandem.createTandem( 'movableDragHandler' ),
-      endDrag: function() {
-        ammeter.droppedEmitter.emit1( bodyNode.globalBounds );
+    if ( !options.icon ) {
+      this.movableDragHandler = new MovableDragHandler( ammeter.bodyPositionProperty, {
+        tandem: tandem.createTandem( 'movableDragHandler' ),
+        endDrag: function() {
+          ammeter.droppedEmitter.emit1( bodyNode.globalBounds );
 
-        // After dropping in the play area the probes move independently of the body
-        ammeter.draggingTogether = false;
-      }
-    } );
-    !options.icon && bodyNode.addInputListener( this.movableDragHandler );
-    var probeDragHandler = new MovableDragHandler( ammeter.probePositionProperty, {
-      tandem: tandem.createTandem( 'probeDragHandler' )
-    } );
-    !options.icon && this.probeNode.addInputListener( probeDragHandler );
+          // After dropping in the play area the probes move independently of the body
+          ammeter.draggingTogether = false;
+        }
+      } );
+      bodyNode.addInputListener( this.movableDragHandler );
+      var probeDragHandler = new MovableDragHandler( ammeter.probePositionProperty, {
+        tandem: tandem.createTandem( 'probeDragHandler' )
+      } );
+      this.probeNode.addInputListener( probeDragHandler );
+    }
 
     options.visibleBoundsProperty && options.visibleBoundsProperty.link( function( visibleBounds ) {
 

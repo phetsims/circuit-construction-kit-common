@@ -101,24 +101,26 @@ define( function( require ) {
         this.blackProbeNode
       ]
     } );
-    this.movableDragHandler = new MovableDragHandler( voltmeter.bodyPositionProperty, {
-      tandem: tandem.createTandem( 'movableDragHandler' ),
-      endDrag: function() {
-        voltmeter.droppedEmitter.emit1( bodyNode.globalBounds );
+    if ( !options.icon ) {
+      this.movableDragHandler = new MovableDragHandler( voltmeter.bodyPositionProperty, {
+        tandem: tandem.createTandem( 'movableDragHandler' ),
+        endDrag: function() {
+          voltmeter.droppedEmitter.emit1( bodyNode.globalBounds );
 
-        // After dropping in the play area the probes move independently of the body
-        voltmeter.draggingTogether = false;
-      }
-    } );
-    !options.icon && bodyNode.addInputListener( this.movableDragHandler );
-    var redProbeDragHandler = new MovableDragHandler( voltmeter.redProbePositionProperty, {
-      tandem: tandem.createTandem( 'redProbeDragHandler' )
-    } );
-    !options.icon && this.redProbeNode.addInputListener( redProbeDragHandler );
-    var blackProbeDragHandler = new MovableDragHandler( voltmeter.blackProbePositionProperty, {
-      tandem: tandem.createTandem( 'blackProbeDragHandler' )
-    } );
-    !options.icon && this.blackProbeNode.addInputListener( blackProbeDragHandler );
+          // After dropping in the play area the probes move independently of the body
+          voltmeter.draggingTogether = false;
+        }
+      } );
+      bodyNode.addInputListener( this.movableDragHandler );
+      var redProbeDragHandler = new MovableDragHandler( voltmeter.redProbePositionProperty, {
+        tandem: tandem.createTandem( 'redProbeDragHandler' )
+      } );
+      this.redProbeNode.addInputListener( redProbeDragHandler );
+      var blackProbeDragHandler = new MovableDragHandler( voltmeter.blackProbePositionProperty, {
+        tandem: tandem.createTandem( 'blackProbeDragHandler' )
+      } );
+      this.blackProbeNode.addInputListener( blackProbeDragHandler );
+    }
 
     options.visibleBoundsProperty && options.visibleBoundsProperty.link( function( visibleBounds ) {
 

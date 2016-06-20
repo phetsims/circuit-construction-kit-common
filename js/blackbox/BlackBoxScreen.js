@@ -43,10 +43,10 @@ define( function( require ) {
     Screen.call( this, 'Black Box', icon, function() {
         return new BlackBoxScreenModel();
       }, function( model ) {
-      return new BlackBoxScreenView( model, blackBoxScreen.backgroundColorProperty );
+        return new BlackBoxScreenView( model, blackBoxScreen.backgroundColorProperty );
       }, {
-      backgroundColor: backgroundColor,
-      tandem: tandem
+        backgroundColor: backgroundColor,
+        tandem: tandem
       }
     );
   }

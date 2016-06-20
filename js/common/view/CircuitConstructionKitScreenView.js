@@ -96,7 +96,7 @@ define( function( require ) {
     } );
 
     // @protected - so that subclasses can add a layout circuit element near it
-    this.sensorToolbox = new SensorToolbox( voltmeterNode, ammeterNode, circuitConstructionKitModel.runningProperty );
+    this.sensorToolbox = new SensorToolbox( voltmeterNode, ammeterNode, circuitConstructionKitModel.runningProperty, tandem.createTandem( 'sensorToolbox' ) );
 
     this.addChild( this.circuitNode );
     this.addChild( this.sensorToolbox );
@@ -104,6 +104,7 @@ define( function( require ) {
     // Reset All button
     if ( options.showResetAllButton ) {
       var resetAllButton = new ResetAllButton( {
+        tandem: tandem.createTandem( 'resetAllButton' ),
         listener: function() {
           circuitConstructionKitModel.reset();
           circuitConstructionKitScreenView.reset();
