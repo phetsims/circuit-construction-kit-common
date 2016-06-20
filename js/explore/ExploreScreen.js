@@ -35,7 +35,7 @@ define( function( require ) {
   /**
    * @constructor
    */
-  function ExploreScreen() {
+  function ExploreScreen( tandem ) {
 
     var icon = new Rectangle( 0, 0, Screen.NAVBAR_ICON_SIZE.width, Screen.NAVBAR_ICON_SIZE.height, {
       fill: backgroundColor
@@ -69,7 +69,8 @@ define( function( require ) {
       }, function( model ) {
         return new ExploreScreenView( model );
       }, {
-        backgroundColor: CircuitConstructionKitConstants.backgroundColor
+      backgroundColor: CircuitConstructionKitConstants.backgroundColor,
+      tandem: tandem
       }
     );
   }

@@ -25,7 +25,7 @@ define( function( require ) {
   /**
    * @constructor
    */
-  function BlackBoxScreen() {
+  function BlackBoxScreen( tandem ) {
 
     var blackBoxScreen = this;
 
@@ -45,7 +45,8 @@ define( function( require ) {
       }, function( model ) {
       return new BlackBoxScreenView( model, blackBoxScreen.backgroundColorProperty );
       }, {
-      backgroundColor: backgroundColor
+      backgroundColor: backgroundColor,
+      tandem: tandem
       }
     );
   }
