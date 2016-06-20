@@ -29,7 +29,7 @@ define( function( require ) {
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - for dropping circuit element back into the toolbox
    * @constructor
    */
-  function CircuitNode( circuit, circuitConstructionKitScreenView ) {
+  function CircuitNode( circuit, circuitConstructionKitScreenView, tandem ) {
     this.circuitConstructionKitModel = circuitConstructionKitScreenView.circuitConstructionKitModel;
     this.visibleBoundsProperty = circuitConstructionKitScreenView.visibleBoundsProperty;
     var runningProperty = this.circuitConstructionKitModel.runningProperty;
@@ -120,12 +120,13 @@ define( function( require ) {
     initializeCircuitElementType( ResistorNode, circuit.resistors, circuitNode.resistorNodes, this.getResistorNode.bind( this ) );
     initializeCircuitElementType( SwitchNode, circuit.switches, circuitNode.switchNodes, this.getSwitchNode.bind( this ) );
 
+    var vertexNodeGroup = tandem.createGroupTandem( 'vertexNode' );
     var addVertexNode = function( vertex ) {
       var solderNode = new SolderNode( circuitNode, vertex );
       circuitNode.solderNodes.push( solderNode );
       mainLayer.addChild( solderNode );
 
-      var vertexNode = new VertexNode( circuitNode, vertex );
+      var vertexNode = new VertexNode( circuitNode, vertex, vertexNodeGroup.createNextTandem() );
       circuitNode.vertexNodes.push( vertexNode );
       mainLayer.addChild( vertexNode );
     };

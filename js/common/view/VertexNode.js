@@ -29,7 +29,7 @@ define( function( require ) {
    *
    * @constructor
    */
-  function VertexNode( circuitNode, vertex ) {
+  function VertexNode( circuitNode, vertex, tandem ) {
     var vertexNode = this;
     var circuit = circuitNode.circuit;
     this.vertex = vertex;
@@ -52,6 +52,7 @@ define( function( require ) {
     } );
 
     var cutButton = new RoundPushButton( {
+      tandem: tandem.createTandem( 'cutButton' ),
       baseColor: 'yellow',
       content: new FontAwesomeNode( 'cut', {
         rotation: -Math.PI / 2, // scissors point up
