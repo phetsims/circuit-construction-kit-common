@@ -23,7 +23,7 @@ define( function( require ) {
    * @param {Property.<Color>} backgroundColorProperty
    * @constructor
    */
-  function BlackBoxScreenView( blackBoxScreenModel, backgroundColorProperty ) {
+  function BlackBoxScreenView( blackBoxScreenModel, backgroundColorProperty, tandem ) {
     ScreenView.call( this );
     var blackBoxScreenView = this;
     var sceneViews = {}; // Populated lazily, key = scene name
@@ -42,7 +42,8 @@ define( function( require ) {
             blackBoxHeight,
             new BlackBoxSceneModel( CircuitStruct.fromStateObject( ChallengeSet.warmupCircuitStateObject ) ),
             blackBoxScreenModel.sceneProperty,
-            backgroundColorProperty
+            backgroundColorProperty,
+            tandem.createTandem( scene + 'SceneView' )
           );
         }
         else if ( scene.indexOf( 'scene' ) === 0 ) {
@@ -52,7 +53,8 @@ define( function( require ) {
             blackBoxHeight,
             new BlackBoxSceneModel( CircuitStruct.fromStateObject( ChallengeSet.challengeArray[ index ] ) ),
             blackBoxScreenModel.sceneProperty,
-            backgroundColorProperty
+            backgroundColorProperty,
+            tandem.createTandem( scene + 'SceneView' )
           );
         }
         else {

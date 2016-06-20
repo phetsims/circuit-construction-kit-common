@@ -35,7 +35,7 @@ define( function( require ) {
    * @param {Property.<Color>} backgroundColorProperty
    * @constructor
    */
-  function BlackBoxSceneView( blackBoxWidth, blackBoxHeight, blackBoxSceneModel, sceneProperty, backgroundColorProperty ) {
+  function BlackBoxSceneView( blackBoxWidth, blackBoxHeight, blackBoxSceneModel, sceneProperty, backgroundColorProperty, tandem ) {
     var blackBoxSceneView = this;
     CircuitConstructionKitScreenView.call( this, blackBoxSceneModel, tandem, {
       numberOfLeftBatteriesInToolbox: 0,

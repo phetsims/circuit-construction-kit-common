@@ -41,9 +41,9 @@ define( function( require ) {
     icon.addChild( blackBoxNode );
 
     Screen.call( this, 'Black Box', icon, function() {
-        return new BlackBoxScreenModel();
+      return new BlackBoxScreenModel( tandem.createTandem( 'model' ) );
       }, function( model ) {
-        return new BlackBoxScreenView( model, blackBoxScreen.backgroundColorProperty );
+      return new BlackBoxScreenView( model, blackBoxScreen.backgroundColorProperty, tandem.createTandem( 'view' ) );
       }, {
         backgroundColor: backgroundColor,
         tandem: tandem

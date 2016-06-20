@@ -24,8 +24,8 @@ define( function( require ) {
    * @param {Property.<Color>} backgroundColorProperty
    * @constructor
    */
-  function WarmUpSceneView( blackBoxWidth, blackBoxHeight, blackBoxSceneModel, sceneProperty, backgroundColorProperty ) {
-    BlackBoxSceneView.call( this, blackBoxWidth, blackBoxHeight, blackBoxSceneModel, sceneProperty, backgroundColorProperty );
+  function WarmUpSceneView( blackBoxWidth, blackBoxHeight, blackBoxSceneModel, sceneProperty, backgroundColorProperty, tandem ) {
+    BlackBoxSceneView.call( this, blackBoxWidth, blackBoxHeight, blackBoxSceneModel, sceneProperty, backgroundColorProperty, tandem );
     var textOptions = {
       fontSize: 34
     };
