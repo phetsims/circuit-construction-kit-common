@@ -41,7 +41,7 @@ define( function( require ) {
       }
     } );
 
-    var ammeterNodeIcon = new AmmeterNode( new Ammeter(), {
+    var ammeterNodeIcon = new AmmeterNode( new Ammeter(), tandem.createTandem( 'ammeterNodeIcon' ), {
       icon: true,
       runningProperty: runningProperty
     } );

@@ -70,7 +70,7 @@ define( function( require ) {
       voltmeterNode.visible = visible;
     } );
 
-    var ammeterNode = new AmmeterNode( circuitConstructionKitModel.ammeter, {
+    var ammeterNode = new AmmeterNode( circuitConstructionKitModel.ammeter, tandem.createTandem( 'ammeterNode' ), {
       visibleBoundsProperty: this.visibleBoundsProperty,
       runningProperty: circuitConstructionKitModel.runningProperty
     } );

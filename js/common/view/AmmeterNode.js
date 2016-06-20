@@ -24,7 +24,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
   var Property = require( 'AXON/Property' );
-  
+
   // images
   var ammeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT/ammeter_body.png' );
 
@@ -41,7 +41,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function AmmeterNode( ammeter, options ) {
+  function AmmeterNode( ammeter, tandem, options ) {
     var ammeterNode = this;
     options = _.extend( {
       icon: false,
@@ -105,6 +105,7 @@ define( function( require ) {
     } );
 
     this.movableDragHandler = new MovableDragHandler( ammeter.bodyPositionProperty, {
+      tandem: tandem.createTandem( 'movableDragHandler' ),
       endDrag: function() {
         ammeter.droppedEmitter.emit1( bodyNode.globalBounds );
 
@@ -113,7 +114,9 @@ define( function( require ) {
       }
     } );
     !options.icon && bodyNode.addInputListener( this.movableDragHandler );
-    var probeDragHandler = new MovableDragHandler( ammeter.probePositionProperty, {} );
+    var probeDragHandler = new MovableDragHandler( ammeter.probePositionProperty, {
+      tandem: tandem.createTandem( 'probeDragHandler' )
+    } );
     !options.icon && this.probeNode.addInputListener( probeDragHandler );
 
     options.visibleBoundsProperty && options.visibleBoundsProperty.link( function( visibleBounds ) {
