@@ -10,6 +10,8 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/DisplayOptionsPanel' );
+  var Property = require( 'AXON/Property' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var CircuitNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitNode' );
@@ -98,6 +100,14 @@ define( function( require ) {
     // @protected - so that subclasses can add a layout circuit element near it
     this.sensorToolbox = new SensorToolbox( voltmeterNode, ammeterNode, circuitConstructionKitModel.runningProperty, tandem.createTandem( 'sensorToolbox' ) );
 
+    // @protected
+    this.displayOptionsPanel = new DisplayOptionsPanel( new Property( false ), new Property( false ), new Property( false ), {
+      showConventionalCurrentCheckBox: false,
+      showValuesCheckBox: false
+    } );
+    this.addChild( this.displayOptionsPanel );
+    this.displayOptionsPanel.moveToBack(); // Move behind elements added in the super, such as the sensors and circuit
+
     this.addChild( this.circuitNode );
     this.addChild( this.sensorToolbox );
 
@@ -134,9 +144,13 @@ define( function( require ) {
 
       circuitConstructionKitScreenView.circuitElementToolbox.mutate( options.getToolboxPosition( visibleBounds ) );
 
-      circuitConstructionKitScreenView.sensorToolbox.mutate( {
+      circuitConstructionKitScreenView.displayOptionsPanel.mutate( {
         right: visibleBounds.right - inset,
         top: visibleBounds.top + inset
+      } );
+      circuitConstructionKitScreenView.sensorToolbox.mutate( {
+        right: visibleBounds.right - inset,
+        top: circuitConstructionKitScreenView.displayOptionsPanel.bottom + inset
       } );
     } );
 
