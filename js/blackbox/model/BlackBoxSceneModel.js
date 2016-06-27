@@ -9,15 +9,18 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var CircuitConstructionKitModel = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/CircuitConstructionKitModel' );
   var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Circuit' );
   var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/CircuitStruct' );
-  var inherit = require( 'PHET_CORE/inherit' );
   var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitQueryParameters' );
 
+  // constants
+  var showPlayPauseButton = CircuitConstructionKitQueryParameters.showPlayPauseButton;
+
   /**
-   * @param {Circuit} trueBlackBoxCircuit
+   * @param {Circuit} trueBlackBoxCircuit - the circuit inside the black box (the true one, not the user-created one)
    * @constructor
    */
   function BlackBoxSceneModel( trueBlackBoxCircuit ) {
@@ -25,6 +28,7 @@ define( function( require ) {
     var blackBoxSceneModel = this;
 
     // When loading a black box circuit, none of the vertices should be draggable
+    // TODO: Fix this in the saved/loaded data structures, not here as a post-hoc patch.
     for ( var i = 0; i < trueBlackBoxCircuit.vertices.length; i++ ) {
       trueBlackBoxCircuit.vertices[ i ].draggable = false;
 
@@ -37,6 +41,7 @@ define( function( require ) {
     }
 
     // All of the circuit elements should be non-interactive
+    // TODO: Fix this in the saved/loaded data structures, not here as a post-hoc patch.
     for ( i = 0; i < trueBlackBoxCircuit.circuitElements.length; i++ ) {
       var circuitElement = trueBlackBoxCircuit.circuitElements[ i ];
       circuitElement.interactive = false;
@@ -44,20 +49,24 @@ define( function( require ) {
     }
 
     CircuitConstructionKitModel.call( this, {
-      mode: 'investigate', // or 'build'
-      revealing: false, // true when the user is holding down the reveal button, and the answer (inside the black box) is showing
-      isRevealEnabled: false, // true when the user has created a circuit for comparison with the black box (at least one terminal connected)
-      running: !CircuitConstructionKitQueryParameters.showPlayPauseButton // {boolean} @public changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
+      mode: 'investigate',          // @public - whether the user is in the 'investigate' or 'build' mode
+      revealing: false,             // @public - true when the user is holding down the reveal button, and the answer
+                                    //           (inside the black box) is showing
+      isRevealEnabled: false,       // @public - true if the user has created a circuit for comparison with the black box
+                                    //           (at least one terminal connected)
+      running: !showPlayPauseButton // @public {boolean} - changes whether the light bulb brightness and ammeter/voltmeter
+                                    //           readouts can be seen
     }, {
       circuit: new Circuit()
     } );
 
-    // @public
-    this.blackBoxBounds = null; // {Bounds2} Filled in by the BlackBoxSceneView after the black box node is created and positioned
+    this.blackBoxBounds = null; // @public {Bounds2} - filled in by the BlackBoxSceneView after the black box node is
+                                //                     created and positioned
 
     // For syntax highlighting and navigation
     this.circuit = this.circuit || null;
 
+    // When reveal is pressed, true black box circuit should be shown instead of the user-created circuit
     this.revealingProperty.lazyLink( function( revealing ) {
       blackBoxSceneModel.mode = revealing ? 'investigate' : 'build';
     } );
