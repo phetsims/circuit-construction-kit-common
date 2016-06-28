@@ -1,4 +1,5 @@
 // Copyright 2015-2016, University of Colorado Boulder
+// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * One scene focuses on one black box, and has a separate model + view because scenes are independent.

@@ -1,4 +1,5 @@
 // Copyright 2016, University of Colorado Boulder
+// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * Model for the Ammeter, which adds the probe position and current readout

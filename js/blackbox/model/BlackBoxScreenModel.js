@@ -1,4 +1,5 @@
 // Copyright 2015-2016, University of Colorado Boulder
+// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * This model is solely responsible for choosing between different scenes, one for each black box.

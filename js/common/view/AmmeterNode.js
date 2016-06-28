@@ -1,4 +1,5 @@
 // Copyright 2016, University of Colorado Boulder
+// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * The user interface component with a single probe which reads current values from wires (not from vertices or

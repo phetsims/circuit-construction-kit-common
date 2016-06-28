@@ -1,4 +1,5 @@
 // Copyright 2015-2016, University of Colorado Boulder
+// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * Shows the silver solder at a connected vertex.  This is not interactive and is behind everything else.

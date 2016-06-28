@@ -1,4 +1,5 @@
 // Copyright 2016, University of Colorado Boulder
+// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * The node that shows the black round rectangle with a question mark.

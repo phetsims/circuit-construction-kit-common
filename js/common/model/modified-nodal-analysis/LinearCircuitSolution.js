@@ -1,4 +1,5 @@
 // Copyright 2015-2016, University of Colorado Boulder
+// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * This class represents a sparse solution containing only the solved variables in MNA.

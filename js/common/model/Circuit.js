@@ -1,4 +1,5 @@
 // Copyright 2015-2016, University of Colorado Boulder
+// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * A collection of circuit elements in the play area, not necessarily connected.  (For instance it could be 2 logical

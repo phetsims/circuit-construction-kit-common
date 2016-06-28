@@ -1,4 +1,5 @@
 // Copyright 2003-2016, University of Colorado Boulder
+// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * Ported directly from the Java.

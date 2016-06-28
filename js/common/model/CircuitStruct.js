@@ -1,4 +1,5 @@
 // Copyright 2016, University of Colorado Boulder
+// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * The CircuitStruct keeps track of the Circuit components but without wiring up listeners or solving physics.
