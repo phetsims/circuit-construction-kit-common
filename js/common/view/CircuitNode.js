@@ -23,6 +23,11 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/FixedLengthCircuitElement' );
   var ElectronNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/ElectronNode' );
+  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Wire' );
+  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Battery' );
+  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/LightBulb' );
+  var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Switch' );
+  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Resistor' );
 
   /**
    *
@@ -179,7 +184,7 @@ define( function( require ) {
     circuit.electrons.addItemRemovedListener( function( electron ) {
 
       // TODO: Why is this sometimes undefined?
-      electron.node && circuitNode.mainLayer.removeChild( electron.node );
+      electron.node && electron.node.detach();
       electron.node = null;
     } );
   }
@@ -188,6 +193,26 @@ define( function( require ) {
 
   return inherit( Node, CircuitNode, {
 
+    getSpecificCircuitElementNode: function( circuitElement ) {
+      if ( circuitElement instanceof Wire ) {
+        return this.getWireNode( circuitElement );
+      }
+      else if ( circuitElement instanceof LightBulb ) {
+        return this.getCCKLightBulbNode( circuitElement );
+      }
+      else if ( circuitElement instanceof Battery ) {
+        return this.getBatteryNode( circuitElement );
+      }
+      else if ( circuitElement instanceof Resistor ) {
+        return this.getResistorNode( circuitElement );
+      }
+      else if ( circuitElement instanceof Switch ) {
+        return this.getSwitchNode( circuitElement );
+      }
+      else {
+        return null;
+      }
+    },
     /**
      * Get the CircuitElementNode for the corresponding CircuitElement
      * @param {Array.<CircuitElementNode>} nodeArray - the list of nodes to search
