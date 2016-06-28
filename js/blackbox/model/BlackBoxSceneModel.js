@@ -1,8 +1,8 @@
 // Copyright 2015-2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- * One scene for the black box screen, which focuses on a single black box.
+ * One scene for the black box screen, which focuses on a single black box and deals with the contents of the
+ * black box when the mode changes between investigate and build.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -50,36 +50,49 @@ define( function( require ) {
     }
 
     CircuitConstructionKitModel.call( this, {
-      mode: 'investigate',          // @public - whether the user is in the 'investigate' or 'build' mode
-      revealing: false,             // @public - true when the user is holding down the reveal button, and the answer
-                                    //           (inside the black box) is showing
-      isRevealEnabled: false,       // @public - true if the user has created a circuit for comparison with the black box
-                                    //           (at least one terminal connected)
-      running: !showPlayPauseButton // @public {boolean} - changes whether the light bulb brightness and ammeter/voltmeter
-                                    //           readouts can be seen
-    }, {
-      circuit: new Circuit()
+
+      // @public - whether the user is in the 'investigate' or 'build' mode
+      mode: 'investigate',
+
+      // @public - true when the user is holding down the reveal button and the answer (inside the black box) is showing
+      revealing: false,
+
+      // @public - true if the user has created a circuit for comparison with the black box (1+ terminal connected)
+      isRevealEnabled: false,
+
+      // @public {boolean} - changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
+      running: !showPlayPauseButton
     } );
 
-    this.blackBoxBounds = null; // @public {Bounds2} - filled in by the BlackBoxSceneView after the black box node is
-                                //                     created and positioned
+    this.revealingProperty = this.revealingProperty || null;
+    this.modeProperty = this.modeProperty || null;
+    this.isRevealEnabledProperty = this.isRevealEnabledProperty || null;
+    this.runningProperty = this.runningProperty || null;
 
     // For syntax highlighting and navigation
     this.circuit = this.circuit || null;
+
+    // @public {Bounds2} - filled in by the BlackBoxSceneView after the black box node is created and positioned
+    this.blackBoxBounds = null;
 
     // When reveal is pressed, true black box circuit should be shown instead of the user-created circuit
     this.revealingProperty.lazyLink( function( revealing ) {
       blackBoxSceneModel.mode = revealing ? 'investigate' : 'build';
     } );
+
+    // Keep track of what the user has built inside the black box so it may be restored.
     var userBlackBoxCircuit = new CircuitStruct( [], [], [], [], [], [] );
     var circuit = this.circuit;
 
-    var userDidSomething = function() {
+    /**
+     * Check whether the user built (at least part of) their own black box circuit.
+     * @returns {boolean}
+     */
+    var userBuiltSomething = function() {
       var count = 0;
       var callback = function( element ) {
-        if ( element.interactive &&
-             (element.startVertex.blackBoxInterface || element.endVertex.blackBoxInterface)
-        ) {
+        var isConnectedToBlackBoxInterface = element.startVertex.blackBoxInterface || element.endVertex.blackBoxInterface;
+        if ( element.interactive && isConnectedToBlackBoxInterface ) {
           count++;
         }
       };
@@ -92,13 +105,12 @@ define( function( require ) {
 
     // Enable the reveal button if the user has done something in build mode.
     circuit.circuitChangedEmitter.addListener( function() {
-      var builtSomething = blackBoxSceneModel.mode === 'build' && userDidSomething();
-      var revealEnabled = blackBoxSceneModel.revealing || builtSomething;
-      blackBoxSceneModel.isRevealEnabled = revealEnabled;
+      var builtSomething = blackBoxSceneModel.mode === 'build' && userBuiltSomething();
+      blackBoxSceneModel.isRevealEnabled = blackBoxSceneModel.revealing || builtSomething;
     } );
 
+    // Remove the true black box contents or user-created black box contents
     var removeBlackBoxContents = function( blackBoxCircuit ) {
-
       circuit.wires.removeAll( blackBoxCircuit.wires );
       circuit.lightBulbs.removeAll( blackBoxCircuit.lightBulbs );
       circuit.resistors.removeAll( blackBoxCircuit.resistors );
@@ -111,9 +123,11 @@ define( function( require ) {
           circuit.vertices.remove( vertex );
         }
       }
-      circuit.solve();
     };
+
+    // Add the true black box contents or user-created black box contents
     var addBlackBoxContents = function( blackBoxCircuit ) {
+
       // Add the vertices, but only if not already added
       for ( var i = 0; i < blackBoxCircuit.vertices.length; i++ ) {
         var vertex = blackBoxCircuit.vertices[ i ];
@@ -125,9 +139,10 @@ define( function( require ) {
       circuit.resistors.addAll( blackBoxCircuit.resistors );
       circuit.batteries.addAll( blackBoxCircuit.batteries );
       circuit.lightBulbs.addAll( blackBoxCircuit.lightBulbs );
-      circuit.solve();
     };
 
+    // Logic for changing the contents of the black box when the mode changes
+    // TODO: All of this logic must be re-read and re-evaluated.
     this.modeProperty.link( function( mode ) {
 
       // When switching to build mode, remove all of the black box circuitry and vice-versa
@@ -174,8 +189,10 @@ define( function( require ) {
 
         addBlackBoxContents( trueBlackBoxCircuit );
       }
+      circuit.solve();
     } );
 
+    // @private - called by reset
     this.resetBlackBoxSceneModel = function() {
       addBlackBoxContents( trueBlackBoxCircuit );
       userBlackBoxCircuit.clear();
@@ -183,7 +200,14 @@ define( function( require ) {
   }
 
   circuitConstructionKit.register( 'BlackBoxSceneModel', BlackBoxSceneModel );
+
   return inherit( CircuitConstructionKitModel, BlackBoxSceneModel, {
+
+    /**
+     * Reset the model.
+     * @overrides
+     * @public
+     */
     reset: function() {
       CircuitConstructionKitModel.prototype.reset.call( this );
       this.resetBlackBoxSceneModel();
