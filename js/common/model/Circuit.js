@@ -102,9 +102,13 @@ define( function( require ) {
     var addElectrons = function( circuitElement ) {
       circuit.constantDensityLayout.layoutElectrons( circuitElement );
 
-      // When any vertex moves, relayout all electrons within the fixed-length connected component.
+      // When any vertex moves, relayout all electrons within the fixed-length connected component, see #100
       circuitElement.vertexMovedEmitter.addListener( function() {
-        circuit.constantDensityLayout.layoutElectrons( circuitElement );
+        var circuitElements = circuit.findAllConnectedCircuitElements( circuitElement.startVertex );
+
+        for ( var i = 0; i < circuitElements.length; i++ ) {
+          circuit.constantDensityLayout.layoutElectrons( circuitElements[ i ] );
+        }
       } );
     };
     var removeElectrons = function( circuitElement ) {
@@ -535,6 +539,26 @@ define( function( require ) {
     getNeighborVertices: function( vertex ) {
       var neighborCircuitElements = this.getNeighborCircuitElements( vertex );
       return this.getNeighbors( vertex, neighborCircuitElements );
+    },
+
+    /**
+     * Get a list of all circuit elements that can reach the specified vertex.
+     * @param {Vertex} vertex
+     * @returns {CircuitElement[]}
+     */
+    findAllConnectedCircuitElements: function( vertex ) {
+      var allConnectedVertices = this.findAllConnectedVertices( vertex );
+      var circuitElements = [];
+      for ( var i = 0; i < allConnectedVertices.length; i++ ) {
+        var neighborCircuitElements = this.getNeighborCircuitElements( allConnectedVertices[ i ] );
+        for ( var k = 0; k < neighborCircuitElements.length; k++ ) {
+          var neighborCircuitElement = neighborCircuitElements[ k ];
+          if ( circuitElements.indexOf( neighborCircuitElement ) === -1 ) {
+            circuitElements.push( neighborCircuitElement );
+          }
+        }
+      }
+      return circuitElements;
     },
 
     /**
