@@ -95,6 +95,11 @@ define( function( require ) {
 
   return inherit( PropertySet, ConstantDensityPropagator, {
     step: function( dt ) {
+
+      // dt would ideally be around 16.666ms = 0.0166 sec
+      // let's cap it at double that
+      dt = Math.min( dt, 1 / 60 * 2 );
+
       dt = dt * timeScale;
       var maxCurrent = this.getMaxCurrent(); //TODO: Shouldn't this use abs?
       var maxVelocity = maxCurrent * speedScale;
