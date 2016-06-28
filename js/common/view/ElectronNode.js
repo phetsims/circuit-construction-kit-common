@@ -20,7 +20,7 @@ define( function( require ) {
 
   var radius = 10;
 
-  //Scale up before rasterization so it won't be too pixellated/fuzzy
+  // Scale up before rasterization so it won't be too pixellated/fuzzy
   var scale = 2;
 
   // Copied from John Travoltage
