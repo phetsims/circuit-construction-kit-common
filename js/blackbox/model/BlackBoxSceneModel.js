@@ -1,4 +1,5 @@
 // Copyright 2015-2016, University of Colorado Boulder
+// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * One scene for the black box screen, which focuses on a single black box and deals with the contents of the
@@ -20,7 +21,7 @@ define( function( require ) {
   var showPlayPauseButton = CircuitConstructionKitQueryParameters.showPlayPauseButton;
 
   /**
-   * @param {Circuit} trueBlackBoxCircuit - the circuit inside the black box (the true one, not the user-created one)
+   * @param {CircuitStruct} trueBlackBoxCircuit - the circuit inside the black box (the true one, not the user-created one)
    * @constructor
    */
   function BlackBoxSceneModel( trueBlackBoxCircuit ) {
