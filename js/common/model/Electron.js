@@ -24,7 +24,8 @@ define( function( require ) {
     assert && assert( _.isNumber( distance ), 'distance should be a number' );
     assert && assert( distance >= 0 && distance <= circuitElement.length, 'electron out of bounds' );
     var electron = this;
-    this.circuitElement = circuitElement;
+
+    this.circuitElement = circuitElement; // @public 
     this.radius = 0.1;
     this.deleted = false;
 

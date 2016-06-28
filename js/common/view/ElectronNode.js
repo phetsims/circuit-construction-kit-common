@@ -16,6 +16,7 @@ define( function( require ) {
   var Circle = require( 'SCENERY/nodes/Circle' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Image = require( 'SCENERY/nodes/Image' );
+  var Property = require( 'AXON/Property' );
 
   var radius = 10;
 
@@ -55,11 +56,15 @@ define( function( require ) {
       children: [ node ],
       pickable: false
     } );
+    var outsideOfBlackBoxProperty = new Property( false );
+
     electron.positionProperty.link( function( position ) {
       electronNode.center = position;
+      outsideOfBlackBoxProperty.value = !electron.circuitElement.insideTrueBlackBox;
     } );
-    electron.visibleProperty.link( function( visible ) {
-      electronNode.visible = visible;
+
+    Property.multilink( [ electron.visibleProperty, outsideOfBlackBoxProperty ], function( visible, outsideBox ) {
+      electronNode.visible = visible && outsideBox;
     } );
   }
 
