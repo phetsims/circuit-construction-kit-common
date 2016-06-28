@@ -96,7 +96,7 @@ define( function( require ) {
   return inherit( PropertySet, ConstantDensityPropagator, {
     step: function( dt ) {
       dt = dt * timeScale;
-      var maxCurrent = this.getMaxCurrent();
+      var maxCurrent = this.getMaxCurrent(); //TODO: Shouldn't this use abs?
       var maxVelocity = maxCurrent * speedScale;
       var maxStep = maxVelocity * dt;
       if ( maxStep >= MAX_STEP ) {
@@ -157,7 +157,7 @@ define( function( require ) {
       var dest = midpoint;
       var distMoving = Math.abs( dest - myloc );
       var vec = dest - myloc;
-      var sameDirAsCurrent = vec > 0 && electron.circuitElement.current > 0;
+      var sameDirAsCurrent = vec > 0 && -electron.circuitElement.current > 0;
       var myscale = 1000.0 / 30.0;//to have same scale as 3.17.00
       var correctionSpeed = .055 / numEqualize * myscale;
       if ( !sameDirAsCurrent ) {
@@ -185,7 +185,7 @@ define( function( require ) {
     propagate: function( e, dt ) {
       var x = e.distance;
       assert && assert( _.isNumber( x ), 'disance along wire should be a number' );
-      var current = e.circuitElement.current;
+      var current = -e.circuitElement.current;
 
       if ( current === 0 || Math.abs( current ) < MIN_CURRENT ) {
         return;
@@ -248,7 +248,7 @@ define( function( require ) {
       //keep only those with outgoing current.
       for ( var i = 0; i < adjacentBranches.length; i++ ) {
         var neighbor = adjacentBranches[ i ];
-        var current = neighbor.current;
+        var current = -neighbor.current;
         if ( current > FIRE_CURRENT ) {
           current = FIRE_CURRENT;
         }
