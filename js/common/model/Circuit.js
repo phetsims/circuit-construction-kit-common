@@ -100,14 +100,12 @@ define( function( require ) {
     this.resistors.addItemAddedListener( addVertices );
 
     var addElectrons = function( circuitElement ) {
-      if ( circuit.showElectronsProperty.value ) {
-        circuit.constantDensityLayout.layoutElectrons( circuitElement );
+      circuit.constantDensityLayout.layoutElectrons( circuitElement );
 
-        // When any vertex moves, relayout all electrons within the fixed-length connected component.
-        circuitElement.vertexMovedEmitter.addListener( function() {
-          circuit.constantDensityLayout.layoutElectrons( circuitElement );
-        } );
-      }
+      // When any vertex moves, relayout all electrons within the fixed-length connected component.
+      circuitElement.vertexMovedEmitter.addListener( function() {
+        circuit.constantDensityLayout.layoutElectrons( circuitElement );
+      } );
     };
     var removeElectrons = function( circuitElement ) {
       circuit.electrons.removeAll( circuit.getElectronsInCircuitElement( circuitElement ) );
