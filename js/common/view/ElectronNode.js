@@ -58,6 +58,9 @@ define( function( require ) {
     electron.positionProperty.link( function( position ) {
       electronNode.center = position;
     } );
+    electron.visibleProperty.link( function( visible ) {
+      electronNode.visible = visible;
+    } );
   }
 
   circuitConstructionKit.register( 'ElectronNode', ElectronNode );

@@ -45,7 +45,7 @@ define( function( require ) {
           integralNumberParticles = 0;
         }
         for ( var i = 0; i < integralNumberParticles; i++ ) {
-          this.electrons.add( new Electron( circuitElement, i * dx + offset ) );
+          this.electrons.add( new Electron( circuitElement, i * dx + offset, this.circuit.showElectronsProperty ) );
         }
       }
     }

@@ -102,7 +102,7 @@ define( function( require ) {
     this.sensorToolbox = new SensorToolbox( voltmeterNode, ammeterNode, circuitConstructionKitModel.runningProperty, tandem.createTandem( 'sensorToolbox' ) );
 
     // @protected
-    this.displayOptionsPanel = new DisplayOptionsPanel( new Property( false ), new Property( false ), new Property( false ), {
+    this.displayOptionsPanel = new DisplayOptionsPanel( circuitConstructionKitModel.circuit.showElectronsProperty, new Property( false ), new Property( false ), {
       showConventionalCurrentCheckBox: false,
       showValuesCheckBox: false
     } );

@@ -27,7 +27,10 @@ define( function( require ) {
   function BlackBoxScreenView( blackBoxScreenModel, backgroundColorProperty, tandem ) {
     ScreenView.call( this );
     var blackBoxScreenView = this;
+    this.blackBoxScreenModel = blackBoxScreenModel;
+
     var sceneViews = {}; // Populated lazily, key = scene name
+    this.sceneViews = sceneViews;
     blackBoxScreenModel.sceneProperty.link( function( scene ) {
 
       // Create the scene if it did not already exist
@@ -82,5 +85,9 @@ define( function( require ) {
 
   circuitConstructionKit.register( 'BlackBoxScreenView', BlackBoxScreenView );
 
-  return inherit( ScreenView, BlackBoxScreenView );
+  return inherit( ScreenView, BlackBoxScreenView, {
+    step: function( dt ) {
+      this.sceneViews[ this.blackBoxScreenModel.scene ].circuitConstructionKitModel.step( dt );
+    }
+  } );
 } );

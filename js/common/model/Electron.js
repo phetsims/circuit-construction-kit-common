@@ -2,7 +2,7 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- *
+ * The model for a single blue electron that moves along a circuit element, depicted as a colored sphere.
  * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {
@@ -13,7 +13,14 @@ define( function( require ) {
   var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var PropertySet = require( 'AXON/PropertySet' );
 
-  function Electron( circuitElement, distance ) {
+  /**
+   *
+   * @param {CircuitElement} circuitElement - the circuit element the electron is in.
+   * @param {number} distance - how far along the circuit element it has traveled, between 0 and 1 inclusive
+   * @param {Property.<boolean>} visibleProperty - whether the electron should be shown.
+   * @constructor
+   */
+  function Electron( circuitElement, distance, visibleProperty ) {
     assert && assert( _.isNumber( distance ), 'distance should be a number' );
     assert && assert( distance >= 0 && distance <= circuitElement.length, 'electron out of bounds' );
     var electron = this;
@@ -36,6 +43,9 @@ define( function( require ) {
 
     // @public
     this.node = null; // Support map for the view
+
+    // @public
+    this.visibleProperty = visibleProperty;
   }
 
   circuitConstructionKit.register( 'Electron', Electron );
@@ -44,7 +54,9 @@ define( function( require ) {
 
     dispose: function() {
       this.deleted = true;
+      this.node = null;
     },
+    
     setLocation: function( circuitElement, distance ) {
       assert && assert( !isNaN( distance ), 'Distance was NaN' );
       assert && assert( circuitElement.containsScalarLocation( distance ), 'no location in branch' );
