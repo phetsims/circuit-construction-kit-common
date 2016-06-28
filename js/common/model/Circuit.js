@@ -42,7 +42,7 @@ define( function( require ) {
     this.lightBulbs = new ObservableArray();
     this.resistors = new ObservableArray();
 
-    this.showElectronsProperty = new Property( true );
+    this.showElectronsProperty = new Property( false );
     this.electrons = new ObservableArray();
 
     this.constantDensityLayout = new ConstantDensityLayout( this );
