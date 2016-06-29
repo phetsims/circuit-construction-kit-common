@@ -62,6 +62,11 @@ define( function( require ) {
 
       // @public {boolean} - changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
       running: !showPlayPauseButton
+    }, {
+      mode: tandem.createTandem( 'modeProperty' ),
+      revealing: tandem.createTandem( 'revealingProperty' ),
+      isRevealEnabled: tandem.createTandem( 'isRevealEnabledProperty' ),
+      running: tandem.createTandem( 'runningProperty' )
     } );
 
     this.revealingProperty = this.revealingProperty || null;
