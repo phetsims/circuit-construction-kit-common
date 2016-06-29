@@ -36,6 +36,7 @@ define( function( require ) {
      * Create an item to be used in a VerticalCheckBoxGroup
      * @param {string} text - the text to display
      * @param {Property.<boolean>} property - the property to wire to the checkbox
+     * @param {string} tandemName - the name to use for the dynamically-created subtandem
      * @returns {Object}
      */
     var createItem = function( text, property, tandemName ) {
