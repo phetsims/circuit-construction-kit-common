@@ -23,7 +23,7 @@ define( function( require ) {
    * @param {Object} options
    * @constructor
    */
-  function DisplayOptionsPanel( showElectronsProperty, conventionalCurrentProperty, showValuesProperty, options ) {
+  function DisplayOptionsPanel( showElectronsProperty, conventionalCurrentProperty, showValuesProperty, tandem, options ) {
     options = _.extend( {
       showElectronsCheckBox: true,
       showConventionalCurrentCheckBox: true,
@@ -38,17 +38,20 @@ define( function( require ) {
      * @param {Property.<boolean>} property - the property to wire to the checkbox
      * @returns {Object}
      */
-    var createItem = function( text, property ) {
+    var createItem = function( text, property, tandemName ) {
       return {
         content: new Text( text, textOptions ),
-        property: property
+        property: property,
+        tandemName: tandemName
       };
     };
-    options.showElectronsCheckBox && array.push( createItem( 'Show Electrons', showElectronsProperty ) );
-    options.showConventionalCurrentCheckBox && array.push( createItem( 'Conventional Current', conventionalCurrentProperty ) );
-    options.showValuesCheckBox && array.push( createItem( 'Values', showValuesProperty ) );
-    var content = new VerticalCheckBoxGroup( array );
-    CircuitConstructionKitPanel.call( this, content );
+    options.showElectronsCheckBox && array.push( createItem( 'Show Electrons', showElectronsProperty, 'showElectronsCheckBox' ) );
+    options.showConventionalCurrentCheckBox && array.push( createItem( 'Conventional Current', conventionalCurrentProperty, 'showConventionalCurrentCheckBox' ) );
+    options.showValuesCheckBox && array.push( createItem( 'Values', showValuesProperty, 'showValuesCheckBox' ) );
+    var verticalCheckBoxGroup = new VerticalCheckBoxGroup( array, {
+      tandem: tandem.createTandem( 'verticalCheckBoxGroup' )
+    } );
+    CircuitConstructionKitPanel.call( this, verticalCheckBoxGroup );
   }
 
   circuitConstructionKit.register( 'DisplayOptionsPanel', DisplayOptionsPanel );
