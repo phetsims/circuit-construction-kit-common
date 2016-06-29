@@ -14,6 +14,13 @@ define( function( require ) {
   var LabScreen = require( 'CIRCUIT_CONSTRUCTION_KIT/lab/LabScreen' );
   var Sim = require( 'JOIST/Sim' );
   var SimLauncher = require( 'JOIST/SimLauncher' );
+  var Tandem = require( 'TANDEM/Tandem' );
+
+  // If running as phet-io, load the API
+  require( 'ifphetio!PHET_IO/simulations/circuit-construction-kit-black-box-study/circuit-construction-kit-api' );
+
+  // constants
+  var tandem = Tandem.createRootTandem();
 
   // strings
   var circuitConstructionKitTitleString = require( 'string!CIRCUIT_CONSTRUCTION_KIT/circuit-construction-kit.title' );
@@ -34,9 +41,9 @@ define( function( require ) {
   if ( !window.circuitConstructionKitTestSuite ) {
     SimLauncher.launch( function() {
       var sim = new Sim( circuitConstructionKitTitleString, [
-        new IntroScreen(),
-        new EnergyScreen(),
-        new LabScreen()
+        new IntroScreen( tandem.createTandem( 'introScreen' ) ),
+        new EnergyScreen( tandem.createTandem( 'energyScreen' ) ),
+        new LabScreen( tandem.createTandem( 'labScreen' ) )
       ], simOptions );
       sim.start();
     } );
