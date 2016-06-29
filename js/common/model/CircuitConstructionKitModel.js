@@ -21,13 +21,18 @@ define( function( require ) {
   /**
    * @constructor
    */
-  function CircuitConstructionKitModel( additionalProperties, options ) {
+  function CircuitConstructionKitModel( tandem, additionalProperties, options ) {
     var circuitConstructionKitModel = this;
     options = _.extend( { circuit: null }, options );
     PropertySet.call( this, _.extend( {
       showElectrons: false,
       running: true // {boolean} @public changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
-    }, additionalProperties ) );
+    }, _.extend( {
+      tandemSet: {
+        showElectrons: tandem.createTandem( 'showElectronsProperty' ),
+        running: tandem.createTandem( 'runningProperty' )
+      }
+    }, additionalProperties ) ) );
 
     // @public (read-only) These assignments provide improved highlighting and navigation in IntelliJ IDEA
     this.runningProperty = this.runningProperty || null;

@@ -16,8 +16,8 @@ define( function( require ) {
   /**
    * @constructor
    */
-  function LabScreenModel() {
-    CircuitConstructionKitModel.call( this, {} );
+  function LabScreenModel( tandem ) {
+    CircuitConstructionKitModel.call( this, tandem, {} );
   }
 
   circuitConstructionKit.register( 'LabScreenModel', LabScreenModel );

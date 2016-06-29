@@ -24,7 +24,7 @@ define( function( require ) {
    * @param {CircuitStruct} trueBlackBoxCircuit - the circuit inside the black box (the true one, not the user-created one)
    * @constructor
    */
-  function BlackBoxSceneModel( trueBlackBoxCircuit ) {
+  function BlackBoxSceneModel( trueBlackBoxCircuit, tandem ) {
     assert && assert( trueBlackBoxCircuit instanceof CircuitStruct, 'circuit should be CircuitStruct' );
     var blackBoxSceneModel = this;
 
@@ -49,7 +49,7 @@ define( function( require ) {
       circuitElement.insideTrueBlackBox = true;
     }
 
-    CircuitConstructionKitModel.call( this, {
+    CircuitConstructionKitModel.call( this, tandem, {
 
       // @public - whether the user is in the 'investigate' or 'build' mode
       mode: 'investigate',

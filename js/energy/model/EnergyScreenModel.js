@@ -16,8 +16,8 @@ define( function( require ) {
   /**
    * @constructor
    */
-  function EnergyScreenModel() {
-    CircuitConstructionKitModel.call( this, {} );
+  function EnergyScreenModel( tandem ) {
+    CircuitConstructionKitModel.call( this, tandem, {} );
   }
 
   circuitConstructionKit.register( 'EnergyScreenModel', EnergyScreenModel );
