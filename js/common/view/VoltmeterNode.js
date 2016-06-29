@@ -54,7 +54,7 @@ define( function( require ) {
     var voltageReadoutProperty = new DerivedProperty( [ voltmeter.voltageProperty ], function( voltage ) {
       return voltage === null ? '?' : Util.toFixed( voltage, 2 ) + ' V';
     } );
-    var probeTextNode = new ProbeTextNode( voltageReadoutProperty, options.runningProperty, 'Voltage', {
+    var probeTextNode = new ProbeTextNode( voltageReadoutProperty, options.runningProperty, 'Voltage', tandem.createTandem( 'probeTextNode' ), {
       centerX: voltmeterBodyImage[ 0 ].width / 2,
       centerY: voltmeterBodyImage[ 0 ].height / 2
     } );

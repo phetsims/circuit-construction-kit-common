@@ -13,7 +13,7 @@ define( function( require ) {
   var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var Text = require( 'SCENERY/nodes/Text' );
+  var TandemText = require( 'TANDEM/scenery/nodes/TandemText' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var VBox = require( 'SCENERY/nodes/VBox' );
 
@@ -24,11 +24,15 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function ProbeTextNode( textProperty, runningProperty, title, options ) {
+  function ProbeTextNode( textProperty, runningProperty, title, tandem, options ) {
 
     var rectangleWidth = 140;
 
-    var readout = new Text( '?', { fontSize: 34, maxWidth: rectangleWidth - 20 } );
+    var readout = new TandemText( '?', {
+      fontSize: 34,
+      maxWidth: rectangleWidth - 20,
+      tandem: tandem.createTandem( 'readoutText' )
+    } );
     var textBox = new Rectangle( 0, 0, rectangleWidth, 52, 10, 10, {
       lineWidth: 2, stroke: 'black', fill: 'white'
     } );
@@ -52,7 +56,10 @@ define( function( require ) {
       spacing: 6,
 
       align: 'center',
-      children: [ new Text( title, { fontSize: 42 } ), readoutNode ]
+      children: [ new TandemText( title, {
+        fontSize: 42,
+        tandem: tandem.createTandem( 'titleText' )
+      } ), readoutNode ]
     } );
     this.mutate( options );
   }

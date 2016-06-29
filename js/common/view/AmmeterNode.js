@@ -59,7 +59,7 @@ define( function( require ) {
       // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
       return current === null ? '?' : Util.toFixed( Math.abs( current ), 2 ) + ' A';
     } );
-    var probeTextNode = new ProbeTextNode( currentProperty, options.runningProperty, 'Current', {
+    var probeTextNode = new ProbeTextNode( currentProperty, options.runningProperty, 'Current', tandem.createTandem( 'probeTextNode' ), {
       centerX: ammeterBodyImage[ 0 ].width / 2,
       centerY: ammeterBodyImage[ 0 ].height / 2
     } );
