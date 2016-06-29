@@ -26,7 +26,7 @@ define( function( require ) {
    * @param {CircuitConstructionKitModel} introScreenModel
    * @constructor
    */
-  function IntroScreenView( introScreenModel ) {
+  function IntroScreenView( introScreenModel, tandem ) {
     var introScreenView = this;
     this.introScreenModel = introScreenModel;
     ScreenView.call( this );
@@ -78,7 +78,10 @@ define( function( require ) {
             numberOfSwitchesInToolbox: 1
           }
         }[ selectedScene ];
-        var sceneNode = new IntroSceneNode( new IntroSceneModel( introScreenView.layoutBounds, introScreenModel.selectedSceneProperty ), options );
+        var sceneNode = new IntroSceneNode(
+          new IntroSceneModel( introScreenView.layoutBounds, introScreenModel.selectedSceneProperty ),
+          tandem.createTandem( selectedScene ),
+          options );
         sceneNode.visibleBoundsProperty.set( introScreenView.visibleBoundsProperty.value );
         introScreenView.sceneNodes[ selectedScene ] = sceneNode;
       }

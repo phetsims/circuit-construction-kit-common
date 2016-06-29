@@ -36,7 +36,7 @@ define( function( require ) {
   /**
    * @constructor
    */
-  function IntroScreen() {
+  function IntroScreen( tandem ) {
 
     var icon = new Rectangle( 0, 0, Screen.NAVBAR_ICON_SIZE.width, Screen.NAVBAR_ICON_SIZE.height, {
       fill: backgroundColor
@@ -68,7 +68,7 @@ define( function( require ) {
     Screen.call( this, 'Intro', icon, function() {
         return new IntroScreenModel();
       }, function( model ) {
-        return new IntroScreenView( model );
+      return new IntroScreenView( model, tandem.createTandem( 'view' ) );
       }, {
         backgroundColor: backgroundColor
       }

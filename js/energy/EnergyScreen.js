@@ -36,7 +36,7 @@ define( function( require ) {
   /**
    * @constructor
    */
-  function EnergyScreen() {
+  function EnergyScreen( tandem ) {
 
     var icon = new Rectangle( 0, 0, Screen.NAVBAR_ICON_SIZE.width, Screen.NAVBAR_ICON_SIZE.height, {
       fill: backgroundColor
@@ -68,7 +68,7 @@ define( function( require ) {
     Screen.call( this, 'Energy', icon, function() {
         return new EnergyScreenModel();
       }, function( model ) {
-        return new EnergyScreenView( model );
+      return new EnergyScreenView( model, tandem.createTandem( 'view' ) );
       }, {
         backgroundColor: backgroundColor
       }

@@ -36,7 +36,7 @@ define( function( require ) {
   /**
    * @constructor
    */
-  function LabScreen() {
+  function LabScreen( tandem ) {
 
     var icon = new Rectangle( 0, 0, Screen.NAVBAR_ICON_SIZE.width, Screen.NAVBAR_ICON_SIZE.height, {
       fill: backgroundColor
@@ -68,7 +68,7 @@ define( function( require ) {
     Screen.call( this, 'Lab', icon, function() {
         return new LabScreenModel();
       }, function( model ) {
-        return new LabScreenView( model );
+      return new LabScreenView( model, tandem.createTandem( 'view' ) );
       }, {
         backgroundColor: backgroundColor
       }
