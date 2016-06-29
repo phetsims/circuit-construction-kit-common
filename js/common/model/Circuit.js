@@ -103,13 +103,15 @@ define( function( require ) {
       circuit.constantDensityLayout.layoutElectrons( circuitElement );
 
       // When any vertex moves, relayout all electrons within the fixed-length connected component, see #100
-      circuitElement.vertexMovedEmitter.addListener( function() {
+      var updateElectrons = function() {
         var circuitElements = circuit.findAllConnectedCircuitElements( circuitElement.startVertex );
 
         for ( var i = 0; i < circuitElements.length; i++ ) {
           circuit.constantDensityLayout.layoutElectrons( circuitElements[ i ] );
         }
-      } );
+      };
+      circuitElement.vertexMovedEmitter.addListener( updateElectrons );
+      circuitElement.moveToFrontEmitter.addListener( updateElectrons );
     };
     var removeElectrons = function( circuitElement ) {
       circuit.electrons.removeAll( circuit.getElectronsInCircuitElement( circuitElement ) );
@@ -826,6 +828,24 @@ define( function( require ) {
       circuitStruct.batteries.forEach( this.batteries.add.bind( this.batteries ) );
       circuitStruct.resistors.forEach( this.vertices.add.bind( this.vertices ) );
       circuitStruct.lightBulbs.forEach( this.lightBulbs.add.bind( this.lightBulbs ) );
+    },
+
+    relayoutElectrons: function() {
+      var addElectrons = function( circuitElement ) {
+        circuit.constantDensityLayout.layoutElectrons( circuitElement );
+
+        // When any vertex moves, relayout all electrons within the fixed-length connected component, see #100
+        circuitElement.vertexMovedEmitter.addListener( function() {
+          var circuitElements = circuit.findAllConnectedCircuitElements( circuitElement.startVertex );
+
+          for ( var i = 0; i < circuitElements.length; i++ ) {
+            circuit.constantDensityLayout.layoutElectrons( circuitElements[ i ] );
+          }
+        } );
+      };
+      var removeElectrons = function( circuitElement ) {
+        circuit.electrons.removeAll( circuit.getElectronsInCircuitElement( circuitElement ) );
+      };
     }
   } );
 } );

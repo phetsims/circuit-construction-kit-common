@@ -99,6 +99,7 @@ define( function( require ) {
       // Components outside the black box do not move in front of the overlay
       if ( circuitElement.interactive ) {
         fixedLengthCircuitElementNode.moveToFront();
+        fixedLengthCircuitElementNode.circuitElement.moveToFrontEmitter.emit();
         fixedLengthCircuitElementNode.circuitElement.startVertex.moveToFrontEmitter.emit();
         fixedLengthCircuitElementNode.circuitElement.endVertex.moveToFrontEmitter.emit();
       }
