@@ -34,7 +34,7 @@ define( function( require ) {
    *
    * @constructor
    */
-  function Circuit() {
+  function Circuit( tandem ) {
     var circuit = this;
     this.wires = new ObservableArray();
     this.switches = new ObservableArray();
@@ -42,7 +42,9 @@ define( function( require ) {
     this.lightBulbs = new ObservableArray();
     this.resistors = new ObservableArray();
 
-    this.showElectronsProperty = new Property( false );
+    this.showElectronsProperty = new Property( false, {
+      tandem: tandem.createTandem( 'showElectronsProperty' )
+    } );
     this.electrons = new ObservableArray();
 
     this.constantDensityLayout = new ConstantDensityLayout( this );

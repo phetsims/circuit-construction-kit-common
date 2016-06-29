@@ -25,11 +25,9 @@ define( function( require ) {
     var circuitConstructionKitModel = this;
     options = _.extend( { circuit: null }, options );
     PropertySet.call( this, _.extend( {
-      showElectrons: false,
       running: true // {boolean} @public changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
     }, additionalProperties ), {
       tandemSet: {
-        showElectrons: tandem.createTandem( 'showElectronsProperty' ),
         running: tandem.createTandem( 'runningProperty' )
       }
     } );
@@ -37,7 +35,7 @@ define( function( require ) {
     // @public (read-only) These assignments provide improved highlighting and navigation in IntelliJ IDEA
     this.runningProperty = this.runningProperty || null;
 
-    this.circuit = options.circuit || new Circuit();
+    this.circuit = options.circuit || new Circuit( tandem.createTandem( 'circuit' ) );
     this.initialCircuitState = this.circuit.toStateObject();
     this.voltmeter = new Voltmeter();
     this.ammeter = new Ammeter();
