@@ -30,10 +30,7 @@ define( function( require ) {
     };
   };
 
-  function CircuitElementEditContainerPanel( circuit, visibleBoundsProperty, options ) {
-    options = _.extend( {
-      getLayoutPosition: GET_LAYOUT_POSITION
-    }, options );
+  function CircuitElementEditContainerPanel( circuit, visibleBoundsProperty, getLayoutPosition ) {
     var selectedCircuitElementProperty = circuit.selectedCircuitElementProperty;
     var circuitElementEditContainerPanel = this;
     Node.call( this );
@@ -58,7 +55,7 @@ define( function( require ) {
 
     this.addChild( new Rectangle( 0, 0, 10, 10, { fill: null } ) ); // blank spacer so layout doesn't exception out
     var updatePosition = function() {
-      circuitElementEditContainerPanel.mutate( options.getLayoutPosition( visibleBoundsProperty.get() ) );
+      circuitElementEditContainerPanel.mutate( getLayoutPosition( visibleBoundsProperty.get() ) );
     };
 
     var lastNumberControl = null;
