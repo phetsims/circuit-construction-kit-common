@@ -732,7 +732,7 @@ define( function( require ) {
       } );
 
       // (9) When in Black Box "build" mode (i.e. building inside the black box), a vertex user cannot connect to
-      // a black bax interface vertex if its other vertices would be outside of the black box.  See #136
+      // a black box interface vertex if its other vertices would be outside of the black box.  See #136
       if ( mode === 'build' ) {
         var connectedVertices = this.findAllConnectedVertices( vertex );
         candidateVertices = candidateVertices.filter( function( candidateVertex ) {
@@ -749,7 +749,11 @@ define( function( require ) {
 
                 // OK for black box interface vertex to be slightly outside the box
               }
-              else if ( connectedVertex !== vertex && !blackBoxBounds.containsPoint( connectedVertex.position ) ) {
+              else if ( connectedVertex !== vertex && !blackBoxBounds.containsPoint( connectedVertex.position ) &&
+
+                        // exempt wires connected outside of the black box, which are flagged as un-attachable in
+                        // build mode, see #141
+                        connectedVertex.attachable ) {
                 return false;
               }
             }
