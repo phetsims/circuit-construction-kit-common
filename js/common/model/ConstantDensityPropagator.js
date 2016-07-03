@@ -26,7 +26,7 @@ define( function( require ) {
 
   var MAX_STEP = CircuitConstructionKitConstants.electronDX * 0.43;
   var numEqualize = 2;
-  var speedScale = .01 / 0.03;
+  var speedScale = 1 / 3;
   var timeScale = 100;
   var highestSoFar = null;//for debugging
 
@@ -103,9 +103,7 @@ define( function( require ) {
 
       // dt would ideally be around 16.666ms = 0.0166 sec
       // let's cap it at double that
-      dt = Math.min( dt, 1 / 60 * 2 );
-
-      dt = dt * timeScale;
+      dt = Math.min( dt, 1 / 60 * 2 ) * timeScale;
       var maxCurrent = this.getMaxCurrent(); //TODO: Shouldn't this use abs?
       var maxVelocity = maxCurrent * speedScale;
       var maxStep = maxVelocity * dt;
@@ -136,7 +134,7 @@ define( function( require ) {
     getMaxCurrent: function() {
       var max = 0;
       var circuitElements = this.circuit.getCircuitElements();
-      for ( var i = 0; i < circuitElements; i++ ) {
+      for ( var i = 0; i < circuitElements.length; i++ ) {
         var current = circuitElements[ i ].current;
         max = Math.max( max, Math.abs( current ) );
       }
