@@ -18,6 +18,7 @@ define( function( require ) {
   var CircuitNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitNode' );
   var CircuitElementToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitElementToolbox' );
   var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitElementEditContainerPanel' );
+  var ElectronSpeedThrottlingReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/ElectronSpeedThrottlingReadoutNode' );
   var SensorToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/SensorToolbox' );
   var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/VoltmeterNode' );
   var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/AmmeterNode' );
@@ -98,6 +99,9 @@ define( function( require ) {
       numberOfResistors: options.numberOfResistorsInToolbox
     } );
 
+    var electronSpeedThrottlingReadoutNode = new ElectronSpeedThrottlingReadoutNode( circuitConstructionKitModel.circuit.constantDensityPropagator.timeScalePercentStringProperty );
+    this.addChild( electronSpeedThrottlingReadoutNode );
+
     // @protected - so that subclasses can add a layout circuit element near it
     this.sensorToolbox = new SensorToolbox( voltmeterNode, ammeterNode, circuitConstructionKitModel.runningProperty, tandem.createTandem( 'sensorToolbox' ) );
 
@@ -140,6 +144,11 @@ define( function( require ) {
           bottom: visibleBounds.bottom - inset
         } );
       }
+
+      electronSpeedThrottlingReadoutNode.mutate( {
+        centerX: visibleBounds.centerX,
+        bottom: visibleBounds.bottom - 100 // so it doesn't overlap the component controls
+      } );
 
       circuitConstructionKitScreenView.circuitElementToolbox.mutate( options.getToolboxPosition( visibleBounds ) );
 
