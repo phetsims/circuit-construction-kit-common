@@ -88,7 +88,9 @@ define( function( require ) {
       // Assumes the default layout bounds are used
       center: ScreenView.DEFAULT_LAYOUT_BOUNDS.center
     } );
-    blackBoxSceneModel.blackBoxBounds = blackBoxNode.bounds;
+
+    // Expand the black box bounds so all of the black box vertices are inside the bounds, see #128
+    blackBoxSceneModel.blackBoxBounds = blackBoxNode.bounds.dilated( 7 );
     blackBoxSceneModel.revealingProperty.link( function( revealing ) {
       blackBoxNode.opacity = revealing ? 0.2 : 1.0;
     } );

@@ -643,6 +643,7 @@ define( function( require ) {
      * @public
      */
     getDropTarget: function( vertex, mode, blackBoxBounds ) {
+      console.log( blackBoxBounds.top );
       var circuit = this;
 
       if ( mode === 'build' ) {
@@ -737,7 +738,7 @@ define( function( require ) {
         var connectedVertices = this.findAllConnectedVertices( vertex );
         candidateVertices = candidateVertices.filter( function( candidateVertex ) {
 
-          // Don't connect to vertices that might have snuck outside of the black box, say by a rotation.
+          // Don't connect to vertices that might have sneaked outside of the black box, say by a rotation.
           if ( !candidateVertex.blackBoxInterface && !blackBoxBounds.containsPoint( candidateVertex.position ) ) {
             return false;
           }
@@ -746,6 +747,7 @@ define( function( require ) {
             for ( var i = 0; i < connectedVertices.length; i++ ) {
               var connectedVertex = connectedVertices[ i ];
               if ( connectedVertex.blackBoxInterface ) {
+
                 // OK for black box interface vertex to be slightly outside the box
               }
               else if ( connectedVertex !== vertex && !blackBoxBounds.containsPoint( connectedVertex.position ) ) {
