@@ -79,7 +79,7 @@ define( function( require ) {
     this.smoothData = new SmoothData( 30 );
     this.timeScalingPercentValue = null;
     PropertySet.call( this, {
-      timeScalePercentString: '100'
+      timeScale: 1 // between 0 and 1, 1 is full speed (unthrottled)
     } );
   }
 
@@ -113,14 +113,10 @@ define( function( require ) {
       else {
         this.scale = 1;
       }
-      this.smoothData.addData( this.scale * 100 );
+      this.smoothData.addData( this.scale );
       this.timeScalingPercentValue = this.smoothData.getAverage();
 
-      var percent = this.timeScalingPercentValue.toFixed( 2 );
-      if ( percent === '0' ) {
-        percent = '1';
-      }
-      this.timeScalePercentString = percent;
+      this.timeScale = this.timeScalingPercentValue;
       for ( var i = 0; i < this.electrons.length; i++ ) {
         var e = this.electrons.get( i );
         this.propagate( e, dt );

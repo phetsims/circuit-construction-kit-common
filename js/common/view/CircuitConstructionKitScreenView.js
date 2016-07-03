@@ -99,7 +99,7 @@ define( function( require ) {
       numberOfResistors: options.numberOfResistorsInToolbox
     } );
 
-    var electronSpeedThrottlingReadoutNode = new ElectronSpeedThrottlingReadoutNode( circuitConstructionKitModel.circuit.constantDensityPropagator.timeScalePercentStringProperty );
+    var electronSpeedThrottlingReadoutNode = new ElectronSpeedThrottlingReadoutNode( circuitConstructionKitModel.circuit.constantDensityPropagator.timeScaleProperty );
     this.addChild( electronSpeedThrottlingReadoutNode );
 
     // @protected - so that subclasses can add a layout circuit element near it
