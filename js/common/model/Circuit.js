@@ -643,7 +643,6 @@ define( function( require ) {
      * @public
      */
     getDropTarget: function( vertex, mode, blackBoxBounds ) {
-      console.log( blackBoxBounds.top );
       var circuit = this;
 
       if ( mode === 'build' ) {
