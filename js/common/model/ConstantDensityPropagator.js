@@ -2,6 +2,7 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
+ * This code governs the movement of electrons, making sure they are distributed equally among the different branches.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -16,10 +17,14 @@ define( function( require ) {
   var PropertySet = require( 'AXON/PropertySet' );
 
   // constants
+
+  // Number of amps at which a component catches fire
   var FIRE_CURRENT = 10;
+
+  // If the current is lower than this, then there is no electron movement
   var MIN_CURRENT = Math.pow( 10, -10 );
-  var ELECTRON_DX = CircuitConstructionKitConstants.electronDX;
-  var MAX_STEP = ELECTRON_DX * .43;
+
+  var MAX_STEP = CircuitConstructionKitConstants.electronDX * 0.43;
   var numEqualize = 2;
   var speedScale = .01 / 0.03;
   var timeScale = 100;
@@ -149,7 +154,7 @@ define( function( require ) {
     },
     equalizeElectron: function( electron, dt ) {
 
-      //if it has a lower and upper neighbor, try to get the distance to each to be half of ELECTRON_DX
+      // if it has a lower and upper neighbor, try to get the distance to each to be half of ELECTRON_DX
       var upper = getUpperNeighborInBranch( this.circuit, electron );
       var lower = getLowerNeighborInBranch( this.circuit, electron );
       if ( upper === null || lower === null ) {
