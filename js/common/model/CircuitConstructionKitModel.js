@@ -63,7 +63,7 @@ define( function( require ) {
     },
     reset: function() {
       PropertySet.prototype.reset.call( this );
-      this.circuit.clear();
+      this.circuit.reset();
       this.voltmeter.reset();
       this.ammeter.reset();
 

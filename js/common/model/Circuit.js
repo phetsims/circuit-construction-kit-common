@@ -307,7 +307,7 @@ define( function( require ) {
 
           // Add the new vertex to the model first so that it can be updated in subsequent calls
           this.vertices.add( newVertex );
-          
+
           circuitElement.replaceVertex( vertex, newVertex );
 
           // Bump the vertices away from each other
@@ -779,6 +779,11 @@ define( function( require ) {
         } );
         return sorted[ 0 ];
       }
+    },
+
+    reset: function() {
+      this.clear();
+      this.showElectronsProperty.reset();
     },
 
     toStateObject: function() {
