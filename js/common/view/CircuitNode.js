@@ -28,6 +28,7 @@ define( function( require ) {
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/LightBulb' );
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Switch' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Resistor' );
+  var Property = require( 'AXON/Property' );
 
   /**
    *
@@ -178,7 +179,10 @@ define( function( require ) {
     } );
 
     circuit.electrons.addItemAddedListener( function( electron ) {
-      electron.node = new ElectronNode( electron );
+      electron.node = new ElectronNode(
+        electron,
+        circuitConstructionKitScreenView.circuitConstructionKitModel.revealingProperty || new Property( true )
+      );
       circuitNode.mainLayer.addChild( electron.node );
     } );
     circuit.electrons.addItemRemovedListener( function( electron ) {

@@ -50,7 +50,7 @@ define( function( require ) {
     node.children = [ new Image( im, { scale: 1.0 / scale } ) ];
   }, 0, 0, minusChargeNode.width, minusChargeNode.height );
 
-  function ElectronNode( electron ) {
+  function ElectronNode( electron, revealingProperty ) {
     var electronNode = this;
     Node.call( this, {
       children: [ node ],
@@ -63,8 +63,8 @@ define( function( require ) {
       outsideOfBlackBoxProperty.value = !electron.circuitElement.insideTrueBlackBox;
     } );
 
-    Property.multilink( [ electron.visibleProperty, outsideOfBlackBoxProperty ], function( visible, outsideBox ) {
-      electronNode.visible = visible && outsideBox;
+    Property.multilink( [ electron.visibleProperty, outsideOfBlackBoxProperty, revealingProperty ], function( visible, outsideBox, revealing ) {
+      electronNode.visible = visible && (outsideBox || revealing);
     } );
   }
 
