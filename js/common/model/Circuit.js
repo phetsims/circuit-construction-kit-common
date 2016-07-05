@@ -304,8 +304,11 @@ define( function( require ) {
             insideTrueBlackBox: false
           };
           var newVertex = new Vertex( vertex.position.x, vertex.position.y, options );
-          circuitElement.replaceVertex( vertex, newVertex );
+
+          // Add the new vertex to the model first so that it can be updated in subsequent calls
           this.vertices.add( newVertex );
+          
+          circuitElement.replaceVertex( vertex, newVertex );
 
           // Bump the vertices away from each other
           var vertexGroup = this.findAllFixedVertices( newVertex );
