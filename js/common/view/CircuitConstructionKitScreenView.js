@@ -274,7 +274,9 @@ define( function( require ) {
      * @returns {*}
      */
     hitWireNode: function( probeNode, locationString ) {
-      for ( var i = 0; i < this.circuitNode.wireNodes.length; i++ ) {
+
+      // Search from the front to the back, because frontmost objects look like they are hitting the sensor, see #143
+      for ( var i = this.circuitNode.wireNodes.length - 1; i >= 0; i-- ) {
         var wireNode = this.circuitNode.wireNodes[ i ];
 
         // Don't connect to wires in the black box
