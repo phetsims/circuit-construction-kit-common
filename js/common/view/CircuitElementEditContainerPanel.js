@@ -65,20 +65,20 @@ define( function( require ) {
       lastNumberControl = null;
 
       if ( selectedCircuitElement ) {
-        var res = selectedCircuitElement instanceof Resistor || selectedCircuitElement instanceof LightBulb;
-        var bat = selectedCircuitElement instanceof Battery;
-        var wir = selectedCircuitElement instanceof Wire;
+        var resistor = selectedCircuitElement instanceof Resistor || selectedCircuitElement instanceof LightBulb;
+        var battery = selectedCircuitElement instanceof Battery;
+        var wire = selectedCircuitElement instanceof Wire;
 
-        var text = (res || wir) ? 'Resistance' :
-                   bat ? 'Voltage' :
+        var text = (resistor || wire) ? 'Resistance' :
+                   battery ? 'Voltage' :
                    null;
-        var units = (res || wir) ? 'ohms' :
-                    bat ? 'volts' :
+        var units = (resistor || wire) ? 'ohms' :
+                    battery ? 'volts' :
                     null;
-        var property = (res || wir) ? selectedCircuitElement.resistanceProperty :
-                       bat ? selectedCircuitElement.voltageProperty :
+        var property = (resistor || wire) ? selectedCircuitElement.resistanceProperty :
+                       battery ? selectedCircuitElement.voltageProperty :
                        null;
-        var options = wir ? { numberControlEnabled: false } : {};
+        var options = wire ? { numberControlEnabled: false } : {};
         lastNumberControl = new CircuitElementEditPanel( text, units, property, circuit, selectedCircuitElement, options );
       }
       else {
