@@ -148,6 +148,7 @@ define( function( require ) {
     wire.endVertexProperty.link( updateEndVertex );
 
     var p = null;
+    var didDrag = false;
     this.inputListener = new SimpleDragHandler( {
       start: function( event ) {
         p = event.pointer.point;
@@ -156,11 +157,13 @@ define( function( require ) {
           circuitNode.startDrag( event.pointer.point, wire.startVertex, false );
           circuitNode.startDrag( event.pointer.point, wire.endVertex, false );
         }
+        didDrag = false;
       },
       drag: function( event ) {
         if ( wire.interactive ) {
           circuitNode.drag( event.pointer.point, wire.startVertex, false );
           circuitNode.drag( event.pointer.point, wire.endVertex, false );
+          didDrag = true;
         }
       },
       end: function( event ) {
@@ -174,11 +177,13 @@ define( function( require ) {
           return;
         }
 
-        circuitNode.endDrag( event, wire.startVertex );
-        circuitNode.endDrag( event, wire.endVertex );
+        circuitNode.endDrag( event, wire.startVertex, didDrag );
+        circuitNode.endDrag( event, wire.endVertex, didDrag );
 
         // Only show the editor when tapped, not on every drag.
         wireNode.maybeSelect( event, circuitNode, p );
+
+        didDrag = false;
       }
     } );
     circuitConstructionKitScreenView && wireNode.addInputListener( this.inputListener );

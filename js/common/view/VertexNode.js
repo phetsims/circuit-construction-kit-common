@@ -111,16 +111,21 @@ define( function( require ) {
     // circuit.vertices.addItemRemovedListener( updateShape );
 
     var p = null;
+    var didDrag = false;
     var simpleDragHandler = new SimpleDragHandler( {
       start: function( event ) {
         p = event.pointer.point;
         vertex.draggable && circuitNode.startDrag( event.pointer.point, vertex, true );
+        didDrag = false;
       },
       drag: function( event ) {
+        didDrag = true;
         vertex.draggable && circuitNode.drag( event.pointer.point, vertex, true );
       },
       end: function( event ) {
-        vertex.draggable && circuitNode.endDrag( event, vertex );
+
+        // The vertex can only connect to something if it was actually moved.
+        vertex.draggable && circuitNode.endDrag( event, vertex, didDrag );
 
         // Only show on a tap, not on every drag.
         if ( vertex.interactive && event.pointer.point.distance( p ) < CircuitConstructionKitConstants.tapThreshold ) {

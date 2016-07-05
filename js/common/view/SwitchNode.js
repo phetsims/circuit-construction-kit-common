@@ -162,8 +162,10 @@ define( function( require ) {
     switchModel.endVertexProperty.link( updateEndVertex );
 
     var p = null;
+    var didDrag = false;
     this.inputListener = new SimpleDragHandler( {
       start: function( event ) {
+        didDrag = false;
         p = event.pointer.point;
 
         if ( switchModel.interactive ) {
@@ -175,6 +177,7 @@ define( function( require ) {
         if ( switchModel.interactive ) {
           circuitNode.drag( event.pointer.point, switchModel.startVertex, false );
           circuitNode.drag( event.pointer.point, switchModel.endVertex, false );
+          didDrag = true;
         }
       },
       end: function( event ) {
@@ -188,8 +191,8 @@ define( function( require ) {
           return;
         }
 
-        circuitNode.endDrag( event, switchModel.startVertex );
-        circuitNode.endDrag( event, switchModel.endVertex );
+        circuitNode.endDrag( event, switchModel.startVertex, didDrag );
+        circuitNode.endDrag( event, switchModel.endVertex, didDrag );
 
         // Only show the editor when tapped, not on every drag.
         wireNode.maybeSelect( event, circuitNode, p );
