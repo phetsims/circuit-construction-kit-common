@@ -53,6 +53,10 @@ define( function( require ) {
     );
     this.addChild( revealButton );
 
+    // Circuit components and ammeter/voltmeter should be in front of these controls
+    modeRadioButtonGroup.moveToBack();
+    revealButton.moveToBack();
+
     var comboBoxTextOptions = {
       fontSize: 16
     };

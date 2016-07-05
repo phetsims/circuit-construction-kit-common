@@ -61,6 +61,18 @@ define( function( require ) {
     this.circuitConstructionKitModel = circuitConstructionKitModel;
     ScreenView.call( this );
 
+    // Reset All button
+    if ( options.showResetAllButton ) {
+      var resetAllButton = new ResetAllButton( {
+        tandem: tandem.createTandem( 'resetAllButton' ),
+        listener: function() {
+          circuitConstructionKitModel.reset();
+          circuitConstructionKitScreenView.reset();
+        }
+      } );
+      this.addChild( resetAllButton );
+    }
+
     var voltmeterNode = new VoltmeterNode( circuitConstructionKitModel.voltmeter, tandem.createTandem( 'voltmeterNode' ), {
       runningProperty: circuitConstructionKitModel.runningProperty,
       visibleBoundsProperty: this.visibleBoundsProperty
@@ -115,18 +127,6 @@ define( function( require ) {
 
     this.addChild( this.circuitNode );
     this.addChild( this.sensorToolbox );
-
-    // Reset All button
-    if ( options.showResetAllButton ) {
-      var resetAllButton = new ResetAllButton( {
-        tandem: tandem.createTandem( 'resetAllButton' ),
-        listener: function() {
-          circuitConstructionKitModel.reset();
-          circuitConstructionKitScreenView.reset();
-        }
-      } );
-      this.addChild( resetAllButton );
-    }
 
     // Has to be interleaved in the circuit layering to support the black box, so that the toolbox can be behind
     // circuit elements but in front of the transparency overlay
