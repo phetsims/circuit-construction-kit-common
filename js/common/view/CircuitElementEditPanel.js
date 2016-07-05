@@ -20,7 +20,7 @@ define( function( require ) {
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
   var Property = require( 'AXON/Property' );
 
-  function CircuitElementEditPanel( title, units, valueProperty, circuit, circuitElement, options ) {
+  function CircuitElementEditPanel( title, units, valueProperty, circuit, circuitElement, tandem, options ) {
     options = _.extend( { numberControlEnabled: true }, options );
 
     var font = new PhetFont( 14 );
@@ -48,9 +48,10 @@ define( function( require ) {
 
     // Create the controls using the proxy
     var numberControl = new NumberControl( title, proxy, new Range( 0, 100 ), _.extend( {
+      tandem: tandem.createTandem( 'numberControl' ),
       units: units
     }, numberControlOptions ) );
-    var roundPushButton = new RoundPushButton( {
+    var trashButton = new RoundPushButton( {
       baseColor: 'yellow',
       content: new FontAwesomeNode( 'trash', {
         scale: CircuitConstructionKitConstants.fontAwesomeIconScale
@@ -59,14 +60,15 @@ define( function( require ) {
         circuit.remove( circuitElement );
       },
       minXMargin: 10,
-      minYMargin: 10
+      minYMargin: 10,
+      tandem: tandem.createTandem( 'trashButton' )
     } );
     var children = [];
     if ( options.numberControlEnabled ) {
       children.push( numberControl );
     }
     if ( circuitElement.canBeDroppedInToolbox ) {
-      children.push( roundPushButton );
+      children.push( trashButton );
     }
     HBox.call( this, {
       spacing: 40,

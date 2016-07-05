@@ -31,6 +31,7 @@ define( function( require ) {
   };
 
   function CircuitElementEditContainerPanel( circuit, visibleBoundsProperty, getLayoutPosition, tandem ) {
+    var groupTandem = tandem.createGroupTandem( 'circuitElementEditPanel' );
     var selectedCircuitElementProperty = circuit.selectedCircuitElementProperty;
     var circuitElementEditContainerPanel = this;
     Node.call( this );
@@ -79,7 +80,7 @@ define( function( require ) {
                        battery ? selectedCircuitElement.voltageProperty :
                        null;
         var options = wire ? { numberControlEnabled: false } : {};
-        lastNumberControl = new CircuitElementEditPanel( text, units, property, circuit, selectedCircuitElement, options );
+        lastNumberControl = new CircuitElementEditPanel( text, units, property, circuit, selectedCircuitElement, groupTandem.createNextTandem(), options );
       }
       else {
         lastNumberControl = tapInstructionTextNode;
