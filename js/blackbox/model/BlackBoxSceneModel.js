@@ -144,6 +144,14 @@ define( function( require ) {
       circuit.resistors.addAll( blackBoxCircuit.resistors );
       circuit.batteries.addAll( blackBoxCircuit.batteries );
       circuit.lightBulbs.addAll( blackBoxCircuit.lightBulbs );
+
+      var updateElectrons = function( circuitElement ) { circuitElement.moveToFrontEmitter.emit(); };
+      blackBoxCircuit.wires.forEach( updateElectrons );
+      blackBoxCircuit.resistors.forEach( updateElectrons );
+      blackBoxCircuit.lightBulbs.forEach( updateElectrons );
+      blackBoxCircuit.batteries.forEach( updateElectrons );
+
+      // TODO: Switches
     };
 
     // Logic for changing the contents of the black box when the mode changes
