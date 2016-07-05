@@ -131,7 +131,12 @@ define( function( require ) {
     // Has to be interleaved in the circuit layering to support the black box, so that the toolbox can be behind
     // circuit elements but in front of the transparency overlay
     this.circuitNode.mainLayer.addChild( this.circuitElementToolbox );
-    var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel( circuitConstructionKitModel.circuit, this.visibleBoundsProperty, options.getCircuitEditPanelLayoutPosition );
+    var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel(
+      circuitConstructionKitModel.circuit,
+      this.visibleBoundsProperty,
+      options.getCircuitEditPanelLayoutPosition,
+      tandem.createTandem( 'circuitElementEditContainerPanel' )
+    );
 
     // @protected - so the subclass can set the layout
     this.circuitElementEditContainerPanel = circuitElementEditContainerPanel;

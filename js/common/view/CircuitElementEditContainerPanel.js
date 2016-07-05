@@ -30,7 +30,7 @@ define( function( require ) {
     };
   };
 
-  function CircuitElementEditContainerPanel( circuit, visibleBoundsProperty, getLayoutPosition ) {
+  function CircuitElementEditContainerPanel( circuit, visibleBoundsProperty, getLayoutPosition, tandem ) {
     var selectedCircuitElementProperty = circuit.selectedCircuitElementProperty;
     var circuitElementEditContainerPanel = this;
     Node.call( this );
@@ -68,10 +68,18 @@ define( function( require ) {
         var res = selectedCircuitElement instanceof Resistor || selectedCircuitElement instanceof LightBulb;
         var bat = selectedCircuitElement instanceof Battery;
         var wir = selectedCircuitElement instanceof Wire;
-        lastNumberControl = res ? new CircuitElementEditPanel( 'Resistance', 'ohms', selectedCircuitElement.resistanceProperty, circuit, selectedCircuitElement ) :
-                            bat ? new CircuitElementEditPanel( 'Voltage', 'volts', selectedCircuitElement.voltageProperty, circuit, selectedCircuitElement ) :
-                            wir ? new CircuitElementEditPanel( 'Resistance', 'ohms', selectedCircuitElement.resistanceProperty, circuit, selectedCircuitElement, { numberControlEnabled: false } ) :
-                            null;
+
+        var text = (res || wir) ? 'Resistance' :
+                   bat ? 'Voltage' :
+                   null;
+        var units = (res || wir) ? 'ohms' :
+                    bat ? 'volts' :
+                    null;
+        var property = (res || wir) ? selectedCircuitElement.resistanceProperty :
+                       bat ? selectedCircuitElement.voltageProperty :
+                       null;
+        var options = wir ? { numberControlEnabled: false } : {};
+        lastNumberControl = new CircuitElementEditPanel( text, units, property, circuit, selectedCircuitElement, options );
       }
       else {
         lastNumberControl = tapInstructionTextNode;
