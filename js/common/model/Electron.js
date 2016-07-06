@@ -12,6 +12,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var PropertySet = require( 'AXON/PropertySet' );
+  var Emitter = require( 'AXON/Emitter' );
 
   /**
    *
@@ -47,6 +48,7 @@ define( function( require ) {
 
     // @public
     this.visibleProperty = visibleProperty;
+    this.disposeEmitter = new Emitter();
   }
 
   circuitConstructionKitCommon.register( 'Electron', Electron );
@@ -56,8 +58,10 @@ define( function( require ) {
     dispose: function() {
       this.deleted = true;
       this.node = null;
+      this.disposeEmitter.emit();
+      assert && assert( !this.disposeEmitter.hasListeners(), 'after disposal, should have no listeners' );
     },
-    
+
     setLocation: function( circuitElement, distance ) {
       assert && assert( !isNaN( distance ), 'Distance was NaN' );
       assert && assert( circuitElement.containsScalarLocation( distance ), 'no location in branch' );

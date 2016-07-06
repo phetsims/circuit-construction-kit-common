@@ -130,6 +130,11 @@ define( function( require ) {
     this.lightBulbs.addItemRemovedListener( removeElectrons );
     this.resistors.addItemRemovedListener( removeElectrons );
 
+    // When electron is removed from the list, dispose it
+    this.electrons.addItemRemovedListener( function( electron ) {
+      electron.dispose();
+    } );
+
     // After the circuit physics is recomputed in solve(), some listeners need to update themselves, such as
     // the voltmeter and ammeter
     this.circuitChangedEmitter = new Emitter();

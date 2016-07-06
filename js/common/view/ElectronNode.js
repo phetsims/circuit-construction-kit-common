@@ -58,14 +58,22 @@ define( function( require ) {
     } );
     var outsideOfBlackBoxProperty = new Property( false );
 
-    electron.positionProperty.link( function( position ) {
+    var positionListener = function( position ) {
       electronNode.center = position;
       outsideOfBlackBoxProperty.value = !electron.circuitElement.insideTrueBlackBox;
-    } );
+    };
+    electron.positionProperty.link( positionListener );
 
-    Property.multilink( [ electron.visibleProperty, outsideOfBlackBoxProperty, revealingProperty ], function( visible, outsideBox, revealing ) {
+    var multilink = Property.multilink( [ electron.visibleProperty, outsideOfBlackBoxProperty, revealingProperty ], function( visible, outsideBox, revealing ) {
       electronNode.visible = visible && (outsideBox || revealing);
     } );
+
+    var disposeListener = function() {
+      electron.positionProperty.unlink( positionListener );
+      multilink.dispose();
+      electron.disposeEmitter.removeListener( disposeListener );
+    };
+    electron.disposeEmitter.addListener( disposeListener );
   }
 
   circuitConstructionKitCommon.register( 'ElectronNode', ElectronNode );
