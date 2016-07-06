@@ -78,7 +78,7 @@
     var circuit = new MNACircuit( [], [ resistor ], [ currentSource ] );
     var voltageMap = {
       0: 0,
-      1: -39.999996 // This is negative since traversing across the resistor should yield a negative voltage, see http://en.wikipedia.org/wiki/Current_source
+      1: -40.0 // This is negative since traversing across the resistor should yield a negative voltage, see http://en.wikipedia.org/wiki/Current_source
     };
     var desiredSolution = new LinearCircuitSolution( voltageMap, [] );
     var solution = circuit.solve();
