@@ -1,10 +1,10 @@
 {
-  "name": "circuit-construction-kit",
+  "name": "circuit-construction-kit-common",
   "version": "1.0.0-dev.8",
   "license": "GPL-3.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/phetsims/circuit-construction-kit.git"
+    "url": "https://github.com/phetsims/circuit-construction-kit-common.git"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
