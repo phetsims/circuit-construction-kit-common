@@ -36,15 +36,11 @@ define( function( require ) {
     this.addDerivedProperty( 'position', [ 'distance' ], function( distance ) {
       assert && assert( !electron.deleted, 'Electron was deleted' );
       assert && assert( !isNaN( distance ), 'electron position was not a number' );
-      assert && assert( !electron.deleted, 'electron was already deleted' );
       assert && assert( electron.circuitElement.containsScalarLocation( distance ), 'branch did not contain position' );
       var position = electron.circuitElement.getPosition( distance );
       assert && assert( !isNaN( position.x ) && !isNaN( position.y ), 'point was not a number' );
       return position;
     } );
-
-    // @public
-    this.node = null; // Support map for the view
 
     // @public
     this.visibleProperty = visibleProperty;
@@ -57,7 +53,6 @@ define( function( require ) {
 
     dispose: function() {
       this.deleted = true;
-      this.node = null;
       this.disposeEmitter.emit();
       assert && assert( !this.disposeEmitter.hasListeners(), 'after disposal, should have no listeners' );
     },

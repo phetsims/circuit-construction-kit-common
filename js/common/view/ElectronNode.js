@@ -18,6 +18,7 @@ define( function( require ) {
   var Image = require( 'SCENERY/nodes/Image' );
   var Property = require( 'AXON/Property' );
 
+  // constants
   var radius = 10;
 
   // Scale up before rasterization so it won't be too pixellated/fuzzy
@@ -69,6 +70,7 @@ define( function( require ) {
     } );
 
     var disposeListener = function() {
+      electronNode.detach();
       electron.positionProperty.unlink( positionListener );
       multilink.dispose();
       electron.disposeEmitter.removeListener( disposeListener );
