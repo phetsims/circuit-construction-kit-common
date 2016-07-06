@@ -10,7 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var RadioButtonGroup = require( 'SUN/buttons/RadioButtonGroup' );
   var Text = require( 'SCENERY/nodes/Text' );
@@ -36,7 +36,7 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKit.register( 'ModeRadioButtonGroup', ModeRadioButtonGroup );
+  circuitConstructionKitCommon.register( 'ModeRadioButtonGroup', ModeRadioButtonGroup );
 
   return inherit( RadioButtonGroup, ModeRadioButtonGroup );
 } );

@@ -10,18 +10,18 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var Path = require( 'SCENERY/nodes/Path' );
   var LineStyles = require( 'KITE/util/LineStyles' );
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
   var Color = require( 'SCENERY/util/Color' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Vector2 = require( 'DOT/Vector2' );
-  var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitElementNode' );
+  var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitElementNode' );
   var CheckBox = require( 'SUN/CheckBox' );
 
   // constants
@@ -233,7 +233,7 @@ define( function( require ) {
     };
   }
 
-  circuitConstructionKit.register( 'SwitchNode', SwitchNode );
+  circuitConstructionKitCommon.register( 'SwitchNode', SwitchNode );
 
   return inherit( CircuitElementNode, SwitchNode, {
 

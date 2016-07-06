@@ -10,11 +10,11 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   function WhiteBoxNode( width, height, options ) {
     Node.call( this, {
@@ -29,7 +29,7 @@ define( function( require ) {
     this.mutate( options );
   }
 
-  circuitConstructionKit.register( 'WhiteBoxNode', WhiteBoxNode );
+  circuitConstructionKitCommon.register( 'WhiteBoxNode', WhiteBoxNode );
 
   return inherit( Node, WhiteBoxNode );
 } );

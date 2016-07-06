@@ -11,12 +11,12 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
-  var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/FixedLengthCircuitElementNode' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/FixedLengthCircuitElementNode' );
   var Image = require( 'SCENERY/nodes/Image' );
 
   // images
-  var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT/battery.png' );
+  var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
 
   /**
    *
@@ -27,7 +27,7 @@ define( function( require ) {
     FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, battery, new Image( batteryImage ), 0.7 );
   }
 
-  circuitConstructionKit.register( 'BatteryNode', BatteryNode );
+  circuitConstructionKitCommon.register( 'BatteryNode', BatteryNode );
 
   return inherit( FixedLengthCircuitElementNode, BatteryNode );
 } );

@@ -10,14 +10,14 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var BlackBoxSceneView = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/view/BlackBoxSceneView' );
-  var BlackBoxSceneModel = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/model/BlackBoxSceneModel' );
+  var BlackBoxSceneView = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/blackbox/view/BlackBoxSceneView' );
+  var BlackBoxSceneModel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/blackbox/model/BlackBoxSceneModel' );
   var ScreenView = require( 'JOIST/ScreenView' );
-  var WarmUpSceneView = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/view/WarmUpSceneView' );
-  var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/CircuitStruct' );
-  var ChallengeSet = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/model/ChallengeSet' );
+  var WarmUpSceneView = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/blackbox/view/WarmUpSceneView' );
+  var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/CircuitStruct' );
+  var ChallengeSet = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/blackbox/model/ChallengeSet' );
 
   /**
    * @param {BlackBoxScreenModel} blackBoxScreenModel
@@ -83,7 +83,7 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKit.register( 'BlackBoxScreenView', BlackBoxScreenView );
+  circuitConstructionKitCommon.register( 'BlackBoxScreenView', BlackBoxScreenView );
 
   return inherit( ScreenView, BlackBoxScreenView, {
     step: function( dt ) {

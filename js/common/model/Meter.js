@@ -10,7 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
   var Vector2 = require( 'DOT/Vector2' );
@@ -25,7 +25,7 @@ define( function( require ) {
     this.droppedEmitter = new Emitter(); // Fire event when dropped
   }
 
-  circuitConstructionKit.register( 'Meter', Meter );
+  circuitConstructionKitCommon.register( 'Meter', Meter );
 
   return inherit( PropertySet, Meter );
 } );

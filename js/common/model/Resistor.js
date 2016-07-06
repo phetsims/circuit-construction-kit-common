@@ -10,9 +10,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/FixedLengthCircuitElement' );
+  var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/FixedLengthCircuitElement' );
 
   // constants
   var RESISTOR_LENGTH = 110;
@@ -27,7 +27,7 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKit.register( 'Resistor', Resistor );
+  circuitConstructionKitCommon.register( 'Resistor', Resistor );
 
   return inherit( FixedLengthCircuitElement, Resistor, {
       toStateObjectWithVertexIndices: function( getVertexIndex ) {

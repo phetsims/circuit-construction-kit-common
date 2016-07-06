@@ -11,9 +11,9 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Circle = require( 'SCENERY/nodes/Circle' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var Node = require( 'SCENERY/nodes/Node' );
 
   /**
@@ -81,7 +81,7 @@ define( function( require ) {
     };
   }
 
-  circuitConstructionKit.register( 'SolderNode', SolderNode );
+  circuitConstructionKitCommon.register( 'SolderNode', SolderNode );
 
   return inherit( Node, SolderNode, {
     dispose: function() {

@@ -10,22 +10,22 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
-  var DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/DisplayOptionsPanel' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/DisplayOptionsPanel' );
   var Property = require( 'AXON/Property' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ScreenView = require( 'JOIST/ScreenView' );
-  var CircuitNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitNode' );
-  var CircuitElementToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitElementToolbox' );
-  var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitElementEditContainerPanel' );
-  var ElectronSpeedThrottlingReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/ElectronSpeedThrottlingReadoutNode' );
-  var SensorToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/SensorToolbox' );
-  var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/VoltmeterNode' );
-  var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/AmmeterNode' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+  var CircuitNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitNode' );
+  var CircuitElementToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitElementToolbox' );
+  var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitElementEditContainerPanel' );
+  var ElectronSpeedThrottlingReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ElectronSpeedThrottlingReadoutNode' );
+  var SensorToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/SensorToolbox' );
+  var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/VoltmeterNode' );
+  var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/AmmeterNode' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var Util = require( 'DOT/Util' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
-  var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitQueryParameters' );
+  var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
   var PlayPauseButton = require( 'SCENERY_PHET/buttons/PlayPauseButton' );
 
   // constants
@@ -230,7 +230,7 @@ define( function( require ) {
     this.circuitConstructionKitModel = circuitConstructionKitModel;
   }
 
-  circuitConstructionKit.register( 'CircuitConstructionKitScreenView', CircuitConstructionKitScreenView );
+  circuitConstructionKitCommon.register( 'CircuitConstructionKitScreenView', CircuitConstructionKitScreenView );
 
   return inherit( ScreenView, CircuitConstructionKitScreenView, {
 

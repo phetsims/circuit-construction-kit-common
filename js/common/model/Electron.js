@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var PropertySet = require( 'AXON/PropertySet' );
 
   /**
@@ -49,7 +49,7 @@ define( function( require ) {
     this.visibleProperty = visibleProperty;
   }
 
-  circuitConstructionKit.register( 'Electron', Electron );
+  circuitConstructionKitCommon.register( 'Electron', Electron );
 
   return inherit( PropertySet, Electron, {
 

@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Panel = require( 'SUN/Panel' );
 
   function CircuitConstructionKitPanel( content, options ) {
@@ -24,7 +24,7 @@ define( function( require ) {
     Panel.call( this, content, options );
   }
 
-  circuitConstructionKit.register( 'CircuitConstructionKitPanel', CircuitConstructionKitPanel );
+  circuitConstructionKitCommon.register( 'CircuitConstructionKitPanel', CircuitConstructionKitPanel );
 
   return inherit( Panel, CircuitConstructionKitPanel, {} );
 } );

@@ -10,10 +10,10 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var SmoothData = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/SmoothData' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+  var SmoothData = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/SmoothData' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var PropertySet = require( 'AXON/PropertySet' );
 
   // constants
@@ -96,7 +96,7 @@ define( function( require ) {
     };
   };
 
-  circuitConstructionKit.register( 'ConstantDensityPropagator', ConstantDensityPropagator );
+  circuitConstructionKitCommon.register( 'ConstantDensityPropagator', ConstantDensityPropagator );
 
   return inherit( PropertySet, ConstantDensityPropagator, {
     step: function( dt ) {

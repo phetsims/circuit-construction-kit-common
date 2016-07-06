@@ -11,12 +11,12 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var Property = require( 'AXON/Property' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitElementNode' );
+  var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitElementNode' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var Node = require( 'SCENERY/nodes/Node' );
 
@@ -189,7 +189,7 @@ define( function( require ) {
     };
   }
 
-  circuitConstructionKit.register( 'FixedLengthCircuitElementNode', FixedLengthCircuitElementNode );
+  circuitConstructionKitCommon.register( 'FixedLengthCircuitElementNode', FixedLengthCircuitElementNode );
 
   return inherit( CircuitElementNode, FixedLengthCircuitElementNode, {
     dispose: function() {

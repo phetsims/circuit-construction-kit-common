@@ -10,10 +10,10 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
-  var CircuitConstructionKitModel = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/CircuitConstructionKitModel' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var CircuitConstructionKitModel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/CircuitConstructionKitModel' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitQueryParameters' );
+  var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
 
   /**
    * @constructor
@@ -26,7 +26,7 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKit.register( 'ExploreScreenModel', ExploreScreenModel );
+  circuitConstructionKitCommon.register( 'ExploreScreenModel', ExploreScreenModel );
 
   return inherit( CircuitConstructionKitModel, ExploreScreenModel );
 } );

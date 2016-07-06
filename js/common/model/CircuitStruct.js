@@ -11,14 +11,14 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Vertex' );
-  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Wire' );
-  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Battery' );
-  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/LightBulb' );
-  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Resistor' );
-  var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Switch' );
+  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Vertex' );
+  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Wire' );
+  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Battery' );
+  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/LightBulb' );
+  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Resistor' );
+  var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Switch' );
 
   function CircuitStruct( vertices, wires, resistors, lightBulbs, batteries, switches ) {
     this.vertices = vertices;
@@ -29,7 +29,7 @@ define( function( require ) {
     this.switches = switches;
   }
 
-  circuitConstructionKit.register( 'CircuitStruct', CircuitStruct );
+  circuitConstructionKitCommon.register( 'CircuitStruct', CircuitStruct );
 
   return inherit( Object, CircuitStruct, {
     clear: function() {

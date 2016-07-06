@@ -10,9 +10,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/FixedLengthCircuitElementNode' );
+  var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/FixedLengthCircuitElementNode' );
   var LightBulbNode = require( 'SCENERY_PHET/LightBulbNode' );
   var Property = require( 'AXON/Property' );
   var Util = require( 'DOT/Util' );
@@ -73,7 +73,7 @@ define( function( require ) {
     updateLayout( lightBulb.startVertex.position, lightBulb.endVertex.position );
   }
 
-  circuitConstructionKit.register( 'CCKLightBulbNode', CCKLightBulbNode );
+  circuitConstructionKitCommon.register( 'CCKLightBulbNode', CCKLightBulbNode );
 
   return inherit( FixedLengthCircuitElementNode, CCKLightBulbNode, {
 

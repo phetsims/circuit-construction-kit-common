@@ -41,7 +41,7 @@ require.config( {
     TANDEM: '../../tandem/js',
 
     // this sim
-    CIRCUIT_CONSTRUCTION_KIT: '.'
+    CIRCUIT_CONSTRUCTION_KIT_COMMON: '.'
   },
 
   // optional cache buster to make browser refresh load all included scripts, can be disabled with ?cacheBuster=false

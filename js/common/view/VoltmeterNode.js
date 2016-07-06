@@ -10,22 +10,22 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Image = require( 'SCENERY/nodes/Image' );
   var Node = require( 'SCENERY/nodes/Node' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var Util = require( 'DOT/Util' );
-  var ProbeTextNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/ProbeTextNode' );
-  var ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/ProbeWireNode' );
+  var ProbeTextNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ProbeTextNode' );
+  var ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ProbeWireNode' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var Vector2 = require( 'DOT/Vector2' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var Property = require( 'AXON/Property' );
 
   // images
-  var voltmeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT/voltmeter_body.png' );
-  var redProbe = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT/probe_red.png' );
-  var blackProbe = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT/probe_black.png' );
+  var voltmeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltmeter_body.png' );
+  var redProbe = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/probe_red.png' );
+  var blackProbe = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/probe_black.png' );
 
   // constants
 
@@ -138,7 +138,7 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKit.register( 'VoltmeterNode', VoltmeterNode );
+  circuitConstructionKitCommon.register( 'VoltmeterNode', VoltmeterNode );
 
   return inherit( Node, VoltmeterNode, {} );
 } );

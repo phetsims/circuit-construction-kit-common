@@ -10,17 +10,17 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var CircuitConstructionKitScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitConstructionKitScreenView' );
-  var ChallengeSet = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/model/ChallengeSet' );
-  var ModeRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/view/ModeRadioButtonGroup' );
+  var CircuitConstructionKitScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitConstructionKitScreenView' );
+  var ChallengeSet = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/blackbox/model/ChallengeSet' );
+  var ModeRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/blackbox/view/ModeRadioButtonGroup' );
   var ComboBox = require( 'SUN/ComboBox' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
-  var BlackBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/view/BlackBoxNode' );
-  var WhiteBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/view/WhiteBoxNode' );
-  var RevealButton = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/view/RevealButton' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var BlackBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/blackbox/view/BlackBoxNode' );
+  var WhiteBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/blackbox/view/WhiteBoxNode' );
+  var RevealButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/blackbox/view/RevealButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var Color = require( 'SCENERY/util/Color' );
 
@@ -181,7 +181,7 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKit.register( 'BlackBoxSceneView', BlackBoxSceneView );
+  circuitConstructionKitCommon.register( 'BlackBoxSceneView', BlackBoxSceneView );
 
   return inherit( CircuitConstructionKitScreenView, BlackBoxSceneView, {
     reset: function() {

@@ -10,24 +10,24 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
-  var CircuitConstructionKitPanel = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitConstructionKitPanel' );
-  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Battery' );
-  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/LightBulb' );
-  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Vertex' );
-  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Wire' );
-  var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Switch' );
-  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Resistor' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var CircuitConstructionKitPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitConstructionKitPanel' );
+  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Battery' );
+  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/LightBulb' );
+  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Vertex' );
+  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Wire' );
+  var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Switch' );
+  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Resistor' );
   var Image = require( 'SCENERY/nodes/Image' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
-  var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/ResistorNode' );
-  var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/WireNode' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ResistorNode' );
+  var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/WireNode' );
   var LightBulbNode = require( 'SCENERY_PHET/LightBulbNode' );
   var Property = require( 'AXON/Property' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
 
   // images
-  var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT/battery.png' );
+  var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
 
   // constants
   var batteryLength = Battery.BATTERY_LENGTH;
@@ -225,7 +225,7 @@ define( function( require ) {
     } ) );
   }
 
-  circuitConstructionKit.register( 'CircuitElementToolbox', CircuitElementToolbox );
+  circuitConstructionKitCommon.register( 'CircuitElementToolbox', CircuitElementToolbox );
 
   return inherit( CircuitConstructionKitPanel, CircuitElementToolbox, {}, {
     NUMBER_OF_RIGHT_BATTERIES: 10,

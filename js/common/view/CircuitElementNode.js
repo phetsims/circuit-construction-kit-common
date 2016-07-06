@@ -10,11 +10,11 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
-  var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitElementEditContainerPanel' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitElementEditContainerPanel' );
 
   /**
    * @param {CircuitElement} circuitElement
@@ -27,7 +27,7 @@ define( function( require ) {
     this.updateOpacityOnInteractiveChange();
   }
 
-  circuitConstructionKit.register( 'CircuitElementNode', CircuitElementNode );
+  circuitConstructionKitCommon.register( 'CircuitElementNode', CircuitElementNode );
 
   return inherit( Node, CircuitElementNode, {
 

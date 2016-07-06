@@ -9,26 +9,26 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
-  var LabScreenModel = require( 'CIRCUIT_CONSTRUCTION_KIT/lab/model/LabScreenModel' );
-  var LabScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT/lab/view/LabScreenView' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var LabScreenModel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/lab/model/LabScreenModel' );
+  var LabScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/lab/view/LabScreenView' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Screen = require( 'JOIST/Screen' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var Image = require( 'SCENERY/nodes/Image' );
-  var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/ResistorNode' );
-  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Vertex' );
-  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Resistor' );
-  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Wire' );
-  var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/WireNode' );
+  var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ResistorNode' );
+  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Vertex' );
+  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Resistor' );
+  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Wire' );
+  var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/WireNode' );
   var LightBulbNode = require( 'SCENERY_PHET/LightBulbNode' );
   var Property = require( 'AXON/Property' );
 
   // images
-  var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT/battery.png' );
+  var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
 
   // constants
   var backgroundColor = CircuitConstructionKitConstants.backgroundColor;
@@ -75,7 +75,7 @@ define( function( require ) {
     );
   }
 
-  circuitConstructionKit.register( 'LabScreen', LabScreen );
+  circuitConstructionKitCommon.register( 'LabScreen', LabScreen );
 
   return inherit( Screen, LabScreen );
 } );

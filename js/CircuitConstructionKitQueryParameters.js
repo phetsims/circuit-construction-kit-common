@@ -10,7 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
 
   var getQueryParameter = phet.chipper.getQueryParameter;
 
@@ -30,7 +30,7 @@ define( function( require ) {
       'illegal value for vertexDisplay: ' + CircuitConstructionKitQueryParameters.vertexDisplay );
   }
 
-  circuitConstructionKit.register( 'CircuitConstructionKitQueryParameters', CircuitConstructionKitQueryParameters );
+  circuitConstructionKitCommon.register( 'CircuitConstructionKitQueryParameters', CircuitConstructionKitQueryParameters );
 
   return CircuitConstructionKitQueryParameters;
 } );

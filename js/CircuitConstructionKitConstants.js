@@ -11,7 +11,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Color = require( 'SCENERY/util/Color' );
 
   /**
@@ -21,7 +21,7 @@ define( function( require ) {
   function CircuitConstructionKitConstants() {
   }
 
-  circuitConstructionKit.register( 'CircuitConstructionKitConstants', CircuitConstructionKitConstants );
+  circuitConstructionKitCommon.register( 'CircuitConstructionKitConstants', CircuitConstructionKitConstants );
 
   return inherit( Object, CircuitConstructionKitConstants, {}, {
     vertexNodeAttributes: { stroke: 'black', lineWidth: 3, cursor: 'pointer' },

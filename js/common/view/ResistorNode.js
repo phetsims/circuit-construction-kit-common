@@ -11,14 +11,14 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
-  var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/FixedLengthCircuitElementNode' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/FixedLengthCircuitElementNode' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var ResistorColors = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/ResistorColors' );
+  var ResistorColors = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ResistorColors' );
   var Image = require( 'SCENERY/nodes/Image' );
 
   // images
-  var resistorImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT/resistor.png' );
+  var resistorImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor.png' );
 
   /**
    *
@@ -67,7 +67,7 @@ define( function( require ) {
     };
   }
 
-  circuitConstructionKit.register( 'ResistorNode', ResistorNode );
+  circuitConstructionKitCommon.register( 'ResistorNode', ResistorNode );
 
   return inherit( FixedLengthCircuitElementNode, ResistorNode, {
     dispose: function() {

@@ -10,12 +10,12 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/FixedLengthCircuitElement' );
+  var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/FixedLengthCircuitElement' );
   var Vector2 = require( 'DOT/Vector2' );
-  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Vertex' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Vertex' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   // constants
   var DISTANCE_BETWEEN_VERTICES = 33;
@@ -30,7 +30,7 @@ define( function( require ) {
     }, options );
   }
 
-  circuitConstructionKit.register( 'LightBulb', LightBulb );
+  circuitConstructionKitCommon.register( 'LightBulb', LightBulb );
 
   return inherit( FixedLengthCircuitElement, LightBulb, {
     toStateObjectWithVertexIndices: function( getVertexIndex ) {

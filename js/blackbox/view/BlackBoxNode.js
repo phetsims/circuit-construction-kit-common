@@ -10,12 +10,12 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitQueryParameters' );
+  var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
 
   /**
    * @param {number} width
@@ -48,6 +48,6 @@ define( function( require ) {
     this.mutate( options );
   }
 
-  circuitConstructionKit.register( 'BlackBoxNode', BlackBoxNode );
+  circuitConstructionKitCommon.register( 'BlackBoxNode', BlackBoxNode );
   return inherit( Node, BlackBoxNode );
 } );

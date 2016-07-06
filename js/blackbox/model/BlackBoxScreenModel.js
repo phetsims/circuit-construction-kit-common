@@ -10,7 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
 
@@ -23,6 +23,6 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKit.register( 'BlackBoxScreenModel', BlackBoxScreenModel );
+  circuitConstructionKitCommon.register( 'BlackBoxScreenModel', BlackBoxScreenModel );
   return inherit( PropertySet, BlackBoxScreenModel );
 } );

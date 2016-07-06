@@ -9,9 +9,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var CircuitConstructionKitScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitConstructionKitScreenView' );
+  var CircuitConstructionKitScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitConstructionKitScreenView' );
 
   /**
    * @param {CircuitConstructionKitModel} circuitConstructionKitScreenModel
@@ -23,7 +23,7 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKit.register( 'LabScreenView', LabScreenView );
+  circuitConstructionKitCommon.register( 'LabScreenView', LabScreenView );
 
   return inherit( CircuitConstructionKitScreenView, LabScreenView );
 } );

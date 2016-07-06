@@ -12,22 +12,22 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Image = require( 'SCENERY/nodes/Image' );
   var Node = require( 'SCENERY/nodes/Node' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
-  var ProbeTextNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/ProbeTextNode' );
+  var ProbeTextNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ProbeTextNode' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var Util = require( 'DOT/Util' );
   var ProbeNode = require( 'SCENERY_PHET/ProbeNode' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/ProbeWireNode' );
+  var ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ProbeWireNode' );
   var Vector2 = require( 'DOT/Vector2' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var Property = require( 'AXON/Property' );
 
   // images
-  var ammeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT/ammeter_body.png' );
+  var ammeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeter_body.png' );
 
   // constants
   // measurements for the cubic curve for the wire nodes
@@ -135,7 +135,7 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKit.register( 'AmmeterNode', AmmeterNode );
+  circuitConstructionKitCommon.register( 'AmmeterNode', AmmeterNode );
 
   return inherit( Node, AmmeterNode, {} );
 } );

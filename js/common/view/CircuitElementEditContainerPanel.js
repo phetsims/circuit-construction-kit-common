@@ -9,18 +9,18 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Resistor' );
-  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/LightBulb' );
-  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Battery' );
-  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Wire' );
+  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Resistor' );
+  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/LightBulb' );
+  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Battery' );
+  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Wire' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/FixedLengthCircuitElement' );
-  var CircuitElementEditPanel = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitElementEditPanel' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+  var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/FixedLengthCircuitElement' );
+  var CircuitElementEditPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitElementEditPanel' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   // constants
   var GET_LAYOUT_POSITION = function( visibleBounds ) {
@@ -94,7 +94,7 @@ define( function( require ) {
     visibleBoundsProperty.link( updatePosition );
   }
 
-  circuitConstructionKit.register( 'CircuitElementEditContainerPanel', CircuitElementEditContainerPanel );
+  circuitConstructionKitCommon.register( 'CircuitElementEditContainerPanel', CircuitElementEditContainerPanel );
 
   return inherit( Node, CircuitElementEditContainerPanel, {}, {
     GET_LAYOUT_POSITION: GET_LAYOUT_POSITION

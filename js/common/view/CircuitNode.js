@@ -10,24 +10,24 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/WireNode' );
-  var SwitchNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/SwitchNode' );
-  var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/BatteryNode' );
-  var CCKLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CCKLightBulbNode' );
-  var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/ResistorNode' );
-  var VertexNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/VertexNode' );
-  var SolderNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/SolderNode' );
+  var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/WireNode' );
+  var SwitchNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/SwitchNode' );
+  var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/BatteryNode' );
+  var CCKLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CCKLightBulbNode' );
+  var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ResistorNode' );
+  var VertexNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/VertexNode' );
+  var SolderNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/SolderNode' );
   var Vector2 = require( 'DOT/Vector2' );
-  var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/FixedLengthCircuitElement' );
-  var ElectronNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/ElectronNode' );
-  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Wire' );
-  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Battery' );
-  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/LightBulb' );
-  var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Switch' );
-  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Resistor' );
+  var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/FixedLengthCircuitElement' );
+  var ElectronNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ElectronNode' );
+  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Wire' );
+  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Battery' );
+  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/LightBulb' );
+  var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Switch' );
+  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Resistor' );
   var Property = require( 'AXON/Property' );
 
   /**
@@ -193,7 +193,7 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKit.register( 'CircuitNode', CircuitNode );
+  circuitConstructionKitCommon.register( 'CircuitNode', CircuitNode );
 
   return inherit( Node, CircuitNode, {
 

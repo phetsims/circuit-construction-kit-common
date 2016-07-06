@@ -11,20 +11,20 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ObservableArray = require( 'AXON/ObservableArray' );
-  var MNACircuit = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/modified-nodal-analysis/MNACircuit' );
+  var MNACircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/modified-nodal-analysis/MNACircuit' );
   var Property = require( 'AXON/Property' );
   var Emitter = require( 'AXON/Emitter' );
-  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Vertex' );
-  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Wire' );
-  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Battery' );
-  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/LightBulb' );
-  var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Switch' );
-  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Resistor' );
-  var ConstantDensityLayout = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/ConstantDensityLayout' );
-  var ConstantDensityPropagator = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/ConstantDensityPropagator' );
+  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Vertex' );
+  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Wire' );
+  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Battery' );
+  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/LightBulb' );
+  var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Switch' );
+  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Resistor' );
+  var ConstantDensityLayout = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/ConstantDensityLayout' );
+  var ConstantDensityPropagator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/ConstantDensityPropagator' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // constants
@@ -188,7 +188,7 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKit.register( 'Circuit', Circuit );
+  circuitConstructionKitCommon.register( 'Circuit', Circuit );
 
   return inherit( Object, Circuit, {
     containsVertex: function( vertex ) {

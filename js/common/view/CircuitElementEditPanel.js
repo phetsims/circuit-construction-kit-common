@@ -9,7 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var NumberControl = require( 'SCENERY_PHET/NumberControl' );
@@ -17,7 +17,7 @@ define( function( require ) {
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var Range = require( 'DOT/Range' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var Property = require( 'AXON/Property' );
 
   function CircuitElementEditPanel( title, units, valueProperty, circuit, circuitElement, tandem, options ) {
@@ -81,7 +81,7 @@ define( function( require ) {
     };
   }
 
-  circuitConstructionKit.register( 'CircuitElementEditPanel', CircuitElementEditPanel );
+  circuitConstructionKitCommon.register( 'CircuitElementEditPanel', CircuitElementEditPanel );
 
   return inherit( HBox, CircuitElementEditPanel, {
     dispose: function() {

@@ -9,10 +9,10 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Electron = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Electron' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+  var Electron = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Electron' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   // constants
   var electronsVisible = true;
@@ -23,7 +23,7 @@ define( function( require ) {
     this.electrons = circuit.electrons;
   }
 
-  circuitConstructionKit.register( 'ConstantDensityLayout', ConstantDensityLayout );
+  circuitConstructionKitCommon.register( 'ConstantDensityLayout', ConstantDensityLayout );
 
   return inherit( Object, ConstantDensityLayout, {
     layoutElectrons: function( circuitElement ) {

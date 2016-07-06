@@ -10,9 +10,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var LinearCircuitSolution = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/modified-nodal-analysis/LinearCircuitSolution' );
+  var LinearCircuitSolution = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/modified-nodal-analysis/LinearCircuitSolution' );
   var Matrix = require( 'DOT/Matrix' );
 
   // constants
@@ -185,7 +185,7 @@ define( function( require ) {
       return element.node0;
     }
   };
-  circuitConstructionKit.register( 'MNACircuit', MNACircuit );
+  circuitConstructionKitCommon.register( 'MNACircuit', MNACircuit );
 
   return inherit( Object, MNACircuit, {
     toString: function() {

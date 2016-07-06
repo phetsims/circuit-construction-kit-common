@@ -9,7 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var RadialGradient = require( 'SCENERY/util/RadialGradient' );
@@ -68,7 +68,7 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKit.register( 'ElectronNode', ElectronNode );
+  circuitConstructionKitCommon.register( 'ElectronNode', ElectronNode );
 
   return inherit( Node, ElectronNode );
 } );

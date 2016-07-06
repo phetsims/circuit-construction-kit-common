@@ -10,9 +10,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var BlackBoxSceneView = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/view/BlackBoxSceneView' );
+  var BlackBoxSceneView = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/blackbox/view/BlackBoxSceneView' );
   var MultiLineText = require( 'SCENERY_PHET/MultiLineText' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var Property = require( 'AXON/Property' );
@@ -56,6 +56,6 @@ define( function( require ) {
     questionText.moveToBack();
   }
 
-  circuitConstructionKit.register( 'WarmUpSceneView', WarmUpSceneView );
+  circuitConstructionKitCommon.register( 'WarmUpSceneView', WarmUpSceneView );
   return inherit( BlackBoxSceneView, WarmUpSceneView );
 } );

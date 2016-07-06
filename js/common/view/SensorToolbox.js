@@ -10,14 +10,14 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
-  var CircuitConstructionKitPanel = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitConstructionKitPanel' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var CircuitConstructionKitPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitConstructionKitPanel' );
   var HBox = require( 'SCENERY/nodes/HBox' );
-  var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/VoltmeterNode' );
-  var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/AmmeterNode' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
-  var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Voltmeter' );
-  var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/Ammeter' );
+  var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/VoltmeterNode' );
+  var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/AmmeterNode' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Voltmeter' );
+  var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Ammeter' );
 
   function SensorToolbox( voltmeterNode, ammeterNode, runningProperty, tandem ) {
     var sensorToolbox = this;
@@ -70,7 +70,7 @@ define( function( require ) {
     } ) );
   }
 
-  circuitConstructionKit.register( 'SensorToolbox', SensorToolbox );
+  circuitConstructionKitCommon.register( 'SensorToolbox', SensorToolbox );
 
   return inherit( CircuitConstructionKitPanel, SensorToolbox, {} );
 } );

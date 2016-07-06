@@ -10,13 +10,13 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var IntroSceneNode = require( 'CIRCUIT_CONSTRUCTION_KIT/intro/view/IntroSceneNode' );
+  var IntroSceneNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/intro/view/IntroSceneNode' );
   var ScreenView = require( 'JOIST/ScreenView' );
-  var IntroSceneModel = require( 'CIRCUIT_CONSTRUCTION_KIT/intro/model/IntroSceneModel' );
-  var SceneSelectionRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT/intro/view/SceneSelectionRadioButtonGroup' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+  var IntroSceneModel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/intro/model/IntroSceneModel' );
+  var SceneSelectionRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/intro/view/SceneSelectionRadioButtonGroup' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
 
   // constants
@@ -112,7 +112,7 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKit.register( 'IntroScreenView', IntroScreenView );
+  circuitConstructionKitCommon.register( 'IntroScreenView', IntroScreenView );
 
   return inherit( ScreenView, IntroScreenView, {
     step: function( dt ) {

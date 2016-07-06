@@ -10,7 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
 
   /**
@@ -31,7 +31,7 @@ define( function( require ) {
   var numberApproxEquals = function( a, b ) {
     return Math.abs( a - b ) < 1E-6;
   };
-  circuitConstructionKit.register( 'LinearCircuitSolution', LinearCircuitSolution );
+  circuitConstructionKitCommon.register( 'LinearCircuitSolution', LinearCircuitSolution );
 
   return inherit( Object, LinearCircuitSolution, {
 

@@ -10,12 +10,12 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var CircuitConstructionKitScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/CircuitConstructionKitScreenView' );
+  var CircuitConstructionKitScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitConstructionKitScreenView' );
   var Property = require( 'AXON/Property' );
-  var DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT/common/view/DisplayOptionsPanel' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+  var DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/DisplayOptionsPanel' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   // constants
   var inset = CircuitConstructionKitConstants.layoutInset;
@@ -80,7 +80,7 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKit.register( 'IntroSceneNode', IntroSceneNode );
+  circuitConstructionKitCommon.register( 'IntroSceneNode', IntroSceneNode );
 
   return inherit( CircuitConstructionKitScreenView, IntroSceneNode );
 } );

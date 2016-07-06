@@ -10,15 +10,15 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
-  var BlackBoxScreenModel = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/model/BlackBoxScreenModel' );
-  var BlackBoxScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/view/BlackBoxScreenView' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var BlackBoxScreenModel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/blackbox/model/BlackBoxScreenModel' );
+  var BlackBoxScreenView = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/blackbox/view/BlackBoxScreenView' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Screen = require( 'JOIST/Screen' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var BlackBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT/blackbox/view/BlackBoxNode' );
+  var BlackBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/blackbox/view/BlackBoxNode' );
   var Property = require( 'AXON/Property' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   // constants
   var backgroundColor = CircuitConstructionKitConstants.backgroundColor;
@@ -52,6 +52,6 @@ define( function( require ) {
     );
   }
 
-  circuitConstructionKit.register( 'BlackBoxScreen', BlackBoxScreen );
+  circuitConstructionKitCommon.register( 'BlackBoxScreen', BlackBoxScreen );
   return inherit( Screen, BlackBoxScreen );
 } );

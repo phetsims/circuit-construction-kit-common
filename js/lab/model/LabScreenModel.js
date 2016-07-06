@@ -9,8 +9,8 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKit = require( 'CIRCUIT_CONSTRUCTION_KIT/circuitConstructionKit' );
-  var CircuitConstructionKitModel = require( 'CIRCUIT_CONSTRUCTION_KIT/common/model/CircuitConstructionKitModel' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var CircuitConstructionKitModel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/CircuitConstructionKitModel' );
   var inherit = require( 'PHET_CORE/inherit' );
 
   /**
@@ -20,7 +20,7 @@ define( function( require ) {
     CircuitConstructionKitModel.call( this, tandem, {}, {} );
   }
 
-  circuitConstructionKit.register( 'LabScreenModel', LabScreenModel );
+  circuitConstructionKitCommon.register( 'LabScreenModel', LabScreenModel );
 
   return inherit( CircuitConstructionKitModel, LabScreenModel );
 } );
