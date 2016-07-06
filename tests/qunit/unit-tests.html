@@ -21,7 +21,7 @@
   </script>
 
   <!-- <script src="../../dist/standalone/dot.min.js"></script> -->
-  <script data-main="../../js/circuit-construction-kit-config.js"
+  <script data-main="../../js/circuit-construction-kit-common-config.js"
           src="../../../sherpa/lib/require-2.1.11.js"></script>
 
   <!-- Loads the code needed to run unit tests for each particular library/codebase -->
@@ -41,8 +41,8 @@
 <div id="qunit-fixture"></div>
 <script src="../../../sherpa/lib/qunit-1.14.0.js"></script>
 <script>
-  require( [ 'circuit-construction-kit-config' ], function() {
-    require( [ 'circuit-construction-kit-main', 'PHET_CORE/main', 'PHET_CORE/phetAllocation' ], function() {
+  require( [ 'circuit-construction-kit-common-config' ], function() {
+    require( [ 'circuit-construction-kit-common-main', 'PHET_CORE/main', 'PHET_CORE/phetAllocation' ], function() {
       runCCKTests( '.' );
     } );
   } );

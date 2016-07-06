@@ -10,5 +10,5 @@ function runCCKTests( pathToTestBase ) {
     document.getElementsByTagName( 'head' )[ 0 ].appendChild( script );
   }
 
-  loadTestFile( 'js/circuit-construction-kit-tests.js' );
+  loadTestFile( 'js/circuit-construction-kit-common-tests.js' );
 }

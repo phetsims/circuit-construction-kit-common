@@ -3,8 +3,8 @@
 (function() {
   'use strict';
 
-  var MNACircuit = phet.circuitConstructionKit.MNACircuit;
-  var LinearCircuitSolution = phet.circuitConstructionKit.LinearCircuitSolution;
+  var MNACircuit = phet.circuitConstructionKitCommon.MNACircuit;
+  var LinearCircuitSolution = phet.circuitConstructionKitCommon.LinearCircuitSolution;
 
   module( 'Circuit Construction Kit' );
 
