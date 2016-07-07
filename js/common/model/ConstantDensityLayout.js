@@ -31,18 +31,22 @@ define( function( require ) {
       this.electrons.removeAll( particlesInBranch );
 
       if ( electronsVisible ) {
+
+        // compress or expand, but fix a particle at startingPoint and endingPoint.
         var offset = ELECTRON_DX / 2;
         var endingPoint = circuitElement.length - offset;
+        var startingPoint = offset;
+        var length = endingPoint - startingPoint;
 
-        //compress or expand, but fix a particle at startingPoint and endingPoint.
-        var length = endingPoint - offset;
-        var desiredDensity = 1 / ELECTRON_DX;
-        var N = length * desiredDensity;
-        var integralNumberParticles = Math.ceil( N );
-        var density = ( integralNumberParticles - 1 ) / length;
+        var numberParticles = length / ELECTRON_DX;
+        var integralNumberParticles = Math.ceil( numberParticles );
+        var density = ( integralNumberParticles - 1) / length;
         var dx = 1 / density;
-        if ( density === 0 ) {
-          integralNumberParticles = 0;
+
+        // If there is a single particle, show it in the middle of the component.
+        if ( integralNumberParticles === 1 ) {
+          dx = 0;
+          offset = (startingPoint + endingPoint) / 2;
         }
         for ( var i = 0; i < integralNumberParticles; i++ ) {
           this.electrons.add( new Electron( circuitElement, i * dx + offset, this.circuit.showElectronsProperty ) );
