@@ -99,6 +99,8 @@ define( function( require ) {
   return inherit( PropertySet, ConstantDensityPropagator, {
     step: function( dt ) {
 
+
+
       // dt would ideally be around 16.666ms = 0.0166 sec
       // let's cap it at double that
       dt = Math.min( dt, 1 / 60 * 2 ) * timeScale;
@@ -116,8 +118,12 @@ define( function( require ) {
 
       this.timeScale = this.timeScalingPercentValue;
       for ( var i = 0; i < this.electrons.length; i++ ) {
-        var e = this.electrons.get( i );
-        this.propagate( e, dt );
+        var electron = this.electrons.get( i );
+
+        // Don't update electrons in dirty circuit elements, because they will get a relayout anyways
+        if ( !electron.circuitElement.dirty ) {
+          this.propagate( electron, dt );
+        }
       }
 
       //maybe this should be done in random order, otherwise we may get artefacts.
