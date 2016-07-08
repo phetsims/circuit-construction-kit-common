@@ -45,7 +45,7 @@ define( function( require ) {
       else {
         readout.right = textBox.right - 10;
       }
-      readout.bottom = textBox.bottom;
+      readout.centerY = textBox.centerY;
     } );
     var readoutNode = new Node( {
       children: [ textBox, readout ]
