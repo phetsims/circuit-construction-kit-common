@@ -12,7 +12,9 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var PropertySet = require( 'AXON/PropertySet' );
+  var Property = require( 'AXON/Property' );
   var Emitter = require( 'AXON/Emitter' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   /**
    *
@@ -31,15 +33,19 @@ define( function( require ) {
     this.deleted = false;
 
     PropertySet.call( this, {
-      distance: distance
+      distance: distance,
+      updating: true, // flag to disable updates during ConstantDensityPropagator.step to improve performance
+      position: new Vector2()
     } );
-    this.addDerivedProperty( 'position', [ 'distance' ], function( distance ) {
-      assert && assert( !electron.deleted, 'Electron was deleted' );
-      assert && assert( !isNaN( distance ), 'electron position was not a number' );
-      assert && assert( electron.circuitElement.containsScalarLocation( distance ), 'branch did not contain position' );
-      var position = electron.circuitElement.getPosition( distance );
-      assert && assert( !isNaN( position.x ) && !isNaN( position.y ), 'point was not a number' );
-      return position;
+
+    Property.multilink( [ this.distanceProperty, this.updatingProperty ], function( distance, updating ) {
+      if ( updating ) {
+        assert && assert( !electron.deleted, 'Electron was deleted' );
+        assert && assert( !isNaN( distance ), 'electron position was not a number' );
+        var position = electron.circuitElement.getPosition( distance );
+        assert && assert( !isNaN( position.x ) && !isNaN( position.y ), 'point was not a number' );
+        electron.position = position;
+      }
     } );
 
     // @public

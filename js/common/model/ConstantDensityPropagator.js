@@ -99,7 +99,11 @@ define( function( require ) {
   return inherit( PropertySet, ConstantDensityPropagator, {
     step: function( dt ) {
 
-
+      // Disable incremental updates to improve performance.  The ElectronNodes are only updated once, instead
+      // of incrementally many times throughout this update
+      for ( var k = 0; k < this.electrons.length; k++ ) {
+        this.electrons.get( k ).updating = false;
+      }
 
       // dt would ideally be around 16.666ms = 0.0166 sec
       // let's cap it at double that
@@ -129,6 +133,11 @@ define( function( require ) {
       //maybe this should be done in random order, otherwise we may get artefacts.
       for ( i = 0; i < numEqualize; i++ ) {
         this.equalizeAll( dt );
+      }
+
+      // After math complete, update the positions all at once
+      for ( k = 0; k < this.electrons.length; k++ ) {
+        this.electrons.get( k ).updating = true;
       }
     },
     getMaxCurrent: function() {
