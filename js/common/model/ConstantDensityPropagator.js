@@ -143,7 +143,13 @@ define( function( require ) {
       }
       _.shuffle( indices );
       for ( i = 0; i < this.electrons.length; i++ ) {
-        this.equalizeElectron( this.electrons.get( indices[ i ] ), dt );
+        var electron = this.electrons.get( indices[ i ] );
+
+        // No need to update electrons in dirty circuit elements, they will be replaced anyways.  Skipping dirty
+        // circuitElements improves performance
+        if ( !electron.circuitElement.dirty ) {
+          this.equalizeElectron( electron, dt );
+        }
       }
     },
     equalizeElectron: function( electron, dt ) {
