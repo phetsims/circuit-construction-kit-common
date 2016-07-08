@@ -636,7 +636,7 @@ define( function( require ) {
      * @returns {Array}
      */
     getElectronsInCircuitElement: function( circuitElement ) {
-      return this.electrons.filter( function( electron ) { return electron.circuitElement === circuitElement; } ).getArray();
+      return this.electrons.getArray().filter( function( electron ) { return electron.circuitElement === circuitElement; } );
     },
 
     /**

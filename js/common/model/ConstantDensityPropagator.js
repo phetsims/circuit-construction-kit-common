@@ -30,8 +30,7 @@ define( function( require ) {
   var timeScale = 100;
   var highestSoFar = null;//for debugging
 
-  var getUpperNeighborInBranch = function( circuit, electron ) {
-    var branchElectrons = circuit.getElectronsInCircuitElement( electron.circuitElement );
+  var getUpperNeighborInBranch = function( circuit, electron, branchElectrons ) {
     var closestUpperNeighbor = null;
     var closestDistance = Number.POSITIVE_INFINITY;
     for ( var i = 0; i < branchElectrons.length; i++ ) {
@@ -51,8 +50,7 @@ define( function( require ) {
     return closestUpperNeighbor;
   };
 
-  var getLowerNeighborInBranch = function( circuit, electron ) {
-    var branchElectrons = circuit.getElectronsInCircuitElement( electron.circuitElement );
+  var getLowerNeighborInBranch = function( circuit, electron, branchElectrons ) {
     var closestLowerNeighbor = null;
     var closestDistance = Number.POSITIVE_INFINITY;
     for ( var i = 0; i < branchElectrons.length; i++ ) {
@@ -154,9 +152,11 @@ define( function( require ) {
     },
     equalizeElectron: function( electron, dt ) {
 
+      var branchElectrons = this.circuit.getElectronsInCircuitElement( electron.circuitElement );
+
       // if it has a lower and upper neighbor, try to get the distance to each to be half of ELECTRON_DX
-      var upper = getUpperNeighborInBranch( this.circuit, electron );
-      var lower = getLowerNeighborInBranch( this.circuit, electron );
+      var upper = getUpperNeighborInBranch( this.circuit, electron, branchElectrons );
+      var lower = getLowerNeighborInBranch( this.circuit, electron, branchElectrons );
       if ( upper === null || lower === null ) {
         return;
       }
