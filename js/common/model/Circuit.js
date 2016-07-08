@@ -510,7 +510,12 @@ define( function( require ) {
 
     step: function( dt ) {
       this.constantDensityPropagator.step( dt );
+    },
 
+    /**
+     * Happens every frame, even if paused.
+     */
+    updateElectronsInDirtyCircuitElements: function() {
       var circuitElements = this.circuitElements; // TODO: Heavy on GC
       for ( var i = 0; i < circuitElements.length; i++ ) {
         if ( circuitElements[ i ].dirty ) {

@@ -59,7 +59,13 @@ define( function( require ) {
 
   return inherit( PropertySet, CircuitConstructionKitModel, {
     step: function( dt ) {
-      this.circuit.step( dt );
+
+      // Only move electrons if the simulation is not paused.
+      if ( this.runningProperty.get() ) {
+        this.circuit.step( dt );
+      }
+      
+      this.circuit.updateElectronsInDirtyCircuitElements();
     },
     reset: function() {
       PropertySet.prototype.reset.call( this );
