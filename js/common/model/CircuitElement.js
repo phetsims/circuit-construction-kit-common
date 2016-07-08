@@ -47,6 +47,9 @@ define( function( require ) {
       insideTrueBlackBox: false
     }, propertySetMap ) );
 
+    // @public - true if the electrons must be layed out
+    this.dirty = true;
+
     this.interactiveProperty = this.interactiveProperty || null;
 
     // @public (read-only) - indicate when this circuit element has been connected

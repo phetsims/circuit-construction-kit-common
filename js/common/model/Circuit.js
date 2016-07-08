@@ -102,14 +102,15 @@ define( function( require ) {
     this.resistors.addItemAddedListener( addVertices );
 
     var addElectrons = function( circuitElement ) {
-      circuit.constantDensityLayout.layoutElectrons( circuitElement );
+      circuitElement.dirty = true;
+      // circuit.constantDensityLayout.layoutElectrons( circuitElement );
 
       // When any vertex moves, relayout all electrons within the fixed-length connected component, see #100
       var updateElectrons = function() {
         var circuitElements = circuit.findAllConnectedCircuitElements( circuitElement.startVertex );
 
         for ( var i = 0; i < circuitElements.length; i++ ) {
-          circuit.constantDensityLayout.layoutElectrons( circuitElements[ i ] );
+          circuitElements[ i ].dirty = true;
         }
       };
       circuitElement.vertexMovedEmitter.addListener( updateElectrons );
@@ -509,6 +510,13 @@ define( function( require ) {
 
     step: function( dt ) {
       this.constantDensityPropagator.step( dt );
+
+      var circuitElements = this.circuitElements; // TODO: Heavy on GC
+      for ( var i = 0; i < circuitElements.length; i++ ) {
+        if ( circuitElements[ i ].dirty ) {
+          this.constantDensityLayout.layoutElectrons( circuitElements[ i ] );
+        }
+      }
     },
 
     // The only way for two vertices to be adjacent is for them to be the start/end of a single CircuitElement
