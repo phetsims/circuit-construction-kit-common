@@ -28,6 +28,7 @@ define( function( require ) {
   var minusChargeNode = new Node( {
     children: [
       new Circle( radius, {
+        boundsMethod: 'none',
         fill: new RadialGradient( 2, -3, 2, 2, -3, 7 )
           .addColorStop( 0, '#4fcfff' )
           .addColorStop( 0.5, '#2cbef5' )
@@ -39,7 +40,9 @@ define( function( require ) {
         centerX: 0,
         centerY: 0
       } )
-    ], scale: scale
+    ],
+    scale: scale,
+    boundsMethod: 'none'
   } );
   minusChargeNode.top = 0;
   minusChargeNode.left = 0;
