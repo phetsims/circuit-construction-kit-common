@@ -859,7 +859,7 @@ define( function( require ) {
       circuitStruct.wires.forEach( this.wires.add.bind( this.wires ) );
       circuitStruct.switches.forEach( this.switches.add.bind( this.switches ) );
       circuitStruct.batteries.forEach( this.batteries.add.bind( this.batteries ) );
-      circuitStruct.resistors.forEach( this.vertices.add.bind( this.vertices ) );
+      circuitStruct.resistors.forEach( this.resistors.add.bind( this.resistors ) );
       circuitStruct.lightBulbs.forEach( this.lightBulbs.add.bind( this.lightBulbs ) );
     }
   } );
