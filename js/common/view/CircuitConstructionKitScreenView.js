@@ -27,6 +27,7 @@ define( function( require ) {
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
   var PlayPauseButton = require( 'SCENERY_PHET/buttons/PlayPauseButton' );
+  var TextPushButton = require( 'SUN/buttons/TextPushButton' );
 
   // constants
   var inset = CircuitConstructionKitConstants.layoutInset;
@@ -56,7 +57,8 @@ define( function( require ) {
           top: visibleBounds.top + inset
         };
       },
-      getCircuitEditPanelLayoutPosition: CircuitElementEditContainerPanel.GET_LAYOUT_POSITION
+      getCircuitEditPanelLayoutPosition: CircuitElementEditContainerPanel.GET_LAYOUT_POSITION,
+      showSaveButton: CircuitConstructionKitQueryParameters.showSaveButton
     }, options );
     this.circuitConstructionKitModel = circuitConstructionKitModel;
     ScreenView.call( this );
@@ -71,6 +73,15 @@ define( function( require ) {
         }
       } );
       this.addChild( resetAllButton );
+    }
+
+    if ( options.showSaveButton ) {
+      var saveButton = new TextPushButton( 'Save', {
+        listener: function() {
+          
+        }
+      } );
+      this.addChild( saveButton );
     }
 
     var voltmeterNode = new VoltmeterNode( circuitConstructionKitModel.voltmeter, tandem.createTandem( 'voltmeterNode' ), {
@@ -147,6 +158,13 @@ define( function( require ) {
         resetAllButton.mutate( {
           right: visibleBounds.right - inset,
           bottom: visibleBounds.bottom - inset
+        } );
+      }
+
+      if ( options.showSaveButton ) {
+        saveButton.mutate( {
+          right: visibleBounds.right - inset,
+          bottom: resetAllButton.top - inset
         } );
       }
 

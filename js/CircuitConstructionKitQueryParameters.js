@@ -21,7 +21,9 @@ define( function( require ) {
 
     dev: !!getQueryParameter( 'dev' ),
 
-    showPlayPauseButton: !!getQueryParameter( 'showPlayPauseButton' )
+    showPlayPauseButton: !!getQueryParameter( 'showPlayPauseButton' ),
+
+    showSaveButton: !!getQueryParameter( 'showSaveButton' )
   };
 
   if ( CircuitConstructionKitQueryParameters.vertexDisplay ) {
