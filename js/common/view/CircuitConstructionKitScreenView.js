@@ -28,6 +28,7 @@ define( function( require ) {
   var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
   var PlayPauseButton = require( 'SCENERY_PHET/buttons/PlayPauseButton' );
   var TextPushButton = require( 'SUN/buttons/TextPushButton' );
+  var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/CircuitStruct' );
 
   // constants
   var inset = CircuitConstructionKitConstants.layoutInset;
@@ -75,10 +76,37 @@ define( function( require ) {
       this.addChild( resetAllButton );
     }
 
+    // TODO: A better place to implement this?
+    if ( CircuitConstructionKitQueryParameters.circuit ) {
+      var circuitStateObject = JSON.parse( LZString.decompressFromEncodedURIComponent( CircuitConstructionKitQueryParameters.circuit ) );
+      var circuitStruct = CircuitStruct.fromStateObject( circuitStateObject );
+      circuitConstructionKitModel.circuit.loadFromCircuitStruct( circuitStruct );
+    }
+
     if ( options.showSaveButton ) {
       var saveButton = new TextPushButton( 'Save', {
         listener: function() {
-          
+          var stateObject = circuitConstructionKitModel.circuit.toStateObject();
+          var string = JSON.stringify( stateObject );
+          console.log( string );
+          console.log( string.length );
+
+          var compressed = LZString.compressToEncodedURIComponent( string );
+          console.log( 'compressed: ' + compressed );
+          console.log( compressed.length );
+
+          // assume circuit query parameter is last
+          var text = window.location.href;
+          if ( text.indexOf( '?circuit=' ) >= 0 ) {
+            text = text.substring( 0, text.indexOf( '?circuit=' ) );
+          }
+          else if ( text.indexOf( '&circuit=' ) >= 0 ) {
+            text = text.substring( 0, text.indexOf( '&circuit=' ) );
+          }
+
+          var join = text.indexOf( '?' ) >= 0 ? '&' : '?';
+
+          window.history.pushState( { hello: 'there' }, 'title', text + join + 'circuit=' + compressed );
         }
       } );
       this.addChild( saveButton );

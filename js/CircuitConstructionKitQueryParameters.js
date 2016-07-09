@@ -23,7 +23,9 @@ define( function( require ) {
 
     showPlayPauseButton: !!getQueryParameter( 'showPlayPauseButton' ),
 
-    showSaveButton: !!getQueryParameter( 'showSaveButton' )
+    showSaveButton: !!getQueryParameter( 'showSaveButton' ),
+
+    circuit: getQueryParameter( 'circuit' )
   };
 
   if ( CircuitConstructionKitQueryParameters.vertexDisplay ) {
