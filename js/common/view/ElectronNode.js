@@ -68,15 +68,21 @@ define( function( require ) {
     };
     electron.positionProperty.link( positionListener );
 
-    var multilink = Property.multilink( [ electron.visibleProperty, outsideOfBlackBoxProperty, revealingProperty ], function( visible, outsideBox, revealing ) {
-      electronNode.visible = visible && (outsideBox || revealing);
-    } );
+    // TODO: When I wrote this with Property.multilink, it failed as #172
+    var updateVisible = function() {
+      electronNode.visible = electron.visibleProperty.value && (outsideOfBlackBoxProperty.value || revealingProperty.value);
+    };
+    revealingProperty.link( updateVisible );
+    electron.visibleProperty.link( updateVisible );
+    outsideOfBlackBoxProperty.link( updateVisible );
 
     var disposeListener = function() {
       electronNode.detach();
       electron.positionProperty.unlink( positionListener );
-      multilink.dispose();
       electron.disposeEmitter.removeListener( disposeListener );
+      revealingProperty.unlink( updateVisible );
+      electron.visibleProperty.unlink( updateVisible );
+      outsideOfBlackBoxProperty.unlink( updateVisible );
     };
     electron.disposeEmitter.addListener( disposeListener );
   }
