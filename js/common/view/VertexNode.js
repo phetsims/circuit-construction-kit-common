@@ -58,6 +58,19 @@ define( function( require ) {
     circuit.vertices.addItemAddedListener( updateStroke );
     circuit.vertices.addItemRemovedListener( updateStroke );
 
+    // In Black Box, other wires can be detached from a vertex and this should also update the solder
+    circuit.batteries.addItemAddedListener( updateStroke );
+    circuit.batteries.addItemRemovedListener( updateStroke );
+
+    circuit.wires.addItemAddedListener( updateStroke );
+    circuit.wires.addItemRemovedListener( updateStroke );
+
+    circuit.resistors.addItemAddedListener( updateStroke );
+    circuit.resistors.addItemRemovedListener( updateStroke );
+
+    circuit.lightBulbs.addItemAddedListener( updateStroke );
+    circuit.lightBulbs.addItemRemovedListener( updateStroke );
+    
     updateStroke();
 
     var cutButton = new RoundPushButton( {
@@ -209,6 +222,22 @@ define( function( require ) {
       vertex.moveToFrontEmitter.removeListener( updateMoveToFront );
 
       circuitNode.highlightLayer.removeChild( highlightNode );
+
+      circuit.vertices.removeItemAddedListener( updateStroke );
+      circuit.vertices.removeItemRemovedListener( updateStroke );
+
+      // In Black Box, other wires can be detached from a vertex and this should also update the solder
+      circuit.batteries.removeItemAddedListener( updateStroke );
+      circuit.batteries.removeItemRemovedListener( updateStroke );
+
+      circuit.wires.removeItemAddedListener( updateStroke );
+      circuit.wires.removeItemRemovedListener( updateStroke );
+
+      circuit.resistors.removeItemAddedListener( updateStroke );
+      circuit.resistors.removeItemRemovedListener( updateStroke );
+
+      circuit.lightBulbs.removeItemAddedListener( updateStroke );
+      circuit.lightBulbs.removeItemRemovedListener( updateStroke );
     };
   }
 
