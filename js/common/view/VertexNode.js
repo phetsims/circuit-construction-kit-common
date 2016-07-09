@@ -41,7 +41,7 @@ define( function( require ) {
 
     // Start as a dotted line, becomes solid when connected to >1 element.
     var dottedLineNode = new Circle( this.dottedLineNodeRadius, {
-      stroke: 'black',
+      stroke: 'red',
       lineWidth: 1.3,
       lineDash: [ 6, 4 ],
       cursor: 'pointer'
@@ -51,6 +51,14 @@ define( function( require ) {
       lineWidth: CircuitConstructionKitConstants.highlightLineWidth,
       pickable: false
     } );
+
+    var updateStroke = function() {
+      dottedLineNode.stroke = circuit.countCircuitElements( vertex ) > 1 ? 'black' : 'red';
+    };
+    circuit.vertices.addItemAddedListener( updateStroke );
+    circuit.vertices.addItemRemovedListener( updateStroke );
+
+    updateStroke();
 
     var cutButton = new RoundPushButton( {
       tandem: tandem.createTandem( 'cutButton' ),
