@@ -79,9 +79,15 @@ define( function( require ) {
     // TODO: A better place to implement this?
     if ( CircuitConstructionKitQueryParameters.circuit ) {
       var circuitStateObject = JSON.parse( LZString.decompressFromEncodedURIComponent( CircuitConstructionKitQueryParameters.circuit ) );
-      var circuitStruct = CircuitStruct.fromStateObject( circuitStateObject );
-      circuitConstructionKitModel.circuit.loadFromCircuitStruct( circuitStruct );
+      circuitConstructionKitModel.circuit.loadFromCircuitStruct( CircuitStruct.fromStateObject( circuitStateObject ) );
     }
+
+    window.onpopstate = function( e ) {
+      if ( e.state && e.state.circuit ) {
+        var circuit = e.state.circuit;
+        circuitConstructionKitModel.circuit.loadFromCircuitStruct( CircuitStruct.fromStateObject( circuit ) );
+      }
+    };
 
     if ( options.showSaveButton ) {
       var saveButton = new TextPushButton( 'Save', {
@@ -106,7 +112,7 @@ define( function( require ) {
 
           var join = text.indexOf( '?' ) >= 0 ? '&' : '?';
 
-          window.history.pushState( { hello: 'there' }, 'title', text + join + 'circuit=' + compressed );
+          window.history.pushState( { circuit: stateObject }, 'title', text + join + 'circuit=' + compressed );
         }
       } );
       this.addChild( saveButton );
