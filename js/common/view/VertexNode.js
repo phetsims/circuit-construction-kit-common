@@ -103,13 +103,6 @@ define( function( require ) {
     };
     vertex.interactiveProperty.link( updatePickable );
 
-    // var updateShape = function() {
-    //   var edgeCount = circuit.countCircuitElements( vertex );
-    //   dottedLineNode.fill = edgeCount > 1 ? CircuitConstructionKitConstants.solderColor : null;
-    // };
-    // circuit.vertices.addItemAddedListener( updateShape );
-    // circuit.vertices.addItemRemovedListener( updateShape );
-
     var p = null;
     var didDrag = false;
     var simpleDragHandler = new SimpleDragHandler( {
