@@ -755,7 +755,7 @@ define( function( require ) {
       // (9) When in Black Box "build" mode (i.e. building inside the black box), a vertex user cannot connect to
       // a black box interface vertex if its other vertices would be outside of the black box.  See #136
       if ( mode === 'build' ) {
-        var connectedVertices = this.findAllConnectedVertices( vertex );
+        var fixedVertices2 = this.findAllFixedVertices( vertex );
         candidateVertices = candidateVertices.filter( function( candidateVertex ) {
 
           // Don't connect to vertices that might have sneaked outside of the black box, say by a rotation.
@@ -764,8 +764,8 @@ define( function( require ) {
           }
 
           if ( candidateVertex.blackBoxInterface || blackBoxBounds.containsPoint( candidateVertex.position ) ) {
-            for ( var i = 0; i < connectedVertices.length; i++ ) {
-              var connectedVertex = connectedVertices[ i ];
+            for ( var i = 0; i < fixedVertices2.length; i++ ) {
+              var connectedVertex = fixedVertices2[ i ];
               if ( connectedVertex.blackBoxInterface ) {
 
                 // OK for black box interface vertex to be slightly outside the box
