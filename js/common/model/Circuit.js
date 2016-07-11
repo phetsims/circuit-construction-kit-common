@@ -310,7 +310,8 @@ define( function( require ) {
             interactive: true,
             attachable: true,
             blackBoxInterface: false,
-            insideTrueBlackBox: false
+            insideTrueBlackBox: false,
+            tandem: this.vertexGroupTandem.createNextTandem()
           };
           var newVertex = new Vertex( vertex.position.x, vertex.position.y, options );
 
