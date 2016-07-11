@@ -146,15 +146,16 @@ define( function( require ) {
 
     // Pass the view into circuit node so that circuit elements can be dropped back into the toolbox
     this.circuitNode = new CircuitNode( circuitConstructionKitModel.circuit, this, tandem.createTandem( 'circuitNode' ) );
-    this.circuitElementToolbox = new CircuitElementToolbox( circuitConstructionKitModel.circuit, this.circuitNode, {
-      orientation: options.toolboxOrientation,
-      numberOfRightBatteries: options.numberOfRightBatteriesInToolbox,
-      numberOfLeftBatteries: options.numberOfLeftBatteriesInToolbox,
-      numberOfWires: options.numberOfWiresInToolbox,
-      numberOfSwitches: options.numberOfSwitchesInToolbox,
-      numberOfLightBulbs: options.numberOfLightBulbsInToolbox,
-      numberOfResistors: options.numberOfResistorsInToolbox
-    } );
+    this.circuitElementToolbox = new CircuitElementToolbox( circuitConstructionKitModel.circuit, this.circuitNode,
+      tandem.createTandem( 'circuitElementToolbox' ), {
+        orientation: options.toolboxOrientation,
+        numberOfRightBatteries: options.numberOfRightBatteriesInToolbox,
+        numberOfLeftBatteries: options.numberOfLeftBatteriesInToolbox,
+        numberOfWires: options.numberOfWiresInToolbox,
+        numberOfSwitches: options.numberOfSwitchesInToolbox,
+        numberOfLightBulbs: options.numberOfLightBulbsInToolbox,
+        numberOfResistors: options.numberOfResistorsInToolbox
+      } );
 
     var electronSpeedThrottlingReadoutNode = new ElectronSpeedThrottlingReadoutNode( circuitConstructionKitModel.circuit.constantDensityPropagator.timeScaleProperty, circuitConstructionKitModel.circuit.showElectronsProperty );
     this.addChild( electronSpeedThrottlingReadoutNode );

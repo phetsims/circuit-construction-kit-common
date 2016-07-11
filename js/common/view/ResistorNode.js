@@ -22,12 +22,14 @@ define( function( require ) {
 
   /**
    *
+   * @param circuitConstructionKitScreenView
    * @param {CircuitNode} [circuitNode] optional, null for icons
    * @param resistor
+   * @param tandem
    * @param options
    * @constructor
    */
-  function ResistorNode( circuitConstructionKitScreenView, circuitNode, resistor, options ) {
+  function ResistorNode( circuitConstructionKitScreenView, circuitNode, resistor, runningProperty, tandem, options ) {
     this.resistor = resistor;
     var imageScale = 0.7;
     var resistorNode = new Image( resistorImage );
@@ -61,7 +63,7 @@ define( function( require ) {
       resistorNode.addChild( colorBands[ i ] );
     }
 
-    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, resistor, resistorNode, imageScale, options );
+    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, resistor, resistorNode, imageScale, tandem, options );
     this.disposeResistorNode = function() {
       resistor.resistanceProperty.unlink( updateColorBands );
     };

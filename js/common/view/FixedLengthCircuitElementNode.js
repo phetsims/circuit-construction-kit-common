@@ -14,7 +14,7 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var Property = require( 'AXON/Property' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var TandemDragHandler = require( 'TANDEM/scenery/input/TandemDragHandler' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitElementNode' );
   var Matrix3 = require( 'DOT/Matrix3' );
@@ -30,7 +30,7 @@ define( function( require ) {
    * @constructor
    */
   function FixedLengthCircuitElementNode( circuitConstructionKitScreenView, circuitNode, circuitElement, contentNode,
-                                          contentScale, options ) {
+                                          contentScale, tandem, options ) {
 
     var fixedLengthCircuitElementNode = this;
 
@@ -125,37 +125,40 @@ define( function( require ) {
     // Use whatever the start node currently is (it can change), and let the circuit manage the dependent vertices
     var p = null;
     var didDrag = false;
-    this.inputListener = new SimpleDragHandler( {
-      start: function( event ) {
-        p = event.pointer.point;
-        circuitElement.interactive && circuitNode.startDrag( event.pointer.point, circuitElement.endVertex, false );
-        didDrag = false;
-      },
-      drag: function( event ) {
-        circuitElement.interactive && circuitNode.drag( event.pointer.point, circuitElement.endVertex, false );
-        didDrag = true;
-      },
-      end: function( event ) {
+    if ( !options.icon ) {
+      this.inputListener = new TandemDragHandler( {
+        tandem: tandem.createTandem( 'inputListener' ), // TODO: some input listeners are 'dragHandler' let's be consistent
+        start: function( event ) {
+          p = event.pointer.point;
+          circuitElement.interactive && circuitNode.startDrag( event.pointer.point, circuitElement.endVertex, false );
+          didDrag = false;
+        },
+        drag: function( event ) {
+          circuitElement.interactive && circuitNode.drag( event.pointer.point, circuitElement.endVertex, false );
+          didDrag = true;
+        },
+        end: function( event ) {
 
-        // If over the toolbox, then drop into it, and don't process further
-        if ( circuitConstructionKitScreenView.canNodeDropInToolbox( fixedLengthCircuitElementNode ) ) {
-          circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( fixedLengthCircuitElementNode );
-          return;
+          // If over the toolbox, then drop into it, and don't process further
+          if ( circuitConstructionKitScreenView.canNodeDropInToolbox( fixedLengthCircuitElementNode ) ) {
+            circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( fixedLengthCircuitElementNode );
+            return;
+          }
+
+          if ( !circuitElement.interactive ) {
+            return;
+          }
+
+          circuitNode.endDrag( event, circuitElement.endVertex, didDrag );
+
+          // Only show the editor when tapped, not on every drag.
+          fixedLengthCircuitElementNode.maybeSelect( event, circuitNode, p );
+
+          didDrag = false;
         }
-
-        if ( !circuitElement.interactive ) {
-          return;
-        }
-
-        circuitNode.endDrag( event, circuitElement.endVertex, didDrag );
-
-        // Only show the editor when tapped, not on every drag.
-        fixedLengthCircuitElementNode.maybeSelect( event, circuitNode, p );
-
-        didDrag = false;
-      }
-    } );
-    !options.icon && contentNode.addInputListener( this.inputListener );
+      } );
+      contentNode.addInputListener( this.inputListener );
+    }
 
     if ( circuitNode ) {
       var updateSelectionHighlight = function( lastCircuitElement ) {
@@ -172,7 +175,7 @@ define( function( require ) {
     );
 
     this.disposeFixedLengthCircuitElementNode = function() {
-      if ( fixedLengthCircuitElementNode.inputListener.dragging ) {
+      if ( fixedLengthCircuitElementNode.inputListener && fixedLengthCircuitElementNode.inputListener.dragging ) {
         fixedLengthCircuitElementNode.inputListener.endDrag();
       }
       multilink && multilink.dispose();
@@ -186,7 +189,11 @@ define( function( require ) {
       circuitElement.interactiveProperty.unlink( pickableListener );
 
       circuitNode && circuitNode.highlightLayer.removeChild( highlightParent );
+
+      tandem.removeInstance( this );
     };
+
+    tandem.addInstance( this );
   }
 
   circuitConstructionKitCommon.register( 'FixedLengthCircuitElementNode', FixedLengthCircuitElementNode );

@@ -22,7 +22,7 @@ define( function( require ) {
    *
    * @constructor
    */
-  function CCKLightBulbNode( circuitConstructionKitScreenView, circuitNode, lightBulb, runningProperty, options ) {
+  function CCKLightBulbNode( circuitConstructionKitScreenView, circuitNode, lightBulb, runningProperty, tandem, options ) {
     var cckLightBulbNode = this;
     this.lightBulb = lightBulb;
     var brightnessProperty = new Property( 0.0 );
@@ -67,7 +67,7 @@ define( function( require ) {
         bottom: FixedLengthCircuitElementNode.HIGHLIGHT_INSET * 0.75
       }
     }, options );
-    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, this.lightBulbNode, contentScale, options );
+    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, this.lightBulbNode, contentScale, tandem, options );
 
     // Set the initial location of the highlight, since it was not available in the supercall to updateLayout
     updateLayout( lightBulb.startVertex.position, lightBulb.endVertex.position );

@@ -38,7 +38,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function CircuitElementToolbox( circuit, circuitNode, options ) {
+  function CircuitElementToolbox( circuit, circuitNode, tandem, options ) {
 
     options = _.extend( {
       orientation: 'vertical',
@@ -87,7 +87,15 @@ define( function( require ) {
     var iconWidth = CircuitConstructionKitConstants.toolboxIconLength;
     var wireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ) );
 
-    var resistorNode = new ResistorNode( null, null, new Resistor( new Vertex( 0, 0 ), new Vertex( Resistor.RESISTOR_LENGTH, 0 ), CircuitConstructionKitConstants.defaultResistance ), { icon: true } );
+    var resistorNode = new ResistorNode(
+      null,
+      null,
+      new Resistor( new Vertex( 0, 0 ), new Vertex( Resistor.RESISTOR_LENGTH, 0 ), CircuitConstructionKitConstants.defaultResistance ),
+      null,
+      tandem.createTandem( 'resistorIcon' ), {
+        icon: true
+      }
+    );
     var lightBulbNode = new LightBulbNode( new Property( 0 ) );
 
     var countBatteries = function( initialOrientation ) {

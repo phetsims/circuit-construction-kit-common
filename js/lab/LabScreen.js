@@ -43,7 +43,10 @@ define( function( require ) {
     } );
 
     var wireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ) );
-    var resistorNode = new ResistorNode( null, null, new Resistor( new Vertex( 0, 0 ), new Vertex( Resistor.RESISTOR_LENGTH, 0 ), CircuitConstructionKitConstants.defaultResistance ), { icon: true } );
+    var resistorNode = new ResistorNode( null, null, new Resistor( new Vertex( 0, 0 ), new Vertex( Resistor.RESISTOR_LENGTH, 0 ), CircuitConstructionKitConstants.defaultResistance ),
+      tandem.createTandem( 'resistorIcon' ), {
+        icon: true
+      } );
     var battery = new Image( batteryImage );
     var lightBulbNode = new LightBulbNode( new Property( 0 ) );
 
