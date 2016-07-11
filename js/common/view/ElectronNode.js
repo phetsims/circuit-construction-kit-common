@@ -83,6 +83,9 @@ define( function( require ) {
       revealingProperty.unlink( updateVisible );
       electron.visibleProperty.unlink( updateVisible );
       outsideOfBlackBoxProperty.unlink( updateVisible );
+
+      // We must remove the image child node, or it will continue to track its parents and lead to a memory leak
+      electronNode.removeAllChildren();
     };
     electron.disposeEmitter.addListener( disposeListener );
   }
