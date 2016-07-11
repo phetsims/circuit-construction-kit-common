@@ -85,7 +85,7 @@ define( function( require ) {
     };
 
     var iconWidth = CircuitConstructionKitConstants.toolboxIconLength;
-    var wireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ) );
+    var wireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, tandem.createTandem( 'wireIcon' ) );
 
     var resistorNode = new ResistorNode(
       null,
@@ -208,7 +208,7 @@ define( function( require ) {
     circuit.resistors.addItemRemovedListener( updateResistorIcon );
     circuit.resistors.addItemAddedListener( updateResistorIcon );
 
-    var switchWireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ) );
+    var switchWireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, tandem.createTandem( 'switchIcon' ) );
     var switchIcon = switchWireNode.mutate( { scale: iconWidth / Math.max( switchWireNode.width, switchWireNode.height ) } )
       .addInputListener( createToolIconInputListener(
         function( position ) {

@@ -13,7 +13,7 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var TandemDragHandler = require( 'TANDEM/scenery/input/TandemDragHandler' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var Path = require( 'SCENERY/nodes/Path' );
   var LineStyles = require( 'KITE/util/LineStyles' );
@@ -30,9 +30,11 @@ define( function( require ) {
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - if null, this WireNode is just an icon
    * @param {CircuitNode} circuitNode
    * @param {Wire} wire
+   * @param {Property.<boolean>} to match the constructors of other circuit element nodes
+   * @param {Tandem} tandem
    * @constructor
    */
-  function WireNode( circuitConstructionKitScreenView, circuitNode, wire ) {
+  function WireNode( circuitConstructionKitScreenView, circuitNode, wire, runningProperty, tandem ) {
     var wireNode = this;
     this.wire = wire;
 
@@ -149,44 +151,48 @@ define( function( require ) {
 
     var p = null;
     var didDrag = false;
-    this.inputListener = new SimpleDragHandler( {
-      start: function( event ) {
-        p = event.pointer.point;
 
-        if ( wire.interactive ) {
-          circuitNode.startDrag( event.pointer.point, wire.startVertex, false );
-          circuitNode.startDrag( event.pointer.point, wire.endVertex, false );
+    if ( circuitConstructionKitScreenView ) {
+      this.inputListener = new TandemDragHandler( {
+        tandem: tandem.createTandem( 'inputListener' ),
+        start: function( event ) {
+          p = event.pointer.point;
+
+          if ( wire.interactive ) {
+            circuitNode.startDrag( event.pointer.point, wire.startVertex, false );
+            circuitNode.startDrag( event.pointer.point, wire.endVertex, false );
+          }
+          didDrag = false;
+        },
+        drag: function( event ) {
+          if ( wire.interactive ) {
+            circuitNode.drag( event.pointer.point, wire.startVertex, false );
+            circuitNode.drag( event.pointer.point, wire.endVertex, false );
+            didDrag = true;
+          }
+        },
+        end: function( event ) {
+
+          // If over the toolbox, then drop into it, and don't process further
+          if ( circuitConstructionKitScreenView.canNodeDropInToolbox( wireNode ) ) {
+            circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( wireNode );
+            return;
+          }
+          if ( !wire.interactive ) {
+            return;
+          }
+
+          circuitNode.endDrag( event, wire.startVertex, didDrag );
+          circuitNode.endDrag( event, wire.endVertex, didDrag );
+
+          // Only show the editor when tapped, not on every drag.
+          wireNode.maybeSelect( event, circuitNode, p );
+
+          didDrag = false;
         }
-        didDrag = false;
-      },
-      drag: function( event ) {
-        if ( wire.interactive ) {
-          circuitNode.drag( event.pointer.point, wire.startVertex, false );
-          circuitNode.drag( event.pointer.point, wire.endVertex, false );
-          didDrag = true;
-        }
-      },
-      end: function( event ) {
-
-        // If over the toolbox, then drop into it, and don't process further
-        if ( circuitConstructionKitScreenView.canNodeDropInToolbox( wireNode ) ) {
-          circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( wireNode );
-          return;
-        }
-        if ( !wire.interactive ) {
-          return;
-        }
-
-        circuitNode.endDrag( event, wire.startVertex, didDrag );
-        circuitNode.endDrag( event, wire.endVertex, didDrag );
-
-        // Only show the editor when tapped, not on every drag.
-        wireNode.maybeSelect( event, circuitNode, p );
-
-        didDrag = false;
-      }
-    } );
-    circuitConstructionKitScreenView && wireNode.addInputListener( this.inputListener );
+      } );
+      wireNode.addInputListener( this.inputListener );
+    }
 
     if ( circuitNode ) {
       var updateHighlight = function( lastCircuitElement ) {
@@ -212,7 +218,10 @@ define( function( require ) {
       wire.endVertex.positionProperty.unlink( endListener );
 
       circuitNode && circuitNode.highlightLayer.removeChild( highlightNodeParent );
+      tandem.removeInstance( this );
     };
+
+    tandem.addInstance( this );
   }
 
   circuitConstructionKitCommon.register( 'WireNode', WireNode );
