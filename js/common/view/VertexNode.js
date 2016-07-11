@@ -15,13 +15,13 @@ define( function( require ) {
   var Circle = require( 'SCENERY/nodes/Circle' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
   var Node = require( 'SCENERY/nodes/Node' );
   var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var Vector2 = require( 'DOT/Vector2' );
+  var TandemDragHandler = require( 'TANDEM/scenery/input/TandemDragHandler' );
 
   // constants
   var DISTANCE_TO_CUT_BUTTON = 70; // How far (screen coordinates) the cut button appears from the vertex node
@@ -70,7 +70,7 @@ define( function( require ) {
 
     circuit.lightBulbs.addItemAddedListener( updateStroke );
     circuit.lightBulbs.addItemRemovedListener( updateStroke );
-    
+
     updateStroke();
 
     var cutButton = new RoundPushButton( {
@@ -126,7 +126,8 @@ define( function( require ) {
 
     var p = null;
     var didDrag = false;
-    var simpleDragHandler = new SimpleDragHandler( {
+    var dragHandler = new TandemDragHandler( {
+      tandem: tandem.createTandem( 'dragHandler' ),
       start: function( event ) {
         p = event.pointer.point;
         vertex.draggable && circuitNode.startDrag( event.pointer.point, vertex, true );
@@ -161,7 +162,7 @@ define( function( require ) {
     } );
 
     // Don't permit dragging by the scissors or highlight
-    dottedLineNode.addInputListener( simpleDragHandler );
+    dottedLineNode.addInputListener( dragHandler );
 
     // Use a query parameter to turn on node voltage readouts for debugging.  In #22 we are discussing making this
     // a user-visible option.
@@ -213,8 +214,8 @@ define( function( require ) {
     vertex.positionProperty.link( updateVertexNodePosition );
 
     this.disposeVertexNode = function() {
-      if ( simpleDragHandler.dragging ) {
-        simpleDragHandler.endDrag();
+      if ( dragHandler.dragging ) {
+        dragHandler.endDrag();
       }
       vertex.positionProperty.unlink( updateVertexNodePosition );
       vertex.selectedProperty.unlink( updateSelected );
@@ -238,7 +239,11 @@ define( function( require ) {
 
       circuit.lightBulbs.removeItemAddedListener( updateStroke );
       circuit.lightBulbs.removeItemRemovedListener( updateStroke );
+
+      tandem.removeInstance( vertexNode );
     };
+
+    tandem.addInstance( this );
   }
 
   circuitConstructionKitCommon.register( 'VertexNode', VertexNode );

@@ -127,7 +127,7 @@ define( function( require ) {
     initializeCircuitElementType( ResistorNode, circuit.resistors, circuitNode.resistorNodes, this.getResistorNode.bind( this ) );
     initializeCircuitElementType( SwitchNode, circuit.switches, circuitNode.switchNodes, this.getSwitchNode.bind( this ) );
 
-    var vertexNodeGroup = tandem.createGroupTandem( 'vertexNode' );
+    var vertexNodeGroup = tandem.createGroupTandem( 'vertexNodes' );
     var addVertexNode = function( vertex ) {
       var solderNode = new SolderNode( circuitNode, vertex );
       circuitNode.solderNodes.push( solderNode );
