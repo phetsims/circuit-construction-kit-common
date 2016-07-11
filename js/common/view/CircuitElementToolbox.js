@@ -96,14 +96,20 @@ define( function( require ) {
       } ).length;
     };
 
+    var getTandemOptions = function() {
+      return {
+        tandem: circuit.vertexGroupTandem.createNextTandem()
+      };
+    };
+
     var leftBatteryIcon = new Image( batteryImage, {
       cursor: 'pointer',
       scale: iconWidth / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height ),
       rotation: Math.PI
     } ).addInputListener( createToolIconInputListener(
       function( position ) {
-        var startVertex = new Vertex( position.x - batteryLength / 2, position.y );
-        var endVertex = new Vertex( position.x + batteryLength / 2, position.y );
+        var startVertex = new Vertex( position.x - batteryLength / 2, position.y, getTandemOptions() );
+        var endVertex = new Vertex( position.x + batteryLength / 2, position.y, getTandemOptions() );
         return new Battery( endVertex, startVertex, 9.0, {
           initialOrientation: 'left'
         } );
@@ -121,8 +127,8 @@ define( function( require ) {
       scale: iconWidth / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height )
     } ).addInputListener( createToolIconInputListener(
       function( position ) {
-        var startVertex = new Vertex( position.x - batteryLength / 2, position.y );
-        var endVertex = new Vertex( position.x + batteryLength / 2, position.y );
+        var startVertex = new Vertex( position.x - batteryLength / 2, position.y, getTandemOptions() );
+        var endVertex = new Vertex( position.x + batteryLength / 2, position.y, getTandemOptions() );
         return new Battery( startVertex, endVertex, 9.0, {
           initialOrientation: 'right'
         } );

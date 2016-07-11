@@ -192,6 +192,9 @@ define( function( require ) {
         }
       }, 100 );
     } );
+
+    // @public - for creating vertex tandems
+    this.vertexGroupTandem = tandem.createGroupTandem( 'vertices' );
   }
 
   circuitConstructionKitCommon.register( 'Circuit', Circuit );
