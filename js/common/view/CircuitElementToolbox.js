@@ -164,7 +164,7 @@ define( function( require ) {
     } )
       .addInputListener( createToolIconInputListener(
         function( position ) {
-          return LightBulb.createAtPosition( position );
+          return LightBulb.createAtPosition( position, circuit.vertexGroupTandem );
         },
         circuit.lightBulbs,
         circuitNode.lightBulbNodes,
