@@ -17,6 +17,7 @@ define( function( require ) {
   var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Voltmeter' );
   var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Ammeter' );
   var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
+  var TandemEmitter = require( 'TANDEM/axon/TandemEmitter' );
 
   /**
    * @constructor
@@ -53,6 +54,26 @@ define( function( require ) {
       this.circuit.vertices.lengthProperty.link( pause );
       this.circuit.componentEditedEmitter.addListener( pause );
     }
+
+    var circuitChangedEmitter = new TandemEmitter( {
+      tandem: tandem.createTandem( 'circuitChangedEmitter' )
+    } );
+
+    // For PhET-iO, when a component is edited or a vertex is added, connected, or cut, output the circuit to the data stream
+    // Only do this for phet-io brand so it doesn't disturb performance of other brands
+    if ( phet.chipper.brand === 'phet-io' ) {
+
+      var emitCircuitChanged = function() {
+
+        // Wait until fully wired up.  If we send out messages immediately here, some vertices are not registered and cause exceptions
+        setTimeout( function() {
+          var circuit = JSON.stringify( circuitConstructionKitModel.circuit.toStateObject() );
+          circuitChangedEmitter.emit1( circuit );
+        }, 0 );
+      };
+      this.circuit.vertices.lengthProperty.link( emitCircuitChanged );
+      this.circuit.componentEditedEmitter.addListener( emitCircuitChanged );
+    }
   }
 
   circuitConstructionKitCommon.register( 'CircuitConstructionKitModel', CircuitConstructionKitModel );
@@ -64,7 +85,7 @@ define( function( require ) {
       if ( this.runningProperty.get() ) {
         this.circuit.step( dt );
       }
-      
+
       this.circuit.updateElectronsInDirtyCircuitElements();
     },
     reset: function() {
