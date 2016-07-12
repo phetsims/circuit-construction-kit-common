@@ -278,8 +278,12 @@ define( function( require ) {
 
     // Detection for ammeter probe + circuit collision is done in the view since view bounds are used
     var updateAmmeter = function() {
-      var current = circuitConstructionKitScreenView.getCurrent( ammeterNode.probeNode );
-      circuitConstructionKitModel.ammeter.current = current;
+
+      // Skip work when ammeter is not out, to improve performance.
+      if ( circuitConstructionKitModel.ammeter.visible ) {
+        var current = circuitConstructionKitScreenView.getCurrent( ammeterNode.probeNode );
+        circuitConstructionKitModel.ammeter.current = current;
+      }
     };
     circuitConstructionKitModel.circuit.circuitChangedEmitter.addListener( updateAmmeter );
     circuitConstructionKitModel.ammeter.probePositionProperty.link( updateAmmeter );
