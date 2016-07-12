@@ -287,6 +287,7 @@ define( function( require ) {
     // TODO: Move to a separate file
     if ( CircuitConstructionKitQueryParameters.showPlayPauseButton ) {
       var playPauseButton = new PlayPauseButton( circuitConstructionKitModel.runningProperty, {
+        tandem: tandem.createTandem( 'playPauseButton' ),
         baseColor: '#33ff44' // the default blue fades into the background too much
       } );
       this.addChild( playPauseButton );
