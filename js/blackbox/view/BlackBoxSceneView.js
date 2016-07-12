@@ -141,43 +141,47 @@ define( function( require ) {
     // TODO: Let's move this to the model, and make the blackBoxNodeBounds available there.
     blackBoxSceneModel.circuit.vertexDroppedEmitter.addListener( function( vertex ) {
 
-      // If the wire connected to a black box vertex, then it may no longer exist in the model.
-      // In this case there is no need to move it inside the black box
-      if ( blackBoxSceneModel.circuit.containsVertex( vertex ) && blackBoxSceneModel.mode === 'build' ) {
+      // Allow the wire drag event to complete so that the wire won't think it was released near another target
+      // and attach to it, see #173
+      setTimeout( function() {
+        // If the wire connected to a black box vertex, then it may no longer exist in the model.
+        // In this case there is no need to move it inside the black box
+        if ( blackBoxSceneModel.circuit.containsVertex( vertex ) && blackBoxSceneModel.mode === 'build' ) {
 
-        // Find all the vertices that must be translated into the box, translating wires
-        (function() {
-          var vertices = blackBoxSceneModel.circuit.findAllConnectedVertices( vertex );
-          var connectedToBlackBox = vertices.filter( function( v ) {return v.blackBoxInterface;} ).length > 0;
-          if ( !connectedToBlackBox ) {
-            for ( var i = 0; i < vertices.length; i++ ) {
-              var vertexInGroup = vertices[ i ];
+          // Find all the vertices that must be translated into the box, translating wires
+          (function() {
+            var vertices = blackBoxSceneModel.circuit.findAllConnectedVertices( vertex );
+            var connectedToBlackBox = vertices.filter( function( v ) {return v.blackBoxInterface;} ).length > 0;
+            if ( !connectedToBlackBox ) {
+              for ( var i = 0; i < vertices.length; i++ ) {
+                var vertexInGroup = vertices[ i ];
 
-              var closestPoint = blackBoxNode.bounds.closestPointTo( vertexInGroup.position );
-              var delta = closestPoint.minus( vertexInGroup.position );
+                var closestPoint = blackBoxNode.bounds.closestPointTo( vertexInGroup.position );
+                var delta = closestPoint.minus( vertexInGroup.position );
 
-              blackBoxSceneView.circuitNode.translateVertexGroup( vertexInGroup, vertices, delta, null, [] );
+                blackBoxSceneView.circuitNode.translateVertexGroup( vertexInGroup, vertices, delta, null, [] );
+              }
             }
-          }
-        })();
+          })();
 
-        // Find all the vertices that must be translated into the box, shrinking wires
-        // TODO: Factor out
-        (function() {
-          var vertices = blackBoxSceneModel.circuit.findAllFixedVertices( vertex );
-          var connectedToBlackBox = vertices.filter( function( v ) {return v.blackBoxInterface;} ).length > 0;
-          if ( !connectedToBlackBox ) {
-            for ( var i = 0; i < vertices.length; i++ ) {
-              var vertexInGroup = vertices[ i ];
+          // Find all the vertices that must be translated into the box, shrinking wires
+          // TODO: Factor out
+          (function() {
+            var vertices = blackBoxSceneModel.circuit.findAllFixedVertices( vertex );
+            var connectedToBlackBox = vertices.filter( function( v ) {return v.blackBoxInterface;} ).length > 0;
+            if ( !connectedToBlackBox ) {
+              for ( var i = 0; i < vertices.length; i++ ) {
+                var vertexInGroup = vertices[ i ];
 
-              var closestPoint = blackBoxNode.bounds.closestPointTo( vertexInGroup.position );
-              var delta = closestPoint.minus( vertexInGroup.position );
+                var closestPoint = blackBoxNode.bounds.closestPointTo( vertexInGroup.position );
+                var delta = closestPoint.minus( vertexInGroup.position );
 
-              blackBoxSceneView.circuitNode.translateVertexGroup( vertexInGroup, vertices, delta, null, [] );
+                blackBoxSceneView.circuitNode.translateVertexGroup( vertexInGroup, vertices, delta, null, [] );
+              }
             }
-          }
-        })();
-      }
+          })();
+        }
+      }, 0 );
     } );
   }
 
