@@ -25,7 +25,9 @@ define( function( require ) {
 
     showSaveButton: !!getQueryParameter( 'showSaveButton' ),
 
-    circuit: getQueryParameter( 'circuit' )
+    circuit: getQueryParameter( 'circuit' ),
+
+    autosave: !!getQueryParameter( 'autosave' )
   };
 
   if ( CircuitConstructionKitQueryParameters.vertexDisplay ) {

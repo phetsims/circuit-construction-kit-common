@@ -82,38 +82,57 @@ define( function( require ) {
       circuitConstructionKitModel.circuit.loadFromCircuitStruct( CircuitStruct.fromStateObject( circuitStateObject ) );
     }
 
+    var enableSave = true;
     window.onpopstate = function( e ) {
       if ( e.state && e.state.circuit ) {
         var circuit = e.state.circuit;
+        enableSave = false;
+        console.log( 'loading from pop state' );
         circuitConstructionKitModel.circuit.loadFromCircuitStruct( CircuitStruct.fromStateObject( circuit ) );
+        enableSave = true;
       }
     };
 
+    var pushState = function() {
+      if ( !enableSave ) {
+        return;
+      }
+      console.log( 'push state' );
+      var stateObject = circuitConstructionKitModel.circuit.toStateObject();
+      var string = JSON.stringify( stateObject );
+      var compressed = LZString.compressToEncodedURIComponent( string );
+      console.log( string.length, ' => ', compressed.length );
+
+      // assume circuit query parameter is last
+      var text = window.location.href;
+      if ( text.indexOf( '?circuit=' ) >= 0 ) {
+        text = text.substring( 0, text.indexOf( '?circuit=' ) );
+      }
+      else if ( text.indexOf( '&circuit=' ) >= 0 ) {
+        text = text.substring( 0, text.indexOf( '&circuit=' ) );
+      }
+
+      var join = text.indexOf( '?' ) >= 0 ? '&' : '?';
+
+      window.history.pushState( { circuit: stateObject }, 'title', text + join + 'circuit=' + compressed );
+    };
+
+    // If autosave is set, save state to URL when topology changes.  This facilitates Undo via Back button
+    if ( CircuitConstructionKitQueryParameters.autosave ) {
+      console.log( 'autosave' );
+      var t = function() {
+        if ( enableSave ) {
+          setTimeout( pushState, 0 );
+        }
+      };
+
+      // Save a circuit when vertices are joined or when a component is deleted.
+      circuitConstructionKitModel.circuit.vertices.addItemRemovedListener( t );
+    }
+
     if ( options.showSaveButton ) {
       var saveButton = new TextPushButton( 'Save', {
-        listener: function() {
-          var stateObject = circuitConstructionKitModel.circuit.toStateObject();
-          var string = JSON.stringify( stateObject );
-          console.log( string );
-          console.log( string.length );
-
-          var compressed = LZString.compressToEncodedURIComponent( string );
-          console.log( 'compressed: ' + compressed );
-          console.log( compressed.length );
-
-          // assume circuit query parameter is last
-          var text = window.location.href;
-          if ( text.indexOf( '?circuit=' ) >= 0 ) {
-            text = text.substring( 0, text.indexOf( '?circuit=' ) );
-          }
-          else if ( text.indexOf( '&circuit=' ) >= 0 ) {
-            text = text.substring( 0, text.indexOf( '&circuit=' ) );
-          }
-
-          var join = text.indexOf( '?' ) >= 0 ? '&' : '?';
-
-          window.history.pushState( { circuit: stateObject }, 'title', text + join + 'circuit=' + compressed );
-        }
+        listener: pushState
       } );
       this.addChild( saveButton );
     }
