@@ -23,7 +23,7 @@ define( function( require ) {
     var sensorToolbox = this;
     var toolIconLength = CircuitConstructionKitConstants.toolboxIconLength;
 
-    var voltmeterNodeIcon = new VoltmeterNode( new Voltmeter(), tandem.createTandem( 'voltmeterNodeIcon' ), {
+    var voltmeterNodeIcon = new VoltmeterNode( new Voltmeter( tandem.createTandem( 'voltmeterIconModel' ) ), tandem.createTandem( 'voltmeterNodeIcon' ), {
       runningProperty: runningProperty,
       icon: true
     } );
@@ -42,7 +42,7 @@ define( function( require ) {
       }
     } );
 
-    var ammeterNodeIcon = new AmmeterNode( new Ammeter(), tandem.createTandem( 'ammeterNodeIcon' ), {
+    var ammeterNodeIcon = new AmmeterNode( new Ammeter( tandem.createTandem( 'ammeterIconModel' ) ), tandem.createTandem( 'ammeterNodeIcon' ), {
       icon: true,
       runningProperty: runningProperty
     } );

@@ -39,8 +39,8 @@ define( function( require ) {
 
     this.circuit = options.circuit || new Circuit( tandem.createTandem( 'circuit' ) );
     this.initialCircuitState = this.circuit.toStateObject();
-    this.voltmeter = new Voltmeter();
-    this.ammeter = new Ammeter();
+    this.voltmeter = new Voltmeter( tandem.createTandem( 'voltmeter' ) );
+    this.ammeter = new Ammeter( tandem.createTandem( 'ammeter' ) );
 
     // When the user manipulates something, hide the readouts, see https://github.com/phetsims/circuit-construction-kit/issues/130
     // When any of the following conditions occurs, hide the readouts:
