@@ -23,13 +23,29 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Taken from a mockup by Bryce Gruneich and/or Amy Rouinfar"
   },
-  "light-bulb.png": {
+  "lightbulb.png": {
     "text": [
-      "Copyright 2002-2015 University of Colorado Boulder"
+      "Copyright 2016 University of Colorado Boulder"
     ],
     "projectURL": "http://phet.colorado.edu",
     "license": "contact phethelp@colorado.edu",
-    "notes": "Taken from a mockup by Bryce Gruneich and/or Amy Rouinfar"
+    "notes": "Amy Rouinfar"
+  },
+  "lightbulb-back.png": {
+    "text": [
+      "Copyright 2016 University of Colorado Boulder"
+    ],
+    "projectURL": "http://phet.colorado.edu",
+    "license": "contact phethelp@colorado.edu",
+    "notes": "Amy Rouinfar"
+  },
+  "lightbulb-front.png": {
+    "text": [
+      "Copyright 2016 University of Colorado Boulder"
+    ],
+    "projectURL": "http://phet.colorado.edu",
+    "license": "contact phethelp@colorado.edu",
+    "notes": "Amy Rouinfar"
   },
   "probe_red.png": {
     "text": [

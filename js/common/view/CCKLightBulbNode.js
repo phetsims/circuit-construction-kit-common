@@ -13,10 +13,11 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/FixedLengthCircuitElementNode' );
-  var LightBulbNode = require( 'SCENERY_PHET/LightBulbNode' );
   var Property = require( 'AXON/Property' );
   var Util = require( 'DOT/Util' );
   var Matrix3 = require( 'DOT/Matrix3' );
+  var Image = require( 'SCENERY/nodes/Image' );
+  var lightBulbImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb.png' );
 
   /**
    *
@@ -37,17 +38,15 @@ define( function( require ) {
       }
       brightnessProperty.value = running ? clamped : 0;
     } );
-    this.lightBulbNode = new LightBulbNode( brightnessProperty, {
-      scale: 3.5
-    } );
-    var contentScale = 2.5;
+    this.lightBulbNode = new Image( lightBulbImage );
+    var contentScale = 0.2;
     var scratchMatrix = new Matrix3();
     var scratchMatrix2 = new Matrix3();
     var updateLayout = function( startPosition, endPosition ) {
       var angle = endPosition.minus( startPosition ).angle() + Math.PI / 4;
 
       // Update the node transform in a single step, see #66
-      scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
+      scratchMatrix.setToTranslation( startPosition.x - lightBulbImage.width / 2 * contentScale, startPosition.y - lightBulbImage.height * contentScale )
         .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
         .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) );
       cckLightBulbNode.lightBulbNode.setMatrix( scratchMatrix );
