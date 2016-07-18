@@ -16,7 +16,7 @@ define( function( require ) {
   var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
-  var Range = require( 'DOT/Range' );
+  var RangeWithValue = require( 'DOT/RangeWithValue' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var Property = require( 'AXON/Property' );
 
@@ -47,7 +47,7 @@ define( function( require ) {
     } );
 
     // Create the controls using the proxy
-    var numberControl = new NumberControl( title, proxy, new Range( 0, 100 ), _.extend( {
+    var numberControl = new NumberControl( title, proxy, new RangeWithValue( 0, 100 ), _.extend( {
       tandem: tandem.createTandem( 'numberControl' ),
       units: units
     }, numberControlOptions ) );
