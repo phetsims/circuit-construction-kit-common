@@ -34,7 +34,7 @@ define( function( require ) {
 
     PropertySet.call( this, {
       distance: distance,
-      updating: true, // flag to disable updates during ConstantDensityPropagator.step to improve performance
+      updating: true, // flag to disable updates during ElectronPropagator.step to improve performance
       position: new Vector2()
     } );
 

@@ -24,7 +24,7 @@ define( function( require ) {
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Switch' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Resistor' );
   var ElectronLayout = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/ElectronLayout' );
-  var ConstantDensityPropagator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/ConstantDensityPropagator' );
+  var ElectronPropagator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/ElectronPropagator' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // constants
@@ -48,7 +48,7 @@ define( function( require ) {
     this.electrons = new ObservableArray();
 
     this.constantDensityLayout = new ElectronLayout( this );
-    this.constantDensityPropagator = new ConstantDensityPropagator( this );
+    this.constantDensityPropagator = new ElectronPropagator( this );
 
     // Re-solve the circuit when voltages or resistances change.
     var solve = function() {

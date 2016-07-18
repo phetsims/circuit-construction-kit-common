@@ -70,7 +70,7 @@ define( function( require ) {
     return closestLowerNeighbor;
   };
 
-  function ConstantDensityPropagator( circuit ) {
+  function ElectronPropagator( circuit ) {
     this.electrons = circuit.electrons;
     this.circuit = circuit;
     this.scale = 1;
@@ -94,9 +94,9 @@ define( function( require ) {
     };
   };
 
-  circuitConstructionKitCommon.register( 'ConstantDensityPropagator', ConstantDensityPropagator );
+  circuitConstructionKitCommon.register( 'ElectronPropagator', ElectronPropagator );
 
-  return inherit( PropertySet, ConstantDensityPropagator, {
+  return inherit( PropertySet, ElectronPropagator, {
     step: function( dt ) {
 
       // Disable incremental updates to improve performance.  The ElectronNodes are only updated once, instead
