@@ -192,6 +192,9 @@ define( function( require ) {
         }
       }, 100 );
     } );
+
+    // @public - for creating vertex tandems
+    this.vertexGroupTandem = tandem.createGroupTandem( 'vertices' );
   }
 
   circuitConstructionKitCommon.register( 'Circuit', Circuit );
@@ -307,7 +310,8 @@ define( function( require ) {
             interactive: true,
             attachable: true,
             blackBoxInterface: false,
-            insideTrueBlackBox: false
+            insideTrueBlackBox: false,
+            tandem: this.vertexGroupTandem.createNextTandem()
           };
           var newVertex = new Vertex( vertex.position.x, vertex.position.y, options );
 
@@ -763,6 +767,9 @@ define( function( require ) {
             return false;
           }
 
+          // How far the vertex would be moved if it joined to the candidate
+          var delta = candidateVertex.position.minus( vertex.position );
+
           if ( candidateVertex.blackBoxInterface || blackBoxBounds.containsPoint( candidateVertex.position ) ) {
             for ( var i = 0; i < fixedVertices2.length; i++ ) {
               var connectedVertex = fixedVertices2[ i ];
@@ -770,7 +777,7 @@ define( function( require ) {
 
                 // OK for black box interface vertex to be slightly outside the box
               }
-              else if ( connectedVertex !== vertex && !blackBoxBounds.containsPoint( connectedVertex.position ) &&
+              else if ( connectedVertex !== vertex && !blackBoxBounds.containsPoint( connectedVertex.position.plus( delta ) ) &&
 
                         // exempt wires connected outside of the black box, which are flagged as un-attachable in
                         // build mode, see #141

@@ -16,12 +16,18 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var Emitter = require( 'AXON/Emitter' );
 
-  function Meter( additionalProperties ) {
+  function Meter( additionalProperties, tandem, tandemSet ) {
     PropertySet.call( this, _.extend( {
       visible: false,
       bodyPosition: new Vector2( 0, 0 ),
       draggingTogether: true // When the meter is dragged from the toolbox, all pieces drag together as a single unit.
-    }, additionalProperties ) );
+    }, additionalProperties ), {
+      tandemSet: _.extend( {
+        visible: tandem.createTandem( 'visibleProperty' ),
+        bodyPosition: tandem.createTandem( 'bodyPositionProperty' ),
+        draggingTogether: tandem.createTandem( 'draggingTogetherProperty' )
+      }, tandemSet )
+    } );
     this.droppedEmitter = new Emitter(); // Fire event when dropped
   }
 

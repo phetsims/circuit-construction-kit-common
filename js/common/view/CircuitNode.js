@@ -109,9 +109,15 @@ define( function( require ) {
      * @param {Array.<CircuitElementNode>} nodeArray
      * @param {function} getter, given a {CircuitElement}, return the corresponding {CircuitElementNode}
      */
-    var initializeCircuitElementType = function( CircuitElementNodeConstructor, modelObservableArray, nodeArray, getter ) {
+    var initializeCircuitElementType = function( CircuitElementNodeConstructor, modelObservableArray, nodeArray, getter, groupTandem ) {
       var addCircuitElement = function( circuitElement ) {
-        var circuitElementNode = new CircuitElementNodeConstructor( circuitConstructionKitScreenView, circuitNode, circuitElement, runningProperty );
+        var circuitElementNode = new CircuitElementNodeConstructor(
+          circuitConstructionKitScreenView,
+          circuitNode,
+          circuitElement,
+          runningProperty,
+          groupTandem.createNextTandem()
+        );
         nodeArray.push( circuitElementNode );
         mainLayer.addChild( circuitElementNode );
         moveVerticesToFront( circuitElement );
@@ -121,13 +127,13 @@ define( function( require ) {
       modelObservableArray.addItemRemovedListener( createCircuitElementRemovedListener( nodeArray, getter ) );
     };
 
-    initializeCircuitElementType( WireNode, circuit.wires, circuitNode.wireNodes, this.getWireNode.bind( this ) );
-    initializeCircuitElementType( BatteryNode, circuit.batteries, circuitNode.batteryNodes, this.getBatteryNode.bind( this ) );
-    initializeCircuitElementType( CCKLightBulbNode, circuit.lightBulbs, circuitNode.lightBulbNodes, this.getCCKLightBulbNode.bind( this ) );
-    initializeCircuitElementType( ResistorNode, circuit.resistors, circuitNode.resistorNodes, this.getResistorNode.bind( this ) );
-    initializeCircuitElementType( SwitchNode, circuit.switches, circuitNode.switchNodes, this.getSwitchNode.bind( this ) );
+    initializeCircuitElementType( WireNode, circuit.wires, circuitNode.wireNodes, this.getWireNode.bind( this ), tandem.createGroupTandem( 'wireNode' ) );
+    initializeCircuitElementType( BatteryNode, circuit.batteries, circuitNode.batteryNodes, this.getBatteryNode.bind( this ), tandem.createGroupTandem( 'batteryNode' ) );
+    initializeCircuitElementType( CCKLightBulbNode, circuit.lightBulbs, circuitNode.lightBulbNodes, this.getCCKLightBulbNode.bind( this ), tandem.createGroupTandem( 'lightBulbNode' ) );
+    initializeCircuitElementType( ResistorNode, circuit.resistors, circuitNode.resistorNodes, this.getResistorNode.bind( this ), tandem.createGroupTandem( 'resistorNode' ) );
+    initializeCircuitElementType( SwitchNode, circuit.switches, circuitNode.switchNodes, this.getSwitchNode.bind( this ), tandem.createGroupTandem( 'switchNode' ) );
 
-    var vertexNodeGroup = tandem.createGroupTandem( 'vertexNode' );
+    var vertexNodeGroup = tandem.createGroupTandem( 'vertexNodes' );
     var addVertexNode = function( vertex ) {
       var solderNode = new SolderNode( circuitNode, vertex );
       circuitNode.solderNodes.push( solderNode );

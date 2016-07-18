@@ -15,10 +15,13 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var Meter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Meter' );
 
-  function Ammeter() {
+  function Ammeter( tandem ) {
     Meter.call( this, {
       current: null, // Null means no reading, otherwise {number} amps
       probePosition: new Vector2( 0, 0 )
+    }, tandem, {
+      current: tandem.createTandem( 'currentProperty' ),
+      probePosition: tandem.createTandem( 'probePositionProperty' )
     } );
   }
 

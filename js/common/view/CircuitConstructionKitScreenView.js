@@ -82,38 +82,57 @@ define( function( require ) {
       circuitConstructionKitModel.circuit.loadFromCircuitStruct( CircuitStruct.fromStateObject( circuitStateObject ) );
     }
 
+    var enableSave = true;
     window.onpopstate = function( e ) {
       if ( e.state && e.state.circuit ) {
         var circuit = e.state.circuit;
+        enableSave = false;
+        console.log( 'loading from pop state' );
         circuitConstructionKitModel.circuit.loadFromCircuitStruct( CircuitStruct.fromStateObject( circuit ) );
+        enableSave = true;
       }
     };
 
+    var pushState = function() {
+      if ( !enableSave ) {
+        return;
+      }
+      console.log( 'push state' );
+      var stateObject = circuitConstructionKitModel.circuit.toStateObject();
+      var string = JSON.stringify( stateObject );
+      var compressed = LZString.compressToEncodedURIComponent( string );
+      console.log( string.length, ' => ', compressed.length );
+
+      // assume circuit query parameter is last
+      var text = window.location.href;
+      if ( text.indexOf( '?circuit=' ) >= 0 ) {
+        text = text.substring( 0, text.indexOf( '?circuit=' ) );
+      }
+      else if ( text.indexOf( '&circuit=' ) >= 0 ) {
+        text = text.substring( 0, text.indexOf( '&circuit=' ) );
+      }
+
+      var join = text.indexOf( '?' ) >= 0 ? '&' : '?';
+
+      window.history.pushState( { circuit: stateObject }, 'title', text + join + 'circuit=' + compressed );
+    };
+
+    // If autosave is set, save state to URL when topology changes.  This facilitates Undo via Back button
+    if ( CircuitConstructionKitQueryParameters.autosave ) {
+      console.log( 'autosave' );
+      var t = function() {
+        if ( enableSave ) {
+          setTimeout( pushState, 0 );
+        }
+      };
+
+      // Save a circuit when vertices are joined or when a component is deleted.
+      circuitConstructionKitModel.circuit.vertices.addItemRemovedListener( t );
+    }
+
     if ( options.showSaveButton ) {
       var saveButton = new TextPushButton( 'Save', {
-        listener: function() {
-          var stateObject = circuitConstructionKitModel.circuit.toStateObject();
-          var string = JSON.stringify( stateObject );
-          console.log( string );
-          console.log( string.length );
-
-          var compressed = LZString.compressToEncodedURIComponent( string );
-          console.log( 'compressed: ' + compressed );
-          console.log( compressed.length );
-
-          // assume circuit query parameter is last
-          var text = window.location.href;
-          if ( text.indexOf( '?circuit=' ) >= 0 ) {
-            text = text.substring( 0, text.indexOf( '?circuit=' ) );
-          }
-          else if ( text.indexOf( '&circuit=' ) >= 0 ) {
-            text = text.substring( 0, text.indexOf( '&circuit=' ) );
-          }
-
-          var join = text.indexOf( '?' ) >= 0 ? '&' : '?';
-
-          window.history.pushState( { circuit: stateObject }, 'title', text + join + 'circuit=' + compressed );
-        }
+        listener: pushState
       } );
       this.addChild( saveButton );
     }
@@ -146,15 +165,16 @@ define( function( require ) {
 
     // Pass the view into circuit node so that circuit elements can be dropped back into the toolbox
     this.circuitNode = new CircuitNode( circuitConstructionKitModel.circuit, this, tandem.createTandem( 'circuitNode' ) );
-    this.circuitElementToolbox = new CircuitElementToolbox( circuitConstructionKitModel.circuit, this.circuitNode, {
-      orientation: options.toolboxOrientation,
-      numberOfRightBatteries: options.numberOfRightBatteriesInToolbox,
-      numberOfLeftBatteries: options.numberOfLeftBatteriesInToolbox,
-      numberOfWires: options.numberOfWiresInToolbox,
-      numberOfSwitches: options.numberOfSwitchesInToolbox,
-      numberOfLightBulbs: options.numberOfLightBulbsInToolbox,
-      numberOfResistors: options.numberOfResistorsInToolbox
-    } );
+    this.circuitElementToolbox = new CircuitElementToolbox( circuitConstructionKitModel.circuit, this.circuitNode,
+      tandem.createTandem( 'circuitElementToolbox' ), {
+        orientation: options.toolboxOrientation,
+        numberOfRightBatteries: options.numberOfRightBatteriesInToolbox,
+        numberOfLeftBatteries: options.numberOfLeftBatteriesInToolbox,
+        numberOfWires: options.numberOfWiresInToolbox,
+        numberOfSwitches: options.numberOfSwitchesInToolbox,
+        numberOfLightBulbs: options.numberOfLightBulbsInToolbox,
+        numberOfResistors: options.numberOfResistorsInToolbox
+      } );
 
     var electronSpeedThrottlingReadoutNode = new ElectronSpeedThrottlingReadoutNode( circuitConstructionKitModel.circuit.constantDensityPropagator.timeScaleProperty, circuitConstructionKitModel.circuit.showElectronsProperty );
     this.addChild( electronSpeedThrottlingReadoutNode );
@@ -258,8 +278,12 @@ define( function( require ) {
 
     // Detection for ammeter probe + circuit collision is done in the view since view bounds are used
     var updateAmmeter = function() {
-      var current = circuitConstructionKitScreenView.getCurrent( ammeterNode.probeNode );
-      circuitConstructionKitModel.ammeter.current = current;
+
+      // Skip work when ammeter is not out, to improve performance.
+      if ( circuitConstructionKitModel.ammeter.visible ) {
+        var current = circuitConstructionKitScreenView.getCurrent( ammeterNode.probeNode );
+        circuitConstructionKitModel.ammeter.current = current;
+      }
     };
     circuitConstructionKitModel.circuit.circuitChangedEmitter.addListener( updateAmmeter );
     circuitConstructionKitModel.ammeter.probePositionProperty.link( updateAmmeter );
@@ -267,6 +291,7 @@ define( function( require ) {
     // TODO: Move to a separate file
     if ( CircuitConstructionKitQueryParameters.showPlayPauseButton ) {
       var playPauseButton = new PlayPauseButton( circuitConstructionKitModel.runningProperty, {
+        tandem: tandem.createTandem( 'playPauseButton' ),
         baseColor: '#33ff44' // the default blue fades into the background too much
       } );
       this.addChild( playPauseButton );

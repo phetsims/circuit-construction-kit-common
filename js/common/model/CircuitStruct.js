@@ -49,7 +49,7 @@ define( function( require ) {
         .concat( this.resistors );
     }
   }, {
-    fromStateObject: function( circuitState ) {
+    fromStateObject: function( circuitState ) { // TODO: Tandem - Pass tandems through
       var circuit = new CircuitStruct( [], [], [], [], [], [] );
       var options = null;
       for ( var i = 0; i < circuitState.vertices.length; i++ ) {

@@ -22,11 +22,11 @@ define( function( require ) {
    *
    * @constructor
    */
-  function CCKLightBulbNode( circuitConstructionKitScreenView, circuitNode, lightBulb, runningProperty, options ) {
+  function CCKLightBulbNode( circuitConstructionKitScreenView, circuitNode, lightBulb, runningProperty, tandem, options ) {
     var cckLightBulbNode = this;
     this.lightBulb = lightBulb;
     var brightnessProperty = new Property( 0.0 );
-    Property.multilink( [ lightBulb.currentProperty, runningProperty ], function( current, running ) {
+    var updateBrightness = Property.multilink( [ lightBulb.currentProperty, runningProperty ], function( current, running ) {
       var scaled = Math.abs( current ) / 20;
       var clamped = Util.clamp( scaled, 0, 1 );
 
@@ -67,15 +67,24 @@ define( function( require ) {
         bottom: FixedLengthCircuitElementNode.HIGHLIGHT_INSET * 0.75
       }
     }, options );
-    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, this.lightBulbNode, contentScale, options );
+    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, this.lightBulbNode, contentScale, tandem, options );
 
     // Set the initial location of the highlight, since it was not available in the supercall to updateLayout
     updateLayout( lightBulb.startVertex.position, lightBulb.endVertex.position );
+
+    this.disposeCCKLightBulbNode = function() {
+      updateBrightness.dispose();
+    };
   }
 
   circuitConstructionKitCommon.register( 'CCKLightBulbNode', CCKLightBulbNode );
 
   return inherit( FixedLengthCircuitElementNode, CCKLightBulbNode, {
+
+    dispose: function() {
+      this.disposeCCKLightBulbNode();
+      FixedLengthCircuitElementNode.prototype.dispose.call( this );
+    },
 
     /**
      * Maintain the opacity of the brightness lines while changing the opacity of the light bulb itself.

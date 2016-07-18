@@ -34,7 +34,18 @@ define( function( require ) {
    */
   function Vertex( x, y, options ) {
     this.index = counter++; // @private - For debugging
-    options = _.extend( _.clone( DEFAULTS ), options );
+    options = _.extend( _.clone( DEFAULTS ), {
+
+      // Vertices created for icons do not need a tandem
+      tandem: null
+    }, options );
+
+    var tandemSet = options.tandem ? {
+      position: options.tandem.createTandem( 'positionProperty' ),
+      voltage: options.tandem.createTandem( 'voltageProperty' ),
+      selected: options.tandem.createTandem( 'selectedProperty' )
+    } : {};
+
     PropertySet.call( this, {
 
       // {Vertex2} Where the vertex is and is shown
@@ -71,6 +82,8 @@ define( function( require ) {
       // @public - whether the vertex is inside the true black box, not inside the user-created black box, on the
       // interface or outside of the black box
       insideTrueBlackBox: false
+    }, {
+      tandemSet: tandemSet
     } );
     this.moveToFrontEmitter = new Emitter();
   }

@@ -36,7 +36,7 @@ define( function( require ) {
   return inherit( CircuitConstructionKitModel, IntroSceneModel, {
     setInitialState: function() {
       // All of the intro scenes have a light bulb in the center of the screen.
-      this.circuit.lightBulbs.add( LightBulb.createAtPosition( this.layoutBounds.center, {
+      this.circuit.lightBulbs.add( LightBulb.createAtPosition( this.layoutBounds.center, this.circuit.vertexGroupTandem, {
         canBeDroppedInToolbox: false
       } ) );
     },

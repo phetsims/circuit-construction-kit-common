@@ -34,17 +34,19 @@ define( function( require ) {
     // changing when its length changes).
     var proxy = new Property( valueProperty.value );
     var changing = false;
-    proxy.lazyLink( function( value ) {
+    var proxyListener = function( value ) {
       valueProperty.value = value;
       if ( !changing ) {
         circuit.componentEditedEmitter.emit();
       }
-    } );
-    valueProperty.lazyLink( function( value ) {
+    };
+    proxy.lazyLink( proxyListener );
+    var valueListener = function( value ) {
       changing = true;
       proxy.value = value;
       changing = false;
-    } );
+    };
+    valueProperty.lazyLink( valueListener );
 
     // Create the controls using the proxy
     var numberControl = new NumberControl( title, proxy, new RangeWithValue( 0, 100 ), _.extend( {
@@ -78,6 +80,9 @@ define( function( require ) {
 
     this.disposeCircuitElementEditPanel = function() {
       numberControl.dispose();
+      valueProperty.unlink( valueListener );
+      proxy.unlink( proxyListener );
+      proxy.dispose();
     };
   }
 

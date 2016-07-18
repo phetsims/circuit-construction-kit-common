@@ -38,7 +38,7 @@ define( function( require ) {
     }
   }, {
     DISTANCE_BETWEEN_VERTICES: DISTANCE_BETWEEN_VERTICES,
-    createAtPosition: function( position, options ) {
+    createAtPosition: function( position, circuitVertexGroupTandem, options ) { // TODO: Tandem
       var translation = new Vector2( 30, 10 );
 
       // Connect at the side and bottom
@@ -51,8 +51,12 @@ define( function( require ) {
 
       endPoint = startPoint.plus( Vector2.createPolar( LightBulb.DISTANCE_BETWEEN_VERTICES, angle - Math.PI * 0.3975 ) );
 
-      var startVertex = new Vertex( startPoint.x, startPoint.y );
-      var endVertex = new Vertex( endPoint.x, endPoint.y );
+      var startVertex = new Vertex( startPoint.x, startPoint.y, {
+        tandem: circuitVertexGroupTandem.createNextTandem()
+      } );
+      var endVertex = new Vertex( endPoint.x, endPoint.y, {
+        tandem: circuitVertexGroupTandem.createNextTandem()
+      } );
 
       return new LightBulb( startVertex, endVertex, CircuitConstructionKitConstants.defaultResistance, options );
     }
