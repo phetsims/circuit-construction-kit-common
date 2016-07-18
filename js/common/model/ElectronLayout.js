@@ -18,14 +18,14 @@ define( function( require ) {
   var electronsVisible = true;
   var ELECTRON_DX = CircuitConstructionKitConstants.electronDX;
 
-  function ConstantDensityLayout( circuit ) {
+  function ElectronLayout( circuit ) {
     this.circuit = circuit;
     this.electrons = circuit.electrons;
   }
 
-  circuitConstructionKitCommon.register( 'ConstantDensityLayout', ConstantDensityLayout );
+  circuitConstructionKitCommon.register( 'ElectronLayout', ElectronLayout );
 
-  return inherit( Object, ConstantDensityLayout, {
+  return inherit( Object, ElectronLayout, {
     layoutElectrons: function( circuitElement ) {
       var particlesInBranch = this.circuit.getElectronsInCircuitElement( circuitElement );
       this.electrons.removeAll( particlesInBranch );
