@@ -24,7 +24,7 @@ define( function( require ) {
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Resistor' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Wire' );
   var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/WireNode' );
-  var LightBulbNode = require( 'SCENERY_PHET/LightBulbNode' );
+  var CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CustomLightBulbNode' );
   var Property = require( 'AXON/Property' );
 
   // images
@@ -48,7 +48,7 @@ define( function( require ) {
         icon: true
       } );
     var battery = new Image( batteryImage );
-    var lightBulbNode = new LightBulbNode( new Property( 0 ) );
+    var lightBulbNode = new CustomLightBulbNode( new Property( 0 ) );
 
     var elementWidth = 50;
     resistorNode.mutate( { scale: elementWidth / resistorNode.width * 0.75 } );

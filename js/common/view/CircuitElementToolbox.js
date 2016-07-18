@@ -22,9 +22,9 @@ define( function( require ) {
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ResistorNode' );
   var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/WireNode' );
-  var LightBulbNode = require( 'SCENERY_PHET/LightBulbNode' );
   var Property = require( 'AXON/Property' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
+  var CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CustomLightBulbNode' );
 
   // images
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
@@ -96,7 +96,7 @@ define( function( require ) {
         icon: true
       }
     );
-    var lightBulbNode = new LightBulbNode( new Property( 0 ) );
+    var lightBulbNode = new CustomLightBulbNode( new Property( 0 ) );
 
     var countBatteries = function( initialOrientation ) {
       return circuit.batteries.filter( function( battery ) {
