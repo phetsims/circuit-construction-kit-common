@@ -26,6 +26,10 @@ define( function( require ) {
 
   return inherit( Object, ElectronLayout, {
     layoutElectrons: function( circuitElement ) {
+
+      // Remove any electrons that were already in the branch.
+      // TODO: a performance improvement could be to adjust them instead of delete/recreate
+      // TODO: this could particularly help when dragging a wire, and the electrons are continually re-layed-out.
       var particlesInBranch = this.circuit.getElectronsInCircuitElement( circuitElement );
       this.electrons.removeAll( particlesInBranch );
 
