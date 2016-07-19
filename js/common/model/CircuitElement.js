@@ -47,6 +47,9 @@ define( function( require ) {
       insideTrueBlackBox: false
     }, propertySetMap ) );
 
+    // Satisfy the syntax highlighter
+    this.current = this.current + 0;
+
     // @public - true if the electrons must be layed out
     this.dirty = true;
 

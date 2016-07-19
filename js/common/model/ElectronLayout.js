@@ -40,9 +40,6 @@ define( function( require ) {
       var offset = ELECTRON_DX / 2;
 
       var circuitLength = circuitElement.length;
-      if ( bulb ) {
-        circuitLength = circuitElement.innerLength;
-      }
       var endingPoint = circuitLength - offset;
       var startingPoint = offset;
       var length = endingPoint - startingPoint;

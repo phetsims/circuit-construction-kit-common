@@ -30,7 +30,7 @@ define( function( require ) {
       resistance: resistance
     }, options );
 
-    this.innerLength = 200;
+    this.length = 130; // changes the speed at which particles go through the light bulb
   }
 
   circuitConstructionKitCommon.register( 'LightBulb', LightBulb );
@@ -55,17 +55,14 @@ define( function( require ) {
         this.startVertex.position.plusXY( 0, -70 ),
         this.endVertex.position
       ];
-      if ( distanceAlongWire < this.innerLength / 2 ) {
-        var a = Util.linear( 0, this.innerLength / 2, 0, 1, distanceAlongWire );
+      if ( distanceAlongWire < this.length / 2 ) {
+        var a = Util.linear( 0, this.length / 2, 0, 1, distanceAlongWire );
         return points[ 0 ].blend( points[ 1 ], a );
       }
       else {
-        var b = Util.linear( this.innerLength / 2, this.innerLength, 0, 1, distanceAlongWire );
+        var b = Util.linear( this.length / 2, this.length, 0, 1, distanceAlongWire );
         return points[ 1 ].blend( points[ 2 ], b );
       }
-    },
-    containsScalarLocation: function( s ) {
-      return s >= 0 && s <= this.innerLength;
     }
   }, {
     DISTANCE_BETWEEN_VERTICES: DISTANCE_BETWEEN_VERTICES,

@@ -207,10 +207,10 @@ define( function( require ) {
         electron.distance = dest;
       }
     },
-    propagate: function( e, dt ) {
-      var x = e.distance;
+    propagate: function( electron, dt ) {
+      var x = electron.distance;
       assert && assert( _.isNumber( x ), 'disance along wire should be a number' );
-      var current = -e.circuitElement.current;
+      var current = -electron.circuitElement.current;
 
       if ( current === 0 || Math.abs( current ) < MIN_CURRENT ) {
         return;
@@ -220,9 +220,9 @@ define( function( require ) {
       var dx = speed * dt;
       dx *= this.scale;
       var newX = x + dx;
-      var branch = e.circuitElement;
-      if ( branch.containsScalarLocation( newX ) ) {
-        e.distance = newX;
+      var circuitElement = electron.circuitElement;
+      if ( circuitElement.containsScalarLocation( newX ) ) {
+        electron.distance = newX;
       }
       else {
         //need a new branch.
@@ -233,18 +233,20 @@ define( function( require ) {
           under = true;
         }
         else {
-          overshoot = Math.abs( branch.length - newX );
+
+          // TODO: better abstraction for the following line
+          overshoot = Math.abs( circuitElement.length - newX );
           under = false;
         }
         assert && assert( !isNaN( overshoot ), 'overshoot is NaN' );
         assert && assert( overshoot >= 0, 'overshoot is <0' );
-        var locationArray = this.getLocations( e, dt, overshoot, under );
+        var locationArray = this.getLocations( electron, dt, overshoot, under );
         if ( locationArray.length === 0 ) {
           return;
         }
         //choose the branch with the furthest away electron
         var chosenCircuitLocation = this.chooseDestinationBranch( locationArray );
-        e.setLocation( chosenCircuitLocation.branch, Math.abs( chosenCircuitLocation.distance ) );
+        electron.setLocation( chosenCircuitLocation.branch, Math.abs( chosenCircuitLocation.distance ) );
       }
     },
     chooseDestinationBranch: function( circuitLocations ) {
