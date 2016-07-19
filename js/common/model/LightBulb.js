@@ -23,20 +23,21 @@ define( function( require ) {
 
   // Tinker with coordinates to get thing to match up
   var sx1 = 1.5;
-  var sy1 = 0.4;
-  var sx2 = 0.85;
+  var sy1 = 0.32;
+  var sx2 = 0.87;
 
   var specs = {
     dimension: new Vector2( 1.222, 2.063 ),
     bottomCenter: new Vector2( 0.623, 2.063 ),
     firstCurve: new Vector2( 0.623, 1.014 * 0.75 ),
-    leftCurve1: new Vector2( 0.314 * sx1, 0.704 * sy1 ),
+    leftCurve1: new Vector2( 0.314 * sx1, 0.704 * sy1 * 1.1 ),
     leftCurve2: new Vector2( 0.314 * sx1, 0.639 * sy1 ),
     leftCurve3: new Vector2( 0.394 * sx1, 0.560 * sy1 ),
     topRight1: new Vector2( 0.823 * sx2, 0.565 * sy1 ),
     topRight2: new Vector2( 0.888 * sx2, 0.600 * sy1 ),
     topRight3: new Vector2( 0.922 * sx2, 0.699 * sy1 ),
-    exit: new Vector2( 0.927 * sx2, 1.474 )
+    exitNotch: new Vector2( 0.927 * sx2, 1.474 ),
+    exit: new Vector2( 0.927 * 0.8 * 1.2, 1.474 )
   };
 
   var points = [
@@ -48,6 +49,7 @@ define( function( require ) {
     specs.topRight1,
     specs.topRight2,
     specs.topRight3,
+    specs.exitNotch,
     specs.exit
   ];
 
@@ -63,7 +65,25 @@ define( function( require ) {
       resistance: resistance
     }, options );
 
-    var trueLength = 173.20871708651816; // measured by code below
+    // TODO: copied
+    var accumulatedDistance = 0;
+    for ( var i = 0; i < points.length - 1; i++ ) {
+
+      var p1 = points[ i ];
+      var p2 = points[ i + 1 ];
+
+      var p1X = Util.linear( start.x, end.x, this.startVertex.position.x, this.endVertex.position.x, p1.x );
+      var p1Y = Util.linear( start.y, end.y, this.startVertex.position.y, this.endVertex.position.y, p1.y );
+
+      var p2X = Util.linear( start.x, end.x, this.startVertex.position.x, this.endVertex.position.x, p2.x );
+      var p2Y = Util.linear( start.y, end.y, this.startVertex.position.y, this.endVertex.position.y, p2.y );
+
+      var q1 = new Vector2( p1X, p1Y );
+      var q2 = new Vector2( p2X, p2Y );
+      accumulatedDistance += q2.distance( q1 );
+    }
+
+    var trueLength = accumulatedDistance; // measured by code below
     this.length = trueLength - 1E-8; // changes the speed at which particles go through the light bulb
   }
 
