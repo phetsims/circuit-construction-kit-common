@@ -16,6 +16,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Vertex' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var Util = require( 'DOT/Util' );
 
   // constants
   var DISTANCE_BETWEEN_VERTICES = 33;
@@ -28,6 +29,8 @@ define( function( require ) {
     FixedLengthCircuitElement.call( this, DISTANCE_BETWEEN_VERTICES, startVertex, endVertex, {
       resistance: resistance
     }, options );
+
+    this.innerLength = 200;
   }
 
   circuitConstructionKitCommon.register( 'LightBulb', LightBulb );
@@ -35,6 +38,34 @@ define( function( require ) {
   return inherit( FixedLengthCircuitElement, LightBulb, {
     toStateObjectWithVertexIndices: function( getVertexIndex ) {
       return _.extend( { resistance: this.resistance }, FixedLengthCircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex ) );
+    },
+
+    /**
+     * Overrides CircuitElement.getPosition to describe the path the electron takes through the light bulb.
+     *
+     * @param {number} distanceAlongWire - how far along the bulb's length the electron has traveled
+     *                                   - the light bulb's length is declared in ElectronLayout // TODO: fix that
+     * @returns {Vector2}
+     * @override
+     */
+    getPosition: function( distanceAlongWire ) {
+
+      var points = [
+        this.startVertex.position,
+        this.startVertex.position.plusXY( 0, -70 ),
+        this.endVertex.position
+      ];
+      if ( distanceAlongWire < this.innerLength / 2 ) {
+        var a = Util.linear( 0, this.innerLength / 2, 0, 1, distanceAlongWire );
+        return points[ 0 ].blend( points[ 1 ], a );
+      }
+      else {
+        var b = Util.linear( this.innerLength / 2, this.innerLength, 0, 1, distanceAlongWire );
+        return points[ 1 ].blend( points[ 2 ], b );
+      }
+    },
+    containsScalarLocation: function( s ) {
+      return s >= 0 && s <= this.innerLength;
     }
   }, {
     DISTANCE_BETWEEN_VERTICES: DISTANCE_BETWEEN_VERTICES,
@@ -51,6 +82,7 @@ define( function( require ) {
 
       endPoint = startPoint.plus( Vector2.createPolar( LightBulb.DISTANCE_BETWEEN_VERTICES, angle - Math.PI * 0.3975 ) );
 
+      // start vertex is at the bottom
       var startVertex = new Vertex( startPoint.x, startPoint.y, {
         tandem: circuitVertexGroupTandem.createNextTandem()
       } );

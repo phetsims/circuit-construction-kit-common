@@ -28,6 +28,8 @@ define( function( require ) {
   return inherit( Object, ElectronLayout, {
     layoutElectrons: function( circuitElement ) {
 
+      var bulb = circuitElement instanceof LightBulb;
+
       // Remove any electrons that were already in the branch.
       // TODO: a performance improvement could be to adjust them instead of delete/recreate
       // TODO: this could particularly help when dragging a wire, and the electrons are continually re-layed-out.
@@ -36,17 +38,15 @@ define( function( require ) {
 
       // compress or expand, but fix a particle at startingPoint and endingPoint.
       var offset = ELECTRON_DX / 2;
-      var endingPoint = circuitElement.length - offset;
+
+      var circuitLength = circuitElement.length;
+      if ( bulb ) {
+        circuitLength = circuitElement.innerLength;
+      }
+      var endingPoint = circuitLength - offset;
       var startingPoint = offset;
       var length = endingPoint - startingPoint;
 
-      // TODO: abstraction?  Move this method to CircuitElement?
-      var bulb = circuitElement instanceof LightBulb;
-      var lengthScaleFactor = 1;
-      if ( bulb ) {
-        lengthScaleFactor = length / 100;
-        length = 100;
-      }
       var numberParticles = length / ELECTRON_DX;
       var integralNumberParticles = Math.ceil( numberParticles );
       var density = ( integralNumberParticles - 1) / length;
@@ -57,7 +57,6 @@ define( function( require ) {
         dx = 0;
         offset = (startingPoint + endingPoint) / 2;
       }
-      dx = dx * lengthScaleFactor;
       for ( var i = 0; i < integralNumberParticles; i++ ) {
         this.electrons.add( new Electron( circuitElement, i * dx + offset, this.circuit.showElectronsProperty ) );
       }

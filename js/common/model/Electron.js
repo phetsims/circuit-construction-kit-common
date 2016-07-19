@@ -25,7 +25,8 @@ define( function( require ) {
    */
   function Electron( circuitElement, distance, visibleProperty ) {
     assert && assert( _.isNumber( distance ), 'distance should be a number' );
-    assert && assert( distance >= 0 && distance <= circuitElement.length, 'electron out of bounds' );
+    assert && assert( distance >= 0, 'electron was below the origin of the circuit element' );
+    assert && assert( circuitElement.containsScalarLocation( distance ), 'electron was not within the circuit element' );
     var electron = this;
 
     this.circuitElement = circuitElement; // @public 
