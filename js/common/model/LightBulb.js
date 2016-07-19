@@ -21,6 +21,39 @@ define( function( require ) {
   // constants
   var DISTANCE_BETWEEN_VERTICES = 33;
 
+  // Tinker with coordinates to get thing to match up
+  var sx1 = 1.5;
+  var sy1 = 0.4;
+  var sx2 = 0.85;
+
+  var specs = {
+    dimension: new Vector2( 1.222, 2.063 ),
+    bottomCenter: new Vector2( 0.623, 2.063 ),
+    firstCurve: new Vector2( 0.623, 1.014 * 0.75 ),
+    leftCurve1: new Vector2( 0.314 * sx1, 0.704 * sy1 ),
+    leftCurve2: new Vector2( 0.314 * sx1, 0.639 * sy1 ),
+    leftCurve3: new Vector2( 0.394 * sx1, 0.560 * sy1 ),
+    topRight1: new Vector2( 0.823 * sx2, 0.565 * sy1 ),
+    topRight2: new Vector2( 0.888 * sx2, 0.600 * sy1 ),
+    topRight3: new Vector2( 0.922 * sx2, 0.699 * sy1 ),
+    exit: new Vector2( 0.927 * sx2, 1.474 )
+  };
+
+  var points = [
+    specs.bottomCenter,
+    specs.firstCurve,
+    specs.leftCurve1,
+    specs.leftCurve2,
+    specs.leftCurve3,
+    specs.topRight1,
+    specs.topRight2,
+    specs.topRight3,
+    specs.exit
+  ];
+
+  var start = points[ 0 ];
+  var end = points[ points.length - 1 ];
+
   /**
    *
    * @constructor
@@ -30,7 +63,8 @@ define( function( require ) {
       resistance: resistance
     }, options );
 
-    this.length = 130; // changes the speed at which particles go through the light bulb
+    var trueLength = 173.20871708651816; // measured by code below
+    this.length = trueLength - 1E-8; // changes the speed at which particles go through the light bulb
   }
 
   circuitConstructionKitCommon.register( 'LightBulb', LightBulb );
@@ -50,19 +84,32 @@ define( function( require ) {
      */
     getPosition: function( distanceAlongWire ) {
 
-      var points = [
-        this.startVertex.position,
-        this.startVertex.position.plusXY( 0, -70 ),
-        this.endVertex.position
-      ];
-      if ( distanceAlongWire < this.length / 2 ) {
-        var a = Util.linear( 0, this.length / 2, 0, 1, distanceAlongWire );
-        return points[ 0 ].blend( points[ 1 ], a );
+      var accumulatedDistance = 0;
+      var prev = 0;
+      for ( var i = 0; i < points.length - 1; i++ ) {
+
+        var p1 = points[ i ];
+        var p2 = points[ i + 1 ];
+
+        var p1X = Util.linear( start.x, end.x, this.startVertex.position.x, this.endVertex.position.x, p1.x );
+        var p1Y = Util.linear( start.y, end.y, this.startVertex.position.y, this.endVertex.position.y, p1.y );
+
+        var p2X = Util.linear( start.x, end.x, this.startVertex.position.x, this.endVertex.position.x, p2.x );
+        var p2Y = Util.linear( start.y, end.y, this.startVertex.position.y, this.endVertex.position.y, p2.y );
+
+        var q1 = new Vector2( p1X, p1Y );
+        var q2 = new Vector2( p2X, p2Y );
+        accumulatedDistance += q2.distance( q1 );
+
+        // Find what segment the electron is in
+        if ( distanceAlongWire < accumulatedDistance ) {
+          var a = Util.linear( prev, accumulatedDistance, 0, 1, distanceAlongWire );
+          return q1.blend( q2, a );
+        }
+        prev = accumulatedDistance;
       }
-      else {
-        var b = Util.linear( this.length / 2, this.length, 0, 1, distanceAlongWire );
-        return points[ 1 ].blend( points[ 2 ], b );
-      }
+      console.log( accumulatedDistance );
+      assert && assert( false, 'hello' );
     }
   }, {
     DISTANCE_BETWEEN_VERTICES: DISTANCE_BETWEEN_VERTICES,
