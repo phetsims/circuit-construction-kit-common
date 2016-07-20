@@ -85,6 +85,8 @@ define( function( require ) {
 
     var trueLength = accumulatedDistance; // measured by code below
     this.length = trueLength - 1E-8; // changes the speed at which particles go through the light bulb
+
+    this.lightBulbLength = startVertex.position.distance( endVertex.position );
   }
 
   circuitConstructionKitCommon.register( 'LightBulb', LightBulb );
@@ -128,8 +130,11 @@ define( function( require ) {
         }
         prev = accumulatedDistance;
       }
-      console.log( accumulatedDistance );
-      assert && assert( false, 'hello' );
+
+      // TODO: Restore this assertion after #186 complete
+      console.log( distanceAlongWire, accumulatedDistance );
+      // assert && assert( false, 'hello' );
+      return new Vector2();
     }
   }, {
     DISTANCE_BETWEEN_VERTICES: DISTANCE_BETWEEN_VERTICES,

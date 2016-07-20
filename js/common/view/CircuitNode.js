@@ -420,7 +420,7 @@ define( function( require ) {
         }
 
         // Maintain fixed length
-        var length = neighbors[ 0 ].length;
+        var length = neighbors[ 0 ].lightBulbLength || neighbors[ 0 ].length;
         var relative = Vector2.createPolar( length, angle + Math.PI );
         var oppositePosition = position.plus( relative );
 
