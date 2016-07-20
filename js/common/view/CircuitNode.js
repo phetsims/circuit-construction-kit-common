@@ -17,6 +17,7 @@ define( function( require ) {
   var SwitchNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/SwitchNode' );
   var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/BatteryNode' );
   var CCKLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CCKLightBulbNode' );
+  var CCKLightBulbForegroundNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CCKLightBulbForegroundNode' );
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ResistorNode' );
   var VertexNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/VertexNode' );
   var SolderNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/SolderNode' );
@@ -61,6 +62,7 @@ define( function( require ) {
     // in main layer
     this.batteryNodes = [];
     this.lightBulbNodes = [];
+    this.lightBulbForegroundNodes = [];
     this.wireNodes = [];
     this.resistorNodes = [];
     this.switchNodes = [];
@@ -130,6 +132,7 @@ define( function( require ) {
     initializeCircuitElementType( WireNode, circuit.wires, circuitNode.wireNodes, this.getWireNode.bind( this ), tandem.createGroupTandem( 'wireNode' ) );
     initializeCircuitElementType( BatteryNode, circuit.batteries, circuitNode.batteryNodes, this.getBatteryNode.bind( this ), tandem.createGroupTandem( 'batteryNode' ) );
     initializeCircuitElementType( CCKLightBulbNode, circuit.lightBulbs, circuitNode.lightBulbNodes, this.getCCKLightBulbNode.bind( this ), tandem.createGroupTandem( 'lightBulbNode' ) );
+    initializeCircuitElementType( CCKLightBulbForegroundNode, circuit.lightBulbs, circuitNode.lightBulbForegroundNodes, this.getCCKLightBulbForegroundNode.bind( this ), tandem.createGroupTandem( 'lightBulbForegroundNode' ) );
     initializeCircuitElementType( ResistorNode, circuit.resistors, circuitNode.resistorNodes, this.getResistorNode.bind( this ), tandem.createGroupTandem( 'resistorNode' ) );
     initializeCircuitElementType( SwitchNode, circuit.switches, circuitNode.switchNodes, this.getSwitchNode.bind( this ), tandem.createGroupTandem( 'switchNode' ) );
 
@@ -189,6 +192,11 @@ define( function( require ) {
         electron,
         circuitConstructionKitScreenView.circuitConstructionKitModel.revealingProperty || new Property( true )
       ) );
+
+      // Move light bulb foregrounds to the front so electron will go behind.
+      circuitNode.lightBulbForegroundNodes.forEach( function( b ) {
+        b.moveToFront();
+      } );
     } );
   }
 
@@ -233,6 +241,7 @@ define( function( require ) {
 
     getWireNode: function( wire ) { return this.getCircuitElementNode( this.wireNodes, wire ); },
     getCCKLightBulbNode: function( lightBulb ) { return this.getCircuitElementNode( this.lightBulbNodes, lightBulb ); },
+    getCCKLightBulbForegroundNode: function( lightBulb ) { return this.getCircuitElementNode( this.lightBulbForegroundNodes, lightBulb ); },
     getBatteryNode: function( battery ) { return this.getCircuitElementNode( this.batteryNodes, battery ); },
     getResistorNode: function( resistor ) { return this.getCircuitElementNode( this.resistorNodes, resistor ); },
     getSwitchNode: function( switchModel ) { return this.getCircuitElementNode( this.switchNodes, switchModel ); },

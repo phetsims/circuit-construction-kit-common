@@ -2,8 +2,8 @@
 
 /**
  * Light bulb, made to 'glow' by modulating opacity of the 'on' image.
- * TODO: Copied from SCENERY_PHET/LightBulbNode, but with different images.
- * Either (a) make the images optional in LightBulbNode or (b) simplify this file and factor out
+ * TODO: Copied from SCENERY_PHET/CustomLightBulbNode, but with different images.
+ * Either (a) make the images optional in CustomLightBulbNode or (b) simplify this file and factor out
  * options to LightRaysNode.
  *
  * @author Chris Malley (PixelZoom, Inc.)
@@ -22,15 +22,17 @@ define( function( require ) {
   // images
   var onImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb.png' );
   var offImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb.png' );
+  var baseImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-front.png' );
 
   /**
    * @param {Property.<number>} brightnessProperty 0 (off) to 1 (full brightness)
    * @param {Object} [options]
    * @constructor
    */
-  function LightBulbNode( brightnessProperty, options ) {
+  function CustomLightBulbNode( brightnessProperty, options ) {
 
     var defaultOptions = {
+      baseOnly: false,
       bulbImageScale: 0.33 * 0.2,
       rayStroke: 'yellow',
       minRays: 8,
@@ -47,36 +49,43 @@ define( function( require ) {
     var thisNode = this;
 
     // @private
-    thisNode.onNode = new Image( onImage, {
+    thisNode.onNode = new Image( options.baseOnly ? baseImage : onImage, {
       scale: options.bulbImageScale,
       centerX: 0,
       bottom: 0
     } ); // @private
 
-    var offNode = new Image( offImage, {
+    var offNode = new Image( options.baseOnly ? baseImage : offImage, {
       scale: options.bulbImageScale,
       centerX: thisNode.onNode.centerX,
       bottom: thisNode.onNode.bottom
     } );
 
     // rays
-    var bulbRadius = offNode.width / 2; // use 'off' node, the 'on' node is wider because it has a glow around it.
-    var rayOptions = _.pick( options, _.keys( defaultOptions ) ); // cherry-pick options that are specific to rays
-    rayOptions.x = this.onNode.centerX;
-    rayOptions.y = offNode.top + bulbRadius;
-    thisNode.raysNode = new LightRaysNode( bulbRadius, rayOptions ); // @private
+    if ( !options.baseOnly ) {
+      var bulbRadius = offNode.width / 2; // use 'off' node, the 'on' node is wider because it has a glow around it.
+      var rayOptions = _.pick( options, _.keys( defaultOptions ) ); // cherry-pick options that are specific to rays
+      rayOptions.x = this.onNode.centerX;
+      rayOptions.y = offNode.top + bulbRadius;
+      thisNode.raysNode = new LightRaysNode( bulbRadius, rayOptions ); // @private
 
-    options.children = [ thisNode.raysNode, offNode, thisNode.onNode ];
+      options.children = [ thisNode.raysNode, offNode, thisNode.onNode ];
+    }
+    else {
+      options.children = [ offNode, thisNode.onNode ];
+    }
     Node.call( thisNode, options );
 
-    thisNode.brightnessObserver = function( brightness ) { thisNode.update(); }; // @private
-    thisNode.brightnessProperty = brightnessProperty; // @private
-    thisNode.brightnessProperty.link( this.brightnessObserver );
+    if ( !options.baseOnly ) {
+      thisNode.brightnessObserver = function( brightness ) { thisNode.update(); }; // @private
+      thisNode.brightnessProperty = brightnessProperty; // @private
+      thisNode.brightnessProperty.link( this.brightnessObserver );
+    }
   }
 
-  circuitConstructionKitCommon.register( 'CustomLightBulbNode', LightBulbNode );
+  circuitConstructionKitCommon.register( 'CustomLightBulbNode', CustomLightBulbNode );
 
-  inherit( Node, LightBulbNode, {
+  inherit( Node, CustomLightBulbNode, {
 
     // @public Ensures that this object is eligible for GC
     dispose: function() {
@@ -106,5 +115,5 @@ define( function( require ) {
     }
   } );
 
-  return LightBulbNode;
+  return CustomLightBulbNode;
 } );
