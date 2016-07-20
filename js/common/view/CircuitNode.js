@@ -311,10 +311,10 @@ define( function( require ) {
             child.moveToFront();
           }
           else {
-            var indexOfBackground = children.indexOf( this.getCCKLightBulbNode( child.electron.circuitElement ) );
+            var indexOfForeground = children.indexOf( this.getCCKLightBulbForegroundNode( child.electron.circuitElement ) );
 
             this.mainLayer.removeChild( child );
-            this.mainLayer.insertChild( indexOfBackground + 1, child );
+            this.mainLayer.insertChild( indexOfForeground - 2, child ); // TODO: I have no idea why -2 seems to work
           }
         }
       }
