@@ -56,6 +56,7 @@ define( function( require ) {
 
   function ElectronNode( electron, revealingProperty ) {
     var electronNode = this;
+    this.electron = electron;
     Node.call( this, {
       children: [ node ],
       pickable: false

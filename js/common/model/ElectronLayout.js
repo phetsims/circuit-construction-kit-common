@@ -32,6 +32,9 @@ define( function( require ) {
       // TODO: a performance improvement could be to adjust them instead of delete/recreate
       // TODO: this could particularly help when dragging a wire, and the electrons are continually re-layed-out.
       var particlesInBranch = this.circuit.getElectronsInCircuitElement( circuitElement );
+      for ( var k = 0; k < particlesInBranch.length; k++ ) {
+        particlesInBranch[ k ].dispose();
+      }
       this.electrons.removeAll( particlesInBranch );
 
       // compress or expand, but fix a particle at startingPoint and endingPoint.

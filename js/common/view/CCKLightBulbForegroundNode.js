@@ -22,7 +22,6 @@ define( function( require ) {
    * @constructor
    */
   function CCKLightBulbForegroundNode( circuitConstructionKitScreenView, circuitNode, lightBulb, runningProperty, tandem, options ) {
-    console.log( 'CCKLightBulbForegroundNode' );
     var cckLightBulbForegroundNode = this;
     this.lightBulb = lightBulb;
 

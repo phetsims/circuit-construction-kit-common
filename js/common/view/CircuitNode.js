@@ -67,6 +67,7 @@ define( function( require ) {
     this.resistorNodes = [];
     this.switchNodes = [];
     this.vertexNodes = [];
+    this.electronNodes = [];
 
     /**
      * For each type of circuitElement, create a listener that can be used to remove the corresponding nodes
@@ -188,10 +189,18 @@ define( function( require ) {
     } );
 
     circuit.electrons.addItemAddedListener( function( electron ) {
-      circuitNode.mainLayer.addChild( new ElectronNode(
+      var electronNode = new ElectronNode(
         electron,
         circuitConstructionKitScreenView.circuitConstructionKitModel.revealingProperty || new Property( true )
-      ) );
+      );
+      electron.disposeEmitter.addListener( function x() {
+        var index = circuitNode.electronNodes.indexOf( electron );
+        circuitNode.electronNodes.splice( index, 1 );
+
+        electron.disposeEmitter.removeListener( x );
+      } );
+      circuitNode.electronNodes.push( electronNode );
+      circuitNode.mainLayer.addChild( electronNode );
 
       // Move light bulb foregrounds to the front so electron will go behind.
       circuitNode.lightBulbForegroundNodes.forEach( function( b ) {
@@ -285,6 +294,29 @@ define( function( require ) {
       }
       else {
         return null;
+      }
+    },
+
+    step: function( dt ) {
+
+      // Any electrons that are in a light bulb and above halfway should be in front of the base
+      // TODO: does this code fight with the code that moves the bases to the front?
+      // TODO: how to avoid moving electrons unnecessarily?
+      var children = this.mainLayer.children;
+      for ( var i = 0; i < children.length; i++ ) {
+        var child = children[ i ];
+        if ( child instanceof ElectronNode &&
+             child.electron.circuitElement instanceof LightBulb ) {
+          if ( child.electron.distance > child.electron.circuitElement.length / 2 ) {
+            child.moveToFront();
+          }
+          else {
+            var indexOfBackground = children.indexOf( this.getCCKLightBulbNode( child.electron.circuitElement ) );
+
+            this.mainLayer.removeChild( child );
+            this.mainLayer.insertChild( indexOfBackground + 1, child );
+          }
+        }
       }
     },
     startDrag: function( point, vertex ) {

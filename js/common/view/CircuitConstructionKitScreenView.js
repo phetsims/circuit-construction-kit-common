@@ -310,7 +310,9 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'CircuitConstructionKitScreenView', CircuitConstructionKitScreenView );
 
   return inherit( ScreenView, CircuitConstructionKitScreenView, {
-
+    step: function( dt ) {
+      this.circuitNode.step( dt );
+    },
     //overrideable stub
     reset: function() {
 
