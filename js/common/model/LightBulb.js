@@ -87,6 +87,8 @@ define( function( require ) {
     this.length = trueLength - 1E-8; // changes the speed at which particles go through the light bulb
 
     this.lightBulbLength = startVertex.position.distance( endVertex.position );
+
+    this.vertexDelta = endVertex.position.minus( startVertex.position );
   }
 
   circuitConstructionKitCommon.register( 'LightBulb', LightBulb );
@@ -113,11 +115,11 @@ define( function( require ) {
         var p1 = points[ i ];
         var p2 = points[ i + 1 ];
 
-        var p1X = Util.linear( start.x, end.x, this.startVertex.position.x, this.endVertex.position.x, p1.x );
-        var p1Y = Util.linear( start.y, end.y, this.startVertex.position.y, this.endVertex.position.y, p1.y );
+        var p1X = Util.linear( start.x, end.x, this.startVertex.position.x, this.startVertex.position.x + this.vertexDelta.x, p1.x );
+        var p1Y = Util.linear( start.y, end.y, this.startVertex.position.y, this.startVertex.position.y + this.vertexDelta.y, p1.y );
 
-        var p2X = Util.linear( start.x, end.x, this.startVertex.position.x, this.endVertex.position.x, p2.x );
-        var p2Y = Util.linear( start.y, end.y, this.startVertex.position.y, this.endVertex.position.y, p2.y );
+        var p2X = Util.linear( start.x, end.x, this.startVertex.position.x, this.startVertex.position.x + this.vertexDelta.x, p2.x );
+        var p2Y = Util.linear( start.y, end.y, this.startVertex.position.y, this.startVertex.position.y + this.vertexDelta.y, p2.y );
 
         var q1 = new Vector2( p1X, p1Y );
         var q2 = new Vector2( p2X, p2Y );
