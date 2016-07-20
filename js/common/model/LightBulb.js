@@ -56,6 +56,19 @@ define( function( require ) {
   var start = points[ 0 ];
   var end = points[ points.length - 1 ];
 
+  // See http://stackoverflow.com/questions/12161277/how-to-rotate-a-vertex-around-a-certain-point
+  // TODO: move to Vector2?
+  var rotatedAbout = function( point, origin, angle ) {
+    var dx = (point.x - origin.x);
+    var dy = (point.y - origin.y);
+    var cos = Math.cos( angle );
+    var sin = Math.sin( angle );
+    return new Vector2(
+      origin.x + dx * cos - dy * sin,
+      origin.y + dx * sin + dy * cos
+    );
+  };
+
   /**
    *
    * @constructor
@@ -128,7 +141,15 @@ define( function( require ) {
         // Find what segment the electron is in
         if ( distanceAlongWire < accumulatedDistance ) {
           var a = Util.linear( prev, accumulatedDistance, 0, 1, distanceAlongWire );
-          return q1.blend( q2, a );
+          var position = q1.blend( q2, a );
+
+          // Rotate about the start vertex.
+          var vd = this.endVertex.position.minus( this.startVertex.position );
+
+          var angle = vd.angle() - this.vertexDelta.angle();
+
+          // rotate the point about the start vertex
+          return rotatedAbout( position, this.startVertex.position, angle );
         }
         prev = accumulatedDistance;
       }
