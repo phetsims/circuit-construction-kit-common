@@ -232,6 +232,12 @@ define( function( require ) {
     options.numberOfLightBulbs && children.push( lightBulbIcon );
     options.numberOfResistors && children.push( resistorIcon );
     options.numberOfSwitches && children.push( switchIcon );
+
+    // Expand touch bounds for each icon
+    for ( var i = 0; i < children.length; i++ ) {
+      children[ i ].touchArea = children[ i ].localBounds.dilatedXY( 10, 18 );
+    }
+    lightBulbIcon.touchArea = lightBulbIcon.localBounds.dilatedXY( 11, 8 );
     CircuitConstructionKitPanel.call( this, new LayoutBox( {
       orientation: options.orientation,
       spacing: CircuitConstructionKitConstants.toolboxItemSpacing,
