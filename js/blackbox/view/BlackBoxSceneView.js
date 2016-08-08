@@ -24,6 +24,9 @@ define( function( require ) {
   var ScreenView = require( 'JOIST/ScreenView' );
   var Color = require( 'SCENERY/util/Color' );
 
+  // phet-io modules
+  var TString = require( 'ifphetio!PHET_IO/types/TString' );
+
   // constants
   var fadedColor = new Color( '#e3edfc' );
   var solidColor = CircuitConstructionKitConstants.backgroundColor;
@@ -71,7 +74,8 @@ define( function( require ) {
       } );
     }
     var sceneSelectionComboBox = new ComboBox( elements, sceneProperty, this, {
-      tandem: tandem.createTandem( 'sceneSelectionComboBox' )
+      tandem: tandem.createTandem( 'sceneSelectionComboBox' ),
+      phetioValueType: TString
     } );
     this.addChild( sceneSelectionComboBox );
 
