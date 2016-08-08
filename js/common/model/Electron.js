@@ -39,7 +39,7 @@ define( function( require ) {
       position: new Vector2()
     } );
 
-    Property.multilink( [ this.distanceProperty, this.updatingProperty ], function( distance, updating ) {
+    var multilink = Property.multilink( [ this.distanceProperty, this.updatingProperty ], function( distance, updating ) {
       if ( updating ) {
         assert && assert( !electron.deleted, 'Electron was deleted' );
         assert && assert( !isNaN( distance ), 'electron position was not a number' );
@@ -52,6 +52,19 @@ define( function( require ) {
     // @public
     this.visibleProperty = visibleProperty;
     this.disposeEmitter = new Emitter();
+
+    this.disposeElectron = function() {
+
+      // TODO: sometimes the electrons are getting disposed twice, we must find out why and fix it
+      if ( electron.deleted ) {
+        return;
+      }
+      assert && assert( !electron.deleted, 'cannot delete twice' );
+      multilink.dispose();
+      electron.deleted = true;
+      electron.disposeEmitter.emit();
+      assert && assert( !electron.disposeEmitter.hasListeners(), 'after disposal, should have no listeners' );
+    };
   }
 
   circuitConstructionKitCommon.register( 'Electron', Electron );
@@ -59,9 +72,7 @@ define( function( require ) {
   return inherit( PropertySet, Electron, {
 
     dispose: function() {
-      this.deleted = true;
-      this.disposeEmitter.emit();
-      assert && assert( !this.disposeEmitter.hasListeners(), 'after disposal, should have no listeners' );
+      this.disposeElectron();
     },
 
     setLocation: function( circuitElement, distance ) {
