@@ -61,7 +61,6 @@ define( function( require ) {
 
     // Set the initial location of the highlight, since it was not available in the supercall to updateLayout
     updateLayout( lightBulb.startVertex.position, lightBulb.endVertex.position );
-
   }
 
   circuitConstructionKitCommon.register( 'CCKLightBulbForegroundNode', CCKLightBulbForegroundNode );

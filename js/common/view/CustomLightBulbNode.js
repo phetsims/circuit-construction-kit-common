@@ -77,10 +77,16 @@ define( function( require ) {
     Node.call( thisNode, options );
 
     if ( !options.baseOnly ) {
-      thisNode.brightnessObserver = function( brightness ) { thisNode.update(); }; // @private
+      thisNode.brightnessObserver = function() { thisNode.update(); }; // @private
       thisNode.brightnessProperty = brightnessProperty; // @private
       thisNode.brightnessProperty.link( this.brightnessObserver );
     }
+
+    this.disposeCustomLightBulbNode = function() {
+      if ( !options.baseOnly ) {
+        thisNode.brightnessProperty.unlink( thisNode.brightnessObserver );
+      }
+    };
   }
 
   circuitConstructionKitCommon.register( 'CustomLightBulbNode', CustomLightBulbNode );
@@ -89,7 +95,7 @@ define( function( require ) {
 
     // @public Ensures that this object is eligible for GC
     dispose: function() {
-      this.brightnessProperty.unlink( this.brightnessObserver );
+      this.disposeCustomLightBulbNode();
     },
 
     // @private
