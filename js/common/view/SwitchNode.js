@@ -240,6 +240,7 @@ define( function( require ) {
     // @public
     dispose: function() {
       this.disposeSwitchNode();
+      CircuitElementNode.prototype.dispose.call( this );
     },
 
     // @private

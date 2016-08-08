@@ -22,21 +22,44 @@ define( function( require ) {
    * @constructor
    */
   function CircuitElementNode( circuitElement, options ) {
+
+    var circuitElementNode = this;
+
     Node.call( this, options );
     this.circuitElement = circuitElement;
+
+    // @protected
+    this.disposeActions = [];
+
     this.updateOpacityOnInteractiveChange();
+
+    this.disposeCircuitElementNode = function() {
+      circuitElementNode.disposeActions.forEach( function( element ) {
+        element();
+      } );
+      circuitElementNode.disposeActions.length = 0;
+    };
   }
 
   circuitConstructionKitCommon.register( 'CircuitElementNode', CircuitElementNode );
 
   return inherit( Node, CircuitElementNode, {
 
+    dispose: function() {
+      this.disposeCircuitElementNode();
+    },
+
     // @protected
     updateOpacityOnInteractiveChange: function() {
       var circuitElementNode = this;
       // TODO: Replace this with grayscale if we keep it
-      this.circuitElement.interactiveProperty.link( function( interactive ) {
+      var interactivityChanged = function( interactive ) {
         circuitElementNode.opacity = interactive ? 1 : 0.5;
+      };
+      this.circuitElement.interactiveProperty.link( interactivityChanged );
+
+      this.disposeActions.push( function() {
+        circuitElementNode.circuitElement.interactiveProperty.unlink( interactivityChanged );
       } );
     },
     createDeselectFunctionListener: function( circuitNode ) {

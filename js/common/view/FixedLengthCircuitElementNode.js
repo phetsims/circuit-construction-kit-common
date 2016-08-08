@@ -204,6 +204,7 @@ define( function( require ) {
   return inherit( CircuitElementNode, FixedLengthCircuitElementNode, {
     dispose: function() {
       this.disposeFixedLengthCircuitElementNode();
+      CircuitElementNode.prototype.dispose.call( this );
     }
   }, {
     HIGHLIGHT_INSET: 10

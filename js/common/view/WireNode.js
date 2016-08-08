@@ -234,6 +234,7 @@ define( function( require ) {
     // @public
     dispose: function() {
       this.disposeWireNode();
+      CircuitElementNode.prototype.dispose.call( this );
     },
 
     // @private
