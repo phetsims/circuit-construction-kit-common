@@ -17,6 +17,10 @@ define( function( require ) {
   var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/CircuitStruct' );
   var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
 
+  // phet-io modules
+  var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
+  var TString = require( 'ifphetio!PHET_IO/types/TString' );
+
   // constants
   var showPlayPauseButton = CircuitConstructionKitQueryParameters.showPlayPauseButton;
 
@@ -67,6 +71,11 @@ define( function( require ) {
       revealing: tandem.createTandem( 'revealingProperty' ),
       isRevealEnabled: tandem.createTandem( 'isRevealEnabledProperty' ),
       running: tandem.createTandem( 'runningProperty' )
+    }, {
+      mode: TString,
+      revealing: TBoolean,
+      isRevealEnabled: TBoolean,
+      running: TBoolean
     } );
 
     this.revealingProperty = this.revealingProperty || null;

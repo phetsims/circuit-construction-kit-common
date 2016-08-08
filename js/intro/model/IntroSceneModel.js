@@ -19,7 +19,7 @@ define( function( require ) {
    * @constructor
    */
   function IntroSceneModel( layoutBounds, selectedSceneProperty, tandem ) {
-    CircuitConstructionKitModel.call( this, tandem, {}, {} );
+    CircuitConstructionKitModel.call( this, tandem, {}, {}, {} );
 
     // @public (read-only)
     this.selectedSceneProperty = selectedSceneProperty;

@@ -19,10 +19,14 @@ define( function( require ) {
   var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
   var TandemEmitter = require( 'TANDEM/axon/TandemEmitter' );
 
+  // phet-io modules
+  var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
+  var TString = require( 'ifphetio!PHET_IO/types/TString' );
+
   /**
    * @constructor
    */
-  function CircuitConstructionKitModel( tandem, additionalProperties, additionalTandemSetEntries, options ) {
+  function CircuitConstructionKitModel( tandem, additionalProperties, additionalTandemSetEntries, additionalTypeEntries, options ) {
     var circuitConstructionKitModel = this;
     options = _.extend( { circuit: null }, options );
     PropertySet.call( this, _.extend( {
@@ -30,7 +34,10 @@ define( function( require ) {
     }, additionalProperties ), {
       tandemSet: _.extend( {
         running: tandem.createTandem( 'runningProperty' )
-      }, additionalTandemSetEntries )
+      }, additionalTandemSetEntries ),
+      phetioValueTypeSet: _.extend( {
+        running: TBoolean
+      }, additionalTypeEntries )
     } );
 
     // @public (read-only) These assignments provide improved highlighting and navigation in IntelliJ IDEA
@@ -55,7 +62,8 @@ define( function( require ) {
     }
 
     var circuitChangedEmitter = new TandemEmitter( {
-      tandem: tandem.createTandem( 'circuitChangedEmitter' )
+      tandem: tandem.createTandem( 'circuitChangedEmitter' ),
+      argTypes: [ TString ]
     } );
 
     // For PhET-iO, when a component is edited or a vertex is added, connected, or cut, output the circuit to the data stream

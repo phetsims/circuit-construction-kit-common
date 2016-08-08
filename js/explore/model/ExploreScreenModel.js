@@ -23,7 +23,7 @@ define( function( require ) {
       running: !CircuitConstructionKitQueryParameters.showPlayPauseButton // {boolean} @public changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
     }, {
       running: tandem.createTandem( 'runningProperty' )
-    } );
+    }, {} );
   }
 
   circuitConstructionKitCommon.register( 'ExploreScreenModel', ExploreScreenModel );

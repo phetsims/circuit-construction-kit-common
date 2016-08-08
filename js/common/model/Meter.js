@@ -16,7 +16,11 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var Emitter = require( 'AXON/Emitter' );
 
-  function Meter( additionalProperties, tandem, tandemSet ) {
+  // phet-io modules
+  var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
+  var TVector2 = require( 'ifphetio!PHET_IO/types/dot/TVector2' );
+
+  function Meter( additionalProperties, tandem, tandemSet, additionalPhetioValueTypeSet ) {
     PropertySet.call( this, _.extend( {
       visible: false,
       bodyPosition: new Vector2( 0, 0 ),
@@ -26,7 +30,12 @@ define( function( require ) {
         visible: tandem.createTandem( 'visibleProperty' ),
         bodyPosition: tandem.createTandem( 'bodyPositionProperty' ),
         draggingTogether: tandem.createTandem( 'draggingTogetherProperty' )
-      }, tandemSet )
+      }, tandemSet ),
+      phetioValueTypeSet: _.extend( {
+        visible: TBoolean,
+        bodyPosition: TVector2,
+        draggingTogether: TBoolean
+      }, additionalPhetioValueTypeSet )
     } );
     this.droppedEmitter = new Emitter(); // Fire event when dropped
   }

@@ -27,6 +27,9 @@ define( function( require ) {
   var ElectronPropagator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/ElectronPropagator' );
   var Vector2 = require( 'DOT/Vector2' );
 
+  // phet-io modules
+  var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
+
   // constants
   var SNAP_RADIUS = 30;
 
@@ -43,7 +46,8 @@ define( function( require ) {
     this.resistors = new ObservableArray();
 
     this.showElectronsProperty = new Property( false, {
-      tandem: tandem.createTandem( 'showElectronsProperty' )
+      tandem: tandem.createTandem( 'showElectronsProperty' ),
+      phetioValueType: TBoolean
     } );
     this.electrons = new ObservableArray();
 
