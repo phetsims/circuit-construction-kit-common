@@ -29,9 +29,8 @@ define( function( require ) {
       running: true // {boolean} @public changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
     }, additionalProperties ), {
       tandemSet: _.extend( {
-          running: tandem.createTandem( 'runningProperty' )
-        }
-        , additionalTandemSetEntries )
+        running: tandem.createTandem( 'runningProperty' )
+      }, additionalTandemSetEntries )
     } );
 
     // @public (read-only) These assignments provide improved highlighting and navigation in IntelliJ IDEA
