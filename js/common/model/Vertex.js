@@ -16,6 +16,11 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var Emitter = require( 'AXON/Emitter' );
 
+  // phet-io modules
+  var TNumber = require( 'ifphetio!PHET_IO/types/TNumber' );
+  var TVector2 = require( 'ifphetio!PHET_IO/types/dot/TVector2' );
+  var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
+
   // constants
   var DEFAULTS = {
     draggable: true, // {boolean} whether the vertex can be dragged, false for Black Box elements
@@ -44,6 +49,12 @@ define( function( require ) {
       position: options.tandem.createTandem( 'positionProperty' ),
       voltage: options.tandem.createTandem( 'voltageProperty' ),
       selected: options.tandem.createTandem( 'selectedProperty' )
+    } : {};
+
+    var phetioValueTypeSet = options.tandem ? {
+      position: TVector2,
+      voltage: TNumber( 'volts' ),
+      selected: TBoolean
     } : {};
 
     PropertySet.call( this, {
@@ -83,7 +94,8 @@ define( function( require ) {
       // interface or outside of the black box
       insideTrueBlackBox: false
     }, {
-      tandemSet: tandemSet
+      tandemSet: tandemSet,
+      phetioValueTypeSet: phetioValueTypeSet
     } );
     this.moveToFrontEmitter = new Emitter();
   }
