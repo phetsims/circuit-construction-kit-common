@@ -193,6 +193,9 @@ define( function( require ) {
 
       circuitNode && circuitNode.highlightLayer.removeChild( highlightParent );
 
+      circuitElement.startVertexProperty.unlink( relink );
+      circuitElement.endVertexProperty.unlink( relink );
+
       tandem.removeInstance( this );
     };
 
