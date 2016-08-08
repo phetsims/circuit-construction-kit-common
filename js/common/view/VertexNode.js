@@ -23,6 +23,9 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var TandemDragHandler = require( 'TANDEM/scenery/input/TandemDragHandler' );
 
+  // phet-io modules
+  var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
+
   // constants
   var DISTANCE_TO_CUT_BUTTON = 70; // How far (screen coordinates) the cut button appears from the vertex node
 
@@ -243,7 +246,7 @@ define( function( require ) {
       tandem.removeInstance( vertexNode );
     };
 
-    tandem.addInstance( this );
+    tandem.addInstance( this, TNode );
   }
 
   circuitConstructionKitCommon.register( 'VertexNode', VertexNode );

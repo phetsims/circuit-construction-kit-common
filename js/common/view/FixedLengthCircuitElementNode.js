@@ -20,6 +20,9 @@ define( function( require ) {
   var Matrix3 = require( 'DOT/Matrix3' );
   var Node = require( 'SCENERY/nodes/Node' );
 
+  // phet-io modules
+  var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
+
   /**
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
    * @param circuitNode - Null if an icon is created
@@ -193,7 +196,7 @@ define( function( require ) {
       tandem.removeInstance( this );
     };
 
-    tandem.addInstance( this );
+    tandem.addInstance( this, TNode );
   }
 
   circuitConstructionKitCommon.register( 'FixedLengthCircuitElementNode', FixedLengthCircuitElementNode );
