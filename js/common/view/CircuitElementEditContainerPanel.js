@@ -36,6 +36,7 @@ define( function( require ) {
     var circuitElementEditContainerPanel = this;
     Node.call( this );
 
+    // TODO: i18n
     var tapInstructionTextNode = new Text( 'Tap circuit element to edit.', {
       fontSize: 24
     } );
