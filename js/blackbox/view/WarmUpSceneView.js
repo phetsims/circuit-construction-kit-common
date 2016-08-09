@@ -46,7 +46,6 @@ define( function( require ) {
       top: ScreenView.DEFAULT_LAYOUT_BOUNDS.height / 6
     }, textOptions ) );
     blackBoxSceneModel.modeProperty.link( function( mode ) {
-      tryToText.moveToFront(); // So it doesn't become obscured by the partially transparent overlay
       tryToText.visible = mode === 'build';
     } );
 
