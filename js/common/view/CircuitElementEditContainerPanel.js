@@ -48,11 +48,12 @@ define( function( require ) {
 
       // Only fixed length circuit elements are editable, even though wires can be deleted
       var fixedLengthElements = circuitElements.filter( function( circuitElement ) {
-        return circuitElement instanceof FixedLengthCircuitElement;
+        return circuitElement instanceof FixedLengthCircuitElement && circuitElement.interactive;
       } );
       tapInstructionTextNode.visible = fixedLengthElements.length > 0;
     };
     circuit.vertexDroppedEmitter.addListener( listener );
+    circuit.vertices.addItemRemovedListener( listener ); // Also update on reset all, or if a component is dropped in the toolbox
     listener(); // Update on startup, like link()
 
     this.addChild( new Rectangle( 0, 0, 10, 10, { fill: null } ) ); // blank spacer so layout doesn't exception out
