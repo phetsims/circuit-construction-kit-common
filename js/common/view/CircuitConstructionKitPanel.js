@@ -13,13 +13,20 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Panel = require( 'SUN/Panel' );
 
-  function CircuitConstructionKitPanel( content, options ) {
+  /**
+   * @param content
+   * @param {Tandem} tandem
+   * @param options
+   * @constructor
+   */
+  function CircuitConstructionKitPanel( content, tandem, options ) {
     options = _.extend( {
       fill: '#f1f1f2',
       stroke: 'black',
       lineWidth: 1.3,
       xMargin: 15,
-      yMargin: 15
+      yMargin: 15,
+      tandem: tandem
     }, options );
     Panel.call( this, content, options );
   }

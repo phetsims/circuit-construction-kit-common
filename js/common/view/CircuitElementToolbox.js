@@ -242,7 +242,7 @@ define( function( require ) {
       orientation: options.orientation,
       spacing: CircuitConstructionKitConstants.toolboxItemSpacing,
       children: children
-    } ) );
+    } ), tandem );
   }
 
   circuitConstructionKitCommon.register( 'CircuitElementToolbox', CircuitElementToolbox );

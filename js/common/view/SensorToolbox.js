@@ -67,7 +67,7 @@ define( function( require ) {
         voltmeterNodeIcon,
         ammeterNodeIcon
       ]
-    } ) );
+    } ), tandem );
   }
 
   circuitConstructionKitCommon.register( 'SensorToolbox', SensorToolbox );

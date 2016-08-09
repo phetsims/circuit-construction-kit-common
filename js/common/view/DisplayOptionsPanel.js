@@ -18,8 +18,9 @@ define( function( require ) {
 
   /**
    * @param {Property} showElectronsProperty - true if electrons should be shown
-   * @param {Property} conventionalCurrentProperty - true to show the coventional current direction
+   * @param {Property} conventionalCurrentProperty - true to show the conventional current direction
    * @param {Property} showValuesProperty - true if values should be shown
+   * @param {Tandem} tandem
    * @param {Object} options
    * @constructor
    */
@@ -52,7 +53,7 @@ define( function( require ) {
     var verticalCheckBoxGroup = new VerticalCheckBoxGroup( array, {
       tandem: tandem.createTandem( 'verticalCheckBoxGroup' )
     } );
-    CircuitConstructionKitPanel.call( this, verticalCheckBoxGroup );
+    CircuitConstructionKitPanel.call( this, verticalCheckBoxGroup, tandem );
   }
 
   circuitConstructionKitCommon.register( 'DisplayOptionsPanel', DisplayOptionsPanel );
