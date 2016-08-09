@@ -29,6 +29,7 @@ define( function( require ) {
   var PlayPauseButton = require( 'SCENERY_PHET/buttons/PlayPauseButton' );
   var TextPushButton = require( 'SUN/buttons/TextPushButton' );
   var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/CircuitStruct' );
+  var Plane = require( 'SCENERY/nodes/Plane' );
 
   // constants
   var inset = CircuitConstructionKitConstants.layoutInset;
@@ -63,6 +64,20 @@ define( function( require ) {
     }, options );
     this.circuitConstructionKitModel = circuitConstructionKitModel;
     ScreenView.call( this );
+
+    // On touch, make it so tapping the background deselects items.  For mouse, we add listeners to the pointer that
+    // work a bit more accurately.
+    // @private
+    this.backgroundPlane = new Plane();
+    this.backgroundPlane.addInputListener( {
+      touchdown: function() {
+        circuitConstructionKitModel.circuit.selectedCircuitElementProperty.set( null );
+        circuitConstructionKitModel.circuit.vertices.forEach( function( v ) {
+          v.selected = false;
+        } );
+      }
+    } );
+    this.addChild( this.backgroundPlane );
 
     // Reset All button
     if ( options.showResetAllButton ) {
@@ -189,6 +204,7 @@ define( function( require ) {
     } );
     this.addChild( this.displayOptionsPanel );
     this.displayOptionsPanel.moveToBack(); // Move behind elements added in the super, such as the sensors and circuit
+    this.moveBackgroundToBack();
 
     this.addChild( this.circuitNode );
     this.addChild( this.sensorToolbox );
@@ -310,6 +326,14 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'CircuitConstructionKitScreenView', CircuitConstructionKitScreenView );
 
   return inherit( ScreenView, CircuitConstructionKitScreenView, {
+
+    /**
+     * When other UI components are moved to the back, we must make sure the background stays behind them.
+     * @public
+     */
+    moveBackgroundToBack: function() {
+      this.backgroundPlane.moveToBack();
+    },
     step: function( dt ) {
       this.circuitNode.step( dt );
     },

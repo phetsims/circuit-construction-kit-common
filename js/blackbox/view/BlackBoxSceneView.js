@@ -133,12 +133,14 @@ define( function( require ) {
         blackBoxSceneView.circuitNode.moveTrueBlackBoxElementsToBack();
       }
       whiteBoxNode.moveToBack();
+      blackBoxSceneView.moveBackgroundToBack();
     } );
 
     // When reset, move the boxes in front of the black box circuit elements
     this.resetBlackBoxSceneView = function() {
       blackBoxNode.moveToFront();
       whiteBoxNode.moveToBack();
+      blackBoxSceneView.moveBackgroundToBack();
     };
 
     // When dropping an object in "build mode", its vertices should pop inside the black box, see #113
@@ -187,6 +189,7 @@ define( function( require ) {
         }
       }, 0 );
     } );
+    this.moveBackgroundToBack();
   }
 
   circuitConstructionKitCommon.register( 'BlackBoxSceneView', BlackBoxSceneView );

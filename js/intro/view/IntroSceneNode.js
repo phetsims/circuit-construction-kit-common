@@ -60,6 +60,7 @@ define( function( require ) {
     var displayOptionsPanel = new DisplayOptionsPanel( new Property( false ), new Property( false ), new Property( false ) );
     this.addChild( displayOptionsPanel );
     displayOptionsPanel.moveToBack(); // Move behind elements added in the super, such as the sensors and circuit
+    this.moveBackgroundToBack();
 
     this.visibleBoundsProperty.link( function( visibleBounds ) {
       displayOptionsPanel.top = visibleBounds.top + inset;
