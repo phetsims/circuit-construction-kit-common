@@ -157,6 +157,7 @@ define( function( require ) {
 
     if ( circuitConstructionKitScreenView ) {
       this.inputListener = new TandemDragHandler( {
+        allowTouchSnag: true,
         tandem: tandem.createTandem( 'inputListener' ),
         start: function( event ) {
           p = event.pointer.point;

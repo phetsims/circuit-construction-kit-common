@@ -130,6 +130,7 @@ define( function( require ) {
     var p = null;
     var didDrag = false;
     var dragHandler = new TandemDragHandler( {
+      allowTouchSnag: true,
       tandem: tandem.createTandem( 'dragHandler' ),
       start: function( event ) {
         p = event.pointer.point;

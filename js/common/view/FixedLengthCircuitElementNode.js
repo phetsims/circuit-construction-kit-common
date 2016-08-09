@@ -130,6 +130,7 @@ define( function( require ) {
     var didDrag = false;
     if ( !options.icon ) {
       this.inputListener = new TandemDragHandler( {
+        allowTouchSnag: true,
         tandem: tandem.createTandem( 'inputListener' ), // TODO: some input listeners are 'dragHandler' let's be consistent
         start: function( event ) {
           p = event.pointer.point;
