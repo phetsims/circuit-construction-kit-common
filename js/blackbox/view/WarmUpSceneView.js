@@ -31,6 +31,7 @@ define( function( require ) {
       fontSize: 34
     };
 
+    // TODO: i18n
     var questionText = new MultiLineText( 'What circuit is\nin the black box?', _.extend( {
       centerX: ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2,
       top: ScreenView.DEFAULT_LAYOUT_BOUNDS.height / 6
@@ -39,6 +40,7 @@ define( function( require ) {
       questionText.visible = !revealing && mode === 'investigate';
     } );
 
+    // TODO: i18n
     var tryToText = new MultiLineText( 'Build a circuit that\nbehaves the same way.', _.extend( {
       centerX: ScreenView.DEFAULT_LAYOUT_BOUNDS.width / 2,
       top: ScreenView.DEFAULT_LAYOUT_BOUNDS.height / 6
