@@ -216,6 +216,7 @@ define( function( require ) {
       circuitConstructionKitModel.circuit,
       this.visibleBoundsProperty,
       options.getCircuitEditPanelLayoutPosition,
+      circuitConstructionKitModel.modeProperty || new Property( 'investigate' ), // TODO: should we move modeProperty up a class?
       tandem.createTandem( 'circuitElementEditContainerPanel' )
     );
 

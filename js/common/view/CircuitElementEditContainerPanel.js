@@ -30,7 +30,7 @@ define( function( require ) {
     };
   };
 
-  function CircuitElementEditContainerPanel( circuit, visibleBoundsProperty, getLayoutPosition, tandem ) {
+  function CircuitElementEditContainerPanel( circuit, visibleBoundsProperty, getLayoutPosition, modeProperty, tandem ) {
     var groupTandem = tandem.createGroupTandem( 'circuitElementEditPanel' );
     var selectedCircuitElementProperty = circuit.selectedCircuitElementProperty;
     var circuitElementEditContainerPanel = this;
@@ -52,8 +52,10 @@ define( function( require ) {
       } );
       tapInstructionTextNode.visible = fixedLengthElements.length > 0;
     };
+
     circuit.vertexDroppedEmitter.addListener( listener );
     circuit.vertices.addItemRemovedListener( listener ); // Also update on reset all, or if a component is dropped in the toolbox
+    modeProperty.link( listener );
     listener(); // Update on startup, like link()
 
     this.addChild( new Rectangle( 0, 0, 10, 10, { fill: null } ) ); // blank spacer so layout doesn't exception out
