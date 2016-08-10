@@ -28,7 +28,7 @@ define( function( require ) {
       redProbePosition: tandem.createTandem( 'redProbePositionProperty' ),
       blackProbePosition: tandem.createTandem( 'blackProbePositionProperty' )
     }, {
-      voltage: TNumber( 'volts' ),
+      voltage: TNumber( { units: 'volts' } ),
       redProbePosition: TVector2,
       blackProbePosition: TVector2
     } );

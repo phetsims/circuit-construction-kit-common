@@ -27,7 +27,7 @@ define( function( require ) {
       current: tandem.createTandem( 'currentProperty' ),
       probePosition: tandem.createTandem( 'probePositionProperty' )
     }, {
-      current: TNumber( 'amperes' ),
+      current: TNumber( { units: 'amperes' } ),
       probePosition: TVector2
     } );
   }
