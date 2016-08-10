@@ -53,7 +53,7 @@ define( function( require ) {
 
     var phetioValueTypeSet = options.tandem ? {
       position: TVector2,
-      voltage: TNumber( {units: 'volts'} ),
+      voltage: TNumber( { units: 'volts' } ),
       selected: TBoolean
     } : {};
 
