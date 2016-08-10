@@ -57,6 +57,7 @@ define( function( require ) {
 
     var updateStroke = function() {
       dottedLineNode.stroke = circuit.countCircuitElements( vertex ) > 1 ? 'black' : 'red';
+      dottedLineNode.visible = vertex.attachable;
     };
     circuit.vertices.addItemAddedListener( updateStroke );
     circuit.vertices.addItemRemovedListener( updateStroke );
@@ -75,6 +76,7 @@ define( function( require ) {
     circuit.lightBulbs.addItemRemovedListener( updateStroke );
 
     updateStroke();
+    vertex.attachableProperty.link( updateStroke );
 
     var cutButton = new RoundPushButton( {
       tandem: tandem.createTandem( 'cutButton' ),
@@ -244,6 +246,7 @@ define( function( require ) {
       circuit.lightBulbs.removeItemAddedListener( updateStroke );
       circuit.lightBulbs.removeItemRemovedListener( updateStroke );
 
+      vertex.attachableProperty.unlink( updateStroke );
       tandem.removeInstance( vertexNode );
     };
 
