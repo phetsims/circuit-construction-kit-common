@@ -63,7 +63,7 @@ define( function( require ) {
 
     var circuitChangedEmitter = new TandemEmitter( {
       tandem: tandem.createTandem( 'circuitChangedEmitter' ),
-      argTypes: [ TString ]
+      phetioArgumentTypes: [ TString ]
     } );
 
     // For PhET-iO, when a component is edited or a vertex is added, connected, or cut, output the circuit to the data stream
