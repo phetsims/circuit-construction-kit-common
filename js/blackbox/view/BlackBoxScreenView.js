@@ -21,10 +21,9 @@ define( function( require ) {
 
   /**
    * @param {BlackBoxScreenModel} blackBoxScreenModel
-   * @param {Property.<Color>} backgroundColorProperty
    * @constructor
    */
-  function BlackBoxScreenView( blackBoxScreenModel, backgroundColorProperty, tandem ) {
+  function BlackBoxScreenView( blackBoxScreenModel, tandem ) {
     ScreenView.call( this );
     var blackBoxScreenView = this;
     this.blackBoxScreenModel = blackBoxScreenModel;
@@ -46,7 +45,6 @@ define( function( require ) {
             blackBoxHeight,
             new BlackBoxSceneModel( CircuitStruct.fromStateObject( ChallengeSet.warmupCircuitStateObject ), tandem.createTandem( scene + 'Model' ) ),
             blackBoxScreenModel.sceneProperty,
-            backgroundColorProperty,
             tandem.createTandem( scene + 'SceneView' )
           );
         }
@@ -57,7 +55,6 @@ define( function( require ) {
             blackBoxHeight,
             new BlackBoxSceneModel( CircuitStruct.fromStateObject( ChallengeSet.challengeArray[ index ] ), tandem.createTandem( scene + 'Model' ) ),
             blackBoxScreenModel.sceneProperty,
-            backgroundColorProperty,
             tandem.createTandem( scene + 'SceneView' )
           );
         }

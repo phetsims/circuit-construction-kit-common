@@ -36,10 +36,9 @@ define( function( require ) {
    * @param {number} blackBoxHeight
    * @param {BlackBoxSceneModel} blackBoxSceneModel
    * @param {Property.<string>} sceneProperty - for switching screens
-   * @param {Property.<Color>} backgroundColorProperty
    * @constructor
    */
-  function BlackBoxSceneView( blackBoxWidth, blackBoxHeight, blackBoxSceneModel, sceneProperty, backgroundColorProperty, tandem ) {
+  function BlackBoxSceneView( blackBoxWidth, blackBoxHeight, blackBoxSceneModel, sceneProperty, tandem ) {
     var blackBoxSceneView = this;
     CircuitConstructionKitScreenView.call( this, blackBoxSceneModel, tandem, {
       numberOfLeftBatteriesInToolbox: 0,
@@ -123,7 +122,7 @@ define( function( require ) {
     blackBoxSceneModel.modeProperty.link( function( mode ) {
       var isBuildBode = mode === 'build';
 
-      backgroundColorProperty.set( isBuildBode ? fadedColor : solidColor );
+      blackBoxSceneView.backgroundPlane.fill = isBuildBode ? fadedColor : solidColor;
       if ( isBuildBode ) {
         blackBoxSceneView.circuitElementToolbox.moveToFront();
       }

@@ -28,8 +28,6 @@ define( function( require ) {
    */
   function BlackBoxScreen( tandem ) {
 
-    var blackBoxScreen = this;
-
     var icon = new Rectangle( 0, 0, Screen.NAVBAR_ICON_SIZE.width, Screen.NAVBAR_ICON_SIZE.height, {
       fill: backgroundColor
     } );
@@ -44,9 +42,8 @@ define( function( require ) {
     Screen.call( this, 'Black Box', icon, function() {
       return new BlackBoxScreenModel( tandem.createTandem( 'model' ) );
       }, function( model ) {
-      return new BlackBoxScreenView( model, blackBoxScreen.backgroundColorProperty, tandem.createTandem( 'view' ) );
+      return new BlackBoxScreenView( model, tandem.createTandem( 'view' ) );
       }, {
-        backgroundColor: backgroundColor,
         tandem: tandem
       }
     );
