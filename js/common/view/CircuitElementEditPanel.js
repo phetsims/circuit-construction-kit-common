@@ -51,8 +51,7 @@ define( function( require ) {
     // Create the controls using the proxy
     var numberControl = new NumberControl( title, proxy, new RangeWithValue( 0, 100 ), _.extend( {
       tandem: tandem.createTandem( 'numberControl' ),
-      //TODO replace units with valuePattern, see https://github.com/phetsims/scenery-phet/issues/254
-      units: units
+      valuePattern: '{0} ' + units // TODO: i18n
     }, numberControlOptions ) );
     var trashButton = new RoundPushButton( {
       baseColor: 'yellow',
