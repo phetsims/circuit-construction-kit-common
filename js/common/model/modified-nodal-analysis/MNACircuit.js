@@ -355,7 +355,7 @@ define( function( require ) {
      */
     getConnectedNodesRecursive: function( visited, toVisit ) {
       while ( _.size( toVisit ) > 0 ) {
-        var n = parseInt( _.keys( toVisit )[ 0 ] );
+        var n = parseInt( _.keys( toVisit )[ 0 ], 10 );
         visited[ n ] = true;
         for ( var i = 0; i < this.getElements().length; i++ ) {
           var e = this.getElements()[ i ];
@@ -374,14 +374,14 @@ define( function( require ) {
       //reference node in each connected circuit element has a voltage of 0.0
       for ( var i = 0; i < this.getReferenceNodes().length; i++ ) {
         var n = this.getReferenceNodes()[ i ];
-        list.push( new Equation( 0, [ new Term( 1, new UnknownVoltage( parseInt( n ) ) ) ] ) );
+        list.push( new Equation( 0, [ new Term( 1, new UnknownVoltage( parseInt( n, 10 ) ) ) ] ) );
       }
 
       //for each node, charge is conserved
       var nodeKeys = _.keys( this.getNodeSet() );
       for ( i = 0; i < nodeKeys.length; i++ ) {
         var nodeKey = nodeKeys[ i ];
-        var node = parseInt( nodeKey );
+        var node = parseInt( nodeKey, 10 );
         list.push( new Equation( this.getRHS( node ), this.getCurrentConservationTerms( node ) ) );
       }
 
@@ -406,7 +406,7 @@ define( function( require ) {
       var v = [];
       var nodes = _.keys( this.getNodeSet() );
       for ( var i = 0; i < nodes.length; i++ ) {
-        var node = parseInt( nodes[ i ] );
+        var node = parseInt( nodes[ i ], 10 );
         v.push( new UnknownVoltage( node ) );
       }
       return v;
