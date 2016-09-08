@@ -38,7 +38,7 @@ define( function( require ) {
    */
   function ExploreScreen( tandem ) {
 
-    var icon = new Rectangle( 0, 0, Screen.NAVBAR_ICON_SIZE.width, Screen.NAVBAR_ICON_SIZE.height, {
+    var icon = new Rectangle( 0, 0, Screen.HOME_SCREEN_ICON_SIZE.width, Screen.HOME_SCREEN_ICON_SIZE.height, {
       fill: backgroundColor
     } );
 
