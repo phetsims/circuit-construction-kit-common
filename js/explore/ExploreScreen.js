@@ -72,15 +72,21 @@ define( function( require ) {
     } );
     icon.addChild( vBox );
 
-    Screen.call( this, 'Explore', icon, function() {
-      return new ExploreScreenModel( tandem.createTandem( 'model' ) );
-      }, function( model ) {
-      return new ExploreScreenView( model, tandem.createTandem( 'view' ) );
-      }, {
+    var options = {
+      name: 'Explore', //TODO i18n
       backgroundColor: CircuitConstructionKitConstants.backgroundColor,
+      homeScreenIcon: icon,
       tandem: tandem
-      }
-    );
+    };
+
+    Screen.call( this,
+      function() {
+        return new ExploreScreenModel( tandem.createTandem( 'model' ) );
+      },
+      function( model ) {
+        return new ExploreScreenView( model, tandem.createTandem( 'view' ) );
+      },
+      options );
   }
 
   circuitConstructionKitCommon.register( 'ExploreScreen', ExploreScreen );

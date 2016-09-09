@@ -68,14 +68,20 @@ define( function( require ) {
     } );
     icon.addChild( vBox );
 
-    Screen.call( this, 'Lab', icon, function() {
+    var options = {
+      name: 'Lab', //TODO i18n
+      backgroundColor: backgroundColor,
+      homeScreenIcon: icon,
+      tandem: tandem
+    };
+
+    Screen.call( this,
+      function() {
         return new LabScreenModel();
       }, function( model ) {
-      return new LabScreenView( model, tandem.createTandem( 'view' ) );
-      }, {
-        backgroundColor: backgroundColor
-      }
-    );
+        return new LabScreenView( model, tandem.createTandem( 'view' ) );
+      },
+      options );
   }
 
   circuitConstructionKitCommon.register( 'LabScreen', LabScreen );

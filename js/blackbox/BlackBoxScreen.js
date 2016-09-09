@@ -39,16 +39,22 @@ define( function( require ) {
     } );
     icon.addChild( blackBoxNode );
 
-    Screen.call( this, 'Black Box', icon, function() {
-      return new BlackBoxScreenModel( tandem.createTandem( 'model' ) );
+    var options = {
+      name: 'Black Box', //TODO i18n
+      homeScreenIcon: icon,
+      tandem: tandem
+    };
+
+    Screen.call( this,
+      function() {
+        return new BlackBoxScreenModel( tandem.createTandem( 'model' ) );
       }, function( model ) {
-      return new BlackBoxScreenView( model, tandem.createTandem( 'view' ) );
-      }, {
-        tandem: tandem
-      }
-    );
+        return new BlackBoxScreenView( model, tandem.createTandem( 'view' ) );
+      },
+      options );
   }
 
   circuitConstructionKitCommon.register( 'BlackBoxScreen', BlackBoxScreen );
+
   return inherit( Screen, BlackBoxScreen );
 } );

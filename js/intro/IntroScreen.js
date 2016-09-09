@@ -68,14 +68,21 @@ define( function( require ) {
     } );
     icon.addChild( vBox );
 
-    Screen.call( this, 'Intro', icon, function() {
+    var options = {
+      name: 'Intro', //TODO i18n
+      homeScreenIcon: icon,
+      backgroundColor: backgroundColor,
+      tandem: tandem
+    };
+
+    Screen.call( this,
+      function() {
         return new IntroScreenModel();
-      }, function( model ) {
-      return new IntroScreenView( model, tandem.createTandem( 'view' ) );
-      }, {
-        backgroundColor: backgroundColor
-      }
-    );
+      },
+      function( model ) {
+        return new IntroScreenView( model, tandem.createTandem( 'view' ) );
+      },
+      options );
   }
 
   circuitConstructionKitCommon.register( 'IntroScreen', IntroScreen );

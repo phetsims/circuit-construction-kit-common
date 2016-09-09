@@ -66,14 +66,21 @@ define( function( require ) {
     } );
     icon.addChild( vBox );
 
-    Screen.call( this, 'Energy', icon, function() {
+    var options = {
+      name: 'Energy', //TODO i18n
+      backgroundColor: backgroundColor,
+      homeScreenIcon: icon,
+      tandem: tandem
+    };
+
+    Screen.call( this,
+      function() {
         return new EnergyScreenModel();
-      }, function( model ) {
-      return new EnergyScreenView( model, tandem.createTandem( 'view' ) );
-      }, {
-        backgroundColor: backgroundColor
-      }
-    );
+      },
+      function( model ) {
+        return new EnergyScreenView( model, tandem.createTandem( 'view' ) );
+      },
+      options );
   }
 
   circuitConstructionKitCommon.register( 'EnergyScreen', EnergyScreen );
