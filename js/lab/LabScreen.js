@@ -38,7 +38,7 @@ define( function( require ) {
    */
   function LabScreen( tandem ) {
 
-    var icon = new Rectangle( 0, 0, Screen.NAVBAR_ICON_SIZE.width, Screen.NAVBAR_ICON_SIZE.height, {
+    var icon = new Rectangle( 0, 0, Screen.MINIMUM_NAVBAR_ICON_SIZE.width, Screen.MINIMUM_NAVBAR_ICON_SIZE.height, {
       fill: backgroundColor
     } );
 
