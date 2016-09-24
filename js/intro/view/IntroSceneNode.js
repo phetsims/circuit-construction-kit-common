@@ -27,7 +27,7 @@ define( function( require ) {
    */
   function IntroSceneNode( circuitConstructionKitScreenModel, tandem, options ) {
     this.circuitConstructionKitScreenModel = circuitConstructionKitScreenModel;
-    var introSceneNode = this;
+    var self = this;
     options = _.extend( {
       numberOfRightBatteriesInToolbox: 1,
       numberOfLeftBatteriesInToolbox: 0,
@@ -66,15 +66,15 @@ define( function( require ) {
       displayOptionsPanel.top = visibleBounds.top + inset;
       displayOptionsPanel.right = visibleBounds.right - inset;
 
-      introSceneNode.sensorToolbox.top = displayOptionsPanel.bottom + 10;
-      introSceneNode.sensorToolbox.right = displayOptionsPanel.right;
+      self.sensorToolbox.top = displayOptionsPanel.bottom + 10;
+      self.sensorToolbox.right = displayOptionsPanel.right;
 
-      introSceneNode.circuitElementToolbox.mutate( {
+      self.circuitElementToolbox.mutate( {
         centerX: visibleBounds.centerX,
         bottom: visibleBounds.bottom - inset
       } );
 
-      introSceneNode.circuitElementEditContainerPanel.mutate( {
+      self.circuitElementEditContainerPanel.mutate( {
         left: visibleBounds.left + inset,
         bottom: visibleBounds.bottom - inset
       } );

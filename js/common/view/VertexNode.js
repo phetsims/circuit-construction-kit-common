@@ -34,7 +34,7 @@ define( function( require ) {
    * @constructor
    */
   function VertexNode( circuitNode, vertex, tandem ) {
-    var vertexNode = this;
+    var self = this;
     var circuit = circuitNode.circuit;
     this.vertex = vertex;
     this.startOffset = null;// @public - added by CircuitNode during dragging, used for relative drag location.
@@ -102,7 +102,7 @@ define( function( require ) {
           neighborCircuitElements[ i ].vertexSelectedEmitter.emit();
         }
 
-        vertexNode.moveToFront();
+        self.moveToFront();
       }
       highlightNode.visible = selected;
 
@@ -111,12 +111,12 @@ define( function( require ) {
       selected && updateCutButtonPosition();
 
       // Show a disabled button as a cue that the vertex could be cuttable, but it isn't right now.
-      var isConnectedBlackBoxVertex = numberConnections === 1 && !vertexNode.vertex.draggable;
+      var isConnectedBlackBoxVertex = numberConnections === 1 && !self.vertex.draggable;
       cutButton.enabled = numberConnections > 1 || isConnectedBlackBoxVertex;
     };
     vertex.selectedProperty.link( updateSelected );
     var updateMoveToFront = function() {
-      vertexNode.moveToFront();
+      self.moveToFront();
     };
     vertex.moveToFrontEmitter.addListener( updateMoveToFront );
     Node.call( this, {
@@ -125,7 +125,7 @@ define( function( require ) {
     circuitNode.highlightLayer.addChild( highlightNode );
 
     var updatePickable = function( interactive ) {
-      vertexNode.pickable = interactive;
+      self.pickable = interactive;
     };
     vertex.interactiveProperty.link( updatePickable );
 
@@ -247,7 +247,7 @@ define( function( require ) {
       circuit.lightBulbs.removeItemRemovedListener( updateStroke );
 
       vertex.attachableProperty.unlink( updateStroke );
-      tandem.removeInstance( vertexNode );
+      tandem.removeInstance( self );
     };
 
     tandem.addInstance( this, TNode );

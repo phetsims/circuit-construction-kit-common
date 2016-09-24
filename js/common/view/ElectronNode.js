@@ -55,7 +55,7 @@ define( function( require ) {
   }, 0, 0, minusChargeNode.width, minusChargeNode.height );
 
   function ElectronNode( electron, revealingProperty ) {
-    var electronNode = this;
+    var self = this;
     this.electron = electron;
     Node.call( this, {
       children: [ node ],
@@ -64,21 +64,21 @@ define( function( require ) {
     var outsideOfBlackBoxProperty = new Property( false );
 
     var positionListener = function( position ) {
-      electronNode.center = position;
+      self.center = position;
       outsideOfBlackBoxProperty.value = !electron.circuitElement.insideTrueBlackBox;
     };
     electron.positionProperty.link( positionListener );
 
     // TODO: When I wrote this with Property.multilink, it failed as #172
     var updateVisible = function() {
-      electronNode.visible = electron.visibleProperty.value && (outsideOfBlackBoxProperty.value || revealingProperty.value);
+      self.visible = electron.visibleProperty.value && (outsideOfBlackBoxProperty.value || revealingProperty.value);
     };
     revealingProperty.link( updateVisible );
     electron.visibleProperty.link( updateVisible );
     outsideOfBlackBoxProperty.link( updateVisible );
 
     var disposeListener = function() {
-      electronNode.detach();
+      self.detach();
       electron.positionProperty.unlink( positionListener );
       electron.disposeEmitter.removeListener( disposeListener );
       revealingProperty.unlink( updateVisible );
@@ -86,7 +86,7 @@ define( function( require ) {
       outsideOfBlackBoxProperty.unlink( updateVisible );
 
       // We must remove the image child node, or it will continue to track its parents and lead to a memory leak
-      electronNode.removeAllChildren();
+      self.removeAllChildren();
     };
     electron.disposeEmitter.addListener( disposeListener );
   }

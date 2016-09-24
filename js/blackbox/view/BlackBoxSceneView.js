@@ -39,7 +39,7 @@ define( function( require ) {
    * @constructor
    */
   function BlackBoxSceneView( blackBoxWidth, blackBoxHeight, blackBoxSceneModel, sceneProperty, tandem ) {
-    var blackBoxSceneView = this;
+    var self = this;
     CircuitConstructionKitScreenView.call( this, blackBoxSceneModel, tandem, {
       numberOfLeftBatteriesInToolbox: 0,
       toolboxOrientation: 'vertical',
@@ -80,8 +80,8 @@ define( function( require ) {
 
     // Layout when the screen view size changed
     this.visibleBoundsProperty.link( function( visibleBounds ) {
-      modeRadioButtonGroup.top = blackBoxSceneView.sensorToolbox.bottom + 20;
-      modeRadioButtonGroup.right = blackBoxSceneView.sensorToolbox.right;
+      modeRadioButtonGroup.top = self.sensorToolbox.bottom + 20;
+      modeRadioButtonGroup.right = self.sensorToolbox.right;
 
       revealButton.top = modeRadioButtonGroup.bottom + 10;
       revealButton.right = modeRadioButtonGroup.right;
@@ -122,24 +122,24 @@ define( function( require ) {
     blackBoxSceneModel.modeProperty.link( function( mode ) {
       var isBuildBode = mode === 'build';
 
-      blackBoxSceneView.backgroundPlane.fill = isBuildBode ? fadedColor : solidColor;
+      self.backgroundPlane.fill = isBuildBode ? fadedColor : solidColor;
       if ( isBuildBode ) {
-        blackBoxSceneView.circuitElementToolbox.moveToFront();
+        self.circuitElementToolbox.moveToFront();
       }
       else {
 
         // investigate mode - move black box circuit elements to the back so they won't appear in front of the black box
-        blackBoxSceneView.circuitNode.moveTrueBlackBoxElementsToBack();
+        self.circuitNode.moveTrueBlackBoxElementsToBack();
       }
       whiteBoxNode.moveToBack();
-      blackBoxSceneView.moveBackgroundToBack();
+      self.moveBackgroundToBack();
     } );
 
     // When reset, move the boxes in front of the black box circuit elements
     this.resetBlackBoxSceneView = function() {
       blackBoxNode.moveToFront();
       whiteBoxNode.moveToBack();
-      blackBoxSceneView.moveBackgroundToBack();
+      self.moveBackgroundToBack();
     };
 
     // When dropping an object in "build mode", its vertices should pop inside the black box, see #113
@@ -164,7 +164,7 @@ define( function( require ) {
                 var closestPoint = blackBoxNode.bounds.closestPointTo( vertexInGroup.position );
                 var delta = closestPoint.minus( vertexInGroup.position );
 
-                blackBoxSceneView.circuitNode.translateVertexGroup( vertexInGroup, vertices, delta, null, [] );
+                self.circuitNode.translateVertexGroup( vertexInGroup, vertices, delta, null, [] );
               }
             }
           })();
@@ -181,7 +181,7 @@ define( function( require ) {
                 var closestPoint = blackBoxNode.bounds.closestPointTo( vertexInGroup.position );
                 var delta = closestPoint.minus( vertexInGroup.position );
 
-                blackBoxSceneView.circuitNode.translateVertexGroup( vertexInGroup, vertices, delta, null, [] );
+                self.circuitNode.translateVertexGroup( vertexInGroup, vertices, delta, null, [] );
               }
             }
           })();

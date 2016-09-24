@@ -38,7 +38,7 @@ define( function( require ) {
    * @constructor
    */
   function WireNode( circuitConstructionKitScreenView, circuitNode, wire, runningProperty, tandem ) {
-    var wireNode = this;
+    var self = this;
     this.wire = wire;
 
     var highlightNode = new Path( null, {
@@ -104,7 +104,7 @@ define( function( require ) {
     } );
 
     var updatePickable = function( interactive ) {
-      wireNode.pickable = interactive;
+      self.pickable = interactive;
     };
     wire.interactiveProperty.link( updatePickable );
 
@@ -119,7 +119,7 @@ define( function( require ) {
       highlightNodeParent.setTranslation( startPoint.x, startPoint.y );
       endListener && endListener( wire.endVertex.position );
       if ( highlightNode.visible ) {
-        highlightNode.shape = wireNode.getHighlightStrokedShape( highlightStrokeStyles );
+        highlightNode.shape = self.getHighlightStrokedShape( highlightStrokeStyles );
       }
     };
 
@@ -136,7 +136,7 @@ define( function( require ) {
       lineNodeParent.setRotation( deltaVector.angle() );
       highlightNodeParent.setRotation( deltaVector.angle() );
       if ( highlightNode.visible ) {
-        highlightNode.shape = wireNode.getHighlightStrokedShape( highlightStrokeStyles );
+        highlightNode.shape = self.getHighlightStrokedShape( highlightStrokeStyles );
       }
 
       // normal angle
@@ -178,8 +178,8 @@ define( function( require ) {
         end: function( event ) {
 
           // If over the toolbox, then drop into it, and don't process further
-          if ( circuitConstructionKitScreenView.canNodeDropInToolbox( wireNode ) ) {
-            circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( wireNode );
+          if ( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) ) {
+            circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
             return;
           }
           if ( !wire.interactive ) {
@@ -190,12 +190,12 @@ define( function( require ) {
           circuitNode.endDrag( event, wire.endVertex, didDrag );
 
           // Only show the editor when tapped, not on every drag.
-          wireNode.maybeSelect( event, circuitNode, p );
+          self.maybeSelect( event, circuitNode, p );
 
           didDrag = false;
         }
       } );
-      wireNode.addInputListener( this.inputListener );
+      self.addInputListener( this.inputListener );
     }
 
     if ( circuitNode ) {
@@ -203,14 +203,14 @@ define( function( require ) {
         var showHighlight = lastCircuitElement === wire;
         highlightNode.visible = showHighlight;
         if ( highlightNode.visible ) {
-          highlightNode.shape = wireNode.getHighlightStrokedShape( highlightStrokeStyles );
+          highlightNode.shape = self.getHighlightStrokedShape( highlightStrokeStyles );
         }
       };
       circuitNode.circuit.selectedCircuitElementProperty.link( updateHighlight );
     }
 
     this.disposeWireNode = function() {
-      wireNode.inputListener.dragging && wireNode.inputListener.endDrag();
+      self.inputListener.dragging && self.inputListener.endDrag();
 
       wire.startVertexProperty.unlink( updateStartVertex );
       wire.endVertexProperty.unlink( updateEndVertex );

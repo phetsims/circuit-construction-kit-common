@@ -41,7 +41,7 @@ define( function( require ) {
    * @constructor
    */
   function CircuitConstructionKitScreenView( circuitConstructionKitModel, tandem, options ) {
-    var circuitConstructionKitScreenView = this;
+    var self = this;
 
     options = _.extend( {
 
@@ -86,7 +86,7 @@ define( function( require ) {
         tandem: tandem.createTandem( 'resetAllButton' ),
         listener: function() {
           circuitConstructionKitModel.reset();
-          circuitConstructionKitScreenView.reset();
+          self.reset();
         }
       } );
       this.addChild( resetAllButton );
@@ -158,7 +158,7 @@ define( function( require ) {
       visibleBoundsProperty: this.visibleBoundsProperty
     } );
     circuitConstructionKitModel.voltmeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
-      if ( bodyNodeGlobalBounds.intersectsBounds( circuitConstructionKitScreenView.sensorToolbox.globalBounds ) ) {
+      if ( bodyNodeGlobalBounds.intersectsBounds( self.sensorToolbox.globalBounds ) ) {
         circuitConstructionKitModel.voltmeter.visible = false;
       }
     } );
@@ -171,7 +171,7 @@ define( function( require ) {
       runningProperty: circuitConstructionKitModel.runningProperty
     } );
     circuitConstructionKitModel.ammeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
-      if ( bodyNodeGlobalBounds.intersectsBounds( circuitConstructionKitScreenView.sensorToolbox.globalBounds ) ) {
+      if ( bodyNodeGlobalBounds.intersectsBounds( self.sensorToolbox.globalBounds ) ) {
         circuitConstructionKitModel.ammeter.visible = false;
       }
     } );
@@ -245,15 +245,15 @@ define( function( require ) {
         bottom: visibleBounds.bottom - 100 // so it doesn't overlap the component controls
       } );
 
-      circuitConstructionKitScreenView.circuitElementToolbox.mutate( options.getToolboxPosition( visibleBounds ) );
+      self.circuitElementToolbox.mutate( options.getToolboxPosition( visibleBounds ) );
 
-      circuitConstructionKitScreenView.displayOptionsPanel.mutate( {
+      self.displayOptionsPanel.mutate( {
         right: visibleBounds.right - inset,
         top: visibleBounds.top + inset
       } );
-      circuitConstructionKitScreenView.sensorToolbox.mutate( {
+      self.sensorToolbox.mutate( {
         right: visibleBounds.right - inset,
-        top: circuitConstructionKitScreenView.displayOptionsPanel.bottom + inset
+        top: self.displayOptionsPanel.bottom + inset
       } );
     } );
 
@@ -265,8 +265,8 @@ define( function( require ) {
     // Detection for voltmeter probe + circuit collision is done in the view since view bounds are used
     var updateVoltmeter = function() {
       if ( circuitConstructionKitModel.voltmeter.visible ) {
-        var redConnection = circuitConstructionKitScreenView.getVoltageConnection( voltmeterNode.redProbeNode, voltmeterNode.voltmeter.redProbePosition );
-        var blackConnection = circuitConstructionKitScreenView.getVoltageConnection( voltmeterNode.blackProbeNode, voltmeterNode.voltmeter.blackProbePosition );
+        var redConnection = self.getVoltageConnection( voltmeterNode.redProbeNode, voltmeterNode.voltmeter.redProbePosition );
+        var blackConnection = self.getVoltageConnection( voltmeterNode.blackProbeNode, voltmeterNode.voltmeter.blackProbePosition );
         if ( redConnection === null || blackConnection === null ) {
           circuitConstructionKitModel.voltmeter.voltage = null;
         }
@@ -299,7 +299,7 @@ define( function( require ) {
 
       // Skip work when ammeter is not out, to improve performance.
       if ( circuitConstructionKitModel.ammeter.visible ) {
-        var current = circuitConstructionKitScreenView.getCurrent( ammeterNode.probeNode );
+        var current = self.getCurrent( ammeterNode.probeNode );
         circuitConstructionKitModel.ammeter.current = current;
       }
     };

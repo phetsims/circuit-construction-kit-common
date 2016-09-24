@@ -23,7 +23,7 @@ define( function( require ) {
    */
   function CircuitElementNode( circuitElement, options ) {
 
-    var circuitElementNode = this;
+    var self = this;
 
     Node.call( this, options );
     this.circuitElement = circuitElement;
@@ -34,10 +34,10 @@ define( function( require ) {
     this.updateOpacityOnInteractiveChange();
 
     this.disposeCircuitElementNode = function() {
-      circuitElementNode.disposeActions.forEach( function( element ) {
+      self.disposeActions.forEach( function( element ) {
         element();
       } );
-      circuitElementNode.disposeActions.length = 0;
+      self.disposeActions.length = 0;
     };
   }
 
@@ -51,15 +51,15 @@ define( function( require ) {
 
     // @protected
     updateOpacityOnInteractiveChange: function() {
-      var circuitElementNode = this;
+      var self = this;
       // TODO: Replace this with grayscale if we keep it
       var interactivityChanged = function( interactive ) {
-        circuitElementNode.opacity = interactive ? 1 : 0.5;
+        self.opacity = interactive ? 1 : 0.5;
       };
       this.circuitElement.interactiveProperty.link( interactivityChanged );
 
       this.disposeActions.push( function() {
-        circuitElementNode.circuitElement.interactiveProperty.unlink( interactivityChanged );
+        self.circuitElement.interactiveProperty.unlink( interactivityChanged );
       } );
     },
     createDeselectFunctionListener: function( circuitNode ) {

@@ -54,7 +54,7 @@ define( function( require ) {
       ]
     } );
     this.circuit = circuit;
-    var circuitNode = this;
+    var self = this;
 
     // solder layer
     this.solderNodes = [];
@@ -94,11 +94,11 @@ define( function( require ) {
 
     // When loading from a state object, the vertices could have been added first.  If so, move them in front
     var moveVerticesToFront = function( circuitElement ) {
-      circuitNode.getVertexNode( circuitElement.startVertex ) && circuitNode.getVertexNode( circuitElement.startVertex ).moveToFront();
-      circuitNode.getVertexNode( circuitElement.endVertex ) && circuitNode.getVertexNode( circuitElement.endVertex ).moveToFront();
+      self.getVertexNode( circuitElement.startVertex ) && self.getVertexNode( circuitElement.startVertex ).moveToFront();
+      self.getVertexNode( circuitElement.endVertex ) && self.getVertexNode( circuitElement.endVertex ).moveToFront();
 
-      circuitNode.getVertexNode( circuitElement.startVertex ) && circuitNode.getSolderNode( circuitElement.startVertex ).moveToFront();
-      circuitNode.getVertexNode( circuitElement.endVertex ) && circuitNode.getSolderNode( circuitElement.endVertex ).moveToFront();
+      self.getVertexNode( circuitElement.startVertex ) && self.getSolderNode( circuitElement.startVertex ).moveToFront();
+      self.getVertexNode( circuitElement.endVertex ) && self.getSolderNode( circuitElement.endVertex ).moveToFront();
     };
 
     /**
@@ -116,7 +116,7 @@ define( function( require ) {
       var addCircuitElement = function( circuitElement ) {
         var circuitElementNode = new CircuitElementNodeConstructor(
           circuitConstructionKitScreenView,
-          circuitNode,
+          self,
           circuitElement,
           runningProperty,
           groupTandem.createNextTandem()
@@ -130,46 +130,46 @@ define( function( require ) {
       modelObservableArray.addItemRemovedListener( createCircuitElementRemovedListener( nodeArray, getter ) );
     };
 
-    initializeCircuitElementType( WireNode, circuit.wires, circuitNode.wireNodes, this.getWireNode.bind( this ), tandem.createGroupTandem( 'wireNode' ) );
-    initializeCircuitElementType( BatteryNode, circuit.batteries, circuitNode.batteryNodes, this.getBatteryNode.bind( this ), tandem.createGroupTandem( 'batteryNode' ) );
-    initializeCircuitElementType( CCKLightBulbNode, circuit.lightBulbs, circuitNode.lightBulbNodes, this.getCCKLightBulbNode.bind( this ), tandem.createGroupTandem( 'lightBulbNode' ) );
-    initializeCircuitElementType( CCKLightBulbForegroundNode, circuit.lightBulbs, circuitNode.lightBulbForegroundNodes, this.getCCKLightBulbForegroundNode.bind( this ), tandem.createGroupTandem( 'lightBulbForegroundNode' ) );
-    initializeCircuitElementType( ResistorNode, circuit.resistors, circuitNode.resistorNodes, this.getResistorNode.bind( this ), tandem.createGroupTandem( 'resistorNode' ) );
-    initializeCircuitElementType( SwitchNode, circuit.switches, circuitNode.switchNodes, this.getSwitchNode.bind( this ), tandem.createGroupTandem( 'switchNode' ) );
+    initializeCircuitElementType( WireNode, circuit.wires, self.wireNodes, this.getWireNode.bind( this ), tandem.createGroupTandem( 'wireNode' ) );
+    initializeCircuitElementType( BatteryNode, circuit.batteries, self.batteryNodes, this.getBatteryNode.bind( this ), tandem.createGroupTandem( 'batteryNode' ) );
+    initializeCircuitElementType( CCKLightBulbNode, circuit.lightBulbs, self.lightBulbNodes, this.getCCKLightBulbNode.bind( this ), tandem.createGroupTandem( 'lightBulbNode' ) );
+    initializeCircuitElementType( CCKLightBulbForegroundNode, circuit.lightBulbs, self.lightBulbForegroundNodes, this.getCCKLightBulbForegroundNode.bind( this ), tandem.createGroupTandem( 'lightBulbForegroundNode' ) );
+    initializeCircuitElementType( ResistorNode, circuit.resistors, self.resistorNodes, this.getResistorNode.bind( this ), tandem.createGroupTandem( 'resistorNode' ) );
+    initializeCircuitElementType( SwitchNode, circuit.switches, self.switchNodes, this.getSwitchNode.bind( this ), tandem.createGroupTandem( 'switchNode' ) );
 
     var vertexNodeGroup = tandem.createGroupTandem( 'vertexNodes' );
     var addVertexNode = function( vertex ) {
-      var solderNode = new SolderNode( circuitNode, vertex );
-      circuitNode.solderNodes.push( solderNode );
+      var solderNode = new SolderNode( self, vertex );
+      self.solderNodes.push( solderNode );
       mainLayer.addChild( solderNode );
 
-      var vertexNode = new VertexNode( circuitNode, vertex, vertexNodeGroup.createNextTandem() );
-      circuitNode.vertexNodes.push( vertexNode );
+      var vertexNode = new VertexNode( self, vertex, vertexNodeGroup.createNextTandem() );
+      self.vertexNodes.push( vertexNode );
       mainLayer.addChild( vertexNode );
     };
     circuit.vertices.addItemAddedListener( addVertexNode );
     circuit.vertices.addItemRemovedListener( function( vertex ) {
-      var vertexNode = circuitNode.getVertexNode( vertex );
+      var vertexNode = self.getVertexNode( vertex );
       mainLayer.removeChild( vertexNode );
 
-      var index = circuitNode.vertexNodes.indexOf( vertexNode );
+      var index = self.vertexNodes.indexOf( vertexNode );
       if ( index > -1 ) {
-        circuitNode.vertexNodes.splice( index, 1 );
+        self.vertexNodes.splice( index, 1 );
       }
       vertexNode.dispose();
 
-      assert && assert( circuitNode.getVertexNode( vertex ) === null, 'vertex node should have been removed' );
+      assert && assert( self.getVertexNode( vertex ) === null, 'vertex node should have been removed' );
 
-      var solderNode = circuitNode.getSolderNode( vertex );
+      var solderNode = self.getSolderNode( vertex );
       mainLayer.removeChild( solderNode );
 
-      var solderNodeIndex = circuitNode.solderNodes.indexOf( solderNode );
+      var solderNodeIndex = self.solderNodes.indexOf( solderNode );
       if ( solderNodeIndex > -1 ) {
-        circuitNode.solderNodes.splice( solderNodeIndex, 1 );
+        self.solderNodes.splice( solderNodeIndex, 1 );
       }
       solderNode.dispose();
 
-      assert && assert( circuitNode.getSolderNode( vertex ) === null, 'solder node should have been removed' );
+      assert && assert( self.getSolderNode( vertex ) === null, 'solder node should have been removed' );
     } );
     circuit.vertices.forEach( addVertexNode );
 
@@ -183,7 +183,7 @@ define( function( require ) {
 
           // Find all vertices connected by fixed length nodes.
           var vertices = circuit.findAllFixedVertices( vertex );
-          circuitNode.translateVertexGroup( vertex, vertices, delta, null, [] );
+          self.translateVertexGroup( vertex, vertices, delta, null, [] );
         }
       }
     } );
@@ -194,16 +194,16 @@ define( function( require ) {
         circuitConstructionKitScreenView.circuitConstructionKitModel.revealingProperty || new Property( true )
       );
       electron.disposeEmitter.addListener( function x() {
-        var index = circuitNode.electronNodes.indexOf( electron );
-        circuitNode.electronNodes.splice( index, 1 );
+        var index = self.electronNodes.indexOf( electron );
+        self.electronNodes.splice( index, 1 );
 
         electron.disposeEmitter.removeListener( x );
       } );
-      circuitNode.electronNodes.push( electronNode );
-      circuitNode.mainLayer.addChild( electronNode );
+      self.electronNodes.push( electronNode );
+      self.mainLayer.addChild( electronNode );
 
       // Move light bulb foregrounds to the front so electron will go behind.
-      circuitNode.lightBulbForegroundNodes.forEach( function( b ) {
+      self.lightBulbForegroundNodes.forEach( function( b ) {
         b.moveToFront();
       } );
     } );

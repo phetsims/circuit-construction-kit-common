@@ -46,10 +46,10 @@ define( function( require ) {
 
     options = _.extend( {}, defaultOptions, options ); // don't modify defaultOptions!
 
-    var thisNode = this;
+    var self = this;
 
     // @private
-    thisNode.onNode = new Image( options.baseOnly ? baseImage : onImage, {
+    self.onNode = new Image( options.baseOnly ? baseImage : onImage, {
       scale: options.bulbImageScale,
       centerX: 0,
       bottom: 0
@@ -57,8 +57,8 @@ define( function( require ) {
 
     var offNode = new Image( options.baseOnly ? baseImage : offImage, {
       scale: options.bulbImageScale,
-      centerX: thisNode.onNode.centerX,
-      bottom: thisNode.onNode.bottom
+      centerX: self.onNode.centerX,
+      bottom: self.onNode.bottom
     } );
 
     // rays
@@ -67,24 +67,24 @@ define( function( require ) {
       var rayOptions = _.pick( options, _.keys( defaultOptions ) ); // cherry-pick options that are specific to rays
       rayOptions.x = this.onNode.centerX;
       rayOptions.y = offNode.top + bulbRadius;
-      thisNode.raysNode = new LightRaysNode( bulbRadius, rayOptions ); // @private
+      self.raysNode = new LightRaysNode( bulbRadius, rayOptions ); // @private
 
-      options.children = [ thisNode.raysNode, offNode, thisNode.onNode ];
+      options.children = [ self.raysNode, offNode, self.onNode ];
     }
     else {
-      options.children = [ offNode, thisNode.onNode ];
+      options.children = [ offNode, self.onNode ];
     }
-    Node.call( thisNode, options );
+    Node.call( self, options );
 
     if ( !options.baseOnly ) {
-      thisNode.brightnessObserver = function() { thisNode.update(); }; // @private
-      thisNode.brightnessProperty = brightnessProperty; // @private
-      thisNode.brightnessProperty.link( this.brightnessObserver );
+      self.brightnessObserver = function() { self.update(); }; // @private
+      self.brightnessProperty = brightnessProperty; // @private
+      self.brightnessProperty.link( this.brightnessObserver );
     }
 
     this.disposeCustomLightBulbNode = function() {
       if ( !options.baseOnly ) {
-        thisNode.brightnessProperty.unlink( thisNode.brightnessObserver );
+        self.brightnessProperty.unlink( self.brightnessObserver );
       }
     };
   }

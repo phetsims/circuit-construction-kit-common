@@ -20,7 +20,7 @@ define( function( require ) {
   var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Ammeter' );
 
   function SensorToolbox( voltmeterNode, ammeterNode, runningProperty, tandem ) {
-    var sensorToolbox = this;
+    var self = this;
     var toolIconLength = CircuitConstructionKitConstants.toolboxIconLength;
 
     var voltmeterNodeIcon = new VoltmeterNode( new Voltmeter( tandem.createTandem( 'voltmeterIconModel' ) ), tandem.createTandem( 'voltmeterNodeIcon' ), {
@@ -34,7 +34,7 @@ define( function( require ) {
     voltmeterNodeIcon.mutate( { scale: toolIconLength * voltmeterIconSizeIncrease / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height ) } );
     voltmeterNodeIcon.addInputListener( {
       down: function( event ) {
-        var viewPosition = sensorToolbox.globalToParentPoint( event.pointer.point );
+        var viewPosition = self.globalToParentPoint( event.pointer.point );
         voltmeterNode.voltmeter.draggingTogether = true;
         voltmeterNode.voltmeter.visible = true;
         voltmeterNode.voltmeter.bodyPosition = viewPosition;
@@ -52,7 +52,7 @@ define( function( require ) {
     ammeterNodeIcon.mutate( { scale: toolIconLength / Math.max( ammeterNodeIcon.width, ammeterNodeIcon.height ) } );
     ammeterNodeIcon.addInputListener( {
       down: function( event ) {
-        var viewPosition = sensorToolbox.globalToParentPoint( event.pointer.point );
+        var viewPosition = self.globalToParentPoint( event.pointer.point );
         ammeterNode.ammeter.draggingTogether = true;
         ammeterNode.ammeter.visible = true;
         ammeterNode.ammeter.bodyPosition = viewPosition;

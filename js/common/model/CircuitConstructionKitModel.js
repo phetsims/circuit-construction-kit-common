@@ -27,7 +27,7 @@ define( function( require ) {
    * @constructor
    */
   function CircuitConstructionKitModel( tandem, additionalProperties, additionalTandemSetEntries, additionalTypeEntries, options ) {
-    var circuitConstructionKitModel = this;
+    var self = this;
     options = _.extend( { circuit: null }, options );
     PropertySet.call( this, _.extend( {
       running: true // {boolean} @public changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
@@ -55,7 +55,7 @@ define( function( require ) {
     // 3. Component voltage/resistance is edited
     if ( CircuitConstructionKitQueryParameters.showPlayPauseButton ) {
       var pause = function() {
-        circuitConstructionKitModel.running = false;
+        self.running = false;
       };
       this.circuit.vertices.lengthProperty.link( pause );
       this.circuit.componentEditedEmitter.addListener( pause );
@@ -74,7 +74,7 @@ define( function( require ) {
 
         // Wait until fully wired up.  If we send out messages immediately here, some vertices are not registered and cause exceptions
         setTimeout( function() {
-          var circuit = JSON.stringify( circuitConstructionKitModel.circuit.toStateObject() );
+          var circuit = JSON.stringify( self.circuit.toStateObject() );
           circuitChangedEmitter.emit1( circuit );
         }, 0 );
       };

@@ -26,7 +26,7 @@ define( function( require ) {
    */
   function Switch( startVertex, endVertex, resistivity, options ) {
     assert && assert( typeof resistivity === 'number' && resistivity >= 0, 'bad value for resistivity: ' + resistivity );
-    var switchModel = this;
+    var self = this;
     CircuitElement.call( this, startVertex, endVertex, {
       resistance: CircuitConstructionKitConstants.minimumResistance,
       resistivity: resistivity,
@@ -34,15 +34,15 @@ define( function( require ) {
     }, options );
 
     var updateResistance = function() {
-      var length = switchModel.startVertex.position.minus( switchModel.endVertex.position ).magnitude();
+      var length = self.startVertex.position.minus( self.endVertex.position ).magnitude();
       var javaLength = length / 990 * 15.120675866835684;
-      switchModel.resistance = switchModel.closed ? Math.max( MINIMUM_RESISTANCE, javaLength * switchModel.resistivity ) :
-                               OPEN_RESISTANCE;
-      assert && assert( !isNaN( switchModel.resistance ) );
+      self.resistance = self.closed ? Math.max( MINIMUM_RESISTANCE, javaLength * self.resistivity ) :
+                        OPEN_RESISTANCE;
+      assert && assert( !isNaN( self.resistance ) );
     };
 
     var updateLength = function() {
-      switchModel.length = switchModel.startVertex.position.distance( switchModel.endVertex.position );
+      self.length = self.startVertex.position.distance( self.endVertex.position );
     };
 
     var vertexMovedListener = function() {
@@ -54,8 +54,8 @@ define( function( require ) {
     this.closedProperty.link( updateResistance );
 
     this.disposeSwitch = function() {
-      switchModel.closedProperty.unlink( updateResistance );
-      switchModel.vertexMovedEmitter.removeListener( vertexMovedListener );
+      self.closedProperty.unlink( updateResistance );
+      self.vertexMovedEmitter.removeListener( vertexMovedListener );
     };
   }
 

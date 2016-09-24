@@ -21,17 +21,17 @@ define( function( require ) {
    */
   function Wire( startVertex, endVertex, resistivity, options ) {
     assert && assert( typeof resistivity === 'number' && resistivity >= 0, 'bad value for resistivity: ' + resistivity );
-    var wire = this;
+    var self = this;
     CircuitElement.call( this, startVertex, endVertex, {
       resistance: CircuitConstructionKitConstants.minimumResistance,
       resistivity: resistivity
     }, options );
 
     var updateResistance = function() {
-      var length = wire.startVertex.position.minus( wire.endVertex.position ).magnitude();
+      var length = self.startVertex.position.minus( self.endVertex.position ).magnitude();
       var javaLength = length / 990 * 15.120675866835684;
-      wire.resistance = Math.max( CircuitConstructionKitConstants.minimumResistance, javaLength * wire.resistivity );
-      assert && assert( !isNaN( wire.resistance ) );
+      self.resistance = Math.max( CircuitConstructionKitConstants.minimumResistance, javaLength * self.resistivity );
+      assert && assert( !isNaN( self.resistance ) );
     };
 
     this.disposeWire = function() {
@@ -39,7 +39,7 @@ define( function( require ) {
     };
 
     var updateLength = function() {
-      wire.length = wire.startVertex.position.distance( wire.endVertex.position );
+      self.length = self.startVertex.position.distance( self.endVertex.position );
     };
 
     var vertexMovedListener = function() {

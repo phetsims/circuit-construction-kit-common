@@ -16,7 +16,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
 
   function ElectronSpeedThrottlingReadoutNode( timeScaleProperty, showElectronsProperty ) {
-    var electronSpeedThrottlingReadoutNode = this;
+    var self = this;
     var text = new Text( 'Animation speed limit reached! Simulation speed reduced to < 1% normal.', { fontSize: 26 } );
     Node.call( this, {
       children: [
@@ -34,7 +34,7 @@ define( function( require ) {
       text.setText( 'Animation speed limit reached! Simulation speed reduced to ' + fixed + '% normal.' );
 
       // Only show the throttling message if the speed is less than 100% and electrons are visible
-      electronSpeedThrottlingReadoutNode.visible = isThrottled && showElectrons;
+      self.visible = isThrottled && showElectrons;
     } );
   }
 

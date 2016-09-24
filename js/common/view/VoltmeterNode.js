@@ -40,7 +40,7 @@ define( function( require ) {
   var PROBE_CONNECTION_POINT_DX = 8;
 
   function VoltmeterNode( voltmeter, tandem, options ) {
-    var voltmeterNode = this;
+    var self = this;
     options = _.extend( {
       icon: false,
       visibleBoundsProperty: null,
@@ -75,13 +75,13 @@ define( function( require ) {
     } );
 
     voltmeter.redProbePositionProperty.link( function( redProbePosition ) {
-      voltmeterNode.redProbeNode.centerTop = redProbePosition;
-      redWireNode.setProbePosition( voltmeterNode.redProbeNode.centerBottom );
+      self.redProbeNode.centerTop = redProbePosition;
+      redWireNode.setProbePosition( self.redProbeNode.centerBottom );
     } );
 
     voltmeter.blackProbePositionProperty.link( function( blackProbePosition ) {
-      voltmeterNode.blackProbeNode.centerTop = blackProbePosition;
-      blackWireNode.setProbePosition( voltmeterNode.blackProbeNode.centerBottom );
+      self.blackProbeNode.centerTop = blackProbePosition;
+      blackWireNode.setProbePosition( self.blackProbeNode.centerBottom );
     } );
 
     voltmeter.bodyPositionProperty.link( function( bodyPosition ) {
@@ -128,7 +128,7 @@ define( function( require ) {
       // Make sure at least a grabbable edge remains visible
       visibleBounds = visibleBounds.eroded( CircuitConstructionKitConstants.dragBoundsErosion );
 
-      voltmeterNode.movableDragHandler.setDragBounds( visibleBounds );
+      self.movableDragHandler.setDragBounds( visibleBounds );
       redProbeDragHandler.setDragBounds( visibleBounds );
       blackProbeDragHandler.setDragBounds( visibleBounds );
 

@@ -27,7 +27,7 @@ define( function( require ) {
    * @constructor
    */
   function IntroScreenView( introScreenModel, tandem ) {
-    var introScreenView = this;
+    var self = this;
     this.introScreenModel = introScreenModel;
     ScreenView.call( this );
 
@@ -42,7 +42,7 @@ define( function( require ) {
       listener: function() {
         introScreenModel.reset();
 
-        _.values( introScreenView.sceneNodes ).forEach( function( sceneNode ) {
+        _.values( self.sceneNodes ).forEach( function( sceneNode ) {
           sceneNode.reset();
           sceneNode.circuitConstructionKitModel.reset();
         } );
@@ -51,7 +51,7 @@ define( function( require ) {
     this.addChild( resetAllButton );
 
     introScreenModel.selectedSceneProperty.link( function( selectedScene ) {
-      if ( !introScreenView.sceneNodes[ selectedScene ] ) {
+      if ( !self.sceneNodes[ selectedScene ] ) {
         var options = {
           0: {
             numberOfLeftBatteriesInToolbox: 0,
@@ -79,23 +79,23 @@ define( function( require ) {
           }
         }[ selectedScene ];
         var sceneNode = new IntroSceneNode(
-          new IntroSceneModel( introScreenView.layoutBounds, introScreenModel.selectedSceneProperty ),
+          new IntroSceneModel( self.layoutBounds, introScreenModel.selectedSceneProperty ),
           tandem.createTandem( selectedScene ),
           options );
-        sceneNode.visibleBoundsProperty.set( introScreenView.visibleBoundsProperty.value );
-        introScreenView.sceneNodes[ selectedScene ] = sceneNode;
+        sceneNode.visibleBoundsProperty.set( self.visibleBoundsProperty.value );
+        self.sceneNodes[ selectedScene ] = sceneNode;
       }
 
       // scene selection buttons go in back so that circuit elements may go in front
-      introScreenView.children = [
+      self.children = [
         resetAllButton,
         sceneSelectionRadioButtonGroup,
-        introScreenView.sceneNodes[ selectedScene ]
+        self.sceneNodes[ selectedScene ]
       ];
     } );
 
     this.visibleBoundsProperty.link( function( visibleBounds ) {
-      _.values( introScreenView.sceneNodes ).forEach( function( sceneNode ) {
+      _.values( self.sceneNodes ).forEach( function( sceneNode ) {
         sceneNode.visibleBoundsProperty.set( visibleBounds );
       } );
 

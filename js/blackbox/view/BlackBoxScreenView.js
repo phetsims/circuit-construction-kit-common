@@ -25,7 +25,7 @@ define( function( require ) {
    */
   function BlackBoxScreenView( blackBoxScreenModel, tandem ) {
     ScreenView.call( this );
-    var blackBoxScreenView = this;
+    var self = this;
     this.blackBoxScreenModel = blackBoxScreenModel;
 
     var sceneViews = {}; // Populated lazily, key = scene name
@@ -64,19 +64,19 @@ define( function( require ) {
       }
 
       // Update layout when the scene changes
-      blackBoxScreenView.updateAllSceneLayouts && blackBoxScreenView.updateAllSceneLayouts();
+      self.updateAllSceneLayouts && self.updateAllSceneLayouts();
 
       // Show the selected scene
-      blackBoxScreenView.children = [ sceneViews[ scene ] ];
+      self.children = [ sceneViews[ scene ] ];
     } );
 
     this.visibleBoundsProperty.link( function( visibleBounds ) {
-      blackBoxScreenView.updateAllSceneLayouts = function() {
+      self.updateAllSceneLayouts = function() {
         _.keys( sceneViews ).forEach( function( key ) {
           sceneViews[ key ].visibleBoundsProperty.set( visibleBounds.copy() );
         } );
       };
-      blackBoxScreenView.updateAllSceneLayouts();
+      self.updateAllSceneLayouts();
     } );
   }
 

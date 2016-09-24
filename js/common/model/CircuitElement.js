@@ -26,7 +26,7 @@ define( function( require ) {
   function CircuitElement( startVertex, endVertex, propertySetMap, options ) {
     assert && assert( startVertex !== endVertex, 'vertices must be different' );
 
-    var circuitElement = this;
+    var self = this;
 
     options = _.extend( {
       canBeDroppedInToolbox: true, // false in Circuit Construction Kit Intro screen
@@ -67,25 +67,25 @@ define( function( require ) {
     this.vertexMovedEmitter = new Emitter();
 
     var vertexMoved = function() {
-      circuitElement.vertexMovedEmitter.emit();
+      self.vertexMovedEmitter.emit();
     };
     var linkToVertex = function( vertex, oldVertex ) {
       oldVertex && oldVertex.positionProperty.unlink( vertexMoved );
       vertex.positionProperty.link( vertexMoved );
 
       if ( !oldVertex || !oldVertex.position.equals( vertex.position ) ) {
-        circuitElement.vertexMovedEmitter.emit();
+        self.vertexMovedEmitter.emit();
       }
     };
     this.startVertexProperty.link( linkToVertex );
     this.endVertexProperty.link( linkToVertex );
 
     this.disposeCircuitElement = function() {
-      circuitElement.startVertexProperty.unlink( linkToVertex );
-      circuitElement.endVertexProperty.unlink( linkToVertex );
+      self.startVertexProperty.unlink( linkToVertex );
+      self.endVertexProperty.unlink( linkToVertex );
 
-      circuitElement.startVertex.positionProperty.unlink( vertexMoved );
-      circuitElement.endVertex.positionProperty.unlink( vertexMoved );
+      self.startVertex.positionProperty.unlink( vertexMoved );
+      self.endVertex.positionProperty.unlink( vertexMoved );
     };
   }
 

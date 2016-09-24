@@ -22,7 +22,7 @@ define( function( require ) {
    * @constructor
    */
   function CCKLightBulbForegroundNode( circuitConstructionKitScreenView, circuitNode, lightBulb, runningProperty, tandem, options ) {
-    var cckLightBulbForegroundNode = this;
+    var self = this;
     this.lightBulb = lightBulb;
 
     // TODO: This is overkill, we should just have an Image, without all of the extra brightness lines, etc.
@@ -40,9 +40,9 @@ define( function( require ) {
       scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
         .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
         .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) );
-      cckLightBulbForegroundNode.lightBulbNode.setMatrix( scratchMatrix );
+      self.lightBulbNode.setMatrix( scratchMatrix );
 
-      cckLightBulbForegroundNode.highlightParent && cckLightBulbForegroundNode.highlightParent.setMatrix( scratchMatrix.copy() );
+      self.highlightParent && self.highlightParent.setMatrix( scratchMatrix.copy() );
     };
     options = _.extend( {
       updateLayout: updateLayout,

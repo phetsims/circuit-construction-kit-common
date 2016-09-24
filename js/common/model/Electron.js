@@ -27,7 +27,7 @@ define( function( require ) {
     assert && assert( _.isNumber( distance ), 'distance should be a number' );
     assert && assert( distance >= 0, 'electron was below the origin of the circuit element' );
     assert && assert( circuitElement.containsScalarLocation( distance ), 'electron was not within the circuit element' );
-    var electron = this;
+    var self = this;
 
     this.circuitElement = circuitElement; // @public 
     this.radius = 0.1;
@@ -41,11 +41,11 @@ define( function( require ) {
 
     var multilink = Property.multilink( [ this.distanceProperty, this.updatingProperty ], function( distance, updating ) {
       if ( updating ) {
-        assert && assert( !electron.deleted, 'Electron was deleted' );
+        assert && assert( !self.deleted, 'Electron was deleted' );
         assert && assert( !isNaN( distance ), 'electron position was not a number' );
-        var position = electron.circuitElement.getPosition( distance );
+        var position = self.circuitElement.getPosition( distance );
         assert && assert( !isNaN( position.x ) && !isNaN( position.y ), 'point was not a number' );
-        electron.position = position;
+        self.position = position;
       }
     } );
 
@@ -56,14 +56,14 @@ define( function( require ) {
     this.disposeElectron = function() {
 
       // TODO: sometimes the electrons are getting disposed twice, we must find out why and fix it
-      if ( electron.deleted ) {
+      if ( self.deleted ) {
         return;
       }
-      assert && assert( !electron.deleted, 'cannot delete twice' );
+      assert && assert( !self.deleted, 'cannot delete twice' );
       multilink.dispose();
-      electron.deleted = true;
-      electron.disposeEmitter.emit();
-      assert && assert( !electron.disposeEmitter.hasListeners(), 'after disposal, should have no listeners' );
+      self.deleted = true;
+      self.disposeEmitter.emit();
+      assert && assert( !self.disposeEmitter.hasListeners(), 'after disposal, should have no listeners' );
     };
   }
 

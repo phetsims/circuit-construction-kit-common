@@ -30,7 +30,7 @@ define( function( require ) {
    */
   function BlackBoxSceneModel( trueBlackBoxCircuit, tandem ) {
     assert && assert( trueBlackBoxCircuit instanceof CircuitStruct, 'circuit should be CircuitStruct' );
-    var blackBoxSceneModel = this;
+    var self = this;
 
     // When loading a black box circuit, none of the vertices should be draggable
     // TODO: Fix this in the saved/loaded data structures, not here as a post-hoc patch.
@@ -91,7 +91,7 @@ define( function( require ) {
 
     // When reveal is pressed, true black box circuit should be shown instead of the user-created circuit
     this.revealingProperty.lazyLink( function( revealing ) {
-      blackBoxSceneModel.mode = revealing ? 'investigate' : 'build';
+      self.mode = revealing ? 'investigate' : 'build';
     } );
 
     // Keep track of what the user has built inside the black box so it may be restored.
@@ -119,8 +119,8 @@ define( function( require ) {
 
     // Enable the reveal button if the user has done something in build mode.
     circuit.circuitChangedEmitter.addListener( function() {
-      var builtSomething = blackBoxSceneModel.mode === 'build' && userBuiltSomething();
-      blackBoxSceneModel.isRevealEnabled = blackBoxSceneModel.revealing || builtSomething;
+      var builtSomething = self.mode === 'build' && userBuiltSomething();
+      self.isRevealEnabled = self.revealing || builtSomething;
     } );
 
     // Remove the true black box contents or user-created black box contents

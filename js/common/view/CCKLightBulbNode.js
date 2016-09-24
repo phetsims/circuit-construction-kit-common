@@ -23,7 +23,7 @@ define( function( require ) {
    * @constructor
    */
   function CCKLightBulbNode( circuitConstructionKitScreenView, circuitNode, lightBulb, runningProperty, tandem, options ) {
-    var cckLightBulbNode = this;
+    var self = this;
     this.lightBulb = lightBulb;
     var brightnessProperty = new Property( 0.0 );
     var updateBrightness = Property.multilink( [ lightBulb.currentProperty, runningProperty ], function( current, running ) {
@@ -50,9 +50,9 @@ define( function( require ) {
       scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
         .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
         .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) );
-      cckLightBulbNode.lightBulbNode.setMatrix( scratchMatrix );
+      self.lightBulbNode.setMatrix( scratchMatrix );
 
-      cckLightBulbNode.highlightParent && cckLightBulbNode.highlightParent.setMatrix( scratchMatrix.copy() );
+      self.highlightParent && self.highlightParent.setMatrix( scratchMatrix.copy() );
     };
     options = _.extend( {
       updateLayout: updateLayout,

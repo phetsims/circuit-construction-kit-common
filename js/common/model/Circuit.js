@@ -38,7 +38,7 @@ define( function( require ) {
    * @constructor
    */
   function Circuit( tandem ) {
-    var circuit = this;
+    var self = this;
     this.wires = new ObservableArray();
     this.switches = new ObservableArray();
     this.batteries = new ObservableArray();
@@ -56,7 +56,7 @@ define( function( require ) {
 
     // Re-solve the circuit when voltages or resistances change.
     var solve = function() {
-      circuit.solve();
+      self.solve();
     };
 
     this.wires.addItemAddedListener( function( wire ) { wire.resistanceProperty.lazyLink( solve ); } );
@@ -87,17 +87,17 @@ define( function( require ) {
     var addVertices = function( circuitElement ) {
 
       // Vertices may already exist for a Circuit when loading
-      if ( circuit.vertices.indexOf( circuitElement.startVertex ) < 0 ) {
-        circuit.vertices.add( circuitElement.startVertex );
+      if ( self.vertices.indexOf( circuitElement.startVertex ) < 0 ) {
+        self.vertices.add( circuitElement.startVertex );
       }
 
-      if ( circuit.vertices.indexOf( circuitElement.endVertex ) < 0 ) {
-        circuit.vertices.add( circuitElement.endVertex );
+      if ( self.vertices.indexOf( circuitElement.endVertex ) < 0 ) {
+        self.vertices.add( circuitElement.endVertex );
       }
 
-      assert && assert( circuit.vertices.indexOf( circuitElement.startVertex ) >= 0, 'start vertex should appear in the list' );
-      assert && assert( circuit.vertices.indexOf( circuitElement.endVertex ) >= 0, 'end vertex should appear in the list' );
-      circuit.solve();
+      assert && assert( self.vertices.indexOf( circuitElement.startVertex ) >= 0, 'start vertex should appear in the list' );
+      assert && assert( self.vertices.indexOf( circuitElement.endVertex ) >= 0, 'end vertex should appear in the list' );
+      self.solve();
     };
     this.wires.addItemAddedListener( addVertices );
     this.switches.addItemAddedListener( addVertices );
@@ -111,7 +111,7 @@ define( function( require ) {
 
       // When any vertex moves, relayout all electrons within the fixed-length connected component, see #100
       var updateElectrons = function() {
-        var circuitElements = circuit.findAllConnectedCircuitElements( circuitElement.startVertex );
+        var circuitElements = self.findAllConnectedCircuitElements( circuitElement.startVertex );
 
         for ( var i = 0; i < circuitElements.length; i++ ) {
           circuitElements[ i ].dirty = true;
@@ -121,7 +121,7 @@ define( function( require ) {
       circuitElement.moveToFrontEmitter.addListener( updateElectrons );
     };
     var removeElectrons = function( circuitElement ) {
-      circuit.electrons.removeAll( circuit.getElectronsInCircuitElement( circuitElement ) );
+      self.electrons.removeAll( self.getElectronsInCircuitElement( circuitElement ) );
     };
     this.wires.addItemAddedListener( addElectrons );
     this.switches.addItemAddedListener( addElectrons );
@@ -151,21 +151,21 @@ define( function( require ) {
     this.componentEditedEmitter = new Emitter();
 
     var circuitChangedEmitterFunction = function() {
-      circuit.circuitChangedEmitter.emit();
+      self.circuitChangedEmitter.emit();
     };
-    circuit.vertices.addItemAddedListener( function( vertex ) {
+    self.vertices.addItemAddedListener( function( vertex ) {
 
       // Observe the change in location of the vertices, to update the ammeter and voltmeter
       vertex.positionProperty.link( circuitChangedEmitterFunction );
 
-      var filtered = circuit.vertices.filter( function( candidateVertex ) {
+      var filtered = self.vertices.filter( function( candidateVertex ) {
         return vertex === candidateVertex;
       } );
       assert && assert( filtered.length === 1, 'should only have one copy of each vertex' );
     } );
 
     // Stop watching the vertex positions for updating the voltmeter and ammeter
-    circuit.vertices.addItemRemovedListener( function( vertex ) {
+    self.vertices.addItemRemovedListener( function( vertex ) {
       assert && assert( vertex.positionProperty.hasListener( circuitChangedEmitterFunction ), 'should have had the listener' );
       vertex.positionProperty.unlink( circuitChangedEmitterFunction );
       assert && assert(
@@ -182,13 +182,13 @@ define( function( require ) {
 
       // TODO: schedule in the step() function or with phet timers
       setTimeout( function() {
-        for ( var i = 0; i < circuit.vertices.length; i++ ) {
-          var v1 = circuit.vertices.get( i );
-          for ( var k = 0; k < circuit.vertices.length; k++ ) {
-            var v2 = circuit.vertices.get( k );
+        for ( var i = 0; i < self.vertices.length; i++ ) {
+          var v1 = self.vertices.get( i );
+          for ( var k = 0; k < self.vertices.length; k++ ) {
+            var v2 = self.vertices.get( k );
             if ( i !== k ) {
               if ( v2.unsnappedPosition.distance( v1.unsnappedPosition ) < 20 ) {
-                circuit.moveVerticesApart( v1, v2 );
+                self.moveVerticesApart( v1, v2 );
                 return; // Don't handle the same pair twice  // TODO: perhaps cycle several times until reaching a stable state
               }
             }
@@ -427,12 +427,12 @@ define( function( require ) {
     solve: function() {
       // console.log( JSON.stringify( this.toStateObject(), null, 2 ) );
 
-      var circuit = this;
+      var self = this;
 
       var toObject = function( circuitElement ) {
         return {
-          node0: circuit.vertices.indexOf( circuitElement.startVertex ),
-          node1: circuit.vertices.indexOf( circuitElement.endVertex ),
+          node0: self.vertices.indexOf( circuitElement.startVertex ),
+          node1: self.vertices.indexOf( circuitElement.endVertex ),
           circuitElement: circuitElement
         };
       };
@@ -672,7 +672,7 @@ define( function( require ) {
      * @public
      */
     getDropTarget: function( vertex, mode, blackBoxBounds ) {
-      var circuit = this;
+      var self = this;
 
       if ( mode === 'build' ) {
         assert && assert( blackBoxBounds, 'bounds should be provided for build mode' );
@@ -681,7 +681,7 @@ define( function( require ) {
       // Rules for a vertex connecting to another vertex.
       // (1) A vertex may not connect to an adjacent vertex.
       var candidateVertices = this.vertices.filter( function( candidateVertex ) {
-        return !circuit.isVertexAdjacent( vertex, candidateVertex );
+        return !self.isVertexAdjacent( vertex, candidateVertex );
       } );
 
       // (2) A vertex cannot connect to itself
@@ -705,9 +705,9 @@ define( function( require ) {
 
         // if something else is already snapping to candidateVertex, then we cannot snap to it as well.
         // check the neighbor vertices
-        for ( var i = 0; i < circuit.vertices.length; i++ ) {
-          var circuitVertex = circuit.vertices.get( i );
-          var adjacent = circuit.isVertexAdjacent( circuitVertex, vertex );
+        for ( var i = 0; i < self.vertices.length; i++ ) {
+          var circuitVertex = self.vertices.get( i );
+          var adjacent = self.isVertexAdjacent( circuitVertex, vertex );
 
           // If the adjacent vertex has the same position as the candidate vertex, that means it is already "snapped"
           // there and hence another vertex should not snap there at the same time.
@@ -736,14 +736,14 @@ define( function( require ) {
         if ( candidateVertex.blackBoxInterface ) {
           return true;
         }
-        var neighbors = circuit.getNeighborCircuitElements( candidateVertex );
+        var neighbors = self.getNeighborCircuitElements( candidateVertex );
         for ( var i = 0; i < neighbors.length; i++ ) {
           var neighbor = neighbors[ i ];
           var oppositeVertex = neighbor.getOppositeVertex( candidateVertex );
 
           // is another node proposing a match to that node?
-          for ( var k = 0; k < circuit.vertices.length; k++ ) {
-            var v = circuit.vertices.get( k );
+          for ( var k = 0; k < self.vertices.length; k++ ) {
+            var v = self.vertices.get( k );
             if ( neighbor instanceof Wire && v !== vertex && v !== oppositeVertex && v.position.equals( oppositeVertex.position ) ) {
               return false;
             }
@@ -754,8 +754,8 @@ define( function( require ) {
 
       // (8) a wire vertex cannot double connect to an object, creating a tiny short circuit
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
-        var candidateNeighbors = circuit.getNeighborVertices( candidateVertex );
-        var myNeighbors = circuit.getNeighborVertices( vertex );
+        var candidateNeighbors = self.getNeighborVertices( candidateVertex );
+        var myNeighbors = self.getNeighborVertices( vertex );
         var intersection = _.intersection( candidateNeighbors, myNeighbors );
         return intersection.length === 0;
       } );
@@ -816,9 +816,9 @@ define( function( require ) {
     },
 
     toStateObject: function() {
-      var circuit = this;
+      var self = this;
       var getVertexIndex = function( vertex ) {
-        var vertexIndex = circuit.vertices.indexOf( vertex );
+        var vertexIndex = self.vertices.indexOf( vertex );
         assert && assert( vertexIndex >= 0, 'vertex should have an index' );
         return vertexIndex;
       };

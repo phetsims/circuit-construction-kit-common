@@ -33,7 +33,7 @@ define( function( require ) {
   function CircuitElementEditContainerPanel( circuit, visibleBoundsProperty, getLayoutPosition, modeProperty, tandem ) {
     var groupTandem = tandem.createGroupTandem( 'circuitElementEditPanel' );
     var selectedCircuitElementProperty = circuit.selectedCircuitElementProperty;
-    var circuitElementEditContainerPanel = this;
+    var self = this;
     Node.call( this );
 
     // TODO: i18n
@@ -60,13 +60,13 @@ define( function( require ) {
 
     this.addChild( new Rectangle( 0, 0, 10, 10, { fill: null } ) ); // blank spacer so layout doesn't exception out
     var updatePosition = function() {
-      circuitElementEditContainerPanel.mutate( getLayoutPosition( visibleBoundsProperty.get() ) );
+      self.mutate( getLayoutPosition( visibleBoundsProperty.get() ) );
     };
 
     var lastNumberControl = null;
     selectedCircuitElementProperty.link( function( selectedCircuitElement ) {
       lastNumberControl && lastNumberControl.dispose();
-      lastNumberControl && circuitElementEditContainerPanel.removeChild( lastNumberControl );
+      lastNumberControl && self.removeChild( lastNumberControl );
       lastNumberControl = null;
 
       if ( selectedCircuitElement ) {
@@ -90,7 +90,7 @@ define( function( require ) {
         lastNumberControl = tapInstructionTextNode;
       }
       if ( lastNumberControl !== null ) {
-        circuitElementEditContainerPanel.addChild( lastNumberControl );
+        self.addChild( lastNumberControl );
       }
       updatePosition();
     } );

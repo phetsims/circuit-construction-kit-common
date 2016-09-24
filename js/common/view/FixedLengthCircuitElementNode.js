@@ -35,7 +35,7 @@ define( function( require ) {
   function FixedLengthCircuitElementNode( circuitConstructionKitScreenView, circuitNode, circuitElement, contentNode,
                                           contentScale, tandem, options ) {
 
-    var fixedLengthCircuitElementNode = this;
+    var self = this;
 
     // Capture the original dimensions of the content node, without the highlight node
     var contentNodeHeight = contentNode.height;
@@ -101,10 +101,10 @@ define( function( require ) {
 
       // Components outside the black box do not move in front of the overlay
       if ( circuitElement.interactive ) {
-        fixedLengthCircuitElementNode.moveToFront();
-        fixedLengthCircuitElementNode.circuitElement.moveToFrontEmitter.emit();
-        fixedLengthCircuitElementNode.circuitElement.startVertex.moveToFrontEmitter.emit();
-        fixedLengthCircuitElementNode.circuitElement.endVertex.moveToFrontEmitter.emit();
+        self.moveToFront();
+        self.circuitElement.moveToFrontEmitter.emit();
+        self.circuitElement.startVertex.moveToFrontEmitter.emit();
+        self.circuitElement.endVertex.moveToFrontEmitter.emit();
       }
     };
     circuitElement.connectedEmitter.addListener( moveToFront );
@@ -121,7 +121,7 @@ define( function( require ) {
     } );
 
     var pickableListener = function( interactive ) {
-      fixedLengthCircuitElementNode.pickable = interactive;
+      self.pickable = interactive;
     };
     circuitElement.interactiveProperty.link( pickableListener );
 
@@ -144,8 +144,8 @@ define( function( require ) {
         end: function( event ) {
 
           // If over the toolbox, then drop into it, and don't process further
-          if ( circuitConstructionKitScreenView.canNodeDropInToolbox( fixedLengthCircuitElementNode ) ) {
-            circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( fixedLengthCircuitElementNode );
+          if ( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) ) {
+            circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
             return;
           }
 
@@ -156,7 +156,7 @@ define( function( require ) {
           circuitNode.endDrag( event, circuitElement.endVertex, didDrag );
 
           // Only show the editor when tapped, not on every drag.
-          fixedLengthCircuitElementNode.maybeSelect( event, circuitNode, p );
+          self.maybeSelect( event, circuitNode, p );
 
           didDrag = false;
         }
@@ -179,8 +179,8 @@ define( function( require ) {
     );
 
     this.disposeFixedLengthCircuitElementNode = function() {
-      if ( fixedLengthCircuitElementNode.inputListener && fixedLengthCircuitElementNode.inputListener.dragging ) {
-        fixedLengthCircuitElementNode.inputListener.endDrag();
+      if ( self.inputListener && self.inputListener.dragging ) {
+        self.inputListener.endDrag();
       }
       multilink && multilink.dispose();
       multilink = null; // Mark null so it doesn't get disposed again in relink()

@@ -20,18 +20,18 @@ define( function( require ) {
       lineWidth: 3,
       stroke: color
     } );
-    var probeWireNode = this;
+    var self = this;
     this.probePosition = new Vector2();
     this.bodyPosition = new Vector2();
 
     this.updateWireShape = function() {
 
-      var bodyX = probeWireNode.bodyPosition.x;
-      var bodyY = probeWireNode.bodyPosition.y;
-      var probeX = probeWireNode.probePosition.x;
-      var probeY = probeWireNode.probePosition.y;
+      var bodyX = self.bodyPosition.x;
+      var bodyY = self.bodyPosition.y;
+      var probeX = self.probePosition.x;
+      var probeY = self.probePosition.y;
 
-      probeWireNode.shape = new Shape()
+      self.shape = new Shape()
         .moveTo( bodyX, bodyY )
         .cubicCurveTo(
           bodyX + controlPointDelta1.x, bodyY + controlPointDelta1.y,

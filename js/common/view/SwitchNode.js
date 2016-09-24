@@ -34,7 +34,7 @@ define( function( require ) {
    * @constructor
    */
   function SwitchNode( circuitConstructionKitScreenView, circuitNode, switchModel ) {
-    var wireNode = this;
+    var self = this;
     this.switchModel = switchModel;
 
     var highlightNode = new Path( null, {
@@ -103,7 +103,7 @@ define( function( require ) {
     this.addChild( checkBox );
 
     var updatePickable = function( interactive ) {
-      wireNode.pickable = interactive;
+      self.pickable = interactive;
     };
     switchModel.interactiveProperty.link( updatePickable );
 
@@ -125,7 +125,7 @@ define( function( require ) {
       highlightNodeParent.setTranslation( startPoint.x, startPoint.y );
       endListener && endListener( switchModel.endVertex.position );
       if ( highlightNode.visible ) {
-        highlightNode.shape = wireNode.getHighlightStrokedShape( highlightStrokeStyles );
+        highlightNode.shape = self.getHighlightStrokedShape( highlightStrokeStyles );
       }
       updateCheckBox();
     };
@@ -143,7 +143,7 @@ define( function( require ) {
       lineNodeParent.setRotation( deltaVector.angle() );
       highlightNodeParent.setRotation( deltaVector.angle() );
       if ( highlightNode.visible ) {
-        highlightNode.shape = wireNode.getHighlightStrokedShape( highlightStrokeStyles );
+        highlightNode.shape = self.getHighlightStrokedShape( highlightStrokeStyles );
       }
 
       // normal angle
@@ -183,8 +183,8 @@ define( function( require ) {
       end: function( event ) {
 
         // If over the toolbox, then drop into it, and don't process further
-        if ( circuitConstructionKitScreenView.canNodeDropInToolbox( wireNode ) ) {
-          circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( wireNode );
+        if ( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) ) {
+          circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
           return;
         }
         if ( !switchModel.interactive ) {
@@ -195,17 +195,17 @@ define( function( require ) {
         circuitNode.endDrag( event, switchModel.endVertex, didDrag );
 
         // Only show the editor when tapped, not on every drag.
-        wireNode.maybeSelect( event, circuitNode, p );
+        self.maybeSelect( event, circuitNode, p );
       }
     } );
-    circuitConstructionKitScreenView && wireNode.addInputListener( this.inputListener );
+    circuitConstructionKitScreenView && self.addInputListener( this.inputListener );
 
     if ( circuitNode ) {
       var updateHighlight = function( lastCircuitElement ) {
         var showHighlight = lastCircuitElement === switchModel;
         highlightNode.visible = showHighlight;
         if ( highlightNode.visible ) {
-          highlightNode.shape = wireNode.getHighlightStrokedShape( highlightStrokeStyles );
+          highlightNode.shape = self.getHighlightStrokedShape( highlightStrokeStyles );
         }
       };
       circuitNode.circuit.selectedCircuitElementProperty.link( updateHighlight );
@@ -213,11 +213,11 @@ define( function( require ) {
 
     // Only show the wire if the switch is closed.
     switchModel.closedProperty.link( function( closed ) {
-      wireNode.lineNode.visible = closed;
+      self.lineNode.visible = closed;
     } );
 
     this.disposeSwitchNode = function() {
-      wireNode.inputListener.dragging && wireNode.inputListener.endDrag();
+      self.inputListener.dragging && self.inputListener.endDrag();
 
       switchModel.startVertexProperty.unlink( updateStartVertex );
       switchModel.endVertexProperty.unlink( updateEndVertex );

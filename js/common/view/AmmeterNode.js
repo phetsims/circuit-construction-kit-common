@@ -43,7 +43,7 @@ define( function( require ) {
    * @constructor
    */
   function AmmeterNode( ammeter, tandem, options ) {
-    var ammeterNode = this;
+    var self = this;
     options = _.extend( {
       icon: false,
       visibleBoundsProperty: null,
@@ -96,8 +96,8 @@ define( function( require ) {
     } );
 
     ammeter.probePositionProperty.link( function( probePosition ) {
-      ammeterNode.probeNode.centerTop = probePosition;
-      blackWireNode.setProbePosition( ammeterNode.probeNode.centerBottom );
+      self.probeNode.centerTop = probePosition;
+      blackWireNode.setProbePosition( self.probeNode.centerBottom );
     } );
     ammeter.bodyPositionProperty.link( function( bodyPosition ) {
       if ( ammeter.draggingTogether ) {
@@ -127,7 +127,7 @@ define( function( require ) {
       // Make sure at least a grabbable edge remains visible
       visibleBounds = visibleBounds.eroded( CircuitConstructionKitConstants.dragBoundsErosion );
 
-      ammeterNode.movableDragHandler.setDragBounds( visibleBounds );
+      self.movableDragHandler.setDragBounds( visibleBounds );
       probeDragHandler.setDragBounds( visibleBounds );
 
       ammeter.bodyPosition = visibleBounds.closestPointTo( ammeter.bodyPosition );
