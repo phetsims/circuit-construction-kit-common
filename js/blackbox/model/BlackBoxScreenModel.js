@@ -12,17 +12,16 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var PropertySet = require( 'AXON/PropertySet' );
+  var Property = require( 'AXON/Property' );
 
   /**
    * @constructor
    */
   function BlackBoxScreenModel() {
-    PropertySet.call( this, {
-      scene: 'warmup'
-    } );
+    this.sceneProperty = new Property( 'warmup' );
+    Object.defineProperty( this, 'scene', this.sceneProperty.getDeclarator() );
   }
 
   circuitConstructionKitCommon.register( 'BlackBoxScreenModel', BlackBoxScreenModel );
-  return inherit( PropertySet, BlackBoxScreenModel );
+  return inherit( Object, BlackBoxScreenModel );
 } );
