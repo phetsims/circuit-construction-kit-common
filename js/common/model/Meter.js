@@ -44,7 +44,7 @@ define( function( require ) {
       }
     }, additionalProperties );
 
-    PropertySet.call( this, null, null, properties );
+    PropertySet.call( this, null, properties );
 
     this.droppedEmitter = new Emitter(); // Fire event when dropped
   }

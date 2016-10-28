@@ -45,7 +45,7 @@ define( function( require ) {
       }
     }, additionalProperties );
 
-    PropertySet.call( this, null, null, properties );
+    PropertySet.call( this, null, properties );
 
     // @public (read-only) These assignments provide improved highlighting and navigation in IntelliJ IDEA
     this.runningProperty = this.runningProperty || null;

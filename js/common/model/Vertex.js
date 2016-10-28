@@ -106,7 +106,7 @@ define( function( require ) {
       }
     };
 
-    PropertySet.call( this, null, null, properties );
+    PropertySet.call( this, null, properties );
 
     this.moveToFrontEmitter = new Emitter();
   }
