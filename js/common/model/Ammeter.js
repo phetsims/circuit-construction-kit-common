@@ -20,16 +20,25 @@ define( function( require ) {
   var TVector2 = require( 'ifphetio!PHET_IO/types/dot/TVector2' );
 
   function Ammeter( tandem ) {
-    Meter.call( this, {
-      current: null, // Null means no reading, otherwise {number} amps
-      probePosition: new Vector2( 0, 0 )
-    }, tandem, {
-      current: tandem.createTandem( 'currentProperty' ),
-      probePosition: tandem.createTandem( 'probePositionProperty' )
-    }, {
-      current: TNumber( { units: 'amperes' } ),
-      probePosition: TVector2
-    } );
+
+    // additional Properties added to the supertype
+    var additionalProperties = {
+
+      // Null means no reading, otherwise {number} amps
+      current: {
+        value: null,
+        tandem: tandem.createTandem( 'currentProperty' ),
+        phetioValueType: TNumber( { units: 'amperes' } )
+      },
+
+      probePosition: {
+        value: new Vector2( 0, 0 ),
+        tandem: tandem.createTandem( 'probePositionProperty' ),
+        phetioValueType: TVector2
+      }
+    };
+
+    Meter.call( this, tandem, additionalProperties );
   }
 
   circuitConstructionKitCommon.register( 'Ammeter', Ammeter );

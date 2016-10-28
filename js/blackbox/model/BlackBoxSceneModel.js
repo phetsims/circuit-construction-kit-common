@@ -53,30 +53,39 @@ define( function( require ) {
       circuitElement.insideTrueBlackBox = true;
     }
 
-    CircuitConstructionKitModel.call( this, tandem, {
+    // additional Properties that will be added to supertype
+    var additionalProperties = {
 
       // @public - whether the user is in the 'investigate' or 'build' mode
-      mode: 'investigate',
+      mode: {
+        value: 'investigate',
+        tandem: tandem.createTandem( 'modeProperty' ),
+        phetioValueType: TString
+      },
 
       // @public - true when the user is holding down the reveal button and the answer (inside the black box) is showing
-      revealing: false,
+      revealing: {
+        value: false,
+        tandem: tandem.createTandem( 'revealingProperty' ),
+        phetioValueType: TBoolean
+      },
 
       // @public - true if the user has created a circuit for comparison with the black box (1+ terminal connected)
-      isRevealEnabled: false,
+      isRevealEnabled: {
+        value: false,
+        tandem: tandem.createTandem( 'isRevealEnabledProperty' ),
+        phetioValueType: TBoolean
+      },
 
       // @public {boolean} - changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
-      running: !showPlayPauseButton
-    }, {
-      mode: tandem.createTandem( 'modeProperty' ),
-      revealing: tandem.createTandem( 'revealingProperty' ),
-      isRevealEnabled: tandem.createTandem( 'isRevealEnabledProperty' ),
-      running: tandem.createTandem( 'runningProperty' )
-    }, {
-      mode: TString,
-      revealing: TBoolean,
-      isRevealEnabled: TBoolean,
-      running: TBoolean
-    } );
+      running: {
+        value: !showPlayPauseButton,
+        tandem: tandem.createTandem( 'runningProperty' ),
+        phetioValueType: TBoolean
+      }
+    };
+
+    CircuitConstructionKitModel.call( this, tandem, additionalProperties );
 
     this.revealingProperty = this.revealingProperty || null;
     this.modeProperty = this.modeProperty || null;

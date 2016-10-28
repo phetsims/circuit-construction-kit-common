@@ -24,21 +24,28 @@ define( function( require ) {
   var TString = require( 'ifphetio!PHET_IO/types/TString' );
 
   /**
+   * @param {Tandem} tandem
+   * @param {Object} [additionalProperties] - addition Properties added to this type
+   * @param {Object} [options]
    * @constructor
    */
-  function CircuitConstructionKitModel( tandem, additionalProperties, additionalTandemSetEntries, additionalTypeEntries, options ) {
+  function CircuitConstructionKitModel( tandem, additionalProperties, options ) {
+
     var self = this;
+
     options = _.extend( { circuit: null }, options );
-    PropertySet.call( this, _.extend( {
-      running: true // {boolean} @public changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
-    }, additionalProperties ), {
-      tandemSet: _.extend( {
-        running: tandem.createTandem( 'runningProperty' )
-      }, additionalTandemSetEntries ),
-      phetioValueTypeSet: _.extend( {
-        running: TBoolean
-      }, additionalTypeEntries )
-    } );
+
+    var properties = _.extend( {
+
+      // @public changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
+      running: {
+        value: true,
+        tandem: tandem.createTandem( 'runningProperty' ),
+        phetioValueType: TBoolean
+      }
+    }, additionalProperties );
+
+    PropertySet.call( this, null, null, properties );
 
     // @public (read-only) These assignments provide improved highlighting and navigation in IntelliJ IDEA
     this.runningProperty = this.runningProperty || null;

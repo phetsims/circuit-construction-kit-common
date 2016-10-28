@@ -19,19 +19,31 @@ define( function( require ) {
   var TVector2 = require( 'ifphetio!PHET_IO/types/dot/TVector2' );
 
   function Voltmeter( tandem ) {
-    Meter.call( this, {
-      voltage: null, // Null means no reading, otherwise {number} volts
-      redProbePosition: new Vector2( 0, 0 ),
-      blackProbePosition: new Vector2( 0, 0 )
-    }, tandem, {
-      voltage: tandem.createTandem( 'voltageProperty' ),
-      redProbePosition: tandem.createTandem( 'redProbePositionProperty' ),
-      blackProbePosition: tandem.createTandem( 'blackProbePositionProperty' )
-    }, {
-      voltage: TNumber( { units: 'volts' } ),
-      redProbePosition: TVector2,
-      blackProbePosition: TVector2
-    } );
+
+    // additional Properties added to the supertype
+    var additionalProperties = {
+
+      // Null means no reading, otherwise {number} volts
+      voltage: {
+        value: null,
+        tandem: tandem.createTandem( 'voltageProperty' ),
+        phetioValueType: TNumber( { units: 'volts' } )
+      },
+
+      redProbePosition: {
+        value: new Vector2( 0, 0 ),
+        tandem: tandem.createTandem( 'redProbePositionProperty' ),
+        phetioValueType: TVector2
+      },
+
+      blackProbePosition: {
+        value: new Vector2( 0, 0 ),
+        tandem: tandem.createTandem( 'blackProbePositionProperty' ),
+        phetioValueType: TVector2
+      }
+    };
+
+    Meter.call( this, tandem, additionalProperties );
   }
 
   circuitConstructionKitCommon.register( 'Voltmeter', Voltmeter );

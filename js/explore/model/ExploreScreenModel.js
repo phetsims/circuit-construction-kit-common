@@ -19,11 +19,19 @@ define( function( require ) {
    * @constructor
    */
   function ExploreScreenModel( tandem ) {
-    CircuitConstructionKitModel.call( this, tandem, {
-      running: !CircuitConstructionKitQueryParameters.showPlayPauseButton // {boolean} @public changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
-    }, {
-      running: tandem.createTandem( 'runningProperty' )
-    }, {} );
+
+    // additional Properties that will be added to supertype
+    var additionalProperties = {
+
+      // {boolean} @public changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
+      running: {
+        value: !CircuitConstructionKitQueryParameters.showPlayPauseButton,
+        tandem: tandem.createTandem( 'runningProperty' )
+        //TODO missing phetioValueType
+      }
+    };
+
+    CircuitConstructionKitModel.call( this, tandem, additionalProperties );
   }
 
   circuitConstructionKitCommon.register( 'ExploreScreenModel', ExploreScreenModel );
