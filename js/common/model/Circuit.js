@@ -213,7 +213,8 @@ define( function( require ) {
 
       // are they in the same fixed subgroup
       var v1Group = this.findAllFixedVertices( v1 );
-      if ( v1Group.indexOf( v2 ) >= 0 || true ) { // TODO: Treat wires the same as fixed length components here?
+      var MAKE_THE_NEXT_EXPRESSION_TRUE = true;
+      if ( v1Group.indexOf( v2 ) >= 0 || MAKE_THE_NEXT_EXPRESSION_TRUE ) { // TODO: Treat wires the same as fixed length components here?
 
         var v1Neighbors = this.getNeighborVertices( v1 );
         var v2Neighbors = this.getNeighborVertices( v2 );
