@@ -12,29 +12,25 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
 
-  var getQueryParameter = phet.chipper.getQueryParameter;
-
-  var CircuitConstructionKitQueryParameters = {
+  var CircuitConstructionKitQueryParameters = QueryStringMachine.getAll( {
 
     // Show the voltage above each node, for debugging the circuit physics
-    vertexDisplay: getQueryParameter( 'vertexDisplay' ), // 'voltage' | 'index' | undefined
+    vertexDisplay: {
+      type: 'string',
+      defaultValue: undefined,
+      validValues: [ undefined, 'voltage', 'index' ]
+    },
 
-    dev: !!getQueryParameter( 'dev' ),
+    dev: { type: 'flag' },
 
-    showPlayPauseButton: !!getQueryParameter( 'showPlayPauseButton' ),
+    showPlayPauseButton: { type: 'flag' },
 
-    showSaveButton: !!getQueryParameter( 'showSaveButton' ),
+    showSaveButton: { type: 'flag' },
 
-    circuit: getQueryParameter( 'circuit' ),
+    circuit: { type: 'flag' },
 
-    autosave: !!getQueryParameter( 'autosave' )
-  };
-
-  if ( CircuitConstructionKitQueryParameters.vertexDisplay ) {
-    assert && assert( CircuitConstructionKitQueryParameters.vertexDisplay === 'voltage' ||
-                      CircuitConstructionKitQueryParameters.vertexDisplay === 'index',
-      'illegal value for vertexDisplay: ' + CircuitConstructionKitQueryParameters.vertexDisplay );
-  }
+    autosave: { type: 'flag' }
+  } );
 
   circuitConstructionKitCommon.register( 'CircuitConstructionKitQueryParameters', CircuitConstructionKitQueryParameters );
 
