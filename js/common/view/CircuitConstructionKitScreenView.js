@@ -154,7 +154,7 @@ define( function( require ) {
     }
 
     var voltmeterNode = new VoltmeterNode( circuitConstructionKitModel.voltmeter, tandem.createTandem( 'voltmeterNode' ), {
-      runningProperty: circuitConstructionKitModel.runningProperty,
+      runningProperty: circuitConstructionKitModel.exploreScreenRunningProperty,
       visibleBoundsProperty: this.visibleBoundsProperty
     } );
     circuitConstructionKitModel.voltmeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
@@ -168,7 +168,7 @@ define( function( require ) {
 
     var ammeterNode = new AmmeterNode( circuitConstructionKitModel.ammeter, tandem.createTandem( 'ammeterNode' ), {
       visibleBoundsProperty: this.visibleBoundsProperty,
-      runningProperty: circuitConstructionKitModel.runningProperty
+      runningProperty: circuitConstructionKitModel.exploreScreenRunningProperty
     } );
     circuitConstructionKitModel.ammeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
       if ( bodyNodeGlobalBounds.intersectsBounds( self.sensorToolbox.globalBounds ) ) {
@@ -196,7 +196,7 @@ define( function( require ) {
     this.addChild( electronSpeedThrottlingReadoutNode );
 
     // @protected - so that subclasses can add a layout circuit element near it
-    this.sensorToolbox = new SensorToolbox( voltmeterNode, ammeterNode, circuitConstructionKitModel.runningProperty, tandem.createTandem( 'sensorToolbox' ) );
+    this.sensorToolbox = new SensorToolbox( voltmeterNode, ammeterNode, circuitConstructionKitModel.exploreScreenRunningProperty, tandem.createTandem( 'sensorToolbox' ) );
 
     // @protected
     this.displayOptionsPanel = new DisplayOptionsPanel( circuitConstructionKitModel.circuit.showElectronsProperty, new Property( false ), new Property( false ), tandem.createTandem( 'displayOptionsPanel' ), {
@@ -308,7 +308,7 @@ define( function( require ) {
 
     // TODO: Move to a separate file
     if ( CircuitConstructionKitQueryParameters.showPlayPauseButton ) {
-      var playPauseButton = new PlayPauseButton( circuitConstructionKitModel.runningProperty, {
+      var playPauseButton = new PlayPauseButton( circuitConstructionKitModel.exploreScreenRunningProperty, {
         tandem: tandem.createTandem( 'playPauseButton' ),
         baseColor: '#33ff44' // the default blue fades into the background too much
       } );

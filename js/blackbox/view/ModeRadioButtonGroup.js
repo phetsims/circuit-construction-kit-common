@@ -16,21 +16,16 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
 
-  // phet-io modules
-  var TString = require( 'ifphetio!PHET_IO/types/TString' );
-
   function ModeRadioButtonGroup( modeProperty, tandem ) {
     var textOptions = { fontSize: 18 };
     RadioButtonGroup.call( this, modeProperty, [ {
       value: 'investigate',
       node: new Text( 'Investigate Circuit', textOptions ),
-      tandem: tandem.createTandem( 'investigateCircuitButton' ),
-      phetioValueType: TString
+      tandem: tandem.createTandem( 'investigateCircuitButton' )
     }, {
       value: 'build',
       node: new Text( 'Build Circuit', textOptions ),
-      tandem: tandem.createTandem( 'buildCircuitButton' ),
-      phetioValueType: TString
+      tandem: tandem.createTandem( 'buildCircuitButton' )
     } ], {
       tandem: tandem,
       baseColor: 'white',

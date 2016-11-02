@@ -12,6 +12,7 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
+  var Property = require( 'AXON/Property' );
   var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Circuit' );
   var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/CircuitStruct' );
   var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Voltmeter' );
@@ -88,6 +89,12 @@ define( function( require ) {
       this.circuit.vertices.lengthProperty.link( emitCircuitChanged );
       this.circuit.componentEditedEmitter.addListener( emitCircuitChanged );
     }
+
+    // {boolean} @public changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
+    this.exploreScreenRunningProperty = new Property( !CircuitConstructionKitQueryParameters.showPlayPauseButton, {
+      tandem: tandem.createTandem( 'exploreScreenRunningProperty' ),
+      phetioValueType: TBoolean
+    } );
   }
 
   circuitConstructionKitCommon.register( 'CircuitConstructionKitModel', CircuitConstructionKitModel );
