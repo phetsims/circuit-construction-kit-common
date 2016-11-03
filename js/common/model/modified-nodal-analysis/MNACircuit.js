@@ -306,7 +306,7 @@ define( function( require ) {
     /**
      * Returns a object with true set for all keys that have a node in the circuit, such as:
      * {0:true, 1:true, 2:true, 7:true}
-     * @returns {object}
+     * @returns {Object}
      */
     getNodeSet: function() {
       var nodeSet = {};
@@ -350,8 +350,8 @@ define( function( require ) {
 
     /**
      *
-     * @param {object} visited
-     * @param {object} toVisit
+     * @param {Object} visited
+     * @param {Object} toVisit
      */
     getConnectedNodesRecursive: function( visited, toVisit ) {
       while ( _.size( toVisit ) > 0 ) {
