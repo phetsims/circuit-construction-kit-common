@@ -39,7 +39,7 @@ define( function( require ) {
       // When the meter is dragged from the toolbox, all pieces drag together as a single unit.
       draggingTogether: {
         value: true,
-        tandem: tandem.createTandem( 'draggingTogetherProperty' ),
+        tandem: tandem.createTandem( 'draggingProbesWithBodyProperty' ),
         phetioValueType: TBoolean
       }
     }, additionalProperties );
