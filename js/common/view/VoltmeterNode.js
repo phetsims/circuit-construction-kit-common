@@ -85,7 +85,7 @@ define( function( require ) {
     } );
 
     voltmeter.bodyPositionProperty.link( function( bodyPosition ) {
-      if ( voltmeter.draggingTogether ) {
+      if ( voltmeter.draggingProbesWithBody ) {
         voltmeter.redProbePosition = bodyPosition.plusXY( -100, -30 );
         voltmeter.blackProbePosition = bodyPosition.plusXY( 100, -30 );
       }
@@ -109,7 +109,7 @@ define( function( require ) {
           voltmeter.droppedEmitter.emit1( bodyNode.globalBounds );
 
           // After dropping in the play area the probes move independently of the body
-          voltmeter.draggingTogether = false;
+          voltmeter.draggingProbesWithBody = false;
         }
       } );
       bodyNode.addInputListener( this.movableDragHandler );

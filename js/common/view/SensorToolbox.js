@@ -35,7 +35,7 @@ define( function( require ) {
     voltmeterNodeIcon.addInputListener( {
       down: function( event ) {
         var viewPosition = self.globalToParentPoint( event.pointer.point );
-        voltmeterNode.voltmeter.draggingTogether = true;
+        voltmeterNode.voltmeter.draggingProbesWithBody = true;
         voltmeterNode.voltmeter.visible = true;
         voltmeterNode.voltmeter.bodyPosition = viewPosition;
         voltmeterNode.movableDragHandler.startDrag( event );
@@ -53,7 +53,7 @@ define( function( require ) {
     ammeterNodeIcon.addInputListener( {
       down: function( event ) {
         var viewPosition = self.globalToParentPoint( event.pointer.point );
-        ammeterNode.ammeter.draggingTogether = true;
+        ammeterNode.ammeter.draggingProbesWithBody = true;
         ammeterNode.ammeter.visible = true;
         ammeterNode.ammeter.bodyPosition = viewPosition;
         ammeterNode.movableDragHandler.startDrag( event );
