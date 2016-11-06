@@ -73,8 +73,7 @@ define( function( require ) {
       } );
     }
     var sceneSelectionComboBox = new ComboBox( elements, sceneProperty, this, {
-      tandem: tandem.createTandem( 'sceneSelectionComboBox' ),
-      phetioValueType: TString
+      tandem: tandem.createTandem( 'sceneSelectionComboBox' )
     } );
     this.addChild( sceneSelectionComboBox );
 
