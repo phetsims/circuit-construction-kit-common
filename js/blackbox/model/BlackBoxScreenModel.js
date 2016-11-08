@@ -14,11 +14,16 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Property = require( 'AXON/Property' );
 
+  // phet-io modules
+  var TString = require( 'ifphetio!PHET_IO/types/TString' );
+
   /**
    * @constructor
    */
   function BlackBoxScreenModel() {
-    this.sceneProperty = new Property( 'warmup' );
+    this.sceneProperty = new Property( 'warmup', {
+      phetioValueType: TString
+    } );
     Object.defineProperty( this, 'scene', this.sceneProperty.getDeclarator() );
   }
 
