@@ -23,6 +23,7 @@ define( function( require ) {
   var RevealButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/blackbox/view/RevealButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var Color = require( 'SCENERY/util/Color' );
+  var Property = require( 'AXON/Property' );
 
   // constants
   var fadedColor = new Color( '#e3edfc' );
@@ -115,10 +116,13 @@ define( function( require ) {
     this.circuitNode.mainLayer.addChild( blackBoxNode );
     this.circuitNode.mainLayer.addChild( whiteBoxNode );
 
-    blackBoxSceneModel.modeProperty.link( function( mode ) {
+    this.unlinkBackgroundListener();
+    Property.multilink( [ blackBoxSceneModel.modeProperty, blackBoxSceneModel.exploreScreenRunningProperty ], function( mode, exploreScreenRunning ) {
       var isBuildBode = mode === 'build';
 
-      self.backgroundPlane.fill = isBuildBode ? fadedColor : solidColor;
+      self.backgroundPlane.fill = !exploreScreenRunning ? 'gray' :
+                                  isBuildBode ? fadedColor :
+                                  solidColor;
       if ( isBuildBode ) {
         self.circuitElementToolbox.moveToFront();
       }

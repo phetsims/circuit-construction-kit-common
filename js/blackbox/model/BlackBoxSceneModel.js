@@ -75,13 +75,6 @@ define( function( require ) {
         value: false,
         tandem: tandem.createTandem( 'isRevealEnabledProperty' ),
         phetioValueType: TBoolean
-      },
-
-      // @public {boolean} - changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
-      running: {
-        value: !showPlayPauseButton,
-        tandem: tandem.createTandem( 'runningProperty' ),
-        phetioValueType: TBoolean
       }
     };
 
@@ -90,7 +83,6 @@ define( function( require ) {
     this.revealingProperty = this.revealingProperty || null;
     this.modeProperty = this.modeProperty || null;
     this.isRevealEnabledProperty = this.isRevealEnabledProperty || null;
-    this.runningProperty = this.runningProperty || null;
 
     // For syntax highlighting and navigation
     this.circuit = this.circuit || null;

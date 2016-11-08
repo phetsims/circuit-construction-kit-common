@@ -40,7 +40,7 @@ define( function( require ) {
   function CircuitNode( circuit, circuitConstructionKitScreenView, tandem ) {
     this.circuitConstructionKitModel = circuitConstructionKitScreenView.circuitConstructionKitModel;
     this.visibleBoundsProperty = circuitConstructionKitScreenView.visibleBoundsProperty;
-    var runningProperty = this.circuitConstructionKitModel.runningProperty;
+    var runningProperty = this.circuitConstructionKitModel.exploreScreenRunningProperty;
 
     this.highlightLayer = new Node();
 

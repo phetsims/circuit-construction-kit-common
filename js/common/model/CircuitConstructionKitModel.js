@@ -36,20 +36,9 @@ define( function( require ) {
 
     options = _.extend( { circuit: null }, options );
 
-    var properties = _.extend( {
-
-      // @public changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
-      running: {
-        value: true,
-        tandem: tandem.createTandem( 'runningProperty' ),
-        phetioValueType: TBoolean
-      }
-    }, additionalProperties );
+    var properties = _.extend( {}, additionalProperties );
 
     PropertySet.call( this, null, properties );
-
-    // @public (read-only) These assignments provide improved highlighting and navigation in IntelliJ IDEA
-    this.runningProperty = this.runningProperty || null;
 
     this.circuit = options.circuit || new Circuit( tandem.createTandem( 'circuit' ) );
     this.initialCircuitState = this.circuit.toStateObject();
@@ -103,7 +92,7 @@ define( function( require ) {
     step: function( dt ) {
 
       // Only move electrons if the simulation is not paused.
-      if ( this.runningProperty.get() ) {
+      if ( this.exploreScreenRunningProperty.value ) {
         this.circuit.step( dt );
       }
 

@@ -79,9 +79,15 @@ define( function( require ) {
       }
     } );
     this.addChild( this.backgroundPlane );
-    circuitConstructionKitModel.exploreScreenRunningProperty.link( function( exploreScreenRunning ) {
+    var backgroundListener = function( exploreScreenRunning ) {
       self.backgroundPlane.fill = exploreScreenRunning ? backgroundColor : 'gray';
-    } );
+    };
+    circuitConstructionKitModel.exploreScreenRunningProperty.link( backgroundListener );
+
+    // For overriding in BlackBoxSceneView, which needs a custom color
+    this.unlinkBackgroundListener = function() {
+      circuitConstructionKitModel.exploreScreenRunningProperty.unlink( backgroundListener );
+    };
 
     // Reset All button
     if ( options.showResetAllButton ) {
