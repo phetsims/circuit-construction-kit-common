@@ -157,7 +157,7 @@ define( function( require ) {
               for ( var i = 0; i < vertices.length; i++ ) {
                 var vertexInGroup = vertices[ i ];
 
-                var closestPoint = blackBoxNode.bounds.closestPointTo( vertexInGroup.position );
+                var closestPoint = blackBoxNode.bounds.eroded( 30 ).closestPointTo( vertexInGroup.position );
                 var delta = closestPoint.minus( vertexInGroup.position );
 
                 self.circuitNode.translateVertexGroup( vertexInGroup, vertices, delta, null, [] );
@@ -174,7 +174,7 @@ define( function( require ) {
               for ( var i = 0; i < vertices.length; i++ ) {
                 var vertexInGroup = vertices[ i ];
 
-                var closestPoint = blackBoxNode.bounds.closestPointTo( vertexInGroup.position );
+                var closestPoint = blackBoxNode.bounds.eroded( 30 ).closestPointTo( vertexInGroup.position );
                 var delta = closestPoint.minus( vertexInGroup.position );
 
                 self.circuitNode.translateVertexGroup( vertexInGroup, vertices, delta, null, [] );
