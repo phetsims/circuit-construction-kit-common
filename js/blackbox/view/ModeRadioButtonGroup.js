@@ -2,7 +2,7 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- * Radio buttons for choosing 'Investigate Circuit' or 'Build Circuit'
+ * Radio buttons for choosing 'Explore' or 'Test'
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -20,11 +20,11 @@ define( function( require ) {
     var textOptions = { fontSize: 18 };
     RadioButtonGroup.call( this, modeProperty, [ {
       value: 'investigate',
-      node: new Text( 'Investigate Circuit', textOptions ),
+      node: new Text( 'Explore', textOptions ),
       tandem: tandem.createTandem( 'investigateCircuitButton' )
     }, {
       value: 'build',
-      node: new Text( 'Build Circuit', textOptions ),
+      node: new Text( 'Test', textOptions ),
       tandem: tandem.createTandem( 'buildCircuitButton' )
     } ], {
       tandem: tandem,

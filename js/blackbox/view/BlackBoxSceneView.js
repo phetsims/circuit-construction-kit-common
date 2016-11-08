@@ -46,7 +46,7 @@ define( function( require ) {
       showResetAllButton: true
     } );
 
-    // Add 'Investigate Circuit' and 'Build Circuit' radio buttons under the sensor toolbox
+    // Add 'Explore' and 'Test' radio buttons under the sensor toolbox
     var modeRadioButtonGroup = new ModeRadioButtonGroup( blackBoxSceneModel.modeProperty, tandem.createTandem( 'modeRadioButtonGroup' ) );
     this.addChild( modeRadioButtonGroup );
 
