@@ -84,6 +84,10 @@ define( function( require ) {
       this.circuit.vertices.lengthProperty.link( emitCircuitChanged );
       this.circuit.componentEditedEmitter.addListener( emitCircuitChanged );
     }
+
+    this.exploreScreenRunningProperty.link( function( exploreScreenRunning ) {
+      self.circuit.constantDensityPropagator.smoothData.clear();
+    } );
   }
 
   circuitConstructionKitCommon.register( 'CircuitConstructionKitModel', CircuitConstructionKitModel );

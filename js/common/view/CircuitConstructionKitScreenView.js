@@ -201,7 +201,11 @@ define( function( require ) {
         numberOfResistors: options.numberOfResistorsInToolbox
       } );
 
-    var electronSpeedThrottlingReadoutNode = new ElectronSpeedThrottlingReadoutNode( circuitConstructionKitModel.circuit.constantDensityPropagator.timeScaleProperty, circuitConstructionKitModel.circuit.showElectronsProperty );
+    var electronSpeedThrottlingReadoutNode = new ElectronSpeedThrottlingReadoutNode(
+      circuitConstructionKitModel.circuit.constantDensityPropagator.timeScaleProperty,
+      circuitConstructionKitModel.circuit.showElectronsProperty,
+      circuitConstructionKitModel.exploreScreenRunningProperty
+    );
     this.addChild( electronSpeedThrottlingReadoutNode );
 
     // @protected - so that subclasses can add a layout circuit element near it

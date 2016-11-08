@@ -23,6 +23,9 @@ define( function( require ) {
 
     numDataPoints: function() {return this.data.length;},
     getWindowSize: function() {return this.windowSize;},
+    clear: function() {
+      this.data.length = [];
+    },
 
     addData: function( d ) {
       this.data.push( d );
