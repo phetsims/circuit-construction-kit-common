@@ -32,6 +32,11 @@ define( function( require ) {
       } )
     } );
     enabledProperty.linkAttribute( this, 'enabled' );
+
+    var self = this;
+    revealingProperty.link( function( revealing ) {
+      self.setBaseColor( revealing ? '#91e053' : 'yellow' ); // Light green
+    } );
   }
 
   circuitConstructionKitCommon.register( 'RevealButton', RevealButton );
