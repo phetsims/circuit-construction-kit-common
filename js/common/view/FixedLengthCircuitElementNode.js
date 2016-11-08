@@ -181,7 +181,7 @@ define( function( require ) {
     }
 
     // Show values for components inside the black box when "reveal" is pressed.
-    if ( circuitElement.insideTrueBlackBoxProperty.value && circuitConstructionKitScreenView.circuitConstructionKitModel.revealingProperty ) {
+    if ( circuitElement.insideTrueBlackBoxProperty.value ) {
       var textNode = new Text( 'readout', { fontSize: 20, maxWidth: 50 } );
       circuitElement.resistanceProperty && circuitElement.resistanceProperty.link( function( resistance ) {
         textNode.text = resistance + ' Ω';
@@ -195,9 +195,6 @@ define( function( require ) {
         pickable: false
       } );
       this.addChild( readoutNode );
-      circuitConstructionKitScreenView.circuitConstructionKitModel.revealingProperty.link( function( revealing ) {
-        readoutNode.visible = revealing;
-      } );
     }
 
     // Update after the highlight/readout exist
