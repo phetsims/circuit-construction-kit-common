@@ -18,6 +18,7 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
   var LightRaysNode = require( 'SCENERY_PHET/LightRaysNode' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var Shape = require( 'KITE/Shape' );
 
   // images
   var onImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb.png' );
@@ -52,13 +53,15 @@ define( function( require ) {
     self.onNode = new Image( options.baseOnly ? baseImage : onImage, {
       scale: options.bulbImageScale,
       centerX: 0,
-      bottom: 0
+      bottom: 0,
+      pickable: false
     } ); // @private
 
     var offNode = new Image( options.baseOnly ? baseImage : offImage, {
       scale: options.bulbImageScale,
       centerX: self.onNode.centerX,
-      bottom: self.onNode.bottom
+      bottom: self.onNode.bottom,
+      pickable: false
     } );
 
     // rays
@@ -87,6 +90,24 @@ define( function( require ) {
         self.brightnessProperty.unlink( self.brightnessObserver );
       }
     };
+
+    // Custom pick area for the bulb, so it doesn't interfere with the vertices, see https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/5
+    var w = this.localBounds.width;
+    var h = this.localBounds.height;
+    var fractionDown = 0.6; // How far the top part of the bulb extends over the image
+    var fractionTrim = 0.1; // How much to trim off of the bottom of the bulb.
+    var fractionHorizontalInset = 0.25;
+    this.mouseArea = new Shape()
+      .moveTo( this.localBounds.minX, this.localBounds.minY )
+      .lineToRelative( w, 0 )
+      .lineToRelative( 0, h * fractionDown )
+      .lineToRelative( -w * fractionHorizontalInset, 0 )
+      .lineToRelative( 0, h * (1 - fractionDown - fractionTrim) )
+      .lineToRelative( -w * (1 - fractionHorizontalInset * 2), 0 )
+      .lineToRelative( 0, -h * (1 - fractionDown - fractionTrim) )
+      .lineToRelative( -w * fractionHorizontalInset, 0 )
+      .lineTo( this.localBounds.minX, this.localBounds.minY );
+    this.touchArea = this.mouseArea;
   }
 
   circuitConstructionKitCommon.register( 'CustomLightBulbNode', CustomLightBulbNode );
