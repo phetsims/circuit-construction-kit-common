@@ -39,6 +39,7 @@ define( function( require ) {
 
   /**
    * @param {Ammeter} ammeter
+   * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
@@ -57,7 +58,9 @@ define( function( require ) {
     var currentProperty = new DerivedProperty( [ ammeter.currentProperty ], function( current ) {
 
       // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
-      return current === null ? '?' : Util.toFixed( Math.abs( current ), 2 ) + ' A';
+      return current === null ? '?' :
+             current >= 1E5 ? 'lots of current' :
+             Util.toFixed( Math.abs( current ), 2 ) + ' A';
     } );
     var probeTextNode = new ProbeTextNode( currentProperty, options.runningProperty, 'Current', tandem.createTandem( 'probeTextNode' ), {
       centerX: ammeterBodyImage[ 0 ].width / 2,
