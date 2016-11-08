@@ -45,6 +45,12 @@ define( function( require ) {
     this.voltmeter = new Voltmeter( tandem.createTandem( 'voltmeter' ) );
     this.ammeter = new Ammeter( tandem.createTandem( 'ammeter' ) );
 
+    // {boolean} @public changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
+    this.exploreScreenRunningProperty = new Property( !CircuitConstructionKitQueryParameters.showPlayPauseButton, {
+      tandem: tandem.createTandem( 'exploreScreenRunningProperty' ),
+      phetioValueType: TBoolean
+    } );
+
     // When the user manipulates something, hide the readouts, see https://github.com/phetsims/circuit-construction-kit/issues/130
     // When any of the following conditions occurs, hide the readouts:
     // 1. More components are dragged out of the toolbox
@@ -52,7 +58,7 @@ define( function( require ) {
     // 3. Component voltage/resistance is edited
     if ( CircuitConstructionKitQueryParameters.showPlayPauseButton ) {
       var pause = function() {
-        self.running = false;
+        self.exploreScreenRunningProperty.value = false;
       };
       this.circuit.vertices.lengthProperty.link( pause );
       this.circuit.componentEditedEmitter.addListener( pause );
@@ -78,12 +84,6 @@ define( function( require ) {
       this.circuit.vertices.lengthProperty.link( emitCircuitChanged );
       this.circuit.componentEditedEmitter.addListener( emitCircuitChanged );
     }
-
-    // {boolean} @public changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
-    this.exploreScreenRunningProperty = new Property( !CircuitConstructionKitQueryParameters.showPlayPauseButton, {
-      tandem: tandem.createTandem( 'exploreScreenRunningProperty' ),
-      phetioValueType: TBoolean
-    } );
   }
 
   circuitConstructionKitCommon.register( 'CircuitConstructionKitModel', CircuitConstructionKitModel );
