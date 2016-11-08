@@ -21,9 +21,6 @@ define( function( require ) {
   var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
   var TString = require( 'ifphetio!PHET_IO/types/TString' );
 
-  // constants
-  var showPlayPauseButton = CircuitConstructionKitQueryParameters.showPlayPauseButton;
-
   /**
    * @param {CircuitStruct} trueBlackBoxCircuit - the circuit inside the black box (the true one, not the user-created one)
    * @constructor
