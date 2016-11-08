@@ -79,6 +79,9 @@ define( function( require ) {
       }
     } );
     this.addChild( this.backgroundPlane );
+    circuitConstructionKitModel.exploreScreenRunningProperty.link( function( exploreScreenRunning ) {
+      self.backgroundPlane.fill = exploreScreenRunning ? backgroundColor : 'gray';
+    } );
 
     // Reset All button
     if ( options.showResetAllButton ) {
