@@ -19,6 +19,9 @@ define( function( require ) {
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitElementNode' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var Panel = require( 'SUN/Panel' );
+  var Text = require( 'SCENERY/nodes/Text' );
+  var Color = require( 'SCENERY/util/Color' );
 
   // phet-io modules
   var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
@@ -56,6 +59,11 @@ define( function( require ) {
           .multiplyMatrix( scratchMatrix2.setToTranslation( 0, -contentNodeHeight / 2 ) );
         contentNode.setMatrix( scratchMatrix );
         highlightNode && highlightParent.setMatrix( scratchMatrix.copy() );
+
+        // Show the readout node above the center of the component.
+        if ( readoutNode ) {
+          readoutNode.center = contentNode.center.plusXY( 0, -30 );
+        }
       },
       highlightOptions: {}
     }, options );
@@ -172,7 +180,27 @@ define( function( require ) {
       circuitNode.circuit.selectedCircuitElementProperty.link( updateSelectionHighlight );
     }
 
-    // Update after the highlight exists
+    // Show values for components inside the black box when "reveal" is pressed.
+    if ( circuitElement.insideTrueBlackBoxProperty.value && circuitConstructionKitScreenView.circuitConstructionKitModel.revealingProperty ) {
+      var textNode = new Text( 'readout', { fontSize: 20, maxWidth: 50 } );
+      circuitElement.resistanceProperty && circuitElement.resistanceProperty.link( function( resistance ) {
+        textNode.text = resistance + ' Ω';
+      } );
+      circuitElement.voltageProperty && circuitElement.voltageProperty.link( function( voltage ) {
+        textNode.text = voltage + ' V';
+      } );
+      var readoutNode = new Panel( textNode, {
+        stroke: null,
+        fill: new Color( 255, 255, 255, 0.8 ),
+        pickable: false
+      } );
+      this.addChild( readoutNode );
+      circuitConstructionKitScreenView.circuitConstructionKitModel.revealingProperty.link( function( revealing ) {
+        readoutNode.visible = revealing;
+      } );
+    }
+
+    // Update after the highlight/readout exist
     options.updateLayout(
       circuitElement.startVertex.position,
       circuitElement.endVertex.position
