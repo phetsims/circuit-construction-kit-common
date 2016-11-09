@@ -124,6 +124,7 @@ define( function( require ) {
     var handleRemoval = function( circuitElement ) {
       self.electrons.removeAll( self.getElectronsInCircuitElement( circuitElement ) );
       self.componentDeletedEmitter.emit();
+      self.solve(); // Explicit call to solve since it is possible to remove a CircuitElement without removing any vertices.
     };
     this.wires.addItemAddedListener( addElectrons );
     this.switches.addItemAddedListener( addElectrons );
