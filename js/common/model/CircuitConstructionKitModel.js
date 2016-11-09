@@ -56,12 +56,15 @@ define( function( require ) {
     // 1. More components are dragged out of the toolbox
     // 2. Any vertex is broken
     // 3. Component voltage/resistance is edited
+    // 4. A component within a circuit is deleted, see https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/16
     if ( CircuitConstructionKitQueryParameters.showPlayPauseButton ) {
       var pause = function() {
         self.exploreScreenRunningProperty.value = false;
       };
       this.circuit.vertices.lengthProperty.link( pause );
       this.circuit.componentEditedEmitter.addListener( pause );
+      this.circuit.componentAddedEmitter.addListener( pause );
+      this.circuit.componentDeletedEmitter.addListener( pause );
     }
 
     var circuitChangedEmitter = new TandemEmitter( {

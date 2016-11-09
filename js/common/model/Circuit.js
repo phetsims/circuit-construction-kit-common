@@ -119,9 +119,11 @@ define( function( require ) {
       };
       circuitElement.vertexMovedEmitter.addListener( updateElectrons );
       circuitElement.moveToFrontEmitter.addListener( updateElectrons );
+      self.componentAddedEmitter.emit();
     };
-    var removeElectrons = function( circuitElement ) {
+    var handleRemoval = function( circuitElement ) {
       self.electrons.removeAll( self.getElectronsInCircuitElement( circuitElement ) );
+      self.componentDeletedEmitter.emit();
     };
     this.wires.addItemAddedListener( addElectrons );
     this.switches.addItemAddedListener( addElectrons );
@@ -129,11 +131,11 @@ define( function( require ) {
     this.lightBulbs.addItemAddedListener( addElectrons );
     this.resistors.addItemAddedListener( addElectrons );
 
-    this.wires.addItemRemovedListener( removeElectrons );
-    this.switches.addItemRemovedListener( removeElectrons );
-    this.batteries.addItemRemovedListener( removeElectrons );
-    this.lightBulbs.addItemRemovedListener( removeElectrons );
-    this.resistors.addItemRemovedListener( removeElectrons );
+    this.wires.addItemRemovedListener( handleRemoval );
+    this.switches.addItemRemovedListener( handleRemoval );
+    this.batteries.addItemRemovedListener( handleRemoval );
+    this.lightBulbs.addItemRemovedListener( handleRemoval );
+    this.resistors.addItemRemovedListener( handleRemoval );
 
     // When electron is removed from the list, dispose it
     this.electrons.addItemRemovedListener( function( electron ) {
@@ -149,6 +151,9 @@ define( function( require ) {
 
     // Pass-through events
     this.componentEditedEmitter = new Emitter();
+
+    this.componentDeletedEmitter = new Emitter();
+    this.componentAddedEmitter = new Emitter();
 
     var circuitChangedEmitterFunction = function() {
       self.circuitChangedEmitter.emit();
