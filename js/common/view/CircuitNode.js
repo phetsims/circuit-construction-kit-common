@@ -338,7 +338,7 @@ define( function( require ) {
         var fixedVertex = fixedNeighbor.getOppositeVertex( vertex );
         var desiredAngle = position.minus( fixedVertex.position ).angle();
 
-        var length = fixedNeighbor.length;
+        var length = fixedNeighbor.distanceBetweenVertices;
         var indexOfFixedVertex = vertices.indexOf( fixedVertex );
         vertices.splice( indexOfFixedVertex, 1 );
 
@@ -420,7 +420,7 @@ define( function( require ) {
         }
 
         // Maintain fixed length
-        var length = neighbors[ 0 ].lightBulbLength || neighbors[ 0 ].length;
+        var length = neighbors[ 0 ].distanceBetweenVertices;
         var relative = Vector2.createPolar( length, angle + Math.PI );
         var oppositePosition = position.plus( relative );
 

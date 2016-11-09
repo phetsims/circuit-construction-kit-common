@@ -23,7 +23,12 @@ define( function( require ) {
     assert && assert( Math.abs( length - actualLength ) < 1E-6, 'length should be ' + length );
 
     CircuitElement.call( this, startVertex, endVertex, additionalProperties, options );
+
+    // The distance electrons travel (along paths)
     this.length = length;
+
+    // The distance from one vertex to another (as the crow flies)
+    this.distanceBetweenVertices = this.length;
   }
 
   circuitConstructionKitCommon.register( 'FixedLengthCircuitElement', FixedLengthCircuitElement );
