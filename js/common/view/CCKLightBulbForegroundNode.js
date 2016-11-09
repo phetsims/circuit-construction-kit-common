@@ -2,7 +2,7 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- * Named CCKLightBulbForegroundNode to avoid collisions with SCENERY_PHET/LightBulbNode
+ * Shows the foreground of the light bulb, so that electrons are depicted in the correct z-order (through the base)
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -61,6 +61,9 @@ define( function( require ) {
 
     // Set the initial location of the highlight, since it was not available in the supercall to updateLayout
     updateLayout( lightBulb.startVertex.position, lightBulb.endVertex.position );
+
+    // Interferes with Cut Button selection when the foreground is in front, see https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/18
+    this.pickable = false;
   }
 
   circuitConstructionKitCommon.register( 'CCKLightBulbForegroundNode', CCKLightBulbForegroundNode );
