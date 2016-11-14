@@ -21,9 +21,6 @@ define( function( require ) {
       validValues: [ undefined, 'voltage', 'index' ]
     },
 
-    //TODO delete this, use phet.chipper.queryParameters.dev
-    dev: { type: 'flag' },
-
     //TODO document
     showPlayPauseButton: { type: 'flag' },
 
