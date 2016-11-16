@@ -63,11 +63,19 @@ define( function( require ) {
 
     // A different ComboBox instance appears in each BlackBoxSceneView
     var elements = [ {
-      node: new Text( 'Warm-up', comboBoxTextOptions ), value: 'warmup'
+      node: new Text( 'Warm-up', comboBoxTextOptions ),
+      value: 'warmup',
+      options: {
+        tandemName: 'warmup'
+      }
     } ];
     for ( var i = 0; i < ChallengeSet.challengeArray.length; i++ ) {
       elements.push( {
-        node: new Text( 'Black Box ' + (i + 1), comboBoxTextOptions ), value: 'scene' + i
+        node: new Text( 'Black Box ' + (i + 1), comboBoxTextOptions ),
+        value: 'scene' + i,
+        options: {
+          tandemName: 'scene' + i
+        }
       } );
     }
     var sceneSelectionComboBox = new ComboBox( elements, sceneProperty, this, {
