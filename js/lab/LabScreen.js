@@ -26,6 +26,7 @@ define( function( require ) {
   var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/WireNode' );
   var CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CustomLightBulbNode' );
   var Property = require( 'AXON/Property' );
+  var Color = require( 'SCENERY/util/Color' );
 
   // images
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
@@ -70,7 +71,7 @@ define( function( require ) {
 
     var options = {
       name: 'Lab', //TODO i18n
-      backgroundColor: backgroundColor,
+      backgroundColorProperty: new Property( Color.toColor( backgroundColor ) ),
       homeScreenIcon: icon,
       tandem: tandem
     };
