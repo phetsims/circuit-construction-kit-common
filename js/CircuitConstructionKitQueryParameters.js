@@ -17,8 +17,8 @@ define( function( require ) {
     // Show the voltage above each node, for debugging the circuit physics
     vertexDisplay: {
       type: 'string',
-      defaultValue: undefined,
-      validValues: [ undefined, 'voltage', 'index' ]
+      defaultValue: null,
+      validValues: [ null, 'voltage', 'index' ]
     },
 
     //TODO document
