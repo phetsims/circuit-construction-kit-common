@@ -21,11 +21,11 @@ define( function( require ) {
     RadioButtonGroup.call( this, modeProperty, [ {
       value: 'investigate',
       node: new Text( 'Explore', textOptions ),
-      tandem: tandem.createTandem( 'investigateCircuitButton' )
+      tandemName: 'investigateCircuitButton'
     }, {
       value: 'build',
       node: new Text( 'Test', textOptions ),
-      tandem: tandem.createTandem( 'buildCircuitButton' )
+      tandemName: 'buildCircuitButton'
     } ], {
       tandem: tandem,
       baseColor: 'white',
