@@ -27,7 +27,7 @@ define( function( require ) {
       node: new Text( 'Test', textOptions ),
       tandemName: 'buildCircuitButton'
     } ], {
-      tandem: tandem.createTandem('ModeRadioButtonGroup'),
+      tandem: tandem.createTandem( 'ModeRadioButtonGroup' ),
       baseColor: 'white',
       buttonContentXMargin: 10,
       buttonContentYMargin: 15,
