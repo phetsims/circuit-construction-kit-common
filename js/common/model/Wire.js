@@ -31,7 +31,7 @@ define( function( require ) {
       var length = self.startVertex.position.minus( self.endVertex.position ).magnitude();
       var javaLength = length / 990 * 15.120675866835684;
       self.resistance = Math.max( CircuitConstructionKitConstants.minimumResistance, javaLength * self.resistivity );
-      assert && assert( !isNaN( self.resistance ) );
+      assert && assert( !isNaN( self.resistance ), 'wire resistance should not be NaN' );
     };
 
     this.disposeWire = function() {

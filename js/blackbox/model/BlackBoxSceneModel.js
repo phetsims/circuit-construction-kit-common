@@ -15,6 +15,8 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitModel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/CircuitConstructionKitModel' );
   var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/CircuitStruct' );
+  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Wire' );
+  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Vertex' );
 
   // phet-io modules
   var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
@@ -22,6 +24,7 @@ define( function( require ) {
 
   /**
    * @param {CircuitStruct} trueBlackBoxCircuit - the circuit inside the black box (the true one, not the user-created one)
+   * @param {Tandem} tandem
    * @constructor
    */
   function BlackBoxSceneModel( trueBlackBoxCircuit, tandem ) {
@@ -30,14 +33,44 @@ define( function( require ) {
 
     // When loading a black box circuit, none of the vertices should be draggable
     // TODO: Fix this in the saved/loaded data structures, not here as a post-hoc patch.
-    for ( var i = 0; i < trueBlackBoxCircuit.vertices.length; i++ ) {
+    for ( i = 0; i < trueBlackBoxCircuit.vertices.length; i++ ) {
       trueBlackBoxCircuit.vertices[ i ].draggable = false;
 
       if ( trueBlackBoxCircuit.vertices[ i ].attachable ) {
         trueBlackBoxCircuit.vertices[ i ].blackBoxInterface = true;
+        trueBlackBoxCircuit.vertices[ i ].attachable = false;
       }
       else {
         trueBlackBoxCircuit.vertices[ i ].insideTrueBlackBox = true;
+      }
+    }
+
+    // Add wire stubs outside the black box, see https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/21
+    for ( var i = 0; i < trueBlackBoxCircuit.vertices.length; i++ ) {
+      var vertex = trueBlackBoxCircuit.vertices[ i ];
+      if ( vertex.blackBoxInterface ) {
+        console.log( vertex.positionProperty.value );
+
+        // the center of the black box is approximately (508, 305).  Point the wires away from the box.
+        var side = vertex.positionProperty.value.x < 400 ? 'left' :
+                   vertex.positionProperty.value.x > 600 ? 'right' :
+                   vertex.positionProperty.value.y < 200 ? 'top' :
+                   'bottom';
+
+        var extentLength = 40;
+
+        var dx = side === 'left' ? -extentLength :
+                 side === 'right' ? +extentLength :
+                 0;
+        var dy = side === 'top' ? -extentLength :
+                 side === 'bottom' ? +extentLength :
+                 0;
+        var outerVertex = new Vertex( vertex.positionProperty.value.x + dx, vertex.positionProperty.value.y + dy );
+        outerVertex.attachable = true;
+        outerVertex.blackBoxInterface = true;
+        outerVertex.draggable = false;
+
+        trueBlackBoxCircuit.wires.push( new Wire( vertex, outerVertex, 1E-6 ) ); // TODO: resistivity
       }
     }
 
