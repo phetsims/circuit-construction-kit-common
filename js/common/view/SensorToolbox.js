@@ -35,9 +35,9 @@ define( function( require ) {
     voltmeterNodeIcon.addInputListener( {
       down: function( event ) {
         var viewPosition = self.globalToParentPoint( event.pointer.point );
-        voltmeterNode.voltmeter.draggingProbesWithBody = true;
-        voltmeterNode.voltmeter.visible = true;
-        voltmeterNode.voltmeter.bodyPosition = viewPosition;
+        voltmeterNode.voltmeter.draggingProbesWithBodyProperty.set( true );
+        voltmeterNode.voltmeter.visibleProperty.set( true )
+        voltmeterNode.voltmeter.bodyPositionProperty.set( viewPosition );
         voltmeterNode.movableDragHandler.startDrag( event );
       }
     } );
@@ -53,9 +53,9 @@ define( function( require ) {
     ammeterNodeIcon.addInputListener( {
       down: function( event ) {
         var viewPosition = self.globalToParentPoint( event.pointer.point );
-        ammeterNode.ammeter.draggingProbesWithBody = true;
-        ammeterNode.ammeter.visible = true;
-        ammeterNode.ammeter.bodyPosition = viewPosition;
+        ammeterNode.ammeter.draggingProbesWithBodyProperty.set( true );
+        ammeterNode.ammeter.visibleProperty.set( true );
+        ammeterNode.ammeter.bodyPositionProperty.set( viewPosition );
         ammeterNode.movableDragHandler.startDrag( event );
       }
     } );

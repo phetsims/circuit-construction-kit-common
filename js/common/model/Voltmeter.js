@@ -13,6 +13,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector2 = require( 'DOT/Vector2' );
   var Meter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Meter' );
+  var Property = require( 'AXON/Property' );
 
   // phet-io modules
   var TNumber = require( 'ifphetio!PHET_IO/types/TNumber' );
@@ -20,30 +21,27 @@ define( function( require ) {
 
   function Voltmeter( tandem ) {
 
-    // additional Properties added to the supertype
-    var additionalProperties = {
+    Meter.call( this, tandem );
 
-      // Null means no reading, otherwise {number} volts
-      voltage: {
-        value: null,
-        tandem: tandem.createTandem( 'voltageProperty' ),
-        phetioValueType: TNumber( { units: 'volts' } )
-      },
+    // @public Null means no reading, otherwise {number} volts
+    this.voltageProperty = new Property( null, {
+      tandem: tandem.createTandem( 'voltageProperty' ),
+      phetioValueType: TNumber( { units: 'volts' } )
+    } );
 
-      redProbePosition: {
-        value: new Vector2( 0, 0 ),
-        tandem: tandem.createTandem( 'redProbePositionProperty' ),
-        phetioValueType: TVector2
-      },
+    this.redProbePositionProperty = new Property( new Vector2(), {
+      tandem: tandem.createTandem( 'redProbePositionProperty' ),
+      phetioValueType: TVector2
+    } );
 
-      blackProbePosition: {
-        value: new Vector2( 0, 0 ),
-        tandem: tandem.createTandem( 'blackProbePositionProperty' ),
-        phetioValueType: TVector2
-      }
-    };
+    this.blackProbePositionProperty = new Property( new Vector2(), {
+      tandem: tandem.createTandem( 'blackProbePositionProperty' ),
+      phetioValueType: TVector2
+    } );
 
-    Meter.call( this, tandem, additionalProperties );
+    Property.preventGetSet( this, 'voltage' );
+    Property.preventGetSet( this, 'redProbePosition' );
+    Property.preventGetSet( this, 'blackProbePosition' );
   }
 
   circuitConstructionKitCommon.register( 'Voltmeter', Voltmeter );

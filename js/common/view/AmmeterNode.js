@@ -103,8 +103,8 @@ define( function( require ) {
       blackWireNode.setProbePosition( self.probeNode.centerBottom );
     } );
     ammeter.bodyPositionProperty.link( function( bodyPosition ) {
-      if ( ammeter.draggingProbesWithBody ) {
-        ammeter.probePosition = bodyPosition.plusXY( 80 / 2, -140 / 2 - 10 );
+      if ( ammeter.draggingProbesWithBodyProperty.get() ) {
+        ammeter.probePositionProperty.set( bodyPosition.plusXY( 80 / 2, -140 / 2 - 10 ) );
       }
     } );
 
@@ -115,7 +115,7 @@ define( function( require ) {
           ammeter.droppedEmitter.emit1( bodyNode.globalBounds );
 
           // After dropping in the play area the probes move independently of the body
-          ammeter.draggingProbesWithBody = false;
+          ammeter.draggingProbesWithBodyProperty.set( false );
         }
       } );
       bodyNode.addInputListener( this.movableDragHandler );
@@ -133,8 +133,8 @@ define( function( require ) {
       self.movableDragHandler.setDragBounds( visibleBounds );
       probeDragHandler.setDragBounds( visibleBounds );
 
-      ammeter.bodyPosition = visibleBounds.closestPointTo( ammeter.bodyPosition );
-      ammeter.probePosition = visibleBounds.closestPointTo( ammeter.probePosition );
+      ammeter.bodyPositionProperty.set( visibleBounds.closestPointTo( ammeter.bodyPositionProperty.get() ) );
+      ammeter.probePositionProperty.set( visibleBounds.closestPointTo( ammeter.probePositionProperty.get() ) );
     } );
   }
 

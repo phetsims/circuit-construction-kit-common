@@ -85,9 +85,9 @@ define( function( require ) {
     } );
 
     voltmeter.bodyPositionProperty.link( function( bodyPosition ) {
-      if ( voltmeter.draggingProbesWithBody ) {
-        voltmeter.redProbePosition = bodyPosition.plusXY( -100, -30 );
-        voltmeter.blackProbePosition = bodyPosition.plusXY( 100, -30 );
+      if ( voltmeter.draggingProbesWithBodyProperty.get() ) {
+        voltmeter.redProbePositionProperty.set( bodyPosition.plusXY( -100, -30 ) );
+        voltmeter.blackProbePositionProperty.set( bodyPosition.plusXY( 100, -30 ) );
       }
     } );
 
@@ -109,7 +109,7 @@ define( function( require ) {
           voltmeter.droppedEmitter.emit1( bodyNode.globalBounds );
 
           // After dropping in the play area the probes move independently of the body
-          voltmeter.draggingProbesWithBody = false;
+          voltmeter.draggingProbesWithBodyProperty.set( false );
         }
       } );
       bodyNode.addInputListener( this.movableDragHandler );
@@ -132,9 +132,9 @@ define( function( require ) {
       redProbeDragHandler.setDragBounds( visibleBounds );
       blackProbeDragHandler.setDragBounds( visibleBounds );
 
-      voltmeter.bodyPosition = visibleBounds.closestPointTo( voltmeter.bodyPosition );
-      voltmeter.redProbePosition = visibleBounds.closestPointTo( voltmeter.redProbePosition );
-      voltmeter.blackProbePosition = visibleBounds.closestPointTo( voltmeter.blackProbePosition );
+      voltmeter.bodyPositionProperty.set( visibleBounds.closestPointTo( voltmeter.bodyPositionProperty.get() ) );
+      voltmeter.redProbePositionProperty.set( visibleBounds.closestPointTo( voltmeter.redProbePositionProperty.get() ) );
+      voltmeter.blackProbePositionProperty.set( visibleBounds.closestPointTo( voltmeter.blackProbePositionProperty.get() ) );
     } );
   }
 

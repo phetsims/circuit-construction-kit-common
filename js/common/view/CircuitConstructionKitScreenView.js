@@ -277,29 +277,29 @@ define( function( require ) {
 
     // Detection for voltmeter probe + circuit collision is done in the view since view bounds are used
     var updateVoltmeter = function() {
-      if ( circuitConstructionKitModel.voltmeter.visible ) {
-        var redConnection = self.getVoltageConnection( voltmeterNode.redProbeNode, voltmeterNode.voltmeter.redProbePosition );
-        var blackConnection = self.getVoltageConnection( voltmeterNode.blackProbeNode, voltmeterNode.voltmeter.blackProbePosition );
+      if ( circuitConstructionKitModel.voltmeter.visibleProperty.get() ) {
+        var redConnection = self.getVoltageConnection( voltmeterNode.redProbeNode, voltmeterNode.voltmeter.redProbePositionProperty.get() );
+        var blackConnection = self.getVoltageConnection( voltmeterNode.blackProbeNode, voltmeterNode.voltmeter.blackProbePositionProperty.get() );
         if ( redConnection === null || blackConnection === null ) {
-          circuitConstructionKitModel.voltmeter.voltage = null;
+          circuitConstructionKitModel.voltmeter.voltageProperty.set( null );
         }
         else if ( !circuitConstructionKitModel.circuit.areVerticesConnected( redConnection.vertex, blackConnection.vertex ) ) {
 
           // Voltmeter probes each hit things but they were not connected to each other through the circuit.
-          circuitConstructionKitModel.voltmeter.voltage = null;
+          circuitConstructionKitModel.voltmeter.voltageProperty.set( null );
         }
         else if ( redConnection !== null && redConnection.vertex.insideTrueBlackBox && !circuitConstructionKitModel.revealingProperty.get() ) {
 
           // Cannot read values inside the black box, unless "reveal" is being pressed
-          circuitConstructionKitModel.voltmeter.voltage = null;
+          circuitConstructionKitModel.voltmeter.voltageProperty.set( null );
         }
         else if ( blackConnection !== null && blackConnection.vertex.insideTrueBlackBox && !circuitConstructionKitModel.revealingProperty.get() ) {
 
           // Cannot read values inside the black box, unless "reveal" is being pressed
-          circuitConstructionKitModel.voltmeter.voltage = null;
+          circuitConstructionKitModel.voltmeter.voltageProperty.set( null );
         }
         else {
-          circuitConstructionKitModel.voltmeter.voltage = redConnection.voltage - blackConnection.voltage;
+          circuitConstructionKitModel.voltmeter.voltageProperty.set( redConnection.voltage - blackConnection.voltage );
         }
       }
     };
@@ -311,9 +311,9 @@ define( function( require ) {
     var updateAmmeter = function() {
 
       // Skip work when ammeter is not out, to improve performance.
-      if ( circuitConstructionKitModel.ammeter.visible ) {
+      if ( circuitConstructionKitModel.ammeter.visibleProperty.get() ) {
         var current = self.getCurrent( ammeterNode.probeNode );
-        circuitConstructionKitModel.ammeter.current = current;
+        circuitConstructionKitModel.ammeter.currentProperty.set( current );
       }
     };
     circuitConstructionKitModel.circuit.circuitChangedEmitter.addListener( updateAmmeter );

@@ -14,6 +14,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector2 = require( 'DOT/Vector2' );
   var Meter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Meter' );
+  var Property = require( 'AXON/Property' );
 
   // phet-io modules
   var TNumber = require( 'ifphetio!PHET_IO/types/TNumber' );
@@ -21,24 +22,20 @@ define( function( require ) {
 
   function Ammeter( tandem ) {
 
-    // additional Properties added to the supertype
-    var additionalProperties = {
+    Meter.call( this, tandem );
 
-      // Null means no reading, otherwise {number} amps
-      current: {
-        value: null,
-        tandem: tandem.createTandem( 'currentProperty' ),
-        phetioValueType: TNumber( { units: 'amperes' } )
-      },
+    // @public Null means no reading, otherwise {number} amps
+    this.currentProperty = new Property( null, {
+      tandem: tandem.createTandem( 'currentProperty' ),
+      phetioValueType: TNumber( { units: 'amperes' } )
+    } );
+    this.probePositionProperty = new Property( new Vector2(), {
+      tandem: tandem.createTandem( 'probePositionProperty' ),
+      phetioValueType: TVector2
+    } );
 
-      probePosition: {
-        value: new Vector2( 0, 0 ),
-        tandem: tandem.createTandem( 'probePositionProperty' ),
-        phetioValueType: TVector2
-      }
-    };
-
-    Meter.call( this, tandem, additionalProperties );
+    Property.preventGetSet( this, 'current' );
+    Property.preventGetSet( this, 'probePosition' );
   }
 
   circuitConstructionKitCommon.register( 'Ammeter', Ammeter );

@@ -13,6 +13,7 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
+  var Property = require( 'AXON/Property' );
   var Vector2 = require( 'DOT/Vector2' );
   var Emitter = require( 'AXON/Emitter' );
 
@@ -20,36 +21,36 @@ define( function( require ) {
   var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
   var TVector2 = require( 'ifphetio!PHET_IO/types/dot/TVector2' );
 
-  function Meter( tandem, additionalProperties ) {
+  /**
+   * @param {Tandem} tandem
+   * @constructor
+   */
+  function Meter( tandem ) {
 
-    var properties = _.extend( {
+    this.visibleProperty = new Property( false, {
+      tandem: tandem.createTandem( 'visibleProperty' ),
+      phetioValueType: TBoolean
+    } );
 
-      visible: {
-        value: false,
-        tandem: tandem.createTandem( 'visibleProperty' ),
-        phetioValueType: TBoolean
-      },
+    this.bodyPositionProperty = new Property( new Vector2( 0, 0 ), {
+      tandem: tandem.createTandem( 'bodyPositionProperty' ),
+      phetioValueType: TVector2
+    } );
 
-      bodyPosition: {
-        value: new Vector2( 0, 0 ),
-        tandem: tandem.createTandem( 'bodyPositionProperty' ),
-        phetioValueType: TVector2
-      },
-
-      // When the meter is dragged from the toolbox, all pieces drag together as a single unit.
-      draggingProbesWithBody: {
-        value: true,
-        tandem: tandem.createTandem( 'draggingProbesWithBodyProperty' ),
-        phetioValueType: TBoolean
-      }
-    }, additionalProperties );
-
-    PropertySet.call( this, null, properties );
+    // @public When the meter is dragged from the toolbox, all pieces drag together as a single unit.
+    this.draggingProbesWithBodyProperty = new Property( true, {
+      tandem: tandem.createTandem( 'draggingProbesWithBodyProperty' ),
+      phetioValueType: TBoolean
+    } );
 
     this.droppedEmitter = new Emitter(); // Fire event when dropped
+
+    Property.preventGetSet( this, 'visible' );
+    Property.preventGetSet( this, 'bodyPosition' );
+    Property.preventGetSet( this, 'draggingProbesWithBody' );
   }
 
   circuitConstructionKitCommon.register( 'Meter', Meter );
 
-  return inherit( PropertySet, Meter );
+  return inherit( Object, Meter );
 } );
