@@ -36,9 +36,6 @@ define( function( require ) {
     this.distanceProperty = new Property( distance );
     this.updatingProperty = new Property( true ); // flag to disable updates during ElectronPropagator.step to improve performance
     this.positionProperty = new Property( new Vector2() );
-    Property.preventGetSet( this, 'distance' );
-    Property.preventGetSet( this, 'updating' );
-    Property.preventGetSet( this, 'position' );
 
     var multilink = Property.multilink( [ this.distanceProperty, this.updatingProperty ], function( distance, updating ) {
       if ( updating ) {
