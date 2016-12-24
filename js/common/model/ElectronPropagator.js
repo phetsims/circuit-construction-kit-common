@@ -14,7 +14,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var SmoothData = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/SmoothData' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
-  var PropertySet = require( 'AXON/PropertySet' );
+  var Property = require( 'AXON/Property' );
 
   // constants
 
@@ -76,9 +76,7 @@ define( function( require ) {
     this.scale = 1;
     this.smoothData = new SmoothData( 30 );
     this.timeScalingPercentValue = null;
-    PropertySet.call( this, {
-      timeScale: 1 // between 0 and 1, 1 is full speed (unthrottled)
-    } );
+    this.timeScaleProperty = new Property( 1 ); // between 0 and 1, 1 is full speed (unthrottled)
   }
 
   var createCircuitLocation = function( branch, distance ) {
@@ -96,7 +94,7 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'ElectronPropagator', ElectronPropagator );
 
-  return inherit( PropertySet, ElectronPropagator, {
+  return inherit( Object, ElectronPropagator, {
     step: function( dt ) {
 
       // Disable incremental updates to improve performance.  The ElectronNodes are only updated once, instead
@@ -120,7 +118,7 @@ define( function( require ) {
       this.smoothData.addData( this.scale );
       this.timeScalingPercentValue = this.smoothData.getAverage();
 
-      this.timeScale = this.timeScalingPercentValue;
+      this.timeScaleProperty.set( this.timeScalingPercentValue );
       for ( var i = 0; i < this.electrons.length; i++ ) {
         var electron = this.electrons.get( i );
 
