@@ -33,11 +33,12 @@ define( function( require ) {
     this.radius = 0.1;
     this.deleted = false;
 
-    PropertySet.call( this, {
-      distance: distance,
-      updating: true, // flag to disable updates during ElectronPropagator.step to improve performance
-      position: new Vector2()
-    } );
+    this.distanceProperty = new Property( distance );
+    this.updatingProperty = new Property( true ); // flag to disable updates during ElectronPropagator.step to improve performance
+    this.positionProperty = new Property( new Vector2() );
+    Property.preventGetSet( this, 'distance' );
+    Property.preventGetSet( this, 'updating' );
+    Property.preventGetSet( this, 'position' );
 
     var multilink = Property.multilink( [ this.distanceProperty, this.updatingProperty ], function( distance, updating ) {
       if ( updating ) {
@@ -45,7 +46,7 @@ define( function( require ) {
         assert && assert( !isNaN( distance ), 'electron position was not a number' );
         var position = self.circuitElement.getPosition( distance );
         assert && assert( !isNaN( position.x ) && !isNaN( position.y ), 'point was not a number' );
-        self.position = position;
+        self.positionProperty.set( position );
       }
     } );
 
@@ -69,7 +70,7 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'Electron', Electron );
 
-  return inherit( PropertySet, Electron, {
+  return inherit( Object, Electron, {
 
     dispose: function() {
       this.disposeElectron();
@@ -81,7 +82,7 @@ define( function( require ) {
       if ( this.circuitElement !== circuitElement ) {
         this.circuitElement = circuitElement;
       }
-      this.distance = distance;
+      this.distanceProperty.set( distance );
     }
   } );
 } );

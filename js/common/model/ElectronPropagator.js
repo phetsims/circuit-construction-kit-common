@@ -36,8 +36,8 @@ define( function( require ) {
     for ( var i = 0; i < branchElectrons.length; i++ ) {
       var neighborElectron = branchElectrons[ i ];
       if ( neighborElectron !== electron ) {
-        var neighborDistance = neighborElectron.distance;
-        var electronDistance = electron.distance;
+        var neighborDistance = neighborElectron.distanceProperty.get();
+        var electronDistance = electron.distanceProperty.get();
         if ( neighborDistance > electronDistance ) {
           var distance = neighborDistance - electronDistance;
           if ( distance < closestDistance ) {
@@ -56,8 +56,8 @@ define( function( require ) {
     for ( var i = 0; i < branchElectrons.length; i++ ) {
       var neighborElectron = branchElectrons[ i ];
       if ( neighborElectron !== electron ) {
-        var neighborDistance = neighborElectron.distance;
-        var electronDistance = electron.distance;
+        var neighborDistance = neighborElectron.distanceProperty.get();
+        var electronDistance = electron.distanceProperty.get();
         if ( neighborDistance < electronDistance ) {
           var distance = electronDistance - neighborDistance;
           if ( distance < closestDistance ) {
@@ -102,7 +102,7 @@ define( function( require ) {
       // Disable incremental updates to improve performance.  The ElectronNodes are only updated once, instead
       // of incrementally many times throughout this update
       for ( var k = 0; k < this.electrons.length; k++ ) {
-        this.electrons.get( k ).updating = false;
+        this.electrons.get( k ).updatingProperty.set( false );
       }
 
       // dt would ideally be around 16.666ms = 0.0166 sec
@@ -137,7 +137,7 @@ define( function( require ) {
 
       // After math complete, update the positions all at once
       for ( k = 0; k < this.electrons.length; k++ ) {
-        this.electrons.get( k ).updating = true;
+        this.electrons.get( k ).updatingProperty.set( true );
       }
     },
     getMaxCurrent: function() {
@@ -175,9 +175,9 @@ define( function( require ) {
       if ( upper === null || lower === null ) {
         return;
       }
-      var sep = upper.distance - lower.distance;
-      var myloc = electron.distance;
-      var midpoint = lower.distance + sep / 2;
+      var sep = upper.distanceProperty.get() - lower.distanceProperty.get();
+      var myloc = electron.distanceProperty.get();
+      var midpoint = lower.distanceProperty.get() + sep / 2;
 
       var dest = midpoint;
       var distMoving = Math.abs( dest - myloc );
@@ -204,11 +204,11 @@ define( function( require ) {
         }
       }
       if ( dest >= 0 && dest <= electron.circuitElement.length ) {
-        electron.distance = dest;
+        electron.distanceProperty.set( dest );
       }
     },
     propagate: function( electron, dt ) {
-      var x = electron.distance;
+      var x = electron.distanceProperty.get();
       assert && assert( _.isNumber( x ), 'disance along wire should be a number' );
       var current = -electron.circuitElement.current;
 
@@ -222,7 +222,7 @@ define( function( require ) {
       var newX = x + dx;
       var circuitElement = electron.circuitElement;
       if ( circuitElement.containsScalarLocation( newX ) ) {
-        electron.distance = newX;
+        electron.distanceProperty.set( newX );
       }
       else {
         //need a new branch.
