@@ -27,7 +27,8 @@ define( function( require ) {
     var numberControlOptions = {
       titleFont: font,
       valueFont: font,
-      decimalPlaces: 1
+      decimalPlaces: 1,
+      delta: 0.5
     };
 
     // Track whether the changes were from the user interface or from the model (e.g. the resistance of a wire
