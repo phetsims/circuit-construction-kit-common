@@ -2,6 +2,7 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
+ * The "Explore Screen", used in both Black Box Study and DC simulations.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
