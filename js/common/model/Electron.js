@@ -11,7 +11,6 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var PropertySet = require( 'AXON/PropertySet' );
   var Property = require( 'AXON/Property' );
   var Emitter = require( 'AXON/Emitter' );
   var Vector2 = require( 'DOT/Vector2' );

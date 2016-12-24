@@ -277,7 +277,7 @@ define( function( require ) {
 
       for ( var i = 0; i < vertices.length; i++ ) {
         var vertex = vertices[ i ];
-        var targetVertex = this.circuit.getDropTarget( vertex, this.circuitConstructionKitModel.mode, this.circuitConstructionKitModel.blackBoxBounds );
+        var targetVertex = this.circuit.getDropTarget( vertex, this.circuitConstructionKitModel.modeProperty.get(), this.circuitConstructionKitModel.blackBoxBounds );
         if ( targetVertex ) {
           allDropTargets.push( { src: vertex, dst: targetVertex } );
         }

@@ -26,19 +26,14 @@ define( function( require ) {
 
   /**
    * @param {Tandem} tandem
-   * @param {Object} [additionalProperties] - addition Properties added to this type
    * @param {Object} [options]
    * @constructor
    */
-  function CircuitConstructionKitModel( tandem, additionalProperties, options ) {
+  function CircuitConstructionKitModel( tandem, options ) {
 
     var self = this;
 
     options = _.extend( { circuit: null }, options );
-
-    var properties = _.extend( {}, additionalProperties );
-
-    PropertySet.call( this, null, properties );
 
     this.circuit = options.circuit || new Circuit( tandem.createTandem( 'circuit' ) );
     this.initialCircuitState = this.circuit.toStateObject();
@@ -49,6 +44,12 @@ define( function( require ) {
     this.exploreScreenRunningProperty = new Property( !CircuitConstructionKitQueryParameters.showPlayPauseButton, {
       tandem: tandem.createTandem( 'exploreScreenRunningProperty' ),
       phetioValueType: TBoolean
+    } );
+
+    // @public - whether the user is in the 'investigate' or 'build' mode
+    this.modeProperty = new Property( 'investigate', {
+      tandem: tandem.createTandem( 'modeProperty' ),
+      phetioValueType: TString
     } );
 
     // When the user manipulates something, hide the readouts, see https://github.com/phetsims/circuit-construction-kit/issues/130
@@ -95,7 +96,7 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'CircuitConstructionKitModel', CircuitConstructionKitModel );
 
-  return inherit( PropertySet, CircuitConstructionKitModel, {
+  return inherit( Object, CircuitConstructionKitModel, {
     step: function( dt ) {
 
       // Only move electrons if the simulation is not paused.

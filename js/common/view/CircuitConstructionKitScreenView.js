@@ -230,7 +230,7 @@ define( function( require ) {
       circuitConstructionKitModel.circuit,
       this.visibleBoundsProperty,
       options.getCircuitEditPanelLayoutPosition,
-      circuitConstructionKitModel.modeProperty || new Property( 'investigate' ), // TODO: should we move modeProperty up a class?
+      circuitConstructionKitModel.modeProperty,
       tandem.createTandem( 'circuitElementEditContainerPanel' )
     );
 
@@ -288,12 +288,12 @@ define( function( require ) {
           // Voltmeter probes each hit things but they were not connected to each other through the circuit.
           circuitConstructionKitModel.voltmeter.voltage = null;
         }
-        else if ( redConnection !== null && redConnection.vertex.insideTrueBlackBox && !circuitConstructionKitModel.revealing ) {
+        else if ( redConnection !== null && redConnection.vertex.insideTrueBlackBox && !circuitConstructionKitModel.revealingProperty.get() ) {
 
           // Cannot read values inside the black box, unless "reveal" is being pressed
           circuitConstructionKitModel.voltmeter.voltage = null;
         }
-        else if ( blackConnection !== null && blackConnection.vertex.insideTrueBlackBox && !circuitConstructionKitModel.revealing ) {
+        else if ( blackConnection !== null && blackConnection.vertex.insideTrueBlackBox && !circuitConstructionKitModel.revealingProperty.get() ) {
 
           // Cannot read values inside the black box, unless "reveal" is being pressed
           circuitConstructionKitModel.voltmeter.voltage = null;
@@ -401,7 +401,7 @@ define( function( require ) {
         var revealing = true;
         var trueBlackBox = wireNode.wire.insideTrueBlackBox;
         if ( trueBlackBox ) {
-          revealing = this.circuitConstructionKitModel.revealing;
+          revealing = this.circuitConstructionKitModel.revealingProperty.get();
         }
         if ( revealing && wireNode.getStrokedShape().containsPoint( probeNode[ locationString ] ) ) {
           return wireNode;
