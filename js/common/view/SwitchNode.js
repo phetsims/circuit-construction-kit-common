@@ -115,15 +115,15 @@ define( function( require ) {
 
     // Position the checkbox
     var updateCheckBox = function() {
-      var center = switchModel.startVertex.position.plus( switchModel.endVertex.position ).timesScalar( 0.5 );
-      var normal = switchModel.endVertex.position.minus( switchModel.startVertex.position ).normalized().perpendicular().timesScalar( 50 );
+      var center = switchModel.startVertexProperty.get().position.plus( switchModel.endVertexProperty.get().position ).timesScalar( 0.5 );
+      var normal = switchModel.endVertexProperty.get().position.minus( switchModel.startVertexProperty.get().position ).normalized().perpendicular().timesScalar( 50 );
       checkBox.center = center.plus( normal );
     };
 
     var startListener = function( startPoint ) {
       lineNodeParent.setTranslation( startPoint.x, startPoint.y );
       highlightNodeParent.setTranslation( startPoint.x, startPoint.y );
-      endListener && endListener( switchModel.endVertex.position );
+      endListener && endListener( switchModel.endVertexProperty.get().position );
       if ( highlightNode.visible ) {
         highlightNode.shape = self.getHighlightStrokedShape( highlightStrokeStyles );
       }
@@ -138,8 +138,8 @@ define( function( require ) {
     switchModel.startVertexProperty.link( updateStartVertex );
 
     var endListener = function( endPoint ) {
-      lineNode.setPoint2( endPoint.distance( switchModel.startVertex.position ), 0 );
-      var deltaVector = endPoint.minus( switchModel.startVertex.position );
+      lineNode.setPoint2( endPoint.distance( switchModel.startVertexProperty.get().position ), 0 );
+      var deltaVector = endPoint.minus( switchModel.startVertexProperty.get().position );
       lineNodeParent.setRotation( deltaVector.angle() );
       highlightNodeParent.setRotation( deltaVector.angle() );
       if ( highlightNode.visible ) {
@@ -168,15 +168,15 @@ define( function( require ) {
         didDrag = false;
         p = event.pointer.point;
 
-        if ( switchModel.interactive ) {
-          circuitNode.startDrag( event.pointer.point, switchModel.startVertex, false );
-          circuitNode.startDrag( event.pointer.point, switchModel.endVertex, false );
+        if ( switchModel.interactiveProperty.get() ) {
+          circuitNode.startDrag( event.pointer.point, switchModel.startVertexProperty.get(), false );
+          circuitNode.startDrag( event.pointer.point, switchModel.endVertexProperty.get(), false );
         }
       },
       drag: function( event ) {
-        if ( switchModel.interactive ) {
-          circuitNode.drag( event.pointer.point, switchModel.startVertex, false );
-          circuitNode.drag( event.pointer.point, switchModel.endVertex, false );
+        if ( switchModel.interactiveProperty.get() ) {
+          circuitNode.drag( event.pointer.point, switchModel.startVertexProperty.get(), false );
+          circuitNode.drag( event.pointer.point, switchModel.endVertexProperty.get(), false );
           didDrag = true;
         }
       },
@@ -187,12 +187,12 @@ define( function( require ) {
           circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
           return;
         }
-        if ( !switchModel.interactive ) {
+        if ( !switchModel.interactiveProperty.get() ) {
           return;
         }
 
-        circuitNode.endDrag( event, switchModel.startVertex, didDrag );
-        circuitNode.endDrag( event, switchModel.endVertex, didDrag );
+        circuitNode.endDrag( event, switchModel.startVertexProperty.get(), didDrag );
+        circuitNode.endDrag( event, switchModel.endVertexProperty.get(), didDrag );
 
         // Only show the editor when tapped, not on every drag.
         self.maybeSelect( event, circuitNode, p );
@@ -225,8 +225,8 @@ define( function( require ) {
       updateHighlight && circuitNode.circuit.selectedCircuitElementProperty.unlink( updateHighlight );
       switchModel.interactiveProperty.unlink( updatePickable );
 
-      switchModel.startVertex.positionProperty.unlink( startListener );
-      switchModel.endVertex.positionProperty.unlink( endListener );
+      switchModel.startVertexProperty.get().positionProperty.unlink( startListener );
+      switchModel.endVertexProperty.get().positionProperty.unlink( endListener );
 
       circuitNode && circuitNode.highlightLayer.removeChild( highlightNodeParent );
       checkBox.dispose();

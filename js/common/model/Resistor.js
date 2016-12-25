@@ -13,7 +13,7 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/FixedLengthCircuitElement' );
-
+  var Property = require( 'AXON/Property' );
   // constants
   var RESISTOR_LENGTH = 110;
 
@@ -22,16 +22,16 @@ define( function( require ) {
    * @constructor
    */
   function Resistor( startVertex, endVertex, resistance ) {
-    FixedLengthCircuitElement.call( this, RESISTOR_LENGTH, startVertex, endVertex, {
-      resistance: resistance
-    } );
+    FixedLengthCircuitElement.call( this, RESISTOR_LENGTH, startVertex, endVertex );
+    this.resistanceProperty = new Property( resistance );
+    Property.preventGetSet( this, 'resistance' );
   }
 
   circuitConstructionKitCommon.register( 'Resistor', Resistor );
 
   return inherit( FixedLengthCircuitElement, Resistor, {
       toStateObjectWithVertexIndices: function( getVertexIndex ) {
-        return _.extend( { resistance: this.resistance }, FixedLengthCircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex ) );
+        return _.extend( { resistance: this.resistanceProperty.get() }, FixedLengthCircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex ) );
       }
     }, {
       RESISTOR_LENGTH: RESISTOR_LENGTH

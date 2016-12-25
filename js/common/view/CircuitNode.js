@@ -94,11 +94,11 @@ define( function( require ) {
 
     // When loading from a state object, the vertices could have been added first.  If so, move them in front
     var moveVerticesToFront = function( circuitElement ) {
-      self.getVertexNode( circuitElement.startVertex ) && self.getVertexNode( circuitElement.startVertex ).moveToFront();
-      self.getVertexNode( circuitElement.endVertex ) && self.getVertexNode( circuitElement.endVertex ).moveToFront();
+      self.getVertexNode( circuitElement.startVertexProperty.get() ) && self.getVertexNode( circuitElement.startVertexProperty.get() ).moveToFront();
+      self.getVertexNode( circuitElement.endVertexProperty.get() ) && self.getVertexNode( circuitElement.endVertexProperty.get() ).moveToFront();
 
-      self.getVertexNode( circuitElement.startVertex ) && self.getSolderNode( circuitElement.startVertex ).moveToFront();
-      self.getVertexNode( circuitElement.endVertex ) && self.getSolderNode( circuitElement.endVertex ).moveToFront();
+      self.getVertexNode( circuitElement.startVertexProperty.get() ) && self.getSolderNode( circuitElement.startVertexProperty.get() ).moveToFront();
+      self.getVertexNode( circuitElement.endVertexProperty.get() ) && self.getSolderNode( circuitElement.endVertexProperty.get() ).moveToFront();
     };
 
     /**
@@ -361,10 +361,10 @@ define( function( require ) {
      */
     moveTrueBlackBoxElementsToBack: function() {
       var circuitElementNodeToBack = function( circuitElementNode ) {
-        circuitElementNode.circuitElement.insideTrueBlackBox && circuitElementNode.moveToBack();
+        circuitElementNode.circuitElement.insideTrueBlackBoxProperty.get() && circuitElementNode.moveToBack();
       };
       var vertexNodeToBack = function( nodeWithVertex ) {
-        (nodeWithVertex.vertex.insideTrueBlackBox || nodeWithVertex.vertex.blackBoxInterface ) && nodeWithVertex.moveToBack();
+        (nodeWithVertex.vertex.insideTrueBlackBoxProperty.get() || nodeWithVertex.vertex.blackBoxInterface ) && nodeWithVertex.moveToBack();
       };
       this.solderNodes.forEach( vertexNodeToBack );
       this.vertexNodes.forEach( vertexNodeToBack );

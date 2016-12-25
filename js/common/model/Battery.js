@@ -13,6 +13,7 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/FixedLengthCircuitElement' );
+  var Property = require( 'AXON/Property' );
 
   // constants
   var BATTERY_LENGTH = 102;
@@ -24,9 +25,9 @@ define( function( require ) {
   function Battery( startVertex, endVertex, voltage, options ) {
     assert && assert( typeof voltage === 'number', 'voltage should be a number' );
     options = _.extend( { initialOrientation: 'right' }, options );
-    FixedLengthCircuitElement.call( this, BATTERY_LENGTH, startVertex, endVertex, {
-      voltage: voltage
-    } );
+    FixedLengthCircuitElement.call( this, BATTERY_LENGTH, startVertex, endVertex );
+    this.voltageProperty = new Property( voltage );
+    Property.preventGetSet( this, 'voltage' );
 
     // @public (read-only) - track the initial state so the user can only create a certain number of "left" or "right" batteries
     // from the toolbox.
@@ -38,7 +39,7 @@ define( function( require ) {
   return inherit( FixedLengthCircuitElement, Battery, {
     toStateObjectWithVertexIndices: function( getVertexIndex ) {
       return _.extend( {
-          voltage: this.voltage
+          voltage: this.voltageProperty.get()
         },
         FixedLengthCircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex )
       );

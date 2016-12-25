@@ -100,7 +100,7 @@ define( function( require ) {
 
     var countBatteries = function( initialOrientation ) {
       return circuit.batteries.filter( function( battery ) {
-        return battery.initialOrientation === initialOrientation && !battery.insideTrueBlackBox;
+        return battery.initialOrientation === initialOrientation && !battery.insideTrueBlackBoxProperty.get();
       } ).length;
     };
 
@@ -159,7 +159,7 @@ define( function( require ) {
         function( wireNode ) { return wireNode.wire; }
       ) );
     var updateWireIcon = function() {
-      var numberOfCreatedWires = circuit.wires.filter( function( wire ) {return !wire.insideTrueBlackBox;} ).length;
+      var numberOfCreatedWires = circuit.wires.filter( function( wire ) {return !wire.insideTrueBlackBoxProperty.get();} ).length;
       wireIcon.visible = numberOfCreatedWires < options.numberOfWires;
     };
     circuit.wires.addItemRemovedListener( updateWireIcon );
@@ -179,7 +179,7 @@ define( function( require ) {
         function( lightBulbNode ) { return lightBulbNode.lightBulb; }
       ) );
     var updateLightBulbIcon = function() {
-      var numberOfCreatedLightBulbs = circuit.lightBulbs.filter( function( lightBulb ) {return !lightBulb.insideTrueBlackBox;} ).length;
+      var numberOfCreatedLightBulbs = circuit.lightBulbs.filter( function( lightBulb ) {return !lightBulb.insideTrueBlackBoxProperty.get();} ).length;
       lightBulbIcon.visible = numberOfCreatedLightBulbs < options.numberOfLightBulbs;
     };
     circuit.lightBulbs.addItemRemovedListener( updateLightBulbIcon );
@@ -202,7 +202,7 @@ define( function( require ) {
         function( resistorNode ) { return resistorNode.resistor; }
       ) );
     var updateResistorIcon = function() {
-      var numberOfCreatedResistors = circuit.resistors.filter( function( resistor ) {return !resistor.insideTrueBlackBox;} ).length;
+      var numberOfCreatedResistors = circuit.resistors.filter( function( resistor ) {return !resistor.insideTrueBlackBoxProperty.get();} ).length;
       resistorIcon.visible = numberOfCreatedResistors < options.numberOfResistors;
     };
     circuit.resistors.addItemRemovedListener( updateResistorIcon );
@@ -219,7 +219,7 @@ define( function( require ) {
         function( switchNode ) { return switchNode.switchModel; }
       ) );
     var updateSwitchIcon = function() {
-      var numberOfCreatedSwitches = circuit.switches.filter( function( s ) {return !s.insideTrueBlackBox;} ).length;
+      var numberOfCreatedSwitches = circuit.switches.filter( function( s ) {return !s.insideTrueBlackBoxProperty.get();} ).length;
       switchIcon.visible = numberOfCreatedSwitches < options.numberOfSwitches;
     };
     circuit.switches.addItemRemovedListener( updateSwitchIcon );

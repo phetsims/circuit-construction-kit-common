@@ -12,18 +12,17 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var PropertySet = require( 'AXON/PropertySet' );
+  var Property = require( 'AXON/Property' );
   var Emitter = require( 'AXON/Emitter' );
 
   /**
    *
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
-   * @param {Object} propertySetMap - additional properties to add to PropertySet
    * @param {Object} [options]
    * @constructor
    */
-  function CircuitElement( startVertex, endVertex, propertySetMap, options ) {
+  function CircuitElement( startVertex, endVertex, options ) {
     assert && assert( startVertex !== endVertex, 'vertices must be different' );
 
     var self = this;
@@ -34,26 +33,24 @@ define( function( require ) {
     }, options );
     this.canBeDroppedInToolbox = options.canBeDroppedInToolbox;
 
-    PropertySet.call( this, _.extend( {
-      startVertex: startVertex,
-      endVertex: endVertex,
-      current: 0,
+    this.startVertexProperty = new Property( startVertex );
+    this.endVertexProperty = new Property( endVertex );
+    this.currentProperty = new Property( 0 );
 
-      // @public - can be edited and dragged
-      interactive: options.interactive,
+    // @public - can be edited and dragged
+    this.interactiveProperty = new Property( options.interactive );
 
-      // @public - whether the circuit element is inside the true black box, not inside the user-created black box, on
-      // the interface or outside of the black box
-      insideTrueBlackBox: false
-    }, propertySetMap ) );
-
-    // Satisfy the syntax highlighter
-    this.current = this.current + 0;
+    // @public - whether the circuit element is inside the true black box, not inside the user-created black box, on
+    // the interface or outside of the black box
+    this.insideTrueBlackBoxProperty = new Property( false );
+    Property.preventGetSet( this, 'startVertex' );
+    Property.preventGetSet( this, 'endVertex' );
+    Property.preventGetSet( this, 'current' );
+    Property.preventGetSet( this, 'interactive' );
+    Property.preventGetSet( this, 'insideTrueBlackBox' );
 
     // @public - true if the electrons must be layed out
     this.dirty = true;
-
-    this.interactiveProperty = this.interactiveProperty || null;
 
     // @public (read-only) - indicate when this circuit element has been connected
     this.connectedEmitter = new Emitter();
@@ -84,14 +81,14 @@ define( function( require ) {
       self.startVertexProperty.unlink( linkToVertex );
       self.endVertexProperty.unlink( linkToVertex );
 
-      self.startVertex.positionProperty.unlink( vertexMoved );
-      self.endVertex.positionProperty.unlink( vertexMoved );
+      self.startVertexProperty.get().positionProperty.unlink( vertexMoved );
+      self.endVertexProperty.get().positionProperty.unlink( vertexMoved );
     };
   }
 
   circuitConstructionKitCommon.register( 'CircuitElement', CircuitElement );
 
-  return inherit( PropertySet, CircuitElement, {
+  return inherit( Object, CircuitElement, {
 
     dispose: function() {
       this.disposeCircuitElement();
@@ -104,26 +101,26 @@ define( function( require ) {
      */
     replaceVertex: function( oldVertex, newVertex ) {
       assert && assert( oldVertex !== newVertex, 'Cannot replace with the same vertex' );
-      assert && assert( oldVertex === this.startVertex || oldVertex === this.endVertex, 'Cannot replace a nonexistent vertex' );
-      assert && assert( newVertex !== this.startVertex && newVertex !== this.endVertex, 'The new vertex shouldn\'t already be in the circuit element.' );
-      if ( oldVertex === this.startVertex ) {
-        this.startVertex = newVertex;
+      assert && assert( oldVertex === this.startVertexProperty.get() || oldVertex === this.endVertexProperty.get(), 'Cannot replace a nonexistent vertex' );
+      assert && assert( newVertex !== this.startVertexProperty.get() && newVertex !== this.endVertexProperty.get(), 'The new vertex shouldn\'t already be in the circuit element.' );
+      if ( oldVertex === this.startVertexProperty.get() ) {
+        this.startVertexProperty.set( newVertex );
       }
       else {
-        this.endVertex = newVertex;
+        this.endVertexProperty.set( newVertex );
       }
     },
     getOppositeVertex: function( vertex ) {
       assert && assert( this.containsVertex( vertex ), 'Missing vertex' );
-      if ( this.startVertex === vertex ) {
-        return this.endVertex;
+      if ( this.startVertexProperty.get() === vertex ) {
+        return this.endVertexProperty.get();
       }
       else {
-        return this.startVertex;
+        return this.startVertexProperty.get();
       }
     },
     containsVertex: function( vertex ) {
-      return this.startVertex === vertex || this.endVertex === vertex;
+      return this.startVertexProperty.get() === vertex || this.endVertexProperty.get() === vertex;
     },
 
     /**
@@ -133,29 +130,29 @@ define( function( require ) {
      * @public
      */
     connectCircuitElement: function( vertex1, vertex2 ) {
-      if ( this.startVertex === vertex2 ) {
-        this.startVertex = vertex1;
+      if ( this.startVertexProperty.get() === vertex2 ) {
+        this.startVertexProperty.set( vertex1 );
       }
-      if ( this.endVertex === vertex2 ) {
-        this.endVertex = vertex1;
+      if ( this.endVertexProperty.get() === vertex2 ) {
+        this.endVertexProperty.set( vertex1 );
       }
 
       // Make sure we didn't just obtain same start and end vertices
-      assert && assert( this.startVertex !== this.endVertex, 'vertices must be different' );
+      assert && assert( this.startVertexProperty.get() !== this.endVertexProperty.get(), 'vertices must be different' );
     },
 
     hasBothVertices: function( vertex1, vertex2 ) {
-      return (this.startVertex === vertex1 && this.endVertex === vertex2) ||
-             (this.startVertex === vertex2 && this.endVertex === vertex1);
+      return (this.startVertexProperty.get() === vertex1 && this.endVertexProperty.get() === vertex2) ||
+             (this.startVertexProperty.get() === vertex2 && this.endVertexProperty.get() === vertex1);
     },
     toStateObjectWithVertexIndices: function( getVertexIndex ) {
       return {
-        startVertex: getVertexIndex( this.startVertex ),
-        endVertex: getVertexIndex( this.endVertex )
+        startVertex: getVertexIndex( this.startVertexProperty.get() ),
+        endVertex: getVertexIndex( this.endVertexProperty.get() )
       };
     },
     getPosition: function( distanceAlongWire ) {
-      return this.startVertex.position.blend( this.endVertex.position, distanceAlongWire / this.length );
+      return this.startVertexProperty.get().position.blend( this.endVertexProperty.get().position, distanceAlongWire / this.length );
     },
     containsScalarLocation: function( s ) {
       return s >= 0 && s <= this.length;

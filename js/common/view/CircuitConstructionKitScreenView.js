@@ -288,18 +288,18 @@ define( function( require ) {
           // Voltmeter probes each hit things but they were not connected to each other through the circuit.
           circuitConstructionKitModel.voltmeter.voltageProperty.set( null );
         }
-        else if ( redConnection !== null && redConnection.vertex.insideTrueBlackBox && !circuitConstructionKitModel.revealingProperty.get() ) {
+        else if ( redConnection !== null && redConnection.vertex.insideTrueBlackBoxProperty.get() && !circuitConstructionKitModel.revealingProperty.get() ) {
 
           // Cannot read values inside the black box, unless "reveal" is being pressed
           circuitConstructionKitModel.voltmeter.voltageProperty.set( null );
         }
-        else if ( blackConnection !== null && blackConnection.vertex.insideTrueBlackBox && !circuitConstructionKitModel.revealingProperty.get() ) {
+        else if ( blackConnection !== null && blackConnection.vertex.insideTrueBlackBoxProperty.get() && !circuitConstructionKitModel.revealingProperty.get() ) {
 
           // Cannot read values inside the black box, unless "reveal" is being pressed
           circuitConstructionKitModel.voltmeter.voltageProperty.set( null );
         }
         else {
-          circuitConstructionKitModel.voltmeter.voltageProperty.set( redConnection.voltage - blackConnection.voltage );
+          circuitConstructionKitModel.voltmeter.voltageProperty.set( redConnection.voltageProperty.get() - blackConnection.voltageProperty.get() );
         }
       }
     };
@@ -378,7 +378,7 @@ define( function( require ) {
 
       var hitWireNode = this.hitWireNode( probeNode, 'translation' );
       if ( hitWireNode ) {
-        return hitWireNode.wire.current;
+        return hitWireNode.wire.currentProperty.get();
       }
       else {
         return null;
@@ -399,7 +399,7 @@ define( function( require ) {
 
         // Don't connect to wires in the black box
         var revealing = true;
-        var trueBlackBox = wireNode.wire.insideTrueBlackBox;
+        var trueBlackBox = wireNode.wire.insideTrueBlackBoxProperty.get();
         if ( trueBlackBox ) {
           revealing = this.circuitConstructionKitModel.revealingProperty.get();
         }
@@ -429,7 +429,7 @@ define( function( require ) {
         if ( distance <= radius ) {
           return {
             vertex: vertexNode.vertex,
-            voltage: vertexNode.vertex.voltage
+            voltage: vertexNode.vertex.voltageProperty.get()
           };
         }
       }
@@ -438,8 +438,8 @@ define( function( require ) {
       var wireNode = this.hitWireNode( probeNode, 'centerTop' );
       if ( wireNode ) {
 
-        var startPoint = wireNode.wire.startVertex.position;
-        var endPoint = wireNode.wire.endVertex.position;
+        var startPoint = wireNode.wire.startVertexProperty.get().position;
+        var endPoint = wireNode.wire.endVertexProperty.get().position;
         var segmentVector = endPoint.minus( startPoint );
         var probeVector = probeNode.centerTop.minus( startPoint );
 
@@ -447,10 +447,10 @@ define( function( require ) {
         distanceAlongSegment = Util.clamp( distanceAlongSegment, 0, 1 );
 
         assert && assert( distanceAlongSegment >= 0 && distanceAlongSegment <= 1, 'beyond the end of the wire' );
-        var voltageAlongWire = Util.linear( 0, 1, wireNode.wire.startVertex.voltage, wireNode.wire.endVertex.voltage, distanceAlongSegment );
+        var voltageAlongWire = Util.linear( 0, 1, wireNode.wire.startVertexProperty.get().voltageProperty.get(), wireNode.wire.endVertexProperty.get().voltageProperty.get(), distanceAlongSegment );
 
         return {
-          vertex: wireNode.wire.startVertex,
+          vertex: wireNode.wire.startVertexProperty.get(),
           voltage: voltageAlongWire
         };
       }

@@ -117,7 +117,7 @@ define( function( require ) {
     var startListener = function( startPoint ) {
       lineNodeParent.setTranslation( startPoint.x, startPoint.y );
       highlightNodeParent.setTranslation( startPoint.x, startPoint.y );
-      endListener && endListener( wire.endVertex.position );
+      endListener && endListener( wire.endVertexProperty.get().position );
       if ( highlightNode.visible ) {
         highlightNode.shape = self.getHighlightStrokedShape( highlightStrokeStyles );
       }
@@ -131,8 +131,8 @@ define( function( require ) {
     wire.startVertexProperty.link( updateStartVertex );
 
     var endListener = function( endPoint ) {
-      lineNode.setPoint2( endPoint.distance( wire.startVertex.position ), 0 );
-      var deltaVector = endPoint.minus( wire.startVertex.position );
+      lineNode.setPoint2( endPoint.distance( wire.startVertexProperty.get().position ), 0 );
+      var deltaVector = endPoint.minus( wire.startVertexProperty.get().position );
       lineNodeParent.setRotation( deltaVector.angle() );
       highlightNodeParent.setRotation( deltaVector.angle() );
       if ( highlightNode.visible ) {
@@ -162,16 +162,16 @@ define( function( require ) {
         start: function( event ) {
           p = event.pointer.point;
 
-          if ( wire.interactive ) {
-            circuitNode.startDrag( event.pointer.point, wire.startVertex, false );
-            circuitNode.startDrag( event.pointer.point, wire.endVertex, false );
+          if ( wire.interactiveProperty.get() ) {
+            circuitNode.startDrag( event.pointer.point, wire.startVertexProperty.get(), false );
+            circuitNode.startDrag( event.pointer.point, wire.endVertexProperty.get(), false );
           }
           didDrag = false;
         },
         drag: function( event ) {
-          if ( wire.interactive ) {
-            circuitNode.drag( event.pointer.point, wire.startVertex, false );
-            circuitNode.drag( event.pointer.point, wire.endVertex, false );
+          if ( wire.interactiveProperty.get() ) {
+            circuitNode.drag( event.pointer.point, wire.startVertexProperty.get(), false );
+            circuitNode.drag( event.pointer.point, wire.endVertexProperty.get(), false );
             didDrag = true;
           }
         },
@@ -182,12 +182,12 @@ define( function( require ) {
             circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
             return;
           }
-          if ( !wire.interactive ) {
+          if ( !wire.interactiveProperty.get() ) {
             return;
           }
 
-          circuitNode.endDrag( event, wire.startVertex, didDrag );
-          circuitNode.endDrag( event, wire.endVertex, didDrag );
+          circuitNode.endDrag( event, wire.startVertexProperty.get(), didDrag );
+          circuitNode.endDrag( event, wire.endVertexProperty.get(), didDrag );
 
           // Only show the editor when tapped, not on every drag.
           self.maybeSelect( event, circuitNode, p );
@@ -218,8 +218,8 @@ define( function( require ) {
       updateHighlight && circuitNode.circuit.selectedCircuitElementProperty.unlink( updateHighlight );
       wire.interactiveProperty.unlink( updatePickable );
 
-      wire.startVertex.positionProperty.unlink( startListener );
-      wire.endVertex.positionProperty.unlink( endListener );
+      wire.startVertexProperty.get().positionProperty.unlink( startListener );
+      wire.endVertexProperty.get().positionProperty.unlink( endListener );
 
       circuitNode && circuitNode.highlightLayer.removeChild( highlightNodeParent );
       tandem.removeInstance( this );

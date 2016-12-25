@@ -99,8 +99,8 @@ define( function( require ) {
     var relink = function() {
       multilink && multilink.dispose();
       multilink = Property.multilink( [
-        circuitElement.startVertex.positionProperty,
-        circuitElement.endVertex.positionProperty
+        circuitElement.startVertexProperty.get().positionProperty,
+        circuitElement.endVertexProperty.get().positionProperty
       ], options.updateLayout );
     };
     relink();
@@ -108,11 +108,11 @@ define( function( require ) {
     var moveToFront = function() {
 
       // Components outside the black box do not move in front of the overlay
-      if ( circuitElement.interactive ) {
+      if ( circuitElement.interactiveProperty.get() ) {
         self.moveToFront();
         self.circuitElement.moveToFrontEmitter.emit();
-        self.circuitElement.startVertex.moveToFrontEmitter.emit();
-        self.circuitElement.endVertex.moveToFrontEmitter.emit();
+        self.circuitElement.startVertexProperty.get().moveToFrontEmitter.emit();
+        self.circuitElement.endVertexProperty.get().moveToFrontEmitter.emit();
       }
     };
     circuitElement.connectedEmitter.addListener( moveToFront );
@@ -142,11 +142,11 @@ define( function( require ) {
         tandem: tandem.createTandem( 'inputListener' ), // TODO: some input listeners are 'dragHandler' let's be consistent
         start: function( event ) {
           p = event.pointer.point;
-          circuitElement.interactive && circuitNode.startDrag( event.pointer.point, circuitElement.endVertex, false );
+          circuitElement.interactiveProperty.get() && circuitNode.startDrag( event.pointer.point, circuitElement.endVertexProperty.get(), false );
           didDrag = false;
         },
         drag: function( event ) {
-          circuitElement.interactive && circuitNode.drag( event.pointer.point, circuitElement.endVertex, false );
+          circuitElement.interactiveProperty.get() && circuitNode.drag( event.pointer.point, circuitElement.endVertexProperty.get(), false );
           didDrag = true;
         },
         end: function( event ) {
@@ -157,11 +157,11 @@ define( function( require ) {
             return;
           }
 
-          if ( !circuitElement.interactive ) {
+          if ( !circuitElement.interactiveProperty.get() ) {
             return;
           }
 
-          circuitNode.endDrag( event, circuitElement.endVertex, didDrag );
+          circuitNode.endDrag( event, circuitElement.endVertexProperty.get(), didDrag );
 
           // Only show the editor when tapped, not on every drag.
           self.maybeSelect( event, circuitNode, p );
@@ -199,8 +199,8 @@ define( function( require ) {
 
     // Update after the highlight/readout exist
     options.updateLayout(
-      circuitElement.startVertex.position,
-      circuitElement.endVertex.position
+      circuitElement.startVertexProperty.get().position,
+      circuitElement.endVertexProperty.get().position
     );
 
     this.disposeFixedLengthCircuitElementNode = function() {

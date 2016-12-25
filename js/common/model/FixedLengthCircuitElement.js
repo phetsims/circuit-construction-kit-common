@@ -18,11 +18,11 @@ define( function( require ) {
    *
    * @constructor
    */
-  function FixedLengthCircuitElement( length, startVertex, endVertex, additionalProperties, options ) {
+  function FixedLengthCircuitElement( length, startVertex, endVertex, options ) {
     var actualLength = startVertex.position.distance( endVertex.position );
     assert && assert( Math.abs( length - actualLength ) < 1E-6, 'length should be ' + length );
 
-    CircuitElement.call( this, startVertex, endVertex, additionalProperties, options );
+    CircuitElement.call( this, startVertex, endVertex, options );
 
     // The distance electrons travel (along paths)
     this.length = length;

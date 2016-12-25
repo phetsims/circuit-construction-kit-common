@@ -48,7 +48,7 @@ define( function( require ) {
 
       // Only fixed length circuit elements are editable, even though wires can be deleted
       var fixedLengthElements = circuitElements.filter( function( circuitElement ) {
-        return circuitElement instanceof FixedLengthCircuitElement && circuitElement.interactive;
+        return circuitElement instanceof FixedLengthCircuitElement && circuitElement.interactiveProperty.get();
       } );
       tapInstructionTextNode.visible = fixedLengthElements.length > 0;
     };

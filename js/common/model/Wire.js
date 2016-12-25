@@ -14,6 +14,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/CircuitElement' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var Property = require( 'AXON/Property' );
 
   /**
    *
@@ -22,16 +23,18 @@ define( function( require ) {
   function Wire( startVertex, endVertex, resistivity, options ) {
     assert && assert( typeof resistivity === 'number' && resistivity >= 0, 'bad value for resistivity: ' + resistivity );
     var self = this;
-    CircuitElement.call( this, startVertex, endVertex, {
-      resistance: CircuitConstructionKitConstants.minimumResistance,
-      resistivity: resistivity
-    }, options );
+    CircuitElement.call( this, startVertex, endVertex, options );
+
+    this.resistanceProperty = new Property( CircuitConstructionKitConstants.minimumResistance );
+    this.resistivityProperty = new Property( resistivity );
+    Property.preventGetSet( this, 'resistance' );
+    Property.preventGetSet( this, 'resistivity' );
 
     var updateResistance = function() {
-      var length = self.startVertex.position.minus( self.endVertex.position ).magnitude();
+      var length = self.startVertexProperty.get().position.minus( self.endVertexProperty.get().position ).magnitude();
       var javaLength = length / 990 * 15.120675866835684;
-      self.resistance = Math.max( CircuitConstructionKitConstants.minimumResistance, javaLength * self.resistivity );
-      assert && assert( !isNaN( self.resistance ), 'wire resistance should not be NaN' );
+      self.resistanceProperty.set( Math.max( CircuitConstructionKitConstants.minimumResistance, javaLength * self.resistivityProperty.get() ) );
+      assert && assert( !isNaN( self.resistanceProperty.get() ), 'wire resistance should not be NaN' );
     };
 
     this.disposeWire = function() {
@@ -39,7 +42,7 @@ define( function( require ) {
     };
 
     var updateLength = function() {
-      self.length = self.startVertex.position.distance( self.endVertex.position );
+      self.length = self.startVertexProperty.get().position.distance( self.endVertexProperty.get().position );
     };
 
     var vertexMovedListener = function() {
@@ -59,8 +62,8 @@ define( function( require ) {
     },
     toStateObjectWithVertexIndices: function( getVertexIndex ) {
       return _.extend( {
-        resistance: this.resistance,
-        resistivity: this.resistivity
+        resistance: this.resistanceProperty.get(),
+        resistivity: this.resistivityProperty.get()
       }, CircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex ) );
     }
   } );

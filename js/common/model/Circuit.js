@@ -87,16 +87,16 @@ define( function( require ) {
     var addVertices = function( circuitElement ) {
 
       // Vertices may already exist for a Circuit when loading
-      if ( self.vertices.indexOf( circuitElement.startVertex ) < 0 ) {
-        self.vertices.add( circuitElement.startVertex );
+      if ( self.vertices.indexOf( circuitElement.startVertexProperty.get() ) < 0 ) {
+        self.vertices.add( circuitElement.startVertexProperty.get() );
       }
 
-      if ( self.vertices.indexOf( circuitElement.endVertex ) < 0 ) {
-        self.vertices.add( circuitElement.endVertex );
+      if ( self.vertices.indexOf( circuitElement.endVertexProperty.get() ) < 0 ) {
+        self.vertices.add( circuitElement.endVertexProperty.get() );
       }
 
-      assert && assert( self.vertices.indexOf( circuitElement.startVertex ) >= 0, 'start vertex should appear in the list' );
-      assert && assert( self.vertices.indexOf( circuitElement.endVertex ) >= 0, 'end vertex should appear in the list' );
+      assert && assert( self.vertices.indexOf( circuitElement.startVertexProperty.get() ) >= 0, 'start vertex should appear in the list' );
+      assert && assert( self.vertices.indexOf( circuitElement.endVertexProperty.get() ) >= 0, 'end vertex should appear in the list' );
       self.solve();
     };
     this.wires.addItemAddedListener( addVertices );
@@ -111,7 +111,7 @@ define( function( require ) {
 
       // When any vertex moves, relayout all electrons within the fixed-length connected component, see #100
       var updateElectrons = function() {
-        var circuitElements = self.findAllConnectedCircuitElements( circuitElement.startVertex );
+        var circuitElements = self.findAllConnectedCircuitElements( circuitElement.startVertexProperty.get() );
 
         for ( var i = 0; i < circuitElements.length; i++ ) {
           circuitElements[ i ].dirty = true;
@@ -315,7 +315,7 @@ define( function( require ) {
       }
       for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
         var circuitElement = neighborCircuitElements[ i ];
-        if ( circuitElement.interactive ) {
+        if ( circuitElement.interactiveProperty.get() ) {
           var options = {
             draggable: true,
             interactive: true,
@@ -361,8 +361,8 @@ define( function( require ) {
     },
 
     isSingle: function( circuitElement ) {
-      return this.getNeighborCircuitElements( circuitElement.startVertex ).length === 1 &&
-             this.getNeighborCircuitElements( circuitElement.endVertex ).length === 1;
+      return this.getNeighborCircuitElements( circuitElement.startVertexProperty.get() ).length === 1 &&
+             this.getNeighborCircuitElements( circuitElement.endVertexProperty.get() ).length === 1;
     },
 
     remove: function( circuitElement ) {
@@ -375,12 +375,12 @@ define( function( require ) {
       list.remove( circuitElement );
 
       // Delete orphaned vertices
-      if ( this.getNeighborCircuitElements( circuitElement.startVertex ).length === 0 && !circuitElement.startVertex.blackBoxInterface ) {
-        this.vertices.remove( circuitElement.startVertex );
+      if ( this.getNeighborCircuitElements( circuitElement.startVertexProperty.get() ).length === 0 && !circuitElement.startVertexProperty.get().blackBoxInterface ) {
+        this.vertices.remove( circuitElement.startVertexProperty.get() );
       }
 
-      if ( this.getNeighborCircuitElements( circuitElement.endVertex ).length === 0 && !circuitElement.endVertex.blackBoxInterface ) {
-        this.vertices.remove( circuitElement.endVertex );
+      if ( this.getNeighborCircuitElements( circuitElement.endVertexProperty.get() ).length === 0 && !circuitElement.endVertexProperty.get().blackBoxInterface ) {
+        this.vertices.remove( circuitElement.endVertexProperty.get() );
       }
 
       circuitElement.dispose();
@@ -438,28 +438,28 @@ define( function( require ) {
 
       var toObject = function( circuitElement ) {
         return {
-          node0: self.vertices.indexOf( circuitElement.startVertex ),
-          node1: self.vertices.indexOf( circuitElement.endVertex ),
+          node0: self.vertices.indexOf( circuitElement.startVertexProperty.get() ),
+          node1: self.vertices.indexOf( circuitElement.endVertexProperty.get() ),
           circuitElement: circuitElement
         };
       };
 
       // the index of vertex corresponds to position in list.
       var batteries = this.batteries.map( function( battery ) {
-        return _.extend( toObject( battery ), { voltage: battery.voltage } );
+        return _.extend( toObject( battery ), { voltage: battery.voltageProperty.get() } );
       } );
       var resistors = this.resistors.map( function( resistor ) {
-        return _.extend( toObject( resistor ), { resistance: resistor.resistance } );
+        return _.extend( toObject( resistor ), { resistance: resistor.resistanceProperty.get() } );
       } );
       var wires = this.wires.map( function( wire ) {
-        return _.extend( toObject( wire ), { resistance: wire.resistance } );
+        return _.extend( toObject( wire ), { resistance: wire.resistanceProperty.get() } );
       } );
       var bulbs = this.lightBulbs.map( function( lightBulb ) {
-        return _.extend( toObject( lightBulb ), { resistance: lightBulb.resistance } );
+        return _.extend( toObject( lightBulb ), { resistance: lightBulb.resistanceProperty.get() } );
       } );
       // TODO: correct modeling of switch topology?  Match with voltmeter/ammeter.
       var switches = this.switches.map( function( switchModel ) {
-        return _.extend( toObject( switchModel ), { resistance: switchModel.resistance } );
+        return _.extend( toObject( switchModel ), { resistance: switchModel.resistanceProperty.get() } );
       } );
 
       var resistorAdapters = resistors.getArray().concat( wires.getArray() ).concat( bulbs.getArray() ).concat( switches.getArray() );
@@ -472,12 +472,12 @@ define( function( require ) {
         // For unconnected vertices, such as for the black box, they may not have an entry in the matrix, so just mark them
         // as zero.
         var v = typeof solution.nodeVoltages[ i ] === 'number' ? solution.nodeVoltages[ i ] : 0;
-        this.vertices.get( i ).voltage = v;
+        this.vertices.get( i ).voltageProperty.set( v );
       }
 
       // Apply the branch currents
       for ( i = 0; i < solution.elements.length; i++ ) {
-        solution.elements[ i ].circuitElement.current = solution.elements[ i ].currentSolution;
+        solution.elements[ i ].circuitElement.currentProperty.set( solution.elements[ i ].currentSolution );
       }
 
       // For resistors with r!==0, we must use Ohm's Law to compute the current
@@ -486,7 +486,7 @@ define( function( require ) {
         if ( resistorAdapter.resistance !== 0 ) {
           var voltage = solution.nodeVoltages[ resistorAdapter.node1 ] - solution.nodeVoltages[ resistorAdapter.node0 ];
           var current = -voltage / resistorAdapter.resistance;
-          resistorAdapter.circuitElement.current = current;
+          resistorAdapter.circuitElement.currentProperty.set( current );
         }
       }
 

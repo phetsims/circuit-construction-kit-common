@@ -17,6 +17,7 @@ define( function( require ) {
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Vertex' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var Util = require( 'DOT/Util' );
+  var Property = require( 'AXON/Property' );
 
   // constants
   var DISTANCE_BETWEEN_VERTICES = 33;
@@ -74,9 +75,9 @@ define( function( require ) {
    * @constructor
    */
   function LightBulb( startVertex, endVertex, resistance, options ) {
-    FixedLengthCircuitElement.call( this, DISTANCE_BETWEEN_VERTICES, startVertex, endVertex, {
-      resistance: resistance
-    }, options );
+    FixedLengthCircuitElement.call( this, DISTANCE_BETWEEN_VERTICES, startVertex, endVertex, options );
+    this.resistanceProperty = new Property( resistance );
+    Property.preventGetSet( this, 'resistance' );
 
     // TODO: copied
     var accumulatedDistance = 0;
@@ -85,11 +86,11 @@ define( function( require ) {
       var p1 = points[ i ];
       var p2 = points[ i + 1 ];
 
-      var p1X = Util.linear( start.x, end.x, this.startVertex.position.x, this.endVertex.position.x, p1.x );
-      var p1Y = Util.linear( start.y, end.y, this.startVertex.position.y, this.endVertex.position.y, p1.y );
+      var p1X = Util.linear( start.x, end.x, this.startVertexProperty.get().position.x, this.endVertexProperty.get().position.x, p1.x );
+      var p1Y = Util.linear( start.y, end.y, this.startVertexProperty.get().position.y, this.endVertexProperty.get().position.y, p1.y );
 
-      var p2X = Util.linear( start.x, end.x, this.startVertex.position.x, this.endVertex.position.x, p2.x );
-      var p2Y = Util.linear( start.y, end.y, this.startVertex.position.y, this.endVertex.position.y, p2.y );
+      var p2X = Util.linear( start.x, end.x, this.startVertexProperty.get().position.x, this.endVertexProperty.get().position.x, p2.x );
+      var p2Y = Util.linear( start.y, end.y, this.startVertexProperty.get().position.y, this.endVertexProperty.get().position.y, p2.y );
 
       var q1 = new Vector2( p1X, p1Y );
       var q2 = new Vector2( p2X, p2Y );
@@ -108,7 +109,7 @@ define( function( require ) {
 
   return inherit( FixedLengthCircuitElement, LightBulb, {
     toStateObjectWithVertexIndices: function( getVertexIndex ) {
-      return _.extend( { resistance: this.resistance }, FixedLengthCircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex ) );
+      return _.extend( { resistance: this.resistanceProperty.get() }, FixedLengthCircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex ) );
     },
 
     /**
@@ -128,11 +129,11 @@ define( function( require ) {
         var p1 = points[ i ];
         var p2 = points[ i + 1 ];
 
-        var p1X = Util.linear( start.x, end.x, this.startVertex.position.x, this.startVertex.position.x + this.vertexDelta.x, p1.x );
-        var p1Y = Util.linear( start.y, end.y, this.startVertex.position.y, this.startVertex.position.y + this.vertexDelta.y, p1.y );
+        var p1X = Util.linear( start.x, end.x, this.startVertexProperty.get().position.x, this.startVertexProperty.get().position.x + this.vertexDelta.x, p1.x );
+        var p1Y = Util.linear( start.y, end.y, this.startVertexProperty.get().position.y, this.startVertexProperty.get().position.y + this.vertexDelta.y, p1.y );
 
-        var p2X = Util.linear( start.x, end.x, this.startVertex.position.x, this.startVertex.position.x + this.vertexDelta.x, p2.x );
-        var p2Y = Util.linear( start.y, end.y, this.startVertex.position.y, this.startVertex.position.y + this.vertexDelta.y, p2.y );
+        var p2X = Util.linear( start.x, end.x, this.startVertexProperty.get().position.x, this.startVertexProperty.get().position.x + this.vertexDelta.x, p2.x );
+        var p2Y = Util.linear( start.y, end.y, this.startVertexProperty.get().position.y, this.startVertexProperty.get().position.y + this.vertexDelta.y, p2.y );
 
         var q1 = new Vector2( p1X, p1Y );
         var q2 = new Vector2( p2X, p2Y );
@@ -144,12 +145,12 @@ define( function( require ) {
           var position = q1.blend( q2, a );
 
           // Rotate about the start vertex.
-          var vd = this.endVertex.position.minus( this.startVertex.position );
+          var vd = this.endVertexProperty.get().position.minus( this.startVertexProperty.get().position );
 
           var angle = vd.angle() - this.vertexDelta.angle();
 
           // rotate the point about the start vertex
-          return rotatedAbout( position, this.startVertex.position, angle );
+          return rotatedAbout( position, this.startVertexProperty.get().position, angle );
         }
         prev = accumulatedDistance;
       }

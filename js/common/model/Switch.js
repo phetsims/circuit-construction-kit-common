@@ -15,6 +15,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/CircuitElement' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var Property = require( 'AXON/Property' );
 
   // constants
   var OPEN_RESISTANCE = 1E11;
@@ -27,22 +28,24 @@ define( function( require ) {
   function Switch( startVertex, endVertex, resistivity, options ) {
     assert && assert( typeof resistivity === 'number' && resistivity >= 0, 'bad value for resistivity: ' + resistivity );
     var self = this;
-    CircuitElement.call( this, startVertex, endVertex, {
-      resistance: CircuitConstructionKitConstants.minimumResistance,
-      resistivity: resistivity,
-      closed: false
-    }, options );
+    CircuitElement.call( this, startVertex, endVertex, options );
+    this.resistanceProperty = new Property( CircuitConstructionKitConstants.minimumResistance );
+    this.resistivityProperty = new Property( resistivity );
+    this.closedProperty = new Property( false );
+    Property.preventGetSet( this, 'resistance' );
+    Property.preventGetSet( this, 'resistivity' );
+    Property.preventGetSet( this, 'closed' );
 
     var updateResistance = function() {
-      var length = self.startVertex.position.minus( self.endVertex.position ).magnitude();
+      var length = self.startVertexProperty.get().position.minus( self.endVertexProperty.get().position ).magnitude();
       var javaLength = length / 990 * 15.120675866835684;
-      self.resistance = self.closed ? Math.max( MINIMUM_RESISTANCE, javaLength * self.resistivity ) :
-                        OPEN_RESISTANCE;
-      assert && assert( !isNaN( self.resistance ) );
+      self.resistanceProperty.set( self.closed ? Math.max( MINIMUM_RESISTANCE, javaLength * self.resistivityProperty.get() ) :
+                                   OPEN_RESISTANCE );
+      assert && assert( !isNaN( self.resistanceProperty.get() ) );
     };
 
     var updateLength = function() {
-      self.length = self.startVertex.position.distance( self.endVertex.position );
+      self.length = self.startVertexProperty.get().position.distance( self.endVertexProperty.get().position );
     };
 
     var vertexMovedListener = function() {
@@ -68,8 +71,8 @@ define( function( require ) {
     },
     toStateObjectWithVertexIndices: function( getVertexIndex ) {
       return _.extend( {
-        resistance: this.resistance,
-        resistivity: this.resistivity
+        resistance: this.resistanceProperty.get(),
+        resistivity: this.resistivityProperty.get()
       }, CircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex ) );
     }
   } );

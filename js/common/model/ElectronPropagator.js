@@ -142,7 +142,7 @@ define( function( require ) {
       var max = 0;
       var circuitElements = this.circuit.getCircuitElements();
       for ( var i = 0; i < circuitElements.length; i++ ) {
-        var current = circuitElements[ i ].current;
+        var current = circuitElements[ i ].currentProperty.get();
         max = Math.max( max, Math.abs( current ) );
       }
       return max;
@@ -180,7 +180,7 @@ define( function( require ) {
       var dest = midpoint;
       var distMoving = Math.abs( dest - myloc );
       var vec = dest - myloc;
-      var sameDirAsCurrent = vec > 0 && -electron.circuitElement.current > 0;
+      var sameDirAsCurrent = vec > 0 && -electron.circuitElement.currentProperty.get() > 0;
       var myscale = 1000.0 / 30.0;//to have same scale as 3.17.00
       var correctionSpeed = .055 / numEqualize * myscale;
       if ( !sameDirAsCurrent ) {
@@ -208,7 +208,7 @@ define( function( require ) {
     propagate: function( electron, dt ) {
       var x = electron.distanceProperty.get();
       assert && assert( _.isNumber( x ), 'disance along wire should be a number' );
-      var current = -electron.circuitElement.current;
+      var current = -electron.circuitElement.currentProperty.get();
 
       if ( current === 0 || Math.abs( current ) < MIN_CURRENT ) {
         return;
@@ -263,17 +263,17 @@ define( function( require ) {
       var branch = electron.circuitElement;
       var jroot = null;
       if ( under ) {
-        jroot = branch.startVertex;
+        jroot = branch.startVertexProperty.get();
       }
       else {
-        jroot = branch.endVertex;
+        jroot = branch.endVertexProperty.get();
       }
       var adjacentBranches = this.circuit.getNeighborCircuitElements( jroot );
       var all = [];
       //keep only those with outgoing current.
       for ( var i = 0; i < adjacentBranches.length; i++ ) {
         var neighbor = adjacentBranches[ i ];
-        var current = -neighbor.current;
+        var current = -neighbor.currentProperty.get();
         if ( current > FIRE_CURRENT ) {
           current = FIRE_CURRENT;
         }
@@ -281,7 +281,7 @@ define( function( require ) {
           current = -FIRE_CURRENT;
         }
         var distAlongNew = null;
-        if ( current > 0 && neighbor.startVertex === jroot ) {//start near the beginning.
+        if ( current > 0 && neighbor.startVertexProperty.get() === jroot ) {//start near the beginning.
           distAlongNew = overshoot;
           if ( distAlongNew > neighbor.length ) {
             distAlongNew = neighbor.length;
@@ -291,7 +291,7 @@ define( function( require ) {
           }
           all.push( createCircuitLocation( neighbor, distAlongNew ) );
         }
-        else if ( current < 0 && neighbor.endVertex === jroot ) {
+        else if ( current < 0 && neighbor.endVertexProperty.get() === jroot ) {
           distAlongNew = neighbor.length - overshoot;
           if ( distAlongNew > neighbor.length ) {
             distAlongNew = neighbor.length;

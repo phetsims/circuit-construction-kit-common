@@ -70,7 +70,7 @@ define( function( require ) {
     FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, this.lightBulbNode, contentScale, tandem, options );
 
     // Set the initial location of the highlight, since it was not available in the supercall to updateLayout
-    updateLayout( lightBulb.startVertex.position, lightBulb.endVertex.position );
+    updateLayout( lightBulb.startVertexProperty.get().position, lightBulb.endVertexProperty.get().position );
 
     this.disposeCCKLightBulbNode = function() {
       updateBrightness.dispose();
