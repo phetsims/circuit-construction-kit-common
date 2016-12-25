@@ -70,7 +70,7 @@ define( function( require ) {
       oldVertex && oldVertex.positionProperty.unlink( vertexMoved );
       vertex.positionProperty.link( vertexMoved );
 
-      if ( !oldVertex || !oldVertex.position.equals( vertex.position ) ) {
+      if ( !oldVertex || !oldVertex.positionProperty.get().equals( vertex.positionProperty.get() ) ) {
         self.vertexMovedEmitter.emit();
       }
     };
@@ -152,7 +152,7 @@ define( function( require ) {
       };
     },
     getPosition: function( distanceAlongWire ) {
-      return this.startVertexProperty.get().position.blend( this.endVertexProperty.get().position, distanceAlongWire / this.length );
+      return this.startVertexProperty.get().positionProperty.get().blend( this.endVertexProperty.get().positionProperty.get(), distanceAlongWire / this.length );
     },
     containsScalarLocation: function( s ) {
       return s >= 0 && s <= this.length;

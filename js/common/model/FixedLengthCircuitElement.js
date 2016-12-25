@@ -19,7 +19,7 @@ define( function( require ) {
    * @constructor
    */
   function FixedLengthCircuitElement( length, startVertex, endVertex, options ) {
-    var actualLength = startVertex.position.distance( endVertex.position );
+    var actualLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
     assert && assert( Math.abs( length - actualLength ) < 1E-6, 'length should be ' + length );
 
     CircuitElement.call( this, startVertex, endVertex, options );

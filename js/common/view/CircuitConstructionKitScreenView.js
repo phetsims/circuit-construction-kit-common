@@ -422,7 +422,7 @@ define( function( require ) {
       // Check for intersection with a vertex
       for ( var i = 0; i < this.circuitNode.vertexNodes.length; i++ ) {
         var vertexNode = this.circuitNode.vertexNodes[ i ];
-        var position = vertexNode.vertex.position;
+        var position = vertexNode.vertex.positionProperty.get();
         var radius = vertexNode.dottedLineNodeRadius;
 
         var distance = probePosition.distance( position );
@@ -438,8 +438,8 @@ define( function( require ) {
       var wireNode = this.hitWireNode( probeNode, 'centerTop' );
       if ( wireNode ) {
 
-        var startPoint = wireNode.wire.startVertexProperty.get().position;
-        var endPoint = wireNode.wire.endVertexProperty.get().position;
+        var startPoint = wireNode.wire.startVertexProperty.get().positionProperty.get();
+        var endPoint = wireNode.wire.endVertexProperty.get().positionProperty.get();
         var segmentVector = endPoint.minus( startPoint );
         var probeVector = probeNode.centerTop.minus( startPoint );
 

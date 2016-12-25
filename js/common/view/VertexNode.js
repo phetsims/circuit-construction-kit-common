@@ -57,7 +57,7 @@ define( function( require ) {
 
     var updateStroke = function() {
       dottedLineNode.stroke = circuit.countCircuitElements( vertex ) > 1 ? 'black' : 'red';
-      dottedLineNode.visible = vertex.attachable;
+      dottedLineNode.visible = vertex.attachableProperty.get();
     };
     circuit.vertices.addItemAddedListener( updateStroke );
     circuit.vertices.addItemRemovedListener( updateStroke );
@@ -111,7 +111,7 @@ define( function( require ) {
       selected && updateCutButtonPosition();
 
       // Show a disabled button as a cue that the vertex could be cuttable, but it isn't right now.
-      var isConnectedBlackBoxVertex = numberConnections === 1 && !self.vertex.draggable;
+      var isConnectedBlackBoxVertex = numberConnections === 1 && !self.vertex.draggableProperty.get();
       cutButton.enabled = numberConnections > 1 || isConnectedBlackBoxVertex;
     };
     vertex.selectedProperty.link( updateSelected );
@@ -136,17 +136,17 @@ define( function( require ) {
       tandem: tandem.createTandem( 'dragHandler' ),
       start: function( event ) {
         p = event.pointer.point;
-        vertex.draggable && circuitNode.startDrag( event.pointer.point, vertex, true );
+        vertex.draggableProperty.get() && circuitNode.startDrag( event.pointer.point, vertex, true );
         didDrag = false;
       },
       drag: function( event ) {
         didDrag = true;
-        vertex.draggable && circuitNode.drag( event.pointer.point, vertex, true );
+        vertex.draggableProperty.get() && circuitNode.drag( event.pointer.point, vertex, true );
       },
       end: function( event ) {
 
         // The vertex can only connect to something if it was actually moved.
-        vertex.draggable && circuitNode.endDrag( event, vertex, didDrag );
+        vertex.draggableProperty.get() && circuitNode.endDrag( event, vertex, didDrag );
 
         // Only show on a tap, not on every drag.
         if ( vertex.interactiveProperty.get() && event.pointer.point.distance( p ) < CircuitConstructionKitConstants.tapThreshold ) {
@@ -192,7 +192,7 @@ define( function( require ) {
     }
 
     var updateCutButtonPosition = function() {
-      var position = vertex.position;
+      var position = vertex.positionProperty.get();
 
       var neighbors = circuit.getNeighborCircuitElements( vertex );
 
@@ -200,7 +200,7 @@ define( function( require ) {
       // so the button will appear in the least populated area.
       var sumOfDirections = new Vector2();
       for ( var i = 0; i < neighbors.length; i++ ) {
-        var v = vertex.position.minus( neighbors[ i ].getOppositeVertex( vertex ).position );
+        var v = vertex.positionProperty.get().minus( neighbors[ i ].getOppositeVertex( vertex ).positionProperty.get() );
         if ( v.magnitude() > 0 ) {
           var vector = v.normalized();
           sumOfDirections.add( vector );

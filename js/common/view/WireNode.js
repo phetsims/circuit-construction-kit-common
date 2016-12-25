@@ -117,7 +117,7 @@ define( function( require ) {
     var startListener = function( startPoint ) {
       lineNodeParent.setTranslation( startPoint.x, startPoint.y );
       highlightNodeParent.setTranslation( startPoint.x, startPoint.y );
-      endListener && endListener( wire.endVertexProperty.get().position );
+      endListener && endListener( wire.endVertexProperty.get().positionProperty.get() );
       if ( highlightNode.visible ) {
         highlightNode.shape = self.getHighlightStrokedShape( highlightStrokeStyles );
       }
@@ -131,8 +131,8 @@ define( function( require ) {
     wire.startVertexProperty.link( updateStartVertex );
 
     var endListener = function( endPoint ) {
-      lineNode.setPoint2( endPoint.distance( wire.startVertexProperty.get().position ), 0 );
-      var deltaVector = endPoint.minus( wire.startVertexProperty.get().position );
+      lineNode.setPoint2( endPoint.distance( wire.startVertexProperty.get().positionProperty.get() ), 0 );
+      var deltaVector = endPoint.minus( wire.startVertexProperty.get().positionProperty.get() );
       lineNodeParent.setRotation( deltaVector.angle() );
       highlightNodeParent.setRotation( deltaVector.angle() );
       if ( highlightNode.visible ) {

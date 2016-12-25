@@ -193,7 +193,7 @@ define( function( require ) {
           for ( var k = 0; k < self.vertices.length; k++ ) {
             var v2 = self.vertices.get( k );
             if ( i !== k ) {
-              if ( v2.unsnappedPosition.distance( v1.unsnappedPosition ) < 20 ) {
+              if ( v2.unsnappedPositionProperty.get().distance( v1.unsnappedPositionProperty.get() ) < 20 ) {
                 self.moveVerticesApart( v1, v2 );
                 return; // Don't handle the same pair twice  // TODO: perhaps cycle several times until reaching a stable state
               }
@@ -225,10 +225,10 @@ define( function( require ) {
         var v1Neighbors = this.getNeighborVertices( v1 );
         var v2Neighbors = this.getNeighborVertices( v2 );
 
-        if ( v1Neighbors.length === 1 && !v1.blackBoxInterface ) {
+        if ( v1Neighbors.length === 1 && !v1.blackBoxInterfaceProperty.get() ) {
           this.rotateSingleVertex( v1, v1Neighbors[ 0 ] );
         }
-        else if ( v2Neighbors.length === 1 && !v2.blackBoxInterface ) {
+        else if ( v2Neighbors.length === 1 && !v2.blackBoxInterfaceProperty.get() ) {
           this.rotateSingleVertex( v2, v2Neighbors[ 0 ] );
         }
         else {
@@ -266,12 +266,12 @@ define( function( require ) {
     },
 
     rotateSingleVertexByAngle: function( vertex, pivotVertex, deltaAngle ) {
-      var distanceFromVertex = vertex.position.distance( pivotVertex.position );
-      var angle = vertex.position.minus( pivotVertex.position ).angle();
+      var distanceFromVertex = vertex.positionProperty.get().distance( pivotVertex.positionProperty.get() );
+      var angle = vertex.positionProperty.get().minus( pivotVertex.positionProperty.get() ).angle();
 
-      var newPosition = pivotVertex.position.plus( Vector2.createPolar( distanceFromVertex, angle + deltaAngle ) );
-      vertex.unsnappedPosition = newPosition;
-      vertex.position = newPosition;
+      var newPosition = pivotVertex.positionProperty.get().plus( Vector2.createPolar( distanceFromVertex, angle + deltaAngle ) );
+      vertex.unsnappedPositionProperty.set( newPosition );
+      vertex.positionProperty.set( newPosition );
     },
 
     closestDistanceToOtherVertex: function( vertex ) {
@@ -279,7 +279,7 @@ define( function( require ) {
       for ( var i = 0; i < this.vertices.length; i++ ) {
         var v = this.vertices.get( i );
         if ( v !== vertex ) {
-          var distance = v.position.distance( vertex.position );
+          var distance = v.positionProperty.get().distance( vertex.positionProperty.get() );
           if ( closestDistance === null || distance < closestDistance ) {
             closestDistance = distance;
           }
@@ -324,7 +324,7 @@ define( function( require ) {
             insideTrueBlackBox: false,
             tandem: this.vertexGroupTandem.createNextTandem()
           };
-          var newVertex = new Vertex( vertex.position.x, vertex.position.y, options );
+          var newVertex = new Vertex( vertex.positionProperty.get().x, vertex.positionProperty.get().y, options );
 
           // Add the new vertex to the model first so that it can be updated in subsequent calls
           this.vertices.add( newVertex );
@@ -334,20 +334,20 @@ define( function( require ) {
           // Bump the vertices away from each other
           var vertexGroup = this.findAllFixedVertices( newVertex );
           var oppositeVertex = circuitElement.getOppositeVertex( newVertex );
-          var translation = oppositeVertex.position.minus( newVertex.position ).normalized().timesScalar( 30 );
+          var translation = oppositeVertex.positionProperty.get().minus( newVertex.positionProperty.get() ).normalized().timesScalar( 30 );
           for ( var j = 0; j < vertexGroup.length; j++ ) {
             var v = vertexGroup[ j ];
 
             // Only translate vertices that are movable and not connected to the black box interface by fixed length elements
-            if ( v.draggable && !this.hasFixedConnectionToBlackBoxInterfaceVertex( v ) ) {
-              v.position = v.position.plus( translation );
-              v.unsnappedPosition = v.position;
+            if ( v.draggableProperty.get() && !this.hasFixedConnectionToBlackBoxInterfaceVertex( v ) ) {
+              v.positionProperty.set( v.positionProperty.get().plus( translation ) );
+              v.unsnappedPositionProperty.set( v.positionProperty.get() );
             }
           }
         }
       }
 
-      if ( !vertex.blackBoxInterface ) {
+      if ( !vertex.blackBoxInterfaceProperty.get() ) {
         this.vertices.remove( vertex );
       }
 
@@ -357,7 +357,9 @@ define( function( require ) {
 
     hasFixedConnectionToBlackBoxInterfaceVertex: function( v ) {
       var vertices = this.findAllFixedVertices( v );
-      return _.filter( vertices, function( v ) {return v.blackBoxInterface;} ).length > 0;
+      return _.filter( vertices, function( v ) {
+          return v.blackBoxInterfaceProperty.get();
+        } ).length > 0;
     },
 
     isSingle: function( circuitElement ) {
@@ -375,11 +377,11 @@ define( function( require ) {
       list.remove( circuitElement );
 
       // Delete orphaned vertices
-      if ( this.getNeighborCircuitElements( circuitElement.startVertexProperty.get() ).length === 0 && !circuitElement.startVertexProperty.get().blackBoxInterface ) {
+      if ( this.getNeighborCircuitElements( circuitElement.startVertexProperty.get() ).length === 0 && !circuitElement.startVertexProperty.get().blackBoxInterfaceProperty.get() ) {
         this.vertices.remove( circuitElement.startVertexProperty.get() );
       }
 
-      if ( this.getNeighborCircuitElements( circuitElement.endVertexProperty.get() ).length === 0 && !circuitElement.endVertexProperty.get().blackBoxInterface ) {
+      if ( this.getNeighborCircuitElements( circuitElement.endVertexProperty.get() ).length === 0 && !circuitElement.endVertexProperty.get().blackBoxInterfaceProperty.get() ) {
         this.vertices.remove( circuitElement.endVertexProperty.get() );
       }
 
@@ -500,11 +502,11 @@ define( function( require ) {
      * @public
      */
     connect: function( vertex1, vertex2 ) {
-      assert && assert( vertex1.attachable && vertex2.attachable, 'both vertices should be attachable' );
+      assert && assert( vertex1.attachableProperty.get() && vertex2.attachableProperty.get(), 'both vertices should be attachable' );
 
       // Keep the black box vertices
-      if ( vertex2.blackBoxInterface ) {
-        assert && assert( !vertex1.blackBoxInterface, 'cannot attach black box interface vertex to black box interface vertex' );
+      if ( vertex2.blackBoxInterfaceProperty.get() ) {
+        assert && assert( !vertex1.blackBoxInterfaceProperty.get(), 'cannot attach black box interface vertex to black box interface vertex' );
         this.connect( vertex2, vertex1 );
       }
       else {
@@ -698,12 +700,12 @@ define( function( require ) {
 
       // (3) a vertex must be within SNAP_RADIUS (screen coordinates) of the other vertex
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
-        return vertex.unsnappedPosition.distance( candidateVertex.position ) < SNAP_RADIUS;
+        return vertex.unsnappedPositionProperty.get().distance( candidateVertex.positionProperty.get() ) < SNAP_RADIUS;
       } );
 
       // (4) a vertex must be attachable. Some black box vertices are not attachable, such as vertices hidden in the box
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
-        return candidateVertex.attachable;
+        return candidateVertex.attachableProperty.get();
       } );
 
       // (5) Reject any matches that result in circuit elements sharing a pair of vertices, which would cause
@@ -718,7 +720,7 @@ define( function( require ) {
 
           // If the adjacent vertex has the same position as the candidate vertex, that means it is already "snapped"
           // there and hence another vertex should not snap there at the same time.
-          if ( adjacent && circuitVertex.position.equals( candidateVertex.position ) ) {
+          if ( adjacent && circuitVertex.positionProperty.get().equals( candidateVertex.positionProperty.get() ) ) {
             return false;
           }
         }
@@ -740,7 +742,7 @@ define( function( require ) {
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
 
         // You can always attach to a black box interface
-        if ( candidateVertex.blackBoxInterface ) {
+        if ( candidateVertex.blackBoxInterfaceProperty.get() ) {
           return true;
         }
         var neighbors = self.getNeighborCircuitElements( candidateVertex );
@@ -751,7 +753,7 @@ define( function( require ) {
           // is another node proposing a match to that node?
           for ( var k = 0; k < self.vertices.length; k++ ) {
             var v = self.vertices.get( k );
-            if ( neighbor instanceof Wire && v !== vertex && v !== oppositeVertex && v.position.equals( oppositeVertex.position ) ) {
+            if ( neighbor instanceof Wire && v !== vertex && v !== oppositeVertex && v.positionProperty.get().equals( oppositeVertex.positionProperty.get() ) ) {
               return false;
             }
           }
@@ -774,25 +776,25 @@ define( function( require ) {
         candidateVertices = candidateVertices.filter( function( candidateVertex ) {
 
           // Don't connect to vertices that might have sneaked outside of the black box, say by a rotation.
-          if ( !candidateVertex.blackBoxInterface && !blackBoxBounds.containsPoint( candidateVertex.position ) ) {
+          if ( !candidateVertex.blackBoxInterfaceProperty.get() && !blackBoxBounds.containsPoint( candidateVertex.positionProperty.get() ) ) {
             return false;
           }
 
           // How far the vertex would be moved if it joined to the candidate
-          var delta = candidateVertex.position.minus( vertex.position );
+          var delta = candidateVertex.positionProperty.get().minus( vertex.positionProperty.get() );
 
-          if ( candidateVertex.blackBoxInterface || blackBoxBounds.containsPoint( candidateVertex.position ) ) {
+          if ( candidateVertex.blackBoxInterfaceProperty.get() || blackBoxBounds.containsPoint( candidateVertex.positionProperty.get() ) ) {
             for ( var i = 0; i < fixedVertices2.length; i++ ) {
               var connectedVertex = fixedVertices2[ i ];
-              if ( connectedVertex.blackBoxInterface ) {
+              if ( connectedVertex.blackBoxInterfaceProperty.get() ) {
 
                 // OK for black box interface vertex to be slightly outside the box
               }
-              else if ( connectedVertex !== vertex && !blackBoxBounds.containsPoint( connectedVertex.position.plus( delta ) ) &&
+              else if ( connectedVertex !== vertex && !blackBoxBounds.containsPoint( connectedVertex.positionProperty.get().plus( delta ) ) &&
 
                         // exempt wires connected outside of the black box, which are flagged as un-attachable in
                         // build mode, see #141
-                        connectedVertex.attachable ) {
+                        connectedVertex.attachableProperty.get() ) {
                 return false;
               }
             }
@@ -811,7 +813,7 @@ define( function( require ) {
 
         // Find the closest match
         var sorted = _.sortBy( candidateVertices.getArray(), function( candidateVertex ) {
-          return vertex.unsnappedPosition.distance( candidateVertex.position );
+          return vertex.unsnappedPositionProperty.get().distance( candidateVertex.positionProperty.get() );
         } );
         return sorted[ 0 ];
       }
@@ -848,8 +850,8 @@ define( function( require ) {
         vertices: this.vertices.map( function( vertex ) {
 
           var v = {
-            x: vertex.position.x,
-            y: vertex.position.y
+            x: vertex.positionProperty.get().x,
+            y: vertex.positionProperty.get().y
           };
 
           // Include any non-default options
@@ -857,11 +859,11 @@ define( function( require ) {
 
           // Capture all non-default values for vertex options, if any
           var options = {};
-          if ( vertex.attachable !== defaults.attachable ) {
-            options.attachable = vertex.attachable;
+          if ( vertex.attachableProperty.get() !== defaults.attachable ) {
+            options.attachable = vertex.attachableProperty.get();
           }
-          if ( vertex.draggable !== defaults.draggable ) {
-            options.draggable = vertex.draggable;
+          if ( vertex.draggableProperty.get() !== defaults.draggable ) {
+            options.draggable = vertex.draggableProperty.get();
           }
           if ( _.keys( options ).length > 0 ) {
             v.options = options;

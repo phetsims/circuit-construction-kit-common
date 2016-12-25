@@ -199,8 +199,8 @@ define( function( require ) {
 
     // Update after the highlight/readout exist
     options.updateLayout(
-      circuitElement.startVertexProperty.get().position,
-      circuitElement.endVertexProperty.get().position
+      circuitElement.startVertexProperty.get().positionProperty.get(),
+      circuitElement.endVertexProperty.get().positionProperty.get()
     );
 
     this.disposeFixedLengthCircuitElementNode = function() {

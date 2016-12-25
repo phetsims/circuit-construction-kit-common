@@ -86,11 +86,11 @@ define( function( require ) {
       var p1 = points[ i ];
       var p2 = points[ i + 1 ];
 
-      var p1X = Util.linear( start.x, end.x, this.startVertexProperty.get().position.x, this.endVertexProperty.get().position.x, p1.x );
-      var p1Y = Util.linear( start.y, end.y, this.startVertexProperty.get().position.y, this.endVertexProperty.get().position.y, p1.y );
+      var p1X = Util.linear( start.x, end.x, this.startVertexProperty.get().positionProperty.get().x, this.endVertexProperty.get().positionProperty.get().x, p1.x );
+      var p1Y = Util.linear( start.y, end.y, this.startVertexProperty.get().positionProperty.get().y, this.endVertexProperty.get().positionProperty.get().y, p1.y );
 
-      var p2X = Util.linear( start.x, end.x, this.startVertexProperty.get().position.x, this.endVertexProperty.get().position.x, p2.x );
-      var p2Y = Util.linear( start.y, end.y, this.startVertexProperty.get().position.y, this.endVertexProperty.get().position.y, p2.y );
+      var p2X = Util.linear( start.x, end.x, this.startVertexProperty.get().positionProperty.get().x, this.endVertexProperty.get().positionProperty.get().x, p2.x );
+      var p2Y = Util.linear( start.y, end.y, this.startVertexProperty.get().positionProperty.get().y, this.endVertexProperty.get().positionProperty.get().y, p2.y );
 
       var q1 = new Vector2( p1X, p1Y );
       var q2 = new Vector2( p2X, p2Y );
@@ -100,9 +100,9 @@ define( function( require ) {
     var trueLength = accumulatedDistance; // measured by code below
     this.length = trueLength - 1E-8; // changes the speed at which particles go through the light bulb
 
-    this.distanceBetweenVertices = startVertex.position.distance( endVertex.position );
+    this.distanceBetweenVertices = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
 
-    this.vertexDelta = endVertex.position.minus( startVertex.position );
+    this.vertexDelta = endVertex.positionProperty.get().minus( startVertex.positionProperty.get() );
   }
 
   circuitConstructionKitCommon.register( 'LightBulb', LightBulb );
@@ -129,11 +129,11 @@ define( function( require ) {
         var p1 = points[ i ];
         var p2 = points[ i + 1 ];
 
-        var p1X = Util.linear( start.x, end.x, this.startVertexProperty.get().position.x, this.startVertexProperty.get().position.x + this.vertexDelta.x, p1.x );
-        var p1Y = Util.linear( start.y, end.y, this.startVertexProperty.get().position.y, this.startVertexProperty.get().position.y + this.vertexDelta.y, p1.y );
+        var p1X = Util.linear( start.x, end.x, this.startVertexProperty.get().positionProperty.get().x, this.startVertexProperty.get().positionProperty.get().x + this.vertexDelta.x, p1.x );
+        var p1Y = Util.linear( start.y, end.y, this.startVertexProperty.get().positionProperty.get().y, this.startVertexProperty.get().positionProperty.get().y + this.vertexDelta.y, p1.y );
 
-        var p2X = Util.linear( start.x, end.x, this.startVertexProperty.get().position.x, this.startVertexProperty.get().position.x + this.vertexDelta.x, p2.x );
-        var p2Y = Util.linear( start.y, end.y, this.startVertexProperty.get().position.y, this.startVertexProperty.get().position.y + this.vertexDelta.y, p2.y );
+        var p2X = Util.linear( start.x, end.x, this.startVertexProperty.get().positionProperty.get().x, this.startVertexProperty.get().positionProperty.get().x + this.vertexDelta.x, p2.x );
+        var p2Y = Util.linear( start.y, end.y, this.startVertexProperty.get().positionProperty.get().y, this.startVertexProperty.get().positionProperty.get().y + this.vertexDelta.y, p2.y );
 
         var q1 = new Vector2( p1X, p1Y );
         var q2 = new Vector2( p2X, p2Y );
@@ -145,12 +145,12 @@ define( function( require ) {
           var position = q1.blend( q2, a );
 
           // Rotate about the start vertex.
-          var vd = this.endVertexProperty.get().position.minus( this.startVertexProperty.get().position );
+          var vd = this.endVertexProperty.get().positionProperty.get().minus( this.startVertexProperty.get().positionProperty.get() );
 
           var angle = vd.angle() - this.vertexDelta.angle();
 
           // rotate the point about the start vertex
-          return rotatedAbout( position, this.startVertexProperty.get().position, angle );
+          return rotatedAbout( position, this.startVertexProperty.get().positionProperty.get(), angle );
         }
         prev = accumulatedDistance;
       }

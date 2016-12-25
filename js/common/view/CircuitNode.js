@@ -177,9 +177,9 @@ define( function( require ) {
     this.visibleBoundsProperty.link( function( visibleBounds ) {
       for ( var i = 0; i < circuit.vertices.length; i++ ) {
         var vertex = circuit.vertices.get( i );
-        if ( !visibleBounds.containsPoint( vertex.position ) ) {
-          var closestPoint = visibleBounds.getClosestPoint( vertex.position.x, vertex.position.y );
-          var delta = closestPoint.minus( vertex.position );
+        if ( !visibleBounds.containsPoint( vertex.positionProperty.get() ) ) {
+          var closestPoint = visibleBounds.getClosestPoint( vertex.positionProperty.get().x, vertex.positionProperty.get().y );
+          var delta = closestPoint.minus( vertex.positionProperty.get() );
 
           // Find all vertices connected by fixed length nodes.
           var vertices = circuit.findAllFixedVertices( vertex );
@@ -288,7 +288,7 @@ define( function( require ) {
       var allDropTargets = this.getAllDropTargets( vertices );
       if ( allDropTargets ) {
         var sorted = _.sortBy( allDropTargets, function( dropTarget ) {
-          return dropTarget.src.unsnappedPosition.distance( dropTarget.dst.position );
+          return dropTarget.src.unsnappedPositionProperty.get().distance( dropTarget.dst.positionProperty.get() );
         } );
         return sorted[ 0 ];
       }
@@ -323,7 +323,7 @@ define( function( require ) {
 
       // If it is the edge of a fixed length circuit element, the element rotates and moves toward the mouse
       var vertexNode = this.getVertexNode( vertex );
-      vertexNode.startOffset = vertexNode.globalToParentPoint( point ).minus( vertex.unsnappedPosition );
+      vertexNode.startOffset = vertexNode.globalToParentPoint( point ).minus( vertex.unsnappedPositionProperty.get() );
     },
 
     // Vertices connected to the black box cannot be moved, but they can be rotated
@@ -331,26 +331,30 @@ define( function( require ) {
     rotateAboutFixedPivot: function( point, vertex, okToRotate, vertexNode, position, neighbors, vertices ) {
 
       // Don't traverse across the black box interface, or it would rotate objects on the other side
-      vertices = this.circuit.findAllFixedVertices( vertex, function( currentVertex, neighbor ) {return !currentVertex.blackBoxInterface;} );
-      var fixedNeighbors = neighbors.filter( function( neighbor ) {return neighbor.getOppositeVertex( vertex ).blackBoxInterface;} );
+      vertices = this.circuit.findAllFixedVertices( vertex, function( currentVertex, neighbor ) {
+        return !currentVertex.blackBoxInterfaceProperty.get();
+      } );
+      var fixedNeighbors = neighbors.filter( function( neighbor ) {
+        return neighbor.getOppositeVertex( vertex ).blackBoxInterfaceProperty.get();
+      } );
       if ( fixedNeighbors.length === 1 ) {
         var fixedNeighbor = fixedNeighbors[ 0 ];
         var fixedVertex = fixedNeighbor.getOppositeVertex( vertex );
-        var desiredAngle = position.minus( fixedVertex.position ).angle();
+        var desiredAngle = position.minus( fixedVertex.positionProperty.get() ).angle();
 
         var length = fixedNeighbor.distanceBetweenVertices;
         var indexOfFixedVertex = vertices.indexOf( fixedVertex );
         vertices.splice( indexOfFixedVertex, 1 );
 
-        var dest = Vector2.createPolar( length, desiredAngle ).plus( fixedVertex.position );
-        var src = vertex.position;
+        var dest = Vector2.createPolar( length, desiredAngle ).plus( fixedVertex.positionProperty.get() );
+        var src = vertex.positionProperty.get();
         var delta = dest.minus( src );
         var relative = Vector2.createPolar( length, desiredAngle + Math.PI );
 
         // Do not propose attachments, since connections cannot be made from a rotation.
         var attachable = [];
         this.translateVertexGroup( vertex, vertices, delta, function() {
-          vertex.unsnappedPosition = fixedVertex.unsnappedPosition.minus( relative );
+          vertex.unsnappedPositionProperty.set( fixedVertex.unsnappedPositionProperty.get().minus( relative ) );
         }, attachable );
       }
     },
@@ -364,7 +368,7 @@ define( function( require ) {
         circuitElementNode.circuitElement.insideTrueBlackBoxProperty.get() && circuitElementNode.moveToBack();
       };
       var vertexNodeToBack = function( nodeWithVertex ) {
-        (nodeWithVertex.vertex.insideTrueBlackBoxProperty.get() || nodeWithVertex.vertex.blackBoxInterface ) && nodeWithVertex.moveToBack();
+        (nodeWithVertex.vertex.insideTrueBlackBoxProperty.get() || nodeWithVertex.vertex.blackBoxInterfaceProperty.get() ) && nodeWithVertex.moveToBack();
       };
       this.solderNodes.forEach( vertexNodeToBack );
       this.vertexNodes.forEach( vertexNodeToBack );
@@ -387,7 +391,7 @@ define( function( require ) {
       // If any of the vertices connected by fixed length nodes is immobile, then the entire subgraph cannot be moved
       var rotated = false;
       for ( var i = 0; i < vertices.length; i++ ) {
-        if ( !vertices[ i ].draggable ) {
+        if ( !vertices[ i ].draggableProperty.get() ) {
 
           // See #108 multiple objects connected to the same origin vertex can cause problems.
           // Restrict ourselves to the case where one wire is attached
@@ -408,15 +412,15 @@ define( function( require ) {
         // Find the new relative angle
         var angle;
 
-        if ( vertex.unsnappedPosition.x === vertex.position.x && vertex.unsnappedPosition.y === vertex.position.y ) {
+        if ( vertex.unsnappedPositionProperty.get().x === vertex.positionProperty.get().x && vertex.unsnappedPositionProperty.get().y === vertex.positionProperty.get().y ) {
 
           // Rotate the way the element is going.
-          angle = position.minus( oppositeVertex.position ).angle();
+          angle = position.minus( oppositeVertex.positionProperty.get() ).angle();
         }
         else {
 
           // Lock in the angle if a match is proposed, otherwise things rotate uncontrollably
-          angle = vertex.position.minus( oppositeVertex.position ).angle();
+          angle = vertex.positionProperty.get().minus( oppositeVertex.positionProperty.get() ).angle();
         }
 
         // Maintain fixed length
@@ -424,14 +428,14 @@ define( function( require ) {
         var relative = Vector2.createPolar( length, angle + Math.PI );
         var oppositePosition = position.plus( relative );
 
-        var rotationDelta = oppositePosition.minus( oppositeVertex.unsnappedPosition );
+        var rotationDelta = oppositePosition.minus( oppositeVertex.unsnappedPositionProperty.get() );
 
         this.translateVertexGroup( vertex, vertices, rotationDelta, function() {
-          vertex.unsnappedPosition = oppositeVertex.unsnappedPosition.minus( relative );
+          vertex.unsnappedPositionPosition.set( oppositeVertex.unsnappedPositionProperty.get().minus( relative ) );
         }, [ vertex ] );
       }
       else {
-        var translationDelta = position.minus( vertex.unsnappedPosition );
+        var translationDelta = position.minus( vertex.unsnappedPositionProperty.get() );
         this.translateVertexGroup( vertex, vertices, translationDelta, null, vertices );
       }
     },
@@ -450,7 +454,7 @@ define( function( require ) {
 
       // Modify the delta to guarantee all vertices remain in bounds
       for ( i = 0; i < vertices.length; i++ ) {
-        var proposedPosition = vertices[ i ].unsnappedPosition.plus( unsnappedDelta );
+        var proposedPosition = vertices[ i ].unsnappedPositionProperty.get().plus( unsnappedDelta );
         if ( !bounds.containsPoint( proposedPosition ) ) {
           var closestPosition = bounds.getClosestPoint( proposedPosition.x, proposedPosition.y );
           var keepInBoundsDelta = closestPosition.minus( proposedPosition );
@@ -461,7 +465,7 @@ define( function( require ) {
       // Update the unsnapped position of the entire subgraph, i.e. where it would be if no matches are proposed.
       // Must do this before calling getBestDropTarget, because the unsnapped positions are used for target matching
       for ( var i = 0; i < vertices.length; i++ ) {
-        vertices[ i ].unsnappedPosition = vertices[ i ].unsnappedPosition.plus( unsnappedDelta );
+        vertices[ i ].unsnappedPositionProperty.set( vertices[ i ].unsnappedPositionProperty.get().plus( unsnappedDelta ) );
       }
 
       updatePositions && updatePositions();
@@ -471,11 +475,11 @@ define( function( require ) {
       var bestDropTarget = this.getBestDropTarget( attachable );
       var delta = Vector2.ZERO;
       if ( bestDropTarget ) {
-        delta = bestDropTarget.dst.unsnappedPosition.minus( bestDropTarget.src.unsnappedPosition );
+        delta = bestDropTarget.dst.unsnappedPositionProperty.get().minus( bestDropTarget.src.unsnappedPositionProperty.get() );
       }
 
       for ( i = 0; i < vertices.length; i++ ) {
-        vertices[ i ].position = vertices[ i ].unsnappedPosition.plus( delta );
+        vertices[ i ].positionProperty.set( vertices[ i ].unsnappedPositionProperty.get().plus( delta ) );
       }
     },
     /**
@@ -494,7 +498,7 @@ define( function( require ) {
 
       // If any of the vertices connected by fixed length nodes is immobile, then the entire subgraph cannot be moved
       for ( var i = 0; i < vertices.length; i++ ) {
-        if ( !vertices[ i ].draggable ) {
+        if ( !vertices[ i ].draggableProperty.get() ) {
           return;
         }
       }
@@ -505,7 +509,7 @@ define( function( require ) {
 
         // Set the new reference point for next drag
         for ( i = 0; i < vertices.length; i++ ) {
-          vertices[ i ].unsnappedPosition = vertices[ i ].position;
+          vertices[ i ].unsnappedPositionProperty.set( vertices[ i ].positionProperty.get() );
         }
       }
       vertexNode.startOffset = null;

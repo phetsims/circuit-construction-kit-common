@@ -115,15 +115,15 @@ define( function( require ) {
 
     // Position the checkbox
     var updateCheckBox = function() {
-      var center = switchModel.startVertexProperty.get().position.plus( switchModel.endVertexProperty.get().position ).timesScalar( 0.5 );
-      var normal = switchModel.endVertexProperty.get().position.minus( switchModel.startVertexProperty.get().position ).normalized().perpendicular().timesScalar( 50 );
+      var center = switchModel.startVertexProperty.get().positionProperty.get().plus( switchModel.endVertexProperty.get().positionProperty.get() ).timesScalar( 0.5 );
+      var normal = switchModel.endVertexProperty.get().positionProperty.get().minus( switchModel.startVertexProperty.get().positionProperty.get() ).normalized().perpendicular().timesScalar( 50 );
       checkBox.center = center.plus( normal );
     };
 
     var startListener = function( startPoint ) {
       lineNodeParent.setTranslation( startPoint.x, startPoint.y );
       highlightNodeParent.setTranslation( startPoint.x, startPoint.y );
-      endListener && endListener( switchModel.endVertexProperty.get().position );
+      endListener && endListener( switchModel.endVertexProperty.get().positionProperty.get() );
       if ( highlightNode.visible ) {
         highlightNode.shape = self.getHighlightStrokedShape( highlightStrokeStyles );
       }
@@ -138,8 +138,8 @@ define( function( require ) {
     switchModel.startVertexProperty.link( updateStartVertex );
 
     var endListener = function( endPoint ) {
-      lineNode.setPoint2( endPoint.distance( switchModel.startVertexProperty.get().position ), 0 );
-      var deltaVector = endPoint.minus( switchModel.startVertexProperty.get().position );
+      lineNode.setPoint2( endPoint.distance( switchModel.startVertexProperty.get().positionProperty.get() ), 0 );
+      var deltaVector = endPoint.minus( switchModel.startVertexProperty.get().positionProperty.get() );
       lineNodeParent.setRotation( deltaVector.angle() );
       highlightNodeParent.setRotation( deltaVector.angle() );
       if ( highlightNode.visible ) {
