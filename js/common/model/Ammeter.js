@@ -40,5 +40,11 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'Ammeter', Ammeter );
 
-  return inherit( Meter, Ammeter );
+  return inherit( Meter, Ammeter, {
+    reset: function() {
+      Meter.prototype.reset.call( this );
+      this.currentProperty.reset();
+      this.probePositionProperty.reset();
+    }
+  } );
 } );

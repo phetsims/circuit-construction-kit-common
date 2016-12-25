@@ -11,7 +11,6 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var PropertySet = require( 'AXON/PropertySet' );
   var Property = require( 'AXON/Property' );
   var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Circuit' );
   var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/CircuitStruct' );
@@ -107,7 +106,8 @@ define( function( require ) {
       this.circuit.updateElectronsInDirtyCircuitElements();
     },
     reset: function() {
-      PropertySet.prototype.reset.call( this );
+      this.exploreScreenRunningProperty.reset();
+      this.modeProperty.reset();
       this.circuit.reset();
       this.voltmeter.reset();
       this.ammeter.reset();

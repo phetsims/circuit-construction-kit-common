@@ -12,7 +12,6 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var PropertySet = require( 'AXON/PropertySet' );
   var Property = require( 'AXON/Property' );
   var Vector2 = require( 'DOT/Vector2' );
   var Emitter = require( 'AXON/Emitter' );
@@ -52,5 +51,11 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'Meter', Meter );
 
-  return inherit( Object, Meter );
+  return inherit( Object, Meter, {
+    reset: function() {
+      this.visibleProperty.reset();
+      this.bodyPositionProperty.reset();
+      this.draggingProbesWithBodyProperty.reset();
+    }
+  } );
 } );

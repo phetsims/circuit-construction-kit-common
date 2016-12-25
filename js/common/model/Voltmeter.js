@@ -46,5 +46,12 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'Voltmeter', Voltmeter );
 
-  return inherit( Meter, Voltmeter );
+  return inherit( Meter, Voltmeter, {
+    reset: function() {
+      Meter.prototype.reset.call( this );
+      this.voltageProperty.reset();
+      this.redProbePositionProperty.reset();
+      this.blackProbePositionProperty.reset();
+    }
+  } );
 } );
