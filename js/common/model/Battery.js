@@ -1,5 +1,4 @@
 // Copyright 2015-2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * The Battery is a circuit element that provides a fixed voltage difference.
@@ -19,12 +18,17 @@ define( function( require ) {
   var BATTERY_LENGTH = 102;
 
   /**
-   *
+   * @param {Vertex} startVertex
+   * @param {Vertex} endVertex
+   * @param {number} voltage
+   * @param {Object} [options]
    * @constructor
    */
   function Battery( startVertex, endVertex, voltage, options ) {
     assert && assert( typeof voltage === 'number', 'voltage should be a number' );
-    options = _.extend( { initialOrientation: 'right' }, options );
+    options = _.extend( {
+      initialOrientation: 'right'
+    }, options );
     FixedLengthCircuitElement.call( this, BATTERY_LENGTH, startVertex, endVertex );
     this.voltageProperty = new Property( voltage );
     Property.preventGetSet( this, 'voltage' );
@@ -37,6 +41,12 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'Battery', Battery );
 
   return inherit( FixedLengthCircuitElement, Battery, {
+
+    /**
+     * @param {function} getVertexIndex - a function that transforms vertices into indices.  TODO: better way to do this?
+     * @returns {Object} a state object that represents the battery
+     * @public
+     */
     toStateObjectWithVertexIndices: function( getVertexIndex ) {
       return _.extend( {
           voltage: this.voltageProperty.get()
