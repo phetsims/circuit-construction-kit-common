@@ -36,6 +36,7 @@ define( function( require ) {
     this.startVertexProperty = new Property( startVertex );
     this.endVertexProperty = new Property( endVertex );
     this.currentProperty = new Property( 0 );
+    this.isOverToolboxProperty = new Property( false );
 
     // @public - can be edited and dragged
     this.interactiveProperty = new Property( options.interactive );

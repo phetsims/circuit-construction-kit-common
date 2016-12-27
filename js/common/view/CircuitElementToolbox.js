@@ -35,6 +35,7 @@ define( function( require ) {
   /**
    * @param {Circuit} circuit
    * @param {CircuitNode} circuitNode
+   * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
@@ -243,6 +244,10 @@ define( function( require ) {
       spacing: CircuitConstructionKitConstants.toolboxItemSpacing,
       children: children
     } ), tandem );
+
+    circuit.isCircuitElementOverToolboxProperty.link( function( isCircuitElementOverToolbox ) {
+      self.stroke = isCircuitElementOverToolbox ? 'white' : 'black';
+    } );
   }
 
   circuitConstructionKitCommon.register( 'CircuitElementToolbox', CircuitElementToolbox );

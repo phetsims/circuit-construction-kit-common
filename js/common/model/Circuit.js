@@ -77,6 +77,26 @@ define( function( require ) {
     this.switches.addItemAddedListener( function( switchModel ) { switchModel.closedProperty.lazyLink( solve ); } );
     this.switches.addItemRemovedListener( function( switchModel ) { switchModel.closedProperty.unlink( solve ); } );
 
+    this.isCircuitElementOverToolboxProperty = new Property( false );
+    var counter = function() {
+      var circuitElements = self.circuitElements;
+      for ( var i = 0; i < circuitElements.length; i++ ) {
+        var element = circuitElements[ i ];
+        if ( element.isOverToolboxProperty.get() ) {
+          self.isCircuitElementOverToolboxProperty.set( true );
+          return;
+        }
+      }
+      self.isCircuitElementOverToolboxProperty.set( false );
+    };
+    this.wires.addItemAddedListener( function( wire ) {
+      wire.isOverToolboxProperty.link( counter );
+    } );
+    this.wires.addItemRemovedListener( function( wire ) {
+      wire.isOverToolboxProperty.unlink( counter );
+      counter();
+    } );
+
     // Keep track of which terminals are connected to other terminals
     // This is redundant (connections tracked in the elements above), but a central point for
     // observing creation/deletion of vertices for showing VertexNodes

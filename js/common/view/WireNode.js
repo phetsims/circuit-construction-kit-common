@@ -165,6 +165,7 @@ define( function( require ) {
           if ( wire.interactiveProperty.get() ) {
             circuitNode.startDrag( event.pointer.point, wire.startVertexProperty.get(), false );
             circuitNode.startDrag( event.pointer.point, wire.endVertexProperty.get(), false );
+            wire.isOverToolboxProperty.set( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) );
           }
           didDrag = false;
         },
@@ -172,13 +173,14 @@ define( function( require ) {
           if ( wire.interactiveProperty.get() ) {
             circuitNode.drag( event.pointer.point, wire.startVertexProperty.get(), false );
             circuitNode.drag( event.pointer.point, wire.endVertexProperty.get(), false );
+            wire.isOverToolboxProperty.set( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) );
             didDrag = true;
           }
         },
         end: function( event ) {
 
           // If over the toolbox, then drop into it, and don't process further
-          if ( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) ) {
+          if ( wire.isOverToolboxProperty.get() ) {
             circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
             return;
           }
