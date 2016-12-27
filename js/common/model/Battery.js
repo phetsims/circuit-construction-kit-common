@@ -15,7 +15,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
 
   // constants
-  var BATTERY_LENGTH = 102;
+  var BATTERY_LENGTH = 102;  // in view coordinates, which are scaled by joist
 
   /**
    * @param {Vertex} startVertex
@@ -30,11 +30,13 @@ define( function( require ) {
       initialOrientation: 'right'
     }, options );
     FixedLengthCircuitElement.call( this, BATTERY_LENGTH, startVertex, endVertex );
+
+    // @public {Property.<number>} the voltage of the battery
     this.voltageProperty = new Property( voltage );
     Property.preventGetSet( this, 'voltage' );
 
-    // @public (read-only) - track the initial state so the user can only create a certain number of "left" or "right" batteries
-    // from the toolbox.
+    // @public (read-only) - track the initial state so the user can only create a certain number of "left" or "right"
+    // batteries from the toolbox.
     this.initialOrientation = options.initialOrientation;
   }
 
