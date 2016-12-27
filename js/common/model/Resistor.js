@@ -31,7 +31,9 @@ define( function( require ) {
 
   return inherit( FixedLengthCircuitElement, Resistor, {
       toStateObjectWithVertexIndices: function( getVertexIndex ) {
-        return _.extend( { resistance: this.resistanceProperty.get() }, FixedLengthCircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex ) );
+        return _.extend( {
+          resistance: this.resistanceProperty.get()
+        }, FixedLengthCircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex ) );
       }
     }, {
       RESISTOR_LENGTH: RESISTOR_LENGTH
