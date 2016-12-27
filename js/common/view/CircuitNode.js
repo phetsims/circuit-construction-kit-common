@@ -431,7 +431,7 @@ define( function( require ) {
         var rotationDelta = oppositePosition.minus( oppositeVertex.unsnappedPositionProperty.get() );
 
         this.translateVertexGroup( vertex, vertices, rotationDelta, function() {
-          vertex.unsnappedPositionPosition.set( oppositeVertex.unsnappedPositionProperty.get().minus( relative ) );
+          vertex.unsnappedPositionProperty.set( oppositeVertex.unsnappedPositionProperty.get().minus( relative ) );
         }, [ vertex ] );
       }
       else {

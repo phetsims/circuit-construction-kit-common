@@ -151,11 +151,11 @@ define( function( require ) {
         // Only show on a tap, not on every drag.
         if ( vertex.interactiveProperty.get() && event.pointer.point.distance( p ) < CircuitConstructionKitConstants.tapThreshold ) {
 
-          vertex.selected = true;
+          vertex.selectedProperty.set( true );
 
           // When the user clicks on anything else, deselect the vertex
           var deselect = function() {
-            vertex.selected = false;
+            vertex.selectedProperty.set( false );
             event.pointer.removeInputListener( listener ); // Thanks, hoisting!
           };
           var listener = {

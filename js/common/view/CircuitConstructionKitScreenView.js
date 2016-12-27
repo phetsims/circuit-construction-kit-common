@@ -168,7 +168,7 @@ define( function( require ) {
     } );
     circuitConstructionKitModel.voltmeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
       if ( bodyNodeGlobalBounds.intersectsBounds( self.sensorToolbox.globalBounds ) ) {
-        circuitConstructionKitModel.voltmeter.visible = false;
+        circuitConstructionKitModel.voltmeter.visibleProperty.set( false );
       }
     } );
     circuitConstructionKitModel.voltmeter.visibleProperty.link( function( visible ) {
@@ -181,7 +181,7 @@ define( function( require ) {
     } );
     circuitConstructionKitModel.ammeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
       if ( bodyNodeGlobalBounds.intersectsBounds( self.sensorToolbox.globalBounds ) ) {
-        circuitConstructionKitModel.ammeter.visible = false;
+        circuitConstructionKitModel.ammeter.visibleProperty.set( false );
       }
     } );
     circuitConstructionKitModel.ammeter.visibleProperty.link( function( visible ) {
