@@ -2,7 +2,7 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- * A collection of circuit elements in the play area, not necessarily connected.  (For instance it could be 2 logical
+ * A collection of circuit elements in the play area, not necessarily connected.  (For instance it could be 2 disjoint
  * circuits).
  *
  * @author Sam Reid (PhET Interactive Simulations)
@@ -34,7 +34,7 @@ define( function( require ) {
   var SNAP_RADIUS = 30;
 
   /**
-   *
+   * @param tandem
    * @constructor
    */
   function Circuit( tandem ) {
