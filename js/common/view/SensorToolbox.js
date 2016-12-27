@@ -36,7 +36,7 @@ define( function( require ) {
       down: function( event ) {
         var viewPosition = self.globalToParentPoint( event.pointer.point );
         voltmeterNode.voltmeter.draggingProbesWithBodyProperty.set( true );
-        voltmeterNode.voltmeter.visibleProperty.set( true )
+        voltmeterNode.voltmeter.visibleProperty.set( true );
         voltmeterNode.voltmeter.bodyPositionProperty.set( viewPosition );
         voltmeterNode.movableDragHandler.startDrag( event );
       }
