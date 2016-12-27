@@ -28,7 +28,7 @@ define( function( require ) {
 
     Meter.call( this, tandem );
 
-    // @public {number|null} the full-precision reading on the ammeter
+    // @public {number|null} the full-precision reading on the ammeter.  It will be formatted for display in the view.
     this.currentProperty = new Property( null, {
       tandem: tandem.createTandem( 'currentProperty' ),
       phetioValueType: TNumber( { units: 'amperes' } )
