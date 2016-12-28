@@ -18,7 +18,7 @@ define( function( require ) {
   require( 'ifphetio!PHET_IO/simulations/circuit-construction-kit-black-box-study/circuit-construction-kit-api' );
 
   // constants
-  var tandem = Tandem.createRootTandem();
+  var TANDEM = Tandem.createRootTandem();
 
   // strings
   var circuitConstructionKitTitleString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/circuit-construction-kit.title' );
@@ -39,7 +39,7 @@ define( function( require ) {
   if ( !window.circuitConstructionKitTestSuite ) {
     SimLauncher.launch( function() {
       var sim = new Sim( circuitConstructionKitTitleString, [
-        new ExploreScreen( tandem.createTandem( 'exploreScreen' ) ),
+        new ExploreScreen( TANDEM.createTandem( 'exploreScreen' ) ),
       ], simOptions );
       sim.start();
     } );
