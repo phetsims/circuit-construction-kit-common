@@ -60,8 +60,7 @@ define( function( require ) {
           top: visibleBounds.top + LAYOUT_INSET
         };
       },
-      getCircuitEditPanelLayoutPosition: CircuitElementEditContainerPanel.GET_LAYOUT_POSITION,
-      showSaveButton: CircuitConstructionKitQueryParameters.showSaveButton
+      getCircuitEditPanelLayoutPosition: CircuitElementEditContainerPanel.GET_LAYOUT_POSITION
     }, options );
     this.circuitConstructionKitModel = circuitConstructionKitModel;
     ScreenView.call( this );
@@ -142,20 +141,7 @@ define( function( require ) {
       window.history.pushState( { circuit: stateObject }, 'title', text + join + 'circuit=' + compressed );
     };
 
-    // If autosave is set, save state to URL when topology changes.  This facilitates Undo via Back button
-    if ( CircuitConstructionKitQueryParameters.autosave ) {
-      console.log( 'autosave' );
-      var t = function() {
-        if ( enableSave ) {
-          setTimeout( pushState, 0 );
-        }
-      };
-
-      // Save a circuit when vertices are joined or when a component is deleted.
-      circuitConstructionKitModel.circuit.vertices.addItemRemovedListener( t );
-    }
-
-    if ( options.showSaveButton ) {
+    if ( CircuitConstructionKitQueryParameters.showSaveButton ) {
       var saveButton = new TextPushButton( 'Save', {
         listener: pushState
       } );
@@ -246,7 +232,7 @@ define( function( require ) {
         } );
       }
 
-      if ( options.showSaveButton ) {
+      if ( CircuitConstructionKitQueryParameters.showSaveButton ) {
         saveButton.mutate( {
           right: visibleBounds.right - LAYOUT_INSET,
           bottom: resetAllButton.top - LAYOUT_INSET

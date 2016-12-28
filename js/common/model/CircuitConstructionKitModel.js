@@ -52,7 +52,7 @@ define( function( require ) {
     } );
 
     // When the user manipulates something, hide the readouts, see https://github.com/phetsims/circuit-construction-kit/issues/130
-    // When any of the following conditions occurs, hide the readouts:
+    // The following cases result in pausing
     // 1. More components are dragged out of the toolbox
     // 2. Any vertex is broken
     // 3. Component voltage/resistance is edited
