@@ -55,7 +55,9 @@ define( function( require ) {
 
     // @public (read-only) - indicate when this circuit element has been connected
     this.connectedEmitter = new Emitter();
-    this.moveToFrontEmitter = new Emitter();  // TODO: Rename this emitter?
+
+    // @public (read-only) - indicate when the circuit element has been moved to the front in z-ordering
+    this.moveToFrontEmitter = new Emitter();
 
     // @public (read-only) - indicate when an adjacent vertex has moved to front, so that the Circuit Element node can
     // move to front too

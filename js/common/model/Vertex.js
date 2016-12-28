@@ -98,6 +98,7 @@ define( function( require ) {
     Property.preventGetSet( this, 'blackBoxInterface' );
     Property.preventGetSet( this, 'insideTrueBlackBox' );
 
+    // @public (read-only) - indicate when the vertex has been moved to the front in z-ordering
     this.moveToFrontEmitter = new Emitter();
   }
 
