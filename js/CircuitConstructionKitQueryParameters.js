@@ -1,5 +1,4 @@
 // Copyright 2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * Query parameters supported by this simulation.
@@ -12,26 +11,30 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
 
-  var CircuitConstructionKitQueryParameters = QueryStringMachine.getAll( {
+  var CircuitConstructionKitQueryParameters = window.QueryStringMachine.getAll( {
 
-    // Show the voltage above each node, for debugging the circuit physics
+    // Show a readout for each vertex, for debugging the circuit physics
     vertexDisplay: {
       type: 'string',
       defaultValue: null,
-      validValues: [ null, 'voltage', 'index' ]
+      validValues: [
+        null, // Show nothing
+        'voltage', // Show the voltage
+        'index' // Show the vertex index
+      ]
     },
 
-    //TODO document
+    // Shows the play/pause button.  When the user changes something, the sim automatically pauses.
     showPlayPauseButton: { type: 'flag' },
 
-    //TODO document
+    // Shows a button that saves the circuit
     showSaveButton: { type: 'flag' },
 
-    //TODO document
-    circuit: { type: 'flag' },
-
-    //TODO document
-    autosave: { type: 'flag' }
+    // The circuit, as a LZW-compressed string
+    circuit: {
+      type: 'string',
+      defaultValue: null
+    }
   } );
 
   circuitConstructionKitCommon.register( 'CircuitConstructionKitQueryParameters', CircuitConstructionKitQueryParameters );

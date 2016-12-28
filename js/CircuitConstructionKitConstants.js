@@ -1,5 +1,4 @@
 // Copyright 2015-2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * Constants used in all of the sims/screens/scenes.
@@ -23,19 +22,47 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'CircuitConstructionKitConstants', CircuitConstructionKitConstants );
 
   return inherit( Object, CircuitConstructionKitConstants, {}, {
-    TOOLBOX_ICON_SIZE: 60, // Width or height for icons in the toolboxes
+
+    // Maximum size for Width or height of icons in the circuit element toolbox or sensor toolbox
+    TOOLBOX_ICON_SIZE: 60,
+
+    // Spacing between adjacent items in the circuit element toolbox or sensor toolbox
     TOOLBOX_ITEM_SPACING: 30,
-    SOLDER_COLOR: '#ae9f9e',
+
+    // The resistance of a default resistor, also used in icons
     DEFAULT_RESISTANCE: 4.5,
+
+    // Padding for placement of control panels
     LAYOUT_INSET: 14,
-    TAP_THRESHOLD: 10, // Number of pixels (screen coordinates) that constitutes a tap instead of a drag
-    FONT_AWESOME_ICON_SCALE: 0.85, // Uniform scaling for all font awesome node button icons
-    HIGHLIGHT_COLOR: 'yellow',
+
+    // Number of pixels (screen coordinates) that constitutes a tap instead of a drag
+    TAP_THRESHOLD: 10,
+
+    // Uniform scaling for all font awesome node button icons
+    FONT_AWESOME_ICON_SCALE: 0.85,
+
+    // Color for selected objects (CircuitElement and Vertex)
+    HIGHLIGHT_COLOR: new Color( 'yellow' ),
+
+    // Line width for highlighting for selected objects
     HIGHLIGHT_LINE_WIDTH: 5,
+
+    // Default resistivity for Wires and Switches (whose resistance varies with length)
     DEFAULT_RESISTIVITY: 1E-4,
+
+    // The lowest resistance a Wire or Switch can have
     MINIMUM_RESISTANCE: 1E-8,
-    DRAG_BOUNDS_EROSION: 10, // How far to erode the visible bounds for keeping the probes in bounds.
+
+    // How far to erode the visible bounds for keeping the probes in bounds.
+    DRAG_BOUNDS_EROSION: 10,
+
+    // Distance between adjacent electrons for electron layout
     ELECTRON_SEPARATION: 28,
-    BACKGROUND_COLOR: new Color( '#c6dbf9' )
+
+    // Color of the background
+    BACKGROUND_COLOR: new Color( '#c6dbf9' ),
+
+    // Length of a battery
+    BATTERY_LENGTH: 102
   } );
 } );

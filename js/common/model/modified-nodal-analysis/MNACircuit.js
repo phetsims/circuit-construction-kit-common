@@ -16,7 +16,7 @@ define( function( require ) {
   var Matrix = require( 'DOT/Matrix' );
 
   // constants
-  var debug = false;
+  var DEBUG = false;
 
   /**
    * Find the index of an element in an array
@@ -448,7 +448,7 @@ define( function( require ) {
         } );
       }
 
-      if ( debug ) {
+      if ( DEBUG ) {
         console.log( 'Debugging circuit: ' + this.toString() );
         console.log( equations.join( '\n' ) );
         console.log( 'a=' );
@@ -459,7 +459,7 @@ define( function( require ) {
       }
 
       var x = A.solve( z );
-      if ( debug ) {
+      if ( DEBUG ) {
         console.log( 'x=' );
         console.log( x.toString() );
       }

@@ -33,7 +33,7 @@ define( function( require ) {
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - if null, this WireNode is just an icon
    * @param {CircuitNode} circuitNode
    * @param {Wire} wire
-   * @param {Property.<boolean>} to match the constructors of other circuit element nodes
+   * @param {Property.<boolean>} runningProperty - to match the constructors of other circuit element nodes
    * @param {Tandem} tandem
    * @constructor
    */

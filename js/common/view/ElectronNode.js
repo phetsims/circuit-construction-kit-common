@@ -19,15 +19,13 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
 
   // constants
-  var radius = 10;
-
-  // Scale up before rasterization so it won't be too pixellated/fuzzy
-  var scale = 2;
+  var RADIUS = 10;
+  var SCALE = 2; // Scale up before rasterization so it won't be too pixellated/fuzzy
 
   // Copied from John Travoltage
   var minusChargeNode = new Node( {
     children: [
-      new Circle( radius, {
+      new Circle( RADIUS, {
         boundsMethod: 'none',
         fill: new RadialGradient( 2, -3, 2, 2, -3, 7 )
           .addColorStop( 0, '#4fcfff' )
@@ -41,7 +39,7 @@ define( function( require ) {
         centerY: 0
       } )
     ],
-    scale: scale,
+    scale: SCALE,
     boundsMethod: 'none'
   } );
   minusChargeNode.top = 0;
@@ -51,7 +49,7 @@ define( function( require ) {
   minusChargeNode.toImage( function( im ) {
 
     //Scale back down so the image will be the desired size
-    node.children = [ new Image( im, { scale: 1.0 / scale } ) ];
+    node.children = [ new Image( im, { scale: 1.0 / SCALE } ) ];
   }, 0, 0, minusChargeNode.width, minusChargeNode.height );
 
   function ElectronNode( electron, revealingProperty ) {

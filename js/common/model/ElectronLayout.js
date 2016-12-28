@@ -15,7 +15,7 @@ define( function( require ) {
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   // constants
-  var ELECTRON_DX = CircuitConstructionKitConstants.ELECTRON_SEPARATION;
+  var ELECTRON_SEPARATION = CircuitConstructionKitConstants.ELECTRON_SEPARATION;
 
   function ElectronLayout( circuit ) {
     this.circuit = circuit;
@@ -37,14 +37,14 @@ define( function( require ) {
       this.electrons.removeAll( particlesInBranch );
 
       // compress or expand, but fix a particle at startingPoint and endingPoint.
-      var offset = ELECTRON_DX / 2;
+      var offset = ELECTRON_SEPARATION / 2;
 
       var circuitLength = circuitElement.length;
       var endingPoint = circuitLength - offset;
       var startingPoint = offset;
       var length = endingPoint - startingPoint;
 
-      var numberParticles = length / ELECTRON_DX;
+      var numberParticles = length / ELECTRON_SEPARATION;
       var integralNumberParticles = Math.ceil( numberParticles );
       var density = ( integralNumberParticles - 1) / length;
       var dx = 1 / density;

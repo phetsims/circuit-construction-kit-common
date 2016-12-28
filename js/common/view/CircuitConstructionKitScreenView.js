@@ -32,7 +32,7 @@ define( function( require ) {
   var Plane = require( 'SCENERY/nodes/Plane' );
 
   // constants
-  var inset = CircuitConstructionKitConstants.LAYOUT_INSET;
+  var LAYOUT_INSET = CircuitConstructionKitConstants.LAYOUT_INSET;
   var BACKGROUND_COLOR = CircuitConstructionKitConstants.BACKGROUND_COLOR;
 
   /**
@@ -56,12 +56,11 @@ define( function( require ) {
       numberOfResistorsInToolbox: CircuitElementToolbox.NUMBER_OF_RESISTORS,
       getToolboxPosition: function( visibleBounds ) {
         return {
-          left: visibleBounds.left + inset,
-          top: visibleBounds.top + inset
+          left: visibleBounds.left + LAYOUT_INSET,
+          top: visibleBounds.top + LAYOUT_INSET
         };
       },
-      getCircuitEditPanelLayoutPosition: CircuitElementEditContainerPanel.GET_LAYOUT_POSITION,
-      showSaveButton: CircuitConstructionKitQueryParameters.showSaveButton
+      getCircuitEditPanelLayoutPosition: CircuitElementEditContainerPanel.GET_LAYOUT_POSITION
     }, options );
     this.circuitConstructionKitModel = circuitConstructionKitModel;
     ScreenView.call( this );
@@ -142,20 +141,7 @@ define( function( require ) {
       window.history.pushState( { circuit: stateObject }, 'title', text + join + 'circuit=' + compressed );
     };
 
-    // If autosave is set, save state to URL when topology changes.  This facilitates Undo via Back button
-    if ( CircuitConstructionKitQueryParameters.autosave ) {
-      console.log( 'autosave' );
-      var t = function() {
-        if ( enableSave ) {
-          setTimeout( pushState, 0 );
-        }
-      };
-
-      // Save a circuit when vertices are joined or when a component is deleted.
-      circuitConstructionKitModel.circuit.vertices.addItemRemovedListener( t );
-    }
-
-    if ( options.showSaveButton ) {
+    if ( CircuitConstructionKitQueryParameters.showSaveButton ) {
       var saveButton = new TextPushButton( 'Save', {
         listener: pushState
       } );
@@ -241,15 +227,15 @@ define( function( require ) {
       // Float the resetAllButton to the bottom right
       if ( options.showResetAllButton ) {
         resetAllButton.mutate( {
-          right: visibleBounds.right - inset,
-          bottom: visibleBounds.bottom - inset
+          right: visibleBounds.right - LAYOUT_INSET,
+          bottom: visibleBounds.bottom - LAYOUT_INSET
         } );
       }
 
-      if ( options.showSaveButton ) {
+      if ( CircuitConstructionKitQueryParameters.showSaveButton ) {
         saveButton.mutate( {
-          right: visibleBounds.right - inset,
-          bottom: resetAllButton.top - inset
+          right: visibleBounds.right - LAYOUT_INSET,
+          bottom: resetAllButton.top - LAYOUT_INSET
         } );
       }
 
@@ -261,12 +247,12 @@ define( function( require ) {
       self.circuitElementToolbox.mutate( options.getToolboxPosition( visibleBounds ) );
 
       self.displayOptionsPanel.mutate( {
-        right: visibleBounds.right - inset,
-        top: visibleBounds.top + inset
+        right: visibleBounds.right - LAYOUT_INSET,
+        top: visibleBounds.top + LAYOUT_INSET
       } );
       self.sensorToolbox.mutate( {
-        right: visibleBounds.right - inset,
-        top: self.displayOptionsPanel.bottom + inset
+        right: visibleBounds.right - LAYOUT_INSET,
+        top: self.displayOptionsPanel.bottom + LAYOUT_INSET
       } );
     } );
 
@@ -330,8 +316,8 @@ define( function( require ) {
 
         // Float the playPauseButton to the bottom left
         playPauseButton.mutate( {
-          left: visibleBounds.left + inset,
-          bottom: visibleBounds.bottom - inset
+          left: visibleBounds.left + LAYOUT_INSET,
+          bottom: visibleBounds.bottom - LAYOUT_INSET
         } );
       } );
     }

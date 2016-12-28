@@ -25,10 +25,10 @@ define( function( require ) {
   var MIN_CURRENT = Math.pow( 10, -10 );
 
   var MAX_STEP = CircuitConstructionKitConstants.ELECTRON_SEPARATION * 0.43;
-  var numEqualize = 2;
-  var speedScale = 1 / 3;
-  var timeScale = 100;
-  var highestSoFar = null;//for debugging
+  var NUMBER_OF_EQUALIZE_STEPS = 2;
+  var SPEED_SCALE = 1 / 3;
+  var TIME_SCALE = 100;
+  var HIGHEST_SO_FAR = null;//for debugging
 
   var getUpperNeighborInBranch = function( circuit, electron, branchElectrons ) {
     var closestUpperNeighbor = null;
@@ -105,9 +105,9 @@ define( function( require ) {
 
       // dt would ideally be around 16.666ms = 0.0166 sec
       // let's cap it at double that
-      dt = Math.min( dt, 1 / 60 * 2 ) * timeScale;
+      dt = Math.min( dt, 1 / 60 * 2 ) * TIME_SCALE;
       var maxCurrent = this.getMaxCurrent(); //TODO: Shouldn't this use abs?
-      var maxVelocity = maxCurrent * speedScale;
+      var maxVelocity = maxCurrent * SPEED_SCALE;
       var maxStep = maxVelocity * dt;
       if ( maxStep >= MAX_STEP ) {
         this.scale = MAX_STEP / maxStep;
@@ -129,7 +129,7 @@ define( function( require ) {
       }
 
       //maybe this should be done in random order, otherwise we may get artefacts.
-      for ( i = 0; i < numEqualize; i++ ) {
+      for ( i = 0; i < NUMBER_OF_EQUALIZE_STEPS; i++ ) {
         this.equalizeAll( dt );
       }
 
@@ -182,14 +182,14 @@ define( function( require ) {
       var vec = dest - myloc;
       var sameDirAsCurrent = vec > 0 && -electron.circuitElement.currentProperty.get() > 0;
       var myscale = 1000.0 / 30.0;//to have same scale as 3.17.00
-      var correctionSpeed = .055 / numEqualize * myscale;
+      var correctionSpeed = .055 / NUMBER_OF_EQUALIZE_STEPS * myscale;
       if ( !sameDirAsCurrent ) {
-        correctionSpeed = .01 / numEqualize * myscale;
+        correctionSpeed = .01 / NUMBER_OF_EQUALIZE_STEPS * myscale;
       }
       var maxDX = Math.abs( correctionSpeed * dt );
 
-      if ( distMoving > highestSoFar ) {//For debugging.
-        highestSoFar = distMoving;
+      if ( distMoving > HIGHEST_SO_FAR ) {//For debugging.
+        HIGHEST_SO_FAR = distMoving;
       }
 
       if ( distMoving > maxDX ) {
@@ -214,7 +214,7 @@ define( function( require ) {
         return;
       }
 
-      var speed = current * speedScale;
+      var speed = current * SPEED_SCALE;
       var dx = speed * dt;
       dx *= this.scale;
       var newX = x + dx;

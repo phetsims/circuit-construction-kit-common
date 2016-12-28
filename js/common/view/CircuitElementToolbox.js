@@ -30,7 +30,7 @@ define( function( require ) {
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
 
   // constants
-  var batteryLength = Battery.BATTERY_LENGTH;
+  var BATTERY_LENGTH = CircuitConstructionKitConstants.BATTERY_LENGTH;
   var TOOLBOX_ICON_SIZE = CircuitConstructionKitConstants.TOOLBOX_ICON_SIZE;
 
   /**
@@ -117,8 +117,8 @@ define( function( require ) {
       rotation: Math.PI
     } ).addInputListener( createToolIconInputListener(
       function( position ) {
-        var startVertex = createVertex( position.x - batteryLength / 2, position.y );
-        var endVertex = createVertex( position.x + batteryLength / 2, position.y );
+        var startVertex = createVertex( position.x - BATTERY_LENGTH / 2, position.y );
+        var endVertex = createVertex( position.x + BATTERY_LENGTH / 2, position.y );
         return new Battery( endVertex, startVertex, 9.0, {
           initialOrientation: 'left'
         } );
@@ -136,8 +136,8 @@ define( function( require ) {
       scale: TOOLBOX_ICON_SIZE / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height )
     } ).addInputListener( createToolIconInputListener(
       function( position ) {
-        var startVertex = createVertex( position.x - batteryLength / 2, position.y );
-        var endVertex = createVertex( position.x + batteryLength / 2, position.y );
+        var startVertex = createVertex( position.x - BATTERY_LENGTH / 2, position.y );
+        var endVertex = createVertex( position.x + BATTERY_LENGTH / 2, position.y );
         return new Battery( startVertex, endVertex, 9.0, {
           initialOrientation: 'right'
         } );
