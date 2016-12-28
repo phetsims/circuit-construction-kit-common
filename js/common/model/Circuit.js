@@ -454,7 +454,6 @@ define( function( require ) {
 
     // @public
     solve: function() {
-      // console.log( JSON.stringify( this.toStateObject(), null, 2 ) );
 
       var self = this;
 
