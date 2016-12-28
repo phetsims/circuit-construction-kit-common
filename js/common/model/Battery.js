@@ -49,12 +49,10 @@ define( function( require ) {
      * @returns {Object} a state object that represents the battery
      * @public
      */
-    toStateObjectWithVertexIndices: function( getVertexIndex ) {
-      return _.extend( {
-          voltage: this.voltageProperty.get()
-        },
-        FixedLengthCircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex )
-      );
+    attributesToStateObject: function() {
+      return {
+        voltage: this.voltageProperty.get()
+      };
     }
   }, {
     BATTERY_LENGTH: BATTERY_LENGTH

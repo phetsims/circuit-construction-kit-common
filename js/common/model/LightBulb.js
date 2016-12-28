@@ -108,10 +108,10 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'LightBulb', LightBulb );
 
   return inherit( FixedLengthCircuitElement, LightBulb, {
-    toStateObjectWithVertexIndices: function( getVertexIndex ) {
-      return _.extend( {
+    attributesToStateObject: function() {
+      return {
         resistance: this.resistanceProperty.get()
-      }, FixedLengthCircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex ) );
+      };
     },
 
     /**

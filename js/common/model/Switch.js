@@ -69,11 +69,11 @@ define( function( require ) {
       CircuitElement.prototype.dispose.call( this );
       this.disposeSwitch();
     },
-    toStateObjectWithVertexIndices: function( getVertexIndex ) {
-      return _.extend( {
+    attributesToStateObject: function() {
+      return {
         resistance: this.resistanceProperty.get(),
         resistivity: this.resistivityProperty.get()
-      }, CircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex ) );
+      };
     }
   } );
 } );

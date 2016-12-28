@@ -60,11 +60,11 @@ define( function( require ) {
       this.disposeWire();
       CircuitElement.prototype.dispose.call( this );
     },
-    toStateObjectWithVertexIndices: function( getVertexIndex ) {
-      return _.extend( {
+    attributesToStateObject: function() {
+      return {
         resistance: this.resistanceProperty.get(),
         resistivity: this.resistivityProperty.get()
-      }, CircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex ) );
+      };
     }
   } );
 } );

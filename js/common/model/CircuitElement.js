@@ -146,12 +146,6 @@ define( function( require ) {
       return (this.startVertexProperty.get() === vertex1 && this.endVertexProperty.get() === vertex2) ||
              (this.startVertexProperty.get() === vertex2 && this.endVertexProperty.get() === vertex1);
     },
-    toStateObjectWithVertexIndices: function( getVertexIndex ) {
-      return {
-        startVertex: getVertexIndex( this.startVertexProperty.get() ),
-        endVertex: getVertexIndex( this.endVertexProperty.get() )
-      };
-    },
     getPosition: function( distanceAlongWire ) {
       return this.startVertexProperty.get().positionProperty.get().blend( this.endVertexProperty.get().positionProperty.get(), distanceAlongWire / this.length );
     },

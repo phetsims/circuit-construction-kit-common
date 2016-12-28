@@ -857,7 +857,10 @@ define( function( require ) {
        */
       var getArray = function( circuitElements ) {
         return circuitElements.map( function( element ) {
-          return element.toStateObjectWithVertexIndices( getVertexIndex );
+          return _.extend( {
+            startVertex: getVertexIndex( element.startVertexProperty.get() ),
+            endVertex: getVertexIndex( element.endVertexProperty.get() ),
+          }, element.attributesToStateObject() );
         } ).getArray();
       };
       return {
