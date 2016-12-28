@@ -76,7 +76,7 @@ define( function( require ) {
 
     var options = {
       name: 'Explore', //TODO i18n
-      backgroundColorProperty: new Property( Color.toColor( CircuitConstructionKitConstants.BACKGROUND_COLOR ) ),
+      backgroundColorProperty: new Property( CircuitConstructionKitConstants.BACKGROUND_COLOR ),
       homeScreenIcon: icon,
       tandem: tandem
     };
