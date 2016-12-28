@@ -91,7 +91,7 @@ define( function( require ) {
     var resistorNode = new ResistorNode(
       null,
       null,
-      new Resistor( new Vertex( 0, 0 ), new Vertex( Resistor.RESISTOR_LENGTH, 0 ), CircuitConstructionKitConstants.DEFAULT_RESISTANCE ),
+      new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ), CircuitConstructionKitConstants.DEFAULT_RESISTANCE ),
       null,
       tandem.createTandem( 'resistorIcon' ), {
         icon: true
@@ -193,7 +193,7 @@ define( function( require ) {
     } )
       .addInputListener( createToolIconInputListener(
         function( position ) {
-          var resistorLength = Resistor.RESISTOR_LENGTH;
+          var resistorLength = CircuitConstructionKitConstants.RESISTOR_LENGTH;
           var startVertex = createVertex( position.x - resistorLength / 2, position.y );
           var endVertex = createVertex( position.x + resistorLength / 2, position.y );
           return new Resistor( startVertex, endVertex, CircuitConstructionKitConstants.DEFAULT_RESISTANCE );

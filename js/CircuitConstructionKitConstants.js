@@ -63,6 +63,9 @@ define( function( require ) {
     BACKGROUND_COLOR: new Color( '#c6dbf9' ),
 
     // Length of a battery
-    BATTERY_LENGTH: 102
+    BATTERY_LENGTH: 102,
+
+    // Length of a resistor
+    RESISTOR_LENGTH: 110
   } );
 } );

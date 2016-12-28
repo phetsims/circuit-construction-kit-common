@@ -48,7 +48,7 @@ define( function( require ) {
     var resistorNode = new ResistorNode(
       null,
       null,
-      new Resistor( new Vertex( 0, 0 ), new Vertex( Resistor.RESISTOR_LENGTH, 0 ), CircuitConstructionKitConstants.DEFAULT_RESISTANCE ),
+      new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ), CircuitConstructionKitConstants.DEFAULT_RESISTANCE ),
       null,
       tandem.createTandem( 'resistorIcon' ), {
         icon: true
