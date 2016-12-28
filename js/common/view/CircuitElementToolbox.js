@@ -30,7 +30,7 @@ define( function( require ) {
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
 
   // constants
-  var BATTERY_LENGTH = Battery.BATTERY_LENGTH;
+  var BATTERY_LENGTH = CircuitConstructionKitConstants.BATTERY_LENGTH;
   var TOOLBOX_ICON_SIZE = CircuitConstructionKitConstants.TOOLBOX_ICON_SIZE;
 
   /**

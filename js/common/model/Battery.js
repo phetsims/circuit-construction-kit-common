@@ -10,12 +10,10 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/FixedLengthCircuitElement' );
   var Property = require( 'AXON/Property' );
-
-  // constants
-  var BATTERY_LENGTH = 102;  // in view coordinates, which are scaled by joist
 
   /**
    * @param {Vertex} startVertex
@@ -29,7 +27,7 @@ define( function( require ) {
     options = _.extend( {
       initialOrientation: 'right'
     }, options );
-    FixedLengthCircuitElement.call( this, BATTERY_LENGTH, startVertex, endVertex );
+    FixedLengthCircuitElement.call( this, CircuitConstructionKitConstants.BATTERY_LENGTH, startVertex, endVertex );
 
     // @public {Property.<number>} the voltage of the battery
     this.voltageProperty = new Property( voltage );
@@ -53,7 +51,5 @@ define( function( require ) {
         voltage: this.voltageProperty.get()
       };
     }
-  }, {
-    BATTERY_LENGTH: BATTERY_LENGTH
   } );
 } );

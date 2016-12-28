@@ -60,6 +60,9 @@ define( function( require ) {
     ELECTRON_SEPARATION: 28,
 
     // Color of the background
-    BACKGROUND_COLOR: new Color( '#c6dbf9' )
+    BACKGROUND_COLOR: new Color( '#c6dbf9' ),
+
+    // Length of a battery
+    BATTERY_LENGTH: 102
   } );
 } );
