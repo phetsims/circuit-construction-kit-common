@@ -45,8 +45,7 @@ define( function( require ) {
   return inherit( FixedLengthCircuitElement, Battery, {
 
     /**
-     * @param {function} getVertexIndex - a function that transforms vertices into indices.  TODO: better way to do this?
-     * @returns {Object} a state object that represents the battery
+     * @returns {Object} the attributes of the battery in a state object
      * @public
      */
     attributesToStateObject: function() {
