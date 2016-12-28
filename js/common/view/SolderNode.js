@@ -16,6 +16,9 @@ define( function( require ) {
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var Node = require( 'SCENERY/nodes/Node' );
 
+  // constants
+  var SOLDER_COLOR = '#ae9f9e';
+
   /**
    *
    * @constructor
@@ -37,7 +40,7 @@ define( function( require ) {
 
     var updateShape = function() {
       var edgeCount = circuit.countCircuitElements( vertex );
-      dottedLineNode.fill = edgeCount > 1 ? CircuitConstructionKitConstants.SOLDER_COLOR : null;
+      dottedLineNode.fill = edgeCount > 1 ? SOLDER_COLOR : null;
     };
     circuit.vertices.addItemAddedListener( updateShape );
     circuit.vertices.addItemRemovedListener( updateShape );

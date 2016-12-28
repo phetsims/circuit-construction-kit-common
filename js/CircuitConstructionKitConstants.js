@@ -23,9 +23,8 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'CircuitConstructionKitConstants', CircuitConstructionKitConstants );
 
   return inherit( Object, CircuitConstructionKitConstants, {}, {
-    TOOLBOX_ICON_SIZE: 60, // Width or height for icons in the toolboxes
-    TOOLBOX_ITEM_SPACING: 30,
-    SOLDER_COLOR: '#ae9f9e',
+    TOOLBOX_ICON_SIZE: 60, // Maximum size for Width or height of icons in the circuit element toolbox or sensor toolbox
+    TOOLBOX_ITEM_SPACING: 30, // Spacing between adjacent items in the circuit element toolbox or sensor toolbox
     DEFAULT_RESISTANCE: 4.5,
     LAYOUT_INSET: 14,
     TAP_THRESHOLD: 10, // Number of pixels (screen coordinates) that constitutes a tap instead of a drag
