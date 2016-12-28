@@ -30,13 +30,12 @@ define( function( require ) {
     LAYOUT_INSET: 14,
     TAP_THRESHOLD: 10, // Number of pixels (screen coordinates) that constitutes a tap instead of a drag
     FONT_AWESOME_ICON_SCALE: 0.85, // Uniform scaling for all font awesome node button icons
-    highlightColor: 'yellow',
-    highlightLineWidth: 5,
-
-    defaultResistivity: 1E-4,
-    minimumResistance: 1E-8,
-    dragBoundsErosion: 10, // How far to erode the visible bounds for keeping the probes in bounds.
-    electronDX: 28,
-    backgroundColor: new Color( '#c6dbf9' )
+    HIGHLIGHT_COLOR: 'yellow',
+    HIGHLIGHT_LINE_WIDTH: 5,
+    DEFAULT_RESISTIVITY: 1E-4,
+    MINIMUM_RESISTANCE: 1E-8,
+    DRAG_BOUNDS_EROSION: 10, // How far to erode the visible bounds for keeping the probes in bounds.
+    ELECTRON_SEPARATION: 28,
+    BACKGROUND_COLOR: new Color( '#c6dbf9' )
   } );
 } );

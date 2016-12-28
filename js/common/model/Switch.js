@@ -19,7 +19,7 @@ define( function( require ) {
 
   // constants
   var OPEN_RESISTANCE = 1E11;
-  var MINIMUM_RESISTANCE = CircuitConstructionKitConstants.minimumResistance;
+  var MINIMUM_RESISTANCE = CircuitConstructionKitConstants.MINIMUM_RESISTANCE;
 
   /**
    *
@@ -29,7 +29,7 @@ define( function( require ) {
     assert && assert( typeof resistivity === 'number' && resistivity >= 0, 'bad value for resistivity: ' + resistivity );
     var self = this;
     CircuitElement.call( this, startVertex, endVertex, options );
-    this.resistanceProperty = new Property( CircuitConstructionKitConstants.minimumResistance );
+    this.resistanceProperty = new Property( CircuitConstructionKitConstants.MINIMUM_RESISTANCE );
     this.resistivityProperty = new Property( resistivity );
     this.closedProperty = new Property( false );
     Property.preventGetSet( this, 'resistance' );

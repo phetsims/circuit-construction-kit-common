@@ -33,7 +33,7 @@ define( function( require ) {
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
 
   // constants
-  var backgroundColor = CircuitConstructionKitConstants.backgroundColor;
+  var BACKGROUND_COLOR = CircuitConstructionKitConstants.BACKGROUND_COLOR;
 
   /**
    * @constructor
@@ -41,7 +41,7 @@ define( function( require ) {
   function ExploreScreen( tandem ) {
 
     var icon = new Rectangle( 0, 0, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height, {
-      fill: backgroundColor
+      fill: BACKGROUND_COLOR
     } );
 
     var wireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, tandem.createTandem( 'wireIcon' ) );
@@ -76,7 +76,7 @@ define( function( require ) {
 
     var options = {
       name: 'Explore', //TODO i18n
-      backgroundColorProperty: new Property( Color.toColor( CircuitConstructionKitConstants.backgroundColor ) ),
+      backgroundColorProperty: new Property( Color.toColor( CircuitConstructionKitConstants.BACKGROUND_COLOR ) ),
       homeScreenIcon: icon,
       tandem: tandem
     };

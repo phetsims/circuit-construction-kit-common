@@ -50,8 +50,8 @@ define( function( require ) {
       cursor: 'pointer'
     } );
     var highlightNode = new Circle( 30, {
-      stroke: CircuitConstructionKitConstants.highlightColor,
-      lineWidth: CircuitConstructionKitConstants.highlightLineWidth,
+      stroke: CircuitConstructionKitConstants.HIGHLIGHT_COLOR,
+      lineWidth: CircuitConstructionKitConstants.HIGHLIGHT_LINE_WIDTH,
       pickable: false
     } );
 

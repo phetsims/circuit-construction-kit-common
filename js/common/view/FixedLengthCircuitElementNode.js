@@ -81,8 +81,8 @@ define( function( require ) {
         8 / contentScale,
         8 / contentScale,
         _.extend( options.highlightOptions, {
-          stroke: CircuitConstructionKitConstants.highlightColor,
-          lineWidth: CircuitConstructionKitConstants.highlightLineWidth / contentScale / contentScale,
+          stroke: CircuitConstructionKitConstants.HIGHLIGHT_COLOR,
+          lineWidth: CircuitConstructionKitConstants.HIGHLIGHT_LINE_WIDTH / contentScale / contentScale,
           scale: contentScale,
           pickable: false
         } )

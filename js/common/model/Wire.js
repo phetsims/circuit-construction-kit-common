@@ -25,7 +25,7 @@ define( function( require ) {
     var self = this;
     CircuitElement.call( this, startVertex, endVertex, options );
 
-    this.resistanceProperty = new Property( CircuitConstructionKitConstants.minimumResistance );
+    this.resistanceProperty = new Property( CircuitConstructionKitConstants.MINIMUM_RESISTANCE );
     this.resistivityProperty = new Property( resistivity );
     Property.preventGetSet( this, 'resistance' );
     Property.preventGetSet( this, 'resistivity' );
@@ -33,7 +33,7 @@ define( function( require ) {
     var updateResistance = function() {
       var length = self.startVertexProperty.get().positionProperty.get().minus( self.endVertexProperty.get().positionProperty.get() ).magnitude();
       var javaLength = length / 990 * 15.120675866835684;
-      self.resistanceProperty.set( Math.max( CircuitConstructionKitConstants.minimumResistance, javaLength * self.resistivityProperty.get() ) );
+      self.resistanceProperty.set( Math.max( CircuitConstructionKitConstants.MINIMUM_RESISTANCE, javaLength * self.resistivityProperty.get() ) );
       assert && assert( !isNaN( self.resistanceProperty.get() ), 'wire resistance should not be NaN' );
     };
 

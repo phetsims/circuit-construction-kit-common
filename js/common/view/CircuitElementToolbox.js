@@ -153,7 +153,7 @@ define( function( require ) {
     var wireIcon = wireNode.mutate( { scale: iconWidth / Math.max( wireNode.width, wireNode.height ) } )
       .addInputListener( createToolIconInputListener(
         function( position ) {
-          return new Wire( createVertex( position.x - 50, position.y ), createVertex( position.x + 50, position.y ), CircuitConstructionKitConstants.defaultResistivity );
+          return new Wire( createVertex( position.x - 50, position.y ), createVertex( position.x + 50, position.y ), CircuitConstructionKitConstants.DEFAULT_RESISTIVITY );
         },
         circuit.wires,
         circuitNode.wireNodes,
@@ -213,7 +213,7 @@ define( function( require ) {
     var switchIcon = switchWireNode.mutate( { scale: iconWidth / Math.max( switchWireNode.width, switchWireNode.height ) } )
       .addInputListener( createToolIconInputListener(
         function( position ) {
-          return new Switch( createVertex( position.x - 50, position.y ), createVertex( position.x + 50, position.y ), CircuitConstructionKitConstants.defaultResistivity );
+          return new Switch( createVertex( position.x - 50, position.y ), createVertex( position.x + 50, position.y ), CircuitConstructionKitConstants.DEFAULT_RESISTIVITY );
         },
         circuit.switches,
         circuitNode.switchNodes,

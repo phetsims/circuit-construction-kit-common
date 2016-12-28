@@ -128,7 +128,7 @@ define( function( require ) {
     options.visibleBoundsProperty && options.visibleBoundsProperty.link( function( visibleBounds ) {
 
       // Make sure at least a grabbable edge remains visible
-      visibleBounds = visibleBounds.eroded( CircuitConstructionKitConstants.dragBoundsErosion );
+      visibleBounds = visibleBounds.eroded( CircuitConstructionKitConstants.DRAG_BOUNDS_EROSION );
 
       self.movableDragHandler.setDragBounds( visibleBounds );
       probeDragHandler.setDragBounds( visibleBounds );

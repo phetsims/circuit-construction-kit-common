@@ -38,8 +38,8 @@ define( function( require ) {
     this.switchModel = switchModel;
 
     var highlightNode = new Path( null, {
-      stroke: CircuitConstructionKitConstants.highlightColor,
-      lineWidth: CircuitConstructionKitConstants.highlightLineWidth,
+      stroke: CircuitConstructionKitConstants.HIGHLIGHT_COLOR,
+      lineWidth: CircuitConstructionKitConstants.HIGHLIGHT_LINE_WIDTH,
       pickable: false,
       visible: false
     } );

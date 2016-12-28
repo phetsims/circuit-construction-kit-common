@@ -33,7 +33,7 @@ define( function( require ) {
 
   // constants
   var inset = CircuitConstructionKitConstants.LAYOUT_INSET;
-  var backgroundColor = CircuitConstructionKitConstants.backgroundColor;
+  var BACKGROUND_COLOR = CircuitConstructionKitConstants.BACKGROUND_COLOR;
 
   /**
    * @param {CircuitConstructionKitModel} circuitConstructionKitModel
@@ -69,7 +69,7 @@ define( function( require ) {
     // On touch, make it so tapping the background deselects items.  For mouse, we add listeners to the pointer that
     // work a bit more accurately.
     // @protected, so subclasses can change the fill
-    this.backgroundPlane = new Plane( { fill: backgroundColor } );
+    this.backgroundPlane = new Plane( { fill: BACKGROUND_COLOR } );
     this.backgroundPlane.addInputListener( {
       touchdown: function() {
         circuitConstructionKitModel.circuit.selectedCircuitElementProperty.set( null );
@@ -80,7 +80,7 @@ define( function( require ) {
     } );
     this.addChild( this.backgroundPlane );
     var backgroundListener = function( exploreScreenRunning ) {
-      self.backgroundPlane.fill = exploreScreenRunning ? backgroundColor : 'gray';
+      self.backgroundPlane.fill = exploreScreenRunning ? BACKGROUND_COLOR : 'gray';
     };
     circuitConstructionKitModel.exploreScreenRunningProperty.link( backgroundListener );
 

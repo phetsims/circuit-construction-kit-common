@@ -24,7 +24,7 @@ define( function( require ) {
   // If the current is lower than this, then there is no electron movement
   var MIN_CURRENT = Math.pow( 10, -10 );
 
-  var MAX_STEP = CircuitConstructionKitConstants.electronDX * 0.43;
+  var MAX_STEP = CircuitConstructionKitConstants.ELECTRON_SEPARATION * 0.43;
   var numEqualize = 2;
   var speedScale = 1 / 3;
   var timeScale = 100;

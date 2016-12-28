@@ -15,7 +15,7 @@ define( function( require ) {
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   // constants
-  var ELECTRON_DX = CircuitConstructionKitConstants.electronDX;
+  var ELECTRON_DX = CircuitConstructionKitConstants.ELECTRON_SEPARATION;
 
   function ElectronLayout( circuit ) {
     this.circuit = circuit;
