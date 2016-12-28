@@ -185,7 +185,7 @@ define( function( require ) {
         tandem: circuitVertexGroupTandem.createNextTandem()
       } );
 
-      return new LightBulb( startVertex, endVertex, CircuitConstructionKitConstants.defaultResistance, options );
+      return new LightBulb( startVertex, endVertex, CircuitConstructionKitConstants.DEFAULT_RESISTANCE, options );
     }
   } );
 } );

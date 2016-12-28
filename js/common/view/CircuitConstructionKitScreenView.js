@@ -32,7 +32,7 @@ define( function( require ) {
   var Plane = require( 'SCENERY/nodes/Plane' );
 
   // constants
-  var inset = CircuitConstructionKitConstants.layoutInset;
+  var inset = CircuitConstructionKitConstants.LAYOUT_INSET;
   var backgroundColor = CircuitConstructionKitConstants.backgroundColor;
 
   /**

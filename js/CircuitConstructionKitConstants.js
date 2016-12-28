@@ -15,7 +15,6 @@ define( function( require ) {
   var Color = require( 'SCENERY/util/Color' );
 
   /**
-   *
    * @constructor
    */
   function CircuitConstructionKitConstants() {
@@ -24,14 +23,13 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'CircuitConstructionKitConstants', CircuitConstructionKitConstants );
 
   return inherit( Object, CircuitConstructionKitConstants, {}, {
-    vertexNodeAttributes: { stroke: 'black', lineWidth: 3, cursor: 'pointer' },
-    toolboxIconLength: 60, // Width or height for icons in the control panel
-    toolboxItemSpacing: 30,
-    solderColor: '#ae9f9e',
-    defaultResistance: 4.5,
-    layoutInset: 14,
-    tapThreshold: 10, // Number of pixels (screen coordinates) that constitutes a tap instead of a drag
-    fontAwesomeIconScale: 0.85, // Uniform scaling for all font awesome node button icons
+    TOOLBOX_ICON_LENGTH: 60, // Width or height for icons in the control panel
+    TOOLBOX_ITEM_SPACING: 30,
+    SOLDER_COLOR: '#ae9f9e',
+    DEFAULT_RESISTANCE: 4.5,
+    LAYOUT_INSET: 14,
+    TAP_THRESHOLD: 10, // Number of pixels (screen coordinates) that constitutes a tap instead of a drag
+    FONT_AWESOME_ICON_SCALE: 0.85, // Uniform scaling for all font awesome node button icons
     highlightColor: 'yellow',
     highlightLineWidth: 5,
 

@@ -89,7 +89,7 @@ define( function( require ) {
     },
     maybeSelect: function( event, circuitNode, p ) {
 
-      if ( event.pointer.point.distance( p ) < CircuitConstructionKitConstants.tapThreshold ) {
+      if ( event.pointer.point.distance( p ) < CircuitConstructionKitConstants.TAP_THRESHOLD ) {
 
         circuitNode.circuit.selectedCircuitElementProperty.set( this.circuitElement );
 

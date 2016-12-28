@@ -83,7 +83,7 @@ define( function( require ) {
       baseColor: 'yellow',
       content: new FontAwesomeNode( 'cut', {
         rotation: -Math.PI / 2, // scissors point up
-        scale: CircuitConstructionKitConstants.fontAwesomeIconScale
+        scale: CircuitConstructionKitConstants.FONT_AWESOME_ICON_SCALE
       } ),
       minXMargin: 10,
       minYMargin: 10,
@@ -149,7 +149,7 @@ define( function( require ) {
         vertex.draggableProperty.get() && circuitNode.endDrag( event, vertex, didDrag );
 
         // Only show on a tap, not on every drag.
-        if ( vertex.interactiveProperty.get() && event.pointer.point.distance( p ) < CircuitConstructionKitConstants.tapThreshold ) {
+        if ( vertex.interactiveProperty.get() && event.pointer.point.distance( p ) < CircuitConstructionKitConstants.TAP_THRESHOLD ) {
 
           vertex.selectedProperty.set( true );
 

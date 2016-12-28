@@ -21,7 +21,7 @@ define( function( require ) {
 
   function SensorToolbox( voltmeterNode, ammeterNode, runningProperty, tandem ) {
     var self = this;
-    var toolIconLength = CircuitConstructionKitConstants.toolboxIconLength;
+    var toolIconLength = CircuitConstructionKitConstants.TOOLBOX_ICON_LENGTH;
 
     var voltmeterNodeIcon = new VoltmeterNode( new Voltmeter( tandem.createTandem( 'voltmeterIconModel' ) ), tandem.createTandem( 'voltmeterNodeIcon' ), {
       runningProperty: runningProperty,
@@ -61,7 +61,7 @@ define( function( require ) {
     } );
 
     CircuitConstructionKitPanel.call( this, new HBox( {
-      spacing: CircuitConstructionKitConstants.toolboxItemSpacing,
+      spacing: CircuitConstructionKitConstants.TOOLBOX_ITEM_SPACING,
       align: 'bottom',
       children: [
         voltmeterNodeIcon,

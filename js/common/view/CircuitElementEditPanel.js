@@ -57,7 +57,7 @@ define( function( require ) {
     var trashButton = new RoundPushButton( {
       baseColor: 'yellow',
       content: new FontAwesomeNode( 'trash', {
-        scale: CircuitConstructionKitConstants.fontAwesomeIconScale
+        scale: CircuitConstructionKitConstants.FONT_AWESOME_ICON_SCALE
       } ),
       listener: function() {
         circuit.remove( circuitElement );

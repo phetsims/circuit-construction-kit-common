@@ -85,13 +85,13 @@ define( function( require ) {
       };
     };
 
-    var iconWidth = CircuitConstructionKitConstants.toolboxIconLength;
+    var iconWidth = CircuitConstructionKitConstants.TOOLBOX_ICON_LENGTH;
     var wireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, tandem.createTandem( 'wireIcon' ) );
 
     var resistorNode = new ResistorNode(
       null,
       null,
-      new Resistor( new Vertex( 0, 0 ), new Vertex( Resistor.RESISTOR_LENGTH, 0 ), CircuitConstructionKitConstants.defaultResistance ),
+      new Resistor( new Vertex( 0, 0 ), new Vertex( Resistor.RESISTOR_LENGTH, 0 ), CircuitConstructionKitConstants.DEFAULT_RESISTANCE ),
       null,
       tandem.createTandem( 'resistorIcon' ), {
         icon: true
@@ -196,7 +196,7 @@ define( function( require ) {
           var resistorLength = Resistor.RESISTOR_LENGTH;
           var startVertex = createVertex( position.x - resistorLength / 2, position.y );
           var endVertex = createVertex( position.x + resistorLength / 2, position.y );
-          return new Resistor( startVertex, endVertex, CircuitConstructionKitConstants.defaultResistance );
+          return new Resistor( startVertex, endVertex, CircuitConstructionKitConstants.DEFAULT_RESISTANCE );
         },
         circuit.resistors,
         circuitNode.resistorNodes,
@@ -241,7 +241,7 @@ define( function( require ) {
     lightBulbIcon.touchArea = lightBulbIcon.localBounds.dilatedXY( 11, 8 );
     CircuitConstructionKitPanel.call( this, new LayoutBox( {
       orientation: options.orientation,
-      spacing: CircuitConstructionKitConstants.toolboxItemSpacing,
+      spacing: CircuitConstructionKitConstants.TOOLBOX_ITEM_SPACING,
       children: children
     } ), tandem );
 
