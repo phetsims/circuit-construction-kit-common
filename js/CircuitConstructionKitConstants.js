@@ -23,7 +23,7 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'CircuitConstructionKitConstants', CircuitConstructionKitConstants );
 
   return inherit( Object, CircuitConstructionKitConstants, {}, {
-    TOOLBOX_ICON_LENGTH: 60, // Width or height for icons in the control panel
+    TOOLBOX_ICON_SIZE: 60, // Width or height for icons in the toolboxes
     TOOLBOX_ITEM_SPACING: 30,
     SOLDER_COLOR: '#ae9f9e',
     DEFAULT_RESISTANCE: 4.5,

@@ -19,9 +19,11 @@ define( function( require ) {
   var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Voltmeter' );
   var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Ammeter' );
 
+  // constants
+  var TOOLBOX_ICON_SIZE = CircuitConstructionKitConstants.TOOLBOX_ICON_SIZE;
+
   function SensorToolbox( voltmeterNode, ammeterNode, runningProperty, tandem ) {
     var self = this;
-    var toolIconLength = CircuitConstructionKitConstants.TOOLBOX_ICON_LENGTH;
 
     var voltmeterNodeIcon = new VoltmeterNode( new Voltmeter( tandem.createTandem( 'voltmeterIconModel' ) ), tandem.createTandem( 'voltmeterNodeIcon' ), {
       runningProperty: runningProperty,
@@ -31,7 +33,7 @@ define( function( require ) {
       voltmeterNodeIcon.visible = !visible;
     } );
     var voltmeterIconSizeIncrease = 1.3;
-    voltmeterNodeIcon.mutate( { scale: toolIconLength * voltmeterIconSizeIncrease / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height ) } );
+    voltmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE * voltmeterIconSizeIncrease / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height ) } );
     voltmeterNodeIcon.addInputListener( {
       down: function( event ) {
         var viewPosition = self.globalToParentPoint( event.pointer.point );
@@ -49,7 +51,7 @@ define( function( require ) {
     ammeterNode.ammeter.visibleProperty.link( function( visible ) {
       ammeterNodeIcon.visible = !visible;
     } );
-    ammeterNodeIcon.mutate( { scale: toolIconLength / Math.max( ammeterNodeIcon.width, ammeterNodeIcon.height ) } );
+    ammeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( ammeterNodeIcon.width, ammeterNodeIcon.height ) } );
     ammeterNodeIcon.addInputListener( {
       down: function( event ) {
         var viewPosition = self.globalToParentPoint( event.pointer.point );

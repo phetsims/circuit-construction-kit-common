@@ -31,6 +31,7 @@ define( function( require ) {
 
   // constants
   var batteryLength = Battery.BATTERY_LENGTH;
+  var TOOLBOX_ICON_SIZE = CircuitConstructionKitConstants.TOOLBOX_ICON_SIZE;
 
   /**
    * @param {Circuit} circuit
@@ -85,7 +86,6 @@ define( function( require ) {
       };
     };
 
-    var iconWidth = CircuitConstructionKitConstants.TOOLBOX_ICON_LENGTH;
     var wireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, tandem.createTandem( 'wireIcon' ) );
 
     var resistorNode = new ResistorNode(
@@ -113,7 +113,7 @@ define( function( require ) {
 
     var leftBatteryIcon = new Image( batteryImage, {
       cursor: 'pointer',
-      scale: iconWidth / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height ),
+      scale: TOOLBOX_ICON_SIZE / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height ),
       rotation: Math.PI
     } ).addInputListener( createToolIconInputListener(
       function( position ) {
@@ -133,7 +133,7 @@ define( function( require ) {
 
     var rightBatteryIcon = new Image( batteryImage, {
       cursor: 'pointer',
-      scale: iconWidth / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height )
+      scale: TOOLBOX_ICON_SIZE / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height )
     } ).addInputListener( createToolIconInputListener(
       function( position ) {
         var startVertex = createVertex( position.x - batteryLength / 2, position.y );
@@ -150,7 +150,7 @@ define( function( require ) {
       rightBatteryIcon.visible = countBatteries( 'right' ) < options.numberOfRightBatteries;
     } );
 
-    var wireIcon = wireNode.mutate( { scale: iconWidth / Math.max( wireNode.width, wireNode.height ) } )
+    var wireIcon = wireNode.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( wireNode.width, wireNode.height ) } )
       .addInputListener( createToolIconInputListener(
         function( position ) {
           return new Wire( createVertex( position.x - 50, position.y ), createVertex( position.x + 50, position.y ), CircuitConstructionKitConstants.DEFAULT_RESISTIVITY );
@@ -169,7 +169,7 @@ define( function( require ) {
     var lightBulbIcon = lightBulbNode.mutate( {
       pickable: true,
       cursor: 'pointer',
-      scale: iconWidth / Math.max( lightBulbNode.width, lightBulbNode.height ) // constrained by being too tall, not too wide
+      scale: TOOLBOX_ICON_SIZE / Math.max( lightBulbNode.width, lightBulbNode.height ) // constrained by being too tall, not too wide
     } )
       .addInputListener( createToolIconInputListener(
         function( position ) {
@@ -189,7 +189,7 @@ define( function( require ) {
     var resistorIcon = resistorNode.mutate( {
       pickable: true,
       cursor: 'pointer',
-      scale: iconWidth / Math.max( resistorNode.width, resistorNode.height )
+      scale: TOOLBOX_ICON_SIZE / Math.max( resistorNode.width, resistorNode.height )
     } )
       .addInputListener( createToolIconInputListener(
         function( position ) {
@@ -210,7 +210,7 @@ define( function( require ) {
     circuit.resistors.addItemAddedListener( updateResistorIcon );
 
     var switchWireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, tandem.createTandem( 'switchIcon' ) );
-    var switchIcon = switchWireNode.mutate( { scale: iconWidth / Math.max( switchWireNode.width, switchWireNode.height ) } )
+    var switchIcon = switchWireNode.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( switchWireNode.width, switchWireNode.height ) } )
       .addInputListener( createToolIconInputListener(
         function( position ) {
           return new Switch( createVertex( position.x - 50, position.y ), createVertex( position.x + 50, position.y ), CircuitConstructionKitConstants.DEFAULT_RESISTIVITY );
