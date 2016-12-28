@@ -39,6 +39,12 @@ define( function( require ) {
   var PROBE_CONNECTION_POINT_DY = -18;
   var PROBE_CONNECTION_POINT_DX = 8;
 
+  /**
+   * @param {Voltmeter|Meter} voltmeter - noting the parent type satisfies the IDEA parser
+   * @param {Tandem} tandem
+   * @param {Object} [options]
+   * @constructor
+   */
   function VoltmeterNode( voltmeter, tandem, options ) {
     var self = this;
     options = _.extend( {

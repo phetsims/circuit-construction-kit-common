@@ -1,5 +1,4 @@
 // Copyright 2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * Base class for Ammeter and Voltmeter
@@ -26,22 +25,26 @@ define( function( require ) {
    */
   function Meter( tandem ) {
 
+    // @public (read-only) {Property.<boolean>} - indicates whether the meter is in the play area
     this.visibleProperty = new Property( false, {
       tandem: tandem.createTandem( 'visibleProperty' ),
       phetioValueType: TBoolean
     } );
 
+    // @public (read-only) {Property.<Vector2>} - the location of the body of the meter
     this.bodyPositionProperty = new Property( new Vector2( 0, 0 ), {
       tandem: tandem.createTandem( 'bodyPositionProperty' ),
       phetioValueType: TVector2
     } );
 
-    // @public When the meter is dragged from the toolbox, all pieces drag together as a single unit.
+    // @public (read-only) {Property.<boolean>} When the meter is dragged from the toolbox, all pieces drag together as
+    // a single unit.
     this.draggingProbesWithBodyProperty = new Property( true, {
       tandem: tandem.createTandem( 'draggingProbesWithBodyProperty' ),
       phetioValueType: TBoolean
     } );
 
+    // @public (read-only) Fires an event when the meter is dropped
     this.droppedEmitter = new Emitter(); // Fire event when dropped
 
     Property.preventGetSet( this, 'visible' );
@@ -52,6 +55,11 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'Meter', Meter );
 
   return inherit( Object, Meter, {
+
+    /**
+     * Resets the meter.  This is overriden by Ammeter and Voltmeter.
+     * @public
+     */
     reset: function() {
       this.visibleProperty.reset();
       this.bodyPositionProperty.reset();

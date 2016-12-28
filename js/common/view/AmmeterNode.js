@@ -38,7 +38,7 @@ define( function( require ) {
   var PROBE_CONNECTION_POINT_DY = 8;
 
   /**
-   * @param {Ammeter} ammeter
+   * @param {Meter|Ammeter} ammeter - specifying parent and child types here satisfies the IDEA parser
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
