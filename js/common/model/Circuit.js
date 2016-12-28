@@ -31,7 +31,7 @@ define( function( require ) {
   var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
 
   // constants
-  var SNAP_RADIUS = 30;
+  var SNAP_RADIUS = 30; // For two vertices to join together, they must be this close
 
   /**
    * @param tandem
@@ -39,26 +39,36 @@ define( function( require ) {
    */
   function Circuit( tandem ) {
     var self = this;
+
+    // @public - The different types of circuit element the circuit may contain.
     this.wires = new ObservableArray();
     this.switches = new ObservableArray();
     this.batteries = new ObservableArray();
     this.lightBulbs = new ObservableArray();
     this.resistors = new ObservableArray();
 
+    // Keep track of which terminals are connected to other terminals.  The vertices are also referenced in the
+    // CircuitElements above--this ObservableArray is a a central point for observing creation/deletion of vertices for
+    // showing VertexNodes
+    // @public
+    this.vertices = new ObservableArray();
+
+    // @public - the electrons in the circuit
+    this.electrons = new ObservableArray();
+
+    // @public - whether the electrons should be displayed
     this.showElectronsProperty = new Property( false, {
       tandem: tandem.createTandem( 'showElectronsProperty' ),
       phetioValueType: TBoolean
     } );
-    this.electrons = new ObservableArray();
 
     this.constantDensityLayout = new ElectronLayout( this );
     this.constantDensityPropagator = new ElectronPropagator( this );
 
     // Re-solve the circuit when voltages or resistances change.
-    var solve = function() {
-      self.solve();
-    };
+    var solve = function() { self.solve(); };
 
+    // Solve the circuit when any of the circuit element attributes change.
     this.wires.addItemAddedListener( function( wire ) { wire.resistanceProperty.lazyLink( solve ); } );
     this.wires.addItemRemovedListener( function( wire ) { wire.resistanceProperty.unlink( solve ); } );
 
@@ -77,6 +87,8 @@ define( function( require ) {
     this.switches.addItemAddedListener( function( switchModel ) { switchModel.closedProperty.lazyLink( solve ); } );
     this.switches.addItemRemovedListener( function( switchModel ) { switchModel.closedProperty.unlink( solve ); } );
 
+    // @public - whether any circuit element is over the toolbox.  This shows the toolbox highlight when something
+    // can be dropped in.
     this.isCircuitElementOverToolboxProperty = new Property( false );
     var counter = function() {
       var circuitElements = self.circuitElements;
@@ -96,12 +108,6 @@ define( function( require ) {
       wire.isOverToolboxProperty.unlink( counter );
       counter();
     } );
-
-    // Keep track of which terminals are connected to other terminals
-    // This is redundant (connections tracked in the elements above), but a central point for
-    // observing creation/deletion of vertices for showing VertexNodes
-    // @public (read-only, elements-read-only)
-    this.vertices = new ObservableArray();
 
     // When a new circuit element is added to a circuit, it has two unconnected vertices
     var addVertices = function( circuitElement ) {
