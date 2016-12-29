@@ -25,16 +25,13 @@ define( function( require ) {
 
   /**
    * @param {Tandem} tandem
-   * @param {Object} [options]
    * @constructor
    */
-  function CircuitConstructionKitModel( tandem, options ) {
+  function CircuitConstructionKitModel( tandem ) {
 
     var self = this;
 
-    options = _.extend( { circuit: null }, options );
-
-    this.circuit = options.circuit || new Circuit( tandem.createTandem( 'circuit' ) );
+    this.circuit = new Circuit( tandem.createTandem( 'circuit' ) );
     this.initialCircuitState = this.circuit.toStateObject();
     this.voltmeter = new Voltmeter( tandem.createTandem( 'voltmeter' ) );
     this.ammeter = new Ammeter( tandem.createTandem( 'ammeter' ) );
