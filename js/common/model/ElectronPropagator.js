@@ -102,7 +102,7 @@ define( function( require ) {
       // Disable incremental updates to improve performance.  The ElectronNodes are only updated once, instead of
       // incrementally many times throughout this update
       for ( var k = 0; k < this.electrons.length; k++ ) {
-        this.electrons.get( k ).updatingProperty.set( false );
+        this.electrons.get( k ).updatingPositionProperty.set( false );
       }
 
       // dt would ideally be around 16.666ms = 0.0166 sec.  Cap it to avoid too large of an integration step.
@@ -136,7 +136,7 @@ define( function( require ) {
 
       // After computing the new electron positions (possibly across several deltas), trigger the views to update.
       for ( k = 0; k < this.electrons.length; k++ ) {
-        this.electrons.get( k ).updatingProperty.set( true );
+        this.electrons.get( k ).updatingPositionProperty.set( true );
       }
     },
 

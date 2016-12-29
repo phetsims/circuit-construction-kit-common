@@ -36,10 +36,10 @@ define( function( require ) {
 
     // @public (read-only) - To improve performance, disable updating while the position of the electron is changed many
     // times during the update step.  TODO: use temporary values for this instead
-    this.updatingProperty = new Property( true );
+    this.updatingPositionProperty = new Property( true );
     this.positionProperty = new Property( new Vector2() );
 
-    var multilink = Property.multilink( [ this.distanceProperty, this.updatingProperty ], function( distance, updating ) {
+    var multilink = Property.multilink( [ this.distanceProperty, this.updatingPositionProperty ], function( distance, updating ) {
       if ( updating ) {
         assert && assert( !self.deleted, 'Electron was deleted' );
         assert && assert( !isNaN( distance ), 'electron position was not a number' );
