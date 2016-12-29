@@ -106,7 +106,7 @@ define( function( require ) {
       // dt would ideally be around 16.666ms = 0.0166 sec
       // let's cap it at double that
       dt = Math.min( dt, 1 / 60 * 2 ) * TIME_SCALE;
-      var maxCurrent = this.getMaxCurrent(); //TODO: Shouldn't this use abs?
+      var maxCurrent = this.getMaxCurrentMagnitude();
       var maxVelocity = maxCurrent * SPEED_SCALE;
       var maxStep = maxVelocity * dt;
       if ( maxStep >= MAX_STEP ) {
@@ -138,7 +138,12 @@ define( function( require ) {
         this.electrons.get( k ).updatingProperty.set( true );
       }
     },
-    getMaxCurrent: function() {
+
+    /**
+     * Returns the absolute value of the most extreme current.
+     * @returns {number}
+     */
+    getMaxCurrentMagnitude: function() {
       var max = 0;
       var circuitElements = this.circuit.getCircuitElements();
       for ( var i = 0; i < circuitElements.length; i++ ) {
