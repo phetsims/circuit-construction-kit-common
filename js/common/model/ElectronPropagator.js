@@ -129,12 +129,12 @@ define( function( require ) {
         }
       }
 
-      //maybe this should be done in random order, otherwise we may get artefacts.
+      // Spread out the electrons so they don't bunch up
       for ( i = 0; i < NUMBER_OF_EQUALIZE_STEPS; i++ ) {
         this.equalizeAll( dt );
       }
 
-      // After math complete, update the positions all at once
+      // After computing the new electron positions (possibly across several deltas), trigger the views to update.
       for ( k = 0; k < this.electrons.length; k++ ) {
         this.electrons.get( k ).updatingProperty.set( true );
       }

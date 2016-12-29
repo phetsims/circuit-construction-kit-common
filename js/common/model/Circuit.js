@@ -683,9 +683,9 @@ define( function( require ) {
     },
 
     /**
-     *
+     * Get the electrons that are in the specified circuit element.
      * @param {CircuitElement} circuitElement
-     * @returns {Array}
+     * @returns {Electron[]}
      */
     getElectronsInCircuitElement: function( circuitElement ) {
       return this.electrons.getArray().filter( function( electron ) { return electron.circuitElement === circuitElement; } );

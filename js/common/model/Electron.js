@@ -33,7 +33,10 @@ define( function( require ) {
     this.deleted = false;
 
     this.distanceProperty = new Property( distance );
-    this.updatingProperty = new Property( true ); // flag to disable updates during ElectronPropagator.step to improve performance
+
+    // @public (read-only) - To improve performance, disable updating while the position of the electron is changed many
+    // times during the update step.  TODO: use temporary values for this instead
+    this.updatingProperty = new Property( true );
     this.positionProperty = new Property( new Vector2() );
 
     var multilink = Property.multilink( [ this.distanceProperty, this.updatingProperty ], function( distance, updating ) {
