@@ -78,9 +78,7 @@ define( function( require ) {
     setLocation: function( circuitElement, distance ) {
       assert && assert( !isNaN( distance ), 'Distance was NaN' );
       assert && assert( circuitElement.containsScalarLocation( distance ), 'no location in branch' );
-      if ( this.circuitElement !== circuitElement ) {
-        this.circuitElement = circuitElement;
-      }
+      this.circuitElement = circuitElement;
       this.distanceProperty.set( distance );
     }
   } );
