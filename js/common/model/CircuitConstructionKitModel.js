@@ -39,9 +39,6 @@ define( function( require ) {
     // @public (read-only)
     this.ammeter = new Ammeter( tandem.createTandem( 'ammeter' ) );
 
-    // @private
-    this.initialCircuitState = this.circuit.toStateObject();
-
     // @public (read-only) {Property.<boolean>} changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
     this.exploreScreenRunningProperty = new Property( !CircuitConstructionKitQueryParameters.showPlayPauseButton, {
       tandem: tandem.createTandem( 'exploreScreenRunningProperty' ),
