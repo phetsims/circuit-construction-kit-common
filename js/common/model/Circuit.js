@@ -50,19 +50,22 @@ define( function( require ) {
     // Keep track of which terminals are connected to other terminals.  The vertices are also referenced in the
     // CircuitElements above--this ObservableArray is a a central point for observing creation/deletion of vertices for
     // showing VertexNodes
-    // @public
+    // @public (read-only)
     this.vertices = new ObservableArray();
 
-    // @public - the electrons in the circuit
+    // @public (read-only) - the electrons in the circuit
     this.electrons = new ObservableArray();
 
-    // @public - whether the electrons should be displayed
+    // @public (read-only) - whether the electrons should be displayed
     this.showElectronsProperty = new Property( false, {
       tandem: tandem.createTandem( 'showElectronsProperty' ),
       phetioValueType: TBoolean
     } );
 
+    // @private - create the electrons in new circuits
     this.constantDensityLayout = new ElectronLayout( this );
+
+    // @private - move the electrons with speed proportional to current
     this.constantDensityPropagator = new ElectronPropagator( this );
 
     // Re-solve the circuit when voltages or resistances change.
@@ -131,11 +134,10 @@ define( function( require ) {
     this.lightBulbs.addItemAddedListener( addVertices );
     this.resistors.addItemAddedListener( addVertices );
 
+    // When any vertex moves, relayout all electrons within the fixed-length connected component, see #100
     var addElectrons = function( circuitElement ) {
       circuitElement.dirty = true;
-      // circuit.constantDensityLayout.layoutElectrons( circuitElement );
 
-      // When any vertex moves, relayout all electrons within the fixed-length connected component, see #100
       var updateElectrons = function() {
         var circuitElements = self.findAllConnectedCircuitElements( circuitElement.startVertexProperty.get() );
 
