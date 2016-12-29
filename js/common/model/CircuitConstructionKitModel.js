@@ -13,7 +13,6 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Property = require( 'AXON/Property' );
   var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Circuit' );
-  var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/CircuitStruct' );
   var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Voltmeter' );
   var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Ammeter' );
   var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
@@ -31,19 +30,27 @@ define( function( require ) {
 
     var self = this;
 
+    // @public (read-only)
     this.circuit = new Circuit( tandem.createTandem( 'circuit' ) );
-    this.initialCircuitState = this.circuit.toStateObject();
+
+    // @public (read-only)
     this.voltmeter = new Voltmeter( tandem.createTandem( 'voltmeter' ) );
+
+    // @public (read-only)
     this.ammeter = new Ammeter( tandem.createTandem( 'ammeter' ) );
 
-    // {boolean} @public changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
+    // @private
+    this.initialCircuitState = this.circuit.toStateObject();
+
+    // @public (read-only) {Property.<boolean>} changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
     this.exploreScreenRunningProperty = new Property( !CircuitConstructionKitQueryParameters.showPlayPauseButton, {
       tandem: tandem.createTandem( 'exploreScreenRunningProperty' ),
       phetioValueType: TBoolean
     } );
 
-    // @public - whether the user is in the 'investigate' or 'build' mode
+    // @public (read-only) {Property.<string>} - whether the user is in the 'investigate' or 'build' mode
     this.modeProperty = new Property( 'investigate', {
+      validValues: [ 'investigate', 'build' ],
       tandem: tandem.createTandem( 'modeProperty' ),
       phetioValueType: TString
     } );
@@ -58,7 +65,7 @@ define( function( require ) {
       var pause = function() {
         self.exploreScreenRunningProperty.value = false;
       };
-      this.circuit.vertices.lengthProperty.link( pause );
+      this.circuit.vertices.lengthProperty.lazyLink( pause );
       this.circuit.componentEditedEmitter.addListener( pause );
       this.circuit.componentAddedEmitter.addListener( pause );
       this.circuit.componentDeletedEmitter.addListener( pause );
@@ -85,7 +92,8 @@ define( function( require ) {
       this.circuit.componentEditedEmitter.addListener( emitCircuitChanged );
     }
 
-    this.exploreScreenRunningProperty.link( function( exploreScreenRunning ) {
+    // TODO: document me
+    this.exploreScreenRunningProperty.link( function() {
       self.circuit.constantDensityPropagator.smoothData.clear();
     } );
   }
@@ -93,6 +101,11 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'CircuitConstructionKitModel', CircuitConstructionKitModel );
 
   return inherit( Object, CircuitConstructionKitModel, {
+
+    /**
+     * Update the circuit over a period of time
+     * @param {number} dt - elapsed time in seconds
+     */
     step: function( dt ) {
 
       // Only move electrons if the simulation is not paused.
@@ -102,15 +115,16 @@ define( function( require ) {
 
       this.circuit.updateElectronsInDirtyCircuitElements();
     },
+
+    /**
+     * Reset the circuit.
+     */
     reset: function() {
       this.exploreScreenRunningProperty.reset();
       this.modeProperty.reset();
       this.circuit.reset();
       this.voltmeter.reset();
       this.ammeter.reset();
-
-      var struct = CircuitStruct.fromStateObject( this.initialCircuitState );
-      this.circuit.loadFromCircuitStruct( struct );
     }
   } );
 } );
