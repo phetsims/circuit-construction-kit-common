@@ -68,14 +68,14 @@ define( function( require ) {
       this.circuit.componentDeletedEmitter.addListener( pause );
     }
 
-    var circuitChangedEmitter = new TandemEmitter( {
-      tandem: tandem.createTandem( 'circuitChangedEmitter' ),
-      phetioArgumentTypes: [ TString ]
-    } );
-
     // For PhET-iO, when a component is edited or a vertex is added, connected, or cut, output the circuit to the data stream
     // Only do this for phet-io brand so it doesn't disturb performance of other brands
     if ( phet.chipper.brand === 'phet-io' ) {
+
+      var circuitChangedEmitter = new TandemEmitter( {
+        tandem: tandem.createTandem( 'circuitChangedEmitter' ),
+        phetioArgumentTypes: [ TString ]
+      } );
 
       var emitCircuitChanged = function() {
 
