@@ -97,7 +97,8 @@ define( function( require ) {
 
     // @private
     this.lineNode = lineNode;
-    CircuitElementNode.call( this, wire, {
+    var circuit = circuitNode && circuitNode.circuit;
+    CircuitElementNode.call( this, wire, circuit, {
       children: [
         lineNodeParent
       ]

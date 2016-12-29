@@ -121,7 +121,8 @@ define( function( require ) {
     circuitElement.startVertexProperty.lazyLink( relink );
     circuitElement.endVertexProperty.lazyLink( relink );
 
-    CircuitElementNode.call( this, circuitElement, {
+    var circuit = circuitNode && circuitNode.circuit;
+    CircuitElementNode.call( this, circuitElement, circuit, {
       cursor: 'pointer',
       children: [
         contentNode
