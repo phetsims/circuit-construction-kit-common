@@ -1,7 +1,7 @@
 // Copyright 2015-2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
+ * The view for the Explore screen.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -15,13 +15,14 @@ define( function( require ) {
 
   /**
    * @param {CircuitConstructionKitModel} circuitConstructionKitScreenModel
+   * @param {Tandem} tandem
    * @constructor
    */
   function ExploreScreenView( circuitConstructionKitScreenModel, tandem ) {
     CircuitConstructionKitScreenView.call( this, circuitConstructionKitScreenModel, tandem, {
-      numberOfLeftBatteriesInToolbox: 0,
-      toolboxOrientation: 'vertical',
-      showResetAllButton: true
+      numberOfLeftBatteriesInToolbox: 0, // Only show right-facing batteries.
+      toolboxOrientation: 'vertical', // The toolbox should be vertical
+      showResetAllButton: true // The reset all button should be shown.
     } );
   }
 
