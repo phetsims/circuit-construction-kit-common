@@ -90,7 +90,7 @@ define( function( require ) {
     // @public - whether any circuit element is over the toolbox.  This shows the toolbox highlight when something
     // can be dropped in.
     this.isCircuitElementOverToolboxProperty = new Property( false );
-    var counter = function() {
+    var detectOverToolbox = function() {
       var circuitElements = self.circuitElements;
       for ( var i = 0; i < circuitElements.length; i++ ) {
         var element = circuitElements[ i ];
@@ -102,11 +102,11 @@ define( function( require ) {
       self.isCircuitElementOverToolboxProperty.set( false );
     };
     this.wires.addItemAddedListener( function( wire ) {
-      wire.isOverToolboxProperty.link( counter );
+      wire.isOverToolboxProperty.link( detectOverToolbox );
     } );
     this.wires.addItemRemovedListener( function( wire ) {
-      wire.isOverToolboxProperty.unlink( counter );
-      counter();
+      wire.isOverToolboxProperty.unlink( detectOverToolbox );
+      detectOverToolbox();
     } );
 
     // When a new circuit element is added to a circuit, it has two unconnected vertices
@@ -393,6 +393,9 @@ define( function( require ) {
              this.getNeighborCircuitElements( circuitElement.endVertexProperty.get() ).length === 1;
     },
 
+    /**
+     * @param {CircuitElement} circuitElement
+     */
     remove: function( circuitElement ) {
       var list = circuitElement instanceof Battery ? this.batteries :
                  circuitElement instanceof Resistor ? this.resistors :
