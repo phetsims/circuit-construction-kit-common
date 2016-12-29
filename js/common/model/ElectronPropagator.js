@@ -24,7 +24,9 @@ define( function( require ) {
   // If the current is lower than this, then there is no electron movement
   var MIN_CURRENT = Math.pow( 10, -10 );
 
-  var MAX_STEP = CircuitConstructionKitConstants.ELECTRON_SEPARATION * 0.43;
+  // The furthest an electron can step in one frame before the time scale must be reduced (to prevent a strobe effect)
+  var MAX_POSITION_CHANGE = CircuitConstructionKitConstants.ELECTRON_SEPARATION * 0.43;
+
   var NUMBER_OF_EQUALIZE_STEPS = 2;
   var SPEED_SCALE = 1 / 3;
   var TIME_SCALE = 100;
@@ -105,11 +107,11 @@ define( function( require ) {
 
       // dt would ideally be around 16.666ms = 0.0166 sec.  Cap it to avoid too large of an integration step.
       dt = Math.min( dt, 1 / 60 * 2 ) * TIME_SCALE;
-      var maxCurrent = this.getMaxCurrentMagnitude();
-      var maxVelocity = maxCurrent * SPEED_SCALE;
-      var maxStep = maxVelocity * dt;
-      if ( maxStep >= MAX_STEP ) {
-        this.scale = MAX_STEP / maxStep;
+      var maxCurrentMagnitude = this.getMaxCurrentMagnitude();
+      var maxSpeed = maxCurrentMagnitude * SPEED_SCALE;
+      var maxPositionChange = maxSpeed * dt;
+      if ( maxPositionChange >= MAX_POSITION_CHANGE ) {
+        this.scale = MAX_POSITION_CHANGE / maxPositionChange;
       }
       else {
         this.scale = 1;
