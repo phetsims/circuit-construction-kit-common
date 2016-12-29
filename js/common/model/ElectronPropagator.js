@@ -70,15 +70,6 @@ define( function( require ) {
     return closestLowerNeighbor;
   };
 
-  function ElectronPropagator( circuit ) {
-    this.electrons = circuit.electrons;
-    this.circuit = circuit;
-    this.scale = 1;
-    this.smoothData = new SmoothData( 30 );
-    this.timeScalingPercentValue = null;
-    this.timeScaleProperty = new Property( 1 ); // between 0 and 1, 1 is full speed (unthrottled)
-  }
-
   var createCircuitLocation = function( branch, distance ) {
     assert && assert( _.isNumber( distance ), 'distance should be a number' );
     assert && assert( branch.containsScalarLocation( distance ), 'branch should contain distance' );
@@ -92,19 +83,27 @@ define( function( require ) {
     };
   };
 
+  function ElectronPropagator( circuit ) {
+    this.electrons = circuit.electrons;
+    this.circuit = circuit;
+    this.scale = 1;
+    this.smoothData = new SmoothData( 30 );
+    this.timeScalingPercentValue = null;
+    this.timeScaleProperty = new Property( 1 ); // between 0 and 1, 1 is full speed (unthrottled)
+  }
+
   circuitConstructionKitCommon.register( 'ElectronPropagator', ElectronPropagator );
 
   return inherit( Object, ElectronPropagator, {
     step: function( dt ) {
 
-      // Disable incremental updates to improve performance.  The ElectronNodes are only updated once, instead
-      // of incrementally many times throughout this update
+      // Disable incremental updates to improve performance.  The ElectronNodes are only updated once, instead of
+      // incrementally many times throughout this update
       for ( var k = 0; k < this.electrons.length; k++ ) {
         this.electrons.get( k ).updatingProperty.set( false );
       }
 
-      // dt would ideally be around 16.666ms = 0.0166 sec
-      // let's cap it at double that
+      // dt would ideally be around 16.666ms = 0.0166 sec.  Cap it to avoid too large of an integration step.
       dt = Math.min( dt, 1 / 60 * 2 ) * TIME_SCALE;
       var maxCurrent = this.getMaxCurrentMagnitude();
       var maxVelocity = maxCurrent * SPEED_SCALE;
