@@ -27,6 +27,7 @@ define( function( require ) {
   var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/WireNode' );
   var CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CustomLightBulbNode' );
   var Property = require( 'AXON/Property' );
+  var Input = require( 'SCENERY/input/Input' );
   var Color = require( 'SCENERY/util/Color' );
 
   // images
@@ -45,6 +46,8 @@ define( function( require ) {
     } );
 
     var wireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, tandem.createTandem( 'wireIcon' ) );
+    wireNode.accessibleContent = null; // icon should not have accessibel content
+
     var resistorNode = new ResistorNode(
       null,
       null,
@@ -53,8 +56,11 @@ define( function( require ) {
       tandem.createTandem( 'resistorIcon' ), {
         icon: true
       } );
+    resistorNode.accessibleContent = null;
+
     var battery = new Image( batteryImage );
     var lightBulbNode = new CustomLightBulbNode( new Property( 0 ) );
+    lightBulbNode.accessibleContent = null;
 
     var elementWidth = 50;
     resistorNode.mutate( { scale: elementWidth / resistorNode.width * 0.75 } );
@@ -80,6 +86,14 @@ define( function( require ) {
       homeScreenIcon: icon,
       tandem: tandem
     };
+
+    // disable general keyboard navigation for any sim using this screen
+    document.addEventListener( 'keydown', function( event ) {
+      var keyCode = event.keyCode || event.which;
+      if ( keyCode === Input.KEY_TAB ) {
+        event.preventDefault();
+      }
+    } );
 
     Screen.call( this,
       function() {

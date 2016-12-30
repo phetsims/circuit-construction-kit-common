@@ -12,7 +12,8 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
+  var AccessibleNode = require( 'SCENERY/accessibility/AccessibleNode' );
+  var Input = require( 'SCENERY/input/Input' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitElementEditContainerPanel' );
 
@@ -21,11 +22,27 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function CircuitElementNode( circuitElement, options ) {
+  function CircuitElementNode( circuitElement, circuit, options ) {
 
     var self = this;
 
-    Node.call( this, options );
+    options = _.extend( {
+      // options for keyboard navigation
+      focusable: true,
+      focusHighlight: 'invisible',
+
+      events: {
+        keydown: function( event ) {
+          var code = event.keyCode || event.which;
+          // on delete or backspace, the focused circuit element should be deleted
+          if ( code === Input.KEY_DELETE || code === Input.KEY_BACKSPACE ) {
+            circuit.remove( circuitElement );
+          }
+        }
+      }
+    }, options );
+
+    AccessibleNode.call( this, options );
     this.circuitElement = circuitElement;
 
     // @protected
@@ -43,7 +60,7 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'CircuitElementNode', CircuitElementNode );
 
-  return inherit( Node, CircuitElementNode, {
+  return inherit( AccessibleNode, CircuitElementNode, {
 
     dispose: function() {
       this.disposeCircuitElementNode();
@@ -92,6 +109,9 @@ define( function( require ) {
       if ( event.pointer.point.distance( p ) < CircuitConstructionKitConstants.TAP_THRESHOLD ) {
 
         circuitNode.circuit.selectedCircuitElementProperty.set( this.circuitElement );
+
+        // focus the element for keyboard interaction
+        this.focus();
 
         // When the user clicks on anything else, deselect the vertex
         event.pointer.addInputListener( this.createDeselectFunctionListener( circuitNode ) );
