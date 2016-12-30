@@ -1,7 +1,7 @@
 // Copyright 2015-2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
+ * Contains circuit, voltmeter, ammeter and properties to indicate what mode the model is in.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -100,7 +100,7 @@ define( function( require ) {
   return inherit( Object, CircuitConstructionKitModel, {
 
     /**
-     * Update the circuit over a period of time
+     * Update the circuit when the simulation clock steps.
      * @param {number} dt - elapsed time in seconds
      */
     step: function( dt ) {
