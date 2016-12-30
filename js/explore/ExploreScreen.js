@@ -87,14 +87,6 @@ define( function( require ) {
       tandem: tandem
     };
 
-    // disable general keyboard navigation for any sim using this screen
-    document.addEventListener( 'keydown', function( event ) {
-      var keyCode = event.keyCode || event.which;
-      if ( keyCode === Input.KEY_TAB ) {
-        event.preventDefault();
-      }
-    } );
-
     Screen.call( this,
       function() {
         return new ExploreScreenModel( tandem.createTandem( 'model' ) );
