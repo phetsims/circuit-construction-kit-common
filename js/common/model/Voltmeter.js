@@ -1,7 +1,7 @@
 // Copyright 2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
+ * The model for a voltmeter, which has a red and black probe and reads out voltage between vertices/wires.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -23,17 +23,19 @@ define( function( require ) {
 
     Meter.call( this, tandem );
 
-    // @public Null means no reading, otherwise {number} volts
+    // @public {Property.<number|null>} the voltage the probe is reading, in volts
     this.voltageProperty = new Property( null, {
       tandem: tandem.createTandem( 'voltageProperty' ),
       phetioValueType: TNumber( { units: 'volts' } )
     } );
 
+    // @public - the position of the tip of the red probe in model=view coordinates.
     this.redProbePositionProperty = new Property( new Vector2(), {
       tandem: tandem.createTandem( 'redProbePositionProperty' ),
       phetioValueType: TVector2
     } );
 
+    // @public - the position of the black probe in model=view coordinates
     this.blackProbePositionProperty = new Property( new Vector2(), {
       tandem: tandem.createTandem( 'blackProbePositionProperty' ),
       phetioValueType: TVector2
@@ -47,6 +49,10 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'Voltmeter', Voltmeter );
 
   return inherit( Meter, Voltmeter, {
+
+    /**
+     * Reset the voltmeter, called when reset all is pressed.
+     */
     reset: function() {
       Meter.prototype.reset.call( this );
       this.voltageProperty.reset();
