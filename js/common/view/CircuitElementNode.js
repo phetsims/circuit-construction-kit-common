@@ -19,6 +19,7 @@ define( function( require ) {
 
   /**
    * @param {CircuitElement} circuitElement
+   * @param {Circuit} circuit - the circuit which the element can be removed from
    * @param {Object} [options]
    * @constructor
    */
