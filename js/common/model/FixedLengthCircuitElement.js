@@ -31,12 +31,13 @@ define( function( require ) {
     // Super constructor
     CircuitElement.call( this, startVertex, endVertex, options );
 
-    // The distance electrons travel (along paths)
-    this.circuitElementLength = circuitElementLength;
     Property.preventGetSet( this, 'length' );
 
     // @public (read-only) The distance from one vertex to another (as the crow flies), used for rotation about a vertex
-    this.distanceBetweenVertices = this.circuitElementLength;
+    this.distanceBetweenVertices = circuitElementLength;
+
+    // The distance electrons travel (along paths)
+    this.circuitElementLength = circuitElementLength;
   }
 
   circuitConstructionKitCommon.register( 'FixedLengthCircuitElement', FixedLengthCircuitElement );
