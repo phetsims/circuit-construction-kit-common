@@ -1,8 +1,8 @@
 // Copyright 2015-2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- *
+ * CircuitElements such as Resistor, Battery, etc have a fixed length (unlike stretchy Wires).  This is their common
+ * base class.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -15,19 +15,26 @@ define( function( require ) {
   var CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/CircuitElement' );
 
   /**
-   *
+   * @param {number} length - in screen coordinates
+   * @param {Vertex} startVertex
+   * @param {Vertex} endVertex
+   * @param {Object} [options]
    * @constructor
    */
   function FixedLengthCircuitElement( length, startVertex, endVertex, options ) {
-    var actualLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
-    assert && assert( Math.abs( length - actualLength ) < 1E-6, 'length should be ' + length );
 
+    // Check that the measured length matches the specified length
+    var measuredLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
+    assert && assert( Math.abs( length - measuredLength ) < 1E-6, 'length should be ' + length );
+
+    // Super constructor
     CircuitElement.call( this, startVertex, endVertex, options );
 
     // The distance electrons travel (along paths)
+    // TODO: give this a more specific name
     this.length = length;
 
-    // The distance from one vertex to another (as the crow flies)
+    // @public (read-only) The distance from one vertex to another (as the crow flies), used for rotation about a vertex
     this.distanceBetweenVertices = this.length;
   }
 

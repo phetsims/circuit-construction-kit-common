@@ -100,8 +100,6 @@ define( function( require ) {
     var trueLength = accumulatedDistance; // measured by code below
     this.length = trueLength - 1E-8; // changes the speed at which particles go through the light bulb
 
-    this.distanceBetweenVertices = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
-
     this.vertexDelta = endVertex.positionProperty.get().minus( startVertex.positionProperty.get() );
   }
 
