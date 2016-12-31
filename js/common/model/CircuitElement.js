@@ -149,10 +149,10 @@ define( function( require ) {
              (this.startVertexProperty.get() === vertex2 && this.endVertexProperty.get() === vertex1);
     },
     getPosition: function( distanceAlongWire ) {
-      return this.startVertexProperty.get().positionProperty.get().blend( this.endVertexProperty.get().positionProperty.get(), distanceAlongWire / this.length );
+      return this.startVertexProperty.get().positionProperty.get().blend( this.endVertexProperty.get().positionProperty.get(), distanceAlongWire / this.circuitElementLength );
     },
     containsScalarLocation: function( s ) {
-      return s >= 0 && s <= this.length;
+      return s >= 0 && s <= this.circuitElementLength;
     }
   } );
 } );

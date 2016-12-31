@@ -80,7 +80,7 @@ define( function( require ) {
       distance: distance,
       getDensity: function( circuit ) {
         var particles = circuit.getElectronsInCircuitElement( branch );
-        return particles.length / branch.length;
+        return particles.length / branch.circuitElementLength;
       }
     };
   };
@@ -207,7 +207,7 @@ define( function( require ) {
           dest = myloc + maxDX;
         }
       }
-      if ( dest >= 0 && dest <= electron.circuitElement.length ) {
+      if ( dest >= 0 && dest <= electron.circuitElement.circuitElementLength ) {
         electron.distanceProperty.set( dest );
       }
     },
@@ -239,7 +239,7 @@ define( function( require ) {
         else {
 
           // TODO: better abstraction for the following line
-          overshoot = Math.abs( circuitElement.length - newX );
+          overshoot = Math.abs( circuitElement.circuitElementLength - newX );
           under = false;
         }
         assert && assert( !isNaN( overshoot ), 'overshoot is NaN' );
@@ -289,8 +289,8 @@ define( function( require ) {
         var distAlongNew = null;
         if ( current > 0 && neighbor.startVertexProperty.get() === jroot ) {//start near the beginning.
           distAlongNew = overshoot;
-          if ( distAlongNew > neighbor.length ) {
-            distAlongNew = neighbor.length;
+          if ( distAlongNew > neighbor.circuitElementLength ) {
+            distAlongNew = neighbor.circuitElementLength;
           }
           else if ( distAlongNew < 0 ) {
             distAlongNew = 0;
@@ -298,9 +298,9 @@ define( function( require ) {
           all.push( createCircuitLocation( neighbor, distAlongNew ) );
         }
         else if ( current < 0 && neighbor.endVertexProperty.get() === jroot ) {
-          distAlongNew = neighbor.length - overshoot;
-          if ( distAlongNew > neighbor.length ) {
-            distAlongNew = neighbor.length;
+          distAlongNew = neighbor.circuitElementLength - overshoot;
+          if ( distAlongNew > neighbor.circuitElementLength ) {
+            distAlongNew = neighbor.circuitElementLength;
           }
           else if ( distAlongNew < 0 ) {
             distAlongNew = 0;

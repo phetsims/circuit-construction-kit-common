@@ -307,7 +307,7 @@ define( function( require ) {
         var child = children[ i ];
         if ( child instanceof ElectronNode &&
              child.electron.circuitElement instanceof LightBulb ) {
-          if ( child.electron.distanceProperty.get() > child.electron.circuitElement.length / 2 ) {
+          if ( child.electron.distanceProperty.get() > child.electron.circuitElement.circuitElementLength / 2 ) {
             child.moveToFront();
           }
           else {

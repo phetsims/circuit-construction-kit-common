@@ -41,16 +41,18 @@ define( function( require ) {
       this.vertexMovedEmitter.removeListener( vertexMovedListener );
     };
 
-    var updateLength = function() {
-      self.length = self.startVertexProperty.get().positionProperty.get().distance( self.endVertexProperty.get().positionProperty.get() );
+    var updateCircuitElementLength = function() {
+      self.circuitElementLength = self.startVertexProperty.get().positionProperty.get().distance( self.endVertexProperty.get().positionProperty.get() );
     };
 
     var vertexMovedListener = function() {
       updateResistance();
-      updateLength();
+      updateCircuitElementLength();
     };
     this.vertexMovedEmitter.addListener( vertexMovedListener );
     vertexMovedListener();
+
+    Property.preventGetSet( this, 'length' );
   }
 
   circuitConstructionKitCommon.register( 'Wire', Wire );
