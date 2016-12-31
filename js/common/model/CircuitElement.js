@@ -87,6 +87,8 @@ define( function( require ) {
       self.startVertexProperty.get().positionProperty.unlink( vertexMoved );
       self.endVertexProperty.get().positionProperty.unlink( vertexMoved );
     };
+
+    // TODO: Move this.circuitElementLength here (currently it is duplicated in subclasses)
   }
 
   circuitConstructionKitCommon.register( 'CircuitElement', CircuitElement );
