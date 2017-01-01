@@ -157,8 +157,8 @@ define( function( require ) {
     getPosition: function( distanceAlongWire ) {
       return this.startVertexProperty.get().positionProperty.get().blend( this.endVertexProperty.get().positionProperty.get(), distanceAlongWire / this.electronPathLength );
     },
-    containsScalarLocation: function( s ) {
-      return s >= 0 && s <= this.electronPathLength;
+    containsScalarLocation: function( scalarLocation ) {
+      return scalarLocation >= 0 && scalarLocation <= this.electronPathLength;
     }
   } );
 } );
