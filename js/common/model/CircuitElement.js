@@ -88,7 +88,7 @@ define( function( require ) {
       self.endVertexProperty.get().positionProperty.unlink( vertexMoved );
     };
 
-    // TODO: Move this.circuitElementLength here (currently it is duplicated in subclasses)
+    // TODO: Move this.electronPathLength here (currently it is duplicated in subclasses)
   }
 
   circuitConstructionKitCommon.register( 'CircuitElement', CircuitElement );
@@ -151,10 +151,10 @@ define( function( require ) {
              (this.startVertexProperty.get() === vertex2 && this.endVertexProperty.get() === vertex1);
     },
     getPosition: function( distanceAlongWire ) {
-      return this.startVertexProperty.get().positionProperty.get().blend( this.endVertexProperty.get().positionProperty.get(), distanceAlongWire / this.circuitElementLength );
+      return this.startVertexProperty.get().positionProperty.get().blend( this.endVertexProperty.get().positionProperty.get(), distanceAlongWire / this.electronPathLength );
     },
     containsScalarLocation: function( s ) {
-      return s >= 0 && s <= this.circuitElementLength;
+      return s >= 0 && s <= this.electronPathLength;
     }
   } );
 } );

@@ -39,7 +39,7 @@ define( function( require ) {
       // compress or expand, but fix a particle at startingPoint and endingPoint.
       var offset = ELECTRON_SEPARATION / 2;
 
-      var circuitLength = circuitElement.circuitElementLength;
+      var circuitLength = circuitElement.electronPathLength;
       var endingPoint = circuitLength - offset;
       var startingPoint = offset;
       var length = endingPoint - startingPoint;

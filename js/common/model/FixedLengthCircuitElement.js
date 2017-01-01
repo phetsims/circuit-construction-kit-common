@@ -16,17 +16,17 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
 
   /**
-   * @param {number} circuitElementLength - in screen coordinates
+   * @param {number} electronPathLength - in screen coordinates
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
    * @param {Object} [options]
    * @constructor
    */
-  function FixedLengthCircuitElement( circuitElementLength, startVertex, endVertex, options ) {
+  function FixedLengthCircuitElement( electronPathLength, startVertex, endVertex, options ) {
 
     // Check that the measured length matches the specified length
     var measuredLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
-    assert && assert( Math.abs( circuitElementLength - measuredLength ) < 1E-6, 'length should be ' + circuitElementLength );
+    assert && assert( Math.abs( electronPathLength - measuredLength ) < 1E-6, 'length should be ' + electronPathLength );
 
     // Super constructor
     CircuitElement.call( this, startVertex, endVertex, options );
@@ -34,10 +34,10 @@ define( function( require ) {
     Property.preventGetSet( this, 'length' );
 
     // @public (read-only) The distance from one vertex to another (as the crow flies), used for rotation about a vertex
-    this.distanceBetweenVertices = circuitElementLength;
+    this.distanceBetweenVertices = electronPathLength;
 
     // The distance electrons travel (along paths)
-    this.circuitElementLength = circuitElementLength;
+    this.electronPathLength = electronPathLength;
   }
 
   circuitConstructionKitCommon.register( 'FixedLengthCircuitElement', FixedLengthCircuitElement );

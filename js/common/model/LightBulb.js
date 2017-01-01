@@ -98,7 +98,7 @@ define( function( require ) {
     }
 
     var trueLength = accumulatedDistance; // measured by code below
-    this.circuitElementLength = trueLength - 1E-8; // changes the speed at which particles go through the light bulb
+    this.electronPathLength = trueLength - 1E-8; // changes the speed at which particles go through the light bulb
 
     // @private (read-only) the vector between the vertices
     this.vertexDelta = endVertex.positionProperty.get().minus( startVertex.positionProperty.get() );

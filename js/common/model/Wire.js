@@ -42,7 +42,7 @@ define( function( require ) {
     };
 
     var updateCircuitElementLength = function() {
-      self.circuitElementLength = self.startVertexProperty.get().positionProperty.get().distance( self.endVertexProperty.get().positionProperty.get() );
+      self.electronPathLength = self.startVertexProperty.get().positionProperty.get().distance( self.endVertexProperty.get().positionProperty.get() );
     };
 
     var vertexMovedListener = function() {
