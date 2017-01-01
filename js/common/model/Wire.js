@@ -23,7 +23,8 @@ define( function( require ) {
   function Wire( startVertex, endVertex, resistivity, options ) {
     assert && assert( typeof resistivity === 'number' && resistivity >= 0, 'bad value for resistivity: ' + resistivity );
     var self = this;
-    CircuitElement.call( this, startVertex, endVertex, options );
+    var electronPathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
+    CircuitElement.call( this, startVertex, endVertex, electronPathLength, options );
 
     this.resistanceProperty = new Property( CircuitConstructionKitConstants.MINIMUM_RESISTANCE );
     this.resistivityProperty = new Property( resistivity );

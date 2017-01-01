@@ -19,10 +19,11 @@ define( function( require ) {
    *
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
+   * @param {number} electronPathLength
    * @param {Object} [options]
    * @constructor
    */
-  function CircuitElement( startVertex, endVertex, options ) {
+  function CircuitElement( startVertex, endVertex, electronPathLength, options ) {
     assert && assert( startVertex !== endVertex, 'vertices must be different' );
 
     var self = this;
@@ -88,7 +89,7 @@ define( function( require ) {
       self.endVertexProperty.get().positionProperty.unlink( vertexMoved );
     };
 
-    // TODO: Move this.electronPathLength here (currently it is duplicated in subclasses)
+    this.electronPathLength = electronPathLength;
   }
 
   circuitConstructionKitCommon.register( 'CircuitElement', CircuitElement );
