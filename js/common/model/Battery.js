@@ -30,7 +30,7 @@ define( function( require ) {
     options = _.extend( {
       initialOrientation: 'right'
     }, options );
-    FixedLengthCircuitElement.call( this, BATTERY_LENGTH, startVertex, endVertex, BATTERY_LENGTH );
+    FixedLengthCircuitElement.call( this, startVertex, endVertex, BATTERY_LENGTH, BATTERY_LENGTH );
 
     // @public {Property.<number>} the voltage of the battery
     this.voltageProperty = new Property( voltage );

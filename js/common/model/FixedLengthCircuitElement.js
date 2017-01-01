@@ -16,14 +16,14 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
 
   /**
-   * @param {number} distanceBetweenVertices - in screen coordinates
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
+   * @param {number} distanceBetweenVertices - in screen coordinates
    * @param {number} electronPathLength
    * @param {Object} [options]
    * @constructor
    */
-  function FixedLengthCircuitElement( distanceBetweenVertices, startVertex, endVertex, electronPathLength, options ) {
+  function FixedLengthCircuitElement( startVertex, endVertex, distanceBetweenVertices, electronPathLength, options ) {
 
     // TODO: fix arg order
     // Check that the measured length matches the specified length

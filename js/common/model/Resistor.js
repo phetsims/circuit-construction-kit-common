@@ -25,7 +25,7 @@ define( function( require ) {
    * @constructor
    */
   function Resistor( startVertex, endVertex, resistance ) {
-    FixedLengthCircuitElement.call( this, RESISTOR_LENGTH, startVertex, endVertex, RESISTOR_LENGTH );
+    FixedLengthCircuitElement.call( this, startVertex, endVertex, RESISTOR_LENGTH, RESISTOR_LENGTH );
 
     // @public (read-only) {Property.<number>} the resistance in ohms
     this.resistanceProperty = new Property( resistance );

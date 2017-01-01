@@ -97,7 +97,7 @@ define( function( require ) {
     }
 
     var electronPathLength = accumulatedDistance - 1E-8; // changes the speed at which particles go through the light bulb
-    FixedLengthCircuitElement.call( this, DISTANCE_BETWEEN_VERTICES, startVertex, endVertex, electronPathLength, options );
+    FixedLengthCircuitElement.call( this, startVertex, endVertex, DISTANCE_BETWEEN_VERTICES, electronPathLength, options ); // TODO: what are options here?
 
     // @private (read-only) the vector between the vertices
     this.vertexDelta = endVertex.positionProperty.get().minus( startVertex.positionProperty.get() );
