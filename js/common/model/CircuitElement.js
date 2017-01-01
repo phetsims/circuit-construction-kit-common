@@ -89,6 +89,9 @@ define( function( require ) {
       self.endVertexProperty.get().positionProperty.unlink( vertexMoved );
     };
 
+    // @public the distance the electrons must take to get to the other side of the component.  This is typically the
+    // distance between vertices, but not for light bulbs.  This value is constant, except for wires which can have
+    // their length changed.
     this.electronPathLength = electronPathLength;
   }
 

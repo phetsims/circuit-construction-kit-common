@@ -75,7 +75,6 @@ define( function( require ) {
    * @constructor
    */
   function LightBulb( startVertex, endVertex, resistance, options ) {
-    FixedLengthCircuitElement.call( this, DISTANCE_BETWEEN_VERTICES, startVertex, endVertex, options );
     this.resistanceProperty = new Property( resistance );
     Property.preventGetSet( this, 'resistance' );
 
@@ -86,19 +85,19 @@ define( function( require ) {
       var p1 = points[ i ];
       var p2 = points[ i + 1 ];
 
-      var p1X = Util.linear( start.x, end.x, this.startVertexProperty.get().positionProperty.get().x, this.endVertexProperty.get().positionProperty.get().x, p1.x );
-      var p1Y = Util.linear( start.y, end.y, this.startVertexProperty.get().positionProperty.get().y, this.endVertexProperty.get().positionProperty.get().y, p1.y );
+      var p1X = Util.linear( start.x, end.x, startVertex.positionProperty.get().x, endVertex.positionProperty.get().x, p1.x );
+      var p1Y = Util.linear( start.y, end.y, startVertex.positionProperty.get().y, endVertex.positionProperty.get().y, p1.y );
 
-      var p2X = Util.linear( start.x, end.x, this.startVertexProperty.get().positionProperty.get().x, this.endVertexProperty.get().positionProperty.get().x, p2.x );
-      var p2Y = Util.linear( start.y, end.y, this.startVertexProperty.get().positionProperty.get().y, this.endVertexProperty.get().positionProperty.get().y, p2.y );
+      var p2X = Util.linear( start.x, end.x, startVertex.positionProperty.get().x, endVertex.positionProperty.get().x, p2.x );
+      var p2Y = Util.linear( start.y, end.y, startVertex.positionProperty.get().y, endVertex.positionProperty.get().y, p2.y );
 
       var q1 = new Vector2( p1X, p1Y );
       var q2 = new Vector2( p2X, p2Y );
       accumulatedDistance += q2.distance( q1 );
     }
 
-    var trueLength = accumulatedDistance; // measured by code below
-    this.electronPathLength = trueLength - 1E-8; // changes the speed at which particles go through the light bulb
+    var electronPathLength = accumulatedDistance - 1E-8; // changes the speed at which particles go through the light bulb
+    FixedLengthCircuitElement.call( this, DISTANCE_BETWEEN_VERTICES, startVertex, endVertex, electronPathLength, options );
 
     // @private (read-only) the vector between the vertices
     this.vertexDelta = endVertex.positionProperty.get().minus( startVertex.positionProperty.get() );

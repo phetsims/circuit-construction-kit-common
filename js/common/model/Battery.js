@@ -15,6 +15,9 @@ define( function( require ) {
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/FixedLengthCircuitElement' );
   var Property = require( 'AXON/Property' );
 
+  // constants
+  var BATTERY_LENGTH = CircuitConstructionKitConstants.BATTERY_LENGTH;
+
   /**
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
@@ -27,7 +30,7 @@ define( function( require ) {
     options = _.extend( {
       initialOrientation: 'right'
     }, options );
-    FixedLengthCircuitElement.call( this, CircuitConstructionKitConstants.BATTERY_LENGTH, startVertex, endVertex );
+    FixedLengthCircuitElement.call( this, BATTERY_LENGTH, startVertex, endVertex, BATTERY_LENGTH );
 
     // @public {Property.<number>} the voltage of the battery
     this.voltageProperty = new Property( voltage );

@@ -15,6 +15,9 @@ define( function( require ) {
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/FixedLengthCircuitElement' );
   var Property = require( 'AXON/Property' );
 
+  // constants
+  var RESISTOR_LENGTH = CircuitConstructionKitConstants.RESISTOR_LENGTH;
+
   /**
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
@@ -22,7 +25,7 @@ define( function( require ) {
    * @constructor
    */
   function Resistor( startVertex, endVertex, resistance ) {
-    FixedLengthCircuitElement.call( this, CircuitConstructionKitConstants.RESISTOR_LENGTH, startVertex, endVertex );
+    FixedLengthCircuitElement.call( this, RESISTOR_LENGTH, startVertex, endVertex, RESISTOR_LENGTH );
 
     // @public (read-only) {Property.<number>} the resistance in ohms
     this.resistanceProperty = new Property( resistance );
