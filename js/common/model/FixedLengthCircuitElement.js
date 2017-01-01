@@ -19,7 +19,7 @@ define( function( require ) {
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
    * @param {number} distanceBetweenVertices - in screen coordinates
-   * @param {number} electronPathLength
+   * @param {number} electronPathLength - the distance the electrons must travel (in screen coordinates).  More docs in CircuitElement.js
    * @param {Object} [options]
    * @constructor
    */
