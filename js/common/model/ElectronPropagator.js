@@ -89,7 +89,7 @@ define( function( require ) {
     this.electrons = circuit.electrons;
     this.circuit = circuit;
     this.scale = 1;
-    this.smoothData = new RunningAverage( 30 );
+    this.timeScaleRunningAverage = new RunningAverage( 30 );
     this.timeScalingPercentValue = null;
     this.timeScaleProperty = new Property( 1 ); // between 0 and 1, 1 is full speed (unthrottled)
   }
@@ -116,7 +116,7 @@ define( function( require ) {
       else {
         this.scale = 1;
       }
-      this.timeScalingPercentValue = this.smoothData.updateRunningAverage( this.scale );
+      this.timeScalingPercentValue = this.timeScaleRunningAverage.updateRunningAverage( this.scale );
 
       this.timeScaleProperty.set( this.timeScalingPercentValue );
       for ( var i = 0; i < this.electrons.length; i++ ) {
