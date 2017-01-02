@@ -39,11 +39,11 @@ define( function( require ) {
 
     /**
      * Add a data point to the average.
-     * @param d
+     * @param {number} sample
      * @public
      */
-    addSample: function( d ) {
-      this.samples.push( d );
+    addSample: function( sample ) {
+      this.samples.push( sample );
       while ( this.samples.length > this.windowSize ) {
         this.samples.splice( 0, 1 );
       }
