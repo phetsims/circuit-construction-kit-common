@@ -17,6 +17,8 @@ define( function( require ) {
 
   function RunningAverage( windowSize ) {
 
+    assert && assert( windowSize > 0, 'window size must be positive' );
+
     // @private
     this.windowSize = windowSize;
 
@@ -37,23 +39,15 @@ define( function( require ) {
     },
 
     /**
-     * Add a data point to the average.
+     * Add a data point to the average and return the new running average.
      * @param {number} sample
      * @public
      */
-    addSample: function( sample ) {
+    updateRunningAverage: function( sample ) {
       this.samples.push( sample );
       while ( this.samples.length > this.windowSize ) {
         this.samples.splice( 0, 1 );
       }
-    },
-
-    /**
-     * Get the current value of the average.
-     * @returns {number}
-     * @public
-     */
-    getAverage: function() {
       return _.foldl( this.samples, SUM ) / this.samples.length;
     }
   } );

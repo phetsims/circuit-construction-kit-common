@@ -116,8 +116,7 @@ define( function( require ) {
       else {
         this.scale = 1;
       }
-      this.smoothData.addSample( this.scale );
-      this.timeScalingPercentValue = this.smoothData.getAverage();
+      this.timeScalingPercentValue = this.smoothData.updateRunningAverage( this.scale );
 
       this.timeScaleProperty.set( this.timeScalingPercentValue );
       for ( var i = 0; i < this.electrons.length; i++ ) {
