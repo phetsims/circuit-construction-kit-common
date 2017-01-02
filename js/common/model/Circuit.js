@@ -526,29 +526,29 @@ define( function( require ) {
     },
 
     /**
-     * Connect the vertices, merging vertex2 into vertex1 and deleting vertex2
-     * @param {Vertex} vertex1
-     * @param {Vertex} vertex2
+     * Connect the vertices, merging oldVertex into vertex1 and deleting oldVertex
+     * @param {Vertex} targetVertex
+     * @param {Vertex} oldVertex
      * @public
      */
-    connect: function( vertex1, vertex2 ) {
-      assert && assert( vertex1.attachableProperty.get() && vertex2.attachableProperty.get(), 'both vertices should be attachable' );
+    connect: function( targetVertex, oldVertex ) {
+      assert && assert( targetVertex.attachableProperty.get() && oldVertex.attachableProperty.get(), 'both vertices should be attachable' );
 
       // Keep the black box vertices
-      if ( vertex2.blackBoxInterfaceProperty.get() ) {
-        assert && assert( !vertex1.blackBoxInterfaceProperty.get(), 'cannot attach black box interface vertex to black box interface vertex' );
-        this.connect( vertex2, vertex1 );
+      if ( oldVertex.blackBoxInterfaceProperty.get() ) {
+        assert && assert( !targetVertex.blackBoxInterfaceProperty.get(), 'cannot attach black box interface vertex to black box interface vertex' );
+        this.connect( oldVertex, targetVertex );
       }
       else {
         var circuitElements = this.getCircuitElements();
         for ( var i = 0; i < circuitElements.length; i++ ) {
-          circuitElements[ i ].connectCircuitElement( vertex1, vertex2 );
-          if ( circuitElements[ i ].containsVertex( vertex1 ) ) {
+          if ( circuitElements[ i ].containsVertex( oldVertex ) ) {
+            circuitElements[ i ].replaceVertex( oldVertex, targetVertex );
             circuitElements[ i ].connectedEmitter.emit();
           }
         }
-        this.vertices.remove( vertex2 );
-        assert && assert( !vertex2.positionProperty.hasListeners(), 'Removed vertex should not have any listeners' );
+        this.vertices.remove( oldVertex );
+        assert && assert( !oldVertex.positionProperty.hasListeners(), 'Removed vertex should not have any listeners' );
 
         // Update the physics
         this.solve();

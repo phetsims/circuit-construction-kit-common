@@ -176,25 +176,6 @@ define( function( require ) {
     },
 
     /**
-     * Replaces vertex2 with vertex1.
-     * @param {Vertex} vertex1 - the vertex that is being merged into
-     * @param {Vertex} vertex2 - the vertex that is being deleted
-     * @public
-     */
-    connectCircuitElement: function( vertex1, vertex2 ) {  // TODO: Merge with replaceVertex
-      assert && assert( vertex1 !== vertex2, 'Cannot connect vertex to itself.' );
-      if ( this.startVertexProperty.get() === vertex2 ) {
-        this.startVertexProperty.set( vertex1 );
-      }
-      if ( this.endVertexProperty.get() === vertex2 ) {
-        this.endVertexProperty.set( vertex1 );
-      }
-
-      // Make sure we didn't just obtain same start and end vertices
-      assert && assert( this.startVertexProperty.get() !== this.endVertexProperty.get(), 'vertices must be different' );
-    },
-
-    /**
      * Returns true if this CircuitElement contains both Vertex instances.
      * @param {Vertex} vertex1
      * @param {Vertex} vertex2
