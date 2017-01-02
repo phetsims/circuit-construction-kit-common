@@ -12,7 +12,7 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var SmoothData = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/SmoothData' );
+  var RunningAverage = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/RunningAverage' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var Property = require( 'AXON/Property' );
 
@@ -89,7 +89,7 @@ define( function( require ) {
     this.electrons = circuit.electrons;
     this.circuit = circuit;
     this.scale = 1;
-    this.smoothData = new SmoothData( 30 );
+    this.smoothData = new RunningAverage( 30 );
     this.timeScalingPercentValue = null;
     this.timeScaleProperty = new Property( 1 ); // between 0 and 1, 1 is full speed (unthrottled)
   }
@@ -116,7 +116,7 @@ define( function( require ) {
       else {
         this.scale = 1;
       }
-      this.smoothData.addData( this.scale );
+      this.smoothData.addSample( this.scale );
       this.timeScalingPercentValue = this.smoothData.getAverage();
 
       this.timeScaleProperty.set( this.timeScalingPercentValue );
