@@ -2,7 +2,8 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- *
+ * CircuitElement is the base class for all elements that can be part of a circuit, including:
+ * Wire, Resistor, Battery, LightBulb, Switch.  It has a start vertex and end vertex and a model for its own current.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -16,7 +17,6 @@ define( function( require ) {
   var Emitter = require( 'AXON/Emitter' );
 
   /**
-   *
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
    * @param {number} electronPathLength
@@ -25,73 +25,96 @@ define( function( require ) {
    */
   function CircuitElement( startVertex, endVertex, electronPathLength, options ) {
     assert && assert( startVertex !== endVertex, 'vertices must be different' );
+    assert && assert( typeof electronPathLength === 'number', 'electron path length should be a number' );
+    assert && assert( electronPathLength > 0, 'electron path length must be positive' );
 
     var self = this;
 
     options = _.extend( {
-      canBeDroppedInToolbox: true, // false in Circuit Construction Kit Intro screen
-      interactive: true // false for Black Box elements
+      canBeDroppedInToolbox: true, // In the CCK: Basics intro screen, CircuitElements cannot be dropped into the toolbox
+      interactive: true // In CCK: Black Box Study, CircuitElements in the black box cannot be manipulated
     }, options );
+
+    // @public (read-only) - whether it is possible to drop the CircuitElement in the toolbox
     this.canBeDroppedInToolbox = options.canBeDroppedInToolbox;
 
+    // @public (read-only) - the Vertex at the origin of the CircuitElement
     this.startVertexProperty = new Property( startVertex );
-    this.endVertexProperty = new Property( endVertex );
-    this.currentProperty = new Property( 0 );
-    this.isOverToolboxProperty = new Property( false );
+    Property.preventGetSet( this, 'startVertex' );
 
-    // @public - can be edited and dragged
+    // @public (read-only) - the Vertex at the end of the CircuitElement
+    this.endVertexProperty = new Property( endVertex );
+    Property.preventGetSet( this, 'endVertex' );
+
+    // @public (read-only) - the flowing current, in amps.
+    this.currentProperty = new Property( 0 );
+    Property.preventGetSet( this, 'current' );
+
+    // @public (read-only) - whether the CircuitElement is being dragged across the toolbox
+    this.isOverToolboxProperty = new Property( false );
+    Property.preventGetSet( this, 'isOverToolbox' );
+
+    // @public (read-only) - true if the CircuitElement can be edited and dragged
     this.interactiveProperty = new Property( options.interactive );
+    Property.preventGetSet( this, 'interactive' );
 
     // @public - whether the circuit element is inside the true black box, not inside the user-created black box, on
     // the interface or outside of the black box
     this.insideTrueBlackBoxProperty = new Property( false );
-    Property.preventGetSet( this, 'startVertex' );
-    Property.preventGetSet( this, 'endVertex' );
-    Property.preventGetSet( this, 'current' );
-    Property.preventGetSet( this, 'interactive' );
     Property.preventGetSet( this, 'insideTrueBlackBox' );
 
-    // @public - true if the electrons must be layed out
+    // @public - true if the electrons must be layed out again
     this.dirty = true;
 
-    // @public (read-only) - indicate when this circuit element has been connected
+    // @public (read-only) - indicate when this CircuitElement has been connected to another CircuitElement
     this.connectedEmitter = new Emitter();
 
-    // @public (read-only) - indicate when the circuit element has been moved to the front in z-ordering
+    // @public (read-only) - indicate when the CircuitElement has been moved to the front in z-ordering
     this.moveToFrontEmitter = new Emitter();
 
-    // @public (read-only) - indicate when an adjacent vertex has moved to front, so that the Circuit Element node can
+    // @public (read-only) - indicate when an adjacent Vertex has moved to front, so that the CircuitElement node can
     // move to front too
     this.vertexSelectedEmitter = new Emitter();
 
-    // @public (read-only) - indicate when either vertex has moved
+    // @public (read-only) - indicate when either Vertex has moved
     this.vertexMovedEmitter = new Emitter();
 
+    /**
+     * Signify that a Vertex moved
+     */
     var vertexMoved = function() {
       self.vertexMovedEmitter.emit();
     };
-    var linkToVertex = function( vertex, oldVertex ) {
-      oldVertex && oldVertex.positionProperty.unlink( vertexMoved );
+
+    /**
+     * When the start or end Vertex changes, move the listener from the old Vertex to the new one
+     * @param {Vertex} vertex - the new vertex
+     * @param {Vertex} oldVertex - the previous vertex
+     */
+    var linkVertex = function( vertex, oldVertex ) {
+      oldVertex.positionProperty.unlink( vertexMoved );
       vertex.positionProperty.link( vertexMoved );
 
-      if ( !oldVertex || !oldVertex.positionProperty.get().equals( vertex.positionProperty.get() ) ) {
+      if ( !oldVertex.positionProperty.get().equals( vertex.positionProperty.get() ) ) {
         self.vertexMovedEmitter.emit();
       }
     };
-    this.startVertexProperty.link( linkToVertex );
-    this.endVertexProperty.link( linkToVertex );
+    this.startVertexProperty.get().positionProperty.link( vertexMoved );
+    this.endVertexProperty.get().positionProperty.link( vertexMoved );
+    this.startVertexProperty.lazyLink( linkVertex );
+    this.endVertexProperty.lazyLink( linkVertex );
 
     this.disposeCircuitElement = function() {
-      self.startVertexProperty.unlink( linkToVertex );
-      self.endVertexProperty.unlink( linkToVertex );
+      self.startVertexProperty.unlink( linkVertex );
+      self.endVertexProperty.unlink( linkVertex );
 
       self.startVertexProperty.get().positionProperty.unlink( vertexMoved );
       self.endVertexProperty.get().positionProperty.unlink( vertexMoved );
     };
 
-    // @public the distance the electrons must take to get to the other side of the component.  This is typically the
-    // distance between vertices, but not for light bulbs.  This value is constant, except for wires which can have
-    // their length changed.
+    // @public (writable by subclasses) the distance the electrons must take to get to the other side of the component.
+    // This is typically the distance between vertices, but not for light bulbs.  This value is constant, except
+    // for wires which can have their length changed.
     this.electronPathLength = electronPathLength;
   }
 
@@ -99,26 +122,37 @@ define( function( require ) {
 
   return inherit( Object, CircuitElement, {
 
+    /**
+     * Release resources associated with this CircuitElement, called when it will no longer be used.
+     */
     dispose: function() {
       this.disposeCircuitElement();
     },
 
     /**
      * Replace one of the vertices with a new one
-     * @param oldVertex
-     * @param newVertex
+     * @param {Vertex} oldVertex
+     * @param {Vertex} newVertex
+     * @public
      */
     replaceVertex: function( oldVertex, newVertex ) {
       assert && assert( oldVertex !== newVertex, 'Cannot replace with the same vertex' );
-      assert && assert( oldVertex === this.startVertexProperty.get() || oldVertex === this.endVertexProperty.get(), 'Cannot replace a nonexistent vertex' );
-      assert && assert( newVertex !== this.startVertexProperty.get() && newVertex !== this.endVertexProperty.get(), 'The new vertex shouldn\'t already be in the circuit element.' );
-      if ( oldVertex === this.startVertexProperty.get() ) {
+      var startVertex = this.startVertexProperty.get();
+      var endVertex = this.endVertexProperty.get();
+      assert && assert( oldVertex === startVertex || oldVertex === endVertex, 'Cannot replace a nonexistent vertex' );
+      assert && assert( newVertex !== startVertex && newVertex !== endVertex, 'The new vertex shouldn\'t already be in the circuit element.' );
+      if ( oldVertex === startVertex ) {
         this.startVertexProperty.set( newVertex );
       }
       else {
         this.endVertexProperty.set( newVertex );
       }
     },
+
+    /**
+     * Gets the Vertex on the opposite side of the specified Vertex
+     * @param {Vertex} vertex
+     */
     getOppositeVertex: function( vertex ) {
       assert && assert( this.containsVertex( vertex ), 'Missing vertex' );
       if ( this.startVertexProperty.get() === vertex ) {
@@ -128,17 +162,24 @@ define( function( require ) {
         return this.startVertexProperty.get();
       }
     },
+
+    /**
+     * Returns whether this CircuitElement contains the specified Vertex as its startVertex or endVertex.
+     * @param {Vertex} vertex - the vertex to check for
+     * @return {boolean}
+     */
     containsVertex: function( vertex ) {
       return this.startVertexProperty.get() === vertex || this.endVertexProperty.get() === vertex;
     },
 
     /**
-     * Connect the vertices, merging vertex2 into vertex1 and deleting vertex2
-     * @param {Vertex} vertex1
-     * @param {Vertex} vertex2
+     * Replaces vertex2 with vertex1.
+     * @param {Vertex} vertex1 - the vertex that is being merged into
+     * @param {Vertex} vertex2 - the vertex that is being deleted
      * @public
      */
-    connectCircuitElement: function( vertex1, vertex2 ) {
+    connectCircuitElement: function( vertex1, vertex2 ) {  // TODO: Merge with replaceVertex
+      assert && assert( vertex1 !== vertex2, 'Cannot connect vertex to itself.' );
       if ( this.startVertexProperty.get() === vertex2 ) {
         this.startVertexProperty.set( vertex1 );
       }
@@ -150,13 +191,27 @@ define( function( require ) {
       assert && assert( this.startVertexProperty.get() !== this.endVertexProperty.get(), 'vertices must be different' );
     },
 
-    hasBothVertices: function( vertex1, vertex2 ) {
+    containsBothVertices: function( vertex1, vertex2 ) { // TODO: implement using containsVertex
       return (this.startVertexProperty.get() === vertex1 && this.endVertexProperty.get() === vertex2) ||
              (this.startVertexProperty.get() === vertex2 && this.endVertexProperty.get() === vertex1);
     },
+
+    /**
+     * Gets the 2D Position along the CircuitElement corresponding to the given scalar distance
+     * @param {number} distanceAlongWire - the scalar distance from one endpoint to another.
+     * @return {Vector2}
+     */
     getPosition: function( distanceAlongWire ) {
-      return this.startVertexProperty.get().positionProperty.get().blend( this.endVertexProperty.get().positionProperty.get(), distanceAlongWire / this.electronPathLength );
+      var startPosition = this.startVertexProperty.get().positionProperty.get();
+      var endPosition = this.endVertexProperty.get().positionProperty.get();
+      return startPosition.blend( endPosition, distanceAlongWire / this.electronPathLength );
     },
+
+    /**
+     * Returns true if this CircuitElement contains the specified scalar location.
+     * @param {number} scalarLocation
+     * @return {boolean}
+     */
     containsScalarLocation: function( scalarLocation ) {
       return scalarLocation >= 0 && scalarLocation <= this.electronPathLength;
     }

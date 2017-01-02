@@ -575,7 +575,7 @@ define( function( require ) {
     isVertexAdjacent: function( a, b ) {
       var circuitElements = this.getCircuitElements();
       for ( var i = 0; i < circuitElements.length; i++ ) {
-        if ( circuitElements[ i ].hasBothVertices( a, b ) ) {
+        if ( circuitElements[ i ].containsBothVertices( a, b ) ) {
           return true;
         }
       }
