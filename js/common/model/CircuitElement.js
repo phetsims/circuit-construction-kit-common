@@ -124,6 +124,7 @@ define( function( require ) {
 
     /**
      * Release resources associated with this CircuitElement, called when it will no longer be used.
+     * @public
      */
     dispose: function() {
       this.disposeCircuitElement();
@@ -152,6 +153,7 @@ define( function( require ) {
     /**
      * Gets the Vertex on the opposite side of the specified Vertex
      * @param {Vertex} vertex
+     * @public
      */
     getOppositeVertex: function( vertex ) {
       assert && assert( this.containsVertex( vertex ), 'Missing vertex' );
@@ -167,6 +169,7 @@ define( function( require ) {
      * Returns whether this CircuitElement contains the specified Vertex as its startVertex or endVertex.
      * @param {Vertex} vertex - the vertex to check for
      * @return {boolean}
+     * @public
      */
     containsVertex: function( vertex ) {
       return this.startVertexProperty.get() === vertex || this.endVertexProperty.get() === vertex;
@@ -196,6 +199,7 @@ define( function( require ) {
      * @param {Vertex} vertex1
      * @param {Vertex} vertex2
      * @return {boolean}
+     * @public
      */
     containsBothVertices: function( vertex1, vertex2 ) {
       return this.containsVertex( vertex1 ) && this.containsVertex( vertex2 );
@@ -205,6 +209,7 @@ define( function( require ) {
      * Gets the 2D Position along the CircuitElement corresponding to the given scalar distance
      * @param {number} distanceAlongWire - the scalar distance from one endpoint to another.
      * @return {Vector2}
+     * @public
      */
     getPosition: function( distanceAlongWire ) {
       var startPosition = this.startVertexProperty.get().positionProperty.get();
@@ -216,6 +221,7 @@ define( function( require ) {
      * Returns true if this CircuitElement contains the specified scalar location.
      * @param {number} scalarLocation
      * @return {boolean}
+     * @public
      */
     containsScalarLocation: function( scalarLocation ) {
       return scalarLocation >= 0 && scalarLocation <= this.electronPathLength;
