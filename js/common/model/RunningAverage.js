@@ -31,6 +31,7 @@ define( function( require ) {
 
     /**
      * Clear the running average.
+     * @public
      */
     clear: function() {
       this.samples.length = 0;
@@ -39,6 +40,7 @@ define( function( require ) {
     /**
      * Add a data point to the average.
      * @param d
+     * @public
      */
     addSample: function( d ) {
       this.samples.push( d );
@@ -50,6 +52,7 @@ define( function( require ) {
     /**
      * Get the current value of the average.
      * @returns {number}
+     * @public
      */
     getAverage: function() {
       return _.foldl( this.samples, SUM ) / this.samples.length;
