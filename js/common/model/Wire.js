@@ -26,43 +26,59 @@ define( function( require ) {
     var electronPathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
     CircuitElement.call( this, startVertex, endVertex, electronPathLength, options );
 
+    // @public (read-only) - the resistance of the Wire in ohms
     this.resistanceProperty = new Property( CircuitConstructionKitConstants.MINIMUM_RESISTANCE );
-    this.resistivityProperty = new Property( resistivity );
     Property.preventGetSet( this, 'resistance' );
+
+    // @public (read-only) - the resistivity of the Wire in ohm-meters
+    // TODO: when the resistivity changes, update the resistance
+    this.resistivityProperty = new Property( resistivity );
     Property.preventGetSet( this, 'resistivity' );
 
-    var updateResistance = function() {
-      var length = self.startVertexProperty.get().positionProperty.get().minus( self.endVertexProperty.get().positionProperty.get() ).magnitude();
-      var javaLength = length / 990 * 15.120675866835684;
-      self.resistanceProperty.set( Math.max( CircuitConstructionKitConstants.MINIMUM_RESISTANCE, javaLength * self.resistivityProperty.get() ) );
-      assert && assert( !isNaN( self.resistanceProperty.get() ), 'wire resistance should not be NaN' );
-    };
-
-    this.disposeWire = function() {
-      this.vertexMovedEmitter.removeListener( vertexMovedListener );
-    };
-
-    var updateCircuitElementLength = function() {
-      self.electronPathLength = self.startVertexProperty.get().positionProperty.get().distance( self.endVertexProperty.get().positionProperty.get() );
-    };
-
+    /**
+     * When the vertex moves, updates the resistance and electron path length.
+     */
     var vertexMovedListener = function() {
-      updateResistance();
-      updateCircuitElementLength();
+      var startPosition = self.startVertexProperty.get().positionProperty.get();
+      var endPosition = self.endVertexProperty.get().positionProperty.get();
+      var distanceBetweenVertices = startPosition.distance( endPosition );
+      var javaLength = distanceBetweenVertices / 990 * 15.120675866835684;
+      var resistance = javaLength * self.resistivityProperty.get();
+      var newResistance = Math.max( CircuitConstructionKitConstants.MINIMUM_RESISTANCE, resistance );
+      assert && assert( !isNaN( newResistance ), 'wire resistance should not be NaN' );
+      self.resistanceProperty.set( newResistance );
+      self.electronPathLength = distanceBetweenVertices;
     };
-    this.vertexMovedEmitter.addListener( vertexMovedListener );
+
+    // Use `self` here instead of `this` so IDEA doesn't mark the property as missing.
+    self.vertexMovedEmitter.addListener( vertexMovedListener );
+
+    // Update the resistance and electron path length on startup
     vertexMovedListener();
 
-    Property.preventGetSet( this, 'length' );
+    this.disposeWire = function() {
+      self.vertexMovedEmitter.removeListener( vertexMovedListener );
+    };
   }
 
   circuitConstructionKitCommon.register( 'Wire', Wire );
 
   return inherit( CircuitElement, Wire, {
+
+    /**
+     * Releases all resources related to the Wire, called when it will no longer be used.
+     * @public
+     */
     dispose: function() {
-      this.disposeWire();
       CircuitElement.prototype.dispose.call( this );
+      this.disposeWire();
     },
+
+    /**
+     * Returns an object with the state of the Wire, so that it can be saved/loaded.
+     * @returns {Object}
+     * @public
+     */
     attributesToStateObject: function() {
       return {
         resistance: this.resistanceProperty.get(),
