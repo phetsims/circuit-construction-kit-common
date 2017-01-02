@@ -573,6 +573,11 @@ define( function( require ) {
 
     // The only way for two vertices to be adjacent is for them to be the start/end of a single CircuitElement
     isVertexAdjacent: function( a, b ) {
+
+      // A vertex cannot be adjacent to itself.  TODO: should this be checked in the call sites?
+      if ( a === b ) {
+        return false;
+      }
       var circuitElements = this.getCircuitElements();
       for ( var i = 0; i < circuitElements.length; i++ ) {
         if ( circuitElements[ i ].containsBothVertices( a, b ) ) {

@@ -191,9 +191,14 @@ define( function( require ) {
       assert && assert( this.startVertexProperty.get() !== this.endVertexProperty.get(), 'vertices must be different' );
     },
 
-    containsBothVertices: function( vertex1, vertex2 ) { // TODO: implement using containsVertex
-      return (this.startVertexProperty.get() === vertex1 && this.endVertexProperty.get() === vertex2) ||
-             (this.startVertexProperty.get() === vertex2 && this.endVertexProperty.get() === vertex1);
+    /**
+     * Returns true if this CircuitElement contains both Vertex instances.
+     * @param {Vertex} vertex1
+     * @param {Vertex} vertex2
+     * @return {boolean}
+     */
+    containsBothVertices: function( vertex1, vertex2 ) {
+      return this.containsVertex( vertex1 ) && this.containsVertex( vertex2 );
     },
 
     /**
