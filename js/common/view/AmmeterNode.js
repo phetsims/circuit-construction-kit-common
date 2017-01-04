@@ -140,6 +140,5 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'AmmeterNode', AmmeterNode );
 
-  // Test Commit
   return inherit( Node, AmmeterNode );
 } );
