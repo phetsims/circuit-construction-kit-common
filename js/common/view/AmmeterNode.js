@@ -140,5 +140,5 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'AmmeterNode', AmmeterNode );
 
-  return inherit( Node, AmmeterNode, {} );
+  return inherit( Node, AmmeterNode );
 } );
