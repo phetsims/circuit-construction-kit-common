@@ -1,4 +1,4 @@
-// Copyright 2016, University of Colorado Boulder
+// Copyright 2016-2017, University of Colorado Boulder
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
@@ -50,58 +50,58 @@ define( function( require ) {
     }
   }, {
     fromStateObject: function( circuitState ) { // TODO: Tandem - Pass tandems through
-      var circuit = new CircuitStruct( [], [], [], [], [], [] );
+      var circuitStruct = new CircuitStruct( [], [], [], [], [], [] );
       var options = null;
       for ( var i = 0; i < circuitState.vertices.length; i++ ) {
         options = circuitState.vertices[ i ].options || {};
-        circuit.vertices.push( new Vertex( circuitState.vertices[ i ].x, circuitState.vertices[ i ].y, options ) );
+        circuitStruct.vertices.push( new Vertex( circuitState.vertices[ i ].x, circuitState.vertices[ i ].y, options ) );
       }
       for ( i = 0; i < circuitState.wires.length; i++ ) {
         options = circuitState.wires[ i ].options || {};
-        circuit.wires.push( new Wire(
-          circuit.vertices[ circuitState.wires[ i ].startVertex ],
-          circuit.vertices[ circuitState.wires[ i ].endVertex ],
+        circuitStruct.wires.push( new Wire(
+          circuitStruct.vertices[ circuitState.wires[ i ].startVertex ],
+          circuitStruct.vertices[ circuitState.wires[ i ].endVertex ],
           circuitState.wires[ i ].resistivity,
           options
         ) );
       }
       for ( i = 0; i < circuitState.batteries.length; i++ ) {
         options = circuitState.batteries[ i ].options || {};
-        circuit.batteries.push( new Battery(
-          circuit.vertices[ circuitState.batteries[ i ].startVertex ],
-          circuit.vertices[ circuitState.batteries[ i ].endVertex ],
+        circuitStruct.batteries.push( new Battery(
+          circuitStruct.vertices[ circuitState.batteries[ i ].startVertex ],
+          circuitStruct.vertices[ circuitState.batteries[ i ].endVertex ],
           circuitState.batteries[ i ].voltage,
           options
         ) );
       }
       for ( i = 0; i < circuitState.resistors.length; i++ ) {
         options = circuitState.resistors[ i ].options || {};
-        circuit.resistors.push( new Resistor(
-          circuit.vertices[ circuitState.resistors[ i ].startVertex ],
-          circuit.vertices[ circuitState.resistors[ i ].endVertex ],
+        circuitStruct.resistors.push( new Resistor(
+          circuitStruct.vertices[ circuitState.resistors[ i ].startVertex ],
+          circuitStruct.vertices[ circuitState.resistors[ i ].endVertex ],
           circuitState.resistors[ i ].resistance,
           options
         ) );
       }
       for ( i = 0; i < circuitState.lightBulbs.length; i++ ) {
         options = circuitState.lightBulbs[ i ].options || {};
-        circuit.lightBulbs.push( new LightBulb(
-          circuit.vertices[ circuitState.lightBulbs[ i ].startVertex ],
-          circuit.vertices[ circuitState.lightBulbs[ i ].endVertex ],
+        circuitStruct.lightBulbs.push( new LightBulb(
+          circuitStruct.vertices[ circuitState.lightBulbs[ i ].startVertex ],
+          circuitStruct.vertices[ circuitState.lightBulbs[ i ].endVertex ],
           circuitState.lightBulbs[ i ].resistance,
           options
         ) );
       }
       for ( i = 0; i < circuitState.switches.length; i++ ) {
         options = circuitState.switches[ i ].options || {};
-        circuit.switches.push( new Switch(
-          circuit.vertices[ circuitState.switches[ i ].startVertex ],
-          circuit.vertices[ circuitState.switches[ i ].endVertex ],
+        circuitStruct.switches.push( new Switch(
+          circuitStruct.vertices[ circuitState.switches[ i ].startVertex ],
+          circuitStruct.vertices[ circuitState.switches[ i ].endVertex ],
           circuitState.wires[ i ].resistivity,
           options
         ) );
       }
-      return circuit;
+      return circuitStruct;
     }
   } );
 } );
