@@ -1,5 +1,4 @@
-// Copyright 2015-2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
+// Copyright 2015-2017, University of Colorado Boulder
 
 /**
  * CircuitElement is the base class for all elements that can be part of a circuit, including:
@@ -72,16 +71,14 @@ define( function( require ) {
     // @public (read-only) - indicate when the CircuitElement has been moved to the front in z-ordering
     this.moveToFrontEmitter = new Emitter();
 
-    // @public (read-only) - indicate when an adjacent Vertex has moved to front, so that the CircuitElement node can
+    // @public (read-only) - indicate when an adjacent Vertex has moved to front, so that the corresponding Node can
     // move to front too
     this.vertexSelectedEmitter = new Emitter();
 
     // @public (read-only) - indicate when either Vertex has moved
     this.vertexMovedEmitter = new Emitter();
 
-    /**
-     * Signify that a Vertex moved
-     */
+    // Signify that a Vertex moved
     var vertexMoved = function() {
       self.vertexMovedEmitter.emit();
     };
@@ -112,7 +109,7 @@ define( function( require ) {
       self.endVertexProperty.get().positionProperty.unlink( vertexMoved );
     };
 
-    // @public (writable by subclasses) the distance the electrons must take to get to the other side of the component.
+    // @public (read-only by clients, writable-by-subclasses) the distance the electrons must take to get to the other side of the component.
     // This is typically the distance between vertices, but not for light bulbs.  This value is constant, except
     // for wires which can have their length changed.
     this.electronPathLength = electronPathLength;
@@ -131,17 +128,19 @@ define( function( require ) {
     },
 
     /**
-     * Replace one of the vertices with a new one
-     * @param {Vertex} oldVertex
-     * @param {Vertex} newVertex
+     * Replace one of the vertices with a new one, when CircuitElements are connected.
+     * @param {Vertex} oldVertex - the vertex which will be replaced.
+     * @param {Vertex} newVertex - the vertex which will take the place of oldVertex.
      * @public
      */
     replaceVertex: function( oldVertex, newVertex ) {
-      assert && assert( oldVertex !== newVertex, 'Cannot replace with the same vertex' );
       var startVertex = this.startVertexProperty.get();
       var endVertex = this.endVertexProperty.get();
+
+      assert && assert( oldVertex !== newVertex, 'Cannot replace with the same vertex' );
       assert && assert( oldVertex === startVertex || oldVertex === endVertex, 'Cannot replace a nonexistent vertex' );
       assert && assert( newVertex !== startVertex && newVertex !== endVertex, 'The new vertex shouldn\'t already be in the circuit element.' );
+
       if ( oldVertex === startVertex ) {
         this.startVertexProperty.set( newVertex );
       }
