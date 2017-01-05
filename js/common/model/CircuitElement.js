@@ -24,7 +24,7 @@ define( function( require ) {
    * @constructor
    */
   function CircuitElement( startVertex, endVertex, electronPathLength, options ) {
-    assert && assert( startVertex !== endVertex, 'vertices must be different' );
+    assert && assert( startVertex !== endVertex, 'startVertex cannot be the same as endVertex' );
     assert && assert( typeof electronPathLength === 'number', 'electron path length should be a number' );
     assert && assert( electronPathLength > 0, 'electron path length must be positive' );
 
@@ -64,7 +64,7 @@ define( function( require ) {
     Property.preventGetSet( this, 'insideTrueBlackBox' );
 
     // @public - true if the electrons must be layed out again
-    this.dirty = true;
+    this.electronLayoutDirty = true;
 
     // @public (read-only) - indicate when this CircuitElement has been connected to another CircuitElement
     this.connectedEmitter = new Emitter();

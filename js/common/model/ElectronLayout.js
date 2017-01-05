@@ -61,7 +61,7 @@ define( function( require ) {
         this.circuit.electrons.add( new Electron( circuitElement, i * dx + offset, this.circuit.showElectronsProperty ) );
       }
 
-      circuitElement.dirty = false;
+      circuitElement.electronLayoutDirty = false;
     }
   } );
 } );

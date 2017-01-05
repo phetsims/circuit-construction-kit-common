@@ -122,8 +122,8 @@ define( function( require ) {
       for ( var i = 0; i < this.electrons.length; i++ ) {
         var electron = this.electrons.get( i );
 
-        // Don't update electrons in dirty circuit elements, because they will get a relayout anyways
-        if ( !electron.circuitElement.dirty ) {
+        // Don't update electrons in electronLayoutDirty circuit elements, because they will get a relayout anyways
+        if ( !electron.circuitElement.electronLayoutDirty ) {
           this.propagate( electron, dt );
         }
       }
@@ -161,9 +161,9 @@ define( function( require ) {
       for ( i = 0; i < this.electrons.length; i++ ) {
         var electron = this.electrons.get( indices[ i ] );
 
-        // No need to update electrons in dirty circuit elements, they will be replaced anyways.  Skipping dirty
+        // No need to update electrons in electronLayoutDirty circuit elements, they will be replaced anyways.  Skipping electronLayoutDirty
         // circuitElements improves performance
-        if ( !electron.circuitElement.dirty ) {
+        if ( !electron.circuitElement.electronLayoutDirty ) {
           this.equalizeElectron( electron, dt );
         }
       }

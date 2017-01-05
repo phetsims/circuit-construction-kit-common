@@ -136,13 +136,13 @@ define( function( require ) {
 
     // When any vertex moves, relayout all electrons within the fixed-length connected component, see #100
     var addElectrons = function( circuitElement ) {
-      circuitElement.dirty = true;
+      circuitElement.electronLayoutDirty = true;
 
       var updateElectrons = function() {
         var circuitElements = self.findAllConnectedCircuitElements( circuitElement.startVertexProperty.get() );
 
         for ( var i = 0; i < circuitElements.length; i++ ) {
-          circuitElements[ i ].dirty = true;
+          circuitElements[ i ].electronLayoutDirty = true;
         }
       };
       circuitElement.vertexMovedEmitter.addListener( updateElectrons );
@@ -565,7 +565,7 @@ define( function( require ) {
     updateElectronsInDirtyCircuitElements: function() {
       var circuitElements = this.circuitElements; // TODO: Heavy on GC
       for ( var i = 0; i < circuitElements.length; i++ ) {
-        if ( circuitElements[ i ].dirty ) {
+        if ( circuitElements[ i ].electronLayoutDirty ) {
           this.constantDensityLayout.layoutElectrons( circuitElements[ i ] );
         }
       }
