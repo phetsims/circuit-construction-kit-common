@@ -30,7 +30,8 @@ define( function( require ) {
 
     options = _.extend( {
       canBeDroppedInToolbox: true, // false in Circuit Construction Kit Intro screen
-      interactive: true // false for Black Box elements
+      interactive: true, // false for Black Box elements
+      wireStub: false
     }, options );
     this.canBeDroppedInToolbox = options.canBeDroppedInToolbox;
 
@@ -46,6 +47,7 @@ define( function( require ) {
       // the interface or outside of the black box
       insideTrueBlackBox: false
     }, propertySetMap ) );
+    this.wireStub = options.wireStub;
 
     // Satisfy the syntax highlighter
     this.current = this.current + 0;

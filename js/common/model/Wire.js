@@ -24,7 +24,8 @@ define( function( require ) {
     var self = this;
     CircuitElement.call( this, startVertex, endVertex, {
       resistance: CircuitConstructionKitConstants.minimumResistance,
-      resistivity: resistivity
+      resistivity: resistivity,
+      wireStub: false
     }, options );
 
     var updateResistance = function() {

@@ -70,7 +70,9 @@ define( function( require ) {
         outerVertex.blackBoxInterface = true;
         outerVertex.draggable = false;
 
-        trueBlackBoxCircuit.wires.push( new Wire( vertex, outerVertex, 1E-6 ) ); // TODO: resistivity
+        trueBlackBoxCircuit.wires.push( new Wire( vertex, outerVertex, 1E-6, {
+          wireStub: true
+        } ) ); // TODO: resistivity
       }
     }
 
@@ -79,7 +81,7 @@ define( function( require ) {
     for ( i = 0; i < trueBlackBoxCircuit.circuitElements.length; i++ ) {
       var circuitElement = trueBlackBoxCircuit.circuitElements[ i ];
       circuitElement.interactive = false;
-      circuitElement.insideTrueBlackBox = true;
+      circuitElement.insideTrueBlackBox = true; // TODO
     }
 
     // additional Properties that will be added to supertype

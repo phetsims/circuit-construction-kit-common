@@ -400,10 +400,11 @@ define( function( require ) {
         // Don't connect to wires in the black box
         var revealing = true;
         var trueBlackBox = wireNode.wire.insideTrueBlackBox;
+        var wireStub = wireNode.wire.wireStub;
         if ( trueBlackBox ) {
           revealing = this.circuitConstructionKitModel.revealing;
         }
-        if ( revealing && wireNode.getStrokedShape().containsPoint( probeNode[ locationString ] ) ) {
+        if ( (revealing || wireStub) && wireNode.getStrokedShape().containsPoint( probeNode[ locationString ] ) ) {
           return wireNode;
         }
       }
