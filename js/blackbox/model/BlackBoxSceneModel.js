@@ -49,6 +49,7 @@ define( function( require ) {
     for ( var i = 0; i < trueBlackBoxCircuit.vertices.length; i++ ) {
       var vertex = trueBlackBoxCircuit.vertices[ i ];
       if ( vertex.blackBoxInterface ) {
+        vertex.blackBoxInterface = false;
         console.log( vertex.positionProperty.value );
 
         // the center of the black box is approximately (508, 305).  Point the wires away from the box.
