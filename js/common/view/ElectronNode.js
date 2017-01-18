@@ -65,7 +65,7 @@ define( function( require ) {
 
     var positionListener = function( position ) {
       self.center = position;
-      outsideOfBlackBoxProperty.value = !electron.circuitElement.insideTrueBlackBox;
+      outsideOfBlackBoxProperty.value = !electron.circuitElement.insideTrueBlackBox || electron.circuitElement.wireStub;
     };
     electron.positionProperty.link( positionListener );
 
