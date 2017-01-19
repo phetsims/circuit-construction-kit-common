@@ -96,13 +96,13 @@ define( function( require ) {
       // @public - whether the vertex is on the edge of a black box.  This means it cannot be deleted, but it can be
       // attached to
       blackBoxInterface: {
-        value: false
+        value: options.blackBoxInterface || false
       },
 
       // @public - whether the vertex is inside the true black box, not inside the user-created black box, on the
       // interface or outside of the black box
       insideTrueBlackBox: {
-        value: false
+        value: options.insideTrueBlackBox || false
       }
     };
 
