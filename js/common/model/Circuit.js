@@ -42,7 +42,6 @@ define( function( require ) {
 
     // @public - The different types of CircuitElement the circuit may contain.
     this.circuitElements = new ObservableArray();
-    this.switches = new ObservableArray();
     this.batteries = new ObservableArray();
     this.lightBulbs = new ObservableArray();
     this.resistors = new ObservableArray();
@@ -75,9 +74,6 @@ define( function( require ) {
     this.circuitElements.addItemAddedListener( function( circuitElement ) { circuitElement.resistanceProperty.lazyLink( solve ); } );
     this.circuitElements.addItemRemovedListener( function( circuitElement ) { circuitElement.resistanceProperty.unlink( solve ); } );
 
-    this.switches.addItemAddedListener( function( switchModel ) { switchModel.resistanceProperty.lazyLink( solve ); } );
-    this.switches.addItemRemovedListener( function( switchModel ) { switchModel.resistanceProperty.unlink( solve ); } );
-
     this.batteries.addItemAddedListener( function( battery ) { battery.voltageProperty.lazyLink( solve ); } );
     this.batteries.addItemRemovedListener( function( battery ) { battery.voltageProperty.unlink( solve ); } );
 
@@ -86,9 +82,6 @@ define( function( require ) {
 
     this.lightBulbs.addItemAddedListener( function( lightBulb ) { lightBulb.resistanceProperty.lazyLink( solve ); } );
     this.lightBulbs.addItemRemovedListener( function( lightBulb ) { lightBulb.resistanceProperty.unlink( solve ); } );
-
-    this.switches.addItemAddedListener( function( switchModel ) { switchModel.closedProperty.lazyLink( solve ); } );
-    this.switches.addItemRemovedListener( function( switchModel ) { switchModel.closedProperty.unlink( solve ); } );
 
     // @public - whether any circuit element is over the toolbox.  This shows the toolbox highlight when something
     // can be dropped in.
@@ -129,7 +122,6 @@ define( function( require ) {
       self.solve();
     };
     this.circuitElements.addItemAddedListener( addVertices );
-    this.switches.addItemAddedListener( addVertices );
     this.batteries.addItemAddedListener( addVertices );
     this.lightBulbs.addItemAddedListener( addVertices );
     this.resistors.addItemAddedListener( addVertices );
@@ -155,13 +147,11 @@ define( function( require ) {
       self.solve(); // Explicit call to solve since it is possible to remove a CircuitElement without removing any vertices.
     };
     this.circuitElements.addItemAddedListener( addElectrons );
-    this.switches.addItemAddedListener( addElectrons );
     this.batteries.addItemAddedListener( addElectrons );
     this.lightBulbs.addItemAddedListener( addElectrons );
     this.resistors.addItemAddedListener( addElectrons );
 
     this.circuitElements.addItemRemovedListener( handleRemoval );
-    this.switches.addItemRemovedListener( handleRemoval );
     this.batteries.addItemRemovedListener( handleRemoval );
     this.lightBulbs.addItemRemovedListener( handleRemoval );
     this.resistors.addItemRemovedListener( handleRemoval );
@@ -270,7 +260,6 @@ define( function( require ) {
     get circuitElementArray() {
       return []
         .concat( this.circuitElements.getArray() )
-        .concat( this.switches.getArray() )
         .concat( this.batteries.getArray() )
         .concat( this.lightBulbs.getArray() )
         .concat( this.resistors.getArray() );
@@ -320,7 +309,6 @@ define( function( require ) {
       this.selectedCircuitElementProperty.reset();
 
       this.circuitElements.clear();
-      this.switches.clear();
       this.batteries.clear();
       this.lightBulbs.clear();
       this.resistors.clear();
@@ -403,7 +391,7 @@ define( function( require ) {
                  circuitElement instanceof Resistor ? this.resistors :
                  circuitElement instanceof Wire ? this.circuitElements :
                  circuitElement instanceof LightBulb ? this.lightBulbs :
-                 circuitElement instanceof Switch ? this.switches :
+                 circuitElement instanceof Switch ? this.circuitElements : // TODO: unify
                  null;
       list.remove( circuitElement );
 
@@ -480,7 +468,7 @@ define( function( require ) {
       var batteries = this.batteries.map( function( battery ) {
         return _.extend( toObject( battery ), { voltage: battery.voltageProperty.get() } );
       } );
-      var resistors = this.resistors.map( function( resistor ) {
+      var resistorsAndSwitches = this.resistors.map( function( resistor ) {
         return _.extend( toObject( resistor ), { resistance: resistor.resistanceProperty.get() } );
       } );
       var wires = this.circuitElements.map( function( circuitElement ) {
@@ -489,12 +477,8 @@ define( function( require ) {
       var bulbs = this.lightBulbs.map( function( lightBulb ) {
         return _.extend( toObject( lightBulb ), { resistance: lightBulb.resistanceProperty.get() } );
       } );
-      // TODO: correct modeling of switch topology?  Match with voltmeter/ammeter.
-      var switches = this.switches.map( function( switchModel ) {
-        return _.extend( toObject( switchModel ), { resistance: switchModel.resistanceProperty.get() } );
-      } );
 
-      var resistorAdapters = resistors.getArray().concat( wires.getArray() ).concat( bulbs.getArray() ).concat( switches.getArray() );
+      var resistorAdapters = resistorsAndSwitches.getArray().concat( wires.getArray() ).concat( bulbs.getArray() ).concat( [] );
 
       var solution = new ModifiedNodalAnalysisCircuit( batteries.getArray(), resistorAdapters, [] ).solve();
 
@@ -588,7 +572,7 @@ define( function( require ) {
     },
 
     getCircuitElements: function() {
-      return this.getFixedLengthCircuitElements().concat( this.circuitElements.getArray() ).concat( this.switches.getArray() );
+      return this.getFixedLengthCircuitElements().concat( this.circuitElements.getArray() ).concat( [] );
     },
 
     getFixedLengthCircuitElements: function() {
@@ -880,11 +864,11 @@ define( function( require ) {
         } ).getArray();
       };
       return {
-        wires: getArray( this.circuitElements ),
+        wires: getArray( this.circuitElements.filter( function( c ) {return c instanceof Wire;} ) ),
         batteries: getArray( this.batteries ),
         lightBulbs: getArray( this.lightBulbs ),
         resistors: getArray( this.resistors ),
-        switches: getArray( this.switches ),
+        switches: getArray( this.circuitElements.filter( function( c ) {return c instanceof Switch;} ) ),
         vertices: this.vertices.map( function( vertex ) {
 
           var v = {
@@ -915,7 +899,7 @@ define( function( require ) {
       this.clear();
       circuitStruct.vertices.forEach( this.vertices.add.bind( this.vertices ) );
       circuitStruct.wires.forEach( this.circuitElements.add.bind( this.circuitElements ) );
-      circuitStruct.switches.forEach( this.switches.add.bind( this.switches ) );
+      circuitStruct.switches.forEach( this.circuitElements.add.bind( this.circuitElements ) );
       circuitStruct.batteries.forEach( this.batteries.add.bind( this.batteries ) );
       circuitStruct.resistors.forEach( this.resistors.add.bind( this.resistors ) );
       circuitStruct.lightBulbs.forEach( this.lightBulbs.add.bind( this.lightBulbs ) );

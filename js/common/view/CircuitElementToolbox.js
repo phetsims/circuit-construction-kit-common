@@ -217,16 +217,19 @@ define( function( require ) {
         function( position ) {
           return new Switch( createVertex( position.x - 50, position.y ), createVertex( position.x + 50, position.y ), CircuitConstructionKitConstants.DEFAULT_RESISTIVITY );
         },
-        circuit.switches,
+        circuit.circuitElements,
         circuitNode.switchNodes,
         function( switchNode ) { return switchNode.switchModel; }
       ) );
     var updateSwitchIcon = function() {
-      var numberOfCreatedSwitches = circuit.switches.filter( function( s ) {return !s.insideTrueBlackBoxProperty.get();} ).length;
+      var numberOfCreatedSwitches = circuit.circuitElements.filter(
+        function( s ) {
+          return !s.insideTrueBlackBoxProperty.get() && s instanceof Switch;
+        } ).length;
       switchIcon.visible = numberOfCreatedSwitches < options.numberOfSwitches;
     };
-    circuit.switches.addItemRemovedListener( updateSwitchIcon );
-    circuit.switches.addItemAddedListener( updateSwitchIcon );
+    circuit.circuitElements.addItemRemovedListener( updateSwitchIcon );
+    circuit.circuitElements.addItemAddedListener( updateSwitchIcon );
 
     var children = [];
     options.numberOfLeftBatteries && children.push( leftBatteryIcon );

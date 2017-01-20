@@ -109,33 +109,36 @@ define( function( require ) {
      *
      * @param {function} CircuitElementNodeConstructor constructor for the node type, such as BatteryNode
      * @param {ObservableArray.<CircuitElement>} modelObservableArray
+     * @param {function} type
      * @param {Array.<CircuitElementNode>} nodeArray
      * @param {function} getter, given a {CircuitElement}, return the corresponding {CircuitElementNode}
      */
-    var initializeCircuitElementType = function( CircuitElementNodeConstructor, modelObservableArray, nodeArray, getter, groupTandem ) {
+    var initializeCircuitElementType = function( CircuitElementNodeConstructor, modelObservableArray, type, nodeArray, getter, groupTandem ) {
       var addCircuitElement = function( circuitElement ) {
-        var circuitElementNode = new CircuitElementNodeConstructor(
-          circuitConstructionKitScreenView,
-          self,
-          circuitElement,
-          runningProperty,
-          groupTandem.createNextTandem()
-        );
-        nodeArray.push( circuitElementNode );
-        mainLayer.addChild( circuitElementNode );
-        moveVerticesToFront( circuitElement );
+        if ( circuitElement instanceof type ) {
+          var circuitElementNode = new CircuitElementNodeConstructor(
+            circuitConstructionKitScreenView,
+            self,
+            circuitElement,
+            runningProperty,
+            groupTandem.createNextTandem()
+          );
+          nodeArray.push( circuitElementNode );
+          mainLayer.addChild( circuitElementNode );
+          moveVerticesToFront( circuitElement );
+        }
       };
       modelObservableArray.addItemAddedListener( addCircuitElement );
       modelObservableArray.forEach( addCircuitElement );
       modelObservableArray.addItemRemovedListener( createCircuitElementRemovedListener( nodeArray, getter ) );
     };
 
-    initializeCircuitElementType( WireNode, circuit.circuitElements, self.wireNodes, this.getWireNode.bind( this ), tandem.createGroupTandem( 'wireNode' ) );
-    initializeCircuitElementType( BatteryNode, circuit.batteries, self.batteryNodes, this.getBatteryNode.bind( this ), tandem.createGroupTandem( 'batteryNode' ) );
-    initializeCircuitElementType( CCKLightBulbNode, circuit.lightBulbs, self.lightBulbNodes, this.getCCKLightBulbNode.bind( this ), tandem.createGroupTandem( 'lightBulbNode' ) );
-    initializeCircuitElementType( CCKLightBulbForegroundNode, circuit.lightBulbs, self.lightBulbForegroundNodes, this.getCCKLightBulbForegroundNode.bind( this ), tandem.createGroupTandem( 'lightBulbForegroundNode' ) );
-    initializeCircuitElementType( ResistorNode, circuit.resistors, self.resistorNodes, this.getResistorNode.bind( this ), tandem.createGroupTandem( 'resistorNode' ) );
-    initializeCircuitElementType( SwitchNode, circuit.switches, self.switchNodes, this.getSwitchNode.bind( this ), tandem.createGroupTandem( 'switchNode' ) );
+    initializeCircuitElementType( WireNode, circuit.circuitElements, Wire, self.wireNodes, this.getWireNode.bind( this ), tandem.createGroupTandem( 'wireNode' ) );
+    initializeCircuitElementType( BatteryNode, circuit.batteries, Battery, self.batteryNodes, this.getBatteryNode.bind( this ), tandem.createGroupTandem( 'batteryNode' ) );
+    initializeCircuitElementType( CCKLightBulbNode, circuit.lightBulbs, LightBulb, self.lightBulbNodes, this.getCCKLightBulbNode.bind( this ), tandem.createGroupTandem( 'lightBulbNode' ) );
+    initializeCircuitElementType( CCKLightBulbForegroundNode, circuit.lightBulbs, LightBulb, self.lightBulbForegroundNodes, this.getCCKLightBulbForegroundNode.bind( this ), tandem.createGroupTandem( 'lightBulbForegroundNode' ) );
+    initializeCircuitElementType( ResistorNode, circuit.resistors, Resistor, self.resistorNodes, this.getResistorNode.bind( this ), tandem.createGroupTandem( 'resistorNode' ) );
+    initializeCircuitElementType( SwitchNode, circuit.circuitElements, Switch, self.switchNodes, this.getSwitchNode.bind( this ), tandem.createGroupTandem( 'switchNode' ) );
 
     var vertexNodeGroup = tandem.createGroupTandem( 'vertexNodes' );
     var addVertexNode = function( vertex ) {
