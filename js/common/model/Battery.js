@@ -19,9 +19,9 @@ define( function( require ) {
   var BATTERY_LENGTH = CircuitConstructionKitConstants.BATTERY_LENGTH;
 
   /**
-   * @param {Vertex} startVertex
-   * @param {Vertex} endVertex
-   * @param {number} voltage
+   * @param {Vertex} startVertex - one of the battery vertices
+   * @param {Vertex} endVertex - the other battery vertex
+   * @param {number} voltage - the amount of constant voltage supplied by the battery
    * @param {Object} [options]
    * @constructor
    */
