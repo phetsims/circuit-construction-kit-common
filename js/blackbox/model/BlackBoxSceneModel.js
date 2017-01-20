@@ -98,40 +98,44 @@ define( function( require ) {
     var circuit = this.circuit;
 
 
-    // Add wire stubs outside the black box, see https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/21
-    for ( i = 0; i < trueBlackBoxCircuit.vertices.length; i++ ) {
-      var vertex = trueBlackBoxCircuit.vertices[ i ];
-      if ( vertex.blackBoxInterface ) {
-        vertex.blackBoxInterface = false;
-        console.log( vertex.positionProperty.value );
+    var addWireStubs = function() {
+      // Add wire stubs outside the black box, see https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/21
+      for ( i = 0; i < trueBlackBoxCircuit.vertices.length; i++ ) {
+        var vertex = trueBlackBoxCircuit.vertices[ i ];
+        if ( vertex.blackBoxInterface ) {
+          vertex.blackBoxInterface = false;
+          console.log( vertex.positionProperty.value );
 
-        // the center of the black box is approximately (508, 305).  Point the wires away from the box.
-        var side = vertex.positionProperty.value.x < 400 ? 'left' :
-                   vertex.positionProperty.value.x > 600 ? 'right' :
-                   vertex.positionProperty.value.y < 200 ? 'top' :
-                   'bottom';
+          // the center of the black box is approximately (508, 305).  Point the wires away from the box.
+          var side = vertex.positionProperty.value.x < 400 ? 'left' :
+                     vertex.positionProperty.value.x > 600 ? 'right' :
+                     vertex.positionProperty.value.y < 200 ? 'top' :
+                     'bottom';
 
-        var extentLength = 40;
+          var extentLength = 40;
 
-        var dx = side === 'left' ? -extentLength :
-                 side === 'right' ? +extentLength :
-                 0;
-        var dy = side === 'top' ? -extentLength :
-                 side === 'bottom' ? +extentLength :
-                 0;
-        var outerVertex = new Vertex( vertex.positionProperty.value.x + dx, vertex.positionProperty.value.y + dy );
-        // outerVertex.attachable = true;
-        outerVertex.blackBoxInterface = true;
-        outerVertex.draggable = false;
-        vertex.blackBoxInterface = true;
+          var dx = side === 'left' ? -extentLength :
+                   side === 'right' ? +extentLength :
+                   0;
+          var dy = side === 'top' ? -extentLength :
+                   side === 'bottom' ? +extentLength :
+                   0;
+          var outerVertex = new Vertex( vertex.positionProperty.value.x + dx, vertex.positionProperty.value.y + dy );
+          // outerVertex.attachable = true;
+          outerVertex.blackBoxInterface = true;
+          outerVertex.draggable = false;
+          vertex.blackBoxInterface = true;
 
-        var w = new Wire( vertex, outerVertex, 1E-6, {
-          wireStub: true,
-          interactive: false
-        } );
-        circuit.wires.push( w ); // TODO: resistivity
+          var w = new Wire( vertex, outerVertex, 1E-6, {
+            wireStub: true,
+            interactive: false
+          } );
+          circuit.wires.push( w ); // TODO: resistivity
+        }
       }
-    }
+    };
+
+    addWireStubs();
 
     /**
      * Check whether the user built (at least part of) their own black box circuit.
@@ -255,6 +259,7 @@ define( function( require ) {
 
     // @private - called by reset
     this.resetBlackBoxSceneModel = function() {
+      addWireStubs();
       addBlackBoxContents( trueBlackBoxCircuit );
       userBlackBoxCircuit.clear();
     };
