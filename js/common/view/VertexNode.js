@@ -66,8 +66,8 @@ define( function( require ) {
     circuit.batteries.addItemAddedListener( updateStroke );
     circuit.batteries.addItemRemovedListener( updateStroke );
 
-    circuit.wires.addItemAddedListener( updateStroke );
-    circuit.wires.addItemRemovedListener( updateStroke );
+    circuit.circuitElements.addItemAddedListener( updateStroke );
+    circuit.circuitElements.addItemRemovedListener( updateStroke );
 
     circuit.resistors.addItemAddedListener( updateStroke );
     circuit.resistors.addItemRemovedListener( updateStroke );
@@ -237,8 +237,8 @@ define( function( require ) {
       circuit.batteries.removeItemAddedListener( updateStroke );
       circuit.batteries.removeItemRemovedListener( updateStroke );
 
-      circuit.wires.removeItemAddedListener( updateStroke );
-      circuit.wires.removeItemRemovedListener( updateStroke );
+      circuit.circuitElements.removeItemAddedListener( updateStroke );
+      circuit.circuitElements.removeItemRemovedListener( updateStroke );
 
       circuit.resistors.removeItemAddedListener( updateStroke );
       circuit.resistors.removeItemRemovedListener( updateStroke );

@@ -41,7 +41,7 @@ define( function( require ) {
     var self = this;
 
     // @public - The different types of CircuitElement the circuit may contain.
-    this.wires = new ObservableArray();
+    this.circuitElements = new ObservableArray();
     this.switches = new ObservableArray();
     this.batteries = new ObservableArray();
     this.lightBulbs = new ObservableArray();
@@ -72,8 +72,8 @@ define( function( require ) {
     var solve = function() { self.solve(); };
 
     // Solve the circuit when any of the circuit element attributes change.
-    this.wires.addItemAddedListener( function( wire ) { wire.resistanceProperty.lazyLink( solve ); } );
-    this.wires.addItemRemovedListener( function( wire ) { wire.resistanceProperty.unlink( solve ); } );
+    this.circuitElements.addItemAddedListener( function( circuitElement ) { circuitElement.resistanceProperty.lazyLink( solve ); } );
+    this.circuitElements.addItemRemovedListener( function( circuitElement ) { circuitElement.resistanceProperty.unlink( solve ); } );
 
     this.switches.addItemAddedListener( function( switchModel ) { switchModel.resistanceProperty.lazyLink( solve ); } );
     this.switches.addItemRemovedListener( function( switchModel ) { switchModel.resistanceProperty.unlink( solve ); } );
@@ -104,11 +104,11 @@ define( function( require ) {
       }
       self.isCircuitElementOverToolboxProperty.set( false );
     };
-    this.wires.addItemAddedListener( function( wire ) {
-      wire.isOverToolboxProperty.link( detectOverToolbox );
+    this.circuitElements.addItemAddedListener( function( circuitElement ) {
+      circuitElement.isOverToolboxProperty.link( detectOverToolbox );
     } );
-    this.wires.addItemRemovedListener( function( wire ) {
-      wire.isOverToolboxProperty.unlink( detectOverToolbox );
+    this.circuitElements.addItemRemovedListener( function( circuitElement ) {
+      circuitElement.isOverToolboxProperty.unlink( detectOverToolbox );
       detectOverToolbox();
     } );
 
@@ -128,7 +128,7 @@ define( function( require ) {
       assert && assert( self.vertices.indexOf( circuitElement.endVertexProperty.get() ) >= 0, 'end vertex should appear in the list' );
       self.solve();
     };
-    this.wires.addItemAddedListener( addVertices );
+    this.circuitElements.addItemAddedListener( addVertices );
     this.switches.addItemAddedListener( addVertices );
     this.batteries.addItemAddedListener( addVertices );
     this.lightBulbs.addItemAddedListener( addVertices );
@@ -154,13 +154,13 @@ define( function( require ) {
       self.componentDeletedEmitter.emit();
       self.solve(); // Explicit call to solve since it is possible to remove a CircuitElement without removing any vertices.
     };
-    this.wires.addItemAddedListener( addElectrons );
+    this.circuitElements.addItemAddedListener( addElectrons );
     this.switches.addItemAddedListener( addElectrons );
     this.batteries.addItemAddedListener( addElectrons );
     this.lightBulbs.addItemAddedListener( addElectrons );
     this.resistors.addItemAddedListener( addElectrons );
 
-    this.wires.addItemRemovedListener( handleRemoval );
+    this.circuitElements.addItemRemovedListener( handleRemoval );
     this.switches.addItemRemovedListener( handleRemoval );
     this.batteries.addItemRemovedListener( handleRemoval );
     this.lightBulbs.addItemRemovedListener( handleRemoval );
@@ -269,7 +269,7 @@ define( function( require ) {
     },
     get circuitElementArray() {
       return []
-        .concat( this.wires.getArray() )
+        .concat( this.circuitElements.getArray() )
         .concat( this.switches.getArray() )
         .concat( this.batteries.getArray() )
         .concat( this.lightBulbs.getArray() )
@@ -319,7 +319,7 @@ define( function( require ) {
     clear: function() {
       this.selectedCircuitElementProperty.reset();
 
-      this.wires.clear();
+      this.circuitElements.clear();
       this.switches.clear();
       this.batteries.clear();
       this.lightBulbs.clear();
@@ -401,7 +401,7 @@ define( function( require ) {
     remove: function( circuitElement ) {
       var list = circuitElement instanceof Battery ? this.batteries :
                  circuitElement instanceof Resistor ? this.resistors :
-                 circuitElement instanceof Wire ? this.wires :
+                 circuitElement instanceof Wire ? this.circuitElements :
                  circuitElement instanceof LightBulb ? this.lightBulbs :
                  circuitElement instanceof Switch ? this.switches :
                  null;
@@ -483,8 +483,8 @@ define( function( require ) {
       var resistors = this.resistors.map( function( resistor ) {
         return _.extend( toObject( resistor ), { resistance: resistor.resistanceProperty.get() } );
       } );
-      var wires = this.wires.map( function( wire ) {
-        return _.extend( toObject( wire ), { resistance: wire.resistanceProperty.get() } );
+      var wires = this.circuitElements.map( function( circuitElement ) {
+        return _.extend( toObject( circuitElement ), { resistance: circuitElement.resistanceProperty.get() } );
       } );
       var bulbs = this.lightBulbs.map( function( lightBulb ) {
         return _.extend( toObject( lightBulb ), { resistance: lightBulb.resistanceProperty.get() } );
@@ -588,7 +588,7 @@ define( function( require ) {
     },
 
     getCircuitElements: function() {
-      return this.getFixedLengthCircuitElements().concat( this.wires.getArray() ).concat( this.switches.getArray() );
+      return this.getFixedLengthCircuitElements().concat( this.circuitElements.getArray() ).concat( this.switches.getArray() );
     },
 
     getFixedLengthCircuitElements: function() {
@@ -880,7 +880,7 @@ define( function( require ) {
         } ).getArray();
       };
       return {
-        wires: getArray( this.wires ),
+        wires: getArray( this.circuitElements ),
         batteries: getArray( this.batteries ),
         lightBulbs: getArray( this.lightBulbs ),
         resistors: getArray( this.resistors ),
@@ -914,7 +914,7 @@ define( function( require ) {
     loadFromCircuitStruct: function( circuitStruct ) {
       this.clear();
       circuitStruct.vertices.forEach( this.vertices.add.bind( this.vertices ) );
-      circuitStruct.wires.forEach( this.wires.add.bind( this.wires ) );
+      circuitStruct.wires.forEach( this.circuitElements.add.bind( this.circuitElements ) );
       circuitStruct.switches.forEach( this.switches.add.bind( this.switches ) );
       circuitStruct.batteries.forEach( this.batteries.add.bind( this.batteries ) );
       circuitStruct.resistors.forEach( this.resistors.add.bind( this.resistors ) );

@@ -130,7 +130,7 @@ define( function( require ) {
       modelObservableArray.addItemRemovedListener( createCircuitElementRemovedListener( nodeArray, getter ) );
     };
 
-    initializeCircuitElementType( WireNode, circuit.wires, self.wireNodes, this.getWireNode.bind( this ), tandem.createGroupTandem( 'wireNode' ) );
+    initializeCircuitElementType( WireNode, circuit.circuitElements, self.wireNodes, this.getWireNode.bind( this ), tandem.createGroupTandem( 'wireNode' ) );
     initializeCircuitElementType( BatteryNode, circuit.batteries, self.batteryNodes, this.getBatteryNode.bind( this ), tandem.createGroupTandem( 'batteryNode' ) );
     initializeCircuitElementType( CCKLightBulbNode, circuit.lightBulbs, self.lightBulbNodes, this.getCCKLightBulbNode.bind( this ), tandem.createGroupTandem( 'lightBulbNode' ) );
     initializeCircuitElementType( CCKLightBulbForegroundNode, circuit.lightBulbs, self.lightBulbForegroundNodes, this.getCCKLightBulbForegroundNode.bind( this ), tandem.createGroupTandem( 'lightBulbForegroundNode' ) );

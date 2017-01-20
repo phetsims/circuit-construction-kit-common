@@ -155,16 +155,18 @@ define( function( require ) {
         function( position ) {
           return new Wire( createVertex( position.x - 50, position.y ), createVertex( position.x + 50, position.y ), CircuitConstructionKitConstants.DEFAULT_RESISTIVITY );
         },
-        circuit.wires,
+        circuit.circuitElements,
         circuitNode.wireNodes,
         function( wireNode ) { return wireNode.wire; }
       ) );
     var updateWireIcon = function() {
-      var numberOfCreatedWires = circuit.wires.filter( function( wire ) {return !wire.insideTrueBlackBoxProperty.get();} ).length;
+      var numberOfCreatedWires = circuit.circuitElements.filter( function( circuitElement ) {
+        return !circuitElement.insideTrueBlackBoxProperty.get() && circuitElement instanceof Wire;
+      } ).length;
       wireIcon.visible = numberOfCreatedWires < options.numberOfWires;
     };
-    circuit.wires.addItemRemovedListener( updateWireIcon );
-    circuit.wires.addItemAddedListener( updateWireIcon );
+    circuit.circuitElements.addItemRemovedListener( updateWireIcon );
+    circuit.circuitElements.addItemAddedListener( updateWireIcon );
 
     var lightBulbIcon = lightBulbNode.mutate( {
       pickable: true,
