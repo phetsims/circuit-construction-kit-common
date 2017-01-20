@@ -134,7 +134,7 @@ define( function( require ) {
    *
    * @constructor
    */
-  function MNACircuit( batteries, resistors, currentSources ) {
+  function ModifiedNodalAnalysisCircuit( batteries, resistors, currentSources ) {
     assert && assert( batteries, 'batteries should be defined' );
     assert && assert( resistors, 'resistors should be defined' );
     assert && assert( currentSources, 'currentSources should be defined' );
@@ -185,9 +185,9 @@ define( function( require ) {
       return element.node0;
     }
   };
-  circuitConstructionKitCommon.register( 'MNACircuit', MNACircuit );
+  circuitConstructionKitCommon.register( 'ModifiedNodalAnalysisCircuit', ModifiedNodalAnalysisCircuit );
 
-  return inherit( Object, MNACircuit, {
+  return inherit( Object, ModifiedNodalAnalysisCircuit, {
     toString: function() {
       return 'Circuit: resistors:' + this.resistors.map( function( r ) {
           return resistorToString( r );

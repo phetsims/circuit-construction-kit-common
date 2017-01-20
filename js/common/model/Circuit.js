@@ -14,7 +14,7 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ObservableArray = require( 'AXON/ObservableArray' );
-  var MNACircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/modified-nodal-analysis/MNACircuit' );
+  var ModifiedNodalAnalysisCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/modified-nodal-analysis/ModifiedNodalAnalysisCircuit' );
   var Property = require( 'AXON/Property' );
   var Emitter = require( 'AXON/Emitter' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Vertex' );
@@ -496,7 +496,7 @@ define( function( require ) {
 
       var resistorAdapters = resistors.getArray().concat( wires.getArray() ).concat( bulbs.getArray() ).concat( switches.getArray() );
 
-      var solution = new MNACircuit( batteries.getArray(), resistorAdapters, [] ).solve();
+      var solution = new ModifiedNodalAnalysisCircuit( batteries.getArray(), resistorAdapters, [] ).solve();
 
       // Apply the node voltages to the vertices
       for ( var i = 0; i < this.vertices.length; i++ ) {

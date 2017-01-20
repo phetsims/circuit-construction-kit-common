@@ -2,7 +2,7 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- * This class represents a sparse solution containing only the solved variables in MNA.
+ * This class represents a sparse solution containing only the solved variables in Modified Nodal Analysis.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
