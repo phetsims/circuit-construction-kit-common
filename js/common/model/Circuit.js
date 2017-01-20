@@ -51,7 +51,7 @@ define( function( require ) {
     // CircuitElements above--this ObservableArray is a a central point for observing creation/deletion of vertices for
     // showing VertexNodes
     // @public (read-only)
-    this.vertices = new ObservableArray();
+    this.vertices = new ObservableArray(); // TODO: can/should we eliminate this redundancy?
 
     // @public (read-only) - the electrons in the circuit
     this.electrons = new ObservableArray();
