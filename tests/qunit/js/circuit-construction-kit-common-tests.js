@@ -4,7 +4,7 @@
   'use strict';
 
   var MNACircuit = phet.circuitConstructionKitCommon.MNACircuit;
-  var LinearCircuitSolution = phet.circuitConstructionKitCommon.LinearCircuitSolution;
+  var ModifiedNodalAnalysisSolution = phet.circuitConstructionKitCommon.ModifiedNodalAnalysisSolution;
 
   module( 'Circuit Construction Kit' );
 
@@ -18,7 +18,7 @@
     var circuit = new MNACircuit( [ battery ], [ resistor ], [] );
     var voltageMap = { 0: 0.0, 1: 4.0 };
 
-    var desiredSolution = new LinearCircuitSolution( voltageMap, [ battery ] );
+    var desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [ battery ] );
     var solution = circuit.solve();
     console.log( 'solution = ', solution );
     console.log( 'desiredSolution = ', desiredSolution );
@@ -32,7 +32,7 @@
     var battery = { node0: 0, node1: 1, voltage: 4.0 };
     var resistor = { node0: 1, node1: 0, resistance: 2.0 };
     var circuit = new MNACircuit( [ battery ], [ resistor ], [] );
-    var desiredSolution = new LinearCircuitSolution( {
+    var desiredSolution = new ModifiedNodalAnalysisSolution( {
       0: 0,
       1: 4
     }, [ _.extend( {}, battery, { currentSolution: 2.0 } ) ] );
@@ -45,7 +45,7 @@
     var battery = { node0: 0, node1: 1, voltage: 4.0 };
     var resistor = { node0: 1, node1: 0, resistance: 2.0 };
     var solution = new MNACircuit( [ battery ], [ resistor ], [] ).solve();
-    var desiredSolution = new LinearCircuitSolution( {
+    var desiredSolution = new ModifiedNodalAnalysisSolution( {
       0: 0,
       1: 4
     }, [ _.extend( {}, battery, { currentSolution: 2 } ) ] );
@@ -60,7 +60,7 @@
     var resistor1 = { node0: 1, node1: 0, resistance: 4.0 };
     var resistor2 = { node0: 2, node1: 3, resistance: 100 };
     var circuit = new MNACircuit( [ battery ], [ resistor1, resistor2 ], [] );
-    var desiredSolution = new LinearCircuitSolution( {
+    var desiredSolution = new ModifiedNodalAnalysisSolution( {
       0: 0,
       1: 4,
       2: 0,
@@ -80,7 +80,7 @@
       0: 0,
       1: -40.0 // This is negative since traversing across the resistor should yield a negative voltage, see http://en.wikipedia.org/wiki/Current_source
     };
-    var desiredSolution = new LinearCircuitSolution( voltageMap, [] );
+    var desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [] );
     var solution = circuit.solve();
     equal( solution.approxEquals( desiredSolution, equal ), true, 'solutions should match' );
   } );
@@ -94,7 +94,7 @@
       1: -4
     };
 
-    var desiredSolution = new LinearCircuitSolution( voltageMap, [ _.extend( {}, battery, { currentSolution: -2 } ) ] );
+    var desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [ _.extend( {}, battery, { currentSolution: -2 } ) ] );
     var solution = circuit.solve();
     equal( solution.approxEquals( desiredSolution, equal ), true, 'solutions should match' );
   } );
@@ -109,7 +109,7 @@
       1: -4,
       2: -8
     };
-    var desiredSolution = new LinearCircuitSolution( voltageMap, [
+    var desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [
       _.extend( {}, battery1, { currentSolution: -4 } ),
       _.extend( {}, battery2, { currentSolution: -4 } )
     ] );
@@ -128,7 +128,7 @@
       1: 5,
       2: 2.5
     };
-    var desiredSolution = new LinearCircuitSolution( voltageMap, [
+    var desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [
       _.extend( {}, battery, { currentSolution: 5 / 20.0 } )
     ] );
     var solution = circuit.solve();
@@ -148,7 +148,7 @@
       1: 4,
       2: 0
     };
-    var desiredSolution = new LinearCircuitSolution( voltageMap, [
+    var desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [
       _.extend( {}, battery, { currentSolution: 1.0 } )
     ] );
     var solution = circuit.solve();
@@ -166,7 +166,7 @@
       1: 4, 2: 0, 3: 0
     };
 
-    var desiredSolution = new LinearCircuitSolution( voltageMap, [
+    var desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [
       _.extend( {}, battery, { currentSolution: 1.0 } )
     ] );
     var solution = circuit.solve();
@@ -185,7 +185,7 @@
       1: 5,
       2: 0
     };
-    var desiredSolution = new LinearCircuitSolution( voltageMap, [
+    var desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [
       _.extend( {}, battery, { currentSolution: 5.0 / 10.0 } ),
       _.extend( {}, resistor, { currentSolution: 5.0 / 10.0 } )
     ] );
@@ -205,7 +205,7 @@
     ], [] );
     var voltageMap = { 0: 0, 1: V };
 
-    var desiredSolution = new LinearCircuitSolution( voltageMap, [
+    var desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [
       _.extend( {}, battery, { currentSolution: V / Req } )
     ] );
     var solution = circuit.solve();

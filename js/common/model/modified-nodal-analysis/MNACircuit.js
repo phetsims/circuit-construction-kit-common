@@ -12,7 +12,7 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var LinearCircuitSolution = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/modified-nodal-analysis/LinearCircuitSolution' );
+  var ModifiedNodalAnalysisSolution = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/modified-nodal-analysis/ModifiedNodalAnalysisSolution' );
   var Matrix = require( 'DOT/Matrix' );
 
   // constants
@@ -475,7 +475,7 @@ define( function( require ) {
         currentVar.element.currentSolution = x.get( getIndexByEquals( unknowns, currentVar ), 0 );
       }
 
-      return new LinearCircuitSolution( voltageMap, unknownCurrents.map( function( u ) {
+      return new ModifiedNodalAnalysisSolution( voltageMap, unknownCurrents.map( function( u ) {
         return u.element;
       } ) );
     }
