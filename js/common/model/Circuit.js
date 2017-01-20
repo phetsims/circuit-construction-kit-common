@@ -94,7 +94,7 @@ define( function( require ) {
     // can be dropped in.
     this.isCircuitElementOverToolboxProperty = new Property( false );
     var detectOverToolbox = function() {
-      var circuitElements = self.circuitElements;
+      var circuitElements = self.circuitElementArray;
       for ( var i = 0; i < circuitElements.length; i++ ) {
         var element = circuitElements[ i ];
         if ( element.isOverToolboxProperty.get() ) {
@@ -267,7 +267,7 @@ define( function( require ) {
         // ok to translate
       }
     },
-    get circuitElements() {
+    get circuitElementArray() {
       return []
         .concat( this.wires.getArray() )
         .concat( this.switches.getArray() )
@@ -563,7 +563,7 @@ define( function( require ) {
      * Happens every frame, even if paused.
      */
     updateElectronsInDirtyCircuitElements: function() {
-      var circuitElements = this.circuitElements; // TODO: Heavy on GC
+      var circuitElements = this.circuitElementArray; // TODO: Heavy on GC
       for ( var i = 0; i < circuitElements.length; i++ ) {
         if ( circuitElements[ i ].electronLayoutDirty ) {
           this.constantDensityLayout.layoutElectrons( circuitElements[ i ] );
@@ -643,13 +643,13 @@ define( function( require ) {
      * @param {Vertex} vertex
      */
     findAllConnectedVertices: function( vertex ) {
-      return this.searchVertices( vertex, this.circuitElements, function() {return true;} );
+      return this.searchVertices( vertex, this.circuitElementArray, function() {return true;} );
     },
 
     /**
      * Find the subgraph where all vertices are connected, given the list of traversible circuit elements
      * @param {Vertex} vertex
-     * @param {Array.<CircuitElement>} circuitElements
+     * @param {CircuitElement[]} circuitElements
      * @param {Function} okToVisit - rule that determines which vertices are OK to visit
      * @returns {Vertex[]}
      */
