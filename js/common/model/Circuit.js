@@ -31,16 +31,16 @@ define( function( require ) {
   var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
 
   // constants
-  var SNAP_RADIUS = 30; // For two vertices to join together, they must be this close
+  var SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
 
   /**
-   * @param tandem
+   * @param {Tandem} tandem
    * @constructor
    */
   function Circuit( tandem ) {
     var self = this;
 
-    // @public - The different types of circuit element the circuit may contain.
+    // @public - The different types of CircuitElement the circuit may contain.
     this.wires = new ObservableArray();
     this.switches = new ObservableArray();
     this.batteries = new ObservableArray();
