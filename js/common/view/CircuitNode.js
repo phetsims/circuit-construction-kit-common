@@ -134,7 +134,7 @@ define( function( require ) {
     };
 
     initializeCircuitElementType( WireNode, circuit.circuitElements, Wire, self.wireNodes, this.getWireNode.bind( this ), tandem.createGroupTandem( 'wireNode' ) );
-    initializeCircuitElementType( BatteryNode, circuit.batteries, Battery, self.batteryNodes, this.getBatteryNode.bind( this ), tandem.createGroupTandem( 'batteryNode' ) );
+    initializeCircuitElementType( BatteryNode, circuit.circuitElements, Battery, self.batteryNodes, this.getBatteryNode.bind( this ), tandem.createGroupTandem( 'batteryNode' ) );
     initializeCircuitElementType( CCKLightBulbNode, circuit.lightBulbs, LightBulb, self.lightBulbNodes, this.getCCKLightBulbNode.bind( this ), tandem.createGroupTandem( 'lightBulbNode' ) );
     initializeCircuitElementType( CCKLightBulbForegroundNode, circuit.lightBulbs, LightBulb, self.lightBulbForegroundNodes, this.getCCKLightBulbForegroundNode.bind( this ), tandem.createGroupTandem( 'lightBulbForegroundNode' ) );
     initializeCircuitElementType( ResistorNode, circuit.resistors, Resistor, self.resistorNodes, this.getResistorNode.bind( this ), tandem.createGroupTandem( 'resistorNode' ) );

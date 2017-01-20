@@ -63,9 +63,6 @@ define( function( require ) {
     circuit.vertices.addItemRemovedListener( updateStroke );
 
     // In Black Box, other wires can be detached from a vertex and this should also update the solder
-    circuit.batteries.addItemAddedListener( updateStroke );
-    circuit.batteries.addItemRemovedListener( updateStroke );
-
     circuit.circuitElements.addItemAddedListener( updateStroke );
     circuit.circuitElements.addItemRemovedListener( updateStroke );
 
@@ -234,9 +231,6 @@ define( function( require ) {
       circuit.vertices.removeItemRemovedListener( updateStroke );
 
       // In Black Box, other wires can be detached from a vertex and this should also update the solder
-      circuit.batteries.removeItemAddedListener( updateStroke );
-      circuit.batteries.removeItemRemovedListener( updateStroke );
-
       circuit.circuitElements.removeItemAddedListener( updateStroke );
       circuit.circuitElements.removeItemRemovedListener( updateStroke );
 

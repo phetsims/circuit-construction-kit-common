@@ -100,8 +100,8 @@ define( function( require ) {
     var lightBulbNode = new CustomLightBulbNode( new Property( 0 ) );
 
     var countBatteries = function( initialOrientation ) {
-      return circuit.batteries.filter( function( battery ) {
-        return battery.initialOrientation === initialOrientation && !battery.insideTrueBlackBoxProperty.get();
+      return circuit.circuitElements.filter( function( battery ) {
+        return battery instanceof Battery && battery.initialOrientation === initialOrientation && !battery.insideTrueBlackBoxProperty.get();
       } ).length;
     };
 
@@ -123,11 +123,11 @@ define( function( require ) {
           initialOrientation: 'left'
         } );
       },
-      circuit.batteries,
+      circuit.circuitElements,
       circuitNode.batteryNodes,
       function( batteryNode ) { return batteryNode.battery; }
     ) );
-    circuit.batteries.lengthProperty.link( function() {
+    circuit.circuitElements.lengthProperty.link( function() {
       leftBatteryIcon.visible = countBatteries( 'left' ) < options.numberOfRightBatteries;
     } );
 
@@ -142,11 +142,11 @@ define( function( require ) {
           initialOrientation: 'right'
         } );
       },
-      circuit.batteries,
+      circuit.circuitElements,
       circuitNode.batteryNodes,
       function( batteryNode ) { return batteryNode.battery; }
     ) );
-    circuit.batteries.lengthProperty.link( function() {
+    circuit.circuitElements.lengthProperty.link( function() {
       rightBatteryIcon.visible = countBatteries( 'right' ) < options.numberOfRightBatteries;
     } );
 
