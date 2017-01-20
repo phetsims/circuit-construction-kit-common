@@ -13,24 +13,34 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
 
+
+  // constants
+
   /**
-   * @param {object.<number,number>} nodeVoltages
-   * @param {element[]} elements, with currentSolution
+   * Returns true if the numbers are approximately equal.
+   *
+   * @param {number} a - a number
+   * @param {number} b - another number
+   * @returns {boolean} true if the numbers are approximately equal
+   */
+  var NUMBER_APPROXIMATELY_EQUALS = function( a, b ) {
+    return Math.abs( a - b ) < 1E-6;
+  };
+
+  /**
+   * @param {Object} nodeVoltages - {nodeIndex:{number}:voltage:{number}}
+   * @param {CircuitElement[]} elements, with currentSolution
    * @constructor
    */
   function LinearCircuitSolution( nodeVoltages, elements ) {
     for ( var i = 0; i < elements.length; i++ ) {
-      var e = elements[ i ];
-      assert && assert( typeof e.node0 === 'number' && typeof e.node1 === 'number' );
+      var element = elements[ i ];
+      assert && assert( typeof element.node0 === 'number' && typeof element.node1 === 'number' );
     }
     this.nodeVoltages = nodeVoltages;
     this.elements = elements;
   }
 
-  // but perhaps we should get it back up to 1E6 again
-  var numberApproxEquals = function( a, b ) {
-    return Math.abs( a - b ) < 1E-6;
-  };
   circuitConstructionKitCommon.register( 'LinearCircuitSolution', LinearCircuitSolution );
 
   return inherit( Object, LinearCircuitSolution, {
@@ -48,7 +58,7 @@ define( function( require ) {
       assert && assert( difference.length === 0, 'wrong structure for compared solution' );
       for ( var i = 0; i < myKeys.length; i++ ) {
         var key = myKeys[ i ];
-        var closeEnough = numberApproxEquals( this.getNodeVoltage( key ), linearCircuitSolution.getNodeVoltage( key ) );
+        var closeEnough = NUMBER_APPROXIMATELY_EQUALS( this.getNodeVoltage( key ), linearCircuitSolution.getNodeVoltage( key ) );
         equal && equal( closeEnough, true, 'node voltages[' + i + '] should match. ' + this.getNodeVoltage( key ) + '!==' + linearCircuitSolution.getNodeVoltage( key ) );
 
         if ( !closeEnough ) {
@@ -82,7 +92,7 @@ define( function( require ) {
     hasMatchingElement: function( element ) {
       for ( var i = 0; i < this.elements.length; i++ ) {
         var e = this.elements[ i ];
-        if ( e.node0 === element.node0 && e.node1 === element.node1 && numberApproxEquals( e.currentSolution, element.currentSolution ) ) {
+        if ( e.node0 === element.node0 && e.node1 === element.node1 && NUMBER_APPROXIMATELY_EQUALS( e.currentSolution, element.currentSolution ) ) {
           return true;
         }
       }
@@ -118,8 +128,14 @@ define( function( require ) {
       return -this.getVoltage( e ) / e.resistance;
     },
 
-    getNodeVoltage: function( node ) {
-      return this.nodeVoltages[ node ];
+    /**
+     * Returns the voltage of the specified node.
+     * @param {number} nodeIndex - the index of the node
+     * @returns {number} the voltage of the node
+     * @private
+     */
+    getNodeVoltage: function( nodeIndex ) {
+      return this.nodeVoltages[ nodeIndex ];
     },
 
     getVoltage: function( e ) {
