@@ -24,7 +24,6 @@ define( function( require ) {
 
   /**
    * @param {CircuitStruct} trueBlackBoxCircuit - the circuit inside the black box (the true one, not the user-created one)
-   * @param {Tandem} tandem
    * @constructor
    */
   function BlackBoxSceneModel( trueBlackBoxCircuit, tandem ) {
@@ -33,47 +32,14 @@ define( function( require ) {
 
     // When loading a black box circuit, none of the vertices should be draggable
     // TODO: Fix this in the saved/loaded data structures, not here as a post-hoc patch.
-    for ( i = 0; i < trueBlackBoxCircuit.vertices.length; i++ ) {
+    for ( var i = 0; i < trueBlackBoxCircuit.vertices.length; i++ ) {
       trueBlackBoxCircuit.vertices[ i ].draggable = false;
 
       if ( trueBlackBoxCircuit.vertices[ i ].attachable ) {
         trueBlackBoxCircuit.vertices[ i ].blackBoxInterface = true;
-        trueBlackBoxCircuit.vertices[ i ].attachable = false;
       }
       else {
         trueBlackBoxCircuit.vertices[ i ].insideTrueBlackBox = true;
-      }
-    }
-
-    // Add wire stubs outside the black box, see https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/21
-    for ( var i = 0; i < trueBlackBoxCircuit.vertices.length; i++ ) {
-      var vertex = trueBlackBoxCircuit.vertices[ i ];
-      if ( vertex.blackBoxInterface ) {
-        vertex.blackBoxInterface = false;
-        console.log( vertex.positionProperty.value );
-
-        // the center of the black box is approximately (508, 305).  Point the wires away from the box.
-        var side = vertex.positionProperty.value.x < 400 ? 'left' :
-                   vertex.positionProperty.value.x > 600 ? 'right' :
-                   vertex.positionProperty.value.y < 200 ? 'top' :
-                   'bottom';
-
-        var extentLength = 40;
-
-        var dx = side === 'left' ? -extentLength :
-                 side === 'right' ? +extentLength :
-                 0;
-        var dy = side === 'top' ? -extentLength :
-                 side === 'bottom' ? +extentLength :
-                 0;
-        var outerVertex = new Vertex( vertex.positionProperty.value.x + dx, vertex.positionProperty.value.y + dy );
-        outerVertex.attachable = true;
-        outerVertex.blackBoxInterface = true;
-        outerVertex.draggable = false;
-
-        trueBlackBoxCircuit.wires.push( new Wire( vertex, outerVertex, 1E-6, {
-          wireStub: true
-        } ) ); // TODO: resistivity
       }
     }
 
@@ -82,7 +48,7 @@ define( function( require ) {
     for ( i = 0; i < trueBlackBoxCircuit.circuitElements.length; i++ ) {
       var circuitElement = trueBlackBoxCircuit.circuitElements[ i ];
       circuitElement.interactive = false;
-      circuitElement.insideTrueBlackBox = true; // TODO
+      circuitElement.insideTrueBlackBox = true;
     }
 
     // additional Properties that will be added to supertype
@@ -130,6 +96,41 @@ define( function( require ) {
     // Keep track of what the user has built inside the black box so it may be restored.
     var userBlackBoxCircuit = new CircuitStruct( [], [], [], [], [], [] );
     var circuit = this.circuit;
+
+
+    // Add wire stubs outside the black box, see https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/21
+    for ( i = 0; i < trueBlackBoxCircuit.vertices.length; i++ ) {
+      var vertex = trueBlackBoxCircuit.vertices[ i ];
+      if ( vertex.blackBoxInterface ) {
+        vertex.blackBoxInterface = false;
+        console.log( vertex.positionProperty.value );
+
+        // the center of the black box is approximately (508, 305).  Point the wires away from the box.
+        var side = vertex.positionProperty.value.x < 400 ? 'left' :
+                   vertex.positionProperty.value.x > 600 ? 'right' :
+                   vertex.positionProperty.value.y < 200 ? 'top' :
+                   'bottom';
+
+        var extentLength = 40;
+
+        var dx = side === 'left' ? -extentLength :
+                 side === 'right' ? +extentLength :
+                 0;
+        var dy = side === 'top' ? -extentLength :
+                 side === 'bottom' ? +extentLength :
+                 0;
+        var outerVertex = new Vertex( vertex.positionProperty.value.x + dx, vertex.positionProperty.value.y + dy );
+        // outerVertex.attachable = true;
+        outerVertex.blackBoxInterface = true;
+        // outerVertex.draggable = false;
+        vertex.blackBoxInterface = true;
+
+        var w = new Wire( vertex, outerVertex, 1E-6, {
+          wireStub: true
+        } );
+        circuit.wires.push( w ); // TODO: resistivity
+      }
+    }
 
     /**
      * Check whether the user built (at least part of) their own black box circuit.
@@ -202,6 +203,7 @@ define( function( require ) {
 
       // When switching to build mode, remove all of the black box circuitry and vice-versa
       if ( mode === 'build' ) {
+        console.log( 'build' );
 
         removeBlackBoxContents( trueBlackBoxCircuit );
 
@@ -220,11 +222,12 @@ define( function( require ) {
         addBlackBoxContents( userBlackBoxCircuit );
       }
       else {
+        console.log( 'explore' );
 
         // Switched to 'investigate'. Move interior elements to userBlackBoxCircuit
         userBlackBoxCircuit.clear();
         circuit.vertices.forEach( function( v ) { if ( v.interactive && v.draggable ) {userBlackBoxCircuit.vertices.push( v );}} );
-        circuit.wires.forEach( function( wire ) { if ( wire.interactive ) { userBlackBoxCircuit.wires.push( wire ); } } );
+        circuit.wires.forEach( function( wire ) { if ( wire.interactive && !wire.wireStub ) { userBlackBoxCircuit.wires.push( wire ); } } );
         circuit.batteries.forEach( function( b ) { if ( b.interactive ) { userBlackBoxCircuit.batteries.push( b ); } } );
         circuit.lightBulbs.forEach( function( bulb ) { if ( bulb.interactive ) { userBlackBoxCircuit.lightBulbs.push( bulb ); } } );
         circuit.resistors.forEach( function( r ) { if ( r.interactive ) { userBlackBoxCircuit.resistors.push( r ); } } );
