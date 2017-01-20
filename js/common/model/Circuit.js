@@ -543,7 +543,7 @@ define( function( require ) {
     },
 
     getCircuitElements: function() {
-      return this.getFixedLengthCircuitElements().concat( this.circuitElements.getArray() ).concat( [] );
+      return this.circuitElements.getArray();
     },
 
     getFixedLengthCircuitElements: function() {
