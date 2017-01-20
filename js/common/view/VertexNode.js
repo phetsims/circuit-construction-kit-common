@@ -66,9 +66,6 @@ define( function( require ) {
     circuit.circuitElements.addItemAddedListener( updateStroke );
     circuit.circuitElements.addItemRemovedListener( updateStroke );
 
-    circuit.resistors.addItemAddedListener( updateStroke );
-    circuit.resistors.addItemRemovedListener( updateStroke );
-
     updateStroke();
     vertex.attachableProperty.link( updateStroke );
 
@@ -230,9 +227,6 @@ define( function( require ) {
       // In Black Box, other wires can be detached from a vertex and this should also update the solder
       circuit.circuitElements.removeItemAddedListener( updateStroke );
       circuit.circuitElements.removeItemRemovedListener( updateStroke );
-
-      circuit.resistors.removeItemAddedListener( updateStroke );
-      circuit.resistors.removeItemRemovedListener( updateStroke );
 
       vertex.attachableProperty.unlink( updateStroke );
       tandem.removeInstance( self );

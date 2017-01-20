@@ -202,16 +202,18 @@ define( function( require ) {
           var endVertex = createVertex( position.x + resistorLength / 2, position.y );
           return new Resistor( startVertex, endVertex, CircuitConstructionKitConstants.DEFAULT_RESISTANCE );
         },
-        circuit.resistors,
+        circuit.circuitElements,
         circuitNode.resistorNodes,
         function( resistorNode ) { return resistorNode.resistor; }
       ) );
     var updateResistorIcon = function() {
-      var numberOfCreatedResistors = circuit.resistors.filter( function( resistor ) {return !resistor.insideTrueBlackBoxProperty.get();} ).length;
+      var numberOfCreatedResistors = circuit.circuitElements.filter( function( resistor ) {
+        return resistor instanceof Resistor && !resistor.insideTrueBlackBoxProperty.get();
+      } ).length;
       resistorIcon.visible = numberOfCreatedResistors < options.numberOfResistors;
     };
-    circuit.resistors.addItemRemovedListener( updateResistorIcon );
-    circuit.resistors.addItemAddedListener( updateResistorIcon );
+    circuit.circuitElements.addItemRemovedListener( updateResistorIcon );
+    circuit.circuitElements.addItemAddedListener( updateResistorIcon );
 
     var switchWireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, tandem.createTandem( 'switchIcon' ) );
     var switchIcon = switchWireNode.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( switchWireNode.width, switchWireNode.height ) } )

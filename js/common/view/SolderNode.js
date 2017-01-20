@@ -48,9 +48,6 @@ define( function( require ) {
     circuit.circuitElements.addItemAddedListener( updateShape );
     circuit.circuitElements.addItemRemovedListener( updateShape );
 
-    circuit.resistors.addItemAddedListener( updateShape );
-    circuit.resistors.addItemRemovedListener( updateShape );
-
     var updateSolderNodePosition = function( position ) {
       dottedLineNode.center = position;
     };
@@ -65,9 +62,6 @@ define( function( require ) {
       // In Black Box, other wires can be detached from a vertex and this should also update the solder
       circuit.circuitElements.removeItemAddedListener( updateShape );
       circuit.circuitElements.removeItemRemovedListener( updateShape );
-
-      circuit.resistors.removeItemAddedListener( updateShape );
-      circuit.resistors.removeItemRemovedListener( updateShape );
     };
   }
 
