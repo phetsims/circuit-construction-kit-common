@@ -51,9 +51,6 @@ define( function( require ) {
     circuit.resistors.addItemAddedListener( updateShape );
     circuit.resistors.addItemRemovedListener( updateShape );
 
-    circuit.lightBulbs.addItemAddedListener( updateShape );
-    circuit.lightBulbs.addItemRemovedListener( updateShape );
-
     var updateSolderNodePosition = function( position ) {
       dottedLineNode.center = position;
     };
@@ -71,9 +68,6 @@ define( function( require ) {
 
       circuit.resistors.removeItemAddedListener( updateShape );
       circuit.resistors.removeItemRemovedListener( updateShape );
-
-      circuit.lightBulbs.removeItemAddedListener( updateShape );
-      circuit.lightBulbs.removeItemRemovedListener( updateShape );
     };
   }
 

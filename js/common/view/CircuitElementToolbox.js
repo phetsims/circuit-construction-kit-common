@@ -177,16 +177,18 @@ define( function( require ) {
         function( position ) {
           return LightBulb.createAtPosition( position, circuit.vertexGroupTandem );
         },
-        circuit.lightBulbs,
+        circuit.circuitElements,
         circuitNode.lightBulbNodes,
         function( lightBulbNode ) { return lightBulbNode.lightBulb; }
       ) );
     var updateLightBulbIcon = function() {
-      var numberOfCreatedLightBulbs = circuit.lightBulbs.filter( function( lightBulb ) {return !lightBulb.insideTrueBlackBoxProperty.get();} ).length;
+      var numberOfCreatedLightBulbs = circuit.circuitElements.filter( function( lightBulb ) {
+        return lightBulb instanceof LightBulb && !lightBulb.insideTrueBlackBoxProperty.get();
+      } ).length;
       lightBulbIcon.visible = numberOfCreatedLightBulbs < options.numberOfLightBulbs;
     };
-    circuit.lightBulbs.addItemRemovedListener( updateLightBulbIcon );
-    circuit.lightBulbs.addItemAddedListener( updateLightBulbIcon );
+    circuit.circuitElements.addItemRemovedListener( updateLightBulbIcon );
+    circuit.circuitElements.addItemAddedListener( updateLightBulbIcon );
 
     var resistorIcon = resistorNode.mutate( {
       pickable: true,

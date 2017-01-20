@@ -43,7 +43,6 @@ define( function( require ) {
 
     // @public - The different types of CircuitElement the circuit may contain.
     this.circuitElements = new ObservableArray();
-    this.lightBulbs = new ObservableArray();
     this.resistors = new ObservableArray();
 
     // Keep track of which terminals are connected to other terminals.  The vertices are also referenced in the
@@ -84,9 +83,6 @@ define( function( require ) {
     this.resistors.addItemAddedListener( function( resistor ) { resistor.resistanceProperty.lazyLink( solve ); } );
     this.resistors.addItemRemovedListener( function( resistor ) { resistor.resistanceProperty.unlink( solve ); } );
 
-    this.lightBulbs.addItemAddedListener( function( lightBulb ) { lightBulb.resistanceProperty.lazyLink( solve ); } );
-    this.lightBulbs.addItemRemovedListener( function( lightBulb ) { lightBulb.resistanceProperty.unlink( solve ); } );
-
     // @public - whether any circuit element is over the toolbox.  This shows the toolbox highlight when something
     // can be dropped in.
     this.isCircuitElementOverToolboxProperty = new Property( false );
@@ -126,7 +122,6 @@ define( function( require ) {
       self.solve();
     };
     this.circuitElements.addItemAddedListener( addVertices );
-    this.lightBulbs.addItemAddedListener( addVertices );
     this.resistors.addItemAddedListener( addVertices );
 
     // When any vertex moves, relayout all electrons within the fixed-length connected component, see #100
@@ -150,11 +145,9 @@ define( function( require ) {
       self.solve(); // Explicit call to solve since it is possible to remove a CircuitElement without removing any vertices.
     };
     this.circuitElements.addItemAddedListener( addElectrons );
-    this.lightBulbs.addItemAddedListener( addElectrons );
     this.resistors.addItemAddedListener( addElectrons );
 
     this.circuitElements.addItemRemovedListener( handleRemoval );
-    this.lightBulbs.addItemRemovedListener( handleRemoval );
     this.resistors.addItemRemovedListener( handleRemoval );
 
     // When electron is removed from the list, dispose it
@@ -261,7 +254,6 @@ define( function( require ) {
     get circuitElementArray() {
       return []
         .concat( this.circuitElements.getArray() )
-        .concat( this.lightBulbs.getArray() )
         .concat( this.resistors.getArray() );
     },
 
@@ -309,7 +301,6 @@ define( function( require ) {
       this.selectedCircuitElementProperty.reset();
 
       this.circuitElements.clear();
-      this.lightBulbs.clear();
       this.resistors.clear();
 
       this.vertices.clear();
@@ -389,7 +380,7 @@ define( function( require ) {
       var list = circuitElement instanceof Battery ? this.circuitElements :
                  circuitElement instanceof Resistor ? this.resistors :
                  circuitElement instanceof Wire ? this.circuitElements :
-                 circuitElement instanceof LightBulb ? this.lightBulbs :
+                 circuitElement instanceof LightBulb ? this.circuitElements :
                  circuitElement instanceof Switch ? this.circuitElements : // TODO: unify
                  null;
       list.remove( circuitElement );
@@ -471,14 +462,11 @@ define( function( require ) {
       var resistors = this.resistors.map( function( resistor ) {
         return _.extend( toObject( resistor ), { resistance: resistor.resistanceProperty.get() } );
       } );
-      var switchesAndWires = this.circuitElements.filter( function( b ) {return !(b instanceof Battery);} ).map( function( circuitElement ) {
+      var switchesAndWiresAndLightBulbs = this.circuitElements.filter( function( b ) {return !(b instanceof Battery);} ).map( function( circuitElement ) {
         return _.extend( toObject( circuitElement ), { resistance: circuitElement.resistanceProperty.get() } );
       } );
-      var bulbs = this.lightBulbs.map( function( lightBulb ) {
-        return _.extend( toObject( lightBulb ), { resistance: lightBulb.resistanceProperty.get() } );
-      } );
 
-      var resistorAdapters = resistors.getArray().concat( switchesAndWires.getArray() ).concat( bulbs.getArray() ).concat( [] );
+      var resistorAdapters = resistors.getArray().concat( switchesAndWiresAndLightBulbs.getArray() ).concat( [] ).concat( [] );// TODO: cleanup
 
       var solution = new ModifiedNodalAnalysisCircuit( batteries.getArray(), resistorAdapters, [] ).solve();
 
@@ -870,7 +858,7 @@ define( function( require ) {
         // TODO: better save state that matches circuit structure
         wires: getArray( this.circuitElements.filter( function( c ) {return c instanceof Wire;} ) ),
         batteries: getArray( this.circuitElements.filter( function( c ) {return c instanceof Battery;} ) ),
-        lightBulbs: getArray( this.lightBulbs ),
+        lightBulbs: getArray( this.circuitElements.filter( function( c ) {return c instanceof LightBulb;} ) ),
         resistors: getArray( this.resistors ),
         switches: getArray( this.circuitElements.filter( function( c ) {return c instanceof Switch;} ) ),
         vertices: this.vertices.map( function( vertex ) {
@@ -906,7 +894,7 @@ define( function( require ) {
       circuitStruct.switches.forEach( this.circuitElements.add.bind( this.circuitElements ) );
       circuitStruct.batteries.forEach( this.circuitElements.add.bind( this.circuitElements ) );
       circuitStruct.resistors.forEach( this.resistors.add.bind( this.resistors ) );
-      circuitStruct.lightBulbs.forEach( this.lightBulbs.add.bind( this.lightBulbs ) );
+      circuitStruct.lightBulbs.forEach( this.circuitElements.add.bind( this.circuitElements ) );
     }
   } );
 } );

@@ -69,9 +69,6 @@ define( function( require ) {
     circuit.resistors.addItemAddedListener( updateStroke );
     circuit.resistors.addItemRemovedListener( updateStroke );
 
-    circuit.lightBulbs.addItemAddedListener( updateStroke );
-    circuit.lightBulbs.addItemRemovedListener( updateStroke );
-
     updateStroke();
     vertex.attachableProperty.link( updateStroke );
 
@@ -236,9 +233,6 @@ define( function( require ) {
 
       circuit.resistors.removeItemAddedListener( updateStroke );
       circuit.resistors.removeItemRemovedListener( updateStroke );
-
-      circuit.lightBulbs.removeItemAddedListener( updateStroke );
-      circuit.lightBulbs.removeItemRemovedListener( updateStroke );
 
       vertex.attachableProperty.unlink( updateStroke );
       tandem.removeInstance( self );
