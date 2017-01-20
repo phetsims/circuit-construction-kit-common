@@ -122,11 +122,12 @@ define( function( require ) {
         var outerVertex = new Vertex( vertex.positionProperty.value.x + dx, vertex.positionProperty.value.y + dy );
         // outerVertex.attachable = true;
         outerVertex.blackBoxInterface = true;
-        // outerVertex.draggable = false;
+        outerVertex.draggable = false;
         vertex.blackBoxInterface = true;
 
         var w = new Wire( vertex, outerVertex, 1E-6, {
-          wireStub: true
+          wireStub: true,
+          interactive: false
         } );
         circuit.wires.push( w ); // TODO: resistivity
       }
@@ -242,7 +243,9 @@ define( function( require ) {
           }
         } );
         circuit.circuitElements.forEach( function( circuitElement ) {
-          circuitElement.interactive = true;
+          if ( !circuitElement.wireStub ) {
+            circuitElement.interactive = true;
+          }
         } );
 
         addBlackBoxContents( trueBlackBoxCircuit );
