@@ -47,7 +47,7 @@ define( function( require ) {
 
     // @public (read-only) so that additional Nodes may be interleaved
     this.mainLayer = new Node();
-    var mainLayer = this.mainLayer;
+    var mainLayer = this.mainLayer; // TODO: get rid of main layer, use a11y for showing highlights?
     Node.call( this, {
       children: [
         this.mainLayer, // everything else
