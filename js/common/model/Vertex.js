@@ -82,11 +82,11 @@ define( function( require ) {
 
     // @public - whether the vertex is on the edge of a black box.  This means it cannot be deleted, but it can be
     // attached to
-    this.blackBoxInterfaceProperty = new Property( false );
+    this.blackBoxInterfaceProperty = new Property( options.blackBoxInterface || false ); // TODO: is this option ever provided?
 
     // @public - whether the vertex is inside the true black box, not inside the user-created black box, on the
     // interface or outside of the black box
-    this.insideTrueBlackBoxProperty = new Property( false );
+    this.insideTrueBlackBoxProperty = new Property( options.insideTrueBlackBox || false ); // TODO: is this option ever provided?
 
     Property.preventGetSet( this, 'position' );
     Property.preventGetSet( this, 'unsnappedPosition' );
