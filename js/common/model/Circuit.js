@@ -290,6 +290,12 @@ define( function( require ) {
       while ( this.circuitElements.length > 0 ) {
         this.remove( this.circuitElements.get( 0 ) );
       }
+
+      // Vertices must be cleared from the black box screen--it's not handled by clearing the circuit elements
+      if ( window.phetBlackBoxStudy ) {
+        this.vertices.clear();
+      }
+
       assert && assert( this.vertices.length === 0, 'vertices should have been removed with circuit elements cleared' );
     },
 

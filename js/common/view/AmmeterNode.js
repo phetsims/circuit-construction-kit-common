@@ -57,9 +57,12 @@ define( function( require ) {
 
     var currentProperty = new DerivedProperty( [ ammeter.currentProperty ], function( current ) {
 
+      var max = window.phetBlackBoxStudy ? 1E3 : 1E4;
+      var maxString = window.phetBlackBoxStudy ? '> 10^3' : '> 10^4';
+
       // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
       return current === null ? '?' :
-             Math.abs( current ) > 1E4 ? '> 10^4' :
+             Math.abs( current ) > max ? maxString :
              Util.toFixed( Math.abs( current ), 2 ) + ' A';
     } );
     var probeTextNode = new ProbeTextNode( currentProperty, options.runningProperty, 'Current', tandem.createTandem( 'probeTextNode' ), {
