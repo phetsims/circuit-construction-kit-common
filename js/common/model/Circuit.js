@@ -16,6 +16,7 @@ define( function( require ) {
   var ObservableArray = require( 'AXON/ObservableArray' );
   var ModifiedNodalAnalysisCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/ModifiedNodalAnalysisCircuit' );
   var Property = require( 'AXON/Property' );
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
   var Emitter = require( 'AXON/Emitter' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Vertex' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Wire' );
@@ -27,9 +28,6 @@ define( function( require ) {
   var ElectronPropagator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/ElectronPropagator' );
   var Vector2 = require( 'DOT/Vector2' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/FixedLengthCircuitElement' );
-
-  // phet-io modules
-  var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
 
   // constants
   var SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
@@ -55,9 +53,8 @@ define( function( require ) {
     this.electrons = new ObservableArray();
 
     // @public (read-only) - whether the electrons should be displayed
-    this.showElectronsProperty = new Property( false, {
-      tandem: tandem.createTandem( 'showElectronsProperty' ),
-      phetioValueType: TBoolean
+    this.showElectronsProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'showElectronsProperty' )
     } );
 
     // @private - create the electrons in new circuits
