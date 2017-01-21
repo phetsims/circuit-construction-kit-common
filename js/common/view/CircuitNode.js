@@ -61,6 +61,7 @@ define( function( require ) {
     this.solderNodes = [];
 
     // in main layer
+    // TODO: eliminate these arrays?
     this.batteryNodes = [];
     this.lightBulbNodes = [];
     this.lightBulbForegroundNodes = [];
