@@ -41,7 +41,8 @@ define( function( require ) {
   function Circuit( tandem ) {
     var self = this;
 
-    // @public - The different types of CircuitElement the circuit may contain.
+    // @public - The different types of CircuitElement the circuit may contain, including Wire, Battery, Switch, Resistor,
+    // LightBulb.
     this.circuitElements = new ObservableArray();
 
     // Keep track of which terminals are connected to other terminals.  The vertices are also referenced in the
@@ -69,7 +70,6 @@ define( function( require ) {
     var solve = function() { self.solve(); };
 
     // Solve the circuit when any of the circuit element attributes change.
-    // TODO: Abstraction
     this.circuitElements.addItemAddedListener( function( circuitElement ) {
       circuitElement.resistanceProperty && circuitElement.resistanceProperty.lazyLink( solve );
       circuitElement.voltageProperty && circuitElement.voltageProperty.lazyLink( solve )
@@ -120,7 +120,7 @@ define( function( require ) {
     this.circuitElements.addItemAddedListener( addVertices );
 
     // When any vertex moves, relayout all electrons within the fixed-length connected component, see #100
-    var addElectrons = function( circuitElement ) {
+    this.circuitElements.addItemAddedListener( function( circuitElement ) {
       circuitElement.electronLayoutDirty = true;
 
       var updateElectrons = function() {
@@ -133,14 +133,12 @@ define( function( require ) {
       circuitElement.vertexMovedEmitter.addListener( updateElectrons );
       circuitElement.moveToFrontEmitter.addListener( updateElectrons );
       self.componentAddedEmitter.emit();
-    };
-    var handleRemoval = function( circuitElement ) {
+    } );
+    this.circuitElements.addItemRemovedListener( function( circuitElement ) {
       self.electrons.removeAll( self.getElectronsInCircuitElement( circuitElement ) );
       self.componentDeletedEmitter.emit();
       self.solve(); // Explicit call to solve since it is possible to remove a CircuitElement without removing any vertices.
-    };
-    this.circuitElements.addItemAddedListener( addElectrons );
-    this.circuitElements.addItemRemovedListener( handleRemoval );
+    } );
 
     // When electron is removed from the list, dispose it
     this.electrons.addItemRemovedListener( function( electron ) {
