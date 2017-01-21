@@ -43,6 +43,7 @@ define( function( require ) {
     var runningProperty = this.circuitConstructionKitModel.exploreScreenRunningProperty;
 
     this.highlightLayer = new Node();
+    window.circuitNode = this;
 
     // @public (read-only) so that additional Nodes may be interleaved
     this.mainLayer = new Node();
@@ -69,29 +70,6 @@ define( function( require ) {
     this.vertexNodes = [];
     this.electronNodes = [];
 
-    /**
-     * For each type of circuitElement, create a listener that can be used to remove the corresponding nodes
-     * @param {Array.<Node>} array - the list of nodes for that circuit element type, such as this.resistorNodes
-     * @param {Function} getter - function that returns a {Node} for a {CircuitElement}
-     * @returns {Function}
-     */
-    var createCircuitElementRemovedListener = function( array, getter ) {
-      return function( circuitElement ) {
-        var circuitElementNode = getter( circuitElement ); // like getBatteryNode(circuitElement)
-        assert && assert( circuitElementNode, 'No circuit element node found for ' + circuitElement );
-
-        mainLayer.removeChild( circuitElementNode );
-
-        var index = array.indexOf( circuitElementNode );
-        if ( index > -1 ) {
-          array.splice( index, 1 );
-        }
-        circuitElementNode.dispose();
-
-        assert && assert( getter( circuitElement ) === null, 'should have been removed' );
-      };
-    };
-
     // When loading from a state object, the vertices could have been added first.  If so, move them in front
     var moveVerticesToFront = function( circuitElement ) {
       self.getVertexNode( circuitElement.startVertexProperty.get() ) && self.getVertexNode( circuitElement.startVertexProperty.get() ).moveToFront();
@@ -108,12 +86,12 @@ define( function( require ) {
      * (c) Add a listener that removes nodes when model elements are removed
      *
      * @param {function} CircuitElementNodeConstructor constructor for the node type, such as BatteryNode
-     * @param {ObservableArray.<CircuitElement>} modelObservableArray
-     * @param {function} type
+     * @param {function} type - the type of the CircuitElement, such as Battery or Wire
      * @param {Array.<CircuitElementNode>} nodeArray
      * @param {function} getter, given a {CircuitElement}, return the corresponding {CircuitElementNode}
+     * @param {Tandem} groupTandem
      */
-    var initializeCircuitElementType = function( CircuitElementNodeConstructor, modelObservableArray, type, nodeArray, getter, groupTandem ) {
+    var initializeCircuitElementType = function( CircuitElementNodeConstructor, type, nodeArray, getter, groupTandem ) {
       var addCircuitElement = function( circuitElement ) {
         if ( circuitElement instanceof type ) {
           var circuitElementNode = new CircuitElementNodeConstructor(
@@ -128,17 +106,30 @@ define( function( require ) {
           moveVerticesToFront( circuitElement );
         }
       };
-      modelObservableArray.addItemAddedListener( addCircuitElement );
-      modelObservableArray.forEach( addCircuitElement );
-      modelObservableArray.addItemRemovedListener( createCircuitElementRemovedListener( nodeArray, getter ) );
+      circuit.circuitElements.addItemAddedListener( addCircuitElement );
+      circuit.circuitElements.forEach( addCircuitElement );
+      circuit.circuitElements.addItemRemovedListener( function( circuitElement ) {
+        if ( circuitElement instanceof type ) {
+          var circuitElementNode = getter( circuitElement );
+          mainLayer.removeChild( circuitElementNode );
+
+          var index = nodeArray.indexOf( circuitElementNode );
+          if ( index > -1 ) {
+            nodeArray.splice( index, 1 );
+          }
+          circuitElementNode.dispose();
+
+          assert && assert( getter( circuitElement ) === null, 'should have been removed' );
+        }
+      } );
     };
 
-    initializeCircuitElementType( WireNode, circuit.circuitElements, Wire, self.wireNodes, this.getWireNode.bind( this ), tandem.createGroupTandem( 'wireNode' ) );
-    initializeCircuitElementType( BatteryNode, circuit.circuitElements, Battery, self.batteryNodes, this.getBatteryNode.bind( this ), tandem.createGroupTandem( 'batteryNode' ) );
-    initializeCircuitElementType( CCKLightBulbNode, circuit.circuitElements, LightBulb, self.lightBulbNodes, this.getCCKLightBulbNode.bind( this ), tandem.createGroupTandem( 'lightBulbNode' ) );
-    initializeCircuitElementType( CCKLightBulbForegroundNode, circuit.circuitElements, LightBulb, self.lightBulbForegroundNodes, this.getCCKLightBulbForegroundNode.bind( this ), tandem.createGroupTandem( 'lightBulbForegroundNode' ) );
-    initializeCircuitElementType( ResistorNode, circuit.circuitElements, Resistor, self.resistorNodes, this.getResistorNode.bind( this ), tandem.createGroupTandem( 'resistorNode' ) );
-    initializeCircuitElementType( SwitchNode, circuit.circuitElements, Switch, self.switchNodes, this.getSwitchNode.bind( this ), tandem.createGroupTandem( 'switchNode' ) );
+    initializeCircuitElementType( WireNode, Wire, self.wireNodes, this.getWireNode.bind( this ), tandem.createGroupTandem( 'wireNode' ) );
+    initializeCircuitElementType( BatteryNode, Battery, self.batteryNodes, this.getBatteryNode.bind( this ), tandem.createGroupTandem( 'batteryNode' ) );
+    initializeCircuitElementType( CCKLightBulbNode, LightBulb, self.lightBulbNodes, this.getCCKLightBulbNode.bind( this ), tandem.createGroupTandem( 'lightBulbNode' ) );
+    initializeCircuitElementType( CCKLightBulbForegroundNode, LightBulb, self.lightBulbForegroundNodes, this.getCCKLightBulbForegroundNode.bind( this ), tandem.createGroupTandem( 'lightBulbForegroundNode' ) );
+    initializeCircuitElementType( ResistorNode, Resistor, self.resistorNodes, this.getResistorNode.bind( this ), tandem.createGroupTandem( 'resistorNode' ) );
+    initializeCircuitElementType( SwitchNode, Switch, self.switchNodes, this.getSwitchNode.bind( this ), tandem.createGroupTandem( 'switchNode' ) );
 
     var vertexNodeGroup = tandem.createGroupTandem( 'vertexNodes' );
     var addVertexNode = function( vertex ) {
