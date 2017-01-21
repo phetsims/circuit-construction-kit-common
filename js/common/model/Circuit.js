@@ -429,29 +429,22 @@ define( function( require ) {
 
       var self = this;
 
-      var toObject = function( circuitElement ) {
-        return {
+      var toStateObject = function( circuitElement ) {
+        return _.extend( {
           node0: self.vertices.indexOf( circuitElement.startVertexProperty.get() ),
           node1: self.vertices.indexOf( circuitElement.endVertexProperty.get() ),
           circuitElement: circuitElement
-        };
+        }, circuitElement.attributesToStateObject() );
       };
 
       // the index of vertex corresponds to position in list.
-      // TODO: Abstraction
-      var batteries = this.circuitElements.filter( function( b ) {return b instanceof Battery;} ).map( function( battery ) {
-        return _.extend( toObject( battery ), { voltage: battery.voltageProperty.get() } );
-      } );
-      var resistors = this.circuitElements.filter( function( b ) {return b instanceof Resistor;} ).map( function( resistor ) {
-        return _.extend( toObject( resistor ), { resistance: resistor.resistanceProperty.get() } );
-      } );
-      var switchesAndWiresAndLightBulbs = this.circuitElements.filter( function( b ) {return !(b instanceof Battery);} ).map( function( circuitElement ) {
-        return _.extend( toObject( circuitElement ), { resistance: circuitElement.resistanceProperty.get() } );
-      } );
+      var batteries = this.circuitElements.filter( function( b ) {return b instanceof Battery;} );
+      var resistors = this.circuitElements.filter( function( b ) {return !(b instanceof Battery);} );
 
-      var resistorAdapters = resistors.getArray().concat( switchesAndWiresAndLightBulbs.getArray() ).concat( [] ).concat( [] );// TODO: cleanup
+      var batteryAdapters = batteries.map( toStateObject ).getArray();
+      var resistorAdapters = resistors.map( toStateObject ).getArray();
 
-      var solution = new ModifiedNodalAnalysisCircuit( batteries.getArray(), resistorAdapters, [] ).solve();
+      var solution = new ModifiedNodalAnalysisCircuit( batteryAdapters, resistorAdapters, [] ).solve();
 
       // Apply the node voltages to the vertices
       for ( var i = 0; i < this.vertices.length; i++ ) {
