@@ -398,10 +398,6 @@ define( function( require ) {
       return neighbors;
     },
 
-    hasOneNeighbor: function( vertex ) {
-      return this.getNeighborCircuitElements( vertex ).length === 1;
-    },
-
     // Duplicates work with the above method to avoid allocations.
     countCircuitElements: function( vertex ) {
       var edgeCount = 0;
