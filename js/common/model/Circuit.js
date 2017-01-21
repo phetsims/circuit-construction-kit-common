@@ -286,17 +286,29 @@ define( function( require ) {
     },
 
     clear: function() {
+
       this.selectedCircuitElementProperty.reset();
-      while ( this.circuitElements.length > 0 ) {
-        this.remove( this.circuitElements.get( 0 ) );
-      }
 
       // Vertices must be cleared from the black box screen--it's not handled by clearing the circuit elements
+      // TODO: Unify these implementations
       if ( window.phetBlackBoxStudy ) {
-        this.vertices.clear();
-      }
 
-      assert && assert( this.vertices.length === 0, 'vertices should have been removed with circuit elements cleared' );
+        // clear references, do not dispose because some items get added back in the black box.
+        this.circuitElements.clear();
+
+        this.vertices.clear();
+
+        // Update the physics
+        this.solve();
+      }
+      else {
+
+        // Dispose of elements
+        while ( this.circuitElements.length > 0 ) {
+          this.remove( this.circuitElements.get( 0 ) );
+        }
+        assert && assert( this.vertices.length === 0, 'vertices should have been removed with circuit elements cleared' );
+      }
     },
 
     /**

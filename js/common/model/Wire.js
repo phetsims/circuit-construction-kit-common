@@ -57,8 +57,11 @@ define( function( require ) {
     vertexMovedListener();
 
     this.disposeWire = function() {
+      assert && assert( !self.disposed, 'Was already disposed' );
+      self.disposed = true;
       self.vertexMovedEmitter.removeListener( vertexMovedListener );
     };
+    this.disposed = false;
   }
 
   circuitConstructionKitCommon.register( 'Wire', Wire );
