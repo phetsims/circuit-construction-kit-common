@@ -519,12 +519,6 @@ define( function( require ) {
       } );
     },
 
-    getFixedLengthCircuitElements: function() {
-      return this.circuitElements.filter( function( circuitElement ) {
-        return circuitElement instanceof FixedLengthCircuitElement;
-      } ).getArray();
-    },
-
     /**
      * Find the neighbor vertices when looking at the given group of circuit elements
      * @param {Vertex} vertex
@@ -633,7 +627,10 @@ define( function( require ) {
      * @return {Vertex[]}
      */
     findAllFixedVertices: function( vertex, okToVisit ) {
-      return this.searchVertices( vertex, this.getFixedLengthCircuitElements(), okToVisit || function() {return true;} );
+      var fixedCircuitElements = this.circuitElements.filter( function( circuitElement ) {
+        return circuitElement instanceof FixedLengthCircuitElement;
+      } ).getArray();
+      return this.searchVertices( vertex, fixedCircuitElements, okToVisit || function() {return true;} );
     },
 
     /**
