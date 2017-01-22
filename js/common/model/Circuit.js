@@ -381,9 +381,6 @@ define( function( require ) {
       if ( this.selectedCircuitElementProperty.get() === circuitElement ) {
         this.selectedCircuitElementProperty.set( null );
       }
-
-      // Update the physics
-      this.solve();
     },
 
     /**
