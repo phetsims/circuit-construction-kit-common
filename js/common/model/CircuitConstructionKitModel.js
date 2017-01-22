@@ -64,7 +64,7 @@ define( function( require ) {
       };
       this.circuit.vertices.lengthProperty.lazyLink( pause );
       this.circuit.componentEditedEmitter.addListener( pause );
-      this.circuit.componentAddedEmitter.addListener( pause );
+      this.circuit.circuitElements.addItemAddedListener( pause );
       this.circuit.circuitElements.addItemRemovedListener( pause );
     }
 

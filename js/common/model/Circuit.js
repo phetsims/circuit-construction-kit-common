@@ -129,7 +129,6 @@ define( function( require ) {
       };
       circuitElement.vertexMovedEmitter.addListener( updateElectrons );
       circuitElement.moveToFrontEmitter.addListener( updateElectrons );
-      self.componentAddedEmitter.emit();
       self.solve();
     } );
     this.circuitElements.addItemRemovedListener( function( circuitElement ) {
@@ -151,8 +150,6 @@ define( function( require ) {
 
     // Pass-through events
     this.componentEditedEmitter = new Emitter();
-
-    this.componentAddedEmitter = new Emitter();
 
     var circuitChangedEmitterFunction = function() {
       self.circuitChangedEmitter.emit();
