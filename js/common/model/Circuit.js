@@ -148,16 +148,16 @@ define( function( require ) {
     // Some actions only take place after an item has been dropped
     this.vertexDroppedEmitter = new Emitter();
 
-    // Pass-through events
+    // This Emitter signifies that a component has been modified (for example, with the CircuitElementEditPanel)
     this.componentEditedEmitter = new Emitter();
 
-    var circuitChangedEmitterFunction = function() {
+    var emitCircuitChanged = function() {
       self.circuitChangedEmitter.emit();
     };
     self.vertices.addItemAddedListener( function( vertex ) {
 
       // Observe the change in location of the vertices, to update the ammeter and voltmeter
-      vertex.positionProperty.link( circuitChangedEmitterFunction );
+      vertex.positionProperty.link( emitCircuitChanged );
 
       var filtered = self.vertices.filter( function( candidateVertex ) {
         return vertex === candidateVertex;
@@ -167,12 +167,9 @@ define( function( require ) {
 
     // Stop watching the vertex positions for updating the voltmeter and ammeter
     self.vertices.addItemRemovedListener( function( vertex ) {
-      assert && assert( vertex.positionProperty.hasListener( circuitChangedEmitterFunction ), 'should have had the listener' );
-      vertex.positionProperty.unlink( circuitChangedEmitterFunction );
-      assert && assert(
-        !vertex.positionProperty.hasListener( circuitChangedEmitterFunction ),
-        'Listener should have been removed'
-      );
+      assert && assert( vertex.positionProperty.hasListener( emitCircuitChanged ), 'should have had the listener' );
+      vertex.positionProperty.unlink( emitCircuitChanged );
+      assert && assert( !vertex.positionProperty.hasListener( emitCircuitChanged ), 'Listener should have been removed' );
     } );
 
     // Keep track of the last circuit element the user manipulated, for showing additional controls
