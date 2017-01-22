@@ -145,9 +145,8 @@ define( function( require ) {
      */
     getMaxCurrentMagnitude: function() {
       var max = 0;
-      var circuitElements = this.circuit.getCircuitElements();
-      for ( var i = 0; i < circuitElements.length; i++ ) {
-        var current = circuitElements[ i ].currentProperty.get();
+      for ( var i = 0; i < this.circuit.circuitElements.length; i++ ) {
+        var current = this.circuit.circuitElements.get( i ).currentProperty.get();
         max = Math.max( max, Math.abs( current ) );
       }
       return max;

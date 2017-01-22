@@ -394,26 +394,16 @@ define( function( require ) {
      * @returns {Array}
      */
     getNeighborCircuitElements: function( vertex ) {
-      var neighbors = [];
-      var circuitElements = this.getCircuitElements();
-      for ( var i = 0; i < circuitElements.length; i++ ) {
-        if ( circuitElements[ i ].containsVertex( vertex ) ) {
-          neighbors.push( circuitElements[ i ] );
-        }
-      }
-      return neighbors;
+      return this.circuitElements.filter( function( circuitElement ) {
+        return circuitElement.containsVertex( vertex );
+      } ).getArray(); //TODO: perhaps call site could accept ObservableArray?
     },
 
     // Duplicates work with the above method to avoid allocations.
     countCircuitElements: function( vertex ) {
-      var edgeCount = 0;
-      var circuitElements = this.getCircuitElements();
-      for ( var i = 0; i < circuitElements.length; i++ ) {
-        if ( circuitElements[ i ].containsVertex( vertex ) ) {
-          edgeCount++;
-        }
-      }
-      return edgeCount;
+      return this.circuitElements.count( function( circuitElement ) {
+        return circuitElement.containsVertex( vertex );
+      } );
     },
 
     areVerticesConnected: function( vertex1, vertex2 ) {
@@ -485,13 +475,12 @@ define( function( require ) {
         this.connect( oldVertex, targetVertex );
       }
       else {
-        var circuitElements = this.getCircuitElements();
-        for ( var i = 0; i < circuitElements.length; i++ ) {
-          if ( circuitElements[ i ].containsVertex( oldVertex ) ) {
-            circuitElements[ i ].replaceVertex( oldVertex, targetVertex );
-            circuitElements[ i ].connectedEmitter.emit();
+        this.circuitElements.forEach( function( circuitElement ) {
+          if ( circuitElement.containsVertex( oldVertex ) ) {
+            circuitElement.replaceVertex( oldVertex, targetVertex );
+            circuitElement.connectedEmitter.emit();
           }
-        }
+        } );
         this.vertices.remove( oldVertex );
         assert && assert( !oldVertex.positionProperty.hasListeners(), 'Removed vertex should not have any listeners' );
 
@@ -525,17 +514,9 @@ define( function( require ) {
       if ( a === b ) {
         return false;
       }
-      var circuitElements = this.getCircuitElements();
-      for ( var i = 0; i < circuitElements.length; i++ ) {
-        if ( circuitElements[ i ].containsBothVertices( a, b ) ) {
-          return true;
-        }
-      }
-      return false;
-    },
-
-    getCircuitElements: function() {
-      return this.circuitElements.getArray();
+      this.circuitElements.anyElementMatchesPredicate( function( circuitElement ) {
+        return circuitElement.containsBothVertices( a, b );
+      } );
     },
 
     getFixedLengthCircuitElements: function() {

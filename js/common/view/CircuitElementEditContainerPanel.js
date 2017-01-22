@@ -44,10 +44,9 @@ define( function( require ) {
     // Only show the instructions if there is a circuit element in the play area, so students don't try to tap
     // something in the toolbox.
     var listener = function() {
-      var circuitElements = circuit.getCircuitElements();
 
       // Only fixed length circuit elements are editable, even though wires can be deleted
-      var fixedLengthElements = circuitElements.filter( function( circuitElement ) {
+      var fixedLengthElements = circuit.circuitElements.filter( function( circuitElement ) {
         return circuitElement instanceof FixedLengthCircuitElement && circuitElement.interactiveProperty.get();
       } );
       tapInstructionTextNode.visible = fixedLengthElements.length > 0;
