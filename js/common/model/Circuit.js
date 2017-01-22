@@ -67,6 +67,7 @@ define( function( require ) {
     var solve = function() { self.solve(); };
 
     // Solve the circuit when any of the circuit element attributes change.
+    // TODO: combine addItemAddListener/addItemRemovedListener calls?  Or document why they are better separate?
     this.circuitElements.addItemAddedListener( function( circuitElement ) {
       circuitElement.resistanceProperty && circuitElement.resistanceProperty.lazyLink( solve );
       circuitElement.voltageProperty && circuitElement.voltageProperty.lazyLink( solve )
@@ -76,8 +77,9 @@ define( function( require ) {
       circuitElement.voltageProperty && circuitElement.voltageProperty.unlink( solve )
     } );
 
-    // @public - whether any circuit element is over the toolbox.  This shows the toolbox highlight when something
-    // can be dropped in.
+    // @public - whether any circuit element is over the toolbox.  This shows the toolbox highlight when something can
+    // be dropped in.
+    // TODO: This code doesn't seem to be doing anything at the moment.  Is it disabled in the view?
     this.isCircuitElementOverToolboxProperty = new Property( false );
     var detectOverToolbox = function() {
       var circuitElements = self.circuitElements.getArray();
@@ -112,7 +114,6 @@ define( function( require ) {
 
       assert && assert( self.vertices.indexOf( circuitElement.startVertexProperty.get() ) >= 0, 'start vertex should appear in the list' );
       assert && assert( self.vertices.indexOf( circuitElement.endVertexProperty.get() ) >= 0, 'end vertex should appear in the list' );
-      self.solve();
     } );
 
     // When any vertex moves, relayout all electrons within the fixed-length connected component, see #100
@@ -129,10 +130,10 @@ define( function( require ) {
       circuitElement.vertexMovedEmitter.addListener( updateElectrons );
       circuitElement.moveToFrontEmitter.addListener( updateElectrons );
       self.componentAddedEmitter.emit();
+      self.solve();
     } );
     this.circuitElements.addItemRemovedListener( function( circuitElement ) {
       self.electrons.removeAll( self.getElectronsInCircuitElement( circuitElement ) );
-      self.componentDeletedEmitter.emit();
       self.solve(); // Explicit call to solve since it is possible to remove a CircuitElement without removing any vertices.
     } );
 
@@ -151,7 +152,6 @@ define( function( require ) {
     // Pass-through events
     this.componentEditedEmitter = new Emitter();
 
-    this.componentDeletedEmitter = new Emitter();
     this.componentAddedEmitter = new Emitter();
 
     var circuitChangedEmitterFunction = function() {

@@ -65,7 +65,7 @@ define( function( require ) {
       this.circuit.vertices.lengthProperty.lazyLink( pause );
       this.circuit.componentEditedEmitter.addListener( pause );
       this.circuit.componentAddedEmitter.addListener( pause );
-      this.circuit.componentDeletedEmitter.addListener( pause );
+      this.circuit.circuitElements.addItemRemovedListener( pause );
     }
 
     // For PhET-iO, when a component is edited or a vertex is added, connected, or cut, output the circuit to the data stream
