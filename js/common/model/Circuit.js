@@ -80,7 +80,7 @@ define( function( require ) {
     // can be dropped in.
     this.isCircuitElementOverToolboxProperty = new Property( false );
     var detectOverToolbox = function() {
-      var circuitElements = self.circuitElementArray;
+      var circuitElements = self.circuitElements.getArray();
       for ( var i = 0; i < circuitElements.length; i++ ) {
         var element = circuitElements[ i ];
         if ( element.isOverToolboxProperty.get() ) {
@@ -236,9 +236,6 @@ define( function( require ) {
       else {
         // ok to translate
       }
-    },
-    get circuitElementArray() {
-      return this.circuitElements.getArray();
     },
 
     // Rotate away from other vertices, not toward them.
@@ -516,12 +513,14 @@ define( function( require ) {
      * Happens every frame, even if paused.
      */
     updateElectronsInDirtyCircuitElements: function() {
-      var circuitElements = this.circuitElementArray; // TODO: Heavy on GC
-      for ( var i = 0; i < circuitElements.length; i++ ) {
-        if ( circuitElements[ i ].electronLayoutDirty ) {
-          this.constantDensityLayout.layoutElectrons( circuitElements[ i ] );
+      var self = this;
+      this.circuitElements.forEach( function( circuitElement ) {
+
+        // TODO: move dirty check into the layoutElectrons call?
+        if ( circuitElement.electronLayoutDirty ) {
+          self.constantDensityLayout.layoutElectrons( circuitElement );
         }
-      }
+      } );
     },
 
     // The only way for two vertices to be adjacent is for them to be the start/end of a single CircuitElement
@@ -598,7 +597,7 @@ define( function( require ) {
      * @param {Vertex} vertex
      */
     findAllConnectedVertices: function( vertex ) {
-      return this.searchVertices( vertex, this.circuitElementArray, function() {return true;} );
+      return this.searchVertices( vertex, this.circuitElements.getArray(), function() {return true;} );
     },
 
     /**
