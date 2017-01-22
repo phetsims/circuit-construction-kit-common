@@ -173,6 +173,7 @@ define( function( require ) {
     } );
 
     // Keep track of the last circuit element the user manipulated, for showing additional controls
+    // TODO: Will a11y track this?
     this.selectedCircuitElementProperty = new Property( null );
 
     // When any vertex is dropped, check all vertices for intersection.  If any overlap, move them apart.
