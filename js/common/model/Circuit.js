@@ -99,7 +99,7 @@ define( function( require ) {
     } );
 
     // When a new circuit element is added to a circuit, it has two unconnected vertices
-    var addVertices = function( circuitElement ) {
+    this.circuitElements.addItemAddedListener( function( circuitElement ) {
 
       // Vertices may already exist for a Circuit when loading
       if ( self.vertices.indexOf( circuitElement.startVertexProperty.get() ) < 0 ) {
@@ -113,8 +113,7 @@ define( function( require ) {
       assert && assert( self.vertices.indexOf( circuitElement.startVertexProperty.get() ) >= 0, 'start vertex should appear in the list' );
       assert && assert( self.vertices.indexOf( circuitElement.endVertexProperty.get() ) >= 0, 'end vertex should appear in the list' );
       self.solve();
-    };
-    this.circuitElements.addItemAddedListener( addVertices );
+    } );
 
     // When any vertex moves, relayout all electrons within the fixed-length connected component, see #100
     this.circuitElements.addItemAddedListener( function( circuitElement ) {
