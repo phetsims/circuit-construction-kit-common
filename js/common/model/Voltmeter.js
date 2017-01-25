@@ -40,10 +40,6 @@ define( function( require ) {
       tandem: tandem.createTandem( 'blackProbePositionProperty' ),
       phetioValueType: TVector2
     } );
-
-    Property.preventGetSet( this, 'voltage' );
-    Property.preventGetSet( this, 'redProbePosition' );
-    Property.preventGetSet( this, 'blackProbePosition' );
   }
 
   circuitConstructionKitCommon.register( 'Voltmeter', Voltmeter );

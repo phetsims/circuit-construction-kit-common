@@ -29,12 +29,10 @@ define( function( require ) {
 
     // @public (read-only) - the resistance of the Wire in ohms
     this.resistanceProperty = new NumberProperty( CircuitConstructionKitConstants.MINIMUM_RESISTANCE );
-    Property.preventGetSet( this, 'resistance' );
 
     // @public (read-only) - the resistivity of the Wire in ohm-meters
     // TODO: when the resistivity changes, update the resistance
     this.resistivityProperty = new NumberProperty( resistivity );
-    Property.preventGetSet( this, 'resistivity' );
 
     /**
      * When the vertex moves, updates the resistance and electron path length.

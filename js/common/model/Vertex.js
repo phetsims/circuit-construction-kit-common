@@ -88,16 +88,6 @@ define( function( require ) {
     // interface or outside of the black box
     this.insideTrueBlackBoxProperty = new BooleanProperty( options.insideTrueBlackBox || false ); // TODO: is this option ever provided?
 
-    Property.preventGetSet( this, 'position' );
-    Property.preventGetSet( this, 'unsnappedPosition' );
-    Property.preventGetSet( this, 'voltage' );
-    Property.preventGetSet( this, 'selected' );
-    Property.preventGetSet( this, 'draggable' );
-    Property.preventGetSet( this, 'interactive' );
-    Property.preventGetSet( this, 'attachable' );
-    Property.preventGetSet( this, 'blackBoxInterface' );
-    Property.preventGetSet( this, 'insideTrueBlackBox' );
-
     // @public (read-only) - indicate when the vertex has been moved to the front in z-ordering
     this.moveToFrontEmitter = new Emitter();
   }

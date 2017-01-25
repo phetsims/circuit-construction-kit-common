@@ -35,9 +35,6 @@ define( function( require ) {
     this.resistanceProperty = new NumberProperty( CircuitConstructionKitConstants.MINIMUM_RESISTANCE );
     this.resistivityProperty = new NumberProperty( resistivity );
     this.closedProperty = new BooleanProperty( false );
-    Property.preventGetSet( this, 'resistance' );
-    Property.preventGetSet( this, 'resistivity' );
-    Property.preventGetSet( this, 'closed' );
 
     var updateResistance = function() {
       var length = self.startVertexProperty.get().positionProperty.get().minus( self.endVertexProperty.get().positionProperty.get() ).magnitude();

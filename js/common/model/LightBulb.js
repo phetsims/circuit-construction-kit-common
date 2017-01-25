@@ -77,7 +77,6 @@ define( function( require ) {
    */
   function LightBulb( startVertex, endVertex, resistance, options ) {
     this.resistanceProperty = new NumberProperty( resistance );
-    Property.preventGetSet( this, 'resistance' );
 
     // TODO: copied
     var accumulatedDistance = 0;

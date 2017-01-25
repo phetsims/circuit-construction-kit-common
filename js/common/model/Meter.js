@@ -44,10 +44,6 @@ define( function( require ) {
 
     // @public (read-only) Fires an event when the meter is dropped
     this.droppedEmitter = new Emitter(); // Fire event when dropped
-
-    Property.preventGetSet( this, 'visible' );
-    Property.preventGetSet( this, 'bodyPosition' );
-    Property.preventGetSet( this, 'draggingProbesWithBody' );
   }
 
   circuitConstructionKitCommon.register( 'Meter', Meter );

@@ -30,7 +30,6 @@ define( function( require ) {
 
     // @public (read-only) {Property.<number>} the resistance in ohms
     this.resistanceProperty = new NumberProperty( resistance );
-    Property.preventGetSet( this, 'resistance' );
   }
 
   circuitConstructionKitCommon.register( 'Resistor', Resistor );

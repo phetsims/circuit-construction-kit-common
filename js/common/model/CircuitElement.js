@@ -41,28 +41,22 @@ define( function( require ) {
 
     // @public (read-only) - the Vertex at the origin of the CircuitElement
     this.startVertexProperty = new Property( startVertex );
-    Property.preventGetSet( this, 'startVertex' );
 
     // @public (read-only) - the Vertex at the end of the CircuitElement
     this.endVertexProperty = new Property( endVertex );
-    Property.preventGetSet( this, 'endVertex' );
 
     // @public (read-only) - the flowing current, in amps.
     this.currentProperty = new NumberProperty( 0 );
-    Property.preventGetSet( this, 'current' );
 
     // @public (read-only) - whether the CircuitElement is being dragged across the toolbox
     this.isOverToolboxProperty = new BooleanProperty( false );
-    Property.preventGetSet( this, 'isOverToolbox' );
 
     // @public (read-only) - true if the CircuitElement can be edited and dragged
     this.interactiveProperty = new BooleanProperty( options.interactive );
-    Property.preventGetSet( this, 'interactive' );
 
     // @public - whether the circuit element is inside the true black box, not inside the user-created black box, on
     // the interface or outside of the black box
     this.insideTrueBlackBoxProperty = new BooleanProperty( false );
-    Property.preventGetSet( this, 'insideTrueBlackBox' );
 
     // @public - true if the electrons must be layed out again
     this.electronLayoutDirty = true;

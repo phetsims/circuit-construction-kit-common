@@ -35,7 +35,6 @@ define( function( require ) {
 
     // @public {Property.<number>} the voltage of the battery
     this.voltageProperty = new NumberProperty( voltage );
-    Property.preventGetSet( this, 'voltage' );
 
     // @public (read-only) - track the initial state so the user can only create a certain number of "left" or "right"
     // batteries from the toolbox.
