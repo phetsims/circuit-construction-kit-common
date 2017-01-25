@@ -66,10 +66,6 @@ define( function( require ) {
 
     this.disposeElectron = function() {
 
-      // TODO: sometimes the electrons are getting disposed twice, we must find out why and fix it
-      if ( self.deleted ) {
-        return;
-      }
       assert && assert( !self.deleted, 'cannot delete twice' );
       multilink.dispose();
       self.deleted = true;
