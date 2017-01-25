@@ -18,7 +18,8 @@ define( function( require ) {
 
   // constants
 
-  // Number of amps at which a component catches fire
+  // Number of amps at which a component catches fire.  TODO: why are currents clamped in this file?  Can we move that
+  // to the view?
   var FIRE_CURRENT = 10;
 
   // If the current is lower than this, then there is no electron movement
@@ -27,6 +28,7 @@ define( function( require ) {
   // The furthest an electron can step in one frame before the time scale must be reduced (to prevent a strobe effect)
   var MAX_POSITION_CHANGE = CircuitConstructionKitConstants.ELECTRON_SEPARATION * 0.43;
 
+  // Number of times to spread out electrons so they don't get bunched up.
   var NUMBER_OF_EQUALIZE_STEPS = 2;
   var SPEED_SCALE = 1 / 3;
   var TIME_SCALE = 100;
@@ -106,7 +108,7 @@ define( function( require ) {
       }
 
       // dt would ideally be around 16.666ms = 0.0166 sec.  Cap it to avoid too large of an integration step.
-      dt = Math.min( dt, 1 / 60 * 2 ) * TIME_SCALE;
+      dt = Math.min( dt, 1 / 30 ) * TIME_SCALE;
       var maxCurrentMagnitude = this.getMaxCurrentMagnitude();
       var maxSpeed = maxCurrentMagnitude * SPEED_SCALE;
       var maxPositionChange = maxSpeed * dt;
@@ -151,12 +153,17 @@ define( function( require ) {
       }
       return max;
     },
+
+    /**
+     * Make the electrons repel each other so they don't bunch up.
+     * @param {number} dt - the elapsed time in seconds
+     */
     equalizeAll: function( dt ) {
       var indices = [];
       for ( var i = 0; i < this.electrons.length; i++ ) {
         indices.push( i );
       }
-      _.shuffle( indices );
+      _.shuffle( indices ); // TODO: This won't be re-seedable
       for ( i = 0; i < this.electrons.length; i++ ) {
         var electron = this.electrons.get( indices[ i ] );
 
@@ -178,12 +185,12 @@ define( function( require ) {
         return;
       }
       var sep = upper.distanceProperty.get() - lower.distanceProperty.get();
-      var myloc = electron.distanceProperty.get();
+      var electronDistance = electron.distanceProperty.get();
       var midpoint = lower.distanceProperty.get() + sep / 2;
 
       var dest = midpoint;
-      var distMoving = Math.abs( dest - myloc );
-      var vec = dest - myloc;
+      var distMoving = Math.abs( dest - electronDistance );
+      var vec = dest - electronDistance;
       var sameDirAsCurrent = vec > 0 && -electron.circuitElement.currentProperty.get() > 0;
       var myscale = 1000.0 / 30.0;//to have same scale as 3.17.00
       var correctionSpeed = .055 / NUMBER_OF_EQUALIZE_STEPS * myscale;
@@ -198,11 +205,11 @@ define( function( require ) {
 
       if ( distMoving > maxDX ) {
         //move in the appropriate direction maxDX
-        if ( dest < myloc ) {
-          dest = myloc - maxDX;
+        if ( dest < electronDistance ) {
+          dest = electronDistance - maxDX;
         }
-        else if ( dest > myloc ) {
-          dest = myloc + maxDX;
+        else if ( dest > electronDistance ) {
+          dest = electronDistance + maxDX;
         }
       }
       if ( dest >= 0 && dest <= electron.circuitElement.electronPathLength ) {
