@@ -211,7 +211,7 @@ define( function( require ) {
     },
     propagate: function( electron, dt ) {
       var x = electron.distanceProperty.get();
-      assert && assert( _.isNumber( x ), 'disance along wire should be a number' );
+      assert && assert( _.isNumber( x ), 'distance along wire should be a number' );
       var current = -electron.circuitElement.currentProperty.get();
 
       if ( current === 0 || Math.abs( current ) < MIN_CURRENT ) {
