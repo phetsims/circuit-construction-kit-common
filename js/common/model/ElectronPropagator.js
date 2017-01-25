@@ -32,7 +32,6 @@ define( function( require ) {
   var NUMBER_OF_EQUALIZE_STEPS = 2;
   var SPEED_SCALE = 1 / 3;
   var TIME_SCALE = 100;
-  var HIGHEST_SO_FAR = null;//for debugging
 
   var getUpperNeighborInBranch = function( circuit, electron, branchElectrons ) {
     var closestUpperNeighbor = null;
@@ -196,10 +195,6 @@ define( function( require ) {
         correctionSpeed = .01 / NUMBER_OF_EQUALIZE_STEPS * speedScale;
       }
       var maxDX = Math.abs( correctionSpeed * dt );
-
-      if ( distMoving > HIGHEST_SO_FAR ) {//For debugging.
-        HIGHEST_SO_FAR = distMoving;
-      }
 
       if ( distMoving > maxDX ) {
         //move in the appropriate direction maxDX
