@@ -17,7 +17,6 @@ define( function( require ) {
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Vertex' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var Util = require( 'DOT/Util' );
-  var Property = require( 'AXON/Property' );
   var NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
