@@ -30,14 +30,18 @@ define( function( require ) {
 
   // Number of times to spread out electrons so they don't get bunched up.
   var NUMBER_OF_EQUALIZE_STEPS = 2;
+
+  // Factor that multiplies the current to attain speed in screen coordinates
   var SPEED_SCALE = 1 / 3;
+
+  // Fudge factor to increase dt to make model compatible.  TODO: eliminate this
   var TIME_SCALE = 100;
 
-  var getUpperNeighborInBranch = function( circuit, electron, branchElectrons ) {
+  var getUpperNeighborInBranch = function( circuit, electron, circuitElementElectrons ) {
     var closestUpperNeighbor = null;
     var closestDistance = Number.POSITIVE_INFINITY;
-    for ( var i = 0; i < branchElectrons.length; i++ ) {
-      var neighborElectron = branchElectrons[ i ];
+    for ( var i = 0; i < circuitElementElectrons.length; i++ ) {
+      var neighborElectron = circuitElementElectrons[ i ];
       if ( neighborElectron !== electron ) {
         var neighborDistance = neighborElectron.distanceProperty.get();
         var electronDistance = electron.distanceProperty.get();
@@ -53,11 +57,11 @@ define( function( require ) {
     return closestUpperNeighbor;
   };
 
-  var getLowerNeighborInBranch = function( circuit, electron, branchElectrons ) {
+  var getLowerNeighborInBranch = function( circuit, electron, circuitElementElectrons ) {
     var closestLowerNeighbor = null;
     var closestDistance = Number.POSITIVE_INFINITY;
-    for ( var i = 0; i < branchElectrons.length; i++ ) {
-      var neighborElectron = branchElectrons[ i ];
+    for ( var i = 0; i < circuitElementElectrons.length; i++ ) {
+      var neighborElectron = circuitElementElectrons[ i ];
       if ( neighborElectron !== electron ) {
         var neighborDistance = neighborElectron.distanceProperty.get();
         var electronDistance = electron.distanceProperty.get();
@@ -175,11 +179,11 @@ define( function( require ) {
     },
     equalizeElectron: function( electron, dt ) {
 
-      var branchElectrons = this.circuit.getElectronsInCircuitElement( electron.circuitElement );
+      var circuitElementElectrons = this.circuit.getElectronsInCircuitElement( electron.circuitElement );
 
       // if it has a lower and upper neighbor, try to get the distance to each to be half of ELECTRON_DX
-      var upper = getUpperNeighborInBranch( this.circuit, electron, branchElectrons );
-      var lower = getLowerNeighborInBranch( this.circuit, electron, branchElectrons );
+      var upper = getUpperNeighborInBranch( this.circuit, electron, circuitElementElectrons );
+      var lower = getLowerNeighborInBranch( this.circuit, electron, circuitElementElectrons );
       if ( upper === null || lower === null ) {
         return;
       }
@@ -227,7 +231,8 @@ define( function( require ) {
         electron.distanceProperty.set( newX );
       }
       else {
-        //need a new branch.
+
+        // need a new CircuitElement
         var overshoot = 0;
         var under = false;
         if ( newX < 0 ) {
@@ -246,12 +251,12 @@ define( function( require ) {
         if ( locationArray.length === 0 ) {
           return;
         }
-        //choose the branch with the furthest away electron
-        var chosenCircuitLocation = this.chooseDestinationBranch( locationArray );
+        //choose the CircuitElement with the furthest away electron
+        var chosenCircuitLocation = this.chooseCircuitElement( locationArray );
         electron.setLocation( chosenCircuitLocation.branch, Math.abs( chosenCircuitLocation.distance ) );
       }
     },
-    chooseDestinationBranch: function( circuitLocations ) {
+    chooseCircuitElement: function( circuitLocations ) {
       var min = Number.POSITIVE_INFINITY;
       var circuitLocationWithLowestDensity = null;
       for ( var i = 0; i < circuitLocations.length; i++ ) {
