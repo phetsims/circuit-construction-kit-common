@@ -61,6 +61,10 @@ define( function( require ) {
         else {
           assert && assert( false, 'no model found' );
         }
+
+        // Hack to fix the solder layering on startup, see https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/36
+        sceneViews[ scene ].circuitConstructionKitModel.reset();
+        sceneViews[ scene ].reset();
       }
 
       // Update layout when the scene changes
