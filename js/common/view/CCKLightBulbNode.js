@@ -17,6 +17,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Util = require( 'DOT/Util' );
   var Matrix3 = require( 'DOT/Matrix3' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
 
   /**
    *
@@ -25,7 +26,7 @@ define( function( require ) {
   function CCKLightBulbNode( circuitConstructionKitScreenView, circuitNode, lightBulb, runningProperty, tandem, options ) {
     var self = this;
     this.lightBulb = lightBulb;
-    var brightnessProperty = new Property( 0.0 );
+    var brightnessProperty = new NumberProperty( 0 );
     var updateBrightness = Property.multilink( [ lightBulb.currentProperty, runningProperty ], function( current, running ) {
       var scaled = Math.abs( current ) / 20;
       var clamped = Util.clamp( scaled, 0, 1 );

@@ -29,7 +29,7 @@ define( function( require ) {
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/LightBulb' );
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Switch' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Resistor' );
-  var Property = require( 'AXON/Property' );
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
 
   /**
    *
@@ -187,7 +187,7 @@ define( function( require ) {
     circuit.electrons.addItemAddedListener( function( electron ) {
       var electronNode = new ElectronNode(
         electron,
-        circuitConstructionKitScreenView.circuitConstructionKitModel.revealingProperty || new Property( true )
+        circuitConstructionKitScreenView.circuitConstructionKitModel.revealingProperty || new BooleanProperty( true )
       );
       electron.disposeEmitter.addListener( function x() {
         var index = self.electronNodes.indexOf( electron );

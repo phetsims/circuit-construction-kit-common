@@ -18,6 +18,7 @@ define( function( require ) {
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var Util = require( 'DOT/Util' );
   var Property = require( 'AXON/Property' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
   var DISTANCE_BETWEEN_VERTICES = 33;
@@ -75,7 +76,7 @@ define( function( require ) {
    * @constructor
    */
   function LightBulb( startVertex, endVertex, resistance, options ) {
-    this.resistanceProperty = new Property( resistance );
+    this.resistanceProperty = new NumberProperty( resistance );
     Property.preventGetSet( this, 'resistance' );
 
     // TODO: copied
@@ -156,7 +157,6 @@ define( function( require ) {
       }
 
       // TODO: Restore this assertion after #186 complete
-      console.log( distanceAlongWire, accumulatedDistance );
       // assert && assert( false, 'hello' );
       return new Vector2();
     }

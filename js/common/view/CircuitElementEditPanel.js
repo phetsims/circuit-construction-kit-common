@@ -18,7 +18,7 @@ define( function( require ) {
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var RangeWithValue = require( 'DOT/RangeWithValue' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
-  var Property = require( 'AXON/Property' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
 
   function CircuitElementEditPanel( title, units, valueProperty, circuit, circuitElement, tandem, options ) {
     options = _.extend( { numberControlEnabled: true }, options );
@@ -33,7 +33,7 @@ define( function( require ) {
 
     // Track whether the changes were from the user interface or from the model (e.g. the resistance of a wire
     // changing when its length changes).
-    var proxy = new Property( valueProperty.value );
+    var proxy = new NumberProperty( valueProperty.value );
     var changing = false;
     var proxyListener = function( value ) {
       valueProperty.value = value;

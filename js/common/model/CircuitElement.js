@@ -13,6 +13,8 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Property = require( 'AXON/Property' );
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
   var Emitter = require( 'AXON/Emitter' );
 
   /**
@@ -46,20 +48,20 @@ define( function( require ) {
     Property.preventGetSet( this, 'endVertex' );
 
     // @public (read-only) - the flowing current, in amps.
-    this.currentProperty = new Property( 0 );
+    this.currentProperty = new NumberProperty( 0 );
     Property.preventGetSet( this, 'current' );
 
     // @public (read-only) - whether the CircuitElement is being dragged across the toolbox
-    this.isOverToolboxProperty = new Property( false );
+    this.isOverToolboxProperty = new BooleanProperty( false );
     Property.preventGetSet( this, 'isOverToolbox' );
 
     // @public (read-only) - true if the CircuitElement can be edited and dragged
-    this.interactiveProperty = new Property( options.interactive );
+    this.interactiveProperty = new BooleanProperty( options.interactive );
     Property.preventGetSet( this, 'interactive' );
 
     // @public - whether the circuit element is inside the true black box, not inside the user-created black box, on
     // the interface or outside of the black box
-    this.insideTrueBlackBoxProperty = new Property( false );
+    this.insideTrueBlackBoxProperty = new BooleanProperty( false );
     Property.preventGetSet( this, 'insideTrueBlackBox' );
 
     // @public - true if the electrons must be layed out again

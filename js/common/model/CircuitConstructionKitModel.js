@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
   var Property = require( 'AXON/Property' );
   var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Circuit' );
   var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Voltmeter' );
@@ -19,7 +20,6 @@ define( function( require ) {
   var TandemEmitter = require( 'TANDEM/axon/TandemEmitter' );
 
   // phet-io modules
-  var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
   var TString = require( 'ifphetio!PHET_IO/types/TString' );
 
   /**
@@ -40,9 +40,8 @@ define( function( require ) {
     this.ammeter = new Ammeter( tandem.createTandem( 'ammeter' ) );
 
     // @public (read-only) {Property.<boolean>} changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
-    this.exploreScreenRunningProperty = new Property( !CircuitConstructionKitQueryParameters.showPlayPauseButton, {
-      tandem: tandem.createTandem( 'exploreScreenRunningProperty' ),
-      phetioValueType: TBoolean
+    this.exploreScreenRunningProperty = new BooleanProperty( !CircuitConstructionKitQueryParameters.showPlayPauseButton, {
+      tandem: tandem.createTandem( 'exploreScreenRunningProperty' )
     } );
 
     // @public (read-only) {Property.<string>} - whether the user is in the 'investigate' or 'build' mode

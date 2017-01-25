@@ -22,7 +22,7 @@ define( function( require ) {
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ResistorNode' );
   var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/WireNode' );
-  var Property = require( 'AXON/Property' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
   var CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CustomLightBulbNode' );
 
@@ -97,7 +97,7 @@ define( function( require ) {
         icon: true
       }
     );
-    var lightBulbNode = new CustomLightBulbNode( new Property( 0 ) );
+    var lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ) );
 
     var countBatteries = function( initialOrientation ) {
       return circuit.circuitElements.filter( function( battery ) {

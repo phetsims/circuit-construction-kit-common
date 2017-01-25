@@ -14,7 +14,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var RunningAverage = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/RunningAverage' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
-  var Property = require( 'AXON/Property' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
 
@@ -91,7 +91,7 @@ define( function( require ) {
     this.scale = 1;
     this.timeScaleRunningAverage = new RunningAverage( 30 );
     this.timeScalingPercentValue = null;
-    this.timeScaleProperty = new Property( 1 ); // between 0 and 1, 1 is full speed (unthrottled)
+    this.timeScaleProperty = new NumberProperty( 1 ); // between 0 and 1, 1 is full speed (unthrottled)
   }
 
   circuitConstructionKitCommon.register( 'ElectronPropagator', ElectronPropagator );

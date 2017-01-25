@@ -15,6 +15,7 @@ define( function( require ) {
   var CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/CircuitElement' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var Property = require( 'AXON/Property' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
 
   /**
    *
@@ -27,12 +28,12 @@ define( function( require ) {
     CircuitElement.call( this, startVertex, endVertex, electronPathLength, options );
 
     // @public (read-only) - the resistance of the Wire in ohms
-    this.resistanceProperty = new Property( CircuitConstructionKitConstants.MINIMUM_RESISTANCE );
+    this.resistanceProperty = new NumberProperty( CircuitConstructionKitConstants.MINIMUM_RESISTANCE );
     Property.preventGetSet( this, 'resistance' );
 
     // @public (read-only) - the resistivity of the Wire in ohm-meters
     // TODO: when the resistivity changes, update the resistance
-    this.resistivityProperty = new Property( resistivity );
+    this.resistivityProperty = new NumberProperty( resistivity );
     Property.preventGetSet( this, 'resistivity' );
 
     /**

@@ -16,7 +16,7 @@ define( function( require ) {
   var Circle = require( 'SCENERY/nodes/Circle' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Image = require( 'SCENERY/nodes/Image' );
-  var Property = require( 'AXON/Property' );
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
 
   // constants
   var RADIUS = 10;
@@ -59,7 +59,7 @@ define( function( require ) {
       children: [ node ],
       pickable: false
     } );
-    var outsideOfBlackBoxProperty = new Property( false );
+    var outsideOfBlackBoxProperty = new BooleanProperty( false );
 
     var positionListener = function( position ) {
       self.center = position;

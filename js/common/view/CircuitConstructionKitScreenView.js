@@ -12,7 +12,7 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/DisplayOptionsPanel' );
-  var Property = require( 'AXON/Property' );
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var CircuitNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitNode' );
@@ -198,7 +198,7 @@ define( function( require ) {
     this.sensorToolbox = new SensorToolbox( voltmeterNode, ammeterNode, circuitConstructionKitModel.exploreScreenRunningProperty, tandem.createTandem( 'sensorToolbox' ) );
 
     // @protected
-    this.displayOptionsPanel = new DisplayOptionsPanel( circuitConstructionKitModel.circuit.showElectronsProperty, new Property( false ), new Property( false ), tandem.createTandem( 'displayOptionsPanel' ), {
+    this.displayOptionsPanel = new DisplayOptionsPanel( circuitConstructionKitModel.circuit.showElectronsProperty, new BooleanProperty( false ), new BooleanProperty( false ), tandem.createTandem( 'displayOptionsPanel' ), {
       showConventionalCurrentCheckBox: false,
       showValuesCheckBox: false
     } );

@@ -14,6 +14,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/FixedLengthCircuitElement' );
   var Property = require( 'AXON/Property' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
   var BATTERY_LENGTH = CircuitConstructionKitConstants.BATTERY_LENGTH;
@@ -33,7 +34,7 @@ define( function( require ) {
     FixedLengthCircuitElement.call( this, startVertex, endVertex, BATTERY_LENGTH, BATTERY_LENGTH );
 
     // @public {Property.<number>} the voltage of the battery
-    this.voltageProperty = new Property( voltage );
+    this.voltageProperty = new NumberProperty( voltage );
     Property.preventGetSet( this, 'voltage' );
 
     // @public (read-only) - track the initial state so the user can only create a certain number of "left" or "right"

@@ -70,17 +70,17 @@ define( function( require ) {
     // TODO: combine addItemAddListener/addItemRemovedListener calls?  Or document why they are better separate?
     this.circuitElements.addItemAddedListener( function( circuitElement ) {
       circuitElement.resistanceProperty && circuitElement.resistanceProperty.lazyLink( solve );
-      circuitElement.voltageProperty && circuitElement.voltageProperty.lazyLink( solve )
+      circuitElement.voltageProperty && circuitElement.voltageProperty.lazyLink( solve );
     } );
     this.circuitElements.addItemRemovedListener( function( circuitElement ) {
       circuitElement.resistanceProperty && circuitElement.resistanceProperty.unlink( solve );
-      circuitElement.voltageProperty && circuitElement.voltageProperty.unlink( solve )
+      circuitElement.voltageProperty && circuitElement.voltageProperty.unlink( solve );
     } );
 
     // @public - whether any circuit element is over the toolbox.  This shows the toolbox highlight when something can
     // be dropped in.
     // TODO: This code doesn't seem to be doing anything at the moment.  Is it disabled in the view?
-    this.isCircuitElementOverToolboxProperty = new Property( false );
+    this.isCircuitElementOverToolboxProperty = new BooleanProperty( false );
     var detectOverToolbox = function() {
       var circuitElements = self.circuitElements.getArray();
       for ( var i = 0; i < circuitElements.length; i++ ) {

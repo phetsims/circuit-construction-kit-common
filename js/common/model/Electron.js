@@ -11,6 +11,8 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Property = require( 'AXON/Property' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
   var Emitter = require( 'AXON/Emitter' );
   var Vector2 = require( 'DOT/Vector2' );
 
@@ -36,11 +38,11 @@ define( function( require ) {
     this.deleted = false;
 
     // @public - the distance the electron has traveled in its CircuitElement
-    this.distanceProperty = new Property( distance );
+    this.distanceProperty = new NumberProperty( distance );
 
     // @public (read-only) - To improve performance, disable updating while the position of the electron is changed many
     // times during the update step.  TODO: use temporary values for this instead
-    this.updatingPositionProperty = new Property( true );
+    this.updatingPositionProperty = new BooleanProperty( true );
 
     // @public the 2d position of the electron
     this.positionProperty = new Property( new Vector2() );

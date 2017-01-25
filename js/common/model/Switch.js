@@ -16,6 +16,8 @@ define( function( require ) {
   var CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/CircuitElement' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var Property = require( 'AXON/Property' );
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
   var OPEN_RESISTANCE = 1E11;
@@ -30,9 +32,9 @@ define( function( require ) {
     var electronPathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
     var self = this;
     CircuitElement.call( this, startVertex, endVertex, electronPathLength, options );
-    this.resistanceProperty = new Property( CircuitConstructionKitConstants.MINIMUM_RESISTANCE );
-    this.resistivityProperty = new Property( resistivity );
-    this.closedProperty = new Property( false );
+    this.resistanceProperty = new NumberProperty( CircuitConstructionKitConstants.MINIMUM_RESISTANCE );
+    this.resistivityProperty = new NumberProperty( resistivity );
+    this.closedProperty = new BooleanProperty( false );
     Property.preventGetSet( this, 'resistance' );
     Property.preventGetSet( this, 'resistivity' );
     Property.preventGetSet( this, 'closed' );

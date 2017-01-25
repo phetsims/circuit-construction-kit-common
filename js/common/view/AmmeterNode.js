@@ -24,7 +24,7 @@ define( function( require ) {
   var ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ProbeWireNode' );
   var Vector2 = require( 'DOT/Vector2' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
-  var Property = require( 'AXON/Property' );
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
 
   // images
   var ammeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeter_body.png' );
@@ -48,7 +48,7 @@ define( function( require ) {
     options = _.extend( {
       icon: false,
       visibleBoundsProperty: null,
-      runningProperty: new Property( true )
+      runningProperty: new BooleanProperty( true )
     }, options );
     var s = 0.5;
     this.ammeter = ammeter;

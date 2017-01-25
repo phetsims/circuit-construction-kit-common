@@ -27,6 +27,7 @@ define( function( require ) {
   var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/WireNode' );
   var CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CustomLightBulbNode' );
   var Property = require( 'AXON/Property' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
 
   // images
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
@@ -57,7 +58,7 @@ define( function( require ) {
     resistorNode.accessibleContent = null;
 
     var battery = new Image( batteryImage );
-    var lightBulbNode = new CustomLightBulbNode( new Property( 0 ) );
+    var lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ) );
     lightBulbNode.accessibleContent = null;
 
     var elementWidth = 50;

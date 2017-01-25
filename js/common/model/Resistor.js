@@ -14,6 +14,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/FixedLengthCircuitElement' );
   var Property = require( 'AXON/Property' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
   var RESISTOR_LENGTH = CircuitConstructionKitConstants.RESISTOR_LENGTH;
@@ -28,7 +29,7 @@ define( function( require ) {
     FixedLengthCircuitElement.call( this, startVertex, endVertex, RESISTOR_LENGTH, RESISTOR_LENGTH );
 
     // @public (read-only) {Property.<number>} the resistance in ohms
-    this.resistanceProperty = new Property( resistance );
+    this.resistanceProperty = new NumberProperty( resistance );
     Property.preventGetSet( this, 'resistance' );
   }
 

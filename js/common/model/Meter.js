@@ -12,11 +12,11 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Property = require( 'AXON/Property' );
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
   var Vector2 = require( 'DOT/Vector2' );
   var Emitter = require( 'AXON/Emitter' );
 
   // phet-io modules
-  var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
   var TVector2 = require( 'ifphetio!PHET_IO/types/dot/TVector2' );
 
   /**
@@ -26,9 +26,8 @@ define( function( require ) {
   function Meter( tandem ) {
 
     // @public (read-only) {Property.<boolean>} - indicates whether the meter is in the play area
-    this.visibleProperty = new Property( false, {
-      tandem: tandem.createTandem( 'visibleProperty' ),
-      phetioValueType: TBoolean
+    this.visibleProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'visibleProperty' )
     } );
 
     // @public (read-only) {Property.<Vector2>} - the location of the body of the meter
@@ -39,9 +38,8 @@ define( function( require ) {
 
     // @public (read-only) {Property.<boolean>} When the meter is dragged from the toolbox, all pieces drag together as
     // a single unit.
-    this.draggingProbesWithBodyProperty = new Property( true, {
-      tandem: tandem.createTandem( 'draggingProbesWithBodyProperty' ),
-      phetioValueType: TBoolean
+    this.draggingProbesWithBodyProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'draggingProbesWithBodyProperty' )
     } );
 
     // @public (read-only) Fires an event when the meter is dropped
