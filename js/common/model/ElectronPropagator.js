@@ -2,7 +2,7 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- * This code governs the movement of electrons, making sure they are distributed equally among the different branches.
+ * This code governs the movement of electrons, making sure they are distributed equally among the different CircuitElements.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -37,7 +37,7 @@ define( function( require ) {
   // Fudge factor to increase dt to make model compatible.  TODO: eliminate this
   var TIME_SCALE = 100;
 
-  var getUpperNeighborInBranch = function( circuit, electron, circuitElementElectrons ) {
+  var getUpperNeighborInCircuitElement = function( circuit, electron, circuitElementElectrons ) {
     var closestUpperNeighbor = null;
     var closestDistance = Number.POSITIVE_INFINITY;
     for ( var i = 0; i < circuitElementElectrons.length; i++ ) {
@@ -57,7 +57,7 @@ define( function( require ) {
     return closestUpperNeighbor;
   };
 
-  var getLowerNeighborInBranch = function( circuit, electron, circuitElementElectrons ) {
+  var getLowerNeighborInCircuitElement = function( circuit, electron, circuitElementElectrons ) {
     var closestLowerNeighbor = null;
     var closestDistance = Number.POSITIVE_INFINITY;
     for ( var i = 0; i < circuitElementElectrons.length; i++ ) {
@@ -77,15 +77,15 @@ define( function( require ) {
     return closestLowerNeighbor;
   };
 
-  var createCircuitLocation = function( branch, distance ) {
+  var createCircuitLocation = function( circuitElement, distance ) {
     assert && assert( _.isNumber( distance ), 'distance should be a number' );
-    assert && assert( branch.containsScalarLocation( distance ), 'branch should contain distance' );
+    assert && assert( circuitElement.containsScalarLocation( distance ), 'circuitElement should contain distance' );
     return {
-      branch: branch,
+      circuitElement: circuitElement,
       distance: distance,
       getDensity: function( circuit ) {
-        var particles = circuit.getElectronsInCircuitElement( branch );
-        return particles.length / branch.electronPathLength;
+        var particles = circuit.getElectronsInCircuitElement( circuitElement );
+        return particles.length / circuitElement.electronPathLength;
       }
     };
   };
@@ -182,8 +182,8 @@ define( function( require ) {
       var circuitElementElectrons = this.circuit.getElectronsInCircuitElement( electron.circuitElement );
 
       // if it has a lower and upper neighbor, try to get the distance to each to be half of ELECTRON_DX
-      var upper = getUpperNeighborInBranch( this.circuit, electron, circuitElementElectrons );
-      var lower = getLowerNeighborInBranch( this.circuit, electron, circuitElementElectrons );
+      var upper = getUpperNeighborInCircuitElement( this.circuit, electron, circuitElementElectrons );
+      var lower = getLowerNeighborInCircuitElement( this.circuit, electron, circuitElementElectrons );
       if ( upper === null || lower === null ) {
         return;
       }
@@ -253,7 +253,7 @@ define( function( require ) {
         }
         //choose the CircuitElement with the furthest away electron
         var chosenCircuitLocation = this.chooseCircuitElement( locationArray );
-        electron.setLocation( chosenCircuitLocation.branch, Math.abs( chosenCircuitLocation.distance ) );
+        electron.setLocation( chosenCircuitLocation.circuitElement, Math.abs( chosenCircuitLocation.distance ) );
       }
     },
     chooseCircuitElement: function( circuitLocations ) {
@@ -269,20 +269,20 @@ define( function( require ) {
       return circuitLocationWithLowestDensity;
     },
     getLocations: function( electron, dt, overshoot, under ) {
-      var branch = electron.circuitElement;
+      var circuitElement = electron.circuitElement;
       var vertex = null;
       if ( under ) {
-        vertex = branch.startVertexProperty.get();
+        vertex = circuitElement.startVertexProperty.get();
       }
       else {
-        vertex = branch.endVertexProperty.get();
+        vertex = circuitElement.endVertexProperty.get();
       }
-      var adjacentBranches = this.circuit.getNeighborCircuitElements( vertex );
+      var adjacentCircuitElements = this.circuit.getNeighborCircuitElements( vertex );
       var all = [];
 
       //keep only those with outgoing current.
-      for ( var i = 0; i < adjacentBranches.length; i++ ) {
-        var neighbor = adjacentBranches[ i ];
+      for ( var i = 0; i < adjacentCircuitElements.length; i++ ) {
+        var neighbor = adjacentCircuitElements[ i ];
         var current = -neighbor.currentProperty.get();
         if ( current > FIRE_CURRENT ) {
           current = FIRE_CURRENT;
