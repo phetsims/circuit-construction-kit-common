@@ -184,18 +184,16 @@ define( function( require ) {
       if ( upper === null || lower === null ) {
         return;
       }
-      var sep = upper.distanceProperty.get() - lower.distanceProperty.get();
+      var separation = upper.distanceProperty.get() - lower.distanceProperty.get();
       var electronDistance = electron.distanceProperty.get();
-      var midpoint = lower.distanceProperty.get() + sep / 2;
 
-      var dest = midpoint;
+      var dest = lower.distanceProperty.get() + separation / 2;
       var distMoving = Math.abs( dest - electronDistance );
-      var vec = dest - electronDistance;
-      var sameDirAsCurrent = vec > 0 && -electron.circuitElement.currentProperty.get() > 0;
-      var myscale = 1000.0 / 30.0;//to have same scale as 3.17.00
-      var correctionSpeed = .055 / NUMBER_OF_EQUALIZE_STEPS * myscale;
+      var sameDirAsCurrent = (dest - electronDistance) > 0 && -electron.circuitElement.currentProperty.get() > 0;
+      var speedScale = 1000.0 / 30.0;//to have same scale as 3.17.00
+      var correctionSpeed = .055 / NUMBER_OF_EQUALIZE_STEPS * speedScale;
       if ( !sameDirAsCurrent ) {
-        correctionSpeed = .01 / NUMBER_OF_EQUALIZE_STEPS * myscale;
+        correctionSpeed = .01 / NUMBER_OF_EQUALIZE_STEPS * speedScale;
       }
       var maxDX = Math.abs( correctionSpeed * dt );
 
@@ -272,15 +270,16 @@ define( function( require ) {
     },
     getLocations: function( electron, dt, overshoot, under ) {
       var branch = electron.circuitElement;
-      var jroot = null;
+      var vertex = null;
       if ( under ) {
-        jroot = branch.startVertexProperty.get();
+        vertex = branch.startVertexProperty.get();
       }
       else {
-        jroot = branch.endVertexProperty.get();
+        vertex = branch.endVertexProperty.get();
       }
-      var adjacentBranches = this.circuit.getNeighborCircuitElements( jroot );
+      var adjacentBranches = this.circuit.getNeighborCircuitElements( vertex );
       var all = [];
+
       //keep only those with outgoing current.
       for ( var i = 0; i < adjacentBranches.length; i++ ) {
         var neighbor = adjacentBranches[ i ];
@@ -292,7 +291,7 @@ define( function( require ) {
           current = -FIRE_CURRENT;
         }
         var distAlongNew = null;
-        if ( current > 0 && neighbor.startVertexProperty.get() === jroot ) {//start near the beginning.
+        if ( current > 0 && neighbor.startVertexProperty.get() === vertex ) {//start near the beginning.
           distAlongNew = overshoot;
           if ( distAlongNew > neighbor.electronPathLength ) {
             distAlongNew = neighbor.electronPathLength;
@@ -302,7 +301,7 @@ define( function( require ) {
           }
           all.push( createCircuitLocation( neighbor, distAlongNew ) );
         }
-        else if ( current < 0 && neighbor.endVertexProperty.get() === jroot ) {
+        else if ( current < 0 && neighbor.endVertexProperty.get() === vertex ) {
           distAlongNew = neighbor.electronPathLength - overshoot;
           if ( distAlongNew > neighbor.electronPathLength ) {
             distAlongNew = neighbor.electronPathLength;
