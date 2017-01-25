@@ -47,7 +47,7 @@ define( function( require ) {
     // CircuitElements above--this ObservableArray is a a central point for observing creation/deletion of vertices for
     // showing VertexNodes
     // @public (read-only)
-    this.vertices = new ObservableArray(); // TODO: can/should we eliminate this redundancy?
+    this.vertices = new ObservableArray(); // TODO: can/should we eliminate this redundancy?  For instance, with a getter?
 
     // @public (read-only) - the electrons in the circuit
     this.electrons = new ObservableArray();
@@ -104,16 +104,13 @@ define( function( require ) {
     this.circuitElements.addItemAddedListener( function( circuitElement ) {
 
       // Vertices may already exist for a Circuit when loading
-      if ( self.vertices.indexOf( circuitElement.startVertexProperty.get() ) < 0 ) {
+      if ( !self.vertices.contains( circuitElement.startVertexProperty.get() ) ) {
         self.vertices.add( circuitElement.startVertexProperty.get() );
       }
 
-      if ( self.vertices.indexOf( circuitElement.endVertexProperty.get() ) < 0 ) {
+      if ( !self.vertices.contains( circuitElement.endVertexProperty.get() ) ) {
         self.vertices.add( circuitElement.endVertexProperty.get() );
       }
-
-      assert && assert( self.vertices.indexOf( circuitElement.startVertexProperty.get() ) >= 0, 'start vertex should appear in the list' );
-      assert && assert( self.vertices.indexOf( circuitElement.endVertexProperty.get() ) >= 0, 'end vertex should appear in the list' );
     } );
 
     // When any vertex moves, relayout all electrons within the fixed-length connected component, see #100
