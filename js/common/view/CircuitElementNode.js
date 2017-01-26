@@ -51,12 +51,27 @@ define( function( require ) {
 
     this.updateOpacityOnInteractiveChange();
 
+    /**
+     * When the object is created and dragged from the toolbox, the start drag method is forwarded through to start the
+     * dragging.
+     * @param event - scenery event
+     */
+    var startDragListener = function( event ) {
+      self.inputListener.startDrag( event );
+    };
+
     this.disposeCircuitElementNode = function() {
       self.disposeActions.forEach( function( element ) {
         element();
       } );
       self.disposeActions.length = 0;
     };
+
+    circuitElement.startDragEmitter.addListener( startDragListener );
+
+    this.disposeActions.push( function() {
+      circuitElement.startDragEmitter.removeListener( startDragListener );
+    } );
   }
 
   circuitConstructionKitCommon.register( 'CircuitElementNode', CircuitElementNode );

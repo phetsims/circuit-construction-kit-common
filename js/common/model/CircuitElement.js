@@ -74,6 +74,9 @@ define( function( require ) {
     // @public (read-only) - indicate when either Vertex has moved
     this.vertexMovedEmitter = new Emitter();
 
+    // @public (read-only) - indicate when the circuit element has started being dragged, when it is created in the toolbox
+    this.startDragEmitter = new Emitter();
+
     // Signify that a Vertex moved
     var vertexMoved = function() {
       self.vertexMovedEmitter.emit();

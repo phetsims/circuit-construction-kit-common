@@ -58,11 +58,9 @@ define( function( require ) {
     /**
      *
      * @param {Function} createElement - given a view location, create a circuit element
-     * @param {Array.<Node>} viewList - list of nodes where the newly created circuit element node will be found
-     * @param {Function} getCircuitElementFromNode - function that gets a model element from a node
-     * @returns {{down: down}}
+     * @returns {Object} the scenery input listener
      */
-    var createToolIconInputListener = function( createElement, viewList, getCircuitElementFromNode ) {
+    var createToolIconInputListener = function( createElement ) {
       return {
         down: function( event ) {
 
@@ -73,16 +71,15 @@ define( function( require ) {
 
           // initial position of the pointer in the screenView coordinates
           var viewPosition = self.globalToParentPoint( event.pointer.point );
+
+          // Create the new CircuitElement at the correct location
           var circuitElement = createElement( viewPosition );
+
+          // Add the CircuitElement to the Circuit
           circuit.circuitElements.add( circuitElement );
 
-          // Look up the view node for the circuit element, and forward the drag event to it.
-          var matchedNodes = viewList.filter( function( circuitElementNode ) {
-            return getCircuitElementFromNode( circuitElementNode ) === circuitElement;
-          } );
-          assert && assert( matchedNodes.length === 1, 'should have found the one and only node for this element' );
-          var circuitElementNode = matchedNodes[ 0 ];
-          circuitElementNode.inputListener.startDrag( event );
+          // Send the start drag event through so the new element will begin dragging.
+          circuitElement.startDragEmitter.emit1( event );
         }
       };
     };
@@ -121,10 +118,7 @@ define( function( require ) {
         var startVertex = createVertex( position.x - BATTERY_LENGTH / 2, position.y );
         var endVertex = createVertex( position.x + BATTERY_LENGTH / 2, position.y );
         return new Battery( endVertex, startVertex, 9.0, { initialOrientation: 'left' } );
-      },
-      circuitNode.batteryNodes,
-      function( batteryNode ) { return batteryNode.battery; }
-    ) );
+      } ) );
     circuit.circuitElements.lengthProperty.link( function() {
       leftBatteryIcon.visible = countBatteries( 'left' ) < options.numberOfRightBatteries;
     } );
@@ -137,9 +131,7 @@ define( function( require ) {
         var startVertex = createVertex( position.x - BATTERY_LENGTH / 2, position.y );
         var endVertex = createVertex( position.x + BATTERY_LENGTH / 2, position.y );
         return new Battery( startVertex, endVertex, 9.0, { initialOrientation: 'right' } );
-      },
-      circuitNode.batteryNodes,
-      function( batteryNode ) { return batteryNode.battery; }
+      }
     ) );
     circuit.circuitElements.lengthProperty.link( function() {
       rightBatteryIcon.visible = countBatteries( 'right' ) < options.numberOfRightBatteries;
@@ -149,9 +141,7 @@ define( function( require ) {
       .addInputListener( createToolIconInputListener(
         function( position ) {
           return new Wire( createVertex( position.x - 50, position.y ), createVertex( position.x + 50, position.y ), CircuitConstructionKitConstants.DEFAULT_RESISTIVITY );
-        },
-        circuitNode.wireNodes,
-        function( wireNode ) { return wireNode.wire; }
+        }
       ) );
     var updateWireIcon = function() {
       var numberOfCreatedWires = circuit.circuitElements.filter( function( circuitElement ) {
@@ -170,9 +160,7 @@ define( function( require ) {
       .addInputListener( createToolIconInputListener(
         function( position ) {
           return LightBulb.createAtPosition( position, circuit.vertexGroupTandem );
-        },
-        circuitNode.lightBulbNodes,
-        function( lightBulbNode ) { return lightBulbNode.lightBulb; }
+        }
       ) );
     var updateLightBulbIcon = function() {
       var numberOfCreatedLightBulbs = circuit.circuitElements.filter( function( lightBulb ) {
@@ -194,9 +182,7 @@ define( function( require ) {
           var startVertex = createVertex( position.x - resistorLength / 2, position.y );
           var endVertex = createVertex( position.x + resistorLength / 2, position.y );
           return new Resistor( startVertex, endVertex, CircuitConstructionKitConstants.DEFAULT_RESISTANCE );
-        },
-        circuitNode.resistorNodes,
-        function( resistorNode ) { return resistorNode.resistor; }
+        }
       ) );
     var updateResistorIcon = function() {
       var numberOfCreatedResistors = circuit.circuitElements.filter( function( resistor ) {
@@ -212,9 +198,7 @@ define( function( require ) {
       .addInputListener( createToolIconInputListener(
         function( position ) {
           return new Switch( createVertex( position.x - 50, position.y ), createVertex( position.x + 50, position.y ), CircuitConstructionKitConstants.DEFAULT_RESISTIVITY );
-        },
-        circuitNode.switchNodes,
-        function( switchNode ) { return switchNode.switchModel; }
+        }
       ) );
     var updateSwitchIcon = function() {
       var numberOfCreatedSwitches = circuit.circuitElements.filter(
