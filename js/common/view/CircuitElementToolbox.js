@@ -58,7 +58,6 @@ define( function( require ) {
     /**
      *
      * @param {Function} createElement - given a view location, create a circuit element
-     * @param {ObservableArray.<Object>} modelList - list of circuit elements the new element should be added to
      * @param {Array.<Node>} viewList - list of nodes where the newly created circuit element node will be found
      * @param {Function} getCircuitElementFromNode - function that gets a model element from a node
      * @returns {{down: down}}
