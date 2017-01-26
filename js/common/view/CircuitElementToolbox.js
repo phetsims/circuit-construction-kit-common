@@ -75,6 +75,8 @@ define( function( require ) {
           var viewPosition = self.globalToParentPoint( event.pointer.point );
           var circuitElement = createElement( viewPosition );
           circuit.circuitElements.add( circuitElement );
+
+          // Look up the view node for the circuit element, and forward the drag event to it.
           var matchedNodes = viewList.filter( function( circuitElementNode ) {
             return getCircuitElementFromNode( circuitElementNode ) === circuitElement;
           } );
