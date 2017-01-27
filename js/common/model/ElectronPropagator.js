@@ -96,7 +96,7 @@ define( function( require ) {
     this.scale = 1;
     this.timeScaleRunningAverage = new RunningAverage( 30 );
     this.timeScalingPercentValue = null;
-    this.timeScaleProperty = new NumberProperty( 1 ); // between 0 and 1, 1 is full speed (unthrottled)
+    this.timeScaleProperty = new NumberProperty( 1, { range: { min: 0, max: 1 } } ); // 1 is full speed, 0.5 is running at half speed, etc.
   }
 
   circuitConstructionKitCommon.register( 'ElectronPropagator', ElectronPropagator );

@@ -1,6 +1,7 @@
-// Copyright 2016, University of Colorado Boulder
+// Copyright 2016-2017, University of Colorado Boulder
 
 /**
+ * This shows a readout that indicates the speed of the simulation is reduced (to prevent a strobe effect).
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -40,5 +41,5 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'ElectronSpeedThrottlingReadoutNode', ElectronSpeedThrottlingReadoutNode );
 
-  return inherit( Node, ElectronSpeedThrottlingReadoutNode, {} );
+  return inherit( Node, ElectronSpeedThrottlingReadoutNode );
 } );
