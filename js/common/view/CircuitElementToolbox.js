@@ -35,12 +35,11 @@ define( function( require ) {
 
   /**
    * @param {Circuit} circuit
-   * @param {CircuitNode} circuitNode
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function CircuitElementToolbox( circuit, circuitNode, tandem, options ) {
+  function CircuitElementToolbox( circuit, tandem, options ) {
 
     options = _.extend( {
       orientation: 'vertical',
