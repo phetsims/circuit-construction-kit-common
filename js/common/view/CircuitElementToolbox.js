@@ -54,40 +54,6 @@ define( function( require ) {
 
     var self = this;
 
-    // From: https://github.com/phetsims/scenery-phet/issues/195#issuecomment-186300071
-    // @jonathanolson and I looked into the way Charges and Fields just calls startDrag(event) on the play area drag
-    // listener (which adds a listener to the pointer, in the usual SimpleDragHandler way), and it seems like a good
-    // pattern. I will try this pattern for Circuit Construction Kit, when I am working on the toolbox listeners.
-
-    /**
-     *
-     * @param {Function} createElement - given a view location, create a circuit element
-     * @returns {Object} the scenery input listener
-     */
-    var createToolIconInputListener = function( createElement ) {
-      return {
-        down: function( event ) {
-
-          // Ignore non-left-mouse-button, see #64
-          if ( event.pointer.isMouse && event.domEvent.button !== 0 ) {
-            return;
-          }
-
-          // initial position of the pointer in the screenView coordinates
-          var viewPosition = self.globalToParentPoint( event.pointer.point );
-
-          // Create the new CircuitElement at the correct location
-          var circuitElement = createElement( viewPosition );
-
-          // Add the CircuitElement to the Circuit
-          circuit.circuitElements.add( circuitElement );
-
-          // Send the start drag event through so the new element will begin dragging.
-          circuitElement.startDragEmitter.emit1( event );
-        }
-      };
-    };
-
     var exampleWire = new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 );
     var exampleResistor = new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ), CircuitConstructionKitConstants.DEFAULT_RESISTANCE );
 
@@ -96,23 +62,6 @@ define( function( require ) {
       }
     );
     var lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ) );
-
-    var countLightBulbs = function() {
-      return circuit.circuitElements.filter( function( lightBulb ) {
-        return lightBulb instanceof LightBulb && !lightBulb.insideTrueBlackBoxProperty.get();
-      } ).length;
-    };
-
-    var countSwitches = function() {
-      return circuit.circuitElements.filter( function( s ) {
-        return !s.insideTrueBlackBoxProperty.get() && s instanceof Switch;
-      } ).length;
-    };
-    var countResistors = function() {
-      return circuit.circuitElements.filter( function( resistor ) {
-        return resistor instanceof Resistor && !resistor.insideTrueBlackBoxProperty.get();
-      } ).length;
-    };
 
     var createVertex = function( x, y ) {
       return new Vertex( x, y, {
@@ -162,36 +111,45 @@ define( function( require ) {
       }
     );
 
-    var lightBulbIcon = lightBulbNode.mutate( {
-      pickable: true,
-      cursor: 'pointer',
-      scale: TOOLBOX_ICON_SIZE / Math.max( lightBulbNode.width, lightBulbNode.height ) // constrained by being too tall, not too wide
-    } ).addInputListener( createToolIconInputListener(
-      function( position ) {
+    var lightBulbIcon = new CircuitElementToolNode( lightBulbNode.mutate( {
+        pickable: true,
+        cursor: 'pointer',
+        scale: TOOLBOX_ICON_SIZE / Math.max( lightBulbNode.width, lightBulbNode.height ) // constrained by being too tall, not too wide
+      } ), circuit, this, options.numberOfLightBulbs, function() {
+        return circuit.circuitElements.filter( function( lightBulb ) {
+          return lightBulb instanceof LightBulb && !lightBulb.insideTrueBlackBoxProperty.get();
+        } ).length;
+      }, function( position ) {
         return LightBulb.createAtPosition( position, circuit.vertexGroupTandem );
       }
-    ) );
+    );
 
-    var resistorIcon = resistorNode.mutate( {
-      pickable: true,
-      cursor: 'pointer',
-      scale: TOOLBOX_ICON_SIZE / Math.max( resistorNode.width, resistorNode.height )
-    } ).addInputListener( createToolIconInputListener(
-      function( position ) {
+    var resistorIcon = new CircuitElementToolNode( resistorNode.mutate( {
+        pickable: true,
+        cursor: 'pointer',
+        scale: TOOLBOX_ICON_SIZE / Math.max( resistorNode.width, resistorNode.height )
+      } ), circuit, this, options.numberOfResistors, function() {
+        return circuit.circuitElements.filter( function( resistor ) {
+          return resistor instanceof Resistor && !resistor.insideTrueBlackBoxProperty.get();
+        } ).length;
+      }, function( position ) {
         var resistorLength = CircuitConstructionKitConstants.RESISTOR_LENGTH;
         var startVertex = createVertex( position.x - resistorLength / 2, position.y );
         var endVertex = createVertex( position.x + resistorLength / 2, position.y );
         return new Resistor( startVertex, endVertex, CircuitConstructionKitConstants.DEFAULT_RESISTANCE );
       }
-    ) );
+    );
 
     var switchWireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, tandem.createTandem( 'switchIcon' ) );
-    var switchIcon = switchWireNode.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( switchWireNode.width, switchWireNode.height ) } )
-      .addInputListener( createToolIconInputListener(
-        function( position ) {
-          return new Switch( createVertex( position.x - 50, position.y ), createVertex( position.x + 50, position.y ), CircuitConstructionKitConstants.DEFAULT_RESISTIVITY );
-        }
-      ) );
+    var switchIcon = new CircuitElementToolNode( switchWireNode.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( switchWireNode.width, switchWireNode.height ) } ),
+      circuit, this, options.numberOfSwitches, function() {
+        return circuit.circuitElements.filter( function( s ) {
+          return !s.insideTrueBlackBoxProperty.get() && s instanceof Switch;
+        } ).length;
+      }, function( position ) {
+        return new Switch( createVertex( position.x - 50, position.y ), createVertex( position.x + 50, position.y ), CircuitConstructionKitConstants.DEFAULT_RESISTIVITY );
+      }
+    );
 
     var children = [];
     options.numberOfLeftBatteries && children.push( leftBatteryIcon );
@@ -214,12 +172,6 @@ define( function( require ) {
 
     circuit.isCircuitElementOverToolboxProperty.link( function( isCircuitElementOverToolbox ) {
       self.stroke = isCircuitElementOverToolbox ? 'white' : 'black';
-    } );
-
-    circuit.circuitElements.lengthProperty.link( function() {
-      lightBulbIcon.visible = countLightBulbs() < options.numberOfLightBulbs;
-      switchIcon.visible = countSwitches() < options.numberOfSwitches;
-      resistorIcon.visible = countResistors() < options.numberOfResistors;
     } );
   }
 

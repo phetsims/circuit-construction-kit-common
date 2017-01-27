@@ -38,6 +38,10 @@ define( function( require ) {
           circuit.circuitElements.add( circuitElement );
 
           // Send the start drag event through so the new element will begin dragging.
+          // From: https://github.com/phetsims/scenery-phet/issues/195#issuecomment-186300071
+          // @jonathanolson and I looked into the way Charges and Fields just calls startDrag(event) on the play area drag
+          // listener (which adds a listener to the pointer, in the usual SimpleDragHandler way), and it seems like a good
+          // pattern.
           circuitElement.startDragEmitter.emit1( event );
         }
       }
