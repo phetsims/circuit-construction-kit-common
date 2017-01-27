@@ -176,7 +176,9 @@ define( function( require ) {
 
     // Pass the view into circuit node so that circuit elements can be dropped back into the toolbox
     this.circuitNode = new CircuitNode( circuitConstructionKitModel.circuit, this, tandem.createTandem( 'circuitNode' ) );
-    this.circuitElementToolbox = new CircuitElementToolbox( circuitConstructionKitModel.circuit,
+    this.circuitElementToolbox = new CircuitElementToolbox(
+      circuitConstructionKitModel.circuit,
+      circuitConstructionKitModel.showLabelsProperty,
       tandem.createTandem( 'circuitElementToolbox' ), {
         orientation: options.toolboxOrientation,
         numberOfRightBatteries: options.numberOfRightBatteriesInToolbox,
@@ -198,10 +200,13 @@ define( function( require ) {
     this.sensorToolbox = new SensorToolbox( voltmeterNode, ammeterNode, circuitConstructionKitModel.exploreScreenRunningProperty, tandem.createTandem( 'sensorToolbox' ) );
 
     // @protected
-    this.displayOptionsPanel = new DisplayOptionsPanel( circuitConstructionKitModel.circuit.showElectronsProperty, new BooleanProperty( false ), new BooleanProperty( false ), tandem.createTandem( 'displayOptionsPanel' ), {
-      showConventionalCurrentCheckBox: false,
-      showValuesCheckBox: false
-    } );
+    this.displayOptionsPanel = new DisplayOptionsPanel( circuitConstructionKitModel.circuit.showElectronsProperty,
+      new BooleanProperty( false ), new BooleanProperty( false ),
+      circuitConstructionKitModel.showLabelsProperty,
+      tandem.createTandem( 'displayOptionsPanel' ), {
+        showConventionalCurrentCheckBox: false,
+        showValuesCheckBox: false
+      } );
     this.addChild( this.displayOptionsPanel );
     this.displayOptionsPanel.moveToBack(); // Move behind elements added in the super, such as the sensors and circuit
     this.moveBackgroundToBack();

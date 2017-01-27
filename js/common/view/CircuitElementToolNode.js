@@ -17,9 +17,10 @@ define( function( require ) {
   /**
    * @constructor
    */
-  function CircuitElementToolNode( labelText, iconNode, circuit, circuitElementToolbox, maxNumber, count, createElement ) {
+  function CircuitElementToolNode( labelText, showLabelsProperty, iconNode, circuit, circuitElementToolbox, maxNumber, count, createElement ) {
     var self = this;
     var labelNode = new Text( labelText, { fontSize: 12 } ); // TODO constrain width
+    showLabelsProperty.link( function( showLabels ) {labelNode.visible = showLabels;} );
     VBox.call( this, { spacing: 6, pickable: true, cursor: 'pointer', children: [ iconNode, labelNode ] } );
 
     this.addInputListener( {
@@ -52,6 +53,8 @@ define( function( require ) {
     circuit.circuitElements.lengthProperty.link( function() {
       self.visible = count() < maxNumber;
     } );
+
+    // TODO: expand touch area around text
   }
 
   circuitConstructionKitCommon.register( 'CircuitElementToolNode', CircuitElementToolNode );

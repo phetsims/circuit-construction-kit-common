@@ -44,6 +44,11 @@ define( function( require ) {
       tandem: tandem.createTandem( 'exploreScreenRunningProperty' )
     } );
 
+    // @public (read-only) {Property.<boolean>} true if the labels in the toolbox should be shown
+    this.showLabelsProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'showLabelsProperty' )
+    } );
+
     // @public (read-only) {Property.<string>} - whether the user is in the 'investigate' or 'build' mode
     this.modeProperty = new Property( 'investigate', {
       validValues: [ 'investigate', 'build' ],

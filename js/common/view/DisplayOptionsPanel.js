@@ -20,11 +20,12 @@ define( function( require ) {
    * @param {Property} showElectronsProperty - true if electrons should be shown
    * @param {Property} conventionalCurrentProperty - true to show the conventional current direction
    * @param {Property} showValuesProperty - true if values should be shown
+   * @param {Property} showLabelsProperty - true if toolbox labels should be shown
    * @param {Tandem} tandem
    * @param {Object} options
    * @constructor
    */
-  function DisplayOptionsPanel( showElectronsProperty, conventionalCurrentProperty, showValuesProperty, tandem, options ) {
+  function DisplayOptionsPanel( showElectronsProperty, conventionalCurrentProperty, showValuesProperty, showLabelsProperty, tandem, options ) {
     options = _.extend( {
       showElectronsCheckBox: true,
       showConventionalCurrentCheckBox: true,
@@ -47,6 +48,7 @@ define( function( require ) {
         tandemName: tandemName
       };
     };
+    array.push( createItem( 'Labels', showLabelsProperty, 'showLabelsCheckBox' ) );
     options.showElectronsCheckBox && array.push( createItem( 'Show Electrons', showElectronsProperty, 'showElectronsCheckBox' ) );
     options.showConventionalCurrentCheckBox && array.push( createItem( 'Conventional Current', conventionalCurrentProperty, 'showConventionalCurrentCheckBox' ) );
     options.showValuesCheckBox && array.push( createItem( 'Values', showValuesProperty, 'showValuesCheckBox' ) );
