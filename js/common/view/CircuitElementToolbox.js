@@ -131,12 +131,15 @@ define( function( require ) {
       }
     ) );
 
-    var wireIcon = wireNode.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( wireNode.width, wireNode.height ) } )
-      .addInputListener( createToolIconInputListener(
-        function( position ) {
-          return new Wire( createVertex( position.x - 50, position.y ), createVertex( position.x + 50, position.y ), CircuitConstructionKitConstants.DEFAULT_RESISTIVITY );
-        }
-      ) );
+    var wireIcon = wireNode.mutate( {
+      scale: TOOLBOX_ICON_SIZE / Math.max( wireNode.width, wireNode.height )
+    } ).addInputListener( createToolIconInputListener(
+      function( position ) {
+        var startVertex = createVertex( position.x - 50, position.y );
+        var endVertex = createVertex( position.x + 50, position.y );
+        return new Wire( startVertex, endVertex, CircuitConstructionKitConstants.DEFAULT_RESISTIVITY );
+      }
+    ) );
     var updateWireIcon = function() {
       var numberOfCreatedWires = circuit.circuitElements.filter( function( circuitElement ) {
         return !circuitElement.insideTrueBlackBoxProperty.get() && circuitElement instanceof Wire;
@@ -144,17 +147,15 @@ define( function( require ) {
       wireIcon.visible = numberOfCreatedWires < options.numberOfWires;
     };
 
-
     var lightBulbIcon = lightBulbNode.mutate( {
       pickable: true,
       cursor: 'pointer',
       scale: TOOLBOX_ICON_SIZE / Math.max( lightBulbNode.width, lightBulbNode.height ) // constrained by being too tall, not too wide
-    } )
-      .addInputListener( createToolIconInputListener(
-        function( position ) {
-          return LightBulb.createAtPosition( position, circuit.vertexGroupTandem );
-        }
-      ) );
+    } ).addInputListener( createToolIconInputListener(
+      function( position ) {
+        return LightBulb.createAtPosition( position, circuit.vertexGroupTandem );
+      }
+    ) );
     var updateLightBulbIcon = function() {
       var numberOfCreatedLightBulbs = circuit.circuitElements.filter( function( lightBulb ) {
         return lightBulb instanceof LightBulb && !lightBulb.insideTrueBlackBoxProperty.get();
@@ -166,15 +167,14 @@ define( function( require ) {
       pickable: true,
       cursor: 'pointer',
       scale: TOOLBOX_ICON_SIZE / Math.max( resistorNode.width, resistorNode.height )
-    } )
-      .addInputListener( createToolIconInputListener(
-        function( position ) {
-          var resistorLength = CircuitConstructionKitConstants.RESISTOR_LENGTH;
-          var startVertex = createVertex( position.x - resistorLength / 2, position.y );
-          var endVertex = createVertex( position.x + resistorLength / 2, position.y );
-          return new Resistor( startVertex, endVertex, CircuitConstructionKitConstants.DEFAULT_RESISTANCE );
-        }
-      ) );
+    } ).addInputListener( createToolIconInputListener(
+      function( position ) {
+        var resistorLength = CircuitConstructionKitConstants.RESISTOR_LENGTH;
+        var startVertex = createVertex( position.x - resistorLength / 2, position.y );
+        var endVertex = createVertex( position.x + resistorLength / 2, position.y );
+        return new Resistor( startVertex, endVertex, CircuitConstructionKitConstants.DEFAULT_RESISTANCE );
+      }
+    ) );
     var updateResistorIcon = function() {
       var numberOfCreatedResistors = circuit.circuitElements.filter( function( resistor ) {
         return resistor instanceof Resistor && !resistor.insideTrueBlackBoxProperty.get();
