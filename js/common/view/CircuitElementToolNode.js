@@ -44,7 +44,6 @@ define( function( require ) {
     );
 
     circuit.circuitElements.lengthProperty.link( function() {
-      debugger;
       self.visible = count() < maxNumber;
     } );
   }
