@@ -69,7 +69,6 @@ define( function( require ) {
       } );
     };
     var leftBatteryIcon = new CircuitElementToolNode( new Image( batteryImage, {
-      cursor: 'pointer',
       scale: TOOLBOX_ICON_SIZE / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height ),
       rotation: Math.PI
     } ), circuit, this, options.numberOfLeftBatteries, function() {
@@ -83,7 +82,6 @@ define( function( require ) {
     } );
 
     var rightBatteryIcon = new CircuitElementToolNode( new Image( batteryImage, {
-        cursor: 'pointer',
         scale: TOOLBOX_ICON_SIZE / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height )
       } ), circuit, this, options.numberOfRightBatteries, function() {
         return circuit.circuitElements.filter( function( battery ) {
@@ -112,8 +110,6 @@ define( function( require ) {
     );
 
     var lightBulbIcon = new CircuitElementToolNode( lightBulbNode.mutate( {
-        pickable: true,
-        cursor: 'pointer',
         scale: TOOLBOX_ICON_SIZE / Math.max( lightBulbNode.width, lightBulbNode.height ) // constrained by being too tall, not too wide
       } ), circuit, this, options.numberOfLightBulbs, function() {
         return circuit.circuitElements.filter( function( lightBulb ) {
@@ -125,8 +121,6 @@ define( function( require ) {
     );
 
     var resistorIcon = new CircuitElementToolNode( resistorNode.mutate( {
-        pickable: true,
-        cursor: 'pointer',
         scale: TOOLBOX_ICON_SIZE / Math.max( resistorNode.width, resistorNode.height )
       } ), circuit, this, options.numberOfResistors, function() {
         return circuit.circuitElements.filter( function( resistor ) {

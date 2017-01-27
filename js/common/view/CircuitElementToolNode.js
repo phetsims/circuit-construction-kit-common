@@ -18,7 +18,7 @@ define( function( require ) {
    */
   function CircuitElementToolNode( iconNode, circuit, circuitElementToolbox, maxNumber, count, createElement ) {
     var self = this;
-    Node.call( this, { children: [ iconNode ] } );
+    Node.call( this, { pickable: true, cursor: 'pointer', children: [ iconNode ] } );
 
     this.addInputListener( {
         down: function( event ) {
