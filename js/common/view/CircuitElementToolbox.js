@@ -119,9 +119,6 @@ define( function( require ) {
         var endVertex = createVertex( position.x + BATTERY_LENGTH / 2, position.y );
         return new Battery( endVertex, startVertex, 9.0, { initialOrientation: 'left' } );
       } ) );
-    circuit.circuitElements.lengthProperty.link( function() {
-      leftBatteryIcon.visible = countBatteries( 'left' ) < options.numberOfRightBatteries;
-    } );
 
     var rightBatteryIcon = new Image( batteryImage, {
       cursor: 'pointer',
@@ -133,9 +130,6 @@ define( function( require ) {
         return new Battery( startVertex, endVertex, 9.0, { initialOrientation: 'right' } );
       }
     ) );
-    circuit.circuitElements.lengthProperty.link( function() {
-      rightBatteryIcon.visible = countBatteries( 'right' ) < options.numberOfRightBatteries;
-    } );
 
     var wireIcon = wireNode.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( wireNode.width, wireNode.height ) } )
       .addInputListener( createToolIconInputListener(
@@ -149,8 +143,7 @@ define( function( require ) {
       } ).length;
       wireIcon.visible = numberOfCreatedWires < options.numberOfWires;
     };
-    circuit.circuitElements.addItemRemovedListener( updateWireIcon );
-    circuit.circuitElements.addItemAddedListener( updateWireIcon );
+
 
     var lightBulbIcon = lightBulbNode.mutate( {
       pickable: true,
@@ -168,8 +161,6 @@ define( function( require ) {
       } ).length;
       lightBulbIcon.visible = numberOfCreatedLightBulbs < options.numberOfLightBulbs;
     };
-    circuit.circuitElements.addItemRemovedListener( updateLightBulbIcon );
-    circuit.circuitElements.addItemAddedListener( updateLightBulbIcon );
 
     var resistorIcon = resistorNode.mutate( {
       pickable: true,
@@ -190,8 +181,6 @@ define( function( require ) {
       } ).length;
       resistorIcon.visible = numberOfCreatedResistors < options.numberOfResistors;
     };
-    circuit.circuitElements.addItemRemovedListener( updateResistorIcon );
-    circuit.circuitElements.addItemAddedListener( updateResistorIcon );
 
     var switchWireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, tandem.createTandem( 'switchIcon' ) );
     var switchIcon = switchWireNode.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( switchWireNode.width, switchWireNode.height ) } )
@@ -207,8 +196,6 @@ define( function( require ) {
         } ).length;
       switchIcon.visible = numberOfCreatedSwitches < options.numberOfSwitches;
     };
-    circuit.circuitElements.addItemRemovedListener( updateSwitchIcon );
-    circuit.circuitElements.addItemAddedListener( updateSwitchIcon );
 
     var children = [];
     options.numberOfLeftBatteries && children.push( leftBatteryIcon );
@@ -231,6 +218,15 @@ define( function( require ) {
 
     circuit.isCircuitElementOverToolboxProperty.link( function( isCircuitElementOverToolbox ) {
       self.stroke = isCircuitElementOverToolbox ? 'white' : 'black';
+    } );
+
+    circuit.circuitElements.lengthProperty.link( function() {
+      updateLightBulbIcon();
+      updateWireIcon();
+      updateSwitchIcon();
+      updateResistorIcon();
+      leftBatteryIcon.visible = countBatteries( 'left' ) < options.numberOfRightBatteries;
+      rightBatteryIcon.visible = countBatteries( 'right' ) < options.numberOfRightBatteries;
     } );
   }
 
