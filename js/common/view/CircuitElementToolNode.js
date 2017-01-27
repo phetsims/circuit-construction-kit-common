@@ -11,14 +11,16 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
+  var Text = require( 'SCENERY/nodes/Text' );
 
   /**
    * @constructor
    */
-  function CircuitElementToolNode( iconNode, circuit, circuitElementToolbox, maxNumber, count, createElement ) {
+  function CircuitElementToolNode( labelText, iconNode, circuit, circuitElementToolbox, maxNumber, count, createElement ) {
     var self = this;
-    Node.call( this, { pickable: true, cursor: 'pointer', children: [ iconNode ] } );
+    var labelNode = new Text( labelText, { fontSize: 12 } ); // TODO constrain width
+    VBox.call( this, { spacing: 6, pickable: true, cursor: 'pointer', children: [ iconNode, labelNode ] } );
 
     this.addInputListener( {
         down: function( event ) {
@@ -54,5 +56,5 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'CircuitElementToolNode', CircuitElementToolNode );
 
-  return inherit( Node, CircuitElementToolNode );
+  return inherit( VBox, CircuitElementToolNode );
 } );
