@@ -122,7 +122,7 @@ define( function( require ) {
                    0;
           var outerVertex = new Vertex( vertex.positionProperty.value.x + dx, vertex.positionProperty.value.y + dy );
           // outerVertex.attachable = true;
-          outerVertex.blackBoxInterface = true;
+          outerVertex.blackBoxInterface = false;
           outerVertex.draggable = false;
           vertex.blackBoxInterface = true;
 
