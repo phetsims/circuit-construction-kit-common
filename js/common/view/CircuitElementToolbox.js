@@ -103,6 +103,29 @@ define( function( require ) {
       } ).length;
     };
 
+    var countWires = function() {
+      return circuit.circuitElements.filter( function( circuitElement ) {
+        return !circuitElement.insideTrueBlackBoxProperty.get() && circuitElement instanceof Wire;
+      } ).length;
+    };
+
+    var countLightBulbs = function() {
+      return circuit.circuitElements.filter( function( lightBulb ) {
+        return lightBulb instanceof LightBulb && !lightBulb.insideTrueBlackBoxProperty.get();
+      } ).length;
+    };
+
+    var countSwitches = function() {
+      return circuit.circuitElements.filter( function( s ) {
+        return !s.insideTrueBlackBoxProperty.get() && s instanceof Switch;
+      } ).length;
+    };
+    var countResistors = function() {
+      return circuit.circuitElements.filter( function( resistor ) {
+        return resistor instanceof Resistor && !resistor.insideTrueBlackBoxProperty.get();
+      } ).length;
+    };
+
     var createVertex = function( x, y ) {
       return new Vertex( x, y, {
         tandem: circuit.vertexGroupTandem.createNextTandem()
@@ -140,12 +163,6 @@ define( function( require ) {
         return new Wire( startVertex, endVertex, CircuitConstructionKitConstants.DEFAULT_RESISTIVITY );
       }
     ) );
-    var updateWireIcon = function() {
-      var numberOfCreatedWires = circuit.circuitElements.filter( function( circuitElement ) {
-        return !circuitElement.insideTrueBlackBoxProperty.get() && circuitElement instanceof Wire;
-      } ).length;
-      wireIcon.visible = numberOfCreatedWires < options.numberOfWires;
-    };
 
     var lightBulbIcon = lightBulbNode.mutate( {
       pickable: true,
@@ -156,12 +173,6 @@ define( function( require ) {
         return LightBulb.createAtPosition( position, circuit.vertexGroupTandem );
       }
     ) );
-    var updateLightBulbIcon = function() {
-      var numberOfCreatedLightBulbs = circuit.circuitElements.filter( function( lightBulb ) {
-        return lightBulb instanceof LightBulb && !lightBulb.insideTrueBlackBoxProperty.get();
-      } ).length;
-      lightBulbIcon.visible = numberOfCreatedLightBulbs < options.numberOfLightBulbs;
-    };
 
     var resistorIcon = resistorNode.mutate( {
       pickable: true,
@@ -175,12 +186,6 @@ define( function( require ) {
         return new Resistor( startVertex, endVertex, CircuitConstructionKitConstants.DEFAULT_RESISTANCE );
       }
     ) );
-    var updateResistorIcon = function() {
-      var numberOfCreatedResistors = circuit.circuitElements.filter( function( resistor ) {
-        return resistor instanceof Resistor && !resistor.insideTrueBlackBoxProperty.get();
-      } ).length;
-      resistorIcon.visible = numberOfCreatedResistors < options.numberOfResistors;
-    };
 
     var switchWireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, tandem.createTandem( 'switchIcon' ) );
     var switchIcon = switchWireNode.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( switchWireNode.width, switchWireNode.height ) } )
@@ -189,13 +194,6 @@ define( function( require ) {
           return new Switch( createVertex( position.x - 50, position.y ), createVertex( position.x + 50, position.y ), CircuitConstructionKitConstants.DEFAULT_RESISTIVITY );
         }
       ) );
-    var updateSwitchIcon = function() {
-      var numberOfCreatedSwitches = circuit.circuitElements.filter(
-        function( s ) {
-          return !s.insideTrueBlackBoxProperty.get() && s instanceof Switch;
-        } ).length;
-      switchIcon.visible = numberOfCreatedSwitches < options.numberOfSwitches;
-    };
 
     var children = [];
     options.numberOfLeftBatteries && children.push( leftBatteryIcon );
@@ -221,10 +219,10 @@ define( function( require ) {
     } );
 
     circuit.circuitElements.lengthProperty.link( function() {
-      updateLightBulbIcon();
-      updateWireIcon();
-      updateSwitchIcon();
-      updateResistorIcon();
+      lightBulbIcon.visible = countLightBulbs() < options.numberOfLightBulbs;
+      wireIcon.visible = countWires() < options.numberOfWires;
+      switchIcon.visible = countSwitches() < options.numberOfSwitches;
+      resistorIcon.visible = countResistors() < options.numberOfResistors;
       leftBatteryIcon.visible = countBatteries( 'left' ) < options.numberOfRightBatteries;
       rightBatteryIcon.visible = countBatteries( 'right' ) < options.numberOfRightBatteries;
     } );
