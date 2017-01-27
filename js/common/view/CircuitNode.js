@@ -387,7 +387,7 @@ define( function( require ) {
       // If any of the vertices connected by fixed length nodes is immobile, then the entire subgraph cannot be moved
       var rotated = false;
       for ( var i = 0; i < vertices.length; i++ ) {
-        if ( !vertices[ i ].draggable ) {
+        if ( !vertices[ i ].draggable || vertices[ i ].outerWireStubVertex ) {
 
           // See #108 multiple objects connected to the same origin vertex can cause problems.
           // Restrict ourselves to the case where one wire is attached
