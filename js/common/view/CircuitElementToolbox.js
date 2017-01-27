@@ -2,6 +2,7 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
+ * Toolbox from which CircuitElements can be dragged or returned.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -54,21 +55,12 @@ define( function( require ) {
 
     var self = this;
 
-    var exampleWire = new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 );
-    var exampleResistor = new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ), CircuitConstructionKitConstants.DEFAULT_RESISTANCE );
-
-    var resistorNode = new ResistorNode( null, null, exampleResistor, null, tandem.createTandem( 'resistorIcon' ), {
-        icon: true
-      }
-    );
-    var lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ) );
-
     var createVertex = function( x, y ) {
       return new Vertex( x, y, {
         tandem: circuit.vertexGroupTandem.createNextTandem()
       } );
     };
-    var leftBatteryIcon = new CircuitElementToolNode( new Image( batteryImage, {
+    var leftBatteryToolNode = new CircuitElementToolNode( new Image( batteryImage, {
       scale: TOOLBOX_ICON_SIZE / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height ),
       rotation: Math.PI
     } ), circuit, this, options.numberOfLeftBatteries, function() {
@@ -81,7 +73,7 @@ define( function( require ) {
       return new Battery( endVertex, startVertex, 9.0, { initialOrientation: 'left' } );
     } );
 
-    var rightBatteryIcon = new CircuitElementToolNode( new Image( batteryImage, {
+    var rightBatteryToolNode = new CircuitElementToolNode( new Image( batteryImage, {
         scale: TOOLBOX_ICON_SIZE / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height )
       } ), circuit, this, options.numberOfRightBatteries, function() {
         return circuit.circuitElements.filter( function( battery ) {
@@ -94,11 +86,10 @@ define( function( require ) {
       }
     );
 
-    var wireIcon = new WireNode( null, null, exampleWire, null, tandem.createTandem( 'wireIcon' ) );
-    wireIcon.mutate( {
-      scale: TOOLBOX_ICON_SIZE / Math.max( wireIcon.width, wireIcon.height )
-    } );
-    var wireToolNode = new CircuitElementToolNode( wireIcon, circuit, this, options.numberOfWires, function() {
+    var wireIcon = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, tandem.createTandem( 'wireIcon' ) );
+    var wireToolNode = new CircuitElementToolNode( wireIcon.mutate( {
+        scale: TOOLBOX_ICON_SIZE / Math.max( wireIcon.width, wireIcon.height )
+      } ), circuit, this, options.numberOfWires, function() {
         return circuit.circuitElements.filter( function( circuitElement ) {
           return !circuitElement.insideTrueBlackBoxProperty.get() && circuitElement instanceof Wire;
         } ).length;
@@ -109,8 +100,9 @@ define( function( require ) {
       }
     );
 
-    var lightBulbIcon = new CircuitElementToolNode( lightBulbNode.mutate( {
-        scale: TOOLBOX_ICON_SIZE / Math.max( lightBulbNode.width, lightBulbNode.height ) // constrained by being too tall, not too wide
+    var lightBulbIcon = new CustomLightBulbNode( new NumberProperty( 0 ) );
+    var lightBulbToolNode = new CircuitElementToolNode( lightBulbIcon.mutate( {
+      scale: TOOLBOX_ICON_SIZE / Math.max( lightBulbIcon.width, lightBulbIcon.height ) // constrained by being too tall, not too wide
       } ), circuit, this, options.numberOfLightBulbs, function() {
         return circuit.circuitElements.filter( function( lightBulb ) {
           return lightBulb instanceof LightBulb && !lightBulb.insideTrueBlackBoxProperty.get();
@@ -120,8 +112,14 @@ define( function( require ) {
       }
     );
 
-    var resistorIcon = new CircuitElementToolNode( resistorNode.mutate( {
-        scale: TOOLBOX_ICON_SIZE / Math.max( resistorNode.width, resistorNode.height )
+    var resistorIcon = new ResistorNode( null, null,
+      new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ), CircuitConstructionKitConstants.DEFAULT_RESISTANCE ),
+      null, tandem.createTandem( 'resistorIcon' ), {
+        icon: true
+      }
+    );
+    var resistorToolNode = new CircuitElementToolNode( resistorIcon.mutate( {
+      scale: TOOLBOX_ICON_SIZE / Math.max( resistorIcon.width, resistorIcon.height )
       } ), circuit, this, options.numberOfResistors, function() {
         return circuit.circuitElements.filter( function( resistor ) {
           return resistor instanceof Resistor && !resistor.insideTrueBlackBoxProperty.get();
@@ -134,8 +132,8 @@ define( function( require ) {
       }
     );
 
-    var switchWireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, tandem.createTandem( 'switchIcon' ) );
-    var switchIcon = new CircuitElementToolNode( switchWireNode.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( switchWireNode.width, switchWireNode.height ) } ),
+    var switchIcon = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, tandem.createTandem( 'switchIcon' ) );
+    var switchToolNode = new CircuitElementToolNode( switchIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( switchIcon.width, switchIcon.height ) } ),
       circuit, this, options.numberOfSwitches, function() {
         return circuit.circuitElements.filter( function( s ) {
           return !s.insideTrueBlackBoxProperty.get() && s instanceof Switch;
@@ -146,18 +144,18 @@ define( function( require ) {
     );
 
     var children = [];
-    options.numberOfLeftBatteries && children.push( leftBatteryIcon );
-    options.numberOfRightBatteries && children.push( rightBatteryIcon );
+    options.numberOfLeftBatteries && children.push( leftBatteryToolNode );
+    options.numberOfRightBatteries && children.push( rightBatteryToolNode );
     options.numberOfWires && children.push( wireToolNode );
-    options.numberOfLightBulbs && children.push( lightBulbIcon );
-    options.numberOfResistors && children.push( resistorIcon );
-    options.numberOfSwitches && children.push( switchIcon );
+    options.numberOfLightBulbs && children.push( lightBulbToolNode );
+    options.numberOfResistors && children.push( resistorToolNode );
+    options.numberOfSwitches && children.push( switchToolNode );
 
     // Expand touch bounds for each icon
     for ( var i = 0; i < children.length; i++ ) {
       children[ i ].touchArea = children[ i ].localBounds.dilatedXY( 10, 18 );
     }
-    lightBulbIcon.touchArea = lightBulbIcon.localBounds.dilatedXY( 11, 8 );
+    lightBulbToolNode.touchArea = lightBulbToolNode.localBounds.dilatedXY( 11, 8 );
     CircuitConstructionKitPanel.call( this, new LayoutBox( {
       orientation: options.orientation,
       spacing: CircuitConstructionKitConstants.TOOLBOX_ITEM_SPACING,
