@@ -507,9 +507,6 @@ define( function( require ) {
         assert && assert( !vertex1.blackBoxInterface, 'cannot attach black box interface vertex to black box interface vertex' );
         this.connect( vertex2, vertex1 );
       }
-      else if ( vertex2.outerWireStubVertex ) { // Keep the outerWireStubVertex
-        this.connect( vertex2, vertex1 );
-      }
       else {
         var circuitElements = this.getCircuitElements();
         for ( var i = 0; i < circuitElements.length; i++ ) {

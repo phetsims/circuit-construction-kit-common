@@ -122,9 +122,8 @@ define( function( require ) {
                    0;
           var outerVertex = new Vertex( vertex.positionProperty.value.x + dx, vertex.positionProperty.value.y + dy );
           // outerVertex.attachable = true;
-          outerVertex.blackBoxInterface = false;
+          outerVertex.blackBoxInterface = true;
           outerVertex.draggable = false;
-          outerVertex.outerWireStubVertex = true;
           vertex.blackBoxInterface = true;
 
           var w = new Wire( vertex, outerVertex, 1E-6, {
