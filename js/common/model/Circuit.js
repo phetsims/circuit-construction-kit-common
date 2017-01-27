@@ -757,6 +757,11 @@ define( function( require ) {
           }
           return true;
         } );
+
+        // a vertex must be attachable. Some black box vertices are not attachable, such as vertices hidden in the box
+        candidateVertices = candidateVertices.filter( function( candidateVertex ) {
+          return !candidateVertex.outerWireStub;
+        } );
       }
 
       if ( candidateVertices.length === 0 ) {
