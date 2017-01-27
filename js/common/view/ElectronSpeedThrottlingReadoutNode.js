@@ -26,9 +26,9 @@ define( function( require ) {
     } );
 
     Property.multilink( [ timeScaleProperty, showElectronsProperty, exploreScreenRunningProperty ], function( timeScale, showElectrons, exploreScreenRunning ) {
-      var readout = (timeScale * 100);
-      var fixed = Util.toFixed( readout, 0 );
-      var isThrottled = fixed !== '100';
+      var percent = timeScale * 100;
+      var isThrottled = percent < 99.5;
+      var fixed = Util.toFixed( percent, 0 );
       if ( timeScale < 0.01 ) {
         fixed = '< 1';
       }
