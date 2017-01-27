@@ -87,14 +87,11 @@ define( function( require ) {
       };
     };
 
-    var wireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, tandem.createTandem( 'wireIcon' ) );
+    var exampleWire = new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 );
+    var exampleResistor = new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ), CircuitConstructionKitConstants.DEFAULT_RESISTANCE );
 
-    var resistorNode = new ResistorNode(
-      null,
-      null,
-      new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ), CircuitConstructionKitConstants.DEFAULT_RESISTANCE ),
-      null,
-      tandem.createTandem( 'resistorIcon' ), {
+    var wireNode = new WireNode( null, null, exampleWire, null, tandem.createTandem( 'wireIcon' ) );
+    var resistorNode = new ResistorNode( null, null, exampleResistor, null, tandem.createTandem( 'resistorIcon' ), {
         icon: true
       }
     );
