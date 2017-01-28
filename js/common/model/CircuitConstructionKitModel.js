@@ -1,4 +1,4 @@
-// Copyright 2015-2016, University of Colorado Boulder
+// Copyright 2015-2017, University of Colorado Boulder
 
 /**
  * Contains circuit, voltmeter, ammeter and properties to indicate what mode the model is in.
@@ -39,12 +39,12 @@ define( function( require ) {
     // @public (read-only)
     this.ammeter = new Ammeter( tandem.createTandem( 'ammeter' ) );
 
-    // @public (read-only) {Property.<boolean>} changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
+    // @public (read-only) changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
     this.exploreScreenRunningProperty = new BooleanProperty( !CircuitConstructionKitQueryParameters.showPlayPauseButton, {
       tandem: tandem.createTandem( 'exploreScreenRunningProperty' )
     } );
 
-    // @public (read-only) {Property.<boolean>} true if the labels in the toolbox should be shown
+    // @public (read-only) true if the labels in the toolbox should be shown
     this.showLabelsProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'showLabelsProperty' )
     } );
@@ -68,8 +68,7 @@ define( function( require ) {
       };
       this.circuit.vertices.lengthProperty.lazyLink( pause );
       this.circuit.componentEditedEmitter.addListener( pause );
-      this.circuit.circuitElements.addItemAddedListener( pause );
-      this.circuit.circuitElements.addItemRemovedListener( pause );
+      this.circuit.circuitElements.lengthProperty.link( pause );
     }
 
     // For PhET-iO, when a component is edited or a vertex is added, connected, or cut, output the circuit to the data stream

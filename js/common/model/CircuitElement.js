@@ -108,9 +108,9 @@ define( function( require ) {
       self.endVertexProperty.get().positionProperty.unlink( vertexMoved );
     };
 
-    // @public (read-only by clients, writable-by-subclasses) the distance the electrons must take to get to the other side of the component.
-    // This is typically the distance between vertices, but not for light bulbs.  This value is constant, except
-    // for wires which can have their length changed.
+    // @public (read-only by clients, writable-by-subclasses) the distance the electrons must take to get to the other
+    // side of the component. This is typically the distance between vertices, but not for light bulbs.  This value is
+    // constant, except for wires which can have their length changed.
     this.electronPathLength = electronPathLength;
   }
 
@@ -187,7 +187,7 @@ define( function( require ) {
     /**
      * Gets the 2D Position along the CircuitElement corresponding to the given scalar distance
      * @param {number} distanceAlongWire - the scalar distance from one endpoint to another.
-     * @return {Vector2}
+     * @return {Vector2} the position in view coordinates
      * @public
      */
     getPosition: function( distanceAlongWire ) {
