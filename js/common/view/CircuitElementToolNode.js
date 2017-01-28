@@ -54,7 +54,9 @@ define( function( require ) {
       self.visible = count() < maxNumber;
     } );
 
-    // TODO: expand touch area around text
+    // Expand touch area around text
+    this.touchArea = this.localBounds.dilated( 10 );
+    this.mouseArea = this.touchArea;
   }
 
   circuitConstructionKitCommon.register( 'CircuitElementToolNode', CircuitElementToolNode );
