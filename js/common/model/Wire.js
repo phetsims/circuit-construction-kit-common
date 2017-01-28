@@ -14,7 +14,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/CircuitElement' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
-  var NumberProperty = require( 'AXON/NumberProperty' )
+  var NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
   var METERS_PER_VIEW_COORDINATE = 0.015273409966500692; // Conversion factor
