@@ -202,7 +202,11 @@ define( function( require ) {
 
   return inherit( Object, Circuit, {
 
-    // Two vertices were too close to each other, move them apart.
+    /**
+     * When over Vertex is released or bumped over another Vertex, move them apart so they don't appear connected.
+     * @param {Vertex} v1
+     * @param {Vertex} v2
+     */
     moveVerticesApart: function( v1, v2 ) {
 
       // are they in the same fixed subgroup
@@ -225,10 +229,15 @@ define( function( require ) {
       }
       else {
         // ok to translate
+        // TODO: Shouldn't something happen here?
       }
     },
 
-    // Rotate away from other vertices, not toward them.
+    /**
+     * When two Vertices are dropped/bumped too close together, move one away by rotating it.
+     * @param {Vertex} vertex - the vertex to rotate
+     * @param {Vertex} pivotVertex - the vertex to rotate about
+     */
     rotateSingleVertex: function( vertex, pivotVertex ) {
       var searchAngle = Math.PI / 4;
       this.rotateSingleVertexByAngle( vertex, pivotVertex, searchAngle );
@@ -236,6 +245,7 @@ define( function( require ) {
       this.rotateSingleVertexByAngle( vertex, pivotVertex, -2 * searchAngle );
       var distance2 = this.closestDistanceToOtherVertex( vertex );
       if ( distance2 > distance1 ) {
+
         // keep it, we're good.
       }
       else {
@@ -245,15 +255,30 @@ define( function( require ) {
       }
     },
 
+    /**
+     * Rotate the given Vertex about the specified Vertex by the given angle
+     * @param {Vertex} vertex - the vertex which will be rotated
+     * @param {Vertex} pivotVertex - the origin about which the vertex will rotate
+     * @param {number} deltaAngle - angle in radians to rotate
+     */
     rotateSingleVertexByAngle: function( vertex, pivotVertex, deltaAngle ) {
-      var distanceFromVertex = vertex.positionProperty.get().distance( pivotVertex.positionProperty.get() );
-      var angle = vertex.positionProperty.get().minus( pivotVertex.positionProperty.get() ).angle();
+      var position = vertex.positionProperty.get();
+      var pivotPosition = pivotVertex.positionProperty.get();
 
-      var newPosition = pivotVertex.positionProperty.get().plus( Vector2.createPolar( distanceFromVertex, angle + deltaAngle ) );
+      var distanceFromVertex = position.distance( pivotPosition );
+      var angle = position.minus( pivotPosition ).angle();
+
+      var newPosition = pivotPosition.plus( Vector2.createPolar( distanceFromVertex, angle + deltaAngle ) );
       vertex.unsnappedPositionProperty.set( newPosition );
       vertex.positionProperty.set( newPosition );
     },
 
+    /**
+     * Determine the distance to the closest Vertex
+     * @param {Vertex} vertex
+     * @return {number} - distance to nearest other Vertex in view coordinates
+     * @private
+     */
     closestDistanceToOtherVertex: function( vertex ) {
       var closestDistance = null;
       for ( var i = 0; i < this.vertices.length; i++ ) {
@@ -268,6 +293,9 @@ define( function( require ) {
       return closestDistance;
     },
 
+    /**
+     * Remove all elements from the circuit.
+     */
     clear: function() {
 
       this.selectedCircuitElementProperty.reset();
@@ -295,7 +323,8 @@ define( function( require ) {
     },
 
     /**
-     * @param {Vertex} vertex
+     * Split the Vertex into two separate vertices.
+     * @param {Vertex} vertex - the vertex to be cut.
      */
     cutVertex: function( vertex ) {
       var neighborCircuitElements = this.getNeighborCircuitElements( vertex );
@@ -530,6 +559,12 @@ define( function( require ) {
       return neighbors;
     },
 
+    /**
+     * Get an array of all the vertices adjacent to the specified Vertex.
+     * @param {Vertex} vertex - the vertex to get neighbors for
+     * @return {Vertex[]}
+     * @private
+     */
     getNeighborVertices: function( vertex ) {
       var neighborCircuitElements = this.getNeighborCircuitElements( vertex );
       return this.getNeighbors( vertex, neighborCircuitElements );
