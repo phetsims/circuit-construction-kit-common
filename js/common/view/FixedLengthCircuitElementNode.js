@@ -164,8 +164,9 @@ define( function( require ) {
 
           circuitNode.endDrag( event, circuitElement.endVertexProperty.get(), didDrag );
 
-          // Only show the editor when tapped, not on every drag.
-          self.maybeSelect( event, circuitNode, p );
+          // Only show the editor when tapped, not on every drag.  Also, event could be undefined if this end() was triggered
+          // by dispose()
+          event && self.maybeSelect( event, circuitNode, p );
 
           didDrag = false;
         }
