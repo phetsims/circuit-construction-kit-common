@@ -51,12 +51,17 @@ define( function( require ) {
       // TODO: Rounding off values like 9.5 could be a problem.
       resistance = Math.round( resistance );
 
-      // first 2 digits for value, third digit for scale.
       if ( resistance < 10 ) {
+
+        // Resistance is less than 10 Ohms
         return [ Color.black, digitToColor( resistance ), Color.black, gold ];
       }
       else if ( resistance < 100 ) {
-        return [ digitToColor( Math.floor( resistance / 10 ) ), digitToColor( Math.floor( resistance % 10 ) ), Color.black, Color.yellow ];
+
+        // The number is between 10 Ohms (inclusive) and 100 Ohms (exclusive)
+        var tensPlaceDigit = Math.floor( resistance / 10 );
+        var onesPlaceDigit = Math.floor( resistance % 10 );
+        return [ digitToColor( tensPlaceDigit ), digitToColor( onesPlaceDigit ), Color.black, Color.yellow ];
       }
       else {
         var resistanceString = Util.toFixed( resistance, 0 );
@@ -74,9 +79,6 @@ define( function( require ) {
         }
         else if ( error < 20 ) {  // TODO: the note above says silver is 10% but this code looks like it is using 20%. WHY?
           tolerance = silver;
-        }
-        else {
-          tolerance = null;
         }
         return [ digitToColor( firstDigit ), digitToColor( secondDigit ), digitToColor( factor ), tolerance ];
       }
