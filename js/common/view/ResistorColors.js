@@ -48,7 +48,7 @@ define( function( require ) {
     getColorArray: function( resistance ) {
       resistance = Math.round( resistance );
 
-      //first 2 digits for value, third digit for scale.
+      // first 2 digits for value, third digit for scale.
       if ( resistance < 10 ) {
         return [ Color.black, digitToColor( resistance ), Color.black, gold ];
       }
@@ -56,26 +56,26 @@ define( function( require ) {
         return [ digitToColor( Math.floor( resistance / 10 ) ), digitToColor( Math.floor( resistance % 10 ) ), Color.black, Color.yellow ];
       }
       else {
-        var s = Util.toFixed( resistance, 0 );
-        var firstdigit = parseInt( s.charAt( 0 ) + '', 10 );
-        var seconddig = parseInt( s.charAt( 1 ) + '', 10 );
-        var factor = s.length - 2;
+        var resistanceString = Util.toFixed( resistance, 0 );
+        var firstDigit = parseInt( resistanceString.charAt( 0 ) + '', 10 );
+        var secondDigit = parseInt( resistanceString.charAt( 1 ) + '', 10 );
+        var factor = resistanceString.length - 2;
 
-        var predicted = ( ( firstdigit * 10 + seconddig ) * Math.pow( 10, factor ) );
-        var offby = ( resistance - predicted ) / predicted * 100;
+        var predicted = ( ( firstDigit * 10 + secondDigit ) * Math.pow( 10, factor ) );
+        var error = ( resistance - predicted ) / predicted * 100;
         var tolerance = null;
 
         // A gold tolerance band is 5% tolerance, silver is 10%
-        if ( offby < 5 ) {
+        if ( error < 5 ) {
           tolerance = gold;
         }
-        else if ( offby < 20 ) {
+        else if ( error < 20 ) {
           tolerance = new Color( 'silver' );
         }
         else {
           tolerance = null;
         }
-        return [ digitToColor( firstdigit ), digitToColor( seconddig ), digitToColor( factor ), tolerance ];
+        return [ digitToColor( firstDigit ), digitToColor( secondDigit ), digitToColor( factor ), tolerance ];
       }
     }
   } );
