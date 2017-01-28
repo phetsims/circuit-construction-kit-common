@@ -47,6 +47,8 @@ define( function( require ) {
   return inherit( Object, ResistorColors, {}, {
 
     getColorArray: function( resistance ) {
+
+      // TODO: Rounding off values like 9.5 could be a problem.
       resistance = Math.round( resistance );
 
       // first 2 digits for value, third digit for scale.
@@ -70,7 +72,7 @@ define( function( require ) {
         if ( error < 5 ) {
           tolerance = gold;
         }
-        else if ( error < 20 ) {
+        else if ( error < 20 ) {  // TODO: the note above says silver is 10% but this code looks like it is using 20%. WHY?
           tolerance = silver;
         }
         else {
