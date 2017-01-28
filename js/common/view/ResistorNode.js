@@ -53,7 +53,7 @@ define( function( require ) {
       } )
     ];
     var updateColorBands = function( resistance ) {
-      var colors = ResistorColors.toThreeColors( resistance );
+      var colors = ResistorColors.getColorArray( resistance );
       for ( var i = 0; i < colorBands.length; i++ ) {
         colorBands[ i ].fill = colors[ i ];// Last one could be null
       }

@@ -45,23 +45,24 @@ define( function( require ) {
 
   return inherit( Object, ResistorColors, {}, {
 
-    toThreeColors: function( value ) {
-      value = Math.round( value );
+    getColorArray: function( resistance ) {
+      resistance = Math.round( resistance );
+
       //first 2 digits for value, third digit for scale.
-      if ( value < 10 ) {
-        return [ Color.black, digitToColor( value ), Color.black, gold ];
+      if ( resistance < 10 ) {
+        return [ Color.black, digitToColor( resistance ), Color.black, gold ];
       }
-      else if ( value < 100 ) {
-        return [ digitToColor( Math.floor( value / 10 ) ), digitToColor( Math.floor( value % 10 ) ), Color.black, Color.yellow ];
+      else if ( resistance < 100 ) {
+        return [ digitToColor( Math.floor( resistance / 10 ) ), digitToColor( Math.floor( resistance % 10 ) ), Color.black, Color.yellow ];
       }
       else {
-        var s = Util.toFixed( value, 0 );
+        var s = Util.toFixed( resistance, 0 );
         var firstdigit = parseInt( s.charAt( 0 ) + '', 10 );
         var seconddig = parseInt( s.charAt( 1 ) + '', 10 );
         var factor = s.length - 2;
 
         var predicted = ( ( firstdigit * 10 + seconddig ) * Math.pow( 10, factor ) );
-        var offby = ( value - predicted ) / predicted * 100;
+        var offby = ( resistance - predicted ) / predicted * 100;
         var tolerance = null;
 
         // A gold tolerance band is 5% tolerance, silver is 10%
