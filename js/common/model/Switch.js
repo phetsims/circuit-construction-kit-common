@@ -64,6 +64,17 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'Switch', Switch );
 
   return inherit( CircuitElement, Switch, {
+    /**
+     * @override
+     * @return {Property[]}
+     */
+    getCircuitProperties: function() {
+      return [
+        this.resistanceProperty
+        // The closed property modifies the resistance property, so would be redundant and double the amount of work
+        // necessary if reported here.
+      ];
+    },
     dispose: function() {
       CircuitElement.prototype.dispose.call( this );
       this.disposeSwitch();

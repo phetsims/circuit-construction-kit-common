@@ -36,6 +36,14 @@ define( function( require ) {
   return inherit( FixedLengthCircuitElement, Resistor, {
 
     /**
+     * @override
+     * @return {Property[]}
+     */
+    getCircuitProperties: function() {
+      return [ this.resistanceProperty ];
+    },
+
+    /**
      * Get the attributes as a state object for serialization.
      * @returns {Object}
      */

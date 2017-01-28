@@ -204,6 +204,16 @@ define( function( require ) {
      */
     containsScalarLocation: function( scalarLocation ) {
       return scalarLocation >= 0 && scalarLocation <= this.electronPathLength;
+    },
+
+    /**
+     * Get all Property instances that influence the circuit dynamics.
+     * @abstract must be specified by the subclass
+     * @return {Property[]}
+     * @public
+     */
+    getCircuitProperties: function() {
+      assert && assert( false, 'getCircuitProperties must be implemented in subclass' );
     }
   } );
 } );

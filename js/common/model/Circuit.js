@@ -67,14 +67,15 @@ define( function( require ) {
     var solve = function() { self.solve(); };
 
     // Solve the circuit when any of the circuit element attributes change.
-    // TODO: combine addItemAddListener/addItemRemovedListener calls?  Or document why they are better separate?
     this.circuitElements.addItemAddedListener( function( circuitElement ) {
-      circuitElement.resistanceProperty && circuitElement.resistanceProperty.lazyLink( solve );
-      circuitElement.voltageProperty && circuitElement.voltageProperty.lazyLink( solve );
+      circuitElement.getCircuitProperties().forEach( function( property ) {
+        property.lazyLink( solve );
+      } );
     } );
     this.circuitElements.addItemRemovedListener( function( circuitElement ) {
-      circuitElement.resistanceProperty && circuitElement.resistanceProperty.unlink( solve );
-      circuitElement.voltageProperty && circuitElement.voltageProperty.unlink( solve );
+      circuitElement.getCircuitProperties().forEach( function( property ) {
+        property.unlink( solve );
+      } );
     } );
 
     // @public - whether any circuit element is over the toolbox.  This shows the toolbox highlight when something can

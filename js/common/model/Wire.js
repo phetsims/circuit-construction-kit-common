@@ -67,6 +67,14 @@ define( function( require ) {
   return inherit( CircuitElement, Wire, {
 
     /**
+     * @override
+     * @return {Property[]}
+     */
+    getCircuitProperties: function() {
+      return [ this.resistanceProperty ];
+    },
+
+    /**
      * Releases all resources related to the Wire, called when it will no longer be used.
      * @public
      */

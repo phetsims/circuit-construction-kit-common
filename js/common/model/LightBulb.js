@@ -105,6 +105,15 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'LightBulb', LightBulb );
 
   return inherit( FixedLengthCircuitElement, LightBulb, {
+
+    /**
+     * @override
+     * @return {Property[]}
+     */
+    getCircuitProperties: function() {
+      return [ this.resistanceProperty ];
+    },
+
     attributesToStateObject: function() {
       return {
         resistance: this.resistanceProperty.get()

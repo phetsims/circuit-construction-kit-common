@@ -45,6 +45,14 @@ define( function( require ) {
   return inherit( FixedLengthCircuitElement, Battery, {
 
     /**
+     * @override
+     * @return {Property[]}
+     */
+    getCircuitProperties: function() {
+      return [ this.voltageProperty ];
+    },
+
+    /**
      * @returns {Object} the attributes of the battery in a state object
      * @public
      */
