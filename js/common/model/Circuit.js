@@ -505,7 +505,8 @@ define( function( require ) {
       if ( a === b ) {
         return false;
       }
-      this.circuitElements.anyElementMatchesPredicate( function( circuitElement ) {
+
+      return this.circuitElements.anyElementMatchesPredicate( function( circuitElement ) {
         return circuitElement.containsBothVertices( a, b );
       } );
     },

@@ -53,6 +53,13 @@ define( function( require ) {
         assert && assert( !self.deleted, 'Electron was deleted' );
         assert && assert( !isNaN( distance ), 'electron position was not a number' );
         var position = self.circuitElement.getPosition( distance );
+
+        // TODO: may need a workaround like this if two vertices of one wire accidentally lie on top of each other
+        // even if not connected
+        // if (isNaN(position.x)|| isNaN(position.y)){
+        //   console.log('nan');
+        //   return;
+        // }
         assert && assert( !isNaN( position.x ) && !isNaN( position.y ), 'point was not a number' );
         self.positionProperty.set( position );
       }
