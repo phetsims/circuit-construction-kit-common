@@ -39,13 +39,13 @@ define( function( require ) {
     var vertexMovedListener = function() {
       var startPosition = self.startVertexProperty.get().positionProperty.get();
       var endPosition = self.endVertexProperty.get().positionProperty.get();
-      var distanceBetweenVertices = startPosition.distance( endPosition );
-      var javaLength = distanceBetweenVertices / 990 * 15.120675866835684;
-      var resistance = javaLength * self.resistivityProperty.get();
+      var viewLength = startPosition.distance( endPosition );
+      var modelLength = viewLength / 990 * 15.120675866835684;
+      var resistance = modelLength * self.resistivityProperty.get();
       var newResistance = Math.max( CircuitConstructionKitConstants.MINIMUM_RESISTANCE, resistance );
       assert && assert( !isNaN( newResistance ), 'wire resistance should not be NaN' );
       self.resistanceProperty.set( newResistance );
-      self.electronPathLength = distanceBetweenVertices;
+      self.electronPathLength = viewLength;
     };
 
     // Use `self` here instead of `this` so IDEA doesn't mark the property as missing.
