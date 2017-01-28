@@ -46,7 +46,7 @@ define( function( require ) {
     updateRunningAverage: function( sample ) {
       this.samples.push( sample );
       while ( this.samples.length > this.windowSize ) {
-        this.samples.splice( 0, 1 );
+        this.samples.shift();
       }
       return _.foldl( this.samples, SUM ) / this.samples.length;
     }
