@@ -13,13 +13,17 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+
+  // constants
+  var TOOLBOX_ICON_SIZE = CircuitConstructionKitConstants.TOOLBOX_ICON_SIZE;
 
   /**
    * @constructor
    */
   function CircuitElementToolNode( labelText, showLabelsProperty, iconNode, circuit, circuitElementToolbox, maxNumber, count, createElement ) {
     var self = this;
-    var labelNode = new Text( labelText, { fontSize: 12 } ); // TODO constrain width
+    var labelNode = new Text( labelText, { fontSize: 12, maxWidth: TOOLBOX_ICON_SIZE } ); // TODO constrain width
     showLabelsProperty.link( function( showLabels ) {labelNode.visible = showLabels;} );
     VBox.call( this, { spacing: 6, pickable: true, cursor: 'pointer', children: [ iconNode, labelNode ] } );
 
