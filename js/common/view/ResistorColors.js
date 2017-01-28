@@ -18,6 +18,7 @@ define( function( require ) {
   var brown = new Color( 200, 150, 100 );
   var violet = new Color( 148, 0, 211 );
   var gold = new Color( '#e8c920' ).darkerColor( 0.75 );
+  var silver = new Color( 'silver' );
   var colors = [
     Color.black,
     brown,
@@ -70,7 +71,7 @@ define( function( require ) {
           tolerance = gold;
         }
         else if ( error < 20 ) {
-          tolerance = new Color( 'silver' );
+          tolerance = silver;
         }
         else {
           tolerance = null;
