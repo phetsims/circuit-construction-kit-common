@@ -24,9 +24,11 @@ define( function( require ) {
 
   // constants
   var DEFAULTS = {
-    draggable: true, // {boolean} whether the vertex can be dragged, false for Black Box elements
-    attachable: true, // {boolean} false for Black box interior elements
-    interactive: true // {boolean} Black box interface vertices can be interactive (tap to select) without being draggable
+    draggable: true, // whether the vertex can be dragged, false for Black Box elements
+    attachable: true, // false for Black box interior elements
+    interactive: true, // Black box interface vertices can be interactive (tap to select) without being draggable
+    blackBoxInterface: false, // Black box interface vertices cannot be dragged or deleted, but can be connected to
+    insideTrueBlackBox: false // Behavior differs in explore vs test mode
   };
 
   var counter = 0;
@@ -82,11 +84,11 @@ define( function( require ) {
 
     // @public - whether the vertex is on the edge of a black box.  This means it cannot be deleted, but it can be
     // attached to
-    this.blackBoxInterfaceProperty = new BooleanProperty( options.blackBoxInterface || false ); // TODO: is this option ever provided?
+    this.blackBoxInterfaceProperty = new BooleanProperty( options.blackBoxInterface );
 
     // @public - whether the vertex is inside the true black box, not inside the user-created black box, on the
     // interface or outside of the black box
-    this.insideTrueBlackBoxProperty = new BooleanProperty( options.insideTrueBlackBox || false ); // TODO: is this option ever provided?
+    this.insideTrueBlackBoxProperty = new BooleanProperty( options.insideTrueBlackBox );
 
     // @public (read-only) - indicate when the vertex has been moved to the front in z-ordering
     this.moveToFrontEmitter = new Emitter();

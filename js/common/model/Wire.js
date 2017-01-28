@@ -2,7 +2,7 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- *
+ * A wire whose length can change.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -17,7 +17,7 @@ define( function( require ) {
   var NumberProperty = require( 'AXON/NumberProperty' );
 
   /**
-   *
+   * Wire main constructor
    * @constructor
    */
   function Wire( startVertex, endVertex, resistivity, options ) {

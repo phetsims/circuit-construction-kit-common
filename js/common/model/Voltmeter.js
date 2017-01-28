@@ -19,6 +19,10 @@ define( function( require ) {
   var TNumber = require( 'ifphetio!PHET_IO/types/TNumber' );
   var TVector2 = require( 'ifphetio!PHET_IO/types/dot/TVector2' );
 
+  /**
+   * @param {Tandem} tandem
+   * @constructor
+   */
   function Voltmeter( tandem ) {
 
     Meter.call( this, tandem );
