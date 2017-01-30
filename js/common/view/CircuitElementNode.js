@@ -12,7 +12,7 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var AccessibleNode = require( 'SCENERY/accessibility/AccessibleNode' );
+  var Node = require( 'SCENERY/nodes/Node' );
   var Input = require( 'SCENERY/input/Input' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitElementEditContainerPanel' );
@@ -29,22 +29,25 @@ define( function( require ) {
 
     options = _.extend( {
       // options for keyboard navigation
+      tagName: 'div', // HTML tag name for representative element in the document, see Accessibility.js
       focusable: true,
-      focusHighlight: 'invisible',
-
-      events: {
-        keydown: function( event ) {
-          var code = event.keyCode || event.which;
-          // on delete or backspace, the focused circuit element should be deleted
-          if ( code === Input.KEY_DELETE || code === Input.KEY_BACKSPACE ) {
-            circuit.remove( circuitElement );
-          }
-        }
-      }
+      focusHighlight: 'invisible'
     }, options );
 
-    AccessibleNode.call( this, options );
+    Node.call( this, options );
     this.circuitElement = circuitElement;
+
+    // keyboard listener so that delete or backspace deletes the element - must be disposed
+    var keyListener = {
+      keydown: function( event ) {
+        var code = event.keyCode || event.which;
+        // on delete or backspace, the focused circuit element should be deleted
+        if ( code === Input.KEY_DELETE || code === Input.KEY_BACKSPACE ) {
+          circuit.remove( circuitElement );
+        }
+      }
+    };
+    this.addAccessibleInputListener( keyListener );
 
     // @protected
     this.disposeActions = [];
@@ -61,6 +64,10 @@ define( function( require ) {
     };
 
     this.disposeCircuitElementNode = function() {
+
+      // remove the keyboard listener
+      self.removeAccessibleInputListener( keyListener );
+
       self.disposeActions.forEach( function( element ) {
         element();
       } );
@@ -76,7 +83,7 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'CircuitElementNode', CircuitElementNode );
 
-  return inherit( AccessibleNode, CircuitElementNode, {
+  return inherit( Node, CircuitElementNode, {
 
     dispose: function() {
       this.disposeCircuitElementNode();
