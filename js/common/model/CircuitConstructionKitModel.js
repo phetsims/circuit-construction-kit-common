@@ -56,6 +56,13 @@ define( function( require ) {
       phetioValueType: TString
     } );
 
+    // @public (read-only) {Property.<string>} - whether to show lifelike or schematic representations
+    this.viewProperty = new Property( 'lifelike', {
+      validValues: [ 'lifelike', 'schematic' ],
+      tandem: tandem.createTandem( 'viewProperty' ),
+      phetioValueType: TString
+    } );
+
     // When the user manipulates something, hide the readouts, see https://github.com/phetsims/circuit-construction-kit/issues/130
     // The following cases result in pausing
     // 1. More components are dragged out of the toolbox

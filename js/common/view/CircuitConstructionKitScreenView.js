@@ -30,6 +30,7 @@ define( function( require ) {
   var TextPushButton = require( 'SUN/buttons/TextPushButton' );
   var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/CircuitStruct' );
   var Plane = require( 'SCENERY/nodes/Plane' );
+  var ViewRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ViewRadioButtonGroup' );
 
   // constants
   var LAYOUT_INSET = CircuitConstructionKitConstants.LAYOUT_INSET;
@@ -189,6 +190,8 @@ define( function( require ) {
         numberOfResistors: options.numberOfResistorsInToolbox
       } );
 
+    this.viewRadioButtonGroup = new ViewRadioButtonGroup( circuitConstructionKitModel.viewProperty );
+
     var electronSpeedThrottlingReadoutNode = new ElectronSpeedThrottlingReadoutNode(
       circuitConstructionKitModel.circuit.constantDensityPropagator.timeScaleProperty,
       circuitConstructionKitModel.circuit.showElectronsProperty,
@@ -217,6 +220,8 @@ define( function( require ) {
     // Has to be interleaved in the circuit layering to support the black box, so that the toolbox can be behind
     // circuit elements but in front of the transparency overlay
     this.circuitNode.mainLayer.addChild( this.circuitElementToolbox );
+    this.circuitNode.mainLayer.addChild( this.viewRadioButtonGroup );
+
     var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel(
       circuitConstructionKitModel.circuit,
       this.visibleBoundsProperty,
@@ -250,6 +255,8 @@ define( function( require ) {
       } );
 
       self.circuitElementToolbox.mutate( options.getToolboxPosition( visibleBounds ) );
+      self.viewRadioButtonGroup.top = self.circuitElementToolbox.bottom + 10;
+      self.viewRadioButtonGroup.left = self.circuitElementToolbox.left;
 
       self.displayOptionsPanel.mutate( {
         right: visibleBounds.right - LAYOUT_INSET,
