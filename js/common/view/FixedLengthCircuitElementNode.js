@@ -32,6 +32,7 @@ define( function( require ) {
    * @param circuitElement
    * @param {Node} contentNode - the node that will display the component
    * @param {number} contentScale - the scale factor to apply to the image for the size in the play area (icons are automatically scaled up)
+   * @param {Tandem} tandem
    * @param options
    * @constructor
    */
