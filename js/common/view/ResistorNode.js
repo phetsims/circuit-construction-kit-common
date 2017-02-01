@@ -25,6 +25,7 @@ define( function( require ) {
    * @param circuitConstructionKitScreenView
    * @param {CircuitNode} [circuitNode] optional, null for icons
    * @param resistor
+   * @param {Property.<boolean>} runningProperty - not used here but appears in signature to keep same signature as other components.
    * @param tandem
    * @param options
    * @constructor
