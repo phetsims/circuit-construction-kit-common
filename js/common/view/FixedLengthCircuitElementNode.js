@@ -152,23 +152,24 @@ define( function( require ) {
         },
         end: function( event ) {
 
-          // If over the toolbox, then drop into it, and don't process further
-          if ( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) ) {
-            circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
-            return;
-          }
-
           if ( !circuitElement.interactiveProperty.get() ) {
-            return;
+            // nothing to do
           }
+          else if ( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) ) {
 
-          circuitNode.endDrag( event, circuitElement.endVertexProperty.get(), didDrag );
+            // If over the toolbox, then drop into it, and don't process further
+            circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
+          }
+          else {
 
-          // Only show the editor when tapped, not on every drag.  Also, event could be undefined if this end() was triggered
-          // by dispose()
-          event && self.maybeSelect( event, circuitNode, p );
+            circuitNode.endDrag( event, circuitElement.endVertexProperty.get(), didDrag );
 
-          didDrag = false;
+            // Only show the editor when tapped, not on every drag.  Also, event could be undefined if this end() was triggered
+            // by dispose()
+            event && self.maybeSelect( event, circuitNode, p );
+
+            didDrag = false;
+          }
         }
       } );
       contentNode.addInputListener( this.inputListener );
