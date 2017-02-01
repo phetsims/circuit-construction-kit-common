@@ -158,7 +158,7 @@ define( function( require ) {
           else if ( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) ) {
 
             // If over the toolbox, then drop into it, and don't process further
-            circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
+            setTimeout( function() {circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );}, 0 );
           }
           else {
 
