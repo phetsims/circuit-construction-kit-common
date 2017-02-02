@@ -18,7 +18,7 @@ define( function( require ) {
   var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitElementEditContainerPanel' );
 
   /**
-   * @param {CircuitElement} circuitElement
+   * @param {CircuitElement} circuitElement - the CircuitElement to be rendered
    * @param {Circuit} circuit - the circuit which the element can be removed from
    * @param {Object} [options]
    * @constructor
@@ -28,6 +28,7 @@ define( function( require ) {
     var self = this;
 
     options = _.extend( {
+
       // options for keyboard navigation
       tagName: 'div', // HTML tag name for representative element in the document, see Accessibility.js
       focusable: true,
@@ -49,7 +50,7 @@ define( function( require ) {
     };
     this.addAccessibleInputListener( keyListener );
 
-    // @protected
+    // @private
     this.disposeActions = [];
 
     this.updateOpacityOnInteractiveChange();
