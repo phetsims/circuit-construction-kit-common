@@ -215,11 +215,11 @@ define( function( require ) {
     );
 
     if ( !options.icon ) {
-      this.fireNode = new Image( fireImage, { pickable: false, opacity: 0.5 } );
+      this.fireNode = new Image( fireImage, { pickable: false, opacity: 0.95 } );
       this.fireNode.mutate( { scale: contentNode.width / this.fireNode.width } );
       this.addChild( this.fireNode );
       var updateFire = function( current ) {
-        self.fireNode.visible = Math.abs( current ) >= 0;
+        self.fireNode.visible = Math.abs( current ) >= 10;
       };
       circuitElement.currentProperty.link( updateFire );
     }
