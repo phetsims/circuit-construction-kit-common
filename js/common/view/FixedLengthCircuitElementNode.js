@@ -22,6 +22,10 @@ define( function( require ) {
   var Panel = require( 'SUN/Panel' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Color = require( 'SCENERY/util/Color' );
+  var Image = require( 'SCENERY/nodes/Image' );
+
+  // images
+  var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
 
   // phet-io modules
   var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
@@ -37,7 +41,6 @@ define( function( require ) {
    */
   function FixedLengthCircuitElementNode( circuitConstructionKitScreenView, circuitNode, circuitElement, contentNode,
                                           contentScale, tandem, options ) {
-
     var self = this;
 
     // Capture the original dimensions of the content node, without the highlight node
@@ -50,7 +53,8 @@ define( function( require ) {
     options = _.extend( {
       icon: false,
       updateLayout: function( startPosition, endPosition ) {
-        var angle = endPosition.minus( startPosition ).angle();
+        var delta = endPosition.minus( startPosition );
+        var angle = delta.angle();
 
         // Update the node transform in a single step, see #66
         scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
@@ -59,6 +63,13 @@ define( function( require ) {
           .multiplyMatrix( scratchMatrix2.setToTranslation( 0, -contentNodeHeight / 2 ) );
         contentNode.setMatrix( scratchMatrix );
         highlightNode && highlightParent.setMatrix( scratchMatrix.copy() );
+
+        // Update the fire transform
+        scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
+          .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
+          .multiplyMatrix( scratchMatrix2.setToScale( contentScale / 2 ) )
+          .multiplyMatrix( scratchMatrix2.setToTranslation( delta.magnitude() / 2 * 0.9, -fireImage[ 0 ].height ) );
+        self.fireNode && self.fireNode.setMatrix( scratchMatrix.copy() );
 
         // Show the readout node above the center of the component.
         if ( readoutNode ) {
@@ -203,6 +214,16 @@ define( function( require ) {
       circuitElement.endVertex.position
     );
 
+    if ( !options.icon ) {
+      this.fireNode = new Image( fireImage, { pickable: false, opacity: 0.5 } );
+      this.fireNode.mutate( { scale: contentNode.width / this.fireNode.width } );
+      this.addChild( this.fireNode );
+      var updateFire = function( current ) {
+        self.fireNode.visible = Math.abs( current ) >= 0;
+      };
+      circuitElement.currentProperty.link( updateFire );
+    }
+
     this.disposeFixedLengthCircuitElementNode = function() {
       if ( self.inputListener && self.inputListener.dragging ) {
         self.inputListener.endDrag();
@@ -223,6 +244,7 @@ define( function( require ) {
       circuitElement.endVertexProperty.unlink( relink );
 
       tandem.removeInstance( this );
+      updateFire && circuit.currentProperty.unlink( updateFire );
     };
 
     tandem.addInstance( this, TNode );

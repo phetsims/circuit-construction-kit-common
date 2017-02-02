@@ -23,6 +23,14 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Taken from a mockup by Bryce Gruneich and/or Amy Rouinfar"
   },
+  "fire.png": {
+    "text": [
+      "Copyright 2017 University of Colorado Boulder"
+    ],
+    "projectURL": "http://phet.colorado.edu",
+    "license": "contact phethelp@colorado.edu",
+    "notes": "Created by PhET Interactive Simulations by @clmccutchan"
+  },
   "lightbulb.png": {
     "text": [
       "Copyright 2016 University of Colorado Boulder"

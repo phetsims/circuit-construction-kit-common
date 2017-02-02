@@ -18,6 +18,9 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
   var Matrix3 = require( 'DOT/Matrix3' );
 
+  // images
+  var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
+
   /**
    *
    * @constructor
@@ -44,13 +47,21 @@ define( function( require ) {
     var scratchMatrix = new Matrix3();
     var scratchMatrix2 = new Matrix3();
     var updateLayout = function( startPosition, endPosition ) {
-      var angle = endPosition.minus( startPosition ).angle() + Math.PI / 4;
+      var delta = endPosition.minus( startPosition );
+      var angle = delta.angle() + Math.PI / 4;
 
       // Update the node transform in a single step, see #66
       scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
         .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
         .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) );
       self.lightBulbNode.setMatrix( scratchMatrix );
+
+      // Update the fire transform
+      scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
+        .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
+        .multiplyMatrix( scratchMatrix2.setToScale( contentScale / 12 ) )
+        .multiplyMatrix( scratchMatrix2.setToTranslation( -100, -fireImage[ 0 ].height - 350 ) );
+      self.fireNode && self.fireNode.setMatrix( scratchMatrix.copy() );
 
       self.highlightParent && self.highlightParent.setMatrix( scratchMatrix.copy() );
     };
