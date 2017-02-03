@@ -38,7 +38,7 @@ define( function( require ) {
   var TIME_SCALE = 100;
 
   var getUpperNeighborInCircuitElement = function( circuit, electron, circuitElementElectrons ) {
-    var closestUpperNeighbor = null;
+    var closestNeighbor = null;
     var closestDistance = Number.POSITIVE_INFINITY;
     for ( var i = 0; i < circuitElementElectrons.length; i++ ) {
       var neighborElectron = circuitElementElectrons[ i ];
@@ -46,19 +46,19 @@ define( function( require ) {
         var neighborDistance = neighborElectron.distanceProperty.get();
         var electronDistance = electron.distanceProperty.get();
         if ( neighborDistance > electronDistance ) {
-          var distance = neighborDistance - electronDistance;
+          var distance = Math.abs( neighborDistance - electronDistance );
           if ( distance < closestDistance ) {
             closestDistance = distance;
-            closestUpperNeighbor = neighborElectron;
+            closestNeighbor = neighborElectron;
           }
         }
       }
     }
-    return closestUpperNeighbor;
+    return closestNeighbor;
   };
 
   var getLowerNeighborInCircuitElement = function( circuit, electron, circuitElementElectrons ) {
-    var closestLowerNeighbor = null;
+    var closestNeighbor = null;
     var closestDistance = Number.POSITIVE_INFINITY;
     for ( var i = 0; i < circuitElementElectrons.length; i++ ) {
       var neighborElectron = circuitElementElectrons[ i ];
@@ -66,15 +66,15 @@ define( function( require ) {
         var neighborDistance = neighborElectron.distanceProperty.get();
         var electronDistance = electron.distanceProperty.get();
         if ( neighborDistance < electronDistance ) {
-          var distance = electronDistance - neighborDistance;
+          var distance = Math.abs( neighborDistance - electronDistance );
           if ( distance < closestDistance ) {
             closestDistance = distance;
-            closestLowerNeighbor = neighborElectron;
+            closestNeighbor = neighborElectron;
           }
         }
       }
     }
-    return closestLowerNeighbor;
+    return closestNeighbor;
   };
 
   var createCircuitLocation = function( circuitElement, distance ) {
