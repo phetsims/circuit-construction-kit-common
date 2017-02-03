@@ -18,9 +18,9 @@ define( function( require ) {
 
   // constants
 
-  // Number of amps at which a component catches fire.  TODO: why are currents clamped in this file?  Can we move that
-  // to the view?
-  var FIRE_CURRENT = 10;
+  // Clamp the current at a maximum.  TODO: Is this truly needed?  It seems like it's responsibility is covered
+  // by the speed decrease and fires.
+  var MAX_CURRENT = 10;
 
   // If the current is lower than this, then there is no electron movement
   var MIN_CURRENT = Math.pow( 10, -10 );
@@ -221,6 +221,10 @@ define( function( require ) {
       }
     },
     chooseCircuitElement: function( circuitLocations ) {
+      var self = this;
+      var minBY = _.minBy( circuitLocations, function( circuitLocation ) {
+        return circuitLocation.getDensity( self.circuit );
+      } );
       var min = Number.POSITIVE_INFINITY;
       var circuitLocationWithLowestDensity = null;
       for ( var i = 0; i < circuitLocations.length; i++ ) {
@@ -230,6 +234,7 @@ define( function( require ) {
           circuitLocationWithLowestDensity = circuitLocations[ i ];
         }
       }
+      console.log( circuitLocationWithLowestDensity === minBY );
       return circuitLocationWithLowestDensity;
     },
     getLocations: function( electron, dt, overshoot, under ) {
@@ -242,17 +247,17 @@ define( function( require ) {
         vertex = circuitElement.endVertexProperty.get();
       }
       var adjacentCircuitElements = this.circuit.getNeighborCircuitElements( vertex );
-      var all = [];
+      var circuitLocations = [];
 
       //keep only those with outgoing current.
       for ( var i = 0; i < adjacentCircuitElements.length; i++ ) {
         var neighbor = adjacentCircuitElements[ i ];
         var current = -neighbor.currentProperty.get();
-        if ( current > FIRE_CURRENT ) {
-          current = FIRE_CURRENT;
+        if ( current > MAX_CURRENT ) {
+          current = MAX_CURRENT;
         }
-        else if ( current < -FIRE_CURRENT ) {
-          current = -FIRE_CURRENT;
+        else if ( current < -MAX_CURRENT ) {
+          current = -MAX_CURRENT;
         }
         var distAlongNew = null;
         if ( current > 0 && neighbor.startVertexProperty.get() === vertex ) {//start near the beginning.
@@ -263,7 +268,7 @@ define( function( require ) {
           else if ( distAlongNew < 0 ) {
             distAlongNew = 0;
           }
-          all.push( createCircuitLocation( neighbor, distAlongNew ) );
+          circuitLocations.push( createCircuitLocation( neighbor, distAlongNew ) );
         }
         else if ( current < 0 && neighbor.endVertexProperty.get() === vertex ) {
           distAlongNew = neighbor.electronPathLength - overshoot;
@@ -273,10 +278,10 @@ define( function( require ) {
           else if ( distAlongNew < 0 ) {
             distAlongNew = 0;
           }
-          all.push( createCircuitLocation( neighbor, distAlongNew ) );
+          circuitLocations.push( createCircuitLocation( neighbor, distAlongNew ) );
         }
       }
-      return all;
+      return circuitLocations;
     }
   } );
 } );
