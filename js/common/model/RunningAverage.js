@@ -48,7 +48,7 @@ define( function( require ) {
       while ( this.samples.length > this.windowSize ) {
         this.samples.shift();
       }
-      return _.foldl( this.samples, SUM ) / this.samples.length;
+      return _.reduce( this.samples, SUM ) / this.samples.length;
     }
   } );
 } );
