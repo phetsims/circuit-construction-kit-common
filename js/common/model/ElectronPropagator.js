@@ -37,46 +37,6 @@ define( function( require ) {
   // Fudge factor to increase dt to make model compatible.  TODO: eliminate this
   var TIME_SCALE = 100;
 
-  var getUpperNeighborInCircuitElement = function( circuit, electron, circuitElementElectrons ) {
-    var closestNeighbor = null;
-    var closestDistance = Number.POSITIVE_INFINITY;
-    for ( var i = 0; i < circuitElementElectrons.length; i++ ) {
-      var neighborElectron = circuitElementElectrons[ i ];
-      if ( neighborElectron !== electron ) {
-        var neighborDistance = neighborElectron.distanceProperty.get();
-        var electronDistance = electron.distanceProperty.get();
-        if ( neighborDistance > electronDistance ) {
-          var distance = Math.abs( neighborDistance - electronDistance );
-          if ( distance < closestDistance ) {
-            closestDistance = distance;
-            closestNeighbor = neighborElectron;
-          }
-        }
-      }
-    }
-    return closestNeighbor;
-  };
-
-  var getLowerNeighborInCircuitElement = function( circuit, electron, circuitElementElectrons ) {
-    var closestNeighbor = null;
-    var closestDistance = Number.POSITIVE_INFINITY;
-    for ( var i = 0; i < circuitElementElectrons.length; i++ ) {
-      var neighborElectron = circuitElementElectrons[ i ];
-      if ( neighborElectron !== electron ) {
-        var neighborDistance = neighborElectron.distanceProperty.get();
-        var electronDistance = electron.distanceProperty.get();
-        if ( neighborDistance < electronDistance ) {
-          var distance = Math.abs( neighborDistance - electronDistance );
-          if ( distance < closestDistance ) {
-            closestDistance = distance;
-            closestNeighbor = neighborElectron;
-          }
-        }
-      }
-    }
-    return closestNeighbor;
-  };
-
   var createCircuitLocation = function( circuitElement, distance ) {
     assert && assert( _.isNumber( distance ), 'distance should be a number' );
     assert && assert( circuitElement.containsScalarLocation( distance ), 'circuitElement should contain distance' );
@@ -182,35 +142,39 @@ define( function( require ) {
       var circuitElementElectrons = this.circuit.getElectronsInCircuitElement( electron.circuitElement );
 
       // if it has a lower and upper neighbor, try to get the distance to each to be half of ELECTRON_DX
-      var upper = getUpperNeighborInCircuitElement( this.circuit, electron, circuitElementElectrons );
-      var lower = getLowerNeighborInCircuitElement( this.circuit, electron, circuitElementElectrons );
-      if ( upper === null || lower === null ) {
-        return;
-      }
-      var separation = upper.distanceProperty.get() - lower.distanceProperty.get();
-      var electronDistance = electron.distanceProperty.get();
+      var sorted = _.sortBy( circuitElementElectrons, function( e ) {return e.distanceProperty.get();} );
 
-      var dest = lower.distanceProperty.get() + separation / 2;
-      var distMoving = Math.abs( dest - electronDistance );
-      var sameDirAsCurrent = (dest - electronDistance) > 0 && -electron.circuitElement.currentProperty.get() > 0;
-      var speedScale = 1000.0 / 30.0;//to have same scale as 3.17.00
-      var correctionSpeed = .055 / NUMBER_OF_EQUALIZE_STEPS * speedScale;
-      if ( !sameDirAsCurrent ) {
-        correctionSpeed = .01 / NUMBER_OF_EQUALIZE_STEPS * speedScale;
-      }
-      var maxDX = Math.abs( correctionSpeed * dt );
+      var electronIndex = sorted.indexOf( electron );
+      var upper = sorted[ electronIndex + 1 ];
+      var lower = sorted[ electronIndex - 1 ];
 
-      if ( distMoving > maxDX ) {
-        //move in the appropriate direction maxDX
-        if ( dest < electronDistance ) {
-          dest = electronDistance - maxDX;
+      if ( upper && lower ) {
+
+        var separation = upper.distanceProperty.get() - lower.distanceProperty.get();
+        var electronDistance = electron.distanceProperty.get();
+
+        var dest = lower.distanceProperty.get() + separation / 2;
+        var distMoving = Math.abs( dest - electronDistance );
+        var sameDirAsCurrent = (dest - electronDistance) > 0 && -electron.circuitElement.currentProperty.get() > 0;
+        var speedScale = 1000.0 / 30.0;//to have same scale as 3.17.00
+        var correctionSpeed = .055 / NUMBER_OF_EQUALIZE_STEPS * speedScale;
+        if ( !sameDirAsCurrent ) {
+          correctionSpeed = .01 / NUMBER_OF_EQUALIZE_STEPS * speedScale;
         }
-        else if ( dest > electronDistance ) {
-          dest = electronDistance + maxDX;
+        var maxDX = Math.abs( correctionSpeed * dt );
+
+        if ( distMoving > maxDX ) {
+          //move in the appropriate direction maxDX
+          if ( dest < electronDistance ) {
+            dest = electronDistance - maxDX;
+          }
+          else if ( dest > electronDistance ) {
+            dest = electronDistance + maxDX;
+          }
         }
-      }
-      if ( dest >= 0 && dest <= electron.circuitElement.electronPathLength ) {
-        electron.distanceProperty.set( dest );
+        if ( dest >= 0 && dest <= electron.circuitElement.electronPathLength ) {
+          electron.distanceProperty.set( dest );
+        }
       }
     },
     propagate: function( electron, dt ) {
