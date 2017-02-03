@@ -29,7 +29,10 @@ define( function( require ) {
 
     circuit: { type: 'flag' },
 
-    autosave: { type: 'flag' }
+    autosave: { type: 'flag' },
+
+    // Determines whether the black box reveal buttons will be shown.
+    showRevealButton: { type: 'boolean', defaultValue: true }
   } );
 
   circuitConstructionKitCommon.register( 'CircuitConstructionKitQueryParameters', CircuitConstructionKitQueryParameters );

@@ -18,6 +18,7 @@ define( function( require ) {
   var ComboBox = require( 'SUN/ComboBox' );
   var Text = require( 'SCENERY/nodes/Text' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
   var BlackBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/blackbox/view/BlackBoxNode' );
   var WhiteBoxNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/blackbox/view/WhiteBoxNode' );
   var RevealButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/blackbox/view/RevealButton' );
@@ -51,7 +52,9 @@ define( function( require ) {
     var revealButton = new RevealButton( blackBoxSceneModel.revealingProperty, blackBoxSceneModel.isRevealEnabledProperty,
       tandem.createTandem( 'revealButton' )
     );
-    this.addChild( revealButton );
+    if ( CircuitConstructionKitQueryParameters.showRevealButton ) {
+      this.addChild( revealButton );
+    }
 
     // Circuit components and ammeter/voltmeter should be in front of these controls
     modeRadioButtonGroup.moveToBack();
