@@ -13,6 +13,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Battery' );
   var Property = require( 'AXON/Property' );
   var TandemDragHandler = require( 'TANDEM/scenery/input/TandemDragHandler' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -214,7 +215,7 @@ define( function( require ) {
       circuitElement.endVertex.position
     );
 
-    if ( !options.icon ) {
+    if ( !options.icon && circuitElement instanceof Battery ) {
       this.fireNode = new Image( fireImage, { pickable: false, opacity: 0.95 } );
       this.fireNode.mutate( { scale: contentNode.width / this.fireNode.width } );
       this.addChild( this.fireNode );
@@ -244,7 +245,7 @@ define( function( require ) {
       circuitElement.endVertexProperty.unlink( relink );
 
       tandem.removeInstance( this );
-      if ( !options.icon ) {
+      if ( !options.icon && circuitElement instanceof Battery ) {
         circuitElement.currentProperty.unlink( updateFire );
       }
     };
