@@ -244,7 +244,9 @@ define( function( require ) {
       circuitElement.endVertexProperty.unlink( relink );
 
       tandem.removeInstance( this );
-      updateFire && circuit.currentProperty.unlink( updateFire );
+      if ( !options.icon ) {
+        circuitElement.currentProperty.unlink( updateFire );
+      }
     };
 
     tandem.addInstance( this, TNode );
