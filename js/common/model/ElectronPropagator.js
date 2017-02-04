@@ -211,17 +211,16 @@ define( function( require ) {
         }
         assert && assert( !isNaN( overshoot ), 'overshoot is NaN' );
         assert && assert( overshoot >= 0, 'overshoot is <0' );
-        var locationArray = this.getLocations( electron, dt, overshoot, under );
-        if ( locationArray.length === 0 ) {
-          return;
-        }
+        var circuitLocations = this.getLocations( electron, dt, overshoot, under );
+        if ( circuitLocations.length > 0 ) {
 
-        //choose the CircuitElement with the furthest away electron
-        var self = this;
-        var chosenCircuitLocation = _.minBy( locationArray, function( circuitLocation ) {
-          return circuitLocation.getDensity( self.circuit );
-        } );
-        electron.setLocation( chosenCircuitLocation.circuitElement, Math.abs( chosenCircuitLocation.distance ) );
+          // choose the CircuitElement with the furthest away electron
+          var self = this;
+          var chosenCircuitLocation = _.minBy( circuitLocations, function( circuitLocation ) {
+            return circuitLocation.getDensity( self.circuit );
+          } );
+          electron.setLocation( chosenCircuitLocation.circuitElement, Math.abs( chosenCircuitLocation.distance ) );
+        }
       }
     },
     getLocations: function( electron, dt, overshoot, under ) {
