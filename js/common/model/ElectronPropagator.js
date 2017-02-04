@@ -215,27 +215,14 @@ define( function( require ) {
         if ( locationArray.length === 0 ) {
           return;
         }
+
         //choose the CircuitElement with the furthest away electron
-        var chosenCircuitLocation = this.chooseCircuitElement( locationArray );
+        var self = this;
+        var chosenCircuitLocation = _.minBy( locationArray, function( circuitLocation ) {
+          return circuitLocation.getDensity( self.circuit );
+        } );
         electron.setLocation( chosenCircuitLocation.circuitElement, Math.abs( chosenCircuitLocation.distance ) );
       }
-    },
-    chooseCircuitElement: function( circuitLocations ) {
-      var self = this;
-      var minBY = _.minBy( circuitLocations, function( circuitLocation ) {
-        return circuitLocation.getDensity( self.circuit );
-      } );
-      var min = Number.POSITIVE_INFINITY;
-      var circuitLocationWithLowestDensity = null;
-      for ( var i = 0; i < circuitLocations.length; i++ ) {
-        var density = circuitLocations[ i ].getDensity( this.circuit );
-        if ( density < min ) {
-          min = density;
-          circuitLocationWithLowestDensity = circuitLocations[ i ];
-        }
-      }
-      console.log( circuitLocationWithLowestDensity === minBY );
-      return circuitLocationWithLowestDensity;
     },
     getLocations: function( electron, dt, overshoot, under ) {
       var circuitElement = electron.circuitElement;
