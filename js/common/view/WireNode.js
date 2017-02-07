@@ -225,7 +225,7 @@ define( function( require ) {
       wire.endVertexProperty.get().positionProperty.unlink( endListener );
 
       circuitNode && circuitNode.highlightLayer.removeChild( highlightNodeParent );
-      tandem.removeInstance( this );
+      tandem.removeInstance( self );
     };
 
     tandem.addInstance( this, TNode );
