@@ -297,7 +297,7 @@ define( function( require ) {
           circuitConstructionKitModel.voltmeter.voltageProperty.set( null );
         }
         else {
-          circuitConstructionKitModel.voltmeter.voltageProperty.set( redConnection.voltageProperty.get() - blackConnection.voltageProperty.get() );
+          circuitConstructionKitModel.voltmeter.voltageProperty.set( redConnection.voltage - blackConnection.voltage );
         }
       }
     };
