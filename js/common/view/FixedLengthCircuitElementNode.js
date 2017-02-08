@@ -14,6 +14,7 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Battery' );
+  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Resistor' );
   var Property = require( 'AXON/Property' );
   var TandemSimpleDragHandler = require( 'TANDEM/scenery/input/TandemSimpleDragHandler' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -219,12 +220,13 @@ define( function( require ) {
       circuitElement.endVertexProperty.get().positionProperty.get()
     );
 
-    if ( !options.icon && circuitElement instanceof Battery ) {
+    if ( !options.icon && (circuitElement instanceof Battery || circuitElement instanceof Resistor) ) {
       this.fireNode = new Image( fireImage, { pickable: false, opacity: 0.95 } );
       this.fireNode.mutate( { scale: contentNode.width / this.fireNode.width } );
       this.addChild( this.fireNode );
       var updateFire = function( current ) {
-        self.fireNode.visible = Math.abs( current ) >= 10;
+        var lowResistanceResistor = circuitElement instanceof Resistor && circuitElement.resistanceProperty.get() < 1E-8;
+        self.fireNode.visible = Math.abs( current ) >= 10 && !lowResistanceResistor;
       };
       circuitElement.currentProperty.link( updateFire );
     }
