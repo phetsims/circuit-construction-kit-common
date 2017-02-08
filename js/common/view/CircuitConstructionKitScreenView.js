@@ -220,7 +220,7 @@ define( function( require ) {
     // Has to be interleaved in the circuit layering to support the black box, so that the toolbox can be behind
     // circuit elements but in front of the transparency overlay
     this.circuitNode.mainLayer.addChild( this.circuitElementToolbox );
-    this.circuitNode.mainLayer.addChild( this.viewRadioButtonGroup );
+    // this.circuitNode.mainLayer.addChild( this.viewRadioButtonGroup );
 
     var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel(
       circuitConstructionKitModel.circuit,
