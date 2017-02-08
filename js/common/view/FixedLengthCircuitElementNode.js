@@ -68,10 +68,13 @@ define( function( require ) {
         highlightNode && highlightParent.setMatrix( scratchMatrix.copy() );
 
         // Update the fire transform
+        var flameExtent = 0.8;
+        var scale = delta.magnitude() / fireImage[ 0 ].width * flameExtent;
+        var flameInset = (1 - flameExtent) / 2;
         scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
           .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
-          .multiplyMatrix( scratchMatrix2.setToScale( contentScale / 2 ) )
-          .multiplyMatrix( scratchMatrix2.setToTranslation( delta.magnitude() / 2 * 0.9, -fireImage[ 0 ].height ) );
+          .multiplyMatrix( scratchMatrix2.setToScale( scale ) )
+          .multiplyMatrix( scratchMatrix2.setToTranslation( delta.magnitude() * flameInset / scale, -fireImage[ 0 ].height ) );
         self.fireNode && self.fireNode.setMatrix( scratchMatrix.copy() );
 
         // Show the readout node above the center of the component.
