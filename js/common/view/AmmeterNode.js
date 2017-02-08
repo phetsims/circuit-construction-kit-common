@@ -57,8 +57,8 @@ define( function( require ) {
 
     var currentProperty = new DerivedProperty( [ ammeter.currentProperty ], function( current ) {
 
-      var max = window.phetBlackBoxStudy ? 1E3 : 1E4;
-      var maxString = window.phetBlackBoxStudy ? '> 10^3' : '> 10^4';
+      var max = window.phetBlackBoxStudy ? 1E3 : 1E10;
+      var maxString = window.phetBlackBoxStudy ? '> 10^3' : '> 10^10';
 
       // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
       return current === null ? '?' :
