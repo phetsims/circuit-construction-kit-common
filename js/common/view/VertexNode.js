@@ -61,6 +61,7 @@ define( function( require ) {
     };
     circuit.vertices.addItemAddedListener( updateStroke );
     circuit.vertices.addItemRemovedListener( updateStroke );
+    circuit.circuitChangedEmitter.addListener( updateStroke ); // TODO: this one seems critical, are the other listeners necessary?
 
     // In Black Box, other wires can be detached from a vertex and this should also update the solder
     circuit.circuitElements.addItemAddedListener( updateStroke );
@@ -229,6 +230,7 @@ define( function( require ) {
       circuit.circuitElements.removeItemRemovedListener( updateStroke );
 
       vertex.attachableProperty.unlink( updateStroke );
+      circuit.circuitChangedEmitter.removeListener( updateStroke );
       tandem.removeInstance( self );
     };
 
