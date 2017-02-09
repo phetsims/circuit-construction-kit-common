@@ -665,7 +665,7 @@ define( function( require ) {
      * A vertex has been dragged, is it a candidate for joining with other vertices?  If so, return the candidate
      * vertex.  Otherwise, return null.
      * @param {Vertex} vertex - the dragged vertex
-     * @param {string} mode - the application mode 'build' | 'investigate' | undefined
+     * @param {string} mode - the application mode 'test' | 'explore' | undefined
      * @param {Bounds2} blackBoxBounds - the bounds of the black box, if there is one
      * @returns {Vertex} - the vertex it will be able to connect to, if dropped
      * @public
@@ -673,7 +673,7 @@ define( function( require ) {
     getDropTarget: function( vertex, mode, blackBoxBounds ) {
       var self = this;
 
-      if ( mode === 'build' ) {
+      if ( mode === 'test' ) {
         assert && assert( blackBoxBounds, 'bounds should be provided for build mode' );
       }
 
@@ -761,7 +761,7 @@ define( function( require ) {
 
       // (9) When in Black Box "build" mode (i.e. building inside the black box), a vertex user cannot connect to
       // a black box interface vertex if its other vertices would be outside of the black box.  See #136
-      if ( mode === 'build' ) {
+      if ( mode === 'test' ) {
         var fixedVertices2 = this.findAllFixedVertices( vertex );
         candidateVertices = candidateVertices.filter( function( candidateVertex ) {
 

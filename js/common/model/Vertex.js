@@ -70,7 +70,7 @@ define( function( require ) {
     } );
 
     // Some of the following properties overlap somewhat.  For example, if 'insideTrueBlackBox' is true, then
-    // the interactive will be set to false when the circuit is in 'build' mode.
+    // the interactive will be set to false when the circuit is in 'test' mode.
 
     // @public - Vertices on the black box interface persist between build/investigate, and cannot be moved/deleted
     this.draggableProperty = new BooleanProperty( options.draggable );

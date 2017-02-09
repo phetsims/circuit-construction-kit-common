@@ -49,9 +49,9 @@ define( function( require ) {
       tandem: tandem.createTandem( 'showLabelsProperty' )
     } );
 
-    // @public (read-only) {Property.<string>} - whether the user is in the 'investigate' or 'build' mode
-    this.modeProperty = new Property( 'investigate', {
-      validValues: [ 'investigate', 'build' ],
+    // @public (read-only) {Property.<string>} - whether the user is in the 'explore' or 'test' mode
+    this.modeProperty = new Property( 'explore', {
+      validValues: [ 'explore', 'test' ],
       tandem: tandem.createTandem( 'modeProperty' ),
       phetioValueType: TString
     } );
