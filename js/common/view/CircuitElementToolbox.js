@@ -169,10 +169,6 @@ define( function( require ) {
       spacing: CircuitConstructionKitConstants.TOOLBOX_ITEM_SPACING,
       children: children
     } ), tandem );
-
-    circuit.isCircuitElementOverToolboxProperty.link( function( isCircuitElementOverToolbox ) {
-      self.stroke = isCircuitElementOverToolbox ? 'white' : 'black';
-    } );
   }
 
   circuitConstructionKitCommon.register( 'CircuitElementToolbox', CircuitElementToolbox );
