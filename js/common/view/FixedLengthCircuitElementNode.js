@@ -217,12 +217,6 @@ define( function( require ) {
       this.addChild( readoutNode );
     }
 
-    // Update after the highlight/readout exist
-    options.updateLayout(
-      circuitElement.startVertexProperty.get().positionProperty.get(),
-      circuitElement.endVertexProperty.get().positionProperty.get()
-    );
-
     if ( !options.icon && (circuitElement instanceof Battery || circuitElement instanceof Resistor) ) {
       this.fireNode = new Image( fireImage, { pickable: false, opacity: 0.95 } );
       this.fireNode.mutate( { scale: contentNode.width / this.fireNode.width } );
@@ -233,6 +227,12 @@ define( function( require ) {
       };
       circuitElement.currentProperty.link( updateFire );
     }
+
+    // Update after the highlight/readout/fire exist
+    options.updateLayout(
+      circuitElement.startVertexProperty.get().positionProperty.get(),
+      circuitElement.endVertexProperty.get().positionProperty.get()
+    );
 
     this.disposeFixedLengthCircuitElementNode = function() {
       if ( self.inputListener && self.inputListener.dragging ) {
