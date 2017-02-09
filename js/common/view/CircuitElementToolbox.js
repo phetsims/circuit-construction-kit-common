@@ -61,8 +61,6 @@ define( function( require ) {
       numberOfSwitches: CircuitElementToolbox.NUMBER_OF_SWITCHES
     }, options );
 
-    var self = this;
-
     var createVertex = function( x, y ) {
       return new Vertex( x, y, {
         tandem: circuit.vertexGroupTandem.createNextTandem()
