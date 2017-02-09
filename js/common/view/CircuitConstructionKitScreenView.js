@@ -208,9 +208,12 @@ define( function( require ) {
       circuitConstructionKitModel.showLabelsProperty,
       tandem.createTandem( 'displayOptionsPanel' ), {
         showConventionalCurrentCheckBox: false,
-        showValuesCheckBox: false
+        showValuesCheckBox: false,
+        showElectronsCheckBox: CircuitConstructionKitQueryParameters.showElectronsCheckBox
       } );
-    this.addChild( this.displayOptionsPanel );
+
+    CircuitConstructionKitQueryParameters.showControlPanel && this.addChild( this.displayOptionsPanel );
+
     this.displayOptionsPanel.moveToBack(); // Move behind elements added in the super, such as the sensors and circuit
     this.moveBackgroundToBack();
 

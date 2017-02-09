@@ -34,6 +34,16 @@ define( function( require ) {
     circuit: {
       type: 'string',
       defaultValue: null
+    },
+
+    showControlPanel: {
+      type: 'boolean',
+      defaultValue: true
+    },
+
+    showElectronsCheckBox: {
+      type: 'boolean',
+      defaultValue: true
     }
   } );
 
