@@ -101,7 +101,7 @@ define( function( require ) {
 
     // When the simulation pauses and resumes, clear the time scaling factor (so it doesn't show a stale value)
     this.exploreScreenRunningProperty.link( function() {
-      self.circuit.constantDensityPropagator.timeScaleRunningAverage.clear();
+      self.circuit.electronPropagator.timeScaleRunningAverage.clear();
     } );
   }
 

@@ -193,7 +193,7 @@ define( function( require ) {
     this.viewRadioButtonGroup = new ViewRadioButtonGroup( circuitConstructionKitModel.viewProperty );
 
     var electronSpeedThrottlingReadoutNode = new ElectronSpeedThrottlingReadoutNode(
-      circuitConstructionKitModel.circuit.constantDensityPropagator.timeScaleProperty,
+      circuitConstructionKitModel.circuit.electronPropagator.timeScaleProperty,
       circuitConstructionKitModel.circuit.showElectronsProperty,
       circuitConstructionKitModel.exploreScreenRunningProperty
     );

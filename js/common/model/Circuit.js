@@ -58,10 +58,10 @@ define( function( require ) {
     } );
 
     // @private - create the electrons in new circuits
-    this.constantDensityLayout = new ElectronLayout( this );
+    this.electronLayout = new ElectronLayout( this );
 
     // @private - move the electrons with speed proportional to current
-    this.constantDensityPropagator = new ElectronPropagator( this );
+    this.electronPropagator = new ElectronPropagator( this );
 
     // Re-solve the circuit when voltages or resistances change.
     var solve = function() { self.solve(); };
@@ -511,7 +511,7 @@ define( function( require ) {
     },
 
     step: function( dt ) {
-      this.constantDensityPropagator.step( dt );
+      this.electronPropagator.step( dt );
     },
 
     /**
@@ -523,7 +523,7 @@ define( function( require ) {
 
         // TODO: move dirty check into the layoutElectrons call?
         if ( circuitElement.electronLayoutDirty ) {
-          self.constantDensityLayout.layoutElectrons( circuitElement );
+          self.electronLayout.layoutElectrons( circuitElement );
         }
       } );
     },
