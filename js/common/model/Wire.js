@@ -21,13 +21,22 @@ define( function( require ) {
 
   /**
    * Wire main constructor
+   * @param {Vertex} startVertex
+   * @param {Vertex} endVertex
+   * @param {Number} resistivity
+   * @param {Object} [options]
    * @constructor
    */
   function Wire( startVertex, endVertex, resistivity, options ) {
     assert && assert( typeof resistivity === 'number' && resistivity >= 0, 'bad value for resistivity: ' + resistivity );
+
+    options = _.extend( { wireStub: false }, options );
     var self = this;
     var electronPathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
     CircuitElement.call( this, startVertex, endVertex, electronPathLength, options );
+
+    // @public (read-only)
+    this.wireStub = options.wireStub;
 
     // @public (read-only) - the resistance of the Wire in ohms
     this.resistanceProperty = new NumberProperty( CircuitConstructionKitConstants.MINIMUM_RESISTANCE );
