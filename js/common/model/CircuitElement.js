@@ -214,6 +214,15 @@ define( function( require ) {
      */
     getCircuitProperties: function() {
       assert && assert( false, 'getCircuitProperties must be implemented in subclass' );
+    },
+
+    /**
+     * Return the indices of the vertices, for debugging.
+     * @public
+     * @return {[number,number]}
+     */
+    get indices() {
+      return [ this.startVertexProperty.get().index, this.endVertexProperty.get().index ];
     }
   } );
 } );

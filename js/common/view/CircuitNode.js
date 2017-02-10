@@ -77,8 +77,8 @@ define( function( require ) {
       self.getVertexNode( circuitElement.startVertexProperty.get() ) && self.getVertexNode( circuitElement.startVertexProperty.get() ).moveToFront();
       self.getVertexNode( circuitElement.endVertexProperty.get() ) && self.getVertexNode( circuitElement.endVertexProperty.get() ).moveToFront();
 
-      self.getVertexNode( circuitElement.startVertexProperty.get() ) && self.getSolderNode( circuitElement.startVertexProperty.get() ).moveToFront();
-      self.getVertexNode( circuitElement.endVertexProperty.get() ) && self.getSolderNode( circuitElement.endVertexProperty.get() ).moveToFront();
+      self.getSolderNode( circuitElement.startVertexProperty.get() ) && self.getSolderNode( circuitElement.startVertexProperty.get() ).moveToFront();
+      self.getSolderNode( circuitElement.endVertexProperty.get() ) && self.getSolderNode( circuitElement.endVertexProperty.get() ).moveToFront();
     };
 
     /**
@@ -203,6 +203,9 @@ define( function( require ) {
         b.moveToFront();
       } );
     } );
+
+    // Filled in by black box study, if it is running.
+    this.blackBoxNode = null;
   }
 
   circuitConstructionKitCommon.register( 'CircuitNode', CircuitNode );
@@ -360,12 +363,14 @@ define( function( require ) {
      * or they will be visible in front of the black box.
      */
     moveTrueBlackBoxElementsToBack: function() {
+      var self = this;
       var circuitElementNodeToBack = function( circuitElementNode ) {
         circuitElementNode.circuitElement.insideTrueBlackBoxProperty.get() && circuitElementNode.moveToBack();
       };
       var vertexNodeToBack = function( nodeWithVertex ) {
-        (nodeWithVertex.vertex.insideTrueBlackBoxProperty.get() || nodeWithVertex.vertex.blackBoxInterfaceProperty.get() ) && nodeWithVertex.moveToBack();
+        nodeWithVertex.vertex.insideTrueBlackBoxProperty.get() && nodeWithVertex.moveToBack();
       };
+
       this.solderNodes.forEach( vertexNodeToBack );
       this.vertexNodes.forEach( vertexNodeToBack );
       this.batteryNodes.forEach( circuitElementNodeToBack );
@@ -373,6 +378,18 @@ define( function( require ) {
       this.wireNodes.forEach( circuitElementNodeToBack );
       this.resistorNodes.forEach( circuitElementNodeToBack );
       this.switchNodes.forEach( circuitElementNodeToBack );
+
+      // Move black box interface vertices behind the black box, see https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/36
+      var interfaceVertexBehindBox = function( nodeWithVertex ) {
+        var blackBoxNodeIndex = self.mainLayer.children.indexOf( self.blackBoxNode );
+        if ( nodeWithVertex.vertex.blackBoxInterfaceProperty.get() ) {
+          self.mainLayer.removeChild( nodeWithVertex );
+          self.mainLayer.insertChild( blackBoxNodeIndex, nodeWithVertex );
+        }
+      };
+
+      this.solderNodes.forEach( interfaceVertexBehindBox );
+      this.vertexNodes.forEach( interfaceVertexBehindBox );
     },
 
     /**

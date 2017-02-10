@@ -23,6 +23,7 @@ define( function( require ) {
    * @constructor
    */
   function SolderNode( circuitNode, vertex ) {
+    var self = this;
     var circuit = circuitNode.circuit;
     this.vertex = vertex;
     this.startOffset = null;// @public - added by CircuitNode during dragging, used for relative drag location.
@@ -53,6 +54,11 @@ define( function( require ) {
     };
     vertex.positionProperty.link( updateSolderNodePosition );
 
+    var moveToFrontListener = function() {
+      self.moveToFront();
+    };
+    vertex.moveToFrontEmitter.addListener( moveToFrontListener );
+
     this.disposeSolderNode = function() {
       vertex.positionProperty.unlink( updateSolderNodePosition );
 
@@ -62,7 +68,11 @@ define( function( require ) {
       // In Black Box, other wires can be detached from a vertex and this should also update the solder
       circuit.circuitElements.removeItemAddedListener( updateShape );
       circuit.circuitElements.removeItemRemovedListener( updateShape );
+
+      vertex.moveToFrontEmitter.removeListener( moveToFrontListener );
     };
+
+    updateShape();
   }
 
   circuitConstructionKitCommon.register( 'SolderNode', SolderNode );
