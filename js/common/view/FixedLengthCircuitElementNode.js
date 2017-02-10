@@ -97,12 +97,12 @@ define( function( require ) {
         h / contentScale - inset * 2,
         8 / contentScale,
         8 / contentScale,
-        _.extend( options.highlightOptions, {
+        _.extend( {
           stroke: CircuitConstructionKitConstants.HIGHLIGHT_COLOR,
           lineWidth: CircuitConstructionKitConstants.HIGHLIGHT_LINE_WIDTH / contentScale / contentScale,
           scale: contentScale,
           pickable: false
-        } )
+        }, options.highlightOptions )
       );
 
       highlightParent.children = [ highlightNode ];

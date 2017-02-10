@@ -74,6 +74,7 @@ define( function( require ) {
       contentHeight: 22 * 0.5,
       highlightOptions: {
         centerX: 0,
+        stroke: null, // No stroke to be shown for the bulb (it is shown for the corresponding foreground node)
 
         // Offset the highlight vertically so it looks good, tuned manually
         bottom: FixedLengthCircuitElementNode.HIGHLIGHT_INSET * 0.75
