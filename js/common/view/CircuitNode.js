@@ -452,8 +452,11 @@ define( function( require ) {
         var rotationDelta = oppositePosition.minus( oppositeVertex.unsnappedPositionProperty.get() );
 
         this.translateVertexGroup( vertex, vertices, rotationDelta, function() {
-          vertex.unsnappedPositionProperty.set( oppositeVertex.unsnappedPositionProperty.get().minus( relative ) );
-        }, [ vertex ] );
+            vertex.unsnappedPositionProperty.set( oppositeVertex.unsnappedPositionProperty.get().minus( relative ) );
+          },
+
+          // allow either vertex to snap
+          [ vertex, oppositeVertex ] );
       }
       else {
         var translationDelta = position.minus( vertex.unsnappedPositionProperty.get() );
