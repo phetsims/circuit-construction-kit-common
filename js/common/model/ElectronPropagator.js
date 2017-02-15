@@ -246,7 +246,12 @@ define( function( require ) {
           current = -MAX_CURRENT;
         }
         var distAlongNew = null;
-        if ( current > 0 && neighbor.startVertexProperty.get() === vertex ) {//start near the beginning.
+
+        // The linear algebra solver can result in currents of 1E-12 where it should be zero.  For these cases, don't
+        // permit electrons to flow.
+        // TODO: Should the current be clamped after linear algebra?
+        var THRESHOLD = 1E-8;
+        if ( current > THRESHOLD && neighbor.startVertexProperty.get() === vertex ) {//start near the beginning.
           distAlongNew = overshoot;
           if ( distAlongNew > neighbor.electronPathLength ) {
             distAlongNew = neighbor.electronPathLength;
@@ -256,7 +261,7 @@ define( function( require ) {
           }
           circuitLocations.push( createCircuitLocation( neighbor, distAlongNew ) );
         }
-        else if ( current < 0 && neighbor.endVertexProperty.get() === vertex ) {
+        else if ( current < -THRESHOLD && neighbor.endVertexProperty.get() === vertex ) {
           distAlongNew = neighbor.electronPathLength - overshoot;
           if ( distAlongNew > neighbor.electronPathLength ) {
             distAlongNew = neighbor.electronPathLength;
