@@ -221,11 +221,15 @@ define( function( require ) {
       this.fireNode = new Image( fireImage, { pickable: false, opacity: 0.95 } );
       this.fireNode.mutate( { scale: contentNode.width / this.fireNode.width } );
       this.addChild( this.fireNode );
-      var updateFire = function( current ) {
+
+      // TODO: multilink?
+      var updateFire = function() {
+        var current = circuitElement.currentProperty.get();
         var lowResistanceResistor = circuitElement instanceof Resistor && circuitElement.resistanceProperty.get() < 1E-8;
-        self.fireNode.visible = Math.abs( current ) >= 10 && !lowResistanceResistor;
+        self.fireNode.visible = Math.abs( current ) >= 10 && !lowResistanceResistor && circuitConstructionKitScreenView.circuitConstructionKitModel.exploreScreenRunningProperty.get();
       };
       circuitElement.currentProperty.link( updateFire );
+      circuitConstructionKitScreenView.circuitConstructionKitModel.exploreScreenRunningProperty.link( updateFire );
     }
 
     // Update after the highlight/readout/fire exist
@@ -256,6 +260,7 @@ define( function( require ) {
       tandem.removeInstance( self );
       if ( !options.icon && circuitElement instanceof Battery ) {
         circuitElement.currentProperty.unlink( updateFire );
+        circuitConstructionKitScreenView.circuitConstructionKitModel.exploreScreenRunningProperty.unlink( updateFire );
       }
     };
 
