@@ -110,7 +110,7 @@ define( function( require ) {
     var updateMoveToFront = function() {
       self.moveToFront();
     };
-    vertex.moveToFrontEmitter.addListener( updateMoveToFront );
+    vertex.relayerEmitter.addListener( updateMoveToFront );
     Node.call( this, {
       children: [ dottedLineNode, cutButton ]
     } );
@@ -218,7 +218,7 @@ define( function( require ) {
       vertex.positionProperty.unlink( updateVertexNodePosition );
       vertex.selectedProperty.unlink( updateSelected );
       vertex.interactiveProperty.unlink( updatePickable );
-      vertex.moveToFrontEmitter.removeListener( updateMoveToFront );
+      vertex.relayerEmitter.removeListener( updateMoveToFront );
 
       circuitNode.highlightLayer.removeChild( highlightNode );
 

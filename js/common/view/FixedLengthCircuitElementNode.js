@@ -128,8 +128,8 @@ define( function( require ) {
       if ( circuitElement.interactiveProperty.get() ) {
         self.moveToFront();
         self.circuitElement.moveToFrontEmitter.emit();
-        self.circuitElement.startVertexProperty.get().moveToFrontEmitter.emit();
-        self.circuitElement.endVertexProperty.get().moveToFrontEmitter.emit();
+        self.circuitElement.startVertexProperty.get().relayerEmitter.emit();
+        self.circuitElement.endVertexProperty.get().relayerEmitter.emit();
       }
     };
     circuitElement.connectedEmitter.addListener( moveToFront );

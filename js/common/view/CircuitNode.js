@@ -2,7 +2,7 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- *
+ * The node that represents a Circuit, including all Wires and FixedLengthCircuitElements, Electrons, Solder, etc.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -211,6 +211,47 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'CircuitNode', CircuitNode );
 
   return inherit( Node, CircuitNode, {
+
+    /**
+     * Fix the solder layering for a given vertex.  Solder should be in front of wires but behind batteries and resistors.
+     *
+     * @param vertex
+     * @public
+     */
+    fixSolderLayeringForVertex: function( vertex ) {
+      var self = this;
+
+      // wires in the back, then solder, then fixed length components.
+      var solderNode = this.getSolderNode( vertex );
+      var adjacentComponents = this.circuit.getNeighborCircuitElements( vertex );
+      var adjacentWires = adjacentComponents.filter( function( component ) {return component instanceof Wire;} );
+      var adjacentFixedLengthComponents = adjacentComponents.filter( function( component ) {return component instanceof FixedLengthCircuitElement;} );
+
+      if ( adjacentFixedLengthComponents.length > 0 ) {
+
+        // move before the first fixed length component
+        var nodes = adjacentFixedLengthComponents.map( function( c ) {return self.getSpecificCircuitElementNode( c );} );
+        var lowestNode = _.minBy( nodes, function( node ) {return self.mainLayer.indexOfChild( node );} );
+        var lowestIndex = self.mainLayer.indexOfChild( lowestNode );
+        var solderIndex = self.mainLayer.indexOfChild( solderNode );
+        if ( solderIndex >= lowestIndex ) {
+          self.mainLayer.removeChild( solderNode );
+          self.mainLayer.insertChild( lowestIndex, solderNode );
+        }
+      }
+      else if ( adjacentWires.length > 0 ) {
+
+        // move after the last wire
+        var wireNodes = adjacentWires.map( function( c ) {return self.getSpecificCircuitElementNode( c );} );
+        var topWireNode = _.maxBy( wireNodes, function( node ) {return self.mainLayer.indexOfChild( node );} );
+        var topIndex = self.mainLayer.indexOfChild( topWireNode );
+        var mySolderIndex = self.mainLayer.indexOfChild( solderNode );
+        if ( mySolderIndex <= topIndex ) {
+          self.mainLayer.removeChild( solderNode );
+          self.mainLayer.insertChild( topIndex, solderNode );
+        }
+      }
+    },
 
     getSpecificCircuitElementNode: function( circuitElement ) {
       if ( circuitElement instanceof Wire ) {

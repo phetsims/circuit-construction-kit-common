@@ -91,7 +91,7 @@ define( function( require ) {
     this.insideTrueBlackBoxProperty = new BooleanProperty( options.insideTrueBlackBox );
 
     // @public (read-only) - indicate when the vertex has been moved to the front in z-ordering
-    this.moveToFrontEmitter = new Emitter();
+    this.relayerEmitter = new Emitter();
   }
 
   circuitConstructionKitCommon.register( 'Vertex', Vertex );

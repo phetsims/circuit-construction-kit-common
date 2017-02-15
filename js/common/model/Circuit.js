@@ -507,6 +507,9 @@ define( function( require ) {
 
         // Update the physics
         this.solve();
+
+        // Make sure the solder is displayed in the correct z-order
+        targetVertex.relayerEmitter.emit();
       }
     },
 

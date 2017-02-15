@@ -54,10 +54,10 @@ define( function( require ) {
     };
     vertex.positionProperty.link( updateSolderNodePosition );
 
-    var moveToFrontListener = function() {
-      self.moveToFront();
+    var relayerListener = function() {
+      circuitNode.fixSolderLayeringForVertex( self.vertex );
     };
-    vertex.moveToFrontEmitter.addListener( moveToFrontListener );
+    vertex.relayerEmitter.addListener( relayerListener );
 
     this.disposeSolderNode = function() {
       vertex.positionProperty.unlink( updateSolderNodePosition );
@@ -69,7 +69,7 @@ define( function( require ) {
       circuit.circuitElements.removeItemAddedListener( updateShape );
       circuit.circuitElements.removeItemRemovedListener( updateShape );
 
-      vertex.moveToFrontEmitter.removeListener( moveToFrontListener );
+      vertex.relayerEmitter.removeListener( relayerListener );
     };
 
     updateShape();
