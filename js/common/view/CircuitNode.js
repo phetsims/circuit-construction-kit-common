@@ -251,6 +251,16 @@ define( function( require ) {
           self.mainLayer.insertChild( topIndex, solderNode );
         }
       }
+
+      // Make sure black box vertices are behind the black box
+      // TODO: This is duplicated below, factor it out.
+      if ( self.blackBoxNode ) {
+        var blackBoxNodeIndex = self.mainLayer.children.indexOf( self.blackBoxNode );
+        if ( vertex.blackBoxInterfaceProperty.get() ) {
+          self.mainLayer.removeChild( solderNode );
+          self.mainLayer.insertChild( blackBoxNodeIndex, solderNode );
+        }
+      }
     },
 
     getSpecificCircuitElementNode: function( circuitElement ) {
