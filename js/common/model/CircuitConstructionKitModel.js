@@ -39,7 +39,8 @@ define( function( require ) {
     // @public (read-only)
     this.ammeter = new Ammeter( tandem.createTandem( 'ammeter' ) );
 
-    // @public (read-only) changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
+    // @public (read-only) changes whether the light bulb brightness and ammeter/voltmeter readouts, electrons, flame,
+    // etc. can be seen
     this.exploreScreenRunningProperty = new BooleanProperty( !CircuitConstructionKitQueryParameters.showPlayPauseButton, {
       tandem: tandem.createTandem( 'exploreScreenRunningProperty' )
     } );
@@ -69,9 +70,19 @@ define( function( require ) {
     // 2. Any vertex is broken
     // 3. Component voltage/resistance is edited
     // 4. A component within a circuit is deleted, see https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/16
+    // However, the simulation should not pause when switching between "Explore" and "Test" and "Reveal" in the black box study sim
+    var modeChanging = false;
+    self.modeProperty.startedCallbacksForChangedEmitter.addListener( function() {
+      modeChanging = true;
+    } );
+    self.modeProperty.endedCallbacksForChangedEmitter.addListener( function() {
+      modeChanging = false;
+    } );
     if ( CircuitConstructionKitQueryParameters.showPlayPauseButton ) {
       var pause = function() {
-        self.exploreScreenRunningProperty.value = false;
+        if ( !modeChanging ) {
+          self.exploreScreenRunningProperty.value = false;
+        }
       };
       this.circuit.vertices.lengthProperty.lazyLink( pause );
       this.circuit.componentEditedEmitter.addListener( pause );
