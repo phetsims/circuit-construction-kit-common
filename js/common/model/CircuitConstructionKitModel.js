@@ -139,10 +139,12 @@ define( function( require ) {
      */
     reset: function() {
       this.exploreScreenRunningProperty.reset();
+      this.showLabelsProperty.reset();
       this.modeProperty.reset();
       this.circuit.reset();
       this.voltmeter.reset();
       this.ammeter.reset();
+      this.viewProperty.reset();
     }
   } );
 } );
