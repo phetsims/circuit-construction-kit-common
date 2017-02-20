@@ -1,8 +1,7 @@
 // Copyright 2015-2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- *
+ * Model for a resistor.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -11,30 +10,48 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/FixedLengthCircuitElement' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
-  var RESISTOR_LENGTH = 110;
+  var RESISTOR_LENGTH = CircuitConstructionKitConstants.RESISTOR_LENGTH;
 
   /**
-   *
+   * @param {Vertex} startVertex
+   * @param {Vertex} endVertex
+   * @param {number} resistance
    * @constructor
    */
   function Resistor( startVertex, endVertex, resistance ) {
-    FixedLengthCircuitElement.call( this, RESISTOR_LENGTH, startVertex, endVertex, {
-      resistance: resistance
-    } );
+    FixedLengthCircuitElement.call( this, startVertex, endVertex, RESISTOR_LENGTH, RESISTOR_LENGTH );
+
+    // @public (read-only) {Property.<number>} the resistance in ohms
+    this.resistanceProperty = new NumberProperty( resistance );
   }
 
   circuitConstructionKitCommon.register( 'Resistor', Resistor );
 
   return inherit( FixedLengthCircuitElement, Resistor, {
-      toStateObjectWithVertexIndices: function( getVertexIndex ) {
-        return _.extend( { resistance: this.resistance }, FixedLengthCircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex ) );
+
+    /**
+     * @override
+     * @return {Property[]}
+     */
+    getCircuitProperties: function() {
+      return [ this.resistanceProperty ];
+    },
+
+    /**
+     * Get the attributes as a state object for serialization.
+     * @returns {Object}
+     */
+    attributesToStateObject: function() {
+      return {
+          resistance: this.resistanceProperty.get()
+      };
       }
-    }, {
-      RESISTOR_LENGTH: RESISTOR_LENGTH
     }
   );
 } );

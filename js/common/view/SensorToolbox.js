@@ -19,9 +19,11 @@ define( function( require ) {
   var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Voltmeter' );
   var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Ammeter' );
 
+  // constants
+  var TOOLBOX_ICON_SIZE = CircuitConstructionKitConstants.TOOLBOX_ICON_SIZE;
+
   function SensorToolbox( voltmeterNode, ammeterNode, runningProperty, tandem ) {
     var self = this;
-    var toolIconLength = CircuitConstructionKitConstants.toolboxIconLength;
 
     var voltmeterNodeIcon = new VoltmeterNode( new Voltmeter( tandem.createTandem( 'voltmeterIconModel' ) ), tandem.createTandem( 'voltmeterNodeIcon' ), {
       runningProperty: runningProperty,
@@ -31,13 +33,13 @@ define( function( require ) {
       voltmeterNodeIcon.visible = !visible;
     } );
     var voltmeterIconSizeIncrease = 1.3;
-    voltmeterNodeIcon.mutate( { scale: toolIconLength * voltmeterIconSizeIncrease / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height ) } );
+    voltmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE * voltmeterIconSizeIncrease / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height ) } );
     voltmeterNodeIcon.addInputListener( {
       down: function( event ) {
         var viewPosition = self.globalToParentPoint( event.pointer.point );
-        voltmeterNode.voltmeter.draggingProbesWithBody = true;
-        voltmeterNode.voltmeter.visible = true;
-        voltmeterNode.voltmeter.bodyPosition = viewPosition;
+        voltmeterNode.voltmeter.draggingProbesWithBodyProperty.set( true );
+        voltmeterNode.voltmeter.visibleProperty.set( true );
+        voltmeterNode.voltmeter.bodyPositionProperty.set( viewPosition );
         voltmeterNode.movableDragHandler.startDrag( event );
       }
     } );
@@ -49,19 +51,19 @@ define( function( require ) {
     ammeterNode.ammeter.visibleProperty.link( function( visible ) {
       ammeterNodeIcon.visible = !visible;
     } );
-    ammeterNodeIcon.mutate( { scale: toolIconLength / Math.max( ammeterNodeIcon.width, ammeterNodeIcon.height ) } );
+    ammeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( ammeterNodeIcon.width, ammeterNodeIcon.height ) } );
     ammeterNodeIcon.addInputListener( {
       down: function( event ) {
         var viewPosition = self.globalToParentPoint( event.pointer.point );
-        ammeterNode.ammeter.draggingProbesWithBody = true;
-        ammeterNode.ammeter.visible = true;
-        ammeterNode.ammeter.bodyPosition = viewPosition;
+        ammeterNode.ammeter.draggingProbesWithBodyProperty.set( true );
+        ammeterNode.ammeter.visibleProperty.set( true );
+        ammeterNode.ammeter.bodyPositionProperty.set( viewPosition );
         ammeterNode.movableDragHandler.startDrag( event );
       }
     } );
 
     CircuitConstructionKitPanel.call( this, new HBox( {
-      spacing: CircuitConstructionKitConstants.toolboxItemSpacing,
+      spacing: CircuitConstructionKitConstants.TOOLBOX_ITEM_SPACING,
       align: 'bottom',
       children: [
         voltmeterNodeIcon,

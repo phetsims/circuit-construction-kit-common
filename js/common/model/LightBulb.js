@@ -17,6 +17,7 @@ define( function( require ) {
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Vertex' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var Util = require( 'DOT/Util' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
   var DISTANCE_BETWEEN_VERTICES = 33;
@@ -74,9 +75,7 @@ define( function( require ) {
    * @constructor
    */
   function LightBulb( startVertex, endVertex, resistance, options ) {
-    FixedLengthCircuitElement.call( this, DISTANCE_BETWEEN_VERTICES, startVertex, endVertex, {
-      resistance: resistance
-    }, options );
+    this.resistanceProperty = new NumberProperty( resistance );
 
     // TODO: copied
     var accumulatedDistance = 0;
@@ -85,30 +84,40 @@ define( function( require ) {
       var p1 = points[ i ];
       var p2 = points[ i + 1 ];
 
-      var p1X = Util.linear( start.x, end.x, this.startVertex.position.x, this.endVertex.position.x, p1.x );
-      var p1Y = Util.linear( start.y, end.y, this.startVertex.position.y, this.endVertex.position.y, p1.y );
+      var p1X = Util.linear( start.x, end.x, startVertex.positionProperty.get().x, endVertex.positionProperty.get().x, p1.x );
+      var p1Y = Util.linear( start.y, end.y, startVertex.positionProperty.get().y, endVertex.positionProperty.get().y, p1.y );
 
-      var p2X = Util.linear( start.x, end.x, this.startVertex.position.x, this.endVertex.position.x, p2.x );
-      var p2Y = Util.linear( start.y, end.y, this.startVertex.position.y, this.endVertex.position.y, p2.y );
+      var p2X = Util.linear( start.x, end.x, startVertex.positionProperty.get().x, endVertex.positionProperty.get().x, p2.x );
+      var p2Y = Util.linear( start.y, end.y, startVertex.positionProperty.get().y, endVertex.positionProperty.get().y, p2.y );
 
       var q1 = new Vector2( p1X, p1Y );
       var q2 = new Vector2( p2X, p2Y );
       accumulatedDistance += q2.distance( q1 );
     }
 
-    var trueLength = accumulatedDistance; // measured by code below
-    this.length = trueLength - 1E-8; // changes the speed at which particles go through the light bulb
+    var electronPathLength = accumulatedDistance - 1E-8; // changes the speed at which particles go through the light bulb
+    FixedLengthCircuitElement.call( this, startVertex, endVertex, DISTANCE_BETWEEN_VERTICES, electronPathLength, options ); // TODO: what are options here?
 
-    this.distanceBetweenVertices = startVertex.position.distance( endVertex.position );
-
-    this.vertexDelta = endVertex.position.minus( startVertex.position );
+    // @private (read-only) the vector between the vertices
+    this.vertexDelta = endVertex.positionProperty.get().minus( startVertex.positionProperty.get() );
   }
 
   circuitConstructionKitCommon.register( 'LightBulb', LightBulb );
 
   return inherit( FixedLengthCircuitElement, LightBulb, {
-    toStateObjectWithVertexIndices: function( getVertexIndex ) {
-      return _.extend( { resistance: this.resistance }, FixedLengthCircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex ) );
+
+    /**
+     * @override
+     * @return {Property[]}
+     */
+    getCircuitProperties: function() {
+      return [ this.resistanceProperty ];
+    },
+
+    attributesToStateObject: function() {
+      return {
+        resistance: this.resistanceProperty.get()
+      };
     },
 
     /**
@@ -128,11 +137,11 @@ define( function( require ) {
         var p1 = points[ i ];
         var p2 = points[ i + 1 ];
 
-        var p1X = Util.linear( start.x, end.x, this.startVertex.position.x, this.startVertex.position.x + this.vertexDelta.x, p1.x );
-        var p1Y = Util.linear( start.y, end.y, this.startVertex.position.y, this.startVertex.position.y + this.vertexDelta.y, p1.y );
+        var p1X = Util.linear( start.x, end.x, this.startVertexProperty.get().positionProperty.get().x, this.startVertexProperty.get().positionProperty.get().x + this.vertexDelta.x, p1.x );
+        var p1Y = Util.linear( start.y, end.y, this.startVertexProperty.get().positionProperty.get().y, this.startVertexProperty.get().positionProperty.get().y + this.vertexDelta.y, p1.y );
 
-        var p2X = Util.linear( start.x, end.x, this.startVertex.position.x, this.startVertex.position.x + this.vertexDelta.x, p2.x );
-        var p2Y = Util.linear( start.y, end.y, this.startVertex.position.y, this.startVertex.position.y + this.vertexDelta.y, p2.y );
+        var p2X = Util.linear( start.x, end.x, this.startVertexProperty.get().positionProperty.get().x, this.startVertexProperty.get().positionProperty.get().x + this.vertexDelta.x, p2.x );
+        var p2Y = Util.linear( start.y, end.y, this.startVertexProperty.get().positionProperty.get().y, this.startVertexProperty.get().positionProperty.get().y + this.vertexDelta.y, p2.y );
 
         var q1 = new Vector2( p1X, p1Y );
         var q2 = new Vector2( p2X, p2Y );
@@ -144,18 +153,17 @@ define( function( require ) {
           var position = q1.blend( q2, a );
 
           // Rotate about the start vertex.
-          var vd = this.endVertex.position.minus( this.startVertex.position );
+          var vd = this.endVertexProperty.get().positionProperty.get().minus( this.startVertexProperty.get().positionProperty.get() );
 
           var angle = vd.angle() - this.vertexDelta.angle();
 
           // rotate the point about the start vertex
-          return rotatedAbout( position, this.startVertex.position, angle );
+          return rotatedAbout( position, this.startVertexProperty.get().positionProperty.get(), angle );
         }
         prev = accumulatedDistance;
       }
 
       // TODO: Restore this assertion after #186 complete
-      console.log( distanceAlongWire, accumulatedDistance );
       // assert && assert( false, 'hello' );
       return new Vector2();
     }
@@ -182,7 +190,7 @@ define( function( require ) {
         tandem: circuitVertexGroupTandem.createNextTandem()
       } );
 
-      return new LightBulb( startVertex, endVertex, CircuitConstructionKitConstants.defaultResistance, options );
+      return new LightBulb( startVertex, endVertex, CircuitConstructionKitConstants.DEFAULT_RESISTANCE, options );
     }
   } );
 } );

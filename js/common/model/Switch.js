@@ -15,10 +15,12 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/CircuitElement' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
   var OPEN_RESISTANCE = 1E11;
-  var MINIMUM_RESISTANCE = CircuitConstructionKitConstants.minimumResistance;
+  var MINIMUM_RESISTANCE = CircuitConstructionKitConstants.MINIMUM_RESISTANCE;
 
   /**
    *
@@ -26,23 +28,23 @@ define( function( require ) {
    */
   function Switch( startVertex, endVertex, resistivity, options ) {
     assert && assert( typeof resistivity === 'number' && resistivity >= 0, 'bad value for resistivity: ' + resistivity );
+    var electronPathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
     var self = this;
-    CircuitElement.call( this, startVertex, endVertex, {
-      resistance: CircuitConstructionKitConstants.minimumResistance,
-      resistivity: resistivity,
-      closed: false
-    }, options );
+    CircuitElement.call( this, startVertex, endVertex, electronPathLength, options );
+    this.resistanceProperty = new NumberProperty( CircuitConstructionKitConstants.MINIMUM_RESISTANCE );
+    this.resistivityProperty = new NumberProperty( resistivity );
+    this.closedProperty = new BooleanProperty( false );
 
     var updateResistance = function() {
-      var length = self.startVertex.position.minus( self.endVertex.position ).magnitude();
+      var length = self.startVertexProperty.get().positionProperty.get().minus( self.endVertexProperty.get().positionProperty.get() ).magnitude();
       var javaLength = length / 990 * 15.120675866835684;
-      self.resistance = self.closed ? Math.max( MINIMUM_RESISTANCE, javaLength * self.resistivity ) :
-                        OPEN_RESISTANCE;
-      assert && assert( !isNaN( self.resistance ) );
+      self.resistanceProperty.set( self.closed ? Math.max( MINIMUM_RESISTANCE, javaLength * self.resistivityProperty.get() ) :
+                                   OPEN_RESISTANCE );
+      assert && assert( !isNaN( self.resistanceProperty.get() ) );
     };
 
     var updateLength = function() {
-      self.length = self.startVertex.position.distance( self.endVertex.position );
+      self.length = self.startVertexProperty.get().positionProperty.get().distance( self.endVertexProperty.get().positionProperty.get() );
     };
 
     var vertexMovedListener = function() {
@@ -62,15 +64,26 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'Switch', Switch );
 
   return inherit( CircuitElement, Switch, {
+    /**
+     * @override
+     * @return {Property[]}
+     */
+    getCircuitProperties: function() {
+      return [
+        this.resistanceProperty
+        // The closed property modifies the resistance property, so would be redundant and double the amount of work
+        // necessary if reported here.
+      ];
+    },
     dispose: function() {
       CircuitElement.prototype.dispose.call( this );
       this.disposeSwitch();
     },
-    toStateObjectWithVertexIndices: function( getVertexIndex ) {
-      return _.extend( {
-        resistance: this.resistance,
-        resistivity: this.resistivity
-      }, CircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex ) );
+    attributesToStateObject: function() {
+      return {
+        resistance: this.resistanceProperty.get(),
+        resistivity: this.resistivityProperty.get()
+      };
     }
   } );
 } );

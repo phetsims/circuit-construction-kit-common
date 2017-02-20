@@ -21,7 +21,7 @@ define( function( require ) {
   var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var Vector2 = require( 'DOT/Vector2' );
-  var TandemDragHandler = require( 'TANDEM/scenery/input/TandemDragHandler' );
+  var TandemSimpleDragHandler = require( 'TANDEM/scenery/input/TandemSimpleDragHandler' );
 
   // phet-io modules
   var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
@@ -50,30 +50,22 @@ define( function( require ) {
       cursor: 'pointer'
     } );
     var highlightNode = new Circle( 30, {
-      stroke: CircuitConstructionKitConstants.highlightColor,
-      lineWidth: CircuitConstructionKitConstants.highlightLineWidth,
+      stroke: CircuitConstructionKitConstants.HIGHLIGHT_COLOR,
+      lineWidth: CircuitConstructionKitConstants.HIGHLIGHT_LINE_WIDTH,
       pickable: false
     } );
 
     var updateStroke = function() {
       dottedLineNode.stroke = circuit.countCircuitElements( vertex ) > 1 ? 'black' : 'red';
-      dottedLineNode.visible = vertex.attachable;
+      dottedLineNode.visible = vertex.attachableProperty.get();
     };
     circuit.vertices.addItemAddedListener( updateStroke );
     circuit.vertices.addItemRemovedListener( updateStroke );
+    circuit.circuitChangedEmitter.addListener( updateStroke ); // TODO: this one seems critical, are the other listeners necessary?
 
     // In Black Box, other wires can be detached from a vertex and this should also update the solder
-    circuit.batteries.addItemAddedListener( updateStroke );
-    circuit.batteries.addItemRemovedListener( updateStroke );
-
-    circuit.wires.addItemAddedListener( updateStroke );
-    circuit.wires.addItemRemovedListener( updateStroke );
-
-    circuit.resistors.addItemAddedListener( updateStroke );
-    circuit.resistors.addItemRemovedListener( updateStroke );
-
-    circuit.lightBulbs.addItemAddedListener( updateStroke );
-    circuit.lightBulbs.addItemRemovedListener( updateStroke );
+    circuit.circuitElements.addItemAddedListener( updateStroke );
+    circuit.circuitElements.addItemRemovedListener( updateStroke );
 
     updateStroke();
     vertex.attachableProperty.link( updateStroke );
@@ -83,7 +75,7 @@ define( function( require ) {
       baseColor: 'yellow',
       content: new FontAwesomeNode( 'cut', {
         rotation: -Math.PI / 2, // scissors point up
-        scale: CircuitConstructionKitConstants.fontAwesomeIconScale
+        scale: CircuitConstructionKitConstants.FONT_AWESOME_ICON_SCALE
       } ),
       minXMargin: 10,
       minYMargin: 10,
@@ -111,14 +103,14 @@ define( function( require ) {
       selected && updateCutButtonPosition();
 
       // Show a disabled button as a cue that the vertex could be cuttable, but it isn't right now.
-      var isConnectedBlackBoxVertex = numberConnections === 1 && !self.vertex.draggable;
+      var isConnectedBlackBoxVertex = numberConnections === 1 && !self.vertex.draggableProperty.get();
       cutButton.enabled = numberConnections > 1 || isConnectedBlackBoxVertex;
     };
     vertex.selectedProperty.link( updateSelected );
     var updateMoveToFront = function() {
       self.moveToFront();
     };
-    vertex.moveToFrontEmitter.addListener( updateMoveToFront );
+    vertex.relayerEmitter.addListener( updateMoveToFront );
     Node.call( this, {
       children: [ dottedLineNode, cutButton ]
     } );
@@ -131,31 +123,31 @@ define( function( require ) {
 
     var p = null;
     var didDrag = false;
-    var dragHandler = new TandemDragHandler( {
+    var dragHandler = new TandemSimpleDragHandler( {
       allowTouchSnag: true,
       tandem: tandem.createTandem( 'dragHandler' ),
       start: function( event ) {
         p = event.pointer.point;
-        vertex.draggable && circuitNode.startDrag( event.pointer.point, vertex, true );
+        vertex.draggableProperty.get() && circuitNode.startDrag( event.pointer.point, vertex, true );
         didDrag = false;
       },
       drag: function( event ) {
         didDrag = true;
-        vertex.draggable && circuitNode.drag( event.pointer.point, vertex, true );
+        vertex.draggableProperty.get() && circuitNode.drag( event.pointer.point, vertex, true );
       },
       end: function( event ) {
 
         // The vertex can only connect to something if it was actually moved.
-        vertex.draggable && circuitNode.endDrag( event, vertex, didDrag );
+        vertex.draggableProperty.get() && circuitNode.endDrag( event, vertex, didDrag );
 
         // Only show on a tap, not on every drag.
-        if ( vertex.interactive && event.pointer.point.distance( p ) < CircuitConstructionKitConstants.tapThreshold ) {
+        if ( vertex.interactiveProperty.get() && event.pointer.point.distance( p ) < CircuitConstructionKitConstants.TAP_THRESHOLD ) {
 
-          vertex.selected = true;
+          vertex.selectedProperty.set( true );
 
           // When the user clicks on anything else, deselect the vertex
           var deselect = function() {
-            vertex.selected = false;
+            vertex.selectedProperty.set( false );
             event.pointer.removeInputListener( listener ); // Thanks, hoisting!
           };
           var listener = {
@@ -192,7 +184,7 @@ define( function( require ) {
     }
 
     var updateCutButtonPosition = function() {
-      var position = vertex.position;
+      var position = vertex.positionProperty.get();
 
       var neighbors = circuit.getNeighborCircuitElements( vertex );
 
@@ -200,7 +192,7 @@ define( function( require ) {
       // so the button will appear in the least populated area.
       var sumOfDirections = new Vector2();
       for ( var i = 0; i < neighbors.length; i++ ) {
-        var v = vertex.position.minus( neighbors[ i ].getOppositeVertex( vertex ).position );
+        var v = vertex.positionProperty.get().minus( neighbors[ i ].getOppositeVertex( vertex ).positionProperty.get() );
         if ( v.magnitude() > 0 ) {
           var vector = v.normalized();
           sumOfDirections.add( vector );
@@ -226,7 +218,7 @@ define( function( require ) {
       vertex.positionProperty.unlink( updateVertexNodePosition );
       vertex.selectedProperty.unlink( updateSelected );
       vertex.interactiveProperty.unlink( updatePickable );
-      vertex.moveToFrontEmitter.removeListener( updateMoveToFront );
+      vertex.relayerEmitter.removeListener( updateMoveToFront );
 
       circuitNode.highlightLayer.removeChild( highlightNode );
 
@@ -234,19 +226,11 @@ define( function( require ) {
       circuit.vertices.removeItemRemovedListener( updateStroke );
 
       // In Black Box, other wires can be detached from a vertex and this should also update the solder
-      circuit.batteries.removeItemAddedListener( updateStroke );
-      circuit.batteries.removeItemRemovedListener( updateStroke );
-
-      circuit.wires.removeItemAddedListener( updateStroke );
-      circuit.wires.removeItemRemovedListener( updateStroke );
-
-      circuit.resistors.removeItemAddedListener( updateStroke );
-      circuit.resistors.removeItemRemovedListener( updateStroke );
-
-      circuit.lightBulbs.removeItemAddedListener( updateStroke );
-      circuit.lightBulbs.removeItemRemovedListener( updateStroke );
+      circuit.circuitElements.removeItemAddedListener( updateStroke );
+      circuit.circuitElements.removeItemRemovedListener( updateStroke );
 
       vertex.attachableProperty.unlink( updateStroke );
+      circuit.circuitChangedEmitter.removeListener( updateStroke );
       tandem.removeInstance( self );
     };
 

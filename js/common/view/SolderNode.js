@@ -13,14 +13,17 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Circle = require( 'SCENERY/nodes/Circle' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var Node = require( 'SCENERY/nodes/Node' );
+
+  // constants
+  var SOLDER_COLOR = '#ae9f9e';
 
   /**
    *
    * @constructor
    */
   function SolderNode( circuitNode, vertex ) {
+    var self = this;
     var circuit = circuitNode.circuit;
     this.vertex = vertex;
     this.startOffset = null;// @public - added by CircuitNode during dragging, used for relative drag location.
@@ -37,28 +40,24 @@ define( function( require ) {
 
     var updateShape = function() {
       var edgeCount = circuit.countCircuitElements( vertex );
-      dottedLineNode.fill = edgeCount > 1 ? CircuitConstructionKitConstants.solderColor : null;
+      dottedLineNode.fill = edgeCount > 1 ? SOLDER_COLOR : null;
     };
     circuit.vertices.addItemAddedListener( updateShape );
     circuit.vertices.addItemRemovedListener( updateShape );
 
     // In Black Box, other wires can be detached from a vertex and this should also update the solder
-    circuit.batteries.addItemAddedListener( updateShape );
-    circuit.batteries.addItemRemovedListener( updateShape );
-
-    circuit.wires.addItemAddedListener( updateShape );
-    circuit.wires.addItemRemovedListener( updateShape );
-
-    circuit.resistors.addItemAddedListener( updateShape );
-    circuit.resistors.addItemRemovedListener( updateShape );
-
-    circuit.lightBulbs.addItemAddedListener( updateShape );
-    circuit.lightBulbs.addItemRemovedListener( updateShape );
+    circuit.circuitElements.addItemAddedListener( updateShape );
+    circuit.circuitElements.addItemRemovedListener( updateShape );
 
     var updateSolderNodePosition = function( position ) {
       dottedLineNode.center = position;
     };
     vertex.positionProperty.link( updateSolderNodePosition );
+
+    var relayerListener = function() {
+      circuitNode.fixSolderLayeringForVertex( self.vertex );
+    };
+    vertex.relayerEmitter.addListener( relayerListener );
 
     this.disposeSolderNode = function() {
       vertex.positionProperty.unlink( updateSolderNodePosition );
@@ -67,18 +66,13 @@ define( function( require ) {
       circuit.vertices.removeItemRemovedListener( updateShape );
 
       // In Black Box, other wires can be detached from a vertex and this should also update the solder
-      circuit.batteries.removeItemAddedListener( updateShape );
-      circuit.batteries.removeItemRemovedListener( updateShape );
+      circuit.circuitElements.removeItemAddedListener( updateShape );
+      circuit.circuitElements.removeItemRemovedListener( updateShape );
 
-      circuit.wires.removeItemAddedListener( updateShape );
-      circuit.wires.removeItemRemovedListener( updateShape );
-
-      circuit.resistors.removeItemAddedListener( updateShape );
-      circuit.resistors.removeItemRemovedListener( updateShape );
-
-      circuit.lightBulbs.removeItemAddedListener( updateShape );
-      circuit.lightBulbs.removeItemRemovedListener( updateShape );
+      vertex.relayerEmitter.removeListener( relayerListener );
     };
+
+    updateShape();
   }
 
   circuitConstructionKitCommon.register( 'SolderNode', SolderNode );

@@ -1,7 +1,7 @@
-// Copyright 2015-2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
+// Copyright 2015-2017, University of Colorado Boulder
 
 /**
+ * Contains circuit, voltmeter, ammeter and properties to indicate what mode the model is in.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -11,48 +11,60 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var PropertySet = require( 'AXON/PropertySet' );
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
   var Property = require( 'AXON/Property' );
   var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Circuit' );
-  var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/CircuitStruct' );
   var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Voltmeter' );
   var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Ammeter' );
   var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
   var TandemEmitter = require( 'TANDEM/axon/TandemEmitter' );
 
   // phet-io modules
-  var TBoolean = require( 'ifphetio!PHET_IO/types/TBoolean' );
   var TString = require( 'ifphetio!PHET_IO/types/TString' );
 
   /**
    * @param {Tandem} tandem
-   * @param {Object} [additionalProperties] - addition Properties added to this type
-   * @param {Object} [options]
    * @constructor
    */
-  function CircuitConstructionKitModel( tandem, additionalProperties, options ) {
+  function CircuitConstructionKitModel( tandem ) {
 
     var self = this;
 
-    options = _.extend( { circuit: null }, options );
+    // @public (read-only)
+    this.circuit = new Circuit( tandem.createTandem( 'circuit' ) );
 
-    var properties = _.extend( {}, additionalProperties );
-
-    PropertySet.call( this, null, properties );
-
-    this.circuit = options.circuit || new Circuit( tandem.createTandem( 'circuit' ) );
-    this.initialCircuitState = this.circuit.toStateObject();
+    // @public (read-only)
     this.voltmeter = new Voltmeter( tandem.createTandem( 'voltmeter' ) );
+
+    // @public (read-only)
     this.ammeter = new Ammeter( tandem.createTandem( 'ammeter' ) );
 
-    // {boolean} @public changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
-    this.exploreScreenRunningProperty = new Property( !CircuitConstructionKitQueryParameters.showPlayPauseButton, {
-      tandem: tandem.createTandem( 'exploreScreenRunningProperty' ),
-      phetioValueType: TBoolean
+    // @public (read-only) changes whether the light bulb brightness and ammeter/voltmeter readouts can be seen
+    this.exploreScreenRunningProperty = new BooleanProperty( !CircuitConstructionKitQueryParameters.showPlayPauseButton, {
+      tandem: tandem.createTandem( 'exploreScreenRunningProperty' )
+    } );
+
+    // @public (read-only) true if the labels in the toolbox should be shown
+    this.showLabelsProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'showLabelsProperty' )
+    } );
+
+    // @public (read-only) {Property.<string>} - whether the user is in the 'explore' or 'test' mode
+    this.modeProperty = new Property( 'explore', {
+      validValues: [ 'explore', 'test' ],
+      tandem: tandem.createTandem( 'modeProperty' ),
+      phetioValueType: TString
+    } );
+
+    // @public (read-only) {Property.<string>} - whether to show lifelike or schematic representations
+    this.viewProperty = new Property( 'lifelike', {
+      validValues: [ 'lifelike', 'schematic' ],
+      tandem: tandem.createTandem( 'viewProperty' ),
+      phetioValueType: TString
     } );
 
     // When the user manipulates something, hide the readouts, see https://github.com/phetsims/circuit-construction-kit/issues/130
-    // When any of the following conditions occurs, hide the readouts:
+    // The following cases result in pausing
     // 1. More components are dragged out of the toolbox
     // 2. Any vertex is broken
     // 3. Component voltage/resistance is edited
@@ -61,20 +73,19 @@ define( function( require ) {
       var pause = function() {
         self.exploreScreenRunningProperty.value = false;
       };
-      this.circuit.vertices.lengthProperty.link( pause );
+      this.circuit.vertices.lengthProperty.lazyLink( pause );
       this.circuit.componentEditedEmitter.addListener( pause );
-      this.circuit.componentAddedEmitter.addListener( pause );
-      this.circuit.componentDeletedEmitter.addListener( pause );
+      this.circuit.circuitElements.lengthProperty.link( pause );
     }
-
-    var circuitChangedEmitter = new TandemEmitter( {
-      tandem: tandem.createTandem( 'circuitChangedEmitter' ),
-      phetioArgumentTypes: [ TString ]
-    } );
 
     // For PhET-iO, when a component is edited or a vertex is added, connected, or cut, output the circuit to the data stream
     // Only do this for phet-io brand so it doesn't disturb performance of other brands
     if ( phet.chipper.brand === 'phet-io' ) {
+
+      var circuitChangedEmitter = new TandemEmitter( {
+        tandem: tandem.createTandem( 'circuitChangedEmitter' ),
+        phetioArgumentTypes: [ TString ]
+      } );
 
       var emitCircuitChanged = function() {
 
@@ -88,14 +99,20 @@ define( function( require ) {
       this.circuit.componentEditedEmitter.addListener( emitCircuitChanged );
     }
 
-    this.exploreScreenRunningProperty.link( function( exploreScreenRunning ) {
-      self.circuit.constantDensityPropagator.smoothData.clear();
+    // When the simulation pauses and resumes, clear the time scaling factor (so it doesn't show a stale value)
+    this.exploreScreenRunningProperty.link( function() {
+      self.circuit.electronPropagator.timeScaleRunningAverage.clear();
     } );
   }
 
   circuitConstructionKitCommon.register( 'CircuitConstructionKitModel', CircuitConstructionKitModel );
 
-  return inherit( PropertySet, CircuitConstructionKitModel, {
+  return inherit( Object, CircuitConstructionKitModel, {
+
+    /**
+     * Update the circuit when the simulation clock steps.
+     * @param {number} dt - elapsed time in seconds
+     */
     step: function( dt ) {
 
       // Only move electrons if the simulation is not paused.
@@ -105,14 +122,16 @@ define( function( require ) {
 
       this.circuit.updateElectronsInDirtyCircuitElements();
     },
+
+    /**
+     * Reset the circuit.
+     */
     reset: function() {
-      PropertySet.prototype.reset.call( this );
+      this.exploreScreenRunningProperty.reset();
+      this.modeProperty.reset();
       this.circuit.reset();
       this.voltmeter.reset();
       this.ammeter.reset();
-
-      var struct = CircuitStruct.fromStateObject( this.initialCircuitState );
-      this.circuit.loadFromCircuitStruct( struct );
     }
   } );
 } );

@@ -2,7 +2,7 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- * This class represents a sparse solution containing only the solved variables in MNA.
+ * This class represents a sparse solution containing only the solved variables in Modified Nodal Analysis.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -13,53 +13,63 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
 
+
+  // constants
+
   /**
-   * @param {object.<number,number>} nodeVoltages
-   * @param {element[]} elements, with currentSolution
+   * Returns true if the numbers are approximately equal.
+   *
+   * @param {number} a - a number
+   * @param {number} b - another number
+   * @returns {boolean} true if the numbers are approximately equal
+   */
+  var NUMBER_APPROXIMATELY_EQUALS = function( a, b ) {
+    return Math.abs( a - b ) < 1E-6;
+  };
+
+  /**
+   * @param {Object} nodeVoltages - {nodeIndex:{number}:voltage:{number}}
+   * @param {CircuitElement[]} elements, with currentSolution
    * @constructor
    */
-  function LinearCircuitSolution( nodeVoltages, elements ) {
+  function ModifiedNodalAnalysisSolution( nodeVoltages, elements ) {
     for ( var i = 0; i < elements.length; i++ ) {
-      var e = elements[ i ];
-      assert && assert( typeof e.node0 === 'number' && typeof e.node1 === 'number' );
+      var element = elements[ i ];
+      assert && assert( typeof element.node0 === 'number' && typeof element.node1 === 'number' );
     }
     this.nodeVoltages = nodeVoltages;
     this.elements = elements;
   }
 
-  // but perhaps we should get it back up to 1E6 again
-  var numberApproxEquals = function( a, b ) {
-    return Math.abs( a - b ) < 1E-6;
-  };
-  circuitConstructionKitCommon.register( 'LinearCircuitSolution', LinearCircuitSolution );
+  circuitConstructionKitCommon.register( 'ModifiedNodalAnalysisSolution', ModifiedNodalAnalysisSolution );
 
-  return inherit( Object, LinearCircuitSolution, {
+  return inherit( Object, ModifiedNodalAnalysisSolution, {
 
     /**
      * Compare two solutions, and provide detailed qunit equal test if equal is provided
-     * @param linearCircuitSolution
+     * @param modifiedNodalAnalysisSolution
      * @param {function} equal from qunit
      * @returns {boolean}
      */
-    approxEquals: function( linearCircuitSolution, equal ) {
+    approxEquals: function( modifiedNodalAnalysisSolution, equal ) {
       var myKeys = _.keys( this.nodeVoltages );
-      var otherKeys = _.keys( linearCircuitSolution.nodeVoltages );
+      var otherKeys = _.keys( modifiedNodalAnalysisSolution.nodeVoltages );
       var difference = _.difference( myKeys, otherKeys );
       assert && assert( difference.length === 0, 'wrong structure for compared solution' );
       for ( var i = 0; i < myKeys.length; i++ ) {
         var key = myKeys[ i ];
-        var closeEnough = numberApproxEquals( this.getNodeVoltage( key ), linearCircuitSolution.getNodeVoltage( key ) );
-        equal && equal( closeEnough, true, 'node voltages[' + i + '] should match. ' + this.getNodeVoltage( key ) + '!==' + linearCircuitSolution.getNodeVoltage( key ) );
+        var closeEnough = NUMBER_APPROXIMATELY_EQUALS( this.getNodeVoltage( key ), modifiedNodalAnalysisSolution.getNodeVoltage( key ) );
+        equal && equal( closeEnough, true, 'node voltages[' + i + '] should match. ' + this.getNodeVoltage( key ) + '!==' + modifiedNodalAnalysisSolution.getNodeVoltage( key ) );
 
         if ( !closeEnough ) {
           return false;
         }
       }
 
-      if ( !this.hasAllCurrents( linearCircuitSolution ) ) {
+      if ( !this.hasAllCurrents( modifiedNodalAnalysisSolution ) ) {
         return false;
       }
-      if ( !linearCircuitSolution.hasAllCurrents( this ) ) {
+      if ( !modifiedNodalAnalysisSolution.hasAllCurrents( this ) ) {
         return false;
       }
       return true;
@@ -67,11 +77,11 @@ define( function( require ) {
 
     /**
      * For equality testing, make sure all of the specified elements and currents match ours
-     * @param linearCircuitSolution
+     * @param modifiedNodalAnalysisSolution
      */
-    hasAllCurrents: function( linearCircuitSolution ) {
-      for ( var i = 0; i < linearCircuitSolution.elements.length; i++ ) {
-        var element = linearCircuitSolution.elements[ i ];
+    hasAllCurrents: function( modifiedNodalAnalysisSolution ) {
+      for ( var i = 0; i < modifiedNodalAnalysisSolution.elements.length; i++ ) {
+        var element = modifiedNodalAnalysisSolution.elements[ i ];
         if ( !this.hasMatchingElement( element ) ) {
           return false;
         }
@@ -82,7 +92,7 @@ define( function( require ) {
     hasMatchingElement: function( element ) {
       for ( var i = 0; i < this.elements.length; i++ ) {
         var e = this.elements[ i ];
-        if ( e.node0 === element.node0 && e.node1 === element.node1 && numberApproxEquals( e.currentSolution, element.currentSolution ) ) {
+        if ( e.node0 === element.node0 && e.node1 === element.node1 && NUMBER_APPROXIMATELY_EQUALS( e.currentSolution, element.currentSolution ) ) {
           return true;
         }
       }
@@ -118,10 +128,22 @@ define( function( require ) {
       return -this.getVoltage( e ) / e.resistance;
     },
 
-    getNodeVoltage: function( node ) {
-      return this.nodeVoltages[ node ];
+    /**
+     * Returns the voltage of the specified node.
+     * @param {number} nodeIndex - the index of the node
+     * @returns {number} the voltage of the node
+     * @private
+     */
+    getNodeVoltage: function( nodeIndex ) {
+      return this.nodeVoltages[ nodeIndex ];
     },
 
+    /**
+     * Returns the voltage across a circuit element.
+     * @param {Object} e - a circuit element with {node1:{number},node2:{number}}
+     * @returns {number} - the voltage
+     * @private
+     */
     getVoltage: function( e ) {
       return this.nodeVoltages[ e.node1 ] - this.nodeVoltages[ e.node0 ];
     }

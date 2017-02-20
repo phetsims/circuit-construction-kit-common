@@ -17,6 +17,10 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Util = require( 'DOT/Util' );
   var Matrix3 = require( 'DOT/Matrix3' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
+
+  // images
+  var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
 
   /**
    *
@@ -25,7 +29,7 @@ define( function( require ) {
   function CCKLightBulbNode( circuitConstructionKitScreenView, circuitNode, lightBulb, runningProperty, tandem, options ) {
     var self = this;
     this.lightBulb = lightBulb;
-    var brightnessProperty = new Property( 0.0 );
+    var brightnessProperty = new NumberProperty( 0 );
     var updateBrightness = Property.multilink( [ lightBulb.currentProperty, runningProperty ], function( current, running ) {
       var scaled = Math.abs( current ) / 20;
       var clamped = Util.clamp( scaled, 0, 1 );
@@ -44,13 +48,21 @@ define( function( require ) {
     var scratchMatrix = new Matrix3();
     var scratchMatrix2 = new Matrix3();
     var updateLayout = function( startPosition, endPosition ) {
-      var angle = endPosition.minus( startPosition ).angle() + Math.PI / 4;
+      var delta = endPosition.minus( startPosition );
+      var angle = delta.angle() + Math.PI / 4;
 
       // Update the node transform in a single step, see #66
       scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
         .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
         .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) );
       self.lightBulbNode.setMatrix( scratchMatrix );
+
+      // Update the fire transform
+      scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
+        .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
+        .multiplyMatrix( scratchMatrix2.setToScale( contentScale / 12 ) )
+        .multiplyMatrix( scratchMatrix2.setToTranslation( -100, -fireImage[ 0 ].height - 350 ) );
+      self.fireNode && self.fireNode.setMatrix( scratchMatrix.copy() );
 
       self.highlightParent && self.highlightParent.setMatrix( scratchMatrix.copy() );
     };
@@ -62,6 +74,7 @@ define( function( require ) {
       contentHeight: 22 * 0.5,
       highlightOptions: {
         centerX: 0,
+        stroke: null, // No stroke to be shown for the bulb (it is shown for the corresponding foreground node)
 
         // Offset the highlight vertically so it looks good, tuned manually
         bottom: FixedLengthCircuitElementNode.HIGHLIGHT_INSET * 0.75
@@ -70,7 +83,7 @@ define( function( require ) {
     FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, this.lightBulbNode, contentScale, tandem, options );
 
     // Set the initial location of the highlight, since it was not available in the supercall to updateLayout
-    updateLayout( lightBulb.startVertex.position, lightBulb.endVertex.position );
+    updateLayout( lightBulb.startVertexProperty.get().positionProperty.get(), lightBulb.endVertexProperty.get().positionProperty.get() );
 
     this.disposeCCKLightBulbNode = function() {
       updateBrightness.dispose();

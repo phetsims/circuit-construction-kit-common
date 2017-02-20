@@ -12,7 +12,7 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/DisplayOptionsPanel' );
-  var Property = require( 'AXON/Property' );
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var CircuitNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitNode' );
@@ -30,10 +30,11 @@ define( function( require ) {
   var TextPushButton = require( 'SUN/buttons/TextPushButton' );
   var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/CircuitStruct' );
   var Plane = require( 'SCENERY/nodes/Plane' );
+  var ViewRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ViewRadioButtonGroup' );
 
   // constants
-  var inset = CircuitConstructionKitConstants.layoutInset;
-  var backgroundColor = CircuitConstructionKitConstants.backgroundColor;
+  var LAYOUT_INSET = CircuitConstructionKitConstants.LAYOUT_INSET;
+  var BACKGROUND_COLOR = CircuitConstructionKitConstants.BACKGROUND_COLOR;
 
   /**
    * @param {CircuitConstructionKitModel} circuitConstructionKitModel
@@ -56,12 +57,11 @@ define( function( require ) {
       numberOfResistorsInToolbox: CircuitElementToolbox.NUMBER_OF_RESISTORS,
       getToolboxPosition: function( visibleBounds ) {
         return {
-          left: visibleBounds.left + inset,
-          top: visibleBounds.top + inset
+          left: visibleBounds.left + LAYOUT_INSET,
+          top: visibleBounds.top + LAYOUT_INSET
         };
       },
-      getCircuitEditPanelLayoutPosition: CircuitElementEditContainerPanel.GET_LAYOUT_POSITION,
-      showSaveButton: CircuitConstructionKitQueryParameters.showSaveButton
+      getCircuitEditPanelLayoutPosition: CircuitElementEditContainerPanel.GET_LAYOUT_POSITION
     }, options );
     this.circuitConstructionKitModel = circuitConstructionKitModel;
     ScreenView.call( this );
@@ -69,7 +69,7 @@ define( function( require ) {
     // On touch, make it so tapping the background deselects items.  For mouse, we add listeners to the pointer that
     // work a bit more accurately.
     // @protected, so subclasses can change the fill
-    this.backgroundPlane = new Plane( { fill: backgroundColor } );
+    this.backgroundPlane = new Plane( { fill: BACKGROUND_COLOR } );
     this.backgroundPlane.addInputListener( {
       touchdown: function() {
         circuitConstructionKitModel.circuit.selectedCircuitElementProperty.set( null );
@@ -80,7 +80,7 @@ define( function( require ) {
     } );
     this.addChild( this.backgroundPlane );
     var backgroundListener = function( exploreScreenRunning ) {
-      self.backgroundPlane.fill = exploreScreenRunning ? backgroundColor : 'gray';
+      self.backgroundPlane.fill = exploreScreenRunning ? BACKGROUND_COLOR : 'gray';
     };
     circuitConstructionKitModel.exploreScreenRunningProperty.link( backgroundListener );
 
@@ -142,20 +142,7 @@ define( function( require ) {
       window.history.pushState( { circuit: stateObject }, 'title', text + join + 'circuit=' + compressed );
     };
 
-    // If autosave is set, save state to URL when topology changes.  This facilitates Undo via Back button
-    if ( CircuitConstructionKitQueryParameters.autosave ) {
-      console.log( 'autosave' );
-      var t = function() {
-        if ( enableSave ) {
-          setTimeout( pushState, 0 );
-        }
-      };
-
-      // Save a circuit when vertices are joined or when a component is deleted.
-      circuitConstructionKitModel.circuit.vertices.addItemRemovedListener( t );
-    }
-
-    if ( options.showSaveButton ) {
+    if ( CircuitConstructionKitQueryParameters.showSaveButton ) {
       var saveButton = new TextPushButton( 'Save', {
         listener: pushState
       } );
@@ -168,7 +155,7 @@ define( function( require ) {
     } );
     circuitConstructionKitModel.voltmeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
       if ( bodyNodeGlobalBounds.intersectsBounds( self.sensorToolbox.globalBounds ) ) {
-        circuitConstructionKitModel.voltmeter.visible = false;
+        circuitConstructionKitModel.voltmeter.visibleProperty.set( false );
       }
     } );
     circuitConstructionKitModel.voltmeter.visibleProperty.link( function( visible ) {
@@ -181,7 +168,7 @@ define( function( require ) {
     } );
     circuitConstructionKitModel.ammeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
       if ( bodyNodeGlobalBounds.intersectsBounds( self.sensorToolbox.globalBounds ) ) {
-        circuitConstructionKitModel.ammeter.visible = false;
+        circuitConstructionKitModel.ammeter.visibleProperty.set( false );
       }
     } );
     circuitConstructionKitModel.ammeter.visibleProperty.link( function( visible ) {
@@ -190,7 +177,9 @@ define( function( require ) {
 
     // Pass the view into circuit node so that circuit elements can be dropped back into the toolbox
     this.circuitNode = new CircuitNode( circuitConstructionKitModel.circuit, this, tandem.createTandem( 'circuitNode' ) );
-    this.circuitElementToolbox = new CircuitElementToolbox( circuitConstructionKitModel.circuit, this.circuitNode,
+    this.circuitElementToolbox = new CircuitElementToolbox(
+      circuitConstructionKitModel.circuit,
+      circuitConstructionKitModel.showLabelsProperty,
       tandem.createTandem( 'circuitElementToolbox' ), {
         orientation: options.toolboxOrientation,
         numberOfRightBatteries: options.numberOfRightBatteriesInToolbox,
@@ -201,8 +190,10 @@ define( function( require ) {
         numberOfResistors: options.numberOfResistorsInToolbox
       } );
 
+    this.viewRadioButtonGroup = new ViewRadioButtonGroup( circuitConstructionKitModel.viewProperty );
+
     var electronSpeedThrottlingReadoutNode = new ElectronSpeedThrottlingReadoutNode(
-      circuitConstructionKitModel.circuit.constantDensityPropagator.timeScaleProperty,
+      circuitConstructionKitModel.circuit.electronPropagator.timeScaleProperty,
       circuitConstructionKitModel.circuit.showElectronsProperty,
       circuitConstructionKitModel.exploreScreenRunningProperty
     );
@@ -212,11 +203,17 @@ define( function( require ) {
     this.sensorToolbox = new SensorToolbox( voltmeterNode, ammeterNode, circuitConstructionKitModel.exploreScreenRunningProperty, tandem.createTandem( 'sensorToolbox' ) );
 
     // @protected
-    this.displayOptionsPanel = new DisplayOptionsPanel( circuitConstructionKitModel.circuit.showElectronsProperty, new Property( false ), new Property( false ), tandem.createTandem( 'displayOptionsPanel' ), {
-      showConventionalCurrentCheckBox: false,
-      showValuesCheckBox: false
-    } );
-    this.addChild( this.displayOptionsPanel );
+    this.displayOptionsPanel = new DisplayOptionsPanel( circuitConstructionKitModel.circuit.showElectronsProperty,
+      new BooleanProperty( false ), new BooleanProperty( false ),
+      circuitConstructionKitModel.showLabelsProperty,
+      tandem.createTandem( 'displayOptionsPanel' ), {
+        showConventionalCurrentCheckBox: false,
+        showValuesCheckBox: false,
+        showElectronsCheckBox: CircuitConstructionKitQueryParameters.showElectronsCheckBox
+      } );
+
+    CircuitConstructionKitQueryParameters.showControlPanel && this.addChild( this.displayOptionsPanel );
+
     this.displayOptionsPanel.moveToBack(); // Move behind elements added in the super, such as the sensors and circuit
     this.moveBackgroundToBack();
 
@@ -226,11 +223,13 @@ define( function( require ) {
     // Has to be interleaved in the circuit layering to support the black box, so that the toolbox can be behind
     // circuit elements but in front of the transparency overlay
     this.circuitNode.mainLayer.addChild( this.circuitElementToolbox );
+    // this.circuitNode.mainLayer.addChild( this.viewRadioButtonGroup );
+
     var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel(
       circuitConstructionKitModel.circuit,
       this.visibleBoundsProperty,
       options.getCircuitEditPanelLayoutPosition,
-      circuitConstructionKitModel.modeProperty || new Property( 'investigate' ), // TODO: should we move modeProperty up a class?
+      circuitConstructionKitModel.modeProperty,
       tandem.createTandem( 'circuitElementEditContainerPanel' )
     );
 
@@ -241,15 +240,15 @@ define( function( require ) {
       // Float the resetAllButton to the bottom right
       if ( options.showResetAllButton ) {
         resetAllButton.mutate( {
-          right: visibleBounds.right - inset,
-          bottom: visibleBounds.bottom - inset
+          right: visibleBounds.right - LAYOUT_INSET,
+          bottom: visibleBounds.bottom - LAYOUT_INSET
         } );
       }
 
-      if ( options.showSaveButton ) {
+      if ( CircuitConstructionKitQueryParameters.showSaveButton ) {
         saveButton.mutate( {
-          right: visibleBounds.right - inset,
-          bottom: resetAllButton.top - inset
+          right: visibleBounds.right - LAYOUT_INSET,
+          bottom: resetAllButton.top - LAYOUT_INSET
         } );
       }
 
@@ -259,14 +258,16 @@ define( function( require ) {
       } );
 
       self.circuitElementToolbox.mutate( options.getToolboxPosition( visibleBounds ) );
+      self.viewRadioButtonGroup.top = self.circuitElementToolbox.bottom + 10;
+      self.viewRadioButtonGroup.left = self.circuitElementToolbox.left;
 
       self.displayOptionsPanel.mutate( {
-        right: visibleBounds.right - inset,
-        top: visibleBounds.top + inset
+        right: visibleBounds.right - LAYOUT_INSET,
+        top: visibleBounds.top + LAYOUT_INSET
       } );
       self.sensorToolbox.mutate( {
-        right: visibleBounds.right - inset,
-        top: self.displayOptionsPanel.bottom + inset
+        right: visibleBounds.right - LAYOUT_INSET,
+        top: self.displayOptionsPanel.bottom + LAYOUT_INSET
       } );
     } );
 
@@ -277,29 +278,29 @@ define( function( require ) {
 
     // Detection for voltmeter probe + circuit collision is done in the view since view bounds are used
     var updateVoltmeter = function() {
-      if ( circuitConstructionKitModel.voltmeter.visible ) {
-        var redConnection = self.getVoltageConnection( voltmeterNode.redProbeNode, voltmeterNode.voltmeter.redProbePosition );
-        var blackConnection = self.getVoltageConnection( voltmeterNode.blackProbeNode, voltmeterNode.voltmeter.blackProbePosition );
+      if ( circuitConstructionKitModel.voltmeter.visibleProperty.get() ) {
+        var redConnection = self.getVoltageConnection( voltmeterNode.redProbeNode, voltmeterNode.voltmeter.redProbePositionProperty.get() );
+        var blackConnection = self.getVoltageConnection( voltmeterNode.blackProbeNode, voltmeterNode.voltmeter.blackProbePositionProperty.get() );
         if ( redConnection === null || blackConnection === null ) {
-          circuitConstructionKitModel.voltmeter.voltage = null;
+          circuitConstructionKitModel.voltmeter.voltageProperty.set( null );
         }
         else if ( !circuitConstructionKitModel.circuit.areVerticesConnected( redConnection.vertex, blackConnection.vertex ) ) {
 
           // Voltmeter probes each hit things but they were not connected to each other through the circuit.
-          circuitConstructionKitModel.voltmeter.voltage = null;
+          circuitConstructionKitModel.voltmeter.voltageProperty.set( null );
         }
-        else if ( redConnection !== null && redConnection.vertex.insideTrueBlackBox && !circuitConstructionKitModel.revealing ) {
+        else if ( redConnection !== null && redConnection.vertex.insideTrueBlackBoxProperty.get() && !circuitConstructionKitModel.revealingProperty.get() ) {
 
           // Cannot read values inside the black box, unless "reveal" is being pressed
-          circuitConstructionKitModel.voltmeter.voltage = null;
+          circuitConstructionKitModel.voltmeter.voltageProperty.set( null );
         }
-        else if ( blackConnection !== null && blackConnection.vertex.insideTrueBlackBox && !circuitConstructionKitModel.revealing ) {
+        else if ( blackConnection !== null && blackConnection.vertex.insideTrueBlackBoxProperty.get() && !circuitConstructionKitModel.revealingProperty.get() ) {
 
           // Cannot read values inside the black box, unless "reveal" is being pressed
-          circuitConstructionKitModel.voltmeter.voltage = null;
+          circuitConstructionKitModel.voltmeter.voltageProperty.set( null );
         }
         else {
-          circuitConstructionKitModel.voltmeter.voltage = redConnection.voltage - blackConnection.voltage;
+          circuitConstructionKitModel.voltmeter.voltageProperty.set( redConnection.voltage - blackConnection.voltage );
         }
       }
     };
@@ -311,9 +312,9 @@ define( function( require ) {
     var updateAmmeter = function() {
 
       // Skip work when ammeter is not out, to improve performance.
-      if ( circuitConstructionKitModel.ammeter.visible ) {
+      if ( circuitConstructionKitModel.ammeter.visibleProperty.get() ) {
         var current = self.getCurrent( ammeterNode.probeNode );
-        circuitConstructionKitModel.ammeter.current = current;
+        circuitConstructionKitModel.ammeter.currentProperty.set( current );
       }
     };
     circuitConstructionKitModel.circuit.circuitChangedEmitter.addListener( updateAmmeter );
@@ -330,8 +331,8 @@ define( function( require ) {
 
         // Float the playPauseButton to the bottom left
         playPauseButton.mutate( {
-          left: visibleBounds.left + inset,
-          bottom: visibleBounds.bottom - inset
+          left: visibleBounds.left + LAYOUT_INSET,
+          bottom: visibleBounds.bottom - LAYOUT_INSET
         } );
       } );
     }
@@ -378,7 +379,7 @@ define( function( require ) {
 
       var hitWireNode = this.hitWireNode( probeNode, 'translation' );
       if ( hitWireNode ) {
-        return hitWireNode.wire.current;
+        return hitWireNode.wire.currentProperty.get();
       }
       else {
         return null;
@@ -399,9 +400,9 @@ define( function( require ) {
 
         // Don't connect to wires in the black box
         var revealing = true;
-        var trueBlackBox = wireNode.wire.insideTrueBlackBox;
+        var trueBlackBox = wireNode.wire.insideTrueBlackBoxProperty.get();
         if ( trueBlackBox ) {
-          revealing = this.circuitConstructionKitModel.revealing;
+          revealing = this.circuitConstructionKitModel.revealingProperty.get();
         }
         if ( revealing && wireNode.getStrokedShape().containsPoint( probeNode[ locationString ] ) ) {
           return wireNode;
@@ -422,14 +423,14 @@ define( function( require ) {
       // Check for intersection with a vertex
       for ( var i = 0; i < this.circuitNode.vertexNodes.length; i++ ) {
         var vertexNode = this.circuitNode.vertexNodes[ i ];
-        var position = vertexNode.vertex.position;
+        var position = vertexNode.vertex.positionProperty.get();
         var radius = vertexNode.dottedLineNodeRadius;
 
         var distance = probePosition.distance( position );
         if ( distance <= radius ) {
           return {
             vertex: vertexNode.vertex,
-            voltage: vertexNode.vertex.voltage
+            voltage: vertexNode.vertex.voltageProperty.get()
           };
         }
       }
@@ -438,8 +439,8 @@ define( function( require ) {
       var wireNode = this.hitWireNode( probeNode, 'centerTop' );
       if ( wireNode ) {
 
-        var startPoint = wireNode.wire.startVertex.position;
-        var endPoint = wireNode.wire.endVertex.position;
+        var startPoint = wireNode.wire.startVertexProperty.get().positionProperty.get();
+        var endPoint = wireNode.wire.endVertexProperty.get().positionProperty.get();
         var segmentVector = endPoint.minus( startPoint );
         var probeVector = probeNode.centerTop.minus( startPoint );
 
@@ -447,10 +448,10 @@ define( function( require ) {
         distanceAlongSegment = Util.clamp( distanceAlongSegment, 0, 1 );
 
         assert && assert( distanceAlongSegment >= 0 && distanceAlongSegment <= 1, 'beyond the end of the wire' );
-        var voltageAlongWire = Util.linear( 0, 1, wireNode.wire.startVertex.voltage, wireNode.wire.endVertex.voltage, distanceAlongSegment );
+        var voltageAlongWire = Util.linear( 0, 1, wireNode.wire.startVertexProperty.get().voltageProperty.get(), wireNode.wire.endVertexProperty.get().voltageProperty.get(), distanceAlongSegment );
 
         return {
-          vertex: wireNode.wire.startVertex,
+          vertex: wireNode.wire.startVertexProperty.get(),
           voltage: voltageAlongWire
         };
       }

@@ -1,5 +1,4 @@
 // Copyright 2015-2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * The Battery is a circuit element that provides a fixed voltage difference.
@@ -11,39 +10,56 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/FixedLengthCircuitElement' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
-  var BATTERY_LENGTH = 102;
+  var BATTERY_LENGTH = CircuitConstructionKitConstants.BATTERY_LENGTH;
 
   /**
-   *
+   * @param {Vertex} startVertex - one of the battery vertices
+   * @param {Vertex} endVertex - the other battery vertex
+   * @param {number} voltage - the amount of constant voltage supplied by the battery
+   * @param {Object} [options]
    * @constructor
    */
   function Battery( startVertex, endVertex, voltage, options ) {
     assert && assert( typeof voltage === 'number', 'voltage should be a number' );
-    options = _.extend( { initialOrientation: 'right' }, options );
-    FixedLengthCircuitElement.call( this, BATTERY_LENGTH, startVertex, endVertex, {
-      voltage: voltage
-    } );
+    options = _.extend( {
+      initialOrientation: 'right'
+    }, options );
+    FixedLengthCircuitElement.call( this, startVertex, endVertex, BATTERY_LENGTH, BATTERY_LENGTH );
 
-    // @public (read-only) - track the initial state so the user can only create a certain number of "left" or "right" batteries
-    // from the toolbox.
+    // @public {Property.<number>} the voltage of the battery
+    this.voltageProperty = new NumberProperty( voltage );
+
+    // @public (read-only) - track the initial state so the user can only create a certain number of "left" or "right"
+    // batteries from the toolbox.
     this.initialOrientation = options.initialOrientation;
   }
 
   circuitConstructionKitCommon.register( 'Battery', Battery );
 
   return inherit( FixedLengthCircuitElement, Battery, {
-    toStateObjectWithVertexIndices: function( getVertexIndex ) {
-      return _.extend( {
-          voltage: this.voltage
-        },
-        FixedLengthCircuitElement.prototype.toStateObjectWithVertexIndices.call( this, getVertexIndex )
-      );
+
+    /**
+     * @override
+     * @return {Property[]}
+     */
+    getCircuitProperties: function() {
+      return [ this.voltageProperty ];
+    },
+
+    /**
+     * @returns {Object} the attributes of the battery in a state object
+     * @public
+     */
+    attributesToStateObject: function() {
+      return {
+        voltage: this.voltageProperty.get()
+      };
     }
-  }, {
-    BATTERY_LENGTH: BATTERY_LENGTH
   } );
 } );

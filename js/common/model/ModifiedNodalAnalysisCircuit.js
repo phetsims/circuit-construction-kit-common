@@ -12,11 +12,11 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var LinearCircuitSolution = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/modified-nodal-analysis/LinearCircuitSolution' );
+  var ModifiedNodalAnalysisSolution = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/ModifiedNodalAnalysisSolution' );
   var Matrix = require( 'DOT/Matrix' );
 
   // constants
-  var debug = false;
+  var DEBUG = false;
 
   /**
    * Find the index of an element in an array
@@ -134,7 +134,7 @@ define( function( require ) {
    *
    * @constructor
    */
-  function MNACircuit( batteries, resistors, currentSources ) {
+  function ModifiedNodalAnalysisCircuit( batteries, resistors, currentSources ) {
     assert && assert( batteries, 'batteries should be defined' );
     assert && assert( resistors, 'resistors should be defined' );
     assert && assert( currentSources, 'currentSources should be defined' );
@@ -185,9 +185,9 @@ define( function( require ) {
       return element.node0;
     }
   };
-  circuitConstructionKitCommon.register( 'MNACircuit', MNACircuit );
+  circuitConstructionKitCommon.register( 'ModifiedNodalAnalysisCircuit', ModifiedNodalAnalysisCircuit );
 
-  return inherit( Object, MNACircuit, {
+  return inherit( Object, ModifiedNodalAnalysisCircuit, {
     toString: function() {
       return 'Circuit: resistors:' + this.resistors.map( function( r ) {
           return resistorToString( r );
@@ -448,7 +448,7 @@ define( function( require ) {
         } );
       }
 
-      if ( debug ) {
+      if ( DEBUG ) {
         console.log( 'Debugging circuit: ' + this.toString() );
         console.log( equations.join( '\n' ) );
         console.log( 'a=' );
@@ -459,7 +459,7 @@ define( function( require ) {
       }
 
       var x = A.solve( z );
-      if ( debug ) {
+      if ( DEBUG ) {
         console.log( 'x=' );
         console.log( x.toString() );
       }
@@ -475,7 +475,7 @@ define( function( require ) {
         currentVar.element.currentSolution = x.get( getIndexByEquals( unknowns, currentVar ), 0 );
       }
 
-      return new LinearCircuitSolution( voltageMap, unknownCurrents.map( function( u ) {
+      return new ModifiedNodalAnalysisSolution( voltageMap, unknownCurrents.map( function( u ) {
         return u.element;
       } ) );
     }

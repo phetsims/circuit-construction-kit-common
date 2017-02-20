@@ -1,8 +1,8 @@
 // Copyright 2015-2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- *
+ * CircuitElements such as Resistor, Battery, etc have a fixed length (unlike stretchy Wires).  This is their common
+ * base class.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -15,20 +15,24 @@ define( function( require ) {
   var CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/CircuitElement' );
 
   /**
-   *
+   * @param {Vertex} startVertex
+   * @param {Vertex} endVertex
+   * @param {number} distanceBetweenVertices - in screen coordinates
+   * @param {number} electronPathLength - the distance the electrons must travel (in screen coordinates).  More docs in CircuitElement.js
+   * @param {Object} [options]
    * @constructor
    */
-  function FixedLengthCircuitElement( length, startVertex, endVertex, additionalProperties, options ) {
-    var actualLength = startVertex.position.distance( endVertex.position );
-    assert && assert( Math.abs( length - actualLength ) < 1E-6, 'length should be ' + length );
+  function FixedLengthCircuitElement( startVertex, endVertex, distanceBetweenVertices, electronPathLength, options ) {
 
-    CircuitElement.call( this, startVertex, endVertex, additionalProperties, options );
+    // Check that the measured length matches the specified length
+    var measuredLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
+    assert && assert( Math.abs( distanceBetweenVertices - measuredLength ) < 1E-6, 'length should be ' + distanceBetweenVertices );
 
-    // The distance electrons travel (along paths)
-    this.length = length;
+    // Super constructor
+    CircuitElement.call( this, startVertex, endVertex, electronPathLength, options );
 
-    // The distance from one vertex to another (as the crow flies)
-    this.distanceBetweenVertices = this.length;
+    // @public (read-only) The distance from one vertex to another (as the crow flies), used for rotation about a vertex
+    this.distanceBetweenVertices = distanceBetweenVertices;
   }
 
   circuitConstructionKitCommon.register( 'FixedLengthCircuitElement', FixedLengthCircuitElement );

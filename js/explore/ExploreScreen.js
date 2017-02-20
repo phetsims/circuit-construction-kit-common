@@ -2,6 +2,7 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
+ * The "Explore Screen", used in both Black Box Study and DC simulations.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -26,12 +27,13 @@ define( function( require ) {
   var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/WireNode' );
   var CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CustomLightBulbNode' );
   var Property = require( 'AXON/Property' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
 
   // images
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
 
   // constants
-  var backgroundColor = CircuitConstructionKitConstants.backgroundColor;
+  var BACKGROUND_COLOR = CircuitConstructionKitConstants.BACKGROUND_COLOR;
 
   /**
    * @constructor
@@ -39,20 +41,25 @@ define( function( require ) {
   function ExploreScreen( tandem ) {
 
     var icon = new Rectangle( 0, 0, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.width, Screen.MINIMUM_HOME_SCREEN_ICON_SIZE.height, {
-      fill: backgroundColor
+      fill: BACKGROUND_COLOR
     } );
 
     var wireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, tandem.createTandem( 'wireIcon' ) );
+    wireNode.accessibleContent = null; // icon should not have accessibel content
+
     var resistorNode = new ResistorNode(
       null,
       null,
-      new Resistor( new Vertex( 0, 0 ), new Vertex( Resistor.RESISTOR_LENGTH, 0 ), CircuitConstructionKitConstants.defaultResistance ),
+      new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ), CircuitConstructionKitConstants.DEFAULT_RESISTANCE ),
       null,
       tandem.createTandem( 'resistorIcon' ), {
         icon: true
       } );
+    resistorNode.accessibleContent = null;
+
     var battery = new Image( batteryImage );
-    var lightBulbNode = new CustomLightBulbNode( new Property( 0 ) );
+    var lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ) );
+    lightBulbNode.accessibleContent = null;
 
     var elementWidth = 50;
     resistorNode.mutate( { scale: elementWidth / resistorNode.width * 0.75 } );
@@ -74,7 +81,7 @@ define( function( require ) {
 
     var options = {
       name: 'Explore', //TODO i18n
-      backgroundColor: CircuitConstructionKitConstants.backgroundColor,
+      backgroundColorProperty: new Property( CircuitConstructionKitConstants.BACKGROUND_COLOR ),
       homeScreenIcon: icon,
       tandem: tandem
     };

@@ -13,7 +13,7 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var TandemText = require( 'TANDEM/scenery/nodes/TandemText' );
+  var Text = require( 'SCENERY/nodes/Text' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var VBox = require( 'SCENERY/nodes/VBox' );
 
@@ -28,7 +28,7 @@ define( function( require ) {
 
     var rectangleWidth = 140;
 
-    var readout = new TandemText( '?', {
+    var readout = new Text( '?', {
       fontSize: 34,
       maxWidth: rectangleWidth - 20,
       tandem: tandem.createTandem( 'readoutText' )
@@ -56,7 +56,7 @@ define( function( require ) {
       spacing: 6,
 
       align: 'center',
-      children: [ new TandemText( title, {
+      children: [ new Text( title, {
         fontSize: 42,
         tandem: tandem.createTandem( 'titleText' )
       } ), readoutNode ]

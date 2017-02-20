@@ -24,7 +24,7 @@ define( function( require ) {
   var ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ProbeWireNode' );
   var Vector2 = require( 'DOT/Vector2' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
-  var Property = require( 'AXON/Property' );
+  var BooleanProperty = require( 'AXON/BooleanProperty' );
 
   // images
   var ammeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeter_body.png' );
@@ -38,7 +38,7 @@ define( function( require ) {
   var PROBE_CONNECTION_POINT_DY = 8;
 
   /**
-   * @param {Ammeter} ammeter
+   * @param {Meter|Ammeter} ammeter - specifying parent and child types here satisfies the IDEA parser
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
@@ -48,7 +48,7 @@ define( function( require ) {
     options = _.extend( {
       icon: false,
       visibleBoundsProperty: null,
-      runningProperty: new Property( true )
+      runningProperty: new BooleanProperty( true )
     }, options );
     var s = 0.5;
     this.ammeter = ammeter;
@@ -57,9 +57,12 @@ define( function( require ) {
 
     var currentProperty = new DerivedProperty( [ ammeter.currentProperty ], function( current ) {
 
+      var max = window.phetBlackBoxStudy ? 1E3 : 1E10;
+      var maxString = window.phetBlackBoxStudy ? '> 10^3' : '> 10^10';
+
       // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
       return current === null ? '?' :
-             Math.abs( current ) > 1E4 ? '> 10^4' :
+             Math.abs( current ) > max ? maxString :
              Util.toFixed( Math.abs( current ), 2 ) + ' A';
     } );
     var probeTextNode = new ProbeTextNode( currentProperty, options.runningProperty, 'Current', tandem.createTandem( 'probeTextNode' ), {
@@ -103,8 +106,8 @@ define( function( require ) {
       blackWireNode.setProbePosition( self.probeNode.centerBottom );
     } );
     ammeter.bodyPositionProperty.link( function( bodyPosition ) {
-      if ( ammeter.draggingProbesWithBody ) {
-        ammeter.probePosition = bodyPosition.plusXY( 80 / 2, -140 / 2 - 10 );
+      if ( ammeter.draggingProbesWithBodyProperty.get() ) {
+        ammeter.probePositionProperty.set( bodyPosition.plusXY( 80 / 2, -140 / 2 - 10 ) );
       }
     } );
 
@@ -115,7 +118,7 @@ define( function( require ) {
           ammeter.droppedEmitter.emit1( bodyNode.globalBounds );
 
           // After dropping in the play area the probes move independently of the body
-          ammeter.draggingProbesWithBody = false;
+          ammeter.draggingProbesWithBodyProperty.set( false );
         }
       } );
       bodyNode.addInputListener( this.movableDragHandler );
@@ -128,17 +131,18 @@ define( function( require ) {
     options.visibleBoundsProperty && options.visibleBoundsProperty.link( function( visibleBounds ) {
 
       // Make sure at least a grabbable edge remains visible
-      visibleBounds = visibleBounds.eroded( CircuitConstructionKitConstants.dragBoundsErosion );
+      visibleBounds = visibleBounds.eroded( CircuitConstructionKitConstants.DRAG_BOUNDS_EROSION );
 
       self.movableDragHandler.setDragBounds( visibleBounds );
       probeDragHandler.setDragBounds( visibleBounds );
 
-      ammeter.bodyPosition = visibleBounds.closestPointTo( ammeter.bodyPosition );
-      ammeter.probePosition = visibleBounds.closestPointTo( ammeter.probePosition );
+      ammeter.bodyPositionProperty.set( visibleBounds.closestPointTo( ammeter.bodyPositionProperty.get() ) );
+      ammeter.probePositionProperty.set( visibleBounds.closestPointTo( ammeter.probePositionProperty.get() ) );
     } );
   }
 
   circuitConstructionKitCommon.register( 'AmmeterNode', AmmeterNode );
 
-  return inherit( Node, AmmeterNode, {} );
+  // Test commit
+  return inherit( Node, AmmeterNode );
 } );

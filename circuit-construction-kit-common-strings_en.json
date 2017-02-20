@@ -1,5 +1,20 @@
 {
   "circuit-construction-kit.title": {
     "value": "Circuit Construction Kit"
+  },
+  "resistor": {
+    "value": "resistor"
+  },
+  "battery": {
+    "value": "battery"
+  },
+  "lightBulb": {
+    "value": "light bulb"
+  },
+  "switch": {
+    "value": "switch"
+  },
+  "wire": {
+    "value": "wire"
   }
 }

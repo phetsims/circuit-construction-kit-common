@@ -25,6 +25,7 @@ define( function( require ) {
    * @param circuitConstructionKitScreenView
    * @param {CircuitNode} [circuitNode] optional, null for icons
    * @param resistor
+   * @param {Property.<boolean>} runningProperty - not used here but appears in signature to keep same signature as other components.
    * @param tandem
    * @param options
    * @constructor
@@ -53,7 +54,7 @@ define( function( require ) {
       } )
     ];
     var updateColorBands = function( resistance ) {
-      var colors = ResistorColors.toThreeColors( resistance );
+      var colors = ResistorColors.getColorArray( resistance );
       for ( var i = 0; i < colorBands.length; i++ ) {
         colorBands[ i ].fill = colors[ i ];// Last one could be null
       }

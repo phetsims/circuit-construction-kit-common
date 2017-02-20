@@ -11,8 +11,10 @@
   <!-- CDN reference for now, so we don't pull in unneeded deps -->
   <script src="../../../sherpa/lib/jquery-2.1.0.min.js"></script>
   <script src="../../../assert/js/assert.js"></script>
-  <script src="../../../sherpa/lib/lodash-2.4.1.min.js"></script>
+  <script src="../../../query-string-machine/js/QueryStringMachine.js"></script>
+  <script src="../../../sherpa/lib/lodash-4.17.4.min.js"></script>
   <script src="../../../chipper/js/initialize-globals.js"></script>
+  <script src="../../../chipper/js/getVersionForBrand.js"></script>
   <script type="text/javascript">
     window.circuitConstructionKitTestSuite = true;
 
@@ -43,6 +45,28 @@
 <script>
   require( [ 'circuit-construction-kit-common-config' ], function() {
     require( [ 'circuit-construction-kit-common-main', 'PHET_CORE/main', 'PHET_CORE/phetAllocation' ], function() {
+
+      QUnit.log( function( details ) {
+        window.parent && window.parent.postMessage( JSON.stringify( {
+          type: 'qunit-test',
+          main: 'scenery',
+          result: details.result,
+          module: details.module,
+          name: details.name,
+          message: details.message,
+          source: details.source // TODO: consider expected/actual, or don't worry because we'll run finer tests once it fails.
+        } ), '*' );
+      } );
+
+      QUnit.done( function( details ) {
+        window.parent && window.parent.postMessage( JSON.stringify( {
+          type: 'qunit-done',
+          failed: details.failed,
+          passed: details.passed,
+          total: details.total
+        } ), '*' );
+      } );
+
       runCCKTests( '.' );
     } );
   } );

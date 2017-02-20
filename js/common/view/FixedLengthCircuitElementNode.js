@@ -13,8 +13,10 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Battery' );
+  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Resistor' );
   var Property = require( 'AXON/Property' );
-  var TandemDragHandler = require( 'TANDEM/scenery/input/TandemDragHandler' );
+  var TandemSimpleDragHandler = require( 'TANDEM/scenery/input/TandemSimpleDragHandler' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitElementNode' );
   var Matrix3 = require( 'DOT/Matrix3' );
@@ -22,6 +24,10 @@ define( function( require ) {
   var Panel = require( 'SUN/Panel' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Color = require( 'SCENERY/util/Color' );
+  var Image = require( 'SCENERY/nodes/Image' );
+
+  // images
+  var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
 
   // phet-io modules
   var TNode = require( 'ifphetio!PHET_IO/types/scenery/nodes/TNode' );
@@ -32,12 +38,12 @@ define( function( require ) {
    * @param circuitElement
    * @param {Node} contentNode - the node that will display the component
    * @param {number} contentScale - the scale factor to apply to the image for the size in the play area (icons are automatically scaled up)
+   * @param {Tandem} tandem
    * @param options
    * @constructor
    */
   function FixedLengthCircuitElementNode( circuitConstructionKitScreenView, circuitNode, circuitElement, contentNode,
                                           contentScale, tandem, options ) {
-
     var self = this;
 
     // Capture the original dimensions of the content node, without the highlight node
@@ -50,7 +56,8 @@ define( function( require ) {
     options = _.extend( {
       icon: false,
       updateLayout: function( startPosition, endPosition ) {
-        var angle = endPosition.minus( startPosition ).angle();
+        var delta = endPosition.minus( startPosition );
+        var angle = delta.angle();
 
         // Update the node transform in a single step, see #66
         scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
@@ -59,6 +66,16 @@ define( function( require ) {
           .multiplyMatrix( scratchMatrix2.setToTranslation( 0, -contentNodeHeight / 2 ) );
         contentNode.setMatrix( scratchMatrix );
         highlightNode && highlightParent.setMatrix( scratchMatrix.copy() );
+
+        // Update the fire transform
+        var flameExtent = 0.8;
+        var scale = delta.magnitude() / fireImage[ 0 ].width * flameExtent;
+        var flameInset = (1 - flameExtent) / 2;
+        scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
+          .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
+          .multiplyMatrix( scratchMatrix2.setToScale( scale ) )
+          .multiplyMatrix( scratchMatrix2.setToTranslation( delta.magnitude() * flameInset / scale, -fireImage[ 0 ].height ) );
+        self.fireNode && self.fireNode.setMatrix( scratchMatrix.copy() );
 
         // Show the readout node above the center of the component.
         if ( readoutNode ) {
@@ -80,12 +97,12 @@ define( function( require ) {
         h / contentScale - inset * 2,
         8 / contentScale,
         8 / contentScale,
-        _.extend( options.highlightOptions, {
-          stroke: CircuitConstructionKitConstants.highlightColor,
-          lineWidth: CircuitConstructionKitConstants.highlightLineWidth / contentScale / contentScale,
+        _.extend( {
+          stroke: CircuitConstructionKitConstants.HIGHLIGHT_COLOR,
+          lineWidth: CircuitConstructionKitConstants.HIGHLIGHT_LINE_WIDTH / contentScale / contentScale,
           scale: contentScale,
           pickable: false
-        } )
+        }, options.highlightOptions )
       );
 
       highlightParent.children = [ highlightNode ];
@@ -99,8 +116,8 @@ define( function( require ) {
     var relink = function() {
       multilink && multilink.dispose();
       multilink = Property.multilink( [
-        circuitElement.startVertex.positionProperty,
-        circuitElement.endVertex.positionProperty
+        circuitElement.startVertexProperty.get().positionProperty,
+        circuitElement.endVertexProperty.get().positionProperty
       ], options.updateLayout );
     };
     relink();
@@ -108,11 +125,11 @@ define( function( require ) {
     var moveToFront = function() {
 
       // Components outside the black box do not move in front of the overlay
-      if ( circuitElement.interactive ) {
+      if ( circuitElement.interactiveProperty.get() ) {
         self.moveToFront();
         self.circuitElement.moveToFrontEmitter.emit();
-        self.circuitElement.startVertex.moveToFrontEmitter.emit();
-        self.circuitElement.endVertex.moveToFrontEmitter.emit();
+        self.circuitElement.startVertexProperty.get().relayerEmitter.emit();
+        self.circuitElement.endVertexProperty.get().relayerEmitter.emit();
       }
     };
     circuitElement.connectedEmitter.addListener( moveToFront );
@@ -121,7 +138,8 @@ define( function( require ) {
     circuitElement.startVertexProperty.lazyLink( relink );
     circuitElement.endVertexProperty.lazyLink( relink );
 
-    CircuitElementNode.call( this, circuitElement, {
+    var circuit = circuitNode && circuitNode.circuit;
+    CircuitElementNode.call( this, circuitElement, circuit, {
       cursor: 'pointer',
       children: [
         contentNode
@@ -137,36 +155,38 @@ define( function( require ) {
     var p = null;
     var didDrag = false;
     if ( !options.icon ) {
-      this.inputListener = new TandemDragHandler( {
+      this.inputListener = new TandemSimpleDragHandler( {
         allowTouchSnag: true,
         tandem: tandem.createTandem( 'inputListener' ), // TODO: some input listeners are 'dragHandler' let's be consistent
         start: function( event ) {
           p = event.pointer.point;
-          circuitElement.interactive && circuitNode.startDrag( event.pointer.point, circuitElement.endVertex, false );
+          circuitElement.interactiveProperty.get() && circuitNode.startDrag( event.pointer.point, circuitElement.endVertexProperty.get(), false );
           didDrag = false;
         },
         drag: function( event ) {
-          circuitElement.interactive && circuitNode.drag( event.pointer.point, circuitElement.endVertex, false );
+          circuitElement.interactiveProperty.get() && circuitNode.drag( event.pointer.point, circuitElement.endVertexProperty.get(), false );
           didDrag = true;
         },
         end: function( event ) {
 
-          // If over the toolbox, then drop into it, and don't process further
-          if ( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) ) {
-            circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
-            return;
+          if ( !circuitElement.interactiveProperty.get() ) {
+            // nothing to do
           }
+          else if ( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) ) {
 
-          if ( !circuitElement.interactive ) {
-            return;
+            // If over the toolbox, then drop into it, and don't process further
+            setTimeout( function() {circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );}, 0 );
           }
+          else {
 
-          circuitNode.endDrag( event, circuitElement.endVertex, didDrag );
+            circuitNode.endDrag( event, circuitElement.endVertexProperty.get(), didDrag );
 
-          // Only show the editor when tapped, not on every drag.
-          self.maybeSelect( event, circuitNode, p );
+            // Only show the editor when tapped, not on every drag.  Also, event could be undefined if this end() was triggered
+            // by dispose()
+            event && self.maybeSelect( event, circuitNode, p );
 
-          didDrag = false;
+            didDrag = false;
+          }
         }
       } );
       contentNode.addInputListener( this.inputListener );
@@ -197,10 +217,25 @@ define( function( require ) {
       this.addChild( readoutNode );
     }
 
-    // Update after the highlight/readout exist
+    if ( !options.icon && (circuitElement instanceof Battery || circuitElement instanceof Resistor) ) {
+      this.fireNode = new Image( fireImage, { pickable: false, opacity: 0.95 } );
+      this.fireNode.mutate( { scale: contentNode.width / this.fireNode.width } );
+      this.addChild( this.fireNode );
+
+      // TODO: multilink?
+      var updateFire = function() {
+        var current = circuitElement.currentProperty.get();
+        var lowResistanceResistor = circuitElement instanceof Resistor && circuitElement.resistanceProperty.get() < 1E-8;
+        self.fireNode.visible = Math.abs( current ) >= 10 && !lowResistanceResistor && circuitConstructionKitScreenView.circuitConstructionKitModel.exploreScreenRunningProperty.get();
+      };
+      circuitElement.currentProperty.link( updateFire );
+      circuitConstructionKitScreenView.circuitConstructionKitModel.exploreScreenRunningProperty.link( updateFire );
+    }
+
+    // Update after the highlight/readout/fire exist
     options.updateLayout(
-      circuitElement.startVertex.position,
-      circuitElement.endVertex.position
+      circuitElement.startVertexProperty.get().positionProperty.get(),
+      circuitElement.endVertexProperty.get().positionProperty.get()
     );
 
     this.disposeFixedLengthCircuitElementNode = function() {
@@ -222,7 +257,11 @@ define( function( require ) {
       circuitElement.startVertexProperty.unlink( relink );
       circuitElement.endVertexProperty.unlink( relink );
 
-      tandem.removeInstance( this );
+      tandem.removeInstance( self );
+      if ( !options.icon && circuitElement instanceof Battery ) {
+        circuitElement.currentProperty.unlink( updateFire );
+        circuitConstructionKitScreenView.circuitConstructionKitModel.exploreScreenRunningProperty.unlink( updateFire );
+      }
     };
 
     tandem.addInstance( this, TNode );

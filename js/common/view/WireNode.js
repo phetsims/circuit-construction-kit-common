@@ -13,7 +13,7 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
-  var TandemDragHandler = require( 'TANDEM/scenery/input/TandemDragHandler' );
+  var TandemSimpleDragHandler = require( 'TANDEM/scenery/input/TandemSimpleDragHandler' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var Path = require( 'SCENERY/nodes/Path' );
   var LineStyles = require( 'KITE/util/LineStyles' );
@@ -33,7 +33,7 @@ define( function( require ) {
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - if null, this WireNode is just an icon
    * @param {CircuitNode} circuitNode
    * @param {Wire} wire
-   * @param {Property.<boolean>} to match the constructors of other circuit element nodes
+   * @param {Property.<boolean>} runningProperty - to match the constructors of other circuit element nodes
    * @param {Tandem} tandem
    * @constructor
    */
@@ -42,8 +42,8 @@ define( function( require ) {
     this.wire = wire;
 
     var highlightNode = new Path( null, {
-      stroke: CircuitConstructionKitConstants.highlightColor,
-      lineWidth: CircuitConstructionKitConstants.highlightLineWidth,
+      stroke: CircuitConstructionKitConstants.HIGHLIGHT_COLOR,
+      lineWidth: CircuitConstructionKitConstants.HIGHLIGHT_LINE_WIDTH,
       pickable: false,
       visible: false
     } );
@@ -97,7 +97,8 @@ define( function( require ) {
 
     // @private
     this.lineNode = lineNode;
-    CircuitElementNode.call( this, wire, {
+    var circuit = circuitNode && circuitNode.circuit;
+    CircuitElementNode.call( this, wire, circuit, {
       children: [
         lineNodeParent
       ]
@@ -117,7 +118,7 @@ define( function( require ) {
     var startListener = function( startPoint ) {
       lineNodeParent.setTranslation( startPoint.x, startPoint.y );
       highlightNodeParent.setTranslation( startPoint.x, startPoint.y );
-      endListener && endListener( wire.endVertex.position );
+      endListener && endListener( wire.endVertexProperty.get().positionProperty.get() );
       if ( highlightNode.visible ) {
         highlightNode.shape = self.getHighlightStrokedShape( highlightStrokeStyles );
       }
@@ -131,8 +132,8 @@ define( function( require ) {
     wire.startVertexProperty.link( updateStartVertex );
 
     var endListener = function( endPoint ) {
-      lineNode.setPoint2( endPoint.distance( wire.startVertex.position ), 0 );
-      var deltaVector = endPoint.minus( wire.startVertex.position );
+      lineNode.setPoint2( endPoint.distance( wire.startVertexProperty.get().positionProperty.get() ), 0 );
+      var deltaVector = endPoint.minus( wire.startVertexProperty.get().positionProperty.get() );
       lineNodeParent.setRotation( deltaVector.angle() );
       highlightNodeParent.setRotation( deltaVector.angle() );
       if ( highlightNode.visible ) {
@@ -156,38 +157,40 @@ define( function( require ) {
     var didDrag = false;
 
     if ( circuitConstructionKitScreenView ) {
-      this.inputListener = new TandemDragHandler( {
+      this.inputListener = new TandemSimpleDragHandler( {
         allowTouchSnag: true,
         tandem: tandem.createTandem( 'inputListener' ),
         start: function( event ) {
           p = event.pointer.point;
 
-          if ( wire.interactive ) {
-            circuitNode.startDrag( event.pointer.point, wire.startVertex, false );
-            circuitNode.startDrag( event.pointer.point, wire.endVertex, false );
+          if ( wire.interactiveProperty.get() ) {
+            circuitNode.startDrag( event.pointer.point, wire.startVertexProperty.get(), false );
+            circuitNode.startDrag( event.pointer.point, wire.endVertexProperty.get(), false );
+            wire.isOverToolboxProperty.set( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) );
           }
           didDrag = false;
         },
         drag: function( event ) {
-          if ( wire.interactive ) {
-            circuitNode.drag( event.pointer.point, wire.startVertex, false );
-            circuitNode.drag( event.pointer.point, wire.endVertex, false );
+          if ( wire.interactiveProperty.get() ) {
+            circuitNode.drag( event.pointer.point, wire.startVertexProperty.get(), false );
+            circuitNode.drag( event.pointer.point, wire.endVertexProperty.get(), false );
+            wire.isOverToolboxProperty.set( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) );
             didDrag = true;
           }
         },
         end: function( event ) {
 
           // If over the toolbox, then drop into it, and don't process further
-          if ( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) ) {
+          if ( wire.isOverToolboxProperty.get() ) {
             circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
             return;
           }
-          if ( !wire.interactive ) {
+          if ( !wire.interactiveProperty.get() ) {
             return;
           }
 
-          circuitNode.endDrag( event, wire.startVertex, didDrag );
-          circuitNode.endDrag( event, wire.endVertex, didDrag );
+          circuitNode.endDrag( event, wire.startVertexProperty.get(), didDrag );
+          circuitNode.endDrag( event, wire.endVertexProperty.get(), didDrag );
 
           // Only show the editor when tapped, not on every drag.
           self.maybeSelect( event, circuitNode, p );
@@ -218,11 +221,11 @@ define( function( require ) {
       updateHighlight && circuitNode.circuit.selectedCircuitElementProperty.unlink( updateHighlight );
       wire.interactiveProperty.unlink( updatePickable );
 
-      wire.startVertex.positionProperty.unlink( startListener );
-      wire.endVertex.positionProperty.unlink( endListener );
+      wire.startVertexProperty.get().positionProperty.unlink( startListener );
+      wire.endVertexProperty.get().positionProperty.unlink( endListener );
 
       circuitNode && circuitNode.highlightLayer.removeChild( highlightNodeParent );
-      tandem.removeInstance( this );
+      tandem.removeInstance( self );
     };
 
     tandem.addInstance( this, TNode );

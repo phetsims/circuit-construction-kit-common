@@ -2,7 +2,7 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- * This code governs the movement of electrons, making sure they are distributed equally among the different branches.
+ * This code governs the movement of electrons, making sure they are distributed equally among the different CircuitElements.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -12,220 +12,191 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var SmoothData = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/SmoothData' );
+  var RunningAverage = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/RunningAverage' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
-  var PropertySet = require( 'AXON/PropertySet' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
 
-  // Number of amps at which a component catches fire
-  var FIRE_CURRENT = 10;
+  // Clamp the current at a maximum.  TODO: Is this truly needed?  It seems like it's responsibility is covered
+  // by the speed decrease and fires.
+  var MAX_CURRENT = 10;
 
   // If the current is lower than this, then there is no electron movement
   var MIN_CURRENT = Math.pow( 10, -10 );
 
-  var MAX_STEP = CircuitConstructionKitConstants.electronDX * 0.43;
-  var numEqualize = 2;
-  var speedScale = 1 / 3;
-  var timeScale = 100;
-  var highestSoFar = null;//for debugging
+  // The furthest an electron can step in one frame before the time scale must be reduced (to prevent a strobe effect)
+  var MAX_POSITION_CHANGE = CircuitConstructionKitConstants.ELECTRON_SEPARATION * 0.43;
 
-  var getUpperNeighborInBranch = function( circuit, electron, branchElectrons ) {
-    var closestUpperNeighbor = null;
-    var closestDistance = Number.POSITIVE_INFINITY;
-    for ( var i = 0; i < branchElectrons.length; i++ ) {
-      var neighborElectron = branchElectrons[ i ];
-      if ( neighborElectron !== electron ) {
-        var neighborDistance = neighborElectron.distance;
-        var electronDistance = electron.distance;
-        if ( neighborDistance > electronDistance ) {
-          var distance = neighborDistance - electronDistance;
-          if ( distance < closestDistance ) {
-            closestDistance = distance;
-            closestUpperNeighbor = neighborElectron;
-          }
-        }
-      }
-    }
-    return closestUpperNeighbor;
-  };
+  // Number of times to spread out electrons so they don't get bunched up.
+  var NUMBER_OF_EQUALIZE_STEPS = 2;
 
-  var getLowerNeighborInBranch = function( circuit, electron, branchElectrons ) {
-    var closestLowerNeighbor = null;
-    var closestDistance = Number.POSITIVE_INFINITY;
-    for ( var i = 0; i < branchElectrons.length; i++ ) {
-      var neighborElectron = branchElectrons[ i ];
-      if ( neighborElectron !== electron ) {
-        var neighborDistance = neighborElectron.distance;
-        var electronDistance = electron.distance;
-        if ( neighborDistance < electronDistance ) {
-          var distance = electronDistance - neighborDistance;
-          if ( distance < closestDistance ) {
-            closestDistance = distance;
-            closestLowerNeighbor = neighborElectron;
-          }
-        }
+  // Factor that multiplies the current to attain speed in screen coordinates
+  var SPEED_SCALE = 1 / 3;
+
+  // Fudge factor to increase dt to make model compatible.  TODO: eliminate this
+  var TIME_SCALE = 100;
+
+  var createCircuitLocation = function( circuitElement, distance ) {
+    assert && assert( _.isNumber( distance ), 'distance should be a number' );
+    assert && assert( circuitElement.containsScalarLocation( distance ), 'circuitElement should contain distance' );
+    return {
+      circuitElement: circuitElement,
+      distance: distance,
+      getDensity: function( circuit ) {
+        var particles = circuit.getElectronsInCircuitElement( circuitElement );
+        return particles.length / circuitElement.electronPathLength;
       }
-    }
-    return closestLowerNeighbor;
+    };
   };
 
   function ElectronPropagator( circuit ) {
     this.electrons = circuit.electrons;
     this.circuit = circuit;
     this.scale = 1;
-    this.smoothData = new SmoothData( 30 );
+    this.timeScaleRunningAverage = new RunningAverage( 30 );
     this.timeScalingPercentValue = null;
-    PropertySet.call( this, {
-      timeScale: 1 // between 0 and 1, 1 is full speed (unthrottled)
-    } );
+    this.timeScaleProperty = new NumberProperty( 1, { range: { min: 0, max: 1 } } ); // 1 is full speed, 0.5 is running at half speed, etc.
   }
-
-  var createCircuitLocation = function( branch, distance ) {
-    assert && assert( _.isNumber( distance ), 'distance should be a number' );
-    assert && assert( branch.containsScalarLocation( distance ), 'branch should contain distance' );
-    return {
-      branch: branch,
-      distance: distance,
-      getDensity: function( circuit ) {
-        var particles = circuit.getElectronsInCircuitElement( branch );
-        return particles.length / branch.length;
-      }
-    };
-  };
 
   circuitConstructionKitCommon.register( 'ElectronPropagator', ElectronPropagator );
 
-  return inherit( PropertySet, ElectronPropagator, {
+  return inherit( Object, ElectronPropagator, {
     step: function( dt ) {
 
-      // Disable incremental updates to improve performance.  The ElectronNodes are only updated once, instead
-      // of incrementally many times throughout this update
+      // Disable incremental updates to improve performance.  The ElectronNodes are only updated once, instead of
+      // incrementally many times throughout this update
       for ( var k = 0; k < this.electrons.length; k++ ) {
-        this.electrons.get( k ).updating = false;
+        this.electrons.get( k ).updatingPositionProperty.set( false );
       }
 
-      // dt would ideally be around 16.666ms = 0.0166 sec
-      // let's cap it at double that
-      dt = Math.min( dt, 1 / 60 * 2 ) * timeScale;
-      var maxCurrent = this.getMaxCurrent(); //TODO: Shouldn't this use abs?
-      var maxVelocity = maxCurrent * speedScale;
-      var maxStep = maxVelocity * dt;
-      if ( maxStep >= MAX_STEP ) {
-        this.scale = MAX_STEP / maxStep;
+      // dt would ideally be around 16.666ms = 0.0166 sec.  Cap it to avoid too large of an integration step.
+      dt = Math.min( dt, 1 / 30 ) * TIME_SCALE;
+      var maxCurrentMagnitude = this.getMaxCurrentMagnitude();
+      var maxSpeed = maxCurrentMagnitude * SPEED_SCALE;
+      var maxPositionChange = maxSpeed * dt;
+      if ( maxPositionChange >= MAX_POSITION_CHANGE ) {
+        this.scale = MAX_POSITION_CHANGE / maxPositionChange;
       }
       else {
         this.scale = 1;
       }
-      this.smoothData.addData( this.scale );
-      this.timeScalingPercentValue = this.smoothData.getAverage();
+      this.timeScalingPercentValue = this.timeScaleRunningAverage.updateRunningAverage( this.scale );
 
-      this.timeScale = this.timeScalingPercentValue;
+      this.timeScaleProperty.set( this.timeScalingPercentValue );
       for ( var i = 0; i < this.electrons.length; i++ ) {
         var electron = this.electrons.get( i );
 
-        // Don't update electrons in dirty circuit elements, because they will get a relayout anyways
-        if ( !electron.circuitElement.dirty ) {
+        // Don't update electrons in electronLayoutDirty circuit elements, because they will get a relayout anyways
+        if ( !electron.circuitElement.electronLayoutDirty ) {
           this.propagate( electron, dt );
         }
       }
 
-      //maybe this should be done in random order, otherwise we may get artefacts.
-      for ( i = 0; i < numEqualize; i++ ) {
+      // Spread out the electrons so they don't bunch up
+      for ( i = 0; i < NUMBER_OF_EQUALIZE_STEPS; i++ ) {
         this.equalizeAll( dt );
       }
 
-      // After math complete, update the positions all at once
+      // After computing the new electron positions (possibly across several deltas), trigger the views to update.
       for ( k = 0; k < this.electrons.length; k++ ) {
-        this.electrons.get( k ).updating = true;
+        this.electrons.get( k ).updatingPositionProperty.set( true );
       }
     },
-    getMaxCurrent: function() {
+
+    /**
+     * Returns the absolute value of the most extreme current.
+     * @returns {number}
+     */
+    getMaxCurrentMagnitude: function() {
       var max = 0;
-      var circuitElements = this.circuit.getCircuitElements();
-      for ( var i = 0; i < circuitElements.length; i++ ) {
-        var current = circuitElements[ i ].current;
+      for ( var i = 0; i < this.circuit.circuitElements.length; i++ ) {
+        var current = this.circuit.circuitElements.get( i ).currentProperty.get();
         max = Math.max( max, Math.abs( current ) );
       }
       return max;
     },
+
+    /**
+     * Make the electrons repel each other so they don't bunch up.
+     * @param {number} dt - the elapsed time in seconds
+     */
     equalizeAll: function( dt ) {
       var indices = [];
       for ( var i = 0; i < this.electrons.length; i++ ) {
         indices.push( i );
       }
-      _.shuffle( indices );
+      _.shuffle( indices ); // TODO: This won't be re-seedable
       for ( i = 0; i < this.electrons.length; i++ ) {
         var electron = this.electrons.get( indices[ i ] );
 
-        // No need to update electrons in dirty circuit elements, they will be replaced anyways.  Skipping dirty
+        // No need to update electrons in electronLayoutDirty circuit elements, they will be replaced anyways.  Skipping electronLayoutDirty
         // circuitElements improves performance
-        if ( !electron.circuitElement.dirty ) {
+        if ( !electron.circuitElement.electronLayoutDirty ) {
           this.equalizeElectron( electron, dt );
         }
       }
     },
     equalizeElectron: function( electron, dt ) {
 
-      var branchElectrons = this.circuit.getElectronsInCircuitElement( electron.circuitElement );
+      var circuitElementElectrons = this.circuit.getElectronsInCircuitElement( electron.circuitElement );
 
       // if it has a lower and upper neighbor, try to get the distance to each to be half of ELECTRON_DX
-      var upper = getUpperNeighborInBranch( this.circuit, electron, branchElectrons );
-      var lower = getLowerNeighborInBranch( this.circuit, electron, branchElectrons );
-      if ( upper === null || lower === null ) {
-        return;
-      }
-      var sep = upper.distance - lower.distance;
-      var myloc = electron.distance;
-      var midpoint = lower.distance + sep / 2;
+      var sorted = _.sortBy( circuitElementElectrons, function( e ) {return e.distanceProperty.get();} );
 
-      var dest = midpoint;
-      var distMoving = Math.abs( dest - myloc );
-      var vec = dest - myloc;
-      var sameDirAsCurrent = vec > 0 && -electron.circuitElement.current > 0;
-      var myscale = 1000.0 / 30.0;//to have same scale as 3.17.00
-      var correctionSpeed = .055 / numEqualize * myscale;
-      if ( !sameDirAsCurrent ) {
-        correctionSpeed = .01 / numEqualize * myscale;
-      }
-      var maxDX = Math.abs( correctionSpeed * dt );
+      var electronIndex = sorted.indexOf( electron );
+      var upper = sorted[ electronIndex + 1 ];
+      var lower = sorted[ electronIndex - 1 ];
 
-      if ( distMoving > highestSoFar ) {//For debugging.
-        highestSoFar = distMoving;
-      }
+      if ( upper && lower ) {
 
-      if ( distMoving > maxDX ) {
-        //move in the appropriate direction maxDX
-        if ( dest < myloc ) {
-          dest = myloc - maxDX;
+        var separation = upper.distanceProperty.get() - lower.distanceProperty.get();
+        var electronDistance = electron.distanceProperty.get();
+
+        var dest = lower.distanceProperty.get() + separation / 2;
+        var distMoving = Math.abs( dest - electronDistance );
+        var sameDirAsCurrent = (dest - electronDistance) > 0 && -electron.circuitElement.currentProperty.get() > 0;
+        var speedScale = 1000.0 / 30.0;//to have same scale as 3.17.00
+        var correctionSpeed = .055 / NUMBER_OF_EQUALIZE_STEPS * speedScale;
+        if ( !sameDirAsCurrent ) {
+          correctionSpeed = .01 / NUMBER_OF_EQUALIZE_STEPS * speedScale;
         }
-        else if ( dest > myloc ) {
-          dest = myloc + maxDX;
+        var maxDX = Math.abs( correctionSpeed * dt );
+
+        if ( distMoving > maxDX ) {
+          //move in the appropriate direction maxDX
+          if ( dest < electronDistance ) {
+            dest = electronDistance - maxDX;
+          }
+          else if ( dest > electronDistance ) {
+            dest = electronDistance + maxDX;
+          }
         }
-      }
-      if ( dest >= 0 && dest <= electron.circuitElement.length ) {
-        electron.distance = dest;
+        if ( dest >= 0 && dest <= electron.circuitElement.electronPathLength ) {
+          electron.distanceProperty.set( dest );
+        }
       }
     },
     propagate: function( electron, dt ) {
-      var x = electron.distance;
-      assert && assert( _.isNumber( x ), 'disance along wire should be a number' );
-      var current = -electron.circuitElement.current;
+      var x = electron.distanceProperty.get();
+      assert && assert( _.isNumber( x ), 'distance along wire should be a number' );
+      var current = -electron.circuitElement.currentProperty.get();
 
       if ( current === 0 || Math.abs( current ) < MIN_CURRENT ) {
         return;
       }
 
-      var speed = current * speedScale;
+      var speed = current * SPEED_SCALE;
       var dx = speed * dt;
       dx *= this.scale;
       var newX = x + dx;
       var circuitElement = electron.circuitElement;
       if ( circuitElement.containsScalarLocation( newX ) ) {
-        electron.distance = newX;
+        electron.distanceProperty.set( newX );
       }
       else {
-        //need a new branch.
+
+        // need a new CircuitElement
         var overshoot = 0;
         var under = false;
         if ( newX < 0 ) {
@@ -235,76 +206,73 @@ define( function( require ) {
         else {
 
           // TODO: better abstraction for the following line
-          overshoot = Math.abs( circuitElement.length - newX );
+          overshoot = Math.abs( circuitElement.electronPathLength - newX );
           under = false;
         }
         assert && assert( !isNaN( overshoot ), 'overshoot is NaN' );
         assert && assert( overshoot >= 0, 'overshoot is <0' );
-        var locationArray = this.getLocations( electron, dt, overshoot, under );
-        if ( locationArray.length === 0 ) {
-          return;
-        }
-        //choose the branch with the furthest away electron
-        var chosenCircuitLocation = this.chooseDestinationBranch( locationArray );
-        electron.setLocation( chosenCircuitLocation.branch, Math.abs( chosenCircuitLocation.distance ) );
-      }
-    },
-    chooseDestinationBranch: function( circuitLocations ) {
-      var min = Number.POSITIVE_INFINITY;
-      var circuitLocationWithLowestDensity = null;
-      for ( var i = 0; i < circuitLocations.length; i++ ) {
-        var density = circuitLocations[ i ].getDensity( this.circuit );
-        if ( density < min ) {
-          min = density;
-          circuitLocationWithLowestDensity = circuitLocations[ i ];
+        var circuitLocations = this.getLocations( electron, dt, overshoot, under );
+        if ( circuitLocations.length > 0 ) {
+
+          // choose the CircuitElement with the furthest away electron
+          var self = this;
+          var chosenCircuitLocation = _.minBy( circuitLocations, function( circuitLocation ) {
+            return circuitLocation.getDensity( self.circuit );
+          } );
+          electron.setLocation( chosenCircuitLocation.circuitElement, Math.abs( chosenCircuitLocation.distance ) );
         }
       }
-      return circuitLocationWithLowestDensity;
     },
     getLocations: function( electron, dt, overshoot, under ) {
-      var branch = electron.circuitElement;
-      var jroot = null;
+      var circuitElement = electron.circuitElement;
+      var vertex = null;
       if ( under ) {
-        jroot = branch.startVertex;
+        vertex = circuitElement.startVertexProperty.get();
       }
       else {
-        jroot = branch.endVertex;
+        vertex = circuitElement.endVertexProperty.get();
       }
-      var adjacentBranches = this.circuit.getNeighborCircuitElements( jroot );
-      var all = [];
+      var adjacentCircuitElements = this.circuit.getNeighborCircuitElements( vertex );
+      var circuitLocations = [];
+
       //keep only those with outgoing current.
-      for ( var i = 0; i < adjacentBranches.length; i++ ) {
-        var neighbor = adjacentBranches[ i ];
-        var current = -neighbor.current;
-        if ( current > FIRE_CURRENT ) {
-          current = FIRE_CURRENT;
+      for ( var i = 0; i < adjacentCircuitElements.length; i++ ) {
+        var neighbor = adjacentCircuitElements[ i ];
+        var current = -neighbor.currentProperty.get();
+        if ( current > MAX_CURRENT ) {
+          current = MAX_CURRENT;
         }
-        else if ( current < -FIRE_CURRENT ) {
-          current = -FIRE_CURRENT;
+        else if ( current < -MAX_CURRENT ) {
+          current = -MAX_CURRENT;
         }
         var distAlongNew = null;
-        if ( current > 0 && neighbor.startVertex === jroot ) {//start near the beginning.
+
+        // The linear algebra solver can result in currents of 1E-12 where it should be zero.  For these cases, don't
+        // permit electrons to flow.
+        // TODO: Should the current be clamped after linear algebra?
+        var THRESHOLD = 1E-8;
+        if ( current > THRESHOLD && neighbor.startVertexProperty.get() === vertex ) {//start near the beginning.
           distAlongNew = overshoot;
-          if ( distAlongNew > neighbor.length ) {
-            distAlongNew = neighbor.length;
+          if ( distAlongNew > neighbor.electronPathLength ) {
+            distAlongNew = neighbor.electronPathLength;
           }
           else if ( distAlongNew < 0 ) {
             distAlongNew = 0;
           }
-          all.push( createCircuitLocation( neighbor, distAlongNew ) );
+          circuitLocations.push( createCircuitLocation( neighbor, distAlongNew ) );
         }
-        else if ( current < 0 && neighbor.endVertex === jroot ) {
-          distAlongNew = neighbor.length - overshoot;
-          if ( distAlongNew > neighbor.length ) {
-            distAlongNew = neighbor.length;
+        else if ( current < -THRESHOLD && neighbor.endVertexProperty.get() === vertex ) {
+          distAlongNew = neighbor.electronPathLength - overshoot;
+          if ( distAlongNew > neighbor.electronPathLength ) {
+            distAlongNew = neighbor.electronPathLength;
           }
           else if ( distAlongNew < 0 ) {
             distAlongNew = 0;
           }
-          all.push( createCircuitLocation( neighbor, distAlongNew ) );
+          circuitLocations.push( createCircuitLocation( neighbor, distAlongNew ) );
         }
       }
-      return all;
+      return circuitLocations;
     }
   } );
 } );

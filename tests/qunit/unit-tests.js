@@ -1,4 +1,7 @@
-function runCCKTests( pathToTestBase ) {
+// Copyright 2016, University of Colorado Boulder
+
+function runCCKTests( pathToTestBase ) { // eslint-disable-line no-unused-vars
+  'use strict';
   function loadTestFile( src ) {
     var script = document.createElement( 'script' );
     script.type = 'text/javascript';
