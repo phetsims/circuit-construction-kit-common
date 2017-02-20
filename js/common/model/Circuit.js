@@ -53,7 +53,7 @@ define( function( require ) {
     this.electrons = new ObservableArray();
 
     // @public (read-only) - whether the electrons should be displayed
-    this.showElectronsProperty = new BooleanProperty( false, {
+    this.showElectronsProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'showElectronsProperty' )
     } );
 
