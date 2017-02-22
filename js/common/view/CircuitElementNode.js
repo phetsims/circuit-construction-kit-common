@@ -88,6 +88,7 @@ define( function( require ) {
 
     dispose: function() {
       this.disposeCircuitElementNode();
+      Node.prototype.dispose.call( this );
     },
 
     // @protected

@@ -80,6 +80,7 @@ define( function( require ) {
   return inherit( Node, SolderNode, {
     dispose: function() {
       this.disposeSolderNode();
+      Node.prototype.dispose.call( this );
     }
   } );
 } );

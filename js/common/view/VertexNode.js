@@ -242,6 +242,7 @@ define( function( require ) {
   return inherit( Node, VertexNode, {
     dispose: function() {
       this.disposeVertexNode();
+      Node.prototype.dispose.call( this );
     }
   } );
 } );
