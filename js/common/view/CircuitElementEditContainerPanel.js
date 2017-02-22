@@ -64,8 +64,8 @@ define( function( require ) {
 
     var lastNumberControl = null;
     selectedCircuitElementProperty.link( function( selectedCircuitElement ) {
-      lastNumberControl && lastNumberControl.dispose();
       lastNumberControl && self.removeChild( lastNumberControl );
+      lastNumberControl && lastNumberControl !== tapInstructionTextNode && lastNumberControl.dispose();
       lastNumberControl = null;
 
       if ( selectedCircuitElement ) {
