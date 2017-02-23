@@ -15,7 +15,6 @@ define( function( require ) {
   var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/FixedLengthCircuitElementNode' );
   var CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CustomLightBulbNode' );
   var Property = require( 'AXON/Property' );
-  var Util = require( 'DOT/Util' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var NumberProperty = require( 'AXON/NumberProperty' );
 
