@@ -30,16 +30,18 @@ define( function( require ) {
     var self = this;
     this.lightBulb = lightBulb;
     var brightnessProperty = new NumberProperty( 0 );
-    var updateBrightness = Property.multilink( [ lightBulb.currentProperty, runningProperty ], function( current, running ) {
-      var scaled = Math.abs( current ) / 20;
-      var clamped = Util.clamp( scaled, 0, 1 );
+    var updateBrightness = Property.multilink( [ lightBulb.currentProperty, runningProperty, lightBulb.voltageDifferenceProperty ], function( current, running, voltageDifference ) {
+      var power = Math.abs( current * voltageDifference );
+
+      // Heuristics are from Java
+      var maxPower = 60;
 
       // Workaround for SCENERY_PHET/LightBulbNode which shows highlight even for current = 1E-16, so clamp it off
       // see https://github.com/phetsims/scenery-phet/issues/225
-      if ( clamped < 1E-6 ) {
-        clamped = 0;
-      }
-      brightnessProperty.value = running ? clamped : 0;
+      var minPower = 1E-6;
+      power = Math.min( power, maxPower );
+      power = Math.max( power, minPower );
+      brightnessProperty.value = Math.pow( power / maxPower, 0.354 ) * 0.4;
     } );
     this.lightBulbNode = new CustomLightBulbNode( brightnessProperty, {
       scale: 3.5
