@@ -131,7 +131,7 @@ define( function( require ) {
         this.circuit.step( dt );
       }
 
-      this.circuit.updateElectronsInDirtyCircuitElements();
+      this.circuit.layoutElectronsInDirtyCircuitElements();
     },
 
     /**

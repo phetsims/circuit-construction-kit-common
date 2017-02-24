@@ -487,12 +487,12 @@ define( function( require ) {
         this.vertices.get( i ).voltageProperty.set( v );
       }
 
-      // Apply the branch currents
+      // Apply the currents through the CircuitElements
       for ( i = 0; i < solution.elements.length; i++ ) {
         solution.elements[ i ].circuitElement.currentProperty.set( solution.elements[ i ].currentSolution );
       }
 
-      // For resistors with r!==0, we must use Ohm's Law to compute the current
+      // For resistors with r>0, Ohm's Law gives the current
       for ( i = 0; i < resistorAdapters.length; i++ ) {
         var resistorAdapter = resistorAdapters[ i ];
         if ( resistorAdapter.resistance !== 0 ) {
@@ -537,19 +537,27 @@ define( function( require ) {
       }
     },
 
+    /**
+     * Move forward in time
+     * @param {number} dt - the elapsed time in seconds
+     */
     step: function( dt ) {
 
       // Invoke any scheduled actions
       this.stepActions.forEach( function( stepAction ) {stepAction();} );
       this.stepActions.length = 0;
 
+      // Move the electrons
       this.electronPropagator.step( dt );
     },
 
     /**
-     * Happens every frame, even if paused.
+     * When a circuit element is marked as dirty (such as when it changed length or moved), it needs to have
+     * the electrons layed out again, so they will be equally spaced internally and spaced well compared to neighbor
+     * elements.
+     * @public
      */
-    updateElectronsInDirtyCircuitElements: function() {
+    layoutElectronsInDirtyCircuitElements: function() {
       var self = this;
       this.circuitElements.forEach( function( circuitElement ) {
 
