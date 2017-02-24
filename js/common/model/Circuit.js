@@ -194,6 +194,7 @@ define( function( require ) {
      * When over Vertex is released or bumped over another Vertex, move them apart so they don't appear connected.
      * @param {Vertex} v1
      * @param {Vertex} v2
+     * @private
      */
     moveVerticesApart: function( v1, v2 ) {
 
@@ -216,6 +217,7 @@ define( function( require ) {
      * When two Vertices are dropped/bumped too close together, move one away by rotating it.
      * @param {Vertex} vertex - the vertex to rotate
      * @param {Vertex} pivotVertex - the vertex to rotate about
+     * @private
      */
     rotateSingleVertex: function( vertex, pivotVertex ) {
       var searchAngle = Math.PI / 4;
@@ -239,6 +241,7 @@ define( function( require ) {
      * @param {Vertex} vertex - the vertex which will be rotated
      * @param {Vertex} pivotVertex - the origin about which the vertex will rotate
      * @param {number} deltaAngle - angle in radians to rotate
+     * @private
      */
     rotateSingleVertexByAngle: function( vertex, pivotVertex, deltaAngle ) {
       var position = vertex.positionProperty.get();
@@ -274,6 +277,7 @@ define( function( require ) {
 
     /**
      * Remove all elements from the circuit.
+     * @public
      */
     clear: function() {
 
@@ -304,6 +308,7 @@ define( function( require ) {
     /**
      * Split the Vertex into two separate vertices.
      * @param {Vertex} vertex - the vertex to be cut.
+     * @public
      */
     cutVertex: function( vertex ) {
       var neighborCircuitElements = this.getNeighborCircuitElements( vertex );
@@ -354,6 +359,12 @@ define( function( require ) {
       this.solve();
     },
 
+    /**
+     * Returns true if the given vertex has a fixed connection to a black box interface vertex.
+     * @param {Vertex} v
+     * @return {boolean}
+     * @private
+     */
     hasFixedConnectionToBlackBoxInterfaceVertex: function( v ) {
       var vertices = this.findAllFixedVertices( v );
       return _.filter( vertices, function( v ) {
@@ -361,32 +372,48 @@ define( function( require ) {
         } ).length > 0;
     },
 
+    /**
+     * Returns true if the CircuitElement is not connected to any other CircuitElement.
+     * @param {CircuitElement} circuitElement
+     * @return {boolean}
+     * @public
+     */
     isSingle: function( circuitElement ) {
       return this.getNeighborCircuitElements( circuitElement.startVertexProperty.get() ).length === 1 &&
              this.getNeighborCircuitElements( circuitElement.endVertexProperty.get() ).length === 1;
     },
 
     /**
+     * When removing a CircuitElement, also remove its start/end Vertex if it can be removed.
+     * @param {Vertex} vertex
+     * @private
+     */
+    removeCircuitElementVertex: function( vertex ) {
+      if ( this.getNeighborCircuitElements( vertex ).length === 0 && !vertex.blackBoxInterfaceProperty.get() ) {
+        this.vertices.remove( vertex );
+      }
+    },
+
+    /**
+     * Remove the given CircuitElement and its Vertex instances from the Circuit
      * @param {CircuitElement} circuitElement
+     * @public
      */
     remove: function( circuitElement ) {
+
+      // Remove the circuit element itself
       this.circuitElements.remove( circuitElement );
 
       // Delete orphaned vertices
-      if ( this.getNeighborCircuitElements( circuitElement.startVertexProperty.get() ).length === 0 && !circuitElement.startVertexProperty.get().blackBoxInterfaceProperty.get() ) {
-        this.vertices.remove( circuitElement.startVertexProperty.get() );
-      }
-
-      if ( this.getNeighborCircuitElements( circuitElement.endVertexProperty.get() ).length === 0 && !circuitElement.endVertexProperty.get().blackBoxInterfaceProperty.get() ) {
-        this.vertices.remove( circuitElement.endVertexProperty.get() );
-      }
-
-      circuitElement.dispose();
+      this.removeCircuitElementVertex( circuitElement.startVertexProperty.get() );
+      this.removeCircuitElementVertex( circuitElement.endVertexProperty.get() );
 
       // Clear the selected element property so that the Edit panel for the element will disappear
       if ( this.selectedCircuitElementProperty.get() === circuitElement ) {
         this.selectedCircuitElementProperty.set( null );
       }
+
+      circuitElement.dispose();
     },
 
     /**
