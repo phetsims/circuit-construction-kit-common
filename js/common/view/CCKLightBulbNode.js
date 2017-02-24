@@ -17,6 +17,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var NumberProperty = require( 'AXON/NumberProperty' );
+  var Util = require( 'DOT/Util' );
 
   // images
   var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
@@ -38,9 +39,10 @@ define( function( require ) {
       // Workaround for SCENERY_PHET/LightBulbNode which shows highlight even for current = 1E-16, so clamp it off
       // see https://github.com/phetsims/scenery-phet/issues/225
       var minPower = 1E-6;
-      power = Math.min( power, maxPower );
+      power = Math.min( power, maxPower * 20 );
       power = Math.max( power, minPower );
-      brightnessProperty.value = Math.pow( power / maxPower, 0.354 ) * 0.4;
+      var brightness = Math.pow( power / maxPower, 0.354 ) * 0.4;
+      brightnessProperty.value = Util.clamp( brightness, 0, 1 );
     } );
     this.lightBulbNode = new CustomLightBulbNode( brightnessProperty, {
       scale: 3.5
