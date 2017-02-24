@@ -35,6 +35,10 @@ define( function( require ) {
      */
     layoutElectrons: function( circuitElement ) {
 
+      if ( !circuitElement.electronLayoutDirty ) {
+        return;
+      }
+
       // Remove any electrons that were already in the branch.
       // TODO: a performance improvement could be to adjust them instead of delete/recreate. This could particularly
       // help when dragging a wire, and the electrons are continually re-layed-out.

@@ -553,22 +553,25 @@ define( function( require ) {
 
     /**
      * When a circuit element is marked as dirty (such as when it changed length or moved), it needs to have
-     * the electrons layed out again, so they will be equally spaced internally and spaced well compared to neighbor
+     * the electrons repositioned, so they will be equally spaced internally and spaced well compared to neighbor
      * elements.
      * @public
      */
     layoutElectronsInDirtyCircuitElements: function() {
       var self = this;
       this.circuitElements.forEach( function( circuitElement ) {
-
-        // TODO: move dirty check into the layoutElectrons call?
-        if ( circuitElement.electronLayoutDirty ) {
-          self.electronLayout.layoutElectrons( circuitElement );
-        }
+        self.electronLayout.layoutElectrons( circuitElement );
       } );
     },
 
-    // The only way for two vertices to be adjacent is for them to be the start/end of a single CircuitElement
+    /**
+     * Determine if one Vertex is adjacent to another Vertex.  The only way for two vertices to be adjacent is for them
+     * to be the start/end of a single CircuitElement
+     * @param {Vertex} a
+     * @param {Vertex} b
+     * @return {boolean}
+     * @private
+     */
     isVertexAdjacent: function( a, b ) {
 
       // A vertex cannot be adjacent to itself.  TODO: should this be checked in the call sites?
