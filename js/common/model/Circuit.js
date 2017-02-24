@@ -31,6 +31,8 @@ define( function( require ) {
 
   // constants
   var SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
+  var BUMP_AWAY_RADIUS = 20; // If two vertices are too close together after one is released, and they could not be
+                             // joined then bump them apart so they do not look connected.
 
   /**
    * @param {Tandem} tandem
@@ -151,24 +153,27 @@ define( function( require ) {
     // TODO: Will a11y track this?
     this.selectedCircuitElementProperty = new Property( null );
 
+    // Actions that will be invoked during the step function
+    this.stepActions = [];
+
     // When any vertex is dropped, check all vertices for intersection.  If any overlap, move them apart.
     this.vertexDroppedEmitter.addListener( function() {
-
-      // TODO: schedule in the step() function or with phet timers
-      setTimeout( function() {
+      self.stepActions.push( function() {
+        var pairs = [];
         for ( var i = 0; i < self.vertices.length; i++ ) {
-          var v1 = self.vertices.get( i );
-          for ( var k = 0; k < self.vertices.length; k++ ) {
-            var v2 = self.vertices.get( k );
-            if ( i !== k ) {
-              if ( v2.unsnappedPositionProperty.get().distance( v1.unsnappedPositionProperty.get() ) < 20 ) {
-                self.moveVerticesApart( v1, v2 );
-                return; // Don't handle the same pair twice  // TODO: perhaps cycle several times until reaching a stable state
-              }
-            }
+          for ( var k = i + 1; k < self.vertices.length; k++ ) {
+            pairs.push( { v1: self.vertices.get( i ), v2: self.vertices.get( k ) } );
           }
         }
-      }, 100 );
+        var distance = function( pair ) {
+          return pair.v2.unsnappedPositionProperty.get().distance( pair.v1.unsnappedPositionProperty.get() );
+        };
+        var minPair = _.minBy( pairs, distance );
+        var minDistance = distance( minPair );
+        if ( minDistance < BUMP_AWAY_RADIUS ) {
+          self.moveVerticesApart( minPair.v1, minPair.v2 );
+        }
+      } );
     } );
 
     // @public - for creating vertex tandems
@@ -491,6 +496,11 @@ define( function( require ) {
     },
 
     step: function( dt ) {
+
+      // Invoke any scheduled actions
+      this.stepActions.forEach( function( stepAction ) {stepAction();} );
+      this.stepActions.length = 0;
+
       this.electronPropagator.step( dt );
     },
 
