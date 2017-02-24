@@ -123,6 +123,7 @@ define( function( require ) {
     /**
      * Update the circuit when the simulation clock steps.
      * @param {number} dt - elapsed time in seconds
+     * @public
      */
     step: function( dt ) {
 
@@ -136,6 +137,7 @@ define( function( require ) {
 
     /**
      * Reset the circuit.
+     * @public
      */
     reset: function() {
       this.exploreScreenRunningProperty.reset();
