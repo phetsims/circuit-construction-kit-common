@@ -47,7 +47,7 @@ define( function( require ) {
     // CircuitElements above--this ObservableArray is a a central point for observing creation/deletion of vertices for
     // showing VertexNodes
     // @public (read-only)
-    this.vertices = new ObservableArray(); // TODO: can/should we eliminate this redundancy?  For instance, with a getter?
+    this.vertices = new ObservableArray();
 
     // @public (read-only) - the electrons in the circuit
     this.electrons = new ObservableArray();
@@ -76,29 +76,6 @@ define( function( require ) {
       circuitElement.getCircuitProperties().forEach( function( property ) {
         property.unlink( solve );
       } );
-    } );
-
-    // @public - whether any circuit element is over the toolbox.  This shows the toolbox highlight when something can
-    // be dropped in.
-    // TODO: This code doesn't seem to be doing anything at the moment.  Is it disabled in the view?
-    this.isCircuitElementOverToolboxProperty = new BooleanProperty( false );
-    var detectOverToolbox = function() {
-      var circuitElements = self.circuitElements.getArray();
-      for ( var i = 0; i < circuitElements.length; i++ ) {
-        var element = circuitElements[ i ];
-        if ( element.isOverToolboxProperty.get() ) {
-          self.isCircuitElementOverToolboxProperty.set( true );
-          return;
-        }
-      }
-      self.isCircuitElementOverToolboxProperty.set( false );
-    };
-    this.circuitElements.addItemAddedListener( function( circuitElement ) {
-      circuitElement.isOverToolboxProperty.link( detectOverToolbox );
-    } );
-    this.circuitElements.addItemRemovedListener( function( circuitElement ) {
-      circuitElement.isOverToolboxProperty.unlink( detectOverToolbox );
-      detectOverToolbox();
     } );
 
     // When a new circuit element is added to a circuit, it has two unconnected vertices

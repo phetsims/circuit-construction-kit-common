@@ -47,6 +47,7 @@ define( function( require ) {
     /**
      * @override
      * @return {Property[]}
+     * @public
      */
     getCircuitProperties: function() {
       return [ this.voltageProperty ];
