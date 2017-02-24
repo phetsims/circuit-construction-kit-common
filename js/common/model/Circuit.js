@@ -417,28 +417,46 @@ define( function( require ) {
     },
 
     /**
+     * Get all of the CircuitElements that contain the given Vertex.
      * @param {Vertex} vertex
-     * @returns {Array}
+     * @returns {CircuitElement[]}
+     * @public
      */
     getNeighborCircuitElements: function( vertex ) {
       return this.circuitElements.filter( function( circuitElement ) {
         return circuitElement.containsVertex( vertex );
-      } ).getArray(); //TODO: perhaps call site could accept ObservableArray?
+      } ).getArray();
     },
 
-    // Duplicates work with the above method to avoid allocations.
+    /**
+     * Gets the number of CircuitElements connected to the specified Vertex
+     * @param {Vertex} vertex
+     * @return {number}
+     * @public
+     */
     countCircuitElements: function( vertex ) {
       return this.circuitElements.count( function( circuitElement ) {
         return circuitElement.containsVertex( vertex );
       } );
     },
 
+    /**
+     * Determines whether the specified Vertices are connected through any arbitrary connections.
+     * @param {Vertex} vertex1
+     * @param {Vertex} vertex2
+     * @return {boolean}
+     * @public
+     */
     areVerticesConnected: function( vertex1, vertex2 ) {
-      var vertexGroup = this.findAllConnectedVertices( vertex1 );
-      return vertexGroup.indexOf( vertex2 ) >= 0;
+      var connectedVertices = this.findAllConnectedVertices( vertex1 );
+      return connectedVertices.indexOf( vertex2 ) >= 0;
     },
 
-    // @public
+    /**
+     * Solve for the unknown currents and voltages of the circuit using Modified Nodal Analysis.  The solved values
+     * are set to the CircuitElements and Vertices.
+     * @public
+     */
     solve: function() {
 
       var self = this;
@@ -463,8 +481,8 @@ define( function( require ) {
       // Apply the node voltages to the vertices
       for ( var i = 0; i < this.vertices.length; i++ ) {
 
-        // For unconnected vertices, such as for the black box, they may not have an entry in the matrix, so just mark them
-        // as zero.
+        // For unconnected vertices, such as for the black box, they may not have an entry in the matrix, so just mark
+        // them as zero.
         var v = typeof solution.nodeVoltages[ i ] === 'number' ? solution.nodeVoltages[ i ] : 0;
         this.vertices.get( i ).voltageProperty.set( v );
       }
