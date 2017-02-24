@@ -15,9 +15,9 @@ define( function( require ) {
   var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/FixedLengthCircuitElementNode' );
   var CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CustomLightBulbNode' );
   var Property = require( 'AXON/Property' );
-  var Util = require( 'DOT/Util' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var NumberProperty = require( 'AXON/NumberProperty' );
+  var Util = require( 'DOT/Util' );
 
   // images
   var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
@@ -30,16 +30,19 @@ define( function( require ) {
     var self = this;
     this.lightBulb = lightBulb;
     var brightnessProperty = new NumberProperty( 0 );
-    var updateBrightness = Property.multilink( [ lightBulb.currentProperty, runningProperty ], function( current, running ) {
-      var scaled = Math.abs( current ) / 20;
-      var clamped = Util.clamp( scaled, 0, 1 );
+    var updateBrightness = Property.multilink( [ lightBulb.currentProperty, runningProperty, lightBulb.voltageDifferenceProperty ], function( current, running, voltageDifference ) {
+      var power = Math.abs( current * voltageDifference );
+
+      // Heuristics are from Java
+      var maxPower = 60;
 
       // Workaround for SCENERY_PHET/LightBulbNode which shows highlight even for current = 1E-16, so clamp it off
       // see https://github.com/phetsims/scenery-phet/issues/225
-      if ( clamped < 1E-6 ) {
-        clamped = 0;
-      }
-      brightnessProperty.value = running ? clamped : 0;
+      var minPower = 1E-6;
+      power = Math.min( power, maxPower * 15 );
+      power = Math.max( power, minPower );
+      var brightness = Math.pow( power / maxPower, 0.354 ) * 0.4;
+      brightnessProperty.value = Util.clamp( brightness, 0, 1 );
     } );
     this.lightBulbNode = new CustomLightBulbNode( brightnessProperty, {
       scale: 3.5

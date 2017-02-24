@@ -77,9 +77,20 @@ define( function( require ) {
     // @public (read-only) - indicate when the circuit element has started being dragged, when it is created in the toolbox
     this.startDragEmitter = new Emitter();
 
+    // @public (read-only) - the voltage at the end vertex minus the voltage at the start vertex
+    // name voltageDifferenceProperty so it doesn't clash with voltageProperty in Battery subclass
+    this.voltageDifferenceProperty = new Property();
+
     // Signify that a Vertex moved
     var vertexMoved = function() {
       self.vertexMovedEmitter.emit();
+    };
+
+    var vertexVoltageChanged = function() {
+      self.voltageDifferenceProperty.set(
+        self.endVertexProperty.get().voltageProperty.get() -
+        self.startVertexProperty.get().voltageProperty.get()
+      );
     };
 
     /**
@@ -91,12 +102,17 @@ define( function( require ) {
       oldVertex.positionProperty.unlink( vertexMoved );
       vertex.positionProperty.link( vertexMoved );
 
+      oldVertex.voltageProperty.unlink( vertexVoltageChanged );
+      vertex.voltageProperty.link( vertexVoltageChanged );
+
       if ( !oldVertex.positionProperty.get().equals( vertex.positionProperty.get() ) ) {
         self.vertexMovedEmitter.emit();
       }
     };
     this.startVertexProperty.get().positionProperty.link( vertexMoved );
     this.endVertexProperty.get().positionProperty.link( vertexMoved );
+    this.startVertexProperty.get().voltageProperty.link( vertexVoltageChanged );
+    this.endVertexProperty.get().voltageProperty.link( vertexVoltageChanged );
     this.startVertexProperty.lazyLink( linkVertex );
     this.endVertexProperty.lazyLink( linkVertex );
 
