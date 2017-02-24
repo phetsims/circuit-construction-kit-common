@@ -1,5 +1,4 @@
 // Copyright 2015-2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * A collection of circuit elements in the play area, not necessarily connected.  (For instance it could be 2 disjoint
@@ -198,8 +197,8 @@ define( function( require ) {
      */
     moveVerticesApart: function( v1, v2 ) {
 
-      var v1Neighbors = this.getNeighborVertices( v1 );
-      var v2Neighbors = this.getNeighborVertices( v2 );
+      var v1Neighbors = this.getAllNeighborVertices( v1 );
+      var v2Neighbors = this.getAllNeighborVertices( v2 );
 
       if ( v1Neighbors.length === 1 && !v1.blackBoxInterfaceProperty.get() ) {
         this.rotateSingleVertex( v1, v1Neighbors[ 0 ] );
@@ -585,13 +584,13 @@ define( function( require ) {
     },
 
     /**
-     * Find the neighbor vertices when looking at the given group of circuit elements
+     * Find the neighbor vertices within the given group of circuit elements
      * @param {Vertex} vertex
-     * @param {CircuitElement[]} circuitElements
+     * @param {CircuitElement[]} circuitElements - the group of CircuitElements within which to look for neighbors
      * @returns {Vertex[]}
      * @private
      */
-    getNeighbors: function( vertex, circuitElements ) {
+    getNeighborVerticesInGroup: function( vertex, circuitElements ) {
       var neighbors = [];
       for ( var i = 0; i < circuitElements.length; i++ ) {
         var circuitElement = circuitElements[ i ];
@@ -608,15 +607,16 @@ define( function( require ) {
      * @return {Vertex[]}
      * @private
      */
-    getNeighborVertices: function( vertex ) {
+    getAllNeighborVertices: function( vertex ) {
       var neighborCircuitElements = this.getNeighborCircuitElements( vertex );
-      return this.getNeighbors( vertex, neighborCircuitElements );
+      return this.getNeighborVerticesInGroup( vertex, neighborCircuitElements );
     },
 
     /**
      * Get a list of all circuit elements that can reach the specified vertex.
      * @param {Vertex} vertex
      * @returns {CircuitElement[]}
+     * @private
      */
     findAllConnectedCircuitElements: function( vertex ) {
       var allConnectedVertices = this.findAllConnectedVertices( vertex );
@@ -634,8 +634,9 @@ define( function( require ) {
     },
 
     /**
-     * Find the subgraph where all vertices are connected by any kind of (non-infinite resistance) connections
+     * Find the subgraph where all vertices are connected by any kind of CircuitElements
      * @param {Vertex} vertex
+     * @public
      */
     findAllConnectedVertices: function( vertex ) {
       return this.searchVertices( vertex, this.circuitElements.getArray(), function() {return true;} );
@@ -647,6 +648,7 @@ define( function( require ) {
      * @param {CircuitElement[]} circuitElements
      * @param {Function} okToVisit - rule that determines which vertices are OK to visit
      * @returns {Vertex[]}
+     * @private
      */
     searchVertices: function( vertex, circuitElements, okToVisit ) {
       assert && assert( this.vertices.indexOf( vertex ) >= 0, 'Vertex wasn\'t in the model' );
@@ -660,7 +662,7 @@ define( function( require ) {
 
         // If we haven't visited it before, then explore it
         if ( visited.indexOf( currentVertex ) < 0 ) {
-          var neighbors = this.getNeighbors( currentVertex, circuitElements );
+          var neighbors = this.getNeighborVerticesInGroup( currentVertex, circuitElements );
 
           for ( var i = 0; i < neighbors.length; i++ ) {
             var neighbor = neighbors[ i ];
@@ -679,13 +681,13 @@ define( function( require ) {
         }
       }
       return fixedVertices;
-
     },
 
     /**
      * Get the electrons that are in the specified circuit element.
      * @param {CircuitElement} circuitElement
      * @returns {Electron[]}
+     * @public
      */
     getElectronsInCircuitElement: function( circuitElement ) {
       return this.electrons.getArray().filter( function( electron ) { return electron.circuitElement === circuitElement; } );
@@ -696,6 +698,7 @@ define( function( require ) {
      * @param {Vertex} vertex
      * @param {Function} [okToVisit] - rule that determines which vertices are OK to visit
      * @return {Vertex[]}
+     * @public
      */
     findAllFixedVertices: function( vertex, okToVisit ) {
       var fixedCircuitElements = this.circuitElements.filter( function( circuitElement ) {
@@ -796,8 +799,8 @@ define( function( require ) {
 
       // (8) a wire vertex cannot double connect to an object, creating a tiny short circuit
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
-        var candidateNeighbors = self.getNeighborVertices( candidateVertex );
-        var myNeighbors = self.getNeighborVertices( vertex );
+        var candidateNeighbors = self.getAllNeighborVertices( candidateVertex );
+        var myNeighbors = self.getAllNeighborVertices( vertex );
         var intersection = _.intersection( candidateNeighbors, myNeighbors );
         return intersection.length === 0;
       } );
@@ -857,11 +860,19 @@ define( function( require ) {
       }
     },
 
+    /**
+     * Reset the Circuit to its initial state.
+     * @public
+     */
     reset: function() {
       this.clear();
       this.showElectronsProperty.reset();
     },
 
+    /**
+     * Convert the Circuit to a state object which can be serialized or printed.
+     * @public
+     */
     toStateObject: function() {
       var self = this;
       var getVertexIndex = function( vertex ) {
@@ -916,6 +927,12 @@ define( function( require ) {
         } ).getArray()
       };
     },
+
+    /**
+     * Load the state of a CircuitStruct into this Circuit
+     * @param {CircuitStruct} circuitStruct
+     * @public
+     */
     loadFromCircuitStruct: function( circuitStruct ) {
       var self = this;
       this.clear();
