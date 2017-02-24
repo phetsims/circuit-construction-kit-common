@@ -39,7 +39,7 @@ define( function( require ) {
       // Workaround for SCENERY_PHET/LightBulbNode which shows highlight even for current = 1E-16, so clamp it off
       // see https://github.com/phetsims/scenery-phet/issues/225
       var minPower = 1E-6;
-      power = Math.min( power, maxPower * 20 );
+      power = Math.min( power, maxPower * 15 );
       power = Math.max( power, minPower );
       var brightness = Math.pow( power / maxPower, 0.354 ) * 0.4;
       brightnessProperty.value = Util.clamp( brightness, 0, 1 );
