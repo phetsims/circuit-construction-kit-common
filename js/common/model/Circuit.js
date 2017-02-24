@@ -159,17 +159,23 @@ define( function( require ) {
     // When any vertex is dropped, check all vertices for intersection.  If any overlap, move them apart.
     this.vertexDroppedEmitter.addListener( function() {
       self.stepActions.push( function() {
+
+        // Enumerate all pairs of vertices
         var pairs = [];
         for ( var i = 0; i < self.vertices.length; i++ ) {
           for ( var k = i + 1; k < self.vertices.length; k++ ) {
             pairs.push( { v1: self.vertices.get( i ), v2: self.vertices.get( k ) } );
           }
         }
+
+        // Find the closest pair
         var distance = function( pair ) {
           return pair.v2.unsnappedPositionProperty.get().distance( pair.v1.unsnappedPositionProperty.get() );
         };
         var minPair = _.minBy( pairs, distance );
         var minDistance = distance( minPair );
+
+        // If the pair is too close, then bump one vertex away from each other.
         if ( minDistance < BUMP_AWAY_RADIUS ) {
           self.moveVerticesApart( minPair.v1, minPair.v2 );
         }
@@ -191,27 +197,18 @@ define( function( require ) {
      */
     moveVerticesApart: function( v1, v2 ) {
 
-      // are they in the same fixed subgroup
-      var v1Group = this.findAllFixedVertices( v1 );
-      var MAKE_THE_NEXT_EXPRESSION_TRUE = true;
-      if ( v1Group.indexOf( v2 ) >= 0 || MAKE_THE_NEXT_EXPRESSION_TRUE ) { // TODO: Treat wires the same as fixed length components here?
+      var v1Neighbors = this.getNeighborVertices( v1 );
+      var v2Neighbors = this.getNeighborVertices( v2 );
 
-        var v1Neighbors = this.getNeighborVertices( v1 );
-        var v2Neighbors = this.getNeighborVertices( v2 );
-
-        if ( v1Neighbors.length === 1 && !v1.blackBoxInterfaceProperty.get() ) {
-          this.rotateSingleVertex( v1, v1Neighbors[ 0 ] );
-        }
-        else if ( v2Neighbors.length === 1 && !v2.blackBoxInterfaceProperty.get() ) {
-          this.rotateSingleVertex( v2, v2Neighbors[ 0 ] );
-        }
-        else {
-          // TODO: rotate the entire group unless they have a fixed connection other than the pivot?
-        }
+      if ( v1Neighbors.length === 1 && !v1.blackBoxInterfaceProperty.get() ) {
+        this.rotateSingleVertex( v1, v1Neighbors[ 0 ] );
+      }
+      else if ( v2Neighbors.length === 1 && !v2.blackBoxInterfaceProperty.get() ) {
+        this.rotateSingleVertex( v2, v2Neighbors[ 0 ] );
       }
       else {
-        // ok to translate
-        // TODO: Shouldn't something happen here?
+        // TODO: rotate the entire group unless they have a fixed connection other than the pivot?
+        // Or translate if not part of the same fixed subgroup?
       }
     },
 
