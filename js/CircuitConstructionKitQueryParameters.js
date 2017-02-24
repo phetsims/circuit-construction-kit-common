@@ -44,6 +44,11 @@ define( function( require ) {
     showElectronsCheckBox: {
       type: 'boolean',
       defaultValue: true
+    },
+
+    showElectrons: {
+      type: 'boolean',
+      defaultValue: true
     }
   } );
 
