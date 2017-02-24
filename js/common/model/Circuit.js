@@ -574,7 +574,7 @@ define( function( require ) {
      */
     isVertexAdjacent: function( a, b ) {
 
-      // A vertex cannot be adjacent to itself.  TODO: should this be checked in the call sites?
+      // A vertex cannot be adjacent to itself.
       if ( a === b ) {
         return false;
       }
