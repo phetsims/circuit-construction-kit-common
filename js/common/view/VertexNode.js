@@ -2,7 +2,7 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- *
+ * The interactive scenery node for a vertex in the circuit graph.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -30,14 +30,17 @@ define( function( require ) {
   var DISTANCE_TO_CUT_BUTTON = 70; // How far (screen coordinates) the cut button appears from the vertex node
 
   /**
-   *
    * @constructor
    */
   function VertexNode( circuitNode, vertex, tandem ) {
     var self = this;
     var circuit = circuitNode.circuit;
+
+    // @public (read-only) the vertex associated with this node
     this.vertex = vertex;
-    this.startOffset = null;// @public - added by CircuitNode during dragging, used for relative drag location.
+
+    // @public - added by CircuitNode during dragging, used for relative drag location.
+    this.startOffset = null;
 
     // @public (read-only) - for hit testing with probes
     this.dottedLineNodeRadius = 16;
@@ -59,15 +62,16 @@ define( function( require ) {
       dottedLineNode.stroke = circuit.countCircuitElements( vertex ) > 1 ? 'black' : 'red';
       dottedLineNode.visible = vertex.attachableProperty.get();
     };
+
+    // Update when any vertex is added or removed, or when the existing circuit values change.
     circuit.vertices.addItemAddedListener( updateStroke );
     circuit.vertices.addItemRemovedListener( updateStroke );
-    circuit.circuitChangedEmitter.addListener( updateStroke ); // TODO: this one seems critical, are the other listeners necessary?
+    circuit.circuitChangedEmitter.addListener( updateStroke );
 
     // In Black Box, other wires can be detached from a vertex and this should also update the solder
     circuit.circuitElements.addItemAddedListener( updateStroke );
     circuit.circuitElements.addItemRemovedListener( updateStroke );
 
-    updateStroke();
     vertex.attachableProperty.link( updateStroke );
 
     var cutButton = new RoundPushButton( {
@@ -194,14 +198,17 @@ define( function( require ) {
       for ( var i = 0; i < neighbors.length; i++ ) {
         var v = vertex.positionProperty.get().minus( neighbors[ i ].getOppositeVertex( vertex ).positionProperty.get() );
         if ( v.magnitude() > 0 ) {
-          var vector = v.normalized();
-          sumOfDirections.add( vector );
+          sumOfDirections.add( v.normalized() );
         }
       }
       if ( sumOfDirections.magnitude() < 1E-6 ) {
         sumOfDirections = new Vector2( 0, -1 ); // Show the scissors above
       }
-      cutButton.center = position.plus( sumOfDirections.normalized().timesScalar( DISTANCE_TO_CUT_BUTTON ) );
+
+      var proposedPosition = position.plus( sumOfDirections.normalized().timesScalar( DISTANCE_TO_CUT_BUTTON ) );
+      var availableBounds = circuitNode.visibleBoundsProperty.get().eroded( cutButton.width / 2 );
+      var closestPoint = availableBounds.closestPointTo( proposedPosition );
+      cutButton.center = closestPoint;
     };
     var updateVertexNodePosition = function( position ) {
       dottedLineNode.center = position;
