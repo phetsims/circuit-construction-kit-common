@@ -166,17 +166,19 @@ define( function( require ) {
             pairs.push( { v1: self.vertices.get( i ), v2: self.vertices.get( k ) } );
           }
         }
+        if ( pairs.length > 0 ) {
 
-        // Find the closest pair
-        var distance = function( pair ) {
-          return pair.v2.unsnappedPositionProperty.get().distance( pair.v1.unsnappedPositionProperty.get() );
-        };
-        var minPair = _.minBy( pairs, distance );
-        var minDistance = distance( minPair );
+          // Find the closest pair
+          var distance = function( pair ) {
+            return pair.v2.unsnappedPositionProperty.get().distance( pair.v1.unsnappedPositionProperty.get() );
+          };
+          var minPair = _.minBy( pairs, distance );
+          var minDistance = distance( minPair );
 
-        // If the pair is too close, then bump one vertex away from each other.
-        if ( minDistance < BUMP_AWAY_RADIUS ) {
-          self.moveVerticesApart( minPair.v1, minPair.v2 );
+          // If the pair is too close, then bump one vertex away from each other.
+          if ( minDistance < BUMP_AWAY_RADIUS ) {
+            self.moveVerticesApart( minPair.v1, minPair.v2 );
+          }
         }
       } );
     } );
