@@ -21,9 +21,14 @@ define( function( require ) {
    * @param {CircuitElement} circuitElement - the circuit element the electron is in.
    * @param {number} distance - how far along the circuit element it has traveled (in screen coordinates)
    * @param {Property.<boolean>} visibleProperty - whether the electron should be shown.
+   * @param {number} charge - +1 for conventional current and -1 for electrons
    * @constructor
    */
   function Electron( circuitElement, distance, visibleProperty, charge ) {
+
+    assert && assert( charge === 1 || charge === -1, 'charge should be 1 or -1' );
+
+    // @public (read-only) the amount of charge
     this.charge = charge;
 
     // Validate inputs
