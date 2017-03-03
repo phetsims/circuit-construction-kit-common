@@ -58,6 +58,11 @@ define( function( require ) {
       tandem: tandem.createTandem( 'showElectronsProperty' )
     } );
 
+    // @public (read-only) - whether the current should be displayed
+    this.showCurrentProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'showCurrentProperty' )
+    } );
+
     // @private - create the electrons in new circuits
     this.electronLayout = new ElectronLayout( this );
 

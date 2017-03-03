@@ -203,11 +203,12 @@ define( function( require ) {
     this.sensorToolbox = new SensorToolbox( voltmeterNode, ammeterNode, circuitConstructionKitModel.exploreScreenRunningProperty, tandem.createTandem( 'sensorToolbox' ) );
 
     // @protected
-    this.displayOptionsPanel = new DisplayOptionsPanel( circuitConstructionKitModel.circuit.showElectronsProperty,
+    this.displayOptionsPanel = new DisplayOptionsPanel(
+      circuitConstructionKitModel.circuit.showCurrentProperty,
+      circuitConstructionKitModel.circuit.showElectronsProperty,
       new BooleanProperty( false ), new BooleanProperty( false ),
       circuitConstructionKitModel.showLabelsProperty,
       tandem.createTandem( 'displayOptionsPanel' ), {
-        showConventionalCurrentCheckBox: false,
         showValuesCheckBox: false,
         showElectronsCheckBox: CircuitConstructionKitQueryParameters.showElectronsCheckBox
       } );
