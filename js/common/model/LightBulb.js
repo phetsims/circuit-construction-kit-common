@@ -160,8 +160,8 @@ define( function( require ) {
           // rotate the point about the start vertex
           var p = rotatedAbout( position, this.startVertexProperty.get().positionProperty.get(), angle );
 
-          var a = q2.minus( q1 ).angle();
-          return { position: p, angle: a };
+          var localAngle = q2.minus( q1 ).angle();
+          return { position: p, angle: localAngle };
         }
         prev = accumulatedDistance;
       }
