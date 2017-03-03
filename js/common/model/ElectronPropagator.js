@@ -155,7 +155,7 @@ define( function( require ) {
 
         var dest = lower.distanceProperty.get() + separation / 2;
         var distMoving = Math.abs( dest - electronDistance );
-        var sameDirAsCurrent = (dest - electronDistance) > 0 && -electron.circuitElement.currentProperty.get() > 0;
+        var sameDirAsCurrent = (dest - electronDistance) > 0 && electron.circuitElement.currentProperty.get() * electron.charge > 0;
         var speedScale = 1000.0 / 30.0;//to have same scale as 3.17.00
         var correctionSpeed = .055 / NUMBER_OF_EQUALIZE_STEPS * speedScale;
         if ( !sameDirAsCurrent ) {
@@ -180,9 +180,9 @@ define( function( require ) {
     propagate: function( electron, dt ) {
       var x = electron.distanceProperty.get();
       assert && assert( _.isNumber( x ), 'distance along wire should be a number' );
-      var current = -electron.circuitElement.currentProperty.get();
+      var current = electron.circuitElement.currentProperty.get() * electron.charge;
 
-      if ( current === 0 || Math.abs( current ) < MIN_CURRENT ) {
+      if ( Math.abs( current ) < MIN_CURRENT ) {
         return;
       }
 
@@ -238,7 +238,7 @@ define( function( require ) {
       //keep only those with outgoing current.
       for ( var i = 0; i < adjacentCircuitElements.length; i++ ) {
         var neighbor = adjacentCircuitElements[ i ];
-        var current = -neighbor.currentProperty.get();
+        var current = neighbor.currentProperty.get() * electron.charge;
         if ( current > MAX_CURRENT ) {
           current = MAX_CURRENT;
         }

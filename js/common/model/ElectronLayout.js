@@ -62,7 +62,7 @@ define( function( require ) {
         offset = (startingPoint + endingPoint) / 2;
       }
       for ( var i = 0; i < numberOfParticles; i++ ) {
-        this.circuit.electrons.add( new Electron( circuitElement, i * dx + offset, this.circuit.showElectronsProperty ) );
+        this.circuit.electrons.add( new Electron( circuitElement, i * dx + offset, this.circuit.showElectronsProperty, +1 ) );
       }
 
       circuitElement.electronLayoutDirty = false;

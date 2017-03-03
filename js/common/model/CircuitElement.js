@@ -237,6 +237,15 @@ define( function( require ) {
     },
 
     /**
+     * Get the angle of the circuit element
+     */
+    getAngle: function() {
+      var startPosition = this.startVertexProperty.get().positionProperty.get();
+      var endPosition = this.endVertexProperty.get().positionProperty.get();
+      return endPosition.minus( startPosition ).angle();
+    },
+
+    /**
      * Return the indices of the vertices, for debugging.
      * @public
      * @return {[number,number]}

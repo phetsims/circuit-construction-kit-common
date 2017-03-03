@@ -22,7 +22,8 @@ define( function( require ) {
    * @param {Property.<boolean>} visibleProperty - whether the electron should be shown.
    * @constructor
    */
-  function Electron( circuitElement, distance, visibleProperty ) {
+  function Electron( circuitElement, distance, visibleProperty, charge ) {
+    this.charge = charge;
 
     // Validate inputs
     assert && assert( _.isNumber( distance ), 'distance should be a number' );

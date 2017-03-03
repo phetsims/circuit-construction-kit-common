@@ -17,6 +17,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Image = require( 'SCENERY/nodes/Image' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
+  var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
 
   // constants
   var RADIUS = 10;
@@ -52,17 +53,30 @@ define( function( require ) {
     node.children = [ new Image( im, { scale: 1.0 / SCALE } ) ];
   }, 0, 0, minusChargeNode.width, minusChargeNode.height );
 
+  // Center arrow so it is easy to rotate
+  var arrowLength = 25;
+  var arrowNode = new ArrowNode( -arrowLength / 2, 0, arrowLength / 2, 0, {
+    headHeight: 12,
+    headWidth: 16,
+    tailWidth: 8,
+    fill: 'red',
+    stroke: 'black'
+  } );
+
   function ElectronNode( electron, revealingProperty ) {
     var self = this;
     this.electron = electron;
     Node.call( this, {
-      children: [ node ],
+      children: [ arrowNode ],
       pickable: false
     } );
     var outsideOfBlackBoxProperty = new BooleanProperty( false );
 
     var positionListener = function( position ) {
+      var current = electron.circuitElement.currentProperty.get();
       self.center = position;
+      self.rotation = electron.circuitElement.getAngle() + (current < 0 ? Math.PI : 0);
+      self.visible = Math.abs( electron.circuitElement.currentProperty.get() ) > 1E-6;
       outsideOfBlackBoxProperty.value = !electron.circuitElement.insideTrueBlackBoxProperty.get();
     };
     electron.positionProperty.link( positionListener );
