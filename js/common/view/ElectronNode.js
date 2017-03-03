@@ -2,6 +2,7 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
+ * TODO: Rename chargenode
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -46,19 +47,19 @@ define( function( require ) {
   minusChargeNode.top = 0;
   minusChargeNode.left = 0;
 
-  var node = new Node();
+  var electronImageNode = new Node();
   minusChargeNode.toImage( function( im ) {
 
     //Scale back down so the image will be the desired size
-    node.children = [ new Image( im, { scale: 1.0 / SCALE } ) ];
+    electronImageNode.children = [ new Image( im, { scale: 1.0 / SCALE } ) ];
   }, 0, 0, minusChargeNode.width, minusChargeNode.height );
 
   // Center arrow so it is easy to rotate
-  var arrowLength = 25;
+  var arrowLength = 23;
   var arrowNode = new ArrowNode( -arrowLength / 2, 0, arrowLength / 2, 0, {
     headHeight: 12,
-    headWidth: 16,
-    tailWidth: 8,
+    headWidth: 14,
+    tailWidth: 7,
     fill: 'red',
     stroke: 'black'
   } );
@@ -67,24 +68,25 @@ define( function( require ) {
     var self = this;
     this.electron = electron;
     Node.call( this, {
-      children: [ arrowNode ],
+      children: [ electron.charge > 0 ? arrowNode : electronImageNode ],
       pickable: false
     } );
     var outsideOfBlackBoxProperty = new BooleanProperty( false );
 
+    // TODO: When I wrote this with Property.multilink, it failed as #172
+    var updateVisible = function() {
+      self.visible = electron.visibleProperty.value && (outsideOfBlackBoxProperty.value || revealingProperty.value) &&
+                     ( Math.abs( electron.circuitElement.currentProperty.get() ) > 1E-6 || electron.charge < 0 );
+    };
     var positionListener = function( position ) {
       var current = electron.circuitElement.currentProperty.get();
       self.center = position;
-      self.rotation = electron.circuitElement.getAngle() + (current < 0 ? Math.PI : 0);
-      self.visible = Math.abs( electron.circuitElement.currentProperty.get() ) > 1E-6;
+      self.rotation = electron.charge < 0 ? 0 : electron.circuitElement.getAngle() + (current < 0 ? Math.PI : 0);
+      updateVisible()
       outsideOfBlackBoxProperty.value = !electron.circuitElement.insideTrueBlackBoxProperty.get();
     };
     electron.positionProperty.link( positionListener );
 
-    // TODO: When I wrote this with Property.multilink, it failed as #172
-    var updateVisible = function() {
-      self.visible = electron.visibleProperty.value && (outsideOfBlackBoxProperty.value || revealingProperty.value);
-    };
     revealingProperty.link( updateVisible );
     electron.visibleProperty.link( updateVisible );
     outsideOfBlackBoxProperty.link( updateVisible );

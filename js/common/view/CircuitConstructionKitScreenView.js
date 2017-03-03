@@ -194,7 +194,7 @@ define( function( require ) {
 
     var electronSpeedThrottlingReadoutNode = new ElectronSpeedThrottlingReadoutNode(
       circuitConstructionKitModel.circuit.electronPropagator.timeScaleProperty,
-      circuitConstructionKitModel.circuit.showElectronsProperty,
+      circuitConstructionKitModel.circuit.showCurrentProperty,
       circuitConstructionKitModel.exploreScreenRunningProperty
     );
     this.addChild( electronSpeedThrottlingReadoutNode );
@@ -205,8 +205,8 @@ define( function( require ) {
     // @protected
     this.displayOptionsPanel = new DisplayOptionsPanel(
       circuitConstructionKitModel.circuit.showCurrentProperty,
-      circuitConstructionKitModel.circuit.showElectronsProperty,
-      new BooleanProperty( false ), new BooleanProperty( false ),
+      circuitConstructionKitModel.circuit.currentTypeProperty,
+      new BooleanProperty( false ),
       circuitConstructionKitModel.showLabelsProperty,
       tandem.createTandem( 'displayOptionsPanel' ), {
         showValuesCheckBox: false,

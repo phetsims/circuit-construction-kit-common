@@ -21,15 +21,15 @@ define( function( require ) {
   var AquaRadioButton = require( 'SUN/AquaRadioButton' );
 
   /**
-   * @param {Property} showElectronsProperty - true if electrons should be shown
-   * @param {Property} conventionalCurrentProperty - true to show the conventional current direction
+   * @param {Property} showCurrentProperty - true if current should be shown
+   * @param {Property} currentTypeProperty - true if current should be shown as electrons or conventional
    * @param {Property} showValuesProperty - true if values should be shown
    * @param {Property} showLabelsProperty - true if toolbox labels should be shown
    * @param {Tandem} tandem
    * @param {Object} options
    * @constructor
    */
-  function DisplayOptionsPanel( showCurrentProperty, showElectronsProperty, conventionalCurrentProperty, showValuesProperty, showLabelsProperty, tandem, options ) {
+  function DisplayOptionsPanel( showCurrentProperty, currentTypeProperty, showValuesProperty, showLabelsProperty, tandem, options ) {
     options = _.extend( {
       showElectronsCheckBox: true,
       showConventionalCurrentCheckBox: true,
@@ -56,8 +56,8 @@ define( function( require ) {
               align: 'left',
               spacing: 6,
               children: [
-                new AquaRadioButton( showElectronsProperty, true, new Text( 'Electrons', textOptions ), aquaRadioButtonOptions ),
-                new AquaRadioButton( showElectronsProperty, false, new Text( 'Conventional', textOptions ), aquaRadioButtonOptions )
+                new AquaRadioButton( currentTypeProperty, 'electrons', new Text( 'Electrons', textOptions ), aquaRadioButtonOptions ),
+                new AquaRadioButton( currentTypeProperty, 'conventional', new Text( 'Conventional', textOptions ), aquaRadioButtonOptions )
               ]
             } )
           ]

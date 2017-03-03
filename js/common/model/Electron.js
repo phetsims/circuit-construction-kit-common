@@ -2,6 +2,7 @@
 
 /**
  * The model for a single blue electron that moves along a circuit element, depicted as a colored sphere.
+ * TODO: Rename charge
  * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {

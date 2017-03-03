@@ -28,6 +28,9 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/FixedLengthCircuitElement' );
 
+  // phet-io modules
+  var TString = require( 'ifphetio!PHET_IO/types/TString' );
+
   // constants
   var SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
   var BUMP_AWAY_RADIUS = 20; // If two vertices are too close together after one is released, and they could not be
@@ -53,9 +56,21 @@ define( function( require ) {
     // @public (read-only) - the electrons in the circuit
     this.electrons = new ObservableArray();
 
-    // @public (read-only) - whether the electrons should be displayed
-    this.showElectronsProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'showElectronsProperty' )
+    // @public (read-only) - whether to show electrons or conventional currentt
+    var currentTypes = [ 'electrons', 'conventional' ];
+    this.currentTypeProperty = new Property( currentTypes[ 0 ], {
+      validValues: currentTypes,
+      tandem: tandem.createTandem( 'currentTypeProperty' ),
+      phetioValueType: TString
+    } );
+
+    this.currentTypeProperty.lazyLink( function() {
+
+      // Mark everything as dirty and relayout electrons
+      self.circuitElements.forEach( function( circuitElement ) {
+        circuitElement.electronLayoutDirty = true;
+      } );
+      self.layoutElectronsInDirtyCircuitElements();
     } );
 
     // @public (read-only) - whether the current should be displayed
@@ -873,7 +888,8 @@ define( function( require ) {
      */
     reset: function() {
       this.clear();
-      this.showElectronsProperty.reset();
+      this.showCurrentProperty.reset();
+      this.currentTypeProperty.reset();
     },
 
     /**
