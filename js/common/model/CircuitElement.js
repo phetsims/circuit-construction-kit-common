@@ -31,6 +31,10 @@ define( function( require ) {
 
     var self = this;
 
+    // @public (read-only) track the time of creation so it can't be dropped in the toolbox for 0.5 seconds
+    // see https://github.com/phetsims/circuit-construction-kit-common/issues/244
+    this.creationTime = phet.joist.elapsedTime;
+
     options = _.extend( {
       canBeDroppedInToolbox: true, // In the CCK: Basics intro screen, CircuitElements cannot be dropped into the toolbox
       interactive: true // In CCK: Black Box Study, CircuitElements in the black box cannot be manipulated

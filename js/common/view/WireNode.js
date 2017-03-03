@@ -180,22 +180,32 @@ define( function( require ) {
         },
         end: function( event ) {
 
+          // TODO: duplicated with FixedLengthCircuitElementNode
           // If over the toolbox, then drop into it, and don't process further
           if ( wire.isOverToolboxProperty.get() ) {
-            circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
-            return;
+
+            var creationTime = self.circuitElement.creationTime;
+            var lifetime = phet.joist.elapsedTime - creationTime;
+            var delayMS = Math.max( 500 - lifetime, 0 );
+
+            // If over the toolbox, then drop into it, and don't process further
+            setTimeout( function() {
+              circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
+            }, delayMS );
           }
-          if ( !wire.interactiveProperty.get() ) {
-            return;
+          else {
+            if ( !wire.interactiveProperty.get() ) {
+              return;
+            }
+
+            circuitNode.endDrag( event, wire.startVertexProperty.get(), didDrag );
+            circuitNode.endDrag( event, wire.endVertexProperty.get(), didDrag );
+
+            // Only show the editor when tapped, not on every drag.
+            self.maybeSelect( event, circuitNode, p );
+
+            didDrag = false;
           }
-
-          circuitNode.endDrag( event, wire.startVertexProperty.get(), didDrag );
-          circuitNode.endDrag( event, wire.endVertexProperty.get(), didDrag );
-
-          // Only show the editor when tapped, not on every drag.
-          self.maybeSelect( event, circuitNode, p );
-
-          didDrag = false;
         }
       } );
       self.addInputListener( this.inputListener );

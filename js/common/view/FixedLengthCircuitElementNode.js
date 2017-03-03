@@ -174,8 +174,14 @@ define( function( require ) {
           }
           else if ( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) ) {
 
+            var creationTime = self.circuitElement.creationTime;
+            var lifetime = phet.joist.elapsedTime - creationTime;
+            var delayMS = Math.max( 500 - lifetime, 0 );
+
             // If over the toolbox, then drop into it, and don't process further
-            setTimeout( function() {circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );}, 0 );
+            setTimeout( function() {
+              circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
+            }, delayMS );
           }
           else {
 
