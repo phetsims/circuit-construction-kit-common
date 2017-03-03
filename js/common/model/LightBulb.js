@@ -125,10 +125,10 @@ define( function( require ) {
      *
      * @param {number} distanceAlongWire - how far along the bulb's length the electron has traveled
      *                                   - the light bulb's length is declared in ElectronLayout // TODO: fix that
-     * @returns {Vector2}
+     * @returns {Object}
      * @override
      */
-    getPosition: function( distanceAlongWire ) {
+    getPositionAndAngle: function( distanceAlongWire ) {
 
       var accumulatedDistance = 0;
       var prev = 0;
@@ -158,14 +158,17 @@ define( function( require ) {
           var angle = vd.angle() - this.vertexDelta.angle();
 
           // rotate the point about the start vertex
-          return rotatedAbout( position, this.startVertexProperty.get().positionProperty.get(), angle );
+          var p = rotatedAbout( position, this.startVertexProperty.get().positionProperty.get(), angle );
+
+          var a = q2.minus( q1 ).angle();
+          return { position: p, angle: a };
         }
         prev = accumulatedDistance;
       }
 
       // TODO: Restore this assertion after #186 complete
       // assert && assert( false, 'hello' );
-      return new Vector2();
+      return { position: new Vector2(), angle: 0 };
     }
   }, {
     DISTANCE_BETWEEN_VERTICES: DISTANCE_BETWEEN_VERTICES,

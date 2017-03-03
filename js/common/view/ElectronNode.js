@@ -81,8 +81,8 @@ define( function( require ) {
     var positionListener = function( position ) {
       var current = electron.circuitElement.currentProperty.get();
       self.center = position;
-      self.rotation = electron.charge < 0 ? 0 : electron.circuitElement.getAngle() + (current < 0 ? Math.PI : 0);
-      updateVisible()
+      self.rotation = electron.charge < 0 ? 0 : electron.angle + (current < 0 ? Math.PI : 0);
+      updateVisible();
       outsideOfBlackBoxProperty.value = !electron.circuitElement.insideTrueBlackBoxProperty.get();
     };
     electron.positionProperty.link( positionListener );

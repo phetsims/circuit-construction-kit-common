@@ -210,10 +210,13 @@ define( function( require ) {
      * @return {Vector2} the position in view coordinates
      * @public
      */
-    getPosition: function( distanceAlongWire ) {
+    getPositionAndAngle: function( distanceAlongWire ) {
       var startPosition = this.startVertexProperty.get().positionProperty.get();
       var endPosition = this.endVertexProperty.get().positionProperty.get();
-      return startPosition.blend( endPosition, distanceAlongWire / this.electronPathLength );
+      return {
+        position: startPosition.blend( endPosition, distanceAlongWire / this.electronPathLength ),
+        angle: endPosition.minus( startPosition ).angle()
+      };
     },
 
     /**
@@ -234,15 +237,6 @@ define( function( require ) {
      */
     getCircuitProperties: function() {
       assert && assert( false, 'getCircuitProperties must be implemented in subclass' );
-    },
-
-    /**
-     * Get the angle of the circuit element
-     */
-    getAngle: function() {
-      var startPosition = this.startVertexProperty.get().positionProperty.get();
-      var endPosition = this.endVertexProperty.get().positionProperty.get();
-      return endPosition.minus( startPosition ).angle();
     },
 
     /**
