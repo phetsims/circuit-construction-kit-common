@@ -1,7 +1,7 @@
 // Copyright 2017, University of Colorado Boulder
 
 /**
- *
+ * An icon in the circuit element toolbox/carousel that can be used to create circuit elements.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -19,9 +19,17 @@ define( function( require ) {
   var TOOLBOX_ICON_SIZE = CircuitConstructionKitConstants.TOOLBOX_ICON_SIZE;
 
   /**
+   * @param {string} labelText
+   * @param {BooleanProperty} showLabelsProperty
+   * @param {CircuitNode} circuitNode
+   * @param {Node} iconNode
+   * @param {Circuit} circuit
+   * @param {number} maxNumber
+   * @param {number} count
+   * @param {function} createElement
    * @constructor
    */
-  function CircuitElementToolNode( labelText, showLabelsProperty, iconNode, circuit, circuitElementToolbox, maxNumber, count, createElement ) {
+  function CircuitElementToolNode( labelText, showLabelsProperty, circuitNode, iconNode, circuit, maxNumber, count, createElement ) {
     var self = this;
     var labelNode = new Text( labelText, { fontSize: 12, maxWidth: TOOLBOX_ICON_SIZE } ); // TODO constrain width
     showLabelsProperty.link( function( showLabels ) {labelNode.visible = showLabels;} );
@@ -35,8 +43,8 @@ define( function( require ) {
             return;
           }
 
-          // initial position of the pointer in the screenView coordinates
-          var viewPosition = circuitElementToolbox.globalToParentPoint( event.pointer.point );
+          // initial position of the pointer in the coordinate frame of the CircuitNode
+          var viewPosition = circuitNode.globalToLocalPoint( event.pointer.point );
 
           // Create the new CircuitElement at the correct location
           var circuitElement = createElement( viewPosition );

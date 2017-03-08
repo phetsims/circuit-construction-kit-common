@@ -525,7 +525,8 @@ define( function( require ) {
      */
     translateVertexGroup: function( vertex, vertices, unsnappedDelta, updatePositions, attachable ) {
 
-      var bounds = this.visibleBoundsProperty.get();
+      var screenBounds = this.visibleBoundsProperty.get();
+      var bounds = this.parentToLocalBounds( screenBounds );
 
       // Modify the delta to guarantee all vertices remain in bounds
       for ( i = 0; i < vertices.length; i++ ) {

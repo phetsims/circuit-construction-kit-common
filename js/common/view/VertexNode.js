@@ -206,7 +206,12 @@ define( function( require ) {
       }
 
       var proposedPosition = position.plus( sumOfDirections.normalized().timesScalar( DISTANCE_TO_CUT_BUTTON ) );
-      var availableBounds = circuitNode.visibleBoundsProperty.get().eroded( cutButton.width / 2 );
+
+      // TODO: these lines are duplicated in CircuitNode
+      var screenBounds = circuitNode.visibleBoundsProperty.get();
+      var bounds = circuitNode.parentToLocalBounds( screenBounds );
+
+      var availableBounds = bounds.eroded( cutButton.width / 2 );
       var closestPoint = availableBounds.closestPointTo( proposedPosition );
       cutButton.center = closestPoint;
     };

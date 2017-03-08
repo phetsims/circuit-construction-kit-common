@@ -183,6 +183,7 @@ define( function( require ) {
     this.circuitElementToolbox = new CircuitElementToolbox(
       circuitConstructionKitModel.circuit,
       circuitConstructionKitModel.showLabelsProperty,
+      this.circuitNode,
       tandem.createTandem( 'circuitElementToolbox' ), {
         orientation: options.toolboxOrientation,
         numberOfRightBatteries: options.numberOfRightBatteriesInToolbox,
@@ -355,6 +356,10 @@ define( function( require ) {
       zoomControlPanel.left = self.circuitElementToolbox.left;
     } );
 
+    // Center the circuit node so that zooms will remain centered.
+    self.circuitNode.setTranslation( self.layoutBounds.centerX, self.layoutBounds.centerY );
+
+    // TODO: replace this with a continuous zoom in out animation, probably in step()
     circuitConstructionKitModel.zoomLevelProperty.link( function( zoomLevel ) {
       self.circuitNode.setScaleMagnitude( zoomLevel );
     } );

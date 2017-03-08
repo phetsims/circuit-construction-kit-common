@@ -45,11 +45,12 @@ define( function( require ) {
   /**
    * @param {Circuit} circuit
    * @param {Property.<boolean>} showLabelsProperty
+   * @param {CircuitNode} circuitNode
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function CircuitElementToolbox( circuit, showLabelsProperty, tandem, options ) {
+  function CircuitElementToolbox( circuit, showLabelsProperty, circuitNode, tandem, options ) {
 
     options = _.extend( {
       orientation: 'vertical',
@@ -66,10 +67,10 @@ define( function( require ) {
         tandem: circuit.vertexGroupTandem.createNextTandem()
       } );
     };
-    var leftBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, new Image( batteryImage, {
+    var leftBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitNode, new Image( batteryImage, {
       scale: TOOLBOX_ICON_SIZE / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height ),
       rotation: Math.PI
-    } ), circuit, this, options.numberOfLeftBatteries, function() {
+    } ), circuit, options.numberOfLeftBatteries, function() {
       return circuit.circuitElements.filter( function( battery ) {
         return battery instanceof Battery && battery.initialOrientation === 'left' && !battery.insideTrueBlackBoxProperty.get();
       } ).length;
@@ -79,9 +80,9 @@ define( function( require ) {
       return new Battery( endVertex, startVertex, 9.0, { initialOrientation: 'left' } );
     } );
 
-    var rightBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, new Image( batteryImage, {
+    var rightBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitNode, new Image( batteryImage, {
         scale: TOOLBOX_ICON_SIZE / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height )
-      } ), circuit, this, options.numberOfRightBatteries, function() {
+      } ), circuit, options.numberOfRightBatteries, function() {
         return circuit.circuitElements.filter( function( battery ) {
           return battery instanceof Battery && battery.initialOrientation === 'right' && !battery.insideTrueBlackBoxProperty.get();
         } ).length;
@@ -93,9 +94,9 @@ define( function( require ) {
     );
 
     var wireIcon = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, tandem.createTandem( 'wireIcon' ) );
-    var wireToolNode = new CircuitElementToolNode( wireString, showLabelsProperty, wireIcon.mutate( {
+    var wireToolNode = new CircuitElementToolNode( wireString, showLabelsProperty, circuitNode, wireIcon.mutate( {
         scale: TOOLBOX_ICON_SIZE / Math.max( wireIcon.width, wireIcon.height )
-      } ), circuit, this, options.numberOfWires, function() {
+      } ), circuit, options.numberOfWires, function() {
         return circuit.circuitElements.filter( function( circuitElement ) {
           return !circuitElement.insideTrueBlackBoxProperty.get() && circuitElement instanceof Wire;
         } ).length;
@@ -107,9 +108,9 @@ define( function( require ) {
     );
 
     var lightBulbIcon = new CustomLightBulbNode( new NumberProperty( 0 ) );
-    var lightBulbToolNode = new CircuitElementToolNode( lightBulbString, showLabelsProperty, lightBulbIcon.mutate( { // TODO: i18n labels
-      scale: TOOLBOX_ICON_SIZE / Math.max( lightBulbIcon.width, lightBulbIcon.height ) // constrained by being too tall, not too wide
-      } ), circuit, this, options.numberOfLightBulbs, function() {
+    var lightBulbToolNode = new CircuitElementToolNode( lightBulbString, showLabelsProperty, circuitNode, lightBulbIcon.mutate( { // TODO: i18n labels
+        scale: TOOLBOX_ICON_SIZE / Math.max( lightBulbIcon.width, lightBulbIcon.height ) // constrained by being too tall, not too wide
+      } ), circuit, options.numberOfLightBulbs, function() {
         return circuit.circuitElements.filter( function( lightBulb ) {
           return lightBulb instanceof LightBulb && !lightBulb.insideTrueBlackBoxProperty.get();
         } ).length;
@@ -124,9 +125,9 @@ define( function( require ) {
         icon: true
       }
     );
-    var resistorToolNode = new CircuitElementToolNode( resistorString, showLabelsProperty, resistorIcon.mutate( {
-      scale: TOOLBOX_ICON_SIZE / Math.max( resistorIcon.width, resistorIcon.height )
-      } ), circuit, this, options.numberOfResistors, function() {
+    var resistorToolNode = new CircuitElementToolNode( resistorString, showLabelsProperty, circuitNode, resistorIcon.mutate( {
+        scale: TOOLBOX_ICON_SIZE / Math.max( resistorIcon.width, resistorIcon.height )
+      } ), circuit, options.numberOfResistors, function() {
         return circuit.circuitElements.filter( function( resistor ) {
           return resistor instanceof Resistor && !resistor.insideTrueBlackBoxProperty.get();
         } ).length;
@@ -139,8 +140,9 @@ define( function( require ) {
     );
 
     var switchIcon = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, tandem.createTandem( 'switchIcon' ) );
-    var switchToolNode = new CircuitElementToolNode( switchString, showLabelsProperty, switchIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( switchIcon.width, switchIcon.height ) } ),
-      circuit, this, options.numberOfSwitches, function() {
+    var switchToolNode = new CircuitElementToolNode( switchString, showLabelsProperty, circuitNode,
+      switchIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( switchIcon.width, switchIcon.height ) } ),
+      circuit, options.numberOfSwitches, function() {
         return circuit.circuitElements.filter( function( s ) {
           return !s.insideTrueBlackBoxProperty.get() && s instanceof Switch;
         } ).length;
