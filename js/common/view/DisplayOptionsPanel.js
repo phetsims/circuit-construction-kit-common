@@ -44,6 +44,15 @@ define( function( require ) {
     };
 
     var children = [];
+    var electronsRadioButton = new AquaRadioButton( currentTypeProperty, 'electrons', new Text( 'Electrons', textOptions ), aquaRadioButtonOptions );
+    var conventionalRadioButton = new AquaRadioButton( currentTypeProperty, 'conventional', new Text( 'Conventional', textOptions ), aquaRadioButtonOptions );
+
+    // Gray out current view options when current is not selected.
+    showCurrentProperty.link( function( showCurrent ) {
+      electronsRadioButton.setEnabled( showCurrent );
+      conventionalRadioButton.setEnabled( showCurrent );
+    } );
+
     children.push( new VBox( {
       align: 'left',
       spacing: 8,
@@ -56,8 +65,8 @@ define( function( require ) {
               align: 'left',
               spacing: 6,
               children: [
-                new AquaRadioButton( currentTypeProperty, 'electrons', new Text( 'Electrons', textOptions ), aquaRadioButtonOptions ),
-                new AquaRadioButton( currentTypeProperty, 'conventional', new Text( 'Conventional', textOptions ), aquaRadioButtonOptions )
+                electronsRadioButton,
+                conventionalRadioButton
               ]
             } )
           ]
