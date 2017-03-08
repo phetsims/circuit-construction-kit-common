@@ -18,7 +18,7 @@ define( function( require ) {
   var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Ammeter' );
   var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
   var TandemEmitter = require( 'TANDEM/axon/TandemEmitter' );
-  var Easing = require( 'TWIXT/Easing' );
+  var EaseAnimation = require( 'TWIXT/EaseAnimation' );
 
   // phet-io modules
   var TString = require( 'ifphetio!PHET_IO/types/TString' );
@@ -34,8 +34,8 @@ define( function( require ) {
 
     var self = this;
 
-    // @private - the last time the zoom level changed
-    this.zoomChangeTime = 0;
+    // @private - animation for the zoom level
+    this.zoomAnimation = null;
 
     // @public (read-only)
     this.circuit = new Circuit( tandem.createTandem( 'circuit' ) );
@@ -67,8 +67,14 @@ define( function( require ) {
     } );
 
     this.selectedZoomProperty.lazyLink( function( newValue, oldValue ) {
-      self.zoomChangeTime = Date.now();
-      self.previousZoom = oldValue;
+      self.zoomAnimation = new EaseAnimation( {
+        duration: ZOOM_ANIMATION_TIME,
+        initialValue: oldValue,
+        targetValue: newValue,
+        delta: function( delta ) {
+          self.currentZoomProperty.value += delta;
+        }
+      } );
     } );
 
     // @public (read-only) {Property.<string>} - whether the user is in the 'explore' or 'test' mode
@@ -148,19 +154,11 @@ define( function( require ) {
      */
     step: function( dt ) {
 
-      var timeSinceZoom = (Date.now() - this.zoomChangeTime) / 1000; // seconds;
-      if ( timeSinceZoom < ZOOM_ANIMATION_TIME ) {
-        var scale = Easing.CUBIC_IN_OUT.value( timeSinceZoom / ZOOM_ANIMATION_TIME );
-
-        // map into appropriate range
-        var range = this.selectedZoomProperty.get() - this.previousZoom;
-        var newZoom = scale * range + this.previousZoom;
-
-        // Set to the property
-        this.currentZoomProperty.set( newZoom );
-      }
-      else {
-        this.currentZoomProperty.set( this.selectedZoomProperty.get() );
+      if ( this.zoomAnimation ) {
+        var overflow = this.zoomAnimation.step( dt );
+        if ( overflow > 0 ) {
+          this.zoomAnimation = null;
+        }
       }
 
       // Only move electrons if the simulation is not paused.
