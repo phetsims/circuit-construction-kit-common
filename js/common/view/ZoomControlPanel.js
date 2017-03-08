@@ -19,16 +19,22 @@ define( function( require ) {
    * @constructor
    */
   function ZoomControlPanel( zoomLevelProperty ) {
+    var zoomOutButton = new ZoomButton( {
+      in: false
+    } );
+    var zoomInButton = new ZoomButton( {
+      in: true
+    } );
     HBox.call( this, {
       spacing: 12,
       children: [
-        new ZoomButton( {
-          in: false
-        } ),
-        new ZoomButton( {
-          in: true
-        } )
+        zoomOutButton,
+        zoomInButton
       ]
+    } );
+    zoomLevelProperty.link( function( zoomLevel ) {
+      zoomInButton.setEnabled( zoomLevel !== 1 );
+      zoomOutButton.setEnabled( zoomLevel === 1 );
     } );
   }
 
