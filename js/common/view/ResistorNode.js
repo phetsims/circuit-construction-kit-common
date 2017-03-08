@@ -32,10 +32,11 @@ define( function( require ) {
    */
   function ResistorNode( circuitConstructionKitScreenView, circuitNode, resistor, runningProperty, tandem, options ) {
     this.resistor = resistor;
-    var imageScale = 0.7;
-    var resistorNode = new Image( resistorImage );
 
-    var imageWidth = resistorNode.imageWidth / imageScale;
+    var imageScale = 0.7;
+    var resistorImageNode = new Image( resistorImage );
+
+    var imageWidth = resistorImageNode.imageWidth / imageScale;
     var bandWidth = 10;
     var bandHeight = 34;
     var bandTopDY = -2; // Account for vertical asymmetry in the image
@@ -43,7 +44,7 @@ define( function( require ) {
     var availableBandSpace = imageWidth * 0.75 - 2 * inset;
     var remainingSpace = availableBandSpace - 4 * bandWidth;// max is 4 bands, even though they are not always shown
     var bandSeparation = remainingSpace / 4; // two spaces before last band
-    var y = resistorNode.imageHeight / 2 / imageScale - bandHeight / imageScale / 2 + bandTopDY;
+    var y = resistorImageNode.imageHeight / 2 / imageScale - bandHeight / imageScale / 2 + bandTopDY;
     var colorBands = [
       new Rectangle( 0, 0, bandWidth, bandHeight, { x: inset + (bandWidth + bandSeparation) * 0, y: y } ),
       new Rectangle( 0, 0, bandWidth, bandHeight, { x: inset + (bandWidth + bandSeparation) * 1, y: y } ),
@@ -61,10 +62,10 @@ define( function( require ) {
     };
     resistor.resistanceProperty.link( updateColorBands );
     for ( var i = 0; i < colorBands.length; i++ ) {
-      resistorNode.addChild( colorBands[ i ] );
+      resistorImageNode.addChild( colorBands[ i ] );
     }
 
-    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, resistor, resistorNode, imageScale, tandem, options );
+    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, resistor, resistorImageNode, imageScale, tandem, options );
     this.disposeResistorNode = function() {
       resistor.resistanceProperty.unlink( updateColorBands );
     };
