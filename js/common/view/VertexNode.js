@@ -207,9 +207,7 @@ define( function( require ) {
 
       var proposedPosition = position.plus( sumOfDirections.normalized().timesScalar( DISTANCE_TO_CUT_BUTTON ) );
 
-      // TODO: these lines are duplicated in CircuitNode
-      var screenBounds = circuitNode.visibleBoundsProperty.get();
-      var bounds = circuitNode.parentToLocalBounds( screenBounds );
+      var bounds = circuitNode.visibleBoundsInCircuitCoordinateFrameProperty.get();
 
       var availableBounds = bounds.eroded( cutButton.width / 2 );
       var closestPoint = availableBounds.closestPointTo( proposedPosition );

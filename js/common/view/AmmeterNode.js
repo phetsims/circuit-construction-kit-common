@@ -135,9 +135,6 @@ define( function( require ) {
 
       self.movableDragHandler.setDragBounds( visibleBounds );
       probeDragHandler.setDragBounds( visibleBounds );
-
-      ammeter.bodyPositionProperty.set( visibleBounds.closestPointTo( ammeter.bodyPositionProperty.get() ) );
-      ammeter.probePositionProperty.set( visibleBounds.closestPointTo( ammeter.probePositionProperty.get() ) );
     } );
   }
 

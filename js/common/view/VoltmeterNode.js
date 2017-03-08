@@ -138,9 +138,9 @@ define( function( require ) {
       redProbeDragHandler.setDragBounds( visibleBounds );
       blackProbeDragHandler.setDragBounds( visibleBounds );
 
-      voltmeter.bodyPositionProperty.set( visibleBounds.closestPointTo( voltmeter.bodyPositionProperty.get() ) );
-      voltmeter.redProbePositionProperty.set( visibleBounds.closestPointTo( voltmeter.redProbePositionProperty.get() ) );
-      voltmeter.blackProbePositionProperty.set( visibleBounds.closestPointTo( voltmeter.blackProbePositionProperty.get() ) );
+      // voltmeter.bodyPositionProperty.set( visibleBounds.closestPointTo( voltmeter.bodyPositionProperty.get() ) );
+      // voltmeter.redProbePositionProperty.set( visibleBounds.closestPointTo( voltmeter.redProbePositionProperty.get() ) );
+      // voltmeter.blackProbePositionProperty.set( visibleBounds.closestPointTo( voltmeter.blackProbePositionProperty.get() ) );
     } );
   }
 

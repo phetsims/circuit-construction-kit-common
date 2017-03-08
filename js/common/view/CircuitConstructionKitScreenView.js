@@ -32,6 +32,7 @@ define( function( require ) {
   var Plane = require( 'SCENERY/nodes/Plane' );
   var ViewRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ViewRadioButtonGroup' );
   var ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ZoomControlPanel' );
+  var DerivedProperty = require( 'AXON/DerivedProperty' );
 
   // constants
   var LAYOUT_INSET = CircuitConstructionKitConstants.LAYOUT_INSET;
@@ -152,9 +153,16 @@ define( function( require ) {
       this.addChild( saveButton );
     }
 
+    this.circuitNode = new CircuitNode( circuitConstructionKitModel.circuit, this, tandem.createTandem( 'circuitNode' ) );
+
+    this.visibleBoundsInCircuitCoordinateFrameProperty = new DerivedProperty( [ circuitConstructionKitModel.currentZoomProperty, this.visibleBoundsProperty ], function( zoom, visibleBounds ) {
+      return self.circuitNode.parentToLocalBounds( visibleBounds );
+    } );
+    this.circuitNode.visibleBoundsInCircuitCoordinateFrameProperty = this.visibleBoundsInCircuitCoordinateFrameProperty;
+
     var voltmeterNode = new VoltmeterNode( circuitConstructionKitModel.voltmeter, tandem.createTandem( 'voltmeterNode' ), {
       runningProperty: circuitConstructionKitModel.exploreScreenRunningProperty,
-      visibleBoundsProperty: this.visibleBoundsProperty
+      visibleBoundsProperty: this.visibleBoundsInCircuitCoordinateFrameProperty
     } );
     circuitConstructionKitModel.voltmeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
       if ( bodyNodeGlobalBounds.intersectsBounds( self.sensorToolbox.globalBounds ) ) {
@@ -166,7 +174,7 @@ define( function( require ) {
     } );
 
     var ammeterNode = new AmmeterNode( circuitConstructionKitModel.ammeter, tandem.createTandem( 'ammeterNode' ), {
-      visibleBoundsProperty: this.visibleBoundsProperty,
+      visibleBoundsProperty: this.visibleBoundsInCircuitCoordinateFrameProperty,
       runningProperty: circuitConstructionKitModel.exploreScreenRunningProperty
     } );
     circuitConstructionKitModel.ammeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
@@ -179,7 +187,6 @@ define( function( require ) {
     } );
 
     // Pass the view into circuit node so that circuit elements can be dropped back into the toolbox
-    this.circuitNode = new CircuitNode( circuitConstructionKitModel.circuit, this, tandem.createTandem( 'circuitNode' ) );
     this.circuitElementToolbox = new CircuitElementToolbox(
       circuitConstructionKitModel.circuit,
       circuitConstructionKitModel.showLabelsProperty,
@@ -202,7 +209,7 @@ define( function( require ) {
     this.addChild( electronSpeedThrottlingReadoutNode );
 
     // @protected - so that subclasses can add a layout circuit element near it
-    this.sensorToolbox = new SensorToolbox( voltmeterNode, ammeterNode, circuitConstructionKitModel.exploreScreenRunningProperty, tandem.createTandem( 'sensorToolbox' ) );
+    this.sensorToolbox = new SensorToolbox( this.circuitNode, voltmeterNode, ammeterNode, circuitConstructionKitModel.exploreScreenRunningProperty, tandem.createTandem( 'sensorToolbox' ) );
 
     // @private
     this.viewRadioButtonGroup = new ViewRadioButtonGroup( circuitConstructionKitModel.viewProperty );
