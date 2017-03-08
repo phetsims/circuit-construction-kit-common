@@ -183,6 +183,8 @@ define( function( require ) {
       this.voltmeter.reset();
       this.ammeter.reset();
       this.viewProperty.reset();
+      this.currentZoomProperty.reset();
+      this.selectedZoomProperty.reset();
     }
   } );
 } );
