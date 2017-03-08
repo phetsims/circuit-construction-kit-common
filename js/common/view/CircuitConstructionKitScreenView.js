@@ -32,7 +32,6 @@ define( function( require ) {
   var Plane = require( 'SCENERY/nodes/Plane' );
   var ViewRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ViewRadioButtonGroup' );
   var ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ZoomControlPanel' );
-  var Property = require( 'AXON/Property' );
 
   // constants
   var LAYOUT_INSET = CircuitConstructionKitConstants.LAYOUT_INSET;
