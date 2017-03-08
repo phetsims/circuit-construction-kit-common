@@ -27,7 +27,9 @@ define( function( require ) {
         value: 'schematic',
         node: new Text( 'Schematic' )
       }
-    ] );
+    ], {
+      orientation: 'horizontal'
+    } );
   }
 
   circuitConstructionKitCommon.register( 'ViewRadioButtonGroup', ViewRadioButtonGroup );
