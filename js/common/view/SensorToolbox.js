@@ -40,7 +40,7 @@ define( function( require ) {
         voltmeterNode.voltmeter.draggingProbesWithBodyProperty.set( true );
         voltmeterNode.voltmeter.visibleProperty.set( true );
         voltmeterNode.voltmeter.bodyPositionProperty.set( viewPosition );
-        voltmeterNode.movableDragHandler.startDrag( event );
+        voltmeterNode.dragHandler.startDrag( event );
       }
     } );
 
@@ -58,7 +58,7 @@ define( function( require ) {
         ammeterNode.ammeter.draggingProbesWithBodyProperty.set( true );
         ammeterNode.ammeter.visibleProperty.set( true );
         ammeterNode.ammeter.bodyPositionProperty.set( viewPosition );
-        ammeterNode.movableDragHandler.startDrag( event );
+        ammeterNode.dragHandler.startDrag( event );
       }
     } );
 

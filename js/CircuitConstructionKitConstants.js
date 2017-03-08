@@ -54,7 +54,7 @@ define( function( require ) {
     MINIMUM_RESISTANCE: 1E-8,
 
     // How far to erode the visible bounds for keeping the probes in bounds.
-    DRAG_BOUNDS_EROSION: 10,
+    DRAG_BOUNDS_EROSION: 20,
 
     // Distance between adjacent electrons for electron layout
     ELECTRON_SEPARATION: 28,

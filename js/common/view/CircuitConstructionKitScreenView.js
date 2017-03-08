@@ -233,10 +233,9 @@ define( function( require ) {
 
     this.addChild( this.circuitElementToolbox );
 
-    this.addChild( this.circuitNode );
     this.addChild( this.sensorToolbox );
-
     this.addChild( this.viewRadioButtonGroup );
+    this.addChild( this.circuitNode );
 
     var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel(
       circuitConstructionKitModel.circuit,

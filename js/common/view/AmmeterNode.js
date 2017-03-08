@@ -15,7 +15,6 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Image = require( 'SCENERY/nodes/Image' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var ProbeTextNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ProbeTextNode' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var Util = require( 'DOT/Util' );
@@ -25,6 +24,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
+  var TandemSimpleDragHandler = require( 'TANDEM/scenery/input/TandemSimpleDragHandler' );
 
   // images
   var ammeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeter_body.png' );
@@ -112,30 +112,34 @@ define( function( require ) {
     } );
 
     if ( !options.icon ) {
-      this.movableDragHandler = new MovableDragHandler( ammeter.bodyPositionProperty, {
-        tandem: tandem.createTandem( 'movableDragHandler' ),
-        endDrag: function() {
+      this.dragHandler = new TandemSimpleDragHandler( {
+        tandem: tandem.createTandem( 'dragHandler' ),
+        start: function() {},
+        drag: function( event ) {
+          var pt = self.globalToParentPoint( event.pointer.point );
+          pt = options.visibleBoundsProperty.value.eroded( CircuitConstructionKitConstants.DRAG_BOUNDS_EROSION ).closestPointTo( pt );
+          ammeter.bodyPositionProperty.set( pt );
+        },
+        end: function() {
           ammeter.droppedEmitter.emit1( bodyNode.globalBounds );
 
           // After dropping in the play area the probes move independently of the body
           ammeter.draggingProbesWithBodyProperty.set( false );
         }
       } );
-      bodyNode.addInputListener( this.movableDragHandler );
-      var probeDragHandler = new MovableDragHandler( ammeter.probePositionProperty, {
-        tandem: tandem.createTandem( 'probeDragHandler' )
+      bodyNode.addInputListener( this.dragHandler );
+      var probeDragHandler = new TandemSimpleDragHandler( {
+        tandem: tandem.createTandem( 'probeDragHandler' ),
+        start: function() {},
+        drag: function( event ) {
+          var pt = self.globalToParentPoint( event.pointer.point );
+          pt = options.visibleBoundsProperty.value.eroded( CircuitConstructionKitConstants.DRAG_BOUNDS_EROSION ).closestPointTo( pt );
+          ammeter.probePositionProperty.set( pt );
+        },
+        end: function() {}
       } );
       this.probeNode.addInputListener( probeDragHandler );
     }
-
-    options.visibleBoundsProperty && options.visibleBoundsProperty.link( function( visibleBounds ) {
-
-      // Make sure at least a grabbable edge remains visible
-      visibleBounds = visibleBounds.eroded( CircuitConstructionKitConstants.DRAG_BOUNDS_EROSION );
-
-      self.movableDragHandler.setDragBounds( visibleBounds );
-      probeDragHandler.setDragBounds( visibleBounds );
-    } );
   }
 
   circuitConstructionKitCommon.register( 'AmmeterNode', AmmeterNode );
