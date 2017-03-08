@@ -194,8 +194,6 @@ define( function( require ) {
         numberOfResistors: options.numberOfResistorsInToolbox
       } );
 
-    this.viewRadioButtonGroup = new ViewRadioButtonGroup( circuitConstructionKitModel.viewProperty );
-
     var electronSpeedThrottlingReadoutNode = new ElectronSpeedThrottlingReadoutNode(
       circuitConstructionKitModel.circuit.electronPropagator.timeScaleProperty,
       circuitConstructionKitModel.circuit.showCurrentProperty,
@@ -205,6 +203,10 @@ define( function( require ) {
 
     // @protected - so that subclasses can add a layout circuit element near it
     this.sensorToolbox = new SensorToolbox( voltmeterNode, ammeterNode, circuitConstructionKitModel.exploreScreenRunningProperty, tandem.createTandem( 'sensorToolbox' ) );
+
+    // @private
+    this.viewRadioButtonGroup = new ViewRadioButtonGroup( circuitConstructionKitModel.viewProperty );
+    this.viewRadioButtonGroup.setScaleMagnitude( this.sensorToolbox.width / this.viewRadioButtonGroup.width );
 
     // @protected
     this.displayOptionsPanel = new DisplayOptionsPanel(
@@ -227,7 +229,7 @@ define( function( require ) {
     this.addChild( this.circuitNode );
     this.addChild( this.sensorToolbox );
 
-    this.circuitNode.mainLayer.addChild( this.viewRadioButtonGroup );
+    this.addChild( this.viewRadioButtonGroup );
 
     var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel(
       circuitConstructionKitModel.circuit,
@@ -338,8 +340,6 @@ define( function( require ) {
       } );
 
       self.circuitElementToolbox.mutate( options.getToolboxPosition( visibleBounds ) );
-      self.viewRadioButtonGroup.top = self.circuitElementToolbox.bottom + 10;
-      self.viewRadioButtonGroup.left = self.circuitElementToolbox.left;
 
       self.displayOptionsPanel.mutate( {
         right: visibleBounds.right - LAYOUT_INSET,
@@ -349,6 +349,8 @@ define( function( require ) {
         right: visibleBounds.right - LAYOUT_INSET,
         top: self.displayOptionsPanel.bottom + LAYOUT_INSET
       } );
+      self.viewRadioButtonGroup.top = self.sensorToolbox.bottom + 10;
+      self.viewRadioButtonGroup.left = self.sensorToolbox.left;
 
       zoomControlPanel.bottom = visibleBounds.bottom - LAYOUT_INSET;
       zoomControlPanel.left = self.circuitElementToolbox.left;
