@@ -244,8 +244,9 @@ define( function( require ) {
 
     this.addChild( circuitElementEditContainerPanel );
 
-    this.addChild( voltmeterNode );
-    this.addChild( ammeterNode );
+    // The voltmeter and ammeter are considered part of the circuit node so they will scale up and down with the circuit
+    this.circuitNode.addChild( voltmeterNode );
+    this.circuitNode.addChild( ammeterNode );
 
     // Detection for voltmeter probe + circuit collision is done in the view since view bounds are used
     var updateVoltmeter = function() {
