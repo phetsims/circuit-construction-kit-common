@@ -18,9 +18,13 @@ define( function( require ) {
   var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Ammeter' );
   var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
   var TandemEmitter = require( 'TANDEM/axon/TandemEmitter' );
+  var Easing = require( 'TWIXT/Easing' );
 
   // phet-io modules
   var TString = require( 'ifphetio!PHET_IO/types/TString' );
+
+  // constants
+  var ZOOM_ANIMATION_TIME = 0.35; // seconds
 
   /**
    * @param {Tandem} tandem
@@ -29,6 +33,9 @@ define( function( require ) {
   function CircuitConstructionKitModel( tandem ) {
 
     var self = this;
+
+    // @private - the last time the zoom level changed
+    this.zoomChangeTime = 0;
 
     // @public (read-only)
     this.circuit = new Circuit( tandem.createTandem( 'circuit' ) );
@@ -51,8 +58,17 @@ define( function( require ) {
     } );
 
     // @public (read-only) scaling applied to the circuit node so the user can zoom out and make larger circuits.
-    this.zoomLevelProperty = new Property( 1, {
-      tandem: tandem.createTandem( 'zoomLevelProperty' )
+    this.selectedZoomProperty = new Property( 1, {
+      tandem: tandem.createTandem( 'selectedZoomProperty' )
+    } );
+
+    this.currentZoomProperty = new Property( this.selectedZoomProperty.get(), {
+      tandem: tandem.createTandem( 'currentZoomProperty' )
+    } );
+
+    this.selectedZoomProperty.lazyLink( function( newValue, oldValue ) {
+      self.zoomChangeTime = Date.now();
+      self.previousZoom = oldValue;
     } );
 
     // @public (read-only) {Property.<string>} - whether the user is in the 'explore' or 'test' mode
@@ -131,6 +147,21 @@ define( function( require ) {
      * @public
      */
     step: function( dt ) {
+
+      var timeSinceZoom = (Date.now() - this.zoomChangeTime) / 1000; // seconds;
+      if ( timeSinceZoom < ZOOM_ANIMATION_TIME ) {
+        var scale = Easing.CUBIC_IN_OUT.value( timeSinceZoom / ZOOM_ANIMATION_TIME );
+
+        // map into appropriate range
+        var range = this.selectedZoomProperty.get() - this.previousZoom;
+        var newZoom = scale * range + this.previousZoom;
+
+        // Set to the property
+        this.currentZoomProperty.set( newZoom );
+      }
+      else {
+        this.currentZoomProperty.set( this.selectedZoomProperty.get() );
+      }
 
       // Only move electrons if the simulation is not paused.
       if ( this.exploreScreenRunningProperty.value ) {

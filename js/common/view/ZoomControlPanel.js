@@ -14,21 +14,25 @@ define( function( require ) {
   var HBox = require( 'SCENERY/nodes/HBox' );
   var ZoomButton = require( 'SCENERY_PHET/buttons/ZoomButton' );
 
+  // constants
+  var ZOOMED_IN = 1;
+  var ZOOMED_OUT = 0.5;
+
   /**
-   * @param {Property} zoomLevelProperty
+   * @param {Property} selectedZoomProperty
    * @constructor
    */
-  function ZoomControlPanel( zoomLevelProperty ) {
+  function ZoomControlPanel( selectedZoomProperty ) {
     var zoomOutButton = new ZoomButton( {
       in: false,
       listener: function() {
-        zoomLevelProperty.set( 0.5 );
+        selectedZoomProperty.set( ZOOMED_OUT );
       }
     } );
     var zoomInButton = new ZoomButton( {
       in: true,
       listener: function() {
-        zoomLevelProperty.set( 1 );
+        selectedZoomProperty.set( ZOOMED_IN );
       }
     } );
     HBox.call( this, {
@@ -38,9 +42,9 @@ define( function( require ) {
         zoomInButton
       ]
     } );
-    zoomLevelProperty.link( function( zoomLevel ) {
-      zoomInButton.setEnabled( zoomLevel !== 1 );
-      zoomOutButton.setEnabled( zoomLevel === 1 );
+    selectedZoomProperty.link( function( zoomLevel ) {
+      zoomInButton.setEnabled( zoomLevel === ZOOMED_OUT );
+      zoomOutButton.setEnabled( zoomLevel === ZOOMED_IN );
     } );
   }
 

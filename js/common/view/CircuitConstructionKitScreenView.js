@@ -309,7 +309,7 @@ define( function( require ) {
     }
 
     // Create the zoom control panel
-    var zoomControlPanel = new ZoomControlPanel( circuitConstructionKitModel.zoomLevelProperty );
+    var zoomControlPanel = new ZoomControlPanel( circuitConstructionKitModel.selectedZoomProperty );
 
     // Make it as wide as the circuit element toolbox
     zoomControlPanel.setScaleMagnitude( this.circuitElementToolbox.width / zoomControlPanel.width );
@@ -360,7 +360,7 @@ define( function( require ) {
     self.circuitNode.setTranslation( self.layoutBounds.centerX, self.layoutBounds.centerY );
 
     // TODO: replace this with a continuous zoom in out animation, probably in step()
-    circuitConstructionKitModel.zoomLevelProperty.link( function( zoomLevel ) {
+    circuitConstructionKitModel.currentZoomProperty.link( function( zoomLevel ) {
       self.circuitNode.setScaleMagnitude( zoomLevel );
     } );
   }

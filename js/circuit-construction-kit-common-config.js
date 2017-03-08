@@ -39,6 +39,7 @@ require.config( {
     SCENERY_PHET: '../../scenery-phet/js',
     SUN: '../../sun/js',
     TANDEM: '../../tandem/js',
+    TWIXT: '../../twixt/js',
 
     // this sim
     CIRCUIT_CONSTRUCTION_KIT_COMMON: '.'
