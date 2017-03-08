@@ -50,6 +50,11 @@ define( function( require ) {
       tandem: tandem.createTandem( 'showLabelsProperty' )
     } );
 
+    // @public (read-only) scaling applied to the circuit node so the user can zoom out and make larger circuits.
+    this.zoomLevelProperty = new Property( 1, {
+      tandem: tandem.createTandem( 'zoomLevelProperty' )
+    } );
+
     // @public (read-only) {Property.<string>} - whether the user is in the 'explore' or 'test' mode
     this.modeProperty = new Property( 'explore', {
       validValues: [ 'explore', 'test' ],

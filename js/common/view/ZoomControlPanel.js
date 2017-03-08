@@ -1,7 +1,7 @@
 // Copyright 2017, University of Colorado Boulder
 
 /**
- *
+ * The panel that appears in the bottom left which can be used to zoom in and out on the circuit.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -20,10 +20,16 @@ define( function( require ) {
    */
   function ZoomControlPanel( zoomLevelProperty ) {
     var zoomOutButton = new ZoomButton( {
-      in: false
+      in: false,
+      listener: function() {
+        zoomLevelProperty.set( 0.5 );
+      }
     } );
     var zoomInButton = new ZoomButton( {
-      in: true
+      in: true,
+      listener: function() {
+        zoomLevelProperty.set( 1 );
+      }
     } );
     HBox.call( this, {
       spacing: 12,

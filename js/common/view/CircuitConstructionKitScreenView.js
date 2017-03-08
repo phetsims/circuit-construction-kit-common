@@ -222,13 +222,12 @@ define( function( require ) {
     this.displayOptionsPanel.moveToBack(); // Move behind elements added in the super, such as the sensors and circuit
     this.moveBackgroundToBack();
 
+    this.addChild( this.circuitElementToolbox );
+
     this.addChild( this.circuitNode );
     this.addChild( this.sensorToolbox );
 
-    // Has to be interleaved in the circuit layering to support the black box, so that the toolbox can be behind
-    // circuit elements but in front of the transparency overlay
-    this.circuitNode.mainLayer.addChild( this.circuitElementToolbox );
-    // this.circuitNode.mainLayer.addChild( this.viewRadioButtonGroup );
+    this.circuitNode.mainLayer.addChild( this.viewRadioButtonGroup );
 
     var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel(
       circuitConstructionKitModel.circuit,
@@ -308,7 +307,7 @@ define( function( require ) {
     }
 
     // Create the zoom control panel
-    var zoomControlPanel = new ZoomControlPanel( new Property( 1 ) );
+    var zoomControlPanel = new ZoomControlPanel( circuitConstructionKitModel.zoomLevelProperty );
 
     // Make it as wide as the circuit element toolbox
     zoomControlPanel.setScaleMagnitude( this.circuitElementToolbox.width / zoomControlPanel.width );
@@ -353,6 +352,10 @@ define( function( require ) {
 
       zoomControlPanel.bottom = visibleBounds.bottom - LAYOUT_INSET;
       zoomControlPanel.left = self.circuitElementToolbox.left;
+    } );
+
+    circuitConstructionKitModel.zoomLevelProperty.link( function( zoomLevel ) {
+      self.circuitNode.setScaleMagnitude( zoomLevel );
     } );
   }
 
