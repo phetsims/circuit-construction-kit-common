@@ -31,6 +31,8 @@ define( function( require ) {
   var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/CircuitStruct' );
   var Plane = require( 'SCENERY/nodes/Plane' );
   var ViewRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ViewRadioButtonGroup' );
+  var ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ZoomControlPanel' );
+  var Property = require( 'AXON/Property' );
 
   // constants
   var LAYOUT_INSET = CircuitConstructionKitConstants.LAYOUT_INSET;
@@ -38,11 +40,13 @@ define( function( require ) {
 
   /**
    * @param {CircuitConstructionKitModel} circuitConstructionKitModel
+   * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
   function CircuitConstructionKitScreenView( circuitConstructionKitModel, tandem, options ) {
     var self = this;
+    this.circuitConstructionKitModel = circuitConstructionKitModel;
 
     options = _.extend( {
 
@@ -236,41 +240,6 @@ define( function( require ) {
 
     // @protected - so the subclass can set the layout
     this.circuitElementEditContainerPanel = circuitElementEditContainerPanel;
-    this.visibleBoundsProperty.link( function( visibleBounds ) {
-
-      // Float the resetAllButton to the bottom right
-      if ( options.showResetAllButton ) {
-        resetAllButton.mutate( {
-          right: visibleBounds.right - LAYOUT_INSET,
-          bottom: visibleBounds.bottom - LAYOUT_INSET
-        } );
-      }
-
-      if ( CircuitConstructionKitQueryParameters.showSaveButton ) {
-        saveButton.mutate( {
-          right: visibleBounds.right - LAYOUT_INSET,
-          bottom: resetAllButton.top - LAYOUT_INSET
-        } );
-      }
-
-      electronSpeedThrottlingReadoutNode.mutate( {
-        centerX: visibleBounds.centerX,
-        bottom: visibleBounds.bottom - 100 // so it doesn't overlap the component controls
-      } );
-
-      self.circuitElementToolbox.mutate( options.getToolboxPosition( visibleBounds ) );
-      self.viewRadioButtonGroup.top = self.circuitElementToolbox.bottom + 10;
-      self.viewRadioButtonGroup.left = self.circuitElementToolbox.left;
-
-      self.displayOptionsPanel.mutate( {
-        right: visibleBounds.right - LAYOUT_INSET,
-        top: visibleBounds.top + LAYOUT_INSET
-      } );
-      self.sensorToolbox.mutate( {
-        right: visibleBounds.right - LAYOUT_INSET,
-        top: self.displayOptionsPanel.bottom + LAYOUT_INSET
-      } );
-    } );
 
     this.addChild( circuitElementEditContainerPanel );
 
@@ -337,7 +306,54 @@ define( function( require ) {
         } );
       } );
     }
-    this.circuitConstructionKitModel = circuitConstructionKitModel;
+
+    // Create the zoom control panel
+    var zoomControlPanel = new ZoomControlPanel( new Property( 1 ) );
+
+    // Make it as wide as the circuit element toolbox
+    zoomControlPanel.setScaleMagnitude( this.circuitElementToolbox.width / zoomControlPanel.width );
+
+    // Add it in front of everything (should never be obscured by a CircuitElement)
+    this.addChild( zoomControlPanel );
+
+    this.visibleBoundsProperty.link( function( visibleBounds ) {
+
+      // Float the resetAllButton to the bottom right
+      if ( options.showResetAllButton ) {
+        resetAllButton.mutate( {
+          right: visibleBounds.right - LAYOUT_INSET,
+          bottom: visibleBounds.bottom - LAYOUT_INSET
+        } );
+      }
+
+      if ( CircuitConstructionKitQueryParameters.showSaveButton ) {
+        saveButton.mutate( {
+          right: visibleBounds.right - LAYOUT_INSET,
+          bottom: resetAllButton.top - LAYOUT_INSET
+        } );
+      }
+
+      electronSpeedThrottlingReadoutNode.mutate( {
+        centerX: visibleBounds.centerX,
+        bottom: visibleBounds.bottom - 100 // so it doesn't overlap the component controls
+      } );
+
+      self.circuitElementToolbox.mutate( options.getToolboxPosition( visibleBounds ) );
+      self.viewRadioButtonGroup.top = self.circuitElementToolbox.bottom + 10;
+      self.viewRadioButtonGroup.left = self.circuitElementToolbox.left;
+
+      self.displayOptionsPanel.mutate( {
+        right: visibleBounds.right - LAYOUT_INSET,
+        top: visibleBounds.top + LAYOUT_INSET
+      } );
+      self.sensorToolbox.mutate( {
+        right: visibleBounds.right - LAYOUT_INSET,
+        top: self.displayOptionsPanel.bottom + LAYOUT_INSET
+      } );
+
+      zoomControlPanel.bottom = visibleBounds.bottom - LAYOUT_INSET;
+      zoomControlPanel.left = self.circuitElementToolbox.left;
+    } );
   }
 
   circuitConstructionKitCommon.register( 'CircuitConstructionKitScreenView', CircuitConstructionKitScreenView );
