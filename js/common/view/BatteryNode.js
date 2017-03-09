@@ -27,7 +27,7 @@ define( function( require ) {
 
     // circuitConstructionKitScreenView, circuitNode, circuitElement, contentNode,
     // contentScale, tandem, options ) {
-    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, battery, new Image( batteryImage ), 0.7, tandem );
+    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, battery, new Image( batteryImage ), new Image( batteryImage ), 0.7, tandem );
   }
 
   circuitConstructionKitCommon.register( 'BatteryNode', BatteryNode );

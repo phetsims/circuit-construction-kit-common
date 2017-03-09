@@ -16,6 +16,8 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var ResistorColors = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ResistorColors' );
   var Image = require( 'SCENERY/nodes/Image' );
+  var Path = require( 'SCENERY/nodes/Path' );
+  var Shape = require( 'KITE/Shape' );
 
   // images
   var resistorImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor.png' );
@@ -65,7 +67,24 @@ define( function( require ) {
       resistorImageNode.addChild( colorBands[ i ] );
     }
 
-    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, resistor, resistorImageNode, imageScale, tandem, options );
+    var zigHeight = 105 - 78;
+    var up = 0 - zigHeight;
+    var down = 0 + zigHeight;
+
+    // Points sampled using Photoshop from a raster of the IEEE icon seen at https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
+    var resistorShape = new Shape()
+      .moveTo( 52, 0 )
+      .lineTo( 136, 0 )
+      .lineTo( 148, up )
+      .lineTo( 167, down )
+      .lineTo( 189, up )
+      .lineTo( 207, down )
+      .lineTo( 227, up )
+      .lineTo( 247, down )
+      .lineTo( 259, 0 )
+      .lineTo( 344, 0 );
+    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, resistor, resistorImageNode,
+      new Path( resistorShape, { stroke: 'black', lineWidth: 10, scale: 0.5 } ), imageScale, tandem, options );
     this.disposeResistorNode = function() {
       resistor.resistanceProperty.unlink( updateColorBands );
     };

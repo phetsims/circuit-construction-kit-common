@@ -36,15 +36,26 @@ define( function( require ) {
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
    * @param circuitNode - Null if an icon is created
    * @param circuitElement
-   * @param {Node} contentNode - the node that will display the component
+   * @param {Node} lifelikeNode - the node that will display the component as a lifelike object
+   * @param {Node} schematicNode - the node that will display the component
    * @param {number} contentScale - the scale factor to apply to the image for the size in the play area (icons are automatically scaled up)
    * @param {Tandem} tandem
    * @param options
    * @constructor
    */
-  function FixedLengthCircuitElementNode( circuitConstructionKitScreenView, circuitNode, circuitElement, contentNode,
-                                          contentScale, tandem, options ) {
+  function FixedLengthCircuitElementNode( circuitConstructionKitScreenView, circuitNode, circuitElement, lifelikeNode,
+                                          schematicNode, contentScale, tandem, options ) {
     var self = this;
+
+    var contentNode = new Node();
+
+    circuitConstructionKitScreenView && circuitConstructionKitScreenView.circuitConstructionKitModel.viewProperty.link( function( view ) {
+      contentNode.children = [ view === 'lifelike' ? lifelikeNode : schematicNode ];
+    } );
+
+    if ( !circuitConstructionKitScreenView ) {
+      contentNode.children = [ lifelikeNode ];
+    }
 
     // Capture the original dimensions of the content node, without the highlight node
     var contentNodeHeight = contentNode.height;
