@@ -23,8 +23,6 @@ define( function( require ) {
   var TOOLBOX_ICON_SIZE = CircuitConstructionKitConstants.TOOLBOX_ICON_SIZE;
 
   function SensorToolbox( circuitNode, voltmeterNode, ammeterNode, runningProperty, tandem ) {
-    var self = this;
-
     var voltmeterNodeIcon = new VoltmeterNode( new Voltmeter( tandem.createTandem( 'voltmeterIconModel' ) ), tandem.createTandem( 'voltmeterNodeIcon' ), {
       runningProperty: runningProperty,
       icon: true
