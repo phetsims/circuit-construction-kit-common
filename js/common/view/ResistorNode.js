@@ -67,24 +67,25 @@ define( function( require ) {
       resistorImageNode.addChild( colorBands[ i ] );
     }
 
-    var zigHeight = 105 - 78;
-    var up = 0 - zigHeight;
-    var down = 0 + zigHeight;
-
     // Points sampled using Photoshop from a raster of the IEEE icon seen at https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
+    var scale = 0.54;
+    var period = 22 * scale;
+    var stemWidth = 84 * scale;
+    var wavelength = 54 * scale;
+
     var resistorShape = new Shape()
-      .moveTo( 52, 0 )
-      .lineTo( 136, 0 )
-      .lineTo( 148, up )
-      .lineTo( 167, down )
-      .lineTo( 189, up )
-      .lineTo( 207, down )
-      .lineTo( 227, up )
-      .lineTo( 247, down )
-      .lineTo( 259, 0 )
-      .lineTo( 344, 0 );
+      .moveTo( 0, resistorImageNode.height * scale )
+      .lineToRelative( stemWidth, 0 )
+      .lineToRelative( period / 2, -wavelength / 2 )
+      .lineToRelative( period, wavelength )
+      .lineToRelative( period, -wavelength )
+      .lineToRelative( period, wavelength )
+      .lineToRelative( period, -wavelength )
+      .lineToRelative( period, wavelength )
+      .lineToRelative( period / 2, -wavelength / 2 )
+      .lineToRelative( stemWidth, 0 );
     FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, resistor, resistorImageNode,
-      new Path( resistorShape, { stroke: 'black', lineWidth: 10, scale: 0.5 } ), imageScale, tandem, options );
+      new Path( resistorShape, { stroke: 'black', lineWidth: 6 } ), imageScale, tandem, options );
     this.disposeResistorNode = function() {
       resistor.resistanceProperty.unlink( updateColorBands );
     };
