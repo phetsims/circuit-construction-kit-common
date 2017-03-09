@@ -83,6 +83,29 @@ define( function( require ) {
       lineCap: 'round'
     } );
 
+    var updateStroke = function() {
+
+      var view = circuitConstructionKitScreenView ? circuitConstructionKitScreenView.circuitConstructionKitModel.viewProperty.value : 'lifelike';
+      if ( view === 'lifelike' ) {
+
+        // normal angle
+        var endPoint = wire.endVertexProperty.value.positionProperty.value;
+        var directionForNormalLighting = new Vector2( 167.67173252279636, 72.6241134751773 ); // sampled manually
+        var deltaVector = endPoint.minus( wire.startVertexProperty.get().positionProperty.get() );
+        var dot = directionForNormalLighting.dot( deltaVector );
+        lineNode.stroke = dot < 0 ? reverseGradient : normalGradient;
+        lineNode.lineWidth = WIRE_LINE_WIDTH;
+      }
+      else {
+        lineNode.stroke = 'black';
+        lineNode.lineWidth = 6;
+      }
+    };
+
+    circuitConstructionKitScreenView && circuitConstructionKitScreenView.circuitConstructionKitModel.viewProperty.link( function( view ) {
+      updateStroke();
+    } );
+
     var lineNodeParent = new Node( {
       children: [ lineNode ]
     } );
@@ -140,11 +163,7 @@ define( function( require ) {
         highlightNode.shape = self.getHighlightStrokedShape( highlightStrokeStyles );
       }
 
-      // normal angle
-      var directionForNormalLighting = new Vector2( 167.67173252279636, 72.6241134751773 ); // sampled manually
-      var dot = directionForNormalLighting.dot( deltaVector );
-
-      lineNode.stroke = dot < 0 ? reverseGradient : normalGradient;
+      updateStroke();
     };
 
     var updateEndVertex = function( newEndVertex, oldEndVertex ) {
