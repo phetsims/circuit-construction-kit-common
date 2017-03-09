@@ -101,6 +101,7 @@ define( function( require ) {
             self,
             circuitElement,
             runningProperty,
+            circuitConstructionKitScreenView.circuitConstructionKitModel.viewProperty,
             groupTandem.createNextTandem()
           );
           nodeArray.push( circuitElementNode );

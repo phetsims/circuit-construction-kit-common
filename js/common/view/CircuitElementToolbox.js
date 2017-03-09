@@ -50,7 +50,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function CircuitElementToolbox( circuit, showLabelsProperty, circuitNode, tandem, options ) {
+  function CircuitElementToolbox( circuit, showLabelsProperty, viewProperty, circuitNode, tandem, options ) {
 
     options = _.extend( {
       orientation: 'vertical',
@@ -93,7 +93,7 @@ define( function( require ) {
       }
     );
 
-    var wireIcon = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, tandem.createTandem( 'wireIcon' ) );
+    var wireIcon = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, viewProperty, tandem.createTandem( 'wireIcon' ) );
     var wireToolNode = new CircuitElementToolNode( wireString, showLabelsProperty, circuitNode, wireIcon.mutate( {
         scale: TOOLBOX_ICON_SIZE / Math.max( wireIcon.width, wireIcon.height )
       } ), circuit, options.numberOfWires, function() {
@@ -121,7 +121,7 @@ define( function( require ) {
 
     var resistorIcon = new ResistorNode( null, null,
       new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ), CircuitConstructionKitConstants.DEFAULT_RESISTANCE ),
-      null, tandem.createTandem( 'resistorIcon' ), {
+      null, viewProperty, tandem.createTandem( 'resistorIcon' ), {
         icon: true
       }
     );
@@ -139,7 +139,7 @@ define( function( require ) {
       }
     );
 
-    var switchIcon = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, tandem.createTandem( 'switchIcon' ) );
+    var switchIcon = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, viewProperty, tandem.createTandem( 'switchIcon' ) );
     var switchToolNode = new CircuitElementToolNode( switchString, showLabelsProperty, circuitNode,
       switchIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( switchIcon.width, switchIcon.height ) } ),
       circuit, options.numberOfSwitches, function() {
@@ -168,7 +168,9 @@ define( function( require ) {
       orientation: options.orientation,
       spacing: CircuitConstructionKitConstants.TOOLBOX_ITEM_SPACING,
       children: children
-    } ), tandem );
+    } ), tandem, {
+      resize: false
+    } );
   }
 
   circuitConstructionKitCommon.register( 'CircuitElementToolbox', CircuitElementToolbox );

@@ -22,12 +22,12 @@ define( function( require ) {
    *
    * @constructor
    */
-  function BatteryNode( circuitConstructionKitScreenView, circuitNode, battery, runningProperty, tandem ) {
+  function BatteryNode( circuitConstructionKitScreenView, circuitNode, battery, runningProperty, viewProperty, tandem ) {
     this.battery = battery;
 
     // circuitConstructionKitScreenView, circuitNode, circuitElement, contentNode,
     // contentScale, tandem, options ) {
-    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, battery, new Image( batteryImage ), new Image( batteryImage ), 0.7, tandem );
+    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, battery, viewProperty, new Image( batteryImage ), new Image( batteryImage ), 0.7, tandem );
   }
 
   circuitConstructionKitCommon.register( 'BatteryNode', BatteryNode );

@@ -34,10 +34,11 @@ define( function( require ) {
    * @param {CircuitNode} circuitNode
    * @param {Wire} wire
    * @param {Property.<boolean>} runningProperty - to match the constructors of other circuit element nodes
+   * @param {Property.<string>} viewProperty - lifelike or schematic
    * @param {Tandem} tandem
    * @constructor
    */
-  function WireNode( circuitConstructionKitScreenView, circuitNode, wire, runningProperty, tandem ) {
+  function WireNode( circuitConstructionKitScreenView, circuitNode, wire, runningProperty, viewProperty, tandem ) {
     var self = this;
     this.wire = wire;
 
@@ -85,7 +86,7 @@ define( function( require ) {
 
     var updateStroke = function() {
 
-      var view = circuitConstructionKitScreenView ? circuitConstructionKitScreenView.circuitConstructionKitModel.viewProperty.value : 'lifelike';
+      var view = viewProperty.value;
       if ( view === 'lifelike' ) {
 
         // normal angle
@@ -102,9 +103,7 @@ define( function( require ) {
       }
     };
 
-    circuitConstructionKitScreenView && circuitConstructionKitScreenView.circuitConstructionKitModel.viewProperty.link( function( view ) {
-      updateStroke();
-    } );
+    viewProperty.link( updateStroke );
 
     var lineNodeParent = new Node( {
       children: [ lineNode ]

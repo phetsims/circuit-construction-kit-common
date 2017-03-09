@@ -43,19 +43,15 @@ define( function( require ) {
    * @param options
    * @constructor
    */
-  function FixedLengthCircuitElementNode( circuitConstructionKitScreenView, circuitNode, circuitElement, lifelikeNode,
-                                          schematicNode, contentScale, tandem, options ) {
+  function FixedLengthCircuitElementNode( circuitConstructionKitScreenView, circuitNode, circuitElement, viewProperty,
+                                          lifelikeNode, schematicNode, contentScale, tandem, options ) {
     var self = this;
 
     var contentNode = new Node();
 
-    circuitConstructionKitScreenView && circuitConstructionKitScreenView.circuitConstructionKitModel.viewProperty.link( function( view ) {
+    viewProperty.link( function( view ) {
       contentNode.children = [ view === 'lifelike' ? lifelikeNode : schematicNode ];
     } );
-
-    if ( !circuitConstructionKitScreenView ) {
-      contentNode.children = [ lifelikeNode ];
-    }
 
     // Capture the original dimensions of the content node, without the highlight node
     var contentNodeHeight = contentNode.height;

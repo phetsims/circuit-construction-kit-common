@@ -28,11 +28,12 @@ define( function( require ) {
    * @param {CircuitNode} [circuitNode] optional, null for icons
    * @param resistor
    * @param {Property.<boolean>} runningProperty - not used here but appears in signature to keep same signature as other components.
+   * @param {Property.<string>} viewProperty - lifelike or schematic
    * @param tandem
    * @param options
    * @constructor
    */
-  function ResistorNode( circuitConstructionKitScreenView, circuitNode, resistor, runningProperty, tandem, options ) {
+  function ResistorNode( circuitConstructionKitScreenView, circuitNode, resistor, runningProperty, viewProperty, tandem, options ) {
     this.resistor = resistor;
 
     var imageScale = 0.7;
@@ -84,7 +85,7 @@ define( function( require ) {
       .lineToRelative( period, wavelength )
       .lineToRelative( period / 2, -wavelength / 2 )
       .lineToRelative( stemWidth, 0 );
-    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, resistor, resistorImageNode,
+    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, resistor, viewProperty, resistorImageNode,
       new Path( resistorShape, { stroke: 'black', lineWidth: 6 } ), imageScale, tandem, options );
     this.disposeResistorNode = function() {
       resistor.resistanceProperty.unlink( updateColorBands );

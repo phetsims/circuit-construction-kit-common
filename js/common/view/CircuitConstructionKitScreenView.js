@@ -190,6 +190,7 @@ define( function( require ) {
     this.circuitElementToolbox = new CircuitElementToolbox(
       circuitConstructionKitModel.circuit,
       circuitConstructionKitModel.showLabelsProperty,
+      circuitConstructionKitModel.viewProperty,
       this.circuitNode,
       tandem.createTandem( 'circuitElementToolbox' ), {
         orientation: options.toolboxOrientation,

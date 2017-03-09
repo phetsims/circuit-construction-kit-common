@@ -24,6 +24,7 @@ define( function( require ) {
   var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/WireNode' );
   var CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CustomLightBulbNode' );
   var NumberProperty = require( 'AXON/NumberProperty' );
+  var Property = require( 'AXON/Property' );
 
   // images
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
@@ -41,7 +42,9 @@ define( function( require ) {
       fill: BACKGROUND_COLOR
     } );
 
-    var wireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, tandem.createTandem( 'wireIcon' ) );
+    var viewProperty = new Property( 'lifelike' );
+
+    var wireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, viewProperty, tandem.createTandem( 'wireIcon' ) );
     wireNode.accessibleContent = null; // icon should not have accessibel content
 
     var resistorNode = new ResistorNode(
@@ -49,6 +52,7 @@ define( function( require ) {
       null,
       new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ), CircuitConstructionKitConstants.DEFAULT_RESISTANCE ),
       null,
+      viewProperty,
       tandem.createTandem( 'resistorIcon' ), {
         icon: true
       } );
