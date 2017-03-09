@@ -57,11 +57,11 @@ define( function( require ) {
   // Center arrow so it is easy to rotate
   var arrowLength = 23;
   var arrowNode = new ArrowNode( -arrowLength / 2, 0, arrowLength / 2, 0, {
-    headHeight: 12,
-    headWidth: 14,
-    tailWidth: 7,
+    headHeight: 10,
+    headWidth: 12,
+    tailWidth: 3,
     fill: 'red',
-    stroke: 'black'
+    stroke: 'white'
   } );
 
   function ElectronNode( electron, revealingProperty ) {
