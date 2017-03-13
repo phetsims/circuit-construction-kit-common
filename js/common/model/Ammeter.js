@@ -15,10 +15,10 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var Meter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Meter' );
   var Property = require( 'AXON/Property' );
+  var TVector2 = require( 'DOT/TVector2' );
 
   // phet-io modules
   var TNumber = require( 'ifphetio!PHET_IO/types/TNumber' );
-  var TVector2 = require( 'ifphetio!PHET_IO/types/dot/TVector2' );
 
   /**
    * @param {Tandem} tandem
