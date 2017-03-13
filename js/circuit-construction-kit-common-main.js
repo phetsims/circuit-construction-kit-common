@@ -14,9 +14,6 @@ define( function( require ) {
   var SimLauncher = require( 'JOIST/SimLauncher' );
   var Tandem = require( 'TANDEM/Tandem' );
 
-  // If running as phet-io, load the API
-  require( 'ifphetio!PHET_IO/simulations/circuit-construction-kit-black-box-study/circuit-construction-kit-api' );
-
   // constants
   var TANDEM = Tandem.createRootTandem();
 
