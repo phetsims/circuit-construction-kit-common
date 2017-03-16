@@ -20,7 +20,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
 
   // images
-  var resistorImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor.png' );
+  var lifelikeResistorImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor.png' );
 
   /**
    *
@@ -37,7 +37,7 @@ define( function( require ) {
     this.resistor = resistor;
 
     var imageScale = 0.7;
-    var resistorImageNode = new Image( resistorImage );
+    var resistorImageNode = new Image( lifelikeResistorImage );
 
     var imageWidth = resistorImageNode.imageWidth / imageScale;
     var bandWidth = 10;
@@ -85,8 +85,20 @@ define( function( require ) {
       .lineToRelative( period, wavelength )
       .lineToRelative( period / 2, -wavelength / 2 )
       .lineToRelative( stemWidth, 0 );
-    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, resistor, viewProperty, resistorImageNode,
-      new Path( resistorShape, { stroke: 'black', lineWidth: 6 } ), imageScale, tandem, options );
+
+    // Super call
+    FixedLengthCircuitElementNode.call( this,
+      circuitConstructionKitScreenView,
+      circuitNode,
+      resistor,
+      viewProperty,
+      resistorImageNode,
+      new Path( resistorShape, { stroke: 'black', lineWidth: 6 } ),
+      imageScale,
+      tandem,
+      options
+    );
+
     this.disposeResistorNode = function() {
       resistor.resistanceProperty.unlink( updateColorBands );
     };
