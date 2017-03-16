@@ -85,6 +85,7 @@ define( function( require ) {
       .lineToRelative( period, wavelength )
       .lineToRelative( period / 2, -wavelength / 2 )
       .lineToRelative( stemWidth, 0 );
+    var schematicPathNode = new Path( resistorShape, { stroke: 'black', lineWidth: 6 } );
 
     // Super call
     FixedLengthCircuitElementNode.call( this,
@@ -93,7 +94,7 @@ define( function( require ) {
       resistor,
       viewProperty,
       resistorImageNode,
-      new Path( resistorShape, { stroke: 'black', lineWidth: 6 } ),
+      schematicPathNode,
       imageScale,
       tandem,
       options
