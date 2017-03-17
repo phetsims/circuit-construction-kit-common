@@ -33,6 +33,7 @@ define( function( require ) {
   var ViewRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ViewRadioButtonGroup' );
   var ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ZoomControlPanel' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
+  var WireResistivityControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/WireResistivityControl' );
 
   // constants
   var LAYOUT_INSET = CircuitConstructionKitConstants.LAYOUT_INSET;
@@ -229,6 +230,8 @@ define( function( require ) {
 
     CircuitConstructionKitQueryParameters.showControlPanel && this.addChild( this.displayOptionsPanel );
 
+    this.wireResistivityControl = new WireResistivityControl( circuitConstructionKitModel.wireResistivityProperty, tandem.createTandem( 'wireResistivityControl' ) );
+
     this.displayOptionsPanel.moveToBack(); // Move behind elements added in the super, such as the sensors and circuit
     this.moveBackgroundToBack();
 
@@ -237,6 +240,7 @@ define( function( require ) {
     this.addChild( this.sensorToolbox );
     this.addChild( this.viewRadioButtonGroup );
     this.addChild( this.circuitNode );
+    this.addChild( this.wireResistivityControl );
 
     var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel(
       circuitConstructionKitModel.circuit,
@@ -362,6 +366,9 @@ define( function( require ) {
 
       zoomControlPanel.bottom = visibleBounds.bottom - LAYOUT_INSET;
       zoomControlPanel.left = self.circuitElementToolbox.left;
+
+      self.wireResistivityControl.top = self.viewRadioButtonGroup.bottom + 10;
+      self.wireResistivityControl.right = visibleBounds.right - LAYOUT_INSET;
     } );
 
     // Center the circuit node so that zooms will remain centered.
