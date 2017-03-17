@@ -15,25 +15,47 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var HSlider = require( 'SUN/HSlider' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var Node = require( 'SCENERY/nodes/Node' );
+  var HBox = require( 'SCENERY/nodes/HBox' );
+  var HStrut = require( 'SCENERY/nodes/HStrut' );
 
   /**
    * @constructor
    */
   function WireResistivityControl( wireResistivityProperty, tandem ) {
+    var max = CircuitConstructionKitConstants.DEFAULT_RESISTIVITY * 10000 / 2;
     var slider = new HSlider( wireResistivityProperty, {
       min: CircuitConstructionKitConstants.DEFAULT_RESISTIVITY,
-      max: CircuitConstructionKitConstants.DEFAULT_RESISTIVITY * 10000 / 2 // large enough so that max resistance in a 9v battery slows to a good rate
+      max: max // large enough so that max resistance in a 9v battery slows to a good rate
     } );
-    slider.addMajorTick( 0, new Text( 'very little', {
-      fontSize: 12
-    } ) );
-    slider.addMajorTick( 100, new Text( 'lots', {
-      fontSize: 12
-    } ) );
+    var createText = function( string, visible ) {
+      return new Text( string, {
+        fontSize: 12,
+        visible: visible
+      } );
+    };
+
+    var createLabel = function( min ) {
+      return new Node( {
+        children: min ? [ createText( 'very little', true ) ] : [ createText( 'lots', true ) ]
+      } );
+    };
+    slider.addMajorTick( 0, createLabel( true ) );
+    slider.addMajorTick( max, createLabel( false ) );
     AccordionBox.call( this, slider, {
-      titleNode: new Text( 'Wire Resistivity', {
-        fontSize: 16,
-        titleXSpacing: 14
+      fill: '#f1f1f2',
+      cornerRadius: 10,
+      titleXMargin: 10,
+      buttonXMargin: 10,
+      titleYMargin: 4,
+      titleXSpacing: 14,
+      titleNode: new HBox( {
+        children: [
+          new HStrut( 10 ),
+          new Text( 'Wire Resistivity', {
+            fontSize: 16
+          } )
+        ]
       } )
     } );
   }
