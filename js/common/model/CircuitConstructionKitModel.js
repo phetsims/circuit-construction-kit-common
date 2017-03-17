@@ -19,11 +19,9 @@ define( function( require ) {
   var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
   var TandemEmitter = require( 'TANDEM/axon/TandemEmitter' );
   var EaseAnimation = require( 'TWIXT/EaseAnimation' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   // phet-io modules
   var TString = require( 'ifphetio!PHET_IO/types/TString' );
-  var TNumber = require( 'ifphetio!PHET_IO/types/TNumber' );
 
   // constants
   var ZOOM_ANIMATION_TIME = 0.35; // seconds
@@ -91,11 +89,6 @@ define( function( require ) {
       validValues: [ 'lifelike', 'schematic' ],
       tandem: tandem.createTandem( 'viewProperty' ),
       phetioValueType: TString
-    } );
-
-    this.wireResistivityProperty = new Property( CircuitConstructionKitConstants.DEFAULT_RESISTIVITY, {
-      tandem: tandem.createTandem( 'wireResistivityProperty' ),
-      phetioValueType: TNumber
     } );
 
     // When the user manipulates something, hide the readouts, see https://github.com/phetsims/circuit-construction-kit/issues/130

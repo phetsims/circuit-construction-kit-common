@@ -27,9 +27,11 @@ define( function( require ) {
   var ElectronPropagator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/ElectronPropagator' );
   var Vector2 = require( 'DOT/Vector2' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/FixedLengthCircuitElement' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   // phet-io modules
   var TString = require( 'ifphetio!PHET_IO/types/TString' );
+  var TNumber = require( 'ifphetio!PHET_IO/types/TNumber' );
 
   // constants
   var SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
@@ -42,6 +44,11 @@ define( function( require ) {
    */
   function Circuit( tandem ) {
     var self = this;
+
+    this.wireResistivityProperty = new Property( CircuitConstructionKitConstants.DEFAULT_RESISTIVITY, {
+      tandem: tandem.createTandem( 'wireResistivityProperty' ),
+      phetioValueType: TNumber
+    } );
 
     // @public - The different types of CircuitElement the circuit may contain, including Wire, Battery, Switch, Resistor,
     // LightBulb.

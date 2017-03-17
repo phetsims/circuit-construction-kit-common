@@ -49,7 +49,7 @@ define( function( require ) {
         .concat( this.resistors );
     }
   }, {
-    fromStateObject: function( circuitState ) { // TODO: Tandem - Pass tandems through
+    fromStateObject: function( circuitState, resistivityProperty ) { // TODO: Tandem - Pass tandems through
       var circuitStruct = new CircuitStruct( [], [], [], [], [], [] );
       var options = null;
       for ( var i = 0; i < circuitState.vertices.length; i++ ) {
@@ -61,7 +61,7 @@ define( function( require ) {
         circuitStruct.wires.push( new Wire(
           circuitStruct.vertices[ circuitState.wires[ i ].startVertex ],
           circuitStruct.vertices[ circuitState.wires[ i ].endVertex ],
-          circuitState.wires[ i ].resistivity,
+          resistivityProperty,
           options
         ) );
       }

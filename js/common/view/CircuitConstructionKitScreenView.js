@@ -230,7 +230,7 @@ define( function( require ) {
 
     CircuitConstructionKitQueryParameters.showControlPanel && this.addChild( this.displayOptionsPanel );
 
-    this.wireResistivityControl = new WireResistivityControl( circuitConstructionKitModel.wireResistivityProperty, tandem.createTandem( 'wireResistivityControl' ) );
+    this.wireResistivityControl = new WireResistivityControl( circuitConstructionKitModel.circuit.wireResistivityProperty, tandem.createTandem( 'wireResistivityControl' ) );
 
     this.displayOptionsPanel.moveToBack(); // Move behind elements added in the super, such as the sensors and circuit
     this.moveBackgroundToBack();

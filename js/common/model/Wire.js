@@ -23,13 +23,12 @@ define( function( require ) {
    * Wire main constructor
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
-   * @param {Number} resistivity
+   * @param {Property.<number>} resistivityProperty
    * @param {Object} [options]
    * @constructor
    */
-  function Wire( startVertex, endVertex, resistivity, options ) {
-    assert && assert( typeof resistivity === 'number' && resistivity >= 0, 'bad value for resistivity: ' + resistivity );
-
+  function Wire( startVertex, endVertex, resistivityProperty, options ) {
+    assert && assert( typeof resistivityProperty !== 'number', 'property should not be a number' );
     options = _.extend( { wireStub: false }, options );
     var self = this;
     var electronPathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
@@ -43,7 +42,7 @@ define( function( require ) {
 
     // @public (read-only) - the resistivity of the Wire in ohm-meters
     // TODO: when the resistivity changes, update the resistance
-    this.resistivityProperty = new NumberProperty( resistivity );
+    this.resistivityProperty = resistivityProperty;
 
     /**
      * When the vertex moves, updates the resistance and electron path length.
@@ -65,6 +64,10 @@ define( function( require ) {
 
     // Update the resistance and electron path length on startup
     vertexMovedListener();
+
+    this.resistivityProperty.link( function() {
+      vertexMovedListener();
+    } );
 
     this.disposeWire = function() {
       assert && assert( !self.disposed, 'Was already disposed' );

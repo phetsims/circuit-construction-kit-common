@@ -44,7 +44,7 @@ define( function( require ) {
 
     var viewProperty = new Property( 'lifelike' );
 
-    var wireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, viewProperty, tandem.createTandem( 'wireIcon' ) );
+    var wireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ) ), null, viewProperty, tandem.createTandem( 'wireIcon' ) );
     wireNode.accessibleContent = null; // icon should not have accessibel content
 
     var resistorNode = new ResistorNode(

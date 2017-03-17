@@ -14,14 +14,15 @@ define( function( require ) {
   var AccordionBox = require( 'SUN/AccordionBox' );
   var Text = require( 'SCENERY/nodes/Text' );
   var HSlider = require( 'SUN/HSlider' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   /**
    * @constructor
    */
   function WireResistivityControl( wireResistivityProperty, tandem ) {
     var slider = new HSlider( wireResistivityProperty, {
-      min: 0,
-      max: 100
+      min: CircuitConstructionKitConstants.DEFAULT_RESISTIVITY,
+      max: CircuitConstructionKitConstants.DEFAULT_RESISTIVITY * 10000 / 2 // large enough so that max resistance in a 9v battery slows to a good rate
     } );
     slider.addMajorTick( 0, new Text( 'very little', {
       fontSize: 12

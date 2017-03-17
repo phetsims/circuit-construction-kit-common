@@ -27,6 +27,7 @@ define( function( require ) {
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
   var CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CustomLightBulbNode' );
   var CircuitElementToolNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitElementToolNode' );
+  var Property = require( 'AXON/Property' );
 
   // strings
   var resistorString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor' );
@@ -94,7 +95,7 @@ define( function( require ) {
       }
     );
 
-    var wireIcon = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, viewProperty, tandem.createTandem( 'wireIcon' ) );
+    var wireIcon = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ) ), null, viewProperty, tandem.createTandem( 'wireIcon' ) );
     var wireToolNode = new CircuitElementToolNode( wireString, showLabelsProperty, circuitNode, wireIcon.mutate( {
         scale: TOOLBOX_ICON_SIZE / Math.max( wireIcon.width, wireIcon.height )
       } ), circuit, options.numberOfWires, function() {
@@ -104,7 +105,7 @@ define( function( require ) {
       }, function( position ) {
         var startVertex = createVertex( position.x - 50, position.y );
         var endVertex = createVertex( position.x + 50, position.y );
-        return new Wire( startVertex, endVertex, CircuitConstructionKitConstants.DEFAULT_RESISTIVITY );
+      return new Wire( startVertex, endVertex, circuit.wireResistivityProperty );
       }
     );
 
@@ -140,7 +141,7 @@ define( function( require ) {
       }
     );
 
-    var switchIcon = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), 0 ), null, viewProperty, tandem.createTandem( 'switchIcon' ) );
+    var switchIcon = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ) ), null, viewProperty, tandem.createTandem( 'switchIcon' ) );
     var switchToolNode = new CircuitElementToolNode( switchString, showLabelsProperty, circuitNode,
       switchIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( switchIcon.width, switchIcon.height ) } ),
       circuit, options.numberOfSwitches, function() {
