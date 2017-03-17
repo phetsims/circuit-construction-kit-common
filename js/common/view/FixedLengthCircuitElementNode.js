@@ -46,9 +46,10 @@ define( function( require ) {
     var self = this;
 
     var contentNode = new Node();
-
+    contentNode.children = [ lifelikeNode, schematicNode ];
     viewProperty.link( function( view ) {
-      contentNode.children = [ view === 'lifelike' ? lifelikeNode : schematicNode ];
+      lifelikeNode.visible = view === 'lifelike';
+      schematicNode.visible = view !== 'lifelike';
     } );
 
     // Capture the original dimensions of the content node, without the highlight node
@@ -60,6 +61,7 @@ define( function( require ) {
     var scratchMatrix2 = new Matrix3();
     options = _.extend( {
       icon: false,
+      verticalOffset: 0,
       updateLayout: function( startPosition, endPosition ) {
         var delta = endPosition.minus( startPosition );
         var angle = delta.angle();
@@ -68,7 +70,7 @@ define( function( require ) {
         scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
           .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
           .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) )
-          .multiplyMatrix( scratchMatrix2.setToTranslation( 0, -contentNodeHeight / 2 ) );
+          .multiplyMatrix( scratchMatrix2.setToTranslation( 0, -contentNodeHeight / 2 + options.verticalOffset ) );
         contentNode.setMatrix( scratchMatrix );
         highlightNode && highlightParent.setMatrix( scratchMatrix.copy() );
 

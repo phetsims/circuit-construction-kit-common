@@ -45,6 +45,7 @@ define( function( require ) {
   /**
    * @param {Circuit} circuit
    * @param {Property.<boolean>} showLabelsProperty
+   * @param {Property.<string} viewProperty
    * @param {CircuitNode} circuitNode
    * @param {Tandem} tandem
    * @param {Object} [options]
@@ -167,7 +168,8 @@ define( function( require ) {
     CircuitConstructionKitPanel.call( this, new LayoutBox( {
       orientation: options.orientation,
       spacing: CircuitConstructionKitConstants.TOOLBOX_ITEM_SPACING,
-      children: children
+      children: children,
+      resize: false
     } ), tandem, {
       resize: false
     } );

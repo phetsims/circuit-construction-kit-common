@@ -30,7 +30,11 @@ define( function( require ) {
 
     // Points sampled using Photoshop from a raster of the IEEE icon seen at https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
     var batteryImageNode = new Image( batteryImage );
-    var y = batteryImageNode.height + 6;
+
+    // Align vertically
+    var y = batteryImageNode.height / 2 + 7;
+
+    // Offset at left vertex
     var x = -47;
     var schematicShape = new Shape()
       .moveTo( 47 + x, y )
@@ -44,6 +48,8 @@ define( function( require ) {
     var width = schematicShape.bounds.width;
     var desiredWidth = batteryImageNode.width;
     var scale = desiredWidth / width;
+
+    // Scale to fit the correct width
     var scaleMatrix = Matrix3.scale( scale, scale );
     schematicShape = schematicShape.transformed( scaleMatrix );
     var plusShape = new Shape().moveTo( 191 + x, 64 - 99 + y ).lineTo( 191 + x, 81 - 99 + y ).moveTo( 178 + x, 73 - 99 + y ).lineTo( 203 + x, 73 - 99 + y );
@@ -66,7 +72,9 @@ define( function( require ) {
       batteryImageNode,
       schematicNode,
       0.7,
-      tandem
+      tandem, {
+        verticalOffset: 15
+      }
     );
   }
 
