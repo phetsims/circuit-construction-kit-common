@@ -146,7 +146,7 @@ define( function( require ) {
           var pt = self.globalToParentPoint( event.pointer.point );
           pt = options.visibleBoundsProperty.value.eroded( CircuitConstructionKitConstants.DRAG_BOUNDS_EROSION ).closestPointTo( pt );
           voltmeter.blackProbePositionProperty.set( pt );
-        },
+        }
       } );
       this.blackProbeNode.addInputListener( blackProbeDragHandler );
     }
