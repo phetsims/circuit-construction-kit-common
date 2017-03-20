@@ -39,7 +39,7 @@ define( function( require ) {
     this.circuitElement = circuitElement;
 
     // keyboard listener so that delete or backspace deletes the element - must be disposed
-    var keyListener = {
+    var keyListener = this.addAccessibleInputListener( {
       keydown: function( event ) {
         var code = event.keyCode || event.which;
         // on delete or backspace, the focused circuit element should be deleted
@@ -47,8 +47,7 @@ define( function( require ) {
           circuit.remove( circuitElement );
         }
       }
-    };
-    this.addAccessibleInputListener( keyListener );
+    } );
 
     // @private
     this.disposeActions = [];
