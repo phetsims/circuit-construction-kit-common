@@ -259,11 +259,20 @@ define( function( require ) {
     this.circuitNode.addChild( voltmeterNode );
     this.circuitNode.addChild( ammeterNode );
 
+    /**
+     * Starting at the tip, iterate down over several samples and return the first hit, if any.
+     * @param {Node} probeNode
+     * @param {Vector2} probePosition
+     */
+    var findVoltageConnection = function( probeNode, probePosition ) {
+      return self.getVoltageConnection( probeNode, voltmeterNode.voltmeter.redProbePositionProperty.get() );
+    };
+
     // Detection for voltmeter probe + circuit collision is done in the view since view bounds are used
     var updateVoltmeter = function() {
       if ( circuitConstructionKitModel.voltmeter.visibleProperty.get() ) {
-        var redConnection = self.getVoltageConnection( voltmeterNode.redProbeNode, voltmeterNode.voltmeter.redProbePositionProperty.get() );
-        var blackConnection = self.getVoltageConnection( voltmeterNode.blackProbeNode, voltmeterNode.voltmeter.blackProbePositionProperty.get() );
+        var redConnection = findVoltageConnection( voltmeterNode.redProbeNode, voltmeterNode.voltmeter.redProbePositionProperty.get() );
+        var blackConnection = findVoltageConnection( voltmeterNode.blackProbeNode, voltmeterNode.voltmeter.blackProbePositionProperty.get() );
         if ( redConnection === null || blackConnection === null ) {
           circuitConstructionKitModel.voltmeter.voltageProperty.set( null );
         }
