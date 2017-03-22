@@ -26,7 +26,7 @@ define( function( require ) {
   var MIN_CURRENT = Math.pow( 10, -10 );
 
   // The furthest an electron can step in one frame before the time scale must be reduced (to prevent a strobe effect)
-  var MAX_POSITION_CHANGE = CircuitConstructionKitConstants.ELECTRON_SEPARATION * 0.43;
+  var MAX_POSITION_CHANGE = CircuitConstructionKitConstants.CHARGE_SEPARATION * 0.43;
 
   // Number of times to spread out electrons so they don't get bunched up.
   var NUMBER_OF_EQUALIZE_STEPS = 2;

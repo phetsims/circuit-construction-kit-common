@@ -46,13 +46,13 @@ define( function( require ) {
       this.circuit.electrons.removeAll( particlesToRemove );
 
       // compress or expand, but fix a particle at startingPoint and endingPoint.
-      var offset = CircuitConstructionKitConstants.ELECTRON_SEPARATION / 2;
+      var offset = CircuitConstructionKitConstants.CHARGE_SEPARATION / 2;
 
       var endingPoint = circuitElement.electronPathLength - offset;
       var startingPoint = offset;
       var length = endingPoint - startingPoint;
 
-      var numberOfParticles = Math.ceil( length / CircuitConstructionKitConstants.ELECTRON_SEPARATION );
+      var numberOfParticles = Math.ceil( length / CircuitConstructionKitConstants.CHARGE_SEPARATION );
       var density = ( numberOfParticles - 1) / length;  // TODO: why is this subtracting 1?
       var dx = 1 / density;
 

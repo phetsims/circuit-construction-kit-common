@@ -57,7 +57,7 @@ define( function( require ) {
     DRAG_BOUNDS_EROSION: 20,
 
     // Distance between adjacent electrons for electron layout
-    ELECTRON_SEPARATION: 28,
+    CHARGE_SEPARATION: 28,
 
     // Color of the background
     BACKGROUND_COLOR: new Color( '#c6dbf9' ),
