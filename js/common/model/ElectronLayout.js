@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Electron = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Electron' );
+  var Charge = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Charge' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   /**
@@ -62,7 +62,7 @@ define( function( require ) {
         offset = (startingPoint + endingPoint) / 2;
       }
       for ( var i = 0; i < numberOfParticles; i++ ) {
-        this.circuit.electrons.add( new Electron( circuitElement, i * dx + offset, this.circuit.showCurrentProperty, this.circuit.currentTypeProperty.get() === 'electrons' ? -1 : +1 ) );
+        this.circuit.electrons.add( new Charge( circuitElement, i * dx + offset, this.circuit.showCurrentProperty, this.circuit.currentTypeProperty.get() === 'electrons' ? -1 : +1 ) );
       }
 
       circuitElement.electronLayoutDirty = false;

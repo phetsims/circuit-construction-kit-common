@@ -1,7 +1,7 @@
 // Copyright 2016, University of Colorado Boulder
 
 /**
- * The model for a single blue electron that moves along a circuit element, depicted as a colored sphere.
+ * The model for a single blue charge that moves along a circuit element, depicted as a colored sphere.
  * TODO: Rename charge
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -18,13 +18,13 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   /**
-   * @param {CircuitElement} circuitElement - the circuit element the electron is in.
+   * @param {CircuitElement} circuitElement - the circuit element the charge is in.
    * @param {number} distance - how far along the circuit element it has traveled (in screen coordinates)
-   * @param {Property.<boolean>} visibleProperty - whether the electron should be shown.
+   * @param {Property.<boolean>} visibleProperty - whether the charge should be shown.
    * @param {number} charge - +1 for conventional current and -1 for electrons
    * @constructor
    */
-  function Electron( circuitElement, distance, visibleProperty, charge ) {
+  function Charge( circuitElement, distance, visibleProperty, charge ) {
 
     assert && assert( charge === 1 || charge === -1, 'charge should be 1 or -1' );
 
@@ -33,32 +33,32 @@ define( function( require ) {
 
     // Validate inputs
     assert && assert( _.isNumber( distance ), 'distance should be a number' );
-    assert && assert( distance >= 0, 'electron was below the origin of the circuit element' );
-    assert && assert( circuitElement.containsScalarLocation( distance ), 'electron was not within the circuit element' );
+    assert && assert( distance >= 0, 'charge was below the origin of the circuit element' );
+    assert && assert( circuitElement.containsScalarLocation( distance ), 'charge was not within the circuit element' );
 
     var self = this;
 
-    // @public (read-only), the CircuitElement the Electron is in
+    // @public (read-only), the CircuitElement the Charge is in
     this.circuitElement = circuitElement;
 
-    // @private - whether the electron has been disposed to aid in debugging
+    // @private - whether the charge has been disposed to aid in debugging
     this.deleted = false;
 
-    // @public - the distance the electron has traveled in its CircuitElement
+    // @public - the distance the charge has traveled in its CircuitElement
     this.distanceProperty = new NumberProperty( distance );
 
-    // @public (read-only) - To improve performance, disable updating while the position of the electron is changed many
+    // @public (read-only) - To improve performance, disable updating while the position of the charge is changed many
     // times during the update step.  TODO: use temporary values for this instead
     this.updatingPositionProperty = new BooleanProperty( true );
 
-    // @public the 2d position of the electron
+    // @public the 2d position of the charge
     this.positionProperty = new Property( new Vector2() );
 
-    // When the distance or updating properties change, update the 2d position of the electron
+    // When the distance or updating properties change, update the 2d position of the charge
     var multilink = Property.multilink( [ this.distanceProperty, this.updatingPositionProperty ], function( distance, updating ) {
       if ( updating ) {
-        assert && assert( !self.deleted, 'Electron was deleted' );
-        assert && assert( !isNaN( distance ), 'electron position was not a number' );
+        assert && assert( !self.deleted, 'Charge was deleted' );
+        assert && assert( !isNaN( distance ), 'charge position was not a number' );
         var positionAndAngle = self.circuitElement.getPositionAndAngle( distance );
         var position = positionAndAngle.position;
         // TODO: may need a workaround like this if two vertices of one wire accidentally lie on top of each other
@@ -73,13 +73,13 @@ define( function( require ) {
       }
     } );
 
-    // @public (read-only) whether the electron should be displayed
+    // @public (read-only) whether the charge should be displayed
     this.visibleProperty = visibleProperty;
 
-    // @public (read-only) send notifications when the electron is disposed, so the view can be disposed.
+    // @public (read-only) send notifications when the charge is disposed, so the view can be disposed.
     this.disposeEmitter = new Emitter();
 
-    this.disposeElectron = function() {
+    this.disposeCharge = function() {
 
       assert && assert( !self.deleted, 'cannot delete twice' );
       multilink.dispose();
@@ -89,20 +89,20 @@ define( function( require ) {
     };
   }
 
-  circuitConstructionKitCommon.register( 'Electron', Electron );
+  circuitConstructionKitCommon.register( 'Charge', Charge );
 
-  return inherit( Object, Electron, {
+  return inherit( Object, Charge, {
 
     /**
-     * Dispose the electron when it will never be used again.
+     * Dispose the charge when it will never be used again.
      */
     dispose: function() {
-      this.disposeElectron();
+      this.disposeCharge();
     },
 
     /**
-     * Set the Electron to be in a new place in the circuit.
-     * @param {CircuitElement} circuitElement - the new CircuitElement the electron will be in.
+     * Set the Charge to be in a new place in the circuit.
+     * @param {CircuitElement} circuitElement - the new CircuitElement the charge will be in.
      * @param {number} distance - the position within the new CircuitElement
      */
     setLocation: function( circuitElement, distance ) {
