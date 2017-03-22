@@ -205,11 +205,14 @@ define( function( require ) {
 
       var proposedPosition = position.plus( sumOfDirections.normalized().timesScalar( DISTANCE_TO_CUT_BUTTON ) );
 
-      var bounds = circuitNode.visibleBoundsInCircuitCoordinateFrameProperty.get();
+      // Property doesn't exist until the node is attached to scene graph
+      if ( circuitNode.visibleBoundsInCircuitCoordinateFrameProperty ) {
+        var bounds = circuitNode.visibleBoundsInCircuitCoordinateFrameProperty.get();
 
-      var availableBounds = bounds.eroded( cutButton.width / 2 );
-      var closestPoint = availableBounds.closestPointTo( proposedPosition );
-      cutButton.center = closestPoint;
+        var availableBounds = bounds.eroded( cutButton.width / 2 );
+        var closestPoint = availableBounds.closestPointTo( proposedPosition );
+        cutButton.center = closestPoint;
+      }
     };
     var updateVertexNodePosition = function( position ) {
       dottedLineNode.center = position;
