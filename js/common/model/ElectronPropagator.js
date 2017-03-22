@@ -51,7 +51,7 @@ define( function( require ) {
   };
 
   function ElectronPropagator( circuit ) {
-    this.electrons = circuit.electrons;
+    this.charges = circuit.charges;
     this.circuit = circuit;
     this.scale = 1;
     this.timeScaleRunningAverage = new RunningAverage( 30 );
@@ -66,8 +66,8 @@ define( function( require ) {
 
       // Disable incremental updates to improve performance.  The ElectronNodes are only updated once, instead of
       // incrementally many times throughout this update
-      for ( var k = 0; k < this.electrons.length; k++ ) {
-        this.electrons.get( k ).updatingPositionProperty.set( false );
+      for ( var k = 0; k < this.charges.length; k++ ) {
+        this.charges.get( k ).updatingPositionProperty.set( false );
       }
 
       // dt would ideally be around 16.666ms = 0.0166 sec.  Cap it to avoid too large of an integration step.
@@ -84,8 +84,8 @@ define( function( require ) {
       this.timeScalingPercentValue = this.timeScaleRunningAverage.updateRunningAverage( this.scale );
 
       this.timeScaleProperty.set( this.timeScalingPercentValue );
-      for ( var i = 0; i < this.electrons.length; i++ ) {
-        var electron = this.electrons.get( i );
+      for ( var i = 0; i < this.charges.length; i++ ) {
+        var electron = this.charges.get( i );
 
         // Don't update electrons in electronLayoutDirty circuit elements, because they will get a relayout anyways
         if ( !electron.circuitElement.electronLayoutDirty ) {
@@ -99,8 +99,8 @@ define( function( require ) {
       }
 
       // After computing the new electron positions (possibly across several deltas), trigger the views to update.
-      for ( k = 0; k < this.electrons.length; k++ ) {
-        this.electrons.get( k ).updatingPositionProperty.set( true );
+      for ( k = 0; k < this.charges.length; k++ ) {
+        this.charges.get( k ).updatingPositionProperty.set( true );
       }
     },
 
@@ -123,12 +123,12 @@ define( function( require ) {
      */
     equalizeAll: function( dt ) {
       var indices = [];
-      for ( var i = 0; i < this.electrons.length; i++ ) {
+      for ( var i = 0; i < this.charges.length; i++ ) {
         indices.push( i );
       }
       _.shuffle( indices ); // TODO: This won't be re-seedable
-      for ( i = 0; i < this.electrons.length; i++ ) {
-        var electron = this.electrons.get( indices[ i ] );
+      for ( i = 0; i < this.charges.length; i++ ) {
+        var electron = this.charges.get( indices[ i ] );
 
         // No need to update electrons in electronLayoutDirty circuit elements, they will be replaced anyways.  Skipping electronLayoutDirty
         // circuitElements improves performance

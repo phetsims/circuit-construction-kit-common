@@ -43,7 +43,7 @@ define( function( require ) {
       // TODO: a performance improvement could be to adjust them instead of delete/recreate. This could particularly
       // help when dragging a wire, and the electrons are continually re-layed-out.
       var particlesToRemove = this.circuit.getElectronsInCircuitElement( circuitElement );
-      this.circuit.electrons.removeAll( particlesToRemove );
+      this.circuit.charges.removeAll( particlesToRemove );
 
       // compress or expand, but fix a particle at startingPoint and endingPoint.
       var offset = CircuitConstructionKitConstants.CHARGE_SEPARATION / 2;
@@ -62,7 +62,7 @@ define( function( require ) {
         offset = (startingPoint + endingPoint) / 2;
       }
       for ( var i = 0; i < numberOfParticles; i++ ) {
-        this.circuit.electrons.add( new Charge( circuitElement, i * dx + offset, this.circuit.showCurrentProperty, this.circuit.currentTypeProperty.get() === 'electrons' ? -1 : +1 ) );
+        this.circuit.charges.add( new Charge( circuitElement, i * dx + offset, this.circuit.showCurrentProperty, this.circuit.currentTypeProperty.get() === 'electrons' ? -1 : +1 ) );
       }
 
       circuitElement.electronLayoutDirty = false;

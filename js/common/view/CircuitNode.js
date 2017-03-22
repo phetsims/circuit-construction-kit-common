@@ -185,7 +185,7 @@ define( function( require ) {
       }
     } );
 
-    circuit.electrons.addItemAddedListener( function( electron ) {
+    circuit.charges.addItemAddedListener( function( electron ) {
       var electronNode = new ElectronNode(
         electron,
         circuitConstructionKitScreenView.circuitConstructionKitModel.revealingProperty || new BooleanProperty( true )

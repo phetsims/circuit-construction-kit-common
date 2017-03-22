@@ -60,8 +60,8 @@ define( function( require ) {
     // @public (read-only)
     this.vertices = new ObservableArray();
 
-    // @public (read-only) - the electrons in the circuit
-    this.electrons = new ObservableArray();
+    // @public (read-only) - the charges in the circuit
+    this.charges = new ObservableArray();
 
     // @public (read-only) - whether to show electrons or conventional currentt
     var currentTypes = [ 'electrons', 'conventional' ];
@@ -135,12 +135,12 @@ define( function( require ) {
       self.solve();
     } );
     this.circuitElements.addItemRemovedListener( function( circuitElement ) {
-      self.electrons.removeAll( self.getElectronsInCircuitElement( circuitElement ) );
+      self.charges.removeAll( self.getElectronsInCircuitElement( circuitElement ) );
       self.solve(); // Explicit call to solve since it is possible to remove a CircuitElement without removing any vertices.
     } );
 
     // When electron is removed from the list, dispose it
-    this.electrons.addItemRemovedListener( function( electron ) {
+    this.charges.addItemRemovedListener( function( electron ) {
       electron.dispose();
     } );
 
@@ -719,7 +719,7 @@ define( function( require ) {
      * @public
      */
     getElectronsInCircuitElement: function( circuitElement ) {
-      return this.electrons.getArray().filter( function( electron ) { return electron.circuitElement === circuitElement; } );
+      return this.charges.getArray().filter( function( electron ) { return electron.circuitElement === circuitElement; } );
     },
 
     /**
