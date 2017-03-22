@@ -188,6 +188,8 @@ define( function( require ) {
             var delayMS = Math.max( 500 - lifetime, 0 );
 
             // If over the toolbox, then drop into it, and don't process further
+            contentNode.removeInputListener( self.inputListener );
+
             setTimeout( function() {
               circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
             }, delayMS );

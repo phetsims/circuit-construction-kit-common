@@ -204,6 +204,9 @@ define( function( require ) {
             var lifetime = phet.joist.elapsedTime - creationTime;
             var delayMS = Math.max( 500 - lifetime, 0 );
 
+            // Disallow further interaction
+            self.removeInputListener( self.inputListener );
+
             // If over the toolbox, then drop into it, and don't process further
             setTimeout( function() {
               circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
