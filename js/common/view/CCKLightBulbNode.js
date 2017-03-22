@@ -18,6 +18,7 @@ define( function( require ) {
   var Matrix3 = require( 'DOT/Matrix3' );
   var NumberProperty = require( 'AXON/NumberProperty' );
   var Util = require( 'DOT/Util' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   // images
   var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
@@ -83,7 +84,7 @@ define( function( require ) {
         bottom: FixedLengthCircuitElementNode.HIGHLIGHT_INSET * 0.75
       }
     }, options );
-    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, viewProperty, this.lightBulbNode, this.lightBulbNode, contentScale, tandem, options );
+    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, viewProperty, this.lightBulbNode, new Rectangle( 0, 0, 10, 10 ), contentScale, tandem, options );
 
     // Set the initial location of the highlight, since it was not available in the supercall to updateLayout
     updateLayout( lightBulb.startVertexProperty.get().positionProperty.get(), lightBulb.endVertexProperty.get().positionProperty.get() );

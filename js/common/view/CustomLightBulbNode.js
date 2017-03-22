@@ -31,7 +31,7 @@ define( function( require ) {
    * @constructor
    */
   function CustomLightBulbNode( brightnessProperty, options ) {
-
+    assert && assert( brightnessProperty, 'brightness property should exist' );
     var defaultOptions = {
       baseOnly: false,
       bulbImageScale: 0.33 * 0.2,
@@ -48,6 +48,8 @@ define( function( require ) {
     options = _.extend( {}, defaultOptions, options ); // don't modify defaultOptions!
 
     var self = this;
+
+    this.baseOnly = options.baseOnly;
 
     // @private
     self.onNode = new Image( options.baseOnly ? baseImage : onImage, {
@@ -121,7 +123,7 @@ define( function( require ) {
 
     // @private
     update: function() {
-      if ( this.visible ) {
+      if ( this.visible && !this.baseOnly ) {
         var brightness = this.brightnessProperty.value;
         assert && assert( brightness >= 0 && brightness <= 1 );
         this.onNode.visible = ( brightness > 0 );

@@ -43,9 +43,11 @@ define( function( require ) {
    */
   function FixedLengthCircuitElementNode( circuitConstructionKitScreenView, circuitNode, circuitElement, viewProperty,
                                           lifelikeNode, schematicNode, contentScale, tandem, options ) {
+    assert && assert( lifelikeNode !== schematicNode, 'schematicNode should be different than lifelikeNode' );
     var self = this;
 
     var contentNode = new Node();
+
     contentNode.children = [ lifelikeNode, schematicNode ];
     viewProperty.link( function( view ) {
       lifelikeNode.visible = view === 'lifelike';
