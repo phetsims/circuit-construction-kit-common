@@ -58,7 +58,7 @@ define( function( require ) {
   var end = points[ points.length - 1 ];
 
   // See http://stackoverflow.com/questions/12161277/how-to-rotate-a-vertex-around-a-certain-point
-  // TODO: move to Vector2?
+  // TODO: move to Vector2?, see https://github.com/phetsims/dot/issues/66
   var rotatedAbout = function( point, origin, angle ) {
     var dx = (point.x - origin.x);
     var dy = (point.y - origin.y);
