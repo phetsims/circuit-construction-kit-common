@@ -20,14 +20,14 @@ define( function( require ) {
   /**
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
-   * @param {number} electronPathLength
+   * @param {number} chargePathLength
    * @param {Object} [options]
    * @constructor
    */
-  function CircuitElement( startVertex, endVertex, electronPathLength, options ) {
+  function CircuitElement( startVertex, endVertex, chargePathLength, options ) {
     assert && assert( startVertex !== endVertex, 'startVertex cannot be the same as endVertex' );
-    assert && assert( typeof electronPathLength === 'number', 'charge path length should be a number' );
-    assert && assert( electronPathLength > 0, 'charge path length must be positive' );
+    assert && assert( typeof chargePathLength === 'number', 'charge path length should be a number' );
+    assert && assert( chargePathLength > 0, 'charge path length must be positive' );
 
     var self = this;
 
@@ -62,8 +62,8 @@ define( function( require ) {
     // the interface or outside of the black box
     this.insideTrueBlackBoxProperty = new BooleanProperty( false );
 
-    // @public - true if the electrons must be layed out again
-    this.electronLayoutDirty = true;
+    // @public - true if the charge layout must be updated
+    this.chargeLayoutDirty = true;
 
     // @public (read-only) - indicate when this CircuitElement has been connected to another CircuitElement
     this.connectedEmitter = new Emitter();
@@ -128,10 +128,10 @@ define( function( require ) {
       self.endVertexProperty.get().positionProperty.unlink( vertexMoved );
     };
 
-    // @public (read-only by clients, writable-by-subclasses) the distance the electrons must take to get to the other
+    // @public (read-only by clients, writable-by-subclasses) the distance the charges must take to get to the other
     // side of the component. This is typically the distance between vertices, but not for light bulbs.  This value is
     // constant, except for wires which can have their length changed.
-    this.electronPathLength = electronPathLength;
+    this.chargePathLength = chargePathLength;
   }
 
   circuitConstructionKitCommon.register( 'CircuitElement', CircuitElement );
@@ -214,7 +214,7 @@ define( function( require ) {
       var startPosition = this.startVertexProperty.get().positionProperty.get();
       var endPosition = this.endVertexProperty.get().positionProperty.get();
       return {
-        position: startPosition.blend( endPosition, distanceAlongWire / this.electronPathLength ),
+        position: startPosition.blend( endPosition, distanceAlongWire / this.chargePathLength ),
         angle: endPosition.minus( startPosition ).angle()
       };
     },
@@ -226,7 +226,7 @@ define( function( require ) {
      * @public
      */
     containsScalarLocation: function( scalarLocation ) {
-      return scalarLocation >= 0 && scalarLocation <= this.electronPathLength;
+      return scalarLocation >= 0 && scalarLocation <= this.chargePathLength;
     },
 
     /**

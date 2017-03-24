@@ -46,7 +46,7 @@ define( function( require ) {
     // @public (read-only)
     this.ammeter = new Ammeter( tandem.createTandem( 'ammeter' ) );
 
-    // @public (read-only) changes whether the light bulb brightness and ammeter/voltmeter readouts, electrons, flame,
+    // @public (read-only) changes whether the light bulb brightness and ammeter/voltmeter readouts, charges, flame,
     // etc. can be seen
     this.exploreScreenRunningProperty = new BooleanProperty( !CircuitConstructionKitQueryParameters.showPlayPauseButton, {
       tandem: tandem.createTandem( 'exploreScreenRunningProperty' )
@@ -139,7 +139,7 @@ define( function( require ) {
 
     // When the simulation pauses and resumes, clear the time scaling factor (so it doesn't show a stale value)
     this.exploreScreenRunningProperty.link( function() {
-      self.circuit.electronPropagator.timeScaleRunningAverage.clear();
+      self.circuit.chargePropagator.timeScaleRunningAverage.clear();
     } );
   }
 
@@ -161,12 +161,12 @@ define( function( require ) {
         }
       }
 
-      // Only move electrons if the simulation is not paused.
+      // Only move charges if the simulation is not paused.
       if ( this.exploreScreenRunningProperty.value ) {
         this.circuit.step( dt );
       }
 
-      this.circuit.layoutElectronsInDirtyCircuitElements();
+      this.circuit.layoutChargesInDirtyCircuitElements();
     },
 
     /**

@@ -64,9 +64,9 @@ define( function( require ) {
     stroke: 'white'
   } );
 
-  function ElectronNode( charge, revealingProperty ) {
+  function ChargeNode( charge, revealingProperty ) {
     var self = this;
-    this.electron = charge;
+    this.charge = charge;
     Node.call( this, {
       children: [ charge.charge > 0 ? arrowNode : electronImageNode ],
       pickable: false
@@ -105,7 +105,7 @@ define( function( require ) {
     charge.disposeEmitter.addListener( disposeListener );
   }
 
-  circuitConstructionKitCommon.register( 'ElectronNode', ElectronNode );
+  circuitConstructionKitCommon.register( 'ChargeNode', ChargeNode );
 
-  return inherit( Node, ElectronNode );
+  return inherit( Node, ChargeNode );
 } );

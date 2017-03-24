@@ -2,7 +2,7 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- * The node that represents a Circuit, including all Wires and FixedLengthCircuitElements, Electrons, Solder, etc.
+ * The node that represents a Circuit, including all Wires and FixedLengthCircuitElements, Charge, Solder, etc.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -23,7 +23,7 @@ define( function( require ) {
   var SolderNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/SolderNode' );
   var Vector2 = require( 'DOT/Vector2' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/FixedLengthCircuitElement' );
-  var ElectronNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ElectronNode' );
+  var ChargeNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ChargeNode' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Wire' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Battery' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/LightBulb' );
@@ -70,7 +70,7 @@ define( function( require ) {
     this.resistorNodes = [];
     this.switchNodes = [];
     this.vertexNodes = [];
-    this.electronNodes = [];
+    this.chargeNodes = [];
 
     // When loading from a state object, the vertices could have been added first.  If so, move them in front
     var moveVerticesToFront = function( circuitElement ) {
@@ -186,18 +186,18 @@ define( function( require ) {
     } );
 
     circuit.charges.addItemAddedListener( function( charge ) {
-      var electronNode = new ElectronNode(
+      var chargeNode = new ChargeNode(
         charge,
         circuitConstructionKitScreenView.circuitConstructionKitModel.revealingProperty || new BooleanProperty( true )
       );
       charge.disposeEmitter.addListener( function x() {
-        var index = self.electronNodes.indexOf( charge );
-        self.electronNodes.splice( index, 1 );
+        var index = self.chargeNodes.indexOf( charge );
+        self.chargeNodes.splice( index, 1 );
 
         charge.disposeEmitter.removeListener( x );
       } );
-      self.electronNodes.push( electronNode );
-      self.mainLayer.addChild( electronNode );
+      self.chargeNodes.push( chargeNode );
+      self.mainLayer.addChild( chargeNode );
 
       // Move light bulb foregrounds to the front so charge will go behind.
       self.lightBulbForegroundNodes.forEach( function( b ) {
@@ -350,19 +350,19 @@ define( function( require ) {
 
     step: function( dt ) {
 
-      // Any electrons that are in a light bulb and above halfway should be in front of the base
+      // Any charges that are in a light bulb and above halfway should be in front of the base
       // TODO: does this code fight with the code that moves the bases to the front?
-      // TODO: how to avoid moving electrons unnecessarily?
+      // TODO: how to avoid moving charges unnecessarily?
       var children = this.mainLayer.children;
       for ( var i = 0; i < children.length; i++ ) {
         var child = children[ i ];
-        if ( child instanceof ElectronNode &&
-             child.electron.circuitElement instanceof LightBulb ) {
-          if ( child.electron.distanceProperty.get() > child.electron.circuitElement.electronPathLength / 2 ) {
+        if ( child instanceof ChargeNode &&
+             child.charge.circuitElement instanceof LightBulb ) {
+          if ( child.charge.distanceProperty.get() > child.charge.circuitElement.chargePathLength / 2 ) {
             child.moveToFront();
           }
           else {
-            var indexOfForeground = children.indexOf( this.getCCKLightBulbForegroundNode( child.electron.circuitElement ) );
+            var indexOfForeground = children.indexOf( this.getCCKLightBulbForegroundNode( child.charge.circuitElement ) );
 
             this.mainLayer.removeChild( child );
             this.mainLayer.insertChild( indexOfForeground - 2, child ); // TODO: I have no idea why -2 seems to work

@@ -18,7 +18,7 @@ define( function( require ) {
   var CircuitNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitNode' );
   var CircuitElementToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitElementToolbox' );
   var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitElementEditContainerPanel' );
-  var ElectronSpeedThrottlingReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ElectronSpeedThrottlingReadoutNode' );
+  var ChargeSpeedThrottlingReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ChargeSpeedThrottlingReadoutNode' );
   var SensorToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/SensorToolbox' );
   var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/VoltmeterNode' );
   var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/AmmeterNode' );
@@ -203,12 +203,12 @@ define( function( require ) {
         numberOfResistors: options.numberOfResistorsInToolbox
       } );
 
-    var electronSpeedThrottlingReadoutNode = new ElectronSpeedThrottlingReadoutNode(
-      circuitConstructionKitModel.circuit.electronPropagator.timeScaleProperty,
+    var chargeSpeedThrottlingReadoutNode = new ChargeSpeedThrottlingReadoutNode(
+      circuitConstructionKitModel.circuit.chargePropagator.timeScaleProperty,
       circuitConstructionKitModel.circuit.showCurrentProperty,
       circuitConstructionKitModel.exploreScreenRunningProperty
     );
-    this.addChild( electronSpeedThrottlingReadoutNode );
+    this.addChild( chargeSpeedThrottlingReadoutNode );
 
     // @protected - so that subclasses can add a layout circuit element near it
     this.sensorToolbox = new SensorToolbox( this.circuitNode, voltmeterNode, ammeterNode, circuitConstructionKitModel.exploreScreenRunningProperty, tandem.createTandem( 'sensorToolbox' ) );
@@ -355,7 +355,7 @@ define( function( require ) {
         } );
       }
 
-      electronSpeedThrottlingReadoutNode.mutate( {
+      chargeSpeedThrottlingReadoutNode.mutate( {
         centerX: visibleBounds.centerX,
         bottom: visibleBounds.bottom - 100 // so it doesn't overlap the component controls
       } );

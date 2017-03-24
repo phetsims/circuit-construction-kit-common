@@ -95,8 +95,8 @@ define( function( require ) {
       accumulatedDistance += q2.distance( q1 );
     }
 
-    var electronPathLength = accumulatedDistance - 1E-8; // changes the speed at which particles go through the light bulb
-    FixedLengthCircuitElement.call( this, startVertex, endVertex, DISTANCE_BETWEEN_VERTICES, electronPathLength, options ); // TODO: what are options here?
+    var chargePathLength = accumulatedDistance - 1E-8; // changes the speed at which particles go through the light bulb
+    FixedLengthCircuitElement.call( this, startVertex, endVertex, DISTANCE_BETWEEN_VERTICES, chargePathLength, options ); // TODO: what are options here?
 
     // @private (read-only) the vector between the vertices
     this.vertexDelta = endVertex.positionProperty.get().minus( startVertex.positionProperty.get() );
@@ -121,9 +121,9 @@ define( function( require ) {
     },
 
     /**
-     * Overrides CircuitElement.getPosition to describe the path the electron takes through the light bulb.
+     * Overrides CircuitElement.getPosition to describe the path the charge takes through the light bulb.
      *
-     * @param {number} distanceAlongWire - how far along the bulb's length the electron has traveled
+     * @param {number} distanceAlongWire - how far along the bulb's length the charge has traveled
      *                                   - the light bulb's length is declared in ChargeLayout // TODO: fix that
      * @returns {Object}
      * @override

@@ -16,7 +16,7 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
   var Property = require( 'AXON/Property' );
 
-  function ElectronSpeedThrottlingReadoutNode( timeScaleProperty, showCurrentProperty, exploreScreenRunningProperty ) {
+  function ChargeSpeedThrottlingReadoutNode( timeScaleProperty, showCurrentProperty, exploreScreenRunningProperty ) {
     var self = this;
     var text = new Text( 'Animation speed limit reached! Simulation speed reduced to < 1% normal.', { fontSize: 26 } );
     Node.call( this, {
@@ -25,7 +25,7 @@ define( function( require ) {
       ]
     } );
 
-    Property.multilink( [ timeScaleProperty, showCurrentProperty, exploreScreenRunningProperty ], function( timeScale, showElectrons, exploreScreenRunning ) {
+    Property.multilink( [ timeScaleProperty, showCurrentProperty, exploreScreenRunningProperty ], function( timeScale, showCurrent, exploreScreenRunning ) {
       var percent = timeScale * 100;
       var isThrottled = percent < 99.5;
       var fixed = Util.toFixed( percent, 0 );
@@ -34,12 +34,12 @@ define( function( require ) {
       }
       text.setText( 'Animation speed limit reached! Simulation speed reduced to ' + fixed + '% normal.' );
 
-      // Only show the throttling message if the speed is less than 100% and electrons are visible
-      self.visible = isThrottled && showElectrons && exploreScreenRunning;
+      // Only show the throttling message if the speed is less than 100% and charges are visible
+      self.visible = isThrottled && showCurrent && exploreScreenRunning;
     } );
   }
 
-  circuitConstructionKitCommon.register( 'ElectronSpeedThrottlingReadoutNode', ElectronSpeedThrottlingReadoutNode );
+  circuitConstructionKitCommon.register( 'ChargeSpeedThrottlingReadoutNode', ChargeSpeedThrottlingReadoutNode );
 
-  return inherit( Node, ElectronSpeedThrottlingReadoutNode );
+  return inherit( Node, ChargeSpeedThrottlingReadoutNode );
 } );

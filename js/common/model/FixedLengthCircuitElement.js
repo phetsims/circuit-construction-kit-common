@@ -18,18 +18,18 @@ define( function( require ) {
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
    * @param {number} distanceBetweenVertices - in screen coordinates
-   * @param {number} electronPathLength - the distance the electrons must travel (in screen coordinates).  More docs in CircuitElement.js
+   * @param {number} chargePathLength - the distance the charges must travel (in screen coordinates).  More docs in CircuitElement.js
    * @param {Object} [options]
    * @constructor
    */
-  function FixedLengthCircuitElement( startVertex, endVertex, distanceBetweenVertices, electronPathLength, options ) {
+  function FixedLengthCircuitElement( startVertex, endVertex, distanceBetweenVertices, chargePathLength, options ) {
 
     // Check that the measured length matches the specified length
     var measuredLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
     assert && assert( Math.abs( distanceBetweenVertices - measuredLength ) < 1E-6, 'length should be ' + distanceBetweenVertices );
 
     // Super constructor
-    CircuitElement.call( this, startVertex, endVertex, electronPathLength, options );
+    CircuitElement.call( this, startVertex, endVertex, chargePathLength, options );
 
     // @public (read-only) The distance from one vertex to another (as the crow flies), used for rotation about a vertex
     this.distanceBetweenVertices = distanceBetweenVertices;

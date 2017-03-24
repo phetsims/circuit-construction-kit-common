@@ -56,7 +56,7 @@ define( function( require ) {
     // How far to erode the visible bounds for keeping the probes in bounds.
     DRAG_BOUNDS_EROSION: 20,
 
-    // Distance between adjacent electrons for electron layout
+    // Distance between adjacent charges within a circuit element
     CHARGE_SEPARATION: 28,
 
     // Color of the background

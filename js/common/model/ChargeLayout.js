@@ -1,7 +1,7 @@
 // Copyright 2016, University of Colorado Boulder
 
 /**
- * Creates Electrons in a CircuitElement when it has been created, or when an adjacent wire's length has been modified.
+ * Creates Charge instances in a CircuitElement when it has been created, or when an adjacent wire's length has been modified.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -29,26 +29,26 @@ define( function( require ) {
   return inherit( Object, ChargeLayout, {
 
     /**
-     * Creates and positions electrons in the specified circuit element.
+     * Creates and positions charges in the specified circuit element.
      * @param circuitElement
      * @public
      */
-    layoutElectrons: function( circuitElement ) {
+    layoutCharges: function( circuitElement ) {
 
-      if ( !circuitElement.electronLayoutDirty ) {
+      if ( !circuitElement.chargeLayoutDirty ) {
         return;
       }
 
-      // Remove any electrons that were already in the branch.
+      // Remove any charges that were already in the branch.
       // TODO: a performance improvement could be to adjust them instead of delete/recreate. This could particularly
-      // help when dragging a wire, and the electrons are continually re-layed-out.
-      var particlesToRemove = this.circuit.getElectronsInCircuitElement( circuitElement );
+      // help when dragging a wire, and the charges are continually re-layed-out.
+      var particlesToRemove = this.circuit.getChargesInCircuitElement( circuitElement );
       this.circuit.charges.removeAll( particlesToRemove );
 
       // compress or expand, but fix a particle at startingPoint and endingPoint.
       var offset = CircuitConstructionKitConstants.CHARGE_SEPARATION / 2;
 
-      var endingPoint = circuitElement.electronPathLength - offset;
+      var endingPoint = circuitElement.chargePathLength - offset;
       var startingPoint = offset;
       var length = endingPoint - startingPoint;
 
@@ -65,7 +65,7 @@ define( function( require ) {
         this.circuit.charges.add( new Charge( circuitElement, i * dx + offset, this.circuit.showCurrentProperty, this.circuit.currentTypeProperty.get() === 'electrons' ? -1 : +1 ) );
       }
 
-      circuitElement.electronLayoutDirty = false;
+      circuitElement.chargeLayoutDirty = false;
     }
   } );
 } );

@@ -31,8 +31,8 @@ define( function( require ) {
     assert && assert( typeof resistivityProperty !== 'number', 'property should not be a number' );
     options = _.extend( { wireStub: false }, options );
     var self = this;
-    var electronPathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
-    CircuitElement.call( this, startVertex, endVertex, electronPathLength, options );
+    var chargePathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
+    CircuitElement.call( this, startVertex, endVertex, chargePathLength, options );
 
     // @public (read-only)
     this.wireStub = options.wireStub;
@@ -56,7 +56,7 @@ define( function( require ) {
       var clampedResistance = Math.max( CircuitConstructionKitConstants.MINIMUM_RESISTANCE, resistance );
       assert && assert( !isNaN( clampedResistance ), 'wire resistance should not be NaN' );
       self.resistanceProperty.set( clampedResistance );
-      self.electronPathLength = viewLength;
+      self.chargePathLength = viewLength;
     };
 
     // Use `self` here instead of `this` so IDEA doesn't mark the property as missing.

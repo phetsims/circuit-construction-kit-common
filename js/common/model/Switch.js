@@ -28,9 +28,9 @@ define( function( require ) {
    */
   function Switch( startVertex, endVertex, resistivity, options ) {
     assert && assert( typeof resistivity === 'number' && resistivity >= 0, 'bad value for resistivity: ' + resistivity );
-    var electronPathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
+    var chargePathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
     var self = this;
-    CircuitElement.call( this, startVertex, endVertex, electronPathLength, options );
+    CircuitElement.call( this, startVertex, endVertex, chargePathLength, options );
     this.resistanceProperty = new NumberProperty( CircuitConstructionKitConstants.MINIMUM_RESISTANCE );
     this.resistivityProperty = new NumberProperty( resistivity );
     this.closedProperty = new BooleanProperty( false );

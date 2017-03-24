@@ -2,7 +2,7 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- * Shows the foreground of the light bulb, so that electrons are depicted in the correct z-order (through the base)
+ * Shows the foreground of the light bulb, so that charges are depicted in the correct z-order (through the base)
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

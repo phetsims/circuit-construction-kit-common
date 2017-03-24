@@ -24,7 +24,7 @@ define( function( require ) {
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Switch' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Resistor' );
   var ChargeLayout = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/ChargeLayout' );
-  var ElectronPropagator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/ElectronPropagator' );
+  var ChargePropagator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/ChargePropagator' );
   var Vector2 = require( 'DOT/Vector2' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/FixedLengthCircuitElement' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
@@ -63,7 +63,7 @@ define( function( require ) {
     // @public (read-only) - the charges in the circuit
     this.charges = new ObservableArray();
 
-    // @public (read-only) - whether to show electrons or conventional currentt
+    // @public (read-only) - whether to show charges or conventional current
     var currentTypes = [ 'electrons', 'conventional' ];
     this.currentTypeProperty = new Property( currentTypes[ 0 ], {
       validValues: currentTypes,
@@ -73,11 +73,11 @@ define( function( require ) {
 
     this.currentTypeProperty.lazyLink( function() {
 
-      // Mark everything as dirty and relayout electrons
+      // Mark everything as dirty and relayout charges
       self.circuitElements.forEach( function( circuitElement ) {
-        circuitElement.electronLayoutDirty = true;
+        circuitElement.chargeLayoutDirty = true;
       } );
-      self.layoutElectronsInDirtyCircuitElements();
+      self.layoutChargesInDirtyCircuitElements();
     } );
 
     // @public (read-only) - whether the current should be displayed
@@ -85,11 +85,11 @@ define( function( require ) {
       tandem: tandem.createTandem( 'showCurrentProperty' )
     } );
 
-    // @private - create the electrons in new circuits
-    this.electronLayout = new ChargeLayout( this );
+    // @private - create the charges in new circuits
+    this.chargeLayout = new ChargeLayout( this );
 
-    // @private - move the electrons with speed proportional to current
-    this.electronPropagator = new ElectronPropagator( this );
+    // @private - move the charges with speed proportional to current
+    this.chargePropagator = new ChargePropagator( this );
 
     // Re-solve the circuit when voltages or resistances change.
     var solve = function() { self.solve(); };
@@ -119,27 +119,27 @@ define( function( require ) {
       }
     } );
 
-    // When any vertex moves, relayout all electrons within the fixed-length connected component, see #100
+    // When any vertex moves, relayout all charges within the fixed-length connected component, see #100
     this.circuitElements.addItemAddedListener( function( circuitElement ) {
-      circuitElement.electronLayoutDirty = true;
+      circuitElement.chargeLayoutDirty = true;
 
-      var updateElectrons = function() {
+      var updateCharges = function() {
         var circuitElements = self.findAllConnectedCircuitElements( circuitElement.startVertexProperty.get() );
 
         for ( var i = 0; i < circuitElements.length; i++ ) {
-          circuitElements[ i ].electronLayoutDirty = true;
+          circuitElements[ i ].chargeLayoutDirty = true;
         }
       };
-      circuitElement.vertexMovedEmitter.addListener( updateElectrons );
-      circuitElement.moveToFrontEmitter.addListener( updateElectrons );
+      circuitElement.vertexMovedEmitter.addListener( updateCharges );
+      circuitElement.moveToFrontEmitter.addListener( updateCharges );
       self.solve();
     } );
     this.circuitElements.addItemRemovedListener( function( circuitElement ) {
-      self.charges.removeAll( self.getElectronsInCircuitElement( circuitElement ) );
+      self.charges.removeAll( self.getChargesInCircuitElement( circuitElement ) );
       self.solve(); // Explicit call to solve since it is possible to remove a CircuitElement without removing any vertices.
     } );
 
-    // When electron is removed from the list, dispose it
+    // When a Charge is removed from the list, dispose it
     this.charges.addItemRemovedListener( function( charge ) {
       charge.dispose();
     } );
@@ -575,20 +575,20 @@ define( function( require ) {
       this.stepActions.forEach( function( stepAction ) {stepAction();} );
       this.stepActions.length = 0;
 
-      // Move the electrons
-      this.electronPropagator.step( dt );
+      // Move the charges
+      this.chargePropagator.step( dt );
     },
 
     /**
      * When a circuit element is marked as dirty (such as when it changed length or moved), it needs to have
-     * the electrons repositioned, so they will be equally spaced internally and spaced well compared to neighbor
+     * the charges repositioned, so they will be equally spaced internally and spaced well compared to neighbor
      * elements.
      * @public
      */
-    layoutElectronsInDirtyCircuitElements: function() {
+    layoutChargesInDirtyCircuitElements: function() {
       var self = this;
       this.circuitElements.forEach( function( circuitElement ) {
-        self.electronLayout.layoutElectrons( circuitElement );
+        self.chargeLayout.layoutCharges( circuitElement );
       } );
     },
 
@@ -713,12 +713,12 @@ define( function( require ) {
     },
 
     /**
-     * Get the electrons that are in the specified circuit element.
+     * Get the charges that are in the specified circuit element.
      * @param {CircuitElement} circuitElement
-     * @returns {Electron[]}
+     * @returns {Charge[]}
      * @public
      */
-    getElectronsInCircuitElement: function( circuitElement ) {
+    getChargesInCircuitElement: function( circuitElement ) {
       return this.charges.getArray().filter( function( charge ) { return charge.circuitElement === circuitElement; } );
     },
 

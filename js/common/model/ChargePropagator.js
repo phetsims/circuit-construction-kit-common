@@ -2,7 +2,7 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- * This code governs the movement of electrons, making sure they are distributed equally among the different CircuitElements.
+ * This code governs the movement of charges, making sure they are distributed equally among the different CircuitElements.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -22,13 +22,13 @@ define( function( require ) {
   // by the speed decrease and fires.
   var MAX_CURRENT = 10;
 
-  // If the current is lower than this, then there is no electron movement
+  // If the current is lower than this, then there is no charge movement
   var MIN_CURRENT = Math.pow( 10, -10 );
 
-  // The furthest an electron can step in one frame before the time scale must be reduced (to prevent a strobe effect)
+  // The furthest an charge can step in one frame before the time scale must be reduced (to prevent a strobe effect)
   var MAX_POSITION_CHANGE = CircuitConstructionKitConstants.CHARGE_SEPARATION * 0.43;
 
-  // Number of times to spread out electrons so they don't get bunched up.
+  // Number of times to spread out charges so they don't get bunched up.
   var NUMBER_OF_EQUALIZE_STEPS = 2;
 
   // Factor that multiplies the current to attain speed in screen coordinates
@@ -44,13 +44,13 @@ define( function( require ) {
       circuitElement: circuitElement,
       distance: distance,
       getDensity: function( circuit ) {
-        var particles = circuit.getElectronsInCircuitElement( circuitElement );
-        return particles.length / circuitElement.electronPathLength;
+        var particles = circuit.getChargesInCircuitElement( circuitElement );
+        return particles.length / circuitElement.chargePathLength;
       }
     };
   };
 
-  function ElectronPropagator( circuit ) {
+  function ChargePropagator( circuit ) {
     this.charges = circuit.charges;
     this.circuit = circuit;
     this.scale = 1;
@@ -59,12 +59,12 @@ define( function( require ) {
     this.timeScaleProperty = new NumberProperty( 1, { range: { min: 0, max: 1 } } ); // 1 is full speed, 0.5 is running at half speed, etc.
   }
 
-  circuitConstructionKitCommon.register( 'ElectronPropagator', ElectronPropagator );
+  circuitConstructionKitCommon.register( 'ChargePropagator', ChargePropagator );
 
-  return inherit( Object, ElectronPropagator, {
+  return inherit( Object, ChargePropagator, {
     step: function( dt ) {
 
-      // Disable incremental updates to improve performance.  The ElectronNodes are only updated once, instead of
+      // Disable incremental updates to improve performance.  The ChargeNodes are only updated once, instead of
       // incrementally many times throughout this update
       for ( var k = 0; k < this.charges.length; k++ ) {
         this.charges.get( k ).updatingPositionProperty.set( false );
@@ -87,18 +87,18 @@ define( function( require ) {
       for ( var i = 0; i < this.charges.length; i++ ) {
         var charge = this.charges.get( i );
 
-        // Don't update electrons in electronLayoutDirty circuit elements, because they will get a relayout anyways
-        if ( !charge.circuitElement.electronLayoutDirty ) {
+        // Don't update charges in chargeLayoutDirty circuit elements, because they will get a relayout anyways
+        if ( !charge.circuitElement.chargeLayoutDirty ) {
           this.propagate( charge, dt );
         }
       }
 
-      // Spread out the electrons so they don't bunch up
+      // Spread out the charges so they don't bunch up
       for ( i = 0; i < NUMBER_OF_EQUALIZE_STEPS; i++ ) {
         this.equalizeAll( dt );
       }
 
-      // After computing the new electron positions (possibly across several deltas), trigger the views to update.
+      // After computing the new charge positions (possibly across several deltas), trigger the views to update.
       for ( k = 0; k < this.charges.length; k++ ) {
         this.charges.get( k ).updatingPositionProperty.set( true );
       }
@@ -118,7 +118,7 @@ define( function( require ) {
     },
 
     /**
-     * Make the electrons repel each other so they don't bunch up.
+     * Make the charges repel each other so they don't bunch up.
      * @param {number} dt - the elapsed time in seconds
      */
     equalizeAll: function( dt ) {
@@ -130,32 +130,32 @@ define( function( require ) {
       for ( i = 0; i < this.charges.length; i++ ) {
         var charge = this.charges.get( indices[ i ] );
 
-        // No need to update electrons in electronLayoutDirty circuit elements, they will be replaced anyways.  Skipping electronLayoutDirty
-        // circuitElements improves performance
-        if ( !charge.circuitElement.electronLayoutDirty ) {
-          this.equalizeElectron( charge, dt );
+        // No need to update charges in chargeLayoutDirty circuit elements, they will be replaced anyways.  Skipping
+        // chargeLayoutDirty circuitElements improves performance
+        if ( !charge.circuitElement.chargeLayoutDirty ) {
+          this.equalizeCharge( charge, dt );
         }
       }
     },
-    equalizeElectron: function( charge, dt ) {
+    equalizeCharge: function( charge, dt ) {
 
-      var circuitElementElectrons = this.circuit.getElectronsInCircuitElement( charge.circuitElement );
+      var circuitElementCharges = this.circuit.getChargesInCircuitElement( charge.circuitElement );
 
       // if it has a lower and upper neighbor, try to get the distance to each to be half of ELECTRON_DX
-      var sorted = _.sortBy( circuitElementElectrons, function( e ) {return e.distanceProperty.get();} );
+      var sorted = _.sortBy( circuitElementCharges, function( e ) {return e.distanceProperty.get();} );
 
-      var electronIndex = sorted.indexOf( charge );
-      var upper = sorted[ electronIndex + 1 ];
-      var lower = sorted[ electronIndex - 1 ];
+      var chargeIndex = sorted.indexOf( charge );
+      var upper = sorted[ chargeIndex + 1 ];
+      var lower = sorted[ chargeIndex - 1 ];
 
       if ( upper && lower ) {
 
         var separation = upper.distanceProperty.get() - lower.distanceProperty.get();
-        var electronDistance = charge.distanceProperty.get();
+        var chargeDistance = charge.distanceProperty.get();
 
         var dest = lower.distanceProperty.get() + separation / 2;
-        var distMoving = Math.abs( dest - electronDistance );
-        var sameDirAsCurrent = (dest - electronDistance) > 0 && charge.circuitElement.currentProperty.get() * charge.charge > 0;
+        var distMoving = Math.abs( dest - chargeDistance );
+        var sameDirAsCurrent = (dest - chargeDistance) > 0 && charge.circuitElement.currentProperty.get() * charge.charge > 0;
         var speedScale = 1000.0 / 30.0;//to have same scale as 3.17.00
         var correctionSpeed = .055 / NUMBER_OF_EQUALIZE_STEPS * speedScale;
         if ( !sameDirAsCurrent ) {
@@ -165,14 +165,14 @@ define( function( require ) {
 
         if ( distMoving > maxDX ) {
           //move in the appropriate direction maxDX
-          if ( dest < electronDistance ) {
-            dest = electronDistance - maxDX;
+          if ( dest < chargeDistance ) {
+            dest = chargeDistance - maxDX;
           }
-          else if ( dest > electronDistance ) {
-            dest = electronDistance + maxDX;
+          else if ( dest > chargeDistance ) {
+            dest = chargeDistance + maxDX;
           }
         }
-        if ( dest >= 0 && dest <= charge.circuitElement.electronPathLength ) {
+        if ( dest >= 0 && dest <= charge.circuitElement.chargePathLength ) {
           charge.distanceProperty.set( dest );
         }
       }
@@ -206,7 +206,7 @@ define( function( require ) {
         else {
 
           // TODO: better abstraction for the following line
-          overshoot = Math.abs( circuitElement.electronPathLength - newX );
+          overshoot = Math.abs( circuitElement.chargePathLength - newX );
           under = false;
         }
         assert && assert( !isNaN( overshoot ), 'overshoot is NaN' );
@@ -214,7 +214,7 @@ define( function( require ) {
         var circuitLocations = this.getLocations( charge, dt, overshoot, under );
         if ( circuitLocations.length > 0 ) {
 
-          // choose the CircuitElement with the furthest away electron
+          // choose the CircuitElement with the furthest away charge
           var self = this;
           var chosenCircuitLocation = _.minBy( circuitLocations, function( circuitLocation ) {
             return circuitLocation.getDensity( self.circuit );
@@ -248,13 +248,13 @@ define( function( require ) {
         var distAlongNew = null;
 
         // The linear algebra solver can result in currents of 1E-12 where it should be zero.  For these cases, don't
-        // permit electrons to flow.
+        // permit charges to flow.
         // TODO: Should the current be clamped after linear algebra?
         var THRESHOLD = 1E-8;
         if ( current > THRESHOLD && neighbor.startVertexProperty.get() === vertex ) {//start near the beginning.
           distAlongNew = overshoot;
-          if ( distAlongNew > neighbor.electronPathLength ) {
-            distAlongNew = neighbor.electronPathLength;
+          if ( distAlongNew > neighbor.chargePathLength ) {
+            distAlongNew = neighbor.chargePathLength;
           }
           else if ( distAlongNew < 0 ) {
             distAlongNew = 0;
@@ -262,9 +262,9 @@ define( function( require ) {
           circuitLocations.push( createCircuitLocation( neighbor, distAlongNew ) );
         }
         else if ( current < -THRESHOLD && neighbor.endVertexProperty.get() === vertex ) {
-          distAlongNew = neighbor.electronPathLength - overshoot;
-          if ( distAlongNew > neighbor.electronPathLength ) {
-            distAlongNew = neighbor.electronPathLength;
+          distAlongNew = neighbor.chargePathLength - overshoot;
+          if ( distAlongNew > neighbor.chargePathLength ) {
+            distAlongNew = neighbor.chargePathLength;
           }
           else if ( distAlongNew < 0 ) {
             distAlongNew = 0;
