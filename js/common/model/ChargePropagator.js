@@ -37,12 +37,26 @@ define( function( require ) {
   // Fudge factor to increase dt to make model compatible.  TODO: eliminate this
   var TIME_SCALE = 100;
 
+  /**
+   * Returns an object that indicates a position in a circuit element and can compute the charge density in that
+   * circuit element.
+   *
+   * @param {CircuitElement} circuitElement
+   * @param {number} distance
+   * @return {Object}
+   */
   var createCircuitLocation = function( circuitElement, distance ) {
     assert && assert( _.isNumber( distance ), 'distance should be a number' );
     assert && assert( circuitElement.containsScalarLocation( distance ), 'circuitElement should contain distance' );
     return {
       circuitElement: circuitElement,
       distance: distance,
+
+      /**
+       * Returns the number of charges per unit
+       * @param circuit
+       * @return {number}
+       */
       getDensity: function( circuit ) {
         var particles = circuit.getChargesInCircuitElement( circuitElement );
         return particles.length / circuitElement.chargePathLength;
@@ -50,12 +64,26 @@ define( function( require ) {
     };
   };
 
+  /**
+   * Creates a ChargePropagator
+   * @param {Circuit} circuit
+   * @constructor
+   */
   function ChargePropagator( circuit ) {
+
+    // @private (read-only) the ObservableArray of Charge instances
     this.charges = circuit.charges;
+
+    // @private (read-only) the Circuit
     this.circuit = circuit;
+
+    // @private (read-only) factor that reduces the overall propagator speed when maximum speed is exceeded
     this.scale = 1;
+
+    // @private (read-only) a running average over last time steps
     this.timeScaleRunningAverage = new RunningAverage( 30 );
-    this.timeScalingPercentValue = null;
+
+    // @public (read-only)
     this.timeScaleProperty = new NumberProperty( 1, { range: { min: 0, max: 1 } } ); // 1 is full speed, 0.5 is running at half speed, etc.
   }
 
@@ -81,9 +109,9 @@ define( function( require ) {
       else {
         this.scale = 1;
       }
-      this.timeScalingPercentValue = this.timeScaleRunningAverage.updateRunningAverage( this.scale );
+      var timeScalingPercentValue = this.timeScaleRunningAverage.updateRunningAverage( this.scale );
 
-      this.timeScaleProperty.set( this.timeScalingPercentValue );
+      this.timeScaleProperty.set( timeScalingPercentValue );
       for ( var i = 0; i < this.charges.length; i++ ) {
         var charge = this.charges.get( i );
 
