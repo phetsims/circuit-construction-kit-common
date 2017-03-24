@@ -2,7 +2,8 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- * TODO: Rename chargenode
+ * Renders a single charge.  Electrons are shown as a sphere with a minus sign and conventional current is shown as an
+ * arrow.  Electrons are shown when current is off, but coventional current is not.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
