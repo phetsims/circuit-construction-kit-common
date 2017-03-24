@@ -185,21 +185,21 @@ define( function( require ) {
       }
     } );
 
-    circuit.charges.addItemAddedListener( function( electron ) {
+    circuit.charges.addItemAddedListener( function( charge ) {
       var electronNode = new ElectronNode(
-        electron,
+        charge,
         circuitConstructionKitScreenView.circuitConstructionKitModel.revealingProperty || new BooleanProperty( true )
       );
-      electron.disposeEmitter.addListener( function x() {
-        var index = self.electronNodes.indexOf( electron );
+      charge.disposeEmitter.addListener( function x() {
+        var index = self.electronNodes.indexOf( charge );
         self.electronNodes.splice( index, 1 );
 
-        electron.disposeEmitter.removeListener( x );
+        charge.disposeEmitter.removeListener( x );
       } );
       self.electronNodes.push( electronNode );
       self.mainLayer.addChild( electronNode );
 
-      // Move light bulb foregrounds to the front so electron will go behind.
+      // Move light bulb foregrounds to the front so charge will go behind.
       self.lightBulbForegroundNodes.forEach( function( b ) {
         b.moveToFront();
       } );

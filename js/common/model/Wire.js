@@ -45,7 +45,7 @@ define( function( require ) {
     this.resistivityProperty = resistivityProperty;
 
     /**
-     * When the vertex moves, updates the resistance and electron path length.
+     * When the vertex moves, updates the resistance and charge path length.
      */
     var vertexMovedListener = function() {
       var startPosition = self.startVertexProperty.get().positionProperty.get();
@@ -62,7 +62,7 @@ define( function( require ) {
     // Use `self` here instead of `this` so IDEA doesn't mark the property as missing.
     self.vertexMovedEmitter.addListener( vertexMovedListener );
 
-    // Update the resistance and electron path length on startup
+    // Update the resistance and charge path length on startup
     vertexMovedListener();
 
     this.resistivityProperty.link( function() {

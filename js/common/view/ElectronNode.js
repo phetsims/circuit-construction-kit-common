@@ -64,45 +64,45 @@ define( function( require ) {
     stroke: 'white'
   } );
 
-  function ElectronNode( electron, revealingProperty ) {
+  function ElectronNode( charge, revealingProperty ) {
     var self = this;
-    this.electron = electron;
+    this.electron = charge;
     Node.call( this, {
-      children: [ electron.charge > 0 ? arrowNode : electronImageNode ],
+      children: [ charge.charge > 0 ? arrowNode : electronImageNode ],
       pickable: false
     } );
     var outsideOfBlackBoxProperty = new BooleanProperty( false );
 
     // TODO: When I wrote this with Property.multilink, it failed as #172
     var updateVisible = function() {
-      self.visible = electron.visibleProperty.value && (outsideOfBlackBoxProperty.value || revealingProperty.value) &&
-                     ( Math.abs( electron.circuitElement.currentProperty.get() ) > 1E-6 || electron.charge < 0 );
+      self.visible = charge.visibleProperty.value && (outsideOfBlackBoxProperty.value || revealingProperty.value) &&
+                     ( Math.abs( charge.circuitElement.currentProperty.get() ) > 1E-6 || charge.charge < 0 );
     };
     var positionListener = function( position ) {
-      var current = electron.circuitElement.currentProperty.get();
+      var current = charge.circuitElement.currentProperty.get();
       self.center = position;
-      self.rotation = electron.charge < 0 ? 0 : electron.angle + (current < 0 ? Math.PI : 0);
+      self.rotation = charge.charge < 0 ? 0 : charge.angle + (current < 0 ? Math.PI : 0);
       updateVisible();
-      outsideOfBlackBoxProperty.value = !electron.circuitElement.insideTrueBlackBoxProperty.get();
+      outsideOfBlackBoxProperty.value = !charge.circuitElement.insideTrueBlackBoxProperty.get();
     };
-    electron.positionProperty.link( positionListener );
+    charge.positionProperty.link( positionListener );
 
     revealingProperty.link( updateVisible );
-    electron.visibleProperty.link( updateVisible );
+    charge.visibleProperty.link( updateVisible );
     outsideOfBlackBoxProperty.link( updateVisible );
 
     var disposeListener = function() {
       self.detach();
-      electron.positionProperty.unlink( positionListener );
-      electron.disposeEmitter.removeListener( disposeListener );
+      charge.positionProperty.unlink( positionListener );
+      charge.disposeEmitter.removeListener( disposeListener );
       revealingProperty.unlink( updateVisible );
-      electron.visibleProperty.unlink( updateVisible );
+      charge.visibleProperty.unlink( updateVisible );
       outsideOfBlackBoxProperty.unlink( updateVisible );
 
       // We must remove the image child node, or it will continue to track its parents and lead to a memory leak
       self.removeAllChildren();
     };
-    electron.disposeEmitter.addListener( disposeListener );
+    charge.disposeEmitter.addListener( disposeListener );
   }
 
   circuitConstructionKitCommon.register( 'ElectronNode', ElectronNode );

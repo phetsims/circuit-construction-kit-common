@@ -140,8 +140,8 @@ define( function( require ) {
     } );
 
     // When electron is removed from the list, dispose it
-    this.charges.addItemRemovedListener( function( electron ) {
-      electron.dispose();
+    this.charges.addItemRemovedListener( function( charge ) {
+      charge.dispose();
     } );
 
     // After the circuit physics is recomputed in solve(), some listeners need to update themselves, such as
@@ -719,7 +719,7 @@ define( function( require ) {
      * @public
      */
     getElectronsInCircuitElement: function( circuitElement ) {
-      return this.charges.getArray().filter( function( electron ) { return electron.circuitElement === circuitElement; } );
+      return this.charges.getArray().filter( function( charge ) { return charge.circuitElement === circuitElement; } );
     },
 
     /**

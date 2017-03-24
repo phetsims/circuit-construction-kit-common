@@ -147,7 +147,7 @@ define( function( require ) {
         var q2 = new Vector2( p2X, p2Y );
         accumulatedDistance += q2.distance( q1 );
 
-        // Find what segment the electron is in
+        // Find what segment the charge is in
         if ( distanceAlongWire < accumulatedDistance ) {
           var a = Util.linear( prev, accumulatedDistance, 0, 1, distanceAlongWire );
           var position = q1.blend( q2, a );

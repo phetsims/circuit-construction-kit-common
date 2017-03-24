@@ -26,8 +26,8 @@ define( function( require ) {
    */
   function CircuitElement( startVertex, endVertex, electronPathLength, options ) {
     assert && assert( startVertex !== endVertex, 'startVertex cannot be the same as endVertex' );
-    assert && assert( typeof electronPathLength === 'number', 'electron path length should be a number' );
-    assert && assert( electronPathLength > 0, 'electron path length must be positive' );
+    assert && assert( typeof electronPathLength === 'number', 'charge path length should be a number' );
+    assert && assert( electronPathLength > 0, 'charge path length must be positive' );
 
     var self = this;
 
