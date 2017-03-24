@@ -124,7 +124,7 @@ define( function( require ) {
      * Overrides CircuitElement.getPosition to describe the path the electron takes through the light bulb.
      *
      * @param {number} distanceAlongWire - how far along the bulb's length the electron has traveled
-     *                                   - the light bulb's length is declared in ElectronLayout // TODO: fix that
+     *                                   - the light bulb's length is declared in ChargeLayout // TODO: fix that
      * @returns {Object}
      * @override
      */

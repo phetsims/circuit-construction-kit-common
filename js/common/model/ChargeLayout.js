@@ -18,15 +18,15 @@ define( function( require ) {
    * @param {Circuit} circuit
    * @constructor
    */
-  function ElectronLayout( circuit ) {
+  function ChargeLayout( circuit ) {
 
     // @private
     this.circuit = circuit;
   }
 
-  circuitConstructionKitCommon.register( 'ElectronLayout', ElectronLayout );
+  circuitConstructionKitCommon.register( 'ChargeLayout', ChargeLayout );
 
-  return inherit( Object, ElectronLayout, {
+  return inherit( Object, ChargeLayout, {
 
     /**
      * Creates and positions electrons in the specified circuit element.

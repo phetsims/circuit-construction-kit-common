@@ -23,7 +23,7 @@ define( function( require ) {
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/LightBulb' );
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Switch' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Resistor' );
-  var ElectronLayout = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/ElectronLayout' );
+  var ChargeLayout = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/ChargeLayout' );
   var ElectronPropagator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/ElectronPropagator' );
   var Vector2 = require( 'DOT/Vector2' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/FixedLengthCircuitElement' );
@@ -86,7 +86,7 @@ define( function( require ) {
     } );
 
     // @private - create the electrons in new circuits
-    this.electronLayout = new ElectronLayout( this );
+    this.electronLayout = new ChargeLayout( this );
 
     // @private - move the electrons with speed proportional to current
     this.electronPropagator = new ElectronPropagator( this );
