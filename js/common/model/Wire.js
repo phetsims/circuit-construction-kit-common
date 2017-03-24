@@ -41,7 +41,6 @@ define( function( require ) {
     this.resistanceProperty = new NumberProperty( CircuitConstructionKitConstants.MINIMUM_RESISTANCE );
 
     // @public (read-only) - the resistivity of the Wire in ohm-meters
-    // TODO: when the resistivity changes, update the resistance
     this.resistivityProperty = resistivityProperty;
 
     /**
