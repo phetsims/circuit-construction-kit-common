@@ -86,6 +86,12 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'ChargePropagator', ChargePropagator );
 
   return inherit( Object, ChargePropagator, {
+
+    /**
+     * Update the location of the charges based on the circuit currents
+     * @param {number} dt - elapsed time in seconds
+     * @public
+     */
     step: function( dt ) {
 
       // Disable incremental updates to improve performance.  The ChargeNodes are only updated once, instead of
@@ -96,6 +102,7 @@ define( function( require ) {
 
       // dt would ideally be around 16.666ms = 0.0166 sec.  Cap it to avoid too large of an integration step.
       dt = Math.min( dt, 1 / 30 ) * TIME_SCALE;
+
       var maxCurrentMagnitude = this.getMaxCurrentMagnitude();
       var maxSpeed = maxCurrentMagnitude * SPEED_SCALE;
       var maxPositionChange = maxSpeed * dt;
@@ -131,6 +138,7 @@ define( function( require ) {
     /**
      * Returns the absolute value of the most extreme current.
      * @returns {number}
+     * @private
      */
     getMaxCurrentMagnitude: function() {
       var max = 0;
@@ -144,6 +152,7 @@ define( function( require ) {
     /**
      * Make the charges repel each other so they don't bunch up.
      * @param {number} dt - the elapsed time in seconds
+     * @private
      */
     equalizeAll: function( dt ) {
       var indices = [];
@@ -161,6 +170,14 @@ define( function( require ) {
         }
       }
     },
+
+    /**
+     * Adjust the charge so it is more closely centered between its neighbors.  This prevents charges from getting
+     * too bunched up.
+     * @param {Charge} charge - the charge to adjust
+     * @param {number} dt - seconds
+     * @private
+     */
     equalizeCharge: function( charge, dt ) {
 
       var circuitElementCharges = this.circuit.getChargesInCircuitElement( charge.circuitElement );
@@ -173,7 +190,6 @@ define( function( require ) {
       var lower = sorted[ chargeIndex - 1 ];
 
       if ( upper && lower ) {
-
         var separation = upper.distanceProperty.get() - lower.distanceProperty.get();
         var chargeDistance = charge.distanceProperty.get();
 
@@ -201,6 +217,13 @@ define( function( require ) {
         }
       }
     },
+
+    /**
+     * Move the charge forward in time by the specified amount.
+     * @param {Charge} charge - the charge to update
+     * @param {number} dt - elapsed time in seconds
+     * @private
+     */
     propagate: function( charge, dt ) {
       var x = charge.distanceProperty.get();
       assert && assert( _.isNumber( x ), 'distance along wire should be a number' );
@@ -247,15 +270,19 @@ define( function( require ) {
         }
       }
     },
+
+    /**
+     * Returns the locations where a charge can flow to
+     * @param {Charge} charge
+     * @param {number} dt
+     * @param {number} overshoot
+     * @param {number} under
+     * @return {Object[]} see createCircuitLocation
+     * @private
+     */
     getLocations: function( charge, dt, overshoot, under ) {
       var circuitElement = charge.circuitElement;
-      var vertex = null;
-      if ( under ) {
-        vertex = circuitElement.startVertexProperty.get();
-      }
-      else {
-        vertex = circuitElement.endVertexProperty.get();
-      }
+      var vertex = under ? circuitElement.startVertexProperty.get() : circuitElement.endVertexProperty.get();
       var adjacentCircuitElements = this.circuit.getNeighborCircuitElements( vertex );
       var circuitLocations = [];
 
