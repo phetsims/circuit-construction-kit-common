@@ -18,10 +18,6 @@ define( function( require ) {
 
   // constants
 
-  // Clamp the current at a maximum.  TODO: Is this truly needed?  It seems like it's responsibility is covered
-  // by the speed decrease and fires.
-  var MAX_CURRENT = 10;
-
   // If the current is lower than this, then there is no charge movement
   var MIN_CURRENT = Math.pow( 10, -10 );
 
@@ -267,12 +263,6 @@ define( function( require ) {
       for ( var i = 0; i < adjacentCircuitElements.length; i++ ) {
         var neighbor = adjacentCircuitElements[ i ];
         var current = neighbor.currentProperty.get() * charge.charge;
-        if ( current > MAX_CURRENT ) {
-          current = MAX_CURRENT;
-        }
-        else if ( current < -MAX_CURRENT ) {
-          current = -MAX_CURRENT;
-        }
         var distAlongNew = null;
 
         // The linear algebra solver can result in currents of 1E-12 where it should be zero.  For these cases, don't
