@@ -204,7 +204,8 @@ define( function( require ) {
         var maxDX = Math.abs( correctionSpeed * dt );
 
         if ( distMoving > maxDX ) {
-          //move in the appropriate direction maxDX
+
+          // move in the appropriate direction maxDX
           if ( dest < chargeDistance ) {
             dest = chargeDistance - maxDX;
           }
@@ -276,7 +277,7 @@ define( function( require ) {
      * @param {Charge} charge
      * @param {number} dt
      * @param {number} overshoot
-     * @param {number} under
+     * @param {boolean} under
      * @return {Object[]} see createCircuitLocation
      * @private
      */
