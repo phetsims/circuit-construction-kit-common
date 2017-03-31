@@ -60,12 +60,6 @@ define( function( require ) {
         assert && assert( !isNaN( distance ), 'charge position was not a number' );
         var positionAndAngle = self.circuitElement.getPositionAndAngle( distance );
         var position = positionAndAngle.position;
-        // TODO: may need a workaround like this if two vertices of one wire accidentally lie on top of each other
-        // even if not connected
-        // if (isNaN(position.x)|| isNaN(position.y)){
-        //   console.log('nan');
-        //   return;
-        // }
         assert && assert( !isNaN( position.x ) && !isNaN( position.y ), 'point was not a number' );
         self.angle = positionAndAngle.angle;
         self.positionProperty.set( position ); // TODO: set position and angle together?
