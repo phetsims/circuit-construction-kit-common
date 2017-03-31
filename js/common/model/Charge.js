@@ -47,7 +47,7 @@ define( function( require ) {
     this.distanceProperty = new NumberProperty( distance );
 
     // @public (read-only) - To improve performance, disable updating while the position of the charge is changed many
-    // times during the update step.  TODO: use temporary values for this instead
+    // times during the update step.
     this.updatingPositionProperty = new BooleanProperty( true );
 
     // @public the 2d position of the charge
