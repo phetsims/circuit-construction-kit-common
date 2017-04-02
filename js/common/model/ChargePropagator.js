@@ -159,7 +159,7 @@ define( function( require ) {
       for ( var i = 0; i < this.charges.length; i++ ) {
         indices.push( i );
       }
-      _.shuffle( indices ); // TODO: This won't be re-seedable
+      indices = phet.joist.random.shuffle( indices );
       for ( i = 0; i < this.charges.length; i++ ) {
         var charge = this.charges.get( indices[ i ] );
 
