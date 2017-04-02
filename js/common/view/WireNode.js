@@ -54,14 +54,14 @@ define( function( require ) {
     /**
      * Create a LinearGradient for the wire, depending on the orientation relative to the shading (light comes from
      * top left)
-     * @param {{point:number,color:Color}} array
-     * @param {function} op
+     * @param {Object[]} array - entries have point: Number, color: Color
+     * @param {function} op - the operation to apply to create color stops
      * @returns {LinearGradient}
      */
     var createGradient = function( array, op ) {
-      var normalGradient = new LinearGradient( 0, -WIRE_LINE_WIDTH / 2, 0, WIRE_LINE_WIDTH / 2 );
-      array.forEach( function( element ) {normalGradient.addColorStop( op( element.point ), element.color );} );
-      return normalGradient;
+      var gradient = new LinearGradient( 0, -WIRE_LINE_WIDTH / 2, 0, WIRE_LINE_WIDTH / 2 );
+      array.forEach( function( element ) {gradient.addColorStop( op( element.point ), element.color );} );
+      return gradient;
     };
 
     var array = [
@@ -135,12 +135,21 @@ define( function( require ) {
       lineJoin: 'round'
     } );
 
+    /**
+     * Convenience function that gets the stroked shape for the wire line node with the given style
+     * @param {LineStyles} lineStyles
+     * @return {Shape}
+     */
+    var getHighlightStrokedShape = function( lineStyles ) {
+      return self.lineNode.shape.getStrokedShape( lineStyles );
+    };
+
     var startListener = function( startPoint ) {
       lineNodeParent.setTranslation( startPoint.x, startPoint.y );
       highlightNodeParent.setTranslation( startPoint.x, startPoint.y );
       endListener && endListener( wire.endVertexProperty.get().positionProperty.get() );
       if ( highlightNode.visible ) {
-        highlightNode.shape = self.getHighlightStrokedShape( highlightStrokeStyles );
+        highlightNode.shape = getHighlightStrokedShape( highlightStrokeStyles );
       }
     };
 
@@ -157,7 +166,7 @@ define( function( require ) {
       lineNodeParent.setRotation( deltaVector.angle() );
       highlightNodeParent.setRotation( deltaVector.angle() );
       if ( highlightNode.visible ) {
-        highlightNode.shape = self.getHighlightStrokedShape( highlightStrokeStyles );
+        highlightNode.shape = getHighlightStrokedShape( highlightStrokeStyles );
       }
 
       updateStroke();
@@ -235,7 +244,7 @@ define( function( require ) {
         var showHighlight = lastCircuitElement === wire;
         highlightNode.visible = showHighlight;
         if ( highlightNode.visible ) {
-          highlightNode.shape = self.getHighlightStrokedShape( highlightStrokeStyles );
+          highlightNode.shape = getHighlightStrokedShape( highlightStrokeStyles );
         }
       };
       circuitNode.circuit.selectedCircuitElementProperty.link( updateHighlight );
@@ -264,18 +273,20 @@ define( function( require ) {
 
   return inherit( CircuitElementNode, WireNode, {
 
-    // @public
+    /**
+     * Dispose the WireNode when it will no longer be used.
+     * @public
+     */
     dispose: function() {
       this.disposeWireNode();
       CircuitElementNode.prototype.dispose.call( this );
     },
 
-    // @private
-    getHighlightStrokedShape: function( lineStyles ) {
-      return this.lineNode.shape.getStrokedShape( lineStyles );
-    },
-
-    // @public
+    /**
+     * Gets the shape of the line node in the parent's coordinate frame for hit testing.
+     * @return {Shape}
+     * @public
+     */
     getStrokedShape: function() {
       return this.lineNode.getStrokedShape().transformed( this.lineNodeParent.matrix );
     }
