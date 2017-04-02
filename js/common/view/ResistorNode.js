@@ -2,7 +2,7 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- *
+ * This node shows a resistor.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -22,12 +22,29 @@ define( function( require ) {
   // images
   var lifelikeResistorImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor.png' );
 
+  // constants
+  var LIFELIKE_IMAGE_SCALE = 0.7;
+  var LIFELIKE_IMAGE_WIDTH = lifelikeResistorImage[ 0 ].width / LIFELIKE_IMAGE_SCALE;
+  var COLOR_BAND_WIDTH = 10;
+  var COLOR_BAND_HEIGHT = 34;
+  var COLOR_BAND_TOP = -2; // Account for vertical asymmetry in the image
+  var COLOR_BAND_INSET = 40;
+  var AVAILABLE_COLOR_BAND_SPACE = LIFELIKE_IMAGE_WIDTH * 0.75 - 2 * COLOR_BAND_INSET;
+  var REMAINING_COLOR_BAND_SPACE = AVAILABLE_COLOR_BAND_SPACE - 4 * COLOR_BAND_WIDTH;// max is 4 bands, even though they are not always shown
+  var COLOR_BAND_SPACING = REMAINING_COLOR_BAND_SPACE / 4; // two spaces before last band
+  var COLOR_BAND_Y = lifelikeResistorImage[ 0 ].height / 2 / LIFELIKE_IMAGE_SCALE - COLOR_BAND_HEIGHT / LIFELIKE_IMAGE_SCALE / 2 + COLOR_BAND_TOP;
+
+  // Points sampled using Photoshop from a raster of the IEEE icon seen at https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
+  var SCHEMATIC_SCALE = 0.54;
+  var SCHEMATIC_PERIOD = 22 * SCHEMATIC_SCALE;
+  var SCHEMATIC_STEM_WIDTH = 84 * SCHEMATIC_SCALE;
+  var SCHEMATIC_WAVELENGTH = 54 * SCHEMATIC_SCALE;
+
   /**
-   *
    * @param circuitConstructionKitScreenView
    * @param {CircuitNode} [circuitNode] optional, null for icons
    * @param resistor
-   * @param {Property.<boolean>} runningProperty - not used here but appears in signature to keep same signature as other components.
+   * @param {Property.<boolean>} runningProperty - not used here but appears in signature to keep same signature as other CircuitElementNode subclasses.
    * @param {Property.<string>} viewProperty - lifelike or schematic
    * @param tandem
    * @param options
@@ -36,27 +53,29 @@ define( function( require ) {
   function ResistorNode( circuitConstructionKitScreenView, circuitNode, resistor, runningProperty, viewProperty, tandem, options ) {
     this.resistor = resistor;
 
-    var imageScale = 0.7;
     var resistorImageNode = new Image( lifelikeResistorImage );
 
-    var imageWidth = resistorImageNode.imageWidth / imageScale;
-    var bandWidth = 10;
-    var bandHeight = 34;
-    var bandTopDY = -2; // Account for vertical asymmetry in the image
-    var inset = 40;
-    var availableBandSpace = imageWidth * 0.75 - 2 * inset;
-    var remainingSpace = availableBandSpace - 4 * bandWidth;// max is 4 bands, even though they are not always shown
-    var bandSeparation = remainingSpace / 4; // two spaces before last band
-    var y = resistorImageNode.imageHeight / 2 / imageScale - bandHeight / imageScale / 2 + bandTopDY;
-    var colorBands = [
-      new Rectangle( 0, 0, bandWidth, bandHeight, { x: inset + (bandWidth + bandSeparation) * 0, y: y } ),
-      new Rectangle( 0, 0, bandWidth, bandHeight, { x: inset + (bandWidth + bandSeparation) * 1, y: y } ),
-      new Rectangle( 0, 0, bandWidth, bandHeight, { x: inset + (bandWidth + bandSeparation) * 2, y: y } ),
-      new Rectangle( 0, 0, bandWidth, bandHeight + 3, {
-        x: inset + (bandWidth + bandSeparation) * 3 + bandSeparation,
-        y: y - 1.5
-      } )
-    ];
+    /**
+     * Get a color band for the given index.
+     * @param {number} index
+     * @return {Rectangle}
+     */
+    var getColorBand = function( index ) {
+
+      // TODO: why is the last band offset vertically?
+      var additionalHeight = index === 3 ? 3 : 0;
+      return new Rectangle( 0, 0, COLOR_BAND_WIDTH, COLOR_BAND_HEIGHT + additionalHeight, {
+        x: COLOR_BAND_INSET + (COLOR_BAND_WIDTH + COLOR_BAND_SPACING) * index,
+        y: COLOR_BAND_Y - additionalHeight / 2
+      } );
+    };
+
+    var colorBands = _.range( 4 ).map( getColorBand );
+
+    /**
+     * When the resistance changes, update the colors of the color bands.
+     * @param resistance
+     */
     var updateColorBands = function( resistance ) {
       var colors = ResistorColors.getColorArray( resistance );
       for ( var i = 0; i < colorBands.length; i++ ) {
@@ -64,28 +83,24 @@ define( function( require ) {
       }
     };
     resistor.resistanceProperty.link( updateColorBands );
-    for ( var i = 0; i < colorBands.length; i++ ) {
-      resistorImageNode.addChild( colorBands[ i ] );
-    }
 
-    // Points sampled using Photoshop from a raster of the IEEE icon seen at https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
-    var scale = 0.54;
-    var period = 22 * scale;
-    var stemWidth = 84 * scale;
-    var wavelength = 54 * scale;
+    // Add the color bands to the resistor image
+    colorBands.forEach( function( colorBand ) {
+      resistorImageNode.addChild( colorBand );
+    } );
 
-    var resistorShape = new Shape()
-      .moveTo( 0, resistorImageNode.height * scale )
-      .lineToRelative( stemWidth, 0 )
-      .lineToRelative( period / 2, -wavelength / 2 )
-      .lineToRelative( period, wavelength )
-      .lineToRelative( period, -wavelength )
-      .lineToRelative( period, wavelength )
-      .lineToRelative( period, -wavelength )
-      .lineToRelative( period, wavelength )
-      .lineToRelative( period / 2, -wavelength / 2 )
-      .lineToRelative( stemWidth, 0 );
-    var schematicPathNode = new Path( resistorShape, { stroke: 'black', lineWidth: 6 } );
+    var schematicShape = new Shape()
+      .moveTo( 0, resistorImageNode.height * SCHEMATIC_SCALE )
+      .lineToRelative( SCHEMATIC_STEM_WIDTH, 0 )
+      .lineToRelative( SCHEMATIC_PERIOD / 2, -SCHEMATIC_WAVELENGTH / 2 )
+      .lineToRelative( SCHEMATIC_PERIOD, SCHEMATIC_WAVELENGTH )
+      .lineToRelative( SCHEMATIC_PERIOD, -SCHEMATIC_WAVELENGTH )
+      .lineToRelative( SCHEMATIC_PERIOD, SCHEMATIC_WAVELENGTH )
+      .lineToRelative( SCHEMATIC_PERIOD, -SCHEMATIC_WAVELENGTH )
+      .lineToRelative( SCHEMATIC_PERIOD, SCHEMATIC_WAVELENGTH )
+      .lineToRelative( SCHEMATIC_PERIOD / 2, -SCHEMATIC_WAVELENGTH / 2 )
+      .lineToRelative( SCHEMATIC_STEM_WIDTH, 0 );
+    var schematicPathNode = new Path( schematicShape, { stroke: 'black', lineWidth: 6 } );
 
     // Super call
     FixedLengthCircuitElementNode.call( this,
@@ -95,7 +110,7 @@ define( function( require ) {
       viewProperty,
       resistorImageNode,
       schematicPathNode,
-      imageScale,
+      LIFELIKE_IMAGE_SCALE,
       tandem,
       options
     );
@@ -108,6 +123,11 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'ResistorNode', ResistorNode );
 
   return inherit( FixedLengthCircuitElementNode, ResistorNode, {
+
+    /**
+     * Dispose the ResistorNode when it will no longer be used.
+     * @public
+     */
     dispose: function() {
       FixedLengthCircuitElementNode.prototype.dispose.call( this );
       this.disposeResistorNode();
