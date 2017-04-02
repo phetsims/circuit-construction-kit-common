@@ -25,7 +25,8 @@ define( function( require ) {
   var TNode = require( 'SCENERY/nodes/TNode' );
 
   // constants
-  var WIRE_LINE_WIDTH = 12; // line width in screen coordinates
+  var LIFELIKE_LINE_WIDTH = 12; // line width in screen coordinates
+  var SCHEMATIC_LINE_WIDTH = 6; // line width in screen coordinates
 
   /**
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - if null, this WireNode is just an icon
@@ -54,50 +55,54 @@ define( function( require ) {
     /**
      * Create a LinearGradient for the wire, depending on the orientation relative to the shading (light comes from
      * top left)
-     * @param {Object[]} array - entries have point: Number, color: Color
-     * @param {function} op - the operation to apply to create color stops
+     * @param {Object[]} colorStops - entries have point: Number, color: Color
+     * @param {function} colorStopPointMap - the operation to apply to create color stops
      * @returns {LinearGradient}
      */
-    var createGradient = function( array, op ) {
-      var gradient = new LinearGradient( 0, -WIRE_LINE_WIDTH / 2, 0, WIRE_LINE_WIDTH / 2 );
-      array.forEach( function( element ) {gradient.addColorStop( op( element.point ), element.color );} );
+    var createGradient = function( colorStops, colorStopPointMap ) {
+      var gradient = new LinearGradient( 0, -LIFELIKE_LINE_WIDTH / 2, 0, LIFELIKE_LINE_WIDTH / 2 );
+      colorStops.forEach( function( colorStop ) {
+        gradient.addColorStop( colorStopPointMap( colorStop.point ), colorStop.color );
+      } );
       return gradient;
     };
 
-    var array = [
+    var colorStops = [
       { point: 0.0, color: new Color( '#993f35' ) },
       { point: 0.2, color: new Color( '#cd7767' ) },
       { point: 0.3, color: new Color( '#f6bda0' ) },
       { point: 1.0, color: new Color( '#3c0c08' ) }
     ];
 
-    var normalGradient = createGradient( array, function( e ) {return e;} );
-    var reverseGradient = createGradient( array.reverse(), function( e ) {return 1.0 - e;} );
+    var normalGradient = createGradient( colorStops, function( e ) {return e;} );
+    var reverseGradient = createGradient( colorStops.reverse(), function( e ) {return 1.0 - e;} );
 
     var lineNode = new Line( 0, 0, 100, 0, {
-      stroke: normalGradient,
-      lineWidth: WIRE_LINE_WIDTH,
       cursor: 'pointer',
       strokePickable: true,
       lineCap: 'round'
     } );
 
+    /**
+     * When the view type changes (lifelike vs schematic), update the node
+     */
     var updateStroke = function() {
 
       var view = viewProperty.value;
       if ( view === 'lifelike' ) {
+        lineNode.lineWidth = LIFELIKE_LINE_WIDTH;
 
-        // normal angle
-        var endPoint = wire.endVertexProperty.value.positionProperty.value;
-        var directionForNormalLighting = new Vector2( 167.67173252279636, 72.6241134751773 ); // sampled manually
-        var deltaVector = endPoint.minus( wire.startVertexProperty.get().positionProperty.get() );
-        var dot = directionForNormalLighting.dot( deltaVector );
+        // determine whether to use the forward or reverse gradient based on the angle
+        var startPoint = wire.startVertexProperty.get().positionProperty.get();
+        var endPoint = wire.endVertexProperty.value.positionProperty.get();
+        var lightingDirection = new Vector2( 0.916, 0.4 ); // sampled manually
+        var wireVector = endPoint.minus( startPoint );
+        var dot = lightingDirection.dot( wireVector );
         lineNode.stroke = dot < 0 ? reverseGradient : normalGradient;
-        lineNode.lineWidth = WIRE_LINE_WIDTH;
       }
       else {
+        lineNode.lineWidth = SCHEMATIC_LINE_WIDTH;
         lineNode.stroke = 'black';
-        lineNode.lineWidth = 6;
       }
     };
 
@@ -263,6 +268,8 @@ define( function( require ) {
       wire.endVertexProperty.get().positionProperty.unlink( endListener );
 
       circuitNode && circuitNode.highlightLayer.removeChild( highlightNodeParent );
+
+      viewProperty.unlink( updateStroke );
       tandem.removeInstance( self );
     };
 
