@@ -207,24 +207,33 @@ define( function( require ) {
     };
     wire.endVertexProperty.link( updateEndVertex );
 
+    // Keep track of the start point to see if it was dragged or tapped to be selected
     var startPoint = null;
+
+    // Keep track of whether it was dragged
     var dragged = false;
 
     if ( circuitConstructionKitScreenView ) {
+
+      // Input listener for dragging the body of the wire, to translate it.
       this.inputListener = new TandemSimpleDragHandler( {
         allowTouchSnag: true,
         tandem: tandem.createTandem( 'inputListener' ),
         start: function( event ) {
           if ( wire.interactiveProperty.get() ) {
-            startPoint = event.pointer.point;
+
+            // Start drag by starting a drag on start and end vertices
             circuitNode.startDrag( event.pointer.point, wire.startVertexProperty.get(), false );
             circuitNode.startDrag( event.pointer.point, wire.endVertexProperty.get(), false );
             wire.isOverToolboxProperty.set( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) );
             dragged = false;
+            startPoint = event.pointer.point;
           }
         },
         drag: function( event ) {
           if ( wire.interactiveProperty.get() ) {
+
+            // Drag by translating both of the vertices
             circuitNode.drag( event.pointer.point, wire.startVertexProperty.get(), false );
             circuitNode.drag( event.pointer.point, wire.endVertexProperty.get(), false );
             wire.isOverToolboxProperty.set( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) );
@@ -252,6 +261,8 @@ define( function( require ) {
               }, delayMS );
             }
             else {
+
+              // End drag for each of the vertices
               circuitNode.endDrag( event, wire.startVertexProperty.get(), dragged );
               circuitNode.endDrag( event, wire.endVertexProperty.get(), dragged );
 

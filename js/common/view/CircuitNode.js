@@ -563,10 +563,10 @@ define( function( require ) {
      *
      * @param event
      * @param vertex
-     * @param {boolean} didDrag - true if the vertex actually moved with at least 1 drag call
+     * @param {boolean} dragged - true if the vertex actually moved with at least 1 drag call
      */
-    endDrag: function( event, vertex, didDrag ) {
-      assert && assert( typeof didDrag === 'boolean', 'didDrag must be supplied' );
+    endDrag: function( event, vertex, dragged ) {
+      assert && assert( typeof dragged === 'boolean', 'didDrag must be supplied' );
 
       var vertexNode = this.getVertexNode( vertex );
 
@@ -581,7 +581,7 @@ define( function( require ) {
       }
 
       var bestDropTarget = this.getBestDropTarget( vertices );
-      if ( bestDropTarget && didDrag ) {
+      if ( bestDropTarget && dragged ) {
         this.circuit.connect( bestDropTarget.src, bestDropTarget.dst );
 
         // Set the new reference point for next drag
