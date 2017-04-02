@@ -1,5 +1,4 @@
 // Copyright 2015-2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * The node for a wire, which can be stretched out by dragging its vertices.
@@ -198,6 +197,7 @@ define( function( require ) {
 
     /**
      * When the end vertex changes to a different instance, unlink the old properties and link to the new properties.
+     * TODO: duplicated with updateStartVertex
      * @param {Vertex} newEndVertex
      * @param {Vertex} oldEndVertex
      */
@@ -265,10 +265,14 @@ define( function( require ) {
       } );
       self.addInputListener( this.inputListener );
 
-      var updateHighlight = function( lastCircuitElement ) {
-        var showHighlight = lastCircuitElement === wire;
+      /**
+       * Update the shape of the highlight region when selected.
+       * @param selectedCircuitElement
+       */
+      var updateHighlight = function( selectedCircuitElement ) {
+        var showHighlight = selectedCircuitElement === wire;
         highlightNode.visible = showHighlight;
-        if ( highlightNode.visible ) {
+        if ( showHighlight ) {
           highlightNode.shape = getHighlightStrokedShape( highlightStrokeStyles );
         }
       };
