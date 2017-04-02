@@ -62,7 +62,7 @@ define( function( require ) {
         var position = positionAndAngle.position;
         assert && assert( !isNaN( position.x ) && !isNaN( position.y ), 'point was not a number' );
         self.angle = positionAndAngle.angle;
-        self.positionProperty.set( position ); // TODO: set position and angle together?
+        self.positionProperty.set( position ); // TODO: set position and angle together?  Should angle be a property?
       }
     } );
 
