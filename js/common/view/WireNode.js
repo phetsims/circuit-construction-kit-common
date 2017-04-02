@@ -129,6 +129,10 @@ define( function( require ) {
       ]
     } );
 
+    /**
+     * Update whether the WireNode is pickable
+     * @param {boolean} interactive
+     */
     var updatePickable = function( interactive ) {
       self.pickable = interactive;
     };
@@ -149,23 +153,38 @@ define( function( require ) {
       return self.lineNode.shape.getStrokedShape( lineStyles );
     };
 
-    var startListener = function( startPoint ) {
+    /**
+     * Listener for the position of the start vertex.
+     * @param {Vector2} startPoint
+     */
+    var updateStartPosition = function( startPoint ) {
       lineNodeParent.setTranslation( startPoint.x, startPoint.y );
       highlightNodeParent.setTranslation( startPoint.x, startPoint.y );
-      endListener && endListener( wire.endVertexProperty.get().positionProperty.get() );
+
+      // After changing the coordinate frames in the preceding calls, update the rest of the transform.
+      updateEndPosition && updateEndPosition( wire.endVertexProperty.get().positionProperty.get() );
       if ( highlightNode.visible ) {
         highlightNode.shape = getHighlightStrokedShape( highlightStrokeStyles );
       }
     };
 
-    // There is a double nested property, since the vertex may change and the position may change
+    /**
+     * When the start vertex changes to a different instance (say when vertices are soldered together), unlink the
+     * old one and link to the new one.
+     * @param {Vertex} newStartVertex
+     * @param {Vertex} oldStartVertex
+     */
     var updateStartVertex = function( newStartVertex, oldStartVertex ) {
-      oldStartVertex && oldStartVertex.positionProperty.unlink( startListener );
-      newStartVertex.positionProperty.link( startListener );
+      oldStartVertex && oldStartVertex.positionProperty.unlink( updateStartPosition );
+      newStartVertex.positionProperty.link( updateStartPosition );
     };
     wire.startVertexProperty.link( updateStartVertex );
 
-    var endListener = function( endPoint ) {
+    /**
+     * Listener for the position of the end vertex.
+     * @param {Vector2} endPoint
+     */
+    var updateEndPosition = function( endPoint ) {
       lineNode.setPoint2( endPoint.distance( wire.startVertexProperty.get().positionProperty.get() ), 0 );
       var deltaVector = endPoint.minus( wire.startVertexProperty.get().positionProperty.get() );
       lineNodeParent.setRotation( deltaVector.angle() );
@@ -177,74 +196,75 @@ define( function( require ) {
       updateStroke();
     };
 
+    /**
+     * When the end vertex changes to a different instance, unlink the old properties and link to the new properties.
+     * @param {Vertex} newEndVertex
+     * @param {Vertex} oldEndVertex
+     */
     var updateEndVertex = function( newEndVertex, oldEndVertex ) {
-      oldEndVertex && oldEndVertex.positionProperty.unlink( endListener );
-      newEndVertex.positionProperty.link( endListener );
+      oldEndVertex && oldEndVertex.positionProperty.unlink( updateEndPosition );
+      newEndVertex.positionProperty.link( updateEndPosition );
     };
     wire.endVertexProperty.link( updateEndVertex );
 
-    var p = null;
-    var didDrag = false;
+    var startPoint = null;
+    var dragged = false;
 
     if ( circuitConstructionKitScreenView ) {
       this.inputListener = new TandemSimpleDragHandler( {
         allowTouchSnag: true,
         tandem: tandem.createTandem( 'inputListener' ),
         start: function( event ) {
-          p = event.pointer.point;
-
           if ( wire.interactiveProperty.get() ) {
+            startPoint = event.pointer.point;
             circuitNode.startDrag( event.pointer.point, wire.startVertexProperty.get(), false );
             circuitNode.startDrag( event.pointer.point, wire.endVertexProperty.get(), false );
             wire.isOverToolboxProperty.set( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) );
+            dragged = false;
           }
-          didDrag = false;
         },
         drag: function( event ) {
           if ( wire.interactiveProperty.get() ) {
             circuitNode.drag( event.pointer.point, wire.startVertexProperty.get(), false );
             circuitNode.drag( event.pointer.point, wire.endVertexProperty.get(), false );
             wire.isOverToolboxProperty.set( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) );
-            didDrag = true;
+            dragged = true;
           }
         },
         end: function( event ) {
 
           // TODO: duplicated with FixedLengthCircuitElementNode
-          // If over the toolbox, then drop into it, and don't process further
-          if ( wire.isOverToolboxProperty.get() ) {
-
-            var creationTime = self.circuitElement.creationTime;
-            var lifetime = phet.joist.elapsedTime - creationTime;
-            var delayMS = Math.max( 500 - lifetime, 0 );
-
-            // Disallow further interaction
-            self.removeInputListener( self.inputListener );
+          if ( wire.interactiveProperty.get() ) {
 
             // If over the toolbox, then drop into it, and don't process further
-            setTimeout( function() {
-              circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
-            }, delayMS );
-          }
-          else {
-            if ( !wire.interactiveProperty.get() ) {
-              return;
+            if ( wire.isOverToolboxProperty.get() ) {
+
+              var creationTime = self.circuitElement.creationTime;
+              var lifetime = phet.joist.elapsedTime - creationTime;
+              var delayMS = Math.max( 500 - lifetime, 0 );
+
+              // Disallow further interaction
+              self.removeInputListener( self.inputListener );
+
+              // If over the toolbox, then drop into it, and don't process further
+              setTimeout( function() {
+                circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
+              }, delayMS );
             }
+            else {
+              circuitNode.endDrag( event, wire.startVertexProperty.get(), dragged );
+              circuitNode.endDrag( event, wire.endVertexProperty.get(), dragged );
 
-            circuitNode.endDrag( event, wire.startVertexProperty.get(), didDrag );
-            circuitNode.endDrag( event, wire.endVertexProperty.get(), didDrag );
+              // Only show the editor when tapped, not on every drag.
+              self.maybeSelect( event, circuitNode, startPoint );
 
-            // Only show the editor when tapped, not on every drag.
-            self.maybeSelect( event, circuitNode, p );
-
-            didDrag = false;
+              dragged = false;
+            }
           }
         }
       } );
       self.addInputListener( this.inputListener );
-    }
 
-    if ( circuitNode ) {
       var updateHighlight = function( lastCircuitElement ) {
         var showHighlight = lastCircuitElement === wire;
         highlightNode.visible = showHighlight;
@@ -255,6 +275,9 @@ define( function( require ) {
       circuitNode.circuit.selectedCircuitElementProperty.link( updateHighlight );
     }
 
+    /**
+     * @private - dispose the wire node
+     */
     this.disposeWireNode = function() {
       self.inputListener.dragging && self.inputListener.endDrag();
 
@@ -264,8 +287,8 @@ define( function( require ) {
       updateHighlight && circuitNode.circuit.selectedCircuitElementProperty.unlink( updateHighlight );
       wire.interactiveProperty.unlink( updatePickable );
 
-      wire.startVertexProperty.get().positionProperty.unlink( startListener );
-      wire.endVertexProperty.get().positionProperty.unlink( endListener );
+      wire.startVertexProperty.get().positionProperty.unlink( updateStartPosition );
+      wire.endVertexProperty.get().positionProperty.unlink( updateEndPosition );
 
       circuitNode && circuitNode.highlightLayer.removeChild( highlightNodeParent );
 
