@@ -2,7 +2,7 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- *
+ * The node for a wire, which can be stretched out by dragging its vertices.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -25,13 +25,13 @@ define( function( require ) {
   var TNode = require( 'SCENERY/nodes/TNode' );
 
   // constants
-  var WIRE_LINE_WIDTH = 12; // screen coordinates
+  var WIRE_LINE_WIDTH = 12; // line width in screen coordinates
 
   /**
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - if null, this WireNode is just an icon
    * @param {CircuitNode} circuitNode
    * @param {Wire} wire
-   * @param {Property.<boolean>} runningProperty - to match the constructors of other circuit element nodes
+   * @param {Property.<boolean>} runningProperty - unused but provided to match the constructors of other circuit element nodes
    * @param {Property.<string>} viewProperty - lifelike or schematic
    * @param {Tandem} tandem
    * @constructor
@@ -65,7 +65,7 @@ define( function( require ) {
     };
 
     var array = [
-      { point: 0.0, color: new Color( '#7b332b' ).brighterColor( 0.8 ) },
+      { point: 0.0, color: new Color( '#993f35' ) },
       { point: 0.2, color: new Color( '#cd7767' ) },
       { point: 0.3, color: new Color( '#f6bda0' ) },
       { point: 1.0, color: new Color( '#3c0c08' ) }
