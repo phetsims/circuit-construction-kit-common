@@ -1,5 +1,4 @@
-// Copyright 2015-2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
+// Copyright 2015-2017, University of Colorado Boulder
 
 /**
  * This node shows a resistor.
@@ -39,21 +38,24 @@ define( function( require ) {
   var SCHEMATIC_PERIOD = 22 * SCHEMATIC_SCALE;
   var SCHEMATIC_STEM_WIDTH = 84 * SCHEMATIC_SCALE;
   var SCHEMATIC_WAVELENGTH = 54 * SCHEMATIC_SCALE;
+  var SCHEMATIC_LINE_WIDTH = 6;
 
   /**
-   * @param circuitConstructionKitScreenView
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
    * @param {CircuitNode} [circuitNode] optional, null for icons
-   * @param resistor
+   * @param {Resistor} resistor
    * @param {Property.<boolean>} runningProperty - not used here but appears in signature to keep same signature as other CircuitElementNode subclasses.
-   * @param {Property.<string>} viewProperty - lifelike or schematic
-   * @param tandem
-   * @param options
+   * @param {Property.<string>} viewProperty - 'lifelike' or 'schematic'
+   * @param {Tandem} tandem
+   * @param {Object} [options]
    * @constructor
    */
   function ResistorNode( circuitConstructionKitScreenView, circuitNode, resistor, runningProperty, viewProperty, tandem, options ) {
+
+    // @public (read-only) the resistor depicted by this node
     this.resistor = resistor;
 
-    var resistorImageNode = new Image( lifelikeResistorImage );
+    var lifelikeResistorImageNode = new Image( lifelikeResistorImage );
 
     /**
      * Get a color band for the given index.
@@ -86,11 +88,12 @@ define( function( require ) {
 
     // Add the color bands to the resistor image
     colorBands.forEach( function( colorBand ) {
-      resistorImageNode.addChild( colorBand );
+      lifelikeResistorImageNode.addChild( colorBand );
     } );
 
+    // Classical zig-zag shape
     var schematicShape = new Shape()
-      .moveTo( 0, resistorImageNode.height * SCHEMATIC_SCALE )
+      .moveTo( 0, lifelikeResistorImageNode.height * SCHEMATIC_SCALE )
       .lineToRelative( SCHEMATIC_STEM_WIDTH, 0 )
       .lineToRelative( SCHEMATIC_PERIOD / 2, -SCHEMATIC_WAVELENGTH / 2 )
       .lineToRelative( SCHEMATIC_PERIOD, SCHEMATIC_WAVELENGTH )
@@ -100,7 +103,7 @@ define( function( require ) {
       .lineToRelative( SCHEMATIC_PERIOD, SCHEMATIC_WAVELENGTH )
       .lineToRelative( SCHEMATIC_PERIOD / 2, -SCHEMATIC_WAVELENGTH / 2 )
       .lineToRelative( SCHEMATIC_STEM_WIDTH, 0 );
-    var schematicPathNode = new Path( schematicShape, { stroke: 'black', lineWidth: 6 } );
+    var schematicPathNode = new Path( schematicShape, { stroke: 'black', lineWidth: SCHEMATIC_LINE_WIDTH } );
 
     // Super call
     FixedLengthCircuitElementNode.call( this,
@@ -108,13 +111,16 @@ define( function( require ) {
       circuitNode,
       resistor,
       viewProperty,
-      resistorImageNode,
+      lifelikeResistorImageNode,
       schematicPathNode,
       LIFELIKE_IMAGE_SCALE,
       tandem,
       options
     );
 
+    /**
+     * @private - dispose the resistor node
+     */
     this.disposeResistorNode = function() {
       resistor.resistanceProperty.unlink( updateColorBands );
     };
