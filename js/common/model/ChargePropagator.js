@@ -188,25 +188,31 @@ define( function( require ) {
       // Only adjust a charge if it is between two other charges
       if ( upper && lower ) {
         var neighborSeparation = upper.distanceProperty.get() - lower.distanceProperty.get();
-        var chargePosition = charge.distanceProperty.get();
+        var currentPosition = charge.distanceProperty.get();
 
         var desiredPosition = lower.distanceProperty.get() + neighborSeparation / 2;
-        var distanceToMove = Math.abs( desiredPosition - chargePosition );
-        var sameDirectionAsCurrent = (desiredPosition - chargePosition) > 0 && charge.circuitElement.currentProperty.get() * charge.charge > 0;
-        var correctionSpeed = (sameDirectionAsCurrent ? 5.5 : 1) / NUMBER_OF_EQUALIZE_STEPS * SPEED_SCALE;
-        var maxAllowedStepSize = Math.abs( correctionSpeed * dt );
+        var distanceFromDesiredPosition = Math.abs( desiredPosition - currentPosition );
+        var sameDirectionAsCurrent = Math.sign( desiredPosition - currentPosition ) ===
+                                     Math.sign( charge.circuitElement.currentProperty.get() * charge.charge );
 
-        // TODO: this sign seems wrong
-        if ( distanceToMove > maxAllowedStepSize ) {
+        // When we need to correct in the same direction as current flow, do it quickly.  When going against
+        // the current flow, don't go too fast (never run backwards)
+        var correctionSpeed = (sameDirectionAsCurrent ? 5.5 : 1) / NUMBER_OF_EQUALIZE_STEPS * SPEED_SCALE;
+        var correctionStepSize = Math.abs( correctionSpeed * dt );
+
+        // If far enough away that it won't overshoot, then correct it with one step
+        if ( distanceFromDesiredPosition > correctionStepSize ) {
 
           // move in the appropriate direction maxDX
-          if ( desiredPosition < chargePosition ) {
-            desiredPosition = chargePosition - maxAllowedStepSize;
+          if ( desiredPosition < currentPosition ) {
+            desiredPosition = currentPosition - correctionStepSize;
           }
-          else if ( desiredPosition > chargePosition ) {
-            desiredPosition = chargePosition + maxAllowedStepSize;
+          else if ( desiredPosition > currentPosition ) {
+            desiredPosition = currentPosition + correctionStepSize;
           }
         }
+
+        // Only update the charge if its new position would be within the same circuit element.
         if ( desiredPosition >= 0 && desiredPosition <= charge.circuitElement.chargePathLength ) {
           charge.distanceProperty.set( desiredPosition );
         }
