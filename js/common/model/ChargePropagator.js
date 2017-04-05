@@ -122,7 +122,7 @@ define( function( require ) {
       var maxSpeed = maxCurrentMagnitude * SPEED_SCALE;
       var maxPositionChange = maxSpeed * dt;
 
-      // Slow down the simulation if the fastest particle step distance exceeds the maximum allowed step
+      // Slow down the simulation if the fastest step distance exceeds the maximum allowed step
       this.scale = maxPositionChange >= MAX_POSITION_CHANGE ? MAX_POSITION_CHANGE / maxPositionChange : 1;
 
       // Average over scale values to smooth them out
@@ -178,8 +178,8 @@ define( function( require ) {
 
       var circuitElementCharges = this.circuit.getChargesInCircuitElement( charge.circuitElement );
 
-      // if it has a lower and upper neighbor, try to get the distance to each to be half of the charge separation
-      var sorted = _.sortBy( circuitElementCharges, function( e ) {return e.distanceProperty.get();} );
+      // if it has a lower and upper neighbor, nudge the charge to be closer to the midpoint
+      var sorted = _.sortBy( circuitElementCharges, function( e ) { return e.distanceProperty.get(); } );
 
       var chargeIndex = sorted.indexOf( charge );
       var upper = sorted[ chargeIndex + 1 ];
