@@ -298,6 +298,10 @@ define( function( require ) {
           // start near the end
           distAlongNew = Util.clamp( neighbor.chargePathLength - overshoot, 0, neighbor.chargePathLength );
         }
+        else {
+
+          // TODO: does this ever happen?  Should it be forbidden?
+        }
         distAlongNew && circuitLocations.push( createCircuitLocation( this.circuit, neighbor, distAlongNew ) );
       }
       return circuitLocations;
