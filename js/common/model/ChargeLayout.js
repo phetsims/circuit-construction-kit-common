@@ -41,27 +41,25 @@ define( function( require ) {
         // Remove any charges that were already in the branch.
         // TODO: a performance improvement could be to adjust them instead of delete/recreate. This could particularly
         // help when dragging a wire, and the charges are continually re-layed-out.
-        var particlesToRemove = this.circuit.getChargesInCircuitElement( circuitElement );
-        this.circuit.charges.removeAll( particlesToRemove );
+        var chargesToRemove = this.circuit.getChargesInCircuitElement( circuitElement );
+        this.circuit.charges.removeAll( chargesToRemove );
 
-        // compress or expand, but fix a particle at startingPoint and endingPoint.
+        // put charges 1/2 separation from the edge so it will match up with adjacent components
         var offset = CircuitConstructionKitConstants.CHARGE_SEPARATION / 2;
+        var lastChargePosition = circuitElement.chargePathLength - offset;
+        var firstChargePosition = offset;
+        var lengthForCharges = lastChargePosition - firstChargePosition;
 
-        var endingPoint = circuitElement.chargePathLength - offset;
-        var startingPoint = offset;
-        var length = endingPoint - startingPoint;
+        var numberOfCharges = Math.round( lengthForCharges / CircuitConstructionKitConstants.CHARGE_SEPARATION );
 
-        var numberOfParticles = Math.ceil( length / CircuitConstructionKitConstants.CHARGE_SEPARATION );
-        var density = ( numberOfParticles - 1) / length;  // TODO: why is this subtracting 1?
-        var dx = 1 / density;
+        // compute distance between adjacent charges
+        var spacing = lengthForCharges / ( numberOfCharges - 1 );
 
-        // If there is a single particle, show it in the middle of the component.
-        if ( numberOfParticles === 1 ) {
-          dx = 0;
-          offset = (startingPoint + endingPoint) / 2;
-        }
-        for ( var i = 0; i < numberOfParticles; i++ ) {
-          this.circuit.charges.add( new Charge( circuitElement, i * dx + offset, this.circuit.showCurrentProperty, this.circuit.currentTypeProperty.get() === 'electrons' ? -1 : +1 ) );
+        for ( var i = 0; i < numberOfCharges; i++ ) {
+
+          // If there is a single particle, show it in the middle of the component, otherwise space equally
+          var chargePosition = numberOfCharges === 1 ? (firstChargePosition + lastChargePosition) / 2 : i * spacing + offset;
+          this.circuit.charges.add( new Charge( circuitElement, chargePosition, this.circuit.showCurrentProperty, this.circuit.currentTypeProperty.get() === 'electrons' ? -1 : +1 ) );
         }
 
         circuitElement.chargeLayoutDirty = false;
