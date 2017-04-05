@@ -185,6 +185,7 @@ define( function( require ) {
       var upper = sorted[ chargeIndex + 1 ];
       var lower = sorted[ chargeIndex - 1 ];
 
+      // Only adjust a charge if it is between two other charges
       if ( upper && lower ) {
         var separation = upper.distanceProperty.get() - lower.distanceProperty.get();
         var chargeDistance = charge.distanceProperty.get();
