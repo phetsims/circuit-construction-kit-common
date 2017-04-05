@@ -226,45 +226,38 @@ define( function( require ) {
      * @private
      */
     propagate: function( charge, dt ) {
-      var x = charge.distanceProperty.get();
-      assert && assert( _.isNumber( x ), 'distance along wire should be a number' );
+      var chargePosition = charge.distanceProperty.get();
+      assert && assert( _.isNumber( chargePosition ), 'distance along wire should be a number' );
       var current = charge.circuitElement.currentProperty.get() * charge.charge;
 
-      if ( Math.abs( current ) < MIN_CURRENT ) {
-        return;
-      }
+      // Below min current, the charges should remain stationary
+      if ( Math.abs( current ) > MIN_CURRENT ) {
+        var speed = current * SPEED_SCALE;
+        var stepSize = speed * dt * this.scale;
+        var newChargePosition = chargePosition + stepSize;
 
-      var speed = current * SPEED_SCALE;
-      var dx = speed * dt;
-      dx *= this.scale;
-      var newX = x + dx;
-      var circuitElement = charge.circuitElement;
-      if ( circuitElement.containsScalarLocation( newX ) ) {
-        charge.distanceProperty.set( newX );
-      }
-      else {
-
-        // need a new CircuitElement
-        var overshoot = 0;
-        var under = false;
-        if ( newX < 0 ) {
-          overshoot = -newX;
-          under = true;
+        // Step within a single circuit element
+        if ( charge.circuitElement.containsScalarLocation( newChargePosition ) ) {
+          charge.distanceProperty.set( newChargePosition );
         }
         else {
 
-          // TODO: better abstraction for the following line
-          overshoot = Math.abs( circuitElement.chargePathLength - newX );
-          under = false;
-        }
-        assert && assert( !isNaN( overshoot ), 'overshoot is NaN' );
-        assert && assert( overshoot >= 0, 'overshoot is <0' );
-        var circuitLocations = this.getLocations( charge, overshoot, under );
-        if ( circuitLocations.length > 0 ) {
+          // move to a new CircuitElement
+          var overshoot = newChargePosition < 0 ? -newChargePosition : (newChargePosition - charge.circuitElement.chargePathLength);
+          var under = newChargePosition < 0;
 
-          // choose the CircuitElement with the furthest away charge
-          var chosenCircuitLocation = _.minBy( circuitLocations, 'density' );
-          charge.setLocation( chosenCircuitLocation.circuitElement, Math.abs( chosenCircuitLocation.distance ) );
+          assert && assert( !isNaN( overshoot ), 'overshoot should be a number' );
+          assert && assert( overshoot >= 0, 'overshoot should be >=0' );
+
+          // enumerate all possible circuit elements the charge could go to
+          var circuitLocations = this.getLocations( charge, overshoot, under );
+          if ( circuitLocations.length > 0 ) {
+
+            // choose the CircuitElement with the lowest density
+            var chosenCircuitLocation = _.minBy( circuitLocations, 'density' );
+            assert && assert( chosenCircuitLocation.distance >= 0, 'position should be >=0' );
+            charge.setLocation( chosenCircuitLocation.circuitElement, chosenCircuitLocation.distance );
+          }
         }
       }
     },
