@@ -27,38 +27,47 @@ define( function( require ) {
   // Number of times to spread out charges so they don't get bunched up.
   var NUMBER_OF_EQUALIZE_STEPS = 2;
 
-  // Factor that multiplies the current to attain speed in screen coordinates
+  // Factor that multiplies the current to attain speed in screen coordinates per second
   var SPEED_SCALE = 100 / 3;
 
   /**
-   * Returns an object that indicates a position in a circuit element and can compute the charge density in that
-   * circuit element.
-   *
-   * @param {CircuitElement} circuitElement
-   * @param {number} distance
-   * @return {Object}
+   * Sets the charge to not update its position, so that we may apply batch changes without impacting performance
+   * @param {Charge} charge
+   * @constructor
    */
-  var createCircuitLocation = function( circuitElement, distance ) {
+  var DISABLE_UPDATES = function( charge ) {
+    charge.updatingPositionProperty.set( false );
+  };
+
+  /**
+   * Sets the charge to update its position after a batch of changes has been made.
+   * @param {Charge} charge
+   * @constructor
+   */
+  var ENABLE_UPDATES = function( charge ) {
+    charge.updatingPositionProperty.set( true );
+  };
+
+  /**
+   * Returns an object that indicates a position in a circuit element and can compute the charge density in that
+   * circuit element, so we can find the one with the lowest density and move the charge there.
+   *
+   * @param {Circuit} circuit - the entire circuit
+   * @param {CircuitElement} circuitElement - the circuit element
+   * @param {number} distance - the distance along the circuit element
+   * @return {Object} combining circuitElement, distance and density
+   */
+  var createCircuitLocation = function( circuit, circuitElement, distance ) {
     assert && assert( _.isNumber( distance ), 'distance should be a number' );
     assert && assert( circuitElement.containsScalarLocation( distance ), 'circuitElement should contain distance' );
     return {
       circuitElement: circuitElement,
       distance: distance,
-
-      /**
-       * Returns the number of charges per unit
-       * @param circuit
-       * @return {number}
-       */
-      getDensity: function( circuit ) {
-        var particles = circuit.getChargesInCircuitElement( circuitElement );
-        return particles.length / circuitElement.chargePathLength;
-      }
+      density: circuit.getChargesInCircuitElement( circuitElement ).length / circuitElement.chargePathLength
     };
   };
 
   /**
-   * Creates a ChargePropagator
    * @param {Circuit} circuit
    * @constructor
    */
@@ -93,9 +102,7 @@ define( function( require ) {
 
       // Disable incremental updates to improve performance.  The ChargeNodes are only updated once, instead of
       // incrementally many times throughout this update
-      for ( var k = 0; k < this.charges.length; k++ ) {
-        this.charges.get( k ).updatingPositionProperty.set( false );
-      }
+      this.charges.forEach( DISABLE_UPDATES );
 
       // dt would ideally be around 16.666ms = 0.0166 sec.  Cap it to avoid too large of an integration step.
       dt = Math.min( dt, 1 / 30 );
@@ -127,9 +134,7 @@ define( function( require ) {
       }
 
       // After computing the new charge positions (possibly across several deltas), trigger the views to update.
-      for ( k = 0; k < this.charges.length; k++ ) {
-        this.charges.get( k ).updatingPositionProperty.set( true );
-      }
+      this.charges.forEach( ENABLE_UPDATES );
     },
 
     /**
@@ -179,7 +184,7 @@ define( function( require ) {
 
       var circuitElementCharges = this.circuit.getChargesInCircuitElement( charge.circuitElement );
 
-      // if it has a lower and upper neighbor, try to get the distance to each to be half of ELECTRON_DX
+      // if it has a lower and upper neighbor, try to get the distance to each to be half of the charge separation
       var sorted = _.sortBy( circuitElementCharges, function( e ) {return e.distanceProperty.get();} );
 
       var chargeIndex = sorted.indexOf( charge );
@@ -260,10 +265,7 @@ define( function( require ) {
         if ( circuitLocations.length > 0 ) {
 
           // choose the CircuitElement with the furthest away charge
-          var self = this;
-          var chosenCircuitLocation = _.minBy( circuitLocations, function( circuitLocation ) {
-            return circuitLocation.getDensity( self.circuit );
-          } );
+          var chosenCircuitLocation = _.minBy( circuitLocations, 'density' );
           charge.setLocation( chosenCircuitLocation.circuitElement, Math.abs( chosenCircuitLocation.distance ) );
         }
       }
@@ -301,7 +303,7 @@ define( function( require ) {
           else if ( distAlongNew < 0 ) {
             distAlongNew = 0;
           }
-          circuitLocations.push( createCircuitLocation( neighbor, distAlongNew ) );
+          circuitLocations.push( createCircuitLocation( this.circuit, neighbor, distAlongNew ) );
         }
         else if ( current < -THRESHOLD && neighbor.endVertexProperty.get() === vertex ) {
           distAlongNew = neighbor.chargePathLength - overshoot;
@@ -311,7 +313,7 @@ define( function( require ) {
           else if ( distAlongNew < 0 ) {
             distAlongNew = 0;
           }
-          circuitLocations.push( createCircuitLocation( neighbor, distAlongNew ) );
+          circuitLocations.push( createCircuitLocation( this.circuit, neighbor, distAlongNew ) );
         }
       }
       return circuitLocations;
