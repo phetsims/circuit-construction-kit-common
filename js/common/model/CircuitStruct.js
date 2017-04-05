@@ -1,5 +1,4 @@
 // Copyright 2016-2017, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * The CircuitStruct keeps track of the Circuit components but without wiring up listeners or solving physics.
@@ -20,18 +19,44 @@ define( function( require ) {
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Resistor' );
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Switch' );
 
+  /**
+   * @param {Vertex[]} vertices
+   * @param {Wire[]} wires
+   * @param {Resistor[]} resistors
+   * @param {LightBulb[]} lightBulbs
+   * @param {Battery[]} batteries
+   * @param {Switch[]} switches
+   * @constructor
+   */
   function CircuitStruct( vertices, wires, resistors, lightBulbs, batteries, switches ) {
+
+    // @private (read-only)
     this.vertices = vertices;
+
+    // @private (read-only)
     this.wires = wires;
+
+    // @private (read-only)
     this.resistors = resistors;
+
+    // @private (read-only)
     this.lightBulbs = lightBulbs;
+
+    // @private (read-only)
     this.batteries = batteries;
+
+    // @private (read-only)
     this.switches = switches;
   }
 
   circuitConstructionKitCommon.register( 'CircuitStruct', CircuitStruct );
 
   return inherit( Object, CircuitStruct, {
+
+    /**
+     * Clear out the CircuitStruct.
+     * TODO: why is this necessary
+     */
     clear: function() {
       this.vertices.length = 0;
       this.wires.length = 0;
@@ -40,6 +65,11 @@ define( function( require ) {
       this.resistors.length = 0;
       this.switches.length = 0;
     },
+
+    /**
+     * Gets all the circuit elements.
+     * @return {CircuitElement[]}
+     */
     get circuitElements() {
       return []
         .concat( this.wires )
@@ -49,6 +79,13 @@ define( function( require ) {
         .concat( this.resistors );
     }
   }, {
+
+    /**
+     * Create a CircuitStruct from a plain object for deserialization.
+     * @param {Object} circuitState
+     * @param {NumberProperty} resistivityProperty - shared value for resistivity across all of the wires
+     * @return {CircuitStruct}
+     */
     fromStateObject: function( circuitState, resistivityProperty ) { // TODO: Tandem - Pass tandems through
       var circuitStruct = new CircuitStruct( [], [], [], [], [], [] );
       var options = null;
