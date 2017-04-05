@@ -204,7 +204,7 @@ define( function( require ) {
       } );
 
     var chargeSpeedThrottlingReadoutNode = new ChargeSpeedThrottlingReadoutNode(
-      circuitConstructionKitModel.circuit.chargePropagator.timeScaleProperty,
+      circuitConstructionKitModel.circuit.chargeAnimator.timeScaleProperty,
       circuitConstructionKitModel.circuit.showCurrentProperty,
       circuitConstructionKitModel.exploreScreenRunningProperty
     );

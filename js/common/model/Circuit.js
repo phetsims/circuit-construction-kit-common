@@ -24,7 +24,7 @@ define( function( require ) {
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Switch' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Resistor' );
   var ChargeLayout = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/ChargeLayout' );
-  var ChargePropagator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/ChargePropagator' );
+  var ChargeAnimator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/ChargeAnimator' );
   var Vector2 = require( 'DOT/Vector2' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/FixedLengthCircuitElement' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
@@ -89,7 +89,7 @@ define( function( require ) {
     this.chargeLayout = new ChargeLayout( this );
 
     // @private - move the charges with speed proportional to current
-    this.chargePropagator = new ChargePropagator( this );
+    this.chargeAnimator = new ChargeAnimator( this );
 
     // Re-solve the circuit when voltages or resistances change.
     var solve = function() { self.solve(); };
@@ -576,7 +576,7 @@ define( function( require ) {
       this.stepActions.length = 0;
 
       // Move the charges
-      this.chargePropagator.step( dt );
+      this.chargeAnimator.step( dt );
     },
 
     /**

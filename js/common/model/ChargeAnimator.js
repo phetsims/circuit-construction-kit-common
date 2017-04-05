@@ -15,8 +15,10 @@ define( function( require ) {
   var RunningAverage = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/RunningAverage' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var NumberProperty = require( 'AXON/NumberProperty' );
+  var Util = require( 'DOT/Util' );
 
   // constants
+  var CURRENT_THRESHOLD = 1E-8;
 
   // If the current is lower than this, then there is no charge movement
   var MIN_CURRENT = Math.pow( 10, -10 );
@@ -81,7 +83,7 @@ define( function( require ) {
    * @param {Circuit} circuit
    * @constructor
    */
-  function ChargePropagator( circuit ) {
+  function ChargeAnimator( circuit ) {
 
     // @private (read-only) the ObservableArray of Charge instances
     this.charges = circuit.charges;
@@ -99,9 +101,9 @@ define( function( require ) {
     this.timeScaleProperty = new NumberProperty( 1, { range: { min: 0, max: 1 } } ); // 1 is full speed, 0.5 is running at half speed, etc.
   }
 
-  circuitConstructionKitCommon.register( 'ChargePropagator', ChargePropagator );
+  circuitConstructionKitCommon.register( 'ChargeAnimator', ChargeAnimator );
 
-  return inherit( Object, ChargePropagator, {
+  return inherit( Object, ChargeAnimator, {
 
     /**
      * Update the location of the charges based on the circuit currents
@@ -263,16 +265,17 @@ define( function( require ) {
     },
 
     /**
-     * Returns the locations where a charge can flow to
-     * @param {Charge} charge
-     * @param {number} overshoot
-     * @param {boolean} under
+     * Returns the locations where a charge can flow to (connected circuits with current flowing in the right direction)
+     * @param {Charge} charge - the charge that is moving
+     * @param {number} overshoot - the distance the charge should appear along the next circuit element
+     * @param {boolean} under - determines whether the charge will be at the start or end of the circuit element
      * @return {Object[]} see createCircuitLocation
      * @private
      */
     getLocations: function( charge, overshoot, under ) {
-      var circuitElement = charge.circuitElement;
-      var vertex = under ? circuitElement.startVertexProperty.get() : circuitElement.endVertexProperty.get();
+      var vertex = under ?
+                   charge.circuitElement.startVertexProperty.get() :
+                   charge.circuitElement.endVertexProperty.get();
       var adjacentCircuitElements = this.circuit.getNeighborCircuitElements( vertex );
       var circuitLocations = [];
 
@@ -285,27 +288,17 @@ define( function( require ) {
         // The linear algebra solver can result in currents of 1E-12 where it should be zero.  For these cases, don't
         // permit charges to flow.
         // TODO: Should the current be clamped after linear algebra?
-        var THRESHOLD = 1E-8;
-        if ( current > THRESHOLD && neighbor.startVertexProperty.get() === vertex ) {//start near the beginning.
-          distAlongNew = overshoot;
-          if ( distAlongNew > neighbor.chargePathLength ) {
-            distAlongNew = neighbor.chargePathLength;
-          }
-          else if ( distAlongNew < 0 ) {
-            distAlongNew = 0;
-          }
-          circuitLocations.push( createCircuitLocation( this.circuit, neighbor, distAlongNew ) );
+        if ( current > CURRENT_THRESHOLD && neighbor.startVertexProperty.get() === vertex ) {
+
+          //start near the beginning.
+          distAlongNew = Util.clamp( overshoot, 0, neighbor.chargePathLength );
         }
-        else if ( current < -THRESHOLD && neighbor.endVertexProperty.get() === vertex ) {
-          distAlongNew = neighbor.chargePathLength - overshoot;
-          if ( distAlongNew > neighbor.chargePathLength ) {
-            distAlongNew = neighbor.chargePathLength;
-          }
-          else if ( distAlongNew < 0 ) {
-            distAlongNew = 0;
-          }
-          circuitLocations.push( createCircuitLocation( this.circuit, neighbor, distAlongNew ) );
+        else if ( current < -CURRENT_THRESHOLD && neighbor.endVertexProperty.get() === vertex ) {
+
+          // start near the end
+          distAlongNew = Util.clamp( neighbor.chargePathLength - overshoot, 0, neighbor.chargePathLength );
         }
+        distAlongNew && circuitLocations.push( createCircuitLocation( this.circuit, neighbor, distAlongNew ) );
       }
       return circuitLocations;
     }
