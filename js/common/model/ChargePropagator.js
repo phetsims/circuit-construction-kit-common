@@ -187,31 +187,28 @@ define( function( require ) {
 
       // Only adjust a charge if it is between two other charges
       if ( upper && lower ) {
-        var separation = upper.distanceProperty.get() - lower.distanceProperty.get();
-        var chargeDistance = charge.distanceProperty.get();
+        var neighborSeparation = upper.distanceProperty.get() - lower.distanceProperty.get();
+        var chargePosition = charge.distanceProperty.get();
 
-        var dest = lower.distanceProperty.get() + separation / 2;
-        var distMoving = Math.abs( dest - chargeDistance );
-        var sameDirAsCurrent = (dest - chargeDistance) > 0 && charge.circuitElement.currentProperty.get() * charge.charge > 0;
-        var speedScale = SPEED_SCALE * 100;//to have same scale as 3.17.00
-        var correctionSpeed = .055 / NUMBER_OF_EQUALIZE_STEPS * speedScale;
-        if ( !sameDirAsCurrent ) {
-          correctionSpeed = .01 / NUMBER_OF_EQUALIZE_STEPS * speedScale;
-        }
-        var maxDX = Math.abs( correctionSpeed * dt );
+        var desiredPosition = lower.distanceProperty.get() + neighborSeparation / 2;
+        var distanceToMove = Math.abs( desiredPosition - chargePosition );
+        var sameDirectionAsCurrent = (desiredPosition - chargePosition) > 0 && charge.circuitElement.currentProperty.get() * charge.charge > 0;
+        var correctionSpeed = (sameDirectionAsCurrent ? 5.5 : 1) / NUMBER_OF_EQUALIZE_STEPS * SPEED_SCALE;
+        var maxAllowedStepSize = Math.abs( correctionSpeed * dt );
 
-        if ( distMoving > maxDX ) {
+        // TODO: this sign seems wrong
+        if ( distanceToMove > maxAllowedStepSize ) {
 
           // move in the appropriate direction maxDX
-          if ( dest < chargeDistance ) {
-            dest = chargeDistance - maxDX;
+          if ( desiredPosition < chargePosition ) {
+            desiredPosition = chargePosition - maxAllowedStepSize;
           }
-          else if ( dest > chargeDistance ) {
-            dest = chargeDistance + maxDX;
+          else if ( desiredPosition > chargePosition ) {
+            desiredPosition = chargePosition + maxAllowedStepSize;
           }
         }
-        if ( dest >= 0 && dest <= charge.circuitElement.chargePathLength ) {
-          charge.distanceProperty.set( dest );
+        if ( desiredPosition >= 0 && desiredPosition <= charge.circuitElement.chargePathLength ) {
+          charge.distanceProperty.set( desiredPosition );
         }
       }
     },
