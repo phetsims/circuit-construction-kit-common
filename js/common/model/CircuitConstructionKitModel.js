@@ -62,6 +62,7 @@ define( function( require ) {
       tandem: tandem.createTandem( 'selectedZoomProperty' )
     } );
 
+    // @public (read-only) the animated value of the zoom level
     this.currentZoomProperty = new Property( this.selectedZoomProperty.get(), {
       tandem: tandem.createTandem( 'currentZoomProperty' )
     } );
@@ -92,7 +93,7 @@ define( function( require ) {
     } );
 
     // When the user manipulates something, hide the readouts, see https://github.com/phetsims/circuit-construction-kit/issues/130
-    // The following cases result in pausing
+    // The following cases result in hiding the readouts:
     // 1. More components are dragged out of the toolbox
     // 2. Any vertex is broken
     // 3. Component voltage/resistance is edited
@@ -128,6 +129,7 @@ define( function( require ) {
       var emitCircuitChanged = function() {
 
         // Wait until fully wired up.  If we send out messages immediately here, some vertices are not registered and cause exceptions
+        // TODO: can we make this synchronous?
         setTimeout( function() {
           var circuit = JSON.stringify( self.circuit.toStateObject() );
           circuitChangedEmitter.emit1( circuit );
@@ -148,7 +150,7 @@ define( function( require ) {
   return inherit( Object, CircuitConstructionKitModel, {
 
     /**
-     * Update the circuit when the simulation clock steps.
+     * Update the circuit and zoom level when the simulation clock steps.
      * @param {number} dt - elapsed time in seconds
      * @public
      */

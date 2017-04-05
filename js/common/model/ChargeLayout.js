@@ -30,7 +30,7 @@ define( function( require ) {
 
     /**
      * Creates and positions charges in the specified circuit element.
-     * @param circuitElement
+     * @param {CircuitElement} circuitElement - the circuit element within which the charges will be updated
      * @public
      */
     layoutCharges: function( circuitElement ) {
