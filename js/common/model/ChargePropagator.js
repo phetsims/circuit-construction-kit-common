@@ -101,11 +101,11 @@ define( function( require ) {
       }
 
       // dt would ideally be around 16.666ms = 0.0166 sec.  Cap it to avoid too large of an integration step.
-      dt = Math.min( dt, 1 / 30 ) * TIME_SCALE;
+      dt = Math.min( dt, 1 / 30 );
 
       var maxCurrentMagnitude = this.getMaxCurrentMagnitude();
       var maxSpeed = maxCurrentMagnitude * SPEED_SCALE;
-      var maxPositionChange = maxSpeed * dt;
+      var maxPositionChange = maxSpeed * dt * TIME_SCALE;
       if ( maxPositionChange >= MAX_POSITION_CHANGE ) {
         this.scale = MAX_POSITION_CHANGE / maxPositionChange;
       }
@@ -201,7 +201,7 @@ define( function( require ) {
         if ( !sameDirAsCurrent ) {
           correctionSpeed = .01 / NUMBER_OF_EQUALIZE_STEPS * speedScale;
         }
-        var maxDX = Math.abs( correctionSpeed * dt );
+        var maxDX = Math.abs( correctionSpeed * dt * TIME_SCALE );
 
         if ( distMoving > maxDX ) {
 
@@ -235,7 +235,7 @@ define( function( require ) {
       }
 
       var speed = current * SPEED_SCALE;
-      var dx = speed * dt;
+      var dx = speed * dt * TIME_SCALE;
       dx *= this.scale;
       var newX = x + dx;
       var circuitElement = charge.circuitElement;
@@ -259,7 +259,7 @@ define( function( require ) {
         }
         assert && assert( !isNaN( overshoot ), 'overshoot is NaN' );
         assert && assert( overshoot >= 0, 'overshoot is <0' );
-        var circuitLocations = this.getLocations( charge, dt, overshoot, under );
+        var circuitLocations = this.getLocations( charge, overshoot, under );
         if ( circuitLocations.length > 0 ) {
 
           // choose the CircuitElement with the furthest away charge
@@ -275,13 +275,12 @@ define( function( require ) {
     /**
      * Returns the locations where a charge can flow to
      * @param {Charge} charge
-     * @param {number} dt
      * @param {number} overshoot
      * @param {boolean} under
      * @return {Object[]} see createCircuitLocation
      * @private
      */
-    getLocations: function( charge, dt, overshoot, under ) {
+    getLocations: function( charge, overshoot, under ) {
       var circuitElement = charge.circuitElement;
       var vertex = under ? circuitElement.startVertexProperty.get() : circuitElement.endVertexProperty.get();
       var adjacentCircuitElements = this.circuit.getNeighborCircuitElements( vertex );
