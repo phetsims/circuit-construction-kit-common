@@ -50,7 +50,8 @@ define( function( require ) {
         var firstChargePosition = offset;
         var lengthForCharges = lastChargePosition - firstChargePosition;
 
-        var numberOfCharges = Math.round( lengthForCharges / CircuitConstructionKitConstants.CHARGE_SEPARATION );
+        // Math.round leads to charges too far apart when N=2
+        var numberOfCharges = Math.ceil( lengthForCharges / CircuitConstructionKitConstants.CHARGE_SEPARATION );
 
         // compute distance between adjacent charges
         var spacing = lengthForCharges / ( numberOfCharges - 1 );

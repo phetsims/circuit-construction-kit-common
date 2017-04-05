@@ -28,10 +28,7 @@ define( function( require ) {
   var NUMBER_OF_EQUALIZE_STEPS = 2;
 
   // Factor that multiplies the current to attain speed in screen coordinates
-  var SPEED_SCALE = 1 / 3;
-
-  // Fudge factor to increase dt to make model compatible.  TODO: eliminate this
-  var TIME_SCALE = 100;
+  var SPEED_SCALE = 100 / 3;
 
   /**
    * Returns an object that indicates a position in a circuit element and can compute the charge density in that
@@ -105,7 +102,7 @@ define( function( require ) {
 
       var maxCurrentMagnitude = this.getMaxCurrentMagnitude();
       var maxSpeed = maxCurrentMagnitude * SPEED_SCALE;
-      var maxPositionChange = maxSpeed * dt * TIME_SCALE;
+      var maxPositionChange = maxSpeed * dt;
       if ( maxPositionChange >= MAX_POSITION_CHANGE ) {
         this.scale = MAX_POSITION_CHANGE / maxPositionChange;
       }
@@ -196,12 +193,12 @@ define( function( require ) {
         var dest = lower.distanceProperty.get() + separation / 2;
         var distMoving = Math.abs( dest - chargeDistance );
         var sameDirAsCurrent = (dest - chargeDistance) > 0 && charge.circuitElement.currentProperty.get() * charge.charge > 0;
-        var speedScale = 1000.0 / 30.0;//to have same scale as 3.17.00
+        var speedScale = SPEED_SCALE * 100;//to have same scale as 3.17.00
         var correctionSpeed = .055 / NUMBER_OF_EQUALIZE_STEPS * speedScale;
         if ( !sameDirAsCurrent ) {
           correctionSpeed = .01 / NUMBER_OF_EQUALIZE_STEPS * speedScale;
         }
-        var maxDX = Math.abs( correctionSpeed * dt * TIME_SCALE );
+        var maxDX = Math.abs( correctionSpeed * dt );
 
         if ( distMoving > maxDX ) {
 
@@ -235,7 +232,7 @@ define( function( require ) {
       }
 
       var speed = current * SPEED_SCALE;
-      var dx = speed * dt * TIME_SCALE;
+      var dx = speed * dt;
       dx *= this.scale;
       var newX = x + dx;
       var circuitElement = charge.circuitElement;
