@@ -49,6 +49,16 @@ define( function( require ) {
   };
 
   /**
+   * Gets the absolute value of the current in a circuit element.
+   * @param {CircuitElement} circuitElement
+   * @return {number}
+   * @constructor
+   */
+  var CURRENT_MAGNITUDE = function( circuitElement ) {
+    return Math.abs( circuitElement.currentProperty.get() );
+  };
+
+  /**
    * Returns an object that indicates a position in a circuit element and can compute the charge density in that
    * circuit element, so we can find the one with the lowest density and move the charge there.
    *
@@ -107,18 +117,18 @@ define( function( require ) {
       // dt would ideally be around 16.666ms = 0.0166 sec.  Cap it to avoid too large of an integration step.
       dt = Math.min( dt, 1 / 30 );
 
-      var maxCurrentMagnitude = this.getMaxCurrentMagnitude();
+      // Find the fastest current in any circuit element
+      var maxCurrentMagnitude = _.max( this.circuit.circuitElements.getArray().map( CURRENT_MAGNITUDE ) );
       var maxSpeed = maxCurrentMagnitude * SPEED_SCALE;
       var maxPositionChange = maxSpeed * dt;
-      if ( maxPositionChange >= MAX_POSITION_CHANGE ) {
-        this.scale = MAX_POSITION_CHANGE / maxPositionChange;
-      }
-      else {
-        this.scale = 1;
-      }
-      var timeScalingPercentValue = this.timeScaleRunningAverage.updateRunningAverage( this.scale );
 
-      this.timeScaleProperty.set( timeScalingPercentValue );
+      // Slow down the simulation if the fastest particle step distance exceeds the maximum allowed step
+      this.scale = maxPositionChange >= MAX_POSITION_CHANGE ? MAX_POSITION_CHANGE / maxPositionChange : 1;
+
+      // Average over scale values to smooth them out
+      var averageScale = this.timeScaleRunningAverage.updateRunningAverage( this.scale );
+      this.timeScaleProperty.set( averageScale );
+
       for ( var i = 0; i < this.charges.length; i++ ) {
         var charge = this.charges.get( i );
 
@@ -138,31 +148,15 @@ define( function( require ) {
     },
 
     /**
-     * Returns the absolute value of the most extreme current.
-     * @returns {number}
-     * @private
-     */
-    getMaxCurrentMagnitude: function() {
-      var max = 0;
-      for ( var i = 0; i < this.circuit.circuitElements.length; i++ ) {
-        var current = this.circuit.circuitElements.get( i ).currentProperty.get();
-        max = Math.max( max, Math.abs( current ) );
-      }
-      return max;
-    },
-
-    /**
      * Make the charges repel each other so they don't bunch up.
      * @param {number} dt - the elapsed time in seconds
      * @private
      */
     equalizeAll: function( dt ) {
-      var indices = [];
+
+      // Update them in a stochastic order to avoid systematic sources of error building up.
+      var indices = phet.joist.random.shuffle( _.range( this.charges.length ) );
       for ( var i = 0; i < this.charges.length; i++ ) {
-        indices.push( i );
-      }
-      indices = phet.joist.random.shuffle( indices );
-      for ( i = 0; i < this.charges.length; i++ ) {
         var charge = this.charges.get( indices[ i ] );
 
         // No need to update charges in chargeLayoutDirty circuit elements, they will be replaced anyways.  Skipping
