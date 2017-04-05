@@ -1,5 +1,4 @@
 // Copyright 2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * This code governs the movement of charges, making sure they are distributed equally among the different CircuitElements.
