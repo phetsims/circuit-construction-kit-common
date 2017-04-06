@@ -466,7 +466,7 @@ define( function( require ) {
      * @param {Image} probeNode - the probe node from the VoltmeterNode
      * @param {Vector2} probePosition
      * @private
-     * @return {Object} with vertex (for checking connectivity) and voltage (if connected)
+     * @returns {Object} with vertex (for checking connectivity) and voltage (if connected)
      */
     getVoltageConnection: function( probeNode, probePosition ) {
 

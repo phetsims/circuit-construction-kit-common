@@ -286,7 +286,7 @@ define( function( require ) {
     /**
      * Determine the distance to the closest Vertex
      * @param {Vertex} vertex
-     * @return {number} - distance to nearest other Vertex in view coordinates
+     * @returns {number} - distance to nearest other Vertex in view coordinates
      * @private
      */
     closestDistanceToOtherVertex: function( vertex ) {
@@ -390,7 +390,7 @@ define( function( require ) {
     /**
      * Returns true if the given vertex has a fixed connection to a black box interface vertex.
      * @param {Vertex} v
-     * @return {boolean}
+     * @returns {boolean}
      * @private
      */
     hasFixedConnectionToBlackBoxInterfaceVertex: function( v ) {
@@ -403,7 +403,7 @@ define( function( require ) {
     /**
      * Returns true if the CircuitElement is not connected to any other CircuitElement.
      * @param {CircuitElement} circuitElement
-     * @return {boolean}
+     * @returns {boolean}
      * @public
      */
     isSingle: function( circuitElement ) {
@@ -459,7 +459,7 @@ define( function( require ) {
     /**
      * Gets the number of CircuitElements connected to the specified Vertex
      * @param {Vertex} vertex
-     * @return {number}
+     * @returns {number}
      * @public
      */
     countCircuitElements: function( vertex ) {
@@ -472,7 +472,7 @@ define( function( require ) {
      * Determines whether the specified Vertices are connected through any arbitrary connections.
      * @param {Vertex} vertex1
      * @param {Vertex} vertex2
-     * @return {boolean}
+     * @returns {boolean}
      * @public
      */
     areVerticesConnected: function( vertex1, vertex2 ) {
@@ -597,7 +597,7 @@ define( function( require ) {
      * to be the start/end of a single CircuitElement
      * @param {Vertex} a
      * @param {Vertex} b
-     * @return {boolean}
+     * @returns {boolean}
      * @private
      */
     isVertexAdjacent: function( a, b ) {
@@ -633,7 +633,7 @@ define( function( require ) {
     /**
      * Get an array of all the vertices adjacent to the specified Vertex.
      * @param {Vertex} vertex - the vertex to get neighbors for
-     * @return {Vertex[]}
+     * @returns {Vertex[]}
      * @private
      */
     getAllNeighborVertices: function( vertex ) {
@@ -726,7 +726,7 @@ define( function( require ) {
      * Find the subgraph where all vertices are connected by FixedLengthCircuitElements, not stretchy wires.
      * @param {Vertex} vertex
      * @param {Function} [okToVisit] - rule that determines which vertices are OK to visit
-     * @return {Vertex[]}
+     * @returns {Vertex[]}
      * @public
      */
     findAllFixedVertices: function( vertex, okToVisit ) {

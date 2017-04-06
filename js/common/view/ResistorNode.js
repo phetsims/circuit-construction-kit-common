@@ -60,7 +60,7 @@ define( function( require ) {
     /**
      * Get a color band for the given index.
      * @param {number} index
-     * @return {Rectangle}
+     * @returns {Rectangle}
      */
     var getColorBand = function( index ) {
 

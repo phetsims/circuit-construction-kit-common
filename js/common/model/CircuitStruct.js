@@ -68,7 +68,7 @@ define( function( require ) {
 
     /**
      * Gets all the circuit elements.
-     * @return {CircuitElement[]}
+     * @returns {CircuitElement[]}
      */
     get circuitElements() {
       return []
@@ -84,7 +84,7 @@ define( function( require ) {
      * Create a CircuitStruct from a plain object for deserialization.
      * @param {Object} circuitState
      * @param {NumberProperty} resistivityProperty - shared value for resistivity across all of the wires
-     * @return {CircuitStruct}
+     * @returns {CircuitStruct}
      */
     fromStateObject: function( circuitState, resistivityProperty ) { // TODO: Tandem - Pass tandems through
       var circuitStruct = new CircuitStruct( [], [], [], [], [], [] );

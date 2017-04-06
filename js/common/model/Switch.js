@@ -66,7 +66,7 @@ define( function( require ) {
   return inherit( CircuitElement, Switch, {
     /**
      * @override
-     * @return {Property[]}
+     * @returns {Property[]}
      */
     getCircuitProperties: function() {
       return [

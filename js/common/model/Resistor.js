@@ -37,7 +37,7 @@ define( function( require ) {
 
     /**
      * @override
-     * @return {Property[]}
+     * @returns {Property[]}
      */
     getCircuitProperties: function() {
       return [ this.resistanceProperty ];

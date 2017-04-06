@@ -146,7 +146,7 @@ define( function( require ) {
     /**
      * Convenience function that gets the stroked shape for the wire line node with the given style
      * @param {LineStyles} lineStyles
-     * @return {Shape}
+     * @returns {Shape}
      */
     var getHighlightStrokedShape = function( lineStyles ) {
       return self.lineNode.shape.getStrokedShape( lineStyles );
@@ -329,7 +329,7 @@ define( function( require ) {
 
     /**
      * Gets the shape of the line node in the parent's coordinate frame for hit testing.
-     * @return {Shape}
+     * @returns {Shape}
      * @public
      */
     getStrokedShape: function() {

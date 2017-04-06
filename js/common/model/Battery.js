@@ -46,7 +46,7 @@ define( function( require ) {
 
     /**
      * @override
-     * @return {Property[]}
+     * @returns {Property[]}
      * @public
      */
     getCircuitProperties: function() {

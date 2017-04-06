@@ -52,7 +52,7 @@ define( function( require ) {
   /**
    * Gets the absolute value of the current in a circuit element.
    * @param {CircuitElement} circuitElement
-   * @return {number}
+   * @returns {number}
    * @constructor
    */
   var CURRENT_MAGNITUDE = function( circuitElement ) {
@@ -66,7 +66,7 @@ define( function( require ) {
    * @param {Circuit} circuit - the entire circuit
    * @param {CircuitElement} circuitElement - the circuit element
    * @param {number} distance - the distance along the circuit element
-   * @return {Object} combining circuitElement, distance and density
+   * @returns {Object} combining circuitElement, distance and density
    */
   var createCircuitLocation = function( circuit, circuitElement, distance ) {
     assert && assert( _.isNumber( distance ), 'distance should be a number' );
@@ -268,7 +268,7 @@ define( function( require ) {
      * @param {Charge} charge - the charge that is moving
      * @param {number} overshoot - the distance the charge should appear along the next circuit element
      * @param {boolean} under - determines whether the charge will be at the start or end of the circuit element
-     * @return {Object[]} see createCircuitLocation
+     * @returns {Object[]} see createCircuitLocation
      * @private
      */
     getLocations: function( charge, overshoot, under ) {

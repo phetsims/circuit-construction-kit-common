@@ -186,7 +186,7 @@ define( function( require ) {
     /**
      * Returns whether this CircuitElement contains the specified Vertex as its startVertex or endVertex.
      * @param {Vertex} vertex - the vertex to check for
-     * @return {boolean}
+     * @returns {boolean}
      * @public
      */
     containsVertex: function( vertex ) {
@@ -197,7 +197,7 @@ define( function( require ) {
      * Returns true if this CircuitElement contains both Vertex instances.
      * @param {Vertex} vertex1
      * @param {Vertex} vertex2
-     * @return {boolean}
+     * @returns {boolean}
      * @public
      */
     containsBothVertices: function( vertex1, vertex2 ) {
@@ -207,7 +207,7 @@ define( function( require ) {
     /**
      * Gets the 2D Position along the CircuitElement corresponding to the given scalar distance
      * @param {number} distanceAlongWire - the scalar distance from one endpoint to another.
-     * @return {Vector2} the position in view coordinates
+     * @returns {Vector2} the position in view coordinates
      * @public
      */
     getPositionAndAngle: function( distanceAlongWire ) {
@@ -222,7 +222,7 @@ define( function( require ) {
     /**
      * Returns true if this CircuitElement contains the specified scalar location.
      * @param {number} scalarLocation
-     * @return {boolean}
+     * @returns {boolean}
      * @public
      */
     containsScalarLocation: function( scalarLocation ) {
@@ -232,7 +232,7 @@ define( function( require ) {
     /**
      * Get all Property instances that influence the circuit dynamics.
      * @abstract must be specified by the subclass
-     * @return {Property[]}
+     * @returns {Property[]}
      * @public
      */
     getCircuitProperties: function() {
@@ -242,7 +242,7 @@ define( function( require ) {
     /**
      * Return the indices of the vertices, for debugging.
      * @public
-     * @return {[number,number]}
+     * @returns {[number,number]}
      */
     get indices() {
       return [ this.startVertexProperty.get().index, this.endVertexProperty.get().index ];
