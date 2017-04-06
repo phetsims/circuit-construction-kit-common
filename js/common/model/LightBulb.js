@@ -57,19 +57,6 @@ define( function( require ) {
   var start = points[ 0 ];
   var end = points[ points.length - 1 ];
 
-  // See http://stackoverflow.com/questions/12161277/how-to-rotate-a-vertex-around-a-certain-point
-  // TODO: move to Vector2?, see https://github.com/phetsims/dot/issues/66
-  var rotatedAbout = function( point, origin, angle ) {
-    var dx = (point.x - origin.x);
-    var dy = (point.y - origin.y);
-    var cos = Math.cos( angle );
-    var sin = Math.sin( angle );
-    return new Vector2(
-      origin.x + dx * cos - dy * sin,
-      origin.y + dx * sin + dy * cos
-    );
-  };
-
   /**
    *
    * @constructor
@@ -158,7 +145,7 @@ define( function( require ) {
           var angle = vd.angle() - this.vertexDelta.angle();
 
           // rotate the point about the start vertex
-          var p = rotatedAbout( position, this.startVertexProperty.get().positionProperty.get(), angle );
+          var p = position.rotatedAboutPoint( this.startVertexProperty.get().positionProperty.get(), angle );
 
           var localAngle = q2.minus( q1 ).angle();
           return { position: p, angle: localAngle };
