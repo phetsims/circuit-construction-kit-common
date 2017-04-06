@@ -1,4 +1,4 @@
-// Copyright 2016, University of Colorado Boulder
+// Copyright 2016-2017, University of Colorado Boulder
 
 /**
  * Creates Charge instances in a CircuitElement when it has been created, or when an adjacent wire's length has been modified.

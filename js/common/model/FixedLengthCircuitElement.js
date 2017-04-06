@@ -1,4 +1,4 @@
-// Copyright 2015-2016, University of Colorado Boulder
+// Copyright 2015-2017, University of Colorado Boulder
 
 /**
  * CircuitElements such as Resistor, Battery, etc have a fixed length (unlike stretchy Wires).  This is their common

@@ -1,4 +1,4 @@
-// Copyright 2016, University of Colorado Boulder
+// Copyright 2016-2017, University of Colorado Boulder
 
 /**
  * This code governs the movement of charges, making sure they are distributed equally among the different CircuitElements.

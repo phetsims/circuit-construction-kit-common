@@ -1,8 +1,8 @@
-// Copyright 2015-2016, University of Colorado Boulder
+// Copyright 2015-2017, University of Colorado Boulder
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- *
+ * The LightBulb is a CircuitElement that shines when current flows through it.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
