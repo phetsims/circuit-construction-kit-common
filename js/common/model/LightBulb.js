@@ -62,36 +62,42 @@ define( function( require ) {
    * @constructor
    */
   function LightBulb( startVertex, endVertex, resistance, options ) {
+
+    // @private
     this.resistanceProperty = new NumberProperty( resistance );
 
-    // TODO: copied
+    // @private (read-only) the vector between the vertices
+    this.vertexDelta = endVertex.positionProperty.get().minus( startVertex.positionProperty.get() );
+
     var accumulatedDistance = 0;
     for ( var i = 0; i < points.length - 1; i++ ) {
-
-      var p1 = points[ i ];
-      var p2 = points[ i + 1 ];
-
-      var p1X = Util.linear( start.x, end.x, startVertex.positionProperty.get().x, endVertex.positionProperty.get().x, p1.x );
-      var p1Y = Util.linear( start.y, end.y, startVertex.positionProperty.get().y, endVertex.positionProperty.get().y, p1.y );
-
-      var p2X = Util.linear( start.x, end.x, startVertex.positionProperty.get().x, endVertex.positionProperty.get().x, p2.x );
-      var p2Y = Util.linear( start.y, end.y, startVertex.positionProperty.get().y, endVertex.positionProperty.get().y, p2.y );
-
-      var q1 = new Vector2( p1X, p1Y );
-      var q2 = new Vector2( p2X, p2Y );
+      var q1 = this.getPoint( i, startVertex );
+      var q2 = this.getPoint( i + 1, startVertex );
       accumulatedDistance += q2.distance( q1 );
     }
 
     var chargePathLength = accumulatedDistance - 1E-8; // changes the speed at which particles go through the light bulb
     FixedLengthCircuitElement.call( this, startVertex, endVertex, DISTANCE_BETWEEN_VERTICES, chargePathLength, options ); // TODO: what are options here?
-
-    // @private (read-only) the vector between the vertices
-    this.vertexDelta = endVertex.positionProperty.get().minus( startVertex.positionProperty.get() );
   }
 
   circuitConstructionKitCommon.register( 'LightBulb', LightBulb );
 
   return inherit( FixedLengthCircuitElement, LightBulb, {
+
+    /**
+     * Get the Vector2 corresponding to the specified index, using the startVertex as an origin.
+     * @param {number} index
+     * @param {Vertex} startVertex
+     * @returns {Vector2}
+     */
+    getPoint: function( index, startVertex ) {
+      var p1 = points[ index ];
+
+      var p1X = Util.linear( start.x, end.x, startVertex.positionProperty.get().x, startVertex.positionProperty.get().x + this.vertexDelta.x, p1.x );
+      var p1Y = Util.linear( start.y, end.y, startVertex.positionProperty.get().y, startVertex.positionProperty.get().y + this.vertexDelta.y, p1.y );
+
+      return new Vector2( p1X, p1Y );
+    },
 
     /**
      * @override
@@ -120,18 +126,9 @@ define( function( require ) {
       var accumulatedDistance = 0;
       var prev = 0;
       for ( var i = 0; i < points.length - 1; i++ ) {
+        var q1 = this.getPoint( i, this.startVertexProperty.get() );
+        var q2 = this.getPoint( i + 1, this.startVertexProperty.get() );
 
-        var p1 = points[ i ];
-        var p2 = points[ i + 1 ];
-
-        var p1X = Util.linear( start.x, end.x, this.startVertexProperty.get().positionProperty.get().x, this.startVertexProperty.get().positionProperty.get().x + this.vertexDelta.x, p1.x );
-        var p1Y = Util.linear( start.y, end.y, this.startVertexProperty.get().positionProperty.get().y, this.startVertexProperty.get().positionProperty.get().y + this.vertexDelta.y, p1.y );
-
-        var p2X = Util.linear( start.x, end.x, this.startVertexProperty.get().positionProperty.get().x, this.startVertexProperty.get().positionProperty.get().x + this.vertexDelta.x, p2.x );
-        var p2Y = Util.linear( start.y, end.y, this.startVertexProperty.get().positionProperty.get().y, this.startVertexProperty.get().positionProperty.get().y + this.vertexDelta.y, p2.y );
-
-        var q1 = new Vector2( p1X, p1Y );
-        var q2 = new Vector2( p2X, p2Y );
         accumulatedDistance += q2.distance( q1 );
 
         // Find what segment the charge is in
