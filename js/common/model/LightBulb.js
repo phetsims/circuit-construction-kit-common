@@ -20,6 +20,8 @@ define( function( require ) {
   var NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
+
+  // The distance (as the crow flies) between start and end vertex
   var DISTANCE_BETWEEN_VERTICES = 33;
 
   // Tinker with coordinates to get thing to match up
@@ -46,8 +48,8 @@ define( function( require ) {
   var END_POINT = POINTS[ POINTS.length - 1 ];
 
   /**
-   * @param {Vertex} startVertex - TODO: is this the side or bottom vertex?
-   * @param {Vertex} endVertex
+   * @param {Vertex} startVertex - the side Vertex
+   * @param {Vertex} endVertex - the bottom Vertex
    * @param {number} resistance - in ohms
    * @param {Object} [options]
    * @constructor
@@ -155,19 +157,26 @@ define( function( require ) {
       return { position: new Vector2(), angle: 0 };
     }
   }, {
-    DISTANCE_BETWEEN_VERTICES: DISTANCE_BETWEEN_VERTICES,
+
+    /**
+     * Create a LightBulb at the specified position
+     * @param {Vector2} position
+     * @param {Tandem} circuitVertexGroupTandem
+     * @param {Object} [options]
+     * @returns {LightBulb}
+     * @public
+     */
     createAtPosition: function( position, circuitVertexGroupTandem, options ) { // TODO: Tandem
       var translation = new Vector2( 30, 10 );
 
       // Connect at the side and bottom
-      var lightBulbLength = LightBulb.DISTANCE_BETWEEN_VERTICES;
-      var startPoint = new Vector2( position.x - lightBulbLength / 2, position.y ).plus( translation );
-      var endPoint = new Vector2( position.x, position.y + lightBulbLength / 4 ).plus( translation );
+      var startPoint = new Vector2( position.x - DISTANCE_BETWEEN_VERTICES / 2, position.y ).plus( translation );
+      var endPoint = new Vector2( position.x, position.y + DISTANCE_BETWEEN_VERTICES / 4 ).plus( translation );
 
       var delta = endPoint.minus( startPoint );
       var angle = delta.angle();
 
-      endPoint = startPoint.plus( Vector2.createPolar( LightBulb.DISTANCE_BETWEEN_VERTICES, angle - Math.PI * 0.3975 ) );
+      endPoint = startPoint.plus( Vector2.createPolar( DISTANCE_BETWEEN_VERTICES, angle - Math.PI * 0.3975 ) );
 
       // start vertex is at the bottom
       var startVertex = new Vertex( startPoint.x, startPoint.y, {
