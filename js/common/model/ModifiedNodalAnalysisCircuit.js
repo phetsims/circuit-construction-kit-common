@@ -21,209 +21,6 @@ define( function( require ) {
   var DEBUG = false;
 
   /**
-   * Find the index of an element in an array comparing with the equals() method.
-   * Could have used lodash's _.findIndex, but this will be called many times per frame and could be faster without
-   * lodash
-   * @param {Array} array
-   * @param {Object} element
-   * @returns {number} the index or -1 if not found
-   */
-  var getIndexByEquals = function( array, element ) {
-    for ( var i = 0; i < array.length; i++ ) {
-      if ( array[ i ].equals( element ) ) {
-        return i;
-      }
-    }
-    return -1;
-  };
-
-  /**
-   * For debugging, display a Resistor as a string
-   * @param {Resistor} resistor
-   * @returns {string}
-   */
-  var resistorToString = function( resistor ) {
-    return 'node' + resistor.node0 + ' -> node' + resistor.node1 + ' @ ' + resistor.resistance + ' Ohms';
-  };
-
-  /**
-   * For debugging, display a Battery as a string
-   * @param {Battery} battery
-   * @returns {string}
-   */
-  var batteryToString = function( battery ) {
-    return 'node' + battery.node0 + ' -> node' + battery.node1 + ' @ ' + battery.voltage + ' Volts';
-  };
-
-  /**
-   * Determine if an element contains the given node
-   * @param {Element} element
-   * @param {number} node
-   * @returns {boolean}
-   */
-  var elementContainsNode = function( element, node ) {
-    return element.node0 === node || element.node1 === node;
-  };
-
-  var getOpposite = function( element, node ) {
-    assert && assert( element.node0 === node || element.node1 === node );
-    if ( element.node0 === node ) {
-      return element.node1;
-    }
-    else {
-      return element.node0;
-    }
-  };
-
-  /**
-   * @param {number} coefficient
-   * @param {UnknownCurrent|UnknownVoltage} variable
-   * @constructor
-   */
-  function Term( coefficient, variable ) {
-
-    // @public (read-only) the coefficient for the term, like '7' in 7x
-    this.coefficient = coefficient;
-
-    // @public (read-only) the variable for the term, like the x variable in 7x
-    this.variable = variable;
-  }
-
-  inherit( Object, Term, {
-
-    /**
-     * Returns a string representation for debugging.
-     * @returns {string}
-     * @public
-     */
-    toTermString: function() {
-      var prefix = this.coefficient === 1 ? '' :
-                   this.coefficient === -1 ? '-' :
-                   this.coefficient + '*';
-      return prefix + this.variable.toTermName();
-    }
-  } );
-
-  /**
-   * @param {Element} element - the circuit element through which the current runs
-   * @constructor
-   */
-  function UnknownCurrent( element ) {
-
-    assert && assert( element, 'element should be defined' );
-
-    // @public (read-only)
-    this.element = element;
-  }
-
-  inherit( Object, UnknownCurrent, {
-
-    /**
-     * Returns the name of the term for debugging.
-     * @returns {string}
-     * @public
-     */
-    toTermName: function() {
-      return 'I' + this.element.node0 + '_' + this.element.node1;
-    },
-
-    /**
-     * Two UnknownCurrents are equal if the refer to the same element.
-     * @param {Object} other - an object to compare with this one
-     * @returns {boolean}
-     * @public
-     */
-    equals: function( other ) {
-      return other.element === this.element;
-    }
-  } );
-
-  /**
-   * @param {number} node - the index of the node
-   * @constructor
-   */
-  function UnknownVoltage( node ) {
-    assert && assert( typeof node === 'number', 'nodes should be numbers' );
-
-    // @public (read-only)
-    this.node = node;
-  }
-
-  inherit( Object, UnknownVoltage, {
-
-    /**
-     * Returns a string variable name for this term, for debugging.
-     * @returns {string}
-     * @public
-     */
-    toTermName: function() {
-      return 'V' + this.node;
-    },
-
-    /**
-     * Two UnknownVoltages are equal if they refer to the same node.
-     * @param {Object} other - another object to compare with this one
-     * @returns {boolean}
-     * @public
-     */
-    equals: function( other ) {
-      return other.node === this.node;
-    }
-  } );
-
-  /**
-   * @param {number} value - the value on the right hand side of the equation, such as x+y=7
-   * @param {Term[]} terms
-   * @constructor
-   */
-  function Equation( value, terms ) {
-
-    // @public (read-only) the value of the equation.  For instance in x+3y=12, the value is 12
-    this.value = value;
-
-    // @public (read-only) the terms on the left-hand side of the equation.  E.g., in 3x+y=12 the terms are 3x and y
-    this.terms = terms;
-  }
-
-  inherit( Object, Equation, {
-
-    /**
-     * Enter this Equation into the given Matrices for solving the system.
-     * @param {number} row - the index of the row for this equation
-     * @param {Matrix} a - the matrix of coefficients in Ax=z
-     * @param {Matrix} z - the matrix on the right hand side in Ax=z
-     * @param {function} getIndex
-     */
-    stamp: function( row, a, z, getIndex ) {
-
-      // Set the equation's value into the solution matrix
-      z.set( row, 0, this.value );
-
-      // For each term, augment the coefficient matrix
-      for ( var i = 0; i < this.terms.length; i++ ) {
-        var term = this.terms[ i ];
-        var index = getIndex( term.variable );
-        a.set( row, index, term.coefficient + a.get( row, index ) );
-      }
-    },
-
-    /**
-     * Returns a string representation for debugging.
-     * @returns {string}
-     */
-    toString: function() {
-      var termList = [];
-      for ( var i = 0; i < this.terms.length; i++ ) {
-        termList.push( this.terms[ i ].toTermString() );
-      }
-      var result = '' + termList.join( '+' ) + '=' + this.value;
-
-      // replace +- with -. For instance, x+-3 should just be x-3
-      return result.replace( '\\+\\-', '\\-' );
-    }
-  } );
-
-  /**
    * @param {Battery[]} batteries
    * @param {Resistor[]} resistors
    * @param {CurrentSource[]} currentSources // TODO: What type is this?
@@ -283,7 +80,7 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'ModifiedNodalAnalysisCircuit', ModifiedNodalAnalysisCircuit );
 
-  return inherit( Object, ModifiedNodalAnalysisCircuit, {
+  inherit( Object, ModifiedNodalAnalysisCircuit, {
 
     /**
      * Returns a string representation of the circuit for debugging.
@@ -357,20 +154,20 @@ define( function( require ) {
           nodeTerms.push( new Term( -1, new UnknownCurrent( battery ) ) );
         }
       }
-      var r;
+      var resistor;
       for ( i = 0; i < this.resistors.length; i++ ) {
-        r = this.resistors[ i ];
+        resistor = this.resistors[ i ];
 
         //Treat resistors with R=0 as having unknown current and v1=v2
-        if ( r.node1 === node && r.resistance === 0 ) {
-          nodeTerms.push( new Term( -1, new UnknownCurrent( r ) ) );
+        if ( resistor.node1 === node && resistor.resistance === 0 ) {
+          nodeTerms.push( new Term( -1, new UnknownCurrent( resistor ) ) );
         }
       }
       for ( i = 0; i < this.resistors.length; i++ ) {
-        r = this.resistors[ i ];
-        if ( r.node1 === node && r.resistance !== 0 ) {
-          nodeTerms.push( new Term( 1 / r.resistance, new UnknownVoltage( r.node1 ) ) );
-          nodeTerms.push( new Term( -1 / r.resistance, new UnknownVoltage( r.node0 ) ) );
+        resistor = this.resistors[ i ];
+        if ( resistor.node1 === node && resistor.resistance !== 0 ) {
+          nodeTerms.push( new Term( 1 / resistor.resistance, new UnknownVoltage( resistor.node1 ) ) );
+          nodeTerms.push( new Term( -1 / resistor.resistance, new UnknownVoltage( resistor.node0 ) ) );
         }
       }
       return nodeTerms;
@@ -576,4 +373,214 @@ define( function( require ) {
       } ) );
     }
   } );
+
+  /**
+   * Find the index of an element in an array comparing with the equals() method.
+   * Could have used lodash's _.findIndex, but this will be called many times per frame and could be faster without
+   * lodash
+   * @param {Array} array
+   * @param {Object} element
+   * @returns {number} the index or -1 if not found
+   */
+  var getIndexByEquals = function( array, element ) {
+    for ( var i = 0; i < array.length; i++ ) {
+      if ( array[ i ].equals( element ) ) {
+        return i;
+      }
+    }
+    return -1;
+  };
+
+  /**
+   * For debugging, display a Resistor as a string
+   * @param {Resistor} resistor
+   * @returns {string}
+   */
+  var resistorToString = function( resistor ) {
+    return 'node' + resistor.node0 + ' -> node' + resistor.node1 + ' @ ' + resistor.resistance + ' Ohms';
+  };
+
+  /**
+   * For debugging, display a Battery as a string
+   * @param {Battery} battery
+   * @returns {string}
+   */
+  var batteryToString = function( battery ) {
+    return 'node' + battery.node0 + ' -> node' + battery.node1 + ' @ ' + battery.voltage + ' Volts';
+  };
+
+  /**
+   * Determine if an element contains the given node
+   * @param {Element} element
+   * @param {number} node
+   * @returns {boolean}
+   */
+  var elementContainsNode = function( element, node ) {
+    return element.node0 === node || element.node1 === node;
+  };
+
+  /**
+   * Find the node across from the specified node.
+   * @param {Element} element
+   * @param {number} node
+   */
+  var getOpposite = function( element, node ) {
+    assert && assert( element.node0 === node || element.node1 === node );
+    if ( element.node0 === node ) {
+      return element.node1;
+    }
+    else {
+      return element.node0;
+    }
+  };
+
+  /**
+   * @param {number} coefficient
+   * @param {UnknownCurrent|UnknownVoltage} variable
+   * @constructor
+   */
+  function Term( coefficient, variable ) {
+
+    // @public (read-only) the coefficient for the term, like '7' in 7x
+    this.coefficient = coefficient;
+
+    // @public (read-only) the variable for the term, like the x variable in 7x
+    this.variable = variable;
+  }
+
+  inherit( Object, Term, {
+
+    /**
+     * Returns a string representation for debugging.
+     * @returns {string}
+     * @public
+     */
+    toTermString: function() {
+      var prefix = this.coefficient === 1 ? '' :
+                   this.coefficient === -1 ? '-' :
+                   this.coefficient + '*';
+      return prefix + this.variable.toTermName();
+    }
+  } );
+
+  /**
+   * @param {Element} element - the circuit element through which the current runs
+   * @constructor
+   */
+  function UnknownCurrent( element ) {
+
+    assert && assert( element, 'element should be defined' );
+
+    // @public (read-only)
+    this.element = element;
+  }
+
+  inherit( Object, UnknownCurrent, {
+
+    /**
+     * Returns the name of the term for debugging.
+     * @returns {string}
+     * @public
+     */
+    toTermName: function() {
+      return 'I' + this.element.node0 + '_' + this.element.node1;
+    },
+
+    /**
+     * Two UnknownCurrents are equal if the refer to the same element.
+     * @param {Object} other - an object to compare with this one
+     * @returns {boolean}
+     * @public
+     */
+    equals: function( other ) {
+      return other.element === this.element;
+    }
+  } );
+
+  /**
+   * @param {number} node - the index of the node
+   * @constructor
+   */
+  function UnknownVoltage( node ) {
+    assert && assert( typeof node === 'number', 'nodes should be numbers' );
+
+    // @public (read-only)
+    this.node = node;
+  }
+
+  inherit( Object, UnknownVoltage, {
+
+    /**
+     * Returns a string variable name for this term, for debugging.
+     * @returns {string}
+     * @public
+     */
+    toTermName: function() {
+      return 'V' + this.node;
+    },
+
+    /**
+     * Two UnknownVoltages are equal if they refer to the same node.
+     * @param {Object} other - another object to compare with this one
+     * @returns {boolean}
+     * @public
+     */
+    equals: function( other ) {
+      return other.node === this.node;
+    }
+  } );
+
+  /**
+   * @param {number} value - the value on the right hand side of the equation, such as x+y=7
+   * @param {Term[]} terms
+   * @constructor
+   */
+  function Equation( value, terms ) {
+
+    // @public (read-only) the value of the equation.  For instance in x+3y=12, the value is 12
+    this.value = value;
+
+    // @public (read-only) the terms on the left-hand side of the equation.  E.g., in 3x+y=12 the terms are 3x and y
+    this.terms = terms;
+  }
+
+  inherit( Object, Equation, {
+
+    /**
+     * Enter this Equation into the given Matrices for solving the system.
+     * @param {number} row - the index of the row for this equation
+     * @param {Matrix} a - the matrix of coefficients in Ax=z
+     * @param {Matrix} z - the matrix on the right hand side in Ax=z
+     * @param {function} getIndex
+     */
+    stamp: function( row, a, z, getIndex ) {
+
+      // Set the equation's value into the solution matrix
+      z.set( row, 0, this.value );
+
+      // For each term, augment the coefficient matrix
+      for ( var i = 0; i < this.terms.length; i++ ) {
+        var term = this.terms[ i ];
+        var index = getIndex( term.variable );
+        a.set( row, index, term.coefficient + a.get( row, index ) );
+      }
+    },
+
+    /**
+     * Returns a string representation for debugging.
+     * @returns {string}
+     */
+    toString: function() {
+      var termList = [];
+      for ( var i = 0; i < this.terms.length; i++ ) {
+        termList.push( this.terms[ i ].toTermString() );
+      }
+      var result = '' + termList.join( '+' ) + '=' + this.value;
+
+      // replace +- with -. For instance, x+-3 should just be x-3
+      return result.replace( '\\+\\-', '\\-' );
+    }
+  } );
+
+  return ModifiedNodalAnalysisCircuit;
 } );
