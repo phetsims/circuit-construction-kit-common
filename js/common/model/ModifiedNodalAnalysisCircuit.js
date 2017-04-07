@@ -38,6 +38,44 @@ define( function( require ) {
   };
 
   /**
+   * For debugging, display a Resistor as a string
+   * @param {Resistor} resistor
+   * @returns {string}
+   */
+  var resistorToString = function( resistor ) {
+    return 'node' + resistor.node0 + ' -> node' + resistor.node1 + ' @ ' + resistor.resistance + ' Ohms';
+  };
+
+  /**
+   * For debugging, display a Battery as a string
+   * @param {Battery} battery
+   * @returns {string}
+   */
+  var batteryToString = function( battery ) {
+    return 'node' + battery.node0 + ' -> node' + battery.node1 + ' @ ' + battery.voltage + ' Volts';
+  };
+
+  /**
+   * Determine if an element contains the given node
+   * @param {Element} element
+   * @param {number} node
+   * @returns {boolean}
+   */
+  var elementContainsNode = function( element, node ) {
+    return element.node0 === node || element.node1 === node;
+  };
+
+  var getOpposite = function( element, node ) {
+    assert && assert( element.node0 === node || element.node1 === node );
+    if ( element.node0 === node ) {
+      return element.node1;
+    }
+    else {
+      return element.node0;
+    }
+  };
+
+  /**
    * @param {number} coefficient
    * @param {UnknownCurrent|UnknownVoltage} variable
    * @constructor
@@ -139,21 +177,29 @@ define( function( require ) {
    * @constructor
    */
   function Equation( value, terms ) {
+
+    // @public (read-only) the value of the equation.  For instance in x+3y=12, the value is 12
     this.value = value;
+
+    // @public (read-only) the terms on the left-hand side of the equation.  E.g., in 3x+y=12 the terms are 3x and y
     this.terms = terms;
   }
 
   inherit( Object, Equation, {
 
     /**
-     *
-     * @param {number} row
-     * @param {Matrix} a
-     * @param {Matrix} z
+     * Enter this Equation into the given Matrices for solving the system.
+     * @param {number} row - the index of the row for this equation
+     * @param {Matrix} a - the matrix of coefficients in Ax=z
+     * @param {Matrix} z - the matrix on the right hand side in Ax=z
      * @param {function} getIndex
      */
     stamp: function( row, a, z, getIndex ) {
+
+      // Set the equation's value into the solution matrix
       z.set( row, 0, this.value );
+
+      // For each term, augment the coefficient matrix
       for ( var i = 0; i < this.terms.length; i++ ) {
         var term = this.terms[ i ];
         var index = getIndex( term.variable );
@@ -161,19 +207,26 @@ define( function( require ) {
       }
     },
 
+    /**
+     * Returns a string representation for debugging.
+     * @returns {string}
+     */
     toString: function() {
       var termList = [];
       for ( var i = 0; i < this.terms.length; i++ ) {
-        var a = this.terms[ i ];
-        termList.push( a.toTermString() );
+        termList.push( this.terms[ i ].toTermString() );
       }
       var result = '' + termList.join( '+' ) + '=' + this.value;
+
+      // replace +- with -. For instance, x+-3 should just be x-3
       return result.replace( '\\+\\-', '\\-' );
     }
   } );
 
   /**
-   *
+   * @param {Battery[]} batteries
+   * @param {Resistor[]} resistors
+   * @param {CurrentSource[]} currentSources
    * @constructor
    */
   function ModifiedNodalAnalysisCircuit( batteries, resistors, currentSources ) {
@@ -181,6 +234,7 @@ define( function( require ) {
     assert && assert( resistors, 'resistors should be defined' );
     assert && assert( currentSources, 'currentSources should be defined' );
 
+    // Skip iteration in built mode
     if ( assert ) {
       for ( var i = 0; i < batteries.length; i++ ) {
         var battery = batteries[ i ];
@@ -201,35 +255,25 @@ define( function( require ) {
         assert && assert( typeof currentSource.current === 'number' );
       }
     }
+
+    // @public (read-only)
     this.batteries = batteries;
+
+    // @public (read-only)
     this.resistors = resistors;
+
+    // @public (read-only)
     this.currentSources = currentSources;
   }
 
-  var resistorToString = function( resistor ) {
-    return 'node' + resistor.node0 + ' -> node' + resistor.node1 + ' @ ' + resistor.resistance + ' Ohms';
-  };
-
-  var batteryToString = function( battery ) {
-    return 'node' + battery.node0 + ' -> node' + battery.node1 + ' @ ' + battery.voltage + ' Volts';
-  };
-
-  var elementContainsNode = function( element, node ) {
-    return element.node0 === node || element.node1 === node;
-  };
-
-  var getOpposite = function( element, node ) {
-    assert && assert( element.node0 === node || element.node1 === node );
-    if ( element.node0 === node ) {
-      return element.node1;
-    }
-    else {
-      return element.node0;
-    }
-  };
   circuitConstructionKitCommon.register( 'ModifiedNodalAnalysisCircuit', ModifiedNodalAnalysisCircuit );
 
   return inherit( Object, ModifiedNodalAnalysisCircuit, {
+
+    /**
+     * Returns a string representation of the circuit for debugging.
+     * @returns {string}
+     */
     toString: function() {
       return 'Circuit: resistors:' + this.resistors.map( function( r ) {
           return resistorToString( r );
