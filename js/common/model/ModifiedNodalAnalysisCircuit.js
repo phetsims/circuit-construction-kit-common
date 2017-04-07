@@ -226,7 +226,7 @@ define( function( require ) {
   /**
    * @param {Battery[]} batteries
    * @param {Resistor[]} resistors
-   * @param {CurrentSource[]} currentSources
+   * @param {CurrentSource[]} currentSources // TODO: What type is this?
    * @constructor
    */
   function ModifiedNodalAnalysisCircuit( batteries, resistors, currentSources ) {
@@ -267,6 +267,18 @@ define( function( require ) {
 
     // @public (read-only) - the list of all the elements for ease of access
     this.elements = this.batteries.concat( this.resistors ).concat( this.currentSources );
+
+    // @public (read-only) - an object with true set for all keys that have a node in the circuit, such as:
+    // {0:true, 1:true, 2:true, 7:true}
+    this.nodeSet = {};
+    for ( var k = 0; k < this.elements.length; k++ ) {
+      var element = this.elements[ k ];
+      this.nodeSet[ element.node0 ] = true;
+      this.nodeSet[ element.node1 ] = true;
+    }
+
+    // @public the number of nodes in the set
+    this.nodeCount = _.size( this.nodeSet );
   }
 
   circuitConstructionKitCommon.register( 'ModifiedNodalAnalysisCircuit', ModifiedNodalAnalysisCircuit );
@@ -276,6 +288,7 @@ define( function( require ) {
     /**
      * Returns a string representation of the circuit for debugging.
      * @returns {string}
+     * @private
      */
     toString: function() {
       return 'Circuit: resistors:' + this.resistors.map( function( r ) {
@@ -286,31 +299,45 @@ define( function( require ) {
           return c.toString();
         } ).join( ',' );
     },
-    getNodeCount: function() {
-      return _.size( this.getNodeSet() );
-    },
+
+    /**
+     * Counts the number of unknown currents in the circuit.  There is an unknown current in each battery and 0-resistance resistor.
+     * @returns {number}
+     * @private
+     */
     getCurrentCount: function() {
-      var zeroResistors = 0;
+      var resistorsWithNoResistance = 0;
       for ( var i = 0; i < this.resistors.length; i++ ) {
-        var resistor = this.resistors[ i ];
-        if ( resistor.resistance === 0 ) {
-          zeroResistors++;
+        if ( this.resistors[ i ].resistance === 0 ) {
+          resistorsWithNoResistance++;
         }
       }
-      return this.batteries.length + zeroResistors;
+      return this.batteries.length + resistorsWithNoResistance;
     },
+
+    /**
+     * Gets the number of variables for the system, one for each voltage and one for each current.
+     * @returns {number}
+     * @private
+     */
     getNumVars: function() {
-      return this.getNodeCount() + this.getCurrentCount();
+      return this.nodeCount + this.getCurrentCount();
     },
+
+    /**
+     *
+     * @param nodeIndex
+     * @returns {number}
+     */
     getRHS: function( nodeIndex ) {
       var sum = 0.0;
       for ( var i = 0; i < this.currentSources.length; i++ ) {
         var c = this.currentSources[ i ];
         if ( c.node1 === nodeIndex ) {
-          sum = sum - c.current; //positive current is entering the node, and the convention is for incoming current to be negative
+          sum = sum - c.current; // positive current is entering the node, and the convention is for incoming current to be negative
         }
         if ( c.node0 === nodeIndex ) {
-          sum = sum + c.current; //positive current is leaving the node, and the convention is for outgoing current to be positive
+          sum = sum + c.current; // positive current is leaving the node, and the convention is for outgoing current to be positive
         }
       }
       return sum;
@@ -390,25 +417,10 @@ define( function( require ) {
     },
 
     /**
-     * Returns a object with true set for all keys that have a node in the circuit, such as:
-     * {0:true, 1:true, 2:true, 7:true}
-     * @returns {Object}
-     */
-    getNodeSet: function() {
-      var nodeSet = {};
-      for ( var i = 0; i < this.elements.length; i++ ) {
-        var element = this.elements[ i ];
-        nodeSet[ element.node0 ] = true;
-        nodeSet[ element.node1 ] = true;
-      }
-      return nodeSet;
-    },
-
-    /**
      * Obtain one node for each connected component and select it to have the reference voltage of 0V
      */
     getReferenceNodes: function() {
-      var remaining = this.getNodeSet(); // A separate copy
+      var remaining = _.clone( this.nodeSet ); // A separate copy for modification
       var referenceNodes = {};
       while ( _.size( remaining ) > 0 ) {
         var sorted = _.sortBy( _.keys( remaining ) );
@@ -464,7 +476,7 @@ define( function( require ) {
       }
 
       //for each node, charge is conserved
-      var nodeKeys = _.keys( this.getNodeSet() );
+      var nodeKeys = _.keys( this.nodeSet );
       for ( i = 0; i < nodeKeys.length; i++ ) {
         var nodeKey = nodeKeys[ i ];
         var node = parseInt( nodeKey, 10 );
@@ -490,7 +502,7 @@ define( function( require ) {
 
     getUnknownVoltages: function() {
       var v = [];
-      var nodes = _.keys( this.getNodeSet() );
+      var nodes = _.keys( this.nodeSet );
       for ( var i = 0; i < nodes.length; i++ ) {
         var node = parseInt( nodes[ i ], 10 );
         v.push( new UnknownVoltage( node ) );
