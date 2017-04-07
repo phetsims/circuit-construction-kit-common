@@ -23,42 +23,33 @@ define( function( require ) {
   var DISTANCE_BETWEEN_VERTICES = 33;
 
   // Tinker with coordinates to get thing to match up
-  var sx1 = 1.5;
-  var sy1 = 0.32;
-  var sx2 = 0.87;
+  var LEFT_CURVE_X_SCALE = 1.5;
+  var TOP_Y_SCALE = 0.32;
+  var RIGHT_CURVE_X_SCALE = 0.87;
 
-  var specs = {
-    dimension: new Vector2( 1.222, 2.063 ),
-    bottomCenter: new Vector2( 0.623, 2.063 ),
-    firstCurve: new Vector2( 0.623, 1.014 * 0.75 ),
-    leftCurve1: new Vector2( 0.314 * sx1, 0.704 * sy1 * 1.1 ),
-    leftCurve2: new Vector2( 0.314 * sx1, 0.639 * sy1 ),
-    leftCurve3: new Vector2( 0.394 * sx1, 0.560 * sy1 ),
-    topRight1: new Vector2( 0.823 * sx2, 0.565 * sy1 ),
-    topRight2: new Vector2( 0.888 * sx2, 0.600 * sy1 ),
-    topRight3: new Vector2( 0.922 * sx2, 0.699 * sy1 ),
-    exitNotch: new Vector2( 0.927 * sx2, 1.474 ),
-    exit: new Vector2( 0.927 * 0.8 * 1.2, 1.474 )
-  };
-
-  var points = [
-    specs.bottomCenter,
-    specs.firstCurve,
-    specs.leftCurve1,
-    specs.leftCurve2,
-    specs.leftCurve3,
-    specs.topRight1,
-    specs.topRight2,
-    specs.topRight3,
-    specs.exitNotch,
-    specs.exit
+  // The sampled points for the wire/filament curves
+  var POINTS = [
+    new Vector2( 0.623, 2.063 ),                                          // bottom center
+    new Vector2( 0.623, 1.014 * 0.75 ),                                   // first curve
+    new Vector2( 0.314 * LEFT_CURVE_X_SCALE, 0.704 * TOP_Y_SCALE * 1.1 ), // left curve 1
+    new Vector2( 0.314 * LEFT_CURVE_X_SCALE, 0.639 * TOP_Y_SCALE ),       // left curve 2
+    new Vector2( 0.394 * LEFT_CURVE_X_SCALE, 0.560 * TOP_Y_SCALE ),       // left curve 3
+    new Vector2( 0.823 * RIGHT_CURVE_X_SCALE, 0.565 * TOP_Y_SCALE ),      // top right 1
+    new Vector2( 0.888 * RIGHT_CURVE_X_SCALE, 0.600 * TOP_Y_SCALE ),      // top right 2
+    new Vector2( 0.922 * RIGHT_CURVE_X_SCALE, 0.699 * TOP_Y_SCALE ),      // top right 3
+    new Vector2( 0.927 * RIGHT_CURVE_X_SCALE, 1.474 ),                    // exit notch
+    new Vector2( 0.927 * 0.8 * 1.2, 1.474 )                               // exit
   ];
 
-  var start = points[ 0 ];
-  var end = points[ points.length - 1 ];
+  // Nicknames for the first and last points
+  var START_POINT = POINTS[ 0 ];
+  var END_POINT = POINTS[ POINTS.length - 1 ];
 
   /**
-   *
+   * @param {Vertex} startVertex - TODO: is this the side or bottom vertex?
+   * @param {Vertex} endVertex
+   * @param {number} resistance - in ohms
+   * @param {Object} [options]
    * @constructor
    */
   function LightBulb( startVertex, endVertex, resistance, options ) {
@@ -70,14 +61,14 @@ define( function( require ) {
     this.vertexDelta = endVertex.positionProperty.get().minus( startVertex.positionProperty.get() );
 
     var accumulatedDistance = 0;
-    for ( var i = 0; i < points.length - 1; i++ ) {
+    for ( var i = 0; i < POINTS.length - 1; i++ ) {
       var q1 = this.getPoint( i, startVertex );
       var q2 = this.getPoint( i + 1, startVertex );
       accumulatedDistance += q2.distance( q1 );
     }
 
-    var chargePathLength = accumulatedDistance - 1E-8; // changes the speed at which particles go through the light bulb
-    FixedLengthCircuitElement.call( this, startVertex, endVertex, DISTANCE_BETWEEN_VERTICES, chargePathLength, options ); // TODO: what are options here?
+    var chargePathLength = accumulatedDistance - 1E-8; // changes the speed at which particles go through the light bulb // TODO: why subtract 1E-8 here?
+    FixedLengthCircuitElement.call( this, startVertex, endVertex, DISTANCE_BETWEEN_VERTICES, chargePathLength, options );
   }
 
   circuitConstructionKitCommon.register( 'LightBulb', LightBulb );
@@ -86,27 +77,35 @@ define( function( require ) {
 
     /**
      * Get the Vector2 corresponding to the specified index, using the startVertex as an origin.
+     * TODO: this implementation doesn't match the jsdoc.
      * @param {number} index
      * @param {Vertex} startVertex
      * @returns {Vector2}
      */
     getPoint: function( index, startVertex ) {
-      var p1 = points[ index ];
+      var p1 = POINTS[ index ];
 
-      var p1X = Util.linear( start.x, end.x, startVertex.positionProperty.get().x, startVertex.positionProperty.get().x + this.vertexDelta.x, p1.x );
-      var p1Y = Util.linear( start.y, end.y, startVertex.positionProperty.get().y, startVertex.positionProperty.get().y + this.vertexDelta.y, p1.y );
+      var p1X = Util.linear( START_POINT.x, END_POINT.x, startVertex.positionProperty.get().x, startVertex.positionProperty.get().x + this.vertexDelta.x, p1.x );
+      var p1Y = Util.linear( START_POINT.y, END_POINT.y, startVertex.positionProperty.get().y, startVertex.positionProperty.get().y + this.vertexDelta.y, p1.y );
 
       return new Vector2( p1X, p1Y );
     },
 
     /**
+     * Gets all of the properties that characterize this LightBulb.
      * @override
      * @returns {Property[]}
+     * @public
      */
     getCircuitProperties: function() {
       return [ this.resistanceProperty ];
     },
 
+    /**
+     * Returns a serialized form of the properties that characterize this LightBulb
+     * @returns {Object}
+     * @public
+     */
     attributesToStateObject: function() {
       return {
         resistance: this.resistanceProperty.get()
@@ -120,12 +119,13 @@ define( function( require ) {
      *                                   - the light bulb's length is declared in ChargeLayout // TODO: fix that
      * @returns {Object}
      * @override
+     * @public
      */
     getPositionAndAngle: function( distanceAlongWire ) {
 
       var accumulatedDistance = 0;
       var prev = 0;
-      for ( var i = 0; i < points.length - 1; i++ ) {
+      for ( var i = 0; i < POINTS.length - 1; i++ ) {
         var q1 = this.getPoint( i, this.startVertexProperty.get() );
         var q2 = this.getPoint( i + 1, this.startVertexProperty.get() );
 
