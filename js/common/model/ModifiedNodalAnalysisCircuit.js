@@ -19,7 +19,7 @@ define( function( require ) {
   var DEBUG = false;
 
   /**
-   * Find the index of an element in an array
+   * Find the index of an element in an array comparing with the equals() method.
    * Could have used lodash's _.findIndex, but this will be called many times per frame and could be faster without
    * lodash
    * @param {Array} array
@@ -28,8 +28,7 @@ define( function( require ) {
    */
   var getIndexByEquals = function( array, element ) {
     for ( var i = 0; i < array.length; i++ ) {
-      var e = array[ i ];
-      if ( e.equals( element ) ) {
+      if ( array[ i ].equals( element ) ) {
         return i;
       }
     }
@@ -37,7 +36,6 @@ define( function( require ) {
   };
 
   /**
-   *
    * @param {number} coefficient
    * @param {UnknownCurrent|UnknownVoltage} variable
    * @constructor
@@ -48,14 +46,20 @@ define( function( require ) {
   }
 
   inherit( Object, Term, {
+
+    /**
+     * Returns a string representation for debugging.
+     * @returns {string}
+     */
     toTermString: function() {
-      var prefix = this.coefficient === 1 ? '' : ( ( this.coefficient === -1 ) ? '-' : this.coefficient + '*' );
+      var prefix = this.coefficient === 1 ? '' :
+                   this.coefficient === -1 ? '-' :
+                   this.coefficient + '*';
       return prefix + this.variable.toTermName();
     }
   } );
 
   /**
-   *
    * @param {Element} element
    * @constructor
    */
@@ -64,16 +68,27 @@ define( function( require ) {
   }
 
   inherit( Object, UnknownCurrent, {
+
+    /**
+     * Returns the name of the term for debugging.
+     * @returns {string}
+     */
     toTermName: function() {
       return 'I' + this.element.node0 + '_' + this.element.node1;
     },
+
+    /**
+     * Two UnknownCurrents are equal if the refer to the same element.
+     * @param other
+     * @returns {boolean}
+     */
     equals: function( other ) {
       return other.element === this.element;
     }
   } );
 
   /**
-   * @param {number} node
+   * @param {number} node - the index of the node
    * @constructor
    */
   function UnknownVoltage( node ) {
@@ -82,22 +97,32 @@ define( function( require ) {
   }
 
   inherit( Object, UnknownVoltage, {
+
+    /**
+     * Returns a string variable name for this term, for debugging.
+     * @returns {string}
+     */
     toTermName: function() {
       return 'V' + this.node;
     },
+
+    /**
+     * Two UnknownVoltages are equal if they refer to the same node.
+     * @param other
+     * @returns {boolean}
+     */
     equals: function( other ) {
       return other.node === this.node;
     }
   } );
 
   /**
-   *
-   * @param {number} rhs
+   * @param {number} value - the value on the right hand side of the equation, such as x+y=7
    * @param {Term[]} terms
    * @constructor
    */
-  function Equation( rhs, terms ) {
-    this.rhs = rhs;
+  function Equation( value, terms ) {
+    this.rhs = value;
     this.terms = terms;
   }
 
@@ -448,21 +473,19 @@ define( function( require ) {
         } );
       }
 
-      if ( DEBUG ) {
-        console.log( 'Debugging circuit: ' + this.toString() );
-        console.log( equations.join( '\n' ) );
-        console.log( 'a=' );
-        console.log( A.toString() );
-        console.log( 'z=' );
-        console.log( z.toString() );
-        console.log( 'unknowns=\n' + this.getUnknowns().map( function( u ) {return u.toString();} ).join( '\n' ) );
-      }
+      DEBUG && console.log( 'Debugging circuit: ' + this.toString() );
+      DEBUG && console.log( equations.join( '\n' ) );
+      DEBUG && console.log( 'a=' );
+      DEBUG && console.log( A.toString() );
+      DEBUG && console.log( 'z=' );
+      DEBUG && console.log( z.toString() );
+      DEBUG && console.log( 'unknowns=\n' + this.getUnknowns().map( function( u ) {return u.toString();} ).join( '\n' ) );
 
+      // solve the matrix system for the unknowns
       var x = A.solve( z );
-      if ( DEBUG ) {
-        console.log( 'x=' );
-        console.log( x.toString() );
-      }
+
+      DEBUG && console.log( 'x=' );
+      DEBUG && console.log( x.toString() );
 
       var voltageMap = {};
       for ( i = 0; i < this.getUnknownVoltages().length; i++ ) {
