@@ -1,5 +1,4 @@
 // Copyright 2015-2017, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * The LightBulb is a CircuitElement that shines when current flows through it.
@@ -56,7 +55,7 @@ define( function( require ) {
    */
   function LightBulb( startVertex, endVertex, resistance, options ) {
 
-    // @private
+    // @public (read-only)
     this.resistanceProperty = new NumberProperty( resistance );
 
     // @private (read-only) the vector between the vertices
@@ -64,9 +63,9 @@ define( function( require ) {
 
     var accumulatedDistance = 0;
     for ( var i = 0; i < POINTS.length - 1; i++ ) {
-      var q1 = this.getPoint( i, startVertex );
+      var point1 = this.getPoint( i, startVertex );
       var q2 = this.getPoint( i + 1, startVertex );
-      accumulatedDistance += q2.distance( q1 );
+      accumulatedDistance += q2.distance( point1 );
     }
 
     var chargePathLength = accumulatedDistance - 1E-8; // changes the speed at which particles go through the light bulb // TODO: why subtract 1E-8 here?
@@ -85,12 +84,12 @@ define( function( require ) {
      * @returns {Vector2}
      */
     getPoint: function( index, startVertex ) {
-      var p1 = POINTS[ index ];
+      var point = POINTS[ index ];
 
-      var p1X = Util.linear( START_POINT.x, END_POINT.x, startVertex.positionProperty.get().x, startVertex.positionProperty.get().x + this.vertexDelta.x, p1.x );
-      var p1Y = Util.linear( START_POINT.y, END_POINT.y, startVertex.positionProperty.get().y, startVertex.positionProperty.get().y + this.vertexDelta.y, p1.y );
+      var x = Util.linear( START_POINT.x, END_POINT.x, startVertex.positionProperty.get().x, startVertex.positionProperty.get().x + this.vertexDelta.x, point.x );
+      var y = Util.linear( START_POINT.y, END_POINT.y, startVertex.positionProperty.get().y, startVertex.positionProperty.get().y + this.vertexDelta.y, point.y );
 
-      return new Vector2( p1X, p1Y );
+      return new Vector2( x, y );
     },
 
     /**
@@ -118,43 +117,38 @@ define( function( require ) {
      * Overrides CircuitElement.getPosition to describe the path the charge takes through the light bulb.
      *
      * @param {number} distanceAlongWire - how far along the bulb's length the charge has traveled
-     *                                   - the light bulb's length is declared in ChargeLayout // TODO: fix that
      * @returns {Object}
      * @override
      * @public
      */
     getPositionAndAngle: function( distanceAlongWire ) {
 
+      var previousAccumulatedDistance = 0;
       var accumulatedDistance = 0;
-      var prev = 0;
       for ( var i = 0; i < POINTS.length - 1; i++ ) {
-        var q1 = this.getPoint( i, this.startVertexProperty.get() );
-        var q2 = this.getPoint( i + 1, this.startVertexProperty.get() );
+        var point1 = this.getPoint( i, this.startVertexProperty.get() );
+        var point2 = this.getPoint( i + 1, this.startVertexProperty.get() );
 
-        accumulatedDistance += q2.distance( q1 );
+        accumulatedDistance += point2.distance( point1 );
 
         // Find what segment the charge is in
-        if ( distanceAlongWire < accumulatedDistance ) {
-          var a = Util.linear( prev, accumulatedDistance, 0, 1, distanceAlongWire );
-          var position = q1.blend( q2, a );
-
-          // Rotate about the start vertex.
-          var vd = this.endVertexProperty.get().positionProperty.get().minus( this.startVertexProperty.get().positionProperty.get() );
-
-          var angle = vd.angle() - this.vertexDelta.angle();
+        if ( distanceAlongWire <= accumulatedDistance ) {
+          var normalizedDistance = Util.linear( previousAccumulatedDistance, accumulatedDistance, 0, 1, distanceAlongWire );
+          var averaged = point1.blend( point2, normalizedDistance );  // TODO: what is happening here?
 
           // rotate the point about the start vertex
-          var p = position.rotatedAboutPoint( this.startVertexProperty.get().positionProperty.get(), angle );
+          var vertexDelta = this.endVertexProperty.get().positionProperty.get().minus( this.startVertexProperty.get().positionProperty.get() );
+          var relativeAngle = vertexDelta.angle() - this.vertexDelta.angle();
+          var position = averaged.rotatedAboutPoint( this.startVertexProperty.get().positionProperty.get(), relativeAngle );
+          var angle = point2.minus( point1 ).angle();
 
-          var localAngle = q2.minus( q1 ).angle();
-          return { position: p, angle: localAngle };
+          return { position: position, angle: angle };
         }
-        prev = accumulatedDistance;
+        previousAccumulatedDistance = accumulatedDistance;
       }
 
-      // TODO: Restore this assertion after #186 complete
-      // assert && assert( false, 'hello' );
-      return { position: new Vector2(), angle: 0 };
+      assert && assert( false, 'exceeded charge path bounds' );
+      return null;
     }
   }, {
 
@@ -176,6 +170,7 @@ define( function( require ) {
       var delta = endPoint.minus( startPoint );
       var angle = delta.angle();
 
+      // TODO: what is happening here?
       endPoint = startPoint.plus( Vector2.createPolar( DISTANCE_BETWEEN_VERTICES, angle - Math.PI * 0.3975 ) );
 
       // start vertex is at the bottom
