@@ -2,7 +2,9 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- * Modified Nodal Analysis for a circuit.
+ * Modified Nodal Analysis for a circuit.  An Equation is a sum of Terms equal to a numeric value.  A Term is composed
+ * of a coefficient times a variable.  The variables are UnknownCurrent or UnknownVoltage.  The system of all
+ * Equations is solved as a linear system.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -41,7 +43,11 @@ define( function( require ) {
    * @constructor
    */
   function Term( coefficient, variable ) {
+
+    // @public (read-only) the coefficient for the term, like '7' in 7x
     this.coefficient = coefficient;
+
+    // @public (read-only) the variable for the term, like the x variable in 7x
     this.variable = variable;
   }
 
@@ -50,6 +56,7 @@ define( function( require ) {
     /**
      * Returns a string representation for debugging.
      * @returns {string}
+     * @public
      */
     toTermString: function() {
       var prefix = this.coefficient === 1 ? '' :
@@ -60,10 +67,14 @@ define( function( require ) {
   } );
 
   /**
-   * @param {Element} element
+   * @param {Element} element - the circuit element through which the current runs
    * @constructor
    */
   function UnknownCurrent( element ) {
+
+    assert && assert( element, 'element should be defined' );
+
+    // @public (read-only)
     this.element = element;
   }
 
@@ -72,6 +83,7 @@ define( function( require ) {
     /**
      * Returns the name of the term for debugging.
      * @returns {string}
+     * @public
      */
     toTermName: function() {
       return 'I' + this.element.node0 + '_' + this.element.node1;
@@ -79,8 +91,9 @@ define( function( require ) {
 
     /**
      * Two UnknownCurrents are equal if the refer to the same element.
-     * @param other
+     * @param {Object} other - an object to compare with this one
      * @returns {boolean}
+     * @public
      */
     equals: function( other ) {
       return other.element === this.element;
@@ -93,6 +106,8 @@ define( function( require ) {
    */
   function UnknownVoltage( node ) {
     assert && assert( typeof node === 'number', 'nodes should be numbers' );
+
+    // @public (read-only)
     this.node = node;
   }
 
@@ -101,6 +116,7 @@ define( function( require ) {
     /**
      * Returns a string variable name for this term, for debugging.
      * @returns {string}
+     * @public
      */
     toTermName: function() {
       return 'V' + this.node;
@@ -108,8 +124,9 @@ define( function( require ) {
 
     /**
      * Two UnknownVoltages are equal if they refer to the same node.
-     * @param other
+     * @param {Object} other - another object to compare with this one
      * @returns {boolean}
+     * @public
      */
     equals: function( other ) {
       return other.node === this.node;
@@ -122,7 +139,7 @@ define( function( require ) {
    * @constructor
    */
   function Equation( value, terms ) {
-    this.rhs = value;
+    this.value = value;
     this.terms = terms;
   }
 
@@ -136,7 +153,7 @@ define( function( require ) {
      * @param {function} getIndex
      */
     stamp: function( row, a, z, getIndex ) {
-      z.set( row, 0, this.rhs );
+      z.set( row, 0, this.value );
       for ( var i = 0; i < this.terms.length; i++ ) {
         var term = this.terms[ i ];
         var index = getIndex( term.variable );
@@ -150,7 +167,7 @@ define( function( require ) {
         var a = this.terms[ i ];
         termList.push( a.toTermString() );
       }
-      var result = '' + termList.join( '+' ) + '=' + this.rhs;
+      var result = '' + termList.join( '+' ) + '=' + this.value;
       return result.replace( '\\+\\-', '\\-' );
     }
   } );
