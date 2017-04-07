@@ -264,6 +264,9 @@ define( function( require ) {
 
     // @public (read-only)
     this.currentSources = currentSources;
+
+    // @public (read-only) - the list of all the elements for ease of access
+    this.elements = this.batteries.concat( this.resistors ).concat( this.currentSources );
   }
 
   circuitConstructionKitCommon.register( 'ModifiedNodalAnalysisCircuit', ModifiedNodalAnalysisCircuit );
@@ -282,9 +285,6 @@ define( function( require ) {
         } ).join( ',' ) + ', currentSources: ' + this.currentSources.map( function( c ) {
           return c.toString();
         } ).join( ',' );
-    },
-    getElements: function() {
-      return this.batteries.concat( this.resistors ).concat( this.currentSources );
     },
     getNodeCount: function() {
       return _.size( this.getNodeSet() );
@@ -396,8 +396,8 @@ define( function( require ) {
      */
     getNodeSet: function() {
       var nodeSet = {};
-      for ( var i = 0; i < this.getElements().length; i++ ) {
-        var element = this.getElements()[ i ];
+      for ( var i = 0; i < this.elements.length; i++ ) {
+        var element = this.elements[ i ];
         nodeSet[ element.node0 ] = true;
         nodeSet[ element.node1 ] = true;
       }
@@ -443,8 +443,8 @@ define( function( require ) {
       while ( _.size( toVisit ) > 0 ) {
         var n = parseInt( _.keys( toVisit )[ 0 ], 10 );
         visited[ n ] = true;
-        for ( var i = 0; i < this.getElements().length; i++ ) {
-          var e = this.getElements()[ i ];
+        for ( var i = 0; i < this.elements.length; i++ ) {
+          var e = this.elements[ i ];
           if ( elementContainsNode( e, n ) && !visited[ getOpposite( e, n ) ] ) {
             toVisit[ getOpposite( e, n ) ] = true;
           }
