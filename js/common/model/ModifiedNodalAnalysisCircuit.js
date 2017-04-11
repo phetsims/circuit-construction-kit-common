@@ -223,6 +223,8 @@ define( function( require ) {
       toVisit[ node ] = true;
 
       while ( _.size( toVisit ) > 0 ) {
+
+        // TODO: get rid of all parse ints in this file
         var nodeToVisit = parseInt( _.keys( toVisit )[ 0 ], 10 ); // TODO: it is nice to use maps for O[1] access but not nice that the keys are strings
         visited[ nodeToVisit ] = true;
         for ( var i = 0; i < this.elements.length; i++ ) {
@@ -258,7 +260,7 @@ define( function( require ) {
       var nodeKeys = _.keys( this.nodeSet );
       for ( i = 0; i < nodeKeys.length; i++ ) {
         var nodeKey = nodeKeys[ i ];
-        var node = parseInt( nodeKey, 10 );
+        var node = parseInt( nodeKey, 10 ); // TODO: get rid of all parse ints in this file
         var incomingCurrentTerms = this.getCurrentTerms( node, 'node1', -1 );
         var outgoingCurrentTerms = this.getCurrentTerms( node, 'node0', +1 );
         var currentConservationTerms = incomingCurrentTerms.concat( outgoingCurrentTerms );
@@ -282,14 +284,13 @@ define( function( require ) {
       return equations;
     },
 
+    /**
+     * Gets an array of all the unknown voltages in the circuit.
+     * @returns {UnknownVoltage[]}
+     */
     getUnknownVoltages: function() {
-      var v = [];
-      var nodes = _.keys( this.nodeSet );
-      for ( var i = 0; i < nodes.length; i++ ) {
-        var node = parseInt( nodes[ i ], 10 );
-        v.push( new UnknownVoltage( node ) );
-      }
-      return v;
+      // TODO: stop using _.keys for nodeSet everywhere
+      return _.keys( this.nodeSet ).map( stringToUnknownVoltage );
     },
     getUnknownCurrents: function() {
       var unknowns = [];
@@ -308,16 +309,14 @@ define( function( require ) {
       return unknowns;
     },
 
-    getUnknowns: function() {
-      return this.getUnknownCurrents().concat( this.getUnknownVoltages() );
-    },
-
     solve: function() {
       var equations = this.getEquations();
+      var unknownCurrents = this.getUnknownCurrents();
+      var unknownVoltages = this.getUnknownVoltages();
 
       var A = new Matrix( equations.length, this.getNumVars() );
       var z = new Matrix( equations.length, 1 );
-      var unknowns = this.getUnknowns();
+      var unknowns = unknownCurrents.concat( unknownVoltages );
       for ( var i = 0; i < equations.length; i++ ) {
         var equation = equations[ i ];
         equation.stamp( i, A, z, function( unknown ) {
@@ -343,11 +342,10 @@ define( function( require ) {
       DEBUG && console.log( x.toString() );
 
       var voltageMap = {};
-      for ( i = 0; i < this.getUnknownVoltages().length; i++ ) {
-        var nodeVoltage = this.getUnknownVoltages()[ i ];
+      for ( i = 0; i < unknownVoltages.length; i++ ) {
+        var nodeVoltage = unknownVoltages[ i ];
         voltageMap[ nodeVoltage.node ] = x.get( getIndexByEquals( unknowns, nodeVoltage ), 0 );
       }
-      var unknownCurrents = this.getUnknownCurrents();
       for ( i = 0; i < unknownCurrents.length; i++ ) {
         var currentVar = unknownCurrents[ i ];
         currentVar.element.currentSolution = x.get( getIndexByEquals( unknowns, currentVar ), 0 );
@@ -385,6 +383,14 @@ define( function( require ) {
     return parseInt( string, 10 );
   };
 
+  /**
+   * Creates an UnknownVoltage for the node (by string)
+   * @param {string} nodeString
+   * @returns {UnknownVoltage}
+   */
+  var stringToUnknownVoltage = function( nodeString ) {
+    return new UnknownVoltage( parseInt( nodeString, 10 ) );
+  };
   /**
    * For debugging, display a Resistor as a string
    * @param {Resistor} resistor
