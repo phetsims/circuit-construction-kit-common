@@ -185,22 +185,30 @@ define( function( require ) {
     },
 
     /**
-     * Obtain one node for each connected component and select it to have the reference voltage of 0V
+     * Obtain one node for each connected component and select it to have the reference voltage of 0V.
+     * @returns {number[]}
+     * @private
      */
     getReferenceNodes: function() {
-      var remaining = _.clone( this.nodeSet ); // A separate copy for modification
-      var referenceNodes = {};
-      while ( _.size( remaining ) > 0 ) {
-        var sorted = _.sortBy( _.keys( remaining ) );
-        referenceNodes[ sorted[ 0 ] ] = true;
-        var connected = _.keys( this.getConnectedNodes( sorted[ 0 ] ) );
 
-        for ( var i = 0; i < connected.length; i++ ) {
-          var c = connected[ i ];
-          delete remaining[ c ];
+      // The nodes which need to be visited
+      var remaining = _.clone( this.nodeSet );
+
+      // Mark reference nodes as they are discovered as map keys.
+      var referenceNodes = [];
+      while ( _.size( remaining ) > 0 ) {
+        var referenceNode = _.minBy( _.keys( remaining ) );
+        referenceNodes.push( referenceNode );
+        var connectedNodes = _.keys( this.getConnectedNodes( referenceNode ) );
+
+        // No need to visit any nodes connected to the reference node, since their connected component already has
+        // a reference node.
+        for ( var i = 0; i < connectedNodes.length; i++ ) {
+          var connectedNode = connectedNodes[ i ];
+          delete remaining[ connectedNode ];
         }
       }
-      return _.keys( referenceNodes );
+      return referenceNodes;
     },
 
     /**
@@ -238,9 +246,10 @@ define( function( require ) {
       var list = [];
 
       //reference node in each connected circuit element has a voltage of 0.0
-      for ( var i = 0; i < this.getReferenceNodes().length; i++ ) {
-        var n = this.getReferenceNodes()[ i ];
-        list.push( new Equation( 0, [ new Term( 1, new UnknownVoltage( parseInt( n, 10 ) ) ) ] ) );
+      var referenceNodes = this.getReferenceNodes();
+      for ( var i = 0; i < referenceNodes.length; i++ ) {
+        var referenceNode = referenceNodes[ i ];
+        list.push( new Equation( 0, [ new Term( 1, new UnknownVoltage( parseInt( referenceNode, 10 ) ) ) ] ) );
       }
 
       //for each node, charge is conserved
