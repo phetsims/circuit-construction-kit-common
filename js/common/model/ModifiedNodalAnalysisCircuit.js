@@ -185,7 +185,7 @@ define( function( require ) {
     },
 
     /**
-     * Obtain one node for each connected component and select it to have the reference voltage of 0V.
+     * Selects one node for each connected component to have the reference voltage of 0 volts.
      * @returns {number[]}
      * @private
      */
