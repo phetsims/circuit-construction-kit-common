@@ -199,7 +199,7 @@ define( function( require ) {
       while ( _.size( remaining ) > 0 ) {
         var referenceNode = _.minBy( _.keys( remaining ) );
         referenceNodes.push( referenceNode );
-        var connectedNodes = _.keys( this.getConnectedNodes( referenceNode ) );
+        var connectedNodes = this.getConnectedNodes( referenceNode );
 
         // No need to visit any nodes connected to the reference node, since their connected component already has
         // a reference node.
@@ -208,12 +208,13 @@ define( function( require ) {
           delete remaining[ connectedNode ];
         }
       }
-      return referenceNodes;
+      return referenceNodes.map( toNumber );
     },
 
     /**
      * Finds all nodes connected (by any path) to the given node
      * @param {number} node
+     * @returns {number[]}
      * @private
      */
     getConnectedNodes: function( node ) {
@@ -221,37 +222,36 @@ define( function( require ) {
       var toVisit = {};
       toVisit[ node ] = true;
 
-      // TODO: return keys only since that is all that is used by client?
       while ( _.size( toVisit ) > 0 ) {
-        var n = parseInt( _.keys( toVisit )[ 0 ], 10 ); // TODO: it is nice to use maps for O[1] access but not nice that the keys are strings.  Perhaps use array?
-        visited[ n ] = true;
+        var nodeToVisit = parseInt( _.keys( toVisit )[ 0 ], 10 ); // TODO: it is nice to use maps for O[1] access but not nice that the keys are strings
+        visited[ nodeToVisit ] = true;
         for ( var i = 0; i < this.elements.length; i++ ) {
           var e = this.elements[ i ];
-          if ( elementContainsNode( e, n ) ) {
-            var oppositeNode = getOppositeNode( e, n );
+          if ( elementContainsNode( e, nodeToVisit ) ) {
+            var oppositeNode = getOppositeNode( e, nodeToVisit );
             if ( !visited[ oppositeNode ] ) {
               toVisit[ oppositeNode ] = true;
             }
           }
         }
-        delete toVisit[ n ];
+        delete toVisit[ nodeToVisit ];
       }
-      return visited;
+      return _.keys( visited );
     },
 
     /**
      * Returns an array of Equation instances that will be solved as a linear algebra problem to find the unknown variables
      * of the circuit.
      * @returns {Equation[]}
+     * @private
      */
     getEquations: function() {
-      var list = [];
+      var equations = [];
 
       // Reference node in each connected circuit element has a voltage of 0.0
       var referenceNodes = this.getReferenceNodes();
       for ( var i = 0; i < referenceNodes.length; i++ ) {
-        var referenceNode = referenceNodes[ i ];
-        list.push( new Equation( 0, [ new Term( 1, new UnknownVoltage( parseInt( referenceNode, 10 ) ) ) ] ) );
+        equations.push( new Equation( 0, [ new Term( 1, new UnknownVoltage( referenceNodes[ i ] ) ) ] ) );
       }
 
       // For each node, charge is conserved
@@ -262,24 +262,24 @@ define( function( require ) {
         var incomingCurrentTerms = this.getCurrentTerms( node, 'node1', -1 );
         var outgoingCurrentTerms = this.getCurrentTerms( node, 'node0', +1 );
         var currentConservationTerms = incomingCurrentTerms.concat( outgoingCurrentTerms );
-        list.push( new Equation( this.getCurrentSourceTotal( node ), currentConservationTerms ) );
+        equations.push( new Equation( this.getCurrentSourceTotal( node ), currentConservationTerms ) );
       }
 
       // For each battery, voltage drop is given
       for ( i = 0; i < this.batteries.length; i++ ) {
         var battery = this.batteries[ i ];
-        list.push( new Equation( battery.voltage, [ new Term( -1, new UnknownVoltage( battery.node0 ) ), new Term( 1, new UnknownVoltage( battery.node1 ) ) ] ) );
+        equations.push( new Equation( battery.voltage, [ new Term( -1, new UnknownVoltage( battery.node0 ) ), new Term( 1, new UnknownVoltage( battery.node1 ) ) ] ) );
       }
 
       // If resistor has no resistance, node0 and node1 should have same voltage
       for ( i = 0; i < this.resistors.length; i++ ) {
         var resistor = this.resistors[ i ];
         if ( resistor.resistance === 0 ) {
-          list.push( new Equation( 0, [ new Term( 1, new UnknownVoltage( resistor.node0 ) ), new Term( -1, new UnknownVoltage( resistor.node1 ) ) ] ) );
+          equations.push( new Equation( 0, [ new Term( 1, new UnknownVoltage( resistor.node0 ) ), new Term( -1, new UnknownVoltage( resistor.node1 ) ) ] ) );
         }
       }
 
-      return list;
+      return equations;
     },
 
     getUnknownVoltages: function() {
@@ -374,6 +374,15 @@ define( function( require ) {
       }
     }
     return -1;
+  };
+
+  /**
+   * Converts a string integer to a number.  Used when converting object keys to indices.
+   * @param {string} string
+   * @returns {Number}
+   */
+  var toNumber = function( string ) {
+    return parseInt( string, 10 );
   };
 
   /**
