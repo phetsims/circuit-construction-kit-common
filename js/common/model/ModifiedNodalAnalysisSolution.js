@@ -108,7 +108,7 @@ define( function( require ) {
 
       if ( typeof e.resistance !== 'number' || e.resistance === 0 ) {
 
-        //if it was a battery or resistor (of R=0), look up the answer from an equivalent component
+        // If it was a battery or resistor (of R=0), look up the answer from an equivalent component
         for ( var i = 0; i < this.elements.length; i++ ) {
           var element = this.elements[ i ];
           if ( element.node0 === e.node0 && element.node1 === e.node1 ) {
@@ -124,7 +124,7 @@ define( function( require ) {
         assert && assert( false, 'should have found an equivalent component by now' );
       }
 
-      //else compute based on V=IR
+      // Else compute based on V=IR
       return -this.getVoltage( e ) / e.resistance;
     },
 

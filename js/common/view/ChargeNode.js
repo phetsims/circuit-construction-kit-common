@@ -52,7 +52,7 @@ define( function( require ) {
   var ELECTRON_IMAGE_NODE = new Node();
   MINUS_CHARGE_NODE.toImage( function( im ) {
 
-    //Scale back down so the image will be the desired size
+    // Scale back down so the image will be the desired size
     ELECTRON_IMAGE_NODE.children = [ new Image( im, { scale: 1.0 / ELECTRON_SCALE } ) ];
   }, 0, 0, MINUS_CHARGE_NODE.width, MINUS_CHARGE_NODE.height );
 

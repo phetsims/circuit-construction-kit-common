@@ -403,7 +403,8 @@ define( function( require ) {
     step: function( dt ) {
       this.circuitNode.step( dt );
     },
-    //overrideable stub
+
+    // Overrideable stub
     reset: function() {
 
     },

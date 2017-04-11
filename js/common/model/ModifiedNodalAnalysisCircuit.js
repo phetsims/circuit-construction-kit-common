@@ -212,29 +212,36 @@ define( function( require ) {
     },
 
     /**
-     *
+     * Finds all nodes connected (by any path) to the given node
      * @param {number} node
+     * @private
      */
     getConnectedNodes: function( node ) {
       var visited = {};
       var toVisit = {};
       toVisit[ node ] = true;
+
+      // TODO: return keys only since that is all that is used by client?
       return this.getConnectedNodesRecursive( visited, toVisit );
     },
 
     /**
-     *
      * @param {Object} visited
      * @param {Object} toVisit
+     * @private
      */
+    // TODO: this doesn't look recursive
     getConnectedNodesRecursive: function( visited, toVisit ) {
       while ( _.size( toVisit ) > 0 ) {
-        var n = parseInt( _.keys( toVisit )[ 0 ], 10 );
+        var n = parseInt( _.keys( toVisit )[ 0 ], 10 ); // TODO: it is nice to use maps for O[1] access but not nice that the keys are strings.  Perhaps use array?
         visited[ n ] = true;
         for ( var i = 0; i < this.elements.length; i++ ) {
           var e = this.elements[ i ];
-          if ( elementContainsNode( e, n ) && !visited[ getOpposite( e, n ) ] ) {
-            toVisit[ getOpposite( e, n ) ] = true;
+          if ( elementContainsNode( e, n ) ) {
+            var oppositeNode = getOppositeNode( e, n );
+            if ( !visited[ oppositeNode ] ) {
+              toVisit[ oppositeNode ] = true;
+            }
           }
         }
         delete toVisit[ n ];
@@ -242,17 +249,22 @@ define( function( require ) {
       return visited;
     },
 
+    /**
+     * Returns an array of Equation instances that will be solved as a linear algebra problem to find the unknown variables
+     * of the circuit.
+     * @returns {Equation[]}
+     */
     getEquations: function() {
       var list = [];
 
-      //reference node in each connected circuit element has a voltage of 0.0
+      // Reference node in each connected circuit element has a voltage of 0.0
       var referenceNodes = this.getReferenceNodes();
       for ( var i = 0; i < referenceNodes.length; i++ ) {
         var referenceNode = referenceNodes[ i ];
         list.push( new Equation( 0, [ new Term( 1, new UnknownVoltage( parseInt( referenceNode, 10 ) ) ) ] ) );
       }
 
-      //for each node, charge is conserved
+      // For each node, charge is conserved
       var nodeKeys = _.keys( this.nodeSet );
       for ( i = 0; i < nodeKeys.length; i++ ) {
         var nodeKey = nodeKeys[ i ];
@@ -263,13 +275,13 @@ define( function( require ) {
         list.push( new Equation( this.getCurrentSourceTotal( node ), currentConservationTerms ) );
       }
 
-      //for each battery, voltage drop is given
+      // For each battery, voltage drop is given
       for ( i = 0; i < this.batteries.length; i++ ) {
         var battery = this.batteries[ i ];
         list.push( new Equation( battery.voltage, [ new Term( -1, new UnknownVoltage( battery.node0 ) ), new Term( 1, new UnknownVoltage( battery.node1 ) ) ] ) );
       }
 
-      //if resistor has no resistance, node0 and node1 should have same voltage
+      // If resistor has no resistance, node0 and node1 should have same voltage
       for ( i = 0; i < this.resistors.length; i++ ) {
         var resistor = this.resistors[ i ];
         if ( resistor.resistance === 0 ) {
@@ -407,7 +419,7 @@ define( function( require ) {
    * @param {Element} element
    * @param {number} node
    */
-  var getOpposite = function( element, node ) {
+  var getOppositeNode = function( element, node ) {
     assert && assert( element.node0 === node || element.node1 === node );
     if ( element.node0 === node ) {
       return element.node1;

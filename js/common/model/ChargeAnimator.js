@@ -278,7 +278,7 @@ define( function( require ) {
       var adjacentCircuitElements = this.circuit.getNeighborCircuitElements( vertex );
       var circuitLocations = [];
 
-      //keep only those with outgoing current.
+      // Keep only those with outgoing current.
       for ( var i = 0; i < adjacentCircuitElements.length; i++ ) {
         var neighbor = adjacentCircuitElements[ i ];
         var current = neighbor.currentProperty.get() * charge.charge;
@@ -289,7 +289,7 @@ define( function( require ) {
         // TODO: Should the current be clamped after linear algebra?
         if ( current > CURRENT_THRESHOLD && neighbor.startVertexProperty.get() === vertex ) {
 
-          //start near the beginning.
+          // Start near the beginning.
           distAlongNew = Util.clamp( overshoot, 0, neighbor.chargePathLength );
         }
         else if ( current < -CURRENT_THRESHOLD && neighbor.endVertexProperty.get() === vertex ) {
