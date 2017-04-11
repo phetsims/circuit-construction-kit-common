@@ -144,19 +144,21 @@ define( function( require ) {
     },
 
     /**
-     * Gets all the incoming current is negative, outgoing is positive.
+     * Gets current conservation terms going into or out of a node. Incoming current is negative, outgoing is positive.
      * @param {number} node - the node
+     * @param {string} side - 'node0' for outgoing current or 'node1' for incoming current
+     * @param {number} sign - 1 for incoming current and -1 for outgoing current
      * @returns {Term[]}
      */
-    getIncomingCurrentTerms: function( node ) {
+    getCurrentTerms: function( node, side, sign ) {
       assert && assert( typeof node === 'number', 'node should be a number' );
       var nodeTerms = [];
 
       // Each battery introduces an unknown current through the battery
       for ( var i = 0; i < this.batteries.length; i++ ) {
         var battery = this.batteries[ i ];
-        if ( battery.node1 === node ) {
-          nodeTerms.push( new Term( -1, new UnknownCurrent( battery ) ) );
+        if ( battery[ side ] === node ) {
+          nodeTerms.push( new Term( sign, new UnknownCurrent( battery ) ) );
         }
       }
       var resistor;
@@ -166,60 +168,20 @@ define( function( require ) {
         resistor = this.resistors[ i ];
 
         //Treat resistors with R=0 as having unknown current and v1=v2
-        if ( resistor.node1 === node && resistor.resistance === 0 ) {
-          nodeTerms.push( new Term( -1, new UnknownCurrent( resistor ) ) );
+        if ( resistor[ side ] === node && resistor.resistance === 0 ) {
+          nodeTerms.push( new Term( sign, new UnknownCurrent( resistor ) ) );
         }
       }
 
       // Each resistor with >0 resistance has an unknown voltage
       for ( i = 0; i < this.resistors.length; i++ ) {
         resistor = this.resistors[ i ];
-        if ( resistor.node1 === node && resistor.resistance !== 0 ) {
-          nodeTerms.push( new Term( 1 / resistor.resistance, new UnknownVoltage( resistor.node1 ) ) );
-          nodeTerms.push( new Term( -1 / resistor.resistance, new UnknownVoltage( resistor.node0 ) ) );
+        if ( resistor[ side ] === node && resistor.resistance !== 0 ) {
+          nodeTerms.push( new Term( -sign / resistor.resistance, new UnknownVoltage( resistor.node1 ) ) );
+          nodeTerms.push( new Term( sign / resistor.resistance, new UnknownVoltage( resistor.node0 ) ) );
         }
       }
       return nodeTerms;
-    },
-
-    /**
-     * outgoing currents are negative so that incoming + outgoing = 0
-     * @param {number} node
-     * @returns {Term[]}
-     */
-    getOutgoingCurrentTerms: function( node ) {
-      var nodeTerms = [];
-      for ( var i = 0; i < this.batteries.length; i++ ) {
-        var b = this.batteries[ i ];
-        if ( b.node0 === node ) {
-          nodeTerms.push( new Term( 1, new UnknownCurrent( b ) ) );
-        }
-      }
-      var r;
-      for ( i = 0; i < this.resistors.length; i++ ) {
-        r = this.resistors[ i ];
-        // Treat resistors with R=0 as having unknown current and v1=v2
-        if ( r.node0 === node && r.resistance === 0 ) {
-          nodeTerms.push( new Term( 1, new UnknownCurrent( r ) ) );
-        }
-      }
-      for ( i = 0; i < this.resistors.length; i++ ) {
-        r = this.resistors[ i ];
-        if ( r.node0 === node && r.resistance !== 0 ) {
-          nodeTerms.push( new Term( -1 / r.resistance, new UnknownVoltage( r.node1 ) ) );
-          nodeTerms.push( new Term( 1 / r.resistance, new UnknownVoltage( r.node0 ) ) );
-        }
-      }
-      return nodeTerms;
-    },
-
-    /**
-     *
-     * @param {number} node
-     */
-    getCurrentConservationTerms: function( node ) {
-      assert && assert( typeof node === 'number' );
-      return this.getIncomingCurrentTerms( node ).concat( this.getOutgoingCurrentTerms( node ) );
     },
 
     /**
@@ -286,7 +248,10 @@ define( function( require ) {
       for ( i = 0; i < nodeKeys.length; i++ ) {
         var nodeKey = nodeKeys[ i ];
         var node = parseInt( nodeKey, 10 );
-        list.push( new Equation( this.getCurrentSourceTotal( node ), this.getCurrentConservationTerms( node ) ) );
+        var incomingCurrentTerms = this.getCurrentTerms( node, 'node1', -1 );
+        var outgoingCurrentTerms = this.getCurrentTerms( node, 'node0', +1 );
+        var currentConservationTerms = incomingCurrentTerms.concat( outgoingCurrentTerms );
+        list.push( new Equation( this.getCurrentSourceTotal( node ), currentConservationTerms ) );
       }
 
       //for each battery, voltage drop is given
