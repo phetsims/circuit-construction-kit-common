@@ -21,9 +21,9 @@ define( function( require ) {
   var DEBUG = false;
 
   /**
-   * @param {Battery[]} batteries
-   * @param {Resistor[]} resistors
-   * @param {CurrentSource[]} currentSources // TODO: What type is this?
+   * @param {Object[]} batteries - {node0:number,node1:number,circuitElement:CircuitElement,voltage:number}
+   * @param {Object[]} resistors - {node0:number,node1:number,circuitElement:CircuitElement,resistance:number}
+   * @param {Object[]} currentSources {node0:number,node1:number,circuitElement:CircuitElement,current:number}
    * @constructor
    */
   function ModifiedNodalAnalysisCircuit( batteries, resistors, currentSources ) {
@@ -125,6 +125,7 @@ define( function( require ) {
      *
      * @param nodeIndex
      * @returns {number}
+     * @private
      */
     getRHS: function( nodeIndex ) {
       var sum = 0.0;
