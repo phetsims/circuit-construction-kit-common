@@ -31,7 +31,7 @@ define( function( require ) {
     assert && assert( resistors, 'resistors should be defined' );
     assert && assert( currentSources, 'currentSources should be defined' );
 
-    // Skip iteration in built mode
+    // validate input types but only when asserts are enabled
     if ( assert ) {
       for ( var i = 0; i < batteries.length; i++ ) {
         var battery = batteries[ i ];
@@ -88,13 +88,10 @@ define( function( require ) {
      * @private
      */
     toString: function() {
-      return 'Circuit: resistors:' + this.resistors.map( function( r ) {
-          return resistorToString( r );
-        } ).join( ',' ) + ', batteries: ' + this.batteries.map( function( b ) {
-          return batteryToString( b );
-        } ).join( ',' ) + ', currentSources: ' + this.currentSources.map( function( c ) {
-          return c.toString();
-        } ).join( ',' );
+      return 'resistors:' + this.resistors.map( resistorToString ).join( ',' ) + ', ' +
+             'batteries: ' + this.batteries.map( batteryToString ).join( ',' ) + ', ' +
+             'currentSources: ' + this.currentSources.map( function( c ) { return c.toString(); } )
+               .join( ',' );
     },
 
     /**
@@ -122,33 +119,40 @@ define( function( require ) {
     },
 
     /**
+     * Sums all of the current leaving the node (subtracting current flowing into the node).
      *
-     * @param nodeIndex
+     * @param {number} nodeIndex - the node at which to compute current sources
      * @returns {number}
      * @private
      */
-    getRHS: function( nodeIndex ) {
-      var sum = 0.0;
+    getCurrentSourceTotal: function( nodeIndex ) {
+      var currentSourceTotal = 0.0;
       for ( var i = 0; i < this.currentSources.length; i++ ) {
         var c = this.currentSources[ i ];
         if ( c.node1 === nodeIndex ) {
-          sum = sum - c.current; // positive current is entering the node, and the convention is for incoming current to be negative
+
+          // positive current is entering the node, and the convention is for incoming current to be negative
+          currentSourceTotal = currentSourceTotal - c.current;
         }
         if ( c.node0 === nodeIndex ) {
-          sum = sum + c.current; // positive current is leaving the node, and the convention is for outgoing current to be positive
+
+          // positive current is leaving the node, and the convention is for outgoing current to be positive
+          currentSourceTotal = currentSourceTotal + c.current;
         }
       }
-      return sum;
+      return currentSourceTotal;
     },
 
     /**
-     * incoming current is negative, outgoing is positive
-     * @param node
-     * @returns {Array.<Term>}
+     * Gets all the incoming current is negative, outgoing is positive.
+     * @param {number} node - the node
+     * @returns {Term[]}
      */
     getIncomingCurrentTerms: function( node ) {
       assert && assert( typeof node === 'number', 'node should be a number' );
       var nodeTerms = [];
+
+      // Each battery introduces an unknown current through the battery
       for ( var i = 0; i < this.batteries.length; i++ ) {
         var battery = this.batteries[ i ];
         if ( battery.node1 === node ) {
@@ -156,6 +160,8 @@ define( function( require ) {
         }
       }
       var resistor;
+
+      // Each resistor with 0 resistance introduces an unknown current
       for ( i = 0; i < this.resistors.length; i++ ) {
         resistor = this.resistors[ i ];
 
@@ -164,6 +170,8 @@ define( function( require ) {
           nodeTerms.push( new Term( -1, new UnknownCurrent( resistor ) ) );
         }
       }
+
+      // Each resistor with >0 resistance has an unknown voltage
       for ( i = 0; i < this.resistors.length; i++ ) {
         resistor = this.resistors[ i ];
         if ( resistor.node1 === node && resistor.resistance !== 0 ) {
@@ -278,7 +286,7 @@ define( function( require ) {
       for ( i = 0; i < nodeKeys.length; i++ ) {
         var nodeKey = nodeKeys[ i ];
         var node = parseInt( nodeKey, 10 );
-        list.push( new Equation( this.getRHS( node ), this.getCurrentConservationTerms( node ) ) );
+        list.push( new Equation( this.getCurrentSourceTotal( node ), this.getCurrentConservationTerms( node ) ) );
       }
 
       //for each battery, voltage drop is given
