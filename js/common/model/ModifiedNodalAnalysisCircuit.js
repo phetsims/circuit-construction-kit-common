@@ -167,7 +167,7 @@ define( function( require ) {
       for ( i = 0; i < this.resistors.length; i++ ) {
         resistor = this.resistors[ i ];
 
-        //Treat resistors with R=0 as having unknown current and v1=v2
+        // Treat resistors with R=0 as having unknown current and v1=v2
         if ( resistor[ side ] === node && resistor.resistance === 0 ) {
           nodeTerms.push( new Term( sign, new UnknownCurrent( resistor ) ) );
         }
