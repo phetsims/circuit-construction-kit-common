@@ -222,16 +222,6 @@ define( function( require ) {
       toVisit[ node ] = true;
 
       // TODO: return keys only since that is all that is used by client?
-      return this.getConnectedNodesRecursive( visited, toVisit );
-    },
-
-    /**
-     * @param {Object} visited
-     * @param {Object} toVisit
-     * @private
-     */
-    // TODO: this doesn't look recursive
-    getConnectedNodesRecursive: function( visited, toVisit ) {
       while ( _.size( toVisit ) > 0 ) {
         var n = parseInt( _.keys( toVisit )[ 0 ], 10 ); // TODO: it is nice to use maps for O[1] access but not nice that the keys are strings.  Perhaps use array?
         visited[ n ] = true;
