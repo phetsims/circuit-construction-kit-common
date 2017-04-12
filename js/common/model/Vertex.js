@@ -87,7 +87,8 @@ define( function( require ) {
     // interface or outside of the black box
     this.insideTrueBlackBoxProperty = new BooleanProperty( options.insideTrueBlackBox );
 
-    // @public (read-only) - indicate when the vertex has been moved to the front in z-ordering
+    // @public (read-only) - indicate when the vertex has been moved to the front in z-ordering and layering in the
+    // view must be updated
     this.relayerEmitter = new Emitter();
 
     // TODO: Does this need Tandem.addInstance(this,TVertex?)?
