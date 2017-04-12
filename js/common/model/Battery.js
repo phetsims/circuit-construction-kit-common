@@ -32,7 +32,7 @@ define( function( require ) {
     }, options );
     FixedLengthCircuitElement.call( this, startVertex, endVertex, BATTERY_LENGTH, BATTERY_LENGTH );
 
-    // @public {Property.<number>} the voltage of the battery
+    // @public (read-only) the voltage of the battery
     this.voltageProperty = new NumberProperty( voltage );
 
     // @public (read-only) - track the initial state so the user can only create a certain number of "left" or "right"

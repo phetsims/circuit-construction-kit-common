@@ -34,10 +34,10 @@ define( function( require ) {
     var self = this;
     var circuit = circuitNode.circuit;
 
-    // @public (read-only) the vertex associated with this node
+    // @public (read-only) - the vertex associated with this node
     this.vertex = vertex;
 
-    // @public - added by CircuitNode during dragging, used for relative drag location.
+    // @public (read-only) - added by CircuitNode during dragging, used for relative drag location.
     this.startOffset = null;
 
     // @public (read-only) - for hit testing with probes

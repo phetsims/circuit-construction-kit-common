@@ -50,8 +50,8 @@ define( function( require ) {
       phetioValueType: TNumber
     } );
 
-    // @public - The different types of CircuitElement the circuit may contain, including Wire, Battery, Switch, Resistor,
-    // LightBulb.
+    // @public (read-only) - The different types of CircuitElement the circuit may contain, including Wire, Battery,
+    // Switch, Resistor, LightBulb.
     this.circuitElements = new ObservableArray();
 
     // Keep track of which terminals are connected to other terminals.  The vertices are also referenced in the
@@ -210,7 +210,7 @@ define( function( require ) {
       } );
     } );
 
-    // @public - for creating vertex tandems
+    // @public (read-only) - for creating vertex tandems
     this.vertexGroupTandem = tandem.createGroupTandem( 'vertices' );
   }
 
@@ -932,28 +932,14 @@ define( function( require ) {
         resistors: getArray( this.circuitElements.filter( function( c ) {return c instanceof Resistor;} ) ),
         switches: getArray( this.circuitElements.filter( function( c ) {return c instanceof Switch;} ) ),
         vertices: this.vertices.map( function( vertex ) {
-
-          var v = {
+          return {
             x: vertex.positionProperty.get().x,
-            y: vertex.positionProperty.get().y
+            y: vertex.positionProperty.get().y,
+            options: {
+              attachable: vertex.attachableProperty.get(),
+              draggable: vertex.draggableProperty.get()
+            }
           };
-
-          // Include any non-default options
-          var defaults = Vertex.DEFAULTS;
-
-          // Capture all non-default values for vertex options, if any
-          var options = {};
-          if ( vertex.attachableProperty.get() !== defaults.attachable ) {
-            options.attachable = vertex.attachableProperty.get();
-          }
-          if ( vertex.draggableProperty.get() !== defaults.draggable ) {
-            options.draggable = vertex.draggableProperty.get();
-          }
-          if ( _.keys( options ).length > 0 ) {
-            v.options = options;
-          }
-
-          return v;
         } ).getArray()
       };
     },

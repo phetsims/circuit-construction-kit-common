@@ -26,7 +26,9 @@ define( function( require ) {
     var self = this;
     var circuit = circuitNode.circuit;
     this.vertex = vertex;
-    this.startOffset = null;// @public - added by CircuitNode during dragging, used for relative drag location.
+
+    // @public (read-only) - added by CircuitNode during dragging, used for relative drag location.
+    this.startOffset = null;
 
     // @public (read-only) - for hit testing with probes
     this.dottedLineNodeRadius = 11.2;

@@ -22,10 +22,10 @@ define( function( require ) {
       assert && assert( typeof elements[ i ].node0 === 'number' && typeof elements[ i ].node1 === 'number' );
     }
 
-    // @public - the solved node voltages
+    // @public (read-only) - the solved node voltages
     this.nodeVoltages = nodeVoltages;
 
-    // @public - circuit elements in the solution
+    // @public (read-only) - circuit elements in the solution
     this.elements = elements;
   }
 

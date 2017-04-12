@@ -116,7 +116,7 @@ define( function( require ) {
 
   inherit( Node, CustomLightBulbNode, {
 
-    // @public Ensures that this object is eligible for GC
+    // @public (read-only) Ensures that this object is eligible for GC
     dispose: function() {
       this.disposeCustomLightBulbNode();
     },
