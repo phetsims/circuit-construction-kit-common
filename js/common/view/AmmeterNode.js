@@ -2,8 +2,8 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- * The user interface component with a single probe which reads current values from wires (not from vertices or
- * FixedLengthCircuitElements).
+ * The user interface component with a single probe which reads current values from Wires (not from Vertex or
+ * FixedLengthCircuitElement instances).
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -31,8 +31,8 @@ define( function( require ) {
 
   // constants
   // measurements for the cubic curve for the wire nodes
-  var BODY_LEAD_Y = -30;
-  var PROBE_LEAD_Y = 15;
+  var BODY_LEAD_Y = -30; // in model=view coordinates
+  var PROBE_LEAD_Y = 15; // in model=view coordinates
 
   // unsigned measurements for the circles on the voltmeter body image, for where the probe wires connect
   var PROBE_CONNECTION_POINT_DY = 8;
