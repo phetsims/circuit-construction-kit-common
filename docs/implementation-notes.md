@@ -1,0 +1,1 @@
+Model and view are in the same coordinate frame.

@@ -17,7 +17,8 @@ define( function( require ) {
   var NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
-  var METERS_PER_VIEW_COORDINATE = 0.015273409966500692; // Conversion factor
+  // Conversion factor between model=view coordinates and meters, in order to use resistivity to compute resistance.
+  var METERS_PER_VIEW_COORDINATE = 0.015273409966500692;
 
   /**
    * Wire main constructor
@@ -46,7 +47,7 @@ define( function( require ) {
     /**
      * When the vertex moves, updates the resistance and charge path length.
      */
-    var vertexMovedListener = function() {
+    var updateWire = function() {
       var startPosition = self.startVertexProperty.get().positionProperty.get();
       var endPosition = self.endVertexProperty.get().positionProperty.get();
       var viewLength = startPosition.distance( endPosition );
@@ -59,20 +60,22 @@ define( function( require ) {
     };
 
     // Use `self` here instead of `this` so IDEA doesn't mark the property as missing.
-    self.vertexMovedEmitter.addListener( vertexMovedListener );
+    self.vertexMovedEmitter.addListener( updateWire );
 
     // Update the resistance and charge path length on startup
-    vertexMovedListener();
+    updateWire();
 
-    this.resistivityProperty.link( function() {
-      vertexMovedListener();
-    } );
+    // When resistivity changes, update the resistance
+    this.resistivityProperty.link( updateWire );
 
+    // @private - for disposal
     this.disposeWire = function() {
       assert && assert( !self.disposed, 'Was already disposed' );
       self.disposed = true;
-      self.vertexMovedEmitter.removeListener( vertexMovedListener );
+      self.vertexMovedEmitter.removeListener( updateWire );
     };
+
+    // @private - for debugging
     this.disposed = false;
   }
 
@@ -81,6 +84,7 @@ define( function( require ) {
   return inherit( CircuitElement, Wire, {
 
     /**
+     * Get the properties so that the circuit can be solved when changed.
      * @override
      * @returns {Property[]}
      * @public

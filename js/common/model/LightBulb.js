@@ -94,7 +94,7 @@ define( function( require ) {
     },
 
     /**
-     * Gets all of the properties that characterize this LightBulb.
+     * Get the properties so that the circuit can be solved when changed.
      * @override
      * @returns {Property[]}
      * @public

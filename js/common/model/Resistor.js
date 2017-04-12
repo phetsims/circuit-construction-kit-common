@@ -36,6 +36,7 @@ define( function( require ) {
   return inherit( FixedLengthCircuitElement, Resistor, {
 
     /**
+     * Get the properties so that the circuit can be solved when changed.
      * @override
      * @returns {Property[]}
      * @public
