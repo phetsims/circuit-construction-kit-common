@@ -1,8 +1,7 @@
 // Copyright 2015-2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- * This class represents a sparse solution containing only the solved variables in Modified Nodal Analysis.
+ * Sparse solution containing the solved variables from ModifiedNodalAnalysisCircuit
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -13,8 +12,24 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
 
+  /**
+   * @param {Object} nodeVoltages - keys are {number} indicating the node index, values are {number} for the voltage at the node
+   * @param {Object[]} elements, with node0, node1, currentSolution (all {number})
+   * @constructor
+   */
+  function ModifiedNodalAnalysisSolution( nodeVoltages, elements ) {
+    for ( var i = 0; i < elements.length; i++ ) {
+      assert && assert( typeof elements[ i ].node0 === 'number' && typeof elements[ i ].node1 === 'number' );
+    }
 
-  // constants
+    // @public - the solved node voltages
+    this.nodeVoltages = nodeVoltages;
+
+    // @public - circuit elements in the solution
+    this.elements = elements;
+  }
+
+  circuitConstructionKitCommon.register( 'ModifiedNodalAnalysisSolution', ModifiedNodalAnalysisSolution );
 
   /**
    * Returns true if the numbers are approximately equal.
@@ -27,37 +42,22 @@ define( function( require ) {
     return Math.abs( a - b ) < 1E-6;
   };
 
-  /**
-   * @param {Object} nodeVoltages - {nodeIndex:{number}:voltage:{number}}
-   * @param {CircuitElement[]} elements, with currentSolution
-   * @constructor
-   */
-  function ModifiedNodalAnalysisSolution( nodeVoltages, elements ) {
-    for ( var i = 0; i < elements.length; i++ ) {
-      var element = elements[ i ];
-      assert && assert( typeof element.node0 === 'number' && typeof element.node1 === 'number' );
-    }
-    this.nodeVoltages = nodeVoltages;
-    this.elements = elements;
-  }
-
-  circuitConstructionKitCommon.register( 'ModifiedNodalAnalysisSolution', ModifiedNodalAnalysisSolution );
-
   return inherit( Object, ModifiedNodalAnalysisSolution, {
 
     /**
      * Compare two solutions, and provide detailed qunit equal test if equal is provided
      * @param modifiedNodalAnalysisSolution
-     * @param {function} equal from qunit
+     * @param {function} [equal] from qunit
      * @returns {boolean}
+     * @public
      */
     approxEquals: function( modifiedNodalAnalysisSolution, equal ) {
-      var myKeys = _.keys( this.nodeVoltages );
+      var keys = _.keys( this.nodeVoltages );
       var otherKeys = _.keys( modifiedNodalAnalysisSolution.nodeVoltages );
-      var difference = _.difference( myKeys, otherKeys );
-      assert && assert( difference.length === 0, 'wrong structure for compared solution' );
-      for ( var i = 0; i < myKeys.length; i++ ) {
-        var key = myKeys[ i ];
+      var keyDifference = _.difference( keys, otherKeys );
+      assert && assert( keyDifference.length === 0, 'wrong keys in compared solution' );
+      for ( var i = 0; i < keys.length; i++ ) {
+        var key = keys[ i ];
         var closeEnough = NUMBER_APPROXIMATELY_EQUALS( this.getNodeVoltage( key ), modifiedNodalAnalysisSolution.getNodeVoltage( key ) );
         equal && equal( closeEnough, true, 'node voltages[' + i + '] should match. ' + this.getNodeVoltage( key ) + '!==' + modifiedNodalAnalysisSolution.getNodeVoltage( key ) );
 
@@ -78,6 +78,7 @@ define( function( require ) {
     /**
      * For equality testing, make sure all of the specified elements and currents match ours
      * @param modifiedNodalAnalysisSolution
+     * @private
      */
     hasAllCurrents: function( modifiedNodalAnalysisSolution ) {
       for ( var i = 0; i < modifiedNodalAnalysisSolution.elements.length; i++ ) {
@@ -89,10 +90,17 @@ define( function( require ) {
       return true;
     },
 
+    /**
+     * Returns true if this solution has an element that matches the provided element.
+     * @param {Object} element
+     * @returns {boolean}
+     */
     hasMatchingElement: function( element ) {
       for ( var i = 0; i < this.elements.length; i++ ) {
-        var e = this.elements[ i ];
-        if ( e.node0 === element.node0 && e.node1 === element.node1 && NUMBER_APPROXIMATELY_EQUALS( e.currentSolution, element.currentSolution ) ) {
+        var proposedElement = this.elements[ i ];
+        if ( proposedElement.node0 === element.node0 &&
+             proposedElement.node1 === element.node1 &&
+             NUMBER_APPROXIMATELY_EQUALS( proposedElement.currentSolution, element.currentSolution ) ) {
           return true;
         }
       }
@@ -101,22 +109,24 @@ define( function( require ) {
 
     /**
      * Used by the CCK test harness.
-     * @param {Object} e
+     * @param {Object} element
      * @returns {number}
+     * @public
      */
-    getCurrent: function( e ) {
+    getCurrent: function( element ) {
 
-      if ( typeof e.resistance !== 'number' || e.resistance === 0 ) {
+      // If the current is in the solution, look it up.
+      if ( typeof element.resistance !== 'number' || element.resistance === 0 ) {
 
         // If it was a battery or resistor (of R=0), look up the answer from an equivalent component
         for ( var i = 0; i < this.elements.length; i++ ) {
-          var element = this.elements[ i ];
-          if ( element.node0 === e.node0 && element.node1 === e.node1 ) {
+          var proposedElement = this.elements[ i ];
+          if ( proposedElement.node0 === element.node0 && proposedElement.node1 === element.node1 ) {
 
-            var isEquivalentResistor = typeof element.resistance === 'number' && element.resistance === e.resistance;
-            var isEquivalentBattery = typeof element.voltage === 'number' && element.voltage === e.voltage;
+            var isEquivalentResistor = typeof proposedElement.resistance === 'number' && proposedElement.resistance === element.resistance;
+            var isEquivalentBattery = typeof proposedElement.voltage === 'number' && proposedElement.voltage === element.voltage;
             if ( isEquivalentResistor || isEquivalentBattery ) {
-              return element.currentSolution;
+              return proposedElement.currentSolution;
             }
           }
         }
@@ -124,8 +134,8 @@ define( function( require ) {
         assert && assert( false, 'should have found an equivalent component by now' );
       }
 
-      // Else compute based on V=IR
-      return -this.getVoltage( e ) / e.resistance;
+      // If the current was not in the solution, use Ohm's law (V=IR) to compute the current
+      return -this.getVoltage( element ) / element.resistance;
     },
 
     /**
@@ -140,12 +150,12 @@ define( function( require ) {
 
     /**
      * Returns the voltage across a circuit element.
-     * @param {Object} e - a circuit element with {node1:{number},node2:{number}}
+     * @param {Object} element - a circuit element with {node1:{number},node2:{number}}
      * @returns {number} - the voltage
      * @private
      */
-    getVoltage: function( e ) {
-      return this.nodeVoltages[ e.node1 ] - this.nodeVoltages[ e.node0 ];
+    getVoltage: function( element ) {
+      return this.nodeVoltages[ element.node1 ] - this.nodeVoltages[ element.node0 ];
     }
   } );
 } );
