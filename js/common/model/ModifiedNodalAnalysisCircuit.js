@@ -1,10 +1,10 @@
 // Copyright 2015-2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * Modified Nodal Analysis for a circuit.  An Equation is a sum of Terms equal to a numeric value.  A Term is composed
  * of a coefficient times a variable.  The variables are UnknownCurrent or UnknownVoltage.  The system of all
- * Equations is solved as a linear system.
+ * Equations is solved as a linear system.  Here is a good reference that was used during the development of this code
+ * https://www.swarthmore.edu/NatSci/echeeve1/Ref/mna/MNA2.html
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -149,6 +149,7 @@ define( function( require ) {
      * @param {string} side - 'node0' for outgoing current or 'node1' for incoming current
      * @param {number} sign - 1 for incoming current and -1 for outgoing current
      * @returns {Term[]}
+     * @private
      */
     getCurrentTerms: function( node, side, sign ) {
       assert && assert( typeof node === 'number', 'node should be a number' );
@@ -173,7 +174,7 @@ define( function( require ) {
         }
       }
 
-      // Each resistor with >0 resistance has an unknown voltage
+      // Each resistor with nonzero resistance has an unknown voltage
       for ( i = 0; i < this.resistors.length; i++ ) {
         resistor = this.resistors[ i ];
         if ( resistor[ side ] === node && resistor.resistance !== 0 ) {
@@ -287,68 +288,79 @@ define( function( require ) {
     /**
      * Gets an array of all the unknown voltages in the circuit.
      * @returns {UnknownVoltage[]}
+     * @private
      */
     getUnknownVoltages: function() {
+
       // TODO: stop using _.keys for nodeSet everywhere
       return _.keys( this.nodeSet ).map( stringToUnknownVoltage );
     },
+
+    /**
+     * Gets an array of the unknown currents in the circuit.
+     * @returns {Array}
+     * @private
+     */
     getUnknownCurrents: function() {
-      var unknowns = [];
+      var unknownCurrents = [];
+
+      // Each battery has an unknown current
       for ( var i = 0; i < this.batteries.length; i++ ) {
-        var battery = this.batteries[ i ];
-        unknowns.push( new UnknownCurrent( battery ) );
+        unknownCurrents.push( new UnknownCurrent( this.batteries[ i ] ) );
       }
 
       // Treat resisters with R=0 as having unknown current and v1=v2
       for ( i = 0; i < this.resistors.length; i++ ) {
-        var resistor = this.resistors[ i ];
-        if ( resistor.resistance === 0 ) {
-          unknowns.push( new UnknownCurrent( resistor ) );
+        if ( this.resistors[ i ].resistance === 0 ) {
+          unknownCurrents.push( new UnknownCurrent( this.resistors[ i ] ) );
         }
       }
-      return unknowns;
+      return unknownCurrents;
     },
 
+    /**
+     * Solves for all unknown currents and voltages in the circuit.
+     * @returns {ModifiedNodalAnalysisSolution}
+     */
     solve: function() {
       var equations = this.getEquations();
       var unknownCurrents = this.getUnknownCurrents();
       var unknownVoltages = this.getUnknownVoltages();
+      var unknowns = unknownCurrents.concat( unknownVoltages );
 
+      // Gets the index of the specified unknown.
+      var getIndex = function( unknown ) {
+        var index = getIndexByEquals( unknowns, unknown );
+        assert && assert( index >= 0, 'unknown was missing' );
+        return index;
+      };
+
+      // Prepare the A and z matrices for the linear system Ax=z
       var A = new Matrix( equations.length, this.getNumVars() );
       var z = new Matrix( equations.length, 1 );
-      var unknowns = unknownCurrents.concat( unknownVoltages );
       for ( var i = 0; i < equations.length; i++ ) {
-        var equation = equations[ i ];
-        equation.stamp( i, A, z, function( unknown ) {
-
-          var index = getIndexByEquals( unknowns, unknown );
-          assert && assert( index >= 0, 'unknown was missing' );
-          return index;
-        } );
+        equations[ i ].stamp( i, A, z, getIndex );
       }
 
       DEBUG && console.log( 'Debugging circuit: ' + this.toString() );
       DEBUG && console.log( equations.join( '\n' ) );
-      DEBUG && console.log( 'a=' );
-      DEBUG && console.log( A.toString() );
-      DEBUG && console.log( 'z=' );
-      DEBUG && console.log( z.toString() );
+      DEBUG && console.log( 'A=\n' + A.toString() );
+      DEBUG && console.log( 'z=\n' + z.toString() );
       DEBUG && console.log( 'unknowns=\n' + this.getUnknowns().map( function( u ) {return u.toString();} ).join( '\n' ) );
 
-      // solve the matrix system for the unknowns
+      // solve the linear matrix system for the unknowns
       var x = A.solve( z );
 
-      DEBUG && console.log( 'x=' );
-      DEBUG && console.log( x.toString() );
+      DEBUG && console.log( 'x=\n' + x.toString() );
 
       var voltageMap = {};
       for ( i = 0; i < unknownVoltages.length; i++ ) {
-        var nodeVoltage = unknownVoltages[ i ];
-        voltageMap[ nodeVoltage.node ] = x.get( getIndexByEquals( unknowns, nodeVoltage ), 0 );
+        var unknownVoltage = unknownVoltages[ i ];
+        voltageMap[ unknownVoltage.node ] = x.get( getIndexByEquals( unknowns, unknownVoltage ), 0 );
       }
       for ( i = 0; i < unknownCurrents.length; i++ ) {
-        var currentVar = unknownCurrents[ i ];
-        currentVar.element.currentSolution = x.get( getIndexByEquals( unknowns, currentVar ), 0 );
+        var unknownCurrent = unknownCurrents[ i ];
+        unknownCurrent.element.currentSolution = x.get( getIndexByEquals( unknowns, unknownCurrent ), 0 );
       }
 
       return new ModifiedNodalAnalysisSolution( voltageMap, unknownCurrents.map( function( u ) {
@@ -426,17 +438,12 @@ define( function( require ) {
    */
   var getOppositeNode = function( element, node ) {
     assert && assert( element.node0 === node || element.node1 === node );
-    if ( element.node0 === node ) {
-      return element.node1;
-    }
-    else {
-      return element.node0;
-    }
+    return element.node0 === node ? element.node1 : element.node0;
   };
 
   /**
-   * @param {number} coefficient
-   * @param {UnknownCurrent|UnknownVoltage} variable
+   * @param {number} coefficient - the multiplier for this term
+   * @param {UnknownCurrent|UnknownVoltage} variable - the variable for this term, like the x variable in 7x
    * @constructor
    */
   function Term( coefficient, variable ) {
