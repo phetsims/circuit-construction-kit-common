@@ -568,6 +568,7 @@ define( function( require ) {
     /**
      * Move forward in time
      * @param {number} dt - the elapsed time in seconds
+     * @public
      */
     step: function( dt ) {
 

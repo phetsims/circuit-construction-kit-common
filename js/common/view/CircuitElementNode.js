@@ -85,12 +85,19 @@ define( function( require ) {
 
   return inherit( Node, CircuitElementNode, {
 
+    /**
+     * Dispose resources when no longer used.
+     * @public
+     */
     dispose: function() {
       this.disposeCircuitElementNode();
       Node.prototype.dispose.call( this );
     },
 
-    // @protected
+    /**
+     * When interactivity changes, update the opacity.  Overriden.
+     * @public
+     */
     updateOpacityOnInteractiveChange: function() {
       var self = this;
       // TODO: Replace this with grayscale if we keep it
@@ -103,6 +110,13 @@ define( function( require ) {
         self.circuitElement.interactiveProperty.unlink( interactivityChanged );
       } );
     },
+
+    /**
+     * TODO: document me
+     * @param circuitNode
+     * @returns {{mouseup: deselect, touchup: deselect}}
+     * TODO: public/private
+     */
     createDeselectFunctionListener: function( circuitNode ) {
       var deselect = function( event ) {
 
@@ -128,6 +142,14 @@ define( function( require ) {
       };
       return listener;
     },
+
+    /**
+     * TODO: Document me
+     * @param event
+     * @param circuitNode
+     * @param startPoint
+     * TODO: public/private
+     */
     maybeSelect: function( event, circuitNode, startPoint ) {
 
       if ( event.pointer.point.distance( startPoint ) < CircuitConstructionKitConstants.TAP_THRESHOLD ) {

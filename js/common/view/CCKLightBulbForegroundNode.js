@@ -74,6 +74,7 @@ define( function( require ) {
     /**
      * Maintain the opacity of the brightness lines while changing the opacity of the light bulb itself.
      * @override
+     * @public
      */
     updateOpacityOnInteractiveChange: function() {
 

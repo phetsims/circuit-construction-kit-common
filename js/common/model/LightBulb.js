@@ -82,6 +82,7 @@ define( function( require ) {
      * @param {number} index
      * @param {Vertex} startVertex
      * @returns {Vector2}
+     * @private
      */
     getPoint: function( index, startVertex ) {
       var point = POINTS[ index ];

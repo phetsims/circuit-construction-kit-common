@@ -56,6 +56,7 @@ define( function( require ) {
     /**
      * Clear out the CircuitStruct.
      * TODO: why is this necessary
+     * @public
      */
     clear: function() {
       this.vertices.length = 0;
@@ -85,6 +86,7 @@ define( function( require ) {
      * @param {Object} circuitState
      * @param {NumberProperty} resistivityProperty - shared value for resistivity across all of the wires
      * @returns {CircuitStruct}
+     * @public
      */
     fromStateObject: function( circuitState, resistivityProperty ) { // TODO: Tandem - Pass tandems through
       var circuitStruct = new CircuitStruct( [], [], [], [], [], [] );

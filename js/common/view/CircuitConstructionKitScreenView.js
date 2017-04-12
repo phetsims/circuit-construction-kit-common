@@ -400,14 +400,28 @@ define( function( require ) {
     moveBackgroundToBack: function() {
       this.backgroundPlane.moveToBack();
     },
+
+    /**
+     * Move forward in time by the specified dt
+     * @param {number} dt - seconds
+     */
     step: function( dt ) {
       this.circuitNode.step( dt );
     },
 
-    // Overrideable stub
+    /**
+     * Overrideable stub
+     * @public
+     */
     reset: function() {
-
     },
+
+    /**
+     * Return true if and only if the CircuitElementNode can be dropped in the toolbox.
+     * @param {CircuitElementNode} circuitElementNode
+     * @returns {boolean}
+     * @public
+     */
     canNodeDropInToolbox: function( circuitElementNode ) {
       var isSingle = this.circuitConstructionKitModel.circuit.isSingle( circuitElementNode.circuitElement );
       var inBounds = this.circuitElementToolbox.globalBounds.containsPoint( circuitElementNode.globalBounds.center );
@@ -415,6 +429,11 @@ define( function( require ) {
       return isSingle && inBounds && okToDrop;
     },
 
+    /**
+     * Drop the CircuitElementNode in the toolbox.
+     * @param {CircuitElementNode} circuitElementNode
+     * @public
+     */
     dropCircuitElementNodeInToolbox: function( circuitElementNode ) {
 
       // Only drop in the box if it was a single component, if connected to other things, do not
@@ -441,7 +460,8 @@ define( function( require ) {
      * Check for an intersection between a probeNode and a wire, return null if no hits.
      * @param probeNode
      * @param {string} locationString - 'translation' for ammeter or 'centerTop' for voltmeter probes
-     * @returns {*}
+     * @returns {boolean}
+     * @public
      */
     hitWireNode: function( probeNode, locationString ) {
 
@@ -466,8 +486,8 @@ define( function( require ) {
      * Find where the voltmeter probe node intersects the wire, for computing the voltage difference
      * @param {Image} probeNode - the probe node from the VoltmeterNode
      * @param {Vector2} probePosition
-     * @private
      * @returns {Object} with vertex (for checking connectivity) and voltage (if connected)
+     * @private
      */
     getVoltageConnection: function( probeNode, probePosition ) {
 

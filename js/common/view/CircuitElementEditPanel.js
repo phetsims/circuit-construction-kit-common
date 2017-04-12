@@ -90,6 +90,11 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'CircuitElementEditPanel', CircuitElementEditPanel );
 
   return inherit( HBox, CircuitElementEditPanel, {
+
+    /**
+     * Dispose resources when no longer used.
+     * @public
+     */
     dispose: function() {
       this.disposeCircuitElementEditPanel();
       HBox.prototype.dispose.call( this );

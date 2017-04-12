@@ -321,6 +321,7 @@ define( function( require ) {
     /**
      * Solves for all unknown currents and voltages in the circuit.
      * @returns {ModifiedNodalAnalysisSolution}
+     * @public
      */
     solve: function() {
       var equations = this.getEquations();
@@ -559,6 +560,7 @@ define( function( require ) {
      * @param {Matrix} a - the matrix of coefficients in Ax=z
      * @param {Matrix} z - the matrix on the right hand side in Ax=z
      * @param {function} getIndex
+     * @public
      */
     stamp: function( row, a, z, getIndex ) {
 
@@ -576,6 +578,7 @@ define( function( require ) {
     /**
      * Returns a string representation for debugging.
      * @returns {string}
+     * @public
      */
     toString: function() {
       var termList = [];

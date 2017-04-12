@@ -66,6 +66,7 @@ define( function( require ) {
     /**
      * @override
      * @returns {Property[]}
+     * @public
      */
     getCircuitProperties: function() {
       return [
@@ -74,10 +75,21 @@ define( function( require ) {
         // necessary if reported here.
       ];
     },
+
+    /**
+     * Dispose the switch when it will no longer be used.
+     * @public
+     */
     dispose: function() {
       CircuitElement.prototype.dispose.call( this );
       this.disposeSwitch();
     },
+
+    /**
+     * Gets all of the attributes in a serializable state object.
+     * @returns {{resistance: *, resistivity: *}}
+     * @public
+     */
     attributesToStateObject: function() {
       return {
         resistance: this.resistanceProperty.get(),

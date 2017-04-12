@@ -88,6 +88,7 @@ define( function( require ) {
 
     /**
      * Dispose the charge when it will never be used again.
+     * @public
      */
     dispose: function() {
       this.disposeCharge();
@@ -97,6 +98,7 @@ define( function( require ) {
      * Set the Charge to be in a new place in the circuit.
      * @param {CircuitElement} circuitElement - the new CircuitElement the charge will be in.
      * @param {number} distance - the position within the new CircuitElement
+     * @public
      */
     setLocation: function( circuitElement, distance ) {
       assert && assert( !isNaN( distance ), 'Distance was NaN' );

@@ -38,6 +38,7 @@ define( function( require ) {
     /**
      * @override
      * @returns {Property[]}
+     * @public
      */
     getCircuitProperties: function() {
       return [ this.resistanceProperty ];
@@ -46,6 +47,7 @@ define( function( require ) {
     /**
      * Get the attributes as a state object for serialization.
      * @returns {Object}
+     * @public
      */
     attributesToStateObject: function() {
       return {

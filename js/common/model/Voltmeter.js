@@ -52,6 +52,7 @@ define( function( require ) {
 
     /**
      * Reset the voltmeter, called when reset all is pressed.
+     * @public
      */
     reset: function() {
       Meter.prototype.reset.call( this );

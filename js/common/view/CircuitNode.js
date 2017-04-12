@@ -264,6 +264,12 @@ define( function( require ) {
       }
     },
 
+    /**
+     * TODO: Document me
+     * @param circuitElement
+     * @returns {*}
+     * TODO: private/public
+     */
     getSpecificCircuitElementNode: function( circuitElement ) {
       if ( circuitElement instanceof Wire ) {
         return this.getWireNode( circuitElement );
@@ -299,6 +305,8 @@ define( function( require ) {
       return null;
     },
 
+
+    // TODO: docs
     getWireNode: function( wire ) { return this.getCircuitElementNode( this.wireNodes, wire ); },
     getCCKLightBulbNode: function( lightBulb ) { return this.getCircuitElementNode( this.lightBulbNodes, lightBulb ); },
     getCCKLightBulbForegroundNode: function( lightBulb ) { return this.getCircuitElementNode( this.lightBulbForegroundNodes, lightBulb ); },
@@ -320,6 +328,8 @@ define( function( require ) {
       }
       return null;
     },
+
+    // TODO: docs
     getSolderNode: function( vertex ) { return this.getNodeForVertex( this.solderNodes, vertex ); },
     getVertexNode: function( vertex ) { return this.getNodeForVertex( this.vertexNodes, vertex ); },
 

@@ -98,6 +98,10 @@ define( function( require ) {
 
   return inherit( FixedLengthCircuitElementNode, CCKLightBulbNode, {
 
+    /**
+     * Dispose when no longer used.
+     * @public
+     */
     dispose: function() {
       this.disposeCCKLightBulbNode();
       FixedLengthCircuitElementNode.prototype.dispose.call( this );
@@ -106,6 +110,7 @@ define( function( require ) {
     /**
      * Maintain the opacity of the brightness lines while changing the opacity of the light bulb itself.
      * @override
+     * @public
      */
     updateOpacityOnInteractiveChange: function() {
 

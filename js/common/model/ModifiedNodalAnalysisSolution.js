@@ -94,6 +94,7 @@ define( function( require ) {
      * Returns true if this solution has an element that matches the provided element.
      * @param {Object} element
      * @returns {boolean}
+     * @private
      */
     hasMatchingElement: function( element ) {
       for ( var i = 0; i < this.elements.length; i++ ) {
