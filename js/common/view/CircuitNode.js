@@ -267,7 +267,7 @@ define( function( require ) {
     /**
      * TODO: Document me
      * @param circuitElement
-     * @returns {*}
+     * @returns {Node}
      * TODO: private/public
      */
     getSpecificCircuitElementNode: function( circuitElement ) {
