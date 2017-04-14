@@ -46,6 +46,7 @@ define( function( require ) {
       defaultValue: true
     },
 
+    // TODO: this needs to match new UI for show charges
     showElectrons: {
       type: 'boolean',
       defaultValue: true
