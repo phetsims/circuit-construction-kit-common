@@ -1,5 +1,4 @@
 // Copyright 2015-2017, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * Renders the lifelike/schematic view for a Battery.
@@ -36,14 +35,18 @@ define( function( require ) {
    * @constructor
    */
   function BatteryNode( circuitConstructionKitScreenView, circuitNode, battery, runningProperty, viewProperty, tandem ) {
+
+    // @public - the Battery rendered by this Node
     this.battery = battery;
 
-    // Points sampled using Photoshop from a raster of the IEEE icon seen at https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
     var batteryImageNode = new Image( batteryImage );
 
     // Align vertically
     var y = batteryImageNode.height / 2 + 7;
 
+    // Points sampled using Photoshop from a raster of the IEEE icon seen at
+    // https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
+    // TODO: clean up the geometry
     var schematicShape = new Shape()
       .moveTo( 47 + LEFT_OFFSET, y )
       .lineTo( 123 + LEFT_OFFSET, y )
@@ -53,15 +56,15 @@ define( function( require ) {
       .lineTo( 235 + LEFT_OFFSET, y )
       .moveTo( 156 + LEFT_OFFSET, 151 - 99 + y )
       .lineTo( 156 + LEFT_OFFSET, 46 - 99 + y );
-    var width = schematicShape.bounds.width;
+    var schematicWidth = schematicShape.bounds.width;
     var desiredWidth = batteryImageNode.width;
-    var scale = desiredWidth / width;
+    var schematicScale = desiredWidth / schematicWidth;
 
     // Scale to fit the correct width
-    var scaleMatrix = Matrix3.scale( scale, scale );
-    schematicShape = schematicShape.transformed( scaleMatrix );
+    schematicShape = schematicShape.transformed( Matrix3.scale( schematicScale, schematicScale ) );
     var schematicNode = new Path( schematicShape, {
-      stroke: 'black', lineWidth: 6
+      stroke: 'black',
+      lineWidth: 6
     } );
 
     FixedLengthCircuitElementNode.call( this,
@@ -71,9 +74,9 @@ define( function( require ) {
       viewProperty,
       batteryImageNode,
       schematicNode,
-      0.7,
+      0.7, // TODO: document
       tandem, {
-        verticalOffset: 15
+        verticalOffset: 15 // TODO: document
       }
     );
   }
