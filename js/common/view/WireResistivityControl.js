@@ -18,6 +18,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var HStrut = require( 'SCENERY/nodes/HStrut' );
+  var Dimension2 = require( 'DOT/Dimension2' );
 
   /**
    * @constructor
@@ -27,6 +28,9 @@ define( function( require ) {
     var slider = new HSlider( wireResistivityProperty, {
       min: CircuitConstructionKitConstants.DEFAULT_RESISTIVITY,
       max: max // large enough so that max resistance in a 9v battery slows to a good rate
+    }, {
+      trackSize: new Dimension2( 130, 5 ),
+      tandem: tandem.createTandem( 'slider' )
     } );
     var createText = function( string, visible ) {
       return new Text( string, {
@@ -37,14 +41,14 @@ define( function( require ) {
 
     var createLabel = function( min ) {
       return new Node( {
-        children: min ? [ createText( 'very little', true ) ] : [ createText( 'lots', true ) ]
+        children: min ? [ createText( 'tiny', true ) ] : [ createText( 'lots', true ) ]
       } );
     };
     slider.addMajorTick( 0, createLabel( true ) );
     slider.addMajorTick( max, createLabel( false ) );
     AccordionBox.call( this, slider, {
-      fill: '#f1f1f2',
-      cornerRadius: 10,
+      fill: CircuitConstructionKitConstants.PANEL_COLOR,
+      cornerRadius: CircuitConstructionKitConstants.CORNER_RADIUS,
       titleXMargin: 10,
       buttonXMargin: 10,
       titleYMargin: 4,
