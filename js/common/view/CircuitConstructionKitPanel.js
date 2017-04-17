@@ -12,6 +12,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Panel = require( 'SUN/Panel' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   /**
    * @param content
@@ -21,12 +22,13 @@ define( function( require ) {
    */
   function CircuitConstructionKitPanel( content, tandem, options ) {
     options = _.extend( {
-      fill: '#f1f1f2',
+      fill: CircuitConstructionKitConstants.PANEL_COLOR,
       stroke: 'black',
       lineWidth: 1.3,
       xMargin: 15,
       yMargin: 15,
-      tandem: tandem
+      tandem: tandem,
+      cornerRadius: CircuitConstructionKitConstants.CORNER_RADIUS
     }, options );
     Panel.call( this, content, options );
   }

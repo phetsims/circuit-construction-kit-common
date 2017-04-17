@@ -148,12 +148,12 @@ define( function( require ) {
     circuitElement.endVertexProperty.lazyLink( relink );
 
     var circuit = circuitNode && circuitNode.circuit;
-    CircuitElementNode.call( this, circuitElement, circuit, {
+    CircuitElementNode.call( this, circuitElement, circuit, _.extend( {
       cursor: 'pointer',
       children: [
         contentNode
       ]
-    } );
+    }, options ) );
 
     var pickableListener = function( interactive ) {
       self.pickable = interactive;

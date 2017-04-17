@@ -32,12 +32,17 @@ define( function( require ) {
    * @param {Property.<boolean>} runningProperty - supplied for consistency with other CircuitElementNode constructors
    * @param {Property.<string>} viewProperty
    * @param {Tandem} tandem
+   * @param {Object} [options]
    * @constructor
    */
-  function BatteryNode( circuitConstructionKitScreenView, circuitNode, battery, runningProperty, viewProperty, tandem ) {
+  function BatteryNode( circuitConstructionKitScreenView, circuitNode, battery, runningProperty, viewProperty, tandem, options ) {
 
     // @public (read-only) - the Battery rendered by this Node
     this.battery = battery;
+
+    options = _.extend( {
+      verticalOffset: 15 // TODO: document
+    }, options );
 
     var batteryImageNode = new Image( batteryImage );
 
@@ -75,10 +80,8 @@ define( function( require ) {
       batteryImageNode,
       schematicNode,
       0.7, // TODO: document
-      tandem, {
-        verticalOffset: 15 // TODO: document
-      }
-    );
+      tandem,
+      options );
   }
 
   circuitConstructionKitCommon.register( 'BatteryNode', BatteryNode );

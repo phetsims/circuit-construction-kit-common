@@ -214,8 +214,8 @@ define( function( require ) {
     this.sensorToolbox = new SensorToolbox( this.circuitNode, voltmeterNode, ammeterNode, circuitConstructionKitModel.exploreScreenRunningProperty, tandem.createTandem( 'sensorToolbox' ) );
 
     // @private
-    this.viewRadioButtonGroup = new ViewRadioButtonGroup( circuitConstructionKitModel.viewProperty );
-    this.viewRadioButtonGroup.setScaleMagnitude( this.sensorToolbox.width / this.viewRadioButtonGroup.width );
+    this.viewRadioButtonGroup = new ViewRadioButtonGroup( circuitConstructionKitModel.viewProperty, tandem.createTandem( 'viewRadioButtonGroup' ) );
+    // this.viewRadioButtonGroup.setScaleMagnitude( this.sensorToolbox.width / this.viewRadioButtonGroup.width );
 
     // @protected
     this.displayOptionsPanel = new DisplayOptionsPanel(
