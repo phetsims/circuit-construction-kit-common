@@ -50,6 +50,11 @@ define( function( require ) {
       phetioValueType: TNumber
     } );
 
+    this.batteryResistanceProperty = new Property( CircuitConstructionKitConstants.DEFAULT_BATTERY_RESISTANCE, {
+      tandem: tandem.createTandem( 'batteryResistanceProperty' ),
+      phetioValueType: TNumber
+    } );
+
     // @public (read-only) - The different types of CircuitElement the circuit may contain, including Wire, Battery,
     // Switch, Resistor, LightBulb.
     this.circuitElements = new ObservableArray();
@@ -921,7 +926,7 @@ define( function( require ) {
         return circuitElements.map( function( element ) {
           return _.extend( {
             startVertex: getVertexIndex( element.startVertexProperty.get() ),
-            endVertex: getVertexIndex( element.endVertexProperty.get() ),
+            endVertex: getVertexIndex( element.endVertexProperty.get() )
           }, element.attributesToStateObject() );
         } ).getArray();
       };

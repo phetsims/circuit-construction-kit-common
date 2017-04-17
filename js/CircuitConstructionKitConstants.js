@@ -32,6 +32,13 @@ define( function( require ) {
     // The resistance of a default resistor, also used in icons
     DEFAULT_RESISTANCE: 4.5,
 
+    // The resistance of a default battery
+    DEFAULT_BATTERY_RESISTANCE: 0,
+
+    //TODO: Add this to all right side panels.
+    // Right side panel minWidth
+    RIGHT_SIDE_PANEL_MIN_WIDTH: 200,
+
     // Padding for placement of control panels
     LAYOUT_INSET: 14,
 

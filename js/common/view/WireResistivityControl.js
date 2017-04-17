@@ -37,7 +37,7 @@ define( function( require ) {
 
     var createLabel = function( min ) {
       return new Node( {
-        children: min ? [ createText( 'very little', true ) ] : [ createText( 'lots', true ) ]
+        children: min ? [ createText( 'tiny', true ) ] : [ createText( 'lots', true ) ]
       } );
     };
     slider.addMajorTick( 0, createLabel( true ) );
