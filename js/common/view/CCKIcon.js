@@ -1,7 +1,7 @@
 // Copyright 2017, University of Colorado Boulder
 
 /**
- * Icon that shows common circuit elements
+ * Home screen/navigation bar icon that shows common circuit elements.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -27,10 +27,11 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
 
   // images
-  var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
+  var batteryMipmap = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
 
   // constants
   var BACKGROUND_COLOR = CircuitConstructionKitConstants.BACKGROUND_COLOR;
+  var ELEMENT_WIDTH = 50;
 
   /**
    * @param {Tandem} tandem
@@ -45,33 +46,34 @@ define( function( require ) {
     var viewProperty = new Property( 'lifelike' );
 
     var wireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ) ), null, viewProperty, tandem.createTandem( 'wireIcon' ) );
-    wireNode.accessibleContent = null; // icon should not have accessibel content
+    wireNode.accessibleContent = null; // icon should not have accessible content // TODO: explore this.  Do we really need it here?  Do we need it elsewhere?
 
-    var resistorNode = new ResistorNode(
-      null,
-      null,
-      new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ), CircuitConstructionKitConstants.DEFAULT_RESISTANCE ),
-      null,
-      viewProperty,
-      tandem.createTandem( 'resistorIcon' ), {
-        icon: true
-      } );
+    // Model element used to create the node
+    var resistor = new Resistor(
+      new Vertex( 0, 0 ),
+      new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ),
+      CircuitConstructionKitConstants.DEFAULT_RESISTANCE
+    );
+
+    var resistorNode = new ResistorNode( null, null, resistor, null, viewProperty, tandem.createTandem( 'resistorIcon' ), {
+      icon: true
+    } );
     resistorNode.accessibleContent = null;
 
-    var battery = new Image( batteryImage );
+    var batteryNode = new Image( batteryMipmap );
+
     var lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ) );
     lightBulbNode.accessibleContent = null;
 
-    var elementWidth = 50;
-    resistorNode.mutate( { scale: elementWidth / resistorNode.width * 0.75 } );
-    wireNode.mutate( { scale: elementWidth / wireNode.width * 0.7 } );
-    battery.mutate( { scale: elementWidth / battery.width } );
-    lightBulbNode.mutate( { scale: elementWidth / lightBulbNode.width / 2 } );
+    resistorNode.mutate( { scale: ELEMENT_WIDTH / resistorNode.width * 0.75 } );
+    wireNode.mutate( { scale: ELEMENT_WIDTH / wireNode.width * 0.7 } );
+    batteryNode.mutate( { scale: ELEMENT_WIDTH / batteryNode.width } );
+    lightBulbNode.mutate( { scale: ELEMENT_WIDTH / lightBulbNode.width / 2 } );
     var vBox = new VBox( {
       spacing: 20,
       children: [ new HBox( { spacing: 20, children: [ wireNode, resistorNode ] } ), new HBox( {
         spacing: 20,
-        children: [ battery, lightBulbNode ]
+        children: [ batteryNode, lightBulbNode ]
       } ) ]
     } );
     vBox.mutate( {

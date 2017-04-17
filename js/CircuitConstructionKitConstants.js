@@ -73,6 +73,12 @@ define( function( require ) {
     BATTERY_LENGTH: 102,
 
     // Length of a resistor
-    RESISTOR_LENGTH: 110
+    RESISTOR_LENGTH: 110,
+
+    // background for panels and radio buttons
+    PANEL_COLOR: '#f1f1f2',
+
+    // radius for panels and radio buttons
+    CORNER_RADIUS: 6
   } );
 } );

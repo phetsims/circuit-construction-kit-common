@@ -1,8 +1,7 @@
-// Copyright 2015-2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
+// Copyright 2015-2017, University of Colorado Boulder
 
 /**
- *
+ * Renders the lifelike/schematic view for a Battery.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -21,47 +20,56 @@ define( function( require ) {
   // images
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
 
+  // constants
+
+  // Offset at left vertex
+  var LEFT_OFFSET = -47;
+
   /**
-   *
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
+   * @param {CircuitNode} circuitNode
+   * @param {Battery} battery
+   * @param {Property.<boolean>} runningProperty - supplied for consistency with other CircuitElementNode constructors
+   * @param {Property.<string>} viewProperty
+   * @param {Tandem} tandem
+   * @param {Object} [options]
    * @constructor
    */
-  function BatteryNode( circuitConstructionKitScreenView, circuitNode, battery, runningProperty, viewProperty, tandem ) {
+  function BatteryNode( circuitConstructionKitScreenView, circuitNode, battery, runningProperty, viewProperty, tandem, options ) {
+
+    // @public (read-only) - the Battery rendered by this Node
     this.battery = battery;
 
-    // Points sampled using Photoshop from a raster of the IEEE icon seen at https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
+    options = _.extend( {
+      verticalOffset: 15 // TODO: document
+    }, options );
+
     var batteryImageNode = new Image( batteryImage );
 
     // Align vertically
     var y = batteryImageNode.height / 2 + 7;
 
-    // Offset at left vertex
-    var x = -47;
+    // Points sampled using Photoshop from a raster of the IEEE icon seen at
+    // https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
+    // TODO: clean up the geometry
     var schematicShape = new Shape()
-      .moveTo( 47 + x, y )
-      .lineTo( 123 + x, y )
-      .moveTo( 123 + x, 122 - 99 + y )
-      .lineTo( 123 + x, 74 - 99 + y )
-      .moveTo( 156 + x, y )
-      .lineTo( 235 + x, y )
-      .moveTo( 156 + x, 151 - 99 + y )
-      .lineTo( 156 + x, 46 - 99 + y );
-    var width = schematicShape.bounds.width;
+      .moveTo( 47 + LEFT_OFFSET, y )
+      .lineTo( 123 + LEFT_OFFSET, y )
+      .moveTo( 123 + LEFT_OFFSET, 122 - 99 + y )
+      .lineTo( 123 + LEFT_OFFSET, 74 - 99 + y )
+      .moveTo( 156 + LEFT_OFFSET, y )
+      .lineTo( 235 + LEFT_OFFSET, y )
+      .moveTo( 156 + LEFT_OFFSET, 151 - 99 + y )
+      .lineTo( 156 + LEFT_OFFSET, 46 - 99 + y );
+    var schematicWidth = schematicShape.bounds.width;
     var desiredWidth = batteryImageNode.width;
-    var scale = desiredWidth / width;
+    var schematicScale = desiredWidth / schematicWidth;
 
     // Scale to fit the correct width
-    var scaleMatrix = Matrix3.scale( scale, scale );
-    schematicShape = schematicShape.transformed( scaleMatrix );
-    var plusShape = new Shape().moveTo( 191 + x, 64 - 99 + y ).lineTo( 191 + x, 81 - 99 + y ).moveTo( 178 + x, 73 - 99 + y ).lineTo( 203 + x, 73 - 99 + y );
-    plusShape = plusShape.transformed( scaleMatrix );
-    var path2 = new Path( plusShape, {
-      stroke: 'black', lineWidth: 4
-    } );
+    schematicShape = schematicShape.transformed( Matrix3.scale( schematicScale, schematicScale ) );
     var schematicNode = new Path( schematicShape, {
-      stroke: 'black', lineWidth: 6,
-      children: [
-        path2
-      ]
+      stroke: 'black',
+      lineWidth: 6
     } );
 
     FixedLengthCircuitElementNode.call( this,
@@ -71,11 +79,9 @@ define( function( require ) {
       viewProperty,
       batteryImageNode,
       schematicNode,
-      0.7,
-      tandem, {
-        verticalOffset: 15
-      }
-    );
+      0.7, // TODO: document
+      tandem,
+      options );
   }
 
   circuitConstructionKitCommon.register( 'BatteryNode', BatteryNode );

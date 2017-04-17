@@ -1,5 +1,4 @@
-// Copyright 2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
+// Copyright 2016-2017, University of Colorado Boulder
 
 /**
  * The user interface component with a single probe which reads current values from Wires (not from Vertex or
@@ -33,12 +32,16 @@ define( function( require ) {
   // measurements for the cubic curve for the wire nodes
   var BODY_LEAD_Y = -30; // in model=view coordinates
   var PROBE_LEAD_Y = 15; // in model=view coordinates
+  var HANDLE_WIDTH = 50;
+
+  // overall scale factor for the body and probe
+  var SCALE_FACTOR = 0.5;
 
   // unsigned measurements for the circles on the voltmeter body image, for where the probe wires connect
   var PROBE_CONNECTION_POINT_DY = 8;
 
   /**
-   * @param {Meter|Ammeter} ammeter - specifying parent and child types here satisfies the IDEA parser
+   * @param {Ammeter} ammeter
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
@@ -46,76 +49,87 @@ define( function( require ) {
   function AmmeterNode( ammeter, tandem, options ) {
     var self = this;
     options = _.extend( {
+
+      // true if it will be used as a toolbox icon
       icon: false,
+
+      // allowable drag bounds in view coordinates
       visibleBoundsProperty: null,
+
+      // when the simulation is not "running", values are hidden
       runningProperty: new BooleanProperty( true )
     }, options );
-    var s = 0.5;
+
+    // @public (read-only) (the model Ammeter associated with this Node)
     this.ammeter = ammeter;
 
-    var blackWireNode = new ProbeWireNode( 'black', new Vector2( 0, BODY_LEAD_Y ), new Vector2( 0, PROBE_LEAD_Y ) );
+    var wireNode = new ProbeWireNode( 'black', new Vector2( 0, BODY_LEAD_Y ), new Vector2( 0, PROBE_LEAD_Y ) );
 
-    var currentProperty = new DerivedProperty( [ ammeter.currentProperty ], function( current ) {
-
+    var currentReadoutProperty = new DerivedProperty( [ ammeter.currentProperty ], function( current ) {
       var max = window.phetBlackBoxStudy ? 1E3 : 1E10;
       var maxString = window.phetBlackBoxStudy ? '> 10^3' : '> 10^10';
 
       // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
       return current === null ? '?' :
              Math.abs( current ) > max ? maxString :
-             Util.toFixed( Math.abs( current ), 2 ) + ' A';
+             Util.toFixed( Math.abs( current ), 2 ) + ' A'; // TODO: i18n
     } );
-    var probeTextNode = new ProbeTextNode( currentProperty, options.runningProperty, 'Current', tandem.createTandem( 'probeTextNode' ), {
+
+    // TODO: i18n
+    var probeTextNode = new ProbeTextNode( currentReadoutProperty, options.runningProperty, 'Current', tandem.createTandem( 'probeTextNode' ), {
       centerX: ammeterBodyImage[ 0 ].width / 2,
       centerY: ammeterBodyImage[ 0 ].height / 2
     } );
 
     var bodyNode = new Image( ammeterBodyImage, {
-      scale: s,
+      scale: SCALE_FACTOR,
       cursor: 'pointer',
-      children: [
-        probeTextNode
-      ]
+      children: [ probeTextNode ]
     } );
-    var handleWidth = 50;
+
     this.probeNode = new ProbeNode( {
       cursor: 'pointer',
       sensorTypeFunction: ProbeNode.crosshairs(),
-      scale: s,
-      handleWidth: handleWidth,
+      scale: SCALE_FACTOR,
+      handleWidth: HANDLE_WIDTH,
       color: '#2c2c2b', // The dark gray border
       innerRadius: 43
     } );
 
     // Add a decoration on the handle to match the color scheme
-    this.probeNode.addChild( new Rectangle( 0, 52, handleWidth * 0.72, 19, 6, 6, {
+    this.probeNode.addChild( new Rectangle( 0, 52, HANDLE_WIDTH * 0.72, 19, 6, 6, {
       centerX: 0,
       fill: '#e79547' // Match the orange of the ammeter image
     } ) );
 
     Node.call( this, {
-      children: [ bodyNode, blackWireNode, this.probeNode ]
-    } );
-    ammeter.bodyPositionProperty.link( function( bodyPosition ) {
-      bodyNode.centerTop = bodyPosition;
-      blackWireNode.setBodyPosition( bodyNode.centerTop.plusXY( 0, PROBE_CONNECTION_POINT_DY ) );
+      children: [ bodyNode, wireNode, this.probeNode ]
     } );
 
-    ammeter.probePositionProperty.link( function( probePosition ) {
-      self.probeNode.centerTop = probePosition;
-      blackWireNode.setProbePosition( self.probeNode.centerBottom );
-    } );
+    // When the body position changes, update the body node and the wire
     ammeter.bodyPositionProperty.link( function( bodyPosition ) {
+      bodyNode.centerTop = bodyPosition;
+      wireNode.setBodyPosition( bodyNode.centerTop.plusXY( 0, PROBE_CONNECTION_POINT_DY ) );
       if ( ammeter.draggingProbesWithBodyProperty.get() ) {
-        ammeter.probePositionProperty.set( bodyPosition.plusXY( 80 / 2, -140 / 2 - 10 ) );
+        ammeter.probePositionProperty.set( bodyPosition.plusXY( 40, -80 ) );
       }
     } );
 
+    // When the probe position changes, update the probe node and the wire
+    ammeter.probePositionProperty.link( function( probePosition ) {
+      self.probeNode.centerTop = probePosition;
+      wireNode.setProbePosition( self.probeNode.centerBottom );
+    } );
+
     if ( !options.icon ) {
+
+      // @public (read-only) - so events can be forwarded from the toolbox
       this.dragHandler = new TandemSimpleDragHandler( {
         tandem: tandem.createTandem( 'dragHandler' ),
         start: function() {},
         drag: function( event ) {
+
+          // TODO: Should drag by deltas
           var pt = self.globalToParentPoint( event.pointer.point );
           pt = options.visibleBoundsProperty.value.eroded( CircuitConstructionKitConstants.DRAG_BOUNDS_EROSION ).closestPointTo( pt );
           ammeter.bodyPositionProperty.set( pt );
@@ -132,6 +146,7 @@ define( function( require ) {
         tandem: tandem.createTandem( 'probeDragHandler' ),
         start: function() {},
         drag: function( event ) {
+          // TODO: Should drag by deltas
           var pt = self.globalToParentPoint( event.pointer.point );
           pt = options.visibleBoundsProperty.value.eroded( CircuitConstructionKitConstants.DRAG_BOUNDS_EROSION ).closestPointTo( pt );
           ammeter.probePositionProperty.set( pt );
@@ -144,6 +159,5 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'AmmeterNode', AmmeterNode );
 
-  // Test commit
   return inherit( Node, AmmeterNode );
 } );
