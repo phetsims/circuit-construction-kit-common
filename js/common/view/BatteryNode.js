@@ -36,7 +36,7 @@ define( function( require ) {
    */
   function BatteryNode( circuitConstructionKitScreenView, circuitNode, battery, runningProperty, viewProperty, tandem ) {
 
-    // @public - the Battery rendered by this Node
+    // @public (read-only) - the Battery rendered by this Node
     this.battery = battery;
 
     var batteryImageNode = new Image( batteryImage );

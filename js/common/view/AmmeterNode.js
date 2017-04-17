@@ -60,7 +60,7 @@ define( function( require ) {
       runningProperty: new BooleanProperty( true )
     }, options );
 
-    // @public (the model Ammeter associated with this Node)
+    // @public (read-only) (the model Ammeter associated with this Node)
     this.ammeter = ammeter;
 
     var wireNode = new ProbeWireNode( 'black', new Vector2( 0, BODY_LEAD_Y ), new Vector2( 0, PROBE_LEAD_Y ) );
@@ -122,6 +122,8 @@ define( function( require ) {
     } );
 
     if ( !options.icon ) {
+
+      // @public (read-only) - so events can be forwarded from the toolbox
       this.dragHandler = new TandemSimpleDragHandler( {
         tandem: tandem.createTandem( 'dragHandler' ),
         start: function() {},
