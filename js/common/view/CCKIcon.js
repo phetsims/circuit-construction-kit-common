@@ -27,7 +27,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
 
   // images
-  var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
+  var batteryMipmap = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
 
   // constants
   var BACKGROUND_COLOR = CircuitConstructionKitConstants.BACKGROUND_COLOR;
@@ -60,20 +60,20 @@ define( function( require ) {
     } );
     resistorNode.accessibleContent = null;
 
-    var batteryImage = new Image( batteryImage );
+    var batteryNode = new Image( batteryMipmap );
 
     var lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ) );
     lightBulbNode.accessibleContent = null;
 
     resistorNode.mutate( { scale: ELEMENT_WIDTH / resistorNode.width * 0.75 } );
     wireNode.mutate( { scale: ELEMENT_WIDTH / wireNode.width * 0.7 } );
-    batteryImage.mutate( { scale: ELEMENT_WIDTH / batteryImage.width } );
+    batteryNode.mutate( { scale: ELEMENT_WIDTH / batteryNode.width } );
     lightBulbNode.mutate( { scale: ELEMENT_WIDTH / lightBulbNode.width / 2 } );
     var vBox = new VBox( {
       spacing: 20,
       children: [ new HBox( { spacing: 20, children: [ wireNode, resistorNode ] } ), new HBox( {
         spacing: 20,
-        children: [ batteryImage, lightBulbNode ]
+        children: [ batteryNode, lightBulbNode ]
       } ) ]
     } );
     vBox.mutate( {
