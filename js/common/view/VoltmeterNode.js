@@ -20,7 +20,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var TandemSimpleDragHandler = require( 'TANDEM/scenery/input/TandemSimpleDragHandler' );
+  var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
 
   // images
   var voltmeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltmeter_body.png' );
@@ -138,50 +138,43 @@ define( function( require ) {
     if ( !options.icon ) {
 
       // @public (read-only) - so events can be forwarded from the toolbox
-      this.dragHandler = new TandemSimpleDragHandler( {
+      this.dragHandler = new MovableDragHandler( voltmeter.bodyPositionProperty, {
         tandem: tandem.createTandem( 'dragHandler' ),
-        start: function() {},
-        drag: function( event ) {
-
-          // TODO: drag by deltas
-          var pt = self.globalToParentPoint( event.pointer.point );
-          pt = options.visibleBoundsProperty.value.eroded( CircuitConstructionKitConstants.DRAG_BOUNDS_EROSION ).closestPointTo( pt );
-          voltmeter.bodyPositionProperty.set( pt );
-        },
-        end: function() {
+        endDrag: function() {
           voltmeter.droppedEmitter.emit1( bodyNode.globalBounds );
 
           // After dropping in the play area the probes move independently of the body
           voltmeter.draggingProbesWithBodyProperty.set( false );
-        }
+        },
+        onDrag: function( event ) {} // use this to do something every time drag is called, such as notify that a user has modified the position
+      } );
+      options.visibleBoundsProperty.link( function( visibleBounds ) {
+        self.dragHandler.dragBounds = visibleBounds.eroded( CircuitConstructionKitConstants.DRAG_BOUNDS_EROSION );
       } );
       bodyNode.addInputListener( this.dragHandler );
-      var redProbeDragHandler = new TandemSimpleDragHandler( {
-        tandem: tandem.createTandem( 'redProbeDragHandler' ),
-        start: function() {},
-        drag: function( event ) {
-          // TODO: drag by deltas
 
-          // TODO: duplicated
-          var pt = self.globalToParentPoint( event.pointer.point );
-          pt = options.visibleBoundsProperty.value.eroded( CircuitConstructionKitConstants.DRAG_BOUNDS_EROSION ).closestPointTo( pt );
-          voltmeter.redProbePositionProperty.set( pt );
-        },
-        end: function() {}
-      } );
-      this.redProbeNode.addInputListener( redProbeDragHandler );
-      var blackProbeDragHandler = new TandemSimpleDragHandler( {
-        tandem: tandem.createTandem( 'blackProbeDragHandler' ),
-        drag: function( event ) {
-          // TODO: drag by deltas
+      /**
+       * Gets a drag handler for one of the probes.
+       * @param {Property.<Vector2>} positionProperty
+       * @param {Tandem} tandem
+       * @returns {MovableDragHandler}
+       */
+      var getProbeDragHandler = function( positionProperty, tandem ) {
+        var probeDragHandler = new MovableDragHandler( voltmeter.redProbePositionProperty, {
+          tandem: tandem.createTandem( 'redProbeDragHandler' )
+        } );
+        options.visibleBoundsProperty.link( function( visibleBounds ) {
+          probeDragHandler.dragBounds = visibleBounds.eroded( CircuitConstructionKitConstants.DRAG_BOUNDS_EROSION );
+        } );
+        return probeDragHandler;
+      };
 
-          // TODO: duplicated
-          var pt = self.globalToParentPoint( event.pointer.point );
-          pt = options.visibleBoundsProperty.value.eroded( CircuitConstructionKitConstants.DRAG_BOUNDS_EROSION ).closestPointTo( pt );
-          voltmeter.blackProbePositionProperty.set( pt );
-        }
-      } );
-      this.blackProbeNode.addInputListener( blackProbeDragHandler );
+      this.redProbeNode.addInputListener(
+        getProbeDragHandler( voltmeter.redProbePositionProperty, tandem.createTandem( 'redProbeDragHandler' ) )
+      );
+      this.blackProbeNode.addInputListener(
+        getProbeDragHandler( voltmeter.blackProbePositionProperty, tandem.createTandem( 'blackProbeDragHandler' ) )
+      );
     }
   }
 
