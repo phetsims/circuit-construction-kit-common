@@ -23,7 +23,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var TandemSimpleDragHandler = require( 'TANDEM/scenery/input/TandemSimpleDragHandler' );
+  var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
 
   // images
   var ammeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeter_body.png' );
@@ -124,17 +124,9 @@ define( function( require ) {
     if ( !options.icon ) {
 
       // @public (read-only) - so events can be forwarded from the toolbox
-      this.dragHandler = new TandemSimpleDragHandler( {
+      this.dragHandler = new MovableDragHandler( ammeter.bodyPositionProperty, {
         tandem: tandem.createTandem( 'dragHandler' ),
-        start: function() {},
-        drag: function( event ) {
-
-          // TODO: Should drag by deltas
-          var pt = self.globalToParentPoint( event.pointer.point );
-          pt = options.visibleBoundsProperty.value.eroded( CircuitConstructionKitConstants.DRAG_BOUNDS_EROSION ).closestPointTo( pt );
-          ammeter.bodyPositionProperty.set( pt );
-        },
-        end: function() {
+        endDrag: function() {
           ammeter.droppedEmitter.emit1( bodyNode.globalBounds );
 
           // After dropping in the play area the probes move independently of the body
@@ -142,16 +134,14 @@ define( function( require ) {
         }
       } );
       bodyNode.addInputListener( this.dragHandler );
-      var probeDragHandler = new TandemSimpleDragHandler( {
-        tandem: tandem.createTandem( 'probeDragHandler' ),
-        start: function() {},
-        drag: function( event ) {
-          // TODO: Should drag by deltas
-          var pt = self.globalToParentPoint( event.pointer.point );
-          pt = options.visibleBoundsProperty.value.eroded( CircuitConstructionKitConstants.DRAG_BOUNDS_EROSION ).closestPointTo( pt );
-          ammeter.probePositionProperty.set( pt );
-        },
-        end: function() {}
+      options.visibleBoundsProperty.link( function( visibleBounds ) {
+        self.dragHandler.dragBounds = visibleBounds.eroded( CircuitConstructionKitConstants.DRAG_BOUNDS_EROSION );
+      } );
+      var probeDragHandler = new MovableDragHandler( ammeter.probePositionProperty, {
+        tandem: tandem.createTandem( 'probeDragHandler' )
+      } );
+      options.visibleBoundsProperty.link( function( visibleBounds ) {
+        probeDragHandler.dragBounds = visibleBounds.eroded( CircuitConstructionKitConstants.DRAG_BOUNDS_EROSION ); // TODO: factor out
       } );
       this.probeNode.addInputListener( probeDragHandler );
     }
