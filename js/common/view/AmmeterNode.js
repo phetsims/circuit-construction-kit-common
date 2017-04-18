@@ -87,20 +87,23 @@ define( function( require ) {
       children: [ probeTextNode ]
     } );
 
+    // @public (read-only)
     this.probeNode = new ProbeNode( {
       cursor: 'pointer',
       sensorTypeFunction: ProbeNode.crosshairs(),
       scale: SCALE_FACTOR,
       handleWidth: HANDLE_WIDTH,
       color: '#2c2c2b', // The dark gray border
-      innerRadius: 43
-    } );
+      innerRadius: 43,
 
-    // Add a decoration on the handle to match the color scheme
-    this.probeNode.addChild( new Rectangle( 0, 52, HANDLE_WIDTH * 0.72, 19, 6, 6, {
-      centerX: 0,
-      fill: '#e79547' // Match the orange of the ammeter image
-    } ) );
+      // Add a decoration on the handle to match the color scheme
+      children: [
+        new Rectangle( 0, 52, HANDLE_WIDTH * 0.72, 19, 6, 6, {
+          centerX: 0,
+          fill: '#e79547' // Match the orange of the ammeter image
+        } )
+      ]
+    } );
 
     Node.call( this, {
       children: [ bodyNode, wireNode, this.probeNode ]
