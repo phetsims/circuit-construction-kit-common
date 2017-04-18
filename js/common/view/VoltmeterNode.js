@@ -93,14 +93,17 @@ define( function( require ) {
 
     // When the voltmeter body moves, update the node and wires
     voltmeter.bodyPositionProperty.link( function( bodyPosition ) {
-      bodyNode.centerTop = bodyPosition;
+
+      // Drag the body by the center
+      bodyNode.center = bodyPosition;
+
       redWireNode.setBodyPosition( bodyNode.centerBottom.plusXY( -PROBE_CONNECTION_POINT_DX, PROBE_CONNECTION_POINT_DY ) );
       blackWireNode.setBodyPosition( bodyNode.centerBottom.plusXY( PROBE_CONNECTION_POINT_DX, PROBE_CONNECTION_POINT_DY ) );
 
       // When dragging out of the toolbox, the probes move with the body
       if ( voltmeter.draggingProbesWithBodyProperty.get() ) {
-        voltmeter.redProbePositionProperty.set( bodyPosition.plusXY( -100, -30 ) );
-        voltmeter.blackProbePositionProperty.set( bodyPosition.plusXY( 100, -30 ) );
+        voltmeter.redProbePositionProperty.set( bodyPosition.plusXY( -100, -30 - bodyNode.height / 2 ) );  // TODO: duplicated
+        voltmeter.blackProbePositionProperty.set( bodyPosition.plusXY( 100, -30 - bodyNode.height / 2 ) );
       }
     } );
 
@@ -160,7 +163,7 @@ define( function( require ) {
        * @returns {MovableDragHandler}
        */
       var getProbeDragHandler = function( positionProperty, tandem ) {
-        var probeDragHandler = new MovableDragHandler( voltmeter.redProbePositionProperty, {
+        var probeDragHandler = new MovableDragHandler( positionProperty, {
           tandem: tandem.createTandem( 'redProbeDragHandler' )
         } );
         options.visibleBoundsProperty.link( function( visibleBounds ) {
