@@ -1,9 +1,10 @@
 // Copyright 2017, University of Colorado Boulder
 
 /**
- * Controls for showing and changing the wire resistivity.
+ * Controls for showing and changing the battery internal resistance.
  *
  * @author Sam Reid (PhET Interactive Simulations)
+ * @author Denzell Barnett (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';
@@ -24,12 +25,14 @@ define( function( require ) {
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
 
   /**
+   * @param {Property.<number>} batteryResistanceProperty - the axon Property for the internal resistance of all Batteries
+   * @param {Tandem} tandem
    * @constructor
    */
   function BatteryResistanceControl( batteryResistanceProperty, tandem ) {
-    //var max = CircuitConstructionKitConstants.DEFAULT_BATTERY_RESISTANCE;
+
     var slider = new HSlider( batteryResistanceProperty, {
-      trackSize: new Dimension2( 150, 5 ),
+      trackSize: new Dimension2( 150, 5 ), // TODO: is this duplicated in the resistivity control?
       majorTickLength: 2,
       minorTickLength: 5,
       min: CircuitConstructionKitConstants.DEFAULT_BATTERY_RESISTANCE,

@@ -243,7 +243,7 @@ define( function( require ) {
     this.addChild( this.viewRadioButtonGroup );
     this.addChild( this.circuitNode );
     this.addChild( this.wireResistivityControl );
-    // this.addChild( this.batteryResistanceControl );
+    this.addChild( this.batteryResistanceControl );
 
     var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel(
       circuitConstructionKitModel.circuit,
@@ -382,6 +382,9 @@ define( function( require ) {
       self.wireResistivityControl.top = self.viewRadioButtonGroup.bottom + 10;
       self.wireResistivityControl.right = visibleBounds.right - LAYOUT_INSET;
 
+      // TODO: should the layout adjust when the upper box is collapsed/expanded?
+      // I think it doesn't collapse in Build an Atom and that works well
+      // TODO: position this properly below the expanded resistivity box
       self.batteryResistanceControl.top = self.wireResistivityControl.bottom + 10;
       self.batteryResistanceControl.right = visibleBounds.right - LAYOUT_INSET;
     } );

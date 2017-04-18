@@ -45,14 +45,16 @@ define( function( require ) {
   function Circuit( tandem ) {
     var self = this;
 
+    // All wires share the same resistivity, which is defined by resistance = resistivity * length
     this.wireResistivityProperty = new Property( CircuitConstructionKitConstants.DEFAULT_RESISTIVITY, {
       tandem: tandem.createTandem( 'wireResistivityProperty' ),
-      phetioValueType: TNumber
+      phetioValueType: TNumber()
     } );
 
+    // All batteries share a single internal resistance value
     this.batteryResistanceProperty = new Property( CircuitConstructionKitConstants.DEFAULT_BATTERY_RESISTANCE, {
       tandem: tandem.createTandem( 'batteryResistanceProperty' ),
-      phetioValueType: TNumber
+      phetioValueType: TNumber()
     } );
 
     // @public (read-only) - The different types of CircuitElement the circuit may contain, including Wire, Battery,
