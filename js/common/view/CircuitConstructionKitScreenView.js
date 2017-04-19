@@ -67,7 +67,9 @@ define( function( require ) {
           top: visibleBounds.top + LAYOUT_INSET
         };
       },
-      getCircuitEditPanelLayoutPosition: CircuitElementEditContainerPanel.GET_LAYOUT_POSITION
+      getCircuitEditPanelLayoutPosition: CircuitElementEditContainerPanel.GET_LAYOUT_POSITION,
+      showResistivityControl: true,
+      showBatteryResistanceControl: true
     }, options );
     this.circuitConstructionKitModel = circuitConstructionKitModel;
     ScreenView.call( this );
@@ -242,8 +244,8 @@ define( function( require ) {
     this.addChild( this.sensorToolbox );
     this.addChild( this.viewRadioButtonGroup );
     this.addChild( this.circuitNode );
-    this.addChild( this.wireResistivityControl );
-    this.addChild( this.batteryResistanceControl );
+    options.showResistivityControl && this.addChild( this.wireResistivityControl );
+    options.showBatteryResistanceControl && this.addChild( this.batteryResistanceControl );
 
     var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel(
       circuitConstructionKitModel.circuit,
