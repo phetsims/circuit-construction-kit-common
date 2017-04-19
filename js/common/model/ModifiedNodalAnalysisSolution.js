@@ -47,11 +47,11 @@ define( function( require ) {
     /**
      * Compare two solutions, and provide detailed qunit equal test if equal is provided
      * @param modifiedNodalAnalysisSolution
-     * @param {function} [equal] from qunit
+     * @param {Object} [qassert] from qunit
      * @returns {boolean}
      * @public
      */
-    approxEquals: function( modifiedNodalAnalysisSolution, equal ) {
+    approxEquals: function( modifiedNodalAnalysisSolution, qassert ) {
       var keys = _.keys( this.nodeVoltages );
       var otherKeys = _.keys( modifiedNodalAnalysisSolution.nodeVoltages );
       var keyDifference = _.difference( keys, otherKeys );
@@ -59,7 +59,7 @@ define( function( require ) {
       for ( var i = 0; i < keys.length; i++ ) {
         var key = keys[ i ];
         var closeEnough = NUMBER_APPROXIMATELY_EQUALS( this.getNodeVoltage( key ), modifiedNodalAnalysisSolution.getNodeVoltage( key ) );
-        equal && equal( closeEnough, true, 'node voltages[' + i + '] should match. ' + this.getNodeVoltage( key ) + '!==' + modifiedNodalAnalysisSolution.getNodeVoltage( key ) );
+        qassert && qassert.equal( closeEnough, true, 'node voltages[' + i + '] should match. ' + this.getNodeVoltage( key ) + '!==' + modifiedNodalAnalysisSolution.getNodeVoltage( key ) );
 
         if ( !closeEnough ) {
           return false;

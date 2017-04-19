@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 
   <title>Unit tests for Circuit Construction Kit</title>
-  <link rel="stylesheet" href="../../../sherpa/lib/qunit-1.14.0.css">
+  <link rel="stylesheet" href="../../../sherpa/lib/qunit-2.0.1.css">
 
   <!-- CDN reference for now, so we don't pull in unneeded deps -->
   <script src="../../../sherpa/lib/jquery-2.1.0.min.js"></script>
@@ -22,13 +22,7 @@
     window.assertions.enableAssertSlow();
   </script>
 
-  <!-- <script src="../../dist/standalone/dot.min.js"></script> -->
-  <script data-main="../../js/circuit-construction-kit-common-config.js"
-          src="../../../sherpa/lib/require-2.1.11.js"></script>
 
-  <!-- Loads the code needed to run unit tests for each particular library/codebase -->
-  <script src="unit-tests.js"></script>
-  <script src="../../../phet-core/tests/qunit/unit-tests.js"></script>
 
   <script>
     function collapseTests() {
@@ -41,7 +35,14 @@
 <div id="qunit"></div>
 <!-- Div for holding temporary HTML content needed by tests, which is reset by QUnit before every test -->
 <div id="qunit-fixture"></div>
-<script src="../../../sherpa/lib/qunit-1.14.0.js"></script>
+<script src="../../../sherpa/lib/qunit-2.0.1.js"></script>
+<!-- <script src="../../dist/standalone/dot.min.js"></script> -->
+<script data-main="../../js/circuit-construction-kit-common-config.js"
+        src="../../../sherpa/lib/require-2.1.11.js"></script>
+
+<!-- Loads the code needed to run unit tests for each particular library/codebase -->
+<script src="unit-tests.js"></script>
+<script src="../../../phet-core/tests/qunit/unit-tests.js"></script>
 <script>
   require( [ 'circuit-construction-kit-common-config' ], function() {
     require( [ 'circuit-construction-kit-common-main', 'PHET_CORE/main', 'PHET_CORE/phetAllocation' ], function() {

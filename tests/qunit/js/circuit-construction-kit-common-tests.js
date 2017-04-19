@@ -7,13 +7,11 @@
   var ModifiedNodalAnalysisSolution = phet.circuitConstructionKitCommon.ModifiedNodalAnalysisSolution;
   var ResistorColors = phet.circuitConstructionKitCommon.ResistorColors;
 
-  module( 'Circuit Construction Kit' );
-
   var approxEquals = function( a, b ) {
     return Math.abs( a - b ) < 1E-6;
   };
 
-  test( 'test_battery_resistor_circuit_should_have_correct_voltages_and_currents_for_a_simple_circuit', function() {
+  QUnit.test( 'test_battery_resistor_circuit_should_have_correct_voltages_and_currents_for_a_simple_circuit', function( assert ) {
     var battery = { node0: 0, node1: 1, voltage: 4.0 };
     var resistor = { node0: 1, node1: 0, resistance: 4.0 };
     var circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [ resistor ], [] );
@@ -23,13 +21,13 @@
     var solution = circuit.solve();
     console.log( 'solution = ', solution );
     console.log( 'desiredSolution = ', desiredSolution );
-    equal( true, solution.approxEquals( desiredSolution, equal ), 'solutions instances should match' );
+    assert.equal( true, solution.approxEquals( desiredSolution, assert ), 'solutions instances should match' );
 
     var currentThroughResistor = solution.getCurrent( resistor );
-    equal( approxEquals( currentThroughResistor, 1.0 ), true, 'current should be 1 amp through the resistor' ); // should be flowing forward through resistor
+    assert.equal( approxEquals( currentThroughResistor, 1.0 ), true, 'current should be 1 amp through the resistor' ); // should be flowing forward through resistor
   } );
 
-  test( 'test_battery_resistor_circuit_should_have_correct_voltages_and_currents_for_a_simple_circuit_ii', function() {
+  QUnit.test( 'test_battery_resistor_circuit_should_have_correct_voltages_and_currents_for_a_simple_circuit_ii', function( assert ) {
     var battery = { node0: 0, node1: 1, voltage: 4.0 };
     var resistor = { node0: 1, node1: 0, resistance: 2.0 };
     var circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [ resistor ], [] );
@@ -38,11 +36,11 @@
       1: 4
     }, [ _.extend( {}, battery, { currentSolution: 2.0 } ) ] );
     var solution = circuit.solve();
-    equal( solution.approxEquals( desiredSolution, equal ), true, 'solution should match' );
+    assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solution should match' );
   } );
 
 
-  test( 'test_should_be_able_to_obtain_current_for_a_resistor', function() {
+  QUnit.test( 'test_should_be_able_to_obtain_current_for_a_resistor', function( assert ) {
     var battery = { node0: 0, node1: 1, voltage: 4.0 };
     var resistor = { node0: 1, node1: 0, resistance: 2.0 };
     var solution = new ModifiedNodalAnalysisCircuit( [ battery ], [ resistor ], [] ).solve();
@@ -50,13 +48,13 @@
       0: 0,
       1: 4
     }, [ _.extend( {}, battery, { currentSolution: 2 } ) ] );
-    equal( solution.approxEquals( desiredSolution, equal ), true, 'solution should match' );
+    assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solution should match' );
 
     // same magnitude as battery: positive because current flows from node 1 to 0
-    equal( approxEquals( solution.getCurrent( resistor ), 2 ), true, 'current through resistor should be 2.0 Amps' );
+    assert.equal( approxEquals( solution.getCurrent( resistor ), 2 ), true, 'current through resistor should be 2.0 Amps' );
   } );
 
-  test( 'test_an_unconnected_resistor_shouldnt_cause_problems', function() {
+  QUnit.test( 'test_an_unconnected_resistor_shouldnt_cause_problems', function( assert ) {
     var battery = { node0: 0, node1: 1, voltage: 4.0 };
     var resistor1 = { node0: 1, node1: 0, resistance: 4.0 };
     var resistor2 = { node0: 2, node1: 3, resistance: 100 };
@@ -70,10 +68,10 @@
       _.extend( {}, battery, { currentSolution: 1.0 } )
     ] );
     var solution = circuit.solve();
-    equal( solution.approxEquals( desiredSolution, equal ), true, 'solutions should match' );
+    assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
   } );
 
-  test( 'test_current_source_should_provide_current', function() {
+  QUnit.test( 'test_current_source_should_provide_current', function( assert ) {
     var currentSource = { node0: 0, node1: 1, current: 10 };
     var resistor = { node0: 1, node1: 0, resistance: 4 };
     var circuit = new ModifiedNodalAnalysisCircuit( [], [ resistor ], [ currentSource ] );
@@ -83,10 +81,10 @@
     };
     var desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [] );
     var solution = circuit.solve();
-    equal( solution.approxEquals( desiredSolution, equal ), true, 'solutions should match' );
+    assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
   } );
 
-  test( 'test_current_should_be_reversed_when_voltage_is_reversed', function() {
+  QUnit.test( 'test_current_should_be_reversed_when_voltage_is_reversed', function( assert ) {
     var battery = { node0: 0, node1: 1, voltage: -4 };
     var resistor = { node0: 1, node1: 0, resistance: 2 };
     var circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [ resistor ], [] );
@@ -97,10 +95,10 @@
 
     var desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [ _.extend( {}, battery, { currentSolution: -2 } ) ] );
     var solution = circuit.solve();
-    equal( solution.approxEquals( desiredSolution, equal ), true, 'solutions should match' );
+    assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
   } );
 
-  test( 'test_two_batteries_in_series_should_have_voltage_added', function() {
+  QUnit.test( 'test_two_batteries_in_series_should_have_voltage_added', function( assert ) {
     var battery1 = { node0: 0, node1: 1, voltage: -4 };
     var battery2 = { node0: 1, node1: 2, voltage: -4 };
     var circuit = new ModifiedNodalAnalysisCircuit( [ battery1, battery2 ], [ {
@@ -119,10 +117,10 @@
       _.extend( {}, battery2, { currentSolution: -4 } )
     ] );
     var solution = circuit.solve();
-    equal( solution.approxEquals( desiredSolution, equal ), true, 'solutions should match' );
+    assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
   } );
 
-  test( 'test_two_resistors_in_series_should_have_resistance_added', function() {
+  QUnit.test( 'test_two_resistors_in_series_should_have_resistance_added', function( assert ) {
     var battery = { node0: 0, node1: 1, voltage: 5.0 };
     var circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [
       { node0: 1, node1: 2, resistance: 10.0 },
@@ -137,10 +135,10 @@
       _.extend( {}, battery, { currentSolution: 5 / 20.0 } )
     ] );
     var solution = circuit.solve();
-    equal( solution.approxEquals( desiredSolution, equal ), true, 'solutions should match' );
+    assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
   } );
 
-  test( 'test_A_resistor_with_one_node_unconnected_shouldnt_cause_problems', function() {
+  QUnit.test( 'test_A_resistor_with_one_node_unconnected_shouldnt_cause_problems', function( assert ) {
     var battery = { node0: 0, node1: 1, voltage: 4.0 };
     var circuit = new ModifiedNodalAnalysisCircuit(
       [ battery ],
@@ -157,10 +155,10 @@
       _.extend( {}, battery, { currentSolution: 1.0 } )
     ] );
     var solution = circuit.solve();
-    equal( solution.approxEquals( desiredSolution, equal ), true, 'solutions should match' );
+    assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
   } );
 
-  test( 'test_an_unconnected_resistor_shouldnt_cause_problems', function() {
+  QUnit.test( 'test_an_unconnected_resistor_shouldnt_cause_problems', function( assert ) {
     var battery = { node0: 0, node1: 1, voltage: 4.0 };
     var circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [
       { node0: 1, node1: 0, resistance: 4.0 },
@@ -175,10 +173,10 @@
       _.extend( {}, battery, { currentSolution: 1.0 } )
     ] );
     var solution = circuit.solve();
-    equal( solution.approxEquals( desiredSolution, equal ), true, 'solutions should match' );
+    assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
   } );
 
-  test( 'test_should_handle_resistors_with_no_resistance', function() {
+  QUnit.test( 'test_should_handle_resistors_with_no_resistance', function( assert ) {
     var battery = { node0: 0, node1: 1, voltage: 5 };
     var resistor = { node0: 2, node1: 0, resistance: 0 };
     var circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [
@@ -195,10 +193,10 @@
       _.extend( {}, resistor, { currentSolution: 5.0 / 10.0 } )
     ] );
     var solution = circuit.solve();
-    equal( solution.approxEquals( desiredSolution, equal ), true, 'solutions should match' );
+    assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
   } );
 
-  test( 'test_resistors_in_parallel_should_have_harmonic_mean_of_resistance', function() {
+  QUnit.test( 'test_resistors_in_parallel_should_have_harmonic_mean_of_resistance', function( assert ) {
     var V = 9.0;
     var R1 = 5.0;
     var R2 = 5.0;
@@ -214,14 +212,14 @@
       _.extend( {}, battery, { currentSolution: V / Req } )
     ] );
     var solution = circuit.solve();
-    equal( solution.approxEquals( desiredSolution, equal ), true, 'solutions should match' );
+    assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
   } );
 
-  test( 'test resistor colors', function() {
-    deepEqual( ResistorColors.getColorNames( 0 ), [ 'black' ], '0 resistance should have one black band' );
-    deepEqual( ResistorColors.getColorNames( 4700 ), [ 'yellow', 'violet', 'red', 'gray' ], '4700 ohm resistor' );
-    deepEqual( ResistorColors.getColorNames( 10 ), [ 'brown', 'black', 'black', 'gray' ], '10 ohm resistor' );
-    deepEqual( ResistorColors.getColorNames( 99.5 ), [ 'brown', 'black', 'brown', 'brown' ], '99.5 ohm resistor' );
+  QUnit.test( 'test resistor colors', function( assert ) {
+    assert.deepEqual( ResistorColors.getColorNames( 0 ), [ 'black' ], '0 resistance should have one black band' );
+    assert.deepEqual( ResistorColors.getColorNames( 4700 ), [ 'yellow', 'violet', 'red', 'gold' ], '4700 ohm resistor' );
+    assert.deepEqual( ResistorColors.getColorNames( 10 ), [ 'brown', 'black', 'black', 'gold' ], '10 ohm resistor' );
+    assert.deepEqual( ResistorColors.getColorNames( 99.5 ), [ 'brown', 'black', 'brown', 'gold' ], '99.5 ohm resistor' );
 
     // TODO: use https://www.allaboutcircuits.com/tools/resistor-color-code-calculator/ to generate more tests
   } );
