@@ -30,7 +30,7 @@ define( function( require ) {
     TOOLBOX_ITEM_SPACING: 30,
 
     // The resistance of a default resistor, also used in icons
-    DEFAULT_RESISTANCE: 4.5,
+    DEFAULT_RESISTANCE: 10,
 
     // The resistance of a default battery
     DEFAULT_BATTERY_RESISTANCE: 0,
