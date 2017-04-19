@@ -81,7 +81,9 @@ define( function( require ) {
     var updateColorBands = function( resistance ) {
       var colors = ResistorColors.getColorArray( resistance );
       for ( var i = 0; i < colorBands.length; i++ ) {
-        colorBands[ i ].fill = colors[ i ];// Last one could be null
+
+        // TODO: if only one color band, make it appear in the middle
+        colorBands[ i ].fill = colors[ i ] || null;// Last one could be null
       }
     };
     resistor.resistanceProperty.link( updateColorBands );

@@ -13,34 +13,35 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Color = require( 'SCENERY/util/Color' );
-  var Util = require( 'DOT/Util' );
 
-  var brown = new Color( 200, 150, 100 );
-  var violet = new Color( 148, 0, 211 );
-  var gold = new Color( '#e8c920' ).darkerColor( 0.75 );
-  var silver = new Color( 'silver' );
-  var colors = [
-    Color.black,
-    brown,
-    Color.red,
-    Color.orange,
-    Color.yellow,
-    Color.green,
-    Color.blue,
-    violet,
-    Color.gray,
-    Color.white
+  // See https://en.wikipedia.org/wiki/Electronic_color_code#Resistor_color-coding
+  var colorTable = [
+    { name: 'none', significantFigure: '-', multiplier: null, tolerance: 20, color: null },
+    { name: 'pink', significantFigure: '-', multiplier: 'e-3', tolerance: null, color: new Color( 255, 105, 180 ) },
+    { name: 'silver', significantFigure: '-', multiplier: 'e-2', tolerance: 10, color: new Color( 192, 192, 192 ) },
+    { name: 'gold', significantFigure: '-', multiplier: 'e-1', tolerance: 5, color: new Color( 207, 181, 59 ) },
+    { name: 'black', significantFigure: '0', multiplier: 'e+0', tolerance: null, color: new Color( 0, 0, 0 ) },
+    { name: 'brown', significantFigure: '1', multiplier: 'e+1', tolerance: 1, color: new Color( 150, 75, 0 ) },
+    { name: 'red', significantFigure: '2', multiplier: 'e+2', tolerance: 2, color: new Color( 255, 0, 0 ) },
+    { name: 'orange', significantFigure: '3', multiplier: 'e+3', tolerance: null, color: new Color( 255, 165, 0 ) },
+    { name: 'yellow', significantFigure: '4', multiplier: 'e+4', tolerance: null, color: new Color( 255, 255, 0 ) },
+    { name: 'green', significantFigure: '5', multiplier: 'e+5', tolerance: 0.5, color: new Color( 154, 205, 50 ) },
+    { name: 'blue', significantFigure: '6', multiplier: 'e+6', tolerance: 0.25, color: new Color( 100, 149, 237 ) },
+    { name: 'violet', significantFigure: '7', multiplier: 'e+7', tolerance: 0.1, color: new Color( 148, 0, 211 ) },
+    { name: 'gray', significantFigure: '8', multiplier: 'e+8', tolerance: 0.05, color: new Color( 160, 160, 160 ) },
+    { name: 'white', significantFigure: '9', multiplier: 'e+9', tolerance: null, color: new Color( 255, 255, 255 ) }
   ];
-  var digitToColor = function( digit ) {
-    assert && assert( digit >= 0 && digit < 10, 'digit should have been between 0 and 10' );
-
-    var color = colors[ digit ];
-    assert && assert( color, 'should be a color' );
-    return color;
-  };
 
   function ResistorColors() {
   }
+
+  var colorFor = function( keyName, value ) {
+    var filtered = _.filter( colorTable, function( colorTableEntry ) {
+      return colorTableEntry[ keyName ] === value;
+    } );
+    assert && assert( filtered.length === 1, 'wrong number of matches' );
+    return filtered[ 0 ];
+  };
 
   circuitConstructionKitCommon.register( 'ResistorColors', ResistorColors );
 
@@ -48,40 +49,54 @@ define( function( require ) {
 
     getColorArray: function( resistance ) {
 
-      // TODO: Rounding off values like 9.5 could be a problem.
-      resistance = Math.round( resistance );
+      assert && assert( resistance >= 0, 'resistance should be non-negative' );
 
-      if ( resistance < 10 ) {
-
-        // Resistance is less than 10 Ohms
-        return [ Color.black, digitToColor( resistance ), Color.black, gold ];
+      // 0 resistance has a single black band centered on the resistor
+      if ( resistance === 0 ) {
+        return [ Color.black ];
       }
-      else if ( resistance < 100 ) {
+      var exponential = resistance.toExponential( 1 ); // like `1.5e+7`
+      var firstSignificantDigit = exponential[ 0 ];
+      assert && assert( exponential[ 1 ] === '.', 'incorrect pattern' );
+      var secondSignificantDigit = exponential[ 2 ];
 
-        // The number is between 10 Ohms (inclusive) and 100 Ohms (exclusive)
-        var tensPlaceDigit = Math.floor( resistance / 10 );
-        var onesPlaceDigit = Math.floor( resistance % 10 );
-        return [ digitToColor( tensPlaceDigit ), digitToColor( onesPlaceDigit ), Color.black, Color.yellow ];
-      }
-      else {
-        var resistanceString = Util.toFixed( resistance, 0 );
-        var firstDigit = parseInt( resistanceString.charAt( 0 ) + '', 10 );
-        var secondDigit = parseInt( resistanceString.charAt( 1 ) + '', 10 );
-        var factor = resistanceString.length - 2;
+      var smallerMagnitude = (resistance / 10).toExponential( 1 );
+      var substring = smallerMagnitude.substring( smallerMagnitude.indexOf( 'e' ) + 1 );
 
-        var predicted = ( ( firstDigit * 10 + secondDigit ) * Math.pow( 10, factor ) );
-        var error = ( resistance - predicted ) / predicted * 100;
-        var tolerance = null;
+      // TODO: accommodate numbers with 2 digits in the exponent like 1.5e+16
+      var decimalMultiplier = 'e' + substring;
 
-        // A gold tolerance band is 5% tolerance, silver is 10%
-        if ( error < 5 ) {
-          tolerance = gold;
+      // Find the lowest tolerance that accommodates the error
+      var approximateValue = parseFloat( firstSignificantDigit + secondSignificantDigit + decimalMultiplier );
+      var percentError = (resistance - approximateValue) / resistance * 100;
+      var colorsWithTolerance = _.filter( colorTable, function( colorTableEntry ) {
+        return colorTableEntry.tolerance !== null;
+      } );
+      var sortedColorsWithTolerance = _.sortBy( colorsWithTolerance, 'tolerance' );
+      for ( var i = 0; i < sortedColorsWithTolerance.length; i++ ) {
+        var color = sortedColorsWithTolerance[ i ];
+        if ( color.tolerance > percentError ) {
+          break;
         }
-        else if ( error < 20 ) {  // TODO: the note above says silver is 10% but this code looks like it is using 20%. WHY?
-          tolerance = silver;
-        }
-        return [ digitToColor( firstDigit ), digitToColor( secondDigit ), digitToColor( factor ), tolerance ];
       }
+
+      // find the lowest tolerance that fits the value
+      // TODO: Do we want to restrict tolerance to silver/gold/none?
+      var entries = [
+        colorFor( 'significantFigure', firstSignificantDigit ),
+        colorFor( 'significantFigure', secondSignificantDigit ),
+        colorFor( 'multiplier', decimalMultiplier ),
+        colorFor( 'tolerance', color.tolerance )
+      ];
+
+      // for debugging, output the color bands
+      console.log( resistance + ' => ' + entries.map( function( band ) {
+          return band.name;
+        } ) );
+
+      return entries.map( function( band ) {
+        return band.color;
+      } );
     }
   } );
 } );
