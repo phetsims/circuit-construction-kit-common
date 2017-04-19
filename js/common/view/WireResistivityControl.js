@@ -24,7 +24,7 @@ define( function( require ) {
    * @constructor
    */
   function WireResistivityControl( wireResistivityProperty, tandem ) {
-    var max = CircuitConstructionKitConstants.DEFAULT_RESISTIVITY * 10000 / 2;
+    var max = CircuitConstructionKitConstants.DEFAULT_RESISTIVITY * 10000;
     var slider = new HSlider( wireResistivityProperty, {
       min: CircuitConstructionKitConstants.DEFAULT_RESISTIVITY,
       max: max // large enough so that max resistance in a 9v battery slows to a good rate
