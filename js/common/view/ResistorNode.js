@@ -27,10 +27,10 @@ define( function( require ) {
   var COLOR_BAND_WIDTH = 10;
   var COLOR_BAND_HEIGHT = 34;
   var COLOR_BAND_TOP = -2; // Account for vertical asymmetry in the image
-  var COLOR_BAND_INSET = 40;
+  var COLOR_BAND_INSET = 38;
   var AVAILABLE_COLOR_BAND_SPACE = LIFELIKE_IMAGE_WIDTH * 0.75 - 2 * COLOR_BAND_INSET;
   var REMAINING_COLOR_BAND_SPACE = AVAILABLE_COLOR_BAND_SPACE - 4 * COLOR_BAND_WIDTH;// max is 4 bands, even though they are not always shown
-  var COLOR_BAND_SPACING = REMAINING_COLOR_BAND_SPACE / 4; // two spaces before last band
+  var COLOR_BAND_SPACING = REMAINING_COLOR_BAND_SPACE / 4 - 2; // two spaces before last band
   var COLOR_BAND_Y = lifelikeResistorImage[ 0 ].height / 2 / LIFELIKE_IMAGE_SCALE - COLOR_BAND_HEIGHT / LIFELIKE_IMAGE_SCALE / 2 + COLOR_BAND_TOP;
 
   // Points sampled using Photoshop from a raster of the IEEE icon seen at https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
@@ -66,8 +66,9 @@ define( function( require ) {
 
       // TODO: why is the last band offset vertically?
       var additionalHeight = index === 3 ? 3 : 0;
+      var additionalOffset = index === 3 ? 12 : 0;
       return new Rectangle( 0, 0, COLOR_BAND_WIDTH, COLOR_BAND_HEIGHT + additionalHeight, {
-        x: COLOR_BAND_INSET + (COLOR_BAND_WIDTH + COLOR_BAND_SPACING) * index,
+        x: COLOR_BAND_INSET + (COLOR_BAND_WIDTH + COLOR_BAND_SPACING) * index + additionalOffset,
         y: COLOR_BAND_Y - additionalHeight / 2
       } );
     };
@@ -80,6 +81,12 @@ define( function( require ) {
      */
     var updateColorBands = function( resistance ) {
       var colors = ResistorColors.getColorArray( resistance );
+
+      // If there is only one color band (for a 0-resistance resistor), show that band in the middle
+      if ( colors.length === 1 ) {
+        colors = [ null, null, colors[ 0 ], null ];
+      }
+
       for ( var i = 0; i < colorBands.length; i++ ) {
 
         // TODO: if only one color band, make it appear in the middle
