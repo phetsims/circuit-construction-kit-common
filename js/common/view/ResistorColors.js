@@ -47,13 +47,12 @@ define( function( require ) {
 
   return inherit( Object, ResistorColors, {}, {
 
-    getColorArray: function( resistance ) {
-
+    getEntries: function( resistance ) {
       assert && assert( resistance >= 0, 'resistance should be non-negative' );
 
       // 0 resistance has a single black band centered on the resistor
       if ( resistance === 0 ) {
-        return [ Color.black ];
+        return [ colorFor( 'name', 'black' ) ];
       }
       var exponential = resistance.toExponential( 1 ); // like `1.5e+7`
       var firstSignificantDigit = exponential[ 0 ];
@@ -94,7 +93,15 @@ define( function( require ) {
           return band.name;
         } ) );
 
-      return entries.map( function( band ) {
+      return entries;
+    },
+    getColorNames: function( resistance ) {
+      return this.getEntries( resistance ).map( function( band ) {
+        return band.name;
+      } );
+    },
+    getColorArray: function( resistance ) {
+      return this.getEntries( resistance ).map( function( band ) {
         return band.color;
       } );
     }

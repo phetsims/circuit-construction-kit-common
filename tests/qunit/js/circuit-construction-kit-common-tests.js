@@ -5,6 +5,7 @@
 
   var ModifiedNodalAnalysisCircuit = phet.circuitConstructionKitCommon.ModifiedNodalAnalysisCircuit;
   var ModifiedNodalAnalysisSolution = phet.circuitConstructionKitCommon.ModifiedNodalAnalysisSolution;
+  var ResistorColors = phet.circuitConstructionKitCommon.ResistorColors;
 
   module( 'Circuit Construction Kit' );
 
@@ -214,5 +215,11 @@
     ] );
     var solution = circuit.solve();
     equal( solution.approxEquals( desiredSolution, equal ), true, 'solutions should match' );
+  } );
+
+  test( 'test resistor colors', function() {
+    deepEqual( ResistorColors.getColorNames( 0 ), [ 'black' ], '0 resistance should have one black band' );
+    deepEqual( ResistorColors.getColorNames( 4700 ), [ 'yellow', 'violet', 'red', 'gray' ], '4700 ohm resistor' );
+    deepEqual( ResistorColors.getColorNames( 10 ), [ 'brown', 'black', 'black', 'gray' ], '10 ohm resistor' );
   } );
 })();

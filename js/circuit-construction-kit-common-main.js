@@ -10,4 +10,5 @@ define( function( require ) {
 
   // modules
   require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Circuit' );
+  require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ResistorColors' );
 } );
