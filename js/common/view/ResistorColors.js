@@ -21,14 +21,14 @@ define( function( require ) {
     { name: 'silver', significantFigure: '-', multiplier: 'e-2', tolerance: 10, color: new Color( 192, 192, 192 ) },
     { name: 'gold', significantFigure: '-', multiplier: 'e-1', tolerance: 5, color: new Color( 207, 181, 59 ) },
     { name: 'black', significantFigure: '0', multiplier: 'e0', tolerance: null, color: new Color( 0, 0, 0 ) },
-    { name: 'brown', significantFigure: '1', multiplier: 'e1', tolerance: 1, color: new Color( 150, 75, 0 ) },
-    { name: 'red', significantFigure: '2', multiplier: 'e2', tolerance: 2, color: new Color( 255, 0, 0 ) },
+    { name: 'brown', significantFigure: '1', multiplier: 'e1', tolerance: null, color: new Color( 150, 75, 0 ) },
+    { name: 'red', significantFigure: '2', multiplier: 'e2', tolerance: null, color: new Color( 255, 0, 0 ) },
     { name: 'orange', significantFigure: '3', multiplier: 'e3', tolerance: null, color: new Color( 255, 165, 0 ) },
     { name: 'yellow', significantFigure: '4', multiplier: 'e4', tolerance: null, color: new Color( 255, 255, 0 ) },
-    { name: 'green', significantFigure: '5', multiplier: 'e5', tolerance: 0.5, color: new Color( 154, 205, 50 ) },
-    { name: 'blue', significantFigure: '6', multiplier: 'e6', tolerance: 0.25, color: new Color( 100, 149, 237 ) },
-    { name: 'violet', significantFigure: '7', multiplier: 'e7', tolerance: 0.1, color: new Color( 148, 0, 211 ) },
-    { name: 'gray', significantFigure: '8', multiplier: 'e8', tolerance: 0.05, color: new Color( 160, 160, 160 ) },
+    { name: 'green', significantFigure: '5', multiplier: 'e5', tolerance: null, color: new Color( 154, 205, 50 ) },
+    { name: 'blue', significantFigure: '6', multiplier: 'e6', tolerance: null, color: new Color( 100, 149, 237 ) },
+    { name: 'violet', significantFigure: '7', multiplier: 'e7', tolerance: null, color: new Color( 148, 0, 211 ) },
+    { name: 'gray', significantFigure: '8', multiplier: 'e8', tolerance: null, color: new Color( 160, 160, 160 ) },
     { name: 'white', significantFigure: '9', multiplier: 'e9', tolerance: null, color: new Color( 255, 255, 255 ) }
   ];
 
