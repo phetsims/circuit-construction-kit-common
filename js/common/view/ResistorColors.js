@@ -15,6 +15,7 @@ define( function( require ) {
   var Color = require( 'SCENERY/util/Color' );
 
   // See https://en.wikipedia.org/wiki/Electronic_color_code#Resistor_color-coding
+  // Tolerances below gold were eliminated to reduce variance in the tolerance band, see https://github.com/phetsims/circuit-construction-kit-dc/issues/10
   var colorTable = [
     { name: 'none', significantFigure: '-', multiplier: null, tolerance: 20, color: null },
     { name: 'pink', significantFigure: '-', multiplier: 'e-3', tolerance: null, color: new Color( 255, 105, 180 ) },
@@ -81,18 +82,12 @@ define( function( require ) {
       assert && assert( percentError < color.tolerance, 'no tolerance high enough to accommodate error' );
 
       // find the lowest tolerance that fits the value
-      // TODO: Do we want to restrict tolerance to silver/gold/none?
       var entries = [
         colorFor( 'significantFigure', firstSignificantDigit ),
         colorFor( 'significantFigure', secondSignificantDigit ),
         colorFor( 'multiplier', decimalMultiplier ),
         colorFor( 'tolerance', color.tolerance )
       ];
-
-      // for debugging, output the color bands
-      console.log( resistance + ' => ' + entries.map( function( band ) {
-          return band.name;
-        } ) );
 
       return entries;
     },
