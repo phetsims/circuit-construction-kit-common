@@ -20,16 +20,16 @@ define( function( require ) {
     { name: 'pink', significantFigure: '-', multiplier: 'e-3', tolerance: null, color: new Color( 255, 105, 180 ) },
     { name: 'silver', significantFigure: '-', multiplier: 'e-2', tolerance: 10, color: new Color( 192, 192, 192 ) },
     { name: 'gold', significantFigure: '-', multiplier: 'e-1', tolerance: 5, color: new Color( 207, 181, 59 ) },
-    { name: 'black', significantFigure: '0', multiplier: 'e+0', tolerance: null, color: new Color( 0, 0, 0 ) },
-    { name: 'brown', significantFigure: '1', multiplier: 'e+1', tolerance: 1, color: new Color( 150, 75, 0 ) },
-    { name: 'red', significantFigure: '2', multiplier: 'e+2', tolerance: 2, color: new Color( 255, 0, 0 ) },
-    { name: 'orange', significantFigure: '3', multiplier: 'e+3', tolerance: null, color: new Color( 255, 165, 0 ) },
-    { name: 'yellow', significantFigure: '4', multiplier: 'e+4', tolerance: null, color: new Color( 255, 255, 0 ) },
-    { name: 'green', significantFigure: '5', multiplier: 'e+5', tolerance: 0.5, color: new Color( 154, 205, 50 ) },
-    { name: 'blue', significantFigure: '6', multiplier: 'e+6', tolerance: 0.25, color: new Color( 100, 149, 237 ) },
-    { name: 'violet', significantFigure: '7', multiplier: 'e+7', tolerance: 0.1, color: new Color( 148, 0, 211 ) },
-    { name: 'gray', significantFigure: '8', multiplier: 'e+8', tolerance: 0.05, color: new Color( 160, 160, 160 ) },
-    { name: 'white', significantFigure: '9', multiplier: 'e+9', tolerance: null, color: new Color( 255, 255, 255 ) }
+    { name: 'black', significantFigure: '0', multiplier: 'e0', tolerance: null, color: new Color( 0, 0, 0 ) },
+    { name: 'brown', significantFigure: '1', multiplier: 'e1', tolerance: 1, color: new Color( 150, 75, 0 ) },
+    { name: 'red', significantFigure: '2', multiplier: 'e2', tolerance: 2, color: new Color( 255, 0, 0 ) },
+    { name: 'orange', significantFigure: '3', multiplier: 'e3', tolerance: null, color: new Color( 255, 165, 0 ) },
+    { name: 'yellow', significantFigure: '4', multiplier: 'e4', tolerance: null, color: new Color( 255, 255, 0 ) },
+    { name: 'green', significantFigure: '5', multiplier: 'e5', tolerance: 0.5, color: new Color( 154, 205, 50 ) },
+    { name: 'blue', significantFigure: '6', multiplier: 'e6', tolerance: 0.25, color: new Color( 100, 149, 237 ) },
+    { name: 'violet', significantFigure: '7', multiplier: 'e7', tolerance: 0.1, color: new Color( 148, 0, 211 ) },
+    { name: 'gray', significantFigure: '8', multiplier: 'e8', tolerance: 0.05, color: new Color( 160, 160, 160 ) },
+    { name: 'white', significantFigure: '9', multiplier: 'e9', tolerance: null, color: new Color( 255, 255, 255 ) }
   ];
 
   function ResistorColors() {
@@ -59,15 +59,15 @@ define( function( require ) {
       assert && assert( exponential[ 1 ] === '.', 'incorrect pattern' );
       var secondSignificantDigit = exponential[ 2 ];
 
-      var smallerMagnitude = (resistance / 10).toExponential( 1 );
-      var substring = smallerMagnitude.substring( smallerMagnitude.indexOf( 'e' ) + 1 );
+      var exponentString = exponential.substring( exponential.indexOf( 'e' ) + 1 );
+      var exponentNumber = parseInt( exponentString, 10 );
+      exponentNumber = exponentNumber - 1; // Because the decimal is omitted from the number
 
-      // TODO: accommodate numbers with 2 digits in the exponent like 1.5e+16
-      var decimalMultiplier = 'e' + substring;
+      var decimalMultiplier = 'e' + exponentNumber;
 
       // Find the lowest tolerance that accommodates the error
       var approximateValue = parseFloat( firstSignificantDigit + secondSignificantDigit + decimalMultiplier );
-      var percentError = (resistance - approximateValue) / resistance * 100;
+      var percentError = Math.abs( (resistance - approximateValue) / resistance * 100 );
       var colorsWithTolerance = _.filter( colorTable, function( colorTableEntry ) {
         return colorTableEntry.tolerance !== null;
       } );
@@ -78,6 +78,7 @@ define( function( require ) {
           break;
         }
       }
+      assert && assert( percentError < color.tolerance, 'no tolerance high enough to accommodate error' );
 
       // find the lowest tolerance that fits the value
       // TODO: Do we want to restrict tolerance to silver/gold/none?

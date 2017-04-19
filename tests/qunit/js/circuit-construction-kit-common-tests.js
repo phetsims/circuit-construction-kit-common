@@ -221,5 +221,8 @@
     deepEqual( ResistorColors.getColorNames( 0 ), [ 'black' ], '0 resistance should have one black band' );
     deepEqual( ResistorColors.getColorNames( 4700 ), [ 'yellow', 'violet', 'red', 'gray' ], '4700 ohm resistor' );
     deepEqual( ResistorColors.getColorNames( 10 ), [ 'brown', 'black', 'black', 'gray' ], '10 ohm resistor' );
+    deepEqual( ResistorColors.getColorNames( 99.5 ), [ 'brown', 'black', 'brown', 'brown' ], '99.5 ohm resistor' );
+
+    // TODO: use https://www.allaboutcircuits.com/tools/resistor-color-code-calculator/ to generate more tests
   } );
 })();
