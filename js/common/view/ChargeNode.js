@@ -71,7 +71,8 @@ define( function( require ) {
     this.charge = charge;
     Node.call( this, {
       children: [ charge.charge > 0 ? ARROW_NODE : ELECTRON_IMAGE_NODE ],
-      pickable: false
+      pickable: false,
+      opacity: 0.75
     } );
     var outsideOfBlackBoxProperty = new BooleanProperty( false );
 
