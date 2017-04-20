@@ -30,32 +30,31 @@ define( function( require ) {
    * @constructor
    */
   function BatteryResistanceControl( batteryResistanceProperty, tandem ) {
-
     var slider = new HSlider( batteryResistanceProperty, {
       trackSize: new Dimension2( 150, 5 ), // TODO: is this duplicated in the resistivity control?
       majorTickLength: 2,
       minorTickLength: 5,
       min: CircuitConstructionKitConstants.DEFAULT_BATTERY_RESISTANCE,
-      max: 10
+      max: 10,
+      tandem: tandem.createTandem( 'slider' )
     } );
-    var createText = function( string, visible ) {
+
+    var createLabel = function( string, tandem ) {
       return new Text( string, {
         fontSize: 12,
-        visible: visible
-      } );
+        tandem: tandem
+      } )
     };
 
-    var createLabel = function( min ) {
-      return new Node( {
-        children: min ? [ createText( '0', true ) ] : [ createText( '10', true ) ]
-      } );
-    };
-
-    var numberNode = new Text( batteryResistanceProperty.get(), { font: new PhetFont( 14 ), fill: 'black' } );
+    var numberNode = new Text( batteryResistanceProperty.get(), {
+      font: new PhetFont( 14 ),
+      fill: 'black',
+      tandem: tandem.createTandem( 'numberNode' )
+    } );
 
     // number to be displayed
     batteryResistanceProperty.link( function( value ) {
-      numberNode = new Text( value + ' ohms', { font: new PhetFont( 14 ), fill: 'black' } );
+      numberNode.setText( value + ' ohms' );
     } );
 
     // background for displaying the value
@@ -63,14 +62,18 @@ define( function( require ) {
       2, 2, {
         fill: 'white',
         stroke: 'black',
-        lineWidth: 2
+        lineWidth: 2,
+        tandem: tandem.createTandem( 'backgroundNode' )
       } );
     numberNode.center = backgroundNode.center;
-    var valueParent = new Node( { children: [ backgroundNode, numberNode ] } );
+    var valueParent = new Node( {
+      children: [ backgroundNode, numberNode ],
+      tandem: tandem.createTandem( 'valueParent' )
+    } );
 
-    slider.addMajorTick( 0, createLabel( true ) );
+    slider.addMajorTick( 0, createLabel( '0', tandem.createTandem( 'minLabel' ) ) );
     slider.addMajorTick( 5 );
-    slider.addMajorTick( 10, createLabel( false ) );
+    slider.addMajorTick( 10, createLabel( '10', tandem.createTandem( 'maxLabel' ) ) );
     for ( var i = 1; i < 10; i++ ) {
       if ( i !== 5 ) {
         slider.addMinorTick( i );
