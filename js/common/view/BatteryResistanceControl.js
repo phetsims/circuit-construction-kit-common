@@ -43,7 +43,7 @@ define( function( require ) {
       return new Text( string, {
         fontSize: 12,
         tandem: tandem
-      } )
+      } );
     };
 
     var numberNode = new Text( batteryResistanceProperty.get(), {
