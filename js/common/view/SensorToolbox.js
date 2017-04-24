@@ -1,5 +1,4 @@
 // Copyright 2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * This is the toolbox on the right hand side from which the voltmeter and ammeter can be dragged/dropped.
@@ -33,47 +32,42 @@ define( function( require ) {
    */
   function SensorToolbox( circuitNode, voltmeterNode, ammeterNode, runningProperty, tandem ) {
 
-    // Draggable icon for the voltmeter
-    var voltmeterNodeIcon = new VoltmeterNode( new Voltmeter( tandem.createTandem( 'voltmeterIconModel' ) ), tandem.createTandem( 'voltmeterNodeIcon' ), {
-      runningProperty: runningProperty,
-      icon: true
-    } );
-    voltmeterNode.voltmeter.visibleProperty.link( function( visible ) {
-      voltmeterNodeIcon.visible = !visible;
-    } );
-    voltmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE * VOLTMETER_ICON_SCALE / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height ) } );
-    voltmeterNodeIcon.addInputListener( {
-      down: function( event ) {
-
-        // TODO: factor out duplicated code
-        var viewPosition = circuitNode.globalToLocalPoint( event.pointer.point );
-        voltmeterNode.voltmeter.draggingProbesWithBodyProperty.set( true );
-        voltmeterNode.voltmeter.visibleProperty.set( true );
-        voltmeterNode.voltmeter.bodyPositionProperty.set( viewPosition );
-        voltmeterNode.dragHandler.startDrag( event );
-      }
-    } );
-
-    // Icon for the ammeter
-    var ammeterNodeIcon = new AmmeterNode( new Ammeter( tandem.createTandem( 'ammeterIconModel' ) ), tandem.createTandem( 'ammeterNodeIcon' ), {
+    // Options for the VoltmeterNode and AmmeterNode
+    var options = {
       icon: true,
       runningProperty: runningProperty
-    } );
-    ammeterNode.ammeter.visibleProperty.link( function( visible ) {
-      ammeterNodeIcon.visible = !visible;
-    } );
-    ammeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( ammeterNodeIcon.width, ammeterNodeIcon.height ) } );
-    ammeterNodeIcon.addInputListener( {
-      down: function( event ) {
+    };
 
-        // TODO: factor out duplicated code
-        var viewPosition = circuitNode.globalToLocalPoint( event.pointer.point );
-        ammeterNode.ammeter.draggingProbesWithBodyProperty.set( true );
-        ammeterNode.ammeter.visibleProperty.set( true );
-        ammeterNode.ammeter.bodyPositionProperty.set( viewPosition );
-        ammeterNode.dragHandler.startDrag( event );
-      }
-    } );
+    /**
+     * @param {Ammeter|Voltmeter} meterModel
+     * @param {AmmeterNode|VoltmeterNode} meterNode
+     * @returns {Object} a listener
+     */
+    var createListener = function( meterModel, meterNode ) {
+      return {
+        down: function( event ) {
+          var viewPosition = circuitNode.globalToLocalPoint( event.pointer.point );
+          meterModel.draggingProbesWithBodyProperty.set( true );
+          meterModel.visibleProperty.set( true );
+          meterModel.bodyPositionProperty.set( viewPosition );
+          meterNode.dragHandler.startDrag( event );
+        }
+      };
+    };
+
+    // Draggable icon for the voltmeter
+    var voltmeter = new Voltmeter( tandem.createTandem( 'voltmeterIconModel' ) );
+    var voltmeterNodeIcon = new VoltmeterNode( voltmeter, tandem.createTandem( 'voltmeterNodeIcon' ), options );
+    voltmeterNode.voltmeter.visibleProperty.link( function( visible ) { voltmeterNodeIcon.visible = !visible; } );
+    voltmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE * VOLTMETER_ICON_SCALE / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height ) } );
+    voltmeterNodeIcon.addInputListener( createListener( voltmeterNode.voltmeter, voltmeterNode ) );
+
+    // Icon for the ammeter
+    var ammeter = new Ammeter( tandem.createTandem( 'ammeterIconModel' ) );
+    var ammeterNodeIcon = new AmmeterNode( ammeter, tandem.createTandem( 'ammeterNodeIcon' ), options );
+    ammeterNode.ammeter.visibleProperty.link( function( visible ) { ammeterNodeIcon.visible = !visible; } );
+    ammeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( ammeterNodeIcon.width, ammeterNodeIcon.height ) } );
+    ammeterNodeIcon.addInputListener( createListener( ammeterNode.ammeter, ammeterNode ) );
 
     CircuitConstructionKitPanel.call( this, new HBox( {
       spacing: CircuitConstructionKitConstants.TOOLBOX_ITEM_SPACING,
