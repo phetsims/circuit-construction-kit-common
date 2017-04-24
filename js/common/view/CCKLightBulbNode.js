@@ -1,5 +1,4 @@
-// Copyright 2015-2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
+// Copyright 2015-2017, University of Colorado Boulder
 
 /**
  * Named CCKLightBulbNode to avoid collisions with SCENERY_PHET/LightBulbNode
@@ -24,7 +23,14 @@ define( function( require ) {
   var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
 
   /**
-   *
+   * This constructor is called dynamically and must match the signature of other circuit element nodes.
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - the main screen view
+   * @param {CircuitNode} circuitNode - the node for the entire circuit
+   * @param {LightBulb} lightBulb - the light bulb model
+   * @param {Property.<boolean>} runningProperty - true if the sim can display values
+   * @param {Property.<string>} viewProperty - 'likelike'|'schematic'
+   * @param {Tandem} tandem
+   * @param {Object} [options]
    * @constructor
    */
   function CCKLightBulbNode( circuitConstructionKitScreenView, circuitNode, lightBulb, runningProperty, viewProperty, tandem, options ) {
@@ -54,6 +60,7 @@ define( function( require ) {
       var delta = endPosition.minus( startPosition );
       var angle = delta.angle() + Math.PI / 4;
 
+      // TODO: factor out matrix logic
       // Update the node transform in a single step, see #66
       scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
         .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
