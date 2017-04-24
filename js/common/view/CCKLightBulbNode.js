@@ -1,8 +1,8 @@
-// Copyright 2015-2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
+// Copyright 2015-2017, University of Colorado Boulder
 
 /**
- * Named CCKLightBulbNode to avoid collisions with SCENERY_PHET/LightBulbNode
+ * Named CCKLightBulbNode to avoid collisions with SCENERY_PHET/LightBulbNode.  Renders the bulb shape and brightness
+ * lines.  Note that the socket is rendered in CCKLightBulbForegroundNode.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -24,12 +24,18 @@ define( function( require ) {
   var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
 
   /**
-   *
+   * This constructor is called dynamically and must match the signature of other circuit element nodes.
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - the main screen view
+   * @param {CircuitNode} circuitNode - the node for the entire circuit
+   * @param {LightBulb} lightBulb - the light bulb model
+   * @param {Property.<boolean>} runningProperty - true if the sim can display values
+   * @param {Property.<string>} viewProperty - 'likelike'|'schematic'
+   * @param {Tandem} tandem
+   * @param {Object} [options]
    * @constructor
    */
   function CCKLightBulbNode( circuitConstructionKitScreenView, circuitNode, lightBulb, runningProperty, viewProperty, tandem, options ) {
     var self = this;
-    this.lightBulb = lightBulb;
     var brightnessProperty = new NumberProperty( 0 );
     var updateBrightness = Property.multilink( [ lightBulb.currentProperty, runningProperty, lightBulb.voltageDifferenceProperty ], function( current, running, voltageDifference ) {
       var power = Math.abs( current * voltageDifference );
@@ -45,7 +51,7 @@ define( function( require ) {
       var brightness = Math.pow( power / maxPower, 0.354 ) * 0.4;
       brightnessProperty.value = Util.clamp( brightness, 0, 1 );
     } );
-    this.lightBulbNode = new CustomLightBulbNode( brightnessProperty, {
+    var lightBulbNode = new CustomLightBulbNode( brightnessProperty, {
       scale: 3.5
     } );
     var contentScale = 2.5;
@@ -55,11 +61,12 @@ define( function( require ) {
       var delta = endPosition.minus( startPosition );
       var angle = delta.angle() + Math.PI / 4;
 
+      // TODO: factor out matrix logic
       // Update the node transform in a single step, see #66
       scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
         .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
         .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) );
-      self.lightBulbNode.setMatrix( scratchMatrix );
+      lightBulbNode.setMatrix( scratchMatrix );
 
       // Update the fire transform
       scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
@@ -84,7 +91,7 @@ define( function( require ) {
         bottom: FixedLengthCircuitElementNode.HIGHLIGHT_INSET * 0.75
       }
     }, options );
-    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, viewProperty, this.lightBulbNode, new Rectangle( 0, 0, 10, 10 ), contentScale, tandem, options );
+    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, viewProperty, lightBulbNode, new Rectangle( 0, 0, 10, 10 ), contentScale, tandem, options );
 
     // Set the initial location of the highlight, since it was not available in the supercall to updateLayout
     updateLayout( lightBulb.startVertexProperty.get().positionProperty.get(), lightBulb.endVertexProperty.get().positionProperty.get() );
