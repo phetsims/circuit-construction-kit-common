@@ -29,7 +29,6 @@ define( function( require ) {
    */
   function CCKLightBulbNode( circuitConstructionKitScreenView, circuitNode, lightBulb, runningProperty, viewProperty, tandem, options ) {
     var self = this;
-    this.lightBulb = lightBulb;
     var brightnessProperty = new NumberProperty( 0 );
     var updateBrightness = Property.multilink( [ lightBulb.currentProperty, runningProperty, lightBulb.voltageDifferenceProperty ], function( current, running, voltageDifference ) {
       var power = Math.abs( current * voltageDifference );
@@ -45,7 +44,7 @@ define( function( require ) {
       var brightness = Math.pow( power / maxPower, 0.354 ) * 0.4;
       brightnessProperty.value = Util.clamp( brightness, 0, 1 );
     } );
-    this.lightBulbNode = new CustomLightBulbNode( brightnessProperty, {
+    var lightBulbNode = new CustomLightBulbNode( brightnessProperty, {
       scale: 3.5
     } );
     var contentScale = 2.5;
@@ -59,7 +58,7 @@ define( function( require ) {
       scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
         .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
         .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) );
-      self.lightBulbNode.setMatrix( scratchMatrix );
+      lightBulbNode.setMatrix( scratchMatrix );
 
       // Update the fire transform
       scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
@@ -84,7 +83,7 @@ define( function( require ) {
         bottom: FixedLengthCircuitElementNode.HIGHLIGHT_INSET * 0.75
       }
     }, options );
-    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, viewProperty, this.lightBulbNode, new Rectangle( 0, 0, 10, 10 ), contentScale, tandem, options );
+    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, viewProperty, lightBulbNode, new Rectangle( 0, 0, 10, 10 ), contentScale, tandem, options );
 
     // Set the initial location of the highlight, since it was not available in the supercall to updateLayout
     updateLayout( lightBulb.startVertexProperty.get().positionProperty.get(), lightBulb.endVertexProperty.get().positionProperty.get() );

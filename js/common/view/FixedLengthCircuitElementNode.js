@@ -158,7 +158,11 @@ define( function( require ) {
     var pickableListener = function( interactive ) {
       self.pickable = interactive;
     };
-    circuitElement.interactiveProperty.link( pickableListener );
+
+    // CCKLightBulbForegroundNode cannot ever be pickable, so let it opt out of this callback
+    if ( options.pickable !== false ) {
+      circuitElement.interactiveProperty.link( pickableListener );
+    }
 
     // Use whatever the start node currently is (it can change), and let the circuit manage the dependent vertices
     var p = null;
