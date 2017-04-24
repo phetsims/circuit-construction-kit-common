@@ -1,5 +1,4 @@
 // Copyright 2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * Shows the title (above) and dynamic readout (below) for the ammeter and voltmeter.
@@ -17,51 +16,64 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var VBox = require( 'SCENERY/nodes/VBox' );
 
+  // constants
+  var TEXT_BOX_WIDTH = 140;
+
   /**
    * @param {Property.<string>} textProperty - the text that should be displayed
-   * @param {Property.<boolean>} runningProperty - true if the text should be displayed
+   * @param {Property.<boolean>} runningProperty - true if the text should be displayed // TODO: rename this property
    * @param {string} title - the title
+   * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
   function ProbeTextNode( textProperty, runningProperty, title, tandem, options ) {
 
-    var rectangleWidth = 140;
+    options = _.extend( {
+      spacing: 6,
+      align: 'center'
+    }, options );
 
+    // TODO: i18n for ?
     var readout = new Text( '?', {
       fontSize: 34,
-      maxWidth: rectangleWidth - 20,
+      maxWidth: TEXT_BOX_WIDTH - 20,
       tandem: tandem.createTandem( 'readoutText' )
     } );
-    var textBox = new Rectangle( 0, 0, rectangleWidth, 52, 10, 10, {
+
+    var textBox = new Rectangle( 0, 0, TEXT_BOX_WIDTH, 52, 10, 10, {
       lineWidth: 2, stroke: 'black', fill: 'white'
     } );
 
     textProperty.link( function( text ) {
       readout.setText( text );
       if ( text === '?' ) {
+
+        // ? is centered
         readout.centerX = textBox.centerX;
       }
       else {
+
+        // numbers are right-aligned
         readout.right = textBox.right - 10;
       }
+
+      // vertically center
       readout.centerY = textBox.centerY;
     } );
-    var readoutNode = new Node( {
-      children: [ textBox, readout ]
-    } );
+
+    // Update visibility when running property changes
     runningProperty.linkAttribute( readout, 'visible' );
 
-    VBox.call( this, {
-      spacing: 6,
+    // set the children
+    options.children = [ new Text( title, {
+      fontSize: 42,
+      tandem: tandem.createTandem( 'titleText' )
+    } ), new Node( {
+      children: [ textBox, readout ]
+    } ) ];
 
-      align: 'center',
-      children: [ new Text( title, {
-        fontSize: 42,
-        tandem: tandem.createTandem( 'titleText' )
-      } ), readoutNode ]
-    } );
-    this.mutate( options );
+    VBox.call( this, options );
   }
 
   circuitConstructionKitCommon.register( 'ProbeTextNode', ProbeTextNode );
