@@ -1,5 +1,4 @@
 // Copyright 2003-2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * Ported directly from the Java.
@@ -11,8 +10,25 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var inherit = require( 'PHET_CORE/inherit' );
   var Color = require( 'SCENERY/util/Color' );
+
+  /**
+   * Gets the name from a color table entry.
+   * @param {Object} band
+   * @constructor
+   */
+  var GET_NAME = function( band ) {
+    return band.name;
+  };
+
+  /**
+   * Gets the color from a color table entry.
+   * @param {Object} band
+   * @constructor
+   */
+  var GET_COLOR = function( band ) {
+    return band.color;
+  };
 
   // See https://en.wikipedia.org/wiki/Electronic_color_code#Resistor_color-coding
   // Tolerances below gold were eliminated to reduce variance in the tolerance band, see https://github.com/phetsims/circuit-construction-kit-dc/issues/10
@@ -33,10 +49,13 @@ define( function( require ) {
     { name: 'white', significantFigure: '9', multiplier: 'e9', tolerance: null, color: new Color( 255, 255, 255 ) }
   ];
 
-  function ResistorColors() {
-  }
-
-  var colorFor = function( keyName, value ) {
+  /**
+   * Gets the color table entry for the specified column in the colorTable
+   * @param {string} keyName - the name of the key, such as 'significantFigure'|'multiplier'|'tolerance'
+   * @param value
+   * @returns {*}
+   */
+  var getEntry = function( keyName, value ) {
     var filtered = _.filter( colorTable, function( colorTableEntry ) {
       return colorTableEntry[ keyName ] === value;
     } );
@@ -44,16 +63,20 @@ define( function( require ) {
     return filtered[ 0 ];
   };
 
-  circuitConstructionKitCommon.register( 'ResistorColors', ResistorColors );
+  var ResistorColors = {
 
-  return inherit( Object, ResistorColors, {}, {
-
+    /**
+     * Get the color table entries for the specified resistance.
+     * @param {number} resistance
+     * @returns {Object[]} entries from the color table
+     * @private
+     */
     getEntries: function( resistance ) {
       assert && assert( resistance >= 0, 'resistance should be non-negative' );
 
       // 0 resistance has a single black band centered on the resistor
       if ( resistance === 0 ) {
-        return [ colorFor( 'name', 'black' ) ];
+        return [ getEntry( 'name', 'black' ) ];
       }
       var exponential = resistance.toExponential( 1 ); // like `1.5e+7`
       var firstSignificantDigit = exponential[ 0 ];
@@ -82,24 +105,36 @@ define( function( require ) {
       assert && assert( percentError < color.tolerance, 'no tolerance high enough to accommodate error' );
 
       // find the lowest tolerance that fits the value
-      var entries = [
-        colorFor( 'significantFigure', firstSignificantDigit ),
-        colorFor( 'significantFigure', secondSignificantDigit ),
-        colorFor( 'multiplier', decimalMultiplier ),
-        colorFor( 'tolerance', color.tolerance )
+      return [
+        getEntry( 'significantFigure', firstSignificantDigit ),
+        getEntry( 'significantFigure', secondSignificantDigit ),
+        getEntry( 'multiplier', decimalMultiplier ),
+        getEntry( 'tolerance', color.tolerance )
       ];
+    },
 
-      return entries;
-    },
+    /**
+     * For debugging and testing, get the human-readable color names.
+     * @param {number} resistance
+     * @returns {string[]}
+     * @public
+     */
     getColorNames: function( resistance ) {
-      return this.getEntries( resistance ).map( function( band ) {
-        return band.name;
-      } );
+      return this.getEntries( resistance ).map( GET_NAME );
     },
+
+    /**
+     * Return the colors for the given resistance
+     * @param {number} resistance
+     * @returns {Object[]}
+     * @public
+     */
     getColorArray: function( resistance ) {
-      return this.getEntries( resistance ).map( function( band ) {
-        return band.color;
-      } );
+      return this.getEntries( resistance ).map( GET_COLOR );
     }
-  } );
+  };
+
+  circuitConstructionKitCommon.register( 'ResistorColors', ResistorColors );
+
+  return ResistorColors;
 } );
