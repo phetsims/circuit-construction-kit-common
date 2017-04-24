@@ -1,4 +1,4 @@
-// Copyright 2003-2016, University of Colorado Boulder
+// Copyright 2003-2017, University of Colorado Boulder
 
 /**
  * Ported directly from the Java.
