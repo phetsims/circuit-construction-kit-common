@@ -2,7 +2,7 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- *
+ * This is the toolbox on the right hand side from which the voltmeter and ammeter can be dragged/dropped.
  * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {
@@ -21,8 +21,19 @@ define( function( require ) {
 
   // constants
   var TOOLBOX_ICON_SIZE = CircuitConstructionKitConstants.TOOLBOX_ICON_SIZE;
+  var VOLTMETER_ICON_SCALE = 1.3;
 
+  /**
+   * @param {Node} circuitNode - the main circuit node to use as a coordinate frame
+   * @param {VoltmeterNode} voltmeterNode - node for the Voltmeter
+   * @param {AmmeterNode} ammeterNode - node for the Ammeter
+   * @param {Property.<boolean>} runningProperty - whether values can be displayed
+   * @param {Tandem} tandem
+   * @constructor
+   */
   function SensorToolbox( circuitNode, voltmeterNode, ammeterNode, runningProperty, tandem ) {
+
+    // Draggable icon for the voltmeter
     var voltmeterNodeIcon = new VoltmeterNode( new Voltmeter( tandem.createTandem( 'voltmeterIconModel' ) ), tandem.createTandem( 'voltmeterNodeIcon' ), {
       runningProperty: runningProperty,
       icon: true
@@ -30,10 +41,11 @@ define( function( require ) {
     voltmeterNode.voltmeter.visibleProperty.link( function( visible ) {
       voltmeterNodeIcon.visible = !visible;
     } );
-    var voltmeterIconSizeIncrease = 1.3;
-    voltmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE * voltmeterIconSizeIncrease / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height ) } );
+    voltmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE * VOLTMETER_ICON_SCALE / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height ) } );
     voltmeterNodeIcon.addInputListener( {
       down: function( event ) {
+
+        // TODO: factor out duplicated code
         var viewPosition = circuitNode.globalToLocalPoint( event.pointer.point );
         voltmeterNode.voltmeter.draggingProbesWithBodyProperty.set( true );
         voltmeterNode.voltmeter.visibleProperty.set( true );
@@ -42,6 +54,7 @@ define( function( require ) {
       }
     } );
 
+    // Icon for the ammeter
     var ammeterNodeIcon = new AmmeterNode( new Ammeter( tandem.createTandem( 'ammeterIconModel' ) ), tandem.createTandem( 'ammeterNodeIcon' ), {
       icon: true,
       runningProperty: runningProperty
@@ -52,6 +65,8 @@ define( function( require ) {
     ammeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( ammeterNodeIcon.width, ammeterNodeIcon.height ) } );
     ammeterNodeIcon.addInputListener( {
       down: function( event ) {
+
+        // TODO: factor out duplicated code
         var viewPosition = circuitNode.globalToLocalPoint( event.pointer.point );
         ammeterNode.ammeter.draggingProbesWithBodyProperty.set( true );
         ammeterNode.ammeter.visibleProperty.set( true );
@@ -63,14 +78,11 @@ define( function( require ) {
     CircuitConstructionKitPanel.call( this, new HBox( {
       spacing: CircuitConstructionKitConstants.TOOLBOX_ITEM_SPACING,
       align: 'bottom',
-      children: [
-        voltmeterNodeIcon,
-        ammeterNodeIcon
-      ]
+      children: [ voltmeterNodeIcon, ammeterNodeIcon ]
     } ), tandem );
   }
 
   circuitConstructionKitCommon.register( 'SensorToolbox', SensorToolbox );
 
-  return inherit( CircuitConstructionKitPanel, SensorToolbox, {} );
+  return inherit( CircuitConstructionKitPanel, SensorToolbox );
 } );
