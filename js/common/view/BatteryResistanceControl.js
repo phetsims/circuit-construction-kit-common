@@ -79,7 +79,10 @@ define( function( require ) {
         slider.addMinorTick( i );
       }
     }
-    AccordionBox.call( this, new VBox( { children: [ valueParent, slider ] } ), {
+    AccordionBox.call( this, new VBox( {
+      children: [ valueParent, slider ],
+      tandem: tandem.createTandem( 'accordionBox' )
+    } ), {
       fill: '#f1f1f2',
       cornerRadius: 10,
       titleXMargin: 10,
@@ -91,9 +94,11 @@ define( function( require ) {
         children: [
           new HStrut( 10 ),
           new Text( 'Battery Resistance', {
-            fontSize: 16
+            fontSize: 16,
+            tandem: tandem.createTandem( 'batteryResistanceText' )
           } )
-        ]
+        ],
+        tandem: tandem.createTandem( 'titleNode' )
       } )
     } );
   }
