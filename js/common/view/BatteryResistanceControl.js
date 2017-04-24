@@ -31,7 +31,7 @@ define( function( require ) {
    */
   function BatteryResistanceControl( batteryResistanceProperty, tandem ) {
     var slider = new HSlider( batteryResistanceProperty, {
-      trackSize: new Dimension2( 150, 5 ), // TODO: is this duplicated in the resistivity control?
+      trackSize: CircuitConstructionKitConstants.SLIDER_TRACK_SIZE,
       majorTickLength: 2,
       minorTickLength: 5,
       min: CircuitConstructionKitConstants.DEFAULT_BATTERY_RESISTANCE,
@@ -53,9 +53,9 @@ define( function( require ) {
     } );
 
     // number to be displayed
-    batteryResistanceProperty.link( function( value ) {
-      numberNode.setText( value + ' ohms' );
-    } );
+    // batteryResistanceProperty.link( function( value ) {
+    //   numberNode.setText( value + ' ohms' );
+    // } );
 
     // background for displaying the value
     var backgroundNode = new Rectangle( 0, 0, 60, 20,

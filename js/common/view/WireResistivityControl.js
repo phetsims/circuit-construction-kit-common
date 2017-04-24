@@ -29,7 +29,7 @@ define( function( require ) {
       min: CircuitConstructionKitConstants.DEFAULT_RESISTIVITY,
       max: max // large enough so that max resistance in a 9v battery slows to a good rate
     }, {
-      trackSize: new Dimension2( 130, 5 ),
+      trackSize: CircuitConstructionKitConstants.SLIDER_TRACK_SIZE,
       tandem: tandem.createTandem( 'slider' )
     } );
     var createText = function( string, visible ) {

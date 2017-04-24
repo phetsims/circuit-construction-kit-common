@@ -12,6 +12,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Color = require( 'SCENERY/util/Color' );
+  var Dimension2 = require( 'DOT/Dimension2' );
 
   /**
    * @constructor
@@ -44,6 +45,9 @@ define( function( require ) {
 
     // Number of pixels (screen coordinates) that constitutes a tap instead of a drag
     TAP_THRESHOLD: 10,
+
+    // Dimensions of track size found in sliders
+    SLIDER_TRACK_SIZE: new Dimension2( 150, 5 ),
 
     // Uniform scaling for all font awesome node button icons
     FONT_AWESOME_ICON_SCALE: 0.85,
