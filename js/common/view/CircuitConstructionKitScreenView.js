@@ -226,10 +226,7 @@ define( function( require ) {
       circuitConstructionKitModel.circuit.currentTypeProperty,
       new BooleanProperty( false ),
       circuitConstructionKitModel.showLabelsProperty,
-      tandem.createTandem( 'displayOptionsPanel' ), {
-        showValuesCheckBox: false,
-        showElectronsCheckBox: CircuitConstructionKitQueryParameters.showElectronsCheckBox
-      } );
+      tandem.createTandem( 'displayOptionsPanel' ) );
 
     CircuitConstructionKitQueryParameters.showControlPanel && this.addChild( this.displayOptionsPanel );
 

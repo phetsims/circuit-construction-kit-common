@@ -1,5 +1,4 @@
-// Copyright 2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
+// Copyright 2016-2017, University of Colorado Boulder
 
 /**
  * This control panel shows checkboxes for "Show Electrons", etc.
@@ -19,70 +18,77 @@ define( function( require ) {
   var HStrut = require( 'SCENERY/nodes/HStrut' );
   var CheckBox = require( 'SUN/CheckBox' );
   var AquaRadioButton = require( 'SUN/AquaRadioButton' );
+  var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
+
+  // constants
+  var TEXT_OPTIONS = {
+    fontSize: 16
+  };
 
   /**
-   * @param {Property} showCurrentProperty - true if current should be shown
-   * @param {Property} currentTypeProperty - true if current should be shown as electrons or conventional
-   * @param {Property} showValuesProperty - true if values should be shown
-   * @param {Property} showLabelsProperty - true if toolbox labels should be shown
+   * @param {Property.<boolean>} showCurrentProperty - true if current should be shown
+   * @param {Property.<boolean>} currentTypeProperty - true if current should be shown as electrons or conventional
+   * @param {Property.<boolean>} showValuesProperty - true if values should be shown
+   * @param {Property.<boolean>} showLabelsProperty - true if toolbox labels should be shown
    * @param {Tandem} tandem
-   * @param {Object} options
    * @constructor
    */
-  function DisplayOptionsPanel( showCurrentProperty, currentTypeProperty, showValuesProperty, showLabelsProperty, tandem, options ) {
-    options = _.extend( {
-      showElectronsCheckBox: true,
-      showConventionalCurrentCheckBox: true,
-      showValuesCheckBox: true,
-      showCurrentCheckBox: true
-    }, options );
-    var textOptions = {
-      fontSize: 16
-    };
-    var aquaRadioButtonOptions = {
-      radius: 8
-    };
+  function DisplayOptionsPanel( showCurrentProperty, currentTypeProperty, showValuesProperty, showLabelsProperty, tandem ) {
 
-    var children = [];
-    var electronsRadioButton = new AquaRadioButton( currentTypeProperty, 'electrons', new Text( 'Electrons', textOptions ), aquaRadioButtonOptions );
-    var conventionalRadioButton = new AquaRadioButton( currentTypeProperty, 'conventional', new Text( 'Conventional', textOptions ), aquaRadioButtonOptions );
+    /**
+     * Create an AquaRadioButton for the specified kind of current
+     * @param {string} currentType - 'electrons'|'conventional'
+     * @param {string} text - the text to display in the button
+     * @returns {AquaRadioButton}
+     */
+    var createRadioButton = function( currentType, text ) {
+      return new AquaRadioButton( currentTypeProperty, currentType, new Text( text, TEXT_OPTIONS ), {
+        radius: 8
+      } );
+    };
+    var electronsRadioButton = createRadioButton( 'electrons', 'Electrons' ); // TODO: i18n
+    var conventionalRadioButton = createRadioButton( 'conventional', 'Conventional' ); // TODO: i18n
 
     // Gray out current view options when current is not selected.
-    showCurrentProperty.link( function( showCurrent ) {
-      electronsRadioButton.setEnabled( showCurrent );
-      conventionalRadioButton.setEnabled( showCurrent );
-    } );
+    showCurrentProperty.linkAttribute( electronsRadioButton, 'enabled' );
+    showCurrentProperty.linkAttribute( conventionalRadioButton, 'enabled' );
 
-    children.push( new VBox( {
-      align: 'left',
-      spacing: 8,
-      children: [
-        new CheckBox( new Text( 'Show Current', textOptions ), showCurrentProperty ),
-        new HBox( {
-          children: [
-            new HStrut( 30 ),
-            new VBox( {
-              align: 'left',
-              spacing: 6,
-              children: [
-                electronsRadioButton,
-                conventionalRadioButton
-              ]
-            } )
-          ]
-        } )
-      ]
-    } ) );
+    var children = [
 
-    children.push( new CheckBox( new Text( 'Labels', textOptions ), showLabelsProperty ) );
-    children.push( new CheckBox( new Text( 'Values', textOptions ), showValuesProperty ) );
-    var vbox = new VBox( {
+      // Show Current and sub-checkboxes
+      new VBox( {
+        align: 'left',
+        spacing: 8,
+        children: [
+          new CheckBox( new Text( 'Show Current', TEXT_OPTIONS ), showCurrentProperty ),
+          new HBox( {
+            children: [
+
+              // Indent the sub-checkboxes
+              new HStrut( 30 ),
+              new VBox( {
+                align: 'left',
+                spacing: 6,
+                children: CircuitConstructionKitQueryParameters.showElectronsCheckBox ? [
+                  electronsRadioButton,
+                  conventionalRadioButton
+                ] : [
+                  conventionalRadioButton
+                ]
+              } )
+            ]
+          } )
+        ]
+      } ),
+      new CheckBox( new Text( 'Labels', TEXT_OPTIONS ), showLabelsProperty ),
+      new CheckBox( new Text( 'Values', TEXT_OPTIONS ), showValuesProperty )
+    ];
+
+    CircuitConstructionKitPanel.call( this, new VBox( {
       children: children,
       spacing: 10,
       align: 'left'
-    } );
-
-    CircuitConstructionKitPanel.call( this, vbox, tandem );
+    } ), tandem );
   }
 
   circuitConstructionKitCommon.register( 'DisplayOptionsPanel', DisplayOptionsPanel );
