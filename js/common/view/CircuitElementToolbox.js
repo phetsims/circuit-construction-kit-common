@@ -43,7 +43,8 @@ define( function( require ) {
   var BATTERY_LENGTH = CircuitConstructionKitConstants.BATTERY_LENGTH;
   var TOOLBOX_ICON_SIZE = CircuitConstructionKitConstants.TOOLBOX_ICON_SIZE;
   var RESISTOR_LENGTH = CircuitConstructionKitConstants.RESISTOR_LENGTH;
-  var DEFAULT_WIRE_LENGTH = 100;
+  var WIRE_LENGTH = 100;
+  var SWITCH_LENGTH = 100;
 
   /**
    * @param {Circuit} circuit
@@ -66,10 +67,14 @@ define( function( require ) {
       numberOfSwitches: CircuitElementToolbox.NUMBER_OF_SWITCHES
     }, options );
 
+    /**
+     * Create a Vertex at the specified location, convenience function for creating the vertices for CircuitElements.
+     * @param {number} x - the x-coordinate of the Vertex
+     * @param {number} y - the y-coordinate of the Vertex
+     * @returns {Vertex}
+     */
     var createVertex = function( x, y ) {
-      return new Vertex( x, y, {
-        tandem: circuit.vertexGroupTandem.createNextTandem()
-      } );
+      return new Vertex( x, y, { tandem: circuit.vertexGroupTandem.createNextTandem() } );
     };
 
     // create icons
@@ -104,7 +109,6 @@ define( function( require ) {
 
     // Functions that count how many circuit elements there are of each type, so the icon can be hidden when the user created
     // the maximum number of that type
-
     var countLeftBatteries = function() {
       return circuit.circuitElements.filter( function( battery ) {
         return battery instanceof Battery && battery.initialOrientation === 'left' && !battery.insideTrueBlackBoxProperty.get();
@@ -136,35 +140,42 @@ define( function( require ) {
       } ).length;
     };
 
+    /**
+     * Create a pair of vertices to be used for a new CircuitElement
+     * @param {Vector2} position - the position of the center of the CircuitElement
+     * @param {number} length - the distance between the vertices
+     * @returns {{startVertex: Vertex, endVertex: Vertex}}
+     */
+    var createVertexPair = function( position, length ) {
+      return {
+        startVertex: createVertex( position.x - length / 2, position.y ),
+        endVertex: createVertex( position.x + length / 2, position.y )
+      };
+    };
+
     // create tool nodes
     var createLeftBattery = function( position ) {
-      var startVertex = createVertex( position.x - BATTERY_LENGTH / 2, position.y );
-      var endVertex = createVertex( position.x + BATTERY_LENGTH / 2, position.y );
-      return new Battery( endVertex, startVertex, 9.0, { initialOrientation: 'left' } );
+      var vertexPair = createVertexPair( position, BATTERY_LENGTH );
+      return new Battery( vertexPair.endVertex, vertexPair.startVertex, 9.0, { initialOrientation: 'left' } ); // TODO: factor out default battery voltage
     };
     var createRightBattery = function( position ) {
-      var startVertex = createVertex( position.x - BATTERY_LENGTH / 2, position.y );
-      var endVertex = createVertex( position.x + BATTERY_LENGTH / 2, position.y );
-      return new Battery( startVertex, endVertex, 9.0, { initialOrientation: 'right' } );
+      var vertexPair = createVertexPair( position, BATTERY_LENGTH );
+      return new Battery( vertexPair.startVertex, vertexPair.endVertex, 9.0, { initialOrientation: 'right' } );
     };
     var createWire = function( position ) {
-      var startVertex = createVertex( position.x - DEFAULT_WIRE_LENGTH / 2, position.y );
-      var endVertex = createVertex( position.x + DEFAULT_WIRE_LENGTH / 2, position.y );
-      return new Wire( startVertex, endVertex, circuit.wireResistivityProperty );
+      var vertexPair = createVertexPair( position, WIRE_LENGTH );
+      return new Wire( vertexPair.startVertex, vertexPair.endVertex, circuit.wireResistivityProperty );
     };
     var createLightBulb = function( position ) {
       return LightBulb.createAtPosition( position, circuit.vertexGroupTandem );
     };
     var createResistor = function( position ) {
-      var startVertex = createVertex( position.x - RESISTOR_LENGTH / 2, position.y );
-      var endVertex = createVertex( position.x + RESISTOR_LENGTH / 2, position.y );
-      return new Resistor( startVertex, endVertex, CircuitConstructionKitConstants.DEFAULT_RESISTANCE );
+      var vertexPair = createVertexPair( position, RESISTOR_LENGTH );
+      return new Resistor( vertexPair.startVertex, vertexPair.endVertex, CircuitConstructionKitConstants.DEFAULT_RESISTANCE );
     };
     var createSwitch = function( position ) {
-      var SWITCH_LENGTH = 100;
-      var startVertex = createVertex( position.x - SWITCH_LENGTH / 2, position.y );
-      var endVertex = createVertex( position.x + SWITCH_LENGTH / 2, position.y );
-      return new Switch( startVertex, endVertex, CircuitConstructionKitConstants.DEFAULT_RESISTIVITY );
+      var vertexPair = createVertexPair( position, SWITCH_LENGTH );
+      return new Switch( vertexPair.startVertex, vertexPair.endVertex, CircuitConstructionKitConstants.DEFAULT_RESISTIVITY );
     };
     var leftBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitNode, leftBatteryIcon, circuit, options.numberOfLeftBatteries, countLeftBatteries, createLeftBattery );
     var rightBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitNode, rightBatteryIcon, circuit, options.numberOfRightBatteries, countRightBatteries, createRightBattery );
