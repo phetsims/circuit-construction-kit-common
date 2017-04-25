@@ -1,5 +1,4 @@
-// Copyright 2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
+// Copyright 2016-2017, University of Colorado Boulder
 
 /**
  * Renders a single charge. Electrons are shown as a sphere with a minus sign and conventional current is shown as an
@@ -23,7 +22,6 @@ define( function( require ) {
   var ELECTRON_SCALE = 2; // Scale up before rasterization so it won't be too pixellated/fuzzy
 
   // Copied from John Travoltage
-  // TODO: Factor out to scenery phet?
   var MINUS_CHARGE_NODE = new ElectronChargeNode( { scale: ELECTRON_SCALE, top: 0, left: 0 } );
 
   var ELECTRON_IMAGE_NODE = new Node();
@@ -43,9 +41,17 @@ define( function( require ) {
     stroke: 'white'
   } );
 
+  /**
+   * @param {Charge} charge - the model element
+   * @param {Property.<boolean>} revealingProperty - true if circuit details are being shown
+   * @constructor
+   */
   function ChargeNode( charge, revealingProperty ) {
     var self = this;
+
+    // @public (read-only) the {Charge} depicted by this node
     this.charge = charge;
+
     Node.call( this, {
       children: [ charge.charge > 0 ? ARROW_NODE : ELECTRON_IMAGE_NODE ],
       pickable: false,
@@ -59,6 +65,8 @@ define( function( require ) {
                      (outsideOfBlackBoxProperty.value || revealingProperty.value) &&
                      ( Math.abs( charge.circuitElement.currentProperty.get() ) > 1E-6 || charge.charge < 0 );
     };
+
+    // When the model position changes, update the node position changes
     var positionListener = function( position ) {
       var current = charge.circuitElement.currentProperty.get();
       self.center = position;
@@ -67,7 +75,6 @@ define( function( require ) {
       outsideOfBlackBoxProperty.value = !charge.circuitElement.insideTrueBlackBoxProperty.get();
     };
     charge.positionProperty.link( positionListener );
-
     revealingProperty.link( updateVisible );
     charge.visibleProperty.link( updateVisible );
     outsideOfBlackBoxProperty.link( updateVisible );
