@@ -49,11 +49,7 @@ define( function( require ) {
     wireNode.accessibleContent = null; // icon should not have accessible content // TODO: explore this.  Do we really need it here?  Do we need it elsewhere?
 
     // Model element used to create the node
-    var resistor = new Resistor(
-      new Vertex( 0, 0 ),
-      new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ),
-      CircuitConstructionKitConstants.DEFAULT_RESISTANCE
-    );
+    var resistor = new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ) );
 
     var resistorNode = new ResistorNode( null, null, resistor, null, viewProperty, tandem.createTandem( 'resistorIcon' ), {
       icon: true

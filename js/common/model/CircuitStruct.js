@@ -118,8 +118,7 @@ define( function( require ) {
         circuitStruct.resistors.push( new Resistor(
           circuitStruct.vertices[ circuitState.resistors[ i ].startVertex ],
           circuitStruct.vertices[ circuitState.resistors[ i ].endVertex ],
-          circuitState.resistors[ i ].resistance,
-          options
+          circuitState.resistors[ i ].resistance
         ) );
       }
       for ( i = 0; i < circuitState.lightBulbs.length; i++ ) {

@@ -88,7 +88,7 @@ define( function( require ) {
     var wireIcon = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ) ), null, viewProperty, tandem.createTandem( 'wireIcon' ) );
     var lightBulbIcon = new CustomLightBulbNode( new NumberProperty( 0 ) );
     var resistorIcon = new ResistorNode( null, null,
-      new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ), CircuitConstructionKitConstants.DEFAULT_RESISTANCE ),
+      new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ) ),
       null, viewProperty, tandem.createTandem( 'resistorIcon' ), {
         icon: true
       }
@@ -162,7 +162,7 @@ define( function( require ) {
     };
     var createResistor = function( position ) {
       var vertexPair = createVertexPair( position, RESISTOR_LENGTH );
-      return new Resistor( vertexPair.startVertex, vertexPair.endVertex, CircuitConstructionKitConstants.DEFAULT_RESISTANCE );
+      return new Resistor( vertexPair.startVertex, vertexPair.endVertex );
     };
     var createSwitch = function( position ) {
       var vertexPair = createVertexPair( position, SWITCH_LENGTH );
