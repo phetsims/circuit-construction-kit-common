@@ -25,15 +25,15 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function Battery( startVertex, endVertex, voltage, options ) {
-    assert && assert( typeof voltage === 'number', 'voltage should be a number' );
+  function Battery( startVertex, endVertex, options ) {
     options = _.extend( {
-      initialOrientation: 'right'
+      initialOrientation: 'right',
+      voltage: 9.0
     }, options );
     FixedLengthCircuitElement.call( this, startVertex, endVertex, BATTERY_LENGTH, BATTERY_LENGTH );
 
     // @public (read-only) the voltage of the battery
-    this.voltageProperty = new NumberProperty( voltage );
+    this.voltageProperty = new NumberProperty( options.voltage );
 
     // @public (read-only) - track the initial state so the user can only create a certain number of "left" or "right"
     // batteries from the toolbox.

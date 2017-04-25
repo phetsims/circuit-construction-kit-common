@@ -147,11 +147,11 @@ define( function( require ) {
     // create tool nodes
     var createLeftBattery = function( position ) {
       var vertexPair = createVertexPair( position, BATTERY_LENGTH );
-      return new Battery( vertexPair.endVertex, vertexPair.startVertex, BATTERY_VOLTAGE, { initialOrientation: 'left' } );
+      return new Battery( vertexPair.endVertex, vertexPair.startVertex, { initialOrientation: 'left' } );
     };
     var createRightBattery = function( position ) {
       var vertexPair = createVertexPair( position, BATTERY_LENGTH );
-      return new Battery( vertexPair.startVertex, vertexPair.endVertex, BATTERY_VOLTAGE );
+      return new Battery( vertexPair.startVertex, vertexPair.endVertex );
     };
     var createWire = function( position ) {
       var vertexPair = createVertexPair( position, WIRE_LENGTH );

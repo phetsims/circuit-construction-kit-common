@@ -108,17 +108,18 @@ define( function( require ) {
         options = circuitState.batteries[ i ].options || {};
         circuitStruct.batteries.push( new Battery(
           circuitStruct.vertices[ circuitState.batteries[ i ].startVertex ],
-          circuitStruct.vertices[ circuitState.batteries[ i ].endVertex ],
-          circuitState.batteries[ i ].voltage,
-          options
+          circuitStruct.vertices[ circuitState.batteries[ i ].endVertex ], {
+            voltage: circuitState.batteries[ i ].voltage
+          }
         ) );
       }
       for ( i = 0; i < circuitState.resistors.length; i++ ) {
         options = circuitState.resistors[ i ].options || {};
         circuitStruct.resistors.push( new Resistor(
           circuitStruct.vertices[ circuitState.resistors[ i ].startVertex ],
-          circuitStruct.vertices[ circuitState.resistors[ i ].endVertex ],
-          circuitState.resistors[ i ].resistance
+          circuitStruct.vertices[ circuitState.resistors[ i ].endVertex ], {
+            resistance: circuitState.resistors[ i ].resistance
+          }
         ) );
       }
       for ( i = 0; i < circuitState.lightBulbs.length; i++ ) {
