@@ -1,5 +1,4 @@
-// Copyright 2015-2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
+// Copyright 2015-2017, University of Colorado Boulder
 
 /**
  * A wire whose length can change.
@@ -44,9 +43,7 @@ define( function( require ) {
     // @public (read-only) - the resistivity of the Wire in ohm-meters
     this.resistivityProperty = resistivityProperty;
 
-    /**
-     * When the vertex moves, updates the resistance and charge path length.
-     */
+    // When the vertex moves, updates the resistance and charge path length.
     var updateWire = function() {
       var startPosition = self.startVertexProperty.get().positionProperty.get();
       var endPosition = self.endVertexProperty.get().positionProperty.get();
