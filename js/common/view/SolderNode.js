@@ -25,6 +25,9 @@ define( function( require ) {
   function SolderNode( circuitNode, vertex ) {
     var circuit = circuitNode.circuit;
 
+    // @public (read-only)
+    this.vertex = vertex;
+
     // @public (read-only) - added by CircuitNode during dragging, used for relative drag location.
     this.startOffset = null;
 
