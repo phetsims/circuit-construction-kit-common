@@ -46,7 +46,7 @@ define( function( require ) {
   /**
    * @param {Circuit} circuit
    * @param {Property.<boolean>} showLabelsProperty
-   * @param {Property.<string} viewProperty
+   * @param {Property.<string>} viewProperty
    * @param {CircuitNode} circuitNode
    * @param {Tandem} tandem
    * @param {Object} [options]
@@ -69,10 +69,39 @@ define( function( require ) {
         tandem: circuit.vertexGroupTandem.createNextTandem()
       } );
     };
-    var leftBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitNode, new Image( batteryImage, {
+
+    // create icons
+    var leftBatteryIcon = new Image( batteryImage, {
       scale: TOOLBOX_ICON_SIZE / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height ),
       rotation: Math.PI
-    } ), circuit, options.numberOfLeftBatteries, function() {
+    } );
+    var rightBatteryIcon = new Image( batteryImage, {
+      scale: TOOLBOX_ICON_SIZE / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height )
+    } );
+    var wireIcon = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ) ), null, viewProperty, tandem.createTandem( 'wireIcon' ) );
+    var lightBulbIcon = new CustomLightBulbNode( new NumberProperty( 0 ) );
+    var resistorIcon = new ResistorNode( null, null,
+      new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ), CircuitConstructionKitConstants.DEFAULT_RESISTANCE ),
+      null, viewProperty, tandem.createTandem( 'resistorIcon' ), {
+        icon: true
+      }
+    );
+    var switchIcon = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ) ), null, viewProperty, tandem.createTandem( 'switchIcon' ) );
+
+    // normalize icon sizes
+    resistorIcon.mutate( {
+      scale: TOOLBOX_ICON_SIZE / Math.max( resistorIcon.width, resistorIcon.height )
+    } );
+    wireIcon.mutate( {
+      scale: TOOLBOX_ICON_SIZE / Math.max( wireIcon.width, wireIcon.height )
+    } );
+    lightBulbIcon.mutate( { // TODO: i18n labels
+      scale: TOOLBOX_ICON_SIZE / Math.max( lightBulbIcon.width, lightBulbIcon.height ) // constrained by being too tall, not too wide
+    } );
+    switchIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( switchIcon.width, switchIcon.height ) } );
+
+    // create tool nodes
+    var leftBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitNode, leftBatteryIcon, circuit, options.numberOfLeftBatteries, function() {
       return circuit.circuitElements.filter( function( battery ) {
         return battery instanceof Battery && battery.initialOrientation === 'left' && !battery.insideTrueBlackBoxProperty.get();
       } ).length;
@@ -82,9 +111,7 @@ define( function( require ) {
       return new Battery( endVertex, startVertex, 9.0, { initialOrientation: 'left' } );
     } );
 
-    var rightBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitNode, new Image( batteryImage, {
-        scale: TOOLBOX_ICON_SIZE / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height )
-      } ), circuit, options.numberOfRightBatteries, function() {
+    var rightBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitNode, rightBatteryIcon, circuit, options.numberOfRightBatteries, function() {
         return circuit.circuitElements.filter( function( battery ) {
           return battery instanceof Battery && battery.initialOrientation === 'right' && !battery.insideTrueBlackBoxProperty.get();
         } ).length;
@@ -95,10 +122,7 @@ define( function( require ) {
       }
     );
 
-    var wireIcon = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ) ), null, viewProperty, tandem.createTandem( 'wireIcon' ) );
-    var wireToolNode = new CircuitElementToolNode( wireString, showLabelsProperty, circuitNode, wireIcon.mutate( {
-        scale: TOOLBOX_ICON_SIZE / Math.max( wireIcon.width, wireIcon.height )
-      } ), circuit, options.numberOfWires, function() {
+    var wireToolNode = new CircuitElementToolNode( wireString, showLabelsProperty, circuitNode, wireIcon, circuit, options.numberOfWires, function() {
         return circuit.circuitElements.filter( function( circuitElement ) {
           return !circuitElement.insideTrueBlackBoxProperty.get() && circuitElement instanceof Wire;
         } ).length;
@@ -109,10 +133,7 @@ define( function( require ) {
       }
     );
 
-    var lightBulbIcon = new CustomLightBulbNode( new NumberProperty( 0 ) );
-    var lightBulbToolNode = new CircuitElementToolNode( lightBulbString, showLabelsProperty, circuitNode, lightBulbIcon.mutate( { // TODO: i18n labels
-        scale: TOOLBOX_ICON_SIZE / Math.max( lightBulbIcon.width, lightBulbIcon.height ) // constrained by being too tall, not too wide
-      } ), circuit, options.numberOfLightBulbs, function() {
+    var lightBulbToolNode = new CircuitElementToolNode( lightBulbString, showLabelsProperty, circuitNode, lightBulbIcon, circuit, options.numberOfLightBulbs, function() {
         return circuit.circuitElements.filter( function( lightBulb ) {
           return lightBulb instanceof LightBulb && !lightBulb.insideTrueBlackBoxProperty.get();
         } ).length;
@@ -121,15 +142,7 @@ define( function( require ) {
       }
     );
 
-    var resistorIcon = new ResistorNode( null, null,
-      new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ), CircuitConstructionKitConstants.DEFAULT_RESISTANCE ),
-      null, viewProperty, tandem.createTandem( 'resistorIcon' ), {
-        icon: true
-      }
-    );
-    var resistorToolNode = new CircuitElementToolNode( resistorString, showLabelsProperty, circuitNode, resistorIcon.mutate( {
-        scale: TOOLBOX_ICON_SIZE / Math.max( resistorIcon.width, resistorIcon.height )
-      } ), circuit, options.numberOfResistors, function() {
+    var resistorToolNode = new CircuitElementToolNode( resistorString, showLabelsProperty, circuitNode, resistorIcon, circuit, options.numberOfResistors, function() {
         return circuit.circuitElements.filter( function( resistor ) {
           return resistor instanceof Resistor && !resistor.insideTrueBlackBoxProperty.get();
         } ).length;
@@ -141,9 +154,7 @@ define( function( require ) {
       }
     );
 
-    var switchIcon = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ) ), null, viewProperty, tandem.createTandem( 'switchIcon' ) );
-    var switchToolNode = new CircuitElementToolNode( switchString, showLabelsProperty, circuitNode,
-      switchIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( switchIcon.width, switchIcon.height ) } ),
+    var switchToolNode = new CircuitElementToolNode( switchString, showLabelsProperty, circuitNode, switchIcon,
       circuit, options.numberOfSwitches, function() {
         return circuit.circuitElements.filter( function( s ) {
           return !s.insideTrueBlackBoxProperty.get() && s instanceof Switch;
