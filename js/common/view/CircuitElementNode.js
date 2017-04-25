@@ -151,13 +151,13 @@ define( function( require ) {
     },
 
     /**
-     * TODO: Document me and better name
+     * TODO: Document me
      * @param event
      * @param circuitNode
      * @param startPoint
      * TODO: public/private
      */
-    maybeSelect: function( event, circuitNode, startPoint ) {
+    selectVertexWhenNear: function( event, circuitNode, startPoint ) {
 
       if ( event.pointer.point.distance( startPoint ) < CircuitConstructionKitConstants.TAP_THRESHOLD ) {
 

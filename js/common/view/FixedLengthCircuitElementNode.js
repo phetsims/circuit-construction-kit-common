@@ -1,8 +1,8 @@
-// Copyright 2015-2016, University of Colorado Boulder
+// Copyright 2015-2017, University of Colorado Boulder
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- *
+ * Renders and provides interactivity for FixedLengthCircuitElements (all CircuitElements except Wires)
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -25,15 +25,15 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Color = require( 'SCENERY/util/Color' );
   var Image = require( 'SCENERY/nodes/Image' );
-  var TNode = require( 'SCENERY/nodes/TNode' );
 
   // images
   var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
 
   /**
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
-   * @param circuitNode - Null if an icon is created
-   * @param circuitElement
+   * @param {CircuitNode} circuitNode - Null if an icon is created
+   * @param {FixedLengthCircuitElement} circuitElement
+   * @param {Property.<string>} viewProperty - 'lifelike'|'schematic'
    * @param {Node} lifelikeNode - the node that will display the component as a lifelike object
    * @param {Node} schematicNode - the node that will display the component
    * @param {number} contentScale - the scale factor to apply to the image for the size in the play area (icons are automatically scaled up)
@@ -48,6 +48,7 @@ define( function( require ) {
 
     var contentNode = new Node();
 
+    // TODO: maybe it would be better to only have one node in the content at once, perhaps this node won't be necessary
     contentNode.children = [ lifelikeNode, schematicNode ];
     viewProperty.link( function( view ) {
       lifelikeNode.visible = view === 'lifelike';
@@ -150,9 +151,10 @@ define( function( require ) {
     var circuit = circuitNode && circuitNode.circuit;
     CircuitElementNode.call( this, circuitElement, circuit, _.extend( {
       cursor: 'pointer',
-      children: [
+      children: [ // TODO: this is a code smell if there is only one child of a node
         contentNode
-      ]
+      ],
+      tandem: tandem
     }, options ) );
 
     var pickableListener = function( interactive ) {
@@ -204,7 +206,7 @@ define( function( require ) {
 
             // Only show the editor when tapped, not on every drag.  Also, event could be undefined if this end() was triggered
             // by dispose()
-            event && self.maybeSelect( event, circuitNode, p );
+            event && self.selectVertexWhenNear( event, circuitNode, p );
 
             didDrag = false;
           }
@@ -284,16 +286,18 @@ define( function( require ) {
         circuitConstructionKitScreenView.circuitConstructionKitModel.exploreScreenRunningProperty.unlink( updateFire );
       }
     };
-
-    tandem.addInstance( this, TNode );
   }
 
   circuitConstructionKitCommon.register( 'FixedLengthCircuitElementNode', FixedLengthCircuitElementNode );
 
   return inherit( CircuitElementNode, FixedLengthCircuitElementNode, {
+
+    /**
+     * @public - dispose resources when no longer used
+     */
     dispose: function() {
-      this.disposeFixedLengthCircuitElementNode();
       CircuitElementNode.prototype.dispose.call( this );
+      this.disposeFixedLengthCircuitElementNode();
     }
   }, {
     HIGHLIGHT_INSET: 10

@@ -267,7 +267,7 @@ define( function( require ) {
               circuitNode.endDrag( event, wire.endVertexProperty.get(), dragged );
 
               // Only show the editor when tapped, not on every drag.
-              self.maybeSelect( event, circuitNode, startPoint );
+              self.selectVertexWhenNear( event, circuitNode, startPoint );
 
               dragged = false;
             }

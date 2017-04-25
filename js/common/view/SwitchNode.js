@@ -195,7 +195,7 @@ define( function( require ) {
         circuitNode.endDrag( event, switchModel.endVertexProperty.get(), didDrag );
 
         // Only show the editor when tapped, not on every drag.
-        self.maybeSelect( event, circuitNode, p );
+        self.selectVertexWhenNear( event, circuitNode, p );
       }
     } );
     circuitConstructionKitScreenView && self.addInputListener( this.inputListener );
