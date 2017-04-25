@@ -1,5 +1,4 @@
 // Copyright 2015-2017, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * Abstract base class for WireNode and FixedLengthCircuitElementNode
@@ -152,7 +151,7 @@ define( function( require ) {
     },
 
     /**
-     * TODO: Document me
+     * TODO: Document me and better name
      * @param event
      * @param circuitNode
      * @param startPoint
