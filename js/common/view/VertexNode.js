@@ -1,5 +1,4 @@
-// Copyright 2015-2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
+// Copyright 2015-2017, University of Colorado Boulder
 
 /**
  * The interactive scenery node for a vertex in the circuit graph.
@@ -22,12 +21,14 @@ define( function( require ) {
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var Vector2 = require( 'DOT/Vector2' );
   var TandemSimpleDragHandler = require( 'TANDEM/scenery/input/TandemSimpleDragHandler' );
-  var TNode = require( 'SCENERY/nodes/TNode' );
 
   // constants
-  var DISTANCE_TO_CUT_BUTTON = 70; // How far (screen coordinates) the cut button appears from the vertex node
+  var DISTANCE_TO_CUT_BUTTON = 70; // How far in view coordinates the cut button appears from the vertex node
 
   /**
+   * @param {CircuitNode} circuitNode - the entire CircuitNode
+   * @param {Vertex} vertex - the Vertex that will be displayed
+   * @param {Tandem} tandem
    * @constructor
    */
   function VertexNode( circuitNode, vertex, tandem ) {
@@ -50,12 +51,16 @@ define( function( require ) {
       lineDash: [ 6, 4 ],
       cursor: 'pointer'
     } );
+
+    // Highlight is shown when the vertex is selected.
     var highlightNode = new Circle( 30, {
       stroke: CircuitConstructionKitConstants.HIGHLIGHT_COLOR,
       lineWidth: CircuitConstructionKitConstants.HIGHLIGHT_LINE_WIDTH,
       pickable: false
     } );
 
+    // Shows up as red when disconnected or black when connected.  When unattachable, the dotted line disappears (black
+    // box study)
     var updateStroke = function() {
       dottedLineNode.stroke = circuit.countCircuitElements( vertex ) > 1 ? 'black' : 'red';
       dottedLineNode.visible = vertex.attachableProperty.get();
@@ -72,8 +77,8 @@ define( function( require ) {
 
     vertex.attachableProperty.link( updateStroke );
 
+    // Button shown when the vertex is attached to >1 circuit element that allows detaching.
     var cutButton = new RoundPushButton( {
-      tandem: tandem.createTandem( 'cutButton' ),
       baseColor: 'yellow',
       content: new FontAwesomeNode( 'cut', {
         rotation: -Math.PI / 2, // scissors point up
@@ -81,9 +86,8 @@ define( function( require ) {
       } ),
       minXMargin: 10,
       minYMargin: 10,
-      listener: function() {
-        circuit.cutVertex( vertex );
-      }
+      listener: function() { circuit.cutVertex( vertex ); },
+      tandem: tandem.createTandem( 'cutButton' )
     } );
 
     var updateSelected = function( selected ) {
@@ -114,36 +118,35 @@ define( function( require ) {
     };
     vertex.relayerEmitter.addListener( updateMoveToFront );
     Node.call( this, {
-      children: [ dottedLineNode, cutButton ]
+      children: [ dottedLineNode, cutButton ],
+      tandem: tandem
     } );
     circuitNode.highlightLayer.addChild( highlightNode );
 
-    var updatePickable = function( interactive ) {
-      self.pickable = interactive;
-    };
+    var updatePickable = function( interactive ) { self.pickable = interactive; };
     vertex.interactiveProperty.link( updatePickable );
 
-    var p = null;
-    var didDrag = false;
+    var eventPoint = null;
+    var dragged = false;
     var dragHandler = new TandemSimpleDragHandler( {
       allowTouchSnag: true,
       tandem: tandem.createTandem( 'dragHandler' ),
       start: function( event ) {
-        p = event.pointer.point;
+        eventPoint = event.pointer.point;
         vertex.draggableProperty.get() && circuitNode.startDrag( event.pointer.point, vertex, true );
-        didDrag = false;
+        dragged = false;
       },
       drag: function( event ) {
-        didDrag = true;
+        dragged = true;
         vertex.draggableProperty.get() && circuitNode.drag( event.pointer.point, vertex, true );
       },
       end: function( event ) {
 
         // The vertex can only connect to something if it was actually moved.
-        vertex.draggableProperty.get() && circuitNode.endDrag( event, vertex, didDrag );
+        vertex.draggableProperty.get() && circuitNode.endDrag( event, vertex, dragged );
 
         // Only show on a tap, not on every drag.
-        if ( vertex.interactiveProperty.get() && event.pointer.point.distance( p ) < CircuitConstructionKitConstants.TAP_THRESHOLD ) {
+        if ( vertex.interactiveProperty.get() && event.pointer.point.distance( eventPoint ) < CircuitConstructionKitConstants.TAP_THRESHOLD ) {
 
           vertex.selectedProperty.set( true );
 
@@ -164,8 +167,7 @@ define( function( require ) {
     // Don't permit dragging by the scissors or highlight
     dottedLineNode.addInputListener( dragHandler );
 
-    // Use a query parameter to turn on node voltage readouts for debugging.  In #22 we are discussing making this
-    // a user-visible option.
+    // Use a query parameter to turn on node voltage readouts for debugging only.
     var vertexDisplay = CircuitConstructionKitQueryParameters.vertexDisplay;
     if ( vertexDisplay ) {
       var voltageReadoutText = new Text( '', {
@@ -185,13 +187,14 @@ define( function( require ) {
       } );
     }
 
+    // Make sure the cut button remains in the visible screen bounds.
     var updateCutButtonPosition = function() {
       var position = vertex.positionProperty.get();
 
       var neighbors = circuit.getNeighborCircuitElements( vertex );
 
-      // Compute an unweighted sum of adjacent element directions, and point in the opposite direction
-      // so the button will appear in the least populated area.
+      // Compute an unweighted sum of adjacent element directions, and point in the opposite direction so the button
+      // will appear in the least populated area.
       var sumOfDirections = new Vector2();
       for ( var i = 0; i < neighbors.length; i++ ) {
         var v = vertex.positionProperty.get().minus( neighbors[ i ].getOppositeVertex( vertex ).positionProperty.get() );
@@ -210,8 +213,7 @@ define( function( require ) {
         var bounds = circuitNode.visibleBoundsInCircuitCoordinateFrameProperty.get();
 
         var availableBounds = bounds.eroded( cutButton.width / 2 );
-        var closestPoint = availableBounds.closestPointTo( proposedPosition );
-        cutButton.center = closestPoint;
+        cutButton.center = availableBounds.closestPointTo( proposedPosition );
       }
     };
     var updateVertexNodePosition = function( position ) {
@@ -222,6 +224,7 @@ define( function( require ) {
     };
     vertex.positionProperty.link( updateVertexNodePosition );
 
+    // @private
     this.disposeVertexNode = function() {
       if ( dragHandler.dragging ) {
         dragHandler.endDrag();
@@ -244,16 +247,19 @@ define( function( require ) {
       circuit.circuitChangedEmitter.removeListener( updateStroke );
       tandem.removeInstance( self );
     };
-
-    tandem.addInstance( this, TNode );
   }
 
   circuitConstructionKitCommon.register( 'VertexNode', VertexNode );
 
   return inherit( Node, VertexNode, {
+
+    /**
+     * Dispose resources when no longer used.
+     * @public
+     */
     dispose: function() {
-      this.disposeVertexNode();
       Node.prototype.dispose.call( this );
+      this.disposeVertexNode();
     }
   } );
 } );
