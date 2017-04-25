@@ -247,7 +247,6 @@ define( function( require ) {
     var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel(
       circuitConstructionKitModel.circuit,
       this.visibleBoundsProperty,
-      options.getCircuitEditPanelLayoutPosition,
       circuitConstructionKitModel.modeProperty,
       tandem.createTandem( 'circuitElementEditContainerPanel' )
     );

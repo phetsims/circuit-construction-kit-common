@@ -1,7 +1,8 @@
-// Copyright 2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
+// Copyright 2016-2017, University of Colorado Boulder
 
 /**
+ * This popup control appears at the bottom of the screen and shows circuit element-specific controls, like a
+ * resistance control for resistors.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -30,9 +31,15 @@ define( function( require ) {
     };
   };
 
-  function CircuitElementEditContainerPanel( circuit, visibleBoundsProperty, getLayoutPosition, modeProperty, tandem ) {
+  /**
+   * @param {Circuit} circuit - the circuit model
+   * @param {Property.<boolean>} visibleBoundsProperty - the visible bounds in view coordinates
+   * @param {Property.<string>} modeProperty - 'explore'|'test' for Black Box Study
+   * @param {Tandem} tandem
+   * @constructor
+   */
+  function CircuitElementEditContainerPanel( circuit, visibleBoundsProperty, modeProperty, tandem ) {
     var groupTandem = tandem.createGroupTandem( 'circuitElementEditPanel' );
-    var selectedCircuitElementProperty = circuit.selectedCircuitElementProperty;
     var self = this;
     Node.call( this );
 
@@ -55,15 +62,16 @@ define( function( require ) {
     circuit.vertexDroppedEmitter.addListener( listener );
     circuit.vertices.addItemRemovedListener( listener ); // Also update on reset all, or if a component is dropped in the toolbox
     modeProperty.link( listener );
-    listener(); // Update on startup, like link()
 
-    this.addChild( new Rectangle( 0, 0, 10, 10, { fill: null } ) ); // blank spacer so layout doesn't exception out
+    // blank spacer so layout doesn't exception out
+    this.addChild( new Rectangle( 0, 0, 10, 10, { fill: null } ) );
     var updatePosition = function() {
-      self.mutate( getLayoutPosition( visibleBoundsProperty.get() ) );
+      self.mutate( GET_LAYOUT_POSITION( visibleBoundsProperty.get() ) );
     };
 
+    // When the selected element changes, update the displayed controls
     var lastNumberControl = null;
-    selectedCircuitElementProperty.link( function( selectedCircuitElement ) {
+    circuit.selectedCircuitElementProperty.link( function( selectedCircuitElement ) {
       lastNumberControl && self.removeChild( lastNumberControl );
       lastNumberControl && lastNumberControl !== tapInstructionTextNode && lastNumberControl.dispose();
       lastNumberControl = null;
@@ -73,6 +81,7 @@ define( function( require ) {
         var battery = selectedCircuitElement instanceof Battery;
         var wire = selectedCircuitElement instanceof Wire;
 
+        // TODO: i18n
         var text = (resistor || wire) ? 'Resistance' :
                    battery ? 'Voltage' :
                    null;
@@ -99,7 +108,5 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'CircuitElementEditContainerPanel', CircuitElementEditContainerPanel );
 
-  return inherit( Node, CircuitElementEditContainerPanel, {}, {
-    GET_LAYOUT_POSITION: GET_LAYOUT_POSITION
-  } );
+  return inherit( Node, CircuitElementEditContainerPanel );
 } );
