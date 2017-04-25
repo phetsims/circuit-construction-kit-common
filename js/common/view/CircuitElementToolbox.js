@@ -1,4 +1,4 @@
-// Copyright 2016, University of Colorado Boulder
+// Copyright 2016-2017, University of Colorado Boulder
 
 /**
  * Toolbox from which CircuitElements can be dragged or returned.
@@ -44,7 +44,6 @@ define( function( require ) {
   var RESISTOR_LENGTH = CircuitConstructionKitConstants.RESISTOR_LENGTH;
   var WIRE_LENGTH = 100;
   var SWITCH_LENGTH = 100;
-  var BATTERY_VOLTAGE = 9.0; // TODO: move to constants file or Battery.js or as a default
 
   /**
    * @param {Circuit} circuit
