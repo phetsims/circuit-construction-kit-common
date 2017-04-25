@@ -14,40 +14,17 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var RadialGradient = require( 'SCENERY/util/RadialGradient' );
-  var Circle = require( 'SCENERY/nodes/Circle' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Image = require( 'SCENERY/nodes/Image' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
+  var ElectronChargeNode = require( 'SCENERY_PHET/ElectronChargeNode' );
 
   // constants
-  var ELECTRON_RADIUS = 10; // in view coordinates
   var ELECTRON_SCALE = 2; // Scale up before rasterization so it won't be too pixellated/fuzzy
 
   // Copied from John Travoltage
   // TODO: Factor out to scenery phet?
-  var MINUS_CHARGE_NODE = new Node( {
-    children: [
-      new Circle( ELECTRON_RADIUS, {
-        boundsMethod: 'none',
-        fill: new RadialGradient( 2, -3, 2, 2, -3, 7 )
-          .addColorStop( 0, '#4fcfff' )
-          .addColorStop( 0.5, '#2cbef5' )
-          .addColorStop( 1, '#00a9e8' )
-      } ),
-
-      new Rectangle( 0, 0, 11, 2, {
-        fill: 'white',
-        centerX: 0,
-        centerY: 0
-      } )
-    ],
-    scale: ELECTRON_SCALE,
-    boundsMethod: 'none'
-  } );
-  MINUS_CHARGE_NODE.top = 0;
-  MINUS_CHARGE_NODE.left = 0;
+  var MINUS_CHARGE_NODE = new ElectronChargeNode( { scale: ELECTRON_SCALE, top: 0, left: 0 } );
 
   var ELECTRON_IMAGE_NODE = new Node();
   MINUS_CHARGE_NODE.toImage( function( im ) {
