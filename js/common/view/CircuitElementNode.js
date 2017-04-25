@@ -1,8 +1,8 @@
-// Copyright 2015-2016, University of Colorado Boulder
+// Copyright 2015-2017, University of Colorado Boulder
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- * Abstract base class for CircuitElementNode and FixedLengthCircuitElementNode
+ * Abstract base class for WireNode and FixedLengthCircuitElementNode
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -27,21 +27,27 @@ define( function( require ) {
 
     var self = this;
 
+    // @public (read-only) - the CircuitElement rendered by this node
+    this.circuitElement = circuitElement;
+
+    // @public
+    this.inputListener = null; // Supplied by subclasses
+
     options = _.extend( {
 
-      // options for keyboard navigation
+      // keyboard navigation
       tagName: 'div', // HTML tag name for representative element in the document, see Accessibility.js
       focusable: true,
-      focusHighlight: 'invisible'
+      focusHighlight: 'invisible' // highlights are drawn by the simulation
     }, options );
 
     Node.call( this, options );
-    this.circuitElement = circuitElement;
 
     // keyboard listener so that delete or backspace deletes the element - must be disposed
     var keyListener = this.addAccessibleInputListener( {
       keydown: function( event ) {
         var code = event.keyCode || event.which;
+
         // on delete or backspace, the focused circuit element should be deleted
         if ( code === Input.KEY_DELETE || code === Input.KEY_BACKSPACE ) {
           circuit.remove( circuitElement );
@@ -63,6 +69,7 @@ define( function( require ) {
       self.inputListener.startDrag( event );
     };
 
+    // @private - for disposal
     this.disposeCircuitElementNode = function() {
 
       // remove the keyboard listener
@@ -100,6 +107,7 @@ define( function( require ) {
      */
     updateOpacityOnInteractiveChange: function() {
       var self = this;
+
       // TODO: Replace this with grayscale if we keep it
       var interactivityChanged = function( interactive ) {
         self.opacity = interactive ? 1 : 0.5;
