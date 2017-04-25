@@ -23,13 +23,13 @@ define( function( require ) {
    * @param {BooleanProperty} showLabelsProperty
    * @param {CircuitNode} circuitNode
    * @param {Node} iconNode
-   * @param {Circuit} circuit
    * @param {number} maxNumber
-   * @param {number} count
+   * @param {function} count
    * @param {function} createElement
    * @constructor
    */
-  function CircuitElementToolNode( labelText, showLabelsProperty, circuitNode, iconNode, circuit, maxNumber, count, createElement ) {
+  function CircuitElementToolNode( labelText, showLabelsProperty, circuitNode, iconNode, maxNumber, count, createElement ) {
+    var circuit = circuitNode.circuit;
     var self = this;
     var labelNode = new Text( labelText, { fontSize: 12, maxWidth: TOOLBOX_ICON_SIZE } ); // TODO: constrain width
     showLabelsProperty.link( function( showLabels ) {labelNode.visible = showLabels;} );

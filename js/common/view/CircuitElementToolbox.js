@@ -1,5 +1,4 @@
 // Copyright 2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * Toolbox from which CircuitElements can be dragged or returned.
@@ -45,6 +44,7 @@ define( function( require ) {
   var RESISTOR_LENGTH = CircuitConstructionKitConstants.RESISTOR_LENGTH;
   var WIRE_LENGTH = 100;
   var SWITCH_LENGTH = 100;
+  var BATTERY_VOLTAGE = 9.0; // TODO: move to constants file or Battery.js or as a default
 
   /**
    * @param {Circuit} circuit
@@ -95,50 +95,41 @@ define( function( require ) {
     );
     var switchIcon = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ) ), null, viewProperty, tandem.createTandem( 'switchIcon' ) );
 
+    // TODO: i18n labels
+
     // normalize icon sizes
-    resistorIcon.mutate( {
-      scale: TOOLBOX_ICON_SIZE / Math.max( resistorIcon.width, resistorIcon.height )
-    } );
-    wireIcon.mutate( {
-      scale: TOOLBOX_ICON_SIZE / Math.max( wireIcon.width, wireIcon.height )
-    } );
-    lightBulbIcon.mutate( { // TODO: i18n labels
-      scale: TOOLBOX_ICON_SIZE / Math.max( lightBulbIcon.width, lightBulbIcon.height ) // constrained by being too tall, not too wide
-    } );
+    resistorIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( resistorIcon.width, resistorIcon.height ) } );
+    wireIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( wireIcon.width, wireIcon.height ) } );
+    lightBulbIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( lightBulbIcon.width, lightBulbIcon.height ) } );
     switchIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( switchIcon.width, switchIcon.height ) } );
+
+    /**
+     * Returns a function which counts the number of circuit elements (not counting those in the true black box).
+     * @param {function} predicate
+     * @returns {function}
+     */
+    var createCounter = function( predicate ) {
+      return function() {
+        return circuit.circuitElements.filter( function( circuitElement ) {
+
+          // Count according to the predicate, but don't count elements inside the true black box
+          return predicate( circuitElement ) && !circuitElement.insideTrueBlackBoxProperty.get();
+        } ).length;
+      };
+    };
 
     // Functions that count how many circuit elements there are of each type, so the icon can be hidden when the user created
     // the maximum number of that type
-    var countLeftBatteries = function() {
-      return circuit.circuitElements.filter( function( battery ) {
-        return battery instanceof Battery && battery.initialOrientation === 'left' && !battery.insideTrueBlackBoxProperty.get();
-      } ).length;
-    };
-    var countRightBatteries = function() {
-      return circuit.circuitElements.filter( function( battery ) {
-        return battery instanceof Battery && battery.initialOrientation === 'right' && !battery.insideTrueBlackBoxProperty.get();
-      } ).length;
-    };
-    var countWires = function() {
-      return circuit.circuitElements.filter( function( circuitElement ) {
-        return circuitElement instanceof Wire && !circuitElement.insideTrueBlackBoxProperty.get();
-      } ).length;
-    };
-    var countLightBulbs = function() {
-      return circuit.circuitElements.filter( function( lightBulb ) {
-        return lightBulb instanceof LightBulb && !lightBulb.insideTrueBlackBoxProperty.get();
-      } ).length;
-    };
-    var countResistors = function() {
-      return circuit.circuitElements.filter( function( resistor ) {
-        return resistor instanceof Resistor && !resistor.insideTrueBlackBoxProperty.get();
-      } ).length;
-    };
-    var countSwitches = function() {
-      return circuit.circuitElements.filter( function( switchElement ) {
-        return switchElement instanceof Switch && !switchElement.insideTrueBlackBoxProperty.get();
-      } ).length;
-    };
+    var countLeftBatteries = createCounter( function( circuitElement ) {
+      return circuitElement instanceof Battery && circuitElement.initialOrientation === 'left';
+    } );
+    var countRightBatteries = createCounter( function( circuitElement ) {
+      return circuitElement instanceof Battery && circuitElement.initialOrientation === 'right';
+    } );
+    var countWires = createCounter( function( circuitElement ) { return circuitElement instanceof Wire; } );
+    var countLightBulbs = createCounter( function( circuitElement ) { return circuitElement instanceof LightBulb; } );
+    var countResistors = createCounter( function( circuitElement ) { return circuitElement instanceof Resistor; } );
+    var countSwitches = createCounter( function( circuitElement ) { return circuitElement instanceof Switch; } );
 
     /**
      * Create a pair of vertices to be used for a new CircuitElement
@@ -156,11 +147,11 @@ define( function( require ) {
     // create tool nodes
     var createLeftBattery = function( position ) {
       var vertexPair = createVertexPair( position, BATTERY_LENGTH );
-      return new Battery( vertexPair.endVertex, vertexPair.startVertex, 9.0, { initialOrientation: 'left' } ); // TODO: factor out default battery voltage
+      return new Battery( vertexPair.endVertex, vertexPair.startVertex, BATTERY_VOLTAGE, { initialOrientation: 'left' } );
     };
     var createRightBattery = function( position ) {
       var vertexPair = createVertexPair( position, BATTERY_LENGTH );
-      return new Battery( vertexPair.startVertex, vertexPair.endVertex, 9.0, { initialOrientation: 'right' } );
+      return new Battery( vertexPair.startVertex, vertexPair.endVertex, BATTERY_VOLTAGE );
     };
     var createWire = function( position ) {
       var vertexPair = createVertexPair( position, WIRE_LENGTH );
@@ -177,12 +168,12 @@ define( function( require ) {
       var vertexPair = createVertexPair( position, SWITCH_LENGTH );
       return new Switch( vertexPair.startVertex, vertexPair.endVertex, CircuitConstructionKitConstants.DEFAULT_RESISTIVITY );
     };
-    var leftBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitNode, leftBatteryIcon, circuit, options.numberOfLeftBatteries, countLeftBatteries, createLeftBattery );
-    var rightBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitNode, rightBatteryIcon, circuit, options.numberOfRightBatteries, countRightBatteries, createRightBattery );
-    var wireToolNode = new CircuitElementToolNode( wireString, showLabelsProperty, circuitNode, wireIcon, circuit, options.numberOfWires, countWires, createWire );
-    var lightBulbToolNode = new CircuitElementToolNode( lightBulbString, showLabelsProperty, circuitNode, lightBulbIcon, circuit, options.numberOfLightBulbs, countLightBulbs, createLightBulb );
-    var resistorToolNode = new CircuitElementToolNode( resistorString, showLabelsProperty, circuitNode, resistorIcon, circuit, options.numberOfResistors, countResistors, createResistor );
-    var switchToolNode = new CircuitElementToolNode( switchString, showLabelsProperty, circuitNode, switchIcon, circuit, options.numberOfSwitches, countSwitches, createSwitch );
+    var leftBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitNode, leftBatteryIcon, options.numberOfLeftBatteries, countLeftBatteries, createLeftBattery );
+    var rightBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitNode, rightBatteryIcon, options.numberOfRightBatteries, countRightBatteries, createRightBattery );
+    var wireToolNode = new CircuitElementToolNode( wireString, showLabelsProperty, circuitNode, wireIcon, options.numberOfWires, countWires, createWire );
+    var lightBulbToolNode = new CircuitElementToolNode( lightBulbString, showLabelsProperty, circuitNode, lightBulbIcon, options.numberOfLightBulbs, countLightBulbs, createLightBulb );
+    var resistorToolNode = new CircuitElementToolNode( resistorString, showLabelsProperty, circuitNode, resistorIcon, options.numberOfResistors, countResistors, createResistor );
+    var switchToolNode = new CircuitElementToolNode( switchString, showLabelsProperty, circuitNode, switchIcon, options.numberOfSwitches, countSwitches, createSwitch );
 
     var children = [];
     options.numberOfLeftBatteries && children.push( leftBatteryToolNode );
