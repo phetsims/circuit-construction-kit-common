@@ -1,7 +1,8 @@
-// Copyright 2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
+// Copyright 2016-2017, University of Colorado Boulder
 
 /**
+ * Shows controls for a single CircuitElement at the bottom of the screen and contained in a
+ * CircuitElementEditContainerPanel.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -19,43 +20,62 @@ define( function( require ) {
   var RangeWithValue = require( 'DOT/RangeWithValue' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var NumberProperty = require( 'AXON/NumberProperty' );
+  var PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
 
+  // constants
+  var FONT = new PhetFont( 14 );
+
+  /**
+   * @param {string} title - text to show as a title
+   * @param {string} units - units for the value to change
+   * @param {Property.<number>} valueProperty - property this control changes
+   * @param {Circuit} circuit - parent circuit
+   * @param {FixedLengthCircuitElement} circuitElement - the CircuitElement controlled by this UI
+   * @param {Tandem} tandem
+   * @param {Object} [options]
+   * @constructor
+   */
   function CircuitElementEditPanel( title, units, valueProperty, circuit, circuitElement, tandem, options ) {
     options = _.extend( { numberControlEnabled: true }, options );
 
-    var font = new PhetFont( 14 );
-    var numberControlOptions = {
-      titleFont: font,
-      valueFont: font,
-      decimalPlaces: 1,
-      delta: 0.5
-    };
-
-    // Track whether the changes were from the user interface or from the model (e.g. the resistance of a wire
-    // changing when its length changes).
-    var proxy = new NumberProperty( valueProperty.value );
+    // Use a proxy property so we can track whether the changes were from the user interface or from the model (e.g. the
+    // resistance of a wire changing when its length changes).
+    // TODO: this is not a practical example since wire resistance cannot be edited through this UI.  Is the proxy still
+    // necessary?
+    var proxyProperty = new NumberProperty( valueProperty.value );
     var changing = false;
+
+    // Listener that is called when the proxy property changes
     var proxyListener = function( value ) {
       valueProperty.value = value;
       if ( !changing ) {
         circuit.componentEditedEmitter.emit();
       }
     };
-    proxy.lazyLink( proxyListener );
+    proxyProperty.lazyLink( proxyListener );
+
+    // Bind from the model property to the proxy property
     var valueListener = function( value ) {
       changing = true;
-      proxy.value = value;
+      proxyProperty.value = value;
       changing = false;
     };
     valueProperty.lazyLink( valueListener );
 
     // Create the controls using the proxy
-    var numberControl = new NumberControl( title, proxy, new RangeWithValue( 0, 100 ), _.extend( {
+    var numberControl = new NumberControl( title, proxyProperty, new RangeWithValue( 0, 100 ), _.extend( {
       tandem: tandem.createTandem( 'numberControl' ),
       valuePattern: '{0} ' + units // TODO: i18n
-    }, numberControlOptions ) );
+    }, {
+      titleFont: FONT,
+      valueFont: FONT,
+      decimalPlaces: 1,
+      delta: 0.5
+    } ) );
+
+    // The button that deletes the circuit component
     var trashButton = new RoundPushButton( {
-      baseColor: 'yellow',
+      baseColor: PhetColorScheme.PHET_LOGO_YELLOW,
       content: new FontAwesomeNode( 'trash', {
         scale: CircuitConstructionKitConstants.FONT_AWESOME_ICON_SCALE
       } ),
@@ -67,24 +87,22 @@ define( function( require ) {
       tandem: tandem.createTandem( 'trashButton' )
     } );
     var children = [];
-    if ( options.numberControlEnabled ) {
-      children.push( numberControl );
-    }
-    if ( circuitElement.canBeDroppedInToolbox ) {
-      children.push( trashButton );
-    }
-    HBox.call( this, {
-      spacing: 40,
-      align: 'bottom',
-      children: children
-    } );
+    options.numberControlEnabled && children.push( numberControl );
+    circuitElement.canBeDroppedInToolbox && children.push( trashButton );
 
+    // @private - for disposal
     this.disposeCircuitElementEditPanel = function() {
       numberControl.dispose();
       valueProperty.unlink( valueListener );
-      proxy.unlink( proxyListener );
-      proxy.dispose();
+      proxyProperty.unlink( proxyListener );
+      proxyProperty.dispose();
     };
+
+    HBox.call( this, {
+      spacing: 40,
+      children: children,
+      align: 'bottom'
+    } );
   }
 
   circuitConstructionKitCommon.register( 'CircuitElementEditPanel', CircuitElementEditPanel );
@@ -96,8 +114,8 @@ define( function( require ) {
      * @public
      */
     dispose: function() {
-      this.disposeCircuitElementEditPanel();
       HBox.prototype.dispose.call( this );
+      this.disposeCircuitElementEditPanel();
     }
   } );
 } );
