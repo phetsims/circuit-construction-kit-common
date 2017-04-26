@@ -167,14 +167,14 @@ define( function( require ) {
     }
 
     // Use whatever the start node currently is (it can change), and let the circuit manage the dependent vertices
-    var p = null;
+    var eventPoint = null;
     var didDrag = false;
     if ( !options.icon ) {
       this.inputListener = new TandemSimpleDragHandler( {
         allowTouchSnag: true,
         tandem: tandem.createTandem( 'inputListener' ), // TODO: some input listeners are 'dragHandler' let's be consistent
         start: function( event ) {
-          p = event.pointer.point;
+          eventPoint = event.pointer.point;
           circuitElement.interactiveProperty.get() && circuitNode.startDrag( event.pointer.point, circuitElement.endVertexProperty.get(), false );
           didDrag = false;
         },
@@ -206,7 +206,7 @@ define( function( require ) {
 
             // Only show the editor when tapped, not on every drag.  Also, event could be undefined if this end() was triggered
             // by dispose()
-            event && self.selectVertexWhenNear( event, circuitNode, p );
+            event && self.selectVertexWhenNear( event, circuitNode, eventPoint );
 
             didDrag = false;
           }
@@ -261,6 +261,7 @@ define( function( require ) {
       circuitElement.endVertexProperty.get().positionProperty.get()
     );
 
+    // @private - for disposal
     this.disposeFixedLengthCircuitElementNode = function() {
       if ( self.inputListener && self.inputListener.dragging ) {
         self.inputListener.endDrag();
