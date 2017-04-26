@@ -185,6 +185,7 @@ define( function( require ) {
 
     // Keep track of the last circuit element the user manipulated, for showing additional controls
     // TODO: Will a11y track this?
+    // TODO: should we have one "selected item" that makes vertices and circuit elements mutually exclusive?
     this.selectedCircuitElementProperty = new Property( null );
 
     // Actions that will be invoked during the step function

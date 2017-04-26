@@ -27,8 +27,6 @@ define( function( require ) {
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
   var PlayPauseButton = require( 'SCENERY_PHET/buttons/PlayPauseButton' );
-  var TextPushButton = require( 'SUN/buttons/TextPushButton' );
-  var CircuitStruct = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/CircuitStruct' );
   var Plane = require( 'SCENERY/nodes/Plane' );
   var ViewRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ViewRadioButtonGroup' );
   var ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ZoomControlPanel' );
@@ -52,8 +50,8 @@ define( function( require ) {
 
     options = _.extend( {
 
-      // When used as a scene, the reset all button is suppressed here, added in the screen
-      // so that it may reset all scenes (including but not limited to this one).
+      // When used as a scene, the reset all button is suppressed here, added in the screen so that it may reset all
+      // scenes (including but not limited to this one).
       showResetAllButton: false,
       toolboxOrientation: 'vertical',
       numberOfRightBatteriesInToolbox: CircuitElementToolbox.NUMBER_OF_RIGHT_BATTERIES,
@@ -71,12 +69,15 @@ define( function( require ) {
       showResistivityControl: true,
       showBatteryResistanceControl: true
     }, options );
+
+    // @public - the main model
     this.circuitConstructionKitModel = circuitConstructionKitModel;
+
     ScreenView.call( this );
 
     // On touch, make it so tapping the background deselects items.  For mouse, we add listeners to the pointer that
     // work a bit more accurately.
-    // @protected, so subclasses can change the fill
+    // @protected (read-only), so subclasses can change the fill
     this.backgroundPlane = new Plane( { fill: BACKGROUND_COLOR } );
     this.backgroundPlane.addInputListener( {
       touchdown: function() {
@@ -107,54 +108,6 @@ define( function( require ) {
         }
       } );
       this.addChild( resetAllButton );
-    }
-
-    // TODO: A better place to implement this?
-    if ( CircuitConstructionKitQueryParameters.circuit ) {
-      var circuitStateObject = JSON.parse( LZString.decompressFromEncodedURIComponent( CircuitConstructionKitQueryParameters.circuit ) );
-      circuitConstructionKitModel.circuit.loadFromCircuitStruct( CircuitStruct.fromStateObject( circuitStateObject ) );
-    }
-
-    var enableSave = true;
-    window.onpopstate = function( e ) {
-      if ( e.state && e.state.circuit ) {
-        var circuit = e.state.circuit;
-        enableSave = false;
-        console.log( 'loading from pop state' );
-        circuitConstructionKitModel.circuit.loadFromCircuitStruct( CircuitStruct.fromStateObject( circuit ) );
-        enableSave = true;
-      }
-    };
-
-    var pushState = function() {
-      if ( !enableSave ) {
-        return;
-      }
-      console.log( 'push state' );
-      var stateObject = circuitConstructionKitModel.circuit.toStateObject();
-      var string = JSON.stringify( stateObject );
-      var compressed = LZString.compressToEncodedURIComponent( string );
-      console.log( string.length, ' => ', compressed.length );
-
-      // assume circuit query parameter is last
-      var text = window.location.href;
-      if ( text.indexOf( '?circuit=' ) >= 0 ) {
-        text = text.substring( 0, text.indexOf( '?circuit=' ) );
-      }
-      else if ( text.indexOf( '&circuit=' ) >= 0 ) {
-        text = text.substring( 0, text.indexOf( '&circuit=' ) );
-      }
-
-      var join = text.indexOf( '?' ) >= 0 ? '&' : '?';
-
-      window.history.pushState( { circuit: stateObject }, 'title', text + join + 'circuit=' + compressed );
-    };
-
-    if ( CircuitConstructionKitQueryParameters.showSaveButton ) {
-      var saveButton = new TextPushButton( 'Save', {
-        listener: pushState
-      } );
-      this.addChild( saveButton );
     }
 
     this.circuitNode = new CircuitNode( circuitConstructionKitModel.circuit, this, tandem.createTandem( 'circuitNode' ) );
@@ -346,13 +299,6 @@ define( function( require ) {
         resetAllButton.mutate( {
           right: visibleBounds.right - LAYOUT_INSET,
           bottom: visibleBounds.bottom - LAYOUT_INSET
-        } );
-      }
-
-      if ( CircuitConstructionKitQueryParameters.showSaveButton ) {
-        saveButton.mutate( {
-          right: visibleBounds.right - LAYOUT_INSET,
-          bottom: resetAllButton.top - LAYOUT_INSET
         } );
       }
 
