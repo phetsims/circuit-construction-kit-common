@@ -1,4 +1,4 @@
-// Copyright 2015-2016, University of Colorado Boulder
+// Copyright 2015-2017, University of Colorado Boulder
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
@@ -139,11 +139,9 @@ define( function( require ) {
         circuitConstructionKitModel.ammeter.visibleProperty.set( false );
       }
     } );
-    circuitConstructionKitModel.ammeter.visibleProperty.link( function( visible ) {
-      ammeterNode.visible = visible;
-    } );
+    circuitConstructionKitModel.ammeter.visibleProperty.linkAttribute( ammeterNode, 'visible' );
 
-    // Pass the view into circuit node so that circuit elements can be dropped back into the toolbox
+    // @public (read-only) Pass the view into circuit node so that circuit elements can be dropped back into the toolbox
     this.circuitElementToolbox = new CircuitElementToolbox(
       circuitConstructionKitModel.circuit,
       circuitConstructionKitModel.showLabelsProperty,
