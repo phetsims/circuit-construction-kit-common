@@ -217,6 +217,7 @@ define( function( require ) {
 
     /**
      * Starting at the tip, iterate down over several samples and return the first hit, if any.
+     * TODO: check several points along the probe's conductive surface
      * @param {Node} probeNode
      * @param {Vector2} probePosition
      */
