@@ -221,7 +221,7 @@ define( function( require ) {
      * @param {Vector2} probePosition
      */
     var findVoltageConnection = function( probeNode, probePosition ) {
-      return self.getVoltageConnection( probeNode, voltmeterNode.voltmeter.redProbePositionProperty.get() );
+      return self.getVoltageConnection( probeNode, probePosition );
     };
 
     // Detection for voltmeter probe + circuit collision is done in the view since view bounds are used
