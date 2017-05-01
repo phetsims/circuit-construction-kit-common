@@ -53,7 +53,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function LightBulb( startVertex, endVertex, resistance, options ) {
+  function LightBulb( startVertex, endVertex, resistance, tandem, options ) {
 
     // @public (read-only)
     this.resistanceProperty = new NumberProperty( resistance );
@@ -69,7 +69,7 @@ define( function( require ) {
     }
 
     var chargePathLength = accumulatedDistance - 1E-8; // changes the speed at which particles go through the light bulb // TODO: why subtract 1E-8 here?
-    FixedLengthCircuitElement.call( this, startVertex, endVertex, DISTANCE_BETWEEN_VERTICES, chargePathLength, options );
+    FixedLengthCircuitElement.call( this, startVertex, endVertex, DISTANCE_BETWEEN_VERTICES, chargePathLength, tandem, options );
   }
 
   circuitConstructionKitCommon.register( 'LightBulb', LightBulb );
@@ -157,11 +157,12 @@ define( function( require ) {
      * Create a LightBulb at the specified position
      * @param {Vector2} position
      * @param {Tandem} circuitVertexGroupTandem
+     * @param {Tandem} tandem
      * @param {Object} [options]
      * @returns {LightBulb}
      * @public
      */
-    createAtPosition: function( position, circuitVertexGroupTandem, options ) { // TODO: Tandem
+    createAtPosition: function( position, circuitVertexGroupTandem, tandem, options ) { // TODO: Tandem
       var translation = new Vector2( 30, 10 );
 
       // Connect at the side and bottom
@@ -182,7 +183,7 @@ define( function( require ) {
         tandem: circuitVertexGroupTandem.createNextTandem()
       } );
 
-      return new LightBulb( startVertex, endVertex, CircuitConstructionKitConstants.DEFAULT_RESISTANCE, options );
+      return new LightBulb( startVertex, endVertex, CircuitConstructionKitConstants.DEFAULT_RESISTANCE, tandem, options );
     }
   } );
 } );

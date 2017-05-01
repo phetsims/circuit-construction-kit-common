@@ -17,14 +17,18 @@ define( function( require ) {
   var NumberProperty = require( 'AXON/NumberProperty' );
   var Emitter = require( 'AXON/Emitter' );
 
+  // phet-io modules
+  var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
+
   /**
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
    * @param {number} chargePathLength
+   * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function CircuitElement( startVertex, endVertex, chargePathLength, options ) {
+  function CircuitElement( startVertex, endVertex, chargePathLength, tandem, options ) {
     assert && assert( startVertex !== endVertex, 'startVertex cannot be the same as endVertex' );
     assert && assert( typeof chargePathLength === 'number', 'charge path length should be a number' );
     assert && assert( chargePathLength > 0, 'charge path length must be positive' );
@@ -132,6 +136,8 @@ define( function( require ) {
     // side of the component. This is typically the distance between vertices, but not for light bulbs.  This value is
     // constant, except for wires which can have their length changed.
     this.chargePathLength = chargePathLength;
+
+    tandem.addInstance( this, TObject );
   }
 
   circuitConstructionKitCommon.register( 'CircuitElement', CircuitElement );

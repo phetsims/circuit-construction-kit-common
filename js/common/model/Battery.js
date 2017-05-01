@@ -22,15 +22,16 @@ define( function( require ) {
    * @param {Vertex} startVertex - one of the battery vertices
    * @param {Vertex} endVertex - the other battery vertex
    * @param {number} voltage - the amount of constant voltage supplied by the battery
+   * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function Battery( startVertex, endVertex, options ) {
+  function Battery( startVertex, endVertex, tandem, options ) {
     options = _.extend( {
       initialOrientation: 'right',
       voltage: 9.0
     }, options );
-    FixedLengthCircuitElement.call( this, startVertex, endVertex, BATTERY_LENGTH, BATTERY_LENGTH );
+    FixedLengthCircuitElement.call( this, startVertex, endVertex, BATTERY_LENGTH, BATTERY_LENGTH, tandem );
 
     // @public (read-only) the voltage of the battery
     this.voltageProperty = new NumberProperty( options.voltage );

@@ -89,6 +89,7 @@ define( function( require ) {
      * @public
      */
     fromStateObject: function( circuitState, resistivityProperty ) { // TODO: Tandem - Pass tandems through
+      debugger;
       var circuitStruct = new CircuitStruct( [], [], [], [], [], [] );
       var options = null;
       for ( var i = 0; i < circuitState.vertices.length; i++ ) {

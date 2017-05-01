@@ -21,14 +21,15 @@ define( function( require ) {
   /**
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
-   * @param {number} resistance
+   * @param {Tandem} tandem
+   * @param {Object} [options]
    * @constructor
    */
-  function Resistor( startVertex, endVertex, options ) {
+  function Resistor( startVertex, endVertex, tandem, options ) {
     options = _.extend( {
       resistance: CircuitConstructionKitConstants.DEFAULT_RESISTANCE
     }, options );
-    FixedLengthCircuitElement.call( this, startVertex, endVertex, RESISTOR_LENGTH, RESISTOR_LENGTH );
+    FixedLengthCircuitElement.call( this, startVertex, endVertex, RESISTOR_LENGTH, RESISTOR_LENGTH, tandem );
 
     // @public (read-only) {Property.<number>} the resistance in ohms
     this.resistanceProperty = new NumberProperty( options.resistance );

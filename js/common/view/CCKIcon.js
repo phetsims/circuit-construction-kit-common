@@ -45,11 +45,12 @@ define( function( require ) {
 
     var viewProperty = new Property( 'lifelike' );
 
-    var wireNode = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ) ), null, viewProperty, tandem.createTandem( 'wireIcon' ) );
+    var wire = new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ), tandem.createTandem( 'wire' ) );
+    var wireNode = new WireNode( null, null, wire, null, viewProperty, tandem.createTandem( 'wireIcon' ) );
     wireNode.accessibleContent = null; // icon should not have accessible content // TODO: explore this.  Do we really need it here?  Do we need it elsewhere?
 
     // Model element used to create the node
-    var resistor = new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ) );
+    var resistor = new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ), tandem.createTandem( 'resistor' ) );
 
     var resistorNode = new ResistorNode( null, null, resistor, null, viewProperty, tandem.createTandem( 'resistorIcon' ), {
       icon: true

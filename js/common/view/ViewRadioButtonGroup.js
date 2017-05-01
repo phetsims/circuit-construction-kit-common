@@ -29,7 +29,7 @@ define( function( require ) {
     // Create a battery which can be used in the views
     var startVertex = new Vertex( BATTERY_LENGTH / 2, 0 );
     var endVertex = new Vertex( -BATTERY_LENGTH / 2, 0 );
-    var battery = new Battery( endVertex, startVertex, { initialOrientation: 'left' } );
+    var battery = new Battery( endVertex, startVertex, tandem.createTandem( 'battery' ), { initialOrientation: 'left' } );
 
     /**
      * Create a battery node to be used as an icon.

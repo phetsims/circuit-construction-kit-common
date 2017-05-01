@@ -84,15 +84,22 @@ define( function( require ) {
     var rightBatteryIcon = new Image( batteryImage, {
       scale: TOOLBOX_ICON_SIZE / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height )
     } );
-    var wireIcon = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ) ), null, viewProperty, tandem.createTandem( 'wireIcon' ) );
+    var wire = new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ), tandem.createTandem( 'wireIconWire' ) );
+    var wireIcon = new WireNode( null, null, wire, null, viewProperty, tandem.createTandem( 'wireIcon' ) );
     var lightBulbIcon = new CustomLightBulbNode( new NumberProperty( 0 ) );
+    var resistor = new Resistor(
+      new Vertex( 0, 0 ),
+      new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ),
+      tandem.createTandem( 'resistor' )
+    );
     var resistorIcon = new ResistorNode( null, null,
-      new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ) ),
+      resistor,
       null, viewProperty, tandem.createTandem( 'resistorIcon' ), {
         icon: true
       }
     );
-    var switchIcon = new WireNode( null, null, new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ) ), null, viewProperty, tandem.createTandem( 'switchIcon' ) );
+    var wire2 = new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ), tandem.createTandem( 'wire' ) );
+    var switchIcon = new WireNode( null, null, wire2, null, viewProperty, tandem.createTandem( 'switchIcon' ) );
 
     // TODO: i18n labels
 
@@ -146,22 +153,22 @@ define( function( require ) {
     // create tool nodes
     var createLeftBattery = function( position ) {
       var vertexPair = createVertexPair( position, BATTERY_LENGTH );
-      return new Battery( vertexPair.endVertex, vertexPair.startVertex, { initialOrientation: 'left' } );
+      return new Battery( vertexPair.endVertex, vertexPair.startVertex, circuit.leftBatteryTandemGroup.createNextTandem(), { initialOrientation: 'left' } );
     };
     var createRightBattery = function( position ) {
       var vertexPair = createVertexPair( position, BATTERY_LENGTH );
-      return new Battery( vertexPair.startVertex, vertexPair.endVertex );
+      return new Battery( vertexPair.startVertex, vertexPair.endVertex, circuit.rightBatteryTandemGroup.createNextTandem() );
     };
     var createWire = function( position ) {
       var vertexPair = createVertexPair( position, WIRE_LENGTH );
-      return new Wire( vertexPair.startVertex, vertexPair.endVertex, circuit.wireResistivityProperty );
+      return new Wire( vertexPair.startVertex, vertexPair.endVertex, circuit.wireResistivityProperty, circuit.wireGroupTandem.createNextTandem() );
     };
     var createLightBulb = function( position ) {
-      return LightBulb.createAtPosition( position, circuit.vertexGroupTandem );
+      return LightBulb.createAtPosition( position, circuit.vertexGroupTandem, circuit.lightBulbGroupTandem.createNextTandem() );
     };
     var createResistor = function( position ) {
       var vertexPair = createVertexPair( position, RESISTOR_LENGTH );
-      return new Resistor( vertexPair.startVertex, vertexPair.endVertex );
+      return new Resistor( vertexPair.startVertex, vertexPair.endVertex, circuit.resistorGroupTandem.createNextTandem() );
     };
     var createSwitch = function( position ) {
       var vertexPair = createVertexPair( position, SWITCH_LENGTH );

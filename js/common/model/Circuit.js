@@ -32,6 +32,7 @@ define( function( require ) {
   // phet-io modules
   var TString = require( 'ifphetio!PHET_IO/types/TString' );
   var TNumber = require( 'ifphetio!PHET_IO/types/TNumber' );
+  var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
 
   // constants
   var SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
@@ -186,7 +187,10 @@ define( function( require ) {
     // Keep track of the last circuit element the user manipulated, for showing additional controls
     // TODO: Will a11y track this?
     // TODO: should we have one "selected item" that makes vertices and circuit elements mutually exclusive?
-    this.selectedCircuitElementProperty = new Property( null );
+    this.selectedCircuitElementProperty = new Property( null, {
+      tandem: tandem.createTandem( 'selectedCircuitElementProperty' ),
+      phetioValueType: TObject
+    } );
 
     // Actions that will be invoked during the step function
     this.stepActions = [];
@@ -219,8 +223,13 @@ define( function( require ) {
       } );
     } );
 
-    // @public (read-only) - for creating vertex tandems
+    // @public (read-only) - for creating tandems
     this.vertexGroupTandem = tandem.createGroupTandem( 'vertices' );
+    this.wireGroupTandem = tandem.createGroupTandem( 'wires' );
+    this.resistorGroupTandem = tandem.createGroupTandem( 'resistors' );
+    this.rightBatteryTandemGroup = tandem.createGroupTandem( 'rightBatteries' );
+    this.leftBatteryTandemGroup = tandem.createGroupTandem( 'leftBatteries' );
+    this.lightBulbGroupTandem = tandem.createGroupTandem( 'lightBulbs' );
   }
 
   circuitConstructionKitCommon.register( 'Circuit', Circuit );

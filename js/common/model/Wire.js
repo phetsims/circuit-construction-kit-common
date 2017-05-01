@@ -27,12 +27,12 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function Wire( startVertex, endVertex, resistivityProperty, options ) {
+  function Wire( startVertex, endVertex, resistivityProperty, tandem, options ) {
     assert && assert( typeof resistivityProperty !== 'number', 'property should not be a number' );
     options = _.extend( { wireStub: false }, options );
     var self = this;
     var chargePathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
-    CircuitElement.call( this, startVertex, endVertex, chargePathLength, options );
+    CircuitElement.call( this, startVertex, endVertex, chargePathLength, tandem, options );
 
     // @public (read-only)
     this.wireStub = options.wireStub;
