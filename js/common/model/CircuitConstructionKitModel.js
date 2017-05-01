@@ -22,6 +22,7 @@ define( function( require ) {
 
   // phet-io modules
   var TString = require( 'ifphetio!PHET_IO/types/TString' );
+  var TNumber = require( 'ifphetio!PHET_IO/types/TNumber' );
 
   // constants
   var ZOOM_ANIMATION_TIME = 0.35; // seconds
@@ -59,12 +60,14 @@ define( function( require ) {
 
     // @public (read-only) scaling applied to the circuit node so the user can zoom out and make larger circuits.
     this.selectedZoomProperty = new Property( 1, {
-      tandem: tandem.createTandem( 'selectedZoomProperty' )
+      tandem: tandem.createTandem( 'selectedZoomProperty' ),
+      phetioValueType: TNumber()
     } );
 
     // @public (read-only) the animated value of the zoom level
     this.currentZoomProperty = new Property( this.selectedZoomProperty.get(), {
-      tandem: tandem.createTandem( 'currentZoomProperty' )
+      tandem: tandem.createTandem( 'currentZoomProperty' ),
+      phetioValueType: TNumber()
     } );
 
     this.selectedZoomProperty.lazyLink( function( newValue, oldValue ) {
