@@ -18,7 +18,6 @@ define( function( require ) {
   var HStrut = require( 'SCENERY/nodes/HStrut' );
   var CheckBox = require( 'SUN/CheckBox' );
   var AquaRadioButton = require( 'SUN/AquaRadioButton' );
-  var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
 
   // constants
   var TEXT_OPTIONS = {
@@ -69,10 +68,8 @@ define( function( require ) {
               new VBox( {
                 align: 'left',
                 spacing: 6,
-                children: CircuitConstructionKitQueryParameters.showElectronsCheckBox ? [
+                children: [
                   electronsRadioButton,
-                  conventionalRadioButton
-                ] : [
                   conventionalRadioButton
                 ]
               } )

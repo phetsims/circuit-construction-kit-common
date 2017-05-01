@@ -28,6 +28,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/FixedLengthCircuitElement' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
 
   // phet-io modules
   var TString = require( 'ifphetio!PHET_IO/types/TString' );
@@ -74,7 +75,7 @@ define( function( require ) {
     var currentTypes = [ 'electrons', 'conventional' ];
 
     // @public (read-only) - whether to show charges or conventional current
-    this.currentTypeProperty = new Property( currentTypes[ 0 ], {
+    this.currentTypeProperty = new Property( CircuitConstructionKitQueryParameters.currentType, {
       validValues: currentTypes,
       tandem: tandem.createTandem( 'currentTypeProperty' ),
       phetioValueType: TString
@@ -90,7 +91,7 @@ define( function( require ) {
     } );
 
     // @public (read-only) - whether the current should be displayed
-    this.showCurrentProperty = new BooleanProperty( true, {
+    this.showCurrentProperty = new BooleanProperty( CircuitConstructionKitQueryParameters.showCurrent, {
       tandem: tandem.createTandem( 'showCurrentProperty' )
     } );
 

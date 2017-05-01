@@ -183,7 +183,7 @@ define( function( require ) {
       circuitConstructionKitModel.showLabelsProperty,
       tandem.createTandem( 'displayOptionsPanel' ) );
 
-    CircuitConstructionKitQueryParameters.showControlPanel && this.addChild( this.displayOptionsPanel );
+    CircuitConstructionKitQueryParameters.showDisplayOptionsPanel && this.addChild( this.displayOptionsPanel );
 
     this.wireResistivityControl = new WireResistivityControl( circuitConstructionKitModel.circuit.wireResistivityProperty, tandem.createTandem( 'wireResistivityControl' ) );
     this.batteryResistanceControl = new BatteryResistanceControl( circuitConstructionKitModel.circuit.batteryResistanceProperty, tandem.createTandem( 'batteryResistanceControl' ) );

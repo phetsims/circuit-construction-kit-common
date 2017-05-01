@@ -36,18 +36,17 @@ define( function( require ) {
       defaultValue: null
     },
 
-    showControlPanel: {
+    showDisplayOptionsPanel: {
       type: 'boolean',
       defaultValue: true
     },
 
-    showElectronsCheckBox: {
-      type: 'boolean',
-      defaultValue: true
+    currentType: {
+      type: 'string',
+      defaultValue: 'electrons'
     },
 
-    // TODO: this needs to match new UI for show charges
-    showElectrons: {
+    showCurrent: {
       type: 'boolean',
       defaultValue: true
     }
