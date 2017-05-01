@@ -17,6 +17,7 @@ define( function( require ) {
   var Image = require( 'SCENERY/nodes/Image' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
+  var Color = require( 'SCENERY/util/Color' );
 
   // images
   var lifelikeResistorImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor.png' );
@@ -27,7 +28,7 @@ define( function( require ) {
   var COLOR_BAND_WIDTH = 10;
   var COLOR_BAND_HEIGHT = 38;
   var COLOR_BAND_TOP = -0.5; // Account for vertical asymmetry in the image
-  var COLOR_BAND_INSET = 38;
+  var COLOR_BAND_INSET = 36;
   var AVAILABLE_COLOR_BAND_SPACE = LIFELIKE_IMAGE_WIDTH * 0.75 - 2 * COLOR_BAND_INSET;
   var REMAINING_COLOR_BAND_SPACE = AVAILABLE_COLOR_BAND_SPACE - 4 * COLOR_BAND_WIDTH;// max is 4 bands, even though they are not always shown
   var COLOR_BAND_SPACING = REMAINING_COLOR_BAND_SPACE / 4 - 2; // two spaces before last band
@@ -73,7 +74,14 @@ define( function( require ) {
       } );
     };
 
+    // Color bands for resistance > 0
     var colorBands = _.range( 4 ).map( getColorBand );
+
+    // Single color band when resistance = 0 which appears in the middle
+    var singleColorBand = new Rectangle( 0, 0, COLOR_BAND_WIDTH, COLOR_BAND_HEIGHT, {
+      centerX: COLOR_BAND_INSET + AVAILABLE_COLOR_BAND_SPACE / 2,
+      y: COLOR_BAND_Y
+    } );
 
     /**
      * When the resistance changes, update the colors of the color bands.
@@ -82,15 +90,18 @@ define( function( require ) {
     var updateColorBands = function( resistance ) {
       var colors = ResistorColors.getColorArray( resistance );
 
-      // If there is only one color band (for a 0-resistance resistor), show that band in the middle
       if ( colors.length === 1 ) {
-        colors = [ null, null, colors[ 0 ], null ];
+        singleColorBand.fill = colors[ 0 ];
+        assert && assert( colors[ 0 ].equals( new Color( 'black' ) ), 'single band should be black' );
+        colorBands.forEach( function( colorBand ) { colorBand.fill = null; } );
       }
+      else {
 
-      for ( var i = 0; i < colorBands.length; i++ ) {
-
-        // TODO: if only one color band, make it appear in the middle
-        colorBands[ i ].fill = colors[ i ] || null;// Last one could be null
+        // Show all 4 colors bands and hide the 0-resistance band
+        singleColorBand.fill = null;
+        for ( var i = 0; i < colorBands.length; i++ ) {
+          colorBands[ i ].fill = colors[ i ] || null;// Last one could be null
+        }
       }
     };
     resistor.resistanceProperty.link( updateColorBands );
@@ -99,6 +110,7 @@ define( function( require ) {
     colorBands.forEach( function( colorBand ) {
       lifelikeResistorImageNode.addChild( colorBand );
     } );
+    lifelikeResistorImageNode.addChild( singleColorBand );
 
     // Classical zig-zag shape
     var schematicShape = new Shape()
