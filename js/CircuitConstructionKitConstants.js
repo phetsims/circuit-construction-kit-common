@@ -36,7 +36,6 @@ define( function( require ) {
     // The resistance of a default battery
     DEFAULT_BATTERY_RESISTANCE: 0,
 
-    //TODO: Add this to all right side panels.
     // Right side panel minWidth
     RIGHT_SIDE_PANEL_MIN_WIDTH: 200,
 
