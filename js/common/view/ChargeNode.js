@@ -17,6 +17,7 @@ define( function( require ) {
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
   var ElectronChargeNode = require( 'SCENERY_PHET/ElectronChargeNode' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   // constants
   var ELECTRON_SCALE = 2; // Scale up before rasterization so it won't be too pixellated/fuzzy
@@ -38,7 +39,8 @@ define( function( require ) {
     headWidth: 12,
     tailWidth: 3,
     fill: 'red',
-    stroke: 'white'
+    stroke: 'white',
+    tandem: Tandem.createStaticTandem( 'arrowNode' )
   } );
 
   /**

@@ -130,13 +130,7 @@ define( function( require ) {
       } );
 
       var emitCircuitChanged = function() {
-
-        // Wait until fully wired up.  If we send out messages immediately here, some vertices are not registered and cause exceptions
-        // TODO: can we make this synchronous?
-        setTimeout( function() {
-          var circuit = JSON.stringify( self.circuit.toStateObject() );
-          circuitChangedEmitter.emit1( circuit );
-        }, 0 );
+        circuitChangedEmitter.emit1( JSON.stringify( self.circuit.toStateObject() ) );
       };
       this.circuit.vertices.lengthProperty.link( emitCircuitChanged );
       this.circuit.componentEditedEmitter.addListener( emitCircuitChanged );
