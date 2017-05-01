@@ -6,6 +6,8 @@
  * Equations is solved as a linear system.  Here is a good reference that was used during the development of this code
  * https://www.swarthmore.edu/NatSci/echeeve1/Ref/mna/MNA2.html
  *
+ * // TODO: get rid of all parse ints in this file
+ *
  * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {
@@ -198,7 +200,7 @@ define( function( require ) {
       // Mark reference nodes as they are discovered as map keys.
       var referenceNodes = [];
       while ( _.size( remaining ) > 0 ) {
-        var referenceNode = _.minBy( _.keys( remaining ) );
+        var referenceNode = parseInt( _.minBy( _.keys( remaining ) ), 10 );
         referenceNodes.push( referenceNode );
         var connectedNodes = this.getConnectedNodes( referenceNode );
 
@@ -219,25 +221,23 @@ define( function( require ) {
      * @private
      */
     getConnectedNodes: function( node ) {
+      assert && assert( typeof node === 'number', 'node should be a number' );
       var visited = {};
-      var toVisit = {};
-      toVisit[ node ] = true;
+      var toVisit = [ node ];
 
-      while ( _.size( toVisit ) > 0 ) {
+      while ( toVisit.length > 0 ) {
 
-        // TODO: get rid of all parse ints in this file
-        var nodeToVisit = parseInt( _.keys( toVisit )[ 0 ], 10 ); // TODO: it is nice to use maps for O[1] access but not nice that the keys are strings
+        var nodeToVisit = toVisit.shift(); // TODO: it is nice to use maps for O[1] access but not nice that the keys are strings
         visited[ nodeToVisit ] = true;
         for ( var i = 0; i < this.elements.length; i++ ) {
           var e = this.elements[ i ];
           if ( elementContainsNode( e, nodeToVisit ) ) {
             var oppositeNode = getOppositeNode( e, nodeToVisit );
             if ( !visited[ oppositeNode ] ) {
-              toVisit[ oppositeNode ] = true;
+              toVisit.push( oppositeNode );
             }
           }
         }
-        delete toVisit[ nodeToVisit ];
       }
       return _.keys( visited );
     },
