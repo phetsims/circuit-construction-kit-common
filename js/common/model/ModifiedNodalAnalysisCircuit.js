@@ -6,7 +6,8 @@
  * Equations is solved as a linear system.  Here is a good reference that was used during the development of this code
  * https://www.swarthmore.edu/NatSci/echeeve1/Ref/mna/MNA2.html
  *
- * // TODO: get rid of all parse ints in this file
+ * TODO: get rid of all parse ints in this file
+ * TODO: make sure all node types are consistent (before May 2017 I saw places that were using string/number interchangeably)
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -222,24 +223,24 @@ define( function( require ) {
      */
     getConnectedNodes: function( node ) {
       assert && assert( typeof node === 'number', 'node should be a number' );
-      var visited = {};
+      var visited = [];
       var toVisit = [ node ];
 
       while ( toVisit.length > 0 ) {
 
         var nodeToVisit = toVisit.shift(); // TODO: it is nice to use maps for O[1] access but not nice that the keys are strings
-        visited[ nodeToVisit ] = true;
+        visited.push( nodeToVisit );
         for ( var i = 0; i < this.elements.length; i++ ) {
           var e = this.elements[ i ];
           if ( elementContainsNode( e, nodeToVisit ) ) {
             var oppositeNode = getOppositeNode( e, nodeToVisit );
-            if ( !visited[ oppositeNode ] ) {
+            if ( visited.indexOf( oppositeNode ) === -1 ) {
               toVisit.push( oppositeNode );
             }
           }
         }
       }
-      return _.keys( visited );
+      return visited;
     },
 
     /**
