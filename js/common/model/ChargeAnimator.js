@@ -17,7 +17,7 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
 
   // constants
-  var CURRENT_THRESHOLD = 1E-8;
+  var MINIMUM_CURRENT_THRESHOLD = 1E-8; // consider current slower than this to be stationary
 
   // If the current is lower than this, then there is no charge movement
   var MIN_CURRENT = Math.pow( 10, -10 );
@@ -285,21 +285,21 @@ define( function( require ) {
         var distAlongNew = null;
 
         // The linear algebra solver can result in currents of 1E-12 where it should be zero.  For these cases, don't
-        // permit charges to flow.
-        // TODO: Should the current be clamped after linear algebra?
-        if ( current > CURRENT_THRESHOLD && neighbor.startVertexProperty.get() === vertex ) {
+        // permit charges to flow. The current is clamped here instead of after the linear algebra so that we don't
+        // mess up support for oscillating elements that may need the small values such as capacitors and inductors.
+        if ( current > MINIMUM_CURRENT_THRESHOLD && neighbor.startVertexProperty.get() === vertex ) {
 
           // Start near the beginning.
           distAlongNew = Util.clamp( overshoot, 0, neighbor.chargePathLength );
         }
-        else if ( current < -CURRENT_THRESHOLD && neighbor.endVertexProperty.get() === vertex ) {
+        else if ( current < -MINIMUM_CURRENT_THRESHOLD && neighbor.endVertexProperty.get() === vertex ) {
 
           // start near the end
           distAlongNew = Util.clamp( neighbor.chargePathLength - overshoot, 0, neighbor.chargePathLength );
         }
         else {
 
-          // TODO: does this ever happen?  Should it be forbidden?
+          // Current too small to animate
         }
         distAlongNew && circuitLocations.push( createCircuitLocation( this.circuit, neighbor, distAlongNew ) );
       }
