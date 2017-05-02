@@ -78,6 +78,8 @@ define( function( require ) {
 
     // @public the number of nodes in the set
     this.nodeCount = _.size( this.nodeSet );
+
+    // {number[]} the node indices
     this.nodes = _.values( this.nodeSet );
   }
 
