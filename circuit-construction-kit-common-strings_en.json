@@ -5,6 +5,21 @@
   "resistor": {
     "value": "resistor"
   },
+  "tiny": {
+    "value": "tiny"
+  },
+  "lots": {
+    "value": "lots"
+  },
+  "ohms": {
+    "value": "ohms"
+  },
+  "wireResistivity": {
+    "value": "Wire Resistivity"
+  },
+  "batteryResistivity": {
+    "value": "Battery Resistivity"
+  },
   "battery": {
     "value": "battery"
   },

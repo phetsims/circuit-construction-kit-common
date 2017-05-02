@@ -19,6 +19,11 @@ define( function( require ) {
   var HBox = require( 'SCENERY/nodes/HBox' );
   var HStrut = require( 'SCENERY/nodes/HStrut' );
 
+  //strings
+  var tinyString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/tiny' );
+  var lotsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/lots' );
+  var wireResistivityString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/wireResistivity' );
+
   /**
    * @constructor
    */
@@ -39,7 +44,7 @@ define( function( require ) {
      * @returns {Text} Text with the value of 'tiny' or 'lots'
      */
     var createLabel = function( min ) {
-      return new Text( min ? 'tiny' : 'lots', { fontSize: 12 } );
+      return new Text( min ? tinyString : lotsString, { fontSize: 12 } );
     };
 
     slider.addMajorTick( 0, createLabel( true ) );
@@ -54,7 +59,7 @@ define( function( require ) {
       titleNode: new HBox( {
         children: [
           new HStrut( 10 ),
-          new Text( 'Wire Resistivity', {fontSize: 16} )
+          new Text( wireResistivityString, {fontSize: 16} )
         ]
       } )
     } );

@@ -24,6 +24,10 @@ define( function( require ) {
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Util = require( 'DOT/Util' );
 
+  //strings
+  var ohmsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ohms' );
+  var batteryResistivityString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/batteryResistivity' );
+
   /**
    * @param {Property.<number>} batteryResistanceProperty - the axon Property for the internal resistance of all Batteries
    * @param {Tandem} tandem
@@ -35,7 +39,7 @@ define( function( require ) {
      * Creates label to be used for slider
      * @param {string} string
      * @param {Tandem} tandem
-     * @returns {Text} 
+     * @returns {Text}
      */
     var createLabel = function( string, tandem ) {
       return new Text( string, { fontSize: 12, tandem: tandem } );
@@ -66,7 +70,7 @@ define( function( require ) {
       // number to be displayed
       batteryResistanceProperty.link( function( value ) {
         value = Util.roundSymmetric( value );
-        numberNode.setText( value + ' ohms' );
+        numberNode.setText( value +'\t'+ ohmsString );
       } );
 
       // background for displaying the value
@@ -76,7 +80,6 @@ define( function( require ) {
         lineWidth: 1,
         tandem: tandem.createTandem( 'backgroundNode' )
       } );
-
       numberNode.center = backgroundNode.center;
       var valueParent = new Node( {
         children: [ backgroundNode, numberNode ],
@@ -98,7 +101,7 @@ define( function( require ) {
       titleNode: new HBox( {
         children: [
           new HStrut( 10 ),
-          new Text( 'Battery Resistance', { fontSize: 16, tandem: tandem.createTandem( 'batteryResistanceText' ) } )
+          new Text(batteryResistivityString, { fontSize: 16, tandem: tandem.createTandem( 'batteryResistanceText' ) } )
         ],
         tandem: tandem.createTandem( 'titleNode' )
       } )
