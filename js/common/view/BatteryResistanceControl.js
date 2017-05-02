@@ -30,6 +30,17 @@ define( function( require ) {
    * @constructor
    */
   function BatteryResistanceControl( batteryResistanceProperty, tandem ) {
+
+    /**
+     * Creates label to be used for slider
+     * @param {string} string
+     * @param {Tandem} tandem
+     * @returns {Text} 
+     */
+    var createLabel = function( string, tandem ) {
+      return new Text( string, { fontSize: 12, tandem: tandem } );
+    };
+
     var slider = new HSlider( batteryResistanceProperty, {
       trackSize: CircuitConstructionKitConstants.SLIDER_TRACK_SIZE,
       majorTickLength: 2,
@@ -38,40 +49,6 @@ define( function( require ) {
       max: 10,
       tandem: tandem.createTandem( 'slider' )
     } );
-
-    var createLabel = function( string, tandem ) {
-      return new Text( string, {
-        fontSize: 12,
-        tandem: tandem
-      } );
-    };
-
-    var numberNode = new Text( batteryResistanceProperty.get(), {
-      font: new PhetFont( 14 ),
-      fill: 'black',
-      tandem: tandem.createTandem( 'numberNode' )
-    } );
-
-    // number to be displayed
-    batteryResistanceProperty.link( function( value ) {
-      value = Util.roundSymmetric( value );
-      numberNode.setText( value + ' ohms' );
-    } );
-
-    // background for displaying the value
-    var backgroundNode = new Rectangle( 0, 0, 60, 20,
-      2, 2, {
-        fill: 'white',
-        stroke: 'black',
-        lineWidth: 2,
-        tandem: tandem.createTandem( 'backgroundNode' )
-      } );
-    numberNode.center = backgroundNode.center;
-    var valueParent = new Node( {
-      children: [ backgroundNode, numberNode ],
-      tandem: tandem.createTandem( 'valueParent' )
-    } );
-
     slider.addMajorTick( 0, createLabel( '0', tandem.createTandem( 'minLabel' ) ) );
     slider.addMajorTick( 5 );
     slider.addMajorTick( 10, createLabel( '10', tandem.createTandem( 'maxLabel' ) ) );
@@ -79,6 +56,33 @@ define( function( require ) {
       if ( i !== 5 ) {
         slider.addMinorTick( i );
       }
+
+      var numberNode = new Text( batteryResistanceProperty.get(), {
+        font: new PhetFont( 14 ),
+        fill: 'black',
+        tandem: tandem.createTandem( 'numberNode' )
+      } );
+
+      // number to be displayed
+      batteryResistanceProperty.link( function( value ) {
+        value = Util.roundSymmetric( value );
+        numberNode.setText( value + ' ohms' );
+      } );
+
+      // background for displaying the value
+      var backgroundNode = new Rectangle( 0, 0, 60, 20, 2, 2, {
+        fill: 'white',
+        stroke: 'black',
+        lineWidth: 1,
+        tandem: tandem.createTandem( 'backgroundNode' )
+      } );
+
+      numberNode.center = backgroundNode.center;
+      var valueParent = new Node( {
+        children: [ backgroundNode, numberNode ],
+        tandem: tandem.createTandem( 'valueParent' )
+      } );
+
     }
     AccordionBox.call( this, new VBox( {
       children: [ valueParent, slider ],
@@ -94,10 +98,7 @@ define( function( require ) {
       titleNode: new HBox( {
         children: [
           new HStrut( 10 ),
-          new Text( 'Battery Resistance', {
-            fontSize: 16,
-            tandem: tandem.createTandem( 'batteryResistanceText' )
-          } )
+          new Text( 'Battery Resistance', { fontSize: 16, tandem: tandem.createTandem( 'batteryResistanceText' ) } )
         ],
         tandem: tandem.createTandem( 'titleNode' )
       } )
