@@ -329,10 +329,14 @@ define( function( require ) {
       self.wireResistivityControl.top = self.viewRadioButtonGroup.bottom + 10;
       self.wireResistivityControl.right = visibleBounds.right - LAYOUT_INSET;
 
-      // TODO: should the layout adjust when the upper box is collapsed/expanded?
       // I think it doesn't collapse in Build an Atom and that works well
-      // TODO: position this properly below the expanded resistivity box
-      self.batteryResistanceControl.top = self.wireResistivityControl.bottom + 10;
+
+      // Link that adjusts batteryResistanceControl in response to the wireResistivityControl's expanded property.
+      var expandedDistance = self.wireResistivityControl.bottom + 10;
+      var retractedDistance = self.wireResistivityControl.top + 35;
+      self.wireResistivityControl.expandedProperty.link( function( expanded ) {
+        self.batteryResistanceControl.top = expanded === true ? expandedDistance : retractedDistance;
+      } );
       self.batteryResistanceControl.right = visibleBounds.right - LAYOUT_INSET;
     } );
 

@@ -22,6 +22,7 @@ define( function( require ) {
   var HStrut = require( 'SCENERY/nodes/HStrut' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var Util = require( 'DOT/Util' );
 
   /**
    * @param {Property.<number>} batteryResistanceProperty - the axon Property for the internal resistance of all Batteries
@@ -52,9 +53,10 @@ define( function( require ) {
     } );
 
     // number to be displayed
-    // batteryResistanceProperty.link( function( value ) {
-    //   numberNode.setText( value + ' ohms' );
-    // } );
+    batteryResistanceProperty.link( function( value ) {
+      value = Util.roundSymmetric( value );
+      numberNode.setText( value + ' ohms' );
+    } );
 
     // background for displaying the value
     var backgroundNode = new Rectangle( 0, 0, 60, 20,
