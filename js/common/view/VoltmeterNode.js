@@ -27,6 +27,9 @@ define( function( require ) {
   var redProbe = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/probe_red.png' );
   var blackProbe = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/probe_black.png' );
 
+  // strings
+  var questionMarkString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/questionMark' );
+
   // constants
 
   // measurements for the cubic curve for the wire nodes
@@ -73,7 +76,7 @@ define( function( require ) {
 
     // Displays the voltage reading
     var voltageReadoutProperty = new DerivedProperty( [ voltmeter.voltageProperty ], function( voltage ) {
-      return voltage === null ? '?' : Util.toFixed( voltage, 2 ) + ' V'; // TODO: i18n
+      return voltage === null ? questionMarkString : Util.toFixed( voltage, 2 ) + ' V'; // TODO: i18n
     } );
 
     // TODO: i18n

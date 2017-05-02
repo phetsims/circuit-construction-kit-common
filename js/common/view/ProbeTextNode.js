@@ -16,6 +16,9 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var VBox = require( 'SCENERY/nodes/VBox' );
 
+  // strings
+  var questionMarkString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/questionMark' );
+
   // constants
   var TEXT_BOX_WIDTH = 140;
 
@@ -34,8 +37,7 @@ define( function( require ) {
       align: 'center'
     }, options );
 
-    // TODO: i18n for ?
-    var readout = new Text( '?', {
+    var readout = new Text( textProperty.value, {
       fontSize: 34,
       maxWidth: TEXT_BOX_WIDTH - 20,
       tandem: tandem.createTandem( 'readoutText' )
@@ -47,7 +49,7 @@ define( function( require ) {
 
     textProperty.link( function( text ) {
       readout.setText( text );
-      if ( text === '?' ) {
+      if ( text === questionMarkString ) {
 
         // ? is centered
         readout.centerX = textBox.centerX;

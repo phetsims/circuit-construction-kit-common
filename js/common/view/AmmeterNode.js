@@ -28,6 +28,9 @@ define( function( require ) {
   // images
   var ammeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeter_body.png' );
 
+  // strings
+  var questionMarkString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/questionMark' );
+
   // constants
   // measurements for the cubic curve for the wire nodes
   var BODY_LEAD_Y = -30; // in model=view coordinates
@@ -70,7 +73,7 @@ define( function( require ) {
       var maxString = window.phetBlackBoxStudy ? '> 10^3' : '> 10^10';
 
       // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
-      return current === null ? '?' :
+      return current === null ? questionMarkString :
              Math.abs( current ) > max ? maxString :
              Util.toFixed( Math.abs( current ), 2 ) + ' A'; // TODO: i18n
     } );

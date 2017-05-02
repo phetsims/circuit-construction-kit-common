@@ -16,5 +16,8 @@
   },
   "wire": {
     "value": "wire"
+  },
+  "questionMark": {
+    "value": "?"
   }
 }
