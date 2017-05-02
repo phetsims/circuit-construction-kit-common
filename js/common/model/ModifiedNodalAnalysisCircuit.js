@@ -6,7 +6,6 @@
  * Equations is solved as a linear system.  Here is a good reference that was used during the development of this code
  * https://www.swarthmore.edu/NatSci/echeeve1/Ref/mna/MNA2.html
  *
- * TODO: get rid of all parse ints in this file
  * TODO: make sure all node types are consistent (before May 2017 I saw places that were using string/number interchangeably)
  *
  * @author Sam Reid (PhET Interactive Simulations)
@@ -68,17 +67,18 @@ define( function( require ) {
     // @public (read-only) - the list of all the elements for ease of access
     this.elements = this.batteries.concat( this.resistors ).concat( this.currentSources );
 
-    // @public (read-only) - an object with true set for all keys that have a node in the circuit, such as:
-    // {0:true, 1:true, 2:true, 7:true}
+    // @public (read-only) - an object with index for all keys that have a node in the circuit, such as:
+    // {0:0, 1:1, 2:2, 7:7}
     this.nodeSet = {};
     for ( var k = 0; k < this.elements.length; k++ ) {
       var element = this.elements[ k ];
-      this.nodeSet[ element.node0 ] = true;
-      this.nodeSet[ element.node1 ] = true;
+      this.nodeSet[ element.node0 ] = element.node0;
+      this.nodeSet[ element.node1 ] = element.node1;
     }
 
     // @public the number of nodes in the set
     this.nodeCount = _.size( this.nodeSet );
+    this.nodes = _.values( this.nodeSet );
   }
 
   circuitConstructionKitCommon.register( 'ModifiedNodalAnalysisCircuit', ModifiedNodalAnalysisCircuit );
@@ -201,7 +201,7 @@ define( function( require ) {
       // Mark reference nodes as they are discovered as map keys.
       var referenceNodes = [];
       while ( _.size( remaining ) > 0 ) {
-        var referenceNode = parseInt( _.minBy( _.keys( remaining ) ), 10 );
+        var referenceNode = _.minBy( _.values( remaining ) );
         referenceNodes.push( referenceNode );
         var connectedNodes = this.getConnectedNodes( referenceNode );
 
@@ -212,7 +212,7 @@ define( function( require ) {
           delete remaining[ connectedNode ];
         }
       }
-      return referenceNodes.map( toNumber );
+      return referenceNodes;
     },
 
     /**
@@ -259,10 +259,9 @@ define( function( require ) {
       }
 
       // For each node, charge is conserved
-      var nodeKeys = _.keys( this.nodeSet );
-      for ( i = 0; i < nodeKeys.length; i++ ) {
-        var nodeKey = nodeKeys[ i ];
-        var node = parseInt( nodeKey, 10 ); // TODO: get rid of all parse ints in this file
+      var nodes = this.nodes;
+      for ( i = 0; i < nodes.length; i++ ) {
+        var node = nodes[ i ];
         var incomingCurrentTerms = this.getCurrentTerms( node, 'node1', -1 );
         var outgoingCurrentTerms = this.getCurrentTerms( node, 'node0', +1 );
         var currentConservationTerms = incomingCurrentTerms.concat( outgoingCurrentTerms );
@@ -284,17 +283,6 @@ define( function( require ) {
       }
 
       return equations;
-    },
-
-    /**
-     * Gets an array of all the unknown voltages in the circuit.
-     * @returns {UnknownVoltage[]}
-     * @private
-     */
-    getUnknownVoltages: function() {
-
-      // TODO: stop using _.keys for nodeSet everywhere
-      return _.keys( this.nodeSet ).map( stringToUnknownVoltage );
     },
 
     /**
@@ -327,7 +315,7 @@ define( function( require ) {
     solve: function() {
       var equations = this.getEquations();
       var unknownCurrents = this.getUnknownCurrents();
-      var unknownVoltages = this.getUnknownVoltages();
+      var unknownVoltages = this.nodes.map( function( node ) { return new UnknownVoltage( node ); } );
       var unknowns = unknownCurrents.concat( unknownVoltages );
 
       // Gets the index of the specified unknown.
@@ -388,23 +376,6 @@ define( function( require ) {
     return -1;
   };
 
-  /**
-   * Converts a string integer to a number.  Used when converting object keys to indices.
-   * @param {string} string
-   * @returns {Number}
-   */
-  var toNumber = function( string ) {
-    return parseInt( string, 10 );
-  };
-
-  /**
-   * Creates an UnknownVoltage for the node (by string)
-   * @param {string} nodeString
-   * @returns {UnknownVoltage}
-   */
-  var stringToUnknownVoltage = function( nodeString ) {
-    return new UnknownVoltage( parseInt( nodeString, 10 ) );
-  };
   /**
    * For debugging, display a Resistor as a string
    * @param {Resistor} resistor
