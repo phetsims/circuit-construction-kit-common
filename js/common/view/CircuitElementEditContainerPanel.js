@@ -92,6 +92,8 @@ define( function( require ) {
                        battery ? selectedCircuitElement.voltageProperty :
                        null;
         var options = wire ? { numberControlEnabled: false } : {};
+
+        assert && assert( property, 'property should not be null' );
         lastNumberControl = new CircuitElementEditPanel( text, units, property, circuit, selectedCircuitElement, groupTandem.createNextTandem(), options );
       }
       else {
