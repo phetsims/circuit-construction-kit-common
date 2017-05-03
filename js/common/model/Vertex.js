@@ -41,7 +41,7 @@ define( function( require ) {
       interactive: true, // Black box interface vertices can be interactive (tap to select) without being draggable
       blackBoxInterface: false, // Black box interface vertices cannot be dragged or deleted, but can be connected to
       insideTrueBlackBox: false, // Behavior differs in explore vs test mode
-      tandem: null
+      tandem: null // TODO: should probably be required
     }, options );
 
     // @public (read-only)  - location of the vertex

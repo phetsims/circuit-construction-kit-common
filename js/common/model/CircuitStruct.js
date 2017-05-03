@@ -84,14 +84,17 @@ define( function( require ) {
      * Create a CircuitStruct from a plain object for deserialization.
      * @param {Object} circuitState
      * @param {NumberProperty} resistivityProperty - shared value for resistivity across all of the wires
+     * @param {Tandem} tandem
      * @returns {CircuitStruct}
      * @public
      */
-    fromStateObject: function( circuitState, resistivityProperty ) { // TODO: Tandem - Pass tandems through
+    fromStateObject: function( circuitState, resistivityProperty, tandem ) { // TODO: Tandem - Pass tandems through
       var circuitStruct = new CircuitStruct( [], [], [], [], [], [] );
+      tandem = tandem.createGroupTandem( 'circuitStructElement' );
       var options = null;
       for ( var i = 0; i < circuitState.vertices.length; i++ ) {
         options = circuitState.vertices[ i ].options || {};
+        options.tandem = tandem.createNextTandem();
         circuitStruct.vertices.push( new Vertex( circuitState.vertices[ i ].x, circuitState.vertices[ i ].y, options ) );
       }
       for ( i = 0; i < circuitState.wires.length; i++ ) {
@@ -100,6 +103,7 @@ define( function( require ) {
           circuitStruct.vertices[ circuitState.wires[ i ].startVertex ],
           circuitStruct.vertices[ circuitState.wires[ i ].endVertex ],
           resistivityProperty,
+          tandem.createNextTandem(),
           options
         ) );
       }
@@ -107,7 +111,8 @@ define( function( require ) {
         options = circuitState.batteries[ i ].options || {};
         circuitStruct.batteries.push( new Battery(
           circuitStruct.vertices[ circuitState.batteries[ i ].startVertex ],
-          circuitStruct.vertices[ circuitState.batteries[ i ].endVertex ], {
+          circuitStruct.vertices[ circuitState.batteries[ i ].endVertex ],
+          tandem.createNextTandem(), {
             voltage: circuitState.batteries[ i ].voltage
           }
         ) );
@@ -116,7 +121,8 @@ define( function( require ) {
         options = circuitState.resistors[ i ].options || {};
         circuitStruct.resistors.push( new Resistor(
           circuitStruct.vertices[ circuitState.resistors[ i ].startVertex ],
-          circuitStruct.vertices[ circuitState.resistors[ i ].endVertex ], {
+          circuitStruct.vertices[ circuitState.resistors[ i ].endVertex ],
+          tandem.createNextTandem(), {
             resistance: circuitState.resistors[ i ].resistance
           }
         ) );
@@ -127,6 +133,7 @@ define( function( require ) {
           circuitStruct.vertices[ circuitState.lightBulbs[ i ].startVertex ],
           circuitStruct.vertices[ circuitState.lightBulbs[ i ].endVertex ],
           circuitState.lightBulbs[ i ].resistance,
+          tandem.createNextTandem(),
           options
         ) );
       }
@@ -136,6 +143,7 @@ define( function( require ) {
           circuitStruct.vertices[ circuitState.switches[ i ].startVertex ],
           circuitStruct.vertices[ circuitState.switches[ i ].endVertex ],
           circuitState.wires[ i ].resistivity,
+          tandem.createNextTandem(),
           options
         ) );
       }

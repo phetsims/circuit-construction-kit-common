@@ -24,6 +24,7 @@ define( function( require ) {
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
    * @param {Property.<number>} resistivityProperty
+   * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
