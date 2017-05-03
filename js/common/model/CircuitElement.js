@@ -127,7 +127,12 @@ define( function( require ) {
     this.startVertexProperty.lazyLink( linkVertex );
     this.endVertexProperty.lazyLink( linkVertex );
 
+    // @private - for debugging
+    this.disposed = false;
+
     this.disposeCircuitElement = function() {
+      self.disposed = true;
+
       self.startVertexProperty.unlink( linkVertex );
       self.endVertexProperty.unlink( linkVertex );
 

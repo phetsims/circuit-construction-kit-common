@@ -72,9 +72,6 @@ define( function( require ) {
       self.disposed = true;
       self.vertexMovedEmitter.removeListener( updateWire );
     };
-
-    // @public - true when the wire has been disposed // TODO: move this to parent class
-    this.disposed = false;
   }
 
   circuitConstructionKitCommon.register( 'Wire', Wire );

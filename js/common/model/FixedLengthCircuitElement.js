@@ -19,6 +19,7 @@ define( function( require ) {
    * @param {Vertex} endVertex
    * @param {number} distanceBetweenVertices - in screen coordinates
    * @param {number} chargePathLength - the distance the charges must travel (in screen coordinates).  More docs in CircuitElement.js
+   * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
