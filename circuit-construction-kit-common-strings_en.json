@@ -43,5 +43,8 @@
   },
   "tapCircuitElementToEdit": {
     "value": "Tap circuit element to edit."
+  },
+  "current": {
+    "value": "Current"
   }
 }

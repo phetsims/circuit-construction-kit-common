@@ -30,6 +30,7 @@ define( function( require ) {
 
   // strings
   var questionMarkString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/questionMark' );
+  var currentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/current' );
 
   // constants
   // measurements for the cubic curve for the wire nodes
@@ -78,8 +79,7 @@ define( function( require ) {
              Util.toFixed( Math.abs( current ), 2 ) + ' A'; // TODO: i18n
     } );
 
-    // TODO: i18n
-    var probeTextNode = new ProbeTextNode( currentReadoutProperty, options.runningProperty, 'Current', tandem.createTandem( 'probeTextNode' ), {
+    var probeTextNode = new ProbeTextNode( currentReadoutProperty, options.runningProperty, currentString, tandem.createTandem( 'probeTextNode' ), {
       centerX: ammeterBodyImage[ 0 ].width / 2,
       centerY: ammeterBodyImage[ 0 ].height / 2
     } );
