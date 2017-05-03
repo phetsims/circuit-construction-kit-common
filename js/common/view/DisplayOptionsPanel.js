@@ -19,9 +19,14 @@ define( function( require ) {
   var CheckBox = require( 'SUN/CheckBox' );
   var AquaRadioButton = require( 'SUN/AquaRadioButton' );
 
+  // strings
+  var electronsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/electrons' );
+  var conventionalString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/conventional' );
+
   // constants
   var TEXT_OPTIONS = {
-    fontSize: 16
+    fontSize: 16,
+    maxWidth: 120
   };
 
   /**
@@ -45,8 +50,8 @@ define( function( require ) {
         radius: 8
       } );
     };
-    var electronsRadioButton = createRadioButton( 'electrons', 'Electrons' ); // TODO: i18n
-    var conventionalRadioButton = createRadioButton( 'conventional', 'Conventional' ); // TODO: i18n
+    var electronsRadioButton = createRadioButton( 'electrons', electronsString );
+    var conventionalRadioButton = createRadioButton( 'conventional', conventionalString );
 
     // Gray out current view options when current is not selected.
     showCurrentProperty.linkAttribute( electronsRadioButton, 'enabled' );

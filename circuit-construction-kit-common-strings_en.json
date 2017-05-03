@@ -34,5 +34,11 @@
   },
   "questionMark": {
     "value": "?"
+  },
+  "electrons": {
+    "value": "Electrons"
+  },
+  "conventional": {
+    "value": "Conventional"
   }
 }
