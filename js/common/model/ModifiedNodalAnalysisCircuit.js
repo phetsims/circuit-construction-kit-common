@@ -230,7 +230,7 @@ define( function( require ) {
 
       while ( toVisit.length > 0 ) {
 
-        var nodeToVisit = toVisit.shift(); // TODO: it is nice to use maps for O[1] access but not nice that the keys are strings
+        var nodeToVisit = toVisit.shift();
         visited.push( nodeToVisit );
         for ( var i = 0; i < this.elements.length; i++ ) {
           var e = this.elements[ i ];
