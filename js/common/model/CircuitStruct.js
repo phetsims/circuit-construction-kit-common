@@ -88,7 +88,7 @@ define( function( require ) {
      * @returns {CircuitStruct}
      * @public
      */
-    fromStateObject: function( circuitState, resistivityProperty, tandem ) { // TODO: Tandem - Pass tandems through
+    fromStateObject: function( circuitState, resistivityProperty, tandem ) {
       var circuitStruct = new CircuitStruct( [], [], [], [], [], [] );
       tandem = tandem.createGroupTandem( 'circuitStructElement' );
       var options = null;
