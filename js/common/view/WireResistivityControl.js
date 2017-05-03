@@ -58,9 +58,10 @@ define( function( require ) {
       titleNode: new HBox( {
         children: [
           new HStrut( 10 ),
-          new Text( wireResistivityString, {fontSize: 16} )
+          new Text( wireResistivityString, { fontSize: 16 } )
         ]
-      } )
+      } ),
+      tandem: tandem
     } );
   }
 

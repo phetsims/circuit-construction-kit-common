@@ -281,7 +281,6 @@ define( function( require ) {
       circuitElement.startVertexProperty.unlink( relink );
       circuitElement.endVertexProperty.unlink( relink );
 
-      tandem.removeInstance( self );
       if ( !options.icon && circuitElement instanceof Battery ) {
         circuitElement.currentProperty.unlink( updateFire );
         circuitConstructionKitScreenView.circuitConstructionKitModel.exploreScreenRunningProperty.unlink( updateFire );

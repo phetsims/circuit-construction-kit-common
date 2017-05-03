@@ -45,13 +45,14 @@ define( function( require ) {
      * @param {string} text - the text to display in the button
      * @returns {AquaRadioButton}
      */
-    var createRadioButton = function( currentType, text ) {
+    var createRadioButton = function( currentType, text, tandem ) {
       return new AquaRadioButton( currentTypeProperty, currentType, new Text( text, TEXT_OPTIONS ), {
-        radius: 8
+        radius: 8,
+        tandem: tandem
       } );
     };
-    var electronsRadioButton = createRadioButton( 'electrons', electronsString );
-    var conventionalRadioButton = createRadioButton( 'conventional', conventionalString );
+    var electronsRadioButton = createRadioButton( 'electrons', electronsString, tandem.createTandem( 'electronsRadioButton' ) );
+    var conventionalRadioButton = createRadioButton( 'conventional', conventionalString, tandem.createTandem( 'conventionalRadioButton' ) );
 
     // Gray out current view options when current is not selected.
     showCurrentProperty.linkAttribute( electronsRadioButton, 'enabled' );
@@ -64,7 +65,9 @@ define( function( require ) {
         align: 'left',
         spacing: 8,
         children: [
-          new CheckBox( new Text( 'Show Current', TEXT_OPTIONS ), showCurrentProperty ),
+          new CheckBox( new Text( 'Show Current', TEXT_OPTIONS ), showCurrentProperty, {
+            tandem: tandem.createTandem( 'showCurrentCheckBox' )
+          } ),
           new HBox( {
             children: [
 
@@ -82,8 +85,12 @@ define( function( require ) {
           } )
         ]
       } ),
-      new CheckBox( new Text( 'Labels', TEXT_OPTIONS ), showLabelsProperty ),
-      new CheckBox( new Text( 'Values', TEXT_OPTIONS ), showValuesProperty )
+      new CheckBox( new Text( 'Labels', TEXT_OPTIONS ), showLabelsProperty, {
+        tandem: tandem.createTandem( 'labelsCheckBox' )
+      } ),
+      new CheckBox( new Text( 'Values', TEXT_OPTIONS ), showValuesProperty, {
+        tandem: tandem.createTandem( 'valuesCheckBox' )
+      } )
     ];
 
     CircuitConstructionKitPanel.call( this, new VBox( {

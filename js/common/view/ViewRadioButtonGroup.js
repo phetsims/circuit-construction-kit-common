@@ -37,20 +37,22 @@ define( function( require ) {
      * @param {string} view - 'lifelike' or 'schematic'
      * @returns {BatteryNode}
      */
-    var createBatteryNode = function( view ) {
-      return new BatteryNode( null, null, battery, new Property( true ), new Property( view ), tandem.createTandem( 'lifelikeRadioButton' ), {
+    var createBatteryNode = function( view, tandem ) {
+      return new BatteryNode( null, null, battery, new Property( true ), new Property( view ), tandem, {
         icon: true,
         scale: SCALE
       } );
     };
-    var lifelikeNode = createBatteryNode( 'lifelike' );
-    var schematicNode = createBatteryNode( 'schematic' );
+    var lifelikeIcon = createBatteryNode( 'lifelike', tandem.createTandem( 'lifelikeIcon' ) );
+    var schematicIcon = createBatteryNode( 'schematic', tandem.createTandem( 'schematicIcon' ) );
     RadioButtonGroup.call( this, viewProperty, [ {
       value: 'lifelike',
-      node: lifelikeNode
+      node: lifelikeIcon,
+      tandemName: 'lifelikeRadioButton'
     }, {
       value: 'schematic',
-      node: schematicNode
+      node: schematicIcon,
+      tandemName: 'schematicRadioButton'
     } ], {
       orientation: 'horizontal',
       buttonContentXMargin: 14,
@@ -58,7 +60,8 @@ define( function( require ) {
       baseColor: CircuitConstructionKitConstants.PANEL_COLOR,
       deselectedButtonOpacity: 0.4,
       overButtonOpacity: 0.7,
-      cornerRadius: CircuitConstructionKitConstants.CORNER_RADIUS
+      cornerRadius: CircuitConstructionKitConstants.CORNER_RADIUS,
+      tandem: tandem
     } );
   }
 

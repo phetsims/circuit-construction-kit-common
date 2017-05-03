@@ -13,6 +13,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var ZoomButton = require( 'SCENERY_PHET/buttons/ZoomButton' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   // constants
   var ZOOMED_IN = 1;
@@ -22,26 +23,30 @@ define( function( require ) {
    * @param {Property} selectedZoomProperty
    * @constructor
    */
-  function ZoomControlPanel( selectedZoomProperty ) {
+  function ZoomControlPanel( selectedZoomProperty, options ) {
+    options = _.extend( {
+      spacing: 12,
+      tandem: Tandem.tandemRequired()
+    }, options );
     var zoomOutButton = new ZoomButton( {
       in: false,
       listener: function() {
         selectedZoomProperty.set( ZOOMED_OUT );
-      }
+      },
+      tandem: options.tandem.createTandem( 'zoomOutButton' )
     } );
     var zoomInButton = new ZoomButton( {
       in: true,
       listener: function() {
         selectedZoomProperty.set( ZOOMED_IN );
-      }
+      },
+      tandem: options.tandem.createTandem( 'zoomInButton' )
     } );
-    HBox.call( this, {
-      spacing: 12,
-      children: [
-        zoomOutButton,
-        zoomInButton
-      ]
-    } );
+    options.children = [
+      zoomOutButton,
+      zoomInButton
+    ];
+    HBox.call( this, options );
     selectedZoomProperty.link( function( zoomLevel ) {
       zoomInButton.setEnabled( zoomLevel === ZOOMED_OUT );
       zoomOutButton.setEnabled( zoomLevel === ZOOMED_IN );

@@ -287,7 +287,9 @@ define( function( require ) {
     }
 
     // Create the zoom control panel
-    var zoomControlPanel = new ZoomControlPanel( circuitConstructionKitModel.selectedZoomProperty );
+    var zoomControlPanel = new ZoomControlPanel( circuitConstructionKitModel.selectedZoomProperty, {
+      tandem: tandem.createTandem( 'zoomControlPanel' )
+    } );
 
     // Make it as wide as the circuit element toolbox
     zoomControlPanel.setScaleMagnitude( this.circuitElementToolbox.width / zoomControlPanel.width );

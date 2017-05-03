@@ -23,6 +23,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Util = require( 'DOT/Util' );
+  var Range = require( 'DOT/Range' );
 
   //strings
   var ohmsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ohms' );
@@ -45,17 +46,19 @@ define( function( require ) {
       return new Text( string, { fontSize: 12, tandem: tandem } );
     };
 
-    var slider = new HSlider( batteryResistanceProperty, {
+    var slider = new HSlider( batteryResistanceProperty, new Range( CircuitConstructionKitConstants.DEFAULT_BATTERY_RESISTANCE, 10 ), {
       trackSize: CircuitConstructionKitConstants.SLIDER_TRACK_SIZE,
       majorTickLength: 2,
       minorTickLength: 5,
-      min: CircuitConstructionKitConstants.DEFAULT_BATTERY_RESISTANCE,
-      max: 10,
       tandem: tandem.createTandem( 'slider' )
     } );
     slider.addMajorTick( 0, createLabel( '0', tandem.createTandem( 'minLabel' ) ) );
     slider.addMajorTick( 5 );
     slider.addMajorTick( 10, createLabel( '10', tandem.createTandem( 'maxLabel' ) ) );
+
+    var numberNodesGroupTandem = tandem.createGroupTandem( 'numberNodes' );
+    var backgroundNodesGroupTandem = tandem.createGroupTandem( 'backgroundNodes' );
+    var valueParentsGroupTandem = tandem.createGroupTandem( 'valueParents' );
     for ( var i = 1; i < 10; i++ ) {
       if ( i !== 5 ) {
         slider.addMinorTick( i );
@@ -64,13 +67,13 @@ define( function( require ) {
       var numberNode = new Text( batteryResistanceProperty.get(), {
         font: new PhetFont( 14 ),
         fill: 'black',
-        tandem: tandem.createTandem( 'numberNode' )
+        tandem: numberNodesGroupTandem.createNextTandem()
       } );
 
       // number to be displayed
       batteryResistanceProperty.link( function( value ) {
         value = Util.roundSymmetric( value );
-        numberNode.setText( value +'\t'+ ohmsString );
+        numberNode.setText( value + '\t' + ohmsString );
       } );
 
       // background for displaying the value
@@ -78,18 +81,17 @@ define( function( require ) {
         fill: 'white',
         stroke: 'black',
         lineWidth: 1,
-        tandem: tandem.createTandem( 'backgroundNode' )
+        tandem: backgroundNodesGroupTandem.createNextTandem()
       } );
       numberNode.center = backgroundNode.center;
       var valueParent = new Node( {
         children: [ backgroundNode, numberNode ],
-        tandem: tandem.createTandem( 'valueParent' )
+        tandem: valueParentsGroupTandem.createNextTandem()
       } );
 
     }
     AccordionBox.call( this, new VBox( {
-      children: [ valueParent, slider ],
-      tandem: tandem.createTandem( 'accordionBox' )
+      children: [ valueParent, slider ]
     } ), {
       fill: '#f1f1f2',
       cornerRadius: 10,
@@ -97,11 +99,12 @@ define( function( require ) {
       buttonXMargin: 10,
       titleYMargin: 4,
       titleXSpacing: 14,
+      tandem: tandem.createTandem( 'accordionBox' ),
       minWidth: CircuitConstructionKitConstants.RIGHT_SIDE_PANEL_MIN_WIDTH,
       titleNode: new HBox( {
         children: [
           new HStrut( 10 ),
-          new Text(batteryResistivityString, { fontSize: 16, tandem: tandem.createTandem( 'batteryResistanceText' ) } )
+          new Text( batteryResistivityString, { fontSize: 16, tandem: tandem.createTandem( 'batteryResistanceText' ) } )
         ],
         tandem: tandem.createTandem( 'titleNode' )
       } )
