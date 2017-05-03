@@ -23,6 +23,9 @@ define( function( require ) {
   var CircuitElementEditPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitElementEditPanel' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
+  // strings
+  var tapCircuitElementToEditString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/tapCircuitElementToEdit' );
+
   // constants
   var GET_LAYOUT_POSITION = function( visibleBounds ) {
     return {
@@ -43,9 +46,9 @@ define( function( require ) {
     var self = this;
     Node.call( this );
 
-    // TODO: i18n
-    var tapInstructionTextNode = new Text( 'Tap circuit element to edit.', {
-      fontSize: 24
+    var tapInstructionTextNode = new Text( tapCircuitElementToEditString, {
+      fontSize: 24,
+      maxWidth: 300
     } );
 
     // Only show the instructions if there is a circuit element in the play area, so students don't try to tap

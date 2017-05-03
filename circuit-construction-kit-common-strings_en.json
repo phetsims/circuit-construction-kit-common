@@ -40,5 +40,8 @@
   },
   "conventional": {
     "value": "Conventional"
+  },
+  "tapCircuitElementToEdit": {
+    "value": "Tap circuit element to edit."
   }
 }
