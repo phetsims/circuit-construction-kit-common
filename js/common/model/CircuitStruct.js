@@ -54,8 +54,7 @@ define( function( require ) {
   return inherit( Object, CircuitStruct, {
 
     /**
-     * Clear out the CircuitStruct.
-     * TODO: why is this necessary
+     * Clear out the CircuitStruct. Used for Black Box Study to clear the records of user-created circuits in the black box.
      * @public
      */
     clear: function() {
