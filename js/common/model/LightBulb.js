@@ -162,7 +162,7 @@ define( function( require ) {
      * @returns {LightBulb}
      * @public
      */
-    createAtPosition: function( position, circuitVertexGroupTandem, tandem, options ) { // TODO: Tandem
+    createAtPosition: function( position, circuitVertexGroupTandem, tandem, options ) {
       var translation = new Vector2( 30, 10 );
 
       // Connect at the side and bottom
