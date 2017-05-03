@@ -46,5 +46,8 @@
   },
   "current": {
     "value": "Current"
+  },
+  "currentAmps": {
+    "value": "{{current}} A"
   }
 }

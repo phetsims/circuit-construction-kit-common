@@ -24,6 +24,7 @@ define( function( require ) {
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
+  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
 
   // images
   var ammeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeter_body.png' );
@@ -31,6 +32,7 @@ define( function( require ) {
   // strings
   var questionMarkString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/questionMark' );
   var currentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/current' );
+  var currentAmpsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/currentAmps' );
 
   // constants
   // measurements for the cubic curve for the wire nodes
@@ -76,7 +78,7 @@ define( function( require ) {
       // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
       return current === null ? questionMarkString :
              Math.abs( current ) > max ? maxString :
-             Util.toFixed( Math.abs( current ), 2 ) + ' A'; // TODO: i18n
+             StringUtils.fillIn( currentAmpsString, { current: Util.toFixed( Math.abs( current ), 2 ) } );
     } );
 
     var probeTextNode = new ProbeTextNode( currentReadoutProperty, options.runningProperty, currentString, tandem.createTandem( 'probeTextNode' ), {
