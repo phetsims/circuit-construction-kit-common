@@ -196,9 +196,12 @@ define( function( require ) {
             // If over the toolbox, then drop into it, and don't process further
             contentNode.removeInputListener( self.inputListener );
 
-            setTimeout( function() {
+            var id = setTimeout( function() {
               circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
             }, delayMS );
+
+            // If disposed by reset all button, clear the timeout
+            circuitElement.disposeEmitter.addListener( function() { clearTimeout( id ); } );
           }
           else {
 

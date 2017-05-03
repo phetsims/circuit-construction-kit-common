@@ -73,7 +73,7 @@ define( function( require ) {
       self.vertexMovedEmitter.removeListener( updateWire );
     };
 
-    // @private - for debugging
+    // @public - true when the wire has been disposed // TODO: move this to parent class
     this.disposed = false;
   }
 

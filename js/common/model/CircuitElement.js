@@ -85,6 +85,9 @@ define( function( require ) {
     // @public (read-only) - indicate when the circuit element has started being dragged, when it is created in the toolbox
     this.startDragEmitter = new Emitter();
 
+    // @public (read-only) - indicate when the circuit element has been disposed
+    this.disposeEmitter = new Emitter();
+
     // @public (read-only) - the voltage at the end vertex minus the voltage at the start vertex
     // name voltageDifferenceProperty so it doesn't clash with voltageProperty in Battery subclass
     this.voltageDifferenceProperty = new Property();
@@ -130,6 +133,8 @@ define( function( require ) {
 
       self.startVertexProperty.get().positionProperty.unlink( vertexMoved );
       self.endVertexProperty.get().positionProperty.unlink( vertexMoved );
+
+      self.disposeEmitter.emit();
     };
 
     // @public (read-only by clients, writable-by-subclasses) the distance the charges must take to get to the other
