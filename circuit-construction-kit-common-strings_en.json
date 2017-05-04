@@ -58,5 +58,8 @@
   },
   "volts": {
     "value": "volts"
+  },
+  "valueUnitsPattern": {
+    "value": "{0} {{units}}"
   }
 }

@@ -21,6 +21,10 @@ define( function( require ) {
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var NumberProperty = require( 'AXON/NumberProperty' );
   var PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
+  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+
+  // strings
+  var valueUnitsPatternString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/valueUnitsPattern' );
 
   // constants
   var FONT = new PhetFont( 14 );
@@ -65,7 +69,7 @@ define( function( require ) {
     // Create the controls using the proxy
     var numberControl = new NumberControl( title, proxyProperty, new RangeWithValue( 0, 100 ), _.extend( {
       tandem: tandem.createTandem( 'numberControl' ),
-      valuePattern: '{0} ' + units // TODO: i18n
+      valuePattern: StringUtils.fillIn( valueUnitsPatternString, { units: units } )
     }, {
       titleFont: FONT,
       valueFont: FONT,
