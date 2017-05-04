@@ -21,6 +21,7 @@ define( function( require ) {
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
+  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
 
   // images
   var voltmeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltmeter_body.png' );
@@ -29,6 +30,7 @@ define( function( require ) {
 
   // strings
   var questionMarkString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/questionMark' );
+  var voltageUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageUnits' );
 
   // constants
 
@@ -76,7 +78,7 @@ define( function( require ) {
 
     // Displays the voltage reading
     var voltageReadoutProperty = new DerivedProperty( [ voltmeter.voltageProperty ], function( voltage ) {
-      return voltage === null ? questionMarkString : Util.toFixed( voltage, 2 ) + ' V'; // TODO: i18n
+      return voltage === null ? questionMarkString : StringUtils.fillIn( voltageUnitsString, { voltage: Util.toFixed( voltage, 2 ) } );
     } );
 
     // TODO: i18n

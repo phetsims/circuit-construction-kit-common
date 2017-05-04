@@ -61,5 +61,8 @@
   },
   "valueUnitsPattern": {
     "value": "{0} {{units}}"
+  },
+  "voltageUnits": {
+    "value": "{{voltage}} V"
   }
 }
