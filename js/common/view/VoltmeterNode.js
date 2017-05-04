@@ -31,6 +31,7 @@ define( function( require ) {
   // strings
   var questionMarkString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/questionMark' );
   var voltageUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageUnits' );
+  var voltageString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltage' );
 
   // constants
 
@@ -81,8 +82,7 @@ define( function( require ) {
       return voltage === null ? questionMarkString : StringUtils.fillIn( voltageUnitsString, { voltage: Util.toFixed( voltage, 2 ) } );
     } );
 
-    // TODO: i18n
-    var probeTextNode = new ProbeTextNode( voltageReadoutProperty, options.runningProperty, 'Voltage', tandem.createTandem( 'probeTextNode' ), {
+    var probeTextNode = new ProbeTextNode( voltageReadoutProperty, options.runningProperty, voltageString, tandem.createTandem( 'probeTextNode' ), {
       centerX: voltmeterBodyImage[ 0 ].width / 2,
       centerY: voltmeterBodyImage[ 0 ].height / 2
     } );
