@@ -226,9 +226,6 @@ define( function( require ) {
 
     // @private
     this.disposeVertexNode = function() {
-      if ( dragHandler.dragging ) {
-        dragHandler.endDrag();
-      }
       vertex.positionProperty.unlink( updateVertexNodePosition );
       vertex.selectedProperty.unlink( updateSelected );
       vertex.interactiveProperty.unlink( updatePickable );
