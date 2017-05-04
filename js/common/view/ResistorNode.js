@@ -26,8 +26,8 @@ define( function( require ) {
   var LIFELIKE_IMAGE_SCALE = 0.7;
   var LIFELIKE_IMAGE_WIDTH = lifelikeResistorImage[ 0 ].width / LIFELIKE_IMAGE_SCALE;
   var COLOR_BAND_WIDTH = 10;
-  var COLOR_BAND_HEIGHT = 38;
-  var COLOR_BAND_TOP = -0.5; // Account for vertical asymmetry in the image
+  var COLOR_BAND_HEIGHT = 39.75;
+  var COLOR_BAND_TOP = -0.25;
   var COLOR_BAND_INSET = 36;
   var AVAILABLE_COLOR_BAND_SPACE = LIFELIKE_IMAGE_WIDTH * 0.75 - 2 * COLOR_BAND_INSET;
   var REMAINING_COLOR_BAND_SPACE = AVAILABLE_COLOR_BAND_SPACE - 4 * COLOR_BAND_WIDTH;// max is 4 bands, even though they are not always shown
@@ -65,12 +65,10 @@ define( function( require ) {
      */
     var getColorBand = function( index ) {
 
-      // TODO: why is the last band offset vertically?
-      var additionalHeight = index === 3 ? 2 : 0;
       var additionalOffset = index === 3 ? 12 : 0;
-      return new Rectangle( 0, 0, COLOR_BAND_WIDTH, COLOR_BAND_HEIGHT + additionalHeight, {
+      return new Rectangle( 0, 0, COLOR_BAND_WIDTH, COLOR_BAND_HEIGHT, {
         x: COLOR_BAND_INSET + (COLOR_BAND_WIDTH + COLOR_BAND_SPACING) * index + additionalOffset,
-        y: COLOR_BAND_Y - additionalHeight / 2
+        y: COLOR_BAND_Y
       } );
     };
 
