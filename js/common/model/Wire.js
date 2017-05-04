@@ -68,8 +68,6 @@ define( function( require ) {
 
     // @private - for disposal
     this.disposeWire = function() {
-      assert && assert( !self.disposed, 'Was already disposed' );
-      self.disposed = true;
       self.vertexMovedEmitter.removeListener( updateWire );
     };
   }

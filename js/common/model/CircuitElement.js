@@ -131,6 +131,7 @@ define( function( require ) {
     this.disposed = false;
 
     this.disposeCircuitElement = function() {
+      assert && assert( !self.disposed, 'Was already disposed' );
       self.disposed = true;
 
       self.startVertexProperty.unlink( linkVertex );
