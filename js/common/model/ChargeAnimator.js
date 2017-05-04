@@ -29,7 +29,8 @@ define( function( require ) {
   var NUMBER_OF_EQUALIZE_STEPS = 2;
 
   // Factor that multiplies the current to attain speed in screen coordinates per second
-  var SPEED_SCALE = 100 / 3;
+  // Manually tuned so that at 1 Amp, 1 charge flows past in 1 second
+  var SPEED_SCALE = 34.5;
 
   /**
    * Sets the charge to not update its position, so that we may apply batch changes without impacting performance
