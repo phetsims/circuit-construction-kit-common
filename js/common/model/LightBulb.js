@@ -62,15 +62,14 @@ define( function( require ) {
     // @private (read-only) the vector between the vertices
     this.vertexDelta = endVertex.positionProperty.get().minus( startVertex.positionProperty.get() );
 
-    var accumulatedDistance = 0;
+    var pathLength = 0;
     for ( var i = 0; i < POINTS.length - 1; i++ ) {
       var point1 = this.getFilamentPathPoint( i, startVertex );
       var point2 = this.getFilamentPathPoint( i + 1, startVertex );
-      accumulatedDistance += point2.distance( point1 );
+      pathLength += point2.distance( point1 );
     }
 
-    var chargePathLength = accumulatedDistance - 1E-8; // changes the speed at which particles go through the light bulb // TODO: why subtract 1E-8 here?
-    FixedLengthCircuitElement.call( this, startVertex, endVertex, DISTANCE_BETWEEN_VERTICES, chargePathLength, tandem, options );
+    FixedLengthCircuitElement.call( this, startVertex, endVertex, DISTANCE_BETWEEN_VERTICES, pathLength, tandem, options );
   }
 
   circuitConstructionKitCommon.register( 'LightBulb', LightBulb );
