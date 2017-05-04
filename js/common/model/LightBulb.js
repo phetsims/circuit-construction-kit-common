@@ -50,6 +50,7 @@ define( function( require ) {
    * @param {Vertex} startVertex - the side Vertex
    * @param {Vertex} endVertex - the bottom Vertex
    * @param {number} resistance - in ohms
+   * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
@@ -63,9 +64,9 @@ define( function( require ) {
 
     var accumulatedDistance = 0;
     for ( var i = 0; i < POINTS.length - 1; i++ ) {
-      var point1 = this.getPoint( i, startVertex );
-      var q2 = this.getPoint( i + 1, startVertex );
-      accumulatedDistance += q2.distance( point1 );
+      var point1 = this.getFilamentPathPoint( i, startVertex );
+      var point2 = this.getFilamentPathPoint( i + 1, startVertex );
+      accumulatedDistance += point2.distance( point1 );
     }
 
     var chargePathLength = accumulatedDistance - 1E-8; // changes the speed at which particles go through the light bulb // TODO: why subtract 1E-8 here?
@@ -77,18 +78,21 @@ define( function( require ) {
   return inherit( FixedLengthCircuitElement, LightBulb, {
 
     /**
-     * Get the Vector2 corresponding to the specified index, using the startVertex as an origin.
-     * TODO: this implementation doesn't match the jsdoc.
+     * Maps from the "as the crow flies" path to the circuitous path.
+     *
      * @param {number} index
      * @param {Vertex} startVertex
      * @returns {Vector2}
      * @private
      */
-    getPoint: function( index, startVertex ) {
+    getFilamentPathPoint: function( index, startVertex ) {
       var point = POINTS[ index ];
 
-      var x = Util.linear( START_POINT.x, END_POINT.x, startVertex.positionProperty.get().x, startVertex.positionProperty.get().x + this.vertexDelta.x, point.x );
-      var y = Util.linear( START_POINT.y, END_POINT.y, startVertex.positionProperty.get().y, startVertex.positionProperty.get().y + this.vertexDelta.y, point.y );
+      var vertexX = startVertex.positionProperty.get().x;
+      var vertexY = startVertex.positionProperty.get().y;
+
+      var x = Util.linear( START_POINT.x, END_POINT.x, vertexX, vertexX + this.vertexDelta.x, point.x );
+      var y = Util.linear( START_POINT.y, END_POINT.y, vertexY, vertexY + this.vertexDelta.y, point.y );
 
       return new Vector2( x, y );
     },
@@ -127,8 +131,8 @@ define( function( require ) {
       var previousAccumulatedDistance = 0;
       var accumulatedDistance = 0;
       for ( var i = 0; i < POINTS.length - 1; i++ ) {
-        var point1 = this.getPoint( i, this.startVertexProperty.get() );
-        var point2 = this.getPoint( i + 1, this.startVertexProperty.get() );
+        var point1 = this.getFilamentPathPoint( i, this.startVertexProperty.get() );
+        var point2 = this.getFilamentPathPoint( i + 1, this.startVertexProperty.get() );
 
         accumulatedDistance += point2.distance( point1 );
 
