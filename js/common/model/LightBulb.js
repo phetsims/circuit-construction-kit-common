@@ -137,13 +137,15 @@ define( function( require ) {
 
         // Find what segment the charge is in
         if ( distanceAlongWire <= accumulatedDistance ) {
-          var normalizedDistance = Util.linear( previousAccumulatedDistance, accumulatedDistance, 0, 1, distanceAlongWire );
-          var averaged = point1.blend( point2, normalizedDistance );  // TODO: what is happening here?
+
+          // Choose the right point along the segment
+          var fractionAlongSegment = Util.linear( previousAccumulatedDistance, accumulatedDistance, 0, 1, distanceAlongWire );
+          var positionAlongSegment = point1.blend( point2, fractionAlongSegment );
 
           // rotate the point about the start vertex
           var vertexDelta = this.endVertexProperty.get().positionProperty.get().minus( this.startVertexProperty.get().positionProperty.get() );
           var relativeAngle = vertexDelta.angle() - this.vertexDelta.angle();
-          var position = averaged.rotatedAboutPoint( this.startVertexProperty.get().positionProperty.get(), relativeAngle );
+          var position = positionAlongSegment.rotatedAboutPoint( this.startVertexProperty.get().positionProperty.get(), relativeAngle );
           var angle = point2.minus( point1 ).angle();
 
           return { position: position, angle: angle };
