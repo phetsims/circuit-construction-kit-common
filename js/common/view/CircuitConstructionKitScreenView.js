@@ -345,7 +345,7 @@ define( function( require ) {
     // Center the circuit node so that zooms will remain centered.
     self.circuitNode.setTranslation( self.layoutBounds.centerX, self.layoutBounds.centerY );
 
-    // TODO: replace this with a continuous zoom in out animation, probably in step()
+    // Continuously zoom in and out as the current zoom interpolates
     circuitConstructionKitModel.currentZoomProperty.link( function( zoomLevel ) {
       self.circuitNode.setScaleMagnitude( zoomLevel );
     } );
