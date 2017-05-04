@@ -25,6 +25,10 @@ define( function( require ) {
 
   // strings
   var tapCircuitElementToEditString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/tapCircuitElementToEdit' );
+  var resistanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistance' );
+  var voltageString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltage' );
+  var ohmsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ohms' );
+  var voltsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/volts' );
 
   // constants
   var GET_LAYOUT_POSITION = function( visibleBounds ) {
@@ -84,12 +88,11 @@ define( function( require ) {
         var battery = selectedCircuitElement instanceof Battery;
         var wire = selectedCircuitElement instanceof Wire;
 
-        // TODO: i18n
-        var text = (resistor || wire) ? 'Resistance' :
-                   battery ? 'Voltage' :
+        var text = (resistor || wire) ? resistanceString :
+                   battery ? voltageString :
                    null;
-        var units = (resistor || wire) ? 'ohms' :
-                    battery ? 'volts' :
+        var units = (resistor || wire) ? ohmsString :
+                    battery ? voltsString :
                     null;
         var property = (resistor || wire) ? selectedCircuitElement.resistanceProperty :
                        battery ? selectedCircuitElement.voltageProperty :

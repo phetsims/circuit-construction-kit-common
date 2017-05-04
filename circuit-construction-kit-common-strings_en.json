@@ -11,9 +11,6 @@
   "lots": {
     "value": "lots"
   },
-  "ohms": {
-    "value": "ohms"
-  },
   "wireResistivity": {
     "value": "Wire Resistivity"
   },
@@ -49,5 +46,17 @@
   },
   "currentAmps": {
     "value": "{{current}} A"
+  },
+  "resistance": {
+    "value": "Resistance"
+  },
+  "voltage": {
+    "value": "Voltage"
+  },
+  "ohms": {
+    "value": "ohms"
+  },
+  "volts": {
+    "value": "volts"
   }
 }
