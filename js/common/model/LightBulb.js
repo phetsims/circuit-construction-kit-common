@@ -177,7 +177,7 @@ define( function( require ) {
       var delta = endPoint.minus( startPoint );
       var angle = delta.angle();
 
-      // TODO: what is happening here?
+      // Position the vertices so the light bulb is upright
       endPoint = startPoint.plus( Vector2.createPolar( DISTANCE_BETWEEN_VERTICES, angle - Math.PI * 0.3975 ) );
 
       // start vertex is at the bottom
