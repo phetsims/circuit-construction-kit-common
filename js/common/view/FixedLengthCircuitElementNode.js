@@ -96,13 +96,13 @@ define( function( require ) {
     }, options );
 
     // Add highlight (but not for icons)
-    if ( circuitNode ) {
+    if ( !options.icon ) {
       var inset = -FixedLengthCircuitElementNode.HIGHLIGHT_INSET;
       var w = options.contentWidth || contentNode.width;
       var h = options.contentHeight || contentNode.height;
       var highlightNode = new Rectangle(
-        inset,
-        inset,
+        inset + contentNode.bounds.minX,
+        inset + contentNode.bounds.minY,
         w / contentScale - inset * 2,
         h / contentScale - inset * 2,
         8 / contentScale,
@@ -218,7 +218,7 @@ define( function( require ) {
       contentNode.addInputListener( this.inputListener );
     }
 
-    if ( circuitNode ) {
+    if ( !options.icon ) {
       var updateSelectionHighlight = function( lastCircuitElement ) {
         var showHighlight = lastCircuitElement === circuitElement;
         highlightNode.visible = showHighlight;
