@@ -81,7 +81,8 @@ define( function( require ) {
       schematicNode,
       0.7, // TODO: document
       tandem,
-      options );
+      options
+    );
   }
 
   circuitConstructionKitCommon.register( 'BatteryNode', BatteryNode );

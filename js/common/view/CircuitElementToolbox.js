@@ -18,9 +18,9 @@ define( function( require ) {
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Wire' );
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Switch' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Resistor' );
-  var Image = require( 'SCENERY/nodes/Image' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ResistorNode' );
+  var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/BatteryNode' );
   var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/WireNode' );
   var NumberProperty = require( 'AXON/NumberProperty' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
@@ -34,9 +34,6 @@ define( function( require ) {
   var lightBulbString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightBulb' );
   var switchString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/switch' );
   var wireString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/wire' );
-
-  // images
-  var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
 
   // constants
   var BATTERY_LENGTH = CircuitConstructionKitConstants.BATTERY_LENGTH;
@@ -77,12 +74,14 @@ define( function( require ) {
     };
 
     // create icons
-    var leftBatteryIcon = new Image( batteryImage, {
-      scale: TOOLBOX_ICON_SIZE / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height ),
-      rotation: Math.PI
+    var leftBattery = new Battery( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.BATTERY_LENGTH, 0 ), tandem.createTandem( 'iconBattery' ) );
+    var leftBatteryIcon = new BatteryNode( null, null, leftBattery, null, viewProperty, tandem.createTandem( 'leftBatteryIcon' ), {
+      icon: true
     } );
-    var rightBatteryIcon = new Image( batteryImage, {
-      scale: TOOLBOX_ICON_SIZE / Math.max( batteryImage[ 0 ].width, batteryImage[ 0 ].height )
+
+    var rightBattery = new Battery( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.BATTERY_LENGTH, 0 ), tandem.createTandem( 'iconBattery' ) );
+    var rightBatteryIcon = new BatteryNode( null, null, rightBattery, null, viewProperty, tandem.createTandem( 'leftBatteryIcon' ), {
+      icon: true
     } );
     var wire = new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ), tandem.createTandem( 'wireIconWire' ) );
     var wireIcon = new WireNode( null, null, wire, null, viewProperty, tandem.createTandem( 'wireIcon' ) );
@@ -106,6 +105,8 @@ define( function( require ) {
     wireIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( wireIcon.width, wireIcon.height ) } );
     lightBulbIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( lightBulbIcon.width, lightBulbIcon.height ) } );
     switchIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( switchIcon.width, switchIcon.height ) } );
+    leftBatteryIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( leftBatteryIcon.width, leftBatteryIcon.height ) } );
+    rightBatteryIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( rightBatteryIcon.width, rightBatteryIcon.height ) } );
 
     /**
      * Returns a function which counts the number of circuit elements (not counting those in the true black box).
