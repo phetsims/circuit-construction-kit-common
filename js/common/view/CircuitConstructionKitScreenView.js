@@ -37,6 +37,8 @@ define( function( require ) {
   // constants
   var LAYOUT_INSET = CircuitConstructionKitConstants.LAYOUT_INSET;
   var BACKGROUND_COLOR = CircuitConstructionKitConstants.BACKGROUND_COLOR;
+  var VOLTMETER_PROBE_TIP_LENGTH = 20; // The probe tip is about 20 view coordinates tall
+  var VOLTMETER_NUMBER_SAMPLE_POINTS = 10; // Number of points along the edge of the voltmeter tip to detect voltages
 
   /**
    * @param {CircuitConstructionKitModel} circuitConstructionKitModel
@@ -217,12 +219,18 @@ define( function( require ) {
 
     /**
      * Starting at the tip, iterate down over several samples and return the first hit, if any.
-     * TODO: check several points along the probe's conductive surface
      * @param {Node} probeNode
      * @param {Vector2} probePosition
+     * @returns the voltage connection or null if no connection
      */
     var findVoltageConnection = function( probeNode, probePosition ) {
-      return self.getVoltageConnection( probeNode, probePosition );
+      for ( var i = 0; i < VOLTMETER_NUMBER_SAMPLE_POINTS; i++ ) {
+        var voltageConnection = self.getVoltageConnection( probeNode, probePosition.plusXY( 0, i * VOLTMETER_PROBE_TIP_LENGTH / VOLTMETER_NUMBER_SAMPLE_POINTS ) );
+        if ( voltageConnection ) {
+          return voltageConnection;
+        }
+      }
+      return null;
     };
 
     // Detection for voltmeter probe + circuit collision is done in the view since view bounds are used
@@ -409,7 +417,7 @@ define( function( require ) {
      */
     getCurrent: function( probeNode ) {
 
-      var hitWireNode = this.hitWireNode( probeNode, 'translation' );
+      var hitWireNode = this.hitWireNode( probeNode.translation );
       if ( hitWireNode ) {
         return hitWireNode.wire.currentProperty.get();
       }
@@ -420,12 +428,11 @@ define( function( require ) {
 
     /**
      * Check for an intersection between a probeNode and a wire, return null if no hits.
-     * @param probeNode
-     * @param {string} locationString - 'translation' for ammeter or 'centerTop' for voltmeter probes
-     * @returns {boolean}
+     * @param {Vector2} position to hit test
+     * @returns {WireNode|null}
      * @public
      */
-    hitWireNode: function( probeNode, locationString ) {
+    hitWireNode: function( position ) {
 
       // Search from the front to the back, because frontmost objects look like they are hitting the sensor, see #143
       for ( var i = this.circuitNode.wireNodes.length - 1; i >= 0; i-- ) {
@@ -437,7 +444,7 @@ define( function( require ) {
         if ( trueBlackBox ) {
           revealing = this.circuitConstructionKitModel.revealingProperty.get();
         }
-        if ( revealing && wireNode.getStrokedShape().containsPoint( probeNode[ locationString ] ) ) {
+        if ( revealing && wireNode.getStrokedShape().containsPoint( position ) ) {
           return wireNode;
         }
       }
@@ -469,7 +476,7 @@ define( function( require ) {
       }
 
       // Check for intersection with a wire
-      var wireNode = this.hitWireNode( probeNode, 'centerTop' );
+      var wireNode = this.hitWireNode( probePosition );
       if ( wireNode ) {
 
         var startPoint = wireNode.wire.startVertexProperty.get().positionProperty.get();
