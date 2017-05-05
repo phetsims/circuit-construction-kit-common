@@ -97,8 +97,8 @@ define( function( require ) {
         icon: true
       }
     );
-    var wire2 = new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ), tandem.createTandem( 'wire' ) );
-    var switchIcon = new WireNode( null, null, wire2, null, viewProperty, tandem.createTandem( 'switchIcon' ) );
+    var mockSwitch = new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ), tandem.createTandem( 'wire' ) );
+    var switchIcon = new WireNode( null, null, mockSwitch, null, viewProperty, tandem.createTandem( 'switchIcon' ) );
 
     // normalize icon sizes
     resistorIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( resistorIcon.width, resistorIcon.height ) } );

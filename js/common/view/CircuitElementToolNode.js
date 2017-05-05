@@ -33,7 +33,12 @@ define( function( require ) {
     var self = this;
     var labelNode = new Text( labelText, { fontSize: 12, maxWidth: TOOLBOX_ICON_SIZE } ); // TODO: constrain width
     showLabelsProperty.link( function( showLabels ) {labelNode.visible = showLabels;} );
-    VBox.call( this, { spacing: 6, pickable: true, cursor: 'pointer', children: [ iconNode, labelNode ] } );
+    VBox.call( this, {
+      spacing: 6,
+      resize: false,
+      cursor: 'pointer',
+      children: [ iconNode, labelNode ]
+    } );
 
     this.addInputListener( {
         down: function( event ) {
