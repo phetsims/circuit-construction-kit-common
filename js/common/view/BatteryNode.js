@@ -71,6 +71,8 @@ define( function( require ) {
       stroke: 'black',
       lineWidth: 6
     } );
+    schematicNode.mouseArea = schematicNode.bounds;
+    schematicNode.touchArea = schematicNode.bounds;
 
     FixedLengthCircuitElementNode.call( this,
       circuitConstructionKitScreenView,

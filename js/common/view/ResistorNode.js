@@ -122,7 +122,9 @@ define( function( require ) {
       .lineToRelative( SCHEMATIC_PERIOD, SCHEMATIC_WAVELENGTH )
       .lineToRelative( SCHEMATIC_PERIOD / 2, -SCHEMATIC_WAVELENGTH / 2 )
       .lineToRelative( SCHEMATIC_STEM_WIDTH, 0 );
-    var schematicPathNode = new Path( schematicShape, { stroke: 'black', lineWidth: SCHEMATIC_LINE_WIDTH } );
+    var schematicNode = new Path( schematicShape, { stroke: 'black', lineWidth: SCHEMATIC_LINE_WIDTH } );
+    schematicNode.mouseArea = schematicNode.bounds;
+    schematicNode.touchArea = schematicNode.bounds;
 
     // Super call
     FixedLengthCircuitElementNode.call( this,
@@ -131,7 +133,7 @@ define( function( require ) {
       resistor,
       viewProperty,
       lifelikeResistorImageNode,
-      schematicPathNode,
+      schematicNode,
       LIFELIKE_IMAGE_SCALE,
       tandem,
       options
