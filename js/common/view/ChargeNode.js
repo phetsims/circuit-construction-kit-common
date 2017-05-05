@@ -29,7 +29,10 @@ define( function( require ) {
   MINUS_CHARGE_NODE.toImage( function( im ) {
 
     // Scale back down so the image will be the desired size
-    ELECTRON_IMAGE_NODE.children = [ new Image( im, { scale: 1.0 / ELECTRON_SCALE } ) ];
+    ELECTRON_IMAGE_NODE.children = [ new Image( im, {
+      scale: 1.0 / ELECTRON_SCALE,
+      imageOpacity: 0.75 // use imageOpacity for a significant performance boost, see https://github.com/phetsims/circuit-construction-kit-common/issues/293
+    } ) ];
   }, 0, 0, MINUS_CHARGE_NODE.width, MINUS_CHARGE_NODE.height );
 
   // Center arrow so it is easy to rotate
@@ -56,8 +59,7 @@ define( function( require ) {
 
     Node.call( this, {
       children: [ charge.charge > 0 ? ARROW_NODE : ELECTRON_IMAGE_NODE ],
-      pickable: false,
-      opacity: 0.75
+      pickable: false
     } );
     var outsideOfBlackBoxProperty = new BooleanProperty( false );
 
