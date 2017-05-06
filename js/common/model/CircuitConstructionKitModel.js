@@ -58,6 +58,11 @@ define( function( require ) {
       tandem: tandem.createTandem( 'showLabelsProperty' )
     } );
 
+    // @public (read-only) true if the labels in the toolbox should be shown
+    this.showValuesProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'showLabelsProperty' )
+    } );
+
     // @public (read-only) scaling applied to the circuit node so the user can zoom out and make larger circuits.
     this.selectedZoomProperty = new Property( 1, {
       tandem: tandem.createTandem( 'selectedZoomProperty' ),

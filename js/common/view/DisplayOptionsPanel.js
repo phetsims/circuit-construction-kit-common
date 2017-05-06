@@ -85,10 +85,10 @@ define( function( require ) {
           } )
         ]
       } ),
-      new CheckBox( new Text( 'Labels', TEXT_OPTIONS ), showLabelsProperty, {
+      new CheckBox( new Text( 'Labels', TEXT_OPTIONS ), showLabelsProperty, { // TODO: i18n
         tandem: tandem.createTandem( 'labelsCheckBox' )
       } ),
-      new CheckBox( new Text( 'Values', TEXT_OPTIONS ), showValuesProperty, {
+      new CheckBox( new Text( 'Values', TEXT_OPTIONS ), showValuesProperty, { // TODO: i18n
         tandem: tandem.createTandem( 'valuesCheckBox' )
       } )
     ];

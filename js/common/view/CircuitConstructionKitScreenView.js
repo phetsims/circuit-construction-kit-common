@@ -12,7 +12,6 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/DisplayOptionsPanel' );
-  var BooleanProperty = require( 'AXON/BooleanProperty' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var CircuitNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitNode' );
@@ -181,7 +180,7 @@ define( function( require ) {
     this.displayOptionsPanel = new DisplayOptionsPanel(
       circuitConstructionKitModel.circuit.showCurrentProperty,
       circuitConstructionKitModel.circuit.currentTypeProperty,
-      new BooleanProperty( false ),
+      circuitConstructionKitModel.showValuesProperty,
       circuitConstructionKitModel.showLabelsProperty,
       tandem.createTandem( 'displayOptionsPanel' ) );
 

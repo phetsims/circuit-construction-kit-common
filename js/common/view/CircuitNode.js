@@ -30,6 +30,7 @@ define( function( require ) {
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Switch' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Resistor' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
+  var ValueNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ValueNode' );
 
   /**
    *
@@ -44,6 +45,7 @@ define( function( require ) {
     var runningProperty = this.circuitConstructionKitModel.exploreScreenRunningProperty;
 
     this.highlightLayer = new Node();
+    this.valueLayer = new Node(); // for "show values"
     window.circuitNode = this;
 
     // @public (read-only) so that additional Nodes may be interleaved
@@ -52,6 +54,7 @@ define( function( require ) {
     Node.call( this, {
       children: [
         this.mainLayer, // everything else
+        this.valueLayer,
         this.highlightLayer // highlights go in front of everything else
       ]
     } );
@@ -107,6 +110,9 @@ define( function( require ) {
           nodeArray.push( circuitElementNode );
           mainLayer.addChild( circuitElementNode );
           moveVerticesToFront( circuitElement );
+          if ( circuitElement instanceof FixedLengthCircuitElement && !(circuitElementNode instanceof CCKLightBulbForegroundNode) ) { // don't double add for light bulbs
+            self.valueLayer.addChild( new ValueNode( circuitElement, self.circuitConstructionKitModel.showValuesProperty ) );
+          }
         }
       };
       circuit.circuitElements.addItemAddedListener( addCircuitElement );

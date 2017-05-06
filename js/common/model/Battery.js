@@ -21,7 +21,6 @@ define( function( require ) {
   /**
    * @param {Vertex} startVertex - one of the battery vertices
    * @param {Vertex} endVertex - the other battery vertex
-   * @param {number} voltage - the amount of constant voltage supplied by the battery
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor

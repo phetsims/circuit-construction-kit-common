@@ -27,7 +27,7 @@ define( function( require ) {
 
   //strings
   var ohmsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ohms' );
-  var batteryResistivityString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/batteryResistivity' );
+  var batteryResistanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/batteryResistance' );
 
   /**
    * @param {Property.<number>} batteryResistanceProperty - the axon Property for the internal resistance of all Batteries
@@ -77,6 +77,7 @@ define( function( require ) {
       } );
 
       // background for displaying the value
+      // TODO: This will become a panel, see https://github.com/phetsims/circuit-construction-kit-common/issues/305
       var backgroundNode = new Rectangle( 0, 0, 60, 20, 2, 2, {
         fill: 'white',
         stroke: 'black',
@@ -104,7 +105,7 @@ define( function( require ) {
       titleNode: new HBox( {
         children: [
           new HStrut( 10 ),
-          new Text( batteryResistivityString, { fontSize: 16, tandem: tandem.createTandem( 'batteryResistanceText' ) } )
+          new Text( batteryResistanceString, { fontSize: 16, tandem: tandem.createTandem( 'batteryResistanceText' ) } )
         ],
         tandem: tandem.createTandem( 'titleNode' )
       } )

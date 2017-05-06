@@ -14,8 +14,8 @@
   "wireResistivity": {
     "value": "Wire Resistivity"
   },
-  "batteryResistivity": {
-    "value": "Battery Resistivity"
+  "batteryResistance": {
+    "value": "Battery Resistance"
   },
   "battery": {
     "value": "battery"
