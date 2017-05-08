@@ -34,6 +34,9 @@ define( function( require ) {
 
     // @public (read-only) The distance from one vertex to another (as the crow flies), used for rotation about a vertex
     this.distanceBetweenVertices = distanceBetweenVertices;
+
+    // @public - placeholder for ValueNode, assigned by the view and used so the ValueNode can be looked up from the FixedLengthCircuitElement
+    this.valueNode = null;
   }
 
   circuitConstructionKitCommon.register( 'FixedLengthCircuitElement', FixedLengthCircuitElement );

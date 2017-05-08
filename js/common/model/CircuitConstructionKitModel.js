@@ -186,6 +186,7 @@ define( function( require ) {
     reset: function() {
       this.exploreScreenRunningProperty.reset();
       this.showLabelsProperty.reset();
+      this.showValuesProperty.reset();
       this.modeProperty.reset();
       this.circuit.reset();
       this.voltmeter.reset();

@@ -110,8 +110,11 @@ define( function( require ) {
           nodeArray.push( circuitElementNode );
           mainLayer.addChild( circuitElementNode );
           moveVerticesToFront( circuitElement );
+
           if ( circuitElement instanceof FixedLengthCircuitElement && !(circuitElementNode instanceof CCKLightBulbForegroundNode) ) { // don't double add for light bulbs
-            self.valueLayer.addChild( new ValueNode( circuitElement, self.circuitConstructionKitModel.showValuesProperty ) );
+            var valueNode = new ValueNode( circuitElement, self.circuitConstructionKitModel.showValuesProperty );
+            circuitElement.valueNode = valueNode;
+            self.valueLayer.addChild( valueNode );
           }
         }
       };
@@ -119,6 +122,13 @@ define( function( require ) {
       circuit.circuitElements.forEach( addCircuitElement );
       circuit.circuitElements.addItemRemovedListener( function( circuitElement ) {
         if ( circuitElement instanceof type ) {
+
+          // Remove associated ValueNode, if any
+          if ( circuitElement.valueNode ) {
+            self.valueLayer.removeChild( circuitElement.valueNode );
+            circuitElement.valueNode = null;
+          }
+
           var circuitElementNode = getter( circuitElement );
           mainLayer.removeChild( circuitElementNode );
 
