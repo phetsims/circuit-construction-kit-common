@@ -24,9 +24,11 @@ define( function( require ) {
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Util = require( 'DOT/Util' );
   var Range = require( 'DOT/Range' );
+  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
 
   //strings
   var batteryResistanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/batteryResistance' );
+  var resistanceUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceUnits' );
 
   /**
    * @param {Property.<number>} batteryResistanceProperty - the axon Property for the internal resistance of all Batteries
@@ -71,8 +73,7 @@ define( function( require ) {
 
       // number to be displayed
       batteryResistanceProperty.link( function( value ) {
-        value = Util.toFixed( value, 1 );
-        numberNode.setText( value + ' Ω' );// TODO: i18n
+        numberNode.setText( StringUtils.fillIn( resistanceUnitsString, { resistance: Util.toFixed( value, 1 ) } ) );
       } );
 
       // background for displaying the value
