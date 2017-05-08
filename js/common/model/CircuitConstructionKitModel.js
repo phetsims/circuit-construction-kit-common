@@ -193,6 +193,7 @@ define( function( require ) {
       this.viewProperty.reset();
       this.currentZoomProperty.reset();
       this.selectedZoomProperty.reset();
+      this.zoomAnimation = null; // cancel any animation in progress, including (but not limited to) one that may have just been caused by the reset
     }
   } );
 } );
