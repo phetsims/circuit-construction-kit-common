@@ -20,6 +20,11 @@ define( function( require ) {
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/LightBulb' );
   var Util = require( 'DOT/Util' );
   var VBox = require( 'SCENERY/nodes/VBox' );
+  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+
+  // strings
+  var voltageUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageUnits' );
+  var resistanceUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceUnits' );
 
   /**
    * @param {CircuitElement} circuitElement
@@ -32,44 +37,46 @@ define( function( require ) {
     // Big enough to see when zoomed out
     var TEXT_OPTIONS = { fontSize: 25 };
 
-    var textNode = null;
+    var contentNode = null;
     if ( circuitElement instanceof Battery ) {
 
       // Battery readouts shows voltage and internal resistance if it is nonzero
-      textNode = new VBox( {
+      contentNode = new VBox( {
         align: 'left'
       } );
 
       var voltageNode = new Text( '', TEXT_OPTIONS );
       circuitElement.voltageProperty.link( function( voltage ) {
-        voltageNode.text = Util.toFixed( voltage, 1 ) + ' V'; // TODO: pattern and i18n and factor out formatter with control panel
+
+        // TODO: factor out formatter with control panel
+        voltageNode.text = StringUtils.fillIn( voltageUnitsString, { voltage: Util.toFixed( voltage, 1 ) } );
         updatePosition && updatePosition();
       } );
 
       var resistanceNode = new Text( '', TEXT_OPTIONS );
       circuitElement.internalResistanceProperty.link( function( internalResistance, lastInternalResistance ) {
-        resistanceNode.text = Util.toFixed( internalResistance, 1 ) + ' Ω';
+        resistanceNode.text = StringUtils.fillIn( resistanceUnitsString, { resistance: Util.toFixed( internalResistance, 1 ) } );
 
         // If the children should change, update them here
         if ( lastInternalResistance === null || (internalResistance === 0 || lastInternalResistance === 0) ) {
-          textNode.children = internalResistance > 0 ? [ voltageNode, resistanceNode ] : [ voltageNode ];
+          contentNode.children = internalResistance > 0 ? [ voltageNode, resistanceNode ] : [ voltageNode ];
         }
         updatePosition && updatePosition();
       } );
     }
     else if ( circuitElement instanceof Resistor || circuitElement instanceof LightBulb ) {
-      textNode = new Text( '9.0 V', TEXT_OPTIONS );
+      contentNode = new Text( '', TEXT_OPTIONS );
       circuitElement.resistanceProperty.link( function( resistance ) {
-        textNode.text = Util.toFixed( resistance, 1 ) + ' Ω';
+        contentNode.text = StringUtils.fillIn( resistanceUnitsString, { resistance: Util.toFixed( resistance, 1 ) } );
       } );
     }
     else {
-      textNode = new Text( 'hello!', TEXT_OPTIONS );
+      contentNode = new Text( '', TEXT_OPTIONS );
     }
 
-    assert && assert( textNode, 'Text node should be defined' );
+    assert && assert( contentNode, 'Content node should be defined' );
 
-    Panel.call( this, textNode, {
+    Panel.call( this, contentNode, {
       lineWidth: 0,
       fill: new Color( 255, 255, 255, 0.5 )// put transparency in the color so that the children aren't transparent
     } );
@@ -81,9 +88,7 @@ define( function( require ) {
     };
     circuitElement.vertexMovedEmitter.addListener( updatePosition );
     updatePosition();
-    visibleProperty.link( function( visible ) {
-      self.visible = visible;
-    } );
+    visibleProperty.link( function( visible ) { self.visible = visible; } );
   }
 
   circuitConstructionKitCommon.register( 'ValueNode', ValueNode );

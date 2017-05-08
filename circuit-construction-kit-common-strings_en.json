@@ -64,5 +64,8 @@
   },
   "voltageUnits": {
     "value": "{{voltage}} V"
+  },
+  "resistanceUnits": {
+    "value": "{{resistance}} Ω"
   }
 }
