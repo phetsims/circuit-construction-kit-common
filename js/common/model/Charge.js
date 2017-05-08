@@ -53,6 +53,9 @@ define( function( require ) {
     // @public (read-only) - the 2d position of the charge
     this.positionProperty = new Property( new Vector2() );
 
+    // @public (read-only) - the angle of the charge (for showing arrows)
+    this.angleProperty = new Property();
+
     // When the distance or updating properties change, update the 2d position of the charge
     var multilink = Property.multilink( [ this.distanceProperty, this.updatingPositionProperty ], function( distance, updating ) {
       if ( updating ) {
@@ -61,8 +64,8 @@ define( function( require ) {
         var positionAndAngle = self.circuitElement.getPositionAndAngle( distance );
         var position = positionAndAngle.position;
         assert && assert( !isNaN( position.x ) && !isNaN( position.y ), 'point was not a number' );
-        self.angle = positionAndAngle.angle;
-        self.positionProperty.set( position ); // TODO: set position and angle together?  Should angle be a property?
+        self.angleProperty.set( positionAndAngle.angle );
+        self.positionProperty.set( position );
       }
     } );
 

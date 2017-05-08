@@ -71,21 +71,23 @@ define( function( require ) {
     };
 
     // When the model position changes, update the node position changes
-    var positionListener = function( position ) {
+    var updateTransform = function() {
       var current = charge.circuitElement.currentProperty.get();
-      self.center = position;
-      self.rotation = charge.charge < 0 ? 0 : charge.angle + (current < 0 ? Math.PI : 0);
+      self.center = charge.positionProperty.get();
+      self.rotation = charge.charge < 0 ? 0 : charge.angleProperty.get() + (current < 0 ? Math.PI : 0);
       updateVisible();
       outsideOfBlackBoxProperty.value = !charge.circuitElement.insideTrueBlackBoxProperty.get();
     };
-    charge.positionProperty.link( positionListener );
+    charge.angleProperty.link( updateTransform );
+    charge.positionProperty.link( updateTransform );
     revealingProperty.link( updateVisible );
     charge.visibleProperty.link( updateVisible );
     outsideOfBlackBoxProperty.link( updateVisible );
 
     var disposeChargeNode = function() {
       self.detach();
-      charge.positionProperty.unlink( positionListener );
+      charge.positionProperty.unlink( updateTransform );
+      charge.angleProperty.unlink( updateTransform );
       charge.disposeEmitter.removeListener( disposeChargeNode );
       revealingProperty.unlink( updateVisible );
       charge.visibleProperty.unlink( updateVisible );
