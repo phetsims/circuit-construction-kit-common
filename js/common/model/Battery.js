@@ -64,7 +64,8 @@ define( function( require ) {
      */
     attributesToStateObject: function() {
       return {
-        voltage: this.voltageProperty.get()
+        voltage: this.voltageProperty.get(),
+        internalResistance: this.internalResistanceProperty.get()
       };
     }
   } );

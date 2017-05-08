@@ -224,6 +224,8 @@ define( function( require ) {
       } );
     } );
 
+    this.batteryResistanceProperty.link( solve );
+
     // @public (read-only) - for creating tandems
     this.vertexGroupTandem = tandem.createGroupTandem( 'vertices' );
     this.wireGroupTandem = tandem.createGroupTandem( 'wires' );
@@ -509,6 +511,8 @@ define( function( require ) {
       var self = this;
 
       var toStateObject = function( circuitElement ) {
+
+        // the index of vertex corresponds to position in list.
         return _.extend( {
           node0: self.vertices.indexOf( circuitElement.startVertexProperty.get() ),
           node1: self.vertices.indexOf( circuitElement.endVertexProperty.get() ),
@@ -516,12 +520,36 @@ define( function( require ) {
         }, circuitElement.attributesToStateObject() );
       };
 
-      // the index of vertex corresponds to position in list.
-      var batteries = this.circuitElements.filter( function( b ) {return b instanceof Battery;} );
-      var resistors = this.circuitElements.filter( function( b ) {return !(b instanceof Battery);} );
+      var batteries = this.circuitElements.filter( function( b ) {return b instanceof Battery;} ).getArray();
+      var resistors = this.circuitElements.filter( function( b ) {return !(b instanceof Battery);} ).getArray();
 
-      var batteryAdapters = batteries.map( toStateObject ).getArray();
-      var resistorAdapters = resistors.map( toStateObject ).getArray();
+      // introduce a synthetic vertex for each battery to model internal resistance
+      var resistorAdapters = resistors.map( toStateObject );
+      var batteryAdapters = [];
+
+      var nextSyntheticVertexIndex = self.vertices.length;
+      for ( var k = 0; k < batteries.length; k++ ) {
+        var battery = batteries[ k ];
+
+        // add a voltage source from startVertex to syntheticVertex
+        batteryAdapters.push( {
+          node0: self.vertices.indexOf( battery.startVertexProperty.value ),
+          node1: nextSyntheticVertexIndex,
+          voltage: battery.voltageProperty.value,
+          circuitElement: battery
+        } );
+
+        // add a resistor from syntheticVertex to endVertex
+        resistorAdapters.push( {
+          node0: nextSyntheticVertexIndex,
+          node1: self.vertices.indexOf( battery.endVertexProperty.value ),
+          resistance: battery.internalResistanceProperty.value,
+          circuitElement: battery
+        } );
+
+        // Prepare for next battery, if any
+        nextSyntheticVertexIndex++;
+      }
 
       var solution = new ModifiedNodalAnalysisCircuit( batteryAdapters, resistorAdapters, [] ).solve();
 
