@@ -248,14 +248,28 @@ define( function( require ) {
       this.fireNode.mutate( { scale: contentNode.width / this.fireNode.width } );
       this.addChild( this.fireNode );
 
-      // TODO: multilink?
-      var updateFire = function() {
-        var current = circuitElement.currentProperty.get();
-        var lowResistanceResistor = circuitElement instanceof Resistor && circuitElement.resistanceProperty.get() < 1E-8;
-        self.fireNode.visible = Math.abs( current ) >= 10 && !lowResistanceResistor && circuitConstructionKitScreenView.circuitConstructionKitModel.exploreScreenRunningProperty.get();
+      var showFire = function( current, exploreScreenRunning ) {
+        return Math.abs( current ) >= 10 && exploreScreenRunning;
       };
-      circuitElement.currentProperty.link( updateFire );
-      circuitConstructionKitScreenView.circuitConstructionKitModel.exploreScreenRunningProperty.link( updateFire );
+
+      var updateFireMultilink = circuitElement instanceof Resistor ?
+
+        // Show fire in resistors (but only if they have >0 resistance)
+                                (Property.multilink( [
+                                  circuitElement.currentProperty,
+                                  circuitElement.resistanceProperty,
+                                  circuitConstructionKitScreenView.circuitConstructionKitModel.exploreScreenRunningProperty
+                                ], function( current, resistance, exploreScreenRunning ) {
+                                  self.fireNode.visible = showFire( current, exploreScreenRunning ) && resistance >= 1E-8;
+                                } )) :
+
+        // Show fire in all other circuit elements
+                                (Property.multilink( [
+                                  circuitElement.currentProperty,
+                                  circuitConstructionKitScreenView.circuitConstructionKitModel.exploreScreenRunningProperty
+                                ], function( current, exploreScreenRunning ) {
+                                  self.fireNode.visible = showFire( current, exploreScreenRunning );
+                                } ));
     }
 
     // Update after the highlight/readout/fire exist
@@ -285,8 +299,7 @@ define( function( require ) {
       circuitElement.endVertexProperty.unlink( relink );
 
       if ( !options.icon && circuitElement instanceof Battery ) {
-        circuitElement.currentProperty.unlink( updateFire );
-        circuitConstructionKitScreenView.circuitConstructionKitModel.exploreScreenRunningProperty.unlink( updateFire );
+        Property.unmultilink( updateFireMultilink );
       }
     };
   }
