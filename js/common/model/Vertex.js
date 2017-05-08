@@ -17,6 +17,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var Emitter = require( 'AXON/Emitter' );
   var TVector2 = require( 'DOT/TVector2' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   // phet-io modules
   var TNumber = require( 'ifphetio!PHET_IO/types/TNumber' );
@@ -41,7 +42,8 @@ define( function( require ) {
       interactive: true, // Black box interface vertices can be interactive (tap to select) without being draggable
       blackBoxInterface: false, // Black box interface vertices cannot be dragged or deleted, but can be connected to
       insideTrueBlackBox: false, // Behavior differs in explore vs test mode
-      tandem: null // TODO: should probably be required
+      tandem: Tandem.tandemOptional() // Temporary vertices (for icons) should not be instrumented since they
+                                      // are more of an implementation detail rather than a feature
     }, options );
 
     // @public (read-only)  - location of the vertex
@@ -91,7 +93,8 @@ define( function( require ) {
     // view must be updated
     this.relayerEmitter = new Emitter();
 
-    // TODO: Does this need Tandem.addInstance(this,TVertex?)?
+    // Tandem.addInstance is not necessary because all of the sub-properties are already tracked, we do not need to
+    // refer to the Vertex by reference (tandem name) and it doesn't have events other than those in the sub-properties
   }
 
   circuitConstructionKitCommon.register( 'Vertex', Vertex );
