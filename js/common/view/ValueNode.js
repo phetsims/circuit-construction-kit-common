@@ -35,23 +35,25 @@ define( function( require ) {
     var textNode = null;
     if ( circuitElement instanceof Battery ) {
 
-      // Show voltage.  Also show internal resistance if it is nonzero
+      // Battery readouts shows voltage and internal resistance if it is nonzero
       textNode = new VBox( {
         align: 'left'
       } );
 
-      // TODO: use Node with children which update if internal resistance > 0
-      var voltageNode = new Text( '9.0 V', TEXT_OPTIONS );
+      var voltageNode = new Text( '', TEXT_OPTIONS );
       circuitElement.voltageProperty.link( function( voltage ) {
         voltageNode.text = Util.toFixed( voltage, 1 ) + ' V'; // TODO: pattern and i18n and factor out formatter with control panel
-        // TODO: internal resistance
         updatePosition && updatePosition();
       } );
 
-      var resistanceNode = new Text( 'some ohms', TEXT_OPTIONS );
-      circuitElement.internalResistanceProperty.link( function( internalResistance ) {
+      var resistanceNode = new Text( '', TEXT_OPTIONS );
+      circuitElement.internalResistanceProperty.link( function( internalResistance, lastInternalResistance ) {
         resistanceNode.text = Util.toFixed( internalResistance, 1 ) + ' Ω';
-        textNode.children = internalResistance > 0 ? [ voltageNode, resistanceNode ] : [ voltageNode ]; // TODO: performance
+
+        // If the children should change, update them here
+        if ( lastInternalResistance === null || (internalResistance === 0 || lastInternalResistance === 0) ) {
+          textNode.children = internalResistance > 0 ? [ voltageNode, resistanceNode ] : [ voltageNode ];
+        }
         updatePosition && updatePosition();
       } );
     }
