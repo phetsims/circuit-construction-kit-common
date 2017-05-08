@@ -112,6 +112,7 @@ define( function( require ) {
         circuitStruct.batteries.push( new Battery(
           circuitStruct.vertices[ circuitState.batteries[ i ].startVertex ],
           circuitStruct.vertices[ circuitState.batteries[ i ].endVertex ],
+          null,
           tandem.createNextTandem(), {
             voltage: circuitState.batteries[ i ].voltage
           }

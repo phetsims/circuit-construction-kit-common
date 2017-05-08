@@ -21,11 +21,12 @@ define( function( require ) {
   /**
    * @param {Vertex} startVertex - one of the battery vertices
    * @param {Vertex} endVertex - the other battery vertex
+   * @param {Property.<number>} resistanceProperty - the resistance of the battery
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function Battery( startVertex, endVertex, tandem, options ) {
+  function Battery( startVertex, endVertex, resistanceProperty, tandem, options ) {
     options = _.extend( {
       initialOrientation: 'right',
       voltage: 9.0
@@ -34,6 +35,9 @@ define( function( require ) {
 
     // @public (read-only) the voltage of the battery
     this.voltageProperty = new NumberProperty( options.voltage );
+
+    // @public (read-only) the internal resistance of the battery
+    this.internalResistanceProperty = resistanceProperty;
 
     // @public (read-only) - track the initial state so the user can only create a certain number of "left" or "right"
     // batteries from the toolbox.

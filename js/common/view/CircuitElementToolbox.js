@@ -74,12 +74,12 @@ define( function( require ) {
     };
 
     // create icons
-    var leftBattery = new Battery( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.BATTERY_LENGTH, 0 ), tandem.createTandem( 'iconBattery' ) );
+    var leftBattery = new Battery( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.BATTERY_LENGTH, 0 ), null, tandem.createTandem( 'iconBattery' ) );
     var leftBatteryIcon = new BatteryNode( null, null, leftBattery, null, viewProperty, tandem.createTandem( 'leftBatteryIcon' ), {
       icon: true
     } );
 
-    var rightBattery = new Battery( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.BATTERY_LENGTH, 0 ), tandem.createTandem( 'iconBattery' ) );
+    var rightBattery = new Battery( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.BATTERY_LENGTH, 0 ), null, tandem.createTandem( 'iconBattery' ) );
     var rightBatteryIcon = new BatteryNode( null, null, rightBattery, null, viewProperty, tandem.createTandem( 'leftBatteryIcon' ), {
       icon: true
     } );
@@ -152,11 +152,11 @@ define( function( require ) {
     // create tool nodes
     var createLeftBattery = function( position ) {
       var vertexPair = createVertexPair( position, BATTERY_LENGTH );
-      return new Battery( vertexPair.endVertex, vertexPair.startVertex, circuit.leftBatteryTandemGroup.createNextTandem(), { initialOrientation: 'left' } );
+      return new Battery( vertexPair.endVertex, vertexPair.startVertex, circuit.batteryResistanceProperty, circuit.leftBatteryTandemGroup.createNextTandem(), { initialOrientation: 'left' } );
     };
     var createRightBattery = function( position ) {
       var vertexPair = createVertexPair( position, BATTERY_LENGTH );
-      return new Battery( vertexPair.startVertex, vertexPair.endVertex, circuit.rightBatteryTandemGroup.createNextTandem() );
+      return new Battery( vertexPair.startVertex, vertexPair.endVertex, circuit.batteryResistanceProperty, circuit.rightBatteryTandemGroup.createNextTandem() );
     };
     var createWire = function( position ) {
       var vertexPair = createVertexPair( position, WIRE_LENGTH );

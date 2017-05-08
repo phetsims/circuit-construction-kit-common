@@ -26,7 +26,6 @@ define( function( require ) {
   var Range = require( 'DOT/Range' );
 
   //strings
-  var ohmsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ohms' );
   var batteryResistanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/batteryResistance' );
 
   /**
@@ -72,8 +71,8 @@ define( function( require ) {
 
       // number to be displayed
       batteryResistanceProperty.link( function( value ) {
-        value = Util.roundSymmetric( value );
-        numberNode.setText( value + '\t' + ohmsString );
+        value = Util.toFixed( value, 1 );
+        numberNode.setText( value + ' Ω' );// TODO: i18n
       } );
 
       // background for displaying the value

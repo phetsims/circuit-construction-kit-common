@@ -1,7 +1,7 @@
 // Copyright 2017, University of Colorado Boulder
 
 /**
- *
+ * When enabled, shows the readout above circuit elements, such as "9.0 V" for a 9 volt battery.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -18,8 +18,8 @@ define( function( require ) {
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Battery' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Resistor' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/LightBulb' );
-  // var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Util = require( 'DOT/Util' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
 
   /**
    * @param {CircuitElement} circuitElement
@@ -32,15 +32,26 @@ define( function( require ) {
     // Big enough to see when zoomed out
     var TEXT_OPTIONS = { fontSize: 25 };
 
-
     var textNode = null;
     if ( circuitElement instanceof Battery ) {
 
+      // Show voltage.  Also show internal resistance if it is nonzero
+      textNode = new VBox( {
+        align: 'left'
+      } );
+
       // TODO: use Node with children which update if internal resistance > 0
-      textNode = new Text( '9.0 V', TEXT_OPTIONS );
+      var voltageNode = new Text( '9.0 V', TEXT_OPTIONS );
       circuitElement.voltageProperty.link( function( voltage ) {
-        textNode.text = Util.toFixed( voltage, 1 ) + ' V'; // TODO: pattern and i18n and factor out formatter with control panel
+        voltageNode.text = Util.toFixed( voltage, 1 ) + ' V'; // TODO: pattern and i18n and factor out formatter with control panel
         // TODO: internal resistance
+        updatePosition && updatePosition();
+      } );
+
+      var resistanceNode = new Text( 'some ohms', TEXT_OPTIONS );
+      circuitElement.internalResistanceProperty.link( function( internalResistance ) {
+        resistanceNode.text = Util.toFixed( internalResistance, 1 ) + ' Ω';
+        textNode.children = internalResistance > 0 ? [ voltageNode, resistanceNode ] : [ voltageNode ]; // TODO: performance
         updatePosition && updatePosition();
       } );
     }
