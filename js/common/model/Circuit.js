@@ -247,8 +247,8 @@ define( function( require ) {
      */
     moveVerticesApart: function( v1, v2 ) {
 
-      var v1Neighbors = this.getAllNeighborVertices( v1 );
-      var v2Neighbors = this.getAllNeighborVertices( v2 );
+      var v1Neighbors = this.getNeighboringVertices( v1 );
+      var v2Neighbors = this.getNeighboringVertices( v2 );
 
       if ( v1Neighbors.length === 1 && !v1.blackBoxInterfaceProperty.get() ) {
         this.rotateSingleVertex( v1, v1Neighbors[ 0 ] );
@@ -684,7 +684,7 @@ define( function( require ) {
      * @returns {Vertex[]}
      * @private
      */
-    getAllNeighborVertices: function( vertex ) {
+    getNeighboringVertices: function( vertex ) {
       var neighborCircuitElements = this.getNeighborCircuitElements( vertex );
       return this.getNeighborVerticesInGroup( vertex, neighborCircuitElements );
     },
@@ -876,8 +876,8 @@ define( function( require ) {
 
       // (8) a wire vertex cannot double connect to an object, creating a tiny short circuit
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
-        var candidateNeighbors = self.getAllNeighborVertices( candidateVertex );
-        var myNeighbors = self.getAllNeighborVertices( vertex );
+        var candidateNeighbors = self.getNeighboringVertices( candidateVertex );
+        var myNeighbors = self.getNeighboringVertices( vertex );
         var intersection = _.intersection( candidateNeighbors, myNeighbors );
         return intersection.length === 0;
       } );
