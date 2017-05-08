@@ -74,13 +74,13 @@ define( function( require ) {
     };
 
     // create icons
-    var leftBattery = new Battery( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.BATTERY_LENGTH, 0 ), null, tandem.createTandem( 'iconBattery' ) );
-    var leftBatteryIcon = new BatteryNode( null, null, leftBattery, null, viewProperty, tandem.createTandem( 'leftBatteryIcon' ), {
+    var leftIconBattery = new Battery( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.BATTERY_LENGTH, 0 ), null, tandem.createTandem( 'leftIconBattery' ) );
+    var leftBatteryIcon = new BatteryNode( null, null, leftIconBattery, null, viewProperty, tandem.createTandem( 'leftBatteryIcon' ), {
       icon: true
     } );
 
-    var rightBattery = new Battery( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.BATTERY_LENGTH, 0 ), null, tandem.createTandem( 'iconBattery' ) );
-    var rightBatteryIcon = new BatteryNode( null, null, rightBattery, null, viewProperty, tandem.createTandem( 'leftBatteryIcon' ), {
+    var rightIconBattery = new Battery( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.BATTERY_LENGTH, 0 ), null, tandem.createTandem( 'rightIconBattery' ) );
+    var rightBatteryIcon = new BatteryNode( null, null, rightIconBattery, null, viewProperty, tandem.createTandem( 'rightBatteryIcon' ), {
       icon: true
     } );
     var wire = new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ), tandem.createTandem( 'wireIconWire' ) );

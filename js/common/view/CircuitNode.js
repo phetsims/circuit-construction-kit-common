@@ -112,7 +112,7 @@ define( function( require ) {
           moveVerticesToFront( circuitElement );
 
           if ( circuitElement instanceof FixedLengthCircuitElement && !(circuitElementNode instanceof CCKLightBulbForegroundNode) ) { // don't double add for light bulbs
-            var valueNode = new ValueNode( circuitElement, self.circuitConstructionKitModel.showValuesProperty );
+            var valueNode = new ValueNode( circuitElement, self.circuitConstructionKitModel.showValuesProperty, tandem.createTandem( circuitElement.tandemName ).createTandem( 'valueNode' ) );
             circuitElement.valueNode = valueNode;
             self.valueLayer.addChild( valueNode );
           }

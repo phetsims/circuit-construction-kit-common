@@ -29,9 +29,10 @@ define( function( require ) {
   /**
    * @param {CircuitElement} circuitElement
    * @param {Property.<boolean>} visibleProperty
+   * @param {Tandem} tandem
    * @constructor
    */
-  function ValueNode( circuitElement, visibleProperty ) {
+  function ValueNode( circuitElement, visibleProperty, tandem ) {
     var self = this;
 
     // Big enough to see when zoomed out
@@ -45,27 +46,27 @@ define( function( require ) {
         align: 'left'
       } );
 
-      var voltageNode = new Text( '', TEXT_OPTIONS );
+      var voltageText = new Text( '', _.extend( { tandem: tandem.createTandem( 'voltageText' ) }, TEXT_OPTIONS ) );
       circuitElement.voltageProperty.link( function( voltage ) {
 
         // TODO: factor out formatter with control panel
-        voltageNode.text = StringUtils.fillIn( voltageUnitsString, { voltage: Util.toFixed( voltage, 1 ) } );
+        voltageText.text = StringUtils.fillIn( voltageUnitsString, { voltage: Util.toFixed( voltage, 1 ) } );
         updatePosition && updatePosition();
       } );
 
-      var resistanceNode = new Text( '', TEXT_OPTIONS );
+      var resistanceNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'resistanceText' ) }, TEXT_OPTIONS ) );
       circuitElement.internalResistanceProperty.link( function( internalResistance, lastInternalResistance ) {
         resistanceNode.text = StringUtils.fillIn( resistanceUnitsString, { resistance: Util.toFixed( internalResistance, 1 ) } );
 
         // If the children should change, update them here
         if ( lastInternalResistance === null || (internalResistance === 0 || lastInternalResistance === 0) ) {
-          contentNode.children = internalResistance > 0 ? [ voltageNode, resistanceNode ] : [ voltageNode ];
+          contentNode.children = internalResistance > 0 ? [ voltageText, resistanceNode ] : [ voltageText ];
         }
         updatePosition && updatePosition();
       } );
     }
     else if ( circuitElement instanceof Resistor || circuitElement instanceof LightBulb ) {
-      contentNode = new Text( '', TEXT_OPTIONS );
+      contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'resistanceText' ) }, TEXT_OPTIONS ) );
       circuitElement.resistanceProperty.link( function( resistance ) {
         contentNode.text = StringUtils.fillIn( resistanceUnitsString, { resistance: Util.toFixed( resistance, 1 ) } );
       } );
@@ -78,7 +79,8 @@ define( function( require ) {
 
     Panel.call( this, contentNode, {
       lineWidth: 0,
-      fill: new Color( 255, 255, 255, 0.5 )// put transparency in the color so that the children aren't transparent
+      fill: new Color( 255, 255, 255, 0.5 ),// put transparency in the color so that the children aren't transparent
+      tandem: tandem
     } );
     var updatePosition = function() {
 
