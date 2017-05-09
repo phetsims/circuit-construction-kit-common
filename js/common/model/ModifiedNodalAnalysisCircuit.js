@@ -6,8 +6,6 @@
  * Equations is solved as a linear system.  Here is a good reference that was used during the development of this code
  * https://www.swarthmore.edu/NatSci/echeeve1/Ref/mna/MNA2.html
  *
- * TODO: make sure all node types are consistent (before May 2017 I saw places that were using string/number interchangeably)
- *
  * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {
