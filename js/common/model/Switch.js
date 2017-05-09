@@ -1,10 +1,7 @@
 // Copyright 2015-2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * @author Sam Reid (PhET Interactive Simulations)
- * TODO: Factor out duplicated code with Wire
- * TODO: This component has been redesigned, see the open issues and/or design doc
  */
 define( function( require ) {
   'use strict';
