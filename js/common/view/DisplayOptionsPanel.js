@@ -87,10 +87,10 @@ define( function( require ) {
           } )
         ]
       } ),
-      new CheckBox( new Text( labelsString, TEXT_OPTIONS ), showLabelsProperty, { // TODO: i18n
+      new CheckBox( new Text( labelsString, TEXT_OPTIONS ), showLabelsProperty, {
         tandem: tandem.createTandem( 'labelsCheckBox' )
       } ),
-      new CheckBox( new Text( valuesString, TEXT_OPTIONS ), showValuesProperty, { // TODO: i18n
+      new CheckBox( new Text( valuesString, TEXT_OPTIONS ), showValuesProperty, {
         tandem: tandem.createTandem( 'valuesCheckBox' )
       } )
     ];
