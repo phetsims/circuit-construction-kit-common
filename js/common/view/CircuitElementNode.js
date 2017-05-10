@@ -119,10 +119,11 @@ define( function( require ) {
     },
 
     /**
-     * TODO: document me
-     * @param circuitNode
-     * @returns {{mouseup: deselect, touchup: deselect}}
-     * TODO: public/private
+     * Create a scenery input listener that deselects the circuit element when the user clicks something else (unless
+     * they click on the controls for the selected component)
+     * @param {CircuitNode} circuitNode - the main circuit node
+     * @returns {Object} the input listener
+     * @private
      */
     createDeselectFunctionListener: function( circuitNode ) {
       var deselect = function( event ) {
