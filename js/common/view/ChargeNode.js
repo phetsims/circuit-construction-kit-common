@@ -63,7 +63,7 @@ define( function( require ) {
     } );
     var outsideOfBlackBoxProperty = new BooleanProperty( false );
 
-    // TODO: When I wrote this with Property.multilink, it failed as #172
+    // Update the visibilty accordingly.  A multilink will not work because the charge circuitElement changes.
     var updateVisible = function() {
       self.visible = charge.visibleProperty.value &&
                      (outsideOfBlackBoxProperty.value || revealingProperty.value) &&
