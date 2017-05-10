@@ -186,8 +186,9 @@ define( function( require ) {
     } );
 
     // Keep track of the last circuit element the user manipulated, for showing additional controls
-    // TODO: Will a11y track this?
-    // TODO: should we have one "selected item" that makes vertices and circuit elements mutually exclusive?
+    // Once this simulation is instrumented for a11y, the focus property can be used to track this.
+    // Note that vertex selection is done via Vertex.selectedProperty.  These strategies can be unified when we
+    // work on a11y
     this.selectedCircuitElementProperty = new Property( null, {
       tandem: tandem.createTandem( 'selectedCircuitElementProperty' ),
       phetioValueType: TObject
