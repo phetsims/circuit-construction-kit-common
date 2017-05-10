@@ -53,6 +53,12 @@
   "voltage": {
     "value": "Voltage"
   },
+  "labels": {
+    "value": "Labels"
+  },
+  "values": {
+    "value": "Values"
+  },
   "ohms": {
     "value": "ohms"
   },

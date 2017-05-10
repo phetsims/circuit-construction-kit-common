@@ -22,6 +22,8 @@ define( function( require ) {
   // strings
   var electronsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/electrons' );
   var conventionalString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/conventional' );
+  var labelsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/labels' );
+  var valuesString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/values' );
 
   // constants
   var TEXT_OPTIONS = {
@@ -85,10 +87,10 @@ define( function( require ) {
           } )
         ]
       } ),
-      new CheckBox( new Text( 'Labels', TEXT_OPTIONS ), showLabelsProperty, { // TODO: i18n
+      new CheckBox( new Text( labelsString, TEXT_OPTIONS ), showLabelsProperty, { // TODO: i18n
         tandem: tandem.createTandem( 'labelsCheckBox' )
       } ),
-      new CheckBox( new Text( 'Values', TEXT_OPTIONS ), showValuesProperty, { // TODO: i18n
+      new CheckBox( new Text( valuesString, TEXT_OPTIONS ), showValuesProperty, { // TODO: i18n
         tandem: tandem.createTandem( 'valuesCheckBox' )
       } )
     ];
