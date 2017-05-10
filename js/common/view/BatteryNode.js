@@ -16,7 +16,6 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
   var Matrix3 = require( 'DOT/Matrix3' );
-  // var Circle = require('SCENERY/nodes/Circle');
 
   // images
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
@@ -46,7 +45,6 @@ define( function( require ) {
     this.battery = battery;
 
     var batteryImageNode = new Image( batteryImage );
-    // var c = new Circle(10,{lineDash:null});
 
     // Points sampled using Photoshop from a raster of the IEEE icon seen at
     // https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
