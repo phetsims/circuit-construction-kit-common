@@ -392,10 +392,14 @@ define( function( require ) {
      * @public
      */
     canNodeDropInToolbox: function( circuitElementNode ) {
+
+      // Only single (unconnected) elements can be dropped into the toolbox
       var isSingle = this.circuitConstructionKitModel.circuit.isSingle( circuitElementNode.circuitElement );
-      var inBounds = this.circuitElementToolbox.globalBounds.containsPoint( circuitElementNode.globalBounds.center );
-      var okToDrop = circuitElementNode.circuitElement.canBeDroppedInToolbox;
-      return isSingle && inBounds && okToDrop;
+
+      // Detect whether the midpoint between the vertices overlaps the toolbox
+      var overToolbox = this.circuitElementToolbox.globalBounds.containsPoint( circuitElementNode.localToGlobalPoint( circuitElementNode.circuitElement.getMidpoint() ) );
+
+      return isSingle && overToolbox && circuitElementNode.circuitElement.canBeDroppedInToolbox;
     },
 
     /**

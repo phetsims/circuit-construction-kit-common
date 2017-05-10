@@ -259,6 +259,17 @@ define( function( require ) {
     },
 
     /**
+     * Get the midpoint between the vertices.  Used for dropping circuit elements into the toolbox.
+     * @returns {Vector2}
+     * @public
+     */
+    getMidpoint: function() {
+      var start = this.startVertexProperty.value.positionProperty.value;
+      var end = this.endVertexProperty.value.positionProperty.value;
+      return start.blend( end, 0.5 );
+    },
+
+    /**
      * Return the indices of the vertices, for debugging.
      * @public
      * @returns {[number,number]}
