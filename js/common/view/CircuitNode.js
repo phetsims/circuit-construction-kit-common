@@ -247,7 +247,7 @@ define( function( require ) {
       if ( adjacentFixedLengthComponents.length > 0 ) {
 
         // move before the first fixed length component
-        var nodes = adjacentFixedLengthComponents.map( function( c ) {return self.getSpecificCircuitElementNode( c );} );
+        var nodes = adjacentFixedLengthComponents.map( function( c ) {return self.getCircuitElementNode( c );} );
         var lowestNode = _.minBy( nodes, function( node ) {return self.mainLayer.indexOfChild( node );} );
         var lowestIndex = self.mainLayer.indexOfChild( lowestNode );
         var solderIndex = self.mainLayer.indexOfChild( solderNode );
@@ -259,7 +259,7 @@ define( function( require ) {
       else if ( adjacentWires.length > 0 ) {
 
         // move after the last wire
-        var wireNodes = adjacentWires.map( function( c ) {return self.getSpecificCircuitElementNode( c );} );
+        var wireNodes = adjacentWires.map( function( c ) {return self.getCircuitElementNode( c );} );
         var topWireNode = _.maxBy( wireNodes, function( node ) {return self.mainLayer.indexOfChild( node );} );
         var topIndex = self.mainLayer.indexOfChild( topWireNode );
         var mySolderIndex = self.mainLayer.indexOfChild( solderNode );
@@ -284,9 +284,9 @@ define( function( require ) {
      * TODO: Document me
      * @param circuitElement
      * @returns {Node}
-     * TODO: private/public
+     * @private
      */
-    getSpecificCircuitElementNode: function( circuitElement ) {
+    getCircuitElementNode: function( circuitElement ) {
       if ( circuitElement instanceof Wire ) {
         return this.getWireNode( circuitElement );
       }
@@ -311,8 +311,9 @@ define( function( require ) {
      * @param {Array.<CircuitElementNode>} nodeArray - the list of nodes to search
      * @param {CircuitElement} circuitElement
      * @returns {CircuitElementNode|null}
+     * @private
      */
-    getCircuitElementNode: function( nodeArray, circuitElement ) {
+    getCircuitElementNodeFromArray: function( nodeArray, circuitElement ) {
       for ( var i = 0; i < nodeArray.length; i++ ) {
         if ( nodeArray[ i ].circuitElement === circuitElement ) {
           return nodeArray[ i ];
@@ -323,12 +324,12 @@ define( function( require ) {
 
 
     // TODO: docs
-    getWireNode: function( wire ) { return this.getCircuitElementNode( this.wireNodes, wire ); },
-    getCCKLightBulbNode: function( lightBulb ) { return this.getCircuitElementNode( this.lightBulbNodes, lightBulb ); },
-    getCCKLightBulbForegroundNode: function( lightBulb ) { return this.getCircuitElementNode( this.lightBulbForegroundNodes, lightBulb ); },
-    getBatteryNode: function( battery ) { return this.getCircuitElementNode( this.batteryNodes, battery ); },
-    getResistorNode: function( resistor ) { return this.getCircuitElementNode( this.resistorNodes, resistor ); },
-    getSwitchNode: function( switchModel ) { return this.getCircuitElementNode( this.switchNodes, switchModel ); },
+    getWireNode: function( wire ) { return this.getCircuitElementNodeFromArray( this.wireNodes, wire ); },
+    getCCKLightBulbNode: function( lightBulb ) { return this.getCircuitElementNodeFromArray( this.lightBulbNodes, lightBulb ); },
+    getCCKLightBulbForegroundNode: function( lightBulb ) { return this.getCircuitElementNodeFromArray( this.lightBulbForegroundNodes, lightBulb ); },
+    getBatteryNode: function( battery ) { return this.getCircuitElementNodeFromArray( this.batteryNodes, battery ); },
+    getResistorNode: function( resistor ) { return this.getCircuitElementNodeFromArray( this.resistorNodes, resistor ); },
+    getSwitchNode: function( switchModel ) { return this.getCircuitElementNodeFromArray( this.switchNodes, switchModel ); },
 
     /**
      * Get the Node for a vertex
