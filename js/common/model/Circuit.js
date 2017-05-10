@@ -334,7 +334,6 @@ define( function( require ) {
       this.selectedCircuitElementProperty.reset();
 
       // Vertices must be cleared from the black box screen--it's not handled by clearing the circuit elements
-      // TODO: Unify these implementations
       if ( window.phetBlackBoxStudy ) {
 
         // clear references, do not dispose because some items get added back in the black box.
