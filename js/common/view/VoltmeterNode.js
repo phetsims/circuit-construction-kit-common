@@ -107,8 +107,10 @@ define( function( require ) {
 
       // When dragging out of the toolbox, the probes move with the body
       if ( voltmeter.draggingProbesWithBodyProperty.get() ) {
-        voltmeter.redProbePositionProperty.set( bodyPosition.plusXY( -100, -30 - bodyNode.height / 2 ) );  // TODO: duplicated
-        voltmeter.blackProbePositionProperty.set( bodyPosition.plusXY( 100, -30 - bodyNode.height / 2 ) );
+        var probeY = -30 - bodyNode.height / 2;
+        var probeOffsetX = 100;
+        voltmeter.redProbePositionProperty.set( bodyPosition.plusXY( -probeOffsetX, probeY ) );
+        voltmeter.blackProbePositionProperty.set( bodyPosition.plusXY( +probeOffsetX, probeY ) );
       }
     } );
 
