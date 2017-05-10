@@ -47,7 +47,6 @@ define( function( require ) {
 
     var wire = new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ), tandem.createTandem( 'wire' ) );
     var wireNode = new WireNode( null, null, wire, null, viewProperty, tandem.createTandem( 'wireIcon' ) );
-    wireNode.accessibleContent = null; // icon should not have accessible content // TODO: explore this.  Do we really need it here?  Do we need it elsewhere?
 
     // Model element used to create the node
     var resistor = new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ), tandem.createTandem( 'resistor' ) );
@@ -55,17 +54,21 @@ define( function( require ) {
     var resistorNode = new ResistorNode( null, null, resistor, null, viewProperty, tandem.createTandem( 'resistorIcon' ), {
       icon: true
     } );
-    resistorNode.accessibleContent = null;
 
     var batteryNode = new Image( batteryMipmap );
 
     var lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ) );
-    lightBulbNode.accessibleContent = null;
 
-    resistorNode.mutate( { scale: ELEMENT_WIDTH / resistorNode.width * 0.75 } );
-    wireNode.mutate( { scale: ELEMENT_WIDTH / wireNode.width * 0.7 } );
-    batteryNode.mutate( { scale: ELEMENT_WIDTH / batteryNode.width } );
-    lightBulbNode.mutate( { scale: ELEMENT_WIDTH / lightBulbNode.width / 2 } );
+    // icons should not be discoverable by assistive technology, and should not be focusable
+    var a11yIconOptions = {
+      tagName: null,
+      focusable: false
+    };
+
+    resistorNode.mutate( _.extend( a11yIconOptions, { scale: ELEMENT_WIDTH / resistorNode.width * 0.75 } ) );
+    wireNode.mutate( _.extend( a11yIconOptions, { scale: ELEMENT_WIDTH / wireNode.width * 0.7 } ) );
+    batteryNode.mutate( _.extend( a11yIconOptions, { scale: ELEMENT_WIDTH / batteryNode.width } ) );
+    lightBulbNode.mutate( _.extend( a11yIconOptions, { scale: ELEMENT_WIDTH / lightBulbNode.width / 2 } ) );
     var vBox = new VBox( {
       spacing: 20,
       children: [ new HBox( { spacing: 20, children: [ wireNode, resistorNode ] } ), new HBox( {
