@@ -142,14 +142,13 @@ define( function( require ) {
         }
       } );
       bodyNode.addInputListener( this.dragHandler );
-      options.visibleBoundsProperty.link( function( visibleBounds ) {
-        self.dragHandler.dragBounds = visibleBounds.eroded( CircuitConstructionKitConstants.DRAG_BOUNDS_EROSION );
-      } );
       var probeDragHandler = new MovableDragHandler( ammeter.probePositionProperty, {
         tandem: tandem.createTandem( 'probeDragHandler' )
       } );
       options.visibleBoundsProperty.link( function( visibleBounds ) {
-        probeDragHandler.dragBounds = visibleBounds.eroded( CircuitConstructionKitConstants.DRAG_BOUNDS_EROSION ); // TODO: factor out
+        var erodedDragBounds = visibleBounds.eroded( CircuitConstructionKitConstants.DRAG_BOUNDS_EROSION );
+        self.dragHandler.dragBounds = erodedDragBounds;
+        probeDragHandler.dragBounds = erodedDragBounds;
       } );
       this.probeNode.addInputListener( probeDragHandler );
     }
