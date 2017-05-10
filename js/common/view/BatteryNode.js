@@ -40,10 +40,6 @@ define( function( require ) {
     // @public (read-only) - the Battery rendered by this Node
     this.battery = battery;
 
-    options = _.extend( {
-      verticalOffset: 15 // TODO: document
-    }, options );
-
     var batteryImageNode = new Image( batteryImage );
 
     // Align vertically

@@ -55,16 +55,12 @@ define( function( require ) {
       schematicNode.visible = view !== 'lifelike';
     } );
 
-    // Capture the original dimensions of the content node, without the highlight node
-    var contentNodeHeight = contentNode.height;
-
     var highlightParent = new Node();
 
     var scratchMatrix = new Matrix3();
     var scratchMatrix2 = new Matrix3();
     options = _.extend( {
       icon: false,
-      verticalOffset: 0,
       updateLayout: function( startPosition, endPosition ) {
         var delta = endPosition.minus( startPosition );
         var angle = delta.angle();
@@ -73,7 +69,7 @@ define( function( require ) {
         scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
           .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
           .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) )
-          .multiplyMatrix( scratchMatrix2.setToTranslation( 0, -contentNodeHeight / 2 + options.verticalOffset ) );
+          .multiplyMatrix( scratchMatrix2.setToTranslation( 0, -23.5 ) ); // TODO: where does this magic number come from?
         contentNode.setMatrix( scratchMatrix );
         highlightNode && highlightParent.setMatrix( scratchMatrix.copy() );
 
