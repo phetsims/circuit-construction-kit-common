@@ -80,7 +80,7 @@ define( function( require ) {
       viewProperty,
       batteryImageNode,
       schematicNode,
-      0.7, // TODO: document
+      0.7, // scale factor to make the resistor fit the ditsance between vertices
       tandem,
       options
     );
