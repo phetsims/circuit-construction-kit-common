@@ -156,7 +156,7 @@ define( function( require ) {
      * @param event
      * @param circuitNode
      * @param startPoint
-     * TODO: public/private
+     * @public
      */
     selectVertexWhenNear: function( event, circuitNode, startPoint ) {
 
