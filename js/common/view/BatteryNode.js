@@ -16,14 +16,19 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
   var Matrix3 = require( 'DOT/Matrix3' );
+  // var Circle = require('SCENERY/nodes/Circle');
 
   // images
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
 
   // constants
-
-  // Offset at left vertex
-  var LEFT_OFFSET = -47;
+  // dimensions for schematic battery
+  var SMALL_TERMINAL_WIDTH = 50;
+  var LARGE_TERMINAL_WIDTH = 104;
+  var WIDTH = 188;
+  var GAP = 33;
+  var LEFT_JUNCTION = WIDTH / 2 - GAP / 2;
+  var RIGHT_JUNCTION = WIDTH / 2 + GAP / 2;
 
   /**
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
@@ -41,25 +46,25 @@ define( function( require ) {
     this.battery = battery;
 
     var batteryImageNode = new Image( batteryImage );
-
-    // Align vertically
-    var y = batteryImageNode.height / 2 + 7;
+    // var c = new Circle(10,{lineDash:null});
 
     // Points sampled using Photoshop from a raster of the IEEE icon seen at
     // https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
-    // TODO: clean up the geometry
     var schematicShape = new Shape()
-      .moveTo( 47 + LEFT_OFFSET, y )
-      .lineTo( 123 + LEFT_OFFSET, y )
-      .moveTo( 123 + LEFT_OFFSET, 122 - 99 + y )
-      .lineTo( 123 + LEFT_OFFSET, 74 - 99 + y )
-      .moveTo( 156 + LEFT_OFFSET, y )
-      .lineTo( 235 + LEFT_OFFSET, y )
-      .moveTo( 156 + LEFT_OFFSET, 151 - 99 + y )
-      .lineTo( 156 + LEFT_OFFSET, 46 - 99 + y );
+      .moveTo( 0, 0 ) // left wire
+      .lineTo( LEFT_JUNCTION, 0 )
+      .moveTo( LEFT_JUNCTION, SMALL_TERMINAL_WIDTH / 2 ) // left plate
+      .lineTo( LEFT_JUNCTION, -SMALL_TERMINAL_WIDTH / 2 )
+      .moveTo( RIGHT_JUNCTION, 0 ) // right wire
+      .lineTo( WIDTH, 0 )
+      .moveTo( RIGHT_JUNCTION, LARGE_TERMINAL_WIDTH / 2 ) // right plate
+      .lineTo( RIGHT_JUNCTION, -LARGE_TERMINAL_WIDTH / 2 );
     var schematicWidth = schematicShape.bounds.width;
     var desiredWidth = batteryImageNode.width;
     var schematicScale = desiredWidth / schematicWidth;
+
+    // Align vertically
+    schematicShape = schematicShape.transformed( Matrix3.translation( 0, batteryImageNode.height / 2 + 7 ) );
 
     // Scale to fit the correct width
     schematicShape = schematicShape.transformed( Matrix3.scale( schematicScale, schematicScale ) );
