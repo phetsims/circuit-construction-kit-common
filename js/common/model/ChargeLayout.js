@@ -39,9 +39,6 @@ define( function( require ) {
       if ( circuitElement.chargeLayoutDirty ) {
 
         // Remove any charges that were already in the branch.
-        // TODO: a performance improvement could be to adjust them instead of delete/recreate. This could particularly
-        // help when dragging a wire, and the charges are continually re-layed-out.  Initial tests can estimate
-        // an upper bound benefit by not calling this at all.
         var chargesToRemove = this.circuit.getChargesInCircuitElement( circuitElement );
         this.circuit.charges.removeAll( chargesToRemove );
 
