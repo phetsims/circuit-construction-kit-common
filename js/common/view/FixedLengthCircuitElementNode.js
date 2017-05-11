@@ -19,9 +19,6 @@ define( function( require ) {
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitElementNode' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var Panel = require( 'SUN/Panel' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var Color = require( 'SCENERY/util/Color' );
   var Image = require( 'SCENERY/nodes/Image' );
   var Vector2 = require( 'DOT/Vector2' );
   var FixedLengthCircuitElementHighlightNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/FixedLengthCircuitElementHighlightNode' );
@@ -45,7 +42,7 @@ define( function( require ) {
     assert && assert( lifelikeNode !== schematicNode, 'schematicNode should be different than lifelikeNode' );
     var self = this;
 
-    // node that shows the component, separate from the part that shows the highlight
+    // node that shows the component, separate from the part that shows the highlight and the fire
     var contentNode = new Node();
     this.contentNode = contentNode;// TODO eliminate redundant
 
@@ -65,7 +62,11 @@ define( function( require ) {
       icon: false,
 
       // TODO: move to prototype?
-      updateLayout: function( startPosition, endPosition ) {
+      // TODO: this is getting called twice per drag.  Perhaps mark as dirty then update in view step?
+      updateLayout: function() {
+        var startPosition = circuitElement.startVertexProperty.get().positionProperty.get();
+        var endPosition = circuitElement.endVertexProperty.get().positionProperty.get();
+        console.log( startPosition, endPosition );
         var delta = endPosition.minus( startPosition );
         var angle = delta.angle();
         var center = startPosition.blend( endPosition, 0.5 );
@@ -95,15 +96,7 @@ define( function( require ) {
     }
 
     // Relink when start vertex changes
-    var multilink = null;
-    var relink = function() {
-      multilink && multilink.dispose();
-      multilink = Property.multilink( [
-        circuitElement.startVertexProperty.get().positionProperty,
-        circuitElement.endVertexProperty.get().positionProperty
-      ], options.updateLayout );
-    };
-    relink();
+    circuitElement.vertexMovedEmitter.addListener( options.updateLayout );
 
     var moveToFront = function() {
 
@@ -117,9 +110,6 @@ define( function( require ) {
     };
     circuitElement.connectedEmitter.addListener( moveToFront );
     circuitElement.vertexSelectedEmitter.addListener( moveToFront );
-
-    circuitElement.startVertexProperty.lazyLink( relink );
-    circuitElement.endVertexProperty.lazyLink( relink );
 
     var circuit = circuitNode && circuitNode.circuit;
     CircuitElementNode.call( this, circuitElement, circuit, _.extend( {
@@ -239,8 +229,8 @@ define( function( require ) {
       if ( self.inputListener && self.inputListener.dragging ) {
         self.inputListener.endDrag();
       }
-      multilink && multilink.dispose();
-      multilink = null; // Mark null so it doesn't get disposed again in relink()
+
+      circuitElement.vertexMovedEmitter.removeListener( options.updateLayout );
 
       updateSelectionHighlight && circuitNode.circuit.selectedCircuitElementProperty.unlink( updateSelectionHighlight );
 
@@ -250,9 +240,6 @@ define( function( require ) {
       circuitElement.interactiveProperty.unlink( pickableListener );
 
       circuitNode && circuitNode.highlightLayer.removeChild( highlightNode );
-
-      circuitElement.startVertexProperty.unlink( relink );
-      circuitElement.endVertexProperty.unlink( relink );
 
       if ( !options.icon && circuitElement instanceof Battery ) {
         Property.unmultilink( updateFireMultilink );
