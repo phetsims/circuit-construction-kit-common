@@ -45,6 +45,7 @@ define( function( require ) {
                                           lifelikeNode, schematicNode, tandem, options ) {
     assert && assert( lifelikeNode !== schematicNode, 'schematicNode should be different than lifelikeNode' );
     var self = this;
+    this.circuitElement = circuitElement;
 
     // node that shows the component, separate from the part that shows the highlight and the fire
     this.contentNode = new Node();
@@ -68,8 +69,8 @@ define( function( require ) {
 
     // Add highlight (but not for icons)
     if ( !options.icon ) {
-      var highlightNode = new FixedLengthCircuitElementHighlightNode( this, {} );
-      circuitNode.highlightLayer.addChild( highlightNode );
+      this.highlightNode = new FixedLengthCircuitElementHighlightNode( this, {} );
+      circuitNode.highlightLayer.addChild( this.highlightNode );
     }
     var updateLayoutCallabck = function() {
       self.updateLayout();
@@ -164,7 +165,7 @@ define( function( require ) {
     if ( !options.icon ) {
       var updateSelectionHighlight = function( lastCircuitElement ) {
         var showHighlight = lastCircuitElement === circuitElement;
-        highlightNode.visible = showHighlight;
+        self.highlightNode.visible = showHighlight;
       };
       circuitNode.circuit.selectedCircuitElementProperty.link( updateSelectionHighlight );
     }
@@ -213,35 +214,11 @@ define( function( require ) {
 
       circuitElement.interactiveProperty.unlink( pickableListener );
 
-      circuitNode && circuitNode.highlightLayer.removeChild( highlightNode );
+      circuitNode && circuitNode.highlightLayer.removeChild( self.highlightNode );
 
       if ( !options.icon && circuitElement instanceof Battery ) {
         Property.unmultilink( updateFireMultilink );
       }
-    };
-
-    // TODO: doc/cleanup/move to prototype?
-    this.updateRender = function() {
-      var startPosition = circuitElement.startVertexProperty.get().positionProperty.get();
-      var endPosition = circuitElement.endVertexProperty.get().positionProperty.get();
-      var delta = endPosition.minus( startPosition );
-      var angle = delta.angle();
-      var center = startPosition.blend( endPosition, 0.5 );
-
-      // Update the node transform in a single step, see #66
-      transform.setToTranslation( center.x, center.y ).multiplyMatrix( rotationMatrix.setToRotationZ( angle ) );
-      self.contentNode.setMatrix( transform );
-      highlightNode && highlightNode.setMatrix( transform.copy() );
-
-      // Update the fire transform
-      var flameExtent = 0.8;
-      var scale = delta.magnitude() / fireImage[ 0 ].width * flameExtent;
-      var flameInset = (1 - flameExtent) / 2;
-      transform.setToTranslation( startPosition.x, startPosition.y )
-        .multiplyMatrix( rotationMatrix.setToRotationZ( angle ) )
-        .multiplyMatrix( rotationMatrix.setToScale( scale ) )
-        .multiplyMatrix( rotationMatrix.setToTranslation( delta.magnitude() * flameInset / scale, -fireImage[ 0 ].height ) );
-      self.fireNode && self.fireNode.setMatrix( transform.copy() );
     };
   }
 
@@ -253,6 +230,31 @@ define( function( require ) {
     updateLayout: function() {
       this.dirty = true;
     },
+
+    updateRender: function() {
+      // TODO: doc/cleanup/move to prototype?
+      var startPosition = this.circuitElement.startVertexProperty.get().positionProperty.get();
+      var endPosition = this.circuitElement.endVertexProperty.get().positionProperty.get();
+      var delta = endPosition.minus( startPosition );
+      var angle = delta.angle();
+      var center = startPosition.blend( endPosition, 0.5 );
+
+      // Update the node transform in a single step, see #66
+      transform.setToTranslation( center.x, center.y ).multiplyMatrix( rotationMatrix.setToRotationZ( angle ) );
+      this.contentNode.setMatrix( transform );
+      this.highlightNode && this.highlightNode.setMatrix( transform.copy() );
+
+      // Update the fire transform
+      var flameExtent = 0.8;
+      var scale = delta.magnitude() / fireImage[ 0 ].width * flameExtent;
+      var flameInset = (1 - flameExtent) / 2;
+      transform.setToTranslation( startPosition.x, startPosition.y )
+        .multiplyMatrix( rotationMatrix.setToRotationZ( angle ) )
+        .multiplyMatrix( rotationMatrix.setToScale( scale ) )
+        .multiplyMatrix( rotationMatrix.setToTranslation( delta.magnitude() * flameInset / scale, -fireImage[ 0 ].height ) );
+      this.fireNode && this.fireNode.setMatrix( transform.copy() );
+    },
+
     step: function() {
       if ( this.dirty ) {
         this.updateRender();

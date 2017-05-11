@@ -1,7 +1,7 @@
 // Copyright 2015-2017, University of Colorado Boulder
 
 /**
- * Shows the base of the light bulb only, so that it will appear that the electrons go "inside" the base.
+ * Shows the socket (base) of the light bulb only, so that it will appear that the electrons go "inside" the base.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -17,6 +17,11 @@ define( function( require ) {
   var Matrix3 = require( 'DOT/Matrix3' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
+  // TODO: Factor out this matrix logic, it seems to be used in many places.
+  var contentScale = 2.5;
+  var scratchMatrix = new Matrix3();
+  var scratchMatrix2 = new Matrix3();
+
   /**
    * This constructor is called dynamically and must match the signature of other circuit element nodes.
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - the main screen view
@@ -29,7 +34,6 @@ define( function( require ) {
    * @constructor
    */
   function CCKLightBulbForegroundNode( circuitConstructionKitScreenView, circuitNode, lightBulb, runningProperty, viewProperty, tandem, options ) {
-    var self = this;
     // TODO: factor out duplicated code between this class and CCKLightBulbNode
 
     // TODO: This is overkill, we should just have an Image, without all of the extra brightness lines, etc.
@@ -38,25 +42,6 @@ define( function( require ) {
       scale: 3.5
     } );
 
-    // TODO: Factor out this matrix logic, it seems to be used in many places.
-    var contentScale = 2.5;
-    var scratchMatrix = new Matrix3();
-    var scratchMatrix2 = new Matrix3();
-
-    // TODO: move to prototype
-    this.updateRender = function() {
-      var startPosition = lightBulb.startVertexProperty.get().positionProperty.get();
-      var endPosition = lightBulb.endVertexProperty.get().positionProperty.get();
-      var angle = endPosition.minus( startPosition ).angle() + Math.PI / 4;
-
-      // Update the node transform in a single step, see #66
-      scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
-        .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
-        .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) );
-      lightBulbNode.setMatrix( scratchMatrix );
-
-      self.highlightParent && self.highlightParent.setMatrix( scratchMatrix.copy() );
-    };
     options = _.extend( {
 
       // Override the dimensions of the bulb node because the invisible rays contribute to the bounds.
@@ -73,13 +58,28 @@ define( function( require ) {
       }
     }, options );
     FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, viewProperty, lightBulbNode, new Rectangle( 0, 0, 10, 10 ), tandem, options );
-
   }
 
   circuitConstructionKitCommon.register( 'CCKLightBulbForegroundNode', CCKLightBulbForegroundNode );
 
   return inherit( FixedLengthCircuitElementNode, CCKLightBulbForegroundNode, {
 
+    /**
+     * @override
+     */
+    updateRender: function() {
+      var startPosition = this.circuitElement.startVertexProperty.get().positionProperty.get();
+      var endPosition = this.circuitElement.endVertexProperty.get().positionProperty.get();
+      var angle = endPosition.minus( startPosition ).angle() + Math.PI / 4;
+
+      // Update the node transform in a single step, see #66
+      scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
+        .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
+        .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) );
+      this.contentNode.setMatrix( scratchMatrix );
+
+      self.highlightParent && self.highlightParent.setMatrix( scratchMatrix.copy() );
+    },
     /**
      * Maintain the opacity of the brightness lines while changing the opacity of the light bulb itself.
      * @override

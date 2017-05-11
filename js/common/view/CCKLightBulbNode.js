@@ -23,6 +23,11 @@ define( function( require ) {
   // images
   var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
 
+  // constants
+  var contentScale = 2.5;
+  var scratchMatrix = new Matrix3();
+  var scratchMatrix2 = new Matrix3();
+
   /**
    * This constructor is called dynamically and must match the signature of other circuit element nodes.
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - the main screen view
@@ -35,7 +40,6 @@ define( function( require ) {
    * @constructor
    */
   function CCKLightBulbNode( circuitConstructionKitScreenView, circuitNode, lightBulb, runningProperty, viewProperty, tandem, options ) {
-    var self = this;
     var brightnessProperty = new NumberProperty( 0 );
     var updateBrightness = Property.multilink( [ lightBulb.currentProperty, runningProperty, lightBulb.voltageDifferenceProperty ], function( current, running, voltageDifference ) {
       var power = Math.abs( current * voltageDifference );
@@ -54,33 +58,7 @@ define( function( require ) {
     var lightBulbNode = new CustomLightBulbNode( brightnessProperty, {
       scale: 3.5
     } );
-    var contentScale = 2.5;
-    var scratchMatrix = new Matrix3();
-    var scratchMatrix2 = new Matrix3();
 
-    // TODO: move to prototype
-    this.updateRender = function() {
-      var startPosition = lightBulb.startVertexProperty.get().positionProperty.get();
-      var endPosition = lightBulb.endVertexProperty.get().positionProperty.get();
-      var delta = endPosition.minus( startPosition );
-      var angle = delta.angle() + Math.PI / 4;
-
-      // TODO: factor out matrix logic
-      // Update the node transform in a single step, see #66
-      scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
-        .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
-        .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) );
-      lightBulbNode.setMatrix( scratchMatrix );
-
-      // Update the fire transform
-      scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
-        .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
-        .multiplyMatrix( scratchMatrix2.setToScale( contentScale / 12 ) )
-        .multiplyMatrix( scratchMatrix2.setToTranslation( -100, -fireImage[ 0 ].height - 350 ) );
-      self.fireNode && self.fireNode.setMatrix( scratchMatrix.copy() );
-
-      self.highlightParent && self.highlightParent.setMatrix( scratchMatrix.copy() );
-    };
     options = _.extend( {
 
       // Override the dimensions of the bulb node because the invisible rays contribute to the bounds.
@@ -104,7 +82,28 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'CCKLightBulbNode', CCKLightBulbNode );
 
   return inherit( FixedLengthCircuitElementNode, CCKLightBulbNode, {
+    updateRender: function() {
+      var startPosition = this.circuitElement.startVertexProperty.get().positionProperty.get();
+      var endPosition = this.circuitElement.endVertexProperty.get().positionProperty.get();
+      var delta = endPosition.minus( startPosition );
+      var angle = delta.angle() + Math.PI / 4;
 
+      // TODO: factor out matrix logic
+      // Update the node transform in a single step, see #66
+      scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
+        .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
+        .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) );
+      this.contentNode.setMatrix( scratchMatrix );
+
+      // Update the fire transform
+      scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
+        .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
+        .multiplyMatrix( scratchMatrix2.setToScale( contentScale / 12 ) )
+        .multiplyMatrix( scratchMatrix2.setToTranslation( -100, -fireImage[ 0 ].height - 350 ) );
+      self.fireNode && self.fireNode.setMatrix( scratchMatrix.copy() );
+
+      self.highlightParent && self.highlightParent.setMatrix( scratchMatrix.copy() );
+    },
     /**
      * Dispose when no longer used.
      * @public
