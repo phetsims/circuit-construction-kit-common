@@ -3,7 +3,7 @@
     "value": "Circuit Construction Kit"
   },
   "resistor": {
-    "value": "resistor"
+    "value": "Resistor"
   },
   "tiny": {
     "value": "tiny"
@@ -18,16 +18,16 @@
     "value": "Battery Resistance"
   },
   "battery": {
-    "value": "battery"
+    "value": "Battery"
   },
   "lightBulb": {
-    "value": "light bulb"
+    "value": "Light Bulb"
   },
   "switch": {
-    "value": "switch"
+    "value": "Switch"
   },
   "wire": {
-    "value": "wire"
+    "value": "Wire"
   },
   "questionMark": {
     "value": "?"

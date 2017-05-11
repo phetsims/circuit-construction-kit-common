@@ -18,7 +18,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   // TODO: Factor out this matrix logic, it seems to be used in many places.
-  var contentScale = 1;
+  var contentScale = 0.72;
   var scratchMatrix = new Matrix3();
   var scratchMatrix2 = new Matrix3();
 
@@ -59,6 +59,11 @@ define( function( require ) {
       centerChildren: false
     }, options );
     FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, viewProperty, lightBulbNode, new Rectangle( 0, 0, 10, 10 ), tandem, options );
+
+    // Suppress the highlight for the socket, the highlight is shown for the CCKLightBulbNode
+    if ( this.highlightNode ) {
+      this.highlightNode.stroke = null;
+    }
   }
 
   circuitConstructionKitCommon.register( 'LightBulbSocketNode', LightBulbSocketNode );
@@ -78,8 +83,6 @@ define( function( require ) {
         .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
         .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) );
       this.contentNode.setMatrix( scratchMatrix );
-
-      self.highlightParent && self.highlightParent.setMatrix( scratchMatrix.copy() );
     },
     /**
      * Maintain the opacity of the brightness lines while changing the opacity of the light bulb itself.
