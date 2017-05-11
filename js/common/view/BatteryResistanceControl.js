@@ -13,6 +13,7 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var AccordionBox = require( 'SUN/AccordionBox' );
+  var Panel = require( 'SUN/Panel' );
   var Text = require( 'SCENERY/nodes/Text' );
   var HSlider = require( 'SUN/HSlider' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
@@ -76,17 +77,8 @@ define( function( require ) {
         numberNode.setText( StringUtils.fillIn( resistanceUnitsString, { resistance: Util.toFixed( value, 1 ) } ) );
       } );
 
-      // background for displaying the value
-      // TODO: This will become a panel, see https://github.com/phetsims/circuit-construction-kit-common/issues/305
-      var backgroundNode = new Rectangle( 0, 0, 60, 20, 2, 2, {
-        fill: 'white',
-        stroke: 'black',
-        lineWidth: 1,
-        tandem: backgroundNodesGroupTandem.createNextTandem()
-      } );
-      numberNode.center = backgroundNode.center;
-      var valueParent = new Node( {
-        children: [ backgroundNode, numberNode ],
+      var valueParent = new Panel( numberNode, {
+        cornerRadius: 5,
         tandem: valueParentsGroupTandem.createNextTandem()
       } );
 
