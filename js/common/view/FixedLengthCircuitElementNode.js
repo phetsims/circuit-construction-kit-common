@@ -47,8 +47,7 @@ define( function( require ) {
     var self = this;
 
     // node that shows the component, separate from the part that shows the highlight and the fire
-    var contentNode = new Node();
-    this.contentNode = contentNode;// TODO eliminate redundant
+    this.contentNode = new Node();
 
     // Center the nodes so they will be easy to position
     lifelikeNode.center = Vector2.ZERO;
@@ -56,17 +55,14 @@ define( function( require ) {
 
     // Show the selected node
     viewProperty.link( function( view ) {
-      contentNode.children = [ view === 'lifelike' ? lifelikeNode : schematicNode ];
+      self.contentNode.children = [ view === 'lifelike' ? lifelikeNode : schematicNode ];
     } );
+
+    // Flag to indicate when updating view is necessary, in order to avoid duplicate work when both vertices move
+    this.dirty = true;
 
     options = _.extend( {
       icon: false,
-
-      // TODO: move to prototype?
-      // TODO: this is getting called twice per drag.  Perhaps mark as dirty then update in view step?
-      updateLayout: function() {
-        self.dirty = true;
-      },
       highlightOptions: {}
     }, options );
 
@@ -75,9 +71,12 @@ define( function( require ) {
       var highlightNode = new FixedLengthCircuitElementHighlightNode( this, {} );
       circuitNode.highlightLayer.addChild( highlightNode );
     }
+    var updateLayoutCallabck = function() {
+      self.updateLayout();
+    };
 
     // Relink when start vertex changes
-    circuitElement.vertexMovedEmitter.addListener( options.updateLayout );
+    circuitElement.vertexMovedEmitter.addListener( updateLayoutCallabck );
 
     var moveToFront = function() {
 
@@ -96,7 +95,7 @@ define( function( require ) {
     CircuitElementNode.call( this, circuitElement, circuit, _.extend( {
       cursor: 'pointer',
       children: [ // TODO: this is a code smell if there is only one child of a node
-        contentNode
+        self.contentNode
       ],
       tandem: tandem
     }, options ) );
@@ -138,7 +137,7 @@ define( function( require ) {
             var delayMS = Math.max( 500 - lifetime, 0 );
 
             // If over the toolbox, then drop into it, and don't process further
-            contentNode.removeInputListener( self.inputListener );
+            self.contentNode.removeInputListener( self.inputListener );
 
             var id = setTimeout( function() {
               circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
@@ -159,7 +158,7 @@ define( function( require ) {
           }
         }
       } );
-      contentNode.addInputListener( this.inputListener );
+      self.contentNode.addInputListener( this.inputListener );
     }
 
     if ( !options.icon ) {
@@ -172,7 +171,7 @@ define( function( require ) {
 
     if ( !options.icon && (circuitElement instanceof Battery || circuitElement instanceof Resistor) ) {
       this.fireNode = new Image( fireImage, { pickable: false, opacity: 0.95 } );
-      this.fireNode.mutate( { scale: contentNode.width / this.fireNode.width } );
+      this.fireNode.mutate( { scale: self.contentNode.width / this.fireNode.width } );
       this.addChild( this.fireNode );
 
       var showFire = function( current, exploreScreenRunning ) {
@@ -199,16 +198,13 @@ define( function( require ) {
                                 } ));
     }
 
-    // Update after the highlight/readout/fire exist
-    options.updateLayout();
-
     // @private - for disposal
     this.disposeFixedLengthCircuitElementNode = function() {
       if ( self.inputListener && self.inputListener.dragging ) {
         self.inputListener.endDrag();
       }
 
-      circuitElement.vertexMovedEmitter.removeListener( options.updateLayout );
+      circuitElement.vertexMovedEmitter.removeListener( updateLayoutCallabck );
 
       updateSelectionHighlight && circuitNode.circuit.selectedCircuitElementProperty.unlink( updateSelectionHighlight );
 
@@ -234,7 +230,7 @@ define( function( require ) {
 
       // Update the node transform in a single step, see #66
       transform.setToTranslation( center.x, center.y ).multiplyMatrix( rotationMatrix.setToRotationZ( angle ) );
-      contentNode.setMatrix( transform );
+      self.contentNode.setMatrix( transform );
       highlightNode && highlightNode.setMatrix( transform.copy() );
 
       // Update the fire transform
@@ -253,6 +249,10 @@ define( function( require ) {
 
   return inherit( CircuitElementNode, FixedLengthCircuitElementNode, {
 
+    // Mark dirty to avoid duplicate work
+    updateLayout: function() {
+      this.dirty = true;
+    },
     step: function() {
       if ( this.dirty ) {
         this.updateRender();

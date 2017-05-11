@@ -57,7 +57,11 @@ define( function( require ) {
     var contentScale = 2.5;
     var scratchMatrix = new Matrix3();
     var scratchMatrix2 = new Matrix3();
-    var updateLayout = function( startPosition, endPosition ) {
+
+    // TODO: move to prototype
+    this.updateRender = function() {
+      var startPosition = lightBulb.startVertexProperty.get().positionProperty.get();
+      var endPosition = lightBulb.endVertexProperty.get().positionProperty.get();
       var delta = endPosition.minus( startPosition );
       var angle = delta.angle() + Math.PI / 4;
 
@@ -78,7 +82,6 @@ define( function( require ) {
       self.highlightParent && self.highlightParent.setMatrix( scratchMatrix.copy() );
     };
     options = _.extend( {
-      updateLayout: updateLayout,
 
       // Override the dimensions of the bulb node because the invisible rays contribute to the bounds.
       contentWidth: 12 * 0.3,
@@ -92,9 +95,6 @@ define( function( require ) {
       }
     }, options );
     FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, viewProperty, lightBulbNode, new Rectangle( 0, 0, 10, 10 ), tandem, options );
-
-    // Set the initial location of the highlight, since it was not available in the supercall to updateLayout
-    updateLayout( lightBulb.startVertexProperty.get().positionProperty.get(), lightBulb.endVertexProperty.get().positionProperty.get() );
 
     this.disposeCCKLightBulbNode = function() {
       updateBrightness.dispose();
