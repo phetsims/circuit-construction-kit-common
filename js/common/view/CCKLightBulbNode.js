@@ -100,14 +100,14 @@ define( function( require ) {
         .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) );
       this.contentNode.setMatrix( scratchMatrix );
 
+      this.highlightNode && this.highlightNode.setMatrix( scratchMatrix.copy() );
+
       // Update the fire transform
       scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
         .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
         .multiplyMatrix( scratchMatrix2.setToScale( contentScale / 12 ) )
         .multiplyMatrix( scratchMatrix2.setToTranslation( -100, -fireImage[ 0 ].height - 350 ) );
-      self.fireNode && self.fireNode.setMatrix( scratchMatrix.copy() );
-
-      self.highlightParent && self.highlightParent.setMatrix( scratchMatrix.copy() );
+      this.fireNode && this.fireNode.setMatrix( scratchMatrix.copy() );
     },
     /**
      * Dispose when no longer used.

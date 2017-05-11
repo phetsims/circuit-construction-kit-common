@@ -59,6 +59,11 @@ define( function( require ) {
       centerChildren: false
     }, options );
     FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, viewProperty, lightBulbNode, new Rectangle( 0, 0, 10, 10 ), tandem, options );
+
+    // Suppress the highlight for the socket, the highlight is shown for the CCKLightBulbNode
+    if ( this.highlightNode ) {
+      this.highlightNode.stroke = null;
+    }
   }
 
   circuitConstructionKitCommon.register( 'LightBulbSocketNode', LightBulbSocketNode );
@@ -78,8 +83,6 @@ define( function( require ) {
         .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
         .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) );
       this.contentNode.setMatrix( scratchMatrix );
-
-      self.highlightParent && self.highlightParent.setMatrix( scratchMatrix.copy() );
     },
     /**
      * Maintain the opacity of the brightness lines while changing the opacity of the light bulb itself.
