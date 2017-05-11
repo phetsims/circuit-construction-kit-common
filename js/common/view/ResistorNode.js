@@ -18,18 +18,19 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
   var Color = require( 'SCENERY/util/Color' );
+  var Matrix3 = require( 'DOT/Matrix3' );
 
   // images
   var lifelikeResistorImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor.png' );
 
   // constants
-  var LIFELIKE_IMAGE_SCALE = 0.7;
+  var LIFELIKE_IMAGE_SCALE = 1.0;
   var LIFELIKE_IMAGE_WIDTH = lifelikeResistorImage[ 0 ].width / LIFELIKE_IMAGE_SCALE;
   var COLOR_BAND_WIDTH = 10;
   var COLOR_BAND_HEIGHT = 39.75;
   var COLOR_BAND_TOP = -0.25;
-  var COLOR_BAND_INSET = 36;
-  var AVAILABLE_COLOR_BAND_SPACE = LIFELIKE_IMAGE_WIDTH * 0.75 - 2 * COLOR_BAND_INSET;
+  var COLOR_BAND_INSET = 33;
+  var AVAILABLE_COLOR_BAND_SPACE = LIFELIKE_IMAGE_WIDTH - 2 * COLOR_BAND_INSET;
   var REMAINING_COLOR_BAND_SPACE = AVAILABLE_COLOR_BAND_SPACE - 4 * COLOR_BAND_WIDTH;// max is 4 bands, even though they are not always shown
   var COLOR_BAND_SPACING = REMAINING_COLOR_BAND_SPACE / 4 - 2; // two spaces before last band
   var COLOR_BAND_Y = lifelikeResistorImage[ 0 ].height / 2 / LIFELIKE_IMAGE_SCALE - COLOR_BAND_HEIGHT / LIFELIKE_IMAGE_SCALE / 2 + COLOR_BAND_TOP;
@@ -39,7 +40,7 @@ define( function( require ) {
   var SCHEMATIC_PERIOD = 22 * SCHEMATIC_SCALE;
   var SCHEMATIC_STEM_WIDTH = 84 * SCHEMATIC_SCALE;
   var SCHEMATIC_WAVELENGTH = 54 * SCHEMATIC_SCALE;
-  var SCHEMATIC_LINE_WIDTH = 6;
+  var SCHEMATIC_LINE_WIDTH = 4; // TODO: factor out
 
   /**
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
@@ -122,6 +123,12 @@ define( function( require ) {
       .lineToRelative( SCHEMATIC_PERIOD, SCHEMATIC_WAVELENGTH )
       .lineToRelative( SCHEMATIC_PERIOD / 2, -SCHEMATIC_WAVELENGTH / 2 )
       .lineToRelative( SCHEMATIC_STEM_WIDTH, 0 );
+
+    lifelikeResistorImageNode.mutate( {
+      scale: resistor.distanceBetweenVertices / lifelikeResistorImageNode.width
+    } );
+    var scale = lifelikeResistorImageNode.width / schematicShape.bounds.width;
+    schematicShape = schematicShape.transformed( Matrix3.scale( scale, scale ) );
     var schematicNode = new Path( schematicShape, { stroke: 'black', lineWidth: SCHEMATIC_LINE_WIDTH } );
     schematicNode.mouseArea = schematicNode.bounds;
     schematicNode.touchArea = schematicNode.bounds;
@@ -134,7 +141,6 @@ define( function( require ) {
       viewProperty,
       lifelikeResistorImageNode,
       schematicNode,
-      LIFELIKE_IMAGE_SCALE,
       tandem,
       options
     );

@@ -2,7 +2,7 @@
 // TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- * Renders and provides interactivity for FixedLengthCircuitElements (all CircuitElements except Wires)
+ * Renders and provides interactivity for FixedLengthCircuitElements (all CircuitElements except Wires).
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -12,12 +12,10 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Battery' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Resistor' );
   var Property = require( 'AXON/Property' );
   var TandemSimpleDragHandler = require( 'TANDEM/scenery/input/TandemSimpleDragHandler' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitElementNode' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -25,6 +23,8 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Color = require( 'SCENERY/util/Color' );
   var Image = require( 'SCENERY/nodes/Image' );
+  var Vector2 = require( 'DOT/Vector2' );
+  var FixedLengthCircuitElementHighlightNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/FixedLengthCircuitElementHighlightNode' );
 
   // images
   var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
@@ -36,56 +36,58 @@ define( function( require ) {
    * @param {Property.<string>} viewProperty - 'lifelike'|'schematic'
    * @param {Node} lifelikeNode - the node that will display the component as a lifelike object
    * @param {Node} schematicNode - the node that will display the component
-   * @param {number} contentScale - the scale factor to apply to the image for the size in the play area (icons are automatically scaled up)
    * @param {Tandem} tandem
    * @param options
    * @constructor
    */
   function FixedLengthCircuitElementNode( circuitConstructionKitScreenView, circuitNode, circuitElement, viewProperty,
-                                          lifelikeNode, schematicNode, contentScale, tandem, options ) {
+                                          lifelikeNode, schematicNode, tandem, options ) {
     assert && assert( lifelikeNode !== schematicNode, 'schematicNode should be different than lifelikeNode' );
     var self = this;
 
+    // node that shows the component, separate from the part that shows the readout or highlight
     var contentNode = new Node();
+    this.contentNode = contentNode;// TODO eliminate redundant
 
-    // TODO: maybe it would be better to only have one node in the content at once, perhaps this node won't be necessary
-    contentNode.children = [ lifelikeNode, schematicNode ];
+    // Center the nodes so they will be easy to position
+    lifelikeNode.center = Vector2.ZERO;
+    schematicNode.center = Vector2.ZERO;
+
+    // Show the selected node
     viewProperty.link( function( view ) {
-      lifelikeNode.visible = view === 'lifelike';
-      schematicNode.visible = view !== 'lifelike';
+      contentNode.children = [ view === 'lifelike' ? lifelikeNode : schematicNode ];
     } );
 
-    var highlightParent = new Node();
+    var transform = new Matrix3();
+    var rotationMatrix = new Matrix3();
 
-    var scratchMatrix = new Matrix3();
-    var scratchMatrix2 = new Matrix3();
     options = _.extend( {
       icon: false,
+
+      // TODO: move to prototype?
       updateLayout: function( startPosition, endPosition ) {
         var delta = endPosition.minus( startPosition );
         var angle = delta.angle();
+        var center = startPosition.blend( endPosition, 0.5 );
 
         // Update the node transform in a single step, see #66
-        scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
-          .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
-          .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) )
-          .multiplyMatrix( scratchMatrix2.setToTranslation( 0, -23.5 ) ); // TODO: where does this magic number come from?
-        contentNode.setMatrix( scratchMatrix );
-        highlightNode && highlightParent.setMatrix( scratchMatrix.copy() );
+        transform.setToTranslation( center.x, center.y ).multiplyMatrix( rotationMatrix.setToRotationZ( angle ) );
+        contentNode.setMatrix( transform );
+        highlightNode && highlightNode.setMatrix( transform.copy() );
 
         // Update the fire transform
         var flameExtent = 0.8;
         var scale = delta.magnitude() / fireImage[ 0 ].width * flameExtent;
         var flameInset = (1 - flameExtent) / 2;
-        scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
-          .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
-          .multiplyMatrix( scratchMatrix2.setToScale( scale ) )
-          .multiplyMatrix( scratchMatrix2.setToTranslation( delta.magnitude() * flameInset / scale, -fireImage[ 0 ].height ) );
-        self.fireNode && self.fireNode.setMatrix( scratchMatrix.copy() );
+        transform.setToTranslation( startPosition.x, startPosition.y )
+          .multiplyMatrix( rotationMatrix.setToRotationZ( angle ) )
+          .multiplyMatrix( rotationMatrix.setToScale( scale ) )
+          .multiplyMatrix( rotationMatrix.setToTranslation( delta.magnitude() * flameInset / scale, -fireImage[ 0 ].height ) );
+        self.fireNode && self.fireNode.setMatrix( transform.copy() );
 
         // Show the readout node above the center of the component.
         if ( readoutNode ) {
-          readoutNode.center = contentNode.center.plusXY( 0, -30 );
+          readoutNode.center = center.plusXY( 0, -30 );
         }
       },
       highlightOptions: {}
@@ -93,28 +95,8 @@ define( function( require ) {
 
     // Add highlight (but not for icons)
     if ( !options.icon ) {
-      var inset = -FixedLengthCircuitElementNode.HIGHLIGHT_INSET;
-      var w = options.contentWidth || contentNode.width;
-      var h = options.contentHeight || contentNode.height;
-      var highlightNode = new Rectangle(
-        inset + contentNode.bounds.minX,
-        inset + contentNode.bounds.minY,
-        w / contentScale - inset * 2,
-        h / contentScale - inset * 2,
-        8 / contentScale,
-        8 / contentScale,
-        _.extend( {
-          stroke: CircuitConstructionKitConstants.HIGHLIGHT_COLOR,
-          lineWidth: CircuitConstructionKitConstants.HIGHLIGHT_LINE_WIDTH / contentScale / contentScale,
-          scale: contentScale,
-          pickable: false
-        }, options.highlightOptions )
-      );
-
-      highlightParent.children = [ highlightNode ];
-      circuitNode.highlightLayer.addChild( highlightParent );
-
-      this.highlightParent = highlightParent;
+      var highlightNode = new FixedLengthCircuitElementHighlightNode( this, {} );
+      circuitNode.highlightLayer.addChild( highlightNode );
     }
 
     // Relink when start vertex changes
@@ -289,7 +271,7 @@ define( function( require ) {
 
       circuitElement.interactiveProperty.unlink( pickableListener );
 
-      circuitNode && circuitNode.highlightLayer.removeChild( highlightParent );
+      circuitNode && circuitNode.highlightLayer.removeChild( highlightNode );
 
       circuitElement.startVertexProperty.unlink( relink );
       circuitElement.endVertexProperty.unlink( relink );

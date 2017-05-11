@@ -46,6 +46,10 @@ define( function( require ) {
 
     var batteryImageNode = new Image( batteryImage );
 
+    batteryImageNode.mutate( {
+      scale: battery.distanceBetweenVertices / batteryImageNode.width
+    } );
+
     // Points sampled using Photoshop from a raster of the IEEE icon seen at
     // https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
     var schematicShape = new Shape()
@@ -68,7 +72,7 @@ define( function( require ) {
     schematicShape = schematicShape.transformed( Matrix3.scale( schematicScale, schematicScale ) );
     var schematicNode = new Path( schematicShape, {
       stroke: 'black',
-      lineWidth: 6
+      lineWidth: 4
     } );
     schematicNode.mouseArea = schematicNode.bounds;
     schematicNode.touchArea = schematicNode.bounds;
@@ -80,7 +84,6 @@ define( function( require ) {
       viewProperty,
       batteryImageNode,
       schematicNode,
-      0.7, // scale factor to make the resistor fit the ditsance between vertices
       tandem,
       options
     );
