@@ -24,7 +24,7 @@ define( function( require ) {
   var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
 
   // constants
-  var contentScale = 2.5;
+  var contentScale = 1;
   var scratchMatrix = new Matrix3();
   var scratchMatrix2 = new Matrix3();
 
@@ -70,7 +70,8 @@ define( function( require ) {
 
         // Offset the highlight vertically so it looks good, tuned manually
         bottom: FixedLengthCircuitElementNode.HIGHLIGHT_INSET * 0.75
-      }
+      },
+      centerChildren: false
     }, options );
     FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, viewProperty, lightBulbNode, new Rectangle( 0, 0, 10, 10 ), tandem, options );
 

@@ -45,14 +45,22 @@ define( function( require ) {
                                           lifelikeNode, schematicNode, tandem, options ) {
     assert && assert( lifelikeNode !== schematicNode, 'schematicNode should be different than lifelikeNode' );
     var self = this;
+
+    options = _.extend( {
+      icon: false,
+      highlightOptions: {},
+      centerChildren: true
+    }, options );
     this.circuitElement = circuitElement;
 
     // node that shows the component, separate from the part that shows the highlight and the fire
     this.contentNode = new Node();
 
     // Center the nodes so they will be easy to position
-    lifelikeNode.center = Vector2.ZERO;
-    schematicNode.center = Vector2.ZERO;
+    if ( options.centerChildren ) {
+      lifelikeNode.center = Vector2.ZERO;
+      schematicNode.center = Vector2.ZERO;
+    }
 
     // Show the selected node
     viewProperty.link( function( view ) {
@@ -61,11 +69,6 @@ define( function( require ) {
 
     // Flag to indicate when updating view is necessary, in order to avoid duplicate work when both vertices move
     this.dirty = true;
-
-    options = _.extend( {
-      icon: false,
-      highlightOptions: {}
-    }, options );
 
     // Add highlight (but not for icons)
     if ( !options.icon ) {
