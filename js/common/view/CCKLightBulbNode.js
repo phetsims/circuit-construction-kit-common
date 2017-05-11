@@ -83,6 +83,10 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'CCKLightBulbNode', CCKLightBulbNode );
 
   return inherit( FixedLengthCircuitElementNode, CCKLightBulbNode, {
+
+    /**
+     * @override
+     */
     updateRender: function() {
       var startPosition = this.circuitElement.startVertexProperty.get().positionProperty.get();
       var endPosition = this.circuitElement.endVertexProperty.get().positionProperty.get();
