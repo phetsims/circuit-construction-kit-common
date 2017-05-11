@@ -36,7 +36,7 @@ define( function( require ) {
     var self = this;
 
     // Big enough to see when zoomed out
-    var TEXT_OPTIONS = { fontSize: 25 };
+    var TEXT_OPTIONS = { fontSize: 22 };
 
     var contentNode = null;
     if ( circuitElement instanceof Battery ) {
@@ -79,14 +79,17 @@ define( function( require ) {
 
     Panel.call( this, contentNode, {
       lineWidth: 0,
-      fill: new Color( 255, 255, 255, 0.5 ),// put transparency in the color so that the children aren't transparent
-      tandem: tandem
+      fill: new Color( 255, 255, 255, 0.6 ),// put transparency in the color so that the children aren't transparent
+      tandem: tandem,
+      cornerRadius: 3,
+      xMargin: 3,
+      yMargin: 1
     } );
     var updatePosition = function() {
 
       // TODO: position should account for the size of the text label so it doesn't overlap the component.
       var centerPositionAndAngle = circuitElement.getPositionAndAngle( circuitElement.chargePathLength / 2 );
-      self.center = centerPositionAndAngle.position.plus( Vector2.createPolar( 60, centerPositionAndAngle.angle + 3 * Math.PI / 2 ) ); // above light bulb
+      self.center = centerPositionAndAngle.position.plus( Vector2.createPolar( 24, centerPositionAndAngle.angle + 3 * Math.PI / 2 ) ); // above light bulb
     };
     circuitElement.vertexMovedEmitter.addListener( updatePosition );
     updatePosition();

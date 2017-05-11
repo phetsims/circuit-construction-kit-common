@@ -38,7 +38,7 @@ define( function( require ) {
     }, options );
 
     var readout = new Text( textProperty.value, {
-      fontSize: 34,
+      fontSize: 40,
       maxWidth: TEXT_BOX_WIDTH - 20,
       tandem: tandem.createTandem( 'readoutText' )
     } );
