@@ -45,7 +45,7 @@ define( function( require ) {
     assert && assert( lifelikeNode !== schematicNode, 'schematicNode should be different than lifelikeNode' );
     var self = this;
 
-    // node that shows the component, separate from the part that shows the readout or highlight
+    // node that shows the component, separate from the part that shows the highlight
     var contentNode = new Node();
     this.contentNode = contentNode;// TODO eliminate redundant
 
@@ -84,11 +84,6 @@ define( function( require ) {
           .multiplyMatrix( rotationMatrix.setToScale( scale ) )
           .multiplyMatrix( rotationMatrix.setToTranslation( delta.magnitude() * flameInset / scale, -fireImage[ 0 ].height ) );
         self.fireNode && self.fireNode.setMatrix( transform.copy() );
-
-        // Show the readout node above the center of the component.
-        if ( readoutNode ) {
-          readoutNode.center = center.plusXY( 0, -30 );
-        }
       },
       highlightOptions: {}
     }, options );
@@ -202,23 +197,6 @@ define( function( require ) {
         highlightNode.visible = showHighlight;
       };
       circuitNode.circuit.selectedCircuitElementProperty.link( updateSelectionHighlight );
-    }
-
-    // Show values for components inside the black box when "reveal" is pressed.
-    if ( circuitElement.insideTrueBlackBoxProperty.value ) {
-      var textNode = new Text( 'readout', { fontSize: 20, maxWidth: 50 } );
-      circuitElement.resistanceProperty && circuitElement.resistanceProperty.link( function( resistance ) {
-        textNode.text = resistance + ' Ω';
-      } );
-      circuitElement.voltageProperty && circuitElement.voltageProperty.link( function( voltage ) {
-        textNode.text = voltage + ' V';
-      } );
-      var readoutNode = new Panel( textNode, {
-        stroke: null,
-        fill: new Color( 255, 255, 255, 0.8 ),
-        pickable: false
-      } );
-      this.addChild( readoutNode );
     }
 
     if ( !options.icon && (circuitElement instanceof Battery || circuitElement instanceof Resistor) ) {
