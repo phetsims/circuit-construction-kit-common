@@ -17,11 +17,9 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var HSlider = require( 'SUN/HSlider' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
-  var Node = require( 'SCENERY/nodes/Node' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var HStrut = require( 'SCENERY/nodes/HStrut' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Util = require( 'DOT/Util' );
   var Range = require( 'DOT/Range' );
@@ -59,7 +57,6 @@ define( function( require ) {
     slider.addMajorTick( 10, createLabel( '10', tandem.createTandem( 'maxLabel' ) ) );
 
     var numberNodesGroupTandem = tandem.createGroupTandem( 'numberNodes' );
-    var backgroundNodesGroupTandem = tandem.createGroupTandem( 'backgroundNodes' );
     var valueParentsGroupTandem = tandem.createGroupTandem( 'valueParents' );
     for ( var i = 1; i < 10; i++ ) {
       if ( i !== 5 ) {
