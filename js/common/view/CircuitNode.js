@@ -16,6 +16,7 @@ define( function( require ) {
   var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/WireNode' );
   var SwitchNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/SwitchNode' );
   var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/BatteryNode' );
+  var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/FixedLengthCircuitElementNode' );
   var CCKLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CCKLightBulbNode' );
   var CCKLightBulbForegroundNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CCKLightBulbForegroundNode' );
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ResistorNode' );
@@ -394,6 +395,11 @@ define( function( require ) {
             this.mainLayer.removeChild( child );
             this.mainLayer.insertChild( indexOfForeground - 2, child ); // TODO: I have no idea why -2 seems to work
           }
+        }
+        else if ( child instanceof FixedLengthCircuitElementNode ) {
+
+          // paint dirty fixed length circuit element nodes
+          child.step();
         }
       }
     },

@@ -26,6 +26,10 @@ define( function( require ) {
   // images
   var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
 
+  // constants
+  var transform = new Matrix3();
+  var rotationMatrix = new Matrix3();
+
   /**
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
    * @param {CircuitNode} circuitNode - Null if an icon is created
@@ -55,36 +59,13 @@ define( function( require ) {
       contentNode.children = [ view === 'lifelike' ? lifelikeNode : schematicNode ];
     } );
 
-    var transform = new Matrix3();
-    var rotationMatrix = new Matrix3();
-
     options = _.extend( {
       icon: false,
 
       // TODO: move to prototype?
       // TODO: this is getting called twice per drag.  Perhaps mark as dirty then update in view step?
       updateLayout: function() {
-        var startPosition = circuitElement.startVertexProperty.get().positionProperty.get();
-        var endPosition = circuitElement.endVertexProperty.get().positionProperty.get();
-        console.log( startPosition, endPosition );
-        var delta = endPosition.minus( startPosition );
-        var angle = delta.angle();
-        var center = startPosition.blend( endPosition, 0.5 );
-
-        // Update the node transform in a single step, see #66
-        transform.setToTranslation( center.x, center.y ).multiplyMatrix( rotationMatrix.setToRotationZ( angle ) );
-        contentNode.setMatrix( transform );
-        highlightNode && highlightNode.setMatrix( transform.copy() );
-
-        // Update the fire transform
-        var flameExtent = 0.8;
-        var scale = delta.magnitude() / fireImage[ 0 ].width * flameExtent;
-        var flameInset = (1 - flameExtent) / 2;
-        transform.setToTranslation( startPosition.x, startPosition.y )
-          .multiplyMatrix( rotationMatrix.setToRotationZ( angle ) )
-          .multiplyMatrix( rotationMatrix.setToScale( scale ) )
-          .multiplyMatrix( rotationMatrix.setToTranslation( delta.magnitude() * flameInset / scale, -fireImage[ 0 ].height ) );
-        self.fireNode && self.fireNode.setMatrix( transform.copy() );
+        self.dirty = true;
       },
       highlightOptions: {}
     }, options );
@@ -219,10 +200,7 @@ define( function( require ) {
     }
 
     // Update after the highlight/readout/fire exist
-    options.updateLayout(
-      circuitElement.startVertexProperty.get().positionProperty.get(),
-      circuitElement.endVertexProperty.get().positionProperty.get()
-    );
+    options.updateLayout();
 
     // @private - for disposal
     this.disposeFixedLengthCircuitElementNode = function() {
@@ -245,11 +223,42 @@ define( function( require ) {
         Property.unmultilink( updateFireMultilink );
       }
     };
+
+    // TODO: doc/cleanup/move to prototype?
+    this.updateRender = function() {
+      var startPosition = circuitElement.startVertexProperty.get().positionProperty.get();
+      var endPosition = circuitElement.endVertexProperty.get().positionProperty.get();
+      var delta = endPosition.minus( startPosition );
+      var angle = delta.angle();
+      var center = startPosition.blend( endPosition, 0.5 );
+
+      // Update the node transform in a single step, see #66
+      transform.setToTranslation( center.x, center.y ).multiplyMatrix( rotationMatrix.setToRotationZ( angle ) );
+      contentNode.setMatrix( transform );
+      highlightNode && highlightNode.setMatrix( transform.copy() );
+
+      // Update the fire transform
+      var flameExtent = 0.8;
+      var scale = delta.magnitude() / fireImage[ 0 ].width * flameExtent;
+      var flameInset = (1 - flameExtent) / 2;
+      transform.setToTranslation( startPosition.x, startPosition.y )
+        .multiplyMatrix( rotationMatrix.setToRotationZ( angle ) )
+        .multiplyMatrix( rotationMatrix.setToScale( scale ) )
+        .multiplyMatrix( rotationMatrix.setToTranslation( delta.magnitude() * flameInset / scale, -fireImage[ 0 ].height ) );
+      self.fireNode && self.fireNode.setMatrix( transform.copy() );
+    };
   }
 
   circuitConstructionKitCommon.register( 'FixedLengthCircuitElementNode', FixedLengthCircuitElementNode );
 
   return inherit( CircuitElementNode, FixedLengthCircuitElementNode, {
+
+    step: function() {
+      if ( this.dirty ) {
+        this.updateRender();
+        this.dirty = false;
+      }
+    },
 
     /**
      * @public - dispose resources when no longer used
