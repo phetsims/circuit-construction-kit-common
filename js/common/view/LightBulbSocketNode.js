@@ -18,7 +18,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   // TODO: Factor out this matrix logic, it seems to be used in many places.
-  var contentScale = 1;
+  var contentScale = 0.72;
   var scratchMatrix = new Matrix3();
   var scratchMatrix2 = new Matrix3();
 

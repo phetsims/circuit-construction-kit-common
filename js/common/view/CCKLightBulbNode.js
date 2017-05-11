@@ -24,7 +24,7 @@ define( function( require ) {
   var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
 
   // constants
-  var contentScale = 1;
+  var contentScale = 1 * 0.72;
   var scratchMatrix = new Matrix3();
   var scratchMatrix2 = new Matrix3();
 
