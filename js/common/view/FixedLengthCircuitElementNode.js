@@ -105,7 +105,7 @@ define( function( require ) {
       self.pickable = interactive;
     };
 
-    // CCKLightBulbForegroundNode cannot ever be pickable, so let it opt out of this callback
+    // LightBulbSocketNode cannot ever be pickable, so let it opt out of this callback
     if ( options.pickable !== false ) {
       circuitElement.interactiveProperty.link( pickableListener );
     }

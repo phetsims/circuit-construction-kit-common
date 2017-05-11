@@ -33,7 +33,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function CCKLightBulbForegroundNode( circuitConstructionKitScreenView, circuitNode, lightBulb, runningProperty, viewProperty, tandem, options ) {
+  function LightBulbSocketNode( circuitConstructionKitScreenView, circuitNode, lightBulb, runningProperty, viewProperty, tandem, options ) {
     // TODO: factor out duplicated code between this class and CCKLightBulbNode
 
     // TODO: This is overkill, we should just have an Image, without all of the extra brightness lines, etc.
@@ -60,9 +60,9 @@ define( function( require ) {
     FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, viewProperty, lightBulbNode, new Rectangle( 0, 0, 10, 10 ), tandem, options );
   }
 
-  circuitConstructionKitCommon.register( 'CCKLightBulbForegroundNode', CCKLightBulbForegroundNode );
+  circuitConstructionKitCommon.register( 'LightBulbSocketNode', LightBulbSocketNode );
 
-  return inherit( FixedLengthCircuitElementNode, CCKLightBulbForegroundNode, {
+  return inherit( FixedLengthCircuitElementNode, LightBulbSocketNode, {
 
     /**
      * @override

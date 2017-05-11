@@ -2,7 +2,7 @@
 
 /**
  * Named CCKLightBulbNode to avoid collisions with SCENERY_PHET/LightBulbNode.  Renders the bulb shape and brightness
- * lines.  Note that the socket is rendered in CCKLightBulbForegroundNode.
+ * lines.  Note that the socket is rendered in LightBulbSocketNode.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

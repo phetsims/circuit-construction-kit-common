@@ -18,7 +18,7 @@ define( function( require ) {
   var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/BatteryNode' );
   var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/FixedLengthCircuitElementNode' );
   var CCKLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CCKLightBulbNode' );
-  var CCKLightBulbForegroundNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CCKLightBulbForegroundNode' );
+  var LightBulbSocketNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/LightBulbSocketNode' );
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ResistorNode' );
   var VertexNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/VertexNode' );
   var SolderNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/SolderNode' );
@@ -112,7 +112,7 @@ define( function( require ) {
           mainLayer.addChild( circuitElementNode );
           moveVerticesToFront( circuitElement );
 
-          if ( circuitElement instanceof FixedLengthCircuitElement && !(circuitElementNode instanceof CCKLightBulbForegroundNode) ) { // don't double add for light bulbs
+          if ( circuitElement instanceof FixedLengthCircuitElement && !(circuitElementNode instanceof LightBulbSocketNode) ) { // don't double add for light bulbs
             var valueNode = new ValueNode( circuitElement, self.circuitConstructionKitModel.showValuesProperty, tandem.createTandem( circuitElement.tandemName ).createTandem( 'valueNode' ) );
             circuitElement.valueNode = valueNode;
             self.valueLayer.addChild( valueNode );
@@ -147,7 +147,7 @@ define( function( require ) {
     initializeCircuitElementType( WireNode, Wire, self.wireNodes, this.getWireNode.bind( this ), tandem.createGroupTandem( 'wireNode' ) );
     initializeCircuitElementType( BatteryNode, Battery, self.batteryNodes, this.getBatteryNode.bind( this ), tandem.createGroupTandem( 'batteryNode' ) );
     initializeCircuitElementType( CCKLightBulbNode, LightBulb, self.lightBulbNodes, this.getCCKLightBulbNode.bind( this ), tandem.createGroupTandem( 'lightBulbNode' ) );
-    initializeCircuitElementType( CCKLightBulbForegroundNode, LightBulb, self.lightBulbForegroundNodes, this.getCCKLightBulbForegroundNode.bind( this ), tandem.createGroupTandem( 'lightBulbForegroundNode' ) );
+    initializeCircuitElementType( LightBulbSocketNode, LightBulb, self.lightBulbForegroundNodes, this.getCCKLightBulbForegroundNode.bind( this ), tandem.createGroupTandem( 'lightBulbForegroundNode' ) );
     initializeCircuitElementType( ResistorNode, Resistor, self.resistorNodes, this.getResistorNode.bind( this ), tandem.createGroupTandem( 'resistorNode' ) );
     initializeCircuitElementType( SwitchNode, Switch, self.switchNodes, this.getSwitchNode.bind( this ), tandem.createGroupTandem( 'switchNode' ) );
 
