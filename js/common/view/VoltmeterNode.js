@@ -156,7 +156,8 @@ define( function( require ) {
           // After dropping in the play area the probes move independently of the body
           voltmeter.draggingProbesWithBodyProperty.set( false );
         },
-        onDrag: function( event ) {} // use this to do something every time drag is called, such as notify that a user has modified the position
+        onDrag: function( event ) {}, // use this to do something every time drag is called, such as notify that a user has modified the position
+        targetNode: self // adds support for zoomed coordinate frame, see https://github.com/phetsims/circuit-construction-kit-common/issues/301
       } );
       options.visibleBoundsProperty.link( function( visibleBounds ) {
         self.dragHandler.dragBounds = visibleBounds.eroded( CircuitConstructionKitConstants.DRAG_BOUNDS_EROSION );

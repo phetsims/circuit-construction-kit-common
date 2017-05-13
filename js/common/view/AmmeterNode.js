@@ -139,7 +139,8 @@ define( function( require ) {
 
           // After dropping in the play area the probes move independently of the body
           ammeter.draggingProbesWithBodyProperty.set( false );
-        }
+        },
+        targetNode: self // adds support for zoomed coordinate frame, see https://github.com/phetsims/circuit-construction-kit-common/issues/301
       } );
       bodyNode.addInputListener( this.dragHandler );
       var probeDragHandler = new MovableDragHandler( ammeter.probePositionProperty, {
