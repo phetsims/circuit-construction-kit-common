@@ -118,10 +118,11 @@ define( function( require ) {
     };
     vertex.relayerEmitter.addListener( updateMoveToFront );
     Node.call( this, {
-      children: [ dottedLineNode, cutButton ],
+      children: [ dottedLineNode ],
       tandem: tandem
     } );
     circuitNode.highlightLayer.addChild( highlightNode );
+    circuitNode.buttonLayer.addChild( cutButton );
 
     var updatePickable = function( interactive ) { self.pickable = interactive; };
     vertex.interactiveProperty.link( updatePickable );
@@ -232,6 +233,7 @@ define( function( require ) {
       vertex.relayerEmitter.removeListener( updateMoveToFront );
 
       circuitNode.highlightLayer.removeChild( highlightNode );
+      circuitNode.buttonLayer.removeChild( cutButton );
 
       circuit.vertices.removeItemAddedListener( updateStroke );
       circuit.vertices.removeItemRemovedListener( updateStroke );

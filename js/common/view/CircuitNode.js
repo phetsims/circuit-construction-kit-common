@@ -46,6 +46,7 @@ define( function( require ) {
     var runningProperty = this.circuitConstructionKitModel.exploreScreenRunningProperty;
 
     this.highlightLayer = new Node();
+    this.buttonLayer = new Node();
     this.valueLayer = new Node(); // for "show values"
     window.circuitNode = this;
 
@@ -56,7 +57,8 @@ define( function( require ) {
       children: [
         this.mainLayer, // everything else
         this.valueLayer,
-        this.highlightLayer // highlights go in front of everything else
+        this.highlightLayer, // highlights go in front of everything else
+        this.buttonLayer
       ]
     } );
     this.circuit = circuit;
