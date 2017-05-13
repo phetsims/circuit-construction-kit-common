@@ -130,6 +130,8 @@ define( function( require ) {
     var scale = lifelikeResistorImageNode.width / schematicShape.bounds.width;
     schematicShape = schematicShape.transformed( Matrix3.scale( scale, scale ) );
     var schematicNode = new Path( schematicShape, { stroke: 'black', lineWidth: SCHEMATIC_LINE_WIDTH } );
+
+    // Expand the touch areas. Use the Shape instead of Path, otherwise they are at the wrong spot (SR doesn't know why)
     schematicNode.mouseArea = schematicShape.bounds;
     schematicNode.touchArea = schematicShape.bounds;
 
