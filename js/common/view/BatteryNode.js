@@ -74,8 +74,10 @@ define( function( require ) {
       stroke: 'black',
       lineWidth: 4
     } );
-    schematicNode.mouseArea = schematicNode.bounds;
-    schematicNode.touchArea = schematicNode.bounds;
+
+    // Expand the touch areas. Use the Shape instead of Path, otherwise they are at the wrong spot (SR doesn't know why)
+    schematicNode.mouseArea = schematicShape.bounds;
+    schematicNode.touchArea = schematicShape.bounds;
 
     FixedLengthCircuitElementNode.call( this,
       circuitConstructionKitScreenView,
