@@ -75,9 +75,9 @@ define( function( require ) {
       lineWidth: 4
     } );
 
-    // Expand the touch areas. Use the Shape instead of Path, otherwise they are at the wrong spot (SR doesn't know why)
-    schematicNode.mouseArea = schematicShape.bounds;
-    schematicNode.touchArea = schematicShape.bounds;
+    // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
+    schematicNode.mouseArea = schematicNode.bounds.copy();
+    schematicNode.touchArea = schematicNode.bounds.copy();
 
     FixedLengthCircuitElementNode.call( this,
       circuitConstructionKitScreenView,

@@ -131,9 +131,9 @@ define( function( require ) {
     schematicShape = schematicShape.transformed( Matrix3.scale( scale, scale ) );
     var schematicNode = new Path( schematicShape, { stroke: 'black', lineWidth: SCHEMATIC_LINE_WIDTH } );
 
-    // Expand the touch areas. Use the Shape instead of Path, otherwise they are at the wrong spot (SR doesn't know why)
-    schematicNode.mouseArea = schematicShape.bounds;
-    schematicNode.touchArea = schematicShape.bounds;
+    // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
+    schematicNode.mouseArea = schematicNode.bounds.copy();
+    schematicNode.touchArea = schematicNode.bounds.copy();
 
     // Super call
     FixedLengthCircuitElementNode.call( this,
