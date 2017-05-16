@@ -40,7 +40,7 @@ define( function( require ) {
   var TOOLBOX_ICON_SIZE = CircuitConstructionKitConstants.TOOLBOX_ICON_SIZE;
   var RESISTOR_LENGTH = CircuitConstructionKitConstants.RESISTOR_LENGTH;
   var WIRE_LENGTH = 100;
-  var SWITCH_LENGTH = 100;
+  var SWITCH_LENGTH = CircuitConstructionKitConstants.SWITCH_LENGTH;
 
   /**
    * @param {Circuit} circuit
@@ -171,7 +171,7 @@ define( function( require ) {
     };
     var createSwitch = function( position ) {
       var vertexPair = createVertexPair( position, SWITCH_LENGTH );
-      return new Switch( vertexPair.startVertex, vertexPair.endVertex, CircuitConstructionKitConstants.DEFAULT_RESISTIVITY );
+      return new Switch( vertexPair.startVertex, vertexPair.endVertex, circuit.switchGroupTandem.createNextTandem() );
     };
     var leftBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitNode, leftBatteryIcon, options.numberOfLeftBatteries, countLeftBatteries, createLeftBattery );
     var rightBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitNode, rightBatteryIcon, options.numberOfRightBatteries, countRightBatteries, createRightBattery );

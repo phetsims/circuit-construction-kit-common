@@ -17,6 +17,7 @@ define( function( require ) {
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/LightBulb' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Battery' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Wire' );
+  var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Switch' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/FixedLengthCircuitElement' );
@@ -87,6 +88,7 @@ define( function( require ) {
         var resistor = selectedCircuitElement instanceof Resistor || selectedCircuitElement instanceof LightBulb;
         var battery = selectedCircuitElement instanceof Battery;
         var wire = selectedCircuitElement instanceof Wire;
+        var isSwitch = selectedCircuitElement instanceof Switch;
 
         var text = (resistor || wire) ? resistanceString :
                    battery ? voltageString :
@@ -96,6 +98,7 @@ define( function( require ) {
                     null;
         var property = (resistor || wire) ? selectedCircuitElement.resistanceProperty :
                        battery ? selectedCircuitElement.voltageProperty :
+                       isSwitch ? selectedCircuitElement.closedProperty :
                        null;
         var options = wire ? { numberControlEnabled: false } : {};
 

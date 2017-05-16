@@ -1,8 +1,7 @@
-// Copyright 2015-2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
+// Copyright 2015-2017, University of Colorado Boulder
 
 /**
- *
+ * Renders the lifelike/schematic view for a Battery.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -10,247 +9,91 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Line = require( 'SCENERY/nodes/Line' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/FixedLengthCircuitElementNode' );
   var Path = require( 'SCENERY/nodes/Path' );
-  var LineStyles = require( 'KITE/util/LineStyles' );
-  var LinearGradient = require( 'SCENERY/util/LinearGradient' );
-  var Color = require( 'SCENERY/util/Color' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Vector2 = require( 'DOT/Vector2' );
-  var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitElementNode' );
-  var CheckBox = require( 'SUN/CheckBox' );
+  var Shape = require( 'KITE/Shape' );
+  var Matrix3 = require( 'DOT/Matrix3' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   // constants
-  var WIRE_LINE_WIDTH = 12; // screen coordinates
+  // dimensions for schematic battery
+  var SMALL_TERMINAL_WIDTH = 50;
+  var LARGE_TERMINAL_WIDTH = 104;
+  var WIDTH = 188;
+  var GAP = 33;
+  var LEFT_JUNCTION = WIDTH / 2 - GAP / 2;
+  var RIGHT_JUNCTION = WIDTH / 2 + GAP / 2;
 
   /**
-   * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - if null, this SwitchNode is just an icon
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
    * @param {CircuitNode} circuitNode
-   * @param {Wire} switchModel
+   * @param {Battery} battery
+   * @param {Property.<boolean>} runningProperty - supplied for consistency with other CircuitElementNode constructors
+   * @param {Property.<string>} viewProperty
+   * @param {Tandem} tandem
+   * @param {Object} [options]
    * @constructor
    */
-  function SwitchNode( circuitConstructionKitScreenView, circuitNode, switchModel ) {
-    var self = this;
-    this.switchModel = switchModel;
+  function SwitchNode( circuitConstructionKitScreenView, circuitNode, battery, runningProperty, viewProperty, tandem, options ) {
 
-    var highlightNode = new Path( null, {
-      stroke: CircuitConstructionKitConstants.HIGHLIGHT_COLOR,
-      lineWidth: CircuitConstructionKitConstants.HIGHLIGHT_LINE_WIDTH,
-      pickable: false,
-      visible: false
+    // @public (read-only) - the Battery rendered by this Node
+    this.battery = battery;
+
+    var lifelikeNode = new Rectangle( 0, 0, CircuitConstructionKitConstants.SWITCH_LENGTH, 12, {
+      fill: '#d48270',
+      stroke: 'black',
+      lineWidth: 1
     } );
 
-    // In order to show a gradient on the line, while still allowing the line to stretch (without stretching rounded
-    // ends), use a parent node to position and rotate the line, and keep the line the same width.
-    // This increases the complexity of the code, but allows us to use Line renderer with a constant gradient.
+    // lifelikeNode.mutate( {
+    //   scale: battery.distanceBetweenVertices / lifelikeNode.width
+    // } );
 
-    /**
-     * Create a LinearGradient for the wire, depending on the orientation relative to the shading (light comes from
-     * top left)
-     * @param {{point:number,color:Color}} array
-     * @param {function} op
-     * @returns {LinearGradient}
-     */
-    var createGradient = function( array, op ) {
-      var normalGradient = new LinearGradient( 0, -WIRE_LINE_WIDTH / 2, 0, WIRE_LINE_WIDTH / 2 );
-      array.forEach( function( element ) {normalGradient.addColorStop( op( element.point ), element.color );} );
-      return normalGradient;
-    };
+    // Points sampled using Photoshop from a raster of the IEEE icon seen at
+    // https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
+    var schematicShape = new Shape()
+      .moveTo( 0, 0 ) // left wire
+      .lineTo( LEFT_JUNCTION, 0 )
+      .moveTo( LEFT_JUNCTION, SMALL_TERMINAL_WIDTH / 2 ) // left plate
+      .lineTo( LEFT_JUNCTION, -SMALL_TERMINAL_WIDTH / 2 )
+      .moveTo( RIGHT_JUNCTION, 0 ) // right wire
+      .lineTo( WIDTH, 0 )
+      .moveTo( RIGHT_JUNCTION, LARGE_TERMINAL_WIDTH / 2 ) // right plate
+      .lineTo( RIGHT_JUNCTION, -LARGE_TERMINAL_WIDTH / 2 );
+    var schematicWidth = schematicShape.bounds.width;
+    var desiredWidth = lifelikeNode.width;
+    var schematicScale = desiredWidth / schematicWidth;
 
-    var array = [
-      { point: 0.0, color: new Color( '#7b332b' ).brighterColor( 0.8 ) },
-      { point: 0.2, color: new Color( '#cd7767' ) },
-      { point: 0.3, color: new Color( '#f6bda0' ) },
-      { point: 1.0, color: new Color( '#3c0c08' ) }
-    ];
+    // Align vertically
+    schematicShape = schematicShape.transformed( Matrix3.translation( 0, lifelikeNode.height / 2 + 7 ) );
 
-    var normalGradient = createGradient( array, function( e ) {return e;} );
-    var reverseGradient = createGradient( array.reverse(), function( e ) {return 1.0 - e;} );
-
-    var lineNode = new Line( 0, 0, 100, 0, {
-      stroke: normalGradient,
-      lineWidth: WIRE_LINE_WIDTH,
-      cursor: 'pointer',
-      strokePickable: true,
-      lineCap: 'round'
+    // Scale to fit the correct width
+    schematicShape = schematicShape.transformed( Matrix3.scale( schematicScale, schematicScale ) );
+    var schematicNode = new Path( schematicShape, {
+      stroke: 'black',
+      lineWidth: 4
     } );
 
-    var lineNodeParent = new Node( {
-      children: [ lineNode ]
-    } );
-    var highlightNodeParent = new Node( {
-      children: [ highlightNode ]
-    } );
+    // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
+    schematicNode.mouseArea = schematicNode.bounds.copy();
+    schematicNode.touchArea = schematicNode.bounds.copy();
 
-    circuitNode && circuitNode.highlightLayer.addChild( highlightNodeParent );
-
-    // @private
-    this.lineNodeParent = lineNodeParent;
-
-    // @private
-    this.lineNode = lineNode;
-    CircuitElementNode.call( this, switchModel, {
-      children: [
-        lineNodeParent
-      ]
-    } );
-
-    var checkBox = CheckBox.createTextCheckBox( 'Closed', {}, switchModel.closedProperty, {} );
-    this.addChild( checkBox );
-
-    var updatePickable = function( interactive ) {
-      self.pickable = interactive;
-    };
-    switchModel.interactiveProperty.link( updatePickable );
-
-    var highlightStrokeStyles = new LineStyles( {
-      lineWidth: 26,
-      lineCap: 'round',
-      lineJoin: 'round'
-    } );
-
-    // Position the checkbox
-    var updateCheckBox = function() {
-      var center = switchModel.startVertexProperty.get().positionProperty.get().plus( switchModel.endVertexProperty.get().positionProperty.get() ).timesScalar( 0.5 );
-      var normal = switchModel.endVertexProperty.get().positionProperty.get().minus( switchModel.startVertexProperty.get().positionProperty.get() ).normalized().perpendicular().timesScalar( 50 );
-      checkBox.center = center.plus( normal );
-    };
-
-    var startListener = function( startPoint ) {
-      lineNodeParent.setTranslation( startPoint.x, startPoint.y );
-      highlightNodeParent.setTranslation( startPoint.x, startPoint.y );
-      endListener && endListener( switchModel.endVertexProperty.get().positionProperty.get() );
-      if ( highlightNode.visible ) {
-        highlightNode.shape = self.getHighlightStrokedShape( highlightStrokeStyles );
-      }
-      updateCheckBox();
-    };
-
-    // There is a double nested property, since the vertex may change and the position may change
-    var updateStartVertex = function( newStartVertex, oldStartVertex ) {
-      oldStartVertex && oldStartVertex.positionProperty.unlink( startListener );
-      newStartVertex.positionProperty.link( startListener );
-    };
-    switchModel.startVertexProperty.link( updateStartVertex );
-
-    var endListener = function( endPoint ) {
-      lineNode.setPoint2( endPoint.distance( switchModel.startVertexProperty.get().positionProperty.get() ), 0 );
-      var deltaVector = endPoint.minus( switchModel.startVertexProperty.get().positionProperty.get() );
-      lineNodeParent.setRotation( deltaVector.angle() );
-      highlightNodeParent.setRotation( deltaVector.angle() );
-      if ( highlightNode.visible ) {
-        highlightNode.shape = self.getHighlightStrokedShape( highlightStrokeStyles );
-      }
-
-      // normal angle
-      var directionForNormalLighting = new Vector2( 167.67173252279636, 72.6241134751773 ); // sampled manually
-      var dot = directionForNormalLighting.dot( deltaVector );
-
-      lineNode.stroke = dot < 0 ? reverseGradient : normalGradient;
-
-      updateCheckBox();
-    };
-
-    var updateEndVertex = function( newEndVertex, oldEndVertex ) {
-      oldEndVertex && oldEndVertex.positionProperty.unlink( endListener );
-      newEndVertex.positionProperty.link( endListener );
-    };
-    switchModel.endVertexProperty.link( updateEndVertex );
-
-    var p = null;
-    var didDrag = false;
-    this.inputListener = new SimpleDragHandler( {
-      start: function( event ) {
-        didDrag = false;
-        p = event.pointer.point;
-
-        if ( switchModel.interactiveProperty.get() ) {
-          circuitNode.startDrag( event.pointer.point, switchModel.startVertexProperty.get(), false );
-          circuitNode.startDrag( event.pointer.point, switchModel.endVertexProperty.get(), false );
-        }
-      },
-      drag: function( event ) {
-        if ( switchModel.interactiveProperty.get() ) {
-          circuitNode.drag( event.pointer.point, switchModel.startVertexProperty.get(), false );
-          circuitNode.drag( event.pointer.point, switchModel.endVertexProperty.get(), false );
-          didDrag = true;
-        }
-      },
-      end: function( event ) {
-
-        // If over the toolbox, then drop into it, and don't process further
-        if ( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) ) {
-          circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
-          return;
-        }
-        if ( !switchModel.interactiveProperty.get() ) {
-          return;
-        }
-
-        circuitNode.endDrag( event, switchModel.startVertexProperty.get(), didDrag );
-        circuitNode.endDrag( event, switchModel.endVertexProperty.get(), didDrag );
-
-        // Only show the editor when tapped, not on every drag.
-        self.selectCircuitElementNodeWhenNear( event, circuitNode, p );
-      }
-    } );
-    circuitConstructionKitScreenView && self.addInputListener( this.inputListener );
-
-    if ( circuitNode ) {
-      var updateHighlight = function( lastCircuitElement ) {
-        var showHighlight = lastCircuitElement === switchModel;
-        highlightNode.visible = showHighlight;
-        if ( highlightNode.visible ) {
-          highlightNode.shape = self.getHighlightStrokedShape( highlightStrokeStyles );
-        }
-      };
-      circuitNode.circuit.selectedCircuitElementProperty.link( updateHighlight );
-    }
-
-    // Only show the wire if the switch is closed.
-    switchModel.closedProperty.link( function( closed ) {
-      self.lineNode.visible = closed;
-    } );
-
-    this.disposeSwitchNode = function() {
-      self.inputListener.dragging && self.inputListener.endDrag();
-
-      switchModel.startVertexProperty.unlink( updateStartVertex );
-      switchModel.endVertexProperty.unlink( updateEndVertex );
-
-      updateHighlight && circuitNode.circuit.selectedCircuitElementProperty.unlink( updateHighlight );
-      switchModel.interactiveProperty.unlink( updatePickable );
-
-      switchModel.startVertexProperty.get().positionProperty.unlink( startListener );
-      switchModel.endVertexProperty.get().positionProperty.unlink( endListener );
-
-      circuitNode && circuitNode.highlightLayer.removeChild( highlightNodeParent );
-      checkBox.dispose();
-    };
+    FixedLengthCircuitElementNode.call( this,
+      circuitConstructionKitScreenView,
+      circuitNode,
+      battery,
+      viewProperty,
+      lifelikeNode,
+      schematicNode,
+      tandem,
+      options
+    );
   }
 
   circuitConstructionKitCommon.register( 'SwitchNode', SwitchNode );
 
-  return inherit( CircuitElementNode, SwitchNode, {
-
-    // @public
-    dispose: function() {
-      this.disposeSwitchNode();
-      CircuitElementNode.prototype.dispose.call( this );
-    },
-
-    // @private
-    getHighlightStrokedShape: function( lineStyles ) {
-      return this.lineNode.shape.getStrokedShape( lineStyles );
-    },
-
-    // @public
-    getStrokedShape: function() {
-      return this.lineNode.getStrokedShape().transformed( this.lineNodeParent.matrix );
-    }
-  } );
+  return inherit( FixedLengthCircuitElementNode, SwitchNode );
 } );

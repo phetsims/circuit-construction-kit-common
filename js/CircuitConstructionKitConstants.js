@@ -75,6 +75,9 @@ define( function( require ) {
     // Length of a battery
     BATTERY_LENGTH: 102,
 
+    // Length of a switch
+    SWITCH_LENGTH: 110,
+
     // Length of a resistor
     RESISTOR_LENGTH: 110,
 

@@ -60,6 +60,7 @@ define( function( require ) {
       numberOfWiresInToolbox: CircuitElementToolbox.NUMBER_OF_WIRES,
       numberOfLightBulbsInToolbox: CircuitElementToolbox.NUMBER_OF_LIGHT_BULBS,
       numberOfResistorsInToolbox: CircuitElementToolbox.NUMBER_OF_RESISTORS,
+      numberOfSwitchesInToolbox: CircuitElementToolbox.NUMBER_OF_SWITCHES,
       getToolboxPosition: function( visibleBounds ) {
         return {
           left: visibleBounds.left + LAYOUT_INSET,

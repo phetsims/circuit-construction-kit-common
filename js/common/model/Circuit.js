@@ -231,6 +231,7 @@ define( function( require ) {
     this.vertexGroupTandem = tandem.createGroupTandem( 'vertices' );
     this.wireGroupTandem = tandem.createGroupTandem( 'wires' );
     this.resistorGroupTandem = tandem.createGroupTandem( 'resistors' );
+    this.switchGroupTandem = tandem.createGroupTandem( 'resistors' );
     this.rightBatteryTandemGroup = tandem.createGroupTandem( 'rightBatteries' );
     this.leftBatteryTandemGroup = tandem.createGroupTandem( 'leftBatteries' );
     this.lightBulbGroupTandem = tandem.createGroupTandem( 'lightBulbs' );
