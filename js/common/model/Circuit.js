@@ -241,7 +241,7 @@ define( function( require ) {
   return inherit( Object, Circuit, {
 
     /**
-     * When over Vertex is released or bumped over another Vertex, move them apart so they don't appear connected.
+     * When over Vertex is released or bumped over another Vertex, rotate one away so it doesn't appear connected.
      * @param {Vertex} v1
      * @param {Vertex} v2
      * @private
@@ -256,10 +256,6 @@ define( function( require ) {
       }
       else if ( v2Neighbors.length === 1 && !v2.blackBoxInterfaceProperty.get() ) {
         this.rotateSingleVertex( v2, v2Neighbors[ 0 ] );
-      }
-      else {
-        // TODO: rotate the entire group unless they have a fixed connection other than the pivot?
-        // Or translate if not part of the same fixed subgroup?
       }
     },
 
