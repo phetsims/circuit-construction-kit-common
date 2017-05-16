@@ -284,9 +284,9 @@ define( function( require ) {
     },
 
     /**
-     * TODO: Document me
-     * @param circuitElement
-     * @returns {Node}
+     * Returns the circuit element node that matches the given circuit element.
+     * @param {CircuitElement} circuitElement
+     * @returns {CircuitElementNode}
      * @private
      */
     getCircuitElementNode: function( circuitElement ) {
@@ -306,6 +306,7 @@ define( function( require ) {
         return this.getSwitchNode( circuitElement );
       }
       else {
+        assert && assert( 'no node found for circuit element' );
         return null;
       }
     },
