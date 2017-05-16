@@ -28,7 +28,7 @@ define( function( require ) {
   var GAP = 33;
   var LEFT_JUNCTION = WIDTH / 2 - GAP / 2;
   var RIGHT_JUNCTION = WIDTH / 2 + GAP / 2;
-  var LIFELIKE_DIAMETER = 12;
+  var LIFELIKE_DIAMETER = 16;
 
   /**
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
@@ -54,17 +54,13 @@ define( function( require ) {
     var lifelikeHinge = new Circle( LIFELIKE_DIAMETER / 2, {
       fill: '#a7a8ab',
       stroke: 'black',
-      lineWidth: 3,
+      lineWidth: 4,
       y: LIFELIKE_DIAMETER / 2,
       x: CircuitConstructionKitConstants.SWITCH_LENGTH / 3
     } );
     var lifelikeNode = new Node( {
       children: [ rect, lifelikeHinge ]
     } );
-
-    // lifelikeNode.mutate( {
-    //   scale: battery.distanceBetweenVertices / lifelikeNode.width
-    // } );
 
     // Points sampled using Photoshop from a raster of the IEEE icon seen at
     // https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
