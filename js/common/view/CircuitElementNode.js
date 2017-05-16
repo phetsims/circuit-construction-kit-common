@@ -152,13 +152,13 @@ define( function( require ) {
     },
 
     /**
-     * TODO: Document me
-     * @param event
-     * @param circuitNode
-     * @param startPoint
+     * On tap events, select the vertex (if it is close enough to the tap)
+     * @param {Object} event - scenery input event
+     * @param {CircuitNode} circuitNode
+     * @param {Vector2} startPoint
      * @public
      */
-    selectVertexWhenNear: function( event, circuitNode, startPoint ) {
+    selectCircuitElementNodeWhenNear: function( event, circuitNode, startPoint ) {
 
       if ( event.pointer.point.distance( startPoint ) < CircuitConstructionKitConstants.TAP_THRESHOLD ) {
 

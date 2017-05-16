@@ -156,7 +156,7 @@ define( function( require ) {
 
             // Only show the editor when tapped, not on every drag.  Also, event could be undefined if this end() was triggered
             // by dispose()
-            event && self.selectVertexWhenNear( event, circuitNode, eventPoint );
+            event && self.selectCircuitElementNodeWhenNear( event, circuitNode, eventPoint );
 
             didDrag = false;
           }
