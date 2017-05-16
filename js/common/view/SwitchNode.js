@@ -17,6 +17,8 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var Circle = require( 'SCENERY/nodes/Circle' );
+  var Node = require( 'SCENERY/nodes/Node' );
 
   // constants
   // dimensions for schematic battery
@@ -26,6 +28,7 @@ define( function( require ) {
   var GAP = 33;
   var LEFT_JUNCTION = WIDTH / 2 - GAP / 2;
   var RIGHT_JUNCTION = WIDTH / 2 + GAP / 2;
+  var LIFELIKE_DIAMETER = 12;
 
   /**
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
@@ -42,10 +45,21 @@ define( function( require ) {
     // @public (read-only) - the Battery rendered by this Node
     this.battery = battery;
 
-    var lifelikeNode = new Rectangle( 0, 0, CircuitConstructionKitConstants.SWITCH_LENGTH, 12, {
+    var rect = new Rectangle( 0, 0, CircuitConstructionKitConstants.SWITCH_LENGTH, LIFELIKE_DIAMETER, {
       fill: '#d48270',
       stroke: 'black',
       lineWidth: 1
+    } );
+
+    var lifelikeHinge = new Circle( LIFELIKE_DIAMETER / 2, {
+      fill: '#a7a8ab',
+      stroke: 'black',
+      lineWidth: 3,
+      y: LIFELIKE_DIAMETER / 2,
+      x: CircuitConstructionKitConstants.SWITCH_LENGTH / 3
+    } );
+    var lifelikeNode = new Node( {
+      children: [ rect, lifelikeHinge ]
     } );
 
     // lifelikeNode.mutate( {
