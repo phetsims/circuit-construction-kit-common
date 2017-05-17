@@ -77,12 +77,16 @@ define( function( require ) {
     schematicNode.mouseArea = schematicNode.bounds.copy();
     schematicNode.touchArea = schematicNode.bounds.copy();
 
+    // Center vertically to match the FixedLengthCircuitElementNode assumption that origin is center left
+    batteryImageNode.centerY = 0;
+    schematicNode.centerY = 0;
+
     FixedLengthCircuitElementNode.call( this,
       circuitConstructionKitScreenView,
       circuitNode,
       battery,
       viewProperty,
-      new Node( { children: [ batteryImageNode ], y: -batteryImageNode.height / 2 } ),
+      batteryImageNode,
       schematicNode,
       tandem,
       options
