@@ -50,6 +50,8 @@ define( function( require ) {
       trackSize: CircuitConstructionKitConstants.SLIDER_TRACK_SIZE,
       majorTickLength: 2,
       minorTickLength: 5,
+      // Snap to the nearest whole number.
+      constrainValue: function( value ) {return Util.roundSymmetric( value );},
       tandem: tandem.createTandem( 'slider' )
     } );
     slider.addMajorTick( 0, createLabel( '0', tandem.createTandem( 'minLabel' ) ) );
@@ -71,7 +73,7 @@ define( function( require ) {
 
       // number to be displayed
       batteryResistanceProperty.link( function( value ) {
-        numberNode.setText( StringUtils.fillIn( resistanceOhmsString, { resistance: Util.toFixed( value, 1 ) } ) );
+        numberNode.setText( StringUtils.fillIn( resistanceOhmsString, { resistance: Util.toFixed( value, 0 ) } ) );
       } );
 
       var valueParent = new Panel( numberNode, {
