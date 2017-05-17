@@ -17,6 +17,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Battery' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Resistor' );
+  var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Switch' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/LightBulb' );
   var Util = require( 'DOT/Util' );
   var VBox = require( 'SCENERY/nodes/VBox' );
@@ -71,6 +72,12 @@ define( function( require ) {
         contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, { resistance: Util.toFixed( resistance, 1 ) } );
       } );
     }
+    else if ( circuitElement instanceof Switch ) {
+      contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'switchText' ) }, TEXT_OPTIONS ) );
+      circuitElement.resistanceProperty.link( function( resistance ) {
+        contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, { resistance: resistance > 100000 ? '∞' : Util.toFixed( resistance, 1 ) } );
+      } );
+    }
     else {
       contentNode = new Text( '', TEXT_OPTIONS );
     }
@@ -94,6 +101,8 @@ define( function( require ) {
     circuitElement.vertexMovedEmitter.addListener( updatePosition );
     updatePosition();
     visibleProperty.link( function( visible ) { self.visible = visible; } );
+
+    // TODO: implement dispose
   }
 
   circuitConstructionKitCommon.register( 'ValueNode', ValueNode );
