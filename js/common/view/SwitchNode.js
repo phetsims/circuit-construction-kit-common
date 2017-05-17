@@ -43,9 +43,6 @@ define( function( require ) {
    */
   function SwitchNode( circuitConstructionKitScreenView, circuitNode, circuitSwitch, runningProperty, viewProperty, tandem, options ) {
 
-    options = options || {};
-    options.centerChildren = false;
-
     // @public (read-only) - the Switch rendered by this Node
     this.circuitSwitch = circuitSwitch;
 
@@ -109,6 +106,10 @@ define( function( require ) {
     schematicNode.mouseArea = schematicNode.bounds.copy();
     schematicNode.touchArea = schematicNode.bounds.copy();
 
+    // Make it so clicking in the gap still toggles the switch
+    lifelikeNode.mouseArea = lifelikeNode.bounds.copy();
+    lifelikeNode.touchArea = lifelikeNode.bounds.copy();
+
     FixedLengthCircuitElementNode.call( this,
       circuitConstructionKitScreenView,
       circuitNode,
@@ -120,10 +121,20 @@ define( function( require ) {
       options
     );
 
+    var downPoint = null;
+
     // When the user taps the switch, toggle whether it is open or closed.
     this.contentNode.addInputListener( new ButtonListener( {
-      fire: function() {
-        circuitSwitch.closedProperty.value = !circuitSwitch.closedProperty.value;
+      down: function( event ) {
+        downPoint = event.pointer.point;
+      },
+      fire: function( event ) {
+        var distance = event.pointer.point.distance( downPoint );
+
+        // Toggle the state of the switch, but only if it wasn't dragged too far
+        if ( distance < 15 ) {
+          circuitSwitch.closedProperty.value = !circuitSwitch.closedProperty.value;
+        }
       }
     } ) );
   }
