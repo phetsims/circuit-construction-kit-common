@@ -47,9 +47,12 @@ define( function( require ) {
 
     getPositionAndAngle: function( distanceAlongWire ) {
 
+      // TODO: factor out 1/3 and 2/3 as the important points.
       var startPosition = this.startVertexProperty.get().positionProperty.get();
       var endPosition = this.endVertexProperty.get().positionProperty.get();
       var fractionAlongWire = distanceAlongWire / this.chargePathLength;
+
+      // If the electron is halfway up the switch lever for an open switch, show it along the raised lever
       if ( fractionAlongWire > 1 / 3 && fractionAlongWire < 2 / 3 && !this.closedProperty.get() ) {
         var pivot = startPosition.blend( endPosition, 1 / 3 );
 
@@ -64,10 +67,9 @@ define( function( require ) {
         };
       }
       else {
-        return {
-          position: startPosition.blend( endPosition, fractionAlongWire ),
-          angle: endPosition.minus( startPosition ).angle()
-        };
+
+        // For a closed switch, there is a straight path from the start vertex to the end vertex
+        return FixedLengthCircuitElement.prototype.getPositionAndAngle.call( this, distanceAlongWire );
       }
     },
 
