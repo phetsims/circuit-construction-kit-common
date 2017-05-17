@@ -195,11 +195,11 @@ define( function( require ) {
 
     this.addChild( this.circuitElementToolbox );
 
+    options.showResistivityControl && this.addChild( this.wireResistivityControl );
+    options.showBatteryResistanceControl && this.addChild( this.batteryResistanceControl );
     this.addChild( this.sensorToolbox );
     this.addChild( this.viewRadioButtonGroup );
     this.addChild( this.circuitNode );
-    options.showResistivityControl && this.addChild( this.wireResistivityControl );
-    options.showBatteryResistanceControl && this.addChild( this.batteryResistanceControl );
 
     var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel(
       circuitConstructionKitModel.circuit,
