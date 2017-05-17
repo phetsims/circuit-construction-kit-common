@@ -56,6 +56,11 @@ define( function( require ) {
       maxWidth: 300
     } );
 
+    var switchTextNode = new Text( 'The switch is open', {
+      fontSize: 24,
+      maxWidth: 300
+    } );
+
     // Only show the instructions if there is a circuit element in the play area, so students don't try to tap
     // something in the toolbox.
     var listener = function() {
@@ -78,11 +83,11 @@ define( function( require ) {
     };
 
     // When the selected element changes, update the displayed controls
-    var lastNumberControl = null;
+    var previousPanel = null;
     circuit.selectedCircuitElementProperty.link( function( selectedCircuitElement ) {
-      lastNumberControl && self.removeChild( lastNumberControl );
-      lastNumberControl && lastNumberControl !== tapInstructionTextNode && lastNumberControl.dispose();
-      lastNumberControl = null;
+      previousPanel && self.removeChild( previousPanel );
+      previousPanel && previousPanel !== tapInstructionTextNode && previousPanel !== switchTextNode && previousPanel.dispose();
+      previousPanel = null;
 
       if ( selectedCircuitElement ) {
         var resistor = selectedCircuitElement instanceof Resistor || selectedCircuitElement instanceof LightBulb;
@@ -90,26 +95,30 @@ define( function( require ) {
         var wire = selectedCircuitElement instanceof Wire;
         var isSwitch = selectedCircuitElement instanceof Switch;
 
-        var text = (resistor || wire) ? resistanceString :
-                   battery ? voltageString :
-                   null;
-        var units = (resistor || wire) ? ohmsString :
-                    battery ? voltsString :
-                    null;
-        var property = (resistor || wire) ? selectedCircuitElement.resistanceProperty :
-                       battery ? selectedCircuitElement.voltageProperty :
-                       isSwitch ? selectedCircuitElement.closedProperty :
-                       null;
-        var options = wire ? { numberControlEnabled: false } : {};
+        if ( resistor || battery || wire ) {
+          var text = (resistor || wire) ? resistanceString :
+                     battery ? voltageString :
+                     null;
+          var units = (resistor || wire) ? ohmsString :
+                      battery ? voltsString :
+                      null;
+          var property = (resistor || wire) ? selectedCircuitElement.resistanceProperty :
+                         battery ? selectedCircuitElement.voltageProperty :
+                         null;
+          var options = wire ? { numberControlEnabled: false } : {};
 
-        assert && assert( property, 'property should not be null' );
-        lastNumberControl = new CircuitElementEditPanel( text, units, property, circuit, selectedCircuitElement, groupTandem.createNextTandem(), options );
+          assert && assert( property, 'property should not be null' );
+          previousPanel = new CircuitElementEditPanel( text, units, property, circuit, selectedCircuitElement, groupTandem.createNextTandem(), options );
+        }
+        else if ( isSwitch ) {
+          previousPanel = switchTextNode;
+        }
       }
       else {
-        lastNumberControl = tapInstructionTextNode;
+        previousPanel = tapInstructionTextNode;
       }
-      if ( lastNumberControl !== null ) {
-        self.addChild( lastNumberControl );
+      if ( previousPanel !== null ) {
+        self.addChild( previousPanel );
       }
       updatePosition();
     } );

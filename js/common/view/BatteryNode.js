@@ -14,6 +14,7 @@ define( function( require ) {
   var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/FixedLengthCircuitElementNode' );
   var Image = require( 'SCENERY/nodes/Image' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var Node = require( 'SCENERY/nodes/Node' );
   var Shape = require( 'KITE/Shape' );
   var Matrix3 = require( 'DOT/Matrix3' );
 
@@ -65,9 +66,6 @@ define( function( require ) {
     var desiredWidth = batteryImageNode.width;
     var schematicScale = desiredWidth / schematicWidth;
 
-    // Align vertically
-    schematicShape = schematicShape.transformed( Matrix3.translation( 0, batteryImageNode.height / 2 + 7 ) );
-
     // Scale to fit the correct width
     schematicShape = schematicShape.transformed( Matrix3.scale( schematicScale, schematicScale ) );
     var schematicNode = new Path( schematicShape, {
@@ -84,7 +82,7 @@ define( function( require ) {
       circuitNode,
       battery,
       viewProperty,
-      batteryImageNode,
+      new Node( { children: [ batteryImageNode ], y: -batteryImageNode.height / 2 } ),
       schematicNode,
       tandem,
       options

@@ -42,10 +42,25 @@ define( function( require ) {
    */
   function SwitchNode( circuitConstructionKitScreenView, circuitNode, battery, runningProperty, viewProperty, tandem, options ) {
 
+    options = options || {};
+    options.centerChildren = false;
+
     // @public (read-only) - the Battery rendered by this Node
     this.battery = battery;
 
-    var rect = new Rectangle( 0, 0, CircuitConstructionKitConstants.SWITCH_LENGTH, LIFELIKE_DIAMETER, {
+    var leftSegment = new Rectangle( 0, -LIFELIKE_DIAMETER / 2, CircuitConstructionKitConstants.SWITCH_LENGTH / 3, LIFELIKE_DIAMETER, {
+      fill: '#d48270',
+      stroke: 'black',
+      lineWidth: 1
+    } );
+    var midSegment = new Rectangle( 0, -LIFELIKE_DIAMETER / 2, CircuitConstructionKitConstants.SWITCH_LENGTH / 3, LIFELIKE_DIAMETER, {
+      x: CircuitConstructionKitConstants.SWITCH_LENGTH / 3,
+      fill: '#d48270',
+      stroke: 'black',
+      lineWidth: 1
+    } );
+    midSegment.rotate( -Math.PI / 4 );
+    var rightSegment = new Rectangle( CircuitConstructionKitConstants.SWITCH_LENGTH * 2 / 3, -LIFELIKE_DIAMETER / 2, CircuitConstructionKitConstants.SWITCH_LENGTH / 3, LIFELIKE_DIAMETER, {
       fill: '#d48270',
       stroke: 'black',
       lineWidth: 1
@@ -55,11 +70,10 @@ define( function( require ) {
       fill: '#a7a8ab',
       stroke: 'black',
       lineWidth: 4,
-      y: LIFELIKE_DIAMETER / 2,
       x: CircuitConstructionKitConstants.SWITCH_LENGTH / 3
     } );
     var lifelikeNode = new Node( {
-      children: [ rect, lifelikeHinge ]
+      children: [ leftSegment, midSegment, rightSegment, lifelikeHinge ]
     } );
 
     // Points sampled using Photoshop from a raster of the IEEE icon seen at

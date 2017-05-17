@@ -20,7 +20,6 @@ define( function( require ) {
   var Matrix3 = require( 'DOT/Matrix3' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Image = require( 'SCENERY/nodes/Image' );
-  var Vector2 = require( 'DOT/Vector2' );
   var FixedLengthCircuitElementHighlightNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/FixedLengthCircuitElementHighlightNode' );
 
   // images
@@ -35,8 +34,8 @@ define( function( require ) {
    * @param {CircuitNode} circuitNode - Null if an icon is created
    * @param {FixedLengthCircuitElement} circuitElement
    * @param {Property.<string>} viewProperty - 'lifelike'|'schematic'
-   * @param {Node} lifelikeNode - the node that will display the component as a lifelike object
-   * @param {Node} schematicNode - the node that will display the component
+   * @param {Node} lifelikeNode - the node that will display the component as a lifelike object.  Origin must be left-center
+   * @param {Node} schematicNode - the node that will display the component. Origin must be left-center.
    * @param {Tandem} tandem
    * @param options
    * @constructor
@@ -48,19 +47,12 @@ define( function( require ) {
 
     options = _.extend( {
       icon: false,
-      highlightOptions: {},
-      centerChildren: true
+      highlightOptions: {}
     }, options );
     this.circuitElement = circuitElement;
 
     // node that shows the component, separate from the part that shows the highlight and the fire
     this.contentNode = new Node();
-
-    // Center the nodes so they will be easy to position
-    if ( options.centerChildren ) {
-      lifelikeNode.center = Vector2.ZERO;
-      schematicNode.center = Vector2.ZERO;
-    }
 
     // Show the selected node
     viewProperty.link( function( view ) {
@@ -235,15 +227,15 @@ define( function( require ) {
     },
 
     updateRender: function() {
+
       // TODO: doc/cleanup/move to prototype?
       var startPosition = this.circuitElement.startVertexProperty.get().positionProperty.get();
       var endPosition = this.circuitElement.endVertexProperty.get().positionProperty.get();
       var delta = endPosition.minus( startPosition );
       var angle = delta.angle();
-      var center = startPosition.blend( endPosition, 0.5 );
 
       // Update the node transform in a single step, see #66
-      transform.setToTranslation( center.x, center.y ).multiplyMatrix( rotationMatrix.setToRotationZ( angle ) );
+      transform.setToTranslation( startPosition.x, startPosition.y ).multiplyMatrix( rotationMatrix.setToRotationZ( angle ) );
       this.contentNode.setMatrix( transform );
       this.highlightNode && this.highlightNode.setMatrix( transform.copy() );
 
