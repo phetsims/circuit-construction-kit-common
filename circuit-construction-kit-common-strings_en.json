@@ -71,7 +71,10 @@
   "voltageUnits": {
     "value": "{{voltage}} V"
   },
-  "resistanceUnits": {
+  "resistanceOhmsSymbol": {
     "value": "{{resistance}} Ω"
+  },
+  "resistanceOhms": {
+    "value": "{{resistance}} ohms"
   }
 }

@@ -24,7 +24,7 @@ define( function( require ) {
 
   // strings
   var voltageUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageUnits' );
-  var resistanceUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceUnits' );
+  var resistanceOhmsSymbolString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhmsSymbol' );
 
   /**
    * @param {CircuitElement} circuitElement
@@ -56,7 +56,7 @@ define( function( require ) {
 
       var resistanceNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'resistanceText' ) }, TEXT_OPTIONS ) );
       circuitElement.internalResistanceProperty.link( function( internalResistance, lastInternalResistance ) {
-        resistanceNode.text = StringUtils.fillIn( resistanceUnitsString, { resistance: Util.toFixed( internalResistance, 1 ) } );
+        resistanceNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, { resistance: Util.toFixed( internalResistance, 1 ) } );
 
         // If the children should change, update them here
         if ( lastInternalResistance === null || (internalResistance === 0 || lastInternalResistance === 0) ) {
@@ -68,7 +68,7 @@ define( function( require ) {
     else if ( circuitElement instanceof Resistor || circuitElement instanceof LightBulb ) {
       contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'resistanceText' ) }, TEXT_OPTIONS ) );
       circuitElement.resistanceProperty.link( function( resistance ) {
-        contentNode.text = StringUtils.fillIn( resistanceUnitsString, { resistance: Util.toFixed( resistance, 1 ) } );
+        contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, { resistance: Util.toFixed( resistance, 1 ) } );
       } );
     }
     else {
