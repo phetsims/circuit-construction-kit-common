@@ -330,23 +330,17 @@ define( function( require ) {
         right: visibleBounds.right - LAYOUT_INSET,
         top: self.displayOptionsPanel.bottom + LAYOUT_INSET
       } );
-      self.viewRadioButtonGroup.top = self.sensorToolbox.bottom + 10;
+      self.viewRadioButtonGroup.top = self.sensorToolbox.bottom + LAYOUT_INSET;
       self.viewRadioButtonGroup.left = self.sensorToolbox.left;
 
       zoomControlPanel.bottom = visibleBounds.bottom - LAYOUT_INSET;
       zoomControlPanel.left = self.circuitElementToolbox.left;
 
-      self.wireResistivityControl.top = self.viewRadioButtonGroup.bottom + 10;
+      self.wireResistivityControl.top = self.viewRadioButtonGroup.bottom + LAYOUT_INSET;
       self.wireResistivityControl.right = visibleBounds.right - LAYOUT_INSET;
 
-      // I think it doesn't collapse in Build an Atom and that works well
-
-      // Link that adjusts batteryResistanceControl in response to the wireResistivityControl's expanded property.
-      var expandedDistance = self.wireResistivityControl.bottom + 10;
-      var retractedDistance = self.wireResistivityControl.top + 35;
-      self.wireResistivityControl.expandedProperty.link( function( expanded ) {
-        self.batteryResistanceControl.top = expanded === true ? expandedDistance : retractedDistance;
-      } );
+      // The layout remains the same whether the accordion boxes are expanded or collapsed
+      self.batteryResistanceControl.top = self.wireResistivityControl.bottom + LAYOUT_INSET;
       self.batteryResistanceControl.right = visibleBounds.right - LAYOUT_INSET;
     } );
 

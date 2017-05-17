@@ -55,6 +55,7 @@ define( function( require ) {
       buttonXMargin: 10,
       titleYMargin: 4,
       titleXSpacing: 14,
+      contentYSpacing: 4,
       titleNode: new HBox( {
         children: [
           new HStrut( 10 ),
