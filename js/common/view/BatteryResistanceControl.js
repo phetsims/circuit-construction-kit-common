@@ -83,8 +83,8 @@ define( function( require ) {
     AccordionBox.call( this, new VBox( {
       children: [ valueParent, slider ]
     } ), {
-      fill: '#f1f1f2',
-      cornerRadius: 10,
+      fill: CircuitConstructionKitConstants.PANEL_COLOR,
+      cornerRadius: CircuitConstructionKitConstants.CORNER_RADIUS,
       titleXMargin: 10,
       buttonXMargin: 10,
       titleYMargin: 4,
