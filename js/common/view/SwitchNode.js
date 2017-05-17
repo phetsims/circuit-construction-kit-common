@@ -1,7 +1,7 @@
 // Copyright 2015-2017, University of Colorado Boulder
 
 /**
- * Renders the lifelike/schematic view for a Battery.
+ * Renders the lifelike/schematic view for a Switch.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -19,6 +19,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
 
   // constants
   // dimensions for schematic battery
@@ -33,20 +34,20 @@ define( function( require ) {
   /**
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
    * @param {CircuitNode} circuitNode
-   * @param {Battery} battery
+   * @param {Switch} circuitSwitch
    * @param {Property.<boolean>} runningProperty - supplied for consistency with other CircuitElementNode constructors
    * @param {Property.<string>} viewProperty
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function SwitchNode( circuitConstructionKitScreenView, circuitNode, battery, runningProperty, viewProperty, tandem, options ) {
+  function SwitchNode( circuitConstructionKitScreenView, circuitNode, circuitSwitch, runningProperty, viewProperty, tandem, options ) {
 
     options = options || {};
     options.centerChildren = false;
 
-    // @public (read-only) - the Battery rendered by this Node
-    this.battery = battery;
+    // @public (read-only) - the Switch rendered by this Node
+    this.circuitSwitch = circuitSwitch;
 
     var leftSegment = new Rectangle( 0, -LIFELIKE_DIAMETER / 2, CircuitConstructionKitConstants.SWITCH_LENGTH / 3, LIFELIKE_DIAMETER, {
       fill: '#d48270',
@@ -59,7 +60,10 @@ define( function( require ) {
       stroke: 'black',
       lineWidth: 1
     } );
-    midSegment.rotate( -Math.PI / 4 );
+
+    circuitSwitch.closedProperty.link( function( closed ) {
+      midSegment.setRotation( closed ? 0 : -Math.PI / 4 );
+    } );
     var rightSegment = new Rectangle( CircuitConstructionKitConstants.SWITCH_LENGTH * 2 / 3, -LIFELIKE_DIAMETER / 2, CircuitConstructionKitConstants.SWITCH_LENGTH / 3, LIFELIKE_DIAMETER, {
       fill: '#d48270',
       stroke: 'black',
@@ -108,13 +112,20 @@ define( function( require ) {
     FixedLengthCircuitElementNode.call( this,
       circuitConstructionKitScreenView,
       circuitNode,
-      battery,
+      circuitSwitch,
       viewProperty,
       lifelikeNode,
       schematicNode,
       tandem,
       options
     );
+
+    // When the user taps the switch, toggle whether it is open or closed.
+    this.contentNode.addInputListener( new ButtonListener( {
+      fire: function() {
+        circuitSwitch.closedProperty.value = !circuitSwitch.closedProperty.value;
+      }
+    } ) );
   }
 
   circuitConstructionKitCommon.register( 'SwitchNode', SwitchNode );

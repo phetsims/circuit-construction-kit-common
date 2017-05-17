@@ -51,7 +51,7 @@ define( function( require ) {
     }, options );
     this.circuitElement = circuitElement;
 
-    // node that shows the component, separate from the part that shows the highlight and the fire
+    // @protected (read-only) node that shows the component, separate from the part that shows the highlight and the fire
     this.contentNode = new Node();
 
     // Show the selected node
