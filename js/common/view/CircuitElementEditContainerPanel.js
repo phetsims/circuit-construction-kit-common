@@ -18,11 +18,11 @@ define( function( require ) {
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Battery' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Wire' );
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Switch' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/FixedLengthCircuitElement' );
   var CircuitElementEditPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitElementEditPanel' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var SwitchReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/SwitchReadoutNode' );
 
   // strings
   var tapCircuitElementToEditString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/tapCircuitElementToEdit' );
@@ -56,11 +56,6 @@ define( function( require ) {
       maxWidth: 300
     } );
 
-    var switchTextNode = new Text( 'The switch is open', {
-      fontSize: 24,
-      maxWidth: 300
-    } );
-
     // Only show the instructions if there is a circuit element in the play area, so students don't try to tap
     // something in the toolbox.
     var listener = function() {
@@ -76,17 +71,17 @@ define( function( require ) {
     circuit.vertices.addItemRemovedListener( listener ); // Also update on reset all, or if a component is dropped in the toolbox
     modeProperty.link( listener );
 
-    // blank spacer so layout doesn't exception out
-    this.addChild( new Rectangle( 0, 0, 10, 10, { fill: null } ) );
     var updatePosition = function() {
-      self.mutate( GET_LAYOUT_POSITION( visibleBoundsProperty.get() ) );
+
+      // Layout, but only if we have something to display (otherwise bounds fail out)
+      self.children.length > 0 && self.mutate( GET_LAYOUT_POSITION( visibleBoundsProperty.get() ) );
     };
 
     // When the selected element changes, update the displayed controls
     var previousPanel = null;
     circuit.selectedCircuitElementProperty.link( function( selectedCircuitElement ) {
       previousPanel && self.removeChild( previousPanel );
-      previousPanel && previousPanel !== tapInstructionTextNode && previousPanel !== switchTextNode && previousPanel.dispose();
+      previousPanel && previousPanel !== tapInstructionTextNode && previousPanel.dispose();
       previousPanel = null;
 
       if ( selectedCircuitElement ) {
@@ -111,7 +106,7 @@ define( function( require ) {
           previousPanel = new CircuitElementEditPanel( text, units, property, circuit, selectedCircuitElement, groupTandem.createNextTandem(), options );
         }
         else if ( isSwitch ) {
-          previousPanel = switchTextNode;
+          previousPanel = new SwitchReadoutNode( selectedCircuitElement );
         }
       }
       else {

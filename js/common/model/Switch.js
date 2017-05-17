@@ -23,18 +23,21 @@ define( function( require ) {
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
    * @param {Tandem} tandem
-   * @param {Object} [options]
    * @constructor
    */
   function Switch( startVertex, endVertex, tandem ) {
     FixedLengthCircuitElement.call( this, startVertex, endVertex, SWITCH_LENGTH, SWITCH_LENGTH, tandem );
+    var self = this;
 
     // @public (read-only) the resistance in ohms
-    // TODO: should this be here?
-    this.resistanceProperty = new NumberProperty( CircuitConstructionKitConstants.DEFAULT_RESISTANCE );
+    this.resistanceProperty = new NumberProperty( 0 );
 
     // @public (read-only) whether the switch is closed (and current is flowing)
     this.closedProperty = new BooleanProperty( false );
+
+    this.closedProperty.link( function( closed ) {
+      self.resistanceProperty.value = closed ? 0 : 1000000000; // TODO: Do I need to model this topologically?
+    } );
   }
 
   circuitConstructionKitCommon.register( 'Switch', Switch );

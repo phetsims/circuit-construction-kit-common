@@ -76,5 +76,11 @@
   },
   "resistanceOhms": {
     "value": "{{resistance}} ohms"
+  },
+  "theSwitchIsClosed": {
+    "value": "The switch is closed."
+  },
+  "theSwitchIsOpen": {
+    "value": "The switch is open."
   }
 }
