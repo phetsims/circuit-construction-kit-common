@@ -15,6 +15,7 @@ define( function( require ) {
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/FixedLengthCircuitElement' );
   var NumberProperty = require( 'AXON/NumberProperty' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
+  var Util = require( 'DOT/Util' );
 
   // constants
   var SWITCH_LENGTH = CircuitConstructionKitConstants.SWITCH_LENGTH;
@@ -43,6 +44,32 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'Switch', Switch );
 
   return inherit( FixedLengthCircuitElement, Switch, {
+
+    getPositionAndAngle: function( distanceAlongWire ) {
+
+      var startPosition = this.startVertexProperty.get().positionProperty.get();
+      var endPosition = this.endVertexProperty.get().positionProperty.get();
+      var fractionAlongWire = distanceAlongWire / this.chargePathLength;
+      if ( fractionAlongWire > 1 / 3 && fractionAlongWire < 2 / 3 && !this.closedProperty.get() ) {
+        var pivot = startPosition.blend( endPosition, 1 / 3 );
+
+        var twoThirdsPoint = startPosition.blend( endPosition, 2 / 3 );
+        var rotatedPoint = twoThirdsPoint.rotatedAboutPoint( pivot, -Math.PI / 4 );
+
+        var distanceAlongSegment = Util.linear( 1 / 3, 2 / 3, 0, 1, fractionAlongWire );
+        return {
+
+          position: pivot.blend( rotatedPoint, distanceAlongSegment ),
+          angle: endPosition.minus( startPosition ).angle()
+        };
+      }
+      else {
+        return {
+          position: startPosition.blend( endPosition, fractionAlongWire ),
+          angle: endPosition.minus( startPosition ).angle()
+        };
+      }
+    },
 
       /**
        * Get the properties so that the circuit can be solved when changed.
