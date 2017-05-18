@@ -14,6 +14,7 @@ define( function( require ) {
   var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/FixedLengthCircuitElementNode' );
   var Image = require( 'SCENERY/nodes/Image' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Shape = require( 'KITE/Shape' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var Property = require( 'AXON/Property' );
@@ -47,48 +48,31 @@ define( function( require ) {
     // @public (read-only) - the Battery rendered by this Node
     this.battery = battery;
 
-    var batteryImageNode = new Image( batteryImage );
+    var createNode = function() {
+      var node = new Rectangle( 0, 0, 100, 40, 10, 10, {
+        fill: '#f39033',
+        stroke: '#231f20',
+        lineWidth: 4
+      } );
 
-    batteryImageNode.mutate( {
-      scale: battery.distanceBetweenVertices / batteryImageNode.width
-    } );
+      // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
+      node.mouseArea = node.bounds.copy();
+      node.touchArea = node.bounds.copy();
 
-    // Points sampled using Photoshop from a raster of the IEEE icon seen at
-    // https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
-    var schematicShape = new Shape()
-      .moveTo( 0, 0 ) // left wire
-      .lineTo( LEFT_JUNCTION, 0 )
-      .moveTo( LEFT_JUNCTION, SMALL_TERMINAL_WIDTH / 2 ) // left plate
-      .lineTo( LEFT_JUNCTION, -SMALL_TERMINAL_WIDTH / 2 )
-      .moveTo( RIGHT_JUNCTION, 0 ) // right wire
-      .lineTo( WIDTH, 0 )
-      .moveTo( RIGHT_JUNCTION, LARGE_TERMINAL_WIDTH / 2 ) // right plate
-      .lineTo( RIGHT_JUNCTION, -LARGE_TERMINAL_WIDTH / 2 );
-    var schematicWidth = schematicShape.bounds.width;
-    var desiredWidth = batteryImageNode.width;
-    var schematicScale = desiredWidth / schematicWidth;
+      // Center vertically to match the FixedLengthCircuitElementNode assumption that origin is center left
+      node.centerY = 0;
+      return node;
+    };
 
-    // Scale to fit the correct width
-    schematicShape = schematicShape.transformed( Matrix3.scale( schematicScale, schematicScale ) );
-    var schematicNode = new Path( schematicShape, {
-      stroke: 'black',
-      lineWidth: 4
-    } );
-
-    // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
-    schematicNode.mouseArea = schematicNode.bounds.copy();
-    schematicNode.touchArea = schematicNode.bounds.copy();
-
-    // Center vertically to match the FixedLengthCircuitElementNode assumption that origin is center left
-    batteryImageNode.centerY = 0;
-    schematicNode.centerY = 0;
+    var lifelikeNode = createNode();
+    var schematicNode = createNode();
 
     FixedLengthCircuitElementNode.call( this,
       circuitConstructionKitScreenView,
       circuitNode,
       battery,
       viewProperty,
-      batteryImageNode,
+      lifelikeNode,
       schematicNode,
       tandem,
       options
