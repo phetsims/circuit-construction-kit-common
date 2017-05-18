@@ -18,7 +18,7 @@ define( function( require ) {
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var ResistivityControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ResistivityControlPanel' );
+  var CCKAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CCKAccordionBox' );
   var Util = require( 'DOT/Util' );
   var Range = require( 'DOT/Range' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
@@ -47,8 +47,8 @@ define( function( require ) {
 
     var slider = new HSlider( batteryResistanceProperty, new Range( CircuitConstructionKitConstants.DEFAULT_BATTERY_RESISTANCE, 10 ), {
       trackSize: CircuitConstructionKitConstants.SLIDER_TRACK_SIZE,
-      majorTickLength: 2,
-      minorTickLength: 5,
+      // majorTickLength: 2,
+      // minorTickLength: 5,
       // Snap to the nearest whole number.
       constrainValue: function( value ) {return Util.roundSymmetric( value );},
       tandem: tandem.createTandem( 'slider' )
@@ -93,12 +93,12 @@ define( function( require ) {
       } );
 
     }
-    ResistivityControlPanel.call( this, new VBox( {
+    CCKAccordionBox.call( this, new VBox( {
       children: [ valueParent, slider ]
     } ), batteryResistanceString, tandem );
   }
 
   circuitConstructionKitCommon.register( 'BatteryResistanceControl', BatteryResistanceControl );
 
-  return inherit( ResistivityControlPanel, BatteryResistanceControl );
+  return inherit( CCKAccordionBox, BatteryResistanceControl );
 } );

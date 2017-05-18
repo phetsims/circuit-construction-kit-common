@@ -14,7 +14,7 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var HSlider = require( 'SUN/HSlider' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
-  var ResistivityControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ResistivityControlPanel' );
+  var CCKAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CCKAccordionBox' );
 
   //strings
   var tinyString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/tiny' );
@@ -47,10 +47,10 @@ define( function( require ) {
     slider.addMajorTick( 0, createLabel( true ) );
     slider.addMajorTick( max, createLabel( false ) );
 
-    ResistivityControlPanel.call( this, slider, wireResistivityString, tandem );
+    CCKAccordionBox.call( this, slider, wireResistivityString, tandem );
   }
 
   circuitConstructionKitCommon.register( 'WireResistivityControl', WireResistivityControl );
 
-  return inherit( ResistivityControlPanel, WireResistivityControl );
+  return inherit( CCKAccordionBox, WireResistivityControl );
 } );

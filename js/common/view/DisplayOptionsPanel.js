@@ -99,7 +99,9 @@ define( function( require ) {
       children: children,
       spacing: 10,
       align: 'left'
-    } ), tandem );
+    } ), tandem, {
+      yMargin: 10
+    } );
   }
 
   circuitConstructionKitCommon.register( 'DisplayOptionsPanel', DisplayOptionsPanel );

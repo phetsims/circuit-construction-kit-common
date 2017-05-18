@@ -1,9 +1,10 @@
 // Copyright 2017, University of Colorado Boulder
 
 /**
- *
+ * AccordionBox that is customized with constants for Circuit Construction Kit.
  *
  * @author Sam Reid (PhET Interactive Simulations)
+ * @author Denzell Barnett (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';
@@ -18,10 +19,12 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
 
   /**
+   * @param {Node} content - the content to display in the accordion box when it is expanded
+   * @param {string} title - the text to display in the title bar
+   * @param {Tandem} tandem
    * @constructor
    */
-  function ResistivityControlPanel( content, title, tandem ) {
-
+  function CCKAccordionBox( content, title, tandem ) {
     AccordionBox.call( this, content, {
       fill: CircuitConstructionKitConstants.PANEL_COLOR,
       cornerRadius: CircuitConstructionKitConstants.CORNER_RADIUS,
@@ -30,7 +33,7 @@ define( function( require ) {
       titleYMargin: 4,
       titleXSpacing: 14,
       contentYSpacing: 4,
-      tandem: tandem.createTandem( 'accordionBox' ),
+      tandem: tandem,
       minWidth: CircuitConstructionKitConstants.RIGHT_SIDE_PANEL_MIN_WIDTH,
       titleNode: new HBox( {
         children: [
@@ -42,7 +45,7 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKitCommon.register( 'ResistivityControlPanel', ResistivityControlPanel );
+  circuitConstructionKitCommon.register( 'CCKAccordionBox', CCKAccordionBox );
 
-  return inherit( AccordionBox, ResistivityControlPanel );
+  return inherit( AccordionBox, CCKAccordionBox );
 } );
