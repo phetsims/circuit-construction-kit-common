@@ -28,6 +28,7 @@ define( function( require ) {
   //strings
   var batteryResistanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/batteryResistance' );
   var resistanceOhmsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhms' );
+  var resistanceOhmString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhm' );
 
   /**
    * @param {Property.<number>} batteryResistanceProperty - the axon Property for the internal resistance of all Batteries
@@ -73,7 +74,12 @@ define( function( require ) {
 
       // number to be displayed
       batteryResistanceProperty.link( function( value ) {
-        numberNode.setText( StringUtils.fillIn( resistanceOhmsString, { resistance: Util.toFixed( value, 0 ) } ) );
+        if ( value === 1 ) {
+          numberNode.setText( StringUtils.fillIn( resistanceOhmString, { resistance: Util.toFixed( value, 0 ) } ) );
+        }
+        else {
+          numberNode.setText( StringUtils.fillIn( resistanceOhmsString, { resistance: Util.toFixed( value, 0 ) } ) );
+        }
       } );
 
       var valueParent = new Panel( numberNode, {
