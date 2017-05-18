@@ -12,24 +12,8 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/FixedLengthCircuitElementNode' );
-  var Image = require( 'SCENERY/nodes/Image' );
-  var Path = require( 'SCENERY/nodes/Path' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var Shape = require( 'KITE/Shape' );
-  var Matrix3 = require( 'DOT/Matrix3' );
   var Property = require( 'AXON/Property' );
-
-  // images
-  var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
-
-  // constants
-  // dimensions for schematic battery
-  var SMALL_TERMINAL_WIDTH = 50;
-  var LARGE_TERMINAL_WIDTH = 104;
-  var WIDTH = 188;
-  var GAP = 33;
-  var LEFT_JUNCTION = WIDTH / 2 - GAP / 2;
-  var RIGHT_JUNCTION = WIDTH / 2 + GAP / 2;
 
   /**
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
