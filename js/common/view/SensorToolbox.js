@@ -12,14 +12,18 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/CircuitConstructionKitPanel' );
   var HBox = require( 'SCENERY/nodes/HBox' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
   var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/VoltmeterNode' );
   var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/AmmeterNode' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var SeriesAmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/SeriesAmmeterNode' );
   var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Voltmeter' );
   var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Ammeter' );
+  var SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/SeriesAmmeter' );
+  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Vertex' );
+  var Text = require( 'SCENERY/nodes/Text' );
 
   // constants
-  var TOOLBOX_ICON_SIZE = CircuitConstructionKitConstants.TOOLBOX_ICON_SIZE;
+  var TOOLBOX_ICON_SIZE = 53;
   var VOLTMETER_ICON_SCALE = 1.3;
 
   /**
@@ -69,11 +73,40 @@ define( function( require ) {
     ammeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( ammeterNodeIcon.width, ammeterNodeIcon.height ) } );
     ammeterNodeIcon.addInputListener( createListener( ammeterNode.ammeter, ammeterNode ) );
 
+    // Icon for the series ammeter
+    var seriesAmmeter = new SeriesAmmeter( new Vertex( 0, 0 ), new Vertex( 100, 0 ), tandem.createTandem( 'seriesAmmeterIconModel' ) );
+    var seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeter, null, null, tandem.createTandem( 'seriesAmmeterNodeIcon' ), {
+      icon: true
+    } );
+    seriesAmmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / seriesAmmeterNodeIcon.width } );
+
     CircuitConstructionKitPanel.call( this, new HBox( {
-      spacing: CircuitConstructionKitConstants.TOOLBOX_ITEM_SPACING,
+      spacing: 20,
       align: 'bottom',
-      children: [ voltmeterNodeIcon, ammeterNodeIcon ]
-    } ), tandem );
+      children: [ new VBox( {
+        spacing: 3,
+        children: [
+          voltmeterNodeIcon,
+          new Text( 'Voltmeter' )
+        ]
+      } ), new VBox( {
+        spacing: 3,// TODO: factor out
+        // TODO: support screen 1-2 that only show probes
+        children: [
+          new HBox( {
+            spacing: 8,
+            align: 'bottom',
+            children: [
+              ammeterNodeIcon, seriesAmmeterNodeIcon
+            ]
+          } ),
+          new Text( 'Ammeters' )
+        ]
+      } ) ]
+    } ), tandem, {
+      xMargin: 10,
+      yMargin: 8
+    } );
   }
 
   circuitConstructionKitCommon.register( 'SensorToolbox', SensorToolbox );
