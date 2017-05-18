@@ -9,6 +9,6 @@ define( function( require ) {
   'use strict';
 
   // modules
-  require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/model/Circuit' );
-  require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ResistorColors' );
+  require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Circuit' );
+  require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorColors' );
 } );
