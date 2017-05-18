@@ -77,7 +77,14 @@ define( function( require ) {
       } );
 
       var valueParent = new Panel( numberNode, {
-        cornerRadius: 5,
+        fill: 'white',
+        stroke: 'gray',
+        lineWidth: 1, // width of the background border
+        xMargin: 4,
+        yMargin: 3,
+        cornerRadius: 0, // radius of the rounded corners on the background
+        resize: true, // dynamically resize when content bounds change
+        backgroundPickable: false,
         tandem: valueParentsGroupTandem.createNextTandem()
       } );
 
