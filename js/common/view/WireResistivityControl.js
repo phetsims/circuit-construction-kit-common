@@ -11,12 +11,10 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var AccordionBox = require( 'SUN/AccordionBox' );
   var Text = require( 'SCENERY/nodes/Text' );
   var HSlider = require( 'SUN/HSlider' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
-  var HStrut = require( 'SCENERY/nodes/HStrut' );
+  var ResistivityControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ResistivityControlPanel' );
 
   //strings
   var tinyString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/tiny' );
@@ -48,26 +46,11 @@ define( function( require ) {
 
     slider.addMajorTick( 0, createLabel( true ) );
     slider.addMajorTick( max, createLabel( false ) );
-    AccordionBox.call( this, slider, {
-      fill: CircuitConstructionKitConstants.PANEL_COLOR,
-      cornerRadius: CircuitConstructionKitConstants.CORNER_RADIUS,
-      titleXMargin: 10,
-      buttonXMargin: 10,
-      titleYMargin: 4,
-      titleXSpacing: 14,
-      contentYSpacing: 4,
-      minWidth: CircuitConstructionKitConstants.RIGHT_SIDE_PANEL_MIN_WIDTH,
-      titleNode: new HBox( {
-        children: [
-          new HStrut( 10 ),
-          new Text( wireResistivityString, { fontSize: 14, tandem: tandem.createTandem( 'wireResistanceText' ) } )
-        ]
-      } ),
-      tandem: tandem
-    } );
+
+    ResistivityControlPanel.call( this, slider, wireResistivityString, tandem );
   }
 
   circuitConstructionKitCommon.register( 'WireResistivityControl', WireResistivityControl );
 
-  return inherit( AccordionBox, WireResistivityControl );
+  return inherit( ResistivityControlPanel, WireResistivityControl );
 } );

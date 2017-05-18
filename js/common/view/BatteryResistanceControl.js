@@ -12,15 +12,13 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var AccordionBox = require( 'SUN/AccordionBox' );
   var Panel = require( 'SUN/Panel' );
   var Text = require( 'SCENERY/nodes/Text' );
   var HSlider = require( 'SUN/HSlider' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
   var VBox = require( 'SCENERY/nodes/VBox' );
-  var HStrut = require( 'SCENERY/nodes/HStrut' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var ResistivityControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/ResistivityControlPanel' );
   var Util = require( 'DOT/Util' );
   var Range = require( 'DOT/Range' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
@@ -95,29 +93,12 @@ define( function( require ) {
       } );
 
     }
-    AccordionBox.call( this, new VBox( {
+    ResistivityControlPanel.call( this, new VBox( {
       children: [ valueParent, slider ]
-    } ), {
-      fill: CircuitConstructionKitConstants.PANEL_COLOR,
-      cornerRadius: CircuitConstructionKitConstants.CORNER_RADIUS,
-      titleXMargin: 10,
-      buttonXMargin: 10,
-      titleYMargin: 4,
-      titleXSpacing: 14,
-      contentYSpacing: 4,
-      tandem: tandem.createTandem( 'accordionBox' ),
-      minWidth: CircuitConstructionKitConstants.RIGHT_SIDE_PANEL_MIN_WIDTH,
-      titleNode: new HBox( {
-        children: [
-          new HStrut( 10 ),
-          new Text( batteryResistanceString, { fontSize: 14, tandem: tandem.createTandem( 'batteryResistanceText' ) } )
-        ],
-        tandem: tandem.createTandem( 'titleNode' )
-      } )
-    } );
+    } ), batteryResistanceString, tandem );
   }
 
   circuitConstructionKitCommon.register( 'BatteryResistanceControl', BatteryResistanceControl );
 
-  return inherit( AccordionBox, BatteryResistanceControl );
+  return inherit( ResistivityControlPanel, BatteryResistanceControl );
 } );
