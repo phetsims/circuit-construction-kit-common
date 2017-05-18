@@ -14,6 +14,11 @@ define( function( require ) {
   var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/common/view/FixedLengthCircuitElementNode' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Property = require( 'AXON/Property' );
+  var Node = require( 'SCENERY/nodes/Node' );
+
+  // constants
+  var PANEL_HEIGHT = 40;
+  var PANEL_WIDTH = 100;
 
   /**
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
@@ -33,10 +38,31 @@ define( function( require ) {
     this.battery = battery;
 
     var createNode = function() {
-      var node = new Rectangle( 0, 0, 100, 40, 10, 10, {
-        fill: '#f39033',
-        stroke: '#231f20',
-        lineWidth: 4
+
+      var createPanel = function( options ) {
+        return new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, 14, 14, options );
+      };
+
+      var node = new Node( {
+        children: [
+
+          // orange background panel
+          createPanel( {
+            fill: '#f39033'
+          } ),
+
+          // gray track
+          new Rectangle( 0, 0, PANEL_WIDTH, 20, {
+            fill: '#bcbdbf',
+            centerY: PANEL_HEIGHT / 2
+          } ),
+
+          // black border
+          createPanel( {
+            stroke: '#231f20',
+            lineWidth: 4
+          } )
+        ]
       } );
 
       // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
