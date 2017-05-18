@@ -22,6 +22,8 @@ define( function( require ) {
   var wireResistivityString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/wireResistivity' );
 
   /**
+   * @param {Property.<number>} wireResistivityProperty
+   * @param {Tandem} tandem
    * @constructor
    */
   function WireResistivityControl( wireResistivityProperty, tandem ) {
