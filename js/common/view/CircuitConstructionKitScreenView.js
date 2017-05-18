@@ -175,7 +175,6 @@ define( function( require ) {
 
     // @private
     this.viewRadioButtonGroup = new ViewRadioButtonGroup( circuitConstructionKitModel.viewProperty, tandem.createTandem( 'viewRadioButtonGroup' ) );
-    // this.viewRadioButtonGroup.setScaleMagnitude( this.sensorToolbox.width / this.viewRadioButtonGroup.width );
 
     // @protected
     this.displayOptionsPanel = new DisplayOptionsPanel(
@@ -331,7 +330,7 @@ define( function( require ) {
         top: self.displayOptionsPanel.bottom + LAYOUT_INSET
       } );
       self.viewRadioButtonGroup.top = self.sensorToolbox.bottom + LAYOUT_INSET;
-      self.viewRadioButtonGroup.left = self.sensorToolbox.left;
+      self.viewRadioButtonGroup.right = visibleBounds.right - LAYOUT_INSET;
 
       zoomControlPanel.bottom = visibleBounds.bottom - LAYOUT_INSET;
       zoomControlPanel.left = self.circuitElementToolbox.left;

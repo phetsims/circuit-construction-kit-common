@@ -56,10 +56,11 @@ define( function( require ) {
       titleYMargin: 4,
       titleXSpacing: 14,
       contentYSpacing: 4,
+      minWidth: CircuitConstructionKitConstants.RIGHT_SIDE_PANEL_MIN_WIDTH,
       titleNode: new HBox( {
         children: [
           new HStrut( 10 ),
-          new Text( wireResistivityString, { fontSize: 16, tandem: tandem.createTandem( 'wireResistanceText' ) } )
+          new Text( wireResistivityString, { fontSize: 14, tandem: tandem.createTandem( 'wireResistanceText' ) } )
         ]
       } ),
       tandem: tandem

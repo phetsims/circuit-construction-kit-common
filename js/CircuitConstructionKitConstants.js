@@ -37,7 +37,7 @@ define( function( require ) {
     DEFAULT_BATTERY_RESISTANCE: 0,
 
     // Right side panel minWidth
-    RIGHT_SIDE_PANEL_MIN_WIDTH: 200,
+    RIGHT_SIDE_PANEL_MIN_WIDTH: 190,
 
     // Padding for placement of control panels
     LAYOUT_INSET: 5,
@@ -46,7 +46,7 @@ define( function( require ) {
     TAP_THRESHOLD: 10,
 
     // Dimensions of track size found in sliders
-    SLIDER_TRACK_SIZE: new Dimension2( 150, 5 ),
+    SLIDER_TRACK_SIZE: new Dimension2( 130, 5 ),
 
     // Uniform scaling for all font awesome node button icons
     FONT_AWESOME_ICON_SCALE: 0.85,

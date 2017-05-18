@@ -104,7 +104,7 @@ define( function( require ) {
       titleNode: new HBox( {
         children: [
           new HStrut( 10 ),
-          new Text( batteryResistanceString, { fontSize: 16, tandem: tandem.createTandem( 'batteryResistanceText' ) } )
+          new Text( batteryResistanceString, { fontSize: 14, tandem: tandem.createTandem( 'batteryResistanceText' ) } )
         ],
         tandem: tandem.createTandem( 'titleNode' )
       } )

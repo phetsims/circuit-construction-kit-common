@@ -19,7 +19,7 @@ define( function( require ) {
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   var BATTERY_LENGTH = CircuitConstructionKitConstants.BATTERY_LENGTH;
-  var SCALE = 0.56;
+  var SCALE = 0.58;
 
   /**
    * @constructor
@@ -54,6 +54,7 @@ define( function( require ) {
       node: schematicIcon,
       tandemName: 'schematicRadioButton'
     } ], {
+      spacing: 13.5, // Fitted to make this control have the same width as the rest of the panels
       orientation: 'horizontal',
       buttonContentXMargin: 14,
       buttonContentYMargin: 7,
