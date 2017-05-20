@@ -33,10 +33,11 @@ define( function( require ) {
    * @param {VoltmeterNode} voltmeterNode - node for the Voltmeter
    * @param {AmmeterNode} ammeterNode - node for the Ammeter
    * @param {Property.<boolean>} runningProperty - whether values can be displayed
+   * @param {boolean} showSeriesAmmeters - whether the series ammeters should be shown in the toolbox
    * @param {Tandem} tandem
    * @constructor
    */
-  function SensorToolbox( circuitNode, voltmeterNode, ammeterNode, runningProperty, tandem ) {
+  function SensorToolbox( circuitNode, voltmeterNode, ammeterNode, runningProperty, showSeriesAmmeters, tandem ) {
 
     // Options for the VoltmeterNode and AmmeterNode
     var options = {
@@ -104,11 +105,11 @@ define( function( require ) {
           new HBox( {
             spacing: 8,
             align: 'bottom',
-            children: [
+            children: showSeriesAmmeters ? [
               ammeterNodeIcon, seriesAmmeterToolNode
-            ]
+            ] : [ ammeterNodeIcon ]
           } ),
-          new Text( 'Ammeters' )
+          new Text( showSeriesAmmeters ? 'Ammeters' : 'Ammeter' )
         ]
       } ) ]
     } ), tandem, {

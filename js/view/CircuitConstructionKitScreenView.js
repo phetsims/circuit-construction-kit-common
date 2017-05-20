@@ -61,6 +61,7 @@ define( function( require ) {
       numberOfLightBulbsInToolbox: CircuitElementToolbox.NUMBER_OF_LIGHT_BULBS,
       numberOfResistorsInToolbox: CircuitElementToolbox.NUMBER_OF_RESISTORS,
       numberOfSwitchesInToolbox: CircuitElementToolbox.NUMBER_OF_SWITCHES,
+      showSeriesAmmeters: false,
       getToolboxPosition: function( visibleBounds ) {
         return {
           left: visibleBounds.left + LAYOUT_INSET,
@@ -171,7 +172,9 @@ define( function( require ) {
     this.addChild( chargeSpeedThrottlingReadoutNode );
 
     // @protected - so that subclasses can add a layout circuit element near it
-    this.sensorToolbox = new SensorToolbox( this.circuitNode, voltmeterNode, ammeterNode, circuitConstructionKitModel.exploreScreenRunningProperty, tandem.createTandem( 'sensorToolbox' ) );
+    this.sensorToolbox = new SensorToolbox( this.circuitNode, voltmeterNode, ammeterNode, circuitConstructionKitModel.exploreScreenRunningProperty,
+      options.showSeriesAmmeters,
+      tandem.createTandem( 'sensorToolbox' ) );
 
     // @private
     this.viewRadioButtonGroup = new ViewRadioButtonGroup( circuitConstructionKitModel.viewProperty, tandem.createTandem( 'viewRadioButtonGroup' ) );
