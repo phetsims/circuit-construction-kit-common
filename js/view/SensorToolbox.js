@@ -100,7 +100,6 @@ define( function( require ) {
         ]
       } ), new VBox( {
         spacing: 3,// TODO: factor out
-        // TODO: support screen 1-2 that only show probes
         children: [
           new HBox( {
             spacing: 8,
@@ -109,7 +108,7 @@ define( function( require ) {
               ammeterNodeIcon, seriesAmmeterToolNode
             ] : [ ammeterNodeIcon ]
           } ),
-          new Text( showSeriesAmmeters ? 'Ammeters' : 'Ammeter' )
+          new Text( showSeriesAmmeters ? 'Ammeters' : 'Ammeter' ) // TODO: i18n
         ]
       } ) ]
     } ), tandem, {
