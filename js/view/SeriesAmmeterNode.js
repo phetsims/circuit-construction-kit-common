@@ -61,7 +61,8 @@ define( function( require ) {
           cornerRadius: 0,
           xMargin: 2,
           yMargin: 1,
-          stroke: 'gray'
+          stroke: 'gray',
+          resize: false
         } )
       ]
     } ), {
