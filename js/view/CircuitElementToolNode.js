@@ -37,7 +37,7 @@ define( function( require ) {
       spacing: 6,
       resize: false,
       cursor: 'pointer',
-      children: [ iconNode, labelNode ]
+      children: labelText.length > 0 ? [ iconNode, labelNode ] : [ iconNode ] // hack because the series ammeter tool node has text rendered separately (joined with probe ammeter)
     } );
 
     this.addInputListener( {

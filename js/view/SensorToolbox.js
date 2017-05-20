@@ -11,6 +11,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitPanel' );
+  var CircuitElementToolNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolNode' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VoltmeterNode' );
@@ -21,6 +22,7 @@ define( function( require ) {
   var SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var Property = require( 'AXON/Property' );
 
   // constants
   var TOOLBOX_ICON_SIZE = 53;
@@ -78,7 +80,13 @@ define( function( require ) {
     var seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeter, null, null, tandem.createTandem( 'seriesAmmeterNodeIcon' ), {
       icon: true
     } );
+    var createSeriesAmmeter = function( position ) {
+      return new SeriesAmmeter( new Vertex( position.x - 50, position.y ), new Vertex( position.x + 50, position.y ), circuitNode.circuit.seriesAmmeterGroupTandem.createNextTandem() );
+    };
     seriesAmmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / seriesAmmeterNodeIcon.width } );
+    var seriesAmmeterToolNode = new CircuitElementToolNode( '', new Property( false ), circuitNode, seriesAmmeterNodeIcon, 4, function() {
+      return 1; // TODO: fix this
+    }, createSeriesAmmeter );
 
     CircuitConstructionKitPanel.call( this, new HBox( {
       spacing: 20,
@@ -97,7 +105,7 @@ define( function( require ) {
             spacing: 8,
             align: 'bottom',
             children: [
-              ammeterNodeIcon, seriesAmmeterNodeIcon
+              ammeterNodeIcon, seriesAmmeterToolNode
             ]
           } ),
           new Text( 'Ammeters' )

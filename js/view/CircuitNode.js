@@ -20,6 +20,7 @@ define( function( require ) {
   var CCKLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKLightBulbNode' );
   var LightBulbSocketNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/LightBulbSocketNode' );
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorNode' );
+  var SeriesAmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SeriesAmmeterNode' );
   var VertexNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VertexNode' );
   var SolderNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SolderNode' );
   var Vector2 = require( 'DOT/Vector2' );
@@ -30,6 +31,7 @@ define( function( require ) {
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
+  var SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var ValueNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ValueNode' );
 
@@ -77,6 +79,7 @@ define( function( require ) {
     this.switchNodes = [];
     this.vertexNodes = [];
     this.chargeNodes = [];
+    this.seriesAmmeterNodes = [];
 
     // When loading from a state object, the vertices could have been added first.  If so, move them in front
     var moveVerticesToFront = function( circuitElement ) {
@@ -151,6 +154,7 @@ define( function( require ) {
     initializeCircuitElementType( CCKLightBulbNode, LightBulb, self.lightBulbNodes, this.getCCKLightBulbNode.bind( this ), tandem.createGroupTandem( 'lightBulbNode' ) );
     initializeCircuitElementType( LightBulbSocketNode, LightBulb, self.lightBulbForegroundNodes, this.getCCKLightBulbForegroundNode.bind( this ), tandem.createGroupTandem( 'lightBulbForegroundNode' ) );
     initializeCircuitElementType( ResistorNode, Resistor, self.resistorNodes, this.getResistorNode.bind( this ), tandem.createGroupTandem( 'resistorNode' ) );
+    initializeCircuitElementType( SeriesAmmeterNode, SeriesAmmeter, self.seriesAmmeterNodes, this.getSeriesAmmeterNode.bind( this ), tandem.createGroupTandem( 'seriesAmmeterNode' ) );
     initializeCircuitElementType( SwitchNode, Switch, self.switchNodes, this.getSwitchNode.bind( this ), tandem.createGroupTandem( 'switchNode' ) );
 
     var vertexNodeGroup = tandem.createGroupTandem( 'vertexNodes' );
@@ -305,6 +309,9 @@ define( function( require ) {
       else if ( circuitElement instanceof Switch ) {
         return this.getSwitchNode( circuitElement );
       }
+      else if ( circuitElement instanceof SeriesAmmeter ) {
+        return this.getSeriesAmmeterNode( circuitElement );
+      }
       else {
         assert && assert( 'no node found for circuit element' );
         return null;
@@ -326,13 +333,14 @@ define( function( require ) {
       return null;
     },
 
-
+    // TODO: do we really need these?
     // TODO: docs
     getWireNode: function( wire ) { return this.getCircuitElementNodeFromArray( this.wireNodes, wire ); },
     getCCKLightBulbNode: function( lightBulb ) { return this.getCircuitElementNodeFromArray( this.lightBulbNodes, lightBulb ); },
     getCCKLightBulbForegroundNode: function( lightBulb ) { return this.getCircuitElementNodeFromArray( this.lightBulbForegroundNodes, lightBulb ); },
     getBatteryNode: function( battery ) { return this.getCircuitElementNodeFromArray( this.batteryNodes, battery ); },
     getResistorNode: function( resistor ) { return this.getCircuitElementNodeFromArray( this.resistorNodes, resistor ); },
+    getSeriesAmmeterNode: function( seriesAmmeter ) { return this.getCircuitElementNodeFromArray( this.seriesAmmeterNodes, seriesAmmeter ); },
     getSwitchNode: function( switchModel ) { return this.getCircuitElementNodeFromArray( this.switchNodes, switchModel ); },
 
     /**

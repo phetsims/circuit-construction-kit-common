@@ -15,10 +15,14 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Property = require( 'AXON/Property' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
+  var Text = require( 'SCENERY/nodes/Text' );
+  var Panel = require( 'SUN/Panel' );
 
   // constants
   var PANEL_HEIGHT = 40;
-  var PANEL_WIDTH = 100;
+  var PANEL_WIDTH = 110;
+  var ORANGE = '#f39033';
 
   /**
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
@@ -31,13 +35,32 @@ define( function( require ) {
    * @constructor
    */
   function SeriesAmmeterNode( circuitConstructionKitScreenView, circuitNode, battery, runningProperty, viewProperty, tandem, options ) {
-
+    var self = this;
+    options = options || {};
     viewProperty = new Property( 'lifelike' );
 
     // @public (read-only) - the Battery rendered by this Node
     this.battery = battery;
 
     var createNode = function() {
+
+      // Electrons go behind this panel to give the appearance they go through the ammeter
+      var readoutPanel = new Panel( new VBox( {
+        children: [
+          new Text( 'Current', { fontSize: 14 } ),
+          new Panel( new Text( '100.0 A', { fontSize: 14 } ), {
+            cornerRadius: 0,
+            xMargin: 2,
+            yMargin: 1,
+            stroke: 'gray'
+          } )
+        ]
+      } ), {
+        fill: ORANGE,
+        stroke: null,
+        xMargin: 4,
+        yMargin: 0
+      } );
 
       var createPanel = function( options ) {
         return new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, 14, 14, options );
@@ -48,7 +71,7 @@ define( function( require ) {
 
           // orange background panel
           createPanel( {
-            fill: '#f39033'
+            fill: ORANGE
           } ),
 
           // gray track
@@ -71,25 +94,64 @@ define( function( require ) {
 
       // Center vertically to match the FixedLengthCircuitElementNode assumption that origin is center left
       node.centerY = 0;
+
+      readoutPanel.centerX = node.centerX;
+      readoutPanel.centerY = node.centerY;
+
+      node.frontPanel = new Node( {
+        children: [
+          readoutPanel
+        ]
+      } );
+      if ( options.icon ) {
+        node.addChild( node.frontPanel );
+      }
+      else {
+
+        // TODO: use a dedicated layer
+        circuitNode.highlightLayer.addChild( node.frontPanel );
+      }
       return node;
     };
 
-    var lifelikeNode = createNode();
-    var schematicNode = createNode();
+    this.lifelikeNode = createNode();
 
     FixedLengthCircuitElementNode.call( this,
       circuitConstructionKitScreenView,
       circuitNode,
       battery,
       viewProperty,
-      lifelikeNode,
-      schematicNode,
+      this.lifelikeNode,
+      new Node( { children: [ this.lifelikeNode ] } ),// reuse lifelike view for the schematic view
       tandem,
       options
     );
+
+    // @private (read-only)
+    this.icon = options.icon;
+
+    this.updateRender();
+
+    this.disposeSeriesAmmeterNode = function() {
+      if ( !this.icon ) {
+        circuitNode.highlightLayer.removeChild( self.lifelikeNode.frontPanel );
+      }
+    };
   }
 
   circuitConstructionKitCommon.register( 'SeriesAmmeterNode', SeriesAmmeterNode );
 
-  return inherit( FixedLengthCircuitElementNode, SeriesAmmeterNode );
+  return inherit( FixedLengthCircuitElementNode, SeriesAmmeterNode, {
+
+    // TODO: make it so you can dispose it by putting it in the correct toolbox
+    dispose: function() {
+      this.disposeSeriesAmmeterNode();
+      FixedLengthCircuitElementNode.prototype.dispose.call( this );
+    },
+    updateRender: function() {
+      FixedLengthCircuitElementNode.prototype.updateRender.call( this );
+      this.lifelikeNode.frontPanel.setMatrix( this.contentNode.getMatrix() );
+      this.icon && this.lifelikeNode.frontPanel.translate( 0, 17 ); // TODO: this line is a hack
+    }
+  } );
 } );
