@@ -86,7 +86,10 @@ define( function( require ) {
     };
     seriesAmmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / seriesAmmeterNodeIcon.width } );
     var seriesAmmeterToolNode = new CircuitElementToolNode( '', new Property( false ), circuitNode, seriesAmmeterNodeIcon, 4, function() {
-      return 1; // TODO: fix this
+      return circuitNode.circuit.circuitElements.filter( function( circuitElement ) {
+
+        return circuitElement instanceof SeriesAmmeter;
+      } ).length;
     }, createSeriesAmmeter );
 
     CircuitConstructionKitPanel.call( this, new HBox( {
