@@ -16,7 +16,7 @@ define( function( require ) {
   var NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
-  var LENGTH = 100;
+  var LENGTH = 110;
 
   /**
    * @param {Vertex} startVertex

@@ -77,12 +77,13 @@ define( function( require ) {
     ammeterNodeIcon.addInputListener( createListener( ammeterNode.ammeter, ammeterNode ) );
 
     // Icon for the series ammeter
-    var seriesAmmeter = new SeriesAmmeter( new Vertex( 0, 0 ), new Vertex( 100, 0 ), tandem.createTandem( 'seriesAmmeterIconModel' ) );
+    var seriesAmmeter = new SeriesAmmeter( new Vertex( 0, 0 ), new Vertex( 110, 0 ), tandem.createTandem( 'seriesAmmeterIconModel' ) );
     var seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeter, null, null, tandem.createTandem( 'seriesAmmeterNodeIcon' ), {
       icon: true
     } );
     var createSeriesAmmeter = function( position ) {
-      return new SeriesAmmeter( new Vertex( position.x - 50, position.y ), new Vertex( position.x + 50, position.y ), circuitNode.circuit.seriesAmmeterGroupTandem.createNextTandem() );
+      var seriesAmmeterLength = 110;// TODO: factor out
+      return new SeriesAmmeter( new Vertex( position.x - seriesAmmeterLength / 2, position.y ), new Vertex( position.x + seriesAmmeterLength / 2, position.y ), circuitNode.circuit.seriesAmmeterGroupTandem.createNextTandem() );
     };
     seriesAmmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / seriesAmmeterNodeIcon.width } );
     var seriesAmmeterToolNode = new CircuitElementToolNode( '', new Property( false ), circuitNode, seriesAmmeterNodeIcon, 4, function() {

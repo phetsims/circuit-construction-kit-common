@@ -82,6 +82,9 @@ define( function( require ) {
         updatePosition && updatePosition();
       } );
     }
+
+    // TODO: series ammeter shouldn't have a readout
+
     else {
       contentNode = new Text( '', TEXT_OPTIONS );
     }

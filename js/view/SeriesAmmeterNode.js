@@ -48,21 +48,35 @@ define( function( require ) {
     var WIDEST_LABEL = '9.99 A';
     var readoutText = new Text( WIDEST_LABEL, { fontSize: 14 } );
     readoutText.setMaxWidth( readoutText.width );
+    var maxWidth = readoutText.width;
+    var maxHeight = readoutText.height;
+
+    var textPanelMarginX = 2;
+    var textPanelMarginY = 2;
 
     var updateText = function( current ) {
-      readoutText.setText( Util.toFixed( current, 2 ) + ' A' ); // TODO i18n and fillIn
+
+      // The ammeter doesn't indicate direction
+      current = Math.abs( current );
+
+      var currentText = ( current < 1E-10 ) ? '' : Util.toFixed( current, 2 ) + ' A'; // TODO i18n and fillIn
+      readoutText.setText( currentText );
+
+      // Center in the panel
+      readoutText.centerX = (maxWidth + textPanelMarginX * 2) / 2;
+      readoutText.centerY = (maxHeight + textPanelMarginY * 2) / 2;
     };
 
     seriesAmmeter.currentProperty.link( updateText );
     var readoutPanel = new Panel( new VBox( {
       children: [
         new Text( 'Current', { fontSize: 14 } ),
-        new Panel( readoutText, {
-          cornerRadius: 0,
-          xMargin: 2,
-          yMargin: 1,
+        new Rectangle( 0, 0, maxWidth + textPanelMarginX * 2, maxHeight + textPanelMarginY * 2, {
           stroke: 'gray',
-          resize: false
+          fill: 'white',
+          children: [
+            readoutText
+          ]
         } )
       ]
     } ), {
@@ -161,7 +175,7 @@ define( function( require ) {
     updateRender: function() {
       FixedLengthCircuitElementNode.prototype.updateRender.call( this );
       this.lifelikeNode.frontPanel.setMatrix( this.contentNode.getMatrix() );
-      this.icon && this.lifelikeNode.frontPanel.translate( 0, 17 ); // TODO: this line is a hack
+      this.icon && this.lifelikeNode.frontPanel.translate( 0, 19 ); // TODO: this line is a hack
     }
   } );
 } );
