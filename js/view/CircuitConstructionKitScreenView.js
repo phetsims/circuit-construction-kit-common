@@ -22,6 +22,7 @@ define( function( require ) {
   var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VoltmeterNode' );
   var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/AmmeterNode' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
   var Util = require( 'DOT/Util' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
@@ -393,8 +394,12 @@ define( function( require ) {
       // Only single (unconnected) elements can be dropped into the toolbox
       var isSingle = this.circuitConstructionKitModel.circuit.isSingle( circuitElementNode.circuitElement );
 
+      // SeriesAmmeters should be dropped in the sensor toolbox
+      var toolbox = circuitElementNode.circuitElement instanceof SeriesAmmeter ? this.sensorToolbox : this.circuitElementToolbox;
+
       // Detect whether the midpoint between the vertices overlaps the toolbox
-      var overToolbox = this.circuitElementToolbox.globalBounds.containsPoint( circuitElementNode.localToGlobalPoint( circuitElementNode.circuitElement.getMidpoint() ) );
+      var globalCircuitElementMidpoint = circuitElementNode.localToGlobalPoint( circuitElementNode.circuitElement.getMidpoint() );
+      var overToolbox = toolbox.globalBounds.containsPoint( globalCircuitElementMidpoint );
 
       return isSingle && overToolbox && circuitElementNode.circuitElement.canBeDroppedInToolbox;
     },
