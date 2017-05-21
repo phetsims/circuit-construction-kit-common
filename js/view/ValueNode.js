@@ -76,6 +76,10 @@ define( function( require ) {
       contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'switchText' ) }, TEXT_OPTIONS ) );
       circuitElement.resistanceProperty.link( function( resistance ) {
         contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, { resistance: resistance > 100000 ? '∞' : Util.toFixed( resistance, 1 ) } );
+
+        // Account for the switch open and close geometry for positioning the label.  When the switch is open
+        // the label must be higher
+        updatePosition && updatePosition();
       } );
     }
     else {
