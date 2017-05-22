@@ -21,9 +21,9 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
 
   // images
-  var onImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb.png' );
-  var offImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb.png' );
-  var baseImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-front.png' );
+  var backImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb_back.png' );
+  var middleImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb_middle.png' );
+  var socketImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb_front.png' );
 
   /**
    * @param {Property.<number>} brightnessProperty 0 (off) to 1 (full brightness)
@@ -33,8 +33,9 @@ define( function( require ) {
   function CustomLightBulbNode( brightnessProperty, options ) {
     assert && assert( brightnessProperty, 'brightness property should exist' );
     var defaultOptions = {
+      icon: false,
       baseOnly: false,
-      bulbImageScale: 0.33 * 0.2,
+      bulbImageScale: 0.125,
       rayStroke: 'yellow',
       minRays: 8,
       maxRays: 60,
@@ -52,33 +53,40 @@ define( function( require ) {
     this.baseOnly = options.baseOnly;
 
     // @private
-    self.onNode = new Image( options.baseOnly ? baseImage : onImage, {
+    self.backNode = new Image( options.baseOnly ? socketImage : backImage, {
       scale: options.bulbImageScale,
       centerX: 0,
       bottom: 0,
       pickable: false
     } ); // @private
 
-    var offNode = new Image( options.baseOnly ? baseImage : offImage, {
+    var middleNode = new Image( options.baseOnly ? socketImage : middleImage, {
       scale: options.bulbImageScale,
-      centerX: self.onNode.centerX,
-      bottom: self.onNode.bottom,
+      centerX: self.backNode.centerX,
+      bottom: self.backNode.bottom,
       pickable: false
     } );
 
     // rays
     if ( !options.baseOnly ) {
-      var bulbRadius = offNode.width / 2; // use 'off' node, the 'on' node is wider because it has a glow around it.
+      var bulbRadius = middleNode.width / 2; // use 'off' node, the 'on' node is wider because it has a glow around it.
       var rayOptions = _.pick( options, _.keys( defaultOptions ) ); // cherry-pick options that are specific to rays
-      rayOptions.x = this.onNode.centerX;
-      rayOptions.y = offNode.top + bulbRadius;
+      rayOptions.x = this.backNode.centerX;
+      rayOptions.y = middleNode.top + bulbRadius;
       self.raysNode = new LightRaysNode( bulbRadius, rayOptions ); // @private
 
-      options.children = [ self.raysNode, offNode, self.onNode ];
+      options.children = [ self.raysNode, self.backNode, middleNode ];
     }
     else {
-      options.children = [ offNode, self.onNode ];
+      options.children = [ self.backNode, middleNode ];
     }
+
+    options.icon && options.children.push( new Image( socketImage, {
+      scale: options.bulbImageScale,
+      centerX: self.backNode.centerX,
+      bottom: self.backNode.bottom,
+      pickable: false
+    } ) );
     Node.call( self, options );
 
     if ( !options.baseOnly ) {
@@ -126,9 +134,9 @@ define( function( require ) {
       if ( this.visible && !this.baseOnly ) {
         var brightness = this.brightnessProperty.value;
         assert && assert( brightness >= 0 && brightness <= 1 );
-        this.onNode.visible = ( brightness > 0 );
-        if ( this.onNode.visible ) {
-          this.onNode.opacity = Util.linear( 0, 1, 0.3, 1, brightness );
+        this.backNode.visible = ( brightness > 0 );
+        if ( this.backNode.visible ) {
+          this.backNode.opacity = Util.linear( 0, 1, 0.3, 1, brightness );
         }
         this.raysNode.setBrightness( brightness );
       }

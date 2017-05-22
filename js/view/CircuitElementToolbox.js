@@ -86,7 +86,9 @@ define( function( require ) {
     } );
     var wire = new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ), tandem.createTandem( 'wireIconWire' ) );
     var wireIcon = new WireNode( null, null, wire, null, viewProperty, tandem.createTandem( 'wireIcon' ) );
-    var lightBulbIcon = new CustomLightBulbNode( new NumberProperty( 0 ) );
+    var lightBulbIcon = new CustomLightBulbNode( new NumberProperty( 0 ), {
+      icon: true
+    } );
     var resistor = new Resistor(
       new Vertex( 0, 0 ),
       new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ),

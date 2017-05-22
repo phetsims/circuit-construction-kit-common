@@ -31,7 +31,7 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Created by PhET Interactive Simulations by @clmccutchan"
   },
-  "lightbulb.png": {
+  "lightbulb_back.png": {
     "text": [
       "Copyright 2016 University of Colorado Boulder"
     ],
@@ -39,7 +39,7 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Amy Rouinfar"
   },
-  "lightbulb-back.png": {
+  "lightbulb_front.png": {
     "text": [
       "Copyright 2016 University of Colorado Boulder"
     ],
@@ -47,7 +47,7 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Amy Rouinfar"
   },
-  "lightbulb-front.png": {
+  "lightbulb_middle.png": {
     "text": [
       "Copyright 2016 University of Colorado Boulder"
     ],
