@@ -16,12 +16,12 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var VBox = require( 'SCENERY/nodes/VBox' );
-  var HStrut = require( 'SCENERY/nodes/HStrut' );
   var CheckBox = require( 'SUN/CheckBox' );
   var AquaRadioButton = require( 'SUN/AquaRadioButton' );
   var Property = require( 'AXON/Property' );
   var Charge = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Charge' );
   var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
+  var AlignBox = require( 'SCENERY/nodes/AlignBox' );
 
   // strings
   var electronsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/electrons' );
@@ -102,11 +102,7 @@ define( function( require ) {
           new CheckBox( new Text( 'Show Current', TEXT_OPTIONS ), showCurrentProperty, {
             tandem: tandem.createTandem( 'showCurrentCheckBox' )
           } ),
-          new HBox( {
-            children: [
-
-              // Indent the sub-checkboxes
-              new HStrut( 30 ),
+          new AlignBox(
               new VBox( {
                 align: 'left',
                 spacing: 6,
@@ -114,9 +110,9 @@ define( function( require ) {
                   electronsRadioButton,
                   conventionalRadioButton
                 ]
-              } )
-            ]
-          } )
+              } ),
+            { leftMargin: 30 }
+          )
         ]
       } ),
       new CheckBox( new Text( labelsString, TEXT_OPTIONS ), showLabelsProperty, {
