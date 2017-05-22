@@ -106,7 +106,7 @@ define( function( require ) {
           previousPanel = new CircuitElementEditPanel( text, units, property, circuit, selectedCircuitElement, groupTandem.createNextTandem(), options );
         }
         else if ( isSwitch ) {
-          previousPanel = new SwitchReadoutNode( selectedCircuitElement );
+          previousPanel = new SwitchReadoutNode( circuit, selectedCircuitElement, groupTandem.createNextTandem() );
         }
       }
       else {

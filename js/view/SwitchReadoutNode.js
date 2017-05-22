@@ -13,36 +13,50 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var CCKTrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKTrashButton' );
 
   // strings
   var theSwitchIsOpenString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/theSwitchIsOpen' );
   var theSwitchIsClosedString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/theSwitchIsClosed' );
 
+  // constants
+  var MAX_TEXT_WIDTH = 300;
+
   /**
-   * @param {Switch} circuitSwitch - the selected Switch
+   * @param {Circuit} circuit - the circuit from which the switch can be removed when the trash button is pressed
+   * @param {Switch} circuitSwitch - the switch
+   * @param {Tandem} tandem
    * @constructor
    */
-  function SwitchReadoutNode( circuitSwitch ) {
+  function SwitchReadoutNode( circuit, circuitSwitch, tandem ) {
 
     // Create both texts and display both so they remain aligned as the value changes
     var closedText = new Text( theSwitchIsClosedString, {
       fontSize: 24,
-      maxWidth: 300
+      maxWidth: MAX_TEXT_WIDTH
     } );
     var openText = new Text( theSwitchIsOpenString, {
       fontSize: 24,
-      maxWidth: 300
+      maxWidth: MAX_TEXT_WIDTH
     } );
 
-    Node.call( this, {
-      children: [ closedText, openText ]
-    } );
+    var maxWidth = Math.max( closedText.width, openText.width );
 
     var closedListener = function( closed ) {
       closedText.visible = closed;
       openText.visible = !closed;
     };
     circuitSwitch.closedProperty.link( closedListener );
+
+    // Show a trash button to the right of the text
+    var trashButton = new CCKTrashButton( circuit, circuitSwitch, tandem.createTandem( 'trashButton' ) ).mutate( {
+      left: maxWidth + 10,
+      centerY: closedText.centerY
+    } );
+
+    Node.call( this, {
+      children: [ closedText, openText, trashButton ]
+    } );
 
     // @private
     this.disposeSwitchReadoutNode = function() {

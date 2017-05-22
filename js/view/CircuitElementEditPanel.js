@@ -14,14 +14,11 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var NumberControl = require( 'SCENERY_PHET/NumberControl' );
-  var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var RangeWithValue = require( 'DOT/RangeWithValue' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var NumberProperty = require( 'AXON/NumberProperty' );
-  var PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+  var CCKTrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKTrashButton' );
 
   // strings
   var valueUnitsPatternString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/valueUnitsPattern' );
@@ -78,18 +75,7 @@ define( function( require ) {
     } ) );
 
     // The button that deletes the circuit component
-    var trashButton = new RoundPushButton( {
-      baseColor: PhetColorScheme.PHET_LOGO_YELLOW,
-      content: new FontAwesomeNode( 'trash', {
-        scale: CircuitConstructionKitConstants.FONT_AWESOME_ICON_SCALE
-      } ),
-      listener: function() {
-        circuit.remove( circuitElement );
-      },
-      minXMargin: 10,
-      minYMargin: 10,
-      tandem: tandem.createTandem( 'trashButton' )
-    } );
+    var trashButton = new CCKTrashButton( circuit, circuitElement, tandem.createTandem( 'trashButton' ) );
     var children = [];
     options.numberControlEnabled && children.push( numberControl );
     circuitElement.canBeDroppedInToolbox && children.push( trashButton );
