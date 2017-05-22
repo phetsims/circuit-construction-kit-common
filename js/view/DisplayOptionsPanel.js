@@ -66,12 +66,12 @@ define( function( require ) {
     var electronsText = new Text( electronsString, TEXT_OPTIONS );
     var conventionalText = new Text( conventionalString, TEXT_OPTIONS );
     var largerTextWidth = Math.max( electronsText.width, conventionalText.width );
-    var electronsBox = new HBox( {
+    var electronsBox = new AlignBox( new HBox( {
       spacing: largerTextWidth - electronsText.width + textIconSpacing,
       children: [ electronsText, new ElectronChargeNode() ]
-    } );
+    } ) );
 
-    var conventionalBox = new HBox( {
+    var conventionalBox = new AlignBox( new HBox( {
       spacing: largerTextWidth - conventionalText.width + textIconSpacing,
 
       // TODO: arrow is duplicated with ChargeNode
@@ -82,7 +82,7 @@ define( function( require ) {
         fill: 'red',
         stroke: 'white'
       } ) ]
-    } );
+    } ) );
     var electronsRadioButton = createRadioButton( 'electrons', electronsBox, tandem.createTandem( 'electronsRadioButton' ) );
     var conventionalRadioButton = createRadioButton( 'conventional', conventionalBox, tandem.createTandem( 'conventionalRadioButton' ) );
 
