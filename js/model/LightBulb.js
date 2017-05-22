@@ -21,11 +21,11 @@ define( function( require ) {
   // constants
 
   // The distance (as the crow flies) between start and end vertex
-  var DISTANCE_BETWEEN_VERTICES = 33;
+  var DISTANCE_BETWEEN_VERTICES = 36;
 
   // Tinker with coordinates to get thing to match up
   var LEFT_CURVE_X_SCALE = 1.5;
-  var TOP_Y_SCALE = 0.32;
+  var TOP_Y_SCALE = 0.6;
   var RIGHT_CURVE_X_SCALE = 0.87;
 
   // The sampled points for the wire/filament curves
