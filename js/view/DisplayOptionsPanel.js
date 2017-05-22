@@ -12,24 +12,32 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var CircuitConstructionKitPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitPanel' );
+  var ChargeNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ChargeNode' );
   var Text = require( 'SCENERY/nodes/Text' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var HStrut = require( 'SCENERY/nodes/HStrut' );
   var CheckBox = require( 'SUN/CheckBox' );
   var AquaRadioButton = require( 'SUN/AquaRadioButton' );
+  var Property = require( 'AXON/Property' );
+  var Charge = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Charge' );
+  var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
 
   // strings
   var electronsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/electrons' );
   var conventionalString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/conventional' );
   var labelsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/labels' );
   var valuesString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/values' );
+  var ElectronChargeNode = require( 'SCENERY_PHET/ElectronChargeNode' );
 
   // constants
   var TEXT_OPTIONS = {
     fontSize: 16,
     maxWidth: 120
   };
+
+  // TODO: copied
+  var ARROW_LENGTH = 23; // view coordinates
 
   /**
    * @param {Property.<boolean>} showCurrentProperty - true if current should be shown
@@ -45,16 +53,40 @@ define( function( require ) {
      * Create an AquaRadioButton for the specified kind of current
      * @param {string} currentType - 'electrons'|'conventional'
      * @param {string} text - the text to display in the button
+     * @param {Tandem} tandem
      * @returns {AquaRadioButton}
      */
-    var createRadioButton = function( currentType, text, tandem ) {
-      return new AquaRadioButton( currentTypeProperty, currentType, new Text( text, TEXT_OPTIONS ), {
+    var createRadioButton = function( currentType, node, tandem ) {
+      return new AquaRadioButton( currentTypeProperty, currentType, node, {
         radius: 8,
         tandem: tandem
       } );
     };
-    var electronsRadioButton = createRadioButton( 'electrons', electronsString, tandem.createTandem( 'electronsRadioButton' ) );
-    var conventionalRadioButton = createRadioButton( 'conventional', conventionalString, tandem.createTandem( 'conventionalRadioButton' ) );
+
+    var textIconSpacing = 11;
+
+    var electronsText = new Text( electronsString, TEXT_OPTIONS );
+    var conventionalText = new Text( conventionalString, TEXT_OPTIONS );
+    var largerTextWidth = Math.max( electronsText.width, conventionalText.width );
+    var electronsBox = new HBox( {
+      spacing: largerTextWidth - electronsText.width + textIconSpacing,
+      children: [ electronsText, new ElectronChargeNode() ]
+    } );
+
+    var conventionalBox = new HBox( {
+      spacing: largerTextWidth - conventionalText.width + textIconSpacing,
+
+      // TODO: arrow is duplicated with ChargeNode
+      children: [ conventionalText, new ArrowNode( -ARROW_LENGTH / 2, 0, ARROW_LENGTH / 2, 0, {
+        headHeight: 10,
+        headWidth: 12,
+        tailWidth: 3,
+        fill: 'red',
+        stroke: 'white'
+      } ) ]
+    } );
+    var electronsRadioButton = createRadioButton( 'electrons', electronsBox, tandem.createTandem( 'electronsRadioButton' ) );
+    var conventionalRadioButton = createRadioButton( 'conventional', conventionalBox, tandem.createTandem( 'conventionalRadioButton' ) );
 
     // Gray out current view options when current is not selected.
     showCurrentProperty.linkAttribute( electronsRadioButton, 'enabled' );
