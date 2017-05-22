@@ -117,7 +117,14 @@ define( function( require ) {
           mainLayer.addChild( circuitElementNode );
           moveVerticesToFront( circuitElement );
 
-          if ( circuitElement instanceof FixedLengthCircuitElement && !(circuitElementNode instanceof LightBulbSocketNode) ) { // don't double add for light bulbs
+          if ( circuitElement instanceof FixedLengthCircuitElement &&
+
+               // don't double add for light bulbs
+               !(circuitElementNode instanceof LightBulbSocketNode) &&
+
+               // series ammeters already show their own readouts
+               !(circuitElement instanceof SeriesAmmeter)
+          ) {
             var valueNode = new ValueNode( circuitElement, self.circuitConstructionKitModel.showValuesProperty, tandem.createTandem( circuitElement.tandemName ).createTandem( 'valueNode' ) );
             circuitElement.valueNode = valueNode;
             self.valueLayer.addChild( valueNode );
