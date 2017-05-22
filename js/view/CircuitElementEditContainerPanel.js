@@ -15,6 +15,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
+  var SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
@@ -23,6 +24,7 @@ define( function( require ) {
   var CircuitElementEditPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditPanel' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var SwitchReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SwitchReadoutNode' );
+  var CCKTrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKTrashButton' );
 
   // strings
   var tapCircuitElementToEditString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/tapCircuitElementToEdit' );
@@ -85,28 +87,25 @@ define( function( require ) {
       previousPanel = null;
 
       if ( selectedCircuitElement ) {
-        var resistor = selectedCircuitElement instanceof Resistor || selectedCircuitElement instanceof LightBulb;
-        var battery = selectedCircuitElement instanceof Battery;
-        var wire = selectedCircuitElement instanceof Wire;
+        var isResistor = selectedCircuitElement instanceof Resistor || selectedCircuitElement instanceof LightBulb;
+        var isBattery = selectedCircuitElement instanceof Battery;
+        var isWire = selectedCircuitElement instanceof Wire;
         var isSwitch = selectedCircuitElement instanceof Switch;
+        var isSeriesAmmeter = selectedCircuitElement instanceof SeriesAmmeter;
 
-        if ( resistor || battery || wire ) {
-          var text = (resistor || wire) ? resistanceString :
-                     battery ? voltageString :
-                     null;
-          var units = (resistor || wire) ? ohmsString :
-                      battery ? voltsString :
-                      null;
-          var property = (resistor || wire) ? selectedCircuitElement.resistanceProperty :
-                         battery ? selectedCircuitElement.voltageProperty :
-                         null;
-          var options = wire ? { numberControlEnabled: false } : {};
-
-          assert && assert( property, 'property should not be null' );
-          previousPanel = new CircuitElementEditPanel( text, units, property, circuit, selectedCircuitElement, groupTandem.createNextTandem(), options );
+        if ( isResistor ) {
+          previousPanel = new CircuitElementEditPanel( resistanceString, ohmsString, selectedCircuitElement.resistanceProperty, circuit, selectedCircuitElement, groupTandem.createNextTandem() );
+        }
+        else if ( isBattery ) {
+          previousPanel = new CircuitElementEditPanel( voltageString, voltsString, selectedCircuitElement.voltageProperty, circuit, selectedCircuitElement, groupTandem.createNextTandem() );
         }
         else if ( isSwitch ) {
           previousPanel = new SwitchReadoutNode( circuit, selectedCircuitElement, groupTandem.createNextTandem() );
+        }
+        else if ( isSeriesAmmeter || isWire ) {
+
+          // Just show a trash button
+          previousPanel = new CCKTrashButton( circuit, selectedCircuitElement, groupTandem.createNextTandem().createTandem( 'trashButton' ) );
         }
       }
       else {

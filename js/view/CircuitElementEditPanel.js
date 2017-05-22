@@ -33,11 +33,9 @@ define( function( require ) {
    * @param {Circuit} circuit - parent circuit
    * @param {FixedLengthCircuitElement} circuitElement - the CircuitElement controlled by this UI
    * @param {Tandem} tandem
-   * @param {Object} [options]
    * @constructor
    */
-  function CircuitElementEditPanel( title, units, valueProperty, circuit, circuitElement, tandem, options ) {
-    options = _.extend( { numberControlEnabled: true }, options );
+  function CircuitElementEditPanel( title, units, valueProperty, circuit, circuitElement, tandem ) {
 
     // Use a proxy property so we can track whether the changes were from the user interface or from the model (e.g. the
     // resistance of a wire changing when its length changes).
@@ -76,8 +74,7 @@ define( function( require ) {
 
     // The button that deletes the circuit component
     var trashButton = new CCKTrashButton( circuit, circuitElement, tandem.createTandem( 'trashButton' ) );
-    var children = [];
-    options.numberControlEnabled && children.push( numberControl );
+    var children = [ numberControl ];
     circuitElement.canBeDroppedInToolbox && children.push( trashButton );
 
     // @private - for disposal
