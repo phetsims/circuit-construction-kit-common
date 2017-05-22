@@ -19,6 +19,7 @@ define( function( require ) {
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
+  var LinearGradient = require( 'SCENERY/util/LinearGradient' );
 
   // constants
   // dimensions for schematic battery
@@ -41,7 +42,7 @@ define( function( require ) {
 
     /**
      * @param {string} type - 'lifelike'|'schematic'
-     * @param {Color|string} fill
+     * @param {Color|string|LinearGradient} fill
      * @param {number} thickness
      * @param {number} curveDiameter - the diameter of the circles in the slots
      * @returns {Node}
@@ -120,7 +121,12 @@ define( function( require ) {
       return node;
     };
 
-    var lifelikeNode = createNode( 'lifelike', '#d48270', LIFELIKE_DIAMETER, 6 );
+    var lifelikeNodeThickness = 8;
+    var lifelikeGradient = new LinearGradient( 0, -lifelikeNodeThickness / 2, 0, lifelikeNodeThickness / 2 )
+      .addColorStop( 0, '#d48270' )
+      .addColorStop( 0.3, '#e39b8c' )
+      .addColorStop( 1, '#b56351' );
+    var lifelikeNode = createNode( 'lifelike', lifelikeGradient, LIFELIKE_DIAMETER, 6 );
     var schematicNode = createNode( 'schematic', 'black', 6, 0 );// TODO: factor out thickness with WireNode
 
     FixedLengthCircuitElementNode.call( this,
