@@ -56,6 +56,7 @@ define( function( require ) {
      * @param {Tandem} tandem
      * @returns {AquaRadioButton}
      */
+    //REVIEW: Is this JSDoc correct?
     var createRadioButton = function( currentType, node, tandem ) {
       return new AquaRadioButton( currentTypeProperty, currentType, node, {
         radius: 8,
@@ -103,14 +104,14 @@ define( function( require ) {
             tandem: tandem.createTandem( 'showCurrentCheckBox' )
           } ),
           new AlignBox(
-              new VBox( {
-                align: 'left',
-                spacing: 6,
-                children: [
-                  electronsRadioButton,
-                  conventionalRadioButton
-                ]
-              } ),
+            new VBox( {
+              align: 'left',
+              spacing: 6,
+              children: [
+                electronsRadioButton,
+                conventionalRadioButton
+              ]
+            } ),
             { leftMargin: 30 }
           )
         ]
