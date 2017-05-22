@@ -53,6 +53,9 @@ define( function( require ) {
       power = Math.min( power, maxPower * 15 );
       power = Math.max( power, minPower );
       var brightness = Math.pow( power / maxPower, 0.354 ) * 0.4;
+      if ( power <= minPower ) {
+        brightness = 0;
+      }
       brightnessProperty.value = Util.clamp( brightness, 0, 1 );
     } );
     var lightBulbNode = new CustomLightBulbNode( brightnessProperty, {
