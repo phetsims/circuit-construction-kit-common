@@ -176,6 +176,20 @@ define( function( require ) {
         return vertex === candidateVertex;
       } );
       assert && assert( filtered.length === 1, 'should only have one copy of each vertex' );
+
+      // if one vertex becomes selected, deselect the other vertices and circuit elements
+      var vertexSelectedPropertyListener = function( selected ) {
+        if ( selected ) {
+          self.vertices.forEach( function( v ) {
+            if ( v !== vertex ) {
+              v.selectedProperty.set( false );
+            }
+          } );
+          self.selectedCircuitElementProperty.set( null );
+        }
+      };
+      vertex.vertexSelectedPropertyListener = vertexSelectedPropertyListener;
+      vertex.selectedProperty.link( vertexSelectedPropertyListener );
     } );
 
     // Stop watching the vertex positions for updating the voltmeter and ammeter
@@ -183,6 +197,8 @@ define( function( require ) {
       assert && assert( vertex.positionProperty.hasListener( emitCircuitChanged ), 'should have had the listener' );
       vertex.positionProperty.unlink( emitCircuitChanged );
       assert && assert( !vertex.positionProperty.hasListener( emitCircuitChanged ), 'Listener should have been removed' );
+      vertex.selectedProperty.unlink( vertex.vertexSelectedPropertyListener );
+      vertex.vertexSelectedPropertyListener = null;
     } );
 
     // Keep track of the last circuit element the user manipulated, for showing additional controls
@@ -192,6 +208,14 @@ define( function( require ) {
     this.selectedCircuitElementProperty = new Property( null, {
       tandem: tandem.createTandem( 'selectedCircuitElementProperty' ),
       phetioValueType: TObject
+    } );
+
+    this.selectedCircuitElementProperty.link( function( selectedCircuitElement ) {
+
+      // When a circuit element is selected, deselect all the vertices
+      if ( selectedCircuitElement ) {
+        self.vertices.forEach( function( vertex ) {vertex.selectedProperty.set( false );} );
+      }
     } );
 
     // Actions that will be invoked during the step function
