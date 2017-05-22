@@ -25,6 +25,7 @@ define( function( require ) {
   var PANEL_HEIGHT = 40;
   var PANEL_WIDTH = 110;
   var ORANGE = '#f39033';
+  var WIDEST_LABEL = '9.99 A';
 
   /**
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
@@ -45,14 +46,13 @@ define( function( require ) {
     this.seriesAmmeter = seriesAmmeter;
 
     // Electrons go behind this panel to give the appearance they go through the ammeter
-    var WIDEST_LABEL = '9.99 A';
-    var readoutText = new Text( WIDEST_LABEL, { fontSize: 14 } );
+    var readoutText = new Text( WIDEST_LABEL, { fontSize: 13 } );
     readoutText.setMaxWidth( readoutText.width );
     var maxWidth = readoutText.width;
     var maxHeight = readoutText.height;
 
     var textPanelMarginX = 2;
-    var textPanelMarginY = 2;
+    var textPanelMarginY = 1;
 
     var updateText = function( current ) {
 
@@ -94,9 +94,7 @@ define( function( require ) {
       children: [
 
         // orange background panel
-        createPanel( {
-          fill: ORANGE
-        } ),
+        createPanel( { fill: ORANGE } ),
 
         // gray track
         new Rectangle( 0, 0, PANEL_WIDTH, 20, {
@@ -167,7 +165,6 @@ define( function( require ) {
 
   return inherit( FixedLengthCircuitElementNode, SeriesAmmeterNode, {
 
-    // TODO: make it so you can dispose it by putting it in the correct toolbox
     dispose: function() {
       this.disposeSeriesAmmeterNode();
       FixedLengthCircuitElementNode.prototype.dispose.call( this );
