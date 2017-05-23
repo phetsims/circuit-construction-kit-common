@@ -98,10 +98,9 @@ define( function( require ) {
     // TODO: fix all of this layout and number code
     var PIN_Y = -100;
     var INNER_RADIUS = 5;
-    delta.x = delta.x + 7 + 8;
-    delta.y = delta.y - 5;
+    delta.x = delta.x + 2;
 
-    var LEFT_LEG_X = -8;
+    var LEFT_LEG_X = -5;
     var schematicNode = new Path( new Shape()
 
     // Left leg
