@@ -95,27 +95,32 @@ define( function( require ) {
     var startPosition = lightBulb.startVertexProperty.get().positionProperty.get();
     var delta = endPosition.minus( startPosition );
 
+    // TODO: fix all of this layout and number code
     var PIN_Y = -100;
     var INNER_RADIUS = 5;
+    delta.x = delta.x + 7 + 8;
+    delta.y = delta.y - 5;
+
+    var LEFT_LEG_X = -8;
     var schematicNode = new Path( new Shape()
 
     // Left leg
-      .moveTo( 0, 0 )
-      .lineTo( 0, PIN_Y )
+      .moveTo( LEFT_LEG_X, 0 )
+      .lineTo( LEFT_LEG_X, PIN_Y )
 
       // Right leg
-      .moveTo( delta.x, PIN_Y )
-      .lineTo( delta.x, delta.y )
+      .moveTo( LEFT_LEG_X + delta.x, PIN_Y )
+      .lineTo( LEFT_LEG_X + delta.x, delta.y )
 
       // Outer circle
-      .moveTo( 0, PIN_Y )
-      .arc( delta.x / 2, PIN_Y, delta.x / 2, Math.PI, -Math.PI, true )
+      .moveTo( LEFT_LEG_X, PIN_Y )
+      .arc( LEFT_LEG_X + delta.x / 2, PIN_Y, delta.x / 2, Math.PI, -Math.PI, true )
 
       // Filament
-      .moveTo( 0, PIN_Y )
-      .lineTo( delta.x / 2 - INNER_RADIUS, PIN_Y )
-      .arc( delta.x / 2, PIN_Y, INNER_RADIUS, Math.PI, 0, false )
-      .lineTo( delta.x, PIN_Y ), {
+      .moveTo( LEFT_LEG_X, PIN_Y )
+      .lineTo( LEFT_LEG_X + delta.x / 2 - INNER_RADIUS, PIN_Y )
+      .arc( LEFT_LEG_X + delta.x / 2, PIN_Y, INNER_RADIUS, Math.PI, 0, false )
+      .lineTo( LEFT_LEG_X + delta.x, PIN_Y ), {
       stroke: 'black',
       lineWidth: 4
     } );
@@ -132,7 +137,7 @@ define( function( require ) {
         .lineTo( delta.x / 2 - INNER_RADIUS, PIN_Y )
         .arc( delta.x / 2, PIN_Y, INNER_RADIUS, Math.PI, 0, false )
         .lineTo( delta.x, PIN_Y )
-        .transformed( Matrix3.scaling( 2.75 ) ), {
+        .transformed( Matrix3.scaling( 1.75 ) ), {
         stroke: 'black',
         lineWidth: 5,
         centerBottom: new Vector2( 0, -10 )
