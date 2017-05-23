@@ -250,7 +250,7 @@ define( function( require ) {
 
               var creationTime = self.circuitElement.creationTime;
               var lifetime = phet.joist.elapsedTime - creationTime;
-              var delayMS = Math.max( 5000 - lifetime, 0 );
+              var delayMS = Math.max( 500 - lifetime, 0 );
 
               // Disallow further interaction
               self.removeInputListener( self.inputListener );
