@@ -18,6 +18,7 @@ define( function( require ) {
   var CheckBox = require( 'SUN/CheckBox' );
   var AquaRadioButton = require( 'SUN/AquaRadioButton' );
   var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
+  var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
   var AlignBox = require( 'SCENERY/nodes/AlignBox' );
 
   // strings
@@ -53,36 +54,42 @@ define( function( require ) {
      * @param {Tandem} tandem
      * @returns {AquaRadioButton}
      */
-    //REVIEW: Is this JSDoc correct?
+      //REVIEW: Is this JSDoc correct?
     var createRadioButton = function( currentType, node, tandem ) {
-      return new AquaRadioButton( currentTypeProperty, currentType, node, {
-        radius: 8,
-        tandem: tandem
-      } );
-    };
+        return new AquaRadioButton( currentTypeProperty, currentType, node, {
+          radius: 8,
+          tandem: tandem
+        } );
+      };
 
     var textIconSpacing = 11;
 
-    var electronsText = new Text( electronsString, TEXT_OPTIONS );
-    var conventionalText = new Text( conventionalString, TEXT_OPTIONS );
-    var largerTextWidth = Math.max( electronsText.width, conventionalText.width );
-    var electronsBox = new AlignBox( new HBox( {
-      spacing: largerTextWidth - electronsText.width + textIconSpacing,
-      children: [ electronsText, new ElectronChargeNode() ]
-    } ) );
+    // Align the Electrons/Conventional text and radio buttons
+    var currentTypeRadioButtonLabelGroup = new AlignGroup();
+    var BOX_ALIGNMENT = { xAlign: 'left' };
+    var electronsBox = new HBox( {
+      children: [
+        currentTypeRadioButtonLabelGroup.createBox( new Text( electronsString, TEXT_OPTIONS ), BOX_ALIGNMENT ),
+        new ElectronChargeNode()
+      ],
+      spacing: textIconSpacing
+    } );
+    var conventionalBox = new HBox( {
+      children: [
+        currentTypeRadioButtonLabelGroup.createBox( new Text( conventionalString, TEXT_OPTIONS ), BOX_ALIGNMENT ),
 
-    var conventionalBox = new AlignBox( new HBox( {
-      spacing: largerTextWidth - conventionalText.width + textIconSpacing,
+        // TODO: arrow is duplicated with ChargeNode
+        new ArrowNode( -ARROW_LENGTH / 2, 0, ARROW_LENGTH / 2, 0, {
+          headHeight: 10,
+          headWidth: 12,
+          tailWidth: 3,
+          fill: 'red',
+          stroke: 'white'
+        } )
+      ],
+      spacing: textIconSpacing
+    } );
 
-      // TODO: arrow is duplicated with ChargeNode
-      children: [ conventionalText, new ArrowNode( -ARROW_LENGTH / 2, 0, ARROW_LENGTH / 2, 0, {
-        headHeight: 10,
-        headWidth: 12,
-        tailWidth: 3,
-        fill: 'red',
-        stroke: 'white'
-      } ) ]
-    } ) );
     var electronsRadioButton = createRadioButton( 'electrons', electronsBox, tandem.createTandem( 'electronsRadioButton' ) );
     var conventionalRadioButton = createRadioButton( 'conventional', conventionalBox, tandem.createTandem( 'conventionalRadioButton' ) );
 
@@ -108,8 +115,9 @@ define( function( require ) {
                 electronsRadioButton,
                 conventionalRadioButton
               ]
-            } ),
-            { leftMargin: 30 }
+            } ), {
+              leftMargin: 30
+            }
           )
         ]
       } ),
