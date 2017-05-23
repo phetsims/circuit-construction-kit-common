@@ -30,7 +30,7 @@ define( function( require ) {
   var rotationMatrix = new Matrix3();
 
   /**
-   * @param {CCKScreenView} circuitConstructionKitScreenView
+   * @param {CCKScreenView} cckScreenView
    * @param {CircuitNode} circuitNode - Null if an icon is created
    * @param {FixedLengthCircuitElement} circuitElement
    * @param {Property.<string>} viewProperty - 'lifelike'|'schematic'
@@ -40,7 +40,7 @@ define( function( require ) {
    * @param options
    * @constructor
    */
-  function FixedLengthCircuitElementNode( circuitConstructionKitScreenView, circuitNode, circuitElement, viewProperty,
+  function FixedLengthCircuitElementNode( cckScreenView, circuitNode, circuitElement, viewProperty,
                                           lifelikeNode, schematicNode, tandem, options ) {
     assert && assert( lifelikeNode !== schematicNode, 'schematicNode should be different than lifelikeNode' );
     var self = this;
@@ -126,17 +126,22 @@ define( function( require ) {
           if ( !circuitElement.interactiveProperty.get() ) {
             // nothing to do
           }
-          else if ( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) ) {
+          else if ( cckScreenView.canNodeDropInToolbox( self ) ) {
 
             var creationTime = self.circuitElement.creationTime;
             var lifetime = phet.joist.elapsedTime - creationTime;
-            var delayMS = Math.max( 500 - lifetime, 0 );
+            var delayMS = Math.max( 5000 - lifetime, 0 );
 
             // If over the toolbox, then drop into it, and don't process further
             self.contentNode.removeInputListener( self.inputListener );
 
+            // Make it impossible to drag vertices when about to drop back into box
+            // See https://github.com/phetsims/circuit-construction-kit-common/issues/279
+            circuitNode.getVertexNode( circuitElement.startVertexProperty.get() ).pickable = false;
+            circuitNode.getVertexNode( circuitElement.endVertexProperty.get() ).pickable = false;
+
             var id = setTimeout( function() {
-              circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
+              cckScreenView.dropCircuitElementNodeInToolbox( self );
             }, delayMS );
 
             // If disposed by reset all button, clear the timeout
@@ -180,7 +185,7 @@ define( function( require ) {
                                 (Property.multilink( [
                                   circuitElement.currentProperty,
                                   circuitElement.resistanceProperty,
-                                  circuitConstructionKitScreenView.circuitConstructionKitModel.exploreScreenRunningProperty
+                                  cckScreenView.circuitConstructionKitModel.exploreScreenRunningProperty
                                 ], function( current, resistance, exploreScreenRunning ) {
                                   self.fireNode.visible = showFire( current, exploreScreenRunning ) && resistance >= 1E-8;
                                 } )) :
@@ -188,7 +193,7 @@ define( function( require ) {
         // Show fire in all other circuit elements
                                 (Property.multilink( [
                                   circuitElement.currentProperty,
-                                  circuitConstructionKitScreenView.circuitConstructionKitModel.exploreScreenRunningProperty
+                                  cckScreenView.circuitConstructionKitModel.exploreScreenRunningProperty
                                 ], function( current, exploreScreenRunning ) {
                                   self.fireNode.visible = showFire( current, exploreScreenRunning );
                                 } ));

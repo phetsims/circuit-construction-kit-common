@@ -250,10 +250,15 @@ define( function( require ) {
 
               var creationTime = self.circuitElement.creationTime;
               var lifetime = phet.joist.elapsedTime - creationTime;
-              var delayMS = Math.max( 500 - lifetime, 0 );
+              var delayMS = Math.max( 5000 - lifetime, 0 );
 
               // Disallow further interaction
               self.removeInputListener( self.inputListener );
+
+              // Make it impossible to drag vertices when about to drop back into box
+              // See https://github.com/phetsims/circuit-construction-kit-common/issues/279
+              circuitNode.getVertexNode( wire.startVertexProperty.get() ).pickable = false;
+              circuitNode.getVertexNode( wire.endVertexProperty.get() ).pickable = false;
 
               // If over the toolbox, then drop into it, and don't process further
               var id = setTimeout( function() {
