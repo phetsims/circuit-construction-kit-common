@@ -18,14 +18,17 @@ define( function( require ) {
   var Matrix3 = require( 'DOT/Matrix3' );
   var NumberProperty = require( 'AXON/NumberProperty' );
   var Util = require( 'DOT/Util' );
+  var Vector2 = require( 'DOT/Vector2' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var Node = require( 'SCENERY/nodes/Node' );
   var Shape = require( 'KITE/Shape' );
+  var LightBulbSocketNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/LightBulbSocketNode' );
 
   // images
   var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
 
   // constants
-  var contentScale = 1 * 0.72;
+  var contentScale = 0.72;
   var scratchMatrix = new Matrix3();
   var scratchMatrix2 = new Matrix3();
 
@@ -41,6 +44,7 @@ define( function( require ) {
    * @constructor
    */
   function CCKLightBulbNode( circuitConstructionKitScreenView, circuitNode, lightBulb, runningProperty, viewProperty, tandem, options ) {
+    options = options || {};
     var brightnessProperty = new NumberProperty( 0 );
     var updateBrightness = Property.multilink( [ lightBulb.currentProperty, runningProperty, lightBulb.voltageDifferenceProperty ], function( current, running, voltageDifference ) {
       var power = Math.abs( current * voltageDifference );
@@ -62,6 +66,16 @@ define( function( require ) {
     var lightBulbNode = new CustomLightBulbNode( brightnessProperty, {
       scale: 3.5
     } );
+
+    // The icon must show the socket as well
+    if ( options.icon ) {
+      lightBulbNode = new Node( {
+        children: [
+          lightBulbNode,
+          new LightBulbSocketNode( circuitConstructionKitScreenView, circuitNode, lightBulb, runningProperty, viewProperty, tandem, options )
+        ]
+      } );
+    }
 
     options = _.extend( {
 
@@ -105,6 +119,25 @@ define( function( require ) {
       stroke: 'black',
       lineWidth: 4
     } );
+    if ( options.icon ) {
+      schematicNode = new Path( new Shape()
+
+      // TODO: copied with above
+      // Outer circle
+        .moveTo( 0, PIN_Y )
+        .arc( delta.x / 2, PIN_Y, delta.x / 2, Math.PI, -Math.PI, true )
+
+        // Filament
+        .moveTo( 0, PIN_Y )
+        .lineTo( delta.x / 2 - INNER_RADIUS, PIN_Y )
+        .arc( delta.x / 2, PIN_Y, INNER_RADIUS, Math.PI, 0, false )
+        .lineTo( delta.x, PIN_Y )
+        .transformed( Matrix3.scaling( 2.75 ) ), {
+        stroke: 'black',
+        lineWidth: 5,
+        centerBottom: new Vector2( 0, -10 )
+      } );
+    }
     FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, viewProperty, lightBulbNode, schematicNode, tandem, options );
 
     this.disposeCCKLightBulbNode = function() {
