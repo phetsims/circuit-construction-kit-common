@@ -26,7 +26,7 @@ define( function( require ) {
   var LIFELIKE_DIAMETER = 16;
 
   /**
-   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
+   * @param {CCKScreenView} circuitConstructionKitScreenView
    * @param {CircuitNode} circuitNode
    * @param {Switch} circuitSwitch
    * @param {Property.<boolean>} runningProperty - supplied for consistency with other CircuitElementNode constructors

@@ -43,7 +43,7 @@ define( function( require ) {
   var SCHEMATIC_LINE_WIDTH = 4; // TODO: factor out
 
   /**
-   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
+   * @param {CCKScreenView} circuitConstructionKitScreenView
    * @param {CircuitNode} [circuitNode] optional, null for icons
    * @param {Resistor} resistor
    * @param {Property.<boolean>} runningProperty - not used here but appears in signature to keep same signature as other CircuitElementNode subclasses.

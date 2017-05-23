@@ -30,7 +30,7 @@ define( function( require ) {
   var rotationMatrix = new Matrix3();
 
   /**
-   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
+   * @param {CCKScreenView} circuitConstructionKitScreenView
    * @param {CircuitNode} circuitNode - Null if an icon is created
    * @param {FixedLengthCircuitElement} circuitElement
    * @param {Property.<string>} viewProperty - 'lifelike'|'schematic'

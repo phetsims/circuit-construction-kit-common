@@ -28,7 +28,7 @@ define( function( require ) {
   var WIDEST_LABEL = '9.99 A';
 
   /**
-   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
+   * @param {CCKScreenView} circuitConstructionKitScreenView
    * @param {CircuitNode} circuitNode
    * @param {SeriesAmmeter} seriesAmmeter
    * @param {Property.<boolean>} runningProperty - supplied for consistency with other CircuitElementNode constructors

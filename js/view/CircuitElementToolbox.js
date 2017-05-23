@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitPanel' );
+  var CCKPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKPanel' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
@@ -198,7 +198,7 @@ define( function( require ) {
       children[ i ].touchArea = children[ i ].localBounds.dilatedXY( 10, 18 );
     }
     lightBulbToolNode.touchArea = lightBulbToolNode.localBounds.dilatedXY( 11, 8 );
-    CircuitConstructionKitPanel.call( this, new LayoutBox( {
+    CCKPanel.call( this, new LayoutBox( {
       orientation: options.orientation,
       spacing: CircuitConstructionKitConstants.TOOLBOX_ITEM_SPACING,
       children: children,
@@ -210,7 +210,7 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'CircuitElementToolbox', CircuitElementToolbox );
 
-  return inherit( CircuitConstructionKitPanel, CircuitElementToolbox, {}, {
+  return inherit( CCKPanel, CircuitElementToolbox, {}, {
     NUMBER_OF_RIGHT_BATTERIES: 10,
     NUMBER_OF_LEFT_BATTERIES: 10,
     NUMBER_OF_WIRES: 20,

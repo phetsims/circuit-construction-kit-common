@@ -20,7 +20,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function CircuitConstructionKitPanel( content, tandem, options ) {
+  function CCKPanel( content, tandem, options ) {
     options = _.extend( {
       fill: CircuitConstructionKitConstants.PANEL_COLOR,
       stroke: 'black',
@@ -33,7 +33,7 @@ define( function( require ) {
     Panel.call( this, content, options );
   }
 
-  circuitConstructionKitCommon.register( 'CircuitConstructionKitPanel', CircuitConstructionKitPanel );
+  circuitConstructionKitCommon.register( 'CCKPanel', CCKPanel );
 
-  return inherit( Panel, CircuitConstructionKitPanel, {} );
+  return inherit( Panel, CCKPanel, {} );
 } );

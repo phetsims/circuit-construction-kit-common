@@ -28,7 +28,7 @@ define( function( require ) {
   var SCHEMATIC_LINE_WIDTH = 6; // line width in screen coordinates
 
   /**
-   * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - if null, this WireNode is just an icon
+   * @param {CCKScreenView|null} circuitConstructionKitScreenView - if null, this WireNode is just an icon
    * @param {CircuitNode} circuitNode
    * @param {Wire} wire
    * @param {Property.<boolean>} runningProperty - unused but provided to match the constructors of other circuit element nodes

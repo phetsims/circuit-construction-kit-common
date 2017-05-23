@@ -24,7 +24,7 @@ define( function( require ) {
 
   /**
    * This constructor is called dynamically and must match the signature of other circuit element nodes.
-   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - the main screen view
+   * @param {CCKScreenView} circuitConstructionKitScreenView - the main screen view
    * @param {CircuitNode} circuitNode - the node for the entire circuit
    * @param {LightBulb} lightBulb - the light bulb model
    * @param {Property.<boolean>} runningProperty - true if the sim can display values

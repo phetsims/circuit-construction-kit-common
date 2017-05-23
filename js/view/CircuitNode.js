@@ -38,7 +38,7 @@ define( function( require ) {
   /**
    *
    * @param {Circuit} circuit
-   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - for dropping circuit element back into the toolbox
+   * @param {CCKScreenView} circuitConstructionKitScreenView - for dropping circuit element back into the toolbox
    * @param {Tandem} tandem
    * @constructor
    */

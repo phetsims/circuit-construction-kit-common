@@ -46,7 +46,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function CircuitConstructionKitScreenView( circuitConstructionKitModel, tandem, options ) {
+  function CCKScreenView( circuitConstructionKitModel, tandem, options ) {
     var self = this;
     this.circuitConstructionKitModel = circuitConstructionKitModel;
 
@@ -356,9 +356,9 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKitCommon.register( 'CircuitConstructionKitScreenView', CircuitConstructionKitScreenView );
+  circuitConstructionKitCommon.register( 'CCKScreenView', CCKScreenView );
 
-  return inherit( ScreenView, CircuitConstructionKitScreenView, {
+  return inherit( ScreenView, CCKScreenView, {
 
     /**
      * When other UI components are moved to the back, we must make sure the background stays behind them.

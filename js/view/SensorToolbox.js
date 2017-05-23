@@ -10,7 +10,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitPanel' );
+  var CCKPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKPanel' );
   var CircuitElementToolNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolNode' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var VBox = require( 'SCENERY/nodes/VBox' );
@@ -93,7 +93,7 @@ define( function( require ) {
       } ).length;
     }, createSeriesAmmeter );
 
-    CircuitConstructionKitPanel.call( this, new HBox( {
+    CCKPanel.call( this, new HBox( {
       spacing: 20,
       align: 'bottom',
       children: [ new VBox( {
@@ -123,5 +123,5 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'SensorToolbox', SensorToolbox );
 
-  return inherit( CircuitConstructionKitPanel, SensorToolbox );
+  return inherit( CCKPanel, SensorToolbox );
 } );
