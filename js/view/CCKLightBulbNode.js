@@ -186,6 +186,19 @@ define( function( require ) {
     },
 
     /**
+     * Returns true if the node hits the sensor at the given point.
+     * @param {Vector2} point
+     * @returns {boolean}
+     * @overrides
+     * @public
+     */
+    containsSensorPoint: function( point ) {
+
+      // Check against the mouse region
+      return !!this.hitTest( point, true, false );
+    },
+
+    /**
      * Maintain the opacity of the brightness lines while changing the opacity of the light bulb itself.
      * @override
      * @public

@@ -33,6 +33,7 @@ define( function( require ) {
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var WireResistivityControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/WireResistivityControl' );
   var BatteryResistanceControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryResistanceControl' );
+  var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
 
   // constants
   var LAYOUT_INSET = CircuitConstructionKitConstants.LAYOUT_INSET;
@@ -416,19 +417,22 @@ define( function( require ) {
     },
 
     /**
-     * Find where the voltmeter probe node intersects the wire, for computing the voltage difference
+     * Find the current under the given probe
      * @param {Node} probeNode
      * @private
      */
     getCurrent: function( probeNode ) {
 
-      var hitWireNode = this.hitWireNode( probeNode.translation );
-      if ( hitWireNode ) {
-        return hitWireNode.wire.currentProperty.get();
+      // See if any CircuitElementNode contains the sensor point
+      for ( var i = 0; i < this.circuitNode.mainLayer.children.length; i++ ) {
+        var circuitElementNode = this.circuitNode.mainLayer.children[ i ];
+        if ( circuitElementNode instanceof CircuitElementNode ) {
+          if ( circuitElementNode.containsSensorPoint( probeNode.translation ) ) {
+            return circuitElementNode.circuitElement.currentProperty.get();
+          }
+        }
       }
-      else {
-        return null;
-      }
+      return null;
     },
 
     /**
@@ -449,6 +453,8 @@ define( function( require ) {
         if ( trueBlackBox ) {
           revealing = this.circuitConstructionKitModel.revealingProperty.get();
         }
+
+        // TODO: use containsSensorPoint like above
         if ( revealing && wireNode.getStrokedShape().containsPoint( position ) ) {
           return wireNode;
         }

@@ -152,6 +152,17 @@ define( function( require ) {
     },
 
     /**
+     * Returns true if the node hits the sensor at the given point.
+     * @param {Vector2} point
+     * @returns {boolean}
+     */
+    containsSensorPoint: function( point ) {
+
+      // default implementation is a scenery hit test
+      return this.containsPoint( point );
+    },
+
+    /**
      * On tap events, select the vertex (if it is close enough to the tap)
      * @param {Object} event - scenery input event
      * @param {CircuitNode} circuitNode
