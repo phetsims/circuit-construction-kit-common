@@ -25,7 +25,7 @@ define( function( require ) {
 
   // constants
   var LIFELIKE_LINE_WIDTH = 12; // line width in screen coordinates
-  var SCHEMATIC_LINE_WIDTH = 6; // line width in screen coordinates
+  var SCHEMATIC_LINE_WIDTH = CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH; // line width in screen coordinates
 
   /**
    * @param {CCKScreenView|null} circuitConstructionKitScreenView - if null, this WireNode is just an icon

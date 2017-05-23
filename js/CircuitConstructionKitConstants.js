@@ -85,6 +85,9 @@ define( function( require ) {
     PANEL_COLOR: '#f1f1f2',
 
     // radius for panels and radio buttons
-    CORNER_RADIUS: 6
+    CORNER_RADIUS: 6,
+
+    // Line width for schematic view
+    SCHEMATIC_LINE_WIDTH: 4
   } );
 } );

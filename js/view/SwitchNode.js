@@ -51,7 +51,7 @@ define( function( require ) {
       var leftSegmentNode = new Rectangle( 0, -thickness / 2, CircuitConstructionKitConstants.SWITCH_LENGTH / 3, thickness, {
         fill: fill,
         stroke: 'black',
-        lineWidth: 1
+        lineWidth: type === 'schematic' ? 0 : 1
       } );
 
       // See the picture at https://github.com/phetsims/circuit-construction-kit-common/issues/313
@@ -72,7 +72,7 @@ define( function( require ) {
         x: CircuitConstructionKitConstants.SWITCH_LENGTH / 3,
         fill: fill,
         stroke: 'black',
-        lineWidth: 1
+        lineWidth: type === 'schematic' ? 0 : 1
       } );
 
       circuitSwitch.closedProperty.link( function( closed ) {
@@ -127,7 +127,7 @@ define( function( require ) {
       .addColorStop( 0.3, '#e39b8c' )
       .addColorStop( 1, '#b56351' );
     var lifelikeNode = createNode( 'lifelike', lifelikeGradient, LIFELIKE_DIAMETER, 6 );
-    var schematicNode = createNode( 'schematic', 'black', 6, 0 );// TODO: factor out thickness with WireNode
+    var schematicNode = createNode( 'schematic', 'black', CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH, 0 );// TODO: factor out thickness with WireNode
 
     FixedLengthCircuitElementNode.call( this,
       circuitConstructionKitScreenView,

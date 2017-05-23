@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedLengthCircuitElementNode' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var ResistorColors = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorColors' );
@@ -40,7 +41,7 @@ define( function( require ) {
   var SCHEMATIC_PERIOD = 22 * SCHEMATIC_SCALE;
   var SCHEMATIC_STEM_WIDTH = 84 * SCHEMATIC_SCALE;
   var SCHEMATIC_WAVELENGTH = 54 * SCHEMATIC_SCALE;
-  var SCHEMATIC_LINE_WIDTH = 4; // TODO: factor out
+  var SCHEMATIC_LINE_WIDTH = CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH; // TODO: factor out
 
   /**
    * @param {CCKScreenView} circuitConstructionKitScreenView

@@ -16,6 +16,7 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
   var Matrix3 = require( 'DOT/Matrix3' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   // images
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
@@ -69,7 +70,7 @@ define( function( require ) {
     schematicShape = schematicShape.transformed( Matrix3.scale( schematicScale, schematicScale ) );
     var schematicNode = new Path( schematicShape, {
       stroke: 'black',
-      lineWidth: 4
+      lineWidth: CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH
     } );
 
     // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310

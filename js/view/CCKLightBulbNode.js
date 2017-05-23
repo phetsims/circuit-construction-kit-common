@@ -23,12 +23,12 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Shape = require( 'KITE/Shape' );
   var LightBulbSocketNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/LightBulbSocketNode' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   // images
   var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
 
   // constants
-  var contentScale = 0.72;
   var scratchMatrix = new Matrix3();
   var scratchMatrix2 = new Matrix3();
 
@@ -122,7 +122,7 @@ define( function( require ) {
       .arc( LEFT_LEG_X + delta.x / 2, PIN_Y, INNER_RADIUS, Math.PI, 0, false )
       .lineTo( LEFT_LEG_X + delta.x, PIN_Y ), {
       stroke: 'black',
-      lineWidth: 4
+      lineWidth: CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH
     } );
     if ( options.icon ) {
       schematicNode = new Path( new Shape()
@@ -166,8 +166,7 @@ define( function( require ) {
       // TODO: factor out matrix logic
       // Update the node transform in a single step, see #66
       scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
-        .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
-        .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) );
+        .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) );
       this.contentNode.setMatrix( scratchMatrix );
 
       this.highlightNode && this.highlightNode.setMatrix( scratchMatrix.copy() );
@@ -175,7 +174,6 @@ define( function( require ) {
       // Update the fire transform
       scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
         .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
-        .multiplyMatrix( scratchMatrix2.setToScale( contentScale / 12 ) )
         .multiplyMatrix( scratchMatrix2.setToTranslation( -100, -fireImage[ 0 ].height - 350 ) );
       this.fireNode && this.fireNode.setMatrix( scratchMatrix.copy() );
     },

@@ -18,7 +18,6 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   // TODO: Factor out this matrix logic, it seems to be used in many places.
-  var contentScale = 0.72;
   var scratchMatrix = new Matrix3();
   var scratchMatrix2 = new Matrix3();
 
@@ -79,8 +78,7 @@ define( function( require ) {
 
       // Update the node transform in a single step, see #66
       scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
-        .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
-        .multiplyMatrix( scratchMatrix2.setToScale( contentScale ) );
+        .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) );
       this.contentNode.setMatrix( scratchMatrix );
     },
     /**
