@@ -165,6 +165,19 @@ define( function( require ) {
   return inherit( FixedLengthCircuitElementNode, ResistorNode, {
 
     /**
+     * Returns true if the node hits the sensor at the given point.
+     * @param {Vector2} point
+     * @returns {boolean}
+     * @overrides
+     * @public
+     */
+    containsSensorPoint: function( point ) {
+
+      // Check against the mouse region
+      return !!this.hitTest( point, true, false );
+    },
+
+    /**
      * Dispose the ResistorNode when it will no longer be used.
      * @public
      */

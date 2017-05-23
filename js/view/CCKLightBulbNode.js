@@ -142,6 +142,11 @@ define( function( require ) {
         centerBottom: new Vector2( 0, -10 )
       } );
     }
+
+    // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
+    schematicNode.mouseArea = schematicNode.bounds.copy();
+    schematicNode.touchArea = schematicNode.bounds.copy();
+
     FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, viewProperty, lightBulbNode, schematicNode, tandem, options );
 
     this.disposeCCKLightBulbNode = function() {

@@ -45,10 +45,10 @@ define( function( require ) {
     // @public (read-only) - the Battery rendered by this Node
     this.battery = battery;
 
-    var batteryImageNode = new Image( batteryImage );
+    var lifelikeNode = new Image( batteryImage );
 
-    batteryImageNode.mutate( {
-      scale: battery.distanceBetweenVertices / batteryImageNode.width
+    lifelikeNode.mutate( {
+      scale: battery.distanceBetweenVertices / lifelikeNode.width
     } );
 
     // Points sampled using Photoshop from a raster of the IEEE icon seen at
@@ -63,7 +63,7 @@ define( function( require ) {
       .moveTo( RIGHT_JUNCTION, LARGE_TERMINAL_WIDTH / 2 ) // right plate
       .lineTo( RIGHT_JUNCTION, -LARGE_TERMINAL_WIDTH / 2 );
     var schematicWidth = schematicShape.bounds.width;
-    var desiredWidth = batteryImageNode.width;
+    var desiredWidth = lifelikeNode.width;
     var schematicScale = desiredWidth / schematicWidth;
 
     // Scale to fit the correct width
@@ -78,7 +78,7 @@ define( function( require ) {
     schematicNode.touchArea = schematicNode.bounds.copy();
 
     // Center vertically to match the FixedLengthCircuitElementNode assumption that origin is center left
-    batteryImageNode.centerY = 0;
+    lifelikeNode.centerY = 0;
     schematicNode.centerY = 0;
 
     FixedLengthCircuitElementNode.call( this,
@@ -86,7 +86,7 @@ define( function( require ) {
       circuitNode,
       battery,
       viewProperty,
-      batteryImageNode,
+      lifelikeNode,
       schematicNode,
       tandem,
       options
@@ -95,5 +95,18 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'BatteryNode', BatteryNode );
 
-  return inherit( FixedLengthCircuitElementNode, BatteryNode );
+  return inherit( FixedLengthCircuitElementNode, BatteryNode, {
+    /**
+     * Returns true if the node hits the sensor at the given point.
+     * @param {Vector2} point
+     * @returns {boolean}
+     * @overrides
+     * @public
+     */
+    containsSensorPoint: function( point ) {
+
+      // Check against the mouse region
+      return !!this.hitTest( point, true, false );
+    }
+  } );
 } );
