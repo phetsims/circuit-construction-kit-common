@@ -18,7 +18,8 @@ define( function( require ) {
   var Matrix3 = require( 'DOT/Matrix3' );
   var NumberProperty = require( 'AXON/NumberProperty' );
   var Util = require( 'DOT/Util' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var Path = require( 'SCENERY/nodes/Path' );
+  var Shape = require( 'KITE/Shape' );
 
   // images
   var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
@@ -75,7 +76,36 @@ define( function( require ) {
         bottom: FixedLengthCircuitElementNode.HIGHLIGHT_INSET * 0.75
       }
     }, options );
-    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, viewProperty, lightBulbNode, new Rectangle( 0, 0, 10, 10 ), tandem, options );
+
+    var endPosition = lightBulb.endVertexProperty.get().positionProperty.get();
+    var startPosition = lightBulb.startVertexProperty.get().positionProperty.get();
+    var delta = endPosition.minus( startPosition );
+
+    var PIN_Y = -100;
+    var INNER_RADIUS = 5;
+    var schematicNode = new Path( new Shape()
+
+    // Left leg
+      .moveTo( 0, 0 )
+      .lineTo( 0, PIN_Y )
+
+      // Right leg
+      .moveTo( delta.x, PIN_Y )
+      .lineTo( delta.x, delta.y )
+
+      // Outer circle
+      .moveTo( 0, PIN_Y )
+      .arc( delta.x / 2, PIN_Y, delta.x / 2, Math.PI, -Math.PI, true )
+
+      // Filament
+      .moveTo( 0, PIN_Y )
+      .lineTo( delta.x / 2 - INNER_RADIUS, PIN_Y )
+      .arc( delta.x / 2, PIN_Y, INNER_RADIUS, Math.PI, 0, false )
+      .lineTo( delta.x, PIN_Y ), {
+      stroke: 'black',
+      lineWidth: 4
+    } );
+    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, viewProperty, lightBulbNode, schematicNode, tandem, options );
 
     this.disposeCCKLightBulbNode = function() {
       updateBrightness.dispose();
