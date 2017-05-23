@@ -38,7 +38,7 @@ define( function( require ) {
     // TODO: This is overkill, we should just have an Image, without all of the extra brightness lines, etc.
     var lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ), {
       baseOnly: true,
-      scale: 3.5
+      scale: 3.5 * 0.72
     } );
 
     options = _.extend( {
