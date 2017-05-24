@@ -129,6 +129,8 @@ define( function( require ) {
 
     var eventPoint = null;
     var dragged = false;
+    var clickToDismissListener = null;
+    var rootNode = null;
     var dragHandler = new TandemSimpleDragHandler( {
       allowTouchSnag: true,
       tandem: tandem.createTandem( 'dragHandler' ),
@@ -151,10 +153,10 @@ define( function( require ) {
 
           vertex.selectedProperty.set( true );
 
-          var rootNode = self.getUniqueTrail().rootNode();
+          rootNode = self.getUniqueTrail().rootNode();
 
           // listener for 'click outside to dismiss'
-          var clickToDismissListener = {
+          clickToDismissListener = {
             down: function( event ) {
 
               // When tapping on the same vertex, just leave it selected
@@ -167,12 +169,20 @@ define( function( require ) {
 
               // If the user tapped anything except the vertex, then hide the highlight and cut button
               if ( trails.length === 0 ) {
-                rootNode.removeInputListener( clickToDismissListener );
+                clickToDismissListener && rootNode.removeInputListener( clickToDismissListener );
                 vertex.selectedProperty.set( false );
+                clickToDismissListener = null;
               }
             }
           };
           rootNode.addInputListener( clickToDismissListener );
+        }
+        else {
+
+          // Deselect after dragging so a grayed-out cut button doesn't remain when open vertex is connected
+          clickToDismissListener && rootNode.removeInputListener( clickToDismissListener );
+          vertex.selectedProperty.set( false );
+          clickToDismissListener = null;
         }
       }
     } );
