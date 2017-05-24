@@ -33,7 +33,6 @@ define( function( require ) {
       titleYMargin: 4,
       titleXSpacing: 14,
       contentYSpacing: 4,
-      tandem: tandem,
       minWidth: CircuitConstructionKitConstants.RIGHT_SIDE_PANEL_MIN_WIDTH,
       titleNode: new HBox( {
         children: [
