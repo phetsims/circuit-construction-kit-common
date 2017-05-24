@@ -83,7 +83,8 @@ define( function( require ) {
       fill: ORANGE,
       stroke: null,
       xMargin: 4,
-      yMargin: 0
+      yMargin: 0,
+      tandem: tandem.createTandem( 'readoutPanel' )
     } );
 
     var createPanel = function( options ) {

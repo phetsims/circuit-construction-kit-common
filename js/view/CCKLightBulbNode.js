@@ -72,7 +72,7 @@ define( function( require ) {
       lightBulbNode = new Node( {
         children: [
           lightBulbNode,
-          new LightBulbSocketNode( circuitConstructionKitScreenView, circuitNode, lightBulb, runningProperty, viewProperty, tandem, options )
+          new LightBulbSocketNode( circuitConstructionKitScreenView, circuitNode, lightBulb, runningProperty, viewProperty, tandem.createTandem( 'socketNode' ), options )
         ]
       } );
     }

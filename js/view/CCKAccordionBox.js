@@ -39,9 +39,9 @@ define( function( require ) {
         children: [
           new HStrut( 10 ),
           new Text( title, { fontSize: 14, tandem: tandem.createTandem( title ) } )
-        ],
-        tandem: tandem
-      } )
+        ]
+      } ),
+      tandem: tandem
     } );
   }
 

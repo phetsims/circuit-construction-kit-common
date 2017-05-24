@@ -84,7 +84,8 @@ define( function( require ) {
           headWidth: 12,
           tailWidth: 3,
           fill: 'red',
-          stroke: 'white'
+          stroke: 'white',
+          tandem: tandem.createTandem( 'arrowNode' )
         } )
       ],
       spacing: textIconSpacing
