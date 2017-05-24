@@ -32,6 +32,9 @@ define( function( require ) {
   // Manually tuned so that at 1 Amp, 1 charge flows past in 1 second
   var SPEED_SCALE = 34.5;
 
+  // the highest allowable time step for integration
+  var MAX_DT = 1 / 30;
+
   /**
    * Sets the charge to not update its position, so that we may apply batch changes without impacting performance
    * @param {Charge} charge
@@ -117,12 +120,12 @@ define( function( require ) {
       this.charges.forEach( DISABLE_UPDATES );
 
       // dt would ideally be around 16.666ms = 0.0166 sec.  Cap it to avoid too large of an integration step.
-      dt = Math.min( dt, 1 / 30 );
+      dt = Math.min( dt, MAX_DT );
 
       // Find the fastest current in any circuit element
       var maxCurrentMagnitude = _.max( this.circuit.circuitElements.getArray().map( CURRENT_MAGNITUDE ) );
       var maxSpeed = maxCurrentMagnitude * SPEED_SCALE;
-      var maxPositionChange = maxSpeed * dt;
+      var maxPositionChange = maxSpeed * MAX_DT; // Use the max dt instead of the true dt to avoid fluctuations
 
       // Slow down the simulation if the fastest step distance exceeds the maximum allowed step
       this.scale = maxPositionChange >= MAX_POSITION_CHANGE ? MAX_POSITION_CHANGE / maxPositionChange : 1;
