@@ -53,7 +53,6 @@ define( function( require ) {
   var RESISTOR_LENGTH = CircuitConstructionKitConstants.RESISTOR_LENGTH;
   var WIRE_LENGTH = 100;
   var SWITCH_LENGTH = CircuitConstructionKitConstants.SWITCH_LENGTH;
-  var PAGE_CONTROL_SPACING = 5;
 
   /**
    * @param {Circuit} circuit
@@ -302,9 +301,9 @@ define( function( require ) {
     options.numberOfWires && children.push( wireToolNode );
     options.numberOfLeftBatteries && children.push( leftBatteryToolNode );
     options.numberOfRightBatteries && children.push( rightBatteryToolNode );
-    options.numberOfLightBulbs && children.push( lightBulbToolNode );
     options.numberOfResistors && children.push( resistorToolNode );
     options.numberOfSwitches && children.push( switchToolNode );
+    options.numberOfLightBulbs && children.push( lightBulbToolNode );
 
     // Wires at the top of each page
     options.numberOfCoins && children.push( new Node( { children: [ wireToolNode ] } ) );
