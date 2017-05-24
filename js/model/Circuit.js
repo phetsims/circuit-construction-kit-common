@@ -264,6 +264,7 @@ define( function( require ) {
     this.seriesAmmeterGroupTandem = tandem.createGroupTandem( 'seriesAmmeters' );
     this.switchGroupTandem = tandem.createGroupTandem( 'switches' );
     this.coinGroupTandem = tandem.createGroupTandem( 'coins' );
+    this.dollarBillGroupTandem = tandem.createGroupTandem( 'dollarBills' );
     this.rightBatteryTandemGroup = tandem.createGroupTandem( 'rightBatteries' );
     this.leftBatteryTandemGroup = tandem.createGroupTandem( 'leftBatteries' );
     this.lightBulbGroupTandem = tandem.createGroupTandem( 'lightBulbs' );

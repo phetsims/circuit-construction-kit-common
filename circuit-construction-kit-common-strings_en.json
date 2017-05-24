@@ -14,6 +14,9 @@
   "coin": {
     "value": "Coin"
   },
+  "dollarBill": {
+    "value": "Dollar Bill"
+  },
   "wireResistivity": {
     "value": "Wire Resistivity"
   },

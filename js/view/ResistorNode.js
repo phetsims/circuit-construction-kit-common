@@ -64,6 +64,9 @@ define( function( require ) {
     if ( resistor.resistorType === 'coin' ) {
       lifelikeResistorImageNode = new Text( 'COIN NODE' );
     }
+    else if ( resistor.resistorType === 'dollarBill' ) {
+      lifelikeResistorImageNode = new Text( 'ITS A DOLLAR BILL' );
+    }
     else {
 
       /**

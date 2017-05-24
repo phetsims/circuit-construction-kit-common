@@ -165,7 +165,8 @@ define( function( require ) {
         numberOfSwitches: options.numberOfSwitchesInToolbox,
         numberOfLightBulbs: options.numberOfLightBulbsInToolbox,
         numberOfResistors: options.numberOfResistorsInToolbox,
-        numberOfCoins: options.numberOfCoinsInToolbox
+        numberOfCoins: options.numberOfCoinsInToolbox,
+        numberOfDollarBills: options.numberOfDollarBillsInToolbox
       } );
 
     var chargeSpeedThrottlingReadoutNode = new ChargeSpeedThrottlingReadoutNode(

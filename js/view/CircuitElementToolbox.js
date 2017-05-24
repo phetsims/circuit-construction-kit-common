@@ -37,6 +37,7 @@ define( function( require ) {
   var lightBulbString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightBulb' );
   var switchString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/switch' );
   var coinString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/coin' );
+  var dollarBillString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/dollarBill' );
   var wireString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/wire' );
 
   // constants
@@ -65,7 +66,8 @@ define( function( require ) {
       numberOfLightBulbs: CircuitElementToolbox.NUMBER_OF_LIGHT_BULBS,
       numberOfResistors: CircuitElementToolbox.NUMBER_OF_RESISTORS,
       numberOfSwitches: CircuitElementToolbox.NUMBER_OF_SWITCHES,
-      numberOfCoins: 4
+      numberOfCoins: 0,
+      numberOfDollarBills: 0
     }, options );
 
     /**
@@ -100,7 +102,7 @@ define( function( require ) {
     var createGrabBagItem = function( resistorType, resistorLength, tandem ) {
       return new Resistor(
         new Vertex( 0, 0 ),
-        new Vertex( CircuitConstructionKitConstants.COIN_LENGTH, 0 ),
+        new Vertex( resistorLength, 0 ),
         tandem, {
           resistorType: resistorType,
           resistorLength: resistorLength
@@ -121,7 +123,6 @@ define( function( require ) {
       icon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( icon.width, icon.height ) } );
       return icon;
     };
-    var coinIcon = createGrabBagIcon( createGrabBagItem( 'coin', CircuitConstructionKitConstants.COIN_LENGTH, tandem.createTandem( 'coin' ) ), tandem.createTandem( 'coinIcon' ) );
 
     // normalize icon sizes
     resistorIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( resistorIcon.width, resistorIcon.height ) } );
@@ -158,7 +159,6 @@ define( function( require ) {
     var countLightBulbs = createCounter( function( circuitElement ) { return circuitElement instanceof LightBulb; } );
     var countResistors = createCounter( function( circuitElement ) { return circuitElement instanceof Resistor && circuitElement.resistorType === 'resistor'; } );
     var countSwitches = createCounter( function( circuitElement ) { return circuitElement instanceof Switch; } );
-    var countCoins = createCounter( function( circuitElement ) { return circuitElement instanceof Resistor && circuitElement.resistorType === 'coin'; } );
 
     /**
      * Create a pair of vertices to be used for a new CircuitElement
@@ -206,14 +206,38 @@ define( function( require ) {
         } );
       };
     };
-    var createCoin = getGrabBagItemCreator( 'coin', CircuitConstructionKitConstants.COIN_LENGTH, circuit.coinGroupTandem );
+
     var leftBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitNode, leftBatteryIcon, options.numberOfLeftBatteries, countLeftBatteries, createLeftBattery );
     var rightBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitNode, rightBatteryIcon, options.numberOfRightBatteries, countRightBatteries, createRightBattery );
     var wireToolNode = new CircuitElementToolNode( wireString, showLabelsProperty, circuitNode, wireIcon, options.numberOfWires, countWires, createWire );
     var lightBulbToolNode = new CircuitElementToolNode( lightBulbString, showLabelsProperty, circuitNode, lightBulbIcon, options.numberOfLightBulbs, countLightBulbs, createLightBulb );
     var resistorToolNode = new CircuitElementToolNode( resistorString, showLabelsProperty, circuitNode, resistorIcon, options.numberOfResistors, countResistors, createResistor );
     var switchToolNode = new CircuitElementToolNode( switchString, showLabelsProperty, circuitNode, switchIcon, options.numberOfSwitches, countSwitches, createSwitch );
-    var coinToolNode = new CircuitElementToolNode( coinString, showLabelsProperty, circuitNode, coinIcon, options.numberOfCoins, countCoins, createCoin );
+
+    var createGrabBagToolNode = function( resistorType, resistorLength, labelString, maxCount, iconModelTandem, iconTandem, groupTandem ) {
+      var icon = createGrabBagIcon( createGrabBagItem( resistorType, resistorLength, iconModelTandem ), iconTandem );
+      var itemCounter = createCounter( function( circuitElement ) { return circuitElement instanceof Resistor && circuitElement.resistorType === resistorType; } );
+      var createItem = getGrabBagItemCreator( resistorType, resistorLength, groupTandem );
+      return new CircuitElementToolNode( labelString, showLabelsProperty, circuitNode, icon, maxCount, itemCounter, createItem );
+    };
+    var coinToolNode = createGrabBagToolNode(
+      'coin',
+      CircuitConstructionKitConstants.COIN_LENGTH,
+      coinString,
+      options.numberOfCoins,
+      tandem.createTandem( 'coin' ),
+      tandem.createTandem( 'coinIcon' ),
+      circuit.coinGroupTandem
+    );
+    var dollarBillNode = createGrabBagToolNode(
+      'dollarBill',
+      CircuitConstructionKitConstants.DOLLAR_BILL_LENGTH,
+      dollarBillString,
+      options.numberOfDollarBills,
+      tandem.createTandem( 'dollarBill' ),
+      tandem.createTandem( 'dollarBillIcon' ),
+      circuit.dollarBillGroupTandem
+    );
 
     var children = [];
     options.numberOfLeftBatteries && children.push( leftBatteryToolNode );
@@ -223,6 +247,7 @@ define( function( require ) {
     options.numberOfResistors && children.push( resistorToolNode );
     options.numberOfSwitches && children.push( switchToolNode );
     options.numberOfCoins && children.push( coinToolNode );
+    options.numberOfDollarBills && children.push( dollarBillNode );
 
     // Expand touch bounds for each icon
     for ( var i = 0; i < children.length; i++ ) {
