@@ -82,6 +82,7 @@ define( function( require ) {
     RESISTOR_LENGTH: 110,
     COIN_LENGTH: 150,
     DOLLAR_BILL_LENGTH: 200,
+    PAPER_CLIP_LENGTH: 120,
 
     // background for panels and radio buttons
     PANEL_COLOR: '#f1f1f2',

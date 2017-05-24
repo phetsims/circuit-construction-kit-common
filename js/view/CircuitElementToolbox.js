@@ -38,6 +38,7 @@ define( function( require ) {
   var switchString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/switch' );
   var coinString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/coin' );
   var dollarBillString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/dollarBill' );
+  var paperClipString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/paperClip' );
   var wireString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/wire' );
 
   // constants
@@ -67,7 +68,8 @@ define( function( require ) {
       numberOfResistors: CircuitElementToolbox.NUMBER_OF_RESISTORS,
       numberOfSwitches: CircuitElementToolbox.NUMBER_OF_SWITCHES,
       numberOfCoins: 0,
-      numberOfDollarBills: 0
+      numberOfDollarBills: 0,
+      numberOfPaperClips: 0
     }, options );
 
     /**
@@ -238,16 +240,29 @@ define( function( require ) {
       tandem.createTandem( 'dollarBillIcon' ),
       circuit.dollarBillGroupTandem
     );
+    var paperClipNode = createGrabBagToolNode(
+      'paperClip',
+      CircuitConstructionKitConstants.PAPER_CLIP_LENGTH,
+      paperClipString,
+      options.numberOfPaperClips,
+      tandem.createTandem( 'paperClip' ),
+      tandem.createTandem( 'paperClipIcon' ),
+      circuit.paperClipGroupTandem
+    );
 
     var children = [];
+    options.numberOfWires && children.push( wireToolNode );
     options.numberOfLeftBatteries && children.push( leftBatteryToolNode );
     options.numberOfRightBatteries && children.push( rightBatteryToolNode );
-    options.numberOfWires && children.push( wireToolNode );
     options.numberOfLightBulbs && children.push( lightBulbToolNode );
     options.numberOfResistors && children.push( resistorToolNode );
     options.numberOfSwitches && children.push( switchToolNode );
+
+    // Wires at the top of each page
+    options.numberOfCoins && children.push( new Node( { children: [ wireToolNode ] } ) );
     options.numberOfCoins && children.push( coinToolNode );
     options.numberOfDollarBills && children.push( dollarBillNode );
+    options.numberOfPaperClips && children.push( paperClipNode );
 
     // Expand touch bounds for each icon
     for ( var i = 0; i < children.length; i++ ) {

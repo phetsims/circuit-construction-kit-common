@@ -17,6 +17,9 @@
   "dollarBill": {
     "value": "Dollar Bill"
   },
+  "paperClip": {
+    "value": "Paper Clip"
+  },
   "wireResistivity": {
     "value": "Wire Resistivity"
   },
