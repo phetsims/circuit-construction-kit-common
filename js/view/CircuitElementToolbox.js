@@ -65,7 +65,7 @@ define( function( require ) {
       numberOfLightBulbs: CircuitElementToolbox.NUMBER_OF_LIGHT_BULBS,
       numberOfResistors: CircuitElementToolbox.NUMBER_OF_RESISTORS,
       numberOfSwitches: CircuitElementToolbox.NUMBER_OF_SWITCHES,
-      numberOfCoins: 10
+      numberOfCoins: 4
     }, options );
 
     /**
@@ -97,14 +97,15 @@ define( function( require ) {
       new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ),
       tandem.createTandem( 'resistor' )
     );
-    var coin = new Resistor(
-      new Vertex( 0, 0 ),
-      new Vertex( CircuitConstructionKitConstants.COIN_LENGTH, 0 ),
-      tandem.createTandem( 'coin' ), {
-        resistorType: 'coin',
-        resistorLength: CircuitConstructionKitConstants.COIN_LENGTH
-      }
-    );
+    var createGrabBagItem = function( resistorType, resistorLength, tandem ) {
+      return new Resistor(
+        new Vertex( 0, 0 ),
+        new Vertex( CircuitConstructionKitConstants.COIN_LENGTH, 0 ),
+        tandem, {
+          resistorType: resistorType,
+          resistorLength: resistorLength
+        } );
+    };
     var resistorIcon = new ResistorNode( null, null,
       resistor,
       null, viewProperty, tandem.createTandem( 'resistorIcon' ), {
@@ -115,12 +116,12 @@ define( function( require ) {
     var switchIcon = new SwitchNode( null, null, circuitSwitch, null, viewProperty, tandem.createTandem( 'switchIcon' ), {
       icon: true
     } );
-    var coinIcon = new ResistorNode( null, null,
-      coin,
-      null, viewProperty, tandem.createTandem( 'resistorIcon' ), {
-        icon: true
-      }
-    );
+    var createGrabBagIcon = function( grabBagItem, tandem ) {
+      var icon = new ResistorNode( null, null, grabBagItem, null, viewProperty, tandem, { icon: true } );
+      icon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( icon.width, icon.height ) } );
+      return icon;
+    };
+    var coinIcon = createGrabBagIcon( createGrabBagItem( 'coin', CircuitConstructionKitConstants.COIN_LENGTH, tandem.createTandem( 'coin' ) ), tandem.createTandem( 'coinIcon' ) );
 
     // normalize icon sizes
     resistorIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( resistorIcon.width, resistorIcon.height ) } );
@@ -129,7 +130,7 @@ define( function( require ) {
     switchIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( switchIcon.width, switchIcon.height ) } );
     leftBatteryIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( leftBatteryIcon.width, leftBatteryIcon.height ) } );
     rightBatteryIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( rightBatteryIcon.width, rightBatteryIcon.height ) } );
-    coinIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( coinIcon.width, coinIcon.height ) } );
+
     /**
      * Returns a function which counts the number of circuit elements (not counting those in the true black box).
      * @param {function} predicate
@@ -196,13 +197,16 @@ define( function( require ) {
       var vertexPair = createVertexPair( position, SWITCH_LENGTH );
       return new Switch( vertexPair.startVertex, vertexPair.endVertex, circuit.switchGroupTandem.createNextTandem() );
     };
-    var createCoin = function( position ) {
-      var vertexPair = createVertexPair( position, CircuitConstructionKitConstants.COIN_LENGTH );
-      return new Resistor( vertexPair.startVertex, vertexPair.endVertex, circuit.switchGroupTandem.createNextTandem(), {
-        resistorType: 'coin',
-        resistorLength: CircuitConstructionKitConstants.COIN_LENGTH
-      } );
+    var getGrabBagItemCreator = function( resistorType, resistorLength, groupTandem ) {
+      return function( position ) {
+        var vertexPair = createVertexPair( position, resistorLength );
+        return new Resistor( vertexPair.startVertex, vertexPair.endVertex, groupTandem.createNextTandem(), {
+          resistorType: resistorType,
+          resistorLength: resistorLength
+        } );
+      };
     };
+    var createCoin = getGrabBagItemCreator( 'coin', CircuitConstructionKitConstants.COIN_LENGTH, circuit.coinGroupTandem );
     var leftBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitNode, leftBatteryIcon, options.numberOfLeftBatteries, countLeftBatteries, createLeftBattery );
     var rightBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitNode, rightBatteryIcon, options.numberOfRightBatteries, countRightBatteries, createRightBattery );
     var wireToolNode = new CircuitElementToolNode( wireString, showLabelsProperty, circuitNode, wireIcon, options.numberOfWires, countWires, createWire );
