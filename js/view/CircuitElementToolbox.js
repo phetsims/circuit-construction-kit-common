@@ -26,10 +26,12 @@ define( function( require ) {
   var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
   var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/WireNode' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
+  var HBox = require( 'SCENERY/nodes/HBox' );
   var Carousel = require( 'SUN/Carousel' );
   var CircuitElementToolNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolNode' );
   var Property = require( 'AXON/Property' );
   var Vector2 = require( 'DOT/Vector2' );
+  var PageControl = require( 'SUN/PageControl' );
 
   // strings
   var resistorString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor' );
@@ -51,6 +53,7 @@ define( function( require ) {
   var RESISTOR_LENGTH = CircuitConstructionKitConstants.RESISTOR_LENGTH;
   var WIRE_LENGTH = 100;
   var SWITCH_LENGTH = CircuitConstructionKitConstants.SWITCH_LENGTH;
+  var PAGE_CONTROL_SPACING = 5;
 
   /**
    * @param {Circuit} circuit
@@ -323,20 +326,38 @@ define( function( require ) {
     lightBulbToolNode.touchArea = lightBulbToolNode.localBounds.dilatedXY( 11, 8 );
 
     var ITEMS_PER_PAGE = 5;
+
+    var child = null;
+    if ( children.length <= ITEMS_PER_PAGE ) {
+      child = new CCKPanel( new LayoutBox( {
+        orientation: options.orientation,
+        spacing: CircuitConstructionKitConstants.TOOLBOX_ITEM_SPACING,
+        children: children,
+        resize: false
+      } ), tandem, {
+        resize: false
+      } );
+    }
+    else {
+      var carousel = new Carousel( children, {
+        orientation: 'vertical',
+        itemsPerPage: ITEMS_PER_PAGE
+      } );
+      var pageControl = new PageControl( carousel.numberOfPages, carousel.pageNumberProperty, {
+        orientation: 'vertical',
+        pageFill: 'white',
+        pageStroke: 'black',
+        interactive: true,
+        dotTouchAreaDilation: 4,
+        dotMouseAreaDilation: 4
+      } );
+      child = new HBox( {
+        spacing: 5,
+        children: [ carousel, pageControl ]
+      } );
+    }
     Node.call( this, {
-      children: [
-        children.length <= ITEMS_PER_PAGE ? new CCKPanel( new LayoutBox( {
-          orientation: options.orientation,
-          spacing: CircuitConstructionKitConstants.TOOLBOX_ITEM_SPACING,
-          children: children,
-          resize: false
-        } ), tandem, {
-          resize: false
-        } ) : new Carousel( children, {
-          orientation: 'vertical',
-          itemsPerPage: ITEMS_PER_PAGE
-        } )
-      ]
+      children: [ child ]
     } );
   }
 
