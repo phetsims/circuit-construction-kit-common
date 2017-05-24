@@ -80,6 +80,7 @@ define( function( require ) {
 
     // Length of a resistor
     RESISTOR_LENGTH: 110,
+    COIN_LENGTH: 150,
 
     // background for panels and radio buttons
     PANEL_COLOR: '#f1f1f2',

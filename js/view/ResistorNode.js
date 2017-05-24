@@ -20,6 +20,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var Color = require( 'SCENERY/util/Color' );
   var Matrix3 = require( 'DOT/Matrix3' );
+  var Text = require( 'SCENERY/nodes/Text' );
 
   // images
   var lifelikeResistorImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor.png' );
@@ -60,57 +61,63 @@ define( function( require ) {
 
     var lifelikeResistorImageNode = new Image( lifelikeResistorImage );
 
-    /**
-     * Get a color band for the given index.
-     * @param {number} index
-     * @returns {Rectangle}
-     */
-    var getColorBand = function( index ) {
+    if ( resistor.resistorType === 'coin' ) {
+      lifelikeResistorImageNode = new Text( 'COIN NODE' );
+    }
+    else {
 
-      var additionalOffset = index === 3 ? 12 : 0;
-      return new Rectangle( 0, 0, COLOR_BAND_WIDTH, COLOR_BAND_HEIGHT, {
-        x: COLOR_BAND_INSET + (COLOR_BAND_WIDTH + COLOR_BAND_SPACING) * index + additionalOffset,
+      /**
+       * Get a color band for the given index.
+       * @param {number} index
+       * @returns {Rectangle}
+       */
+      var getColorBand = function( index ) {
+
+        var additionalOffset = index === 3 ? 12 : 0;
+        return new Rectangle( 0, 0, COLOR_BAND_WIDTH, COLOR_BAND_HEIGHT, {
+          x: COLOR_BAND_INSET + (COLOR_BAND_WIDTH + COLOR_BAND_SPACING) * index + additionalOffset,
+          y: COLOR_BAND_Y
+        } );
+      };
+
+      // Color bands for resistance > 0
+      var colorBands = _.range( 4 ).map( getColorBand );
+
+      // Single color band when resistance = 0 which appears in the middle
+      var singleColorBand = new Rectangle( 0, 0, COLOR_BAND_WIDTH, COLOR_BAND_HEIGHT, {
+        centerX: COLOR_BAND_INSET + AVAILABLE_COLOR_BAND_SPACE / 2,
         y: COLOR_BAND_Y
       } );
-    };
 
-    // Color bands for resistance > 0
-    var colorBands = _.range( 4 ).map( getColorBand );
+      /**
+       * When the resistance changes, update the colors of the color bands.
+       * @param resistance
+       */
+      var updateColorBands = function( resistance ) {
+        var colors = ResistorColors.getColorArray( resistance );
 
-    // Single color band when resistance = 0 which appears in the middle
-    var singleColorBand = new Rectangle( 0, 0, COLOR_BAND_WIDTH, COLOR_BAND_HEIGHT, {
-      centerX: COLOR_BAND_INSET + AVAILABLE_COLOR_BAND_SPACE / 2,
-      y: COLOR_BAND_Y
-    } );
-
-    /**
-     * When the resistance changes, update the colors of the color bands.
-     * @param resistance
-     */
-    var updateColorBands = function( resistance ) {
-      var colors = ResistorColors.getColorArray( resistance );
-
-      if ( colors.length === 1 ) {
-        singleColorBand.fill = colors[ 0 ];
-        assert && assert( colors[ 0 ].equals( new Color( 'black' ) ), 'single band should be black' );
-        colorBands.forEach( function( colorBand ) { colorBand.fill = null; } );
-      }
-      else {
-
-        // Show all 4 colors bands and hide the 0-resistance band
-        singleColorBand.fill = null;
-        for ( var i = 0; i < colorBands.length; i++ ) {
-          colorBands[ i ].fill = colors[ i ] || null;// Last one could be null
+        if ( colors.length === 1 ) {
+          singleColorBand.fill = colors[ 0 ];
+          assert && assert( colors[ 0 ].equals( new Color( 'black' ) ), 'single band should be black' );
+          colorBands.forEach( function( colorBand ) { colorBand.fill = null; } );
         }
-      }
-    };
-    resistor.resistanceProperty.link( updateColorBands );
+        else {
 
-    // Add the color bands to the resistor image
-    colorBands.forEach( function( colorBand ) {
-      lifelikeResistorImageNode.addChild( colorBand );
-    } );
-    lifelikeResistorImageNode.addChild( singleColorBand );
+          // Show all 4 colors bands and hide the 0-resistance band
+          singleColorBand.fill = null;
+          for ( var i = 0; i < colorBands.length; i++ ) {
+            colorBands[ i ].fill = colors[ i ] || null;// Last one could be null
+          }
+        }
+      };
+      resistor.resistanceProperty.link( updateColorBands );
+
+      // Add the color bands to the resistor image
+      colorBands.forEach( function( colorBand ) {
+        lifelikeResistorImageNode.addChild( colorBand );
+      } );
+      lifelikeResistorImageNode.addChild( singleColorBand );
+    }
 
     // Classical zig-zag shape
     var schematicShape = new Shape()

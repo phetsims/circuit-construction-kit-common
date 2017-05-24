@@ -27,9 +27,17 @@ define( function( require ) {
    */
   function Resistor( startVertex, endVertex, tandem, options ) {
     options = _.extend( {
-      resistance: CircuitConstructionKitConstants.DEFAULT_RESISTANCE
+      resistance: CircuitConstructionKitConstants.DEFAULT_RESISTANCE,
+
+      // Support for rendering grab bag items
+      resistorType: 'resistor',
+      resistorLength: RESISTOR_LENGTH
     }, options );
-    FixedLengthCircuitElement.call( this, startVertex, endVertex, RESISTOR_LENGTH, RESISTOR_LENGTH, tandem );
+
+    // @public (read-only) {string} indicates 'resistor' or grab bag component type
+    this.resistorType = options.resistorType;
+
+    FixedLengthCircuitElement.call( this, startVertex, endVertex, options.resistorLength, options.resistorLength, tandem );
 
     // @public (read-only) {Property.<number>} the resistance in ohms
     this.resistanceProperty = new NumberProperty( options.resistance );

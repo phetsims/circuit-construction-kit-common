@@ -36,6 +36,7 @@ define( function( require ) {
   var batteryString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery' );
   var lightBulbString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightBulb' );
   var switchString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/switch' );
+  var coinString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/coin' );
   var wireString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/wire' );
 
   // constants
@@ -63,7 +64,8 @@ define( function( require ) {
       numberOfWires: CircuitElementToolbox.NUMBER_OF_WIRES,
       numberOfLightBulbs: CircuitElementToolbox.NUMBER_OF_LIGHT_BULBS,
       numberOfResistors: CircuitElementToolbox.NUMBER_OF_RESISTORS,
-      numberOfSwitches: CircuitElementToolbox.NUMBER_OF_SWITCHES
+      numberOfSwitches: CircuitElementToolbox.NUMBER_OF_SWITCHES,
+      numberOfCoins: 10
     }, options );
 
     /**
@@ -95,6 +97,14 @@ define( function( require ) {
       new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ),
       tandem.createTandem( 'resistor' )
     );
+    var coin = new Resistor(
+      new Vertex( 0, 0 ),
+      new Vertex( CircuitConstructionKitConstants.COIN_LENGTH, 0 ),
+      tandem.createTandem( 'coin' ), {
+        resistorType: 'coin',
+        resistorLength: CircuitConstructionKitConstants.COIN_LENGTH
+      }
+    );
     var resistorIcon = new ResistorNode( null, null,
       resistor,
       null, viewProperty, tandem.createTandem( 'resistorIcon' ), {
@@ -105,6 +115,12 @@ define( function( require ) {
     var switchIcon = new SwitchNode( null, null, circuitSwitch, null, viewProperty, tandem.createTandem( 'switchIcon' ), {
       icon: true
     } );
+    var coinIcon = new ResistorNode( null, null,
+      coin,
+      null, viewProperty, tandem.createTandem( 'resistorIcon' ), {
+        icon: true
+      }
+    );
 
     // normalize icon sizes
     resistorIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( resistorIcon.width, resistorIcon.height ) } );
@@ -113,7 +129,7 @@ define( function( require ) {
     switchIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( switchIcon.width, switchIcon.height ) } );
     leftBatteryIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( leftBatteryIcon.width, leftBatteryIcon.height ) } );
     rightBatteryIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( rightBatteryIcon.width, rightBatteryIcon.height ) } );
-
+    coinIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( coinIcon.width, coinIcon.height ) } );
     /**
      * Returns a function which counts the number of circuit elements (not counting those in the true black box).
      * @param {function} predicate
@@ -139,8 +155,9 @@ define( function( require ) {
     } );
     var countWires = createCounter( function( circuitElement ) { return circuitElement instanceof Wire; } );
     var countLightBulbs = createCounter( function( circuitElement ) { return circuitElement instanceof LightBulb; } );
-    var countResistors = createCounter( function( circuitElement ) { return circuitElement instanceof Resistor; } );
+    var countResistors = createCounter( function( circuitElement ) { return circuitElement instanceof Resistor && circuitElement.resistorType === 'resistor'; } );
     var countSwitches = createCounter( function( circuitElement ) { return circuitElement instanceof Switch; } );
+    var countCoins = createCounter( function( circuitElement ) { return circuitElement instanceof Resistor && circuitElement.resistorType === 'coin'; } );
 
     /**
      * Create a pair of vertices to be used for a new CircuitElement
@@ -179,12 +196,20 @@ define( function( require ) {
       var vertexPair = createVertexPair( position, SWITCH_LENGTH );
       return new Switch( vertexPair.startVertex, vertexPair.endVertex, circuit.switchGroupTandem.createNextTandem() );
     };
+    var createCoin = function( position ) {
+      var vertexPair = createVertexPair( position, CircuitConstructionKitConstants.COIN_LENGTH );
+      return new Resistor( vertexPair.startVertex, vertexPair.endVertex, circuit.switchGroupTandem.createNextTandem(), {
+        resistorType: 'coin',
+        resistorLength: CircuitConstructionKitConstants.COIN_LENGTH
+      } );
+    };
     var leftBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitNode, leftBatteryIcon, options.numberOfLeftBatteries, countLeftBatteries, createLeftBattery );
     var rightBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitNode, rightBatteryIcon, options.numberOfRightBatteries, countRightBatteries, createRightBattery );
     var wireToolNode = new CircuitElementToolNode( wireString, showLabelsProperty, circuitNode, wireIcon, options.numberOfWires, countWires, createWire );
     var lightBulbToolNode = new CircuitElementToolNode( lightBulbString, showLabelsProperty, circuitNode, lightBulbIcon, options.numberOfLightBulbs, countLightBulbs, createLightBulb );
     var resistorToolNode = new CircuitElementToolNode( resistorString, showLabelsProperty, circuitNode, resistorIcon, options.numberOfResistors, countResistors, createResistor );
     var switchToolNode = new CircuitElementToolNode( switchString, showLabelsProperty, circuitNode, switchIcon, options.numberOfSwitches, countSwitches, createSwitch );
+    var coinToolNode = new CircuitElementToolNode( coinString, showLabelsProperty, circuitNode, coinIcon, options.numberOfCoins, countCoins, createCoin );
 
     var children = [];
     options.numberOfLeftBatteries && children.push( leftBatteryToolNode );
@@ -193,6 +218,7 @@ define( function( require ) {
     options.numberOfLightBulbs && children.push( lightBulbToolNode );
     options.numberOfResistors && children.push( resistorToolNode );
     options.numberOfSwitches && children.push( switchToolNode );
+    options.numberOfCoins && children.push( coinToolNode );
 
     // Expand touch bounds for each icon
     for ( var i = 0; i < children.length; i++ ) {

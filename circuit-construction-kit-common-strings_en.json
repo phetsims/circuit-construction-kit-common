@@ -11,6 +11,9 @@
   "lots": {
     "value": "lots"
   },
+  "coin": {
+    "value": "Coin"
+  },
   "wireResistivity": {
     "value": "Wire Resistivity"
   },

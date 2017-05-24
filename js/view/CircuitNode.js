@@ -98,6 +98,7 @@ define( function( require ) {
      *
      * @param {function} CircuitElementNodeConstructor constructor for the node type, such as BatteryNode
      * @param {function} type - the type of the CircuitElement, such as Battery or Wire
+     * @param {function} predicate - additional test for whether to use this renderer for this model element
      * @param {Array.<CircuitElementNode>} nodeArray
      * @param {function} getter, given a {CircuitElement}, return the corresponding {CircuitElementNode}
      * @param {Tandem} groupTandem
@@ -156,6 +157,9 @@ define( function( require ) {
       } );
     };
 
+    // var all = function() {return true;};
+    // var isResistor = function( circuitElement ) { return circuitElement.resistorType === 'resistor'; };
+    // var isGrabBagItem = function( circuitElement ) { return !isResistor( circuitElement ); };
     initializeCircuitElementType( WireNode, Wire, self.wireNodes, this.getWireNode.bind( this ), tandem.createGroupTandem( 'wireNode' ) );
     initializeCircuitElementType( BatteryNode, Battery, self.batteryNodes, this.getBatteryNode.bind( this ), tandem.createGroupTandem( 'batteryNode' ) );
     initializeCircuitElementType( CCKLightBulbNode, LightBulb, self.lightBulbNodes, this.getCCKLightBulbNode.bind( this ), tandem.createGroupTandem( 'lightBulbNode' ) );
@@ -163,6 +167,7 @@ define( function( require ) {
     initializeCircuitElementType( ResistorNode, Resistor, self.resistorNodes, this.getResistorNode.bind( this ), tandem.createGroupTandem( 'resistorNode' ) );
     initializeCircuitElementType( SeriesAmmeterNode, SeriesAmmeter, self.seriesAmmeterNodes, this.getSeriesAmmeterNode.bind( this ), tandem.createGroupTandem( 'seriesAmmeterNode' ) );
     initializeCircuitElementType( SwitchNode, Switch, self.switchNodes, this.getSwitchNode.bind( this ), tandem.createGroupTandem( 'switchNode' ) );
+    // initializeCircuitElementType( GrabBagItemNode, Resistor, isGrabBagItem, self.switchNodes, this.getSwitchNode.bind( this ), tandem.createGroupTandem( 'switchNode' ) );
 
     var vertexNodeGroup = tandem.createGroupTandem( 'vertexNodes' );
     var addVertexNode = function( vertex ) {
