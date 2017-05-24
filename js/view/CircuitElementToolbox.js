@@ -341,7 +341,8 @@ define( function( require ) {
     else {
       var carousel = new Carousel( children, {
         orientation: 'vertical',
-        itemsPerPage: ITEMS_PER_PAGE
+        itemsPerPage: ITEMS_PER_PAGE,
+        spacing: 0
       } );
       var pageControl = new PageControl( carousel.numberOfPages, carousel.pageNumberProperty, {
         orientation: 'vertical',
