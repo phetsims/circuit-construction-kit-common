@@ -96,7 +96,7 @@ define( function( require ) {
     var delta = endPosition.minus( startPosition );
 
     // TODO: fix all of this layout and number code
-    var PIN_Y = -100;
+    var LEAD_Y = -73;
     var INNER_RADIUS = 5;
     delta.x = delta.x + 2;
 
@@ -105,21 +105,21 @@ define( function( require ) {
 
     // Left leg
       .moveTo( LEFT_LEG_X, 0 )
-      .lineTo( LEFT_LEG_X, PIN_Y )
+      .lineTo( LEFT_LEG_X, LEAD_Y )
 
       // Right leg
-      .moveTo( LEFT_LEG_X + delta.x, PIN_Y )
+      .moveTo( LEFT_LEG_X + delta.x, LEAD_Y )
       .lineTo( LEFT_LEG_X + delta.x, delta.y )
 
       // Outer circle
-      .moveTo( LEFT_LEG_X, PIN_Y )
-      .arc( LEFT_LEG_X + delta.x / 2, PIN_Y, delta.x / 2, Math.PI, -Math.PI, true )
+      .moveTo( LEFT_LEG_X, LEAD_Y )
+      .arc( LEFT_LEG_X + delta.x / 2, LEAD_Y, delta.x / 2, Math.PI, -Math.PI, true )
 
       // Filament
-      .moveTo( LEFT_LEG_X, PIN_Y )
-      .lineTo( LEFT_LEG_X + delta.x / 2 - INNER_RADIUS, PIN_Y )
-      .arc( LEFT_LEG_X + delta.x / 2, PIN_Y, INNER_RADIUS, Math.PI, 0, false )
-      .lineTo( LEFT_LEG_X + delta.x, PIN_Y ), {
+      .moveTo( LEFT_LEG_X, LEAD_Y )
+      .lineTo( LEFT_LEG_X + delta.x / 2 - INNER_RADIUS, LEAD_Y )
+      .arc( LEFT_LEG_X + delta.x / 2, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
+      .lineTo( LEFT_LEG_X + delta.x, LEAD_Y ), {
       stroke: 'black',
       lineWidth: CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH
     } );
@@ -128,14 +128,14 @@ define( function( require ) {
 
       // TODO: copied with above
       // Outer circle
-        .moveTo( 0, PIN_Y )
-        .arc( delta.x / 2, PIN_Y, delta.x / 2, Math.PI, -Math.PI, true )
+        .moveTo( 0, LEAD_Y )
+        .arc( delta.x / 2, LEAD_Y, delta.x / 2, Math.PI, -Math.PI, true )
 
         // Filament
-        .moveTo( 0, PIN_Y )
-        .lineTo( delta.x / 2 - INNER_RADIUS, PIN_Y )
-        .arc( delta.x / 2, PIN_Y, INNER_RADIUS, Math.PI, 0, false )
-        .lineTo( delta.x, PIN_Y )
+        .moveTo( 0, LEAD_Y )
+        .lineTo( delta.x / 2 - INNER_RADIUS, LEAD_Y )
+        .arc( delta.x / 2, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
+        .lineTo( delta.x, LEAD_Y )
         .transformed( Matrix3.scaling( 1.75 ) ), {
         stroke: 'black',
         lineWidth: 5,
