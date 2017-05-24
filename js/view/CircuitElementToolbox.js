@@ -12,6 +12,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CCKPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKPanel' );
+  var Node = require( 'SCENERY/nodes/Node' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
@@ -25,6 +26,7 @@ define( function( require ) {
   var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
   var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/WireNode' );
   var LayoutBox = require( 'SCENERY/nodes/LayoutBox' );
+  var Carousel = require( 'SUN/Carousel' );
   var CircuitElementToolNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolNode' );
   var Property = require( 'AXON/Property' );
   var Vector2 = require( 'DOT/Vector2' );
@@ -197,19 +199,28 @@ define( function( require ) {
       children[ i ].touchArea = children[ i ].localBounds.dilatedXY( 10, 18 );
     }
     lightBulbToolNode.touchArea = lightBulbToolNode.localBounds.dilatedXY( 11, 8 );
-    CCKPanel.call( this, new LayoutBox( {
-      orientation: options.orientation,
-      spacing: CircuitConstructionKitConstants.TOOLBOX_ITEM_SPACING,
-      children: children,
-      resize: false
-    } ), tandem, {
-      resize: false
+
+    var ITEMS_PER_PAGE = 5;
+    Node.call( this, {
+      children: [
+        children.length <= ITEMS_PER_PAGE ? new CCKPanel( new LayoutBox( {
+          orientation: options.orientation,
+          spacing: CircuitConstructionKitConstants.TOOLBOX_ITEM_SPACING,
+          children: children,
+          resize: false
+        } ), tandem, {
+          resize: false
+        } ) : new Carousel( children, {
+          orientation: 'vertical',
+          itemsPerPage: ITEMS_PER_PAGE
+        } )
+      ]
     } );
   }
 
   circuitConstructionKitCommon.register( 'CircuitElementToolbox', CircuitElementToolbox );
 
-  return inherit( CCKPanel, CircuitElementToolbox, {}, {
+  return inherit( Node, CircuitElementToolbox, {}, {
     NUMBER_OF_RIGHT_BATTERIES: 10,
     NUMBER_OF_LEFT_BATTERIES: 10,
     NUMBER_OF_WIRES: 20,
