@@ -222,15 +222,7 @@ define( function( require ) {
       var createItem = getGrabBagItemCreator( resistorType, resistorLength, groupTandem );
       return new CircuitElementToolNode( labelString, showLabelsProperty, circuitNode, icon, maxCount, itemCounter, createItem );
     };
-    var coinToolNode = createGrabBagToolNode(
-      'coin',
-      CircuitConstructionKitConstants.COIN_LENGTH,
-      coinString,
-      options.numberOfCoins,
-      tandem.createTandem( 'coin' ),
-      tandem.createTandem( 'coinIcon' ),
-      circuit.coinGroupTandem
-    );
+
     var dollarBillNode = createGrabBagToolNode(
       'dollarBill',
       CircuitConstructionKitConstants.DOLLAR_BILL_LENGTH,
@@ -249,6 +241,15 @@ define( function( require ) {
       tandem.createTandem( 'paperClipIcon' ),
       circuit.paperClipGroupTandem
     );
+    var coinToolNode = createGrabBagToolNode(
+      'coin',
+      CircuitConstructionKitConstants.COIN_LENGTH,
+      coinString,
+      options.numberOfCoins,
+      tandem.createTandem( 'coin' ),
+      tandem.createTandem( 'coinIcon' ),
+      circuit.coinGroupTandem
+    );
 
     var children = [];
     options.numberOfWires && children.push( wireToolNode );
@@ -260,9 +261,9 @@ define( function( require ) {
 
     // Wires at the top of each page
     options.numberOfCoins && children.push( new Node( { children: [ wireToolNode ] } ) );
-    options.numberOfCoins && children.push( coinToolNode );
     options.numberOfDollarBills && children.push( dollarBillNode );
     options.numberOfPaperClips && children.push( paperClipNode );
+    options.numberOfCoins && children.push( coinToolNode );
 
     // Expand touch bounds for each icon
     for ( var i = 0; i < children.length; i++ ) {
