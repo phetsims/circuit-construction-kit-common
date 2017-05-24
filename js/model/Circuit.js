@@ -221,15 +221,21 @@ define( function( require ) {
     // Actions that will be invoked during the step function
     this.stepActions = [];
 
-    // When any vertex is dropped, check all vertices for intersection.  If any overlap, move them apart.
-    this.vertexDroppedEmitter.addListener( function() {
+    // When any vertex is dropped, check it and its neighbors for overlap.  If any overlap, move them apart.
+    this.vertexDroppedEmitter.addListener( function( vertex ) {
       self.stepActions.push( function() {
 
-        // Enumerate all pairs of vertices
+        var neighbors = self.getNeighboringVertices( vertex );
         var pairs = [];
-        for ( var i = 0; i < self.vertices.length; i++ ) {
-          for ( var k = i + 1; k < self.vertices.length; k++ ) {
-            pairs.push( { v1: self.vertices.get( i ), v2: self.vertices.get( k ) } );
+        for ( var i = 0; i < neighbors.length; i++ ) {
+          for ( var k = 0; k < self.vertices.length; k++ ) {
+
+            // Make sure nodes are different
+            if ( neighbors[ i ] !== self.vertices.get( k ) ) {
+
+              // Add to the list to be checked
+              pairs.push( { v1: neighbors[ i ], v2: self.vertices.get( k ) } );
+            }
           }
         }
         if ( pairs.length > 0 ) {
@@ -439,8 +445,8 @@ define( function( require ) {
     hasFixedConnectionToBlackBoxInterfaceVertex: function( v ) {
       var vertices = this.findAllFixedVertices( v );
       return _.filter( vertices, function( v ) {
-          return v.blackBoxInterfaceProperty.get();
-        } ).length > 0;
+        return v.blackBoxInterfaceProperty.get();
+      } ).length > 0;
     },
 
     /**
