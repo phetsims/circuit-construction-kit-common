@@ -154,21 +154,14 @@ define( function( require ) {
 
             // if the target was in a CircuitElementEditContainerPanel, don't dismiss the event because the user was
             // dragging the slider or pressing the trash button or another control in that panel
-            var remainSelected = false;
-            var trails = event.target.getTrails();
-            for ( var i = 0; i < trails.length; i++ ) {
-              for ( var k = 0; k < trails[ i ].nodes.length; k++ ) {
-                var nodeInTrail = trails[ i ].nodes[ k ];
+            var trails = event.target.getTrails( function( node ) {
 
-                // If the user tapped any component in the CircuitElementContainerPanel or on the selected node
-                // allow interaction to proceed normally.  Any other taps will deselect the circuit element
-                if ( nodeInTrail instanceof CircuitElementEditContainerPanel || nodeInTrail === self ) {
-                  remainSelected = true;
-                }
-              }
-            }
+              // If the user tapped any component in the CircuitElementContainerPanel or on the selected node
+              // allow interaction to proceed normally.  Any other taps will deselect the circuit element
+              return node instanceof CircuitElementEditContainerPanel || node === self;
+            } );
 
-            if ( !remainSelected ) {
+            if ( trails.length === 0 ) {
               rootNode.removeInputListener( clickToDismissListener );
               circuitNode.circuit.selectedCircuitElementProperty.set( null );
             }

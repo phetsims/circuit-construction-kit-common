@@ -158,22 +158,15 @@ define( function( require ) {
             down: function( event ) {
 
               // When tapping on the same vertex, just leave it selected
-              var remainSelected = false;
-              var trails = event.target.getTrails();
-              for ( var i = 0; i < trails.length; i++ ) {
-                for ( var k = 0; k < trails[ i ].nodes.length; k++ ) {
-                  var nodeInTrail = trails[ i ].nodes[ k ];
+              var trails = event.target.getTrails( function( node ) {
 
-                  // When tapping on the selected vertex, leave it selected
-                  // When tapping on the associated cut button, don't dismiss it (before it can be activated)
-                  if ( nodeInTrail === self || nodeInTrail === cutButton ) {
-                    remainSelected = true;
-                  }
-                }
-              }
+                // When tapping on the selected vertex, leave it selected
+                // When tapping on the associated cut button, don't dismiss it (before it can be activated)
+                return node === self || node === cutButton;
+              } );
 
               // If the user tapped anything except the vertex, then hide the highlight and cut button
-              if ( !remainSelected ) {
+              if ( trails.length === 0 ) {
                 rootNode.removeInputListener( clickToDismissListener );
                 vertex.selectedProperty.set( false );
               }
