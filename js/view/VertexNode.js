@@ -151,16 +151,35 @@ define( function( require ) {
 
           vertex.selectedProperty.set( true );
 
-          // When the user clicks on anything else, deselect the vertex
-          var deselect = function() {
-            vertex.selectedProperty.set( false );
-            event.pointer.removeInputListener( listener ); // Thanks, hoisting!
+          var rootNode = self.getUniqueTrail().rootNode();
+
+          // listener for 'click outside to dismiss'
+          var clickToDismissListener = {
+            down: function( event ) {
+
+              // When tapping on the same vertex, just leave it selected
+              var remainSelected = false;
+              var trails = event.target.getTrails();
+              for ( var i = 0; i < trails.length; i++ ) {
+                for ( var k = 0; k < trails[ i ].nodes.length; k++ ) {
+                  var nodeInTrail = trails[ i ].nodes[ k ];
+
+                  // When tapping on the selected vertex, leave it selected
+                  // When tapping on the associated cut button, don't dismiss it (before it can be activated)
+                  if ( nodeInTrail === self || nodeInTrail === cutButton ) {
+                    remainSelected = true;
+                  }
+                }
+              }
+
+              // If the user tapped anything except the vertex, then hide the highlight and cut button
+              if ( !remainSelected ) {
+                rootNode.removeInputListener( clickToDismissListener );
+                vertex.selectedProperty.set( false );
+              }
+            }
           };
-          var listener = {
-            mouseup: deselect,
-            touchup: deselect
-          };
-          event.pointer.addInputListener( listener );
+          rootNode.addInputListener( clickToDismissListener );
         }
       }
     } );

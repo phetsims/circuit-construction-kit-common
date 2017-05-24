@@ -119,39 +119,6 @@ define( function( require ) {
     },
 
     /**
-     * Create a scenery input listener that deselects the circuit element when the user clicks something else (unless
-     * they click on the controls for the selected component)
-     * @param {CircuitNode} circuitNode - the main circuit node
-     * @returns {Object} the input listener
-     * @private
-     */
-    createDeselectFunctionListener: function( circuitNode ) {
-      var deselect = function( event ) {
-
-        // Detect whether the user is hitting something pickable in the CircuitElementEditContainerPanel
-        var circuitElementEditContainerPanel = false;
-        for ( var i = 0; i < event.trail.nodes.length; i++ ) {
-          var trailNode = event.trail.nodes[ i ];
-          if ( trailNode instanceof CircuitElementEditContainerPanel ) {
-            circuitElementEditContainerPanel = true;
-          }
-        }
-
-        // If the user clicked outside of the CircuitElementEditContainerPanel, then hide the edit panel and
-        // deselect the circuitElement
-        if ( !circuitElementEditContainerPanel ) {
-          circuitNode.circuit.selectedCircuitElementProperty.set( null );
-          event.pointer.removeInputListener( listener ); // Thanks, hoisting!
-        }
-      };
-      var listener = {
-        mouseup: deselect,
-        touchup: deselect
-      };
-      return listener;
-    },
-
-    /**
      * Returns true if the node hits the sensor at the given point.
      * @param {Vector2} point
      * @returns {boolean}
@@ -163,14 +130,14 @@ define( function( require ) {
     },
 
     /**
-     * On tap events, select the vertex (if it is close enough to the tap)
+     * On tap events, select the CircuitElement (if it is close enough to the tap)
      * @param {Object} event - scenery input event
      * @param {CircuitNode} circuitNode
      * @param {Vector2} startPoint
      * @public
      */
     selectCircuitElementNodeWhenNear: function( event, circuitNode, startPoint ) {
-
+      var self = this;
       if ( event.pointer.point.distance( startPoint ) < CircuitConstructionKitConstants.TAP_THRESHOLD ) {
 
         circuitNode.circuit.selectedCircuitElementProperty.set( this.circuitElement );
@@ -178,8 +145,36 @@ define( function( require ) {
         // focus the element for keyboard interaction
         this.focus();
 
-        // When the user clicks on anything else, deselect the vertex
-        event.pointer.addInputListener( this.createDeselectFunctionListener( circuitNode ) );
+        // When the user clicks on anything else, deselect the Circuit Element
+        var rootNode = this.getUniqueTrail().rootNode();
+
+        // listener for 'click outside to dismiss'
+        var clickToDismissListener = {
+          down: function( event ) {
+
+            // if the target was in a CircuitElementEditContainerPanel, don't dismiss the event because the user was
+            // dragging the slider or pressing the trash button or another control in that panel
+            var remainSelected = false;
+            var trails = event.target.getTrails();
+            for ( var i = 0; i < trails.length; i++ ) {
+              for ( var k = 0; k < trails[ i ].nodes.length; k++ ) {
+                var nodeInTrail = trails[ i ].nodes[ k ];
+
+                // If the user tapped any component in the CircuitElementContainerPanel or on the selected node
+                // allow interaction to proceed normally.  Any other taps will deselect the circuit element
+                if ( nodeInTrail instanceof CircuitElementEditContainerPanel || nodeInTrail === self ) {
+                  remainSelected = true;
+                }
+              }
+            }
+
+            if ( !remainSelected ) {
+              rootNode.removeInputListener( clickToDismissListener );
+              circuitNode.circuit.selectedCircuitElementProperty.set( null );
+            }
+          }
+        };
+        rootNode.addInputListener( clickToDismissListener );
       }
     }
   } );
