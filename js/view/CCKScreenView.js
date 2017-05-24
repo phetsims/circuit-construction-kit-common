@@ -64,6 +64,10 @@ define( function( require ) {
       numberOfResistorsInToolbox: CircuitElementToolbox.NUMBER_OF_RESISTORS,
       numberOfSwitchesInToolbox: CircuitElementToolbox.NUMBER_OF_SWITCHES,
       numberOfCoinsInToolbox: 0,
+      numberOfHandsInToolbox: 0,
+      numberOfPencilsInToolbox: 0,
+      numberOfDogsInToolbox: 0,
+      numberOfErasersInToolbox: 0,
       showSeriesAmmeters: false,
       getToolboxPosition: function( visibleBounds ) {
         return {
@@ -165,9 +169,13 @@ define( function( require ) {
         numberOfSwitches: options.numberOfSwitchesInToolbox,
         numberOfLightBulbs: options.numberOfLightBulbsInToolbox,
         numberOfResistors: options.numberOfResistorsInToolbox,
-        numberOfCoins: options.numberOfCoinsInToolbox,
         numberOfDollarBills: options.numberOfDollarBillsInToolbox,
-        numberOfPaperClips: options.numberOfPaperClipsInToolbox
+        numberOfPaperClips: options.numberOfPaperClipsInToolbox,
+        numberOfCoins: options.numberOfCoinsInToolbox,
+        numberOfErasers: options.numberOfErasersInToolbox,
+        numberOfPencils: options.numberOfPencilsInToolbox,
+        numberOfHands: options.numberOfHandsInToolbox,
+        numberOfDogs: options.numberOfDogsInToolbox
       } );
 
     var chargeSpeedThrottlingReadoutNode = new ChargeSpeedThrottlingReadoutNode(

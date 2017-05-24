@@ -37,6 +37,10 @@ define( function( require ) {
   var lightBulbString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightBulb' );
   var switchString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/switch' );
   var coinString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/coin' );
+  var eraserString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/eraser' );
+  var pencilString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/pencil' );
+  var handString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/hand' );
+  var dogString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/dog' );
   var dollarBillString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/dollarBill' );
   var paperClipString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/paperClip' );
   var wireString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/wire' );
@@ -68,6 +72,10 @@ define( function( require ) {
       numberOfResistors: CircuitElementToolbox.NUMBER_OF_RESISTORS,
       numberOfSwitches: CircuitElementToolbox.NUMBER_OF_SWITCHES,
       numberOfCoins: 0,
+      numberOfErasers: 0,
+      numberOfPencils: 0,
+      numberOfHands: 0,
+      numberOfDogs: 0,
       numberOfDollarBills: 0,
       numberOfPaperClips: 0
     }, options );
@@ -250,6 +258,42 @@ define( function( require ) {
       tandem.createTandem( 'coinIcon' ),
       circuit.coinGroupTandem
     );
+    var eraserToolNode = createGrabBagToolNode(
+      'eraser',
+      CircuitConstructionKitConstants.ERASER_LENGTH,
+      eraserString,
+      options.numberOfErasers,
+      tandem.createTandem( 'eraser' ),
+      tandem.createTandem( 'eraserIcon' ),
+      circuit.eraserGroupTandem
+    );
+    var pencilToolNode = createGrabBagToolNode(
+      'pencil',
+      CircuitConstructionKitConstants.PENCIL_LENGTH,
+      pencilString,
+      options.numberOfPencils,
+      tandem.createTandem( 'pencil' ),
+      tandem.createTandem( 'pencilIcon' ),
+      circuit.pencilGroupTandem
+    );
+    var handToolNode = createGrabBagToolNode(
+      'hand',
+      CircuitConstructionKitConstants.HAND_LENGTH,
+      handString,
+      options.numberOfHands,
+      tandem.createTandem( 'hand' ),
+      tandem.createTandem( 'handIcon' ),
+      circuit.handGroupTandem
+    );
+    var dogToolNode = createGrabBagToolNode(
+      'dog',
+      CircuitConstructionKitConstants.DOG_LENGTH,
+      dogString,
+      options.numberOfDogs,
+      tandem.createTandem( 'dog' ),
+      tandem.createTandem( 'dogIcon' ),
+      circuit.dogGroupTandem
+    );
 
     var children = [];
     options.numberOfWires && children.push( wireToolNode );
@@ -264,6 +308,13 @@ define( function( require ) {
     options.numberOfDollarBills && children.push( dollarBillNode );
     options.numberOfPaperClips && children.push( paperClipNode );
     options.numberOfCoins && children.push( coinToolNode );
+    options.numberOfErasers && children.push( eraserToolNode );
+
+    // Wires at the top of each page
+    options.numberOfCoins && children.push( new Node( { children: [ wireToolNode ] } ) );
+    options.numberOfPencils && children.push( pencilToolNode );
+    options.numberOfHands && children.push( handToolNode );
+    options.numberOfDogs && children.push( dogToolNode );
 
     // Expand touch bounds for each icon
     for ( var i = 0; i < children.length; i++ ) {

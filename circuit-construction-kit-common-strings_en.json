@@ -17,6 +17,18 @@
   "dollarBill": {
     "value": "Dollar Bill"
   },
+  "eraser": {
+    "value": "Eraser"
+  },
+  "pencil": {
+    "value": "Pencil"
+  },
+  "hand": {
+    "value": "Hand"
+  },
+  "dog": {
+    "value": "Dog"
+  },
   "paperClip": {
     "value": "Paper Clip"
   },

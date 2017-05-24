@@ -81,6 +81,10 @@ define( function( require ) {
     // Length of a resistor
     RESISTOR_LENGTH: 110,
     COIN_LENGTH: 150,
+    ERASER_LENGTH: 150,
+    PENCIL_LENGTH: 150,
+    HAND_LENGTH: 150,
+    DOG_LENGTH: 150,
     DOLLAR_BILL_LENGTH: 200,
     PAPER_CLIP_LENGTH: 120,
 
