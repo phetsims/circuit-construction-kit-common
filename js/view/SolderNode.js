@@ -38,6 +38,10 @@ define( function( require ) {
     var dottedLineNode = new Circle( this.dottedLineNodeRadius );
 
     Node.call( this, {
+
+      // Avoid bounds computation for this node since it is not pickable, and it was showing up in the profiler
+      preventFit: true,
+      pickable: false,
       children: [ dottedLineNode ]
     } );
 
