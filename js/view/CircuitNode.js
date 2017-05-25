@@ -422,22 +422,27 @@ define( function( require ) {
 
     step: function( dt ) {
 
-      // Any charges that are in a light bulb and above halfway should be in front of the base
-      // TODO: does this code fight with the code that moves the bases to the front?
-      // TODO: how to avoid moving charges unnecessarily?
+      // Move all sockets to the front
       var children = this.mainLayer.children;
+      var child = null;
       for ( var i = 0; i < children.length; i++ ) {
-        var child = children[ i ];
+        child = children[ i ];
+        if ( child instanceof LightBulbSocketNode ) {
+          child.moveToFront();
+        }
+      }
+
+      // Any charges that are in a light bulb and above halfway through the filament should be in front of the base,
+      // so they appear to tunnel through the socket and go in front of the socket on the right-hand side.
+      children = this.mainLayer.children;
+      for ( i = 0; i < children.length; i++ ) {
+        child = children[ i ];
         if ( child instanceof ChargeNode &&
              child.charge.circuitElement instanceof LightBulb ) {
+
+          // TODO: how to avoid moving charges unnecessarily?
           if ( child.charge.distanceProperty.get() > child.charge.circuitElement.chargePathLength / 2 ) {
             child.moveToFront();
-          }
-          else {
-            var indexOfForeground = children.indexOf( this.getCCKLightBulbForegroundNode( child.charge.circuitElement ) );
-
-            this.mainLayer.removeChild( child );
-            this.mainLayer.insertChild( indexOfForeground - 2, child ); // TODO: I have no idea why -2 seems to work
           }
         }
         else if ( child instanceof FixedLengthCircuitElementNode ) {
