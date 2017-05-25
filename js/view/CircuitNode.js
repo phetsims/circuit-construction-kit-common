@@ -237,11 +237,6 @@ define( function( require ) {
       } );
       self.chargeNodes.push( chargeNode );
       self.mainLayer.addChild( chargeNode );
-
-      // Move light bulb foregrounds to the front so charge will go behind.
-      self.lightBulbForegroundNodes.forEach( function( b ) {
-        b.moveToFront();
-      } );
     } );
 
     // Filled in by black box study, if it is running.
