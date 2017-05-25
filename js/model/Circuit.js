@@ -133,7 +133,6 @@ define( function( require ) {
     this.circuitElements.addItemAddedListener( function( circuitElement ) {
       circuitElement.chargeLayoutDirty = true;
 
-      // TODO: this is a performance hog, perhaps if we only update for Wire instances it will be better?
       var updateCharges = function() {
         var circuitElements = self.findAllConnectedCircuitElements( circuitElement.startVertexProperty.get() );
 
@@ -141,7 +140,12 @@ define( function( require ) {
           circuitElements[ i ].chargeLayoutDirty = true;
         }
       };
-      circuitElement.vertexMovedEmitter.addListener( updateCharges );
+
+      // Only update when wires change since they are the only components that change their length
+      if ( circuitElement instanceof Wire ) {
+        circuitElement.vertexMovedEmitter.addListener( updateCharges );
+      }
+
       circuitElement.moveToFrontEmitter.addListener( updateCharges );
       self.solve();
     } );
