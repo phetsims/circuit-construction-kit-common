@@ -174,6 +174,11 @@ define( function( require ) {
         };
         rootNode.addInputListener( clickToDismissListener );
       }
+      else {
+
+        // deselect after dragging
+        circuitNode.circuit.selectedCircuitElementProperty.set( null );
+      }
     }
   } );
 } );
