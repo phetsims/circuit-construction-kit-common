@@ -40,6 +40,11 @@ define( function( require ) {
       focusHighlight: 'invisible' // highlights are drawn by the simulation
     }, options );
 
+    // Don't enable accessibility for the icons--it causes a bug in the homescreen icon
+    if ( options.icon ) {
+      delete options.tagName;
+    }
+
     Node.call( this, options );
 
     // keyboard listener so that delete or backspace deletes the element - must be disposed
