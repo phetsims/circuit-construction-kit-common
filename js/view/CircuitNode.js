@@ -43,6 +43,10 @@ define( function( require ) {
    * @constructor
    */
   function CircuitNode( circuit, circuitConstructionKitScreenView, tandem ) {
+
+    // @private
+    this.viewProperty = circuitConstructionKitScreenView.circuitConstructionKitModel.viewProperty;
+
     this.circuitConstructionKitModel = circuitConstructionKitScreenView.circuitConstructionKitModel;
     this.visibleBoundsProperty = circuitConstructionKitScreenView.visibleBoundsProperty;
     var runningProperty = this.circuitConstructionKitModel.exploreScreenRunningProperty;
@@ -242,6 +246,12 @@ define( function( require ) {
 
     // Filled in by black box study, if it is running.
     this.blackBoxNode = null;
+
+    this.viewProperty.link( function( view ) {
+      circuitConstructionKitScreenView.circuitConstructionKitModel.circuit.vertices.forEach( function( vertex ) {
+        self.fixSolderLayeringForVertex( vertex );
+      } );
+    } );
   }
 
   circuitConstructionKitCommon.register( 'CircuitNode', CircuitNode );
@@ -249,7 +259,9 @@ define( function( require ) {
   return inherit( Node, CircuitNode, {
 
     /**
-     * Fix the solder layering for a given vertex.  Solder should be in front of wires but behind batteries and resistors.
+     * Fix the solder layering for a given vertex.
+     * For lifelike: Solder should be in front of wires but behind batteries and resistors.
+     * For schematic: Solder should be in front of all components
      *
      * @param vertex
      * @public
@@ -263,39 +275,48 @@ define( function( require ) {
       var adjacentWires = adjacentComponents.filter( function( component ) {return component instanceof Wire;} );
       var adjacentFixedLengthComponents = adjacentComponents.filter( function( component ) {return component instanceof FixedLengthCircuitElement;} );
 
-      if ( adjacentFixedLengthComponents.length > 0 ) {
+      // TODO: call fixSolderLayering when this viewproperty changes
+      if ( this.viewProperty.get() === 'lifelike' ) {
+        if ( adjacentFixedLengthComponents.length > 0 ) {
 
-        // move before the first fixed length component
-        var nodes = adjacentFixedLengthComponents.map( function( c ) {return self.getCircuitElementNode( c );} );
-        var lowestNode = _.minBy( nodes, function( node ) {return self.mainLayer.indexOfChild( node );} );
-        var lowestIndex = self.mainLayer.indexOfChild( lowestNode );
-        var solderIndex = self.mainLayer.indexOfChild( solderNode );
-        if ( solderIndex >= lowestIndex ) {
-          self.mainLayer.removeChild( solderNode );
-          self.mainLayer.insertChild( lowestIndex, solderNode );
+          // move before the first fixed length component
+          var nodes = adjacentFixedLengthComponents.map( function( c ) {return self.getCircuitElementNode( c );} );
+          var lowestNode = _.minBy( nodes, function( node ) {return self.mainLayer.indexOfChild( node );} );
+          var lowestIndex = self.mainLayer.indexOfChild( lowestNode );
+          var solderIndex = self.mainLayer.indexOfChild( solderNode );
+          if ( solderIndex >= lowestIndex ) {
+            self.mainLayer.removeChild( solderNode );
+            self.mainLayer.insertChild( lowestIndex, solderNode );
+          }
+        }
+        else if ( adjacentWires.length > 0 ) {
+
+          // move after the last wire
+          var wireNodes = adjacentWires.map( function( c ) {return self.getCircuitElementNode( c );} );
+          var topWireNode = _.maxBy( wireNodes, function( node ) {return self.mainLayer.indexOfChild( node );} );
+          var topIndex = self.mainLayer.indexOfChild( topWireNode );
+          var mySolderIndex = self.mainLayer.indexOfChild( solderNode );
+          if ( mySolderIndex <= topIndex ) {
+            self.mainLayer.removeChild( solderNode );
+            self.mainLayer.insertChild( topIndex, solderNode );
+          }
+        }
+
+        // Make sure black box vertices are behind the black box
+        // TODO: This is duplicated below, factor it out.
+        if ( self.blackBoxNode ) {
+          var blackBoxNodeIndex = self.mainLayer.children.indexOf( self.blackBoxNode );
+          if ( vertex.blackBoxInterfaceProperty.get() ) {
+            self.mainLayer.removeChild( solderNode );
+            self.mainLayer.insertChild( blackBoxNodeIndex, solderNode );
+          }
         }
       }
-      else if ( adjacentWires.length > 0 ) {
+      else {
 
-        // move after the last wire
-        var wireNodes = adjacentWires.map( function( c ) {return self.getCircuitElementNode( c );} );
-        var topWireNode = _.maxBy( wireNodes, function( node ) {return self.mainLayer.indexOfChild( node );} );
-        var topIndex = self.mainLayer.indexOfChild( topWireNode );
-        var mySolderIndex = self.mainLayer.indexOfChild( solderNode );
-        if ( mySolderIndex <= topIndex ) {
-          self.mainLayer.removeChild( solderNode );
-          self.mainLayer.insertChild( topIndex, solderNode );
-        }
-      }
-
-      // Make sure black box vertices are behind the black box
-      // TODO: This is duplicated below, factor it out.
-      if ( self.blackBoxNode ) {
-        var blackBoxNodeIndex = self.mainLayer.children.indexOf( self.blackBoxNode );
-        if ( vertex.blackBoxInterfaceProperty.get() ) {
-          self.mainLayer.removeChild( solderNode );
-          self.mainLayer.insertChild( blackBoxNodeIndex, solderNode );
-        }
+        // in schematic mode, solder should be on top of every component, including wires
+        self.mainLayer.removeChild( solderNode );
+        self.mainLayer.addChild( solderNode );
       }
     },
 
