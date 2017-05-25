@@ -133,6 +133,7 @@ define( function( require ) {
     this.circuitElements.addItemAddedListener( function( circuitElement ) {
       circuitElement.chargeLayoutDirty = true;
 
+      // TODO: this is a performance hog, perhaps if we only update for Wire instances it will be better?
       var updateCharges = function() {
         var circuitElements = self.findAllConnectedCircuitElements( circuitElement.startVertexProperty.get() );
 
@@ -837,7 +838,7 @@ define( function( require ) {
 
       // Rules for a vertex connecting to another vertex.
       // (1) A vertex may not connect to an adjacent vertex.
-      var candidateVertices = this.vertices.filter( function( candidateVertex ) {
+      var candidateVertices = this.vertices.getArray().filter( function( candidateVertex ) {
         return !self.isVertexAdjacent( vertex, candidateVertex );
       } );
 
@@ -965,7 +966,7 @@ define( function( require ) {
       else {
 
         // Find the closest match
-        var sorted = _.sortBy( candidateVertices.getArray(), function( candidateVertex ) {
+        var sorted = _.sortBy( candidateVertices, function( candidateVertex ) {
           return vertex.unsnappedPositionProperty.get().distance( candidateVertex.positionProperty.get() );
         } );
         return sorted[ 0 ];
