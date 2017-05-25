@@ -209,10 +209,11 @@ define( function( require ) {
       var vertexPair = createVertexPair( position, SWITCH_LENGTH );
       return new Switch( vertexPair.startVertex, vertexPair.endVertex, circuit.switchGroupTandem.createNextTandem() );
     };
-    var getGrabBagItemCreator = function( resistorType, resistorLength, groupTandem ) {
+    var getGrabBagItemCreator = function( resistorType, resistance, resistorLength, groupTandem ) {
       return function( position ) {
         var vertexPair = createVertexPair( position, resistorLength );
         return new Resistor( vertexPair.startVertex, vertexPair.endVertex, groupTandem.createNextTandem(), {
+          resistance: resistance,
           resistorType: resistorType,
           resistorLength: resistorLength
         } );
@@ -226,15 +227,18 @@ define( function( require ) {
     var resistorToolNode = new CircuitElementToolNode( resistorString, showLabelsProperty, circuitNode, resistorIcon, options.numberOfResistors, countResistors, createResistor );
     var switchToolNode = new CircuitElementToolNode( switchString, showLabelsProperty, circuitNode, switchIcon, options.numberOfSwitches, countSwitches, createSwitch );
 
-    var createGrabBagToolNode = function( resistorType, resistorLength, labelString, maxCount, iconModelTandem, iconTandem, groupTandem ) {
+    var createGrabBagToolNode = function( resistorType, resistance, resistorLength, labelString, maxCount, iconModelTandem, iconTandem, groupTandem ) {
       var icon = createGrabBagIcon( createGrabBagItem( resistorType, resistorLength, iconModelTandem ), iconTandem );
       var itemCounter = createCounter( function( circuitElement ) { return circuitElement instanceof Resistor && circuitElement.resistorType === resistorType; } );
-      var createItem = getGrabBagItemCreator( resistorType, resistorLength, groupTandem );
+      var createItem = getGrabBagItemCreator( resistorType, resistance, resistorLength, groupTandem );
       return new CircuitElementToolNode( labelString, showLabelsProperty, circuitNode, icon, maxCount, itemCounter, createItem );
     };
 
+    var MIN_RESISTANCE = 1E-6;
+
     var dollarBillNode = createGrabBagToolNode(
       'dollarBill',
+      Math.pow( 10, 9 ),
       CircuitConstructionKitConstants.DOLLAR_BILL_LENGTH,
       dollarBillString,
       options.numberOfDollarBills,
@@ -244,6 +248,7 @@ define( function( require ) {
     );
     var paperClipNode = createGrabBagToolNode(
       'paperClip',
+      MIN_RESISTANCE,
       CircuitConstructionKitConstants.PAPER_CLIP_LENGTH,
       paperClipString,
       options.numberOfPaperClips,
@@ -253,6 +258,7 @@ define( function( require ) {
     );
     var coinToolNode = createGrabBagToolNode(
       'coin',
+      MIN_RESISTANCE,
       CircuitConstructionKitConstants.COIN_LENGTH,
       coinString,
       options.numberOfCoins,
@@ -262,6 +268,7 @@ define( function( require ) {
     );
     var eraserToolNode = createGrabBagToolNode(
       'eraser',
+      Math.pow( 10, 9 ),
       CircuitConstructionKitConstants.ERASER_LENGTH,
       eraserString,
       options.numberOfErasers,
@@ -271,6 +278,7 @@ define( function( require ) {
     );
     var pencilToolNode = createGrabBagToolNode(
       'pencil',
+      300,
       CircuitConstructionKitConstants.PENCIL_LENGTH,
       pencilString,
       options.numberOfPencils,
@@ -280,6 +288,7 @@ define( function( require ) {
     );
     var handToolNode = createGrabBagToolNode(
       'hand',
+      Math.pow( 10, 6 ),
       CircuitConstructionKitConstants.HAND_LENGTH,
       handString,
       options.numberOfHands,
@@ -289,6 +298,7 @@ define( function( require ) {
     );
     var dogToolNode = createGrabBagToolNode(
       'dog',
+      Math.pow( 10, 9 ),
       CircuitConstructionKitConstants.DOG_LENGTH,
       dogString,
       options.numberOfDogs,
