@@ -37,7 +37,7 @@ define( function( require ) {
     this.closedProperty = new BooleanProperty( false );
 
     this.closedProperty.link( function( closed ) {
-      self.resistanceProperty.value = closed ? 0 : 1000000000; // TODO: Do I need to model this topologically?
+      self.resistanceProperty.value = closed ? 0 : CircuitConstructionKitConstants.MAX_RESISTANCE;
     } );
   }
 

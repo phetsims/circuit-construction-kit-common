@@ -95,6 +95,9 @@ define( function( require ) {
     CORNER_RADIUS: 6,
 
     // Line width for schematic view
-    SCHEMATIC_LINE_WIDTH: 4
+    SCHEMATIC_LINE_WIDTH: 4,
+
+    // The maximum resistance any circuit element can have.  An open switch is modeled as a high-resistance resistor
+    MAX_RESISTANCE: 1000000000
   } );
 } );
