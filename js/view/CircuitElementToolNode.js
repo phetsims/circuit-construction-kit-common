@@ -31,7 +31,7 @@ define( function( require ) {
   function CircuitElementToolNode( labelText, showLabelsProperty, circuitNode, iconNode, maxNumber, count, createElement ) {
     var circuit = circuitNode.circuit;
     var self = this;
-    var labelNode = new Text( labelText, { fontSize: 12, maxWidth: TOOLBOX_ICON_SIZE } ); // TODO: constrain width
+    var labelNode = new Text( labelText, { fontSize: 12, maxWidth: TOOLBOX_ICON_SIZE } );
     showLabelsProperty.link( function( showLabels ) {labelNode.visible = showLabels;} );
     VBox.call( this, {
       spacing: 6,
