@@ -139,7 +139,7 @@ define( function( require ) {
 
         // Wait until all vertices have been added so we can get their indices without erroring out.
         // TODO: investigate coarse-grained messages (vertex cut, item added, etc) instead of vertex added, which could
-        // lead to inconsistent state. On the other hand, why is circuitelement added before vertex?  That could solve it
+        // lead to inconsistent state. On the other hand, why is CircuitElement added before vertex?  That could solve it
         setTimeout( function() {
           circuitChangedEmitter.emit1( JSON.stringify( self.circuit.toStateObject() ) );
         }, 0 );

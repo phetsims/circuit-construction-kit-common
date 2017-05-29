@@ -13,7 +13,6 @@ define( function( require ) {
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
-  var NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
   var LENGTH = 110;
@@ -26,13 +25,10 @@ define( function( require ) {
    * @constructor
    */
   function SeriesAmmeter( startVertex, endVertex, tandem, options ) {
-    options = _.extend( {
-      resistance: CircuitConstructionKitConstants.DEFAULT_RESISTANCE
-    }, options );
-    FixedLengthCircuitElement.call( this, startVertex, endVertex, LENGTH, LENGTH, tandem );
+    FixedLengthCircuitElement.call( this, startVertex, endVertex, LENGTH, LENGTH, tandem, options );
 
     // @public (read-only) {Property.<number>} the resistance in ohms
-    this.resistanceProperty = new NumberProperty( 0 ); // TODO: should this be a constant?
+    this.resistance = CircuitConstructionKitConstants.DEFAULT_RESISTANCE;
   }
 
   circuitConstructionKitCommon.register( 'SeriesAmmeter', SeriesAmmeter );
@@ -46,7 +42,9 @@ define( function( require ) {
        * @public
        */
       getCircuitProperties: function() {
-        return [ this.resistanceProperty ];
+
+        // No internal parameters that can change the circuit
+        return [];
       },
 
       /**
@@ -56,7 +54,7 @@ define( function( require ) {
        */
       attributesToStateObject: function() {
         return {
-          resistance: this.resistanceProperty.get()
+          resistance: this.resistance
         };
       }
     }
