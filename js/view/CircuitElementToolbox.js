@@ -32,6 +32,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Vector2 = require( 'DOT/Vector2' );
   var PageControl = require( 'SUN/PageControl' );
+  var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
 
   // strings
   var resistorString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor' );
@@ -365,7 +366,7 @@ define( function( require ) {
       } );
       child = new HBox( {
         spacing: 5,
-        children: [ carousel, pageControl ]
+        children: CircuitConstructionKitQueryParameters.carouselPageControlSide === 'right' ? [ carousel, pageControl ] : [ pageControl, carousel ]
       } );
     }
     Node.call( this, {
