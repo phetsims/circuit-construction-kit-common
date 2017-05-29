@@ -311,9 +311,9 @@ define( function( require ) {
     options.numberOfWires && children.push( wireToolNode );
     options.numberOfLeftBatteries && children.push( leftBatteryToolNode );
     options.numberOfRightBatteries && children.push( rightBatteryToolNode );
+    options.numberOfLightBulbs && children.push( lightBulbToolNode );
     options.numberOfResistors && children.push( resistorToolNode );
     options.numberOfSwitches && children.push( switchToolNode );
-    options.numberOfLightBulbs && children.push( lightBulbToolNode );
 
     // Wires at the top of each page
     options.numberOfCoins && children.push( new Node( { children: [ wireToolNode ] } ) );
