@@ -360,8 +360,7 @@ define( function( require ) {
       return null;
     },
 
-    // TODO: do we really need these?
-    // TODO: docs
+    // TODO: do we really need these?  If so, document them.
     getWireNode: function( wire ) { return this.getCircuitElementNodeFromArray( this.wireNodes, wire ); },
     getCCKLightBulbNode: function( lightBulb ) { return this.getCircuitElementNodeFromArray( this.lightBulbNodes, lightBulb ); },
     getCCKLightBulbForegroundNode: function( lightBulb ) { return this.getCircuitElementNodeFromArray( this.lightBulbForegroundNodes, lightBulb ); },
@@ -385,8 +384,18 @@ define( function( require ) {
       return null;
     },
 
-    // TODO: docs
+    /**
+     * Get the solder node associated with the specified Vertex
+     * @param {Vertex} vertex
+     * @returns {SolderNode}
+     */
     getSolderNode: function( vertex ) { return this.getNodeForVertex( this.solderNodes, vertex ); },
+
+    /**
+     * Get the VertexNode associated with the specified Vertex
+     * @param {Vertex} vertex
+     * @returns {VertexNode}
+     */
     getVertexNode: function( vertex ) { return this.getNodeForVertex( this.vertexNodes, vertex ); },
 
     getAllDropTargets: function( vertices ) {
