@@ -32,6 +32,18 @@ define( function( require ) {
   var scratchMatrix = new Matrix3();
   var scratchMatrix2 = new Matrix3();
 
+  // The height from the vertex to the center of the light bulb schematic circle
+  var LEAD_Y = -73;
+
+  // The "blip" in the filament that looks like an upside down "u" semicircle
+  var INNER_RADIUS = 5;
+
+  // According to design the right lead of the vertex should be slightly offset from the center of the vertex.
+  var RIGHT_OFFSET = 2;
+
+  // This is referring to the offset from the center of the leftmost vertex because the origin must be left-centered.
+  var LEFT_LEAD_X = -5;
+
   /**
    * This constructor is called dynamically and must match the signature of other circuit element nodes.
    * @param {CCKScreenView} circuitConstructionKitScreenView - the main screen view
@@ -98,19 +110,8 @@ define( function( require ) {
     var startPosition = lightBulb.startVertexProperty.get().positionProperty.get();
     var delta = endPosition.minus( startPosition );
 
-    // The height from the vertex to the center of the light bulb schematic circle
-    var LEAD_Y = -73;
-
-    // The "blip" in the filament that looks like an upside down "u" semicircle
-    var INNER_RADIUS = 5;
-
-    // According to design the right lead of the vertex should be slightly offset from the center of the vertex.
-    var RIGHT_OFFSET = 2;
-
-    // This is referring to the offset from the center of the leftmost vertex because the origin must be left-centered.
-    var LEFT_LEAD_X = -5;
-    var RIGHT_LEAD_X = LEFT_LEAD_X + (delta.x + RIGHT_OFFSET);
-    var SCHEMATIC_CIRCLE_RADIUS = (delta.x + RIGHT_OFFSET) / 2;
+    var rightLeadX = LEFT_LEAD_X + (delta.x + RIGHT_OFFSET);
+    var schematicCircleRadius = (delta.x + RIGHT_OFFSET) / 2;
     var schematicNode = new Path( new Shape()
 
     // Left lead
@@ -118,18 +119,18 @@ define( function( require ) {
       .lineTo( LEFT_LEAD_X, LEAD_Y )
 
       // Right lead
-      .moveTo( RIGHT_LEAD_X, LEAD_Y )
-      .lineTo( RIGHT_LEAD_X, delta.y )
+      .moveTo( rightLeadX, LEAD_Y )
+      .lineTo( rightLeadX, delta.y )
 
       // Outer circle
       .moveTo( LEFT_LEAD_X, LEAD_Y )
-      .arc( (LEFT_LEAD_X + RIGHT_LEAD_X) / 2, LEAD_Y, SCHEMATIC_CIRCLE_RADIUS, Math.PI, -Math.PI, true )
+      .arc( (LEFT_LEAD_X + rightLeadX) / 2, LEAD_Y, schematicCircleRadius, Math.PI, -Math.PI, true )
 
       // Filament
       .moveTo( LEFT_LEAD_X, LEAD_Y )
-      .lineTo( LEFT_LEAD_X + SCHEMATIC_CIRCLE_RADIUS - INNER_RADIUS, LEAD_Y )
-      .arc( LEFT_LEAD_X + SCHEMATIC_CIRCLE_RADIUS, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
-      .lineTo( RIGHT_LEAD_X, LEAD_Y ), {
+      .lineTo( LEFT_LEAD_X + schematicCircleRadius - INNER_RADIUS, LEAD_Y )
+      .arc( LEFT_LEAD_X + schematicCircleRadius, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
+      .lineTo( rightLeadX, LEAD_Y ), {
       stroke: 'black',
       lineWidth: CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH
     } );
@@ -139,12 +140,12 @@ define( function( require ) {
       // TODO: copied with above
       // Outer circle
         .moveTo( 0, LEAD_Y )
-        .arc( SCHEMATIC_CIRCLE_RADIUS, LEAD_Y, SCHEMATIC_CIRCLE_RADIUS, Math.PI, -Math.PI, true )
+        .arc( schematicCircleRadius, LEAD_Y, schematicCircleRadius, Math.PI, -Math.PI, true )
 
         // Filament
         .moveTo( 0, LEAD_Y )
-        .lineTo( SCHEMATIC_CIRCLE_RADIUS - INNER_RADIUS, LEAD_Y )
-        .arc( SCHEMATIC_CIRCLE_RADIUS, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
+        .lineTo( schematicCircleRadius - INNER_RADIUS, LEAD_Y )
+        .arc( schematicCircleRadius, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
         .lineTo( (delta.x + RIGHT_OFFSET), LEAD_Y )
         .transformed( Matrix3.scaling( 1.75 ) ), {
         stroke: 'black',
