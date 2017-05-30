@@ -50,11 +50,17 @@ define( function( require ) {
      * @returns {Node}
      */
     var createNode = function( type, fill, thickness, curveDiameter ) {
-      var leftSegmentNode = new Rectangle( 0, -thickness / 2, CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_START, thickness, {
-        fill: fill,
-        stroke: 'black',
-        lineWidth: type === 'schematic' ? 0 : 1
-      } );
+      var edgeRadius = thickness / 2;
+      var leftSegmentNode = new Rectangle( 0,
+        -thickness / 2,
+        CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_START,
+        thickness,
+        edgeRadius,
+        edgeRadius, {
+          fill: fill,
+          stroke: 'black',
+          lineWidth: 1
+        } );
 
       // See the picture at https://github.com/phetsims/circuit-construction-kit-common/issues/313
       // This part has a curved notch that fits into the other segment
@@ -90,8 +96,8 @@ define( function( require ) {
         .arc( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_END + curveDiameter / 2, 0, curveDiameter / 2, Math.PI, 0, true )
         .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_END + curveDiameter, -thickness / 2 )
 
-        .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH, -thickness / 2 )
-        .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH, +thickness / 2 )
+        .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH - edgeRadius, -thickness / 2 )
+        .arc( CircuitConstructionKitConstants.SWITCH_LENGTH - edgeRadius, 0, edgeRadius, -Math.PI / 2, Math.PI / 2 )
         .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_END - curveDiameter, thickness / 2 );
       var rightSegmentNode = new Path( rightSegmentShape, { fill: fill, stroke: 'black', lineWidth: 1 } );
 
