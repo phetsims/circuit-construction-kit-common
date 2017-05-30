@@ -86,7 +86,7 @@ define( function( require ) {
       return new SeriesAmmeter( new Vertex( position.x - seriesAmmeterLength / 2, position.y ), new Vertex( position.x + seriesAmmeterLength / 2, position.y ), circuitNode.circuit.seriesAmmeterGroupTandem.createNextTandem() );
     };
     seriesAmmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / seriesAmmeterNodeIcon.width } );
-    var seriesAmmeterToolNode = new CircuitElementToolNode( '', new Property( false ), circuitNode, seriesAmmeterNodeIcon, 4, function() {
+    var seriesAmmeterToolNode = new CircuitElementToolNode( '', new Property( false ), circuitNode, seriesAmmeterNodeIcon, 6, function() {
       return circuitNode.circuit.circuitElements.filter( function( circuitElement ) {
 
         return circuitElement instanceof SeriesAmmeter;

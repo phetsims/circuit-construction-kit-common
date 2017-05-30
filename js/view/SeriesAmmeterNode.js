@@ -88,7 +88,7 @@ define( function( require ) {
     } );
 
     var createPanel = function( options ) {
-      return new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, 14, 14, options );
+      return new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, 4, 4, options );
     };
 
     var node = new Node( {
@@ -106,7 +106,7 @@ define( function( require ) {
         // black border
         createPanel( {
           stroke: '#231f20',
-          lineWidth: 4
+          lineWidth: 3
         } )
       ]
     } );
