@@ -112,32 +112,15 @@ define( function( require ) {
 
     var rightLeadX = LEFT_LEAD_X + (delta.x + RIGHT_OFFSET);
     var schematicCircleRadius = (delta.x + RIGHT_OFFSET) / 2;
-    var schematicNode = new Path( new Shape()
 
-    // Left lead
-      .moveTo( LEFT_LEAD_X, 0 )
-      .lineTo( LEFT_LEAD_X, LEAD_Y )
+    /**
+     * Adds the schematic circle with filament to the given Shape.
+     * @param {Shape} shape
+     * @returns Shape
+     */
+    var addSchematicCircle = function( shape ) {
+      return shape
 
-      // Right lead
-      .moveTo( rightLeadX, LEAD_Y )
-      .lineTo( rightLeadX, delta.y )
-
-      // Outer circle
-      .moveTo( LEFT_LEAD_X, LEAD_Y )
-      .arc( (LEFT_LEAD_X + rightLeadX) / 2, LEAD_Y, schematicCircleRadius, Math.PI, -Math.PI, true )
-
-      // Filament
-      .moveTo( LEFT_LEAD_X, LEAD_Y )
-      .lineTo( LEFT_LEAD_X + schematicCircleRadius - INNER_RADIUS, LEAD_Y )
-      .arc( LEFT_LEAD_X + schematicCircleRadius, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
-      .lineTo( rightLeadX, LEAD_Y ), {
-      stroke: 'black',
-      lineWidth: CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH
-    } );
-    if ( options.icon ) {
-      schematicNode = new Path( new Shape()
-
-      // TODO: copied with above
       // Outer circle
         .moveTo( LEFT_LEAD_X, LEAD_Y )
         .arc( (LEFT_LEAD_X + rightLeadX) / 2, LEAD_Y, schematicCircleRadius, Math.PI, -Math.PI, true )
@@ -146,8 +129,23 @@ define( function( require ) {
         .moveTo( LEFT_LEAD_X, LEAD_Y )
         .lineTo( LEFT_LEAD_X + schematicCircleRadius - INNER_RADIUS, LEAD_Y )
         .arc( LEFT_LEAD_X + schematicCircleRadius, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
-        .lineTo( rightLeadX, LEAD_Y )
-        .transformed( Matrix3.scaling( 1.75 ) ), {
+        .lineTo( rightLeadX, LEAD_Y );
+    };
+    var schematicNode = new Path( addSchematicCircle( new Shape()
+
+      // Left lead
+        .moveTo( LEFT_LEAD_X, 0 )
+        .lineTo( LEFT_LEAD_X, LEAD_Y )
+
+        // Right lead
+        .moveTo( rightLeadX, LEAD_Y )
+        .lineTo( rightLeadX, delta.y )
+    ), {
+      stroke: 'black',
+      lineWidth: CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH
+    } );
+    if ( options.icon ) {
+      schematicNode = new Path( addSchematicCircle( new Shape() ).transformed( Matrix3.scaling( 1.75 ) ), {
         stroke: 'black',
         lineWidth: 5,
         centerBottom: new Vector2( 0, -10 )
