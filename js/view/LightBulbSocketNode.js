@@ -16,6 +16,7 @@ define( function( require ) {
   var NumberProperty = require( 'AXON/NumberProperty' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   // TODO: Factor out this matrix logic, it seems to be used in many places.
   var scratchMatrix = new Matrix3();
@@ -38,7 +39,7 @@ define( function( require ) {
     // TODO: This is overkill, we should just have an Image, without all of the extra brightness lines, etc.
     var lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ), {
       baseOnly: true,
-      scale: 3.5 * 0.72
+      scale: CircuitConstructionKitConstants.BULB_SCALE
     } );
 
     options = _.extend( {

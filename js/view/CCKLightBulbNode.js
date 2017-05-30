@@ -64,7 +64,7 @@ define( function( require ) {
       brightnessProperty.value = Util.clamp( brightness, 0, 1 );
     } );
     var lightBulbNode = new CustomLightBulbNode( brightnessProperty, {
-      scale: 3.5 * 0.72 // TODO: factor out with LightBulbSocketNode
+      scale: CircuitConstructionKitConstants.BULB_SCALE
     } );
 
     // The icon must show the socket as well

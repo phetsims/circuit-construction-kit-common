@@ -101,6 +101,9 @@ define( function( require ) {
     SCHEMATIC_LINE_WIDTH: 4,
 
     // The maximum resistance any circuit element can have.  An open switch is modeled as a high-resistance resistor
-    MAX_RESISTANCE: 1000000000
+    MAX_RESISTANCE: 1000000000,
+
+    // scale applied to the light bulb view
+    BULB_SCALE: 2.52
   } );
 } );
