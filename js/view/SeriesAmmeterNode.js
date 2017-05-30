@@ -130,9 +130,7 @@ define( function( require ) {
       node.addChild( node.frontPanel );
     }
     else {
-
-      // TODO: use a dedicated layer
-      circuitNode.highlightLayer.addChild( node.frontPanel );
+      circuitNode.seriesAmmeterNodeReadoutPanelLayer.addChild( node.frontPanel );
     }
 
     this.lifelikeNode = node;
@@ -157,7 +155,7 @@ define( function( require ) {
     this.disposeSeriesAmmeterNode = function() {
       seriesAmmeter.currentProperty.unlink( updateText );
       if ( !this.icon ) {
-        circuitNode.highlightLayer.removeChild( self.lifelikeNode.frontPanel );
+        circuitNode.seriesAmmeterNodeReadoutPanelLayer.removeChild( self.lifelikeNode.frontPanel );
       }
     };
   }

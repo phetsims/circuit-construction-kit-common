@@ -52,6 +52,7 @@ define( function( require ) {
     var runningProperty = this.circuitConstructionKitModel.exploreScreenRunningProperty;
 
     this.highlightLayer = new Node();
+    this.seriesAmmeterNodeReadoutPanelLayer = new Node(); // used for readout of current and 'Current' string
     this.buttonLayer = new Node();
     this.valueLayer = new Node(); // for "show values"
 
@@ -62,6 +63,7 @@ define( function( require ) {
       children: [
         this.mainLayer, // everything else
         this.valueLayer,
+        this.seriesAmmeterNodeReadoutPanelLayer,
         this.highlightLayer, // highlights go in front of everything else
         this.buttonLayer
       ]
@@ -101,7 +103,6 @@ define( function( require ) {
      *
      * @param {function} CircuitElementNodeConstructor constructor for the node type, such as BatteryNode
      * @param {function} type - the type of the CircuitElement, such as Battery or Wire
-     * @param {function} predicate - additional test for whether to use this renderer for this model element
      * @param {Array.<CircuitElementNode>} nodeArray
      * @param {function} getter, given a {CircuitElement}, return the corresponding {CircuitElementNode}
      * @param {Tandem} groupTandem
@@ -241,7 +242,7 @@ define( function( require ) {
     // Filled in by black box study, if it is running.
     this.blackBoxNode = null;
 
-    this.viewProperty.link( function( view ) {
+    this.viewProperty.link( function() {
       circuitConstructionKitScreenView.circuitConstructionKitModel.circuit.vertices.forEach( function( vertex ) {
         self.fixSolderLayeringForVertex( vertex );
       } );
@@ -423,7 +424,7 @@ define( function( require ) {
       }
     },
 
-    step: function( dt ) {
+    step: function() {
 
       // Move all sockets to the front
       var children = this.mainLayer.children;
@@ -467,7 +468,7 @@ define( function( require ) {
     rotateAboutFixedPivot: function( point, vertex, okToRotate, vertexNode, position, neighbors, vertices ) {
 
       // Don't traverse across the black box interface, or it would rotate objects on the other side
-      vertices = this.circuit.findAllFixedVertices( vertex, function( currentVertex, neighbor ) {
+      vertices = this.circuit.findAllFixedVertices( vertex, function( currentVertex ) {
         return !currentVertex.blackBoxInterfaceProperty.get();
       } );
       var fixedNeighbors = neighbors.filter( function( neighbor ) {
