@@ -77,9 +77,11 @@ define( function( require ) {
       } );
     }
 
+    // General options used throughout bulb node
     options = _.extend( {
 
-      // Override the dimensions of the bulb node because the invisible rays contribute to the bounds.
+      // Override the dimensions of the bulb node because the invisible rays contribute to the bounds. Used to set up
+      // the highlight region.
       contentWidth: 12 * 0.3,
       contentHeight: 22 * 0.5,
       highlightOptions: {
@@ -91,35 +93,39 @@ define( function( require ) {
       }
     }, options );
 
+    // Schematic creation begins here.
     var endPosition = lightBulb.endVertexProperty.get().positionProperty.get();
     var startPosition = lightBulb.startVertexProperty.get().positionProperty.get();
     var delta = endPosition.minus( startPosition );
 
     // TODO: fix all of this layout and number code
+    // Left lead is 73 pixels down from center of light bulb schematic.
     var LEAD_Y = -73;
     var INNER_RADIUS = 5;
+
+    // According to design the right lead of the vertex should be slightly offset from the center of the vertex.
     delta.x = delta.x + 2;
 
-    var LEFT_LEG_X = -5;
+    var LEFT_LEAD_X = -5;
     var schematicNode = new Path( new Shape()
 
-    // Left leg
-      .moveTo( LEFT_LEG_X, 0 )
-      .lineTo( LEFT_LEG_X, LEAD_Y )
+    // Left lead
+      .moveTo( LEFT_LEAD_X, 0 )
+      .lineTo( LEFT_LEAD_X, LEAD_Y )
 
-      // Right leg
-      .moveTo( LEFT_LEG_X + delta.x, LEAD_Y )
-      .lineTo( LEFT_LEG_X + delta.x, delta.y )
+      // Right lead
+      .moveTo( LEFT_LEAD_X + delta.x, LEAD_Y )
+      .lineTo( LEFT_LEAD_X + delta.x, delta.y )
 
       // Outer circle
-      .moveTo( LEFT_LEG_X, LEAD_Y )
-      .arc( LEFT_LEG_X + delta.x / 2, LEAD_Y, delta.x / 2, Math.PI, -Math.PI, true )
+      .moveTo( LEFT_LEAD_X, LEAD_Y )
+      .arc( LEFT_LEAD_X + delta.x / 2, LEAD_Y, delta.x / 2, Math.PI, -Math.PI, true )
 
       // Filament
-      .moveTo( LEFT_LEG_X, LEAD_Y )
-      .lineTo( LEFT_LEG_X + delta.x / 2 - INNER_RADIUS, LEAD_Y )
-      .arc( LEFT_LEG_X + delta.x / 2, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
-      .lineTo( LEFT_LEG_X + delta.x, LEAD_Y ), {
+      .moveTo( LEFT_LEAD_X, LEAD_Y )
+      .lineTo( LEFT_LEAD_X + delta.x / 2 - INNER_RADIUS, LEAD_Y )
+      .arc( LEFT_LEAD_X + delta.x / 2, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
+      .lineTo( LEFT_LEAD_X + delta.x, LEAD_Y ), {
       stroke: 'black',
       lineWidth: CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH
     } );
