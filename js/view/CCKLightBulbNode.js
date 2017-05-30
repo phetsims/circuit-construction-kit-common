@@ -104,28 +104,29 @@ define( function( require ) {
     var INNER_RADIUS = 5;
 
     // According to design the right lead of the vertex should be slightly offset from the center of the vertex.
-    delta.x = delta.x + 2;
+    var rightOffsetX = 2;
 
-    var LEFT_LEAD_X = -5;
+    // This is referring to the offset from the center of the leftmost vertex because the origin must be left-centered.
+    var LEFT_OFFSET_X = -5;
     var schematicNode = new Path( new Shape()
 
     // Left lead
-      .moveTo( LEFT_LEAD_X, 0 )
-      .lineTo( LEFT_LEAD_X, LEAD_Y )
+      .moveTo( LEFT_OFFSET_X, 0 )
+      .lineTo( LEFT_OFFSET_X, LEAD_Y )
 
       // Right lead
-      .moveTo( LEFT_LEAD_X + delta.x, LEAD_Y )
-      .lineTo( LEFT_LEAD_X + delta.x, delta.y )
+      .moveTo( LEFT_OFFSET_X + (delta.x + rightOffsetX), LEAD_Y )
+      .lineTo( LEFT_OFFSET_X + (delta.x + rightOffsetX), delta.y )
 
       // Outer circle
-      .moveTo( LEFT_LEAD_X, LEAD_Y )
-      .arc( LEFT_LEAD_X + delta.x / 2, LEAD_Y, delta.x / 2, Math.PI, -Math.PI, true )
+      .moveTo( LEFT_OFFSET_X, LEAD_Y )
+      .arc( LEFT_OFFSET_X + (delta.x + rightOffsetX) / 2, LEAD_Y, (delta.x + rightOffsetX) / 2, Math.PI, -Math.PI, true )
 
       // Filament
-      .moveTo( LEFT_LEAD_X, LEAD_Y )
-      .lineTo( LEFT_LEAD_X + delta.x / 2 - INNER_RADIUS, LEAD_Y )
-      .arc( LEFT_LEAD_X + delta.x / 2, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
-      .lineTo( LEFT_LEAD_X + delta.x, LEAD_Y ), {
+      .moveTo( LEFT_OFFSET_X, LEAD_Y )
+      .lineTo( LEFT_OFFSET_X + (delta.x + rightOffsetX) / 2 - INNER_RADIUS, LEAD_Y )
+      .arc( LEFT_OFFSET_X + (delta.x + rightOffsetX) / 2, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
+      .lineTo( LEFT_OFFSET_X + (delta.x + rightOffsetX), LEAD_Y ), {
       stroke: 'black',
       lineWidth: CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH
     } );
@@ -135,13 +136,13 @@ define( function( require ) {
       // TODO: copied with above
       // Outer circle
         .moveTo( 0, LEAD_Y )
-        .arc( delta.x / 2, LEAD_Y, delta.x / 2, Math.PI, -Math.PI, true )
+        .arc( (delta.x + rightOffsetX) / 2, LEAD_Y, (delta.x + rightOffsetX) / 2, Math.PI, -Math.PI, true )
 
         // Filament
         .moveTo( 0, LEAD_Y )
-        .lineTo( delta.x / 2 - INNER_RADIUS, LEAD_Y )
-        .arc( delta.x / 2, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
-        .lineTo( delta.x, LEAD_Y )
+        .lineTo( (delta.x + rightOffsetX) / 2 - INNER_RADIUS, LEAD_Y )
+        .arc( (delta.x + rightOffsetX) / 2, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
+        .lineTo( (delta.x + rightOffsetX), LEAD_Y )
         .transformed( Matrix3.scaling( 1.75 ) ), {
         stroke: 'black',
         lineWidth: 5,
