@@ -139,14 +139,14 @@ define( function( require ) {
 
       // TODO: copied with above
       // Outer circle
-        .moveTo( 0, LEAD_Y )
-        .arc( schematicCircleRadius, LEAD_Y, schematicCircleRadius, Math.PI, -Math.PI, true )
+        .moveTo( LEFT_LEAD_X, LEAD_Y )
+        .arc( (LEFT_LEAD_X + rightLeadX) / 2, LEAD_Y, schematicCircleRadius, Math.PI, -Math.PI, true )
 
         // Filament
-        .moveTo( 0, LEAD_Y )
-        .lineTo( schematicCircleRadius - INNER_RADIUS, LEAD_Y )
-        .arc( schematicCircleRadius, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
-        .lineTo( (delta.x + RIGHT_OFFSET), LEAD_Y )
+        .moveTo( LEFT_LEAD_X, LEAD_Y )
+        .lineTo( LEFT_LEAD_X + schematicCircleRadius - INNER_RADIUS, LEAD_Y )
+        .arc( LEFT_LEAD_X + schematicCircleRadius, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
+        .lineTo( rightLeadX, LEAD_Y )
         .transformed( Matrix3.scaling( 1.75 ) ), {
         stroke: 'black',
         lineWidth: 5,
