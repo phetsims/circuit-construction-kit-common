@@ -78,6 +78,9 @@ define( function( require ) {
     // Length of a switch, not so wide that electrons appear in the notches
     SWITCH_LENGTH: 112,
 
+    SWITCH_START: 1 / 3, // fraction along the switch to the pivot
+    SWITCH_END: 2 / 3, // fraction along the switch to the connection point
+
     // Length of a resistor
     RESISTOR_LENGTH: 110,
     COIN_LENGTH: 150,

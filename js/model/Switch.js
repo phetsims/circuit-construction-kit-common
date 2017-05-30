@@ -19,6 +19,8 @@ define( function( require ) {
 
   // constants
   var SWITCH_LENGTH = CircuitConstructionKitConstants.SWITCH_LENGTH;
+  var SWITCH_START = CircuitConstructionKitConstants.SWITCH_START;
+  var SWITCH_END = CircuitConstructionKitConstants.SWITCH_END;
 
   /**
    * @param {Vertex} startVertex
@@ -47,19 +49,18 @@ define( function( require ) {
 
     getPositionAndAngle: function( distanceAlongWire ) {
 
-      // TODO: factor out 1/3 and 2/3 as the important points.
       var startPosition = this.startVertexProperty.get().positionProperty.get();
       var endPosition = this.endVertexProperty.get().positionProperty.get();
       var fractionAlongWire = distanceAlongWire / this.chargePathLength;
 
       // If the electron is halfway up the switch lever for an open switch, show it along the raised lever
-      if ( fractionAlongWire > 1 / 3 && fractionAlongWire < 2 / 3 && !this.closedProperty.get() ) {
-        var pivot = startPosition.blend( endPosition, 1 / 3 );
+      if ( fractionAlongWire > SWITCH_START && fractionAlongWire < SWITCH_END && !this.closedProperty.get() ) {
+        var pivot = startPosition.blend( endPosition, SWITCH_START );
 
-        var twoThirdsPoint = startPosition.blend( endPosition, 2 / 3 );
+        var twoThirdsPoint = startPosition.blend( endPosition, SWITCH_END );
         var rotatedPoint = twoThirdsPoint.rotatedAboutPoint( pivot, -Math.PI / 4 );
 
-        var distanceAlongSegment = Util.linear( 1 / 3, 2 / 3, 0, 1, fractionAlongWire );
+        var distanceAlongSegment = Util.linear( SWITCH_START, SWITCH_END, 0, 1, fractionAlongWire );
         return {
 
           position: pivot.blend( rotatedPoint, distanceAlongSegment ),

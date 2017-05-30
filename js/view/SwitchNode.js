@@ -24,6 +24,8 @@ define( function( require ) {
   // constants
   // dimensions for schematic battery
   var LIFELIKE_DIAMETER = 16;
+  var SWITCH_START = CircuitConstructionKitConstants.SWITCH_START;
+  var SWITCH_END = CircuitConstructionKitConstants.SWITCH_END;
 
   /**
    * @param {CCKScreenView} circuitConstructionKitScreenView
@@ -48,7 +50,7 @@ define( function( require ) {
      * @returns {Node}
      */
     var createNode = function( type, fill, thickness, curveDiameter ) {
-      var leftSegmentNode = new Rectangle( 0, -thickness / 2, CircuitConstructionKitConstants.SWITCH_LENGTH / 3, thickness, {
+      var leftSegmentNode = new Rectangle( 0, -thickness / 2, CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_START, thickness, {
         fill: fill,
         stroke: 'black',
         lineWidth: type === 'schematic' ? 0 : 1
@@ -58,18 +60,18 @@ define( function( require ) {
       // This part has a curved notch that fits into the other segment
       var shape = new Shape()
         .moveTo( 0, thickness / 2 )
-        .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH / 3 - curveDiameter, thickness / 2 )
+        .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_START - curveDiameter, thickness / 2 )
 
         // similar to the notch below
-        .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH / 3 - curveDiameter, 0 )
-        .arc( CircuitConstructionKitConstants.SWITCH_LENGTH / 3 - curveDiameter / 2, 0, curveDiameter / 2, Math.PI, 0, false )
-        .arc( CircuitConstructionKitConstants.SWITCH_LENGTH / 3 + curveDiameter / 2, 0, curveDiameter / 2, Math.PI, 0, true )
-        .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH / 3 + curveDiameter, -thickness / 2 )
+        .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_START - curveDiameter, 0 )
+        .arc( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_START - curveDiameter / 2, 0, curveDiameter / 2, Math.PI, 0, false )
+        .arc( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_START + curveDiameter / 2, 0, curveDiameter / 2, Math.PI, 0, true )
+        .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_START + curveDiameter, -thickness / 2 )
 
         .lineTo( 0, -thickness / 2 )
         .lineTo( 0, thickness / 2 );
       var rotatingSegmentNode = new Path( shape, {
-        x: CircuitConstructionKitConstants.SWITCH_LENGTH / 3,
+        x: CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_START,
         fill: fill,
         stroke: 'black',
         lineWidth: type === 'schematic' ? 0 : 1
@@ -80,24 +82,24 @@ define( function( require ) {
       } );
 
       var rightSegmentShape = new Shape()
-        .moveTo( CircuitConstructionKitConstants.SWITCH_LENGTH * 2 / 3 - curveDiameter, thickness / 2 )
+        .moveTo( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_END - curveDiameter, thickness / 2 )
 
         // similar to the notch above
-        .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH * 2 / 3 - curveDiameter, 0 )
-        .arc( CircuitConstructionKitConstants.SWITCH_LENGTH * 2 / 3 - curveDiameter / 2, 0, curveDiameter / 2, Math.PI, 0, false )
-        .arc( CircuitConstructionKitConstants.SWITCH_LENGTH * 2 / 3 + curveDiameter / 2, 0, curveDiameter / 2, Math.PI, 0, true )
-        .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH * 2 / 3 + curveDiameter, -thickness / 2 )
+        .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_END - curveDiameter, 0 )
+        .arc( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_END - curveDiameter / 2, 0, curveDiameter / 2, Math.PI, 0, false )
+        .arc( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_END + curveDiameter / 2, 0, curveDiameter / 2, Math.PI, 0, true )
+        .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_END + curveDiameter, -thickness / 2 )
 
         .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH, -thickness / 2 )
         .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH, +thickness / 2 )
-        .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH * 2 / 3 - curveDiameter, thickness / 2 );
+        .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_END - curveDiameter, thickness / 2 );
       var rightSegmentNode = new Path( rightSegmentShape, { fill: fill, stroke: 'black', lineWidth: 1 } );
 
       var lifelikeHinge = new Circle( thickness * 0.6, {
         fill: '#a7a8ab',
         stroke: 'black',
         lineWidth: 4,
-        x: CircuitConstructionKitConstants.SWITCH_LENGTH / 3
+        x: CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_START
       } );
 
       var node = new Node( {
@@ -109,7 +111,7 @@ define( function( require ) {
           fill: 'black',
           stroke: 'black',
           lineWidth: 4,
-          x: CircuitConstructionKitConstants.SWITCH_LENGTH * 2 / 3
+          x: CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_END
         } ) );
       }
 

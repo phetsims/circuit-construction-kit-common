@@ -1013,7 +1013,8 @@ define( function( require ) {
       };
       return {
 
-        // TODO: better save state that matches circuit structure
+        // TODO (phet-io): better save state that matches circuit structure
+        // Return an array of CircuitElement that indicate their type
         wires: getArray( this.circuitElements.filter( function( c ) {return c instanceof Wire;} ) ),
         batteries: getArray( this.circuitElements.filter( function( c ) {return c instanceof Battery;} ) ),
         lightBulbs: getArray( this.circuitElements.filter( function( c ) {return c instanceof LightBulb;} ) ),
