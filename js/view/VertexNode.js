@@ -136,12 +136,12 @@ define( function( require ) {
       tandem: tandem.createTandem( 'dragHandler' ),
       start: function( event ) {
         eventPoint = event.pointer.point;
-        vertex.draggableProperty.get() && circuitNode.startDrag( event.pointer.point, vertex, true );
+        vertex.draggableProperty.get() && circuitNode.startDragVertex( event.pointer.point, vertex, true );
         dragged = false;
       },
       drag: function( event ) {
         dragged = true;
-        vertex.draggableProperty.get() && circuitNode.drag( event.pointer.point, vertex, true );
+        vertex.draggableProperty.get() && circuitNode.dragVertex( event.pointer.point, vertex, true );
       },
       end: function( event ) {
 

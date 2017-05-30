@@ -223,8 +223,8 @@ define( function( require ) {
           if ( wire.interactiveProperty.get() ) {
 
             // Start drag by starting a drag on start and end vertices
-            circuitNode.startDrag( event.pointer.point, wire.startVertexProperty.get(), false );
-            circuitNode.startDrag( event.pointer.point, wire.endVertexProperty.get(), false );
+            circuitNode.startDragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
+            circuitNode.startDragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
             wire.isOverToolboxProperty.set( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) );
             dragged = false;
             startPoint = event.pointer.point;
@@ -234,8 +234,8 @@ define( function( require ) {
           if ( wire.interactiveProperty.get() ) {
 
             // Drag by translating both of the vertices
-            circuitNode.drag( event.pointer.point, wire.startVertexProperty.get(), false );
-            circuitNode.drag( event.pointer.point, wire.endVertexProperty.get(), false );
+            circuitNode.dragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
+            circuitNode.dragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
             wire.isOverToolboxProperty.set( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) );
             dragged = true;
           }

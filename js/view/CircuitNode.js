@@ -455,7 +455,7 @@ define( function( require ) {
         }
       }
     },
-    startDrag: function( point, vertex ) {
+    startDragVertex: function( point, vertex ) {
 
       // If it is the edge of a fixed length circuit element, the element rotates and moves toward the mouse
       var vertexNode = this.getVertexNode( vertex );
@@ -530,13 +530,12 @@ define( function( require ) {
     },
 
     /**
-     * TODO: Rename dragVertex
      * Drag a vertex.
      * @param {Vector2} point - the touch position
      * @param {Vertex} vertex - the vertex that is being dragged
      * @param {boolean} okToRotate - true if it is allowed to rotate adjacent CircuitElements
      */
-    drag: function( point, vertex, okToRotate ) {
+    dragVertex: function( point, vertex, okToRotate ) {
       var vertexNode = this.getVertexNode( vertex );
       var position = vertexNode.globalToParentPoint( point ).minus( vertexNode.startOffset );
 

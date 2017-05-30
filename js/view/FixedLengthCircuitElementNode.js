@@ -114,11 +114,11 @@ define( function( require ) {
         tandem: tandem.createTandem( 'inputListener' ), // TODO: some input listeners are 'dragHandler' let's be consistent
         start: function( event ) {
           eventPoint = event.pointer.point;
-          circuitElement.interactiveProperty.get() && circuitNode.startDrag( event.pointer.point, circuitElement.endVertexProperty.get(), false );
+          circuitElement.interactiveProperty.get() && circuitNode.startDragVertex( event.pointer.point, circuitElement.endVertexProperty.get(), false );
           didDrag = false;
         },
         drag: function( event ) {
-          circuitElement.interactiveProperty.get() && circuitNode.drag( event.pointer.point, circuitElement.endVertexProperty.get(), false );
+          circuitElement.interactiveProperty.get() && circuitNode.dragVertex( event.pointer.point, circuitElement.endVertexProperty.get(), false );
           didDrag = true;
         },
         end: function( event ) {
