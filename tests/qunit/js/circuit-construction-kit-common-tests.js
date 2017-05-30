@@ -220,7 +220,5 @@
     assert.deepEqual( ResistorColors.getColorNames( 4700 ), [ 'yellow', 'violet', 'red', 'gold' ], '4700 ohm resistor' );
     assert.deepEqual( ResistorColors.getColorNames( 10 ), [ 'brown', 'black', 'black', 'gold' ], '10 ohm resistor' );
     assert.deepEqual( ResistorColors.getColorNames( 99.5 ), [ 'brown', 'black', 'brown', 'gold' ], '99.5 ohm resistor' );
-
-    // TODO: use https://www.allaboutcircuits.com/tools/resistor-color-code-calculator/ to generate more tests
   } );
 })();
