@@ -50,17 +50,16 @@ define( function( require ) {
     /**
      * Create an AquaRadioButton for the specified kind of current
      * @param {string} currentType - 'electrons'|'conventional'
-     * @param {string} text - the text to display in the button
+     * @param {Node} node - the Node to display in the button
      * @param {Tandem} tandem
      * @returns {AquaRadioButton}
      */
-      //REVIEW: Is this JSDoc correct?
     var createRadioButton = function( currentType, node, tandem ) {
-        return new AquaRadioButton( currentTypeProperty, currentType, node, {
-          radius: 8,
-          tandem: tandem
-        } );
-      };
+      return new AquaRadioButton( currentTypeProperty, currentType, node, {
+        radius: 8,
+        tandem: tandem
+      } );
+    };
 
     var textIconSpacing = 11;
 
