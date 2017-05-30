@@ -54,7 +54,6 @@ define( function( require ) {
     this.highlightLayer = new Node();
     this.buttonLayer = new Node();
     this.valueLayer = new Node(); // for "show values"
-    window.circuitNode = this; // TODO: eliminate this
 
     // @public (read-only) so that additional Nodes may be interleaved
     this.mainLayer = new Node();
