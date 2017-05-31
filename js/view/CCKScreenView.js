@@ -129,17 +129,9 @@ define( function( require ) {
     // @public (read-only) - the circuit node
     this.circuitNode = new CircuitNode( circuitConstructionKitModel.circuit, this, tandem.createTandem( 'circuitNode' ) );
 
-    // @public (read-only)
-    this.visibleBoundsInCircuitCoordinateFrameProperty = new DerivedProperty( [ circuitConstructionKitModel.currentZoomProperty, this.visibleBoundsProperty ], function( zoom, visibleBounds ) {
-      return self.circuitNode.parentToLocalBounds( visibleBounds );
-    } );
-
-    // @public (read-only) TODO: what is happening here???? Why can't we pass this as a parameter?
-    this.circuitNode.visibleBoundsInCircuitCoordinateFrameProperty = this.visibleBoundsInCircuitCoordinateFrameProperty;
-
     var voltmeterNode = new VoltmeterNode( circuitConstructionKitModel.voltmeter, tandem.createTandem( 'voltmeterNode' ), {
       runningProperty: circuitConstructionKitModel.exploreScreenRunningProperty,
-      visibleBoundsProperty: this.visibleBoundsInCircuitCoordinateFrameProperty
+      visibleBoundsProperty: this.circuitNode.visibleBoundsInCircuitCoordinateFrameProperty
     } );
     circuitConstructionKitModel.voltmeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
       if ( bodyNodeGlobalBounds.intersectsBounds( self.sensorToolbox.globalBounds ) ) {
@@ -150,7 +142,7 @@ define( function( require ) {
 
     var ammeterNode = new AmmeterNode( circuitConstructionKitModel.ammeter, tandem.createTandem( 'ammeterNode' ), {
       runningProperty: circuitConstructionKitModel.exploreScreenRunningProperty,
-      visibleBoundsProperty: this.visibleBoundsInCircuitCoordinateFrameProperty
+      visibleBoundsProperty: this.circuitNode.visibleBoundsInCircuitCoordinateFrameProperty
     } );
     circuitConstructionKitModel.ammeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
       if ( bodyNodeGlobalBounds.intersectsBounds( self.sensorToolbox.globalBounds ) ) {

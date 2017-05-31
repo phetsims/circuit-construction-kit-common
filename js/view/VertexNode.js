@@ -232,12 +232,10 @@ define( function( require ) {
       var proposedPosition = position.plus( sumOfDirections.normalized().timesScalar( DISTANCE_TO_CUT_BUTTON ) );
 
       // Property doesn't exist until the node is attached to scene graph
-      if ( circuitNode.visibleBoundsInCircuitCoordinateFrameProperty ) {
-        var bounds = circuitNode.visibleBoundsInCircuitCoordinateFrameProperty.get();
+      var bounds = circuitNode.visibleBoundsInCircuitCoordinateFrameProperty.get();
 
-        var availableBounds = bounds.eroded( cutButton.width / 2 );
-        cutButton.center = availableBounds.closestPointTo( proposedPosition );
-      }
+      var availableBounds = bounds.eroded( cutButton.width / 2 );
+      cutButton.center = availableBounds.closestPointTo( proposedPosition );
     };
     var updateVertexNodePosition = function( position ) {
       dottedLineNode.center = position;

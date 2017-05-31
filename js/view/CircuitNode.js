@@ -34,6 +34,7 @@ define( function( require ) {
   var SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var ValueNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ValueNode' );
+  var DerivedProperty = require( 'AXON/DerivedProperty' );
 
   /**
    *
@@ -43,6 +44,7 @@ define( function( require ) {
    * @constructor
    */
   function CircuitNode( circuit, circuitConstructionKitScreenView, tandem ) {
+    var self = this;
 
     // @private
     this.viewProperty = circuitConstructionKitScreenView.circuitConstructionKitModel.viewProperty;
@@ -68,8 +70,15 @@ define( function( require ) {
         this.buttonLayer
       ]
     } );
+
+    // @public
+    this.visibleBoundsInCircuitCoordinateFrameProperty = new DerivedProperty( [
+      circuitConstructionKitScreenView.circuitConstructionKitModel.currentZoomProperty,
+      circuitConstructionKitScreenView.visibleBoundsProperty
+    ], function( zoom, visibleBounds ) {
+      return self.parentToLocalBounds( visibleBounds );
+    } );
     this.circuit = circuit;
-    var self = this;
 
     // solder layer
     this.solderNodes = [];
