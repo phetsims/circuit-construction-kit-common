@@ -1,5 +1,4 @@
 // Copyright 2015-2017, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * Node that represents a single scene or screen, with a circuit, toolbox, sensors, etc.
@@ -69,6 +68,12 @@ define( function( require ) {
       numberOfDogsInToolbox: 0,
       numberOfErasersInToolbox: 0,
       showSeriesAmmeters: false,
+
+      /**
+       * Function that gives the position for the toolbox
+       * @param {Bounds2} visibleBounds
+       * @returns {left: number, top: number}
+       */
       getToolboxPosition: function( visibleBounds ) {
         return {
           left: visibleBounds.left + LAYOUT_INSET,
@@ -86,7 +91,7 @@ define( function( require ) {
     ScreenView.call( this );
 
     // On touch, make it so tapping the background deselects items.  For mouse, we add listeners to the pointer that
-    // work a bit more accurately.
+    // work over all components, but this isn't possible with touch since it is a new pointer instance for each touch.
     // @protected (read-only), so subclasses can change the fill
     this.backgroundPlane = new Plane( { fill: BACKGROUND_COLOR } );
     this.backgroundPlane.addInputListener( {
@@ -98,6 +103,7 @@ define( function( require ) {
       }
     } );
     this.addChild( this.backgroundPlane );
+
     var backgroundListener = function( exploreScreenRunning ) {
       self.backgroundPlane.fill = exploreScreenRunning ? BACKGROUND_COLOR : 'gray';
     };
@@ -140,13 +146,11 @@ define( function( require ) {
         circuitConstructionKitModel.voltmeter.visibleProperty.set( false );
       }
     } );
-    circuitConstructionKitModel.voltmeter.visibleProperty.link( function( visible ) {
-      voltmeterNode.visible = visible;
-    } );
+    circuitConstructionKitModel.voltmeter.visibleProperty.linkAttribute( voltmeterNode, 'visible' );
 
     var ammeterNode = new AmmeterNode( circuitConstructionKitModel.ammeter, tandem.createTandem( 'ammeterNode' ), {
-      visibleBoundsProperty: this.visibleBoundsInCircuitCoordinateFrameProperty,
-      runningProperty: circuitConstructionKitModel.exploreScreenRunningProperty
+      runningProperty: circuitConstructionKitModel.exploreScreenRunningProperty,
+      visibleBoundsProperty: this.visibleBoundsInCircuitCoordinateFrameProperty
     } );
     circuitConstructionKitModel.ammeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
       if ( bodyNodeGlobalBounds.intersectsBounds( self.sensorToolbox.globalBounds ) ) {
@@ -155,7 +159,7 @@ define( function( require ) {
     } );
     circuitConstructionKitModel.ammeter.visibleProperty.linkAttribute( ammeterNode, 'visible' );
 
-    // @public (read-only) Pass the view into circuit node so that circuit elements can be dropped back into the toolbox
+    // @public (read-only) Toolbox from which CircuitElements can be dragged
     this.circuitElementToolbox = new CircuitElementToolbox(
       circuitConstructionKitModel.circuit,
       circuitConstructionKitModel.showLabelsProperty,
@@ -203,7 +207,10 @@ define( function( require ) {
 
     CircuitConstructionKitQueryParameters.showDisplayOptionsPanel && this.addChild( this.displayOptionsPanel );
 
+    // @private
     this.wireResistivityControl = new WireResistivityControl( circuitConstructionKitModel.circuit.wireResistivityProperty, tandem.createTandem( 'wireResistivityControl' ) );
+
+    // @private
     this.batteryResistanceControl = new BatteryResistanceControl( circuitConstructionKitModel.circuit.batteryResistanceProperty, tandem.createTandem( 'batteryResistanceControl' ) );
 
     this.displayOptionsPanel.moveToBack(); // Move behind elements added in the super, such as the sensors and circuit
@@ -249,7 +256,9 @@ define( function( require ) {
       return null;
     };
 
-    // Detection for voltmeter probe + circuit collision is done in the view since view bounds are used
+    /**
+     * Detection for voltmeter probe + circuit intersection is done in the view since view bounds are used
+     */
     var updateVoltmeter = function() {
       if ( circuitConstructionKitModel.voltmeter.visibleProperty.get() ) {
         var redConnection = findVoltageConnection( voltmeterNode.redProbeNode, voltmeterNode.voltmeter.redProbePositionProperty.get() );
@@ -281,7 +290,9 @@ define( function( require ) {
     circuitConstructionKitModel.voltmeter.redProbePositionProperty.link( updateVoltmeter );
     circuitConstructionKitModel.voltmeter.blackProbePositionProperty.link( updateVoltmeter );
 
-    // Detection for ammeter probe + circuit collision is done in the view since view bounds are used
+    /**
+     * Detection for ammeter probe + circuit intersection is done in the view since view bounds are used
+     */
     var updateAmmeter = function() {
 
       // Skip work when ammeter is not out, to improve performance.
@@ -390,7 +401,7 @@ define( function( require ) {
     },
 
     /**
-     * Overrideable stub
+     * Overrideable stub for resetting
      * @public
      */
     reset: function() {
