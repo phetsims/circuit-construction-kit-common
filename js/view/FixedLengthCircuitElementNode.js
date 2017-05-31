@@ -21,6 +21,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Image = require( 'SCENERY/nodes/Image' );
   var FixedLengthCircuitElementHighlightNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedLengthCircuitElementHighlightNode' );
+  var CCKMathUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKMathUtil' );
 
   // images
   var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
@@ -240,22 +241,18 @@ define( function( require ) {
       var angle = delta.angle();
 
       // Update the node transform in a single step, see #66
-      transform
-        .setToTranslation( startPosition.x, startPosition.y )
-        .multiplyMatrix( rotationMatrix.setToRotationZ( angle ) );
+      CCKMathUtil.setToTranslationRotation( transform, startPosition, angle );
       this.contentNode.setMatrix( transform );
-      this.highlightNode && this.highlightNode.setMatrix( transform.copy() );
+      this.highlightNode && this.highlightNode.setMatrix( transform );
 
       // Update the fire transform
       var flameExtent = 0.8;
       var scale = delta.magnitude() / fireImage[ 0 ].width * flameExtent;
       var flameInset = (1 - flameExtent) / 2;
-      transform
-        .setToTranslation( startPosition.x, startPosition.y )
-        .multiplyMatrix( rotationMatrix.setToRotationZ( angle ) )
+      CCKMathUtil.setToTranslationRotation( transform, startPosition, angle )
         .multiplyMatrix( rotationMatrix.setToScale( scale ) )
         .multiplyMatrix( rotationMatrix.setToTranslation( delta.magnitude() * flameInset / scale, -fireImage[ 0 ].height ) );
-      this.fireNode && this.fireNode.setMatrix( transform.copy() );
+      this.fireNode && this.fireNode.setMatrix( transform );
     },
 
     step: function() {

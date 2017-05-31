@@ -24,6 +24,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var LightBulbSocketNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/LightBulbSocketNode' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CCKMathUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKMathUtil' );
 
   // images
   var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
@@ -176,21 +177,16 @@ define( function( require ) {
       var delta = endPosition.minus( startPosition );
       var angle = delta.angle() + Math.PI / 4;
 
-      // TODO: factor out matrix logic
       // Update the node transform in a single step, see #66
-      scratchMatrix
-        .setToTranslation( startPosition.x, startPosition.y )
-        .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) );
+      CCKMathUtil.setToTranslationRotation( scratchMatrix, startPosition, angle );
       this.contentNode.setMatrix( scratchMatrix );
 
-      this.highlightNode && this.highlightNode.setMatrix( scratchMatrix.copy() );
+      this.highlightNode && this.highlightNode.setMatrix( scratchMatrix );
 
       // Update the fire transform
-      scratchMatrix
-        .setToTranslation( startPosition.x, startPosition.y )
-        .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
+      CCKMathUtil.setToTranslationRotation( scratchMatrix, startPosition, angle )
         .multiplyMatrix( scratchMatrix2.setToTranslation( -100, -fireImage[ 0 ].height - 350 ) );
-      this.fireNode && this.fireNode.setMatrix( scratchMatrix.copy() );
+      this.fireNode && this.fireNode.setMatrix( scratchMatrix );
     },
     /**
      * Dispose when no longer used.
