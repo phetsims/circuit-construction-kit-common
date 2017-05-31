@@ -78,7 +78,8 @@ define( function( require ) {
       var angle = endPosition.minus( startPosition ).angle() + Math.PI / 4;
 
       // Update the node transform in a single step, see #66
-      scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
+      scratchMatrix
+        .setToTranslation( startPosition.x, startPosition.y )
         .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) );
       this.contentNode.setMatrix( scratchMatrix );
     },

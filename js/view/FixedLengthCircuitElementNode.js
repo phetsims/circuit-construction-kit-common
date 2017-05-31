@@ -240,7 +240,9 @@ define( function( require ) {
       var angle = delta.angle();
 
       // Update the node transform in a single step, see #66
-      transform.setToTranslation( startPosition.x, startPosition.y ).multiplyMatrix( rotationMatrix.setToRotationZ( angle ) );
+      transform
+        .setToTranslation( startPosition.x, startPosition.y )
+        .multiplyMatrix( rotationMatrix.setToRotationZ( angle ) );
       this.contentNode.setMatrix( transform );
       this.highlightNode && this.highlightNode.setMatrix( transform.copy() );
 
@@ -248,7 +250,8 @@ define( function( require ) {
       var flameExtent = 0.8;
       var scale = delta.magnitude() / fireImage[ 0 ].width * flameExtent;
       var flameInset = (1 - flameExtent) / 2;
-      transform.setToTranslation( startPosition.x, startPosition.y )
+      transform
+        .setToTranslation( startPosition.x, startPosition.y )
         .multiplyMatrix( rotationMatrix.setToRotationZ( angle ) )
         .multiplyMatrix( rotationMatrix.setToScale( scale ) )
         .multiplyMatrix( rotationMatrix.setToTranslation( delta.magnitude() * flameInset / scale, -fireImage[ 0 ].height ) );

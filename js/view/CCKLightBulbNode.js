@@ -178,14 +178,16 @@ define( function( require ) {
 
       // TODO: factor out matrix logic
       // Update the node transform in a single step, see #66
-      scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
+      scratchMatrix
+        .setToTranslation( startPosition.x, startPosition.y )
         .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) );
       this.contentNode.setMatrix( scratchMatrix );
 
       this.highlightNode && this.highlightNode.setMatrix( scratchMatrix.copy() );
 
       // Update the fire transform
-      scratchMatrix.setToTranslation( startPosition.x, startPosition.y )
+      scratchMatrix
+        .setToTranslation( startPosition.x, startPosition.y )
         .multiplyMatrix( scratchMatrix2.setToRotationZ( angle ) )
         .multiplyMatrix( scratchMatrix2.setToTranslation( -100, -fireImage[ 0 ].height - 350 ) );
       this.fireNode && this.fireNode.setMatrix( scratchMatrix.copy() );
