@@ -300,7 +300,7 @@ define( function( require ) {
     circuitConstructionKitModel.circuit.circuitChangedEmitter.addListener( updateAmmeter );
     circuitConstructionKitModel.ammeter.probePositionProperty.link( updateAmmeter );
 
-    // TODO: Move to a separate file
+    // Add the optional Play/Pause button
     if ( CircuitConstructionKitQueryParameters.showPlayPauseButton ) {
       var playPauseButton = new PlayPauseButton( circuitConstructionKitModel.exploreScreenRunningProperty, {
         tandem: tandem.createTandem( 'playPauseButton' ),
