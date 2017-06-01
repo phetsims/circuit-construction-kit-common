@@ -985,6 +985,8 @@ define( function( require ) {
       this.clear();
       this.showCurrentProperty.reset();
       this.currentTypeProperty.reset();
+      this.wireResistivityProperty.reset();
+      this.batteryResistanceProperty.reset();
     },
 
     /**
