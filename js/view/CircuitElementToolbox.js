@@ -351,12 +351,12 @@ define( function( require ) {
       } );
     }
     else {
-      var carousel = new Carousel( children, {
+      this.carousel = new Carousel( children, {
         orientation: 'vertical',
         itemsPerPage: ITEMS_PER_PAGE,
         spacing: 0
       } );
-      var pageControl = new PageControl( carousel.numberOfPages, carousel.pageNumberProperty, {
+      var pageControl = new PageControl( this.carousel.numberOfPages, this.carousel.pageNumberProperty, {
         orientation: 'vertical',
         pageFill: 'white',
         pageStroke: 'black',
@@ -366,7 +366,7 @@ define( function( require ) {
       } );
       child = new HBox( {
         spacing: 5,
-        children: CircuitConstructionKitQueryParameters.carouselPageControlSide === 'right' ? [ carousel, pageControl ] : [ pageControl, carousel ]
+        children: CircuitConstructionKitQueryParameters.carouselPageControlSide === 'right' ? [ this.carousel, pageControl ] : [ pageControl, this.carousel ]
       } );
     }
     Node.call( this, {
@@ -376,7 +376,18 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'CircuitElementToolbox', CircuitElementToolbox );
 
-  return inherit( Node, CircuitElementToolbox, {}, {
+  return inherit( Node, CircuitElementToolbox, {
+
+    /**
+     * @override
+     *
+     * @public
+     */
+    reset: function() {
+      this.carousel && this.carousel.reset( { animationEnabled: false } );
+    }
+
+  }, {
     NUMBER_OF_RIGHT_BATTERIES: 10,
     NUMBER_OF_LEFT_BATTERIES: 10,
     NUMBER_OF_WIRES: 20,

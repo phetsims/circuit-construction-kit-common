@@ -71,7 +71,7 @@ define( function( require ) {
       /**
        * Function that gives the position for the toolbox
        * @param {Bounds2} visibleBounds
-       * @returns {left: number, top: number}
+       * @returns {Object}
        */
       getToolboxPosition: function( visibleBounds ) {
         return {
@@ -401,6 +401,7 @@ define( function( require ) {
      * @public
      */
     reset: function() {
+      this.circuitElementToolbox.reset();
     },
 
     /**
