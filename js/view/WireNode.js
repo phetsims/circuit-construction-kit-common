@@ -333,15 +333,6 @@ define( function( require ) {
     dispose: function() {
       this.disposeWireNode();
       CircuitElementNode.prototype.dispose.call( this );
-    },
-
-    /**
-     * Gets the shape of the line node in the parent's coordinate frame for hit testing.
-     * @returns {Shape}
-     * @public
-     */
-    getStrokedShape: function() {
-      return this.lineNode.getStrokedShape().transformed( this.lineNodeParent.matrix );
     }
   } );
 } );

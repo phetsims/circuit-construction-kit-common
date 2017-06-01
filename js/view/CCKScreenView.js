@@ -473,8 +473,7 @@ define( function( require ) {
           revealing = this.circuitConstructionKitModel.revealingProperty.get();
         }
 
-        // TODO: use containsSensorPoint like above
-        if ( revealing && wireNode.getStrokedShape().containsPoint( position ) ) {
+        if ( revealing && wireNode.containsSensorPoint( position ) ) {
           return wireNode;
         }
       }
