@@ -20,6 +20,7 @@ define( function( require ) {
   var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
   var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
   var AlignBox = require( 'SCENERY/nodes/AlignBox' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   // strings
   var electronsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/electrons' );
@@ -34,8 +35,7 @@ define( function( require ) {
     maxWidth: 120
   };
 
-  // TODO: copied
-  var ARROW_LENGTH = 23; // view coordinates
+  var ARROW_LENGTH = CircuitConstructionKitConstants.CONVENTIONAL_CURRENT_ARROW_LENGTH; // length in view coordinates
 
   /**
    * @param {Property.<boolean>} showCurrentProperty - true if current should be shown

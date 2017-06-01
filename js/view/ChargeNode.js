@@ -11,6 +11,7 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Image = require( 'SCENERY/nodes/Image' );
@@ -36,7 +37,7 @@ define( function( require ) {
   }, 0, 0, MINUS_CHARGE_NODE.width, MINUS_CHARGE_NODE.height );
 
   // Center arrow so it is easy to rotate
-  var ARROW_LENGTH = 23; // view coordinates
+  var ARROW_LENGTH = CircuitConstructionKitConstants.CONVENTIONAL_CURRENT_ARROW_LENGTH; // length in view coordinates
   var ARROW_NODE = new ArrowNode( -ARROW_LENGTH / 2, 0, ARROW_LENGTH / 2, 0, {
     headHeight: 10,
     headWidth: 12,
