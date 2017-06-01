@@ -74,6 +74,15 @@
   "voltage": {
     "value": "Voltage"
   },
+  "voltmeter": {
+    "value": "Voltmeter"
+  },
+  "ammeter": {
+    "value": "Ammeter"
+  },
+  "ammeters": {
+    "value": "Ammeters"
+  },
   "labels": {
     "value": "Labels"
   },

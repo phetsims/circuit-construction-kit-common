@@ -24,6 +24,13 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Property = require( 'AXON/Property' );
 
+
+  // constants
+  var ammeterString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeter' );
+  var ammetersString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeters' );
+  var voltmeterString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltmeter' );
+
+
   // constants
   var TOOLBOX_ICON_SIZE = 53;
   var VOLTMETER_ICON_SCALE = 1.3;
@@ -100,7 +107,7 @@ define( function( require ) {
         spacing: 3,
         children: [
           voltmeterNodeIcon,
-          new Text( 'Voltmeter' )
+          new Text( voltmeterString )
         ]
       } ), new VBox( {
         spacing: 3,// TODO: factor out
@@ -112,7 +119,7 @@ define( function( require ) {
               ammeterNodeIcon, seriesAmmeterToolNode
             ] : [ ammeterNodeIcon ]
           } ),
-          new Text( showSeriesAmmeters ? 'Ammeters' : 'Ammeter' ) // TODO: i18n
+          new Text( showSeriesAmmeters ? ammetersString : ammeterString )
         ]
       } ) ]
     } ), tandem, {
