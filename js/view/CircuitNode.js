@@ -1,10 +1,12 @@
-// Copyright 2015-2016, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
+// Copyright 2015-2017, University of Colorado Boulder
+// TODO: Review, document, annotate, bring up to standards
 
 /**
- * The node that represents a Circuit, including all Wires and FixedLengthCircuitElements, Charge, Solder, etc.
+ * The Node that represents a Circuit, including all Wires and FixedLengthCircuitElements, Charge, Solder, etc.  It also
+ * renders the voltmeter and ammeter. It can be zoomed in and out.
  *
  * @author Sam Reid (PhET Interactive Simulations)
+ * @author Denzell Barnett (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';
@@ -37,24 +39,32 @@ define( function( require ) {
   var DerivedProperty = require( 'AXON/DerivedProperty' );
 
   /**
-   *
-   * @param {Circuit} circuit
-   * @param {CCKScreenView} circuitConstructionKitScreenView - for dropping circuit element back into the toolbox
+   * @param {Circuit} circuit - the model Circuit
+   * @param {CCKScreenView} circuitConstructionKitScreenView - for dropping CircuitElement instances back into the toolbox
    * @param {Tandem} tandem
    * @constructor
    */
   function CircuitNode( circuit, circuitConstructionKitScreenView, tandem ) {
     var self = this;
 
-    // @private
+    // @private {Property.<string>} - 'lifelike' | 'schematic'
     this.viewProperty = circuitConstructionKitScreenView.circuitConstructionKitModel.viewProperty;
 
+    // @private (read-only)
     this.circuitConstructionKitModel = circuitConstructionKitScreenView.circuitConstructionKitModel;
+
+    // @private (read-only) {Property.<Bounds2>}
     this.visibleBoundsProperty = circuitConstructionKitScreenView.visibleBoundsProperty;
     var runningProperty = this.circuitConstructionKitModel.exploreScreenRunningProperty;
 
+    // @public (read-only) CircuitElementNodes add highlights directly to this layer when they are constructed
     this.highlightLayer = new Node();
-    this.seriesAmmeterNodeReadoutPanelLayer = new Node(); // used for readout of current and 'Current' string
+
+    // @public (read-only) SeriesAmmeterNodes add to this layer when they are constructed
+    // Shows the front panel of SeriesAmmeterNodes (which shows the current readout) so the electrons look like they
+    // flow through.
+    this.seriesAmmeterNodeReadoutPanelLayer = new Node();
+
     this.buttonLayer = new Node();
     this.valueLayer = new Node(); // for "show values"
 
