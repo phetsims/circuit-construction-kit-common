@@ -109,28 +109,29 @@ define( function( require ) {
       ammeterText.visible = showLabels;
     } );
 
+    var voltmeterToolIcon = new VBox( {
+      spacing: 3,
+      children: [
+        voltmeterNodeIcon,
+        voltmeterText
+      ]
+    } );
+    var ammeterToolIcon = new VBox( {
+      spacing: 3,// TODO: factor out
+      children: [
+        new HBox( {
+          spacing: 8,
+          align: 'bottom',
+          children: showSeriesAmmeters ? [ ammeterNodeIcon, seriesAmmeterToolNode ] : [ ammeterNodeIcon ]
+        } ),
+        ammeterText
+      ]
+    } );
+
     CCKPanel.call( this, new HBox( {
       spacing: 20,
       align: 'bottom',
-      children: [ new VBox( {
-        spacing: 3,
-        children: [
-          voltmeterNodeIcon,
-          voltmeterText
-        ]
-      } ), new VBox( {
-        spacing: 3,// TODO: factor out
-        children: [
-          new HBox( {
-            spacing: 8,
-            align: 'bottom',
-            children: showSeriesAmmeters ? [
-              ammeterNodeIcon, seriesAmmeterToolNode
-            ] : [ ammeterNodeIcon ]
-          } ),
-          ammeterText
-        ]
-      } ) ]
+      children: [ voltmeterToolIcon, ammeterToolIcon ]
     } ), tandem, {
       xMargin: 10,
       yMargin: 8
