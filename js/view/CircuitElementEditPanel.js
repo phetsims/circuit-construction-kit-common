@@ -16,7 +16,6 @@ define( function( require ) {
   var NumberControl = require( 'SCENERY_PHET/NumberControl' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var RangeWithValue = require( 'DOT/RangeWithValue' );
-  var NumberProperty = require( 'AXON/NumberProperty' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var CCKTrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKTrashButton' );
 
@@ -37,32 +36,14 @@ define( function( require ) {
    */
   function CircuitElementEditPanel( title, units, valueProperty, circuit, circuitElement, tandem ) {
 
-    // Use a proxy property so we can track whether the changes were from the user interface or from the model (e.g. the
-    // resistance of a wire changing when its length changes).
-    // TODO: this is not a practical example since wire resistance cannot be edited through this UI.  Is the proxy still
-    // necessary?
-    var proxyProperty = new NumberProperty( valueProperty.value );
-    var changing = false;
-
-    // Listener that is called when the proxy property changes
-    var proxyListener = function( value ) {
-      valueProperty.value = value;
-      if ( !changing ) {
-        circuit.componentEditedEmitter.emit();
-      }
+    // When the user changes any parameter of any circuit element, signify it.
+    var valuePropertyListener = function() {
+      circuit.componentEditedEmitter.emit();
     };
-    proxyProperty.lazyLink( proxyListener );
+    valueProperty.lazyLink( valuePropertyListener );
 
-    // Bind from the model property to the proxy property
-    var valueListener = function( value ) {
-      changing = true;
-      proxyProperty.value = value;
-      changing = false;
-    };
-    valueProperty.lazyLink( valueListener );
-
-    // Create the controls using the proxy
-    var numberControl = new NumberControl( title, proxyProperty, new RangeWithValue( 0, 100 ), _.extend( {
+    // Create the controls
+    var numberControl = new NumberControl( title, valueProperty, new RangeWithValue( 0, 100 ), _.extend( {
       tandem: tandem.createTandem( 'numberControl' ),
       valuePattern: StringUtils.fillIn( valueUnitsPatternString, { units: units } )
     }, {
@@ -80,9 +61,7 @@ define( function( require ) {
     // @private - for disposal
     this.disposeCircuitElementEditPanel = function() {
       numberControl.dispose();
-      valueProperty.unlink( valueListener );
-      proxyProperty.unlink( proxyListener );
-      proxyProperty.dispose();
+      valueProperty.unlink( valuePropertyListener );
     };
 
     HBox.call( this, {
