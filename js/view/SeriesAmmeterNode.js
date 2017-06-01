@@ -21,6 +21,9 @@ define( function( require ) {
   var Panel = require( 'SUN/Panel' );
   var Util = require( 'DOT/Util' );
 
+  // strings
+  var currentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/current' );
+
   // constants
   var PANEL_HEIGHT = 40;
   var PANEL_WIDTH = 110;
@@ -70,7 +73,7 @@ define( function( require ) {
     seriesAmmeter.currentProperty.link( updateText );
     var readoutPanel = new Panel( new VBox( {
       children: [
-        new Text( 'Current', { fontSize: 14 } ),
+        new Text( currentString, { fontSize: 14, maxWidth: 54 } ),
         new Rectangle( 0, 0, maxWidth + textPanelMarginX * 2, maxHeight + textPanelMarginY * 2, {
           stroke: 'gray',
           fill: 'white',
