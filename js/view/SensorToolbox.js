@@ -40,11 +40,12 @@ define( function( require ) {
    * @param {VoltmeterNode} voltmeterNode - node for the Voltmeter
    * @param {AmmeterNode} ammeterNode - node for the Ammeter
    * @param {Property.<boolean>} runningProperty - whether values can be displayed
+   * @param {Property.<boolean>} showLabelsProperty - true if toolbox labels should be shown
    * @param {boolean} showSeriesAmmeters - whether the series ammeters should be shown in the toolbox
    * @param {Tandem} tandem
    * @constructor
    */
-  function SensorToolbox( circuitNode, voltmeterNode, ammeterNode, runningProperty, showSeriesAmmeters, tandem ) {
+  function SensorToolbox( circuitNode, voltmeterNode, ammeterNode, runningProperty, showLabelsProperty, showSeriesAmmeters, tandem ) {
 
     // Options for the VoltmeterNode and AmmeterNode
     var options = {
@@ -100,6 +101,14 @@ define( function( require ) {
       } ).length;
     }, createSeriesAmmeter );
 
+    // Alter the visibility of the labels when the labels checkbox is toggled.
+    var voltmeterText = new Text( voltmeterString );
+    var ammeterText = new Text( showSeriesAmmeters ? ammetersString : ammeterString );
+    showLabelsProperty.link( function( showLabels ) {
+      voltmeterText.visible = showLabels;
+      ammeterText.visible = showLabels;
+    } );
+
     CCKPanel.call( this, new HBox( {
       spacing: 20,
       align: 'bottom',
@@ -107,7 +116,7 @@ define( function( require ) {
         spacing: 3,
         children: [
           voltmeterNodeIcon,
-          new Text( voltmeterString )
+          voltmeterText
         ]
       } ), new VBox( {
         spacing: 3,// TODO: factor out
@@ -119,7 +128,7 @@ define( function( require ) {
               ammeterNodeIcon, seriesAmmeterToolNode
             ] : [ ammeterNodeIcon ]
           } ),
-          new Text( showSeriesAmmeters ? ammetersString : ammeterString )
+          ammeterText
         ]
       } ) ]
     } ), tandem, {

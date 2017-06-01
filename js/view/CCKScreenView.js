@@ -181,7 +181,12 @@ define( function( require ) {
     this.addChild( chargeSpeedThrottlingReadoutNode );
 
     // @protected - so that subclasses can add a layout circuit element near it
-    this.sensorToolbox = new SensorToolbox( this.circuitNode, voltmeterNode, ammeterNode, circuitConstructionKitModel.exploreScreenRunningProperty,
+    this.sensorToolbox = new SensorToolbox(
+      this.circuitNode,
+      voltmeterNode,
+      ammeterNode,
+      circuitConstructionKitModel.exploreScreenRunningProperty,
+      circuitConstructionKitModel.showLabelsProperty,
       options.showSeriesAmmeters,
       tandem.createTandem( 'sensorToolbox' ) );
 
