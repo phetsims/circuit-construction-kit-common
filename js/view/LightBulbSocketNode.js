@@ -19,8 +19,8 @@ define( function( require ) {
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var CCKMathUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKMathUtil' );
 
-  // TODO: Factor out this matrix logic, it seems to be used in many places.
-  var scratchMatrix = new Matrix3();
+  // constants
+  var SCRATCH_MATRIX = new Matrix3();
 
   /**
    * This constructor is called dynamically and must match the signature of other circuit element nodes.
@@ -78,8 +78,8 @@ define( function( require ) {
       var angle = endPosition.minus( startPosition ).angle() + Math.PI / 4;
 
       // Update the node transform in a single step, see #66
-      CCKMathUtil.setToTranslationRotation( scratchMatrix, startPosition, angle );
-      this.contentNode.setMatrix( scratchMatrix );
+      CCKMathUtil.setToTranslationRotation( SCRATCH_MATRIX, startPosition, angle );
+      this.contentNode.setMatrix( SCRATCH_MATRIX );
     },
     /**
      * Maintain the opacity of the brightness lines while changing the opacity of the light bulb itself.

@@ -91,7 +91,7 @@ define( function( require ) {
     var circuit = circuitNode && circuitNode.circuit;
     CircuitElementNode.call( this, circuitElement, circuit, _.extend( {
       cursor: 'pointer',
-      children: [ // TODO: this is a code smell if there is only one child of a node
+      children: [
         self.contentNode
       ],
       tandem: tandem
@@ -112,7 +112,7 @@ define( function( require ) {
     if ( !options.icon ) {
       this.inputListener = new TandemSimpleDragHandler( {
         allowTouchSnag: true,
-        tandem: tandem.createTandem( 'inputListener' ), // TODO: some input listeners are 'dragHandler' let's be consistent
+        tandem: tandem.createTandem( 'inputListener' ), // TODO (phet-io): some input listeners are 'dragHandler' let's be consistent
         start: function( event ) {
           eventPoint = event.pointer.point;
           circuitElement.interactiveProperty.get() && circuitNode.startDragVertex( event.pointer.point, circuitElement.endVertexProperty.get(), false );

@@ -1,6 +1,5 @@
 // Copyright 2017, University of Colorado Boulder
-// TODO docs
-// TODO: resize when lifelike/schematic changes
+// TODO docs and resize when lifelike/schematic changes
 /**
  *
  *

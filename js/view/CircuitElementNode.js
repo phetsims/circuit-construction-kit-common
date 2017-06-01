@@ -112,7 +112,7 @@ define( function( require ) {
     updateOpacityOnInteractiveChange: function() {
       var self = this;
 
-      // TODO: Replace this with grayscale if we keep it
+      // TODO (black-box-study): Replace this with grayscale if we keep it
       var interactivityChanged = function( interactive ) {
         self.opacity = interactive ? 1 : 0.5;
       };

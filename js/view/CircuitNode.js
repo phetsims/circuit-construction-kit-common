@@ -307,7 +307,7 @@ define( function( require ) {
         }
 
         // Make sure black box vertices are behind the black box
-        // TODO: This is duplicated below, factor it out.
+        // TODO (black-box-study): This is duplicated below, factor it out.
         if ( self.blackBoxNode ) {
           var blackBoxNodeIndex = self.mainLayer.children.indexOf( self.blackBoxNode );
           if ( vertex.blackBoxInterfaceProperty.get() ) {

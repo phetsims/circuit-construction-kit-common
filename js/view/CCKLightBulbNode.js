@@ -30,8 +30,8 @@ define( function( require ) {
   var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
 
   // constants
-  var scratchMatrix = new Matrix3();
-  var scratchMatrix2 = new Matrix3();
+  var SCRATCH_MATRIX = new Matrix3();
+  var SCRATCH_MATRIX_2 = new Matrix3();
 
   // The height from the vertex to the center of the light bulb schematic circle
   var LEAD_Y = -73;
@@ -178,15 +178,15 @@ define( function( require ) {
       var angle = delta.angle() + Math.PI / 4;
 
       // Update the node transform in a single step, see #66
-      CCKMathUtil.setToTranslationRotation( scratchMatrix, startPosition, angle );
-      this.contentNode.setMatrix( scratchMatrix );
+      CCKMathUtil.setToTranslationRotation( SCRATCH_MATRIX, startPosition, angle );
+      this.contentNode.setMatrix( SCRATCH_MATRIX );
 
-      this.highlightNode && this.highlightNode.setMatrix( scratchMatrix );
+      this.highlightNode && this.highlightNode.setMatrix( SCRATCH_MATRIX );
 
       // Update the fire transform
-      CCKMathUtil.setToTranslationRotation( scratchMatrix, startPosition, angle )
-        .multiplyMatrix( scratchMatrix2.setToTranslation( -100, -fireImage[ 0 ].height - 350 ) );
-      this.fireNode && this.fireNode.setMatrix( scratchMatrix );
+      CCKMathUtil.setToTranslationRotation( SCRATCH_MATRIX, startPosition, angle )
+        .multiplyMatrix( SCRATCH_MATRIX_2.setToTranslation( -100, -fireImage[ 0 ].height - 350 ) );
+      this.fireNode && this.fireNode.setMatrix( SCRATCH_MATRIX );
     },
     /**
      * Dispose when no longer used.
