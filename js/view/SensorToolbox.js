@@ -101,13 +101,13 @@ define( function( require ) {
       } ).length;
     }, createSeriesAmmeter );
 
-    // Alter the visibility of the labels when the labels checkbox is toggled.
+    // Labels underneath the sensor tool nodes
     var voltmeterText = new Text( voltmeterString );
     var ammeterText = new Text( showSeriesAmmeters ? ammetersString : ammeterString );
-    showLabelsProperty.link( function( showLabels ) {
-      voltmeterText.visible = showLabels;
-      ammeterText.visible = showLabels;
-    } );
+
+    // Alter the visibility of the labels when the labels checkbox is toggled.
+    showLabelsProperty.linkAttribute( voltmeterText, 'visible' );
+    showLabelsProperty.linkAttribute( ammeterText, 'visible' );
 
     var voltmeterToolIcon = new VBox( {
       spacing: 3,
