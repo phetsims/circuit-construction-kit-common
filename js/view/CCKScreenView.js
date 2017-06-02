@@ -34,10 +34,13 @@ define( function( require ) {
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
 
   // constants
-  var LAYOUT_INSET = CircuitConstructionKitConstants.LAYOUT_INSET;
+  var VERTICAL_MARGIN = CircuitConstructionKitConstants.LAYOUT_INSET;
   var BACKGROUND_COLOR = CircuitConstructionKitConstants.BACKGROUND_COLOR;
   var VOLTMETER_PROBE_TIP_LENGTH = 20; // The probe tip is about 20 view coordinates tall
   var VOLTMETER_NUMBER_SAMPLE_POINTS = 10; // Number of points along the edge of the voltmeter tip to detect voltages
+
+  // Match margins with the carousel page control and spacing
+  var HORIZONTAL_MARGIN = 17;
 
   /**
    * @param {CircuitConstructionKitModel} circuitConstructionKitModel
@@ -67,18 +70,6 @@ define( function( require ) {
       numberOfDogsInToolbox: 0,
       numberOfErasersInToolbox: 0,
       showSeriesAmmeters: false,
-
-      /**
-       * Function that gives the position for the toolbox
-       * @param {Bounds2} visibleBounds
-       * @returns {Object}
-       */
-      getToolboxPosition: function( visibleBounds ) {
-        return {
-          left: visibleBounds.left + LAYOUT_INSET,
-          top: visibleBounds.top + LAYOUT_INSET
-        };
-      },
       getCircuitEditPanelLayoutPosition: CircuitElementEditContainerPanel.GET_LAYOUT_POSITION,
       showResistivityControl: true,
       showBatteryResistanceControl: true
@@ -311,8 +302,8 @@ define( function( require ) {
 
         // Float the playPauseButton to the bottom left
         playPauseButton.mutate( {
-          left: visibleBounds.left + LAYOUT_INSET,
-          bottom: visibleBounds.bottom - LAYOUT_INSET
+          left: visibleBounds.left + VERTICAL_MARGIN,
+          bottom: visibleBounds.bottom - VERTICAL_MARGIN
         } );
       } );
     }
@@ -323,18 +314,21 @@ define( function( require ) {
     } );
 
     // Make it as wide as the circuit element toolbox
-    zoomControlPanel.setScaleMagnitude( this.circuitElementToolbox.width / zoomControlPanel.width );
+    zoomControlPanel.setScaleMagnitude( 0.8 );
 
     // Add it in front of everything (should never be obscured by a CircuitElement)
     this.addChild( zoomControlPanel );
 
     this.visibleBoundsProperty.link( function( visibleBounds ) {
 
+      self.circuitElementToolbox.left = visibleBounds.left + VERTICAL_MARGIN + (self.circuitElementToolbox.carousel ? 0 : 12);
+      self.circuitElementToolbox.top = visibleBounds.top + VERTICAL_MARGIN;
+
       // Float the resetAllButton to the bottom right
       if ( options.showResetAllButton ) {
         resetAllButton.mutate( {
-          right: visibleBounds.right - LAYOUT_INSET,
-          bottom: visibleBounds.bottom - LAYOUT_INSET
+          right: visibleBounds.right - HORIZONTAL_MARGIN,
+          bottom: visibleBounds.bottom - VERTICAL_MARGIN
         } );
       }
 
@@ -343,28 +337,26 @@ define( function( require ) {
         bottom: visibleBounds.bottom - 100 // so it doesn't overlap the component controls
       } );
 
-      self.circuitElementToolbox.mutate( options.getToolboxPosition( visibleBounds ) );
-
       self.displayOptionsPanel.mutate( {
-        right: visibleBounds.right - LAYOUT_INSET,
-        top: visibleBounds.top + LAYOUT_INSET
+        right: visibleBounds.right - HORIZONTAL_MARGIN,
+        top: visibleBounds.top + VERTICAL_MARGIN
       } );
       self.sensorToolbox.mutate( {
-        right: visibleBounds.right - LAYOUT_INSET,
-        top: self.displayOptionsPanel.bottom + LAYOUT_INSET
+        right: visibleBounds.right - HORIZONTAL_MARGIN,
+        top: self.displayOptionsPanel.bottom + VERTICAL_MARGIN
       } );
-      self.viewRadioButtonGroup.top = self.sensorToolbox.bottom + LAYOUT_INSET;
-      self.viewRadioButtonGroup.right = visibleBounds.right - LAYOUT_INSET;
+      self.viewRadioButtonGroup.right = visibleBounds.right - HORIZONTAL_MARGIN;
+      self.viewRadioButtonGroup.top = self.sensorToolbox.bottom + VERTICAL_MARGIN;
 
-      zoomControlPanel.bottom = visibleBounds.bottom - LAYOUT_INSET;
-      zoomControlPanel.left = self.circuitElementToolbox.left;
+      zoomControlPanel.left = visibleBounds.left + HORIZONTAL_MARGIN;
+      zoomControlPanel.bottom = visibleBounds.bottom - VERTICAL_MARGIN;
 
-      self.wireResistivityControl.top = self.viewRadioButtonGroup.bottom + LAYOUT_INSET;
-      self.wireResistivityControl.right = visibleBounds.right - LAYOUT_INSET;
+      self.wireResistivityControl.right = visibleBounds.right - HORIZONTAL_MARGIN;
+      self.wireResistivityControl.top = self.viewRadioButtonGroup.bottom + VERTICAL_MARGIN;
 
       // The layout remains the same whether the accordion boxes are expanded or collapsed
-      self.batteryResistanceControl.top = self.wireResistivityControl.bottom + LAYOUT_INSET;
-      self.batteryResistanceControl.right = visibleBounds.right - LAYOUT_INSET;
+      self.batteryResistanceControl.right = visibleBounds.right - HORIZONTAL_MARGIN;
+      self.batteryResistanceControl.top = self.wireResistivityControl.bottom + VERTICAL_MARGIN;
     } );
 
     // Center the circuit node so that zooms will remain centered.

@@ -339,6 +339,8 @@ define( function( require ) {
 
     var ITEMS_PER_PAGE = 5;
 
+    var SPACING = 5;
+
     var child = null;
     if ( children.length <= ITEMS_PER_PAGE ) {
       child = new CCKPanel( new LayoutBox( {
@@ -347,15 +349,20 @@ define( function( require ) {
         children: children,
         resize: false
       } ), tandem, {
-        resize: false
+        resize: false,
+
+        // Match the background of the carousel
+        fill: 'white'
       } );
     }
     else {
       this.carousel = new Carousel( children, {
         orientation: 'vertical',
         itemsPerPage: ITEMS_PER_PAGE,
-        spacing: 0
+        spacing: 0,
+        margin: 15
       } );
+
       var pageControl = new PageControl( this.carousel.numberOfPages, this.carousel.pageNumberProperty, {
         orientation: 'vertical',
         pageFill: 'white',
@@ -364,8 +371,9 @@ define( function( require ) {
         dotTouchAreaDilation: 4,
         dotMouseAreaDilation: 4
       } );
+
       child = new HBox( {
-        spacing: 5,
+        spacing: SPACING,
         children: [ pageControl, this.carousel ]
       } );
     }
