@@ -24,6 +24,7 @@ define( function( require ) {
 
   // images
   var lifelikeResistorImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor.png' );
+  var paperClipImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/paper-clip.png' );
 
   // constants
   var LIFELIKE_IMAGE_SCALE = 1.0;
@@ -68,7 +69,7 @@ define( function( require ) {
       lifelikeResistorImageNode = new Text( 'ITS A DOLLAR BILL' );
     }
     else if ( resistor.resistorType === 'paperClip' ) {
-      lifelikeResistorImageNode = new Text( 'paper clip' );
+      lifelikeResistorImageNode = new Image( paperClipImage );
     }
     else {
 
