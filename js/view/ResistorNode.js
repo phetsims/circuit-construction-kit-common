@@ -28,6 +28,7 @@ define( function( require ) {
   var coinImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/coin.png' );
   var pencilImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/pencil.png' );
   var eraserImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/eraser.png' );
+  var handImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/hand.png' );
 
   // constants
   var LIFELIKE_IMAGE_SCALE = 1.0;
@@ -79,6 +80,9 @@ define( function( require ) {
     }
     else if ( resistor.resistorType === 'eraser' ) {
       lifelikeResistorImageNode = new Image( eraserImage );
+    }
+    else if ( resistor.resistorType === 'hand' ) {
+      lifelikeResistorImageNode = new Image( handImage );
     }
     else {
 
