@@ -352,7 +352,8 @@ define( function( require ) {
         resize: false,
 
         // Match the background of the carousel
-        fill: 'white'
+        fill: 'white',
+        yMargin: 27
       } );
     }
     else {
