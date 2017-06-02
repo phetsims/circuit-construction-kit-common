@@ -26,6 +26,7 @@ define( function( require ) {
   var lifelikeResistorImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor.png' );
   var paperClipImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/paper-clip.png' );
   var coinImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/coin.png' );
+  var pencilImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/pencil.png' );
 
   // constants
   var LIFELIKE_IMAGE_SCALE = 1.0;
@@ -71,6 +72,9 @@ define( function( require ) {
     }
     else if ( resistor.resistorType === 'paperClip' ) {
       lifelikeResistorImageNode = new Image( paperClipImage );
+    }
+    else if ( resistor.resistorType === 'pencil' ) {
+      lifelikeResistorImageNode = new Image( pencilImage );
     }
     else {
 
