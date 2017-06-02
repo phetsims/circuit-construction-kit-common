@@ -346,13 +346,13 @@ define( function( require ) {
         top: self.displayOptionsPanel.bottom + VERTICAL_MARGIN
       } );
       self.viewRadioButtonGroup.right = visibleBounds.right - HORIZONTAL_MARGIN;
-      self.viewRadioButtonGroup.top = self.sensorToolbox.bottom + VERTICAL_MARGIN;
+      self.viewRadioButtonGroup.bottom = resetAllButton.top - VERTICAL_MARGIN;
 
       zoomControlPanel.left = visibleBounds.left + HORIZONTAL_MARGIN;
       zoomControlPanel.bottom = visibleBounds.bottom - VERTICAL_MARGIN;
 
       self.wireResistivityControl.right = visibleBounds.right - HORIZONTAL_MARGIN;
-      self.wireResistivityControl.top = self.viewRadioButtonGroup.bottom + VERTICAL_MARGIN;
+      self.wireResistivityControl.top = self.sensorToolbox.bottom + VERTICAL_MARGIN;
 
       // The layout remains the same whether the accordion boxes are expanded or collapsed
       self.batteryResistanceControl.right = visibleBounds.right - HORIZONTAL_MARGIN;
