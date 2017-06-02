@@ -49,13 +49,6 @@ define( function( require ) {
     showCurrent: {
       type: 'boolean',
       defaultValue: true
-    },
-
-    // For design phase, see https://github.com/phetsims/circuit-construction-kit-common/issues/330
-    carouselPageControlSide: {
-      type: 'string',
-      defaultValue: 'right',
-      validValues: [ 'right', 'left' ]
     }
   } );
 

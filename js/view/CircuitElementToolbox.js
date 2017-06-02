@@ -366,7 +366,7 @@ define( function( require ) {
       } );
       child = new HBox( {
         spacing: 5,
-        children: CircuitConstructionKitQueryParameters.carouselPageControlSide === 'right' ? [ this.carousel, pageControl ] : [ pageControl, this.carousel ]
+        children: [ pageControl, this.carousel ]
       } );
     }
     Node.call( this, {
