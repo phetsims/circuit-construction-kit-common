@@ -2,6 +2,15 @@
   "circuit-construction-kit.title": {
     "value": "Circuit Construction Kit"
   },
+  "intro": {
+    "value": "Intro"
+  },
+  "explore": {
+    "value": "Explore"
+  },
+  "lab": {
+    "value": "Lab"
+  },
   "resistor": {
     "value": "Resistor"
   },
