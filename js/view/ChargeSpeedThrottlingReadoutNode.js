@@ -15,10 +15,14 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
   var Property = require( 'AXON/Property' );
+  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+
+  // strings
+  var animationSpeedLimitString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/animationSpeedLimit' );
 
   function ChargeSpeedThrottlingReadoutNode( timeScaleProperty, showCurrentProperty, exploreScreenRunningProperty ) {
     var self = this;
-    var text = new Text( 'Animation speed limit reached! Simulation speed reduced to < 1% normal.', { fontSize: 26 } );
+    var text = new Text( animationSpeedLimitString, { fontSize: 26 } );
     Node.call( this, {
       children: [
         text
@@ -32,7 +36,7 @@ define( function( require ) {
       if ( timeScale < 0.01 ) {
         fixed = '< 1';
       }
-      text.setText( 'Animation speed limit reached! Simulation speed reduced to ' + fixed + '% normal.' );
+      text.setText( StringUtils.format( animationSpeedLimitString, fixed ) );
 
       // Only show the throttling message if the speed is less than 100% and charges are visible
       self.visible = isThrottled && showCurrent && exploreScreenRunning;
