@@ -260,13 +260,16 @@ define( function( require ) {
               circuitLayerNode.getVertexNode( wire.startVertexProperty.get() ).pickable = false;
               circuitLayerNode.getVertexNode( wire.endVertexProperty.get() ).pickable = false;
 
+              var clearTimeoutListener = function() { clearTimeout( id ); };
+
               // If over the toolbox, then drop into it, and don't process further
               var id = setTimeout( function() {
                 circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
+                wire.disposeEmitter.removeListener( clearTimeoutListener );
               }, delayMS );
 
               // If disposed by reset all button, clear the timeout
-              wire.disposeEmitter.addListener( function() { clearTimeout( id ); } );
+              wire.disposeEmitter.addListener( clearTimeoutListener );
             }
             else {
 

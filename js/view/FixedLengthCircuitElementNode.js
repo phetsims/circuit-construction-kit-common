@@ -142,12 +142,15 @@ define( function( require ) {
             circuitLayerNode.getVertexNode( circuitElement.startVertexProperty.get() ).pickable = false;
             circuitLayerNode.getVertexNode( circuitElement.endVertexProperty.get() ).pickable = false;
 
+            var clearTimeoutListener = function() { clearTimeout( id ); };
+
             var id = setTimeout( function() {
               cckScreenView.dropCircuitElementNodeInToolbox( self );
+              circuitElement.disposeEmitter.removeListener( clearTimeoutListener );
             }, delayMS );
 
             // If disposed by reset all button, clear the timeout
-            circuitElement.disposeEmitter.addListener( function() { clearTimeout( id ); } );
+            circuitElement.disposeEmitter.addListener( clearTimeoutListener );
           }
           else {
 
