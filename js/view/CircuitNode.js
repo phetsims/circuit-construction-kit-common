@@ -83,7 +83,7 @@ define( function( require ) {
       ]
     } );
 
-    // @public
+    // @public {DerivedProperty.<Bounds2>} the visible bounds in the coordinate frame of the circuit
     this.visibleBoundsInCircuitCoordinateFrameProperty = new DerivedProperty( [
       circuitConstructionKitScreenView.circuitConstructionKitModel.currentZoomProperty,
       circuitConstructionKitScreenView.visibleBoundsProperty
@@ -100,8 +100,10 @@ define( function( require ) {
     // @private - Map to find CircuitElement=>CircuitElementNode. key is CircuitElement.id, value is CircuitElementNode
     this.circuitElementNodeMap = {};
 
+    // @public (read-only) the VertexNodes
     this.vertexNodes = [];
 
+    // @public (read-only) the nodes to show
     this.chargeNodes = [];
 
     // When loading from a state object, the vertices could have been added first.  If so, move them in front
@@ -121,7 +123,6 @@ define( function( require ) {
      *
      * @param {function} CircuitElementNodeConstructor constructor for the node type, such as BatteryNode
      * @param {function} type - the type of the CircuitElement, such as Battery or Wire
-     * @param {Array.<CircuitElementNode>} nodeArray
      * @param {Tandem} groupTandem
      */
     var initializeCircuitElementType = function( CircuitElementNodeConstructor, type, groupTandem ) {
@@ -248,7 +249,7 @@ define( function( require ) {
       self.mainLayer.addChild( chargeNode );
     } );
 
-    // Filled in by black box study, if it is running.
+    // @public - Filled in by black box study, if it is running.
     this.blackBoxNode = null;
 
     this.viewProperty.link( function() {
@@ -363,6 +364,11 @@ define( function( require ) {
      */
     getVertexNode: function( vertex ) { return this.getNodeForVertex( this.vertexNodes, vertex ); },
 
+    /**
+     * Find drop targets for all the given vertices
+     * @param {Vertex[]} vertices
+     * @returns {Object[]}
+     */
     getAllDropTargets: function( vertices ) {
       var allDropTargets = [];
 
@@ -375,6 +381,12 @@ define( function( require ) {
       }
       return allDropTargets;
     },
+
+    /**
+     * Finds the closest drop target for any of the given vertices
+     * @param {Vertex[]} vertices
+     * @returns {Object}
+     */
     getBestDropTarget: function( vertices ) {
       var allDropTargets = this.getAllDropTargets( vertices );
       if ( allDropTargets ) {
