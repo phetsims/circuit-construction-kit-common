@@ -55,7 +55,6 @@ define( function( require ) {
 
     // @private (read-only) {Property.<Bounds2>}
     this.visibleBoundsProperty = circuitConstructionKitScreenView.visibleBoundsProperty;
-    var runningProperty = this.circuitConstructionKitModel.exploreScreenRunningProperty;
 
     // @public (read-only) CircuitElementNodes add highlights directly to this layer when they are constructed
     this.highlightLayer = new Node();
@@ -138,7 +137,7 @@ define( function( require ) {
             circuitConstructionKitScreenView,
             self,
             circuitElement,
-            runningProperty,
+            self.circuitConstructionKitModel.exploreScreenRunningProperty,
             circuitConstructionKitScreenView.circuitConstructionKitModel.viewProperty,
             groupTandem.createNextTandem()
           );
