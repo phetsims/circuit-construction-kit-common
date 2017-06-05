@@ -43,10 +43,8 @@ define( function( require ) {
     this.addInputListener( {
         down: function( event ) {
 
-          // Ignore non-left-mouse-button, see #64
-          if ( event.pointer.isMouse && event.domEvent.button !== 0 ) {
-            return;
-          }
+          // Don't try to start drags with a right mouse button or an attached pointer.
+          if ( !event.canStartPress() ) { return; }
 
           // initial position of the pointer in the coordinate frame of the CircuitNode
           var viewPosition = circuitNode.globalToLocalPoint( event.pointer.point );
