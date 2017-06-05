@@ -20,6 +20,8 @@ define( function( require ) {
   // phet-io modules
   var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
 
+  var index = 0;
+
   /**
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
@@ -36,6 +38,9 @@ define( function( require ) {
     var self = this;
 
     this.tandemName = tandem.tail;
+
+    // @public (read-only) unique identifier for looking up corresponding views
+    this.id = index++;
 
     // @public (read-only) track the time of creation so it can't be dropped in the toolbox for 0.5 seconds
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/244

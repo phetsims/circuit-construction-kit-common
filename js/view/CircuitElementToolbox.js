@@ -58,12 +58,12 @@ define( function( require ) {
    * @param {Circuit} circuit
    * @param {Property.<boolean>} showLabelsProperty
    * @param {Property.<string>} viewProperty
-   * @param {CircuitNode} circuitNode
+   * @param {CircuitLayerNode} circuitLayerNode
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function CircuitElementToolbox( circuit, showLabelsProperty, viewProperty, circuitNode, tandem, options ) {
+  function CircuitElementToolbox( circuit, showLabelsProperty, viewProperty, circuitLayerNode, tandem, options ) {
 
     options = _.extend( {
       orientation: 'vertical',
@@ -222,18 +222,18 @@ define( function( require ) {
       };
     };
 
-    var leftBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitNode, leftBatteryIcon, options.numberOfLeftBatteries, countLeftBatteries, createLeftBattery );
-    var rightBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitNode, rightBatteryIcon, options.numberOfRightBatteries, countRightBatteries, createRightBattery );
-    var wireToolNode = new CircuitElementToolNode( wireString, showLabelsProperty, circuitNode, wireIcon, options.numberOfWires, countWires, createWire );
-    var lightBulbToolNode = new CircuitElementToolNode( lightBulbString, showLabelsProperty, circuitNode, lightBulbIcon, options.numberOfLightBulbs, countLightBulbs, createLightBulb );
-    var resistorToolNode = new CircuitElementToolNode( resistorString, showLabelsProperty, circuitNode, resistorIcon, options.numberOfResistors, countResistors, createResistor );
-    var switchToolNode = new CircuitElementToolNode( switchString, showLabelsProperty, circuitNode, switchIcon, options.numberOfSwitches, countSwitches, createSwitch );
+    var leftBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitLayerNode, leftBatteryIcon, options.numberOfLeftBatteries, countLeftBatteries, createLeftBattery );
+    var rightBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitLayerNode, rightBatteryIcon, options.numberOfRightBatteries, countRightBatteries, createRightBattery );
+    var wireToolNode = new CircuitElementToolNode( wireString, showLabelsProperty, circuitLayerNode, wireIcon, options.numberOfWires, countWires, createWire );
+    var lightBulbToolNode = new CircuitElementToolNode( lightBulbString, showLabelsProperty, circuitLayerNode, lightBulbIcon, options.numberOfLightBulbs, countLightBulbs, createLightBulb );
+    var resistorToolNode = new CircuitElementToolNode( resistorString, showLabelsProperty, circuitLayerNode, resistorIcon, options.numberOfResistors, countResistors, createResistor );
+    var switchToolNode = new CircuitElementToolNode( switchString, showLabelsProperty, circuitLayerNode, switchIcon, options.numberOfSwitches, countSwitches, createSwitch );
 
     var createGrabBagToolNode = function( resistorType, resistance, resistorLength, labelString, maxCount, iconModelTandem, iconTandem, groupTandem ) {
       var icon = createGrabBagIcon( createGrabBagItem( resistorType, resistorLength, iconModelTandem ), iconTandem );
       var itemCounter = createCounter( function( circuitElement ) { return circuitElement instanceof Resistor && circuitElement.resistorType === resistorType; } );
       var createItem = getGrabBagItemCreator( resistorType, resistance, resistorLength, groupTandem );
-      return new CircuitElementToolNode( labelString, showLabelsProperty, circuitNode, icon, maxCount, itemCounter, createItem );
+      return new CircuitElementToolNode( labelString, showLabelsProperty, circuitLayerNode, icon, maxCount, itemCounter, createItem );
     };
 
     var MIN_RESISTANCE = 1E-6;

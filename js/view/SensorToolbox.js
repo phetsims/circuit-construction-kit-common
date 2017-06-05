@@ -36,7 +36,7 @@ define( function( require ) {
   var VOLTMETER_ICON_SCALE = 1.3;
 
   /**
-   * @param {Node} circuitNode - the main circuit node to use as a coordinate frame
+   * @param {Node} circuitLayerNode - the main circuit node to use as a coordinate frame
    * @param {VoltmeterNode} voltmeterNode - node for the Voltmeter
    * @param {AmmeterNode} ammeterNode - node for the Ammeter
    * @param {Property.<boolean>} runningProperty - whether values can be displayed
@@ -45,7 +45,7 @@ define( function( require ) {
    * @param {Tandem} tandem
    * @constructor
    */
-  function SensorToolbox( circuitNode, voltmeterNode, ammeterNode, runningProperty, showLabelsProperty, showSeriesAmmeters, tandem ) {
+  function SensorToolbox( circuitLayerNode, voltmeterNode, ammeterNode, runningProperty, showLabelsProperty, showSeriesAmmeters, tandem ) {
 
     // Options for the VoltmeterNode and AmmeterNode
     var options = {
@@ -61,7 +61,7 @@ define( function( require ) {
     var createListener = function( meterModel, meterNode ) {
       return {
         down: function( event ) {
-          var viewPosition = circuitNode.globalToLocalPoint( event.pointer.point );
+          var viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point );
           meterModel.draggingProbesWithBodyProperty.set( true );
           meterModel.visibleProperty.set( true );
           meterModel.bodyPositionProperty.set( viewPosition );
@@ -91,11 +91,11 @@ define( function( require ) {
     } );
     var createSeriesAmmeter = function( position ) {
       var seriesAmmeterLength = 110;// TODO: factor out
-      return new SeriesAmmeter( new Vertex( position.x - seriesAmmeterLength / 2, position.y ), new Vertex( position.x + seriesAmmeterLength / 2, position.y ), circuitNode.circuit.seriesAmmeterGroupTandem.createNextTandem() );
+      return new SeriesAmmeter( new Vertex( position.x - seriesAmmeterLength / 2, position.y ), new Vertex( position.x + seriesAmmeterLength / 2, position.y ), circuitLayerNode.circuit.seriesAmmeterGroupTandem.createNextTandem() );
     };
     seriesAmmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / seriesAmmeterNodeIcon.width } );
-    var seriesAmmeterToolNode = new CircuitElementToolNode( '', new Property( false ), circuitNode, seriesAmmeterNodeIcon, 6, function() {
-      return circuitNode.circuit.circuitElements.filter( function( circuitElement ) {
+    var seriesAmmeterToolNode = new CircuitElementToolNode( '', new Property( false ), circuitLayerNode, seriesAmmeterNodeIcon, 6, function() {
+      return circuitLayerNode.circuit.circuitElements.filter( function( circuitElement ) {
 
         return circuitElement instanceof SeriesAmmeter;
       } ).length;

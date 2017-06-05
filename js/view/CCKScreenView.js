@@ -13,7 +13,7 @@ define( function( require ) {
   var DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/DisplayOptionsPanel' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ScreenView = require( 'JOIST/ScreenView' );
-  var CircuitNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitNode' );
+  var CircuitLayerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitLayerNode' );
   var CircuitElementToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolbox' );
   var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditContainerPanel' );
   var ChargeSpeedThrottlingReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ChargeSpeedThrottlingReadoutNode' );
@@ -117,11 +117,11 @@ define( function( require ) {
     }
 
     // @public (read-only) - the circuit node
-    this.circuitNode = new CircuitNode( circuitConstructionKitModel.circuit, this, tandem.createTandem( 'circuitNode' ) );
+    this.circuitLayerNode = new CircuitLayerNode( circuitConstructionKitModel.circuit, this, tandem.createTandem( 'circuitLayerNode' ) );
 
     var voltmeterNode = new VoltmeterNode( circuitConstructionKitModel.voltmeter, tandem.createTandem( 'voltmeterNode' ), {
       runningProperty: circuitConstructionKitModel.exploreScreenRunningProperty,
-      visibleBoundsProperty: this.circuitNode.visibleBoundsInCircuitCoordinateFrameProperty
+      visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty
     } );
     circuitConstructionKitModel.voltmeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
       if ( bodyNodeGlobalBounds.intersectsBounds( self.sensorToolbox.globalBounds ) ) {
@@ -132,7 +132,7 @@ define( function( require ) {
 
     var ammeterNode = new AmmeterNode( circuitConstructionKitModel.ammeter, tandem.createTandem( 'ammeterNode' ), {
       runningProperty: circuitConstructionKitModel.exploreScreenRunningProperty,
-      visibleBoundsProperty: this.circuitNode.visibleBoundsInCircuitCoordinateFrameProperty
+      visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty
     } );
     circuitConstructionKitModel.ammeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
       if ( bodyNodeGlobalBounds.intersectsBounds( self.sensorToolbox.globalBounds ) ) {
@@ -146,7 +146,7 @@ define( function( require ) {
       circuitConstructionKitModel.circuit,
       circuitConstructionKitModel.showLabelsProperty,
       circuitConstructionKitModel.viewProperty,
-      this.circuitNode,
+      this.circuitLayerNode,
       tandem.createTandem( 'circuitElementToolbox' ), {
         orientation: options.toolboxOrientation,
         numberOfRightBatteries: options.numberOfRightBatteriesInToolbox,
@@ -173,7 +173,7 @@ define( function( require ) {
 
     // @protected - so that subclasses can add a layout circuit element near it
     this.sensorToolbox = new SensorToolbox(
-      this.circuitNode,
+      this.circuitLayerNode,
       voltmeterNode,
       ammeterNode,
       circuitConstructionKitModel.exploreScreenRunningProperty,
@@ -209,7 +209,7 @@ define( function( require ) {
     options.showBatteryResistanceControl && this.addChild( this.batteryResistanceControl );
     this.addChild( this.sensorToolbox );
     this.addChild( this.viewRadioButtonGroup );
-    this.addChild( this.circuitNode );
+    this.addChild( this.circuitLayerNode );
 
     var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel(
       circuitConstructionKitModel.circuit,
@@ -224,8 +224,8 @@ define( function( require ) {
     this.addChild( circuitElementEditContainerPanel );
 
     // The voltmeter and ammeter are considered part of the circuit node so they will scale up and down with the circuit
-    this.circuitNode.addChild( voltmeterNode );
-    this.circuitNode.addChild( ammeterNode );
+    this.circuitLayerNode.addChild( voltmeterNode );
+    this.circuitLayerNode.addChild( ammeterNode );
 
     /**
      * Starting at the tip, iterate down over several samples and return the first hit, if any.
@@ -360,11 +360,11 @@ define( function( require ) {
     } );
 
     // Center the circuit node so that zooms will remain centered.
-    self.circuitNode.setTranslation( self.layoutBounds.centerX, self.layoutBounds.centerY );
+    self.circuitLayerNode.setTranslation( self.layoutBounds.centerX, self.layoutBounds.centerY );
 
     // Continuously zoom in and out as the current zoom interpolates
     circuitConstructionKitModel.currentZoomProperty.link( function( zoomLevel ) {
-      self.circuitNode.setScaleMagnitude( zoomLevel );
+      self.circuitLayerNode.setScaleMagnitude( zoomLevel );
     } );
   }
 
@@ -385,7 +385,7 @@ define( function( require ) {
      * @param {number} dt - seconds
      */
     step: function( dt ) {
-      this.circuitNode.step( dt );
+      this.circuitLayerNode.step( dt );
     },
 
     /**
@@ -436,8 +436,8 @@ define( function( require ) {
     getCurrent: function( probeNode ) {
 
       // See if any CircuitElementNode contains the sensor point
-      for ( var i = 0; i < this.circuitNode.mainLayer.children.length; i++ ) {
-        var circuitElementNode = this.circuitNode.mainLayer.children[ i ];
+      for ( var i = 0; i < this.circuitLayerNode.mainLayer.children.length; i++ ) {
+        var circuitElementNode = this.circuitLayerNode.mainLayer.children[ i ];
         if ( circuitElementNode instanceof CircuitElementNode ) {
           if ( circuitElementNode.containsSensorPoint( probeNode.translation ) ) {
             return circuitElementNode.circuitElement.currentProperty.get();
@@ -456,8 +456,8 @@ define( function( require ) {
     hitWireNode: function( position ) {
 
       // Search from the front to the back, because frontmost objects look like they are hitting the sensor, see #143
-      for ( var i = this.circuitNode.wireNodes.length - 1; i >= 0; i-- ) {
-        var wireNode = this.circuitNode.wireNodes[ i ];
+      for ( var i = this.circuitLayerNode.wireNodes.length - 1; i >= 0; i-- ) {
+        var wireNode = this.circuitLayerNode.wireNodes[ i ];
 
         // Don't connect to wires in the black box
         var revealing = true;
@@ -483,8 +483,8 @@ define( function( require ) {
     getVoltageConnection: function( probeNode, probePosition ) {
 
       // Check for intersection with a vertex
-      for ( var i = 0; i < this.circuitNode.vertexNodes.length; i++ ) {
-        var vertexNode = this.circuitNode.vertexNodes[ i ];
+      for ( var i = 0; i < this.circuitLayerNode.vertexNodes.length; i++ ) {
+        var vertexNode = this.circuitLayerNode.vertexNodes[ i ];
         var position = vertexNode.vertex.positionProperty.get();
         var radius = vertexNode.dottedLineNodeRadius;
 

@@ -48,7 +48,7 @@ define( function( require ) {
   /**
    * This constructor is called dynamically and must match the signature of other circuit element nodes.
    * @param {CCKScreenView} circuitConstructionKitScreenView - the main screen view
-   * @param {CircuitNode} circuitNode - the node for the entire circuit
+   * @param {CircuitLayerNode} circuitLayerNode - the node for the entire circuit
    * @param {LightBulb} lightBulb - the light bulb model
    * @param {Property.<boolean>} runningProperty - true if the sim can display values
    * @param {Property.<string>} viewProperty - 'likelike'|'schematic'
@@ -56,7 +56,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function CCKLightBulbNode( circuitConstructionKitScreenView, circuitNode, lightBulb, runningProperty, viewProperty, tandem, options ) {
+  function CCKLightBulbNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, runningProperty, viewProperty, tandem, options ) {
     options = options || {};
     var brightnessProperty = new NumberProperty( 0 );
     var updateBrightness = Property.multilink( [ lightBulb.currentProperty, runningProperty, lightBulb.voltageDifferenceProperty ], function( current, running, voltageDifference ) {
@@ -85,7 +85,7 @@ define( function( require ) {
       lightBulbNode = new Node( {
         children: [
           lightBulbNode,
-          new LightBulbSocketNode( circuitConstructionKitScreenView, circuitNode, lightBulb, runningProperty, viewProperty, tandem.createTandem( 'socketNode' ), options )
+          new LightBulbSocketNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, runningProperty, viewProperty, tandem.createTandem( 'socketNode' ), options )
         ]
       } );
     }
@@ -157,7 +157,7 @@ define( function( require ) {
     schematicNode.mouseArea = schematicNode.bounds.copy();
     schematicNode.touchArea = schematicNode.bounds.copy();
 
-    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, viewProperty, lightBulbNode, schematicNode, tandem, options );
+    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitLayerNode, lightBulb, viewProperty, lightBulbNode, schematicNode, tandem, options );
 
     this.disposeCCKLightBulbNode = function() {
       updateBrightness.dispose();

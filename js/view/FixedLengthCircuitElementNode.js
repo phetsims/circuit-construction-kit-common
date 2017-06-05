@@ -32,7 +32,7 @@ define( function( require ) {
 
   /**
    * @param {CCKScreenView} cckScreenView
-   * @param {CircuitNode} circuitNode - Null if an icon is created
+   * @param {CircuitLayerNode} circuitLayerNode - Null if an icon is created
    * @param {FixedLengthCircuitElement} circuitElement
    * @param {Property.<string>} viewProperty - 'lifelike'|'schematic'
    * @param {Node} lifelikeNode - the node that will display the component as a lifelike object.  Origin must be left-center
@@ -41,7 +41,7 @@ define( function( require ) {
    * @param options
    * @constructor
    */
-  function FixedLengthCircuitElementNode( cckScreenView, circuitNode, circuitElement, viewProperty,
+  function FixedLengthCircuitElementNode( cckScreenView, circuitLayerNode, circuitElement, viewProperty,
                                           lifelikeNode, schematicNode, tandem, options ) {
     assert && assert( lifelikeNode !== schematicNode, 'schematicNode should be different than lifelikeNode' );
     var self = this;
@@ -56,9 +56,10 @@ define( function( require ) {
     this.contentNode = new Node();
 
     // Show the selected node
-    viewProperty.link( function( view ) {
+    var viewPropertyListener = function( view ) {
       self.contentNode.children = [ view === 'lifelike' ? lifelikeNode : schematicNode ];
-    } );
+    };
+    viewProperty.link( viewPropertyListener );
 
     // Flag to indicate when updating view is necessary, in order to avoid duplicate work when both vertices move
     this.dirty = true;
@@ -66,7 +67,7 @@ define( function( require ) {
     // Add highlight (but not for icons)
     if ( !options.icon ) {
       this.highlightNode = new FixedLengthCircuitElementHighlightNode( this, {} );
-      circuitNode.highlightLayer.addChild( this.highlightNode );
+      circuitLayerNode.highlightLayer.addChild( this.highlightNode );
     }
     var updateLayoutCallabck = function() {
       self.updateLayout();
@@ -88,7 +89,7 @@ define( function( require ) {
     circuitElement.connectedEmitter.addListener( moveToFront );
     circuitElement.vertexSelectedEmitter.addListener( moveToFront );
 
-    var circuit = circuitNode && circuitNode.circuit;
+    var circuit = circuitLayerNode && circuitLayerNode.circuit;
     CircuitElementNode.call( this, circuitElement, circuit, _.extend( {
       cursor: 'pointer',
       children: [
@@ -115,11 +116,11 @@ define( function( require ) {
         tandem: tandem.createTandem( 'inputListener' ), // TODO (phet-io): some input listeners are 'dragHandler' let's be consistent
         start: function( event ) {
           eventPoint = event.pointer.point;
-          circuitElement.interactiveProperty.get() && circuitNode.startDragVertex( event.pointer.point, circuitElement.endVertexProperty.get(), false );
+          circuitElement.interactiveProperty.get() && circuitLayerNode.startDragVertex( event.pointer.point, circuitElement.endVertexProperty.get(), false );
           didDrag = false;
         },
         drag: function( event ) {
-          circuitElement.interactiveProperty.get() && circuitNode.dragVertex( event.pointer.point, circuitElement.endVertexProperty.get(), false );
+          circuitElement.interactiveProperty.get() && circuitLayerNode.dragVertex( event.pointer.point, circuitElement.endVertexProperty.get(), false );
           didDrag = true;
         },
         end: function( event ) {
@@ -138,23 +139,26 @@ define( function( require ) {
 
             // Make it impossible to drag vertices when about to drop back into box
             // See https://github.com/phetsims/circuit-construction-kit-common/issues/279
-            circuitNode.getVertexNode( circuitElement.startVertexProperty.get() ).pickable = false;
-            circuitNode.getVertexNode( circuitElement.endVertexProperty.get() ).pickable = false;
+            circuitLayerNode.getVertexNode( circuitElement.startVertexProperty.get() ).pickable = false;
+            circuitLayerNode.getVertexNode( circuitElement.endVertexProperty.get() ).pickable = false;
+
+            var clearTimeoutListener = function() { clearTimeout( id ); };
 
             var id = setTimeout( function() {
               cckScreenView.dropCircuitElementNodeInToolbox( self );
+              circuitElement.disposeEmitter.removeListener( clearTimeoutListener );
             }, delayMS );
 
             // If disposed by reset all button, clear the timeout
-            circuitElement.disposeEmitter.addListener( function() { clearTimeout( id ); } );
+            circuitElement.disposeEmitter.addListener( clearTimeoutListener );
           }
           else {
 
-            circuitNode.endDrag( event, circuitElement.endVertexProperty.get(), didDrag );
+            circuitLayerNode.endDrag( event, circuitElement.endVertexProperty.get(), didDrag );
 
             // Only show the editor when tapped, not on every drag.  Also, event could be undefined if this end() was triggered
             // by dispose()
-            event && self.selectCircuitElementNodeWhenNear( event, circuitNode, eventPoint );
+            event && self.selectCircuitElementNodeWhenNear( event, circuitLayerNode, eventPoint );
 
             didDrag = false;
           }
@@ -168,7 +172,7 @@ define( function( require ) {
         var showHighlight = lastCircuitElement === circuitElement;
         self.highlightNode.visible = showHighlight;
       };
-      circuitNode.circuit.selectedCircuitElementProperty.link( updateSelectionHighlight );
+      circuitLayerNode.circuit.selectedCircuitElementProperty.link( updateSelectionHighlight );
     }
 
     if ( !options.icon && (circuitElement instanceof Battery || circuitElement instanceof Resistor) ) {
@@ -208,14 +212,16 @@ define( function( require ) {
 
       circuitElement.vertexMovedEmitter.removeListener( updateLayoutCallabck );
 
-      updateSelectionHighlight && circuitNode.circuit.selectedCircuitElementProperty.unlink( updateSelectionHighlight );
+      updateSelectionHighlight && circuitLayerNode.circuit.selectedCircuitElementProperty.unlink( updateSelectionHighlight );
 
       circuitElement.connectedEmitter.removeListener( moveToFront );
       circuitElement.vertexSelectedEmitter.removeListener( moveToFront );
 
       circuitElement.interactiveProperty.unlink( pickableListener );
 
-      circuitNode && circuitNode.highlightLayer.removeChild( self.highlightNode );
+      circuitLayerNode && circuitLayerNode.highlightLayer.removeChild( self.highlightNode );
+
+      viewProperty.unlink( viewPropertyListener );
 
       if ( !options.icon && circuitElement instanceof Battery ) {
         Property.unmultilink( updateFireMultilink );
