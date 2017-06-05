@@ -72,9 +72,8 @@ define( function( require ) {
     this.valueLayer = new Node();
 
     // @public (read-only) so that additional Nodes may be interleaved
-    this.mainLayer = new Node();
+    this.mainLayer = new Node(); // TODO: get rid of main layer, use a11y for showing highlights?
 
-    var mainLayer = this.mainLayer; // TODO: get rid of main layer, use a11y for showing highlights?
     Node.call( this, {
       children: [
         this.mainLayer, // everything else
@@ -92,9 +91,11 @@ define( function( require ) {
     ], function( zoom, visibleBounds ) {
       return self.parentToLocalBounds( visibleBounds );
     } );
+
+    // @public (read-only)
     this.circuit = circuit;
 
-    // solder layer
+    // @public (read-only) the layer to display the gray solder
     this.solderNodes = [];
 
     // in main layer
@@ -142,7 +143,7 @@ define( function( require ) {
             groupTandem.createNextTandem()
           );
           nodeArray.push( circuitElementNode );
-          mainLayer.addChild( circuitElementNode );
+          self.mainLayer.addChild( circuitElementNode );
           moveVerticesToFront( circuitElement );
 
           if ( circuitElement instanceof FixedLengthCircuitElement &&
@@ -171,7 +172,7 @@ define( function( require ) {
           }
 
           var circuitElementNode = getter( circuitElement );
-          mainLayer.removeChild( circuitElementNode );
+          self.mainLayer.removeChild( circuitElementNode );
 
           var index = nodeArray.indexOf( circuitElementNode );
           if ( index > -1 ) {
@@ -200,16 +201,16 @@ define( function( require ) {
     var addVertexNode = function( vertex ) {
       var solderNode = new SolderNode( self, vertex );
       self.solderNodes.push( solderNode );
-      mainLayer.addChild( solderNode );
+      self.mainLayer.addChild( solderNode );
 
       var vertexNode = new VertexNode( self, vertex, vertexNodeGroup.createNextTandem() );
       self.vertexNodes.push( vertexNode );
-      mainLayer.addChild( vertexNode );
+      self.mainLayer.addChild( vertexNode );
     };
     circuit.vertices.addItemAddedListener( addVertexNode );
     circuit.vertices.addItemRemovedListener( function( vertex ) {
       var vertexNode = self.getVertexNode( vertex );
-      mainLayer.removeChild( vertexNode );
+      self.mainLayer.removeChild( vertexNode );
 
       var index = self.vertexNodes.indexOf( vertexNode );
       if ( index > -1 ) {
@@ -220,7 +221,7 @@ define( function( require ) {
       assert && assert( self.getVertexNode( vertex ) === null, 'vertex node should have been removed' );
 
       var solderNode = self.getSolderNode( vertex );
-      mainLayer.removeChild( solderNode );
+      self.mainLayer.removeChild( solderNode );
 
       var solderNodeIndex = self.solderNodes.indexOf( solderNode );
       if ( solderNodeIndex > -1 ) {
