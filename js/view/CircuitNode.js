@@ -65,11 +65,15 @@ define( function( require ) {
     // flow through.
     this.seriesAmmeterNodeReadoutPanelLayer = new Node();
 
+    // @public (read-only) layer for vertex buttons
     this.buttonLayer = new Node();
-    this.valueLayer = new Node(); // for "show values"
+
+    // @public (read-only) for "show values"
+    this.valueLayer = new Node();
 
     // @public (read-only) so that additional Nodes may be interleaved
     this.mainLayer = new Node();
+
     var mainLayer = this.mainLayer; // TODO: get rid of main layer, use a11y for showing highlights?
     Node.call( this, {
       children: [
