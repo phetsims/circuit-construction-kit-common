@@ -108,11 +108,15 @@ define( function( require ) {
 
     // When loading from a state object, the vertices could have been added first.  If so, move them in front
     var moveVerticesToFront = function( circuitElement ) {
-      self.getVertexNode( circuitElement.startVertexProperty.get() ) && self.getVertexNode( circuitElement.startVertexProperty.get() ).moveToFront();
-      self.getVertexNode( circuitElement.endVertexProperty.get() ) && self.getVertexNode( circuitElement.endVertexProperty.get() ).moveToFront();
+      var startVertexNode = self.getVertexNode( circuitElement.startVertexProperty.get() );
+      var endVertexNode = self.getVertexNode( circuitElement.endVertexProperty.get() );
+      var startSolderNode = self.getSolderNode( circuitElement.startVertexProperty.get() );
+      var endSolderNode = self.getSolderNode( circuitElement.endVertexProperty.get() );
 
-      self.getSolderNode( circuitElement.startVertexProperty.get() ) && self.getSolderNode( circuitElement.startVertexProperty.get() ).moveToFront();
-      self.getSolderNode( circuitElement.endVertexProperty.get() ) && self.getSolderNode( circuitElement.endVertexProperty.get() ).moveToFront();
+      startVertexNode && startVertexNode.moveToFront();
+      endVertexNode && endVertexNode.moveToFront();
+      startSolderNode && startSolderNode.moveToFront();
+      endSolderNode && endSolderNode.moveToFront();
     };
 
     /**
@@ -142,7 +146,7 @@ define( function( require ) {
 
           if ( circuitElement instanceof FixedLengthCircuitElement &&
 
-               // don't double add for light bulbs
+               // don't double add for light bulbs.  TODO: light bulbs need to be redone for layering see #345
                !(circuitElementNode instanceof LightBulbSocketNode) &&
 
                // series ammeters already show their own readouts
@@ -234,13 +238,14 @@ define( function( require ) {
       }
     } );
 
+    // When a charge is added, add the corresponding ChargeNode
     circuit.charges.addItemAddedListener( function( charge ) {
       var chargeNode = new ChargeNode(
         charge,
         circuitConstructionKitScreenView.circuitConstructionKitModel.revealingProperty || new BooleanProperty( true )
       );
       charge.disposeEmitter.addListener( function x() {
-        var index = self.chargeNodes.indexOf( charge );
+        var index = self.chargeNodes.indexOf( chargeNode );
         self.chargeNodes.splice( index, 1 );
 
         charge.disposeEmitter.removeListener( x );

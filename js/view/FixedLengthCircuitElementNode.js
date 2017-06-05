@@ -56,9 +56,10 @@ define( function( require ) {
     this.contentNode = new Node();
 
     // Show the selected node
-    viewProperty.link( function( view ) {
+    var viewPropertyListener = function( view ) {
       self.contentNode.children = [ view === 'lifelike' ? lifelikeNode : schematicNode ];
-    } );
+    };
+    viewProperty.link( viewPropertyListener );
 
     // Flag to indicate when updating view is necessary, in order to avoid duplicate work when both vertices move
     this.dirty = true;
@@ -216,6 +217,8 @@ define( function( require ) {
       circuitElement.interactiveProperty.unlink( pickableListener );
 
       circuitLayerNode && circuitLayerNode.highlightLayer.removeChild( self.highlightNode );
+
+      viewProperty.unlink( viewPropertyListener );
 
       if ( !options.icon && circuitElement instanceof Battery ) {
         Property.unmultilink( updateFireMultilink );
