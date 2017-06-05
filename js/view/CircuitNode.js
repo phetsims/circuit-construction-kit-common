@@ -97,17 +97,12 @@ define( function( require ) {
     // @public (read-only) the layer to display the gray solder
     this.solderNodes = [];
 
-    // in main layer
-    // TODO: eliminate these arrays?
-    this.batteryNodes = [];
-    this.lightBulbNodes = [];
-    this.lightBulbForegroundNodes = [];
-    this.wireNodes = [];
-    this.resistorNodes = [];
-    this.switchNodes = [];
+    // @private - Map to find CircuitElement=>CircuitElementNode. key is CircuitElement.id, value is CircuitElementNode
+    this.circuitElementNodeMap = {};
+
     this.vertexNodes = [];
+
     this.chargeNodes = [];
-    this.seriesAmmeterNodes = [];
 
     // When loading from a state object, the vertices could have been added first.  If so, move them in front
     var moveVerticesToFront = function( circuitElement ) {
@@ -127,10 +122,9 @@ define( function( require ) {
      * @param {function} CircuitElementNodeConstructor constructor for the node type, such as BatteryNode
      * @param {function} type - the type of the CircuitElement, such as Battery or Wire
      * @param {Array.<CircuitElementNode>} nodeArray
-     * @param {function} getter, given a {CircuitElement}, return the corresponding {CircuitElementNode}
      * @param {Tandem} groupTandem
      */
-    var initializeCircuitElementType = function( CircuitElementNodeConstructor, type, nodeArray, getter, groupTandem ) {
+    var initializeCircuitElementType = function( CircuitElementNodeConstructor, type, groupTandem ) {
       var addCircuitElement = function( circuitElement ) {
         if ( circuitElement instanceof type ) {
           var circuitElementNode = new CircuitElementNodeConstructor(
@@ -141,7 +135,7 @@ define( function( require ) {
             circuitConstructionKitScreenView.circuitConstructionKitModel.viewProperty,
             groupTandem.createNextTandem()
           );
-          nodeArray.push( circuitElementNode );
+          self.circuitElementNodeMap[ circuitElement.id ] = circuitElementNode;
           self.mainLayer.addChild( circuitElementNode );
           moveVerticesToFront( circuitElement );
 
@@ -170,30 +164,22 @@ define( function( require ) {
             circuitElement.valueNode = null;
           }
 
-          var circuitElementNode = getter( circuitElement );
+          var circuitElementNode = self.getCircuitElementNode( circuitElement );
           self.mainLayer.removeChild( circuitElementNode );
-
-          var index = nodeArray.indexOf( circuitElementNode );
-          if ( index > -1 ) {
-            nodeArray.splice( index, 1 );
-          }
           circuitElementNode.dispose();
 
-          assert && assert( getter( circuitElement ) === null, 'should have been removed' );
+          delete self.circuitElementNodeMap.circuitElement.id;
         }
       } );
     };
 
-    // var all = function() {return true;};
-    // var isResistor = function( circuitElement ) { return circuitElement.resistorType === 'resistor'; };
-    // var isGrabBagItem = function( circuitElement ) { return !isResistor( circuitElement ); };
-    initializeCircuitElementType( WireNode, Wire, self.wireNodes, this.getWireNode.bind( this ), tandem.createGroupTandem( 'wireNode' ) );
-    initializeCircuitElementType( BatteryNode, Battery, self.batteryNodes, this.getBatteryNode.bind( this ), tandem.createGroupTandem( 'batteryNode' ) );
-    initializeCircuitElementType( CCKLightBulbNode, LightBulb, self.lightBulbNodes, this.getCCKLightBulbNode.bind( this ), tandem.createGroupTandem( 'lightBulbNode' ) );
-    initializeCircuitElementType( LightBulbSocketNode, LightBulb, self.lightBulbForegroundNodes, this.getCCKLightBulbForegroundNode.bind( this ), tandem.createGroupTandem( 'lightBulbForegroundNode' ) );
-    initializeCircuitElementType( ResistorNode, Resistor, self.resistorNodes, this.getResistorNode.bind( this ), tandem.createGroupTandem( 'resistorNode' ) );
-    initializeCircuitElementType( SeriesAmmeterNode, SeriesAmmeter, self.seriesAmmeterNodes, this.getSeriesAmmeterNode.bind( this ), tandem.createGroupTandem( 'seriesAmmeterNode' ) );
-    initializeCircuitElementType( SwitchNode, Switch, self.switchNodes, this.getSwitchNode.bind( this ), tandem.createGroupTandem( 'switchNode' ) );
+    initializeCircuitElementType( WireNode, Wire, tandem.createGroupTandem( 'wireNode' ) );
+    initializeCircuitElementType( BatteryNode, Battery, tandem.createGroupTandem( 'batteryNode' ) );
+    initializeCircuitElementType( CCKLightBulbNode, LightBulb, tandem.createGroupTandem( 'lightBulbNode' ) );
+    initializeCircuitElementType( LightBulbSocketNode, LightBulb, tandem.createGroupTandem( 'lightBulbForegroundNode' ) );
+    initializeCircuitElementType( ResistorNode, Resistor, tandem.createGroupTandem( 'resistorNode' ) );
+    initializeCircuitElementType( SeriesAmmeterNode, SeriesAmmeter, tandem.createGroupTandem( 'seriesAmmeterNode' ) );
+    initializeCircuitElementType( SwitchNode, Switch, tandem.createGroupTandem( 'switchNode' ) );
     // initializeCircuitElementType( GrabBagItemNode, Resistor, isGrabBagItem, self.switchNodes, this.getSwitchNode.bind( this ), tandem.createGroupTandem( 'switchNode' ) );
 
     var vertexNodeGroup = tandem.createGroupTandem( 'vertexNodes' );
@@ -345,53 +331,8 @@ define( function( require ) {
      * @private
      */
     getCircuitElementNode: function( circuitElement ) {
-      if ( circuitElement instanceof Wire ) {
-        return this.getWireNode( circuitElement );
-      }
-      else if ( circuitElement instanceof LightBulb ) {
-        return this.getCCKLightBulbNode( circuitElement );
-      }
-      else if ( circuitElement instanceof Battery ) {
-        return this.getBatteryNode( circuitElement );
-      }
-      else if ( circuitElement instanceof Resistor ) {
-        return this.getResistorNode( circuitElement );
-      }
-      else if ( circuitElement instanceof Switch ) {
-        return this.getSwitchNode( circuitElement );
-      }
-      else if ( circuitElement instanceof SeriesAmmeter ) {
-        return this.getSeriesAmmeterNode( circuitElement );
-      }
-      else {
-        assert && assert( 'no node found for circuit element' );
-        return null;
-      }
+      return this.circuitElementNodeMap[ circuitElement.id ];
     },
-    /**
-     * Get the CircuitElementNode for the corresponding CircuitElement
-     * @param {Array.<CircuitElementNode>} nodeArray - the list of nodes to search
-     * @param {CircuitElement} circuitElement
-     * @returns {CircuitElementNode|null}
-     * @private
-     */
-    getCircuitElementNodeFromArray: function( nodeArray, circuitElement ) {
-      for ( var i = 0; i < nodeArray.length; i++ ) {
-        if ( nodeArray[ i ].circuitElement === circuitElement ) {
-          return nodeArray[ i ];
-        }
-      }
-      return null;
-    },
-
-    // TODO: do we really need these?  If so, document them.
-    getWireNode: function( wire ) { return this.getCircuitElementNodeFromArray( this.wireNodes, wire ); },
-    getCCKLightBulbNode: function( lightBulb ) { return this.getCircuitElementNodeFromArray( this.lightBulbNodes, lightBulb ); },
-    getCCKLightBulbForegroundNode: function( lightBulb ) { return this.getCircuitElementNodeFromArray( this.lightBulbForegroundNodes, lightBulb ); },
-    getBatteryNode: function( battery ) { return this.getCircuitElementNodeFromArray( this.batteryNodes, battery ); },
-    getResistorNode: function( resistor ) { return this.getCircuitElementNodeFromArray( this.resistorNodes, resistor ); },
-    getSeriesAmmeterNode: function( seriesAmmeter ) { return this.getCircuitElementNodeFromArray( this.seriesAmmeterNodes, seriesAmmeter ); },
-    getSwitchNode: function( switchModel ) { return this.getCircuitElementNodeFromArray( this.switchNodes, switchModel ); },
 
     /**
      * Get the Node for a vertex
@@ -534,11 +475,7 @@ define( function( require ) {
 
       this.solderNodes.forEach( vertexNodeToBack );
       this.vertexNodes.forEach( vertexNodeToBack );
-      this.batteryNodes.forEach( circuitElementNodeToBack );
-      this.lightBulbNodes.forEach( circuitElementNodeToBack );
-      this.wireNodes.forEach( circuitElementNodeToBack );
-      this.resistorNodes.forEach( circuitElementNodeToBack );
-      this.switchNodes.forEach( circuitElementNodeToBack );
+      _.values( this.circuitElementNodeMap ).forEach( circuitElementNodeToBack() );
 
       // Move black box interface vertices behind the black box, see https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/36
       var interfaceVertexBehindBox = function( nodeWithVertex ) {
