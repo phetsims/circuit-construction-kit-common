@@ -137,15 +137,15 @@ define( function( require ) {
     /**
      * On tap events, select the CircuitElement (if it is close enough to the tap)
      * @param {Object} event - scenery input event
-     * @param {CircuitNode} circuitNode
+     * @param {CircuitLayerNode} circuitLayerNode
      * @param {Vector2} startPoint
      * @public
      */
-    selectCircuitElementNodeWhenNear: function( event, circuitNode, startPoint ) {
+    selectCircuitElementNodeWhenNear: function( event, circuitLayerNode, startPoint ) {
       var self = this;
       if ( event.pointer.point.distance( startPoint ) < CircuitConstructionKitConstants.TAP_THRESHOLD ) {
 
-        circuitNode.circuit.selectedCircuitElementProperty.set( this.circuitElement );
+        circuitLayerNode.circuit.selectedCircuitElementProperty.set( this.circuitElement );
 
         // focus the element for keyboard interaction
         this.focus();
@@ -168,7 +168,7 @@ define( function( require ) {
 
             if ( trails.length === 0 ) {
               rootNode.removeInputListener( clickToDismissListener );
-              circuitNode.circuit.selectedCircuitElementProperty.set( null );
+              circuitLayerNode.circuit.selectedCircuitElementProperty.set( null );
             }
           }
         };
@@ -177,7 +177,7 @@ define( function( require ) {
       else {
 
         // deselect after dragging
-        circuitNode.circuit.selectedCircuitElementProperty.set( null );
+        circuitLayerNode.circuit.selectedCircuitElementProperty.set( null );
       }
     }
   } );

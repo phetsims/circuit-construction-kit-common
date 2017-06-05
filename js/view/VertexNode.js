@@ -26,19 +26,19 @@ define( function( require ) {
   var DISTANCE_TO_CUT_BUTTON = 70; // How far in view coordinates the cut button appears from the vertex node
 
   /**
-   * @param {CircuitNode} circuitNode - the entire CircuitNode
+   * @param {CircuitLayerNode} circuitLayerNode - the entire CircuitLayerNode
    * @param {Vertex} vertex - the Vertex that will be displayed
    * @param {Tandem} tandem
    * @constructor
    */
-  function VertexNode( circuitNode, vertex, tandem ) {
+  function VertexNode( circuitLayerNode, vertex, tandem ) {
     var self = this;
-    var circuit = circuitNode.circuit;
+    var circuit = circuitLayerNode.circuit;
 
     // @public (read-only) - the vertex associated with this node
     this.vertex = vertex;
 
-    // @public (read-only) - added by CircuitNode during dragging, used for relative drag location.
+    // @public (read-only) - added by CircuitLayerNode during dragging, used for relative drag location.
     this.startOffset = null;
 
     // @public (read-only) - for hit testing with probes
@@ -121,8 +121,8 @@ define( function( require ) {
       children: [ dottedLineNode ],
       tandem: tandem
     } );
-    circuitNode.highlightLayer.addChild( highlightNode );
-    circuitNode.buttonLayer.addChild( cutButton );
+    circuitLayerNode.highlightLayer.addChild( highlightNode );
+    circuitLayerNode.buttonLayer.addChild( cutButton );
 
     var updatePickable = function( interactive ) { self.pickable = interactive; };
     vertex.interactiveProperty.link( updatePickable );
@@ -136,17 +136,17 @@ define( function( require ) {
       tandem: tandem.createTandem( 'dragHandler' ),
       start: function( event ) {
         eventPoint = event.pointer.point;
-        vertex.draggableProperty.get() && circuitNode.startDragVertex( event.pointer.point, vertex, true );
+        vertex.draggableProperty.get() && circuitLayerNode.startDragVertex( event.pointer.point, vertex, true );
         dragged = false;
       },
       drag: function( event ) {
         dragged = true;
-        vertex.draggableProperty.get() && circuitNode.dragVertex( event.pointer.point, vertex, true );
+        vertex.draggableProperty.get() && circuitLayerNode.dragVertex( event.pointer.point, vertex, true );
       },
       end: function( event ) {
 
         // The vertex can only connect to something if it was actually moved.
-        vertex.draggableProperty.get() && circuitNode.endDrag( event, vertex, dragged );
+        vertex.draggableProperty.get() && circuitLayerNode.endDrag( event, vertex, dragged );
 
         // Only show on a tap, not on every drag.
         if ( vertex.interactiveProperty.get() && event.pointer.point.distance( eventPoint ) < CircuitConstructionKitConstants.TAP_THRESHOLD ) {
@@ -232,7 +232,7 @@ define( function( require ) {
       var proposedPosition = position.plus( sumOfDirections.normalized().timesScalar( DISTANCE_TO_CUT_BUTTON ) );
 
       // Property doesn't exist until the node is attached to scene graph
-      var bounds = circuitNode.visibleBoundsInCircuitCoordinateFrameProperty.get();
+      var bounds = circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty.get();
 
       var availableBounds = bounds.eroded( cutButton.width / 2 );
       cutButton.center = availableBounds.closestPointTo( proposedPosition );
@@ -252,8 +252,8 @@ define( function( require ) {
       vertex.interactiveProperty.unlink( updatePickable );
       vertex.relayerEmitter.removeListener( updateMoveToFront );
 
-      circuitNode.highlightLayer.removeChild( highlightNode );
-      circuitNode.buttonLayer.removeChild( cutButton );
+      circuitLayerNode.highlightLayer.removeChild( highlightNode );
+      circuitLayerNode.buttonLayer.removeChild( cutButton );
 
       circuit.vertices.removeItemAddedListener( updateStroke );
       circuit.vertices.removeItemRemovedListener( updateStroke );

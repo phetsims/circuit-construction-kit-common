@@ -18,17 +18,17 @@ define( function( require ) {
   var SOLDER_COLOR = '#ae9f9e';
 
   /**
-   * @param {CircuitNode} circuitNode
+   * @param {CircuitLayerNode} circuitLayerNode
    * @param {Vertex} vertex
    * @constructor
    */
-  function SolderNode( circuitNode, vertex ) {
-    var circuit = circuitNode.circuit;
+  function SolderNode( circuitLayerNode, vertex ) {
+    var circuit = circuitLayerNode.circuit;
 
     // @public (read-only)
     this.vertex = vertex;
 
-    // @public (read-only) - added by CircuitNode during dragging, used for relative drag location.
+    // @public (read-only) - added by CircuitLayerNode during dragging, used for relative drag location.
     this.startOffset = null;
 
     // @public (read-only) - for hit testing with probes
@@ -63,7 +63,7 @@ define( function( require ) {
     vertex.positionProperty.link( updateSolderNodePosition );
 
     var relayerListener = function() {
-      circuitNode.fixSolderLayeringForVertex( vertex );
+      circuitLayerNode.fixSolderLayeringForVertex( vertex );
     };
     vertex.relayerEmitter.addListener( relayerListener );
 

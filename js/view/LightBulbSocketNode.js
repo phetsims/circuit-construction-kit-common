@@ -25,7 +25,7 @@ define( function( require ) {
   /**
    * This constructor is called dynamically and must match the signature of other circuit element nodes.
    * @param {CCKScreenView} circuitConstructionKitScreenView - the main screen view
-   * @param {CircuitNode} circuitNode - the node for the entire circuit
+   * @param {CircuitLayerNode} circuitLayerNode - the node for the entire circuit
    * @param {LightBulb} lightBulb - the light bulb model
    * @param {Property.<boolean>} runningProperty - true if the sim can display values
    * @param {Property.<string>} viewProperty - 'likelike'|'schematic'
@@ -33,7 +33,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function LightBulbSocketNode( circuitConstructionKitScreenView, circuitNode, lightBulb, runningProperty, viewProperty, tandem, options ) {
+  function LightBulbSocketNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, runningProperty, viewProperty, tandem, options ) {
     // TODO: factor out duplicated code between this class and CCKLightBulbNode
 
     // TODO: This is overkill, we should just have an Image, without all of the extra brightness lines, etc.
@@ -57,7 +57,7 @@ define( function( require ) {
         bottom: FixedLengthCircuitElementNode.HIGHLIGHT_INSET * 0.75
       }
     }, options );
-    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitNode, lightBulb, viewProperty, lightBulbNode, new Rectangle( 0, 0, 10, 10 ), tandem, options );
+    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitLayerNode, lightBulb, viewProperty, lightBulbNode, new Rectangle( 0, 0, 10, 10 ), tandem, options );
 
     // Suppress the highlight for the socket, the highlight is shown for the CCKLightBulbNode
     if ( this.highlightNode ) {

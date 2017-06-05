@@ -21,15 +21,15 @@ define( function( require ) {
   /**
    * @param {string} labelText
    * @param {BooleanProperty} showLabelsProperty
-   * @param {CircuitNode} circuitNode
+   * @param {CircuitLayerNode} circuitLayerNode
    * @param {Node} iconNode
    * @param {number} maxNumber
    * @param {function} count
    * @param {function} createElement
    * @constructor
    */
-  function CircuitElementToolNode( labelText, showLabelsProperty, circuitNode, iconNode, maxNumber, count, createElement ) {
-    var circuit = circuitNode.circuit;
+  function CircuitElementToolNode( labelText, showLabelsProperty, circuitLayerNode, iconNode, maxNumber, count, createElement ) {
+    var circuit = circuitLayerNode.circuit;
     var self = this;
     var labelNode = new Text( labelText, { fontSize: 12, maxWidth: TOOLBOX_ICON_SIZE } );
     showLabelsProperty.link( function( showLabels ) {labelNode.visible = showLabels;} );
@@ -46,8 +46,8 @@ define( function( require ) {
           // Don't try to start drags with a right mouse button or an attached pointer.
           if ( !event.canStartPress() ) { return; }
 
-          // initial position of the pointer in the coordinate frame of the CircuitNode
-          var viewPosition = circuitNode.globalToLocalPoint( event.pointer.point );
+          // initial position of the pointer in the coordinate frame of the CircuitLayerNode
+          var viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point );
 
           // Create the new CircuitElement at the correct location
           var circuitElement = createElement( viewPosition );

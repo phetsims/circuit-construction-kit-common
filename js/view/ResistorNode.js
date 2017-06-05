@@ -51,7 +51,7 @@ define( function( require ) {
 
   /**
    * @param {CCKScreenView} circuitConstructionKitScreenView
-   * @param {CircuitNode} [circuitNode] optional, null for icons
+   * @param {CircuitLayerNode} [circuitLayerNode] optional, null for icons
    * @param {Resistor} resistor
    * @param {Property.<boolean>} runningProperty - not used here but appears in signature to keep same signature as other CircuitElementNode subclasses.
    * @param {Property.<string>} viewProperty - 'lifelike' or 'schematic'
@@ -59,7 +59,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function ResistorNode( circuitConstructionKitScreenView, circuitNode, resistor, runningProperty, viewProperty, tandem, options ) {
+  function ResistorNode( circuitConstructionKitScreenView, circuitLayerNode, resistor, runningProperty, viewProperty, tandem, options ) {
 
     // @public (read-only) the resistor depicted by this node
     this.resistor = resistor;
@@ -170,7 +170,7 @@ define( function( require ) {
     // Super call
     FixedLengthCircuitElementNode.call( this,
       circuitConstructionKitScreenView,
-      circuitNode,
+      circuitLayerNode,
       resistor,
       viewProperty,
       lifelikeResistorImageNode,

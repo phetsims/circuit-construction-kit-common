@@ -29,14 +29,14 @@ define( function( require ) {
 
   /**
    * @param {CCKScreenView|null} circuitConstructionKitScreenView - if null, this WireNode is just an icon
-   * @param {CircuitNode} circuitNode
+   * @param {CircuitLayerNode} circuitLayerNode
    * @param {Wire} wire
    * @param {Property.<boolean>} runningProperty - unused but provided to match the constructors of other circuit element nodes
    * @param {Property.<string>} viewProperty - lifelike or schematic
    * @param {Tandem} tandem
    * @constructor
    */
-  function WireNode( circuitConstructionKitScreenView, circuitNode, wire, runningProperty, viewProperty, tandem ) {
+  function WireNode( circuitConstructionKitScreenView, circuitLayerNode, wire, runningProperty, viewProperty, tandem ) {
     var self = this;
     this.wire = wire;
 
@@ -114,14 +114,14 @@ define( function( require ) {
       children: [ highlightNode ]
     } );
 
-    circuitNode && circuitNode.highlightLayer.addChild( highlightNodeParent );
+    circuitLayerNode && circuitLayerNode.highlightLayer.addChild( highlightNodeParent );
 
     // @private
     this.lineNodeParent = lineNodeParent;
 
     // @private
     this.lineNode = lineNode;
-    var circuit = circuitNode && circuitNode.circuit;
+    var circuit = circuitLayerNode && circuitLayerNode.circuit;
     CircuitElementNode.call( this, wire, circuit, {
       children: [
         lineNodeParent
@@ -223,8 +223,8 @@ define( function( require ) {
           if ( wire.interactiveProperty.get() ) {
 
             // Start drag by starting a drag on start and end vertices
-            circuitNode.startDragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
-            circuitNode.startDragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
+            circuitLayerNode.startDragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
+            circuitLayerNode.startDragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
             wire.isOverToolboxProperty.set( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) );
             dragged = false;
             startPoint = event.pointer.point;
@@ -234,8 +234,8 @@ define( function( require ) {
           if ( wire.interactiveProperty.get() ) {
 
             // Drag by translating both of the vertices
-            circuitNode.dragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
-            circuitNode.dragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
+            circuitLayerNode.dragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
+            circuitLayerNode.dragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
             wire.isOverToolboxProperty.set( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) );
             dragged = true;
           }
@@ -257,8 +257,8 @@ define( function( require ) {
 
               // Make it impossible to drag vertices when about to drop back into box
               // See https://github.com/phetsims/circuit-construction-kit-common/issues/279
-              circuitNode.getVertexNode( wire.startVertexProperty.get() ).pickable = false;
-              circuitNode.getVertexNode( wire.endVertexProperty.get() ).pickable = false;
+              circuitLayerNode.getVertexNode( wire.startVertexProperty.get() ).pickable = false;
+              circuitLayerNode.getVertexNode( wire.endVertexProperty.get() ).pickable = false;
 
               // If over the toolbox, then drop into it, and don't process further
               var id = setTimeout( function() {
@@ -271,11 +271,11 @@ define( function( require ) {
             else {
 
               // End drag for each of the vertices
-              circuitNode.endDrag( event, wire.startVertexProperty.get(), dragged );
-              circuitNode.endDrag( event, wire.endVertexProperty.get(), dragged );
+              circuitLayerNode.endDrag( event, wire.startVertexProperty.get(), dragged );
+              circuitLayerNode.endDrag( event, wire.endVertexProperty.get(), dragged );
 
               // Only show the editor when tapped, not on every drag.
-              self.selectCircuitElementNodeWhenNear( event, circuitNode, startPoint );
+              self.selectCircuitElementNodeWhenNear( event, circuitLayerNode, startPoint );
 
               dragged = false;
             }
@@ -295,7 +295,7 @@ define( function( require ) {
           highlightNode.shape = getHighlightStrokedShape( highlightStrokeStyles );
         }
       };
-      circuitNode.circuit.selectedCircuitElementProperty.link( updateHighlight );
+      circuitLayerNode.circuit.selectedCircuitElementProperty.link( updateHighlight );
     }
 
     /**
@@ -307,13 +307,13 @@ define( function( require ) {
       wire.startVertexProperty.unlink( updateStartVertex );
       wire.endVertexProperty.unlink( updateEndVertex );
 
-      updateHighlight && circuitNode.circuit.selectedCircuitElementProperty.unlink( updateHighlight );
+      updateHighlight && circuitLayerNode.circuit.selectedCircuitElementProperty.unlink( updateHighlight );
       wire.interactiveProperty.unlink( updatePickable );
 
       wire.startVertexProperty.get().positionProperty.unlink( updateStartPosition );
       wire.endVertexProperty.get().positionProperty.unlink( updateEndPosition );
 
-      circuitNode && circuitNode.highlightLayer.removeChild( highlightNodeParent );
+      circuitLayerNode && circuitLayerNode.highlightLayer.removeChild( highlightNodeParent );
 
       viewProperty.unlink( updateStroke );
       tandem.removeInstance( self );

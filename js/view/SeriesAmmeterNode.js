@@ -32,7 +32,7 @@ define( function( require ) {
 
   /**
    * @param {CCKScreenView} circuitConstructionKitScreenView
-   * @param {CircuitNode} circuitNode
+   * @param {CircuitLayerNode} circuitLayerNode
    * @param {SeriesAmmeter} seriesAmmeter
    * @param {Property.<boolean>} runningProperty - supplied for consistency with other CircuitElementNode constructors
    * @param {Property.<string>} viewProperty
@@ -40,7 +40,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function SeriesAmmeterNode( circuitConstructionKitScreenView, circuitNode, seriesAmmeter, runningProperty, viewProperty, tandem, options ) {
+  function SeriesAmmeterNode( circuitConstructionKitScreenView, circuitLayerNode, seriesAmmeter, runningProperty, viewProperty, tandem, options ) {
     var self = this;
     options = options || {};
     viewProperty = new Property( 'lifelike' );
@@ -133,14 +133,14 @@ define( function( require ) {
       node.addChild( node.frontPanel );
     }
     else {
-      circuitNode.seriesAmmeterNodeReadoutPanelLayer.addChild( node.frontPanel );
+      circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.addChild( node.frontPanel );
     }
 
     this.lifelikeNode = node;
 
     FixedLengthCircuitElementNode.call( this,
       circuitConstructionKitScreenView,
-      circuitNode,
+      circuitLayerNode,
       seriesAmmeter,
       viewProperty,
       this.lifelikeNode,
@@ -158,7 +158,7 @@ define( function( require ) {
     this.disposeSeriesAmmeterNode = function() {
       seriesAmmeter.currentProperty.unlink( updateText );
       if ( !this.icon ) {
-        circuitNode.seriesAmmeterNodeReadoutPanelLayer.removeChild( self.lifelikeNode.frontPanel );
+        circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.removeChild( self.lifelikeNode.frontPanel );
       }
     };
   }

@@ -29,7 +29,7 @@ define( function( require ) {
 
   /**
    * @param {CCKScreenView} circuitConstructionKitScreenView
-   * @param {CircuitNode} circuitNode
+   * @param {CircuitLayerNode} circuitLayerNode
    * @param {Switch} circuitSwitch
    * @param {Property.<boolean>} runningProperty - supplied for consistency with other CircuitElementNode constructors
    * @param {Property.<string>} viewProperty
@@ -37,7 +37,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function SwitchNode( circuitConstructionKitScreenView, circuitNode, circuitSwitch, runningProperty, viewProperty, tandem, options ) {
+  function SwitchNode( circuitConstructionKitScreenView, circuitLayerNode, circuitSwitch, runningProperty, viewProperty, tandem, options ) {
 
     // @public (read-only) - the Switch rendered by this Node
     this.circuitSwitch = circuitSwitch;
@@ -139,7 +139,7 @@ define( function( require ) {
 
     FixedLengthCircuitElementNode.call( this,
       circuitConstructionKitScreenView,
-      circuitNode,
+      circuitLayerNode,
       circuitSwitch,
       viewProperty,
       lifelikeNode,

@@ -44,7 +44,7 @@ define( function( require ) {
    * @param {Tandem} tandem
    * @constructor
    */
-  function CircuitNode( circuit, circuitConstructionKitScreenView, tandem ) {
+  function CircuitLayerNode( circuit, circuitConstructionKitScreenView, tandem ) {
     var self = this;
 
     // @private {Property.<string>} - 'lifelike' | 'schematic'
@@ -169,7 +169,7 @@ define( function( require ) {
           self.mainLayer.removeChild( circuitElementNode );
           circuitElementNode.dispose();
 
-          delete self.circuitElementNodeMap.circuitElement.id;
+          delete self.circuitElementNodeMap[ circuitElement.id ];
         }
       } );
     };
@@ -259,9 +259,9 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKitCommon.register( 'CircuitNode', CircuitNode );
+  circuitConstructionKitCommon.register( 'CircuitLayerNode', CircuitLayerNode );
 
-  return inherit( Node, CircuitNode, {
+  return inherit( Node, CircuitLayerNode, {
 
     /**
      * Fix the solder layering for a given vertex.
