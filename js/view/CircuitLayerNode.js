@@ -153,8 +153,12 @@ define( function( require ) {
                !(circuitElement instanceof SeriesAmmeter)
           ) {
             var valueNode = new ValueNode( circuitElement, self.circuitConstructionKitModel.showValuesProperty, tandem.createTandem( circuitElement.tandemName ).createTandem( 'valueNode' ) );
-            circuitElement.valueNode = valueNode;
             self.valueLayer.addChild( valueNode );
+
+            circuitElement.disposeEmitter.addListener( function() {
+              self.valueLayer.removeChild( valueNode );
+              valueNode.dispose();
+            } );
           }
         }
       };
@@ -162,12 +166,6 @@ define( function( require ) {
       circuit.circuitElements.forEach( addCircuitElement );
       circuit.circuitElements.addItemRemovedListener( function( circuitElement ) {
         if ( circuitElement instanceof type ) {
-
-          // Remove associated ValueNode, if any
-          if ( circuitElement.valueNode ) {
-            self.valueLayer.removeChild( circuitElement.valueNode );
-            circuitElement.valueNode = null;
-          }
 
           var circuitElementNode = self.getCircuitElementNode( circuitElement );
           self.mainLayer.removeChild( circuitElementNode );
@@ -244,11 +242,9 @@ define( function( require ) {
         charge,
         circuitConstructionKitScreenView.circuitConstructionKitModel.revealingProperty || new BooleanProperty( true )
       );
-      charge.disposeEmitter.addListener( function x() {
+      charge.disposeEmitter.addListener( function() {
         var index = self.chargeNodes.indexOf( chargeNode );
         self.chargeNodes.splice( index, 1 );
-
-        charge.disposeEmitter.removeListener( x );
       } );
       self.chargeNodes.push( chargeNode );
       self.mainLayer.addChild( chargeNode );

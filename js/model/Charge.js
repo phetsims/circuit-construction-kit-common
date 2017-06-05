@@ -81,7 +81,8 @@ define( function( require ) {
       multilink.dispose();
       self.deleted = true;
       self.disposeEmitter.emit();
-      assert && assert( !self.disposeEmitter.hasListeners(), 'after disposal, should have no listeners' );
+
+      self.disposeEmitter.removeAllListeners();
     };
   }
 

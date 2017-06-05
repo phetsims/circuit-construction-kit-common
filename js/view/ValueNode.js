@@ -39,6 +39,8 @@ define( function( require ) {
     // Big enough to see when zoomed out
     var TEXT_OPTIONS = { fontSize: 22 };
 
+    var disposeActions = [];
+
     var contentNode = null;
     if ( circuitElement instanceof Battery ) {
 
@@ -48,15 +50,16 @@ define( function( require ) {
       } );
 
       var voltageText = new Text( '', _.extend( { tandem: tandem.createTandem( 'voltageText' ) }, TEXT_OPTIONS ) );
-      circuitElement.voltageProperty.link( function( voltage ) {
+      var voltageListener = function( voltage ) {
 
         // TODO: factor out formatter with control panel
         voltageText.text = StringUtils.fillIn( voltageUnitsString, { voltage: Util.toFixed( voltage, 1 ) } );
         updatePosition && updatePosition();
-      } );
+      };
+      circuitElement.voltageProperty.link( voltageListener );
 
       var resistanceNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'resistanceText' ) }, TEXT_OPTIONS ) );
-      circuitElement.internalResistanceProperty.link( function( internalResistance, lastInternalResistance ) {
+      var internalResistanceListener = function( internalResistance, lastInternalResistance ) {
         resistanceNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, { resistance: Util.toFixed( internalResistance, 1 ) } );
 
         // If the children should change, update them here
@@ -64,22 +67,38 @@ define( function( require ) {
           contentNode.children = internalResistance > 0 ? [ voltageText, resistanceNode ] : [ voltageText ];
         }
         updatePosition && updatePosition();
+      };
+      circuitElement.internalResistanceProperty.link( internalResistanceListener );
+
+      disposeActions.push( function() {
+        circuitElement.voltageProperty.unlink( voltageListener );
+        circuitElement.internalResistanceProperty.unlink( internalResistanceListener );
       } );
     }
     else if ( circuitElement instanceof Resistor || circuitElement instanceof LightBulb ) {
       contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'resistanceText' ) }, TEXT_OPTIONS ) );
-      circuitElement.resistanceProperty.link( function( resistance ) {
+
+      var linkResistance = function( resistance ) {
         contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, { resistance: Util.toFixed( resistance, 1 ) } );
+      };
+      circuitElement.resistanceProperty.link( linkResistance );
+      disposeActions.push( function() {
+        circuitElement.resistanceProperty.unlink( linkResistance );
       } );
     }
     else if ( circuitElement instanceof Switch ) {
       contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'switchText' ) }, TEXT_OPTIONS ) );
-      circuitElement.resistanceProperty.link( function( resistance ) {
+
+      var updateResistance = function( resistance ) {
         contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, { resistance: resistance > 100000 ? '∞' : Util.toFixed( resistance, 1 ) } );
 
         // Account for the switch open and close geometry for positioning the label.  When the switch is open
         // the label must be higher
         updatePosition && updatePosition();
+      };
+      circuitElement.resistanceProperty.link( updateResistance );
+      disposeActions.push( function() {
+        circuitElement.resistanceProperty.unlink( updateResistance );
       } );
     }
 
@@ -108,14 +127,34 @@ define( function( require ) {
       var centerPositionAndAngle = circuitElement.getPositionAndAngle( circuitElement.chargePathLength * distance );
       self.center = centerPositionAndAngle.position.plus( Vector2.createPolar( 24, centerPositionAndAngle.angle + 3 * Math.PI / 2 ) ); // above light bulb
     };
+
+    var updateVisible = function( visible ) { self.visible = visible; };
+
     circuitElement.vertexMovedEmitter.addListener( updatePosition );
     updatePosition();
-    visibleProperty.link( function( visible ) { self.visible = visible; } );
 
-    // TODO: implement dispose
+    visibleProperty.link( updateVisible );
+
+    // @private
+    this.disposeValueNode = function() {
+      circuitElement.vertexMovedEmitter.removeListener( updatePosition );
+      visibleProperty.unlink( updateVisible );
+      disposeActions.forEach( function( disposeAction ) {
+        disposeAction();
+      } );
+    };
   }
 
   circuitConstructionKitCommon.register( 'ValueNode', ValueNode );
 
-  return inherit( Panel, ValueNode );
+  return inherit( Panel, ValueNode, {
+
+    /**
+     * @public - dispose when no longer used
+     */
+    dispose: function() {
+      Panel.prototype.dispose.call( this );
+      this.disposeValueNode();
+    }
+  } );
 } );

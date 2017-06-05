@@ -89,7 +89,6 @@ define( function( require ) {
       self.detach();
       charge.positionProperty.unlink( updateTransform );
       charge.angleProperty.unlink( updateTransform );
-      charge.disposeEmitter.removeListener( disposeChargeNode );
       revealingProperty.unlink( updateVisible );
       charge.visibleProperty.unlink( updateVisible );
       outsideOfBlackBoxProperty.unlink( updateVisible );

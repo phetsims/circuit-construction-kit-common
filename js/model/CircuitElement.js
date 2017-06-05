@@ -148,6 +148,7 @@ define( function( require ) {
       self.endVertexProperty.get().positionProperty.unlink( vertexMoved );
 
       self.disposeEmitter.emit();
+      self.disposeEmitter.removeAllListeners();
     };
 
     // @public (read-only by clients, writable-by-subclasses) the distance the charges must take to get to the other
