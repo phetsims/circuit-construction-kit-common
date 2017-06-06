@@ -230,7 +230,11 @@ define( function( require ) {
     this.vertexDroppedEmitter.addListener( function( vertex ) {
       self.stepActions.push( function() {
 
+        // Collect nearest vertices 
         var neighbors = self.getNeighboringVertices( vertex );
+
+        // Also consider the vertex being dropped for comparison with neighbors
+        neighbors.push( vertex );
         var pairs = [];
         for ( var i = 0; i < neighbors.length; i++ ) {
           for ( var k = 0; k < self.vertices.length; k++ ) {
@@ -244,7 +248,6 @@ define( function( require ) {
           }
         }
         if ( pairs.length > 0 ) {
-
           // Find the closest pair
           var distance = function( pair ) {
             return pair.v2.unsnappedPositionProperty.get().distance( pair.v1.unsnappedPositionProperty.get() );
@@ -291,7 +294,6 @@ define( function( require ) {
      * @private
      */
     moveVerticesApart: function( v1, v2 ) {
-
       var v1Neighbors = this.getNeighboringVertices( v1 );
       var v2Neighbors = this.getNeighboringVertices( v2 );
 
@@ -304,7 +306,9 @@ define( function( require ) {
     },
 
     /**
-     * When two Vertices are dropped/bumped too close together, move one away by rotating it.
+     * When two Vertices are dropped/bumped too close together, move one away by rotating it. Rotation instead of
+     * translation is is used to handle crooked elements with fixed length.
+     *
      * @param {Vertex} vertex - the vertex to rotate
      * @param {Vertex} pivotVertex - the vertex to rotate about
      * @private
