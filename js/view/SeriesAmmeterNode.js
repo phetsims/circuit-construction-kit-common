@@ -63,7 +63,7 @@ define( function( require ) {
       // The ammeter doesn't indicate direction
       current = Math.abs( current );
 
-      var currentText = ( current < 1E-10 ) ? '' : Util.toFixed( current, 2 ) + ' A'; // TODO i18n and fillIn
+      var currentText = ( current < 1E-10 ) ? '' : Util.toFixed( current, 2 ) + ' A';
       readoutText.setText( currentText );
 
       // Center in the panel
