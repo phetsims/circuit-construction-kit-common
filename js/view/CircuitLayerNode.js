@@ -287,7 +287,7 @@ define( function( require ) {
         return component instanceof FixedLengthCircuitElement;
       } );
 
-      // TODO: call fixSolderLayering when this viewproperty changes
+      // This method is called for all vertices when viewProperty value changes
       if ( this.viewProperty.get() === 'lifelike' ) {
         if ( adjacentFixedLengthComponents.length > 0 ) {
 
