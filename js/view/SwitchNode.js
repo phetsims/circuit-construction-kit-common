@@ -135,7 +135,7 @@ define( function( require ) {
       .addColorStop( 0.3, '#e39b8c' )
       .addColorStop( 1, '#b56351' );
     var lifelikeNode = createNode( 'lifelike', lifelikeGradient, LIFELIKE_DIAMETER, 6 );
-    var schematicNode = createNode( 'schematic', 'black', CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH, 0 );// TODO: factor out thickness with WireNode
+    var schematicNode = createNode( 'schematic', 'black', CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH, 0 );
 
     FixedLengthCircuitElementNode.call( this,
       circuitConstructionKitScreenView,
