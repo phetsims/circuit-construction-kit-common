@@ -101,9 +101,6 @@ define( function( require ) {
         circuitElement.resistanceProperty.unlink( updateResistance );
       } );
     }
-
-    // TODO: series ammeter shouldn't have a readout
-
     else {
       contentNode = new Text( '', TEXT_OPTIONS );
     }
