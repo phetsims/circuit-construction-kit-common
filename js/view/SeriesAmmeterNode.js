@@ -131,7 +131,7 @@ define( function( require ) {
       ]
     } );
     if ( options.icon ) {
-      node.addChild( node.frontPanel );
+      node.addChild( node.frontPanel.mutate( { centerY: node.height / 2 - 2 } ) );
     }
     else {
       circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.addChild( node.frontPanel );
@@ -153,8 +153,6 @@ define( function( require ) {
     // @private (read-only)
     this.icon = options.icon;
 
-    this.updateRender();
-
     // @private
     this.disposeSeriesAmmeterNode = function() {
       seriesAmmeter.currentProperty.unlink( updateText );
@@ -175,7 +173,6 @@ define( function( require ) {
     updateRender: function() {
       FixedLengthCircuitElementNode.prototype.updateRender.call( this );
       this.lifelikeNode.frontPanel.setMatrix( this.contentNode.getMatrix() );
-      this.icon && this.lifelikeNode.frontPanel.translate( 0, 19 ); // TODO: this line is a hack
     }
   } );
 } );
