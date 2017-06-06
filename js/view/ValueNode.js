@@ -52,7 +52,6 @@ define( function( require ) {
       var voltageText = new Text( '', _.extend( { tandem: tandem.createTandem( 'voltageText' ) }, TEXT_OPTIONS ) );
       var voltageListener = function( voltage ) {
 
-        // TODO: factor out formatter with control panel
         voltageText.text = StringUtils.fillIn( voltageUnitsString, { voltage: Util.toFixed( voltage, 1 ) } );
         updatePosition && updatePosition();
       };
