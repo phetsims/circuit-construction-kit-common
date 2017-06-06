@@ -1,5 +1,4 @@
 // Copyright 2015-2017, University of Colorado Boulder
-// TODO: Review, document, annotate, bring up to standards
 
 /**
  * The Node that represents a Circuit, including all Wires and FixedLengthCircuitElements, Charge, Solder, etc.  It also
@@ -91,14 +90,14 @@ define( function( require ) {
       return self.parentToLocalBounds( visibleBounds );
     } );
 
-    // @public (read-only)
+    // @public (read-only) - the Circuit model depicted by this view
     this.circuit = circuit;
-
-    // @public (read-only) the layer to display the gray solder
-    this.solderNodes = [];
 
     // @private - Map to find CircuitElement=>CircuitElementNode. key is CircuitElement.id, value is CircuitElementNode
     this.circuitElementNodeMap = {};
+
+    // @public (read-only) the layer to display the gray solder
+    this.solderNodes = [];
 
     // @public (read-only) the VertexNodes
     this.vertexNodes = [];
@@ -179,12 +178,12 @@ define( function( require ) {
     initializeCircuitElementType( WireNode, Wire, tandem.createGroupTandem( 'wireNode' ) );
     initializeCircuitElementType( BatteryNode, Battery, tandem.createGroupTandem( 'batteryNode' ) );
     initializeCircuitElementType( CCKLightBulbNode, LightBulb, tandem.createGroupTandem( 'lightBulbNode' ) );
-    initializeCircuitElementType( LightBulbSocketNode, LightBulb, tandem.createGroupTandem( 'lightBulbForegroundNode' ) );
+    initializeCircuitElementType( LightBulbSocketNode, LightBulb, tandem.createGroupTandem( 'lightBulbForegroundNode' ) );  // TODO: redo bulb layering
     initializeCircuitElementType( ResistorNode, Resistor, tandem.createGroupTandem( 'resistorNode' ) );
     initializeCircuitElementType( SeriesAmmeterNode, SeriesAmmeter, tandem.createGroupTandem( 'seriesAmmeterNode' ) );
     initializeCircuitElementType( SwitchNode, Switch, tandem.createGroupTandem( 'switchNode' ) );
-    // initializeCircuitElementType( GrabBagItemNode, Resistor, isGrabBagItem, self.switchNodes, this.getSwitchNode.bind( this ), tandem.createGroupTandem( 'switchNode' ) );
 
+    // When a Vertex is added to the model, create the corresponding views
     var vertexNodeGroup = tandem.createGroupTandem( 'vertexNodes' );
     var addVertexNode = function( vertex ) {
       var solderNode = new SolderNode( self, vertex );
@@ -196,6 +195,8 @@ define( function( require ) {
       self.mainLayer.addChild( vertexNode );
     };
     circuit.vertices.addItemAddedListener( addVertexNode );
+
+    // When a Vertex is removed from the model, remove and dispose the corresponding views
     circuit.vertices.addItemRemovedListener( function( vertex ) {
       var vertexNode = self.getVertexNode( vertex );
       self.mainLayer.removeChild( vertexNode );
@@ -269,7 +270,7 @@ define( function( require ) {
      * For lifelike: Solder should be in front of wires but behind batteries and resistors.
      * For schematic: Solder should be in front of all components
      *
-     * @param vertex
+     * @param {Vertex} vertex
      * @public
      */
     fixSolderLayeringForVertex: function( vertex ) {
@@ -401,9 +402,13 @@ define( function( require ) {
       }
     },
 
+    /**
+     * Updates the view
+     */
     step: function() {
 
-      // Move all sockets to the front
+      // Move all sockets to the front  TODO: when we fix socket layering thids will automatically fix.
+      // TODO: Bonus todo because this will improve performance once fixed
       var children = this.mainLayer.children;
       var child = null;
       for ( var i = 0; i < children.length; i++ ) {
@@ -415,6 +420,7 @@ define( function( require ) {
 
       // Any charges that are in a light bulb and above halfway through the filament should be in front of the base,
       // so they appear to tunnel through the socket and go in front of the socket on the right-hand side.
+      // TODO: or should we model the z-ordering in the model?  Or solve this with clipping?
       children = this.mainLayer.children;
       for ( i = 0; i < children.length; i++ ) {
         child = children[ i ];
@@ -433,6 +439,12 @@ define( function( require ) {
         }
       }
     },
+
+    /**
+     * Called when a Vertex drag begins, records the relative click point
+     * @param {Vector2} point
+     * @param {Vertex} vertex
+     */
     startDragVertex: function( point, vertex ) {
 
       // If it is the edge of a fixed length circuit element, the element rotates and moves toward the mouse
@@ -440,8 +452,18 @@ define( function( require ) {
       vertexNode.startOffset = vertexNode.globalToParentPoint( point ).minus( vertex.unsnappedPositionProperty.get() );
     },
 
-    // Vertices connected to the black box cannot be moved, but they can be rotated
-    // @private
+    /**
+     * Vertices connected to the black box cannot be moved, but they can be rotated.  Called when dragging a subcircuit.
+     * @param {Vector2} point
+     * @param {Vertex} vertex
+     * @param {boolean} okToRotate
+     * @param {VertexNode} vertexNode
+     * @param {Vector2} position
+     * @param {CircuitElement[]} neighbors
+     * @param {Vertex[]} vertices
+     *
+     * @private
+     */
     rotateAboutFixedPivot: function( point, vertex, okToRotate, vertexNode, position, neighbors, vertices ) {
 
       // Don't traverse across the black box interface, or it would rotate objects on the other side
@@ -476,6 +498,7 @@ define( function( require ) {
     /**
      * When switching from "build" -> "investigate", the black box circuit elements must be moved behind the black box
      * or they will be visible in front of the black box.
+     * @public
      */
     moveTrueBlackBoxElementsToBack: function() {
       var self = this;
@@ -508,6 +531,7 @@ define( function( require ) {
      * @param {Vector2} point - the touch position
      * @param {Vertex} vertex - the vertex that is being dragged
      * @param {boolean} okToRotate - true if it is allowed to rotate adjacent CircuitElements
+     * @public
      */
     dragVertex: function( point, vertex, okToRotate ) {
       var vertexNode = this.getVertexNode( vertex );
@@ -581,6 +605,7 @@ define( function( require ) {
      * @param {Vector2} unsnappedDelta - how far to move the group
      * @param {function|null} updatePositions - optional callback for updating positions after unsnapped positions updated
      * @param {Array.<Vertex>} attachable - the nodes that are candidates for attachment
+     * @public
      */
     translateVertexGroup: function( vertex, vertices, unsnappedDelta, updatePositions, attachable ) {
 
@@ -617,11 +642,14 @@ define( function( require ) {
         vertices[ i ].positionProperty.set( vertices[ i ].unsnappedPositionProperty.get().plus( delta ) );
       }
     },
+
     /**
+     * End a vertex drag.
      *
-     * @param event
-     * @param vertex
+     * @param {Object} event - event from scenery
+     * @param {Vertex} vertex
      * @param {boolean} dragged - true if the vertex actually moved with at least 1 drag call
+     * @public
      */
     endDrag: function( event, vertex, dragged ) {
       assert && assert( typeof dragged === 'boolean', 'didDrag must be supplied' );
