@@ -28,7 +28,7 @@ define( function( require ) {
   var SCHEMATIC_LINE_WIDTH = CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH; // line width in screen coordinates
 
   /**
-   * @param {CCKScreenView|null} circuitConstructionKitScreenView - if null, this WireNode is just an icon
+   * @param {circuitConstructionKitScreenView|null} circuitConstructionKitScreenView - if null, this WireNode is just an icon
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {Wire} wire
    * @param {Property.<boolean>} showResultsProperty - unused but provided to match the constructors of other circuit element nodes
@@ -243,47 +243,11 @@ define( function( require ) {
           }
         },
         end: function( event ) {
-
-          // TODO: duplicated with FixedLengthCircuitElementNode
-          if ( wire.interactiveProperty.get() ) {
-
-            // If over the toolbox, then drop into it, and don't process further
-            if ( wire.isOverToolboxProperty.get() ) {
-
-              var creationTime = self.circuitElement.creationTime;
-              var lifetime = phet.joist.elapsedTime - creationTime;
-              var delayMS = Math.max( 500 - lifetime, 0 );
-
-              // Disallow further interaction
-              self.removeInputListener( self.inputListener );
-
-              // Make it impossible to drag vertices when about to drop back into box
-              // See https://github.com/phetsims/circuit-construction-kit-common/issues/279
-              circuitLayerNode.getVertexNode( wire.startVertexProperty.get() ).pickable = false;
-              circuitLayerNode.getVertexNode( wire.endVertexProperty.get() ).pickable = false;
-
-              // If over the toolbox, then drop into it, and don't process further
-              var id = setTimeout( function() {
-                circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
-              }, delayMS );
-
-              // If disposed by reset all button, clear the timeout
-              wire.disposeEmitter.addListener( function() { clearTimeout( id ); } );
-            }
-            else {
-
-              // End drag for each of the vertices
-              circuitLayerNode.endDrag( event, wire.startVertexProperty.get(), dragged );
-              circuitLayerNode.endDrag( event, wire.endVertexProperty.get(), dragged );
-
-              // Only show the editor when tapped, not on every drag.
-              self.selectCircuitElementNodeWhenNear( event, circuitLayerNode, startPoint );
-
-              dragged = false;
-            }
+          CircuitElementNode.prototype.endDrag.call( self, event, self, [ wire.startVertexProperty.get(), wire.endVertexProperty.get() ],
+            circuitConstructionKitScreenView, circuitLayerNode, startPoint, dragged );
           }
         }
-      } );
+      );
       self.addInputListener( this.inputListener );
 
       /**
@@ -337,4 +301,5 @@ define( function( require ) {
       CircuitElementNode.prototype.dispose.call( this );
     }
   } );
-} );
+} )
+;

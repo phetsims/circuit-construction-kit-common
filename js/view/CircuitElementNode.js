@@ -141,6 +141,63 @@ define( function( require ) {
     step: function() {},
 
     /**
+     * Handles when the node is dropped, called by subclass input listener.
+     * @param {Object} event - scenery event
+     * @param {Node} node - the node the input listener is attached to
+     * @param {Vertex[]} vertices - the vertices that are dragged
+     * @param {CCKScreenView} circuitConstructionKitScreenView
+     * @param {CircuitLayerNode} circuitLayerNode
+     * @param {Vector2} startPoint
+     * @param {boolean} dragged
+     */
+    endDrag: function( event, node, vertices, circuitConstructionKitScreenView, circuitLayerNode, startPoint, dragged ) {
+      var self = this;
+      var circuitElement = this.circuitElement;
+
+      if ( !circuitElement.interactiveProperty.get() ) {
+
+        // nothing to do
+      }
+
+      // If over the toolbox, then drop into it, and don't process further
+      else if ( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) ) {
+
+        var lifetime = phet.joist.elapsedTime - self.circuitElement.creationTime;
+        var delayMS = Math.max( 500 - lifetime, 0 );
+
+        // If over the toolbox, then drop into it, and don't process further
+        node.removeInputListener( self.inputListener );
+
+        // Make it impossible to drag vertices when about to drop back into box
+        // See https://github.com/phetsims/circuit-construction-kit-common/issues/279
+        circuitLayerNode.getVertexNode( circuitElement.startVertexProperty.get() ).pickable = false;
+        circuitLayerNode.getVertexNode( circuitElement.endVertexProperty.get() ).pickable = false;
+
+        // If disposed by reset all button, clear the timeout
+        circuitElement.disposeEmitter.addListener( function() { clearTimeout( id ); } );
+
+        // If over the toolbox, then drop into it, and don't process further
+        var id = setTimeout( function() {
+          circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
+        }, delayMS );
+
+        // If disposed by reset all button, clear the timeout
+        circuitElement.disposeEmitter.addListener( function() { clearTimeout( id ); } );
+      }
+      else {
+
+        // End drag for each of the vertices
+        vertices.forEach( function( vertexProperty ) {
+          circuitLayerNode.endDrag( event, vertexProperty, dragged );
+        } );
+
+        // Only show the editor when tapped, not on every drag.  Also, event could be undefined if this end() was triggered
+        // by dispose()
+        event && self.selectCircuitElementNodeWhenNear( event, circuitLayerNode, startPoint );
+      }
+    },
+
+    /**
      * On tap events, select the CircuitElement (if it is close enough to the tap)
      * @param {Object} event - scenery input event
      * @param {CircuitLayerNode} circuitLayerNode

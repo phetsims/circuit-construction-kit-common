@@ -31,7 +31,7 @@ define( function( require ) {
   var rotationMatrix = new Matrix3();
 
   /**
-   * @param {CCKScreenView} cckScreenView
+   * @param {CCKScreenView} circuitConstructionKitScreenView
    * @param {CircuitLayerNode} circuitLayerNode - Null if an icon is created
    * @param {FixedLengthCircuitElement} circuitElement
    * @param {Property.<string>} viewProperty - 'lifelike'|'schematic'
@@ -41,7 +41,7 @@ define( function( require ) {
    * @param options
    * @constructor
    */
-  function FixedLengthCircuitElementNode( cckScreenView, circuitLayerNode, circuitElement, viewProperty,
+  function FixedLengthCircuitElementNode( circuitConstructionKitScreenView, circuitLayerNode, circuitElement, viewProperty,
                                           lifelikeNode, schematicNode, tandem, options ) {
     assert && assert( lifelikeNode !== schematicNode, 'schematicNode should be different than lifelikeNode' );
     var self = this;
@@ -108,57 +108,66 @@ define( function( require ) {
     }
 
     // Use whatever the start node currently is (it can change), and let the circuit manage the dependent vertices
-    var eventPoint = null;
-    var didDrag = false;
+    var startPoint = null;
+    var dragged = false;
     if ( !options.icon ) {
       this.inputListener = new TandemSimpleDragHandler( {
         allowTouchSnag: true,
         tandem: tandem.createTandem( 'inputListener' ), // TODO (phet-io): some input listeners are 'dragHandler' let's be consistent
         start: function( event ) {
-          eventPoint = event.pointer.point;
+          startPoint = event.pointer.point;
           circuitElement.interactiveProperty.get() && circuitLayerNode.startDragVertex( event.pointer.point, circuitElement.endVertexProperty.get(), false );
-          didDrag = false;
+          dragged = false;
         },
         drag: function( event ) {
           circuitElement.interactiveProperty.get() && circuitLayerNode.dragVertex( event.pointer.point, circuitElement.endVertexProperty.get(), false );
-          didDrag = true;
+          dragged = true;
         },
         end: function( event ) {
 
-          if ( !circuitElement.interactiveProperty.get() ) {
-            // nothing to do
-          }
-          else if ( cckScreenView.canNodeDropInToolbox( self ) ) {
+          CircuitElementNode.prototype.endDrag.call( self, event, self.contentNode, [ circuitElement.endVertexProperty.get() ],
+            circuitConstructionKitScreenView, circuitLayerNode, startPoint, dragged );
 
-            var creationTime = self.circuitElement.creationTime;
-            var lifetime = phet.joist.elapsedTime - creationTime;
-            var delayMS = Math.max( 500 - lifetime, 0 );
-
-            // If over the toolbox, then drop into it, and don't process further
-            self.contentNode.removeInputListener( self.inputListener );
-
-            // Make it impossible to drag vertices when about to drop back into box
-            // See https://github.com/phetsims/circuit-construction-kit-common/issues/279
-            circuitLayerNode.getVertexNode( circuitElement.startVertexProperty.get() ).pickable = false;
-            circuitLayerNode.getVertexNode( circuitElement.endVertexProperty.get() ).pickable = false;
-
-            // If disposed by reset all button, clear the timeout
-            circuitElement.disposeEmitter.addListener( function() { clearTimeout( id ); } );
-
-            var id = setTimeout( function() {
-              cckScreenView.dropCircuitElementNodeInToolbox( self );
-            }, delayMS );
-          }
-          else {
-
-            circuitLayerNode.endDrag( event, circuitElement.endVertexProperty.get(), didDrag );
-
-            // Only show the editor when tapped, not on every drag.  Also, event could be undefined if this end() was triggered
-            // by dispose()
-            event && self.selectCircuitElementNodeWhenNear( event, circuitLayerNode, eventPoint );
-
-            didDrag = false;
-          }
+          // // TODO: duplicated with FixedLengthCircuitElementNode
+          // if ( !circuitElement.interactiveProperty.get() ) {
+          //   // nothing to do
+          // }
+          //
+          // // If over the toolbox, then drop into it, and don't process further
+          // else if ( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) ) {
+          //
+          //   var lifetime = phet.joist.elapsedTime - self.circuitElement.creationTime;
+          //   var delayMS = Math.max( 500 - lifetime, 0 );
+          //
+          //   // If over the toolbox, then drop into it, and don't process further
+          //   self.contentNode.removeInputListener( self.inputListener );
+          //
+          //   // Make it impossible to drag vertices when about to drop back into box
+          //   // See https://github.com/phetsims/circuit-construction-kit-common/issues/279
+          //   circuitLayerNode.getVertexNode( circuitElement.startVertexProperty.get() ).pickable = false;
+          //   circuitLayerNode.getVertexNode( circuitElement.endVertexProperty.get() ).pickable = false;
+          //
+          //   // If disposed by reset all button, clear the timeout
+          //   circuitElement.disposeEmitter.addListener( function() { clearTimeout( id ); } );
+          //
+          //   // If over the toolbox, then drop into it, and don't process further
+          //   var id = setTimeout( function() {
+          //     circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
+          //   }, delayMS );
+          //
+          //   // If disposed by reset all button, clear the timeout
+          //   circuitElement.disposeEmitter.addListener( function() { clearTimeout( id ); } );
+          // }
+          // else {
+          //
+          //   circuitLayerNode.endDrag( event, circuitElement.endVertexProperty.get(), dragged );
+          //
+          //   // Only show the editor when tapped, not on every drag.  Also, event could be undefined if this end() was triggered
+          //   // by dispose()
+          //   event && self.selectCircuitElementNodeWhenNear( event, circuitLayerNode, startPoint );
+          //
+          //   dragged = false;
+          // }
         }
       } );
       self.contentNode.addInputListener( this.inputListener );
@@ -187,7 +196,7 @@ define( function( require ) {
                                 (Property.multilink( [
                                   circuitElement.currentProperty,
                                   circuitElement.resistanceProperty,
-                                  cckScreenView.circuitConstructionKitModel.exploreScreenRunningProperty
+                                  circuitConstructionKitScreenView.circuitConstructionKitModel.exploreScreenRunningProperty
                                 ], function( current, resistance, exploreScreenRunning ) {
                                   self.fireNode.visible = showFire( current, exploreScreenRunning ) && resistance >= 1E-8;
                                 } )) :
@@ -195,7 +204,7 @@ define( function( require ) {
         // Show fire in all other circuit elements
                                 (Property.multilink( [
                                   circuitElement.currentProperty,
-                                  cckScreenView.circuitConstructionKitModel.exploreScreenRunningProperty
+                                  circuitConstructionKitScreenView.circuitConstructionKitModel.exploreScreenRunningProperty
                                 ], function( current, exploreScreenRunning ) {
                                   self.fireNode.visible = showFire( current, exploreScreenRunning );
                                 } ));
