@@ -125,49 +125,9 @@ define( function( require ) {
         },
         end: function( event ) {
 
-          CircuitElementNode.prototype.endDrag.call( self, event, self.contentNode, [ circuitElement.endVertexProperty.get() ],
-            circuitConstructionKitScreenView, circuitLayerNode, startPoint, dragged );
-
-          // // TODO: duplicated with FixedLengthCircuitElementNode
-          // if ( !circuitElement.interactiveProperty.get() ) {
-          //   // nothing to do
-          // }
-          //
-          // // If over the toolbox, then drop into it, and don't process further
-          // else if ( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) ) {
-          //
-          //   var lifetime = phet.joist.elapsedTime - self.circuitElement.creationTime;
-          //   var delayMS = Math.max( 500 - lifetime, 0 );
-          //
-          //   // If over the toolbox, then drop into it, and don't process further
-          //   self.contentNode.removeInputListener( self.inputListener );
-          //
-          //   // Make it impossible to drag vertices when about to drop back into box
-          //   // See https://github.com/phetsims/circuit-construction-kit-common/issues/279
-          //   circuitLayerNode.getVertexNode( circuitElement.startVertexProperty.get() ).pickable = false;
-          //   circuitLayerNode.getVertexNode( circuitElement.endVertexProperty.get() ).pickable = false;
-          //
-          //   // If disposed by reset all button, clear the timeout
-          //   circuitElement.disposeEmitter.addListener( function() { clearTimeout( id ); } );
-          //
-          //   // If over the toolbox, then drop into it, and don't process further
-          //   var id = setTimeout( function() {
-          //     circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
-          //   }, delayMS );
-          //
-          //   // If disposed by reset all button, clear the timeout
-          //   circuitElement.disposeEmitter.addListener( function() { clearTimeout( id ); } );
-          // }
-          // else {
-          //
-          //   circuitLayerNode.endDrag( event, circuitElement.endVertexProperty.get(), dragged );
-          //
-          //   // Only show the editor when tapped, not on every drag.  Also, event could be undefined if this end() was triggered
-          //   // by dispose()
-          //   event && self.selectCircuitElementNodeWhenNear( event, circuitLayerNode, startPoint );
-          //
-          //   dragged = false;
-          // }
+          CircuitElementNode.prototype.endDrag.call( self, event, self.contentNode,
+            [ circuitElement.endVertexProperty.get() ], circuitConstructionKitScreenView, circuitLayerNode, startPoint,
+            dragged );
         }
       } );
       self.contentNode.addInputListener( this.inputListener );
