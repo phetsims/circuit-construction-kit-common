@@ -43,7 +43,7 @@ define( function( require ) {
     LAYOUT_INSET: 5,
 
     // Number of pixels (screen coordinates) that constitutes a tap instead of a drag
-    TAP_THRESHOLD: 10,
+    TAP_THRESHOLD: 15,
 
     // Dimensions of track size found in sliders
     SLIDER_TRACK_SIZE: new Dimension2( 130, 5 ),
