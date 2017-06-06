@@ -168,6 +168,7 @@ define( function( require ) {
 
     this.disposeCCKLightBulbNode = function() {
       updateBrightness.dispose();
+      circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.removeChild( this.socketNode );
     };
   }
 
