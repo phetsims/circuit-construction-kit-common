@@ -1,12 +1,10 @@
-// Copyright 2015, University of Colorado Boulder
+// Copyright 2015-2017, University of Colorado Boulder
 
 /**
- * Light bulb, made to 'glow' by modulating opacity of the 'on' image.
- * TODO: Copied from SCENERY_PHET/CustomLightBulbNode, but with different images.
- * Either (a) make the images optional in CustomLightBulbNode or (b) simplify this file and factor out
- * options to LightRaysNode.
+ * Light bulb, made to 'glow' by modulating opacity of the 'on' image. Forked from SCENERY_PHET/LightBulbNode
  *
  * @author Chris Malley (PixelZoom, Inc.)
+ * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';
@@ -25,6 +23,9 @@ define( function( require ) {
   var middleImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb_middle.png' );
   var socketImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb_front.png' );
 
+  // constants
+  var BULB_IMAGE_SCALE = 0.125;
+
   /**
    * @param {Property.<number>} brightnessProperty 0 (off) to 1 (full brightness)
    * @param {Object} [options]
@@ -32,76 +33,73 @@ define( function( require ) {
    */
   function CustomLightBulbNode( brightnessProperty, options ) {
     assert && assert( brightnessProperty, 'brightness property should exist' );
-    var defaultOptions = {
-      icon: false,
-      baseOnly: false,
-      bulbImageScale: 0.125,
-      rayStroke: 'yellow',
-      minRays: 8,
-      maxRays: 60,
-      minRayLength: 0,
-      maxRayLength: 200,
-      longRayLineWidth: 1.5, // for long rays
-      mediumRayLineWidth: 1, // for medium-length rays
-      shortRayLineWidth: 0.5 // for short rays
-    };
-
-    options = _.extend( {}, defaultOptions, options ); // don't modify defaultOptions!
-
     var self = this;
 
+    options = _.extend( { baseOnly: false }, options );
+
+    // @private (read-only)
     this.baseOnly = options.baseOnly;
 
     // @private
     self.backNode = new Image( options.baseOnly ? socketImage : backImage, {
-      scale: options.bulbImageScale,
+      scale: BULB_IMAGE_SCALE,
       centerX: 0,
       bottom: 0,
       pickable: false
-    } ); // @private
+    } );
 
     var middleNode = new Image( options.baseOnly ? socketImage : middleImage, {
-      scale: options.bulbImageScale,
+      scale: BULB_IMAGE_SCALE,
       centerX: self.backNode.centerX,
       bottom: self.backNode.bottom,
       pickable: false
     } );
 
-    // rays
-    if ( !options.baseOnly ) {
-      var bulbRadius = middleNode.width / 2; // use 'off' node, the 'on' node is wider because it has a glow around it.
-      var rayOptions = _.pick( options, _.keys( defaultOptions ) ); // cherry-pick options that are specific to rays
+    // If it is only for showing the socket, omit the rays
+    if ( options.baseOnly ) {
+      options.children = [ self.backNode ];
+    }
+    else {
+
+      // Show the rays
+      var bulbRadius = middleNode.width / 2;
+      var rayOptions = {
+        rayStroke: 'yellow',
+        minRays: 8,
+        maxRays: 60,
+        minRayLength: 0,
+        maxRayLength: 200,
+        longRayLineWidth: 1.5,
+        mediumRayLineWidth: 1,
+        shortRayLineWidth: 0.5
+      };
       rayOptions.x = this.backNode.centerX;
       rayOptions.y = middleNode.top + bulbRadius;
       self.raysNode = new LightRaysNode( bulbRadius, rayOptions ); // @private
 
       options.children = [ self.raysNode, self.backNode, middleNode ];
     }
-    else {
-      options.children = [ self.backNode, middleNode ];
-    }
 
-    options.icon && options.children.push( new Image( socketImage, {
-      scale: options.bulbImageScale,
-      centerX: self.backNode.centerX,
-      bottom: self.backNode.bottom,
-      pickable: false
-    } ) );
     Node.call( self, options );
 
+    // @private
+    self.brightnessProperty = brightnessProperty;
+
+    // If it shows the rays, update their brightness
     if ( !options.baseOnly ) {
       self.brightnessObserver = function() { self.update(); }; // @private
-      self.brightnessProperty = brightnessProperty; // @private
       self.brightnessProperty.link( this.brightnessObserver );
     }
 
+    // @private - for disposal
     this.disposeCustomLightBulbNode = function() {
       if ( !options.baseOnly ) {
         self.brightnessProperty.unlink( self.brightnessObserver );
       }
     };
 
-    // Custom pick area for the bulb, so it doesn't interfere with the vertices, see https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/5
+    // Custom mouse and touch area for the bulb, so it doesn't interfere with the vertices,
+    // see https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/5
     var w = this.localBounds.width;
     var h = this.localBounds.height;
     var fractionDown = 0.6; // How far the top part of the bulb extends over the image
@@ -122,14 +120,18 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'CustomLightBulbNode', CustomLightBulbNode );
 
-  inherit( Node, CustomLightBulbNode, {
+  return inherit( Node, CustomLightBulbNode, {
 
-    // @public (read-only) Ensures that this object is eligible for GC
+    /**
+     * @public - dispose resources when no longer used
+     */
     dispose: function() {
       this.disposeCustomLightBulbNode();
     },
 
-    // @private
+    /**
+     * @private - update when the brightness changes
+     */
     update: function() {
       if ( this.visible && !this.baseOnly ) {
         var brightness = this.brightnessProperty.value;
@@ -142,7 +144,10 @@ define( function( require ) {
       }
     },
 
-    // @override update when this node becomes visible
+    /**
+     * @override update when this node becomes visible
+     * @param visible
+     */
     setVisible: function( visible ) {
       var wasVisible = this.visible;
       Node.prototype.setVisible.call( this, visible );
@@ -151,6 +156,4 @@ define( function( require ) {
       }
     }
   } );
-
-  return CustomLightBulbNode;
 } );
