@@ -1,5 +1,5 @@
 // Copyright 2015-2017, University of Colorado Boulder
-// TODO: docs i18n cleanup etc
+// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * Renders the lifelike/schematic view for a Schematic Ammeter.
