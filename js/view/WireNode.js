@@ -168,27 +168,27 @@ define( function( require ) {
     };
 
     /**
-     * Helper function that updates the vertices of a wireNode.
-     *
-     * @param {Vertex} newVertex
-     * @param {Vertex} oldVertex
-     * @param {function} updateListener
-     * @private
-     */
-    var updateVertex = function( newVertex, oldVertex, updateListener ) {
-      oldVertex && oldVertex.positionProperty.unlink( updateListener );
-      newVertex.positionProperty.link( updateListener );
-    };
-
-    /**
      * When the start vertex changes to a different instance (say when vertices are soldered together), unlink the
      * old one and link to the new one.
-     * @param {Vertex} newStartVertex
-     * @param {Vertex} oldStartVertex
+     *
+     * @param {function} updateListener
+     * @returns {function}
+     * @private
      */
-    var updateStartVertex = function( newStartVertex, oldStartVertex ) {
-      updateVertex( newStartVertex, oldStartVertex, updateStartPosition );
+    var createVertexUpdater = function( updateListener ) {
+
+      /**
+       * Unlink the old vertex and link to the new vertex.
+       * @param {Vertex} newVertex
+       * @param {Vertex} oldVertex
+       */
+      return function( newVertex, oldVertex ) {
+        oldVertex && oldVertex.positionProperty.unlink( updateListener );
+        newVertex.positionProperty.link( updateListener );
+      };
     };
+
+    var updateStartVertex = createVertexUpdater( updateStartPosition );
     wire.startVertexProperty.link( updateStartVertex );
 
     /**
@@ -206,14 +206,7 @@ define( function( require ) {
       updateStroke();
     };
 
-    /**
-     * When the end vertex changes to a different instance, unlink the old properties and link to the new properties.
-     * @param {Vertex} newEndVertex
-     * @param {Vertex} oldEndVertex
-     */
-    var updateEndVertex = function( newEndVertex, oldEndVertex ) {
-      updateVertex( newEndVertex, oldEndVertex, updateEndPosition );
-    };
+    var updateEndVertex = createVertexUpdater( updateEndPosition );
     wire.endVertexProperty.link( updateEndVertex );
 
     // Keep track of the start point to see if it was dragged or tapped to be selected
