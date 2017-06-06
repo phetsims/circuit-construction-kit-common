@@ -34,32 +34,21 @@ define( function( require ) {
    * @constructor
    */
   function LightBulbSocketNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, showResultsProperty, viewProperty, tandem, options ) {
-    // TODO: factor out duplicated code between this class and CCKLightBulbNode
 
-    // TODO: This is overkill, we should just have an Image, without all of the extra brightness lines, etc.
+    // Render the bulb socket only
     var lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ), {
       baseOnly: true,
       scale: CircuitConstructionKitConstants.BULB_SCALE
     } );
 
+    // Interferes with Cut Button selection when the foreground is in front, see https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/18
     options = _.extend( {
-
-      // Override the dimensions of the bulb node because the invisible rays contribute to the bounds.
-      contentWidth: 12 * 0.2,
-      contentHeight: 22 * 0.5,
-
-      // Interferes with Cut Button selection when the foreground is in front, see https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/18
-      pickable: false,
-      highlightOptions: {
-        centerX: 0,
-
-        // Offset the highlight vertically so it looks good, tuned manually
-        bottom: FixedLengthCircuitElementNode.HIGHLIGHT_INSET * 0.75
-      }
+      pickable: false
     }, options );
-    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitLayerNode, lightBulb, viewProperty, lightBulbNode, new Rectangle( 0, 0, 10, 10 ), tandem, options );
+    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitLayerNode, lightBulb,
+      viewProperty, lightBulbNode, new Rectangle( 0, 0, 10, 10 ), tandem, options );
 
-    // Suppress the highlight for the socket, the highlight is shown for the CCKLightBulbNode
+    // Suppress the highlight for the socket, the highlight is shown by the CCKLightBulbNode
     if ( this.highlightNode ) {
       this.highlightNode.stroke = null;
     }
@@ -81,6 +70,7 @@ define( function( require ) {
       CCKMathUtil.setToTranslationRotation( SCRATCH_MATRIX, startPosition, angle );
       this.contentNode.setMatrix( SCRATCH_MATRIX );
     },
+
     /**
      * Maintain the opacity of the brightness lines while changing the opacity of the light bulb itself.
      * @override
