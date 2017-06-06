@@ -23,6 +23,7 @@ define( function( require ) {
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
   var Util = require( 'DOT/Util' );
+  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
   var PlayPauseButton = require( 'SCENERY_PHET/buttons/PlayPauseButton' );
@@ -454,10 +455,22 @@ define( function( require ) {
      * @public
      */
     hitWireNode: function( position ) {
+      var self = this;
 
       // Search from the front to the back, because frontmost objects look like they are hitting the sensor, see #143
-      for ( var i = this.circuitLayerNode.wireNodes.length - 1; i >= 0; i-- ) {
-        var wireNode = this.circuitLayerNode.wireNodes[ i ];
+      var wireNodes = this.circuitLayerNode.circuit.circuitElements.filter( function( circuitElement ) {
+        return circuitElement instanceof Wire;
+      } ).map( function( wire ) {
+        return self.circuitLayerNode.getCircuitElementNode( wire );
+      } ).getArray();
+
+      for ( var i = wireNodes.length - 1; i >= 0; i-- ) {
+        var wireNode = wireNodes[ i ];
+
+        // If this code got called before the WireNode has been created, skip it (the Voltmeter hit tests nodes)
+        if ( !wireNode ) {
+          continue;
+        }
 
         // Don't connect to wires in the black box
         var revealing = true;
