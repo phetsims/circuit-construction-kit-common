@@ -346,8 +346,6 @@ define( function( require ) {
         right: visibleBounds.right - HORIZONTAL_MARGIN,
         top: self.displayOptionsPanel.bottom + VERTICAL_MARGIN
       } );
-      self.viewRadioButtonGroup.right = visibleBounds.right - HORIZONTAL_MARGIN;
-      self.viewRadioButtonGroup.bottom = resetAllButton.top - VERTICAL_MARGIN;
 
       zoomControlPanel.left = visibleBounds.left + HORIZONTAL_MARGIN;
       zoomControlPanel.bottom = visibleBounds.bottom - VERTICAL_MARGIN;
@@ -358,6 +356,11 @@ define( function( require ) {
       // The layout remains the same whether the accordion boxes are expanded or collapsed
       self.batteryResistanceControl.right = visibleBounds.right - HORIZONTAL_MARGIN;
       self.batteryResistanceControl.top = self.wireResistivityControl.bottom + VERTICAL_MARGIN;
+
+      // Show the view radio button group under the other controls
+      var viewRadioButtonUpperNeighbor = self.hasChild( self.batteryResistanceControl ) ? self.batteryResistanceControl : self.sensorToolbox;
+      self.viewRadioButtonGroup.right = visibleBounds.right - HORIZONTAL_MARGIN;
+      self.viewRadioButtonGroup.top = viewRadioButtonUpperNeighbor.bottom + VERTICAL_MARGIN;
     } );
 
     // Center the circuit node so that zooms will remain centered.
