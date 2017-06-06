@@ -418,9 +418,11 @@ define( function( require ) {
 
           if ( shouldBeInFront && !isInFront ) {
             this.lightBulbSocketLayer.addChild( child );
+            this.mainLayer.removeChild( child );
           }
           else if ( !shouldBeInFront && isInFront ) {
             this.lightBulbSocketLayer.removeChild( child );
+            this.mainLayer.addChild( child );
           }
         }
         else if ( child instanceof FixedLengthCircuitElementNode ) {
