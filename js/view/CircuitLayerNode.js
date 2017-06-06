@@ -73,7 +73,7 @@ define( function( require ) {
     // @public (read-only) but CCKLightBulbNode calls addChild/removeChild to add sockets to the front layer
     this.lightBulbSocketLayer = new Node();
 
-    // @private Electrons appear in this layeer when they need to be in front of the socket (on the right hand side of the bulb)
+    // @private Electrons appear in this layer when they need to be in front of the socket (on the right hand side of the bulb)
     this.lightBulbSocketElectronLayer = new Node();
 
     Node.call( this, {
