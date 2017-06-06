@@ -1,8 +1,8 @@
 // Copyright 2015-2017, University of Colorado Boulder
 
 /**
- * Named CCKLightBulbNode to avoid collisions with SCENERY_PHET/LightBulbNode.  Renders the bulb shape and brightness
- * lines.  Note that the socket is rendered in LightBulbSocketNode.
+ * Named CCKLightBulbNode to avoid collisions with SCENERY_PHET/LightBulbNode. Renders the bulb shape and brightness
+ * lines. Note that the socket is rendered in LightBulbSocketNode.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -159,6 +159,11 @@ define( function( require ) {
 
     FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitLayerNode, lightBulb, viewProperty, lightBulbNode, schematicNode, tandem, options );
 
+    if ( circuitLayerNode ) {
+      this.socketNode = new LightBulbSocketNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, runningProperty, viewProperty, tandem.createTandem( 'socketNode' ), options );
+      circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.addChild( this.socketNode );
+    }
+
     this.disposeCCKLightBulbNode = function() {
       updateBrightness.dispose();
     };
@@ -187,6 +192,8 @@ define( function( require ) {
       CCKMathUtil.setToTranslationRotation( SCRATCH_MATRIX, startPosition, angle )
         .multiplyMatrix( SCRATCH_MATRIX_2.setToTranslation( -100, -fireImage[ 0 ].height - 350 ) );
       this.fireNode && this.fireNode.setMatrix( SCRATCH_MATRIX );
+
+      this.socketNode && this.socketNode.updateRender();
     },
     /**
      * Dispose when no longer used.

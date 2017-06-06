@@ -19,7 +19,6 @@ define( function( require ) {
   var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
   var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedLengthCircuitElementNode' );
   var CCKLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKLightBulbNode' );
-  var LightBulbSocketNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/LightBulbSocketNode' );
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorNode' );
   var SeriesAmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SeriesAmmeterNode' );
   var VertexNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VertexNode' );
@@ -72,10 +71,14 @@ define( function( require ) {
     // @public (read-only) so that additional Nodes may be interleaved
     this.mainLayer = new Node();
 
+    // @public (read-only) but CCKLightBulbNode calls addChild/removeChild to add sockets to the front layer
+    this.lightBulbSocketLayer = new Node();
+
     Node.call( this, {
       children: [
         this.mainLayer, // circuit elements, charges and meters
         this.valueLayer, // values
+        this.lightBulbSocketLayer, // fronts of light bulbs
         this.seriesAmmeterNodeReadoutPanelLayer, // fronts of series ammeters
         this.highlightLayer, // highlights go in front of everything else
         this.buttonLayer // vertex buttons
@@ -143,14 +146,8 @@ define( function( require ) {
           self.mainLayer.addChild( circuitElementNode );
           moveVerticesToFront( circuitElement );
 
-          if ( circuitElement instanceof FixedLengthCircuitElement &&
-
-               // don't double add for light bulbs.  TODO: light bulbs need to be redone for layering see #345
-               !(circuitElementNode instanceof LightBulbSocketNode) &&
-
-               // series ammeters already show their own readouts
-               !(circuitElement instanceof SeriesAmmeter)
-          ) {
+          // series ammeters already show their own readouts
+          if ( circuitElement instanceof FixedLengthCircuitElement && !(circuitElement instanceof SeriesAmmeter) ) {
             var valueNode = new ValueNode( circuitElement, self.circuitConstructionKitModel.showValuesProperty, tandem.createTandem( circuitElement.tandemName ).createTandem( 'valueNode' ) );
             self.valueLayer.addChild( valueNode );
 
@@ -178,7 +175,6 @@ define( function( require ) {
     initializeCircuitElementType( WireNode, Wire, tandem.createGroupTandem( 'wireNode' ) );
     initializeCircuitElementType( BatteryNode, Battery, tandem.createGroupTandem( 'batteryNode' ) );
     initializeCircuitElementType( CCKLightBulbNode, LightBulb, tandem.createGroupTandem( 'lightBulbNode' ) );
-    initializeCircuitElementType( LightBulbSocketNode, LightBulb, tandem.createGroupTandem( 'lightBulbForegroundNode' ) );  // TODO: redo bulb layering
     initializeCircuitElementType( ResistorNode, Resistor, tandem.createGroupTandem( 'resistorNode' ) );
     initializeCircuitElementType( SeriesAmmeterNode, SeriesAmmeter, tandem.createGroupTandem( 'seriesAmmeterNode' ) );
     initializeCircuitElementType( SwitchNode, Switch, tandem.createGroupTandem( 'switchNode' ) );
@@ -407,34 +403,30 @@ define( function( require ) {
      */
     step: function() {
 
-      // Move all sockets to the front  TODO: when we fix socket layering thids will automatically fix.
-      // TODO: Bonus todo because this will improve performance once fixed
-      var children = this.mainLayer.children;
-      var child = null;
-      for ( var i = 0; i < children.length; i++ ) {
-        child = children[ i ];
-        if ( child instanceof LightBulbSocketNode ) {
-          child.moveToFront();
-        }
-      }
-
       // Any charges that are in a light bulb and above halfway through the filament should be in front of the base,
       // so they appear to tunnel through the socket and go in front of the socket on the right-hand side.
-      // TODO: or should we model the z-ordering in the model?  Or solve this with clipping?
-      children = this.mainLayer.children;
-      for ( i = 0; i < children.length; i++ ) {
-        child = children[ i ];
-        if ( child instanceof ChargeNode &&
-             child.charge.circuitElement instanceof LightBulb ) {
+      // TODO: this seems like a performance problem. should we model the z-ordering in the model?  Or solve this with clipping?
+      var children = this.mainLayer.children;
+      for ( var i = 0; i < children.length; i++ ) {
+        var child = children[ i ];
+        if ( child instanceof ChargeNode ) {
 
-          // TODO: how to avoid moving charges unnecessarily?
-          if ( child.charge.distanceProperty.get() > child.charge.circuitElement.chargePathLength / 2 ) {
-            child.moveToFront();
+          var shouldBeInFront = child.charge.circuitElement instanceof LightBulb &&
+                                child.charge.distanceProperty.get() > child.charge.circuitElement.chargePathLength / 2;
+
+          var isInFront = this.lightBulbSocketLayer.hasChild( child );
+
+          if ( shouldBeInFront && !isInFront ) {
+            this.lightBulbSocketLayer.addChild( child );
+          }
+          else if ( !shouldBeInFront && isInFront ) {
+            this.lightBulbSocketLayer.removeChild( child );
           }
         }
         else if ( child instanceof FixedLengthCircuitElementNode ) {
 
           // paint dirty fixed length circuit element nodes
+          // TODO: see what is happening here
           child.step();
         }
       }
