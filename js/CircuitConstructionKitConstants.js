@@ -63,9 +63,6 @@ define( function( require ) {
     // The lowest resistance a Wire or Switch can have
     MINIMUM_RESISTANCE: 1E-8,
 
-    // Length of the conventional current arrow in view coordinates
-    CONVENTIONAL_CURRENT_ARROW_LENGTH: 23,
-
     // How far to erode the visible bounds for keeping the probes in bounds.
     DRAG_BOUNDS_EROSION: 20,
 

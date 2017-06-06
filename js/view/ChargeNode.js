@@ -11,14 +11,13 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Image = require( 'SCENERY/nodes/Image' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
   var ElectronChargeNode = require( 'SCENERY_PHET/ElectronChargeNode' );
   var Tandem = require( 'TANDEM/Tandem' );
+  var ConventionalCurrentArrowNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ConventionalCurrentArrowNode' );
 
   // constants
   var ELECTRON_SCALE = 2; // Scale up before rasterization so it won't be too pixellated/fuzzy
@@ -36,16 +35,7 @@ define( function( require ) {
     } ) ];
   }, 0, 0, MINUS_CHARGE_NODE.width, MINUS_CHARGE_NODE.height );
 
-  // Center arrow so it is easy to rotate
-  var ARROW_LENGTH = CircuitConstructionKitConstants.CONVENTIONAL_CURRENT_ARROW_LENGTH; // length in view coordinates
-  var ARROW_NODE = new ArrowNode( -ARROW_LENGTH / 2, 0, ARROW_LENGTH / 2, 0, {
-    headHeight: 10,
-    headWidth: 12,
-    tailWidth: 3,
-    fill: 'red',
-    stroke: 'white',
-    tandem: Tandem.createStaticTandem( 'arrowNode' )
-  } );
+  var ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.createStaticTandem( 'arrowNode' ) );
 
   /**
    * @param {Charge} charge - the model element

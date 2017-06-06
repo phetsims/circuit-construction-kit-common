@@ -17,10 +17,9 @@ define( function( require ) {
   var VBox = require( 'SCENERY/nodes/VBox' );
   var CheckBox = require( 'SUN/CheckBox' );
   var AquaRadioButton = require( 'SUN/AquaRadioButton' );
-  var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
   var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
   var AlignBox = require( 'SCENERY/nodes/AlignBox' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var ConventionalCurrentArrowNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ConventionalCurrentArrowNode' );
 
   // strings
   var electronsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/electrons' );
@@ -34,8 +33,6 @@ define( function( require ) {
     fontSize: 16,
     maxWidth: 120
   };
-
-  var ARROW_LENGTH = CircuitConstructionKitConstants.CONVENTIONAL_CURRENT_ARROW_LENGTH; // length in view coordinates
 
   /**
    * @param {Property.<boolean>} showCurrentProperty - true if current should be shown
@@ -76,16 +73,7 @@ define( function( require ) {
     var conventionalBox = new HBox( {
       children: [
         currentTypeRadioButtonLabelGroup.createBox( new Text( conventionalString, TEXT_OPTIONS ), BOX_ALIGNMENT ),
-
-        // TODO: arrow is duplicated with ChargeNode
-        new ArrowNode( -ARROW_LENGTH / 2, 0, ARROW_LENGTH / 2, 0, {
-          headHeight: 10,
-          headWidth: 12,
-          tailWidth: 3,
-          fill: 'red',
-          stroke: 'white',
-          tandem: tandem.createTandem( 'arrowNode' )
-        } )
+        new ConventionalCurrentArrowNode( tandem.createTandem( 'arrowNode' ) )
       ],
       spacing: textIconSpacing
     } );
