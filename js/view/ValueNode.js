@@ -119,7 +119,7 @@ define( function( require ) {
       // For a light bulb, choose the part of the filament in the top center for the label, see https://github.com/phetsims/circuit-construction-kit-common/issues/325
       var distance = circuitElement instanceof LightBulb ? 0.56 : 0.5;
 
-      // TODO: position should account for the size of the text label so it doesn't overlap the component.
+      // The label partially overlaps the component to make it clear which label goes with which component
       var centerPositionAndAngle = circuitElement.getPositionAndAngle( circuitElement.chargePathLength * distance );
       self.center = centerPositionAndAngle.position.plus( Vector2.createPolar( 24, centerPositionAndAngle.angle + 3 * Math.PI / 2 ) ); // above light bulb
     };
