@@ -23,7 +23,6 @@
   </script>
 
 
-
   <script>
     function collapseTests() {
       $( '#qunit-tests .fail ol' ).css( 'display', 'none' );
@@ -55,7 +54,7 @@
           module: details.module,
           name: details.name,
           message: details.message,
-          source: details.source // TODO: consider expected/actual, or don't worry because we'll run finer tests once it fails.
+          source: details.source
         } ), '*' );
       } );
 
