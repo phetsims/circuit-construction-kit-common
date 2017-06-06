@@ -235,9 +235,12 @@ define( function( require ) {
       this.dirty = true;
     },
 
+    /**
+     * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
+     * @protected - CCKLightBulbNode calls updateRender for its child socket node
+     */
     updateRender: function() {
 
-      // TODO: doc/cleanup/move to prototype?
       var startPosition = this.circuitElement.startVertexProperty.get().positionProperty.get();
       var endPosition = this.circuitElement.endVertexProperty.get().positionProperty.get();
       var delta = endPosition.minus( startPosition );
