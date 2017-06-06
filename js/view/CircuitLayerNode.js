@@ -70,15 +70,15 @@ define( function( require ) {
     this.valueLayer = new Node();
 
     // @public (read-only) so that additional Nodes may be interleaved
-    this.mainLayer = new Node(); // TODO: get rid of main layer, use a11y for showing highlights?
+    this.mainLayer = new Node();
 
     Node.call( this, {
       children: [
-        this.mainLayer, // everything else
-        this.valueLayer,
-        this.seriesAmmeterNodeReadoutPanelLayer,
+        this.mainLayer, // circuit elements, charges and meters
+        this.valueLayer, // values
+        this.seriesAmmeterNodeReadoutPanelLayer, // fronts of series ammeters
         this.highlightLayer, // highlights go in front of everything else
-        this.buttonLayer
+        this.buttonLayer // vertex buttons
       ]
     } );
 
