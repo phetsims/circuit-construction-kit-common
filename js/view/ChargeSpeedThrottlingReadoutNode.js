@@ -11,7 +11,6 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
   var Property = require( 'AXON/Property' );
@@ -22,12 +21,7 @@ define( function( require ) {
 
   function ChargeSpeedThrottlingReadoutNode( timeScaleProperty, showCurrentProperty, exploreScreenRunningProperty ) {
     var self = this;
-    var text = new Text( animationSpeedLimitString, { fontSize: 26 } );
-    Node.call( this, {
-      children: [
-        text //TODO: it seems like we should just subclass text instead of composing it
-      ]
-    } );
+    Text.call( this, animationSpeedLimitString, { fontSize: 26 } );
 
     Property.multilink( [ timeScaleProperty, showCurrentProperty, exploreScreenRunningProperty ], function( timeScale, showCurrent, exploreScreenRunning ) {
       var percent = timeScale * 100;
@@ -36,7 +30,7 @@ define( function( require ) {
       if ( timeScale < 0.01 ) {
         fixed = '< 1';
       }
-      text.setText( StringUtils.format( animationSpeedLimitString, fixed ) );
+      self.setText( StringUtils.format( animationSpeedLimitString, fixed ) );
 
       // Only show the throttling message if the speed is less than 100% and charges are visible
       self.visible = isThrottled && showCurrent && exploreScreenRunning;
@@ -45,5 +39,5 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'ChargeSpeedThrottlingReadoutNode', ChargeSpeedThrottlingReadoutNode );
 
-  return inherit( Node, ChargeSpeedThrottlingReadoutNode );
+  return inherit( Text, ChargeSpeedThrottlingReadoutNode );
 } );
