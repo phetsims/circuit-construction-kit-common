@@ -135,6 +135,12 @@ define( function( require ) {
     },
 
     /**
+     * Hook for view step, overriden in FixedLengthCircuitElementNode
+     *
+     */
+    step: function() {},
+
+    /**
      * On tap events, select the CircuitElement (if it is close enough to the tap)
      * @param {Object} event - scenery input event
      * @param {CircuitLayerNode} circuitLayerNode

@@ -259,6 +259,7 @@ define( function( require ) {
     },
 
     step: function() {
+      CircuitElementNode.prototype.step.call( this );
       if ( this.dirty ) {
         this.updateRender();
         this.dirty = false;

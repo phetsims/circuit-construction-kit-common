@@ -74,11 +74,15 @@ define( function( require ) {
     // @public (read-only) but CCKLightBulbNode calls addChild/removeChild to add sockets to the front layer
     this.lightBulbSocketLayer = new Node();
 
+    // @private Electrons appear in this layeer when they need to be in front of the socket (on the right hand side of the bulb)
+    this.lightBulbSocketElectronLayer = new Node();
+
     Node.call( this, {
       children: [
         this.mainLayer, // circuit elements, charges and meters
         this.valueLayer, // values
         this.lightBulbSocketLayer, // fronts of light bulbs
+        this.lightBulbSocketElectronLayer, // electrons in front of the sockets
         this.seriesAmmeterNodeReadoutPanelLayer, // fronts of series ammeters
         this.highlightLayer, // highlights go in front of everything else
         this.buttonLayer // vertex buttons
@@ -416,36 +420,37 @@ define( function( require ) {
      */
     step: function() {
 
+      var self = this;
+
       // Any charges that are in a light bulb and above halfway through the filament should be in front of the base,
       // so they appear to tunnel through the socket and go in front of the socket on the right-hand side.
       // TODO: this seems like a performance problem. should we model the z-ordering in the model?
       // Or solve this with clipping?
-      var children = this.mainLayer.children;
-      for ( var i = 0; i < children.length; i++ ) {
-        var child = children[ i ];
-        if ( child instanceof ChargeNode ) {
+      for ( var i = 0; i < this.chargeNodes.length; i++ ) {
+        var chargeNode = this.chargeNodes[ i ];
 
-          var shouldBeInFront = child.charge.circuitElement instanceof LightBulb &&
-                                child.charge.distanceProperty.get() > child.charge.circuitElement.chargePathLength / 2;
+        // TODO: move this to model and link to a new Property
+        var shouldBeInFront = chargeNode.charge.circuitElement instanceof LightBulb &&
+                              chargeNode.charge.distanceProperty.get() > chargeNode.charge.circuitElement.chargePathLength / 2;
 
-          var isInFront = this.lightBulbSocketLayer.hasChild( child );
+        // This should be fast because only a few electrons should be in the front layer at a time
+        var isInFront = this.lightBulbSocketElectronLayer.hasChild( chargeNode );
 
-          if ( shouldBeInFront && !isInFront ) {
-            this.lightBulbSocketLayer.addChild( child );
-            this.mainLayer.removeChild( child );
-          }
-          else if ( !shouldBeInFront && isInFront ) {
-            this.lightBulbSocketLayer.removeChild( child );
-            this.mainLayer.addChild( child );
-          }
+        if ( shouldBeInFront && !isInFront ) {
+          this.lightBulbSocketElectronLayer.addChild( chargeNode );
+          this.mainLayer.removeChild( chargeNode );
         }
-        else if ( child instanceof FixedLengthCircuitElementNode ) {
-
-          // paint dirty fixed length circuit element nodes
-          // TODO: see what is happening here
-          child.step();
+        else if ( !shouldBeInFront && isInFront ) {
+          this.lightBulbSocketElectronLayer.removeChild( chargeNode );
+          this.mainLayer.addChild( chargeNode );
         }
       }
+
+      // paint dirty fixed length circuit element nodes.  This batches changes instead of applying multiple changes
+      // per frame
+      this.circuit.circuitElements.forEach( function( circuitElement ) {
+        self.getCircuitElementNode( circuitElement ).step();
+      } );
     },
 
     /**
