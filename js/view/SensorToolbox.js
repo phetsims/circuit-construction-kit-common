@@ -23,6 +23,7 @@ define( function( require ) {
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Property = require( 'AXON/Property' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   // strings
   var ammeterString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeter' );
@@ -84,13 +85,14 @@ define( function( require ) {
     ammeterNodeIcon.addInputListener( createListener( ammeterNode.ammeter, ammeterNode ) );
 
     // Icon for the series ammeter
-    var seriesAmmeter = new SeriesAmmeter( new Vertex( 0, 0 ), new Vertex( 110, 0 ), tandem.createTandem( 'seriesAmmeterIconModel' ) );
+    var seriesAmmeter = new SeriesAmmeter( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.SERIES_AMMETER_LENGTH, 0 ), tandem.createTandem( 'seriesAmmeterIconModel' ) );
     var seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeter, null, null, tandem.createTandem( 'seriesAmmeterNodeIcon' ), {
       icon: true
     } );
     var createSeriesAmmeter = function( position ) {
-      var seriesAmmeterLength = 110;// TODO: factor out
-      return new SeriesAmmeter( new Vertex( position.x - seriesAmmeterLength / 2, position.y ), new Vertex( position.x + seriesAmmeterLength / 2, position.y ), circuitLayerNode.circuit.seriesAmmeterGroupTandem.createNextTandem() );
+      var startVertex = new Vertex( position.x - CircuitConstructionKitConstants.SERIES_AMMETER_LENGTH / 2, position.y );
+      var endVertex = new Vertex( position.x + CircuitConstructionKitConstants.SERIES_AMMETER_LENGTH / 2, position.y );
+      return new SeriesAmmeter( startVertex, endVertex, circuitLayerNode.circuit.seriesAmmeterGroupTandem.createNextTandem() );
     };
     seriesAmmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / seriesAmmeterNodeIcon.width } );
     var seriesAmmeterToolNode = new CircuitElementToolNode( '', new Property( false ), circuitLayerNode, seriesAmmeterNodeIcon, 6, function() {

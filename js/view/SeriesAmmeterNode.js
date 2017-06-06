@@ -20,13 +20,14 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Panel = require( 'SUN/Panel' );
   var Util = require( 'DOT/Util' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   // strings
   var currentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/current' );
 
   // constants
   var PANEL_HEIGHT = 40;
-  var PANEL_WIDTH = 110;
+  var PANEL_WIDTH = CircuitConstructionKitConstants.SERIES_AMMETER_LENGTH;
   var ORANGE = '#f39033';
   var WIDEST_LABEL = '9.99 A';
 

@@ -14,9 +14,6 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
 
-  // constants
-  var LENGTH = 110;
-
   /**
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
@@ -25,7 +22,8 @@ define( function( require ) {
    * @constructor
    */
   function SeriesAmmeter( startVertex, endVertex, tandem, options ) {
-    FixedLengthCircuitElement.call( this, startVertex, endVertex, LENGTH, LENGTH, tandem, options );
+    FixedLengthCircuitElement.call( this, startVertex, endVertex, CircuitConstructionKitConstants.SERIES_AMMETER_LENGTH,
+      CircuitConstructionKitConstants.SERIES_AMMETER_LENGTH, tandem, options );
 
     // @public (read-only) {Property.<number>} the resistance in ohms
     this.resistance = CircuitConstructionKitConstants.MINIMUM_RESISTANCE;

@@ -90,6 +90,7 @@ define( function( require ) {
     DOG_LENGTH: 150,
     DOLLAR_BILL_LENGTH: 200,
     PAPER_CLIP_LENGTH: 120,
+    SERIES_AMMETER_LENGTH: 110,
 
     // background for panels and radio buttons
     PANEL_COLOR: '#f1f1f2',
