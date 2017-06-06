@@ -47,7 +47,6 @@ define( function( require ) {
   var SCHEMATIC_PERIOD = 22 * SCHEMATIC_SCALE;
   var SCHEMATIC_STEM_WIDTH = 84 * SCHEMATIC_SCALE;
   var SCHEMATIC_WAVELENGTH = 54 * SCHEMATIC_SCALE;
-  var SCHEMATIC_LINE_WIDTH = CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH; // TODO: factor out
 
   /**
    * @param {CCKScreenView} circuitConstructionKitScreenView
@@ -157,7 +156,10 @@ define( function( require ) {
     } );
     var scale = lifelikeResistorImageNode.width / schematicShape.bounds.width;
     schematicShape = schematicShape.transformed( Matrix3.scale( scale, scale ) );
-    var schematicNode = new Path( schematicShape, { stroke: 'black', lineWidth: SCHEMATIC_LINE_WIDTH } );
+    var schematicNode = new Path( schematicShape, {
+      stroke: 'black',
+      lineWidth: CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH
+    } );
 
     // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
     schematicNode.mouseArea = schematicNode.bounds.copy();
