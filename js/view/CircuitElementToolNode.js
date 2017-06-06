@@ -34,7 +34,7 @@ define( function( require ) {
     var labelNode = new Text( labelText, { fontSize: 12, maxWidth: TOOLBOX_ICON_SIZE } );
     showLabelsProperty.link( function( showLabels ) {labelNode.visible = showLabels;} );
     VBox.call( this, {
-      spacing: 6,
+      spacing: 6, // Spacing between the icon and the text
       resize: false,
       cursor: 'pointer',
       children: labelText.length > 0 ? [ iconNode, labelNode ] : [ iconNode ] // hack because the series ammeter tool node has text rendered separately (joined with probe ammeter)

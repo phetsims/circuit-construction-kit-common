@@ -24,16 +24,15 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Property = require( 'AXON/Property' );
 
-
-  // constants
+  // strings
   var ammeterString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeter' );
   var ammetersString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeters' );
   var voltmeterString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltmeter' );
 
-
   // constants
   var TOOLBOX_ICON_SIZE = 53;
   var VOLTMETER_ICON_SCALE = 1.3;
+  var ICON_TEXT_SPACING = 3; // distance in view coordinates from the icon to the text below the icon
 
   /**
    * @param {Node} circuitLayerNode - the main circuit node to use as a coordinate frame
@@ -110,14 +109,14 @@ define( function( require ) {
     showLabelsProperty.linkAttribute( ammeterText, 'visible' );
 
     var voltmeterToolIcon = new VBox( {
-      spacing: 3,
+      spacing: ICON_TEXT_SPACING,
       children: [
         voltmeterNodeIcon,
         voltmeterText
       ]
     } );
     var ammeterToolIcon = new VBox( {
-      spacing: 3,// TODO: factor out
+      spacing: ICON_TEXT_SPACING,
       children: [
         new HBox( {
           spacing: 8,
