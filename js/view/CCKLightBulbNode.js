@@ -160,6 +160,8 @@ define( function( require ) {
     FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitLayerNode, lightBulb, viewProperty, lightBulbNode, schematicNode, tandem, options );
 
     if ( circuitLayerNode ) {
+
+      // Render the socket node in the front
       this.socketNode = new LightBulbSocketNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, runningProperty, viewProperty, tandem.createTandem( 'socketNode' ), options );
       circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.addChild( this.socketNode );
     }
