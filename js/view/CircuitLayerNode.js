@@ -38,7 +38,7 @@ define( function( require ) {
 
   /**
    * @param {Circuit} circuit - the model Circuit
-   * @param {CCKScreenView} circuitConstructionKitScreenView - for dropping CircuitElement instances back into the toolbox
+   * @param {CCKScreenView} circuitConstructionKitScreenView - for dropping CircuitElement instances back in the toolbox
    * @param {Tandem} tandem
    * @constructor
    */
@@ -148,7 +148,11 @@ define( function( require ) {
 
           // series ammeters already show their own readouts
           if ( circuitElement instanceof FixedLengthCircuitElement && !(circuitElement instanceof SeriesAmmeter) ) {
-            var valueNode = new ValueNode( circuitElement, self.circuitConstructionKitModel.showValuesProperty, tandem.createTandem( circuitElement.tandemName ).createTandem( 'valueNode' ) );
+            var valueNode = new ValueNode(
+              circuitElement,
+              self.circuitConstructionKitModel.showValuesProperty,
+              tandem.createTandem( circuitElement.tandemName ).createTandem( 'valueNode' )
+            );
             self.valueLayer.addChild( valueNode );
 
             circuitElement.disposeEmitter.addListener( function() {
@@ -223,7 +227,10 @@ define( function( require ) {
       for ( var i = 0; i < circuit.vertices.length; i++ ) {
         var vertex = circuit.vertices.get( i );
         if ( !visibleBounds.containsPoint( vertex.positionProperty.get() ) ) {
-          var closestPoint = visibleBounds.getClosestPoint( vertex.positionProperty.get().x, vertex.positionProperty.get().y );
+          var closestPoint = visibleBounds.getClosestPoint(
+            vertex.positionProperty.get().x,
+            vertex.positionProperty.get().y
+          );
           var delta = closestPoint.minus( vertex.positionProperty.get() );
 
           // Find all vertices connected by fixed length nodes.
@@ -276,7 +283,9 @@ define( function( require ) {
       var solderNode = this.getSolderNode( vertex );
       var adjacentComponents = this.circuit.getNeighborCircuitElements( vertex );
       var adjacentWires = adjacentComponents.filter( function( component ) {return component instanceof Wire;} );
-      var adjacentFixedLengthComponents = adjacentComponents.filter( function( component ) {return component instanceof FixedLengthCircuitElement;} );
+      var adjacentFixedLengthComponents = adjacentComponents.filter( function( component ) {
+        return component instanceof FixedLengthCircuitElement;
+      } );
 
       // TODO: call fixSolderLayering when this viewproperty changes
       if ( this.viewProperty.get() === 'lifelike' ) {
@@ -372,7 +381,11 @@ define( function( require ) {
 
       for ( var i = 0; i < vertices.length; i++ ) {
         var vertex = vertices[ i ];
-        var targetVertex = this.circuit.getDropTarget( vertex, this.circuitConstructionKitModel.modeProperty.get(), this.circuitConstructionKitModel.blackBoxBounds );
+        var targetVertex = this.circuit.getDropTarget(
+          vertex,
+          this.circuitConstructionKitModel.modeProperty.get(),
+          this.circuitConstructionKitModel.blackBoxBounds
+        );
         if ( targetVertex ) {
           allDropTargets.push( { src: vertex, dst: targetVertex } );
         }
@@ -405,7 +418,8 @@ define( function( require ) {
 
       // Any charges that are in a light bulb and above halfway through the filament should be in front of the base,
       // so they appear to tunnel through the socket and go in front of the socket on the right-hand side.
-      // TODO: this seems like a performance problem. should we model the z-ordering in the model?  Or solve this with clipping?
+      // TODO: this seems like a performance problem. should we model the z-ordering in the model?
+      // Or solve this with clipping?
       var children = this.mainLayer.children;
       for ( var i = 0; i < children.length; i++ ) {
         var child = children[ i ];
@@ -507,7 +521,8 @@ define( function( require ) {
       this.vertexNodes.forEach( vertexNodeToBack );
       _.values( this.circuitElementNodeMap ).forEach( circuitElementNodeToBack() );
 
-      // Move black box interface vertices behind the black box, see https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/36
+      // Move black box interface vertices behind the black box,
+      // see https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/36
       var interfaceVertexBehindBox = function( nodeWithVertex ) {
         var blackBoxNodeIndex = self.mainLayer.children.indexOf( self.blackBoxNode );
         if ( nodeWithVertex.vertex.blackBoxInterfaceProperty.get() ) {
@@ -561,7 +576,8 @@ define( function( require ) {
         // Find the new relative angle
         var angle;
 
-        if ( vertex.unsnappedPositionProperty.get().x === vertex.positionProperty.get().x && vertex.unsnappedPositionProperty.get().y === vertex.positionProperty.get().y ) {
+        if ( vertex.unsnappedPositionProperty.get().x === vertex.positionProperty.get().x &&
+             vertex.unsnappedPositionProperty.get().y === vertex.positionProperty.get().y ) {
 
           // Rotate the way the element is going.
           angle = position.minus( oppositeVertex.positionProperty.get() ).angle();
@@ -597,7 +613,7 @@ define( function( require ) {
      * @param {Vertex} vertex - the vertex being dragged
      * @param {Array.<Vertex>} vertices - all the vertices in the group
      * @param {Vector2} unsnappedDelta - how far to move the group
-     * @param {function|null} updatePositions - optional callback for updating positions after unsnapped positions updated
+     * @param {function|null} updatePositions - optional callback for updating positions after unsnapped positions update
      * @param {Array.<Vertex>} attachable - the nodes that are candidates for attachment
      * @public
      */
@@ -619,7 +635,8 @@ define( function( require ) {
       // Update the unsnapped position of the entire subgraph, i.e. where it would be if no matches are proposed.
       // Must do this before calling getBestDropTarget, because the unsnapped positions are used for target matching
       for ( var i = 0; i < vertices.length; i++ ) {
-        vertices[ i ].unsnappedPositionProperty.set( vertices[ i ].unsnappedPositionProperty.get().plus( unsnappedDelta ) );
+        var unsnappedPosition = vertices[ i ].unsnappedPositionProperty.get().plus( unsnappedDelta );
+        vertices[ i ].unsnappedPositionProperty.set( unsnappedPosition );
       }
 
       updatePositions && updatePositions();
@@ -629,7 +646,8 @@ define( function( require ) {
       var bestDropTarget = this.getBestDropTarget( attachable );
       var delta = Vector2.ZERO;
       if ( bestDropTarget ) {
-        delta = bestDropTarget.dst.unsnappedPositionProperty.get().minus( bestDropTarget.src.unsnappedPositionProperty.get() );
+        var srcUnsnappedPosition = bestDropTarget.src.unsnappedPositionProperty.get();
+        delta = bestDropTarget.dst.unsnappedPositionProperty.get().minus( srcUnsnappedPosition );
       }
 
       for ( i = 0; i < vertices.length; i++ ) {
