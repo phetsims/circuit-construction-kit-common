@@ -25,7 +25,7 @@ define( function( require ) {
     var text = new Text( animationSpeedLimitString, { fontSize: 26 } );
     Node.call( this, {
       children: [
-        text
+        text //TODO: it seems like we should just subclass text instead of composing it
       ]
     } );
 
