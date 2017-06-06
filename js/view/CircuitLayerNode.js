@@ -108,9 +108,6 @@ define( function( require ) {
     // @public (read-only) the VertexNodes
     this.vertexNodes = [];
 
-    // @public (read-only) the nodes to show
-    this.chargeNodes = [];
-
     // When loading from a state object, the vertices could have been added first.  If so, move them in front
     var moveVerticesToFront = function( circuitElement ) {
       var startVertexNode = self.getVertexNode( circuitElement.startVertexProperty.get() );
@@ -249,12 +246,30 @@ define( function( require ) {
         charge,
         circuitConstructionKitScreenView.circuitConstructionKitModel.revealingProperty || new BooleanProperty( true )
       );
+
+      // Any charges that are in a light bulb and above halfway through the filament should be in front of the base,
+      // so they appear to tunnel through the socket and go in front of the socket on the right-hand side.
+      if ( charge.onRightHandSideOfLightBulbProperty.get() ) {
+        self.lightBulbSocketElectronLayer.addChild( chargeNode );
+      }
+      else {
+        self.mainLayer.addChild( chargeNode );
+      }
+
+      var chargeLayerListener = function( onRightHandSideOfLightBulb ) {
+        if ( onRightHandSideOfLightBulb ) {
+          self.lightBulbSocketElectronLayer.addChild( chargeNode );
+          self.mainLayer.removeChild( chargeNode );
+        }
+        else {
+          self.lightBulbSocketElectronLayer.removeChild( chargeNode );
+          self.mainLayer.addChild( chargeNode );
+        }
+      };
+      charge.onRightHandSideOfLightBulbProperty.lazyLink( chargeLayerListener );
       charge.disposeEmitter.addListener( function() {
-        var index = self.chargeNodes.indexOf( chargeNode );
-        self.chargeNodes.splice( index, 1 );
+        charge.onRightHandSideOfLightBulbProperty.unlink( chargeLayerListener );
       } );
-      self.chargeNodes.push( chargeNode );
-      self.mainLayer.addChild( chargeNode );
     } );
 
     // @public - Filled in by black box study, if it is running.
@@ -420,30 +435,6 @@ define( function( require ) {
     step: function() {
 
       var self = this;
-
-      // Any charges that are in a light bulb and above halfway through the filament should be in front of the base,
-      // so they appear to tunnel through the socket and go in front of the socket on the right-hand side.
-      // TODO: this seems like a performance problem. should we model the z-ordering in the model?
-      // Or solve this with clipping?
-      for ( var i = 0; i < this.chargeNodes.length; i++ ) {
-        var chargeNode = this.chargeNodes[ i ];
-
-        // TODO: move this to model and link to a new Property
-        var shouldBeInFront = chargeNode.charge.circuitElement instanceof LightBulb &&
-                              chargeNode.charge.distanceProperty.get() > chargeNode.charge.circuitElement.chargePathLength / 2;
-
-        // This should be fast because only a few electrons should be in the front layer at a time
-        var isInFront = this.lightBulbSocketElectronLayer.hasChild( chargeNode );
-
-        if ( shouldBeInFront && !isInFront ) {
-          this.lightBulbSocketElectronLayer.addChild( chargeNode );
-          this.mainLayer.removeChild( chargeNode );
-        }
-        else if ( !shouldBeInFront && isInFront ) {
-          this.lightBulbSocketElectronLayer.removeChild( chargeNode );
-          this.mainLayer.addChild( chargeNode );
-        }
-      }
 
       // paint dirty fixed length circuit element nodes.  This batches changes instead of applying multiple changes
       // per frame

@@ -15,6 +15,7 @@ define( function( require ) {
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var Emitter = require( 'AXON/Emitter' );
   var Vector2 = require( 'DOT/Vector2' );
+  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
 
   /**
    * @param {CircuitElement} circuitElement - the circuit element the charge is in.
@@ -56,6 +57,10 @@ define( function( require ) {
     // @public (read-only) - the angle of the charge (for showing arrows)
     this.angleProperty = new Property();
 
+    // @public (read-only) - true if the Charge is on the right hand side of a light bulb and hence must be layered
+    // in front of the socket node.
+    this.onRightHandSideOfLightBulbProperty = new Property( false );
+
     // When the distance or updating properties change, update the 2d position of the charge
     var multilink = Property.multilink( [ this.distanceProperty, this.updatingPositionProperty ], function( distance, updating ) {
       if ( updating ) {
@@ -66,6 +71,11 @@ define( function( require ) {
         assert && assert( !isNaN( position.x ) && !isNaN( position.y ), 'point was not a number' );
         self.angleProperty.set( positionAndAngle.angle );
         self.positionProperty.set( position );
+
+        self.onRightHandSideOfLightBulbProperty.set(
+          self.circuitElement instanceof LightBulb &&
+          self.distanceProperty.get() > self.circuitElement.chargePathLength / 2
+        );
       }
     } );
 
