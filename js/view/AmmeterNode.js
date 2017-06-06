@@ -62,8 +62,8 @@ define( function( require ) {
       // allowable drag bounds in view coordinates
       visibleBoundsProperty: null,
 
-      // when the simulation is not "running", values are hidden
-      runningProperty: new BooleanProperty( true )
+      // For some CCK Black Box modes, when the user makes a change, the results are hidden
+      showResultsProperty: new BooleanProperty( true )
     }, options );
 
     // @public (read-only) (the model Ammeter associated with this Node)
@@ -81,7 +81,7 @@ define( function( require ) {
              StringUtils.fillIn( currentAmpsString, { current: Util.toFixed( Math.abs( current ), 2 ) } );
     } );
 
-    var probeTextNode = new ProbeTextNode( currentReadoutProperty, options.runningProperty, currentString, tandem.createTandem( 'probeTextNode' ), {
+    var probeTextNode = new ProbeTextNode( currentReadoutProperty, options.showResultsProperty, currentString, tandem.createTandem( 'probeTextNode' ), {
       centerX: ammeterBodyImage[ 0 ].width / 2,
       centerY: ammeterBodyImage[ 0 ].height / 2
     } );

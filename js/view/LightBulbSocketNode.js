@@ -27,13 +27,13 @@ define( function( require ) {
    * @param {CCKScreenView} circuitConstructionKitScreenView - the main screen view
    * @param {CircuitLayerNode} circuitLayerNode - the node for the entire circuit
    * @param {LightBulb} lightBulb - the light bulb model
-   * @param {Property.<boolean>} runningProperty - true if the sim can display values
+   * @param {Property.<boolean>} showResultsProperty - true if the sim can display values
    * @param {Property.<string>} viewProperty - 'likelike'|'schematic'
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function LightBulbSocketNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, runningProperty, viewProperty, tandem, options ) {
+  function LightBulbSocketNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, showResultsProperty, viewProperty, tandem, options ) {
     // TODO: factor out duplicated code between this class and CCKLightBulbNode
 
     // TODO: This is overkill, we should just have an Image, without all of the extra brightness lines, etc.

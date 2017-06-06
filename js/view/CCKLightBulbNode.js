@@ -50,16 +50,16 @@ define( function( require ) {
    * @param {CCKScreenView} circuitConstructionKitScreenView - the main screen view
    * @param {CircuitLayerNode} circuitLayerNode - the node for the entire circuit
    * @param {LightBulb} lightBulb - the light bulb model
-   * @param {Property.<boolean>} runningProperty - true if the sim can display values
+   * @param {Property.<boolean>} showResultsProperty - true if the sim can display values
    * @param {Property.<string>} viewProperty - 'likelike'|'schematic'
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function CCKLightBulbNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, runningProperty, viewProperty, tandem, options ) {
+  function CCKLightBulbNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, showResultsProperty, viewProperty, tandem, options ) {
     options = options || {};
     var brightnessProperty = new NumberProperty( 0 );
-    var updateBrightness = Property.multilink( [ lightBulb.currentProperty, runningProperty, lightBulb.voltageDifferenceProperty ], function( current, running, voltageDifference ) {
+    var updateBrightness = Property.multilink( [ lightBulb.currentProperty, showResultsProperty, lightBulb.voltageDifferenceProperty ], function( current, running, voltageDifference ) {
       var power = Math.abs( current * voltageDifference );
 
       // Heuristics are from Java
@@ -85,7 +85,7 @@ define( function( require ) {
       lightBulbNode = new Node( {
         children: [
           lightBulbNode,
-          new LightBulbSocketNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, runningProperty, viewProperty, tandem.createTandem( 'socketNode' ), options )
+          new LightBulbSocketNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, showResultsProperty, viewProperty, tandem.createTandem( 'socketNode' ), options )
         ]
       } );
     }
@@ -162,7 +162,7 @@ define( function( require ) {
     if ( circuitLayerNode ) {
 
       // Render the socket node in the front
-      this.socketNode = new LightBulbSocketNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, runningProperty, viewProperty, tandem.createTandem( 'socketNode' ), options );
+      this.socketNode = new LightBulbSocketNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, showResultsProperty, viewProperty, tandem.createTandem( 'socketNode' ), options );
       circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.addChild( this.socketNode );
     }
 

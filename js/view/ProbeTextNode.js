@@ -24,13 +24,13 @@ define( function( require ) {
 
   /**
    * @param {Property.<string>} textProperty - the text that should be displayed
-   * @param {Property.<boolean>} runningProperty - true if the text should be displayed // TODO: rename this property
+   * @param {Property.<boolean>} showResultsProperty - true if the text should be displayed
    * @param {string} title - the title
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function ProbeTextNode( textProperty, runningProperty, title, tandem, options ) {
+  function ProbeTextNode( textProperty, showResultsProperty, title, tandem, options ) {
 
     options = _.extend( {
       spacing: 6,
@@ -64,8 +64,8 @@ define( function( require ) {
       readout.centerY = textBox.centerY;
     } );
 
-    // Update visibility when running property changes
-    runningProperty.linkAttribute( readout, 'visible' );
+    // Update visibility when show results property changes
+    showResultsProperty.linkAttribute( readout, 'visible' );
 
     // set the children
     options.children = [ new Text( title, {

@@ -120,7 +120,7 @@ define( function( require ) {
     this.circuitLayerNode = new CircuitLayerNode( circuitConstructionKitModel.circuit, this, tandem.createTandem( 'circuitLayerNode' ) );
 
     var voltmeterNode = new VoltmeterNode( circuitConstructionKitModel.voltmeter, tandem.createTandem( 'voltmeterNode' ), {
-      runningProperty: circuitConstructionKitModel.exploreScreenRunningProperty,
+      showResultsProperty: circuitConstructionKitModel.exploreScreenRunningProperty,
       visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty
     } );
     circuitConstructionKitModel.voltmeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
@@ -131,7 +131,7 @@ define( function( require ) {
     circuitConstructionKitModel.voltmeter.visibleProperty.linkAttribute( voltmeterNode, 'visible' );
 
     var ammeterNode = new AmmeterNode( circuitConstructionKitModel.ammeter, tandem.createTandem( 'ammeterNode' ), {
-      runningProperty: circuitConstructionKitModel.exploreScreenRunningProperty,
+      showResultsProperty: circuitConstructionKitModel.exploreScreenRunningProperty,
       visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty
     } );
     circuitConstructionKitModel.ammeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {

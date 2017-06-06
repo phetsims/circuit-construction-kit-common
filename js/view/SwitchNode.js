@@ -31,13 +31,13 @@ define( function( require ) {
    * @param {CCKScreenView} circuitConstructionKitScreenView
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {Switch} circuitSwitch
-   * @param {Property.<boolean>} runningProperty - supplied for consistency with other CircuitElementNode constructors
+   * @param {Property.<boolean>} showResultsProperty - supplied for consistency with other CircuitElementNode constructors
    * @param {Property.<string>} viewProperty
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function SwitchNode( circuitConstructionKitScreenView, circuitLayerNode, circuitSwitch, runningProperty, viewProperty, tandem, options ) {
+  function SwitchNode( circuitConstructionKitScreenView, circuitLayerNode, circuitSwitch, showResultsProperty, viewProperty, tandem, options ) {
 
     // @public (read-only) - the Switch rendered by this Node
     this.circuitSwitch = circuitSwitch;

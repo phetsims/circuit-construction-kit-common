@@ -39,18 +39,18 @@ define( function( require ) {
    * @param {Node} circuitLayerNode - the main circuit node to use as a coordinate frame
    * @param {VoltmeterNode} voltmeterNode - node for the Voltmeter
    * @param {AmmeterNode} ammeterNode - node for the Ammeter
-   * @param {Property.<boolean>} runningProperty - whether values can be displayed
+   * @param {Property.<boolean>} showResultsProperty - whether values can be displayed
    * @param {Property.<boolean>} showLabelsProperty - true if toolbox labels should be shown
    * @param {boolean} showSeriesAmmeters - whether the series ammeters should be shown in the toolbox
    * @param {Tandem} tandem
    * @constructor
    */
-  function SensorToolbox( circuitLayerNode, voltmeterNode, ammeterNode, runningProperty, showLabelsProperty, showSeriesAmmeters, tandem ) {
+  function SensorToolbox( circuitLayerNode, voltmeterNode, ammeterNode, showResultsProperty, showLabelsProperty, showSeriesAmmeters, tandem ) {
 
     // Options for the VoltmeterNode and AmmeterNode
     var options = {
       icon: true,
-      runningProperty: runningProperty
+      showResultsProperty: showResultsProperty
     };
 
     /**

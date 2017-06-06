@@ -31,12 +31,12 @@ define( function( require ) {
    * @param {CCKScreenView|null} circuitConstructionKitScreenView - if null, this WireNode is just an icon
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {Wire} wire
-   * @param {Property.<boolean>} runningProperty - unused but provided to match the constructors of other circuit element nodes
+   * @param {Property.<boolean>} showResultsProperty - unused but provided to match the constructors of other circuit element nodes
    * @param {Property.<string>} viewProperty - lifelike or schematic
    * @param {Tandem} tandem
    * @constructor
    */
-  function WireNode( circuitConstructionKitScreenView, circuitLayerNode, wire, runningProperty, viewProperty, tandem ) {
+  function WireNode( circuitConstructionKitScreenView, circuitLayerNode, wire, showResultsProperty, viewProperty, tandem ) {
     var self = this;
     this.wire = wire;
 

@@ -34,13 +34,13 @@ define( function( require ) {
    * @param {CCKScreenView} circuitConstructionKitScreenView
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {Battery} battery
-   * @param {Property.<boolean>} runningProperty - supplied for consistency with other CircuitElementNode constructors
+   * @param {Property.<boolean>} showResultsProperty - supplied for consistency with other CircuitElementNode constructors
    * @param {Property.<string>} viewProperty
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function BatteryNode( circuitConstructionKitScreenView, circuitLayerNode, battery, runningProperty, viewProperty, tandem, options ) {
+  function BatteryNode( circuitConstructionKitScreenView, circuitLayerNode, battery, showResultsProperty, viewProperty, tandem, options ) {
 
     // @public (read-only) - the Battery rendered by this Node
     this.battery = battery;

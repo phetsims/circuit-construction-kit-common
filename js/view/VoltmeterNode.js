@@ -64,8 +64,8 @@ define( function( require ) {
       // Draggable bounds
       visibleBoundsProperty: null,
 
-      // Whether values can be displayed (displayed when running).
-      runningProperty: new BooleanProperty( true )
+      // Whether values can be displayed (hidden after user makes a change in some Black Box modes).
+      showResultsProperty: new BooleanProperty( true )
     }, options );
 
     // @public (read-only) - the model
@@ -82,7 +82,7 @@ define( function( require ) {
       return voltage === null ? questionMarkString : StringUtils.fillIn( voltageUnitsString, { voltage: Util.toFixed( voltage, 2 ) } );
     } );
 
-    var probeTextNode = new ProbeTextNode( voltageReadoutProperty, options.runningProperty, voltageString, tandem.createTandem( 'probeTextNode' ), {
+    var probeTextNode = new ProbeTextNode( voltageReadoutProperty, options.showResultsProperty, voltageString, tandem.createTandem( 'probeTextNode' ), {
       centerX: voltmeterBodyImage[ 0 ].width / 2,
       centerY: voltmeterBodyImage[ 0 ].height / 2
     } );

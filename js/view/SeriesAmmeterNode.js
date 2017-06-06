@@ -34,13 +34,13 @@ define( function( require ) {
    * @param {CCKScreenView} circuitConstructionKitScreenView
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {SeriesAmmeter} seriesAmmeter
-   * @param {Property.<boolean>} runningProperty - supplied for consistency with other CircuitElementNode constructors
+   * @param {Property.<boolean>} showResultsProperty - supplied for consistency with other CircuitElementNode constructors
    * @param {Property.<string>} viewProperty
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function SeriesAmmeterNode( circuitConstructionKitScreenView, circuitLayerNode, seriesAmmeter, runningProperty, viewProperty, tandem, options ) {
+  function SeriesAmmeterNode( circuitConstructionKitScreenView, circuitLayerNode, seriesAmmeter, showResultsProperty, viewProperty, tandem, options ) {
     var self = this;
     options = options || {};
     viewProperty = new Property( 'lifelike' );
