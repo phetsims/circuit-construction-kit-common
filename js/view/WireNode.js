@@ -168,14 +168,26 @@ define( function( require ) {
     };
 
     /**
+     * Helper function that updates the vertices of a wireNode.
+     *
+     * @param {Vertex} newVertex
+     * @param {Vertex} oldVertex
+     * @param {function} updateListener
+     * @private
+     */
+    var updateVertex = function( newVertex, oldVertex, updateListener ) {
+      oldVertex && oldVertex.positionProperty.unlink( updateListener );
+      newVertex.positionProperty.link( updateListener );
+    };
+
+    /**
      * When the start vertex changes to a different instance (say when vertices are soldered together), unlink the
      * old one and link to the new one.
      * @param {Vertex} newStartVertex
      * @param {Vertex} oldStartVertex
      */
     var updateStartVertex = function( newStartVertex, oldStartVertex ) {
-      oldStartVertex && oldStartVertex.positionProperty.unlink( updateStartPosition );
-      newStartVertex.positionProperty.link( updateStartPosition );
+      updateVertex( newStartVertex, oldStartVertex, updateStartPosition );
     };
     wire.startVertexProperty.link( updateStartVertex );
 
@@ -191,19 +203,16 @@ define( function( require ) {
       if ( highlightNode.visible ) {
         highlightNode.shape = getHighlightStrokedShape( highlightStrokeStyles );
       }
-
       updateStroke();
     };
 
     /**
      * When the end vertex changes to a different instance, unlink the old properties and link to the new properties.
-     * TODO: duplicated with updateStartVertex
      * @param {Vertex} newEndVertex
      * @param {Vertex} oldEndVertex
      */
     var updateEndVertex = function( newEndVertex, oldEndVertex ) {
-      oldEndVertex && oldEndVertex.positionProperty.unlink( updateEndPosition );
-      newEndVertex.positionProperty.link( updateEndPosition );
+      updateVertex( newEndVertex, oldEndVertex, updateEndPosition );
     };
     wire.endVertexProperty.link( updateEndVertex );
 
