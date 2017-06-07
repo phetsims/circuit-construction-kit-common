@@ -279,7 +279,6 @@ define( function( require ) {
     this.dollarBillGroupTandem = tandem.createGroupTandem( 'dollarBills' );
     this.paperClipGroupTandem = tandem.createGroupTandem( 'paperClips' );
     this.rightBatteryTandemGroup = tandem.createGroupTandem( 'rightBatteries' );
-    this.leftBatteryTandemGroup = tandem.createGroupTandem( 'leftBatteries' );
     this.lightBulbGroupTandem = tandem.createGroupTandem( 'lightBulbs' );
   }
 

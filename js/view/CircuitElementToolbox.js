@@ -70,7 +70,6 @@ define( function( require ) {
     options = _.extend( {
       orientation: 'vertical',
       numberOfRightBatteries: CircuitElementToolbox.NUMBER_OF_RIGHT_BATTERIES,
-      numberOfLeftBatteries: CircuitElementToolbox.NUMBER_OF_LEFT_BATTERIES,
       numberOfWires: CircuitElementToolbox.NUMBER_OF_WIRES,
       numberOfLightBulbs: CircuitElementToolbox.NUMBER_OF_LIGHT_BULBS,
       numberOfResistors: CircuitElementToolbox.NUMBER_OF_RESISTORS,
@@ -96,12 +95,6 @@ define( function( require ) {
     var createVertex = function( x, y ) {
       return new Vertex( x, y, { tandem: circuit.vertexGroupTandem.createNextTandem() } );
     };
-
-    // create icons
-    var leftIconBattery = new Battery( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.BATTERY_LENGTH, 0 ), null, 'normal', tandem.createTandem( 'leftIconBattery' ) );
-    var leftBatteryIcon = new BatteryNode( null, null, leftIconBattery, null, viewProperty, tandem.createTandem( 'leftBatteryIcon' ), {
-      icon: true
-    } );
 
     var rightIconBattery = new Battery( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.BATTERY_LENGTH, 0 ), null, 'normal', tandem.createTandem( 'rightIconBattery' ) );
     var rightBatteryIcon = new BatteryNode( null, null, rightIconBattery, null, viewProperty, tandem.createTandem( 'rightBatteryIcon' ), { icon: true } );
@@ -149,7 +142,6 @@ define( function( require ) {
     lightBulbIcon.mutate( { scale: 0.85 * TOOLBOX_ICON_SIZE / Math.max( lightBulbIcon.width, lightBulbIcon.height ) } );
     highResistanceLightBulbIcon.mutate( { scale: 0.85 * TOOLBOX_ICON_SIZE / Math.max( highResistanceLightBulbIcon.width, highResistanceLightBulbIcon.height ) } );
     switchIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( switchIcon.width, switchIcon.height ) } );
-    leftBatteryIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( leftBatteryIcon.width, leftBatteryIcon.height ) } );
     rightBatteryIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( rightBatteryIcon.width, rightBatteryIcon.height ) } );
     highVoltageBatteryIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( highVoltageBatteryIcon.width, highVoltageBatteryIcon.height ) } );
     highResistorIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( highResistorIcon.width, highResistorIcon.height ) } );
@@ -171,9 +163,6 @@ define( function( require ) {
 
     // Functions that count how many circuit elements there are of each type, so the icon can be hidden when the user created
     // the maximum number of that type
-    var countLeftBatteries = createCounter( function( circuitElement ) {
-      return circuitElement instanceof Battery && circuitElement.initialOrientation === 'left' && circuitElement.batteryType === 'normal';
-    } );
     var countRightBatteries = createCounter( function( circuitElement ) {
       return circuitElement instanceof Battery && circuitElement.initialOrientation === 'right' && circuitElement.batteryType === 'normal';
     } );
@@ -201,10 +190,6 @@ define( function( require ) {
     };
 
     // create tool nodes
-    var createLeftBattery = function( position ) {
-      var vertexPair = createVertexPair( position, BATTERY_LENGTH );
-      return new Battery( vertexPair.endVertex, vertexPair.startVertex, circuit.batteryResistanceProperty, 'normal', circuit.leftBatteryTandemGroup.createNextTandem(), { initialOrientation: 'left' } );
-    };
     var createRightBattery = function( position ) {
       var vertexPair = createVertexPair( position, BATTERY_LENGTH );
       return new Battery( vertexPair.startVertex, vertexPair.endVertex, circuit.batteryResistanceProperty, 'normal', circuit.rightBatteryTandemGroup.createNextTandem() );
@@ -256,7 +241,6 @@ define( function( require ) {
       };
     };
 
-    var leftBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitLayerNode, leftBatteryIcon, options.numberOfLeftBatteries, countLeftBatteries, createLeftBattery );
     var rightBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitLayerNode, rightBatteryIcon, options.numberOfRightBatteries, countRightBatteries, createRightBattery );
     var highVoltageBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitLayerNode, highVoltageBatteryIcon, options.numberOfHighVoltageBatteries, countHighVoltageBatteries, createHighVoltageBattery );
     var wireToolNode = new CircuitElementToolNode( wireString, showLabelsProperty, circuitLayerNode, wireIcon, options.numberOfWires, countWires, createWire );
@@ -460,7 +444,6 @@ define( function( require ) {
 
   }, {
     NUMBER_OF_RIGHT_BATTERIES: 10,
-    NUMBER_OF_LEFT_BATTERIES: 10,
     NUMBER_OF_WIRES: 20,
     NUMBER_OF_LIGHT_BULBS: 10,
     NUMBER_OF_RESISTORS: 10,
