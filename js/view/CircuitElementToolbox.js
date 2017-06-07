@@ -211,7 +211,7 @@ define( function( require ) {
       return LightBulb.createAtPosition( position, circuit.vertexGroupTandem, circuit.lightBulbGroupTandem.createNextTandem(), {
         highResistance: true,
         resistance: 1000,
-        editableRange: new Range( 100, 100000 )
+        editableRange: new Range( 100, 10000 )
       } );
     };
     var createResistor = function( position ) {
@@ -223,7 +223,7 @@ define( function( require ) {
       return new Resistor( vertexPair.startVertex, vertexPair.endVertex, circuit.resistorGroupTandem.createNextTandem(), {
         resistorType: 'high-resistor',
         resistance: 1000,
-        editableRange: new Range( 100, 100000 )
+        editableRange: new Range( 100, 10000 )
       } );
     };
     var createSwitch = function( position ) {
