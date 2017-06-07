@@ -1,7 +1,7 @@
 // Copyright 2015-2016, University of Colorado Boulder
 
 /**
- * Stub to help in loading the unit tests.
+ * Stub to load the unit tests.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
