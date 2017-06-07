@@ -153,15 +153,13 @@ define( function( require ) {
       circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.addChild( this.frontPanel );
     }
 
-    this.lifelikeNode = lifelikeNode;
-
     FixedLengthCircuitElementNode.call( this,
       circuitConstructionKitScreenView,
       circuitLayerNode,
       seriesAmmeter,
       viewProperty,
-      this.lifelikeNode,
-      new Node( { children: [ this.lifelikeNode ] } ),// reuse lifelike view for the schematic view
+      lifelikeNode,
+      new Node( { children: [ lifelikeNode ] } ),// reuse lifelike view for the schematic view
       tandem,
       options
     );
