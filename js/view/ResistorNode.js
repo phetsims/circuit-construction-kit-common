@@ -36,8 +36,8 @@ define( function( require ) {
   var COLOR_BAND_WIDTH = 10;
   var COLOR_BAND_HEIGHT = 39.75;
   var COLOR_BAND_TOP = -0.25;
-  var COLOR_BAND_INSET = 33;
-  var AVAILABLE_COLOR_BAND_SPACE = LIFELIKE_IMAGE_WIDTH - 2 * COLOR_BAND_INSET;
+  var COLOR_BAND_PADDING = 33;
+  var AVAILABLE_COLOR_BAND_SPACE = LIFELIKE_IMAGE_WIDTH - 2 * COLOR_BAND_PADDING;
   var REMAINING_COLOR_BAND_SPACE = AVAILABLE_COLOR_BAND_SPACE - 4 * COLOR_BAND_WIDTH;// max is 4 bands, even though they are not always shown
   var COLOR_BAND_SPACING = REMAINING_COLOR_BAND_SPACE / 4 - 2; // two spaces before last band
   var COLOR_BAND_Y = lifelikeResistorImage[ 0 ].height / 2 / LIFELIKE_IMAGE_SCALE - COLOR_BAND_HEIGHT / LIFELIKE_IMAGE_SCALE / 2 + COLOR_BAND_TOP;
@@ -94,7 +94,7 @@ define( function( require ) {
 
         var additionalOffset = index === 3 ? 12 : 0;
         return new Rectangle( 0, 0, COLOR_BAND_WIDTH, COLOR_BAND_HEIGHT, {
-          x: COLOR_BAND_INSET + (COLOR_BAND_WIDTH + COLOR_BAND_SPACING) * index + additionalOffset,
+          x: COLOR_BAND_PADDING + (COLOR_BAND_WIDTH + COLOR_BAND_SPACING) * index + additionalOffset,
           y: COLOR_BAND_Y
         } );
       };
@@ -104,7 +104,7 @@ define( function( require ) {
 
       // Single color band when resistance = 0 which appears in the middle
       var singleColorBand = new Rectangle( 0, 0, COLOR_BAND_WIDTH, COLOR_BAND_HEIGHT, {
-        centerX: COLOR_BAND_INSET + AVAILABLE_COLOR_BAND_SPACE / 2,
+        centerX: COLOR_BAND_PADDING + AVAILABLE_COLOR_BAND_SPACE / 2,
         y: COLOR_BAND_Y
       } );
 

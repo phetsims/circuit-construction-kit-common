@@ -104,16 +104,16 @@ define( function( require ) {
     var h = this.localBounds.height;
     var fractionDown = 0.6; // How far the top part of the bulb extends over the image
     var fractionTrim = 0.1; // How much to trim off of the bottom of the bulb.
-    var fractionHorizontalInset = 0.25;
+    var fractionHorizontalPadding = 0.25;
     this.mouseArea = new Shape()
       .moveTo( this.localBounds.minX, this.localBounds.minY )
       .lineToRelative( w, 0 )
       .lineToRelative( 0, h * fractionDown )
-      .lineToRelative( -w * fractionHorizontalInset, 0 )
+      .lineToRelative( -w * fractionHorizontalPadding, 0 )
       .lineToRelative( 0, h * (1 - fractionDown - fractionTrim) )
-      .lineToRelative( -w * (1 - fractionHorizontalInset * 2), 0 )
+      .lineToRelative( -w * (1 - fractionHorizontalPadding * 2), 0 )
       .lineToRelative( 0, -h * (1 - fractionDown - fractionTrim) )
-      .lineToRelative( -w * fractionHorizontalInset, 0 )
+      .lineToRelative( -w * fractionHorizontalPadding, 0 )
       .lineTo( this.localBounds.minX, this.localBounds.minY );
     this.touchArea = this.mouseArea;
   }

@@ -40,7 +40,7 @@ define( function( require ) {
     RIGHT_SIDE_PANEL_MIN_WIDTH: 190,
 
     // Padding for placement of control panels
-    LAYOUT_INSET: 5,
+    LAYOUT_MARGIN: 5,
 
     // Number of pixels (screen coordinates) that constitutes a tap instead of a drag
     TAP_THRESHOLD: 15,

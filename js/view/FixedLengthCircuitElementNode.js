@@ -233,10 +233,10 @@ define( function( require ) {
       // Update the fire transform
       var flameExtent = 0.8;
       var scale = delta.magnitude() / fireImage[ 0 ].width * flameExtent;
-      var flameInset = (1 - flameExtent) / 2;
+      var flameMargin = (1 - flameExtent) / 2;
       CCKMathUtil.setToTranslationRotation( transform, startPosition, angle )
         .multiplyMatrix( rotationMatrix.setToScale( scale ) )
-        .multiplyMatrix( rotationMatrix.setToTranslation( delta.magnitude() * flameInset / scale, -fireImage[ 0 ].height ) );
+        .multiplyMatrix( rotationMatrix.setToTranslation( delta.magnitude() * flameMargin / scale, -fireImage[ 0 ].height ) );
       this.fireNode && this.fireNode.setMatrix( transform );
     },
 

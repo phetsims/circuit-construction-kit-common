@@ -2,7 +2,7 @@
 // TODO: docs and resize when lifelike/schematic changes
 
 /**
- *
+ * Node used by FixedLengthCircuitElementNode to show its yellow highlight rectangle.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -16,7 +16,7 @@ define( function( require ) {
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   // constants
-  var INSET = 10;
+  var PADDING = 10;
   var CORNER_RADIUS = 8;
 
   /**
@@ -29,10 +29,10 @@ define( function( require ) {
     var w = options.contentWidth || contentNode.width;
     var h = options.contentHeight || contentNode.height;
     Rectangle.call( this,
-      contentNode.bounds.minX - INSET,
-      contentNode.bounds.minY - INSET,
-      w + INSET * 2,
-      h + INSET * 2,
+      contentNode.bounds.minX - PADDING,
+      contentNode.bounds.minY - PADDING,
+      w + PADDING * 2,
+      h + PADDING * 2,
       CORNER_RADIUS,
       CORNER_RADIUS, {
         stroke: CircuitConstructionKitConstants.HIGHLIGHT_COLOR,
