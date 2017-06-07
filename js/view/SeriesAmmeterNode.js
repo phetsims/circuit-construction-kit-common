@@ -90,6 +90,7 @@ define( function( require ) {
         } )
       ]
     } ), {
+      pickable: false,
       fill: ORANGE,
       stroke: null,
       xMargin: 4,
@@ -138,16 +139,18 @@ define( function( require ) {
     readoutPanel.centerX = lifelikeNode.centerX;
     readoutPanel.centerY = lifelikeNode.centerY;
 
-    lifelikeNode.frontPanel = new Node( {
+    // @private - the panel to be shown in front for z-ordering
+    this.frontPanel = new Node( {
       children: [
         readoutPanel
       ]
     } );
+
     if ( options.icon ) {
-      lifelikeNode.addChild( lifelikeNode.frontPanel.mutate( { centerY: lifelikeNode.height / 2 - 2 } ) );
+      lifelikeNode.addChild( this.frontPanel.mutate( { centerY: lifelikeNode.height / 2 - 2 } ) );
     }
     else {
-      circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.addChild( lifelikeNode.frontPanel );
+      circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.addChild( this.frontPanel );
     }
 
     this.lifelikeNode = lifelikeNode;
@@ -170,7 +173,7 @@ define( function( require ) {
     this.disposeSeriesAmmeterNode = function() {
       seriesAmmeter.currentProperty.unlink( updateText );
       if ( !this.icon ) {
-        circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.removeChild( self.lifelikeNode.frontPanel );
+        circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.removeChild( self.frontPanel );
       }
     };
   }
@@ -185,7 +188,7 @@ define( function( require ) {
     },
     updateRender: function() {
       FixedLengthCircuitElementNode.prototype.updateRender.call( this );
-      this.lifelikeNode.frontPanel.setMatrix( this.contentNode.getMatrix() );
+      this.frontPanel.setMatrix( this.contentNode.getMatrix() );
     }
   } );
 } );
