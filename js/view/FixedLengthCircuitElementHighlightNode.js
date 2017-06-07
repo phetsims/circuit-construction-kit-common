@@ -1,5 +1,4 @@
 // Copyright 2017, University of Colorado Boulder
-// TODO: docs and resize when lifelike/schematic changes
 
 /**
  * Node used by FixedLengthCircuitElementNode to show its yellow highlight rectangle.
@@ -16,23 +15,27 @@ define( function( require ) {
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   // constants
-  var PADDING = 10;
-  var CORNER_RADIUS = 8;
+  var PADDING = 10; // in view coordinates
+  var CORNER_RADIUS = 8; // in view coordinates
 
   /**
+   * @param {FixedLengthCircuitElementNode} fixedLengthCircuitElementNode
+   * @param {Object} [options]
    * @constructor
    */
   function FixedLengthCircuitElementHighlightNode( fixedLengthCircuitElementNode, options ) {
 
-    var contentNode = fixedLengthCircuitElementNode.contentNode;
+    // Use the content node dimensions but allow overriding with an option
+    options = _.extend( {
+      width: fixedLengthCircuitElementNode.contentNode.width,
+      height: fixedLengthCircuitElementNode.contentNode.height
+    }, options );
 
-    var w = options.contentWidth || contentNode.width;
-    var h = options.contentHeight || contentNode.height;
     Rectangle.call( this,
-      contentNode.bounds.minX - PADDING,
-      contentNode.bounds.minY - PADDING,
-      w + PADDING * 2,
-      h + PADDING * 2,
+      fixedLengthCircuitElementNode.contentNode.bounds.minX - PADDING,
+      fixedLengthCircuitElementNode.contentNode.bounds.minY - PADDING,
+      options.width + PADDING * 2,
+      options.height + PADDING * 2,
       CORNER_RADIUS,
       CORNER_RADIUS, {
         stroke: CircuitConstructionKitConstants.HIGHLIGHT_COLOR,

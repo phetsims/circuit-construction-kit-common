@@ -95,8 +95,8 @@ define( function( require ) {
 
       // Override the dimensions of the bulb node because the invisible rays contribute to the bounds. Used to set up
       // the highlight region.
-      contentWidth: 12 * 0.3,
-      contentHeight: 22 * 0.5
+      contentWidth: 3.6,
+      contentHeight: 11
     }, options );
 
     // Schematic creation begins here.
