@@ -50,12 +50,12 @@ define( function( require ) {
     this.seriesAmmeter = seriesAmmeter;
 
     // Electrons go behind this panel to give the appearance they go through the ammeter
-    var readoutText = new Text( WIDEST_LABEL, { fontSize: 13 } );
+    var readoutText = new Text( WIDEST_LABEL, { fontSize: 15 } );
     readoutText.setMaxWidth( readoutText.width );
     var maxWidth = readoutText.width;
     var maxHeight = readoutText.height;
 
-    var textPanelMarginX = 2;
+    var textPanelMarginX = 8;
     var textPanelMarginY = 1;
 
     var updateText = function( current ) {
@@ -74,10 +74,11 @@ define( function( require ) {
     seriesAmmeter.currentProperty.link( updateText );
     var readoutPanel = new Panel( new VBox( {
       children: [
-        new Text( currentString, { fontSize: 14, maxWidth: 54 } ),
-        new Rectangle( 0, 0, maxWidth + textPanelMarginX * 2, maxHeight + textPanelMarginY * 2, {
-          stroke: 'gray',
+        new Text( currentString, { fontSize: 12, maxWidth: 54 } ),
+        new Rectangle( 0, 0, maxWidth + textPanelMarginX * 2, maxHeight + textPanelMarginY * 2, 4, 4, {
+          stroke: 'black',
           fill: 'white',
+          lineWidth: 0.75,
           children: [
             readoutText
           ]
@@ -110,7 +111,7 @@ define( function( require ) {
         // black border
         createPanel( {
           stroke: '#231f20',
-          lineWidth: 3
+          lineWidth: 2.4
         } )
       ]
     } );
