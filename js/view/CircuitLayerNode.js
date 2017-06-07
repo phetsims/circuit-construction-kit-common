@@ -1,8 +1,13 @@
 // Copyright 2015-2017, University of Colorado Boulder
 
 /**
- * The Node that represents a Circuit, including all Wires and FixedLengthCircuitElements, Charge, Solder, etc.  It also
- * renders the voltmeter and ammeter. It can be zoomed in and out.
+ * The Node that represents a Circuit, including all Wires and FixedLengthCircuitElements, Charge, Solder and Sensors.
+ * It also renders the voltmeter and ammeter. It can be zoomed in and out.
+ *
+ * Each CircuitElementNode may node parts that appear in different layers, such as the highlight and the light bulb
+ * socket.  Having the light bulb socket in another layer makes it possible to show the electrons going "through" the
+ * socket (in z-ordering). The CircuitElementNode constructors populate different layers of the CircuitLayerNode in
+ * their constructors and depopulate in their dispose functions.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Denzell Barnett (PhET Interactive Simulations)
