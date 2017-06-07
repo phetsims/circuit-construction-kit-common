@@ -15,7 +15,6 @@ define( function( require ) {
   var HBox = require( 'SCENERY/nodes/HBox' );
   var NumberControl = require( 'SCENERY_PHET/NumberControl' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var Range = require( 'DOT/Range' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var CCKTrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKTrashButton' );
 
