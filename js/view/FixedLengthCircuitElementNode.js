@@ -63,6 +63,7 @@ define( function( require ) {
     viewProperty.link( viewPropertyListener );
 
     // Flag to indicate when updating view is necessary, in order to avoid duplicate work when both vertices move
+    // @private
     this.dirty = true;
 
     // Add highlight (but not for icons)
@@ -70,12 +71,10 @@ define( function( require ) {
       this.highlightNode = new FixedLengthCircuitElementHighlightNode( this, {} );
       circuitLayerNode.highlightLayer.addChild( this.highlightNode );
     }
-    var updateLayoutCallabck = function() {
-      self.updateLayout();
-    };
+    var updateLayoutCallback = function() { self.updateLayout(); };
 
     // Relink when start vertex changes
-    circuitElement.vertexMovedEmitter.addListener( updateLayoutCallabck );
+    circuitElement.vertexMovedEmitter.addListener( updateLayoutCallback );
 
     var moveToFront = function() {
 
@@ -91,6 +90,7 @@ define( function( require ) {
     circuitElement.vertexSelectedEmitter.addListener( moveToFront );
 
     var circuit = circuitLayerNode && circuitLayerNode.circuit;
+
     CircuitElementNode.call( this, circuitElement, circuit, _.extend( {
       cursor: 'pointer',
       children: [
@@ -114,7 +114,6 @@ define( function( require ) {
     if ( !options.icon ) {
       this.inputListener = new TandemSimpleDragHandler( {
         allowTouchSnag: true,
-        tandem: tandem.createTandem( 'inputListener' ), // TODO (phet-io): some input listeners are 'dragHandler' let's be consistent
         start: function( event ) {
           startPoint = event.pointer.point;
           circuitElement.interactiveProperty.get() && circuitLayerNode.startDragVertex( event.pointer.point, circuitElement.endVertexProperty.get(), false );
@@ -129,46 +128,49 @@ define( function( require ) {
           CircuitElementNode.prototype.endDrag.call( self, event, self.contentNode,
             [ circuitElement.endVertexProperty.get() ], circuitConstructionKitScreenView, circuitLayerNode, startPoint,
             dragged );
-        }
+        },
+        tandem: tandem.createTandem( 'inputListener' ) // TODO (phet-io): some input listeners are 'dragHandler' let's be consistent
       } );
       self.contentNode.addInputListener( this.inputListener );
-    }
 
-    if ( !options.icon ) {
       var updateSelectionHighlight = function( lastCircuitElement ) {
-        var showHighlight = lastCircuitElement === circuitElement;
-        self.highlightNode.visible = showHighlight;
+        self.highlightNode.visible = (lastCircuitElement === circuitElement);
       };
       circuitLayerNode.circuit.selectedCircuitElementProperty.link( updateSelectionHighlight );
-    }
 
-    if ( !options.icon && (circuitElement instanceof Battery || circuitElement instanceof Resistor) ) {
-      this.fireNode = new Image( fireImage, { pickable: false, opacity: 0.95 } );
-      this.fireNode.mutate( { scale: self.contentNode.width / this.fireNode.width } );
-      this.addChild( this.fireNode );
+      if ( (circuitElement instanceof Battery || circuitElement instanceof Resistor) ) {
+        this.fireNode = new Image( fireImage, { pickable: false, opacity: 0.95 } );
+        this.fireNode.mutate( { scale: self.contentNode.width / this.fireNode.width } );
+        this.addChild( this.fireNode );
 
-      var showFire = function( current, exploreScreenRunning ) {
-        return Math.abs( current ) >= 10 && exploreScreenRunning;
-      };
+        var showFire = function( current, exploreScreenRunning ) {
+          return Math.abs( current ) >= 10 && exploreScreenRunning;
+        };
 
-      var updateFireMultilink = circuitElement instanceof Resistor ?
+        var updateFireMultilink = null;
 
-        // Show fire in resistors (but only if they have >0 resistance)
-                                (Property.multilink( [
-                                  circuitElement.currentProperty,
-                                  circuitElement.resistanceProperty,
-                                  circuitConstructionKitScreenView.circuitConstructionKitModel.exploreScreenRunningProperty
-                                ], function( current, resistance, exploreScreenRunning ) {
-                                  self.fireNode.visible = showFire( current, exploreScreenRunning ) && resistance >= 1E-8;
-                                } )) :
+        if ( circuitElement instanceof Resistor ) {
 
-        // Show fire in all other circuit elements
-                                (Property.multilink( [
-                                  circuitElement.currentProperty,
-                                  circuitConstructionKitScreenView.circuitConstructionKitModel.exploreScreenRunningProperty
-                                ], function( current, exploreScreenRunning ) {
-                                  self.fireNode.visible = showFire( current, exploreScreenRunning );
-                                } ));
+          // Show fire in resistors (but only if they have >0 resistance)
+          updateFireMultilink = Property.multilink( [
+            circuitElement.currentProperty,
+            circuitElement.resistanceProperty,
+            circuitConstructionKitScreenView.circuitConstructionKitModel.exploreScreenRunningProperty
+          ], function( current, resistance, exploreScreenRunning ) {
+            self.fireNode.visible = showFire( current, exploreScreenRunning ) && resistance >= 1E-8;
+          } );
+        }
+        else {
+
+          // Show fire in all other circuit elements
+          updateFireMultilink = Property.multilink( [
+            circuitElement.currentProperty,
+            circuitConstructionKitScreenView.circuitConstructionKitModel.exploreScreenRunningProperty
+          ], function( current, exploreScreenRunning ) {
+            self.fireNode.visible = showFire( current, exploreScreenRunning );
+          } );
+        }
+      }
     }
 
     // @private - for disposal
@@ -177,7 +179,7 @@ define( function( require ) {
         self.inputListener.endDrag();
       }
 
-      circuitElement.vertexMovedEmitter.removeListener( updateLayoutCallabck );
+      circuitElement.vertexMovedEmitter.removeListener( updateLayoutCallback );
 
       updateSelectionHighlight && circuitLayerNode.circuit.selectedCircuitElementProperty.unlink( updateSelectionHighlight );
 
@@ -190,7 +192,7 @@ define( function( require ) {
 
       viewProperty.unlink( viewPropertyListener );
 
-      if ( !options.icon && circuitElement instanceof Battery ) {
+      if ( !options.icon && updateFireMultilink ) {
         Property.unmultilink( updateFireMultilink );
       }
     };
@@ -200,7 +202,10 @@ define( function( require ) {
 
   return inherit( CircuitElementNode, FixedLengthCircuitElementNode, {
 
-    // Mark dirty to avoid duplicate work
+    /**
+     * Mark dirty to batch changes, so that update can be done once in view step, if necessary
+     * @public
+     */
     updateLayout: function() {
       this.dirty = true;
     },
@@ -231,6 +236,9 @@ define( function( require ) {
       this.fireNode && this.fireNode.setMatrix( transform );
     },
 
+    /**
+     * @public - called during the view step
+     */
     step: function() {
       CircuitElementNode.prototype.step.call( this );
       if ( this.dirty ) {
@@ -246,7 +254,5 @@ define( function( require ) {
       CircuitElementNode.prototype.dispose.call( this );
       this.disposeFixedLengthCircuitElementNode();
     }
-  }, {
-    HIGHLIGHT_INSET: 10
   } );
 } );
