@@ -29,7 +29,7 @@ define( function( require ) {
   var PANEL_HEIGHT = 40;
   var PANEL_WIDTH = CircuitConstructionKitConstants.SERIES_AMMETER_LENGTH;
   var ORANGE = '#f39033';
-  var WIDEST_LABEL = '9.99 A';
+  var WIDEST_LABEL = '99.99 A';
 
   /**
    * @param {CCKScreenView} circuitConstructionKitScreenView
@@ -46,18 +46,20 @@ define( function( require ) {
     options = options || {};
     viewProperty = new Property( 'lifelike' );
 
-    // @public (read-only) - the seriesAmmeter rendered by this Node
-    this.seriesAmmeter = seriesAmmeter;
-
     // Electrons go behind this panel to give the appearance they go through the ammeter
     var readoutText = new Text( WIDEST_LABEL, { fontSize: 15 } );
     readoutText.setMaxWidth( readoutText.width );
     var maxWidth = readoutText.width;
     var maxHeight = readoutText.height;
 
-    var textPanelMarginX = 8;
+    // Margins within the numeric readout text box
+    var textPanelMarginX = 3;
     var textPanelMarginY = 1;
 
+    /**
+     * Update the text in the numeric readout text box
+     * @param {number} current
+     */
     var updateText = function( current ) {
 
       // The ammeter doesn't indicate direction
@@ -66,12 +68,15 @@ define( function( require ) {
       var currentText = ( current < 1E-10 ) ? '' : Util.toFixed( current, 2 ) + ' A';
       readoutText.setText( currentText );
 
-      // Center in the panel
+      // Center the text in the panel
       readoutText.centerX = (maxWidth + textPanelMarginX * 2) / 2;
       readoutText.centerY = (maxHeight + textPanelMarginY * 2) / 2;
     };
 
     seriesAmmeter.currentProperty.link( updateText );
+
+    // The readout panel is in front of the series ammeter node, and makes it look like the electrons flow through
+    // the series ammeter
     var readoutPanel = new Panel( new VBox( {
       children: [
         new Text( currentString, { fontSize: 12, maxWidth: 54 } ),
@@ -92,11 +97,17 @@ define( function( require ) {
       tandem: tandem.createTandem( 'readoutPanel' )
     } );
 
+    /**
+     * Utility function for creating a panel for the sensor body
+     * @param {Object} options
+     * @returns {Rectangle}
+     */
     var createPanel = function( options ) {
       return new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, 4, 4, options );
     };
 
-    var node = new Node( {
+    // This node only has a lifelike representation because it is a sensor
+    var lifelikeNode = new Node( {
       children: [
 
         // orange background panel
@@ -117,28 +128,29 @@ define( function( require ) {
     } );
 
     // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
-    node.mouseArea = node.bounds.copy();
-    node.touchArea = node.bounds.copy();
+    lifelikeNode.mouseArea = lifelikeNode.bounds.copy();
+    lifelikeNode.touchArea = lifelikeNode.bounds.copy();
 
     // Center vertically to match the FixedLengthCircuitElementNode assumption that origin is center left
-    node.centerY = 0;
+    lifelikeNode.centerY = 0;
 
-    readoutPanel.centerX = node.centerX;
-    readoutPanel.centerY = node.centerY;
+    // Center the readout within the main body of the sensor
+    readoutPanel.centerX = lifelikeNode.centerX;
+    readoutPanel.centerY = lifelikeNode.centerY;
 
-    node.frontPanel = new Node( {
+    lifelikeNode.frontPanel = new Node( {
       children: [
         readoutPanel
       ]
     } );
     if ( options.icon ) {
-      node.addChild( node.frontPanel.mutate( { centerY: node.height / 2 - 2 } ) );
+      lifelikeNode.addChild( lifelikeNode.frontPanel.mutate( { centerY: lifelikeNode.height / 2 - 2 } ) );
     }
     else {
-      circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.addChild( node.frontPanel );
+      circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.addChild( lifelikeNode.frontPanel );
     }
 
-    this.lifelikeNode = node;
+    this.lifelikeNode = lifelikeNode;
 
     FixedLengthCircuitElementNode.call( this,
       circuitConstructionKitScreenView,
