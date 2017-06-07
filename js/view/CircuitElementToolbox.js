@@ -79,7 +79,8 @@ define( function( require ) {
       numberOfHands: 0,
       numberOfDogs: 0,
       numberOfDollarBills: 0,
-      numberOfPaperClips: 0
+      numberOfPaperClips: 0,
+      numberOfHighVoltageBatteries: 0
     }, options );
 
     /**
