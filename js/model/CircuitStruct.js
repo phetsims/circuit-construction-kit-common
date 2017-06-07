@@ -113,6 +113,7 @@ define( function( require ) {
           circuitStruct.vertices[ circuitState.batteries[ i ].startVertex ],
           circuitStruct.vertices[ circuitState.batteries[ i ].endVertex ],
           null,
+          options.type || 'normal',
           tandem.createNextTandem(), {
             voltage: circuitState.batteries[ i ].voltage
           }

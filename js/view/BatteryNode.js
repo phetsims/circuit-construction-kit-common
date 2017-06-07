@@ -20,6 +20,7 @@ define( function( require ) {
 
   // images
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
+  var batteryHighImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery_high.png' );
 
   // constants
   // dimensions for schematic battery
@@ -45,7 +46,7 @@ define( function( require ) {
     // @public (read-only) - the Battery rendered by this Node
     this.battery = battery;
 
-    var lifelikeNode = new Image( batteryImage );
+    var lifelikeNode = new Image( battery.batteryType === 'normal' ? batteryImage : batteryHighImage );
 
     lifelikeNode.mutate( {
       scale: battery.distanceBetweenVertices / lifelikeNode.width

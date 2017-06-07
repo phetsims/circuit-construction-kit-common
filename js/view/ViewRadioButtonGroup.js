@@ -18,6 +18,7 @@ define( function( require ) {
   var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
+  // constants
   var BATTERY_LENGTH = CircuitConstructionKitConstants.BATTERY_LENGTH;
   var SCALE = 0.58;
 
@@ -29,12 +30,13 @@ define( function( require ) {
     // Create a battery which can be used in the views
     var startVertex = new Vertex( BATTERY_LENGTH / 2, 0 );
     var endVertex = new Vertex( -BATTERY_LENGTH / 2, 0 );
-    var battery = new Battery( endVertex, startVertex, null, tandem.createTandem( 'battery' ), { initialOrientation: 'left' } );
+    var battery = new Battery( endVertex, startVertex, null, 'normal', tandem.createTandem( 'battery' ), { initialOrientation: 'left' } );
 
     /**
      * Create a battery node to be used as an icon.
      *
      * @param {string} view - 'lifelike' or 'schematic'
+     * @param {Tandem} tandem
      * @returns {BatteryNode}
      */
     var createBatteryNode = function( view, tandem ) {

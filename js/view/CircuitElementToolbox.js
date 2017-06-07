@@ -93,12 +93,12 @@ define( function( require ) {
     };
 
     // create icons
-    var leftIconBattery = new Battery( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.BATTERY_LENGTH, 0 ), null, tandem.createTandem( 'leftIconBattery' ) );
+    var leftIconBattery = new Battery( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.BATTERY_LENGTH, 0 ), null, 'normal', tandem.createTandem( 'leftIconBattery' ) );
     var leftBatteryIcon = new BatteryNode( null, null, leftIconBattery, null, viewProperty, tandem.createTandem( 'leftBatteryIcon' ), {
       icon: true
     } );
 
-    var rightIconBattery = new Battery( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.BATTERY_LENGTH, 0 ), null, tandem.createTandem( 'rightIconBattery' ) );
+    var rightIconBattery = new Battery( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.BATTERY_LENGTH, 0 ), null, 'normal', tandem.createTandem( 'rightIconBattery' ) );
     var rightBatteryIcon = new BatteryNode( null, null, rightIconBattery, null, viewProperty, tandem.createTandem( 'rightBatteryIcon' ), {
       icon: true
     } );
@@ -190,11 +190,11 @@ define( function( require ) {
     // create tool nodes
     var createLeftBattery = function( position ) {
       var vertexPair = createVertexPair( position, BATTERY_LENGTH );
-      return new Battery( vertexPair.endVertex, vertexPair.startVertex, circuit.batteryResistanceProperty, circuit.leftBatteryTandemGroup.createNextTandem(), { initialOrientation: 'left' } );
+      return new Battery( vertexPair.endVertex, vertexPair.startVertex, circuit.batteryResistanceProperty, 'normal', circuit.leftBatteryTandemGroup.createNextTandem(), { initialOrientation: 'left' } );
     };
     var createRightBattery = function( position ) {
       var vertexPair = createVertexPair( position, BATTERY_LENGTH );
-      return new Battery( vertexPair.startVertex, vertexPair.endVertex, circuit.batteryResistanceProperty, circuit.rightBatteryTandemGroup.createNextTandem() );
+      return new Battery( vertexPair.startVertex, vertexPair.endVertex, circuit.batteryResistanceProperty, 'normal', circuit.rightBatteryTandemGroup.createNextTandem() );
     };
     var createWire = function( position ) {
       var vertexPair = createVertexPair( position, WIRE_LENGTH );

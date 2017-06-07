@@ -22,11 +22,14 @@ define( function( require ) {
    * @param {Vertex} startVertex - one of the battery vertices
    * @param {Vertex} endVertex - the other battery vertex
    * @param {Property.<number>} resistanceProperty - the resistance of the battery
+   * @param {string} batteryType - 'normal' | 'high-voltage'
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function Battery( startVertex, endVertex, resistanceProperty, tandem, options ) {
+  function Battery( startVertex, endVertex, resistanceProperty, batteryType, tandem, options ) {
+    assert && assert( batteryType === 'normal' || batteryType === 'high-voltage', 'Illegal battery type: ' + batteryType );
+
     options = _.extend( {
       initialOrientation: 'right',
       voltage: 9.0
@@ -42,6 +45,9 @@ define( function( require ) {
     // @public (read-only) - track the initial state so the user can only create a certain number of "left" or "right"
     // batteries from the toolbox.
     this.initialOrientation = options.initialOrientation;
+
+    // @public (read-only) - the type of the battery - 'normal' | 'high-voltage'
+    this.batteryType = batteryType;
   }
 
   circuitConstructionKitCommon.register( 'Battery', Battery );
