@@ -34,7 +34,6 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var Range = require( 'DOT/Range' );
   var PageControl = require( 'SUN/PageControl' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   // strings
   var resistorString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor' );
@@ -346,33 +345,52 @@ define( function( require ) {
       circuit.dogGroupTandem
     );
 
-    var children = [];
-    options.numberOfWires && children.push( wireToolNode );
-    options.numberOfLeftBatteries && children.push( leftBatteryToolNode );
-    options.numberOfRightBatteries && children.push( rightBatteryToolNode );
-    options.numberOfLightBulbs && children.push( lightBulbToolNode );
-    options.numberOfResistors && children.push( resistorToolNode );
-    options.numberOfSwitches && children.push( switchToolNode );
+    var children = [
+      wireToolNode,
+      rightBatteryToolNode,
+      lightBulbToolNode,
+      resistorToolNode,
+      switchToolNode
+    ];
 
-    // Wires at the top of each page
-    options.numberOfHighVoltageBatteries && children.push( new Node( { children: [ wireToolNode ] } ) );
-    options.numberOfHighVoltageBatteries && children.push( highVoltageBatteryToolNode );
-    options.numberOfHighVoltageBatteries && children.push( highResistorToolNode );
-    options.numberOfHighVoltageBatteries && children.push( highResistanceBulbToolNode );
-    options.numberOfHighVoltageBatteries && children.push( new Rectangle( 0, 0, 10, 10 ) );
+    if ( options.numberOfCoins && !options.numberOfHighVoltageBatteries ) {
+      children = children.concat( [] );
+    }
 
-    // Wires at the top of each page
-    options.numberOfCoins && children.push( new Node( { children: [ wireToolNode ] } ) );
-    options.numberOfDollarBills && children.push( dollarBillNode );
-    options.numberOfPaperClips && children.push( paperClipNode );
-    options.numberOfCoins && children.push( coinToolNode );
-    options.numberOfErasers && children.push( eraserToolNode );
+    if ( options.numberOfCoins && !options.numberOfHighVoltageBatteries ) {
 
-    // Wires at the top of each page
-    options.numberOfCoins && children.push( new Node( { children: [ wireToolNode ] } ) );
-    options.numberOfPencils && children.push( pencilToolNode );
-    options.numberOfHands && children.push( handToolNode );
-    options.numberOfDogs && children.push( dogToolNode );
+      children = children.concat( [
+        new Node( { children: [ wireToolNode ] } ),
+        dollarBillNode,
+        paperClipNode,
+        coinToolNode,
+        eraserToolNode,
+
+        new Node( { children: [ wireToolNode ] } ),
+        pencilToolNode,
+        handToolNode,
+        dogToolNode
+      ] );
+    }
+    else if ( options.numberOfCoins && options.numberOfHighVoltageBatteries ) {
+      children = children.concat( [
+        new Node( { children: [ wireToolNode ] } ),
+        highVoltageBatteryToolNode,
+        highResistorToolNode,
+        highResistanceBulbToolNode,
+        dollarBillNode,
+
+        new Node( { children: [ wireToolNode ] } ),
+        paperClipNode,
+        coinToolNode,
+        eraserToolNode,
+        pencilToolNode,
+
+        new Node( { children: [ wireToolNode ] } ),
+        handToolNode,
+        dogToolNode
+      ] );
+    }
 
     // Expand touch bounds for each icon
     for ( var i = 0; i < children.length; i++ ) {
