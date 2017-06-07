@@ -38,6 +38,7 @@ define( function( require ) {
     // Render the bulb socket only
     var lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ), {
       baseOnly: true,
+      highResistance: lightBulb.highResistance,
       scale: CircuitConstructionKitConstants.BULB_SCALE
     } );
 

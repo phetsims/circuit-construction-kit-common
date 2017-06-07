@@ -56,6 +56,11 @@ define( function( require ) {
    */
   function LightBulb( startVertex, endVertex, resistance, tandem, options ) {
 
+    options = _.extend( { highResistance: false }, options );
+
+    // @public (read-only) true if the light bulb is a high resistance light bulb
+    this.highResistance = options.highResistance;
+
     // @public (read-only)
     this.resistanceProperty = new NumberProperty( resistance );
 

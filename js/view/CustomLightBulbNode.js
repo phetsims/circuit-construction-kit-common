@@ -22,6 +22,7 @@ define( function( require ) {
   var backImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb_back.png' );
   var middleImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb_middle.png' );
   var socketImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb_front.png' );
+  var highResistanceSocketImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb_front_high.png' );
 
   // constants
   var BULB_IMAGE_SCALE = 0.125;
@@ -35,20 +36,25 @@ define( function( require ) {
     assert && assert( brightnessProperty, 'brightness property should exist' );
     var self = this;
 
-    options = _.extend( { baseOnly: false }, options );
+    options = _.extend( {
+      baseOnly: false,
+      highResistance: true
+    }, options );
 
     // @private (read-only)
     this.baseOnly = options.baseOnly;
 
+    var selectedSocketImage = options.highResistance ? highResistanceSocketImage : socketImage;
+
     // @private
-    self.backNode = new Image( options.baseOnly ? socketImage : backImage, {
+    self.backNode = new Image( options.baseOnly ? selectedSocketImage : backImage, {
       scale: BULB_IMAGE_SCALE,
       centerX: 0,
       bottom: 0,
       pickable: false
     } );
 
-    var middleNode = new Image( options.baseOnly ? socketImage : middleImage, {
+    var middleNode = new Image( options.baseOnly ? selectedSocketImage : middleImage, {
       scale: BULB_IMAGE_SCALE,
       centerX: self.backNode.centerX,
       bottom: self.backNode.bottom,
