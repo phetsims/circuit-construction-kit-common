@@ -1,8 +1,7 @@
 // Copyright 2015-2017, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
- * Renders the lifelike/schematic view for a Schematic Ammeter.
+ * Renders the view for the SeriesAmmeter, which looks the same in lifelike mode or schematic mode.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -139,7 +138,8 @@ define( function( require ) {
     readoutPanel.centerX = lifelikeNode.centerX;
     readoutPanel.centerY = lifelikeNode.centerY;
 
-    // @private - the panel to be shown in front for z-ordering
+    // @private - the panel to be shown in front for z-ordering.  Wrap centered in a child node to make the layout
+    // in updateRender trivial.
     this.frontPanel = new Node( {
       children: [
         readoutPanel
@@ -180,10 +180,17 @@ define( function( require ) {
 
   return inherit( FixedLengthCircuitElementNode, SeriesAmmeterNode, {
 
+    /**
+     * @public - dispose resources when no longer used
+     */
     dispose: function() {
       this.disposeSeriesAmmeterNode();
       FixedLengthCircuitElementNode.prototype.dispose.call( this );
     },
+
+    /**
+     * @public - update the transforms in the view step
+     */
     updateRender: function() {
       FixedLengthCircuitElementNode.prototype.updateRender.call( this );
       this.frontPanel.setMatrix( this.contentNode.getMatrix() );
