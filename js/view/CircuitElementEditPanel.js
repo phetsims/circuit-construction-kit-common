@@ -15,7 +15,7 @@ define( function( require ) {
   var HBox = require( 'SCENERY/nodes/HBox' );
   var NumberControl = require( 'SCENERY_PHET/NumberControl' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var RangeWithValue = require( 'DOT/RangeWithValue' );
+  var Range = require( 'DOT/Range' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var CCKTrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKTrashButton' );
 
@@ -43,7 +43,7 @@ define( function( require ) {
     valueProperty.lazyLink( valuePropertyListener );
 
     // Create the controls
-    var numberControl = new NumberControl( title, valueProperty, new RangeWithValue( 0, 100 ), _.extend( {
+    var numberControl = new NumberControl( title, valueProperty, circuitElement.editableRange, _.extend( {
       tandem: tandem.createTandem( 'numberControl' ),
       valuePattern: StringUtils.fillIn( valueUnitsPatternString, { units: units } )
     }, {

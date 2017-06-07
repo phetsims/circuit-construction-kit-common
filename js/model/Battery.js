@@ -14,6 +14,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
   var NumberProperty = require( 'AXON/NumberProperty' );
+  var Range = require( 'DOT/Range' );
 
   // constants
   var BATTERY_LENGTH = CircuitConstructionKitConstants.BATTERY_LENGTH;
@@ -32,9 +33,11 @@ define( function( require ) {
 
     options = _.extend( {
       initialOrientation: 'right',
-      voltage: 9.0
+      voltage: batteryType === 'normal' ? 9.0 : 1000
     }, options );
-    FixedLengthCircuitElement.call( this, startVertex, endVertex, BATTERY_LENGTH, BATTERY_LENGTH, tandem );
+    FixedLengthCircuitElement.call( this, startVertex, endVertex, BATTERY_LENGTH, BATTERY_LENGTH, tandem, {
+      editableRange: batteryType === 'normal' ? new Range( 0, 100 ) : new Range( 100, 10000 )
+    } );
 
     // @public (read-only) the voltage of the battery
     this.voltageProperty = new NumberProperty( options.voltage );

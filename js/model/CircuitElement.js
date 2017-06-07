@@ -16,6 +16,7 @@ define( function( require ) {
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var NumberProperty = require( 'AXON/NumberProperty' );
   var Emitter = require( 'AXON/Emitter' );
+  var Range = require( 'DOT/Range' );
 
   // phet-io modules
   var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
@@ -48,8 +49,12 @@ define( function( require ) {
 
     options = _.extend( {
       canBeDroppedInToolbox: true, // In the CCK: Basics intro screen, CircuitElements cannot be dropped into the toolbox
-      interactive: true // In CCK: Black Box Study, CircuitElements in the black box cannot be manipulated
+      interactive: true, // In CCK: Black Box Study, CircuitElements in the black box cannot be manipulated
+      editableRange: new Range( 0, 100 )
     }, options );
+
+    // @public (read-only) the range of values the CircuitElement can take
+    this.editableRange = options.editableRange;
 
     // @public (read-only) - whether it is possible to drop the CircuitElement in the toolbox
     this.canBeDroppedInToolbox = options.canBeDroppedInToolbox;
