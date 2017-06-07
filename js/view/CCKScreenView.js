@@ -149,6 +149,8 @@ define( function( require ) {
       circuitConstructionKitModel.viewProperty,
       this.circuitLayerNode,
       tandem.createTandem( 'circuitElementToolbox' ), {
+
+        // TODO: I don't like this remapping
         orientation: options.toolboxOrientation,
         numberOfRightBatteries: options.numberOfRightBatteriesInToolbox,
         numberOfLeftBatteries: options.numberOfLeftBatteriesInToolbox,
@@ -162,7 +164,8 @@ define( function( require ) {
         numberOfErasers: options.numberOfErasersInToolbox,
         numberOfPencils: options.numberOfPencilsInToolbox,
         numberOfHands: options.numberOfHandsInToolbox,
-        numberOfDogs: options.numberOfDogsInToolbox
+        numberOfDogs: options.numberOfDogsInToolbox,
+        numberOfHighVoltageBatteries: options.numberOfHighVoltageBatteriesInToolbox
       } );
 
     var chargeSpeedThrottlingReadoutNode = new ChargeSpeedThrottlingReadoutNode(
