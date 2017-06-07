@@ -1,5 +1,4 @@
 // Copyright 2015-2017, University of Colorado Boulder
-// TODO: Review, document, annotate, i18n, bring up to standards
 
 /**
  * Renders and provides interactivity for FixedLengthCircuitElements (all CircuitElements except Wires).
@@ -116,11 +115,19 @@ define( function( require ) {
         allowTouchSnag: true,
         start: function( event ) {
           startPoint = event.pointer.point;
-          circuitElement.interactiveProperty.get() && circuitLayerNode.startDragVertex( event.pointer.point, circuitElement.endVertexProperty.get(), false );
+          circuitElement.interactiveProperty.get() && circuitLayerNode.startDragVertex(
+            event.pointer.point,
+            circuitElement.endVertexProperty.get(),
+            false
+          );
           dragged = false;
         },
         drag: function( event ) {
-          circuitElement.interactiveProperty.get() && circuitLayerNode.dragVertex( event.pointer.point, circuitElement.endVertexProperty.get(), false );
+          circuitElement.interactiveProperty.get() && circuitLayerNode.dragVertex(
+            event.pointer.point,
+            circuitElement.endVertexProperty.get(),
+            false
+          );
           dragged = true;
         },
         end: function( event ) {
@@ -133,12 +140,12 @@ define( function( require ) {
       } );
       self.contentNode.addInputListener( this.inputListener );
 
-      var updateSelectionHighlight = function( lastCircuitElement ) {
+      var updateHighlightVisibility = function( lastCircuitElement ) {
         self.highlightNode.visible = (lastCircuitElement === circuitElement);
       };
-      circuitLayerNode.circuit.selectedCircuitElementProperty.link( updateSelectionHighlight );
+      circuitLayerNode.circuit.selectedCircuitElementProperty.link( updateHighlightVisibility );
 
-      if ( (circuitElement instanceof Battery || circuitElement instanceof Resistor) ) {
+      if ( circuitElement instanceof Battery || circuitElement instanceof Resistor ) {
         this.fireNode = new Image( fireImage, { pickable: false, opacity: 0.95 } );
         this.fireNode.mutate( { scale: self.contentNode.width / this.fireNode.width } );
         this.addChild( this.fireNode );
@@ -175,21 +182,18 @@ define( function( require ) {
 
     // @private - for disposal
     this.disposeFixedLengthCircuitElementNode = function() {
+
+      // End drag event if it was in progress
       if ( self.inputListener && self.inputListener.dragging ) {
         self.inputListener.endDrag();
       }
 
       circuitElement.vertexMovedEmitter.removeListener( updateLayoutCallback );
-
-      updateSelectionHighlight && circuitLayerNode.circuit.selectedCircuitElementProperty.unlink( updateSelectionHighlight );
-
+      updateHighlightVisibility && circuitLayerNode.circuit.selectedCircuitElementProperty.unlink( updateHighlightVisibility );
       circuitElement.connectedEmitter.removeListener( moveToFront );
       circuitElement.vertexSelectedEmitter.removeListener( moveToFront );
-
       circuitElement.interactiveProperty.unlink( pickableListener );
-
       circuitLayerNode && circuitLayerNode.highlightLayer.removeChild( self.highlightNode );
-
       viewProperty.unlink( viewPropertyListener );
 
       if ( !options.icon && updateFireMultilink ) {
