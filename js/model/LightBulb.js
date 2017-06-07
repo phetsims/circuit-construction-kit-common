@@ -173,6 +173,8 @@ define( function( require ) {
      * @public
      */
     createAtPosition: function( position, circuitVertexGroupTandem, tandem, options ) {
+
+      options = options || {};
       var translation = new Vector2( 30, 10 );
 
       // Connect at the side and bottom
@@ -193,7 +195,8 @@ define( function( require ) {
         tandem: circuitVertexGroupTandem.createNextTandem()
       } );
 
-      return new LightBulb( startVertex, endVertex, CircuitConstructionKitConstants.DEFAULT_RESISTANCE, tandem, options );
+      // TODO: let's make resistance required
+      return new LightBulb( startVertex, endVertex, options.resistance || CircuitConstructionKitConstants.DEFAULT_RESISTANCE, tandem, options );
     }
   } );
 } );

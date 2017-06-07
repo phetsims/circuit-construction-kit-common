@@ -225,6 +225,7 @@ define( function( require ) {
     var createHighResistanceLightBulb = function( position ) {
       return LightBulb.createAtPosition( position, circuit.vertexGroupTandem, circuit.lightBulbGroupTandem.createNextTandem(), {
         highResistance: true,
+        resistance: 1000,
         editableRange: new Range( 100, 100000 )
       } );
     };
