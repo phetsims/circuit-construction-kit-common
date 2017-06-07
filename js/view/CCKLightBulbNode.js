@@ -96,14 +96,7 @@ define( function( require ) {
       // Override the dimensions of the bulb node because the invisible rays contribute to the bounds. Used to set up
       // the highlight region.
       contentWidth: 12 * 0.3,
-      contentHeight: 22 * 0.5,
-      highlightOptions: {
-        centerX: 0,
-        stroke: null, // No stroke to be shown for the bulb (it is shown for the corresponding foreground node)
-
-        // Offset the highlight vertically so it looks good, tuned manually
-        bottom: FixedLengthCircuitElementNode.HIGHLIGHT_INSET * 0.75
-      }
+      contentHeight: 22 * 0.5
     }, options );
 
     // Schematic creation begins here.

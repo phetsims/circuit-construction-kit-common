@@ -34,13 +34,11 @@ define( function( require ) {
       w + INSET * 2,
       h + INSET * 2,
       CORNER_RADIUS,
-      CORNER_RADIUS,
-      _.extend( {
+      CORNER_RADIUS, {
         stroke: CircuitConstructionKitConstants.HIGHLIGHT_COLOR,
         lineWidth: CircuitConstructionKitConstants.HIGHLIGHT_LINE_WIDTH,
         pickable: false
-      }, options.highlightOptions )
-    );
+      } );
   }
 
   circuitConstructionKitCommon.register( 'FixedLengthCircuitElementHighlightNode', FixedLengthCircuitElementHighlightNode );

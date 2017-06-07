@@ -31,12 +31,12 @@ define( function( require ) {
   var rotationMatrix = new Matrix3();
 
   /**
-   * @param {CCKScreenView} circuitConstructionKitScreenView
+   * @param {CCKScreenView} circuitConstructionKitScreenView - so that the node can be dropped back into the toolbox
    * @param {CircuitLayerNode} circuitLayerNode - Null if an icon is created
-   * @param {FixedLengthCircuitElement} circuitElement
+   * @param {FixedLengthCircuitElement} circuitElement - the corresponding model element
    * @param {Property.<string>} viewProperty - 'lifelike'|'schematic'
-   * @param {Node} lifelikeNode - the node that will display the component as a lifelike object.  Origin must be left-center
-   * @param {Node} schematicNode - the node that will display the component. Origin must be left-center.
+   * @param {Node} lifelikeNode - the Node that will display the component as a lifelike object.  Origin must be left-center
+   * @param {Node} schematicNode - the Node that will display the component. Origin must be left-center.
    * @param {Tandem} tandem
    * @param options
    * @constructor
@@ -47,9 +47,10 @@ define( function( require ) {
     var self = this;
 
     options = _.extend( {
-      icon: false,
-      highlightOptions: {}
+      icon: false
     }, options );
+
+    // @public (read-only)
     this.circuitElement = circuitElement;
 
     // @protected (read-only) node that shows the component, separate from the part that shows the highlight and the fire
