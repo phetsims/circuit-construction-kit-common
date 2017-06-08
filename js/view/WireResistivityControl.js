@@ -23,7 +23,7 @@ define( function( require ) {
 
   /**
    * @param {Property.<number>} wireResistivityProperty
-   * @param {AlignGroup} - for alignment with other controls
+   * @param {AlignGroup} alignGroup - for alignment with other controls
    * @param {Tandem} tandem
    * @constructor
    */

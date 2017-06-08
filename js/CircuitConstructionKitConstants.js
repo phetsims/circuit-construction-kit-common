@@ -47,7 +47,7 @@ define( function( require ) {
     TAP_THRESHOLD: 15,
 
     // Dimensions of track size found in sliders
-    SLIDER_TRACK_SIZE: new Dimension2( 130, 5 ),
+    SLIDER_TRACK_SIZE: new Dimension2( 160, 5 ),
 
     // Uniform scaling for all font awesome node button icons
     FONT_AWESOME_ICON_SCALE: 0.85,
