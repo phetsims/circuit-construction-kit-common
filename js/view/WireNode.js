@@ -264,6 +264,22 @@ define( function( require ) {
       circuitLayerNode.circuit.selectedCircuitElementProperty.link( updateHighlight );
     }
 
+
+    /**
+     * Move the wire element to the back of the view when connected to another circiut element
+     * @private
+     */
+    var moveToBack = function() {
+
+      // Components outside the black box do not move in back of the overlay
+      if ( wire.interactiveProperty.get() ) {
+
+        // Connected wires should always be behind the solder and circuit elements
+        self.moveToBack();
+      }
+    };
+    wire.connectedEmitter.addListener( moveToBack );
+
     /**
      * @private - dispose the wire node
      */
@@ -278,6 +294,8 @@ define( function( require ) {
 
       wire.startVertexProperty.get().positionProperty.unlink( updateStartPosition );
       wire.endVertexProperty.get().positionProperty.unlink( updateEndPosition );
+
+      wire.connectedEmitter.removeListener( moveToBack );
 
       circuitLayerNode && circuitLayerNode.highlightLayer.removeChild( highlightNodeParent );
 
