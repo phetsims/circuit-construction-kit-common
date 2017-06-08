@@ -60,8 +60,6 @@ define( function( require ) {
     slider.addMajorTick( 5 );
     slider.addMajorTick( 10, createLabel( '10', tandem.createTandem( 'maxLabel' ) ) );
 
-    var numberNodesGroupTandem = tandem.createGroupTandem( 'numberNodes' );
-    var valueParentsGroupTandem = tandem.createGroupTandem( 'valueParents' );
     for ( var i = 1; i < 10; i++ ) {
       if ( i !== 5 ) {
         slider.addMinorTick( i );
