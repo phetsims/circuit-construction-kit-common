@@ -33,9 +33,11 @@ define( function( require ) {
   var WireResistivityControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/WireResistivityControl' );
   var BatteryResistanceControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryResistanceControl' );
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
+  var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
 
   // constants
-  var VERTICAL_MARGIN = CircuitConstructionKitConstants.LAYOUT_MARGIN;
+  var VERTICAL_MARGIN = CircuitConstructionKitConstants.LAYOUT_MARGIN; // TODO: this is confusing
   var BACKGROUND_COLOR = CircuitConstructionKitConstants.BACKGROUND_COLOR;
   var VOLTMETER_PROBE_TIP_LENGTH = 20; // The probe tip is about 20 view coordinates tall
   var VOLTMETER_NUMBER_SAMPLE_POINTS = 10; // Number of points along the edge of the voltmeter tip to detect voltages
@@ -175,8 +177,16 @@ define( function( require ) {
     );
     this.addChild( chargeSpeedThrottlingReadoutNode );
 
+    // Group for aligning the content in the panels and accordion boxes
+    var controlPanelAlignGroup = new AlignGroup( {
+
+      // Elements should have the same widths but not constrained to have the same heights
+      matchVertical: false
+    } );
+
     // @protected - so that subclasses can add a layout circuit element near it
     this.sensorToolbox = new SensorToolbox(
+      controlPanelAlignGroup,
       this.circuitLayerNode,
       voltmeterNode,
       ammeterNode,
@@ -190,29 +200,35 @@ define( function( require ) {
 
     // @protected
     this.displayOptionsPanel = new DisplayOptionsPanel(
+      controlPanelAlignGroup,
       circuitConstructionKitModel.circuit.showCurrentProperty,
       circuitConstructionKitModel.circuit.currentTypeProperty,
       circuitConstructionKitModel.showValuesProperty,
       circuitConstructionKitModel.showLabelsProperty,
-      tandem.createTandem( 'displayOptionsPanel' ) );
-
-    CircuitConstructionKitQueryParameters.showDisplayOptionsPanel && this.addChild( this.displayOptionsPanel );
-
-    // @private
-    this.wireResistivityControl = new WireResistivityControl( circuitConstructionKitModel.circuit.wireResistivityProperty, tandem.createTandem( 'wireResistivityControl' ) );
+      tandem.createTandem( 'displayOptionsPanel' )
+    );
 
     // @private
-    this.batteryResistanceControl = new BatteryResistanceControl( circuitConstructionKitModel.circuit.batteryResistanceProperty, tandem.createTandem( 'batteryResistanceControl' ) );
+    this.wireResistivityControl = new WireResistivityControl( circuitConstructionKitModel.circuit.wireResistivityProperty,
+      controlPanelAlignGroup,
+      tandem.createTandem( 'wireResistivityControl' ) );
 
-    this.displayOptionsPanel.moveToBack(); // Move behind elements added in the super, such as the sensors and circuit
+    // @private
+    this.batteryResistanceControl = new BatteryResistanceControl( circuitConstructionKitModel.circuit.batteryResistanceProperty,
+      controlPanelAlignGroup,
+      tandem.createTandem( 'batteryResistanceControl' ) );
+
     this.moveBackgroundToBack();
 
     this.addChild( this.circuitElementToolbox );
 
-    options.showResistivityControl && this.addChild( this.wireResistivityControl );
-    options.showBatteryResistanceControl && this.addChild( this.batteryResistanceControl );
-    this.addChild( this.sensorToolbox );
-    this.addChild( this.viewRadioButtonGroup );
+    var controlPanelVBox = new VBox( {
+      spacing: VERTICAL_MARGIN,
+      children: !options.showResistivityControl ?
+        [ this.displayOptionsPanel, this.sensorToolbox, this.viewRadioButtonGroup ] :
+        [ this.displayOptionsPanel, this.sensorToolbox, this.wireResistivityControl, this.batteryResistanceControl, this.viewRadioButtonGroup ]
+    } );
+    this.addChild( controlPanelVBox );
     this.addChild( this.circuitLayerNode );
 
     var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel(
@@ -227,7 +243,7 @@ define( function( require ) {
 
     this.addChild( circuitElementEditContainerPanel );
 
-    // The voltmeter and ammeter are considered part of the circuit node so they will scale up and down with the circuit
+    // The voltmeter and ammeter are rendered with the circuit node so they will scale up and down with the circuit
     this.circuitLayerNode.addChild( voltmeterNode );
     this.circuitLayerNode.addChild( ammeterNode );
 
@@ -329,41 +345,21 @@ define( function( require ) {
       self.circuitElementToolbox.top = visibleBounds.top + VERTICAL_MARGIN;
 
       // Float the resetAllButton to the bottom right
-      if ( options.showResetAllButton ) {
-        resetAllButton.mutate( {
-          right: visibleBounds.right - HORIZONTAL_MARGIN,
-          bottom: visibleBounds.bottom - VERTICAL_MARGIN
-        } );
-      }
+      options.showResetAllButton && resetAllButton.mutate( {
+        right: visibleBounds.right - HORIZONTAL_MARGIN,
+        bottom: visibleBounds.bottom - VERTICAL_MARGIN
+      } );
 
       chargeSpeedThrottlingReadoutNode.mutate( {
         centerX: visibleBounds.centerX,
         bottom: visibleBounds.bottom - 100 // so it doesn't overlap the component controls
       } );
 
-      self.displayOptionsPanel.mutate( {
-        right: visibleBounds.right - HORIZONTAL_MARGIN,
-        top: visibleBounds.top + VERTICAL_MARGIN
-      } );
-      self.sensorToolbox.mutate( {
-        right: visibleBounds.right - HORIZONTAL_MARGIN,
-        top: self.displayOptionsPanel.bottom + VERTICAL_MARGIN
-      } );
+      controlPanelVBox.right = visibleBounds.right - HORIZONTAL_MARGIN;
+      controlPanelVBox.top = visibleBounds.top + VERTICAL_MARGIN;
 
       zoomControlPanel.left = visibleBounds.left + HORIZONTAL_MARGIN;
       zoomControlPanel.bottom = visibleBounds.bottom - VERTICAL_MARGIN;
-
-      self.wireResistivityControl.right = visibleBounds.right - HORIZONTAL_MARGIN;
-      self.wireResistivityControl.top = self.sensorToolbox.bottom + VERTICAL_MARGIN;
-
-      // The layout remains the same whether the accordion boxes are expanded or collapsed
-      self.batteryResistanceControl.right = visibleBounds.right - HORIZONTAL_MARGIN;
-      self.batteryResistanceControl.top = self.wireResistivityControl.bottom + VERTICAL_MARGIN;
-
-      // Show the view radio button group under the other controls
-      var viewRadioButtonUpperNeighbor = self.hasChild( self.batteryResistanceControl ) ? self.batteryResistanceControl : self.sensorToolbox;
-      self.viewRadioButtonGroup.right = visibleBounds.right - HORIZONTAL_MARGIN;
-      self.viewRadioButtonGroup.top = viewRadioButtonUpperNeighbor.bottom + VERTICAL_MARGIN;
     } );
 
     // Center the circuit node so that zooms will remain centered.

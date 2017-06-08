@@ -23,10 +23,11 @@ define( function( require ) {
 
   /**
    * @param {Property.<number>} wireResistivityProperty
+   * @param {AlignGroup} - for alignment with other controls
    * @param {Tandem} tandem
    * @constructor
    */
-  function WireResistivityControl( wireResistivityProperty, tandem ) {
+  function WireResistivityControl( wireResistivityProperty, alignGroup, tandem ) {
     var max = CircuitConstructionKitConstants.DEFAULT_RESISTIVITY * 10000;
     var slider = new HSlider( wireResistivityProperty, {
       min: CircuitConstructionKitConstants.DEFAULT_RESISTIVITY,
@@ -49,7 +50,7 @@ define( function( require ) {
     slider.addMajorTick( 0, createLabel( true ) );
     slider.addMajorTick( max, createLabel( false ) );
 
-    CCKAccordionBox.call( this, slider, wireResistivityString, tandem );
+    CCKAccordionBox.call( this, alignGroup.createBox( slider ), wireResistivityString, tandem );
   }
 
   circuitConstructionKitCommon.register( 'WireResistivityControl', WireResistivityControl );

@@ -114,6 +114,8 @@ define( function( require ) {
     // default resistance for the high resistance light bulb or high resistance resistor
     HIGH_RESISTANCE: 1000,
 
-    HIGH_RESISTANCE_RANGE: new Range( 100, 10000 )
+    HIGH_RESISTANCE_RANGE: new Range( 100, 10000 ),
+
+    PANEL_LINE_WIDTH: 1.3
   } );
 } );

@@ -36,6 +36,7 @@ define( function( require ) {
   var ICON_TEXT_SPACING = 3; // distance in view coordinates from the icon to the text below the icon
 
   /**
+   * @param {AlignGroup} alignGroup - for alignment with other controls
    * @param {Node} circuitLayerNode - the main circuit node to use as a coordinate frame
    * @param {VoltmeterNode} voltmeterNode - node for the Voltmeter
    * @param {AmmeterNode} ammeterNode - node for the Ammeter
@@ -45,7 +46,7 @@ define( function( require ) {
    * @param {Tandem} tandem
    * @constructor
    */
-  function SensorToolbox( circuitLayerNode, voltmeterNode, ammeterNode, showResultsProperty, showLabelsProperty, showSeriesAmmeters, tandem ) {
+  function SensorToolbox( alignGroup, circuitLayerNode, voltmeterNode, ammeterNode, showResultsProperty, showLabelsProperty, showSeriesAmmeters, tandem ) {
 
     // Options for the VoltmeterNode and AmmeterNode
     var options = {
@@ -129,14 +130,11 @@ define( function( require ) {
       ]
     } );
 
-    CCKPanel.call( this, new HBox( {
-      spacing: 20,
+    CCKPanel.call( this, alignGroup.createBox( new HBox( {
+      spacing: showSeriesAmmeters ? 20 : 40,
       align: 'bottom',
       children: [ voltmeterToolIcon, ammeterToolIcon ]
-    } ), tandem, {
-      xMargin: 10,
-      yMargin: 8
-    } );
+    } ) ), tandem );
   }
 
   circuitConstructionKitCommon.register( 'SensorToolbox', SensorToolbox );

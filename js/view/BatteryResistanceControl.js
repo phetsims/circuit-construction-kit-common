@@ -33,7 +33,7 @@ define( function( require ) {
    * @param {Tandem} tandem
    * @constructor
    */
-  function BatteryResistanceControl( batteryResistanceProperty, tandem ) {
+  function BatteryResistanceControl( batteryResistanceProperty, alignGroup, tandem ) {
 
     /**
      * Creates label to be used for slider
@@ -93,9 +93,9 @@ define( function( require ) {
       } );
 
     }
-    CCKAccordionBox.call( this, new VBox( {
+    CCKAccordionBox.call( this, alignGroup.createBox( new VBox( {
       children: [ valueParent, slider ]
-    } ), batteryResistanceString, tandem );
+    } ) ), batteryResistanceString, tandem );
   }
 
   circuitConstructionKitCommon.register( 'BatteryResistanceControl', BatteryResistanceControl );

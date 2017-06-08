@@ -24,7 +24,7 @@ define( function( require ) {
     options = _.extend( {
       fill: CircuitConstructionKitConstants.PANEL_COLOR,
       stroke: 'black',
-      lineWidth: 1.3,
+      lineWidth: CircuitConstructionKitConstants.PANEL_LINE_WIDTH,
       xMargin: 15,
       yMargin: 15,
       tandem: tandem,

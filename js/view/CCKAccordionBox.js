@@ -33,11 +33,12 @@ define( function( require ) {
       titleYMargin: 4,
       titleXSpacing: 14,
       contentYSpacing: 4,
+      lineWidth: CircuitConstructionKitConstants.PANEL_LINE_WIDTH,// TODO: factor this out
       minWidth: CircuitConstructionKitConstants.RIGHT_SIDE_PANEL_MIN_WIDTH,
       titleNode: new HBox( {
         children: [
           new HStrut( 10 ),
-          new Text( title, { fontSize: 14, tandem: tandem.createTandem( title ) } )
+          new Text( title, { fontSize: 14, maxWidth: 175, tandem: tandem.createTandem( title ) } )
         ]
       } ),
       tandem: tandem

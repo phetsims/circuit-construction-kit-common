@@ -25,6 +25,7 @@ define( function( require ) {
   var electronsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/electrons' );
   var conventionalString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/conventional' );
   var labelsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/labels' );
+  var showCurrentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/showCurrent' );
   var valuesString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/values' );
   var ElectronChargeNode = require( 'SCENERY_PHET/ElectronChargeNode' );
 
@@ -35,6 +36,7 @@ define( function( require ) {
   };
 
   /**
+   * @param {AlignGroup} alignGroup - box for aligning with other controls
    * @param {Property.<boolean>} showCurrentProperty - true if current should be shown
    * @param {Property.<boolean>} currentTypeProperty - true if current should be shown as electrons or conventional
    * @param {Property.<boolean>} showValuesProperty - true if values should be shown
@@ -42,7 +44,7 @@ define( function( require ) {
    * @param {Tandem} tandem
    * @constructor
    */
-  function DisplayOptionsPanel( showCurrentProperty, currentTypeProperty, showValuesProperty, showLabelsProperty, tandem ) {
+  function DisplayOptionsPanel( alignGroup, showCurrentProperty, currentTypeProperty, showValuesProperty, showLabelsProperty, tandem ) {
 
     /**
      * Create an AquaRadioButton for the specified kind of current
@@ -92,7 +94,7 @@ define( function( require ) {
         align: 'left',
         spacing: 8,
         children: [
-          new CheckBox( new Text( 'Show Current', TEXT_OPTIONS ), showCurrentProperty, {
+          new CheckBox( new Text( showCurrentString, TEXT_OPTIONS ), showCurrentProperty, {
             tandem: tandem.createTandem( 'showCurrentCheckBox' )
           } ),
           new AlignBox(
@@ -117,10 +119,14 @@ define( function( require ) {
       } )
     ];
 
-    CCKPanel.call( this, new VBox( {
+    CCKPanel.call( this, alignGroup.createBox( new VBox( {
       children: children,
       spacing: 10,
       align: 'left'
+    } ), {
+
+      // left align within the box
+      xAlign: 'left'
     } ), tandem, {
       yMargin: 10
     } );

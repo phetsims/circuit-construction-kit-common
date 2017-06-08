@@ -77,6 +77,9 @@
   "current": {
     "value": "Current"
   },
+  "showCurrent": {
+    "value": "Show Current"
+  },
   "currentAmps": {
     "value": "{{current}} A"
   },
