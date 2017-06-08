@@ -31,7 +31,7 @@ define( function( require ) {
 
   // constants
   var TEXT_OPTIONS = {
-    fontSize: 16,
+    fontSize: 14,// TODO factor out
     maxWidth: 120
   };
 
@@ -55,7 +55,7 @@ define( function( require ) {
      */
     var createRadioButton = function( currentType, node, tandem ) {
       return new AquaRadioButton( currentTypeProperty, currentType, node, {
-        radius: 8,
+        radius: 7,
         tandem: tandem
       } );
     };
@@ -87,6 +87,7 @@ define( function( require ) {
     showCurrentProperty.linkAttribute( electronsRadioButton, 'enabled' );
     showCurrentProperty.linkAttribute( conventionalRadioButton, 'enabled' );
 
+    var BOX_WIDTH = 16;
     var children = [
 
       // Show Current and sub-checkboxes
@@ -95,6 +96,7 @@ define( function( require ) {
         spacing: 8,
         children: [
           new CheckBox( new Text( showCurrentString, TEXT_OPTIONS ), showCurrentProperty, {
+            boxWidth: BOX_WIDTH,
             tandem: tandem.createTandem( 'showCurrentCheckBox' )
           } ),
           new AlignBox(
@@ -112,10 +114,12 @@ define( function( require ) {
         ]
       } ),
       new CheckBox( new Text( labelsString, TEXT_OPTIONS ), showLabelsProperty, {
-        tandem: tandem.createTandem( 'labelsCheckBox' )
+        tandem: tandem.createTandem( 'labelsCheckBox' ),
+        boxWidth: BOX_WIDTH//TODO factor out
       } ),
       new CheckBox( new Text( valuesString, TEXT_OPTIONS ), showValuesProperty, {
-        tandem: tandem.createTandem( 'valuesCheckBox' )
+        tandem: tandem.createTandem( 'valuesCheckBox' ),
+        boxWidth: BOX_WIDTH//TODO factor out
       } )
     ];
 

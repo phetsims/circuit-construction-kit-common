@@ -134,7 +134,9 @@ define( function( require ) {
       spacing: showSeriesAmmeters ? 20 : 40,
       align: 'bottom',
       children: [ voltmeterToolIcon, ammeterToolIcon ]
-    } ) ), tandem );
+    } ) ), tandem, {
+      yMargin: 8
+    } );
   }
 
   circuitConstructionKitCommon.register( 'SensorToolbox', SensorToolbox );
