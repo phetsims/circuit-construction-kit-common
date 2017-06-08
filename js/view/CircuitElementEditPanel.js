@@ -49,7 +49,7 @@ define( function( require ) {
       titleFont: FONT,
       valueFont: FONT,
       decimalPlaces: 1,
-      delta: 0.5
+      delta: circuitElement.editorDelta
     } ) );
 
     // The button that deletes the circuit component

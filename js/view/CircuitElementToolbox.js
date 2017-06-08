@@ -198,7 +198,11 @@ define( function( require ) {
     // TODO: factor out battery creation things
     var createHighVoltageBattery = function( position ) {
       var vertexPair = createVertexPair( position, BATTERY_LENGTH );
-      return new Battery( vertexPair.startVertex, vertexPair.endVertex, circuit.batteryResistanceProperty, 'high-voltage', circuit.rightBatteryTandemGroup.createNextTandem() );
+      return new Battery( vertexPair.startVertex, vertexPair.endVertex, circuit.batteryResistanceProperty, 'high-voltage', circuit.rightBatteryTandemGroup.createNextTandem(), {
+        voltage: 10000,
+        editableRange: new Range( 100, 100000 ),
+        editorDelta: 100 // TODO: factor out
+      } );
     };
     var createWire = function( position ) {
       var vertexPair = createVertexPair( position, WIRE_LENGTH );
@@ -210,8 +214,9 @@ define( function( require ) {
     var createHighResistanceLightBulb = function( position ) {
       return LightBulb.createAtPosition( position, circuit.vertexGroupTandem, circuit.lightBulbGroupTandem.createNextTandem(), {
         highResistance: true,
-        resistance: 1000,
-        editableRange: new Range( 100, 10000 )
+        resistance: 1000, // TODO: factor out
+        editableRange: new Range( 100, 10000 ), // TODO: factor out
+        editorDelta: 100
       } );
     };
     var createResistor = function( position ) {
@@ -223,7 +228,8 @@ define( function( require ) {
       return new Resistor( vertexPair.startVertex, vertexPair.endVertex, circuit.resistorGroupTandem.createNextTandem(), {
         resistorType: 'high-resistor',
         resistance: 1000,
-        editableRange: new Range( 100, 10000 )
+        editableRange: new Range( 100, 10000 ),
+        editorDelta: 100
       } );
     };
     var createSwitch = function( position ) {
