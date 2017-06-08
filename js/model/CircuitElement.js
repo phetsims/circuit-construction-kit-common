@@ -49,18 +49,8 @@ define( function( require ) {
 
     options = _.extend( {
       canBeDroppedInToolbox: true, // In the CCK: Basics intro screen, CircuitElements cannot be dropped into the toolbox
-      interactive: true, // In CCK: Black Box Study, CircuitElements in the black box cannot be manipulated
-      editableRange: new Range( 0, 100 ),
-      editorDelta: 0.5 // TODO: should this be moved to FixedLengthCircuitElement?
+      interactive: true // In CCK: Black Box Study, CircuitElements in the black box cannot be manipulated
     }, options );
-
-    // TODO: should this be moved to FixedLengthCircuitElement?
-    // @public (read-only) the range of values the CircuitElement can take
-    this.editableRange = options.editableRange;
-
-    // TODO: should this be moved to FixedLengthCircuitElement?
-    // @public (read-only)  - the tweaker value for the controls
-    this.editorDelta = options.editorDelta;
 
     // @public (read-only) - whether it is possible to drop the CircuitElement in the toolbox
     this.canBeDroppedInToolbox = options.canBeDroppedInToolbox;

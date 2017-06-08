@@ -13,6 +13,7 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Color = require( 'SCENERY/util/Color' );
   var Dimension2 = require( 'DOT/Dimension2' );
+  var Range = require( 'DOT/Range' );
 
   /**
    * @constructor
@@ -105,6 +106,14 @@ define( function( require ) {
     MAX_RESISTANCE: 1000000000,
 
     // scale applied to the light bulb view
-    BULB_SCALE: 2.52
+    BULB_SCALE: 2.52,
+
+    // tweaker amount for the high resistance or high voltage components
+    HIGH_EDITOR_DELTA: 100,
+
+    // default resistance for the high resistance light bulb or high resistance resistor
+    HIGH_RESISTANCE: 1000,
+
+    HIGH_RESISTANCE_RANGE: new Range( 100, 10000 )
   } );
 } );

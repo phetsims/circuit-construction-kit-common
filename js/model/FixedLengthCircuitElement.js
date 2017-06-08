@@ -13,6 +13,7 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElement' );
+  var Range = require( 'DOT/Range' );
 
   /**
    * @param {Vertex} startVertex
@@ -24,6 +25,17 @@ define( function( require ) {
    * @constructor
    */
   function FixedLengthCircuitElement( startVertex, endVertex, distanceBetweenVertices, chargePathLength, tandem, options ) {
+
+    options = _.extend( {
+      editableRange: new Range( 0, 100 ),
+      editorDelta: 0.5
+    }, options );
+
+    // @public (read-only) the range of values the CircuitElement can take
+    this.editableRange = options.editableRange;
+
+    // @public (read-only)  - the tweaker value for the controls
+    this.editorDelta = options.editorDelta;
 
     // Check that the measured length matches the specified length
     var measuredLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );

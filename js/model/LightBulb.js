@@ -172,7 +172,7 @@ define( function( require ) {
      * @returns {LightBulb}
      * @public
      */
-    createAtPosition: function( position, circuitVertexGroupTandem, tandem, options ) {
+    createAtPosition: function( position, circuitVertexGroupTandem, resistance, tandem, options ) {
 
       options = options || {};
       var translation = new Vector2( 30, 10 );
@@ -195,8 +195,7 @@ define( function( require ) {
         tandem: circuitVertexGroupTandem.createNextTandem()
       } );
 
-      // TODO: let's make resistance required
-      return new LightBulb( startVertex, endVertex, options.resistance || CircuitConstructionKitConstants.DEFAULT_RESISTANCE, tandem, options );
+      return new LightBulb( startVertex, endVertex, resistance, tandem, options );
     }
   } );
 } );
