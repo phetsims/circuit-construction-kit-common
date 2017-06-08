@@ -15,6 +15,7 @@ define( function( require ) {
   var HSlider = require( 'SUN/HSlider' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var CCKAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKAccordionBox' );
+  var Dimension2 = require( 'DOT/Dimension2' );
 
   //strings
   var tinyString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/tiny' );
@@ -34,6 +35,8 @@ define( function( require ) {
       max: max // large enough so that max resistance in a 9v battery slows to a good rate
     }, {
       trackSize: CircuitConstructionKitConstants.SLIDER_TRACK_SIZE,
+      thumbSize: new Dimension2( 18, 34 ), // TODO: factor this out
+      majorTickLength: 20, // TODO: factor this out
       tandem: tandem.createTandem( 'slider' )
     } );
 

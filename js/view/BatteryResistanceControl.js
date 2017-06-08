@@ -22,6 +22,7 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
   var Range = require( 'DOT/Range' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+  var Dimension2 = require( 'DOT/Dimension2' );
 
   //strings
   var batteryResistanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/batteryResistance' );
@@ -47,8 +48,10 @@ define( function( require ) {
 
     var slider = new HSlider( batteryResistanceProperty, new Range( CircuitConstructionKitConstants.DEFAULT_BATTERY_RESISTANCE, 10 ), {
       trackSize: CircuitConstructionKitConstants.SLIDER_TRACK_SIZE,
-      // majorTickLength: 2,
-      // minorTickLength: 5,
+
+      thumbSize: new Dimension2( 18, 34 ), // TODO: factor this out
+      majorTickLength: 20, // TODO: factor this out
+
       // Snap to the nearest whole number.
       constrainValue: function( value ) {return Util.roundSymmetric( value );},
       tandem: tandem.createTandem( 'slider' )
@@ -63,38 +66,41 @@ define( function( require ) {
       if ( i !== 5 ) {
         slider.addMinorTick( i );
       }
-
-      var numberNode = new Text( batteryResistanceProperty.get(), {
-        font: new PhetFont( 14 ),
-        fill: 'black',
-        tandem: numberNodesGroupTandem.createNextTandem()
-      } );
-
-      // number to be displayed
-      batteryResistanceProperty.link( function( value ) {
-        if ( value === 1 ) {
-          numberNode.setText( StringUtils.fillIn( resistanceOhmString, { resistance: Util.toFixed( value, 0 ) } ) );
-        }
-        else {
-          numberNode.setText( StringUtils.fillIn( resistanceOhmsString, { resistance: Util.toFixed( value, 0 ) } ) );
-        }
-      } );
-
-      var valueParent = new Panel( numberNode, {
-        fill: 'white',
-        stroke: 'gray',
-        lineWidth: 1, // width of the background border
-        xMargin: 4,
-        yMargin: 3,
-        cornerRadius: 0, // radius of the rounded corners on the background
-        resize: true, // dynamically resize when content bounds change
-        backgroundPickable: false,
-        tandem: valueParentsGroupTandem.createNextTandem()
-      } );
-
     }
+
+    var readoutTextPanelTandem = tandem.createTandem( 'readoutTextPanel' );
+
+    var readoutTextNode = new Text( batteryResistanceProperty.get(), {
+      font: new PhetFont( 14 ),
+      fill: 'black',
+      tandem: readoutTextPanelTandem.createTandem( 'readoutTextNode' )
+    } );
+
+    // number to be displayed
+    batteryResistanceProperty.link( function( value ) {
+      if ( value === 1 ) {
+        readoutTextNode.setText( StringUtils.fillIn( resistanceOhmString, { resistance: Util.toFixed( value, 0 ) } ) );
+      }
+      else {
+        readoutTextNode.setText( StringUtils.fillIn( resistanceOhmsString, { resistance: Util.toFixed( value, 0 ) } ) );
+      }
+    } );
+
+    var readoutTextPanel = new Panel( readoutTextNode, {
+      fill: 'white',
+      stroke: 'gray',
+      lineWidth: 1, // width of the background border
+      xMargin: 4,
+      yMargin: 3,
+      cornerRadius: 0, // radius of the rounded corners on the background
+      resize: true, // dynamically resize when content bounds change
+      backgroundPickable: false,
+      tandem: readoutTextPanelTandem
+    } );
+
     CCKAccordionBox.call( this, alignGroup.createBox( new VBox( {
-      children: [ valueParent, slider ]
+      spacing: -4,
+      children: [ readoutTextPanel, slider ]
     } ) ), batteryResistanceString, tandem );
   }
 
