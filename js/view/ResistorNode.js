@@ -20,7 +20,6 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var Color = require( 'SCENERY/util/Color' );
   var Matrix3 = require( 'DOT/Matrix3' );
-  var Text = require( 'SCENERY/nodes/Text' );
 
   // images
   var lifelikeResistorImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor.png' );
@@ -30,6 +29,8 @@ define( function( require ) {
   var eraserImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/eraser.png' );
   var handImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/hand.png' );
   var highResistorImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor_high.png' );
+  var dogImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/dog.png' );
+  var dollarBillImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/dollar_bill.png' );
 
   // constants
   var LIFELIKE_IMAGE_SCALE = 1.0;
@@ -69,9 +70,6 @@ define( function( require ) {
     if ( resistor.resistorType === 'coin' ) {
       lifelikeResistorImageNode = new Image( coinImage );
     }
-    else if ( resistor.resistorType === 'dollarBill' ) {
-      lifelikeResistorImageNode = new Text( 'ITS A DOLLAR BILL' );
-    }
     else if ( resistor.resistorType === 'paperClip' ) {
       lifelikeResistorImageNode = new Image( paperClipImage );
     }
@@ -86,6 +84,12 @@ define( function( require ) {
     }
     else if ( resistor.resistorType === 'high-resistor' ) {
       lifelikeResistorImageNode = new Image( highResistorImage );
+    }
+    else if ( resistor.resistorType === 'dog' ) {
+      lifelikeResistorImageNode = new Image( dogImage );
+    }
+    else if ( resistor.resistorType === 'dollarBill' ) {
+      lifelikeResistorImageNode = new Image( dollarBillImage );
     }
     else {
 
