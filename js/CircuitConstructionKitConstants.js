@@ -84,13 +84,17 @@ define( function( require ) {
 
     // Length of a resistor
     RESISTOR_LENGTH: 110,
+
+    // Length of grab bag items in view coordinates
     COIN_LENGTH: 85,
-    ERASER_LENGTH: 150,
-    PENCIL_LENGTH: 150,
-    HAND_LENGTH: 150,
-    DOG_LENGTH: 150,
-    DOLLAR_BILL_LENGTH: 200,
-    PAPER_CLIP_LENGTH: 120,
+    ERASER_LENGTH: 90,
+    PENCIL_LENGTH: 130,
+    HAND_LENGTH: 140,
+    DOG_LENGTH: 170,
+    DOLLAR_BILL_LENGTH: 140,
+    PAPER_CLIP_LENGTH: 75,
+
+    // Length
     SERIES_AMMETER_LENGTH: 121,
 
     // background for panels and radio buttons
