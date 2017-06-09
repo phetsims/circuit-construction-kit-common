@@ -34,6 +34,7 @@ define( function( require ) {
   var BatteryResistanceControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryResistanceControl' );
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
   var VBox = require( 'SCENERY/nodes/VBox' );
+  var AlignBox = require( 'SCENERY/nodes/AlignBox' );
   var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
 
   // constants
@@ -228,7 +229,16 @@ define( function( require ) {
         [ this.displayOptionsPanel, this.sensorToolbox, this.viewRadioButtonGroup ] :
         [ this.displayOptionsPanel, this.sensorToolbox, this.wireResistivityControl, this.batteryResistanceControl, this.viewRadioButtonGroup ]
     } );
-    this.addChild( controlPanelVBox );
+
+    var box = new AlignBox( controlPanelVBox, {
+      xAlign: 'right',
+      yAlign: 'top',
+      xMargin: HORIZONTAL_MARGIN,
+      yMargin: VERTICAL_MARGIN
+    } );
+
+    this.visibleBoundsProperty.linkAttribute( box, 'alignBounds' );
+    this.addChild( box );
     this.addChild( this.circuitLayerNode );
 
     var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel(
@@ -339,6 +349,7 @@ define( function( require ) {
     // Add it in front of everything (should never be obscured by a CircuitElement)
     this.addChild( zoomControlPanel );
 
+
     this.visibleBoundsProperty.link( function( visibleBounds ) {
 
       self.circuitElementToolbox.left = visibleBounds.left + VERTICAL_MARGIN + (self.circuitElementToolbox.carousel ? 0 : 12);
@@ -354,9 +365,6 @@ define( function( require ) {
         centerX: visibleBounds.centerX,
         bottom: visibleBounds.bottom - 100 // so it doesn't overlap the component controls
       } );
-
-      controlPanelVBox.right = visibleBounds.right - HORIZONTAL_MARGIN;
-      controlPanelVBox.top = visibleBounds.top + VERTICAL_MARGIN;
 
       zoomControlPanel.left = visibleBounds.left + HORIZONTAL_MARGIN;
       zoomControlPanel.bottom = visibleBounds.bottom - VERTICAL_MARGIN;
