@@ -46,6 +46,20 @@ define( function( require ) {
   var LEFT_LEAD_X = -5;
 
   /**
+   * Determine the brightness for a given power
+   * @param {number} multiplier - steepness of the function
+   * @param {number} power - the power through the light bulb
+   * @returns {number}
+   */
+  function toBrightness( multiplier, power ) {
+    var maximumBrightness = 1;
+
+    // power at which the the brightness becomes 1
+    var maximumPower = 2000;
+    return Math.log( 1 + power * multiplier ) * maximumBrightness / Math.log( 1 + maximumPower * multiplier );
+  }
+
+  /**
    * This constructor is called dynamically and must match the signature of other circuit element nodes.
    * @param {CCKScreenView} circuitConstructionKitScreenView - the main screen view
    * @param {CircuitLayerNode} circuitLayerNode - the node for the entire circuit
@@ -62,18 +76,14 @@ define( function( require ) {
     var updateBrightness = Property.multilink( [ lightBulb.currentProperty, showResultsProperty, lightBulb.voltageDifferenceProperty ], function( current, running, voltageDifference ) {
       var power = Math.abs( current * voltageDifference );
 
-      // Heuristics are from Java
-      var maxPower = 60;
+      var brightness = toBrightness( 0.35, power );
 
       // Workaround for SCENERY_PHET/LightBulbNode which shows highlight even for current = 1E-16, so clamp it off
       // see https://github.com/phetsims/scenery-phet/issues/225
-      var minPower = 1E-6;
-      power = Math.min( power, maxPower * 15 );
-      power = Math.max( power, minPower );
-      var brightness = Math.pow( power / maxPower, 0.354 ) * 0.4;
-      if ( power <= minPower ) {
+      if ( brightness < 1E-6 ) {
         brightness = 0;
       }
+
       brightnessProperty.value = Util.clamp( brightness, 0, 1 );
     } );
     var lightBulbNode = new CustomLightBulbNode( brightnessProperty, {
