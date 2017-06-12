@@ -37,7 +37,7 @@ define( function( require ) {
   var GET_LAYOUT_POSITION = function( visibleBounds ) {
     return {
       centerX: visibleBounds.centerX,
-      bottom: visibleBounds.bottom - CircuitConstructionKitConstants.LAYOUT_MARGIN
+      bottom: visibleBounds.bottom - CircuitConstructionKitConstants.VERTICAL_MARGIN
     };
   };
 

@@ -38,7 +38,7 @@ define( function( require ) {
   var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
 
   // constants
-  var VERTICAL_MARGIN = CircuitConstructionKitConstants.LAYOUT_MARGIN; // TODO: this is confusing
+  var VERTICAL_MARGIN = CircuitConstructionKitConstants.VERTICAL_MARGIN;
   var BACKGROUND_COLOR = CircuitConstructionKitConstants.BACKGROUND_COLOR;
   var VOLTMETER_PROBE_TIP_LENGTH = 20; // The probe tip is about 20 view coordinates tall
   var VOLTMETER_NUMBER_SAMPLE_POINTS = 10; // Number of points along the edge of the voltmeter tip to detect voltages
