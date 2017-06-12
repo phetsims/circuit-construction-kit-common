@@ -177,6 +177,11 @@ define( function( require ) {
     schematicNode.centerY = 0;
     lifelikeResistorImageNode.centerY = 0;
 
+    // Adjust the dog so the electrons travel along the tail/legs, see https://github.com/phetsims/circuit-construction-kit-common/issues/364
+    if ( resistor.resistorType === 'dog' ) {
+      lifelikeResistorImageNode.translate( 0, -40 );
+    }
+
     // Super call
     FixedLengthCircuitElementNode.call( this,
       circuitConstructionKitScreenView,
