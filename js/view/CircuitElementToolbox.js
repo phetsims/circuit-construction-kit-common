@@ -413,7 +413,8 @@ define( function( require ) {
         orientation: 'vertical',
         itemsPerPage: ITEMS_PER_PAGE,
         spacing: 0,
-        margin: 15
+        margin: 15,
+        tandem: tandem.createTandem( 'carousel' )
       } );
 
       var pageControl = new PageControl( this.carousel.numberOfPages, this.carousel.pageNumberProperty, {
