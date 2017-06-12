@@ -116,6 +116,9 @@
   "voltageUnits": {
     "value": "{{voltage}} V"
   },
+  "ampereUnits": {
+    "value": "{{ampere}} A"
+  },
   "resistanceOhmsSymbol": {
     "value": "{{resistance}} Ω"
   },

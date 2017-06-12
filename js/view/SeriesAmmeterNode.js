@@ -19,10 +19,12 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Panel = require( 'SUN/Panel' );
   var Util = require( 'DOT/Util' );
+  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   // strings
   var currentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/current' );
+  var ampereUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ampereUnits' );
 
   // constants
   var PANEL_HEIGHT = 40;
@@ -64,7 +66,8 @@ define( function( require ) {
       // The ammeter doesn't indicate direction
       current = Math.abs( current );
 
-      var currentText = ( current < 1E-10 ) ? '' : Util.toFixed( current, 2 ) + ' A';
+      // var currentText = ( current < 1E-10 ) ? '' : {current: Util.toFixed( current, 2 ) + ' A'};
+      var currentText = ( current < 1E-10 ) ? '' : StringUtils.fillIn( ampereUnitsString, { ampere: Util.toFixed( current, 2 ) } );
       readoutText.setText( currentText );
 
       // Center the text in the panel
