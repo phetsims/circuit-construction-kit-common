@@ -93,8 +93,13 @@ define( function( require ) {
         var isSwitch = selectedCircuitElement instanceof Switch;
         var isSeriesAmmeter = selectedCircuitElement instanceof SeriesAmmeter;
 
-        if ( isResistor ) {
+        if ( isResistor && selectedCircuitElement.isResistanceEditable() ) {
           previousPanel = new CircuitElementEditPanel( resistanceString, ohmsString, selectedCircuitElement.resistanceProperty, circuit, selectedCircuitElement, groupTandem.createNextTandem() );
+        }
+        else if ( isResistor ) {
+
+          // Just show a trash button for non-editable resistors which are grab bag items
+          previousPanel = new CCKTrashButton( circuit, selectedCircuitElement, groupTandem.createNextTandem().createTandem( 'trashButton' ) );
         }
         else if ( isBattery ) {
           previousPanel = new CircuitElementEditPanel( voltageString, voltsString, selectedCircuitElement.voltageProperty, circuit, selectedCircuitElement, groupTandem.createNextTandem() );

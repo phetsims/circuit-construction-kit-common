@@ -28,7 +28,7 @@ define( function( require ) {
   var pencilImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/pencil.png' );
   var eraserImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/eraser.png' );
   var handImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/hand.png' );
-  var highResistorImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor_high.png' );
+  var highResistanceResistorImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor_high.png' );
   var dogImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/dog.png' );
   var dollarBillImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/dollar_bill.png' );
 
@@ -82,8 +82,8 @@ define( function( require ) {
     else if ( resistor.resistorType === 'hand' ) {
       lifelikeResistorImageNode = new Image( handImage );
     }
-    else if ( resistor.resistorType === 'high-resistor' ) {
-      lifelikeResistorImageNode = new Image( highResistorImage );
+    else if ( resistor.resistorType === 'high-resistance-resistor' ) {
+      lifelikeResistorImageNode = new Image( highResistanceResistorImage );
     }
     else if ( resistor.resistorType === 'dog' ) {
       lifelikeResistorImageNode = new Image( dogImage );
@@ -176,6 +176,11 @@ define( function( require ) {
     // Center vertically to match the FixedLengthCircuitElementNode assumption that origin is center left
     schematicNode.centerY = 0;
     lifelikeResistorImageNode.centerY = 0;
+
+    // Adjust the dog so the electrons travel along the tail/legs, see https://github.com/phetsims/circuit-construction-kit-common/issues/364
+    if ( resistor.resistorType === 'dog' ) {
+      lifelikeResistorImageNode.translate( 0, -40 );
+    }
 
     // Super call
     FixedLengthCircuitElementNode.call( this,
