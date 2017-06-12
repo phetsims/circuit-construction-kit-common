@@ -182,6 +182,11 @@ define( function( require ) {
       lifelikeResistorImageNode.translate( 0, -40 );
     }
 
+    // Adjust hand origin as well
+    if ( resistor.resistorType === 'hand' ) {
+      lifelikeResistorImageNode.translate( 0, 14 );
+    }
+
     // Super call
     FixedLengthCircuitElementNode.call( this,
       circuitConstructionKitScreenView,
