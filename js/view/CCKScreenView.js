@@ -46,6 +46,15 @@ define( function( require ) {
   // Match margins with the carousel page control and spacing
   var HORIZONTAL_MARGIN = 17;
 
+  // Group for aligning the content in the panels and accordion boxes.  This is a class variable instead of an
+  // instance variable so the control panels will have the same width across all screens,
+  // see https://github.com/phetsims/circuit-construction-kit-dc/issues/9
+  var CONTROL_PANEL_ALIGN_GROUP = new AlignGroup( {
+
+    // Elements should have the same widths but not constrained to have the same heights
+    matchVertical: false
+  } );
+
   /**
    * @param {CircuitConstructionKitModel} circuitConstructionKitModel
    * @param {Tandem} tandem
@@ -178,16 +187,9 @@ define( function( require ) {
     );
     this.addChild( chargeSpeedThrottlingReadoutNode );
 
-    // Group for aligning the content in the panels and accordion boxes
-    var controlPanelAlignGroup = new AlignGroup( {
-
-      // Elements should have the same widths but not constrained to have the same heights
-      matchVertical: false
-    } );
-
     // @protected - so that subclasses can add a layout circuit element near it
     this.sensorToolbox = new SensorToolbox(
-      controlPanelAlignGroup,
+      CONTROL_PANEL_ALIGN_GROUP,
       this.circuitLayerNode,
       voltmeterNode,
       ammeterNode,
@@ -201,7 +203,7 @@ define( function( require ) {
 
     // @protected
     this.displayOptionsPanel = new DisplayOptionsPanel(
-      controlPanelAlignGroup,
+      CONTROL_PANEL_ALIGN_GROUP,
       circuitConstructionKitModel.circuit.showCurrentProperty,
       circuitConstructionKitModel.circuit.currentTypeProperty,
       circuitConstructionKitModel.showValuesProperty,
@@ -211,12 +213,12 @@ define( function( require ) {
 
     // @private
     this.wireResistivityControl = new WireResistivityControl( circuitConstructionKitModel.circuit.wireResistivityProperty,
-      controlPanelAlignGroup,
+      CONTROL_PANEL_ALIGN_GROUP,
       tandem.createTandem( 'wireResistivityControl' ) );
 
     // @private
     this.batteryResistanceControl = new BatteryResistanceControl( circuitConstructionKitModel.circuit.batteryResistanceProperty,
-      controlPanelAlignGroup,
+      CONTROL_PANEL_ALIGN_GROUP,
       tandem.createTandem( 'batteryResistanceControl' ) );
 
     this.moveBackgroundToBack();
