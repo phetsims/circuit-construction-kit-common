@@ -24,7 +24,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var LightBulbSocketNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/LightBulbSocketNode' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
-  var CCKMathUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKMathUtil' );
+  var CCKUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKUtil' );
 
   // images
   var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
@@ -189,13 +189,13 @@ define( function( require ) {
       var angle = delta.angle() + Math.PI / 4;
 
       // Update the node transform in a single step, see #66
-      CCKMathUtil.setToTranslationRotation( SCRATCH_MATRIX, startPosition, angle );
+      CCKUtil.setToTranslationRotation( SCRATCH_MATRIX, startPosition, angle );
       this.contentNode.setMatrix( SCRATCH_MATRIX );
 
       this.highlightNode && this.highlightNode.setMatrix( SCRATCH_MATRIX );
 
       // Update the fire transform
-      CCKMathUtil.setToTranslationRotation( SCRATCH_MATRIX, startPosition, angle )
+      CCKUtil.setToTranslationRotation( SCRATCH_MATRIX, startPosition, angle )
         .multiplyMatrix( SCRATCH_MATRIX_2.setToTranslation( -100, -fireImage[ 0 ].height - 350 ) );
       this.fireNode && this.fireNode.setMatrix( SCRATCH_MATRIX );
 

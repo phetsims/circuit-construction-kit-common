@@ -17,7 +17,7 @@ define( function( require ) {
   var Matrix3 = require( 'DOT/Matrix3' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
-  var CCKMathUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKMathUtil' );
+  var CCKUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKUtil' );
 
   // constants
   var SCRATCH_MATRIX = new Matrix3();
@@ -68,7 +68,7 @@ define( function( require ) {
       var angle = endPosition.minus( startPosition ).angle() + Math.PI / 4;
 
       // Update the node transform in a single step, see #66
-      CCKMathUtil.setToTranslationRotation( SCRATCH_MATRIX, startPosition, angle );
+      CCKUtil.setToTranslationRotation( SCRATCH_MATRIX, startPosition, angle );
       this.contentNode.setMatrix( SCRATCH_MATRIX );
     },
 

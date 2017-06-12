@@ -22,6 +22,7 @@ define( function( require ) {
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+  var CCKUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKUtil' );
 
   // images
   var voltmeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltmeter_body.png' );
@@ -79,7 +80,7 @@ define( function( require ) {
 
     // Displays the voltage reading
     var voltageReadoutProperty = new DerivedProperty( [ voltmeter.voltageProperty ], function( voltage ) {
-      return voltage === null ? questionMarkString : StringUtils.fillIn( voltageUnitsString, { voltage: Util.toFixed( voltage, 2 ) } );
+      return voltage === null ? questionMarkString : CCKUtil.createMeasurementReadout( voltageUnitsString, 'voltage', voltage, 2 );
     } );
 
     var probeTextNode = new ProbeTextNode( voltageReadoutProperty, options.showResultsProperty, voltageString, tandem.createTandem( 'probeTextNode' ), {

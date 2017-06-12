@@ -16,7 +16,6 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var ProbeTextNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ProbeTextNode' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
-  var Util = require( 'DOT/Util' );
   var ProbeNode = require( 'SCENERY_PHET/ProbeNode' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ProbeWireNode' );
@@ -24,7 +23,7 @@ define( function( require ) {
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
-  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+  var CCKUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKUtil' );
 
   // images
   var ammeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeter_body.png' );
@@ -32,7 +31,7 @@ define( function( require ) {
   // strings
   var questionMarkString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/questionMark' );
   var currentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/current' );
-  var currentAmpsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/currentAmps' );
+  var ampereUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ampereUnits' );
 
   // constants
   // measurements for the cubic curve for the wire nodes
@@ -78,7 +77,7 @@ define( function( require ) {
       // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
       return current === null ? questionMarkString :
              Math.abs( current ) > max ? maxString :
-             StringUtils.fillIn( currentAmpsString, { current: Util.toFixed( Math.abs( current ), 2 ) } );
+             CCKUtil.createMeasurementReadout( ampereUnitsString, 'ampere', current, 2 );
     } );
 
     var probeTextNode = new ProbeTextNode( currentReadoutProperty, options.showResultsProperty, currentString, tandem.createTandem( 'probeTextNode' ), {
