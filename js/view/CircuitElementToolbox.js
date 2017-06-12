@@ -82,7 +82,7 @@ define( function( require ) {
       numberOfDollarBills: 0,
       numberOfPaperClips: 0,
       numberOfHighVoltageBatteries: 0,
-      numberOfHighResistors: 4,
+      numberOfHighResistanceResistors: 4,
       numberOfHighResistanceLightBulbs: 4
     }, options );
 
@@ -107,10 +107,10 @@ define( function( require ) {
     var lightBulbIconModel = LightBulb.createAtPosition( new Vector2( 0, 0 ), circuit.vertexGroupTandem, CircuitConstructionKitConstants.DEFAULT_RESISTANCE, circuit.lightBulbGroupTandem.createNextTandem(), { highResistance: false } );
     var highResistanceLightBulbIconModel = LightBulb.createAtPosition( new Vector2( 0, 0 ), circuit.vertexGroupTandem, 1000, circuit.lightBulbGroupTandem.createNextTandem(), { highResistance: true } );
     var lightBulbIcon = new CCKLightBulbNode( null, null, lightBulbIconModel, new Property( true ), viewProperty, tandem.createTandem( 'lightBulbIcon' ), { icon: true } );
-    var highResistanceLightBulbIcon = new CCKLightBulbNode( null, null, highResistanceLightBulbIconModel, new Property( true ), viewProperty, tandem.createTandem( 'lightBulbIcon' ), { icon: true } );
+    var highResistanceLightBulbIcon = new CCKLightBulbNode( null, null, highResistanceLightBulbIconModel, new Property( true ), viewProperty, tandem.createTandem( 'highResistanceLightBulbIcon' ), { icon: true } );
     var resistor = new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ), tandem.createTandem( 'resistor' ) );
-    var highResistor = new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ), tandem.createTandem( 'resistor' ), {
-      resistorType: 'high-resistor', resistance: 1000
+    var highResistanceResistor = new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ), tandem.createTandem( 'highResistanceResistor' ), {
+      resistorType: 'high-resistance-resistor', resistance: 1000
     } );
     var createGrabBagItem = function( resistorType, resistorLength, tandem ) {
       return new Resistor(
@@ -122,7 +122,7 @@ define( function( require ) {
         } );
     };
     var resistorIcon = new ResistorNode( null, null, resistor, null, viewProperty, tandem.createTandem( 'resistorIcon' ), { icon: true } );
-    var highResistorIcon = new ResistorNode( null, null, highResistor, null, viewProperty, tandem.createTandem( 'highResistorIcon' ), { icon: true } );
+    var highResistanceResistorIcon = new ResistorNode( null, null, highResistanceResistor, null, viewProperty, tandem.createTandem( 'highResistanceResistorIcon' ), { icon: true } );
     var circuitSwitch = new Switch( new Vertex( 0, 0 ), new Vertex( SWITCH_LENGTH, 0 ), tandem.createTandem( 'switch' ) );
     var switchIcon = new SwitchNode( null, null, circuitSwitch, null, viewProperty, tandem.createTandem( 'switchIcon' ), {
       icon: true
@@ -140,7 +140,7 @@ define( function( require ) {
     switchIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( switchIcon.width, switchIcon.height ) } );
     rightBatteryIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( rightBatteryIcon.width, rightBatteryIcon.height ) } );
     highVoltageBatteryIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( highVoltageBatteryIcon.width, highVoltageBatteryIcon.height ) } );
-    highResistorIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( highResistorIcon.width, highResistorIcon.height ) } );
+    highResistanceResistorIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( highResistanceResistorIcon.width, highResistanceResistorIcon.height ) } );
 
     // Make the light bulb icon smaller so it doesn't take up too much room
     lightBulbIcon.mutate( { scale: 0.85 * TOOLBOX_ICON_SIZE / Math.max( lightBulbIcon.width, lightBulbIcon.height ) } );
@@ -173,7 +173,7 @@ define( function( require ) {
     var countLightBulbs = createCounter( function( circuitElement ) { return circuitElement instanceof LightBulb && !circuitElement.highResistance; } );
     var countHighResistanceLightBulbs = createCounter( function( circuitElement ) { return circuitElement instanceof LightBulb && circuitElement.highResistance; } );
     var countResistors = createCounter( function( circuitElement ) { return circuitElement instanceof Resistor && circuitElement.resistorType === 'resistor'; } );
-    var countHighResistors = createCounter( function( circuitElement ) { return circuitElement instanceof Resistor && circuitElement.resistorType === 'high-resistor'; } );
+    var countHighResistanceResistors = createCounter( function( circuitElement ) { return circuitElement instanceof Resistor && circuitElement.resistorType === 'high-resistance-resistor'; } );
     var countSwitches = createCounter( function( circuitElement ) { return circuitElement instanceof Switch; } );
 
     /**
@@ -223,10 +223,10 @@ define( function( require ) {
       var vertexPair = createVertexPair( position, RESISTOR_LENGTH );
       return new Resistor( vertexPair.startVertex, vertexPair.endVertex, circuit.resistorGroupTandem.createNextTandem() );
     };
-    var createHighResistor = function( position ) {
+    var createHighResistanceResistor = function( position ) {
       var vertexPair = createVertexPair( position, RESISTOR_LENGTH );
       return new Resistor( vertexPair.startVertex, vertexPair.endVertex, circuit.resistorGroupTandem.createNextTandem(), {
-        resistorType: 'high-resistor',
+        resistorType: 'high-resistance-resistor',
         resistance: CircuitConstructionKitConstants.HIGH_RESISTANCE,
         editableRange: CircuitConstructionKitConstants.HIGH_RESISTANCE_RANGE,
         editorDelta: CircuitConstructionKitConstants.HIGH_EDITOR_DELTA
@@ -253,7 +253,7 @@ define( function( require ) {
     var lightBulbToolNode = new CircuitElementToolNode( lightBulbString, showLabelsProperty, circuitLayerNode, lightBulbIcon, options.numberOfLightBulbs, countLightBulbs, createLightBulb );
     var highResistanceBulbToolNode = new CircuitElementToolNode( lightBulbString, showLabelsProperty, circuitLayerNode, highResistanceLightBulbIcon, options.numberOfHighResistanceLightBulbs, countHighResistanceLightBulbs, createHighResistanceLightBulb );
     var resistorToolNode = new CircuitElementToolNode( resistorString, showLabelsProperty, circuitLayerNode, resistorIcon, options.numberOfResistors, countResistors, createResistor );
-    var highResistorToolNode = new CircuitElementToolNode( resistorString, showLabelsProperty, circuitLayerNode, highResistorIcon, options.numberOfHighResistors, countHighResistors, createHighResistor );
+    var highResistanceResistorToolNode = new CircuitElementToolNode( resistorString, showLabelsProperty, circuitLayerNode, highResistanceResistorIcon, options.numberOfHighResistanceResistors, countHighResistanceResistors, createHighResistanceResistor );
     var switchToolNode = new CircuitElementToolNode( switchString, showLabelsProperty, circuitLayerNode, switchIcon, options.numberOfSwitches, countSwitches, createSwitch );
 
     var createGrabBagToolNode = function( resistorType, resistance, resistorLength, labelString, maxCount, iconModelTandem, iconTandem, groupTandem ) {
@@ -367,7 +367,7 @@ define( function( require ) {
       children = children.concat( [
         new Node( { children: [ wireToolNode ] } ),
         highVoltageBatteryToolNode,
-        highResistorToolNode,
+        highResistanceResistorToolNode,
         highResistanceBulbToolNode,
         dollarBillNode,
 

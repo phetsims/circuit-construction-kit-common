@@ -34,7 +34,7 @@ define( function( require ) {
       resistorLength: RESISTOR_LENGTH
     }, options );
 
-    // @public (read-only) {string} indicates 'resistor' | 'high-resistor' | grab bag component type
+    // @public (read-only) {string} indicates 'resistor' | 'high-resistance-resistor' | grab bag component type
     this.resistorType = options.resistorType;
 
     FixedLengthCircuitElement.call( this, startVertex, endVertex, options.resistorLength, options.resistorLength, tandem, options );
