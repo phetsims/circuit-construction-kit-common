@@ -81,6 +81,14 @@ define( function( require ) {
   return inherit( FixedLengthCircuitElement, LightBulb, {
 
     /**
+     * Returns true because all light bulbs can have their resistance changed.
+     * @returns {boolean}
+     */
+    isResistanceEditable: function() {
+      return true;
+    },
+
+    /**
      * Maps from the "as the crow flies" path to the circuitous path.
      *
      * @param {number} index

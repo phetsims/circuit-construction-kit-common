@@ -64,7 +64,7 @@ define( function( require ) {
 
       // The ammeter doesn't indicate direction
       current = Math.abs( current );
-      var currentText = ( current < 1E-10 ) ? '' : CCKUtil.createMeasurementReadout( ampereUnitsString, 'ampere', current, 2 );
+      var currentText = ( current < 1E-10 ) ? '' : CCKUtil.createMeasurementReadout( ampereUnitsString, 'ampere', current, 3 );
       readoutText.setText( currentText );
 
       // Center the text in the panel
