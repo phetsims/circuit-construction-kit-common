@@ -35,8 +35,8 @@ define( function( require ) {
       max: max // large enough so that max resistance in a 9v battery slows to a good rate
     }, {
       trackSize: CircuitConstructionKitConstants.SLIDER_TRACK_SIZE,
-      thumbSize: new Dimension2( 18, 34 ), // TODO: factor this out
-      majorTickLength: 20, // TODO: factor this out
+      thumbSize: CircuitConstructionKitConstants.THUMB_SIZE,
+      majorTickLength: CircuitConstructionKitConstants.MAJOR_TICK_LENGTH,
       tandem: tandem.createTandem( 'slider' )
     } );
 

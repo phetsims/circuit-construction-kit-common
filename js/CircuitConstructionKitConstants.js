@@ -120,6 +120,10 @@ define( function( require ) {
 
     HIGH_RESISTANCE_RANGE: new Range( 100, 10000 ),
 
-    PANEL_LINE_WIDTH: 1.3
+    PANEL_LINE_WIDTH: 1.3,
+
+    THUMB_SIZE: new Dimension2( 18, 34 ),
+
+    MAJOR_TICK_LENGTH: 20
   } );
 } );

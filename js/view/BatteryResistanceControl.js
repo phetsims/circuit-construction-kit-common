@@ -48,9 +48,8 @@ define( function( require ) {
 
     var slider = new HSlider( batteryResistanceProperty, new Range( CircuitConstructionKitConstants.DEFAULT_BATTERY_RESISTANCE, 10 ), {
       trackSize: CircuitConstructionKitConstants.SLIDER_TRACK_SIZE,
-
-      thumbSize: new Dimension2( 18, 34 ), // TODO: factor this out
-      majorTickLength: 20, // TODO: factor this out
+      thumbSize: CircuitConstructionKitConstants.THUMB_SIZE,
+      majorTickLength: CircuitConstructionKitConstants.MAJOR_TICK_LENGTH,
 
       // Snap to the nearest whole number.
       constrainValue: function( value ) {return Util.roundSymmetric( value );},
