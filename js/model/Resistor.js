@@ -29,7 +29,7 @@ define( function( require ) {
     options = _.extend( {
       resistance: CircuitConstructionKitConstants.DEFAULT_RESISTANCE,
 
-      // Support for rendering grab bag items
+      // Support for rendering grab bag items or
       resistorType: 'resistor',
       resistorLength: RESISTOR_LENGTH
     }, options );
@@ -46,6 +46,15 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'Resistor', Resistor );
 
   return inherit( FixedLengthCircuitElement, Resistor, {
+
+
+    /**
+     * Returns true if the resistance is editable.  Grab bag item resistance is not editable.
+     * @returns {boolean}
+     */
+    isResistanceEditable: function() {
+      return this.resistorType === 'high-resistance-resistor' || this.resistorType === 'resistor';
+    },
 
     /**
      * Get the properties so that the circuit can be solved when changed.
