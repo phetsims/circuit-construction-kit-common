@@ -77,7 +77,7 @@ define( function( require ) {
       // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
       return current === null ? questionMarkString :
              Math.abs( current ) > max ? maxString :
-             CircuitConstructionKitCommonUtil.createMeasurementReadout( ampereUnitsString, 'ampere', current, 3 );
+             CircuitConstructionKitCommonUtil.createAmpereReadout( ampereUnitsString, current );
     } );
 
     var probeTextNode = new ProbeTextNode( currentReadoutProperty, options.showResultsProperty, currentString, tandem.createTandem( 'probeTextNode' ), {
