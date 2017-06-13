@@ -115,6 +115,10 @@ define( function( require ) {
      */
     step: function( dt ) {
 
+      if ( this.charges.length === 0 || this.circuit.circuitElements.length === 0 ) {
+        return;
+      }
+
       // Disable incremental updates to improve performance.  The ChargeNodes are only updated once, instead of
       // incrementally many times throughout this update
       this.charges.forEach( DISABLE_UPDATES );
@@ -124,6 +128,8 @@ define( function( require ) {
 
       // Find the fastest current in any circuit element
       var maxCurrentMagnitude = _.max( this.circuit.circuitElements.getArray().map( CURRENT_MAGNITUDE ) );
+      assert && assert( maxCurrentMagnitude >= 0, 'max current should be positive' );
+
       var maxSpeed = maxCurrentMagnitude * SPEED_SCALE;
       var maxPositionChange = maxSpeed * MAX_DT; // Use the max dt instead of the true dt to avoid fluctuations
 
@@ -238,8 +244,8 @@ define( function( require ) {
       // Below min current, the charges should remain stationary
       if ( Math.abs( current ) > MIN_CURRENT ) {
         var speed = current * SPEED_SCALE;
-        var stepSize = speed * dt * this.scale;
-        var newChargePosition = chargePosition + stepSize;
+        var chargePositionDelta = speed * dt * this.scale;
+        var newChargePosition = chargePosition + chargePositionDelta;
 
         // Step within a single circuit element
         if ( charge.circuitElement.containsScalarLocation( newChargePosition ) ) {
@@ -248,14 +254,14 @@ define( function( require ) {
         else {
 
           // move to a new CircuitElement
-          var overshoot = newChargePosition < 0 ? -newChargePosition : (newChargePosition - charge.circuitElement.chargePathLength);
-          var under = newChargePosition < 0;
+          var overshoot = current < 0 ? -newChargePosition : (newChargePosition - charge.circuitElement.chargePathLength);
+          var isUnder = newChargePosition < 0;
 
           assert && assert( !isNaN( overshoot ), 'overshoot should be a number' );
           assert && assert( overshoot >= 0, 'overshoot should be >=0' );
 
           // enumerate all possible circuit elements the charge could go to
-          var circuitLocations = this.getLocations( charge, overshoot, under );
+          var circuitLocations = this.getLocations( charge, overshoot, isUnder );
           if ( circuitLocations.length > 0 ) {
 
             // choose the CircuitElement with the lowest density
