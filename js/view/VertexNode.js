@@ -235,9 +235,9 @@ define( function( require ) {
       cutButton.center = availableBounds.closestPointTo( proposedPosition );
     };
     var updateVertexNodePosition = function( position ) {
-      dottedLineNode.center = position;
-      highlightNode.center = position; // TODO: perhaps don't update the position while it is invisible?
-      updateReadoutTextLocation && updateReadoutTextLocation();
+      dottedLineNode.translation = position;
+      highlightNode.translation = position; // TODO: perhaps don't update the position while it is invisible?
+      updateReadoutTextLocation && updateReadoutTextLocation(); // TODO: eliminate this node
       updateCutButtonPosition();
     };
     vertex.positionProperty.link( updateVertexNodePosition );
