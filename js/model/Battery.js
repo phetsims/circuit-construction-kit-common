@@ -39,14 +39,14 @@ define( function( require ) {
     // @public {NumberProperty} - the voltage of the battery in volts
     this.voltageProperty = new NumberProperty( options.voltage );
 
-    // @public (read-only) the internal resistance of the battery
+    // @public {Property.<number>} the internal resistance of the battery
     this.internalResistanceProperty = resistanceProperty;
 
-    // @public (read-only) - track the initial state so the user can only create a certain number of "left" or "right"
-    // batteries from the toolbox.
+    // @public (read-only) {string} - track which way the battery "button" (plus side) was facing the initial state so the user
+    // can only create a certain number of "left" or "right" batteries from the toolbox.
     this.initialOrientation = options.initialOrientation;
 
-    // @public (read-only) - the type of the battery - 'normal' | 'high-voltage'
+    // @public (read-only) {string} - the type of the battery - 'normal' | 'high-voltage'
     this.batteryType = batteryType;
   }
 

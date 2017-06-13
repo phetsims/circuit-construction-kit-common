@@ -35,7 +35,7 @@ define( function( require ) {
     // @public (read-only) {NumberProperty} the resistance in ohms
     this.resistanceProperty = new NumberProperty( 0 );
 
-    // @public (read-only) {NumberProperty} whether the switch is closed (and current is flowing)
+    // @public (read-only) {BooleanProperty} whether the switch is closed (and current can flow through it)
     this.closedProperty = new BooleanProperty( false );
 
     this.closedProperty.link( function( closed ) {

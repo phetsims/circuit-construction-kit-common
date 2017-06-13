@@ -39,38 +39,38 @@ define( function( require ) {
     // @private - animation for the zoom level
     this.zoomAnimation = null;
 
-    // @public (read-only)
+    // @public (read-only) {Circuit} - contains CircuitElements, Vertices, etc.
     this.circuit = new Circuit( tandem.createTandem( 'circuit' ) );
 
-    // @public (read-only)
+    // @public (read-only) {Voltmeter}
     this.voltmeter = new Voltmeter( tandem.createTandem( 'voltmeter' ) );
 
-    // @public (read-only)
+    // @public (read-only) {Ammeter}
     this.ammeter = new Ammeter( tandem.createTandem( 'ammeter' ) );
 
-    // @public (read-only) changes whether the light bulb brightness and ammeter/voltmeter readouts, charges, flame,
-    // etc. can be seen
+    // @public {BooleanProperty} - changes whether the light bulb brightness and ammeter/voltmeter readouts,
+    // charges, flame, etc. can be seen
     this.exploreScreenRunningProperty = new BooleanProperty( !CircuitConstructionKitQueryParameters.showPlayPauseButton, {
       tandem: tandem.createTandem( 'exploreScreenRunningProperty' )
     } );
 
-    // @public (read-only) true if the labels in the toolbox should be shown
+    // @public {BooleanProperty} - true if the labels in the toolbox should be shown
     this.showLabelsProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'showLabelsProperty' )
     } );
 
-    // @public (read-only) true if the labels in the toolbox should be shown
+    // @public {BooleanProperty} - true if the labels in the toolbox should be shown
     this.showValuesProperty = new BooleanProperty( false, {
       tandem: tandem.createTandem( 'showValuesProperty' )
     } );
 
-    // @public (read-only) scaling applied to the circuit node so the user can zoom out and make larger circuits.
+    // @public {Property.<number>} scaling applied to the circuit node so the user can zoom out and make larger circuits.
     this.selectedZoomProperty = new Property( 1, {
       tandem: tandem.createTandem( 'selectedZoomProperty' ),
       phetioValueType: TNumber()
     } );
 
-    // @public (read-only) the animated value of the zoom level
+    // @public (read-only) {Property.<number>} the animated value of the zoom level
     this.currentZoomProperty = new Property( this.selectedZoomProperty.get(), {
       tandem: tandem.createTandem( 'currentZoomProperty' ),
       phetioValueType: TNumber()

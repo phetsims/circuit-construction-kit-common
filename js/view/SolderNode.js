@@ -25,13 +25,13 @@ define( function( require ) {
   function SolderNode( circuitLayerNode, vertex ) {
     var circuit = circuitLayerNode.circuit;
 
-    // @public (read-only)
+    // @public (read-only) {Vertex}
     this.vertex = vertex;
 
-    // @public (read-only) - added by CircuitLayerNode during dragging, used for relative drag location.
+    // @public {Vector2} - added by CircuitLayerNode during dragging, used for relative drag location.
     this.startOffset = null;
 
-    // @public (read-only) - for hit testing with probes
+    // @public (read-only) {number} - for hit testing with probes
     this.dottedLineNodeRadius = 11.2;
 
     // Start as a dotted line, becomes solid when connected to >1 element.
@@ -67,7 +67,7 @@ define( function( require ) {
     };
     vertex.relayerEmitter.addListener( relayerListener );
 
-    // @private (read-only) called by dispose()
+    // @private (read-only) {function} called by dispose()
     this.disposeSolderNode = function() {
       vertex.positionProperty.unlink( updateSolderNodePosition );
 

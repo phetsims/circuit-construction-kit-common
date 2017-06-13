@@ -67,13 +67,13 @@ define( function( require ) {
       showResultsProperty: new BooleanProperty( true )
     }, options );
 
-    // @public (read-only) - the model
+    // @public (read-only) {Voltmeter} - the model
     this.voltmeter = voltmeter;
 
-    // @public (read-only) - the red probe node
+    // @public (read-only) {Image} - the red probe node
     this.redProbeNode = new Image( redProbe, { scale: PROBE_SCALE * SCALE, cursor: 'pointer' } );
 
-    // @public (read-only) - the black probe node
+    // @public (read-only) {Image} - the black probe node
     this.blackProbeNode = new Image( blackProbe, { scale: PROBE_SCALE * SCALE, cursor: 'pointer' } );
 
     // Displays the voltage reading
@@ -146,7 +146,7 @@ define( function( require ) {
     // For the real version (not the icon), add drag listeners.
     if ( !options.icon ) {
 
-      // @public (read-only) - so events can be forwarded from the toolbox
+      // @public (read-only) {MovableDragHandler} - so events can be forwarded from the toolbox
       this.dragHandler = new MovableDragHandler( voltmeter.bodyPositionProperty, {
         tandem: tandem.createTandem( 'dragHandler' ),
         endDrag: function() {

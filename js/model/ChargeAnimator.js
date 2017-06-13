@@ -106,20 +106,20 @@ define( function( require ) {
    */
   function ChargeAnimator( circuit ) {
 
-    // @private (read-only) the ObservableArray of Charge instances
+    // @private (read-only) {ObservableArray.<Charge>} - the ObservableArray of Charge instances
     this.charges = circuit.charges;
 
-    // @private (read-only) the Circuit
+    // @private (read-only) {Circuit} - the Circuit
     this.circuit = circuit;
 
-    // @private (read-only) factor that reduces the overall propagator speed when maximum speed is exceeded
+    // @private (read-only) {number} - factor that reduces the overall propagator speed when maximum speed is exceeded
     this.scale = 1;
 
-    // @private (read-only) a running average over last time steps
+    // @private (read-only) {RunningAverage} - a running average over last time steps as a smoothing step
     this.timeScaleRunningAverage = new RunningAverage( 30 );
 
-    // @public (read-only) {NumberProperty}
-    this.timeScaleProperty = new NumberProperty( 1, { range: { min: 0, max: 1 } } ); // 1 is full speed, 0.5 is running at half speed, etc.
+    // @public (read-only) {NumberProperty} - how much the time should be slowed, 1 is full speed, 0.5 is running at half speed, etc.
+    this.timeScaleProperty = new NumberProperty( 1, { range: { min: 0, max: 1 } } );
   }
 
   circuitConstructionKitCommon.register( 'ChargeAnimator', ChargeAnimator );

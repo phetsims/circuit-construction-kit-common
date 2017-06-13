@@ -26,7 +26,7 @@ define( function( require ) {
 
     var self = this;
 
-    // @public (read-only) - the CircuitElement rendered by this node
+    // @public (read-only) {CircuitElement} - the CircuitElement rendered by this node
     this.circuitElement = circuitElement;
 
     // @public

@@ -57,13 +57,13 @@ define( function( require ) {
 
     options = _.extend( { highResistance: false }, options );
 
-    // @public (read-only) true if the light bulb is a high resistance light bulb
+    // @public (read-only) {boolean} - true if the light bulb is a high resistance light bulb
     this.highResistance = options.highResistance;
 
     // @public {Property.<number>} - the resistance of the light bulb which can be edited with the UI
     this.resistanceProperty = new NumberProperty( resistance );
 
-    // @private (read-only) the vector between the vertices
+    // @private (read-only) {Vector2} the vector between the vertices
     this.vertexDelta = endVertex.positionProperty.get().minus( startVertex.positionProperty.get() );
 
     var pathLength = 0;

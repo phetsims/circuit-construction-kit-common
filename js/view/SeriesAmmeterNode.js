@@ -167,7 +167,7 @@ define( function( require ) {
       options
     );
 
-    // @private (read-only)
+    // @private (read-only) {Node}
     this.icon = options.icon;
 
     // @private

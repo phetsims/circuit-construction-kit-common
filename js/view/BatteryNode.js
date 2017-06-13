@@ -43,7 +43,7 @@ define( function( require ) {
    */
   function BatteryNode( circuitConstructionKitScreenView, circuitLayerNode, battery, showResultsProperty, viewProperty, tandem, options ) {
 
-    // @public (read-only) - the Battery rendered by this Node
+    // @public (read-only) {Battery} - the Battery rendered by this Node
     this.battery = battery;
 
     var lifelikeNode = new Image( battery.batteryType === 'normal' ? batteryImage : batteryHighImage );

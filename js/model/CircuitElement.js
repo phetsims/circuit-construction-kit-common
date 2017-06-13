@@ -39,10 +39,10 @@ define( function( require ) {
 
     this.tandemName = tandem.tail;
 
-    // @public (read-only) unique identifier for looking up corresponding views
+    // @public (read-only) {number} unique identifier for looking up corresponding views
     this.id = index++;
 
-    // @public (read-only) track the time of creation so it can't be dropped in the toolbox for 0.5 seconds
+    // @public (read-only) {number} track the time of creation so it can't be dropped in the toolbox for 0.5 seconds
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/244
     this.creationTime = phet.joist.elapsedTime;
 
@@ -51,22 +51,22 @@ define( function( require ) {
       interactive: true // In CCK: Black Box Study, CircuitElements in the black box cannot be manipulated
     }, options );
 
-    // @public (read-only) - whether it is possible to drop the CircuitElement in the toolbox
+    // @public (read-only) {number} - whether it is possible to drop the CircuitElement in the toolbox
     this.canBeDroppedInToolbox = options.canBeDroppedInToolbox;
 
-    // @public (read-only) - the Vertex at the origin of the CircuitElement
+    // @public {Property.<Vertex>} - the Vertex at the origin of the CircuitElement, may change when CircuitElements are connected
     this.startVertexProperty = new Property( startVertex );
 
-    // @public (read-only) - the Vertex at the end of the CircuitElement
+    // @public {Property.<Vertex>} - the Vertex at the end of the CircuitElement, may change when CircuitElements are connected
     this.endVertexProperty = new Property( endVertex );
 
-    // @public (read-only) - the flowing current, in amps.
+    // @public {NumberProperty} - the flowing current, in amps.
     this.currentProperty = new NumberProperty( 0 );
 
-    // @public (read-only) - whether the CircuitElement is being dragged across the toolbox
+    // @public {BooleanProperty} - whether the CircuitElement is being dragged across the toolbox
     this.isOverToolboxProperty = new BooleanProperty( false );
 
-    // @public (read-only) - true if the CircuitElement can be edited and dragged
+    // @public (read-only) {BooleanProperty} - true if the CircuitElement can be edited and dragged
     this.interactiveProperty = new BooleanProperty( options.interactive );
 
     // @public {BooleanProperty} - whether the circuit element is inside the true black box, not inside the user-created black box, on
@@ -76,26 +76,26 @@ define( function( require ) {
     // @public - true if the charge layout must be updated
     this.chargeLayoutDirty = true;
 
-    // @public (read-only) - indicate when this CircuitElement has been connected to another CircuitElement
+    // @public (read-only) {Emitter} - indicate when this CircuitElement has been connected to another CircuitElement
     this.connectedEmitter = new Emitter();
 
-    // @public (read-only) - indicate when the CircuitElement has been moved to the front in z-ordering
+    // @public (read-only) {Emitter} - indicate when the CircuitElement has been moved to the front in z-ordering
     this.moveToFrontEmitter = new Emitter();
 
-    // @public (read-only) - indicate when an adjacent Vertex has moved to front, so that the corresponding Node can
+    // @public (read-only) {Emitter} - indicate when an adjacent Vertex has moved to front, so that the corresponding Node can
     // move to front too
     this.vertexSelectedEmitter = new Emitter();
 
-    // @public (read-only) - indicate when either Vertex has moved
+    // @public (read-only) {Emitter} - indicate when either Vertex has moved
     this.vertexMovedEmitter = new Emitter();
 
-    // @public (read-only) - indicate when the circuit element has started being dragged, when it is created in the toolbox
+    // @public (read-only) {Emitter} - indicate when the circuit element has started being dragged, when it is created in the toolbox
     this.startDragEmitter = new Emitter();
 
-    // @public (read-only) - indicate when the circuit element has been disposed
+    // @public (read-only) {Emitter} - indicate when the circuit element has been disposed
     this.disposeEmitter = new Emitter();
 
-    // @public (read-only) {Property.<number>} - the voltage at the end vertex minus the voltage at the start vertex
+    // @public {Property.<number>} - the voltage at the end vertex minus the voltage at the start vertex
     // name voltageDifferenceProperty so it doesn't clash with voltageProperty in Battery subclass
     this.voltageDifferenceProperty = new Property( 0 );
 
@@ -151,9 +151,9 @@ define( function( require ) {
       self.disposeEmitter.removeAllListeners();
     };
 
-    // @public (read-only by clients, writable-by-subclasses) the distance the charges must take to get to the other
-    // side of the component. This is typically the distance between vertices, but not for light bulbs.  This value is
-    // constant, except for wires which can have their length changed.
+    // @public (read-only by clients, writable-by-subclasses) {number} the distance the charges must take to get to the
+    // other side of the component. This is typically the distance between vertices, but not for light bulbs.  This
+    // value is constant, except for wires which can have their length changed.
     this.chargePathLength = chargePathLength;
 
     tandem.addInstance( this, TObject );

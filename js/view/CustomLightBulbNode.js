@@ -41,7 +41,7 @@ define( function( require ) {
       highResistance: true
     }, options );
 
-    // @private (read-only)
+    // @private (read-only) {boolean]
     this.baseOnly = options.baseOnly;
 
     var selectedSocketImage = options.highResistance ? highResistanceSocketImage : socketImage;

@@ -28,7 +28,7 @@ define( function( require ) {
 
     assert && assert( charge === 1 || charge === -1, 'charge should be 1 or -1' );
 
-    // @public (read-only) the amount of charge
+    // @public (read-only) {number} the amount of charge
     this.charge = charge;
 
     // Validate inputs
@@ -38,7 +38,7 @@ define( function( require ) {
 
     var self = this;
 
-    // @public (read-only), the CircuitElement the Charge is in
+    // @public (read-only) {CircuitElement} - the CircuitElement the Charge is in, changed by Charge.setLocation
     this.circuitElement = circuitElement;
 
     // @private - whether the charge has been disposed to aid in debugging
@@ -79,10 +79,10 @@ define( function( require ) {
       }
     } );
 
-    // @public (read-only) whether the charge should be displayed
+    // @public (read-only) {Property.<boolean>} - whether the charge should be displayed
     this.visibleProperty = visibleProperty;
 
-    // @public (read-only) send notifications when the charge is disposed, so the view can be disposed.
+    // @public (read-only) {Emitter} send notifications when the charge is disposed, so the view can be disposed.
     this.disposeEmitter = new Emitter();
 
     this.disposeCharge = function() {

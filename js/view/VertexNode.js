@@ -35,13 +35,13 @@ define( function( require ) {
     var self = this;
     var circuit = circuitLayerNode.circuit;
 
-    // @public (read-only) - the vertex associated with this node
+    // @public (read-only) {Vertex} - the vertex associated with this node
     this.vertex = vertex;
 
-    // @public (read-only) - added by CircuitLayerNode during dragging, used for relative drag location.
+    // @public (read-only) {Vector2} - added by CircuitLayerNode during dragging, used for relative drag location.
     this.startOffset = null;
 
-    // @public (read-only) - for hit testing with probes
+    // @public (read-only) {number} - for hit testing with probes
     this.dottedLineNodeRadius = 16;
 
     // Start as a dotted line, becomes solid when connected to >1 element.

@@ -49,10 +49,11 @@ define( function( require ) {
       icon: false
     }, options );
 
-    // @public (read-only)
+    // @public (read-only) {CircuitElement}
     this.circuitElement = circuitElement;
 
-    // @protected (read-only) node that shows the component, separate from the part that shows the highlight and the fire
+    // @protected (read-only) {Node} node that shows the component, separate from the part that shows the highlight and
+    // the fire
     this.contentNode = new Node();
 
     // Show the selected node

@@ -46,13 +46,13 @@ define( function( require ) {
                                       // are more of an implementation detail rather than a feature
     }, options );
 
-    // @public (read-only) {Property.<Vector2>} - location of the vertex
+    // @public {Property.<Vector2>} - location of the vertex
     this.positionProperty = new Property( new Vector2( x, y ), {
       tandem: options.tandem && options.tandem.createTandem( 'positionProperty' ),
       phetioValueType: TVector2
     } );
 
-    // @public (read-only) {Property.<Vector2>} - where the vertex would be if it hadn't snapped for a proposed connection
+    // @public {Property.<Vector2>} - where the vertex would be if it hadn't snapped to a proposed connection
     this.unsnappedPositionProperty = new Property( new Vector2( x, y ) );
 
     // @public {NumberProperty} Relative voltage of the node, determined by Circuit.solve
@@ -61,9 +61,9 @@ define( function( require ) {
       phetioValueType: TNumber( { units: 'volts' } )
     } );
 
-    // @public (read-only) {BooleanProperty} - after the user taps on a vertex it becomes selected, highlighting it and showing a 'cut' button
-    // Multiple vertices can be selected on an iPad, unlike CircuitElements, which can only have one vertex selected
-    // at a time.
+    // @public {BooleanProperty} - after the user taps on a vertex it becomes selected, highlighting it and showing a
+    // 'cut' button. Multiple vertices can be selected on an iPad, unlike CircuitElements, which can only have one
+    // vertex selected at a time.
     this.selectedProperty = new BooleanProperty( false, {
       tandem: options.tandem && options.tandem.createTandem( 'selectedProperty' )
     } );
@@ -71,25 +71,25 @@ define( function( require ) {
     // Some of the following properties overlap.  For example, if 'insideTrueBlackBox' is true, then the interactive
     // flag will be set to false when the circuit is in 'test' mode.
 
-    // @public (read-only) {BooleanProperty} - Vertices on the black box interface persist between build/investigate, and cannot be moved/deleted
+    // @public {BooleanProperty} - Vertices on the black box interface persist between build/investigate, and cannot be moved/deleted
     this.draggableProperty = new BooleanProperty( options.draggable );
 
-    // @public (read-only) {BooleanProperty} - Black box interface vertices can be interactive (tap to select) without being draggable
+    // @public {BooleanProperty} - Black box interface vertices can be interactive (tap to select) without being draggable
     this.interactiveProperty = new BooleanProperty( options.interactive );
 
-    // @public (read-only) {BooleanProperty} - whether the Vertex can be dragged or moved by dragging another part of the circuit
+    // @public {BooleanProperty} - whether the Vertex can be dragged or moved by dragging another part of the circuit
     // must be observable.  When two vertices are joined in Circuit.connect, non-interactivity propagates
     this.attachableProperty = new BooleanProperty( options.attachable );
 
-    // @public (read-only) {BooleanProperty} - whether the vertex is on the edge of a black box.  This means it cannot be deleted, but it can be
-    // attached to
+    // @public (read-only) {BooleanProperty} - whether the vertex is on the edge of a black box.  This means it cannot
+    // be deleted, but it can be attached to
     this.blackBoxInterfaceProperty = new BooleanProperty( options.blackBoxInterface );
 
-    // @public (read-only) {BooleanProperty} - whether the vertex is inside the true black box, not inside the user-created black box, on the
-    // interface or outside of the black box
+    // @public {BooleanProperty} - whether the vertex is inside the true black box, not inside the
+    // user-created black box, on the interface or outside of the black box
     this.insideTrueBlackBoxProperty = new BooleanProperty( options.insideTrueBlackBox );
 
-    // @public (read-only) - indicate when the vertex has been moved to the front in z-ordering and layering in the
+    // @public {Emitter} - indicate when the vertex has been moved to the front in z-ordering and layering in the
     // view must be updated
     this.relayerEmitter = new Emitter();
 

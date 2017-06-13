@@ -40,7 +40,7 @@ define( function( require ) {
       tandem: tandem.createTandem( 'draggingProbesWithBodyProperty' )
     } );
 
-    // @public (read-only) Fires an event when the meter is dropped
+    // @public (read-only) {Emitter} Fires an event when the meter is dropped
     this.droppedEmitter = new Emitter(); // Fire event when dropped
   }
 

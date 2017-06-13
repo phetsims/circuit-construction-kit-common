@@ -49,7 +49,7 @@ define( function( require ) {
   function ChargeNode( charge, revealingProperty ) {
     var self = this;
 
-    // @public (read-only) the {Charge} depicted by this node
+    // @public (read-only) {Charge} - the model depicted by this node
     this.charge = charge;
 
     var child = charge.charge > 0 ? ARROW_NODE : ELECTRON_IMAGE_NODE;

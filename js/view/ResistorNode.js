@@ -62,7 +62,7 @@ define( function( require ) {
    */
   function ResistorNode( circuitConstructionKitScreenView, circuitLayerNode, resistor, showResultsProperty, viewProperty, tandem, options ) {
 
-    // @public (read-only) the resistor depicted by this node
+    // @public (read-only) {Resistor} the resistor depicted by this node
     this.resistor = resistor;
 
     var lifelikeResistorImageNode = new Image( lifelikeResistorImage );

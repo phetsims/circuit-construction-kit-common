@@ -39,7 +39,7 @@ define( function( require ) {
    */
   function SwitchNode( circuitConstructionKitScreenView, circuitLayerNode, circuitSwitch, showResultsProperty, viewProperty, tandem, options ) {
 
-    // @public (read-only) - the Switch rendered by this Node
+    // @public (read-only) {Switch} - the Switch rendered by this Node
     this.circuitSwitch = circuitSwitch;
 
     /**

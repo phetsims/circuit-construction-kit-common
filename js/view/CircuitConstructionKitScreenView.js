@@ -93,9 +93,9 @@ define( function( require ) {
 
     ScreenView.call( this );
 
-    // On touch, make it so tapping the background deselects items.  For mouse, we add listeners to the pointer that
-    // work over all components, but this isn't possible with touch since it is a new pointer instance for each touch.
-    // @protected (read-only), so subclasses can change the fill
+    // @protected (read-only) {Plane}, so subclasses can change the fill. On touch, make it so tapping the background
+    // deselects items.  For mouse, we add listeners to the pointer that work over all components, but this isn't
+    // possible with touch since it is a new pointer instance for each touch.
     this.backgroundPlane = new Plane( { fill: BACKGROUND_COLOR } );
     this.backgroundPlane.addInputListener( {
       touchdown: function() {
@@ -112,7 +112,7 @@ define( function( require ) {
     };
     circuitConstructionKitModel.exploreScreenRunningProperty.link( backgroundListener );
 
-    // @public (read-only) - For overriding in BlackBoxSceneView, which needs a custom color
+    // @public (read-only) {function} - For overriding in BlackBoxSceneView, which needs a custom color
     this.unlinkBackgroundListener = function() {
       circuitConstructionKitModel.exploreScreenRunningProperty.unlink( backgroundListener );
     };
@@ -129,7 +129,7 @@ define( function( require ) {
       this.addChild( resetAllButton );
     }
 
-    // @public (read-only) - the circuit node
+    // @public (read-only) {CircuitLayerNode} - the circuit node
     this.circuitLayerNode = new CircuitLayerNode( circuitConstructionKitModel.circuit, this, tandem.createTandem( 'circuitLayerNode' ) );
 
     var voltmeterNode = new VoltmeterNode( circuitConstructionKitModel.voltmeter, tandem.createTandem( 'voltmeterNode' ), {
@@ -154,7 +154,7 @@ define( function( require ) {
     } );
     circuitConstructionKitModel.ammeter.visibleProperty.linkAttribute( ammeterNode, 'visible' );
 
-    // @public (read-only) Toolbox from which CircuitElements can be dragged
+    // @public (read-only) {CircuitElementToolbox} - Toolbox from which CircuitElements can be dragged
     this.circuitElementToolbox = new CircuitElementToolbox(
       circuitConstructionKitModel.circuit,
       circuitConstructionKitModel.showLabelsProperty,

@@ -52,33 +52,34 @@ define( function( require ) {
     // @private {Property.<string>} - 'lifelike' | 'schematic'
     this.viewProperty = circuitConstructionKitScreenView.circuitConstructionKitModel.viewProperty;
 
-    // @private (read-only)
+    // @private (read-only) {CircuitConstructionKitModel}
     this.circuitConstructionKitModel = circuitConstructionKitScreenView.circuitConstructionKitModel;
 
-    // @private (read-only) {Property.<Bounds2>}
+    // @private (read-only) {Property.<Bounds2>} - the part of the screen that can be seen in view coordinates
     this.visibleBoundsProperty = circuitConstructionKitScreenView.visibleBoundsProperty;
 
-    // @public (read-only) CircuitElementNodes add highlights directly to this layer when they are constructed
+    // @public {Node} - CircuitElementNodes add highlights directly to this layer when they are constructed
     this.highlightLayer = new Node();
 
-    // @public (read-only) SeriesAmmeterNodes add to this layer when they are constructed
+    // @public {Node} - SeriesAmmeterNodes add to this layer when they are constructed
     // Shows the front panel of SeriesAmmeterNodes (which shows the current readout) so the electrons look like they
     // flow through.
     this.seriesAmmeterNodeReadoutPanelLayer = new Node();
 
-    // @public (read-only) layer for vertex buttons
+    // @public {Node} - layer for vertex buttons
     this.buttonLayer = new Node();
 
-    // @public (read-only) for "show values"
+    // @public {Node} - layer for "show values"
     this.valueLayer = new Node();
 
-    // @public (read-only) so that additional Nodes may be interleaved
+    // @public {Node} - so that additional Nodes may be interleaved
     this.mainLayer = new Node();
 
-    // @public (read-only) but CircuitConstructionKitLightBulbNode calls addChild/removeChild to add sockets to the front layer
+    // @public {Node} - CircuitConstructionKitLightBulbNode calls addChild/removeChild to add sockets to the front layer
     this.lightBulbSocketLayer = new Node();
 
-    // @private Electrons appear in this layer when they need to be in front of the socket (on the right hand side of the bulb)
+    // @public {Node} - Electrons appear in this layer when they need to be in front of the socket (on the right hand
+    // side of the bulb)
     this.lightBulbSocketElectronLayer = new Node();
 
     Node.call( this, {
@@ -101,16 +102,16 @@ define( function( require ) {
       return self.parentToLocalBounds( visibleBounds );
     } );
 
-    // @public (read-only) - the Circuit model depicted by this view
+    // @public (read-only) {Circuit} - the Circuit model depicted by this view
     this.circuit = circuit;
 
-    // @private - Map to find CircuitElement=>CircuitElementNode. key is CircuitElement.id, value is CircuitElementNode
+    // @private {Object} - Map to find CircuitElement=>CircuitElementNode. key is CircuitElement.id, value is CircuitElementNode
     this.circuitElementNodeMap = {};
 
-    // @public (read-only) the layer to display the gray solder
+    // @public (read-only) {Node[]} the layer to display the gray solder // TODO: is this used?
     this.solderNodes = [];
 
-    // @public (read-only) the VertexNodes
+    // @public (read-only) {Node[]} the VertexNodes // TODO: is this used?
     this.vertexNodes = [];
 
     // When loading from a state object, the vertices could have been added first.  If so, move them in front

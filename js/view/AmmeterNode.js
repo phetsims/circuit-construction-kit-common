@@ -65,7 +65,7 @@ define( function( require ) {
       showResultsProperty: new BooleanProperty( true )
     }, options );
 
-    // @public (read-only) (the model Ammeter associated with this Node)
+    // @public (read-only) {Ammeter} - the model associated with this view
     this.ammeter = ammeter;
 
     var wireNode = new ProbeWireNode( 'black', new Vector2( 0, BODY_LEAD_Y ), new Vector2( 0, PROBE_LEAD_Y ) );
@@ -91,7 +91,7 @@ define( function( require ) {
       children: [ probeTextNode ]
     } );
 
-    // @public (read-only)
+    // @public (read-only) {ProbeNode}
     this.probeNode = new ProbeNode( {
       cursor: 'pointer',
       sensorTypeFunction: ProbeNode.crosshairs(),
@@ -131,7 +131,7 @@ define( function( require ) {
 
     if ( !options.icon ) {
 
-      // @public (read-only) - so events can be forwarded from the toolbox
+      // @public (read-only) {MovableDragHandler} - so events can be forwarded from the toolbox
       this.dragHandler = new MovableDragHandler( ammeter.bodyPositionProperty, {
         tandem: tandem.createTandem( 'dragHandler' ),
         endDrag: function() {
