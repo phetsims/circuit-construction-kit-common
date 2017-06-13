@@ -14,6 +14,7 @@ define( function( require ) {
   var Circle = require( 'SCENERY/nodes/Circle' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
+  var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -105,7 +106,9 @@ define( function( require ) {
       highlightNode.visible = selected;
 
       var numberConnections = neighborCircuitElements.length;
-      cutButton.visible = selected;
+
+      CircuitConstructionKitCommonUtil.setInSceneGraph( selected, circuitLayerNode.buttonLayer, cutButton );
+
       selected && updateCutButtonPosition();
 
       // Show a disabled button as a cue that the vertex could be cuttable, but it isn't right now.
@@ -122,7 +125,6 @@ define( function( require ) {
       tandem: tandem
     } );
     circuitLayerNode.highlightLayer.addChild( highlightNode );
-    circuitLayerNode.buttonLayer.addChild( cutButton );
 
     var updatePickable = function( interactive ) { self.pickable = interactive; };
     vertex.interactiveProperty.link( updatePickable );
@@ -253,8 +255,8 @@ define( function( require ) {
       vertex.relayerEmitter.removeListener( updateMoveToFront );
 
       circuitLayerNode.highlightLayer.removeChild( highlightNode );
-      circuitLayerNode.buttonLayer.removeChild( cutButton );
 
+      CircuitConstructionKitCommonUtil.setInSceneGraph( false, circuitLayerNode.buttonLayer, cutButton );
       circuit.vertices.removeItemAddedListener( updateStroke );
       circuit.vertices.removeItemRemovedListener( updateStroke );
 
