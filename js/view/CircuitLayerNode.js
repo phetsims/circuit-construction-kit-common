@@ -39,6 +39,7 @@ define( function( require ) {
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var ValueNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ValueNode' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
+  var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
 
   /**
    * @param {Circuit} circuit - the model Circuit
@@ -156,13 +157,17 @@ define( function( require ) {
           if ( circuitElement instanceof FixedLengthCircuitElement && !(circuitElement instanceof SeriesAmmeter) ) {
             var valueNode = new ValueNode(
               circuitElement,
-              self.circuitConstructionKitModel.showValuesProperty,
               tandem.createTandem( circuitElement.tandemName ).createTandem( 'valueNode' )
             );
-            self.valueLayer.addChild( valueNode );
+            // self.valueLayer.addChild( valueNode );
+            var updateShowValues = function( showValues ) {
+              CircuitConstructionKitCommonUtil.setInSceneGraph( showValues, self.valueLayer, valueNode );
+            };
+            self.circuitConstructionKitModel.showValuesProperty.link( updateShowValues );
 
             circuitElement.disposeEmitter.addListener( function() {
-              self.valueLayer.removeChild( valueNode );
+              self.circuitConstructionKitModel.showValuesProperty.unlink( updateShowValues );
+              CircuitConstructionKitCommonUtil.setInSceneGraph( false, self.valueLayer, valueNode );
               valueNode.dispose();
             } );
           }

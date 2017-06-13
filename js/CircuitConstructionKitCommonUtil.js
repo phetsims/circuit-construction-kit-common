@@ -66,7 +66,8 @@ define( function( require ) {
     },
 
     /**
-     * Checks whether a child should be in the scene graph and adds/removes it as necessary
+     * Checks whether a child should be in the scene graph and adds/removes it as necessary.  This is to improve performance
+     * so that the DOM only contains displayed items and doesn't try to update invisible ones.
      * @param inSceneGraph {boolean} - should the child be shown in the scene graph
      * @param parent {Node} - parent that contains the child in the scene graph
      * @param child {Node} - child added/removed from scene graph

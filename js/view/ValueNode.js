@@ -29,11 +29,10 @@ define( function( require ) {
 
   /**
    * @param {CircuitElement} circuitElement
-   * @param {Property.<boolean>} visibleProperty
    * @param {Tandem} tandem
    * @constructor
    */
-  function ValueNode( circuitElement, visibleProperty, tandem ) {
+  function ValueNode( circuitElement, tandem ) {
     var self = this;
 
     // Big enough to see when zoomed out
@@ -124,17 +123,12 @@ define( function( require ) {
       self.center = centerPositionAndAngle.position.plus( Vector2.createPolar( 24, centerPositionAndAngle.angle + 3 * Math.PI / 2 ) ); // above light bulb
     };
 
-    var updateVisible = function( visible ) { self.visible = visible; };
-
     circuitElement.vertexMovedEmitter.addListener( updatePosition );
     updatePosition();
-
-    visibleProperty.link( updateVisible );
 
     // @private
     this.disposeValueNode = function() {
       circuitElement.vertexMovedEmitter.removeListener( updatePosition );
-      visibleProperty.unlink( updateVisible );
       disposeActions.forEach( function( disposeAction ) {
         disposeAction();
       } );
