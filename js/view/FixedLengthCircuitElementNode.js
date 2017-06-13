@@ -69,7 +69,6 @@ define( function( require ) {
     // Add highlight (but not for icons)
     if ( !options.icon ) {
       this.highlightNode = new FixedLengthCircuitElementHighlightNode( this, {} );
-      circuitLayerNode.highlightLayer.addChild( this.highlightNode );
     }
     var updateLayoutCallback = function() { self.updateLayout(); };
 
@@ -142,7 +141,8 @@ define( function( require ) {
       self.contentNode.addInputListener( this.inputListener );
 
       var updateHighlightVisibility = function( lastCircuitElement ) {
-        self.highlightNode.visible = (lastCircuitElement === circuitElement);
+        var visible = (lastCircuitElement === circuitElement);
+        CircuitConstructionKitCommonUtil.setInSceneGraph( visible, circuitLayerNode.highlightLayer, self.highlightNode );
       };
       circuitLayerNode.circuit.selectedCircuitElementProperty.link( updateHighlightVisibility );
 
@@ -194,7 +194,7 @@ define( function( require ) {
       circuitElement.connectedEmitter.removeListener( moveToFront );
       circuitElement.vertexSelectedEmitter.removeListener( moveToFront );
       circuitElement.interactiveProperty.unlink( pickableListener );
-      circuitLayerNode && circuitLayerNode.highlightLayer.removeChild( self.highlightNode );
+      circuitLayerNode && CircuitConstructionKitCommonUtil.setInSceneGraph( false, circuitLayerNode.highlightLayer, self.highlightNode );
       viewProperty.unlink( viewPropertyListener );
 
       if ( !options.icon && updateFireMultilink ) {
@@ -229,7 +229,7 @@ define( function( require ) {
       // Update the node transform in a single step, see #66
       CircuitConstructionKitCommonUtil.setToTranslationRotation( transform, startPosition, angle );
       this.contentNode.setMatrix( transform );
-      this.highlightNode && this.highlightNode.setMatrix( transform );
+      this.highlightNode && this.highlightNode.setMatrix( transform ); // TODO: only update when visible
 
       // Update the fire transform
       var flameExtent = 0.8;
@@ -238,7 +238,7 @@ define( function( require ) {
       CircuitConstructionKitCommonUtil.setToTranslationRotation( transform, startPosition, angle )
         .multiplyMatrix( rotationMatrix.setToScale( scale ) )
         .multiplyMatrix( rotationMatrix.setToTranslation( delta.magnitude() * flameMargin / scale, -fireImage[ 0 ].height ) );
-      this.fireNode && this.fireNode.setMatrix( transform );
+      this.fireNode && this.fireNode.setMatrix( transform ); // TODO: use setInSceneGraph for fire?
     },
 
     /**
