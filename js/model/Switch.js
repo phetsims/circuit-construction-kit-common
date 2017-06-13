@@ -32,10 +32,10 @@ define( function( require ) {
     FixedLengthCircuitElement.call( this, startVertex, endVertex, SWITCH_LENGTH, SWITCH_LENGTH, tandem );
     var self = this;
 
-    // @public (read-only) the resistance in ohms
+    // @public (read-only) {NumberProperty} the resistance in ohms
     this.resistanceProperty = new NumberProperty( 0 );
 
-    // @public (read-only) whether the switch is closed (and current is flowing)
+    // @public (read-only) {BooleanProperty} whether the switch is closed (and current can flow through it)
     this.closedProperty = new BooleanProperty( false );
 
     this.closedProperty.link( function( closed ) {
@@ -47,6 +47,13 @@ define( function( require ) {
 
   return inherit( FixedLengthCircuitElement, Switch, {
 
+    /**
+     * Returns the position and angle of the given point along the Switch
+     * @param {number} distanceAlongWire
+     * @returns {Object} with {position,angle}
+     * @overrides
+     * @public
+     */
     getPositionAndAngle: function( distanceAlongWire ) {
 
       var startPosition = this.startVertexProperty.get().positionProperty.get();

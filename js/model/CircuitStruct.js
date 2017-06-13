@@ -30,22 +30,22 @@ define( function( require ) {
    */
   function CircuitStruct( vertices, wires, resistors, lightBulbs, batteries, switches ) {
 
-    // @private (read-only)
+    // @private (read-only) {Vertex[]}
     this.vertices = vertices;
 
-    // @private (read-only)
+    // @private (read-only) {Wire[]}
     this.wires = wires;
 
-    // @private (read-only)
+    // @private (read-only) {Resistor[]}
     this.resistors = resistors;
 
-    // @private (read-only)
+    // @private (read-only) {LightBulb[]}
     this.lightBulbs = lightBulbs;
 
-    // @private (read-only)
+    // @private (read-only) {Battery[]}
     this.batteries = batteries;
 
-    // @private (read-only)
+    // @private (read-only) {Switch[]}
     this.switches = switches;
   }
 

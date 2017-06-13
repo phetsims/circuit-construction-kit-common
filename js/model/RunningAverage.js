@@ -15,14 +15,18 @@ define( function( require ) {
   // constants
   var SUM = function( a, b ) {return a + b;};
 
+  /**
+   * @param {number} windowSize - number of points to average
+   * @constructor
+   */
   function RunningAverage( windowSize ) {
 
     assert && assert( windowSize > 0, 'window size must be positive' );
 
-    // @private
+    // @private {number}
     this.windowSize = windowSize;
 
-    // @private
+    // @private {number[]}
     this.samples = [];
   }
 

@@ -18,11 +18,10 @@ define( function( require ) {
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var CCKAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKAccordionBox' );
+  var CircuitConstructionKitAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitAccordionBox' );
   var Util = require( 'DOT/Util' );
   var Range = require( 'DOT/Range' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  var Dimension2 = require( 'DOT/Dimension2' );
 
   //strings
   var batteryResistanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/batteryResistance' );
@@ -48,9 +47,8 @@ define( function( require ) {
 
     var slider = new HSlider( batteryResistanceProperty, new Range( CircuitConstructionKitConstants.DEFAULT_BATTERY_RESISTANCE, 10 ), {
       trackSize: CircuitConstructionKitConstants.SLIDER_TRACK_SIZE,
-
-      thumbSize: new Dimension2( 18, 34 ), // TODO: factor this out
-      majorTickLength: 20, // TODO: factor this out
+      thumbSize: CircuitConstructionKitConstants.THUMB_SIZE,
+      majorTickLength: CircuitConstructionKitConstants.MAJOR_TICK_LENGTH,
 
       // Snap to the nearest whole number.
       constrainValue: function( value ) {return Util.roundSymmetric( value );},
@@ -96,7 +94,7 @@ define( function( require ) {
       tandem: readoutTextPanelTandem
     } );
 
-    CCKAccordionBox.call( this, alignGroup.createBox( new VBox( {
+    CircuitConstructionKitAccordionBox.call( this, alignGroup.createBox( new VBox( {
       spacing: -4,
       children: [ readoutTextPanel, slider ]
     } ) ), batteryResistanceString, tandem );
@@ -104,5 +102,5 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'BatteryResistanceControl', BatteryResistanceControl );
 
-  return inherit( CCKAccordionBox, BatteryResistanceControl );
+  return inherit( CircuitConstructionKitAccordionBox, BatteryResistanceControl );
 } );

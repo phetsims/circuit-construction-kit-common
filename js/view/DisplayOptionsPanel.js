@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var CCKPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKPanel' );
+  var CircuitConstructionKitPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitPanel' );
   var Text = require( 'SCENERY/nodes/Text' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var VBox = require( 'SCENERY/nodes/VBox' );
@@ -123,7 +123,7 @@ define( function( require ) {
       } )
     ];
 
-    CCKPanel.call( this, alignGroup.createBox( new VBox( {
+    CircuitConstructionKitPanel.call( this, alignGroup.createBox( new VBox( {
       children: children,
       spacing: 10,
       align: 'left'
@@ -138,5 +138,5 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'DisplayOptionsPanel', DisplayOptionsPanel );
 
-  return inherit( CCKPanel, DisplayOptionsPanel );
+  return inherit( CircuitConstructionKitPanel, DisplayOptionsPanel );
 } );

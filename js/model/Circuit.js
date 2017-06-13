@@ -16,6 +16,7 @@ define( function( require ) {
   var ModifiedNodalAnalysisCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuit' );
   var Property = require( 'AXON/Property' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
   var Emitter = require( 'AXON/Emitter' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
@@ -36,6 +37,7 @@ define( function( require ) {
   var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
 
   // constants
+  var CURRENT_TYPES = [ 'electrons', 'conventional' ];
   var SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
   var BUMP_AWAY_RADIUS = 20; // If two vertices are too close together after one is released, and they could not be
                              // joined then bump them apart so they do not look connected.
@@ -47,58 +49,54 @@ define( function( require ) {
   function Circuit( tandem ) {
     var self = this;
 
-    // All wires share the same resistivity, which is defined by resistance = resistivity * length
-    this.wireResistivityProperty = new Property( CircuitConstructionKitConstants.DEFAULT_RESISTIVITY, {
+    // @public {NumberProperty} - All wires share the same resistivity, which is defined by resistance = resistivity * length
+    // On the Lab Screen, there is a wire resistivity control
+    this.wireResistivityProperty = new NumberProperty( CircuitConstructionKitConstants.DEFAULT_RESISTIVITY, {
       tandem: tandem.createTandem( 'wireResistivityProperty' ),
       phetioValueType: TNumber()
     } );
 
-    // All batteries share a single internal resistance value
-    this.batteryResistanceProperty = new Property( CircuitConstructionKitConstants.DEFAULT_BATTERY_RESISTANCE, {
+    // @public {NumberProperty} - All batteries share a single internal resistance value, which can be edited with
+    // a control on the Lab Screen
+    this.batteryResistanceProperty = new NumberProperty( CircuitConstructionKitConstants.DEFAULT_BATTERY_RESISTANCE, {
       tandem: tandem.createTandem( 'batteryResistanceProperty' ),
       phetioValueType: TNumber()
     } );
 
-    // @public (read-only) - The different types of CircuitElement the circuit may contain, including Wire, Battery,
-    // Switch, Resistor, LightBulb.
+    // @public {ObservableArray.<CircuitElement>} - The different types of CircuitElement the circuit may
+    // contain, including Wire, Battery, Switch, Resistor, LightBulb, etc.
     this.circuitElements = new ObservableArray();
 
-    // Keep track of which terminals are connected to other terminals.  The vertices are also referenced in the
-    // CircuitElements above--this ObservableArray is a a central point for observing creation/deletion of vertices for
-    // showing VertexNodes
-    // @public (read-only)
+    // @public {ObservableArray.<Vertex>} - Keep track of which terminals are connected to other terminals.
+    // The vertices are also referenced in the CircuitElements above--this ObservableArray is a a central point for
+    // observing creation/deletion of vertices for showing VertexNodes
     this.vertices = new ObservableArray();
 
-    // @public (read-only) - the charges in the circuit
+    // @public {ObservableArray.<Charge>} - the charges in the circuit
     this.charges = new ObservableArray();
 
-    var currentTypes = [ 'electrons', 'conventional' ];
-
-    // @public (read-only) - whether to show charges or conventional current
+    // @public {Property.<string>} - whether to show charges or conventional current
     this.currentTypeProperty = new Property( CircuitConstructionKitQueryParameters.currentType, {
-      validValues: currentTypes,
+      validValues: CURRENT_TYPES,
       tandem: tandem.createTandem( 'currentTypeProperty' ),
       phetioValueType: TString
     } );
 
+    // When the current type changes, mark everything as dirty and relayout charges
     this.currentTypeProperty.lazyLink( function() {
-
-      // Mark everything as dirty and relayout charges
-      self.circuitElements.forEach( function( circuitElement ) {
-        circuitElement.chargeLayoutDirty = true;
-      } );
+      self.circuitElements.forEach( function( circuitElement ) { circuitElement.chargeLayoutDirty = true; } );
       self.layoutChargesInDirtyCircuitElements();
     } );
 
-    // @public (read-only) - whether the current should be displayed
+    // @public {BooleanProperty} - whether the current should be displayed
     this.showCurrentProperty = new BooleanProperty( CircuitConstructionKitQueryParameters.showCurrent, {
       tandem: tandem.createTandem( 'showCurrentProperty' )
     } );
 
-    // @private - create the charges in new circuits
+    // @private {ChargeLayout} - create the charges in new circuits
     this.chargeLayout = new ChargeLayout( this );
 
-    // @private - move the charges with speed proportional to current
+    // @private {ChargeAnimator} - move the charges with speed proportional to current
     this.chargeAnimator = new ChargeAnimator( this );
 
     // Re-solve the circuit when voltages or resistances change.
@@ -159,14 +157,14 @@ define( function( require ) {
       charge.dispose();
     } );
 
-    // After the circuit physics is recomputed in solve(), some listeners need to update themselves, such as
+    // @public (read-only) {Emitter} After the circuit physics is recomputed in solve(), some listeners need to update themselves, such as
     // the voltmeter and ammeter
     this.circuitChangedEmitter = new Emitter();
 
-    // Some actions only take place after an item has been dropped
+    // @public (read-only) {Emitter} - Some actions only take place after an item has been dropped
     this.vertexDroppedEmitter = new Emitter();
 
-    // This Emitter signifies that a component has been modified (for example, with the CircuitElementEditPanel)
+    // @public (read-only) {Emitter} - signifies that a component has been modified (for example, with the CircuitElementEditPanel)
     this.componentEditedEmitter = new Emitter();
 
     var emitCircuitChanged = function() {
@@ -206,8 +204,8 @@ define( function( require ) {
       vertex.vertexSelectedPropertyListener = null;
     } );
 
-    // Keep track of the last circuit element the user manipulated, for showing additional controls
-    // Once this simulation is instrumented for a11y, the focus property can be used to track this.
+    // @public {Property.<CircuitElement>} - Keep track of the last circuit element the user manipulated, for showing
+    // additional controls. Once this simulation is instrumented for a11y, the focus property can be used to track this.
     // Note that vertex selection is done via Vertex.selectedProperty.  These strategies can be unified when we
     // work on a11y
     this.selectedCircuitElementProperty = new Property( null, {
@@ -223,7 +221,7 @@ define( function( require ) {
       }
     } );
 
-    // Actions that will be invoked during the step function
+    // @private {Function[]} - Actions that will be invoked during the step function
     this.stepActions = [];
 
     // When any vertex is dropped, check it and its neighbors for overlap.  If any overlap, move them apart.

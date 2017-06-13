@@ -53,19 +53,19 @@ define( function( require ) {
       }
     }
 
-    // @public (read-only)
+    // @public (read-only) {Object[]}
     this.batteries = batteries;
 
-    // @public (read-only)
+    // @public (read-only) {Object[]}
     this.resistors = resistors;
 
-    // @public (read-only)
+    // @public (read-only) {Object[]}
     this.currentSources = currentSources;
 
-    // @public (read-only) - the list of all the elements for ease of access
+    // @public (read-only) {Object[]} - the list of all the elements for ease of access
     this.elements = this.batteries.concat( this.resistors ).concat( this.currentSources );
 
-    // @public (read-only) - an object with index for all keys that have a node in the circuit, such as:
+    // @public (read-only) {Object} - an object with index for all keys that have a node in the circuit, such as:
     // {0:0, 1:1, 2:2, 7:7}
     this.nodeSet = {};
     for ( var k = 0; k < this.elements.length; k++ ) {
@@ -421,10 +421,10 @@ define( function( require ) {
    */
   function Term( coefficient, variable ) {
 
-    // @public (read-only) the coefficient for the term, like '7' in 7x
+    // @public (read-only) {number} the coefficient for the term, like '7' in 7x
     this.coefficient = coefficient;
 
-    // @public (read-only) the variable for the term, like the x variable in 7x
+    // @public (read-only) {UnknownCurrent|UnknownVoltage} the variable for the term, like the x variable in 7x
     this.variable = variable;
   }
 
@@ -451,7 +451,7 @@ define( function( require ) {
 
     assert && assert( element, 'element should be defined' );
 
-    // @public (read-only)
+    // @public (read-only) {Element} // TODO: what is an Element?
     this.element = element;
   }
 
@@ -484,7 +484,7 @@ define( function( require ) {
   function UnknownVoltage( node ) {
     assert && assert( typeof node === 'number', 'nodes should be numbers' );
 
-    // @public (read-only)
+    // @public (read-only) {number}
     this.node = node;
   }
 
@@ -517,10 +517,10 @@ define( function( require ) {
    */
   function Equation( value, terms ) {
 
-    // @public (read-only) the value of the equation.  For instance in x+3y=12, the value is 12
+    // @public (read-only) {number} the value of the equation.  For instance in x+3y=12, the value is 12
     this.value = value;
 
-    // @public (read-only) the terms on the left-hand side of the equation.  E.g., in 3x+y=12 the terms are 3x and y
+    // @public (read-only) {Term[]} the terms on the left-hand side of the equation.  E.g., in 3x+y=12 the terms are 3x and y
     this.terms = terms;
   }
 

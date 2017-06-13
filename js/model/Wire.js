@@ -35,13 +35,13 @@ define( function( require ) {
     var chargePathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
     CircuitElement.call( this, startVertex, endVertex, chargePathLength, tandem, options );
 
-    // @public (read-only)
+    // @public (read-only) {boolean} - if the wire is a small stub attached to the black box
     this.wireStub = options.wireStub;
 
-    // @public (read-only) - the resistance of the Wire in ohms
+    // @public {NumberProperty} - the resistance of the Wire in ohms
     this.resistanceProperty = new NumberProperty( CircuitConstructionKitConstants.MINIMUM_RESISTANCE );
 
-    // @public (read-only) - the resistivity of the Wire in ohm-meters
+    // @public {Property.<number>} - the resistivity of the Wire in ohm-meters
     this.resistivityProperty = resistivityProperty;
 
     // When the vertex moves, updates the resistance and charge path length.
@@ -66,7 +66,7 @@ define( function( require ) {
     // When resistivity changes, update the resistance
     this.resistivityProperty.link( updateWire );
 
-    // @private - for disposal
+    // @private {function} - for disposal
     this.disposeWire = function() {
       self.vertexMovedEmitter.removeListener( updateWire );
     };

@@ -38,7 +38,7 @@ define( function( require ) {
   var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
 
   // constants
-  var VERTICAL_MARGIN = CircuitConstructionKitConstants.LAYOUT_MARGIN; // TODO: this is confusing
+  var VERTICAL_MARGIN = CircuitConstructionKitConstants.VERTICAL_MARGIN;
   var BACKGROUND_COLOR = CircuitConstructionKitConstants.BACKGROUND_COLOR;
   var VOLTMETER_PROBE_TIP_LENGTH = 20; // The probe tip is about 20 view coordinates tall
   var VOLTMETER_NUMBER_SAMPLE_POINTS = 10; // Number of points along the edge of the voltmeter tip to detect voltages
@@ -46,14 +46,25 @@ define( function( require ) {
   // Match margins with the carousel page control and spacing
   var HORIZONTAL_MARGIN = 17;
 
+  // Group for aligning the content in the panels and accordion boxes.  This is a class variable instead of an
+  // instance variable so the control panels will have the same width across all screens,
+  // see https://github.com/phetsims/circuit-construction-kit-dc/issues/9
+  var CONTROL_PANEL_ALIGN_GROUP = new AlignGroup( {
+
+    // Elements should have the same widths but not constrained to have the same heights
+    matchVertical: false
+  } );
+
   /**
    * @param {CircuitConstructionKitModel} circuitConstructionKitModel
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function CCKScreenView( circuitConstructionKitModel, tandem, options ) {
+  function CircuitConstructionKitScreenView( circuitConstructionKitModel, tandem, options ) {
     var self = this;
+
+    // @public (read-only) {CircuitConstructionKitModel}
     this.circuitConstructionKitModel = circuitConstructionKitModel;
 
     options = _.extend( {
@@ -79,14 +90,11 @@ define( function( require ) {
       showBatteryResistanceControl: true
     }, options );
 
-    // @public - the main model
-    this.circuitConstructionKitModel = circuitConstructionKitModel;
-
     ScreenView.call( this );
 
-    // On touch, make it so tapping the background deselects items.  For mouse, we add listeners to the pointer that
-    // work over all components, but this isn't possible with touch since it is a new pointer instance for each touch.
-    // @protected (read-only), so subclasses can change the fill
+    // @protected (read-only) {Plane}, so subclasses can change the fill. On touch, make it so tapping the background
+    // deselects items.  For mouse, we add listeners to the pointer that work over all components, but this isn't
+    // possible with touch since it is a new pointer instance for each touch.
     this.backgroundPlane = new Plane( { fill: BACKGROUND_COLOR } );
     this.backgroundPlane.addInputListener( {
       touchdown: function() {
@@ -103,7 +111,7 @@ define( function( require ) {
     };
     circuitConstructionKitModel.exploreScreenRunningProperty.link( backgroundListener );
 
-    // @public (read-only) - For overriding in BlackBoxSceneView, which needs a custom color
+    // @public (read-only) {function} - For overriding in BlackBoxSceneView, which needs a custom color
     this.unlinkBackgroundListener = function() {
       circuitConstructionKitModel.exploreScreenRunningProperty.unlink( backgroundListener );
     };
@@ -120,7 +128,7 @@ define( function( require ) {
       this.addChild( resetAllButton );
     }
 
-    // @public (read-only) - the circuit node
+    // @public (read-only) {CircuitLayerNode} - the circuit node
     this.circuitLayerNode = new CircuitLayerNode( circuitConstructionKitModel.circuit, this, tandem.createTandem( 'circuitLayerNode' ) );
 
     var voltmeterNode = new VoltmeterNode( circuitConstructionKitModel.voltmeter, tandem.createTandem( 'voltmeterNode' ), {
@@ -145,7 +153,7 @@ define( function( require ) {
     } );
     circuitConstructionKitModel.ammeter.visibleProperty.linkAttribute( ammeterNode, 'visible' );
 
-    // @public (read-only) Toolbox from which CircuitElements can be dragged
+    // @public (read-only) {CircuitElementToolbox} - Toolbox from which CircuitElements can be dragged
     this.circuitElementToolbox = new CircuitElementToolbox(
       circuitConstructionKitModel.circuit,
       circuitConstructionKitModel.showLabelsProperty,
@@ -178,16 +186,9 @@ define( function( require ) {
     );
     this.addChild( chargeSpeedThrottlingReadoutNode );
 
-    // Group for aligning the content in the panels and accordion boxes
-    var controlPanelAlignGroup = new AlignGroup( {
-
-      // Elements should have the same widths but not constrained to have the same heights
-      matchVertical: false
-    } );
-
-    // @protected - so that subclasses can add a layout circuit element near it
+    // @protected {SensorToolbox} - so that subclasses can add a layout circuit element near it
     this.sensorToolbox = new SensorToolbox(
-      controlPanelAlignGroup,
+      CONTROL_PANEL_ALIGN_GROUP,
       this.circuitLayerNode,
       voltmeterNode,
       ammeterNode,
@@ -196,12 +197,12 @@ define( function( require ) {
       options.showSeriesAmmeters,
       tandem.createTandem( 'sensorToolbox' ) );
 
-    // @private
+    // @private {ViewRadioButtonGroup}
     this.viewRadioButtonGroup = new ViewRadioButtonGroup( circuitConstructionKitModel.viewProperty, tandem.createTandem( 'viewRadioButtonGroup' ) );
 
-    // @protected
+    // @protected {DisplayOptionsPanel}
     this.displayOptionsPanel = new DisplayOptionsPanel(
-      controlPanelAlignGroup,
+      CONTROL_PANEL_ALIGN_GROUP,
       circuitConstructionKitModel.circuit.showCurrentProperty,
       circuitConstructionKitModel.circuit.currentTypeProperty,
       circuitConstructionKitModel.showValuesProperty,
@@ -209,14 +210,14 @@ define( function( require ) {
       tandem.createTandem( 'displayOptionsPanel' )
     );
 
-    // @private
+    // @private {WireResistivityControl}
     this.wireResistivityControl = new WireResistivityControl( circuitConstructionKitModel.circuit.wireResistivityProperty,
-      controlPanelAlignGroup,
+      CONTROL_PANEL_ALIGN_GROUP,
       tandem.createTandem( 'wireResistivityControl' ) );
 
-    // @private
+    // @private {BatteryResistanceControl}
     this.batteryResistanceControl = new BatteryResistanceControl( circuitConstructionKitModel.circuit.batteryResistanceProperty,
-      controlPanelAlignGroup,
+      CONTROL_PANEL_ALIGN_GROUP,
       tandem.createTandem( 'batteryResistanceControl' ) );
 
     this.moveBackgroundToBack();
@@ -248,7 +249,7 @@ define( function( require ) {
       tandem.createTandem( 'circuitElementEditContainerPanel' )
     );
 
-    // @protected - so the subclass can set the layout
+    // @protected {CircuitElementEditContainerPanel} - so the subclass can set the layout
     this.circuitElementEditContainerPanel = circuitElementEditContainerPanel;
 
     this.addChild( circuitElementEditContainerPanel );
@@ -379,9 +380,9 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKitCommon.register( 'CCKScreenView', CCKScreenView );
+  circuitConstructionKitCommon.register( 'CircuitConstructionKitScreenView', CircuitConstructionKitScreenView );
 
-  return inherit( ScreenView, CCKScreenView, {
+  return inherit( ScreenView, CircuitConstructionKitScreenView, {
 
     /**
      * When other UI components are moved to the back, we must make sure the background stays behind them.

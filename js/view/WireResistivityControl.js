@@ -14,10 +14,9 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var HSlider = require( 'SUN/HSlider' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
-  var CCKAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKAccordionBox' );
-  var Dimension2 = require( 'DOT/Dimension2' );
+  var CircuitConstructionKitAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitAccordionBox' );
 
-  //strings
+  // strings
   var tinyString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/tiny' );
   var lotsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/lots' );
   var wireResistivityString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/wireResistivity' );
@@ -35,8 +34,8 @@ define( function( require ) {
       max: max // large enough so that max resistance in a 9v battery slows to a good rate
     }, {
       trackSize: CircuitConstructionKitConstants.SLIDER_TRACK_SIZE,
-      thumbSize: new Dimension2( 18, 34 ), // TODO: factor this out
-      majorTickLength: 20, // TODO: factor this out
+      thumbSize: CircuitConstructionKitConstants.THUMB_SIZE,
+      majorTickLength: CircuitConstructionKitConstants.MAJOR_TICK_LENGTH,
       tandem: tandem.createTandem( 'slider' )
     } );
 
@@ -53,10 +52,10 @@ define( function( require ) {
     slider.addMajorTick( 0, createLabel( true ) );
     slider.addMajorTick( max, createLabel( false ) );
 
-    CCKAccordionBox.call( this, alignGroup.createBox( slider ), wireResistivityString, tandem );
+    CircuitConstructionKitAccordionBox.call( this, alignGroup.createBox( slider ), wireResistivityString, tandem );
   }
 
   circuitConstructionKitCommon.register( 'WireResistivityControl', WireResistivityControl );
 
-  return inherit( CCKAccordionBox, WireResistivityControl );
+  return inherit( CircuitConstructionKitAccordionBox, WireResistivityControl );
 } );

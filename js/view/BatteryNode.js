@@ -32,7 +32,7 @@ define( function( require ) {
   var RIGHT_JUNCTION = WIDTH / 2 + GAP / 2;
 
   /**
-   * @param {CCKScreenView} circuitConstructionKitScreenView
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {Battery} battery
    * @param {Property.<boolean>} showResultsProperty - supplied for consistency with other CircuitElementNode constructors
@@ -43,7 +43,7 @@ define( function( require ) {
    */
   function BatteryNode( circuitConstructionKitScreenView, circuitLayerNode, battery, showResultsProperty, viewProperty, tandem, options ) {
 
-    // @public (read-only) - the Battery rendered by this Node
+    // @public (read-only) {Battery} - the Battery rendered by this Node
     this.battery = battery;
 
     var lifelikeNode = new Image( battery.batteryType === 'normal' ? batteryImage : batteryHighImage );
@@ -97,6 +97,7 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'BatteryNode', BatteryNode );
 
   return inherit( FixedLengthCircuitElementNode, BatteryNode, {
+
     /**
      * Returns true if the node hits the sensor at the given point.
      * @param {Vector2} point

@@ -28,13 +28,13 @@ define( function( require ) {
     } );
     var self = this;
 
-    // @private
+    // @private {Vector2}
     this.probePosition = new Vector2();
 
-    // @private
+    // @private {Vector2}
     this.bodyPosition = new Vector2();
 
-    // @private
+    // @private {function}
     this.updateWireShape = function() {
 
       var bodyX = self.bodyPosition.x;

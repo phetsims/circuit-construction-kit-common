@@ -13,16 +13,14 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Image = require( 'SCENERY/nodes/Image' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var Util = require( 'DOT/Util' );
   var ProbeTextNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ProbeTextNode' );
   var ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ProbeWireNode' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var Vector2 = require( 'DOT/Vector2' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
+  var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
-  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  var CCKUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKUtil' );
 
   // images
   var voltmeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltmeter_body.png' );
@@ -69,18 +67,18 @@ define( function( require ) {
       showResultsProperty: new BooleanProperty( true )
     }, options );
 
-    // @public (read-only) - the model
+    // @public (read-only) {Voltmeter} - the model
     this.voltmeter = voltmeter;
 
-    // @public (read-only) - the red probe node
+    // @public (read-only) {Image} - the red probe node
     this.redProbeNode = new Image( redProbe, { scale: PROBE_SCALE * SCALE, cursor: 'pointer' } );
 
-    // @public (read-only) - the black probe node
+    // @public (read-only) {Image} - the black probe node
     this.blackProbeNode = new Image( blackProbe, { scale: PROBE_SCALE * SCALE, cursor: 'pointer' } );
 
     // Displays the voltage reading
     var voltageReadoutProperty = new DerivedProperty( [ voltmeter.voltageProperty ], function( voltage ) {
-      return voltage === null ? questionMarkString : CCKUtil.createVoltageReadout( voltageUnitsString, voltage );
+      return voltage === null ? questionMarkString : CircuitConstructionKitCommonUtil.createVoltageReadout( voltageUnitsString, voltage );
     } );
 
     var probeTextNode = new ProbeTextNode( voltageReadoutProperty, options.showResultsProperty, voltageString, tandem.createTandem( 'probeTextNode' ), {
@@ -148,7 +146,7 @@ define( function( require ) {
     // For the real version (not the icon), add drag listeners.
     if ( !options.icon ) {
 
-      // @public (read-only) - so events can be forwarded from the toolbox
+      // @public (read-only) {MovableDragHandler} - so events can be forwarded from the toolbox
       this.dragHandler = new MovableDragHandler( voltmeter.bodyPositionProperty, {
         tandem: tandem.createTandem( 'dragHandler' ),
         endDrag: function() {

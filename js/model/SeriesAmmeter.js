@@ -25,7 +25,7 @@ define( function( require ) {
     FixedLengthCircuitElement.call( this, startVertex, endVertex, CircuitConstructionKitConstants.SERIES_AMMETER_LENGTH,
       CircuitConstructionKitConstants.SERIES_AMMETER_LENGTH, tandem, options );
 
-    // @public (read-only) {Property.<number>} the resistance in ohms
+    // @public {Property.<number>} the resistance in ohms
     this.resistance = CircuitConstructionKitConstants.MINIMUM_RESISTANCE;
   }
 

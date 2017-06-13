@@ -18,11 +18,9 @@ define( function( require ) {
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Panel = require( 'SUN/Panel' );
-  var Util = require( 'DOT/Util' );
-  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
-  var CCKUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKUtil' );
-  
+  var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
+
   // strings
   var currentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/current' );
   var ampereUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ampereUnits' );
@@ -32,9 +30,10 @@ define( function( require ) {
   var PANEL_WIDTH = CircuitConstructionKitConstants.SERIES_AMMETER_LENGTH;
   var ORANGE = '#f39033';
   var WIDEST_LABEL = '99.99 A';
+  var CORNER_RADIUS = 4;
 
   /**
-   * @param {CCKScreenView} circuitConstructionKitScreenView
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {SeriesAmmeter} seriesAmmeter
    * @param {Property.<boolean>} showResultsProperty - supplied for consistency with other CircuitElementNode constructors
@@ -66,7 +65,7 @@ define( function( require ) {
 
       // The ammeter doesn't indicate direction
       current = Math.abs( current );
-      var currentText = ( current < 1E-10 ) ? '' : CCKUtil.createAmpereReadout( ampereUnitsString, current );
+      var currentText = ( current < 1E-10 ) ? '' : CircuitConstructionKitCommonUtil.createAmpereReadout( ampereUnitsString, current );
       readoutText.setText( currentText );
 
       // Center the text in the panel
@@ -81,7 +80,8 @@ define( function( require ) {
     var readoutPanel = new Panel( new VBox( {
       children: [
         new Text( currentString, { fontSize: 12, maxWidth: 54 } ),
-        new Rectangle( 0, 0, maxWidth + textPanelMarginX * 2, maxHeight + textPanelMarginY * 2, 4, 4, {
+        new Rectangle( 0, 0, maxWidth + textPanelMarginX * 2, maxHeight + textPanelMarginY * 2, {
+          cornerRadius: 4,
           stroke: 'black',
           fill: 'white',
           lineWidth: 0.75,
@@ -105,7 +105,7 @@ define( function( require ) {
      * @returns {Rectangle}
      */
     var createPanel = function( options ) {
-      return new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, 4, 4, options );
+      return new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, options );
     };
 
     // This node only has a lifelike representation because it is a sensor
@@ -113,7 +113,7 @@ define( function( require ) {
       children: [
 
         // orange background panel
-        createPanel( { fill: ORANGE } ),
+        createPanel( { cornerRadius: CORNER_RADIUS, fill: ORANGE } ),
 
         // gray track
         new Rectangle( 0, 0, PANEL_WIDTH, 20, {
@@ -123,6 +123,7 @@ define( function( require ) {
 
         // black border
         createPanel( {
+          cornerRadius: CORNER_RADIUS,
           stroke: '#231f20',
           lineWidth: 2.4
         } )
@@ -166,7 +167,7 @@ define( function( require ) {
       options
     );
 
-    // @private (read-only)
+    // @private (read-only) {boolean} - whether to show as an icon
     this.icon = options.icon;
 
     // @private

@@ -75,10 +75,28 @@ define( function( require ) {
   var createCircuitLocation = function( circuit, circuitElement, distance ) {
     assert && assert( _.isNumber( distance ), 'distance should be a number' );
     assert && assert( circuitElement.containsScalarLocation( distance ), 'circuitElement should contain distance' );
+    var density = circuit.getChargesInCircuitElement( circuitElement ).length / circuitElement.chargePathLength;
+
+    // If there are no electrons in that circuit because it is a short segment, average the density by looking at
+    // downstream neighbors
+    if ( density === 0 && circuitElement.chargePathLength < 30 ) {
+      var distanceFromStart = Math.abs( distance - 0 );
+      var distanceFromEnd = Math.abs( circuitElement.chargePathLength - distance );
+
+      var selectedVertex = distanceFromStart < distanceFromEnd ?
+                           circuitElement.endVertexProperty.get() : // Note it is reversed because we want to check current downstream
+                           circuitElement.startVertexProperty.get();
+      var neighbors = circuit.getNeighborCircuitElements( selectedVertex );
+      var densities = neighbors.map( function( neighbor ) {
+        return circuit.getChargesInCircuitElement( neighbor ).length / neighbor.chargePathLength;
+      } );
+      var averageDensity = _.sum( densities ) / densities.length;
+      density = averageDensity;
+    }
     return {
       circuitElement: circuitElement,
       distance: distance,
-      density: circuit.getChargesInCircuitElement( circuitElement ).length / circuitElement.chargePathLength
+      density: density
     };
   };
 
@@ -88,20 +106,20 @@ define( function( require ) {
    */
   function ChargeAnimator( circuit ) {
 
-    // @private (read-only) the ObservableArray of Charge instances
+    // @private (read-only) {ObservableArray.<Charge>} - the ObservableArray of Charge instances
     this.charges = circuit.charges;
 
-    // @private (read-only) the Circuit
+    // @private (read-only) {Circuit} - the Circuit
     this.circuit = circuit;
 
-    // @private (read-only) factor that reduces the overall propagator speed when maximum speed is exceeded
+    // @private (read-only) {number} - factor that reduces the overall propagator speed when maximum speed is exceeded
     this.scale = 1;
 
-    // @private (read-only) a running average over last time steps
+    // @private (read-only) {RunningAverage} - a running average over last time steps as a smoothing step
     this.timeScaleRunningAverage = new RunningAverage( 30 );
 
-    // @public (read-only)
-    this.timeScaleProperty = new NumberProperty( 1, { range: { min: 0, max: 1 } } ); // 1 is full speed, 0.5 is running at half speed, etc.
+    // @public (read-only) {NumberProperty} - how much the time should be slowed, 1 is full speed, 0.5 is running at half speed, etc.
+    this.timeScaleProperty = new NumberProperty( 1, { range: { min: 0, max: 1 } } );
   }
 
   circuitConstructionKitCommon.register( 'ChargeAnimator', ChargeAnimator );
@@ -115,6 +133,10 @@ define( function( require ) {
      */
     step: function( dt ) {
 
+      if ( this.charges.length === 0 || this.circuit.circuitElements.length === 0 ) {
+        return;
+      }
+
       // Disable incremental updates to improve performance.  The ChargeNodes are only updated once, instead of
       // incrementally many times throughout this update
       this.charges.forEach( DISABLE_UPDATES );
@@ -124,6 +146,8 @@ define( function( require ) {
 
       // Find the fastest current in any circuit element
       var maxCurrentMagnitude = _.max( this.circuit.circuitElements.getArray().map( CURRENT_MAGNITUDE ) );
+      assert && assert( maxCurrentMagnitude >= 0, 'max current should be positive' );
+
       var maxSpeed = maxCurrentMagnitude * SPEED_SCALE;
       var maxPositionChange = maxSpeed * MAX_DT; // Use the max dt instead of the true dt to avoid fluctuations
 
@@ -238,8 +262,8 @@ define( function( require ) {
       // Below min current, the charges should remain stationary
       if ( Math.abs( current ) > MIN_CURRENT ) {
         var speed = current * SPEED_SCALE;
-        var stepSize = speed * dt * this.scale;
-        var newChargePosition = chargePosition + stepSize;
+        var chargePositionDelta = speed * dt * this.scale;
+        var newChargePosition = chargePosition + chargePositionDelta;
 
         // Step within a single circuit element
         if ( charge.circuitElement.containsScalarLocation( newChargePosition ) ) {
@@ -248,14 +272,14 @@ define( function( require ) {
         else {
 
           // move to a new CircuitElement
-          var overshoot = newChargePosition < 0 ? -newChargePosition : (newChargePosition - charge.circuitElement.chargePathLength);
-          var under = newChargePosition < 0;
+          var overshoot = current < 0 ? -newChargePosition : (newChargePosition - charge.circuitElement.chargePathLength);
+          var isUnder = newChargePosition < 0;
 
           assert && assert( !isNaN( overshoot ), 'overshoot should be a number' );
           assert && assert( overshoot >= 0, 'overshoot should be >=0' );
 
           // enumerate all possible circuit elements the charge could go to
-          var circuitLocations = this.getLocations( charge, overshoot, under );
+          var circuitLocations = this.getLocations( charge, overshoot, isUnder );
           if ( circuitLocations.length > 0 ) {
 
             // choose the CircuitElement with the lowest density

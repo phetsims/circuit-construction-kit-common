@@ -28,7 +28,7 @@ define( function( require ) {
   var SWITCH_END = CircuitConstructionKitConstants.SWITCH_END;
 
   /**
-   * @param {CCKScreenView} circuitConstructionKitScreenView
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {Switch} circuitSwitch
    * @param {Property.<boolean>} showResultsProperty - supplied for consistency with other CircuitElementNode constructors
@@ -39,7 +39,7 @@ define( function( require ) {
    */
   function SwitchNode( circuitConstructionKitScreenView, circuitLayerNode, circuitSwitch, showResultsProperty, viewProperty, tandem, options ) {
 
-    // @public (read-only) - the Switch rendered by this Node
+    // @public (read-only) {Switch} - the Switch rendered by this Node
     this.circuitSwitch = circuitSwitch;
 
     /**
@@ -54,9 +54,8 @@ define( function( require ) {
       var leftSegmentNode = new Rectangle( 0,
         -thickness / 2,
         CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_START,
-        thickness,
-        edgeRadius,
-        edgeRadius, {
+        thickness, {
+          cornerRadius: edgeRadius,
           fill: fill,
           stroke: 'black',
           lineWidth: 1

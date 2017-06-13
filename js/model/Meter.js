@@ -23,24 +23,23 @@ define( function( require ) {
    */
   function Meter( tandem ) {
 
-    // @public (read-only) {Property.<boolean>} - indicates whether the meter is in the play area
+    // @public {Property.<boolean>} - indicates whether the meter is in the play area
     this.visibleProperty = new BooleanProperty( false, {
       tandem: tandem.createTandem( 'visibleProperty' )
     } );
 
-    // @public (read-only) {Property.<Vector2>} - the location of the body of the meter
+    // @public {Property.<Vector2>} - the location of the body of the meter
     this.bodyPositionProperty = new Property( new Vector2( 0, 0 ), {
       tandem: tandem.createTandem( 'bodyPositionProperty' ),
       phetioValueType: TVector2
     } );
 
-    // @public (read-only) {Property.<boolean>} When the meter is dragged from the toolbox, all pieces drag together as
-    // a single unit.
+    // @public {Property.<boolean>} When the meter is dragged from the toolbox, all pieces drag together.
     this.draggingProbesWithBodyProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'draggingProbesWithBodyProperty' )
     } );
 
-    // @public (read-only) Fires an event when the meter is dropped
+    // @public (read-only) {Emitter} Fires an event when the meter is dropped
     this.droppedEmitter = new Emitter(); // Fire event when dropped
   }
 

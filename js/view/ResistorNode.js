@@ -51,7 +51,7 @@ define( function( require ) {
   var SCHEMATIC_WAVELENGTH = 54 * SCHEMATIC_SCALE;
 
   /**
-   * @param {CCKScreenView} circuitConstructionKitScreenView
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
    * @param {CircuitLayerNode} [circuitLayerNode] optional, null for icons
    * @param {Resistor} resistor
    * @param {Property.<boolean>} showResultsProperty - not used here but appears in signature to keep same signature as other CircuitElementNode subclasses.
@@ -62,7 +62,7 @@ define( function( require ) {
    */
   function ResistorNode( circuitConstructionKitScreenView, circuitLayerNode, resistor, showResultsProperty, viewProperty, tandem, options ) {
 
-    // @public (read-only) the resistor depicted by this node
+    // @public (read-only) {Resistor} the resistor depicted by this node
     this.resistor = resistor;
 
     var lifelikeResistorImageNode = new Image( lifelikeResistorImage );
@@ -180,6 +180,11 @@ define( function( require ) {
     // Adjust the dog so the electrons travel along the tail/legs, see https://github.com/phetsims/circuit-construction-kit-common/issues/364
     if ( resistor.resistorType === 'dog' ) {
       lifelikeResistorImageNode.translate( 0, -40 );
+    }
+
+    // Adjust hand origin as well
+    if ( resistor.resistorType === 'hand' ) {
+      lifelikeResistorImageNode.translate( 0, 14 );
     }
 
     // Super call

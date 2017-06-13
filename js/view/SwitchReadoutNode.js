@@ -13,7 +13,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var CCKTrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKTrashButton' );
+  var TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
 
   // strings
   var theSwitchIsOpenString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/theSwitchIsOpen' );
@@ -49,7 +49,7 @@ define( function( require ) {
     circuitSwitch.closedProperty.link( closedListener );
 
     // Show a trash button to the right of the text
-    var trashButton = new CCKTrashButton( circuit, circuitSwitch, tandem.createTandem( 'trashButton' ) ).mutate( {
+    var trashButton = new TrashButton( circuit, circuitSwitch, tandem.createTandem( 'trashButton' ) ).mutate( {
       left: maxWidth + 10,
       centerY: closedText.centerY
     } );

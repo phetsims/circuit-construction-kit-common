@@ -41,12 +41,12 @@ define( function( require ) {
       highResistance: true
     }, options );
 
-    // @private (read-only)
+    // @private (read-only) {boolean]
     this.baseOnly = options.baseOnly;
 
     var selectedSocketImage = options.highResistance ? highResistanceSocketImage : socketImage;
 
-    // @private
+    // @private {Image}
     self.backNode = new Image( options.baseOnly ? selectedSocketImage : backImage, {
       scale: BULB_IMAGE_SCALE,
       centerX: 0,
@@ -152,7 +152,8 @@ define( function( require ) {
 
     /**
      * @override update when this node becomes visible
-     * @param visible
+     * @param {boolean} visible
+     * @public
      */
     setVisible: function( visible ) {
       var wasVisible = this.visible;

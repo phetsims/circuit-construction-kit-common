@@ -31,10 +31,10 @@ define( function( require ) {
       editorDelta: 0.5
     }, options );
 
-    // @public (read-only) the range of values the CircuitElement can take
+    // @public (read-only) {Range} - the range of values the CircuitElement can take
     this.editableRange = options.editableRange;
 
-    // @public (read-only)  - the tweaker value for the controls
+    // @public (read-only) {number} - the tweaker value for the controls
     this.editorDelta = options.editorDelta;
 
     // Check that the measured length matches the specified length
@@ -44,7 +44,7 @@ define( function( require ) {
     // Super constructor
     CircuitElement.call( this, startVertex, endVertex, chargePathLength, tandem, options );
 
-    // @public (read-only) The distance from one vertex to another (as the crow flies), used for rotation about a vertex
+    // @public (read-only) {number} The distance from one vertex to another (as the crow flies), used for rotation about a vertex
     this.distanceBetweenVertices = distanceBetweenVertices;
   }
 

@@ -28,14 +28,14 @@ define( function( require ) {
 
     Meter.call( this, tandem );
 
-    // @public (read-only) {Property.<number|null>} the full-precision reading on the ammeter. It will be formatted for display in
-    // the view.  Null means the ammeter is not on a wire.
+    // @public {Property.<number|null>} the full-precision reading on the ammeter. It will be formatted for
+    // display in the view.  Null means the ammeter is not on a wire.
     this.currentProperty = new Property( null, {
       tandem: tandem.createTandem( 'currentProperty' ),
       phetioValueType: TNumber( { units: 'amperes' } )
     } );
 
-    // @public (read-only) {Property.<Vector2>} the position of the tip of the probe
+    // @public {Property.<Vector2>} - the position of the tip of the probe
     this.probePositionProperty = new Property( new Vector2(), {
       tandem: tandem.createTandem( 'probePositionProperty' ),
       phetioValueType: TVector2

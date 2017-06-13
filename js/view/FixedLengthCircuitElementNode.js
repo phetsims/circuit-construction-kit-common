@@ -20,7 +20,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Image = require( 'SCENERY/nodes/Image' );
   var FixedLengthCircuitElementHighlightNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedLengthCircuitElementHighlightNode' );
-  var CCKUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKUtil' );
+  var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
 
   // images
   var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
@@ -30,7 +30,7 @@ define( function( require ) {
   var rotationMatrix = new Matrix3();
 
   /**
-   * @param {CCKScreenView} circuitConstructionKitScreenView - so that the node can be dropped back into the toolbox
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - so that the node can be dropped back into the toolbox
    * @param {CircuitLayerNode} circuitLayerNode - Null if an icon is created
    * @param {FixedLengthCircuitElement} circuitElement - the corresponding model element
    * @param {Property.<string>} viewProperty - 'lifelike'|'schematic'
@@ -49,10 +49,11 @@ define( function( require ) {
       icon: false
     }, options );
 
-    // @public (read-only)
+    // @public (read-only) {CircuitElement}
     this.circuitElement = circuitElement;
 
-    // @protected (read-only) node that shows the component, separate from the part that shows the highlight and the fire
+    // @protected (read-only) {Node} node that shows the component, separate from the part that shows the highlight and
+    // the fire
     this.contentNode = new Node();
 
     // Show the selected node
@@ -61,8 +62,8 @@ define( function( require ) {
     };
     viewProperty.link( viewPropertyListener );
 
-    // Flag to indicate when updating view is necessary, in order to avoid duplicate work when both vertices move
-    // @private
+    // @private {boolean} - Flag to indicate when updating view is necessary, in order to avoid duplicate work when both
+    // vertices move
     this.dirty = true;
 
     // Add highlight (but not for icons)
@@ -216,7 +217,7 @@ define( function( require ) {
 
     /**
      * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
-     * @protected - CCKLightBulbNode calls updateRender for its child socket node
+     * @protected - CircuitConstructionKitLightBulbNode calls updateRender for its child socket node
      */
     updateRender: function() {
 
@@ -226,7 +227,7 @@ define( function( require ) {
       var angle = delta.angle();
 
       // Update the node transform in a single step, see #66
-      CCKUtil.setToTranslationRotation( transform, startPosition, angle );
+      CircuitConstructionKitCommonUtil.setToTranslationRotation( transform, startPosition, angle );
       this.contentNode.setMatrix( transform );
       this.highlightNode && this.highlightNode.setMatrix( transform );
 
@@ -234,7 +235,7 @@ define( function( require ) {
       var flameExtent = 0.8;
       var scale = delta.magnitude() / fireImage[ 0 ].width * flameExtent;
       var flameMargin = (1 - flameExtent) / 2;
-      CCKUtil.setToTranslationRotation( transform, startPosition, angle )
+      CircuitConstructionKitCommonUtil.setToTranslationRotation( transform, startPosition, angle )
         .multiplyMatrix( rotationMatrix.setToScale( scale ) )
         .multiplyMatrix( rotationMatrix.setToTranslation( delta.magnitude() * flameMargin / scale, -fireImage[ 0 ].height ) );
       this.fireNode && this.fireNode.setMatrix( transform );

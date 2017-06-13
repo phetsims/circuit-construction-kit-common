@@ -26,11 +26,11 @@ define( function( require ) {
 
     var self = this;
 
-    // @public (read-only) - the CircuitElement rendered by this node
+    // @public (read-only) {CircuitElement} - the CircuitElement rendered by this node
     this.circuitElement = circuitElement;
 
-    // @public
-    this.inputListener = null; // Supplied by subclasses
+    // @public {Object} - Supplied by subclasses // TODO: but why?
+    this.inputListener = null;
 
     options = _.extend( {
 
@@ -54,7 +54,7 @@ define( function( require ) {
       }
     } );
 
-    // @private
+    // @private {function[]}
     this.disposeActions = [];
 
     this.updateOpacityOnInteractiveChange();
@@ -68,7 +68,7 @@ define( function( require ) {
       self.inputListener.startDrag( event );
     };
 
-    // @private - for disposal
+    // @private {function} - for disposal
     this.disposeCircuitElementNode = function() {
 
       // remove the keyboard listener
@@ -122,6 +122,7 @@ define( function( require ) {
      * Returns true if the node hits the sensor at the given point.
      * @param {Vector2} point
      * @returns {boolean}
+     * @public
      */
     containsSensorPoint: function( point ) {
 
@@ -131,7 +132,7 @@ define( function( require ) {
 
     /**
      * Hook for view step, overriden in FixedLengthCircuitElementNode
-     *
+     * @public
      */
     step: function() {},
 
@@ -140,7 +141,7 @@ define( function( require ) {
      * @param {Object} event - scenery event
      * @param {Node} node - the node the input listener is attached to
      * @param {Vertex[]} vertices - the vertices that are dragged
-     * @param {CCKScreenView} circuitConstructionKitScreenView
+     * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
      * @param {CircuitLayerNode} circuitLayerNode
      * @param {Vector2} startPoint
      * @param {boolean} dragged

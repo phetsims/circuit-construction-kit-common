@@ -41,7 +41,7 @@ define( function( require ) {
     RIGHT_SIDE_PANEL_MIN_WIDTH: 190,
 
     // Padding for placement of control panels
-    LAYOUT_MARGIN: 5,
+    VERTICAL_MARGIN: 5,
 
     // Number of pixels (screen coordinates) that constitutes a tap instead of a drag
     TAP_THRESHOLD: 15,
@@ -120,6 +120,10 @@ define( function( require ) {
 
     HIGH_RESISTANCE_RANGE: new Range( 100, 10000 ),
 
-    PANEL_LINE_WIDTH: 1.3
+    PANEL_LINE_WIDTH: 1.3,
+
+    THUMB_SIZE: new Dimension2( 18, 34 ),
+
+    MAJOR_TICK_LENGTH: 20
   } );
 } );

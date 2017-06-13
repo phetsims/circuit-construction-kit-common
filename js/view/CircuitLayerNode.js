@@ -22,7 +22,7 @@ define( function( require ) {
   var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/WireNode' );
   var SwitchNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SwitchNode' );
   var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
-  var CCKLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKLightBulbNode' );
+  var CircuitConstructionKitLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitLightBulbNode' );
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorNode' );
   var SeriesAmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SeriesAmmeterNode' );
   var VertexNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VertexNode' );
@@ -42,7 +42,7 @@ define( function( require ) {
 
   /**
    * @param {Circuit} circuit - the model Circuit
-   * @param {CCKScreenView} circuitConstructionKitScreenView - for dropping CircuitElement instances back in the toolbox
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - for dropping CircuitElement instances back in the toolbox
    * @param {Tandem} tandem
    * @constructor
    */
@@ -52,33 +52,34 @@ define( function( require ) {
     // @private {Property.<string>} - 'lifelike' | 'schematic'
     this.viewProperty = circuitConstructionKitScreenView.circuitConstructionKitModel.viewProperty;
 
-    // @private (read-only)
+    // @private (read-only) {CircuitConstructionKitModel}
     this.circuitConstructionKitModel = circuitConstructionKitScreenView.circuitConstructionKitModel;
 
-    // @private (read-only) {Property.<Bounds2>}
+    // @private (read-only) {Property.<Bounds2>} - the part of the screen that can be seen in view coordinates
     this.visibleBoundsProperty = circuitConstructionKitScreenView.visibleBoundsProperty;
 
-    // @public (read-only) CircuitElementNodes add highlights directly to this layer when they are constructed
+    // @public {Node} - CircuitElementNodes add highlights directly to this layer when they are constructed
     this.highlightLayer = new Node();
 
-    // @public (read-only) SeriesAmmeterNodes add to this layer when they are constructed
+    // @public {Node} - SeriesAmmeterNodes add to this layer when they are constructed
     // Shows the front panel of SeriesAmmeterNodes (which shows the current readout) so the electrons look like they
     // flow through.
     this.seriesAmmeterNodeReadoutPanelLayer = new Node();
 
-    // @public (read-only) layer for vertex buttons
+    // @public {Node} - layer for vertex buttons
     this.buttonLayer = new Node();
 
-    // @public (read-only) for "show values"
+    // @public {Node} - layer for "show values"
     this.valueLayer = new Node();
 
-    // @public (read-only) so that additional Nodes may be interleaved
+    // @public {Node} - so that additional Nodes may be interleaved
     this.mainLayer = new Node();
 
-    // @public (read-only) but CCKLightBulbNode calls addChild/removeChild to add sockets to the front layer
+    // @public {Node} - CircuitConstructionKitLightBulbNode calls addChild/removeChild to add sockets to the front layer
     this.lightBulbSocketLayer = new Node();
 
-    // @private Electrons appear in this layer when they need to be in front of the socket (on the right hand side of the bulb)
+    // @public {Node} - Electrons appear in this layer when they need to be in front of the socket (on the right hand
+    // side of the bulb)
     this.lightBulbSocketElectronLayer = new Node();
 
     Node.call( this, {
@@ -101,16 +102,16 @@ define( function( require ) {
       return self.parentToLocalBounds( visibleBounds );
     } );
 
-    // @public (read-only) - the Circuit model depicted by this view
+    // @public (read-only) {Circuit} - the Circuit model depicted by this view
     this.circuit = circuit;
 
-    // @private - Map to find CircuitElement=>CircuitElementNode. key is CircuitElement.id, value is CircuitElementNode
+    // @private {Object} - Map to find CircuitElement=>CircuitElementNode. key is CircuitElement.id, value is CircuitElementNode
     this.circuitElementNodeMap = {};
 
-    // @public (read-only) the layer to display the gray solder
+    // @public (read-only) {Node[]} the layer to display the gray solder // TODO: is this used?
     this.solderNodes = [];
 
-    // @public (read-only) the VertexNodes
+    // @public (read-only) {Node[]} the VertexNodes // TODO: is this used?
     this.vertexNodes = [];
 
     // When loading from a state object, the vertices could have been added first.  If so, move them in front
@@ -183,7 +184,7 @@ define( function( require ) {
 
     initializeCircuitElementType( WireNode, Wire, tandem.createGroupTandem( 'wireNode' ) );
     initializeCircuitElementType( BatteryNode, Battery, tandem.createGroupTandem( 'batteryNode' ) );
-    initializeCircuitElementType( CCKLightBulbNode, LightBulb, tandem.createGroupTandem( 'lightBulbNode' ) );
+    initializeCircuitElementType( CircuitConstructionKitLightBulbNode, LightBulb, tandem.createGroupTandem( 'lightBulbNode' ) );
     initializeCircuitElementType( ResistorNode, Resistor, tandem.createGroupTandem( 'resistorNode' ) );
     initializeCircuitElementType( SeriesAmmeterNode, SeriesAmmeter, tandem.createGroupTandem( 'seriesAmmeterNode' ) );
     initializeCircuitElementType( SwitchNode, Switch, tandem.createGroupTandem( 'switchNode' ) );
@@ -229,14 +230,15 @@ define( function( require ) {
 
     // When the screen is resized, move all vertices into view.
     this.visibleBoundsProperty.link( function( visibleBounds ) {
+
+      // Get the bounds in the CircuitLayerNode coordinate frame
+      var localBounds = self.parentToLocalBounds( visibleBounds );
       for ( var i = 0; i < circuit.vertices.length; i++ ) {
         var vertex = circuit.vertices.get( i );
-        if ( !visibleBounds.containsPoint( vertex.positionProperty.get() ) ) {
-          var closestPoint = visibleBounds.getClosestPoint(
-            vertex.positionProperty.get().x,
-            vertex.positionProperty.get().y
-          );
-          var delta = closestPoint.minus( vertex.positionProperty.get() );
+        var position = vertex.positionProperty.get();
+        if ( !localBounds.containsPoint( position ) ) {
+          var closestPoint = localBounds.getClosestPoint( position.x, position.y );
+          var delta = closestPoint.minus( position );
 
           // Find all vertices connected by fixed length nodes.
           var vertices = circuit.findAllFixedVertices( vertex );
@@ -370,6 +372,7 @@ define( function( require ) {
      * @param {Array.<Node>} nodeArray
      * @param {Vertex} vertex
      * @returns {Node|null}
+     * @public
      */
     getNodeForVertex: function( nodeArray, vertex ) {
       for ( var i = 0; i < nodeArray.length; i++ ) {
@@ -384,6 +387,7 @@ define( function( require ) {
      * Get the solder node associated with the specified Vertex
      * @param {Vertex} vertex
      * @returns {SolderNode}
+     * @public
      */
     getSolderNode: function( vertex ) { return this.getNodeForVertex( this.solderNodes, vertex ); },
 
@@ -391,6 +395,7 @@ define( function( require ) {
      * Get the VertexNode associated with the specified Vertex
      * @param {Vertex} vertex
      * @returns {VertexNode}
+     * @public
      */
     getVertexNode: function( vertex ) { return this.getNodeForVertex( this.vertexNodes, vertex ); },
 
@@ -398,6 +403,7 @@ define( function( require ) {
      * Find drop targets for all the given vertices
      * @param {Vertex[]} vertices
      * @returns {Object[]}
+     * @public
      */
     getAllDropTargets: function( vertices ) {
       var allDropTargets = [];
@@ -420,6 +426,7 @@ define( function( require ) {
      * Finds the closest drop target for any of the given vertices
      * @param {Vertex[]} vertices
      * @returns {Object}
+     * @public
      */
     getBestDropTarget: function( vertices ) {
       var allDropTargets = this.getAllDropTargets( vertices );
@@ -436,6 +443,7 @@ define( function( require ) {
 
     /**
      * Updates the view
+     * @public
      */
     step: function() {
 
@@ -452,6 +460,7 @@ define( function( require ) {
      * Called when a Vertex drag begins, records the relative click point
      * @param {Vector2} point
      * @param {Vertex} vertex
+     * @public
      */
     startDragVertex: function( point, vertex ) {
 
@@ -469,7 +478,6 @@ define( function( require ) {
      * @param {Vector2} position
      * @param {CircuitElement[]} neighbors
      * @param {Vertex[]} vertices
-     *
      * @private
      */
     rotateAboutFixedPivot: function( point, vertex, okToRotate, vertexNode, position, neighbors, vertices ) {
@@ -519,7 +527,7 @@ define( function( require ) {
 
       this.solderNodes.forEach( vertexNodeToBack );
       this.vertexNodes.forEach( vertexNodeToBack );
-      _.values( this.circuitElementNodeMap ).forEach( circuitElementNodeToBack() );
+      _.values( this.circuitElementNodeMap ).forEach( circuitElementNodeToBack );
 
       // Move black box interface vertices behind the black box,
       // see https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/36

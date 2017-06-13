@@ -23,7 +23,7 @@ define( function( require ) {
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
-  var CCKUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKUtil' );
+  var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
 
   // images
   var ammeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeter_body.png' );
@@ -65,7 +65,7 @@ define( function( require ) {
       showResultsProperty: new BooleanProperty( true )
     }, options );
 
-    // @public (read-only) (the model Ammeter associated with this Node)
+    // @public (read-only) {Ammeter} - the model associated with this view
     this.ammeter = ammeter;
 
     var wireNode = new ProbeWireNode( 'black', new Vector2( 0, BODY_LEAD_Y ), new Vector2( 0, PROBE_LEAD_Y ) );
@@ -77,7 +77,7 @@ define( function( require ) {
       // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
       return current === null ? questionMarkString :
              Math.abs( current ) > max ? maxString :
-             CCKUtil.createAmpereReadout( ampereUnitsString, current );
+             CircuitConstructionKitCommonUtil.createMeasurementReadout( ampereUnitsString, 'ampere', current, 3 );
     } );
 
     var probeTextNode = new ProbeTextNode( currentReadoutProperty, options.showResultsProperty, currentString, tandem.createTandem( 'probeTextNode' ), {
@@ -91,7 +91,7 @@ define( function( require ) {
       children: [ probeTextNode ]
     } );
 
-    // @public (read-only)
+    // @public (read-only) {ProbeNode}
     this.probeNode = new ProbeNode( {
       cursor: 'pointer',
       sensorTypeFunction: ProbeNode.crosshairs(),
@@ -102,7 +102,8 @@ define( function( require ) {
 
       // Add a decoration on the handle to match the color scheme
       children: [
-        new Rectangle( 0, 52, HANDLE_WIDTH * 0.72, 19, 6, 6, {
+        new Rectangle( 0, 52, HANDLE_WIDTH * 0.72, 19, {
+          cornerRadius: 6,
           centerX: 0,
           fill: '#e79547' // Match the orange of the ammeter image
         } )
@@ -130,7 +131,7 @@ define( function( require ) {
 
     if ( !options.icon ) {
 
-      // @public (read-only) - so events can be forwarded from the toolbox
+      // @public (read-only) {MovableDragHandler} - so events can be forwarded from the toolbox
       this.dragHandler = new MovableDragHandler( ammeter.bodyPositionProperty, {
         tandem: tandem.createTandem( 'dragHandler' ),
         endDrag: function() {
