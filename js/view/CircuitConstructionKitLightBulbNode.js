@@ -181,6 +181,7 @@ define( function( require ) {
 
     /**
      * @override
+     * @public
      */
     updateRender: function() {
       var startPosition = this.circuitElement.startVertexProperty.get().positionProperty.get();
@@ -201,6 +202,7 @@ define( function( require ) {
 
       this.socketNode && this.socketNode.updateRender();
     },
+
     /**
      * Dispose when no longer used.
      * @public

@@ -97,6 +97,7 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'BatteryNode', BatteryNode );
 
   return inherit( FixedLengthCircuitElementNode, BatteryNode, {
+
     /**
      * Returns true if the node hits the sensor at the given point.
      * @param {Vector2} point

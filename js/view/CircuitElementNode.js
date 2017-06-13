@@ -122,6 +122,7 @@ define( function( require ) {
      * Returns true if the node hits the sensor at the given point.
      * @param {Vector2} point
      * @returns {boolean}
+     * @public
      */
     containsSensorPoint: function( point ) {
 
@@ -131,7 +132,7 @@ define( function( require ) {
 
     /**
      * Hook for view step, overriden in FixedLengthCircuitElementNode
-     *
+     * @public
      */
     step: function() {},
 

@@ -44,13 +44,12 @@ define( function( require ) {
      * @param unit {string} - to be used as a key in an object literal
      * @param value {number} - value to be the value associated with the key and displayed in the returned string
      * @param decimalPlace {number} - determines how many decimal places will be shown in readout
-     * @returns {*|string}
+     * @returns {string}
      */
     createMeasurementReadout: function( unitsString, unit, value, decimalPlace ) {
       var readout = {};
       readout[ unit ] = Util.toFixed( Math.abs( value ), decimalPlace );
       return StringUtils.fillIn( unitsString, readout );
     }
-
   } );
 } );

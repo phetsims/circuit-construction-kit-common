@@ -441,14 +441,13 @@ define( function( require ) {
   return inherit( Node, CircuitElementToolbox, {
 
     /**
+     * Resets the toolbox.
      * @override
-     *
      * @public
      */
     reset: function() {
       this.carousel && this.carousel.reset( { animationEnabled: false } );
     }
-
   }, {
     NUMBER_OF_RIGHT_BATTERIES: 10,
     NUMBER_OF_WIRES: 20,

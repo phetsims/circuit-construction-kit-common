@@ -47,6 +47,13 @@ define( function( require ) {
 
   return inherit( FixedLengthCircuitElement, Switch, {
 
+    /**
+     * Returns the position and angle of the given point along the Switch
+     * @param {number} distanceAlongWire
+     * @returns {Object} with {position,angle}
+     * @overrides
+     * @public
+     */
     getPositionAndAngle: function( distanceAlongWire ) {
 
       var startPosition = this.startVertexProperty.get().positionProperty.get();

@@ -372,6 +372,7 @@ define( function( require ) {
      * @param {Array.<Node>} nodeArray
      * @param {Vertex} vertex
      * @returns {Node|null}
+     * @public
      */
     getNodeForVertex: function( nodeArray, vertex ) {
       for ( var i = 0; i < nodeArray.length; i++ ) {
@@ -386,6 +387,7 @@ define( function( require ) {
      * Get the solder node associated with the specified Vertex
      * @param {Vertex} vertex
      * @returns {SolderNode}
+     * @public
      */
     getSolderNode: function( vertex ) { return this.getNodeForVertex( this.solderNodes, vertex ); },
 
@@ -393,6 +395,7 @@ define( function( require ) {
      * Get the VertexNode associated with the specified Vertex
      * @param {Vertex} vertex
      * @returns {VertexNode}
+     * @public
      */
     getVertexNode: function( vertex ) { return this.getNodeForVertex( this.vertexNodes, vertex ); },
 
@@ -400,6 +403,7 @@ define( function( require ) {
      * Find drop targets for all the given vertices
      * @param {Vertex[]} vertices
      * @returns {Object[]}
+     * @public
      */
     getAllDropTargets: function( vertices ) {
       var allDropTargets = [];
@@ -422,6 +426,7 @@ define( function( require ) {
      * Finds the closest drop target for any of the given vertices
      * @param {Vertex[]} vertices
      * @returns {Object}
+     * @public
      */
     getBestDropTarget: function( vertices ) {
       var allDropTargets = this.getAllDropTargets( vertices );
@@ -438,6 +443,7 @@ define( function( require ) {
 
     /**
      * Updates the view
+     * @public
      */
     step: function() {
 
@@ -454,6 +460,7 @@ define( function( require ) {
      * Called when a Vertex drag begins, records the relative click point
      * @param {Vector2} point
      * @param {Vertex} vertex
+     * @public
      */
     startDragVertex: function( point, vertex ) {
 
@@ -471,7 +478,6 @@ define( function( require ) {
      * @param {Vector2} position
      * @param {CircuitElement[]} neighbors
      * @param {Vertex[]} vertices
-     *
      * @private
      */
     rotateAboutFixedPivot: function( point, vertex, okToRotate, vertexNode, position, neighbors, vertices ) {
