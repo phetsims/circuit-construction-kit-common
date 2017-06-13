@@ -100,15 +100,11 @@ define( function( require ) {
         for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
           neighborCircuitElements[ i ].vertexSelectedEmitter.emit();
         }
-
         self.moveToFront();
       }
-      highlightNode.visible = selected;
-
+      CircuitConstructionKitCommonUtil.setInSceneGraph( selected, circuitLayerNode.highlightLayer, highlightNode );
       var numberConnections = neighborCircuitElements.length;
-
       CircuitConstructionKitCommonUtil.setInSceneGraph( selected, circuitLayerNode.buttonLayer, cutButton );
-
       selected && updateCutButtonPosition();
 
       // Show a disabled button as a cue that the vertex could be cuttable, but it isn't right now.
@@ -124,7 +120,6 @@ define( function( require ) {
       children: [ dottedLineNode ],
       tandem: tandem
     } );
-    circuitLayerNode.highlightLayer.addChild( highlightNode );
 
     var updatePickable = function( interactive ) { self.pickable = interactive; };
     vertex.interactiveProperty.link( updatePickable );
@@ -241,7 +236,7 @@ define( function( require ) {
     };
     var updateVertexNodePosition = function( position ) {
       dottedLineNode.center = position;
-      highlightNode.center = position;
+      highlightNode.center = position; // TODO: perhaps don't update the position while it is invisible?
       updateReadoutTextLocation && updateReadoutTextLocation();
       updateCutButtonPosition();
     };
@@ -253,10 +248,8 @@ define( function( require ) {
       vertex.selectedProperty.unlink( updateSelected );
       vertex.interactiveProperty.unlink( updatePickable );
       vertex.relayerEmitter.removeListener( updateMoveToFront );
-
-      circuitLayerNode.highlightLayer.removeChild( highlightNode );
-
       CircuitConstructionKitCommonUtil.setInSceneGraph( false, circuitLayerNode.buttonLayer, cutButton );
+      CircuitConstructionKitCommonUtil.setInSceneGraph( false, circuitLayerNode.highlightLayer, highlightNode );
       circuit.vertices.removeItemAddedListener( updateStroke );
       circuit.vertices.removeItemRemovedListener( updateStroke );
 
