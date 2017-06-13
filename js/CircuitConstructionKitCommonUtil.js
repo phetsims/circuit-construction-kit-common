@@ -17,12 +17,12 @@ define( function( require ) {
   /**
    * @constructor
    */
-  function CCKUtil() {
+  function CircuitConstructionKitCommonUtil() {
   }
 
-  circuitConstructionKitCommon.register( 'CCKUtil', CCKUtil );
+  circuitConstructionKitCommon.register( 'CircuitConstructionKitCommonUtil', CircuitConstructionKitCommonUtil );
 
-  return inherit( Object, CCKUtil, {}, {
+  return inherit( Object, CircuitConstructionKitCommonUtil, {}, {
 
     /**
      * Sets the values of a given Matrix to be translated the rotated

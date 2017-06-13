@@ -24,7 +24,7 @@ define( function( require ) {
   var CircuitElementEditPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditPanel' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var SwitchReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SwitchReadoutNode' );
-  var CCKTrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKTrashButton' );
+  var TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
 
   // strings
   var tapCircuitElementToEditString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/tapCircuitElementToEdit' );
@@ -99,7 +99,7 @@ define( function( require ) {
         else if ( isResistor ) {
 
           // Just show a trash button for non-editable resistors which are grab bag items
-          previousPanel = new CCKTrashButton( circuit, selectedCircuitElement, groupTandem.createNextTandem().createTandem( 'trashButton' ) );
+          previousPanel = new TrashButton( circuit, selectedCircuitElement, groupTandem.createNextTandem().createTandem( 'trashButton' ) );
         }
         else if ( isBattery ) {
           previousPanel = new CircuitElementEditPanel( voltageString, voltsString, selectedCircuitElement.voltageProperty, circuit, selectedCircuitElement, groupTandem.createNextTandem() );
@@ -110,7 +110,7 @@ define( function( require ) {
         else if ( isSeriesAmmeter || isWire ) {
 
           // Just show a trash button
-          previousPanel = new CCKTrashButton( circuit, selectedCircuitElement, groupTandem.createNextTandem().createTandem( 'trashButton' ) );
+          previousPanel = new TrashButton( circuit, selectedCircuitElement, groupTandem.createNextTandem().createTandem( 'trashButton' ) );
         }
       }
       else {

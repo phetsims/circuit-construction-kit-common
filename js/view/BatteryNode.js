@@ -32,7 +32,7 @@ define( function( require ) {
   var RIGHT_JUNCTION = WIDTH / 2 + GAP / 2;
 
   /**
-   * @param {CCKScreenView} circuitConstructionKitScreenView
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {Battery} battery
    * @param {Property.<boolean>} showResultsProperty - supplied for consistency with other CircuitElementNode constructors

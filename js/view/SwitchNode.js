@@ -28,7 +28,7 @@ define( function( require ) {
   var SWITCH_END = CircuitConstructionKitConstants.SWITCH_END;
 
   /**
-   * @param {CCKScreenView} circuitConstructionKitScreenView
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {Switch} circuitSwitch
    * @param {Property.<boolean>} showResultsProperty - supplied for consistency with other CircuitElementNode constructors

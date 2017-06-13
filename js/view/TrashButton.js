@@ -22,7 +22,7 @@ define( function( require ) {
    * @param {Tandem} tandem
    * @constructor
    */
-  function CCKTrashButton( circuit, circuitElement, tandem ) {
+  function TrashButton( circuit, circuitElement, tandem ) {
 
     RoundPushButton.call( this, {
       baseColor: PhetColorScheme.PHET_LOGO_YELLOW,
@@ -38,7 +38,7 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKitCommon.register( 'CCKTrashButton', CCKTrashButton );
+  circuitConstructionKitCommon.register( 'TrashButton', TrashButton );
 
-  return inherit( RoundPushButton, CCKTrashButton );
+  return inherit( RoundPushButton, TrashButton );
 } );

@@ -17,14 +17,14 @@ define( function( require ) {
   var Matrix3 = require( 'DOT/Matrix3' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
-  var CCKUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKUtil' );
+  var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
 
   // constants
   var SCRATCH_MATRIX = new Matrix3();
 
   /**
    * This constructor is called dynamically and must match the signature of other circuit element nodes.
-   * @param {CCKScreenView} circuitConstructionKitScreenView - the main screen view
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - the main screen view
    * @param {CircuitLayerNode} circuitLayerNode - the node for the entire circuit
    * @param {LightBulb} lightBulb - the light bulb model
    * @param {Property.<boolean>} showResultsProperty - true if the sim can display values
@@ -49,7 +49,7 @@ define( function( require ) {
     FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitLayerNode, lightBulb,
       viewProperty, lightBulbNode, new Rectangle( 0, 0, 10, 10 ), tandem, options );
 
-    // Suppress the highlight for the socket, the highlight is shown by the CCKLightBulbNode
+    // Suppress the highlight for the socket, the highlight is shown by the CircuitConstructionKitLightBulbNode
     if ( this.highlightNode ) {
       this.highlightNode.stroke = null;
     }
@@ -68,7 +68,7 @@ define( function( require ) {
       var angle = endPosition.minus( startPosition ).angle() + Math.PI / 4;
 
       // Update the node transform in a single step, see #66
-      CCKUtil.setToTranslationRotation( SCRATCH_MATRIX, startPosition, angle );
+      CircuitConstructionKitCommonUtil.setToTranslationRotation( SCRATCH_MATRIX, startPosition, angle );
       this.contentNode.setMatrix( SCRATCH_MATRIX );
     },
 

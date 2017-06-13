@@ -18,7 +18,7 @@ define( function( require ) {
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var CCKAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKAccordionBox' );
+  var CircuitConstructionKitAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitAccordionBox' );
   var Util = require( 'DOT/Util' );
   var Range = require( 'DOT/Range' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
@@ -94,7 +94,7 @@ define( function( require ) {
       tandem: readoutTextPanelTandem
     } );
 
-    CCKAccordionBox.call( this, alignGroup.createBox( new VBox( {
+    CircuitConstructionKitAccordionBox.call( this, alignGroup.createBox( new VBox( {
       spacing: -4,
       children: [ readoutTextPanel, slider ]
     } ) ), batteryResistanceString, tandem );
@@ -102,5 +102,5 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'BatteryResistanceControl', BatteryResistanceControl );
 
-  return inherit( CCKAccordionBox, BatteryResistanceControl );
+  return inherit( CircuitConstructionKitAccordionBox, BatteryResistanceControl );
 } );

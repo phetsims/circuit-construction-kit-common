@@ -16,7 +16,7 @@ define( function( require ) {
   var NumberControl = require( 'SCENERY_PHET/NumberControl' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  var CCKTrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKTrashButton' );
+  var TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
 
   // strings
   var valueUnitsPatternString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/valueUnitsPattern' );
@@ -53,7 +53,7 @@ define( function( require ) {
     } ) );
 
     // The button that deletes the circuit component
-    var trashButton = new CCKTrashButton( circuit, circuitElement, tandem.createTandem( 'trashButton' ) );
+    var trashButton = new TrashButton( circuit, circuitElement, tandem.createTandem( 'trashButton' ) );
     var children = [ numberControl ];
     circuitElement.canBeDroppedInToolbox && children.push( trashButton );
 

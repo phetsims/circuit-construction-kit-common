@@ -51,7 +51,7 @@ define( function( require ) {
   var SCHEMATIC_WAVELENGTH = 54 * SCHEMATIC_SCALE;
 
   /**
-   * @param {CCKScreenView} circuitConstructionKitScreenView
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
    * @param {CircuitLayerNode} [circuitLayerNode] optional, null for icons
    * @param {Resistor} resistor
    * @param {Property.<boolean>} showResultsProperty - not used here but appears in signature to keep same signature as other CircuitElementNode subclasses.

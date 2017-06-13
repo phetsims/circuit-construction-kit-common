@@ -24,7 +24,7 @@ define( function( require ) {
    * @param {Tandem} tandem
    * @constructor
    */
-  function CCKAccordionBox( content, title, tandem ) {
+  function CircuitConstructionKitAccordionBox( content, title, tandem ) {
     AccordionBox.call( this, content, {
       fill: CircuitConstructionKitConstants.PANEL_COLOR,
       cornerRadius: CircuitConstructionKitConstants.CORNER_RADIUS,
@@ -46,7 +46,7 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKitCommon.register( 'CCKAccordionBox', CCKAccordionBox );
+  circuitConstructionKitCommon.register( 'CircuitConstructionKitAccordionBox', CircuitConstructionKitAccordionBox );
 
-  return inherit( AccordionBox, CCKAccordionBox );
+  return inherit( AccordionBox, CircuitConstructionKitAccordionBox );
 } );

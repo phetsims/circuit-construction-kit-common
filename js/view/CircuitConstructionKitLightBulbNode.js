@@ -1,7 +1,7 @@
 // Copyright 2015-2017, University of Colorado Boulder
 
 /**
- * Named CCKLightBulbNode to avoid collisions with SCENERY_PHET/LightBulbNode. Renders the bulb shape and brightness
+ * Named CircuitConstructionKitLightBulbNode to avoid collisions with SCENERY_PHET/LightBulbNode. Renders the bulb shape and brightness
  * lines. Note that the socket is rendered in LightBulbSocketNode.
  *
  * @author Sam Reid (PhET Interactive Simulations)
@@ -24,7 +24,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var LightBulbSocketNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/LightBulbSocketNode' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
-  var CCKUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKUtil' );
+  var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
 
   // images
   var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
@@ -61,7 +61,7 @@ define( function( require ) {
 
   /**
    * This constructor is called dynamically and must match the signature of other circuit element nodes.
-   * @param {CCKScreenView} circuitConstructionKitScreenView - the main screen view
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - the main screen view
    * @param {CircuitLayerNode} circuitLayerNode - the node for the entire circuit
    * @param {LightBulb} lightBulb - the light bulb model
    * @param {Property.<boolean>} showResultsProperty - true if the sim can display values
@@ -70,7 +70,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function CCKLightBulbNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, showResultsProperty, viewProperty, tandem, options ) {
+  function CircuitConstructionKitLightBulbNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, showResultsProperty, viewProperty, tandem, options ) {
     options = options || {};
     var brightnessProperty = new NumberProperty( 0 );
     var updateBrightness = Property.multilink( [ lightBulb.currentProperty, showResultsProperty, lightBulb.voltageDifferenceProperty ], function( current, running, voltageDifference ) {
@@ -169,15 +169,15 @@ define( function( require ) {
       circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.addChild( this.socketNode );
     }
 
-    this.disposeCCKLightBulbNode = function() {
+    this.disposeCircuitConstructionKitLightBulbNode = function() {
       updateBrightness.dispose();
       circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.removeChild( this.socketNode );
     };
   }
 
-  circuitConstructionKitCommon.register( 'CCKLightBulbNode', CCKLightBulbNode );
+  circuitConstructionKitCommon.register( 'CircuitConstructionKitLightBulbNode', CircuitConstructionKitLightBulbNode );
 
-  return inherit( FixedLengthCircuitElementNode, CCKLightBulbNode, {
+  return inherit( FixedLengthCircuitElementNode, CircuitConstructionKitLightBulbNode, {
 
     /**
      * @override
@@ -189,13 +189,13 @@ define( function( require ) {
       var angle = delta.angle() + Math.PI / 4;
 
       // Update the node transform in a single step, see #66
-      CCKUtil.setToTranslationRotation( SCRATCH_MATRIX, startPosition, angle );
+      CircuitConstructionKitCommonUtil.setToTranslationRotation( SCRATCH_MATRIX, startPosition, angle );
       this.contentNode.setMatrix( SCRATCH_MATRIX );
 
       this.highlightNode && this.highlightNode.setMatrix( SCRATCH_MATRIX );
 
       // Update the fire transform
-      CCKUtil.setToTranslationRotation( SCRATCH_MATRIX, startPosition, angle )
+      CircuitConstructionKitCommonUtil.setToTranslationRotation( SCRATCH_MATRIX, startPosition, angle )
         .multiplyMatrix( SCRATCH_MATRIX_2.setToTranslation( -100, -fireImage[ 0 ].height - 350 ) );
       this.fireNode && this.fireNode.setMatrix( SCRATCH_MATRIX );
 
@@ -206,7 +206,7 @@ define( function( require ) {
      * @public
      */
     dispose: function() {
-      this.disposeCCKLightBulbNode();
+      this.disposeCircuitConstructionKitLightBulbNode();
       FixedLengthCircuitElementNode.prototype.dispose.call( this );
     },
 

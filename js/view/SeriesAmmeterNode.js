@@ -19,7 +19,7 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Panel = require( 'SUN/Panel' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
-  var CCKUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKUtil' );
+  var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
   
   // strings
   var currentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/current' );
@@ -32,7 +32,7 @@ define( function( require ) {
   var WIDEST_LABEL = '99.99 A';
 
   /**
-   * @param {CCKScreenView} circuitConstructionKitScreenView
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {SeriesAmmeter} seriesAmmeter
    * @param {Property.<boolean>} showResultsProperty - supplied for consistency with other CircuitElementNode constructors
@@ -64,7 +64,7 @@ define( function( require ) {
 
       // The ammeter doesn't indicate direction
       current = Math.abs( current );
-      var currentText = ( current < 1E-10 ) ? '' : CCKUtil.createMeasurementReadout( ampereUnitsString, 'ampere', current, 3 );
+      var currentText = ( current < 1E-10 ) ? '' : CircuitConstructionKitCommonUtil.createMeasurementReadout( ampereUnitsString, 'ampere', current, 3 );
       readoutText.setText( currentText );
 
       // Center the text in the panel
