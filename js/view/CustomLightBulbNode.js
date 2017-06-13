@@ -69,19 +69,10 @@ define( function( require ) {
 
       // Show the rays
       var bulbRadius = middleNode.width / 2;
-      var rayOptions = {
-        rayStroke: 'yellow',
-        minRays: 8,
-        maxRays: 60,
-        minRayLength: 0,
-        maxRayLength: 200,
-        longRayLineWidth: 1.5,
-        mediumRayLineWidth: 1,
-        shortRayLineWidth: 0.5
-      };
-      rayOptions.x = this.backNode.centerX;
-      rayOptions.y = middleNode.top + bulbRadius;
-      self.raysNode = new LightRaysNode( bulbRadius, rayOptions ); // @private
+      self.raysNode = new LightRaysNode( bulbRadius, {
+        x: this.backNode.centerX,
+        y: middleNode.top + bulbRadius
+      } ); // @private
 
       options.children = [ self.raysNode, self.backNode, middleNode ];
     }
