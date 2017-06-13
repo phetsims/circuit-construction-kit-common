@@ -22,7 +22,6 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
   var Range = require( 'DOT/Range' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  var Dimension2 = require( 'DOT/Dimension2' );
 
   //strings
   var batteryResistanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/batteryResistance' );

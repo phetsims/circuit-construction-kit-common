@@ -15,9 +15,8 @@ define( function( require ) {
   var HSlider = require( 'SUN/HSlider' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var CCKAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKAccordionBox' );
-  var Dimension2 = require( 'DOT/Dimension2' );
 
-  //strings
+  // strings
   var tinyString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/tiny' );
   var lotsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/lots' );
   var wireResistivityString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/wireResistivity' );

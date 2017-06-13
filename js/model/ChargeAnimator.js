@@ -75,10 +75,28 @@ define( function( require ) {
   var createCircuitLocation = function( circuit, circuitElement, distance ) {
     assert && assert( _.isNumber( distance ), 'distance should be a number' );
     assert && assert( circuitElement.containsScalarLocation( distance ), 'circuitElement should contain distance' );
+    var density = circuit.getChargesInCircuitElement( circuitElement ).length / circuitElement.chargePathLength;
+
+    // If there are no electrons in that circuit because it is a short segment, average the density by looking at
+    // downstream neighbors
+    if ( density === 0 && circuitElement.chargePathLength < 30 ) {
+      var distanceFromStart = Math.abs( distance - 0 );
+      var distanceFromEnd = Math.abs( circuitElement.chargePathLength - distance );
+
+      var selectedVertex = distanceFromStart < distanceFromEnd ?
+                           circuitElement.endVertexProperty.get() : // Note it is reversed because we want to check current downstream
+                           circuitElement.startVertexProperty.get();
+      var neighbors = circuit.getNeighborCircuitElements( selectedVertex );
+      var densities = neighbors.map( function( neighbor ) {
+        return circuit.getChargesInCircuitElement( neighbor ).length / neighbor.chargePathLength;
+      } );
+      var averageDensity = _.sum( densities ) / densities.length;
+      density = averageDensity;
+    }
     return {
       circuitElement: circuitElement,
       distance: distance,
-      density: circuit.getChargesInCircuitElement( circuitElement ).length / circuitElement.chargePathLength
+      density: density
     };
   };
 
