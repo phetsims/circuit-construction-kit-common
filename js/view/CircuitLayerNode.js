@@ -520,7 +520,7 @@ define( function( require ) {
 
       this.solderNodes.forEach( vertexNodeToBack );
       this.vertexNodes.forEach( vertexNodeToBack );
-      _.values( this.circuitElementNodeMap ).forEach( circuitElementNodeToBack() );
+      _.values( this.circuitElementNodeMap ).forEach( circuitElementNodeToBack );
 
       // Move black box interface vertices behind the black box,
       // see https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/36
