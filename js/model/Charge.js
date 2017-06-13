@@ -44,10 +44,10 @@ define( function( require ) {
     // @private - whether the charge has been disposed to aid in debugging
     this.deleted = false;
 
-    // @public (read-only) {NumberProperty} - the distance the charge has traveled in its CircuitElement
+    // @public (read-only) {NumberProperty} - the distance the charge has traveled in its CircuitElement in view coordinates
     this.distanceProperty = new NumberProperty( distance );
 
-    // @public (read-only) {BooleanProperty} - To improve performance, disable updating while the position of the charge is changed many
+    // @public {BooleanProperty} - To improve performance, disable updating while the position of the charge is changed many
     // times during the update step.
     this.updatingPositionProperty = new BooleanProperty( true );
 

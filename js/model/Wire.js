@@ -38,7 +38,7 @@ define( function( require ) {
     // @public (read-only)
     this.wireStub = options.wireStub;
 
-    // @public (read-only) - the resistance of the Wire in ohms
+    // @public (read-only) {NumberProperty} - the resistance of the Wire in ohms
     this.resistanceProperty = new NumberProperty( CircuitConstructionKitConstants.MINIMUM_RESISTANCE );
 
     // @public (read-only) - the resistivity of the Wire in ohm-meters

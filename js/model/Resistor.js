@@ -34,12 +34,12 @@ define( function( require ) {
       resistorLength: RESISTOR_LENGTH
     }, options );
 
-    // @public (read-only) {string} indicates 'resistor' | 'high-resistance-resistor' | grab bag component type
+    // @public (read-only) {string} indicates 'resistor' | 'high-resistance-resistor' | grab bag component type // TODO: enumerate these?
     this.resistorType = options.resistorType;
 
     FixedLengthCircuitElement.call( this, startVertex, endVertex, options.resistorLength, options.resistorLength, tandem, options );
 
-    // @public (read-only) {Property.<number>} the resistance in ohms
+    // @public {Property.<number>} the resistance in ohms
     this.resistanceProperty = new NumberProperty( options.resistance );
   }
 

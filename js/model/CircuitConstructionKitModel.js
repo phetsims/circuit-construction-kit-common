@@ -87,16 +87,16 @@ define( function( require ) {
       } );
     } );
 
-    // @public (read-only) {Property.<string>} - whether the user is in the 'explore' or 'test' mode
+    // @public {Property.<string>} - whether the user is in the 'explore' or 'test' mode
     this.modeProperty = new Property( 'explore', {
       validValues: [ 'explore', 'test' ],
       tandem: tandem.createTandem( 'modeProperty' ),
       phetioValueType: TString
     } );
 
-    // @public (read-only) {Property.<string>} - whether to show lifelike or schematic representations
+    // @public {Property.<string>} - whether to show lifelike or schematic representations
     this.viewProperty = new Property( 'lifelike', {
-      validValues: [ 'lifelike', 'schematic' ],
+      validValues: [ 'lifelike', 'schematic' ], // TODO: factor out
       tandem: tandem.createTandem( 'viewProperty' ),
       phetioValueType: TString
     } );

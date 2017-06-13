@@ -69,7 +69,7 @@ define( function( require ) {
     // @public (read-only) - true if the CircuitElement can be edited and dragged
     this.interactiveProperty = new BooleanProperty( options.interactive );
 
-    // @public - whether the circuit element is inside the true black box, not inside the user-created black box, on
+    // @public {BooleanProperty} - whether the circuit element is inside the true black box, not inside the user-created black box, on
     // the interface or outside of the black box
     this.insideTrueBlackBoxProperty = new BooleanProperty( false );
 
@@ -95,9 +95,9 @@ define( function( require ) {
     // @public (read-only) - indicate when the circuit element has been disposed
     this.disposeEmitter = new Emitter();
 
-    // @public (read-only) - the voltage at the end vertex minus the voltage at the start vertex
+    // @public (read-only) {Property.<number>} - the voltage at the end vertex minus the voltage at the start vertex
     // name voltageDifferenceProperty so it doesn't clash with voltageProperty in Battery subclass
-    this.voltageDifferenceProperty = new Property();
+    this.voltageDifferenceProperty = new Property( 0 );
 
     // Signify that a Vertex moved
     var vertexMoved = function() {

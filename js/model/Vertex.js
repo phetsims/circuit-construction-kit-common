@@ -46,22 +46,22 @@ define( function( require ) {
                                       // are more of an implementation detail rather than a feature
     }, options );
 
-    // @public (read-only)  - location of the vertex
+    // @public (read-only) {Property.<Vector2>} - location of the vertex
     this.positionProperty = new Property( new Vector2( x, y ), {
       tandem: options.tandem && options.tandem.createTandem( 'positionProperty' ),
       phetioValueType: TVector2
     } );
 
-    // @public (read-only) - where the vertex would be if it hadn't snapped for a proposed connection
+    // @public (read-only) {Property.<Vector2>} - where the vertex would be if it hadn't snapped for a proposed connection
     this.unsnappedPositionProperty = new Property( new Vector2( x, y ) );
 
-    // @public (read-only) {number} Relative voltage of the node, determined by Circuit.solve
+    // @public {NumberProperty} Relative voltage of the node, determined by Circuit.solve
     this.voltageProperty = new NumberProperty( 0, {
       tandem: options.tandem && options.tandem.createTandem( 'voltageProperty' ),
       phetioValueType: TNumber( { units: 'volts' } )
     } );
 
-    // @public (read-only) - after the user taps on a vertex it becomes selected, highlighting it and showing a 'cut' button
+    // @public (read-only) {BooleanProperty} - after the user taps on a vertex it becomes selected, highlighting it and showing a 'cut' button
     // Multiple vertices can be selected on an iPad, unlike CircuitElements, which can only have one vertex selected
     // at a time.
     this.selectedProperty = new BooleanProperty( false, {
@@ -71,21 +71,21 @@ define( function( require ) {
     // Some of the following properties overlap.  For example, if 'insideTrueBlackBox' is true, then the interactive
     // flag will be set to false when the circuit is in 'test' mode.
 
-    // @public (read-only) - Vertices on the black box interface persist between build/investigate, and cannot be moved/deleted
+    // @public (read-only) {BooleanProperty} - Vertices on the black box interface persist between build/investigate, and cannot be moved/deleted
     this.draggableProperty = new BooleanProperty( options.draggable );
 
-    // @public (read-only) - Black box interface vertices can be interactive (tap to select) without being draggable
+    // @public (read-only) {BooleanProperty} - Black box interface vertices can be interactive (tap to select) without being draggable
     this.interactiveProperty = new BooleanProperty( options.interactive );
 
-    // @public (read-only) - whether the Vertex can be dragged or moved by dragging another part of the circuit
+    // @public (read-only) {BooleanProperty} - whether the Vertex can be dragged or moved by dragging another part of the circuit
     // must be observable.  When two vertices are joined in Circuit.connect, non-interactivity propagates
     this.attachableProperty = new BooleanProperty( options.attachable );
 
-    // @public (read-only) - whether the vertex is on the edge of a black box.  This means it cannot be deleted, but it can be
+    // @public (read-only) {BooleanProperty} - whether the vertex is on the edge of a black box.  This means it cannot be deleted, but it can be
     // attached to
     this.blackBoxInterfaceProperty = new BooleanProperty( options.blackBoxInterface );
 
-    // @public (read-only) - whether the vertex is inside the true black box, not inside the user-created black box, on the
+    // @public (read-only) {BooleanProperty} - whether the vertex is inside the true black box, not inside the user-created black box, on the
     // interface or outside of the black box
     this.insideTrueBlackBoxProperty = new BooleanProperty( options.insideTrueBlackBox );
 

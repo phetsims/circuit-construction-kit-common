@@ -63,19 +63,19 @@ define( function( require ) {
       phetioValueType: TNumber()
     } );
 
-    // @public (read-only) {ObservableArray.<CircuitElement>} - The different types of CircuitElement the circuit may
+    // @public {ObservableArray.<CircuitElement>} - The different types of CircuitElement the circuit may
     // contain, including Wire, Battery, Switch, Resistor, LightBulb, etc.
     this.circuitElements = new ObservableArray();
 
-    // @public (read-only) {ObservableArray.<Vertex>} - Keep track of which terminals are connected to other terminals.
+    // @public {ObservableArray.<Vertex>} - Keep track of which terminals are connected to other terminals.
     // The vertices are also referenced in the CircuitElements above--this ObservableArray is a a central point for
     // observing creation/deletion of vertices for showing VertexNodes
     this.vertices = new ObservableArray();
 
-    // @public (read-only) {ObservableArray.<Charge>} - the charges in the circuit
+    // @public {ObservableArray.<Charge>} - the charges in the circuit
     this.charges = new ObservableArray();
 
-    // @public (read-only) {Property.<string>} - whether to show charges or conventional current
+    // @public {Property.<string>} - whether to show charges or conventional current
     this.currentTypeProperty = new Property( CircuitConstructionKitQueryParameters.currentType, {
       validValues: CURRENT_TYPES,
       tandem: tandem.createTandem( 'currentTypeProperty' ),
@@ -90,7 +90,7 @@ define( function( require ) {
       self.layoutChargesInDirtyCircuitElements();
     } );
 
-    // @public (read-only) {BooleanProperty} - whether the current should be displayed
+    // @public {BooleanProperty} - whether the current should be displayed
     this.showCurrentProperty = new BooleanProperty( CircuitConstructionKitQueryParameters.showCurrent, {
       tandem: tandem.createTandem( 'showCurrentProperty' )
     } );

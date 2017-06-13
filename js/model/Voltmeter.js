@@ -27,19 +27,19 @@ define( function( require ) {
 
     Meter.call( this, tandem );
 
-    // @public (read-only) {Property.<number|null>} the voltage the probe is reading, in volts
+    // @public {Property.<number|null>} the voltage the probe is reading, in volts
     this.voltageProperty = new Property( null, {
       tandem: tandem.createTandem( 'voltageProperty' ),
       phetioValueType: TNumber( { units: 'volts' } )
     } );
 
-    // @public (read-only) - the position of the tip of the red probe in model=view coordinates.
+    // @public {Property.<Vector2>} - the position of the tip of the red probe in model=view coordinates.
     this.redProbePositionProperty = new Property( new Vector2(), {
       tandem: tandem.createTandem( 'redProbePositionProperty' ),
       phetioValueType: TVector2
     } );
 
-    // @public (read-only) - the position of the black probe in model=view coordinates
+    // @public {Property.<Vector2>} - the position of the black probe in model=view coordinates
     this.blackProbePositionProperty = new Property( new Vector2(), {
       tandem: tandem.createTandem( 'blackProbePositionProperty' ),
       phetioValueType: TVector2
