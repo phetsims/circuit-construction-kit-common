@@ -29,10 +29,14 @@ define( function( require ) {
   MINUS_CHARGE_NODE.toImage( function( im ) {
 
     // Scale back down so the image will be the desired size
-    ELECTRON_IMAGE_NODE.children = [ new Image( im, {
+    var image = new Image( im, {
       scale: 1.0 / ELECTRON_SCALE,
-      imageOpacity: 0.75 // use imageOpacity for a significant performance boost, see https://github.com/phetsims/circuit-construction-kit-common/issues/293
-    } ) ];
+      imageOpacity: 0.75// use imageOpacity for a significant performance boost, see https://github.com/phetsims/circuit-construction-kit-common/issues/293
+    } );
+    ELECTRON_IMAGE_NODE.children = [ image ];
+
+    // Center it so that animation doesn't require getCenter
+    ELECTRON_IMAGE_NODE.translate( -MINUS_CHARGE_NODE.width / 2 / ELECTRON_SCALE, -MINUS_CHARGE_NODE.height / 2 / ELECTRON_SCALE );
   }, 0, 0, MINUS_CHARGE_NODE.width, MINUS_CHARGE_NODE.height );
 
   var ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.createStaticTandem( 'arrowNode' ) );
@@ -48,26 +52,30 @@ define( function( require ) {
     // @public (read-only) the {Charge} depicted by this node
     this.charge = charge;
 
+    var child = charge.charge > 0 ? ARROW_NODE : ELECTRON_IMAGE_NODE;
     Node.call( this, {
-      children: [ charge.charge > 0 ? ARROW_NODE : ELECTRON_IMAGE_NODE ],
+      children: [ child ],
       pickable: false
     } );
     var outsideOfBlackBoxProperty = new BooleanProperty( false );
 
-    // Update the visibilty accordingly.  A multilink will not work because the charge circuitElement changes.
+    // Update the visibility accordingly.  A multilink will not work because the charge circuitElement changes.
     var updateVisible = function() {
-      self.visible = charge.visibleProperty.value &&
-                     (outsideOfBlackBoxProperty.value || revealingProperty.value) &&
+      self.visible = charge.visibleProperty.get() &&
+                     (outsideOfBlackBoxProperty.get() || revealingProperty.get()) &&
                      ( Math.abs( charge.circuitElement.currentProperty.get() ) > 1E-6 || charge.charge < 0 );
     };
 
     // When the model position changes, update the node position changes
     var updateTransform = function() {
       var current = charge.circuitElement.currentProperty.get();
-      self.center = charge.positionProperty.get();
-      self.rotation = charge.charge < 0 ? 0 : charge.angleProperty.get() + (current < 0 ? Math.PI : 0);
+      var position = charge.positionProperty.get();
+      self.setTranslation( position.x, position.y );
+      if ( charge.charge > 0 ) {
+        self.rotation = charge.charge < 0 ? 0 : charge.angleProperty.get() + (current < 0 ? Math.PI : 0);
+      }
       updateVisible();
-      outsideOfBlackBoxProperty.value = !charge.circuitElement.insideTrueBlackBoxProperty.get();
+      outsideOfBlackBoxProperty.set( !charge.circuitElement.insideTrueBlackBoxProperty.get() );
     };
     charge.angleProperty.link( updateTransform );
     charge.positionProperty.link( updateTransform );
