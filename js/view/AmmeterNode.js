@@ -31,7 +31,6 @@ define( function( require ) {
   // strings
   var questionMarkString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/questionMark' );
   var currentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/current' );
-  var ampereUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ampereUnits' );
 
   // constants
   // measurements for the cubic curve for the wire nodes
@@ -77,7 +76,7 @@ define( function( require ) {
       // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
       return current === null ? questionMarkString :
              Math.abs( current ) > max ? maxString :
-             CircuitConstructionKitCommonUtil.createAmpereReadout( ampereUnitsString, current );
+             CircuitConstructionKitCommonUtil.createCurrentReadout( current );
     } );
 
     var probeTextNode = new ProbeTextNode( currentReadoutProperty, options.showResultsProperty, currentString, tandem.createTandem( 'probeTextNode' ), {

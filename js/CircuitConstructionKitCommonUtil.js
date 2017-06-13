@@ -14,6 +14,10 @@ define( function( require ) {
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Util = require( 'DOT/Util' );
 
+  // strings
+  var ampereUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ampereUnits' );
+  var voltageUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageUnits' );
+
   /**
    * @constructor
    */
@@ -40,22 +44,22 @@ define( function( require ) {
 
     /**
      * Returns a string that adjusts its ampere value.
-     * @param ampereString {string} - string that needs at least one placeholder
-     * @param value {number} - ampere value
-     * @returns {*|string}
+     * @param value {number} - number of Amps
+     * @returns {string}
      */
-    createAmpereReadout: function( ampereString, value ) {
-      return StringUtils.fillIn( ampereString, { ampere: Util.toFixed( Math.abs( value ), 2 ) } );
+    createCurrentReadout: function( value ) {
+
+      // Show 3 decimal places so that current can still be seen with a glowing high-resistance bulb
+      return StringUtils.fillIn( ampereUnitsString, { ampere: Util.toFixed( Math.abs( value ), 3 ) } );
     },
 
     /**
      * Returns a string that adjusts its voltage value.
-     * @param ampereString {string} - string that needs at least one placeholder
-     * @param value {number} - voltage value
-     * @returns {*|string}
+     * @param value {number} - voltage value in Volts
+     * @returns {string}
      */
-    createVoltageReadout: function( ampereString, value ) {
-      return StringUtils.fillIn( ampereString, { voltage: Util.toFixed( Math.abs( value ), 2 ) } );
+    createVoltageReadout: function( value ) {
+      return StringUtils.fillIn( voltageUnitsString, { voltage: Util.toFixed( Math.abs( value ), 2 ) } );
     }
   } );
 } );

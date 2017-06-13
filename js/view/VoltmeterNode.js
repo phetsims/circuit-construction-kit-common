@@ -29,7 +29,6 @@ define( function( require ) {
 
   // strings
   var questionMarkString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/questionMark' );
-  var voltageUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageUnits' );
   var voltageString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltage' );
 
   // constants
@@ -78,7 +77,7 @@ define( function( require ) {
 
     // Displays the voltage reading
     var voltageReadoutProperty = new DerivedProperty( [ voltmeter.voltageProperty ], function( voltage ) {
-      return voltage === null ? questionMarkString : CircuitConstructionKitCommonUtil.createVoltageReadout( voltageUnitsString, voltage );
+      return voltage === null ? questionMarkString : CircuitConstructionKitCommonUtil.createVoltageReadout( voltage );
     } );
 
     var probeTextNode = new ProbeTextNode( voltageReadoutProperty, options.showResultsProperty, voltageString, tandem.createTandem( 'probeTextNode' ), {

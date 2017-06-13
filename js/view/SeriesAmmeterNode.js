@@ -23,7 +23,6 @@ define( function( require ) {
 
   // strings
   var currentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/current' );
-  var ampereUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ampereUnits' );
 
   // constants
   var PANEL_HEIGHT = 40;
@@ -65,7 +64,7 @@ define( function( require ) {
 
       // The ammeter doesn't indicate direction
       current = Math.abs( current );
-      var currentText = ( current < 1E-10 ) ? '' : CircuitConstructionKitCommonUtil.createAmpereReadout( ampereUnitsString, current );
+      var currentText = ( current < 1E-10 ) ? '' : CircuitConstructionKitCommonUtil.createCurrentReadout( current );
       readoutText.setText( currentText );
 
       // Center the text in the panel
