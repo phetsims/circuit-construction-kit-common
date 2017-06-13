@@ -30,7 +30,7 @@ define( function( require ) {
       if ( timeScale < 0.01 ) {
         fixed = '< 1';
       }
-      self.setText( StringUtils.format( animationSpeedLimitString, fixed ) );
+      self.setText( StringUtils.fillIn( animationSpeedLimitString, { percent: fixed } ) );
 
       // Only show the throttling message if the speed is less than 100% and charges are visible
       self.visible = isThrottled && showCurrent && exploreScreenRunning;
