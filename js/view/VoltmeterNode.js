@@ -80,7 +80,7 @@ define( function( require ) {
 
     // Displays the voltage reading
     var voltageReadoutProperty = new DerivedProperty( [ voltmeter.voltageProperty ], function( voltage ) {
-      return voltage === null ? questionMarkString : CCKUtil.createMeasurementReadout( voltageUnitsString, 'voltage', voltage, 2 );
+      return voltage === null ? questionMarkString : CCKUtil.createVoltageReadout( voltageUnitsString, voltage );
     } );
 
     var probeTextNode = new ProbeTextNode( voltageReadoutProperty, options.showResultsProperty, voltageString, tandem.createTandem( 'probeTextNode' ), {

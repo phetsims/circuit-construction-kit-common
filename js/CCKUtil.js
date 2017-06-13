@@ -39,17 +39,23 @@ define( function( require ) {
     },
 
     /**
-     * Returns a string that adjusts its value based on the key and value associated with it.
-     * @param unitsString {string} - string that needs at least one placeholder
-     * @param unit {string} - to be used as a key in an object literal
-     * @param value {number} - value to be the value associated with the key and displayed in the returned string
-     * @param decimalPlace {number} - determines how many decimal places will be shown in readout
+     * Returns a string that adjusts its ampere value.
+     * @param ampereString {string} - string that needs at least one placeholder
+     * @param value {number} - ampere value
      * @returns {*|string}
      */
-    createMeasurementReadout: function( unitsString, unit, value, decimalPlace ) {
-      var readout = {};
-      readout[ unit ] = Util.toFixed( Math.abs( value ), decimalPlace );
-      return StringUtils.fillIn( unitsString, readout );
+    createAmpereReadout: function( ampereString, value ) {
+      return StringUtils.fillIn( ampereString, { ampere: Util.toFixed( Math.abs( value ), 2 ) } );
+    },
+
+    /**
+     * Returns a string that adjusts its voltage value.
+     * @param ampereString {string} - string that needs at least one placeholder
+     * @param value {number} - voltage value
+     * @returns {*|string}
+     */
+    createVoltageReadout: function( ampereString, value ) {
+      return StringUtils.fillIn( ampereString, { voltage: Util.toFixed( Math.abs( value ), 2 ) } );
     }
 
   } );
