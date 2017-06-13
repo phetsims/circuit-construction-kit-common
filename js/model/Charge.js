@@ -44,22 +44,22 @@ define( function( require ) {
     // @private - whether the charge has been disposed to aid in debugging
     this.deleted = false;
 
-    // @public (read-only) - the distance the charge has traveled in its CircuitElement
+    // @public (read-only) {NumberProperty} - the distance the charge has traveled in its CircuitElement
     this.distanceProperty = new NumberProperty( distance );
 
-    // @public (read-only) - To improve performance, disable updating while the position of the charge is changed many
+    // @public (read-only) {BooleanProperty} - To improve performance, disable updating while the position of the charge is changed many
     // times during the update step.
     this.updatingPositionProperty = new BooleanProperty( true );
 
-    // @public (read-only) - the 2d position of the charge
+    // @public (read-only) {Property.<Vector2>} - the 2d position of the charge
     this.positionProperty = new Property( new Vector2() );
 
-    // @public (read-only) - the angle of the charge (for showing arrows)
-    this.angleProperty = new Property();
+    // @public (read-only) {NumberProperty} - the angle of the charge (for showing arrows)
+    this.angleProperty = new NumberProperty( 0 );
 
-    // @public (read-only) - true if the Charge is on the right hand side of a light bulb and hence must be layered
+    // @public (read-only) {BooleanProperty} - true if the Charge is on the right hand side of a light bulb and hence must be layered
     // in front of the socket node.
-    this.onRightHandSideOfLightBulbProperty = new Property( false );
+    this.onRightHandSideOfLightBulbProperty = new BooleanProperty( false );
 
     // When the distance or updating properties change, update the 2d position of the charge
     var multilink = Property.multilink( [ this.distanceProperty, this.updatingPositionProperty ], function( distance, updating ) {

@@ -36,7 +36,7 @@ define( function( require ) {
     }, options );
     FixedLengthCircuitElement.call( this, startVertex, endVertex, BATTERY_LENGTH, BATTERY_LENGTH, tandem, options );
 
-    // @public (read-only) the voltage of the battery
+    // @public (read-only) {NumberProperty} the voltage of the battery
     this.voltageProperty = new NumberProperty( options.voltage );
 
     // @public (read-only) the internal resistance of the battery

@@ -118,7 +118,7 @@ define( function( require ) {
     // @private (read-only) a running average over last time steps
     this.timeScaleRunningAverage = new RunningAverage( 30 );
 
-    // @public (read-only)
+    // @public (read-only) {NumberProperty}
     this.timeScaleProperty = new NumberProperty( 1, { range: { min: 0, max: 1 } } ); // 1 is full speed, 0.5 is running at half speed, etc.
   }
 

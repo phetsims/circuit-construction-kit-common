@@ -28,8 +28,8 @@ define( function( require ) {
 
     Meter.call( this, tandem );
 
-    // @public (read-only) {Property.<number|null>} the full-precision reading on the ammeter. It will be formatted for display in
-    // the view.  Null means the ammeter is not on a wire.
+    // @public (read-only) {Property.<number|null>} the full-precision reading on the ammeter. It will be formatted for
+    // display in the view.  Null means the ammeter is not on a wire.
     this.currentProperty = new Property( null, {
       tandem: tandem.createTandem( 'currentProperty' ),
       phetioValueType: TNumber( { units: 'amperes' } )
