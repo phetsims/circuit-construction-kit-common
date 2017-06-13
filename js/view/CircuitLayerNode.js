@@ -229,14 +229,15 @@ define( function( require ) {
 
     // When the screen is resized, move all vertices into view.
     this.visibleBoundsProperty.link( function( visibleBounds ) {
+
+      // Get the bounds in the CircuitLayerNode coordinate frame
+      var localBounds = self.parentToLocalBounds( visibleBounds );
       for ( var i = 0; i < circuit.vertices.length; i++ ) {
         var vertex = circuit.vertices.get( i );
-        if ( !visibleBounds.containsPoint( vertex.positionProperty.get() ) ) {
-          var closestPoint = visibleBounds.getClosestPoint(
-            vertex.positionProperty.get().x,
-            vertex.positionProperty.get().y
-          );
-          var delta = closestPoint.minus( vertex.positionProperty.get() );
+        var position = vertex.positionProperty.get();
+        if ( !localBounds.containsPoint( position ) ) {
+          var closestPoint = localBounds.getClosestPoint( position.x, position.y );
+          var delta = closestPoint.minus( position );
 
           // Find all vertices connected by fixed length nodes.
           var vertices = circuit.findAllFixedVertices( vertex );
