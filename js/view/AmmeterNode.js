@@ -102,7 +102,8 @@ define( function( require ) {
 
       // Add a decoration on the handle to match the color scheme
       children: [
-        new Rectangle( 0, 52, HANDLE_WIDTH * 0.72, 19, 6, 6, {
+        new Rectangle( 0, 52, HANDLE_WIDTH * 0.72, 19, {
+          cornerRadius: 6,
           centerX: 0,
           fill: '#e79547' // Match the orange of the ammeter image
         } )

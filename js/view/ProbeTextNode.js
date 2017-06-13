@@ -43,8 +43,11 @@ define( function( require ) {
       tandem: tandem.createTandem( 'readoutText' )
     } );
 
-    var textBox = new Rectangle( 0, 0, TEXT_BOX_WIDTH, 52, 10, 10, {
-      lineWidth: 2, stroke: 'black', fill: 'white'
+    var textBox = new Rectangle( 0, 0, TEXT_BOX_WIDTH, 52, {
+      cornerRadius: 10,
+      lineWidth: 2,
+      stroke: 'black',
+      fill: 'white'
     } );
 
     textProperty.link( function( text ) {

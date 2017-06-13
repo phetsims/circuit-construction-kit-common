@@ -20,7 +20,7 @@ define( function( require ) {
   var Panel = require( 'SUN/Panel' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
-  
+
   // strings
   var currentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/current' );
   var ampereUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ampereUnits' );
@@ -30,6 +30,7 @@ define( function( require ) {
   var PANEL_WIDTH = CircuitConstructionKitConstants.SERIES_AMMETER_LENGTH;
   var ORANGE = '#f39033';
   var WIDEST_LABEL = '99.99 A';
+  var CORNER_RADIUS = 4;
 
   /**
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
@@ -79,7 +80,8 @@ define( function( require ) {
     var readoutPanel = new Panel( new VBox( {
       children: [
         new Text( currentString, { fontSize: 12, maxWidth: 54 } ),
-        new Rectangle( 0, 0, maxWidth + textPanelMarginX * 2, maxHeight + textPanelMarginY * 2, 4, 4, {
+        new Rectangle( 0, 0, maxWidth + textPanelMarginX * 2, maxHeight + textPanelMarginY * 2, {
+          cornerRadius: 4,
           stroke: 'black',
           fill: 'white',
           lineWidth: 0.75,
@@ -103,7 +105,7 @@ define( function( require ) {
      * @returns {Rectangle}
      */
     var createPanel = function( options ) {
-      return new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, 4, 4, options );
+      return new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, options );
     };
 
     // This node only has a lifelike representation because it is a sensor
@@ -111,7 +113,7 @@ define( function( require ) {
       children: [
 
         // orange background panel
-        createPanel( { fill: ORANGE } ),
+        createPanel( { cornerRadius: CORNER_RADIUS, fill: ORANGE } ),
 
         // gray track
         new Rectangle( 0, 0, PANEL_WIDTH, 20, {
@@ -121,6 +123,7 @@ define( function( require ) {
 
         // black border
         createPanel( {
+          cornerRadius: CORNER_RADIUS,
           stroke: '#231f20',
           lineWidth: 2.4
         } )

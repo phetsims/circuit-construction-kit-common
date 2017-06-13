@@ -54,9 +54,8 @@ define( function( require ) {
       var leftSegmentNode = new Rectangle( 0,
         -thickness / 2,
         CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_START,
-        thickness,
-        edgeRadius,
-        edgeRadius, {
+        thickness, {
+          cornerRadius: edgeRadius,
           fill: fill,
           stroke: 'black',
           lineWidth: 1
