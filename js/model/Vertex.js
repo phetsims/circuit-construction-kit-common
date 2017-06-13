@@ -93,7 +93,7 @@ define( function( require ) {
     // view must be updated
     this.relayerEmitter = new Emitter();
 
-    // @public - added by Circuit.js so that listeners can be removed when vertices are removed
+    // @public {function} - added by Circuit.js so that listeners can be removed when vertices are removed
     this.vertexSelectedPropertyListener = null;
 
     // Tandem.addInstance is not necessary because all of the sub-properties are already tracked, we do not need to

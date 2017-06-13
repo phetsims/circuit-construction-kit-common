@@ -167,7 +167,7 @@ define( function( require ) {
       options
     );
 
-    // @private (read-only) {Node}
+    // @private (read-only) {boolean} - whether to show as an icon
     this.icon = options.icon;
 
     // @private

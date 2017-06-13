@@ -37,6 +37,7 @@ define( function( require ) {
 
     var self = this;
 
+    // @public (read-only) - the tail of the Tandem for creating associated Tandems
     this.tandemName = tandem.tail;
 
     // @public (read-only) {number} unique identifier for looking up corresponding views
@@ -73,7 +74,7 @@ define( function( require ) {
     // the interface or outside of the black box
     this.insideTrueBlackBoxProperty = new BooleanProperty( false );
 
-    // @public - true if the charge layout must be updated
+    // @public {boolean} - true if the charge layout must be updated
     this.chargeLayoutDirty = true;
 
     // @public (read-only) {Emitter} - indicate when this CircuitElement has been connected to another CircuitElement
@@ -134,9 +135,10 @@ define( function( require ) {
     this.startVertexProperty.lazyLink( linkVertex );
     this.endVertexProperty.lazyLink( linkVertex );
 
-    // @private - for debugging
+    // @private {boolean} - for debugging
     this.disposed = false;
 
+    // @private {function} - for disposal
     this.disposeCircuitElement = function() {
       assert && assert( !self.disposed, 'Was already disposed' );
       self.disposed = true;

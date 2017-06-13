@@ -34,8 +34,7 @@ define( function( require ) {
       phetioValueType: TVector2
     } );
 
-    // @public {Property.<boolean>} When the meter is dragged from the toolbox, all pieces drag together as
-    // a single unit.
+    // @public {Property.<boolean>} When the meter is dragged from the toolbox, all pieces drag together.
     this.draggingProbesWithBodyProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'draggingProbesWithBodyProperty' )
     } );

@@ -41,7 +41,7 @@ define( function( require ) {
     // @public (read-only) {CircuitElement} - the CircuitElement the Charge is in, changed by Charge.setLocation
     this.circuitElement = circuitElement;
 
-    // @private - whether the charge has been disposed to aid in debugging
+    // @private (read-only) {boolean} - whether the charge has been disposed, to aid in debugging
     this.deleted = false;
 
     // @public (read-only) {NumberProperty} - the distance the charge has traveled in its CircuitElement in view coordinates
@@ -85,13 +85,12 @@ define( function( require ) {
     // @public (read-only) {Emitter} send notifications when the charge is disposed, so the view can be disposed.
     this.disposeEmitter = new Emitter();
 
+    // @public (read-only) {function} for disposal
     this.disposeCharge = function() {
-
       assert && assert( !self.deleted, 'cannot delete twice' );
       multilink.dispose();
       self.deleted = true;
       self.disposeEmitter.emit();
-
       self.disposeEmitter.removeAllListeners();
     };
   }

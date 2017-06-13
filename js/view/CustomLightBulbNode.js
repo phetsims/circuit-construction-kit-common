@@ -46,7 +46,7 @@ define( function( require ) {
 
     var selectedSocketImage = options.highResistance ? highResistanceSocketImage : socketImage;
 
-    // @private
+    // @private {Image}
     self.backNode = new Image( options.baseOnly ? selectedSocketImage : backImage, {
       scale: BULB_IMAGE_SCALE,
       centerX: 0,

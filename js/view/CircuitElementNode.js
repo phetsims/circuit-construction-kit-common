@@ -29,8 +29,8 @@ define( function( require ) {
     // @public (read-only) {CircuitElement} - the CircuitElement rendered by this node
     this.circuitElement = circuitElement;
 
-    // @public
-    this.inputListener = null; // Supplied by subclasses
+    // @public {Object} - Supplied by subclasses // TODO: but why?
+    this.inputListener = null;
 
     options = _.extend( {
 
@@ -54,7 +54,7 @@ define( function( require ) {
       }
     } );
 
-    // @private
+    // @private {function[]}
     this.disposeActions = [];
 
     this.updateOpacityOnInteractiveChange();
@@ -68,7 +68,7 @@ define( function( require ) {
       self.inputListener.startDrag( event );
     };
 
-    // @private - for disposal
+    // @private {function} - for disposal
     this.disposeCircuitElementNode = function() {
 
       // remove the keyboard listener

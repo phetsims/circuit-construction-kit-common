@@ -84,9 +84,7 @@ define( function( require ) {
 
     // When the current type changes, mark everything as dirty and relayout charges
     this.currentTypeProperty.lazyLink( function() {
-      self.circuitElements.forEach( function( circuitElement ) {
-        circuitElement.chargeLayoutDirty = true;
-      } );
+      self.circuitElements.forEach( function( circuitElement ) { circuitElement.chargeLayoutDirty = true; } );
       self.layoutChargesInDirtyCircuitElements();
     } );
 
@@ -95,10 +93,10 @@ define( function( require ) {
       tandem: tandem.createTandem( 'showCurrentProperty' )
     } );
 
-    // @private - create the charges in new circuits
+    // @private {ChargeLayout} - create the charges in new circuits
     this.chargeLayout = new ChargeLayout( this );
 
-    // @private - move the charges with speed proportional to current
+    // @private {ChargeAnimator} - move the charges with speed proportional to current
     this.chargeAnimator = new ChargeAnimator( this );
 
     // Re-solve the circuit when voltages or resistances change.
@@ -159,14 +157,14 @@ define( function( require ) {
       charge.dispose();
     } );
 
-    // After the circuit physics is recomputed in solve(), some listeners need to update themselves, such as
+    // @public (read-only) {Emitter} After the circuit physics is recomputed in solve(), some listeners need to update themselves, such as
     // the voltmeter and ammeter
     this.circuitChangedEmitter = new Emitter();
 
-    // Some actions only take place after an item has been dropped
+    // @public (read-only) {Emitter} - Some actions only take place after an item has been dropped
     this.vertexDroppedEmitter = new Emitter();
 
-    // This Emitter signifies that a component has been modified (for example, with the CircuitElementEditPanel)
+    // @public (read-only) {Emitter} - signifies that a component has been modified (for example, with the CircuitElementEditPanel)
     this.componentEditedEmitter = new Emitter();
 
     var emitCircuitChanged = function() {
@@ -223,7 +221,7 @@ define( function( require ) {
       }
     } );
 
-    // Actions that will be invoked during the step function
+    // @private {Function[]} - Actions that will be invoked during the step function
     this.stepActions = [];
 
     // When any vertex is dropped, check it and its neighbors for overlap.  If any overlap, move them apart.

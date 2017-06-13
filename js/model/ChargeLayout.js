@@ -20,7 +20,7 @@ define( function( require ) {
    */
   function ChargeLayout( circuit ) {
 
-    // @private
+    // @private {Circuit}
     this.circuit = circuit;
   }
 

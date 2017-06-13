@@ -36,7 +36,7 @@ define( function( require ) {
 
     var self = this;
 
-    // @private - animation for the zoom level
+    // @private {EaseAnimation} - animation for the zoom level
     this.zoomAnimation = null;
 
     // @public (read-only) {Circuit} - contains CircuitElements, Vertices, etc.

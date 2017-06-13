@@ -38,6 +38,8 @@ define( function( require ) {
    */
   function WireNode( circuitConstructionKitScreenView, circuitLayerNode, wire, showResultsProperty, viewProperty, tandem ) {
     var self = this;
+
+    // @public (read-only) {Wire}
     this.wire = wire;
 
     var highlightNode = new Path( null, {
@@ -119,7 +121,7 @@ define( function( require ) {
     // @private
     this.lineNodeParent = lineNodeParent;
 
-    // @private
+    // @private {Line}
     this.lineNode = lineNode;
     var circuit = circuitLayerNode && circuitLayerNode.circuit;
     CircuitElementNode.call( this, wire, circuit, {

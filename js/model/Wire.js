@@ -66,7 +66,7 @@ define( function( require ) {
     // When resistivity changes, update the resistance
     this.resistivityProperty.link( updateWire );
 
-    // @private - for disposal
+    // @private {function} - for disposal
     this.disposeWire = function() {
       self.vertexMovedEmitter.removeListener( updateWire );
     };

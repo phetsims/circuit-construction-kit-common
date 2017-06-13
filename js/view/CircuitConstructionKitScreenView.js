@@ -63,6 +63,8 @@ define( function( require ) {
    */
   function CircuitConstructionKitScreenView( circuitConstructionKitModel, tandem, options ) {
     var self = this;
+
+    // @public (read-only) {CircuitConstructionKitModel}
     this.circuitConstructionKitModel = circuitConstructionKitModel;
 
     options = _.extend( {
@@ -87,9 +89,6 @@ define( function( require ) {
       showResistivityControl: true,
       showBatteryResistanceControl: true
     }, options );
-
-    // @public - the main model
-    this.circuitConstructionKitModel = circuitConstructionKitModel;
 
     ScreenView.call( this );
 
@@ -187,7 +186,7 @@ define( function( require ) {
     );
     this.addChild( chargeSpeedThrottlingReadoutNode );
 
-    // @protected - so that subclasses can add a layout circuit element near it
+    // @protected {SensorToolbox} - so that subclasses can add a layout circuit element near it
     this.sensorToolbox = new SensorToolbox(
       CONTROL_PANEL_ALIGN_GROUP,
       this.circuitLayerNode,
@@ -198,10 +197,10 @@ define( function( require ) {
       options.showSeriesAmmeters,
       tandem.createTandem( 'sensorToolbox' ) );
 
-    // @private
+    // @private {ViewRadioButtonGroup}
     this.viewRadioButtonGroup = new ViewRadioButtonGroup( circuitConstructionKitModel.viewProperty, tandem.createTandem( 'viewRadioButtonGroup' ) );
 
-    // @protected
+    // @protected {DisplayOptionsPanel}
     this.displayOptionsPanel = new DisplayOptionsPanel(
       CONTROL_PANEL_ALIGN_GROUP,
       circuitConstructionKitModel.circuit.showCurrentProperty,
@@ -211,12 +210,12 @@ define( function( require ) {
       tandem.createTandem( 'displayOptionsPanel' )
     );
 
-    // @private
+    // @private {WireResistivityControl}
     this.wireResistivityControl = new WireResistivityControl( circuitConstructionKitModel.circuit.wireResistivityProperty,
       CONTROL_PANEL_ALIGN_GROUP,
       tandem.createTandem( 'wireResistivityControl' ) );
 
-    // @private
+    // @private {BatteryResistanceControl}
     this.batteryResistanceControl = new BatteryResistanceControl( circuitConstructionKitModel.circuit.batteryResistanceProperty,
       CONTROL_PANEL_ALIGN_GROUP,
       tandem.createTandem( 'batteryResistanceControl' ) );
@@ -250,7 +249,7 @@ define( function( require ) {
       tandem.createTandem( 'circuitElementEditContainerPanel' )
     );
 
-    // @protected - so the subclass can set the layout
+    // @protected {CircuitElementEditContainerPanel} - so the subclass can set the layout
     this.circuitElementEditContainerPanel = circuitElementEditContainerPanel;
 
     this.addChild( circuitElementEditContainerPanel );

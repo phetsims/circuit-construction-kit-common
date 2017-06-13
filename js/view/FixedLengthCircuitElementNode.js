@@ -62,8 +62,8 @@ define( function( require ) {
     };
     viewProperty.link( viewPropertyListener );
 
-    // Flag to indicate when updating view is necessary, in order to avoid duplicate work when both vertices move
-    // @private
+    // @private {boolean} - Flag to indicate when updating view is necessary, in order to avoid duplicate work when both
+    // vertices move
     this.dirty = true;
 
     // Add highlight (but not for icons)

@@ -57,7 +57,7 @@ define( function( require ) {
     var children = [ numberControl ];
     circuitElement.canBeDroppedInToolbox && children.push( trashButton );
 
-    // @private - for disposal
+    // @private {function} - for disposal
     this.disposeCircuitElementEditPanel = function() {
       numberControl.dispose();
       valueProperty.unlink( valuePropertyListener );
