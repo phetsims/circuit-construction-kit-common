@@ -846,21 +846,25 @@ define( function( require ) {
       var candidateVertices = this.vertices.getArray().filter( function( candidateVertex ) {
         return !self.isVertexAdjacent( vertex, candidateVertex );
       } );
+      if ( candidateVertices.length === 0 ) {return null;}  // Avoid additional work if possible to improve performance
 
       // (2) A vertex cannot connect to itself
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
         return candidateVertex !== vertex;
       } );
+      if ( candidateVertices.length === 0 ) {return null;}
 
       // (3) a vertex must be within SNAP_RADIUS (screen coordinates) of the other vertex
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
         return vertex.unsnappedPositionProperty.get().distance( candidateVertex.positionProperty.get() ) < SNAP_RADIUS;
       } );
+      if ( candidateVertices.length === 0 ) {return null;}
 
       // (4) a vertex must be attachable. Some black box vertices are not attachable, such as vertices hidden in the box
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
         return candidateVertex.attachableProperty.get();
       } );
+      if ( candidateVertices.length === 0 ) {return null;}
 
       // (5) Reject any matches that result in circuit elements sharing a pair of vertices, which would cause
       // the wires to lay across one another (one vertex was already shared)
@@ -880,6 +884,7 @@ define( function( require ) {
         }
         return true;
       } );
+      if ( candidateVertices.length === 0 ) {return null;}
 
       // (6) a vertex cannot be connected to its own fixed subgraph (no wire)
       var fixedVertices = this.findAllFixedVertices( vertex );
@@ -891,6 +896,7 @@ define( function( require ) {
         }
         return true;
       } );
+      if ( candidateVertices.length === 0 ) {return null;}
 
       // (7) a wire vertex cannot connect if its neighbor is already proposing a connection
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
@@ -914,6 +920,7 @@ define( function( require ) {
         }
         return true;
       } );
+      if ( candidateVertices.length === 0 ) {return null;}
 
       // (8) a wire vertex cannot double connect to an object, creating a tiny short circuit
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
@@ -964,18 +971,13 @@ define( function( require ) {
           return !candidateVertex.outerWireStub;
         } );
       }
+      if ( candidateVertices.length === 0 ) {return null;}
 
-      if ( candidateVertices.length === 0 ) {
-        return null;
-      }
-      else {
-
-        // Find the closest match
-        var sorted = _.sortBy( candidateVertices, function( candidateVertex ) {
-          return vertex.unsnappedPositionProperty.get().distance( candidateVertex.positionProperty.get() );
-        } );
-        return sorted[ 0 ];
-      }
+      // Find the closest match
+      var sorted = _.sortBy( candidateVertices, function( candidateVertex ) {
+        return vertex.unsnappedPositionProperty.get().distance( candidateVertex.positionProperty.get() );
+      } );
+      return sorted[ 0 ];
     },
 
     /**
