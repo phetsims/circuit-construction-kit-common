@@ -189,8 +189,9 @@ define( function( require ) {
         var charge = this.charges.get( indices[ i ] );
 
         // No need to update charges in chargeLayoutDirty circuit elements, they will be replaced anyways.  Skipping
-        // chargeLayoutDirty circuitElements improves performance
-        if ( !charge.circuitElement.chargeLayoutDirty ) {
+        // chargeLayoutDirty circuitElements improves performance.  Also, only update electrons in circuit elements
+        // that have a current (to improve performance)
+        if ( !charge.circuitElement.chargeLayoutDirty && Math.abs( charge.circuitElement.currentProperty.get() ) >= MIN_CURRENT ) {
           this.equalizeCharge( charge, dt );
         }
       }
