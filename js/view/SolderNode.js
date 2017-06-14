@@ -58,7 +58,7 @@ define( function( require ) {
     circuit.circuitElements.addItemRemovedListener( updateFill );
 
     var updateSolderNodePosition = function( position ) {
-      dottedLineNode.center = position;
+      dottedLineNode.translation = position;
     };
     vertex.positionProperty.link( updateSolderNodePosition );
 
