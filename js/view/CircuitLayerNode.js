@@ -157,6 +157,7 @@ define( function( require ) {
           if ( circuitElement instanceof FixedLengthCircuitElement && !(circuitElement instanceof SeriesAmmeter) ) {
             var valueNode = new ValueNode(
               circuitElement,
+              self.circuitConstructionKitModel.showValuesProperty,
               tandem.createTandem( circuitElement.tandemName ).createTandem( 'valueNode' )
             );
             // self.valueLayer.addChild( valueNode );
