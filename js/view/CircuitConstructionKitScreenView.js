@@ -469,11 +469,11 @@ define( function( require ) {
       var self = this;
 
       // Search from the front to the back, because frontmost objects look like they are hitting the sensor, see #143
-      var wireNodes = this.circuitLayerNode.circuit.circuitElements.filter( function( circuitElement ) {
+      var wireNodes = this.circuitLayerNode.circuit.circuitElements.getArray().filter( function( circuitElement ) {
         return circuitElement instanceof Wire;
       } ).map( function( wire ) {
         return self.circuitLayerNode.getCircuitElementNode( wire );
-      } ).getArray();
+      } );
 
       for ( var i = wireNodes.length - 1; i >= 0; i-- ) {
         var wireNode = wireNodes[ i ];

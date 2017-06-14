@@ -561,8 +561,8 @@ define( function( require ) {
         }, circuitElement.attributesToStateObject() );
       };
 
-      var batteries = this.circuitElements.filter( function( b ) {return b instanceof Battery;} ).getArray();
-      var resistors = this.circuitElements.filter( function( b ) {return !(b instanceof Battery);} ).getArray();
+      var batteries = this.circuitElements.getArray().filter( function( b ) {return b instanceof Battery;} );
+      var resistors = this.circuitElements.getArray().filter( function( b ) {return !(b instanceof Battery);} );
 
       // introduce a synthetic vertex for each battery to model internal resistance
       var resistorAdapters = resistors.map( toStateObject );
@@ -819,9 +819,9 @@ define( function( require ) {
      * @public
      */
     findAllFixedVertices: function( vertex, okToVisit ) {
-      var fixedCircuitElements = this.circuitElements.filter( function( circuitElement ) {
+      var fixedCircuitElements = this.circuitElements.getArray().filter( function( circuitElement ) {
         return circuitElement instanceof FixedLengthCircuitElement;
-      } ).getArray();
+      } );
       return this.searchVertices( vertex, fixedCircuitElements, okToVisit || function() {return true;} );
     },
 
@@ -1007,12 +1007,12 @@ define( function( require ) {
        * @returns {Array}
        */
       var getArray = function( circuitElements ) {
-        return circuitElements.map( function( element ) {
+        return circuitElements.getArray().map( function( element ) {
           return _.extend( {
             startVertex: getVertexIndex( element.startVertexProperty.get() ),
             endVertex: getVertexIndex( element.endVertexProperty.get() )
           }, element.attributesToStateObject() );
-        } ).getArray();
+        } );
       };
       return {
 
@@ -1023,7 +1023,7 @@ define( function( require ) {
         lightBulbs: getArray( this.circuitElements.filter( function( c ) {return c instanceof LightBulb;} ) ),
         resistors: getArray( this.circuitElements.filter( function( c ) {return c instanceof Resistor;} ) ),
         switches: getArray( this.circuitElements.filter( function( c ) {return c instanceof Switch;} ) ),
-        vertices: this.vertices.map( function( vertex ) {
+        vertices: this.vertices.getArray().map( function( vertex ) {
           return {
             x: vertex.positionProperty.get().x,
             y: vertex.positionProperty.get().y,
@@ -1032,7 +1032,7 @@ define( function( require ) {
               draggable: vertex.draggableProperty.get()
             }
           };
-        } ).getArray()
+        } )
       };
     },
 
