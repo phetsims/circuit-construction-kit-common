@@ -238,7 +238,9 @@ define( function( require ) {
       dottedLineNode.translation = position;
       highlightNode.translation = position; // TODO: perhaps don't update the position while it is invisible?
       updateReadoutTextLocation && updateReadoutTextLocation(); // TODO: eliminate this node
-      updateCutButtonPosition();
+
+      // Update the cut button position, but only if the cut button is showing (to save on CPU)
+      vertex.selectedProperty.get() && updateCutButtonPosition();
     };
     vertex.positionProperty.link( updateVertexNodePosition );
 
