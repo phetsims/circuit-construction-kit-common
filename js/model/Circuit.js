@@ -513,9 +513,9 @@ define( function( require ) {
      * @public
      */
     getNeighborCircuitElements: function( vertex ) {
-      return this.circuitElements.filter( function( circuitElement ) {
+      return this.circuitElements.getArray().filter( function( circuitElement ) {
         return circuitElement.containsVertex( vertex );
-      } ).getArray();
+      } );
     },
 
     /**
