@@ -147,7 +147,7 @@ define( function( require ) {
       circuitLayerNode.circuit.selectedCircuitElementProperty.link( updateHighlightVisibility );
 
       if ( circuitElement instanceof Battery || circuitElement instanceof Resistor ) {
-        this.fireNode = new Image( fireImage, { pickable: false, opacity: 0.95 } );
+        this.fireNode = new Image( fireImage, { pickable: false, imageOpacity: 0.95 } );
         this.fireNode.mutate( { scale: self.contentNode.width / this.fireNode.width } );
         this.addChild( this.fireNode );
 
