@@ -18,6 +18,7 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var Image = require( 'SCENERY/nodes/Image' );
   var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var Vector2 = require( 'DOT/Vector2' );
@@ -25,6 +26,11 @@ define( function( require ) {
 
   // constants
   var DISTANCE_TO_CUT_BUTTON = 70; // How far in view coordinates the cut button appears from the vertex node
+  var VERTEX_RADIUS = 16; // for hit testing with probes
+
+  // rasters
+  var BLACK_CIRCLE = null; // {Image} - raster filled in by init() for WebGL
+  var RED_CIRCLE = null; // {Image} - raster filled in by init() for WebGL
 
   /**
    * @param {CircuitLayerNode} circuitLayerNode - the entire CircuitLayerNode
@@ -42,16 +48,8 @@ define( function( require ) {
     // @public (read-only) {Vector2} - added by CircuitLayerNode during dragging, used for relative drag location.
     this.startOffset = null;
 
-    // @public (read-only) {number} - for hit testing with probes
-    this.dottedLineNodeRadius = 16;
-
     // Start as a dotted line, becomes solid when connected to >1 element.
-    var dottedLineNode = new Circle( this.dottedLineNodeRadius, {
-      stroke: 'red',
-      lineWidth: 1.3,
-      lineDash: [ 6, 4 ],
-      cursor: 'pointer'
-    } );
+    var circleNode = new Image( RED_CIRCLE );
 
     // Highlight is shown when the vertex is selected.
     var highlightNode = new Circle( 30, {
@@ -63,8 +61,8 @@ define( function( require ) {
     // Shows up as red when disconnected or black when connected.  When unattachable, the dotted line disappears (black
     // box study)
     var updateStroke = function() {
-      dottedLineNode.stroke = circuit.countCircuitElements( vertex ) > 1 ? 'black' : 'red';
-      dottedLineNode.visible = vertex.attachableProperty.get();
+      circleNode.image = circuit.countCircuitElements( vertex ) > 1 ? BLACK_CIRCLE : RED_CIRCLE;
+      circleNode.visible = vertex.attachableProperty.get();
     };
 
     // Update when any vertex is added or removed, or when the existing circuit values change.
@@ -117,8 +115,9 @@ define( function( require ) {
     };
     vertex.relayerEmitter.addListener( updateMoveToFront );
     Node.call( this, {
-      children: [ dottedLineNode ],
-      tandem: tandem
+      children: [ circleNode ],
+      tandem: tandem,
+      cursor: 'pointer'
     } );
 
     var updatePickable = function( interactive ) { self.pickable = interactive; };
@@ -185,7 +184,7 @@ define( function( require ) {
     } );
 
     // Don't permit dragging by the scissors or highlight
-    dottedLineNode.addInputListener( dragHandler );
+    circleNode.addInputListener( dragHandler );
 
     // Use a query parameter to turn on node voltage readouts for debugging only.
     var vertexDisplay = CircuitConstructionKitQueryParameters.vertexDisplay;
@@ -197,8 +196,8 @@ define( function( require ) {
       } );
       this.addChild( voltageReadoutText );
       var updateReadoutTextLocation = function() {
-        voltageReadoutText.centerX = dottedLineNode.centerX;
-        voltageReadoutText.bottom = dottedLineNode.top - 10;
+        voltageReadoutText.centerX = circleNode.centerX;
+        voltageReadoutText.bottom = circleNode.top - 10;
       };
       vertex.voltageProperty.link( function( voltage ) {
         var voltageText = Util.toFixed( voltage, 3 ) + 'V';
@@ -235,7 +234,7 @@ define( function( require ) {
       cutButton.center = availableBounds.closestPointTo( proposedPosition );
     };
     var updateVertexNodePosition = function( position ) {
-      dottedLineNode.translation = position;
+      circleNode.setTranslation( position.x - RED_CIRCLE.width / 2, position.y - BLACK_CIRCLE.height / 2 );
       highlightNode.translation = position; // TODO: perhaps don't update the position while it is invisible?
       updateReadoutTextLocation && updateReadoutTextLocation(); // TODO: eliminate this node
 
@@ -276,6 +275,23 @@ define( function( require ) {
     dispose: function() {
       Node.prototype.dispose.call( this );
       this.disposeVertexNode();
+    }
+  }, {
+    VERTEX_RADIUS: VERTEX_RADIUS,
+    init: function( callback ) { // TODO: document all init methods
+      var CIRCLE_OPTIONS = {
+        stroke: 'red',
+        lineWidth: 1.3,
+        lineDash: [ 6, 4 ],
+      };
+      new Circle( VERTEX_RADIUS, CIRCLE_OPTIONS ).toImage( function( image ) {
+        RED_CIRCLE = image;
+
+        new Circle( VERTEX_RADIUS, CIRCLE_OPTIONS ).toImage( function( image ) {
+          BLACK_CIRCLE = image;
+          callback();
+        } );
+      } );
     }
   } );
 } );

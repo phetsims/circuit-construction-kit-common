@@ -36,6 +36,7 @@ define( function( require ) {
   var VBox = require( 'SCENERY/nodes/VBox' );
   var AlignBox = require( 'SCENERY/nodes/AlignBox' );
   var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
+  var VertexNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VertexNode' );
 
   // constants
   var VERTICAL_MARGIN = CircuitConstructionKitConstants.VERTICAL_MARGIN;
@@ -507,10 +508,11 @@ define( function( require ) {
     getVoltageConnection: function( probeNode, probePosition ) {
 
       // Check for intersection with a vertex
+      // TODO: this should check for intersection with solder
       for ( var i = 0; i < this.circuitLayerNode.vertexNodes.length; i++ ) {
         var vertexNode = this.circuitLayerNode.vertexNodes[ i ];
         var position = vertexNode.vertex.positionProperty.get();
-        var radius = vertexNode.dottedLineNodeRadius;
+        var radius = VertexNode.VERTEX_RADIUS;
 
         var distance = probePosition.distance( position );
         if ( distance <= radius ) {
