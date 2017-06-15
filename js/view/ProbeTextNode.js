@@ -73,6 +73,7 @@ define( function( require ) {
     // set the children
     options.children = [ new Text( title, {
       fontSize: 42,
+      maxWidth: 190,
       tandem: tandem.createTandem( 'titleText' )
     } ), new Node( {
       children: [ textBox, readout ]

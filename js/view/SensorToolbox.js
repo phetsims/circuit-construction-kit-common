@@ -104,8 +104,8 @@ define( function( require ) {
     }, createSeriesAmmeter );
 
     // Labels underneath the sensor tool nodes
-    var voltmeterText = new Text( voltmeterString );
-    var ammeterText = new Text( showSeriesAmmeters ? ammetersString : ammeterString );
+    var voltmeterText = new Text( voltmeterString, { maxWidth: 60 } );
+    var ammeterText = new Text( showSeriesAmmeters ? ammetersString : ammeterString, { maxWidth: 60 } );
 
     // Alter the visibility of the labels when the labels checkbox is toggled.
     showLabelsProperty.linkAttribute( voltmeterText, 'visible' );

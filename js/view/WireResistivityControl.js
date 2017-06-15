@@ -46,7 +46,7 @@ define( function( require ) {
      * @returns {Text} Text with the value of 'tiny' or 'lots'
      */
     var createLabel = function( min ) {
-      return new Text( min ? tinyString : lotsString, { fontSize: 12 } );
+      return new Text( min ? tinyString : lotsString, { fontSize: 12, maxWidth: 30 } );
     };
 
     slider.addMajorTick( 0, createLabel( true ) );
