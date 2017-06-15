@@ -97,10 +97,10 @@ define( function( require ) {
     };
     seriesAmmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / seriesAmmeterNodeIcon.width } );
     var seriesAmmeterToolNode = new CircuitElementToolNode( '', new Property( false ), circuitLayerNode, seriesAmmeterNodeIcon, 6, function() {
-      return circuitLayerNode.circuit.circuitElements.filter( function( circuitElement ) {
+      return circuitLayerNode.circuit.circuitElements.count( function( circuitElement ) {
 
         return circuitElement instanceof SeriesAmmeter;
-      } ).length;
+      } );
     }, createSeriesAmmeter );
 
     // Labels underneath the sensor tool nodes

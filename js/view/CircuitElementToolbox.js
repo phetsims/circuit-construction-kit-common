@@ -153,7 +153,7 @@ define( function( require ) {
      */
     var createCounter = function( predicate ) {
       return function() {
-        return circuit.circuitElements.filter( function( circuitElement ) {
+        return circuit.circuitElements.getArray().filter( function( circuitElement ) {
 
           // Count according to the predicate, but don't count elements inside the true black box
           return predicate( circuitElement ) && !circuitElement.insideTrueBlackBoxProperty.get();

@@ -84,7 +84,7 @@ define( function( require ) {
 
     // When the current type changes, mark everything as dirty and relayout charges
     this.currentTypeProperty.lazyLink( function() {
-      self.circuitElements.forEach( function( circuitElement ) { circuitElement.chargeLayoutDirty = true; } );
+      self.circuitElements.getArray().forEach( function( circuitElement ) { circuitElement.chargeLayoutDirty = true; } );
       self.layoutChargesInDirtyCircuitElements();
     } );
 
@@ -636,7 +636,7 @@ define( function( require ) {
         this.connect( oldVertex, targetVertex );
       }
       else {
-        this.circuitElements.forEach( function( circuitElement ) {
+        this.circuitElements.getArray().forEach( function( circuitElement ) {
           if ( circuitElement.containsVertex( oldVertex ) ) {
             circuitElement.replaceVertex( oldVertex, targetVertex );
             circuitElement.connectedEmitter.emit();
@@ -676,7 +676,7 @@ define( function( require ) {
      */
     layoutChargesInDirtyCircuitElements: function() {
       var self = this;
-      this.circuitElements.forEach( function( circuitElement ) {
+      this.circuitElements.getArray().forEach( function( circuitElement ) {
         self.chargeLayout.layoutCharges( circuitElement );
       } );
     },
@@ -997,6 +997,7 @@ define( function( require ) {
      * @public
      */
     toStateObject: function() {
+      console.log( 'I thought this code wasnt running!' );
       var self = this;
       var getVertexIndex = function( vertex ) {
         var vertexIndex = self.vertices.indexOf( vertex );

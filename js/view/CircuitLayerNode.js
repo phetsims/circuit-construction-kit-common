@@ -457,7 +457,7 @@ define( function( require ) {
 
       // paint dirty fixed length circuit element nodes.  This batches changes instead of applying multiple changes
       // per frame
-      this.circuit.circuitElements.forEach( function( circuitElement ) {
+      this.circuit.circuitElements.getArray().forEach( function( circuitElement ) {
         self.getCircuitElementNode( circuitElement ).step();
       } );
     },
