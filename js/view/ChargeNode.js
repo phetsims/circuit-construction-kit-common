@@ -25,19 +25,7 @@ define( function( require ) {
   // Copied from John Travoltage
   var MINUS_CHARGE_NODE = new ElectronChargeNode( { scale: ELECTRON_SCALE, top: 0, left: 0 } );
 
-  var ELECTRON_IMAGE_NODE = new Node();
-  MINUS_CHARGE_NODE.toImage( function( im ) {
-
-    // Scale back down so the image will be the desired size
-    var image = new Image( im, {
-      scale: 1.0 / ELECTRON_SCALE,
-      imageOpacity: 0.75// use imageOpacity for a significant performance boost, see https://github.com/phetsims/circuit-construction-kit-common/issues/293
-    } );
-    ELECTRON_IMAGE_NODE.children = [ image ];
-
-    // Center it so that animation doesn't require getCenter
-    ELECTRON_IMAGE_NODE.translate( -MINUS_CHARGE_NODE.width / 2 / ELECTRON_SCALE, -MINUS_CHARGE_NODE.height / 2 / ELECTRON_SCALE );
-  }, 0, 0, MINUS_CHARGE_NODE.width, MINUS_CHARGE_NODE.height );
+  var ELECTRON_IMAGE_NODE = new Node(); // TODO: use better startup strategy, see init()
 
   var ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.createStaticTandem( 'arrowNode' ) );
 
@@ -99,5 +87,21 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'ChargeNode', ChargeNode );
 
-  return inherit( Node, ChargeNode );
+  return inherit( Node, ChargeNode, {}, {
+    init: function( callback ) {
+      MINUS_CHARGE_NODE.toImage( function( im ) {
+
+        // Scale back down so the image will be the desired size
+        var image = new Image( im, {
+          scale: 1.0 / ELECTRON_SCALE,
+          imageOpacity: 0.75// use imageOpacity for a significant performance boost, see https://github.com/phetsims/circuit-construction-kit-common/issues/293
+        } );
+        ELECTRON_IMAGE_NODE.children = [ image ];
+
+        // Center it so that animation doesn't require getCenter
+        ELECTRON_IMAGE_NODE.translate( -MINUS_CHARGE_NODE.width / 2 / ELECTRON_SCALE, -MINUS_CHARGE_NODE.height / 2 / ELECTRON_SCALE );
+        callback();
+      }, 0, 0, MINUS_CHARGE_NODE.width, MINUS_CHARGE_NODE.height );
+    }
+  } );
 } );
