@@ -13,9 +13,14 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var Image = require( 'SCENERY/nodes/Image' );
 
   // constants
   var SOLDER_COLOR = '#ae9f9e';
+  var SOLDER_IMAGE = null; // {Image} raster created by init() for WebGL usage
+
+  // @public (read-only) {number} - for hit testing with probes
+  var SOLDER_RADIUS = 11.2;
 
   /**
    * @param {CircuitLayerNode} circuitLayerNode
@@ -23,6 +28,10 @@ define( function( require ) {
    * @constructor
    */
   function SolderNode( circuitLayerNode, vertex ) {
+    assert && assert( SOLDER_IMAGE, 'solder image should exist before creating SolderNode' );
+
+    var self = this;
+
     var circuit = circuitLayerNode.circuit;
 
     // @public (read-only) {Vertex}
@@ -31,24 +40,16 @@ define( function( require ) {
     // @public {Vector2} - added by CircuitLayerNode during dragging, used for relative drag location.
     this.startOffset = null;
 
-    // @public (read-only) {number} - for hit testing with probes
-    this.dottedLineNodeRadius = 11.2;
-
-    // Start as a dotted line, becomes solid when connected to >1 element.
-    var dottedLineNode = new Circle( this.dottedLineNodeRadius );
-
-    Node.call( this, {
+    Image.call( this, SOLDER_IMAGE, {
 
       // Avoid bounds computation for this node since it is not pickable, and it was showing up in the profiler
       preventFit: true,
-      pickable: false,
-      children: [ dottedLineNode ]
+      pickable: false
     } );
 
     // Update the fill when the number of attached components changes.
     var updateFill = function() {
-      var edgeCount = circuit.countCircuitElements( vertex );
-      dottedLineNode.fill = edgeCount > 1 ? SOLDER_COLOR : null;
+      self.visible = circuit.countCircuitElements( vertex ) > 1;
     };
     circuit.vertices.addItemAddedListener( updateFill );
     circuit.vertices.addItemRemovedListener( updateFill );
@@ -58,7 +59,7 @@ define( function( require ) {
     circuit.circuitElements.addItemRemovedListener( updateFill );
 
     var updateSolderNodePosition = function( position ) {
-      dottedLineNode.translation = position;
+      self.setTranslation( position.x - SOLDER_IMAGE.width / 2, position.y - SOLDER_IMAGE.height / 2 );
     };
     vertex.positionProperty.link( updateSolderNodePosition );
 
@@ -86,7 +87,7 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'SolderNode', SolderNode );
 
-  return inherit( Node, SolderNode, {
+  return inherit( Image, SolderNode, {
 
     /**
      * Eliminate resources when no longer used.
@@ -95,6 +96,18 @@ define( function( require ) {
     dispose: function() {
       this.disposeSolderNode();
       Node.prototype.dispose.call( this );
+    }
+  }, {
+
+    /**
+     * Rasterize images for use in WebGL
+     * @param {function} callback - called once rasterization is complete
+     */
+    init: function( callback ) {
+      new Circle( SOLDER_RADIUS, { fill: SOLDER_COLOR } ).toImage( function( image ) {
+        SOLDER_IMAGE = image;
+        callback();
+      } );
     }
   } );
 } );
