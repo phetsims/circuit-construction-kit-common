@@ -74,7 +74,7 @@ define( function( require ) {
     this.valueLayer = new Node();
 
     // @public {Node} - so that additional Nodes may be interleaved
-    this.mainLayer = new Node();
+    this.mainLayer = new Node( { renderer: 'webgl' } );
 
     // @public {Node} - CircuitConstructionKitLightBulbNode calls addChild/removeChild to add sockets to the front layer
     this.lightBulbSocketLayer = new Node();
