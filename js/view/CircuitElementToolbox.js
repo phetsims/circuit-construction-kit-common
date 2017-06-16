@@ -247,94 +247,11 @@ define( function( require ) {
       };
     };
 
-    var rightBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitLayerNode, rightBatteryIcon, options.numberOfRightBatteries, countRightBatteries, createRightBattery );
-    var highVoltageBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitLayerNode, highVoltageBatteryIcon, options.numberOfHighVoltageBatteries, countHighVoltageBatteries, createHighVoltageBattery );
     var wireToolNode = new CircuitElementToolNode( wireString, showLabelsProperty, circuitLayerNode, wireIcon, options.numberOfWires, countWires, createWire );
+    var rightBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitLayerNode, rightBatteryIcon, options.numberOfRightBatteries, countRightBatteries, createRightBattery );
     var lightBulbToolNode = new CircuitElementToolNode( lightBulbString, showLabelsProperty, circuitLayerNode, lightBulbIcon, options.numberOfLightBulbs, countLightBulbs, createLightBulb );
-    var highResistanceBulbToolNode = new CircuitElementToolNode( lightBulbString, showLabelsProperty, circuitLayerNode, highResistanceLightBulbIcon, options.numberOfHighResistanceLightBulbs, countHighResistanceLightBulbs, createHighResistanceLightBulb );
     var resistorToolNode = new CircuitElementToolNode( resistorString, showLabelsProperty, circuitLayerNode, resistorIcon, options.numberOfResistors, countResistors, createResistor );
-    var highResistanceResistorToolNode = new CircuitElementToolNode( resistorString, showLabelsProperty, circuitLayerNode, highResistanceResistorIcon, options.numberOfHighResistanceResistors, countHighResistanceResistors, createHighResistanceResistor );
     var switchToolNode = new CircuitElementToolNode( switchString, showLabelsProperty, circuitLayerNode, switchIcon, options.numberOfSwitches, countSwitches, createSwitch );
-
-    var createGrabBagToolNode = function( resistorType, resistance, resistorLength, labelString, maxCount, iconModelTandem, iconTandem, groupTandem ) {
-      var icon = createGrabBagIcon( createGrabBagItem( resistorType, resistorLength, iconModelTandem ), iconTandem );
-      var itemCounter = createCounter( function( circuitElement ) { return circuitElement instanceof Resistor && circuitElement.resistorType === resistorType; } );
-      var createItem = getGrabBagItemCreator( resistorType, resistance, resistorLength, groupTandem );
-      return new CircuitElementToolNode( labelString, showLabelsProperty, circuitLayerNode, icon, maxCount, itemCounter, createItem );
-    };
-
-    var MIN_RESISTANCE = 1E-6;
-
-    var dollarBillNode = createGrabBagToolNode(
-      'dollarBill',
-      Math.pow( 10, 9 ),
-      CircuitConstructionKitConstants.DOLLAR_BILL_LENGTH,
-      dollarBillString,
-      options.numberOfDollarBills,
-      tandem.createTandem( 'dollarBill' ),
-      tandem.createTandem( 'dollarBillIcon' ),
-      circuit.dollarBillGroupTandem
-    );
-    var paperClipNode = createGrabBagToolNode(
-      'paperClip',
-      MIN_RESISTANCE,
-      CircuitConstructionKitConstants.PAPER_CLIP_LENGTH,
-      paperClipString,
-      options.numberOfPaperClips,
-      tandem.createTandem( 'paperClip' ),
-      tandem.createTandem( 'paperClipIcon' ),
-      circuit.paperClipGroupTandem
-    );
-    var coinToolNode = createGrabBagToolNode(
-      'coin',
-      MIN_RESISTANCE,
-      CircuitConstructionKitConstants.COIN_LENGTH,
-      coinString,
-      options.numberOfCoins,
-      tandem.createTandem( 'coin' ),
-      tandem.createTandem( 'coinIcon' ),
-      circuit.coinGroupTandem
-    );
-    var eraserToolNode = createGrabBagToolNode(
-      'eraser',
-      Math.pow( 10, 9 ),
-      CircuitConstructionKitConstants.ERASER_LENGTH,
-      eraserString,
-      options.numberOfErasers,
-      tandem.createTandem( 'eraser' ),
-      tandem.createTandem( 'eraserIcon' ),
-      circuit.eraserGroupTandem
-    );
-    var pencilToolNode = createGrabBagToolNode(
-      'pencil',
-      300,
-      CircuitConstructionKitConstants.PENCIL_LENGTH,
-      pencilString,
-      options.numberOfPencils,
-      tandem.createTandem( 'pencil' ),
-      tandem.createTandem( 'pencilIcon' ),
-      circuit.pencilGroupTandem
-    );
-    var handToolNode = createGrabBagToolNode(
-      'hand',
-      Math.pow( 10, 6 ),
-      CircuitConstructionKitConstants.HAND_LENGTH,
-      handString,
-      options.numberOfHands,
-      tandem.createTandem( 'hand' ),
-      tandem.createTandem( 'handIcon' ),
-      circuit.handGroupTandem
-    );
-    var dogToolNode = createGrabBagToolNode(
-      'dog',
-      Math.pow( 10, 9 ),
-      CircuitConstructionKitConstants.DOG_LENGTH,
-      dogString,
-      options.numberOfDogs,
-      tandem.createTandem( 'dog' ),
-      tandem.createTandem( 'dogIcon' ),
-      circuit.dogGroupTandem
-    );
 
     var children = [
       wireToolNode,
@@ -343,6 +260,93 @@ define( function( require ) {
       resistorToolNode,
       switchToolNode
     ];
+
+    if ( options.numberOfCoins ) {
+
+      var highVoltageBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitLayerNode, highVoltageBatteryIcon, options.numberOfHighVoltageBatteries, countHighVoltageBatteries, createHighVoltageBattery );
+      var highResistanceBulbToolNode = new CircuitElementToolNode( lightBulbString, showLabelsProperty, circuitLayerNode, highResistanceLightBulbIcon, options.numberOfHighResistanceLightBulbs, countHighResistanceLightBulbs, createHighResistanceLightBulb );
+      var highResistanceResistorToolNode = new CircuitElementToolNode( resistorString, showLabelsProperty, circuitLayerNode, highResistanceResistorIcon, options.numberOfHighResistanceResistors, countHighResistanceResistors, createHighResistanceResistor );
+
+      var createGrabBagToolNode = function( resistorType, resistance, resistorLength, labelString, maxCount, iconModelTandem, iconTandem, groupTandem ) {
+        var icon = createGrabBagIcon( createGrabBagItem( resistorType, resistorLength, iconModelTandem ), iconTandem );
+        var itemCounter = createCounter( function( circuitElement ) { return circuitElement instanceof Resistor && circuitElement.resistorType === resistorType; } );
+        var createItem = getGrabBagItemCreator( resistorType, resistance, resistorLength, groupTandem );
+        return new CircuitElementToolNode( labelString, showLabelsProperty, circuitLayerNode, icon, maxCount, itemCounter, createItem );
+      };
+
+      var MIN_RESISTANCE = 1E-6;
+
+      var dollarBillNode = createGrabBagToolNode(
+        'dollarBill',
+        Math.pow( 10, 9 ),
+        CircuitConstructionKitConstants.DOLLAR_BILL_LENGTH,
+        dollarBillString,
+        options.numberOfDollarBills,
+        tandem.createTandem( 'dollarBill' ),
+        tandem.createTandem( 'dollarBillIcon' ),
+        circuit.dollarBillGroupTandem
+      );
+      var paperClipNode = createGrabBagToolNode(
+        'paperClip',
+        MIN_RESISTANCE,
+        CircuitConstructionKitConstants.PAPER_CLIP_LENGTH,
+        paperClipString,
+        options.numberOfPaperClips,
+        tandem.createTandem( 'paperClip' ),
+        tandem.createTandem( 'paperClipIcon' ),
+        circuit.paperClipGroupTandem
+      );
+      var coinToolNode = createGrabBagToolNode(
+        'coin',
+        MIN_RESISTANCE,
+        CircuitConstructionKitConstants.COIN_LENGTH,
+        coinString,
+        options.numberOfCoins,
+        tandem.createTandem( 'coin' ),
+        tandem.createTandem( 'coinIcon' ),
+        circuit.coinGroupTandem
+      );
+      var eraserToolNode = createGrabBagToolNode(
+        'eraser',
+        Math.pow( 10, 9 ),
+        CircuitConstructionKitConstants.ERASER_LENGTH,
+        eraserString,
+        options.numberOfErasers,
+        tandem.createTandem( 'eraser' ),
+        tandem.createTandem( 'eraserIcon' ),
+        circuit.eraserGroupTandem
+      );
+      var pencilToolNode = createGrabBagToolNode(
+        'pencil',
+        300,
+        CircuitConstructionKitConstants.PENCIL_LENGTH,
+        pencilString,
+        options.numberOfPencils,
+        tandem.createTandem( 'pencil' ),
+        tandem.createTandem( 'pencilIcon' ),
+        circuit.pencilGroupTandem
+      );
+      var handToolNode = createGrabBagToolNode(
+        'hand',
+        Math.pow( 10, 6 ),
+        CircuitConstructionKitConstants.HAND_LENGTH,
+        handString,
+        options.numberOfHands,
+        tandem.createTandem( 'hand' ),
+        tandem.createTandem( 'handIcon' ),
+        circuit.handGroupTandem
+      );
+      var dogToolNode = createGrabBagToolNode(
+        'dog',
+        Math.pow( 10, 9 ),
+        CircuitConstructionKitConstants.DOG_LENGTH,
+        dogString,
+        options.numberOfDogs,
+        tandem.createTandem( 'dog' ),
+        tandem.createTandem( 'dogIcon' ),
+        circuit.dogGroupTandem
+      );
+    }
 
     if ( options.numberOfCoins && !options.numberOfHighVoltageBatteries ) {
       children = children.concat( [] );
