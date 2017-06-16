@@ -28,7 +28,7 @@ define( function( require ) {
   var SCHEMATIC_LINE_WIDTH = CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH; // line width in screen coordinates
 
   /**
-   * @param {circuitConstructionKitScreenView|null} circuitConstructionKitScreenView - if null, this WireNode is just an icon
+   * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - if null, this WireNode is just an icon
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {Wire} wire
    * @param {Property.<boolean>} showResultsProperty - unused but provided to match the constructors of other circuit element nodes
@@ -117,9 +117,6 @@ define( function( require ) {
     } );
 
     circuitLayerNode && circuitLayerNode.highlightLayer.addChild( highlightNodeParent );
-
-    // @private
-    this.lineNodeParent = lineNodeParent;
 
     // @private {Line}
     this.lineNode = lineNode;
