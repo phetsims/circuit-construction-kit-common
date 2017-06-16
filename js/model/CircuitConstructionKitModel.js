@@ -19,7 +19,6 @@ define( function( require ) {
   var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
   var TandemEmitter = require( 'TANDEM/axon/TandemEmitter' );
   var EaseAnimation = require( 'TWIXT/EaseAnimation' );
-  var Brand = require( 'BRAND/Brand' );
 
   // phet-io modules
   var TString = require( 'ifphetio!PHET_IO/types/TString' );
@@ -128,7 +127,7 @@ define( function( require ) {
 
     // For PhET-iO, when a component is edited or a vertex is added, connected, or cut, output the circuit to the data stream
     // Only do this for phet-io brand so it doesn't disturb performance of other brands
-    if ( Brand.phetioEnabled ) {
+    if ( phet.phetio ) {
 
       var circuitChangedEmitter = new TandemEmitter( {
         tandem: tandem.createTandem( 'circuitChangedEmitter' ),
