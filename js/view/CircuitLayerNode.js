@@ -77,17 +77,17 @@ define( function( require ) {
     this.mainLayer = new Node( { renderer: 'webgl' } );
 
     // @public {Node} - CircuitConstructionKitLightBulbNode calls addChild/removeChild to add sockets to the front layer
-    this.lightBulbSocketLayer = new Node();
+    this.lightBulbSocketLayer = new Node( { renderer: 'webgl' } );
 
     // @public {Node} - Electrons appear in this layer when they need to be in front of the socket (on the right hand
     // side of the bulb)
-    this.lightBulbSocketElectronLayer = new Node();
+    this.lightBulbSocketElectronLayer = new Node( { renderer: 'webgl' } );
 
     Node.call( this, {
       children: [
         this.mainLayer, // circuit elements, charges and meters
-        this.valueLayer, // values
         this.lightBulbSocketLayer, // fronts of light bulbs
+        this.valueLayer, // values
         this.lightBulbSocketElectronLayer, // electrons in front of the sockets
         this.seriesAmmeterNodeReadoutPanelLayer, // fronts of series ammeters
         this.highlightLayer, // highlights go in front of everything else
