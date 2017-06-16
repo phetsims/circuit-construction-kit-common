@@ -14,9 +14,12 @@ define( function( require ) {
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Text = require( 'SCENERY/nodes/Text' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // constants
   var TOOLBOX_ICON_SIZE = CircuitConstructionKitConstants.TOOLBOX_ICON_SIZE;
+
+  var preallocate = false; // TODO: eliminate
 
   /**
    * @param {string} labelText
@@ -40,6 +43,14 @@ define( function( require ) {
       children: labelText.length > 0 ? [ iconNode, labelNode ] : [ iconNode ] // hack because the series ammeter tool node has text rendered separately (joined with probe ammeter)
     } );
 
+    if ( preallocate ) {
+      // Preallocate the CircuitElement
+      var circuitElement = createElement( new Vector2() );
+
+      // Add the CircuitElement to the Circuit so that everything is ready to display when the tool is dragged
+      circuit.circuitElements.add( circuitElement );
+    }
+
     this.addInputListener( {
         down: function( event ) {
 
@@ -49,11 +60,19 @@ define( function( require ) {
           // initial position of the pointer in the coordinate frame of the CircuitLayerNode
           var viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point );
 
-          // Create the new CircuitElement at the correct location
-          var circuitElement = createElement( viewPosition );
+          if ( preallocate ) {
+            circuitElement.setMidpoint( viewPosition );
+          }
+          else {
 
-          // Add the CircuitElement to the Circuit
-          circuit.circuitElements.add( circuitElement );
+            // Create the new CircuitElement at the correct location
+            var circuitElement = createElement( viewPosition );
+
+            // Add the CircuitElement to the Circuit
+            circuit.circuitElements.add( circuitElement );
+
+          }
+
 
           // Send the start drag event through so the new element will begin dragging.
           // From: https://github.com/phetsims/scenery-phet/issues/195#issuecomment-186300071

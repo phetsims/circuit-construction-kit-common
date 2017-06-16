@@ -246,6 +246,19 @@ define( function( require ) {
       };
     },
 
+    // TODO doc
+    setMidpoint: function( p ) {
+      var delta = this.endVertexProperty.get().positionProperty.get().minus( this.startVertexProperty.get().positionProperty.get() );
+
+      var startPosition = p.plus( delta.timesScalar( -0.5 ) );
+      this.startVertexProperty.get().positionProperty.set( startPosition );
+      this.startVertexProperty.get().unsnappedPositionProperty.set( startPosition );
+
+      var endPosition = p.plus( delta.timesScalar( +0.5 ) );
+      this.endVertexProperty.get().positionProperty.set( endPosition );
+      this.endVertexProperty.get().unsnappedPositionProperty.set( endPosition );
+    },
+
     /**
      * Returns true if this CircuitElement contains the specified scalar location.
      * @param {number} scalarLocation
