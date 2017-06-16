@@ -73,6 +73,9 @@ define( function( require ) {
     // @public {Node} - layer for "show values"
     this.valueLayer = new Node();
 
+    // @public {Node} - layer for light rays, since it cannot be rendered in WebGL
+    this.lightRaysLayer = new Node();
+
     // @public {Node} - so that additional Nodes may be interleaved
     this.mainLayer = new Node( { renderer: 'webgl' } );
 
@@ -85,6 +88,7 @@ define( function( require ) {
 
     Node.call( this, {
       children: [
+        this.lightRaysLayer,
         this.mainLayer, // circuit elements, charges and meters
         this.lightBulbSocketLayer, // fronts of light bulbs
         this.valueLayer, // values

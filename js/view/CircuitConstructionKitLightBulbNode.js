@@ -162,16 +162,22 @@ define( function( require ) {
 
     FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitLayerNode, lightBulb, viewProperty, lightBulbNode, schematicNode, tandem, options );
 
+    this.raysNode = new Node( {
+      children: lightBulbNode.raysNode ? [ lightBulbNode.raysNode ] : [] // keep centering and translation
+    } );
+
     if ( circuitLayerNode ) {
 
       // Render the socket node in the front
       this.socketNode = new LightBulbSocketNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, showResultsProperty, viewProperty, tandem.createTandem( 'socketNode' ), options );
       circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.addChild( this.socketNode );
+      circuitLayerNode && circuitLayerNode.lightRaysLayer.addChild( this.raysNode );
     }
 
     this.disposeCircuitConstructionKitLightBulbNode = function() {
       updateBrightness.dispose();
       circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.removeChild( this.socketNode );
+      circuitLayerNode && circuitLayerNode.lightRaysLayer.removeChild( this.raysNode );
     };
   }
 
@@ -192,6 +198,7 @@ define( function( require ) {
       // Update the node transform in a single step, see #66
       CircuitConstructionKitCommonUtil.setToTranslationRotation( SCRATCH_MATRIX, startPosition, angle );
       this.contentNode.setMatrix( SCRATCH_MATRIX );
+      this.raysNode.setMatrix( SCRATCH_MATRIX );
 
       this.highlightNode && this.highlightNode.setMatrix( SCRATCH_MATRIX );
 

@@ -71,10 +71,13 @@ define( function( require ) {
       var bulbRadius = middleNode.width / 2;
       self.raysNode = new LightRaysNode( bulbRadius, {
         x: this.backNode.centerX,
-        y: middleNode.top + bulbRadius
+        y: (middleNode.top + bulbRadius) * options.scale
       } ); // @private
 
-      options.children = [ self.raysNode, self.backNode, middleNode ];
+      // TODO: manage raysNode in CCKLightBulbNode
+      self.raysNode.mutate( options );
+
+      options.children = [ self.backNode, middleNode ];
     }
 
     Node.call( self, options );
