@@ -136,18 +136,19 @@ define( function( require ) {
     // @public (read-only) {Node[]} the VertexNodes // TODO: is this used?
     this.vertexNodes = [];
 
+    // TODO: cleanup
     // When loading from a state object, the vertices could have been added first.  If so, move them in front
-    var moveVerticesToFront = function( circuitElement ) {
-      var startVertexNode = self.getVertexNode( circuitElement.startVertexProperty.get() );
-      var endVertexNode = self.getVertexNode( circuitElement.endVertexProperty.get() );
-      var startSolderNode = self.getSolderNode( circuitElement.startVertexProperty.get() );
-      var endSolderNode = self.getSolderNode( circuitElement.endVertexProperty.get() );
-
-      startVertexNode && startVertexNode.moveToFront();
-      endVertexNode && endVertexNode.moveToFront();
-      startSolderNode && startSolderNode.moveToFront();
-      endSolderNode && endSolderNode.moveToFront();
-    };
+    // var moveVerticesToFront = function( circuitElement ) {
+    //   var startVertexNode = self.getVertexNode( circuitElement.startVertexProperty.get() );
+    //   var endVertexNode = self.getVertexNode( circuitElement.endVertexProperty.get() );
+    //   var startSolderNode = self.getSolderNode( circuitElement.startVertexProperty.get() );
+    //   var endSolderNode = self.getSolderNode( circuitElement.endVertexProperty.get() );
+    //
+    //   startVertexNode && startVertexNode.moveToFront();
+    //   endVertexNode && endVertexNode.moveToFront();
+    //   startSolderNode && startSolderNode.moveToFront();
+    //   endSolderNode && endSolderNode.moveToFront();
+    // };
 
     /**
      * For each CircuitElement type, do the following:
@@ -171,10 +172,24 @@ define( function( require ) {
             groupTandem.createNextTandem()
           );
           self.circuitElementNodeMap[ circuitElement.id ] = circuitElementNode;
-          self.mainLayer.addChild( circuitElementNode );
 
-          // TODO: this is a performance cost when adding an item
-          moveVerticesToFront( circuitElement );
+          // Insert the circuit element node behind the vertex nodes.
+          // TODO: cleanup
+          var index = self.mainLayer.getChildrenCount() - 1;
+          var vertexNodeCount = 0;
+          while ( index >= 0 ) {
+
+            if ( self.mainLayer.getChildAt( index ) ) {
+              vertexNodeCount++;
+              if ( vertexNodeCount >= 2 ) {
+                break;
+              }
+            }
+
+            index--;
+          }
+          assert && assert( index >= 0, 'missing vertex nodes' );
+          self.mainLayer.insertChild( index - 1, circuitElementNode );
 
           // series ammeters already show their own readouts
           if ( circuitElement instanceof FixedLengthCircuitElement && !(circuitElement instanceof SeriesAmmeter) ) {

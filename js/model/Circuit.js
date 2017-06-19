@@ -550,6 +550,11 @@ define( function( require ) {
      */
     solve: function() {
 
+      // Must have at least 3 vertices to make a loop, bail out early to avoid work if possible
+      if ( this.vertices.length <= 2 ) {
+        return;
+      }
+
       var self = this;
 
       var toStateObject = function( circuitElement ) {
