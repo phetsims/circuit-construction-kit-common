@@ -22,6 +22,7 @@ define( function( require ) {
   var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/WireNode' );
   var SwitchNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SwitchNode' );
   var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
+  var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedLengthCircuitElementNode' );
   var CircuitConstructionKitLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitLightBulbNode' );
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorNode' );
   var SeriesAmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SeriesAmmeterNode' );
@@ -40,7 +41,6 @@ define( function( require ) {
   var ValueNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ValueNode' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   /**
    * @param {Circuit} circuit - the model Circuit
@@ -80,7 +80,11 @@ define( function( require ) {
     // TODO: docs
     var webglSpriteLayer = new Node( {
       visible: false,
-      children: SolderNode.webglSpriteNodes.concat( ChargeNode.webglSpriteNodes ).concat( VertexNode.webglSpriteNodes )
+      children: SolderNode.webglSpriteNodes
+        .concat( ChargeNode.webglSpriteNodes )
+        .concat( VertexNode.webglSpriteNodes )
+        .concat( BatteryNode.webglSpriteNodes )
+        .concat( FixedLengthCircuitElementNode.webglSpriteNodes )
     } );
 
     // @public {Node} - so that additional Nodes may be interleaved

@@ -259,5 +259,9 @@ define( function( require ) {
       CircuitElementNode.prototype.dispose.call( this );
       this.disposeFixedLengthCircuitElementNode();
     }
+  }, {
+    webglSpriteNodes: [
+      new Image( fireImage )
+    ]
   } );
 } );

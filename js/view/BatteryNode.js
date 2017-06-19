@@ -110,5 +110,9 @@ define( function( require ) {
       // Check against the mouse region
       return !!this.hitTest( point, true, false );
     }
+  }, {
+    webglSpriteNodes: [
+      new Image( batteryImage )
+    ]
   } );
 } );

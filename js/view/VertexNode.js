@@ -18,7 +18,6 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var Image = require( 'SCENERY/nodes/Image' );
   var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var Vector2 = require( 'DOT/Vector2' );
@@ -72,7 +71,7 @@ define( function( require ) {
     // Shows up as red when disconnected or black when connected.  When unattachable, the dotted line disappears (black
     // box study)
     var updateStroke = function() {
-      self.children = [ circuit.countCircuitElements( vertex ) > 1 ? BLACK_CIRCLE_NODE : RED_CIRCLE_NODE ]
+      self.children = [ circuit.countCircuitElements( vertex ) > 1 ? BLACK_CIRCLE_NODE : RED_CIRCLE_NODE ];
       self.visible = vertex.attachableProperty.get();
     };
 
