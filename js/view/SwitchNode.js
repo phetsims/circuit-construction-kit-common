@@ -20,7 +20,6 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
-  var Image = require( 'SCENERY/nodes/Image' );
 
   // constants
   // dimensions for schematic battery
@@ -52,10 +51,12 @@ define( function( require ) {
     var lifelikeNode = new Node();
     var schematicNode = new Node();
     circuitSwitch.closedProperty.link( function( closed ) {
-      lifelikeNode.children = [ new Image( closed ? lifelikeClosedImage : lifelikeOpenImage, {
+      lifelikeNode.children = [ new Node( {
+        children: [ closed ? lifelikeClosedImage : lifelikeOpenImage ],
         y: closed ? -14 : -40 // TODO: hack alert
       } ) ];
-      schematicNode.children = [ new Image( closed ? schematicClosedImage : schematicOpenImage, {
+      schematicNode.children = [ new Node( {
+        children: [ closed ? schematicClosedImage : schematicOpenImage ],
         y: closed ? -7 : -30 // TODO: hack alert
       } ) ];
     } );
@@ -187,19 +188,13 @@ define( function( require ) {
         .addColorStop( 0, '#d48270' )
         .addColorStop( 0.3, '#e39b8c' )
         .addColorStop( 1, '#b56351' );
-      createNode( 'lifelike', lifelikeGradient, LIFELIKE_DIAMETER, 6, false ).toImage( function( image ) {
-        lifelikeOpenImage = image;
-        createNode( 'schematic', 'black', CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH, 0, false ).toImage( function( image ) {
-          schematicOpenImage = image;
-          createNode( 'lifelike', lifelikeGradient, LIFELIKE_DIAMETER, 6, true ).toImage( function( image ) {
-            lifelikeClosedImage = image;
-            createNode( 'schematic', 'black', CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH, 0, true ).toImage( function( image ) {
-              schematicClosedImage = image;
-              callback();
-            } );
-          } );
-        } );
-      } );
+
+      // TODO: convert all nodes to synchronous
+      lifelikeOpenImage = createNode( 'lifelike', lifelikeGradient, LIFELIKE_DIAMETER, 6, false ).toDataURLNodeSynchronous();
+      schematicOpenImage = createNode( 'schematic', 'black', CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH, 0, false ).toDataURLNodeSynchronous();
+      lifelikeClosedImage = createNode( 'lifelike', lifelikeGradient, LIFELIKE_DIAMETER, 6, true ).toDataURLNodeSynchronous();
+      schematicClosedImage = createNode( 'schematic', 'black', CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH, 0, true ).toDataURLNodeSynchronous();
+      callback();
     }
   } );
 } );

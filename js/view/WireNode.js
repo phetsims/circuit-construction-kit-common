@@ -4,6 +4,9 @@
  * The node for a wire, which can be stretched out by dragging its vertices.
  *
  * @author Sam Reid (PhET Interactive Simulations)
+ *
+ * TODO: rounded end caps
+ * TODO: highlight shape
  */
 define( function( require ) {
   'use strict';
@@ -22,10 +25,17 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
   var TNode = require( 'SCENERY/nodes/TNode' );
+  var Shape = require( 'KITE/Shape' );
+  var Matrix3 = require( 'DOT/Matrix3' );
+  var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
 
   // constants
   var LIFELIKE_LINE_WIDTH = 12; // line width in screen coordinates
   var SCHEMATIC_LINE_WIDTH = CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH; // line width in screen coordinates
+
+  // constants
+  var transform = new Matrix3();
+  var WIRE_RASTER_LENGTH = 100;
 
   /**
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - if null, this WireNode is just an icon
@@ -78,20 +88,30 @@ define( function( require ) {
     var normalGradient = createGradient( colorStops, function( e ) {return e;} );
     var reverseGradient = createGradient( colorStops.reverse(), function( e ) {return 1.0 - e;} );
 
-    var lineNode = new Line( 0, 0, 100, 0, {
-      cursor: 'pointer',
-      strokePickable: true,
-      lineCap: 'round'
-    } );
+    var lineNode = new Node();
+    var blackLineNode = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
+      lineWidth: SCHEMATIC_LINE_WIDTH,
+      stroke: 'black'
+    } ).toDataURLNodeSynchronous();
+
+    var lifelikeNodeNormal = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
+      lineWidth: LIFELIKE_LINE_WIDTH,
+      stroke: normalGradient
+    } ).toDataURLNodeSynchronous();
+
+    var lifelikeNodeReversed = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
+      lineWidth: LIFELIKE_LINE_WIDTH,
+      stroke: reverseGradient
+    } ).toDataURLNodeSynchronous();
 
     /**
      * When the view type changes (lifelike vs schematic), update the node
      */
     var updateStroke = function() {
-
       var view = viewProperty.value;
+      lineNode.children = view === 'lifelike' ? lifelikeNodeNormal : blackLineNode;
+
       if ( view === 'lifelike' ) {
-        lineNode.lineWidth = LIFELIKE_LINE_WIDTH;
 
         // determine whether to use the forward or reverse gradient based on the angle
         var startPoint = wire.startVertexProperty.get().positionProperty.get();
@@ -99,22 +119,24 @@ define( function( require ) {
         var lightingDirection = new Vector2( 0.916, 0.4 ); // sampled manually
         var wireVector = endPoint.minus( startPoint );
         var dot = lightingDirection.dot( wireVector );
-        lineNode.stroke = dot < 0 ? reverseGradient : normalGradient;
+        lineNode.children = [ dot < 0 ? lifelikeNodeReversed : lifelikeNodeNormal ];
       }
       else {
-        lineNode.lineWidth = SCHEMATIC_LINE_WIDTH;
-        lineNode.stroke = 'black';
+        lineNode.children = [ blackLineNode ];
       }
     };
 
     viewProperty.link( updateStroke );
 
     var lineNodeParent = new Node( {
-      children: [ lineNode ]
+      children: [ lineNode ],
+      cursor: 'pointer'
     } );
     var highlightNodeParent = new Node( {
       children: [ highlightNode ]
     } );
+
+    this.lineNodeParent = lineNodeParent;
 
     circuitLayerNode && circuitLayerNode.highlightLayer.addChild( highlightNodeParent );
 
@@ -148,22 +170,16 @@ define( function( require ) {
      * @returns {Shape}
      */
     var getHighlightStrokedShape = function( lineStyles ) {
-      return self.lineNode.shape.getStrokedShape( lineStyles );
+      return Shape.rect( 0, 0, 100, 100 );
+      // return self.lineNode.shape.getStrokedShape( lineStyles );
     };
 
     /**
      * Listener for the position of the start vertex.
      * @param {Vector2} startPoint
      */
-    var updateStartPosition = function( startPoint ) {
-      lineNodeParent.setTranslation( startPoint.x, startPoint.y );
-      highlightNodeParent.setTranslation( startPoint.x, startPoint.y );
-
-      // After changing the coordinate frames in the preceding calls, update the rest of the transform.
-      updateEndPosition && updateEndPosition( wire.endVertexProperty.get().positionProperty.get() );
-      if ( highlightNode.visible ) {
-        highlightNode.shape = getHighlightStrokedShape( highlightStrokeStyles );
-      }
+    var updateTransform = function( startPoint ) {
+      self.updateLayout();
     };
 
     /**
@@ -187,26 +203,9 @@ define( function( require ) {
       };
     };
 
-    var updateStartVertex = createVertexUpdater( updateStartPosition );
-    wire.startVertexProperty.link( updateStartVertex );
-
-    /**
-     * Listener for the position of the end vertex.
-     * @param {Vector2} endPoint
-     */
-    var updateEndPosition = function( endPoint ) {
-      lineNode.setPoint2( endPoint.distance( wire.startVertexProperty.get().positionProperty.get() ), 0 );
-      var deltaVector = endPoint.minus( wire.startVertexProperty.get().positionProperty.get() );
-      lineNodeParent.setRotation( deltaVector.angle() );
-      highlightNodeParent.setRotation( deltaVector.angle() );
-      if ( highlightNode.visible ) {
-        highlightNode.shape = getHighlightStrokedShape( highlightStrokeStyles );
-      }
-      updateStroke();
-    };
-
-    var updateEndVertex = createVertexUpdater( updateEndPosition );
-    wire.endVertexProperty.link( updateEndVertex );
+    var doUpdateTransform = createVertexUpdater( updateTransform );
+    wire.startVertexProperty.link( doUpdateTransform );
+    wire.endVertexProperty.link( doUpdateTransform );
 
     // Keep track of the start point to see if it was dragged or tapped to be selected
     var startPoint = null;
@@ -285,14 +284,13 @@ define( function( require ) {
     this.disposeWireNode = function() {
       self.inputListener.dragging && self.inputListener.endDrag();
 
-      wire.startVertexProperty.unlink( updateStartVertex );
-      wire.endVertexProperty.unlink( updateEndVertex );
+      wire.startVertexProperty.unlink( doUpdateTransform );
+      wire.endVertexProperty.unlink( doUpdateTransform );
 
       updateHighlight && circuitLayerNode.circuit.selectedCircuitElementProperty.unlink( updateHighlight );
       wire.interactiveProperty.unlink( updatePickable );
 
-      wire.startVertexProperty.get().positionProperty.unlink( updateStartPosition );
-      wire.endVertexProperty.get().positionProperty.unlink( updateEndPosition );
+      wire.startVertexProperty.get().positionProperty.unlink( updateTransform );
 
       wire.connectedEmitter.removeListener( moveToBack );
 
@@ -310,6 +308,54 @@ define( function( require ) {
   return inherit( CircuitElementNode, WireNode, {
 
     /**
+     * Mark dirty to batch changes, so that update can be done once in view step, if necessary
+     * @public
+     */
+    updateLayout: function() {
+      this.dirty = true;
+    },
+
+    /**
+     * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
+     * @protected - CircuitConstructionKitLightBulbNode calls updateRender for its child socket node
+     */
+    updateRender: function() {
+
+      var startPosition = this.circuitElement.startVertexProperty.get().positionProperty.get();
+      var endPosition = this.circuitElement.endVertexProperty.get().positionProperty.get();
+      var delta = endPosition.minus( startPosition );
+      var angle = delta.angle();
+
+      // Update the node transform
+      CircuitConstructionKitCommonUtil.setToTranslationRotation( transform, startPosition, angle );
+      transform.multiplyMatrix( Matrix3.scaling( delta.magnitude() / WIRE_RASTER_LENGTH, 1 ) );
+      this.lineNodeParent.setMatrix( transform );
+      this.highlightNode && this.highlightNode.setMatrix( transform ); // TODO: only update when visible
+
+      //
+      // highlightNodeParent.setRotation( deltaVector.angle() );
+      // if ( highlightNode.visible ) {
+      //   highlightNode.shape = getHighlightStrokedShape( highlightStrokeStyles );
+      // }
+      // updateStroke();
+      //
+      // if ( highlightNode.visible ) {
+      //   highlightNode.shape = getHighlightStrokedShape( highlightStrokeStyles );
+      // }
+    },
+
+    /**
+     * @public - called during the view step
+     */
+    step: function() {
+      CircuitElementNode.prototype.step.call( this );
+      if ( this.dirty ) {
+        this.updateRender();
+        this.dirty = false;
+      }
+    },
+
+    /**
      * Dispose the WireNode when it will no longer be used.
      * @public
      */
@@ -318,5 +364,4 @@ define( function( require ) {
       CircuitElementNode.prototype.dispose.call( this );
     }
   } );
-} )
-;
+} );
