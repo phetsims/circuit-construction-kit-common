@@ -7,6 +7,7 @@
  *
  * TODO: rounded end caps
  * TODO: highlight shape
+ * TODO: wire gradient should flip when upside down
  */
 define( function( require ) {
   'use strict';
