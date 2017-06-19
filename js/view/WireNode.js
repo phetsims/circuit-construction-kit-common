@@ -110,7 +110,7 @@ define( function( require ) {
      */
     var updateStroke = function() {
       var view = viewProperty.value;
-      lineNode.children = view === 'lifelike' ? lifelikeNodeNormal : blackLineNode;
+      lineNode.children = [ view === 'lifelike' ? lifelikeNodeNormal : blackLineNode ];
 
       if ( view === 'lifelike' ) {
 

@@ -32,9 +32,14 @@ define( function( require ) {
     scale: CircuitConstructionKitConstants.FONT_AWESOME_ICON_SCALE
   } );
 
-  // rasters
-  var BLACK_CIRCLE = null; // {Image} - raster filled in by init() for WebGL
-  var RED_CIRCLE = null; // {Image} - raster filled in by init() for WebGL
+  // TODO: docs
+  var CIRCLE_OPTIONS = {
+    stroke: 'red',
+    lineWidth: 1.3,
+    lineDash: [ 6, 4 ]
+  };
+  var RED_CIRCLE_NODE = new Circle( VERTEX_RADIUS, CIRCLE_OPTIONS ).toDataURLNodeSynchronous();
+  var BLACK_CIRCLE_NODE = new Circle( VERTEX_RADIUS, CIRCLE_OPTIONS ).toDataURLNodeSynchronous();
 
   /**
    * @param {CircuitLayerNode} circuitLayerNode - the entire CircuitLayerNode
@@ -52,9 +57,6 @@ define( function( require ) {
     // @public (read-only) {Vector2} - added by CircuitLayerNode during dragging, used for relative drag location.
     this.startOffset = null;
 
-    // Start as a dotted line, becomes solid when connected to >1 element.
-    var circleNode = new Image( RED_CIRCLE );
-
     // Highlight is shown when the vertex is selected.
     var highlightNode = new Circle( 30, {
       stroke: CircuitConstructionKitConstants.HIGHLIGHT_COLOR,
@@ -62,11 +64,16 @@ define( function( require ) {
       pickable: false
     } );
 
+    Node.call( this, {
+      tandem: tandem,
+      cursor: 'pointer'
+    } );
+
     // Shows up as red when disconnected or black when connected.  When unattachable, the dotted line disappears (black
     // box study)
     var updateStroke = function() {
-      circleNode.image = circuit.countCircuitElements( vertex ) > 1 ? BLACK_CIRCLE : RED_CIRCLE;
-      circleNode.visible = vertex.attachableProperty.get();
+      self.children = [ circuit.countCircuitElements( vertex ) > 1 ? BLACK_CIRCLE_NODE : RED_CIRCLE_NODE ]
+      self.visible = vertex.attachableProperty.get();
     };
 
     // Update when any vertex is added or removed, or when the existing circuit values change.
@@ -116,11 +123,6 @@ define( function( require ) {
       self.moveToFront();
     };
     vertex.relayerEmitter.addListener( updateMoveToFront );
-    Node.call( this, {
-      children: [ circleNode ],
-      tandem: tandem,
-      cursor: 'pointer'
-    } );
 
     var updatePickable = function( interactive ) { self.pickable = interactive; };
     vertex.interactiveProperty.link( updatePickable );
@@ -186,7 +188,7 @@ define( function( require ) {
     } );
 
     // Don't permit dragging by the scissors or highlight
-    circleNode.addInputListener( dragHandler );
+    self.addInputListener( dragHandler );
 
     // Use a query parameter to turn on node voltage readouts for debugging only.
     var vertexDisplay = CircuitConstructionKitQueryParameters.vertexDisplay;
@@ -198,8 +200,8 @@ define( function( require ) {
       } );
       this.addChild( voltageReadoutText );
       var updateReadoutTextLocation = function() {
-        voltageReadoutText.centerX = circleNode.centerX;
-        voltageReadoutText.bottom = circleNode.top - 10;
+        voltageReadoutText.centerX = self.centerX;
+        voltageReadoutText.bottom = self.top - 10;
       };
       vertex.voltageProperty.link( function( voltage ) {
         var voltageText = Util.toFixed( voltage, 3 ) + 'V';
@@ -236,7 +238,7 @@ define( function( require ) {
       cutButton.center = availableBounds.closestPointTo( proposedPosition );
     };
     var updateVertexNodePosition = function( position ) {
-      circleNode.setTranslation( position.x - RED_CIRCLE.width / 2, position.y - BLACK_CIRCLE.height / 2 );
+      self.setTranslation( position.x, position.y );
       highlightNode.translation = position; // TODO: perhaps don't update the position while it is invisible?
       updateReadoutTextLocation && updateReadoutTextLocation(); // TODO: eliminate this node
 
@@ -280,20 +282,10 @@ define( function( require ) {
     }
   }, {
     VERTEX_RADIUS: VERTEX_RADIUS,
-    init: function( callback ) { // TODO: document all init methods
-      var CIRCLE_OPTIONS = {
-        stroke: 'red',
-        lineWidth: 1.3,
-        lineDash: [ 6, 4 ],
-      };
-      new Circle( VERTEX_RADIUS, CIRCLE_OPTIONS ).toImage( function( image ) {
-        RED_CIRCLE = image;
 
-        new Circle( VERTEX_RADIUS, CIRCLE_OPTIONS ).toImage( function( image ) {
-          BLACK_CIRCLE = image;
-          callback();
-        } );
-      } );
-    }
+    // TODO: docs
+    webglSpriteNodes: [
+      BLACK_CIRCLE_NODE, RED_CIRCLE_NODE
+    ]
   } );
 } );

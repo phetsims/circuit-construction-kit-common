@@ -88,6 +88,11 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'ChargeNode', ChargeNode );
 
   return inherit( Node, ChargeNode, {}, {
+
+    // TODO: docs
+    webglSpriteNodes: [
+      ELECTRON_IMAGE_NODE
+    ],
     init: function( callback ) {
       MINUS_CHARGE_NODE.toImage( function( im ) {
 

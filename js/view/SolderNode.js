@@ -13,14 +13,15 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var Image = require( 'SCENERY/nodes/Image' );
 
   // constants
   var SOLDER_COLOR = '#ae9f9e';
-  var SOLDER_IMAGE = null; // {Image} raster created by init() for WebGL usage
 
   // @public (read-only) {number} - for hit testing with probes
   var SOLDER_RADIUS = 11.2;
+
+  // {Image} raster created by init() for WebGL usage
+  var CIRCLE_NODE = new Circle( SOLDER_RADIUS, { fill: SOLDER_COLOR } ).toDataURLNodeSynchronous();
 
   /**
    * @param {CircuitLayerNode} circuitLayerNode
@@ -28,7 +29,7 @@ define( function( require ) {
    * @constructor
    */
   function SolderNode( circuitLayerNode, vertex ) {
-    assert && assert( SOLDER_IMAGE, 'solder image should exist before creating SolderNode' );
+    assert && assert( CIRCLE_NODE, 'solder image should exist before creating SolderNode' );
 
     var self = this;
 
@@ -40,7 +41,8 @@ define( function( require ) {
     // @public {Vector2} - added by CircuitLayerNode during dragging, used for relative drag location.
     this.startOffset = null;
 
-    Image.call( this, SOLDER_IMAGE, {
+    Node.call( this, {
+      children: [ CIRCLE_NODE ],
 
       // Avoid bounds computation for this node since it is not pickable, and it was showing up in the profiler
       preventFit: true,
@@ -59,7 +61,7 @@ define( function( require ) {
     circuit.circuitElements.addItemRemovedListener( updateFill );
 
     var updateSolderNodePosition = function( position ) {
-      self.setTranslation( position.x - SOLDER_IMAGE.width / 2, position.y - SOLDER_IMAGE.height / 2 );
+      self.setTranslation( position.x - CIRCLE_NODE.width / 2, position.y - CIRCLE_NODE.height / 2 );
     };
     vertex.positionProperty.link( updateSolderNodePosition );
 
@@ -87,7 +89,7 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'SolderNode', SolderNode );
 
-  return inherit( Image, SolderNode, {
+  return inherit( Node, SolderNode, {
 
     /**
      * Eliminate resources when no longer used.
@@ -99,15 +101,7 @@ define( function( require ) {
     }
   }, {
 
-    /**
-     * Rasterize images for use in WebGL
-     * @param {function} callback - called once rasterization is complete
-     */
-    init: function( callback ) {
-      new Circle( SOLDER_RADIUS, { fill: SOLDER_COLOR } ).toImage( function( image ) {
-        SOLDER_IMAGE = image;
-        callback();
-      } );
-    }
+    // TODO: docs
+    webglSpriteNodes: [ CIRCLE_NODE ]
   } );
 } );

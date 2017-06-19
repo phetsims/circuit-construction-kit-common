@@ -77,14 +77,19 @@ define( function( require ) {
     // @public {Node} - layer for light rays, since it cannot be rendered in WebGL
     this.lightRaysLayer = new Node();
 
+    // TODO: docs
+    var webglSpriteLayer = new Node( {
+      visible: false,
+      children: SolderNode.webglSpriteNodes.concat( ChargeNode.webglSpriteNodes ).concat( VertexNode.webglSpriteNodes )
+    } );
+
     // @public {Node} - so that additional Nodes may be interleaved
     this.mainLayer = new Node( {
-      renderer: 'webgl', children: [
 
-        // add a child eagerly so the WebGL block is all allocated when 1st object is dragged out of toolbox
-        // @jonathanolson: is there a better way to do this?
-        new Rectangle( 0, 0, 10, 10 )
-      ]
+      // add a child eagerly so the WebGL block is all allocated when 1st object is dragged out of toolbox
+      // @jonathanolson: is there a better way to do this?
+      renderer: 'webgl',
+      children: [ webglSpriteLayer ]
     } );
 
     // @public {Node} - CircuitConstructionKitLightBulbNode calls addChild/removeChild to add sockets to the front layer
