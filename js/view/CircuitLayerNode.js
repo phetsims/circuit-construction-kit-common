@@ -40,6 +40,7 @@ define( function( require ) {
   var ValueNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ValueNode' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   /**
    * @param {Circuit} circuit - the model Circuit
@@ -77,7 +78,14 @@ define( function( require ) {
     this.lightRaysLayer = new Node();
 
     // @public {Node} - so that additional Nodes may be interleaved
-    this.mainLayer = new Node( { renderer: 'webgl' } );
+    this.mainLayer = new Node( {
+      renderer: 'webgl', children: [
+
+        // add a child eagerly so the WebGL block is all allocated when 1st object is dragged out of toolbox
+        // @jonathanolson: is there a better way to do this?
+        new Rectangle( 0, 0, 10, 10 )
+      ]
+    } );
 
     // @public {Node} - CircuitConstructionKitLightBulbNode calls addChild/removeChild to add sockets to the front layer
     this.lightBulbSocketLayer = new Node( { renderer: 'webgl' } );
@@ -155,6 +163,8 @@ define( function( require ) {
           );
           self.circuitElementNodeMap[ circuitElement.id ] = circuitElementNode;
           self.mainLayer.addChild( circuitElementNode );
+
+          // TODO: this is a performance cost when adding an item
           moveVerticesToFront( circuitElement );
 
           // series ammeters already show their own readouts

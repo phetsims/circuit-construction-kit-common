@@ -27,6 +27,10 @@ define( function( require ) {
   // constants
   var DISTANCE_TO_CUT_BUTTON = 70; // How far in view coordinates the cut button appears from the vertex node
   var VERTEX_RADIUS = 16; // for hit testing with probes
+  var CUT_ICON = new FontAwesomeNode( 'cut', {
+    rotation: -Math.PI / 2, // scissors point up
+    scale: CircuitConstructionKitConstants.FONT_AWESOME_ICON_SCALE
+  } );
 
   // rasters
   var BLACK_CIRCLE = null; // {Image} - raster filled in by init() for WebGL
@@ -79,10 +83,7 @@ define( function( require ) {
     // Button shown when the vertex is attached to >1 circuit element that allows detaching.
     var cutButton = new RoundPushButton( {
       baseColor: 'yellow',
-      content: new FontAwesomeNode( 'cut', {
-        rotation: -Math.PI / 2, // scissors point up
-        scale: CircuitConstructionKitConstants.FONT_AWESOME_ICON_SCALE
-      } ),
+      content: CUT_ICON,
       minXMargin: 10,
       minYMargin: 10,
       listener: function() { circuit.cutVertex( vertex ); },
