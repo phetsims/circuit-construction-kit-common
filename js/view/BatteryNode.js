@@ -31,6 +31,28 @@ define( function( require ) {
   var LEFT_JUNCTION = WIDTH / 2 - GAP / 2;
   var RIGHT_JUNCTION = WIDTH / 2 + GAP / 2;
 
+  // Points sampled using Photoshop from a raster of the IEEE icon seen at
+  // https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
+  var schematicShape = new Shape()
+    .moveTo( 0, 0 ) // left wire
+    .lineTo( LEFT_JUNCTION, 0 )
+    .moveTo( LEFT_JUNCTION, SMALL_TERMINAL_WIDTH / 2 ) // left plate
+    .lineTo( LEFT_JUNCTION, -SMALL_TERMINAL_WIDTH / 2 )
+    .moveTo( RIGHT_JUNCTION, 0 ) // right wire
+    .lineTo( WIDTH, 0 )
+    .moveTo( RIGHT_JUNCTION, LARGE_TERMINAL_WIDTH / 2 ) // right plate
+    .lineTo( RIGHT_JUNCTION, -LARGE_TERMINAL_WIDTH / 2 );
+  var schematicWidth = schematicShape.bounds.width;
+  var desiredWidth = CircuitConstructionKitConstants.BATTERY_LENGTH;
+  var schematicScale = desiredWidth / schematicWidth;
+
+  // Scale to fit the correct width
+  schematicShape = schematicShape.transformed( Matrix3.scale( schematicScale, schematicScale ) );
+  var schematicNode = new Path( schematicShape, {
+    stroke: 'black',
+    lineWidth: CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH
+  } ).toDataURLNodeSynchronous();
+
   /**
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
    * @param {CircuitLayerNode} circuitLayerNode
@@ -51,28 +73,6 @@ define( function( require ) {
     lifelikeNode.mutate( {
       scale: battery.distanceBetweenVertices / lifelikeNode.width
     } );
-
-    // Points sampled using Photoshop from a raster of the IEEE icon seen at
-    // https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
-    var schematicShape = new Shape()
-      .moveTo( 0, 0 ) // left wire
-      .lineTo( LEFT_JUNCTION, 0 )
-      .moveTo( LEFT_JUNCTION, SMALL_TERMINAL_WIDTH / 2 ) // left plate
-      .lineTo( LEFT_JUNCTION, -SMALL_TERMINAL_WIDTH / 2 )
-      .moveTo( RIGHT_JUNCTION, 0 ) // right wire
-      .lineTo( WIDTH, 0 )
-      .moveTo( RIGHT_JUNCTION, LARGE_TERMINAL_WIDTH / 2 ) // right plate
-      .lineTo( RIGHT_JUNCTION, -LARGE_TERMINAL_WIDTH / 2 );
-    var schematicWidth = schematicShape.bounds.width;
-    var desiredWidth = lifelikeNode.width;
-    var schematicScale = desiredWidth / schematicWidth;
-
-    // Scale to fit the correct width
-    schematicShape = schematicShape.transformed( Matrix3.scale( schematicScale, schematicScale ) );
-    var schematicNode = new Path( schematicShape, {
-      stroke: 'black',
-      lineWidth: CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH
-    } ).toDataURLNodeSynchronous();
 
     // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
     schematicNode.mouseArea = schematicNode.bounds.copy();
