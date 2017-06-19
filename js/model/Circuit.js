@@ -826,6 +826,18 @@ define( function( require ) {
       return this.searchVertices( vertex, fixedCircuitElements, okToVisit || function() {return true;} );
     },
 
+    // TODO: doc
+    getSelectedVertex: function() {
+      var vertexArray = this.vertices.getArray();
+      for ( var i = 0; i < vertexArray.length; i++ ) {
+        var vertex = vertexArray[ i ];
+        if ( vertex.selectedProperty.get() ) {
+          return vertex;
+        }
+      }
+      return null;
+    },
+
     /**
      * A vertex has been dragged, is it a candidate for joining with other vertices?  If so, return the candidate
      * vertex.  Otherwise, return null.

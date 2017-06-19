@@ -22,6 +22,7 @@ define( function( require ) {
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var Vector2 = require( 'DOT/Vector2' );
   var TandemSimpleDragHandler = require( 'TANDEM/scenery/input/TandemSimpleDragHandler' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   // constants
   var DISTANCE_TO_CUT_BUTTON = 70; // How far in view coordinates the cut button appears from the vertex node
@@ -40,6 +41,19 @@ define( function( require ) {
   var RED_CIRCLE_NODE = new Circle( VERTEX_RADIUS, CIRCLE_OPTIONS ).toDataURLNodeSynchronous();
   var BLACK_CIRCLE_NODE = new Circle( VERTEX_RADIUS, CIRCLE_OPTIONS ).toDataURLNodeSynchronous();
 
+  // Button shown when the vertex is attached to >1 circuit element that allows detaching.
+  // TODO: only allocate one of these and let it move around?
+  // TODO: docs
+  var cutButton = new RoundPushButton( {
+    baseColor: 'yellow',
+    content: CUT_ICON,
+    minXMargin: 10,
+    minYMargin: 10,
+    tandem: Tandem.createStaticTandem( 'cutButton' )
+  } );
+
+  var cutButtonInitialized = false;
+
   /**
    * @param {CircuitLayerNode} circuitLayerNode - the entire CircuitLayerNode
    * @param {Vertex} vertex - the Vertex that will be displayed
@@ -49,6 +63,14 @@ define( function( require ) {
   function VertexNode( circuitLayerNode, vertex, tandem ) {
     var self = this;
     var circuit = circuitLayerNode.circuit;
+
+    // TODO: docs
+    if ( !cutButtonInitialized ) {
+      cutButton.addListener( function() {
+        circuit.cutVertex( circuit.getSelectedVertex() );
+      } );
+      cutButtonInitialized = true;
+    }
 
     // @public (read-only) {Vertex} - the vertex associated with this node
     this.vertex = vertex;
@@ -85,17 +107,6 @@ define( function( require ) {
     circuit.circuitElements.addItemRemovedListener( updateStroke );
 
     vertex.attachableProperty.link( updateStroke );
-
-    // Button shown when the vertex is attached to >1 circuit element that allows detaching.
-    // TODO: only allocate one of these and let it move around?
-    var cutButton = new RoundPushButton( {
-      baseColor: 'yellow',
-      content: CUT_ICON,
-      minXMargin: 10,
-      minYMargin: 10,
-      listener: function() { circuit.cutVertex( vertex ); },
-      tandem: tandem.createTandem( 'cutButton' )
-    } );
 
     var updateSelected = function( selected ) {
       var neighborCircuitElements = circuit.getNeighborCircuitElements( vertex );
