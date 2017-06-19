@@ -2,6 +2,7 @@
 
 /**
  * Model for a switch which can be opened and closed.
+ * TODO: wrong y offset
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

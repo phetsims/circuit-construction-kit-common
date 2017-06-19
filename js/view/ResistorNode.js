@@ -167,7 +167,7 @@ define( function( require ) {
     var schematicNode = new Path( schematicShape, {
       stroke: 'black',
       lineWidth: CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH
-    } );
+    } ).toDataURLNodeSynchronous();
 
     // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
     schematicNode.mouseArea = schematicNode.bounds.copy();
