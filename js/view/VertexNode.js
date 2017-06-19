@@ -81,6 +81,7 @@ define( function( require ) {
     vertex.attachableProperty.link( updateStroke );
 
     // Button shown when the vertex is attached to >1 circuit element that allows detaching.
+    // TODO: only allocate one of these and let it move around?
     var cutButton = new RoundPushButton( {
       baseColor: 'yellow',
       content: CUT_ICON,

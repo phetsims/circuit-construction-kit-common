@@ -487,6 +487,7 @@ define( function( require ) {
     /**
      * Remove the given CircuitElement and its Vertex instances from the Circuit
      * @param {CircuitElement} circuitElement
+     * // TODO: make add symmetrical
      * @public
      */
     remove: function( circuitElement ) {
