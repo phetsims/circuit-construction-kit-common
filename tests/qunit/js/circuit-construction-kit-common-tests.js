@@ -229,6 +229,6 @@
     assert.deepEqual( ResistorColors.getColorNames( 10.5 ), [ 'brown', 'brown', 'black', 'gold' ], '10.5 ohm resistor' );
     assert.deepEqual( ResistorColors.getColorNames( 7.5 ), [ 'violet', 'green', 'gold', 'gold' ], '7.5 ohm resistor' );
     assert.deepEqual( ResistorColors.getColorNames( 20 ), [ 'red', 'black', 'black', 'gold' ], '20 ohm resistor' );
-    assert.deepEqual( ResistorColors.getColorNames( 88000 ), [ 'gray', 'gray', 'orange', 'gold' ], '20 ohm resistor' );
+    assert.deepEqual( ResistorColors.getColorNames( 88000 ), [ 'gray', 'gray', 'orange', 'gold' ], '88000 ohm resistor' );
   } );
 })();
