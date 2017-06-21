@@ -44,11 +44,6 @@ define( function( require ) {
     var contentNode = null;
     if ( circuitElement instanceof Battery ) {
 
-      // Battery readouts shows voltage and internal resistance if it is nonzero
-      contentNode = new VBox( {
-        align: 'left'
-      } );
-
       var voltageText = new Text( '', _.extend( { tandem: tandem.createTandem( 'voltageText' ) }, TEXT_OPTIONS ) );
       var voltageListener = function( voltage ) {
 
@@ -57,13 +52,24 @@ define( function( require ) {
       };
       circuitElement.voltageProperty.link( voltageListener );
 
+      // Battery readouts shows voltage and internal resistance if it is nonzero
+      contentNode = new VBox( {
+        align: 'left',
+        children: [ voltageText ]
+      } );
+
       var resistanceNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'resistanceText' ) }, TEXT_OPTIONS ) );
       var internalResistanceListener = function( internalResistance, lastInternalResistance ) {
         resistanceNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, { resistance: Util.toFixed( internalResistance, 1 ) } );
 
         // If the children should change, update them here
         if ( lastInternalResistance === null || (internalResistance === 0 || lastInternalResistance === 0) ) {
-          contentNode.children = internalResistance > 0 ? [ voltageText, resistanceNode ] : [ voltageText ];
+          var desiredChildren = internalResistance > 0 ? [ voltageText, resistanceNode ] : [ voltageText ];
+
+          // Only set children if changed
+          if ( contentNode.getChildrenCount() !== desiredChildren.length ) {
+            contentNode.children = desiredChildren;
+          }
         }
         updatePosition && updatePosition();
       };
