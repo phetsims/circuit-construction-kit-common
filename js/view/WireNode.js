@@ -29,14 +29,57 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
+  require( 'SCENERY/nodes/Image' ); // TODO: document that this is for making static toDataURLNode work in the built version.  Should this be elsewhere? Like main?
 
   // constants
   var LIFELIKE_LINE_WIDTH = 12; // line width in screen coordinates
   var SCHEMATIC_LINE_WIDTH = CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH; // line width in screen coordinates
 
   // constants
-  var transform = new Matrix3();
+  var transform = new Matrix3(); // TODO: fix casing
   var WIRE_RASTER_LENGTH = 100;
+
+  // TODO: fix casing
+  // TODO: document
+  var blackLineNode = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
+    lineWidth: SCHEMATIC_LINE_WIDTH,
+    stroke: 'black'
+  } ).toDataURLNodeSynchronous();
+
+  /**
+   * Create a LinearGradient for the wire, depending on the orientation relative to the shading (light comes from
+   * top left)
+   * @param {Object[]} colorStops - entries have point: Number, color: Color
+   * @param {function} colorStopPointMap - the operation to apply to create color stops
+   * @returns {LinearGradient}
+   */
+  var createGradient = function( colorStops, colorStopPointMap ) {
+    var gradient = new LinearGradient( 0, -LIFELIKE_LINE_WIDTH / 2, 0, LIFELIKE_LINE_WIDTH / 2 );
+    colorStops.forEach( function( colorStop ) {
+      gradient.addColorStop( colorStopPointMap( colorStop.point ), colorStop.color );
+    } );
+    return gradient;
+  };
+
+  var colorStops = [
+    { point: 0.0, color: new Color( '#993f35' ) },
+    { point: 0.2, color: new Color( '#cd7767' ) },
+    { point: 0.3, color: new Color( '#f6bda0' ) },
+    { point: 1.0, color: new Color( '#3c0c08' ) }
+  ];
+
+  var normalGradient = createGradient( colorStops, function( e ) {return e;} );
+  var reverseGradient = createGradient( colorStops.reverse(), function( e ) {return 1.0 - e;} );
+
+  var lifelikeNodeNormal = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
+    lineWidth: LIFELIKE_LINE_WIDTH,
+    stroke: normalGradient
+  } ).toDataURLNodeSynchronous();
+
+  var lifelikeNodeReversed = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
+    lineWidth: LIFELIKE_LINE_WIDTH,
+    stroke: reverseGradient
+  } ).toDataURLNodeSynchronous();
 
   /**
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - if null, this WireNode is just an icon
@@ -63,47 +106,7 @@ define( function( require ) {
     // In order to show a gradient on the line, while still allowing the line to stretch (without stretching rounded
     // ends), use a parent node to position and rotate the line, and keep the line the same width.
     // This increases the complexity of the code, but allows us to use Line renderer with a constant gradient.
-
-    /**
-     * Create a LinearGradient for the wire, depending on the orientation relative to the shading (light comes from
-     * top left)
-     * @param {Object[]} colorStops - entries have point: Number, color: Color
-     * @param {function} colorStopPointMap - the operation to apply to create color stops
-     * @returns {LinearGradient}
-     */
-    var createGradient = function( colorStops, colorStopPointMap ) {
-      var gradient = new LinearGradient( 0, -LIFELIKE_LINE_WIDTH / 2, 0, LIFELIKE_LINE_WIDTH / 2 );
-      colorStops.forEach( function( colorStop ) {
-        gradient.addColorStop( colorStopPointMap( colorStop.point ), colorStop.color );
-      } );
-      return gradient;
-    };
-
-    var colorStops = [
-      { point: 0.0, color: new Color( '#993f35' ) },
-      { point: 0.2, color: new Color( '#cd7767' ) },
-      { point: 0.3, color: new Color( '#f6bda0' ) },
-      { point: 1.0, color: new Color( '#3c0c08' ) }
-    ];
-
-    var normalGradient = createGradient( colorStops, function( e ) {return e;} );
-    var reverseGradient = createGradient( colorStops.reverse(), function( e ) {return 1.0 - e;} );
-
     var lineNode = new Node();
-    var blackLineNode = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
-      lineWidth: SCHEMATIC_LINE_WIDTH,
-      stroke: 'black'
-    } ).toDataURLNodeSynchronous();
-
-    var lifelikeNodeNormal = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
-      lineWidth: LIFELIKE_LINE_WIDTH,
-      stroke: normalGradient
-    } ).toDataURLNodeSynchronous();
-
-    var lifelikeNodeReversed = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
-      lineWidth: LIFELIKE_LINE_WIDTH,
-      stroke: reverseGradient
-    } ).toDataURLNodeSynchronous();
 
     /**
      * When the view type changes (lifelike vs schematic), update the node
@@ -218,32 +221,32 @@ define( function( require ) {
 
       // Input listener for dragging the body of the wire, to translate it.
       this.inputListener = new TandemSimpleDragHandler( {
-        allowTouchSnag: true,
-        tandem: tandem.createTandem( 'inputListener' ),
-        start: function( event ) {
-          if ( wire.interactiveProperty.get() ) {
+          allowTouchSnag: true,
+          tandem: tandem.createTandem( 'inputListener' ),
+          start: function( event ) {
+            if ( wire.interactiveProperty.get() ) {
 
-            // Start drag by starting a drag on start and end vertices
-            circuitLayerNode.startDragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
-            circuitLayerNode.startDragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
-            wire.isOverToolboxProperty.set( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) );
-            dragged = false;
-            startPoint = event.pointer.point;
-          }
-        },
-        drag: function( event ) {
-          if ( wire.interactiveProperty.get() ) {
+              // Start drag by starting a drag on start and end vertices
+              circuitLayerNode.startDragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
+              circuitLayerNode.startDragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
+              wire.isOverToolboxProperty.set( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) );
+              dragged = false;
+              startPoint = event.pointer.point;
+            }
+          },
+          drag: function( event ) {
+            if ( wire.interactiveProperty.get() ) {
 
-            // Drag by translating both of the vertices
-            circuitLayerNode.dragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
-            circuitLayerNode.dragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
-            wire.isOverToolboxProperty.set( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) );
-            dragged = true;
-          }
-        },
-        end: function( event ) {
-          CircuitElementNode.prototype.endDrag.call( self, event, self, [ wire.startVertexProperty.get(), wire.endVertexProperty.get() ],
-            circuitConstructionKitScreenView, circuitLayerNode, startPoint, dragged );
+              // Drag by translating both of the vertices
+              circuitLayerNode.dragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
+              circuitLayerNode.dragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
+              wire.isOverToolboxProperty.set( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) );
+              dragged = true;
+            }
+          },
+          end: function( event ) {
+            CircuitElementNode.prototype.endDrag.call( self, event, self, [ wire.startVertexProperty.get(), wire.endVertexProperty.get() ],
+              circuitConstructionKitScreenView, circuitLayerNode, startPoint, dragged );
           }
         }
       );
@@ -364,5 +367,11 @@ define( function( require ) {
       this.disposeWireNode();
       CircuitElementNode.prototype.dispose.call( this );
     }
+  }, {
+    webglSpriteNodes: [
+      blackLineNode,
+      lifelikeNodeNormal,
+      lifelikeNodeReversed
+    ]
   } );
 } );
