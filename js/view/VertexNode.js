@@ -39,7 +39,9 @@ define( function( require ) {
     lineDash: [ 6, 4 ]
   };
   var RED_CIRCLE_NODE = new Circle( VERTEX_RADIUS, CIRCLE_OPTIONS ).toDataURLNodeSynchronous();
-  var BLACK_CIRCLE_NODE = new Circle( VERTEX_RADIUS, CIRCLE_OPTIONS ).toDataURLNodeSynchronous();
+  var BLACK_CIRCLE_NODE = new Circle( VERTEX_RADIUS, _.extend( CIRCLE_OPTIONS, {
+    stroke: 'black'
+  } ) ).toDataURLNodeSynchronous();
 
   // Button shown when the vertex is attached to >1 circuit element that allows detaching.
   // TODO: only allocate one of these and let it move around?
@@ -93,7 +95,10 @@ define( function( require ) {
     // Shows up as red when disconnected or black when connected.  When unattachable, the dotted line disappears (black
     // box study)
     var updateStroke = function() {
-      self.children = [ circuit.countCircuitElements( vertex ) > 1 ? BLACK_CIRCLE_NODE : RED_CIRCLE_NODE ];
+      var desiredChild = circuit.countCircuitElements( vertex ) > 1 ? BLACK_CIRCLE_NODE : RED_CIRCLE_NODE;
+      if ( self.getChildAt( 0 ) !== desiredChild ) {
+        self.children = [ desiredChild ];
+      }
       self.visible = vertex.attachableProperty.get();
     };
 
