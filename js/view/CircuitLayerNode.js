@@ -84,6 +84,7 @@ define( function( require ) {
         .concat( ChargeNode.webglSpriteNodes )
         .concat( VertexNode.webglSpriteNodes )
         .concat( BatteryNode.webglSpriteNodes )
+        .concat( ResistorNode.webglSpriteNodes )
         .concat( FixedLengthCircuitElementNode.webglSpriteNodes )
     } );
 

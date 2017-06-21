@@ -232,5 +232,19 @@ define( function( require ) {
       FixedLengthCircuitElementNode.prototype.dispose.call( this );
       this.disposeResistorNode();
     }
+  }, {
+
+    // TODO: docs
+    webglSpriteNodes: [
+      new Image( lifelikeResistorImage ),
+      new Image( paperClipImage ),
+      new Image( coinImage ),
+      new Image( pencilImage ),
+      new Image( eraserImage ),
+      new Image( handImage ),
+      new Image( highResistanceResistorImage ),
+      new Image( dogImage ),
+      new Image( dollarBillImage )
+    ]
   } );
 } );
