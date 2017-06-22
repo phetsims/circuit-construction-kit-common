@@ -336,6 +336,7 @@ define( function( require ) {
       this.lineNodeParent.setMatrix( transform );
       this.highlightNode && this.highlightNode.setMatrix( transform ); // TODO: only update when visible
 
+      // TODO: dead code?
       //
       // highlightNodeParent.setRotation( deltaVector.angle() );
       // if ( highlightNode.visible ) {
