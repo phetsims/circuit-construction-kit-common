@@ -1055,25 +1055,6 @@ define( function( require ) {
           };
         } )
       };
-    },
-
-    /**
-     * Load the state of a CircuitStruct into this Circuit
-     * @param {CircuitStruct} circuitStruct
-     * @public
-     */
-    loadFromCircuitStruct: function( circuitStruct ) {
-      var self = this;
-      this.clear();
-      circuitStruct.vertices.forEach( this.vertices.add.bind( this.vertices ) );
-      var addCircuitElement = function( circuitElement ) {
-        self.circuitElements.add( circuitElement );
-      };
-      circuitStruct.wires.forEach( addCircuitElement );
-      circuitStruct.switches.forEach( addCircuitElement );
-      circuitStruct.batteries.forEach( addCircuitElement );
-      circuitStruct.resistors.forEach( addCircuitElement );
-      circuitStruct.lightBulbs.forEach( addCircuitElement );
     }
   } );
 } );
