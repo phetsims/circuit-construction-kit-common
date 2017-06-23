@@ -212,6 +212,10 @@ define( function( require ) {
         // When the user clicks on anything else, deselect the Circuit Element
         var rootNode = this.getUniqueTrail().rootNode();
 
+        var disposeAction = function() {
+          rootNode.removeInputListener( clickToDismissListener );
+        };
+
         // listener for 'click outside to dismiss'
         var clickToDismissListener = {
           down: function( event ) {
@@ -227,11 +231,19 @@ define( function( require ) {
 
             if ( trails.length === 0 ) {
               rootNode.removeInputListener( clickToDismissListener );
+              var index = self.disposeActions.indexOf( disposeAction );
+              if ( index >= 0 ) {
+                self.disposeActions.splice( index, 1 );
+              }
               circuitLayerNode.circuit.selectedCircuitElementProperty.set( null );
             }
           }
         };
         rootNode.addInputListener( clickToDismissListener );
+
+        // If the user deletes the element with the delete button, make sure to detach the rootNode input listener
+        // so the next drag will work right away, see https://github.com/phetsims/circuit-construction-kit-common/issues/368
+        this.disposeActions.push( disposeAction );
       }
       else {
 
