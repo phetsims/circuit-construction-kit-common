@@ -426,28 +426,45 @@ define( function( require ) {
         var translation = oppositeVertex.positionProperty.get().minus( vertex.positionProperty.get() ).normalized().timesScalar( 30 );
         translations.push( translation );
       }
-
       var angles = translations.map( function( t ) {return t.angle();} );
-      var separation = Math.PI * 2 / angles.length;
+
+      // Wow, really?
+      if ( neighborCircuitElements.length > 2 ) {
+        neighborCircuitElements = _.sortBy( neighborCircuitElements, function( n ) {
+          var index = neighborCircuitElements.indexOf( n );
+          return angles[ index ];
+        } );
+
+        var translations = [];
+        for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
+          var circuitElement = neighborCircuitElements[ i ];
+          var oppositeVertex = circuitElement.getOppositeVertex( vertex );
+          var translation = oppositeVertex.positionProperty.get().minus( vertex.positionProperty.get() ).normalized().timesScalar( 30 );
+          translations.push( translation );
+        }
+        var angles = translations.map( function( t ) {return t.angle();} );
+      }
+
+      var separation = Math.PI * 2 / neighborCircuitElements.length;
       var results = [];
 
       var center = angles.reduce( function( a, b ) {return a + b;}, 0 ) / angles.length;
 
       // Move vertices away from cut vertex so that wires don't overlap
-      if ( translations.length === 2 ) {
+      if ( neighborCircuitElements.length === 2 ) {
 
-        var a = center - separation / translations.length;
-        var b = center + separation / translations.length;
-        var ax = Vector2.createPolar( 30, a );
-        var bx = Vector2.createPolar( 30, b );
+        var ax = Vector2.createPolar( 30, center - separation / neighborCircuitElements.length );
+        var bx = Vector2.createPolar( 30, center + separation / neighborCircuitElements.length );
 
         var da = angles[ 0 ] - center;
 
         results = da < 0 ? [ ax, bx ] : [ bx, ax ];
       }
       else {
-        for ( var k = 0; k < translations.length; k++ ) {
-          results.push( Vector2.createPolar( 30, separation * k + angles[ 0 ] ) );
+
+        var distance = neighborCircuitElements.length <= 5 ? 30 : neighborCircuitElements.length * 30 / 5;
+        for ( var k = 0; k < neighborCircuitElements.length; k++ ) {
+          results.push( Vector2.createPolar( distance, separation * k + angles[ 0 ] ) );
         }
       }
 
