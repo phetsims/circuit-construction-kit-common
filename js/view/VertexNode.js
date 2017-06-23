@@ -23,6 +23,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var TandemSimpleDragHandler = require( 'TANDEM/scenery/input/TandemSimpleDragHandler' );
   var Tandem = require( 'TANDEM/Tandem' );
+  var Input = require( 'SCENERY/input/Input' );
 
   // constants
   var DISTANCE_TO_CUT_BUTTON = 70; // How far in view coordinates the cut button appears from the vertex node
@@ -89,7 +90,24 @@ define( function( require ) {
 
     Node.call( this, {
       tandem: tandem,
-      cursor: 'pointer'
+      cursor: 'pointer',
+
+      // keyboard navigation
+      tagName: 'div', // HTML tag name for representative element in the document, see Accessibility.js
+      focusable: true,
+      focusHighlight: 'invisible' // highlights are drawn by the simulation
+    } );
+
+    // keyboard listener so that delete or backspace deletes the element - must be disposed
+    var keyListener = this.addAccessibleInputListener( {
+      keydown: function( event ) {
+        var code = event.keyCode || event.which;
+
+        // on delete or backspace, the focused Vertex should be cut
+        if ( code === Input.KEY_DELETE || code === Input.KEY_BACKSPACE ) {
+          circuit.cutVertex( circuit.getSelectedVertex() );
+        }
+      }
     } );
 
     // Shows up as red when disconnected or black when connected.  When unattachable, the dotted line disappears (black
@@ -123,6 +141,7 @@ define( function( require ) {
           neighborCircuitElements[ i ].vertexSelectedEmitter.emit();
         }
         self.moveToFront();
+        self.focus();
       }
       CircuitConstructionKitCommonUtil.setInSceneGraph( selected, circuitLayerNode.highlightLayer, highlightNode );
       var numberConnections = neighborCircuitElements.length;
@@ -279,6 +298,8 @@ define( function( require ) {
 
       vertex.attachableProperty.unlink( updateStroke );
       circuit.circuitChangedEmitter.removeListener( updateStroke );
+
+      this.removeAccessibleInputListener( keyListener );
       tandem.removeInstance( self );
     };
   }
