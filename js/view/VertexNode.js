@@ -109,7 +109,7 @@ define( function( require ) {
           // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
           // https://github.com/phetsims/circuit-construction-kit-common/issues/307
           event.preventDefault();
-          circuit.cutVertex( circuit.getSelectedVertex() );
+          cutButton.enabled && circuit.cutVertex( circuit.getSelectedVertex() );
         }
       }
     } );
