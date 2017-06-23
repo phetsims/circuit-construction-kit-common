@@ -401,7 +401,7 @@ define( function( require ) {
     },
 
     /**
-     * Split the Vertex into two separate vertices.
+     * Split the Vertex into separate vertices.
      * @param {Vertex} vertex - the vertex to be cut.
      * @public
      */
@@ -418,23 +418,7 @@ define( function( require ) {
         return circuitElement.interactiveProperty.get();
       } );
 
-      // Track where they would go if they moved toward their opposite vertices
-      var translations = [];
-      for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
-        var circuitElement = neighborCircuitElements[ i ];
-        var oppositeVertex = circuitElement.getOppositeVertex( vertex );
-        var translation = oppositeVertex.positionProperty.get().minus( vertex.positionProperty.get() ).normalized().timesScalar( 30 );
-        translations.push( translation );
-      }
-      var angles = translations.map( function( t ) {return t.angle();} );
-
-      // Wow, really?
-      if ( neighborCircuitElements.length > 2 ) {
-        neighborCircuitElements = _.sortBy( neighborCircuitElements, function( n ) {
-          var index = neighborCircuitElements.indexOf( n );
-          return angles[ index ];
-        } );
-
+      var getTranslations = function() {
         var translations = [];
         for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
           var circuitElement = neighborCircuitElements[ i ];
@@ -442,7 +426,24 @@ define( function( require ) {
           var translation = oppositeVertex.positionProperty.get().minus( vertex.positionProperty.get() ).normalized().timesScalar( 30 );
           translations.push( translation );
         }
-        var angles = translations.map( function( t ) {return t.angle();} );
+        return translations;
+      };
+
+      // Track where they would go if they moved toward their opposite vertices
+      var translations = getTranslations();
+      var angles = translations.map( function( t ) {return t.angle();} );
+
+      if ( neighborCircuitElements.length > 2 ) {
+
+        // Reorder elements based on angle so they don't cross over when spread out
+        neighborCircuitElements = _.sortBy( neighborCircuitElements, function( n ) {
+          var index = neighborCircuitElements.indexOf( n );
+          return angles[ index ];
+        } );
+
+        // Get the angles in the corrected order
+        translations = getTranslations();
+        angles = translations.map( function( t ) {return t.angle();} );
       }
 
       var separation = Math.PI * 2 / neighborCircuitElements.length;
@@ -468,8 +469,8 @@ define( function( require ) {
         }
       }
 
-      for ( i = 0; i < neighborCircuitElements.length; i++ ) {
-        circuitElement = neighborCircuitElements[ i ];
+      for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
+        var circuitElement = neighborCircuitElements[ i ];
 
         var newVertex = new Vertex( vertex.positionProperty.get().x, vertex.positionProperty.get().y, {
           tandem: this.vertexGroupTandem.createNextTandem()
