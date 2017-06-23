@@ -105,6 +105,10 @@ define( function( require ) {
 
         // on delete or backspace, the focused Vertex should be cut
         if ( code === Input.KEY_DELETE || code === Input.KEY_BACKSPACE ) {
+
+          // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
+          // https://github.com/phetsims/circuit-construction-kit-common/issues/307
+          event.preventDefault();
           circuit.cutVertex( circuit.getSelectedVertex() );
         }
       }
