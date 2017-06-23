@@ -430,7 +430,7 @@ define( function( require ) {
 
           circuitElement.replaceVertex( vertex, newVertex );
 
-          // Bump the vertices away from each other
+          // Bump the vertices away from the original vertex
           var vertexGroup = this.findAllFixedVertices( newVertex );
           var oppositeVertex = circuitElement.getOppositeVertex( newVertex );
           var translation = oppositeVertex.positionProperty.get().minus( newVertex.positionProperty.get() ).normalized().timesScalar( 30 );
