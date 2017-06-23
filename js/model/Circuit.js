@@ -407,41 +407,71 @@ define( function( require ) {
      */
     cutVertex: function( vertex ) {
       var neighborCircuitElements = this.getNeighborCircuitElements( vertex );
-      if ( neighborCircuitElements.length === 0 ) {
+      if ( neighborCircuitElements.length <= 1 ) {
 
         // No need to cut a solo vertex
         return;
       }
+
+      // Only move interactive circuit elements
+      neighborCircuitElements = neighborCircuitElements.filter( function( circuitElement ) {
+        return circuitElement.interactiveProperty.get();
+      } );
+
+      // Track where they would go if they moved toward their opposite vertices
+      var translations = [];
       for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
         var circuitElement = neighborCircuitElements[ i ];
-        if ( circuitElement.interactiveProperty.get() ) {
-          var options = {
-            draggable: true,
-            interactive: true,
-            attachable: true,
-            blackBoxInterface: false,
-            insideTrueBlackBox: false,
-            tandem: this.vertexGroupTandem.createNextTandem()
-          };
-          var newVertex = new Vertex( vertex.positionProperty.get().x, vertex.positionProperty.get().y, options );
+        var oppositeVertex = circuitElement.getOppositeVertex( vertex );
+        var translation = oppositeVertex.positionProperty.get().minus( vertex.positionProperty.get() ).normalized().timesScalar( 30 );
+        translations.push( translation );
+      }
 
-          // Add the new vertex to the model first so that it can be updated in subsequent calls
-          this.vertices.add( newVertex );
+      var angles = translations.map( function( t ) {return t.angle();} );
+      var separation = Math.PI * 2 / angles.length;
+      var results = [];
 
-          circuitElement.replaceVertex( vertex, newVertex );
+      var center = angles.reduce( function( a, b ) {return a + b;}, 0 ) / angles.length;
 
-          // Bump the vertices away from the original vertex
-          var vertexGroup = this.findAllFixedVertices( newVertex );
-          var oppositeVertex = circuitElement.getOppositeVertex( newVertex );
-          var translation = oppositeVertex.positionProperty.get().minus( newVertex.positionProperty.get() ).normalized().timesScalar( 30 );
-          for ( var j = 0; j < vertexGroup.length; j++ ) {
-            var v = vertexGroup[ j ];
+      // Move vertices away from cut vertex so that wires don't overlap
+      if ( translations.length === 2 ) {
 
-            // Only translate vertices that are movable and not connected to the black box interface by fixed length elements
-            if ( v.draggableProperty.get() && !this.hasFixedConnectionToBlackBoxInterfaceVertex( v ) ) {
-              v.positionProperty.set( v.positionProperty.get().plus( translation ) );
-              v.unsnappedPositionProperty.set( v.positionProperty.get() );
-            }
+        var a = center - separation / translations.length;
+        var b = center + separation / translations.length;
+        var ax = Vector2.createPolar( 30, a );
+        var bx = Vector2.createPolar( 30, b );
+
+        var da = angles[ 0 ] - center;
+
+        results = da < 0 ? [ ax, bx ] : [ bx, ax ];
+      }
+      else {
+        for ( var k = 0; k < translations.length; k++ ) {
+          results.push( Vector2.createPolar( 30, separation * k + angles[ 0 ] ) );
+        }
+      }
+
+      for ( i = 0; i < neighborCircuitElements.length; i++ ) {
+        circuitElement = neighborCircuitElements[ i ];
+
+        var newVertex = new Vertex( vertex.positionProperty.get().x, vertex.positionProperty.get().y, {
+          tandem: this.vertexGroupTandem.createNextTandem()
+        } );
+
+        // Add the new vertex to the model first so that it can be updated in subsequent calls
+        this.vertices.add( newVertex );
+
+        circuitElement.replaceVertex( vertex, newVertex );
+
+        // Bump the vertices away from the original vertex
+        var vertexGroup = this.findAllFixedVertices( newVertex );
+
+        for ( var j = 0; j < vertexGroup.length; j++ ) {
+          var v = vertexGroup[ j ];
+
+          // Only translate vertices that are movable and not connected to the black box interface by fixed length elements
+          if ( v.draggableProperty.get() && !this.hasFixedConnectionToBlackBoxInterfaceVertex( v ) ) {
+            v.setPosition( results[ i ].plus( v.positionProperty.value ) );
           }
         }
       }

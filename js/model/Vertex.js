@@ -102,5 +102,11 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'Vertex', Vertex );
 
-  return inherit( Object, Vertex );
+  return inherit( Object, Vertex, {
+    // TODO: docs
+    setPosition: function( position ) {
+      this.positionProperty.set( position );
+      this.unsnappedPositionProperty.set( position ); // TODO: need clone?
+    }
+  } );
 } );
