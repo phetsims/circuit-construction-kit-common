@@ -186,6 +186,7 @@ define( function( require ) {
   return inherit( FixedLengthCircuitElementNode, CircuitConstructionKitLightBulbNode, {
 
     /**
+     * TODO: factor out updateRender implementations
      * @override
      * @public
      */
