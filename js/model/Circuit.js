@@ -304,14 +304,19 @@ define( function( require ) {
 
     /**
      * When two Vertices are dropped/bumped too close together, move one away by rotating it. Rotation instead of
-     * translation is is used to handle crooked elements with fixed length.
+     * translation is is used to handle FixedLengthCircuitElements.
      *
      * @param {Vertex} vertex - the vertex to rotate
      * @param {Vertex} pivotVertex - the vertex to rotate about
      * @private
      */
     rotateSingleVertex: function( vertex, pivotVertex ) {
-      var searchAngle = Math.PI / 4;
+      var distance = vertex.positionProperty.value.distance( pivotVertex.positionProperty.value );
+
+      // For small components like batteries (which are around 100 view units long), rotate Math.PI/4
+      // Longer components don't need to rotate by such a large angle because the arc length will be
+      // proportionately longer, see https://github.com/phetsims/circuit-construction-kit-common/issues/344
+      var searchAngle = Math.PI / 4 * 100 / distance;
       this.rotateSingleVertexByAngle( vertex, pivotVertex, searchAngle );
       var distance1 = this.closestDistanceToOtherVertex( vertex );
       this.rotateSingleVertexByAngle( vertex, pivotVertex, -2 * searchAngle );
