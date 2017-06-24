@@ -52,12 +52,10 @@ define( function( require ) {
     var schematicNode = new Node();
     circuitSwitch.closedProperty.link( function( closed ) {
       lifelikeNode.children = [ new Node( {
-        children: [ closed ? lifelikeClosedImage : lifelikeOpenImage ],
-        y: closed ? -14 : -40 // TODO: hack alert
+        children: [ closed ? lifelikeClosedImage : lifelikeOpenImage ]
       } ) ];
       schematicNode.children = [ new Node( {
-        children: [ closed ? schematicClosedImage : schematicOpenImage ],
-        y: closed ? -7 : -30 // TODO: hack alert
+        children: [ closed ? schematicClosedImage : schematicOpenImage ]
       } ) ];
     } );
 
