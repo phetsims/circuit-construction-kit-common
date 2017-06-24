@@ -96,6 +96,9 @@ define( function( require ) {
     // @public (read-only) {Wire}
     this.wire = wire;
 
+    // @private - keep track of when disposed so that children cannot be reassigned after disposal
+    this.disposed = false;
+
     var highlightNode = new Path( null, {
       stroke: CircuitConstructionKitConstants.HIGHLIGHT_COLOR,
       lineWidth: CircuitConstructionKitConstants.HIGHLIGHT_LINE_WIDTH,
@@ -112,6 +115,9 @@ define( function( require ) {
      * When the view type changes (lifelike vs schematic), update the node
      */
     var updateStroke = function() {
+      if ( self.disposed ) {
+        return;
+      }
       var view = viewProperty.value;
       lineNode.children = [ view === 'lifelike' ? lifelikeNodeNormal : blackLineNode ];
 
@@ -365,7 +371,9 @@ define( function( require ) {
      * @public
      */
     dispose: function() {
+      this.disposed = true;
       this.disposeWireNode();
+      this.children = [];
       CircuitElementNode.prototype.dispose.call( this );
     }
   }, {

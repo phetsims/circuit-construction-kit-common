@@ -64,6 +64,10 @@ define( function( require ) {
    * @constructor
    */
   function VertexNode( circuitLayerNode, vertex, tandem ) {
+
+    // @private - Keep track of when the node has been dispose to prevent memory leaks, see usage below
+    this.disposed = false;
+
     var self = this;
     var circuit = circuitLayerNode.circuit;
 
@@ -117,6 +121,14 @@ define( function( require ) {
     // Shows up as red when disconnected or black when connected.  When unattachable, the dotted line disappears (black
     // box study)
     var updateStroke = function() {
+
+      // A memory leak was being caused by children getting added after dispose was called.
+      // This is because the itemRemoved listener in CircuitLayerNode is added (and hence called) before this callback.
+      // The CircuitLayerNode listener calls dispose but this listener still gets called back because emitter gets
+      // a defensive copy of listeners.
+      if ( self.disposed ) {
+        return;
+      }
       var desiredChild = circuit.countCircuitElements( vertex ) > 1 ? BLACK_CIRCLE_NODE : RED_CIRCLE_NODE;
       if ( self.getChildAt( 0 ) !== desiredChild ) {
         self.children = [ desiredChild ];
@@ -317,6 +329,8 @@ define( function( require ) {
      * @public
      */
     dispose: function() {
+      this.disposed = true;
+      this.children = [];
       this.disposeVertexNode();
       Node.prototype.dispose.call( this );
     }

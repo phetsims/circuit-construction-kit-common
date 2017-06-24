@@ -97,6 +97,7 @@ define( function( require ) {
      */
     dispose: function() {
       this.disposeSolderNode();
+      this.children = [];
       Node.prototype.dispose.call( this );
     }
   }, {
