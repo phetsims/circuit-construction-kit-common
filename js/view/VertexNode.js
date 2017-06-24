@@ -317,8 +317,8 @@ define( function( require ) {
      * @public
      */
     dispose: function() {
-      Node.prototype.dispose.call( this );
       this.disposeVertexNode();
+      Node.prototype.dispose.call( this );
     }
   }, {
     VERTEX_RADIUS: VERTEX_RADIUS,
