@@ -256,7 +256,6 @@ define( function( require ) {
       circuitLayerNode.circuit.selectedCircuitElementProperty.link( updateHighlight );
     }
 
-
     /**
      * Move the wire element to the back of the view when connected to another circiut element
      * @private
