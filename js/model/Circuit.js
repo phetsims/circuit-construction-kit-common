@@ -884,7 +884,10 @@ define( function( require ) {
       return this.searchVertices( vertex, fixedCircuitElements, okToVisit || function() {return true;} );
     },
 
-    // TODO: doc
+    /**
+     * Returns the selected Vertex or null if none is selected
+     * @returns {Vertex|null}
+     */
     getSelectedVertex: function() {
       var vertexArray = this.vertices.getArray();
       for ( var i = 0; i < vertexArray.length; i++ ) {
