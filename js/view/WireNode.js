@@ -186,34 +186,17 @@ define( function( require ) {
 
     /**
      * Listener for the position of the start vertex.
-     * @param {Vector2} startPoint
      */
-    var updateTransform = function( startPoint ) {
+    var updateTransform = function() {
       self.updateLayout();
     };
 
-    /**
-     * When the start vertex changes to a different instance (say when vertices are soldered together), unlink the
-     * old one and link to the new one.
-     *
-     * @param {function} updateListener
-     * @returns {function}
-     * @private
-     */
-    var createVertexUpdater = function( updateListener ) {
-
-      /**
-       * Unlink the old vertex and link to the new vertex.
-       * @param {Vertex} newVertex
-       * @param {Vertex} oldVertex
-       */
-      return function( newVertex, oldVertex ) {
-        oldVertex && oldVertex.positionProperty.unlink( updateListener );
-        newVertex.positionProperty.link( updateListener );
-      };
+    // When the start vertex changes to a different instance (say when vertices are soldered together), unlink the
+    // old one and link to the new one.
+    var doUpdateTransform = function( newVertex, oldVertex ) {
+      oldVertex && oldVertex.positionProperty.unlink( updateTransform );
+      newVertex.positionProperty.link( updateTransform );
     };
-
-    var doUpdateTransform = createVertexUpdater( updateTransform );
     wire.startVertexProperty.link( doUpdateTransform );
     wire.endVertexProperty.link( doUpdateTransform );
 
@@ -342,7 +325,7 @@ define( function( require ) {
       this.lineNodeParent.setMatrix( transform );
       this.highlightNode && this.highlightNode.setMatrix( transform ); // TODO: only update when visible
 
-      // TODO: dead code?
+      // TODO: update the location of the highlight
       //
       // highlightNodeParent.setRotation( deltaVector.angle() );
       // if ( highlightNode.visible ) {
