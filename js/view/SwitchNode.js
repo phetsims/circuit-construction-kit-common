@@ -33,7 +33,6 @@ define( function( require ) {
     .addColorStop( 0.3, '#e39b8c' )
     .addColorStop( 1, '#b56351' );
 
-
   /**
    * @param {string} type - 'lifelike'|'schematic'
    * @param {Color|string|LinearGradient} fill
@@ -139,6 +138,8 @@ define( function( require ) {
    */
   function SwitchNode( circuitConstructionKitScreenView, circuitLayerNode, circuitSwitch, showResultsProperty, viewProperty, tandem, options ) {
 
+    var self = this;
+
     // @public (read-only) {Switch} - the Switch rendered by this Node
     this.circuitSwitch = circuitSwitch;
 
@@ -168,7 +169,7 @@ define( function( require ) {
     var downPoint = null;
 
     // When the user taps the switch, toggle whether it is open or closed.
-    this.contentNode.addInputListener( new ButtonListener( {
+    var buttonListener = new ButtonListener( {
       down: function( event ) {
         downPoint = event.pointer.point;
       },
@@ -180,11 +181,16 @@ define( function( require ) {
           circuitSwitch.closedProperty.value = !circuitSwitch.closedProperty.value;
         }
       }
-    } ) );
+    } );
+    this.contentNode.addInputListener( buttonListener );
 
     // TODO: docs
     this.disposeSwitchNode = function() {
       circuitSwitch.closedProperty.unlink( closeListener );
+
+      // TODO: I have no idea why these must be called, but if they are omitted there is a memory leak for create/destroy switches
+      self.removeAllChildren();
+      self.contentNode.removeInputListener( buttonListener );
     };
   }
 
