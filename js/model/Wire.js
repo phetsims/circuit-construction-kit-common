@@ -69,6 +69,7 @@ define( function( require ) {
     // @private {function} - for disposal
     this.disposeWire = function() {
       self.vertexMovedEmitter.removeListener( updateWire );
+      self.resistivityProperty.unlink( updateWire );
     };
   }
 
@@ -91,8 +92,8 @@ define( function( require ) {
      * @public
      */
     dispose: function() {
-      CircuitElement.prototype.dispose.call( this );
       this.disposeWire();
+      CircuitElement.prototype.dispose.call( this );
     },
 
     /**

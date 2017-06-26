@@ -179,6 +179,7 @@ define( function( require ) {
      * @param {LineStyles} lineStyles
      * @returns {Shape}
      */
+      // TODO: this is broken
     var getHighlightStrokedShape = function( lineStyles ) {
       return Shape.rect( 0, 0, 100, 100 );
       // return self.lineNode.shape.getStrokedShape( lineStyles );
@@ -284,6 +285,7 @@ define( function( require ) {
       wire.interactiveProperty.unlink( updatePickable );
 
       wire.startVertexProperty.get().positionProperty.unlink( updateTransform );
+      wire.endVertexProperty.get().positionProperty.unlink( updateTransform );
 
       wire.connectedEmitter.removeListener( moveToBack );
 
