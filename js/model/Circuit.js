@@ -109,9 +109,21 @@ define( function( require ) {
       } );
     } );
     this.circuitElements.addItemRemovedListener( function( circuitElement ) {
+
+      // Delete orphaned vertices
+      self.removeCircuitElementVertex( circuitElement.startVertexProperty.get() );
+      self.removeCircuitElementVertex( circuitElement.endVertexProperty.get() );
+
+      // Clear the selected element property so that the Edit panel for the element will disappear
+      if ( self.selectedCircuitElementProperty.get() === circuitElement ) {
+        self.selectedCircuitElementProperty.set( null );
+      }
+
       circuitElement.getCircuitProperties().forEach( function( property ) {
         property.unlink( solve );
       } );
+
+      circuitElement.dispose();
     } );
 
     // When a new circuit element is added to a circuit, it has two unconnected vertices
@@ -394,7 +406,7 @@ define( function( require ) {
 
         // Dispose of elements
         while ( this.circuitElements.length > 0 ) {
-          this.remove( this.circuitElements.get( 0 ) );
+          this.circuitElements.remove( this.circuitElements.get( 0 ) );
         }
         assert && assert( this.vertices.length === 0, 'vertices should have been removed with circuit elements cleared' );
       }
@@ -535,29 +547,6 @@ define( function( require ) {
       if ( this.getNeighborCircuitElements( vertex ).length === 0 && !vertex.blackBoxInterfaceProperty.get() ) {
         this.vertices.remove( vertex );
       }
-    },
-
-    /**
-     * Remove the given CircuitElement and its Vertex instances from the Circuit
-     * @param {CircuitElement} circuitElement
-     * // TODO: make add symmetrical
-     * @public
-     */
-    remove: function( circuitElement ) {
-
-      // Remove the circuit element itself
-      this.circuitElements.remove( circuitElement );
-
-      // Delete orphaned vertices
-      this.removeCircuitElementVertex( circuitElement.startVertexProperty.get() );
-      this.removeCircuitElementVertex( circuitElement.endVertexProperty.get() );
-
-      // Clear the selected element property so that the Edit panel for the element will disappear
-      if ( this.selectedCircuitElementProperty.get() === circuitElement ) {
-        this.selectedCircuitElementProperty.set( null );
-      }
-
-      circuitElement.dispose();
     },
 
     /**

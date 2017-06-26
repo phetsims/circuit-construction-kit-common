@@ -438,7 +438,7 @@ define( function( require ) {
     dropCircuitElementNodeInToolbox: function( circuitElementNode ) {
 
       // Only drop in the box if it was a single component, if connected to other things, do not
-      this.circuitConstructionKitModel.circuit.remove( circuitElementNode.circuitElement );
+      this.circuitConstructionKitModel.circuit.circuitElements.remove( circuitElementNode.circuitElement );
     },
 
     /**
