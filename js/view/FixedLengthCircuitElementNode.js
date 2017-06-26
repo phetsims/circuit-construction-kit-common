@@ -144,6 +144,7 @@ define( function( require ) {
         var visible = (lastCircuitElement === circuitElement);
         CircuitConstructionKitCommonUtil.setInSceneGraph( visible, circuitLayerNode.highlightLayer, self.highlightNode );
       };
+
       circuitLayerNode.circuit.selectedCircuitElementProperty.link( updateHighlightVisibility );
 
       if ( circuitElement instanceof Battery || circuitElement instanceof Resistor ) {
@@ -256,8 +257,8 @@ define( function( require ) {
      * @public - dispose resources when no longer used
      */
     dispose: function() {
-      CircuitElementNode.prototype.dispose.call( this );
       this.disposeFixedLengthCircuitElementNode();
+      CircuitElementNode.prototype.dispose.call( this );
     }
   }, {
     webglSpriteNodes: [

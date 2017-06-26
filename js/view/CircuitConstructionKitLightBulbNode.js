@@ -71,6 +71,7 @@ define( function( require ) {
    * @constructor
    */
   function CircuitConstructionKitLightBulbNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, showResultsProperty, viewProperty, tandem, options ) {
+    var self = this;
     options = options || {};
     var brightnessProperty = new NumberProperty( 0 );
     var updateBrightness = Property.multilink( [ lightBulb.currentProperty, showResultsProperty, lightBulb.voltageDifferenceProperty ], function( current, running, voltageDifference ) {
@@ -176,8 +177,9 @@ define( function( require ) {
 
     this.disposeCircuitConstructionKitLightBulbNode = function() {
       updateBrightness.dispose();
-      circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.removeChild( this.socketNode );
-      circuitLayerNode && circuitLayerNode.lightRaysLayer.removeChild( this.raysNode );
+      circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.removeChild( self.socketNode );
+      circuitLayerNode && circuitLayerNode.lightRaysLayer.removeChild( self.raysNode );
+      self.socketNode.dispose();
     };
   }
 
