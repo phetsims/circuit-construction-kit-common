@@ -13,21 +13,14 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var Image = require( 'SCENERY/nodes/Image' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var ElectronChargeNode = require( 'SCENERY_PHET/ElectronChargeNode' );
   var Tandem = require( 'TANDEM/Tandem' );
   var ConventionalCurrentArrowNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ConventionalCurrentArrowNode' );
 
   // constants
-  var ELECTRON_SCALE = 2; // Scale up before rasterization so it won't be too pixellated/fuzzy
-
-  // Copied from John Travoltage
-  var MINUS_CHARGE_NODE = new ElectronChargeNode( { scale: ELECTRON_SCALE, top: 0, left: 0 } );
-
-  var ELECTRON_IMAGE_NODE = new Node(); // TODO: use better startup strategy, see init()
-
-  var ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.createStaticTandem( 'arrowNode' ) );
+  var ELECTRON_CHARGE_NODE = new ElectronChargeNode( { opacity: 0.75 } ).toDataURLNodeSynchronous();
+  var ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.createStaticTandem( 'arrowNode' ) ).toDataURLNodeSynchronous();
 
   /**
    * @param {Charge} charge - the model element
@@ -40,7 +33,7 @@ define( function( require ) {
     // @public (read-only) {Charge} - the model depicted by this node
     this.charge = charge;
 
-    var child = charge.charge > 0 ? ARROW_NODE : ELECTRON_IMAGE_NODE;
+    var child = charge.charge > 0 ? ARROW_NODE : ELECTRON_CHARGE_NODE;
     Node.call( this, {
       children: [ child ],
       pickable: false
@@ -91,22 +84,7 @@ define( function( require ) {
 
     // TODO: docs
     webglSpriteNodes: [
-      ELECTRON_IMAGE_NODE
-    ],
-    init: function( callback ) {
-      MINUS_CHARGE_NODE.toImage( function( im ) {
-
-        // Scale back down so the image will be the desired size
-        var image = new Image( im, {
-          scale: 1.0 / ELECTRON_SCALE,
-          imageOpacity: 0.75// use imageOpacity for a significant performance boost, see https://github.com/phetsims/circuit-construction-kit-common/issues/293
-        } );
-        ELECTRON_IMAGE_NODE.children = [ image ];
-
-        // Center it so that animation doesn't require getCenter
-        ELECTRON_IMAGE_NODE.translate( -MINUS_CHARGE_NODE.width / 2 / ELECTRON_SCALE, -MINUS_CHARGE_NODE.height / 2 / ELECTRON_SCALE );
-        callback();
-      }, 0, 0, MINUS_CHARGE_NODE.width, MINUS_CHARGE_NODE.height );
-    }
+      ELECTRON_CHARGE_NODE, ARROW_NODE
+    ]
   } );
 } );
