@@ -144,14 +144,15 @@ define( function( require ) {
 
     var lifelikeNode = new Node();
     var schematicNode = new Node();
-    circuitSwitch.closedProperty.link( function( closed ) {
+    var closeListener = function( closed ) {
       lifelikeNode.children = [ new Node( {
         children: [ closed ? lifelikeClosedImage : lifelikeOpenImage ]
       } ) ];
       schematicNode.children = [ new Node( {
         children: [ closed ? schematicClosedImage : schematicOpenImage ]
       } ) ];
-    } );
+    };
+    circuitSwitch.closedProperty.link( closeListener );
 
     FixedLengthCircuitElementNode.call( this,
       circuitConstructionKitScreenView,
@@ -180,9 +181,21 @@ define( function( require ) {
         }
       }
     } ) );
+
+    // TODO: docs
+    this.disposeSwitchNode = function() {
+      circuitSwitch.closedProperty.unlink( closeListener );
+    };
   }
 
   circuitConstructionKitCommon.register( 'SwitchNode', SwitchNode );
 
-  return inherit( FixedLengthCircuitElementNode, SwitchNode );
+  return inherit( FixedLengthCircuitElementNode, SwitchNode, {
+
+    // TODO: docs
+    dispose: function() {
+      this.disposeSwitchNode();
+      FixedLengthCircuitElementNode.prototype.dispose.call( this );
+    }
+  } );
 } );
