@@ -27,68 +27,12 @@ define( function( require ) {
   var SWITCH_START = CircuitConstructionKitConstants.SWITCH_START;
   var SWITCH_END = CircuitConstructionKitConstants.SWITCH_END;
 
-  // TODO: documentation
-  var lifelikeOpenImage;
-  var schematicOpenImage;
-  var lifelikeClosedImage;
-  var schematicClosedImage;
+  var lifelikeNodeThickness = 8;
+  var lifelikeGradient = new LinearGradient( 0, -lifelikeNodeThickness / 2, 0, lifelikeNodeThickness / 2 )
+    .addColorStop( 0, '#d48270' )
+    .addColorStop( 0.3, '#e39b8c' )
+    .addColorStop( 1, '#b56351' );
 
-  /**
-   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
-   * @param {CircuitLayerNode} circuitLayerNode
-   * @param {Switch} circuitSwitch
-   * @param {Property.<boolean>} showResultsProperty - supplied for consistency with other CircuitElementNode constructors
-   * @param {Property.<string>} viewProperty
-   * @param {Tandem} tandem
-   * @param {Object} [options]
-   * @constructor
-   */
-  function SwitchNode( circuitConstructionKitScreenView, circuitLayerNode, circuitSwitch, showResultsProperty, viewProperty, tandem, options ) {
-
-    // @public (read-only) {Switch} - the Switch rendered by this Node
-    this.circuitSwitch = circuitSwitch;
-
-    var lifelikeNode = new Node();
-    var schematicNode = new Node();
-    circuitSwitch.closedProperty.link( function( closed ) {
-      lifelikeNode.children = [ new Node( {
-        children: [ closed ? lifelikeClosedImage : lifelikeOpenImage ]
-      } ) ];
-      schematicNode.children = [ new Node( {
-        children: [ closed ? schematicClosedImage : schematicOpenImage ]
-      } ) ];
-    } );
-
-    FixedLengthCircuitElementNode.call( this,
-      circuitConstructionKitScreenView,
-      circuitLayerNode,
-      circuitSwitch,
-      viewProperty,
-      lifelikeNode,
-      schematicNode,
-      tandem,
-      options
-    );
-
-    var downPoint = null;
-
-    // When the user taps the switch, toggle whether it is open or closed.
-    this.contentNode.addInputListener( new ButtonListener( {
-      down: function( event ) {
-        downPoint = event.pointer.point;
-      },
-      fire: function( event ) {
-        var distance = event.pointer.point.distance( downPoint );
-
-        // Toggle the state of the switch, but only if the event is classified as a tap and not a drag
-        if ( distance < CircuitConstructionKitConstants.TAP_THRESHOLD ) {
-          circuitSwitch.closedProperty.value = !circuitSwitch.closedProperty.value;
-        }
-      }
-    } ) );
-  }
-
-  circuitConstructionKitCommon.register( 'SwitchNode', SwitchNode );
 
   /**
    * @param {string} type - 'lifelike'|'schematic'
@@ -177,22 +121,68 @@ define( function( require ) {
     return node;
   };
 
-  return inherit( FixedLengthCircuitElementNode, SwitchNode, {}, {
+  // TODO: convert all nodes to synchronous
+  var lifelikeOpenImage = createNode( 'lifelike', lifelikeGradient, LIFELIKE_DIAMETER, 6, false ).toDataURLNodeSynchronous();
+  var schematicOpenImage = createNode( 'schematic', 'black', CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH, 0, false ).toDataURLNodeSynchronous();
+  var lifelikeClosedImage = createNode( 'lifelike', lifelikeGradient, LIFELIKE_DIAMETER, 6, true ).toDataURLNodeSynchronous();
+  var schematicClosedImage = createNode( 'schematic', 'black', CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH, 0, true ).toDataURLNodeSynchronous();
 
-    // TODO: docs
-    init: function( callback ) {
-      var lifelikeNodeThickness = 8;
-      var lifelikeGradient = new LinearGradient( 0, -lifelikeNodeThickness / 2, 0, lifelikeNodeThickness / 2 )
-        .addColorStop( 0, '#d48270' )
-        .addColorStop( 0.3, '#e39b8c' )
-        .addColorStop( 1, '#b56351' );
+  /**
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
+   * @param {CircuitLayerNode} circuitLayerNode
+   * @param {Switch} circuitSwitch
+   * @param {Property.<boolean>} showResultsProperty - supplied for consistency with other CircuitElementNode constructors
+   * @param {Property.<string>} viewProperty
+   * @param {Tandem} tandem
+   * @param {Object} [options]
+   * @constructor
+   */
+  function SwitchNode( circuitConstructionKitScreenView, circuitLayerNode, circuitSwitch, showResultsProperty, viewProperty, tandem, options ) {
 
-      // TODO: convert all nodes to synchronous
-      lifelikeOpenImage = createNode( 'lifelike', lifelikeGradient, LIFELIKE_DIAMETER, 6, false ).toDataURLNodeSynchronous();
-      schematicOpenImage = createNode( 'schematic', 'black', CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH, 0, false ).toDataURLNodeSynchronous();
-      lifelikeClosedImage = createNode( 'lifelike', lifelikeGradient, LIFELIKE_DIAMETER, 6, true ).toDataURLNodeSynchronous();
-      schematicClosedImage = createNode( 'schematic', 'black', CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH, 0, true ).toDataURLNodeSynchronous();
-      callback();
-    }
-  } );
+    // @public (read-only) {Switch} - the Switch rendered by this Node
+    this.circuitSwitch = circuitSwitch;
+
+    var lifelikeNode = new Node();
+    var schematicNode = new Node();
+    circuitSwitch.closedProperty.link( function( closed ) {
+      lifelikeNode.children = [ new Node( {
+        children: [ closed ? lifelikeClosedImage : lifelikeOpenImage ]
+      } ) ];
+      schematicNode.children = [ new Node( {
+        children: [ closed ? schematicClosedImage : schematicOpenImage ]
+      } ) ];
+    } );
+
+    FixedLengthCircuitElementNode.call( this,
+      circuitConstructionKitScreenView,
+      circuitLayerNode,
+      circuitSwitch,
+      viewProperty,
+      lifelikeNode,
+      schematicNode,
+      tandem,
+      options
+    );
+
+    var downPoint = null;
+
+    // When the user taps the switch, toggle whether it is open or closed.
+    this.contentNode.addInputListener( new ButtonListener( {
+      down: function( event ) {
+        downPoint = event.pointer.point;
+      },
+      fire: function( event ) {
+        var distance = event.pointer.point.distance( downPoint );
+
+        // Toggle the state of the switch, but only if the event is classified as a tap and not a drag
+        if ( distance < CircuitConstructionKitConstants.TAP_THRESHOLD ) {
+          circuitSwitch.closedProperty.value = !circuitSwitch.closedProperty.value;
+        }
+      }
+    } ) );
+  }
+
+  circuitConstructionKitCommon.register( 'SwitchNode', SwitchNode );
+
+  return inherit( FixedLengthCircuitElementNode, SwitchNode );
 } );
