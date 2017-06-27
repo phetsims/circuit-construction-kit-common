@@ -235,7 +235,8 @@ define( function( require ) {
       // Update the node transform in a single step, see #66
       CircuitConstructionKitCommonUtil.setToTranslationRotation( transform, startPosition, angle );
       this.contentNode.setMatrix( transform );
-      (this.highlightNode && this.circuitLayerNode.circuit.selectedCircuitElementProperty.get() === this.circuitElement) && this.highlightNode.setMatrix( transform ); // TODO: only update when visible
+      var updateHighlight = this.highlightNode && this.circuitLayerNode.circuit.selectedCircuitElementProperty.get() === this.circuitElement;
+      updateHighlight && this.highlightNode.setMatrix( transform );
 
       // Update the fire transform
       var flameExtent = 0.8;
