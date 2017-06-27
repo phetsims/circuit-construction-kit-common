@@ -14,7 +14,6 @@ define( function( require ) {
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Text = require( 'SCENERY/nodes/Text' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
   // constants
   var TOOLBOX_ICON_SIZE = CircuitConstructionKitConstants.TOOLBOX_ICON_SIZE;
@@ -41,9 +40,22 @@ define( function( require ) {
       children: labelText.length > 0 ? [ iconNode, labelNode ] : [ iconNode ] // hack because the series ammeter tool node has text rendered separately (joined with probe ammeter)
     } );
 
-    this.addInputListener( new SimpleDragHandler( {
-      allowTouchSnag: true,
-      start: function( event ) {
+    this.addInputListener( {
+
+      // ad-hoc touchSnag to support multiple dragging out at once
+      touchenter: function( event ) {
+        this.down( event );
+      },
+
+      // ad-hoc touchSnag to support multiple dragging out at once
+      touchmove: function( event ) {
+        this.down( event );
+      },
+
+      down: function( event ) {
+        if ( event.pointer.dragging ) {
+          return;
+        }
 
         // Don't try to start drags with a right mouse button or an attached pointer.
         if ( !event.canStartPress() ) { return; }
@@ -65,7 +77,7 @@ define( function( require ) {
         circuitElement.startDragEmitter.emit1( event );
 
       }
-    } ) );
+    } );
 
     circuit.circuitElements.lengthProperty.link( function() {
       self.visible = count() < maxNumber;
