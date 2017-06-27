@@ -84,6 +84,10 @@ define( function( require ) {
     fill: normalGradient
   } ).toDataURLNodeSynchronous();
 
+  var lifelikeRoundedCapReversed = new Circle( LIFELIKE_LINE_WIDTH / 2, {
+    fill: reverseGradient
+  } ).toDataURLNodeSynchronous();
+
   /**
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - if null, this WireNode is just an icon
    * @param {CircuitLayerNode} circuitLayerNode
@@ -95,6 +99,7 @@ define( function( require ) {
    */
   function WireNode( circuitConstructionKitScreenView, circuitLayerNode, wire, showResultsProperty, viewProperty, tandem ) {
     var self = this;
+    this.viewProperty = viewProperty;
 
     // @public (read-only) {Wire}
     this.wire = wire;
@@ -122,23 +127,7 @@ define( function( require ) {
       if ( self.disposed ) {
         return;
       }
-      var view = viewProperty.value;
-
-      if ( view === CircuitConstructionKitConstants.LIFELIKE ) {
-
-        // determine whether to use the forward or reverse gradient based on the angle
-        var startPoint = wire.startVertexProperty.get().positionProperty.get();
-        var endPoint = wire.endVertexProperty.get().positionProperty.get();
-        var lightingDirection = new Vector2( 0.916, 0.4 ); // sampled manually
-        var wireVector = endPoint.minus( startPoint );
-        var dot = lightingDirection.dot( wireVector );
-        self.lineNode.children = [ dot < 0 ? lifelikeNodeReversed : lifelikeNodeNormal ];
-        lifelikeRoundedCapNormal.visible = true;
-      }
-      else {
-        self.lineNode.children = [ BLACK_LINE_NODE ];
-        lifelikeRoundedCapNormal.visible = false;
-      }
+      self.updateLayout();
     };
 
     viewProperty.link( updateViewType );
@@ -329,6 +318,31 @@ define( function( require ) {
      * @protected - CircuitConstructionKitLightBulbNode calls updateRender for its child socket node
      */
     updateRender: function() {
+
+
+      var view = this.viewProperty.value;
+
+      if ( view === CircuitConstructionKitConstants.LIFELIKE ) {
+
+        // determine whether to use the forward or reverse gradient based on the angle
+        var startPoint = this.wire.startVertexProperty.get().positionProperty.get();
+        var endPoint = this.wire.endVertexProperty.get().positionProperty.get();
+        var lightingDirection = new Vector2( 0.916, 0.4 ); // sampled manually
+        var wireVector = endPoint.minus( startPoint );
+        var dot = lightingDirection.dot( wireVector );
+
+        // TODO: only change children if necessary
+        this.lineNode.children = [ dot < 0 ? lifelikeNodeReversed : lifelikeNodeNormal ];
+        this.endCapParent.children = [ dot < 0 ? lifelikeRoundedCapReversed : lifelikeRoundedCapNormal ];
+        this.startCapParent.children = [ dot < 0 ? lifelikeRoundedCapReversed : lifelikeRoundedCapNormal ];
+        lifelikeRoundedCapNormal.visible = true;
+        lifelikeRoundedCapReversed.visible = true;
+      }
+      else {
+        this.lineNode.children = [ BLACK_LINE_NODE ];
+        lifelikeRoundedCapNormal.visible = false;
+        lifelikeRoundedCapReversed.visible = false;
+      }
 
       var startPosition = this.circuitElement.startVertexProperty.get().positionProperty.get();
       var endPosition = this.circuitElement.endVertexProperty.get().positionProperty.get();
