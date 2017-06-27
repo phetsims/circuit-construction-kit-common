@@ -294,7 +294,7 @@ define( function( require ) {
       if ( vertex.selectedProperty.get() ) {
         highlightNode.translation = position;
       }
-      updateReadoutTextLocation && updateReadoutTextLocation(); // TODO: eliminate this node
+      updateReadoutTextLocation && updateReadoutTextLocation();
 
       // Update the cut button position, but only if the cut button is showing (to save on CPU)
       vertex.selectedProperty.get() && updateCutButtonPosition();
