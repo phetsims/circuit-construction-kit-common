@@ -242,20 +242,14 @@ define( function( require ) {
     circuit.vertices.addItemRemovedListener( function( vertex ) {
       var vertexNode = self.getVertexNode( vertex );
       self.mainLayer.removeChild( vertexNode );
-
-      var vertexNode = self.vertexNodes[ vertex.index ];
       delete self.vertexNodes[ vertex.index ];
       vertexNode.dispose();
-
       assert && assert( !self.getVertexNode( vertex ), 'vertex node should have been removed' );
 
       var solderNode = self.getSolderNode( vertex );
       self.mainLayer.removeChild( solderNode );
-
-      var solderNode = self.solderNodes[ vertex.index ];
       delete self.solderNodes[ vertex.index ];
       solderNode.dispose();
-
       assert && assert( !self.getSolderNode( vertex ), 'solder node should have been removed' );
     } );
     circuit.vertices.forEach( addVertexNode );

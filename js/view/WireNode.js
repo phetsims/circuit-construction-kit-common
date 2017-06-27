@@ -23,6 +23,7 @@ define( function( require ) {
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
   var Color = require( 'SCENERY/util/Color' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var Circle = require( 'SCENERY/nodes/Circle' );
   var Vector2 = require( 'DOT/Vector2' );
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
   var TNode = require( 'SCENERY/nodes/TNode' );
@@ -80,6 +81,10 @@ define( function( require ) {
     stroke: reverseGradient
   } ).toDataURLNodeSynchronous();
 
+  var lifelikeRoundedCapNormal = new Circle( LIFELIKE_LINE_WIDTH / 2, {
+    fill: normalGradient
+  } ).toDataURLNodeSynchronous();
+
   /**
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - if null, this WireNode is just an icon
    * @param {CircuitLayerNode} circuitLayerNode
@@ -107,6 +112,7 @@ define( function( require ) {
 
     // In order to show a gradient on the line, while still allowing the line to stretch (without stretching rounded
     // ends), use a parent node to position and rotate the line, and keep the line the same width.
+    // TODO: check these docs
     // This increases the complexity of the code, but allows us to use Line renderer with a constant gradient.
     var lineNode = new Node();
 
@@ -118,7 +124,6 @@ define( function( require ) {
         return;
       }
       var view = viewProperty.value;
-      lineNode.children = [ view === CircuitConstructionKitConstants.LIFELIKE ? lifelikeNodeNormal : BLACK_LINE_NODE ];
 
       if ( view === CircuitConstructionKitConstants.LIFELIKE ) {
 
@@ -145,7 +150,13 @@ define( function( require ) {
       children: [ highlightNode ]
     } );
 
+    this.endCapsParent = new Node( {
+      children: [ lifelikeRoundedCapNormal ]
+    } );
     this.lineNodeParent = lineNodeParent;
+    this.startCapParent = new Node( {
+      children: [ lifelikeRoundedCapNormal ]
+    } );// TODO: match sense with endCapsParent
 
     circuitLayerNode && circuitLayerNode.highlightLayer.addChild( highlightNodeParent );
 
@@ -154,6 +165,8 @@ define( function( require ) {
     var circuit = circuitLayerNode && circuitLayerNode.circuit;
     CircuitElementNode.call( this, wire, circuit, {
       children: [
+        this.startCapParent,
+        this.endCapsParent,
         lineNodeParent
       ]
     } );
@@ -320,7 +333,13 @@ define( function( require ) {
       var angle = delta.angle();
 
       // Update the node transform
+      CircuitConstructionKitCommonUtil.setToTranslationRotation( TRANSFORM, endPosition, angle );
+      this.endCapsParent.setMatrix( TRANSFORM );
+
+      // This transfrom is done second so the matrix is already in good shape for the scaling step
       CircuitConstructionKitCommonUtil.setToTranslationRotation( TRANSFORM, startPosition, angle );
+      this.startCapParent.setMatrix( TRANSFORM );
+
       TRANSFORM.multiplyMatrix( Matrix3.scaling( delta.magnitude() / WIRE_RASTER_LENGTH, 1 ) );
       this.lineNodeParent.setMatrix( TRANSFORM );
       this.highlightNode && this.highlightNode.setMatrix( TRANSFORM ); // TODO: only update when visible
@@ -368,7 +387,8 @@ define( function( require ) {
     webglSpriteNodes: [
       BLACK_LINE_NODE,
       lifelikeNodeNormal,
-      lifelikeNodeReversed
+      lifelikeNodeReversed,
+      lifelikeRoundedCapNormal
     ]
   } );
 } );
