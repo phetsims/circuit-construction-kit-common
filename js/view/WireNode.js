@@ -331,15 +331,17 @@ define( function( require ) {
         var wireVector = endPoint.minus( startPoint );
         var dot = lightingDirection.dot( wireVector );
 
-        // TODO: only change children if necessary
-        this.lineNode.children = [ dot < 0 ? lifelikeNodeReversed : lifelikeNodeNormal ];
-        this.endCapParent.children = [ dot < 0 ? lifelikeRoundedCapReversed : lifelikeRoundedCapNormal ];
-        this.startCapParent.children = [ dot < 0 ? lifelikeRoundedCapReversed : lifelikeRoundedCapNormal ];
+        // only change children if necessary
+        var lineNodeChild = dot < 0 ? lifelikeNodeReversed : lifelikeNodeNormal;
+        var capChild = dot < 0 ? lifelikeRoundedCapReversed : lifelikeRoundedCapNormal;
+        this.lineNode.getChildAt( 0 ) !== lineNodeChild && this.lineNode.setChildren( [ lineNodeChild ] );
+        this.endCapParent.getChildAt( 0 ) !== capChild && this.endCapParent.setChildren( [ capChild ] );
+        this.startCapParent.getChildAt( 0 ) !== capChild && this.startCapParent.setChildren( [ capChild ] );
         lifelikeRoundedCapNormal.visible = true;
         lifelikeRoundedCapReversed.visible = true;
       }
       else {
-        this.lineNode.children = [ BLACK_LINE_NODE ];
+        this.lineNode.getChildAt( 0 ) !== BLACK_LINE_NODE && this.lineNode.setChildren( [ BLACK_LINE_NODE ] );
         lifelikeRoundedCapNormal.visible = false;
         lifelikeRoundedCapReversed.visible = false;
       }
