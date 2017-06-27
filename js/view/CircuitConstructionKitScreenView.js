@@ -74,17 +74,9 @@ define( function( require ) {
       // scenes (including but not limited to this one).
       showResetAllButton: false,
       toolboxOrientation: 'vertical',
-      numberOfRightBatteries: CircuitElementToolbox.NUMBER_OF_RIGHT_BATTERIES,
-      numberOfLeftBatteries: CircuitElementToolbox.NUMBER_OF_LEFT_BATTERIES,
-      numberOfWires: CircuitElementToolbox.NUMBER_OF_WIRES,
-      numberOfLightBulbs: CircuitElementToolbox.NUMBER_OF_LIGHT_BULBS,
-      numberOfResistors: CircuitElementToolbox.NUMBER_OF_RESISTORS,
-      numberOfSwitches: CircuitElementToolbox.NUMBER_OF_SWITCHES,
-      numberOfCoins: 0,
-      numberOfHands: 0,
-      numberOfPencils: 0,
-      numberOfDogs: 0,
-      numberOfErasers: 0,
+
+      /* SEE ALSO OPTIONS IN CircuitElementToolbox*/
+
       showSeriesAmmeters: false,
       getCircuitEditPanelLayoutPosition: CircuitElementEditContainerPanel.GET_LAYOUT_POSITION,
       showResistivityControl: true,

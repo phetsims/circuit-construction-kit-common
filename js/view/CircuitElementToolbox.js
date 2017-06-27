@@ -69,11 +69,11 @@ define( function( require ) {
 
     options = _.extend( {
       orientation: 'vertical',
-      numberOfRightBatteries: CircuitElementToolbox.NUMBER_OF_RIGHT_BATTERIES,
-      numberOfWires: CircuitElementToolbox.NUMBER_OF_WIRES,
-      numberOfLightBulbs: CircuitElementToolbox.NUMBER_OF_LIGHT_BULBS,
-      numberOfResistors: CircuitElementToolbox.NUMBER_OF_RESISTORS,
-      numberOfSwitches: CircuitElementToolbox.NUMBER_OF_SWITCHES,
+      numberOfWires: 20,
+      numberOfRightBatteries: 10,
+      numberOfLightBulbs: 10,
+      numberOfResistors: 10,
+      numberOfSwitches: 10,
       numberOfCoins: 0,
       numberOfErasers: 0,
       numberOfPencils: 0,
@@ -82,8 +82,8 @@ define( function( require ) {
       numberOfDollarBills: 0,
       numberOfPaperClips: 0,
       numberOfHighVoltageBatteries: 0,
-      numberOfHighResistanceResistors: 4,
-      numberOfHighResistanceLightBulbs: 4
+      numberOfHighResistanceResistors: 0,
+      numberOfHighResistanceLightBulbs: 0
     }, options );
 
     /**
