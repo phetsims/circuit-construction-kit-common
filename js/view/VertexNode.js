@@ -69,7 +69,8 @@ define( function( require ) {
     var self = this;
     var circuit = circuitLayerNode.circuit;
 
-    // Take care to only initialize the cutButton once.  This must happen after the circuit is available.
+    // Take care to only initialize the cutButton once because it will be used for all VertexNode instance.  This must
+    // happen after the circuit is available.
     if ( !cutButtonInitialized ) {
       cutButton.addListener( function() {
         circuit.cutVertex( circuit.getSelectedVertex() );
