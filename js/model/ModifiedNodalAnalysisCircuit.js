@@ -444,14 +444,14 @@ define( function( require ) {
   } );
 
   /**
-   * @param {Element} element - the circuit element through which the current runs
+   * @param {Object} element - {node0,node1,circuitElement,voltage|current|resistance}
    * @constructor
    */
   function UnknownCurrent( element ) {
 
     assert && assert( element, 'element should be defined' );
 
-    // @public (read-only) {Element} // TODO: what is an Element?
+    // @public (read-only) {Object}
     this.element = element;
   }
 
