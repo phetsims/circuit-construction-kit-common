@@ -42,6 +42,7 @@ define( function( require ) {
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CustomLightBulbNode' );
 
   /**
    * @param {Circuit} circuit - the model Circuit
@@ -80,7 +81,7 @@ define( function( require ) {
 
     // We would like performance to be as fast as possible when adding CircuitElements to the mainLayer.  Therefore,
     // we try to preallocate as much of the WebGL spritesheet as possible
-    var webglSpriteLayer = new Node( {
+    var mainLayerWebGLSpriteNode = new Node( {
       visible: false,
       children: SolderNode.webglSpriteNodes
         .concat( ChargeNode.webglSpriteNodes )
@@ -89,6 +90,15 @@ define( function( require ) {
         .concat( ResistorNode.webglSpriteNodes )
         .concat( WireNode.webglSpriteNodes )
         .concat( FixedLengthCircuitElementNode.webglSpriteNodes )
+        .concat( CustomLightBulbNode.webglSpriteNodes )
+    } );
+    var lightBulbSocketLayerWebGLSpriteNode = new Node( {
+      visible: false,
+      children: CustomLightBulbNode.webglSpriteNodes
+    } );
+    var lightBulbSocketElectronLayerWebGLSpriteNode = new Node( {
+      visible: false,
+      children: ChargeNode.webglSpriteNodes
     } );
 
     // @public {Node} - so that additional Nodes may be interleaved
@@ -97,17 +107,21 @@ define( function( require ) {
       // add a child eagerly so the WebGL block is all allocated when 1st object is dragged out of toolbox
       // @jonathanolson: is there a better way to do this?
       renderer: 'webgl',
-      children: [ webglSpriteLayer ]
+      children: [ mainLayerWebGLSpriteNode ]
     } );
 
     // @public {Node} - CircuitConstructionKitLightBulbNode calls addChild/removeChild to add sockets to the front layer
-    // TODO: preload sprites.  @jonathanolson can/should I use the same webglSpriteLayer as above?
-    this.lightBulbSocketLayer = new Node( { renderer: 'webgl' } );
+    this.lightBulbSocketLayer = new Node( {
+      renderer: 'webgl',
+      children: [ lightBulbSocketLayerWebGLSpriteNode ]
+    } );
 
     // @public {Node} - Electrons appear in this layer when they need to be in front of the socket (on the right hand
     // side of the bulb)
-    // TODO: preload sprites.  @jonathanolson can/should I use the same webglSpriteLayer as above?
-    this.lightBulbSocketElectronLayer = new Node( { renderer: 'webgl' } );
+    this.lightBulbSocketElectronLayer = new Node( {
+      renderer: 'webgl',
+      children: [ lightBulbSocketElectronLayerWebGLSpriteNode ]
+    } );
 
     Node.call( this, {
       children: [

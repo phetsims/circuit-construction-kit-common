@@ -154,5 +154,16 @@ define( function( require ) {
         this.update();
       }
     }
+  }, {
+
+    /**
+     * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
+     * @public
+     */
+    webglSpriteNodes: [
+      new Image( backImage ),
+      new Image( middleImage ),
+      new Image( socketImage ),
+      new Image( highResistanceSocketImage ) ]
   } );
 } );
