@@ -5,7 +5,6 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  *
- * TODO: rounded end caps
  * TODO: highlight shape
  * TODO: wire gradient should flip when upside down
  */
@@ -114,7 +113,7 @@ define( function( require ) {
     // ends), use a parent node to position and rotate the line, and keep the line the same width.
     // TODO: check these docs
     // This increases the complexity of the code, but allows us to use Line renderer with a constant gradient.
-    var lineNode = new Node();
+    this.lineNode = new Node();
 
     /**
      * When the view type changes (lifelike vs schematic), update the node
@@ -129,47 +128,48 @@ define( function( require ) {
 
         // determine whether to use the forward or reverse gradient based on the angle
         var startPoint = wire.startVertexProperty.get().positionProperty.get();
-        var endPoint = wire.endVertexProperty.value.positionProperty.get();
+        var endPoint = wire.endVertexProperty.get().positionProperty.get();
         var lightingDirection = new Vector2( 0.916, 0.4 ); // sampled manually
         var wireVector = endPoint.minus( startPoint );
         var dot = lightingDirection.dot( wireVector );
-        lineNode.children = [ dot < 0 ? lifelikeNodeReversed : lifelikeNodeNormal ];
+        self.lineNode.children = [ dot < 0 ? lifelikeNodeReversed : lifelikeNodeNormal ];
         lifelikeRoundedCapNormal.visible = true;
       }
       else {
-        lineNode.children = [ BLACK_LINE_NODE ];
+        self.lineNode.children = [ BLACK_LINE_NODE ];
         lifelikeRoundedCapNormal.visible = false;
       }
     };
 
     viewProperty.link( updateViewType );
 
-    var lineNodeParent = new Node( {
-      children: [ lineNode ],
+    // @private
+    this.lineNodeParent = new Node( {
+      children: [ self.lineNode ],
       cursor: 'pointer'
     } );
     var highlightNodeParent = new Node( {
       children: [ highlightNode ]
     } );
 
-    this.endCapsParent = new Node( {
+    // @private
+    this.endCapParent = new Node( {
       children: [ lifelikeRoundedCapNormal ]
     } );
-    this.lineNodeParent = lineNodeParent;
+
+    // @private
     this.startCapParent = new Node( {
       children: [ lifelikeRoundedCapNormal ]
-    } );// TODO: match sense with endCapsParent
+    } );
 
     circuitLayerNode && circuitLayerNode.highlightLayer.addChild( highlightNodeParent );
 
-    // @private {Line}
-    this.lineNode = lineNode;
     var circuit = circuitLayerNode && circuitLayerNode.circuit;
     CircuitElementNode.call( this, wire, circuit, {
       children: [
         this.startCapParent,
-        this.endCapsParent,
-        lineNodeParent
+        this.endCapParent,
+        this.lineNodeParent
       ]
     } );
 
@@ -308,7 +308,8 @@ define( function( require ) {
       tandem.removeInstance( self );
     };
 
-    tandem.addInstance( this, TNode );
+    // For icons, update the end caps
+    !circuitLayerNode && this.updateRender();
   }
 
   circuitConstructionKitCommon.register( 'WireNode', WireNode );
@@ -336,7 +337,7 @@ define( function( require ) {
 
       // Update the node transform
       CircuitConstructionKitCommonUtil.setToTranslationRotation( TRANSFORM, endPosition, angle );
-      this.endCapsParent.setMatrix( TRANSFORM );
+      this.endCapParent.setMatrix( TRANSFORM );
 
       // This transfrom is done second so the matrix is already in good shape for the scaling step
       CircuitConstructionKitCommonUtil.setToTranslationRotation( TRANSFORM, startPosition, angle );
