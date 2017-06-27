@@ -188,7 +188,7 @@ define( function( require ) {
     this.disposeSwitchNode = function() {
       circuitSwitch.closedProperty.unlink( closeListener );
 
-      // TODO: I have no idea why these must be called, but if they are omitted there is a memory leak for create/destroy switches
+      // Surprisingly, the children and button listener must be removed to prevent a memory leak.
       self.removeAllChildren();
       self.contentNode.removeInputListener( buttonListener );
     };
