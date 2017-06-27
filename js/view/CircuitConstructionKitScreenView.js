@@ -507,8 +507,11 @@ define( function( require ) {
      */
     getVoltageConnection: function( probeNode, probePosition ) {
 
-      // Check for intersection with a vertex
-      // TODO: this should check for intersection with solder
+      // Check for intersection with a vertex, using the solder radius.  This means it will be possible to check for
+      // voltages when nearby the terminal of a battery, not necessarily touching the battery (even when solder is
+      // not shown, this is desirable so that students have a higher chance of getting the desirable reading).
+      // When solder is shown, it is used as the conductive element for the voltmeter (and hence why the solder radius
+      // is used in the computation below.
       var solderNodes = _.values( this.circuitLayerNode.solderNodes );
       for ( var i = 0; i < solderNodes.length; i++ ) {
         var solderNode = solderNodes[ i ];
