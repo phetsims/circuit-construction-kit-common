@@ -84,7 +84,7 @@ define( function( require ) {
     } );
 
     // Expand touch area around text
-    this.touchArea = this.localBounds.dilated( 10 );
+    this.touchArea = this.localBounds.dilatedXY( 10, 18 );
     this.mouseArea = this.touchArea;
   }
 

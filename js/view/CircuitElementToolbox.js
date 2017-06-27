@@ -110,9 +110,6 @@ define( function( require ) {
       };
     };
 
-    // Functions that count how many circuit elements there are of each type, so the icon can be hidden when the user created
-    // the maximum number of that type
-
     /**
      * Create a pair of vertices to be used for a new CircuitElement
      * @param {Vector2} position - the position of the center of the CircuitElement
@@ -178,6 +175,7 @@ define( function( require ) {
       }, {
         iconScale: 0.85
       } );
+    lightBulbToolNode.touchArea = lightBulbToolNode.localBounds.dilatedXY( 11, 8 ); // Override touch area because it has unique dimensions
 
     var resistorToolNode = createCircuitElementToolNode( resistorString, options.numberOfResistors,
       new ResistorNode( null, null,
@@ -201,14 +199,6 @@ define( function( require ) {
         var vertexPair = createVertexPair( position, SWITCH_LENGTH );
         return new Switch( vertexPair.startVertex, vertexPair.endVertex, circuit.switchGroupTandem.createNextTandem() );
       } );
-
-    var circuitElementToolNodes = [
-      wireToolNode,
-      rightBatteryToolNode,
-      lightBulbToolNode,
-      resistorToolNode,
-      switchToolNode
-    ];
 
     if ( options.numberOfCoins ) {
       var createGrabBagToolNode = function( resistorType, resistance, resistorLength, labelString, maxCount, iconModelTandem, iconTandem, groupTandem ) {
@@ -368,16 +358,25 @@ define( function( require ) {
         } );
     }
 
-    // Pagination for the carousel, each page should begin with wire node
+    // Tool nodes that appear on every screen. Pagination for the carousel, each page should begin with wire node
+    var circuitElementToolNodes = [
+      wireToolNode,
+      rightBatteryToolNode,
+      lightBulbToolNode,
+      resistorToolNode,
+      switchToolNode
+    ];
+
     if ( options.numberOfCoins && !options.numberOfHighVoltageBatteries ) {
       circuitElementToolNodes = circuitElementToolNodes.concat( [
-        new Node( { children: [ wireToolNode ] } ),
+
+        new Node( { children: [ wireToolNode ] } ), // Wire should appear at the top of each carousel page
         dollarBillNode,
         paperClipNode,
         coinToolNode,
         eraserToolNode,
 
-        new Node( { children: [ wireToolNode ] } ),
+        new Node( { children: [ wireToolNode ] } ),// Wire should appear at the top of each carousel page
         pencilToolNode,
         handToolNode,
         dogToolNode
@@ -385,35 +384,29 @@ define( function( require ) {
     }
     else if ( options.numberOfCoins && options.numberOfHighVoltageBatteries ) {
       circuitElementToolNodes = circuitElementToolNodes.concat( [
-        new Node( { children: [ wireToolNode ] } ),
+        new Node( { children: [ wireToolNode ] } ),// Wire should appear at the top of each carousel page
         highVoltageBatteryToolNode,
         highResistanceResistorToolNode,
         highResistanceBulbToolNode,
         dollarBillNode,
 
-        new Node( { children: [ wireToolNode ] } ),
+        new Node( { children: [ wireToolNode ] } ),// Wire should appear at the top of each carousel page
         paperClipNode,
         coinToolNode,
         eraserToolNode,
         pencilToolNode,
 
-        new Node( { children: [ wireToolNode ] } ),
+        new Node( { children: [ wireToolNode ] } ),// Wire should appear at the top of each carousel page
         handToolNode,
         dogToolNode
       ] );
     }
 
-    // Expand touch bounds for each icon
-    for ( var i = 0; i < circuitElementToolNodes.length; i++ ) {
-      circuitElementToolNodes[ i ].touchArea = circuitElementToolNodes[ i ].localBounds.dilatedXY( 10, 18 );
-    }
-    lightBulbToolNode.touchArea = lightBulbToolNode.localBounds.dilatedXY( 11, 8 );
-
     var ITEMS_PER_PAGE = 5;
-
     var SPACING = 5;
-
     var child = null;
+
+    // If there is only one page, do not show Carousel controls
     if ( circuitElementToolNodes.length <= ITEMS_PER_PAGE ) {
       child = new CircuitConstructionKitPanel( new LayoutBox( {
         orientation: options.orientation,
@@ -429,6 +422,8 @@ define( function( require ) {
       } );
     }
     else {
+
+      // If there are 2+ pages, show them in a carousel
       this.carousel = new Carousel( circuitElementToolNodes, {
         orientation: 'vertical',
         itemsPerPage: ITEMS_PER_PAGE,
