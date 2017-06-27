@@ -96,9 +96,6 @@ define( function( require ) {
       return new Vertex( x, y, { tandem: circuit.vertexGroupTandem.createNextTandem() } );
     };
 
-    var highVoltageIconBattery = new Battery( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.BATTERY_LENGTH, 0 ), null, 'high-voltage', tandem.createTandem( 'highVoltageIconBattery' ) );
-    var highVoltageBatteryIcon = new BatteryNode( null, null, highVoltageIconBattery, null, viewProperty, tandem.createTandem( 'highVoltageBatteryIcon' ), { icon: true } );
-
     var highResistanceLightBulbIconModel = LightBulb.createAtPosition( new Vector2( 0, 0 ), circuit.vertexGroupTandem, 1000, circuit.lightBulbGroupTandem.createNextTandem(), { highResistance: true } );
     var highResistanceLightBulbIcon = new CircuitConstructionKitLightBulbNode( null, null, highResistanceLightBulbIconModel, new Property( true ), viewProperty, tandem.createTandem( 'highResistanceLightBulbIcon' ), { icon: true } );
     var highResistanceResistor = new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ), tandem.createTandem( 'highResistanceResistor' ), {
@@ -123,7 +120,6 @@ define( function( require ) {
 
     // TODO: factor out
     // normalize icon sizes
-    highVoltageBatteryIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( highVoltageBatteryIcon.width, highVoltageBatteryIcon.height ) } );
     highResistanceResistorIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( highResistanceResistorIcon.width, highResistanceResistorIcon.height ) } );
     highResistanceLightBulbIcon.mutate( { scale: 0.85 * TOOLBOX_ICON_SIZE / Math.max( highResistanceLightBulbIcon.width, highResistanceLightBulbIcon.height ) } );
 
@@ -144,9 +140,6 @@ define( function( require ) {
 
     // Functions that count how many circuit elements there are of each type, so the icon can be hidden when the user created
     // the maximum number of that type
-    var countHighVoltageBatteries = createCounter( function( circuitElement ) {
-      return circuitElement instanceof Battery && circuitElement.initialOrientation === 'right' && circuitElement.batteryType === 'high-voltage';
-    } );
     var countHighResistanceLightBulbs = createCounter( function( circuitElement ) { return circuitElement instanceof LightBulb && circuitElement.highResistance; } );
     var countHighResistanceResistors = createCounter( function( circuitElement ) { return circuitElement instanceof Resistor && circuitElement.resistorType === 'highResistanceResistor'; } );
 
@@ -164,14 +157,6 @@ define( function( require ) {
     };
 
     // TODO: factor out battery creation things
-    var createHighVoltageBattery = function( position ) {
-      var vertexPair = createVertexPair( position, BATTERY_LENGTH );
-      return new Battery( vertexPair.startVertex, vertexPair.endVertex, circuit.batteryResistanceProperty, 'high-voltage', circuit.rightBatteryTandemGroup.createNextTandem(), {
-        voltage: 10000,
-        editableRange: new Range( 100, 100000 ),
-        editorDelta: CircuitConstructionKitConstants.HIGH_EDITOR_DELTA
-      } );
-    };
     var createHighResistanceLightBulb = function( position ) {
       return LightBulb.createAtPosition( position, circuit.vertexGroupTandem,
         CircuitConstructionKitConstants.HIGH_RESISTANCE, circuit.lightBulbGroupTandem.createNextTandem(), {
@@ -275,7 +260,20 @@ define( function( require ) {
 
     if ( options.numberOfCoins ) {
 
-      var highVoltageBatteryToolNode = new CircuitElementToolNode( batteryString, showLabelsProperty, circuitLayerNode, highVoltageBatteryIcon, options.numberOfHighVoltageBatteries, countHighVoltageBatteries, createHighVoltageBattery );
+      var highVoltageBatteryToolNode = createCircuitElementToolNode( batteryString, options.numberOfHighVoltageBatteries,
+        new BatteryNode( null, null,
+          new Battery( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.BATTERY_LENGTH, 0 ), null, 'high-voltage', tandem.createTandem( 'highVoltageIconBattery' ) ), null, viewProperty, tandem.createTandem( 'highVoltageBatteryIcon' ), { icon: true } ),
+        function( circuitElement ) {
+          return circuitElement instanceof Battery && circuitElement.initialOrientation === 'right' && circuitElement.batteryType === 'high-voltage';
+        }, function( position ) {
+          var vertexPair = createVertexPair( position, BATTERY_LENGTH );
+          return new Battery( vertexPair.startVertex, vertexPair.endVertex, circuit.batteryResistanceProperty, 'high-voltage', circuit.rightBatteryTandemGroup.createNextTandem(), {
+            voltage: 10000,
+            editableRange: new Range( 100, 100000 ),
+            editorDelta: CircuitConstructionKitConstants.HIGH_EDITOR_DELTA
+          } );
+        } );
+
       var highResistanceBulbToolNode = new CircuitElementToolNode( lightBulbString, showLabelsProperty, circuitLayerNode, highResistanceLightBulbIcon, options.numberOfHighResistanceLightBulbs, countHighResistanceLightBulbs, createHighResistanceLightBulb );
       var highResistanceResistorToolNode = new CircuitElementToolNode( resistorString, showLabelsProperty, circuitLayerNode, highResistanceResistorIcon, options.numberOfHighResistanceResistors, countHighResistanceResistors, createHighResistanceResistor );
 
