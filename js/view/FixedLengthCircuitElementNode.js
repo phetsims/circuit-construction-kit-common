@@ -245,7 +245,7 @@ define( function( require ) {
       CircuitConstructionKitCommonUtil.setToTranslationRotation( transform, startPosition, angle )
         .multiplyMatrix( rotationMatrix.setToScale( scale ) )
         .multiplyMatrix( rotationMatrix.setToTranslation( delta.magnitude() * flameMargin / scale, -fireImage[ 0 ].height ) );
-      this.fireNode && this.fireNode.setMatrix( transform ); // TODO: use setInSceneGraph for fire?
+      this.fireNode && this.fireNode.setMatrix( transform );
     },
 
     /**
