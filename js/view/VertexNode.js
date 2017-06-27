@@ -285,9 +285,14 @@ define( function( require ) {
       var availableBounds = bounds.eroded( cutButton.width / 2 );
       cutButton.center = availableBounds.closestPointTo( proposedPosition );
     };
-    var updateVertexNodePosition = function( position ) {
+    var updateVertexNodePosition = function() {
+      var position = vertex.positionProperty.get();
       self.setTranslation( position.x, position.y );
-      highlightNode.translation = position; // TODO: perhaps don't update the position while it is invisible?
+
+      // Update the position of the highlight, but only if it is visible
+      if ( vertex.selectedProperty.get() ) {
+        highlightNode.translation = position;
+      }
       updateReadoutTextLocation && updateReadoutTextLocation(); // TODO: eliminate this node
 
       // Update the cut button position, but only if the cut button is showing (to save on CPU)
@@ -295,9 +300,13 @@ define( function( require ) {
     };
     vertex.positionProperty.link( updateVertexNodePosition );
 
+    // When showing the highlight, make sure it shows in the right place (not updated while invisible)
+    vertex.selectedProperty.link( updateVertexNodePosition );
+
     // @private
     this.disposeVertexNode = function() {
       vertex.positionProperty.unlink( updateVertexNodePosition );
+      vertex.selectedProperty.unlink( updateVertexNodePosition );
       vertex.selectedProperty.unlink( updateSelected );
       vertex.interactiveProperty.unlink( updatePickable );
       vertex.relayerEmitter.removeListener( updateMoveToFront );
