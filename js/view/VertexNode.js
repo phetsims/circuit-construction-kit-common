@@ -69,7 +69,7 @@ define( function( require ) {
     var self = this;
     var circuit = circuitLayerNode.circuit;
 
-    // TODO: docs
+    // Take care to only initialize the cutButton once.  This must happen after the circuit is available.
     if ( !cutButtonInitialized ) {
       cutButton.addListener( function() {
         circuit.cutVertex( circuit.getSelectedVertex() );
