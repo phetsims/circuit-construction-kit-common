@@ -128,10 +128,8 @@ define( function( require ) {
       visible: false
     } );
 
-    // In order to show a gradient on the line, while still allowing the line to stretch (without stretching rounded
-    // ends), use a parent node to position and rotate the line, and keep the line the same width.
-    // TODO: check these docs
-    // This increases the complexity of the code, but allows us to use Line renderer with a constant gradient.
+    // @private - the node that displays the main line (for both schematic and lifelike).  This does not include
+    // the rounded caps for the lifelike view
     this.lineNode = new Node();
 
     /**
