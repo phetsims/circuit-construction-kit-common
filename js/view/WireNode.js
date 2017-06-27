@@ -39,9 +39,8 @@ define( function( require ) {
   var TRANSFORM = new Matrix3(); // The Matrix entries are mutable
   var WIRE_RASTER_LENGTH = 100;
 
-  // TODO: fix casing
-  // TODO: document
-  var blackLineNode = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
+  // Node used to render the black line for schematic, cached as toDataURLNodeSynchronous so it can render with WebGL
+  var BLACK_LINE_NODE = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
     lineWidth: SCHEMATIC_LINE_WIDTH,
     stroke: 'black'
   } ).toDataURLNodeSynchronous();
@@ -119,7 +118,7 @@ define( function( require ) {
         return;
       }
       var view = viewProperty.value;
-      lineNode.children = [ view === CircuitConstructionKitConstants.LIFELIKE ? lifelikeNodeNormal : blackLineNode ];
+      lineNode.children = [ view === CircuitConstructionKitConstants.LIFELIKE ? lifelikeNodeNormal : BLACK_LINE_NODE ];
 
       if ( view === CircuitConstructionKitConstants.LIFELIKE ) {
 
@@ -132,7 +131,7 @@ define( function( require ) {
         lineNode.children = [ dot < 0 ? lifelikeNodeReversed : lifelikeNodeNormal ];
       }
       else {
-        lineNode.children = [ blackLineNode ];
+        lineNode.children = [ BLACK_LINE_NODE ];
       }
     };
 
@@ -367,7 +366,7 @@ define( function( require ) {
      * @public
      */
     webglSpriteNodes: [
-      blackLineNode,
+      BLACK_LINE_NODE,
       lifelikeNodeNormal,
       lifelikeNodeReversed
     ]
