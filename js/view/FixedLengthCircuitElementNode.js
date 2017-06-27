@@ -53,6 +53,8 @@ define( function( require ) {
     // @public (read-only) {CircuitElement}
     this.circuitElement = circuitElement;
 
+    this.circuitLayerNode = circuitLayerNode;
+
     // @protected (read-only) {Node} node that shows the component, separate from the part that shows the highlight and
     // the fire
     this.contentNode = new Node();
@@ -144,10 +146,12 @@ define( function( require ) {
       var updateHighlightVisibility = function( lastCircuitElement ) {
         var visible = (lastCircuitElement === circuitElement);
         CircuitConstructionKitCommonUtil.setInSceneGraph( visible, circuitLayerNode.highlightLayer, self.highlightNode );
+        self.updateLayout();
       };
 
       circuitLayerNode.circuit.selectedCircuitElementProperty.link( updateHighlightVisibility );
 
+      // Show fire for batteries and resistors
       if ( circuitElement instanceof Battery || circuitElement instanceof Resistor ) {
         this.fireNode = new Image( fireImage, { pickable: false, imageOpacity: 0.95 } );
         this.fireNode.mutate( { scale: self.contentNode.width / this.fireNode.width } );
@@ -211,7 +215,7 @@ define( function( require ) {
 
     /**
      * Mark dirty to batch changes, so that update can be done once in view step, if necessary
-     * @public
+     * @public TODO: rename these methods
      */
     updateLayout: function() {
       this.dirty = true;
@@ -231,7 +235,7 @@ define( function( require ) {
       // Update the node transform in a single step, see #66
       CircuitConstructionKitCommonUtil.setToTranslationRotation( transform, startPosition, angle );
       this.contentNode.setMatrix( transform );
-      this.highlightNode && this.highlightNode.setMatrix( transform ); // TODO: only update when visible
+      (this.highlightNode && this.circuitLayerNode.circuit.selectedCircuitElementProperty.get() === this.circuitElement) && this.highlightNode.setMatrix( transform ); // TODO: only update when visible
 
       // Update the fire transform
       var flameExtent = 0.8;
