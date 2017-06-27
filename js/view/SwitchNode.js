@@ -38,8 +38,8 @@ define( function( require ) {
    * @param {Color|string|LinearGradient} fill
    * @param {number} thickness
    * @param {number} curveDiameter - the diameter of the circles in the slots
+   * @param {boolean} closed - whether the switch is closed
    * @returns {Node}
-   * // TODO: jsdoc
    */
   var createNode = function( type, fill, thickness, curveDiameter, closed ) {
     var edgeRadius = thickness / 2;
@@ -120,7 +120,7 @@ define( function( require ) {
     return node;
   };
 
-  // TODO: convert all nodes to synchronous
+  // Create all of the images
   var lifelikeOpenImage = createNode( CircuitConstructionKitConstants.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, false ).toDataURLNodeSynchronous();
   var schematicOpenImage = createNode( CircuitConstructionKitConstants.SCHEMATIC, 'black', CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH, 0, false ).toDataURLNodeSynchronous();
   var lifelikeClosedImage = createNode( CircuitConstructionKitConstants.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, true ).toDataURLNodeSynchronous();
@@ -184,7 +184,7 @@ define( function( require ) {
     } );
     this.contentNode.addInputListener( buttonListener );
 
-    // TODO: docs
+    // @private - clean up resources when no longer used.
     this.disposeSwitchNode = function() {
       circuitSwitch.closedProperty.unlink( closeListener );
 
@@ -198,7 +198,10 @@ define( function( require ) {
 
   return inherit( FixedLengthCircuitElementNode, SwitchNode, {
 
-    // TODO: docs
+    /**
+     * Clean up resources when no longer used.
+     * @public
+     */
     dispose: function() {
       this.disposeSwitchNode();
       FixedLengthCircuitElementNode.prototype.dispose.call( this );
