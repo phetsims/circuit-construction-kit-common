@@ -26,7 +26,6 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
-  require( 'SCENERY/nodes/Image' ); // TODO: document that this is for making static toDataURLNode work in the built version.  Should this be elsewhere? Like main?
 
   // constants
   var LIFELIKE_LINE_WIDTH = 12; // line width in screen coordinates
