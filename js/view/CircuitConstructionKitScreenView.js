@@ -74,17 +74,17 @@ define( function( require ) {
       // scenes (including but not limited to this one).
       showResetAllButton: false,
       toolboxOrientation: 'vertical',
-      numberOfRightBatteriesInToolbox: CircuitElementToolbox.NUMBER_OF_RIGHT_BATTERIES,
-      numberOfLeftBatteriesInToolbox: CircuitElementToolbox.NUMBER_OF_LEFT_BATTERIES,
-      numberOfWiresInToolbox: CircuitElementToolbox.NUMBER_OF_WIRES,
-      numberOfLightBulbsInToolbox: CircuitElementToolbox.NUMBER_OF_LIGHT_BULBS,
-      numberOfResistorsInToolbox: CircuitElementToolbox.NUMBER_OF_RESISTORS,
-      numberOfSwitchesInToolbox: CircuitElementToolbox.NUMBER_OF_SWITCHES,
-      numberOfCoinsInToolbox: 0,
-      numberOfHandsInToolbox: 0,
-      numberOfPencilsInToolbox: 0,
-      numberOfDogsInToolbox: 0,
-      numberOfErasersInToolbox: 0,
+      numberOfRightBatteries: CircuitElementToolbox.NUMBER_OF_RIGHT_BATTERIES,
+      numberOfLeftBatteries: CircuitElementToolbox.NUMBER_OF_LEFT_BATTERIES,
+      numberOfWires: CircuitElementToolbox.NUMBER_OF_WIRES,
+      numberOfLightBulbs: CircuitElementToolbox.NUMBER_OF_LIGHT_BULBS,
+      numberOfResistors: CircuitElementToolbox.NUMBER_OF_RESISTORS,
+      numberOfSwitches: CircuitElementToolbox.NUMBER_OF_SWITCHES,
+      numberOfCoins: 0,
+      numberOfHands: 0,
+      numberOfPencils: 0,
+      numberOfDogs: 0,
+      numberOfErasers: 0,
       showSeriesAmmeters: false,
       getCircuitEditPanelLayoutPosition: CircuitElementEditContainerPanel.GET_LAYOUT_POSITION,
       showResistivityControl: true,
@@ -160,25 +160,9 @@ define( function( require ) {
       circuitConstructionKitModel.showLabelsProperty,
       circuitConstructionKitModel.viewProperty,
       this.circuitLayerNode,
-      tandem.createTandem( 'circuitElementToolbox' ), {
-
-        // TODO: I don't like this remapping
-        orientation: options.toolboxOrientation,
-        numberOfRightBatteries: options.numberOfRightBatteriesInToolbox,
-        numberOfLeftBatteries: options.numberOfLeftBatteriesInToolbox,
-        numberOfWires: options.numberOfWiresInToolbox,
-        numberOfSwitches: options.numberOfSwitchesInToolbox,
-        numberOfLightBulbs: options.numberOfLightBulbsInToolbox,
-        numberOfResistors: options.numberOfResistorsInToolbox,
-        numberOfDollarBills: options.numberOfDollarBillsInToolbox,
-        numberOfPaperClips: options.numberOfPaperClipsInToolbox,
-        numberOfCoins: options.numberOfCoinsInToolbox,
-        numberOfErasers: options.numberOfErasersInToolbox,
-        numberOfPencils: options.numberOfPencilsInToolbox,
-        numberOfHands: options.numberOfHandsInToolbox,
-        numberOfDogs: options.numberOfDogsInToolbox,
-        numberOfHighVoltageBatteries: options.numberOfHighVoltageBatteriesInToolbox
-      } );
+      tandem.createTandem( 'circuitElementToolbox' ),
+      options
+    );
 
     var chargeSpeedThrottlingReadoutNode = new ChargeSpeedThrottlingReadoutNode(
       circuitConstructionKitModel.circuit.chargeAnimator.timeScaleProperty,
