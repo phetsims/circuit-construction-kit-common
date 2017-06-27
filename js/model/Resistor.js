@@ -17,6 +17,7 @@ define( function( require ) {
 
   // constants
   var RESISTOR_LENGTH = CircuitConstructionKitConstants.RESISTOR_LENGTH;
+  var RESISTOR_TYPES = [ 'resistor', 'high-resistance-resistor', 'coin', 'paperClip', 'pencil', 'eraser', 'hand', 'dog', 'dollarBill' ];  // TODO: these have mixed casings
 
   /**
    * @param {Vertex} startVertex
@@ -30,11 +31,14 @@ define( function( require ) {
       resistance: CircuitConstructionKitConstants.DEFAULT_RESISTANCE,
 
       // Support for rendering grab bag items or
-      resistorType: 'resistor',
+      resistorType: RESISTOR_TYPES[ 0 ],
       resistorLength: RESISTOR_LENGTH
     }, options );
 
-    // @public (read-only) {string} indicates 'resistor' | 'high-resistance-resistor' | grab bag component type // TODO: enumerate these?
+    // validate resistor type
+    assert && assert( RESISTOR_TYPES.indexOf( options.resistorType ) >= 0, 'Unknown resistor type: ' + options.resistorType );
+
+    // @public (read-only) {string} indicates one of RESISTOR_TYPES
     this.resistorType = options.resistorType;
 
     FixedLengthCircuitElement.call( this, startVertex, endVertex, options.resistorLength, options.resistorLength, tandem, options );
