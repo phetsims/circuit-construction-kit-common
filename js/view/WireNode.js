@@ -132,18 +132,6 @@ define( function( require ) {
     // the rounded caps for the lifelike view
     this.lineNode = new Node();
 
-    /**
-     * When the view type changes (lifelike vs schematic), update the node
-     */
-    var markAsDirty = function() {
-      if ( self.disposed ) {
-        return;
-      }
-      self.markAsDirty();
-    };
-
-    viewProperty.link( markAsDirty );
-
     // @private
     this.lineNodeParent = new Node( {
       children: [ self.lineNode ],
@@ -173,6 +161,23 @@ define( function( require ) {
         this.lineNodeParent
       ]
     } );
+
+    /**
+     * When the view type changes (lifelike vs schematic), update the node
+     */
+    var markAsDirty = function() {
+      if ( self.disposed ) {
+        return;
+      }
+      self.markAsDirty();
+
+      // For the icon, we must update right away since no step() is called
+      if ( !circuitLayerNode ) {
+        self.updateRender();
+      }
+    };
+
+    viewProperty.link( markAsDirty );
 
     /**
      * Update whether the WireNode is pickable
