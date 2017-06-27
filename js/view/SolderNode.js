@@ -102,7 +102,10 @@ define( function( require ) {
     }
   }, {
 
-    // TODO: docs
+    /**
+     * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
+     * @public
+     */
     webglSpriteNodes: [ CIRCLE_NODE ]
   } );
 } );

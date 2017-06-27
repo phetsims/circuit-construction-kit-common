@@ -337,7 +337,10 @@ define( function( require ) {
   }, {
     VERTEX_RADIUS: VERTEX_RADIUS,
 
-    // TODO: docs
+    /**
+     * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
+     * @public
+     */
     webglSpriteNodes: [
       BLACK_CIRCLE_NODE, RED_CIRCLE_NODE
     ]

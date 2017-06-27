@@ -262,6 +262,11 @@ define( function( require ) {
       CircuitElementNode.prototype.dispose.call( this );
     }
   }, {
+
+    /**
+     * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
+     * @public
+     */
     webglSpriteNodes: [
       new Image( fireImage )
     ]

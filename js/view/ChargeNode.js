@@ -82,7 +82,10 @@ define( function( require ) {
 
   return inherit( Node, ChargeNode, {}, {
 
-    // TODO: docs
+    /**
+     * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
+     * @public
+     */
     webglSpriteNodes: [
       ELECTRON_CHARGE_NODE, ARROW_NODE
     ]

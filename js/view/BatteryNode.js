@@ -111,6 +111,11 @@ define( function( require ) {
       return !!this.hitTest( point, true, false );
     }
   }, {
+
+    /**
+     * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
+     * @public
+     */
     webglSpriteNodes: [
       new Image( batteryImage )
     ]
