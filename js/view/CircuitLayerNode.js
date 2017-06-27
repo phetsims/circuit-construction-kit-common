@@ -101,12 +101,12 @@ define( function( require ) {
     } );
 
     // @public {Node} - CircuitConstructionKitLightBulbNode calls addChild/removeChild to add sockets to the front layer
-    // TODO: preload sprites
+    // TODO: preload sprites.  @jonathanolson can/should I use the same webglSpriteLayer as above?
     this.lightBulbSocketLayer = new Node( { renderer: 'webgl' } );
 
     // @public {Node} - Electrons appear in this layer when they need to be in front of the socket (on the right hand
     // side of the bulb)
-    // TODO: preload sprites
+    // TODO: preload sprites.  @jonathanolson can/should I use the same webglSpriteLayer as above?
     this.lightBulbSocketElectronLayer = new Node( { renderer: 'webgl' } );
 
     Node.call( this, {
