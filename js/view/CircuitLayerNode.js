@@ -78,7 +78,8 @@ define( function( require ) {
     // @public {Node} - layer for light rays, since it cannot be rendered in WebGL
     this.lightRaysLayer = new Node();
 
-    // TODO: docs
+    // We would like performance to be as fast as possible when adding CircuitElements to the mainLayer.  Therefore,
+    // we try to preallocate as much of the WebGL spritesheet as possible
     var webglSpriteLayer = new Node( {
       visible: false,
       children: SolderNode.webglSpriteNodes
