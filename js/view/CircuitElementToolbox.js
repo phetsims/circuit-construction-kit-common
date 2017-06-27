@@ -1,5 +1,4 @@
 // Copyright 2016-2017, University of Colorado Boulder
-// TODO: this whole file needs to be simplified and refactored
 
 /**
  * Toolbox from which CircuitElements can be dragged or returned.
