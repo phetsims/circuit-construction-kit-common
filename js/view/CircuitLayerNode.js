@@ -142,20 +142,6 @@ define( function( require ) {
     // @public (read-only) {Object} Map of Vertex.index => VertexNode
     this.vertexNodes = {};
 
-    // TODO: cleanup
-    // When loading from a state object, the vertices could have been added first.  If so, move them in front
-    // var moveVerticesToFront = function( circuitElement ) {
-    //   var startVertexNode = self.getVertexNode( circuitElement.startVertexProperty.get() );
-    //   var endVertexNode = self.getVertexNode( circuitElement.endVertexProperty.get() );
-    //   var startSolderNode = self.getSolderNode( circuitElement.startVertexProperty.get() );
-    //   var endSolderNode = self.getSolderNode( circuitElement.endVertexProperty.get() );
-    //
-    //   startVertexNode && startVertexNode.moveToFront();
-    //   endVertexNode && endVertexNode.moveToFront();
-    //   startSolderNode && startSolderNode.moveToFront();
-    //   endSolderNode && endSolderNode.moveToFront();
-    // };
-
     /**
      * For each CircuitElement type, do the following:
      * (a) Add nodes for pre-existing model elements
