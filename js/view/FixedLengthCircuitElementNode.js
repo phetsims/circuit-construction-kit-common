@@ -114,7 +114,7 @@ define( function( require ) {
     var startPoint = null;
     var dragged = false;
     if ( !options.icon ) {
-      this.inputListener = new TandemSimpleDragHandler( {
+      this.dragHandler = new TandemSimpleDragHandler( {
         allowTouchSnag: true,
         start: function( event ) {
           startPoint = event.pointer.point;
@@ -139,9 +139,9 @@ define( function( require ) {
             [ circuitElement.endVertexProperty.get() ], circuitConstructionKitScreenView, circuitLayerNode, startPoint,
             dragged );
         },
-        tandem: tandem.createTandem( 'inputListener' ) // TODO (phet-io): some input listeners are 'dragHandler' let's be consistent
+        tandem: tandem.createTandem( 'dragHandler' )
       } );
-      self.contentNode.addInputListener( this.inputListener );
+      self.contentNode.addInputListener( this.dragHandler );
 
       var updateHighlightVisibility = function( lastCircuitElement ) {
         var visible = (lastCircuitElement === circuitElement);
@@ -191,8 +191,8 @@ define( function( require ) {
     this.disposeFixedLengthCircuitElementNode = function() {
 
       // End drag event if it was in progress
-      if ( self.inputListener && self.inputListener.dragging ) {
-        self.inputListener.endDrag();
+      if ( self.dragHandler && self.dragHandler.dragging ) {
+        self.dragHandler.endDrag();
       }
 
       circuitElement.vertexMovedEmitter.removeListener( markAsDirty );

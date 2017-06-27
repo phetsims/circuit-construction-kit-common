@@ -30,7 +30,7 @@ define( function( require ) {
     this.circuitElement = circuitElement;
 
     // @protected {Object} - Supplied by subclasses so that events can be forwarded from the tool icons
-    this.inputListener = null;
+    this.dragHandler = null;
 
     options = _.extend( {
 
@@ -69,7 +69,7 @@ define( function( require ) {
      * @param event - scenery event
      */
     var startDragListener = function( event ) {
-      self.inputListener.startDrag( event );
+      self.dragHandler.startDrag( event );
     };
 
     // @private {function} - for disposal
@@ -166,7 +166,7 @@ define( function( require ) {
         var delayMS = Math.max( 500 - lifetime, 0 );
 
         // If over the toolbox, then drop into it, and don't process further
-        node.removeInputListener( self.inputListener );
+        node.removeInputListener( self.dragHandler );
 
         // Make it impossible to drag vertices when about to drop back into box
         // See https://github.com/phetsims/circuit-construction-kit-common/issues/279

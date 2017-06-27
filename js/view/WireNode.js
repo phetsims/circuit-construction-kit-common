@@ -206,9 +206,9 @@ define( function( require ) {
     if ( circuitConstructionKitScreenView ) {
 
       // Input listener for dragging the body of the wire, to translate it.
-      this.inputListener = new TandemSimpleDragHandler( {
+      this.dragHandler = new TandemSimpleDragHandler( {
           allowTouchSnag: true,
-          tandem: tandem.createTandem( 'inputListener' ),
+        tandem: tandem.createTandem( 'dragHandler' ),
           start: function( event ) {
             if ( wire.interactiveProperty.get() ) {
 
@@ -236,7 +236,7 @@ define( function( require ) {
           }
         }
       );
-      self.addInputListener( this.inputListener );
+      self.addInputListener( this.dragHandler );
 
       circuitLayerNode.circuit.selectedCircuitElementProperty.link( markAsDirty );
     }
@@ -260,7 +260,7 @@ define( function( require ) {
      * @private - dispose the wire node
      */
     this.disposeWireNode = function() {
-      self.inputListener.dragging && self.inputListener.endDrag();
+      self.dragHandler.dragging && self.dragHandler.endDrag();
 
       wire.startVertexProperty.unlink( doUpdateTransform );
       wire.endVertexProperty.unlink( doUpdateTransform );
