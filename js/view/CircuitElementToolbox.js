@@ -110,7 +110,7 @@ define( function( require ) {
     var highResistanceLightBulbIcon = new CircuitConstructionKitLightBulbNode( null, null, highResistanceLightBulbIconModel, new Property( true ), viewProperty, tandem.createTandem( 'highResistanceLightBulbIcon' ), { icon: true } );
     var resistor = new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ), tandem.createTandem( 'resistor' ) );
     var highResistanceResistor = new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ), tandem.createTandem( 'highResistanceResistor' ), {
-      resistorType: 'high-resistance-resistor', resistance: 1000
+      resistorType: 'highResistanceResistor', resistance: 1000
     } );
     var createGrabBagItem = function( resistorType, resistorLength, tandem ) {
       return new Resistor(
@@ -173,7 +173,7 @@ define( function( require ) {
     var countLightBulbs = createCounter( function( circuitElement ) { return circuitElement instanceof LightBulb && !circuitElement.highResistance; } );
     var countHighResistanceLightBulbs = createCounter( function( circuitElement ) { return circuitElement instanceof LightBulb && circuitElement.highResistance; } );
     var countResistors = createCounter( function( circuitElement ) { return circuitElement instanceof Resistor && circuitElement.resistorType === 'resistor'; } );
-    var countHighResistanceResistors = createCounter( function( circuitElement ) { return circuitElement instanceof Resistor && circuitElement.resistorType === 'high-resistance-resistor'; } );
+    var countHighResistanceResistors = createCounter( function( circuitElement ) { return circuitElement instanceof Resistor && circuitElement.resistorType === 'highResistanceResistor'; } );
     var countSwitches = createCounter( function( circuitElement ) { return circuitElement instanceof Switch; } );
 
     /**
@@ -226,7 +226,7 @@ define( function( require ) {
     var createHighResistanceResistor = function( position ) {
       var vertexPair = createVertexPair( position, RESISTOR_LENGTH );
       return new Resistor( vertexPair.startVertex, vertexPair.endVertex, circuit.resistorGroupTandem.createNextTandem(), {
-        resistorType: 'high-resistance-resistor',
+        resistorType: 'highResistanceResistor',
         resistance: CircuitConstructionKitConstants.HIGH_RESISTANCE,
         editableRange: CircuitConstructionKitConstants.HIGH_RESISTANCE_RANGE,
         editorDelta: CircuitConstructionKitConstants.HIGH_EDITOR_DELTA

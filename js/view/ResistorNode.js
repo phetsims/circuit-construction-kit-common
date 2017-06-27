@@ -82,7 +82,7 @@ define( function( require ) {
     else if ( resistor.resistorType === 'hand' ) {
       lifelikeResistorImageNode = new Image( handImage );
     }
-    else if ( resistor.resistorType === 'high-resistance-resistor' ) {
+    else if ( resistor.resistorType === 'highResistanceResistor' ) {
       lifelikeResistorImageNode = new Image( highResistanceResistorImage );
     }
     else if ( resistor.resistorType === 'dog' ) {

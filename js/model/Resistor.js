@@ -17,7 +17,7 @@ define( function( require ) {
 
   // constants
   var RESISTOR_LENGTH = CircuitConstructionKitConstants.RESISTOR_LENGTH;
-  var RESISTOR_TYPES = [ 'resistor', 'high-resistance-resistor', 'coin', 'paperClip', 'pencil', 'eraser', 'hand', 'dog', 'dollarBill' ];  // TODO: these have mixed casings
+  var RESISTOR_TYPES = [ 'resistor', 'highResistanceResistor', 'coin', 'paperClip', 'pencil', 'eraser', 'hand', 'dog', 'dollarBill' ];
 
   /**
    * @param {Vertex} startVertex
@@ -58,7 +58,7 @@ define( function( require ) {
      * @public
      */
     isResistanceEditable: function() {
-      return this.resistorType === 'high-resistance-resistor' || this.resistorType === 'resistor';
+      return this.resistorType === 'highResistanceResistor' || this.resistorType === 'resistor';
     },
 
     /**
