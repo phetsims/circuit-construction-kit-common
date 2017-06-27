@@ -51,6 +51,7 @@ define( function( require ) {
     /**
      * Returns true if the resistance is editable.  Grab bag item resistance is not editable.
      * @returns {boolean}
+     * @public
      */
     isResistanceEditable: function() {
       return this.resistorType === 'high-resistance-resistor' || this.resistorType === 'resistor';
