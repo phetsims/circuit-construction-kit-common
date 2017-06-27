@@ -31,7 +31,7 @@ define( function( require ) {
 
   // constants
   var TEXT_OPTIONS = {
-    fontSize: 14,// TODO factor out
+    fontSize: 14,// TODO: factor out
     maxWidth: 120
   };
 
@@ -115,11 +115,11 @@ define( function( require ) {
       } ),
       new CheckBox( new Text( labelsString, TEXT_OPTIONS ), showLabelsProperty, {
         tandem: tandem.createTandem( 'labelsCheckBox' ),
-        boxWidth: BOX_WIDTH//TODO factor out
+        boxWidth: BOX_WIDTH//TODO: factor out
       } ),
       new CheckBox( new Text( valuesString, TEXT_OPTIONS ), showValuesProperty, {
         tandem: tandem.createTandem( 'valuesCheckBox' ),
-        boxWidth: BOX_WIDTH//TODO factor out
+        boxWidth: BOX_WIDTH//TODO: factor out
       } )
     ];
 
