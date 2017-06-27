@@ -69,7 +69,7 @@ define( function( require ) {
 
     // Add highlight (but not for icons)
     if ( !options.icon ) {
-      this.highlightNode = new FixedLengthCircuitElementHighlightNode( this, {} );
+      this.highlightNode = new FixedLengthCircuitElementHighlightNode( this );
     }
     var updateLayoutCallback = function() { self.updateLayout(); };
 
