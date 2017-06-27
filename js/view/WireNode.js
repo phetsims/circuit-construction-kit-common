@@ -340,7 +340,6 @@ define( function( require ) {
 
       TRANSFORM.multiplyMatrix( Matrix3.scaling( delta.magnitude() / WIRE_RASTER_LENGTH, 1 ) );
       this.lineNodeParent.setMatrix( TRANSFORM );
-      // this.highlightNode && this.highlightNode.setMatrix( TRANSFORM ); // TODO: only update when visible
 
       if ( this.circuitLayerNode ) {
         var selectedCircuitElement = this.circuitLayerNode.circuit.selectedCircuitElementProperty.get();
