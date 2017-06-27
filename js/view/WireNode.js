@@ -119,7 +119,7 @@ define( function( require ) {
     /**
      * When the view type changes (lifelike vs schematic), update the node
      */
-    var updateStroke = function() {
+    var updateViewType = function() {
       if ( self.disposed ) {
         return;
       }
@@ -134,13 +134,15 @@ define( function( require ) {
         var wireVector = endPoint.minus( startPoint );
         var dot = lightingDirection.dot( wireVector );
         lineNode.children = [ dot < 0 ? lifelikeNodeReversed : lifelikeNodeNormal ];
+        lifelikeRoundedCapNormal.visible = true;
       }
       else {
         lineNode.children = [ BLACK_LINE_NODE ];
+        lifelikeRoundedCapNormal.visible = false;
       }
     };
 
-    viewProperty.link( updateStroke );
+    viewProperty.link( updateViewType );
 
     var lineNodeParent = new Node( {
       children: [ lineNode ],
@@ -302,7 +304,7 @@ define( function( require ) {
 
       circuitLayerNode && circuitLayerNode.highlightLayer.removeChild( highlightNodeParent );
 
-      viewProperty.unlink( updateStroke );
+      viewProperty.unlink( updateViewType );
       tandem.removeInstance( self );
     };
 
