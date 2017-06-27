@@ -166,30 +166,30 @@ define( function( require ) {
           self.circuitElementNodeMap[ circuitElement.id ] = circuitElementNode;
 
           // Insert the circuit element node behind the vertex nodes.
-          // TODO: cleanup
+          // Search backwards starting at the end until we find the last 2 vertex nodes
           var index = self.mainLayer.getChildrenCount() - 1;
           var vertexNodeCount = 0;
           while ( index >= 0 ) {
-
             if ( self.mainLayer.getChildAt( index ) ) {
               vertexNodeCount++;
               if ( vertexNodeCount >= 2 ) {
                 break;
               }
             }
-
             index--;
           }
           assert && assert( index >= 0, 'missing vertex nodes' );
           self.mainLayer.insertChild( index - 1, circuitElementNode );
 
-          // series ammeters already show their own readouts
+          // Show the ValueNode for readouts, though series ammeters already show their own readouts and Wires do not
+          // have readouts
           if ( circuitElement instanceof FixedLengthCircuitElement && !(circuitElement instanceof SeriesAmmeter) ) {
             var valueNode = new ValueNode(
               circuitElement,
               self.circuitConstructionKitModel.showValuesProperty,
               tandem.createTandem( circuitElement.tandemName ).createTandem( 'valueNode' )
             );
+
             // self.valueLayer.addChild( valueNode );
             var updateShowValues = function( showValues ) {
               CircuitConstructionKitCommonUtil.setInSceneGraph( showValues, self.valueLayer, valueNode );
