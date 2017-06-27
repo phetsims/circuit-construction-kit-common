@@ -97,27 +97,6 @@ define( function( require ) {
     };
 
     /**
-     * Create the specified grab bag item
-     * @param {string} resistorType
-     * @param {number} resistorLength
-     * @param {Tandem} tandem
-     * @returns {Resistor}
-     */
-    var createGrabBagItem = function( resistorType, resistorLength, tandem ) {
-      return new Resistor( new Vertex( 0, 0 ), new Vertex( resistorLength, 0 ), tandem, {
-        resistorType: resistorType,
-        resistorLength: resistorLength
-      } );
-    };
-
-    // TODO: use these for other resistor things?
-    var createGrabBagIcon = function( grabBagItem, tandem ) {
-      var icon = new ResistorNode( null, null, grabBagItem, null, viewProperty, tandem, { icon: true } );
-      icon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( icon.width, icon.height ) } );
-      return icon;
-    };
-
-    /**
      * Returns a function which counts the number of circuit elements (not counting those in the true black box).
      * @param {function} predicate
      * @returns {function}
@@ -148,24 +127,23 @@ define( function( require ) {
       };
     };
 
-    // TODO: factor out battery creation things
-    var getGrabBagItemCreator = function( resistorType, resistance, resistorLength, groupTandem ) {
-      return function( position ) {
-        var vertexPair = createVertexPair( position, resistorLength );
-        return new Resistor( vertexPair.startVertex, vertexPair.endVertex, groupTandem.createNextTandem(), {
-          resistance: resistance,
-          resistorType: resistorType,
-          resistorLength: resistorLength
-        } );
-      };
-    };
-
+    /**
+     * Utility function that creates a CircuitElementToolNode
+     * @param {string} labelString
+     * @param {number} count
+     * @param {Node} icon
+     * @param {function} counterFunction
+     * @param {function} creator
+     * @param {Object} [options]
+     * @returns {CircuitElementToolNode}
+     */
     var createCircuitElementToolNode = function( labelString, count, icon, counterFunction, creator, options ) {
       options = _.extend( { iconScale: 1.0 }, options );
       icon.mutate( { scale: options.iconScale * TOOLBOX_ICON_SIZE / Math.max( icon.width, icon.height ) } );
       return new CircuitElementToolNode( labelString, showLabelsProperty, circuitLayerNode, icon, count, createCounter( counterFunction ), creator );
     };
 
+    // Create the tool nodes
     var wireToolNode = createCircuitElementToolNode( wireString, options.numberOfWires,
       new WireNode( null, null,
         new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ), tandem.createTandem( 'wireIconWire' )
@@ -225,7 +203,7 @@ define( function( require ) {
         return new Switch( vertexPair.startVertex, vertexPair.endVertex, circuit.switchGroupTandem.createNextTandem() );
       } );
 
-    var children = [
+    var circuitElementToolNodes = [
       wireToolNode,
       rightBatteryToolNode,
       lightBulbToolNode,
@@ -234,55 +212,41 @@ define( function( require ) {
     ];
 
     if ( options.numberOfCoins ) {
-
-      var highVoltageBatteryToolNode = createCircuitElementToolNode( batteryString, options.numberOfHighVoltageBatteries,
-        new BatteryNode( null, null,
-          new Battery( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.BATTERY_LENGTH, 0 ), null, 'high-voltage', tandem.createTandem( 'highVoltageIconBattery' ) ), null, viewProperty, tandem.createTandem( 'highVoltageBatteryIcon' ), { icon: true } ),
-        function( circuitElement ) {
-          return circuitElement instanceof Battery && circuitElement.initialOrientation === 'right' && circuitElement.batteryType === 'high-voltage';
-        }, function( position ) {
-          var vertexPair = createVertexPair( position, BATTERY_LENGTH );
-          return new Battery( vertexPair.startVertex, vertexPair.endVertex, circuit.batteryResistanceProperty, 'high-voltage', circuit.rightBatteryTandemGroup.createNextTandem(), {
-            voltage: 10000,
-            editableRange: new Range( 100, 100000 ),
-            editorDelta: CircuitConstructionKitConstants.HIGH_EDITOR_DELTA
-          } );
-        } );
-
-      var highResistanceBulbToolNode = createCircuitElementToolNode( lightBulbString, options.numberOfHighResistanceLightBulbs,
-        new CircuitConstructionKitLightBulbNode( null, null,
-          LightBulb.createAtPosition( new Vector2( 0, 0 ), circuit.vertexGroupTandem, 1000, circuit.lightBulbGroupTandem.createNextTandem(), { highResistance: true } ), new Property( true ), viewProperty, tandem.createTandem( 'highResistanceLightBulbIcon' ), { icon: true } ),
-        function( circuitElement ) { return circuitElement instanceof LightBulb && circuitElement.highResistance; },
-        function( position ) {
-          return LightBulb.createAtPosition( position, circuit.vertexGroupTandem,
-            CircuitConstructionKitConstants.HIGH_RESISTANCE, circuit.lightBulbGroupTandem.createNextTandem(), {
-              highResistance: true,
-              editableRange: CircuitConstructionKitConstants.HIGH_RESISTANCE_RANGE,
-              editorDelta: CircuitConstructionKitConstants.HIGH_EDITOR_DELTA
-            } );
-        } );
-
-      var highResistanceResistorToolNode = createCircuitElementToolNode( resistorString, options.numberOfHighResistanceResistors,
-        new ResistorNode( null, null,
-          new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ), tandem.createTandem( 'highResistanceResistor' ), {
-            resistorType: 'highResistanceResistor', resistance: 1000
-          } ), null, viewProperty, tandem.createTandem( 'highResistanceResistorIcon' ), { icon: true } ),
-        function( circuitElement ) { return circuitElement instanceof Resistor && circuitElement.resistorType === 'highResistanceResistor'; },
-        function( position ) {
-          var vertexPair = createVertexPair( position, RESISTOR_LENGTH );
-          return new Resistor( vertexPair.startVertex, vertexPair.endVertex, circuit.resistorGroupTandem.createNextTandem(), {
-            resistorType: 'highResistanceResistor',
-            resistance: CircuitConstructionKitConstants.HIGH_RESISTANCE,
-            editableRange: CircuitConstructionKitConstants.HIGH_RESISTANCE_RANGE,
-            editorDelta: CircuitConstructionKitConstants.HIGH_EDITOR_DELTA
-          } );
-        } );
-
       var createGrabBagToolNode = function( resistorType, resistance, resistorLength, labelString, maxCount, iconModelTandem, iconTandem, groupTandem ) {
-        var icon = createGrabBagIcon( createGrabBagItem( resistorType, resistorLength, iconModelTandem ), iconTandem );
-        var itemCounter = createCounter( function( circuitElement ) { return circuitElement instanceof Resistor && circuitElement.resistorType === resistorType; } );
-        var createItem = getGrabBagItemCreator( resistorType, resistance, resistorLength, groupTandem );
-        return new CircuitElementToolNode( labelString, showLabelsProperty, circuitLayerNode, icon, maxCount, itemCounter, createItem );
+        var createGrabBagIcon = function( grabBagItem, tandem ) {
+          return new ResistorNode( null, null, grabBagItem, null, viewProperty, tandem, { icon: true } );
+        };
+
+        var getGrabBagItemCreator = function( resistorType, resistance, resistorLength, groupTandem ) {
+          return function( position ) {
+            var vertexPair = createVertexPair( position, resistorLength );
+            return new Resistor( vertexPair.startVertex, vertexPair.endVertex, groupTandem.createNextTandem(), {
+              resistance: resistance,
+              resistorType: resistorType,
+              resistorLength: resistorLength
+            } );
+          };
+        };
+
+        /**
+         * Create the specified grab bag item
+         * @param {string} resistorType
+         * @param {number} resistorLength
+         * @param {Tandem} tandem
+         * @returns {Resistor}
+         */
+        var createGrabBagItem = function( resistorType, resistorLength, tandem ) {
+          return new Resistor( new Vertex( 0, 0 ), new Vertex( resistorLength, 0 ), tandem, {
+            resistorType: resistorType,
+            resistorLength: resistorLength
+          } );
+        };
+        return createCircuitElementToolNode( labelString, maxCount, createGrabBagIcon( createGrabBagItem( resistorType, resistorLength, iconModelTandem ), iconTandem ),
+          function( circuitElement ) {
+            return circuitElement instanceof Resistor && circuitElement.resistorType === resistorType;
+          },
+          getGrabBagItemCreator( resistorType, resistance, resistorLength, groupTandem )
+        );
       };
 
       var MIN_RESISTANCE = 1E-6;
@@ -359,13 +323,55 @@ define( function( require ) {
       );
     }
 
-    if ( options.numberOfCoins && !options.numberOfHighVoltageBatteries ) {
-      children = children.concat( [] );
+    if ( options.numberOfHighVoltageBatteries ) {
+
+      var highVoltageBatteryToolNode = createCircuitElementToolNode( batteryString, options.numberOfHighVoltageBatteries,
+        new BatteryNode( null, null,
+          new Battery( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.BATTERY_LENGTH, 0 ), null, 'high-voltage', tandem.createTandem( 'highVoltageIconBattery' ) ), null, viewProperty, tandem.createTandem( 'highVoltageBatteryIcon' ), { icon: true } ),
+        function( circuitElement ) {
+          return circuitElement instanceof Battery && circuitElement.initialOrientation === 'right' && circuitElement.batteryType === 'high-voltage';
+        }, function( position ) {
+          var vertexPair = createVertexPair( position, BATTERY_LENGTH );
+          return new Battery( vertexPair.startVertex, vertexPair.endVertex, circuit.batteryResistanceProperty, 'high-voltage', circuit.rightBatteryTandemGroup.createNextTandem(), {
+            voltage: 10000,
+            editableRange: new Range( 100, 100000 ),
+            editorDelta: CircuitConstructionKitConstants.HIGH_EDITOR_DELTA
+          } );
+        } );
+
+      var highResistanceBulbToolNode = createCircuitElementToolNode( lightBulbString, options.numberOfHighResistanceLightBulbs,
+        new CircuitConstructionKitLightBulbNode( null, null,
+          LightBulb.createAtPosition( new Vector2( 0, 0 ), circuit.vertexGroupTandem, 1000, circuit.lightBulbGroupTandem.createNextTandem(), { highResistance: true } ), new Property( true ), viewProperty, tandem.createTandem( 'highResistanceLightBulbIcon' ), { icon: true } ),
+        function( circuitElement ) { return circuitElement instanceof LightBulb && circuitElement.highResistance; },
+        function( position ) {
+          return LightBulb.createAtPosition( position, circuit.vertexGroupTandem,
+            CircuitConstructionKitConstants.HIGH_RESISTANCE, circuit.lightBulbGroupTandem.createNextTandem(), {
+              highResistance: true,
+              editableRange: CircuitConstructionKitConstants.HIGH_RESISTANCE_RANGE,
+              editorDelta: CircuitConstructionKitConstants.HIGH_EDITOR_DELTA
+            } );
+        } );
+
+      var highResistanceResistorToolNode = createCircuitElementToolNode( resistorString, options.numberOfHighResistanceResistors,
+        new ResistorNode( null, null,
+          new Resistor( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.RESISTOR_LENGTH, 0 ), tandem.createTandem( 'highResistanceResistor' ), {
+            resistorType: 'highResistanceResistor', resistance: 1000
+          } ), null, viewProperty, tandem.createTandem( 'highResistanceResistorIcon' ), { icon: true } ),
+        function( circuitElement ) { return circuitElement instanceof Resistor && circuitElement.resistorType === 'highResistanceResistor'; },
+        function( position ) {
+          var vertexPair = createVertexPair( position, RESISTOR_LENGTH );
+          return new Resistor( vertexPair.startVertex, vertexPair.endVertex, circuit.resistorGroupTandem.createNextTandem(), {
+            resistorType: 'highResistanceResistor',
+            resistance: CircuitConstructionKitConstants.HIGH_RESISTANCE,
+            editableRange: CircuitConstructionKitConstants.HIGH_RESISTANCE_RANGE,
+            editorDelta: CircuitConstructionKitConstants.HIGH_EDITOR_DELTA
+          } );
+        } );
     }
 
+    // Pagination for the carousel, each page should begin with wire node
     if ( options.numberOfCoins && !options.numberOfHighVoltageBatteries ) {
-
-      children = children.concat( [
+      circuitElementToolNodes = circuitElementToolNodes.concat( [
         new Node( { children: [ wireToolNode ] } ),
         dollarBillNode,
         paperClipNode,
@@ -379,7 +385,7 @@ define( function( require ) {
       ] );
     }
     else if ( options.numberOfCoins && options.numberOfHighVoltageBatteries ) {
-      children = children.concat( [
+      circuitElementToolNodes = circuitElementToolNodes.concat( [
         new Node( { children: [ wireToolNode ] } ),
         highVoltageBatteryToolNode,
         highResistanceResistorToolNode,
@@ -399,8 +405,8 @@ define( function( require ) {
     }
 
     // Expand touch bounds for each icon
-    for ( var i = 0; i < children.length; i++ ) {
-      children[ i ].touchArea = children[ i ].localBounds.dilatedXY( 10, 18 );
+    for ( var i = 0; i < circuitElementToolNodes.length; i++ ) {
+      circuitElementToolNodes[ i ].touchArea = circuitElementToolNodes[ i ].localBounds.dilatedXY( 10, 18 );
     }
     lightBulbToolNode.touchArea = lightBulbToolNode.localBounds.dilatedXY( 11, 8 );
 
@@ -409,11 +415,11 @@ define( function( require ) {
     var SPACING = 5;
 
     var child = null;
-    if ( children.length <= ITEMS_PER_PAGE ) {
+    if ( circuitElementToolNodes.length <= ITEMS_PER_PAGE ) {
       child = new CircuitConstructionKitPanel( new LayoutBox( {
         orientation: options.orientation,
         spacing: CircuitConstructionKitConstants.TOOLBOX_ITEM_SPACING,
-        children: children,
+        children: circuitElementToolNodes,
         resize: false
       } ), tandem, {
         resize: false,
@@ -424,7 +430,7 @@ define( function( require ) {
       } );
     }
     else {
-      this.carousel = new Carousel( children, {
+      this.carousel = new Carousel( circuitElementToolNodes, {
         orientation: 'vertical',
         itemsPerPage: ITEMS_PER_PAGE,
         spacing: 0,
