@@ -33,16 +33,13 @@ define( function( require ) {
     scale: CircuitConstructionKitConstants.FONT_AWESOME_ICON_SCALE
   } );
 
-  // TODO: docs
+  // rasterize the images for the red and black dotted lines so they can be rendered with WebGL to improve performance
   var CIRCLE_OPTIONS = {
-    stroke: 'red',
     lineWidth: 1.3,
     lineDash: [ 6, 4 ]
   };
-  var RED_CIRCLE_NODE = new Circle( VERTEX_RADIUS, CIRCLE_OPTIONS ).toDataURLNodeSynchronous();
-  var BLACK_CIRCLE_NODE = new Circle( VERTEX_RADIUS, _.extend( CIRCLE_OPTIONS, {
-    stroke: 'black'
-  } ) ).toDataURLNodeSynchronous();
+  var RED_CIRCLE_NODE = new Circle( VERTEX_RADIUS, _.extend( CIRCLE_OPTIONS, { stroke: 'red' } ) ).toDataURLNodeSynchronous();
+  var BLACK_CIRCLE_NODE = new Circle( VERTEX_RADIUS, _.extend( CIRCLE_OPTIONS, { stroke: 'black' } ) ).toDataURLNodeSynchronous();
 
   // Button shown when the vertex is attached to >1 circuit element that allows detaching.
   // TODO: only allocate one of these and let it move around?
