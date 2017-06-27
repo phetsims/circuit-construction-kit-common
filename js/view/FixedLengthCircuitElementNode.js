@@ -226,7 +226,6 @@ define( function( require ) {
      * @protected - CircuitConstructionKitLightBulbNode calls updateRender for its child socket node
      */
     updateRender: function() {
-
       var startPosition = this.circuitElement.startVertexProperty.get().positionProperty.get();
       var endPosition = this.circuitElement.endVertexProperty.get().positionProperty.get();
       var delta = endPosition.minus( startPosition );

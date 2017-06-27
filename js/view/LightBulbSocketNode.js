@@ -60,7 +60,9 @@ define( function( require ) {
   return inherit( FixedLengthCircuitElementNode, LightBulbSocketNode, {
 
     /**
+     * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
      * @override
+     * @protected - CircuitConstructionKitLightBulbNode calls updateRender for its child socket node
      */
     updateRender: function() {
       var startPosition = this.circuitElement.startVertexProperty.get().positionProperty.get();

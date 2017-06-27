@@ -295,10 +295,7 @@ define( function( require ) {
      * @protected - CircuitConstructionKitLightBulbNode calls updateRender for its child socket node
      */
     updateRender: function() {
-
-
       var view = this.viewProperty.value;
-
       if ( view === CircuitConstructionKitConstants.LIFELIKE ) {
 
         // determine whether to use the forward or reverse gradient based on the angle

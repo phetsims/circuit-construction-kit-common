@@ -191,7 +191,9 @@ define( function( require ) {
     },
 
     /**
-     * @public - update the transforms in the view step
+     * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
+     * @override
+     * @protected - CircuitConstructionKitLightBulbNode calls updateRender for its child socket node
      */
     updateRender: function() {
       FixedLengthCircuitElementNode.prototype.updateRender.call( this );
