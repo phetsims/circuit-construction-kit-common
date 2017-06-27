@@ -67,14 +67,12 @@ define( function( require ) {
     }
     else {
 
-      // Show the rays
+      // Show the rays here where they can be easily positioned, but only when more than the base is showing
       var bulbRadius = middleNode.width / 2;
       self.raysNode = new LightRaysNode( bulbRadius, {
         x: this.backNode.centerX,
         y: (middleNode.top + bulbRadius) * options.scale
       } ); // @private
-
-      // TODO: manage raysNode in CCKLightBulbNode
       self.raysNode.mutate( options );
 
       options.children = [ self.backNode, middleNode ];
