@@ -148,6 +148,8 @@ define( function( require ) {
 
       self.startVertexProperty.get().positionProperty.unlink( vertexMoved );
       self.endVertexProperty.get().positionProperty.unlink( vertexMoved );
+      self.startVertexProperty.get().voltageProperty.unlink( vertexVoltageChanged );
+      self.endVertexProperty.get().voltageProperty.unlink( vertexVoltageChanged );
 
       self.disposeEmitter.emit();
       self.disposeEmitter.removeAllListeners();

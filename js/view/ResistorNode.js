@@ -204,6 +204,7 @@ define( function( require ) {
      */
     this.disposeResistorNode = function() {
       resistor.resistanceProperty.unlink( updateColorBands );
+      lifelikeResistorImageNode.children = [];
     };
   }
 
@@ -230,6 +231,7 @@ define( function( require ) {
      */
     dispose: function() {
       FixedLengthCircuitElementNode.prototype.dispose.call( this );
+      this.children = [];
       this.disposeResistorNode();
     }
   }, {
