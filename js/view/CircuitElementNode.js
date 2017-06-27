@@ -29,7 +29,7 @@ define( function( require ) {
     // @public (read-only) {CircuitElement} - the CircuitElement rendered by this node
     this.circuitElement = circuitElement;
 
-    // @public {Object} - Supplied by subclasses // TODO: but why?
+    // @protected {Object} - Supplied by subclasses so that events can be forwarded from the tool icons
     this.inputListener = null;
 
     options = _.extend( {
