@@ -36,7 +36,7 @@ define( function( require ) {
   var SCHEMATIC_LINE_WIDTH = CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH; // line width in screen coordinates
 
   // constants
-  var transform = new Matrix3(); // TODO: fix casing
+  var TRANSFORM = new Matrix3(); // The Matrix entries are mutable
   var WIRE_RASTER_LENGTH = 100;
 
   // TODO: fix casing
@@ -181,9 +181,9 @@ define( function( require ) {
      */
       // TODO: this is broken
     var getHighlightStrokedShape = function( lineStyles ) {
-      return Shape.rect( 0, 0, 100, 100 );
-      // return self.lineNode.shape.getStrokedShape( lineStyles );
-    };
+        return Shape.rect( 0, 0, 100, 100 );
+        // return self.lineNode.shape.getStrokedShape( lineStyles );
+      };
 
     /**
      * Listener for the position of the start vertex.
@@ -321,10 +321,10 @@ define( function( require ) {
       var angle = delta.angle();
 
       // Update the node transform
-      CircuitConstructionKitCommonUtil.setToTranslationRotation( transform, startPosition, angle );
-      transform.multiplyMatrix( Matrix3.scaling( delta.magnitude() / WIRE_RASTER_LENGTH, 1 ) );
-      this.lineNodeParent.setMatrix( transform );
-      this.highlightNode && this.highlightNode.setMatrix( transform ); // TODO: only update when visible
+      CircuitConstructionKitCommonUtil.setToTranslationRotation( TRANSFORM, startPosition, angle );
+      TRANSFORM.multiplyMatrix( Matrix3.scaling( delta.magnitude() / WIRE_RASTER_LENGTH, 1 ) );
+      this.lineNodeParent.setMatrix( TRANSFORM );
+      this.highlightNode && this.highlightNode.setMatrix( TRANSFORM ); // TODO: only update when visible
 
       // TODO: update the location of the highlight
       //
