@@ -239,20 +239,25 @@ define( function( require ) {
     var resistorToolNode = new CircuitElementToolNode( resistorString, showLabelsProperty, circuitLayerNode, resistorIcon, options.numberOfResistors, countResistors, createResistor );
     var switchToolNode = new CircuitElementToolNode( switchString, showLabelsProperty, circuitLayerNode, switchIcon, options.numberOfSwitches, countSwitches, createSwitch );
 
-    var rightIconBattery = new Battery( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.BATTERY_LENGTH, 0 ), null, 'normal', tandem.createTandem( 'rightIconBattery' ) );
-    var rightBatteryIcon = new BatteryNode( null, null, rightIconBattery, null, viewProperty, tandem.createTandem( 'rightBatteryIcon' ), {
-      icon: true
-    } );
-    rightBatteryIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( rightBatteryIcon.width, rightBatteryIcon.height ) } );
-    var rightBatteryToolNode = new CircuitElementToolNode(
-      batteryString,
-      showLabelsProperty,
-      circuitLayerNode,
-      rightBatteryIcon,
-      options.numberOfRightBatteries,
-      createCounter( function( circuitElement ) {
+    var createCircuitElementToolNode = function( labelString, count, icon, counterFunction, creator, options ) {
+      options = _.extend( { iconScale: 1.0 }, options );
+      icon.mutate( { scale: options.iconScale * TOOLBOX_ICON_SIZE / Math.max( icon.width, icon.height ) } );
+      return new CircuitElementToolNode( labelString, showLabelsProperty, circuitLayerNode, icon, count, createCounter( counterFunction ), creator );
+    };
+
+    var rightBatteryToolNode = createCircuitElementToolNode( batteryString, options.numberOfRightBatteries,
+      new BatteryNode( null, null, new Battery(
+        new Vertex( 0, 0 ),
+        new Vertex( CircuitConstructionKitConstants.BATTERY_LENGTH, 0 ),
+        null,
+        'normal',
+        tandem.createTandem( 'rightIconBattery' )
+        ),
+        null, viewProperty, tandem.createTandem( 'rightBatteryIcon' ), { icon: true }
+      ),
+      function( circuitElement ) {
         return circuitElement instanceof Battery && circuitElement.initialOrientation === 'right' && circuitElement.batteryType === 'normal';
-      } ),
+      },
       function( position ) {
         var vertexPair = createVertexPair( position, BATTERY_LENGTH );
         return new Battery( vertexPair.startVertex, vertexPair.endVertex, circuit.batteryResistanceProperty, 'normal', circuit.rightBatteryTandemGroup.createNextTandem() );
