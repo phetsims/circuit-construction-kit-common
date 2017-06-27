@@ -132,6 +132,9 @@ define( function( require ) {
 
     LIFELIKE: LIFELIKE,
     SCHEMATIC: SCHEMATIC,
-    VIEW_CHOICES: [ LIFELIKE, SCHEMATIC ]
+    VIEW_CHOICES: [ LIFELIKE, SCHEMATIC ],
+
+    // The main font size to use for labels and controls
+    FONT_SIZE: 14
   } );
 } );

@@ -28,10 +28,11 @@ define( function( require ) {
   var showCurrentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/showCurrent' );
   var valuesString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/values' );
   var ElectronChargeNode = require( 'SCENERY_PHET/ElectronChargeNode' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   // constants
   var TEXT_OPTIONS = {
-    fontSize: 14,// TODO: factor out
+    fontSize: CircuitConstructionKitConstants.FONT_SIZE,
     maxWidth: 120
   };
 

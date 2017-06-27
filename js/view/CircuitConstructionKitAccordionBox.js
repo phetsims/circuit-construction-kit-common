@@ -39,7 +39,11 @@ define( function( require ) {
       titleNode: new HBox( {
         children: [
           new HStrut( 10 ),
-          new Text( title, { fontSize: 14, maxWidth: 175, tandem: tandem.createTandem( title ) } )
+          new Text( title, {
+            fontSize: CircuitConstructionKitConstants.FONT_SIZE,
+            maxWidth: 175,
+            tandem: tandem.createTandem( title )
+          } )
         ]
       } ),
       tandem: tandem
