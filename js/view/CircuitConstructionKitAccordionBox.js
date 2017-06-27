@@ -34,7 +34,7 @@ define( function( require ) {
       titleYMargin: 4,
       titleXSpacing: 14,
       contentYSpacing: 0,
-      lineWidth: CircuitConstructionKitConstants.PANEL_LINE_WIDTH,// TODO: factor this out
+      lineWidth: CircuitConstructionKitConstants.PANEL_LINE_WIDTH,
       minWidth: CircuitConstructionKitConstants.RIGHT_SIDE_PANEL_MIN_WIDTH,
       titleNode: new HBox( {
         children: [
