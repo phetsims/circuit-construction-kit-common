@@ -187,10 +187,6 @@ define( function( require ) {
         editorDelta: CircuitConstructionKitConstants.HIGH_EDITOR_DELTA
       } );
     };
-    var createWire = function( position ) {
-      var vertexPair = createVertexPair( position, WIRE_LENGTH );
-      return new Wire( vertexPair.startVertex, vertexPair.endVertex, circuit.wireResistivityProperty, circuit.wireGroupTandem.createNextTandem() );
-    };
     var createLightBulb = function( position ) {
       return LightBulb.createAtPosition( position, circuit.vertexGroupTandem, CircuitConstructionKitConstants.DEFAULT_RESISTANCE, circuit.lightBulbGroupTandem.createNextTandem() );
     };
@@ -245,7 +241,10 @@ define( function( require ) {
         new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ), tandem.createTandem( 'wireIconWire' )
         ), null, viewProperty, tandem.createTandem( 'wireIcon' ) ),
       function( circuitElement ) { return circuitElement instanceof Wire; },
-      createWire
+      function( position ) {
+        var vertexPair = createVertexPair( position, WIRE_LENGTH );
+        return new Wire( vertexPair.startVertex, vertexPair.endVertex, circuit.wireResistivityProperty, circuit.wireGroupTandem.createNextTandem() );
+      }
     );
 
     var rightBatteryToolNode = createCircuitElementToolNode( batteryString, options.numberOfRightBatteries,
