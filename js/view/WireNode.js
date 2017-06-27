@@ -137,14 +137,14 @@ define( function( require ) {
     /**
      * When the view type changes (lifelike vs schematic), update the node
      */
-    var boundUpdateLayout = function() {
+    var markAsDirty = function() {
       if ( self.disposed ) {
         return;
       }
-      self.updateLayout();
+      self.markAsDirty();
     };
 
-    viewProperty.link( boundUpdateLayout );
+    viewProperty.link( markAsDirty );
 
     // @private
     this.lineNodeParent = new Node( {
@@ -188,8 +188,8 @@ define( function( require ) {
     // When the start vertex changes to a different instance (say when vertices are soldered together), unlink the
     // old one and link to the new one.
     var doUpdateTransform = function( newVertex, oldVertex ) {
-      oldVertex && oldVertex.positionProperty.unlink( boundUpdateLayout );
-      newVertex.positionProperty.link( boundUpdateLayout );
+      oldVertex && oldVertex.positionProperty.unlink( markAsDirty );
+      newVertex.positionProperty.link( markAsDirty );
     };
     wire.startVertexProperty.link( doUpdateTransform );
     wire.endVertexProperty.link( doUpdateTransform );
@@ -235,7 +235,7 @@ define( function( require ) {
       );
       self.addInputListener( this.inputListener );
 
-      circuitLayerNode.circuit.selectedCircuitElementProperty.link( boundUpdateLayout );
+      circuitLayerNode.circuit.selectedCircuitElementProperty.link( markAsDirty );
     }
 
     /**
@@ -262,17 +262,17 @@ define( function( require ) {
       wire.startVertexProperty.unlink( doUpdateTransform );
       wire.endVertexProperty.unlink( doUpdateTransform );
 
-      circuitLayerNode && circuitLayerNode.circuit.selectedCircuitElementProperty.unlink( boundUpdateLayout );
+      circuitLayerNode && circuitLayerNode.circuit.selectedCircuitElementProperty.unlink( markAsDirty );
       wire.interactiveProperty.unlink( updatePickable );
 
-      wire.startVertexProperty.get().positionProperty.unlink( boundUpdateLayout );
-      wire.endVertexProperty.get().positionProperty.unlink( boundUpdateLayout );
+      wire.startVertexProperty.get().positionProperty.unlink( markAsDirty );
+      wire.endVertexProperty.get().positionProperty.unlink( markAsDirty );
 
       wire.connectedEmitter.removeListener( moveToBack );
 
       circuitLayerNode && circuitLayerNode.highlightLayer.removeChild( highlightNodeParent );
 
-      viewProperty.unlink( boundUpdateLayout );
+      viewProperty.unlink( markAsDirty );
       tandem.removeInstance( self );
     };
 
@@ -288,7 +288,7 @@ define( function( require ) {
      * Mark dirty to batch changes, so that update can be done once in view step, if necessary
      * @public
      */
-    updateLayout: function() {
+    markAsDirty: function() {
       this.dirty = true;
     },
 

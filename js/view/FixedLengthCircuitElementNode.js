@@ -73,10 +73,10 @@ define( function( require ) {
     if ( !options.icon ) {
       this.highlightNode = new FixedLengthCircuitElementHighlightNode( this );
     }
-    var updateLayoutCallback = function() { self.updateLayout(); };
+    var markAsDirty = function() { self.markAsDirty(); };
 
     // Relink when start vertex changes
-    circuitElement.vertexMovedEmitter.addListener( updateLayoutCallback );
+    circuitElement.vertexMovedEmitter.addListener( markAsDirty );
 
     var moveToFront = function() {
 
@@ -146,7 +146,7 @@ define( function( require ) {
       var updateHighlightVisibility = function( lastCircuitElement ) {
         var visible = (lastCircuitElement === circuitElement);
         CircuitConstructionKitCommonUtil.setInSceneGraph( visible, circuitLayerNode.highlightLayer, self.highlightNode );
-        self.updateLayout();
+        self.markAsDirty();
       };
 
       circuitLayerNode.circuit.selectedCircuitElementProperty.link( updateHighlightVisibility );
@@ -195,7 +195,7 @@ define( function( require ) {
         self.inputListener.endDrag();
       }
 
-      circuitElement.vertexMovedEmitter.removeListener( updateLayoutCallback );
+      circuitElement.vertexMovedEmitter.removeListener( markAsDirty );
       updateHighlightVisibility && circuitLayerNode.circuit.selectedCircuitElementProperty.unlink( updateHighlightVisibility );
       circuitElement.connectedEmitter.removeListener( moveToFront );
       circuitElement.vertexSelectedEmitter.removeListener( moveToFront );
@@ -215,9 +215,9 @@ define( function( require ) {
 
     /**
      * Mark dirty to batch changes, so that update can be done once in view step, if necessary
-     * @public TODO: rename these methods
+     * @public
      */
-    updateLayout: function() {
+    markAsDirty: function() {
       this.dirty = true;
     },
 
