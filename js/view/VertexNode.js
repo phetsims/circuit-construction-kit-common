@@ -41,9 +41,10 @@ define( function( require ) {
   var RED_CIRCLE_NODE = new Circle( VERTEX_RADIUS, _.extend( CIRCLE_OPTIONS, { stroke: 'red' } ) ).toDataURLNodeSynchronous();
   var BLACK_CIRCLE_NODE = new Circle( VERTEX_RADIUS, _.extend( CIRCLE_OPTIONS, { stroke: 'black' } ) ).toDataURLNodeSynchronous();
 
-  // Button shown when the vertex is attached to >1 circuit element that allows detaching.
-  // TODO: only allocate one of these and let it move around?
-  // TODO: docs
+  // When a vertex is selected, a cut button is shown near to the vertex.  If the vertex is connected to >1 circuit
+  // element, the button is enabled.  Pressing the button will cut the vertex from the neigbors.  Only one cutButton
+  // is allocated for all vertices to use because it is too performance demanding to create these dynamically when
+  // circuit elements are dragged from the toolbox.
   var cutButton = new RoundPushButton( {
     baseColor: 'yellow',
     content: CUT_ICON,
