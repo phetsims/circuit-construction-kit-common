@@ -103,10 +103,15 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'Vertex', Vertex );
 
   return inherit( Object, Vertex, {
-    // TODO: docs
+
+    /**
+     * Called when vertices are cut.
+     * @param {Vector2} position
+     * @public
+     */
     setPosition: function( position ) {
       this.positionProperty.set( position );
-      this.unsnappedPositionProperty.set( position ); // TODO: need clone?
+      this.unsnappedPositionProperty.set( position );
     }
   } );
 } );
