@@ -509,8 +509,9 @@ define( function( require ) {
 
       // Check for intersection with a vertex
       // TODO: this should check for intersection with solder
-      for ( var i = 0; i < this.circuitLayerNode.vertexNodes.length; i++ ) {
-        var vertexNode = this.circuitLayerNode.vertexNodes[ i ];
+      var vertexNodes = _.values( this.circuitLayerNode.vertexNodes );
+      for ( var i = 0; i < vertexNodes.length; i++ ) {
+        var vertexNode = vertexNodes[ i ];
         var position = vertexNode.vertex.positionProperty.get();
         var radius = VertexNode.VERTEX_RADIUS;
 

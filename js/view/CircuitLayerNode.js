@@ -136,11 +136,11 @@ define( function( require ) {
     // @private {Object} - Map to find CircuitElement=>CircuitElementNode. key is CircuitElement.id, value is CircuitElementNode
     this.circuitElementNodeMap = {};
 
-    // @public (read-only) {Node[]} the layer to display the gray solder // TODO: is this used?
-    this.solderNodes = [];
+    // @private {Object} - Map of Vertex.index => SolderNode
+    this.solderNodes = {};
 
-    // @public (read-only) {Node[]} the VertexNodes // TODO: is this used?
-    this.vertexNodes = [];
+    // @public (read-only) {Object} Map of Vertex.index => VertexNode
+    this.vertexNodes = {};
 
     // TODO: cleanup
     // When loading from a state object, the vertices could have been added first.  If so, move them in front
@@ -243,11 +243,11 @@ define( function( require ) {
     var vertexNodeGroup = tandem.createGroupTandem( 'vertexNodes' );
     var addVertexNode = function( vertex ) {
       var solderNode = new SolderNode( self, vertex );
-      self.solderNodes.push( solderNode );
+      self.solderNodes[ vertex.index ] = solderNode;
       self.mainLayer.addChild( solderNode );
 
       var vertexNode = new VertexNode( self, vertex, vertexNodeGroup.createNextTandem() );
-      self.vertexNodes.push( vertexNode );
+      self.vertexNodes[ vertex.index ] = vertexNode;
       self.mainLayer.addChild( vertexNode );
     };
     circuit.vertices.addItemAddedListener( addVertexNode );
@@ -257,24 +257,20 @@ define( function( require ) {
       var vertexNode = self.getVertexNode( vertex );
       self.mainLayer.removeChild( vertexNode );
 
-      var index = self.vertexNodes.indexOf( vertexNode );
-      if ( index > -1 ) {
-        self.vertexNodes.splice( index, 1 );
-      }
+      var vertexNode = self.vertexNodes[ vertex.index ];
+      delete self.vertexNodes[ vertex.index ];
       vertexNode.dispose();
 
-      assert && assert( self.getVertexNode( vertex ) === null, 'vertex node should have been removed' );
+      assert && assert( !self.getVertexNode( vertex ), 'vertex node should have been removed' );
 
       var solderNode = self.getSolderNode( vertex );
       self.mainLayer.removeChild( solderNode );
 
-      var solderNodeIndex = self.solderNodes.indexOf( solderNode );
-      if ( solderNodeIndex > -1 ) {
-        self.solderNodes.splice( solderNodeIndex, 1 );
-      }
+      var solderNode = self.solderNodes[ vertex.index ];
+      delete self.solderNodes[ vertex.index ];
       solderNode.dispose();
 
-      assert && assert( self.getSolderNode( vertex ) === null, 'solder node should have been removed' );
+      assert && assert( !self.getSolderNode( vertex ), 'solder node should have been removed' );
     } );
     circuit.vertices.forEach( addVertexNode );
 
@@ -439,7 +435,7 @@ define( function( require ) {
      * @returns {SolderNode}
      * @public
      */
-    getSolderNode: function( vertex ) { return this.getNodeForVertex( this.solderNodes, vertex ); },
+    getSolderNode: function( vertex ) { return this.solderNodes[ vertex.index ]; },
 
     /**
      * Get the VertexNode associated with the specified Vertex
@@ -447,7 +443,7 @@ define( function( require ) {
      * @returns {VertexNode}
      * @public
      */
-    getVertexNode: function( vertex ) { return this.getNodeForVertex( this.vertexNodes, vertex ); },
+    getVertexNode: function( vertex ) { return this.vertexNodes[ vertex.index ]; },
 
     /**
      * Find drop targets for all the given vertices
@@ -575,8 +571,8 @@ define( function( require ) {
         nodeWithVertex.vertex.insideTrueBlackBoxProperty.get() && nodeWithVertex.moveToBack();
       };
 
-      this.solderNodes.forEach( vertexNodeToBack );
-      this.vertexNodes.forEach( vertexNodeToBack );
+      _.values( this.solderNodes ).forEach( vertexNodeToBack );
+      _.values( this.vertexNodes ).forEach( vertexNodeToBack );
       _.values( this.circuitElementNodeMap ).forEach( circuitElementNodeToBack );
 
       // Move black box interface vertices behind the black box,
@@ -589,8 +585,8 @@ define( function( require ) {
         }
       };
 
-      this.solderNodes.forEach( interfaceVertexBehindBox );
-      this.vertexNodes.forEach( interfaceVertexBehindBox );
+      _.values( this.solderNodes ).forEach( interfaceVertexBehindBox );
+      _.values( this.vertexNodes ).forEach( interfaceVertexBehindBox );
     },
 
     /**
