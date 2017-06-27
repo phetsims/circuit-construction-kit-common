@@ -14,6 +14,7 @@ define( function( require ) {
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Text = require( 'SCENERY/nodes/Text' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
   // constants
   var TOOLBOX_ICON_SIZE = CircuitConstructionKitConstants.TOOLBOX_ICON_SIZE;
@@ -40,30 +41,31 @@ define( function( require ) {
       children: labelText.length > 0 ? [ iconNode, labelNode ] : [ iconNode ] // hack because the series ammeter tool node has text rendered separately (joined with probe ammeter)
     } );
 
-    this.addInputListener( {
-        down: function( event ) {
+    this.addInputListener( new SimpleDragHandler( {
+      allowTouchSnag: true,
+      start: function( event ) {
 
-          // Don't try to start drags with a right mouse button or an attached pointer.
-          if ( !event.canStartPress() ) { return; }
+        // Don't try to start drags with a right mouse button or an attached pointer.
+        if ( !event.canStartPress() ) { return; }
 
-          // initial position of the pointer in the coordinate frame of the CircuitLayerNode
-          var viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point );
+        // initial position of the pointer in the coordinate frame of the CircuitLayerNode
+        var viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point );
 
-          // Create the new CircuitElement at the correct location
-          var circuitElement = createElement( viewPosition );
+        // Create the new CircuitElement at the correct location
+        var circuitElement = createElement( viewPosition );
 
-          // Add the CircuitElement to the Circuit
-          circuit.circuitElements.add( circuitElement );
+        // Add the CircuitElement to the Circuit
+        circuit.circuitElements.add( circuitElement );
 
-          // Send the start drag event through so the new element will begin dragging.
-          // From: https://github.com/phetsims/scenery-phet/issues/195#issuecomment-186300071
-          // @jonathanolson and I looked into the way Charges and Fields just calls startDrag(event) on the play area drag
-          // listener (which adds a listener to the pointer, in the usual SimpleDragHandler way), and it seems like a good
-          // pattern.
-          circuitElement.startDragEmitter.emit1( event );
-        }
+        // Send the start drag event through so the new element will begin dragging.
+        // From: https://github.com/phetsims/scenery-phet/issues/195#issuecomment-186300071
+        // @jonathanolson and I looked into the way Charges and Fields just calls startDrag(event) on the play area drag
+        // listener (which adds a listener to the pointer, in the usual SimpleDragHandler way), and it seems like a good
+        // pattern.
+        circuitElement.startDragEmitter.emit1( event );
+
       }
-    );
+    } ) );
 
     circuit.circuitElements.lengthProperty.link( function() {
       self.visible = count() < maxNumber;
