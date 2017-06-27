@@ -15,6 +15,10 @@ define( function( require ) {
   var Dimension2 = require( 'DOT/Dimension2' );
   var Range = require( 'DOT/Range' );
 
+  // constants
+  var LIFELIKE = 'lifelike';
+  var SCHEMATIC = 'schematic';
+
   /**
    * @constructor
    */
@@ -124,6 +128,10 @@ define( function( require ) {
 
     THUMB_SIZE: new Dimension2( 18, 34 ),
 
-    MAJOR_TICK_LENGTH: 20
+    MAJOR_TICK_LENGTH: 20,
+
+    LIFELIKE: LIFELIKE,
+    SCHEMATIC: SCHEMATIC,
+    VIEW_CHOICES: [ LIFELIKE, SCHEMATIC ]
   } );
 } );

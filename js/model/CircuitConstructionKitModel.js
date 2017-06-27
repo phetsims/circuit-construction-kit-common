@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var Property = require( 'AXON/Property' );
   var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Circuit' );
@@ -94,8 +95,8 @@ define( function( require ) {
     } );
 
     // @public {Property.<string>} - whether to show lifelike or schematic representations
-    this.viewProperty = new Property( 'lifelike', {
-      validValues: [ 'lifelike', 'schematic' ], // TODO: factor out
+    this.viewProperty = new Property( CircuitConstructionKitConstants.LIFELIKE, {
+      validValues: CircuitConstructionKitConstants.VIEW_CHOICES,
       tandem: tandem.createTandem( 'viewProperty' ),
       phetioValueType: TString
     } );

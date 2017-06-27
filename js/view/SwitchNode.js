@@ -71,7 +71,7 @@ define( function( require ) {
       x: CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_START,
       fill: fill,
       stroke: 'black',
-      lineWidth: type === 'schematic' ? 0 : 1
+      lineWidth: type === CircuitConstructionKitConstants.SCHEMATIC ? 0 : 1
     } );
 
     // circuitSwitch.closedProperty.link( function( closed ) {
@@ -103,7 +103,7 @@ define( function( require ) {
       children: [ leftSegmentNode, rotatingSegmentNode, rightSegmentNode, lifelikeHinge ]
     } );
 
-    if ( type === 'schematic' ) {
+    if ( type === CircuitConstructionKitConstants.SCHEMATIC ) {
       node.addChild( new Circle( thickness * 0.6, {
         fill: 'black',
         stroke: 'black',
@@ -121,10 +121,10 @@ define( function( require ) {
   };
 
   // TODO: convert all nodes to synchronous
-  var lifelikeOpenImage = createNode( 'lifelike', lifelikeGradient, LIFELIKE_DIAMETER, 6, false ).toDataURLNodeSynchronous();
-  var schematicOpenImage = createNode( 'schematic', 'black', CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH, 0, false ).toDataURLNodeSynchronous();
-  var lifelikeClosedImage = createNode( 'lifelike', lifelikeGradient, LIFELIKE_DIAMETER, 6, true ).toDataURLNodeSynchronous();
-  var schematicClosedImage = createNode( 'schematic', 'black', CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH, 0, true ).toDataURLNodeSynchronous();
+  var lifelikeOpenImage = createNode( CircuitConstructionKitConstants.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, false ).toDataURLNodeSynchronous();
+  var schematicOpenImage = createNode( CircuitConstructionKitConstants.SCHEMATIC, 'black', CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH, 0, false ).toDataURLNodeSynchronous();
+  var lifelikeClosedImage = createNode( CircuitConstructionKitConstants.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, true ).toDataURLNodeSynchronous();
+  var schematicClosedImage = createNode( CircuitConstructionKitConstants.SCHEMATIC, 'black', CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH, 0, true ).toDataURLNodeSynchronous();
 
   /**
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView

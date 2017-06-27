@@ -119,9 +119,9 @@ define( function( require ) {
         return;
       }
       var view = viewProperty.value;
-      lineNode.children = [ view === 'lifelike' ? lifelikeNodeNormal : blackLineNode ];
+      lineNode.children = [ view === CircuitConstructionKitConstants.LIFELIKE ? lifelikeNodeNormal : blackLineNode ];
 
-      if ( view === 'lifelike' ) {
+      if ( view === CircuitConstructionKitConstants.LIFELIKE ) {
 
         // determine whether to use the forward or reverse gradient based on the angle
         var startPoint = wire.startVertexProperty.get().positionProperty.get();

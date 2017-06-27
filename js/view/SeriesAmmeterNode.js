@@ -44,7 +44,7 @@ define( function( require ) {
   function SeriesAmmeterNode( circuitConstructionKitScreenView, circuitLayerNode, seriesAmmeter, showResultsProperty, viewProperty, tandem, options ) {
     var self = this;
     options = options || {};
-    viewProperty = new Property( 'lifelike' );
+    viewProperty = new Property( CircuitConstructionKitConstants.LIFELIKE );
 
     // Electrons go behind this panel to give the appearance they go through the ammeter
     var readoutText = new Text( WIDEST_LABEL, { fontSize: 15 } );

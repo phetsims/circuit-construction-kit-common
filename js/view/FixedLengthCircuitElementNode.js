@@ -21,6 +21,7 @@ define( function( require ) {
   var Image = require( 'SCENERY/nodes/Image' );
   var FixedLengthCircuitElementHighlightNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedLengthCircuitElementHighlightNode' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   // images
   var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
@@ -58,7 +59,7 @@ define( function( require ) {
 
     // Show the selected node
     var viewPropertyListener = function( view ) {
-      self.contentNode.children = [ view === 'lifelike' ? lifelikeNode : schematicNode ];
+      self.contentNode.children = [ view === CircuitConstructionKitConstants.LIFELIKE ? lifelikeNode : schematicNode ];
     };
     viewProperty.link( viewPropertyListener );
 

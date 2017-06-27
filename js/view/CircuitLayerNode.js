@@ -41,6 +41,7 @@ define( function( require ) {
   var ValueNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ValueNode' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
+  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   /**
    * @param {Circuit} circuit - the model Circuit
@@ -361,7 +362,7 @@ define( function( require ) {
       } );
 
       // This method is called for all vertices when viewProperty value changes
-      if ( this.viewProperty.get() === 'lifelike' ) {
+      if ( this.viewProperty.get() === CircuitConstructionKitConstants.LIFELIKE ) {
         if ( adjacentFixedLengthComponents.length > 0 ) {
 
           // move before the first fixed length component

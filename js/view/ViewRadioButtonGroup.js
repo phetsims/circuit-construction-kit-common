@@ -45,14 +45,14 @@ define( function( require ) {
         scale: SCALE
       } );
     };
-    var lifelikeIcon = createBatteryNode( 'lifelike', tandem.createTandem( 'lifelikeIcon' ) );
-    var schematicIcon = createBatteryNode( 'schematic', tandem.createTandem( 'schematicIcon' ) );
+    var lifelikeIcon = createBatteryNode( CircuitConstructionKitConstants.LIFELIKE, tandem.createTandem( 'lifelikeIcon' ) );
+    var schematicIcon = createBatteryNode( CircuitConstructionKitConstants.SCHEMATIC, tandem.createTandem( 'schematicIcon' ) );
     RadioButtonGroup.call( this, viewProperty, [ {
-      value: 'lifelike',
+      value: CircuitConstructionKitConstants.LIFELIKE,
       node: lifelikeIcon,
       tandemName: 'lifelikeRadioButton'
     }, {
-      value: 'schematic',
+      value: CircuitConstructionKitConstants.SCHEMATIC,
       node: schematicIcon,
       tandemName: 'schematicRadioButton'
     } ], {
