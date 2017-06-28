@@ -25,6 +25,9 @@ instances.  After the circuit is solved for unknown currents, a voltage is assig
 * Ammeter - this ammeter is a "non-contact" ammeter which can take readings of a current by measuring magnetic fields
 (without touching the circuit)
 * SeriesAmmeter - this ammeter is a CircuitElement which measures current flowing through it. 
+* Circuit.js - this contains the CircuitElements and Vertices as well as logic for solving for the unknown voltages
+and currents given the voltages sources and resistances.
+* CircuitNode.js - this contains logic for dragging and connecting vertices to each other.
 
 ## General
 
@@ -47,6 +50,9 @@ must be properly implemented in all CircuitElements and CircuitElementNodes, and
 
 ## Model
 See [model.md](https://github.com/phetsims/circuit-construction-kit-common/blob/master/doc/model.md)
+
+In Circuit.solve, each CircuitElement is converted to a corresponding model element which can be used in the solver which
+is implemented in ModifedNodalAnalysisCircuit and ModifiedNodalAnalysisSolution.
 
 ## View
 
