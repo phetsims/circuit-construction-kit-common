@@ -315,8 +315,8 @@ define( function( require ) {
     },
 
     /**
-     * When two Vertices are dropped/bumped too close together, move one away by rotating it. Rotation instead of
-     * translation is is used to handle FixedLengthCircuitElements.
+     * When two Vertices are dropped/bumped too close together, move away the pre-existing one by rotating or
+     * translating it.
      *
      * @param {Vertex} vertex - the vertex to rotate
      * @param {Vertex} pivotVertex - the vertex to rotate about
@@ -325,22 +325,31 @@ define( function( require ) {
     rotateSingleVertex: function( vertex, pivotVertex ) {
       var distance = vertex.positionProperty.value.distance( pivotVertex.positionProperty.value );
 
-      // For small components like batteries (which are around 100 view units long), rotate Math.PI/4
-      // Longer components don't need to rotate by such a large angle because the arc length will be
-      // proportionately longer, see https://github.com/phetsims/circuit-construction-kit-common/issues/344
-      var searchAngle = Math.PI / 4 * 100 / distance;
-      this.rotateSingleVertexByAngle( vertex, pivotVertex, searchAngle );
-      var distance1 = this.closestDistanceToOtherVertex( vertex );
-      this.rotateSingleVertexByAngle( vertex, pivotVertex, -2 * searchAngle );
-      var distance2 = this.closestDistanceToOtherVertex( vertex );
-      if ( distance2 > distance1 ) {
+      // Still not good enough, let's try translating away
+      if ( distance < BUMP_AWAY_RADIUS && distance > 0 ) {
 
-        // keep it, we're good.
+        var delta = pivotVertex.positionProperty.value.minus( vertex.positionProperty.value ).normalized().times( -SNAP_RADIUS * 1.5 );
+        this.translateVertexGroup( vertex, delta );
       }
       else {
 
-        // go back to the best spot
-        this.rotateSingleVertexByAngle( vertex, pivotVertex, 2 * searchAngle );
+        // For small components like batteries (which are around 100 view units long), rotate Math.PI/4
+        // Longer components don't need to rotate by such a large angle because the arc length will be
+        // proportionately longer, see https://github.com/phetsims/circuit-construction-kit-common/issues/344
+        var searchAngle = Math.PI / 4 * 100 / distance;
+        this.rotateSingleVertexByAngle( vertex, pivotVertex, searchAngle );
+        var distance1 = this.closestDistanceToOtherVertex( vertex );
+        this.rotateSingleVertexByAngle( vertex, pivotVertex, -2 * searchAngle );
+        var distance2 = this.closestDistanceToOtherVertex( vertex );
+        if ( distance2 > distance1 ) {
+
+          // keep it, we're good.
+        }
+        else {
+
+          // go back to the best spot
+          this.rotateSingleVertexByAngle( vertex, pivotVertex, 2 * searchAngle );
+        }
       }
     },
 
@@ -494,16 +503,7 @@ define( function( require ) {
         circuitElement.replaceVertex( vertex, newVertex );
 
         // Bump the vertices away from the original vertex
-        var vertexGroup = this.findAllFixedVertices( newVertex );
-
-        for ( var j = 0; j < vertexGroup.length; j++ ) {
-          var v = vertexGroup[ j ];
-
-          // Only translate vertices that are movable and not connected to the black box interface by fixed length elements
-          if ( v.draggableProperty.get() && !this.hasFixedConnectionToBlackBoxInterfaceVertex( v ) ) {
-            v.setPosition( results[ i ].plus( v.positionProperty.value ) );
-          }
-        }
+        this.translateVertexGroup( newVertex, results[ i ] );
       }
 
       if ( !vertex.blackBoxInterfaceProperty.get() ) {
@@ -512,6 +512,25 @@ define( function( require ) {
 
       // Update the physics
       this.solve();
+    },
+
+    /**
+     * Translate all vertices connected to the mainVertex by FixedLengthCircuitElements by the given distance
+     * @param {Vertex} mainVertex - the vertex whose group will be translated
+     * @param {Vector2} delta - the vector by which to move the vertex group
+     * @private
+     */
+    translateVertexGroup: function( mainVertex, delta ) {
+      var vertexGroup = this.findAllFixedVertices( mainVertex );
+
+      for ( var j = 0; j < vertexGroup.length; j++ ) {
+        var vertex = vertexGroup[ j ];
+
+        // Only translate vertices that are movable and not connected to the black box interface by fixed length elements
+        if ( vertex.draggableProperty.get() && !this.hasFixedConnectionToBlackBoxInterfaceVertex( vertex ) ) {
+          vertex.setPosition( vertex.positionProperty.value.plus( delta ) );
+        }
+      }
     },
 
     /**
