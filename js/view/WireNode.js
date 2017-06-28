@@ -207,7 +207,7 @@ define( function( require ) {
       // Input listener for dragging the body of the wire, to translate it.
       this.dragHandler = new TandemSimpleDragHandler( {
           allowTouchSnag: true,
-        tandem: tandem.createTandem( 'dragHandler' ),
+          tandem: tandem.createTandem( 'dragHandler' ),
           start: function( event ) {
             if ( wire.interactiveProperty.get() ) {
 

@@ -47,39 +47,39 @@ define( function( require ) {
 
   return inherit( FixedLengthCircuitElement, Switch, {
 
-    /**
-     * Returns the position and angle of the given point along the Switch
-     * @param {number} distanceAlongWire
-     * @returns {Object} with {position,angle}
-     * @overrides
-     * @public
-     */
-    getPositionAndAngle: function( distanceAlongWire ) {
+      /**
+       * Returns the position and angle of the given point along the Switch
+       * @param {number} distanceAlongWire
+       * @returns {Object} with {position,angle}
+       * @overrides
+       * @public
+       */
+      getPositionAndAngle: function( distanceAlongWire ) {
 
-      var startPosition = this.startVertexProperty.get().positionProperty.get();
-      var endPosition = this.endVertexProperty.get().positionProperty.get();
-      var fractionAlongWire = distanceAlongWire / this.chargePathLength;
+        var startPosition = this.startVertexProperty.get().positionProperty.get();
+        var endPosition = this.endVertexProperty.get().positionProperty.get();
+        var fractionAlongWire = distanceAlongWire / this.chargePathLength;
 
-      // If the electron is halfway up the switch lever for an open switch, show it along the raised lever
-      if ( fractionAlongWire > SWITCH_START && fractionAlongWire < SWITCH_END && !this.closedProperty.get() ) {
-        var pivot = startPosition.blend( endPosition, SWITCH_START );
+        // If the electron is halfway up the switch lever for an open switch, show it along the raised lever
+        if ( fractionAlongWire > SWITCH_START && fractionAlongWire < SWITCH_END && !this.closedProperty.get() ) {
+          var pivot = startPosition.blend( endPosition, SWITCH_START );
 
-        var twoThirdsPoint = startPosition.blend( endPosition, SWITCH_END );
-        var rotatedPoint = twoThirdsPoint.rotatedAboutPoint( pivot, -Math.PI / 4 );
+          var twoThirdsPoint = startPosition.blend( endPosition, SWITCH_END );
+          var rotatedPoint = twoThirdsPoint.rotatedAboutPoint( pivot, -Math.PI / 4 );
 
-        var distanceAlongSegment = Util.linear( SWITCH_START, SWITCH_END, 0, 1, fractionAlongWire );
-        return {
+          var distanceAlongSegment = Util.linear( SWITCH_START, SWITCH_END, 0, 1, fractionAlongWire );
+          return {
 
-          position: pivot.blend( rotatedPoint, distanceAlongSegment ),
-          angle: endPosition.minus( startPosition ).angle()
-        };
-      }
-      else {
+            position: pivot.blend( rotatedPoint, distanceAlongSegment ),
+            angle: endPosition.minus( startPosition ).angle()
+          };
+        }
+        else {
 
-        // For a closed switch, there is a straight path from the start vertex to the end vertex
-        return FixedLengthCircuitElement.prototype.getPositionAndAngle.call( this, distanceAlongWire );
-      }
-    },
+          // For a closed switch, there is a straight path from the start vertex to the end vertex
+          return FixedLengthCircuitElement.prototype.getPositionAndAngle.call( this, distanceAlongWire );
+        }
+      },
 
       /**
        * Get the properties so that the circuit can be solved when changed.
