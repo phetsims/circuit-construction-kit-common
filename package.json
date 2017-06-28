@@ -10,6 +10,12 @@
     "grunt": "~1.0.0"
   },
   "phet": {
-    "requirejsNamespace": "CIRCUIT_CONSTRUCTION_KIT_COMMON"
+    "requirejsNamespace": "CIRCUIT_CONSTRUCTION_KIT_COMMON",
+    "phetLibs": [
+      "twixt"
+    ],
+    "preload": [
+      "../sherpa/lib/Tween-r12.js"
+    ]
   }
 }
