@@ -42,7 +42,7 @@ define( function( require ) {
   var BLACK_CIRCLE_NODE = new Circle( VERTEX_RADIUS, _.extend( CIRCLE_OPTIONS, { stroke: 'black' } ) ).toDataURLNodeSynchronous();
 
   // When a vertex is selected, a cut button is shown near to the vertex.  If the vertex is connected to >1 circuit
-  // element, the button is enabled.  Pressing the button will cut the vertex from the neigbors.  Only one cutButton
+  // element, the button is enabled.  Pressing the button will cut the vertex from the neighbors.  Only one cutButton
   // is allocated for all vertices to use because it is too performance demanding to create these dynamically when
   // circuit elements are dragged from the toolbox.
   var cutButton = new RoundPushButton( {

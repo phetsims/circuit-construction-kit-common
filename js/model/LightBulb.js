@@ -175,6 +175,7 @@ define( function( require ) {
      * Create a LightBulb at the specified position
      * @param {Vector2} position
      * @param {Tandem} circuitVertexGroupTandem
+     * @param {number} resistance
      * @param {Tandem} tandem
      * @param {Object} [options]
      * @returns {LightBulb}

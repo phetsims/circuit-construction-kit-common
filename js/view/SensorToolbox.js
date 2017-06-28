@@ -68,7 +68,7 @@ define( function( require ) {
           this.down( event );
         },
 
-        // ad-hoc touchSnag\
+        // ad-hoc touchSnag
         touchmove: function( event ) {
           this.down( event );
         },

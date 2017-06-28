@@ -91,14 +91,13 @@ define( function( require ) {
 
   /**
    * Convenience function that gets the stroked shape for the wire line node with the given style
-   * @param {LineStyles} lineStyles
+   * @param {Wire} wire
    * @returns {Shape}
    */
   var getHighlightStrokedShape = function( wire ) {
     var startPoint = wire.startVertexProperty.get().positionProperty.get();
     var endPoint = wire.endVertexProperty.get().positionProperty.get();
-    var shape = Shape.lineSegment( startPoint.x, startPoint.y, endPoint.x, endPoint.y ).getStrokedShape( highlightStrokeStyles );
-    return shape;
+    return Shape.lineSegment( startPoint.x, startPoint.y, endPoint.x, endPoint.y ).getStrokedShape( highlightStrokeStyles );
   };
 
   /**
@@ -242,7 +241,7 @@ define( function( require ) {
     }
 
     /**
-     * Move the wire element to the back of the view when connected to another circiut element
+     * Move the wire element to the back of the view when connected to another circuit element
      * @private
      */
     var moveToBack = function() {
@@ -334,7 +333,7 @@ define( function( require ) {
       CircuitConstructionKitCommonUtil.setToTranslationRotation( TRANSFORM, endPosition, angle );
       this.endCapParent.setMatrix( TRANSFORM );
 
-      // This transfrom is done second so the matrix is already in good shape for the scaling step
+      // This transform is done second so the matrix is already in good shape for the scaling step
       CircuitConstructionKitCommonUtil.setToTranslationRotation( TRANSFORM, startPosition, angle );
       this.startCapParent.setMatrix( TRANSFORM );
 

@@ -30,6 +30,7 @@ define( function( require ) {
 
   /**
    * @param {Property.<number>} batteryResistanceProperty - the axon Property for the internal resistance of all Batteries
+   * @param {AlignGroup} alignGroup
    * @param {Tandem} tandem
    * @constructor
    */
