@@ -56,8 +56,8 @@ define( function( require ) {
 
     /**
      * Get the properties so that the circuit can be solved when changed.
-     * @override
      * @returns {Property[]}
+     * @override
      * @public
      */
     getCircuitProperties: function() {

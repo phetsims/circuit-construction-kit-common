@@ -47,7 +47,8 @@ define( function( require ) {
   return inherit( Meter, Ammeter, {
 
     /**
-     * @public - reset the ammeter
+     * Restore the ammeter to its initial conditions
+     * @public
      */
     reset: function() {
       Meter.prototype.reset.call( this );

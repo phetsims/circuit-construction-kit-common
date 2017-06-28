@@ -372,6 +372,7 @@ define( function( require ) {
     /**
      * Move forward in time by the specified dt
      * @param {number} dt - seconds
+     * @public
      */
     step: function( dt ) {
       this.circuitLayerNode.step( dt );

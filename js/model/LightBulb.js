@@ -83,6 +83,7 @@ define( function( require ) {
     /**
      * Returns true because all light bulbs can have their resistance changed.
      * @returns {boolean}
+     * @public
      */
     isResistanceEditable: function() {
       return true;
