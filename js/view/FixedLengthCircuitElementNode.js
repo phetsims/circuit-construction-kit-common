@@ -1,4 +1,4 @@
-// Copyright 2015-2017, University of Colorado Boulder
+// Copyright 2016-2017, University of Colorado Boulder
 
 /**
  * Renders and provides interactivity for FixedLengthCircuitElements (all CircuitElements except Wires).

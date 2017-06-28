@@ -1,4 +1,4 @@
-// Copyright 2015-2017, University of Colorado Boulder
+// Copyright 2016-2017, University of Colorado Boulder
 
 /**
  * CircuitElement is the base class for all elements that can be part of a circuit, including:

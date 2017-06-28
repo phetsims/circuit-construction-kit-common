@@ -1,4 +1,4 @@
-// Copyright 2016, University of Colorado Boulder
+// Copyright 2016-2017, University of Colorado Boulder
 
 /**
  * Displays the Voltmeter, which has 2 probes and detects potential differences.

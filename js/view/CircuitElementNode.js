@@ -1,4 +1,4 @@
-// Copyright 2015-2017, University of Colorado Boulder
+// Copyright 2016-2017, University of Colorado Boulder
 
 /**
  * Abstract base class for WireNode and FixedLengthCircuitElementNode

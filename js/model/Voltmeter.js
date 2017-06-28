@@ -1,4 +1,4 @@
-// Copyright 2016, University of Colorado Boulder
+// Copyright 2016-2017, University of Colorado Boulder
 
 /**
  * The model for a voltmeter, which has a red and black probe and reads out voltage between vertices/wires.

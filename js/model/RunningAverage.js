@@ -1,4 +1,4 @@
-// Copyright 2016, University of Colorado Boulder
+// Copyright 2017, University of Colorado Boulder
 
 /**
  * Data structure that keeps track of running average over a given window.
