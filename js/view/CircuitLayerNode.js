@@ -268,14 +268,15 @@ define( function( require ) {
     } );
     circuit.vertices.forEach( addVertexNode );
 
-    // When the screen is resized, move all vertices into view.
-    this.visibleBoundsProperty.link( function( visibleBounds ) {
+    // When the screen is resized or zoomed, move all vertices into view.
+    this.visibleBoundsInCircuitCoordinateFrameProperty.link( function( localBounds ) {
 
-      // Get the bounds in the CircuitLayerNode coordinate frame
-      var localBounds = self.parentToLocalBounds( visibleBounds );
+      // Check all vertices
       for ( var i = 0; i < circuit.vertices.length; i++ ) {
         var vertex = circuit.vertices.get( i );
         var position = vertex.positionProperty.get();
+
+        // If any Vertex is out of bounds, move it and all connected Vertices (to preserve geometry) in bounds.
         if ( !localBounds.containsPoint( position ) ) {
           var closestPoint = localBounds.getClosestPoint( position.x, position.y );
           var delta = closestPoint.minus( position );
