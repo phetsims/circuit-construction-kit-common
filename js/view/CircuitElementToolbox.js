@@ -54,6 +54,7 @@ define( function( require ) {
   var RESISTOR_LENGTH = CircuitConstructionKitConstants.RESISTOR_LENGTH;
   var WIRE_LENGTH = 100;
   var SWITCH_LENGTH = CircuitConstructionKitConstants.SWITCH_LENGTH;
+  var HIGH_RESISTANCE = Math.pow( 10, 9 );
 
   /**
    * @param {Circuit} circuit
@@ -242,7 +243,7 @@ define( function( require ) {
 
       var dollarBillNode = createGrabBagToolNode(
         'dollarBill',
-        Math.pow( 10, 9 ),
+        HIGH_RESISTANCE,
         CircuitConstructionKitConstants.DOLLAR_BILL_LENGTH,
         dollarBillString,
         options.numberOfDollarBills,
@@ -272,7 +273,7 @@ define( function( require ) {
       );
       var eraserToolNode = createGrabBagToolNode(
         'eraser',
-        Math.pow( 10, 9 ),
+        HIGH_RESISTANCE,
         CircuitConstructionKitConstants.ERASER_LENGTH,
         eraserString,
         options.numberOfErasers,
@@ -302,7 +303,7 @@ define( function( require ) {
       );
       var dogToolNode = createGrabBagToolNode(
         'dog',
-        Math.pow( 10, 9 ),
+        HIGH_RESISTANCE,
         CircuitConstructionKitConstants.DOG_LENGTH,
         dogString,
         options.numberOfDogs,
