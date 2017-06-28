@@ -58,6 +58,8 @@ is implemented in ModifedNodalAnalysisCircuit and ModifiedNodalAnalysisSolution.
 
 * Each node defines its own lifelike and schematic nodes internally, so nothing needs to be disposed or re-created when
 the view type changes.
+* Likewise ChargeNode can render positive or negative charges, though they are cleared and re-added when the charge view 
+is changed.
 * View Layering: the CircuitLayerNode shows circuit elements, highlights, solder, and sensors.  Each CircuitElementNode
 may node parts that appear in different layers, such as the highlight and the light bulb socket.  Having the light bulb
 socket in another layer makes it possible to show the electrons going "through" the socket (in z-ordering). The 
