@@ -70,7 +70,9 @@ define( function( require ) {
     };
 
     circuit.vertexDroppedEmitter.addListener( listener );
-    circuit.vertices.addItemRemovedListener( listener ); // Also update on reset all, or if a component is dropped in the toolbox
+
+    // Also update on reset all, or if a component is dropped in the toolbox
+    circuit.vertices.addItemRemovedListener( listener );
     modeProperty.link( listener );
 
     var updatePosition = function() {
@@ -94,15 +96,31 @@ define( function( require ) {
         var isSeriesAmmeter = selectedCircuitElement instanceof SeriesAmmeter;
 
         if ( isResistor && selectedCircuitElement.isResistanceEditable() ) {
-          previousPanel = new CircuitElementEditPanel( resistanceString, ohmsString, selectedCircuitElement.resistanceProperty, circuit, selectedCircuitElement, groupTandem.createNextTandem() );
+          previousPanel = new CircuitElementEditPanel(
+            resistanceString,
+            ohmsString,
+            selectedCircuitElement.resistanceProperty,
+            circuit,
+            selectedCircuitElement,
+            groupTandem.createNextTandem()
+          );
         }
         else if ( isResistor ) {
 
           // Just show a trash button for non-editable resistors which are grab bag items
-          previousPanel = new TrashButton( circuit, selectedCircuitElement, groupTandem.createNextTandem().createTandem( 'trashButton' ) );
+          previousPanel = new TrashButton(
+            circuit, selectedCircuitElement, groupTandem.createNextTandem().createTandem( 'trashButton' )
+          );
         }
         else if ( isBattery ) {
-          previousPanel = new CircuitElementEditPanel( voltageString, voltsString, selectedCircuitElement.voltageProperty, circuit, selectedCircuitElement, groupTandem.createNextTandem() );
+          previousPanel = new CircuitElementEditPanel(
+            voltageString,
+            voltsString,
+            selectedCircuitElement.voltageProperty,
+            circuit,
+            selectedCircuitElement,
+            groupTandem.createNextTandem()
+          );
         }
         else if ( isSwitch ) {
           previousPanel = new SwitchReadoutNode( circuit, selectedCircuitElement, groupTandem.createNextTandem() );
@@ -110,7 +128,9 @@ define( function( require ) {
         else if ( isSeriesAmmeter || isWire ) {
 
           // Just show a trash button
-          previousPanel = new TrashButton( circuit, selectedCircuitElement, groupTandem.createNextTandem().createTandem( 'trashButton' ) );
+          previousPanel = new TrashButton(
+            circuit, selectedCircuitElement, groupTandem.createNextTandem().createTandem( 'trashButton' )
+          );
         }
       }
       else {

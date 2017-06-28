@@ -31,12 +31,15 @@ define( function( require ) {
   };
 
   // See https://en.wikipedia.org/wiki/Electronic_color_code#Resistor_color-coding
-  // Tolerances below gold were eliminated to reduce variance in the tolerance band, see https://github.com/phetsims/circuit-construction-kit-dc/issues/10
+  // Tolerances below gold were eliminated to reduce variance in the tolerance band, see
+  // https://github.com/phetsims/circuit-construction-kit-dc/issues/10
   var colorTable = [
     { name: 'none', significantFigure: '-', multiplier: null, tolerance: 20, color: null },
     { name: 'pink', significantFigure: '-', multiplier: 'e-3', tolerance: null, color: new Color( 255, 105, 180 ) },
     { name: 'silver', significantFigure: '-', multiplier: 'e-2', tolerance: 10, color: new Color( 192, 192, 192 ) },
-    { name: 'gold', significantFigure: '-', multiplier: 'e-1', tolerance: 5, color: new Color( '#e6b600' ) }, // chose a different color that shows up better against the resistor color
+
+    // chose a different color that shows up better against the resistor color
+    { name: 'gold', significantFigure: '-', multiplier: 'e-1', tolerance: 5, color: new Color( '#e6b600' ) },
     { name: 'black', significantFigure: '0', multiplier: 'e0', tolerance: null, color: new Color( 0, 0, 0 ) },
     { name: 'brown', significantFigure: '1', multiplier: 'e1', tolerance: null, color: new Color( 150, 75, 0 ) },
     { name: 'red', significantFigure: '2', multiplier: 'e2', tolerance: null, color: new Color( 255, 0, 0 ) },

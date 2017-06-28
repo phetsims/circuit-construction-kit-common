@@ -44,11 +44,12 @@ define( function( require ) {
     // @private (read-only) {boolean} - whether the charge has been disposed, to aid in debugging
     this.deleted = false;
 
-    // @public (read-only) {NumberProperty} - the distance the charge has traveled in its CircuitElement in view coordinates
+    // @public (read-only) {NumberProperty} - the distance the charge has traveled in its CircuitElement in view
+    // coordinates
     this.distanceProperty = new NumberProperty( distance );
 
-    // @public {BooleanProperty} - To improve performance, disable updating while the position of the charge is changed many
-    // times during the update step.
+    // @public {BooleanProperty} - To improve performance, disable updating while the position of the charge is changed
+    // many times during the update step.
     this.updatingPositionProperty = new BooleanProperty( true );
 
     // @public (read-only) {Property.<Vector2>} - the 2d position of the charge
@@ -57,27 +58,28 @@ define( function( require ) {
     // @public (read-only) {NumberProperty} - the angle of the charge (for showing arrows)
     this.angleProperty = new NumberProperty( 0 );
 
-    // @public (read-only) {BooleanProperty} - true if the Charge is on the right hand side of a light bulb and hence must be layered
-    // in front of the socket node.
+    // @public (read-only) {BooleanProperty} - true if the Charge is on the right hand side of a light bulb and hence
+    // must be layered in front of the socket node.
     this.onRightHandSideOfLightBulbProperty = new BooleanProperty( false );
 
     // When the distance or updating properties change, update the 2d position of the charge
-    var multilink = Property.multilink( [ this.distanceProperty, this.updatingPositionProperty ], function( distance, updating ) {
-      if ( updating ) {
-        assert && assert( !self.deleted, 'Charge was deleted' );
-        assert && assert( !isNaN( distance ), 'charge position was not a number' );
-        var positionAndAngle = self.circuitElement.getPositionAndAngle( distance );
-        var position = positionAndAngle.position;
-        assert && assert( !isNaN( position.x ) && !isNaN( position.y ), 'point was not a number' );
-        self.angleProperty.set( positionAndAngle.angle );
-        self.positionProperty.set( position );
+    var multilink = Property.multilink( [ this.distanceProperty, this.updatingPositionProperty ],
+      function( distance, updating ) {
+        if ( updating ) {
+          assert && assert( !self.deleted, 'Charge was deleted' );
+          assert && assert( !isNaN( distance ), 'charge position was not a number' );
+          var positionAndAngle = self.circuitElement.getPositionAndAngle( distance );
+          var position = positionAndAngle.position;
+          assert && assert( !isNaN( position.x ) && !isNaN( position.y ), 'point was not a number' );
+          self.angleProperty.set( positionAndAngle.angle );
+          self.positionProperty.set( position );
 
-        self.onRightHandSideOfLightBulbProperty.set(
-          self.circuitElement instanceof LightBulb &&
-          self.distanceProperty.get() > self.circuitElement.chargePathLength / 2
-        );
-      }
-    } );
+          self.onRightHandSideOfLightBulbProperty.set(
+            self.circuitElement instanceof LightBulb &&
+            self.distanceProperty.get() > self.circuitElement.chargePathLength / 2
+          );
+        }
+      } );
 
     // @public (read-only) {Property.<boolean>} - whether the charge should be displayed
     this.visibleProperty = visibleProperty;

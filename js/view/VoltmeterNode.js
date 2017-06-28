@@ -80,10 +80,11 @@ define( function( require ) {
       return voltage === null ? questionMarkString : CircuitConstructionKitCommonUtil.createVoltageReadout( voltage );
     } );
 
-    var probeTextNode = new ProbeTextNode( voltageReadoutProperty, options.showResultsProperty, voltageString, tandem.createTandem( 'probeTextNode' ), {
-      centerX: voltmeterBodyImage[ 0 ].width / 2,
-      centerY: voltmeterBodyImage[ 0 ].height / 2
-    } );
+    var probeTextNode = new ProbeTextNode(
+      voltageReadoutProperty, options.showResultsProperty, voltageString, tandem.createTandem( 'probeTextNode' ), {
+        centerX: voltmeterBodyImage[ 0 ].width / 2,
+        centerY: voltmeterBodyImage[ 0 ].height / 2
+      } );
 
     var bodyNode = new Image( voltmeterBodyImage, {
       scale: SCALE,
@@ -91,8 +92,12 @@ define( function( require ) {
       children: [ probeTextNode ]
     } );
 
-    var redWireNode = new ProbeWireNode( 'red', new Vector2( -BODY_WIRE_LEAD_X, BODY_LEAD_Y ), new Vector2( PROBE_LEAD_X, PROBE_LEAD_Y ) );
-    var blackWireNode = new ProbeWireNode( 'black', new Vector2( BODY_WIRE_LEAD_X, BODY_LEAD_Y ), new Vector2( PROBE_LEAD_X, PROBE_LEAD_Y ) );
+    var redWireNode = new ProbeWireNode(
+      'red', new Vector2( -BODY_WIRE_LEAD_X, BODY_LEAD_Y ), new Vector2( PROBE_LEAD_X, PROBE_LEAD_Y )
+    );
+    var blackWireNode = new ProbeWireNode(
+      'black', new Vector2( BODY_WIRE_LEAD_X, BODY_LEAD_Y ), new Vector2( PROBE_LEAD_X, PROBE_LEAD_Y )
+    );
 
     // When the voltmeter body moves, update the node and wires
     voltmeter.bodyPositionProperty.link( function( bodyPosition ) {
@@ -100,8 +105,12 @@ define( function( require ) {
       // Drag the body by the center
       bodyNode.center = bodyPosition;
 
-      redWireNode.setBodyPosition( bodyNode.centerBottom.plusXY( -PROBE_CONNECTION_POINT_DX, PROBE_CONNECTION_POINT_DY ) );
-      blackWireNode.setBodyPosition( bodyNode.centerBottom.plusXY( PROBE_CONNECTION_POINT_DX, PROBE_CONNECTION_POINT_DY ) );
+      redWireNode.setBodyPosition(
+        bodyNode.centerBottom.plusXY( -PROBE_CONNECTION_POINT_DX, PROBE_CONNECTION_POINT_DY )
+      );
+      blackWireNode.setBodyPosition(
+        bodyNode.centerBottom.plusXY( PROBE_CONNECTION_POINT_DX, PROBE_CONNECTION_POINT_DY )
+      );
 
       // When dragging out of the toolbox, the probes move with the body
       if ( voltmeter.draggingProbesWithBodyProperty.get() ) {
@@ -154,8 +163,13 @@ define( function( require ) {
           // After dropping in the play area the probes move independently of the body
           voltmeter.draggingProbesWithBodyProperty.set( false );
         },
-        onDrag: function( event ) {}, // use this to do something every time drag is called, such as notify that a user has modified the position
-        targetNode: self // adds support for zoomed coordinate frame, see https://github.com/phetsims/circuit-construction-kit-common/issues/301
+
+        // use this to do something every time drag is called, such as notify that a user has modified the position
+        onDrag: function( event ) {},
+
+        // adds support for zoomed coordinate frame, see
+        // https://github.com/phetsims/circuit-construction-kit-common/issues/301
+        targetNode: self
       } );
       options.visibleBoundsProperty.link( function( visibleBounds ) {
         self.dragHandler.dragBounds = visibleBounds.eroded( CircuitConstructionKitConstants.DRAG_BOUNDS_EROSION );

@@ -1,7 +1,8 @@
 // Copyright 2016-2017, University of Colorado Boulder
 
 /**
- * This code governs the movement of charges, making sure they are distributed equally among the different CircuitElements.
+ * This code governs the movement of charges, making sure they are distributed equally among the different
+ * CircuitElements.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -83,8 +84,9 @@ define( function( require ) {
       var distanceFromStart = Math.abs( distance );
       var distanceFromEnd = Math.abs( circuitElement.chargePathLength - distance );
 
+      // Note it is reversed because we want to check current downstream
       var selectedVertex = distanceFromStart < distanceFromEnd ?
-                           circuitElement.endVertexProperty.get() : // Note it is reversed because we want to check current downstream
+                           circuitElement.endVertexProperty.get() :
                            circuitElement.startVertexProperty.get();
       var neighbors = circuit.getNeighborCircuitElements( selectedVertex );
       var densities = neighbors.map( function( neighbor ) {
@@ -117,7 +119,8 @@ define( function( require ) {
     // @private (read-only) {RunningAverage} - a running average over last time steps as a smoothing step
     this.timeScaleRunningAverage = new RunningAverage( 30 );
 
-    // @public (read-only) {NumberProperty} - how much the time should be slowed, 1 is full speed, 0.5 is running at half speed, etc.
+    // @public (read-only) {NumberProperty} - how much the time should be slowed, 1 is full speed, 0.5 is running at
+    // half speed, etc.
     this.timeScaleProperty = new NumberProperty( 1, { range: { min: 0, max: 1 } } );
   }
 
@@ -190,7 +193,8 @@ define( function( require ) {
         // No need to update charges in chargeLayoutDirty circuit elements, they will be replaced anyways.  Skipping
         // chargeLayoutDirty circuitElements improves performance.  Also, only update electrons in circuit elements
         // that have a current (to improve performance)
-        if ( !charge.circuitElement.chargeLayoutDirty && Math.abs( charge.circuitElement.currentProperty.get() ) >= MIN_CURRENT ) {
+        if ( !charge.circuitElement.chargeLayoutDirty &&
+             Math.abs( charge.circuitElement.currentProperty.get() ) >= MIN_CURRENT ) {
           this.equalizeCharge( charge, dt );
         }
       }
@@ -272,7 +276,9 @@ define( function( require ) {
         else {
 
           // move to a new CircuitElement
-          var overshoot = current < 0 ? -newChargePosition : (newChargePosition - charge.circuitElement.chargePathLength);
+          var overshoot = current < 0 ?
+                          -newChargePosition :
+                          (newChargePosition - charge.circuitElement.chargePathLength);
           var isUnder = newChargePosition < 0;
 
           assert && assert( !isNaN( overshoot ), 'overshoot should be a number' );

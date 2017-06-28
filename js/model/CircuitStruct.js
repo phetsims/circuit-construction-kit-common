@@ -54,7 +54,8 @@ define( function( require ) {
   return inherit( Object, CircuitStruct, {
 
     /**
-     * Clear out the CircuitStruct. Used for Black Box Study to clear the records of user-created circuits in the black box.
+     * Clear out the CircuitStruct. Used for Black Box Study to clear the records of user-created circuits in the black
+     * box.
      * @public
      */
     clear: function() {
@@ -95,7 +96,8 @@ define( function( require ) {
       for ( var i = 0; i < circuitState.vertices.length; i++ ) {
         options = circuitState.vertices[ i ].options || {};
         options.tandem = tandem.createNextTandem();
-        circuitStruct.vertices.push( new Vertex( circuitState.vertices[ i ].x, circuitState.vertices[ i ].y, options ) );
+        var vertex = new Vertex( circuitState.vertices[ i ].x, circuitState.vertices[ i ].y, options );
+        circuitStruct.vertices.push( vertex );
       }
       for ( i = 0; i < circuitState.wires.length; i++ ) {
         options = circuitState.wires[ i ].options || {};

@@ -97,19 +97,22 @@ define( function( require ) {
   var getHighlightStrokedShape = function( wire ) {
     var startPoint = wire.startVertexProperty.get().positionProperty.get();
     var endPoint = wire.endVertexProperty.get().positionProperty.get();
-    return Shape.lineSegment( startPoint.x, startPoint.y, endPoint.x, endPoint.y ).getStrokedShape( highlightStrokeStyles );
+    return Shape.lineSegment( startPoint.x, startPoint.y, endPoint.x, endPoint.y )
+      .getStrokedShape( highlightStrokeStyles );
   };
 
   /**
-   * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - if null, this WireNode is just an icon
+   * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - null means it's an icon
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {Wire} wire
-   * @param {Property.<boolean>} showResultsProperty - unused but provided to match the constructors of other circuit element nodes
+   * @param {Property.<boolean>} showResultsProperty - unused but provided to match the constructors of other circuit
+   *                                                 - element nodes
    * @param {Property.<string>} viewProperty - lifelike or schematic
    * @param {Tandem} tandem
    * @constructor
    */
-  function WireNode( circuitConstructionKitScreenView, circuitLayerNode, wire, showResultsProperty, viewProperty, tandem ) {
+  function WireNode( circuitConstructionKitScreenView, circuitLayerNode, wire, showResultsProperty, viewProperty,
+                     tandem ) {
     var self = this;
     this.viewProperty = viewProperty;
     this.circuitLayerNode = circuitLayerNode;
@@ -230,7 +233,10 @@ define( function( require ) {
             }
           },
           end: function( event ) {
-            CircuitElementNode.prototype.endDrag.call( self, event, self, [ wire.startVertexProperty.get(), wire.endVertexProperty.get() ],
+            CircuitElementNode.prototype.endDrag.call( self, event, self, [
+                wire.startVertexProperty.get(),
+                wire.endVertexProperty.get()
+              ],
               circuitConstructionKitScreenView, circuitLayerNode, startPoint, dragged );
           }
         }

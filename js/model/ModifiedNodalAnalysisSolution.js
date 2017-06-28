@@ -13,7 +13,8 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
 
   /**
-   * @param {Object} nodeVoltages - keys are {number} indicating the node index, values are {number} for the voltage at the node
+   * @param {Object} nodeVoltages - keys are {number} indicating the node index, values are {number} for the voltage at
+   *                              - the node
    * @param {Object[]} elements, with node0, node1, currentSolution (all {number})
    * @constructor
    */
@@ -58,8 +59,13 @@ define( function( require ) {
       assert && assert( keyDifference.length === 0, 'wrong keys in compared solution' );
       for ( var i = 0; i < keys.length; i++ ) {
         var key = keys[ i ];
-        var closeEnough = NUMBER_APPROXIMATELY_EQUALS( this.getNodeVoltage( key ), modifiedNodalAnalysisSolution.getNodeVoltage( key ) );
-        qassert && qassert.equal( closeEnough, true, 'node voltages[' + i + '] should match. ' + this.getNodeVoltage( key ) + '!==' + modifiedNodalAnalysisSolution.getNodeVoltage( key ) );
+        var closeEnough = NUMBER_APPROXIMATELY_EQUALS(
+          this.getNodeVoltage( key ),
+          modifiedNodalAnalysisSolution.getNodeVoltage( key )
+        );
+        qassert && qassert.equal( closeEnough, true, 'node voltages[' + i + '] should match. ' +
+                                                     this.getNodeVoltage( key ) + '!==' +
+                                                     modifiedNodalAnalysisSolution.getNodeVoltage( key ) );
 
         if ( !closeEnough ) {
           return false;
@@ -124,8 +130,10 @@ define( function( require ) {
           var proposedElement = this.elements[ i ];
           if ( proposedElement.node0 === element.node0 && proposedElement.node1 === element.node1 ) {
 
-            var isEquivalentResistor = typeof proposedElement.resistance === 'number' && proposedElement.resistance === element.resistance;
-            var isEquivalentBattery = typeof proposedElement.voltage === 'number' && proposedElement.voltage === element.voltage;
+            var isEquivalentResistor = typeof proposedElement.resistance === 'number' &&
+                                       proposedElement.resistance === element.resistance;
+            var isEquivalentBattery = typeof proposedElement.voltage === 'number' &&
+                                      proposedElement.voltage === element.voltage;
             if ( isEquivalentResistor || isEquivalentBattery ) {
               return proposedElement.currentSolution;
             }

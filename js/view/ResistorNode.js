@@ -40,11 +40,15 @@ define( function( require ) {
   var COLOR_BAND_TOP = -0.25;
   var COLOR_BAND_PADDING = 33;
   var AVAILABLE_COLOR_BAND_SPACE = LIFELIKE_IMAGE_WIDTH - 2 * COLOR_BAND_PADDING;
-  var REMAINING_COLOR_BAND_SPACE = AVAILABLE_COLOR_BAND_SPACE - 4 * COLOR_BAND_WIDTH;// max is 4 bands, even though they are not always shown
-  var COLOR_BAND_SPACING = REMAINING_COLOR_BAND_SPACE / 4 - 2; // two spaces before last band
-  var COLOR_BAND_Y = lifelikeResistorImage[ 0 ].height / 2 / LIFELIKE_IMAGE_SCALE - COLOR_BAND_HEIGHT / LIFELIKE_IMAGE_SCALE / 2 + COLOR_BAND_TOP;
 
-  // Points sampled using Photoshop from a raster of the IEEE icon seen at https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
+  // max is 4 bands, even though they are not always shown
+  var REMAINING_COLOR_BAND_SPACE = AVAILABLE_COLOR_BAND_SPACE - 4 * COLOR_BAND_WIDTH;
+  var COLOR_BAND_SPACING = REMAINING_COLOR_BAND_SPACE / 4 - 2; // two spaces before last band
+  var COLOR_BAND_Y = lifelikeResistorImage[ 0 ].height / 2 / LIFELIKE_IMAGE_SCALE -
+                     COLOR_BAND_HEIGHT / LIFELIKE_IMAGE_SCALE / 2 + COLOR_BAND_TOP;
+
+  // Points sampled using Photoshop from a raster of the IEEE icon seen at
+  // https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
   var SCHEMATIC_SCALE = 0.54;
   var SCHEMATIC_PERIOD = 22 * SCHEMATIC_SCALE;
   var SCHEMATIC_STEM_WIDTH = 84 * SCHEMATIC_SCALE;
@@ -54,13 +58,15 @@ define( function( require ) {
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
    * @param {CircuitLayerNode} [circuitLayerNode] optional, null for icons
    * @param {Resistor} resistor
-   * @param {Property.<boolean>} showResultsProperty - not used here but appears in signature to keep same signature as other CircuitElementNode subclasses.
+   * @param {Property.<boolean>} showResultsProperty - not used here but appears in signature to keep same signature as
+   *                                                 - other CircuitElementNode subclasses.
    * @param {Property.<string>} viewProperty - 'lifelike' or 'schematic'
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function ResistorNode( circuitConstructionKitScreenView, circuitLayerNode, resistor, showResultsProperty, viewProperty, tandem, options ) {
+  function ResistorNode( circuitConstructionKitScreenView, circuitLayerNode, resistor, showResultsProperty,
+                         viewProperty, tandem, options ) {
 
     // @public (read-only) {Resistor} the resistor depicted by this node
     this.resistor = resistor;
@@ -169,7 +175,8 @@ define( function( require ) {
       lineWidth: CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH
     } ).toDataURLNodeSynchronous();
 
-    // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
+    // Expand the pointer areas with a defensive copy, see
+    // https://github.com/phetsims/circuit-construction-kit-common/issues/310
     schematicNode.mouseArea = schematicNode.bounds.copy();
     schematicNode.touchArea = schematicNode.bounds.copy();
 
@@ -177,7 +184,8 @@ define( function( require ) {
     schematicNode.centerY = 0;
     lifelikeResistorImageNode.centerY = 0;
 
-    // Adjust the dog so the electrons travel along the tail/legs, see https://github.com/phetsims/circuit-construction-kit-common/issues/364
+    // Adjust the dog so the electrons travel along the tail/legs, see
+    // https://github.com/phetsims/circuit-construction-kit-common/issues/364
     if ( resistor.resistorType === 'dog' ) {
       lifelikeResistorImageNode.translate( 0, -40 );
     }

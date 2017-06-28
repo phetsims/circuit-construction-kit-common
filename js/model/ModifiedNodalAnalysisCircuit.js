@@ -98,7 +98,8 @@ define( function( require ) {
     },
 
     /**
-     * Counts the number of unknown currents in the circuit.  There is an unknown current in each battery and 0-resistance resistor.
+     * Counts the number of unknown currents in the circuit.  There is an unknown current in each battery and
+     * 0-resistance resistor.
      * @returns {number}
      * @private
      */
@@ -244,8 +245,8 @@ define( function( require ) {
     },
 
     /**
-     * Returns an array of Equation instances that will be solved as a linear algebra problem to find the unknown variables
-     * of the circuit.
+     * Returns an array of Equation instances that will be solved as a linear algebra problem to find the unknown
+     * variables of the circuit.
      * @returns {Equation[]}
      * @private
      */
@@ -271,14 +272,20 @@ define( function( require ) {
       // For each battery, voltage drop is given
       for ( i = 0; i < this.batteries.length; i++ ) {
         var battery = this.batteries[ i ];
-        equations.push( new Equation( battery.voltage, [ new Term( -1, new UnknownVoltage( battery.node0 ) ), new Term( 1, new UnknownVoltage( battery.node1 ) ) ] ) );
+        equations.push( new Equation( battery.voltage, [
+          new Term( -1, new UnknownVoltage( battery.node0 ) ),
+          new Term( 1, new UnknownVoltage( battery.node1 ) )
+        ] ) );
       }
 
       // If resistor has no resistance, node0 and node1 should have same voltage
       for ( i = 0; i < this.resistors.length; i++ ) {
         var resistor = this.resistors[ i ];
         if ( resistor.resistance === 0 ) {
-          equations.push( new Equation( 0, [ new Term( 1, new UnknownVoltage( resistor.node0 ) ), new Term( -1, new UnknownVoltage( resistor.node1 ) ) ] ) );
+          equations.push( new Equation( 0, [
+            new Term( 1, new UnknownVoltage( resistor.node0 ) ),
+            new Term( -1, new UnknownVoltage( resistor.node1 ) )
+          ] ) );
         }
       }
 
@@ -336,7 +343,9 @@ define( function( require ) {
       DEBUG && console.log( equations.join( '\n' ) );
       DEBUG && console.log( 'A=\n' + A.toString() );
       DEBUG && console.log( 'z=\n' + z.toString() );
-      DEBUG && console.log( 'unknowns=\n' + this.getUnknowns().map( function( u ) {return u.toString();} ).join( '\n' ) );
+      DEBUG && console.log( 'unknowns=\n' + this.getUnknowns().map( function( u ) {
+        return u.toString();
+      } ).join( '\n' ) );
 
       // solve the linear matrix system for the unknowns
       var x = A.solve( z );
@@ -520,7 +529,8 @@ define( function( require ) {
     // @public (read-only) {number} the value of the equation.  For instance in x+3y=12, the value is 12
     this.value = value;
 
-    // @public (read-only) {Term[]} the terms on the left-hand side of the equation.  E.g., in 3x+y=12 the terms are 3x and y
+    // @public (read-only) {Term[]} the terms on the left-hand side of the equation.  E.g., in 3x+y=12 the terms are 3x
+    // and y
     this.terms = terms;
   }
 

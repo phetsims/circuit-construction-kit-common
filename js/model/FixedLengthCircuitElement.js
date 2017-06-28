@@ -19,12 +19,13 @@ define( function( require ) {
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
    * @param {number} distanceBetweenVertices - in screen coordinates
-   * @param {number} chargePathLength - the distance the charges must travel (in screen coordinates).  More docs in CircuitElement.js
+   * @param {number} chargePathLength - the distance the charges travel (in screen coordinates).  see CircuitElement.js
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function FixedLengthCircuitElement( startVertex, endVertex, distanceBetweenVertices, chargePathLength, tandem, options ) {
+  function FixedLengthCircuitElement( startVertex, endVertex, distanceBetweenVertices, chargePathLength, tandem,
+                                      options ) {
 
     options = _.extend( {
       editableRange: new Range( 0, 100 ),
@@ -39,12 +40,14 @@ define( function( require ) {
 
     // Check that the measured length matches the specified length
     var measuredLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
-    assert && assert( Math.abs( distanceBetweenVertices - measuredLength ) < 1E-6, 'length should be ' + distanceBetweenVertices );
+    assert && assert( Math.abs( distanceBetweenVertices - measuredLength ) < 1E-6, 'length should be ' +
+                                                                                   distanceBetweenVertices );
 
     // Super constructor
     CircuitElement.call( this, startVertex, endVertex, chargePathLength, tandem, options );
 
-    // @public (read-only) {number} The distance from one vertex to another (as the crow flies), used for rotation about a vertex
+    // @public (read-only) {number} The distance from one vertex to another (as the crow flies), used for rotation
+    // about a vertex
     this.distanceBetweenVertices = distanceBetweenVertices;
   }
 

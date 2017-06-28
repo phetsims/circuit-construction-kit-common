@@ -45,7 +45,8 @@ define( function( require ) {
    * @param {Tandem} tandem
    * @constructor
    */
-  function DisplayOptionsPanel( alignGroup, showCurrentProperty, currentTypeProperty, showValuesProperty, showLabelsProperty, tandem ) {
+  function DisplayOptionsPanel( alignGroup, showCurrentProperty, currentTypeProperty, showValuesProperty,
+                                showLabelsProperty, tandem ) {
 
     /**
      * Create an AquaRadioButton for the specified kind of current
@@ -81,8 +82,12 @@ define( function( require ) {
       spacing: textIconSpacing
     } );
 
-    var electronsRadioButton = createRadioButton( 'electrons', electronsBox, tandem.createTandem( 'electronsRadioButton' ) );
-    var conventionalRadioButton = createRadioButton( 'conventional', conventionalBox, tandem.createTandem( 'conventionalRadioButton' ) );
+    var electronsRadioButton = createRadioButton(
+      'electrons', electronsBox, tandem.createTandem( 'electronsRadioButton' )
+    );
+    var conventionalRadioButton = createRadioButton(
+      'conventional', conventionalBox, tandem.createTandem( 'conventionalRadioButton' )
+    );
 
     // Gray out current view options when current is not selected.
     showCurrentProperty.linkAttribute( electronsRadioButton, 'enabled' );

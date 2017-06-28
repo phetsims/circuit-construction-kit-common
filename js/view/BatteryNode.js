@@ -57,13 +57,14 @@ define( function( require ) {
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {Battery} battery
-   * @param {Property.<boolean>} showResultsProperty - supplied for consistency with other CircuitElementNode constructors
+   * @param {Property.<boolean>} showResultsProperty - for consistency with other CircuitElementNode constructors
    * @param {Property.<string>} viewProperty
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function BatteryNode( circuitConstructionKitScreenView, circuitLayerNode, battery, showResultsProperty, viewProperty, tandem, options ) {
+  function BatteryNode( circuitConstructionKitScreenView, circuitLayerNode, battery, showResultsProperty, viewProperty,
+                        tandem, options ) {
 
     // @public (read-only) {Battery} - the Battery rendered by this Node
     this.battery = battery;
@@ -74,7 +75,8 @@ define( function( require ) {
       scale: battery.distanceBetweenVertices / lifelikeNode.width
     } );
 
-    // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
+    // Expand the pointer areas with a defensive copy, see
+    // https://github.com/phetsims/circuit-construction-kit-common/issues/310
     schematicNode.mouseArea = schematicNode.bounds.copy();
     schematicNode.touchArea = schematicNode.bounds.copy();
 

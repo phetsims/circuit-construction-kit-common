@@ -23,18 +23,19 @@ define( function( require ) {
     var self = this;
     Text.call( this, animationSpeedLimitReachedString, { fontSize: 26 } );
 
-    Property.multilink( [ timeScaleProperty, showCurrentProperty, exploreScreenRunningProperty ], function( timeScale, showCurrent, exploreScreenRunning ) {
-      var percent = timeScale * 100;
-      var isThrottled = percent < 99.5;
-      var fixed = Util.toFixed( percent, 0 );
-      if ( timeScale < 0.01 ) {
-        fixed = '< 1';
-      }
-      self.setText( StringUtils.fillIn( animationSpeedLimitReachedString, { percent: fixed } ) );
+    Property.multilink( [ timeScaleProperty, showCurrentProperty, exploreScreenRunningProperty ],
+      function( timeScale, showCurrent, exploreScreenRunning ) {
+        var percent = timeScale * 100;
+        var isThrottled = percent < 99.5;
+        var fixed = Util.toFixed( percent, 0 );
+        if ( timeScale < 0.01 ) {
+          fixed = '< 1';
+        }
+        self.setText( StringUtils.fillIn( animationSpeedLimitReachedString, { percent: fixed } ) );
 
-      // Only show the throttling message if the speed is less than 100% and charges are visible
-      self.visible = isThrottled && showCurrent && exploreScreenRunning;
-    } );
+        // Only show the throttling message if the speed is less than 100% and charges are visible
+        self.visible = isThrottled && showCurrent && exploreScreenRunning;
+      } );
   }
 
   circuitConstructionKitCommon.register( 'ChargeSpeedThrottlingReadoutNode', ChargeSpeedThrottlingReadoutNode );

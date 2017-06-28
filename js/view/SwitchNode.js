@@ -26,6 +26,7 @@ define( function( require ) {
   var LIFELIKE_DIAMETER = 16;
   var SWITCH_START = CircuitConstructionKitConstants.SWITCH_START;
   var SWITCH_END = CircuitConstructionKitConstants.SWITCH_END;
+  var SWITCH_LENGTH = CircuitConstructionKitConstants.SWITCH_LENGTH;
 
   var lifelikeNodeThickness = 8;
   var lifelikeGradient = new LinearGradient( 0, -lifelikeNodeThickness / 2, 0, lifelikeNodeThickness / 2 )
@@ -43,9 +44,10 @@ define( function( require ) {
    */
   var createNode = function( type, fill, thickness, curveDiameter, closed ) {
     var edgeRadius = thickness / 2;
+
     var leftSegmentNode = new Rectangle( 0,
       -thickness / 2,
-      CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_START,
+      SWITCH_LENGTH * SWITCH_START,
       thickness, {
         cornerRadius: edgeRadius,
         fill: fill,
@@ -57,18 +59,18 @@ define( function( require ) {
     // This part has a curved notch that fits into the other segment
     var shape = new Shape()
       .moveTo( 0, thickness / 2 )
-      .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_START - curveDiameter, thickness / 2 )
+      .lineTo( SWITCH_LENGTH * SWITCH_START - curveDiameter, thickness / 2 )
 
       // similar to the notch below
-      .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_START - curveDiameter, 0 )
-      .arc( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_START - curveDiameter / 2, 0, curveDiameter / 2, Math.PI, 0, false )
-      .arc( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_START + curveDiameter / 2, 0, curveDiameter / 2, Math.PI, 0, true )
-      .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_START + curveDiameter, -thickness / 2 )
+      .lineTo( SWITCH_LENGTH * SWITCH_START - curveDiameter, 0 )
+      .arc( SWITCH_LENGTH * SWITCH_START - curveDiameter / 2, 0, curveDiameter / 2, Math.PI, 0, false )
+      .arc( SWITCH_LENGTH * SWITCH_START + curveDiameter / 2, 0, curveDiameter / 2, Math.PI, 0, true )
+      .lineTo( SWITCH_LENGTH * SWITCH_START + curveDiameter, -thickness / 2 )
 
       .lineTo( 0, -thickness / 2 )
       .lineTo( 0, thickness / 2 );
     var rotatingSegmentNode = new Path( shape, {
-      x: CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_START,
+      x: SWITCH_LENGTH * SWITCH_START,
       fill: fill,
       stroke: 'black',
       lineWidth: type === CircuitConstructionKitConstants.SCHEMATIC ? 0 : 1
@@ -77,24 +79,24 @@ define( function( require ) {
     rotatingSegmentNode.setRotation( closed ? 0 : -Math.PI / 4 );
 
     var rightSegmentShape = new Shape()
-      .moveTo( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_END - curveDiameter, thickness / 2 )
+      .moveTo( SWITCH_LENGTH * SWITCH_END - curveDiameter, thickness / 2 )
 
       // similar to the notch above
-      .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_END - curveDiameter, 0 )
-      .arc( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_END - curveDiameter / 2, 0, curveDiameter / 2, Math.PI, 0, false )
-      .arc( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_END + curveDiameter / 2, 0, curveDiameter / 2, Math.PI, 0, true )
-      .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_END + curveDiameter, -thickness / 2 )
+      .lineTo( SWITCH_LENGTH * SWITCH_END - curveDiameter, 0 )
+      .arc( SWITCH_LENGTH * SWITCH_END - curveDiameter / 2, 0, curveDiameter / 2, Math.PI, 0, false )
+      .arc( SWITCH_LENGTH * SWITCH_END + curveDiameter / 2, 0, curveDiameter / 2, Math.PI, 0, true )
+      .lineTo( SWITCH_LENGTH * SWITCH_END + curveDiameter, -thickness / 2 )
 
-      .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH - edgeRadius, -thickness / 2 )
-      .arc( CircuitConstructionKitConstants.SWITCH_LENGTH - edgeRadius, 0, edgeRadius, -Math.PI / 2, Math.PI / 2 )
-      .lineTo( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_END - curveDiameter, thickness / 2 );
+      .lineTo( SWITCH_LENGTH - edgeRadius, -thickness / 2 )
+      .arc( SWITCH_LENGTH - edgeRadius, 0, edgeRadius, -Math.PI / 2, Math.PI / 2 )
+      .lineTo( SWITCH_LENGTH * SWITCH_END - curveDiameter, thickness / 2 );
     var rightSegmentNode = new Path( rightSegmentShape, { fill: fill, stroke: 'black', lineWidth: 1 } );
 
     var lifelikeHinge = new Circle( thickness * 0.6, {
       fill: '#a7a8ab',
       stroke: 'black',
       lineWidth: 4,
-      x: CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_START
+      x: SWITCH_LENGTH * SWITCH_START
     } );
 
     var node = new Node( {
@@ -106,11 +108,12 @@ define( function( require ) {
         fill: 'black',
         stroke: 'black',
         lineWidth: 4,
-        x: CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_END
+        x: SWITCH_LENGTH * SWITCH_END
       } ) );
     }
 
-    // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
+    // Expand the pointer areas with a defensive copy, see
+    // https://github.com/phetsims/circuit-construction-kit-common/issues/310
     // And make it so clicking in the gap still toggles the switch
     node.mouseArea = node.bounds.copy();
     node.touchArea = node.bounds.copy();
@@ -119,22 +122,32 @@ define( function( require ) {
   };
 
   // Create all of the images
-  var lifelikeOpenImage = createNode( CircuitConstructionKitConstants.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, false ).toDataURLNodeSynchronous();
-  var schematicOpenImage = createNode( CircuitConstructionKitConstants.SCHEMATIC, 'black', CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH, 0, false ).toDataURLNodeSynchronous();
-  var lifelikeClosedImage = createNode( CircuitConstructionKitConstants.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, true ).toDataURLNodeSynchronous();
-  var schematicClosedImage = createNode( CircuitConstructionKitConstants.SCHEMATIC, 'black', CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH, 0, true ).toDataURLNodeSynchronous();
+  var lifelikeOpenImage = createNode(
+    CircuitConstructionKitConstants.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, false
+  ).toDataURLNodeSynchronous();
+  var schematicOpenImage = createNode(
+    CircuitConstructionKitConstants.SCHEMATIC, 'black', CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH, 0, false
+  ).toDataURLNodeSynchronous();
+  var lifelikeClosedImage = createNode(
+    CircuitConstructionKitConstants.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, true
+  ).toDataURLNodeSynchronous();
+  var schematicClosedImage = createNode(
+    CircuitConstructionKitConstants.SCHEMATIC, 'black', CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH, 0, true
+  ).toDataURLNodeSynchronous();
 
   /**
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {Switch} circuitSwitch
-   * @param {Property.<boolean>} showResultsProperty - supplied for consistency with other CircuitElementNode constructors
+   * @param {Property.<boolean>} showResultsProperty - supplied for consistency with other CircuitElementNode
+   *                                                 - constructors
    * @param {Property.<string>} viewProperty
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function SwitchNode( circuitConstructionKitScreenView, circuitLayerNode, circuitSwitch, showResultsProperty, viewProperty, tandem, options ) {
+  function SwitchNode( circuitConstructionKitScreenView, circuitLayerNode, circuitSwitch, showResultsProperty,
+                       viewProperty, tandem, options ) {
 
     var self = this;
 

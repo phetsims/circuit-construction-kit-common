@@ -71,10 +71,12 @@ define( function( require ) {
     // Some of the following properties overlap.  For example, if 'insideTrueBlackBox' is true, then the interactive
     // flag will be set to false when the circuit is in 'test' mode.
 
-    // @public {BooleanProperty} - Vertices on the black box interface persist between build/investigate, and cannot be moved/deleted
+    // @public {BooleanProperty} - Vertices on the black box interface persist between build/investigate, and cannot be
+    // moved/deleted
     this.draggableProperty = new BooleanProperty( options.draggable );
 
-    // @public {BooleanProperty} - Black box interface vertices can be interactive (tap to select) without being draggable
+    // @public {BooleanProperty} - Black box interface vertices can be interactive (tap to select) without being
+    // draggable
     this.interactiveProperty = new BooleanProperty( options.interactive );
 
     // @public {BooleanProperty} - whether the Vertex can be dragged or moved by dragging another part of the circuit

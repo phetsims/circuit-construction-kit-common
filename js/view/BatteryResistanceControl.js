@@ -18,7 +18,8 @@ define( function( require ) {
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var CircuitConstructionKitAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitAccordionBox' );
+  var CircuitConstructionKitAccordionBox =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitAccordionBox' );
   var Util = require( 'DOT/Util' );
   var Range = require( 'DOT/Range' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
@@ -29,7 +30,7 @@ define( function( require ) {
   var resistanceOhmString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhm' );
 
   /**
-   * @param {Property.<number>} batteryResistanceProperty - the axon Property for the internal resistance of all Batteries
+   * @param {Property.<number>} batteryResistanceProperty - axon Property for the internal resistance of all Batteries
    * @param {AlignGroup} alignGroup
    * @param {Tandem} tandem
    * @constructor
@@ -46,15 +47,17 @@ define( function( require ) {
       return new Text( string, { fontSize: 12, tandem: tandem } );
     };
 
-    var slider = new HSlider( batteryResistanceProperty, new Range( CircuitConstructionKitConstants.DEFAULT_BATTERY_RESISTANCE, 10 ), {
-      trackSize: CircuitConstructionKitConstants.SLIDER_TRACK_SIZE,
-      thumbSize: CircuitConstructionKitConstants.THUMB_SIZE,
-      majorTickLength: CircuitConstructionKitConstants.MAJOR_TICK_LENGTH,
+    var slider = new HSlider(
+      batteryResistanceProperty,
+      new Range( CircuitConstructionKitConstants.DEFAULT_BATTERY_RESISTANCE, 10 ), {
+        trackSize: CircuitConstructionKitConstants.SLIDER_TRACK_SIZE,
+        thumbSize: CircuitConstructionKitConstants.THUMB_SIZE,
+        majorTickLength: CircuitConstructionKitConstants.MAJOR_TICK_LENGTH,
 
-      // Snap to the nearest whole number.
-      constrainValue: function( value ) {return Util.roundSymmetric( value );},
-      tandem: tandem.createTandem( 'slider' )
-    } );
+        // Snap to the nearest whole number.
+        constrainValue: function( value ) {return Util.roundSymmetric( value );},
+        tandem: tandem.createTandem( 'slider' )
+      } );
     slider.addMajorTick( 0, createLabel( '0', tandem.createTandem( 'minLabel' ) ) );
     slider.addMajorTick( 5 );
     slider.addMajorTick( 10, createLabel( '10', tandem.createTandem( 'maxLabel' ) ) );

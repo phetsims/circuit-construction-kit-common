@@ -28,7 +28,7 @@ define( function( require ) {
    * @constructor
    */
   function Battery( startVertex, endVertex, resistanceProperty, batteryType, tandem, options ) {
-    assert && assert( batteryType === 'normal' || batteryType === 'high-voltage', 'Illegal battery type: ' + batteryType );
+    assert && assert( batteryType === 'normal' || batteryType === 'high-voltage', 'Bad battery type: ' + batteryType );
 
     options = _.extend( {
       initialOrientation: 'right',
@@ -42,8 +42,8 @@ define( function( require ) {
     // @public {Property.<number>} the internal resistance of the battery
     this.internalResistanceProperty = resistanceProperty;
 
-    // @public (read-only) {string} - track which way the battery "button" (plus side) was facing the initial state so the user
-    // can only create a certain number of "left" or "right" batteries from the toolbox.
+    // @public (read-only) {string} - track which way the battery "button" (plus side) was facing the initial state so
+    // the user can only create a certain number of "left" or "right" batteries from the toolbox.
     this.initialOrientation = options.initialOrientation;
 
     // @public (read-only) {string} - the type of the battery - 'normal' | 'high-voltage'

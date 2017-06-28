@@ -13,7 +13,8 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
-  var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
+  var CircuitConstructionKitQueryParameters =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
@@ -38,8 +39,12 @@ define( function( require ) {
     lineWidth: 1.3,
     lineDash: [ 6, 4 ]
   };
-  var RED_CIRCLE_NODE = new Circle( VERTEX_RADIUS, _.extend( CIRCLE_OPTIONS, { stroke: 'red' } ) ).toDataURLNodeSynchronous();
-  var BLACK_CIRCLE_NODE = new Circle( VERTEX_RADIUS, _.extend( CIRCLE_OPTIONS, { stroke: 'black' } ) ).toDataURLNodeSynchronous();
+  var RED_CIRCLE_NODE = new Circle( VERTEX_RADIUS, _.extend( CIRCLE_OPTIONS, {
+    stroke: 'red'
+  } ) ).toDataURLNodeSynchronous();
+  var BLACK_CIRCLE_NODE = new Circle( VERTEX_RADIUS, _.extend( CIRCLE_OPTIONS, {
+    stroke: 'black'
+  } ) ).toDataURLNodeSynchronous();
 
   // When a vertex is selected, a cut button is shown near to the vertex.  If the vertex is connected to >1 circuit
   // element, the button is enabled.  Pressing the button will cut the vertex from the neighbors.  Only one cutButton
@@ -198,7 +203,8 @@ define( function( require ) {
         vertex.draggableProperty.get() && circuitLayerNode.endDrag( event, vertex, dragged );
 
         // Only show on a tap, not on every drag.
-        if ( vertex.interactiveProperty.get() && event.pointer.point.distance( eventPoint ) < CircuitConstructionKitConstants.TAP_THRESHOLD ) {
+        if ( vertex.interactiveProperty.get() &&
+             event.pointer.point.distance( eventPoint ) < CircuitConstructionKitConstants.TAP_THRESHOLD ) {
 
           vertex.selectedProperty.set( true );
 
@@ -269,7 +275,9 @@ define( function( require ) {
       // will appear in the least populated area.
       var sumOfDirections = new Vector2();
       for ( var i = 0; i < neighbors.length; i++ ) {
-        var v = vertex.positionProperty.get().minus( neighbors[ i ].getOppositeVertex( vertex ).positionProperty.get() );
+        var v = vertex.positionProperty.get().minus(
+          neighbors[ i ].getOppositeVertex( vertex ).positionProperty.get()
+        );
         if ( v.magnitude() > 0 ) {
           sumOfDirections.add( v.normalized() );
         }

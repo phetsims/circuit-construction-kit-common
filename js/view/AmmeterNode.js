@@ -79,10 +79,12 @@ define( function( require ) {
              CircuitConstructionKitCommonUtil.createCurrentReadout( current );
     } );
 
-    var probeTextNode = new ProbeTextNode( currentReadoutProperty, options.showResultsProperty, currentString, tandem.createTandem( 'probeTextNode' ), {
-      centerX: ammeterBodyImage[ 0 ].width / 2,
-      centerY: ammeterBodyImage[ 0 ].height / 2
-    } );
+    var probeTextNode = new ProbeTextNode(
+      currentReadoutProperty, options.showResultsProperty, currentString, tandem.createTandem( 'probeTextNode'
+      ), {
+        centerX: ammeterBodyImage[ 0 ].width / 2,
+        centerY: ammeterBodyImage[ 0 ].height / 2
+      } );
 
     var bodyNode = new Image( ammeterBodyImage, {
       scale: SCALE_FACTOR,
@@ -139,7 +141,10 @@ define( function( require ) {
           // After dropping in the play area the probes move independently of the body
           ammeter.draggingProbesWithBodyProperty.set( false );
         },
-        targetNode: self // adds support for zoomed coordinate frame, see https://github.com/phetsims/circuit-construction-kit-common/issues/301
+
+        // adds support for zoomed coordinate frame, see
+        // https://github.com/phetsims/circuit-construction-kit-common/issues/301
+        targetNode: self
       } );
       bodyNode.addInputListener( this.dragHandler );
       var probeDragHandler = new MovableDragHandler( ammeter.probePositionProperty, {

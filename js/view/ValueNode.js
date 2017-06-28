@@ -58,9 +58,13 @@ define( function( require ) {
         children: [ voltageText ]
       } );
 
-      var resistanceNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'resistanceText' ) }, TEXT_OPTIONS ) );
+      var resistanceNode = new Text( '', _.extend( {
+        tandem: tandem.createTandem( 'resistanceText' )
+      }, TEXT_OPTIONS ) );
       var internalResistanceListener = function( internalResistance, lastInternalResistance ) {
-        resistanceNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, { resistance: Util.toFixed( internalResistance, 1 ) } );
+        resistanceNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
+          resistance: Util.toFixed( internalResistance, 1 )
+        } );
 
         // If the children should change, update them here
         if ( lastInternalResistance === null || (internalResistance === 0 || lastInternalResistance === 0) ) {
@@ -84,7 +88,9 @@ define( function( require ) {
       contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'resistanceText' ) }, TEXT_OPTIONS ) );
 
       var linkResistance = function( resistance ) {
-        contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, { resistance: Util.toFixed( resistance, 1 ) } );
+        contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
+          resistance: Util.toFixed( resistance, 1 )
+        } );
       };
       circuitElement.resistanceProperty.link( linkResistance );
       disposeActions.push( function() {
@@ -95,7 +101,9 @@ define( function( require ) {
       contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'switchText' ) }, TEXT_OPTIONS ) );
 
       var updateResistance = function( resistance ) {
-        contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, { resistance: resistance > 100000 ? '∞' : Util.toFixed( resistance, 1 ) } );
+        contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
+          resistance: resistance > 100000 ? '∞' : Util.toFixed( resistance, 1 )
+        } );
 
         // Account for the switch open and close geometry for positioning the label.  When the switch is open
         // the label must be higher
@@ -126,12 +134,14 @@ define( function( require ) {
       // Only update position when the value is displayed
       if ( showValuesProperty.get() ) {
 
-        // For a light bulb, choose the part of the filament in the top center for the label, see https://github.com/phetsims/circuit-construction-kit-common/issues/325
+        // For a light bulb, choose the part of the filament in the top center for the label, see
+        // https://github.com/phetsims/circuit-construction-kit-common/issues/325
         var distance = circuitElement instanceof LightBulb ? 0.56 : 0.5;
 
         // The label partially overlaps the component to make it clear which label goes with which component
         var centerPositionAndAngle = circuitElement.getPositionAndAngle( circuitElement.chargePathLength * distance );
-        self.center = centerPositionAndAngle.position.plus( Vector2.createPolar( 24, centerPositionAndAngle.angle + 3 * Math.PI / 2 ) ); // above light bulb
+        var delta = Vector2.createPolar( 24, centerPositionAndAngle.angle + 3 * Math.PI / 2 );
+        self.center = centerPositionAndAngle.position.plus( delta ); // above light bulb
       }
     };
 

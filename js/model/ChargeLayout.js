@@ -1,7 +1,8 @@
 // Copyright 2016-2017, University of Colorado Boulder
 
 /**
- * Creates Charge instances in a CircuitElement when it has been created, or when an adjacent wire's length has been modified.
+ * Creates Charge instances in a CircuitElement when it has been created, or when an adjacent wire's length has been
+ * modified.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -57,8 +58,16 @@ define( function( require ) {
         for ( var i = 0; i < numberOfCharges; i++ ) {
 
           // If there is a single particle, show it in the middle of the component, otherwise space equally
-          var chargePosition = numberOfCharges === 1 ? (firstChargePosition + lastChargePosition) / 2 : i * spacing + offset;
-          this.circuit.charges.add( new Charge( circuitElement, chargePosition, this.circuit.showCurrentProperty, this.circuit.currentTypeProperty.get() === 'electrons' ? -1 : +1 ) );
+          var chargePosition = numberOfCharges === 1 ?
+                               (firstChargePosition + lastChargePosition) / 2 :
+                               i * spacing + offset;
+          var charge = new Charge(
+            circuitElement,
+            chargePosition,
+            this.circuit.showCurrentProperty,
+            this.circuit.currentTypeProperty.get() === 'electrons' ? -1 : +1
+          );
+          this.circuit.charges.add( charge );
         }
 
         circuitElement.chargeLayoutDirty = false;

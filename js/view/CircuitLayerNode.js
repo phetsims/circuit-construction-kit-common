@@ -23,7 +23,8 @@ define( function( require ) {
   var SwitchNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SwitchNode' );
   var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
   var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedLengthCircuitElementNode' );
-  var CircuitConstructionKitLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitLightBulbNode' );
+  var CircuitConstructionKitLightBulbNode =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitLightBulbNode' );
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorNode' );
   var SeriesAmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SeriesAmmeterNode' );
   var VertexNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VertexNode' );
@@ -46,7 +47,8 @@ define( function( require ) {
 
   /**
    * @param {Circuit} circuit - the model Circuit
-   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - for dropping CircuitElement instances back in the toolbox
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - for dropping CircuitElement instances
+   *                                                                            - back in the toolbox
    * @param {Tandem} tandem
    * @constructor
    */
@@ -147,7 +149,8 @@ define( function( require ) {
     // @public (read-only) {Circuit} - the Circuit model depicted by this view
     this.circuit = circuit;
 
-    // @private {Object} - Map to find CircuitElement=>CircuitElementNode. key is CircuitElement.id, value is CircuitElementNode
+    // @private {Object} - Map to find CircuitElement=>CircuitElementNode. key is CircuitElement.id, value is
+    // CircuitElementNode
     this.circuitElementNodeMap = {};
 
     // @private {Object} - Map of Vertex.index => SolderNode
@@ -234,7 +237,11 @@ define( function( require ) {
 
     initializeCircuitElementType( WireNode, Wire, tandem.createGroupTandem( 'wireNode' ) );
     initializeCircuitElementType( BatteryNode, Battery, tandem.createGroupTandem( 'batteryNode' ) );
-    initializeCircuitElementType( CircuitConstructionKitLightBulbNode, LightBulb, tandem.createGroupTandem( 'lightBulbNode' ) );
+    initializeCircuitElementType(
+      CircuitConstructionKitLightBulbNode,
+      LightBulb,
+      tandem.createGroupTandem( 'lightBulbNode' )
+    );
     initializeCircuitElementType( ResistorNode, Resistor, tandem.createGroupTandem( 'resistorNode' ) );
     initializeCircuitElementType( SeriesAmmeterNode, SeriesAmmeter, tandem.createGroupTandem( 'seriesAmmeterNode' ) );
     initializeCircuitElementType( SwitchNode, Switch, tandem.createGroupTandem( 'switchNode' ) );
@@ -649,7 +656,8 @@ define( function( require ) {
      * @param {Vertex} vertex - the vertex being dragged
      * @param {Array.<Vertex>} vertices - all the vertices in the group
      * @param {Vector2} unsnappedDelta - how far to move the group
-     * @param {function|null} updatePositions - optional callback for updating positions after unsnapped positions update
+     * @param {function|null} updatePositions - optional callback for updating positions after unsnapped positions
+     *                                        - update
      * @param {Array.<Vertex>} attachable - the nodes that are candidates for attachment
      * @public
      */
@@ -725,7 +733,7 @@ define( function( require ) {
       }
       vertexNode.startOffset = null;
 
-      // Signify that something has been dropped in the play area, to show the edit panel (unless dropped in the toolbox)
+      // Signify that something has been dropped in the play area, to show the edit panel, unless dropped in the toolbox
       this.circuit.vertexDroppedEmitter.emit1( vertex );
     }
   } );

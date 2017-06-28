@@ -44,7 +44,10 @@ define( function( require ) {
       } );
   }
 
-  circuitConstructionKitCommon.register( 'FixedLengthCircuitElementHighlightNode', FixedLengthCircuitElementHighlightNode );
+  circuitConstructionKitCommon.register(
+    'FixedLengthCircuitElementHighlightNode',
+    FixedLengthCircuitElementHighlightNode
+  );
 
   return inherit( Rectangle, FixedLengthCircuitElementHighlightNode );
 } );

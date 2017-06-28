@@ -17,7 +17,9 @@ define( function( require ) {
 
   // constants
   var RESISTOR_LENGTH = CircuitConstructionKitConstants.RESISTOR_LENGTH;
-  var RESISTOR_TYPES = [ 'resistor', 'highResistanceResistor', 'coin', 'paperClip', 'pencil', 'eraser', 'hand', 'dog', 'dollarBill' ];
+  var RESISTOR_TYPES = [
+    'resistor', 'highResistanceResistor', 'coin', 'paperClip', 'pencil', 'eraser', 'hand', 'dog', 'dollarBill'
+  ];
 
   /**
    * @param {Vertex} startVertex
@@ -36,12 +38,15 @@ define( function( require ) {
     }, options );
 
     // validate resistor type
-    assert && assert( RESISTOR_TYPES.indexOf( options.resistorType ) >= 0, 'Unknown resistor type: ' + options.resistorType );
+    assert && assert( RESISTOR_TYPES.indexOf( options.resistorType ) >= 0, 'Unknown resistor type: ' +
+                                                                           options.resistorType );
 
     // @public (read-only) {string} indicates one of RESISTOR_TYPES
     this.resistorType = options.resistorType;
 
-    FixedLengthCircuitElement.call( this, startVertex, endVertex, options.resistorLength, options.resistorLength, tandem, options );
+    FixedLengthCircuitElement.call(
+      this, startVertex, endVertex, options.resistorLength, options.resistorLength, tandem, options
+    );
 
     // @public {Property.<number>} the resistance in ohms
     this.resistanceProperty = new NumberProperty( options.resistance );

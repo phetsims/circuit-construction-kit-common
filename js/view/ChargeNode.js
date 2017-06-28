@@ -20,7 +20,8 @@ define( function( require ) {
 
   // constants
   var ELECTRON_CHARGE_NODE = new ElectronChargeNode( { opacity: 0.75 } ).toDataURLNodeSynchronous();
-  var ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.createStaticTandem( 'arrowNode' ) ).toDataURLNodeSynchronous();
+  var ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.createStaticTandem( 'arrowNode' ) )
+    .toDataURLNodeSynchronous();
 
   /**
    * @param {Charge} charge - the model element

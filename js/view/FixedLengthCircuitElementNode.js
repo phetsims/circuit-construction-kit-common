@@ -19,7 +19,8 @@ define( function( require ) {
   var Matrix3 = require( 'DOT/Matrix3' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Image = require( 'SCENERY/nodes/Image' );
-  var FixedLengthCircuitElementHighlightNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedLengthCircuitElementHighlightNode' );
+  var FixedLengthCircuitElementHighlightNode =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedLengthCircuitElementHighlightNode' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
@@ -31,18 +32,20 @@ define( function( require ) {
   var rotationMatrix = new Matrix3();
 
   /**
-   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - so that the node can be dropped back into the toolbox
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - so that the node can be dropped back
+   *                                                                            - into the toolbox
    * @param {CircuitLayerNode} circuitLayerNode - Null if an icon is created
    * @param {FixedLengthCircuitElement} circuitElement - the corresponding model element
    * @param {Property.<string>} viewProperty - 'lifelike'|'schematic'
-   * @param {Node} lifelikeNode - the Node that will display the component as a lifelike object.  Origin must be left-center
+   * @param {Node} lifelikeNode - the Node that will display the component as a lifelike object.  Origin must be
+   *                            - left-center
    * @param {Node} schematicNode - the Node that will display the component. Origin must be left-center.
    * @param {Tandem} tandem
    * @param options
    * @constructor
    */
-  function FixedLengthCircuitElementNode( circuitConstructionKitScreenView, circuitLayerNode, circuitElement, viewProperty,
-                                          lifelikeNode, schematicNode, tandem, options ) {
+  function FixedLengthCircuitElementNode( circuitConstructionKitScreenView, circuitLayerNode, circuitElement,
+                                          viewProperty, lifelikeNode, schematicNode, tandem, options ) {
     assert && assert( lifelikeNode !== schematicNode, 'schematicNode should be different than lifelikeNode' );
     var self = this;
 
@@ -145,7 +148,9 @@ define( function( require ) {
 
       var updateHighlightVisibility = function( lastCircuitElement ) {
         var visible = (lastCircuitElement === circuitElement);
-        CircuitConstructionKitCommonUtil.setInSceneGraph( visible, circuitLayerNode.highlightLayer, self.highlightNode );
+        CircuitConstructionKitCommonUtil.setInSceneGraph(
+          visible, circuitLayerNode.highlightLayer, self.highlightNode
+        );
         self.markAsDirty();
       };
 
@@ -196,11 +201,15 @@ define( function( require ) {
       }
 
       circuitElement.vertexMovedEmitter.removeListener( markAsDirty );
-      updateHighlightVisibility && circuitLayerNode.circuit.selectedCircuitElementProperty.unlink( updateHighlightVisibility );
+      updateHighlightVisibility && circuitLayerNode.circuit.selectedCircuitElementProperty.unlink(
+        updateHighlightVisibility
+      );
       circuitElement.connectedEmitter.removeListener( moveToFront );
       circuitElement.vertexSelectedEmitter.removeListener( moveToFront );
       circuitElement.interactiveProperty.unlink( pickableListener );
-      circuitLayerNode && CircuitConstructionKitCommonUtil.setInSceneGraph( false, circuitLayerNode.highlightLayer, self.highlightNode );
+      circuitLayerNode && CircuitConstructionKitCommonUtil.setInSceneGraph(
+        false, circuitLayerNode.highlightLayer, self.highlightNode
+      );
       viewProperty.unlink( viewPropertyListener );
 
       if ( !options.icon && updateFireMultilink ) {
@@ -234,16 +243,19 @@ define( function( require ) {
       // Update the node transform in a single step, see #66
       CircuitConstructionKitCommonUtil.setToTranslationRotation( transform, startPosition, angle );
       this.contentNode.setMatrix( transform );
-      var updateHighlight = this.highlightNode && this.circuitLayerNode.circuit.selectedCircuitElementProperty.get() === this.circuitElement;
+      var updateHighlight = this.highlightNode &&
+                            this.circuitLayerNode.circuit.selectedCircuitElementProperty.get() === this.circuitElement;
       updateHighlight && this.highlightNode.setMatrix( transform );
 
       // Update the fire transform
       var flameExtent = 0.8;
       var scale = delta.magnitude() / fireImage[ 0 ].width * flameExtent;
       var flameMargin = (1 - flameExtent) / 2;
+      var flameX = delta.magnitude() * flameMargin / scale;
+      var flameY = -fireImage[ 0 ].height;
       CircuitConstructionKitCommonUtil.setToTranslationRotation( transform, startPosition, angle )
         .multiplyMatrix( rotationMatrix.setToScale( scale ) )
-        .multiplyMatrix( rotationMatrix.setToTranslation( delta.magnitude() * flameMargin / scale, -fireImage[ 0 ].height ) );
+        .multiplyMatrix( rotationMatrix.setToTranslation( flameX, flameY ) );
       this.fireNode && this.fireNode.setMatrix( transform );
     },
 

@@ -46,7 +46,8 @@ define( function( require ) {
    * @param {Tandem} tandem
    * @constructor
    */
-  function SensorToolbox( alignGroup, circuitLayerNode, voltmeterNode, ammeterNode, showResultsProperty, showLabelsProperty, showSeriesAmmeters, tandem ) {
+  function SensorToolbox( alignGroup, circuitLayerNode, voltmeterNode, ammeterNode, showResultsProperty,
+                          showLabelsProperty, showSeriesAmmeters, tandem ) {
 
     // Options for the VoltmeterNode and AmmeterNode
     var options = {
@@ -90,7 +91,9 @@ define( function( require ) {
     var voltmeter = new Voltmeter( tandem.createTandem( 'voltmeterIconModel' ) );
     var voltmeterNodeIcon = new VoltmeterNode( voltmeter, tandem.createTandem( 'voltmeterNodeIcon' ), options );
     voltmeterNode.voltmeter.visibleProperty.link( function( visible ) { voltmeterNodeIcon.visible = !visible; } );
-    voltmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE * VOLTMETER_ICON_SCALE / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height ) } );
+    voltmeterNodeIcon.mutate( {
+      scale: TOOLBOX_ICON_SIZE * VOLTMETER_ICON_SCALE / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height )
+    } );
     voltmeterNodeIcon.addInputListener( createListener( voltmeterNode.voltmeter, voltmeterNode ) );
 
     // Icon for the ammeter
@@ -101,22 +104,43 @@ define( function( require ) {
     ammeterNodeIcon.addInputListener( createListener( ammeterNode.ammeter, ammeterNode ) );
 
     // Icon for the series ammeter
-    var seriesAmmeter = new SeriesAmmeter( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitConstants.SERIES_AMMETER_LENGTH, 0 ), tandem.createTandem( 'seriesAmmeterIconModel' ) );
-    var seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeter, null, null, tandem.createTandem( 'seriesAmmeterNodeIcon' ), {
-      icon: true
-    } );
+    var seriesAmmeter = new SeriesAmmeter(
+      new Vertex( 0, 0 ),
+      new Vertex( CircuitConstructionKitConstants.SERIES_AMMETER_LENGTH, 0 ),
+      tandem.createTandem( 'seriesAmmeterIconModel' )
+    );
+    var seriesAmmeterNodeIcon = new SeriesAmmeterNode(
+      null,
+      null,
+      seriesAmmeter,
+      null,
+      null,
+      tandem.createTandem( 'seriesAmmeterNodeIcon' ), {
+        icon: true
+      } );
     var createSeriesAmmeter = function( position ) {
-      var startVertex = new Vertex( position.x - CircuitConstructionKitConstants.SERIES_AMMETER_LENGTH / 2, position.y );
-      var endVertex = new Vertex( position.x + CircuitConstructionKitConstants.SERIES_AMMETER_LENGTH / 2, position.y );
-      return new SeriesAmmeter( startVertex, endVertex, circuitLayerNode.circuit.seriesAmmeterGroupTandem.createNextTandem() );
+      var halfLength = CircuitConstructionKitConstants.SERIES_AMMETER_LENGTH / 2;
+      var startVertex = new Vertex( position.x - halfLength, position.y );
+      var endVertex = new Vertex( position.x + halfLength, position.y );
+      return new SeriesAmmeter(
+        startVertex,
+        endVertex,
+        circuitLayerNode.circuit.seriesAmmeterGroupTandem.createNextTandem()
+      );
     };
     seriesAmmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / seriesAmmeterNodeIcon.width } );
-    var seriesAmmeterToolNode = new CircuitElementToolNode( '', new Property( false ), circuitLayerNode, seriesAmmeterNodeIcon, 6, function() {
-      return circuitLayerNode.circuit.circuitElements.count( function( circuitElement ) {
+    var seriesAmmeterToolNode = new CircuitElementToolNode(
+      '',
+      new Property( false ),
+      circuitLayerNode,
+      seriesAmmeterNodeIcon,
+      6,
+      function() {
+        return circuitLayerNode.circuit.circuitElements.count( function( circuitElement ) {
 
-        return circuitElement instanceof SeriesAmmeter;
-      } );
-    }, createSeriesAmmeter );
+          return circuitElement instanceof SeriesAmmeter;
+        } );
+      }, createSeriesAmmeter );
 
     // Labels underneath the sensor tool nodes
     var voltmeterText = new Text( voltmeterString, { maxWidth: 60 } );

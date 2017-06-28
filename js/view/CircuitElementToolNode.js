@@ -28,7 +28,9 @@ define( function( require ) {
    * @param {function} createElement
    * @constructor
    */
-  function CircuitElementToolNode( labelText, showLabelsProperty, circuitLayerNode, iconNode, maxNumber, count, createElement ) {
+  function CircuitElementToolNode(
+    labelText, showLabelsProperty, circuitLayerNode, iconNode, maxNumber, count, createElement
+  ) {
     var circuit = circuitLayerNode.circuit;
     var self = this;
     var labelNode = new Text( labelText, { fontSize: 12, maxWidth: TOOLBOX_ICON_SIZE } );
@@ -37,7 +39,9 @@ define( function( require ) {
       spacing: 6, // Spacing between the icon and the text
       resize: false,
       cursor: 'pointer',
-      children: labelText.length > 0 ? [ iconNode, labelNode ] : [ iconNode ] // hack because the series ammeter tool node has text rendered separately (joined with probe ammeter)
+
+      // hack because the series ammeter tool node has text rendered separately (joined with probe ammeter)
+      children: labelText.length > 0 ? [ iconNode, labelNode ] : [ iconNode ]
     } );
 
     this.addInputListener( {

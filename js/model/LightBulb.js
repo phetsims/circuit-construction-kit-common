@@ -73,7 +73,15 @@ define( function( require ) {
       pathLength += point2.distance( point1 );
     }
 
-    FixedLengthCircuitElement.call( this, startVertex, endVertex, DISTANCE_BETWEEN_VERTICES, pathLength, tandem, options );
+    FixedLengthCircuitElement.call(
+      this,
+      startVertex,
+      endVertex,
+      DISTANCE_BETWEEN_VERTICES,
+      pathLength,
+      tandem,
+      options
+    );
   }
 
   circuitConstructionKitCommon.register( 'LightBulb', LightBulb );
@@ -152,13 +160,18 @@ define( function( require ) {
         if ( distanceAlongWire <= accumulatedDistance ) {
 
           // Choose the right point along the segment
-          var fractionAlongSegment = Util.linear( previousAccumulatedDistance, accumulatedDistance, 0, 1, distanceAlongWire );
+          var fractionAlongSegment = Util.linear( previousAccumulatedDistance, accumulatedDistance, 0, 1,
+            distanceAlongWire );
           var positionAlongSegment = point1.blend( point2, fractionAlongSegment );
 
           // rotate the point about the start vertex
-          var vertexDelta = this.endVertexProperty.get().positionProperty.get().minus( this.startVertexProperty.get().positionProperty.get() );
+          var vertexDelta = this.endVertexProperty.get().positionProperty.get()
+            .minus( this.startVertexProperty.get().positionProperty.get() );
           var relativeAngle = vertexDelta.angle() - this.vertexDelta.angle();
-          var position = positionAlongSegment.rotatedAboutPoint( this.startVertexProperty.get().positionProperty.get(), relativeAngle );
+          var position = positionAlongSegment.rotatedAboutPoint(
+            this.startVertexProperty.get().positionProperty.get(),
+            relativeAngle
+          );
           var angle = point2.minus( point1 ).angle();
 
           return { position: position, angle: angle };

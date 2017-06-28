@@ -35,13 +35,15 @@ define( function( require ) {
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {SeriesAmmeter} seriesAmmeter
-   * @param {Property.<boolean>} showResultsProperty - supplied for consistency with other CircuitElementNode constructors
+   * @param {Property.<boolean>} showResultsProperty - supplied for consistency with other CircuitElementNode
+   *                                                 - constructors
    * @param {Property.<string>} viewProperty
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function SeriesAmmeterNode( circuitConstructionKitScreenView, circuitLayerNode, seriesAmmeter, showResultsProperty, viewProperty, tandem, options ) {
+  function SeriesAmmeterNode( circuitConstructionKitScreenView, circuitLayerNode, seriesAmmeter, showResultsProperty,
+                              viewProperty, tandem, options ) {
     var self = this;
     options = options || {};
     viewProperty = new Property( CircuitConstructionKitConstants.LIFELIKE );
@@ -129,7 +131,8 @@ define( function( require ) {
       ]
     } );
 
-    // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
+    // Expand the pointer areas with a defensive copy, see
+    // https://github.com/phetsims/circuit-construction-kit-common/issues/310
     lifelikeNode.mouseArea = lifelikeNode.bounds.copy();
     lifelikeNode.touchArea = lifelikeNode.bounds.copy();
 

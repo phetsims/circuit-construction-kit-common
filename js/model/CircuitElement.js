@@ -48,17 +48,19 @@ define( function( require ) {
     this.creationTime = phet.joist.elapsedTime;
 
     options = _.extend( {
-      canBeDroppedInToolbox: true, // In the CCK: Basics intro screen, CircuitElements cannot be dropped into the toolbox
+      canBeDroppedInToolbox: true, // In the CCK: Basics intro screen, CircuitElements can't be dropped into the toolbox
       interactive: true // In CCK: Black Box Study, CircuitElements in the black box cannot be manipulated
     }, options );
 
     // @public (read-only) {number} - whether it is possible to drop the CircuitElement in the toolbox
     this.canBeDroppedInToolbox = options.canBeDroppedInToolbox;
 
-    // @public {Property.<Vertex>} - the Vertex at the origin of the CircuitElement, may change when CircuitElements are connected
+    // @public {Property.<Vertex>} - the Vertex at the origin of the CircuitElement, may change when CircuitElements are
+    // connected
     this.startVertexProperty = new Property( startVertex );
 
-    // @public {Property.<Vertex>} - the Vertex at the end of the CircuitElement, may change when CircuitElements are connected
+    // @public {Property.<Vertex>} - the Vertex at the end of the CircuitElement, may change when CircuitElements are
+    // connected
     this.endVertexProperty = new Property( endVertex );
 
     // @public {NumberProperty} - the flowing current, in amps.
@@ -70,8 +72,8 @@ define( function( require ) {
     // @public (read-only) {BooleanProperty} - true if the CircuitElement can be edited and dragged
     this.interactiveProperty = new BooleanProperty( options.interactive );
 
-    // @public {BooleanProperty} - whether the circuit element is inside the true black box, not inside the user-created black box, on
-    // the interface or outside of the black box
+    // @public {BooleanProperty} - whether the circuit element is inside the true black box, not inside the user-created
+    // black box, on the interface or outside of the black box
     this.insideTrueBlackBoxProperty = new BooleanProperty( false );
 
     // @public {boolean} - true if the charge layout must be updated
@@ -83,14 +85,15 @@ define( function( require ) {
     // @public (read-only) {Emitter} - indicate when the CircuitElement has been moved to the front in z-ordering
     this.moveToFrontEmitter = new Emitter();
 
-    // @public (read-only) {Emitter} - indicate when an adjacent Vertex has moved to front, so that the corresponding Node can
-    // move to front too
+    // @public (read-only) {Emitter} - indicate when an adjacent Vertex has moved to front, so that the corresponding
+    // Node can move to front too
     this.vertexSelectedEmitter = new Emitter();
 
     // @public (read-only) {Emitter} - indicate when either Vertex has moved
     this.vertexMovedEmitter = new Emitter();
 
-    // @public (read-only) {Emitter} - indicate when the circuit element has started being dragged, when it is created in the toolbox
+    // @public (read-only) {Emitter} - indicate when the circuit element has started being dragged, when it is created
+    // in the toolbox
     this.startDragEmitter = new Emitter();
 
     // @public (read-only) {Emitter} - indicate when the circuit element has been disposed
@@ -187,7 +190,8 @@ define( function( require ) {
 
       assert && assert( oldVertex !== newVertex, 'Cannot replace with the same vertex' );
       assert && assert( oldVertex === startVertex || oldVertex === endVertex, 'Cannot replace a nonexistent vertex' );
-      assert && assert( newVertex !== startVertex && newVertex !== endVertex, 'The new vertex shouldn\'t already be in the circuit element.' );
+      assert && assert( newVertex !== startVertex && newVertex !== endVertex, 'The new vertex shouldn\'t already be ' +
+                                                                              'in the circuit element.' );
 
       if ( oldVertex === startVertex ) {
         this.startVertexProperty.set( newVertex );

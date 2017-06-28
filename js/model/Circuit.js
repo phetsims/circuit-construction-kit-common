@@ -29,7 +29,8 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
-  var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
+  var CircuitConstructionKitQueryParameters =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
 
   // phet-io modules
   var TString = require( 'ifphetio!PHET_IO/types/TString' );
@@ -49,8 +50,8 @@ define( function( require ) {
   function Circuit( tandem ) {
     var self = this;
 
-    // @public {NumberProperty} - All wires share the same resistivity, which is defined by resistance = resistivity * length
-    // On the Lab Screen, there is a wire resistivity control
+    // @public {NumberProperty} - All wires share the same resistivity, which is defined by
+    // resistance = resistivity * length. On the Lab Screen, there is a wire resistivity control
     this.wireResistivityProperty = new NumberProperty( CircuitConstructionKitConstants.DEFAULT_RESISTIVITY, {
       tandem: tandem.createTandem( 'wireResistivityProperty' ),
       phetioValueType: TNumber()
@@ -84,7 +85,9 @@ define( function( require ) {
 
     // When the current type changes, mark everything as dirty and relayout charges
     this.currentTypeProperty.lazyLink( function() {
-      self.circuitElements.getArray().forEach( function( circuitElement ) { circuitElement.chargeLayoutDirty = true; } );
+      self.circuitElements.getArray().forEach( function( circuitElement ) {
+        circuitElement.chargeLayoutDirty = true;
+      } );
       self.layoutChargesInDirtyCircuitElements();
     } );
 
@@ -161,7 +164,9 @@ define( function( require ) {
     } );
     this.circuitElements.addItemRemovedListener( function( circuitElement ) {
       self.charges.removeAll( self.getChargesInCircuitElement( circuitElement ) );
-      self.solve(); // Explicit call to solve since it is possible to remove a CircuitElement without removing any vertices.
+
+      // Explicit call to solve since it is possible to remove a CircuitElement without removing any vertices.
+      self.solve();
     } );
 
     // When a Charge is removed from the list, dispose it
@@ -169,14 +174,15 @@ define( function( require ) {
       charge.dispose();
     } );
 
-    // @public (read-only) {Emitter} After the circuit physics is recomputed in solve(), some listeners need to update themselves, such as
-    // the voltmeter and ammeter
+    // @public (read-only) {Emitter} After the circuit physics is recomputed in solve(), some listeners need to update
+    // themselves, such as the voltmeter and ammeter
     this.circuitChangedEmitter = new Emitter();
 
     // @public (read-only) {Emitter} - Some actions only take place after an item has been dropped
     this.vertexDroppedEmitter = new Emitter();
 
-    // @public (read-only) {Emitter} - signifies that a component has been modified (for example, with the CircuitElementEditPanel)
+    // @public (read-only) {Emitter} - signifies that a component has been modified (for example, with the
+    // CircuitElementEditPanel)
     this.componentEditedEmitter = new Emitter();
 
     var emitCircuitChanged = function() {
@@ -211,7 +217,7 @@ define( function( require ) {
     self.vertices.addItemRemovedListener( function( vertex ) {
       assert && assert( vertex.positionProperty.hasListener( emitCircuitChanged ), 'should have had the listener' );
       vertex.positionProperty.unlink( emitCircuitChanged );
-      assert && assert( !vertex.positionProperty.hasListener( emitCircuitChanged ), 'Listener should have been removed' );
+      assert && assert( !vertex.positionProperty.hasListener( emitCircuitChanged ), 'Listener should be removed' );
       vertex.selectedProperty.unlink( vertex.vertexSelectedPropertyListener );
       vertex.vertexSelectedPropertyListener = null;
     } );
@@ -329,7 +335,9 @@ define( function( require ) {
       // If the vertices are too close, they must be translated way
       if ( distance < BUMP_AWAY_RADIUS && distance > 0 ) {
 
-        var delta = pivotVertex.positionProperty.value.minus( vertex.positionProperty.value ).normalized().times( -SNAP_RADIUS * 1.5 );
+        var delta = pivotVertex.positionProperty.value.minus( vertex.positionProperty.value )
+          .normalized()
+          .times( -SNAP_RADIUS * 1.5 );
         this.translateVertexGroup( vertex, delta );
       }
       else {
@@ -419,7 +427,7 @@ define( function( require ) {
         while ( this.circuitElements.length > 0 ) {
           this.circuitElements.remove( this.circuitElements.get( 0 ) );
         }
-        assert && assert( this.vertices.length === 0, 'vertices should have been removed with circuit elements cleared' );
+        assert && assert( this.vertices.length === 0, 'vertices should have been removed' );
       }
     },
 
@@ -446,7 +454,9 @@ define( function( require ) {
         for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
           var circuitElement = neighborCircuitElements[ i ];
           var oppositeVertex = circuitElement.getOppositeVertex( vertex );
-          var translation = oppositeVertex.positionProperty.get().minus( vertex.positionProperty.get() ).normalized().timesScalar( 30 );
+          var translation = oppositeVertex.positionProperty.get().minus( vertex.positionProperty.get() )
+            .normalized()
+            .timesScalar( 30 );
           translations.push( translation );
         }
         return translations;
@@ -531,7 +541,7 @@ define( function( require ) {
       for ( var j = 0; j < vertexGroup.length; j++ ) {
         var vertex = vertexGroup[ j ];
 
-        // Only translate vertices that are movable and not connected to the black box interface by fixed length elements
+        // Only translate vertices that are movable and not connected to the black box interface by FixedLength elements
         if ( vertex.draggableProperty.get() && !this.hasFixedConnectionToBlackBoxInterfaceVertex( vertex ) ) {
           vertex.setPosition( vertex.positionProperty.value.plus( delta ) );
         }
@@ -700,11 +710,13 @@ define( function( require ) {
      * @public
      */
     connect: function( targetVertex, oldVertex ) {
-      assert && assert( targetVertex.attachableProperty.get() && oldVertex.attachableProperty.get(), 'both vertices should be attachable' );
+      assert && assert( targetVertex.attachableProperty.get() && oldVertex.attachableProperty.get(),
+        'both vertices should be attachable' );
 
       // Keep the black box vertices
       if ( oldVertex.blackBoxInterfaceProperty.get() ) {
-        assert && assert( !targetVertex.blackBoxInterfaceProperty.get(), 'cannot attach black box interface vertex to black box interface vertex' );
+        assert && assert( !targetVertex.blackBoxInterfaceProperty.get(), 'cannot attach black box interface vertex ' +
+                                                                         'to black box interface vertex' );
         this.connect( oldVertex, targetVertex );
       }
       else {
@@ -858,7 +870,9 @@ define( function( require ) {
             var neighbor = neighbors[ i ];
 
             // If the node was already visited, don't visit again
-            if ( visited.indexOf( neighbor ) < 0 && toVisit.indexOf( neighbor ) < 0 && okToVisit( currentVertex, neighbor ) ) {
+            if ( visited.indexOf( neighbor ) < 0 &&
+                 toVisit.indexOf( neighbor ) < 0 &&
+                 okToVisit( currentVertex, neighbor ) ) {
               toVisit.push( neighbor );
             }
           }
@@ -1000,7 +1014,9 @@ define( function( require ) {
           // is another node proposing a match to that node?
           for ( var k = 0; k < self.vertices.length; k++ ) {
             var v = self.vertices.get( k );
-            if ( neighbor instanceof Wire && v !== vertex && v !== oppositeVertex && v.positionProperty.get().equals( oppositeVertex.positionProperty.get() ) ) {
+            if ( neighbor instanceof Wire &&
+                 v !== vertex &&
+                 v !== oppositeVertex && v.positionProperty.get().equals( oppositeVertex.positionProperty.get() ) ) {
               return false;
             }
           }
@@ -1024,21 +1040,24 @@ define( function( require ) {
         candidateVertices = candidateVertices.filter( function( candidateVertex ) {
 
           // Don't connect to vertices that might have sneaked outside of the black box, say by a rotation.
-          if ( !candidateVertex.blackBoxInterfaceProperty.get() && !blackBoxBounds.containsPoint( candidateVertex.positionProperty.get() ) ) {
+          if ( !candidateVertex.blackBoxInterfaceProperty.get() &&
+               !blackBoxBounds.containsPoint( candidateVertex.positionProperty.get() ) ) {
             return false;
           }
 
           // How far the vertex would be moved if it joined to the candidate
           var delta = candidateVertex.positionProperty.get().minus( vertex.positionProperty.get() );
 
-          if ( candidateVertex.blackBoxInterfaceProperty.get() || blackBoxBounds.containsPoint( candidateVertex.positionProperty.get() ) ) {
+          if ( candidateVertex.blackBoxInterfaceProperty.get() ||
+               blackBoxBounds.containsPoint( candidateVertex.positionProperty.get() ) ) {
             for ( var i = 0; i < fixedVertices2.length; i++ ) {
               var connectedVertex = fixedVertices2[ i ];
               if ( connectedVertex.blackBoxInterfaceProperty.get() ) {
 
                 // OK for black box interface vertex to be slightly outside the box
               }
-              else if ( connectedVertex !== vertex && !blackBoxBounds.containsPoint( connectedVertex.positionProperty.get().plus( delta ) ) &&
+              else if ( connectedVertex !== vertex &&
+                        !blackBoxBounds.containsPoint( connectedVertex.positionProperty.get().plus( delta ) ) &&
 
                         // exempt wires connected outside of the black box, which are flagged as un-attachable in
                         // build mode, see #141

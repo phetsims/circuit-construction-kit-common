@@ -1,8 +1,8 @@
 // Copyright 2015-2017, University of Colorado Boulder
 
 /**
- * Named CircuitConstructionKitLightBulbNode to avoid collisions with SCENERY_PHET/LightBulbNode. Renders the bulb shape and brightness
- * lines. Note that the socket is rendered in LightBulbSocketNode.
+ * Named CircuitConstructionKitLightBulbNode to avoid collisions with SCENERY_PHET/LightBulbNode. Renders the bulb shape
+ * and brightness lines. Note that the socket is rendered in LightBulbSocketNode.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -70,23 +70,26 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function CircuitConstructionKitLightBulbNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, showResultsProperty, viewProperty, tandem, options ) {
+  function CircuitConstructionKitLightBulbNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb,
+                                                showResultsProperty, viewProperty, tandem, options ) {
     var self = this;
     options = options || {};
     var brightnessProperty = new NumberProperty( 0 );
-    var updateBrightness = Property.multilink( [ lightBulb.currentProperty, showResultsProperty, lightBulb.voltageDifferenceProperty ], function( current, running, voltageDifference ) {
-      var power = Math.abs( current * voltageDifference );
+    var updateBrightness = Property.multilink(
+      [ lightBulb.currentProperty, showResultsProperty, lightBulb.voltageDifferenceProperty ],
+      function( current, running, voltageDifference ) {
+        var power = Math.abs( current * voltageDifference );
 
-      var brightness = toBrightness( 0.35, power );
+        var brightness = toBrightness( 0.35, power );
 
-      // Workaround for SCENERY_PHET/LightBulbNode which shows highlight even for current = 1E-16, so clamp it off
-      // see https://github.com/phetsims/scenery-phet/issues/225
-      if ( brightness < 1E-6 ) {
-        brightness = 0;
-      }
+        // Workaround for SCENERY_PHET/LightBulbNode which shows highlight even for current = 1E-16, so clamp it off
+        // see https://github.com/phetsims/scenery-phet/issues/225
+        if ( brightness < 1E-6 ) {
+          brightness = 0;
+        }
 
-      brightnessProperty.value = Util.clamp( brightness, 0, 1 );
-    } );
+        brightnessProperty.value = Util.clamp( brightness, 0, 1 );
+      } );
     var lightBulbNode = new CustomLightBulbNode( brightnessProperty, {
       scale: CircuitConstructionKitConstants.BULB_SCALE
     } );
@@ -96,7 +99,15 @@ define( function( require ) {
       lightBulbNode = new Node( {
         children: [
           lightBulbNode,
-          new LightBulbSocketNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, showResultsProperty, viewProperty, tandem.createTandem( 'socketNode' ), options )
+          new LightBulbSocketNode(
+            circuitConstructionKitScreenView,
+            circuitLayerNode,
+            lightBulb,
+            showResultsProperty,
+            viewProperty,
+            tandem.createTandem( 'socketNode' ),
+            options
+          )
         ]
       } );
     }
@@ -138,7 +149,7 @@ define( function( require ) {
     };
     var schematicNode = new Path( addSchematicCircle( new Shape()
 
-        // Left lead
+      // Left lead
         .moveTo( LEFT_LEAD_X, 0 )
         .lineTo( LEFT_LEAD_X, LEAD_Y )
 
@@ -157,11 +168,22 @@ define( function( require ) {
       } );
     }
 
-    // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
+    // Expand the pointer areas with a defensive copy, see
+    // https://github.com/phetsims/circuit-construction-kit-common/issues/310
     schematicNode.mouseArea = schematicNode.bounds.copy();
     schematicNode.touchArea = schematicNode.bounds.copy();
 
-    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitLayerNode, lightBulb, viewProperty, lightBulbNode, schematicNode, tandem, options );
+    FixedLengthCircuitElementNode.call(
+      this,
+      circuitConstructionKitScreenView,
+      circuitLayerNode,
+      lightBulb,
+      viewProperty,
+      lightBulbNode,
+      schematicNode,
+      tandem,
+      options
+    );
 
     // @private
     this.rayNodeContainer = new Node( {
@@ -171,7 +193,15 @@ define( function( require ) {
     if ( circuitLayerNode ) {
 
       // Render the socket node in the front
-      this.socketNode = new LightBulbSocketNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, showResultsProperty, viewProperty, tandem.createTandem( 'socketNode' ), options );
+      this.socketNode = new LightBulbSocketNode(
+        circuitConstructionKitScreenView,
+        circuitLayerNode,
+        lightBulb,
+        showResultsProperty,
+        viewProperty,
+        tandem.createTandem( 'socketNode' ),
+        options
+      );
       circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.addChild( this.socketNode );
       circuitLayerNode && circuitLayerNode.lightRaysLayer.addChild( this.rayNodeContainer );
     }

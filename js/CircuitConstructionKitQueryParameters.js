@@ -58,7 +58,10 @@ define( function( require ) {
     }
   } );
 
-  circuitConstructionKitCommon.register( 'CircuitConstructionKitQueryParameters', CircuitConstructionKitQueryParameters );
+  circuitConstructionKitCommon.register(
+    'CircuitConstructionKitQueryParameters',
+    CircuitConstructionKitQueryParameters
+  );
 
   return CircuitConstructionKitQueryParameters;
 } );

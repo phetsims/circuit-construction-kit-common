@@ -11,33 +11,37 @@
     return Math.abs( a - b ) < 1E-6;
   };
 
-  QUnit.test( 'test_battery_resistor_circuit_should_have_correct_voltages_and_currents_for_a_simple_circuit', function( assert ) {
-    var battery = { node0: 0, node1: 1, voltage: 4.0 };
-    var resistor = { node0: 1, node1: 0, resistance: 4.0 };
-    var circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [ resistor ], [] );
-    var voltageMap = { 0: 0.0, 1: 4.0 };
+  QUnit.test( 'test_battery_resistor_circuit_should_have_correct_voltages_and_currents_for_a_simple_circuit',
+    function( assert ) {
+      var battery = { node0: 0, node1: 1, voltage: 4.0 };
+      var resistor = { node0: 1, node1: 0, resistance: 4.0 };
+      var circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [ resistor ], [] );
+      var voltageMap = { 0: 0.0, 1: 4.0 };
 
-    var desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [ battery ] );
-    var solution = circuit.solve();
-    console.log( 'solution = ', solution );
-    console.log( 'desiredSolution = ', desiredSolution );
-    assert.equal( true, solution.approxEquals( desiredSolution, assert ), 'solutions instances should match' );
+      var desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [ battery ] );
+      var solution = circuit.solve();
+      console.log( 'solution = ', solution );
+      console.log( 'desiredSolution = ', desiredSolution );
+      assert.equal( true, solution.approxEquals( desiredSolution, assert ), 'solutions instances should match' );
 
-    var currentThroughResistor = solution.getCurrent( resistor );
-    assert.equal( approxEquals( currentThroughResistor, 1.0 ), true, 'current should be 1 amp through the resistor' ); // should be flowing forward through resistor
-  } );
+      var currentThroughResistor = solution.getCurrent( resistor );
 
-  QUnit.test( 'test_battery_resistor_circuit_should_have_correct_voltages_and_currents_for_a_simple_circuit_ii', function( assert ) {
-    var battery = { node0: 0, node1: 1, voltage: 4.0 };
-    var resistor = { node0: 1, node1: 0, resistance: 2.0 };
-    var circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [ resistor ], [] );
-    var desiredSolution = new ModifiedNodalAnalysisSolution( {
-      0: 0,
-      1: 4
-    }, [ _.extend( {}, battery, { currentSolution: 2.0 } ) ] );
-    var solution = circuit.solve();
-    assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solution should match' );
-  } );
+      // should be flowing forward through resistor
+      assert.equal( approxEquals( currentThroughResistor, 1.0 ), true, 'current should be 1 amp through the resistor' );
+    } );
+
+  QUnit.test( 'test_battery_resistor_circuit_should_have_correct_voltages_and_currents_for_a_simple_circuit_ii',
+    function( assert ) {
+      var battery = { node0: 0, node1: 1, voltage: 4.0 };
+      var resistor = { node0: 1, node1: 0, resistance: 2.0 };
+      var circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [ resistor ], [] );
+      var desiredSolution = new ModifiedNodalAnalysisSolution( {
+        0: 0,
+        1: 4
+      }, [ _.extend( {}, battery, { currentSolution: 2.0 } ) ] );
+      var solution = circuit.solve();
+      assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solution should match' );
+    } );
 
 
   QUnit.test( 'test_should_be_able_to_obtain_current_for_a_resistor', function( assert ) {
@@ -51,7 +55,9 @@
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solution should match' );
 
     // same magnitude as battery: positive because current flows from node 1 to 0
-    assert.equal( approxEquals( solution.getCurrent( resistor ), 2 ), true, 'current through resistor should be 2.0 Amps' );
+    assert.equal(
+      approxEquals( solution.getCurrent( resistor ), 2 ), true, 'current through resistor should be 2.0 Amps'
+    );
   } );
 
   QUnit.test( 'test_an_unconnected_resistor_shouldnt_cause_problems', function( assert ) {
@@ -77,7 +83,10 @@
     var circuit = new ModifiedNodalAnalysisCircuit( [], [ resistor ], [ currentSource ] );
     var voltageMap = {
       0: 0,
-      1: -40.0 // This is negative since traversing across the resistor should yield a negative voltage, see http://en.wikipedia.org/wiki/Current_source
+
+      // This is negative since traversing across the resistor should yield a negative voltage, see
+      // http://en.wikipedia.org/wiki/Current_source
+      1: -40.0
     };
     var desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [] );
     var solution = circuit.solve();
@@ -93,7 +102,12 @@
       1: -4
     };
 
-    var desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [ _.extend( {}, battery, { currentSolution: -2 } ) ] );
+    var desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [ _.extend(
+      {},
+      battery,
+      {
+        currentSolution: -2
+      } ) ] );
     var solution = circuit.solve();
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
   } );
@@ -221,14 +235,14 @@
     assert.deepEqual( ResistorColors.getColorNames( 10 ), [ 'brown', 'black', 'black', 'gold' ], '10 ohm resistor' );
     assert.deepEqual( ResistorColors.getColorNames( 100 ), [ 'brown', 'black', 'brown', 'gold' ], '100 ohm resistor' );
     assert.deepEqual( ResistorColors.getColorNames( 1000 ), [ 'brown', 'black', 'red', 'gold' ], '100 ohm resistor' );
-    assert.deepEqual( ResistorColors.getColorNames( 4700 ), [ 'yellow', 'violet', 'red', 'gold' ], '4700 ohm resistor' );
+    assert.deepEqual( ResistorColors.getColorNames( 4700 ), [ 'yellow', 'violet', 'red', 'gold' ], '4700 ohm ' );
     assert.deepEqual( ResistorColors.getColorNames( 9900 ), [ 'white', 'white', 'red', 'gold' ], '9900 ohm resistor' );
     assert.deepEqual( ResistorColors.getColorNames( 55 ), [ 'green', 'green', 'black', 'gold' ], '55 ohm resistor' );
-    assert.deepEqual( ResistorColors.getColorNames( 34.5 ), [ 'orange', 'green', 'black', 'gold' ], '34.5 ohm resistor' );
-    assert.deepEqual( ResistorColors.getColorNames( 99.5 ), [ 'brown', 'black', 'brown', 'gold' ], '99.5 ohm resistor' );
-    assert.deepEqual( ResistorColors.getColorNames( 10.5 ), [ 'brown', 'brown', 'black', 'gold' ], '10.5 ohm resistor' );
+    assert.deepEqual( ResistorColors.getColorNames( 34.5 ), [ 'orange', 'green', 'black', 'gold' ], '34.5 ohm' );
+    assert.deepEqual( ResistorColors.getColorNames( 99.5 ), [ 'brown', 'black', 'brown', 'gold' ], '99.5 ohm' );
+    assert.deepEqual( ResistorColors.getColorNames( 10.5 ), [ 'brown', 'brown', 'black', 'gold' ], '10.5 ohm' );
     assert.deepEqual( ResistorColors.getColorNames( 7.5 ), [ 'violet', 'green', 'gold', 'gold' ], '7.5 ohm resistor' );
     assert.deepEqual( ResistorColors.getColorNames( 20 ), [ 'red', 'black', 'black', 'gold' ], '20 ohm resistor' );
-    assert.deepEqual( ResistorColors.getColorNames( 88000 ), [ 'gray', 'gray', 'orange', 'gold' ], '88000 ohm resistor' );
+    assert.deepEqual( ResistorColors.getColorNames( 88000 ), [ 'gray', 'gray', 'orange', 'gold' ], '88000 ohm' );
   } );
 })();

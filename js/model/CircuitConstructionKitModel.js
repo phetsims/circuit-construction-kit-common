@@ -17,7 +17,8 @@ define( function( require ) {
   var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Circuit' );
   var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Voltmeter' );
   var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Ammeter' );
-  var CircuitConstructionKitQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
+  var CircuitConstructionKitQueryParameters =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
   var TandemEmitter = require( 'TANDEM/axon/TandemEmitter' );
   var EaseAnimation = require( 'TWIXT/EaseAnimation' );
 
@@ -50,9 +51,10 @@ define( function( require ) {
 
     // @public {BooleanProperty} - changes whether the light bulb brightness and ammeter/voltmeter readouts,
     // charges, flame, etc. can be seen
-    this.exploreScreenRunningProperty = new BooleanProperty( !CircuitConstructionKitQueryParameters.showPlayPauseButton, {
-      tandem: tandem.createTandem( 'exploreScreenRunningProperty' )
-    } );
+    this.exploreScreenRunningProperty = new BooleanProperty(
+      !CircuitConstructionKitQueryParameters.showPlayPauseButton, {
+        tandem: tandem.createTandem( 'exploreScreenRunningProperty' )
+      } );
 
     // @public {BooleanProperty} - true if the labels in the toolbox should be shown
     this.showLabelsProperty = new BooleanProperty( true, {
@@ -64,7 +66,7 @@ define( function( require ) {
       tandem: tandem.createTandem( 'showValuesProperty' )
     } );
 
-    // @public {Property.<number>} scaling applied to the circuit node so the user can zoom out and make larger circuits.
+    // @public {Property.<number>} scaling applied to the circuit node so the user can zoom out and make larger circuits
     this.selectedZoomProperty = new Property( 1, {
       tandem: tandem.createTandem( 'selectedZoomProperty' ),
       phetioValueType: TNumber()
@@ -101,13 +103,16 @@ define( function( require ) {
       phetioValueType: TString
     } );
 
-    // When the user manipulates something, hide the readouts, see https://github.com/phetsims/circuit-construction-kit/issues/130
+    // When the user manipulates something, hide the readouts, see
+    // https://github.com/phetsims/circuit-construction-kit/issues/130
     // The following cases result in hiding the readouts:
     // 1. More components are dragged out of the toolbox
     // 2. Any vertex is broken
     // 3. Component voltage/resistance is edited
-    // 4. A component within a circuit is deleted, see https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/16
-    // However, the simulation should not pause when switching between "Explore" and "Test" and "Reveal" in the black box study sim
+    // 4. A component within a circuit is deleted, see
+    // https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/16
+    // However, the simulation should not pause when switching between "Explore" and "Test" and "Reveal" in the black
+    // box study sim
     var modeChanging = false;
     self.modeProperty.startedCallbacksForChangedEmitter.addListener( function() {
       modeChanging = true;
@@ -126,8 +131,8 @@ define( function( require ) {
       this.circuit.circuitElements.lengthProperty.link( pause );
     }
 
-    // For PhET-iO, when a component is edited or a vertex is added, connected, or cut, output the circuit to the data stream
-    // Only do this for phet-io brand so it doesn't disturb performance of other brands
+    // For PhET-iO, when a component is edited or a vertex is added, connected, or cut, output the circuit to the data
+    // stream. Only do this for phet-io brand so it doesn't disturb performance of other brands
     if ( phet.phetio ) {
 
       var circuitChangedEmitter = new TandemEmitter( {
@@ -138,8 +143,9 @@ define( function( require ) {
       var emitCircuitChanged = function() {
 
         // Wait until all vertices have been added so we can get their indices without erroring out.
-        // TODO (phet-io): investigate coarse-grained messages (vertex cut, item added, etc) instead of vertex added, which could
-        // lead to inconsistent state. On the other hand, why is CircuitElement added before vertex?  That could solve it
+        // TODO (phet-io): investigate coarse-grained messages (vertex cut, item added, etc) instead of vertex added,
+        // which could lead to inconsistent state. On the other hand, why is CircuitElement added before vertex?  That
+        // could solve it
         setTimeout( function() {
           circuitChangedEmitter.emit1( JSON.stringify( self.circuit.toStateObject() ) );
         }, 0 );
@@ -195,7 +201,9 @@ define( function( require ) {
       this.viewProperty.reset();
       this.currentZoomProperty.reset();
       this.selectedZoomProperty.reset();
-      this.zoomAnimation = null; // cancel any animation in progress, including (but not limited to) one that may have just been caused by the reset
+
+      // cancel any animation in progress, including (but not limited to) one that may have just been caused by reset
+      this.zoomAnimation = null;
     }
   } );
 } );

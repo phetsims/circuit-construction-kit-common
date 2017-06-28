@@ -33,7 +33,8 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function LightBulbSocketNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, showResultsProperty, viewProperty, tandem, options ) {
+  function LightBulbSocketNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, showResultsProperty,
+                                viewProperty, tandem, options ) {
 
     // Render the bulb socket only
     var lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ), {
@@ -42,7 +43,8 @@ define( function( require ) {
       scale: CircuitConstructionKitConstants.BULB_SCALE
     } );
 
-    // Interferes with Cut Button selection when the foreground is in front, see https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/18
+    // Interferes with Cut Button selection when the foreground is in front, see
+    // https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/18
     options = _.extend( {
       pickable: false
     }, options );

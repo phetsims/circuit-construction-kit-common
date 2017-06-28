@@ -14,7 +14,8 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Input = require( 'SCENERY/input/Input' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
-  var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditContainerPanel' );
+  var CircuitElementEditContainerPanel =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditContainerPanel' );
 
   /**
    * @param {CircuitElement} circuitElement - the CircuitElement to be rendered
@@ -147,10 +148,10 @@ define( function( require ) {
      * @param {Vertex[]} vertices - the vertices that are dragged
      * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
      * @param {CircuitLayerNode} circuitLayerNode
-     * @param {Vector2} startPoint
+     * @param {Vector2} start
      * @param {boolean} dragged
      */
-    endDrag: function( event, node, vertices, circuitConstructionKitScreenView, circuitLayerNode, startPoint, dragged ) {
+    endDrag: function( event, node, vertices, circuitConstructionKitScreenView, circuitLayerNode, start, dragged ) {
       var self = this;
       var circuitElement = this.circuitElement;
 
@@ -191,9 +192,9 @@ define( function( require ) {
           circuitLayerNode.endDrag( event, vertexProperty, dragged );
         } );
 
-        // Only show the editor when tapped, not on every drag.  Also, event could be undefined if this end() was triggered
-        // by dispose()
-        event && self.selectCircuitElementNodeWhenNear( event, circuitLayerNode, startPoint );
+        // Only show the editor when tapped, not on every drag.  Also, event could be undefined if this end() was
+        // triggered by dispose()
+        event && self.selectCircuitElementNodeWhenNear( event, circuitLayerNode, start );
       }
     },
 
@@ -246,7 +247,8 @@ define( function( require ) {
         rootNode.addInputListener( clickToDismissListener );
 
         // If the user deletes the element with the delete button, make sure to detach the rootNode input listener
-        // so the next drag will work right away, see https://github.com/phetsims/circuit-construction-kit-common/issues/368
+        // so the next drag will work right away,
+        // see https://github.com/phetsims/circuit-construction-kit-common/issues/368
         this.disposeActions.push( disposeAction );
       }
       else {
