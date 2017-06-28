@@ -1,7 +1,7 @@
 // Copyright 2016-2017, University of Colorado Boulder
 
 /**
- * The wire between a probe and its body.
+ * The curved wire between a probe and its body.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
