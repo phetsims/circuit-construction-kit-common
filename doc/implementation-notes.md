@@ -61,7 +61,8 @@ for details.
 ## View
 
 * Each node defines its own lifelike and schematic nodes internally, so nothing needs to be disposed or re-created when
-the view type changes.
+the view type changes.  Hence the "lifelike/schematic" radio buttons are not treated like independent scenes, but
+rather a single view property.
 * Likewise ChargeNode can render positive or negative charges, though they are cleared and re-added when the charge view 
 is changed.
 * View Layering: the CircuitLayerNode shows circuit elements, highlights, solder, and sensors.  Each CircuitElementNode
