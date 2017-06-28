@@ -25,27 +25,33 @@ define( function( require ) {
     },
 
     // Shows the play/pause button.  When the user changes something, the sim automatically pauses.
+    // For Black Box Study & PhET-iO
     showPlayPauseButton: { type: 'flag' },
 
     // Shows a button that saves the circuit
+    // For Black Box Study & PhET-iO
     showSaveButton: { type: 'flag' },
 
     // The circuit, as a LZW-compressed string
+    // For Black Box Study & PhET-iO
     circuit: {
       type: 'string',
       defaultValue: null
     },
 
+    // For Black Box Study & PhET-iO
     showDisplayOptionsPanel: {
       type: 'boolean',
       defaultValue: true
     },
 
+    // For Black Box Study & PhET-iO
     currentType: {
       type: 'string',
       defaultValue: 'electrons'
     },
 
+    // For Black Box Study & PhET-iO
     showCurrent: {
       type: 'boolean',
       defaultValue: true
