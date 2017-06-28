@@ -28,9 +28,9 @@ define( function( require ) {
   var pencilImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/pencil.png' );
   var eraserImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/eraser.png' );
   var handImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/hand.png' );
-  var highResistanceResistorImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor_high.png' );
+  var highResistanceResistorImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor-high.png' );
   var dogImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/dog.png' );
-  var dollarBillImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/dollar_bill.png' );
+  var dollarBillImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/dollar-bill.png' );
 
   // constants
   var LIFELIKE_IMAGE_SCALE = 1.0;

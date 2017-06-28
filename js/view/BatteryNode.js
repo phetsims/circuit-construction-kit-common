@@ -20,7 +20,7 @@ define( function( require ) {
 
   // images
   var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
-  var batteryHighImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery_high.png' );
+  var batteryHighImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery-high.png' );
 
   // constants
   // dimensions for schematic battery
