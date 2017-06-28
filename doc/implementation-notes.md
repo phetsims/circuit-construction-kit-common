@@ -14,7 +14,7 @@ provides a high-level description of the simulation model.
 
 ## Terminology
 
-This section enumerates terms that you'll see used throughout the internal and external documentation. In no particular 
+This section enumerates types that you'll see used throughout the internal and external documentation. In no particular 
 order:
 
 * CircuitElement - a model object that can participate in a circuit, such as a Wire, Resistor, Battery, etc.
@@ -25,9 +25,11 @@ instances.  After the circuit is solved for unknown currents, a voltage is assig
 * Ammeter - this ammeter is a "non-contact" ammeter which can take readings of a current by measuring magnetic fields
 (without touching the circuit)
 * SeriesAmmeter - this ammeter is a CircuitElement which measures current flowing through it. 
-* Circuit.js - this contains the CircuitElements and Vertices as well as logic for solving for the unknown voltages
+* Circuit - this contains the CircuitElements and Vertices as well as logic for solving for the unknown voltages
 and currents given the voltages sources and resistances.
-* CircuitNode.js - this contains logic for dragging and connecting vertices to each other.
+* CircuitNode - this displays the Circuit and contains logic for dragging and connecting vertices to each other.
+* Resistor -  depicts the normal resistor, the high resistance resistor and the grab bag items, which are treated
+as resistors.
 
 ## General
 
