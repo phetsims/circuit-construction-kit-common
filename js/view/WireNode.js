@@ -104,7 +104,7 @@ define( function( require ) {
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - if null, this WireNode is just an icon
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {Wire} wire
-   * @param {Property.<boolean>} showResultsProperty - unused but provided to match the constructors of other circuit element nodes // TODO: move to another arg
+   * @param {Property.<boolean>} showResultsProperty - unused but provided to match the constructors of other circuit element nodes
    * @param {Property.<string>} viewProperty - lifelike or schematic
    * @param {Tandem} tandem
    * @constructor
