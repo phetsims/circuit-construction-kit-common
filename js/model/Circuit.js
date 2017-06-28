@@ -325,7 +325,7 @@ define( function( require ) {
     rotateSingleVertex: function( vertex, pivotVertex ) {
       var distance = vertex.positionProperty.value.distance( pivotVertex.positionProperty.value );
 
-      // Still not good enough, let's try translating away
+      // If the vertices are too close, they must be translated way
       if ( distance < BUMP_AWAY_RADIUS && distance > 0 ) {
 
         var delta = pivotVertex.positionProperty.value.minus( vertex.positionProperty.value ).normalized().times( -SNAP_RADIUS * 1.5 );
@@ -333,9 +333,10 @@ define( function( require ) {
       }
       else {
 
-        // For small components like batteries (which are around 100 view units long), rotate Math.PI/4
-        // Longer components don't need to rotate by such a large angle because the arc length will be
-        // proportionately longer, see https://github.com/phetsims/circuit-construction-kit-common/issues/344
+        // Other vertices should be rotated away, which handles non-stretchy components well. For small components like
+        // batteries (which are around 100 view units long), rotate Math.PI/4. Longer components don't need to rotate
+        // by such a large angle because the arc length will be proportionately longer,
+        // see https://github.com/phetsims/circuit-construction-kit-common/issues/344
         var searchAngle = Math.PI / 4 * 100 / distance;
         this.rotateSingleVertexByAngle( vertex, pivotVertex, searchAngle );
         var distance1 = this.closestDistanceToOtherVertex( vertex );
