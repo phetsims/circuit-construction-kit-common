@@ -138,7 +138,7 @@ define( function( require ) {
     };
     var schematicNode = new Path( addSchematicCircle( new Shape()
 
-      // Left lead
+        // Left lead
         .moveTo( LEFT_LEAD_X, 0 )
         .lineTo( LEFT_LEAD_X, LEAD_Y )
 

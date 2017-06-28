@@ -258,6 +258,7 @@ define( function( require ) {
           }
         }
         if ( pairs.length > 0 ) {
+
           // Find the closest pair
           var distance = function( pair ) {
             return pair.v2.unsnappedPositionProperty.get().distance( pair.v1.unsnappedPositionProperty.get() );

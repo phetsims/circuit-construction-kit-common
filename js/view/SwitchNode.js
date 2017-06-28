@@ -74,9 +74,7 @@ define( function( require ) {
       lineWidth: type === CircuitConstructionKitConstants.SCHEMATIC ? 0 : 1
     } );
 
-    // circuitSwitch.closedProperty.link( function( closed ) {
     rotatingSegmentNode.setRotation( closed ? 0 : -Math.PI / 4 );
-    // } );
 
     var rightSegmentShape = new Shape()
       .moveTo( CircuitConstructionKitConstants.SWITCH_LENGTH * SWITCH_END - curveDiameter, thickness / 2 )
