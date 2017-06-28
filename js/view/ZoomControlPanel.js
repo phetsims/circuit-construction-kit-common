@@ -21,6 +21,7 @@ define( function( require ) {
 
   /**
    * @param {Property} selectedZoomProperty
+   * @param {Object} [options]
    * @constructor
    */
   function ZoomControlPanel( selectedZoomProperty, options ) {
