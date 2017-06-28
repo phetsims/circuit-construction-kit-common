@@ -11,7 +11,6 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Color = require( 'SCENERY/util/Color' );
-  var _ = require( "js/../../sherpa/lib/lodash-4.17.4" );
 
   /**
    * Gets the name from a color table entry.

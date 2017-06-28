@@ -1060,7 +1060,7 @@ define( function( require ) {
      * @public
      */
     toStateObject: function() {
-      console.log( 'I thought this code wasnt running!' );
+      console.log( 'This should only be running in phet-io mode' );
       var self = this;
       var getVertexIndex = function( vertex ) {
         var vertexIndex = self.vertices.indexOf( vertex );

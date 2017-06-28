@@ -80,7 +80,7 @@ define( function( require ) {
     // If there are no electrons in that circuit because it is a short segment, average the density by looking at
     // downstream neighbors
     if ( density === 0 && circuitElement.chargePathLength < 30 ) {
-      var distanceFromStart = Math.abs( distance - 0 );
+      var distanceFromStart = Math.abs( distance );
       var distanceFromEnd = Math.abs( circuitElement.chargePathLength - distance );
 
       var selectedVertex = distanceFromStart < distanceFromEnd ?
@@ -90,8 +90,7 @@ define( function( require ) {
       var densities = neighbors.map( function( neighbor ) {
         return circuit.getChargesInCircuitElement( neighbor ).length / neighbor.chargePathLength;
       } );
-      var averageDensity = _.sum( densities ) / densities.length;
-      density = averageDensity;
+      density = _.sum( densities ) / densities.length;
     }
     return {
       circuitElement: circuitElement,

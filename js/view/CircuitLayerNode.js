@@ -408,22 +408,6 @@ define( function( require ) {
     },
 
     /**
-     * Get the Node for a vertex
-     * @param {Array.<Node>} nodeArray
-     * @param {Vertex} vertex
-     * @returns {Node|null}
-     * @public
-     */
-    getNodeForVertex: function( nodeArray, vertex ) {
-      for ( var i = 0; i < nodeArray.length; i++ ) {
-        if ( nodeArray[ i ].vertex === vertex ) {
-          return nodeArray[ i ];
-        }
-      }
-      return null;
-    },
-
-    /**
      * Get the solder node associated with the specified Vertex
      * @param {Vertex} vertex
      * @returns {SolderNode}
