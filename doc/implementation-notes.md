@@ -52,7 +52,9 @@ must be properly implemented in all CircuitElements and CircuitElementNodes, and
 See [model.md](https://github.com/phetsims/circuit-construction-kit-common/blob/master/doc/model.md)
 
 In Circuit.solve, each CircuitElement is converted to a corresponding model element which can be used in the solver which
-is implemented in ModifedNodalAnalysisCircuit and ModifiedNodalAnalysisSolution.
+is implemented in ModifedNodalAnalysisCircuit and ModifiedNodalAnalysisSolution.  ModifiedNodalAnalysis implements
+Kirkhoff's Laws for each connected subcircuit, and solves them as a linear algebra problem.  Please see ModifiedNodalAnalysisCircuit.js
+for details.
 
 ## View
 
