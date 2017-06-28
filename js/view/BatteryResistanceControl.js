@@ -23,7 +23,7 @@ define( function( require ) {
   var Range = require( 'DOT/Range' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
 
-  //strings
+  // strings
   var batteryResistanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/batteryResistance' );
   var resistanceOhmsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhms' );
   var resistanceOhmString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhm' );
