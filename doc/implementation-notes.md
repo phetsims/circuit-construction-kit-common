@@ -13,7 +13,7 @@ may node parts that appear in different layers, such as the highlight and the li
 socket in another layer makes it possible to show the electrons going "through" the socket (in z-ordering). The 
 CircuitElementNode constructors populate different layers of the CircuitLayerNode in their constructors and depopulate 
 in their dispose functions.
-* To attain high performance on iPad2, some of the CircuitLayerNode child node layers have been implemented in WebGL 
-using `renderer:'webgl'`.  This means all of the nodes must be rendered with solid-fill Rectangle (without rounded 
+* To attain reasonable performance on iPad2, some of the CircuitLayerNode child node layers have been implemented in 
+WebGL using `renderer:'webgl'`.  This means all of the nodes must be rendered with solid-fill Rectangle (without rounded 
 corners or gradients), and images.  Node.toDataURLNodeSynchronous is used throughout these view layers to rasterize as 
 images. 
