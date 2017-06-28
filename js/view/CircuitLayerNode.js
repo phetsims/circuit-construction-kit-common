@@ -281,7 +281,7 @@ define( function( require ) {
           var delta = closestPoint.minus( position );
 
           // Find all vertices connected by fixed length nodes.
-          var vertices = circuit.findAllFixedVertices( vertex );
+          var vertices = circuit.findAllConnectedVertices( vertex );
           self.translateVertexGroup( vertex, vertices, delta, null, [] );
         }
       }
@@ -642,6 +642,9 @@ define( function( require ) {
 
     /**
      * Translate a group of vertices, used when dragging by a circuit element or by a one-neighbor vertex
+     *
+     * Note: Do not confuse this with Circuit.translateVertexGroup which does not consider connections while dragging
+     *
      * @param {Vertex} vertex - the vertex being dragged
      * @param {Array.<Vertex>} vertices - all the vertices in the group
      * @param {Vector2} unsnappedDelta - how far to move the group

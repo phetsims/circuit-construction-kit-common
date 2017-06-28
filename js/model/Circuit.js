@@ -517,6 +517,9 @@ define( function( require ) {
 
     /**
      * Translate all vertices connected to the mainVertex by FixedLengthCircuitElements by the given distance
+     *
+     * Note: do not confuse this with CircuitLayerNode.translateVertexGroup which proposes connections while dragging
+     *
      * @param {Vertex} mainVertex - the vertex whose group will be translated
      * @param {Vector2} delta - the vector by which to move the vertex group
      * @private
