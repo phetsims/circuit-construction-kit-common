@@ -11,7 +11,7 @@
   "lab": {
     "value": "Lab"
   },
-  "animationSpeedLimit": {
+  "animationSpeedLimitReached": {
     "value": "Animation speed limit reached! Simulation speed reduced to {{percent}}% normal."
   },
   "resistor": {

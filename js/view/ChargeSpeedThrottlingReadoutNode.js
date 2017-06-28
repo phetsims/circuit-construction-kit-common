@@ -17,11 +17,11 @@ define( function( require ) {
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
 
   // strings
-  var animationSpeedLimitString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/animationSpeedLimit' );
+  var animationSpeedLimitReachedString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/animationSpeedLimitReached' );
 
   function ChargeSpeedThrottlingReadoutNode( timeScaleProperty, showCurrentProperty, exploreScreenRunningProperty ) {
     var self = this;
-    Text.call( this, animationSpeedLimitString, { fontSize: 26 } );
+    Text.call( this, animationSpeedLimitReachedString, { fontSize: 26 } );
 
     Property.multilink( [ timeScaleProperty, showCurrentProperty, exploreScreenRunningProperty ], function( timeScale, showCurrent, exploreScreenRunning ) {
       var percent = timeScale * 100;
@@ -30,7 +30,7 @@ define( function( require ) {
       if ( timeScale < 0.01 ) {
         fixed = '< 1';
       }
-      self.setText( StringUtils.fillIn( animationSpeedLimitString, { percent: fixed } ) );
+      self.setText( StringUtils.fillIn( animationSpeedLimitReachedString, { percent: fixed } ) );
 
       // Only show the throttling message if the speed is less than 100% and charges are visible
       self.visible = isThrottled && showCurrent && exploreScreenRunning;
