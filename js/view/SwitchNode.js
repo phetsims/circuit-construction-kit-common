@@ -136,7 +136,7 @@ define( function( require ) {
   ).toDataURLNodeSynchronous();
 
   /**
-   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - the main screen view, null for icon
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {Switch} circuitSwitch
    * @param {Property.<boolean>} showResultsProperty - supplied for consistency with other CircuitElementNode

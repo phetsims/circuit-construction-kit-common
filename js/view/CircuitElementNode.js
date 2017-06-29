@@ -146,7 +146,7 @@ define( function( require ) {
      * @param {Object} event - scenery event
      * @param {Node} node - the node the input listener is attached to
      * @param {Vertex[]} vertices - the vertices that are dragged
-     * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
+     * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - the main screen view, null for icon
      * @param {CircuitLayerNode} circuitLayerNode
      * @param {Vector2} start
      * @param {boolean} dragged

@@ -54,7 +54,7 @@ define( function( require ) {
   } ).toDataURLNodeSynchronous();
 
   /**
-   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - the main screen view, null for icon
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {Battery} battery
    * @param {Property.<boolean>} showResultsProperty - for consistency with other CircuitElementNode constructors

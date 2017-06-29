@@ -32,8 +32,7 @@ define( function( require ) {
   var rotationMatrix = new Matrix3();
 
   /**
-   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - so that the node can be dropped back
-   *                                                                            - into the toolbox
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - the main screen view, null for icon
    * @param {CircuitLayerNode} circuitLayerNode - Null if an icon is created
    * @param {FixedLengthCircuitElement} circuitElement - the corresponding model element
    * @param {Property.<string>} viewProperty - 'lifelike'|'schematic'

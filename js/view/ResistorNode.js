@@ -55,7 +55,7 @@ define( function( require ) {
   var SCHEMATIC_WAVELENGTH = 54 * SCHEMATIC_SCALE;
 
   /**
-   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView
+   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - the main screen view, null for icon
    * @param {CircuitLayerNode} [circuitLayerNode] optional, null for icons
    * @param {Resistor} resistor
    * @param {Property.<boolean>} showResultsProperty - not used here but appears in signature to keep same signature as
