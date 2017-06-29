@@ -193,7 +193,9 @@ define( function( require ) {
         }
       }
     } );
-    this.contentNode.addInputListener( buttonListener );
+
+    // Only add the input listener if it is not for a toolbar icon
+    circuitConstructionKitScreenView && this.contentNode.addInputListener( buttonListener );
 
     // @private - clean up resources when no longer used.
     this.disposeSwitchNode = function() {
@@ -201,7 +203,7 @@ define( function( require ) {
 
       // Surprisingly, the children and button listener must be removed to prevent a memory leak.
       self.removeAllChildren();
-      self.contentNode.removeInputListener( buttonListener );
+      circuitConstructionKitScreenView && self.contentNode.removeInputListener( buttonListener );
     };
   }
 
