@@ -15,7 +15,7 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
 
   // strings
-  var ampereUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ampereUnits' );
+  var currentUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/currentUnits' );
   var voltageUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageUnits' );
 
   /**
@@ -52,7 +52,7 @@ define( function( require ) {
     createCurrentReadout: function( value ) {
 
       // Show 3 decimal places so that current can still be seen with a glowing high-resistance bulb
-      return StringUtils.fillIn( ampereUnitsString, { ampere: Util.toFixed( Math.abs( value ), 3 ) } );
+      return StringUtils.fillIn( currentUnitsString, { current: Util.toFixed( Math.abs( value ), 3 ) } );
     },
 
     /**

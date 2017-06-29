@@ -113,8 +113,8 @@
   "voltageUnits": {
     "value": "{{voltage}} V"
   },
-  "ampereUnits": {
-    "value": "{{ampere}} A"
+  "currentUnits": {
+    "value": "{{current}} A"
   },
   "resistanceOhmsSymbol": {
     "value": "{{resistance}} Ω"
