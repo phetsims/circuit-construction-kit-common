@@ -32,8 +32,9 @@ define( function( require ) {
   var CORNER_RADIUS = 4;
 
   /**
-   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - the main screen view, null for icon
-   * @param {CircuitLayerNode} circuitLayerNode
+   * This constructor is called dynamically and must match the signature of other circuit element nodes.
+   * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - main screen view, null for icon
+   * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {SeriesAmmeter} seriesAmmeter
    * @param {Property.<boolean>} showResultsProperty - supplied for consistency with other CircuitElementNode
    *                                                 - constructors

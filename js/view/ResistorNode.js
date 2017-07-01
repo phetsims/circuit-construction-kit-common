@@ -55,8 +55,9 @@ define( function( require ) {
   var SCHEMATIC_WAVELENGTH = 54 * SCHEMATIC_SCALE;
 
   /**
-   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - the main screen view, null for icon
-   * @param {CircuitLayerNode} [circuitLayerNode] optional, null for icons
+   * This constructor is called dynamically and must match the signature of other circuit element nodes.
+   * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - main screen view, null for icon
+   * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {Resistor} resistor
    * @param {Property.<boolean>} showResultsProperty - not used here but appears in signature to keep same signature as
    *                                                 - other CircuitElementNode subclasses.
