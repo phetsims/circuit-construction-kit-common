@@ -325,7 +325,7 @@ define( function( require ) {
         lifelikeRoundedCapReversed.visible = true;
       }
       else {
-        this.lineNode.getChildAt( 0 ) !== BLACK_LINE_NODE && this.lineNode.setChildren( [ BLACK_LINE_NODE ] );
+        (this.lineNode.getChildAt( 0 ) !== BLACK_LINE_NODE) && this.lineNode.setChildren( [ BLACK_LINE_NODE ] );
         lifelikeRoundedCapNormal.visible = false;
         lifelikeRoundedCapReversed.visible = false;
       }

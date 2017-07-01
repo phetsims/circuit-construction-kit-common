@@ -85,7 +85,7 @@ define( function( require ) {
     var previousPanel = null;
     circuit.selectedCircuitElementProperty.link( function( selectedCircuitElement ) {
       previousPanel && self.removeChild( previousPanel );
-      previousPanel && previousPanel !== tapInstructionTextNode && previousPanel.dispose();
+      (previousPanel && previousPanel !== tapInstructionTextNode) && previousPanel.dispose();
       previousPanel = null;
 
       if ( selectedCircuitElement ) {
