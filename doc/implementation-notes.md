@@ -65,6 +65,8 @@ the view type changes.  Hence the "lifelike/schematic" radio buttons are not tre
 rather a single view property.
 * Likewise ChargeNode can render positive or negative charges, though they are cleared and re-added when the charge view 
 is changed.
+* The CircuitElementNode subtypes like BatteryNode, ResistorNode, etc have the same signature because they are invoked 
+dynamically from CircuitLayerNode.initializeCircuitElementType.  
 * View Layering: the CircuitLayerNode shows circuit elements, highlights, solder, and sensors.  Each CircuitElementNode
 may node parts that appear in different layers, such as the highlight and the light bulb socket.  Having the light bulb
 socket in another layer makes it possible to show the electrons going "through" the socket (in z-ordering). The 
