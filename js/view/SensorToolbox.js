@@ -24,6 +24,7 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Property = require( 'AXON/Property' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
   // strings
   var ammeterString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeter' );
@@ -62,29 +63,17 @@ define( function( require ) {
      */
     var createListener = function( meterModel, meterNode ) {
 
-      return {
-
-        // ad-hoc touchSnag
-        touchenter: function( event ) {
-          this.down( event );
-        },
-
-        // ad-hoc touchSnag
-        touchmove: function( event ) {
-          this.down( event );
-        },
-
+      return SimpleDragHandler.createForwardingListener( {
         down: function( event ) {
-          if ( event.pointer.dragging ) {
-            return;
-          }
           var viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point );
           meterModel.draggingProbesWithBodyProperty.set( true );
           meterModel.visibleProperty.set( true );
           meterModel.bodyPositionProperty.set( viewPosition );
           meterNode.dragHandler.startDrag( event );
         }
-      };
+      }, {
+        allowTouchSnag: true,
+      } );
     };
 
     // Draggable icon for the voltmeter

@@ -14,6 +14,7 @@ define( function( require ) {
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Text = require( 'SCENERY/nodes/Text' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
   // constants
   var TOOLBOX_ICON_SIZE = CircuitConstructionKitConstants.TOOLBOX_ICON_SIZE;
@@ -28,9 +29,7 @@ define( function( require ) {
    * @param {function} createElement
    * @constructor
    */
-  function CircuitElementToolNode(
-    labelText, showLabelsProperty, circuitLayerNode, iconNode, maxNumber, count, createElement
-  ) {
+  function CircuitElementToolNode( labelText, showLabelsProperty, circuitLayerNode, iconNode, maxNumber, count, createElement ) {
     var circuit = circuitLayerNode.circuit;
     var self = this;
     var labelNode = new Text( labelText, { fontSize: 12, maxWidth: TOOLBOX_ICON_SIZE } );
@@ -44,25 +43,8 @@ define( function( require ) {
       children: labelText.length > 0 ? [ iconNode, labelNode ] : [ iconNode ]
     } );
 
-    this.addInputListener( {
-
-      // ad-hoc touchSnag to support multiple dragging out at once
-      touchenter: function( event ) {
-        this.down( event );
-      },
-
-      // ad-hoc touchSnag to support multiple dragging out at once
-      touchmove: function( event ) {
-        this.down( event );
-      },
-
+    this.addInputListener( SimpleDragHandler.createForwardingListener( {
       down: function( event ) {
-        if ( event.pointer.dragging ) {
-          return;
-        }
-
-        // Don't try to start drags with a right mouse button or an attached pointer.
-        if ( !event.canStartPress() ) { return; }
 
         // initial position of the pointer in the coordinate frame of the CircuitLayerNode
         var viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point );
@@ -79,9 +61,10 @@ define( function( require ) {
         // listener (which adds a listener to the pointer, in the usual SimpleDragHandler way), and it seems like a good
         // pattern.
         circuitElement.startDragEmitter.emit1( event );
-
       }
-    } );
+    }, {
+      allowTouchSnag: true
+    } ) );
 
     circuit.circuitElements.lengthProperty.link( function() {
       self.visible = count() < maxNumber;
