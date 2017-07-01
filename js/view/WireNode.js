@@ -114,15 +114,20 @@ define( function( require ) {
   function WireNode( circuitConstructionKitScreenView, circuitLayerNode, wire, showResultsProperty, viewProperty,
                      tandem ) {
     var self = this;
+
+    // @private {Property.<string>} 'lifelike'|'schematic'
     this.viewProperty = viewProperty;
+
+    // @private {CircuitLayerNode}
     this.circuitLayerNode = circuitLayerNode;
 
     // @public (read-only) {Wire}
     this.wire = wire;
 
-    // @private - keep track of when disposed so that children cannot be reassigned after disposal
+    // @private {boolean} - keep track of when disposed so that children cannot be reassigned after disposal
     this.disposed = false;
 
+    // @private {Node} - the node that shows the yellow highlight for the node when selected
     this.highlightNode = new Path( null, {
       stroke: CircuitConstructionKitConstants.HIGHLIGHT_COLOR,
       lineWidth: CircuitConstructionKitConstants.HIGHLIGHT_LINE_WIDTH,
@@ -374,7 +379,7 @@ define( function( require ) {
     dispose: function() {
       this.disposed = true;
       this.disposeWireNode();
-      this.children = [];
+      this.removeAllChildren();
       CircuitElementNode.prototype.dispose.call( this );
     }
   }, {

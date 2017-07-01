@@ -346,7 +346,7 @@ define( function( require ) {
      */
     dispose: function() {
       this.disposed = true;
-      this.children = [];
+      this.removeAllChildren();
       this.disposeVertexNode();
       Node.prototype.dispose.call( this );
     }

@@ -239,7 +239,7 @@ define( function( require ) {
      */
     dispose: function() {
       FixedLengthCircuitElementNode.prototype.dispose.call( this );
-      this.children = [];
+      this.removeAllChildren();
       this.disposeResistorNode();
     }
   }, {

@@ -55,6 +55,7 @@ define( function( require ) {
     // @public (read-only) {CircuitElement}
     this.circuitElement = circuitElement;
 
+    // @private {CircuitLayerNode}
     this.circuitLayerNode = circuitLayerNode;
 
     // @protected (read-only) {Node} node that shows the component, separate from the part that shows the highlight and
@@ -116,6 +117,8 @@ define( function( require ) {
     var startPoint = null;
     var dragged = false;
     if ( !options.icon ) {
+
+      // @private {TandemSimpleDragHandler}
       this.dragHandler = new TandemSimpleDragHandler( {
         allowTouchSnag: true,
         start: function( event ) {
