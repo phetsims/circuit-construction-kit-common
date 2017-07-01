@@ -314,10 +314,10 @@ define( function( require ) {
       var v2Neighbors = this.getNeighboringVertices( v2 );
 
       if ( v1Neighbors.length === 1 && !v1.blackBoxInterfaceProperty.get() ) {
-        this.rotateSingleVertex( v1, v1Neighbors[ 0 ] );
+        this.bumpAwaySingleVertex( v1, v1Neighbors[ 0 ] );
       }
       else if ( v2Neighbors.length === 1 && !v2.blackBoxInterfaceProperty.get() ) {
-        this.rotateSingleVertex( v2, v2Neighbors[ 0 ] );
+        this.bumpAwaySingleVertex( v2, v2Neighbors[ 0 ] );
       }
     },
 
@@ -329,7 +329,7 @@ define( function( require ) {
      * @param {Vertex} pivotVertex - the vertex to rotate about
      * @private
      */
-    rotateSingleVertex: function( vertex, pivotVertex ) {
+    bumpAwaySingleVertex: function( vertex, pivotVertex ) {
       var distance = vertex.positionProperty.value.distance( pivotVertex.positionProperty.value );
 
       // If the vertices are too close, they must be translated way
