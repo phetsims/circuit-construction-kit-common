@@ -19,6 +19,12 @@ define( function( require ) {
   // strings
   var animationSpeedLimitReachedString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/animationSpeedLimitReached' );
 
+  /**
+   * @param {Property.<number>} timeScaleProperty - the fractional rate of time passage (1.0 = full speed)
+   * @param {Property.<boolean>} showCurrentProperty - true if currents are visible
+   * @param {Property.<boolean>} exploreScreenRunningProperty - true if the explore screen is running
+   * @constructor
+   */
   function ChargeSpeedThrottlingReadoutNode( timeScaleProperty, showCurrentProperty, exploreScreenRunningProperty ) {
     var self = this;
     Text.call( this, animationSpeedLimitReachedString, { fontSize: 26 } );
