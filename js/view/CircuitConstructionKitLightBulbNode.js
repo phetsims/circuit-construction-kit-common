@@ -185,7 +185,7 @@ define( function( require ) {
       options
     );
 
-    // @private
+    // @private - node that contains the light rays so they can be easily positioned
     this.rayNodeContainer = new Node( {
       children: lightBulbNode.raysNode ? [ lightBulbNode.raysNode ] : [] // keep centering and translation
     } );
@@ -202,6 +202,10 @@ define( function( require ) {
         tandem.createTandem( 'socketNode' ),
         options
       );
+      var viewListener = function( view ) {
+        self.rayNodeContainer.visible = view === CircuitConstructionKitConstants.LIFELIKE;
+      };
+      viewProperty.link( viewListener );
       circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.addChild( this.socketNode );
       circuitLayerNode && circuitLayerNode.lightRaysLayer.addChild( this.rayNodeContainer );
     }
@@ -210,6 +214,7 @@ define( function( require ) {
       updateBrightness.dispose();
       circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.removeChild( self.socketNode );
       circuitLayerNode && circuitLayerNode.lightRaysLayer.removeChild( self.rayNodeContainer );
+      viewProperty.unlink( viewListener );
       self.socketNode.dispose();
     };
   }
