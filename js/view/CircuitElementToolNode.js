@@ -71,7 +71,7 @@ define( function( require ) {
     } );
 
     // Expand touch area around text
-    this.touchArea = this.localBounds.dilatedXY( 10, 18 );
+    this.touchArea = this.localBounds.dilatedXY( 10, 13 );
     this.mouseArea = this.touchArea;
   }
 

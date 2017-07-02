@@ -207,7 +207,7 @@ define( function( require ) {
       } );
 
     // Override touch area because it has unique dimensions
-    lightBulbToolNode.touchArea = lightBulbToolNode.localBounds.dilatedXY( 11, 8 );
+    // lightBulbToolNode.touchArea = lightBulbToolNode.localBounds.dilatedXY( 11, 8 );
 
     var resistorModel = new Resistor(
       new Vertex( 0, 0 ),
