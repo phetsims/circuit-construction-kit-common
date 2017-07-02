@@ -76,6 +76,15 @@ in their dispose functions.
 WebGL using `renderer:'webgl'`.  This means all of the nodes must be rendered with solid-fill Rectangle (without rounded 
 corners or gradients), and images.  Node.toDataURLNodeSynchronous is used throughout these view layers to rasterize as 
 images. 
+* CircuitElementEditPanel (which appears at the bottom of the screen when a CircuitElement is selected) and 
+ValueNode.js (which shows a text readout over an item when "values" is checked) use a similar pattern of containing
+logic for the different kinds of CircuitElements.  Other ways to solve this may have been:
+(1) create subclasses of CircuitElementEditPanel and ValueNode specific to the types
+(2) create abstract methods in CircuitElement or FixedLengthCircuitElement that can be called by CircuitElementEditPanel
+and ValueNode.
+It seems best to isolate the code relevant to each within its file rather than scattering it around, hence there are 
+type checks in those view classes.  On the downside, when a new element type is added, these files will need to be 
+updated.  
 
 This document was adapted from the [Implementation Notes for Function Builder](https://github.com/phetsims/function-builder/blob/master/doc/implementation-notes.md)
 
