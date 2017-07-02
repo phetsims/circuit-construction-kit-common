@@ -73,7 +73,7 @@ define( function( require ) {
     var readoutTextNode = new Text( batteryResistanceProperty.get(), {
       font: new PhetFont( CircuitConstructionKitConstants.FONT_SIZE ),
       fill: 'black',
-      maxWidth: 25,
+      maxWidth: 100,
       tandem: readoutTextPanelTandem.createTandem( 'readoutTextNode' )
     } );
 
