@@ -176,7 +176,7 @@ define( function( require ) {
             circuitConstructionKitScreenView,
             self,
             circuitElement,
-            self.circuitConstructionKitModel.exploreScreenRunningProperty,
+            self.circuitConstructionKitModel.isValueDepictionEnabledProperty,
             circuitConstructionKitScreenView.circuitConstructionKitModel.viewProperty,
             groupTandem.createNextTandem()
           );

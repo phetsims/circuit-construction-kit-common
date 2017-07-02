@@ -51,9 +51,9 @@ define( function( require ) {
 
     // @public {BooleanProperty} - changes whether the light bulb brightness and ammeter/voltmeter readouts,
     // charges, flame, etc. can be seen
-    this.exploreScreenRunningProperty = new BooleanProperty(
+    this.isValueDepictionEnabledProperty = new BooleanProperty(
       !CircuitConstructionKitQueryParameters.showPlayPauseButton, {
-        tandem: tandem.createTandem( 'exploreScreenRunningProperty' )
+        tandem: tandem.createTandem( 'isValueDepictionEnabledProperty' )
       } );
 
     // @public {BooleanProperty} - true if the labels in the toolbox should be shown
@@ -123,7 +123,7 @@ define( function( require ) {
     if ( CircuitConstructionKitQueryParameters.showPlayPauseButton ) {
       var pause = function() {
         if ( !modeChanging ) {
-          self.exploreScreenRunningProperty.value = false;
+          self.isValueDepictionEnabledProperty.value = false;
         }
       };
       this.circuit.vertices.lengthProperty.lazyLink( pause );
@@ -155,7 +155,7 @@ define( function( require ) {
     }
 
     // When the simulation pauses and resumes, clear the time scaling factor (so it doesn't show a stale value)
-    this.exploreScreenRunningProperty.link( function() {
+    this.isValueDepictionEnabledProperty.link( function() {
       self.circuit.chargeAnimator.timeScaleRunningAverage.clear();
     } );
   }
@@ -179,7 +179,7 @@ define( function( require ) {
       }
 
       // Only move charges if the simulation is not paused.
-      if ( this.exploreScreenRunningProperty.value ) {
+      if ( this.isValueDepictionEnabledProperty.value ) {
         this.circuit.step( dt );
       }
 
@@ -191,7 +191,7 @@ define( function( require ) {
      * @public
      */
     reset: function() {
-      this.exploreScreenRunningProperty.reset();
+      this.isValueDepictionEnabledProperty.reset();
       this.showLabelsProperty.reset();
       this.showValuesProperty.reset();
       this.modeProperty.reset();

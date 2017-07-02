@@ -164,8 +164,8 @@ define( function( require ) {
         this.fireNode.mutate( { scale: self.contentNode.width / this.fireNode.width } );
         this.addChild( this.fireNode );
 
-        var showFire = function( current, exploreScreenRunning ) {
-          return Math.abs( current ) >= 10 && exploreScreenRunning;
+        var showFire = function( current, isValueDepictionEnabled ) {
+          return Math.abs( current ) >= 10 && isValueDepictionEnabled;
         };
 
         var updateFireMultilink = null;
@@ -176,9 +176,9 @@ define( function( require ) {
           updateFireMultilink = Property.multilink( [
             circuitElement.currentProperty,
             circuitElement.resistanceProperty,
-            circuitConstructionKitScreenView.circuitConstructionKitModel.exploreScreenRunningProperty
-          ], function( current, resistance, exploreScreenRunning ) {
-            self.fireNode.visible = showFire( current, exploreScreenRunning ) && resistance >= 1E-8;
+            circuitConstructionKitScreenView.circuitConstructionKitModel.isValueDepictionEnabledProperty
+          ], function( current, resistance, isValueDepictionEnabled ) {
+            self.fireNode.visible = showFire( current, isValueDepictionEnabled ) && resistance >= 1E-8;
           } );
         }
         else {
@@ -186,9 +186,9 @@ define( function( require ) {
           // Show fire in all other circuit elements
           updateFireMultilink = Property.multilink( [
             circuitElement.currentProperty,
-            circuitConstructionKitScreenView.circuitConstructionKitModel.exploreScreenRunningProperty
-          ], function( current, exploreScreenRunning ) {
-            self.fireNode.visible = showFire( current, exploreScreenRunning );
+            circuitConstructionKitScreenView.circuitConstructionKitModel.isValueDepictionEnabledProperty
+          ], function( current, isValueDepictionEnabled ) {
+            self.fireNode.visible = showFire( current, isValueDepictionEnabled );
           } );
         }
       }

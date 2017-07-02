@@ -102,14 +102,14 @@ define( function( require ) {
     } );
     this.addChild( this.backgroundPlane );
 
-    var backgroundListener = function( exploreScreenRunning ) {
-      self.backgroundPlane.fill = exploreScreenRunning ? BACKGROUND_COLOR : 'gray';
+    var backgroundListener = function( isValueDepictionEnabled ) {
+      self.backgroundPlane.fill = isValueDepictionEnabled ? BACKGROUND_COLOR : 'gray';
     };
-    circuitConstructionKitModel.exploreScreenRunningProperty.link( backgroundListener );
+    circuitConstructionKitModel.isValueDepictionEnabledProperty.link( backgroundListener );
 
     // @public (read-only) {function} - For overriding in BlackBoxSceneView, which needs a custom color
     this.unlinkBackgroundListener = function() {
-      circuitConstructionKitModel.exploreScreenRunningProperty.unlink( backgroundListener );
+      circuitConstructionKitModel.isValueDepictionEnabledProperty.unlink( backgroundListener );
     };
 
     // Reset All button
@@ -131,7 +131,7 @@ define( function( require ) {
 
     var voltmeterNode = new VoltmeterNode(
       circuitConstructionKitModel.voltmeter, tandem.createTandem( 'voltmeterNode' ), {
-        showResultsProperty: circuitConstructionKitModel.exploreScreenRunningProperty,
+        showResultsProperty: circuitConstructionKitModel.isValueDepictionEnabledProperty,
         visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty
       } );
     circuitConstructionKitModel.voltmeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
@@ -142,7 +142,7 @@ define( function( require ) {
     circuitConstructionKitModel.voltmeter.visibleProperty.linkAttribute( voltmeterNode, 'visible' );
 
     var ammeterNode = new AmmeterNode( circuitConstructionKitModel.ammeter, tandem.createTandem( 'ammeterNode' ), {
-      showResultsProperty: circuitConstructionKitModel.exploreScreenRunningProperty,
+      showResultsProperty: circuitConstructionKitModel.isValueDepictionEnabledProperty,
       visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty
     } );
     circuitConstructionKitModel.ammeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
@@ -165,7 +165,7 @@ define( function( require ) {
     var chargeSpeedThrottlingReadoutNode = new ChargeSpeedThrottlingReadoutNode(
       circuitConstructionKitModel.circuit.chargeAnimator.timeScaleProperty,
       circuitConstructionKitModel.circuit.showCurrentProperty,
-      circuitConstructionKitModel.exploreScreenRunningProperty
+      circuitConstructionKitModel.isValueDepictionEnabledProperty
     );
     this.addChild( chargeSpeedThrottlingReadoutNode );
 
@@ -175,7 +175,7 @@ define( function( require ) {
       this.circuitLayerNode,
       voltmeterNode,
       ammeterNode,
-      circuitConstructionKitModel.exploreScreenRunningProperty,
+      circuitConstructionKitModel.isValueDepictionEnabledProperty,
       circuitConstructionKitModel.showLabelsProperty,
       options.showSeriesAmmeters,
       tandem.createTandem( 'sensorToolbox' ) );
@@ -323,7 +323,7 @@ define( function( require ) {
 
     // Add the optional Play/Pause button
     if ( CircuitConstructionKitQueryParameters.showPlayPauseButton ) {
-      var playPauseButton = new PlayPauseButton( circuitConstructionKitModel.exploreScreenRunningProperty, {
+      var playPauseButton = new PlayPauseButton( circuitConstructionKitModel.isValueDepictionEnabledProperty, {
         tandem: tandem.createTandem( 'playPauseButton' ),
         baseColor: '#33ff44' // the default blue fades into the background too much
       } );
