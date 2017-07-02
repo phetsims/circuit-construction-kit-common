@@ -16,9 +16,11 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var ModifiedNodalAnalysisSolution = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisSolution' );
   var Matrix = require( 'DOT/Matrix' );
+  var CircuitConstructionKitQueryParameters =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
 
   // constants
-  var DEBUG = false;
+  var DEBUG = CircuitConstructionKitQueryParameters.debugModifiedNodalAnalysis;
 
   /**
    * @param {Object[]} batteries - {node0:number,node1:number,circuitElement:CircuitElement,voltage:number}
@@ -343,7 +345,7 @@ define( function( require ) {
       DEBUG && console.log( equations.join( '\n' ) );
       DEBUG && console.log( 'A=\n' + A.toString() );
       DEBUG && console.log( 'z=\n' + z.toString() );
-      DEBUG && console.log( 'unknowns=\n' + this.getUnknowns().map( function( u ) {
+      DEBUG && console.log( 'unknowns=\n' + unknowns.map( function( u ) {
         return u.toString();
       } ).join( '\n' ) );
 

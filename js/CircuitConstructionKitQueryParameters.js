@@ -24,6 +24,9 @@ define( function( require ) {
       ]
     },
 
+    // Output debugging information for the Modified Nodal Analysis
+    debugModifiedNodalAnalysis: { type: 'flag' },
+
     // Shows the play/pause button.  When the user changes something, the sim automatically pauses.
     // For Black Box Study & PhET-iO
     showPlayPauseButton: { type: 'flag' },
