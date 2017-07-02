@@ -24,7 +24,7 @@ define( function( require ) {
       ]
     },
 
-    // Output debugging information for the Modified Nodal Analysis
+    // Output debugging information to the console during the Modified Nodal Analysis
     debugModifiedNodalAnalysis: { type: 'flag' },
 
     // Shows the play/pause button.  When the user changes something, the sim automatically pauses.
