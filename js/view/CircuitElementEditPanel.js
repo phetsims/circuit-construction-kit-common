@@ -47,6 +47,10 @@ define( function( require ) {
       tandem: tandem.createTandem( 'numberControl' ),
       valuePattern: StringUtils.fillIn( valueUnitsPatternString, { units: units } )
     }, {
+
+      // Prevent overlap with the navigation bar
+      thumbTouchAreaYDilation: 5,
+
       titleFont: FONT,
       valueFont: FONT,
       decimalPlaces: 1,
