@@ -130,8 +130,8 @@ define( function( require ) {
         this.lightRaysLayer,
         this.mainLayer, // circuit elements, charges and meters
         this.lightBulbSocketLayer, // fronts of light bulbs
-        this.valueLayer, // values
         this.lightBulbSocketElectronLayer, // electrons in front of the sockets
+        this.valueLayer, // values
         this.seriesAmmeterNodeReadoutPanelLayer, // fronts of series ammeters
         this.highlightLayer, // highlights go in front of everything else
         this.buttonLayer // vertex buttons
