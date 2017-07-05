@@ -15,26 +15,22 @@ define( function( require ) {
   var HBox = require( 'SCENERY/nodes/HBox' );
   var NumberControl = require( 'SCENERY_PHET/NumberControl' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
-
-  // strings
-  var valueUnitsPatternString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/valueUnitsPattern' );
 
   // constants
   var FONT = new PhetFont( CircuitConstructionKitConstants.FONT_SIZE );
 
   /**
    * @param {string} title - text to show as a title
-   * @param {string} units - units for the value to change
+   * @param {string} valuePattern - pattern for NumberControl to display the value as text
    * @param {Property.<number>} valueProperty - property this control changes
    * @param {Circuit} circuit - parent circuit
    * @param {FixedLengthCircuitElement} circuitElement - the CircuitElement controlled by this UI
    * @param {Tandem} tandem
    * @constructor
    */
-  function CircuitElementEditPanel( title, units, valueProperty, circuit, circuitElement, tandem ) {
+  function CircuitElementEditPanel( title, valuePattern, valueProperty, circuit, circuitElement, tandem ) {
 
     // When the user changes any parameter of any circuit element, signify it.
     var valuePropertyListener = function() {
@@ -45,7 +41,7 @@ define( function( require ) {
     // Create the controls
     var numberControl = new NumberControl( title, valueProperty, circuitElement.editableRange, _.extend( {
       tandem: tandem.createTandem( 'numberControl' ),
-      valuePattern: StringUtils.fillIn( valueUnitsPatternString, { units: units } )
+      valuePattern: valuePattern
     }, {
 
       // Prevent overlap with the navigation bar

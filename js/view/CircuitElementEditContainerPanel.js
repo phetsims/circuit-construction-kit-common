@@ -30,8 +30,8 @@ define( function( require ) {
   var tapCircuitElementToEditString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/tapCircuitElementToEdit' );
   var resistanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistance' );
   var voltageString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltage' );
-  var ohmsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ohms' );
-  var voltsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/volts' );
+  var resistanceOhmsValuePatternString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhmsValuePattern' );
+  var voltageVoltsValuePatternString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageVoltsValuePattern' );
 
   // constants
   var GET_LAYOUT_POSITION = function( visibleBounds ) {
@@ -98,7 +98,7 @@ define( function( require ) {
         if ( isResistor && selectedCircuitElement.isResistanceEditable() ) {
           previousPanel = new CircuitElementEditPanel(
             resistanceString,
-            ohmsString,
+            resistanceOhmsValuePatternString,
             selectedCircuitElement.resistanceProperty,
             circuit,
             selectedCircuitElement,
@@ -115,7 +115,7 @@ define( function( require ) {
         else if ( isBattery ) {
           previousPanel = new CircuitElementEditPanel(
             voltageString,
-            voltsString,
+            voltageVoltsValuePatternString,
             selectedCircuitElement.voltageProperty,
             circuit,
             selectedCircuitElement,
