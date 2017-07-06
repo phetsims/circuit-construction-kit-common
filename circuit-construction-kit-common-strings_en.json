@@ -2,15 +2,6 @@
   "circuit-construction-kit.title": {
     "value": "Circuit Construction Kit"
   },
-  "intro": {
-    "value": "Intro"
-  },
-  "explore": {
-    "value": "Explore"
-  },
-  "lab": {
-    "value": "Lab"
-  },
   "animationSpeedLimitReached": {
     "value": "Animation speed limit reached! Simulation speed reduced to {{percent}}% normal."
   },
