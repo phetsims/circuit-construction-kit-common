@@ -51,7 +51,7 @@ define( function( require ) {
   var schematicNode = new Path( schematicShape, {
     stroke: 'black',
     lineWidth: CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH
-  } ).toDataURLNodeSynchronous();
+  } ).toDataURLImageSynchronous();
 
   /**
    * This constructor is called dynamically and must match the signature of other circuit element nodes.

@@ -159,7 +159,7 @@ define( function( require ) {
     ), {
       stroke: 'black',
       lineWidth: CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH
-    } ).toDataURLNodeSynchronous();
+    } ).toDataURLImageSynchronous();
     if ( options.icon ) {
       schematicNode = new Path( addSchematicCircle( new Shape() ).transformed( Matrix3.scaling( 1.75 ) ), {
         stroke: 'black',

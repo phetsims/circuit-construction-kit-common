@@ -34,11 +34,11 @@ define( function( require ) {
   var TRANSFORM = new Matrix3(); // The Matrix entries are mutable
   var WIRE_RASTER_LENGTH = 100;
 
-  // Node used to render the black line for schematic, cached as toDataURLNodeSynchronous so it can render with WebGL
+  // Node used to render the black line for schematic, cached as toDataURLImageSynchronous so it can render with WebGL
   var BLACK_LINE_NODE = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
     lineWidth: SCHEMATIC_LINE_WIDTH,
     stroke: 'black'
-  } ).toDataURLNodeSynchronous();
+  } ).toDataURLImageSynchronous();
 
   /**
    * Create a LinearGradient for the wire, depending on the orientation relative to the shading (light comes from
@@ -68,20 +68,20 @@ define( function( require ) {
   var lifelikeNodeNormal = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
     lineWidth: LIFELIKE_LINE_WIDTH,
     stroke: normalGradient
-  } ).toDataURLNodeSynchronous();
+  } ).toDataURLImageSynchronous();
 
   var lifelikeNodeReversed = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
     lineWidth: LIFELIKE_LINE_WIDTH,
     stroke: reverseGradient
-  } ).toDataURLNodeSynchronous();
+  } ).toDataURLImageSynchronous();
 
   var lifelikeRoundedCapNormal = new Circle( LIFELIKE_LINE_WIDTH / 2, {
     fill: normalGradient
-  } ).toDataURLNodeSynchronous();
+  } ).toDataURLImageSynchronous();
 
   var lifelikeRoundedCapReversed = new Circle( LIFELIKE_LINE_WIDTH / 2, {
     fill: reverseGradient
-  } ).toDataURLNodeSynchronous();
+  } ).toDataURLImageSynchronous();
 
   var highlightStrokeStyles = new LineStyles( {
     lineWidth: 26,

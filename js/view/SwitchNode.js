@@ -124,16 +124,16 @@ define( function( require ) {
   // Create all of the images
   var lifelikeOpenImage = createNode(
     CircuitConstructionKitConstants.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, false
-  ).toDataURLNodeSynchronous();
+  ).toDataURLImageSynchronous();
   var schematicOpenImage = createNode(
     CircuitConstructionKitConstants.SCHEMATIC, 'black', CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH, 0, false
-  ).toDataURLNodeSynchronous();
+  ).toDataURLImageSynchronous();
   var lifelikeClosedImage = createNode(
     CircuitConstructionKitConstants.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, true
-  ).toDataURLNodeSynchronous();
+  ).toDataURLImageSynchronous();
   var schematicClosedImage = createNode(
     CircuitConstructionKitConstants.SCHEMATIC, 'black', CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH, 0, true
-  ).toDataURLNodeSynchronous();
+  ).toDataURLImageSynchronous();
 
   /**
    * This constructor is called dynamically and must match the signature of other circuit element nodes.

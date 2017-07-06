@@ -19,9 +19,9 @@ define( function( require ) {
   var ConventionalCurrentArrowNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ConventionalCurrentArrowNode' );
 
   // constants
-  var ELECTRON_CHARGE_NODE = new ElectronChargeNode( { opacity: 0.75 } ).toDataURLNodeSynchronous();
+  var ELECTRON_CHARGE_NODE = new ElectronChargeNode( { opacity: 0.75 } ).toDataURLImageSynchronous();
   var ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.createStaticTandem( 'arrowNode' ) )
-    .toDataURLNodeSynchronous();
+    .toDataURLImageSynchronous();
 
   /**
    * @param {Charge} charge - the model element

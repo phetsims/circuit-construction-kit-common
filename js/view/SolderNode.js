@@ -21,7 +21,7 @@ define( function( require ) {
   var SOLDER_RADIUS = 11.2;
 
   // {Image} raster created by init() for WebGL usage
-  var CIRCLE_NODE = new Circle( SOLDER_RADIUS, { fill: SOLDER_COLOR } ).toDataURLNodeSynchronous();
+  var CIRCLE_NODE = new Circle( SOLDER_RADIUS, { fill: SOLDER_COLOR } ).toDataURLImageSynchronous();
 
   /**
    * @param {CircuitLayerNode} circuitLayerNode
