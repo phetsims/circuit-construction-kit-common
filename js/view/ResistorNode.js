@@ -22,19 +22,19 @@ define( function( require ) {
   var Matrix3 = require( 'DOT/Matrix3' );
 
   // images
-  var lifelikeResistorImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor.png' );
-  var paperClipImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/paper-clip.png' );
-  var coinImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/coin.png' );
-  var pencilImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/pencil.png' );
-  var eraserImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/eraser.png' );
-  var handImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/hand.png' );
-  var highResistanceResistorImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor-high.png' );
-  var dogImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/dog.png' );
-  var dollarBillImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/dollar-bill.png' );
+  var lifelikeResistorImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor.png' );
+  var paperClipImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/paper-clip.png' );
+  var coinImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/coin.png' );
+  var pencilImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/pencil.png' );
+  var eraserImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/eraser.png' );
+  var handImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/hand.png' );
+  var highResistanceResistorImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor-high.png' );
+  var dogImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/dog.png' );
+  var dollarBillImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/dollar-bill.png' );
 
   // constants
   var LIFELIKE_IMAGE_SCALE = 1.0;
-  var LIFELIKE_IMAGE_WIDTH = lifelikeResistorImage[ 0 ].width / LIFELIKE_IMAGE_SCALE;
+  var LIFELIKE_IMAGE_WIDTH = lifelikeResistorImage.width / LIFELIKE_IMAGE_SCALE;
   var COLOR_BAND_WIDTH = 10;
   var COLOR_BAND_HEIGHT = 39.75;
   var COLOR_BAND_TOP = -0.25;
@@ -44,7 +44,7 @@ define( function( require ) {
   // max is 4 bands, even though they are not always shown
   var REMAINING_COLOR_BAND_SPACE = AVAILABLE_COLOR_BAND_SPACE - 4 * COLOR_BAND_WIDTH;
   var COLOR_BAND_SPACING = REMAINING_COLOR_BAND_SPACE / 4 - 2; // two spaces before last band
-  var COLOR_BAND_Y = lifelikeResistorImage[ 0 ].height / 2 / LIFELIKE_IMAGE_SCALE -
+  var COLOR_BAND_Y = lifelikeResistorImage.height / 2 / LIFELIKE_IMAGE_SCALE -
                      COLOR_BAND_HEIGHT / LIFELIKE_IMAGE_SCALE / 2 + COLOR_BAND_TOP;
 
   // Points sampled using Photoshop from a raster of the IEEE icon seen at

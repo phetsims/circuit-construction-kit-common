@@ -19,8 +19,8 @@ define( function( require ) {
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   // images
-  var batteryImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
-  var batteryHighImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery-high.png' );
+  var batteryImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
+  var batteryHighImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery-high.png' );
 
   // constants
   // dimensions for schematic battery

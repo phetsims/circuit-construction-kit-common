@@ -19,10 +19,10 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
 
   // images
-  var backImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-back.png' );
-  var middleImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-middle.png' );
-  var socketImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-front.png' );
-  var highResistanceSocketImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-front-high.png' );
+  var backImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-back.png' );
+  var middleImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-middle.png' );
+  var socketImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-front.png' );
+  var highResistanceSocketImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-front-high.png' );
 
   // constants
   var BULB_IMAGE_SCALE = 0.125;

@@ -23,9 +23,9 @@ define( function( require ) {
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
 
   // images
-  var voltmeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltmeter-body.png' );
-  var redProbe = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/probe-red.png' );
-  var blackProbe = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/probe-black.png' );
+  var voltmeterBodyImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltmeter-body.png' );
+  var redProbe = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/probe-red.png' );
+  var blackProbe = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/probe-black.png' );
 
   // strings
   var questionMarkString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/questionMark' );
@@ -82,8 +82,8 @@ define( function( require ) {
 
     var probeTextNode = new ProbeTextNode(
       voltageReadoutProperty, options.showResultsProperty, voltageString, tandem.createTandem( 'probeTextNode' ), {
-        centerX: voltmeterBodyImage[ 0 ].width / 2,
-        centerY: voltmeterBodyImage[ 0 ].height / 2
+        centerX: voltmeterBodyImage.width / 2,
+        centerY: voltmeterBodyImage.height / 2
       } );
 
     var bodyNode = new Image( voltmeterBodyImage, {

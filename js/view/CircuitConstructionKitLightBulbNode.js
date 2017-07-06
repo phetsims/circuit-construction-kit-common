@@ -27,7 +27,7 @@ define( function( require ) {
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
 
   // images
-  var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
+  var fireImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
 
   // constants
   var SCRATCH_MATRIX = new Matrix3();
@@ -242,7 +242,7 @@ define( function( require ) {
 
       // Update the fire transform
       CircuitConstructionKitCommonUtil.setToTranslationRotation( SCRATCH_MATRIX, startPosition, angle )
-        .multiplyMatrix( SCRATCH_MATRIX_2.setToTranslation( -100, -fireImage[ 0 ].height - 350 ) );
+        .multiplyMatrix( SCRATCH_MATRIX_2.setToTranslation( -100, -fireImage.height - 350 ) );
       this.fireNode && this.fireNode.setMatrix( SCRATCH_MATRIX );
 
       this.socketNode && this.socketNode.updateRender();

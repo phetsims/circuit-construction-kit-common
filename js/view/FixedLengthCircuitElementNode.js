@@ -25,7 +25,7 @@ define( function( require ) {
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
 
   // images
-  var fireImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
+  var fireImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
 
   // constants
   var transform = new Matrix3();
@@ -251,10 +251,10 @@ define( function( require ) {
 
       // Update the fire transform
       var flameExtent = 0.8;
-      var scale = delta.magnitude() / fireImage[ 0 ].width * flameExtent;
+      var scale = delta.magnitude() / fireImage.width * flameExtent;
       var flameMargin = (1 - flameExtent) / 2;
       var flameX = delta.magnitude() * flameMargin / scale;
-      var flameY = -fireImage[ 0 ].height;
+      var flameY = -fireImage.height;
       CircuitConstructionKitCommonUtil.setToTranslationRotation( transform, startPosition, angle )
         .multiplyMatrix( rotationMatrix.setToScale( scale ) )
         .multiplyMatrix( rotationMatrix.setToTranslation( flameX, flameY ) );

@@ -26,7 +26,7 @@ define( function( require ) {
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
 
   // images
-  var ammeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeter-body.png' );
+  var ammeterBodyImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeter-body.png' );
 
   // strings
   var questionMarkString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/questionMark' );
@@ -80,10 +80,9 @@ define( function( require ) {
     } );
 
     var probeTextNode = new ProbeTextNode(
-      currentReadoutProperty, options.showResultsProperty, currentString, tandem.createTandem( 'probeTextNode'
-      ), {
-        centerX: ammeterBodyImage[ 0 ].width / 2,
-        centerY: ammeterBodyImage[ 0 ].height / 2
+      currentReadoutProperty, options.showResultsProperty, currentString, tandem.createTandem( 'probeTextNode' ), {
+        centerX: ammeterBodyImage.width / 2,
+        centerY: ammeterBodyImage.height / 2
       } );
 
     var bodyNode = new Image( ammeterBodyImage, {
