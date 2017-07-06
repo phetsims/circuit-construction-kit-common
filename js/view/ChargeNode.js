@@ -12,11 +12,12 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
+  var Image = require( 'SCENERY/nodes/Image' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var ElectronChargeNode = require( 'SCENERY_PHET/ElectronChargeNode' );
   var Tandem = require( 'TANDEM/Tandem' );
   var ConventionalCurrentArrowNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ConventionalCurrentArrowNode' );
+  var Matrix3 = require( 'DOT/Matrix3' );
 
   // constants
   var ELECTRON_CHARGE_NODE = new ElectronChargeNode( { opacity: 0.75 } ).toDataURLImageSynchronous();
@@ -35,8 +36,12 @@ define( function( require ) {
     this.charge = charge;
 
     var child = charge.charge > 0 ? ARROW_NODE : ELECTRON_CHARGE_NODE;
-    Node.call( this, {
-      children: [ child ],
+
+    // TODO: clean this up
+    var offsetX = -child.width / 2;
+    var offsetY = -child.height / 2;
+
+    Image.call( this, child.image, {
       pickable: false
     } );
     var outsideOfBlackBoxProperty = new BooleanProperty( false );
@@ -48,13 +53,20 @@ define( function( require ) {
                      ( Math.abs( charge.circuitElement.currentProperty.get() ) > 1E-6 || charge.charge < 0 );
     };
 
-    // When the model position changes, update the node position changes
+    // When the model position changes, update the node position
     var updateTransform = function() {
       var current = charge.circuitElement.currentProperty.get();
       var position = charge.positionProperty.get();
-      self.setTranslation( position.x, position.y );
+
       if ( charge.charge > 0 ) {
-        self.rotation = charge.charge < 0 ? 0 : charge.angleProperty.get() + (current < 0 ? Math.PI : 0);
+        var angle = charge.charge < 0 ? 0 : charge.angleProperty.get() + (current < 0 ? Math.PI : 0);
+
+        // TODO: combine into a single step.  @jonathanolson can you help with this?
+        self.setMatrix( Matrix3.rotation2( angle ) );
+        self.center = position;
+      }
+      else {
+        self.setTranslation( position.x + offsetX, position.y + offsetY );
       }
       updateVisible();
       outsideOfBlackBoxProperty.set( !charge.circuitElement.insideTrueBlackBoxProperty.get() );
@@ -81,7 +93,7 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'ChargeNode', ChargeNode );
 
-  return inherit( Node, ChargeNode, {}, {
+  return inherit( Image, ChargeNode, {}, {
 
     /**
      * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.

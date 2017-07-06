@@ -22,8 +22,7 @@ define( function( require ) {
    */
   function ConventionalCurrentArrowNode( tandem ) {
 
-    // center so it is easy to position
-    ArrowNode.call( this, -ARROW_LENGTH / 2, 0, ARROW_LENGTH / 2, 0, {
+    ArrowNode.call( this, 0, 0, ARROW_LENGTH, 0, {
       headHeight: 10,
       headWidth: 12,
       tailWidth: 3,
