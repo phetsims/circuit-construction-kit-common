@@ -74,7 +74,7 @@ define( function( require ) {
       numberOfRightBatteries: 10,
       numberOfLightBulbs: 10,
       numberOfResistors: 10,
-      numberOfSwitches: 10,
+      numberOfSwitches: 4,
       numberOfCoins: 0,
       numberOfErasers: 0,
       numberOfPencils: 0,
@@ -567,11 +567,5 @@ define( function( require ) {
     reset: function() {
       this.carousel && this.carousel.reset( { animationEnabled: false } );
     }
-  }, {
-    NUMBER_OF_RIGHT_BATTERIES: 10,
-    NUMBER_OF_WIRES: 20,
-    NUMBER_OF_LIGHT_BULBS: 10,
-    NUMBER_OF_RESISTORS: 10,
-    NUMBER_OF_SWITCHES: 10
   } );
 } );
