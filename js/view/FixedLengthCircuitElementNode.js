@@ -23,6 +23,7 @@ define( function( require ) {
     require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedLengthCircuitElementHighlightNode' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
   var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // images
   var fireImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
@@ -239,8 +240,8 @@ define( function( require ) {
     updateRender: function() {
       var startPosition = this.circuitElement.startVertexProperty.get().positionProperty.get();
       var endPosition = this.circuitElement.endVertexProperty.get().positionProperty.get();
-      var delta = endPosition.minus( startPosition );
-      var angle = delta.angle();
+      var angle = Vector2.getAngleBetweenVectors( startPosition, endPosition );
+      var magnitude = Vector2.getDistanceBetweenVectors( startPosition, endPosition );
 
       // Update the node transform in a single step, see #66
       CircuitConstructionKitCommonUtil.setToTranslationRotation( transform, startPosition, angle );
@@ -251,9 +252,9 @@ define( function( require ) {
 
       // Update the fire transform
       var flameExtent = 0.8;
-      var scale = delta.magnitude() / fireImage.width * flameExtent;
+      var scale = magnitude / fireImage.width * flameExtent;
       var flameMargin = (1 - flameExtent) / 2;
-      var flameX = delta.magnitude() * flameMargin / scale;
+      var flameX = magnitude * flameMargin / scale;
       var flameY = -fireImage.height;
       CircuitConstructionKitCommonUtil.setToTranslationRotation( transform, startPosition, angle )
         .multiplyMatrix( rotationMatrix.setToScale( scale ) )
