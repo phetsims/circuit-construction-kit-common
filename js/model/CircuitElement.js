@@ -16,6 +16,7 @@ define( function( require ) {
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var NumberProperty = require( 'AXON/NumberProperty' );
   var Emitter = require( 'AXON/Emitter' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // phet-io modules
   var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
@@ -248,7 +249,7 @@ define( function( require ) {
       var endPosition = this.endVertexProperty.get().positionProperty.get();
       return {
         position: startPosition.blend( endPosition, distanceAlongWire / this.chargePathLength ),
-        angle: endPosition.minus( startPosition ).angle()
+        angle: Vector2.getAngleBetweenVectors( startPosition, endPosition )
       };
     },
 
