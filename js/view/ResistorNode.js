@@ -33,8 +33,9 @@ define( function( require ) {
   var dollarBillImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/dollar-bill.png' );
 
   // constants
-  var LIFELIKE_IMAGE_SCALE = 1.0;
-  var LIFELIKE_IMAGE_WIDTH = lifelikeResistorImage.width / LIFELIKE_IMAGE_SCALE;
+
+  // hard coded because Image.width and Image.initialWidth sometimes return bad values in the built version
+  var LIFELIKE_IMAGE_WIDTH = 150;
   var COLOR_BAND_WIDTH = 10;
   var COLOR_BAND_HEIGHT = 39.75;
   var COLOR_BAND_TOP = -0.25;
@@ -44,8 +45,7 @@ define( function( require ) {
   // max is 4 bands, even though they are not always shown
   var REMAINING_COLOR_BAND_SPACE = AVAILABLE_COLOR_BAND_SPACE - 4 * COLOR_BAND_WIDTH;
   var COLOR_BAND_SPACING = REMAINING_COLOR_BAND_SPACE / 4 - 2; // two spaces before last band
-  var COLOR_BAND_Y = lifelikeResistorImage.height / 2 / LIFELIKE_IMAGE_SCALE -
-                     COLOR_BAND_HEIGHT / LIFELIKE_IMAGE_SCALE / 2 + COLOR_BAND_TOP;
+  var COLOR_BAND_Y = COLOR_BAND_TOP + 2.5;
 
   // Points sampled using Photoshop from a raster of the IEEE icon seen at
   // https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
