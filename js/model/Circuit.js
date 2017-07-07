@@ -43,6 +43,11 @@ define( function( require ) {
   var BUMP_AWAY_RADIUS = 20; // If two vertices are too close together after one is released, and they could not be
                              // joined then bump them apart so they do not look connected.
 
+  var trueFunction = function() {return true;}; // Lower cased so IDEA doesn't think it is a constructor
+  var isFixedLengthCircuitElement = function( circuitElement ) {
+    return circuitElement instanceof FixedLengthCircuitElement;
+  };
+
   /**
    * @param {Tandem} tandem
    * @constructor
@@ -905,10 +910,8 @@ define( function( require ) {
      * @public
      */
     findAllFixedVertices: function( vertex, okToVisit ) {
-      var fixedCircuitElements = this.circuitElements.getArray().filter( function( circuitElement ) {
-        return circuitElement instanceof FixedLengthCircuitElement;
-      } );
-      return this.searchVertices( vertex, fixedCircuitElements, okToVisit || function() {return true;} );
+      var fixedCircuitElements = this.circuitElements.getArray().filter( isFixedLengthCircuitElement );
+      return this.searchVertices( vertex, fixedCircuitElements, okToVisit || trueFunction );
     },
 
     /**

@@ -584,7 +584,7 @@ define( function( require ) {
      */
     dragVertex: function( point, vertex, okToRotate ) {
       var vertexNode = this.getVertexNode( vertex );
-      var position = vertexNode.globalToParentPoint( point ).minus( vertexNode.startOffset );
+      var position = vertexNode.globalToParentPoint( point ).subtract( vertexNode.startOffset );
 
       // If it is the edge of a fixed length circuit element, the element rotates and moves toward the mouse
       var neighbors = this.circuit.getNeighborCircuitElements( vertex );
@@ -640,7 +640,8 @@ define( function( require ) {
           },
 
           // allow either vertex to snap
-          [ vertex, oppositeVertex ] );
+          [ vertex, oppositeVertex ]
+        );
       }
       else {
         var translationDelta = position.minus( vertex.unsnappedPositionProperty.get() );
