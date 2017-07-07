@@ -74,7 +74,7 @@ define( function( require ) {
       numberOfRightBatteries: 10,
       numberOfLightBulbs: 10,
       numberOfResistors: 10,
-      numberOfSwitches: 4,
+      numberOfSwitches: 5,
       numberOfCoins: 0,
       numberOfErasers: 0,
       numberOfPencils: 0,
