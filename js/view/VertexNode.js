@@ -68,9 +68,6 @@ define( function( require ) {
    */
   function VertexNode( circuitLayerNode, vertex, tandem ) {
 
-    // @private - Keep track of when the node has been dispose to prevent memory leaks, see usage below
-    this.disposed = false;
-
     var self = this;
     var circuit = circuitLayerNode.circuit;
 
@@ -345,7 +342,6 @@ define( function( require ) {
      * @public
      */
     dispose: function() {
-      this.disposed = true;
       this.removeAllChildren();
       this.disposeVertexNode();
       Node.prototype.dispose.call( this );

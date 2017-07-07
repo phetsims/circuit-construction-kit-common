@@ -124,9 +124,6 @@ define( function( require ) {
     // @public (read-only) {Wire}
     this.wire = wire;
 
-    // @private {boolean} - keep track of when disposed so that children cannot be reassigned after disposal
-    this.disposed = false;
-
     // @private {Node} - the node that shows the yellow highlight for the node when selected
     this.highlightNode = new Path( null, {
       stroke: CircuitConstructionKitConstants.HIGHLIGHT_COLOR,
@@ -377,7 +374,6 @@ define( function( require ) {
      * @public
      */
     dispose: function() {
-      this.disposed = true;
       this.disposeWireNode();
       this.removeAllChildren();
       CircuitElementNode.prototype.dispose.call( this );
