@@ -161,7 +161,10 @@ define( function( require ) {
 
       // Only update when wires change since they are the only components that change their length
       if ( circuitElement instanceof Wire ) {
-        circuitElement.vertexMovedEmitter.addListener( updateCharges );
+        circuitElement.lengthProperty.link( updateCharges );
+        circuitElement.disposeEmitter.addListener( function() {
+          circuitElement.lengthProperty.removeListener( updateCharges );
+        } );
       }
 
       circuitElement.moveToFrontEmitter.addListener( updateCharges );
@@ -755,6 +758,10 @@ define( function( require ) {
 
       // Move the charges
       this.chargeAnimator.step( dt );
+
+      this.circuitElements.getArray().forEach( function( circuitElement ) {
+        circuitElement.step && circuitElement.step();
+      } );
     },
 
     /**

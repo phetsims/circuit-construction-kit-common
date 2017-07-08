@@ -44,17 +44,15 @@ define( function( require ) {
     // @public {Property.<number>} - the resistivity of the Wire in ohm-meters
     this.resistivityProperty = resistivityProperty;
 
+    // @public {Property.<number>} - when the length changes the ChargeLayout must be run
+    this.lengthProperty = new NumberProperty( 0 );
+
+    // @private - batch changes so that the length doesn't change incrementally when individual vertices move
+    this.wireDirty = true;
+
     // When the vertex moves, updates the resistance and charge path length.
     var updateWire = function() {
-      var startPosition = self.startVertexProperty.get().positionProperty.get();
-      var endPosition = self.endVertexProperty.get().positionProperty.get();
-      var viewLength = startPosition.distance( endPosition );
-      var modelLength = viewLength * METERS_PER_VIEW_COORDINATE;
-      var resistance = modelLength * self.resistivityProperty.get();
-      var clampedResistance = Math.max( CircuitConstructionKitConstants.MINIMUM_RESISTANCE, resistance );
-      assert && assert( !isNaN( clampedResistance ), 'wire resistance should not be NaN' );
-      self.resistanceProperty.set( clampedResistance );
-      self.chargePathLength = viewLength;
+      self.wireDirty = true;
     };
 
     // Use `self` here instead of `this` so IDEA doesn't mark the property as missing.
@@ -76,6 +74,27 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'Wire', Wire );
 
   return inherit( CircuitElement, Wire, {
+
+    /**
+     * Batch changes so that the length doesn't change incrementally when both vertices move one at a time.
+     * @public
+     */
+    step: function() {
+      if ( this.wireDirty ) {
+        var self = this;
+        var startPosition = self.startVertexProperty.get().positionProperty.get();
+        var endPosition = self.endVertexProperty.get().positionProperty.get();
+        var viewLength = startPosition.distance( endPosition );
+        var modelLength = viewLength * METERS_PER_VIEW_COORDINATE;
+        self.lengthProperty.set( modelLength );
+        var resistance = modelLength * self.resistivityProperty.get();
+        var clampedResistance = Math.max( CircuitConstructionKitConstants.MINIMUM_RESISTANCE, resistance );
+        assert && assert( !isNaN( clampedResistance ), 'wire resistance should not be NaN' );
+        self.resistanceProperty.set( clampedResistance );
+        self.chargePathLength = viewLength;
+        this.wireDirty = false;
+      }
+    },
 
     /**
      * Get the properties so that the circuit can be solved when changed.
