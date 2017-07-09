@@ -28,8 +28,8 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
-  var CircuitConstructionKitQueryParameters =
-    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
+  var CircuitConstructionKitCommonQueryParameters =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonQueryParameters' );
   var PlayPauseButton = require( 'SCENERY_PHET/buttons/PlayPauseButton' );
   var Plane = require( 'SCENERY/nodes/Plane' );
   var ViewRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ViewRadioButtonGroup' );
@@ -323,7 +323,7 @@ define( function( require ) {
     circuitConstructionKitModel.ammeter.probePositionProperty.link( updateAmmeter );
 
     // Add the optional Play/Pause button
-    if ( CircuitConstructionKitQueryParameters.showPlayPauseButton ) {
+    if ( CircuitConstructionKitCommonQueryParameters.showPlayPauseButton ) {
       var playPauseButton = new PlayPauseButton( circuitConstructionKitModel.isValueDepictionEnabledProperty, {
         tandem: tandem.createTandem( 'playPauseButton' ),
         baseColor: '#33ff44' // the default blue fades into the background too much

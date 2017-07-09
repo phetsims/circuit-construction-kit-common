@@ -14,8 +14,8 @@ define( function( require ) {
   var Circle = require( 'SCENERY/nodes/Circle' );
   var CircuitConstructionKitCommonConstants =
     require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var CircuitConstructionKitQueryParameters =
-    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
+  var CircuitConstructionKitCommonQueryParameters =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonQueryParameters' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
@@ -244,7 +244,7 @@ define( function( require ) {
     self.addInputListener( dragHandler );
 
     // Use a query parameter to turn on node voltage readouts for debugging only.
-    var vertexDisplay = CircuitConstructionKitQueryParameters.vertexDisplay;
+    var vertexDisplay = CircuitConstructionKitCommonQueryParameters.vertexDisplay;
     if ( vertexDisplay ) {
       var voltageReadoutText = new Text( '', {
         fontSize: 18,

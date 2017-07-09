@@ -18,8 +18,8 @@ define( function( require ) {
   var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Circuit' );
   var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Voltmeter' );
   var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Ammeter' );
-  var CircuitConstructionKitQueryParameters =
-    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
+  var CircuitConstructionKitCommonQueryParameters =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonQueryParameters' );
   var TandemEmitter = require( 'TANDEM/axon/TandemEmitter' );
   var EaseAnimation = require( 'TWIXT/EaseAnimation' );
 
@@ -53,7 +53,7 @@ define( function( require ) {
     // @public {BooleanProperty} - changes whether the light bulb brightness and ammeter/voltmeter readouts,
     // charges, flame, etc. can be seen
     this.isValueDepictionEnabledProperty = new BooleanProperty(
-      !CircuitConstructionKitQueryParameters.showPlayPauseButton, {
+      !CircuitConstructionKitCommonQueryParameters.showPlayPauseButton, {
         tandem: tandem.createTandem( 'isValueDepictionEnabledProperty' )
       } );
 
@@ -121,7 +121,7 @@ define( function( require ) {
     self.modeProperty.endedCallbacksForChangedEmitter.addListener( function() {
       modeChanging = false;
     } );
-    if ( CircuitConstructionKitQueryParameters.showPlayPauseButton ) {
+    if ( CircuitConstructionKitCommonQueryParameters.showPlayPauseButton ) {
       var pause = function() {
         if ( !modeChanging ) {
           self.isValueDepictionEnabledProperty.value = false;

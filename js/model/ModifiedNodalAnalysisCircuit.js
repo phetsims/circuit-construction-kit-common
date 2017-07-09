@@ -16,11 +16,11 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var ModifiedNodalAnalysisSolution = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisSolution' );
   var Matrix = require( 'DOT/Matrix' );
-  var CircuitConstructionKitQueryParameters =
-    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
+  var CircuitConstructionKitCommonQueryParameters =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonQueryParameters' );
 
   // constants
-  var DEBUG = CircuitConstructionKitQueryParameters.debugModifiedNodalAnalysis;
+  var DEBUG = CircuitConstructionKitCommonQueryParameters.debugModifiedNodalAnalysis;
 
   /**
    * @param {Object[]} batteries - {node0:number,node1:number,circuitElement:CircuitElement,voltage:number}

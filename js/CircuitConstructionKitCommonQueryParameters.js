@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
 
-  var CircuitConstructionKitQueryParameters = window.QueryStringMachine.getAll( {
+  var CircuitConstructionKitCommonQueryParameters = window.QueryStringMachine.getAll( {
 
     // Show a readout for each vertex, for debugging the circuit physics
     vertexDisplay: {
@@ -62,9 +62,9 @@ define( function( require ) {
   } );
 
   circuitConstructionKitCommon.register(
-    'CircuitConstructionKitQueryParameters',
-    CircuitConstructionKitQueryParameters
+    'CircuitConstructionKitCommonQueryParameters',
+    CircuitConstructionKitCommonQueryParameters
   );
 
-  return CircuitConstructionKitQueryParameters;
+  return CircuitConstructionKitCommonQueryParameters;
 } );

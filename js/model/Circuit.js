@@ -30,8 +30,8 @@ define( function( require ) {
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
   var CircuitConstructionKitCommonConstants =
     require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var CircuitConstructionKitQueryParameters =
-    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
+  var CircuitConstructionKitCommonQueryParameters =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonQueryParameters' );
 
   // phet-io modules
   var TString = require( 'ifphetio!PHET_IO/types/TString' );
@@ -83,7 +83,7 @@ define( function( require ) {
     this.charges = new ObservableArray();
 
     // @public {Property.<string>} - whether to show charges or conventional current
-    this.currentTypeProperty = new Property( CircuitConstructionKitQueryParameters.currentType, {
+    this.currentTypeProperty = new Property( CircuitConstructionKitCommonQueryParameters.currentType, {
       validValues: CURRENT_TYPES,
       tandem: tandem.createTandem( 'currentTypeProperty' ),
       phetioValueType: TString
@@ -98,7 +98,7 @@ define( function( require ) {
     } );
 
     // @public {BooleanProperty} - whether the current should be displayed
-    this.showCurrentProperty = new BooleanProperty( CircuitConstructionKitQueryParameters.showCurrent, {
+    this.showCurrentProperty = new BooleanProperty( CircuitConstructionKitCommonQueryParameters.showCurrent, {
       tandem: tandem.createTandem( 'showCurrentProperty' )
     } );
 
