@@ -10,7 +10,8 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
   var NumberProperty = require( 'AXON/NumberProperty' );
@@ -18,9 +19,9 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
 
   // constants
-  var SWITCH_LENGTH = CircuitConstructionKitConstants.SWITCH_LENGTH;
-  var SWITCH_START = CircuitConstructionKitConstants.SWITCH_START;
-  var SWITCH_END = CircuitConstructionKitConstants.SWITCH_END;
+  var SWITCH_LENGTH = CircuitConstructionKitCommonConstants.SWITCH_LENGTH;
+  var SWITCH_START = CircuitConstructionKitCommonConstants.SWITCH_START;
+  var SWITCH_END = CircuitConstructionKitCommonConstants.SWITCH_END;
 
   /**
    * @param {Vertex} startVertex
@@ -39,7 +40,7 @@ define( function( require ) {
     this.closedProperty = new BooleanProperty( false );
 
     this.closedProperty.link( function( closed ) {
-      self.resistanceProperty.value = closed ? 0 : CircuitConstructionKitConstants.MAX_RESISTANCE;
+      self.resistanceProperty.value = closed ? 0 : CircuitConstructionKitCommonConstants.MAX_RESISTANCE;
     } );
   }
 

@@ -16,7 +16,8 @@ define( function( require ) {
   var NumberProperty = require( 'AXON/NumberProperty' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
 
   // constants
@@ -40,7 +41,7 @@ define( function( require ) {
     var lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ), {
       baseOnly: true,
       highResistance: lightBulb.highResistance,
-      scale: CircuitConstructionKitConstants.BULB_SCALE
+      scale: CircuitConstructionKitCommonConstants.BULB_SCALE
     } );
 
     // Interferes with Cut Button selection when the foreground is in front, see

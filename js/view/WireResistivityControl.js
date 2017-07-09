@@ -13,7 +13,8 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Text = require( 'SCENERY/nodes/Text' );
   var HSlider = require( 'SUN/HSlider' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var CircuitConstructionKitAccordionBox =
     require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitAccordionBox' );
 
@@ -29,14 +30,14 @@ define( function( require ) {
    * @constructor
    */
   function WireResistivityControl( wireResistivityProperty, alignGroup, tandem ) {
-    var max = CircuitConstructionKitConstants.DEFAULT_RESISTIVITY * 10000;
+    var max = CircuitConstructionKitCommonConstants.DEFAULT_RESISTIVITY * 10000;
     var slider = new HSlider( wireResistivityProperty, {
-      min: CircuitConstructionKitConstants.DEFAULT_RESISTIVITY,
+      min: CircuitConstructionKitCommonConstants.DEFAULT_RESISTIVITY,
       max: max // large enough so that max resistance in a 9v battery slows to a good rate
     }, {
-      trackSize: CircuitConstructionKitConstants.SLIDER_TRACK_SIZE,
-      thumbSize: CircuitConstructionKitConstants.THUMB_SIZE,
-      majorTickLength: CircuitConstructionKitConstants.MAJOR_TICK_LENGTH,
+      trackSize: CircuitConstructionKitCommonConstants.SLIDER_TRACK_SIZE,
+      thumbSize: CircuitConstructionKitCommonConstants.THUMB_SIZE,
+      majorTickLength: CircuitConstructionKitCommonConstants.MAJOR_TICK_LENGTH,
       tandem: tandem.createTandem( 'slider' )
     } );
 

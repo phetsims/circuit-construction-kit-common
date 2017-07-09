@@ -13,7 +13,8 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Input = require( 'SCENERY/input/Input' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var CircuitElementEditContainerPanel =
     require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditContainerPanel' );
 
@@ -207,7 +208,7 @@ define( function( require ) {
      */
     selectCircuitElementNodeWhenNear: function( event, circuitLayerNode, startPoint ) {
       var self = this;
-      if ( event.pointer.point.distance( startPoint ) < CircuitConstructionKitConstants.TAP_THRESHOLD ) {
+      if ( event.pointer.point.distance( startPoint ) < CircuitConstructionKitCommonConstants.TAP_THRESHOLD ) {
 
         circuitLayerNode.circuit.selectedCircuitElementProperty.set( this.circuitElement );
 

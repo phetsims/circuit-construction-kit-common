@@ -20,7 +20,8 @@ define( function( require ) {
   var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
   var AlignBox = require( 'SCENERY/nodes/AlignBox' );
   var ConventionalCurrentArrowNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ConventionalCurrentArrowNode' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
 
   // strings
   var electronsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/electrons' );
@@ -32,7 +33,7 @@ define( function( require ) {
 
   // constants
   var TEXT_OPTIONS = {
-    fontSize: CircuitConstructionKitConstants.FONT_SIZE,
+    fontSize: CircuitConstructionKitCommonConstants.FONT_SIZE,
     maxWidth: 120
   };
 

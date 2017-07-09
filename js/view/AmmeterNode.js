@@ -20,7 +20,8 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ProbeWireNode' );
   var Vector2 = require( 'DOT/Vector2' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
@@ -150,7 +151,7 @@ define( function( require ) {
         tandem: tandem.createTandem( 'probeDragHandler' )
       } );
       options.visibleBoundsProperty.link( function( visibleBounds ) {
-        var erodedDragBounds = visibleBounds.eroded( CircuitConstructionKitConstants.DRAG_BOUNDS_EROSION );
+        var erodedDragBounds = visibleBounds.eroded( CircuitConstructionKitCommonConstants.DRAG_BOUNDS_EROSION );
         self.dragHandler.dragBounds = erodedDragBounds;
         probeDragHandler.dragBounds = erodedDragBounds;
       } );

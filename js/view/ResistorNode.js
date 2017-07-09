@@ -11,7 +11,8 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedLengthCircuitElementNode' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var ResistorColors = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorColors' );
@@ -173,7 +174,7 @@ define( function( require ) {
     schematicShape = schematicShape.transformed( Matrix3.scale( scale, scale ) );
     var schematicNode = new Path( schematicShape, {
       stroke: 'black',
-      lineWidth: CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH
+      lineWidth: CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH
     } ).toDataURLImageSynchronous();
 
     // Expand the pointer areas with a defensive copy, see

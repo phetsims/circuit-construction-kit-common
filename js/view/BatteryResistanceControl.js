@@ -15,7 +15,8 @@ define( function( require ) {
   var Panel = require( 'SUN/Panel' );
   var Text = require( 'SCENERY/nodes/Text' );
   var HSlider = require( 'SUN/HSlider' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var CircuitConstructionKitAccordionBox =
@@ -49,10 +50,10 @@ define( function( require ) {
 
     var slider = new HSlider(
       batteryResistanceProperty,
-      new Range( CircuitConstructionKitConstants.DEFAULT_BATTERY_RESISTANCE, 10 ), {
-        trackSize: CircuitConstructionKitConstants.SLIDER_TRACK_SIZE,
-        thumbSize: CircuitConstructionKitConstants.THUMB_SIZE,
-        majorTickLength: CircuitConstructionKitConstants.MAJOR_TICK_LENGTH,
+      new Range( CircuitConstructionKitCommonConstants.DEFAULT_BATTERY_RESISTANCE, 10 ), {
+        trackSize: CircuitConstructionKitCommonConstants.SLIDER_TRACK_SIZE,
+        thumbSize: CircuitConstructionKitCommonConstants.THUMB_SIZE,
+        majorTickLength: CircuitConstructionKitCommonConstants.MAJOR_TICK_LENGTH,
 
         // Snap to the nearest whole number.
         constrainValue: function( value ) {return Util.roundSymmetric( value );},
@@ -71,7 +72,7 @@ define( function( require ) {
     var readoutTextPanelTandem = tandem.createTandem( 'readoutTextPanel' );
 
     var readoutTextNode = new Text( batteryResistanceProperty.get(), {
-      font: new PhetFont( CircuitConstructionKitConstants.FONT_SIZE ),
+      font: new PhetFont( CircuitConstructionKitCommonConstants.FONT_SIZE ),
       fill: 'black',
       maxWidth: 100,
       tandem: readoutTextPanelTandem.createTandem( 'readoutTextNode' )

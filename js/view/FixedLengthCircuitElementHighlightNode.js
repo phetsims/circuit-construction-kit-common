@@ -12,7 +12,8 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
 
   // constants
   var PADDING = 10; // in view coordinates
@@ -38,8 +39,8 @@ define( function( require ) {
       options.height + PADDING * 2,
       CORNER_RADIUS,
       CORNER_RADIUS, {
-        stroke: CircuitConstructionKitConstants.HIGHLIGHT_COLOR,
-        lineWidth: CircuitConstructionKitConstants.HIGHLIGHT_LINE_WIDTH,
+        stroke: CircuitConstructionKitCommonConstants.HIGHLIGHT_COLOR,
+        lineWidth: CircuitConstructionKitCommonConstants.HIGHLIGHT_LINE_WIDTH,
         pickable: false
       } );
   }

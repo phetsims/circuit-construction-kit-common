@@ -28,7 +28,8 @@ define( function( require ) {
   var ChargeAnimator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ChargeAnimator' );
   var Vector2 = require( 'DOT/Vector2' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var CircuitConstructionKitQueryParameters =
     require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
 
@@ -57,14 +58,14 @@ define( function( require ) {
 
     // @public {NumberProperty} - All wires share the same resistivity, which is defined by
     // resistance = resistivity * length. On the Lab Screen, there is a wire resistivity control
-    this.wireResistivityProperty = new NumberProperty( CircuitConstructionKitConstants.DEFAULT_RESISTIVITY, {
+    this.wireResistivityProperty = new NumberProperty( CircuitConstructionKitCommonConstants.DEFAULT_RESISTIVITY, {
       tandem: tandem.createTandem( 'wireResistivityProperty' ),
       phetioValueType: TNumber()
     } );
 
     // @public {NumberProperty} - All batteries share a single internal resistance value, which can be edited with
     // a control on the Lab Screen
-    this.batteryResistanceProperty = new NumberProperty( CircuitConstructionKitConstants.DEFAULT_BATTERY_RESISTANCE, {
+    this.batteryResistanceProperty = new NumberProperty( CircuitConstructionKitCommonConstants.DEFAULT_BATTERY_RESISTANCE, {
       tandem: tandem.createTandem( 'batteryResistanceProperty' ),
       phetioValueType: TNumber()
     } );

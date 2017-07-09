@@ -22,12 +22,12 @@ define( function( require ) {
   /**
    * @constructor
    */
-  function CircuitConstructionKitConstants() {
+  function CircuitConstructionKitCommonConstants() {
   }
 
-  circuitConstructionKitCommon.register( 'CircuitConstructionKitConstants', CircuitConstructionKitConstants );
+  circuitConstructionKitCommon.register( 'CircuitConstructionKitCommonConstants', CircuitConstructionKitCommonConstants );
 
-  return inherit( Object, CircuitConstructionKitConstants, {}, {
+  return inherit( Object, CircuitConstructionKitCommonConstants, {}, {
 
     // Maximum size for Width or height of icons in the circuit element toolbox or sensor toolbox
     TOOLBOX_ICON_SIZE: 60,

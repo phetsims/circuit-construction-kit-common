@@ -13,7 +13,8 @@ define( function( require ) {
   var AccordionBox = require( 'SUN/AccordionBox' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var HStrut = require( 'SCENERY/nodes/HStrut' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var Text = require( 'SCENERY/nodes/Text' );
@@ -26,21 +27,21 @@ define( function( require ) {
    */
   function CircuitConstructionKitAccordionBox( content, title, tandem ) {
     AccordionBox.call( this, content, {
-      fill: CircuitConstructionKitConstants.PANEL_COLOR,
-      cornerRadius: CircuitConstructionKitConstants.CORNER_RADIUS,
+      fill: CircuitConstructionKitCommonConstants.PANEL_COLOR,
+      cornerRadius: CircuitConstructionKitCommonConstants.CORNER_RADIUS,
       titleXMargin: 10,
       buttonXMargin: 8,
       buttonYMargin: 8,
       titleYMargin: 4,
       titleXSpacing: 14,
       contentYSpacing: 0,
-      lineWidth: CircuitConstructionKitConstants.PANEL_LINE_WIDTH,
-      minWidth: CircuitConstructionKitConstants.RIGHT_SIDE_PANEL_MIN_WIDTH,
+      lineWidth: CircuitConstructionKitCommonConstants.PANEL_LINE_WIDTH,
+      minWidth: CircuitConstructionKitCommonConstants.RIGHT_SIDE_PANEL_MIN_WIDTH,
       titleNode: new HBox( {
         children: [
           new HStrut( 10 ),
           new Text( title, {
-            fontSize: CircuitConstructionKitConstants.FONT_SIZE,
+            fontSize: CircuitConstructionKitCommonConstants.FONT_SIZE,
             maxWidth: 175,
             tandem: tandem.createTandem( title )
           } )

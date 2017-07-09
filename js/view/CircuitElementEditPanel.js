@@ -16,10 +16,11 @@ define( function( require ) {
   var NumberControl = require( 'SCENERY_PHET/NumberControl' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
 
   // constants
-  var FONT = new PhetFont( CircuitConstructionKitConstants.FONT_SIZE );
+  var FONT = new PhetFont( CircuitConstructionKitCommonConstants.FONT_SIZE );
 
   /**
    * @param {string} title - text to show as a title

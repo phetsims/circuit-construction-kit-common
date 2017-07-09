@@ -17,7 +17,8 @@ define( function( require ) {
   var ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ProbeWireNode' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var Vector2 = require( 'DOT/Vector2' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
@@ -172,7 +173,7 @@ define( function( require ) {
         targetNode: self
       } );
       options.visibleBoundsProperty.link( function( visibleBounds ) {
-        self.dragHandler.dragBounds = visibleBounds.eroded( CircuitConstructionKitConstants.DRAG_BOUNDS_EROSION );
+        self.dragHandler.dragBounds = visibleBounds.eroded( CircuitConstructionKitCommonConstants.DRAG_BOUNDS_EROSION );
       } );
       bodyNode.addInputListener( this.dragHandler );
 
@@ -187,7 +188,7 @@ define( function( require ) {
           tandem: tandem.createTandem( 'redProbeDragHandler' )
         } );
         options.visibleBoundsProperty.link( function( visibleBounds ) {
-          probeDragHandler.dragBounds = visibleBounds.eroded( CircuitConstructionKitConstants.DRAG_BOUNDS_EROSION );
+          probeDragHandler.dragBounds = visibleBounds.eroded( CircuitConstructionKitCommonConstants.DRAG_BOUNDS_EROSION );
         } );
         return probeDragHandler;
       };

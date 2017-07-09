@@ -22,7 +22,8 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
   var CircuitElementEditPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditPanel' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var SwitchReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SwitchReadoutNode' );
   var TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
 
@@ -37,7 +38,7 @@ define( function( require ) {
   var GET_LAYOUT_POSITION = function( visibleBounds ) {
     return {
       centerX: visibleBounds.centerX,
-      bottom: visibleBounds.bottom - CircuitConstructionKitConstants.VERTICAL_MARGIN
+      bottom: visibleBounds.bottom - CircuitConstructionKitCommonConstants.VERTICAL_MARGIN
     };
   };
 

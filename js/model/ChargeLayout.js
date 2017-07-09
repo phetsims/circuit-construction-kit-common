@@ -13,7 +13,8 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Charge = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Charge' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
 
   /**
    * @param {Circuit} circuit
@@ -44,13 +45,13 @@ define( function( require ) {
         this.circuit.charges.removeAll( chargesToRemove );
 
         // put charges 1/2 separation from the edge so it will match up with adjacent components
-        var offset = CircuitConstructionKitConstants.CHARGE_SEPARATION / 2;
+        var offset = CircuitConstructionKitCommonConstants.CHARGE_SEPARATION / 2;
         var lastChargePosition = circuitElement.chargePathLength - offset;
         var firstChargePosition = offset;
         var lengthForCharges = lastChargePosition - firstChargePosition;
 
         // Math.round leads to charges too far apart when N=2
-        var numberOfCharges = Math.ceil( lengthForCharges / CircuitConstructionKitConstants.CHARGE_SEPARATION );
+        var numberOfCharges = Math.ceil( lengthForCharges / CircuitConstructionKitCommonConstants.CHARGE_SEPARATION );
 
         // compute distance between adjacent charges
         var spacing = lengthForCharges / ( numberOfCharges - 1 );

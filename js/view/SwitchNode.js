@@ -11,7 +11,8 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedLengthCircuitElementNode' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Circle = require( 'SCENERY/nodes/Circle' );
@@ -24,9 +25,9 @@ define( function( require ) {
   // constants
   // dimensions for schematic battery
   var LIFELIKE_DIAMETER = 16;
-  var SWITCH_START = CircuitConstructionKitConstants.SWITCH_START;
-  var SWITCH_END = CircuitConstructionKitConstants.SWITCH_END;
-  var SWITCH_LENGTH = CircuitConstructionKitConstants.SWITCH_LENGTH;
+  var SWITCH_START = CircuitConstructionKitCommonConstants.SWITCH_START;
+  var SWITCH_END = CircuitConstructionKitCommonConstants.SWITCH_END;
+  var SWITCH_LENGTH = CircuitConstructionKitCommonConstants.SWITCH_LENGTH;
 
   var lifelikeNodeThickness = 8;
   var lifelikeGradient = new LinearGradient( 0, -lifelikeNodeThickness / 2, 0, lifelikeNodeThickness / 2 )
@@ -73,7 +74,7 @@ define( function( require ) {
       x: SWITCH_LENGTH * SWITCH_START,
       fill: fill,
       stroke: 'black',
-      lineWidth: type === CircuitConstructionKitConstants.SCHEMATIC ? 0 : 1
+      lineWidth: type === CircuitConstructionKitCommonConstants.SCHEMATIC ? 0 : 1
     } );
 
     rotatingSegmentNode.setRotation( closed ? 0 : -Math.PI / 4 );
@@ -103,7 +104,7 @@ define( function( require ) {
       children: [ leftSegmentNode, rotatingSegmentNode, rightSegmentNode, lifelikeHinge ]
     } );
 
-    if ( type === CircuitConstructionKitConstants.SCHEMATIC ) {
+    if ( type === CircuitConstructionKitCommonConstants.SCHEMATIC ) {
       node.addChild( new Circle( thickness * 0.6, {
         fill: 'black',
         stroke: 'black',
@@ -123,16 +124,16 @@ define( function( require ) {
 
   // Create all of the images
   var lifelikeOpenImage = createNode(
-    CircuitConstructionKitConstants.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, false
+    CircuitConstructionKitCommonConstants.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, false
   ).toDataURLImageSynchronous();
   var schematicOpenImage = createNode(
-    CircuitConstructionKitConstants.SCHEMATIC, 'black', CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH, 0, false
+    CircuitConstructionKitCommonConstants.SCHEMATIC, 'black', CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH, 0, false
   ).toDataURLImageSynchronous();
   var lifelikeClosedImage = createNode(
-    CircuitConstructionKitConstants.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, true
+    CircuitConstructionKitCommonConstants.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, true
   ).toDataURLImageSynchronous();
   var schematicClosedImage = createNode(
-    CircuitConstructionKitConstants.SCHEMATIC, 'black', CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH, 0, true
+    CircuitConstructionKitCommonConstants.SCHEMATIC, 'black', CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH, 0, true
   ).toDataURLImageSynchronous();
 
   /**
@@ -189,7 +190,7 @@ define( function( require ) {
         var distance = event.pointer.point.distance( downPoint );
 
         // Toggle the state of the switch, but only if the event is classified as a tap and not a drag
-        if ( distance < CircuitConstructionKitConstants.TAP_THRESHOLD ) {
+        if ( distance < CircuitConstructionKitCommonConstants.TAP_THRESHOLD ) {
           circuitSwitch.closedProperty.value = !circuitSwitch.closedProperty.value;
         }
       }

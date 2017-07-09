@@ -12,7 +12,8 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Panel = require( 'SUN/Panel' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
 
   /**
    * @param {Node} content - what will appear in the panel
@@ -22,13 +23,13 @@ define( function( require ) {
    */
   function CircuitConstructionKitPanel( content, tandem, options ) {
     options = _.extend( {
-      fill: CircuitConstructionKitConstants.PANEL_COLOR,
+      fill: CircuitConstructionKitCommonConstants.PANEL_COLOR,
       stroke: 'black',
-      lineWidth: CircuitConstructionKitConstants.PANEL_LINE_WIDTH,
+      lineWidth: CircuitConstructionKitCommonConstants.PANEL_LINE_WIDTH,
       xMargin: 15,
       yMargin: 15,
       tandem: tandem,
-      cornerRadius: CircuitConstructionKitConstants.CORNER_RADIUS
+      cornerRadius: CircuitConstructionKitCommonConstants.CORNER_RADIUS
     }, options );
     Panel.call( this, content, options );
   }

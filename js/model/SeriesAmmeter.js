@@ -10,7 +10,8 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
 
@@ -22,11 +23,11 @@ define( function( require ) {
    * @constructor
    */
   function SeriesAmmeter( startVertex, endVertex, tandem, options ) {
-    FixedLengthCircuitElement.call( this, startVertex, endVertex, CircuitConstructionKitConstants.SERIES_AMMETER_LENGTH,
-      CircuitConstructionKitConstants.SERIES_AMMETER_LENGTH, tandem, options );
+    FixedLengthCircuitElement.call( this, startVertex, endVertex, CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH,
+      CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH, tandem, options );
 
     // @public {Property.<number>} the resistance in ohms
-    this.resistance = CircuitConstructionKitConstants.MINIMUM_RESISTANCE;
+    this.resistance = CircuitConstructionKitCommonConstants.MINIMUM_RESISTANCE;
   }
 
   circuitConstructionKitCommon.register( 'SeriesAmmeter', SeriesAmmeter );

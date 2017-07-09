@@ -14,7 +14,8 @@ define( function( require ) {
   var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
   var PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
 
   /**
    * @param {Circuit} circuit - the circuit from which the CircuitElement can be removed
@@ -27,7 +28,7 @@ define( function( require ) {
     RoundPushButton.call( this, {
       baseColor: PhetColorScheme.PHET_LOGO_YELLOW,
       content: new FontAwesomeNode( 'trash', {
-        scale: CircuitConstructionKitConstants.FONT_AWESOME_ICON_SCALE
+        scale: CircuitConstructionKitCommonConstants.FONT_AWESOME_ICON_SCALE
       } ),
       listener: function() {
         circuit.circuitElements.remove( circuitElement );

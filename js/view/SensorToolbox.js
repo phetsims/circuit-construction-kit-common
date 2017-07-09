@@ -23,7 +23,8 @@ define( function( require ) {
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Property = require( 'AXON/Property' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
   // strings
@@ -95,7 +96,7 @@ define( function( require ) {
     // Icon for the series ammeter
     var seriesAmmeter = new SeriesAmmeter(
       new Vertex( 0, 0 ),
-      new Vertex( CircuitConstructionKitConstants.SERIES_AMMETER_LENGTH, 0 ),
+      new Vertex( CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH, 0 ),
       tandem.createTandem( 'seriesAmmeterIconModel' )
     );
     var seriesAmmeterNodeIcon = new SeriesAmmeterNode(
@@ -108,7 +109,7 @@ define( function( require ) {
         icon: true
       } );
     var createSeriesAmmeter = function( position ) {
-      var halfLength = CircuitConstructionKitConstants.SERIES_AMMETER_LENGTH / 2;
+      var halfLength = CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH / 2;
       var startVertex = new Vertex( position.x - halfLength, position.y );
       var endVertex = new Vertex( position.x + halfLength, position.y );
       return new SeriesAmmeter(

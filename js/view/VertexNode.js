@@ -12,7 +12,8 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Circle = require( 'SCENERY/nodes/Circle' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var CircuitConstructionKitQueryParameters =
     require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitQueryParameters' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
@@ -31,7 +32,7 @@ define( function( require ) {
   var VERTEX_RADIUS = 16; // for hit testing with probes
   var CUT_ICON = new FontAwesomeNode( 'cut', {
     rotation: -Math.PI / 2, // scissors point up
-    scale: CircuitConstructionKitConstants.FONT_AWESOME_ICON_SCALE
+    scale: CircuitConstructionKitCommonConstants.FONT_AWESOME_ICON_SCALE
   } );
 
   // rasterize the images for the red and black dotted lines so they can be rendered with WebGL to improve performance
@@ -88,8 +89,8 @@ define( function( require ) {
 
     // Highlight is shown when the vertex is selected.
     var highlightNode = new Circle( 30, {
-      stroke: CircuitConstructionKitConstants.HIGHLIGHT_COLOR,
-      lineWidth: CircuitConstructionKitConstants.HIGHLIGHT_LINE_WIDTH,
+      stroke: CircuitConstructionKitCommonConstants.HIGHLIGHT_COLOR,
+      lineWidth: CircuitConstructionKitCommonConstants.HIGHLIGHT_LINE_WIDTH,
       pickable: false
     } );
 
@@ -201,7 +202,7 @@ define( function( require ) {
 
         // Only show on a tap, not on every drag.
         if ( vertex.interactiveProperty.get() &&
-             event.pointer.point.distance( eventPoint ) < CircuitConstructionKitConstants.TAP_THRESHOLD ) {
+             event.pointer.point.distance( eventPoint ) < CircuitConstructionKitCommonConstants.TAP_THRESHOLD ) {
 
           vertex.selectedProperty.set( true );
 

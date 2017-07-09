@@ -16,10 +16,11 @@ define( function( require ) {
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
   var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
 
   // constants
-  var BATTERY_LENGTH = CircuitConstructionKitConstants.BATTERY_LENGTH;
+  var BATTERY_LENGTH = CircuitConstructionKitCommonConstants.BATTERY_LENGTH;
   var SCALE = 0.58;
 
   /**
@@ -48,17 +49,17 @@ define( function( require ) {
       } );
     };
     var lifelikeIcon = createBatteryNode(
-      CircuitConstructionKitConstants.LIFELIKE, tandem.createTandem( 'lifelikeIcon' )
+      CircuitConstructionKitCommonConstants.LIFELIKE, tandem.createTandem( 'lifelikeIcon' )
     );
     var schematicIcon = createBatteryNode(
-      CircuitConstructionKitConstants.SCHEMATIC, tandem.createTandem( 'schematicIcon' )
+      CircuitConstructionKitCommonConstants.SCHEMATIC, tandem.createTandem( 'schematicIcon' )
     );
     RadioButtonGroup.call( this, viewProperty, [ {
-      value: CircuitConstructionKitConstants.LIFELIKE,
+      value: CircuitConstructionKitCommonConstants.LIFELIKE,
       node: lifelikeIcon,
       tandemName: 'lifelikeRadioButton'
     }, {
-      value: CircuitConstructionKitConstants.SCHEMATIC,
+      value: CircuitConstructionKitCommonConstants.SCHEMATIC,
       node: schematicIcon,
       tandemName: 'schematicRadioButton'
     } ], {
@@ -66,10 +67,10 @@ define( function( require ) {
       orientation: 'horizontal',
       buttonContentXMargin: 14,
       buttonContentYMargin: 7,
-      baseColor: CircuitConstructionKitConstants.PANEL_COLOR,
+      baseColor: CircuitConstructionKitCommonConstants.PANEL_COLOR,
       deselectedButtonOpacity: 0.4,
       overButtonOpacity: 0.7,
-      cornerRadius: CircuitConstructionKitConstants.CORNER_RADIUS,
+      cornerRadius: CircuitConstructionKitCommonConstants.CORNER_RADIUS,
       tandem: tandem
     } );
   }

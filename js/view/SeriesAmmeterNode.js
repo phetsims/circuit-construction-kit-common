@@ -18,7 +18,8 @@ define( function( require ) {
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Panel = require( 'SUN/Panel' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
 
   // strings
@@ -26,7 +27,7 @@ define( function( require ) {
 
   // constants
   var PANEL_HEIGHT = 40;
-  var PANEL_WIDTH = CircuitConstructionKitConstants.SERIES_AMMETER_LENGTH;
+  var PANEL_WIDTH = CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH;
   var ORANGE = '#f39033';
   var WIDEST_LABEL = '99.99 A';
   var CORNER_RADIUS = 4;
@@ -47,7 +48,7 @@ define( function( require ) {
                               viewProperty, tandem, options ) {
     var self = this;
     options = options || {};
-    viewProperty = new Property( CircuitConstructionKitConstants.LIFELIKE );
+    viewProperty = new Property( CircuitConstructionKitCommonConstants.LIFELIKE );
 
     // Electrons go behind this panel to give the appearance they go through the ammeter
     var readoutText = new Text( WIDEST_LABEL, { fontSize: 15 } );

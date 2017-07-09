@@ -10,13 +10,14 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
   var NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
-  var BATTERY_LENGTH = CircuitConstructionKitConstants.BATTERY_LENGTH;
+  var BATTERY_LENGTH = CircuitConstructionKitCommonConstants.BATTERY_LENGTH;
 
   /**
    * @param {Vertex} startVertex - one of the battery vertices

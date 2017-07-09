@@ -10,13 +10,14 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
   var NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
-  var RESISTOR_LENGTH = CircuitConstructionKitConstants.RESISTOR_LENGTH;
+  var RESISTOR_LENGTH = CircuitConstructionKitCommonConstants.RESISTOR_LENGTH;
   var RESISTOR_TYPES = [
     'resistor', 'highResistanceResistor', 'coin', 'paperClip', 'pencil', 'eraser', 'hand', 'dog', 'dollarBill'
   ];
@@ -30,7 +31,7 @@ define( function( require ) {
    */
   function Resistor( startVertex, endVertex, tandem, options ) {
     options = _.extend( {
-      resistance: CircuitConstructionKitConstants.DEFAULT_RESISTANCE,
+      resistance: CircuitConstructionKitCommonConstants.DEFAULT_RESISTANCE,
 
       // Support for rendering grab bag items or
       resistorType: RESISTOR_TYPES[ 0 ],

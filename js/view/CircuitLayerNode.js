@@ -42,7 +42,8 @@ define( function( require ) {
   var ValueNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ValueNode' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CustomLightBulbNode' );
 
   /**
@@ -361,7 +362,7 @@ define( function( require ) {
       } );
 
       // This method is called for all vertices when viewProperty value changes
-      if ( this.viewProperty.get() === CircuitConstructionKitConstants.LIFELIKE ) {
+      if ( this.viewProperty.get() === CircuitConstructionKitCommonConstants.LIFELIKE ) {
         if ( adjacentFixedLengthComponents.length > 0 ) {
 
           // move before the first fixed length component

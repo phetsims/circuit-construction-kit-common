@@ -23,7 +23,8 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Shape = require( 'KITE/Shape' );
   var LightBulbSocketNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/LightBulbSocketNode' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
 
   // images
@@ -91,7 +92,7 @@ define( function( require ) {
         brightnessProperty.value = Util.clamp( brightness, 0, 1 );
       } );
     var lightBulbNode = new CustomLightBulbNode( brightnessProperty, {
-      scale: CircuitConstructionKitConstants.BULB_SCALE
+      scale: CircuitConstructionKitCommonConstants.BULB_SCALE
     } );
 
     // The icon must show the socket as well
@@ -158,7 +159,7 @@ define( function( require ) {
         .lineTo( rightLeadX, delta.y )
     ), {
       stroke: 'black',
-      lineWidth: CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH
+      lineWidth: CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH
     } ).toDataURLImageSynchronous();
     if ( options.icon ) {
       schematicNode = new Path( addSchematicCircle( new Shape() ).transformed( Matrix3.scaling( 1.75 ) ), {
@@ -203,7 +204,7 @@ define( function( require ) {
         options
       );
       var viewListener = function( view ) {
-        self.rayNodeContainer.visible = view === CircuitConstructionKitConstants.LIFELIKE;
+        self.rayNodeContainer.visible = view === CircuitConstructionKitCommonConstants.LIFELIKE;
       };
       viewProperty.link( viewListener );
       circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.addChild( this.socketNode );

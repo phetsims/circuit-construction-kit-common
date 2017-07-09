@@ -13,7 +13,8 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Line = require( 'SCENERY/nodes/Line' );
   var TandemSimpleDragHandler = require( 'TANDEM/scenery/input/TandemSimpleDragHandler' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var Path = require( 'SCENERY/nodes/Path' );
   var LineStyles = require( 'KITE/util/LineStyles' );
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
@@ -28,7 +29,7 @@ define( function( require ) {
 
   // constants
   var LIFELIKE_LINE_WIDTH = 12; // line width in screen coordinates
-  var SCHEMATIC_LINE_WIDTH = CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH; // line width in screen coordinates
+  var SCHEMATIC_LINE_WIDTH = CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH; // line width in screen coordinates
 
   // constants
   var TRANSFORM = new Matrix3(); // The Matrix entries are mutable
@@ -126,8 +127,8 @@ define( function( require ) {
 
     // @private {Node} - the node that shows the yellow highlight for the node when selected
     this.highlightNode = new Path( null, {
-      stroke: CircuitConstructionKitConstants.HIGHLIGHT_COLOR,
-      lineWidth: CircuitConstructionKitConstants.HIGHLIGHT_LINE_WIDTH,
+      stroke: CircuitConstructionKitCommonConstants.HIGHLIGHT_COLOR,
+      lineWidth: CircuitConstructionKitCommonConstants.HIGHLIGHT_LINE_WIDTH,
       pickable: false,
       visible: false
     } );
@@ -308,7 +309,7 @@ define( function( require ) {
      */
     updateRender: function() {
       var view = this.viewProperty.value;
-      if ( view === CircuitConstructionKitConstants.LIFELIKE ) {
+      if ( view === CircuitConstructionKitCommonConstants.LIFELIKE ) {
 
         // determine whether to use the forward or reverse gradient based on the angle
         var startPoint = this.wire.startVertexProperty.get().positionProperty.get();

@@ -16,7 +16,8 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
   var Matrix3 = require( 'DOT/Matrix3' );
-  var CircuitConstructionKitConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitConstants' );
+  var CircuitConstructionKitCommonConstants =
+    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
 
   // images
   var batteryImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
@@ -43,14 +44,14 @@ define( function( require ) {
     .moveTo( RIGHT_JUNCTION, LARGE_TERMINAL_WIDTH / 2 ) // right plate
     .lineTo( RIGHT_JUNCTION, -LARGE_TERMINAL_WIDTH / 2 );
   var schematicWidth = schematicShape.bounds.width;
-  var desiredWidth = CircuitConstructionKitConstants.BATTERY_LENGTH;
+  var desiredWidth = CircuitConstructionKitCommonConstants.BATTERY_LENGTH;
   var schematicScale = desiredWidth / schematicWidth;
 
   // Scale to fit the correct width
   schematicShape = schematicShape.transformed( Matrix3.scale( schematicScale, schematicScale ) );
   var schematicNode = new Path( schematicShape, {
     stroke: 'black',
-    lineWidth: CircuitConstructionKitConstants.SCHEMATIC_LINE_WIDTH
+    lineWidth: CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH
   } ).toDataURLImageSynchronous();
 
   /**
