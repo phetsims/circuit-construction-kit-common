@@ -18,6 +18,7 @@ define( function( require ) {
   var HStrut = require( 'SCENERY/nodes/HStrut' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var Property = require( 'AXON/Property' );
 
   /**
    * @param {Node} content - the content to display in the accordion box when it is expanded
@@ -37,6 +38,7 @@ define( function( require ) {
       contentYSpacing: 0,
       lineWidth: CircuitConstructionKitCommonConstants.PANEL_LINE_WIDTH,
       minWidth: CircuitConstructionKitCommonConstants.RIGHT_SIDE_PANEL_MIN_WIDTH,
+      expandedProperty: new Property( false ),
       titleNode: new HBox( {
         children: [
           new HStrut( 10 ),
