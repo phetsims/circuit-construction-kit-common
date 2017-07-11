@@ -408,6 +408,8 @@ define( function( require ) {
      */
     reset: function() {
       this.circuitElementToolbox.reset();
+      this.batteryResistanceControl.expandedProperty.reset();
+      this.wireResistivityControl.expandedProperty.reset();
     },
 
     /**
