@@ -84,18 +84,22 @@ define( function( require ) {
         circuitElement.internalResistanceProperty.unlink( internalResistanceListener );
       } );
     }
+
     else if ( circuitElement instanceof Resistor || circuitElement instanceof LightBulb ) {
       contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'resistanceText' ) }, TEXT_OPTIONS ) );
-
+      var decimalPlaces = 1; // amount of decimal places to be rounded
+      circuitElement instanceof Resistor && (circuitElement.resistorType !== ('resistor' || 'highResistanceResistor')) ?
+      decimalPlaces = 0 : 1;
       var linkResistance = function( resistance ) {
         contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
-          resistance: Util.toFixed( resistance, 1 )
+          resistance: Util.toFixed( resistance, decimalPlaces )
         } );
       };
       circuitElement.resistanceProperty.link( linkResistance );
       disposeActions.push( function() {
         circuitElement.resistanceProperty.unlink( linkResistance );
       } );
+      contentNode.maxWidth = 113;
     }
     else if ( circuitElement instanceof Switch ) {
       contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'switchText' ) }, TEXT_OPTIONS ) );
