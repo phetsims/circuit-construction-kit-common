@@ -164,7 +164,7 @@ define( function( require ) {
       if ( circuitElement instanceof Wire ) {
         circuitElement.lengthProperty.link( updateCharges );
         circuitElement.disposeEmitter.addListener( function() {
-          circuitElement.lengthProperty.removeListener( updateCharges );
+          circuitElement.lengthProperty.unlink( updateCharges );
         } );
       }
 
