@@ -240,9 +240,9 @@ define( function( require ) {
      * @public
      */
     dispose: function() {
-      FixedLengthCircuitElementNode.prototype.dispose.call( this );
-      this.removeAllChildren();
       this.disposeResistorNode();
+      this.removeAllChildren();
+      FixedLengthCircuitElementNode.prototype.dispose.call( this );
     }
   }, {
 
