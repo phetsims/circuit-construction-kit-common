@@ -74,7 +74,7 @@ define( function( require ) {
   function CircuitConstructionKitLightBulbNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb,
                                                 showResultsProperty, viewProperty, tandem, options ) {
     var self = this;
-    options = options || {};
+    options = _.extend( { icon: false }, options );
     var brightnessProperty = new NumberProperty( 0 );
     var updateBrightness = Property.multilink(
       [ lightBulb.currentProperty, showResultsProperty, lightBulb.voltageDifferenceProperty ],
@@ -208,13 +208,19 @@ define( function( require ) {
       };
       viewProperty.link( viewListener );
       circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.addChild( this.socketNode );
-      circuitLayerNode && circuitLayerNode.lightRaysLayer.addChild( this.rayNodeContainer );
+
+      // Light rays are supposed to be behind everything else,
+      // see https://github.com/phetsims/circuit-construction-kit-common/issues/161
+      circuitLayerNode && circuitLayerNode.addChildToBackground( this.rayNodeContainer );
     }
 
     this.disposeCircuitConstructionKitLightBulbNode = function() {
       updateBrightness.dispose();
       circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.removeChild( self.socketNode );
-      circuitLayerNode && circuitLayerNode.lightRaysLayer.removeChild( self.rayNodeContainer );
+
+      // Light rays are supposed to be behind everything else,
+      // see https://github.com/phetsims/circuit-construction-kit-common/issues/161
+      circuitLayerNode && circuitLayerNode.removeChildFromBackground( self.rayNodeContainer );
       viewProperty.unlink( viewListener );
       self.socketNode.dispose();
     };

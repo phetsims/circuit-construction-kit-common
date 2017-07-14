@@ -38,6 +38,7 @@ define( function( require ) {
   var BatteryResistanceControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryResistanceControl' );
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
   var VBox = require( 'SCENERY/nodes/VBox' );
+  var Node = require( 'SCENERY/nodes/Node' );
   var AlignBox = require( 'SCENERY/nodes/AlignBox' );
   var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
   var SolderNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SolderNode' );
@@ -113,17 +114,8 @@ define( function( require ) {
       circuitConstructionKitModel.isValueDepictionEnabledProperty.unlink( backgroundListener );
     };
 
-    // Reset All button
-    if ( options.showResetAllButton ) {
-      var resetAllButton = new ResetAllButton( {
-        tandem: tandem.createTandem( 'resetAllButton' ),
-        listener: function() {
-          circuitConstructionKitModel.reset();
-          self.reset();
-        }
-      } );
-      this.addChild( resetAllButton );
-    }
+    // @private - contains parts of the circuit that should be shown behind the controls
+    this.circuitLayerNodeBackLayer = new Node();
 
     // @public (read-only) {CircuitLayerNode} - the circuit node
     this.circuitLayerNode = new CircuitLayerNode(
@@ -211,6 +203,20 @@ define( function( require ) {
 
     this.moveBackgroundToBack();
 
+    this.addChild( this.circuitLayerNodeBackLayer );
+
+    // Reset All button
+    if ( options.showResetAllButton ) {
+      var resetAllButton = new ResetAllButton( {
+        tandem: tandem.createTandem( 'resetAllButton' ),
+        listener: function() {
+          circuitConstructionKitModel.reset();
+          self.reset();
+        }
+      } );
+      this.addChild( resetAllButton );
+    }
+
     this.addChild( this.circuitElementToolbox );
 
     var controlPanelVBox = new VBox( {
@@ -227,8 +233,8 @@ define( function( require ) {
       xMargin: HORIZONTAL_MARGIN,
       yMargin: VERTICAL_MARGIN
     } );
-
     this.visibleBoundsProperty.linkAttribute( box, 'alignBounds' );
+
     this.addChild( box );
     this.addChild( this.circuitLayerNode );
 
@@ -374,10 +380,12 @@ define( function( require ) {
 
     // Center the circuit node so that zooms will remain centered.
     self.circuitLayerNode.setTranslation( self.layoutBounds.centerX, self.layoutBounds.centerY );
+    self.circuitLayerNodeBackLayer.setTranslation( self.layoutBounds.centerX, self.layoutBounds.centerY );
 
     // Continuously zoom in and out as the current zoom interpolates
     circuitConstructionKitModel.currentZoomProperty.link( function( zoomLevel ) {
       self.circuitLayerNode.setScaleMagnitude( zoomLevel );
+      self.circuitLayerNodeBackLayer.setScaleMagnitude( zoomLevel );
     } );
   }
 

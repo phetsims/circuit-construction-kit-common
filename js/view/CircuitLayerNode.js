@@ -65,6 +65,9 @@ define( function( require ) {
     // @private (read-only) {Property.<Bounds2>} - the part of the screen that can be seen in view coordinates
     this.visibleBoundsProperty = circuitConstructionKitScreenView.visibleBoundsProperty;
 
+    // @private {Node} - the layer behind the control panels
+    this.circuitLayerNodeBackLayer = circuitConstructionKitScreenView.circuitLayerNodeBackLayer;
+
     // @public {Node} - CircuitElementNodes add highlights directly to this layer when they are constructed
     this.highlightLayer = new Node();
 
@@ -737,6 +740,24 @@ define( function( require ) {
 
       // Signify that something has been dropped in the play area, to show the edit panel, unless dropped in the toolbox
       this.circuit.vertexDroppedEmitter.emit1( vertex );
+    },
+
+    /**
+     * Adds a child to a layer behind the control panels.
+     * @param {Node} child - the Node to add
+     * @public
+     */
+    addChildToBackground: function( child ) {
+      this.circuitLayerNodeBackLayer.addChild( child );
+    },
+
+    /**
+     * Removes a child from the layer behind the control panels.
+     * @param {Node} child - the Node to remove
+     * @public
+     */
+    removeChildFromBackground: function( child ) {
+      this.circuitLayerNodeBackLayer.removeChild( child );
     }
   } );
 } );
