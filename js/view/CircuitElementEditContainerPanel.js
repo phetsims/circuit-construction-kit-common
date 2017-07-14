@@ -26,6 +26,7 @@ define( function( require ) {
     require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var SwitchReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SwitchReadoutNode' );
   var TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
+  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
 
   // strings
   var tapCircuitElementToEditString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/tapCircuitElementToEdit' );
@@ -99,7 +100,11 @@ define( function( require ) {
         if ( isResistor && selectedCircuitElement.isResistanceEditable() ) {
           previousPanel = new CircuitElementEditPanel(
             resistanceString,
-            resistanceOhmsValuePatternString,
+
+            // Adapter to take from {{named}} to {0} for usage in common code
+            StringUtils.fillIn( resistanceOhmsValuePatternString, {
+              resistance: '{0}'
+            } ),
             selectedCircuitElement.resistanceProperty,
             circuit,
             selectedCircuitElement,
@@ -116,7 +121,11 @@ define( function( require ) {
         else if ( isBattery ) {
           previousPanel = new CircuitElementEditPanel(
             voltageString,
-            voltageVoltsValuePatternString,
+
+            // Adapter to take from {{named}} to {0} for usage in common code
+            StringUtils.fillIn( voltageVoltsValuePatternString, {
+              voltage: '{0}'
+            } ),
             selectedCircuitElement.voltageProperty,
             circuit,
             selectedCircuitElement,

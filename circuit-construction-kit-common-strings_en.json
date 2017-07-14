@@ -99,7 +99,7 @@
     "value": "{{voltage}} V"
   },
   "voltageVoltsValuePattern": {
-    "value": "{0} volts"
+    "value": "{{voltage}} volts"
   },
   "currentUnits": {
     "value": "{{current}} A"
@@ -111,7 +111,7 @@
     "value": "{{resistance}} ohms"
   },
   "resistanceOhmsValuePattern": {
-    "value": "{0} ohms"
+    "value": "{{resistance}} ohms"
   },
   "resistanceOhm": {
     "value": "{{resistance}} ohm"
