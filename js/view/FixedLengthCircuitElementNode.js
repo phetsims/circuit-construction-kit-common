@@ -167,7 +167,7 @@ define( function( require ) {
         this.addChild( this.fireNode );
 
         var showFire = function( current, isValueDepictionEnabled ) {
-          return Math.abs( current ) >= 10 && isValueDepictionEnabled;
+          return Math.abs( current ) >= 15 && isValueDepictionEnabled;
         };
 
         var updateFireMultilink = null;
