@@ -83,6 +83,7 @@ define( function( require ) {
       /* SEE ALSO OPTIONS IN CircuitElementToolbox*/
 
       showSeriesAmmeters: false,
+      showNoncontactAmmeters: true,
       getCircuitEditPanelLayoutPosition: CircuitElementEditContainerPanel.GET_LAYOUT_POSITION,
       showResistivityControl: true,
       showBatteryResistanceControl: true
@@ -171,6 +172,7 @@ define( function( require ) {
       circuitConstructionKitModel.isValueDepictionEnabledProperty,
       circuitConstructionKitModel.showLabelsProperty,
       options.showSeriesAmmeters,
+      options.showNoncontactAmmeters,
       tandem.createTandem( 'sensorToolbox' ) );
 
     // @private {ViewRadioButtonGroup}

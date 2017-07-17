@@ -45,11 +45,12 @@ define( function( require ) {
    * @param {Property.<boolean>} showResultsProperty - whether values can be displayed
    * @param {Property.<boolean>} showLabelsProperty - true if toolbox labels should be shown
    * @param {boolean} showSeriesAmmeters - whether the series ammeters should be shown in the toolbox
+   * @param {boolean} showNoncontactAmmeters - whether the noncontact ammeters should be shown in the toolbox
    * @param {Tandem} tandem
    * @constructor
    */
   function SensorToolbox( alignGroup, circuitLayerNode, voltmeterNode, ammeterNode, showResultsProperty,
-                          showLabelsProperty, showSeriesAmmeters, tandem ) {
+                          showLabelsProperty, showSeriesAmmeters, showNoncontactAmmeters, tandem ) {
 
     // Options for the VoltmeterNode and AmmeterNode
     var options = {
@@ -147,20 +148,25 @@ define( function( require ) {
         voltmeterText
       ]
     } );
+
+    var children = [];
+    showNoncontactAmmeters && children.push( ammeterNodeIcon );
+    showSeriesAmmeters && children.push( seriesAmmeterToolNode );
+
     var ammeterToolIcon = new VBox( {
       spacing: ICON_TEXT_SPACING,
       children: [
         new HBox( {
           spacing: 8,
           align: 'bottom',
-          children: showSeriesAmmeters ? [ ammeterNodeIcon, seriesAmmeterToolNode ] : [ ammeterNodeIcon ]
+          children: children
         } ),
         ammeterText
       ]
     } );
 
     CircuitConstructionKitPanel.call( this, alignGroup.createBox( new HBox( {
-      spacing: showSeriesAmmeters ? 20 : 40,
+      spacing: (children.length === 2) ? 20 : 40,
       align: 'bottom',
       children: [ voltmeterToolIcon, ammeterToolIcon ]
     } ) ), tandem, {
