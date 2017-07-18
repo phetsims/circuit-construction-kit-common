@@ -531,10 +531,9 @@ define( function( require ) {
       for ( var i = 0; i < solderNodes.length; i++ ) {
         var solderNode = solderNodes[ i ];
         var position = solderNode.vertex.positionProperty.get();
-        var radius = SolderNode.SOLDER_RADIUS;
 
         var distance = probePosition.distance( position );
-        if ( distance <= radius ) {
+        if ( distance <= SolderNode.SOLDER_RADIUS ) {
           return {
             vertex: solderNode.vertex,
             voltage: solderNode.vertex.voltageProperty.get()
