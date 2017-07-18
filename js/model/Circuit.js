@@ -45,9 +45,6 @@ define( function( require ) {
                              // joined then bump them apart so they do not look connected.
 
   var trueFunction = function() {return true;}; // Lower cased so IDEA doesn't think it is a constructor
-  var isFixedLengthCircuitElement = function( circuitElement ) {
-    return circuitElement instanceof FixedLengthCircuitElement;
-  };
 
   /**
    * @param {Tandem} tandem
