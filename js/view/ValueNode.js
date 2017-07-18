@@ -87,9 +87,14 @@ define( function( require ) {
 
     else if ( circuitElement instanceof Resistor || circuitElement instanceof LightBulb ) {
       contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'resistanceText' ) }, TEXT_OPTIONS ) );
-      var decimalPlaces = 1; // amount of decimal places to be rounded
-      circuitElement instanceof Resistor && (circuitElement.resistorType !== ('resistor' || 'highResistanceResistor')) ?
-      decimalPlaces = 0 : 1;
+
+      // number of decimal places to be displayed
+      var isGrabBagResistor = circuitElement instanceof Resistor &&
+                              circuitElement.resistorType !== 'resistor' &&
+                              circuitElement.resistorType !== 'highResistanceResistor';
+
+      // Items like the hand and dog shouldn't show ".0"
+      var decimalPlaces = isGrabBagResistor ? 0 : 1;
       var linkResistance = function( resistance ) {
         contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
           resistance: Util.toFixed( resistance, decimalPlaces )
@@ -99,7 +104,7 @@ define( function( require ) {
       disposeActions.push( function() {
         circuitElement.resistanceProperty.unlink( linkResistance );
       } );
-      contentNode.maxWidth = 113;
+      contentNode.maxWidth = 100;
     }
     else if ( circuitElement instanceof Switch ) {
       contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'switchText' ) }, TEXT_OPTIONS ) );
