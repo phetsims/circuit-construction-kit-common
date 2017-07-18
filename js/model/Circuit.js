@@ -625,8 +625,7 @@ define( function( require ) {
      * @public
      */
     areVerticesElectricallyConnected: function( vertex1, vertex2 ) {
-      var connectedVertices = this.searchVertices( vertex1, this.circuitElements.getArray(),
-        function( startVertex, circuitElement ) {
+      var connectedVertices = this.searchVertices( vertex1, function( startVertex, circuitElement ) {
 
           // If the circuit element has a closed property (like a Switch), it is only OK to traverse if the element is
           // closed.
@@ -869,19 +868,19 @@ define( function( require ) {
      * @public
      */
     findAllConnectedVertices: function( vertex ) {
-      return this.searchVertices( vertex, this.circuitElements.getArray(), trueFunction );
+      return this.searchVertices( vertex, trueFunction );
     },
 
     /**
      * Find the subgraph where all vertices are connected, given the list of traversible circuit elements
      * @param {Vertex} vertex
-     * @param {CircuitElement[]} circuitElements
      * @param {Function} okToVisit - (startVertex,circuitElement,endVertex)=>boolean, rule that determines which vertices are OK to visit
      * @returns {Vertex[]}
      * @private
      */
-    searchVertices: function( vertex, circuitElements, okToVisit ) {
+    searchVertices: function( vertex, okToVisit ) {
       assert && assert( this.vertices.indexOf( vertex ) >= 0, 'Vertex wasn\'t in the model' );
+
       var fixedVertices = [];
       var toVisit = [ vertex ];
       var visited = [];
@@ -936,7 +935,7 @@ define( function( require ) {
      * @public
      */
     findAllFixedVertices: function( vertex, okToVisit ) {
-      return this.searchVertices( vertex, this.circuitElements.getArray(), function( startVertex, circuitElement, endVertex ) {
+      return this.searchVertices( vertex, function( startVertex, circuitElement, endVertex ) {
         if ( okToVisit ) {
           return circuitElement instanceof FixedLengthCircuitElement && okToVisit( startVertex, circuitElement, endVertex );
         }
