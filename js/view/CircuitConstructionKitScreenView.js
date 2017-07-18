@@ -27,6 +27,7 @@ define( function( require ) {
   var SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
   var Util = require( 'DOT/Util' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
+  var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var CircuitConstructionKitCommonQueryParameters =
     require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonQueryParameters' );
@@ -478,36 +479,35 @@ define( function( require ) {
     /**
      * Check for an intersection between a probeNode and a wire, return null if no hits.
      * @param {Vector2} position to hit test
+     * @param {function} filter - the rule to use for checking circuit elements
      * @returns {WireNode|null}
      * @public
      */
-    hitWireNode: function( position ) {
+    hitCircuitElementNode: function( position, filter ) {
       var self = this;
 
       // Search from the front to the back, because frontmost objects look like they are hitting the sensor, see #143
-      var wireNodes = this.circuitLayerNode.circuit.circuitElements.getArray().filter( function( circuitElement ) {
-        return circuitElement instanceof Wire;
-      } ).map( function( wire ) {
+      var circuitElementNodes = this.circuitLayerNode.circuit.circuitElements.getArray().filter( filter ).map( function( wire ) {
         return self.circuitLayerNode.getCircuitElementNode( wire );
       } );
 
-      for ( var i = wireNodes.length - 1; i >= 0; i-- ) {
-        var wireNode = wireNodes[ i ];
+      for ( var i = circuitElementNodes.length - 1; i >= 0; i-- ) {
+        var circuitElementNode = circuitElementNodes[ i ];
 
         // If this code got called before the WireNode has been created, skip it (the Voltmeter hit tests nodes)
-        if ( !wireNode ) {
+        if ( !circuitElementNode ) {
           continue;
         }
 
         // Don't connect to wires in the black box
         var revealing = true;
-        var trueBlackBox = wireNode.wire.insideTrueBlackBoxProperty.get();
+        var trueBlackBox = circuitElementNode.circuitElement.insideTrueBlackBoxProperty.get();
         if ( trueBlackBox ) {
           revealing = this.circuitConstructionKitModel.revealingProperty.get();
         }
 
-        if ( revealing && wireNode.containsSensorPoint( position ) ) {
-          return wireNode;
+        if ( revealing && circuitElementNode.containsSensorPoint( position ) ) {
+          return circuitElementNode;
         }
       }
       return null;
@@ -542,7 +542,9 @@ define( function( require ) {
       }
 
       // Check for intersection with a wire
-      var wireNode = this.hitWireNode( probePosition );
+      var wireNode = this.hitCircuitElementNode( probePosition, function( circuitElement ) {
+        return circuitElement instanceof Wire;
+      } );
       if ( wireNode ) {
 
         var startPoint = wireNode.wire.startVertexProperty.get().positionProperty.get();
@@ -570,6 +572,27 @@ define( function( require ) {
         };
       }
       else {
+
+        // check for intersection with switch node
+        var switchNode = this.hitCircuitElementNode( probePosition, function( circuitElement ) {
+          return circuitElement instanceof Switch;
+        } );
+        if ( switchNode ) {
+          if ( switchNode.circuitSwitch.closedProperty.get() ) {
+
+            // start and end vertices are equivalent for a closed switch, since it has zero resistance.  So we
+            // arbitrarily return the start vertex
+            return {
+              vertex: switchNode.circuitSwitch.startVertexProperty.get(),
+              voltage: switchNode.circuitSwitch.startVertexProperty.get().voltageProperty.get()
+            };
+          }
+          else {
+
+            // TODO: address closed switch.  Find out whether the probe was near the start or end vertex
+          }
+        }
+
         return null;
       }
     }
