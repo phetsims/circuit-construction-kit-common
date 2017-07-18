@@ -132,7 +132,7 @@ define( function( require ) {
      */
     containsSensorPoint: function( point ) {
 
-      // default implementation is a scenery hit test
+      // default implementation is a scenery geometry containment test
       return this.containsPoint( point );
     },
 

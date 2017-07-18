@@ -53,7 +53,8 @@ define( function( require ) {
         cornerRadius: edgeRadius,
         fill: fill,
         stroke: 'black',
-        lineWidth: 1
+        lineWidth: 1,
+        pickable: true
       } );
 
     // See the picture at https://github.com/phetsims/circuit-construction-kit-common/issues/313
@@ -74,7 +75,8 @@ define( function( require ) {
       x: SWITCH_LENGTH * SWITCH_START,
       fill: fill,
       stroke: 'black',
-      lineWidth: type === CircuitConstructionKitCommonConstants.SCHEMATIC ? 0 : 1
+      lineWidth: type === CircuitConstructionKitCommonConstants.SCHEMATIC ? 0 : 1,
+      pickable: true
     } );
 
     rotatingSegmentNode.setRotation( closed ? 0 : -Math.PI / 4 );
@@ -91,7 +93,12 @@ define( function( require ) {
       .lineTo( SWITCH_LENGTH - edgeRadius, -thickness / 2 )
       .arc( SWITCH_LENGTH - edgeRadius, 0, edgeRadius, -Math.PI / 2, Math.PI / 2 )
       .lineTo( SWITCH_LENGTH * SWITCH_END - curveDiameter, thickness / 2 );
-    var rightSegmentNode = new Path( rightSegmentShape, { fill: fill, stroke: 'black', lineWidth: 1 } );
+    var rightSegmentNode = new Path( rightSegmentShape, {
+      fill: fill,
+      stroke: 'black',
+      lineWidth: 1,
+      pickable: true
+    } );
 
     var lifelikeHinge = new Circle( thickness * 0.6, {
       fill: '#a7a8ab',
@@ -119,13 +126,18 @@ define( function( require ) {
     node.mouseArea = node.bounds.copy();
     node.touchArea = node.bounds.copy();
 
+    node.leftSegmentNode = leftSegmentNode;
+    node.rotatingSegmentNode = rotatingSegmentNode;
+    node.rightSegmentNode = rightSegmentNode;
+
     return node;
   };
 
   // Create all of the images
-  var lifelikeOpenImage = createNode(
+  var lifelikeOpenNode = createNode(
     CircuitConstructionKitCommonConstants.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, false
-  ).toDataURLImageSynchronous();
+  );
+  var lifelikeOpenImage = lifelikeOpenNode.toDataURLImageSynchronous();
   var schematicOpenImage = createNode(
     CircuitConstructionKitCommonConstants.SCHEMATIC, 'black', CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH, 0, false
   ).toDataURLImageSynchronous();
@@ -199,6 +211,11 @@ define( function( require ) {
     // Only add the input listener if it is not for a toolbar icon
     circuitConstructionKitScreenView && this.contentNode.addInputListener( buttonListener );
 
+    // @private - For hit testing
+    this.lifelikeOpenNode = createNode(
+      CircuitConstructionKitCommonConstants.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, false
+    );
+
     // @private - clean up resources when no longer used.
     this.disposeSwitchNode = function() {
       circuitSwitch.closedProperty.unlink( closeListener );
@@ -212,6 +229,49 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'SwitchNode', SwitchNode );
 
   return inherit( FixedLengthCircuitElementNode, SwitchNode, {
+
+    /**
+     * Determine whether the start side (with the pivot) contains the sensor point.
+     * @param {Vector2} localPoint - in the coordinate frame of the switch
+     * @returns {boolean}
+     */
+    startSideContainsSensorPoint: function( localPoint ) {
+
+      var leftSegmentContainsPoint = lifelikeOpenNode.leftSegmentNode.containsPoint( localPoint );
+      var rotatingSegmentContainsPoint = lifelikeOpenNode.rotatingSegmentNode.containsPoint( localPoint );
+      return leftSegmentContainsPoint || rotatingSegmentContainsPoint;
+    },
+
+    /**
+     * Determine whether the start side (without the pivot) contains the sensor point.
+     * @param {Vector2} localPoint - in the coordinate frame of the switch
+     * @returns {boolean}
+     */
+    endSideContainsSensorPoint: function( localPoint ) {
+      var rightSegmentNodeContainsPoint = lifelikeOpenNode.rightSegmentNode.containsPoint( localPoint );
+      return rightSegmentNodeContainsPoint;
+    },
+
+    /**
+     * Returns true if the node hits the sensor at the given point.
+     * @param {Vector2} point
+     * @returns {boolean}
+     * @overrides
+     * @public
+     */
+    containsSensorPoint: function( point ) {
+
+      // TODO: use startSide and endSide containment even when the switch is closed
+      if ( this.circuitSwitch.closedProperty.get() ) {
+        return !!this.hitTest( point, true, false );
+      }
+      else {
+
+        // get the point in the local coordinate frame of the switch
+        var localPoint = this.contentNode.getTransform().inversePosition2( point );
+        return this.startSideContainsSensorPoint( localPoint ) || this.endSideContainsSensorPoint( localPoint );
+      }
+    },
 
     /**
      * Clean up resources when no longer used.

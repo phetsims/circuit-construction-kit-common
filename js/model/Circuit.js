@@ -861,6 +861,7 @@ define( function( require ) {
      * Find the subgraph where all vertices are connected, given the list of traversible circuit elements
      * @param {Vertex} vertex
      * @param {CircuitElement[]} circuitElements
+     * TODO: add type signature to functions
      * @param {Function} okToVisit - rule that determines which vertices are OK to visit
      * @returns {Vertex[]}
      * @private
@@ -877,6 +878,8 @@ define( function( require ) {
 
         // If we haven't visited it before, then explore it
         if ( visited.indexOf( currentVertex ) < 0 ) {
+
+          // TODO: get edges
           var neighbors = this.getNeighborVerticesInGroup( currentVertex, circuitElements );
 
           for ( var i = 0; i < neighbors.length; i++ ) {
@@ -885,6 +888,8 @@ define( function( require ) {
             // If the node was already visited, don't visit again
             if ( visited.indexOf( neighbor ) < 0 &&
                  toVisit.indexOf( neighbor ) < 0 &&
+
+                 // TODO: use edge for comparison here
                  okToVisit( currentVertex, neighbor ) ) {
               toVisit.push( neighbor );
             }
