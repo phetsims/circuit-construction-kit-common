@@ -628,9 +628,15 @@ define( function( require ) {
       var connectedVertices = this.searchVertices( vertex1, this.circuitElements.getArray(),
         function( startVertex, circuitElement ) {
 
-          // If the circuit element has a closed property, it is OK to traverse if the element is closed.
+          // If the circuit element has a closed property (like a Switch), it is only OK to traverse if the element is
+          // closed.
           if ( circuitElement.closedProperty ) {
             return circuitElement.closedProperty.get();
+          }
+          else {
+
+            // Everything else is traversible
+            return true;
           }
         }
       );
