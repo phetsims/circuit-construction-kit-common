@@ -84,10 +84,14 @@ define( function( require ) {
     fill: reverseGradient
   } ).toDataURLImageSynchronous();
 
-  var highlightStrokeStyles = new LineStyles( {
+  var HIGHLIGHT_STROKE_LINE_STYLES = new LineStyles( {
     lineWidth: 26,
     lineCap: 'round',
     lineJoin: 'round'
+  } );
+
+  var TOUCH_AREA_LINE_STYLES = new LineStyles( {
+    lineWidth: 23
   } );
 
   /**
@@ -99,7 +103,36 @@ define( function( require ) {
     var startPoint = wire.startVertexProperty.get().positionProperty.get();
     var endPoint = wire.endVertexProperty.get().positionProperty.get();
     return Shape.lineSegment( startPoint.x, startPoint.y, endPoint.x, endPoint.y )
-      .getStrokedShape( highlightStrokeStyles );
+      .getStrokedShape( HIGHLIGHT_STROKE_LINE_STYLES );
+  };
+
+  /**
+   * Convenience function that gets the stroked shape for the wire line node with the given style
+   * @param {Wire} wire
+   * @returns {Shape}
+   */
+  var getTouchArea = function( wire ) {
+    var startPoint = wire.startVertexProperty.get().positionProperty.get();
+    var endPoint = wire.endVertexProperty.get().positionProperty.get();
+    var distance = endPoint.distance( startPoint );
+    var vertexInset = 18;
+    var touchAreaStart = null;
+    var touchAreaEnd = null;
+
+    // Extend the touch area from vertex to vertex
+    if ( distance > vertexInset * 2 ) {
+      touchAreaStart = startPoint.blend( endPoint, vertexInset / distance );
+      touchAreaEnd = endPoint.blend( startPoint, vertexInset / distance );
+    }
+    else {
+
+      // Not enough room for any touch area for this wire
+      touchAreaStart = startPoint.blend( endPoint, 0.5 );
+      touchAreaEnd = touchAreaStart;
+    }
+
+    return Shape.lineSegment( touchAreaStart.x, touchAreaStart.y, touchAreaEnd.x, touchAreaEnd.y )
+      .getStrokedShape( TOUCH_AREA_LINE_STYLES );
   };
 
   /**
@@ -356,6 +389,8 @@ define( function( require ) {
         if ( showHighlight ) {
           this.highlightNode.shape = getHighlightStrokedShape( this.wire );
         }
+
+        this.touchArea = getTouchArea( this.wire );
       }
     },
 
