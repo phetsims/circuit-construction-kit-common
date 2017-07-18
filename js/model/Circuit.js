@@ -930,8 +930,14 @@ define( function( require ) {
      * @public
      */
     findAllFixedVertices: function( vertex, okToVisit ) {
-      var fixedCircuitElements = this.circuitElements.getArray().filter( isFixedLengthCircuitElement );
-      return this.searchVertices( vertex, fixedCircuitElements, okToVisit || trueFunction );
+      return this.searchVertices( vertex, this.circuitElements.getArray(), function( startVertex, circuitElement, endVertex ) {
+        if ( okToVisit ) {
+          return circuitElement instanceof FixedLengthCircuitElement && okToVisit( startVertex, circuitElement, endVertex );
+        }
+        else {
+          return circuitElement instanceof FixedLengthCircuitElement;
+        }
+      } );
     },
 
     /**
