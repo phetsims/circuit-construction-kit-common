@@ -108,7 +108,9 @@ define( function( require ) {
      * @returns {Rectangle}
      */
     var createPanel = function( options ) {
-      return new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, options );
+
+      // Rasterize so it can be rendered in WebGL, see https://github.com/phetsims/circuit-construction-kit-dc/issues/67
+      return new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, options ).toDataURLNodeSynchronous();
     };
 
     // This node only has a lifelike representation because it is a sensor
