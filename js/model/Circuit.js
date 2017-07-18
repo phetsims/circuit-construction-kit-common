@@ -617,14 +617,23 @@ define( function( require ) {
     },
 
     /**
-     * Determines whether the specified Vertices are connected through any arbitrary connections.
+     * Determines whether the specified Vertices are electrically connected through any arbitrary connections.  An
+     * open switch breaks the connection.
      * @param {Vertex} vertex1
      * @param {Vertex} vertex2
      * @returns {boolean}
      * @public
      */
-    areVerticesConnected: function( vertex1, vertex2 ) {
-      var connectedVertices = this.findAllConnectedVertices( vertex1 );
+    areVerticesElectricallyConnected: function( vertex1, vertex2 ) {
+      var connectedVertices = this.searchVertices( vertex1, this.circuitElements.getArray(),
+        function( startVertex, circuitElement ) {
+
+          // If the circuit element has a closed property, it is OK to traverse if the element is closed.
+          if ( circuitElement.closedProperty ) {
+            return circuitElement.closedProperty.get();
+          }
+        }
+      );
       return connectedVertices.indexOf( vertex2 ) >= 0;
     },
 
@@ -854,15 +863,14 @@ define( function( require ) {
      * @public
      */
     findAllConnectedVertices: function( vertex ) {
-      return this.searchVertices( vertex, this.circuitElements.getArray(), function() {return true;} );
+      return this.searchVertices( vertex, this.circuitElements.getArray(), trueFunction );
     },
 
     /**
      * Find the subgraph where all vertices are connected, given the list of traversible circuit elements
      * @param {Vertex} vertex
      * @param {CircuitElement[]} circuitElements
-     * TODO: add type signature to functions
-     * @param {Function} okToVisit - rule that determines which vertices are OK to visit
+     * @param {Function} okToVisit - (startVertex,circuitElement,endVertex)=>boolean, rule that determines which vertices are OK to visit
      * @returns {Vertex[]}
      * @private
      */
@@ -879,19 +887,18 @@ define( function( require ) {
         // If we haven't visited it before, then explore it
         if ( visited.indexOf( currentVertex ) < 0 ) {
 
-          // TODO: get edges
-          var neighbors = this.getNeighborVerticesInGroup( currentVertex, circuitElements );
+          var neighborCircuitElements = this.getNeighborCircuitElements( currentVertex );
 
-          for ( var i = 0; i < neighbors.length; i++ ) {
-            var neighbor = neighbors[ i ];
+          for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
+            var neighborCircuitElement = neighborCircuitElements[ i ];
+            var neighborVertex = neighborCircuitElement.getOppositeVertex( currentVertex );
 
             // If the node was already visited, don't visit again
-            if ( visited.indexOf( neighbor ) < 0 &&
-                 toVisit.indexOf( neighbor ) < 0 &&
+            if ( visited.indexOf( neighborVertex ) < 0 &&
+                 toVisit.indexOf( neighborVertex ) < 0 &&
 
-                 // TODO: use edge for comparison here
-                 okToVisit( currentVertex, neighbor ) ) {
-              toVisit.push( neighbor );
+                 okToVisit( currentVertex, neighborCircuitElement, neighborVertex ) ) {
+              toVisit.push( neighborVertex );
             }
           }
         }

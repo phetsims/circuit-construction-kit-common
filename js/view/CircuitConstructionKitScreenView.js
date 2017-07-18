@@ -286,10 +286,13 @@ define( function( require ) {
         var blackConnection = findVoltageConnection(
           voltmeterNode.blackProbeNode, voltmeterNode.voltmeter.blackProbePositionProperty.get()
         );
+
+        // TODO: delete this debugging code
+        // console.log( (redConnection && redConnection.vertex.index), ' --> ', (blackConnection && blackConnection.vertex.index) );
         if ( redConnection === null || blackConnection === null ) {
           circuitConstructionKitModel.voltmeter.voltageProperty.set( null );
         }
-        else if ( !circuitConstructionKitModel.circuit.areVerticesConnected(
+        else if ( !circuitConstructionKitModel.circuit.areVerticesElectricallyConnected(
             redConnection.vertex, blackConnection.vertex
           ) ) {
 
@@ -486,11 +489,13 @@ define( function( require ) {
     hitCircuitElementNode: function( position, filter ) {
       var self = this;
 
-      // Search from the front to the back, because frontmost objects look like they are hitting the sensor, see #143
-      var circuitElementNodes = this.circuitLayerNode.circuit.circuitElements.getArray().filter( filter ).map( function( wire ) {
-        return self.circuitLayerNode.getCircuitElementNode( wire );
-      } );
+      var circuitElementNodes = this.circuitLayerNode.circuit.circuitElements.getArray()
+        .filter( filter )
+        .map( function( circuitElement ) {
+          return self.circuitLayerNode.getCircuitElementNode( circuitElement );
+        } );
 
+      // Search from the front to the back, because frontmost objects look like they are hitting the sensor, see #143
       for ( var i = circuitElementNodes.length - 1; i >= 0; i-- ) {
         var circuitElementNode = circuitElementNodes[ i ];
 
@@ -578,32 +583,21 @@ define( function( require ) {
           return circuitElement instanceof Switch;
         } );
         if ( switchNode ) {
-          if ( switchNode.circuitSwitch.closedProperty.get() ) {
 
-            // start and end vertices are equivalent for a closed switch, since it has zero resistance.  So we
-            // arbitrarily return the start vertex
+          // address closed switch.  Find out whether the probe was near the start or end vertex
+          if ( switchNode.startSideContainsSensorPoint( probePosition ) ) {
+
+            // TODO: create a method voltageConnectionAt(vertex)?
             return {
               vertex: switchNode.circuitSwitch.startVertexProperty.get(),
               voltage: switchNode.circuitSwitch.startVertexProperty.get().voltageProperty.get()
             };
           }
-          else {
-
-            // address closed switch.  Find out whether the probe was near the start or end vertex
-            if ( switchNode.startSideContainsSensorPoint( probePosition ) ) {
-
-              // TODO: create a method voltageConnectionAt(vertex)
-              return {
-                vertex: switchNode.circuitSwitch.startVertexProperty.get(),
-                voltage: switchNode.circuitSwitch.startVertexProperty.get().voltageProperty.get()
-              };
-            }
-            else {
-              return {
-                vertex: switchNode.circuitSwitch.endVertexProperty.get(),
-                voltage: switchNode.circuitSwitch.endVertexProperty.get().voltageProperty.get()
-              };
-            }
+          else if ( switchNode.endSideContainsSensorPoint( probePosition ) ) {
+            return {
+              vertex: switchNode.circuitSwitch.endVertexProperty.get(),
+              voltage: switchNode.circuitSwitch.endVertexProperty.get().voltageProperty.get()
+            };
           }
         }
 

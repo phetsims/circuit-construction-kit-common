@@ -123,6 +123,7 @@ define( function( require ) {
     // Expand the pointer areas with a defensive copy, see
     // https://github.com/phetsims/circuit-construction-kit-common/issues/310
     // And make it so clicking in the gap still toggles the switch
+    // TODO: do these do anything after rasterization?
     node.mouseArea = node.bounds.copy();
     node.touchArea = node.bounds.copy();
 
@@ -138,12 +139,16 @@ define( function( require ) {
     CircuitConstructionKitCommonConstants.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, false
   );
   var lifelikeOpenImage = lifelikeOpenNode.toDataURLImageSynchronous();
+
+  var lifelikeClosedNode = createNode(
+    CircuitConstructionKitCommonConstants.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, true
+  );
+  var lifelikeClosedImage = lifelikeClosedNode.toDataURLImageSynchronous();
+
   var schematicOpenImage = createNode(
     CircuitConstructionKitCommonConstants.SCHEMATIC, 'black', CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH, 0, false
   ).toDataURLImageSynchronous();
-  var lifelikeClosedImage = createNode(
-    CircuitConstructionKitCommonConstants.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, true
-  ).toDataURLImageSynchronous();
+
   var schematicClosedImage = createNode(
     CircuitConstructionKitCommonConstants.SCHEMATIC, 'black', CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH, 0, true
   ).toDataURLImageSynchronous();
@@ -235,10 +240,12 @@ define( function( require ) {
      * @param {Vector2} localPoint - in the coordinate frame of the switch
      * @returns {boolean}
      */
-    startSideContainsSensorPoint: function( localPoint ) {
+    startSideContainsSensorPoint: function( point ) {
+      var localPoint = this.contentNode.getTransform().inversePosition2( point );
 
       var leftSegmentContainsPoint = lifelikeOpenNode.leftSegmentNode.containsPoint( localPoint );
-      var rotatingSegmentContainsPoint = lifelikeOpenNode.rotatingSegmentNode.containsPoint( localPoint );
+      var node = this.circuitSwitch.closedProperty.get() ? lifelikeClosedNode : lifelikeOpenNode;
+      var rotatingSegmentContainsPoint = node.rotatingSegmentNode.containsPoint( localPoint );
       return leftSegmentContainsPoint || rotatingSegmentContainsPoint;
     },
 
@@ -247,9 +254,9 @@ define( function( require ) {
      * @param {Vector2} localPoint - in the coordinate frame of the switch
      * @returns {boolean}
      */
-    endSideContainsSensorPoint: function( localPoint ) {
-      var rightSegmentNodeContainsPoint = lifelikeOpenNode.rightSegmentNode.containsPoint( localPoint );
-      return rightSegmentNodeContainsPoint;
+    endSideContainsSensorPoint: function( point ) {
+      var localPoint = this.contentNode.getTransform().inversePosition2( point );
+      return lifelikeOpenNode.rightSegmentNode.containsPoint( localPoint );
     },
 
     /**
@@ -260,17 +267,7 @@ define( function( require ) {
      * @public
      */
     containsSensorPoint: function( point ) {
-
-      // TODO: use startSide and endSide containment even when the switch is closed
-      if ( this.circuitSwitch.closedProperty.get() ) {
-        return !!this.hitTest( point, true, false );
-      }
-      else {
-
-        // get the point in the local coordinate frame of the switch
-        var localPoint = this.contentNode.getTransform().inversePosition2( point );
-        return this.startSideContainsSensorPoint( localPoint ) || this.endSideContainsSensorPoint( localPoint );
-      }
+      return this.startSideContainsSensorPoint( point ) || this.endSideContainsSensorPoint( point );
     },
 
     /**
