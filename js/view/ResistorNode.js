@@ -70,6 +70,8 @@ define( function( require ) {
   function ResistorNode( circuitConstructionKitScreenView, circuitLayerNode, resistor, showResultsProperty,
                          viewProperty, tandem, options ) {
 
+    options = _.extend( { icon: false }, options );
+
     // @public (read-only) {Resistor} the resistor depicted by this node
     this.resistor = resistor;
 
@@ -167,9 +169,13 @@ define( function( require ) {
       .lineToRelative( SCHEMATIC_PERIOD / 2, -SCHEMATIC_WAVELENGTH / 2 )
       .lineToRelative( SCHEMATIC_STEM_WIDTH, 0 );
 
+    // Icons should appear the same in the toolbox, see
+    // https://github.com/phetsims/circuit-construction-kit-common/issues/389
+    var width = options.icon ? CircuitConstructionKitCommonConstants.RESISTOR_LENGTH : resistor.distanceBetweenVertices;
     lifelikeResistorImageNode.mutate( {
-      scale: resistor.distanceBetweenVertices / lifelikeResistorImageNode.width
+      scale: width / lifelikeResistorImageNode.width
     } );
+
     var scale = lifelikeResistorImageNode.width / schematicShape.bounds.width;
     schematicShape = schematicShape.transformed( Matrix3.scale( scale, scale ) );
     var schematicNode = new Path( schematicShape, {
