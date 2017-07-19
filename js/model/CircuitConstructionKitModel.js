@@ -22,6 +22,8 @@ define( function( require ) {
     require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonQueryParameters' );
   var TandemEmitter = require( 'TANDEM/axon/TandemEmitter' );
   var EaseAnimation = require( 'TWIXT/EaseAnimation' );
+  var Util = require( 'DOT/Util' );
+  var ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ZoomControlPanel' );
 
   // phet-io modules
   var TString = require( 'ifphetio!PHET_IO/types/TString' );
@@ -85,7 +87,9 @@ define( function( require ) {
         initialValue: oldValue,
         targetValue: newValue,
         delta: function( delta ) {
-          self.currentZoomProperty.value += delta;
+          var proposedZoomValue = self.currentZoomProperty.value + delta;
+          var boundedValue = Util.clamp( proposedZoomValue, ZoomControlPanel.ZOOMED_OUT, ZoomControlPanel.ZOOMED_IN );
+          self.currentZoomProperty.value = boundedValue;
         }
       } );
     } );

@@ -56,5 +56,8 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'ZoomControlPanel', ZoomControlPanel );
 
-  return inherit( HBox, ZoomControlPanel );
+  return inherit( HBox, ZoomControlPanel, {}, {
+    ZOOMED_OUT: ZOOMED_OUT,
+    ZOOMED_IN: ZOOMED_IN
+  } );
 } );
