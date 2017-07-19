@@ -72,6 +72,25 @@ define( function( require ) {
     var self = this;
     var circuit = circuitLayerNode.circuit;
 
+    // Use a query parameter to turn on node voltage readouts for debugging only.
+    var vertexDisplay = CircuitConstructionKitCommonQueryParameters.vertexDisplay;
+    var voltageReadoutText = null;
+    if ( vertexDisplay ) {
+      voltageReadoutText = new Text( '', {
+        fontSize: 18,
+        pickable: false
+      } );
+      var updateReadoutTextLocation = function() {
+        voltageReadoutText.centerX = 0;
+        voltageReadoutText.bottom = -30;
+      };
+      vertex.voltageProperty.link( function( voltage ) {
+        var voltageText = Util.toFixed( voltage, 3 ) + 'V';
+        voltageReadoutText.setText( vertexDisplay === 'voltage' ? voltageText : vertex.index );
+        updateReadoutTextLocation();
+      } );
+    }
+
     // Take care to only initialize the cutButton once because it will be used for all VertexNode instance.  This must
     // happen after the circuit is available.
     if ( !cutButtonInitialized ) {
@@ -134,6 +153,8 @@ define( function( require ) {
       var desiredChild = circuit.countCircuitElements( vertex ) > 1 ? BLACK_CIRCLE_NODE : RED_CIRCLE_NODE;
       if ( self.getChildAt( 0 ) !== desiredChild ) {
         self.children = [ desiredChild ];
+        voltageReadoutText && self.addChild( voltageReadoutText );
+        console.log( self.children.length );
       }
       self.visible = vertex.attachableProperty.get();
     };
@@ -241,27 +262,7 @@ define( function( require ) {
     } );
 
     // Don't permit dragging by the scissors or highlight
-    self.addInputListener( dragHandler );
-
-    // Use a query parameter to turn on node voltage readouts for debugging only.
-    var vertexDisplay = CircuitConstructionKitCommonQueryParameters.vertexDisplay;
-    if ( vertexDisplay ) {
-      var voltageReadoutText = new Text( '', {
-        fontSize: 18,
-        y: -60,
-        pickable: false
-      } );
-      this.addChild( voltageReadoutText );
-      var updateReadoutTextLocation = function() {
-        voltageReadoutText.centerX = self.centerX;
-        voltageReadoutText.bottom = self.top - 10;
-      };
-      vertex.voltageProperty.link( function( voltage ) {
-        var voltageText = Util.toFixed( voltage, 3 ) + 'V';
-        voltageReadoutText.setText( vertexDisplay === 'voltage' ? voltageText : vertex.index );
-        updateReadoutTextLocation();
-      } );
-    }
+    this.addInputListener( dragHandler );
 
     // Make sure the cut button remains in the visible screen bounds.
     var updateCutButtonPosition = function() {
