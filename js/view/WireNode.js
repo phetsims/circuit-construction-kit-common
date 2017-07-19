@@ -194,9 +194,9 @@ define( function( require ) {
     var circuit = circuitLayerNode && circuitLayerNode.circuit;
     CircuitElementNode.call( this, wire, circuit, {
       children: [
+        this.lineNodeParent,
         this.startCapParent,
-        this.endCapParent,
-        this.lineNodeParent
+        this.endCapParent
       ]
     } );
 
