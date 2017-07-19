@@ -27,8 +27,9 @@ define( function( require ) {
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {Node} iconNode
    * @param {number} maxNumber
-   * @param {function} count
-   * @param {function} createElement
+   * @param {function} count - () => number, gets the number of that kind of object in the model, so the icon can be
+   *                         - hidden when all items have been created
+   * @param {function} createElement - (Vector2) => CircuitElement
    * @constructor
    */
   function CircuitElementToolNode( labelText, showLabelsProperty, circuitLayerNode, iconNode, maxNumber, count, createElement ) {

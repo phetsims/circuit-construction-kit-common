@@ -543,7 +543,7 @@ define( function( require ) {
      * @param {number} row - the index of the row for this equation
      * @param {Matrix} a - the matrix of coefficients in Ax=z
      * @param {Matrix} z - the matrix on the right hand side in Ax=z
-     * @param {function} getIndex
+     * @param {function} getIndex - (UnknownCurrent|UnknownVoltage) => number
      * @public
      */
     stamp: function( row, a, z, getIndex ) {

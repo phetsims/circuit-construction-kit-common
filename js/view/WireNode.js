@@ -45,7 +45,7 @@ define( function( require ) {
    * Create a LinearGradient for the wire, depending on the orientation relative to the shading (light comes from
    * top left)
    * @param {Object[]} colorStops - entries have point: Number, color: Color
-   * @param {function} colorStopPointMap - the operation to apply to create color stops
+   * @param {function} colorStopPointMap - (Vector2) => number, the operation to apply to create color stops
    * @returns {LinearGradient}
    */
   var createGradient = function( colorStops, colorStopPointMap ) {

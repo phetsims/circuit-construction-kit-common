@@ -100,7 +100,7 @@ define( function( require ) {
 
     /**
      * Returns a function which counts the number of circuit elements (not counting those in the true black box).
-     * @param {function} predicate
+     * @param {function} predicate - CircuitElement => boolean
      * @returns {function}
      */
     var createCounter = function( predicate ) {
@@ -131,7 +131,7 @@ define( function( require ) {
      * @param {string} labelString
      * @param {number} count
      * @param {Node} icon
-     * @param {function} counterFunction
+     * @param {function} counterFunction - CircuitElement => boolean
      * @param {function} creator
      * @param {Object} [options]
      * @returns {CircuitElementToolNode}

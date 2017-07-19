@@ -482,7 +482,7 @@ define( function( require ) {
     /**
      * Check for an intersection between a probeNode and a wire, return null if no hits.
      * @param {Vector2} position to hit test
-     * @param {function} filter - the rule to use for checking circuit elements
+     * @param {function} filter - CircuitElement=>boolean the rule to use for checking circuit elements
      * @returns {WireNode|null}
      * @public
      */

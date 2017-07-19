@@ -871,7 +871,8 @@ define( function( require ) {
     /**
      * Find the subgraph where all vertices are connected, given the list of traversible circuit elements
      * @param {Vertex} vertex
-     * @param {Function} okToVisit - (startVertex,circuitElement,endVertex)=>boolean, rule that determines which vertices are OK to visit
+     * @param {function} okToVisit - (startVertex:Vertex,circuitElement:CircuitElement,endVertex:Vertex)=>boolean, rule
+     *                             - that determines which vertices are OK to visit
      * @returns {Vertex[]}
      * @private
      */
@@ -927,7 +928,8 @@ define( function( require ) {
     /**
      * Find the subgraph where all vertices are connected by FixedLengthCircuitElements, not stretchy wires.
      * @param {Vertex} vertex
-     * @param {Function} [okToVisit] - rule that determines which vertices are OK to visit
+     * @param {function} [okToVisit] - (startVertex:Vertex,circuitElement:CircuitElement,endVertex:Vertex)=>boolean,
+     *                               - rule that determines which vertices are OK to visit
      * @returns {Vertex[]}
      * @public
      */
