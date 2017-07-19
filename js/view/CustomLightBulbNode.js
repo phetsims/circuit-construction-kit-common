@@ -136,7 +136,7 @@ define( function( require ) {
         assert && assert( brightness >= 0 && brightness <= 1 );
         this.backNode.visible = ( brightness > 0 );
         if ( this.backNode.visible ) {
-          this.backNode.opacity = Util.clamp( Util.linear( 0, 0.5, 0, 1, brightness ), 0, 1 );
+          this.backNode.imageOpacity = Util.clamp( Util.linear( 0, 0.5, 0, 1, brightness ), 0, 1 );
         }
         this.raysNode.setBrightness( brightness );
       }
