@@ -534,6 +534,9 @@ define( function( require ) {
         itemsPerPage: ITEMS_PER_PAGE,
         spacing: 0,
         margin: 15,
+
+        // Expand the touch area above the up button and below the down button
+        buttonTouchAreaYDilation: 8,
         tandem: tandem.createTandem( 'carousel' )
       } );
 
