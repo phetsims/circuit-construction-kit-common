@@ -154,7 +154,6 @@ define( function( require ) {
       if ( self.getChildAt( 0 ) !== desiredChild ) {
         self.children = [ desiredChild ];
         voltageReadoutText && self.addChild( voltageReadoutText );
-        console.log( self.children.length );
       }
       self.visible = vertex.attachableProperty.get();
     };
