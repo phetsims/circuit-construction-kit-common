@@ -250,6 +250,9 @@ define( function( require ) {
     initializeCircuitElementType( SeriesAmmeterNode, SeriesAmmeter, tandem.createGroupTandem( 'seriesAmmeterNode' ) );
     initializeCircuitElementType( SwitchNode, Switch, tandem.createGroupTandem( 'switchNode' ) );
 
+    // @private - array of actions to be performed in the step function
+    this.stepListeners = [];
+
     // When a Vertex is added to the model, create the corresponding views
     var vertexNodeGroup = tandem.createGroupTandem( 'vertexNodes' );
     var addVertexNode = function( vertex ) {
@@ -260,6 +263,13 @@ define( function( require ) {
       var vertexNode = new VertexNode( self, vertex, vertexNodeGroup.createNextTandem() );
       self.vertexNodes[ vertex.index ] = vertexNode;
       self.mainLayer.addChild( vertexNode );
+
+      // Schedule a step to make sure the solder is layered correctly.  This is necessary because vertices are added
+      // before CircuitElements, but solder should be in front of Wires, see
+      // https://github.com/phetsims/circuit-construction-kit-common/issues/386
+      self.stepListeners.push( function() {
+        self.fixSolderLayeringForVertex( vertex );
+      } );
     };
     circuit.vertices.addItemAddedListener( addVertexNode );
 
@@ -490,6 +500,11 @@ define( function( require ) {
       this.circuit.circuitElements.getArray().forEach( function( circuitElement ) {
         self.getCircuitElementNode( circuitElement ).step();
       } );
+
+      this.stepListeners.forEach( function( stepListener ) {
+        stepListener();
+      } );
+      this.stepListeners.length = 0;
     },
 
     /**
