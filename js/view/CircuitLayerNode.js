@@ -368,9 +368,9 @@ define( function( require ) {
 
       // wires in the back, then solder, then fixed length components.
       var solderNode = this.getSolderNode( vertex );
-      var adjacentComponents = this.circuit.getNeighborCircuitElements( vertex );
-      var adjacentWires = adjacentComponents.filter( function( component ) {return component instanceof Wire;} );
-      var adjacentFixedLengthComponents = adjacentComponents.filter( function( component ) {
+      var adjacentCircuitElements = this.circuit.getNeighborCircuitElements( vertex );
+      var adjacentWires = adjacentCircuitElements.filter( function( component ) {return component instanceof Wire;} );
+      var adjacentFixedLengthComponents = adjacentCircuitElements.filter( function( component ) {
         return component instanceof FixedLengthCircuitElement;
       } );
 
@@ -417,6 +417,20 @@ define( function( require ) {
         self.mainLayer.removeChild( solderNode );
         self.mainLayer.addChild( solderNode );
       }
+
+      // Make sure charges remain in front of the solder for wires.
+      var chargeNodesToMoveToFront = [];
+      self.mainLayer.children.forEach( function( child ) {
+        if ( child instanceof ChargeNode &&
+             child.charge.circuitElement instanceof Wire &&
+             adjacentCircuitElements.indexOf( child.charge.circuitElement ) >= 0
+        ) {
+          chargeNodesToMoveToFront.push( child );
+        }
+      } );
+      chargeNodesToMoveToFront.forEach( function( chargeNode ) {
+        chargeNode.moveToFront();
+      } );
     },
 
     /**
