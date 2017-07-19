@@ -16,6 +16,7 @@ define( function( require ) {
   var CircuitConstructionKitCommonConstants =
     require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var Bounds2 = require( 'DOT/Bounds2' );
 
   // constants
   var TOOLBOX_ICON_SIZE = CircuitConstructionKitCommonConstants.TOOLBOX_ICON_SIZE;
@@ -71,8 +72,14 @@ define( function( require ) {
       self.visible = count() < maxNumber;
     } );
 
-    // Expand touch area around text
-    this.touchArea = this.localBounds.dilatedXY( 10, 13 );
+    // Expand touch area around text, see https://github.com/phetsims/circuit-construction-kit-dc/issues/82
+    var touchExpansionWidth = 10;
+    this.touchArea = new Bounds2(
+      this.localBounds.minX - touchExpansionWidth,
+      this.localBounds.minY - 13,
+      this.localBounds.maxX + touchExpansionWidth,
+      this.localBounds.maxY + 3
+    );
     this.mouseArea = this.touchArea;
   }
 
