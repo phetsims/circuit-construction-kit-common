@@ -34,7 +34,7 @@ define( function( require ) {
 
   // constants
   var TOOLBOX_ICON_SIZE = 53;
-  var VOLTMETER_ICON_SCALE = 1.3;
+  var VOLTMETER_ICON_SCALE = 1.4;
   var ICON_TEXT_SPACING = 3; // distance in view coordinates from the icon to the text below the icon
 
   /**
