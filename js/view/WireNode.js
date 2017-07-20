@@ -69,12 +69,12 @@ define( function( require ) {
   var lifelikeNodeNormal = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
     lineWidth: LIFELIKE_LINE_WIDTH,
     stroke: normalGradient
-  } ).toDataURLImageSynchronous();
+  } ).toDataURLImageSynchronous( 0, LIFELIKE_LINE_WIDTH / 2, WIRE_RASTER_LENGTH, LIFELIKE_LINE_WIDTH );
 
   var lifelikeNodeReversed = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
     lineWidth: LIFELIKE_LINE_WIDTH,
     stroke: reverseGradient
-  } ).toDataURLImageSynchronous();
+  } ).toDataURLImageSynchronous( 0, LIFELIKE_LINE_WIDTH / 2, WIRE_RASTER_LENGTH, LIFELIKE_LINE_WIDTH );
 
   var lifelikeRoundedCapNormal = new Circle( LIFELIKE_LINE_WIDTH / 2, {
     fill: normalGradient
@@ -194,9 +194,9 @@ define( function( require ) {
     var circuit = circuitLayerNode && circuitLayerNode.circuit;
     CircuitElementNode.call( this, wire, circuit, {
       children: [
-        this.lineNodeParent,
         this.startCapParent,
-        this.endCapParent
+        this.endCapParent,
+        this.lineNodeParent
       ]
     } );
 
