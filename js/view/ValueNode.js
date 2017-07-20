@@ -45,9 +45,12 @@ define( function( require ) {
     if ( circuitElement instanceof Battery ) {
 
       var voltageText = new Text( '', _.extend( { tandem: tandem.createTandem( 'voltageText' ) }, TEXT_OPTIONS ) );
+      var numberOfPlaces = circuitElement.batteryType === 'normal' ? 1 : 0;
       var voltageListener = function( voltage ) {
 
-        voltageText.text = StringUtils.fillIn( voltageUnitsString, { voltage: Util.toFixed( voltage, 1 ) } );
+        voltageText.text = StringUtils.fillIn( voltageUnitsString, {
+          voltage: Util.toFixed( voltage, numberOfPlaces )
+        } );
         updatePosition && updatePosition();
       };
       circuitElement.voltageProperty.link( voltageListener );
@@ -89,12 +92,11 @@ define( function( require ) {
       contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'resistanceText' ) }, TEXT_OPTIONS ) );
 
       // number of decimal places to be displayed
-      var isGrabBagResistor = circuitElement instanceof Resistor &&
-                              circuitElement.resistorType !== 'resistor' &&
-                              circuitElement.resistorType !== 'highResistanceResistor';
+      var isOrdinaryResistor = circuitElement instanceof Resistor &&
+                               circuitElement.resistorType !== 'resistor';
 
-      // Items like the hand and dog shouldn't show ".0"
-      var decimalPlaces = isGrabBagResistor ? 0 : 1;
+      // Items like the hand and dog and high resistance resistor shouldn't show ".0"
+      var decimalPlaces = isOrdinaryResistor ? 1 : 0;
       var linkResistance = function( resistance ) {
         contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
           resistance: Util.toFixed( resistance, decimalPlaces )
