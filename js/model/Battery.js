@@ -49,6 +49,9 @@ define( function( require ) {
 
     // @public (read-only) {string} - the type of the battery - 'normal' | 'high-voltage'
     this.batteryType = batteryType;
+
+    // @public (read-only) {number} - the number of decimal places to show in readouts and controls
+    this.numberOfDecimalPlaces = this.batteryType === 'normal' ? 1 : 0;
   }
 
   circuitConstructionKitCommon.register( 'Battery', Battery );

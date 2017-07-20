@@ -45,11 +45,10 @@ define( function( require ) {
     if ( circuitElement instanceof Battery ) {
 
       var voltageText = new Text( '', _.extend( { tandem: tandem.createTandem( 'voltageText' ) }, TEXT_OPTIONS ) );
-      var numberOfPlaces = circuitElement.batteryType === 'normal' ? 1 : 0;
       var voltageListener = function( voltage ) {
 
         voltageText.text = StringUtils.fillIn( voltageUnitsString, {
-          voltage: Util.toFixed( voltage, numberOfPlaces )
+          voltage: Util.toFixed( voltage, circuitElement.numberOfDecimalPlaces )
         } );
         updatePosition && updatePosition();
       };
@@ -91,15 +90,10 @@ define( function( require ) {
     else if ( circuitElement instanceof Resistor || circuitElement instanceof LightBulb ) {
       contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'resistanceText' ) }, TEXT_OPTIONS ) );
 
-      // number of decimal places to be displayed
-      var isOrdinaryResistor = circuitElement instanceof Resistor &&
-                               circuitElement.resistorType !== 'resistor';
-
       // Items like the hand and dog and high resistance resistor shouldn't show ".0"
-      var decimalPlaces = isOrdinaryResistor ? 1 : 0;
       var linkResistance = function( resistance ) {
         contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
-          resistance: Util.toFixed( resistance, decimalPlaces )
+          resistance: Util.toFixed( resistance, circuitElement.numberOfDecimalPlaces )
         } );
       };
       circuitElement.resistanceProperty.link( linkResistance );

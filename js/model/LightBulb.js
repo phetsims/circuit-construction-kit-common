@@ -82,6 +82,9 @@ define( function( require ) {
       tandem,
       options
     );
+
+    // @public (read-only) {number} - the number of decimal places to show in readouts and controls
+    this.numberOfDecimalPlaces = this.highResistance ? 0 : 1;
   }
 
   circuitConstructionKitCommon.register( 'LightBulb', LightBulb );

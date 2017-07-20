@@ -51,6 +51,9 @@ define( function( require ) {
 
     // @public {Property.<number>} the resistance in ohms
     this.resistanceProperty = new NumberProperty( options.resistance );
+
+    // @public (read-only) {number} - the number of decimal places to show in readouts and controls
+    this.numberOfDecimalPlaces = this.resistorType === 'resistor' ? 1 : 0;
   }
 
   circuitConstructionKitCommon.register( 'Resistor', Resistor );
