@@ -215,11 +215,8 @@ define( function( require ) {
         // focus the element for keyboard interaction
         this.focus();
 
-        // When the user clicks on anything else, deselect the Circuit Element
-        var rootNode = this.getUniqueTrail().rootNode();
-
         var disposeAction = function() {
-          rootNode.removeInputListener( clickToDismissListener );
+          phet.joist.sim.display.removeInputListener( clickToDismissListener );
         };
 
         // listener for 'click outside to dismiss'
@@ -236,7 +233,7 @@ define( function( require ) {
             } );
 
             if ( trails.length === 0 ) {
-              rootNode.removeInputListener( clickToDismissListener );
+              phet.joist.sim.display.removeInputListener( clickToDismissListener );
               var index = self.disposeActions.indexOf( disposeAction );
               if ( index >= 0 ) {
                 self.disposeActions.splice( index, 1 );
@@ -245,9 +242,9 @@ define( function( require ) {
             }
           }
         };
-        rootNode.addInputListener( clickToDismissListener );
+        phet.joist.sim.display.addInputListener( clickToDismissListener );
 
-        // If the user deletes the element with the delete button, make sure to detach the rootNode input listener
+        // If the user deletes the element with the delete button, make sure to detach the display input listener
         // so the next drag will work right away,
         // see https://github.com/phetsims/circuit-construction-kit-common/issues/368
         this.disposeActions.push( disposeAction );

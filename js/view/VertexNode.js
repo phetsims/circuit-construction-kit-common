@@ -202,7 +202,6 @@ define( function( require ) {
     var eventPoint = null;
     var dragged = false;
     var clickToDismissListener = null;
-    var rootNode = null;
     var dragHandler = new TandemSimpleDragHandler( {
       allowTouchSnag: true,
       tandem: tandem.createTandem( 'dragHandler' ),
@@ -226,34 +225,20 @@ define( function( require ) {
 
           vertex.selectedProperty.set( true );
 
-          rootNode = self.getUniqueTrail().rootNode();
-
-          // listener for 'click outside to dismiss'
           clickToDismissListener = {
             down: function( event ) {
-
-              // When tapping on the same vertex, just leave it selected
-              var trails = event.target.getTrails( function( node ) {
-
-                // When tapping on the selected vertex, leave it selected
-                // When tapping on the associated cut button, don't dismiss it (before it can be activated)
-                return node === self || node === cutButton;
-              } );
-
-              // If the user tapped anything except the vertex, then hide the highlight and cut button
-              if ( trails.length === 0 ) {
-                clickToDismissListener && rootNode.removeInputListener( clickToDismissListener );
+              if ( !_.includes( event.trail.nodes, self ) && !_.includes( event.trail.nodes, cutButton ) ) {
+                clickToDismissListener && phet.joist.sim.display.removeInputListener( clickToDismissListener );
                 vertex.selectedProperty.set( false );
                 clickToDismissListener = null;
               }
             }
           };
-          rootNode.addInputListener( clickToDismissListener );
+          phet.joist.sim.display.addInputListener( clickToDismissListener );
         }
         else {
-
           // Deselect after dragging so a grayed-out cut button doesn't remain when open vertex is connected
-          clickToDismissListener && rootNode.removeInputListener( clickToDismissListener );
+          clickToDismissListener && phet.joist.sim.display.removeInputListener( clickToDismissListener );
           vertex.selectedProperty.set( false );
           clickToDismissListener = null;
         }
