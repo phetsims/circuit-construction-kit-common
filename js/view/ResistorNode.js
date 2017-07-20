@@ -183,14 +183,14 @@ define( function( require ) {
       lineWidth: CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH
     } ).toDataURLImageSynchronous();
 
-    // Expand the pointer areas with a defensive copy, see
-    // https://github.com/phetsims/circuit-construction-kit-common/issues/310
-    schematicNode.mouseArea = schematicNode.bounds.copy();
-    schematicNode.touchArea = schematicNode.bounds.copy();
-
     // Center vertically to match the FixedLengthCircuitElementNode assumption that origin is center left
     schematicNode.centerY = 0;
     lifelikeResistorImageNode.centerY = 0;
+
+    // Expand the pointer areas with a defensive copy, see
+    // https://github.com/phetsims/circuit-construction-kit-common/issues/310
+    schematicNode.mouseArea = schematicNode.bounds.copy().shiftedY( schematicNode.height / 2 );
+    schematicNode.touchArea = schematicNode.bounds.copy().shiftedY( schematicNode.height / 2 );
 
     // Adjust the dog so the electrons travel along the tail/legs, see
     // https://github.com/phetsims/circuit-construction-kit-common/issues/364
