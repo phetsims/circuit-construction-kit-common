@@ -171,8 +171,8 @@ define( function( require ) {
 
     // Expand the pointer areas with a defensive copy, see
     // https://github.com/phetsims/circuit-construction-kit-common/issues/310
-    schematicNode.mouseArea = schematicNode.bounds.copy();
-    schematicNode.touchArea = schematicNode.bounds.copy();
+    schematicNode.mouseArea = schematicNode.bounds.copy().shifted( 9, schematicNode.height );
+    schematicNode.touchArea = schematicNode.bounds.copy().shifted( 9, schematicNode.height );
 
     FixedLengthCircuitElementNode.call(
       this,

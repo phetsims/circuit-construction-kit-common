@@ -77,14 +77,14 @@ define( function( require ) {
       scale: battery.distanceBetweenVertices / lifelikeNode.width
     } );
 
-    // Expand the pointer areas with a defensive copy, see
-    // https://github.com/phetsims/circuit-construction-kit-common/issues/310
-    schematicNode.mouseArea = schematicNode.bounds.copy();
-    schematicNode.touchArea = schematicNode.bounds.copy();
-
     // Center vertically to match the FixedLengthCircuitElementNode assumption that origin is center left
     lifelikeNode.centerY = 0;
     schematicNode.centerY = 0;
+
+    // Expand the pointer areas with a defensive copy, see
+    // https://github.com/phetsims/circuit-construction-kit-common/issues/310
+    schematicNode.mouseArea = schematicNode.bounds.copy().shiftedY( schematicNode.height / 2 );
+    schematicNode.touchArea = schematicNode.bounds.copy().shiftedY( schematicNode.height / 2 );
 
     FixedLengthCircuitElementNode.call( this,
       circuitConstructionKitScreenView,
