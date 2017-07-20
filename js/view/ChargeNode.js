@@ -44,6 +44,9 @@ define( function( require ) {
     Image.call( this, child.image, {
       pickable: false
     } );
+    if ( charge.charge < 0 ) {
+      this.setImageOpacity( 0.75 );
+    }
     var outsideOfBlackBoxProperty = new BooleanProperty( false );
 
     // Update the visibility accordingly.  A multilink will not work because the charge circuitElement changes.
