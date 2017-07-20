@@ -65,16 +65,14 @@ define( function( require ) {
      */
     var createListener = function( meterModel, meterNode ) {
 
-      return SimpleDragHandler.createForwardingListener( {
-        down: function( event ) {
-          var viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point );
-          meterModel.draggingProbesWithBodyProperty.set( true );
-          meterModel.visibleProperty.set( true );
-          meterModel.bodyPositionProperty.set( viewPosition );
-          meterNode.dragHandler.startDrag( event );
-        }
+      return SimpleDragHandler.createForwardingListener( function( event ) {
+        var viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point );
+        meterModel.draggingProbesWithBodyProperty.set( true );
+        meterModel.visibleProperty.set( true );
+        meterModel.bodyPositionProperty.set( viewPosition );
+        meterNode.dragHandler.startDrag( event );
       }, {
-        allowTouchSnag: true,
+        allowTouchSnag: true
       } );
     };
 
