@@ -646,11 +646,8 @@ define( function( require ) {
      */
     solve: function() {
 
-      // Must have at least 3 vertices to make a loop, bail out early to avoid work if possible
-      if ( this.vertices.length <= 2 ) {
-        return;
-      }
-
+      // Must run the solver even if there is only 1 battery, because it solves for the voltage difference between
+      // the vertices
       var self = this;
 
       var toStateObject = function( circuitElement ) {
