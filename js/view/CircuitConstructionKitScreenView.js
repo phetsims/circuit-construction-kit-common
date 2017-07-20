@@ -13,6 +13,7 @@ define( function( require ) {
   var DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/DisplayOptionsPanel' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ScreenView = require( 'JOIST/ScreenView' );
+  var Vector2 = require( 'DOT/Vector2' );
   var CircuitLayerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitLayerNode' );
   var CircuitElementToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolbox' );
   var CircuitElementEditContainerPanel =
@@ -43,6 +44,7 @@ define( function( require ) {
   var AlignBox = require( 'SCENERY/nodes/AlignBox' );
   var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
   var SolderNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SolderNode' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   // constants
   var VERTICAL_MARGIN = CircuitConstructionKitCommonConstants.VERTICAL_MARGIN;
@@ -260,14 +262,24 @@ define( function( require ) {
     /**
      * Starting at the tip, iterate down over several samples and return the first hit, if any.
      * @param {Node} probeNode
-     * @param {Vector2} probePosition
+     * @param {Vector2} probeTip
+     * @param {number} sign - the direction the probe is rotated
      * @returns the voltage connection or null if no connection
      */
-    var findVoltageConnection = function( probeNode, probePosition ) {
+    var findVoltageConnection = function( probeNode, probeTip, sign ) {
+      var probeTipVector = Vector2.createPolar(
+        VOLTMETER_PROBE_TIP_LENGTH,
+        sign * VoltmeterNode.PROBE_ANGLE + Math.PI / 2
+      );
+      var probeTipTail = probeTip.plus( probeTipVector );
       for ( var i = 0; i < VOLTMETER_NUMBER_SAMPLE_POINTS; i++ ) {
-        var voltageConnection = self.getVoltageConnection(
-          probeNode, probePosition.plusXY( 0, i * VOLTMETER_PROBE_TIP_LENGTH / VOLTMETER_NUMBER_SAMPLE_POINTS )
-        );
+        var samplePoint = probeTip.blend( probeTipTail, i / VOLTMETER_NUMBER_SAMPLE_POINTS );
+        var voltageConnection = self.getVoltageConnection( probeNode, samplePoint );
+
+        // For debugging, depict the points where the sampling happens
+        if ( CircuitConstructionKitCommonQueryParameters.showVoltmeterSamplePoints ) {
+          self.circuitLayerNode.addChild( new Rectangle( -1, -1, 2, 2, { fill: 'black', translation: samplePoint } ) );
+        }
         if ( voltageConnection ) {
           return voltageConnection;
         }
@@ -281,10 +293,10 @@ define( function( require ) {
     var updateVoltmeter = function() {
       if ( circuitConstructionKitModel.voltmeter.visibleProperty.get() ) {
         var redConnection = findVoltageConnection(
-          voltmeterNode.redProbeNode, voltmeterNode.voltmeter.redProbePositionProperty.get()
+          voltmeterNode.redProbeNode, voltmeterNode.voltmeter.redProbePositionProperty.get(), +1
         );
         var blackConnection = findVoltageConnection(
-          voltmeterNode.blackProbeNode, voltmeterNode.voltmeter.blackProbePositionProperty.get()
+          voltmeterNode.blackProbeNode, voltmeterNode.voltmeter.blackProbePositionProperty.get(), -1
         );
 
         // TODO: delete this debugging code

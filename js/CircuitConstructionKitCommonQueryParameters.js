@@ -58,6 +58,12 @@ define( function( require ) {
     showCurrent: {
       type: 'boolean',
       defaultValue: true
+    },
+
+    // This shows the voltmeter probe position and sampling points, useful for debugging voltmeter connectivity issues
+    // or positioning if the voltmeter is rotated
+    showVoltmeterSamplePoints: {
+      type: 'flag'
     }
   } );
 
