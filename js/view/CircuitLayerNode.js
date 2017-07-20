@@ -45,6 +45,15 @@ define( function( require ) {
   var CircuitConstructionKitCommonConstants =
     require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CustomLightBulbNode' );
+  var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
+  var Tandem = require( 'TANDEM/Tandem' );
+  var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
+
+  // constants
+  var CUT_ICON = new FontAwesomeNode( 'cut', {
+    rotation: -Math.PI / 2, // scissors point up
+    scale: CircuitConstructionKitCommonConstants.FONT_AWESOME_ICON_SCALE
+  } );
 
   /**
    * @param {Circuit} circuit - the model Circuit
@@ -252,6 +261,23 @@ define( function( require ) {
 
     // @private - array of actions to be performed in the step function
     this.stepListeners = [];
+
+    // When a vertex is selected, a cut button is shown near to the vertex.  If the vertex is connected to >1 circuit
+    // element, the button is enabled.  Pressing the button will cut the vertex from the neighbors.  Only one cutButton
+    // is allocated for all vertices (per screen) to use because it is too performance demanding to create these
+    // dynamically when circuit elements are dragged from the toolbox.  Also, only one vertex can be selected at once
+    // so there is only a need for one cut button.
+    // @public (read-only)
+    this.cutButton = new RoundPushButton( {
+      baseColor: 'yellow',
+      content: CUT_ICON,
+      minXMargin: 10,
+      minYMargin: 10,
+      tandem: Tandem.createStaticTandem( 'cutButton' )
+    } );
+    this.cutButton.addListener( function() {
+      circuit.cutVertex( circuit.getSelectedVertex() );
+    } );
 
     // When a Vertex is added to the model, create the corresponding views
     var vertexNodeGroup = tandem.createGroupTandem( 'vertexNodes' );

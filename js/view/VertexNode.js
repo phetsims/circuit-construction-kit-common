@@ -20,20 +20,16 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Util = require( 'DOT/Util' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
-  var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
+
   var Vector2 = require( 'DOT/Vector2' );
   var TandemSimpleDragHandler = require( 'TANDEM/scenery/input/TandemSimpleDragHandler' );
-  var Tandem = require( 'TANDEM/Tandem' );
+
   var Input = require( 'SCENERY/input/Input' );
 
   // constants
   var DISTANCE_TO_CUT_BUTTON = 70; // How far in view coordinates the cut button appears from the vertex node
   var VERTEX_RADIUS = 16; // for hit testing with probes
-  var CUT_ICON = new FontAwesomeNode( 'cut', {
-    rotation: -Math.PI / 2, // scissors point up
-    scale: CircuitConstructionKitCommonConstants.FONT_AWESOME_ICON_SCALE
-  } );
+
 
   // rasterize the images for the red and black dotted lines so they can be rendered with WebGL to improve performance
   var CIRCLE_OPTIONS = {
@@ -47,20 +43,6 @@ define( function( require ) {
     stroke: 'black'
   } ) ).toDataURLImageSynchronous();
 
-  // When a vertex is selected, a cut button is shown near to the vertex.  If the vertex is connected to >1 circuit
-  // element, the button is enabled.  Pressing the button will cut the vertex from the neighbors.  Only one cutButton
-  // is allocated for all vertices to use because it is too performance demanding to create these dynamically when
-  // circuit elements are dragged from the toolbox.
-  var cutButton = new RoundPushButton( {
-    baseColor: 'yellow',
-    content: CUT_ICON,
-    minXMargin: 10,
-    minYMargin: 10,
-    tandem: Tandem.createStaticTandem( 'cutButton' )
-  } );
-
-  var cutButtonInitialized = false;
-
   /**
    * @param {CircuitLayerNode} circuitLayerNode - the entire CircuitLayerNode
    * @param {Vertex} vertex - the Vertex that will be displayed
@@ -71,6 +53,8 @@ define( function( require ) {
 
     var self = this;
     var circuit = circuitLayerNode.circuit;
+
+    var cutButton = circuitLayerNode.cutButton;
 
     // Use a query parameter to turn on node voltage readouts for debugging only.
     var vertexDisplay = CircuitConstructionKitCommonQueryParameters.vertexDisplay;
@@ -89,15 +73,6 @@ define( function( require ) {
         voltageReadoutText.setText( vertexDisplay === 'voltage' ? voltageText : vertex.index );
         updateReadoutTextLocation();
       } );
-    }
-
-    // Take care to only initialize the cutButton once because it will be used for all VertexNode instance.  This must
-    // happen after the circuit is available.
-    if ( !cutButtonInitialized ) {
-      cutButton.addListener( function() {
-        circuit.cutVertex( circuit.getSelectedVertex() );
-      } );
-      cutButtonInitialized = true;
     }
 
     // @public (read-only) {Vertex} - the vertex associated with this node
