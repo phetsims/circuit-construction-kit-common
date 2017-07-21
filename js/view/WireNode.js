@@ -39,7 +39,7 @@ define( function( require ) {
   var BLACK_LINE_NODE = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
     lineWidth: SCHEMATIC_LINE_WIDTH,
     stroke: 'black'
-  } ).toDataURLImageSynchronous();
+  } ).toDataURLImageSynchronous( 0, LIFELIKE_LINE_WIDTH / 2, WIRE_RASTER_LENGTH, LIFELIKE_LINE_WIDTH );
 
   /**
    * Create a LinearGradient for the wire, depending on the orientation relative to the shading (light comes from
