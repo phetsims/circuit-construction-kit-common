@@ -49,12 +49,6 @@ define( function( require ) {
   var Tandem = require( 'TANDEM/Tandem' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
 
-  // constants
-  var CUT_ICON = new FontAwesomeNode( 'cut', {
-    rotation: -Math.PI / 2, // scissors point up
-    scale: CircuitConstructionKitCommonConstants.FONT_AWESOME_ICON_SCALE
-  } );
-
   /**
    * @param {Circuit} circuit - the model Circuit
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - for dropping CircuitElement instances
@@ -267,10 +261,15 @@ define( function( require ) {
     // is allocated for all vertices (per screen) to use because it is too performance demanding to create these
     // dynamically when circuit elements are dragged from the toolbox.  Also, only one vertex can be selected at once
     // so there is only a need for one cut button.
+    var cutIcon = new FontAwesomeNode( 'cut', {
+      rotation: -Math.PI / 2, // scissors point up
+      scale: CircuitConstructionKitCommonConstants.FONT_AWESOME_ICON_SCALE
+    } );
+
     // @public (read-only)
     this.cutButton = new RoundPushButton( {
       baseColor: 'yellow',
-      content: CUT_ICON,
+      content: cutIcon,
       minXMargin: 10,
       minYMargin: 10,
       tandem: Tandem.createStaticTandem( 'cutButton' )
