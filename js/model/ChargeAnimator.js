@@ -130,6 +130,15 @@ define( function( require ) {
   return inherit( Object, ChargeAnimator, {
 
     /**
+     * Restores to the initial state
+     * @public
+     */
+    reset: function() {
+      this.timeScaleProperty.reset();
+      this.timeScaleRunningAverage.clear();
+    },
+
+    /**
      * Update the location of the charges based on the circuit currents
      * @param {number} dt - elapsed time in seconds
      * @public

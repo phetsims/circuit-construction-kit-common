@@ -1126,6 +1126,7 @@ define( function( require ) {
       this.currentTypeProperty.reset();
       this.wireResistivityProperty.reset();
       this.batteryResistanceProperty.reset();
+      this.chargeAnimator.reset();
     },
 
     /**
