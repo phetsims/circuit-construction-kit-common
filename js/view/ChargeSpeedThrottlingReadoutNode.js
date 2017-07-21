@@ -33,10 +33,7 @@ define( function( require ) {
       function( timeScale, showCurrent, isValueDepictionEnabled ) {
         var percent = timeScale * 100;
         var isThrottled = percent < 99.5;
-        var fixed = Util.toFixed( percent, 0 );
-        if ( timeScale < 0.01 ) {
-          fixed = '< 1';
-        }
+        var fixed = timeScale < 0.01 ? '< 1' : Util.toFixed( percent, 0 );
         self.setText( StringUtils.fillIn( animationSpeedLimitReachedString, { percent: fixed } ) );
 
         // Only show the throttling message if the speed is less than 100% and charges are visible

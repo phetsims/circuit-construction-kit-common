@@ -28,7 +28,7 @@ define( function( require ) {
                                       options ) {
 
     options = _.extend( {
-      editableRange: new Range( 0, 150 ),
+      editableRange: new Range( 0, 120 ),
       editorDelta: 0.5
     }, options );
 

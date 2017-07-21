@@ -31,8 +31,8 @@ define( function( require ) {
   var NUMBER_OF_EQUALIZE_STEPS = 2;
 
   // Factor that multiplies the current to attain speed in screen coordinates per second
-  // Manually tuned so that at 1 Amp, 1 charge flows past in 1 second
-  var SPEED_SCALE = 34.5;
+  // No longer manually tuned so that at 1 Amp, 1 charge flows past in 1 second
+  var SPEED_SCALE = 25;
 
   // the highest allowable time step for integration
   var MAX_DT = 1 / 30;
@@ -155,7 +155,7 @@ define( function( require ) {
       var maxPositionChange = maxSpeed * MAX_DT; // Use the max dt instead of the true dt to avoid fluctuations
 
       // Slow down the simulation if the fastest step distance exceeds the maximum allowed step
-      this.scale = maxPositionChange >= MAX_POSITION_CHANGE ? MAX_POSITION_CHANGE / maxPositionChange : 1;
+      this.scale = (maxPositionChange >= MAX_POSITION_CHANGE) ? (MAX_POSITION_CHANGE / maxPositionChange) : 1;
 
       // Average over scale values to smooth them out
       var averageScale = this.timeScaleRunningAverage.updateRunningAverage( this.scale );
