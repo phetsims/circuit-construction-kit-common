@@ -180,12 +180,12 @@ define( function( require ) {
     } );
 
     // @private
-    this.endCapParent = new Node( {
+    this.startCapParent = new Node( {
       children: [ lifelikeRoundedCapNormal ]
     } );
 
     // @private
-    this.startCapParent = new Node( {
+    this.endCapParent = new Node( {
       children: [ lifelikeRoundedCapNormal ]
     } );
 
@@ -357,13 +357,13 @@ define( function( require ) {
         this.lineNode.getChildAt( 0 ) !== lineNodeChild && this.lineNode.setChildren( [ lineNodeChild ] );
         this.endCapParent.getChildAt( 0 ) !== capChild && this.endCapParent.setChildren( [ capChild ] );
         this.startCapParent.getChildAt( 0 ) !== capChild && this.startCapParent.setChildren( [ capChild ] );
-        lifelikeRoundedCapNormal.visible = true;
-        lifelikeRoundedCapReversed.visible = true;
+        this.startCapParent.visible = true;
+        this.endCapParent.visible = true;
       }
       else {
         (this.lineNode.getChildAt( 0 ) !== BLACK_LINE_NODE) && this.lineNode.setChildren( [ BLACK_LINE_NODE ] );
-        lifelikeRoundedCapNormal.visible = false;
-        lifelikeRoundedCapReversed.visible = false;
+        this.startCapParent.visible = false;
+        this.endCapParent.visible = false;
       }
 
       var startPosition = this.circuitElement.startVertexProperty.get().positionProperty.get();
