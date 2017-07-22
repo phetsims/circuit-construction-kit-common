@@ -509,59 +509,37 @@ define( function( require ) {
 
     var ITEMS_PER_PAGE = 5;
     var SPACING = 5;
-    var child = null;
 
-    // If there is only one page, do not show Carousel controls
-    if ( circuitElementToolNodes.length <= ITEMS_PER_PAGE ) {
-      child = new CircuitConstructionKitPanel( new LayoutBox( {
-        orientation: options.orientation,
-        spacing: CircuitConstructionKitCommonConstants.TOOLBOX_ITEM_SPACING,
-        children: circuitElementToolNodes,
-        resize: false
-      } ), tandem, {
-        resize: false,
+    // If there are 2+ pages, show them in a carousel
+    this.carousel = new Carousel( circuitElementToolNodes, {
+      orientation: 'vertical',
+      itemsPerPage: ITEMS_PER_PAGE,
+      spacing: 0,
+      margin: 15,
 
-        // Match the background of the carousel
-        fill: 'white',
-        yMargin: 27
-      } );
-    }
-    else {
+      // Expand the touch area above the up button and below the down button
+      buttonTouchAreaYDilation: 8,
+      tandem: tandem.createTandem( 'carousel' )
+    } );
 
-      // If there are 2+ pages, show them in a carousel
-      this.carousel = new Carousel( circuitElementToolNodes, {
-        orientation: 'vertical',
-        itemsPerPage: ITEMS_PER_PAGE,
-        spacing: 0,
-        margin: 15,
+    var pageControl = new PageControl( this.carousel.numberOfPages, this.carousel.pageNumberProperty, {
+      orientation: 'vertical',
+      pageFill: 'white',
+      pageStroke: 'black',
+      interactive: true,
+      dotTouchAreaDilation: 4,
+      dotMouseAreaDilation: 4
+    } );
 
-        // Expand the touch area above the up button and below the down button
-        buttonTouchAreaYDilation: 8,
-        tandem: tandem.createTandem( 'carousel' )
-      } );
-
-      var pageControl = new PageControl( this.carousel.numberOfPages, this.carousel.pageNumberProperty, {
-        orientation: 'vertical',
-        pageFill: 'white',
-        pageStroke: 'black',
-        interactive: true,
-        dotTouchAreaDilation: 4,
-        dotMouseAreaDilation: 4
-      } );
-
-      child = new HBox( {
-        spacing: SPACING,
-        children: [ pageControl, this.carousel ]
-      } );
-    }
-    Node.call( this, {
-      children: [ child ]
+    HBox.call( this, {
+      spacing: SPACING,
+      children: [ pageControl, this.carousel ]
     } );
   }
 
   circuitConstructionKitCommon.register( 'CircuitElementToolbox', CircuitElementToolbox );
 
-  return inherit( Node, CircuitElementToolbox, {
+  return inherit( HBox, CircuitElementToolbox, {
 
     /**
      * Resets the toolbox.
