@@ -26,6 +26,7 @@ define( function( require ) {
   var CircuitConstructionKitCommonConstants =
     require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
+  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   var Util = require( 'DOT/Util' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
@@ -558,14 +559,14 @@ define( function( require ) {
         }
       }
 
-      // Check for intersection with a wire
-      var wireNode = this.hitCircuitElementNode( probePosition, function( circuitElement ) {
-        return circuitElement instanceof Wire;
+      // Check for intersection with a metallic circuit element, which can provide voltmeter readings
+      var metallicCircuitElement = this.hitCircuitElementNode( probePosition, function( circuitElement ) {
+        return (circuitElement instanceof Wire) || (circuitElement instanceof Resistor && circuitElement.isMetallic);
       } );
-      if ( wireNode ) {
+      if ( metallicCircuitElement ) {
 
-        var startPoint = wireNode.wire.startVertexProperty.get().positionProperty.get();
-        var endPoint = wireNode.wire.endVertexProperty.get().positionProperty.get();
+        var startPoint = metallicCircuitElement.circuitElement.startVertexProperty.get().positionProperty.get();
+        var endPoint = metallicCircuitElement.circuitElement.endVertexProperty.get().positionProperty.get();
         var segmentVector = endPoint.minus( startPoint );
         var probeVector = probeNode.centerTop.minus( startPoint );
 
@@ -578,13 +579,13 @@ define( function( require ) {
         var voltageAlongWire = Util.linear(
           0,
           1,
-          wireNode.wire.startVertexProperty.get().voltageProperty.get(),
-          wireNode.wire.endVertexProperty.get().voltageProperty.get(),
+          metallicCircuitElement.circuitElement.startVertexProperty.get().voltageProperty.get(),
+          metallicCircuitElement.circuitElement.endVertexProperty.get().voltageProperty.get(),
           distanceAlongSegment
         );
 
         return {
-          vertex: wireNode.wire.startVertexProperty.get(),
+          vertex: metallicCircuitElement.circuitElement.startVertexProperty.get(),
           voltage: voltageAlongWire
         };
       }

@@ -22,6 +22,11 @@ define( function( require ) {
     'resistor', 'highResistanceResistor', 'coin', 'paperClip', 'pencil', 'eraser', 'hand', 'dog', 'dollarBill'
   ];
 
+  // See isMetallic
+  var METALLIC_RESISTOR_TYPES = [
+    'coin', 'paperClip'
+  ];
+
   /**
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
@@ -35,7 +40,7 @@ define( function( require ) {
 
       // Support for rendering grab bag items or
       resistorType: RESISTOR_TYPES[ 0 ],
-      resistorLength: RESISTOR_LENGTH
+      resistorLength: RESISTOR_LENGTH,
     }, options );
 
     // validate resistor type
@@ -44,6 +49,10 @@ define( function( require ) {
 
     // @public (read-only) {string} indicates one of RESISTOR_TYPES
     this.resistorType = options.resistorType;
+
+    // @public (read-only) metallic resistors behave like exposed wires--sensor values can be read directly on the
+    // resistor. For instance, coins and paper clips are metallic and can have their values read directly.
+    this.isMetallic = METALLIC_RESISTOR_TYPES.indexOf( this.resistorType ) >= 0;
 
     FixedLengthCircuitElement.call(
       this, startVertex, endVertex, options.resistorLength, options.resistorLength, tandem, options
