@@ -148,6 +148,11 @@ define( function( require ) {
       }
       if ( previousPanel !== null ) {
         self.addChild( previousPanel );
+
+        // Clicking nearby (but not directly on) a tweaker button or slider shouldn't dismiss the edit panel,
+        // see https://github.com/phetsims/circuit-construction-kit-dc/issues/90
+        self.mouseArea = self.localBounds.dilatedX( 20 );
+        self.touchArea = self.localBounds.dilatedX( 20 );
       }
       updatePosition();
     } );
