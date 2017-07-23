@@ -24,7 +24,8 @@ define( function( require ) {
   function ProbeWireNode( color, bodyControlPointOffset, probeControlPointOffset ) {
     Path.call( this, null, {
       lineWidth: 3,
-      stroke: color
+      stroke: color,
+      pickable: false
     } );
     var self = this;
 
