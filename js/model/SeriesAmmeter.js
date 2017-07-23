@@ -27,7 +27,7 @@ define( function( require ) {
       CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH, tandem, options );
 
     // @public {Property.<number>} the resistance in ohms
-    this.resistance = CircuitConstructionKitCommonConstants.MINIMUM_RESISTANCE;
+    this.resistance = 0;
   }
 
   circuitConstructionKitCommon.register( 'SeriesAmmeter', SeriesAmmeter );

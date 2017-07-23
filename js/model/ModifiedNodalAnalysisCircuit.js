@@ -364,8 +364,8 @@ define( function( require ) {
         unknownCurrent.element.currentSolution = x.get( getIndexByEquals( unknowns, unknownCurrent ), 0 );
       }
 
-      return new ModifiedNodalAnalysisSolution( voltageMap, unknownCurrents.map( function( u ) {
-        return u.element;
+      return new ModifiedNodalAnalysisSolution( voltageMap, unknownCurrents.map( function( unknownCurrent ) {
+        return unknownCurrent.element;
       } ) );
     }
   } );
