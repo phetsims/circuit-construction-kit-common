@@ -60,7 +60,7 @@ define( function( require ) {
       if ( charge.charge > 0 ) {
         var angle = charge.charge < 0 ? 0 : charge.angleProperty.get() + (current < 0 ? Math.PI : 0);
 
-        // TODO: combine into a single step.  @jonathanolson can you help with this?
+        // Rotate then center the rotated node
         self.setMatrix( Matrix3.rotation2( angle ) );
         self.center = position;
       }
