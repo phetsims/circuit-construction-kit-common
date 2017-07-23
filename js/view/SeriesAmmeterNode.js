@@ -24,6 +24,7 @@ define( function( require ) {
 
   // strings
   var currentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/current' );
+  var questionMarkString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/questionMark' );
 
   // constants
   var PANEL_HEIGHT = 40;
@@ -61,15 +62,27 @@ define( function( require ) {
     var textPanelMarginY = 1;
 
     /**
-     * Update the text in the numeric readout text box
-     * @param {number} current
+     * Update the text in the numeric readout text box.  Shows '?' if disconnected.
      */
-    var updateText = function( current ) {
+    var updateText = function() {
+      var readout = questionMarkString;
 
-      // The ammeter doesn't indicate direction
-      current = Math.abs( current );
-      var currentText = ( current < 1E-10 ) ? '' : CircuitConstructionKitCommonUtil.createCurrentReadout( current );
-      readoutText.setText( currentText );
+      // If it is not an icon and connected at both sides, show the current, otherwise show '?'
+      if ( circuitConstructionKitScreenView ) {
+
+        var circuit = circuitConstructionKitScreenView.circuitConstructionKitModel.circuit;
+        var startConnection = circuit.getNeighboringVertices( seriesAmmeter.startVertexProperty.get() ).length > 1;
+        var endConnection = circuit.getNeighboringVertices( seriesAmmeter.endVertexProperty.get() ).length > 1;
+
+        if ( startConnection && endConnection ) {
+
+          // The ammeter doesn't indicate direction
+          var current = Math.abs( seriesAmmeter.currentProperty.get() );
+          readout = CircuitConstructionKitCommonUtil.createCurrentReadout( current );
+        }
+      }
+
+      readoutText.setText( readout );
 
       // Center the text in the panel
       readoutText.centerX = (maxWidth + textPanelMarginX * 2) / 2;
@@ -77,6 +90,8 @@ define( function( require ) {
     };
 
     seriesAmmeter.currentProperty.link( updateText );
+    seriesAmmeter.startVertexProperty.link( updateText );
+    seriesAmmeter.endVertexProperty.link( updateText );
 
     // The readout panel is in front of the series ammeter node, and makes it look like the electrons flow through
     // the series ammeter
@@ -179,6 +194,8 @@ define( function( require ) {
     // @private
     this.disposeSeriesAmmeterNode = function() {
       seriesAmmeter.currentProperty.unlink( updateText );
+      seriesAmmeter.startVertexProperty.unlink( updateText );
+      seriesAmmeter.endVertexProperty.unlink( updateText );
       if ( !this.icon ) {
         circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.removeChild( self.frontPanel );
       }
