@@ -598,7 +598,6 @@ define( function( require ) {
           // address closed switch.  Find out whether the probe was near the start or end vertex
           if ( switchNode.startSideContainsSensorPoint( probePosition ) ) {
 
-            // TODO: create a method voltageConnectionAt(vertex)?
             return {
               vertex: switchNode.circuitSwitch.startVertexProperty.get(),
               voltage: switchNode.circuitSwitch.startVertexProperty.get().voltageProperty.get()
@@ -611,7 +610,6 @@ define( function( require ) {
             };
           }
         }
-
         return null;
       }
     }
