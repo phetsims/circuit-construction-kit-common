@@ -61,7 +61,7 @@ define( function( require ) {
         var endPosition = this.endVertexProperty.get().positionProperty.get();
         var fractionAlongWire = distanceAlongWire / this.chargePathLength;
 
-        // If the electron is halfway up the switch lever for an open switch, show it along the raised lever
+        // If the charge is halfway up the switch lever for an open switch, show it along the raised lever
         if ( fractionAlongWire > SWITCH_START && fractionAlongWire < SWITCH_END && !this.closedProperty.get() ) {
           var pivot = startPosition.blend( endPosition, SWITCH_START );
 

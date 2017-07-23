@@ -192,7 +192,7 @@ define( function( require ) {
     schematicNode.mouseArea = schematicNode.bounds.copy().shiftedY( schematicNode.height / 2 );
     schematicNode.touchArea = schematicNode.bounds.copy().shiftedY( schematicNode.height / 2 );
 
-    // Adjust the dog so the electrons travel along the tail/legs, see
+    // Adjust the dog so the charges travel along the tail/legs, see
     // https://github.com/phetsims/circuit-construction-kit-common/issues/364
     if ( resistor.resistorType === 'dog' ) {
       lifelikeResistorImageNode.translate( 0, -40 );

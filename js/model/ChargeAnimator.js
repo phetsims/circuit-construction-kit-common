@@ -79,7 +79,7 @@ define( function( require ) {
     assert && assert( circuitElement.containsScalarLocation( distance ), 'circuitElement should contain distance' );
     var density = circuit.getChargesInCircuitElement( circuitElement ).length / circuitElement.chargePathLength;
 
-    // If there are no electrons in that circuit because it is a short segment, average the density by looking at
+    // If there are no charges in that circuit because it is a short segment, average the density by looking at
     // downstream neighbors
     if ( density === 0 && circuitElement.chargePathLength < 30 ) {
       var distanceFromStart = Math.abs( distance );

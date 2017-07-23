@@ -5,7 +5,7 @@
  * It also renders the voltmeter and ammeter. It can be zoomed in and out.
  *
  * Each CircuitElementNode may node parts that appear in different layers, such as the highlight and the light bulb
- * socket.  Having the light bulb socket in another layer makes it possible to show the electrons going "through" the
+ * socket.  Having the light bulb socket in another layer makes it possible to show the charges going "through" the
  * socket (in z-ordering). The CircuitElementNode constructors populate different layers of the CircuitLayerNode in
  * their constructors and depopulate in their dispose functions.
  *
@@ -75,7 +75,7 @@ define( function( require ) {
     this.highlightLayer = new Node();
 
     // @public {Node} - SeriesAmmeterNodes add to this layer when they are constructed
-    // Shows the front panel of SeriesAmmeterNodes (which shows the current readout) so the electrons look like they
+    // Shows the front panel of SeriesAmmeterNodes (which shows the current readout) so the charges look like they
     // flow through.
     this.seriesAmmeterNodeReadoutPanelLayer = new Node();
 
@@ -105,7 +105,7 @@ define( function( require ) {
       visible: false,
       children: CustomLightBulbNode.webglSpriteNodes
     } );
-    var lightBulbSocketElectronLayerWebGLSpriteNode = new Node( {
+    var lightBulbSocketChargeLayerWebGLSpriteNode = new Node( {
       visible: false,
       children: ChargeNode.webglSpriteNodes
     } );
@@ -125,11 +125,11 @@ define( function( require ) {
       children: [ lightBulbSocketLayerWebGLSpriteNode ]
     } );
 
-    // @public {Node} - Electrons appear in this layer when they need to be in front of the socket (on the right hand
+    // @public {Node} - Charges appear in this layer when they need to be in front of the socket (on the right hand
     // side of the bulb)
-    this.lightBulbSocketElectronLayer = new Node( {
+    this.lightBulbSocketChargeLayer = new Node( {
       renderer: 'webgl',
-      children: [ lightBulbSocketElectronLayerWebGLSpriteNode ]
+      children: [ lightBulbSocketChargeLayerWebGLSpriteNode ]
     } );
 
     Node.call( this, {
@@ -137,7 +137,7 @@ define( function( require ) {
         this.lightRaysLayer,
         this.mainLayer, // circuit elements, charges and meters
         this.lightBulbSocketLayer, // fronts of light bulbs
-        this.lightBulbSocketElectronLayer, // electrons in front of the sockets
+        this.lightBulbSocketChargeLayer, // electrons in front of the sockets
         this.valueLayer, // values
         this.seriesAmmeterNodeReadoutPanelLayer, // fronts of series ammeters
         this.highlightLayer, // highlights go in front of everything else
@@ -344,7 +344,7 @@ define( function( require ) {
       // Any charges that are in a light bulb and above halfway through the filament should be in front of the base,
       // so they appear to tunnel through the socket and go in front of the socket on the right-hand side.
       if ( charge.onRightHandSideOfLightBulbProperty.get() ) {
-        self.lightBulbSocketElectronLayer.addChild( chargeNode );
+        self.lightBulbSocketChargeLayer.addChild( chargeNode );
       }
       else {
         self.mainLayer.addChild( chargeNode );
@@ -352,11 +352,11 @@ define( function( require ) {
 
       var chargeLayerListener = function( onRightHandSideOfLightBulb ) {
         if ( onRightHandSideOfLightBulb ) {
-          self.lightBulbSocketElectronLayer.addChild( chargeNode );
+          self.lightBulbSocketChargeLayer.addChild( chargeNode );
           self.mainLayer.removeChild( chargeNode );
         }
         else {
-          self.lightBulbSocketElectronLayer.removeChild( chargeNode );
+          self.lightBulbSocketChargeLayer.removeChild( chargeNode );
           self.mainLayer.addChild( chargeNode );
         }
       };

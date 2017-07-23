@@ -51,7 +51,7 @@ define( function( require ) {
     options = options || {};
     viewProperty = new Property( CircuitConstructionKitCommonConstants.LIFELIKE );
 
-    // Electrons go behind this panel to give the appearance they go through the ammeter
+    // Charges go behind this panel to give the appearance they go through the ammeter
     var readoutText = new Text( WIDEST_LABEL, { fontSize: 15 } );
     readoutText.setMaxWidth( readoutText.width );
     var maxWidth = readoutText.width;
@@ -93,8 +93,8 @@ define( function( require ) {
     seriesAmmeter.startVertexProperty.link( updateText );
     seriesAmmeter.endVertexProperty.link( updateText );
 
-    // The readout panel is in front of the series ammeter node, and makes it look like the electrons flow through
-    // the series ammeter
+    // The readout panel is in front of the series ammeter node, and makes it look like the charges flow through the
+    // series ammeter
     var readoutPanel = new Panel( new VBox( {
       children: [
         new Text( currentString, { fontSize: 12, maxWidth: 54 } ),

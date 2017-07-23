@@ -1,7 +1,7 @@
 // Copyright 2015-2017, University of Colorado Boulder
 
 /**
- * Shows the socket (base) of the light bulb only, so that it will appear that the electrons go "inside" the base.
+ * Shows the socket (base) of the light bulb only, so that it will appear that the charges go "inside" the base.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
