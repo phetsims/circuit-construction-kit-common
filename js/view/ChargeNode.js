@@ -37,10 +37,6 @@ define( function( require ) {
 
     var child = charge.charge > 0 ? ARROW_NODE : ELECTRON_CHARGE_NODE;
 
-    // TODO: clean this up
-    var offsetX = -child.width / 2;
-    var offsetY = -child.height / 2;
-
     Image.call( this, child.image, {
       pickable: false
     } );
@@ -69,7 +65,10 @@ define( function( require ) {
         self.center = position;
       }
       else {
-        self.setTranslation( position.x + offsetX, position.y + offsetY );
+        self.setTranslation(
+          position.x - ELECTRON_CHARGE_NODE.width / 2,
+          position.y - ELECTRON_CHARGE_NODE.height / 2
+        );
       }
       updateVisible();
       outsideOfBlackBoxProperty.set( !charge.circuitElement.insideTrueBlackBoxProperty.get() );
