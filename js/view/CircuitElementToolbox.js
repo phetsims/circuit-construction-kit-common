@@ -146,7 +146,10 @@ define( function( require ) {
     var wireToolNode = createCircuitElementToolNode( wireString, options.numberOfWires,
       new WireNode( null, null,
         new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ), tandem.createTandem( 'wireIconWire' )
-        ), null, viewProperty, tandem.createTandem( 'wireIcon' ) ),
+        ), null, viewProperty, tandem.createTandem( 'wireIcon' ) )
+
+      // HACK alert: rasterize to work around https://github.com/phetsims/circuit-construction-kit-common/issues/390
+        .toDataURLImageSynchronous(),
       function( circuitElement ) { return circuitElement instanceof Wire; },
       function( position ) {
         var vertexPair = createVertexPair( position, WIRE_LENGTH );
