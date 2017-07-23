@@ -120,13 +120,6 @@ define( function( require ) {
       } ) );
     }
 
-    // Expand the pointer areas with a defensive copy, see
-    // https://github.com/phetsims/circuit-construction-kit-common/issues/310
-    // And make it so clicking in the gap still toggles the switch
-    // TODO: do these do anything after rasterization?
-    node.mouseArea = node.bounds.copy();
-    node.touchArea = node.bounds.copy();
-
     node.leftSegmentNode = leftSegmentNode;
     node.rotatingSegmentNode = rotatingSegmentNode;
     node.rightSegmentNode = rightSegmentNode;
@@ -237,7 +230,7 @@ define( function( require ) {
 
     /**
      * Determine whether the start side (with the pivot) contains the sensor point.
-     * @param {Vector2} localPoint - in the coordinate frame of the switch
+     * @param {Vector2} point - in view coordinates
      * @returns {boolean}
      */
     startSideContainsSensorPoint: function( point ) {
@@ -251,7 +244,7 @@ define( function( require ) {
 
     /**
      * Determine whether the start side (without the pivot) contains the sensor point.
-     * @param {Vector2} localPoint - in the coordinate frame of the switch
+     * @param {Vector2} point - in view coordinates
      * @returns {boolean}
      */
     endSideContainsSensorPoint: function( point ) {
