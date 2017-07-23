@@ -334,7 +334,7 @@ define( function( require ) {
       }
     } );
 
-    // When a charge is added, add the corresponding ChargeNode
+    // When a charge is added, add the corresponding ChargeNode (removed it its dispose call)
     circuit.charges.addItemAddedListener( function( charge ) {
       var chargeNode = new ChargeNode(
         charge,
