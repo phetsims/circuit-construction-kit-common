@@ -300,8 +300,6 @@ define( function( require ) {
           voltmeterNode.blackProbeNode, voltmeterNode.voltmeter.blackProbePositionProperty.get(), -1
         );
 
-        // TODO: delete this debugging code
-        // console.log( (redConnection && redConnection.vertex.index), ' --> ', (blackConnection && blackConnection.vertex.index) );
         if ( redConnection === null || blackConnection === null ) {
           circuitConstructionKitModel.voltmeter.voltageProperty.set( null );
         }
