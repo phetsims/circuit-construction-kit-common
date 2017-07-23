@@ -151,6 +151,11 @@ define( function( require ) {
      */
     getPositionAndAngle: function( distanceAlongWire ) {
 
+      var parentPositionAndAngle = FixedLengthCircuitElement.prototype.getPositionAndAngle.call(
+        this,
+        distanceAlongWire
+      );
+
       var previousAccumulatedDistance = 0;
       var accumulatedDistance = 0;
       for ( var i = 0; i < POINTS.length - 1; i++ ) {
@@ -177,7 +182,12 @@ define( function( require ) {
           );
           var angle = point2.minus( point1 ).angle();
 
-          return { position: position, angle: angle };
+          return {
+            position: position, angle: angle + parentPositionAndAngle.angle +
+
+                                       // sampled from createAtPosition
+                                       0.7851354708011367
+          };
         }
         previousAccumulatedDistance = accumulatedDistance;
       }
