@@ -465,9 +465,9 @@ define( function( require ) {
     var circuitElementToolNodes = [
       wireToolNode,
       rightBatteryToolNode,
+      lightBulbToolNode,
       resistorToolNode,
-      switchToolNode,
-      lightBulbToolNode
+      switchToolNode
     ];
 
     if ( options.numberOfCoins && !options.numberOfHighVoltageBatteries ) {
@@ -488,10 +488,10 @@ define( function( require ) {
     else if ( options.numberOfCoins && options.numberOfHighVoltageBatteries ) {
       circuitElementToolNodes = circuitElementToolNodes.concat( [
         new Node( { children: [ wireToolNode ] } ),// Wire should appear at the top of each carousel page
-        dollarBillNode,
         highVoltageBatteryToolNode,
-        highResistanceResistorToolNode,
         highResistanceBulbToolNode,
+        highResistanceResistorToolNode,
+        dollarBillNode,
 
         new Node( { children: [ wireToolNode ] } ),// Wire should appear at the top of each carousel page
         paperClipNode,
@@ -508,8 +508,21 @@ define( function( require ) {
     var ITEMS_PER_PAGE = 5;
     var SPACING = 5;
 
-    // If there are 2+ pages, show them in a carousel
+    var spacingAdjustments = {};
+    spacingAdjustments[ rightBatteryToolNode.id ] = -7;
+    spacingAdjustments[ resistorToolNode.id ] = +7;
+    if ( highVoltageBatteryToolNode ) {
+      spacingAdjustments[ highVoltageBatteryToolNode.id ] = -7;
+      spacingAdjustments[ highResistanceResistorToolNode.id ] = -10;
+      spacingAdjustments[ highResistanceBulbToolNode.id ] = -7;
+    }
+    spacingAdjustments[ dollarBillNode.id ] = -6;
+    spacingAdjustments[ paperClipNode.id ] = -7;
+    spacingAdjustments[ eraserToolNode.id ] = +3;
+
+    // create the carousel
     this.carousel = new Carousel( circuitElementToolNodes, {
+      spacingAdjustments: spacingAdjustments,
       orientation: 'vertical',
       itemsPerPage: ITEMS_PER_PAGE,
       spacing: 0,
