@@ -20,7 +20,14 @@ define( function( require ) {
   var Matrix3 = require( 'DOT/Matrix3' );
 
   // constants
-  var ELECTRON_CHARGE_NODE = new ElectronChargeNode( { opacity: 0.75, scale: 0.75 } ).toDataURLImageSynchronous();
+  var ELECTRON_CHARGE_NODE = new ElectronChargeNode( {
+
+    // electrons are transparent to signify they are just a representation, not physical electrons
+    opacity: 0.75,
+
+    // selected so an electron will exactly fit the width of a wire
+    scale: 0.78
+  } ).toDataURLImageSynchronous();
   var ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.createStaticTandem( 'arrowNode' ) )
     .toDataURLImageSynchronous();
 

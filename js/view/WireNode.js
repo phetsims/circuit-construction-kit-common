@@ -28,7 +28,7 @@ define( function( require ) {
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
 
   // constants
-  var LIFELIKE_LINE_WIDTH = 12; // line width in screen coordinates
+  var LIFELIKE_LINE_WIDTH = 16; // line width in screen coordinates
   var SCHEMATIC_LINE_WIDTH = CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH; // line width in screen coordinates
 
   // constants
