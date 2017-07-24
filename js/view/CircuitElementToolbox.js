@@ -465,9 +465,9 @@ define( function( require ) {
     var circuitElementToolNodes = [
       wireToolNode,
       rightBatteryToolNode,
-      lightBulbToolNode,
       resistorToolNode,
-      switchToolNode
+      switchToolNode,
+      lightBulbToolNode
     ];
 
     if ( options.numberOfCoins && !options.numberOfHighVoltageBatteries ) {
@@ -488,10 +488,10 @@ define( function( require ) {
     else if ( options.numberOfCoins && options.numberOfHighVoltageBatteries ) {
       circuitElementToolNodes = circuitElementToolNodes.concat( [
         new Node( { children: [ wireToolNode ] } ),// Wire should appear at the top of each carousel page
+        dollarBillNode,
         highVoltageBatteryToolNode,
         highResistanceResistorToolNode,
         highResistanceBulbToolNode,
-        dollarBillNode,
 
         new Node( { children: [ wireToolNode ] } ),// Wire should appear at the top of each carousel page
         paperClipNode,
