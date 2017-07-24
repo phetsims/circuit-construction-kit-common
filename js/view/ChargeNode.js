@@ -65,6 +65,9 @@ define( function( require ) {
         self.center = position;
       }
       else {
+
+        // position the electron--note the offsets that were used to make it look exactly centered, see
+        // https://github.com/phetsims/circuit-construction-kit-dc/issues/104
         self.setTranslation(
           position.x - ELECTRON_CHARGE_NODE.width / 2 - 0.5,
           position.y - ELECTRON_CHARGE_NODE.height / 2 - 0.5
