@@ -20,7 +20,7 @@ define( function( require ) {
   var Matrix3 = require( 'DOT/Matrix3' );
 
   // constants
-  var ELECTRON_CHARGE_NODE = new ElectronChargeNode( { opacity: 0.75 } ).toDataURLImageSynchronous();
+  var ELECTRON_CHARGE_NODE = new ElectronChargeNode( { opacity: 0.75, scale: 0.75 } ).toDataURLImageSynchronous();
   var ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.createStaticTandem( 'arrowNode' ) )
     .toDataURLImageSynchronous();
 
@@ -66,8 +66,8 @@ define( function( require ) {
       }
       else {
         self.setTranslation(
-          position.x - ELECTRON_CHARGE_NODE.width / 2,
-          position.y - ELECTRON_CHARGE_NODE.height / 2
+          position.x - ELECTRON_CHARGE_NODE.width / 2 - 0.5,
+          position.y - ELECTRON_CHARGE_NODE.height / 2 - 0.5
         );
       }
       updateVisible();
