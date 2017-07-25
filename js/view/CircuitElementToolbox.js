@@ -58,6 +58,7 @@ define( function( require ) {
   var SWITCH_LENGTH = CircuitConstructionKitCommonConstants.SWITCH_LENGTH;
   var HIGH_RESISTANCE = Math.pow( 10, 9 );
   var CAROUSEL_ITEM_SPACING = 27;
+  var CAROUSEL_PAGE_HEIGHT = 352; // so the carousels will be the same size on each screen
 
   /**
    * @param {Circuit} circuit
@@ -514,15 +515,8 @@ define( function( require ) {
     // Carousel was optimized for items of equal size.  To get equal spacing between objects, we create our own pages
     // see https://github.com/phetsims/circuit-construction-kit-dc/issues/91
     var pages = _.chunk( circuitElementToolNodes, ITEMS_PER_PAGE ).map( function( elements ) {
-      return new VBox( {
-        children: elements,
-        spacing: CAROUSEL_ITEM_SPACING // This will be the spacing on the page with the tallest objects, used as the
-                                       // reference spacing for subsequent computations
-      } );
+      return new VBox( { children: elements } );
     } );
-
-    // Find the tallest page
-    var maxHeight = _.maxBy( pages, 'height' ).height;
 
     // Track the spacings so that any non-filled pages can take the average spacing of the other pages
     var spacings = [];
@@ -532,7 +526,7 @@ define( function( require ) {
       page.setSpacing( 0 );
 
       // Set the spacing so that items will fill the available area
-      var spacing = (maxHeight - page.height) / (page.children.length - 1);
+      var spacing = (CAROUSEL_PAGE_HEIGHT - page.height) / (page.children.length - 1);
       page.setSpacing( spacing );
 
       // Track the spacings of filled pages so that the average can be used for non-filled pages
