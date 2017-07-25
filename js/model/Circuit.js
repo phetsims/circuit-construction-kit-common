@@ -258,17 +258,17 @@ define( function( require ) {
         // Also consider the vertex being dropped for comparison with neighbors
         neighbors.push( vertex );
         var pairs = [];
-        for ( var i = 0; i < neighbors.length; i++ ) {
-          for ( var k = 0; k < self.vertices.length; k++ ) {
+        neighbors.forEach( function( neighbor ) {
+          self.vertices.forEach( function( vertex ) {
 
             // Make sure nodes are different
-            if ( neighbors[ i ] !== self.vertices.get( k ) ) {
+            if ( neighbor !== vertex ) {
 
               // Add to the list to be checked
-              pairs.push( { v1: neighbors[ i ], v2: self.vertices.get( k ) } );
+              pairs.push( { v1: neighbor, v2: vertex } );
             }
-          }
-        }
+          } );
+        } );
         if ( pairs.length > 0 ) {
 
           // Find the closest pair
