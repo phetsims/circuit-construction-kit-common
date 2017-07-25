@@ -443,6 +443,7 @@ define( function( require ) {
      * @public
      */
     cutVertex: function( vertex ) {
+      var self = this;
       var neighborCircuitElements = this.getNeighborCircuitElements( vertex );
       if ( neighborCircuitElements.length <= 1 ) {
 
@@ -503,26 +504,25 @@ define( function( require ) {
       else {
 
         var distance = neighborCircuitElements.length <= 5 ? 30 : neighborCircuitElements.length * 30 / 5;
-        for ( var k = 0; k < neighborCircuitElements.length; k++ ) {
+        neighborCircuitElements.forEach( function( circuitElement, k ) {
           results.push( Vector2.createPolar( distance, separation * k + angles[ 0 ] ) );
-        }
+        } );
       }
 
-      for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
-        var circuitElement = neighborCircuitElements[ i ];
+      neighborCircuitElements.forEach( function( circuitElement, i ) {
 
         var newVertex = new Vertex( vertex.positionProperty.get().x, vertex.positionProperty.get().y, {
-          tandem: this.vertexGroupTandem.createNextTandem()
+          tandem: self.vertexGroupTandem.createNextTandem()
         } );
 
         // Add the new vertex to the model first so that it can be updated in subsequent calls
-        this.vertices.add( newVertex );
+        self.vertices.add( newVertex );
 
         circuitElement.replaceVertex( vertex, newVertex );
 
         // Bump the vertices away from the original vertex
-        this.translateVertexGroup( newVertex, results[ i ] );
-      }
+        self.translateVertexGroup( newVertex, results[ i ] );
+      } );
 
       if ( !vertex.blackBoxInterfaceProperty.get() ) {
         this.vertices.remove( vertex );
@@ -946,14 +946,10 @@ define( function( require ) {
      * @returns {Vertex|null}
      */
     getSelectedVertex: function() {
-      var vertexArray = this.vertices.getArray();
-      for ( var i = 0; i < vertexArray.length; i++ ) {
-        var vertex = vertexArray[ i ];
-        if ( vertex.selectedProperty.get() ) {
-          return vertex;
-        }
-      }
-      return null;
+      var selectedVertex = _.find( this.vertices.getArray(), function( vertex ) {
+        return vertex.selectedProperty.get();
+      } );
+      return selectedVertex || null;
     },
 
     /**
