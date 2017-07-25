@@ -27,12 +27,14 @@ define( function( require ) {
   var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
   var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/WireNode' );
   var HBox = require( 'SCENERY/nodes/HBox' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
   var Carousel = require( 'SUN/Carousel' );
   var CircuitElementToolNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolNode' );
   var Property = require( 'AXON/Property' );
   var Vector2 = require( 'DOT/Vector2' );
   var Range = require( 'DOT/Range' );
   var PageControl = require( 'SUN/PageControl' );
+  var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
 
   // strings
   var resistorString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor' );
@@ -55,6 +57,7 @@ define( function( require ) {
   var WIRE_LENGTH = 100;
   var SWITCH_LENGTH = CircuitConstructionKitCommonConstants.SWITCH_LENGTH;
   var HIGH_RESISTANCE = Math.pow( 10, 9 );
+  var CAROUSEL_ITEM_SPACING = 27;
 
   /**
    * @param {Circuit} circuit
@@ -508,24 +511,52 @@ define( function( require ) {
     var ITEMS_PER_PAGE = 5;
     var SPACING = 5;
 
-    var spacingAdjustments = {};
-    spacingAdjustments[ rightBatteryToolNode.id ] = -7;
-    spacingAdjustments[ resistorToolNode.id ] = +7;
-    if ( highVoltageBatteryToolNode ) {
-      spacingAdjustments[ highVoltageBatteryToolNode.id ] = -7;
-      spacingAdjustments[ highResistanceResistorToolNode.id ] = -10;
-      spacingAdjustments[ highResistanceBulbToolNode.id ] = -7;
-    }
-    spacingAdjustments[ dollarBillNode.id ] = -6;
-    spacingAdjustments[ paperClipNode.id ] = -7;
-    spacingAdjustments[ eraserToolNode.id ] = +3;
+    // Carousel was optimized for items of equal size.  To get equal spacing between objects, we create our own pages
+    // see https://github.com/phetsims/circuit-construction-kit-dc/issues/91
+    var pages = _.chunk( circuitElementToolNodes, ITEMS_PER_PAGE ).map( function( elements ) {
+      return new VBox( {
+        children: elements,
+        spacing: CAROUSEL_ITEM_SPACING // This will be the spacing on the page with the tallest objects, used as the
+                                       // reference spacing for subsequent computations
+      } );
+    } );
+
+    // Find the tallest page
+    var maxHeight = _.maxBy( pages, 'height' ).height;
+
+    // Track the spacings so that any non-filled pages can take the average spacing of the other pages
+    var spacings = [];
+    pages.forEach( function( page ) {
+
+      // Zero out the spacing so we can compute the height without any spacing
+      page.setSpacing( 0 );
+
+      // Set the spacing so that items will fill the available area
+      var spacing = (maxHeight - page.height) / (page.children.length - 1);
+      page.setSpacing( spacing );
+
+      // Track the spacings of filled pages so that the average can be used for non-filled pages
+      if ( page.children.length === ITEMS_PER_PAGE ) {
+        spacings.push( spacing );
+      }
+    } );
+    var averageSpacing = _.reduce( spacings, function( sum, n ) {return sum + n;}, 0 ) / spacings.length;
+
+    pages.forEach( function( page ) {
+      if ( page.children.length !== ITEMS_PER_PAGE ) {
+        page.setSpacing( averageSpacing );
+      }
+    } );
+
+    // Make sure that non-filled pages have the same top
+    var alignGroup = new AlignGroup();
+    var alignedPages = pages.map( function( page ) {return alignGroup.createBox( page, { yAlign: 'top' } );} );
 
     // create the carousel
-    this.carousel = new Carousel( circuitElementToolNodes, {
-      spacingAdjustments: spacingAdjustments,
+    this.carousel = new Carousel( alignedPages, {
       orientation: 'vertical',
-      itemsPerPage: ITEMS_PER_PAGE,
-      spacing: 0,
+      itemsPerPage: 1,
+      spacing: CAROUSEL_ITEM_SPACING, // Determines the vertical margins
       margin: 15,
 
       // Expand the touch area above the up button and below the down button
