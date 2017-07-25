@@ -37,10 +37,11 @@ define( function( require ) {
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
+  var Bounds2 = require( 'DOT/Bounds2' );
   var SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var ValueNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ValueNode' );
-  var DerivedProperty = require( 'AXON/DerivedProperty' );
+  var Property = require( 'AXON/Property' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
   var CircuitConstructionKitCommonConstants =
     require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
@@ -145,13 +146,9 @@ define( function( require ) {
       ]
     } );
 
-    // @public {DerivedProperty.<Bounds2>} the visible bounds in the coordinate frame of the circuit
-    this.visibleBoundsInCircuitCoordinateFrameProperty = new DerivedProperty( [
-      circuitConstructionKitScreenView.circuitConstructionKitModel.currentZoomProperty,
-      circuitConstructionKitScreenView.visibleBoundsProperty
-    ], function( zoom, visibleBounds ) {
-      return self.parentToLocalBounds( visibleBounds );
-    } );
+    // @public {Property.<Bounds2>} the visible bounds in the coordinate frame of the circuit.  Initialized with a
+    // placeholder value until it is filled in by CircuitConstructionKitScreenView (after attached to a parent)
+    this.visibleBoundsInCircuitCoordinateFrameProperty = new Property( new Bounds2( 0, 0, 1, 1 ) );
 
     // @public (read-only) {Circuit} - the Circuit model depicted by this view
     this.circuit = circuit;
@@ -812,6 +809,15 @@ define( function( require ) {
      */
     removeChildFromBackground: function( child ) {
       this.circuitLayerNodeBackLayer.removeChild( child );
+    },
+
+    /**
+     * When the zoom level changes, recompute the visible bounds in the coordinate frame of the CircuitLayerNode so
+     * that objects cannot be dragged outside the boundary.
+     * @public
+     */
+    updateTransform: function( visibleBounds ) {
+      this.visibleBoundsInCircuitCoordinateFrameProperty.set( this.parentToLocalBounds( visibleBounds ) );
     }
   } );
 } );

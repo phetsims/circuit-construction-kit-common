@@ -403,6 +403,7 @@ define( function( require ) {
     circuitConstructionKitModel.currentZoomProperty.link( function( zoomLevel ) {
       self.circuitLayerNode.setScaleMagnitude( zoomLevel );
       self.circuitLayerNodeBackLayer.setScaleMagnitude( zoomLevel );
+      self.circuitLayerNode.updateTransform( self.visibleBoundsProperty.get() );
     } );
   }
 
