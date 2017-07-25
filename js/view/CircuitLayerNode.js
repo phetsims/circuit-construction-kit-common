@@ -94,7 +94,6 @@ define( function( require ) {
     var mainLayerWebGLSpriteNode = new Node( {
       visible: false,
       children: SolderNode.webglSpriteNodes
-        .concat( ChargeNode.webglSpriteNodes )
         .concat( VertexNode.webglSpriteNodes )
         .concat( BatteryNode.webglSpriteNodes )
         .concat( ResistorNode.webglSpriteNodes )
@@ -107,6 +106,10 @@ define( function( require ) {
       children: CustomLightBulbNode.webglSpriteNodes
     } );
     var lightBulbSocketChargeLayerWebGLSpriteNode = new Node( {
+      visible: false,
+      children: ChargeNode.webglSpriteNodes
+    } );
+    var chargeLayerWebGLSpriteNode = new Node( {
       visible: false,
       children: ChargeNode.webglSpriteNodes
     } );
@@ -133,12 +136,18 @@ define( function( require ) {
       children: [ lightBulbSocketChargeLayerWebGLSpriteNode ]
     } );
 
+    this.chargeLayer = new Node( {
+      renderer: 'webgl',
+      children: [ chargeLayerWebGLSpriteNode ]
+    } );
+
     Node.call( this, {
       children: [
         this.lightRaysLayer,
-        this.mainLayer, // circuit elements, charges and meters
-        this.lightBulbSocketLayer, // fronts of light bulbs
+        this.mainLayer, // circuit elements and meters
         this.lightBulbSocketChargeLayer, // electrons in front of the sockets
+        this.chargeLayer,
+        this.lightBulbSocketLayer, // fronts of light bulbs
         this.valueLayer, // values
         this.seriesAmmeterNodeReadoutPanelLayer, // fronts of series ammeters
         this.highlightLayer, // highlights go in front of everything else
@@ -338,29 +347,7 @@ define( function( require ) {
         circuitConstructionKitScreenView.circuitConstructionKitModel.revealingProperty || new BooleanProperty( true )
       );
 
-      // Any charges that are in a light bulb and above halfway through the filament should be in front of the base,
-      // so they appear to tunnel through the socket and go in front of the socket on the right-hand side.
-      if ( charge.onRightHandSideOfLightBulbProperty.get() ) {
-        self.lightBulbSocketChargeLayer.addChild( chargeNode );
-      }
-      else {
-        self.mainLayer.addChild( chargeNode );
-      }
-
-      var chargeLayerListener = function( onRightHandSideOfLightBulb ) {
-        if ( onRightHandSideOfLightBulb ) {
-          self.lightBulbSocketChargeLayer.addChild( chargeNode );
-          self.mainLayer.removeChild( chargeNode );
-        }
-        else {
-          self.lightBulbSocketChargeLayer.removeChild( chargeNode );
-          self.mainLayer.addChild( chargeNode );
-        }
-      };
-      charge.onRightHandSideOfLightBulbProperty.lazyLink( chargeLayerListener );
-      charge.disposeEmitter.addListener( function() {
-        charge.onRightHandSideOfLightBulbProperty.unlink( chargeLayerListener );
-      } );
+      self.chargeLayer.addChild( chargeNode );
     } );
 
     // @public - Filled in by black box study, if it is running.
@@ -439,20 +426,6 @@ define( function( require ) {
         self.mainLayer.removeChild( solderNode );
         self.mainLayer.addChild( solderNode );
       }
-
-      // Make sure charges remain in front of the solder for wires.
-      var chargeNodesToMoveToFront = [];
-      self.mainLayer.children.forEach( function( child ) {
-        if ( child instanceof ChargeNode &&
-             child.charge.circuitElement instanceof Wire &&
-             adjacentCircuitElements.indexOf( child.charge.circuitElement ) >= 0
-        ) {
-          chargeNodesToMoveToFront.push( child );
-        }
-      } );
-      chargeNodesToMoveToFront.forEach( function( chargeNode ) {
-        chargeNode.moveToFront();
-      } );
     },
 
     /**
