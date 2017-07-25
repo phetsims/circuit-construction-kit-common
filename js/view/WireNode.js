@@ -76,13 +76,15 @@ define( function( require ) {
     stroke: reverseGradient
   } ).toDataURLImageSynchronous( 0, LIFELIKE_LINE_WIDTH / 2, WIRE_RASTER_LENGTH, LIFELIKE_LINE_WIDTH );
 
+  // Make sure the heights are the same as the wires so they will line up properly, see
+  // https://github.com/phetsims/circuit-construction-kit-common/issues/390
   var lifelikeRoundedCapNormal = new Circle( LIFELIKE_LINE_WIDTH / 2, {
     fill: normalGradient
-  } ).toDataURLImageSynchronous();
+  } ).toDataURLImageSynchronous( LIFELIKE_LINE_WIDTH / 2 + 2, LIFELIKE_LINE_WIDTH / 2, LIFELIKE_LINE_WIDTH + 4, LIFELIKE_LINE_WIDTH );
 
   var lifelikeRoundedCapReversed = new Circle( LIFELIKE_LINE_WIDTH / 2, {
     fill: reverseGradient
-  } ).toDataURLImageSynchronous();
+  } ).toDataURLImageSynchronous( LIFELIKE_LINE_WIDTH / 2 + 2, LIFELIKE_LINE_WIDTH / 2, LIFELIKE_LINE_WIDTH + 4, LIFELIKE_LINE_WIDTH );
 
   var HIGHLIGHT_STROKE_LINE_STYLES = new LineStyles( {
     lineWidth: 26,
