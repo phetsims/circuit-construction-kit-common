@@ -81,10 +81,10 @@ define( function( require ) {
       phetioValueType: TNumber()
     } );
 
-    this.selectedZoomProperty.lazyLink( function( newValue, oldValue ) {
+    this.selectedZoomProperty.lazyLink( function( newValue ) {
       self.zoomAnimation = new EaseAnimation( {
         duration: ZOOM_ANIMATION_TIME,
-        initialValue: oldValue,
+        initialValue: self.currentZoomProperty.get(),
         targetValue: newValue,
         delta: function( delta ) {
           var proposedZoomValue = self.currentZoomProperty.value + delta;
