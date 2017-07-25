@@ -105,10 +105,6 @@ define( function( require ) {
       visible: false,
       children: CustomLightBulbNode.webglSpriteNodes
     } );
-    var lightBulbSocketChargeLayerWebGLSpriteNode = new Node( {
-      visible: false,
-      children: ChargeNode.webglSpriteNodes
-    } );
     var chargeLayerWebGLSpriteNode = new Node( {
       visible: false,
       children: ChargeNode.webglSpriteNodes
@@ -129,13 +125,6 @@ define( function( require ) {
       children: [ lightBulbSocketLayerWebGLSpriteNode ]
     } );
 
-    // @public {Node} - Charges appear in this layer when they need to be in front of the socket (on the right hand
-    // side of the bulb)
-    this.lightBulbSocketChargeLayer = new Node( {
-      renderer: 'webgl',
-      children: [ lightBulbSocketChargeLayerWebGLSpriteNode ]
-    } );
-
     this.chargeLayer = new Node( {
       renderer: 'webgl',
       children: [ chargeLayerWebGLSpriteNode ]
@@ -145,9 +134,8 @@ define( function( require ) {
       children: [
         this.lightRaysLayer,
         this.mainLayer, // circuit elements and meters
-        this.lightBulbSocketChargeLayer, // electrons in front of the sockets
-        this.chargeLayer,
         this.lightBulbSocketLayer, // fronts of light bulbs
+        this.chargeLayer,
         this.valueLayer, // values
         this.seriesAmmeterNodeReadoutPanelLayer, // fronts of series ammeters
         this.highlightLayer, // highlights go in front of everything else
