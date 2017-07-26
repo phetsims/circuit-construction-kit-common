@@ -10,12 +10,12 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var NumberProperty = require( 'AXON/NumberProperty' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var NumberProperty = require( 'AXON/NumberProperty' );
   var RunningAverage = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/RunningAverage' );
   var Util = require( 'DOT/Util' );
+  var inherit = require( 'PHET_CORE/inherit' );
 
   // constants
   var MINIMUM_CURRENT_THRESHOLD = 1E-8; // consider current slower than this to be stationary

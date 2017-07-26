@@ -11,10 +11,10 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
   var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
+  var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
 
   /**
    * @param {Circuit} circuit - the circuit from which the CircuitElement can be removed
