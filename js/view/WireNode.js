@@ -371,6 +371,7 @@ define( function( require ) {
       var startPosition = this.circuitElement.startVertexProperty.get().positionProperty.get();
       var endPosition = this.circuitElement.endVertexProperty.get().positionProperty.get();
       var delta = endPosition.minus( startPosition );
+      var magnitude = delta.magnitude();
       var angle = delta.angle();
 
       // Update the node transform
@@ -381,7 +382,10 @@ define( function( require ) {
       CircuitConstructionKitCommonUtil.setToTranslationRotation( TRANSFORM, startPosition, angle );
       this.startCapParent.setMatrix( TRANSFORM );
 
-      TRANSFORM.multiplyMatrix( Matrix3.scaling( delta.magnitude() / WIRE_RASTER_LENGTH, 1 ) );
+      // Prevent the case where a vertex lies on another vertex, particularly for fuzz testing
+      if ( magnitude < 1E-8 ) { magnitude = 1E-8; }
+
+      TRANSFORM.multiplyMatrix( Matrix3.scaling( magnitude / WIRE_RASTER_LENGTH, 1 ) );
       this.lineNodeParent.setMatrix( TRANSFORM );
 
       if ( this.circuitLayerNode ) {
