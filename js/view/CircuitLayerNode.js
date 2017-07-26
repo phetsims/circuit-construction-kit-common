@@ -287,11 +287,7 @@ define( function( require ) {
       // before CircuitElements, but solder should be in front of Wires, see
       // https://github.com/phetsims/circuit-construction-kit-common/issues/386
       self.stepListeners.push( function() {
-
-        // make sure the vertex didn't already get removed (like in fuzz testing)
-        if ( self.mainLayer.indexOfChild( vertex ) >= 0 ) {
-          self.fixSolderLayeringForVertex( vertex );
-        }
+        self.fixSolderLayeringForVertex( vertex );
       } );
     };
     circuit.vertices.addItemAddedListener( addVertexNode );
@@ -365,57 +361,61 @@ define( function( require ) {
      * @public
      */
     fixSolderLayeringForVertex: function( vertex ) {
-      var self = this;
 
-      var solderNode = this.getSolderNode( vertex );
-      var adjacentCircuitElements = this.circuit.getNeighborCircuitElements( vertex );
-      var adjacentWires = adjacentCircuitElements.filter( function( component ) {return component instanceof Wire;} );
-      var adjacentFixedLengthComponents = adjacentCircuitElements.filter( function( component ) {
-        return component instanceof FixedLengthCircuitElement;
-      } );
+      // make sure the vertex didn't already get removed (like in fuzz testing)
+      if ( self.mainLayer.indexOfChild( vertex ) >= 0 ) {
+        var self = this;
 
-      // This method is called for all vertices when viewProperty value changes
-      if ( this.viewProperty.get() === CircuitConstructionKitCommonConstants.LIFELIKE ) {
-        if ( adjacentFixedLengthComponents.length > 0 ) {
+        var solderNode = this.getSolderNode( vertex );
+        var adjacentCircuitElements = this.circuit.getNeighborCircuitElements( vertex );
+        var adjacentWires = adjacentCircuitElements.filter( function( component ) {return component instanceof Wire;} );
+        var adjacentFixedLengthComponents = adjacentCircuitElements.filter( function( component ) {
+          return component instanceof FixedLengthCircuitElement;
+        } );
 
-          // move before the first fixed length component
-          var nodes = adjacentFixedLengthComponents.map( function( c ) {return self.getCircuitElementNode( c );} );
-          var lowestNode = _.minBy( nodes, function( node ) {return self.mainLayer.indexOfChild( node );} );
-          var lowestIndex = self.mainLayer.indexOfChild( lowestNode );
-          var solderIndex = self.mainLayer.indexOfChild( solderNode );
-          if ( solderIndex >= lowestIndex ) {
-            self.mainLayer.removeChild( solderNode );
-            self.mainLayer.insertChild( lowestIndex, solderNode );
+        // This method is called for all vertices when viewProperty value changes
+        if ( this.viewProperty.get() === CircuitConstructionKitCommonConstants.LIFELIKE ) {
+          if ( adjacentFixedLengthComponents.length > 0 ) {
+
+            // move before the first fixed length component
+            var nodes = adjacentFixedLengthComponents.map( function( c ) {return self.getCircuitElementNode( c );} );
+            var lowestNode = _.minBy( nodes, function( node ) {return self.mainLayer.indexOfChild( node );} );
+            var lowestIndex = self.mainLayer.indexOfChild( lowestNode );
+            var solderIndex = self.mainLayer.indexOfChild( solderNode );
+            if ( solderIndex >= lowestIndex ) {
+              self.mainLayer.removeChild( solderNode );
+              self.mainLayer.insertChild( lowestIndex, solderNode );
+            }
+          }
+          else if ( adjacentWires.length > 0 ) {
+
+            // move after the last wire
+            var wireNodes = adjacentWires.map( function( c ) {return self.getCircuitElementNode( c );} );
+            var topWireNode = _.maxBy( wireNodes, function( node ) {return self.mainLayer.indexOfChild( node );} );
+            var topIndex = self.mainLayer.indexOfChild( topWireNode );
+            var mySolderIndex = self.mainLayer.indexOfChild( solderNode );
+            if ( mySolderIndex <= topIndex ) {
+              self.mainLayer.removeChild( solderNode );
+              self.mainLayer.insertChild( topIndex, solderNode );
+            }
+          }
+
+          // Make sure black box vertices are behind the black box
+          // TODO (black-box-study): This is duplicated below, factor it out.
+          if ( self.blackBoxNode ) {
+            var blackBoxNodeIndex = self.mainLayer.children.indexOf( self.blackBoxNode );
+            if ( vertex.blackBoxInterfaceProperty.get() ) {
+              self.mainLayer.removeChild( solderNode );
+              self.mainLayer.insertChild( blackBoxNodeIndex, solderNode );
+            }
           }
         }
-        else if ( adjacentWires.length > 0 ) {
+        else {
 
-          // move after the last wire
-          var wireNodes = adjacentWires.map( function( c ) {return self.getCircuitElementNode( c );} );
-          var topWireNode = _.maxBy( wireNodes, function( node ) {return self.mainLayer.indexOfChild( node );} );
-          var topIndex = self.mainLayer.indexOfChild( topWireNode );
-          var mySolderIndex = self.mainLayer.indexOfChild( solderNode );
-          if ( mySolderIndex <= topIndex ) {
-            self.mainLayer.removeChild( solderNode );
-            self.mainLayer.insertChild( topIndex, solderNode );
-          }
+          // in schematic mode, solder should be on top of every component, including wires
+          self.mainLayer.removeChild( solderNode );
+          self.mainLayer.addChild( solderNode );
         }
-
-        // Make sure black box vertices are behind the black box
-        // TODO (black-box-study): This is duplicated below, factor it out.
-        if ( self.blackBoxNode ) {
-          var blackBoxNodeIndex = self.mainLayer.children.indexOf( self.blackBoxNode );
-          if ( vertex.blackBoxInterfaceProperty.get() ) {
-            self.mainLayer.removeChild( solderNode );
-            self.mainLayer.insertChild( blackBoxNodeIndex, solderNode );
-          }
-        }
-      }
-      else {
-
-        // in schematic mode, solder should be on top of every component, including wires
-        self.mainLayer.removeChild( solderNode );
-        self.mainLayer.addChild( solderNode );
       }
     },
 
