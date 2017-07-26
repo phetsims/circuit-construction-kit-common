@@ -134,8 +134,8 @@ define( function( require ) {
       children: [
         this.lightRaysLayer,
         this.mainLayer, // circuit elements and meters
-        this.lightBulbSocketLayer, // fronts of light bulbs
         this.chargeLayer,
+        this.lightBulbSocketLayer, // fronts of light bulbs
         this.valueLayer, // values
         this.seriesAmmeterNodeReadoutPanelLayer, // fronts of series ammeters
         this.highlightLayer, // highlights go in front of everything else
