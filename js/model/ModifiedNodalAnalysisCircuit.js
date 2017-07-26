@@ -16,8 +16,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var ModifiedNodalAnalysisSolution = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisSolution' );
   var Matrix = require( 'DOT/Matrix' );
-  var CircuitConstructionKitCommonQueryParameters =
-    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonQueryParameters' );
+  var CircuitConstructionKitCommonQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonQueryParameters' );
 
   // constants
   var DEBUG = CircuitConstructionKitCommonQueryParameters.debugModifiedNodalAnalysis;

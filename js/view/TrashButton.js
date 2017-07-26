@@ -14,8 +14,7 @@ define( function( require ) {
   var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
   var PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
-  var CircuitConstructionKitCommonConstants =
-    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
 
   /**
    * @param {Circuit} circuit - the circuit from which the CircuitElement can be removed

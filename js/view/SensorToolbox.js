@@ -23,8 +23,7 @@ define( function( require ) {
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Property = require( 'AXON/Property' );
-  var CircuitConstructionKitCommonConstants =
-    require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
   // strings
