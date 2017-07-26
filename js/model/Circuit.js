@@ -339,11 +339,16 @@ define( function( require ) {
       var distance = vertex.positionProperty.value.distance( pivotVertex.positionProperty.value );
 
       // If the vertices are too close, they must be translated way
-      if ( distance < BUMP_AWAY_RADIUS && distance > 0 ) {
+      if ( distance < BUMP_AWAY_RADIUS ) {
 
-        var delta = pivotVertex.positionProperty.value.minus( vertex.positionProperty.value )
-          .normalized()
-          .times( -SNAP_RADIUS * 1.5 );
+        var difference = pivotVertex.positionProperty.value.minus( vertex.positionProperty.value );
+
+        // Support when vertex is on the pivot, mainly for fuzz testing.  In that case, just move directly to the right
+        if ( difference.magnitude() === 0 ) {
+          difference = new Vector2( 1, 0 );
+        }
+
+        var delta = difference.normalized().times( -SNAP_RADIUS * 1.5 );
         this.translateVertexGroup( vertex, delta );
       }
       else {

@@ -189,8 +189,10 @@ define( function( require ) {
       else {
 
         // End drag for each of the vertices
-        vertices.forEach( function( vertexProperty ) {
-          circuitLayerNode.endDrag( event, vertexProperty, dragged );
+        vertices.forEach( function( vertex ) {
+          if ( circuitConstructionKitScreenView.circuitConstructionKitModel.circuit.vertices.contains( vertex ) ) {
+            circuitLayerNode.endDrag( event, vertex, dragged );
+          }
         } );
 
         // Only show the editor when tapped, not on every drag.  Also, event could be undefined if this end() was

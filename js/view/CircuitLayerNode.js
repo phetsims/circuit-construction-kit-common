@@ -287,7 +287,11 @@ define( function( require ) {
       // before CircuitElements, but solder should be in front of Wires, see
       // https://github.com/phetsims/circuit-construction-kit-common/issues/386
       self.stepListeners.push( function() {
-        self.fixSolderLayeringForVertex( vertex );
+
+        // make sure the vertex didn't already get removed (like in fuzz testing)
+        if ( self.mainLayer.indexOfChild( vertex ) >= 0 ) {
+          self.fixSolderLayeringForVertex( vertex );
+        }
       } );
     };
     circuit.vertices.addItemAddedListener( addVertexNode );
@@ -363,7 +367,6 @@ define( function( require ) {
     fixSolderLayeringForVertex: function( vertex ) {
       var self = this;
 
-      // wires in the back, then solder, then fixed length components.
       var solderNode = this.getSolderNode( vertex );
       var adjacentCircuitElements = this.circuit.getNeighborCircuitElements( vertex );
       var adjacentWires = adjacentCircuitElements.filter( function( component ) {return component instanceof Wire;} );
