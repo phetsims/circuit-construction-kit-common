@@ -33,6 +33,7 @@ define( function( require ) {
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
   var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/WireNode' );
+  var Image = require( 'SCENERY/nodes/Image' );
 
   // strings
   var batteryString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery' );
@@ -47,6 +48,9 @@ define( function( require ) {
   var resistorString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor' );
   var switchString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/switch' );
   var wireString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/wire' );
+
+  // images
+  var lightBulbImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-middle.png' );
 
   // constants
   var BATTERY_LENGTH = CircuitConstructionKitCommonConstants.BATTERY_LENGTH;
@@ -184,17 +188,8 @@ define( function( require ) {
       }
     );
 
-    var lightBulbModel = LightBulb.createAtPosition(
-      new Vector2( 0, 0 ),
-      circuit.vertexGroupTandem,
-      CircuitConstructionKitCommonConstants.DEFAULT_RESISTANCE,
-      circuit.lightBulbGroupTandem.createNextTandem(), {
-        highResistance: false
-      } );
     var lightBulbToolNode = createCircuitElementToolNode( lightBulbString, options.numberOfLightBulbs,
-      new CircuitConstructionKitLightBulbNode( null, null,
-        lightBulbModel,
-        new Property( true ), viewProperty, tandem.createTandem( 'lightBulbIcon' ), { icon: true } ),
+      new Image( lightBulbImage ),
       function( circuitElement ) { return circuitElement instanceof LightBulb && !circuitElement.highResistance; },
       function( position ) {
         return LightBulb.createAtPosition(
