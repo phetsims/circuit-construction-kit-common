@@ -11,10 +11,10 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var RunningAverage = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/RunningAverage' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var inherit = require( 'PHET_CORE/inherit' );
   var NumberProperty = require( 'AXON/NumberProperty' );
+  var RunningAverage = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/RunningAverage' );
   var Util = require( 'DOT/Util' );
 
   // constants

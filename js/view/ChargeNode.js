@@ -10,14 +10,14 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Image = require( 'SCENERY/nodes/Image' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var ElectronChargeNode = require( 'SCENERY_PHET/ElectronChargeNode' );
-  var Tandem = require( 'TANDEM/Tandem' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var ConventionalCurrentArrowNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ConventionalCurrentArrowNode' );
+  var ElectronChargeNode = require( 'SCENERY_PHET/ElectronChargeNode' );
+  var Image = require( 'SCENERY/nodes/Image' );
+  var inherit = require( 'PHET_CORE/inherit' );
   var Matrix3 = require( 'DOT/Matrix3' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   // constants
   var ELECTRON_CHARGE_NODE = new ElectronChargeNode( {
