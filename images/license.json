@@ -95,6 +95,14 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Created by Amy Rouinfar"
   },
+  "lightbulb-front-high.png": {
+    "text": [
+      "Copyright 2017 University of Colorado Boulder"
+    ],
+    "projectURL": "http://phet.colorado.edu",
+    "license": "contact phethelp@colorado.edu",
+    "notes": "Created by Amy Rouinfar"
+  },
   "lightbulb-middle.png": {
     "text": [
       "Copyright 2016 University of Colorado Boulder"
@@ -103,9 +111,9 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Created by Amy Rouinfar"
   },
-  "lightbulb-front-high.png": {
+  "lightbulb-middle-high.png": {
     "text": [
-      "Copyright 2017 University of Colorado Boulder"
+      "Copyright 2016 University of Colorado Boulder"
     ],
     "projectURL": "http://phet.colorado.edu",
     "license": "contact phethelp@colorado.edu",
