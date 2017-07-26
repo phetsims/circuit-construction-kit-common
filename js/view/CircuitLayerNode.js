@@ -363,7 +363,7 @@ define( function( require ) {
     fixSolderLayeringForVertex: function( vertex ) {
 
       // make sure the vertex didn't already get removed (like in fuzz testing)
-      if ( self.mainLayer.indexOfChild( vertex ) >= 0 ) {
+      if ( this.mainLayer.indexOfChild( vertex ) >= 0 ) {
         var self = this;
 
         var solderNode = this.getSolderNode( vertex );
