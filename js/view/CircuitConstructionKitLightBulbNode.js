@@ -20,14 +20,16 @@ define( function( require ) {
   var LightBulbSocketNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/LightBulbSocketNode' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var Util = require( 'DOT/Util' );
-  var Vector2 = require( 'DOT/Vector2' );
   var Shape = require( 'KITE/Shape' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Image = require( 'SCENERY/nodes/Image' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
 
   // images
   var fireImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
+  var lightBulbImageHigh = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-middle-high.png' );
+  var lightBulbImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-middle.png' );
 
   // constants
   var SCRATCH_MATRIX = new Matrix3();
@@ -96,20 +98,7 @@ define( function( require ) {
 
     // The icon must show the socket as well
     if ( options.icon ) {
-      lightBulbNode = new Node( {
-        children: [
-          lightBulbNode,
-          new LightBulbSocketNode(
-            circuitConstructionKitScreenView,
-            circuitLayerNode,
-            lightBulb,
-            showResultsProperty,
-            viewProperty,
-            tandem.createTandem( 'socketNode' ),
-            options
-          )
-        ]
-      } );
+      lightBulbNode = new Image( lightBulb.highResistance ? lightBulbImageHigh : lightBulbImage, { scale: 0.37 } );
     }
 
     // General options used throughout bulb node
@@ -163,9 +152,9 @@ define( function( require ) {
     if ( options.icon ) {
       schematicNode = new Path( addSchematicCircle( new Shape() ).transformed( Matrix3.scaling( 1.75 ) ), {
         stroke: 'black',
-        lineWidth: 5,
-        centerBottom: new Vector2( 0, -10 )
+        lineWidth: 5
       } );
+      schematicNode.center = lightBulbNode.center.plusXY( 0, 22 );
     }
 
     // Expand the pointer areas with a defensive copy, see
