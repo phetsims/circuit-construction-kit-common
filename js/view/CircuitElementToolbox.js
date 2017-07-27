@@ -29,7 +29,6 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
   var HBox = require( 'SCENERY/nodes/HBox' );
-  var Image = require( 'SCENERY/nodes/Image' );
   var Node = require( 'SCENERY/nodes/Node' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Carousel = require( 'SUN/Carousel' );
