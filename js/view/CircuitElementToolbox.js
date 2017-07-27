@@ -514,31 +514,38 @@ define( function( require ) {
     // Carousel was optimized for items of equal size.  To get equal spacing between objects, we create our own pages
     // see https://github.com/phetsims/circuit-construction-kit-dc/issues/91
     var pages = _.chunk( circuitElementToolNodes, ITEMS_PER_PAGE ).map( function( elements ) {
-      return new VBox( { children: elements } );
+      return new VBox( {
+        children: elements,
+        resize: true
+      } );
     } );
 
-    // Track the spacings so that any non-filled pages can take the average spacing of the other pages
-    var spacings = [];
-    pages.forEach( function( page ) {
+    // The schematic and lifelike icons have different dimensions, so update the spacing when the view type changes
+    viewProperty.link( function() {
 
-      // Zero out the spacing so we can compute the height without any spacing
-      page.setSpacing( 0 );
+      // Track the spacings so that any non-filled pages can take the average spacing of the other pages
+      var spacings = [];
+      pages.forEach( function( page ) {
 
-      // Set the spacing so that items will fill the available area
-      var spacing = (CAROUSEL_PAGE_HEIGHT - page.height) / (page.children.length - 1);
-      page.setSpacing( spacing );
+        // Zero out the spacing so we can compute the height without any spacing
+        page.setSpacing( 0 );
 
-      // Track the spacings of filled pages so that the average can be used for non-filled pages
-      if ( page.children.length === ITEMS_PER_PAGE ) {
-        spacings.push( spacing );
-      }
-    } );
-    var averageSpacing = _.reduce( spacings, function( sum, n ) {return sum + n;}, 0 ) / spacings.length;
+        // Set the spacing so that items will fill the available area
+        var spacing = (CAROUSEL_PAGE_HEIGHT - page.height) / (page.children.length - 1);
+        page.setSpacing( spacing );
 
-    pages.forEach( function( page ) {
-      if ( page.children.length !== ITEMS_PER_PAGE ) {
-        page.setSpacing( averageSpacing );
-      }
+        // Track the spacings of filled pages so that the average can be used for non-filled pages
+        if ( page.children.length === ITEMS_PER_PAGE ) {
+          spacings.push( spacing );
+        }
+      } );
+      var averageSpacing = _.reduce( spacings, function( sum, n ) {return sum + n;}, 0 ) / spacings.length;
+
+      pages.forEach( function( page ) {
+        if ( page.children.length !== ITEMS_PER_PAGE ) {
+          page.setSpacing( averageSpacing );
+        }
+      } );
     } );
 
     // Make sure that non-filled pages have the same top
