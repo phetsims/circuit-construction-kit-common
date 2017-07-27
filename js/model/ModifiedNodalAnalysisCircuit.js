@@ -349,7 +349,17 @@ define( function( require ) {
       } ).join( '\n' ) );
 
       // solve the linear matrix system for the unknowns
-      var x = A.solve( z );
+      var x = null;
+      try {
+        x = A.solve( z );
+      }
+      catch( e ) {
+
+        // Sometimes a fuzz test gives a deficient matrix rank.  It is a rare error and I haven't got one in the
+        // debugger yet to understand the cause.  Catch it and provide a solution of zeroes of the correct dimension
+        // See https://github.com/phetsims/circuit-construction-kit-dc/issues/113
+        x = new Matrix( A.n, 1 );
+      }
 
       DEBUG && console.log( 'x=\n' + x.toString() );
 
