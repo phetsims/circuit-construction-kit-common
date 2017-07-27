@@ -38,7 +38,7 @@ define( function( require ) {
     showLabelsProperty.link( function( showLabels ) {labelNode.visible = showLabels;} );
     VBox.call( this, {
       spacing: 6, // Spacing between the icon and the text
-      resize: false,
+      resize: true,
       cursor: 'pointer',
 
       // hack because the series ammeter tool node has text rendered separately (joined with probe ammeter)
