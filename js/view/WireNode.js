@@ -321,6 +321,11 @@ define( function( require ) {
       tandem.removeInstance( self );
 
       self.lineNode.dispose();
+      self.highlightNode.dispose();
+      self.lineNodeParent.dispose();
+      highlightNodeParent.dispose();
+      self.startCapParent.dispose();
+      self.endCapParent.dispose();
     };
 
     // For icons, update the end caps

@@ -168,12 +168,8 @@ define( function( require ) {
     var lifelikeNode = new Node();
     var schematicNode = new Node();
     var closeListener = function( closed ) {
-      lifelikeNode.children = [ new Node( {
-        children: [ closed ? lifelikeClosedImage : lifelikeOpenImage ]
-      } ) ];
-      schematicNode.children = [ new Node( {
-        children: [ closed ? schematicClosedImage : schematicOpenImage ]
-      } ) ];
+      lifelikeNode.children = [ closed ? lifelikeClosedImage : lifelikeOpenImage ];
+      schematicNode.children = [ closed ? schematicClosedImage : schematicOpenImage ];
     };
     circuitSwitch.closedProperty.link( closeListener );
 
@@ -218,13 +214,13 @@ define( function( require ) {
       circuitSwitch.closedProperty.unlink( closeListener );
 
       // Surprisingly, the children and button listener must be removed to prevent a memory leak.
-      self.removeAllChildren();
+      self.removeAllChildren(); // TODO: is this line necessary?
       circuitConstructionKitScreenView && self.contentNode.removeInputListener( buttonListener );
 
       // Make sure the lifelikeNode and schematicNode are not listed as parents for their children because the children
       // (images) persist.
-      lifelikeNode.removeAllChildren();
-      schematicNode.removeAllChildren();
+      lifelikeNode.dispose();
+      schematicNode.dispose();
     };
   }
 
