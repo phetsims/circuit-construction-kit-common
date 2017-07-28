@@ -220,6 +220,11 @@ define( function( require ) {
       // Surprisingly, the children and button listener must be removed to prevent a memory leak.
       self.removeAllChildren();
       circuitConstructionKitScreenView && self.contentNode.removeInputListener( buttonListener );
+
+      // Make sure the lifelikeNode and schematicNode are not listed as parents for their children because the children
+      // (images) persist.
+      lifelikeNode.removeAllChildren();
+      schematicNode.removeAllChildren();
     };
   }
 
