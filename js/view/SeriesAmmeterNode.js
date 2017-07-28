@@ -33,6 +33,24 @@ define( function( require ) {
   var CORNER_RADIUS = 4;
 
   /**
+   * Utility function for creating a panel for the sensor body
+   * @param {Object} options
+   * @returns {Rectangle}
+   */
+  var createPanel = function( options ) {
+
+    // Rasterize so it can be rendered in WebGL, see https://github.com/phetsims/circuit-construction-kit-dc/issues/67
+    return new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, options ).toDataURLNodeSynchronous();
+  };
+
+  var orangeBackgroundPanel = createPanel( { cornerRadius: CORNER_RADIUS, fill: ORANGE } );
+  var blackBorder = createPanel( {
+    cornerRadius: CORNER_RADIUS,
+    stroke: '#231f20',
+    lineWidth: 2.4
+  } );
+
+  /**
    * This constructor is called dynamically and must match the signature of other circuit element nodes.
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - main screen view, null for icon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
@@ -116,23 +134,12 @@ define( function( require ) {
       tandem: tandem.createTandem( 'readoutPanel' )
     } );
 
-    /**
-     * Utility function for creating a panel for the sensor body
-     * @param {Object} options
-     * @returns {Rectangle}
-     */
-    var createPanel = function( options ) {
-
-      // Rasterize so it can be rendered in WebGL, see https://github.com/phetsims/circuit-construction-kit-dc/issues/67
-      return new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, options ).toDataURLNodeSynchronous();
-    };
-
     // This node only has a lifelike representation because it is a sensor
     var lifelikeNode = new Node( {
       children: [
 
         // orange background panel
-        createPanel( { cornerRadius: CORNER_RADIUS, fill: ORANGE } ),
+        orangeBackgroundPanel,
 
         // gray track
         new Rectangle( 0, 0, PANEL_WIDTH, 20, {
@@ -141,11 +148,7 @@ define( function( require ) {
         } ),
 
         // black border
-        createPanel( {
-          cornerRadius: CORNER_RADIUS,
-          stroke: '#231f20',
-          lineWidth: 2.4
-        } )
+        blackBorder
       ]
     } );
 
@@ -198,6 +201,9 @@ define( function( require ) {
       if ( !this.icon ) {
         circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.removeChild( self.frontPanel );
       }
+      lifelikeNode.dispose();
+      self.frontPanel.dispose();
+      readoutPanel.dispose();
     };
   }
 

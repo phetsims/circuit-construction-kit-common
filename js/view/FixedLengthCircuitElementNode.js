@@ -219,7 +219,7 @@ define( function( require ) {
       }
 
       // Detach the child nodes which are reused (so they don't have a _parents reference)
-      self.contentNode.removeAllChildren();
+      self.contentNode.dispose();
     };
   }
 

@@ -54,6 +54,9 @@ define( function( require ) {
   var SCHEMATIC_STEM_WIDTH = 84 * SCHEMATIC_SCALE;
   var SCHEMATIC_WAVELENGTH = 54 * SCHEMATIC_SCALE;
 
+  // cache the rasters so they aren't added to the spritesheet multiple times
+  var schematicRasterCache = {};
+
   /**
    * This constructor is called dynamically and must match the signature of other circuit element nodes.
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - main screen view, null for icon
@@ -177,10 +180,17 @@ define( function( require ) {
 
     var scale = lifelikeResistorImageNode.width / schematicShape.bounds.width;
     schematicShape = schematicShape.transformed( Matrix3.scale( scale, scale ) );
-    var schematicNode = new Path( schematicShape, {
-      stroke: 'black',
-      lineWidth: CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH
-    } ).toDataURLImageSynchronous();
+    var schematicNode = null;
+    if ( !options.icon && schematicRasterCache[ resistor.resistorType ] ) {
+      schematicNode = schematicRasterCache[ resistor.resistorType ];
+    }
+    else {
+      schematicNode = new Path( schematicShape, {
+        stroke: 'black',
+        lineWidth: CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH
+      } ).toDataURLImageSynchronous();
+      schematicRasterCache[ resistor.resistorType ] = schematicNode;
+    }
 
     // Center vertically to match the FixedLengthCircuitElementNode assumption that origin is center left
     schematicNode.centerY = 0;
@@ -219,7 +229,7 @@ define( function( require ) {
      */
     this.disposeResistorNode = function() {
       resistor.resistanceProperty.unlink( updateColorBands );
-      lifelikeResistorImageNode.children = [];
+      lifelikeResistorImageNode.dispose();
     };
   }
 

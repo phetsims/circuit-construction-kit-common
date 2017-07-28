@@ -47,6 +47,9 @@ define( function( require ) {
   // This is referring to the offset from the center of the leftmost vertex because the origin must be left-centered.
   var LEFT_LEAD_X = -5;
 
+  // cache the raster after creation so it isn't added to the spritesheet multiple times
+  var cached = null;
+
   /**
    * Determine the brightness for a given power
    * @param {number} multiplier - steepness of the function
@@ -136,7 +139,7 @@ define( function( require ) {
         .arc( LEFT_LEAD_X + schematicCircleRadius, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
         .lineTo( rightLeadX, LEAD_Y );
     };
-    var schematicNode = new Path( addSchematicCircle( new Shape()
+    var schematicNode = cached || new Path( addSchematicCircle( new Shape()
 
       // Left lead
         .moveTo( LEFT_LEAD_X, 0 )
@@ -149,6 +152,7 @@ define( function( require ) {
       stroke: 'black',
       lineWidth: CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH
     } ).toDataURLImageSynchronous();
+    cached = schematicNode;
     if ( options.icon ) {
       schematicNode = new Path( addSchematicCircle( new Shape() ).transformed( Matrix3.scaling( 1.75 ) ), {
         stroke: 'black',
