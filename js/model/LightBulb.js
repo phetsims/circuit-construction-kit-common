@@ -210,7 +210,7 @@ define( function( require ) {
     createAtPosition: function( position, circuitVertexGroupTandem, resistance, tandem, options ) {
 
       options = options || {};
-      var translation = new Vector2( 30, 10 );
+      var translation = new Vector2( 19, 10 );
 
       // Connect at the side and bottom
       var startPoint = new Vector2( position.x - DISTANCE_BETWEEN_VERTICES / 2, position.y ).plus( translation );

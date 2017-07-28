@@ -50,8 +50,12 @@ define( function( require ) {
       // initial position of the pointer in the coordinate frame of the CircuitLayerNode
       var viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point );
 
+      // Adjust for touch.  The object should appear centered on the mouse but vertically above the finger so the finger
+      // doesn't obscure the object
+      viewPosition.y = viewPosition.y - (event.pointer.isTouch ? 28 : 0);
+
       // Create the new CircuitElement at the correct location
-      var circuitElement = createElement( viewPosition );
+      var circuitElement = createElement( viewPosition, event );
 
       // Add the CircuitElement to the Circuit
       circuit.circuitElements.add( circuitElement );
