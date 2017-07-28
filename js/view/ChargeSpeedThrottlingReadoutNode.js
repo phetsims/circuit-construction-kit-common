@@ -27,7 +27,13 @@ define( function( require ) {
    */
   function ChargeSpeedThrottlingReadoutNode( timeScaleProperty, showCurrentProperty, isValueDepictionEnabledProperty ) {
     var self = this;
-    Text.call( this, animationSpeedLimitReachedString, { fontSize: 26 } );
+    Text.call( this, animationSpeedLimitReachedString, {
+
+      // Reduce the width of the animation speed limit reached so it doesn't overlap controls
+      // see https://github.com/phetsims/circuit-construction-kit-dc/issues/118
+      fontSize: 16,
+      maxWidth: 530
+    } );
 
     Property.multilink( [ timeScaleProperty, showCurrentProperty, isValueDepictionEnabledProperty ],
       function( timeScale, showCurrent, isValueDepictionEnabled ) {
