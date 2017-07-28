@@ -217,6 +217,9 @@ define( function( require ) {
       if ( !options.icon && updateFireMultilink ) {
         Property.unmultilink( updateFireMultilink );
       }
+
+      // Detach the child nodes which are reused (so they don't have a _parents reference)
+      self.contentNode.removeAllChildren();
     };
   }
 
