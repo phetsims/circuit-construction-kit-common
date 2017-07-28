@@ -171,7 +171,13 @@ define( function( require ) {
 
     var eventPoint = null;
     var dragged = false;
-    var clickToDismissListener = null;
+    var clickToDismissListeners = [];
+    var clearClickListeners = function() {
+      clickToDismissListeners.forEach( function( listener ) {
+        phet.joist.sim.display.removeInputListener( listener );
+      } );
+      clickToDismissListeners.length = 0;
+    };
     var dragHandler = new TandemSimpleDragHandler( {
       allowTouchSnag: true,
       tandem: tandem.createTandem( 'dragHandler' ),
@@ -195,22 +201,22 @@ define( function( require ) {
 
           vertex.selectedProperty.set( true );
 
-          clickToDismissListener = {
+          var clickToDismissListener = {
             down: function( event ) {
               if ( !_.includes( event.trail.nodes, self ) && !_.includes( event.trail.nodes, cutButton ) ) {
-                clickToDismissListener && phet.joist.sim.display.removeInputListener( clickToDismissListener );
                 vertex.selectedProperty.set( false );
-                clickToDismissListener = null;
+                clearClickListeners();
               }
             }
           };
           phet.joist.sim.display.addInputListener( clickToDismissListener );
+          clickToDismissListeners.push( clickToDismissListener );
         }
         else {
+
           // Deselect after dragging so a grayed-out cut button doesn't remain when open vertex is connected
-          clickToDismissListener && phet.joist.sim.display.removeInputListener( clickToDismissListener );
           vertex.selectedProperty.set( false );
-          clickToDismissListener = null;
+          clearClickListeners();
         }
       }
     } );
@@ -286,6 +292,11 @@ define( function( require ) {
 
       this.removeAccessibleInputListener( keyListener );
       tandem.removeInstance( self );
+
+      // Remove the global listener if it was still enabled
+      clearClickListeners();
+
+      this.removeInputListener( dragHandler );
     };
   }
 
@@ -298,8 +309,11 @@ define( function( require ) {
      * @public
      */
     dispose: function() {
-      this.removeAllChildren();
       this.disposeVertexNode();
+
+      // children are shared, so we must remove the parent references
+      this.removeAllChildren();
+
       Node.prototype.dispose.call( this );
     }
   }, {

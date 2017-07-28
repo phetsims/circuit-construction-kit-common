@@ -319,6 +319,8 @@ define( function( require ) {
 
       viewProperty.unlink( markAsDirty );
       tandem.removeInstance( self );
+
+      self.lineNode.dispose();
     };
 
     // For icons, update the end caps
