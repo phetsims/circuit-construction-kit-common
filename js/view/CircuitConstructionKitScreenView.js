@@ -495,12 +495,12 @@ define( function( require ) {
      * @private
      */
     getCurrent: function( probeNode ) {
-      var mainCurrent = this.getCurrentInLayer( probeNode, this.fixedLengthCircuitElementLayer );
+      var mainCurrent = this.getCurrentInLayer( probeNode, this.circuitLayerNode.fixedLengthCircuitElementLayer );
       if ( mainCurrent !== null ) {
         return mainCurrent;
       }
       else {
-        return this.getCurrentInLayer( probeNode, this.wireLayer );
+        return this.getCurrentInLayer( probeNode, this.circuitLayerNode.wireLayer );
       }
     },
 
