@@ -87,58 +87,106 @@ define( function( require ) {
     // @public {Node} - layer for light rays, since it cannot be rendered in WebGL
     this.lightRaysLayer = new Node();
 
-    // We would like performance to be as fast as possible when adding CircuitElements to the mainLayer.  Therefore,
-    // we try to preallocate as much of the WebGL spritesheet as possible
-    var mainLayerWebGLSpriteNode = new Node( {
-      visible: false,
-      children: SolderNode.webglSpriteNodes
-        .concat( VertexNode.webglSpriteNodes )
-        .concat( BatteryNode.webglSpriteNodes )
-        .concat( ResistorNode.webglSpriteNodes )
-        .concat( WireNode.webglSpriteNodes )
-        .concat( FixedLengthCircuitElementNode.webglSpriteNodes )
-        .concat( CustomLightBulbNode.webglSpriteNodes )
+    this.wireLayer = new Node( {
+      renderer: 'webgl',
+
+      // preallocate sprite sheet
+      children: [ new Node( {
+        visible: false,
+        children: WireNode.webglSpriteNodes
+      } ) ]
     } );
-    var lightBulbSocketLayerWebGLSpriteNode = new Node( {
-      visible: false,
-      children: CustomLightBulbNode.webglSpriteNodes
-    } );
-    var chargeLayerWebGLSpriteNode = new Node( {
-      visible: false,
-      children: ChargeNode.webglSpriteNodes
+    this.solderLayer = new Node( {
+      renderer: 'webgl',
+
+      // preallocate sprite sheet
+      children: [ new Node( {
+        visible: false,
+        children: SolderNode.webglSpriteNodes
+      } ) ]
     } );
 
-    // @public {Node} - so that additional Nodes may be interleaved
-    this.mainLayer = new Node( {
+    this.vertexLayer = new Node( {
+      renderer: 'webgl',
+
+      // preallocate sprite sheet
+      children: [ new Node( {
+        visible: false,
+        children: VertexNode.webglSpriteNodes
+      } ) ]
+    } );
+
+    // @public {Node} - contains FixedLengthCircuitElements
+    this.fixedLengthCircuitElementLayer = new Node( {
 
       // add a child eagerly so the WebGL block is all allocated when 1st object is dragged out of toolbox
       // @jonathanolson: is there a better way to do this?
       renderer: 'webgl',
-      children: [ mainLayerWebGLSpriteNode ]
+      children: [ new Node( {
+        visible: false,
+        children: []
+          .concat( BatteryNode.webglSpriteNodes )
+          .concat( ResistorNode.webglSpriteNodes )
+          .concat( FixedLengthCircuitElementNode.webglSpriteNodes )
+          .concat( CustomLightBulbNode.webglSpriteNodes )
+      } ) ]
     } );
 
     // @public {Node} - CircuitConstructionKitLightBulbNode calls addChild/removeChild to add sockets to the front layer
     this.lightBulbSocketLayer = new Node( {
       renderer: 'webgl',
-      children: [ lightBulbSocketLayerWebGLSpriteNode ]
+
+      // preallocate sprite sheet
+      children: [ new Node( {
+        visible: false,
+        children: CustomLightBulbNode.webglSpriteNodes
+      } ) ]
     } );
 
     this.chargeLayer = new Node( {
       renderer: 'webgl',
-      children: [ chargeLayerWebGLSpriteNode ]
+
+      // preallocate sprite sheet
+      children: [ new Node( {
+        visible: false,
+        children: ChargeNode.webglSpriteNodes
+      } ) ]
     } );
 
-    Node.call( this, {
-      children: [
-        this.lightRaysLayer,
-        this.mainLayer, // circuit elements and meters
-        this.chargeLayer,
-        this.lightBulbSocketLayer, // fronts of light bulbs
-        this.valueLayer, // values
-        this.seriesAmmeterNodeReadoutPanelLayer, // fronts of series ammeters
-        this.highlightLayer, // highlights go in front of everything else
-        this.buttonLayer // vertex buttons
-      ]
+    // For lifelike: Solder should be in front of wires but behind batteries and resistors.
+    var lifelikeLayering = [
+      this.lightRaysLayer,
+      this.wireLayer, // wires go behind other circuit elements
+      this.solderLayer,
+      this.fixedLengthCircuitElementLayer, // circuit elements and meters
+      this.vertexLayer,
+      this.chargeLayer,
+      this.lightBulbSocketLayer, // fronts of light bulbs
+      this.valueLayer, // values
+      this.seriesAmmeterNodeReadoutPanelLayer, // fronts of series ammeters
+      this.highlightLayer, // highlights go in front of everything else
+      this.buttonLayer // vertex buttons
+    ];
+
+    // For schematic: Solder should be in front of all components
+    var schematicLayering = [
+      this.lightRaysLayer,
+      this.wireLayer,
+      this.fixedLengthCircuitElementLayer,
+      this.solderLayer,
+      this.vertexLayer,
+      this.chargeLayer,
+      this.lightBulbSocketLayer,
+      this.valueLayer,
+      this.seriesAmmeterNodeReadoutPanelLayer,
+      this.highlightLayer,
+      this.buttonLayer
+    ];
+    Node.call( this );
+
+    // choose layering for schematic vs lifelike
+    circuitConstructionKitScreenView.circuitConstructionKitModel.viewProperty.link( function( view ) {
+      self.children = (view === 'lifelike') ? lifelikeLayering : schematicLayering;
     } );
 
     // @public {Property.<Bounds2>} the visible bounds in the coordinate frame of the circuit.  Initialized with a
@@ -166,9 +214,10 @@ define( function( require ) {
      *
      * @param {function} CircuitElementNodeConstructor constructor for the node type, such as BatteryNode
      * @param {function} type - the type of the CircuitElement, such as Battery or Wire
+     * @param {Node} layer
      * @param {Tandem} groupTandem
      */
-    var initializeCircuitElementType = function( CircuitElementNodeConstructor, type, groupTandem ) {
+    var initializeCircuitElementType = function( CircuitElementNodeConstructor, type, layer, groupTandem ) {
       var addCircuitElement = function( circuitElement ) {
         if ( circuitElement instanceof type ) {
           var circuitElementNode = new CircuitElementNodeConstructor(
@@ -181,21 +230,7 @@ define( function( require ) {
           );
           self.circuitElementNodeMap[ circuitElement.id ] = circuitElementNode;
 
-          // Insert the circuit element node behind the vertex nodes.
-          // Search backwards starting at the end until we find the last 2 vertex nodes
-          var index = self.mainLayer.getChildrenCount() - 1;
-          var vertexNodeCount = 0;
-          while ( index >= 0 ) {
-            if ( self.mainLayer.getChildAt( index ) ) {
-              vertexNodeCount++;
-              if ( vertexNodeCount >= 2 ) {
-                break;
-              }
-            }
-            index--;
-          }
-          assert && assert( index >= 0, 'missing vertex nodes' );
-          self.mainLayer.insertChild( index - 1, circuitElementNode );
+          layer.addChild( circuitElementNode );
 
           // Show the ValueNode for readouts, though series ammeters already show their own readouts and Wires do not
           // have readouts
@@ -226,7 +261,7 @@ define( function( require ) {
         if ( circuitElement instanceof type ) {
 
           var circuitElementNode = self.getCircuitElementNode( circuitElement );
-          self.mainLayer.removeChild( circuitElementNode );
+          layer.removeChild( circuitElementNode );
           circuitElementNode.dispose();
 
           delete self.circuitElementNodeMap[ circuitElement.id ];
@@ -234,16 +269,12 @@ define( function( require ) {
       } );
     };
 
-    initializeCircuitElementType( WireNode, Wire, tandem.createGroupTandem( 'wireNode' ) );
-    initializeCircuitElementType( BatteryNode, Battery, tandem.createGroupTandem( 'batteryNode' ) );
-    initializeCircuitElementType(
-      CircuitConstructionKitLightBulbNode,
-      LightBulb,
-      tandem.createGroupTandem( 'lightBulbNode' )
-    );
-    initializeCircuitElementType( ResistorNode, Resistor, tandem.createGroupTandem( 'resistorNode' ) );
-    initializeCircuitElementType( SeriesAmmeterNode, SeriesAmmeter, tandem.createGroupTandem( 'seriesAmmeterNode' ) );
-    initializeCircuitElementType( SwitchNode, Switch, tandem.createGroupTandem( 'switchNode' ) );
+    initializeCircuitElementType( WireNode, Wire, this.wireLayer, tandem.createGroupTandem( 'wireNode' ) );
+    initializeCircuitElementType( BatteryNode, Battery, this.fixedLengthCircuitElementLayer, tandem.createGroupTandem( 'batteryNode' ) );
+    initializeCircuitElementType( CircuitConstructionKitLightBulbNode, LightBulb, this.fixedLengthCircuitElementLayer, tandem.createGroupTandem( 'lightBulbNode' ) );
+    initializeCircuitElementType( ResistorNode, Resistor, this.fixedLengthCircuitElementLayer, tandem.createGroupTandem( 'resistorNode' ) );
+    initializeCircuitElementType( SeriesAmmeterNode, SeriesAmmeter, this.fixedLengthCircuitElementLayer, tandem.createGroupTandem( 'seriesAmmeterNode' ) );
+    initializeCircuitElementType( SwitchNode, Switch, this.fixedLengthCircuitElementLayer, tandem.createGroupTandem( 'switchNode' ) );
 
     // @private - array of actions to be performed in the step function
     this.stepListeners = [];
@@ -275,31 +306,24 @@ define( function( require ) {
     var addVertexNode = function( vertex ) {
       var solderNode = new SolderNode( self, vertex );
       self.solderNodes[ vertex.index ] = solderNode;
-      self.mainLayer.addChild( solderNode );
+      self.solderLayer.addChild( solderNode );
 
       var vertexNode = new VertexNode( self, vertex, vertexNodeGroup.createNextTandem() );
       self.vertexNodes[ vertex.index ] = vertexNode;
-      self.mainLayer.addChild( vertexNode );
-
-      // Schedule a step to make sure the solder is layered correctly.  This is necessary because vertices are added
-      // before CircuitElements, but solder should be in front of Wires, see
-      // https://github.com/phetsims/circuit-construction-kit-common/issues/386
-      self.stepListeners.push( function() {
-        self.fixSolderLayeringForVertex( vertex );
-      } );
+      self.vertexLayer.addChild( vertexNode );
     };
     circuit.vertices.addItemAddedListener( addVertexNode );
 
     // When a Vertex is removed from the model, remove and dispose the corresponding views
     circuit.vertices.addItemRemovedListener( function( vertex ) {
       var vertexNode = self.getVertexNode( vertex );
-      self.mainLayer.removeChild( vertexNode );
+      self.vertexLayer.removeChild( vertexNode );
       delete self.vertexNodes[ vertex.index ];
       vertexNode.dispose();
       assert && assert( !self.getVertexNode( vertex ), 'vertex node should have been removed' );
 
       var solderNode = self.getSolderNode( vertex );
-      self.mainLayer.removeChild( solderNode );
+      self.solderLayer.removeChild( solderNode );
       delete self.solderNodes[ vertex.index ];
       solderNode.dispose();
       assert && assert( !self.getSolderNode( vertex ), 'solder node should have been removed' );
@@ -338,84 +362,11 @@ define( function( require ) {
 
     // @public - Filled in by black box study, if it is running.
     this.blackBoxNode = null;
-
-    this.viewProperty.link( function() {
-      circuitConstructionKitScreenView.circuitConstructionKitModel.circuit.vertices.forEach( function( vertex ) {
-        self.fixSolderLayeringForVertex( vertex );
-      } );
-    } );
   }
 
   circuitConstructionKitCommon.register( 'CircuitLayerNode', CircuitLayerNode );
 
   return inherit( Node, CircuitLayerNode, {
-
-    /**
-     * Fix the solder layering for a given vertex.
-     * For lifelike: Solder should be in front of wires but behind batteries and resistors.
-     * For schematic: Solder should be in front of all components
-     *
-     * @param {Vertex} vertex
-     * @public
-     */
-    fixSolderLayeringForVertex: function( vertex ) {
-
-      // make sure the vertex didn't already get removed (like in fuzz testing)
-      if ( this.mainLayer.indexOfChild( vertex ) >= 0 ) {
-        var self = this;
-
-        var solderNode = this.getSolderNode( vertex );
-        var adjacentCircuitElements = this.circuit.getNeighborCircuitElements( vertex );
-        var adjacentWires = adjacentCircuitElements.filter( function( component ) {return component instanceof Wire;} );
-        var adjacentFixedLengthComponents = adjacentCircuitElements.filter( function( component ) {
-          return component instanceof FixedLengthCircuitElement;
-        } );
-
-        // This method is called for all vertices when viewProperty value changes
-        if ( this.viewProperty.get() === CircuitConstructionKitCommonConstants.LIFELIKE ) {
-          if ( adjacentFixedLengthComponents.length > 0 ) {
-
-            // move before the first fixed length component
-            var nodes = adjacentFixedLengthComponents.map( function( c ) {return self.getCircuitElementNode( c );} );
-            var lowestNode = _.minBy( nodes, function( node ) {return self.mainLayer.indexOfChild( node );} );
-            var lowestIndex = self.mainLayer.indexOfChild( lowestNode );
-            var solderIndex = self.mainLayer.indexOfChild( solderNode );
-            if ( solderIndex >= lowestIndex ) {
-              self.mainLayer.removeChild( solderNode );
-              self.mainLayer.insertChild( lowestIndex, solderNode );
-            }
-          }
-          else if ( adjacentWires.length > 0 ) {
-
-            // move after the last wire
-            var wireNodes = adjacentWires.map( function( c ) {return self.getCircuitElementNode( c );} );
-            var topWireNode = _.maxBy( wireNodes, function( node ) {return self.mainLayer.indexOfChild( node );} );
-            var topIndex = self.mainLayer.indexOfChild( topWireNode );
-            var mySolderIndex = self.mainLayer.indexOfChild( solderNode );
-            if ( mySolderIndex <= topIndex ) {
-              self.mainLayer.removeChild( solderNode );
-              self.mainLayer.insertChild( topIndex, solderNode );
-            }
-          }
-
-          // Make sure black box vertices are behind the black box
-          // TODO (black-box-study): This is duplicated below, factor it out.
-          if ( self.blackBoxNode ) {
-            var blackBoxNodeIndex = self.mainLayer.children.indexOf( self.blackBoxNode );
-            if ( vertex.blackBoxInterfaceProperty.get() ) {
-              self.mainLayer.removeChild( solderNode );
-              self.mainLayer.insertChild( blackBoxNodeIndex, solderNode );
-            }
-          }
-        }
-        else {
-
-          // in schematic mode, solder should be on top of every component, including wires
-          self.mainLayer.removeChild( solderNode );
-          self.mainLayer.addChild( solderNode );
-        }
-      }
-    },
 
     /**
      * Returns the circuit element node that matches the given circuit element.
@@ -558,38 +509,6 @@ define( function( require ) {
           vertex.unsnappedPositionProperty.set( fixedVertex.unsnappedPositionProperty.get().minus( relative ) );
         }, attachable );
       }
-    },
-
-    /**
-     * When switching from "build" -> "investigate", the black box circuit elements must be moved behind the black box
-     * or they will be visible in front of the black box.
-     * @public
-     */
-    moveTrueBlackBoxElementsToBack: function() {
-      var self = this;
-      var circuitElementNodeToBack = function( circuitElementNode ) {
-        circuitElementNode.circuitElement.insideTrueBlackBoxProperty.get() && circuitElementNode.moveToBack();
-      };
-      var vertexNodeToBack = function( nodeWithVertex ) {
-        nodeWithVertex.vertex.insideTrueBlackBoxProperty.get() && nodeWithVertex.moveToBack();
-      };
-
-      _.values( this.solderNodes ).forEach( vertexNodeToBack );
-      _.values( this.vertexNodes ).forEach( vertexNodeToBack );
-      _.values( this.circuitElementNodeMap ).forEach( circuitElementNodeToBack );
-
-      // Move black box interface vertices behind the black box,
-      // see https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/36
-      var interfaceVertexBehindBox = function( nodeWithVertex ) {
-        var blackBoxNodeIndex = self.mainLayer.children.indexOf( self.blackBoxNode );
-        if ( nodeWithVertex.vertex.blackBoxInterfaceProperty.get() ) {
-          self.mainLayer.removeChild( nodeWithVertex );
-          self.mainLayer.insertChild( blackBoxNodeIndex, nodeWithVertex );
-        }
-      };
-
-      _.values( this.solderNodes ).forEach( interfaceVertexBehindBox );
-      _.values( this.vertexNodes ).forEach( interfaceVertexBehindBox );
     },
 
     /**

@@ -469,15 +469,16 @@ define( function( require ) {
     },
 
     /**
-     * Find the current under the given probe
+     * Find the the current in the given layer (if any CircuitElement hits the sensor)
      * @param {Node} probeNode
+     * @param {Node} layer
+     * @returns {number|null}
      * @private
      */
-    getCurrent: function( probeNode ) {
-
+    getCurrentInLayer: function( probeNode, layer ) {
       // See if any CircuitElementNode contains the sensor point
-      for ( var i = 0; i < this.circuitLayerNode.mainLayer.children.length; i++ ) {
-        var circuitElementNode = this.circuitLayerNode.mainLayer.children[ i ];
+      for ( var i = 0; i < layer.children.length; i++ ) {
+        var circuitElementNode = layer.children[ i ];
         if ( circuitElementNode instanceof CircuitElementNode ) {
           if ( circuitElementNode.containsSensorPoint( probeNode.translation ) ) {
             return circuitElementNode.circuitElement.currentProperty.get();
@@ -485,6 +486,22 @@ define( function( require ) {
         }
       }
       return null;
+    },
+
+    /**
+     * Find the current under the given probe
+     * @param {Node} probeNode
+     * @returns {number|null}
+     * @private
+     */
+    getCurrent: function( probeNode ) {
+      var mainCurrent = this.getCurrentInLayer( probeNode, this.fixedLengthCircuitElementLayer );
+      if ( mainCurrent !== null ) {
+        return mainCurrent;
+      }
+      else {
+        return this.getCurrentInLayer( probeNode, this.wireLayer );
+      }
     },
 
     /**

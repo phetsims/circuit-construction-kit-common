@@ -74,11 +74,6 @@ define( function( require ) {
     };
     vertex.positionProperty.link( updateSolderNodePosition );
 
-    var relayerListener = function() {
-      circuitLayerNode.fixSolderLayeringForVertex( vertex );
-    };
-    vertex.relayerEmitter.addListener( relayerListener );
-
     // @private (read-only) {function} called by dispose()
     this.disposeSolderNode = function() {
       vertex.positionProperty.unlink( updateSolderNodePosition );
@@ -89,8 +84,6 @@ define( function( require ) {
       // In Black Box, other wires can be detached from a vertex and this should also update the solder
       circuit.circuitElements.removeItemAddedListener( updateFill );
       circuit.circuitElements.removeItemRemovedListener( updateFill );
-
-      vertex.relayerEmitter.removeListener( relayerListener );
     };
 
     updateFill();
