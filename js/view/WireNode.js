@@ -65,25 +65,27 @@ define( function( require ) {
   var normalGradient = createGradient( colorStops, function( e ) {return e;} );
   var reverseGradient = createGradient( colorStops.reverse(), function( e ) {return 1.0 - e;} );
 
+  var PADDING = 2;
+
   var lifelikeNodeNormal = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
     lineWidth: LIFELIKE_LINE_WIDTH,
     stroke: normalGradient
-  } ).toDataURLImageSynchronous( 0, LIFELIKE_LINE_WIDTH / 2, WIRE_RASTER_LENGTH, LIFELIKE_LINE_WIDTH );
+  } ).toDataURLImageSynchronous( 0, LIFELIKE_LINE_WIDTH / 2 + PADDING, WIRE_RASTER_LENGTH, LIFELIKE_LINE_WIDTH + 2 * PADDING );
 
   var lifelikeNodeReversed = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
     lineWidth: LIFELIKE_LINE_WIDTH,
     stroke: reverseGradient
-  } ).toDataURLImageSynchronous( 0, LIFELIKE_LINE_WIDTH / 2, WIRE_RASTER_LENGTH, LIFELIKE_LINE_WIDTH );
+  } ).toDataURLImageSynchronous( 0, LIFELIKE_LINE_WIDTH / 2 + PADDING, WIRE_RASTER_LENGTH, LIFELIKE_LINE_WIDTH + 2 * PADDING );
 
   // Make sure the heights are the same as the wires so they will line up properly, see
   // https://github.com/phetsims/circuit-construction-kit-common/issues/390
   var lifelikeRoundedCapNormal = new Circle( LIFELIKE_LINE_WIDTH / 2, {
     fill: normalGradient
-  } ).toDataURLImageSynchronous( LIFELIKE_LINE_WIDTH / 2 + 2, LIFELIKE_LINE_WIDTH / 2, LIFELIKE_LINE_WIDTH + 4, LIFELIKE_LINE_WIDTH );
+  } ).toDataURLImageSynchronous( LIFELIKE_LINE_WIDTH / 2 + PADDING, LIFELIKE_LINE_WIDTH / 2 + PADDING, LIFELIKE_LINE_WIDTH + 2 * PADDING, LIFELIKE_LINE_WIDTH + 2 * PADDING );
 
   var lifelikeRoundedCapReversed = new Circle( LIFELIKE_LINE_WIDTH / 2, {
     fill: reverseGradient
-  } ).toDataURLImageSynchronous( LIFELIKE_LINE_WIDTH / 2 + 2, LIFELIKE_LINE_WIDTH / 2, LIFELIKE_LINE_WIDTH + 4, LIFELIKE_LINE_WIDTH );
+  } ).toDataURLImageSynchronous( LIFELIKE_LINE_WIDTH / 2 + PADDING, LIFELIKE_LINE_WIDTH / 2 + PADDING, LIFELIKE_LINE_WIDTH + 2 * PADDING, LIFELIKE_LINE_WIDTH + 2 * PADDING );
 
   var HIGHLIGHT_STROKE_LINE_STYLES = new LineStyles( {
     lineWidth: 26,
