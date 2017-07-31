@@ -29,6 +29,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
   var HBox = require( 'SCENERY/nodes/HBox' );
+  var Image = require( 'SCENERY/nodes/Image' );
   var Node = require( 'SCENERY/nodes/Node' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Carousel = require( 'SUN/Carousel' );
@@ -47,6 +48,9 @@ define( function( require ) {
   var resistorString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor' );
   var switchString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/switch' );
   var wireString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/wire' );
+
+  // images
+  var wireIconImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/wire-icon.png' );
 
   // constants
   var BATTERY_LENGTH = CircuitConstructionKitCommonConstants.BATTERY_LENGTH;
@@ -145,10 +149,9 @@ define( function( require ) {
     };
 
     // Create the tool nodes
+    var wireNode = new Image( wireIconImage );
     var wireToolNode = createCircuitElementToolNode( wireString, options.numberOfWires,
-      new WireNode( null, null,
-        new Wire( new Vertex( 0, 0 ), new Vertex( 100, 0 ), new Property( 0 ), tandem.createTandem( 'wireIconWire' )
-        ), null, viewProperty, tandem.createTandem( 'wireIcon' ) ),
+      wireNode,
       function( circuitElement ) { return circuitElement instanceof Wire; },
       function( position ) {
         var vertexPair = createVertexPair( position, WIRE_LENGTH );
