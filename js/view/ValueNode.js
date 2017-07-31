@@ -56,7 +56,7 @@ define( function( require ) {
 
       // Battery readouts shows voltage and internal resistance if it is nonzero
       contentNode = new VBox( {
-        align: 'left',
+        align: 'right',
         children: [ voltageText ]
       } );
 
