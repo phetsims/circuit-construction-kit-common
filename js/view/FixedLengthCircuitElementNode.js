@@ -60,13 +60,9 @@ define( function( require ) {
 
     // @protected (read-only) {Node} node that shows the component, separate from the part that shows the highlight and
     // the fire
-    this.contentNode = new Node();
-
-    // Show the selected node
-    var viewPropertyListener = function( view ) {
-      self.contentNode.children = [ view === CircuitConstructionKitCommonConstants.LIFELIKE ? lifelikeNode : schematicNode ];
-    };
-    viewProperty.link( viewPropertyListener );
+    this.contentNode = new Node( {
+      children: [ lifelikeNode ]
+    } );
 
     // @private {boolean} - Flag to indicate when updating view is necessary, in order to avoid duplicate work when both
     // vertices move
@@ -77,6 +73,15 @@ define( function( require ) {
       this.highlightNode = new FixedLengthCircuitElementHighlightNode( this );
     }
     var markAsDirty = function() { self.markAsDirty(); };
+
+    // Show the selected node
+    var viewPropertyListener = function( view ) {
+      self.contentNode.children = [ view === CircuitConstructionKitCommonConstants.LIFELIKE ? lifelikeNode : schematicNode ];
+
+      // Update the dimensions of the highlight
+      self.highlightNode && self.highlightNode.recomputeBounds( self );
+    };
+    viewProperty.link( viewPropertyListener );
 
     // Relink when start vertex changes
     circuitElement.vertexMovedEmitter.addListener( markAsDirty );
@@ -248,8 +253,7 @@ define( function( require ) {
       // Update the node transform in a single step, see #66
       CircuitConstructionKitCommonUtil.setToTranslationRotation( transform, startPosition, angle );
       this.contentNode.setMatrix( transform );
-      var updateHighlight = this.highlightNode &&
-                            this.circuitLayerNode.circuit.selectedCircuitElementProperty.get() === this.circuitElement;
+      var updateHighlight = this.highlightNode && this.circuitLayerNode.circuit.selectedCircuitElementProperty.get() === this.circuitElement;
       updateHighlight && this.highlightNode.setMatrix( transform );
 
       // Update the fire transform

@@ -20,34 +20,38 @@ define( function( require ) {
 
   /**
    * @param {FixedLengthCircuitElementNode} fixedLengthCircuitElementNode
-   * @param {Object} [options]
    * @constructor
    */
-  function FixedLengthCircuitElementHighlightNode( fixedLengthCircuitElementNode, options ) {
+  function FixedLengthCircuitElementHighlightNode( fixedLengthCircuitElementNode ) {
 
-    // Use the content node dimensions but allow overriding with an option
-    options = _.extend( {
-      width: fixedLengthCircuitElementNode.contentNode.width,
-      height: fixedLengthCircuitElementNode.contentNode.height
-    }, options );
-
-    Rectangle.call( this,
-      fixedLengthCircuitElementNode.contentNode.bounds.minX - PADDING,
-      fixedLengthCircuitElementNode.contentNode.bounds.minY - PADDING,
-      options.width + PADDING * 2,
-      options.height + PADDING * 2,
+    Rectangle.call( this, 0, 0, 0, 0,
       CORNER_RADIUS,
       CORNER_RADIUS, {
         stroke: CircuitConstructionKitCommonConstants.HIGHLIGHT_COLOR,
         lineWidth: CircuitConstructionKitCommonConstants.HIGHLIGHT_LINE_WIDTH,
         pickable: false
       } );
+
+    this.recomputeBounds( fixedLengthCircuitElementNode );
   }
 
-  circuitConstructionKitCommon.register(
-    'FixedLengthCircuitElementHighlightNode',
-    FixedLengthCircuitElementHighlightNode
-  );
+  circuitConstructionKitCommon.register( 'FixedLengthCircuitElementHighlightNode', FixedLengthCircuitElementHighlightNode );
 
-  return inherit( Rectangle, FixedLengthCircuitElementHighlightNode );
+  return inherit( Rectangle, FixedLengthCircuitElementHighlightNode, {
+
+    /**
+     * Update the dimensions of the highlight, called on startup and when components change from lifelike/schematic.
+     * @param {FixedLengthCircuitElementNode} fixedLengthCircuitElementNode
+     * @public
+     */
+    recomputeBounds: function( fixedLengthCircuitElementNode ) {
+      var localBounds = fixedLengthCircuitElementNode.contentNode.localBounds;
+      this.setRect(
+        localBounds.minX - PADDING,
+        localBounds.minY - PADDING,
+        localBounds.width + PADDING * 2,
+        localBounds.height + PADDING * 2
+      );
+    }
+  } );
 } );
