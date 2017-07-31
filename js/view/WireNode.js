@@ -391,7 +391,7 @@ define( function( require ) {
       // Prevent the case where a vertex lies on another vertex, particularly for fuzz testing
       if ( magnitude < 1E-8 ) { magnitude = 1E-8; }
 
-      TRANSFORM.multiplyMatrix( Matrix3.scaling( magnitude / WIRE_RASTER_LENGTH, 1 ) );
+      // TRANSFORM.multiplyMatrix( Matrix3.scaling( magnitude / WIRE_RASTER_LENGTH, 1 ) );
       this.lineNodeParent.setMatrix( TRANSFORM );
 
       if ( this.circuitLayerNode ) {
