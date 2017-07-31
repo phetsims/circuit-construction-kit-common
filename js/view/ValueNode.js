@@ -126,7 +126,7 @@ define( function( require ) {
     assert && assert( contentNode, 'Content node should be defined' );
 
     Panel.call( this, contentNode, {
-      lineWidth: 0,
+      stroke: null,
       fill: new Color( 255, 255, 255, 0.6 ),// put transparency in the color so that the children aren't transparent
       tandem: tandem,
       cornerRadius: 3,
