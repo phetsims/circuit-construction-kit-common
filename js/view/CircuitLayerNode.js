@@ -153,6 +153,8 @@ define( function( require ) {
       } ) ]
     } );
 
+    this.sensorLayer = new Node();
+
     // For lifelike: Solder should be in front of wires but behind batteries and resistors.
     var lifelikeLayering = [
       this.lightRaysLayer,
@@ -164,6 +166,7 @@ define( function( require ) {
       this.lightBulbSocketLayer, // fronts of light bulbs
       this.valueLayer, // values
       this.seriesAmmeterNodeReadoutPanelLayer, // fronts of series ammeters
+      this.sensorLayer,
       this.highlightLayer, // highlights go in front of everything else
       this.buttonLayer // vertex buttons
     ];
@@ -179,12 +182,14 @@ define( function( require ) {
       this.lightBulbSocketLayer,
       this.valueLayer,
       this.seriesAmmeterNodeReadoutPanelLayer,
+      this.sensorLayer,
       this.highlightLayer,
       this.buttonLayer
     ];
     Node.call( this );
 
-    // choose layering for schematic vs lifelike
+    // choose layering for schematic vs lifelike.  HEADS UP, this means circuitLayerNode.addChild() will get overwritten
+    // so all nodes must be added as children in the array above.
     circuitConstructionKitScreenView.circuitConstructionKitModel.viewProperty.link( function( view ) {
       self.children = (view === 'lifelike') ? lifelikeLayering : schematicLayering;
     } );

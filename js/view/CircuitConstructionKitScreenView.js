@@ -253,8 +253,8 @@ define( function( require ) {
     this.addChild( circuitElementEditContainerPanel );
 
     // The voltmeter and ammeter are rendered with the circuit node so they will scale up and down with the circuit
-    this.circuitLayerNode.addChild( voltmeterNode );
-    this.circuitLayerNode.addChild( ammeterNode );
+    this.circuitLayerNode.sensorLayer.addChild( voltmeterNode );
+    this.circuitLayerNode.sensorLayer.addChild( ammeterNode );
 
     /**
      * Starting at the tip, iterate down over several samples and return the first hit, if any.
@@ -275,6 +275,8 @@ define( function( require ) {
 
         // For debugging, depict the points where the sampling happens
         if ( CircuitConstructionKitCommonQueryParameters.showVoltmeterSamplePoints ) {
+
+          // Note, these get erased when changing between lifelike/schematic
           self.circuitLayerNode.addChild( new Rectangle( -1, -1, 2, 2, { fill: 'black', translation: samplePoint } ) );
         }
         if ( voltageConnection ) {
