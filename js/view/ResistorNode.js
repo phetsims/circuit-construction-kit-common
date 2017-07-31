@@ -189,7 +189,11 @@ define( function( require ) {
         stroke: 'black',
         lineWidth: CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH
       } ).toDataURLImageSynchronous();
-      schematicRasterCache[ resistor.resistorType ] = schematicNode;
+
+      // icons are all the same size in the toolbox, so only cache the non-icons (with the correct heights)
+      if ( !options.icon ) {
+        schematicRasterCache[ resistor.resistorType ] = schematicNode;
+      }
     }
 
     // Center vertically to match the FixedLengthCircuitElementNode assumption that origin is center left
