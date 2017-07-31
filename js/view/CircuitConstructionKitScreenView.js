@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var Property = require( 'AXON/Property' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var CircuitConstructionKitCommonQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonQueryParameters' );
@@ -397,11 +398,11 @@ define( function( require ) {
     self.circuitLayerNode.setTranslation( self.layoutBounds.centerX, self.layoutBounds.centerY );
     self.circuitLayerNodeBackLayer.setTranslation( self.layoutBounds.centerX, self.layoutBounds.centerY );
 
-    // Continuously zoom in and out as the current zoom interpolates
-    circuitConstructionKitModel.currentZoomProperty.link( function( zoomLevel ) {
-      self.circuitLayerNode.setScaleMagnitude( zoomLevel );
-      self.circuitLayerNodeBackLayer.setScaleMagnitude( zoomLevel );
-      self.circuitLayerNode.updateTransform( self.visibleBoundsProperty.get() );
+    // Continuously zoom in and out as the current zoom interpolates, and update when the visible bounds change
+    Property.multilink( [ circuitConstructionKitModel.currentZoomProperty, this.visibleBoundsProperty ], function( currentZoom, visibleBounds ) {
+      self.circuitLayerNode.setScaleMagnitude( currentZoom );
+      self.circuitLayerNodeBackLayer.setScaleMagnitude( currentZoom );
+      self.circuitLayerNode.updateTransform( visibleBounds );
     } );
   }
 
