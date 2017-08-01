@@ -28,10 +28,10 @@ define( function( require ) {
    * @constructor
    */
   function WireResistivityControl( wireResistivityProperty, alignGroup, tandem ) {
-    var max = CircuitConstructionKitCommonConstants.DEFAULT_RESISTIVITY * 10000;
+    var MAX_RESISTIVITY = 1;
     var slider = new HSlider( wireResistivityProperty, {
       min: CircuitConstructionKitCommonConstants.DEFAULT_RESISTIVITY,
-      max: max // large enough so that max resistance in a 9v battery slows to a good rate
+      max: MAX_RESISTIVITY // large enough so that max resistance in a 9v battery slows to a good rate
     }, {
       trackSize: CircuitConstructionKitCommonConstants.SLIDER_TRACK_SIZE,
       thumbSize: CircuitConstructionKitCommonConstants.THUMB_SIZE,
@@ -50,7 +50,7 @@ define( function( require ) {
     };
 
     slider.addMajorTick( 0, createLabel( true ) );
-    slider.addMajorTick( max, createLabel( false ) );
+    slider.addMajorTick( MAX_RESISTIVITY, createLabel( false ) );
 
     CircuitConstructionKitAccordionBox.call( this, alignGroup.createBox( slider ), wireResistivityString, tandem );
   }

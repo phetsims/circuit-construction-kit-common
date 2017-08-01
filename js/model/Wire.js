@@ -69,6 +69,8 @@ define( function( require ) {
       self.vertexMovedEmitter.removeListener( updateWire );
       self.resistivityProperty.unlink( updateWire );
     };
+
+    this.step(); // initialize state
   }
 
   circuitConstructionKitCommon.register( 'Wire', Wire );
