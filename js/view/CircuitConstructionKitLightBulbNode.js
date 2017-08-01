@@ -78,12 +78,14 @@ define( function( require ) {
   function CircuitConstructionKitLightBulbNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb,
                                                 showResultsProperty, viewProperty, tandem, options ) {
     var self = this;
-    options = _.extend( { icon: false }, options );
+    options = _.extend( {
+      icon: false
+    }, options );
     var brightnessProperty = new NumberProperty( 0 );
     var updateBrightness = Property.multilink(
-      [ lightBulb.currentProperty, showResultsProperty, lightBulb.voltageDifferenceProperty ],
-      function( current, running, voltageDifference ) {
-        var power = Math.abs( current * voltageDifference );
+      [ lightBulb.currentProperty, showResultsProperty, lightBulb.resistanceProperty ],
+      function( current, running, resistance ) {
+        var power = Math.abs( current * current * resistance );
 
         var brightness = toBrightness( 0.35, power );
 
