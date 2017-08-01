@@ -63,7 +63,7 @@ define( function( require ) {
     HIGHLIGHT_LINE_WIDTH: 5,
 
     // Default resistivity for Wires and Switches (whose resistance varies with length)
-    DEFAULT_RESISTIVITY: 1E-10,
+    DEFAULT_RESISTIVITY: 1E-5,
 
     // The lowest resistance a Wire or Switch can have
     MINIMUM_RESISTANCE: 1E-8,
