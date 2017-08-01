@@ -29,6 +29,7 @@ define( function( require ) {
   var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var Image = require( 'SCENERY/nodes/Image' );
+  var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Carousel = require( 'SUN/Carousel' );
@@ -148,7 +149,15 @@ define( function( require ) {
     };
 
     // Create the tool nodes
-    var wireNode = new Image( wireIconImage );
+    var lifelikeWireNode = new Image( wireIconImage );
+    var schematicWireNode = new Line( 0, 0, 120, 0, {
+      stroke: 'black',
+      lineWidth: 4.5 // match with other toolbox icons
+    } );
+    var wireNode = new Node();
+    viewProperty.link( function( view ) {
+      wireNode.children = [ view === 'lifelike' ? lifelikeWireNode : schematicWireNode ];
+    } );
     var wireToolNode = createCircuitElementToolNode( wireString, options.numberOfWires,
       wireNode,
       function( circuitElement ) { return circuitElement instanceof Wire; },
