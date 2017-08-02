@@ -55,15 +55,16 @@ define( function( require ) {
 
     /**
      * Returns a string that adjusts its ampere value.
-     * @param value {number} - number of Amps
+     * @param current {number} - number of Amps
      * @returns {string}
      * @public
      */
-    createCurrentReadout: function( value ) {
-      var decimals = this.getNumberOfDecimalPoints( value );
+    createCurrentReadout: function( current ) {
+      var absoluteCurrent = Math.abs( current );
+      var decimals = this.getNumberOfDecimalPoints( absoluteCurrent );
 
       // Show 3 decimal places so that current can still be seen with a glowing high-resistance bulb
-      return StringUtils.fillIn( currentUnitsString, { current: Util.toFixed( Math.abs( value ), decimals ) } );
+      return StringUtils.fillIn( currentUnitsString, { current: Util.toFixed( absoluteCurrent, decimals ) } );
     },
 
     /**

@@ -94,8 +94,7 @@ define( function( require ) {
         if ( startConnection && endConnection ) {
 
           // The ammeter doesn't indicate direction
-          var current = Math.abs( seriesAmmeter.currentProperty.get() );
-          readout = CircuitConstructionKitCommonUtil.createCurrentReadout( current );
+          readout = CircuitConstructionKitCommonUtil.createCurrentReadout( seriesAmmeter.currentProperty.get() );
         }
       }
 
