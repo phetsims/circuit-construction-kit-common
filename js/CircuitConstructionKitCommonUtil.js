@@ -44,15 +44,26 @@ define( function( require ) {
     },
 
     /**
+     * Typically show 2 decimal places for current and voltage readouts in the play area, but if it is a smaller value,
+     * between between 0.02 and 0.001, then it should show 3 decimal places.
+     * @param {number} value - the value to be formatted for display
+     * @returns {number} - the number of decimal places to use for the display
+     */
+    getNumberOfDecimalPoints: function( value ) {
+      return (value >= 0.001 && value < 0.02 ) ? 3 : 2;
+    },
+
+    /**
      * Returns a string that adjusts its ampere value.
      * @param value {number} - number of Amps
      * @returns {string}
      * @public
      */
     createCurrentReadout: function( value ) {
+      var decimals = this.getNumberOfDecimalPoints( value );
 
       // Show 3 decimal places so that current can still be seen with a glowing high-resistance bulb
-      return StringUtils.fillIn( currentUnitsString, { current: Util.toFixed( Math.abs( value ), 3 ) } );
+      return StringUtils.fillIn( currentUnitsString, { current: Util.toFixed( Math.abs( value ), decimals ) } );
     },
 
     /**
@@ -62,7 +73,9 @@ define( function( require ) {
      * @public
      */
     createVoltageReadout: function( value ) {
-      return StringUtils.fillIn( voltageUnitsString, { voltage: Util.toFixed( Math.abs( value ), 2 ) } );
+      var decimals = this.getNumberOfDecimalPoints( value );
+
+      return StringUtils.fillIn( voltageUnitsString, { voltage: Util.toFixed( Math.abs( value ), decimals ) } );
     },
 
     /**
