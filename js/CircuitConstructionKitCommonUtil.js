@@ -76,7 +76,7 @@ define( function( require ) {
     createVoltageReadout: function( value ) {
       var decimals = this.getNumberOfDecimalPoints( value );
 
-      return StringUtils.fillIn( voltageUnitsString, { voltage: Util.toFixed( Math.abs( value ), decimals ) } );
+      return StringUtils.fillIn( voltageUnitsString, { voltage: Util.toFixed( value, decimals ) } );
     },
 
     /**
