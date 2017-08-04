@@ -235,12 +235,12 @@ define( function( require ) {
         var distanceFromDesiredPosition = Math.abs( desiredPosition - currentPosition );
         var sameDirectionAsCurrent = Math.sign( desiredPosition - currentPosition ) ===
                                      Math.sign( charge.circuitElement.currentProperty.get() * charge.charge );
+
+        // never slow down or run the current backwards
         if ( sameDirectionAsCurrent ) {
 
-          // When we need to correct in the same direction as current flow, do it quickly.  When going against the
-          // current flow, don't go too fast (never run backwards)
-          var correctionSpeed = 5.5 / NUMBER_OF_EQUALIZE_STEPS * SPEED_SCALE;
-          var correctionStepSize = Math.abs( correctionSpeed * dt );
+          // When we need to correct in the same direction as current flow, do it quickly.
+          var correctionStepSize = Math.abs( 5.5 / NUMBER_OF_EQUALIZE_STEPS * SPEED_SCALE * dt );
 
           // If far enough away that it won't overshoot, then correct it with one step
           if ( distanceFromDesiredPosition > correctionStepSize ) {
