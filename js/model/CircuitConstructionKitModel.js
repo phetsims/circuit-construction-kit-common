@@ -20,7 +20,7 @@ define( function( require ) {
   var ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ZoomControlPanel' );
   var Util = require( 'DOT/Util' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var TandemEmitter = require( 'TANDEM/axon/TandemEmitter' );
+  var Emitter = require( 'AXON/Emitter' );
   var EaseAnimation = require( 'TWIXT/EaseAnimation' );
 
   // phet-io modules
@@ -138,7 +138,7 @@ define( function( require ) {
     // stream. Only do this for phet-io brand so it doesn't disturb performance of other brands
     if ( phet.phetio ) {
 
-      var circuitChangedEmitter = new TandemEmitter( {
+      var circuitChangedEmitter = new Emitter( {
         tandem: tandem.createTandem( 'circuitChangedEmitter' ),
         phetioArgumentTypes: [ TString ]
       } );
