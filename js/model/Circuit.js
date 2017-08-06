@@ -804,7 +804,7 @@ define( function( require ) {
         return false;
       }
 
-      return this.circuitElements.anyElementMatchesPredicate( function( circuitElement ) {
+      return !!this.circuitElements.find( function( circuitElement ) {
         return circuitElement.containsBothVertices( a, b );
       } );
     },
