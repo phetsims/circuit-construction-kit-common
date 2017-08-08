@@ -10,9 +10,11 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
+  var RotateBatteryButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/RotateBatteryButton' );
   var inherit = require( 'PHET_CORE/inherit' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var NumberControl = require( 'SCENERY_PHET/NumberControl' );
@@ -53,10 +55,18 @@ define( function( require ) {
       delta: circuitElement.editorDelta
     } ) );
 
+    var children = [];
+
+    // Batteries can be reversed
+    if ( circuitElement instanceof Battery ) {
+      children.push( new RotateBatteryButton( circuit, circuitElement, tandem.createTandem( 'reverseBatteryButton' ) ) );
+    }
+    children.push( numberControl );
+
     // The button that deletes the circuit component
-    var trashButton = new TrashButton( circuit, circuitElement, tandem.createTandem( 'trashButton' ) );
-    var children = [ numberControl ];
-    circuitElement.canBeDroppedInToolbox && children.push( trashButton );
+    if ( circuitElement.canBeDroppedInToolbox ) {
+      children.push( new TrashButton( circuit, circuitElement, tandem.createTandem( 'trashButton' ) ) );
+    }
 
     // @private {function} - for disposal
     this.disposeCircuitElementEditPanel = function() {

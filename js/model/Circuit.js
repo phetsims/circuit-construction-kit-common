@@ -1116,6 +1116,22 @@ define( function( require ) {
     },
 
     /**
+     * Flip the given CircuitElement
+     * @param {CircuitElement} circuitElement - the circuit element to flip
+     */
+    flip: function( circuitElement ) {
+      var startVertex = circuitElement.startVertexProperty.value;
+      var endVertex = circuitElement.endVertexProperty.value;
+      circuitElement.startVertexProperty.value = endVertex;
+      circuitElement.endVertexProperty.value = startVertex;
+
+      // Layout the charges in the circuitElement but nowhere else, since that creates a discontinuity in the motion
+      circuitElement.chargeLayoutDirty = true;
+      this.layoutChargesInDirtyCircuitElements();
+      this.solve();
+    },
+
+    /**
      * Reset the Circuit to its initial state.
      * @public
      */
