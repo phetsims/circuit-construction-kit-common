@@ -20,7 +20,7 @@ define( function( require ) {
   var Circle = require( 'SCENERY/nodes/Circle' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var TandemSimpleDragHandler = require( 'TANDEM/scenery/input/TandemSimpleDragHandler' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
   // constants
   var DISTANCE_TO_CUT_BUTTON = 70; // How far in view coordinates the cut button appears from the vertex node
@@ -178,7 +178,7 @@ define( function( require ) {
       } );
       clickToDismissListeners.length = 0;
     };
-    var dragHandler = new TandemSimpleDragHandler( {
+    var dragHandler = new SimpleDragHandler( {
       allowTouchSnag: true,
       tandem: tandem.createTandem( 'dragHandler' ),
       start: function( event ) {

@@ -24,7 +24,7 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var Color = require( 'SCENERY/util/Color' );
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
-  var TandemSimpleDragHandler = require( 'TANDEM/scenery/input/TandemSimpleDragHandler' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
   // constants
   var LIFELIKE_LINE_WIDTH = 16; // line width in screen coordinates
@@ -247,7 +247,7 @@ define( function( require ) {
     if ( circuitConstructionKitScreenView ) {
 
       // Input listener for dragging the body of the wire, to translate it.
-      this.dragHandler = new TandemSimpleDragHandler( {
+      this.dragHandler = new SimpleDragHandler( {
           allowTouchSnag: true,
           tandem: tandem.createTandem( 'dragHandler' ),
           start: function( event ) {

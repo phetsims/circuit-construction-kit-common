@@ -22,7 +22,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Image = require( 'SCENERY/nodes/Image' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var TandemSimpleDragHandler = require( 'TANDEM/scenery/input/TandemSimpleDragHandler' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
   // images
   var fireImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
@@ -123,8 +123,8 @@ define( function( require ) {
     var dragged = false;
     if ( !options.icon ) {
 
-      // @private {TandemSimpleDragHandler}
-      this.dragHandler = new TandemSimpleDragHandler( {
+      // @private {SimpleDragHandler}
+      this.dragHandler = new SimpleDragHandler( {
         allowTouchSnag: true,
         start: function( event ) {
           startPoint = event.pointer.point;
