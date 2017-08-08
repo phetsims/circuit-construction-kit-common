@@ -27,7 +27,6 @@ define( function( require ) {
    * @param {Property.<number>} valueProperty - property this control changes
    * @param {Circuit} circuit - parent circuit
    * @param {FixedLengthCircuitElement} circuitElement - the CircuitElement controlled by this UI
-   * @param {number} decimalPlaces - the number of decimal places to show in the readout
    * @param {Tandem} tandem
    * @constructor
    */
