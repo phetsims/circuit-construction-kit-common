@@ -28,7 +28,7 @@ define( function( require ) {
   var voltageUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageUnits' );
 
   // constants
-  var VERTICAL_OFFSET = 24;
+  var VERTICAL_OFFSET = 0;
 
   /**
    * @param {CircuitElement} circuitElement
