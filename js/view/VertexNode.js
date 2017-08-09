@@ -296,6 +296,7 @@ define( function( require ) {
       // Remove the global listener if it was still enabled
       clearClickListeners();
 
+      dragHandler.dispose();
       this.removeInputListener( dragHandler );
     };
   }
