@@ -33,7 +33,7 @@ define( function( require ) {
   var VERTICAL_OFFSET = 24;
 
   // Big enough to see when zoomed out
-  var FONT = new PhetFont( { family: 'Century Gothic', size: 22 } );
+  var FONT = new PhetFont( { size: 22 } );
 
   /**
    * @param {CircuitElement} circuitElement
@@ -116,7 +116,9 @@ define( function( require ) {
 
       var updateResistance = function( resistance ) {
         contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
-          resistance: resistance > 100000 ? '<font size="27px">∞</font>' : '0'
+
+          // Using a serif font makes the infinity symbol look less lopsided
+          resistance: resistance > 100000 ? '<font size="26px" face="serif"><b>∞</b></font>' : '0'
         } );
 
         // Account for the switch open and close geometry for positioning the label.  When the switch is open
