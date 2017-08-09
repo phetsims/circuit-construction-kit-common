@@ -18,9 +18,11 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var inherit = require( 'PHET_CORE/inherit' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+  var RichText = require( 'SCENERY/nodes/RichText' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Color = require( 'SCENERY/util/Color' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Panel = require( 'SUN/Panel' );
 
   // strings
@@ -29,6 +31,9 @@ define( function( require ) {
 
   // constants
   var VERTICAL_OFFSET = 24;
+
+  // Big enough to see when zoomed out
+  var FONT = new PhetFont( { family: 'Century Gothic', size: 22 } );
 
   /**
    * @param {CircuitElement} circuitElement
@@ -39,15 +44,12 @@ define( function( require ) {
   function ValueNode( circuitElement, showValuesProperty, tandem ) {
     var self = this;
 
-    // Big enough to see when zoomed out
-    var TEXT_OPTIONS = { fontSize: 22 };
-
     var disposeActions = [];
 
     var contentNode = null;
     if ( circuitElement instanceof Battery ) {
 
-      var voltageText = new Text( '', _.extend( { tandem: tandem.createTandem( 'voltageText' ) }, TEXT_OPTIONS ) );
+      var voltageText = new Text( '', _.extend( { tandem: tandem.createTandem( 'voltageText' ) }, { font: FONT } ) );
       var voltageListener = function( voltage ) {
 
         voltageText.text = StringUtils.fillIn( voltageUnitsString, {
@@ -65,7 +67,7 @@ define( function( require ) {
 
       var resistanceNode = new Text( '', _.extend( {
         tandem: tandem.createTandem( 'resistanceText' )
-      }, TEXT_OPTIONS ) );
+      }, { font: FONT } ) );
       var internalResistanceListener = function( internalResistance, lastInternalResistance ) {
         resistanceNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
           resistance: Util.toFixed( internalResistance, 1 )
@@ -88,10 +90,11 @@ define( function( require ) {
         circuitElement.voltageProperty.unlink( voltageListener );
         circuitElement.internalResistanceProperty.unlink( internalResistanceListener );
       } );
+      contentNode.maxWidth = 100;
     }
 
     else if ( circuitElement instanceof Resistor || circuitElement instanceof LightBulb ) {
-      contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'resistanceText' ) }, TEXT_OPTIONS ) );
+      contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'resistanceText' ) }, { font: FONT } ) );
 
       // Items like the hand and dog and high resistance resistor shouldn't show ".0"
       var linkResistance = function( resistance ) {
@@ -109,11 +112,11 @@ define( function( require ) {
     else if ( circuitElement instanceof Switch ) {
 
       // Make it easier to read the infinity symbol, see https://github.com/phetsims/circuit-construction-kit-dc/issues/135
-      contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'switchText' ) }, TEXT_OPTIONS ) );
+      contentNode = new RichText( '', { tandem: tandem.createTandem( 'switchText' ), font: FONT } );
 
       var updateResistance = function( resistance ) {
         contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
-          resistance: resistance > 100000 ? '∞' : '0'
+          resistance: resistance > 100000 ? '<font size="27px">∞</font>' : '0'
         } );
 
         // Account for the switch open and close geometry for positioning the label.  When the switch is open
@@ -124,9 +127,10 @@ define( function( require ) {
       disposeActions.push( function() {
         circuitElement.resistanceProperty.unlink( updateResistance );
       } );
+      contentNode.maxWidth = 100;
     }
     else {
-      contentNode = new Text( '', TEXT_OPTIONS );
+      contentNode = new Text( '', { font: FONT } );
     }
 
     assert && assert( contentNode, 'Content node should be defined' );
