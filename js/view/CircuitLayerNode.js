@@ -243,6 +243,7 @@ define( function( require ) {
             var valueNode = new ValueNode(
               circuitElement,
               self.circuitConstructionKitModel.showValuesProperty,
+              self.circuitConstructionKitModel.viewProperty,
               tandem.createTandem( circuitElement.tandemName ).createTandem( 'valueNode' )
             );
 

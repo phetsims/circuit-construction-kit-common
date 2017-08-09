@@ -38,10 +38,11 @@ define( function( require ) {
   /**
    * @param {CircuitElement} circuitElement
    * @param {Property.<boolean>} showValuesProperty
+   * @param {Property.<boolean>} viewProperty - 'lifelike'|'schematic'
    * @param {Tandem} tandem
    * @constructor
    */
-  function ValueNode( circuitElement, showValuesProperty, tandem ) {
+  function ValueNode( circuitElement, showValuesProperty, viewProperty, tandem ) {
     var self = this;
 
     var disposeActions = [];
@@ -165,11 +166,13 @@ define( function( require ) {
     circuitElement.vertexMovedEmitter.addListener( updatePosition );
     updatePosition();
     showValuesProperty.link( updatePosition );
+    viewProperty.link( updatePosition );
 
     // @private
     this.disposeValueNode = function() {
       circuitElement.vertexMovedEmitter.removeListener( updatePosition );
       showValuesProperty.unlink( updatePosition );
+      viewProperty.unlink( updatePosition );
       disposeActions.forEach( function( disposeAction ) {
         disposeAction();
       } );
