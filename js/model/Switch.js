@@ -29,7 +29,12 @@ define( function( require ) {
    * @constructor
    */
   function Switch( startVertex, endVertex, tandem ) {
-    FixedLengthCircuitElement.call( this, startVertex, endVertex, SWITCH_LENGTH, SWITCH_LENGTH, tandem );
+    FixedLengthCircuitElement.call( this, startVertex, endVertex, SWITCH_LENGTH, SWITCH_LENGTH, tandem, {
+
+      // Use the bounding box of the open lifelike switch to show bounds for all combinations of open/closed x lifelike/schematic
+      // See https://github.com/phetsims/circuit-construction-kit-dc/issues/132
+      isSizeChangedOnViewChange: false
+    } );
     var self = this;
 
     // @public (read-only) {NumberProperty} the resistance in ohms

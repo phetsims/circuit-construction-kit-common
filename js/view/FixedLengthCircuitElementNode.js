@@ -20,9 +20,9 @@ define( function( require ) {
   var Matrix3 = require( 'DOT/Matrix3' );
   var Vector2 = require( 'DOT/Vector2' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Image = require( 'SCENERY/nodes/Image' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
 
   // images
   var fireImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
@@ -78,8 +78,11 @@ define( function( require ) {
     var viewPropertyListener = function( view ) {
       self.contentNode.children = [ view === CircuitConstructionKitCommonConstants.LIFELIKE ? lifelikeNode : schematicNode ];
 
-      // Update the dimensions of the highlight
-      self.highlightNode && self.highlightNode.recomputeBounds( self );
+      // Update the dimensions of the highlight.  For Switches, retain the original bounds (big enough to encapsulate
+      // both schematic and lifelike open and closed).
+      if ( circuitElement.isSizeChangedOnViewChange ) {
+        self.highlightNode && self.highlightNode.recomputeBounds( self );
+      }
     };
     viewProperty.link( viewPropertyListener );
 
@@ -208,9 +211,7 @@ define( function( require ) {
       }
 
       circuitElement.vertexMovedEmitter.removeListener( markAsDirty );
-      updateHighlightVisibility && circuitLayerNode.circuit.selectedCircuitElementProperty.unlink(
-        updateHighlightVisibility
-      );
+      updateHighlightVisibility && circuitLayerNode.circuit.selectedCircuitElementProperty.unlink( updateHighlightVisibility );
       circuitElement.connectedEmitter.removeListener( moveToFront );
       circuitElement.vertexSelectedEmitter.removeListener( moveToFront );
       circuitElement.interactiveProperty.unlink( pickableListener );
