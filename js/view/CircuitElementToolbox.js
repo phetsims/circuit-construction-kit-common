@@ -199,6 +199,7 @@ define( function( require ) {
       new Vector2( 0, 0 ),
       circuit.vertexGroupTandem,
       CircuitConstructionKitCommonConstants.DEFAULT_RESISTANCE,
+      viewProperty,
       circuit.lightBulbGroupTandem.createNextTandem(), {
         highResistance: false
       } );
@@ -212,6 +213,7 @@ define( function( require ) {
           position,
           circuit.vertexGroupTandem,
           CircuitConstructionKitCommonConstants.DEFAULT_RESISTANCE,
+          viewProperty,
           circuit.lightBulbGroupTandem.createNextTandem()
         );
       }, {
@@ -424,6 +426,7 @@ define( function( require ) {
             new Vector2( 0, 0 ),
             circuit.vertexGroupTandem,
             1000,
+            viewProperty,
             circuit.lightBulbGroupTandem.createNextTandem(), {
               highResistance: true
             } ),
@@ -435,7 +438,8 @@ define( function( require ) {
         function( circuitElement ) { return circuitElement instanceof LightBulb && circuitElement.highResistance; },
         function( position ) {
           return LightBulb.createAtPosition( position, circuit.vertexGroupTandem,
-            CircuitConstructionKitCommonConstants.HIGH_RESISTANCE, circuit.lightBulbGroupTandem.createNextTandem(), {
+            CircuitConstructionKitCommonConstants.HIGH_RESISTANCE, viewProperty,
+            circuit.lightBulbGroupTandem.createNextTandem(), {
               highResistance: true,
               editableRange: CircuitConstructionKitCommonConstants.HIGH_RESISTANCE_RANGE,
               editorDelta: CircuitConstructionKitCommonConstants.HIGH_EDITOR_DELTA

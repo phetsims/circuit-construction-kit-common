@@ -137,6 +137,7 @@ define( function( require ) {
           circuitStruct.vertices[ circuitState.lightBulbs[ i ].startVertex ],
           circuitStruct.vertices[ circuitState.lightBulbs[ i ].endVertex ],
           circuitState.lightBulbs[ i ].resistance,
+          null, // TODO (phet-io) pass this value somehow
           tandem.createNextTandem(),
           options
         ) );

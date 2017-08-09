@@ -86,10 +86,7 @@ define( function( require ) {
 
     // When the current type changes, mark everything as dirty and relayout charges
     this.currentTypeProperty.lazyLink( function() {
-      self.circuitElements.getArray().forEach( function( circuitElement ) {
-        circuitElement.chargeLayoutDirty = true;
-      } );
-      self.layoutChargesInDirtyCircuitElements();
+      self.relayoutAllCharges();
     } );
 
     // @public {BooleanProperty} - whether the current should be displayed
@@ -323,6 +320,17 @@ define( function( require ) {
       else if ( v2Neighbors.length === 1 && !v2.blackBoxInterfaceProperty.get() ) {
         this.bumpAwaySingleVertex( v2, v2Neighbors[ 0 ] );
       }
+    },
+
+    /**
+     * Update the position of all charges.
+     * @public
+     */
+    relayoutAllCharges: function() {
+      this.circuitElements.getArray().forEach( function( circuitElement ) {
+        circuitElement.chargeLayoutDirty = true;
+      } );
+      this.layoutChargesInDirtyCircuitElements();
     },
 
     /**

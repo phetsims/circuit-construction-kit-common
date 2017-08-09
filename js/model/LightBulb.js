@@ -28,7 +28,7 @@ define( function( require ) {
   var RIGHT_CURVE_X_SCALE = 0.87;
 
   // The sampled points for the wire/filament curves
-  var POINTS = [
+  var LIFELIKE_SAMPLE_POINTS = [
     new Vector2( 0.623, 2.063 ),                                          // bottom center
     new Vector2( 0.623, 1.014 * 0.75 ),                                   // first curve
     new Vector2( 0.314 * LEFT_CURVE_X_SCALE, 0.704 * TOP_Y_SCALE * 1.1 ), // left curve 1
@@ -41,20 +41,23 @@ define( function( require ) {
     new Vector2( 0.927 * 0.8 * 1.2, 1.474 )                               // exit
   ];
 
-  // Nicknames for the first and last points
-  var START_POINT = POINTS[ 0 ];
-  var END_POINT = POINTS[ POINTS.length - 1 ];
+  var SCHEMATIC_SAMPLE_POINTS = [
+    new Vector2( 0.50, 2.06 ),                                            // bottom left
+    new Vector2( 0.50, 0.34 ),                                            // top left
+    new Vector2( 0.81, 0.34 ),                                            // top right
+    new Vector2( 0.89, 1.474 )                                            // bottom right
+  ];
 
   /**
    * @param {Vertex} startVertex - the side Vertex
    * @param {Vertex} endVertex - the bottom Vertex
    * @param {number} resistance - in ohms
    * @param {Tandem} tandem
+   * @param {Property.<string>} viewProperty - 'lifelike' | 'schematic'
    * @param {Object} [options]
    * @constructor
    */
-  function LightBulb( startVertex, endVertex, resistance, tandem, options ) {
-
+  function LightBulb( startVertex, endVertex, resistance, viewProperty, tandem, options ) {
     options = _.extend( { highResistance: false }, options );
 
     // @public (read-only) {boolean} - true if the light bulb is a high resistance light bulb
@@ -66,19 +69,15 @@ define( function( require ) {
     // @private (read-only) {Vector2} the vector between the vertices
     this.vertexDelta = endVertex.positionProperty.get().minus( startVertex.positionProperty.get() );
 
-    var pathLength = 0;
-    for ( var i = 0; i < POINTS.length - 1; i++ ) {
-      var point1 = this.getFilamentPathPoint( i, startVertex );
-      var point2 = this.getFilamentPathPoint( i + 1, startVertex );
-      pathLength += point2.distance( point1 );
-    }
+    // @private
+    this.viewProperty = viewProperty;
 
     FixedLengthCircuitElement.call(
       this,
       startVertex,
       endVertex,
       DISTANCE_BETWEEN_VERTICES,
-      pathLength,
+      this.getPathLength( startVertex ),
       tandem,
       options
     );
@@ -90,6 +89,31 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'LightBulb', LightBulb );
 
   return inherit( FixedLengthCircuitElement, LightBulb, {
+
+    /**
+     * Updates the charge path length when the view changes between lifelike/schematic
+     * @public
+     */
+    updatePathLength: function() {
+      this.chargePathLength = this.getPathLength( this.startVertexProperty.value );
+    },
+
+    /**
+     * Determine the new path length
+     * @param {Vertex} startVertex
+     * @returns {number}
+     * @private
+     */
+    getPathLength: function( startVertex ) {
+      var pathLength = 0;
+      var samplePoints = this.viewProperty.value === 'lifelike' ? LIFELIKE_SAMPLE_POINTS : SCHEMATIC_SAMPLE_POINTS;
+      for ( var i = 0; i < samplePoints.length - 1; i++ ) {
+        var point1 = this.getFilamentPathPoint( i, startVertex, samplePoints );
+        var point2 = this.getFilamentPathPoint( i + 1, startVertex, samplePoints );
+        pathLength += point2.distance( point1 );
+      }
+      return pathLength;
+    },
 
     /**
      * Returns true because all light bulbs can have their resistance changed.
@@ -105,17 +129,21 @@ define( function( require ) {
      *
      * @param {number} index
      * @param {Vertex} startVertex
+     * @param {Vector2[]} samplePoints - the array of points to use for sampling
      * @returns {Vector2}
      * @private
      */
-    getFilamentPathPoint: function( index, startVertex ) {
-      var point = POINTS[ index ];
+    getFilamentPathPoint: function( index, startVertex, samplePoints ) {
+      var point = samplePoints[ index ];
 
       var vertexX = startVertex.positionProperty.get().x;
       var vertexY = startVertex.positionProperty.get().y;
 
-      var x = Util.linear( START_POINT.x, END_POINT.x, vertexX, vertexX + this.vertexDelta.x, point.x );
-      var y = Util.linear( START_POINT.y, END_POINT.y, vertexY, vertexY + this.vertexDelta.y, point.y );
+      var startPoint = samplePoints[ 0 ];
+      var endPoint = samplePoints[ samplePoints.length - 1 ];
+
+      var x = Util.linear( startPoint.x, endPoint.x, vertexX, vertexX + this.vertexDelta.x, point.x );
+      var y = Util.linear( startPoint.y, endPoint.y, vertexY, vertexY + this.vertexDelta.y, point.y );
 
       return new Vector2( x, y );
     },
@@ -155,9 +183,10 @@ define( function( require ) {
 
       var previousAccumulatedDistance = 0;
       var accumulatedDistance = 0;
-      for ( var i = 0; i < POINTS.length - 1; i++ ) {
-        var point1 = this.getFilamentPathPoint( i, this.startVertexProperty.get() );
-        var point2 = this.getFilamentPathPoint( i + 1, this.startVertexProperty.get() );
+      var samplePoints = this.viewProperty.value === 'lifelike' ? LIFELIKE_SAMPLE_POINTS : SCHEMATIC_SAMPLE_POINTS;
+      for ( var i = 0; i < samplePoints.length - 1; i++ ) {
+        var point1 = this.getFilamentPathPoint( i, this.startVertexProperty.get(), samplePoints );
+        var point2 = this.getFilamentPathPoint( i + 1, this.startVertexProperty.get(), samplePoints );
 
         accumulatedDistance += point2.distance( point1 );
 
@@ -193,12 +222,13 @@ define( function( require ) {
      * @param {Vector2} position
      * @param {Tandem} circuitVertexGroupTandem
      * @param {number} resistance
+     * @param {Property.<string>} viewProperty - 'lifelike'|'schematic'
      * @param {Tandem} tandem
      * @param {Object} [options]
      * @returns {LightBulb}
      * @public
      */
-    createAtPosition: function( position, circuitVertexGroupTandem, resistance, tandem, options ) {
+    createAtPosition: function( position, circuitVertexGroupTandem, resistance, viewProperty, tandem, options ) {
 
       options = options || {};
       var translation = new Vector2( 19, 10 );
@@ -221,7 +251,7 @@ define( function( require ) {
         tandem: circuitVertexGroupTandem.createNextTandem()
       } );
 
-      return new LightBulb( startVertex, endVertex, resistance, tandem, options );
+      return new LightBulb( startVertex, endVertex, resistance, viewProperty, tandem, options );
     }
   } );
 } );

@@ -161,6 +161,19 @@ define( function( require ) {
     this.isValueDepictionEnabledProperty.link( function() {
       self.circuit.chargeAnimator.timeScaleRunningAverage.clear();
     } );
+
+    // When the view changes between schematic/lifelike, update the electron paths (because the LightBulb has a different
+    // charge path depending on the view
+    this.viewProperty.link( function() {
+
+      // First update the length of the light bulbs
+      self.circuit.circuitElements.forEach( function( circuitElement ) {
+        circuitElement.updatePathLength && circuitElement.updatePathLength();
+      } );
+
+      // Then position the electrons in the new paths
+      self.circuit.relayoutAllCharges();
+    } );
   }
 
   circuitConstructionKitCommon.register( 'CircuitConstructionKitModel', CircuitConstructionKitModel );
