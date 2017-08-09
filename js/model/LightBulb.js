@@ -44,7 +44,7 @@ define( function( require ) {
   var SCHEMATIC_SAMPLE_POINTS = [
     new Vector2( 0.50, 2.06 ),                                            // bottom left
     new Vector2( 0.50, 0.34 ),                                            // top left
-    new Vector2( 0.81, 0.34 ),                                            // top right
+    new Vector2( 0.89, 0.34 ),                                            // top right
     new Vector2( 0.89, 1.474 )                                            // bottom right
   ];
 

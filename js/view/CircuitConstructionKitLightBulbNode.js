@@ -41,12 +41,6 @@ define( function( require ) {
   // The "blip" in the filament that looks like an upside down "u" semicircle
   var INNER_RADIUS = 5;
 
-  // According to design the right lead of the vertex should be slightly offset from the center of the vertex.
-  var RIGHT_OFFSET = 2;
-
-  // This is referring to the offset from the center of the leftmost vertex because the origin must be left-centered.
-  var LEFT_LEAD_X = -5;
-
   // cache the raster after creation so it isn't added to the spritesheet multiple times
   var cached = null;
 
@@ -120,8 +114,8 @@ define( function( require ) {
     var startPosition = lightBulb.startVertexProperty.get().positionProperty.get();
     var delta = endPosition.minus( startPosition );
 
-    var rightLeadX = LEFT_LEAD_X + (delta.x + RIGHT_OFFSET);
-    var schematicCircleRadius = (delta.x + RIGHT_OFFSET) / 2;
+    var rightLeadX = delta.x;
+    var schematicCircleRadius = delta.x / 2;
 
     /**
      * Adds the schematic circle with filament to the given Shape.
@@ -132,20 +126,20 @@ define( function( require ) {
       return shape
 
       // Outer circle
-        .moveTo( LEFT_LEAD_X, LEAD_Y )
-        .arc( (LEFT_LEAD_X + rightLeadX) / 2, LEAD_Y, schematicCircleRadius, Math.PI, -Math.PI, true )
+        .moveTo( 0, LEAD_Y )
+        .arc( rightLeadX / 2, LEAD_Y, schematicCircleRadius, Math.PI, -Math.PI, true )
 
         // Filament
-        .moveTo( LEFT_LEAD_X, LEAD_Y )
-        .lineTo( LEFT_LEAD_X + schematicCircleRadius - INNER_RADIUS, LEAD_Y )
-        .arc( LEFT_LEAD_X + schematicCircleRadius, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
+        .moveTo( 0, LEAD_Y )
+        .lineTo( schematicCircleRadius - INNER_RADIUS, LEAD_Y )
+        .arc( schematicCircleRadius, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
         .lineTo( rightLeadX, LEAD_Y );
     };
     var schematicNode = cached || new Path( addSchematicCircle( new Shape()
 
       // Left lead
-        .moveTo( LEFT_LEAD_X, 0 )
-        .lineTo( LEFT_LEAD_X, LEAD_Y )
+      .moveTo( 0, 0 )
+      .lineTo( 0, LEAD_Y )
 
         // Right lead
         .moveTo( rightLeadX, LEAD_Y )
