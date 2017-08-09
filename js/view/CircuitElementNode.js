@@ -25,6 +25,7 @@ define( function( require ) {
   function CircuitElementNode( circuitElement, circuit, options ) {
 
     var self = this;
+    this.circuit = circuit;
 
     // @public (read-only) {CircuitElement} - the CircuitElement rendered by this node
     this.circuitElement = circuitElement;
@@ -178,7 +179,7 @@ define( function( require ) {
 
         // If over the toolbox, then drop into it, and don't process further
         var id = setTimeout( function() {
-          circuitConstructionKitScreenView.dropCircuitElementNodeInToolbox( self );
+          self.circuit.circuitElements.remove( circuitElement );
         }, delayMS );
 
         // If disposed by reset all button, clear the timeout

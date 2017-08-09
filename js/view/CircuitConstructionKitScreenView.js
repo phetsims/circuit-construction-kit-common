@@ -461,17 +461,6 @@ define( function( require ) {
     },
 
     /**
-     * Drop the CircuitElementNode in the toolbox.
-     * @param {CircuitElementNode} circuitElementNode
-     * @public
-     */
-    dropCircuitElementNodeInToolbox: function( circuitElementNode ) {
-
-      // Only drop in the box if it was a single component, if connected to other things, do not
-      this.circuitConstructionKitModel.circuit.circuitElements.remove( circuitElementNode.circuitElement );
-    },
-
-    /**
      * Find the the current in the given layer (if any CircuitElement hits the sensor)
      * @param {Node} probeNode
      * @param {Node} layer
