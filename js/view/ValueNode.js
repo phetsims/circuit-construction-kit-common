@@ -155,8 +155,8 @@ define( function( require ) {
 
         // The label partially overlaps the component to make it clear which label goes with which component
         var centerPositionAndAngle = circuitElement.getPositionAndAngle( circuitElement.chargePathLength * distance );
-        var delta = Vector2.createPolar( VERTICAL_OFFSET, 2 * Math.PI * 3 / 4 );
-        self.center = centerPositionAndAngle.position.plus( delta );
+        var delta = Vector2.createPolar( VERTICAL_OFFSET, centerPositionAndAngle.angle + 3 * Math.PI / 2 );
+        self.center = centerPositionAndAngle.position.plus( delta ); // above light bulb
       }
     };
 
