@@ -164,10 +164,10 @@ define( function( require ) {
       this.vertexLayer,
       this.chargeLayer,
       this.lightBulbSocketLayer, // fronts of light bulbs
-      this.valueLayer, // values
       this.seriesAmmeterNodeReadoutPanelLayer, // fronts of series ammeters
       this.sensorLayer,
       this.highlightLayer, // highlights go in front of everything else
+      this.valueLayer, // values
       this.buttonLayer // vertex buttons
     ];
 
@@ -180,10 +180,10 @@ define( function( require ) {
       this.vertexLayer,
       this.chargeLayer,
       this.lightBulbSocketLayer,
-      this.valueLayer,
       this.seriesAmmeterNodeReadoutPanelLayer,
       this.sensorLayer,
       this.highlightLayer,
+      this.valueLayer,
       this.buttonLayer
     ];
     Node.call( this );
