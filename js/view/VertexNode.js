@@ -48,7 +48,6 @@ define( function( require ) {
 
     var self = this;
     var circuit = circuitLayerNode.circuit;
-
     var cutButton = circuitLayerNode.cutButton;
 
     // Use a query parameter to turn on node voltage readouts for debugging only.

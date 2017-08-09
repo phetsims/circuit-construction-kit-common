@@ -404,6 +404,21 @@ define( function( require ) {
       self.circuitLayerNodeBackLayer.setScaleMagnitude( currentZoom );
       self.circuitLayerNode.updateTransform( visibleBounds );
     } );
+
+    // When a Vertex is dropped and the CircuitElement is over the CircuitElementToolbox, the CircuitElement will go back
+    // into the toolbox
+    this.circuitConstructionKitModel.circuit.vertexDroppedEmitter.addListener( function( vertex ) {
+
+      var neighbors = self.circuitConstructionKitModel.circuit.getNeighborCircuitElements( vertex );
+      if ( neighbors.length === 1 ) {
+        var circuitElement = neighbors[ 0 ];
+        var circuitElementNode = self.circuitLayerNode.getCircuitElementNode( circuitElement );
+
+        if ( self.canNodeDropInToolbox( circuitElementNode ) ) {
+          self.circuitConstructionKitModel.circuit.circuitElements.remove( circuitElement );
+        }
+      }
+    } );
   }
 
   circuitConstructionKitCommon.register( 'CircuitConstructionKitScreenView', CircuitConstructionKitScreenView );
@@ -444,20 +459,19 @@ define( function( require ) {
      * @public
      */
     canNodeDropInToolbox: function( circuitElementNode ) {
+      var circuitElement = circuitElementNode.circuitElement;
 
       // Only single (unconnected) elements can be dropped into the toolbox
-      var isSingle = this.circuitConstructionKitModel.circuit.isSingle( circuitElementNode.circuitElement );
+      var isSingle = this.circuitConstructionKitModel.circuit.isSingle( circuitElement );
 
       // SeriesAmmeters should be dropped in the sensor toolbox
-      var toolbox = circuitElementNode.circuitElement instanceof SeriesAmmeter ?
-                    this.sensorToolbox :
-                    this.circuitElementToolbox;
+      var toolbox = circuitElement instanceof SeriesAmmeter ? this.sensorToolbox : this.circuitElementToolbox;
 
       // Detect whether the midpoint between the vertices overlaps the toolbox
-      var globalMidpoint = circuitElementNode.localToGlobalPoint( circuitElementNode.circuitElement.getMidpoint() );
+      var globalMidpoint = circuitElementNode.localToGlobalPoint( circuitElement.getMidpoint() );
       var overToolbox = toolbox.globalBounds.containsPoint( globalMidpoint );
 
-      return isSingle && overToolbox && circuitElementNode.circuitElement.canBeDroppedInToolbox;
+      return isSingle && overToolbox && circuitElement.canBeDroppedInToolbox;
     },
 
     /**
