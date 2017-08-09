@@ -110,7 +110,7 @@ define( function( require ) {
 
       var updateResistance = function( resistance ) {
         contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
-          resistance: resistance > 100000 ? '∞' : Util.toFixed( resistance, 1 )
+          resistance: resistance > 100000 ? '∞' : '0'
         } );
 
         // Account for the switch open and close geometry for positioning the label.  When the switch is open
