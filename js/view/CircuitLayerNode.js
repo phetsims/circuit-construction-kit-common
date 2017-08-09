@@ -580,8 +580,8 @@ define( function( require ) {
             vertex.unsnappedPositionProperty.set( oppositeVertex.unsnappedPositionProperty.get().minus( relative ) );
           },
 
-          // allow either vertex to snap
-          [ vertex, oppositeVertex ]
+          // allow any vertex connected by fixed length elements to snap, see https://github.com/phetsims/circuit-construction-kit-common/issues/254
+          vertices
         );
       }
       else {
