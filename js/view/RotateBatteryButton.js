@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Path = rsequire( 'SCENERY/nodes/Path' );
+  var Path = require( 'SCENERY/nodes/Path' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
   var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
