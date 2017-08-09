@@ -27,6 +27,9 @@ define( function( require ) {
   var resistanceOhmsSymbolString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhmsSymbol' );
   var voltageUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageUnits' );
 
+  // constants
+  var VERTICAL_OFFSET = 24;
+
   /**
    * @param {CircuitElement} circuitElement
    * @param {Property.<boolean>} showValuesProperty
@@ -145,7 +148,7 @@ define( function( require ) {
 
         // The label partially overlaps the component to make it clear which label goes with which component
         var centerPositionAndAngle = circuitElement.getPositionAndAngle( circuitElement.chargePathLength * distance );
-        var delta = Vector2.createPolar( 24, centerPositionAndAngle.angle + 3 * Math.PI / 2 );
+        var delta = Vector2.createPolar( VERTICAL_OFFSET, centerPositionAndAngle.angle + 3 * Math.PI / 2 );
         self.center = centerPositionAndAngle.position.plus( delta ); // above light bulb
       }
     };
