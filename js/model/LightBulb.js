@@ -151,10 +151,7 @@ define( function( require ) {
      */
     getPositionAndAngle: function( distanceAlongWire ) {
 
-      var parentPositionAndAngle = FixedLengthCircuitElement.prototype.getPositionAndAngle.call(
-        this,
-        distanceAlongWire
-      );
+      var parentPositionAndAngle = FixedLengthCircuitElement.prototype.getPositionAndAngle.call( this, distanceAlongWire );
 
       var previousAccumulatedDistance = 0;
       var accumulatedDistance = 0;
@@ -168,25 +165,19 @@ define( function( require ) {
         if ( distanceAlongWire <= accumulatedDistance ) {
 
           // Choose the right point along the segment
-          var fractionAlongSegment = Util.linear( previousAccumulatedDistance, accumulatedDistance, 0, 1,
-            distanceAlongWire );
+          var fractionAlongSegment = Util.linear( previousAccumulatedDistance, accumulatedDistance, 0, 1, distanceAlongWire );
           var positionAlongSegment = point1.blend( point2, fractionAlongSegment );
 
           // rotate the point about the start vertex
-          var vertexDelta = this.endVertexProperty.get().positionProperty.get()
-            .minus( this.startVertexProperty.get().positionProperty.get() );
+          var startPoint = this.startVertexProperty.get().positionProperty.get();
+          var vertexDelta = this.endVertexProperty.get().positionProperty.get().minus( startPoint );
           var relativeAngle = vertexDelta.angle() - this.vertexDelta.angle();
-          var position = positionAlongSegment.rotatedAboutPoint(
-            this.startVertexProperty.get().positionProperty.get(),
-            relativeAngle
-          );
+          var position = positionAlongSegment.rotatedAboutPoint( startPoint, relativeAngle );
           var angle = point2.minus( point1 ).angle();
 
           return {
-            position: position, angle: angle + parentPositionAndAngle.angle +
-
-                                       // sampled from createAtPosition
-                                       0.7851354708011367
+            position: position,
+            angle: angle + parentPositionAndAngle.angle + 0.7851354708011367 // sampled from createAtPosition
           };
         }
         previousAccumulatedDistance = accumulatedDistance;
