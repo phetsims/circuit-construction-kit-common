@@ -106,7 +106,9 @@ define( function( require ) {
       contentNode.maxWidth = 100;
     }
     else if ( circuitElement instanceof Switch ) {
-      contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'switchText' ) }, TEXT_OPTIONS ) );
+
+      // Make it easier to read the infinity symbol, see https://github.com/phetsims/circuit-construction-kit-dc/issues/135
+      contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'switchText' ) }, { fontSize: 32 } ) );
 
       var updateResistance = function( resistance ) {
         contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
