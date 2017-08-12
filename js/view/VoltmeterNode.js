@@ -185,28 +185,6 @@ define( function( require ) {
     // For the real version (not the icon), add drag listeners.
     if ( !options.icon ) {
 
-      // @public (read-only) {MovableDragHandler} - so events can be forwarded from the toolbox
-      this.dragHandler = new MovableDragHandler( voltmeter.bodyPositionProperty, {
-        tandem: tandem.createTandem( 'dragHandler' ),
-        endDrag: function() {
-          voltmeter.droppedEmitter.emit1( bodyNode.globalBounds );
-
-          // After dropping in the play area the probes move independently of the body
-          voltmeter.draggingProbesWithBodyProperty.set( false );
-        },
-
-        // use this to do something every time drag is called, such as notify that a user has modified the position
-        onDrag: function( event ) {},
-
-        // adds support for zoomed coordinate frame, see
-        // https://github.com/phetsims/circuit-construction-kit-common/issues/301
-        targetNode: self
-      } );
-      options.visibleBoundsProperty.link( function( visibleBounds ) {
-        self.dragHandler.dragBounds = visibleBounds.eroded( CircuitConstructionKitCommonConstants.DRAG_BOUNDS_EROSION );
-      } );
-      bodyNode.addInputListener( this.dragHandler );
-
       /**
        * Gets a drag handler for one of the probes.
        * @param {Property.<Vector2>} positionProperty
@@ -223,12 +201,36 @@ define( function( require ) {
         return probeDragHandler;
       };
 
-      this.redProbeNode.addInputListener(
-        getProbeDragHandler( voltmeter.redProbePositionProperty, tandem.createTandem( 'redProbeDragHandler' ) )
-      );
-      this.blackProbeNode.addInputListener(
-        getProbeDragHandler( voltmeter.blackProbePositionProperty, tandem.createTandem( 'blackProbeDragHandler' ) )
-      );
+      var redProbeDragHandler = getProbeDragHandler( voltmeter.redProbePositionProperty, tandem.createTandem( 'redProbeDragHandler' ) );
+      var blackProbeDragHandler = getProbeDragHandler( voltmeter.blackProbePositionProperty, tandem.createTandem( 'blackProbeDragHandler' ) );
+
+      this.redProbeNode.addInputListener( redProbeDragHandler );
+      this.blackProbeNode.addInputListener( blackProbeDragHandler );
+
+      // @public (read-only) {MovableDragHandler} - so events can be forwarded from the toolbox
+      this.dragHandler = new MovableDragHandler( voltmeter.bodyPositionProperty, {
+        tandem: tandem.createTandem( 'dragHandler' ),
+        endDrag: function() {
+          voltmeter.droppedEmitter.emit1( bodyNode.globalBounds );
+
+          // After dropping in the play area the probes move independently of the body
+          voltmeter.draggingProbesWithBodyProperty.set( false );
+
+          redProbeDragHandler.constrainToBounds();
+          blackProbeDragHandler.constrainToBounds()
+        },
+
+        // use this to do something every time drag is called, such as notify that a user has modified the position
+        onDrag: function( event ) {},
+
+        // adds support for zoomed coordinate frame, see
+        // https://github.com/phetsims/circuit-construction-kit-common/issues/301
+        targetNode: self
+      } );
+      options.visibleBoundsProperty.link( function( visibleBounds ) {
+        self.dragHandler.dragBounds = visibleBounds.eroded( CircuitConstructionKitCommonConstants.DRAG_BOUNDS_EROSION );
+      } );
+      bodyNode.addInputListener( this.dragHandler );
     }
   }
 

@@ -131,6 +131,10 @@ define( function( require ) {
 
     if ( !options.icon ) {
 
+      var probeDragHandler = new MovableDragHandler( ammeter.probePositionProperty, {
+        tandem: tandem.createTandem( 'probeDragHandler' )
+      } );
+
       // @public (read-only) {MovableDragHandler} - so events can be forwarded from the toolbox
       this.dragHandler = new MovableDragHandler( ammeter.bodyPositionProperty, {
         tandem: tandem.createTandem( 'dragHandler' ),
@@ -139,6 +143,8 @@ define( function( require ) {
 
           // After dropping in the play area the probes move independently of the body
           ammeter.draggingProbesWithBodyProperty.set( false );
+
+          probeDragHandler.constrainToBounds();
         },
 
         // adds support for zoomed coordinate frame, see
@@ -146,9 +152,6 @@ define( function( require ) {
         targetNode: self
       } );
       bodyNode.addInputListener( this.dragHandler );
-      var probeDragHandler = new MovableDragHandler( ammeter.probePositionProperty, {
-        tandem: tandem.createTandem( 'probeDragHandler' )
-      } );
       options.visibleBoundsProperty.link( function( visibleBounds ) {
         var erodedDragBounds = visibleBounds.eroded( CircuitConstructionKitCommonConstants.DRAG_BOUNDS_EROSION );
         self.dragHandler.dragBounds = erodedDragBounds;
