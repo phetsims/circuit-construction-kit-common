@@ -217,7 +217,7 @@ define( function( require ) {
           voltmeter.draggingProbesWithBodyProperty.set( false );
 
           redProbeDragHandler.constrainToBounds();
-          blackProbeDragHandler.constrainToBounds()
+          blackProbeDragHandler.constrainToBounds();
         },
 
         // use this to do something every time drag is called, such as notify that a user has modified the position
