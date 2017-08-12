@@ -305,6 +305,9 @@ define( function( require ) {
     } );
     this.cutButton.addListener( function() {
       circuit.cutVertex( circuit.getSelectedVertex() );
+
+      // Make sure no vertices got nudged out of bounds during a cut, see https://github.com/phetsims/circuit-construction-kit-dc/issues/138
+      moveVerticesInBounds( self.visibleBoundsInCircuitCoordinateFrameProperty.value );
     } );
 
     // When a Vertex is added to the model, create the corresponding views
@@ -337,7 +340,7 @@ define( function( require ) {
     circuit.vertices.forEach( addVertexNode );
 
     // When the screen is resized or zoomed, move all vertices into view.
-    this.visibleBoundsInCircuitCoordinateFrameProperty.link( function( localBounds ) {
+    var moveVerticesInBounds = function( localBounds ) {
 
       // Check all vertices
       for ( var i = 0; i < circuit.vertices.length; i++ ) {
@@ -354,7 +357,9 @@ define( function( require ) {
           self.translateVertexGroup( vertex, vertices, delta, null, [] );
         }
       }
-    } );
+    };
+    this.visibleBoundsInCircuitCoordinateFrameProperty.link( moveVerticesInBounds );
+
 
     // When a charge is added, add the corresponding ChargeNode (removed it its dispose call)
     circuit.charges.addItemAddedListener( function( charge ) {
