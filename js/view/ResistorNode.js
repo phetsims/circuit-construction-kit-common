@@ -232,7 +232,7 @@ define( function( require ) {
      * @private - dispose the resistor node
      */
     this.disposeResistorNode = function() {
-      resistor.resistanceProperty.unlink( updateColorBands );
+      updateColorBands && resistor.resistanceProperty.unlink( updateColorBands );
       lifelikeResistorImageNode.dispose();
     };
   }

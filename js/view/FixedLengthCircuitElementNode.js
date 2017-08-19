@@ -214,7 +214,10 @@ define( function( require ) {
       updateHighlightVisibility && circuitLayerNode.circuit.selectedCircuitElementProperty.unlink( updateHighlightVisibility );
       circuitElement.connectedEmitter.removeListener( moveToFront );
       circuitElement.vertexSelectedEmitter.removeListener( moveToFront );
-      circuitElement.interactiveProperty.unlink( pickableListener );
+
+      if ( options.pickable !== false ) {
+        circuitElement.interactiveProperty.unlink( pickableListener );
+      }
       circuitLayerNode && CircuitConstructionKitCommonUtil.setInSceneGraph(
         false, circuitLayerNode.highlightLayer, self.highlightNode
       );
