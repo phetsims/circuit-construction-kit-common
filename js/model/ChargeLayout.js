@@ -39,9 +39,8 @@ define( function( require ) {
       // Avoid unnecessary work to improve performance
       if ( circuitElement.chargeLayoutDirty ) {
 
-        // Remove any charges that were already in the branch.
-        var chargesToRemove = this.circuit.getChargesInCircuitElement( circuitElement );
-        this.circuit.charges.removeAll( chargesToRemove );
+        // Identify charges that were already in the branch.
+        var charges = this.circuit.getChargesInCircuitElement( circuitElement );
 
         // put charges 1/2 separation from the edge so it will match up with adjacent components
         var offset = CircuitConstructionKitCommonConstants.CHARGE_SEPARATION / 2;
@@ -61,15 +60,29 @@ define( function( require ) {
           var chargePosition = numberOfCharges === 1 ?
                                (firstChargePosition + lastChargePosition) / 2 :
                                i * spacing + offset;
-          var charge = new Charge(
-            circuitElement,
-            chargePosition,
-            this.circuit.showCurrentProperty,
-            this.circuit.currentTypeProperty.get() === 'electrons' ? -1 : +1
-          );
-          this.circuit.charges.add( charge );
+
+          var desiredCharge = this.circuit.currentTypeProperty.get() === 'electrons' ? -1 : +1;
+
+          if ( charges.length > 0 &&
+               charges[ 0 ].charge === desiredCharge &&
+               charges[ 0 ].circuitElement === circuitElement &&
+               charges[ 0 ].visibleProperty === this.circuit.showCurrentProperty ) {
+
+            var c = charges.shift(); // remove 1st element, since it's the charge we checked in the guard
+            c.setLocation( circuitElement, chargePosition );
+          }
+          else {
+
+            // nothing suitable in the pool, create something new
+            var charge = new Charge( circuitElement, chargePosition, this.circuit.showCurrentProperty, desiredCharge );
+            this.circuit.charges.add( charge );
+          }
         }
 
+        // Any charges that did not get recycled should be removed
+        this.circuit.charges.removeAll( charges );
+
+        // Mark for layout in the next step
         circuitElement.chargeLayoutDirty = false;
       }
     }
