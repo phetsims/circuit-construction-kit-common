@@ -123,17 +123,17 @@ define( function( require ) {
 
     /**
      * When the start or end Vertex changes, move the listener from the old Vertex to the new one
-     * @param {Vertex} vertex - the new vertex
+     * @param {Vertex} newVertex - the new vertex
      * @param {Vertex} oldVertex - the previous vertex
      */
-    var linkVertex = function( vertex, oldVertex ) {
+    var linkVertex = function( newVertex, oldVertex ) {
       oldVertex.positionProperty.unlink( vertexMoved );
-      vertex.positionProperty.link( vertexMoved );
+      newVertex.positionProperty.link( vertexMoved );
 
       oldVertex.voltageProperty.unlink( vertexVoltageChanged );
-      vertex.voltageProperty.link( vertexVoltageChanged );
+      newVertex.voltageProperty.link( vertexVoltageChanged );
 
-      if ( !oldVertex.positionProperty.get().equals( vertex.positionProperty.get() ) ) {
+      if ( !oldVertex.positionProperty.get().equals( newVertex.positionProperty.get() ) ) {
         self.vertexMovedEmitter.emit();
       }
     };
@@ -155,10 +155,11 @@ define( function( require ) {
       self.startVertexProperty.unlink( linkVertex );
       self.endVertexProperty.unlink( linkVertex );
 
-      self.startVertexProperty.get().positionProperty.unlink( vertexMoved );
-      self.endVertexProperty.get().positionProperty.unlink( vertexMoved );
-      self.startVertexProperty.get().voltageProperty.unlink( vertexVoltageChanged );
-      self.endVertexProperty.get().voltageProperty.unlink( vertexVoltageChanged );
+      // TODO: how are these listeners sometimes already detached? See https://github.com/phetsims/circuit-construction-kit-dc/issues/144
+      self.startVertexProperty.get().positionProperty.hasListener( vertexMoved ) && self.startVertexProperty.get().positionProperty.unlink( vertexMoved );
+      self.endVertexProperty.get().positionProperty.hasListener( vertexMoved ) && self.endVertexProperty.get().positionProperty.unlink( vertexMoved );
+      self.startVertexProperty.get().voltageProperty.hasListener( vertexVoltageChanged ) && self.startVertexProperty.get().voltageProperty.unlink( vertexVoltageChanged );
+      self.endVertexProperty.get().voltageProperty.hasListener( vertexVoltageChanged ) && self.endVertexProperty.get().voltageProperty.unlink( vertexVoltageChanged );
 
       self.disposeEmitter.emit();
       self.disposeEmitter.removeAllListeners();
