@@ -26,6 +26,8 @@ define( function( require ) {
   var counter = 0;
 
   /**
+   * REVIEW: Most usages either use a Vector2, or could use Vector2.ZERO (and we duplicate initial vector references).
+   * REVIEW: Prefer Vector2 input instead of x,y
    * @param {number} x - position (screen coordinates) in x
    * @param {number} y - position (screen coordinates) in y
    * @param {Object} [options]
@@ -33,7 +35,8 @@ define( function( require ) {
    */
   function Vertex( x, y, options ) {
 
-    // @private - Index counter for debugging, can be shown with ?vertexDisplay=index
+    // @private {number} - Index counter for debugging, can be shown with ?vertexDisplay=index
+    //REVIEW: If this is for debugging, is it temporary (could be removed), or could only be enabled when assertions are enabled?
     this.index = counter++;
 
     options = _.extend( {

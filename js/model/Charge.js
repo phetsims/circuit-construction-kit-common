@@ -43,6 +43,8 @@ define( function( require ) {
     this.circuitElement = circuitElement;
 
     // @private (read-only) {boolean} - whether the charge has been disposed, to aid in debugging
+    //REVIEW: If for debugging, can this be removed, or set only when assertions are enabled? Would help memory to remove, particularly since a lot
+    //REVIEW: of charges get created.
     this.deleted = false;
 
     // @public (read-only) {NumberProperty} - the distance the charge has traveled in its CircuitElement in view
@@ -51,19 +53,29 @@ define( function( require ) {
 
     // @public {BooleanProperty} - To improve performance, disable updating while the position of the charge is changed
     // many times during the update step.
+    //REVIEW: Presumably this can be removed, see note below for the multilink on proposed strategy
     this.updatingPositionProperty = new BooleanProperty( true );
 
     // @public (read-only) {Property.<Vector2>} - the 2d position of the charge
-    this.positionProperty = new Property( new Vector2() );
+    this.positionProperty = new Property( new Vector2() ); // REVIEW: Use Vector2.ZERO so we don't create extra vectors?
 
+    //REVIEW: It may be worse for memory (but better for simplicity/performance), but instead of an independent
+    //REVIEW: position/angle, it would be possible to have a matrixProperty that includes both. It looks like ChargeNode
+    //REVIEW: has to fully update its transform multiple times upon any change, as the position/angle changes both
+    //REVIEW: trigger a full updateTransform in ChargeNode.
     // @public (read-only) {NumberProperty} - the angle of the charge (for showing arrows)
     this.angleProperty = new NumberProperty( 0 );
 
     // @public (read-only) {BooleanProperty} - true if the Charge is on the right hand side of a light bulb and hence
     // must be layered in front of the socket node.
+    //REVIEW: I don't see where this is used (besides setting it). Can this be removed?
     this.onRightHandSideOfLightBulbProperty = new BooleanProperty( false );
 
     // When the distance or updating properties change, update the 2d position of the charge
+    //REVIEW: A multilink seems like overkill here, particularly since it's conditional. Furthermore, this looks like
+    //REVIEW: a function that should be a method (for performance and memory). Can we have an update() function or
+    //REVIEW: equivalent, and call it either when setLocation() is called or from ChargeAnimator's location where
+    //REVIEW: charges can then be updated? This should reduce calls to it, be a bit simpler, and have lower memory.
     var multilink = Property.multilink( [ this.distanceProperty, this.updatingPositionProperty ],
       function( distance, updating ) {
         if ( updating ) {
@@ -75,6 +87,8 @@ define( function( require ) {
           self.angleProperty.set( positionAndAngle.angle );
           self.positionProperty.set( position );
 
+          //REVIEW: Presumably this can get removed, so that the non-assertion parts of the function can just be:
+          //REVIEW: self.matrixProperty.set( self.circuitElement.getMatrix( distance ) );
           self.onRightHandSideOfLightBulbProperty.set(
             self.circuitElement instanceof LightBulb &&
             self.distanceProperty.get() > self.circuitElement.chargePathLength / 2
@@ -89,6 +103,8 @@ define( function( require ) {
     this.disposeEmitter = new Emitter();
 
     // @public (read-only) {function} for disposal
+    //REVIEW: We should not be creating copies of this function for objects that get created a lot, as it presumably
+    //REVIEW: increases the amount of memory used. This looks exactly like something that should be a method instead.
     this.disposeCharge = function() {
       assert && assert( !self.deleted, 'cannot delete twice' );
       multilink.dispose();
@@ -117,6 +133,7 @@ define( function( require ) {
      * @public
      */
     setLocation: function( circuitElement, distance ) {
+      //REVIEW: Are infinite distances allowed? isFinite() may be preferred over isNaN (but it's mostly a preference)
       assert && assert( !isNaN( distance ), 'Distance was NaN' );
       assert && assert( circuitElement.containsScalarLocation( distance ), 'no location in branch' );
       this.circuitElement = circuitElement;

@@ -38,7 +38,7 @@ define( function( require ) {
 
     var self = this;
 
-    // @public (read-only) - the tail of the Tandem for creating associated Tandems
+    // @public (read-only) {string} - the tail of the Tandem for creating associated Tandems
     this.tandemName = tandem.tail;
 
     // @public (read-only) {number} unique identifier for looking up corresponding views
@@ -73,6 +73,7 @@ define( function( require ) {
     this.currentProperty = new NumberProperty( 0 );
 
     // @public {BooleanProperty} - whether the CircuitElement is being dragged across the toolbox
+    //REVIEW: Don't see any read/link to this, maybe there is something I'm missing?
     this.isOverToolboxProperty = new BooleanProperty( false );
 
     // @public (read-only) {BooleanProperty} - true if the CircuitElement can be edited and dragged
@@ -80,6 +81,7 @@ define( function( require ) {
 
     // @public {BooleanProperty} - whether the circuit element is inside the true black box, not inside the user-created
     // black box, on the interface or outside of the black box
+    //REVIEW: Presumably this could be initialized properly on creation? Only setters are on deserialization.
     this.insideTrueBlackBoxProperty = new BooleanProperty( false );
 
     // @public {boolean} - true if the charge layout must be updated
@@ -107,13 +109,16 @@ define( function( require ) {
 
     // @public {Property.<number>} - the voltage at the end vertex minus the voltage at the start vertex
     // name voltageDifferenceProperty so it doesn't clash with voltageProperty in Battery subclass
+    //REVIEW: I don't see reads of this property, can it be removed?
     this.voltageDifferenceProperty = new Property( 0 );
 
     // Signify that a Vertex moved
+    //REVIEW: seems like it should be a method (bound to a property) for memory purposes. See notes below.
     var vertexMoved = function() {
       self.vertexMovedEmitter.emit();
     };
 
+    //REVIEW: seems like it should be a method (bound to a property) for memory purposes. See notes below.
     var vertexVoltageChanged = function() {
       self.voltageDifferenceProperty.set(
         self.endVertexProperty.get().voltageProperty.get() -
@@ -126,6 +131,8 @@ define( function( require ) {
      * @param {Vertex} newVertex - the new vertex
      * @param {Vertex} oldVertex - the previous vertex
      */
+    //REVIEW: Would be better as a method, so it doesn't create new function objects. Then bind it for the listeners
+    //REVIEW: below (and for the dispose method)
     var linkVertex = function( newVertex, oldVertex ) {
       oldVertex.positionProperty.unlink( vertexMoved );
       newVertex.positionProperty.link( vertexMoved );
@@ -137,6 +144,9 @@ define( function( require ) {
         self.vertexMovedEmitter.emit();
       }
     };
+
+    //REVIEW: The position properties of the vertex properties are used a ton. Maybe a getter for getStartPositionProperty()
+    //REVIEW: / getEndPositionProperty() would help make things more readable?
     this.startVertexProperty.get().positionProperty.link( vertexMoved );
     this.endVertexProperty.get().positionProperty.link( vertexMoved );
     this.startVertexProperty.get().voltageProperty.link( vertexVoltageChanged );
@@ -144,10 +154,11 @@ define( function( require ) {
     this.startVertexProperty.lazyLink( linkVertex );
     this.endVertexProperty.lazyLink( linkVertex );
 
-    // @private {boolean} - for debugging
+    // @private {boolean} - for debugging REVIEW: Clarify "for debugging"? Can this now be removed (or only with assertions to reduce production memory?)
     this.disposed = false;
 
     // @private {function} - for disposal
+    //REVIEW: This should be part of dispose() as a method? It's creating extra closures for every element right now.
     this.disposeCircuitElement = function() {
       assert && assert( !self.disposed, 'Was already disposed' );
       self.disposed = true;
@@ -161,6 +172,7 @@ define( function( require ) {
       self.startVertexProperty.get().voltageProperty.hasListener( vertexVoltageChanged ) && self.startVertexProperty.get().voltageProperty.unlink( vertexVoltageChanged );
       self.endVertexProperty.get().voltageProperty.hasListener( vertexVoltageChanged ) && self.endVertexProperty.get().voltageProperty.unlink( vertexVoltageChanged );
 
+      //REVIEW: If listeners are getting notified that something will be disposed, presumably it should be before disposing inner components?
       self.disposeEmitter.emit();
       self.disposeEmitter.removeAllListeners();
     };
@@ -247,7 +259,12 @@ define( function( require ) {
     /**
      * Gets the 2D Position along the CircuitElement corresponding to the given scalar distance
      * @param {number} distanceAlongWire - the scalar distance from one endpoint to another.
-     * @returns {Vector2} the position in view coordinates
+     * @returns {Vector2} the position in view coordinates REVIEW: Definitely not returning a Vector2.
+     * REVIEW: I see no reason not to split this into two functions. Sometimes only one of the two things computed is
+     * REVIEW: used, and it wouldn't require creating another temporary object.
+     *
+     * REVIEW: If both are needed, can we just return a Matrix that has the position/angle information (assuming
+     * REVIEW: Charge switches to use a Matrix3 instead of position/angle independently)
      * @public
      */
     getPositionAndAngle: function( distanceAlongWire ) {
@@ -272,7 +289,7 @@ define( function( require ) {
     /**
      * Get all Property instances that influence the circuit dynamics.
      * @abstract must be specified by the subclass
-     * @returns {Property[]}
+     * @returns {Property[]} REVIEW: Type of Properties? Property.<Circuit>?
      * @public
      */
     getCircuitProperties: function() {
@@ -291,7 +308,7 @@ define( function( require ) {
     },
 
     /**
-     * Return the indices of the vertices, for debugging.
+     * Return the indices of the vertices, for debugging. REVIEW: Does this mean it can be removed? (See no usages)
      * @public
      * @returns {[number,number]}
      */

@@ -87,6 +87,7 @@ define( function( require ) {
   inherit( Object, ModifiedNodalAnalysisCircuit, {
 
     /**
+     * REVIEW: A lot of things are noted as for debugging. Can these be stripped out of the production build of the sim?
      * Returns a string representation of the circuit for debugging.
      * @returns {string}
      * @private

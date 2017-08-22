@@ -160,6 +160,7 @@ define( function( require ) {
         } );
       }
 
+      //REVIEW: Don't see a matching removeListener. Presumably it should be called before we dispose the element?
       circuitElement.moveToFrontEmitter.addListener( updateCharges );
       self.solve();
     } );
