@@ -21,6 +21,8 @@ define( function( require ) {
    * @param {number} distanceBetweenVertices - in screen coordinates
    * @param {number} chargePathLength - the distance the charges travel (in screen coordinates).  see CircuitElement.js
    * REVIEW: Distance traveled in screen coordinates (in the model?) Can model coordinates be used?
+   * REVIEW(samreid): As described in implementation-notes.md, model and view coordinates are the same because (aside
+   * REVIEW(samreid): from resistivity) the length measurements have no bearing of the physics
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
