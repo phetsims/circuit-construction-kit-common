@@ -94,6 +94,7 @@ define( function( require ) {
       var circuitStruct = new CircuitStruct( [], [], [], [], [], [] );
       tandem = tandem.createGroupTandem( 'circuitStructElement' );
       options = _.extend( {
+
         // See CircuitElement.js for options
       }, options );
       for ( var i = 0; i < circuitState.vertices.length; i++ ) {
