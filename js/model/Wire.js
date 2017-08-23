@@ -51,25 +51,24 @@ define( function( require ) {
     this.wireDirty = true;
 
     // When the vertex moves, updates the resistance and charge path length.
-    //REVIEW: If it doesn't update something immediately, I like to think of it as marking it as dirty, instead of updating.
-    var updateWire = function() {
+    var markWireDirty = function() {
       self.wireDirty = true;
     };
 
     // Use `self` here instead of `this` so IDEA doesn't mark the property as missing.
-    self.vertexMovedEmitter.addListener( updateWire );
+    self.vertexMovedEmitter.addListener( markWireDirty );
 
     // Update the resistance and charge path length on startup
-    updateWire();
+    markWireDirty();
 
     // When resistivity changes, update the resistance
-    this.resistivityProperty.link( updateWire );
+    this.resistivityProperty.link( markWireDirty );
 
     // @private {function} - for disposal
     //REVIEW: Again if memory is an issue (I'll investigate), having this as a method may be better.
     this.disposeWire = function() {
-      self.vertexMovedEmitter.removeListener( updateWire );
-      self.resistivityProperty.unlink( updateWire );
+      self.vertexMovedEmitter.removeListener( markWireDirty );
+      self.resistivityProperty.unlink( markWireDirty );
     };
 
     this.step(); // initialize state
