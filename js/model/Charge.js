@@ -112,8 +112,7 @@ define( function( require ) {
      * @public
      */
     setLocation: function( circuitElement, distance ) {
-      //REVIEW: Are infinite distances allowed? isFinite() may be preferred over isNaN (but it's mostly a preference)
-      assert && assert( !isNaN( distance ), 'Distance was NaN' );
+      assert && assert( !isFinite( distance ), 'Distance was not finite' ); // also guards against NaN
       assert && assert( circuitElement.containsScalarLocation( distance ), 'no location in branch' );
       this.circuitElement = circuitElement;
       this.distanceProperty.set( distance );
