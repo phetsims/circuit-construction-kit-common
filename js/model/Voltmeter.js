@@ -40,7 +40,6 @@ define( function( require ) {
     } );
 
     // @public {Property.<Vector2>} - the position of the black probe in model=view coordinates
-    //REVIEW: Use Vector2.ZERO to avoid allocations (for the zero vector)
     this.blackProbePositionProperty = new Property( Vector2.ZERO, {
       tandem: tandem.createTandem( 'blackProbePositionProperty' ),
       phetioValueType: TVector2
