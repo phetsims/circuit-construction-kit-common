@@ -51,6 +51,7 @@ define( function( require ) {
     //REVIEW(samreid): Even if we use a single matrix instead of separate position/angle attributes, there are several
     //REVIEW(samreid): updates during each step, and I suspect it would still be good to batch them instead of letting
     //REVIEW(samreid): intermediate values update the view.
+    //REVIEW*: I'd like to know more about the updates, and whether they happen all while this is set.
     this.updatingPositionProperty = new BooleanProperty( true );
 
     // @public (read-only) {Property.<Vector2>} - the 2d position of the charge

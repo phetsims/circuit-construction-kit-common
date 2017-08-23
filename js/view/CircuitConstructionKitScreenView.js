@@ -63,7 +63,7 @@ define( function( require ) {
   } );
 
   /**
-   * @param {CircuitConstructionKitModel} circuitConstructionKitModel
+   * @param {CircuitConstructionKitModel} circuitConstructionKitModel REVIEW*: Usually I recommend the name "model" instead.
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor

@@ -81,6 +81,7 @@ define( function( require ) {
     this.insideTrueBlackBoxProperty = new BooleanProperty( options.insideTrueBlackBox );
 
     // @public {boolean} - true if the charge layout must be updated
+    //REVIEW*: It's a preference, but a method marking things as needing an update has been useful.
     this.chargeLayoutDirty = true;
 
     // @public (read-only) {Emitter} - indicate when this CircuitElement has been connected to another CircuitElement
@@ -165,12 +166,15 @@ define( function( require ) {
       this.endVertexProperty.get().positionProperty.hasListener( vertexMoved ) && this.endVertexProperty.get().positionProperty.unlink( vertexMoved );
 
       //REVIEW(samreid): are these lines necessary?
+      //REVIEW*: Presumably not, unless you want to retain a reference to this object but not the others.
       this.linkVertex = null;
       this.vertexMoved = null;
 
       //REVIEW: If listeners are getting notified that something will be disposed, presumably it should be before disposing inner components?
       //REVIEW(samreid): I thought it was more important that the listeners are notified after disposal is complete (or
       //REVIEW(samreid): as close to it as possible, but I guess it depends how this is being used.
+      //REVIEW*: If it notifies as disposal is starting, clients can still access state. If it notifies after disposal is
+      //REVIEW*: complete, it shouldn't/can't access state. What is the advantage to notifying at the end?
       this.disposeEmitter.emit();
       this.disposeEmitter.removeAllListeners();
     },

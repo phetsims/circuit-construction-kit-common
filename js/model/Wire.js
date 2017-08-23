@@ -68,6 +68,7 @@ define( function( require ) {
     //REVIEW: Again if memory is an issue (I'll investigate), having this as a method may be better.
     //REVIEW(samreid): My suspicion is that with a small number (<100) of wires, the overhead from these closures will
     //REVIEW(samreid): be in the noise
+    //REVIEW*: I'll investigate. If it requires copies of compiled code for each one, it may definitely be adding overhead.
     this.disposeWire = function() {
       self.vertexMovedEmitter.removeListener( markWireDirty );
       self.resistivityProperty.unlink( markWireDirty );

@@ -98,12 +98,15 @@ define( function( require ) {
     this.chargeLayout = new ChargeLayout( this );
 
     // @private {ChargeAnimator} - move the charges with speed proportional to current
+    //REVIEW*: Appears to be used publicly to grab timeScaleRunningAverage and timeScaleProperty.
     this.chargeAnimator = new ChargeAnimator( this );
 
     // Re-solve the circuit when voltages or resistances change.
     var solve = this.solve.bind( this );
 
     // Solve the circuit when any of the circuit element attributes change.
+    //REVIEW*: There are three addItemAddedListeners and two addItemRemovedListeners for the same circuitElements array.
+    //REVIEW*: Can these get grouped up more?
     this.circuitElements.addItemAddedListener( function( circuitElement ) {
       circuitElement.getCircuitProperties().forEach( function( property ) {
         property.lazyLink( solve );
@@ -112,6 +115,7 @@ define( function( require ) {
     this.circuitElements.addItemRemovedListener( function( circuitElement ) {
 
       // Delete orphaned vertices
+      //REVIEW*: remove* methods usually don't conditionally remove, maybe a better name to try to remove may be better?
       self.removeCircuitElementVertex( circuitElement.startVertexProperty.get() );
       self.removeCircuitElementVertex( circuitElement.endVertexProperty.get() );
 
@@ -131,10 +135,13 @@ define( function( require ) {
     this.circuitElements.addItemAddedListener( function( circuitElement ) {
 
       // Vertices may already exist for a Circuit when loading
+      //REVIEW*: removeCircuitElementVertex is a method doing the opposite (kinda)
       if ( !self.vertices.contains( circuitElement.startVertexProperty.get() ) ) {
         self.vertices.add( circuitElement.startVertexProperty.get() );
       }
 
+      //REVIEW*: There are a lot of cases where duplicate logic is done for both starting and ending vertices.
+      //REVIEW*: Would an array of vertex properties be helpful?
       if ( !self.vertices.contains( circuitElement.endVertexProperty.get() ) ) {
         self.vertices.add( circuitElement.endVertexProperty.get() );
       }
@@ -153,6 +160,7 @@ define( function( require ) {
       };
 
       // Only update when wires change since they are the only components that change their length
+      //REVIEW*: A tag (property) on CircuitElement (with override in Wire) of whether it changes length may be preferred.
       if ( circuitElement instanceof Wire ) {
         circuitElement.lengthProperty.link( updateCharges );
         circuitElement.disposeEmitter.addListener( function() {
@@ -160,7 +168,8 @@ define( function( require ) {
         } );
       }
 
-      // Layout  the charges in connected circuit elements when moved to the front
+      // Layout the charges in connected circuit elements when moved to the front
+      //REVIEW*: If layering changes, why do charges need to be updated?
       circuitElement.moveToFrontEmitter.addListener( updateCharges );
 
       // Remove the preceding listener when disposed
@@ -184,6 +193,7 @@ define( function( require ) {
 
     // @public (read-only) {Emitter} After the circuit physics is recomputed in solve(), some listeners need to update
     // themselves, such as the voltmeter and ammeter
+    //REVIEW*: What does read-only mean in this case? Presumably emitters (and most other objects like that) shouldn't ever change.
     this.circuitChangedEmitter = new Emitter();
 
     // @public (read-only) {Emitter} - Some actions only take place after an item has been dropped
