@@ -97,8 +97,7 @@ define( function( require ) {
     // @private {ChargeLayout} - create the charges in new circuits
     this.chargeLayout = new ChargeLayout( this );
 
-    // @private {ChargeAnimator} - move the charges with speed proportional to current
-    //REVIEW*: Appears to be used publicly to grab timeScaleRunningAverage and timeScaleProperty.
+    // @public {ChargeAnimator} - move the charges with speed proportional to current
     this.chargeAnimator = new ChargeAnimator( this );
 
     // Re-solve the circuit when voltages or resistances change.
