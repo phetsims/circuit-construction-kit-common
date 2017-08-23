@@ -50,6 +50,7 @@ define( function( require ) {
      * Restore the ammeter to its initial conditions
      * @public
      * @override REVIEW: I've been tagging @override tags, should it be discussed whether this for-sure standard/helpful
+     *           REVIEW(samreid): I went through and added some missing @override tags, I think it's best to have them
      */
     reset: function() {
       Meter.prototype.reset.call( this );

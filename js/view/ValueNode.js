@@ -185,6 +185,7 @@ define( function( require ) {
 
     /**
      * @public - dispose when no longer used
+     * @override
      */
     dispose: function() {
       Panel.prototype.dispose.call( this );

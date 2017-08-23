@@ -408,6 +408,7 @@ define( function( require ) {
 
     /**
      * @public - called during the view step
+     * @override
      */
     step: function() {
       CircuitElementNode.prototype.step.call( this );

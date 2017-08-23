@@ -70,6 +70,7 @@ define( function( require ) {
 
     /**
      * @public - dispose when no longer used
+     * @override
      */
     dispose: function() {
       this.disposeSwitchReadoutNode();
