@@ -35,8 +35,8 @@ define( function( require ) {
    */
   function Vertex( x, y, options ) {
 
-    // @private {number} - Index counter for debugging, can be shown with ?vertexDisplay=index
-    //REVIEW: If this is for debugging, is it temporary (could be removed), or could only be enabled when assertions are enabled?
+    // @private {number} - Index counter for hashing in CircuitLayerNode.  Also useful for debugging and can be shown
+    // with ?vertexDisplay=index
     this.index = counter++;
 
     options = _.extend( {
