@@ -47,10 +47,11 @@ define( function( require ) {
     // @public {Property.<number>} - when the length changes the ChargeLayout must be run
     this.lengthProperty = new NumberProperty( 0 );
 
-    // @private - batch changes so that the length doesn't change incrementally when individual vertices move
+    // @private {boolean} - batch changes so that the length doesn't change incrementally when individual vertices move
     this.wireDirty = true;
 
     // When the vertex moves, updates the resistance and charge path length.
+    //REVIEW: If it doesn't update something immediately, I like to think of it as marking it as dirty, instead of updating.
     var updateWire = function() {
       self.wireDirty = true;
     };
@@ -65,6 +66,7 @@ define( function( require ) {
     this.resistivityProperty.link( updateWire );
 
     // @private {function} - for disposal
+    //REVIEW: Again if memory is an issue (I'll investigate), having this as a method may be better.
     this.disposeWire = function() {
       self.vertexMovedEmitter.removeListener( updateWire );
       self.resistivityProperty.unlink( updateWire );
@@ -80,10 +82,12 @@ define( function( require ) {
     /**
      * Batch changes so that the length doesn't change incrementally when both vertices move one at a time.
      * @public
+     * REVIEW: Would normally name this update(), since it has no DT and conditionally updates based on the dirty flag.
      */
     step: function() {
       if ( this.wireDirty ) {
         var self = this;
+        //REVIEW: Another place where having a shortcut to the position properties (on the circuit element) would be nice.
         var startPosition = self.startVertexProperty.get().positionProperty.get();
         var endPosition = self.endVertexProperty.get().positionProperty.get();
         var viewLength = startPosition.distance( endPosition );
@@ -101,7 +105,7 @@ define( function( require ) {
     /**
      * Get the properties so that the circuit can be solved when changed.
      * @override
-     * @returns {Property[]}
+     * @returns {Property[]} REVIEW: Type of property?
      * @public
      */
     getCircuitProperties: function() {
@@ -111,6 +115,7 @@ define( function( require ) {
     /**
      * Releases all resources related to the Wire, called when it will no longer be used.
      * @public
+     * @override
      */
     dispose: function() {
       this.disposeWire();
@@ -121,6 +126,7 @@ define( function( require ) {
      * Returns an object with the state of the Wire, so that it can be saved/loaded.
      * @returns {Object}
      * @public
+     * REVIEW: Duck typing looks good for these objects, but it should be documented where the spec is.
      */
     attributesToStateObject: function() {
       return {

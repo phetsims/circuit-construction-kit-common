@@ -212,6 +212,7 @@ define( function( require ) {
 
     /**
      * @public - dispose resources when no longer used
+     * @override
      */
     dispose: function() {
       this.disposeSeriesAmmeterNode();

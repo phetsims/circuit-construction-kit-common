@@ -246,6 +246,7 @@ define( function( require ) {
     /**
      * Dispose when no longer used.
      * @public
+     * @override
      */
     dispose: function() {
       this.disposeCircuitConstructionKitLightBulbNode();

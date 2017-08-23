@@ -257,17 +257,18 @@ define( function( require ) {
     /**
      * Dispose the ResistorNode when it will no longer be used.
      * @public
+     * @override
      */
     dispose: function() {
       this.disposeResistorNode();
-      this.removeAllChildren();
+      this.removeAllChildren(); // REVIEW: Node.dispose does this now?
       FixedLengthCircuitElementNode.prototype.dispose.call( this );
     }
   }, {
 
     /**
      * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-     * @public
+     * @public {Array.<Image>}
      */
     webglSpriteNodes: [
       new Image( lifelikeResistorImage ),

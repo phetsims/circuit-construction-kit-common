@@ -312,7 +312,7 @@ define( function( require ) {
       this.disposeVertexNode();
 
       // children are shared, so we must remove the parent references
-      this.removeAllChildren();
+      this.removeAllChildren();  // REVIEW: Node.dispose does this now?
 
       Node.prototype.dispose.call( this );
     }
@@ -321,7 +321,7 @@ define( function( require ) {
 
     /**
      * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-     * @public
+     * @public {Array.<Image>}
      */
     webglSpriteNodes: [
       BLACK_CIRCLE_NODE, RED_CIRCLE_NODE

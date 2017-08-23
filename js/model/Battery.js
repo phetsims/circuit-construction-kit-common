@@ -59,7 +59,7 @@ define( function( require ) {
 
     /**
      * Get the properties so that the circuit can be solved when changed.
-     * @returns {Property[]}
+     * @returns {Property[]} REVIEW: Type of Properties? Property.<Circuit>?
      * @override
      * @public
      */
@@ -70,6 +70,7 @@ define( function( require ) {
     /**
      * @returns {Object} the attributes of the battery in a state object
      * @public
+     * REVIEW: Duck typing looks good for these objects, but it should be documented where the spec is.
      */
     attributesToStateObject: function() {
       return {

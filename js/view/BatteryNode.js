@@ -117,7 +117,7 @@ define( function( require ) {
 
     /**
      * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-     * @public
+     * @public {Array.<Image>}
      */
     webglSpriteNodes: [
       new Image( batteryImage ),

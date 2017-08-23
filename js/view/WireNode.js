@@ -420,17 +420,18 @@ define( function( require ) {
     /**
      * Dispose the WireNode when it will no longer be used.
      * @public
+     * @override
      */
     dispose: function() {
       this.disposeWireNode();
-      this.removeAllChildren();
+      this.removeAllChildren(); // REVIEW: Node.dispose does this now?
       CircuitElementNode.prototype.dispose.call( this );
     }
   }, {
 
     /**
      * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-     * @public
+     * @public {Array.<Image>}
      */
     webglSpriteNodes: [
       BLACK_LINE_NODE,

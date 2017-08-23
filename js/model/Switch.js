@@ -89,7 +89,7 @@ define( function( require ) {
       /**
        * Get the properties so that the circuit can be solved when changed.
        * @override
-       * @returns {Property[]}
+       * @returns {Property[]} REVIEW: Type of Properties? Property.<Circuit>?
        * @public
        */
       getCircuitProperties: function() {
@@ -100,6 +100,7 @@ define( function( require ) {
        * Get the attributes as a state object for serialization.
        * @returns {Object}
        * @public
+       * REVIEW: Duck typing looks good for these objects, but it should be documented where the spec is.
        */
       attributesToStateObject: function() {
         return {
