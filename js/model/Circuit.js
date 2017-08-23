@@ -104,34 +104,12 @@ define( function( require ) {
     var solve = this.solve.bind( this );
 
     // Solve the circuit when any of the circuit element attributes change.
-    //REVIEW*: There are three addItemAddedListeners and two addItemRemovedListeners for the same circuitElements array.
-    //REVIEW*: Can these get grouped up more?
     this.circuitElements.addItemAddedListener( function( circuitElement ) {
       circuitElement.getCircuitProperties().forEach( function( property ) {
         property.lazyLink( solve );
       } );
-    } );
-    this.circuitElements.addItemRemovedListener( function( circuitElement ) {
 
-      // Delete orphaned vertices
-      //REVIEW*: remove* methods usually don't conditionally remove, maybe a better name to try to remove may be better?
-      self.removeCircuitElementVertex( circuitElement.startVertexProperty.get() );
-      self.removeCircuitElementVertex( circuitElement.endVertexProperty.get() );
-
-      // Clear the selected element property so that the Edit panel for the element will disappear
-      if ( self.selectedCircuitElementProperty.get() === circuitElement ) {
-        self.selectedCircuitElementProperty.set( null );
-      }
-
-      circuitElement.getCircuitProperties().forEach( function( property ) {
-        property.unlink( solve );
-      } );
-
-      circuitElement.dispose();
-    } );
-
-    // When a new circuit element is added to a circuit, it has two unconnected vertices
-    this.circuitElements.addItemAddedListener( function( circuitElement ) {
+      // When a new circuit element is added to a circuit, it has two unconnected vertices
 
       // Vertices may already exist for a Circuit when loading
       //REVIEW*: removeCircuitElementVertex is a method doing the opposite (kinda)
@@ -144,10 +122,8 @@ define( function( require ) {
       if ( !self.vertices.contains( circuitElement.endVertexProperty.get() ) ) {
         self.vertices.add( circuitElement.endVertexProperty.get() );
       }
-    } );
 
-    // When any vertex moves, relayout all charges within the fixed-length connected component, see #100
-    this.circuitElements.addItemAddedListener( function( circuitElement ) {
+      // When any vertex moves, relayout all charges within the fixed-length connected component, see #100
       circuitElement.chargeLayoutDirty = true;
 
       var updateCharges = function() {
@@ -179,6 +155,23 @@ define( function( require ) {
       self.solve();
     } );
     this.circuitElements.addItemRemovedListener( function( circuitElement ) {
+
+      // Delete orphaned vertices
+      //REVIEW*: remove* methods usually don't conditionally remove, maybe a better name to try to remove may be better?
+      self.removeCircuitElementVertex( circuitElement.startVertexProperty.get() );
+      self.removeCircuitElementVertex( circuitElement.endVertexProperty.get() );
+
+      // Clear the selected element property so that the Edit panel for the element will disappear
+      if ( self.selectedCircuitElementProperty.get() === circuitElement ) {
+        self.selectedCircuitElementProperty.set( null );
+      }
+
+      circuitElement.getCircuitProperties().forEach( function( property ) {
+        property.unlink( solve );
+      } );
+
+      circuitElement.dispose();
+
       self.charges.removeAll( self.getChargesInCircuitElement( circuitElement ) );
 
       // Explicit call to solve since it is possible to remove a CircuitElement without removing any vertices.
