@@ -101,7 +101,6 @@ define( function( require ) {
     dispose: function() {
       this.solderNodeDisposed = true;
       this.disposeSolderNode();
-      this.removeAllChildren(); //REVIEW: This is done by Node.dispose now
       Node.prototype.dispose.call( this );
     }
   }, {
