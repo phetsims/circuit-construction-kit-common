@@ -266,6 +266,7 @@ define( function( require ) {
      * Get all Property instances that influence the circuit dynamics.
      * @abstract must be specified by the subclass
      * @returns {Property[]} REVIEW: Type of Properties? Property.<Circuit>?
+     *                       REVIEW(samreid): In discussion in Battery.js
      * @public
      */
     getCircuitProperties: function() {
