@@ -66,11 +66,6 @@ define( function( require ) {
     // @public (read-only) {NumberProperty} - the angle of the charge (for showing arrows)
     this.angleProperty = new NumberProperty( 0 );
 
-    // @public (read-only) {BooleanProperty} - true if the Charge is on the right hand side of a light bulb and hence
-    // must be layered in front of the socket node.
-    //REVIEW: I don't see where this is used (besides setting it). Can this be removed?
-    this.onRightHandSideOfLightBulbProperty = new BooleanProperty( false );
-
     // When the distance or updating properties change, update the 2d position of the charge
     //REVIEW: A multilink seems like overkill here, particularly since it's conditional. Furthermore, this looks like
     //REVIEW: a function that should be a method (for performance and memory). Can we have an update() function or
@@ -87,12 +82,8 @@ define( function( require ) {
           self.angleProperty.set( positionAndAngle.angle );
           self.positionProperty.set( position );
 
-          //REVIEW: Presumably this can get removed, so that the non-assertion parts of the function can just be:
+          //REVIEW: Can the non-assertion parts of the function can just be:
           //REVIEW: self.matrixProperty.set( self.circuitElement.getMatrix( distance ) );
-          self.onRightHandSideOfLightBulbProperty.set(
-            self.circuitElement instanceof LightBulb &&
-            self.distanceProperty.get() > self.circuitElement.chargePathLength / 2
-          );
         }
       } );
 
