@@ -60,6 +60,7 @@ define( function( require ) {
     /**
      * Get the properties so that the circuit can be solved when changed.
      * @returns {Property[]} REVIEW: Type of Properties? Property.<Circuit>?
+     *                       REVIEW(samreid): I used Property[] (meaning an array of Properties of any type) to match the overriden method
      * @override
      * @public
      */
@@ -71,6 +72,7 @@ define( function( require ) {
      * @returns {Object} the attributes of the battery in a state object
      * @public
      * REVIEW: Duck typing looks good for these objects, but it should be documented where the spec is.
+     * REVIEW(samreid): Where should the spec be?  Each CircuitElement subtype declares what it needs to store.
      */
     attributesToStateObject: function() {
       return {
