@@ -25,6 +25,7 @@ define( function( require ) {
   var Image = require( 'SCENERY/nodes/Image' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitElementViewType' );
 
   // images
   var fireImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
@@ -64,13 +65,13 @@ define( function( require ) {
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {LightBulb} lightBulb - the light bulb model
    * @param {Property.<boolean>} showResultsProperty - true if the sim can display values
-   * @param {Property.<string>} viewProperty - 'likelike'|'schematic'
+   * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
   function CircuitConstructionKitLightBulbNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb,
-                                                showResultsProperty, viewProperty, tandem, options ) {
+                                                showResultsProperty, viewTypeProperty, tandem, options ) {
     var self = this;
     options = _.extend( {
       icon: false
@@ -167,7 +168,7 @@ define( function( require ) {
       circuitConstructionKitScreenView,
       circuitLayerNode,
       lightBulb,
-      viewProperty,
+      viewTypeProperty,
       lightBulbNode,
       schematicNode,
       tandem,
@@ -187,14 +188,14 @@ define( function( require ) {
         circuitLayerNode,
         lightBulb,
         showResultsProperty,
-        viewProperty,
+        viewTypeProperty,
         tandem.createTandem( 'socketNode' ),
         options
       );
       var viewListener = function( view ) {
-        self.rayNodeContainer.visible = view === CircuitConstructionKitCommonConstants.LIFELIKE;
+        self.rayNodeContainer.visible = view === CircuitElementViewType.LIFELIKE;
       };
-      viewProperty.link( viewListener );
+      viewTypeProperty.link( viewListener );
       circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.addChild( this.socketNode );
 
       // Light rays are supposed to be behind everything else,
@@ -209,7 +210,7 @@ define( function( require ) {
       // Light rays are supposed to be behind everything else,
       // see https://github.com/phetsims/circuit-construction-kit-common/issues/161
       circuitLayerNode && circuitLayerNode.removeChildFromBackground( self.rayNodeContainer );
-      viewProperty.unlink( viewListener );
+      viewTypeProperty.unlink( viewListener );
       self.socketNode.dispose();
     };
   }

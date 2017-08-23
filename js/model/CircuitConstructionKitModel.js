@@ -22,6 +22,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Emitter = require( 'AXON/Emitter' );
   var EaseAnimation = require( 'TWIXT/EaseAnimation' );
+  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitElementViewType' );
 
   // phet-io modules
   var TNumber = require( 'ifphetio!PHET_IO/types/TNumber' );
@@ -100,9 +101,9 @@ define( function( require ) {
     } );
 
     // @public {Property.<string>} - whether to show lifelike or schematic representations
-    this.viewProperty = new Property( CircuitConstructionKitCommonConstants.LIFELIKE, {
+    this.viewTypeProperty = new Property( CircuitElementViewType.LIFELIKE, {
       validValues: CircuitConstructionKitCommonConstants.VIEW_CHOICES,
-      tandem: tandem.createTandem( 'viewProperty' ),
+      tandem: tandem.createTandem( 'viewTypeProperty' ),
       phetioValueType: TString
     } );
 
@@ -164,7 +165,7 @@ define( function( require ) {
 
     // When the view changes between schematic/lifelike, update the electron paths (because the LightBulb has a different
     // charge path depending on the view
-    this.viewProperty.link( function() {
+    this.viewTypeProperty.link( function() {
 
       // First update the length of the light bulbs
       self.circuit.circuitElements.forEach( function( circuitElement ) {
@@ -214,7 +215,7 @@ define( function( require ) {
       this.circuit.reset();
       this.voltmeter.reset();
       this.ammeter.reset();
-      this.viewProperty.reset();
+      this.viewTypeProperty.reset();
       this.currentZoomProperty.reset();
       this.selectedZoomProperty.reset();
 

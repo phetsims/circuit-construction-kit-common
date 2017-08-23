@@ -64,13 +64,13 @@ define( function( require ) {
    * @param {Resistor} resistor
    * @param {Property.<boolean>} showResultsProperty - not used here but appears in signature to keep same signature as
    *                                                 - other CircuitElementNode subclasses.
-   * @param {Property.<string>} viewProperty - 'lifelike' or 'schematic'
+   * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
   function ResistorNode( circuitConstructionKitScreenView, circuitLayerNode, resistor, showResultsProperty,
-                         viewProperty, tandem, options ) {
+                         viewTypeProperty, tandem, options ) {
 
     options = _.extend( { icon: false }, options );
 
@@ -221,7 +221,7 @@ define( function( require ) {
       circuitConstructionKitScreenView,
       circuitLayerNode,
       resistor,
-      viewProperty,
+      viewTypeProperty,
       lifelikeResistorImageNode,
       schematicNode,
       tandem,

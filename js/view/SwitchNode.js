@@ -20,6 +20,7 @@ define( function( require ) {
   var Path = require( 'SCENERY/nodes/Path' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
+  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitElementViewType' );
 
   // constants
   // dimensions for schematic battery
@@ -35,14 +36,14 @@ define( function( require ) {
     .addColorStop( 1, '#b56351' );
 
   /**
-   * @param {string} type - 'lifelike'|'schematic'
+   * @param {CircuitElementViewType} viewType
    * @param {Color|string|LinearGradient} fill
    * @param {number} thickness
    * @param {number} curveDiameter - the diameter of the circles in the slots
    * @param {boolean} closed - whether the switch is closed
    * @returns {Node}
    */
-  var createNode = function( type, fill, thickness, curveDiameter, closed ) {
+  var createNode = function( viewType, fill, thickness, curveDiameter, closed ) {
     var edgeRadius = thickness / 2;
 
     var leftSegmentNode = new Rectangle( 0,
@@ -74,7 +75,7 @@ define( function( require ) {
       x: SWITCH_LENGTH * SWITCH_START,
       fill: fill,
       stroke: 'black',
-      lineWidth: type === CircuitConstructionKitCommonConstants.SCHEMATIC ? 0 : 1,
+      lineWidth: viewType === CircuitElementViewType.SCHEMATIC ? 0 : 1,
       pickable: true
     } );
 
@@ -110,7 +111,7 @@ define( function( require ) {
       children: [ leftSegmentNode, rotatingSegmentNode, rightSegmentNode, lifelikeHinge ]
     } );
 
-    if ( type === CircuitConstructionKitCommonConstants.SCHEMATIC ) {
+    if ( viewType === CircuitElementViewType.SCHEMATIC ) {
       node.addChild( new Circle( thickness * 0.6, {
         fill: 'black',
         stroke: 'black',
@@ -128,21 +129,21 @@ define( function( require ) {
 
   // Create all of the images
   var lifelikeOpenNode = createNode(
-    CircuitConstructionKitCommonConstants.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, false
+    CircuitElementViewType.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, false
   );
   var lifelikeOpenImage = lifelikeOpenNode.toDataURLImageSynchronous();
 
   var lifelikeClosedNode = createNode(
-    CircuitConstructionKitCommonConstants.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, true
+    CircuitElementViewType.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, true
   );
   var lifelikeClosedImage = lifelikeClosedNode.toDataURLImageSynchronous();
 
   var schematicOpenImage = createNode(
-    CircuitConstructionKitCommonConstants.SCHEMATIC, 'black', CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH, 0, false
+    CircuitElementViewType.SCHEMATIC, 'black', CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH, 0, false
   ).toDataURLImageSynchronous();
 
   var schematicClosedImage = createNode(
-    CircuitConstructionKitCommonConstants.SCHEMATIC, 'black', CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH, 0, true
+    CircuitElementViewType.SCHEMATIC, 'black', CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH, 0, true
   ).toDataURLImageSynchronous();
 
   /**
@@ -152,13 +153,13 @@ define( function( require ) {
    * @param {Switch} circuitSwitch
    * @param {Property.<boolean>} showResultsProperty - supplied for consistency with other CircuitElementNode
    *                                                 - constructors
-   * @param {Property.<string>} viewProperty
+   * @param {Property.<string>} viewTypeProperty
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
   function SwitchNode( circuitConstructionKitScreenView, circuitLayerNode, circuitSwitch, showResultsProperty,
-                       viewProperty, tandem, options ) {
+                       viewTypeProperty, tandem, options ) {
 
     var self = this;
 
@@ -177,7 +178,7 @@ define( function( require ) {
       circuitConstructionKitScreenView,
       circuitLayerNode,
       circuitSwitch,
-      viewProperty,
+      viewTypeProperty,
       lifelikeNode,
       schematicNode,
       tandem,
@@ -206,7 +207,7 @@ define( function( require ) {
 
     // @private - For hit testing
     this.lifelikeOpenNode = createNode(
-      CircuitConstructionKitCommonConstants.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, false
+      CircuitElementViewType.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, false
     );
 
     // @private - clean up resources when no longer used.

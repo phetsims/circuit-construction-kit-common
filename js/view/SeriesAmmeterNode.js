@@ -20,6 +20,7 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Panel = require( 'SUN/Panel' );
+  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitElementViewType' );
 
   // strings
   var currentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/current' );
@@ -57,16 +58,16 @@ define( function( require ) {
    * @param {SeriesAmmeter} seriesAmmeter
    * @param {Property.<boolean>} showResultsProperty - supplied for consistency with other CircuitElementNode
    *                                                 - constructors
-   * @param {Property.<string>} viewProperty
+   * @param {Property.<string>} viewTypeProperty
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
   function SeriesAmmeterNode( circuitConstructionKitScreenView, circuitLayerNode, seriesAmmeter, showResultsProperty,
-                              viewProperty, tandem, options ) {
+                              viewTypeProperty, tandem, options ) {
     var self = this;
     options = options || {};
-    viewProperty = new Property( CircuitConstructionKitCommonConstants.LIFELIKE );
+    viewTypeProperty = new Property( CircuitElementViewType.LIFELIKE );
 
     // Charges go behind this panel to give the appearance they go through the ammeter
     var readoutText = new Text( WIDEST_LABEL, { fontSize: 15 } );
@@ -182,7 +183,7 @@ define( function( require ) {
       circuitConstructionKitScreenView,
       circuitLayerNode,
       seriesAmmeter,
-      viewProperty,
+      viewTypeProperty,
       lifelikeNode,
       new Node( { children: [ lifelikeNode ] } ),// reuse lifelike view for the schematic view
       tandem,

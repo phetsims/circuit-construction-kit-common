@@ -11,7 +11,6 @@ define( function( require ) {
   // modules
   var Property = require( 'AXON/Property' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
@@ -23,6 +22,7 @@ define( function( require ) {
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Image = require( 'SCENERY/nodes/Image' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitElementViewType' );
 
   // images
   var fireImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
@@ -35,7 +35,7 @@ define( function( require ) {
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - the main screen view, null for icon
    * @param {CircuitLayerNode} circuitLayerNode - Null if an icon is created
    * @param {FixedLengthCircuitElement} circuitElement - the corresponding model element
-   * @param {Property.<string>} viewProperty - 'lifelike'|'schematic'
+   * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Node} lifelikeNode - the Node that will display the component as a lifelike object.  Origin must be
    *                            - left-center
    * @param {Node} schematicNode - the Node that will display the component. Origin must be left-center.
@@ -44,7 +44,7 @@ define( function( require ) {
    * @constructor
    */
   function FixedLengthCircuitElementNode( circuitConstructionKitScreenView, circuitLayerNode, circuitElement,
-                                          viewProperty, lifelikeNode, schematicNode, tandem, options ) {
+                                          viewTypeProperty, lifelikeNode, schematicNode, tandem, options ) {
     assert && assert( lifelikeNode !== schematicNode, 'schematicNode should be different than lifelikeNode' );
     var self = this;
 
@@ -76,7 +76,7 @@ define( function( require ) {
 
     // Show the selected node
     var viewPropertyListener = function( view ) {
-      self.contentNode.children = [ view === CircuitConstructionKitCommonConstants.LIFELIKE ? lifelikeNode : schematicNode ];
+      self.contentNode.children = [ view === CircuitElementViewType.LIFELIKE ? lifelikeNode : schematicNode ];
 
       // Update the dimensions of the highlight.  For Switches, retain the original bounds (big enough to encapsulate
       // both schematic and lifelike open and closed).
@@ -84,7 +84,7 @@ define( function( require ) {
         self.highlightNode && self.highlightNode.recomputeBounds( self );
       }
     };
-    viewProperty.link( viewPropertyListener );
+    viewTypeProperty.link( viewPropertyListener );
 
     // Relink when start vertex changes
     circuitElement.vertexMovedEmitter.addListener( markAsDirty );
@@ -221,7 +221,7 @@ define( function( require ) {
       circuitLayerNode && CircuitConstructionKitCommonUtil.setInSceneGraph(
         false, circuitLayerNode.highlightLayer, self.highlightNode
       );
-      viewProperty.unlink( viewPropertyListener );
+      viewTypeProperty.unlink( viewPropertyListener );
 
       if ( !options.icon && updateFireMultilink ) {
         Property.unmultilink( updateFireMultilink );

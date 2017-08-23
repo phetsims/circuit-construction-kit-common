@@ -16,6 +16,7 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
   var Vector2 = require( 'DOT/Vector2' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitElementViewType' );
 
   // constants
 
@@ -53,11 +54,11 @@ define( function( require ) {
    * @param {Vertex} endVertex - the bottom Vertex
    * @param {number} resistance - in ohms
    * @param {Tandem} tandem
-   * @param {Property.<string>} viewProperty - 'lifelike' | 'schematic'
+   * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Object} [options]
    * @constructor
    */
-  function LightBulb( startVertex, endVertex, resistance, viewProperty, tandem, options ) {
+  function LightBulb( startVertex, endVertex, resistance, viewTypeProperty, tandem, options ) {
     options = _.extend( { highResistance: false }, options );
 
     // @public (read-only) {boolean} - true if the light bulb is a high resistance light bulb
@@ -70,7 +71,7 @@ define( function( require ) {
     this.vertexDelta = endVertex.positionProperty.get().minus( startVertex.positionProperty.get() );
 
     // @private
-    this.viewProperty = viewProperty;
+    this.viewTypeProperty = viewTypeProperty;
 
     FixedLengthCircuitElement.call(
       this,
@@ -106,7 +107,7 @@ define( function( require ) {
      */
     getPathLength: function( startVertex ) {
       var pathLength = 0;
-      var samplePoints = this.viewProperty.value === 'lifelike' ? LIFELIKE_SAMPLE_POINTS : SCHEMATIC_SAMPLE_POINTS;
+      var samplePoints = this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? LIFELIKE_SAMPLE_POINTS : SCHEMATIC_SAMPLE_POINTS;
       for ( var i = 0; i < samplePoints.length - 1; i++ ) {
         var point1 = this.getFilamentPathPoint( i, startVertex, samplePoints );
         var point2 = this.getFilamentPathPoint( i + 1, startVertex, samplePoints );
@@ -185,7 +186,7 @@ define( function( require ) {
 
       var previousAccumulatedDistance = 0;
       var accumulatedDistance = 0;
-      var samplePoints = this.viewProperty.value === 'lifelike' ? LIFELIKE_SAMPLE_POINTS : SCHEMATIC_SAMPLE_POINTS;
+      var samplePoints = this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? LIFELIKE_SAMPLE_POINTS : SCHEMATIC_SAMPLE_POINTS;
       for ( var i = 0; i < samplePoints.length - 1; i++ ) {
         var point1 = this.getFilamentPathPoint( i, this.startVertexProperty.get(), samplePoints );
         var point2 = this.getFilamentPathPoint( i + 1, this.startVertexProperty.get(), samplePoints );
@@ -224,13 +225,13 @@ define( function( require ) {
      * @param {Vector2} position
      * @param {Tandem} circuitVertexGroupTandem
      * @param {number} resistance
-     * @param {Property.<string>} viewProperty - 'lifelike'|'schematic'
+     * @param {Property.<CircuitElementViewType>} viewTypeProperty
      * @param {Tandem} tandem
      * @param {Object} [options]
      * @returns {LightBulb}
      * @public
      */
-    createAtPosition: function( position, circuitVertexGroupTandem, resistance, viewProperty, tandem, options ) {
+    createAtPosition: function( position, circuitVertexGroupTandem, resistance, viewTypeProperty, tandem, options ) {
 
       options = options || {};
       var translation = new Vector2( 19, 10 );
@@ -253,7 +254,7 @@ define( function( require ) {
         tandem: circuitVertexGroupTandem.createNextTandem()
       } );
 
-      return new LightBulb( startVertex, endVertex, resistance, viewProperty, tandem, options );
+      return new LightBulb( startVertex, endVertex, resistance, viewTypeProperty, tandem, options );
     }
   } );
 } );

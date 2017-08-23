@@ -25,6 +25,7 @@ define( function( require ) {
   var Color = require( 'SCENERY/util/Color' );
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitElementViewType' );
 
   // constants
   var LIFELIKE_LINE_WIDTH = 16; // line width in screen coordinates
@@ -144,16 +145,16 @@ define( function( require ) {
    * @param {Wire} wire
    * @param {Property.<boolean>} showResultsProperty - unused but provided to match the constructors of other circuit
    *                                                 - element nodes
-   * @param {Property.<string>} viewProperty - lifelike or schematic
+   * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Tandem} tandem
    * @constructor
    */
-  function WireNode( circuitConstructionKitScreenView, circuitLayerNode, wire, showResultsProperty, viewProperty,
+  function WireNode( circuitConstructionKitScreenView, circuitLayerNode, wire, showResultsProperty, viewTypeProperty,
                      tandem ) {
     var self = this;
 
-    // @private {Property.<string>} 'lifelike'|'schematic'
-    this.viewProperty = viewProperty;
+    // @private {Property.<CircuitElementViewType>}
+    this.viewTypeProperty = viewTypeProperty;
 
     // @private {CircuitLayerNode}
     this.circuitLayerNode = circuitLayerNode;
@@ -218,7 +219,7 @@ define( function( require ) {
       }
     };
 
-    viewProperty.link( markAsDirty );
+    viewTypeProperty.link( markAsDirty );
 
     /**
      * Update whether the WireNode is pickable
@@ -317,7 +318,7 @@ define( function( require ) {
 
       circuitLayerNode && circuitLayerNode.highlightLayer.removeChild( highlightNodeParent );
 
-      viewProperty.unlink( markAsDirty );
+      viewTypeProperty.unlink( markAsDirty );
       tandem.removeInstance( self );
 
       self.lineNode.dispose();
@@ -349,8 +350,8 @@ define( function( require ) {
      * @protected - CircuitConstructionKitLightBulbNode calls updateRender for its child socket node
      */
     updateRender: function() {
-      var view = this.viewProperty.value;
-      if ( view === CircuitConstructionKitCommonConstants.LIFELIKE ) {
+      var view = this.viewTypeProperty.value;
+      if ( view === CircuitElementViewType.LIFELIKE ) {
 
         // determine whether to use the forward or reverse gradient based on the angle
         var startPoint = this.wire.startVertexProperty.get().positionProperty.get();

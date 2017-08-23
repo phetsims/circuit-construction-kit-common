@@ -17,6 +17,7 @@ define( function( require ) {
   var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var RadioButtonGroup = require( 'SUN/buttons/RadioButtonGroup' );
+  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitElementViewType' );
 
   // constants
   var BATTERY_LENGTH = CircuitConstructionKitCommonConstants.BATTERY_LENGTH;
@@ -25,7 +26,7 @@ define( function( require ) {
   /**
    * @constructor
    */
-  function ViewRadioButtonGroup( viewProperty, tandem ) {
+  function ViewRadioButtonGroup( viewTypeProperty, tandem ) {
 
     // Create a battery which can be used in the views
     var startVertex = new Vertex( BATTERY_LENGTH / 2, 0 );
@@ -37,7 +38,7 @@ define( function( require ) {
     /**
      * Create a battery node to be used as an icon.
      *
-     * @param {string} view - 'lifelike' or 'schematic'
+     * @param {CircuitElementViewType} view
      * @param {Tandem} tandem
      * @returns {BatteryNode}
      */
@@ -48,17 +49,17 @@ define( function( require ) {
       } );
     };
     var lifelikeIcon = createBatteryNode(
-      CircuitConstructionKitCommonConstants.LIFELIKE, tandem.createTandem( 'lifelikeIcon' )
+      CircuitElementViewType.LIFELIKE, tandem.createTandem( 'lifelikeIcon' )
     );
     var schematicIcon = createBatteryNode(
-      CircuitConstructionKitCommonConstants.SCHEMATIC, tandem.createTandem( 'schematicIcon' )
+      CircuitElementViewType.SCHEMATIC, tandem.createTandem( 'schematicIcon' )
     );
-    RadioButtonGroup.call( this, viewProperty, [ {
-      value: CircuitConstructionKitCommonConstants.LIFELIKE,
+    RadioButtonGroup.call( this, viewTypeProperty, [ {
+      value: CircuitElementViewType.LIFELIKE,
       node: lifelikeIcon,
       tandemName: 'lifelikeRadioButton'
     }, {
-      value: CircuitConstructionKitCommonConstants.SCHEMATIC,
+      value: CircuitElementViewType.SCHEMATIC,
       node: schematicIcon,
       tandemName: 'schematicRadioButton'
     } ], {

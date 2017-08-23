@@ -34,6 +34,7 @@ define( function( require ) {
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Carousel = require( 'SUN/Carousel' );
   var PageControl = require( 'SUN/PageControl' );
+  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitElementViewType' );
 
   // strings
   var batteryString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery' );
@@ -65,13 +66,13 @@ define( function( require ) {
   /**
    * @param {Circuit} circuit
    * @param {Property.<boolean>} showLabelsProperty
-   * @param {Property.<string>} viewProperty
+   * @param {Property.<string>} viewTypeProperty
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function CircuitElementToolbox( circuit, showLabelsProperty, viewProperty, circuitLayerNode, tandem, options ) {
+  function CircuitElementToolbox( circuit, showLabelsProperty, viewTypeProperty, circuitLayerNode, tandem, options ) {
 
     options = _.extend( {
       orientation: 'vertical',
@@ -155,8 +156,8 @@ define( function( require ) {
       lineWidth: 4.5 // match with other toolbox icons
     } );
     var wireNode = new Node();
-    viewProperty.link( function( view ) {
-      wireNode.children = [ view === 'lifelike' ? lifelikeWireNode : schematicWireNode ];
+    viewTypeProperty.link( function( view ) {
+      wireNode.children = [ view === CircuitElementViewType.LIFELIKE ? lifelikeWireNode : schematicWireNode ];
     } );
     var wireToolNode = createCircuitElementToolNode( wireString, options.numberOfWires,
       wireNode,
@@ -176,7 +177,7 @@ define( function( require ) {
       null, 'normal', tandem.createTandem( 'rightIconBattery' ) );
     var rightBatteryToolNode = createCircuitElementToolNode( batteryString, options.numberOfRightBatteries,
       new BatteryNode( null, null, batteryModel,
-        null, viewProperty, tandem.createTandem( 'rightBatteryIcon' ), { icon: true }
+        null, viewTypeProperty, tandem.createTandem( 'rightBatteryIcon' ), { icon: true }
       ),
       function( circuitElement ) {
         return circuitElement instanceof Battery &&
@@ -199,21 +200,21 @@ define( function( require ) {
       Vector2.ZERO,
       circuit.vertexGroupTandem,
       CircuitConstructionKitCommonConstants.DEFAULT_RESISTANCE,
-      viewProperty,
+      viewTypeProperty,
       circuit.lightBulbGroupTandem.createNextTandem(), {
         highResistance: false
       } );
     var lightBulbToolNode = createCircuitElementToolNode( lightBulbString, options.numberOfLightBulbs,
       new CircuitConstructionKitLightBulbNode( null, null,
         lightBulbModel,
-        new Property( true ), viewProperty, tandem.createTandem( 'lightBulbIcon' ), { icon: true } ),
+        new Property( true ), viewTypeProperty, tandem.createTandem( 'lightBulbIcon' ), { icon: true } ),
       function( circuitElement ) { return circuitElement instanceof LightBulb && !circuitElement.highResistance; },
       function( position ) {
         return LightBulb.createAtPosition(
           position,
           circuit.vertexGroupTandem,
           CircuitConstructionKitCommonConstants.DEFAULT_RESISTANCE,
-          viewProperty,
+          viewTypeProperty,
           circuit.lightBulbGroupTandem.createNextTandem()
         );
       }, {
@@ -230,7 +231,7 @@ define( function( require ) {
     );
     var resistorToolNode = createCircuitElementToolNode( resistorString, options.numberOfResistors,
       new ResistorNode( null, null,
-        resistorModel, null, viewProperty, tandem.createTandem( 'resistorIcon' ), { icon: true }
+        resistorModel, null, viewTypeProperty, tandem.createTandem( 'resistorIcon' ), { icon: true }
       ),
       function( circuitElement ) {
         return circuitElement instanceof Resistor && circuitElement.resistorType === 'resistor';
@@ -249,7 +250,7 @@ define( function( require ) {
           new Vertex( 0, 0 ),
           new Vertex( SWITCH_LENGTH, 0 ),
           tandem.createTandem( 'switch' )
-        ), null, viewProperty, tandem.createTandem( 'switchIcon' ), {
+        ), null, viewTypeProperty, tandem.createTandem( 'switchIcon' ), {
           icon: true
         } ),
       function( circuitElement ) { return circuitElement instanceof Switch; },
@@ -275,7 +276,7 @@ define( function( require ) {
       var createGrabBagToolNode = function( resistorType, resistance, resistorLength, labelString, maxCount,
                                             iconModelTandem, iconTandem, groupTandem ) {
         var createGrabBagIcon = function( grabBagItem, tandem ) {
-          return new ResistorNode( null, null, grabBagItem, null, viewProperty, tandem, { icon: true } );
+          return new ResistorNode( null, null, grabBagItem, null, viewTypeProperty, tandem, { icon: true } );
         };
 
         var getGrabBagItemCreator = function( resistorType, resistance, resistorLength, groupTandem ) {
@@ -397,7 +398,7 @@ define( function( require ) {
             null,
             'high-voltage',
             tandem.createTandem( 'highVoltageIconBattery' )
-          ), null, viewProperty, tandem.createTandem( 'highVoltageBatteryIcon' ), { icon: true } ),
+          ), null, viewTypeProperty, tandem.createTandem( 'highVoltageBatteryIcon' ), { icon: true } ),
         function( circuitElement ) {
           return circuitElement instanceof Battery &&
                  circuitElement.initialOrientation === 'right' &&
@@ -426,19 +427,19 @@ define( function( require ) {
             Vector2.ZERO,
             circuit.vertexGroupTandem,
             1000,
-            viewProperty,
+            viewTypeProperty,
             circuit.lightBulbGroupTandem.createNextTandem(), {
               highResistance: true
             } ),
           new Property( true ),
-          viewProperty,
+          viewTypeProperty,
           tandem.createTandem( 'highResistanceLightBulbIcon' ), {
             icon: true
           } ),
         function( circuitElement ) { return circuitElement instanceof LightBulb && circuitElement.highResistance; },
         function( position ) {
           return LightBulb.createAtPosition( position, circuit.vertexGroupTandem,
-            CircuitConstructionKitCommonConstants.HIGH_RESISTANCE, viewProperty,
+            CircuitConstructionKitCommonConstants.HIGH_RESISTANCE, viewTypeProperty,
             circuit.lightBulbGroupTandem.createNextTandem(), {
               highResistance: true,
               editableRange: CircuitConstructionKitCommonConstants.HIGH_RESISTANCE_RANGE,
@@ -457,7 +458,7 @@ define( function( require ) {
               resistorType: 'highResistanceResistor', resistance: 1000
             } ),
           null,
-          viewProperty,
+          viewTypeProperty,
           tandem.createTandem( 'highResistanceResistorIcon' ), {
             icon: true
           } ),
@@ -535,7 +536,7 @@ define( function( require ) {
     } );
 
     // The schematic and lifelike icons have different dimensions, so update the spacing when the view type changes
-    viewProperty.link( function() {
+    viewTypeProperty.link( function() {
 
       // Track the spacings so that any non-filled pages can take the average spacing of the other pages
       var spacings = [];

@@ -151,7 +151,7 @@ define( function( require ) {
     this.circuitElementToolbox = new CircuitElementToolbox(
       circuitConstructionKitModel.circuit,
       circuitConstructionKitModel.showLabelsProperty,
-      circuitConstructionKitModel.viewProperty,
+      circuitConstructionKitModel.viewTypeProperty,
       this.circuitLayerNode,
       tandem.createTandem( 'circuitElementToolbox' ),
       options
@@ -178,7 +178,7 @@ define( function( require ) {
 
     // @private {ViewRadioButtonGroup}
     this.viewRadioButtonGroup = new ViewRadioButtonGroup(
-      circuitConstructionKitModel.viewProperty, tandem.createTandem( 'viewRadioButtonGroup' )
+      circuitConstructionKitModel.viewTypeProperty, tandem.createTandem( 'viewRadioButtonGroup' )
     );
 
     // @protected {DisplayOptionsPanel}

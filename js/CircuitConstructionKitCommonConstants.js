@@ -15,10 +15,6 @@ define( function( require ) {
   var Color = require( 'SCENERY/util/Color' );
 
   // constants
-  //REVIEW: Prefer an enumeration, (ViewType?) similar to Side.js, with if ( assert ) { Object.freeze( ViewType ); }
-  var LIFELIKE = 'lifelike';
-  var SCHEMATIC = 'schematic';
-
   var CircuitConstructionKitCommonConstants = {
 
     // Maximum size for Width or height of icons in the circuit element toolbox or sensor toolbox
@@ -121,10 +117,6 @@ define( function( require ) {
     THUMB_SIZE: new Dimension2( 18, 34 ),
 
     MAJOR_TICK_LENGTH: 20,
-
-    LIFELIKE: LIFELIKE,
-    SCHEMATIC: SCHEMATIC,
-    VIEW_CHOICES: [ LIFELIKE, SCHEMATIC ], //REVIEW: This array should exist in the enumeration (statically)
 
     // The main font size to use for labels and controls
     FONT_SIZE: 14

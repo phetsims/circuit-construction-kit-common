@@ -28,13 +28,13 @@ define( function( require ) {
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {LightBulb} lightBulb - the light bulb model
    * @param {Property.<boolean>} showResultsProperty - true if the sim can display values
-   * @param {Property.<string>} viewProperty - 'likelike'|'schematic'
+   * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
   function LightBulbSocketNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, showResultsProperty,
-                                viewProperty, tandem, options ) {
+                                viewTypeProperty, tandem, options ) {
 
     // Render the bulb socket only
     var lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ), {
@@ -49,7 +49,7 @@ define( function( require ) {
       pickable: false
     }, options );
     FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitLayerNode, lightBulb,
-      viewProperty, lightBulbNode, new Rectangle( 0, 0, 10, 10 ), tandem, options );
+      viewTypeProperty, lightBulbNode, new Rectangle( 0, 0, 10, 10 ), tandem, options );
 
     // Suppress the highlight for the socket, the highlight is shown by the CircuitConstructionKitLightBulbNode
     if ( this.highlightNode ) {

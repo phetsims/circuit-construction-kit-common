@@ -47,6 +47,7 @@ define( function( require ) {
   var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var Tandem = require( 'TANDEM/Tandem' );
+  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitElementViewType' );
 
   /**
    * @param {Circuit} circuit - the model Circuit
@@ -58,8 +59,8 @@ define( function( require ) {
   function CircuitLayerNode( circuit, circuitConstructionKitScreenView, tandem ) {
     var self = this;
 
-    // @private {Property.<string>} - 'lifelike' | 'schematic'
-    this.viewProperty = circuitConstructionKitScreenView.circuitConstructionKitModel.viewProperty;
+    // @private {Property.<CircuitElementViewType>}
+    this.viewTypeProperty = circuitConstructionKitScreenView.circuitConstructionKitModel.viewTypeProperty;
 
     // @private (read-only) {CircuitConstructionKitModel}
     this.circuitConstructionKitModel = circuitConstructionKitScreenView.circuitConstructionKitModel;
@@ -190,8 +191,8 @@ define( function( require ) {
 
     // choose layering for schematic vs lifelike.  HEADS UP, this means circuitLayerNode.addChild() will get overwritten
     // so all nodes must be added as children in the array above.
-    circuitConstructionKitScreenView.circuitConstructionKitModel.viewProperty.link( function( view ) {
-      self.children = (view === 'lifelike') ? lifelikeLayering : schematicLayering;
+    circuitConstructionKitScreenView.circuitConstructionKitModel.viewTypeProperty.link( function( view ) {
+      self.children = (view === CircuitElementViewType.LIFELIKE) ? lifelikeLayering : schematicLayering;
     } );
 
     // @public {Property.<Bounds2>} the visible bounds in the coordinate frame of the circuit.  Initialized with a
@@ -231,7 +232,7 @@ define( function( require ) {
             self,
             circuitElement,
             self.circuitConstructionKitModel.isValueDepictionEnabledProperty,
-            circuitConstructionKitScreenView.circuitConstructionKitModel.viewProperty,
+            circuitConstructionKitScreenView.circuitConstructionKitModel.viewTypeProperty,
             groupTandem.createNextTandem()
           );
           self.circuitElementNodeMap[ circuitElement.id ] = circuitElementNode;
@@ -244,7 +245,7 @@ define( function( require ) {
             var valueNode = new ValueNode(
               circuitElement,
               self.circuitConstructionKitModel.showValuesProperty,
-              self.circuitConstructionKitModel.viewProperty,
+              self.circuitConstructionKitModel.viewTypeProperty,
               tandem.createTandem( circuitElement.tandemName ).createTandem( 'valueNode' )
             );
 

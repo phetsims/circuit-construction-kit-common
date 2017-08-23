@@ -59,12 +59,12 @@ define( function( require ) {
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {Battery} battery
    * @param {Property.<boolean>} showResultsProperty - for consistency with other CircuitElementNode constructors
-   * @param {Property.<string>} viewProperty
+   * @param {Property.<string>} viewTypeProperty
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function BatteryNode( circuitConstructionKitScreenView, circuitLayerNode, battery, showResultsProperty, viewProperty,
+  function BatteryNode( circuitConstructionKitScreenView, circuitLayerNode, battery, showResultsProperty, viewTypeProperty,
                         tandem, options ) {
 
     // @public (read-only) {Battery} - the Battery rendered by this Node
@@ -89,7 +89,7 @@ define( function( require ) {
       circuitConstructionKitScreenView,
       circuitLayerNode,
       battery,
-      viewProperty,
+      viewTypeProperty,
       lifelikeNode,
       schematicNode,
       tandem,
