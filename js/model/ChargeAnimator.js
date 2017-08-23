@@ -116,8 +116,7 @@ define( function( require ) {
     // @private (read-only) {number} - factor that reduces the overall propagator speed when maximum speed is exceeded
     this.scale = 1;
 
-    // @private (read-only) {RunningAverage} - a running average over last time steps as a smoothing step
-    //REVIEW*: Publicly used in CircuitConstructionKitModel
+    // @public {RunningAverage} - a running average over last time steps as a smoothing step
     this.timeScaleRunningAverage = new RunningAverage( 30 );
 
     // @public (read-only) {NumberProperty} - how much the time should be slowed, 1 is full speed, 0.5 is running at
