@@ -166,7 +166,9 @@ define( function( require ) {
       this.endVertexProperty.get().positionProperty.hasListener( vertexMoved ) && this.endVertexProperty.get().positionProperty.unlink( vertexMoved );
 
       //REVIEW(samreid): are these lines necessary?
-      //REVIEW*: Presumably not, unless you want to retain a reference to this object but not the others.
+      //REVIEW: Presumably not, unless you want to retain a reference to this object but not the others.
+      //REVIEW(samreid): my main concern was about memory leaks.  Do you think it is necessary to null these out to
+      //REVIEW(samreid): prevent memory leaks?
       this.linkVertex = null;
       this.vertexMoved = null;
 

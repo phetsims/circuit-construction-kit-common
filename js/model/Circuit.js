@@ -180,7 +180,9 @@ define( function( require ) {
 
     // @public (read-only) {Emitter} After the circuit physics is recomputed in solve(), some listeners need to update
     // themselves, such as the voltmeter and ammeter
-    //REVIEW*: What does read-only mean in this case? Presumably emitters (and most other objects like that) shouldn't ever change.
+    //REVIEW: What does read-only mean in this case? Presumably emitters (and most other objects like that) shouldn't ever change.
+    //REVIEW(samreid): I meant to convey the idea that this.circuitChangedEmitter should not be changed to any other instance.
+    //REVIEW(samreid): Perhaps everyone already knows that?
     this.circuitChangedEmitter = new Emitter();
 
     // @public (read-only) {Emitter} - Some actions only take place after an item has been dropped
