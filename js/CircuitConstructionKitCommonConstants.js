@@ -12,22 +12,14 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var Range = require( 'DOT/Range' );
-  var inherit = require( 'PHET_CORE/inherit' );
   var Color = require( 'SCENERY/util/Color' );
 
   // constants
+  //REVIEW: Prefer an enumeration, (ViewType?) similar to Side.js, with if ( assert ) { Object.freeze( ViewType ); }
   var LIFELIKE = 'lifelike';
   var SCHEMATIC = 'schematic';
 
-  /**
-   * @constructor
-   */
-  function CircuitConstructionKitCommonConstants() {
-  }
-
-  circuitConstructionKitCommon.register( 'CircuitConstructionKitCommonConstants', CircuitConstructionKitCommonConstants );
-
-  return inherit( Object, CircuitConstructionKitCommonConstants, {}, {
+  var CircuitConstructionKitCommonConstants = {
 
     // Maximum size for Width or height of icons in the circuit element toolbox or sensor toolbox
     TOOLBOX_ICON_SIZE: 60,
@@ -132,9 +124,13 @@ define( function( require ) {
 
     LIFELIKE: LIFELIKE,
     SCHEMATIC: SCHEMATIC,
-    VIEW_CHOICES: [ LIFELIKE, SCHEMATIC ],
+    VIEW_CHOICES: [ LIFELIKE, SCHEMATIC ], //REVIEW: This array should exist in the enumeration (statically)
 
     // The main font size to use for labels and controls
     FONT_SIZE: 14
-  } );
+  };
+
+  circuitConstructionKitCommon.register( 'CircuitConstructionKitCommonConstants', CircuitConstructionKitCommonConstants );
+
+  return CircuitConstructionKitCommonConstants;
 } );

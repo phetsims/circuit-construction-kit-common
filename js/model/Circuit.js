@@ -37,12 +37,12 @@ define( function( require ) {
   var TString = require( 'ifphetio!PHET_IO/types/TString' );
 
   // constants
-  var CURRENT_TYPES = [ 'electrons', 'conventional' ];
+  var CURRENT_TYPES = [ 'electrons', 'conventional' ]; //REVIEW: Prefer enumeration, put this array in the enumeration
   var SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
   var BUMP_AWAY_RADIUS = 20; // If two vertices are too close together after one is released, and they could not be
                              // joined then bump them apart so they do not look connected.
 
-  var trueFunction = function() {return true;}; // Lower cased so IDEA doesn't think it is a constructor
+  var trueFunction = _.constant( true ); // Lower cased so IDEA doesn't think it is a constructor
 
   /**
    * @param {Tandem} tandem
@@ -101,7 +101,7 @@ define( function( require ) {
     this.chargeAnimator = new ChargeAnimator( this );
 
     // Re-solve the circuit when voltages or resistances change.
-    var solve = function() { self.solve(); };
+    var solve = this.solve.bind( this );
 
     // Solve the circuit when any of the circuit element attributes change.
     this.circuitElements.addItemAddedListener( function( circuitElement ) {
@@ -254,7 +254,7 @@ define( function( require ) {
     this.vertexDroppedEmitter.addListener( function( vertex ) {
       self.stepActions.push( function() {
 
-        // Collect nearest vertices 
+        // Collect nearest vertices
         var neighbors = self.getNeighboringVertices( vertex );
 
         // Also consider the vertex being dropped for comparison with neighbors
