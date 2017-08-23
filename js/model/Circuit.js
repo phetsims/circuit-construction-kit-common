@@ -112,7 +112,7 @@ define( function( require ) {
       // When a new circuit element is added to a circuit, it has two unconnected vertices
 
       // Vertices may already exist for a Circuit when loading
-      //REVIEW*: removeCircuitElementVertex is a method doing the opposite (kinda)
+      //REVIEW*: removeCircuitElementVertexIfOrphaned is a method doing the opposite (kinda)
       if ( !self.vertices.contains( circuitElement.startVertexProperty.get() ) ) {
         self.vertices.add( circuitElement.startVertexProperty.get() );
       }
@@ -157,9 +157,8 @@ define( function( require ) {
     this.circuitElements.addItemRemovedListener( function( circuitElement ) {
 
       // Delete orphaned vertices
-      //REVIEW*: remove* methods usually don't conditionally remove, maybe a better name to try to remove may be better?
-      self.removeCircuitElementVertex( circuitElement.startVertexProperty.get() );
-      self.removeCircuitElementVertex( circuitElement.endVertexProperty.get() );
+      self.removeCircuitElementVertexIfOrphaned( circuitElement.startVertexProperty.get() );
+      self.removeCircuitElementVertexIfOrphaned( circuitElement.endVertexProperty.get() );
 
       // Clear the selected element property so that the Edit panel for the element will disappear
       if ( self.selectedCircuitElementProperty.get() === circuitElement ) {
@@ -603,7 +602,7 @@ define( function( require ) {
      * @param {Vertex} vertex
      * @private
      */
-    removeCircuitElementVertex: function( vertex ) {
+    removeCircuitElementVertexIfOrphaned: function( vertex ) {
       if ( this.getNeighborCircuitElements( vertex ).length === 0 && !vertex.blackBoxInterfaceProperty.get() ) {
         this.vertices.remove( vertex );
       }
