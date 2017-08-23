@@ -104,7 +104,7 @@ define( function( require ) {
     this.disposeEmitter = new Emitter();
 
     // Signify that a Vertex moved
-    //REVIEW: seems like it should be a method (bound to a property) for memory purposes. See notes below.
+    //REVIEW*: seems like it should be a method (bound to a property) for memory purposes. See notes below.
     var vertexMoved = function() {
       self.vertexMovedEmitter.emit();
     };
@@ -114,7 +114,7 @@ define( function( require ) {
      * @param {Vertex} newVertex - the new vertex
      * @param {Vertex} oldVertex - the previous vertex
      */
-      //REVIEW: Would be better as a method, so it doesn't create new function objects. Then bind it for the listeners
+      //REVIEW*: Would be better as a method, so it doesn't create new function objects. Then bind it for the listeners
       //REVIEW: below (and for the dispose method)
     var linkVertex = function( newVertex, oldVertex ) {
         oldVertex.positionProperty.unlink( vertexMoved );
@@ -125,7 +125,7 @@ define( function( require ) {
         }
       };
 
-    //REVIEW: The position properties of the vertex properties are used a ton. Maybe a getter for getStartPositionProperty()
+    //REVIEW*: The position properties of the vertex properties are used a ton. Maybe a getter for getStartPositionProperty()
     //REVIEW: / getEndPositionProperty() would help make things more readable?
     this.startVertexProperty.get().positionProperty.link( vertexMoved );
     this.endVertexProperty.get().positionProperty.link( vertexMoved );
@@ -164,13 +164,15 @@ define( function( require ) {
       this.startVertexProperty.get().positionProperty.hasListener( vertexMoved ) && this.startVertexProperty.get().positionProperty.unlink( vertexMoved );
       this.endVertexProperty.get().positionProperty.hasListener( vertexMoved ) && this.endVertexProperty.get().positionProperty.unlink( vertexMoved );
 
-      //REVIEW: If listeners are getting notified that something will be disposed, presumably it should be before disposing inner components?
-      this.disposeEmitter.emit();
-      this.disposeEmitter.removeAllListeners();
-
       //REVIEW(samreid): are these lines necessary?
       this.linkVertex = null;
       this.vertexMoved = null;
+
+      //REVIEW: If listeners are getting notified that something will be disposed, presumably it should be before disposing inner components?
+      //REVIEW(samreid): I thought it was more important that the listeners are notified after disposal is complete (or
+      //REVIEW(samreid): as close to it as possible, but I guess it depends how this is being used.
+      this.disposeEmitter.emit();
+      this.disposeEmitter.removeAllListeners();
     },
 
     /**
@@ -235,12 +237,12 @@ define( function( require ) {
     /**
      * Gets the 2D Position along the CircuitElement corresponding to the given scalar distance
      * @param {number} distanceAlongWire - the scalar distance from one endpoint to another.
-     * @returns {Vector2} the position in view coordinates REVIEW: Definitely not returning a Vector2.
-     * REVIEW: I see no reason not to split this into two functions. Sometimes only one of the two things computed is
+     * @returns {Vector2} the position in view coordinates REVIEW*: Definitely not returning a Vector2.
+     * REVIEW*: I see no reason not to split this into two functions. Sometimes only one of the two things computed is
      * REVIEW: used, and it wouldn't require creating another temporary object.
      *
-     * REVIEW: If both are needed, can we just return a Matrix that has the position/angle information (assuming
-     * REVIEW: Charge switches to use a Matrix3 instead of position/angle independently)
+     * REVIEW*: If both are needed, can we just return a Matrix that has the position/angle information (assuming
+     * REVIEW*: Charge switches to use a Matrix3 instead of position/angle independently)
      * @public
      */
     getPositionAndAngle: function( distanceAlongWire ) {

@@ -26,8 +26,8 @@ define( function( require ) {
   var counter = 0;
 
   /**
-   * REVIEW: Most usages either use a Vector2, or could use Vector2.ZERO (and we duplicate initial vector references).
-   * REVIEW: Prefer Vector2 input instead of x,y
+   * REVIEW*: Most usages either use a Vector2, or could use Vector2.ZERO (and we duplicate initial vector references).
+   * REVIEW*: Prefer Vector2 input instead of x,y
    * @param {number} x - position (screen coordinates) in x
    * @param {number} y - position (screen coordinates) in y
    * @param {Object} [options]

@@ -37,7 +37,7 @@ define( function( require ) {
   var TString = require( 'ifphetio!PHET_IO/types/TString' );
 
   // constants
-  var CURRENT_TYPES = [ 'electrons', 'conventional' ]; //REVIEW: Prefer enumeration, put this array in the enumeration
+  var CURRENT_TYPES = [ 'electrons', 'conventional' ]; //REVIEW*: Prefer enumeration, put this array in the enumeration
   var SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
   var BUMP_AWAY_RADIUS = 20; // If two vertices are too close together after one is released, and they could not be
                              // joined then bump them apart so they do not look connected.

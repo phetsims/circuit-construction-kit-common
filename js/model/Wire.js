@@ -83,12 +83,12 @@ define( function( require ) {
     /**
      * Batch changes so that the length doesn't change incrementally when both vertices move one at a time.
      * @public
-     * REVIEW: Would normally name this update(), since it has no DT and conditionally updates based on the dirty flag.
+     * REVIEW*: Would normally name this update(), since it has no DT and conditionally updates based on the dirty flag.
      */
     step: function() {
       if ( this.wireDirty ) {
         var self = this;
-        //REVIEW: Another place where having a shortcut to the position properties (on the circuit element) would be nice.
+        //REVIEW*: Another place where having a shortcut to the position properties (on the circuit element) would be nice.
         var startPosition = self.startVertexProperty.get().positionProperty.get();
         var endPosition = self.endVertexProperty.get().positionProperty.get();
         var viewLength = startPosition.distance( endPosition );

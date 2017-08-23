@@ -56,7 +56,7 @@ define( function( require ) {
     // @public (read-only) {Property.<Vector2>} - the 2d position of the charge
     this.positionProperty = new Property( Vector2.ZERO );
 
-    //REVIEW: It may be worse for memory (but better for simplicity/performance), but instead of an independent
+    //REVIEW*: It may be worse for memory (but better for simplicity/performance), but instead of an independent
     //REVIEW: position/angle, it would be possible to have a matrixProperty that includes both. It looks like ChargeNode
     //REVIEW: has to fully update its transform multiple times upon any change, as the position/angle changes both
     //REVIEW: trigger a full updateTransform in ChargeNode.
@@ -64,7 +64,7 @@ define( function( require ) {
     this.angleProperty = new NumberProperty( 0 );
 
     // When the distance or updating properties change, update the 2d position of the charge
-    //REVIEW: A multilink seems like overkill here, particularly since it's conditional. Furthermore, this looks like
+    //REVIEW*: A multilink seems like overkill here, particularly since it's conditional. Furthermore, this looks like
     //REVIEW: a function that should be a method (for performance and memory). Can we have an update() function or
     //REVIEW: equivalent, and call it either when setLocation() is called or from ChargeAnimator's location where
     //REVIEW: charges can then be updated? This should reduce calls to it, be a bit simpler, and have lower memory.
@@ -78,7 +78,7 @@ define( function( require ) {
           self.angleProperty.set( positionAndAngle.angle );
           self.positionProperty.set( position );
 
-          //REVIEW: Can the non-assertion parts of the function can just be:
+          //REVIEW*: Can the non-assertion parts of the function can just be:
           //REVIEW: self.matrixProperty.set( self.circuitElement.getMatrix( distance ) );
         }
       } );
