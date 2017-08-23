@@ -132,27 +132,18 @@ define( function( require ) {
     this.startVertexProperty.lazyLink( linkVertex );
     this.endVertexProperty.lazyLink( linkVertex );
 
-    // @private {function} - for disposal
-    //REVIEW: This should be part of dispose() as a method? It's creating extra closures for every element right now.
-    this.disposeCircuitElement = function() {
-      self.startVertexProperty.unlink( linkVertex );
-      self.endVertexProperty.unlink( linkVertex );
-
-      // TODO: how are these listeners sometimes already detached? See https://github.com/phetsims/circuit-construction-kit-dc/issues/144
-      self.startVertexProperty.get().positionProperty.hasListener( vertexMoved ) && self.startVertexProperty.get().positionProperty.unlink( vertexMoved );
-      self.endVertexProperty.get().positionProperty.hasListener( vertexMoved ) && self.endVertexProperty.get().positionProperty.unlink( vertexMoved );
-
-      //REVIEW: If listeners are getting notified that something will be disposed, presumably it should be before disposing inner components?
-      self.disposeEmitter.emit();
-      self.disposeEmitter.removeAllListeners();
-    };
-
     // @public (read-only by clients, writable-by-subclasses) {number} the distance the charges must take to get to the
     // other side of the component. This is typically the distance between vertices, but not for light bulbs.  This
     // value is constant, except for wires which can have their length changed.
     this.chargePathLength = chargePathLength;
 
     tandem.addInstance( this, TObject );
+
+    // @private - stored for disposal
+    this.linkVertex = linkVertex;
+
+    // @private - stored for disposal
+    this.vertexMoved = vertexMoved;
   }
 
   circuitConstructionKitCommon.register( 'CircuitElement', CircuitElement );
@@ -164,7 +155,22 @@ define( function( require ) {
      * @public
      */
     dispose: function() {
-      this.disposeCircuitElement();
+      var linkVertex = this.linkVertex;
+      var vertexMoved = this.vertexMoved;
+      this.startVertexProperty.unlink( linkVertex );
+      this.endVertexProperty.unlink( linkVertex );
+
+      // TODO: how are these listeners sometimes already detached? See https://github.com/phetsims/circuit-construction-kit-dc/issues/144
+      this.startVertexProperty.get().positionProperty.hasListener( vertexMoved ) && this.startVertexProperty.get().positionProperty.unlink( vertexMoved );
+      this.endVertexProperty.get().positionProperty.hasListener( vertexMoved ) && this.endVertexProperty.get().positionProperty.unlink( vertexMoved );
+
+      //REVIEW: If listeners are getting notified that something will be disposed, presumably it should be before disposing inner components?
+      this.disposeEmitter.emit();
+      this.disposeEmitter.removeAllListeners();
+
+      //REVIEW(samreid): are these lines necessary?
+      this.linkVertex = null;
+      this.vertexMoved = null;
     },
 
     /**
