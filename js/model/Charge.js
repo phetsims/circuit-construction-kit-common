@@ -42,12 +42,6 @@ define( function( require ) {
     // @public (read-only) {CircuitElement} - the CircuitElement the Charge is in, changed by Charge.setLocation
     this.circuitElement = circuitElement;
 
-    // @private (read-only) {boolean} - whether the charge has been disposed, to aid in debugging
-    //REVIEW: If for debugging, can this be removed, or set only when assertions are enabled? Would help memory to remove, particularly since a lot
-    //REVIEW: of charges get created.
-    //REVIEW(samreid): This was once very useful, but now I think it can be removed.
-    this.deleted = false;
-
     // @public (read-only) {NumberProperty} - the distance the charge has traveled in its CircuitElement in view
     // coordinates
     this.distanceProperty = new NumberProperty( distance );
@@ -78,7 +72,6 @@ define( function( require ) {
     var multilink = Property.multilink( [ this.distanceProperty, this.updatingPositionProperty ],
       function( distance, updating ) {
         if ( updating ) {
-          assert && assert( !self.deleted, 'Charge was deleted' );
           assert && assert( !isNaN( distance ), 'charge position was not a number' );
           var positionAndAngle = self.circuitElement.getPositionAndAngle( distance );
           var position = positionAndAngle.position;
@@ -101,9 +94,7 @@ define( function( require ) {
     //REVIEW: We should not be creating copies of this function for objects that get created a lot, as it presumably
     //REVIEW: increases the amount of memory used. This looks exactly like something that should be a method instead.
     this.disposeCharge = function() {
-      assert && assert( !self.deleted, 'cannot delete twice' );
       multilink.dispose();
-      self.deleted = true;
       self.disposeEmitter.emit();
       self.disposeEmitter.removeAllListeners();
     };
