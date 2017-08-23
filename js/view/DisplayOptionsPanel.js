@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CurrentType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CurrentType' );
   var CircuitConstructionKitPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitPanel' );
   var ConventionalCurrentArrowNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ConventionalCurrentArrowNode' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -50,7 +51,7 @@ define( function( require ) {
 
     /**
      * Create an AquaRadioButton for the specified kind of current
-     * @param {string} currentType - 'electrons'|'conventional'
+     * @param {CurrentType} currentType
      * @param {Node} node - the Node to display in the button
      * @param {Tandem} tandem
      * @returns {AquaRadioButton}
@@ -83,10 +84,10 @@ define( function( require ) {
     } );
 
     var electronsRadioButton = createRadioButton(
-      'electrons', electronsBox, tandem.createTandem( 'electronsRadioButton' )
+      CurrentType.ELECTRONS, electronsBox, tandem.createTandem( 'electronsRadioButton' )
     );
     var conventionalRadioButton = createRadioButton(
-      'conventional', conventionalBox, tandem.createTandem( 'conventionalRadioButton' )
+      CurrentType.CONVENTIONAL, conventionalBox, tandem.createTandem( 'conventionalRadioButton' )
     );
 
     // Gray out current view options when current is not selected.

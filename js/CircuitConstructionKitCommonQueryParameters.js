@@ -10,6 +10,7 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var CurrentType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CurrentType' );
 
   var CircuitConstructionKitCommonQueryParameters = window.QueryStringMachine.getAll( {
 
@@ -50,8 +51,14 @@ define( function( require ) {
 
     // For Black Box Study & PhET-iO
     currentType: {
-      type: 'string',
-      defaultValue: 'electrons'
+      type: 'custom',
+      defaultValue: CurrentType.ELECTRONS,
+      validValues: CurrentType.VALUES,
+      parse: function( string ) {
+        return string === 'electrons' ? CurrentType.ELECTRONS :
+               string === 'conventional' ? CurrentType.CONVENTIONAL :
+               new Error( 'invalid value: ' + string );
+      }
     },
 
     // For Black Box Study & PhET-iO

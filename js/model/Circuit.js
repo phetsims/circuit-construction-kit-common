@@ -30,6 +30,7 @@ define( function( require ) {
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
   var Vector2 = require( 'DOT/Vector2' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var CurrentType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CurrentType' );
 
   // phet-io modules
   var TNumber = require( 'ifphetio!PHET_IO/types/TNumber' );
@@ -37,7 +38,6 @@ define( function( require ) {
   var TString = require( 'ifphetio!PHET_IO/types/TString' );
 
   // constants
-  var CURRENT_TYPES = [ 'electrons', 'conventional' ]; //REVIEW*: Prefer enumeration, put this array in the enumeration
   var SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
   var BUMP_AWAY_RADIUS = 20; // If two vertices are too close together after one is released, and they could not be
                              // joined then bump them apart so they do not look connected.
@@ -79,7 +79,7 @@ define( function( require ) {
 
     // @public {Property.<string>} - whether to show charges or conventional current
     this.currentTypeProperty = new Property( CircuitConstructionKitCommonQueryParameters.currentType, {
-      validValues: CURRENT_TYPES,
+      validValues: CurrentType.VALUES,
       tandem: tandem.createTandem( 'currentTypeProperty' ),
       phetioValueType: TString
     } );

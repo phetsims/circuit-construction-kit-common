@@ -12,6 +12,7 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CurrentType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CurrentType' );
   var Charge = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Charge' );
   var inherit = require( 'PHET_CORE/inherit' );
 
@@ -61,7 +62,7 @@ define( function( require ) {
                                (firstChargePosition + lastChargePosition) / 2 :
                                i * spacing + offset;
 
-          var desiredCharge = this.circuit.currentTypeProperty.get() === 'electrons' ? -1 : +1;
+          var desiredCharge = this.circuit.currentTypeProperty.get() === CurrentType.ELECTRONS ? -1 : +1;
 
           if ( charges.length > 0 &&
                charges[ 0 ].charge === desiredCharge &&

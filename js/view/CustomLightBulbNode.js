@@ -38,7 +38,8 @@ define( function( require ) {
 
     options = _.extend( {
       baseOnly: false,
-      highResistance: true
+      highResistance: true,
+      scale: 1
     }, options );
 
     // @private (read-only) {boolean]
