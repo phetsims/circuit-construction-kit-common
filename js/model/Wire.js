@@ -107,6 +107,7 @@ define( function( require ) {
      * Get the properties so that the circuit can be solved when changed.
      * @override
      * @returns {Property[]} REVIEW: Type of property?
+     * REVIEW(samreid): In discussion in Battery.js
      * @public
      */
     getCircuitProperties: function() {
