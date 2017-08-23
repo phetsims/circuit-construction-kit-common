@@ -196,7 +196,7 @@ define( function( require ) {
     );
 
     var lightBulbModel = LightBulb.createAtPosition(
-      new Vector2( 0, 0 ),
+      Vector2.ZERO,
       circuit.vertexGroupTandem,
       CircuitConstructionKitCommonConstants.DEFAULT_RESISTANCE,
       viewProperty,
@@ -423,7 +423,7 @@ define( function( require ) {
           null,
           null,
           LightBulb.createAtPosition(
-            new Vector2( 0, 0 ),
+            Vector2.ZERO,
             circuit.vertexGroupTandem,
             1000,
             viewProperty,

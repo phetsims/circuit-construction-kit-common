@@ -34,15 +34,14 @@ define( function( require ) {
     } );
 
     // @public {Property.<Vector2>} - the position of the tip of the red probe in model=view coordinates.
-    //REVIEW: Use Vector2.ZERO to avoid allocations (for the zero vector)
-    this.redProbePositionProperty = new Property( new Vector2(), {
+    this.redProbePositionProperty = new Property( Vector2.ZERO, {
       tandem: tandem.createTandem( 'redProbePositionProperty' ),
       phetioValueType: TVector2
     } );
 
     // @public {Property.<Vector2>} - the position of the black probe in model=view coordinates
     //REVIEW: Use Vector2.ZERO to avoid allocations (for the zero vector)
-    this.blackProbePositionProperty = new Property( new Vector2(), {
+    this.blackProbePositionProperty = new Property( Vector2.ZERO, {
       tandem: tandem.createTandem( 'blackProbePositionProperty' ),
       phetioValueType: TVector2
     } );
