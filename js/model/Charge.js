@@ -45,6 +45,7 @@ define( function( require ) {
     // @private (read-only) {boolean} - whether the charge has been disposed, to aid in debugging
     //REVIEW: If for debugging, can this be removed, or set only when assertions are enabled? Would help memory to remove, particularly since a lot
     //REVIEW: of charges get created.
+    //REVIEW(samreid): This was once very useful, but now I think it can be removed.
     this.deleted = false;
 
     // @public (read-only) {NumberProperty} - the distance the charge has traveled in its CircuitElement in view
@@ -54,10 +55,13 @@ define( function( require ) {
     // @public {BooleanProperty} - To improve performance, disable updating while the position of the charge is changed
     // many times during the update step.
     //REVIEW: Presumably this can be removed, see note below for the multilink on proposed strategy
+    //REVIEW(samreid): Even if we use a single matrix instead of separate position/angle attributes, there are several
+    //REVIEW(samreid): updates during each step, and I suspect it would still be good to batch them instead of letting
+    //REVIEW(samreid): intermediate values update the view.
     this.updatingPositionProperty = new BooleanProperty( true );
 
     // @public (read-only) {Property.<Vector2>} - the 2d position of the charge
-    this.positionProperty = new Property( new Vector2() ); // REVIEW: Use Vector2.ZERO so we don't create extra vectors?
+    this.positionProperty = new Property( Vector2.ZERO );
 
     //REVIEW: It may be worse for memory (but better for simplicity/performance), but instead of an independent
     //REVIEW: position/angle, it would be possible to have a matrixProperty that includes both. It looks like ChargeNode
