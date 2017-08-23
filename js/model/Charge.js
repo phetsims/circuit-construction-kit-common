@@ -69,7 +69,7 @@ define( function( require ) {
     //REVIEW: a function that should be a method (for performance and memory). Can we have an update() function or
     //REVIEW: equivalent, and call it either when setLocation() is called or from ChargeAnimator's location where
     //REVIEW: charges can then be updated? This should reduce calls to it, be a bit simpler, and have lower memory.
-    var multilink = Property.multilink( [ this.distanceProperty, this.updatingPositionProperty ],
+    this.chargeMultilink = Property.multilink( [ this.distanceProperty, this.updatingPositionProperty ],
       function( distance, updating ) {
         if ( updating ) {
           assert && assert( !isNaN( distance ), 'charge position was not a number' );
@@ -89,15 +89,6 @@ define( function( require ) {
 
     // @public (read-only) {Emitter} send notifications when the charge is disposed, so the view can be disposed.
     this.disposeEmitter = new Emitter();
-
-    // @public (read-only) {function} for disposal
-    //REVIEW: We should not be creating copies of this function for objects that get created a lot, as it presumably
-    //REVIEW: increases the amount of memory used. This looks exactly like something that should be a method instead.
-    this.disposeCharge = function() {
-      multilink.dispose();
-      self.disposeEmitter.emit();
-      self.disposeEmitter.removeAllListeners();
-    };
   }
 
   circuitConstructionKitCommon.register( 'Charge', Charge );
@@ -109,7 +100,9 @@ define( function( require ) {
      * @public
      */
     dispose: function() {
-      this.disposeCharge();
+      this.chargeMultilink.dispose();
+      this.disposeEmitter.emit();
+      this.disposeEmitter.removeAllListeners();
     },
 
     /**
