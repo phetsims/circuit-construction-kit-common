@@ -114,16 +114,16 @@ define( function( require ) {
      * @param {Vertex} newVertex - the new vertex
      * @param {Vertex} oldVertex - the previous vertex
      */
-    //REVIEW: Would be better as a method, so it doesn't create new function objects. Then bind it for the listeners
-    //REVIEW: below (and for the dispose method)
+      //REVIEW: Would be better as a method, so it doesn't create new function objects. Then bind it for the listeners
+      //REVIEW: below (and for the dispose method)
     var linkVertex = function( newVertex, oldVertex ) {
-      oldVertex.positionProperty.unlink( vertexMoved );
-      newVertex.positionProperty.link( vertexMoved );
+        oldVertex.positionProperty.unlink( vertexMoved );
+        newVertex.positionProperty.link( vertexMoved );
 
-      if ( !oldVertex.positionProperty.get().equals( newVertex.positionProperty.get() ) ) {
-        self.vertexMovedEmitter.emit();
-      }
-    };
+        if ( !oldVertex.positionProperty.get().equals( newVertex.positionProperty.get() ) ) {
+          self.vertexMovedEmitter.emit();
+        }
+      };
 
     //REVIEW: The position properties of the vertex properties are used a ton. Maybe a getter for getStartPositionProperty()
     //REVIEW: / getEndPositionProperty() would help make things more readable?
@@ -281,15 +281,6 @@ define( function( require ) {
       var start = this.startVertexProperty.value.positionProperty.value;
       var end = this.endVertexProperty.value.positionProperty.value;
       return start.blend( end, 0.5 );
-    },
-
-    /**
-     * Return the indices of the vertices, for debugging. REVIEW: Does this mean it can be removed? (See no usages)
-     * @public
-     * @returns {[number,number]}
-     */
-    get indices() {
-      return [ this.startVertexProperty.get().index, this.endVertexProperty.get().index ];
     }
   } );
 } );
