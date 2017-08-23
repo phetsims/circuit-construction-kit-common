@@ -86,13 +86,16 @@ define( function( require ) {
      * @param {Object} circuitState
      * @param {NumberProperty} resistivityProperty - shared value for resistivity across all of the wires
      * @param {Tandem} tandem
+     * @param {Object} [options]
      * @returns {CircuitStruct}
      * @public
      */
-    fromStateObject: function( circuitState, resistivityProperty, tandem ) {
+    fromStateObject: function( circuitState, resistivityProperty, tandem, options ) {
       var circuitStruct = new CircuitStruct( [], [], [], [], [], [] );
       tandem = tandem.createGroupTandem( 'circuitStructElement' );
-      var options = null;
+      options = _.extend( {
+        // See CircuitElement.js for options
+      }, options );
       for ( var i = 0; i < circuitState.vertices.length; i++ ) {
         options = circuitState.vertices[ i ].options || {};
         options.tandem = tandem.createNextTandem();

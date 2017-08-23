@@ -51,7 +51,8 @@ define( function( require ) {
     options = _.extend( {
       canBeDroppedInToolbox: true, // In the CCK: Basics intro screen, CircuitElements can't be dropped into the toolbox
       interactive: true, // In CCK: Black Box Study, CircuitElements in the black box cannot be manipulated
-      isSizeChangedOnViewChange: true
+      isSizeChangedOnViewChange: true,
+      insideTrueBlackBox: false
     }, options );
 
     // @public (read-only) {boolean} - whether the size changes when changing from lifelike/schematic, used to determine
@@ -77,8 +78,7 @@ define( function( require ) {
 
     // @public {BooleanProperty} - whether the circuit element is inside the true black box, not inside the user-created
     // black box, on the interface or outside of the black box
-    //REVIEW: Presumably this could be initialized properly on creation? Only setters are on deserialization.
-    this.insideTrueBlackBoxProperty = new BooleanProperty( false );
+    this.insideTrueBlackBoxProperty = new BooleanProperty( options.insideTrueBlackBox );
 
     // @public {boolean} - true if the charge layout must be updated
     this.chargeLayoutDirty = true;
