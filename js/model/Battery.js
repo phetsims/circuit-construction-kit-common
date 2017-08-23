@@ -59,8 +59,7 @@ define( function( require ) {
 
     /**
      * Get the properties so that the circuit can be solved when changed.
-     * @returns {Property[]} REVIEW: Type of Properties? Property.<Circuit>?
-     *                       REVIEW(samreid): I used Property[] (meaning an array of Properties of any type) to match the overriden method
+     * @returns {Property.<*>[]}
      * @override
      * @public
      */
