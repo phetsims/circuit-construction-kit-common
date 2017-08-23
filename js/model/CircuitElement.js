@@ -132,15 +132,9 @@ define( function( require ) {
     this.startVertexProperty.lazyLink( linkVertex );
     this.endVertexProperty.lazyLink( linkVertex );
 
-    // @private {boolean} - for debugging REVIEW: Clarify "for debugging"? Can this now be removed (or only with assertions to reduce production memory?)
-    this.disposed = false;
-
     // @private {function} - for disposal
     //REVIEW: This should be part of dispose() as a method? It's creating extra closures for every element right now.
     this.disposeCircuitElement = function() {
-      assert && assert( !self.disposed, 'Was already disposed' );
-      self.disposed = true;
-
       self.startVertexProperty.unlink( linkVertex );
       self.endVertexProperty.unlink( linkVertex );
 
