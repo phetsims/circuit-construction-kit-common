@@ -160,8 +160,14 @@ define( function( require ) {
         } );
       }
 
-      //REVIEW: Don't see a matching removeListener. Presumably it should be called before we dispose the element?
+      // Layout  the charges in connected circuit elements when moved to the front
       circuitElement.moveToFrontEmitter.addListener( updateCharges );
+
+      // Remove the preceding listener when disposed
+      circuitElement.disposeEmitter.addListener( function() {
+        circuitElement.moveToFrontEmitter.removeListener( updateCharges );
+      } );
+
       self.solve();
     } );
     this.circuitElements.addItemRemovedListener( function( circuitElement ) {
