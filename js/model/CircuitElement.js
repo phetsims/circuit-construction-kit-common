@@ -103,23 +103,10 @@ define( function( require ) {
     // @public (read-only) {Emitter} - indicate when the circuit element has been disposed
     this.disposeEmitter = new Emitter();
 
-    // @public {Property.<number>} - the voltage at the end vertex minus the voltage at the start vertex
-    // name voltageDifferenceProperty so it doesn't clash with voltageProperty in Battery subclass
-    //REVIEW: I don't see reads of this property, can it be removed?
-    this.voltageDifferenceProperty = new Property( 0 );
-
     // Signify that a Vertex moved
     //REVIEW: seems like it should be a method (bound to a property) for memory purposes. See notes below.
     var vertexMoved = function() {
       self.vertexMovedEmitter.emit();
-    };
-
-    //REVIEW: seems like it should be a method (bound to a property) for memory purposes. See notes below.
-    var vertexVoltageChanged = function() {
-      self.voltageDifferenceProperty.set(
-        self.endVertexProperty.get().voltageProperty.get() -
-        self.startVertexProperty.get().voltageProperty.get()
-      );
     };
 
     /**
@@ -133,9 +120,6 @@ define( function( require ) {
       oldVertex.positionProperty.unlink( vertexMoved );
       newVertex.positionProperty.link( vertexMoved );
 
-      oldVertex.voltageProperty.unlink( vertexVoltageChanged );
-      newVertex.voltageProperty.link( vertexVoltageChanged );
-
       if ( !oldVertex.positionProperty.get().equals( newVertex.positionProperty.get() ) ) {
         self.vertexMovedEmitter.emit();
       }
@@ -145,8 +129,6 @@ define( function( require ) {
     //REVIEW: / getEndPositionProperty() would help make things more readable?
     this.startVertexProperty.get().positionProperty.link( vertexMoved );
     this.endVertexProperty.get().positionProperty.link( vertexMoved );
-    this.startVertexProperty.get().voltageProperty.link( vertexVoltageChanged );
-    this.endVertexProperty.get().voltageProperty.link( vertexVoltageChanged );
     this.startVertexProperty.lazyLink( linkVertex );
     this.endVertexProperty.lazyLink( linkVertex );
 
@@ -165,8 +147,6 @@ define( function( require ) {
       // TODO: how are these listeners sometimes already detached? See https://github.com/phetsims/circuit-construction-kit-dc/issues/144
       self.startVertexProperty.get().positionProperty.hasListener( vertexMoved ) && self.startVertexProperty.get().positionProperty.unlink( vertexMoved );
       self.endVertexProperty.get().positionProperty.hasListener( vertexMoved ) && self.endVertexProperty.get().positionProperty.unlink( vertexMoved );
-      self.startVertexProperty.get().voltageProperty.hasListener( vertexVoltageChanged ) && self.startVertexProperty.get().voltageProperty.unlink( vertexVoltageChanged );
-      self.endVertexProperty.get().voltageProperty.hasListener( vertexVoltageChanged ) && self.endVertexProperty.get().voltageProperty.unlink( vertexVoltageChanged );
 
       //REVIEW: If listeners are getting notified that something will be disposed, presumably it should be before disposing inner components?
       self.disposeEmitter.emit();
