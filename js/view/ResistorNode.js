@@ -261,7 +261,6 @@ define( function( require ) {
      */
     dispose: function() {
       this.disposeResistorNode();
-      this.removeAllChildren(); // REVIEW: Node.dispose does this now?
       FixedLengthCircuitElementNode.prototype.dispose.call( this );
     }
   }, {

@@ -310,10 +310,6 @@ define( function( require ) {
      */
     dispose: function() {
       this.disposeVertexNode();
-
-      // children are shared, so we must remove the parent references
-      this.removeAllChildren();  // REVIEW: Node.dispose does this now?
-
       Node.prototype.dispose.call( this );
     }
   }, {

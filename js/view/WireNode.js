@@ -424,7 +424,6 @@ define( function( require ) {
      */
     dispose: function() {
       this.disposeWireNode();
-      this.removeAllChildren(); // REVIEW: Node.dispose does this now?
       CircuitElementNode.prototype.dispose.call( this );
     }
   }, {
