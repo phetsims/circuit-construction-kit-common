@@ -256,7 +256,6 @@ define( function( require ) {
               // Start drag by starting a drag on start and end vertices
               circuitLayerNode.startDragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
               circuitLayerNode.startDragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
-              wire.isOverToolboxProperty.set( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) );
               dragged = false;
               startPoint = event.pointer.point;
             }
@@ -267,7 +266,6 @@ define( function( require ) {
               // Drag by translating both of the vertices
               circuitLayerNode.dragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
               circuitLayerNode.dragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
-              wire.isOverToolboxProperty.set( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) );
               dragged = true;
             }
           },

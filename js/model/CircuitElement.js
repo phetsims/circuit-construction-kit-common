@@ -72,10 +72,6 @@ define( function( require ) {
     // @public {NumberProperty} - the flowing current, in amps.
     this.currentProperty = new NumberProperty( 0 );
 
-    // @public {BooleanProperty} - whether the CircuitElement is being dragged across the toolbox
-    //REVIEW: Don't see any read/link to this, maybe there is something I'm missing?
-    this.isOverToolboxProperty = new BooleanProperty( false );
-
     // @public (read-only) {BooleanProperty} - true if the CircuitElement can be edited and dragged
     this.interactiveProperty = new BooleanProperty( options.interactive );
 
