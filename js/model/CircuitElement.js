@@ -174,7 +174,7 @@ define( function( require ) {
       //REVIEW(samreid): I thought it was more important that the listeners are notified after disposal is complete (or
       //REVIEW(samreid): as close to it as possible, but I guess it depends how this is being used.
       //REVIEW*: If it notifies as disposal is starting, clients can still access state. If it notifies after disposal is
-      //REVIEW*: complete, it shouldn't/can't access state. What is the advantage to notifying at the end?
+      //REVIEW: complete, it shouldn't/can't access state. What is the advantage to notifying at the end?
       this.disposeEmitter.emit();
       this.disposeEmitter.removeAllListeners();
     },
@@ -246,7 +246,7 @@ define( function( require ) {
      * REVIEW: used, and it wouldn't require creating another temporary object.
      *
      * REVIEW*: If both are needed, can we just return a Matrix that has the position/angle information (assuming
-     * REVIEW*: Charge switches to use a Matrix3 instead of position/angle independently)
+     * REVIEW: Charge switches to use a Matrix3 instead of position/angle independently)
      * @public
      */
     getPositionAndAngle: function( distanceAlongWire ) {

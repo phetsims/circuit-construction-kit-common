@@ -89,6 +89,7 @@ define( function( require ) {
     step: function() {
       if ( this.wireDirty ) {
         var self = this;
+
         //REVIEW*: Another place where having a shortcut to the position properties (on the circuit element) would be nice.
         var startPosition = self.startVertexProperty.get().positionProperty.get();
         var endPosition = self.endVertexProperty.get().positionProperty.get();

@@ -367,6 +367,7 @@ define( function( require ) {
     circuit.charges.addItemAddedListener( function( charge ) {
       var chargeNode = new ChargeNode(
         charge,
+
         //REVIEW*: First of all, why not have this be a BooleanProperty on all models by default, if it is used like this.
         //REVIEW*: Second, why is it passed to ChargeNodes? Can we just control the Charge element visibility instead?
         circuitConstructionKitScreenView.circuitConstructionKitModel.revealingProperty || new BooleanProperty( true )

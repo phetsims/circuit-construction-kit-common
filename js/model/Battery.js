@@ -73,11 +73,11 @@ define( function( require ) {
      * REVIEW: Duck typing looks good for these objects, but it should be documented where the spec is.
      * REVIEW(samreid): Where should the spec be?  Each CircuitElement subtype declares what it needs to store.
      * REVIEW*: Sorry, thought this was an options object for something. If it's serialization, no spec is necessary
-     * REVIEW*: if the serialization is placed in the same file. If there's a lot of cross-file or shared attributes,
-     * REVIEW*: it would be helpful to doc.
-     * REVIEW*: Presumably toStateObject() should be a method, and fromStateObject( ... ) should be a static method on this type?
-     * REVIEW*: Usually best to keep serialization/deserialization code in the same place.
-     * REVIEW*: Moving this to where deserialization happens may make sense
+     * REVIEW: if the serialization is placed in the same file. If there's a lot of cross-file or shared attributes,
+     * REVIEW: it would be helpful to doc.
+     * REVIEW: Presumably toStateObject() should be a method, and fromStateObject( ... ) should be a static method on this type?
+     * REVIEW: Usually best to keep serialization/deserialization code in the same place.
+     * REVIEW: Moving this to where deserialization happens may make sense
      */
     attributesToStateObject: function() {
       return {

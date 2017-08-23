@@ -47,6 +47,7 @@ define( function( require ) {
     Image.call( this, child.image, {
       pickable: false
     } );
+
     //REVIEW*: inline option "imageOpacity: charge.charge < 0 ? 0.75 : 1" may be preferred?
     if ( charge.charge < 0 ) {
       this.setImageOpacity( 0.75 );
@@ -77,6 +78,7 @@ define( function( require ) {
         //REVIEW*: Also, why not just set self.rotation = angle? The translation is getting overwritten below anyways.
         //REVIEW*: Is there a concern about a scale being set, that we're zeroing a scale?
         self.setMatrix( Matrix3.rotation2( angle ) );
+
         //REVIEW*: Is it safe to assume the center could be 0,0, and the center computation could be avoided?
         self.center = position;
       }
@@ -92,6 +94,7 @@ define( function( require ) {
       updateVisible();
       outsideOfBlackBoxProperty.set( !charge.circuitElement.insideTrueBlackBoxProperty.get() );
     };
+
     //REVIEW*: Maybe lazyLink these and call it directly afterwards? That's 5 calls to something that may be in a "hot"
     //REVIEW: codepath (as noted by charge updates when dragging the lightbulb).
     charge.angleProperty.link( updateTransform );
