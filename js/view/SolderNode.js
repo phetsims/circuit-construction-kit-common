@@ -96,18 +96,19 @@ define( function( require ) {
     /**
      * Eliminate resources when no longer used.
      * @public
+     * @override
      */
     dispose: function() {
       this.solderNodeDisposed = true;
       this.disposeSolderNode();
-      this.removeAllChildren();
+      this.removeAllChildren(); //REVIEW: This is done by Node.dispose now
       Node.prototype.dispose.call( this );
     }
   }, {
 
     /**
      * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-     * @public
+     * @public {Array.<Image>}
      */
     webglSpriteNodes: [ CIRCLE_NODE ],
 

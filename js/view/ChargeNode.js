@@ -47,28 +47,37 @@ define( function( require ) {
     Image.call( this, child.image, {
       pickable: false
     } );
+    //REVIEW: inline option "imageOpacity: charge.charge < 0 ? 0.75 : 1" may be preferred?
     if ( charge.charge < 0 ) {
       this.setImageOpacity( 0.75 );
     }
     var outsideOfBlackBoxProperty = new BooleanProperty( false );
 
     // Update the visibility accordingly.  A multilink will not work because the charge circuitElement changes.
+    //REVIEW: For memory/performance purposes, it looks like this should be a method instead of creating a function
+    //        object for every ChargeNode.
     var updateVisible = function() {
       self.visible = charge.visibleProperty.get() &&
-                     (outsideOfBlackBoxProperty.get() || revealingProperty.get()) &&
+                     ( outsideOfBlackBoxProperty.get() || revealingProperty.get() ) &&
                      ( Math.abs( charge.circuitElement.currentProperty.get() ) > 1E-6 || charge.charge < 0 );
     };
 
     // When the model position changes, update the node position
+    //REVIEW: For memory/performance purposes, it looks like this should be a method instead of creating a function
+    //        object for every ChargeNode.
     var updateTransform = function() {
       var current = charge.circuitElement.currentProperty.get();
       var position = charge.positionProperty.get();
 
       if ( charge.charge > 0 ) {
-        var angle = charge.charge < 0 ? 0 : charge.angleProperty.get() + (current < 0 ? Math.PI : 0);
+        var angle = charge.charge < 0 ? 0 : charge.angleProperty.get() + ( current < 0 ? Math.PI : 0 );
 
         // Rotate then center the rotated node
+        //REVIEW: Could reuse a Matrix3 object for this purpose if desired.
+        //REVIEW: Also, why not just set self.rotation = angle? The translation is getting overwritten below anyways.
+        //REVIEW: Is there a concern about a scale being set, that we're zeroing a scale?
         self.setMatrix( Matrix3.rotation2( angle ) );
+        //REVIEW: Is it safe to assume the center could be 0,0, and the center computation could be avoided?
         self.center = position;
       }
       else {
@@ -83,12 +92,15 @@ define( function( require ) {
       updateVisible();
       outsideOfBlackBoxProperty.set( !charge.circuitElement.insideTrueBlackBoxProperty.get() );
     };
+    //REVIEW: Maybe lazyLink these and call it directly afterwards? That's 5 calls to something that may be in a "hot"
+    //REVIEW: codepath (as noted by charge updates when dragging the lightbulb).
     charge.angleProperty.link( updateTransform );
     charge.positionProperty.link( updateTransform );
     revealingProperty.link( updateVisible );
     charge.visibleProperty.link( updateVisible );
     outsideOfBlackBoxProperty.link( updateVisible );
 
+    //REVIEW: Same notes about potential memory/performance loss by creating the function for every ChargeNode.
     var disposeChargeNode = function() {
       self.detach();
       charge.positionProperty.unlink( updateTransform );
@@ -109,7 +121,7 @@ define( function( require ) {
 
     /**
      * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-     * @public
+     * @public {Array.<Image>}
      */
     webglSpriteNodes: [
       ELECTRON_CHARGE_NODE, ARROW_NODE

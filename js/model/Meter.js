@@ -29,6 +29,7 @@ define( function( require ) {
     } );
 
     // @public {Property.<Vector2>} - the location of the body of the meter
+    //REVIEW: Prefer Vector2.ZERO for the initial value (doesn't create new object)
     this.bodyPositionProperty = new Property( new Vector2( 0, 0 ), {
       tandem: tandem.createTandem( 'bodyPositionProperty' ),
       phetioValueType: TVector2

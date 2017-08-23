@@ -49,6 +49,7 @@ define( function( require ) {
     /**
      * Restore the ammeter to its initial conditions
      * @public
+     * @override REVIEW: I've been tagging @override tags, should it be discussed whether this for-sure standard/helpful
      */
     reset: function() {
       Meter.prototype.reset.call( this );

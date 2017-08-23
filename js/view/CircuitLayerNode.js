@@ -217,6 +217,7 @@ define( function( require ) {
      * (b) Add a listener that adds nodes when model elements are added
      * (c) Add a listener that removes nodes when model elements are removed
      *
+     * REVIEW: Is this "all constructors have the same type signature" more helpful and easier than a factory pattern?
      * @param {function} CircuitElementNodeConstructor constructor for the node type, such as BatteryNode
      * @param {function} type - the type of the CircuitElement, such as Battery or Wire
      * @param {Node} layer
@@ -365,6 +366,8 @@ define( function( require ) {
     circuit.charges.addItemAddedListener( function( charge ) {
       var chargeNode = new ChargeNode(
         charge,
+        //REVIEW: First of all, why not have this be a BooleanProperty on all models by default, if it is used like this.
+        //REVIEW: Second, why is it passed to ChargeNodes? Can we just control the Charge element visibility instead?
         circuitConstructionKitScreenView.circuitConstructionKitModel.revealingProperty || new BooleanProperty( true )
       );
 

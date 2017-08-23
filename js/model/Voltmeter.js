@@ -34,12 +34,14 @@ define( function( require ) {
     } );
 
     // @public {Property.<Vector2>} - the position of the tip of the red probe in model=view coordinates.
+    //REVIEW: Use Vector2.ZERO to avoid allocations (for the zero vector)
     this.redProbePositionProperty = new Property( new Vector2(), {
       tandem: tandem.createTandem( 'redProbePositionProperty' ),
       phetioValueType: TVector2
     } );
 
     // @public {Property.<Vector2>} - the position of the black probe in model=view coordinates
+    //REVIEW: Use Vector2.ZERO to avoid allocations (for the zero vector)
     this.blackProbePositionProperty = new Property( new Vector2(), {
       tandem: tandem.createTandem( 'blackProbePositionProperty' ),
       phetioValueType: TVector2
@@ -53,6 +55,7 @@ define( function( require ) {
     /**
      * Reset the voltmeter, called when reset all is pressed.
      * @public
+     * @override
      */
     reset: function() {
       Meter.prototype.reset.call( this );

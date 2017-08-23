@@ -88,6 +88,7 @@ define( function( require ) {
     /**
      * Dispose resources when no longer used.
      * @public
+     * @override
      */
     dispose: function() {
       HBox.prototype.dispose.call( this );

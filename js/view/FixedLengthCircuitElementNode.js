@@ -274,6 +274,7 @@ define( function( require ) {
 
     /**
      * @public - called during the view step
+     * @override
      */
     step: function() {
       CircuitElementNode.prototype.step.call( this );
@@ -285,6 +286,7 @@ define( function( require ) {
 
     /**
      * @public - dispose resources when no longer used
+     * @override
      */
     dispose: function() {
       this.disposeFixedLengthCircuitElementNode();
@@ -294,7 +296,7 @@ define( function( require ) {
 
     /**
      * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-     * @public
+     * @public {Array.<Image>}
      */
     webglSpriteNodes: [
       new Image( fireImage )

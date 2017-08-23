@@ -99,6 +99,7 @@ define( function( require ) {
     /**
      * Dispose resources when no longer used.
      * @public
+     * @override
      */
     dispose: function() {
       this.disposeCircuitElementNode();

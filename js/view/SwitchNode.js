@@ -266,6 +266,7 @@ define( function( require ) {
     /**
      * Clean up resources when no longer used.
      * @public
+     * @override
      */
     dispose: function() {
       this.disposeSwitchNode();

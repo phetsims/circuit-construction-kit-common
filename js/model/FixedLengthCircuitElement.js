@@ -20,6 +20,7 @@ define( function( require ) {
    * @param {Vertex} endVertex
    * @param {number} distanceBetweenVertices - in screen coordinates
    * @param {number} chargePathLength - the distance the charges travel (in screen coordinates).  see CircuitElement.js
+   * REVIEW: Distance traveled in screen coordinates (in the model?) Can model coordinates be used?
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
