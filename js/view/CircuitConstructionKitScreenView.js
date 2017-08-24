@@ -64,6 +64,8 @@ define( function( require ) {
 
   /**
    * @param {CircuitConstructionKitModel} circuitConstructionKitModel REVIEW*: Usually I recommend the name "model" instead.
+   * //REVIEW(samreid): This would be good to discuss.  I've found it useful to name objects like their type because
+   * //REVIEW(samreid): it helps with navigation in IDEA.
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
