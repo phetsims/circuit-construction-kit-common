@@ -60,10 +60,10 @@ define( function( require ) {
     var self = this;
 
     // @private {Property.<CircuitElementViewType>}
-    this.viewTypeProperty = circuitConstructionKitScreenView.circuitConstructionKitModel.viewTypeProperty;
+    this.viewTypeProperty = circuitConstructionKitScreenView.model.viewTypeProperty;
 
     // @private (read-only) {CircuitConstructionKitModel}
-    this.circuitConstructionKitModel = circuitConstructionKitScreenView.circuitConstructionKitModel;
+    this.model = circuitConstructionKitScreenView.model;
 
     // @private (read-only) {Property.<Bounds2>} - the part of the screen that can be seen in view coordinates
     this.visibleBoundsProperty = circuitConstructionKitScreenView.visibleBoundsProperty;
@@ -191,7 +191,7 @@ define( function( require ) {
 
     // choose layering for schematic vs lifelike.  HEADS UP, this means circuitLayerNode.addChild() will get overwritten
     // so all nodes must be added as children in the array above.
-    circuitConstructionKitScreenView.circuitConstructionKitModel.viewTypeProperty.link( function( view ) {
+    circuitConstructionKitScreenView.model.viewTypeProperty.link( function( view ) {
       self.children = (view === CircuitElementViewType.LIFELIKE) ? lifelikeLayering : schematicLayering;
     } );
 
@@ -231,8 +231,8 @@ define( function( require ) {
             circuitConstructionKitScreenView,
             self,
             circuitElement,
-            self.circuitConstructionKitModel.isValueDepictionEnabledProperty,
-            circuitConstructionKitScreenView.circuitConstructionKitModel.viewTypeProperty,
+            self.model.isValueDepictionEnabledProperty,
+            circuitConstructionKitScreenView.model.viewTypeProperty,
             groupTandem.createNextTandem()
           );
           self.circuitElementNodeMap[ circuitElement.id ] = circuitElementNode;
@@ -244,8 +244,8 @@ define( function( require ) {
           if ( circuitElement instanceof FixedLengthCircuitElement && !(circuitElement instanceof SeriesAmmeter) ) {
             var valueNode = new ValueNode(
               circuitElement,
-              self.circuitConstructionKitModel.showValuesProperty,
-              self.circuitConstructionKitModel.viewTypeProperty,
+              self.model.showValuesProperty,
+              self.model.viewTypeProperty,
               tandem.createTandem( circuitElement.tandemName ).createTandem( 'valueNode' )
             );
 
@@ -253,10 +253,10 @@ define( function( require ) {
             var updateShowValues = function( showValues ) {
               CircuitConstructionKitCommonUtil.setInSceneGraph( showValues, self.valueLayer, valueNode );
             };
-            self.circuitConstructionKitModel.showValuesProperty.link( updateShowValues );
+            self.model.showValuesProperty.link( updateShowValues );
 
             circuitElement.disposeEmitter.addListener( function() {
-              self.circuitConstructionKitModel.showValuesProperty.unlink( updateShowValues );
+              self.model.showValuesProperty.unlink( updateShowValues );
               CircuitConstructionKitCommonUtil.setInSceneGraph( false, self.valueLayer, valueNode );
               valueNode.dispose();
             } );
@@ -370,7 +370,7 @@ define( function( require ) {
 
         //REVIEW*: First of all, why not have this be a BooleanProperty on all models by default, if it is used like this.
         //REVIEW*: Second, why is it passed to ChargeNodes? Can we just control the Charge element visibility instead?
-        circuitConstructionKitScreenView.circuitConstructionKitModel.revealingProperty || new BooleanProperty( true )
+        circuitConstructionKitScreenView.model.revealingProperty || new BooleanProperty( true )
       );
 
       self.chargeLayer.addChild( chargeNode );
@@ -423,8 +423,8 @@ define( function( require ) {
         var vertex = vertices[ i ];
         var targetVertex = this.circuit.getDropTarget(
           vertex,
-          this.circuitConstructionKitModel.modeProperty.get(),
-          this.circuitConstructionKitModel.blackBoxBounds
+          this.model.modeProperty.get(),
+          this.model.blackBoxBounds
         );
         if ( targetVertex ) {
           allDropTargets.push( { src: vertex, dst: targetVertex } );

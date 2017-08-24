@@ -184,7 +184,7 @@ define( function( require ) {
           updateFireMultilink = Property.multilink( [
             circuitElement.currentProperty,
             circuitElement.resistanceProperty,
-            circuitConstructionKitScreenView.circuitConstructionKitModel.isValueDepictionEnabledProperty
+            circuitConstructionKitScreenView.model.isValueDepictionEnabledProperty
           ], function( current, resistance, isValueDepictionEnabled ) {
             self.fireNode.visible = showFire( current, isValueDepictionEnabled ) && resistance >= 1E-8;
           } );
@@ -194,7 +194,7 @@ define( function( require ) {
           // Show fire in all other circuit elements
           updateFireMultilink = Property.multilink( [
             circuitElement.currentProperty,
-            circuitConstructionKitScreenView.circuitConstructionKitModel.isValueDepictionEnabledProperty
+            circuitConstructionKitScreenView.model.isValueDepictionEnabledProperty
           ], function( current, isValueDepictionEnabled ) {
             self.fireNode.visible = showFire( current, isValueDepictionEnabled );
           } );

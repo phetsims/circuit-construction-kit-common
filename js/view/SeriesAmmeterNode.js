@@ -88,7 +88,7 @@ define( function( require ) {
       // If it is not an icon and connected at both sides, show the current, otherwise show '?'
       if ( circuitConstructionKitScreenView ) {
 
-        var circuit = circuitConstructionKitScreenView.circuitConstructionKitModel.circuit;
+        var circuit = circuitConstructionKitScreenView.model.circuit;
         var startConnection = circuit.getNeighboringVertices( seriesAmmeter.startVertexProperty.get() ).length > 1;
         var endConnection = circuit.getNeighboringVertices( seriesAmmeter.endVertexProperty.get() ).length > 1;
 

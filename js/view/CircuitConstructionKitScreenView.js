@@ -63,18 +63,16 @@ define( function( require ) {
   } );
 
   /**
-   * @param {CircuitConstructionKitModel} circuitConstructionKitModel REVIEW*: Usually I recommend the name "model" instead.
-   * //REVIEW(samreid): This would be good to discuss.  I've found it useful to name objects like their type because
-   * //REVIEW(samreid): it helps with navigation in IDEA.
+   * @param {CircuitConstructionKitModel} model
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function CircuitConstructionKitScreenView( circuitConstructionKitModel, tandem, options ) {
+  function CircuitConstructionKitScreenView( model, tandem, options ) {
     var self = this;
 
     // @public (read-only) {CircuitConstructionKitModel}
-    this.circuitConstructionKitModel = circuitConstructionKitModel;
+    this.model = model;
 
     options = _.extend( {
 
@@ -100,8 +98,8 @@ define( function( require ) {
     this.backgroundPlane = new Plane( { fill: BACKGROUND_COLOR } );
     this.backgroundPlane.addInputListener( {
       touchdown: function() {
-        circuitConstructionKitModel.circuit.selectedCircuitElementProperty.set( null );
-        circuitConstructionKitModel.circuit.vertices.forEach( function( v ) {
+        model.circuit.selectedCircuitElementProperty.set( null );
+        model.circuit.vertices.forEach( function( v ) {
           v.selected = false;
         } );
       }
@@ -111,11 +109,11 @@ define( function( require ) {
     var backgroundListener = function( isValueDepictionEnabled ) {
       self.backgroundPlane.fill = isValueDepictionEnabled ? BACKGROUND_COLOR : 'gray';
     };
-    circuitConstructionKitModel.isValueDepictionEnabledProperty.link( backgroundListener );
+    model.isValueDepictionEnabledProperty.link( backgroundListener );
 
     // @public (read-only) {function} - For overriding in BlackBoxSceneView, which needs a custom color
     this.unlinkBackgroundListener = function() {
-      circuitConstructionKitModel.isValueDepictionEnabledProperty.unlink( backgroundListener );
+      model.isValueDepictionEnabledProperty.unlink( backgroundListener );
     };
 
     // @private - contains parts of the circuit that should be shown behind the controls
@@ -123,46 +121,46 @@ define( function( require ) {
 
     // @public (read-only) {CircuitLayerNode} - the circuit node
     this.circuitLayerNode = new CircuitLayerNode(
-      circuitConstructionKitModel.circuit, this, tandem.createTandem( 'circuitLayerNode' )
+      model.circuit, this, tandem.createTandem( 'circuitLayerNode' )
     );
 
     var voltmeterNode = new VoltmeterNode(
-      circuitConstructionKitModel.voltmeter, tandem.createTandem( 'voltmeterNode' ), {
-        showResultsProperty: circuitConstructionKitModel.isValueDepictionEnabledProperty,
+      model.voltmeter, tandem.createTandem( 'voltmeterNode' ), {
+        showResultsProperty: model.isValueDepictionEnabledProperty,
         visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty
       } );
-    circuitConstructionKitModel.voltmeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
+    model.voltmeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
       if ( bodyNodeGlobalBounds.intersectsBounds( self.sensorToolbox.globalBounds ) ) {
-        circuitConstructionKitModel.voltmeter.visibleProperty.set( false );
+        model.voltmeter.visibleProperty.set( false );
       }
     } );
-    circuitConstructionKitModel.voltmeter.visibleProperty.linkAttribute( voltmeterNode, 'visible' );
+    model.voltmeter.visibleProperty.linkAttribute( voltmeterNode, 'visible' );
 
-    var ammeterNode = new AmmeterNode( circuitConstructionKitModel.ammeter, tandem.createTandem( 'ammeterNode' ), {
-      showResultsProperty: circuitConstructionKitModel.isValueDepictionEnabledProperty,
+    var ammeterNode = new AmmeterNode( model.ammeter, tandem.createTandem( 'ammeterNode' ), {
+      showResultsProperty: model.isValueDepictionEnabledProperty,
       visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty
     } );
-    circuitConstructionKitModel.ammeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
+    model.ammeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
       if ( bodyNodeGlobalBounds.intersectsBounds( self.sensorToolbox.globalBounds ) ) {
-        circuitConstructionKitModel.ammeter.visibleProperty.set( false );
+        model.ammeter.visibleProperty.set( false );
       }
     } );
-    circuitConstructionKitModel.ammeter.visibleProperty.linkAttribute( ammeterNode, 'visible' );
+    model.ammeter.visibleProperty.linkAttribute( ammeterNode, 'visible' );
 
     // @public (read-only) {CircuitElementToolbox} - Toolbox from which CircuitElements can be dragged
     this.circuitElementToolbox = new CircuitElementToolbox(
-      circuitConstructionKitModel.circuit,
-      circuitConstructionKitModel.showLabelsProperty,
-      circuitConstructionKitModel.viewTypeProperty,
+      model.circuit,
+      model.showLabelsProperty,
+      model.viewTypeProperty,
       this.circuitLayerNode,
       tandem.createTandem( 'circuitElementToolbox' ),
       options
     );
 
     var chargeSpeedThrottlingReadoutNode = new ChargeSpeedThrottlingReadoutNode(
-      circuitConstructionKitModel.circuit.chargeAnimator.timeScaleProperty,
-      circuitConstructionKitModel.circuit.showCurrentProperty,
-      circuitConstructionKitModel.isValueDepictionEnabledProperty
+      model.circuit.chargeAnimator.timeScaleProperty,
+      model.circuit.showCurrentProperty,
+      model.isValueDepictionEnabledProperty
     );
     this.addChild( chargeSpeedThrottlingReadoutNode );
 
@@ -172,37 +170,37 @@ define( function( require ) {
       this.circuitLayerNode,
       voltmeterNode,
       ammeterNode,
-      circuitConstructionKitModel.isValueDepictionEnabledProperty,
-      circuitConstructionKitModel.showLabelsProperty,
+      model.isValueDepictionEnabledProperty,
+      model.showLabelsProperty,
       options.showSeriesAmmeters,
       options.showNoncontactAmmeters,
       tandem.createTandem( 'sensorToolbox' ) );
 
     // @private {ViewRadioButtonGroup}
     this.viewRadioButtonGroup = new ViewRadioButtonGroup(
-      circuitConstructionKitModel.viewTypeProperty, tandem.createTandem( 'viewRadioButtonGroup' )
+      model.viewTypeProperty, tandem.createTandem( 'viewRadioButtonGroup' )
     );
 
     // @protected {DisplayOptionsPanel}
     this.displayOptionsPanel = new DisplayOptionsPanel(
       CONTROL_PANEL_ALIGN_GROUP,
-      circuitConstructionKitModel.circuit.showCurrentProperty,
-      circuitConstructionKitModel.circuit.currentTypeProperty,
-      circuitConstructionKitModel.showValuesProperty,
-      circuitConstructionKitModel.showLabelsProperty,
+      model.circuit.showCurrentProperty,
+      model.circuit.currentTypeProperty,
+      model.showValuesProperty,
+      model.showLabelsProperty,
       tandem.createTandem( 'displayOptionsPanel' )
     );
 
     // @private {WireResistivityControl}
     this.wireResistivityControl = new WireResistivityControl(
-      circuitConstructionKitModel.circuit.wireResistivityProperty,
+      model.circuit.wireResistivityProperty,
       CONTROL_PANEL_ALIGN_GROUP,
       tandem.createTandem( 'wireResistivityControl' )
     );
 
     // @private {BatteryResistanceControl}
     this.batteryResistanceControl = new BatteryResistanceControl(
-      circuitConstructionKitModel.circuit.batteryResistanceProperty,
+      model.circuit.batteryResistanceProperty,
       CONTROL_PANEL_ALIGN_GROUP,
       tandem.createTandem( 'batteryResistanceControl' ) );
 
@@ -215,7 +213,7 @@ define( function( require ) {
       var resetAllButton = new ResetAllButton( {
         tandem: tandem.createTandem( 'resetAllButton' ),
         listener: function() {
-          circuitConstructionKitModel.reset();
+          model.reset();
           self.reset();
         }
       } );
@@ -244,9 +242,9 @@ define( function( require ) {
     this.addChild( this.circuitLayerNode );
 
     var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel(
-      circuitConstructionKitModel.circuit,
+      model.circuit,
       this.visibleBoundsProperty,
-      circuitConstructionKitModel.modeProperty,
+      model.modeProperty,
       tandem.createTandem( 'circuitElementEditContainerPanel' )
     );
 
@@ -293,7 +291,7 @@ define( function( require ) {
      * Detection for voltmeter probe + circuit intersection is done in the view since view bounds are used
      */
     var updateVoltmeter = function() {
-      if ( circuitConstructionKitModel.voltmeter.visibleProperty.get() ) {
+      if ( model.voltmeter.visibleProperty.get() ) {
         var redConnection = findVoltageConnection(
           voltmeterNode.redProbeNode, voltmeterNode.voltmeter.redProbePositionProperty.get(), +1
         );
@@ -302,35 +300,35 @@ define( function( require ) {
         );
 
         if ( redConnection === null || blackConnection === null ) {
-          circuitConstructionKitModel.voltmeter.voltageProperty.set( null );
+          model.voltmeter.voltageProperty.set( null );
         }
-        else if ( !circuitConstructionKitModel.circuit.areVerticesElectricallyConnected(
+        else if ( !model.circuit.areVerticesElectricallyConnected(
             redConnection.vertex, blackConnection.vertex
           ) ) {
 
           // Voltmeter probes each hit things but they were not connected to each other through the circuit.
-          circuitConstructionKitModel.voltmeter.voltageProperty.set( null );
+          model.voltmeter.voltageProperty.set( null );
         }
         else if ( redConnection !== null && redConnection.vertex.insideTrueBlackBoxProperty.get() &&
-                  !circuitConstructionKitModel.revealingProperty.get() ) {
+                  !model.revealingProperty.get() ) {
 
           // Cannot read values inside the black box, unless "reveal" is being pressed
-          circuitConstructionKitModel.voltmeter.voltageProperty.set( null );
+          model.voltmeter.voltageProperty.set( null );
         }
         else if ( blackConnection !== null && blackConnection.vertex.insideTrueBlackBoxProperty.get() &&
-                  !circuitConstructionKitModel.revealingProperty.get() ) {
+                  !model.revealingProperty.get() ) {
 
           // Cannot read values inside the black box, unless "reveal" is being pressed
-          circuitConstructionKitModel.voltmeter.voltageProperty.set( null );
+          model.voltmeter.voltageProperty.set( null );
         }
         else {
-          circuitConstructionKitModel.voltmeter.voltageProperty.set( redConnection.voltage - blackConnection.voltage );
+          model.voltmeter.voltageProperty.set( redConnection.voltage - blackConnection.voltage );
         }
       }
     };
-    circuitConstructionKitModel.circuit.circuitChangedEmitter.addListener( updateVoltmeter );
-    circuitConstructionKitModel.voltmeter.redProbePositionProperty.link( updateVoltmeter );
-    circuitConstructionKitModel.voltmeter.blackProbePositionProperty.link( updateVoltmeter );
+    model.circuit.circuitChangedEmitter.addListener( updateVoltmeter );
+    model.voltmeter.redProbePositionProperty.link( updateVoltmeter );
+    model.voltmeter.blackProbePositionProperty.link( updateVoltmeter );
 
     /**
      * Detection for ammeter probe + circuit intersection is done in the view since view bounds are used
@@ -338,17 +336,17 @@ define( function( require ) {
     var updateAmmeter = function() {
 
       // Skip work when ammeter is not out, to improve performance.
-      if ( circuitConstructionKitModel.ammeter.visibleProperty.get() ) {
+      if ( model.ammeter.visibleProperty.get() ) {
         var current = self.getCurrent( ammeterNode.probeNode );
-        circuitConstructionKitModel.ammeter.currentProperty.set( current );
+        model.ammeter.currentProperty.set( current );
       }
     };
-    circuitConstructionKitModel.circuit.circuitChangedEmitter.addListener( updateAmmeter );
-    circuitConstructionKitModel.ammeter.probePositionProperty.link( updateAmmeter );
+    model.circuit.circuitChangedEmitter.addListener( updateAmmeter );
+    model.ammeter.probePositionProperty.link( updateAmmeter );
 
     // Add the optional Play/Pause button
     if ( CircuitConstructionKitCommonQueryParameters.showPlayPauseButton ) {
-      var playPauseButton = new PlayPauseButton( circuitConstructionKitModel.isValueDepictionEnabledProperty, {
+      var playPauseButton = new PlayPauseButton( model.isValueDepictionEnabledProperty, {
         tandem: tandem.createTandem( 'playPauseButton' ),
         baseColor: '#33ff44' // the default blue fades into the background too much
       } );
@@ -364,7 +362,7 @@ define( function( require ) {
     }
 
     // Create the zoom control panel
-    var zoomControlPanel = new ZoomControlPanel( circuitConstructionKitModel.selectedZoomProperty, {
+    var zoomControlPanel = new ZoomControlPanel( model.selectedZoomProperty, {
       tandem: tandem.createTandem( 'zoomControlPanel' )
     } );
 
@@ -401,7 +399,7 @@ define( function( require ) {
     self.circuitLayerNodeBackLayer.setTranslation( self.layoutBounds.centerX, self.layoutBounds.centerY );
 
     // Continuously zoom in and out as the current zoom interpolates, and update when the visible bounds change
-    Property.multilink( [ circuitConstructionKitModel.currentZoomProperty, this.visibleBoundsProperty ], function( currentZoom, visibleBounds ) {
+    Property.multilink( [ model.currentZoomProperty, this.visibleBoundsProperty ], function( currentZoom, visibleBounds ) {
       self.circuitLayerNode.setScaleMagnitude( currentZoom );
       self.circuitLayerNodeBackLayer.setScaleMagnitude( currentZoom );
       self.circuitLayerNode.updateTransform( visibleBounds );
@@ -409,15 +407,15 @@ define( function( require ) {
 
     // When a Vertex is dropped and the CircuitElement is over the CircuitElementToolbox, the CircuitElement will go back
     // into the toolbox
-    this.circuitConstructionKitModel.circuit.vertexDroppedEmitter.addListener( function( vertex ) {
+    this.model.circuit.vertexDroppedEmitter.addListener( function( vertex ) {
 
-      var neighbors = self.circuitConstructionKitModel.circuit.getNeighborCircuitElements( vertex );
+      var neighbors = self.model.circuit.getNeighborCircuitElements( vertex );
       if ( neighbors.length === 1 ) {
         var circuitElement = neighbors[ 0 ];
         var circuitElementNode = self.circuitLayerNode.getCircuitElementNode( circuitElement );
 
         if ( self.canNodeDropInToolbox( circuitElementNode ) ) {
-          self.circuitConstructionKitModel.circuit.circuitElements.remove( circuitElement );
+          self.model.circuit.circuitElements.remove( circuitElement );
         }
       }
     } );
@@ -464,7 +462,7 @@ define( function( require ) {
       var circuitElement = circuitElementNode.circuitElement;
 
       // Only single (unconnected) elements can be dropped into the toolbox
-      var isSingle = this.circuitConstructionKitModel.circuit.isSingle( circuitElement );
+      var isSingle = this.model.circuit.isSingle( circuitElement );
 
       // SeriesAmmeters should be dropped in the sensor toolbox
       var toolbox = circuitElement instanceof SeriesAmmeter ? this.sensorToolbox : this.circuitElementToolbox;
@@ -541,7 +539,7 @@ define( function( require ) {
         var revealing = true;
         var trueBlackBox = circuitElementNode.circuitElement.insideTrueBlackBoxProperty.get();
         if ( trueBlackBox ) {
-          revealing = this.circuitConstructionKitModel.revealingProperty.get();
+          revealing = this.model.revealingProperty.get();
         }
 
         if ( revealing && circuitElementNode.containsSensorPoint( position ) ) {

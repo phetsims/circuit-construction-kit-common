@@ -190,7 +190,7 @@ define( function( require ) {
 
         // End drag for each of the vertices
         vertices.forEach( function( vertex ) {
-          if ( circuitConstructionKitScreenView.circuitConstructionKitModel.circuit.vertices.contains( vertex ) ) {
+          if ( circuitConstructionKitScreenView.model.circuit.vertices.contains( vertex ) ) {
             circuitLayerNode.endDrag( event, vertex, dragged );
           }
         } );
