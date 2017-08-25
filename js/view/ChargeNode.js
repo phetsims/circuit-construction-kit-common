@@ -60,36 +60,7 @@ define( function( require ) {
     var updateVisible = this.updateVisible.bind( this );
 
     // When the model position changes, update the node position
-    //REVIEW*: For memory/performance purposes, it looks like this should be a method instead of creating a function
-    //         object for every ChargeNode.
-    var updateTransform = function() {
-      var current = charge.circuitElement.currentProperty.get();
-      var position = charge.position;
-
-      if ( charge.charge > 0 ) {
-        var angle = charge.charge < 0 ? 0 : charge.angle + ( current < 0 ? Math.PI : 0 );
-
-        // Rotate then center the rotated node
-        //REVIEW*: Could reuse a Matrix3 object for this purpose if desired.
-        //REVIEW*: Also, why not just set self.rotation = angle? The translation is getting overwritten below anyways.
-        //REVIEW*: Is there a concern about a scale being set, that we're zeroing a scale?
-        self.setMatrix( Matrix3.rotation2( angle ) );
-
-        //REVIEW*: Is it safe to assume the center could be 0,0, and the center computation could be avoided?
-        self.center = position;
-      }
-      else {
-
-        // position the electron--note the offsets that were used to make it look exactly centered, see
-        // https://github.com/phetsims/circuit-construction-kit-dc/issues/104
-        self.setTranslation(
-          position.x - ELECTRON_CHARGE_NODE.width / 2 - 0.5,
-          position.y - ELECTRON_CHARGE_NODE.height / 2 - 0.5
-        );
-      }
-      updateVisible();
-      self.outsideOfBlackBoxProperty.set( !charge.circuitElement.insideTrueBlackBoxProperty.get() );
-    };
+    var updateTransform = this.updateTransform.bind( this );
 
     //REVIEW*: Maybe lazyLink these and call it directly afterwards? That's 5 calls to something that may be in a "hot"
     //REVIEW: codepath (as noted by charge updates when dragging the lightbulb).
@@ -117,6 +88,43 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'ChargeNode', ChargeNode );
 
   return inherit( Image, ChargeNode, {
+
+    /**
+     * @private - update the transform of the charge node
+     */
+    updateTransform: function() {
+      var charge = this.charge;
+      var current = charge.circuitElement.currentProperty.get();
+      var position = charge.position;
+
+      if ( charge.charge > 0 ) {
+        var angle = charge.charge < 0 ? 0 : charge.angle + ( current < 0 ? Math.PI : 0 );
+
+        // Rotate then center the rotated node
+        //REVIEW*: Could reuse a Matrix3 object for this purpose if desired.
+        //REVIEW*: Also, why not just set this.rotation = angle? The translation is getting overwritten below anyways.
+        //REVIEW*: Is there a concern about a scale being set, that we're zeroing a scale?
+        this.setMatrix( Matrix3.rotation2( angle ) );
+
+        //REVIEW*: Is it safe to assume the center could be 0,0, and the center computation could be avoided?
+        this.center = position;
+      }
+      else {
+
+        // position the electron--note the offsets that were used to make it look exactly centered, see
+        // https://github.com/phetsims/circuit-construction-kit-dc/issues/104
+        this.setTranslation(
+          position.x - ELECTRON_CHARGE_NODE.width / 2 - 0.5,
+          position.y - ELECTRON_CHARGE_NODE.height / 2 - 0.5
+        );
+      }
+      this.updateVisible();
+      this.outsideOfBlackBoxProperty.set( !charge.circuitElement.insideTrueBlackBoxProperty.get() );
+    },
+
+    /**
+     * @private - update the visibility
+     */
     updateVisible: function() {
       this.visible = this.charge.visibleProperty.get() &&
                      ( this.outsideOfBlackBoxProperty.get() || this.revealingProperty.get() ) &&
