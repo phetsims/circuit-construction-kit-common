@@ -196,7 +196,7 @@ define( function( require ) {
       //REVIEW(samreid): are these lines necessary?
       //REVIEW: Presumably not, unless you want to retain a reference to this object but not the others.
       //REVIEW(samreid): my main concern was about memory leaks.  Do you think it is necessary to null these out to
-      //REVIEW(samreid): prevent memory leaks?
+      //REVIEW^(samreid): prevent memory leaks?
       this.linkVertex = null;
       this.vertexMoved = null;
     },
@@ -263,7 +263,7 @@ define( function( require ) {
     /**
      * Gets the 2D Position along the CircuitElement corresponding to the given scalar distance
      * @param {number} distanceAlongWire - the scalar distance from one endpoint to another.
-     * @returns {Vector2} the position in view coordinates REVIEW*: Definitely not returning a Vector2.
+     * @returns {Object} with {position:Vector2,angle:number} the position in view coordinates
      * REVIEW*: I see no reason not to split this into two functions. Sometimes only one of the two things computed is
      * REVIEW: used, and it wouldn't require creating another temporary object.
      *
