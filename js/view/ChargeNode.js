@@ -37,7 +37,6 @@ define( function( require ) {
    * @constructor
    */
   function ChargeNode( charge, revealingProperty ) {
-    var self = this;
 
     // @public (read-only) {Charge} - the model depicted by this node
     this.charge = charge;
@@ -108,7 +107,9 @@ define( function( require ) {
         //REVIEW*: Is there a concern about a scale being set, that we're zeroing a scale?
         this.setMatrix( Matrix3.rotation2( angle ) );
 
-        //REVIEW*: Is it safe to assume the center could be 0,0, and the center computation could be avoided?
+        //REVIEW: Is it safe to assume the center could be 0,0, and the center computation could be avoided?
+        //REVIEW^(samreid): the image is rasterized for WebGL, so it has the origin at the top left. How would you
+        //REVIEW(samreid) recommend to proceed?
         this.center = position;
       }
       else {
