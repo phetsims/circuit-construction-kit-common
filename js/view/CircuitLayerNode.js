@@ -51,25 +51,24 @@ define( function( require ) {
 
   /**
    * @param {Circuit} circuit - the model Circuit
-   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - for dropping CircuitElement instances
-   *                                                                            - back in the toolbox
+   * @param {CircuitConstructionKitScreenView} screenView - for dropping CircuitElement instances back in the toolbox
    * @param {Tandem} tandem
    * @constructor
    */
-  function CircuitLayerNode( circuit, circuitConstructionKitScreenView, tandem ) {
+  function CircuitLayerNode( circuit, screenView, tandem ) {
     var self = this;
 
     // @private {Property.<CircuitElementViewType>}
-    this.viewTypeProperty = circuitConstructionKitScreenView.model.viewTypeProperty;
+    this.viewTypeProperty = screenView.model.viewTypeProperty;
 
     // @private (read-only) {CircuitConstructionKitModel}
-    this.model = circuitConstructionKitScreenView.model;
+    this.model = screenView.model;
 
     // @private (read-only) {Property.<Bounds2>} - the part of the screen that can be seen in view coordinates
-    this.visibleBoundsProperty = circuitConstructionKitScreenView.visibleBoundsProperty;
+    this.visibleBoundsProperty = screenView.visibleBoundsProperty;
 
     // @private {Node} - the layer behind the control panels
-    this.circuitLayerNodeBackLayer = circuitConstructionKitScreenView.circuitLayerNodeBackLayer;
+    this.circuitLayerNodeBackLayer = screenView.circuitLayerNodeBackLayer;
 
     // @public {Node} - CircuitElementNodes add highlights directly to this layer when they are constructed
     this.highlightLayer = new Node();
@@ -191,7 +190,7 @@ define( function( require ) {
 
     // choose layering for schematic vs lifelike.  HEADS UP, this means circuitLayerNode.addChild() will get overwritten
     // so all nodes must be added as children in the array above.
-    circuitConstructionKitScreenView.model.viewTypeProperty.link( function( view ) {
+    screenView.model.viewTypeProperty.link( function( view ) {
       self.children = (view === CircuitElementViewType.LIFELIKE) ? lifelikeLayering : schematicLayering;
     } );
 
@@ -218,23 +217,15 @@ define( function( require ) {
      * (b) Add a listener that adds nodes when model elements are added
      * (c) Add a listener that removes nodes when model elements are removed
      *
-     * REVIEW*: Is this "all constructors have the same type signature" more helpful and easier than a factory pattern?
-     * @param {function} CircuitElementNodeConstructor constructor for the node type, such as BatteryNode
      * @param {function} type - the type of the CircuitElement, such as Battery or Wire
      * @param {Node} layer
      * @param {Tandem} groupTandem
+     * @param {function} createCircuitElement - creates the node, given a circuitElement and tandem BatteryNode
      */
-    var initializeCircuitElementType = function( CircuitElementNodeConstructor, type, layer, groupTandem ) {
+    var initializeCircuitElementType = function( type, layer, groupTandem, createCircuitElement ) {
       var addCircuitElement = function( circuitElement ) {
         if ( circuitElement instanceof type ) {
-          var circuitElementNode = new CircuitElementNodeConstructor(
-            circuitConstructionKitScreenView,
-            self,
-            circuitElement,
-            self.model.isValueDepictionEnabledProperty,
-            circuitConstructionKitScreenView.model.viewTypeProperty,
-            groupTandem.createNextTandem()
-          );
+          var circuitElementNode = createCircuitElement( circuitElement, groupTandem.createNextTandem() );
           self.circuitElementNodeMap[ circuitElement.id ] = circuitElementNode;
 
           layer.addChild( circuitElementNode );
@@ -277,12 +268,24 @@ define( function( require ) {
       } );
     };
 
-    initializeCircuitElementType( WireNode, Wire, this.wireLayer, tandem.createGroupTandem( 'wireNode' ) );
-    initializeCircuitElementType( BatteryNode, Battery, this.fixedLengthCircuitElementLayer, tandem.createGroupTandem( 'batteryNode' ) );
-    initializeCircuitElementType( CircuitConstructionKitLightBulbNode, LightBulb, this.fixedLengthCircuitElementLayer, tandem.createGroupTandem( 'lightBulbNode' ) );
-    initializeCircuitElementType( ResistorNode, Resistor, this.fixedLengthCircuitElementLayer, tandem.createGroupTandem( 'resistorNode' ) );
-    initializeCircuitElementType( SeriesAmmeterNode, SeriesAmmeter, this.fixedLengthCircuitElementLayer, tandem.createGroupTandem( 'seriesAmmeterNode' ) );
-    initializeCircuitElementType( SwitchNode, Switch, this.fixedLengthCircuitElementLayer, tandem.createGroupTandem( 'switchNode' ) );
+    initializeCircuitElementType( Wire, this.wireLayer, tandem.createGroupTandem( 'wireNode' ), function( circuitElement, tandem ) {
+      return new WireNode( screenView, self, circuitElement, self.model.viewTypeProperty, tandem );
+    } );
+    initializeCircuitElementType( Battery, this.fixedLengthCircuitElementLayer, tandem.createGroupTandem( 'batteryNode' ), function( circuitElement, tandem ) {
+      return new BatteryNode( screenView, self, circuitElement, self.model.viewTypeProperty, tandem );
+    } );
+    initializeCircuitElementType( LightBulb, this.fixedLengthCircuitElementLayer, tandem.createGroupTandem( 'lightBulbNode' ), function( circuitElement, tandem ) {
+      return new CircuitConstructionKitLightBulbNode( screenView, self, circuitElement, self.model.isValueDepictionEnabledProperty, self.model.viewTypeProperty, tandem );
+    } );
+    initializeCircuitElementType( Resistor, this.fixedLengthCircuitElementLayer, tandem.createGroupTandem( 'resistorNode' ), function( circuitElement, tandem ) {
+      return new ResistorNode( screenView, self, circuitElement, self.model.viewTypeProperty, tandem );
+    } );
+    initializeCircuitElementType( SeriesAmmeter, this.fixedLengthCircuitElementLayer, tandem.createGroupTandem( 'seriesAmmeterNode' ), function( circuitElement, tandem ) {
+      return new SeriesAmmeterNode( screenView, self, circuitElement, self.model.viewTypeProperty, tandem );
+    } );
+    initializeCircuitElementType( Switch, this.fixedLengthCircuitElementLayer, tandem.createGroupTandem( 'switchNode' ), function( circuitElement, tandem ) {
+      return new SwitchNode( screenView, self, circuitElement, self.model.viewTypeProperty, tandem );
+    } );
 
     // @private - array of actions to be performed in the step function
     this.stepListeners = [];
@@ -370,7 +373,7 @@ define( function( require ) {
 
         //REVIEW*: First of all, why not have this be a BooleanProperty on all models by default, if it is used like this.
         //REVIEW*: Second, why is it passed to ChargeNodes? Can we just control the Charge element visibility instead?
-        circuitConstructionKitScreenView.model.revealingProperty || new BooleanProperty( true )
+        screenView.model.revealingProperty || new BooleanProperty( true )
       );
 
       self.chargeLayer.addChild( chargeNode );

@@ -143,14 +143,11 @@ define( function( require ) {
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - null means it's an icon
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {Wire} wire
-   * @param {Property.<boolean>} showResultsProperty - unused but provided to match the constructors of other circuit
-   *                                                 - element nodes
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Tandem} tandem
    * @constructor
    */
-  function WireNode( circuitConstructionKitScreenView, circuitLayerNode, wire, showResultsProperty, viewTypeProperty,
-                     tandem ) {
+  function WireNode( circuitConstructionKitScreenView, circuitLayerNode, wire, viewTypeProperty, tandem ) {
     var self = this;
 
     // @private {Property.<CircuitElementViewType>}

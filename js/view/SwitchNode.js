@@ -151,15 +151,12 @@ define( function( require ) {
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - main screen view, null for icon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {Switch} circuitSwitch
-   * @param {Property.<boolean>} showResultsProperty - supplied for consistency with other CircuitElementNode
-   *                                                 - constructors
    * @param {Property.<string>} viewTypeProperty
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function SwitchNode( circuitConstructionKitScreenView, circuitLayerNode, circuitSwitch, showResultsProperty,
-                       viewTypeProperty, tandem, options ) {
+  function SwitchNode( circuitConstructionKitScreenView, circuitLayerNode, circuitSwitch, viewTypeProperty, tandem, options ) {
 
     var self = this;
 

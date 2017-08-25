@@ -103,7 +103,6 @@ define( function( require ) {
       null,
       seriesAmmeter,
       null,
-      null,
       tandem.createTandem( 'seriesAmmeterNodeIcon' ), {
         icon: true
       } );

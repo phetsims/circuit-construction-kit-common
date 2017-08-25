@@ -44,7 +44,7 @@ define( function( require ) {
      * @returns {BatteryNode}
      */
     var createBatteryNode = function( view, tandem ) {
-      return new BatteryNode( null, null, battery, new Property( true ), new Property( view ), tandem, {
+      return new BatteryNode( null, null, battery, new Property( view ), tandem, {
         icon: true,
         scale: SCALE
       } );

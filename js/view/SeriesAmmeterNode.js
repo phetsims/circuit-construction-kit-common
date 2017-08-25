@@ -56,15 +56,12 @@ define( function( require ) {
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - main screen view, null for icon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {SeriesAmmeter} seriesAmmeter
-   * @param {Property.<boolean>} showResultsProperty - supplied for consistency with other CircuitElementNode
-   *                                                 - constructors
    * @param {Property.<string>} viewTypeProperty
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function SeriesAmmeterNode( circuitConstructionKitScreenView, circuitLayerNode, seriesAmmeter, showResultsProperty,
-                              viewTypeProperty, tandem, options ) {
+  function SeriesAmmeterNode( circuitConstructionKitScreenView, circuitLayerNode, seriesAmmeter, viewTypeProperty, tandem, options ) {
     var self = this;
     options = options || {};
     viewTypeProperty = new Property( CircuitElementViewType.LIFELIKE );
