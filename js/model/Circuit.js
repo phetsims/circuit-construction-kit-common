@@ -112,16 +112,11 @@ define( function( require ) {
       // When a new circuit element is added to a circuit, it has two unconnected vertices
 
       // Vertices may already exist for a Circuit when loading
-      //REVIEW*: removeCircuitElementVertexIfOrphaned is a method doing the opposite (kinda)
-      if ( !self.vertices.contains( circuitElement.startVertexProperty.get() ) ) {
-        self.vertices.add( circuitElement.startVertexProperty.get() );
-      }
+      self.addVertexIfNew( circuitElement.startVertexProperty.get() );
 
       //REVIEW*: There are a lot of cases where duplicate logic is done for both starting and ending vertices.
-      //REVIEW*: Would an array of vertex properties be helpful?
-      if ( !self.vertices.contains( circuitElement.endVertexProperty.get() ) ) {
-        self.vertices.add( circuitElement.endVertexProperty.get() );
-      }
+      //REVIEW: Would an array of vertex properties be helpful?
+      self.addVertexIfNew( circuitElement.endVertexProperty.get() );
 
       // When any vertex moves, relayout all charges within the fixed-length connected component, see #100
       circuitElement.chargeLayoutDirty = true;
@@ -148,8 +143,8 @@ define( function( require ) {
     this.circuitElements.addItemRemovedListener( function( circuitElement ) {
 
       // Delete orphaned vertices
-      self.removeCircuitElementVertexIfOrphaned( circuitElement.startVertexProperty.get() );
-      self.removeCircuitElementVertexIfOrphaned( circuitElement.endVertexProperty.get() );
+      self.removeVertexIfOrphaned( circuitElement.startVertexProperty.get() );
+      self.removeVertexIfOrphaned( circuitElement.endVertexProperty.get() );
 
       // Clear the selected element property so that the Edit panel for the element will disappear
       if ( self.selectedCircuitElementProperty.get() === circuitElement ) {
@@ -595,9 +590,20 @@ define( function( require ) {
      * @param {Vertex} vertex
      * @private
      */
-    removeCircuitElementVertexIfOrphaned: function( vertex ) {
+    removeVertexIfOrphaned: function( vertex ) {
       if ( this.getNeighborCircuitElements( vertex ).length === 0 && !vertex.blackBoxInterfaceProperty.get() ) {
         this.vertices.remove( vertex );
+      }
+    },
+
+    /**
+     * Add the given vertex if it doesn't already belong to the circuit.
+     * @param {Vertex} vertex
+     * @private
+     */
+    addVertexIfNew: function( vertex ) {
+      if ( !this.vertices.contains( vertex ) ) {
+        this.vertices.add( vertex );
       }
     },
 
