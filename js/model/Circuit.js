@@ -116,6 +116,7 @@ define( function( require ) {
 
       //REVIEW*: There are a lot of cases where duplicate logic is done for both starting and ending vertices.
       //REVIEW: Would an array of vertex properties be helpful?
+      //REVIEW(samreid): tracked in https://github.com/phetsims/circuit-construction-kit-common/issues/394
       self.addVertexIfNew( circuitElement.endVertexProperty.get() );
 
       // When any vertex moves, relayout all charges within the fixed-length connected component, see #100
