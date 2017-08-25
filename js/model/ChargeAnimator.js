@@ -37,24 +37,6 @@ define( function( require ) {
   var MAX_DT = 1 / 30;
 
   /**
-   * Sets the charge to not update its position, so that we may apply batch changes without impacting performance
-   * @param {Charge} charge
-   * @constructor
-   */
-  var DISABLE_UPDATES = function( charge ) {
-    charge.updatingPositionProperty.set( false );
-  };
-
-  /**
-   * Sets the charge to update its position after a batch of changes has been made.
-   * @param {Charge} charge
-   * @constructor
-   */
-  var ENABLE_UPDATES = function( charge ) {
-    charge.updatingPositionProperty.set( true );
-  };
-
-  /**
    * Gets the absolute value of the current in a circuit element.
    * @param {CircuitElement} circuitElement
    * @returns {number}
@@ -148,10 +130,6 @@ define( function( require ) {
         return;
       }
 
-      // Disable incremental updates to improve performance.  The ChargeNodes are only updated once, instead of
-      // incrementally many times throughout this update
-      this.charges.forEach( DISABLE_UPDATES );
-
       // dt would ideally be around 16.666ms = 0.0166 sec.  Cap it to avoid too large of an integration step.
       dt = Math.min( dt, MAX_DT );
 
@@ -184,7 +162,9 @@ define( function( require ) {
       }
 
       // After computing the new charge positions (possibly across several deltas), trigger the views to update.
-      this.charges.forEach( ENABLE_UPDATES );
+      this.charges.forEach( function( charge ) {
+        charge.updatePositionAndAngle();
+      } );
     },
 
     /**
@@ -220,7 +200,7 @@ define( function( require ) {
       var circuitElementCharges = this.circuit.getChargesInCircuitElement( charge.circuitElement );
 
       // if it has a lower and upper neighbor, nudge the charge to be closer to the midpoint
-      var sorted = _.sortBy( circuitElementCharges, function( e ) { return e.distanceProperty.get(); } );
+      var sorted = _.sortBy( circuitElementCharges, function( e ) { return e.distance; } );
 
       var chargeIndex = sorted.indexOf( charge );
       var upper = sorted[ chargeIndex + 1 ];
@@ -228,10 +208,10 @@ define( function( require ) {
 
       // Only adjust a charge if it is between two other charges
       if ( upper && lower ) {
-        var neighborSeparation = upper.distanceProperty.get() - lower.distanceProperty.get();
-        var currentPosition = charge.distanceProperty.get();
+        var neighborSeparation = upper.distance - lower.distance;
+        var currentPosition = charge.distance;
 
-        var desiredPosition = lower.distanceProperty.get() + neighborSeparation / 2;
+        var desiredPosition = lower.distance + neighborSeparation / 2;
         var distanceFromDesiredPosition = Math.abs( desiredPosition - currentPosition );
         var sameDirectionAsCurrent = Math.sign( desiredPosition - currentPosition ) ===
                                      Math.sign( charge.circuitElement.currentProperty.get() * charge.charge );
@@ -256,7 +236,7 @@ define( function( require ) {
 
           // Only update the charge if its new position would be within the same circuit element.
           if ( desiredPosition >= 0 && desiredPosition <= charge.circuitElement.chargePathLength ) {
-            charge.distanceProperty.set( desiredPosition );
+            charge.distance = desiredPosition;
           }
         }
       }
@@ -269,7 +249,7 @@ define( function( require ) {
      * @private
      */
     propagate: function( charge, dt ) {
-      var chargePosition = charge.distanceProperty.get();
+      var chargePosition = charge.distance;
       assert && assert( _.isNumber( chargePosition ), 'distance along wire should be a number' );
       var current = charge.circuitElement.currentProperty.get() * charge.charge;
 
@@ -281,7 +261,7 @@ define( function( require ) {
 
         // Step within a single circuit element
         if ( charge.circuitElement.containsScalarLocation( newChargePosition ) ) {
-          charge.distanceProperty.set( newChargePosition );
+          charge.distance = newChargePosition;
         }
         else {
 
@@ -301,7 +281,8 @@ define( function( require ) {
             // choose the CircuitElement with the lowest density
             var chosenCircuitLocation = _.minBy( circuitLocations, 'density' );
             assert && assert( chosenCircuitLocation.distance >= 0, 'position should be >=0' );
-            charge.setLocation( chosenCircuitLocation.circuitElement, chosenCircuitLocation.distance );
+            charge.circuitElement = chosenCircuitLocation.circuitElement
+            charge.distance = chosenCircuitLocation.distance;
           }
         }
       }

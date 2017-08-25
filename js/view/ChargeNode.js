@@ -65,13 +65,13 @@ define( function( require ) {
 
     // When the model position changes, update the node position
     //REVIEW*: For memory/performance purposes, it looks like this should be a method instead of creating a function
-    //        object for every ChargeNode.
+    //         object for every ChargeNode.
     var updateTransform = function() {
       var current = charge.circuitElement.currentProperty.get();
-      var position = charge.positionProperty.get();
+      var position = charge.position;
 
       if ( charge.charge > 0 ) {
-        var angle = charge.charge < 0 ? 0 : charge.angleProperty.get() + ( current < 0 ? Math.PI : 0 );
+        var angle = charge.charge < 0 ? 0 : charge.angle + ( current < 0 ? Math.PI : 0 );
 
         // Rotate then center the rotated node
         //REVIEW*: Could reuse a Matrix3 object for this purpose if desired.
@@ -97,8 +97,7 @@ define( function( require ) {
 
     //REVIEW*: Maybe lazyLink these and call it directly afterwards? That's 5 calls to something that may be in a "hot"
     //REVIEW: codepath (as noted by charge updates when dragging the lightbulb).
-    charge.angleProperty.link( updateTransform );
-    charge.positionProperty.link( updateTransform );
+    charge.changedEmitter.addListener( updateTransform );
     revealingProperty.link( updateVisible );
     charge.visibleProperty.link( updateVisible );
     outsideOfBlackBoxProperty.link( updateVisible );
@@ -106,8 +105,7 @@ define( function( require ) {
     //REVIEW*: Same notes about potential memory/performance loss by creating the function for every ChargeNode.
     var disposeChargeNode = function() {
       self.detach();
-      charge.positionProperty.unlink( updateTransform );
-      charge.angleProperty.unlink( updateTransform );
+      charge.changedEmitter.removeListener( updateTransform );
       revealingProperty.unlink( updateVisible );
       charge.visibleProperty.unlink( updateVisible );
       outsideOfBlackBoxProperty.unlink( updateVisible );
@@ -116,6 +114,8 @@ define( function( require ) {
       self.removeAllChildren();
     };
     charge.disposeEmitter.addListener( disposeChargeNode );
+
+    updateTransform();
   }
 
   circuitConstructionKitCommon.register( 'ChargeNode', ChargeNode );

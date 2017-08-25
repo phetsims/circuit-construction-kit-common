@@ -70,7 +70,9 @@ define( function( require ) {
                charges[ 0 ].visibleProperty === this.circuit.showCurrentProperty ) {
 
             var c = charges.shift(); // remove 1st element, since it's the charge we checked in the guard
-            c.setLocation( circuitElement, chargePosition );
+            c.circuitElement = circuitElement;
+            c.distance = chargePosition;
+            c.updatePositionAndAngle();
           }
           else {
 
