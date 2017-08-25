@@ -42,6 +42,9 @@ define( function( require ) {
     // @public (read-only) {Charge} - the model depicted by this node
     this.charge = charge;
 
+    // @private {Property.<boolean>} - true if circuit details are being shown
+    this.revealingProperty = revealingProperty;
+
     var child = charge.charge > 0 ? ARROW_NODE : ELECTRON_CHARGE_NODE;
 
     Image.call( this, child.image, {
@@ -51,16 +54,10 @@ define( function( require ) {
     // Negative charges should be transparent
     this.setImageOpacity( charge.charge < 0 ? 0.75 : 1 );
 
-    var outsideOfBlackBoxProperty = new BooleanProperty( false );
+    this.outsideOfBlackBoxProperty = new BooleanProperty( false );
 
     // Update the visibility accordingly.  A multilink will not work because the charge circuitElement changes.
-    //REVIEW*: For memory/performance purposes, it looks like this should be a method instead of creating a function
-    //        object for every ChargeNode.
-    var updateVisible = function() {
-      self.visible = charge.visibleProperty.get() &&
-                     ( outsideOfBlackBoxProperty.get() || revealingProperty.get() ) &&
-                     ( Math.abs( charge.circuitElement.currentProperty.get() ) > 1E-6 || charge.charge < 0 );
-    };
+    var updateVisible = this.updateVisible.bind( this );
 
     // When the model position changes, update the node position
     //REVIEW*: For memory/performance purposes, it looks like this should be a method instead of creating a function
@@ -91,7 +88,7 @@ define( function( require ) {
         );
       }
       updateVisible();
-      outsideOfBlackBoxProperty.set( !charge.circuitElement.insideTrueBlackBoxProperty.get() );
+      self.outsideOfBlackBoxProperty.set( !charge.circuitElement.insideTrueBlackBoxProperty.get() );
     };
 
     //REVIEW*: Maybe lazyLink these and call it directly afterwards? That's 5 calls to something that may be in a "hot"
@@ -99,7 +96,7 @@ define( function( require ) {
     charge.changedEmitter.addListener( updateTransform );
     revealingProperty.link( updateVisible );
     charge.visibleProperty.link( updateVisible );
-    outsideOfBlackBoxProperty.link( updateVisible );
+    this.outsideOfBlackBoxProperty.link( updateVisible );
 
     //REVIEW*: Same notes about potential memory/performance loss by creating the function for every ChargeNode.
     var disposeChargeNode = function() {
@@ -107,7 +104,7 @@ define( function( require ) {
       charge.changedEmitter.removeListener( updateTransform );
       revealingProperty.unlink( updateVisible );
       charge.visibleProperty.unlink( updateVisible );
-      outsideOfBlackBoxProperty.unlink( updateVisible );
+      self.outsideOfBlackBoxProperty.unlink( updateVisible );
 
       // We must remove the image child node, or it will continue to track its parents and lead to a memory leak
       self.removeAllChildren();
@@ -119,7 +116,13 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'ChargeNode', ChargeNode );
 
-  return inherit( Image, ChargeNode, {}, {
+  return inherit( Image, ChargeNode, {
+    updateVisible: function() {
+      this.visible = this.charge.visibleProperty.get() &&
+                     ( this.outsideOfBlackBoxProperty.get() || this.revealingProperty.get() ) &&
+                     ( Math.abs( this.charge.circuitElement.currentProperty.get() ) > 1E-6 || this.charge.charge < 0 );
+    }
+  }, {
 
     /**
      * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
