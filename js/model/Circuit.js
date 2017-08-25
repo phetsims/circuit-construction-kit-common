@@ -114,7 +114,7 @@ define( function( require ) {
       // Vertices may already exist for a Circuit when loading
       self.addVertexIfNew( circuitElement.startVertexProperty.get() );
 
-      //REVIEW*: There are a lot of cases where duplicate logic is done for both starting and ending vertices.
+      //REVIEW: There are a lot of cases where duplicate logic is done for both starting and ending vertices.
       //REVIEW: Would an array of vertex properties be helpful?
       //REVIEW(samreid): tracked in https://github.com/phetsims/circuit-construction-kit-common/issues/394
       self.addVertexIfNew( circuitElement.endVertexProperty.get() );
