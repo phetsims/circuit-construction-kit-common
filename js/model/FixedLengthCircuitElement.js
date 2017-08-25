@@ -19,17 +19,12 @@ define( function( require ) {
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
    * @param {number} distanceBetweenVertices - in screen coordinates
-   * @param {number} chargePathLength - the distance the charges travel (in screen coordinates).  see CircuitElement.js
-   * REVIEW: Distance traveled in screen coordinates (in the model?) Can model coordinates be used?
-   * REVIEW(samreid): As described in implementation-notes.md, model and view coordinates are the same because (aside
-   * REVIEW(samreid): from resistivity) the length measurements have no bearing of the physics
-   * REVIEW*: Screen coordinates as in CSS px from the window 0,0 to the window innerWidth/innerHeight? Or do you mean view coordinates?
+   * @param {number} chargePathLength - the distance the charges travel (in view coordinates), see CircuitElement.js
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function FixedLengthCircuitElement( startVertex, endVertex, distanceBetweenVertices, chargePathLength, tandem,
-                                      options ) {
+  function FixedLengthCircuitElement( startVertex, endVertex, distanceBetweenVertices, chargePathLength, tandem, options ) {
 
     options = _.extend( {
       editableRange: new Range( 0, 120 ),
