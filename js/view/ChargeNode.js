@@ -48,10 +48,9 @@ define( function( require ) {
       pickable: false
     } );
 
-    //REVIEW*: inline option "imageOpacity: charge.charge < 0 ? 0.75 : 1" may be preferred?
-    if ( charge.charge < 0 ) {
-      this.setImageOpacity( 0.75 );
-    }
+    // Negative charges should be transparent
+    this.setImageOpacity( charge.charge < 0 ? 0.75 : 1 );
+
     var outsideOfBlackBoxProperty = new BooleanProperty( false );
 
     // Update the visibility accordingly.  A multilink will not work because the charge circuitElement changes.
