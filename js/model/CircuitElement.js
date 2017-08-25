@@ -36,8 +36,6 @@ define( function( require ) {
     assert && assert( typeof chargePathLength === 'number', 'charge path length should be a number' );
     assert && assert( chargePathLength > 0, 'charge path length must be positive' );
 
-    var self = this;
-
     // @public (read-only) {string} - the tail of the Tandem for creating associated Tandems
     this.tandemName = tandem.tail;
 
@@ -80,9 +78,7 @@ define( function( require ) {
     // black box, on the interface or outside of the black box
     this.insideTrueBlackBoxProperty = new BooleanProperty( options.insideTrueBlackBox );
 
-    // @public {boolean} - true if the charge layout must be updated
-    //REVIEW: It's a preference, but a method marking things as needing an update has been useful.
-    //REVIEW^(samreid): under discussion in https://github.com/phetsims/circuit-construction-kit-common/issues/395
+    // @public {boolean} - true if the charge layout must be updated (each element is visited every frame to check this)
     this.chargeLayoutDirty = true;
 
     // @public (read-only) {Emitter} - indicate when this CircuitElement has been connected to another CircuitElement
@@ -105,30 +101,16 @@ define( function( require ) {
     // @public (read-only) {Emitter} - indicate when the circuit element has been disposed
     this.disposeEmitter = new Emitter();
 
-    // Signify that a Vertex moved
-    var vertexMoved = this.emitVertexMoved.bind( this );
+    // @private {function} - Signify that a Vertex moved
+    this.vertexMoved = this.emitVertexMoved.bind( this );
 
-    /**
-     * When the start or end Vertex changes, move the listener from the old Vertex to the new one
-     * @param {Vertex} newVertex - the new vertex
-     * @param {Vertex} oldVertex - the previous vertex
-     */
-      //REVIEW: Would be better as a method, so it doesn't create new function objects. Then bind it for the listeners
-      //REVIEW: below (and for the dispose method)
-      //REVIEW^(samreid): how to deal with newVertex/oldVertex in bind?
-    var linkVertex = function( newVertex, oldVertex ) {
-        oldVertex.positionProperty.unlink( vertexMoved );
-        newVertex.positionProperty.link( vertexMoved );
+    // @private {function} - stored for disposal
+    this.linkVertexListener = this.linkVertex.bind( this );
 
-        if ( !oldVertex.positionProperty.get().equals( newVertex.positionProperty.get() ) ) {
-          self.vertexMovedEmitter.emit();
-        }
-      };
-
-    this.startPositionProperty.link( vertexMoved );
-    this.endPositionProperty.link( vertexMoved );
-    this.startVertexProperty.lazyLink( linkVertex );
-    this.endVertexProperty.lazyLink( linkVertex );
+    this.startPositionProperty.link( this.vertexMoved );
+    this.endPositionProperty.link( this.vertexMoved );
+    this.startVertexProperty.lazyLink( this.linkVertexListener );
+    this.endVertexProperty.lazyLink( this.linkVertexListener );
 
     // @public (read-only by clients, writable-by-subclasses) {number} the distance the charges must take to get to the
     // other side of the component. This is typically the distance between vertices, but not for light bulbs.  This
@@ -136,17 +118,26 @@ define( function( require ) {
     this.chargePathLength = chargePathLength;
 
     tandem.addInstance( this, TObject );
-
-    // @private - stored for disposal
-    this.linkVertex = linkVertex;
-
-    // @private - stored for disposal
-    this.vertexMoved = vertexMoved;
   }
 
   circuitConstructionKitCommon.register( 'CircuitElement', CircuitElement );
 
   return inherit( Object, CircuitElement, {
+
+    /**
+     * When the start or end Vertex changes, move the listener from the old Vertex to the new one
+     * @private
+     * @param {Vertex} newVertex - the new vertex
+     * @param {Vertex} oldVertex - the previous vertex
+     */
+    linkVertex: function( newVertex, oldVertex ) {
+      oldVertex.positionProperty.unlink( this.vertexMoved );
+      newVertex.positionProperty.link( this.vertexMoved );
+
+      if ( !oldVertex.positionProperty.get().equals( newVertex.positionProperty.get() ) ) {
+        this.vertexMovedEmitter.emit();
+      }
+    },
 
     /**
      * Convenience method to get the start vertex position Property
