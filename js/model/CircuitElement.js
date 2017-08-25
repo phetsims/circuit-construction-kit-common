@@ -179,6 +179,11 @@ define( function( require ) {
      * @public
      */
     dispose: function() {
+
+      // Notify about intent to dispose first because dispose listeners may need to access state
+      this.disposeEmitter.emit();
+      this.disposeEmitter.removeAllListeners();
+
       var linkVertex = this.linkVertex;
       var vertexMoved = this.vertexMoved;
       this.startVertexProperty.unlink( linkVertex );
@@ -194,14 +199,6 @@ define( function( require ) {
       //REVIEW(samreid): prevent memory leaks?
       this.linkVertex = null;
       this.vertexMoved = null;
-
-      //REVIEW: If listeners are getting notified that something will be disposed, presumably it should be before disposing inner components?
-      //REVIEW(samreid): I thought it was more important that the listeners are notified after disposal is complete (or
-      //REVIEW(samreid): as close to it as possible, but I guess it depends how this is being used.
-      //REVIEW*: If it notifies as disposal is starting, clients can still access state. If it notifies after disposal is
-      //REVIEW: complete, it shouldn't/can't access state. What is the advantage to notifying at the end?
-      this.disposeEmitter.emit();
-      this.disposeEmitter.removeAllListeners();
     },
 
     /**
