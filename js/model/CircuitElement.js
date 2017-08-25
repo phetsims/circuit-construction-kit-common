@@ -106,10 +106,7 @@ define( function( require ) {
     this.disposeEmitter = new Emitter();
 
     // Signify that a Vertex moved
-    //REVIEW*: seems like it should be a method (bound to a property) for memory purposes. See notes below.
-    var vertexMoved = function() {
-      self.vertexMovedEmitter.emit();
-    };
+    var vertexMoved = this.emitVertexMoved.bind( this );
 
     /**
      * When the start or end Vertex changes, move the listener from the old Vertex to the new one
@@ -151,6 +148,14 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'CircuitElement', CircuitElement );
 
   return inherit( Object, CircuitElement, {
+
+    /**
+     * Signify that a vertex has moved.
+     * @private
+     */
+    emitVertexMoved: function() {
+      this.vertexMovedEmitter.emit();
+    },
 
     /**
      * Release resources associated with this CircuitElement, called when it will no longer be used.
