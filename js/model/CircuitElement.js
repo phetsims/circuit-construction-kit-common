@@ -113,8 +113,9 @@ define( function( require ) {
      * @param {Vertex} newVertex - the new vertex
      * @param {Vertex} oldVertex - the previous vertex
      */
-      //REVIEW*: Would be better as a method, so it doesn't create new function objects. Then bind it for the listeners
+      //REVIEW: Would be better as a method, so it doesn't create new function objects. Then bind it for the listeners
       //REVIEW: below (and for the dispose method)
+      //REVIEW^(samreid): how to deal with newVertex/oldVertex in bind?
     var linkVertex = function( newVertex, oldVertex ) {
         oldVertex.positionProperty.unlink( vertexMoved );
         newVertex.positionProperty.link( vertexMoved );
