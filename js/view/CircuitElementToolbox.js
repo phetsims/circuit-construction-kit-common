@@ -12,6 +12,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitElementViewType' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
@@ -34,7 +35,6 @@ define( function( require ) {
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Carousel = require( 'SUN/Carousel' );
   var PageControl = require( 'SUN/PageControl' );
-  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitElementViewType' );
 
   // strings
   var batteryString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery' );
@@ -95,12 +95,11 @@ define( function( require ) {
 
     /**
      * Create a Vertex at the specified location, convenience function for creating the vertices for CircuitElements.
-     * @param {number} x - the x-coordinate of the Vertex
-     * @param {number} y - the y-coordinate of the Vertex
+     * @param {Vector2} position - the position of the Vertex in view = model coordinates
      * @returns {Vertex}
      */
-    var createVertex = function( x, y ) {
-      return new Vertex( x, y, { tandem: circuit.vertexGroupTandem.createNextTandem() } );
+    var createVertex = function( position ) {
+      return new Vertex( position, { tandem: circuit.vertexGroupTandem.createNextTandem() } );
     };
 
     /**
@@ -126,8 +125,8 @@ define( function( require ) {
      */
     var createVertexPair = function( position, length ) {
       return {
-        startVertex: createVertex( position.x - length / 2, position.y ),
-        endVertex: createVertex( position.x + length / 2, position.y )
+        startVertex: createVertex( new Vector2( position.x - length / 2, position.y ) ),
+        endVertex: createVertex( new Vector2( position.x + length / 2, position.y ) )
       };
     };
 
@@ -173,7 +172,7 @@ define( function( require ) {
       }
     );
 
-    var batteryModel = new Battery( new Vertex( 0, 0 ), new Vertex( CircuitConstructionKitCommonConstants.BATTERY_LENGTH, 0 ),
+    var batteryModel = new Battery( new Vertex( Vector2.ZERO ), new Vertex( new Vector2( CircuitConstructionKitCommonConstants.BATTERY_LENGTH, 0 ) ),
       null, 'normal', tandem.createTandem( 'rightIconBattery' ) );
     var rightBatteryToolNode = createCircuitElementToolNode( batteryString, options.numberOfRightBatteries,
       new BatteryNode( null, null, batteryModel,
@@ -225,8 +224,8 @@ define( function( require ) {
     // lightBulbToolNode.touchArea = lightBulbToolNode.localBounds.dilatedXY( 11, 8 );
 
     var resistorModel = new Resistor(
-      new Vertex( 0, 0 ),
-      new Vertex( CircuitConstructionKitCommonConstants.RESISTOR_LENGTH, 0 ),
+      new Vertex( Vector2.ZERO ),
+      new Vertex( new Vector2( CircuitConstructionKitCommonConstants.RESISTOR_LENGTH, 0 ) ),
       tandem.createTandem( 'resistor' )
     );
     var resistorToolNode = createCircuitElementToolNode( resistorString, options.numberOfResistors,
@@ -247,8 +246,8 @@ define( function( require ) {
     var switchToolNode = createCircuitElementToolNode( switchString, options.numberOfSwitches,
       new SwitchNode( null, null,
         new Switch(
-          new Vertex( 0, 0 ),
-          new Vertex( SWITCH_LENGTH, 0 ),
+          new Vertex( Vector2.ZERO ),
+          new Vertex( new Vector2( SWITCH_LENGTH, 0 ) ),
           tandem.createTandem( 'switch' )
         ), null, viewTypeProperty, tandem.createTandem( 'switchIcon' ), {
           icon: true
@@ -298,7 +297,7 @@ define( function( require ) {
          * @returns {Resistor}
          */
         var createGrabBagItem = function( resistorType, resistorLength, tandem ) {
-          return new Resistor( new Vertex( 0, 0 ), new Vertex( resistorLength, 0 ), tandem, {
+          return new Resistor( new Vertex( Vector2.ZERO ), new Vertex( new Vector2( resistorLength, 0 ) ), tandem, {
             resistorType: resistorType,
             resistorLength: resistorLength
           } );
@@ -393,8 +392,8 @@ define( function( require ) {
         options.numberOfHighVoltageBatteries,
         new BatteryNode( null, null,
           new Battery(
-            new Vertex( 0, 0 ),
-            new Vertex( CircuitConstructionKitCommonConstants.BATTERY_LENGTH, 0 ),
+            new Vertex( Vector2.ZERO ),
+            new Vertex( new Vector2( CircuitConstructionKitCommonConstants.BATTERY_LENGTH, 0 ) ),
             null,
             'high-voltage',
             tandem.createTandem( 'highVoltageIconBattery' )
@@ -452,8 +451,8 @@ define( function( require ) {
         options.numberOfHighResistanceResistors,
         new ResistorNode( null, null,
           new Resistor(
-            new Vertex( 0, 0 ),
-            new Vertex( CircuitConstructionKitCommonConstants.RESISTOR_LENGTH, 0 ),
+            new Vertex( Vector2.ZERO ),
+            new Vertex( new Vector2( CircuitConstructionKitCommonConstants.RESISTOR_LENGTH, 0 ) ),
             tandem.createTandem( 'highResistanceResistor' ), {
               resistorType: 'highResistanceResistor', resistance: 1000
             } ),

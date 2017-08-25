@@ -20,6 +20,7 @@ define( function( require ) {
   var CircuitElementToolNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolNode' );
   var SeriesAmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SeriesAmmeterNode' );
   var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VoltmeterNode' );
+  var Vector2 = require( 'DOT/Vector2' );
   var inherit = require( 'PHET_CORE/inherit' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var HBox = require( 'SCENERY/nodes/HBox' );
@@ -93,8 +94,8 @@ define( function( require ) {
 
     // Icon for the series ammeter
     var seriesAmmeter = new SeriesAmmeter(
-      new Vertex( 0, 0 ),
-      new Vertex( CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH, 0 ),
+      new Vertex( Vector2.ZERO ),
+      new Vertex( new Vector2( CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH, 0 ) ),
       tandem.createTandem( 'seriesAmmeterIconModel' )
     );
     var seriesAmmeterNodeIcon = new SeriesAmmeterNode(
@@ -108,8 +109,8 @@ define( function( require ) {
       } );
     var createSeriesAmmeter = function( position ) {
       var halfLength = CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH / 2;
-      var startVertex = new Vertex( position.x - halfLength, position.y );
-      var endVertex = new Vertex( position.x + halfLength, position.y );
+      var startVertex = new Vertex( new Vector2( position.x - halfLength, position.y ) );
+      var endVertex = new Vertex( new Vector2( position.x + halfLength, position.y ) );
       return new SeriesAmmeter(
         startVertex,
         endVertex,

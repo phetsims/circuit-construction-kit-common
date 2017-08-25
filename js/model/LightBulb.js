@@ -234,10 +234,10 @@ define( function( require ) {
       endPoint = startPoint.plus( Vector2.createPolar( DISTANCE_BETWEEN_VERTICES, angle - Math.PI * 0.3975 ) );
 
       // start vertex is at the bottom
-      var startVertex = new Vertex( startPoint.x, startPoint.y, {
+      var startVertex = new Vertex( startPoint, {
         tandem: circuitVertexGroupTandem.createNextTandem()
       } );
-      var endVertex = new Vertex( endPoint.x, endPoint.y, {
+      var endVertex = new Vertex( endPoint, {
         tandem: circuitVertexGroupTandem.createNextTandem()
       } );
 

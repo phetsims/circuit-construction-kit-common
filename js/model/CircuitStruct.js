@@ -17,6 +17,7 @@ define( function( require ) {
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
+  var Vector2 = require( 'DOT/Vector2' );
   var inherit = require( 'PHET_CORE/inherit' );
 
   /**
@@ -100,7 +101,7 @@ define( function( require ) {
       for ( var i = 0; i < circuitState.vertices.length; i++ ) {
         options = circuitState.vertices[ i ].options || {};
         options.tandem = tandem.createNextTandem();
-        var vertex = new Vertex( circuitState.vertices[ i ].x, circuitState.vertices[ i ].y, options );
+        var vertex = new Vertex( new Vector2( circuitState.vertices[ i ].x, circuitState.vertices[ i ].y ), options );
         circuitStruct.vertices.push( vertex );
       }
       for ( i = 0; i < circuitState.wires.length; i++ ) {

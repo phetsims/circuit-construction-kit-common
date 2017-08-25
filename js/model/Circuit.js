@@ -518,7 +518,7 @@ define( function( require ) {
 
       neighborCircuitElements.forEach( function( circuitElement, i ) {
 
-        var newVertex = new Vertex( vertex.positionProperty.get().x, vertex.positionProperty.get().y, {
+        var newVertex = new Vertex( vertex.positionProperty.get(), {
           tandem: self.vertexGroupTandem.createNextTandem()
         } );
 

@@ -12,12 +12,13 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitElementViewType' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
   var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
+  var Vector2 = require( 'DOT/Vector2' );
   var inherit = require( 'PHET_CORE/inherit' );
   var RadioButtonGroup = require( 'SUN/buttons/RadioButtonGroup' );
-  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitElementViewType' );
 
   // constants
   var BATTERY_LENGTH = CircuitConstructionKitCommonConstants.BATTERY_LENGTH;
@@ -29,8 +30,8 @@ define( function( require ) {
   function ViewRadioButtonGroup( viewTypeProperty, tandem ) {
 
     // Create a battery which can be used in the views
-    var startVertex = new Vertex( BATTERY_LENGTH / 2, 0 );
-    var endVertex = new Vertex( -BATTERY_LENGTH / 2, 0 );
+    var startVertex = new Vertex( new Vector2( BATTERY_LENGTH / 2, 0 ) );
+    var endVertex = new Vertex( new Vector2( -BATTERY_LENGTH / 2, 0 ) );
     var battery = new Battery( endVertex, startVertex, null, 'normal', tandem.createTandem( 'battery' ), {
       initialOrientation: 'left'
     } );

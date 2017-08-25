@@ -15,7 +15,6 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var TVector2 = require( 'DOT/TVector2' );
-  var Vector2 = require( 'DOT/Vector2' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Tandem = require( 'TANDEM/Tandem' );
 
@@ -26,14 +25,11 @@ define( function( require ) {
   var counter = 0;
 
   /**
-   * REVIEW*: Most usages either use a Vector2, or could use Vector2.ZERO (and we duplicate initial vector references).
-   * REVIEW*: Prefer Vector2 input instead of x,y
-   * @param {number} x - position (screen coordinates) in x
-   * @param {number} y - position (screen coordinates) in y
+   * @param {Vector2} position - position in view coordinates
    * @param {Object} [options]
    * @constructor
    */
-  function Vertex( x, y, options ) {
+  function Vertex( position, options ) {
 
     // @private {number} - Index counter for hashing in CircuitLayerNode.  Also useful for debugging and can be shown
     // with ?vertexDisplay=index
@@ -50,13 +46,13 @@ define( function( require ) {
     }, options );
 
     // @public {Property.<Vector2>} - location of the vertex
-    this.positionProperty = new Property( new Vector2( x, y ), {
+    this.positionProperty = new Property( position, {
       tandem: options.tandem && options.tandem.createTandem( 'positionProperty' ),
       phetioValueType: TVector2
     } );
 
     // @public {Property.<Vector2>} - where the vertex would be if it hadn't snapped to a proposed connection
-    this.unsnappedPositionProperty = new Property( new Vector2( x, y ) );
+    this.unsnappedPositionProperty = new Property( position );
 
     // @public {NumberProperty} Relative voltage of the node, determined by Circuit.solve
     this.voltageProperty = new NumberProperty( 0, {
