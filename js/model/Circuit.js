@@ -130,9 +130,8 @@ define( function( require ) {
         }
       };
 
-      // Only update when wires change since they are the only components that change their length
-      //REVIEW*: A tag (property) on CircuitElement (with override in Wire) of whether it changes length may be preferred.
-      if ( circuitElement instanceof Wire ) {
+      // For circuit elements that can change their length, make sure to update charges when the length changes.
+      if ( circuitElement.lengthProperty ) {
         circuitElement.lengthProperty.link( updateCharges );
         circuitElement.disposeEmitter.addListener( function() {
           circuitElement.lengthProperty.unlink( updateCharges );
