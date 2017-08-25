@@ -62,8 +62,9 @@ define( function( require ) {
     // When the model position changes, update the node position
     var updateTransform = this.updateTransform.bind( this );
 
-    //REVIEW*: Maybe lazyLink these and call it directly afterwards? That's 5 calls to something that may be in a "hot"
+    //REVIEW: Maybe lazyLink these and call it directly afterwards? That's 5 calls to something that may be in a "hot"
     //REVIEW: codepath (as noted by charge updates when dragging the lightbulb).
+    //REVIEW^(samreid): is this addressed after being coalesced into a changedEmitter?
     charge.changedEmitter.addListener( updateTransform );
     revealingProperty.link( updateVisible );
     charge.visibleProperty.link( updateVisible );
