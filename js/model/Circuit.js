@@ -786,7 +786,7 @@ define( function( require ) {
       this.chargeAnimator.step( dt );
 
       this.circuitElements.getArray().forEach( function( circuitElement ) {
-        circuitElement.step && circuitElement.step();
+        circuitElement.update && circuitElement.update();
       } );
     },
 

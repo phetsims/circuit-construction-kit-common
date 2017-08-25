@@ -68,13 +68,14 @@ define( function( require ) {
     //REVIEW: Again if memory is an issue (I'll investigate), having this as a method may be better.
     //REVIEW(samreid): My suspicion is that with a small number (<100) of wires, the overhead from these closures will
     //REVIEW(samreid): be in the noise
-    //REVIEW*: I'll investigate. If it requires copies of compiled code for each one, it may definitely be adding overhead.
+    //REVIEW: I'll investigate. If it requires copies of compiled code for each one, it may definitely be adding overhead.
+    //REVIEW^(samreid): Sounds good, let me know if you'd like assistance into that investigation.
     this.disposeWire = function() {
       self.vertexMovedEmitter.removeListener( markWireDirty );
       self.resistivityProperty.unlink( markWireDirty );
     };
 
-    this.step(); // initialize state
+    this.update(); // initialize state
   }
 
   circuitConstructionKitCommon.register( 'Wire', Wire );
@@ -84,9 +85,8 @@ define( function( require ) {
     /**
      * Batch changes so that the length doesn't change incrementally when both vertices move one at a time.
      * @public
-     * REVIEW*: Would normally name this update(), since it has no DT and conditionally updates based on the dirty flag.
      */
-    step: function() {
+    update: function() {
       if ( this.wireDirty ) {
         var self = this;
 
