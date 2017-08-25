@@ -51,21 +51,21 @@ define( function( require ) {
     this.outsideOfBlackBoxProperty = new BooleanProperty( false );
 
     // Update the visibility accordingly.  A multilink will not work because the charge circuitElement changes.
-    this.boundUpdateVisible = this.updateVisible.bind( this );
+    this.updateVisibleListener = this.updateVisible.bind( this );
 
     // When the model position changes, update the node position
-    this.boundUpdateTransform = this.updateTransform.bind( this );
+    this.updateTransformListener = this.updateTransform.bind( this );
 
     //REVIEW: Maybe lazyLink these and call it directly afterwards? That's 5 calls to something that may be in a "hot"
     //REVIEW: codepath (as noted by charge updates when dragging the lightbulb).
     //REVIEW^(samreid): is this addressed after being coalesced into a changedEmitter?
-    charge.changedEmitter.addListener( this.boundUpdateTransform );
-    charge.visibleProperty.link( this.boundUpdateVisible );
-    this.outsideOfBlackBoxProperty.link( this.boundUpdateVisible );
+    charge.changedEmitter.addListener( this.updateTransformListener );
+    charge.visibleProperty.link( this.updateVisibleListener );
+    this.outsideOfBlackBoxProperty.link( this.updateVisibleListener );
 
     charge.disposeEmitter.addListener( this.dispose.bind( this ) );
 
-    this.boundUpdateTransform();
+    this.updateTransformListener();
   }
 
   circuitConstructionKitCommon.register( 'ChargeNode', ChargeNode );
@@ -77,9 +77,9 @@ define( function( require ) {
      * @public
      */
     dispose: function() {
-      this.charge.changedEmitter.removeListener( this.boundUpdateTransform );
-      this.charge.visibleProperty.unlink( this.boundUpdateVisible );
-      this.outsideOfBlackBoxProperty.unlink( this.boundUpdateVisible );
+      this.charge.changedEmitter.removeListener( this.updateTransformListener );
+      this.charge.visibleProperty.unlink( this.updateVisibleListener );
+      this.outsideOfBlackBoxProperty.unlink( this.updateVisibleListener );
       Image.prototype.dispose.call( this );
     },
 

@@ -102,13 +102,13 @@ define( function( require ) {
     this.disposeEmitter = new Emitter();
 
     // @private {function} - Signify that a Vertex moved
-    this.vertexMoved = this.emitVertexMoved.bind( this );
+    this.vertexMovedListener = this.emitVertexMoved.bind( this );
 
     // @private {function} - stored for disposal
     this.linkVertexListener = this.linkVertex.bind( this );
 
-    this.startPositionProperty.link( this.vertexMoved );
-    this.endPositionProperty.link( this.vertexMoved );
+    this.startPositionProperty.link( this.vertexMovedListener );
+    this.endPositionProperty.link( this.vertexMovedListener );
     this.startVertexProperty.lazyLink( this.linkVertexListener );
     this.endVertexProperty.lazyLink( this.linkVertexListener );
 
@@ -131,8 +131,8 @@ define( function( require ) {
      * @param {Vertex} oldVertex - the previous vertex
      */
     linkVertex: function( newVertex, oldVertex ) {
-      oldVertex.positionProperty.unlink( this.vertexMoved );
-      newVertex.positionProperty.link( this.vertexMoved );
+      oldVertex.positionProperty.unlink( this.vertexMovedListener );
+      newVertex.positionProperty.link( this.vertexMovedListener );
 
       if ( !oldVertex.positionProperty.get().equals( newVertex.positionProperty.get() ) ) {
         this.vertexMovedEmitter.emit();
@@ -179,8 +179,8 @@ define( function( require ) {
       this.endVertexProperty.unlink( this.linkVertex );
 
       // TODO: how are these listeners sometimes already detached? See https://github.com/phetsims/circuit-construction-kit-dc/issues/144
-      this.startPositionProperty.hasListener( this.vertexMoved ) && this.startPositionProperty.unlink( this.vertexMoved );
-      this.endPositionProperty.hasListener( this.vertexMoved ) && this.endPositionProperty.unlink( this.vertexMoved );
+      this.startPositionProperty.hasListener( this.vertexMovedListener ) && this.startPositionProperty.unlink( this.vertexMovedListener );
+      this.endPositionProperty.hasListener( this.vertexMovedListener ) && this.endPositionProperty.unlink( this.vertexMovedListener );
     },
 
     /**

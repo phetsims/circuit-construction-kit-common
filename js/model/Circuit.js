@@ -101,12 +101,12 @@ define( function( require ) {
     this.chargeAnimator = new ChargeAnimator( this );
 
     // Re-solve the circuit when voltages or resistances change.
-    var solve = this.solve.bind( this );
+    var solveListener = this.solve.bind( this );
 
     // Solve the circuit when any of the circuit element attributes change.
     this.circuitElements.addItemAddedListener( function( circuitElement ) {
       circuitElement.getCircuitProperties().forEach( function( property ) {
-        property.lazyLink( solve );
+        property.lazyLink( solveListener );
       } );
 
       // When a new circuit element is added to a circuit, it has two unconnected vertices
@@ -148,7 +148,7 @@ define( function( require ) {
       }
 
       circuitElement.getCircuitProperties().forEach( function( property ) {
-        property.unlink( solve );
+        property.unlink( solveListener );
       } );
 
       circuitElement.dispose();
@@ -270,7 +270,7 @@ define( function( require ) {
       } );
     } );
 
-    this.batteryResistanceProperty.link( solve );
+    this.batteryResistanceProperty.link( solveListener );
 
     // @public (read-only) - for creating tandems
     this.vertexGroupTandem = tandem.createGroupTandem( 'vertices' );
