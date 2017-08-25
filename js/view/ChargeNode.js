@@ -33,16 +33,12 @@ define( function( require ) {
 
   /**
    * @param {Charge} charge - the model element
-   * @param {Property.<boolean>} revealingProperty - true if circuit details are being shown
    * @constructor
    */
-  function ChargeNode( charge, revealingProperty ) {
+  function ChargeNode( charge ) {
 
     // @public (read-only) {Charge} - the model depicted by this node
     this.charge = charge;
-
-    // @private {Property.<boolean>} - true if circuit details are being shown
-    this.revealingProperty = revealingProperty;
 
     var child = charge.charge > 0 ? ARROW_NODE : ELECTRON_CHARGE_NODE;
 
@@ -65,7 +61,6 @@ define( function( require ) {
     //REVIEW: codepath (as noted by charge updates when dragging the lightbulb).
     //REVIEW^(samreid): is this addressed after being coalesced into a changedEmitter?
     charge.changedEmitter.addListener( this.boundUpdateTransform );
-    revealingProperty.link( this.boundUpdateVisible );
     charge.visibleProperty.link( this.boundUpdateVisible );
     this.outsideOfBlackBoxProperty.link( this.boundUpdateVisible );
 
@@ -84,7 +79,6 @@ define( function( require ) {
      */
     dispose: function() {
       this.charge.changedEmitter.removeListener( this.boundUpdateTransform );
-      this.revealingProperty.unlink( this.boundUpdateVisible );
       this.charge.visibleProperty.unlink( this.boundUpdateVisible );
       this.outsideOfBlackBoxProperty.unlink( this.boundUpdateVisible );
       Image.prototype.dispose.call( this );
@@ -130,7 +124,7 @@ define( function( require ) {
      */
     updateVisible: function() {
       this.visible = this.charge.visibleProperty.get() &&
-                     ( this.outsideOfBlackBoxProperty.get() || this.revealingProperty.get() ) &&
+                     this.outsideOfBlackBoxProperty.get() &&
                      ( Math.abs( this.charge.circuitElement.currentProperty.get() ) > 1E-6 || this.charge.charge < 0 );
     }
   }, {

@@ -153,6 +153,10 @@ define( function( require ) {
       } ) ]
     } );
 
+    screenView.model.revealingProperty.link( function( revealing ) {
+      self.chargeLayer.visible = revealing;
+    } );
+
     this.sensorLayer = new Node();
 
     // For lifelike: Solder should be in front of wires but behind batteries and resistors.
@@ -365,18 +369,9 @@ define( function( require ) {
     };
     this.visibleBoundsInCircuitCoordinateFrameProperty.link( moveVerticesInBounds );
 
-
     // When a charge is added, add the corresponding ChargeNode (removed it its dispose call)
     circuit.charges.addItemAddedListener( function( charge ) {
-      var chargeNode = new ChargeNode(
-        charge,
-
-        //REVIEW*: First of all, why not have this be a BooleanProperty on all models by default, if it is used like this.
-        //REVIEW*: Second, why is it passed to ChargeNodes? Can we just control the Charge element visibility instead?
-        screenView.model.revealingProperty || new BooleanProperty( true )
-      );
-
-      self.chargeLayer.addChild( chargeNode );
+      self.chargeLayer.addChild( new ChargeNode( charge ) );
     } );
 
     // @public - Filled in by black box study, if it is running.

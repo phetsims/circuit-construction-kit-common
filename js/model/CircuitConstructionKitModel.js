@@ -33,11 +33,19 @@ define( function( require ) {
 
   /**
    * @param {Tandem} tandem
+   * @param {Object} [options]
    * @constructor
    */
-  function CircuitConstructionKitModel( tandem ) {
+  function CircuitConstructionKitModel( tandem, options ) {
 
     var self = this;
+
+    options = _.extend( {
+
+      // Determines whether electrons can be shown.  In black box, electrons can only be shown when the user reveals
+      // the answer by pressing the reveal answer button.
+      revealing: true
+    }, options );
 
     // @private {EaseAnimation} - animation for the zoom level
     this.zoomAnimation = null;
@@ -174,6 +182,11 @@ define( function( require ) {
 
       // Then position the electrons in the new paths
       self.circuit.relayoutAllCharges();
+    } );
+
+    // @public - true when the user is holding down the reveal button and the answer (inside the black box) is showing
+    this.revealingProperty = new BooleanProperty( options.revealing, {
+      tandem: tandem.createTandem( 'revealingProperty' )
     } );
   }
 
