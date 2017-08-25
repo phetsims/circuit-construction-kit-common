@@ -281,7 +281,7 @@ define( function( require ) {
             // choose the CircuitElement with the lowest density
             var chosenCircuitLocation = _.minBy( circuitLocations, 'density' );
             assert && assert( chosenCircuitLocation.distance >= 0, 'position should be >=0' );
-            charge.circuitElement = chosenCircuitLocation.circuitElement
+            charge.circuitElement = chosenCircuitLocation.circuitElement;
             charge.distance = chosenCircuitLocation.distance;
           }
         }

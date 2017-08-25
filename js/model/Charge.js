@@ -9,10 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var BooleanProperty = require( 'AXON/BooleanProperty' );
   var Emitter = require( 'AXON/Emitter' );
-  var NumberProperty = require( 'AXON/NumberProperty' );
-  var Property = require( 'AXON/Property' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Vector2 = require( 'DOT/Vector2' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -35,8 +32,6 @@ define( function( require ) {
     assert && assert( _.isNumber( distance ), 'distance should be a number' );
     assert && assert( distance >= 0, 'charge was below the origin of the circuit element' );
     assert && assert( circuitElement.containsScalarLocation( distance ), 'charge was not within the circuit element' );
-
-    var self = this;
 
     // @public (read-only) {CircuitElement} - the CircuitElement the Charge is in, changed by Charge.setLocation
     this.circuitElement = circuitElement;
