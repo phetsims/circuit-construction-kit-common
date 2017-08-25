@@ -57,38 +57,39 @@ define( function( require ) {
     this.outsideOfBlackBoxProperty = new BooleanProperty( false );
 
     // Update the visibility accordingly.  A multilink will not work because the charge circuitElement changes.
-    var updateVisible = this.updateVisible.bind( this );
+    this.boundUpdateVisible = this.updateVisible.bind( this );
 
     // When the model position changes, update the node position
-    var updateTransform = this.updateTransform.bind( this );
+    this.boundUpdateTransform = this.updateTransform.bind( this );
 
     //REVIEW: Maybe lazyLink these and call it directly afterwards? That's 5 calls to something that may be in a "hot"
     //REVIEW: codepath (as noted by charge updates when dragging the lightbulb).
     //REVIEW^(samreid): is this addressed after being coalesced into a changedEmitter?
-    charge.changedEmitter.addListener( updateTransform );
-    revealingProperty.link( updateVisible );
-    charge.visibleProperty.link( updateVisible );
-    this.outsideOfBlackBoxProperty.link( updateVisible );
+    charge.changedEmitter.addListener( this.boundUpdateTransform );
+    revealingProperty.link( this.boundUpdateVisible );
+    charge.visibleProperty.link( this.boundUpdateVisible );
+    this.outsideOfBlackBoxProperty.link( this.boundUpdateVisible );
 
-    //REVIEW*: Same notes about potential memory/performance loss by creating the function for every ChargeNode.
-    var disposeChargeNode = function() {
-      self.detach();
-      charge.changedEmitter.removeListener( updateTransform );
-      revealingProperty.unlink( updateVisible );
-      charge.visibleProperty.unlink( updateVisible );
-      self.outsideOfBlackBoxProperty.unlink( updateVisible );
+    charge.disposeEmitter.addListener( this.dispose.bind( this ) );
 
-      // We must remove the image child node, or it will continue to track its parents and lead to a memory leak
-      self.removeAllChildren();
-    };
-    charge.disposeEmitter.addListener( disposeChargeNode );
-
-    updateTransform();
+    this.boundUpdateTransform();
   }
 
   circuitConstructionKitCommon.register( 'ChargeNode', ChargeNode );
 
   return inherit( Image, ChargeNode, {
+
+    /**
+     * Dispose resources when no longer used.
+     * @public
+     */
+    dispose: function() {
+      this.charge.changedEmitter.removeListener( this.boundUpdateTransform );
+      this.revealingProperty.unlink( this.boundUpdateVisible );
+      this.charge.visibleProperty.unlink( this.boundUpdateVisible );
+      this.outsideOfBlackBoxProperty.unlink( this.boundUpdateVisible );
+      Image.prototype.dispose.call( this );
+    },
 
     /**
      * @private - update the transform of the charge node
