@@ -160,19 +160,6 @@ define( function( require ) {
     },
 
     /**
-     * Returns a serialized form of the properties that characterize this LightBulb
-     * @returns {Object}
-     * @public
-     * REVIEW: Duck typing looks good for these objects, but it should be documented where the spec is.
-     * REVIEW(samreid): In discussion in Battery.js
-     */
-    attributesToStateObject: function() {
-      return {
-        resistance: this.resistanceProperty.get()
-      };
-    },
-
-    /**
      * Overrides CircuitElement.getPosition to describe the path the charge takes through the light bulb.
      *
      * @param {number} distanceAlongWire - how far along the bulb's length the charge has traveled

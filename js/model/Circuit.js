@@ -143,11 +143,6 @@ define( function( require ) {
         } );
       }
 
-      // Remove the preceding listener when disposed
-      circuitElement.disposeEmitter.addListener( function() {
-        circuitElement.moveToFrontEmitter.removeListener( updateCharges );
-      } );
-
       self.solve();
     } );
     this.circuitElements.addItemRemovedListener( function( circuitElement ) {
@@ -667,21 +662,20 @@ define( function( require ) {
       // the vertices
       var self = this;
 
-      var toStateObject = function( circuitElement ) {
-
-        // the index of vertex corresponds to position in list.
-        return _.extend( {
-          node0: self.vertices.indexOf( circuitElement.startVertexProperty.get() ),
-          node1: self.vertices.indexOf( circuitElement.endVertexProperty.get() ),
-          circuitElement: circuitElement
-        }, circuitElement.attributesToStateObject() );
-      };
-
       var batteries = this.circuitElements.getArray().filter( function( b ) {return b instanceof Battery;} );
       var resistors = this.circuitElements.getArray().filter( function( b ) {return !(b instanceof Battery);} );
 
       // introduce a synthetic vertex for each battery to model internal resistance
-      var resistorAdapters = resistors.map( toStateObject );
+      var resistorAdapters = resistors.map( function( circuitElement ) {
+        return {
+
+          // the index of vertex corresponds to position in list.
+          node0: self.vertices.indexOf( circuitElement.startVertexProperty.get() ),
+          node1: self.vertices.indexOf( circuitElement.endVertexProperty.get() ),
+          circuitElement: circuitElement,
+          resistance: circuitElement.resistanceProperty.get()
+        };
+      } );
       var batteryAdapters = [];
 
       var nextSyntheticVertexIndex = self.vertices.length;
@@ -1177,10 +1171,18 @@ define( function( require ) {
        */
       var getArray = function( circuitElements ) {
         return circuitElements.getArray().map( function( element ) {
-          return _.extend( {
+          return {
             startVertex: getVertexIndex( element.startVertexProperty.get() ),
             endVertex: getVertexIndex( element.endVertexProperty.get() )
-          }, element.attributesToStateObject() );
+
+            // TODO(phet-io): include other circuit-element-specific data for save/load
+            // * REVIEW*: Sorry, thought this was an options object for something. If it's serialization, no spec is necessary
+            // * REVIEW: if the serialization is placed in the same file. If there's a lot of cross-file or shared attributes,
+            // * REVIEW: it would be helpful to doc.
+            // * REVIEW: Presumably toStateObject() should be a method, and fromStateObject( ... ) should be a static method on the circuit element?
+            // * REVIEW: Usually best to keep serialization/deserialization code in the same place.
+            // * REVIEW: Moving this to where deserialization happens may make sense
+          };
         } );
       };
       return {

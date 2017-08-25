@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var Property = require( 'AXON/Property' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
@@ -25,8 +26,9 @@ define( function( require ) {
     FixedLengthCircuitElement.call( this, startVertex, endVertex, CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH,
       CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH, tandem, options );
 
-    // @public {Property.<number>} the resistance in ohms
-    this.resistance = 0;
+    // @public (read-only) {Property.<number>} the resistance in ohms.  A constant, but modeled as a property for
+    // uniformity with other resistive elements.
+    this.resistanceProperty = new Property( 0 );
   }
 
   circuitConstructionKitCommon.register( 'SeriesAmmeter', SeriesAmmeter );
@@ -43,19 +45,6 @@ define( function( require ) {
 
         // No internal parameters that can change the circuit
         return [];
-      },
-
-      /**
-       * Get the attributes as a state object for serialization.
-       * @returns {Object}
-       * @public
-       * REVIEW: Duck typing looks good for these objects, but it should be documented where the spec is.
-       * REVIEW(samreid): In discussion in Battery.js
-       */
-      attributesToStateObject: function() {
-        return {
-          resistance: this.resistance
-        };
       }
     }
   );

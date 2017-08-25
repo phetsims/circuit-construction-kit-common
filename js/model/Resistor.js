@@ -86,19 +86,6 @@ define( function( require ) {
        */
       getCircuitProperties: function() {
         return [ this.resistanceProperty ];
-      },
-
-      /**
-       * Get the attributes as a state object for serialization.
-       * @returns {Object}
-       * @public
-       * REVIEW: Duck typing looks good for these objects, but it should be documented where the spec is.
-       * REVIEW(samreid): In discussion in Battery.js
-       */
-      attributesToStateObject: function() {
-        return {
-          resistance: this.resistanceProperty.get()
-        };
       }
     }
   );

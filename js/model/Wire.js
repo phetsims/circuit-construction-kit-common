@@ -123,20 +123,6 @@ define( function( require ) {
     dispose: function() {
       this.disposeWire();
       CircuitElement.prototype.dispose.call( this );
-    },
-
-    /**
-     * Returns an object with the state of the Wire, so that it can be saved/loaded.
-     * @returns {Object}
-     * @public
-     * REVIEW: Duck typing looks good for these objects, but it should be documented where the spec is.
-     * REVIEW(samreid): In discussion in Battery.js
-     */
-    attributesToStateObject: function() {
-      return {
-        resistance: this.resistanceProperty.get(),
-        resistivity: this.resistivityProperty.get()
-      };
     }
   } );
 } );
