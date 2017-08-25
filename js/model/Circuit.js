@@ -116,7 +116,7 @@ define( function( require ) {
 
       //REVIEW: There are a lot of cases where duplicate logic is done for both starting and ending vertices.
       //REVIEW: Would an array of vertex properties be helpful?
-      //REVIEW(samreid): tracked in https://github.com/phetsims/circuit-construction-kit-common/issues/394
+      //REVIEW^(samreid): tracked in https://github.com/phetsims/circuit-construction-kit-common/issues/394
       self.addVertexIfNew( circuitElement.endVertexProperty.get() );
 
       // When any vertex moves, relayout all charges within the fixed-length connected component, see #100
@@ -171,7 +171,7 @@ define( function( require ) {
     // @public (read-only) {Emitter} After the circuit physics is recomputed in solve(), some listeners need to update
     // themselves, such as the voltmeter and ammeter
     //REVIEW: What does read-only mean in this case? Presumably emitters (and most other objects like that) shouldn't ever change.
-    //REVIEW(samreid): I meant to convey the idea that this.circuitChangedEmitter should not be changed to any other instance.
+    //REVIEW^(samreid): I meant to convey the idea that this.circuitChangedEmitter should not be changed to any other instance.
     //REVIEW(samreid): Perhaps everyone already knows that?
     this.circuitChangedEmitter = new Emitter();
 

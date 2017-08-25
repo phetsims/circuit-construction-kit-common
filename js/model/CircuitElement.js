@@ -82,7 +82,7 @@ define( function( require ) {
 
     // @public {boolean} - true if the charge layout must be updated
     //REVIEW: It's a preference, but a method marking things as needing an update has been useful.
-    //REVIEW(samreid): under discussion in https://github.com/phetsims/circuit-construction-kit-common/issues/395
+    //REVIEW^(samreid): under discussion in https://github.com/phetsims/circuit-construction-kit-common/issues/395
     this.chargeLayoutDirty = true;
 
     // @public (read-only) {Emitter} - indicate when this CircuitElement has been connected to another CircuitElement
@@ -195,8 +195,8 @@ define( function( require ) {
 
       //REVIEW(samreid): are these lines necessary?
       //REVIEW: Presumably not, unless you want to retain a reference to this object but not the others.
-      //REVIEW(samreid): my main concern was about memory leaks.  Do you think it is necessary to null these out to
-      //REVIEW^(samreid): prevent memory leaks?
+      //REVIEW^(samreid): my main concern was about memory leaks.  Do you think it is necessary to null these out to
+      //REVIEW(samreid): prevent memory leaks?
       this.linkVertex = null;
       this.vertexMoved = null;
     },
