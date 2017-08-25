@@ -102,10 +102,11 @@ define( function( require ) {
         var angle = charge.charge < 0 ? 0 : charge.angle + ( current < 0 ? Math.PI : 0 );
 
         // Rotate then center the rotated node
-        //REVIEW*: Could reuse a Matrix3 object for this purpose if desired.
-        //REVIEW*: Also, why not just set this.rotation = angle? The translation is getting overwritten below anyways.
-        //REVIEW*: Is there a concern about a scale being set, that we're zeroing a scale?
-        this.setMatrix( Matrix3.rotation2( angle ) );
+        //REVIEW: Could reuse a Matrix3 object for this purpose if desired.
+        //REVIEW: Also, why not just set this.rotation = angle? The translation is getting overwritten below anyways.
+        //REVIEW: Is there a concern about a scale being set, that we're zeroing a scale?
+        //REVIEW^(samreid): I went with rotation=angle and it seems to work nicely, does this seem OK?
+        this.rotation = angle;
 
         //REVIEW: Is it safe to assume the center could be 0,0, and the center computation could be avoided?
         //REVIEW^(samreid): the image is rasterized for WebGL, so it has the origin at the top left. How would you
