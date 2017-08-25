@@ -67,8 +67,8 @@ define( function( require ) {
      * @protected - CircuitConstructionKitLightBulbNode calls updateRender for its child socket node
      */
     updateRender: function() {
-      var startPosition = this.circuitElement.startVertexProperty.get().positionProperty.get();
-      var endPosition = this.circuitElement.endVertexProperty.get().positionProperty.get();
+      var startPosition = this.circuitElement.startPositionProperty.get();
+      var endPosition = this.circuitElement.endPositionProperty.get();
       var angle = endPosition.minus( startPosition ).angle() + Math.PI / 4;
 
       // Update the node transform in a single step, see #66

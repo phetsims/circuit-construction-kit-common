@@ -188,8 +188,8 @@ define( function( require ) {
           var positionAlongSegment = point1.blend( point2, fractionAlongSegment );
 
           // rotate the point about the start vertex
-          var startPoint = this.startVertexProperty.get().positionProperty.get();
-          var vertexDelta = this.endVertexProperty.get().positionProperty.get().minus( startPoint );
+          var startPoint = this.startPositionProperty.get();
+          var vertexDelta = this.endPositionProperty.get().minus( startPoint );
           var relativeAngle = vertexDelta.angle() - this.vertexDelta.angle();
           var position = positionAlongSegment.rotatedAboutPoint( startPoint, relativeAngle );
           var angle = point2.minus( point1 ).angle();

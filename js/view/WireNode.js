@@ -104,8 +104,8 @@ define( function( require ) {
    * @returns {Shape}
    */
   var getHighlightStrokedShape = function( wire ) {
-    var startPoint = wire.startVertexProperty.get().positionProperty.get();
-    var endPoint = wire.endVertexProperty.get().positionProperty.get();
+    var startPoint = wire.startPositionProperty.get();
+    var endPoint = wire.endPositionProperty.get();
     return Shape.lineSegment( startPoint.x, startPoint.y, endPoint.x, endPoint.y )
       .getStrokedShape( HIGHLIGHT_STROKE_LINE_STYLES );
   };
@@ -116,8 +116,8 @@ define( function( require ) {
    * @returns {Shape}
    */
   var getTouchArea = function( wire ) {
-    var startPoint = wire.startVertexProperty.get().positionProperty.get();
-    var endPoint = wire.endVertexProperty.get().positionProperty.get();
+    var startPoint = wire.startPositionProperty.get();
+    var endPoint = wire.endPositionProperty.get();
     var distance = endPoint.distance( startPoint );
     var vertexInset = 18;
     var touchAreaStart = null;
@@ -311,8 +311,8 @@ define( function( require ) {
       circuitLayerNode && circuitLayerNode.circuit.selectedCircuitElementProperty.unlink( markAsDirty );
       wire.interactiveProperty.unlink( updatePickable );
 
-      wire.startVertexProperty.get().positionProperty.unlink( markAsDirty );
-      wire.endVertexProperty.get().positionProperty.unlink( markAsDirty );
+      wire.startPositionProperty.unlink( markAsDirty );
+      wire.endPositionProperty.unlink( markAsDirty );
 
       wire.connectedEmitter.removeListener( moveToBack );
 
@@ -354,8 +354,8 @@ define( function( require ) {
       if ( view === CircuitElementViewType.LIFELIKE ) {
 
         // determine whether to use the forward or reverse gradient based on the angle
-        var startPoint = this.wire.startVertexProperty.get().positionProperty.get();
-        var endPoint = this.wire.endVertexProperty.get().positionProperty.get();
+        var startPoint = this.wire.startPositionProperty.get();
+        var endPoint = this.wire.endPositionProperty.get();
         var lightingDirection = new Vector2( 0.916, 0.4 ); // sampled manually
         var wireVector = endPoint.minus( startPoint );
         var dot = lightingDirection.dot( wireVector );
@@ -375,8 +375,8 @@ define( function( require ) {
         this.endCapParent.visible = false;
       }
 
-      var startPosition = this.circuitElement.startVertexProperty.get().positionProperty.get();
-      var endPosition = this.circuitElement.endVertexProperty.get().positionProperty.get();
+      var startPosition = this.circuitElement.startPositionProperty.get();
+      var endPosition = this.circuitElement.endPositionProperty.get();
       var delta = endPosition.minus( startPosition );
       var magnitude = delta.magnitude();
       var angle = delta.angle();

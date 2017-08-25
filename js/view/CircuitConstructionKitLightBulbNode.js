@@ -111,8 +111,8 @@ define( function( require ) {
     }, options );
 
     // Schematic creation begins here.
-    var endPosition = lightBulb.endVertexProperty.get().positionProperty.get();
-    var startPosition = lightBulb.startVertexProperty.get().positionProperty.get();
+    var endPosition = lightBulb.endPositionProperty.get();
+    var startPosition = lightBulb.startPositionProperty.get();
     var delta = endPosition.minus( startPosition );
 
     var rightLeadX = delta.x;
@@ -225,8 +225,8 @@ define( function( require ) {
      * @protected - CircuitConstructionKitLightBulbNode calls updateRender for its child socket node
      */
     updateRender: function() {
-      var startPosition = this.circuitElement.startVertexProperty.get().positionProperty.get();
-      var endPosition = this.circuitElement.endVertexProperty.get().positionProperty.get();
+      var startPosition = this.circuitElement.startPositionProperty.get();
+      var endPosition = this.circuitElement.endPositionProperty.get();
       var delta = endPosition.minus( startPosition );
       var angle = delta.angle() + Math.PI / 4;
 

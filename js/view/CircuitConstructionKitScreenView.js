@@ -583,8 +583,8 @@ define( function( require ) {
       } );
       if ( metallicCircuitElement ) {
 
-        var startPoint = metallicCircuitElement.circuitElement.startVertexProperty.get().positionProperty.get();
-        var endPoint = metallicCircuitElement.circuitElement.endVertexProperty.get().positionProperty.get();
+        var startPoint = metallicCircuitElement.circuitElement.startPositionProperty.get();
+        var endPoint = metallicCircuitElement.circuitElement.endPositionProperty.get();
         var segmentVector = endPoint.minus( startPoint );
         var probeVector = probeNode.centerTop.minus( startPoint );
 

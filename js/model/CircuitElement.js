@@ -125,10 +125,8 @@ define( function( require ) {
         }
       };
 
-    //REVIEW*: The position properties of the vertex properties are used a ton. Maybe a getter for getStartPositionProperty()
-    //REVIEW: / getEndPositionProperty() would help make things more readable?
-    this.startVertexProperty.get().positionProperty.link( vertexMoved );
-    this.endVertexProperty.get().positionProperty.link( vertexMoved );
+    this.startPositionProperty.link( vertexMoved );
+    this.endPositionProperty.link( vertexMoved );
     this.startVertexProperty.lazyLink( linkVertex );
     this.endVertexProperty.lazyLink( linkVertex );
 
@@ -151,6 +149,24 @@ define( function( require ) {
   return inherit( Object, CircuitElement, {
 
     /**
+     * Convenience method to get the start vertex position Property
+     * @returns {Property.<Vector2>}
+     * @public
+     */
+    get startPositionProperty() {
+      return this.startVertexProperty.get().positionProperty;
+    },
+
+    /**
+     * Convenience method to get the end vertex position Property
+     * @returns {Property.<Vector2>}
+     * @public
+     */
+    get endPositionProperty() {
+      return this.endVertexProperty.get().positionProperty;
+    },
+
+    /**
      * Signify that a vertex has moved.
      * @private
      */
@@ -169,8 +185,8 @@ define( function( require ) {
       this.endVertexProperty.unlink( linkVertex );
 
       // TODO: how are these listeners sometimes already detached? See https://github.com/phetsims/circuit-construction-kit-dc/issues/144
-      this.startVertexProperty.get().positionProperty.hasListener( vertexMoved ) && this.startVertexProperty.get().positionProperty.unlink( vertexMoved );
-      this.endVertexProperty.get().positionProperty.hasListener( vertexMoved ) && this.endVertexProperty.get().positionProperty.unlink( vertexMoved );
+      this.startPositionProperty.hasListener( vertexMoved ) && this.startPositionProperty.unlink( vertexMoved );
+      this.endPositionProperty.hasListener( vertexMoved ) && this.endPositionProperty.unlink( vertexMoved );
 
       //REVIEW(samreid): are these lines necessary?
       //REVIEW: Presumably not, unless you want to retain a reference to this object but not the others.
@@ -259,8 +275,8 @@ define( function( require ) {
      * @public
      */
     getPositionAndAngle: function( distanceAlongWire ) {
-      var startPosition = this.startVertexProperty.get().positionProperty.get();
-      var endPosition = this.endVertexProperty.get().positionProperty.get();
+      var startPosition = this.startPositionProperty.get();
+      var endPosition = this.endPositionProperty.get();
       return {
         position: startPosition.blend( endPosition, distanceAlongWire / this.chargePathLength ),
         angle: Vector2.getAngleBetweenVectors( startPosition, endPosition )

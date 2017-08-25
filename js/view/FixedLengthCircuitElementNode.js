@@ -249,8 +249,8 @@ define( function( require ) {
      * @protected - CircuitConstructionKitLightBulbNode calls updateRender for its child socket node
      */
     updateRender: function() {
-      var startPosition = this.circuitElement.startVertexProperty.get().positionProperty.get();
-      var endPosition = this.circuitElement.endVertexProperty.get().positionProperty.get();
+      var startPosition = this.circuitElement.startPositionProperty.get();
+      var endPosition = this.circuitElement.endPositionProperty.get();
       var angle = Vector2.getAngleBetweenVectors( startPosition, endPosition );
       var magnitude = Vector2.getDistanceBetweenVectors( startPosition, endPosition );
 

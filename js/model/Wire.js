@@ -91,8 +91,8 @@ define( function( require ) {
         var self = this;
 
         //REVIEW*: Another place where having a shortcut to the position properties (on the circuit element) would be nice.
-        var startPosition = self.startVertexProperty.get().positionProperty.get();
-        var endPosition = self.endVertexProperty.get().positionProperty.get();
+        var startPosition = self.startPositionProperty.get();
+        var endPosition = self.endPositionProperty.get();
         var viewLength = startPosition.distance( endPosition );
         var modelLength = viewLength * METERS_PER_VIEW_COORDINATE;
         self.lengthProperty.set( modelLength );

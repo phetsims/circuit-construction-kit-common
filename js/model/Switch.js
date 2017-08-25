@@ -61,8 +61,8 @@ define( function( require ) {
        */
       getPositionAndAngle: function( distanceAlongWire ) {
 
-        var startPosition = this.startVertexProperty.get().positionProperty.get();
-        var endPosition = this.endVertexProperty.get().positionProperty.get();
+        var startPosition = this.startPositionProperty.get();
+        var endPosition = this.endPositionProperty.get();
         var fractionAlongWire = distanceAlongWire / this.chargePathLength;
 
         // If the charge is halfway up the switch lever for an open switch, show it along the raised lever
