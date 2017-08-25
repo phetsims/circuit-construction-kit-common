@@ -101,8 +101,8 @@ define( function( require ) {
         this.rotation = charge.charge < 0 ? 0 : charge.angle + ( current < 0 ? Math.PI : 0 );
 
         //REVIEW: Is it safe to assume the center could be 0,0, and the center computation could be avoided?
-        //REVIEW^(samreid): the image is rasterized for WebGL, so it has the origin at the top left. How would you
-        //REVIEW(samreid) recommend to proceed?
+        //REVIEW^(samreid): the image is rasterized for WebGL, so it has the origin at the top left, and it must be
+        //REVIEW: centered after being rotated. How would you recommend to proceed?
         this.center = position;
       }
       else {
