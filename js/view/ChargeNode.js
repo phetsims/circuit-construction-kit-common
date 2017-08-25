@@ -102,7 +102,7 @@ define( function( require ) {
 
         //REVIEW: Is it safe to assume the center could be 0,0, and the center computation could be avoided?
         //REVIEW^(samreid): the image is rasterized for WebGL, so it has the origin at the top left, and it must be
-        //REVIEW: centered after being rotated. How would you recommend to proceed?
+        //REVIEW: centered after being rotated (or we could center and nest in a child node). How would you recommend to proceed?
         this.center = position;
       }
       else {
