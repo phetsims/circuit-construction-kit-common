@@ -87,7 +87,9 @@ define( function( require ) {
   inherit( Object, ModifiedNodalAnalysisCircuit, {
 
     /**
-     * REVIEW*: A lot of things are noted as for debugging. Can these be stripped out of the production build of the sim?
+     * REVIEW: A lot of things are noted as for debugging. Can these be stripped out of the production build of the sim?
+     * REVIEW^(samreid): I'll need this when I start working on inductors and capacitors.  Is there a good way to strip
+     * REVIEW(samreid): it out for builds but leave it in for requirejs mode?
      * Returns a string representation of the circuit for debugging.
      * @returns {string}
      * @private
