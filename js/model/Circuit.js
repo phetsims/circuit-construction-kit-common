@@ -1181,13 +1181,9 @@ define( function( require ) {
             startVertex: getVertexIndex( element.startVertexProperty.get() ),
             endVertex: getVertexIndex( element.endVertexProperty.get() )
 
-            // TODO(phet-io): include other circuit-element-specific data for save/load
-            // * REVIEW*: Sorry, thought this was an options object for something. If it's serialization, no spec is necessary
-            // * REVIEW: if the serialization is placed in the same file. If there's a lot of cross-file or shared attributes,
-            // * REVIEW: it would be helpful to doc.
-            // * REVIEW: Presumably toStateObject() should be a method, and fromStateObject( ... ) should be a static method on the circuit element?
-            // * REVIEW: Usually best to keep serialization/deserialization code in the same place.
-            // * REVIEW: Moving this to where deserialization happens may make sense
+            // TODO(phet-io): include other circuit-element-specific data for save/load.  Save code should be adjacent
+            // TODO(phet-io): to load code.  If there's a lot of cross-file or shared attributes, it would be helpful to doc.
+            // TODO(phet-io): Presumably toStateObject() should be a method, and fromStateObject( ... ) should be a static method on the circuit element?
           };
         } );
       };
