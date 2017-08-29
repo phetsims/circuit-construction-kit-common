@@ -28,6 +28,7 @@ define( function( require ) {
     Meter.call( this, tandem );
 
     // @public {Property.<number|null>} the voltage the probe is reading, in volts
+    //REVIEW*: Doc what null means (presumably unconnected?)
     this.voltageProperty = new Property( null, {
       tandem: tandem.createTandem( 'voltageProperty' ),
       phetioValueType: TNumber( { units: 'volts' } )

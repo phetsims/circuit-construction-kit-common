@@ -205,6 +205,7 @@ define( function( require ) {
 
     // Stop watching the vertex positions for updating the voltmeter and ammeter
     self.vertices.addItemRemovedListener( function( vertex ) {
+      //REVIEW*: These assertions will be unneeded in the future if our plans go through?
       assert && assert( vertex.positionProperty.hasListener( emitCircuitChanged ), 'should have had the listener' );
       vertex.positionProperty.unlink( emitCircuitChanged );
       assert && assert( !vertex.positionProperty.hasListener( emitCircuitChanged ), 'Listener should be removed' );
@@ -216,6 +217,7 @@ define( function( require ) {
     // additional controls. Once this simulation is instrumented for a11y, the focus property can be used to track this.
     // Note that vertex selection is done via Vertex.selectedProperty.  These strategies can be unified when we
     // work on a11y
+    //REVIEW*: Type docs don't mention null!
     this.selectedCircuitElementProperty = new Property( null, {
       tandem: tandem.createTandem( 'selectedCircuitElementProperty' ),
       phetioValueType: TObject
@@ -225,11 +227,11 @@ define( function( require ) {
 
       // When a circuit element is selected, deselect all the vertices
       if ( selectedCircuitElement ) {
-        self.vertices.forEach( function( vertex ) {vertex.selectedProperty.set( false );} );
+        self.vertices.forEach( function( vertex ) { vertex.selectedProperty.set( false ); } );
       }
     } );
 
-    // @private {Function[]} - Actions that will be invoked during the step function
+    // @private {function[]} - Actions that will be invoked during the step function
     this.stepActions = [];
 
     // When any vertex is dropped, check it and its neighbors for overlap.  If any overlap, move them apart.
@@ -237,6 +239,7 @@ define( function( require ) {
       self.stepActions.push( function() {
 
         // Collect nearest vertices
+        //REVIEW*: What does nearest vertices mean (indicates distance?). Something other than neighboring vertices?
         var neighbors = self.getNeighboringVertices( vertex );
 
         // Also consider the vertex being dropped for comparison with neighbors
@@ -340,13 +343,16 @@ define( function( require ) {
 
         // Support when vertex is on the pivot, mainly for fuzz testing.  In that case, just move directly to the right
         if ( difference.magnitude() === 0 ) {
-          difference = new Vector2( 1, 0 );
+          difference = new Vector2( 1, 0 ); //REVIEW*: Why not pushing away by SNAP_RADIUS * 1.5?
         }
 
         var delta = difference.normalized().times( -SNAP_RADIUS * 1.5 );
         this.translateVertexGroup( vertex, delta );
       }
       else {
+        //REVIEW*: How is this branch ever triggered? Only source is from moveVerticesApart, which is only called
+        //REVIEW*: if ( minDistance < BUMP_AWAY_RADIUS ), which SEEMS for most cases (given moveVerticesApart logic)
+        //REVIEW*: to exclude this from being run. Not sure I understand why, as it IS being called.
 
         // Other vertices should be rotated away, which handles non-stretchy components well. For small components like
         // batteries (which are around 100 view units long), rotate Math.PI/4. Longer components don't need to rotate
@@ -358,7 +364,7 @@ define( function( require ) {
         this.rotateSingleVertexByAngle( vertex, pivotVertex, -2 * searchAngle );
         var distance2 = this.closestDistanceToOtherVertex( vertex );
         if ( distance2 > distance1 ) {
-
+          //REVIEW*: Usually just "if ( distance2 <= distance1 ) {" for the other case?
           // keep it, we're good.
         }
         else {
@@ -1156,6 +1162,7 @@ define( function( require ) {
      * @public
      */
     toStateObject: function() {
+      //REVIEW*: Maybe an assertion here would be more appropriate than a log statement?
       console.log( 'This should only be running in phet-io mode' );
       var self = this;
       var getVertexIndex = function( vertex ) {
