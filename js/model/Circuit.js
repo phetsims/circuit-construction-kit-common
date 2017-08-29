@@ -310,11 +310,13 @@ define( function( require ) {
       var v1Neighbors = this.getNeighboringVertices( v1 );
       var v2Neighbors = this.getNeighboringVertices( v2 );
 
+      // When vertex v1 is too close (but not connected) to v2, we choose vertex v3 as a reference point for moving
+      // vertex v1 (or vice versa).
       if ( v1Neighbors.length === 1 && !v1.blackBoxInterfaceProperty.get() ) {
-        this.bumpAwaySingleVertex( v1, v1Neighbors[ 0 ] );
+        this.bumpAwaySingleVertex( v1, v1Neighbors[ 0 ] ); // Arbitrarily choose 0th neighbor to move away from
       }
       else if ( v2Neighbors.length === 1 && !v2.blackBoxInterfaceProperty.get() ) {
-        this.bumpAwaySingleVertex( v2, v2Neighbors[ 0 ] );
+        this.bumpAwaySingleVertex( v2, v2Neighbors[ 0 ] ); // Arbitrarily choose 0th neighbor to move away from
       }
     },
 
@@ -340,7 +342,7 @@ define( function( require ) {
     bumpAwaySingleVertex: function( vertex, pivotVertex ) {
       var distance = vertex.positionProperty.value.distance( pivotVertex.positionProperty.value );
 
-      // If the vertices are too close, they must be translated way
+      // If the vertices are too close, they must be translated away
       if ( distance < BUMP_AWAY_RADIUS ) {
 
         var difference = pivotVertex.positionProperty.value.minus( vertex.positionProperty.value );
@@ -356,9 +358,13 @@ define( function( require ) {
         this.translateVertexGroup( vertex, delta );
       }
       else {
-        //REVIEW*: How is this branch ever triggered? Only source is from moveVerticesApart, which is only called
-        //REVIEW*: if ( minDistance < BUMP_AWAY_RADIUS ), which SEEMS for most cases (given moveVerticesApart logic)
-        //REVIEW*: to exclude this from being run. Not sure I understand why, as it IS being called.
+
+        //REVIEW: How is this branch ever triggered? Only source is from moveVerticesApart, which is only called
+        //REVIEW: if ( minDistance < BUMP_AWAY_RADIUS ), which SEEMS for most cases (given moveVerticesApart logic)
+        //REVIEW: to exclude this from being run. Not sure I understand why, as it IS being called.
+        //REVIEW^(samreid): When vertex v1 is too close (but not connected) to v2, we choose vertex v3 as a reference
+        //REVIEW^(samreid): point for moving vertex v1.  v3 may be closer or further to v1 than v2 was.
+        //REVIEW^(samreid): I tried to refine the comments above, let me know if I can add anything else to help.
 
         // Other vertices should be rotated away, which handles non-stretchy components well. For small components like
         // batteries (which are around 100 view units long), rotate Math.PI/4. Longer components don't need to rotate
