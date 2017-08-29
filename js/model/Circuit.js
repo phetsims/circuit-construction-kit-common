@@ -375,11 +375,7 @@ define( function( require ) {
         var distance1 = this.closestDistanceToOtherVertex( vertex );
         this.rotateSingleVertexByAngle( vertex, pivotVertex, -2 * searchAngle );
         var distance2 = this.closestDistanceToOtherVertex( vertex );
-        if ( distance2 > distance1 ) {
-          //REVIEW*: Usually just "if ( distance2 <= distance1 ) {" for the other case?
-          // keep it, we're good.
-        }
-        else {
+        if ( distance2 <= distance1 ) {
 
           // go back to the best spot
           this.rotateSingleVertexByAngle( vertex, pivotVertex, 2 * searchAngle );
