@@ -22,6 +22,9 @@ define( function( require ) {
   var DEBUG = CircuitConstructionKitCommonQueryParameters.debugModifiedNodalAnalysis;
 
   /**
+   * REVIEW*: Why not create an actual type with nodeId0, nodeId1, circuitElement and value?
+   * REVIEW*: This could be used for all of these cases?
+   * REVIEW*: It's also quite confusing that node0 and node1 aren't {Node}s.
    * @param {Object[]} batteries - {node0:number,node1:number,circuitElement:CircuitElement,voltage:number}
    * @param {Object[]} resistors - {node0:number,node1:number,circuitElement:CircuitElement,resistance:number}
    * @param {Object[]} currentSources {node0:number,node1:number,circuitElement:CircuitElement,current:number}
@@ -198,7 +201,7 @@ define( function( require ) {
 
     /**
      * Selects one node for each connected component to have the reference voltage of 0 volts.
-     * @returns {number[]}
+     * @returns {number[]} REVIEW*: referenceNodes is not an array of nodes? maybe node IDs?
      * @private
      */
     getReferenceNodes: function() {
@@ -208,7 +211,9 @@ define( function( require ) {
 
       // Mark reference nodes as they are discovered as map keys.
       var referenceNodes = [];
+      //REVIEW*: PERFORMANCE?! Just a guess, but _.size can't be a particularly efficient function.
       while ( _.size( remaining ) > 0 ) {
+        //REVIEW*: PERFORMANCE?! _.values every loop? If performance-sensitive, use something like a queue!
         var referenceNode = _.minBy( _.values( remaining ) );
         referenceNodes.push( referenceNode );
         var connectedNodes = this.getConnectedNodes( referenceNode );
@@ -217,6 +222,7 @@ define( function( require ) {
         // a reference node.
         for ( var i = 0; i < connectedNodes.length; i++ ) {
           var connectedNode = connectedNodes[ i ];
+          //REVIEW*: delete isn't great for performance.
           delete remaining[ connectedNode ];
         }
       }

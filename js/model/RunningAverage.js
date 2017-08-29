@@ -52,6 +52,7 @@ define( function( require ) {
       while ( this.samples.length > this.windowSize ) {
         this.samples.shift();
       }
+      //REVIEW*: _.sum?
       return _.reduce( this.samples, SUM ) / this.samples.length;
     }
   } );

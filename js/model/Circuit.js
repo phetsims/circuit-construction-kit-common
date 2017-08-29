@@ -471,12 +471,19 @@ define( function( require ) {
         return circuitElement.interactiveProperty.get();
       } );
 
+      //REVIEW*: If we're not performance-sensitive (called not often, already a closure), then just use
+      //REVIEW*: neighborCircuitElements.map( ... ) with a closure. Should simplify by a few lines:
+      //REVIEW*: neighborCircuitElements.map( function( element ) {
+      //REVIEW*:   return element.getOppositeVertex( vertex ).positionProperty.value
+      //REVIEW*:                 .minus( vertex.positionProperty.value ).withMagnitude( 30 )
+      //REVIEW*: } );
       var getTranslations = function() {
         var translations = [];
         for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
           var circuitElement = neighborCircuitElements[ i ];
           var oppositeVertex = circuitElement.getOppositeVertex( vertex );
           var translation = oppositeVertex.positionProperty.get().minus( vertex.positionProperty.get() )
+            //REVIEW*: .withMagnitude( 30 ) instead of normalized+timesScalar
             .normalized()
             .timesScalar( 30 );
           translations.push( translation );
@@ -500,13 +507,14 @@ define( function( require ) {
 
         // Get the angles in the corrected order
         translations = getTranslations();
-        angles = translations.map( function( t ) {return t.angle();} );
+        angles = translations.map( function( t ) { return t.angle(); } );
       }
 
       var separation = Math.PI * 2 / neighborCircuitElements.length;
       var results = [];
 
-      var center = angles.reduce( function( a, b ) {return a + b;}, 0 ) / angles.length;
+      //REVIEW: _.sum( angles ) / angles.length
+      var center = angles.reduce( function( a, b ) { return a + b; }, 0 ) / angles.length;
 
       // Move vertices away from cut vertex so that wires don't overlap
       if ( neighborCircuitElements.length === 2 ) {
@@ -574,12 +582,13 @@ define( function( require ) {
 
     /**
      * Returns true if the given vertex has a fixed connection to a black box interface vertex.
-     * @param {Vertex} v
+     * @param {Vertex} v REVIEW*: 'vertex' may be better variable name here, since we don't have multiple vertices?
      * @returns {boolean}
      * @private
      */
     hasFixedConnectionToBlackBoxInterfaceVertex: function( v ) {
       var vertices = this.findAllFixedVertices( v );
+      //REVIEW: _.some() will be simpler and higher performance.
       return _.filter( vertices, function( v ) {
         return v.blackBoxInterfaceProperty.get();
       } ).length > 0;
@@ -679,8 +688,8 @@ define( function( require ) {
       // the vertices
       var self = this;
 
-      var batteries = this.circuitElements.getArray().filter( function( b ) {return b instanceof Battery;} );
-      var resistors = this.circuitElements.getArray().filter( function( b ) {return !(b instanceof Battery);} );
+      var batteries = this.circuitElements.getArray().filter( function( b ) { return b instanceof Battery; } );
+      var resistors = this.circuitElements.getArray().filter( function( b ) { return !( b instanceof Battery ); } );
 
       // introduce a synthetic vertex for each battery to model internal resistance
       var resistorAdapters = resistors.map( function( circuitElement ) {
@@ -696,6 +705,7 @@ define( function( require ) {
       var batteryAdapters = [];
 
       var nextSyntheticVertexIndex = self.vertices.length;
+      //REVIEW*: With the map above, would a forEach here be appropriate?
       for ( var k = 0; k < batteries.length; k++ ) {
         var battery = batteries[ k ];
 
@@ -722,20 +732,25 @@ define( function( require ) {
       var solution = new ModifiedNodalAnalysisCircuit( batteryAdapters, resistorAdapters, [] ).solve();
 
       // Apply the node voltages to the vertices
+      //REVIEW*: With the map above (and temporary object creation), would a forEach here be appropriate?
       for ( var i = 0; i < this.vertices.length; i++ ) {
 
         // For unconnected vertices, such as for the black box, they may not have an entry in the matrix, so just mark
         // them as zero.
+        //REVIEW*: typeof checks may be worse than undefined checks. What value would it take if it's not a number?
         var v = typeof solution.nodeVoltages[ i ] === 'number' ? solution.nodeVoltages[ i ] : 0;
         this.vertices.get( i ).voltageProperty.set( v );
       }
 
       // Apply the currents through the CircuitElements
+      //REVIEW*: With the map above (and temporary object creation), would a forEach here be appropriate?
       for ( i = 0; i < solution.elements.length; i++ ) {
         solution.elements[ i ].circuitElement.currentProperty.set( solution.elements[ i ].currentSolution );
       }
 
       // For resistors with r>0, Ohm's Law gives the current
+      //REVIEW*: I thought all resistors had non-zero resistance (even wires technically) to give a solution?
+      //REVIEW*: With the map above (and temporary object creation), would a forEach here be appropriate?
       for ( i = 0; i < resistorAdapters.length; i++ ) {
         var resistorAdapter = resistorAdapters[ i ];
         if ( resistorAdapter.resistance !== 0 ) {
@@ -790,12 +805,17 @@ define( function( require ) {
     step: function( dt ) {
 
       // Invoke any scheduled actions
-      this.stepActions.forEach( function( stepAction ) {stepAction();} );
+      this.stepActions.forEach( function( stepAction ) { stepAction(); } );
       this.stepActions.length = 0;
 
       // Move the charges
       this.chargeAnimator.step( dt );
 
+      //REVIEW*: This pattern seems necessary (to avoid copying), but:
+      //REVIEW*: (a) you're creating function closures here but avoiding an array copy. Should we ditch the closures?
+      //REVIEW*: (b) I'd REALLY like to see a safe way to do this, that sets assertions to ensure there wasn't a
+      //REVIEW*: concurrent modification. Maybe forEachVolatile or some other name that adds assertion checks, but
+      //REVIEW*: production runtime is fast (and doesn't require the extra ugly getArray() all over the place).
       this.circuitElements.getArray().forEach( function( circuitElement ) {
         circuitElement.update && circuitElement.update();
       } );
@@ -829,6 +849,7 @@ define( function( require ) {
         return false;
       }
 
+      //REVIEW*: Do we need a _.some equivalent for ObservableArray?
       return !!this.circuitElements.find( function( circuitElement ) {
         return circuitElement.containsBothVertices( a, b );
       } );
@@ -875,6 +896,14 @@ define( function( require ) {
       for ( var i = 0; i < allConnectedVertices.length; i++ ) {
         var neighborCircuitElements = this.getNeighborCircuitElements( allConnectedVertices[ i ] );
         for ( var k = 0; k < neighborCircuitElements.length; k++ ) {
+          //REVIEW*: I somewhat prefer adding duplicates to the array, and then use _.uniq/whatnot.
+          //REVIEW*: Potentially more efficient than scanning through for duplicates every time.
+          //REVIEW*: Maybe there's a good way of stripping duplicates out of an exiting array without creating another array?
+          //REVIEW*: If not concerned about performance:
+          //REVIEW*: var self = this;
+          //REVIEW*: return _.uniq( _.flatten( this.findAllConnectedVertices( vertex ).map( function( vertices ) {
+          //REVIEW*:   return self.getNeighborCircuitElements( vertices );
+          //REVIEW*: } ) ) );
           var neighborCircuitElement = neighborCircuitElements[ k ];
           if ( circuitElements.indexOf( neighborCircuitElement ) === -1 ) {
             circuitElements.push( neighborCircuitElement );
@@ -924,12 +953,13 @@ define( function( require ) {
             // If the node was already visited, don't visit again
             if ( visited.indexOf( neighborVertex ) < 0 &&
                  toVisit.indexOf( neighborVertex ) < 0 &&
-
+                 //REVIEW*: Blank line here was throwing me, can it be removed?
                  okToVisit( currentVertex, neighborCircuitElement, neighborVertex ) ) {
               toVisit.push( neighborVertex );
             }
           }
         }
+        //REVIEW*: Similar notes about maybe there's a more efficient way to handle deduplication.
         if ( fixedVertices.indexOf( currentVertex ) < 0 ) {
           fixedVertices.push( currentVertex );
         }
@@ -961,6 +991,7 @@ define( function( require ) {
     findAllFixedVertices: function( vertex, okToVisit ) {
       return this.searchVertices( vertex, function( startVertex, circuitElement, endVertex ) {
         if ( okToVisit ) {
+          //REVIEW*: Prefer your previous check to look for a lengthProperty than an instanceof lookup?
           return circuitElement instanceof FixedLengthCircuitElement && okToVisit( startVertex, circuitElement, endVertex );
         }
         else {
@@ -997,30 +1028,35 @@ define( function( require ) {
         assert && assert( blackBoxBounds, 'bounds should be provided for build mode' );
       }
 
+      //REVIEW*: docs probably indicate this function gets called once per frame dragging.
+      //REVIEW*: This filters an AWFUL LOT. In a row. I honestly can't think of a reason NOT to combine the filters
+      //REVIEW*: into one filter function. Won't have to duplicate zero-length checks, and it should be at least as
+      //REVIEW*: fast.
+
       // Rules for a vertex connecting to another vertex.
       // (1) A vertex may not connect to an adjacent vertex.
       var candidateVertices = this.vertices.getArray().filter( function( candidateVertex ) {
         return !self.isVertexAdjacent( vertex, candidateVertex );
       } );
-      if ( candidateVertices.length === 0 ) {return null;}  // Avoid additional work if possible to improve performance
+      if ( candidateVertices.length === 0 ) { return null;}  // Avoid additional work if possible to improve performanc e
 
       // (2) A vertex cannot connect to itself
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
         return candidateVertex !== vertex;
       } );
-      if ( candidateVertices.length === 0 ) {return null;}
+      if ( candidateVertices.length === 0 ) { return null; }
 
       // (3) a vertex must be within SNAP_RADIUS (screen coordinates) of the other vertex
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
         return vertex.unsnappedPositionProperty.get().distance( candidateVertex.positionProperty.get() ) < SNAP_RADIUS;
       } );
-      if ( candidateVertices.length === 0 ) {return null;}
+      if ( candidateVertices.length === 0 ) { return null; }
 
       // (4) a vertex must be attachable. Some black box vertices are not attachable, such as vertices hidden in the box
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
         return candidateVertex.attachableProperty.get();
       } );
-      if ( candidateVertices.length === 0 ) {return null;}
+      if ( candidateVertices.length === 0 ) { return null; }
 
       // (5) Reject any matches that result in circuit elements sharing a pair of vertices, which would cause
       // the wires to lay across one another (one vertex was already shared)
@@ -1040,7 +1076,7 @@ define( function( require ) {
         }
         return true;
       } );
-      if ( candidateVertices.length === 0 ) {return null;}
+      if ( candidateVertices.length === 0 ) { return null; }
 
       // (6) a vertex cannot be connected to its own fixed subgraph (no wire)
       var fixedVertices = this.findAllFixedVertices( vertex );
@@ -1052,7 +1088,7 @@ define( function( require ) {
         }
         return true;
       } );
-      if ( candidateVertices.length === 0 ) {return null;}
+      if ( candidateVertices.length === 0 ) { return null; }
 
       // (7) a wire vertex cannot connect if its neighbor is already proposing a connection
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
@@ -1078,7 +1114,7 @@ define( function( require ) {
         }
         return true;
       } );
-      if ( candidateVertices.length === 0 ) {return null;}
+      if ( candidateVertices.length === 0 ) { return null; }
 
       // (8) a wire vertex cannot double connect to an object, creating a tiny short circuit
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
@@ -1132,7 +1168,7 @@ define( function( require ) {
           return !candidateVertex.outerWireStub;
         } );
       }
-      if ( candidateVertices.length === 0 ) {return null;}
+      if ( candidateVertices.length === 0 ) { return null; }
 
       // Find the closest match
       var sorted = _.sortBy( candidateVertices, function( candidateVertex ) {

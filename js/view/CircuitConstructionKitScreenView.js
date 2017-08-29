@@ -567,6 +567,7 @@ define( function( require ) {
       // not shown, this is desirable so that students have a higher chance of getting the desirable reading).
       // When solder is shown, it is used as the conductive element for the voltmeter (and hence why the solder radius
       // is used in the computation below.
+      //REVIEW*: _.values not efficient, but a for-loop is used. Is this performance critical in this section?
       var solderNodes = _.values( this.circuitLayerNode.solderNodes );
       for ( var i = 0; i < solderNodes.length; i++ ) {
         var solderNode = solderNodes[ i ];
