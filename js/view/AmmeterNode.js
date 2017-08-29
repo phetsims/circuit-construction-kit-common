@@ -61,7 +61,10 @@ define( function( require ) {
       visibleBoundsProperty: null,
 
       // For some CCK Black Box modes, when the user makes a change, the results are hidden
-      showResultsProperty: new BooleanProperty( true )
+      showResultsProperty: new BooleanProperty( true ),
+
+      // For the black box study, there is a different current threshold in the readout
+      blackBoxStudy: false
     }, options );
 
     // @public (read-only) {Ammeter} - the model associated with this view
@@ -70,8 +73,8 @@ define( function( require ) {
     var wireNode = new ProbeWireNode( 'black', new Vector2( 0, BODY_LEAD_Y ), new Vector2( 0, PROBE_LEAD_Y ) );
 
     var currentReadoutProperty = new DerivedProperty( [ ammeter.currentProperty ], function( current ) {
-      var max = window.phetBlackBoxStudy ? 1E3 : 1E10;
-      var maxString = window.phetBlackBoxStudy ? '> 10^3' : '> 10^10';
+      var max = options.blackBoxStudy ? 1E3 : 1E10;
+      var maxString = options.blackBoxStudy ? '> 10^3' : '> 10^10';
 
       // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
       return current === null ? questionMarkString :

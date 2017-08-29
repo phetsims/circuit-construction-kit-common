@@ -46,10 +46,14 @@ define( function( require ) {
 
   /**
    * @param {Tandem} tandem
+   * @param {Object} [options]
    * @constructor
    */
-  function Circuit( tandem ) {
+  function Circuit( tandem, options ) {
     var self = this;
+
+    options = _.extend( { blackBoxStudy: false }, options );
+    this.blackBoxStudy = options.blackBoxStudy;
 
     // @public {NumberProperty} - All wires share the same resistivity, which is defined by
     // resistance = resistivity * length. On the Lab Screen, there is a wire resistivity control
@@ -431,8 +435,7 @@ define( function( require ) {
       this.selectedCircuitElementProperty.reset();
 
       // Vertices must be cleared from the black box screen--it's not handled by clearing the circuit elements
-      //REVIEW*: There's probably a better way of passing this information in than a global?
-      if ( window.phetBlackBoxStudy ) {
+      if ( this.blackBoxStudy ) {
 
         // clear references, do not dispose because some items get added back in the black box.
         this.circuitElements.clear();
@@ -483,7 +486,7 @@ define( function( require ) {
           var circuitElement = neighborCircuitElements[ i ];
           var oppositeVertex = circuitElement.getOppositeVertex( vertex );
           var translation = oppositeVertex.positionProperty.get().minus( vertex.positionProperty.get() )
-            //REVIEW*: .withMagnitude( 30 ) instead of normalized+timesScalar
+          //REVIEW*: .withMagnitude( 30 ) instead of normalized+timesScalar
             .normalized()
             .timesScalar( 30 );
           translations.push( translation );

@@ -87,7 +87,9 @@ define( function( require ) {
       showNoncontactAmmeters: true,
       getCircuitEditPanelLayoutPosition: CircuitElementEditContainerPanel.GET_LAYOUT_POSITION,
       showResistivityControl: true,
-      showBatteryResistanceControl: true
+      showBatteryResistanceControl: true,
+
+      blackBoxStudy: false
     }, options );
 
     ScreenView.call( this );
@@ -141,7 +143,8 @@ define( function( require ) {
 
     var ammeterNode = new AmmeterNode( model.ammeter, tandem.createTandem( 'ammeterNode' ), {
       showResultsProperty: model.isValueDepictionEnabledProperty,
-      visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty
+      visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty,
+      blackBoxStudy: options.blackBoxStudy
     } );
     model.ammeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
       if ( bodyNodeGlobalBounds.intersectsBounds( self.sensorToolbox.globalBounds ) ) {

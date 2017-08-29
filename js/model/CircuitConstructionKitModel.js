@@ -44,7 +44,8 @@ define( function( require ) {
 
       // Determines whether electrons can be shown.  In black box, electrons can only be shown when the user reveals
       // the answer by pressing the reveal answer button.
-      revealing: true
+      revealing: true,
+      blackBoxStudy: false
     }, options );
 
     // @private {EaseAnimation} - animation for the zoom level
@@ -52,7 +53,7 @@ define( function( require ) {
     this.zoomAnimation = null;
 
     // @public (read-only) {Circuit} - contains CircuitElements, Vertices, etc.
-    this.circuit = new Circuit( tandem.createTandem( 'circuit' ) );
+    this.circuit = new Circuit( tandem.createTandem( 'circuit' ), { blackBoxStudy: options.blackBoxStudy } );
 
     // @public (read-only) {Voltmeter}
     this.voltmeter = new Voltmeter( tandem.createTandem( 'voltmeter' ) );
