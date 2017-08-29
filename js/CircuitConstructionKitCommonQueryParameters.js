@@ -55,15 +55,6 @@ define( function( require ) {
       defaultValue: CurrentType.ELECTRONS,
       validValues: CurrentType.VALUES,
       parse: function( string ) {
-        //REVIEW: More of a question of how this works: Is validValues checked after the parsing (in which case I guess
-        //REVIEW: it sees the Error object... but it won't throw the error object?). Why not throw, and not specify
-        //REVIEW: validValues?
-        //REVIEW^(samreid): ValidValues is checked after parsing, it will see the error and see that error is not on the
-        //REVIEW^(samreid): on the whitelist.  So running with ?currentType=hello you get this error:
-        //REVIEW^(samreid): Error for query parameter "currentType": value must be a member of validValues: Error: invalid value: hello
-        //REVIEW^(samreid): validValues has worked well elsewhere, so I used that pattern here as well.  But I think
-        //REVIEW^(samreid): it was confusing to have an error reporting another error, so I changed this to use the string
-        //REVIEW^(samreid): Now the error reads like Error for query parameter "currentType": value must be a member of validValues: hello
         return string === 'electrons' ? CurrentType.ELECTRONS :
                string === 'conventional' ? CurrentType.CONVENTIONAL :
                string; // Will error out in validValues check

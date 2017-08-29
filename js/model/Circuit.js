@@ -215,6 +215,7 @@ define( function( require ) {
       //REVIEW^(samreid): proposed axon changes.  The second check could be removed if the proposed axon changes
       //REVIEW^(samreid): go through.  Should I just remove these now?  Or keep the top one?  Let me know your
       //REVIEW^(samreid): recommendation.
+      //REVIEW*: May be best to leave them in (in case we back out of adding assertions otherwise), sorry about tagging these.
       assert && assert( vertex.positionProperty.hasListener( emitCircuitChanged ), 'should have had the listener' );
       vertex.positionProperty.unlink( emitCircuitChanged );
       assert && assert( !vertex.positionProperty.hasListener( emitCircuitChanged ), 'Listener should be removed' );
@@ -353,9 +354,7 @@ define( function( require ) {
 
         // Support when vertex is on the pivot, mainly for fuzz testing.  In that case, just move directly to the right
         if ( difference.magnitude() === 0 ) {
-          difference = new Vector2( 1, 0 ); //REVIEW: Why not pushing away by SNAP_RADIUS * 1.5?
-                                            //REVIEW^(samreid): this is set to (1,0) to keep the following line simple
-                                            //REVIEW^(samreid): but let me know if you have a better plan
+          difference = new Vector2( 1, 0 );
         }
 
         var delta = difference.normalized().times( -SNAP_RADIUS * 1.5 );
