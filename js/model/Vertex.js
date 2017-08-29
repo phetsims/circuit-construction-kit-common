@@ -95,6 +95,7 @@ define( function( require ) {
     this.relayerEmitter = new Emitter();
 
     // @public {function} - added by Circuit.js so that listeners can be removed when vertices are removed
+    //REVIEW*: This is set to null, but type docs don't allow.
     this.vertexSelectedPropertyListener = null;
 
     // Tandem.addInstance is not necessary because all of the sub-properties are already tracked, we do not need to

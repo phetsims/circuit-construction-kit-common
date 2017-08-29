@@ -73,6 +73,8 @@ define( function( require ) {
     this.vertex = vertex;
 
     // @public (read-only) {Vector2} - added by CircuitLayerNode during dragging, used for relative drag location.
+    //REVIEW*: Null not allowed by type documentation! Also set to null in CircuitLayerNode's endDrag, so presumably
+    //REVIEW*: this isn't just initialization.
     this.startOffset = null;
 
     // Highlight is shown when the vertex is selected.
@@ -103,6 +105,7 @@ define( function( require ) {
           // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
           // https://github.com/phetsims/circuit-construction-kit-common/issues/307
           event.preventDefault();
+          //REVIEW*: getSelectedVertex() can supposedly return null, but cutVertex doesn't allow null.
           cutButton.enabled && circuit.cutVertex( circuit.getSelectedVertex() );
         }
       }

@@ -95,6 +95,9 @@ define( function( require ) {
     // @protected (read-only) {Plane}, so subclasses can change the fill. On touch, make it so tapping the background
     // deselects items.  For mouse, we add listeners to the pointer that work over all components, but this isn't
     // possible with touch since it is a new pointer instance for each touch.
+    //REVIEW*: I'm confused, this looks like it's for two purposes, neither of which I would use a Plane for.
+    //REVIEW*: For the input handling, can Display.addInputListener be used?
+    //REVIEW*: For the background color, can we just set the background color of the screen?
     this.backgroundPlane = new Plane( { fill: BACKGROUND_COLOR } );
     this.backgroundPlane.addInputListener( {
       touchdown: function() {
@@ -554,6 +557,7 @@ define( function( require ) {
      * @param {Image} probeNode - the probe node from the VoltmeterNode
      * @param {Vector2} probePosition
      * @returns {Object} with vertex (for checking connectivity) and voltage (if connected)
+     * REVIEW*: I see a "return null", but this is not noted in the type docs
      * @private
      */
     getVoltageConnection: function( probeNode, probePosition ) {

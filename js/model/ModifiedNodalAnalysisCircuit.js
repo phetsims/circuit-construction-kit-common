@@ -352,7 +352,7 @@ define( function( require ) {
       } ).join( '\n' ) );
 
       // solve the linear matrix system for the unknowns
-      var x = null;
+      var x = null; //REVIEW*: This null value isn't used. Just "var x"
       try {
         x = A.solve( z );
       }

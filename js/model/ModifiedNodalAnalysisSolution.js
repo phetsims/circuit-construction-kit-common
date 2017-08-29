@@ -46,6 +46,8 @@ define( function( require ) {
   return inherit( Object, ModifiedNodalAnalysisSolution, {
 
     /**
+     * REVIEW*: This looks like it's exclusively used by unit testing. Can we move it to the unit tests, so it won't be
+     * REVIEW*: included otherwise?
      * Compare two solutions, and provide detailed qunit equal test if equal is provided
      * @param modifiedNodalAnalysisSolution
      * @param {Object} [qassert] from qunit
@@ -83,6 +85,7 @@ define( function( require ) {
 
     /**
      * For equality testing, make sure all of the specified elements and currents match ours
+     * REVIEW*: Also only used in unit testing, see above comment.
      * @param modifiedNodalAnalysisSolution
      * @private
      */
@@ -98,6 +101,7 @@ define( function( require ) {
 
     /**
      * Returns true if this solution has an element that matches the provided element.
+     * REVIEW*: Also only used in unit testing, see above comment.
      * @param {Object} element
      * @returns {boolean}
      * @private
@@ -116,6 +120,7 @@ define( function( require ) {
 
     /**
      * Used by the CCK test harness.
+     * REVIEW*: Also only used in unit testing, see above comment.
      * @param {Object} element
      * @returns {number}
      * @public
@@ -149,6 +154,7 @@ define( function( require ) {
 
     /**
      * Returns the voltage of the specified node.
+     * REVIEW*: Also only used in unit testing, see above comment.
      * @param {number} nodeIndex - the index of the node
      * @returns {number} the voltage of the node
      * @private
@@ -159,6 +165,7 @@ define( function( require ) {
 
     /**
      * Returns the voltage across a circuit element.
+     * REVIEW*: Also only used in unit testing, see above comment.
      * @param {Object} element - a circuit element with {node1:{number},node2:{number}}
      * @returns {number} - the voltage
      * @private

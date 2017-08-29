@@ -55,6 +55,9 @@ define( function( require ) {
       defaultValue: CurrentType.ELECTRONS,
       validValues: CurrentType.VALUES,
       parse: function( string ) {
+        //REVIEW*: More of a question of how this works: Is validValues checked after the parsing (in which case I guess
+        //REVIEW*: it sees the Error object... but it won't throw the error object?). Why not throw, and not specify
+        //REVIEW*: validValues?
         return string === 'electrons' ? CurrentType.ELECTRONS :
                string === 'conventional' ? CurrentType.CONVENTIONAL :
                new Error( 'invalid value: ' + string );

@@ -423,6 +423,7 @@ define( function( require ) {
       this.selectedCircuitElementProperty.reset();
 
       // Vertices must be cleared from the black box screen--it's not handled by clearing the circuit elements
+      //REVIEW*: There's probably a better way of passing this information in than a global?
       if ( window.phetBlackBoxStudy ) {
 
         // clear references, do not dispose because some items get added back in the black box.
@@ -479,6 +480,8 @@ define( function( require ) {
       var translations = getTranslations();
       var angles = translations.map( function( t ) {return t.angle();} );
 
+      //REVIEW*: Wasn't sure how to trigger this code. Presumably this is not a safe assumption to make for the future?
+      //REVIEW*: Is the assumption that this is not possible made elsewhere?
       if ( neighborCircuitElements.length > 2 ) {
 
         // Reorder elements based on angle so they don't cross over when spread out
@@ -508,6 +511,7 @@ define( function( require ) {
         results = da < 0 ? [ ax, bx ] : [ bx, ax ];
       }
       else {
+        //REVIEW*: Also wasn't sure how to reach here. See above notes about assumptions.
 
         var distance = neighborCircuitElements.length <= 5 ? 30 : neighborCircuitElements.length * 30 / 5;
         neighborCircuitElements.forEach( function( circuitElement, k ) {
@@ -972,9 +976,10 @@ define( function( require ) {
      * A vertex has been dragged, is it a candidate for joining with other vertices?  If so, return the candidate
      * vertex.  Otherwise, return null.
      * @param {Vertex} vertex - the dragged vertex
-     * @param {string} mode - the application mode 'test' | 'explore' | undefined
+     * @param {string} mode - the application mode 'test' | 'explore' | undefined REVIEW*: Put undefined in type docs then?
      * @param {Bounds2} blackBoxBounds - the bounds of the black box, if there is one
-     * @returns {Vertex} - the vertex it will be able to connect to, if dropped
+     *                                   REVIEW*: The one call site seems to mostly pass in undefined(!) here. At least type-doc it, recommend a cleaner way.
+     * @returns {Vertex} - the vertex it will be able to connect to, if dropped REVIEW*: Description notes this can return null, but not noted in type here.
      * @public
      */
     getDropTarget: function( vertex, mode, blackBoxBounds ) {
@@ -1181,6 +1186,7 @@ define( function( require ) {
             startVertex: getVertexIndex( element.startVertexProperty.get() ),
             endVertex: getVertexIndex( element.endVertexProperty.get() )
 
+            //REVIEW*: Do these TODOs not need to be finished for the initial release?
             // TODO(phet-io): include other circuit-element-specific data for save/load.  Save code should be adjacent
             // TODO(phet-io): to load code.  If there's a lot of cross-file or shared attributes, it would be helpful to doc.
             // TODO(phet-io): Presumably toStateObject() should be a method, and fromStateObject( ... ) should be a static method on the circuit element?

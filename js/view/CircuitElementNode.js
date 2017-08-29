@@ -31,6 +31,7 @@ define( function( require ) {
     this.circuitElement = circuitElement;
 
     // @protected {Object} - Supplied by subclasses so that events can be forwarded from the tool icons
+    //REVIEW*: Null not allowed in the type doc
     this.dragHandler = null;
 
     options = _.extend( {

@@ -53,6 +53,7 @@ define( function( require ) {
    * @param {Vertex} startVertex - the side Vertex
    * @param {Vertex} endVertex - the bottom Vertex
    * @param {number} resistance - in ohms
+   *REVIEW*: No docs for viewTypeProperty? (note it looks like it might conditionally be null)
    * @param {Tandem} tandem
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Object} [options]
@@ -202,6 +203,7 @@ define( function( require ) {
         previousAccumulatedDistance = accumulatedDistance;
       }
 
+      //REVIEW*: A throw is better? Docs don't support the return value of null
       assert && assert( false, 'exceeded charge path bounds' );
       return null;
     }

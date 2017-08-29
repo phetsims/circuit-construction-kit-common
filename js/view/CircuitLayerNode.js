@@ -291,6 +291,7 @@ define( function( require ) {
     } );
 
     // @private - array of actions to be performed in the step function
+    //REVIEW*: Maybe I'm wrong, but nothing is being added to this if it's truly private? Remove this and its references?
     this.stepListeners = [];
 
     // When a vertex is selected, a cut button is shown near to the vertex.  If the vertex is connected to >1 circuit
@@ -312,6 +313,7 @@ define( function( require ) {
       tandem: Tandem.createStaticTandem( 'cutButton' )
     } );
     this.cutButton.addListener( function() {
+      //REVIEW*: getSelectedVertex() can supposedly return null, but cutVertex doesn't allow null.
       circuit.cutVertex( circuit.getSelectedVertex() );
 
       // Make sure no vertices got nudged out of bounds during a cut, see https://github.com/phetsims/circuit-construction-kit-dc/issues/138
@@ -374,6 +376,7 @@ define( function( require ) {
     } );
 
     // @public - Filled in by black box study, if it is running.
+    //REVIEW: Needs type docs? What's going on here?
     this.blackBoxNode = null;
   }
 
@@ -421,6 +424,7 @@ define( function( require ) {
         var targetVertex = this.circuit.getDropTarget(
           vertex,
           this.model.modeProperty.get(),
+          //REVIEW*: I don't see where blackBoxBounds is declared for the normal CCK model type. Seems to be passing undefined(!).
           this.model.blackBoxBounds
         );
         if ( targetVertex ) {
@@ -433,7 +437,8 @@ define( function( require ) {
     /**
      * Finds the closest drop target for any of the given vertices
      * @param {Vertex[]} vertices
-     * @returns {Object}
+     * @returns {Object} REVIEW*: No docs on the result?
+     * REVIEW*: Can return null, but return type shows Object only.
      * @public
      */
     getBestDropTarget: function( vertices ) {
@@ -491,6 +496,8 @@ define( function( require ) {
      * @param {Vector2} position
      * @param {CircuitElement[]} neighbors
      * @param {Vertex[]} vertices
+     * REVIEW*: I didn't see how I could trigger this. I'd like to see the behavior if possible in CCK-DC, OR I'd like
+     * REVIEW*: to know more about why it's impossible to reach this in CCK-DC.
      * @private
      */
     rotateAboutFixedPivot: function( point, vertex, okToRotate, vertexNode, position, neighbors, vertices ) {

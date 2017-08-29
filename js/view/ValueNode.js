@@ -133,6 +133,7 @@ define( function( require ) {
       contentNode.maxWidth = 100;
     }
     else {
+      //REVIEW*: Would an error (or bailing) be appropriate here? Didn't hit this in fuzzing CCK-DC
       contentNode = new Text( '', { font: FONT } );
     }
 

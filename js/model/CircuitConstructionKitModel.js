@@ -48,6 +48,7 @@ define( function( require ) {
     }, options );
 
     // @private {EaseAnimation} - animation for the zoom level
+    //REVIEW*: Presumably put null in the type docs?
     this.zoomAnimation = null;
 
     // @public (read-only) {Circuit} - contains CircuitElements, Vertices, etc.

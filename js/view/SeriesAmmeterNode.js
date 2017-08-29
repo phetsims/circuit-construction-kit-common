@@ -56,7 +56,8 @@ define( function( require ) {
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - main screen view, null for icon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {SeriesAmmeter} seriesAmmeter
-   * @param {Property.<string>} viewTypeProperty
+   * @param {Property.<string>} viewTypeProperty REVIEW*: null passed in SensorToolbox's use of this constructor.
+   *                                             REVIEW*: Why not have the viewTypeProperty in the options?
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
