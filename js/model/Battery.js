@@ -29,6 +29,7 @@ define( function( require ) {
    * @constructor
    */
   function Battery( startVertex, endVertex, resistanceProperty, batteryType, tandem, options ) {
+    assert && assert( BatteryType.VALUES.indexOf( batteryType ) >= 0, 'invalid battery type: ' + batteryType );
     options = _.extend( {
       initialOrientation: 'right',
       voltage: 9.0

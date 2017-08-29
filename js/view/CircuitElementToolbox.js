@@ -189,7 +189,7 @@ define( function( require ) {
           vertexPair.startVertex,
           vertexPair.endVertex,
           circuit.batteryResistanceProperty,
-          'normal',
+          BatteryType.NORMAL,
           circuit.rightBatteryTandemGroup.createNextTandem()
         );
       }
