@@ -218,11 +218,11 @@ define( function( require ) {
       vertex.vertexSelectedPropertyListener = null;
     } );
 
-    // @public {Property.<CircuitElement>} - Keep track of the last circuit element the user manipulated, for showing
-    // additional controls. Once this simulation is instrumented for a11y, the focus property can be used to track this.
-    // Note that vertex selection is done via Vertex.selectedProperty.  These strategies can be unified when we
-    // work on a11y
-    //REVIEW*: Type docs don't mention null!
+    // @public {Property.<CircuitElement|null>} - When the user taps on a CircuitElement, it becomes selected and
+    // highlighted, and shows additional controls at the bottom of the screen. When the sim launches or when the user
+    // taps away from a selected circuit element, the selection is `null`.  Once this simulation is instrumented
+    // for a11y, the focus property can be used to track this. Note that vertex selection is done via
+    // Vertex.selectedProperty.  These strategies can be unified when we work on a11y.
     this.selectedCircuitElementProperty = new Property( null, {
       tandem: tandem.createTandem( 'selectedCircuitElementProperty' ),
       phetioValueType: TObject
