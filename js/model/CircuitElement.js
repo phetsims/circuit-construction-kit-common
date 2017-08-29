@@ -249,8 +249,15 @@ define( function( require ) {
      * REVIEW: If both are needed, can we just return a Matrix that has the position/angle information (assuming
      * REVIEW: Charge switches to use a Matrix3 instead of position/angle independently)
      * REVIEW^(samreid): Please see the override in LightBulb.js and let me know what you recommend
-     * REVIEW*: I agree this should be one function, duplication of LightBulb logic into two would be bad.
-     * REVIEW*: I would prefer this used Matrix3.
+     * REVIEW: I agree this should be one function, duplication of LightBulb logic into two would be bad.
+     * REVIEW: I would prefer this used Matrix3.
+     * REVIEW^(samreid): The code where the position and angle is used in ChargeNode.updateTransform had these review comments:
+     *         //REVIEW^(samreid): I went with rotation=angle and it seems to work nicely, does this seem OK?
+     *         //REVIEW*: Looks good.
+     *         this.rotation = charge.charge < 0 ? 0 : charge.angle + ( current < 0 ? Math.PI : 0 );
+     * REVIEW^(samreid): I can see the value of using Matrix3, but getting mixed messages because the change in ChargeNode
+     * REVIEW^(samreid): which uses {position,angle} is marked as Looks good.  I guess I'd like to try this with a Matrix
+     * REVIEW^(samreid): but another hesitation is that scale/shear would be unused.
      * @public
      */
     getPositionAndAngle: function( distanceAlongWire ) {
