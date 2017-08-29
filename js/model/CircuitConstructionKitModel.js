@@ -104,6 +104,7 @@ define( function( require ) {
     } );
 
     // @public {Property.<string>} - whether the user is in the 'explore' or 'test' mode
+    //REVIEW*: Looks like a good candidate for an enum.
     this.modeProperty = new Property( 'explore', {
       validValues: [ 'explore', 'test' ],
       tandem: tandem.createTandem( 'modeProperty' ),
@@ -111,6 +112,7 @@ define( function( require ) {
     } );
 
     // @public {Property.<string>} - whether to show lifelike or schematic representations
+    //REVIEW*: Don't doc them as {string}, but as {CircuitElementViewType}. Presumably check other usages and enums?
     this.viewTypeProperty = new Property( CircuitElementViewType.LIFELIKE, {
       validValues: CircuitConstructionKitCommonConstants.VIEW_CHOICES,
       tandem: tandem.createTandem( 'viewTypeProperty' ),

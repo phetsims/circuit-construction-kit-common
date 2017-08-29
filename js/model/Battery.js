@@ -22,7 +22,7 @@ define( function( require ) {
    * @param {Vertex} startVertex - one of the battery vertices
    * @param {Vertex} endVertex - the other battery vertex
    * @param {Property.<number>} resistanceProperty - the resistance of the battery
-   * @param {string} batteryType - 'normal' | 'high-voltage'
+   * @param {string} batteryType - 'normal' | 'high-voltage' REVIEW*: enum type?
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor

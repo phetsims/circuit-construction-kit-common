@@ -36,6 +36,7 @@ define( function( require ) {
     } );
 
     // @public {Property.<Vector2>} - the position of the tip of the probe
+    //REVIEW*: Generally prefer Vector2.ZERO for immutables, rather than a fresh copy of Vector2.
     this.probePositionProperty = new Property( new Vector2(), {
       tandem: tandem.createTandem( 'probePositionProperty' ),
       phetioValueType: TVector2

@@ -22,6 +22,8 @@ define( function( require ) {
 
   // If the current is lower than this, then there is no charge movement
   var MIN_CURRENT = Math.pow( 10, -10 );
+  //REVIEW*: I'm not sure I understand the difference between MINIMUM_CURRENT_THRESHOLD and MIN_CURRENT
+  //REVIEW*: (which also seems like a threshold). stationary === no charge movement?
 
   // The furthest an charge can step in one frame before the time scale must be reduced (to prevent a strobe effect)
   var MAX_POSITION_CHANGE = CircuitConstructionKitCommonConstants.CHARGE_SEPARATION * 0.43;
@@ -134,6 +136,7 @@ define( function( require ) {
       dt = Math.min( dt, MAX_DT );
 
       // Find the fastest current in any circuit element
+      //REVIEW*: If performance sensitive, may not want the extra array created with map?
       var maxCurrentMagnitude = _.max( this.circuit.circuitElements.getArray().map( CURRENT_MAGNITUDE ) );
       assert && assert( maxCurrentMagnitude >= 0, 'max current should be positive' );
 
@@ -141,7 +144,7 @@ define( function( require ) {
       var maxPositionChange = maxSpeed * MAX_DT; // Use the max dt instead of the true dt to avoid fluctuations
 
       // Slow down the simulation if the fastest step distance exceeds the maximum allowed step
-      this.scale = (maxPositionChange >= MAX_POSITION_CHANGE) ? (MAX_POSITION_CHANGE / maxPositionChange) : 1;
+      this.scale = ( maxPositionChange >= MAX_POSITION_CHANGE ) ? ( MAX_POSITION_CHANGE / maxPositionChange ) : 1;
 
       // Average over scale values to smooth them out
       var averageScale = this.timeScaleRunningAverage.updateRunningAverage( this.scale );
@@ -268,7 +271,7 @@ define( function( require ) {
           // move to a new CircuitElement
           var overshoot = current < 0 ?
                           -newChargePosition :
-                          (newChargePosition - charge.circuitElement.chargePathLength);
+                          ( newChargePosition - charge.circuitElement.chargePathLength );
           var isUnder = newChargePosition < 0;
 
           assert && assert( !isNaN( overshoot ), 'overshoot should be a number' );
