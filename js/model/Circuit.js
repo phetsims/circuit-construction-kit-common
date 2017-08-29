@@ -487,9 +487,6 @@ define( function( require ) {
       var translations = getTranslations();
       var angles = translations.map( function( t ) {return t.angle();} );
 
-      //REVIEW: Wasn't sure how to trigger this code. Presumably this is not a safe assumption to make for the future?
-      //REVIEW: Is the assumption that this is not possible made elsewhere?
-      //REVIEW^(samreid): Connect 3 elements to a single vertex, then cut it.
       if ( neighborCircuitElements.length > 2 ) {
 
         // Reorder elements based on angle so they don't cross over when spread out
@@ -520,9 +517,6 @@ define( function( require ) {
         results = da < 0 ? [ ax, bx ] : [ bx, ax ];
       }
       else {
-        //REVIEW: Also wasn't sure how to reach here. See above notes about assumptions.
-        //REVIEW^(samreid): Connect 3 elements to a single vertex, then cut it.
-
         var distance = neighborCircuitElements.length <= 5 ? 30 : neighborCircuitElements.length * 30 / 5;
         neighborCircuitElements.forEach( function( circuitElement, k ) {
           results.push( Vector2.createPolar( distance, separation * k + angles[ 0 ] ) );
