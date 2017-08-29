@@ -21,7 +21,7 @@ define( function( require ) {
   /**
    * @param {Vertex} startVertex - one of the battery vertices
    * @param {Vertex} endVertex - the other battery vertex
-   * @param {Property.<number>} resistanceProperty - the resistance of the battery REVIEW*: null passed in ViewRadioButtonGroup's code
+   * @param {Property.<number>} resistanceProperty - the resistance of the battery
    * @param {string} batteryType - 'normal' | 'high-voltage'
    * @param {Tandem} tandem
    * @param {Object} [options]

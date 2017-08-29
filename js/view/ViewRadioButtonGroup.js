@@ -32,7 +32,7 @@ define( function( require ) {
     // Create a battery which can be used in the views
     var startVertex = new Vertex( new Vector2( BATTERY_LENGTH / 2, 0 ) );
     var endVertex = new Vertex( new Vector2( -BATTERY_LENGTH / 2, 0 ) );
-    var battery = new Battery( endVertex, startVertex, null, 'normal', tandem.createTandem( 'battery' ), {
+    var battery = new Battery( endVertex, startVertex, new Property( 0 ), 'normal', tandem.createTandem( 'battery' ), {
       initialOrientation: 'left'
     } );
 
