@@ -105,7 +105,9 @@ define( function( require ) {
           // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
           // https://github.com/phetsims/circuit-construction-kit-common/issues/307
           event.preventDefault();
-          //REVIEW*: getSelectedVertex() can supposedly return null, but cutVertex doesn't allow null.
+          //REVIEW: getSelectedVertex() can supposedly return null, but cutVertex doesn't allow null.
+          //REVIEW^(samreid): getSelectedVertex should always return a value if a keydown is being processed,
+          //REVIEW^(samreid): since the keydown is processed on the selected vertex.  How to proceed?
           cutButton.enabled && circuit.cutVertex( circuit.getSelectedVertex() );
         }
       }
