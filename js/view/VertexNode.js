@@ -73,9 +73,8 @@ define( function( require ) {
     // @public (read-only) {Vertex} - the vertex associated with this node
     this.vertex = vertex;
 
-    // @public (read-only) {Vector2} - added by CircuitLayerNode during dragging, used for relative drag location.
-    //REVIEW*: Null not allowed by type documentation! Also set to null in CircuitLayerNode's endDrag, so presumably
-    //REVIEW*: this isn't just initialization.
+    // @public (read-only) {Vector2|null} - added by CircuitLayerNode during dragging, used for relative drag location,
+    // or null if not being dragged.
     this.startOffset = null;
 
     // Highlight is shown when the vertex is selected.
