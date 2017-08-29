@@ -347,7 +347,9 @@ define( function( require ) {
 
         // Support when vertex is on the pivot, mainly for fuzz testing.  In that case, just move directly to the right
         if ( difference.magnitude() === 0 ) {
-          difference = new Vector2( 1, 0 ); //REVIEW*: Why not pushing away by SNAP_RADIUS * 1.5?
+          difference = new Vector2( 1, 0 ); //REVIEW: Why not pushing away by SNAP_RADIUS * 1.5?
+                                            //REVIEW^(samreid): this is set to (1,0) to keep the following line simple
+                                            //REVIEW^(samreid): but let me know if you have a better plan
         }
 
         var delta = difference.normalized().times( -SNAP_RADIUS * 1.5 );
