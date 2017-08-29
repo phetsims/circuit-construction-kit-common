@@ -42,8 +42,7 @@ define( function( require ) {
     // @public (read-only) {Vertex}
     this.vertex = vertex;
 
-    // @public {Vector2} - added by CircuitLayerNode during dragging, used for relative drag location.
-    //REVIEW*: null not allowed by type docs
+    // @public {Vector2|null} - added by CircuitLayerNode during dragging, used for relative drag location.
     this.startOffset = null;
 
     Node.call( this, {
