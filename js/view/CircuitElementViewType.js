@@ -11,8 +11,6 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
 
-  //REVIEW*: I've mostly seen enums put under model (if they are used in the model), view, or in an enum subdirectory
-  //REVIEW*: ('model/enum', or 'view/enum'). Would one of those solutions be better here for this and CurrentType?
   var CircuitElementViewType = {
     LIFELIKE: 'LIFELIKE',
     SCHEMATIC: 'SCHEMATIC'

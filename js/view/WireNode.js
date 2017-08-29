@@ -25,7 +25,7 @@ define( function( require ) {
   var Color = require( 'SCENERY/util/Color' );
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitElementViewType' );
+  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementViewType' );
 
   // constants
   var LIFELIKE_LINE_WIDTH = 16; // line width in screen coordinates
