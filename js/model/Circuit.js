@@ -701,9 +701,7 @@ define( function( require ) {
       var batteryAdapters = [];
 
       var nextSyntheticVertexIndex = self.vertices.length;
-      //REVIEW*: With the map above, would a forEach here be appropriate?
-      for ( var k = 0; k < batteries.length; k++ ) {
-        var battery = batteries[ k ];
+      batteries.forEach( function( battery ) {
 
         // add a voltage source from startVertex to syntheticVertex
         batteryAdapters.push( {
@@ -723,7 +721,7 @@ define( function( require ) {
 
         // Prepare for next battery, if any
         nextSyntheticVertexIndex++;
-      }
+      } );
 
       var solution = new ModifiedNodalAnalysisCircuit( batteryAdapters, resistorAdapters, [] ).solve();
 
