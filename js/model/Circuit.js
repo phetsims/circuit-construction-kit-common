@@ -243,8 +243,7 @@ define( function( require ) {
     this.vertexDroppedEmitter.addListener( function( vertex ) {
       self.stepActions.push( function() {
 
-        // Collect nearest vertices
-        //REVIEW*: What does nearest vertices mean (indicates distance?). Something other than neighboring vertices?
+        // Collect adjacent vertices
         var neighbors = self.getNeighboringVertices( vertex );
 
         // Also consider the vertex being dropped for comparison with neighbors
