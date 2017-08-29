@@ -209,16 +209,14 @@ define( function( require ) {
 
     // Stop watching the vertex positions for updating the voltmeter and ammeter
     self.vertices.addItemRemovedListener( function( vertex ) {
-      //REVIEW: These assertions will be unneeded in the future if our plans go through?
-      //REVIEW^(samreid): These assertions were helpful in getting started, now perhaps not too important (unless
-      //REVIEW^(samreid): significant refactoring occurs in this area.  The first assertion is not related to the
-      //REVIEW^(samreid): proposed axon changes.  The second check could be removed if the proposed axon changes
-      //REVIEW^(samreid): go through.  Should I just remove these now?  Or keep the top one?  Let me know your
-      //REVIEW^(samreid): recommendation.
-      //REVIEW*: May be best to leave them in (in case we back out of adding assertions otherwise), sorry about tagging these.
+
+      // Sanity checks for the listeners
       assert && assert( vertex.positionProperty.hasListener( emitCircuitChanged ), 'should have had the listener' );
       vertex.positionProperty.unlink( emitCircuitChanged );
+
+      // More sanity checks for the listeners
       assert && assert( !vertex.positionProperty.hasListener( emitCircuitChanged ), 'Listener should be removed' );
+
       vertex.selectedProperty.unlink( vertex.vertexSelectedPropertyListener );
       vertex.vertexSelectedPropertyListener = null;
     } );
