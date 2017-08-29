@@ -18,6 +18,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Image = require( 'SCENERY/nodes/Image' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var Color = require( 'SCENERY/util/Color' );
 
   // images
   var batteryHighImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery-high.png' );
@@ -50,7 +51,7 @@ define( function( require ) {
   // Scale to fit the correct width
   schematicShape = schematicShape.transformed( Matrix3.scale( schematicScale, schematicScale ) );
   var schematicNode = new Path( schematicShape, {
-    stroke: 'black',
+    stroke: Color.BLACK,
     lineWidth: CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH
   } ).toDataURLImageSynchronous();
 

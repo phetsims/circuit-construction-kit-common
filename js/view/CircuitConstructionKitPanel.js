@@ -12,6 +12,7 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Color = require( 'SCENERY/util/Color' );
   var Panel = require( 'SUN/Panel' );
 
   /**
@@ -23,7 +24,7 @@ define( function( require ) {
   function CircuitConstructionKitPanel( content, tandem, options ) {
     options = _.extend( {
       fill: CircuitConstructionKitCommonConstants.PANEL_COLOR,
-      stroke: 'black',
+      stroke: Color.BLACK,
       lineWidth: CircuitConstructionKitCommonConstants.PANEL_LINE_WIDTH,
       xMargin: 15,
       yMargin: 15,

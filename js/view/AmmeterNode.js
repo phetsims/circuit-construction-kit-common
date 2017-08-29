@@ -22,6 +22,7 @@ define( function( require ) {
   var Image = require( 'SCENERY/nodes/Image' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var Color = require( 'SCENERY/util/Color' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   var ProbeNode = require( 'SCENERY_PHET/ProbeNode' );
 
@@ -70,7 +71,7 @@ define( function( require ) {
     // @public (read-only) {Ammeter} - the model associated with this view
     this.ammeter = ammeter;
 
-    var wireNode = new ProbeWireNode( 'black', new Vector2( 0, BODY_LEAD_Y ), new Vector2( 0, PROBE_LEAD_Y ) );
+    var wireNode = new ProbeWireNode( Color.BLACK, new Vector2( 0, BODY_LEAD_Y ), new Vector2( 0, PROBE_LEAD_Y ) );
 
     var currentReadoutProperty = new DerivedProperty( [ ammeter.currentProperty ], function( current ) {
       var max = options.blackBoxStudy ? 1E3 : 1E10;

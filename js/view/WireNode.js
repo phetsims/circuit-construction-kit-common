@@ -13,19 +13,19 @@ define( function( require ) {
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
+  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementViewType' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var Vector2 = require( 'DOT/Vector2' );
   var Shape = require( 'KITE/Shape' );
   var LineStyles = require( 'KITE/util/LineStyles' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Color = require( 'SCENERY/util/Color' );
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementViewType' );
 
   // constants
   var LIFELIKE_LINE_WIDTH = 16; // line width in screen coordinates
@@ -38,7 +38,7 @@ define( function( require ) {
   // Node used to render the black line for schematic, cached as toDataURLImageSynchronous so it can render with WebGL
   var BLACK_LINE_NODE = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
     lineWidth: SCHEMATIC_LINE_WIDTH,
-    stroke: 'black'
+    stroke: Color.BLACK
   } ).toDataURLImageSynchronous( 0, LIFELIKE_LINE_WIDTH / 2, WIRE_RASTER_LENGTH, LIFELIKE_LINE_WIDTH );
 
   /**

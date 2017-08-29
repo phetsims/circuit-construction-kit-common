@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Color = require( 'SCENERY/util/Color' );
   var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
 
   // constants
@@ -26,8 +27,8 @@ define( function( require ) {
       headHeight: 10,
       headWidth: 12,
       tailWidth: 3,
-      fill: 'red',
-      stroke: 'white',
+      fill: Color.RED,
+      stroke: Color.WHITE,
       tandem: tandem
     } );
   }

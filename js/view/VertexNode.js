@@ -17,10 +17,11 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Input = require( 'SCENERY/input/Input' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var Color = require( 'SCENERY/util/Color' );
 
   // constants
   var DISTANCE_TO_CUT_BUTTON = 70; // How far in view coordinates the cut button appears from the vertex node
@@ -32,10 +33,10 @@ define( function( require ) {
     lineDash: [ 6, 4 ]
   };
   var RED_CIRCLE_NODE = new Circle( VERTEX_RADIUS, _.extend( CIRCLE_OPTIONS, {
-    stroke: 'red'
+    stroke: Color.RED
   } ) ).toDataURLImageSynchronous();
   var BLACK_CIRCLE_NODE = new Circle( VERTEX_RADIUS, _.extend( CIRCLE_OPTIONS, {
-    stroke: 'black'
+    stroke: Color.BLACK
   } ) ).toDataURLImageSynchronous();
 
   /**

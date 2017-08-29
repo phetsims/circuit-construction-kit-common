@@ -13,6 +13,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Path = require( 'SCENERY/nodes/Path' );
   var VBox = require( 'SCENERY/nodes/VBox' );
+  var Color = require( 'SCENERY/util/Color' );
   var PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
   var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
 
@@ -34,7 +35,7 @@ define( function( require ) {
                                 'h3.271V9.597H52.88V3.741c0-0.189-0.074-0.345-0.227-0.467c-0.153-0.122-0.351-0.184-0.589-0.184H4.666 ' +
                                 'c-0.238,0-0.433,0.062-0.589,0.184C3.925,3.396,3.85,3.552,3.85,3.741v19.518c0,0.189,0.075,0.345,0.228,0.467 ' +
                                 'c0.156,0.121,0.351,0.184,0.589,0.184h47.398c0.238,0,0.436-0.062,0.589-0.184c0.152-0.122,0.227-0.277,0.227-0.467V17.403z ' +
-                                'M43.614,2.819v21.486H3.866V2.819H43.614z', { scale: 0.45, fill: 'black' } );
+                                'M43.614,2.819v21.486H3.866V2.819H43.614z', { scale: 0.45, fill: Color.BLACK } );
     RoundPushButton.call( this, {
       baseColor: PhetColorScheme.PHET_LOGO_YELLOW,
       content: new VBox( {
@@ -43,12 +44,12 @@ define( function( require ) {
 
           // path split up from FontAwesomeNode
           new Path( 'M1511 480q0 -5 -1 -7q-64 -268 -268 -434.5t-478 -166.5q-146 0 -282.5 55t-243.5 157l-129 -129q-19 -19 -45 -19t-45 19t-19 45v448q0 26 19 45t45 19h448q26 0 45 -19t19 -45t-19 -45l-137 -137q71 -66 161 -102t187 -36q134 0 250 65t186 179q11 17 53 117 q8 23 30 23h192q13 0 22.5 -9.5t9.5 -22.5z', {
-            fill: 'black',
+            fill: Color.BLACK,
             scale: ARROW_ICON_SCALE
           } ),
           batteryIcon,
           new Path( 'M1536 1280v-448q0 -26 -19 -45t-45 -19h-448q-26 0 -45 19t-19 45t19 45l138 138q-148 137 -349 137q-134 0 -250 -65t-186 -179q-11 -17 -53 -117q-8 -23 -30 -23h-199q-13 0 -22.5 9.5t-9.5 22.5v7q65 268 270 434.5t480 166.5 q146 0 284 -55.5t245 -156.5l130 129q19 19 45 19t45 -19t19 -45z', {
-            fill: 'black',
+            fill: Color.BLACK,
             scale: ARROW_ICON_SCALE
           } )
         ]

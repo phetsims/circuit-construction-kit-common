@@ -34,6 +34,7 @@ define( function( require ) {
   var Line = require( 'SCENERY/nodes/Line' );
   var Node = require( 'SCENERY/nodes/Node' );
   var VBox = require( 'SCENERY/nodes/VBox' );
+  var Color = require( 'SCENERY/util/Color' );
   var Carousel = require( 'SUN/Carousel' );
   var PageControl = require( 'SUN/PageControl' );
 
@@ -152,7 +153,7 @@ define( function( require ) {
     // Create the tool nodes
     var lifelikeWireNode = new Image( wireIconImage );
     var schematicWireNode = new Line( 0, 0, 120, 0, {
-      stroke: 'black',
+      stroke: Color.BLACK,
       lineWidth: 4.5 // match with other toolbox icons
     } );
     var wireNode = new Node();
@@ -579,8 +580,8 @@ define( function( require ) {
 
     var pageControl = new PageControl( this.carousel.numberOfPages, this.carousel.pageNumberProperty, {
       orientation: 'vertical',
-      pageFill: 'white',
-      pageStroke: 'black',
+      pageFill: Color.WHITE,
+      pageStroke: Color.BLACK,
       interactive: true,
       dotTouchAreaDilation: 4,
       dotMouseAreaDilation: 4

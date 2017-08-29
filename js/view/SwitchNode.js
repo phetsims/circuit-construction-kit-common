@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementViewType' );
   var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedLengthCircuitElementNode' );
   var Shape = require( 'KITE/Shape' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -19,8 +20,8 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var Color = require( 'SCENERY/util/Color' );
   var LinearGradient = require( 'SCENERY/util/LinearGradient' );
-  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementViewType' );
 
   // constants
   // dimensions for schematic battery
@@ -52,7 +53,7 @@ define( function( require ) {
       thickness, {
         cornerRadius: edgeRadius,
         fill: fill,
-        stroke: 'black',
+        stroke: Color.BLACK,
         lineWidth: 1,
         pickable: true
       } );
@@ -74,7 +75,7 @@ define( function( require ) {
     var rotatingSegmentNode = new Path( shape, {
       x: SWITCH_LENGTH * SWITCH_START,
       fill: fill,
-      stroke: 'black',
+      stroke: Color.BLACK,
       lineWidth: viewType === CircuitElementViewType.SCHEMATIC ? 0 : 1,
       pickable: true
     } );
@@ -95,14 +96,14 @@ define( function( require ) {
       .lineTo( SWITCH_LENGTH * SWITCH_END - curveDiameter, thickness / 2 );
     var rightSegmentNode = new Path( rightSegmentShape, {
       fill: fill,
-      stroke: 'black',
+      stroke: Color.BLACK,
       lineWidth: 1,
       pickable: true
     } );
 
     var lifelikeHinge = new Circle( thickness * 0.6, {
       fill: '#a7a8ab',
-      stroke: 'black',
+      stroke: Color.BLACK,
       lineWidth: 4,
       x: SWITCH_LENGTH * SWITCH_START
     } );
@@ -113,8 +114,8 @@ define( function( require ) {
 
     if ( viewType === CircuitElementViewType.SCHEMATIC ) {
       node.addChild( new Circle( thickness * 0.6, {
-        fill: 'black',
-        stroke: 'black',
+        fill: Color.BLACK,
+        stroke: Color.BLACK,
         lineWidth: 4,
         x: SWITCH_LENGTH * SWITCH_END
       } ) );
@@ -139,11 +140,11 @@ define( function( require ) {
   var lifelikeClosedImage = lifelikeClosedNode.toDataURLImageSynchronous();
 
   var schematicOpenImage = createNode(
-    CircuitElementViewType.SCHEMATIC, 'black', CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH, 0, false
+    CircuitElementViewType.SCHEMATIC, Color.BLACK, CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH, 0, false
   ).toDataURLImageSynchronous();
 
   var schematicClosedImage = createNode(
-    CircuitElementViewType.SCHEMATIC, 'black', CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH, 0, true
+    CircuitElementViewType.SCHEMATIC, Color.BLACK, CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH, 0, true
   ).toDataURLImageSynchronous();
 
   /**

@@ -19,6 +19,7 @@ define( function( require ) {
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
+  var Color = require( 'SCENERY/util/Color' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var HSlider = require( 'SUN/HSlider' );
   var Panel = require( 'SUN/Panel' );
@@ -71,7 +72,7 @@ define( function( require ) {
 
     var readoutTextNode = new Text( batteryResistanceProperty.get(), {
       font: new PhetFont( CircuitConstructionKitCommonConstants.FONT_SIZE ),
-      fill: 'black',
+      fill: Color.BLACK,
       maxWidth: 100,
       tandem: readoutTextPanelTandem.createTandem( 'readoutTextNode' )
     } );
@@ -91,8 +92,8 @@ define( function( require ) {
     } );
 
     var readoutTextPanel = new Panel( readoutTextNode, {
-      fill: 'white',
-      stroke: 'gray',
+      fill: Color.WHITE,
+      stroke: Color.GRAY,
       lineWidth: 1, // width of the background border
       xMargin: 4,
       yMargin: 3,

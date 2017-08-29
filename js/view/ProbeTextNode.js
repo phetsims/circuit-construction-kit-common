@@ -15,6 +15,7 @@ define( function( require ) {
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
+  var Color = require( 'SCENERY/util/Color' );
 
   // strings
   var questionMarkString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/questionMark' );
@@ -46,8 +47,8 @@ define( function( require ) {
     var textBox = new Rectangle( 0, 0, TEXT_BOX_WIDTH, 52, {
       cornerRadius: 10,
       lineWidth: 2,
-      stroke: 'black',
-      fill: 'white'
+      stroke: Color.BLACK,
+      fill: Color.WHITE
     } );
 
     textProperty.link( function( text ) {

@@ -41,6 +41,7 @@ define( function( require ) {
   var Plane = require( 'SCENERY/nodes/Plane' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var VBox = require( 'SCENERY/nodes/VBox' );
+  var Color = require( 'SCENERY/util/Color' );
   var PlayPauseButton = require( 'SCENERY_PHET/buttons/PlayPauseButton' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
 
@@ -284,7 +285,10 @@ define( function( require ) {
         if ( CircuitConstructionKitCommonQueryParameters.showVoltmeterSamplePoints ) {
 
           // Note, these get erased when changing between lifelike/schematic
-          self.circuitLayerNode.addChild( new Rectangle( -1, -1, 2, 2, { fill: 'black', translation: samplePoint } ) );
+          self.circuitLayerNode.addChild( new Rectangle( -1, -1, 2, 2, {
+            fill: Color.BLACK,
+            translation: samplePoint
+          } ) );
         }
         if ( voltageConnection ) {
           return voltageConnection;

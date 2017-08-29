@@ -22,6 +22,7 @@ define( function( require ) {
   var Image = require( 'SCENERY/nodes/Image' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var Color = require( 'SCENERY/util/Color' );
   var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
 
   // images
@@ -75,7 +76,7 @@ define( function( require ) {
 
     // @public (read-only) {Image} - the red probe node
     this.redProbeNode = new Rectangle( -2, -2, 4, 4, {
-      fill: CircuitConstructionKitCommonQueryParameters.showVoltmeterSamplePoints ? 'red' : null,
+      fill: CircuitConstructionKitCommonQueryParameters.showVoltmeterSamplePoints ? Color.RED : null,
       cursor: 'pointer'
     } );
     this.redProbeNode.addChild( new Image( redProbe, {
@@ -90,7 +91,7 @@ define( function( require ) {
 
     // @public (read-only) {Image} - the black probe node
     this.blackProbeNode = new Rectangle( -2, -2, 4, 4, {
-      fill: CircuitConstructionKitCommonQueryParameters.showVoltmeterSamplePoints ? 'black' : null,
+      fill: CircuitConstructionKitCommonQueryParameters.showVoltmeterSamplePoints ? Color.BLACK : null,
       cursor: 'pointer'
     } );
     this.blackProbeNode.addChild( new Image( blackProbe, {
@@ -121,10 +122,10 @@ define( function( require ) {
     } );
 
     var redWireNode = new ProbeWireNode(
-      'red', new Vector2( -BODY_WIRE_LEAD_X, BODY_LEAD_Y ), new Vector2( PROBE_LEAD_X - PROBE_CONTROL_POINT_X, PROBE_LEAD_Y )
+      Color.RED, new Vector2( -BODY_WIRE_LEAD_X, BODY_LEAD_Y ), new Vector2( PROBE_LEAD_X - PROBE_CONTROL_POINT_X, PROBE_LEAD_Y )
     );
     var blackWireNode = new ProbeWireNode(
-      'black', new Vector2( BODY_WIRE_LEAD_X, BODY_LEAD_Y ), new Vector2( PROBE_LEAD_X + PROBE_CONTROL_POINT_X, PROBE_LEAD_Y )
+      Color.BLACK, new Vector2( BODY_WIRE_LEAD_X, BODY_LEAD_Y ), new Vector2( PROBE_LEAD_X + PROBE_CONTROL_POINT_X, PROBE_LEAD_Y )
     );
 
     // When the voltmeter body moves, update the node and wires

@@ -134,9 +134,7 @@ define( function( require ) {
 
         if ( colors.length === 1 ) {
           singleColorBand.fill = colors[ 0 ];
-          //REVIEW*: Totally not important in this case, but use Color.BLACK in other similar cases (if it comes up)
-          //REVIEW*: since it won't create new objects.
-          assert && assert( colors[ 0 ].equals( new Color( 'black' ) ), 'single band should be black' );
+          assert && assert( colors[ 0 ].equals( Color.BLACK ), 'single band should be black' );
           colorBands.forEach( function( colorBand ) { colorBand.fill = null; } );
         }
         else {
@@ -185,7 +183,7 @@ define( function( require ) {
     }
     else {
       schematicNode = new Path( schematicShape, {
-        stroke: 'black',
+        stroke: Color.BLACK,
         lineWidth: CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH
       } ).toDataURLImageSynchronous();
 
