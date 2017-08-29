@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
   var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedLengthCircuitElementNode' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var Shape = require( 'KITE/Shape' );
@@ -68,7 +69,7 @@ define( function( require ) {
     // @public (read-only) {Battery} - the Battery rendered by this Node
     this.battery = battery;
 
-    var lifelikeNode = new Image( battery.batteryType === 'normal' ? batteryImage : batteryHighImage );
+    var lifelikeNode = new Image( battery.batteryType === BatteryType.NORMAL ? batteryImage : batteryHighImage );
 
     lifelikeNode.mutate( {
       scale: battery.distanceBetweenVertices / lifelikeNode.width

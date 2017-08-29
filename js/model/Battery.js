@@ -14,6 +14,7 @@ define( function( require ) {
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
 
   // constants
   var BATTERY_LENGTH = CircuitConstructionKitCommonConstants.BATTERY_LENGTH;
@@ -22,14 +23,12 @@ define( function( require ) {
    * @param {Vertex} startVertex - one of the battery vertices
    * @param {Vertex} endVertex - the other battery vertex
    * @param {Property.<number>} resistanceProperty - the resistance of the battery
-   * @param {string} batteryType - 'normal' | 'high-voltage' REVIEW*: enum type?
+   * @param {BatteryType} batteryType - NORMAL | HIGH_VOLTAGE
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
   function Battery( startVertex, endVertex, resistanceProperty, batteryType, tandem, options ) {
-    assert && assert( batteryType === 'normal' || batteryType === 'high-voltage', 'Bad battery type: ' + batteryType );
-
     options = _.extend( {
       initialOrientation: 'right',
       voltage: 9.0
@@ -46,11 +45,11 @@ define( function( require ) {
     // the user can only create a certain number of "left" or "right" batteries from the toolbox.
     this.initialOrientation = options.initialOrientation;
 
-    // @public (read-only) {string} - the type of the battery - 'normal' | 'high-voltage'
+    // @public (read-only) {BatteryType} - the type of the battery - NORMAL | HIGH_VOLTAGE
     this.batteryType = batteryType;
 
     // @public (read-only) {number} - the number of decimal places to show in readouts and controls
-    this.numberOfDecimalPlaces = this.batteryType === 'normal' ? 1 : 0;
+    this.numberOfDecimalPlaces = this.batteryType === BatteryType.NORMAL ? 1 : 0;
   }
 
   circuitConstructionKitCommon.register( 'Battery', Battery );

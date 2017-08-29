@@ -12,8 +12,8 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementViewType' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
+  var BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
@@ -22,6 +22,7 @@ define( function( require ) {
   var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
   var CircuitConstructionKitLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitLightBulbNode' );
   var CircuitElementToolNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolNode' );
+  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementViewType' );
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorNode' );
   var SwitchNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SwitchNode' );
   var Range = require( 'DOT/Range' );
@@ -173,14 +174,14 @@ define( function( require ) {
     );
 
     var batteryModel = new Battery( new Vertex( Vector2.ZERO ), new Vertex( new Vector2( CircuitConstructionKitCommonConstants.BATTERY_LENGTH, 0 ) ),
-      null, 'normal', tandem.createTandem( 'rightIconBattery' ) );
+      null, BatteryType.NORMAL, tandem.createTandem( 'rightIconBattery' ) );
     var rightBatteryToolNode = createCircuitElementToolNode( batteryString, options.numberOfRightBatteries,
       new BatteryNode( null, null, batteryModel, viewTypeProperty, tandem.createTandem( 'rightBatteryIcon' ), { icon: true }
       ),
       function( circuitElement ) {
         return circuitElement instanceof Battery &&
                circuitElement.initialOrientation === 'right' &&
-               circuitElement.batteryType === 'normal';
+               circuitElement.batteryType === BatteryType.NORMAL;
       },
       function( position ) {
         var vertexPair = createVertexPair( position, BATTERY_LENGTH );
@@ -394,20 +395,20 @@ define( function( require ) {
             new Vertex( Vector2.ZERO ),
             new Vertex( new Vector2( CircuitConstructionKitCommonConstants.BATTERY_LENGTH, 0 ) ),
             null,
-            'high-voltage',
+            BatteryType.HIGH_VOLTAGE,
             tandem.createTandem( 'highVoltageIconBattery' )
           ), viewTypeProperty, tandem.createTandem( 'highVoltageBatteryIcon' ), { icon: true } ),
         function( circuitElement ) {
           return circuitElement instanceof Battery &&
                  circuitElement.initialOrientation === 'right' &&
-                 circuitElement.batteryType === 'high-voltage';
+                 circuitElement.batteryType === BatteryType.HIGH_VOLTAGE;
         }, function( position ) {
           var vertexPair = createVertexPair( position, BATTERY_LENGTH );
           return new Battery(
             vertexPair.startVertex,
             vertexPair.endVertex,
             circuit.batteryResistanceProperty,
-            'high-voltage',
+            BatteryType.HIGH_VOLTAGE,
             circuit.rightBatteryTandemGroup.createNextTandem(), {
               voltage: 10000,
               editableRange: new Range( 100, 100000 ),

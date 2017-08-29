@@ -12,6 +12,7 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
+  var BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
@@ -120,7 +121,7 @@ define( function( require ) {
           circuitStruct.vertices[ circuitState.batteries[ i ].startVertex ],
           circuitStruct.vertices[ circuitState.batteries[ i ].endVertex ],
           null,
-          options.type || 'normal',
+          BatteryType.NORMAL, // TODO(phet-io): save/restore battery type
           tandem.createNextTandem(), {
             voltage: circuitState.batteries[ i ].voltage
           }
