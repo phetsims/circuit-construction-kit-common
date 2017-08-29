@@ -552,8 +552,7 @@ define( function( require ) {
           spacings.push( spacing );
         }
       } );
-      // REVIEW*: _.sum
-      var averageSpacing = _.reduce( spacings, function( sum, n ) {return sum + n;}, 0 ) / spacings.length;
+      var averageSpacing = _.sum( spacings ) / spacings.length;
 
       pages.forEach( function( page ) {
         if ( page.children.length !== ITEMS_PER_PAGE ) {
