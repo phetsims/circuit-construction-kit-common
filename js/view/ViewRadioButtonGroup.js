@@ -49,12 +49,8 @@ define( function( require ) {
         scale: SCALE
       } );
     };
-    var lifelikeIcon = createBatteryNode(
-      CircuitElementViewType.LIFELIKE, tandem.createTandem( 'lifelikeIcon' )
-    );
-    var schematicIcon = createBatteryNode(
-      CircuitElementViewType.SCHEMATIC, tandem.createTandem( 'schematicIcon' )
-    );
+    var lifelikeIcon = createBatteryNode( CircuitElementViewType.LIFELIKE, tandem.createTandem( 'lifelikeIcon' ) );
+    var schematicIcon = createBatteryNode( CircuitElementViewType.SCHEMATIC, tandem.createTandem( 'schematicIcon' ) );
     RadioButtonGroup.call( this, viewTypeProperty, [ {
       value: CircuitElementViewType.LIFELIKE,
       node: lifelikeIcon,
