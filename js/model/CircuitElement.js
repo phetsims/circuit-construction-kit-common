@@ -250,7 +250,7 @@ define( function( require ) {
      * REVIEW: Charge switches to use a Matrix3 instead of position/angle independently)
      * REVIEW^(samreid): Please see the override in LightBulb.js and let me know what you recommend
      * REVIEW: I agree this should be one function, duplication of LightBulb logic into two would be bad.
-     * REVIEW: I would prefer this used Matrix3.
+     * REVIEW*: I would prefer this used Matrix3.
      * REVIEW^(samreid): The code where the position and angle is used in ChargeNode.updateTransform had these review comments:
      *         //REVIEW^(samreid): I went with rotation=angle and it seems to work nicely, does this seem OK?
      *         //REVIEW*: Looks good.
