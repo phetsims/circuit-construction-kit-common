@@ -937,7 +937,6 @@ define( function( require ) {
             // If the node was already visited, don't visit again
             if ( visited.indexOf( neighborVertex ) < 0 &&
                  toVisit.indexOf( neighborVertex ) < 0 &&
-                 //REVIEW*: Blank line here was throwing me, can it be removed?
                  okToVisit( currentVertex, neighborCircuitElement, neighborVertex ) ) {
               toVisit.push( neighborVertex );
             }
