@@ -108,8 +108,8 @@ define( function( require ) {
       } );
     var createSeriesAmmeter = function( position ) {
       var halfLength = CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH / 2;
-      var startVertex = new Vertex( new Vector2( position.x - halfLength, position.y ) );
-      var endVertex = new Vertex( new Vector2( position.x + halfLength, position.y ) );
+      var startVertex = new Vertex( position.plusXY( -halfLength, 0 ) );
+      var endVertex = new Vertex( position.plusXY( halfLength, 0 ) );
       return new SeriesAmmeter(
         startVertex,
         endVertex,

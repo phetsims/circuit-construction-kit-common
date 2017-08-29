@@ -125,8 +125,8 @@ define( function( require ) {
      */
     var createVertexPair = function( position, length ) {
       return {
-        startVertex: createVertex( new Vector2( position.x - length / 2, position.y ) ),
-        endVertex: createVertex( new Vector2( position.x + length / 2, position.y ) )
+        startVertex: createVertex( position.plusXY( -length / 2, 0 ) ),
+        endVertex: createVertex( position.plusXY( length / 2, 0 ) )
       };
     };
 
