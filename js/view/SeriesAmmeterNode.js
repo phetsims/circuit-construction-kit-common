@@ -57,16 +57,13 @@ define( function( require ) {
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - main screen view, null for icon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {SeriesAmmeter} seriesAmmeter
-   * @param {Property.<string>} viewTypeProperty REVIEW*: null passed in SensorToolbox's use of this constructor.
-   *                                             REVIEW*: Why not have the viewTypeProperty in the options?
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function SeriesAmmeterNode( circuitConstructionKitScreenView, circuitLayerNode, seriesAmmeter, viewTypeProperty, tandem, options ) {
+  function SeriesAmmeterNode( circuitConstructionKitScreenView, circuitLayerNode, seriesAmmeter, tandem, options ) {
     var self = this;
     options = options || {};
-    viewTypeProperty = new Property( CircuitElementViewType.LIFELIKE );
 
     // Charges go behind this panel to give the appearance they go through the ammeter
     var readoutText = new Text( WIDEST_LABEL, { fontSize: 15 } );
@@ -182,7 +179,7 @@ define( function( require ) {
       circuitConstructionKitScreenView,
       circuitLayerNode,
       seriesAmmeter,
-      viewTypeProperty,
+      new Property( CircuitElementViewType.LIFELIKE ),
       lifelikeNode,
       new Node( { children: [ lifelikeNode ] } ),// reuse lifelike view for the schematic view
       tandem,

@@ -284,7 +284,7 @@ define( function( require ) {
       return new ResistorNode( screenView, self, circuitElement, self.model.viewTypeProperty, tandem );
     } );
     initializeCircuitElementType( SeriesAmmeter, this.fixedLengthCircuitElementLayer, tandem.createGroupTandem( 'seriesAmmeterNode' ), function( circuitElement, tandem ) {
-      return new SeriesAmmeterNode( screenView, self, circuitElement, self.model.viewTypeProperty, tandem );
+      return new SeriesAmmeterNode( screenView, self, circuitElement, tandem );
     } );
     initializeCircuitElementType( Switch, this.fixedLengthCircuitElementLayer, tandem.createGroupTandem( 'switchNode' ), function( circuitElement, tandem ) {
       return new SwitchNode( screenView, self, circuitElement, self.model.viewTypeProperty, tandem );

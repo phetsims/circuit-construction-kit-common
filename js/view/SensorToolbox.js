@@ -98,14 +98,9 @@ define( function( require ) {
       new Vertex( new Vector2( CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH, 0 ) ),
       tandem.createTandem( 'seriesAmmeterIconModel' )
     );
-    var seriesAmmeterNodeIcon = new SeriesAmmeterNode(
-      null,
-      null,
-      seriesAmmeter,
-      null,
-      tandem.createTandem( 'seriesAmmeterNodeIcon' ), {
-        icon: true
-      } );
+    var seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeter, tandem.createTandem( 'seriesAmmeterNodeIcon' ), {
+      icon: true
+    } );
     var createSeriesAmmeter = function( position ) {
       var halfLength = CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH / 2;
       var startVertex = new Vertex( position.plusXY( -halfLength, 0 ) );
