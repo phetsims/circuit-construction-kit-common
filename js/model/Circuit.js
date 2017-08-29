@@ -726,33 +726,26 @@ define( function( require ) {
       var solution = new ModifiedNodalAnalysisCircuit( batteryAdapters, resistorAdapters, [] ).solve();
 
       // Apply the node voltages to the vertices
-      //REVIEW*: With the map above (and temporary object creation), would a forEach here be appropriate?
-      for ( var i = 0; i < this.vertices.length; i++ ) {
+      this.vertices.getArray().forEach( function( vertex, i ) {
 
-        // For unconnected vertices, such as for the black box, they may not have an entry in the matrix, so just mark
-        // them as zero.
-        //REVIEW*: typeof checks may be worse than undefined checks. What value would it take if it's not a number?
-        var v = typeof solution.nodeVoltages[ i ] === 'number' ? solution.nodeVoltages[ i ] : 0;
-        this.vertices.get( i ).voltageProperty.set( v );
-      }
+        // Unconnected vertices like those in the black box may not have an entry in the matrix, so mark them as zero.
+        vertex.voltageProperty.set( solution.nodeVoltages[ i ] || 0 );
+      } );
 
       // Apply the currents through the CircuitElements
-      //REVIEW*: With the map above (and temporary object creation), would a forEach here be appropriate?
-      for ( i = 0; i < solution.elements.length; i++ ) {
-        solution.elements[ i ].circuitElement.currentProperty.set( solution.elements[ i ].currentSolution );
-      }
+      solution.elements.forEach( function( element ) {
+        element.circuitElement.currentProperty.set( element.currentSolution );
+      } );
 
-      // For resistors with r>0, Ohm's Law gives the current
-      //REVIEW*: I thought all resistors had non-zero resistance (even wires technically) to give a solution?
-      //REVIEW*: With the map above (and temporary object creation), would a forEach here be appropriate?
-      for ( i = 0; i < resistorAdapters.length; i++ ) {
-        var resistorAdapter = resistorAdapters[ i ];
+      // For resistors with r>0, Ohm's Law gives the current.  For components with no resistance (like closed switch or
+      // 0-resistance battery), the current is given by the matrix solution.
+      resistorAdapters.forEach( function( resistorAdapter ) {
         if ( resistorAdapter.resistance !== 0 ) {
           var voltage = solution.nodeVoltages[ resistorAdapter.node1 ] - solution.nodeVoltages[ resistorAdapter.node0 ];
           var current = -voltage / resistorAdapter.resistance;
           resistorAdapter.circuitElement.currentProperty.set( current );
         }
-      }
+      } );
 
       this.circuitChangedEmitter.emit();
     },
