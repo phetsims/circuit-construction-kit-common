@@ -79,10 +79,6 @@ define( function( require ) {
 
     // number to be displayed
     batteryResistanceProperty.link( function( value ) {
-      //REVIEW*: This looks like it's trying to i18nize values. Note that languages like Slovenian have a special case
-      //REVIEW*: for the quantity of 2. I'd either recommend NOT doing the separation here in two strings, OR
-      //REVIEW*: handle all of the cases needed (looking up all cases for all common languages). May be worth an issue
-      //REVIEW*: to track discussion.
       if ( value === 1 ) {
         readoutTextNode.setText( StringUtils.fillIn( resistanceOhmString, { resistance: Util.toFixed( value, 0 ) } ) );
       }
