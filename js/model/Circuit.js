@@ -490,8 +490,9 @@ define( function( require ) {
       var translations = getTranslations();
       var angles = translations.map( function( t ) {return t.angle();} );
 
-      //REVIEW*: Wasn't sure how to trigger this code. Presumably this is not a safe assumption to make for the future?
-      //REVIEW*: Is the assumption that this is not possible made elsewhere?
+      //REVIEW: Wasn't sure how to trigger this code. Presumably this is not a safe assumption to make for the future?
+      //REVIEW: Is the assumption that this is not possible made elsewhere?
+      //REVIEW^(samreid): Connect 3 elements to a single vertex, then cut it.
       if ( neighborCircuitElements.length > 2 ) {
 
         // Reorder elements based on angle so they don't cross over when spread out
@@ -522,7 +523,8 @@ define( function( require ) {
         results = da < 0 ? [ ax, bx ] : [ bx, ax ];
       }
       else {
-        //REVIEW*: Also wasn't sure how to reach here. See above notes about assumptions.
+        //REVIEW: Also wasn't sure how to reach here. See above notes about assumptions.
+        //REVIEW^(samreid): Connect 3 elements to a single vertex, then cut it.
 
         var distance = neighborCircuitElements.length <= 5 ? 30 : neighborCircuitElements.length * 30 / 5;
         neighborCircuitElements.forEach( function( circuitElement, k ) {
@@ -577,16 +579,15 @@ define( function( require ) {
 
     /**
      * Returns true if the given vertex has a fixed connection to a black box interface vertex.
-     * @param {Vertex} v REVIEW*: 'vertex' may be better variable name here, since we don't have multiple vertices?
+     * @param {Vertex} vertex
      * @returns {boolean}
      * @private
      */
-    hasFixedConnectionToBlackBoxInterfaceVertex: function( v ) {
-      var vertices = this.findAllFixedVertices( v );
-      //REVIEW: _.some() will be simpler and higher performance.
-      return _.filter( vertices, function( v ) {
-        return v.blackBoxInterfaceProperty.get();
-      } ).length > 0;
+    hasFixedConnectionToBlackBoxInterfaceVertex: function( vertex ) {
+      var fixedVertices = this.findAllFixedVertices( vertex );
+      return _.some( fixedVertices, function( fixedVertex ) {
+        return fixedVertex.blackBoxInterfaceProperty.get();
+      } );
     },
 
     /**
