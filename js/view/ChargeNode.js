@@ -56,9 +56,6 @@ define( function( require ) {
     // When the model position changes, update the node position
     this.updateTransformListener = this.updateTransform.bind( this );
 
-    //REVIEW: Maybe lazyLink these and call it directly afterwards? That's 5 calls to something that may be in a "hot"
-    //REVIEW: codepath (as noted by charge updates when dragging the lightbulb).
-    //REVIEW^(samreid): is this addressed after being coalesced into a changedEmitter?
     charge.changedEmitter.addListener( this.updateTransformListener );
     charge.visibleProperty.link( this.updateVisibleListener );
     this.outsideOfBlackBoxProperty.link( this.updateVisibleListener );
@@ -98,11 +95,15 @@ define( function( require ) {
         //REVIEW: Also, why not just set this.rotation = angle? The translation is getting overwritten below anyways.
         //REVIEW: Is there a concern about a scale being set, that we're zeroing a scale?
         //REVIEW^(samreid): I went with rotation=angle and it seems to work nicely, does this seem OK?
+        //REVIEW*: Looks good.
         this.rotation = charge.charge < 0 ? 0 : charge.angle + ( current < 0 ? Math.PI : 0 );
 
         //REVIEW: Is it safe to assume the center could be 0,0, and the center computation could be avoided?
         //REVIEW^(samreid): the image is rasterized for WebGL, so it has the origin at the top left, and it must be
         //REVIEW: centered after being rotated (or we could center and nest in a child node). How would you recommend to proceed?
+        //REVIEW*: Your choice, using an extra Node to wrap (my usual recommendation to simplify, and not use bounds
+        //REVIEW*: computation) hurts memory usage, so as long as this isn't a bottleneck I think the best choice is to
+        //REVIEW*: keep as-is. Feel free to remove these REVIEW notes.
         this.center = position;
       }
       else {

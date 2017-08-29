@@ -246,13 +246,11 @@ define( function( require ) {
      * Gets the 2D Position along the CircuitElement corresponding to the given scalar distance
      * @param {number} distanceAlongWire - the scalar distance from one endpoint to another.
      * @returns {Object} with {position:Vector2,angle:number} the position in view coordinates and angle in radians
-     * REVIEW: I see no reason not to split this into two functions. Sometimes only one of the two things computed is
-     * REVIEW: used, and it wouldn't require creating another temporary object.
-     * REVIEW^(samreid): Please see the override in LightBulb.js and let me know what you recommend
-     *
      * REVIEW: If both are needed, can we just return a Matrix that has the position/angle information (assuming
      * REVIEW: Charge switches to use a Matrix3 instead of position/angle independently)
      * REVIEW^(samreid): Please see the override in LightBulb.js and let me know what you recommend
+     * REVIEW*: I agree this should be one function, duplication of LightBulb logic into two would be bad.
+     * REVIEW*: I would prefer this used Matrix3.
      * @public
      */
     getPositionAndAngle: function( distanceAlongWire ) {

@@ -70,6 +70,11 @@ define( function( require ) {
     //REVIEW(samreid): be in the noise
     //REVIEW: I'll investigate. If it requires copies of compiled code for each one, it may definitely be adding overhead.
     //REVIEW^(samreid): Sounds good, let me know if you'd like assistance into that investigation.
+    //REVIEW*: Investigation in https://github.com/phetsims/scenery/issues/664
+    //REVIEW*: Tested example showed 147-byte reduction per instance of this (Test0 => Test4 pattern), which would be
+    //REVIEW*: 14kb for 100 wires. I would generally prefer the improved pattern as good practice, but the performance
+    //REVIEW*: and memory loss here is probably not critical, and I'll leave it up to you (feel free to remove REVIEW
+    //REVIEW*: comments here if you wish).
     this.disposeWire = function() {
       self.vertexMovedEmitter.removeListener( markWireDirty );
       self.resistivityProperty.unlink( markWireDirty );

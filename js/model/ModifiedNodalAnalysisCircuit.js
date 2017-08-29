@@ -90,6 +90,9 @@ define( function( require ) {
      * REVIEW: A lot of things are noted as for debugging. Can these be stripped out of the production build of the sim?
      * REVIEW^(samreid): I'll need this when I start working on inductors and capacitors.  Is there a good way to strip
      * REVIEW(samreid): it out for builds but leave it in for requirejs mode?
+     * REVIEW*: Feel free to keep in whatever debugging info will be needed in the future.
+     * REVIEW*: Stripping out would usually be accomplished by wrapping the body with "if(assert)" if that is acceptable
+     * REVIEW*: or just leave it in (not a large issue for this amount of code).
      * Returns a string representation of the circuit for debugging.
      * @returns {string}
      * @private
