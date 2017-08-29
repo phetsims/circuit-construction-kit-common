@@ -30,8 +30,8 @@ define( function( require ) {
     // @public (read-only) {CircuitElement} - the CircuitElement rendered by this node
     this.circuitElement = circuitElement;
 
-    // @protected {Object} - Supplied by subclasses so that events can be forwarded from the tool icons
-    //REVIEW*: Null not allowed in the type doc
+    // @protected {Object|null} - Supplied by subclasses so that events can be forwarded from the tool icons or null
+    // if rendering an icon
     this.dragHandler = null;
 
     options = _.extend( {
