@@ -59,12 +59,9 @@ define( function( require ) {
    * @returns {*}
    */
   var getEntry = function( keyName, value ) {
-    //REVIEW*: _.first()
-    var filtered = _.filter( colorTable, function( colorTableEntry ) {
+    return _.find( colorTable, function( colorTableEntry ) {
       return colorTableEntry[ keyName ] === value;
     } );
-    assert && assert( filtered.length === 1, 'wrong number of matches' );
-    return filtered[ 0 ];
   };
 
   var ResistorColors = {
