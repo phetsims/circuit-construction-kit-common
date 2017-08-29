@@ -92,13 +92,6 @@ define( function( require ) {
 
         // Rotate then center the rotated node
         this.rotation = charge.charge < 0 ? 0 : charge.angle + ( current < 0 ? Math.PI : 0 );
-
-        //REVIEW: Is it safe to assume the center could be 0,0, and the center computation could be avoided?
-        //REVIEW^(samreid): the image is rasterized for WebGL, so it has the origin at the top left, and it must be
-        //REVIEW: centered after being rotated (or we could center and nest in a child node). How would you recommend to proceed?
-        //REVIEW*: Your choice, using an extra Node to wrap (my usual recommendation to simplify, and not use bounds
-        //REVIEW*: computation) hurts memory usage, so as long as this isn't a bottleneck I think the best choice is to
-        //REVIEW*: keep as-is. Feel free to remove these REVIEW notes.
         this.center = position;
       }
       else {
