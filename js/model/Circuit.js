@@ -474,24 +474,16 @@ define( function( require ) {
         return circuitElement.interactiveProperty.get();
       } );
 
-      //REVIEW*: If we're not performance-sensitive (called not often, already a closure), then just use
-      //REVIEW*: neighborCircuitElements.map( ... ) with a closure. Should simplify by a few lines:
-      //REVIEW*: neighborCircuitElements.map( function( element ) {
-      //REVIEW*:   return element.getOppositeVertex( vertex ).positionProperty.value
-      //REVIEW*:                 .minus( vertex.positionProperty.value ).withMagnitude( 30 )
-      //REVIEW*: } );
+      /**
+       * Function that identifies where vertices would go if pulled toward their neighbors
+       * @returns {Array}
+       */
       var getTranslations = function() {
-        var translations = [];
-        for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
-          var circuitElement = neighborCircuitElements[ i ];
-          var oppositeVertex = circuitElement.getOppositeVertex( vertex );
-          var translation = oppositeVertex.positionProperty.get().minus( vertex.positionProperty.get() )
-          //REVIEW*: .withMagnitude( 30 ) instead of normalized+timesScalar
-            .normalized()
-            .timesScalar( 30 );
-          translations.push( translation );
-        }
-        return translations;
+        return neighborCircuitElements.map( function( circuitElement ) {
+          return circuitElement.getOppositeVertex( vertex ).positionProperty.get()
+            .minus( vertex.positionProperty.get() )
+            .withMagnitude( 30 );
+        } );
       };
 
       // Track where they would go if they moved toward their opposite vertices
