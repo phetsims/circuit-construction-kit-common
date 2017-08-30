@@ -48,8 +48,7 @@ define( function( require ) {
       blackBoxStudy: false
     }, options );
 
-    // @private {EaseAnimation} - animation for the zoom level
-    //REVIEW*: Presumably put null in the type docs?
+    // @private {EaseAnimation|null} - animation for the zoom level or null if not animating
     this.zoomAnimation = null;
 
     // @public (read-only) {Circuit} - contains CircuitElements, Vertices, etc.
