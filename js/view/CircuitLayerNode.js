@@ -309,7 +309,10 @@ define( function( require ) {
       tandem: Tandem.createStaticTandem( 'cutButton' )
     } );
     this.cutButton.addListener( function() {
-      //REVIEW*: getSelectedVertex() can supposedly return null, but cutVertex doesn't allow null.
+      //REVIEW: getSelectedVertex() can supposedly return null, but cutVertex doesn't allow null.
+      //REVIEW^(samreid): Hopefully the button is only activated when a vertex is selected (since the button is only
+      //REVIEW^(samreid): shown when a vertex is selected.  Perhaps this assertion will help?
+      assert && assert( circuit.getSelectedVertex(), 'Button should only be available if a vertex is selected' );
       circuit.cutVertex( circuit.getSelectedVertex() );
 
       // Make sure no vertices got nudged out of bounds during a cut, see https://github.com/phetsims/circuit-construction-kit-dc/issues/138
