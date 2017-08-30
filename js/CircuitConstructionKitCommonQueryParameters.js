@@ -30,6 +30,7 @@ define( function( require ) {
 
     // Shows the play/pause button.  When the user changes something, the sim automatically pauses.
     // For Black Box Study & PhET-iO
+    // REVIEW*: this seems to not be working
     showPlayPauseButton: { type: 'flag' },
 
     // Shows a button that saves the circuit
