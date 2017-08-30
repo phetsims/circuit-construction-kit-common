@@ -82,7 +82,7 @@ define( function( require ) {
     // @public {ObservableArray.<Charge>} - the charges in the circuit
     this.charges = new ObservableArray();
 
-    // @public {Property.<string>} - whether to show charges or conventional current
+    // @public {Property.<CurrentType>} - whether to show charges or conventional current
     this.currentTypeProperty = new Property( CircuitConstructionKitCommonQueryParameters.currentType, {
       validValues: CurrentType.VALUES,
       tandem: tandem.createTandem( 'currentTypeProperty' ),

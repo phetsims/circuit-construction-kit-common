@@ -103,17 +103,16 @@ define( function( require ) {
       } );
     } );
 
-    // @public {Property.<string>} - whether the user is in the InteractionMode.EXPLORE or InteractionMode.TEST mode
+    // @public {Property.<InteractionMode>} - whether the user is in the InteractionMode.EXPLORE or InteractionMode.TEST mode
     this.modeProperty = new Property( InteractionMode.EXPLORE, {
       validValues: InteractionMode.VALUES,
       tandem: tandem.createTandem( 'modeProperty' ),
       phetioValueType: TString
     } );
 
-    // @public {Property.<string>} - whether to show lifelike or schematic representations
-    //REVIEW*: Don't doc them as {string}, but as {CircuitElementViewType}. Presumably check other usages and enums?
+    // @public {Property.<CircuitElementViewType>} - whether to show lifelike or schematic representations
     this.viewTypeProperty = new Property( CircuitElementViewType.LIFELIKE, {
-      validValues: CircuitConstructionKitCommonConstants.VIEW_CHOICES,
+      validValues: CircuitElementViewType.VALUES,
       tandem: tandem.createTandem( 'viewTypeProperty' ),
       phetioValueType: TString
     } );
