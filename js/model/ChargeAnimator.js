@@ -18,12 +18,9 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
 
   // constants
-  var MINIMUM_CURRENT_THRESHOLD = 1E-8; // consider current slower than this to be stationary
 
   // If the current is lower than this, then there is no charge movement
-  var MIN_CURRENT = Math.pow( 10, -10 );
-  //REVIEW*: I'm not sure I understand the difference between MINIMUM_CURRENT_THRESHOLD and MIN_CURRENT
-  //REVIEW*: (which also seems like a threshold). stationary === no charge movement?
+  var MINIMUM_CURRENT = 1E-10
 
   // The furthest an charge can step in one frame before the time scale must be reduced (to prevent a strobe effect)
   var MAX_POSITION_CHANGE = CircuitConstructionKitCommonConstants.CHARGE_SEPARATION * 0.43;
@@ -185,7 +182,7 @@ define( function( require ) {
         // No need to update charges in chargeLayoutDirty circuit elements, they will be replaced anyways.  Skipping
         // chargeLayoutDirty circuitElements improves performance.  Also, only update electrons in circuit elements
         // that have a current (to improve performance)
-        if ( !charge.circuitElement.chargeLayoutDirty && Math.abs( charge.circuitElement.currentProperty.get() ) >= MIN_CURRENT ) {
+        if ( !charge.circuitElement.chargeLayoutDirty && Math.abs( charge.circuitElement.currentProperty.get() ) >= MINIMUM_CURRENT ) {
           this.equalizeCharge( charge, dt );
         }
       }
@@ -257,7 +254,7 @@ define( function( require ) {
       var current = charge.circuitElement.currentProperty.get() * charge.charge;
 
       // Below min current, the charges should remain stationary
-      if ( Math.abs( current ) > MIN_CURRENT ) {
+      if ( Math.abs( current ) > MINIMUM_CURRENT ) {
         var speed = current * SPEED_SCALE;
         var chargePositionDelta = speed * dt * this.scale;
         var newChargePosition = chargePosition + chargePositionDelta;
@@ -315,12 +312,12 @@ define( function( require ) {
         // The linear algebra solver can result in currents of 1E-12 where it should be zero.  For these cases, don't
         // permit charges to flow. The current is clamped here instead of after the linear algebra so that we don't
         // mess up support for oscillating elements that may need the small values such as capacitors and inductors.
-        if ( current > MINIMUM_CURRENT_THRESHOLD && neighbor.startVertexProperty.get() === vertex ) {
+        if ( current > MINIMUM_CURRENT && neighbor.startVertexProperty.get() === vertex ) {
 
           // Start near the beginning.
           distAlongNew = Util.clamp( overshoot, 0, neighbor.chargePathLength );
         }
-        else if ( current < -MINIMUM_CURRENT_THRESHOLD && neighbor.endVertexProperty.get() === vertex ) {
+        else if ( current < -MINIMUM_CURRENT && neighbor.endVertexProperty.get() === vertex ) {
 
           // start near the end
           distAlongNew = Util.clamp( neighbor.chargePathLength - overshoot, 0, neighbor.chargePathLength );
