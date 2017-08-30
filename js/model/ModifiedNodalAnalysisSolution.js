@@ -15,18 +15,15 @@ define( function( require ) {
   /**
    * @param {Object} nodeVoltages - keys are {number} indicating the node index, values are {number} for the voltage at
    *                              - the node
-   * @param {Object[]} elements, with node0, node1, currentSolution (all {number})
+   * @param {ModifiedNodalAnalysisCircuitElement[]} elements
    * @constructor
    */
   function ModifiedNodalAnalysisSolution( nodeVoltages, elements ) {
-    for ( var i = 0; i < elements.length; i++ ) {
-      assert && assert( typeof elements[ i ].node0 === 'number' && typeof elements[ i ].node1 === 'number' );
-    }
 
     // @public (read-only) {Object} - the solved node voltages
     this.nodeVoltages = nodeVoltages;
 
-    // @public (read-only) {Object[]} - circuit elements in the solution
+    // @public (read-only) {ModifiedNodalAnalysisCircuitElement[]} - circuit elements in the solution
     this.elements = elements;
   }
 
@@ -113,8 +110,8 @@ define( function( require ) {
     hasMatchingElement: function( element ) {
       for ( var i = 0; i < this.elements.length; i++ ) {
         var proposedElement = this.elements[ i ];
-        if ( proposedElement.node0 === element.node0 &&
-             proposedElement.node1 === element.node1 &&
+        if ( proposedElement.nodeId0 === element.nodeId0 &&
+             proposedElement.nodeId1 === element.nodeId1 &&
              NUMBER_APPROXIMATELY_EQUALS( proposedElement.currentSolution, element.currentSolution ) ) {
           return true;
         }
@@ -129,8 +126,8 @@ define( function( require ) {
      * @public
      */
     getCurrentForResistor: function( resistor ) {
-      assert && assert( resistor.resistance > 0, 'resistor must have resistance to use Ohms Law' );
-      return -this.getVoltage( resistor ) / resistor.resistance;
+      assert && assert( resistor.value > 0, 'resistor must have resistance to use Ohms Law' );
+      return -this.getVoltage( resistor ) / resistor.value;
     },
 
     /**
@@ -149,12 +146,12 @@ define( function( require ) {
      * Returns the voltage across a circuit element.
      * REVIEW: Also only used in unit testing, see above comment.
      * REVIEW^(samreid): See above comment.
-     * @param {Object} element - a circuit element with {node1:{number},node2:{number}}
+     * @param {Object} element - a circuit element with {nodeId1:{number},node2:{number}}
      * @returns {number} - the voltage
      * @private
      */
     getVoltage: function( element ) {
-      return this.nodeVoltages[ element.node1 ] - this.nodeVoltages[ element.node0 ];
+      return this.nodeVoltages[ element.nodeId1 ] - this.nodeVoltages[ element.nodeId0 ];
     }
   } );
 } );

@@ -5,6 +5,7 @@
 
   var ModifiedNodalAnalysisCircuit = phet.circuitConstructionKitCommon.ModifiedNodalAnalysisCircuit;
   var ModifiedNodalAnalysisSolution = phet.circuitConstructionKitCommon.ModifiedNodalAnalysisSolution;
+  var ModifiedNodalAnalysisCircuitElement = phet.circuitConstructionKitCommon.ModifiedNodalAnalysisCircuitElement;
   var ResistorColors = phet.circuitConstructionKitCommon.ResistorColors;
 
   var approxEquals = function( a, b ) {
@@ -13,8 +14,8 @@
 
   QUnit.test( 'test_battery_resistor_circuit_should_have_correct_voltages_and_currents_for_a_simple_circuit',
     function( assert ) {
-      var battery = { node0: 0, node1: 1, voltage: 4.0 };
-      var resistor = { node0: 1, node1: 0, resistance: 4.0 };
+      var battery = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, 4.0 );
+      var resistor = new ModifiedNodalAnalysisCircuitElement( 1, 0, null, 4.0 );
       var circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [ resistor ], [] );
       var voltageMap = { 0: 0.0, 1: 4.0 };
 
@@ -32,8 +33,8 @@
 
   QUnit.test( 'test_battery_resistor_circuit_should_have_correct_voltages_and_currents_for_a_simple_circuit_ii',
     function( assert ) {
-      var battery = { node0: 0, node1: 1, voltage: 4.0 };
-      var resistor = { node0: 1, node1: 0, resistance: 2.0 };
+      var battery = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, 4.0 );
+      var resistor = new ModifiedNodalAnalysisCircuitElement( 1, 0, null, 2.0 );
       var circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [ resistor ], [] );
       var desiredSolution = new ModifiedNodalAnalysisSolution( {
         0: 0,
@@ -45,8 +46,8 @@
 
 
   QUnit.test( 'test_should_be_able_to_obtain_current_for_a_resistor', function( assert ) {
-    var battery = { node0: 0, node1: 1, voltage: 4.0 };
-    var resistor = { node0: 1, node1: 0, resistance: 2.0 };
+    var battery = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, 4.0 );
+    var resistor = new ModifiedNodalAnalysisCircuitElement( 1, 0, null, 2.0 );
     var solution = new ModifiedNodalAnalysisCircuit( [ battery ], [ resistor ], [] ).solve();
     var desiredSolution = new ModifiedNodalAnalysisSolution( {
       0: 0,
@@ -61,9 +62,9 @@
   } );
 
   QUnit.test( 'test_an_unconnected_resistor_shouldnt_cause_problems', function( assert ) {
-    var battery = { node0: 0, node1: 1, voltage: 4.0 };
-    var resistor1 = { node0: 1, node1: 0, resistance: 4.0 };
-    var resistor2 = { node0: 2, node1: 3, resistance: 100 };
+    var battery = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, 4.0 );
+    var resistor1 = new ModifiedNodalAnalysisCircuitElement( 1, 0, null, 4.0 );
+    var resistor2 = new ModifiedNodalAnalysisCircuitElement( 2, 3, null, 100 );
     var circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [ resistor1, resistor2 ], [] );
     var desiredSolution = new ModifiedNodalAnalysisSolution( {
       0: 0,
@@ -78,8 +79,8 @@
   } );
 
   QUnit.test( 'test_current_source_should_provide_current', function( assert ) {
-    var currentSource = { node0: 0, node1: 1, current: 10 };
-    var resistor = { node0: 1, node1: 0, resistance: 4 };
+    var currentSource = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, 10 );
+    var resistor = new ModifiedNodalAnalysisCircuitElement( 1, 0, null, 4 );
     var circuit = new ModifiedNodalAnalysisCircuit( [], [ resistor ], [ currentSource ] );
     var voltageMap = {
       0: 0,
@@ -94,8 +95,8 @@
   } );
 
   QUnit.test( 'test_current_should_be_reversed_when_voltage_is_reversed', function( assert ) {
-    var battery = { node0: 0, node1: 1, voltage: -4 };
-    var resistor = { node0: 1, node1: 0, resistance: 2 };
+    var battery = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, -4 );
+    var resistor = new ModifiedNodalAnalysisCircuitElement( 1, 0, null, 2 );
     var circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [ resistor ], [] );
     var voltageMap = {
       0: 0,
@@ -113,13 +114,10 @@
   } );
 
   QUnit.test( 'test_two_batteries_in_series_should_have_voltage_added', function( assert ) {
-    var battery1 = { node0: 0, node1: 1, voltage: -4 };
-    var battery2 = { node0: 1, node1: 2, voltage: -4 };
-    var circuit = new ModifiedNodalAnalysisCircuit( [ battery1, battery2 ], [ {
-      node0: 2,
-      node1: 0,
-      resistance: 2.0
-    } ], [] );
+    var battery1 = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, -4 );
+    var battery2 = new ModifiedNodalAnalysisCircuitElement( 1, 2, null, -4 );
+    var resistor1 = new ModifiedNodalAnalysisCircuitElement( 2, 0, null, 2.0 );
+    var circuit = new ModifiedNodalAnalysisCircuit( [ battery1, battery2 ], [ resistor1 ], [] );
 
     var voltageMap = {
       0: 0,
@@ -135,10 +133,12 @@
   } );
 
   QUnit.test( 'test_two_resistors_in_series_should_have_resistance_added', function( assert ) {
-    var battery = { node0: 0, node1: 1, voltage: 5.0 };
+    var battery = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, 5.0 );
+    var resistor1 = new ModifiedNodalAnalysisCircuitElement( 1, 2, null, 10.0 );
+    var resistor2 = new ModifiedNodalAnalysisCircuitElement( 2, 0, null, 10.0 );
     var circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [
-      { node0: 1, node1: 2, resistance: 10.0 },
-      { node0: 2, node1: 0, resistance: 10.0 }
+      resistor1,
+      resistor2
     ], [] );
     var voltageMap = {
       0: 0,
@@ -153,12 +153,12 @@
   } );
 
   QUnit.test( 'test_A_resistor_with_one_node_unconnected_shouldnt_cause_problems', function( assert ) {
-    var battery = { node0: 0, node1: 1, voltage: 4.0 };
+    var battery = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, 4.0 );
+    var resistor1 = new ModifiedNodalAnalysisCircuitElement( 1, 0, null, 4.0 );
+    var resistor2 = new ModifiedNodalAnalysisCircuitElement( 0, 2, null, 100.0 );
     var circuit = new ModifiedNodalAnalysisCircuit(
       [ battery ],
-      [
-        { node0: 1, node1: 0, resistance: 4.0 },
-        { node0: 0, node1: 2, resistance: 100.0 } ], []
+      [ resistor1, resistor2 ], []
     );
     var voltageMap = {
       0: 0,
@@ -173,10 +173,12 @@
   } );
 
   QUnit.test( 'test_an_unconnected_resistor_shouldnt_cause_problems', function( assert ) {
-    var battery = { node0: 0, node1: 1, voltage: 4.0 };
+    var battery = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, 4.0 );
+    var resistor1 = new ModifiedNodalAnalysisCircuitElement( 1, 0, null, 4.0 );
+    var resistor2 = new ModifiedNodalAnalysisCircuitElement( 2, 3, null, 100.0 );
     var circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [
-      { node0: 1, node1: 0, resistance: 4.0 },
-      { node0: 2, node1: 3, resistance: 100.0 }
+      resistor1,
+      resistor2
     ], [] );
     var voltageMap = {
       0: 0,
@@ -191,10 +193,11 @@
   } );
 
   QUnit.test( 'test_should_handle_resistors_with_no_resistance', function( assert ) {
-    var battery = { node0: 0, node1: 1, voltage: 5 };
-    var resistor = { node0: 2, node1: 0, resistance: 0 };
+    var battery = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, 5 );
+    var resistor = new ModifiedNodalAnalysisCircuitElement( 2, 0, null, 0 );
+    var resistor0 = new ModifiedNodalAnalysisCircuitElement( 1, 2, null, 10 );
     var circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [
-      { node0: 1, node1: 2, resistance: 10 },
+      resistor0,
       resistor
     ], [] );
     var voltageMap = {
@@ -215,10 +218,12 @@
     var R1 = 5.0;
     var R2 = 5.0;
     var Req = 1 / ( 1 / R1 + 1 / R2 );
-    var battery = { node0: 0, node1: 1, voltage: V };
+    var battery = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, V );
+    var resistor1 = new ModifiedNodalAnalysisCircuitElement( 1, 0, null, R1 );
+    var resistor2 = new ModifiedNodalAnalysisCircuitElement( 1, 0, null, R2 );
     var circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [
-      { node0: 1, node1: 0, resistance: R1 },
-      { node0: 1, node1: 0, resistance: R2 }
+      resistor1,
+      resistor2
     ], [] );
     var voltageMap = { 0: 0, 1: V };
 

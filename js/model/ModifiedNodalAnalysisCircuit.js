@@ -22,13 +22,11 @@ define( function( require ) {
   var DEBUG = CircuitConstructionKitCommonQueryParameters.debugModifiedNodalAnalysis;
 
   /**
-   * REVIEW*: Why not create an actual type with nodeId0, nodeId1, circuitElement and value?
-   * REVIEW*: This could be used for all of these cases?
-   * REVIEW: It's also quite confusing that node0 and node1 aren't {Node}s.
+   * REVIEW: It's also quite confusing that nodeId0 and nodeId1 aren't {Node}s.
    * REVIEW^(samreid): In modified nodal analysis, the terminology is centered on "nodes", so I think we should keep that.
-   * @param {Object[]} batteries - {node0:number,node1:number,circuitElement:CircuitElement,voltage:number}
-   * @param {Object[]} resistors - {node0:number,node1:number,circuitElement:CircuitElement,resistance:number}
-   * @param {Object[]} currentSources {node0:number,node1:number,circuitElement:CircuitElement,current:number}
+   * @param {ModifiedNodalAnalysisCircuitElement[]} batteries
+   * @param {ModifiedNodalAnalysisCircuitElement[]} resistors
+   * @param {ModifiedNodalAnalysisCircuitElement[]} currentSources
    * @constructor
    */
   function ModifiedNodalAnalysisCircuit( batteries, resistors, currentSources ) {
@@ -36,38 +34,16 @@ define( function( require ) {
     assert && assert( resistors, 'resistors should be defined' );
     assert && assert( currentSources, 'currentSources should be defined' );
 
-    // validate input types but only when asserts are enabled
-    if ( assert ) {
-      for ( var i = 0; i < batteries.length; i++ ) {
-        var battery = batteries[ i ];
-        assert && assert( typeof battery.node0 === 'number' );
-        assert && assert( typeof battery.node1 === 'number' );
-        assert && assert( typeof battery.voltage === 'number' );
-      }
-      for ( i = 0; i < resistors.length; i++ ) {
-        var resistor = resistors[ i ];
-        assert && assert( typeof resistor.node0 === 'number' );
-        assert && assert( typeof resistor.node1 === 'number' );
-        assert && assert( typeof resistor.resistance === 'number' );
-      }
-      for ( i = 0; i < currentSources.length; i++ ) {
-        var currentSource = currentSources[ i ];
-        assert && assert( typeof currentSource.node0 === 'number' );
-        assert && assert( typeof currentSource.node1 === 'number' );
-        assert && assert( typeof currentSource.current === 'number' );
-      }
-    }
-
-    // @public (read-only) {Object[]}
+    // @public (read-only) {ModifiedNodalAnalysisCircuitElement[]}
     this.batteries = batteries;
 
-    // @public (read-only) {Object[]}
+    // @public (read-only) {ModifiedNodalAnalysisCircuitElement[]}
     this.resistors = resistors;
 
-    // @public (read-only) {Object[]}
+    // @public (read-only) {ModifiedNodalAnalysisCircuitElement[]}
     this.currentSources = currentSources;
 
-    // @public (read-only) {Object[]} - the list of all the elements for ease of access
+    // @public (read-only) {ModifiedNodalAnalysisCircuitElement[]} - the list of all the elements for ease of access
     this.elements = this.batteries.concat( this.resistors ).concat( this.currentSources );
 
     // @public (read-only) {Object} - an object with index for all keys that have a node in the circuit, such as:
@@ -75,8 +51,8 @@ define( function( require ) {
     this.nodeSet = {};
     for ( var k = 0; k < this.elements.length; k++ ) {
       var element = this.elements[ k ];
-      this.nodeSet[ element.node0 ] = element.node0;
-      this.nodeSet[ element.node1 ] = element.node1;
+      this.nodeSet[ element.nodeId0 ] = element.nodeId0;
+      this.nodeSet[ element.nodeId1 ] = element.nodeId1;
     }
 
     // @public the number of nodes in the set
@@ -111,13 +87,13 @@ define( function( require ) {
      * @private
      */
     getCurrentCount: function() {
-      var resistorsWithNoResistance = 0;
+      var numberOfResistanceFreeResistors = 0;
       for ( var i = 0; i < this.resistors.length; i++ ) {
-        if ( this.resistors[ i ].resistance === 0 ) {
-          resistorsWithNoResistance++;
+        if ( this.resistors[ i ].value === 0 ) {
+          numberOfResistanceFreeResistors++;
         }
       }
-      return this.batteries.length + resistorsWithNoResistance;
+      return this.batteries.length + numberOfResistanceFreeResistors;
     },
 
     /**
@@ -139,16 +115,16 @@ define( function( require ) {
     getCurrentSourceTotal: function( nodeIndex ) {
       var currentSourceTotal = 0.0;
       for ( var i = 0; i < this.currentSources.length; i++ ) {
-        var c = this.currentSources[ i ];
-        if ( c.node1 === nodeIndex ) {
+        var currentSource = this.currentSources[ i ];
+        if ( currentSource.nodeId1 === nodeIndex ) {
 
           // positive current is entering the node, and the convention is for incoming current to be negative
-          currentSourceTotal = currentSourceTotal - c.current;
+          currentSourceTotal = currentSourceTotal - currentSource.value;
         }
-        if ( c.node0 === nodeIndex ) {
+        if ( currentSource.nodeId0 === nodeIndex ) {
 
           // positive current is leaving the node, and the convention is for outgoing current to be positive
-          currentSourceTotal = currentSourceTotal + c.current;
+          currentSourceTotal = currentSourceTotal + currentSource.value;
         }
       }
       return currentSourceTotal;
@@ -157,7 +133,7 @@ define( function( require ) {
     /**
      * Gets current conservation terms going into or out of a node. Incoming current is negative, outgoing is positive.
      * @param {number} node - the node
-     * @param {string} side - 'node0' for outgoing current or 'node1' for incoming current
+     * @param {string} side - 'nodeId0' for outgoing current or 'nodeId1' for incoming current
      * @param {number} sign - 1 for incoming current and -1 for outgoing current
      * @returns {Term[]}
      * @private
@@ -180,7 +156,7 @@ define( function( require ) {
         resistor = this.resistors[ i ];
 
         // Treat resistors with R=0 as having unknown current and v1=v2
-        if ( resistor[ side ] === node && resistor.resistance === 0 ) {
+        if ( resistor[ side ] === node && resistor.value === 0 ) {
           nodeTerms.push( new Term( sign, new UnknownCurrent( resistor ) ) );
         }
       }
@@ -188,9 +164,9 @@ define( function( require ) {
       // Each resistor with nonzero resistance has an unknown voltage
       for ( i = 0; i < this.resistors.length; i++ ) {
         resistor = this.resistors[ i ];
-        if ( resistor[ side ] === node && resistor.resistance !== 0 ) {
-          nodeTerms.push( new Term( -sign / resistor.resistance, new UnknownVoltage( resistor.node1 ) ) );
-          nodeTerms.push( new Term( sign / resistor.resistance, new UnknownVoltage( resistor.node0 ) ) );
+        if ( resistor[ side ] === node && resistor.value !== 0 ) {
+          nodeTerms.push( new Term( -sign / resistor.value, new UnknownVoltage( resistor.nodeId1 ) ) );
+          nodeTerms.push( new Term( sign / resistor.value, new UnknownVoltage( resistor.nodeId0 ) ) );
         }
       }
       return nodeTerms;
@@ -242,9 +218,9 @@ define( function( require ) {
         var nodeToVisit = toVisit.shift();
         visited.push( nodeToVisit );
         for ( var i = 0; i < this.elements.length; i++ ) {
-          var e = this.elements[ i ];
-          if ( elementContainsNode( e, nodeToVisit ) ) {
-            var oppositeNode = getOppositeNode( e, nodeToVisit );
+          var element = this.elements[ i ];
+          if ( element.containsNodeId( nodeToVisit ) ) {
+            var oppositeNode = element.getOppositeNode( nodeToVisit );
             if ( visited.indexOf( oppositeNode ) === -1 ) {
               toVisit.push( oppositeNode );
             }
@@ -273,8 +249,8 @@ define( function( require ) {
       var nodes = this.nodes;
       for ( i = 0; i < nodes.length; i++ ) {
         var node = nodes[ i ];
-        var incomingCurrentTerms = this.getCurrentTerms( node, 'node1', -1 );
-        var outgoingCurrentTerms = this.getCurrentTerms( node, 'node0', +1 );
+        var incomingCurrentTerms = this.getCurrentTerms( node, 'nodeId1', -1 );
+        var outgoingCurrentTerms = this.getCurrentTerms( node, 'nodeId0', +1 );
         var currentConservationTerms = incomingCurrentTerms.concat( outgoingCurrentTerms );
         equations.push( new Equation( this.getCurrentSourceTotal( node ), currentConservationTerms ) );
       }
@@ -282,19 +258,19 @@ define( function( require ) {
       // For each battery, voltage drop is given
       for ( i = 0; i < this.batteries.length; i++ ) {
         var battery = this.batteries[ i ];
-        equations.push( new Equation( battery.voltage, [
-          new Term( -1, new UnknownVoltage( battery.node0 ) ),
-          new Term( 1, new UnknownVoltage( battery.node1 ) )
+        equations.push( new Equation( battery.value, [
+          new Term( -1, new UnknownVoltage( battery.nodeId0 ) ),
+          new Term( 1, new UnknownVoltage( battery.nodeId1 ) )
         ] ) );
       }
 
-      // If resistor has no resistance, node0 and node1 should have same voltage
+      // If resistor has no resistance, nodeId0 and nodeId1 should have same voltage
       for ( i = 0; i < this.resistors.length; i++ ) {
         var resistor = this.resistors[ i ];
-        if ( resistor.resistance === 0 ) {
+        if ( resistor.value === 0 ) {
           equations.push( new Equation( 0, [
-            new Term( 1, new UnknownVoltage( resistor.node0 ) ),
-            new Term( -1, new UnknownVoltage( resistor.node1 ) )
+            new Term( 1, new UnknownVoltage( resistor.nodeId0 ) ),
+            new Term( -1, new UnknownVoltage( resistor.nodeId1 ) )
           ] ) );
         }
       }
@@ -317,7 +293,7 @@ define( function( require ) {
 
       // Treat resisters with R=0 as having unknown current and v1=v2
       for ( i = 0; i < this.resistors.length; i++ ) {
-        if ( this.resistors[ i ].resistance === 0 ) {
+        if ( this.resistors[ i ].value === 0 ) {
           unknownCurrents.push( new UnknownCurrent( this.resistors[ i ] ) );
         }
       }
@@ -411,7 +387,7 @@ define( function( require ) {
    * @returns {string}
    */
   var resistorToString = function( resistor ) {
-    return 'node' + resistor.node0 + ' -> node' + resistor.node1 + ' @ ' + resistor.resistance + ' Ohms';
+    return 'node' + resistor.nodeId0 + ' -> node' + resistor.nodeId1 + ' @ ' + resistor.value + ' Ohms';
   };
 
   /**
@@ -420,27 +396,7 @@ define( function( require ) {
    * @returns {string}
    */
   var batteryToString = function( battery ) {
-    return 'node' + battery.node0 + ' -> node' + battery.node1 + ' @ ' + battery.voltage + ' Volts';
-  };
-
-  /**
-   * Determine if an element contains the given node
-   * @param {Element} element
-   * @param {number} node
-   * @returns {boolean}
-   */
-  var elementContainsNode = function( element, node ) {
-    return element.node0 === node || element.node1 === node;
-  };
-
-  /**
-   * Find the node across from the specified node.
-   * @param {Element} element
-   * @param {number} node
-   */
-  var getOppositeNode = function( element, node ) {
-    assert && assert( element.node0 === node || element.node1 === node );
-    return element.node0 === node ? element.node1 : element.node0;
+    return 'node' + battery.nodeId0 + ' -> node' + battery.nodeId1 + ' @ ' + battery.value + ' Volts';
   };
 
   /**
@@ -473,7 +429,7 @@ define( function( require ) {
   } );
 
   /**
-   * @param {Object} element - {node0,node1,circuitElement,voltage|current|resistance}
+   * @param {Object} element - {nodeId0,nodeId1,circuitElement,voltage|current|resistance}
    * @constructor
    */
   function UnknownCurrent( element ) {
@@ -492,7 +448,7 @@ define( function( require ) {
      * @public
      */
     toTermName: function() {
-      return 'I' + this.element.node0 + '_' + this.element.node1;
+      return 'I' + this.element.nodeId0 + '_' + this.element.nodeId1;
     },
 
     /**

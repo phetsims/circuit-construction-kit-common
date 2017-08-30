@@ -26,6 +26,7 @@ define( function( require ) {
   var InteractionMode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/InteractionMode' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   var ModifiedNodalAnalysisCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuit' );
+  var ModifiedNodalAnalysisCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuitElement' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
@@ -681,14 +682,12 @@ define( function( require ) {
 
       // introduce a synthetic vertex for each battery to model internal resistance
       var resistorAdapters = resistors.map( function( circuitElement ) {
-        return {
-
-          // the index of vertex corresponds to position in list.
-          node0: self.vertices.indexOf( circuitElement.startVertexProperty.get() ),
-          node1: self.vertices.indexOf( circuitElement.endVertexProperty.get() ),
-          circuitElement: circuitElement,
-          resistance: circuitElement.resistanceProperty.get()
-        };
+        return new ModifiedNodalAnalysisCircuitElement(
+          self.vertices.indexOf( circuitElement.startVertexProperty.get() ), // the index of vertex corresponds to position in list.
+          self.vertices.indexOf( circuitElement.endVertexProperty.get() ),
+          circuitElement,
+          circuitElement.resistanceProperty.value
+        );
       } );
       var batteryAdapters = [];
 
@@ -696,20 +695,20 @@ define( function( require ) {
       batteries.forEach( function( battery ) {
 
         // add a voltage source from startVertex to syntheticVertex
-        batteryAdapters.push( {
-          node0: self.vertices.indexOf( battery.startVertexProperty.value ),
-          node1: nextSyntheticVertexIndex,
-          voltage: battery.voltageProperty.value,
-          circuitElement: battery
-        } );
+        batteryAdapters.push( new ModifiedNodalAnalysisCircuitElement(
+          self.vertices.indexOf( battery.startVertexProperty.value ),
+          nextSyntheticVertexIndex,
+          battery,
+          battery.voltageProperty.value
+        ) );
 
         // add a resistor from syntheticVertex to endVertex
-        resistorAdapters.push( {
-          node0: nextSyntheticVertexIndex,
-          node1: self.vertices.indexOf( battery.endVertexProperty.value ),
-          resistance: battery.internalResistanceProperty.value,
-          circuitElement: battery
-        } );
+        resistorAdapters.push( new ModifiedNodalAnalysisCircuitElement(
+          nextSyntheticVertexIndex,
+          self.vertices.indexOf( battery.endVertexProperty.value ),
+          battery,
+          battery.internalResistanceProperty.value,
+        ) );
 
         // Prepare for next battery, if any
         nextSyntheticVertexIndex++;
@@ -732,7 +731,7 @@ define( function( require ) {
       // For resistors with r>0, Ohm's Law gives the current.  For components with no resistance (like closed switch or
       // 0-resistance battery), the current is given by the matrix solution.
       resistorAdapters.forEach( function( resistorAdapter ) {
-        if ( resistorAdapter.resistance !== 0 ) {
+        if ( resistorAdapter.value !== 0 ) {
           resistorAdapter.circuitElement.currentProperty.set( solution.getCurrentForResistor( resistorAdapter ) );
         }
       } );
