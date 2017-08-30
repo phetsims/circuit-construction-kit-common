@@ -977,7 +977,8 @@ define( function( require ) {
     findAllFixedVertices: function( vertex, okToVisit ) {
       return this.searchVertices( vertex, function( startVertex, circuitElement, endVertex ) {
         if ( okToVisit ) {
-          //REVIEW*: Prefer your previous check to look for a lengthProperty than an instanceof lookup?
+          //REVIEW: Prefer your previous check to look for a lengthProperty than an instanceof lookup?
+          //REVIEW^(samreid): type check seems preferable to checking for the lack of a property (my opinion), let me know your thoughts
           return circuitElement instanceof FixedLengthCircuitElement && okToVisit( startVertex, circuitElement, endVertex );
         }
         else {
