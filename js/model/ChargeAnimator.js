@@ -20,7 +20,7 @@ define( function( require ) {
   // constants
 
   // If the current is lower than this, then there is no charge movement
-  var MINIMUM_CURRENT = 1E-10
+  var MINIMUM_CURRENT = 1E-10;
 
   // The furthest an charge can step in one frame before the time scale must be reduced (to prevent a strobe effect)
   var MAX_POSITION_CHANGE = CircuitConstructionKitCommonConstants.CHARGE_SEPARATION * 0.43;

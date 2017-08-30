@@ -38,7 +38,6 @@ define( function( require ) {
   var AlignBox = require( 'SCENERY/nodes/AlignBox' );
   var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
   var Node = require( 'SCENERY/nodes/Node' );
-  var Plane = require( 'SCENERY/nodes/Plane' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Color = require( 'SCENERY/util/Color' );
@@ -47,7 +46,6 @@ define( function( require ) {
 
   // constants
   var VERTICAL_MARGIN = CircuitConstructionKitCommonConstants.VERTICAL_MARGIN;
-  var BACKGROUND_COLOR = CircuitConstructionKitCommonConstants.BACKGROUND_COLOR;
   var VOLTMETER_PROBE_TIP_LENGTH = 20; // The probe tip is about 20 view coordinates tall
   var VOLTMETER_NUMBER_SAMPLE_POINTS = 10; // Number of points along the edge of the voltmeter tip to detect voltages
 
@@ -95,12 +93,7 @@ define( function( require ) {
 
     ScreenView.call( this );
 
-    // TODO(phet-io): change background color to gray when isValueDepictionEnabledProperty goes false
-
-    // @public (read-only) {function} - For overriding in BlackBoxSceneView, which needs a custom color
-    this.unlinkBackgroundListener = function() {
-      model.isValueDepictionEnabledProperty.unlink( backgroundListener );
-    };
+    // TODO(black-box-study): change background color to gray when isValueDepictionEnabledProperty goes false
 
     // @private - contains parts of the circuit that should be shown behind the controls
     this.circuitLayerNodeBackLayer = new Node();
