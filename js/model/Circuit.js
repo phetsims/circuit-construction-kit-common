@@ -711,7 +711,7 @@ define( function( require ) {
           nextSyntheticVertexIndex,
           self.vertices.indexOf( battery.endVertexProperty.value ),
           battery,
-          battery.internalResistanceProperty.value,
+          battery.internalResistanceProperty.value
         ) );
 
         // Prepare for next battery, if any
