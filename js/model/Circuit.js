@@ -733,9 +733,7 @@ define( function( require ) {
       // 0-resistance battery), the current is given by the matrix solution.
       resistorAdapters.forEach( function( resistorAdapter ) {
         if ( resistorAdapter.resistance !== 0 ) {
-          var voltage = solution.nodeVoltages[ resistorAdapter.node1 ] - solution.nodeVoltages[ resistorAdapter.node0 ];
-          var current = -voltage / resistorAdapter.resistance;
-          resistorAdapter.circuitElement.currentProperty.set( current );
+          resistorAdapter.circuitElement.currentProperty.set( solution.getCurrentForResistor( resistorAdapter ) );
         }
       } );
 

@@ -46,10 +46,12 @@ define( function( require ) {
   return inherit( Object, ModifiedNodalAnalysisSolution, {
 
     /**
-     * REVIEW*: This looks like it's exclusively used by unit testing. Can we move it to the unit tests, so it won't be
-     * REVIEW*: included otherwise?
-     * Compare two solutions, and provide detailed qunit equal test if equal is provided
-     * @param modifiedNodalAnalysisSolution
+     * REVIEW: This looks like it's exclusively used by unit testing. Can we move it to the unit tests, so it won't be
+     * REVIEW: included otherwise?
+     * REVIEW^(samreid): See new comment below about usage in AC CCK.
+     * Compare two solutions, and provide detailed qunit equal test if equal is provided.  For the AC CCK, this method
+     * will also be used to identify when enough dt-subdivisions have been made in the adaptive timestep integration.
+     * @param {ModifiedNodalAnalysisSolution} modifiedNodalAnalysisSolution
      * @param {Object} [qassert] from qunit
      * @returns {boolean}
      * @public
@@ -85,7 +87,8 @@ define( function( require ) {
 
     /**
      * For equality testing, make sure all of the specified elements and currents match ours
-     * REVIEW*: Also only used in unit testing, see above comment.
+     * REVIEW: Also only used in unit testing, see above comment.
+     * REVIEW^(samreid): See above comment.
      * @param modifiedNodalAnalysisSolution
      * @private
      */
@@ -101,7 +104,8 @@ define( function( require ) {
 
     /**
      * Returns true if this solution has an element that matches the provided element.
-     * REVIEW*: Also only used in unit testing, see above comment.
+     * REVIEW: Also only used in unit testing, see above comment.
+     * REVIEW^(samreid): See above comment.
      * @param {Object} element
      * @returns {boolean}
      * @private
@@ -119,42 +123,20 @@ define( function( require ) {
     },
 
     /**
-     * Used by the CCK test harness.
-     * REVIEW*: Also only used in unit testing, see above comment.
-     * @param {Object} element
+     * Use Ohm's law to compute the current for a resistor with resistance>0
+     * @param {Object} resistor
      * @returns {number}
      * @public
      */
-    getCurrent: function( element ) {
-
-      // If the current is in the solution, look it up.
-      if ( typeof element.resistance !== 'number' || element.resistance === 0 ) {
-
-        // If it was a battery or resistor (of R=0), look up the answer from an equivalent component
-        for ( var i = 0; i < this.elements.length; i++ ) {
-          var proposedElement = this.elements[ i ];
-          if ( proposedElement.node0 === element.node0 && proposedElement.node1 === element.node1 ) {
-
-            var isEquivalentResistor = typeof proposedElement.resistance === 'number' &&
-                                       proposedElement.resistance === element.resistance;
-            var isEquivalentBattery = typeof proposedElement.voltage === 'number' &&
-                                      proposedElement.voltage === element.voltage;
-            if ( isEquivalentResistor || isEquivalentBattery ) {
-              return proposedElement.currentSolution;
-            }
-          }
-        }
-
-        assert && assert( false, 'should have found an equivalent component by now' );
-      }
-
-      // If the current was not in the solution, use Ohm's law (V=IR) to compute the current
-      return -this.getVoltage( element ) / element.resistance;
+    getCurrentForResistor: function( resistor ) {
+      assert && assert( resistor.resistance > 0, 'resistor must have resistance to use Ohms Law' );
+      return -this.getVoltage( resistor ) / resistor.resistance;
     },
 
     /**
      * Returns the voltage of the specified node.
-     * REVIEW*: Also only used in unit testing, see above comment.
+     * REVIEW: Also only used in unit testing, see above comment.
+     * REVIEW^(samreid): See above comment.
      * @param {number} nodeIndex - the index of the node
      * @returns {number} the voltage of the node
      * @private
@@ -165,7 +147,8 @@ define( function( require ) {
 
     /**
      * Returns the voltage across a circuit element.
-     * REVIEW*: Also only used in unit testing, see above comment.
+     * REVIEW: Also only used in unit testing, see above comment.
+     * REVIEW^(samreid): See above comment.
      * @param {Object} element - a circuit element with {node1:{number},node2:{number}}
      * @returns {number} - the voltage
      * @private

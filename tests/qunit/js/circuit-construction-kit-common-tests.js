@@ -24,7 +24,7 @@
       console.log( 'desiredSolution = ', desiredSolution );
       assert.equal( true, solution.approxEquals( desiredSolution, assert ), 'solutions instances should match' );
 
-      var currentThroughResistor = solution.getCurrent( resistor );
+      var currentThroughResistor = solution.getCurrentForResistor( resistor );
 
       // should be flowing forward through resistor
       assert.equal( approxEquals( currentThroughResistor, 1.0 ), true, 'current should be 1 amp through the resistor' );
@@ -56,7 +56,7 @@
 
     // same magnitude as battery: positive because current flows from node 1 to 0
     assert.equal(
-      approxEquals( solution.getCurrent( resistor ), 2 ), true, 'current through resistor should be 2.0 Amps'
+      approxEquals( solution.getCurrentForResistor( resistor ), 2 ), true, 'current through resistor should be 2.0 Amps'
     );
   } );
 
