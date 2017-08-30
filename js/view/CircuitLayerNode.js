@@ -309,9 +309,6 @@ define( function( require ) {
       tandem: Tandem.createStaticTandem( 'cutButton' )
     } );
     this.cutButton.addListener( function() {
-      //REVIEW: getSelectedVertex() can supposedly return null, but cutVertex doesn't allow null.
-      //REVIEW^(samreid): Hopefully the button is only activated when a vertex is selected (since the button is only
-      //REVIEW^(samreid): shown when a vertex is selected.  Perhaps this assertion will help?
       assert && assert( circuit.getSelectedVertex(), 'Button should only be available if a vertex is selected' );
       circuit.cutVertex( circuit.getSelectedVertex() );
 
@@ -426,6 +423,7 @@ define( function( require ) {
           //REVIEW: I don't see where blackBoxBounds is declared for the normal CCK model type. Seems to be passing undefined(!).
           //REVIEW^(samreid): blackBoxBounds is only defined in BlackBoxSceneModel.  I updated the doc to indicate this could be undefined.
           //REVIEW^(samreid): Let me know your recommendation.
+          //REVIEW*: Prefer blackBoxBounds=null in supertype, override in subtype
           this.model.blackBoxBounds
         );
         if ( targetVertex ) {
@@ -492,11 +490,6 @@ define( function( require ) {
      * @param {Vector2} position
      * @param {CircuitElement[]} neighbors
      * @param {Vertex[]} vertices
-     * REVIEW: I didn't see how I could trigger this. I'd like to see the behavior if possible in CCK-DC, OR I'd like
-     * REVIEW: to know more about why it's impossible to reach this in CCK-DC.
-     * REVIEW^(samreid): This is only for Black Box, there is a guard before this is called that checks:
-     *                   !vertices[ i ].draggableProperty.get()
-     * REVIEW^(samreid): The only undraggable vertices at the moment are the ones on the edge of the black box.
      * @private
      */
     rotateAboutFixedPivot: function( point, vertex, okToRotate, vertexNode, position, neighbors, vertices ) {
