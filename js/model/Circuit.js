@@ -1196,8 +1196,6 @@ define( function( require ) {
      * @public
      */
     toStateObject: function() {
-      //REVIEW*: Maybe an assertion here would be more appropriate than a log statement?
-      console.log( 'This should only be running in phet-io mode' );
       var self = this;
       var getVertexIndex = function( vertex ) {
         var vertexIndex = self.vertices.indexOf( vertex );
