@@ -48,8 +48,7 @@ define( function( require ) {
     var selectedSocketImage = options.highResistance ? highResistanceSocketImage : socketImage;
 
     // @private {Image}
-    //REVIEW*: Use 'this' instead of 'self' here
-    self.backNode = new Image( options.baseOnly ? selectedSocketImage : backImage, {
+    this.backNode = new Image( options.baseOnly ? selectedSocketImage : backImage, {
       scale: BULB_IMAGE_SCALE,
       centerX: 0,
       bottom: 0,
@@ -83,8 +82,7 @@ define( function( require ) {
     Node.call( self, options );
 
     // @private
-    //REVIEW*: Use 'this' instead of 'self' here
-    self.brightnessProperty = brightnessProperty;
+    this.brightnessProperty = brightnessProperty;
 
     // If it shows the rays, update their brightness
     if ( !options.baseOnly ) {

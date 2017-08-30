@@ -376,9 +376,8 @@ define( function( require ) {
     } );
 
     // Center the circuit node so that zooms will remain centered.
-    //REVIEW*: Use 'this' instead of 'self' here
-    self.circuitLayerNode.setTranslation( self.layoutBounds.centerX, self.layoutBounds.centerY );
-    self.circuitLayerNodeBackLayer.setTranslation( self.layoutBounds.centerX, self.layoutBounds.centerY );
+    this.circuitLayerNode.setTranslation( self.layoutBounds.centerX, self.layoutBounds.centerY );
+    this.circuitLayerNodeBackLayer.setTranslation( self.layoutBounds.centerX, self.layoutBounds.centerY );
 
     // Continuously zoom in and out as the current zoom interpolates, and update when the visible bounds change
     Property.multilink( [ model.currentZoomProperty, this.visibleBoundsProperty ], function( currentZoom, visibleBounds ) {

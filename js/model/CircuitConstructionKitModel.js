@@ -127,12 +127,10 @@ define( function( require ) {
     // However, the simulation should not pause when switching between "Explore" and "Test" and "Reveal" in the black
     // box study sim
     var modeChanging = false;
-    //REVIEW*: Use 'this' instead of 'self' here
-    self.modeProperty.startedCallbacksForChangedEmitter.addListener( function() {
+    this.modeProperty.startedCallbacksForChangedEmitter.addListener( function() {
       modeChanging = true;
     } );
-    //REVIEW*: Use 'this' instead of 'self' here
-    self.modeProperty.endedCallbacksForChangedEmitter.addListener( function() {
+    this.modeProperty.endedCallbacksForChangedEmitter.addListener( function() {
       modeChanging = false;
     } );
     if ( CircuitConstructionKitCommonQueryParameters.showPlayPauseButton ) {

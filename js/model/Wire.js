@@ -31,7 +31,6 @@ define( function( require ) {
   function Wire( startVertex, endVertex, resistivityProperty, tandem, options ) {
     assert && assert( typeof resistivityProperty !== 'number', 'property should not be a number' );
     options = _.extend( { wireStub: false }, options );
-    var self = this;
     var chargePathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
     CircuitElement.call( this, startVertex, endVertex, chargePathLength, tandem, options );
 
@@ -56,7 +55,8 @@ define( function( require ) {
     // Use `self` here instead of `this` so IDEA doesn't mark the property as missing.
     //REVIEW*: Is there some way to improve this for IDEA? I'd prefer 'this' here (and thus the comment could go away).
     //REVIEW*: I'd at least like to understand what IDEA doesn't understand, and if we can work around it another way.
-    self.vertexMovedEmitter.addListener( this.markWireDirtyListener );
+    //REVIEW^(samreid): I think IDEA doesn't understand our custom inherit declarations, changed to this for now
+    this.vertexMovedEmitter.addListener( this.markWireDirtyListener );
 
     // When resistivity changes, update the resistance
     this.resistivityProperty.link( this.markWireDirtyListener );
@@ -74,18 +74,16 @@ define( function( require ) {
      */
     update: function() {
       if ( this.wireDirty ) {
-        //REVIEW*: Why using self?
-        var self = this;
-        var startPosition = self.startPositionProperty.get();
-        var endPosition = self.endPositionProperty.get();
+        var startPosition = this.startPositionProperty.get();
+        var endPosition = this.endPositionProperty.get();
         var viewLength = startPosition.distance( endPosition );
         var modelLength = viewLength * METERS_PER_VIEW_COORDINATE;
-        self.lengthProperty.set( modelLength );
-        var resistance = modelLength * self.resistivityProperty.get();
+        this.lengthProperty.set( modelLength );
+        var resistance = modelLength * this.resistivityProperty.get();
         var clampedResistance = Math.max( CircuitConstructionKitCommonConstants.MINIMUM_RESISTANCE, resistance );
         assert && assert( !isNaN( clampedResistance ), 'wire resistance should not be NaN' );
-        self.resistanceProperty.set( clampedResistance );
-        self.chargePathLength = viewLength;
+        this.resistanceProperty.set( clampedResistance );
+        this.chargePathLength = viewLength;
         this.wireDirty = false;
       }
     },
