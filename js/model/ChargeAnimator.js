@@ -133,8 +133,7 @@ define( function( require ) {
       dt = Math.min( dt, MAX_DT );
 
       // Find the fastest current in any circuit element
-      //REVIEW*: If performance sensitive, may not want the extra array created with map?
-      var maxCurrentMagnitude = _.max( this.circuit.circuitElements.getArray().map( CURRENT_MAGNITUDE ) );
+      var maxCurrentMagnitude = CURRENT_MAGNITUDE( _.maxBy( this.circuit.circuitElements.getArray(), CURRENT_MAGNITUDE ) );
       assert && assert( maxCurrentMagnitude >= 0, 'max current should be positive' );
 
       var maxSpeed = maxCurrentMagnitude * SPEED_SCALE;
