@@ -545,17 +545,15 @@ define( function( require ) {
       // is used in the computation below.
       //REVIEW*: _.values not efficient, but a for-loop is used. Is this performance critical in this section?
       var solderNodes = _.values( this.circuitLayerNode.solderNodes );
-      for ( var i = 0; i < solderNodes.length; i++ ) {
-        var solderNode = solderNodes[ i ];
+      var hitSolderNode = _.find( solderNodes, function( solderNode ) {
         var position = solderNode.vertex.positionProperty.get();
-
-        var distance = probePosition.distance( position );
-        if ( distance <= SolderNode.SOLDER_RADIUS ) {
-          return {
-            vertex: solderNode.vertex,
-            voltage: solderNode.vertex.voltageProperty.get()
-          };
-        }
+        return probePosition.distance( position ) <= SolderNode.SOLDER_RADIUS;
+      } );
+      if ( hitSolderNode ) {
+        return {
+          vertex: hitSolderNode.vertex,
+          voltage: hitSolderNode.vertex.voltageProperty.get()
+        };
       }
 
       // Check for intersection with a metallic circuit element, which can provide voltmeter readings
