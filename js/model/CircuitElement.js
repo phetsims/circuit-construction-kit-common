@@ -253,7 +253,7 @@ define( function( require ) {
      * REVIEW: I would prefer this used Matrix3.
      * REVIEW^(samreid): The code where the position and angle is used in ChargeNode.updateTransform had these review comments:
      *         //REVIEW^(samreid): I went with rotation=angle and it seems to work nicely, does this seem OK?
-     *         //REVIEW*: Looks good.
+     *         //REVIEW: Looks good.
      *         this.rotation = charge.charge < 0 ? 0 : charge.angle + ( current < 0 ? Math.PI : 0 );
      * REVIEW^(samreid): I can see the value of using Matrix3, but getting mixed messages because the change in ChargeNode
      * REVIEW^(samreid): which uses {position,angle} is marked in review as "Looks good".  I guess I'd like to try this with a Matrix
