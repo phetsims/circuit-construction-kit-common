@@ -45,7 +45,7 @@ define( function( require ) {
   /**
    * @param {Circuit} circuit - the circuit model
    * @param {Property.<boolean>} visibleBoundsProperty - the visible bounds in view coordinates
-   * @param {Property.<string>} modeProperty - 'explore'|'test' for Black Box Study
+   * @param {Property.<string>} modeProperty - InteractionMode.EXPLORE|InteractionMode.TEST for Black Box Study
    * @param {Tandem} tandem
    * @constructor
    */

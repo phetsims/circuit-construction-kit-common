@@ -21,7 +21,7 @@ define( function( require ) {
   BatteryType.VALUES = [ BatteryType.NORMAL, BatteryType.HIGH_VOLTAGE ];
 
   // verify that enum is immutable, without the runtime penalty in production code
-  if ( assert ) { Object.freeze( BatteryType ); }
+  assert && Object.freeze( BatteryType );
 
   return BatteryType;
 } );

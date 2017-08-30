@@ -21,7 +21,7 @@ define( function( require ) {
   CircuitElementViewType.VALUES = [ CircuitElementViewType.LIFELIKE, CircuitElementViewType.SCHEMATIC ];
 
   // verify that enum is immutable, without the runtime penalty in production code
-  if ( assert ) { Object.freeze( CircuitElementViewType ); }
+  assert && Object.freeze( CircuitElementViewType );
 
   return CircuitElementViewType;
 } );

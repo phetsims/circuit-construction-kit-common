@@ -23,6 +23,7 @@ define( function( require ) {
   var Emitter = require( 'AXON/Emitter' );
   var EaseAnimation = require( 'TWIXT/EaseAnimation' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementViewType' );
+  var InteractionMode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/InteractionMode' );
 
   // phet-io modules
   var TNumber = require( 'ifphetio!PHET_IO/types/TNumber' );
@@ -102,10 +103,9 @@ define( function( require ) {
       } );
     } );
 
-    // @public {Property.<string>} - whether the user is in the 'explore' or 'test' mode
-    //REVIEW*: Looks like a good candidate for an enum.
-    this.modeProperty = new Property( 'explore', {
-      validValues: [ 'explore', 'test' ],
+    // @public {Property.<string>} - whether the user is in the InteractionMode.EXPLORE or InteractionMode.TEST mode
+    this.modeProperty = new Property( InteractionMode.EXPLORE, {
+      validValues: InteractionMode.VALUES,
       tandem: tandem.createTandem( 'modeProperty' ),
       phetioValueType: TString
     } );

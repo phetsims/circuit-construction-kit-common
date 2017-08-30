@@ -21,7 +21,9 @@ define( function( require ) {
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   var ChargeAnimator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ChargeAnimator' );
   var ChargeLayout = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ChargeLayout' );
+  var CurrentType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CurrentType' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
+  var InteractionMode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/InteractionMode' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   var ModifiedNodalAnalysisCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuit' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
@@ -30,7 +32,6 @@ define( function( require ) {
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
   var Vector2 = require( 'DOT/Vector2' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var CurrentType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CurrentType' );
 
   // phet-io modules
   var TNumber = require( 'ifphetio!PHET_IO/types/TNumber' );
@@ -992,7 +993,7 @@ define( function( require ) {
      * A vertex has been dragged, is it a candidate for joining with other vertices?  If so, return the candidate
      * vertex.  Otherwise, return null.
      * @param {Vertex} vertex - the dragged vertex
-     * @param {string} mode - the application mode 'test' | 'explore' | undefined REVIEW*: Put undefined in type docs then?
+     * @param {string} mode - the application mode InteractionMode.TEST | InteractionMode.EXPLORE | undefined REVIEW*: Put undefined in type docs then?
      * @param {Bounds2|undefined} blackBoxBounds - the bounds of the black box, if there is one
      *                                   REVIEW*: The one call site seems to mostly pass in undefined(!) here. At least type-doc it, recommend a cleaner way.
      * @returns {Vertex} - the vertex it will be able to connect to, if dropped REVIEW*: Description notes this can return null, but not noted in type here.
@@ -1001,7 +1002,7 @@ define( function( require ) {
     getDropTarget: function( vertex, mode, blackBoxBounds ) {
       var self = this;
 
-      if ( mode === 'test' ) {
+      if ( mode === InteractionMode.TEST ) {
         assert && assert( blackBoxBounds, 'bounds should be provided for build mode' );
       }
 
@@ -1103,7 +1104,7 @@ define( function( require ) {
 
       // (9) When in Black Box "build" mode (i.e. building inside the black box), a vertex user cannot connect to
       // a black box interface vertex if its other vertices would be outside of the black box.  See #136
-      if ( mode === 'test' ) {
+      if ( mode === InteractionMode.TEST ) {
         var fixedVertices2 = this.findAllFixedVertices( vertex );
         candidateVertices = candidateVertices.filter( function( candidateVertex ) {
 
