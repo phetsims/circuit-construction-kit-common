@@ -133,11 +133,7 @@ define( function( require ) {
       circuitElement.chargeLayoutDirty = true;
 
       var updateCharges = function() {
-        var circuitElements = self.findAllConnectedCircuitElements( circuitElement.startVertexProperty.get() );
-
-        for ( var i = 0; i < circuitElements.length; i++ ) {
-          circuitElements[ i ].chargeLayoutDirty = true;
-        }
+        self.markAllConnectedCircuitElementsDirty( circuitElement.startVertexProperty.get() );
       };
 
       // For circuit elements that can change their length, make sure to update charges when the length changes.
@@ -871,32 +867,23 @@ define( function( require ) {
     },
 
     /**
-     * Get a list of all circuit elements that can reach the specified vertex.
+     * Marks all connected circuit elements as dirty (so electrons will be layed out again), called when any wire length is changed.
      * @param {Vertex} vertex
-     * @returns {CircuitElement[]}
      * @private
      */
-    findAllConnectedCircuitElements: function( vertex ) {
+    markAllConnectedCircuitElementsDirty: function( vertex ) {
       var allConnectedVertices = this.findAllConnectedVertices( vertex );
-      var circuitElements = [];
+
+      // This is called many times while dragging a wire vertex, so for loops (as opposed to functional style) are used
+      // to avoid garbage
       for ( var i = 0; i < allConnectedVertices.length; i++ ) {
         var neighborCircuitElements = this.getNeighborCircuitElements( allConnectedVertices[ i ] );
         for ( var k = 0; k < neighborCircuitElements.length; k++ ) {
-          //REVIEW*: I somewhat prefer adding duplicates to the array, and then use _.uniq/whatnot.
-          //REVIEW*: Potentially more efficient than scanning through for duplicates every time.
-          //REVIEW*: Maybe there's a good way of stripping duplicates out of an exiting array without creating another array?
-          //REVIEW*: If not concerned about performance:
-          //REVIEW*: var self = this;
-          //REVIEW*: return _.uniq( _.flatten( this.findAllConnectedVertices( vertex ).map( function( vertices ) {
-          //REVIEW*:   return self.getNeighborCircuitElements( vertices );
-          //REVIEW*: } ) ) );
-          var neighborCircuitElement = neighborCircuitElements[ k ];
-          if ( circuitElements.indexOf( neighborCircuitElement ) === -1 ) {
-            circuitElements.push( neighborCircuitElement );
-          }
+
+          // Note the same circuit element may be marked dirty twice, but this does not cause any problems.
+          neighborCircuitElements[ k ].chargeLayoutDirty = true;
         }
       }
-      return circuitElements;
     },
 
     /**
