@@ -993,7 +993,7 @@ define( function( require ) {
      * vertex.  Otherwise, return null.
      * @param {Vertex} vertex - the dragged vertex
      * @param {string} mode - the application mode 'test' | 'explore' | undefined REVIEW*: Put undefined in type docs then?
-     * @param {Bounds2} blackBoxBounds - the bounds of the black box, if there is one
+     * @param {Bounds2|undefined} blackBoxBounds - the bounds of the black box, if there is one
      *                                   REVIEW*: The one call site seems to mostly pass in undefined(!) here. At least type-doc it, recommend a cleaner way.
      * @returns {Vertex} - the vertex it will be able to connect to, if dropped REVIEW*: Description notes this can return null, but not noted in type here.
      * @public

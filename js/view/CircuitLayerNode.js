@@ -423,7 +423,9 @@ define( function( require ) {
         var targetVertex = this.circuit.getDropTarget(
           vertex,
           this.model.modeProperty.get(),
-          //REVIEW*: I don't see where blackBoxBounds is declared for the normal CCK model type. Seems to be passing undefined(!).
+          //REVIEW: I don't see where blackBoxBounds is declared for the normal CCK model type. Seems to be passing undefined(!).
+          //REVIEW^(samreid): blackBoxBounds is only defined in BlackBoxSceneModel.  I updated the doc to indicate this could be undefined.
+          //REVIEW^(samreid): Let me know your recommendation.
           this.model.blackBoxBounds
         );
         if ( targetVertex ) {
