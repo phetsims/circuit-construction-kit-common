@@ -1175,13 +1175,8 @@ define( function( require ) {
           return false;
         }
 
-        return true;
-      } );
-
-
-      // (5) Reject any matches that result in circuit elements sharing a pair of vertices, which would cause
-      // the wires to lay across one another (one vertex was already shared)
-      candidateVertices = candidateVertices.filter( function( candidateVertex ) {
+        // (5) Reject any matches that result in circuit elements sharing a pair of vertices, which would cause
+        // the wires to lay across one another (one vertex was already shared)
 
         // if something else is already snapping to candidateVertex, then we cannot snap to it as well.
         // check the neighbor vertices
@@ -1195,58 +1190,51 @@ define( function( require ) {
             return false;
           }
         }
-        return true;
-      } );
-      if ( candidateVertices.length === 0 ) { return null; }
 
-      // (6) a vertex cannot be connected to its own fixed subgraph (no wire)
-      var fixedVertices = this.findAllFixedVertices( vertex );
-      candidateVertices = candidateVertices.filter( function( candidateVertex ) {
+        var fixedVertices = self.findAllFixedVertices( vertex );
+
+        // (6) a vertex cannot be connected to its own fixed subgraph (no wire)
         for ( var i = 0; i < fixedVertices.length; i++ ) {
           if ( fixedVertices[ i ] === candidateVertex ) {
             return false;
           }
         }
-        return true;
-      } );
-      if ( candidateVertices.length === 0 ) { return null; }
 
-      // (7) a wire vertex cannot connect if its neighbor is already proposing a connection
-      candidateVertices = candidateVertices.filter( function( candidateVertex ) {
-
+        // (7) a wire vertex cannot connect if its neighbor is already proposing a connection
         // You can always attach to a black box interface
-        if ( candidateVertex.blackBoxInterfaceProperty.get() ) {
-          return true;
-        }
-        var neighbors = self.getNeighborCircuitElements( candidateVertex );
-        for ( var i = 0; i < neighbors.length; i++ ) {
-          var neighbor = neighbors[ i ];
-          var oppositeVertex = neighbor.getOppositeVertex( candidateVertex );
+        if ( !candidateVertex.blackBoxInterfaceProperty.get() ) {
+          var neighbors = self.getNeighborCircuitElements( candidateVertex );
+          for ( var i = 0; i < neighbors.length; i++ ) {
+            var neighbor = neighbors[ i ];
+            var oppositeVertex = neighbor.getOppositeVertex( candidateVertex );
 
-          // is another node proposing a match to that node?
-          for ( var k = 0; k < self.vertices.length; k++ ) {
-            var v = self.vertices.get( k );
-            if ( neighbor instanceof Wire &&
-                 v !== vertex &&
-                 v !== oppositeVertex && v.positionProperty.get().equals( oppositeVertex.positionProperty.get() ) ) {
-              return false;
+            // is another node proposing a match to that node?
+            for ( var k = 0; k < self.vertices.length; k++ ) {
+              var v = self.vertices.get( k );
+              if ( neighbor instanceof Wire &&
+                   v !== vertex &&
+                   v !== oppositeVertex && v.positionProperty.get().equals( oppositeVertex.positionProperty.get() ) ) {
+                return false;
+              }
             }
           }
         }
-        return true;
-      } );
-      if ( candidateVertices.length === 0 ) { return null; }
 
-      // (8) a wire vertex cannot double connect to an object, creating a tiny short circuit
-      candidateVertices = candidateVertices.filter( function( candidateVertex ) {
+        // (8) a wire vertex cannot double connect to an object, creating a tiny short circuit
         var candidateNeighbors = self.getNeighboringVertices( candidateVertex );
         var myNeighbors = self.getNeighboringVertices( vertex );
         var intersection = _.intersection( candidateNeighbors, myNeighbors );
-        return intersection.length === 0;
+        var returnValue = intersection.length === 0;
+        if ( returnValue === false ) {
+          return false;
+        }
+
+        // (9) When in Black Box "build" mode (i.e. building inside the black box), a vertex user cannot connect to
+        // a black box interface vertex if its other vertices would be outside of the black box.  See #136
+
+        return true;
       } );
 
-      // (9) When in Black Box "build" mode (i.e. building inside the black box), a vertex user cannot connect to
-      // a black box interface vertex if its other vertices would be outside of the black box.  See #136
       if ( mode === InteractionMode.TEST ) {
         var fixedVertices2 = this.findAllFixedVertices( vertex );
         candidateVertices = candidateVertices.filter( function( candidateVertex ) {
