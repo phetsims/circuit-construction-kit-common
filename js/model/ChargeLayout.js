@@ -33,12 +33,15 @@ define( function( require ) {
     /**
      * Creates and positions charges in the specified circuit element.
      * @param {CircuitElement} circuitElement - the circuit element within which the charges will be updated
+     * REVIEW*: Move to Circuit (or ChargeAnimator) itself?
      * @public
      */
     layoutCharges: function( circuitElement ) {
 
       // Avoid unnecessary work to improve performance
       if ( circuitElement.chargeLayoutDirty ) {
+
+        circuitElement.chargeLayoutDirty = false;
 
         // Identify charges that were already in the branch.
         var charges = this.circuit.getChargesInCircuitElement( circuitElement );
@@ -59,7 +62,7 @@ define( function( require ) {
 
           // If there is a single particle, show it in the middle of the component, otherwise space equally
           var chargePosition = numberOfCharges === 1 ?
-                               (firstChargePosition + lastChargePosition) / 2 :
+                               ( firstChargePosition + lastChargePosition ) / 2 :
                                i * spacing + offset;
 
           var desiredCharge = this.circuit.currentTypeProperty.get() === CurrentType.ELECTRONS ? -1 : +1;
@@ -84,9 +87,6 @@ define( function( require ) {
 
         // Any charges that did not get recycled should be removed
         this.circuit.charges.removeAll( charges );
-
-        // Mark for layout in the next step
-        circuitElement.chargeLayoutDirty = false;
       }
     }
   } );

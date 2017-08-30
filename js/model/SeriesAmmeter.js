@@ -35,17 +35,16 @@ define( function( require ) {
 
   return inherit( FixedLengthCircuitElement, SeriesAmmeter, {
 
-      /**
-       * Get the properties so that the circuit can be solved when changed.
-       * @override
-       * @returns {Property.<*>[]}
-       * @public
-       */
-      getCircuitProperties: function() {
+    /**
+     * Get the properties so that the circuit can be solved when changed.
+     * @override
+     * @returns {Property.<*>[]}
+     * @public
+     */
+    getCircuitProperties: function() {
 
-        // No internal parameters that can change the circuit
-        return [];
-      }
+      // No internal parameters that can change the circuit
+      return [];
     }
-  );
+  } );
 } );

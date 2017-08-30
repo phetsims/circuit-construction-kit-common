@@ -199,7 +199,7 @@ define( function( require ) {
       var circuitElementCharges = this.circuit.getChargesInCircuitElement( charge.circuitElement );
 
       // if it has a lower and upper neighbor, nudge the charge to be closer to the midpoint
-      var sorted = _.sortBy( circuitElementCharges, function( e ) { return e.distance; } );
+      var sorted = _.sortBy( circuitElementCharges, 'distance' );
 
       var chargeIndex = sorted.indexOf( charge );
       var upper = sorted[ chargeIndex + 1 ];

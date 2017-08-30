@@ -376,6 +376,7 @@ define( function( require ) {
     } );
 
     // Center the circuit node so that zooms will remain centered.
+    //REVIEW*: Use 'this' instead of 'self' here
     self.circuitLayerNode.setTranslation( self.layoutBounds.centerX, self.layoutBounds.centerY );
     self.circuitLayerNodeBackLayer.setTranslation( self.layoutBounds.centerX, self.layoutBounds.centerY );
 

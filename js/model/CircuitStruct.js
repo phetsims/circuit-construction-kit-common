@@ -29,6 +29,7 @@ define( function( require ) {
    * @param {Battery[]} batteries
    * @param {Switch[]} switches
    * @constructor
+   * REVIEW*: Only called with empty arrays, recommend no-arg constructor
    */
   function CircuitStruct( vertices, wires, resistors, lightBulbs, batteries, switches ) {
 

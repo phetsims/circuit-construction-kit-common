@@ -3,6 +3,8 @@
 /**
  * CircuitElements such as Resistor, Battery, etc have a fixed length (unlike stretchy Wires).  This is their common
  * base class.
+ * REVIEW*: Note that it is NOT fixed length (light bulb breaks this), but has fixed vertex positions relative to the
+ *          element's transform.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -22,9 +24,11 @@ define( function( require ) {
    * @param {number} chargePathLength - the distance the charges travel (in view coordinates), see CircuitElement.js
    * @param {Tandem} tandem
    * @param {Object} [options]
+   * REVIEW*: Consider rename to something like FixedCircuitElement, to properly "handle" the light-bulb case.
    * @constructor
    */
   function FixedLengthCircuitElement( startVertex, endVertex, distanceBetweenVertices, chargePathLength, tandem, options ) {
+    //REVIEW*: Recommend getting rid of distanceBetweenVertices, compute it from startVertex/endVertex.
 
     options = _.extend( {
       editableRange: new Range( 0, 120 ),

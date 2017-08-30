@@ -188,6 +188,7 @@ define( function( require ) {
     var emitCircuitChanged = function() {
       self.circuitChangedEmitter.emit();
     };
+    //REVIEW*: Use 'this' instead of 'self' here
     self.vertices.addItemAddedListener( function( vertex ) {
 
       // Observe the change in location of the vertices, to update the ammeter and voltmeter
@@ -214,6 +215,7 @@ define( function( require ) {
     } );
 
     // Stop watching the vertex positions for updating the voltmeter and ammeter
+    //REVIEW*: Use 'this' instead of 'self' here
     self.vertices.addItemRemovedListener( function( vertex ) {
 
       // Sanity checks for the listeners

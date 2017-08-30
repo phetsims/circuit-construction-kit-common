@@ -17,6 +17,7 @@ define( function( require ) {
 
   // constants
   var RESISTOR_LENGTH = CircuitConstructionKitCommonConstants.RESISTOR_LENGTH;
+  //REVIEW*: Candidate for an enum (maybe with isMetallic(enum) function)
   var RESISTOR_TYPES = [
     'resistor', 'highResistanceResistor', 'coin', 'paperClip', 'pencil', 'eraser', 'hand', 'dog', 'dollarBill'
   ];
@@ -68,25 +69,23 @@ define( function( require ) {
 
   return inherit( FixedLengthCircuitElement, Resistor, {
 
+    /**
+     * Returns true if the resistance is editable.  Grab bag item resistance is not editable.
+     * @returns {boolean}
+     * @public
+     */
+    isResistanceEditable: function() {
+      return this.resistorType === 'highResistanceResistor' || this.resistorType === 'resistor';
+    },
 
-      /**
-       * Returns true if the resistance is editable.  Grab bag item resistance is not editable.
-       * @returns {boolean}
-       * @public
-       */
-      isResistanceEditable: function() {
-        return this.resistorType === 'highResistanceResistor' || this.resistorType === 'resistor';
-      },
-
-      /**
-       * Get the properties so that the circuit can be solved when changed.
-       * @override
-       * @returns {Property.<*>[]}
-       * @public
-       */
-      getCircuitProperties: function() {
-        return [ this.resistanceProperty ];
-      }
+    /**
+     * Get the properties so that the circuit can be solved when changed.
+     * @override
+     * @returns {Property.<*>[]}
+     * @public
+     */
+    getCircuitProperties: function() {
+      return [ this.resistanceProperty ];
     }
-  );
+  } );
 } );

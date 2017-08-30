@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
 
+  //REVIEW*: Was expecting this in the model directory, since it is used in the model
   var CircuitElementViewType = {
     LIFELIKE: 'LIFELIKE',
     SCHEMATIC: 'SCHEMATIC'

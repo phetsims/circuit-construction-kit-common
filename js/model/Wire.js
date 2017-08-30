@@ -54,6 +54,8 @@ define( function( require ) {
     this.markWireDirtyListener = this.markWireDirty.bind( this );
 
     // Use `self` here instead of `this` so IDEA doesn't mark the property as missing.
+    //REVIEW*: Is there some way to improve this for IDEA? I'd prefer 'this' here (and thus the comment could go away).
+    //REVIEW*: I'd at least like to understand what IDEA doesn't understand, and if we can work around it another way.
     self.vertexMovedEmitter.addListener( this.markWireDirtyListener );
 
     // When resistivity changes, update the resistance
@@ -72,6 +74,7 @@ define( function( require ) {
      */
     update: function() {
       if ( this.wireDirty ) {
+        //REVIEW*: Why using self?
         var self = this;
         var startPosition = self.startPositionProperty.get();
         var endPosition = self.endPositionProperty.get();
