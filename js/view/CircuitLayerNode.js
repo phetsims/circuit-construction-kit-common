@@ -436,8 +436,8 @@ define( function( require ) {
     /**
      * Finds the closest drop target for any of the given vertices
      * @param {Vertex[]} vertices
-     * @returns {Object} REVIEW*: No docs on the result?
-     * REVIEW*: Can return null, but return type shows Object only.
+     * @returns {Object|null} Object that indicates the two vertices best suited for connecting as { src: Vertex, dst: Vertex },
+     *                        or null if no match is suitable.
      * @public
      */
     getBestDropTarget: function( vertices ) {
@@ -490,8 +490,11 @@ define( function( require ) {
      * @param {Vector2} position
      * @param {CircuitElement[]} neighbors
      * @param {Vertex[]} vertices
-     * REVIEW*: I didn't see how I could trigger this. I'd like to see the behavior if possible in CCK-DC, OR I'd like
-     * REVIEW*: to know more about why it's impossible to reach this in CCK-DC.
+     * REVIEW: I didn't see how I could trigger this. I'd like to see the behavior if possible in CCK-DC, OR I'd like
+     * REVIEW: to know more about why it's impossible to reach this in CCK-DC.
+     * REVIEW^(samreid): This is only for Black Box, there is a guard before this is called that checks:
+     *                   !vertices[ i ].draggableProperty.get()
+     * REVIEW^(samreid): The only undraggable vertices at the moment are the ones on the edge of the black box.
      * @private
      */
     rotateAboutFixedPivot: function( point, vertex, okToRotate, vertexNode, position, neighbors, vertices ) {
