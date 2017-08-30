@@ -22,7 +22,7 @@ define( function( require ) {
   /**
    * @param {Property.<number>} timeScaleProperty - the fractional rate of time passage (1.0 = full speed)
    * @param {Property.<boolean>} showCurrentProperty - true if currents are visible
-   * @param {Property.<boolean>} isValueDepictionEnabledProperty - true if the explore screen is running
+   * @param {Property.<boolean>} isVaolueDepictionEnabledProperty - true if the explore screen is running
    * @constructor
    */
   function ChargeSpeedThrottlingReadoutNode( timeScaleProperty, showCurrentProperty, isValueDepictionEnabledProperty ) {

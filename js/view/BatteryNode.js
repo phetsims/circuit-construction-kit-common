@@ -60,7 +60,7 @@ define( function( require ) {
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - main screen view, null for icon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {Battery} battery
-   * @param {Property.<string>} viewTypeProperty
+   * @param {Property.<string>} viewTypeProperty REVIEW*: string?
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
@@ -78,6 +78,9 @@ define( function( require ) {
 
     // Center vertically to match the FixedLengthCircuitElementNode assumption that origin is center left
     lifelikeNode.centerY = 0;
+
+    //REVIEW*: Why are we mutating a shared "static" instance in every battery's constructor?
+    //REVIEW*: Move all schematicNode changes to the top level?
     schematicNode.centerY = 0;
 
     // Expand the pointer areas with a defensive copy, see

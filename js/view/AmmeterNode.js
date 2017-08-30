@@ -75,7 +75,7 @@ define( function( require ) {
 
     var currentReadoutProperty = new DerivedProperty( [ ammeter.currentProperty ], function( current ) {
       var max = options.blackBoxStudy ? 1E3 : 1E10;
-      var maxString = options.blackBoxStudy ? '> 10^3' : '> 10^10';
+      var maxString = options.blackBoxStudy ? '> 10^3' : '> 10^10'; //REVIEW*: Why is there a max (that is technically incorrect)?
 
       // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
       return current === null ? questionMarkString :

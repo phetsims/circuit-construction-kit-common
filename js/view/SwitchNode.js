@@ -152,7 +152,7 @@ define( function( require ) {
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - main screen view, null for icon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {Switch} circuitSwitch
-   * @param {Property.<string>} viewTypeProperty
+   * @param {Property.<string>} viewTypeProperty REVIEW*: string?
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor

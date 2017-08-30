@@ -48,13 +48,14 @@ define( function( require ) {
 
     var slider = new HSlider(
       batteryResistanceProperty,
+      //REVIEW*: Extracting info about the 0-10 range may simplify a few things?
       new Range( CircuitConstructionKitCommonConstants.DEFAULT_BATTERY_RESISTANCE, 10 ), {
         trackSize: CircuitConstructionKitCommonConstants.SLIDER_TRACK_SIZE,
         thumbSize: CircuitConstructionKitCommonConstants.THUMB_SIZE,
         majorTickLength: CircuitConstructionKitCommonConstants.MAJOR_TICK_LENGTH,
 
         // Snap to the nearest whole number.
-        constrainValue: function( value ) {return Util.roundSymmetric( value );},
+        constrainValue: function( value ) { return Util.roundSymmetric( value ); },
         tandem: tandem.createTandem( 'slider' )
       } );
     slider.addMajorTick( 0, createLabel( '0', tandem.createTandem( 'minLabel' ) ) );
@@ -84,10 +85,12 @@ define( function( require ) {
     var readoutTextPanel = new Panel( readoutTextNode, {
       fill: Color.WHITE,
       stroke: Color.GRAY,
+      //REVIEW*: Don't lineWidth:1, it's the default (unless you're doing complicated overriding)
       lineWidth: 1, // width of the background border
       xMargin: 4,
       yMargin: 3,
       cornerRadius: 0, // radius of the rounded corners on the background
+      //REVIEW*: resize:true is also the default, not needed
       resize: true, // dynamically resize when content bounds change
       backgroundPickable: false,
       tandem: readoutTextPanelTandem

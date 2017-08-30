@@ -68,7 +68,7 @@ define( function( require ) {
   /**
    * @param {Circuit} circuit
    * @param {Property.<boolean>} showLabelsProperty
-   * @param {Property.<string>} viewTypeProperty
+   * @param {Property.<string>} viewTypeProperty REVIEW*: string?
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {Tandem} tandem
    * @param {Object} [options]
