@@ -78,7 +78,7 @@ define( function( require ) {
 
     // number to be displayed
     batteryResistanceProperty.link( function( value ) {
-      readoutTextNode.setText( StringUtils.fillIn( resistanceOhmsString, { resistance: Util.toFixed( value, 0 ) } ) );
+      readoutTextNode.setText( StringUtils.fillIn( resistanceOhmsString, { resistance: Util.toFixed( value, 1 ) } ) );
     } );
 
     var readoutTextPanel = new Panel( readoutTextNode, {
