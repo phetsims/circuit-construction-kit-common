@@ -114,8 +114,8 @@ define( function( require ) {
 
     // @public (read-only by clients, writable-by-subclasses) {number} the distance the charges must take to get to the
     // other side of the component. This is typically the distance between vertices, but not for light bulbs.  This
-    // value is constant, except for wires which can have their length changed.
-    //REVIEW*: light bulbs can change this too
+    // value is constant, except for (a) wires which can have their length changed and (b) LightBulbs whose path
+    // length changes when switching between LIFELIKE |SCHEMATIC
     this.chargePathLength = chargePathLength;
 
     tandem.addInstance( this, TObject );
