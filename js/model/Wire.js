@@ -51,34 +51,13 @@ define( function( require ) {
     this.wireDirty = true;
 
     // When the vertex moves, updates the resistance and charge path length.
-    var markWireDirty = function() {
-      self.wireDirty = true;
-    };
+    this.markWireDirtyListener = this.markWireDirty.bind( this );
 
     // Use `self` here instead of `this` so IDEA doesn't mark the property as missing.
-    self.vertexMovedEmitter.addListener( markWireDirty );
-
-    // Update the resistance and charge path length on startup
-    markWireDirty();
+    self.vertexMovedEmitter.addListener( this.markWireDirtyListener );
 
     // When resistivity changes, update the resistance
-    this.resistivityProperty.link( markWireDirty );
-
-    // @private {function} - for disposal
-    //REVIEW: Again if memory is an issue (I'll investigate), having this as a method may be better.
-    //REVIEW(samreid): My suspicion is that with a small number (<100) of wires, the overhead from these closures will
-    //REVIEW(samreid): be in the noise
-    //REVIEW: I'll investigate. If it requires copies of compiled code for each one, it may definitely be adding overhead.
-    //REVIEW^(samreid): Sounds good, let me know if you'd like assistance into that investigation.
-    //REVIEW*: Investigation in https://github.com/phetsims/scenery/issues/664
-    //REVIEW*: Tested example showed 147-byte reduction per instance of this (Test0 => Test4 pattern), which would be
-    //REVIEW*: 14kb for 100 wires. I would generally prefer the improved pattern as good practice, but the performance
-    //REVIEW*: and memory loss here is probably not critical, and I'll leave it up to you (feel free to remove REVIEW
-    //REVIEW*: comments here if you wish).
-    this.disposeWire = function() {
-      self.vertexMovedEmitter.removeListener( markWireDirty );
-      self.resistivityProperty.unlink( markWireDirty );
-    };
+    this.resistivityProperty.link( this.markWireDirtyListener );
 
     this.update(); // initialize state
   }
@@ -109,6 +88,13 @@ define( function( require ) {
     },
 
     /**
+     * @private - mark the wire as needing to have its geometry and resistance updated
+     */
+    markWireDirty: function() {
+      this.wireDirty = true;
+    },
+
+    /**
      * Get the properties so that the circuit can be solved when changed.
      * @override
      * @returns {Property.<*>[]}
@@ -124,7 +110,8 @@ define( function( require ) {
      * @override
      */
     dispose: function() {
-      this.disposeWire();
+      this.vertexMovedEmitter.removeListener( this.markWireDirtyListener );
+      this.resistivityProperty.unlink( this.markWireDirtyListener );
       CircuitElement.prototype.dispose.call( this );
     }
   } );
