@@ -1194,7 +1194,7 @@ define( function( require ) {
         var fixedVertices = self.findAllFixedVertices( vertex );
 
         // (6) a vertex cannot be connected to its own fixed subgraph (no wire)
-        for ( var i = 0; i < fixedVertices.length; i++ ) {
+        for ( i = 0; i < fixedVertices.length; i++ ) {
           if ( fixedVertices[ i ] === candidateVertex ) {
             return false;
           }
@@ -1204,7 +1204,7 @@ define( function( require ) {
         // You can always attach to a black box interface
         if ( !candidateVertex.blackBoxInterfaceProperty.get() ) {
           var neighbors = self.getNeighborCircuitElements( candidateVertex );
-          for ( var i = 0; i < neighbors.length; i++ ) {
+          for ( i = 0; i < neighbors.length; i++ ) {
             var neighbor = neighbors[ i ];
             var oppositeVertex = neighbor.getOppositeVertex( candidateVertex );
 
@@ -1224,14 +1224,15 @@ define( function( require ) {
         var candidateNeighbors = self.getNeighboringVertices( candidateVertex );
         var myNeighbors = self.getNeighboringVertices( vertex );
         var intersection = _.intersection( candidateNeighbors, myNeighbors );
-        var returnValue = intersection.length === 0;
-        if ( returnValue === false ) {
+        if ( intersection.length !== 0 ) {
           return false;
         }
 
+        // All tests passed, it's OK for connection
         return true;
       } );
 
+      // TODO(black-box-study): integrate rule (9) with the other rules above
       // (9) When in Black Box "build" mode (i.e. building inside the black box), a vertex user cannot connect to
       // a black box interface vertex if its other vertices would be outside of the black box.  See #136
       if ( mode === InteractionMode.TEST ) {
@@ -1239,27 +1240,23 @@ define( function( require ) {
         candidateVertices = candidateVertices.filter( function( candidateVertex ) {
 
           // Don't connect to vertices that might have sneaked outside of the black box, say by a rotation.
-          if ( !candidateVertex.blackBoxInterfaceProperty.get() &&
-               !blackBoxBounds.containsPoint( candidateVertex.positionProperty.get() ) ) {
+          if ( !candidateVertex.blackBoxInterfaceProperty.get() && !blackBoxBounds.containsPoint( candidateVertex.positionProperty.get() ) ) {
             return false;
           }
 
           // How far the vertex would be moved if it joined to the candidate
           var delta = candidateVertex.positionProperty.get().minus( vertex.positionProperty.get() );
 
-          if ( candidateVertex.blackBoxInterfaceProperty.get() ||
-               blackBoxBounds.containsPoint( candidateVertex.positionProperty.get() ) ) {
+          if ( candidateVertex.blackBoxInterfaceProperty.get() || blackBoxBounds.containsPoint( candidateVertex.positionProperty.get() ) ) {
             for ( var i = 0; i < fixedVertices2.length; i++ ) {
               var connectedVertex = fixedVertices2[ i ];
               if ( connectedVertex.blackBoxInterfaceProperty.get() ) {
 
                 // OK for black box interface vertex to be slightly outside the box
               }
-              else if ( connectedVertex !== vertex &&
-                        !blackBoxBounds.containsPoint( connectedVertex.positionProperty.get().plus( delta ) ) &&
+              else if ( connectedVertex !== vertex && !blackBoxBounds.containsPoint( connectedVertex.positionProperty.get().plus( delta ) ) &&
 
-                        // exempt wires connected outside of the black box, which are flagged as un-attachable in
-                        // build mode, see #141
+                        // exempt wires connected outside of the black box, which are flagged as un-attachable in build mode, see #141
                         connectedVertex.attachableProperty.get() ) {
                 return false;
               }
