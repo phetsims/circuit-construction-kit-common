@@ -95,27 +95,7 @@ define( function( require ) {
 
     ScreenView.call( this );
 
-    // @protected (read-only) {Plane}, so subclasses can change the fill. On touch, make it so tapping the background
-    // deselects items.  For mouse, we add listeners to the pointer that work over all components, but this isn't
-    // possible with touch since it is a new pointer instance for each touch.
-    //REVIEW*: I'm confused, this looks like it's for two purposes, neither of which I would use a Plane for.
-    //REVIEW*: For the input handling, can Display.addInputListener be used?
-    //REVIEW*: For the background color, can we just set the background color of the screen?
-    this.backgroundPlane = new Plane( { fill: BACKGROUND_COLOR } );
-    this.backgroundPlane.addInputListener( {
-      touchdown: function() {
-        model.circuit.selectedCircuitElementProperty.set( null );
-        model.circuit.vertices.forEach( function( v ) {
-          v.selected = false;
-        } );
-      }
-    } );
-    this.addChild( this.backgroundPlane );
-
-    var backgroundListener = function( isValueDepictionEnabled ) {
-      self.backgroundPlane.fill = isValueDepictionEnabled ? BACKGROUND_COLOR : 'gray';
-    };
-    model.isValueDepictionEnabledProperty.link( backgroundListener );
+    // TODO(phet-io): change background color to gray when isValueDepictionEnabledProperty goes false
 
     // @public (read-only) {function} - For overriding in BlackBoxSceneView, which needs a custom color
     this.unlinkBackgroundListener = function() {
@@ -210,8 +190,6 @@ define( function( require ) {
       model.circuit.batteryResistanceProperty,
       CONTROL_PANEL_ALIGN_GROUP,
       tandem.createTandem( 'batteryResistanceControl' ) );
-
-    this.moveBackgroundToBack();
 
     this.addChild( this.circuitLayerNodeBackLayer );
 
@@ -434,14 +412,6 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'CircuitConstructionKitScreenView', CircuitConstructionKitScreenView );
 
   return inherit( ScreenView, CircuitConstructionKitScreenView, {
-
-    /**
-     * When other UI components are moved to the back, we must make sure the background stays behind them.
-     * @public
-     */
-    moveBackgroundToBack: function() {
-      this.backgroundPlane.moveToBack();
-    },
 
     /**
      * Move forward in time by the specified dt
