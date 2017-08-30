@@ -1001,11 +1001,6 @@ define( function( require ) {
         assert && assert( blackBoxBounds, 'bounds should be provided for build mode' );
       }
 
-      //REVIEW*: docs probably indicate this function gets called once per frame dragging.
-      //REVIEW*: This filters an AWFUL LOT. In a row. I honestly can't think of a reason NOT to combine the filters
-      //REVIEW*: into one filter function. Won't have to duplicate zero-length checks, and it should be at least as
-      //REVIEW*: fast.
-
       // Rules for a vertex connecting to another vertex.
       var candidateVertices = this.vertices.getArray().filter( function( candidateVertex ) {
 
