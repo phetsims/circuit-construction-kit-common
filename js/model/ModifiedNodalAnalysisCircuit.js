@@ -174,22 +174,22 @@ define( function( require ) {
 
     /**
      * Selects one node for each connected component to have the reference voltage of 0 volts.
-     * @returns {number[]} REVIEW*: referenceNodes is not an array of nodes? maybe node IDs?
+     * @returns {number[]} - the node IDs selected for references
      * @private
      */
-    getReferenceNodes: function() {
+    getReferenceNodeIds: function() {
 
       // The nodes which need to be visited
       var remaining = _.clone( this.nodeSet );
 
       // Mark reference nodes as they are discovered as map keys.
-      var referenceNodes = [];
+      var referenceNodeIds = [];
       //REVIEW*: PERFORMANCE?! Just a guess, but _.size can't be a particularly efficient function.
       while ( _.size( remaining ) > 0 ) {
         //REVIEW*: PERFORMANCE?! _.values every loop? If performance-sensitive, use something like a queue!
-        var referenceNode = _.minBy( _.values( remaining ) );
-        referenceNodes.push( referenceNode );
-        var connectedNodes = this.getConnectedNodes( referenceNode );
+        var referenceNodeId = _.minBy( _.values( remaining ) );
+        referenceNodeIds.push( referenceNodeId );
+        var connectedNodes = this.getConnectedNodes( referenceNodeId );
 
         // No need to visit any nodes connected to the reference node, since their connected component already has
         // a reference node.
@@ -199,7 +199,7 @@ define( function( require ) {
           delete remaining[ connectedNode ];
         }
       }
-      return referenceNodes;
+      return referenceNodeIds;
     },
 
     /**
@@ -240,9 +240,9 @@ define( function( require ) {
       var equations = [];
 
       // Reference node in each connected circuit element has a voltage of 0.0
-      var referenceNodes = this.getReferenceNodes();
-      for ( var i = 0; i < referenceNodes.length; i++ ) {
-        equations.push( new Equation( 0, [ new Term( 1, new UnknownVoltage( referenceNodes[ i ] ) ) ] ) );
+      var referenceNodeIds = this.getReferenceNodeIds();
+      for ( var i = 0; i < referenceNodeIds.length; i++ ) {
+        equations.push( new Equation( 0, [ new Term( 1, new UnknownVoltage( referenceNodeIds[ i ] ) ) ] ) );
       }
 
       // For each node, charge is conserved
