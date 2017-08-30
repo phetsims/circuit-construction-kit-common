@@ -931,15 +931,16 @@ define( function( require ) {
             }
           }
         }
-        //REVIEW*: Similar notes about maybe there's a more efficient way to handle deduplication.
-        if ( fixedVertices.indexOf( currentVertex ) < 0 ) {
-          fixedVertices.push( currentVertex );
-        }
+
+        fixedVertices.push( currentVertex ); // Allow duplicates, will be _.uniq before return
+
+        // O(n^2) to search for duplicates as we go, if this becomes a performance bottleneck we may wish to find a better
+        // way to deduplicate, perhaps Set or something like that
         if ( visited.indexOf( currentVertex ) < 0 ) {
           visited.push( currentVertex );
         }
       }
-      return fixedVertices;
+      return _.uniq( fixedVertices );
     },
 
     /**
