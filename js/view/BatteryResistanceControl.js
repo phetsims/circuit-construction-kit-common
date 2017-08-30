@@ -26,7 +26,6 @@ define( function( require ) {
 
   // strings
   var batteryResistanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/batteryResistance' );
-  var resistanceOhmString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhm' );
   var resistanceOhmsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhms' );
 
   /**
@@ -79,12 +78,7 @@ define( function( require ) {
 
     // number to be displayed
     batteryResistanceProperty.link( function( value ) {
-      if ( value === 1 ) {
-        readoutTextNode.setText( StringUtils.fillIn( resistanceOhmString, { resistance: Util.toFixed( value, 0 ) } ) );
-      }
-      else {
-        readoutTextNode.setText( StringUtils.fillIn( resistanceOhmsString, { resistance: Util.toFixed( value, 0 ) } ) );
-      }
+      readoutTextNode.setText( StringUtils.fillIn( resistanceOhmsString, { resistance: Util.toFixed( value, 0 ) } ) );
     } );
 
     var readoutTextPanel = new Panel( readoutTextNode, {
