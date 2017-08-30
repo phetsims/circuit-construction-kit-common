@@ -1160,26 +1160,24 @@ define( function( require ) {
           return false;
         }
 
+        // (2) A vertex cannot connect to itself
+        if ( candidateVertex === vertex ) {
+          return false;
+        }
+
+        // (3) a vertex must be within SNAP_RADIUS (screen coordinates) of the other vertex
+        if ( !(vertex.unsnappedPositionProperty.get().distance( candidateVertex.positionProperty.get() ) < SNAP_RADIUS) ) {
+          return false;
+        }
+
+        // (4) a vertex must be attachable. Some black box vertices are not attachable, such as vertices hidden in the box
+        if ( !candidateVertex.attachableProperty.get() ) {
+          return false;
+        }
+
         return true;
       } );
 
-      // (2) A vertex cannot connect to itself
-      candidateVertices = candidateVertices.filter( function( candidateVertex ) {
-        return candidateVertex !== vertex;
-      } );
-      if ( candidateVertices.length === 0 ) { return null; }
-
-      // (3) a vertex must be within SNAP_RADIUS (screen coordinates) of the other vertex
-      candidateVertices = candidateVertices.filter( function( candidateVertex ) {
-        return vertex.unsnappedPositionProperty.get().distance( candidateVertex.positionProperty.get() ) < SNAP_RADIUS;
-      } );
-      if ( candidateVertices.length === 0 ) { return null; }
-
-      // (4) a vertex must be attachable. Some black box vertices are not attachable, such as vertices hidden in the box
-      candidateVertices = candidateVertices.filter( function( candidateVertex ) {
-        return candidateVertex.attachableProperty.get();
-      } );
-      if ( candidateVertices.length === 0 ) { return null; }
 
       // (5) Reject any matches that result in circuit elements sharing a pair of vertices, which would cause
       // the wires to lay across one another (one vertex was already shared)
