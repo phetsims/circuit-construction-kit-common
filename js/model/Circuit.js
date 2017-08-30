@@ -836,8 +836,7 @@ define( function( require ) {
         return false;
       }
 
-      //REVIEW*: Do we need a _.some equivalent for ObservableArray?
-      return !!this.circuitElements.find( function( circuitElement ) {
+      return this.circuitElements.some( function( circuitElement ) {
         return circuitElement.containsBothVertices( a, b );
       } );
     },
