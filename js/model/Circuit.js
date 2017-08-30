@@ -985,162 +985,16 @@ define( function( require ) {
       return selectedVertex || null;
     },
 
-    getDropTarget1: function( vertex, mode, blackBoxBounds ) {
-      var self = this;
-
-      if ( mode === InteractionMode.TEST ) {
-        assert && assert( blackBoxBounds, 'bounds should be provided for build mode' );
-      }
-
-      //REVIEW*: docs probably indicate this function gets called once per frame dragging.
-      //REVIEW*: This filters an AWFUL LOT. In a row. I honestly can't think of a reason NOT to combine the filters
-      //REVIEW*: into one filter function. Won't have to duplicate zero-length checks, and it should be at least as
-      //REVIEW*: fast.
-
-      // Rules for a vertex connecting to another vertex.
-      // (1) A vertex may not connect to an adjacent vertex.
-      var candidateVertices = this.vertices.getArray().filter( function( candidateVertex ) {
-        return !self.isVertexAdjacent( vertex, candidateVertex );
-      } );
-      if ( candidateVertices.length === 0 ) { return null;}  // Avoid additional work if possible to improve performanc e
-
-      // (2) A vertex cannot connect to itself
-      candidateVertices = candidateVertices.filter( function( candidateVertex ) {
-        return candidateVertex !== vertex;
-      } );
-      if ( candidateVertices.length === 0 ) { return null; }
-
-      // (3) a vertex must be within SNAP_RADIUS (screen coordinates) of the other vertex
-      candidateVertices = candidateVertices.filter( function( candidateVertex ) {
-        return vertex.unsnappedPositionProperty.get().distance( candidateVertex.positionProperty.get() ) < SNAP_RADIUS;
-      } );
-      if ( candidateVertices.length === 0 ) { return null; }
-
-      // (4) a vertex must be attachable. Some black box vertices are not attachable, such as vertices hidden in the box
-      candidateVertices = candidateVertices.filter( function( candidateVertex ) {
-        return candidateVertex.attachableProperty.get();
-      } );
-      if ( candidateVertices.length === 0 ) { return null; }
-
-      // (5) Reject any matches that result in circuit elements sharing a pair of vertices, which would cause
-      // the wires to lay across one another (one vertex was already shared)
-      candidateVertices = candidateVertices.filter( function( candidateVertex ) {
-
-        // if something else is already snapping to candidateVertex, then we cannot snap to it as well.
-        // check the neighbor vertices
-        for ( var i = 0; i < self.vertices.length; i++ ) {
-          var circuitVertex = self.vertices.get( i );
-          var adjacent = self.isVertexAdjacent( circuitVertex, vertex );
-
-          // If the adjacent vertex has the same position as the candidate vertex, that means it is already "snapped"
-          // there and hence another vertex should not snap there at the same time.
-          if ( adjacent && circuitVertex.positionProperty.get().equals( candidateVertex.positionProperty.get() ) ) {
-            return false;
-          }
-        }
-        return true;
-      } );
-      if ( candidateVertices.length === 0 ) { return null; }
-
-      // (6) a vertex cannot be connected to its own fixed subgraph (no wire)
-      var fixedVertices = this.findAllFixedVertices( vertex );
-      candidateVertices = candidateVertices.filter( function( candidateVertex ) {
-        for ( var i = 0; i < fixedVertices.length; i++ ) {
-          if ( fixedVertices[ i ] === candidateVertex ) {
-            return false;
-          }
-        }
-        return true;
-      } );
-      if ( candidateVertices.length === 0 ) { return null; }
-
-      // (7) a wire vertex cannot connect if its neighbor is already proposing a connection
-      candidateVertices = candidateVertices.filter( function( candidateVertex ) {
-
-        // You can always attach to a black box interface
-        if ( candidateVertex.blackBoxInterfaceProperty.get() ) {
-          return true;
-        }
-        var neighbors = self.getNeighborCircuitElements( candidateVertex );
-        for ( var i = 0; i < neighbors.length; i++ ) {
-          var neighbor = neighbors[ i ];
-          var oppositeVertex = neighbor.getOppositeVertex( candidateVertex );
-
-          // is another node proposing a match to that node?
-          for ( var k = 0; k < self.vertices.length; k++ ) {
-            var v = self.vertices.get( k );
-            if ( neighbor instanceof Wire &&
-                 v !== vertex &&
-                 v !== oppositeVertex && v.positionProperty.get().equals( oppositeVertex.positionProperty.get() ) ) {
-              return false;
-            }
-          }
-        }
-        return true;
-      } );
-      if ( candidateVertices.length === 0 ) { return null; }
-
-      // (8) a wire vertex cannot double connect to an object, creating a tiny short circuit
-      candidateVertices = candidateVertices.filter( function( candidateVertex ) {
-        var candidateNeighbors = self.getNeighboringVertices( candidateVertex );
-        var myNeighbors = self.getNeighboringVertices( vertex );
-        var intersection = _.intersection( candidateNeighbors, myNeighbors );
-        return intersection.length === 0;
-      } );
-
-      // (9) When in Black Box "build" mode (i.e. building inside the black box), a vertex user cannot connect to
-      // a black box interface vertex if its other vertices would be outside of the black box.  See #136
-      if ( mode === InteractionMode.TEST ) {
-        var fixedVertices2 = this.findAllFixedVertices( vertex );
-        candidateVertices = candidateVertices.filter( function( candidateVertex ) {
-
-          // Don't connect to vertices that might have sneaked outside of the black box, say by a rotation.
-          if ( !candidateVertex.blackBoxInterfaceProperty.get() &&
-               !blackBoxBounds.containsPoint( candidateVertex.positionProperty.get() ) ) {
-            return false;
-          }
-
-          // How far the vertex would be moved if it joined to the candidate
-          var delta = candidateVertex.positionProperty.get().minus( vertex.positionProperty.get() );
-
-          if ( candidateVertex.blackBoxInterfaceProperty.get() ||
-               blackBoxBounds.containsPoint( candidateVertex.positionProperty.get() ) ) {
-            for ( var i = 0; i < fixedVertices2.length; i++ ) {
-              var connectedVertex = fixedVertices2[ i ];
-              if ( connectedVertex.blackBoxInterfaceProperty.get() ) {
-
-                // OK for black box interface vertex to be slightly outside the box
-              }
-              else if ( connectedVertex !== vertex &&
-                        !blackBoxBounds.containsPoint( connectedVertex.positionProperty.get().plus( delta ) ) &&
-
-                        // exempt wires connected outside of the black box, which are flagged as un-attachable in
-                        // build mode, see #141
-                        connectedVertex.attachableProperty.get() ) {
-                return false;
-              }
-            }
-          }
-          else {
-            return true;
-          }
-          return true;
-        } );
-
-        // a vertex must be attachable. Some black box vertices are not attachable, such as vertices hidden in the box
-        candidateVertices = candidateVertices.filter( function( candidateVertex ) {
-          return !candidateVertex.outerWireStub;
-        } );
-      }
-      if ( candidateVertices.length === 0 ) { return null; }
-
-      // Find the closest match
-      var sorted = _.sortBy( candidateVertices, function( candidateVertex ) {
-        return vertex.unsnappedPositionProperty.get().distance( candidateVertex.positionProperty.get() );
-      } );
-      return sorted[ 0 ];
-    },
-    getDropTarget2: function( vertex, mode, blackBoxBounds ) {
+    /**
+     * A vertex has been dragged, is it a candidate for joining with other vertices?  If so, return the candidate
+     * vertex.  Otherwise, return null.
+     * @param {Vertex} vertex - the dragged vertex
+     * @param {InteractionMode} mode - the application mode InteractionMode.TEST | InteractionMode.EXPLORE
+     * @param {Bounds2|undefined} blackBoxBounds - the bounds of the black box, if there is one
+     * @returns {Vertex|null} - the vertex it will be able to connect to, if dropped or null if no connection is available
+     * @public
+     */
+    getDropTarget: function( vertex, mode, blackBoxBounds ) {
       var self = this;
 
       if ( mode === InteractionMode.TEST ) {
@@ -1280,25 +1134,6 @@ define( function( require ) {
         return vertex.unsnappedPositionProperty.get().distance( candidateVertex.positionProperty.get() );
       } );
       return sorted[ 0 ];
-    },
-
-    /**
-     * A vertex has been dragged, is it a candidate for joining with other vertices?  If so, return the candidate
-     * vertex.  Otherwise, return null.
-     * @param {Vertex} vertex - the dragged vertex
-     * @param {InteractionMode} mode - the application mode InteractionMode.TEST | InteractionMode.EXPLORE
-     * @param {Bounds2|undefined} blackBoxBounds - the bounds of the black box, if there is one
-     * @returns {Vertex|null} - the vertex it will be able to connect to, if dropped or null if no connection is available
-     * @public
-     */
-    getDropTarget: function( vertex, mode, blackBoxBounds ) {
-      var a = this.getDropTarget1( vertex, mode, blackBoxBounds );
-      var b = this.getDropTarget2( vertex, mode, blackBoxBounds );
-      if ( a !== b ) {
-        throw new Error( 'problems' );
-      }
-
-      return b;
     },
 
     /**
