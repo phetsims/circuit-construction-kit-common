@@ -16,6 +16,7 @@ define( function( require ) {
   var CircuitConstructionKitCommonQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonQueryParameters' );
   var ModifiedNodalAnalysisSolution = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisSolution' );
   var Matrix = require( 'DOT/Matrix' );
+  var arrayRemove = require( 'PHET_CORE/arrayRemove' );
   var inherit = require( 'PHET_CORE/inherit' );
 
   // constants
@@ -202,7 +203,7 @@ define( function( require ) {
         //REVIEW^(samreid): can you give more guidance or pair with me on speeding it up and making it create less garbage?
         var referenceNodeId = _.minBy( _.values( remaining ) );
         referenceNodeIds.push( referenceNodeId );
-        var connectedNodes = this.getConnectedNodes( referenceNodeId );
+        var connectedNodes = this.getConnectedNodeIds( referenceNodeId );
 
         // No need to visit any nodes connected to the reference node, since their connected component already has
         // a reference node.
@@ -224,30 +225,20 @@ define( function( require ) {
      */
     getReferenceNodeIds2: function() {
 
-      // The nodes which need to be visited
-      var remaining = _.clone( this.nodeSet );
+      // The nodes which need to be visited.
+      var toVisit = _.values( this.nodeSet );
 
-      // Mark reference nodes as they are discovered as map keys.
+      // Mark reference nodes as they are discovered
       var referenceNodeIds = [];
-      //REVIEW: PERFORMANCE?! Just a guess, but _.size can't be a particularly efficient function.
-      //REVIEW^(samreid): A cursory scan suggests Object.keys(remaining).length would be better, but is there a
-      //REVIEW^(samreid): data structure we can use that won't create so much garbage for this computation?
-      while ( _.size( remaining ) > 0 ) {
-        //REVIEW: PERFORMANCE?! _.values every loop? If performance-sensitive, use something like a queue!
-        //REVIEW^(samreid): This will be a performance bottleneck when run many times per frame for AC CCK,
-        //REVIEW^(samreid): can you give more guidance or pair with me on speeding it up and making it create less garbage?
-        var referenceNodeId = _.minBy( _.values( remaining ) );
-        referenceNodeIds.push( referenceNodeId );
-        var connectedNodes = this.getConnectedNodes( referenceNodeId );
+      while ( toVisit.length > 0 ) {
 
-        // No need to visit any nodes connected to the reference node, since their connected component already has
-        // a reference node.
-        for ( var i = 0; i < connectedNodes.length; i++ ) {
-          var connectedNode = connectedNodes[ i ];
-          //REVIEW: delete isn't great for performance.
-          //REVIEW^(samreid): it would be great to get your help improving data structures and algorithms for this method.
-          //REVIEW^(samreid): can you give more guidance or collaborate on this part?
-          delete remaining[ connectedNode ];
+        var referenceNodeId = toVisit[ 0 ];
+        referenceNodeIds.push( referenceNodeId );
+        var connectedNodeIds = this.getConnectedNodeIds( referenceNodeId );
+
+        // No need to visit any nodes connected to the reference node, since their connected component already has a reference node.
+        for ( var i = 0; i < connectedNodeIds.length; i++ ) {
+          arrayRemove( toVisit, connectedNodeIds[ i ] );
         }
       }
       return referenceNodeIds;
@@ -259,7 +250,7 @@ define( function( require ) {
      * @returns {number[]}
      * @private
      */
-    getConnectedNodes: function( node ) {
+    getConnectedNodeIds: function( node ) {
       assert && assert( typeof node === 'number', 'node should be a number' );
       var visited = [];
       var toVisit = [ node ];
@@ -278,7 +269,7 @@ define( function( require ) {
           }
         }
       }
-      return visited;
+      return _.uniq( visited );
     },
 
     /**
