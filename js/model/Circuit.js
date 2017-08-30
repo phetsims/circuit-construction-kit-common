@@ -1153,11 +1153,15 @@ define( function( require ) {
       //REVIEW*: fast.
 
       // Rules for a vertex connecting to another vertex.
-      // (1) A vertex may not connect to an adjacent vertex.
       var candidateVertices = this.vertices.getArray().filter( function( candidateVertex ) {
-        return !self.isVertexAdjacent( vertex, candidateVertex );
+
+        // (1) A vertex may not connect to an adjacent vertex.
+        if ( self.isVertexAdjacent( vertex, candidateVertex ) ) {
+          return false;
+        }
+
+        return true;
       } );
-      if ( candidateVertices.length === 0 ) { return null;}  // Avoid additional work if possible to improve performanc e
 
       // (2) A vertex cannot connect to itself
       candidateVertices = candidateVertices.filter( function( candidateVertex ) {
@@ -1308,7 +1312,9 @@ define( function( require ) {
     getDropTarget: function( vertex, mode, blackBoxBounds ) {
       var a = this.getDropTarget1( vertex, mode, blackBoxBounds );
       var b = this.getDropTarget2( vertex, mode, blackBoxBounds );
-      console.log( a === b );
+      if ( a !== b ) {
+        throw new Error( 'problems' );
+      }
 
       return b;
     },
