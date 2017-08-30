@@ -1229,12 +1229,11 @@ define( function( require ) {
           return false;
         }
 
-        // (9) When in Black Box "build" mode (i.e. building inside the black box), a vertex user cannot connect to
-        // a black box interface vertex if its other vertices would be outside of the black box.  See #136
-
         return true;
       } );
 
+      // (9) When in Black Box "build" mode (i.e. building inside the black box), a vertex user cannot connect to
+      // a black box interface vertex if its other vertices would be outside of the black box.  See #136
       if ( mode === InteractionMode.TEST ) {
         var fixedVertices2 = this.findAllFixedVertices( vertex );
         candidateVertices = candidateVertices.filter( function( candidateVertex ) {
