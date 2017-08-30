@@ -290,10 +290,6 @@ define( function( require ) {
       return new SwitchNode( screenView, self, circuitElement, self.model.viewTypeProperty, tandem );
     } );
 
-    // @private - array of actions to be performed in the step function
-    //REVIEW*: Maybe I'm wrong, but nothing is being added to this if it's truly private? Remove this and its references?
-    this.stepListeners = [];
-
     // When a vertex is selected, a cut button is shown near to the vertex.  If the vertex is connected to >1 circuit
     // element, the button is enabled.  Pressing the button will cut the vertex from the neighbors.  Only one cutButton
     // is allocated for all vertices (per screen) to use because it is too performance demanding to create these
@@ -467,11 +463,6 @@ define( function( require ) {
       this.circuit.circuitElements.getArray().forEach( function( circuitElement ) {
         self.getCircuitElementNode( circuitElement ).step();
       } );
-
-      this.stepListeners.forEach( function( stepListener ) {
-        stepListener();
-      } );
-      this.stepListeners.length = 0;
     },
 
     /**
