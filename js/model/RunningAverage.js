@@ -12,9 +12,6 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
 
-  // constants
-  var SUM = function( a, b ) {return a + b;};
-
   /**
    * @param {number} windowSize - number of points to average
    * @constructor
@@ -52,8 +49,7 @@ define( function( require ) {
       while ( this.samples.length > this.windowSize ) {
         this.samples.shift();
       }
-      //REVIEW*: _.sum?
-      return _.reduce( this.samples, SUM ) / this.samples.length;
+      return _.sum( this.samples ) / this.samples.length;
     }
   } );
 } );
