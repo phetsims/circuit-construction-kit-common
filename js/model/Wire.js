@@ -52,9 +52,8 @@ define( function( require ) {
     // When the vertex moves, updates the resistance and charge path length.
     this.markWireDirtyListener = this.markWireDirty.bind( this );
 
-    // Use `self` here instead of `this` so IDEA doesn't mark the property as missing.
-    //REVIEW*: Is there some way to improve this for IDEA? I'd prefer 'this' here (and thus the comment could go away).
-    //REVIEW*: I'd at least like to understand what IDEA doesn't understand, and if we can work around it another way.
+    //REVIEW: Is there some way to improve this for IDEA? I'd prefer 'this' here (and thus the comment could go away).
+    //REVIEW: I'd at least like to understand what IDEA doesn't understand, and if we can work around it another way.
     //REVIEW^(samreid): I think IDEA doesn't understand our custom inherit declarations, changed to this for now
     this.vertexMovedEmitter.addListener( this.markWireDirtyListener );
 
