@@ -44,7 +44,7 @@ define( function( require ) {
     // @public {Property.<number>} - the resistivity of the Wire in ohm-meters
     this.resistivityProperty = resistivityProperty;
 
-    // @public {Property.<number>} - when the length changes the ChargeLayout must be run
+    // @public {Property.<number>} - when the length changes layoutCharges must be called
     this.lengthProperty = new NumberProperty( 0 );
 
     // @private {boolean} - batch changes so that the length doesn't change incrementally when individual vertices move

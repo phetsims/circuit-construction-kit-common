@@ -20,7 +20,6 @@ define( function( require ) {
   var CircuitConstructionKitCommonQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonQueryParameters' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   var ChargeAnimator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ChargeAnimator' );
-  var ChargeLayout = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ChargeLayout' );
   var CurrentType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CurrentType' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
   var InteractionMode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/InteractionMode' );
@@ -31,6 +30,7 @@ define( function( require ) {
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
+  var Charge = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Charge' );
   var Vector2 = require( 'DOT/Vector2' );
   var inherit = require( 'PHET_CORE/inherit' );
 
@@ -107,9 +107,6 @@ define( function( require ) {
     this.showCurrentProperty = new BooleanProperty( CircuitConstructionKitCommonQueryParameters.showCurrent, {
       tandem: tandem.createTandem( 'showCurrentProperty' )
     } );
-
-    // @private {ChargeLayout} - create the charges in new circuits
-    this.chargeLayout = new ChargeLayout( this );
 
     // @public {ChargeAnimator} - move the charges with speed proportional to current
     this.chargeAnimator = new ChargeAnimator( this );
@@ -815,7 +812,7 @@ define( function( require ) {
     layoutChargesInDirtyCircuitElements: function() {
       var self = this;
       this.circuitElements.getArray().forEach( function( circuitElement ) {
-        self.chargeLayout.layoutCharges( circuitElement );
+        self.layoutCharges( circuitElement );
       } );
     },
 
@@ -1147,6 +1144,66 @@ define( function( require ) {
       circuitElement.chargeLayoutDirty = true;
       this.layoutChargesInDirtyCircuitElements();
       this.solve();
+    },
+
+    /**
+     * Creates and positions charges in the specified circuit element.
+     * @param {CircuitElement} circuitElement - the circuit element within which the charges will be updated
+     * REVIEW*: Move to Circuit (or ChargeAnimator) itself?
+     * @public
+     */
+    layoutCharges: function( circuitElement ) {
+
+      // Avoid unnecessary work to improve performance
+      if ( circuitElement.chargeLayoutDirty ) {
+
+        circuitElement.chargeLayoutDirty = false;
+
+        // Identify charges that were already in the branch.
+        var charges = this.getChargesInCircuitElement( circuitElement );
+
+        // put charges 1/2 separation from the edge so it will match up with adjacent components
+        var offset = CircuitConstructionKitCommonConstants.CHARGE_SEPARATION / 2;
+        var lastChargePosition = circuitElement.chargePathLength - offset;
+        var firstChargePosition = offset;
+        var lengthForCharges = lastChargePosition - firstChargePosition;
+
+        // Math.round leads to charges too far apart when N=2
+        var numberOfCharges = Math.ceil( lengthForCharges / CircuitConstructionKitCommonConstants.CHARGE_SEPARATION );
+
+        // compute distance between adjacent charges
+        var spacing = lengthForCharges / ( numberOfCharges - 1 );
+
+        for ( var i = 0; i < numberOfCharges; i++ ) {
+
+          // If there is a single particle, show it in the middle of the component, otherwise space equally
+          var chargePosition = numberOfCharges === 1 ?
+                               ( firstChargePosition + lastChargePosition ) / 2 :
+                               i * spacing + offset;
+
+          var desiredCharge = this.currentTypeProperty.get() === CurrentType.ELECTRONS ? -1 : +1;
+
+          if ( charges.length > 0 &&
+               charges[ 0 ].charge === desiredCharge &&
+               charges[ 0 ].circuitElement === circuitElement &&
+               charges[ 0 ].visibleProperty === this.showCurrentProperty ) {
+
+            var c = charges.shift(); // remove 1st element, since it's the charge we checked in the guard
+            c.circuitElement = circuitElement;
+            c.distance = chargePosition;
+            c.updatePositionAndAngle();
+          }
+          else {
+
+            // nothing suitable in the pool, create something new
+            var charge = new Charge( circuitElement, chargePosition, this.showCurrentProperty, desiredCharge );
+            this.charges.add( charge );
+          }
+        }
+
+        // Any charges that did not get recycled should be removed
+        this.charges.removeAll( charges );
+      }
     },
 
     /**
