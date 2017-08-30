@@ -1003,7 +1003,7 @@ define( function( require ) {
      * @param {Vertex} vertex - the dragged vertex
      * @param {InteractionMode} mode - the application mode InteractionMode.TEST | InteractionMode.EXPLORE
      * @param {Bounds2|undefined} blackBoxBounds - the bounds of the black box, if there is one
-     * @returns {Vertex} - the vertex it will be able to connect to, if dropped REVIEW*: Description notes this can return null, but not noted in type here.
+     * @returns {Vertex|null} - the vertex it will be able to connect to, if dropped or null if no connection is available
      * @public
      */
     getDropTarget: function( vertex, mode, blackBoxBounds ) {
