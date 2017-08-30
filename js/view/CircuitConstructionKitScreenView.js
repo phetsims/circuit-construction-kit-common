@@ -533,8 +533,7 @@ define( function( require ) {
      * Find where the voltmeter probe node intersects the wire, for computing the voltage difference
      * @param {Image} probeNode - the probe node from the VoltmeterNode
      * @param {Vector2} probePosition
-     * @returns {Object} with vertex (for checking connectivity) and voltage (if connected)
-     * REVIEW*: I see a "return null", but this is not noted in the type docs
+     * @returns {Object|null} if connected returns {vertex,voltage} otherwise null
      * @private
      */
     getVoltageConnection: function( probeNode, probePosition ) {
