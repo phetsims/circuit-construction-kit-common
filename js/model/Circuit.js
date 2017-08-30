@@ -47,6 +47,14 @@ define( function( require ) {
   var trueFunction = _.constant( true ); // Lower cased so IDEA doesn't think it is a constructor
 
   /**
+   * Given a CircuitElement, call its update function (if it has one).
+   * @param {CircuitElement} circuitElement
+   */
+  var UPDATE_IF_PRESENT = function( circuitElement ) {
+    circuitElement.update && circuitElement.update();
+  };
+
+  /**
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
@@ -787,14 +795,17 @@ define( function( require ) {
       // Move the charges
       this.chargeAnimator.step( dt );
 
-      //REVIEW*: This pattern seems necessary (to avoid copying), but:
-      //REVIEW*: (a) you're creating function closures here but avoiding an array copy. Should we ditch the closures?
-      //REVIEW*: (b) I'd REALLY like to see a safe way to do this, that sets assertions to ensure there wasn't a
-      //REVIEW*: concurrent modification. Maybe forEachVolatile or some other name that adds assertion checks, but
-      //REVIEW*: production runtime is fast (and doesn't require the extra ugly getArray() all over the place).
-      this.circuitElements.getArray().forEach( function( circuitElement ) {
-        circuitElement.update && circuitElement.update();
-      } );
+      //REVIEW: This pattern seems necessary (to avoid copying), but:
+      //REVIEW: (a) you're creating function closures here but avoiding an array copy. Should we ditch the closures?
+      //REVIEW: (b) I'd REALLY like to see a safe way to do this, that sets assertions to ensure there wasn't a
+      //REVIEW: concurrent modification. Maybe forEachVolatile or some other name that adds assertion checks, but
+      //REVIEW: production runtime is fast (and doesn't require the extra ugly getArray() all over the place).
+      //REVIEW^(samreid): CircuitElement.update cannot modify the list of circuit elements, so concurrent modification
+      //REVIEW^(samreid): is not an issue in this case.  I moved the closure out, will that help?
+      //REVIEW^(samreid): Should this become an axon issue for further discussion?  I agree the .getArray() are unwieldy
+      //REVIEW^(samreid): but not sure about adding forEachVolatile (or *volatile for many methods).
+      //REVIEW^(samreid): Did we decide it will be impossible to remove the copies in ObservableArray? (basically making everything volatile?)
+      this.circuitElements.getArray().forEach( UPDATE_IF_PRESENT );
     },
 
     /**
@@ -990,7 +1001,7 @@ define( function( require ) {
      * A vertex has been dragged, is it a candidate for joining with other vertices?  If so, return the candidate
      * vertex.  Otherwise, return null.
      * @param {Vertex} vertex - the dragged vertex
-     * @param {string} mode - the application mode InteractionMode.TEST | InteractionMode.EXPLORE | undefined REVIEW*: Put undefined in type docs then?
+     * @param {InteractionMode} mode - the application mode InteractionMode.TEST | InteractionMode.EXPLORE
      * @param {Bounds2|undefined} blackBoxBounds - the bounds of the black box, if there is one
      *                                   REVIEW*: The one call site seems to mostly pass in undefined(!) here. At least type-doc it, recommend a cleaner way.
      * @returns {Vertex} - the vertex it will be able to connect to, if dropped REVIEW*: Description notes this can return null, but not noted in type here.
