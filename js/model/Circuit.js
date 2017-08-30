@@ -212,8 +212,7 @@ define( function( require ) {
     } );
 
     // Stop watching the vertex positions for updating the voltmeter and ammeter
-    //REVIEW*: Use 'this' instead of 'self' here
-    self.vertices.addItemRemovedListener( function( vertex ) {
+    this.vertices.addItemRemovedListener( function( vertex ) {
 
       // Sanity checks for the listeners
       assert && assert( vertex.positionProperty.hasListener( emitCircuitChanged ), 'should have had the listener' );
