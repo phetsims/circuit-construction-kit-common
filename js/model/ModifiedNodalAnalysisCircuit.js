@@ -24,7 +24,8 @@ define( function( require ) {
   /**
    * REVIEW*: Why not create an actual type with nodeId0, nodeId1, circuitElement and value?
    * REVIEW*: This could be used for all of these cases?
-   * REVIEW*: It's also quite confusing that node0 and node1 aren't {Node}s.
+   * REVIEW: It's also quite confusing that node0 and node1 aren't {Node}s.
+   * REVIEW^(samreid): In modified nodal analysis, the terminology is centered on "nodes", so I think we should keep that.
    * @param {Object[]} batteries - {node0:number,node1:number,circuitElement:CircuitElement,voltage:number}
    * @param {Object[]} resistors - {node0:number,node1:number,circuitElement:CircuitElement,resistance:number}
    * @param {Object[]} currentSources {node0:number,node1:number,circuitElement:CircuitElement,current:number}
