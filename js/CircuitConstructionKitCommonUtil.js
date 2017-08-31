@@ -86,6 +86,7 @@ define( function( require ) {
      * @param parent {Node} - parent that contains the child in the scene graph
      * @param child {Node} - child added/removed from scene graph
      * @public
+     * REVIEW*: How about putting this in Node.js (we can discuss a potential name)?
      */
     setInSceneGraph: function( inSceneGraph, parent, child ) {
       if ( inSceneGraph && !parent.hasChild( child ) ) {

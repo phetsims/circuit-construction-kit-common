@@ -32,6 +32,8 @@ define( function( require ) {
   var rotationMatrix = new Matrix3();
 
   /**
+   * REVIEW*: Usually I'd use 'screenView' instead of 'circuitConstructionKitScreenView' (similar to the model). Either
+   * REVIEW*: works, the current way is just quite verbose.
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - the main screen view, null for icon
    * @param {CircuitLayerNode} circuitLayerNode - Null if an icon is created
    * @param {FixedLengthCircuitElement} circuitElement - the corresponding model element
@@ -48,6 +50,8 @@ define( function( require ) {
     assert && assert( lifelikeNode !== schematicNode, 'schematicNode should be different than lifelikeNode' );
     var self = this;
 
+    //REVIEW*: (performance) Lots of closures here. If memory is still an issue, moving these to methods (where possible or convenient) may help.
+
     options = _.extend( {
       icon: false
     }, options );
@@ -61,7 +65,7 @@ define( function( require ) {
     // @protected (read-only) {Node} node that shows the component, separate from the part that shows the highlight and
     // the fire
     this.contentNode = new Node( {
-      children: [ lifelikeNode ]
+      children: [ lifelikeNode ] //REVIEW*: viewPropertyListener link below sets this up. create as new Node()?
     } );
 
     // @private {boolean} - Flag to indicate when updating view is necessary, in order to avoid duplicate work when both
@@ -70,8 +74,10 @@ define( function( require ) {
 
     // Add highlight (but not for icons)
     if ( !options.icon ) {
+      //REVIEW*: visibility/type docs
       this.highlightNode = new FixedLengthCircuitElementHighlightNode( this );
     }
+    //REVIEW*: this.markAsDirty.bind( this );
     var markAsDirty = function() { self.markAsDirty(); };
 
     // Show the selected node
@@ -87,6 +93,7 @@ define( function( require ) {
     viewTypeProperty.link( viewPropertyListener );
 
     // Relink when start vertex changes
+    //REVIEW*: Doc notes "relinking", but I see this just setting dirty flag.
     circuitElement.vertexMovedEmitter.addListener( markAsDirty );
 
     var moveToFront = function() {
@@ -102,11 +109,15 @@ define( function( require ) {
     circuitElement.connectedEmitter.addListener( moveToFront );
     circuitElement.vertexSelectedEmitter.addListener( moveToFront );
 
+    //REVIEW*: It looks like if circuitLayerNode is null, we'll pass null as a circuit to CircuitElementNode.
+    //REVIEW*: Its documentation does not say anything about null (only {Circuit}), and it doesn't have property docs
+    //REVIEW*: on the value assigned to the object.
     var circuit = circuitLayerNode && circuitLayerNode.circuit;
 
     CircuitElementNode.call( this, circuitElement, circuit, _.extend( {
       cursor: 'pointer',
       children: [
+        //REVIEW*: Use 'this' instead of 'self'?
         self.contentNode
       ],
       tandem: tandem
@@ -147,17 +158,19 @@ define( function( require ) {
           dragged = true;
         },
         end: function( event ) {
-
+          //REVIEW*: Why the call()? Are we trying to skip the method (don't see it) overridden on this type?
+          //REVIEW*: self.endDrag( ... ) should be equivalent, no?
           CircuitElementNode.prototype.endDrag.call( self, event, self.contentNode,
             [ circuitElement.endVertexProperty.get() ], circuitConstructionKitScreenView, circuitLayerNode, startPoint,
             dragged );
         },
         tandem: tandem.createTandem( 'dragHandler' )
       } );
+      //REVIEW*: Why is 'self' used here instead of 'this'?
       self.contentNode.addInputListener( this.dragHandler );
 
       var updateHighlightVisibility = function( lastCircuitElement ) {
-        var visible = (lastCircuitElement === circuitElement);
+        var visible = ( lastCircuitElement === circuitElement );
         CircuitConstructionKitCommonUtil.setInSceneGraph(
           visible, circuitLayerNode.highlightLayer, self.highlightNode
         );
@@ -167,7 +180,9 @@ define( function( require ) {
       circuitLayerNode.circuit.selectedCircuitElementProperty.link( updateHighlightVisibility );
 
       // Show fire for batteries and resistors
+      //REVIEW*: Conditional code based on subtype is probably a sign this code should live in the subtypes?
       if ( circuitElement instanceof Battery || circuitElement instanceof Resistor ) {
+        //REVIEW*: visibility/type docs, and consider moving declaration (and docs) up top so it is more visible.
         this.fireNode = new Image( fireImage, { pickable: false, imageOpacity: 0.95 } );
         this.fireNode.mutate( { scale: self.contentNode.width / this.fireNode.width } );
         this.addChild( this.fireNode );
@@ -202,10 +217,11 @@ define( function( require ) {
       }
     }
 
-    // @private - for disposal
+    // @private {function} - for disposal
     this.disposeFixedLengthCircuitElementNode = function() {
 
       // End drag event if it was in progress
+      //REVIEW*: consider self.dragHandler.interrupt()
       if ( self.dragHandler && self.dragHandler.dragging ) {
         self.dragHandler.endDrag();
       }
@@ -239,6 +255,8 @@ define( function( require ) {
     /**
      * Mark dirty to batch changes, so that update can be done once in view step, if necessary
      * @public
+     * REVIEW*: The dirty flag, markAsDirty and step functions for this type AND WireNode seem to be duplicates.
+     * REVIEW*: Can this be consolidated into CircuitElementNode?
      */
     markAsDirty: function() {
       this.dirty = true;
@@ -257,13 +275,15 @@ define( function( require ) {
       // Update the node transform in a single step, see #66
       CircuitConstructionKitCommonUtil.setToTranslationRotation( transform, startPosition, angle );
       this.contentNode.setMatrix( transform );
+
+      //REVIEW*: Usually an if-statement would be more readable here, instead of temp variable + short-circuit?
       var updateHighlight = this.highlightNode && this.circuitLayerNode.circuit.selectedCircuitElementProperty.get() === this.circuitElement;
       updateHighlight && this.highlightNode.setMatrix( transform );
 
       // Update the fire transform
       var flameExtent = 0.8;
       var scale = magnitude / fireImage.width * flameExtent;
-      var flameMargin = (1 - flameExtent) / 2;
+      var flameMargin = ( 1 - flameExtent ) / 2;
       var flameX = magnitude * flameMargin / scale;
       var flameY = -fireImage.height;
       CircuitConstructionKitCommonUtil.setToTranslationRotation( transform, startPosition, angle )
