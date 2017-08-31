@@ -86,7 +86,8 @@ define( function( require ) {
      * @param parent {Node} - parent that contains the child in the scene graph
      * @param child {Node} - child added/removed from scene graph
      * @public
-     * REVIEW*: How about putting this in Node.js (we can discuss a potential name)?
+     * REVIEW: How about putting this in Node.js (we can discuss a potential name)?
+     * REVIEW^(samreid): A general solution should keep track of the ordering--could we accomplish this in a robust way?
      */
     setInSceneGraph: function( inSceneGraph, parent, child ) {
       if ( inSceneGraph && !parent.hasChild( child ) ) {

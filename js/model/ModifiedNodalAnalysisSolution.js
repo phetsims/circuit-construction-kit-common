@@ -13,15 +13,14 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
 
   /**
-   * @param {Object} nodeVoltages - keys are {number} indicating the node index, values are {number} for the voltage at
-   *                              - the node
+   * @param {Object} nodeVoltages - see below
    * @param {ModifiedNodalAnalysisCircuitElement[]} elements
    * @constructor
    */
   function ModifiedNodalAnalysisSolution( nodeVoltages, elements ) {
 
-    //REVIEW*: Usually best to doc the keys/values where this is declared
-    // @public (read-only) {Object} - the solved node voltages
+    // @public (read-only) {Object} - the solved node voltages.
+    // keys are {number} indicating the node id, values are {number} for the voltage at the node
     this.nodeVoltages = nodeVoltages;
 
     // @public (read-only) {ModifiedNodalAnalysisCircuitElement[]} - circuit elements in the solution

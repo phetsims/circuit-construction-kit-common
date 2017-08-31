@@ -171,9 +171,7 @@ define( function( require ) {
 
       var updateHighlightVisibility = function( lastCircuitElement ) {
         var visible = ( lastCircuitElement === circuitElement );
-        CircuitConstructionKitCommonUtil.setInSceneGraph(
-          visible, circuitLayerNode.highlightLayer, self.highlightNode
-        );
+        CircuitConstructionKitCommonUtil.setInSceneGraph( visible, circuitLayerNode.highlightLayer, self.highlightNode );
         self.markAsDirty();
       };
 
@@ -234,9 +232,7 @@ define( function( require ) {
       if ( options.pickable !== false ) {
         circuitElement.interactiveProperty.unlink( pickableListener );
       }
-      circuitLayerNode && CircuitConstructionKitCommonUtil.setInSceneGraph(
-        false, circuitLayerNode.highlightLayer, self.highlightNode
-      );
+      circuitLayerNode && CircuitConstructionKitCommonUtil.setInSceneGraph( false, circuitLayerNode.highlightLayer, self.highlightNode );
       viewTypeProperty.unlink( viewPropertyListener );
 
       if ( !options.icon && updateFireMultilink ) {
