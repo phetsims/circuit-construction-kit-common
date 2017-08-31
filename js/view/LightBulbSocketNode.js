@@ -26,14 +26,12 @@ define( function( require ) {
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - main screen view, null for icon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {LightBulb} lightBulb - the light bulb model
-   * @param {Property.<boolean>} showResultsProperty - true if the sim can display values
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function LightBulbSocketNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, showResultsProperty,
-                                viewTypeProperty, tandem, options ) {
+  function LightBulbSocketNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, viewTypeProperty, tandem, options ) {
 
     // Render the bulb socket only
     var lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ), {

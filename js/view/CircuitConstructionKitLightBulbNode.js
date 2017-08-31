@@ -189,7 +189,6 @@ define( function( require ) {
         circuitConstructionKitScreenView,
         circuitLayerNode,
         lightBulb,
-        showResultsProperty,
         viewTypeProperty,
         tandem.createTandem( 'socketNode' ),
         options
