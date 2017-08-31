@@ -85,8 +85,6 @@ define( function( require ) {
     var readoutTextPanel = new Panel( readoutTextNode, {
       fill: Color.WHITE,
       stroke: Color.GRAY,
-      //REVIEW*: Don't lineWidth:1, it's the default (unless you're doing complicated overriding)
-      lineWidth: 1, // width of the background border
       xMargin: 4,
       yMargin: 3,
       cornerRadius: 0, // radius of the rounded corners on the background
