@@ -48,7 +48,8 @@ define( function( require ) {
 
     var slider = new HSlider(
       batteryResistanceProperty,
-      //REVIEW*: Extracting info about the 0-10 range may simplify a few things?
+      //REVIEW: Extracting info about the 0-10 range may simplify a few things?
+      //REVIEW^(samreid): Can you be more specific? This is the only spot I see that range in use.
       new Range( CircuitConstructionKitCommonConstants.DEFAULT_BATTERY_RESISTANCE, 10 ), {
         trackSize: CircuitConstructionKitCommonConstants.SLIDER_TRACK_SIZE,
         thumbSize: CircuitConstructionKitCommonConstants.THUMB_SIZE,
