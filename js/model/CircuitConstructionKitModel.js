@@ -63,7 +63,7 @@ define( function( require ) {
     // @public {BooleanProperty} - changes whether the light bulb brightness and ammeter/voltmeter readouts,
     // charges, flame, etc. can be seen
     this.isValueDepictionEnabledProperty = new BooleanProperty(
-      !CircuitConstructionKitCommonQueryParameters.showPlayPauseButton, {
+      !CircuitConstructionKitCommonQueryParameters.showDepictValuesToggleButton, {
         tandem: tandem.createTandem( 'isValueDepictionEnabledProperty' )
       } );
 
@@ -133,7 +133,7 @@ define( function( require ) {
     this.modeProperty.endedCallbacksForChangedEmitter.addListener( function() {
       modeChanging = false;
     } );
-    if ( CircuitConstructionKitCommonQueryParameters.showPlayPauseButton ) {
+    if ( CircuitConstructionKitCommonQueryParameters.showDepictValuesToggleButton ) {
       var pause = function() {
         if ( !modeChanging ) {
           self.isValueDepictionEnabledProperty.value = false;

@@ -325,8 +325,13 @@ define( function( require ) {
     model.circuit.circuitChangedEmitter.addListener( updateAmmeter );
     model.ammeter.probePositionProperty.link( updateAmmeter );
 
+    // Create the zoom control panel
+    var zoomControlPanel = new ZoomControlPanel( model.selectedZoomProperty, {
+      tandem: tandem.createTandem( 'zoomControlPanel' )
+    } );
+
     // Add the optional Play/Pause button
-    if ( CircuitConstructionKitCommonQueryParameters.showPlayPauseButton ) {
+    if ( CircuitConstructionKitCommonQueryParameters.showDepictValuesToggleButton ) {
       var playPauseButton = new PlayPauseButton( model.isValueDepictionEnabledProperty, {
         tandem: tandem.createTandem( 'playPauseButton' ),
         baseColor: '#33ff44' // the default blue fades into the background too much
@@ -337,15 +342,10 @@ define( function( require ) {
         // Float the playPauseButton to the bottom left
         playPauseButton.mutate( {
           left: visibleBounds.left + VERTICAL_MARGIN,
-          bottom: visibleBounds.bottom - VERTICAL_MARGIN
+          bottom: visibleBounds.bottom - VERTICAL_MARGIN - zoomControlPanel.height - VERTICAL_MARGIN
         } );
       } );
     }
-
-    // Create the zoom control panel
-    var zoomControlPanel = new ZoomControlPanel( model.selectedZoomProperty, {
-      tandem: tandem.createTandem( 'zoomControlPanel' )
-    } );
 
     // Make it as wide as the circuit element toolbox
     zoomControlPanel.setScaleMagnitude( 0.8 );

@@ -152,8 +152,8 @@ define( function( require ) {
       } ) ]
     } );
 
-    screenView.model.revealingProperty.link( function( revealing ) {
-      self.chargeLayer.visible = revealing;
+    Property.multilink( [ screenView.model.isValueDepictionEnabledProperty, screenView.model.revealingProperty ], function( isValueDepictionEnabled, revealing ) {
+      self.chargeLayer.visible = isValueDepictionEnabled && revealing;
     } );
 
     this.sensorLayer = new Node();
