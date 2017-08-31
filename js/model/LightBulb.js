@@ -212,15 +212,10 @@ define( function( require ) {
       var translation = new Vector2( 19, 10 );
 
       // Connect at the side and bottom
-      //REVIEW*: cleanup generation of endPoint?
       var startPoint = new Vector2( position.x - DISTANCE_BETWEEN_VERTICES / 2, position.y ).plus( translation );
-      var endPoint = new Vector2( position.x, position.y + DISTANCE_BETWEEN_VERTICES / 4 ).plus( translation );
-
-      var delta = endPoint.minus( startPoint );
-      var angle = delta.angle();
 
       // Position the vertices so the light bulb is upright
-      endPoint = startPoint.plus( Vector2.createPolar( DISTANCE_BETWEEN_VERTICES, angle - Math.PI * 0.3975 ) );
+      var endPoint = startPoint.plus( Vector2.createPolar( DISTANCE_BETWEEN_VERTICES, -Math.PI / 4 ) );
 
       // start vertex is at the bottom
       var startVertex = new Vertex( startPoint, {
