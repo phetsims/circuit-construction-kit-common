@@ -262,18 +262,19 @@ define( function( require ) {
      * REVIEW^(samreid): but another hesitation is that scale/shear would be unused.  Also, to me {position,angle} seems it would
      * REVIEW^(samreid): be very clear to other developers whereas Matrix3 may be confusing.  Can you recommend why Matrix3
      * REVIEW^(samreid): would be superior?
-     * REVIEW*: In ChargeNode, my "looks good" meant everything but Matrix3 conversion.
-     * REVIEW*: Matrix3 should definitely be more efficient on the view Scenery side (I understand changes move often).
-     * REVIEW*: A single "chargeNode.matrix = matrix" is one operation, doesn't create any temporary objects, and only
-     * REVIEW*: changes the transform (internally) once. Setting rotation/center is two operations, creates temporary
-     * REVIEW*: objects, changes the transform (internally) twice AND also forces bounds computation.
-     * REVIEW*: Only complication is that the ChargeNode isn't centered at the origin (because we want to minimize nodes
-     * REVIEW*: and it's a rasterized image), so an additional matrix adjustment (which can be done with no GC) would be
-     * REVIEW*: needed. Additionally, instead of passing around a duck-typed object, it can be an actual defined type
-     * REVIEW*: (which also coincidentally has matrix.getTranslation() and matrix.getRotation()), and it may be possible
-     * REVIEW*: to share Matrix3 instances so no GC is needed.
-     * REVIEW*: If performance is no issue, I'd be fine with the current approach (as it doesn't need the extra workaround
-     * REVIEW*: in ChargeNode, so it's probably simpler overall).
+     * REVIEW: In ChargeNode, my "looks good" meant everything but Matrix3 conversion.
+     * REVIEW: Matrix3 should definitely be more efficient on the view Scenery side (I understand changes move often).
+     * REVIEW: A single "chargeNode.matrix = matrix" is one operation, doesn't create any temporary objects, and only
+     * REVIEW: changes the transform (internally) once. Setting rotation/center is two operations, creates temporary
+     * REVIEW: objects, changes the transform (internally) twice AND also forces bounds computation.
+     * REVIEW: Only complication is that the ChargeNode isn't centered at the origin (because we want to minimize nodes
+     * REVIEW: and it's a rasterized image), so an additional matrix adjustment (which can be done with no GC) would be
+     * REVIEW: needed. Additionally, instead of passing around a duck-typed object, it can be an actual defined type
+     * REVIEW: (which also coincidentally has matrix.getTranslation() and matrix.getRotation()), and it may be possible
+     * REVIEW: to share Matrix3 instances so no GC is needed.
+     * REVIEW: If performance is no issue, I'd be fine with the current approach (as it doesn't need the extra workaround
+     * REVIEW: in ChargeNode, so it's probably simpler overall).
+     * REVIEW^(samreid): I addressed this and it could use review.
      * @public
      */
     updateMatrixForPoint: function( distanceAlongWire, matrix ) {
