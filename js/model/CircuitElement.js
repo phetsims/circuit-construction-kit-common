@@ -244,36 +244,9 @@ define( function( require ) {
     },
 
     /**
-     * Gets the 2D Position along the CircuitElement corresponding to the given scalar distance
+     * Updates the given matrix with the position and angle at the specified location along the element.
      * @param {number} distanceAlongWire - the scalar distance from one endpoint to another.
      * @param {Matrix3} matrix to be updated with the position and angle, so that garbage isn't created each time
-     * REVIEW: If both are needed, can we just return a Matrix that has the position/angle information (assuming
-     * REVIEW: Charge switches to use a Matrix3 instead of position/angle independently)
-     * REVIEW^(samreid): Please see the override in LightBulb.js and let me know what you recommend
-     * REVIEW: I agree this should be one function, duplication of LightBulb logic into two would be bad.
-     * REVIEW: I would prefer this used Matrix3.
-     * REVIEW^(samreid): The code where the position and angle is used in ChargeNode.updateTransform had these review comments:
-     *         //REVIEW^(samreid): I went with rotation=angle and it seems to work nicely, does this seem OK?
-     *         //REVIEW: Looks good.
-     *         this.rotation = charge.charge < 0 ? 0 : charge.angle + ( current < 0 ? Math.PI : 0 );
-     * REVIEW^(samreid): I can see the value of using Matrix3, but getting mixed messages because the change in ChargeNode
-     * REVIEW^(samreid): which uses {position,angle} is marked in review as "Looks good".  I guess I'd like to try this with a Matrix
-     * REVIEW^(samreid): but another hesitation is that scale/shear would be unused.  Also, to me {position,angle} seems it would
-     * REVIEW^(samreid): be very clear to other developers whereas Matrix3 may be confusing.  Can you recommend why Matrix3
-     * REVIEW^(samreid): would be superior?
-     * REVIEW: In ChargeNode, my "looks good" meant everything but Matrix3 conversion.
-     * REVIEW: Matrix3 should definitely be more efficient on the view Scenery side (I understand changes move often).
-     * REVIEW: A single "chargeNode.matrix = matrix" is one operation, doesn't create any temporary objects, and only
-     * REVIEW: changes the transform (internally) once. Setting rotation/center is two operations, creates temporary
-     * REVIEW: objects, changes the transform (internally) twice AND also forces bounds computation.
-     * REVIEW: Only complication is that the ChargeNode isn't centered at the origin (because we want to minimize nodes
-     * REVIEW: and it's a rasterized image), so an additional matrix adjustment (which can be done with no GC) would be
-     * REVIEW: needed. Additionally, instead of passing around a duck-typed object, it can be an actual defined type
-     * REVIEW: (which also coincidentally has matrix.getTranslation() and matrix.getRotation()), and it may be possible
-     * REVIEW: to share Matrix3 instances so no GC is needed.
-     * REVIEW: If performance is no issue, I'd be fine with the current approach (as it doesn't need the extra workaround
-     * REVIEW: in ChargeNode, so it's probably simpler overall).
-     * REVIEW^(samreid): I addressed this and it could use review.
      * @public
      */
     updateMatrixForPoint: function( distanceAlongWire, matrix ) {
