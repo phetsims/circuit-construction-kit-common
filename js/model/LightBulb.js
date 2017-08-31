@@ -15,7 +15,6 @@ define( function( require ) {
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
-  var Matrix3 = require( 'DOT/Matrix3' );
   var Util = require( 'DOT/Util' );
   var Vector2 = require( 'DOT/Vector2' );
   var inherit = require( 'PHET_CORE/inherit' );

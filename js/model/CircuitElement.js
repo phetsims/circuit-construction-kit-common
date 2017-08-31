@@ -16,7 +16,6 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
-  var Matrix3 = require( 'DOT/Matrix3' );
   var Vector2 = require( 'DOT/Vector2' );
   var inherit = require( 'PHET_CORE/inherit' );
 
