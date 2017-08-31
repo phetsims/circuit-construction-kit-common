@@ -93,7 +93,7 @@ define( function( require ) {
       if ( charge.charge > 0 ) {
 
         // Rotate then center the rotated node
-        this.rotation = charge.charge < 0 ? 0 : charge.matrix.rotation + ( current < 0 ? Math.PI : 0 );
+        this.rotation = charge.matrix.rotation + ( current < 0 ? Math.PI : 0 );
         this.center = translation;
       }
       else {
