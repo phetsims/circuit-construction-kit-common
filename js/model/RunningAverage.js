@@ -23,8 +23,17 @@ define( function( require ) {
     // @private {number}
     this.windowSize = windowSize;
 
-    // @private {number[]}
-    this.samples = [];
+    // @private {number[]} - Used circularly.
+    this.samples = new Array( windowSize );
+
+    // @private {number} - We add/subtract samples in a circular array pattern using this index.
+    this.sampleIndex = 0;
+
+    // @private {number} - Total sum of the samples within the window (not yet divided by number of samples)
+    this.total = 0;
+
+    // @private {number}
+    this.numSamples = 0;
   }
 
   circuitConstructionKitCommon.register( 'RunningAverage', RunningAverage );
@@ -36,7 +45,13 @@ define( function( require ) {
      * @public
      */
     clear: function() {
-      this.samples.length = 0;
+      this.total = 0;
+      this.numSamples = 0;
+
+      // Need to clear all of the samples
+      for ( var i = 0; i < this.windowSize; i++ ) {
+        this.samples[ i ] = 0;
+      }
     },
 
     /**
@@ -45,15 +60,20 @@ define( function( require ) {
      * @public
      */
     updateRunningAverage: function( sample ) {
-      //REVIEW: Probably not too important, but keeping a "total" of all samples in the array, adding/subtracting from
-      //REVIEW: it on changes, and then dividing it by the length is more efficient (essentially 2 adds, 1 divide per
-      //REVIEW: operation, instead of N-1 adds, 1 divide).
-      //REVIEW^(samreid): How to keep track of the number to be subtracted from the total?
-      this.samples.push( sample );
-      while ( this.samples.length > this.windowSize ) {
-        this.samples.shift();
-      }
-      return _.sum( this.samples ) / this.samples.length;
+      // Limit at the window size
+      this.numSamples = Math.min( this.windowSize, this.numSamples + 1 );
+
+      // Remove the old sample (will be 0 if there was no sample yet, due to clear())
+      this.total -= this.samples[ this.sampleIndex ];
+
+      // Add in the new sample
+      this.total += sample;
+
+      // Overwrite in the array and move to the next index
+      this.samples[ this.sampleIndex ] = sample;
+      this.sampleIndex = ( this.sampleIndex + 1 ) % this.windowSize;
+
+      return this.total / this.numSamples;
     }
   } );
 } );

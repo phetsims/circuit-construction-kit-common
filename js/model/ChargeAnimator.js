@@ -143,7 +143,7 @@ define( function( require ) {
       this.scale = ( maxPositionChange >= MAX_POSITION_CHANGE ) ? ( MAX_POSITION_CHANGE / maxPositionChange ) : 1;
 
       // Average over scale values to smooth them out
-      var averageScale = this.timeScaleRunningAverage.updateRunningAverage( this.scale );
+      var averageScale = Util.clamp( this.timeScaleRunningAverage.updateRunningAverage( this.scale ), 0, 1 );
       this.timeScaleProperty.set( averageScale );
 
       for ( var i = 0; i < this.charges.length; i++ ) {
