@@ -60,6 +60,7 @@ define( function( require ) {
 
   /**
    * This constructor is called dynamically and must match the signature of other circuit element nodes.
+   * REVIEW*: Wait, is this still called dynamically? What is the location? (otherwise remove docs on that everywhere)
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - main screen view, null for icon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {Resistor} resistor
@@ -77,6 +78,13 @@ define( function( require ) {
 
     var lifelikeResistorImageNode = new Image( lifelikeResistorImage );
 
+    // REVIEW*: Either use a rich enum (feels less clean), or something like:
+    // REVIEW*: var RESISTOR_IMAGE_MAP = {};
+    // REVIEW*: RESISTOR_IMAGE_MAP[ ResistorType.COIN ] = coinImage
+    // REVIEW*: ...
+    // REVIEW*: // then here
+    // REVIEW*: lifelikeResistorImageNode = RESISTOR_IMAGE_MAP[ resistor.resistorType ];
+    // REVIEW*: if ( !lifelikeResistorImageNode ) { ... do the else branch ... }
     if ( resistor.resistorType === ResistorType.COIN ) {
       lifelikeResistorImageNode = new Image( coinImage );
     }
@@ -111,13 +119,17 @@ define( function( require ) {
       var getColorBand = function( index ) {
 
         var additionalOffset = index === 3 ? 12 : 0;
+        //REVIEW*: Why specify rectX,rectY of 0,0, but then x,y?
+        //REVIEW*: If concerned about constructor arg space, use:
+        //REVIEW*: new Rectangle( { rectX: , rectY: , rectWidth: , rectHeight: } )
         return new Rectangle( 0, 0, COLOR_BAND_WIDTH, COLOR_BAND_HEIGHT, {
-          x: COLOR_BAND_PADDING + (COLOR_BAND_WIDTH + COLOR_BAND_SPACING) * index + additionalOffset,
+          x: COLOR_BAND_PADDING + ( COLOR_BAND_WIDTH + COLOR_BAND_SPACING ) * index + additionalOffset,
           y: COLOR_BAND_Y
         } );
       };
 
       // Color bands for resistance > 0
+      //REVIEW*: getColorBand used once, possibly inline?
       var colorBands = _.range( 4 ).map( getColorBand );
 
       // Single color band when resistance = 0 which appears in the middle
@@ -128,7 +140,7 @@ define( function( require ) {
 
       /**
        * When the resistance changes, update the colors of the color bands.
-       * @param resistance
+       * @param resistance REVIEW*: type (presumably {number})
        */
       var updateColorBands = function( resistance ) {
         var colors = ResistorColors.getColorArray( resistance );
