@@ -42,8 +42,8 @@ define( function( require ) {
   // The "blip" in the filament that looks like an upside down "u" semicircle
   var INNER_RADIUS = 5;
 
-  // cache the raster after creation so it isn't added to the spritesheet multiple times
-  //REVIEW*: Type docs may help here
+  // {Node} The raster is created during instance construction and cached for future use so it isn't added to the
+  // spritesheet multiple times
   var cached = null;
 
   /**
