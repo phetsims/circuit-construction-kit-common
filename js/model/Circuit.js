@@ -364,13 +364,6 @@ define( function( require ) {
       }
       else {
 
-        //REVIEW: How is this branch ever triggered? Only source is from moveVerticesApart, which is only called
-        //REVIEW: if ( minDistance < BUMP_AWAY_RADIUS ), which SEEMS for most cases (given moveVerticesApart logic)
-        //REVIEW: to exclude this from being run. Not sure I understand why, as it IS being called.
-        //REVIEW^(samreid): When vertex v1 is too close (but not connected) to v2, we choose vertex v3 as a reference
-        //REVIEW^(samreid): point for moving vertex v1.  v3 may be closer or further to v1 than v2 was.
-        //REVIEW^(samreid): I tried to refine the comments above, let me know if I can add anything else to help.
-
         // Other vertices should be rotated away, which handles non-stretchy components well. For small components like
         // batteries (which are around 100 view units long), rotate Math.PI/4. Longer components don't need to rotate
         // by such a large angle because the arc length will be proportionately longer,
@@ -799,6 +792,8 @@ define( function( require ) {
       //REVIEW^(samreid): Should this become an axon issue for further discussion?  I agree the .getArray() are unwieldy
       //REVIEW^(samreid): but not sure about adding forEachVolatile (or *volatile for many methods).
       //REVIEW^(samreid): Did we decide it will be impossible to remove the copies in ObservableArray? (basically making everything volatile?)
+      //REVIEW*: Looks good, commented https://github.com/phetsims/axon/issues/5#issuecomment-326154967
+      //REVIEW*: Remove these comments whenever desired.
       this.circuitElements.getArray().forEach( UPDATE_IF_PRESENT );
     },
 
@@ -962,8 +957,6 @@ define( function( require ) {
     findAllFixedVertices: function( vertex, okToVisit ) {
       return this.searchVertices( vertex, function( startVertex, circuitElement, endVertex ) {
         if ( okToVisit ) {
-          //REVIEW: Prefer your previous check to look for a lengthProperty than an instanceof lookup?
-          //REVIEW^(samreid): type check seems preferable to checking for the lack of a property (my opinion), let me know your thoughts
           return circuitElement instanceof FixedLengthCircuitElement && okToVisit( startVertex, circuitElement, endVertex );
         }
         else {
@@ -1239,9 +1232,6 @@ define( function( require ) {
             startVertex: getVertexIndex( element.startVertexProperty.get() ),
             endVertex: getVertexIndex( element.endVertexProperty.get() )
 
-            //REVIEW: Do these TODOs not need to be finished for the initial release?
-            //REVIEW^(samreid): Correct, my recommendation is to postpone work on TODOS classified as phet-io or black-box-study which will not be
-            //REVIEW^(samreid): invoked in the initial release
             // TODO(phet-io): include other circuit-element-specific data for save/load.  Save code should be adjacent
             // TODO(phet-io): to load code.  If there's a lot of cross-file or shared attributes, it would be helpful to doc.
             // TODO(phet-io): Presumably toStateObject() should be a method, and fromStateObject( ... ) should be a static method on the circuit element?

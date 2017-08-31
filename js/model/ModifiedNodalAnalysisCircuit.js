@@ -23,8 +23,6 @@ define( function( require ) {
   var DEBUG = CircuitConstructionKitCommonQueryParameters.debugModifiedNodalAnalysis;
 
   /**
-   * REVIEW: It's also quite confusing that nodeId0 and nodeId1 aren't {Node}s.
-   * REVIEW^(samreid): In modified nodal analysis, the terminology is centered on "nodes", so I think we should keep that.
    * @param {ModifiedNodalAnalysisCircuitElement[]} batteries
    * @param {ModifiedNodalAnalysisCircuitElement[]} resistors
    * @param {ModifiedNodalAnalysisCircuitElement[]} currentSources
