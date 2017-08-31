@@ -160,7 +160,7 @@ define( function( require ) {
         var distance = circuitElement instanceof LightBulb ? 0.56 : 0.5;
 
         // The label partially overlaps the component to make it clear which label goes with which component
-        circuitElement.getPositionAndAngle( circuitElement.chargePathLength * distance, matrix );
+        circuitElement.updateMatrixForPoint( circuitElement.chargePathLength * distance, matrix );
         var delta = Vector2.createPolar( VERTICAL_OFFSET, matrix.rotation + 3 * Math.PI / 2 );
         self.center = matrix.translation.plus( delta ); // above light bulb
       }

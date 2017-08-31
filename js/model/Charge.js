@@ -64,7 +64,7 @@ define( function( require ) {
      */
     updatePositionAndAngle: function() {
       assert && assert( !isNaN( this.distance ), 'charge position was not a number' );
-      this.circuitElement.getPositionAndAngle( this.distance, this.matrix );
+      this.circuitElement.updateMatrixForPoint( this.distance, this.matrix );
 
       // Notify listeners that the position and angle have changed.
       this.changedEmitter.emit();

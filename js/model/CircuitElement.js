@@ -248,7 +248,6 @@ define( function( require ) {
      * Gets the 2D Position along the CircuitElement corresponding to the given scalar distance
      * @param {number} distanceAlongWire - the scalar distance from one endpoint to another.
      * @param {Matrix3} matrix to be updated with the position and angle, so that garbage isn't created each time
-     * @returns {Object} with {position:Vector2,angle:number} the position in view coordinates and angle in radians
      * REVIEW: If both are needed, can we just return a Matrix that has the position/angle information (assuming
      * REVIEW: Charge switches to use a Matrix3 instead of position/angle independently)
      * REVIEW^(samreid): Please see the override in LightBulb.js and let me know what you recommend
@@ -277,10 +276,10 @@ define( function( require ) {
      * REVIEW*: in ChargeNode, so it's probably simpler overall).
      * @public
      */
-    getPositionAndAngle: function( distanceAlongWire, matrix ) {
+    updateMatrixForPoint: function( distanceAlongWire, matrix ) {
       var startPosition = this.startPositionProperty.get();
       var endPosition = this.endPositionProperty.get();
-      return CircuitConstructionKitCommonUtil.setToTranslationRotation(
+      CircuitConstructionKitCommonUtil.setToTranslationRotation(
         matrix,
         startPosition.blend( endPosition, distanceAlongWire / this.chargePathLength ),
         Vector2.getAngleBetweenVectors( startPosition, endPosition )

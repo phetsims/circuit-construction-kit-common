@@ -57,11 +57,10 @@ define( function( require ) {
        * Returns the position and angle of the given point along the Switch
        * @param {number} distanceAlongWire
        * @param {Matrix3} matrix to be updated with the position and angle, so that garbage isn't created each time
-       * @returns {Object} with {position,angle}
        * @overrides
        * @public
        */
-      getPositionAndAngle: function( distanceAlongWire, matrix ) {
+      updateMatrixForPoint: function( distanceAlongWire, matrix ) {
 
         var startPosition = this.startPositionProperty.get();
         var endPosition = this.endPositionProperty.get();
@@ -75,16 +74,18 @@ define( function( require ) {
           var rotatedPoint = twoThirdsPoint.rotatedAboutPoint( pivot, -Math.PI / 4 );
 
           var distanceAlongSegment = Util.linear( SWITCH_START, SWITCH_END, 0, 1, fractionAlongWire );
-          return CircuitConstructionKitCommonUtil.setToTranslationRotation(
+          CircuitConstructionKitCommonUtil.setToTranslationRotation(
             matrix,
             pivot.blend( rotatedPoint, distanceAlongSegment ),
             endPosition.minus( startPosition ).angle()
           );
+          return;
         }
         else {
 
           // For a closed switch, there is a straight path from the start vertex to the end vertex
-          return FixedLengthCircuitElement.prototype.getPositionAndAngle.call( this, distanceAlongWire, matrix );
+          FixedLengthCircuitElement.prototype.updateMatrixForPoint.call( this, distanceAlongWire, matrix );
+          return;
         }
       },
 

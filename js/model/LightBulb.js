@@ -160,13 +160,12 @@ define( function( require ) {
      *
      * @param {number} distanceAlongWire - how far along the bulb's length the charge has traveled
      * @param {Matrix3} matrix to be updated with the position and angle, so that garbage isn't created each time
-     * @returns {Object}
      * @override
      * @public
      */
-    getPositionAndAngle: function( distanceAlongWire, matrix ) {
+    updateMatrixForPoint: function( distanceAlongWire, matrix ) {
 
-      FixedLengthCircuitElement.prototype.getPositionAndAngle.call( this, distanceAlongWire, matrix );
+      FixedLengthCircuitElement.prototype.updateMatrixForPoint.call( this, distanceAlongWire, matrix );
 
       var previousAccumulatedDistance = 0;
       var accumulatedDistance = 0;
