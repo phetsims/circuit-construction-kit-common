@@ -24,7 +24,6 @@ define( function( require ) {
   function CircuitConstructionKitPanel( content, tandem, options ) {
     options = _.extend( {
       fill: CircuitConstructionKitCommonConstants.PANEL_COLOR,
-      stroke: Color.BLACK, //REVIEW*: That's the default, can be omitted?
       lineWidth: CircuitConstructionKitCommonConstants.PANEL_LINE_WIDTH,
       xMargin: 15,
       yMargin: 15,
