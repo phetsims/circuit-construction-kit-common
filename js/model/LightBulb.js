@@ -74,7 +74,7 @@ define( function( require ) {
     // @private
     this.viewTypeProperty = viewTypeProperty;
 
-    FixedCircuitElement.call( this, startVertex, endVertex, DISTANCE_BETWEEN_VERTICES, this.getPathLength( startVertex ), tandem, options );
+    FixedCircuitElement.call( this, startVertex, endVertex, this.getPathLength( startVertex ), tandem, options );
 
     // @public (read-only) {number} - the number of decimal places to show in readouts and controls
     this.numberOfDecimalPlaces = this.highResistance ? 0 : 1;

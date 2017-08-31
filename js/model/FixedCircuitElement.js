@@ -19,14 +19,12 @@ define( function( require ) {
   /**
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
-   * @param {number} distanceBetweenVertices - in screen coordinates
    * @param {number} chargePathLength - the distance the charges travel (in view coordinates), see CircuitElement.js
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function FixedCircuitElement( startVertex, endVertex, distanceBetweenVertices, chargePathLength, tandem, options ) {
-    //REVIEW*: Recommend getting rid of distanceBetweenVertices, compute it from startVertex/endVertex.
+  function FixedCircuitElement( startVertex, endVertex, chargePathLength, tandem, options ) {
 
     options = _.extend( {
       editableRange: new Range( 0, 120 ),
@@ -39,17 +37,12 @@ define( function( require ) {
     // @public (read-only) {number} - the tweaker value for the controls
     this.editorDelta = options.editorDelta;
 
-    // Check that the measured length matches the specified length
-    var measuredLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
-    assert && assert( Math.abs( distanceBetweenVertices - measuredLength ) < 1E-6, 'length should be ' +
-                                                                                   distanceBetweenVertices );
-
     // Super constructor
     CircuitElement.call( this, startVertex, endVertex, chargePathLength, tandem, options );
 
     // @public (read-only) {number} The distance from one vertex to another (as the crow flies), used for rotation
     // about a vertex
-    this.distanceBetweenVertices = distanceBetweenVertices;
+    this.distanceBetweenVertices = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
   }
 
   circuitConstructionKitCommon.register( 'FixedCircuitElement', FixedCircuitElement );

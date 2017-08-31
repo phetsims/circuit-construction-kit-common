@@ -34,7 +34,7 @@ define( function( require ) {
       initialOrientation: 'right',
       voltage: 9.0
     }, options );
-    FixedCircuitElement.call( this, startVertex, endVertex, BATTERY_LENGTH, BATTERY_LENGTH, tandem, options );
+    FixedCircuitElement.call( this, startVertex, endVertex, BATTERY_LENGTH, tandem, options );
 
     // @public {NumberProperty} - the voltage of the battery in volts
     this.voltageProperty = new NumberProperty( options.voltage );

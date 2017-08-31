@@ -47,7 +47,7 @@ define( function( require ) {
     this.isMetallic = ResistorType.isMetallic( this.resistorType );
 
     FixedCircuitElement.call(
-      this, startVertex, endVertex, options.resistorLength, options.resistorLength, tandem, options
+      this, startVertex, endVertex, options.resistorLength, tandem, options
     );
 
     // @public {Property.<number>} the resistance in ohms

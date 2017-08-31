@@ -23,8 +23,7 @@ define( function( require ) {
    * @constructor
    */
   function SeriesAmmeter( startVertex, endVertex, tandem, options ) {
-    FixedCircuitElement.call( this, startVertex, endVertex, CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH,
-      CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH, tandem, options );
+    FixedCircuitElement.call( this, startVertex, endVertex, CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH, tandem, options );
 
     // @public (read-only) {Property.<number>} the resistance in ohms.  A constant, but modeled as a property for
     // uniformity with other resistive elements.
