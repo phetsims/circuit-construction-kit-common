@@ -53,7 +53,8 @@ define( function( require ) {
     //REVIEW*: (performance) Lots of closures here. If memory is still an issue, moving these to methods (where possible or convenient) may help.
 
     options = _.extend( {
-      icon: false
+      icon: false,
+      showHighlight: true
     }, options );
 
     // @public (read-only) {CircuitElement}
@@ -73,7 +74,7 @@ define( function( require ) {
     this.dirty = true;
 
     // Add highlight (but not for icons)
-    if ( !options.icon ) {
+    if ( !options.icon && options.showHighlight ) {
       //REVIEW*: visibility/type docs
       this.highlightNode = new FixedCircuitElementHighlightNode( this );
     }
@@ -169,13 +170,15 @@ define( function( require ) {
       //REVIEW*: Why is 'self' used here instead of 'this'?
       self.contentNode.addInputListener( this.dragHandler );
 
-      var updateHighlightVisibility = function( lastCircuitElement ) {
-        var visible = ( lastCircuitElement === circuitElement );
-        CircuitConstructionKitCommonUtil.setInSceneGraph( visible, circuitLayerNode.highlightLayer, self.highlightNode );
-        self.markAsDirty();
-      };
+      if ( options.showHighlight ) {
+        var updateHighlightVisibility = function( lastCircuitElement ) {
+          var visible = ( lastCircuitElement === circuitElement );
+          CircuitConstructionKitCommonUtil.setInSceneGraph( visible, circuitLayerNode.highlightLayer, self.highlightNode );
+          self.markAsDirty();
+        };
 
-      circuitLayerNode.circuit.selectedCircuitElementProperty.link( updateHighlightVisibility );
+        circuitLayerNode.circuit.selectedCircuitElementProperty.link( updateHighlightVisibility );
+      }
 
       // Show fire for batteries and resistors
       //REVIEW*: Conditional code based on subtype is probably a sign this code should live in the subtypes?

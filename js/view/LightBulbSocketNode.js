@@ -43,16 +43,13 @@ define( function( require ) {
     // Interferes with Cut Button selection when the foreground is in front, see
     // https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/18
     options = _.extend( {
-      pickable: false
+      pickable: false,
+
+      // Suppress the highlight for the socket, the highlight is shown by the CircuitConstructionKitLightBulbNode
+      showHighlight: false
     }, options );
     FixedCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitLayerNode, lightBulb,
       viewTypeProperty, lightBulbNode, new Rectangle( 0, 0, 10, 10 ), tandem, options );
-
-    // Suppress the highlight for the socket, the highlight is shown by the CircuitConstructionKitLightBulbNode
-    //REVIEW*: Would a super option to omit the highlight work?
-    if ( this.highlightNode ) {
-      this.highlightNode.stroke = null;
-    }
   }
 
   circuitConstructionKitCommon.register( 'LightBulbSocketNode', LightBulbSocketNode );
