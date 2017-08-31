@@ -74,8 +74,13 @@ define( function( require ) {
     var wireNode = new ProbeWireNode( Color.BLACK, new Vector2( 0, BODY_LEAD_Y ), new Vector2( 0, PROBE_LEAD_Y ) );
 
     var currentReadoutProperty = new DerivedProperty( [ ammeter.currentProperty ], function( current ) {
+
+      //REVIEW: Why is there a max (that is technically incorrect)?
+      //REVIEW^(samreid): can you elaborate how this is technically incorrect?  When values get too high we wanted to
+      //REVIEW^(samreid): give the impression the value is too high without showing the exact value, so we settled
+      //REVIEW^(samreid): on the ">" idea.
       var max = options.blackBoxStudy ? 1E3 : 1E10;
-      var maxString = options.blackBoxStudy ? '> 10^3' : '> 10^10'; //REVIEW*: Why is there a max (that is technically incorrect)?
+      var maxString = options.blackBoxStudy ? '> 10^3' : '> 10^10';
 
       // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
       return current === null ? questionMarkString :
