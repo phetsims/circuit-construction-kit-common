@@ -108,7 +108,7 @@ define( function( require ) {
     /**
      * Returns a function which counts the number of circuit elements (not counting those in the true black box).
      * @param {function} predicate - CircuitElement => boolean
-     * @returns {function}
+     * @returns {function} REVIEW*: doc would be nice on this
      */
     var createCounter = function( predicate ) {
       return function() {
@@ -139,7 +139,9 @@ define( function( require ) {
      * @param {number} count
      * @param {Node} icon
      * @param {function} counterFunction - CircuitElement => boolean
-     * @param {function} creator
+     * REVIEW*: Nope, counterFunction should be predicate => {number}?
+     * REVIEW*: Wait, counterFunction .... looks like it's the predicate itself. Better naming perhaps?
+     * @param {function} creator REVIEW*: docs?
      * @param {Object} [options]
      * @returns {CircuitElementToolNode}
      */
