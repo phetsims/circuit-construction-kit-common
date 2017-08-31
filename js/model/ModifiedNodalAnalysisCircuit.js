@@ -425,7 +425,7 @@ define( function( require ) {
 
   /**
    * REVIEW*: Looks an awful lot like ModifiedNodalAnalysisCircuitElement?
-   * @param {Object} element - {nodeId0,nodeId1,circuitElement,voltage|current|resistance}
+   * @param {ModifiedNodalAnalysisCircuitElement} element
    * @constructor
    */
   function UnknownCurrent( element ) {
