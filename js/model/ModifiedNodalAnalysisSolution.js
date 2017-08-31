@@ -20,6 +20,7 @@ define( function( require ) {
    */
   function ModifiedNodalAnalysisSolution( nodeVoltages, elements ) {
 
+    //REVIEW*: Usually best to doc the keys/values where this is declared
     // @public (read-only) {Object} - the solved node voltages
     this.nodeVoltages = nodeVoltages;
 

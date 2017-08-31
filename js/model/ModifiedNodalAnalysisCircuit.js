@@ -54,7 +54,7 @@ define( function( require ) {
       this.nodeSet[ element.nodeId1 ] = element.nodeId1;
     }
 
-    // @public the number of nodes in the set
+    // @public {number} - the number of nodes in the set
     this.nodeCount = _.size( this.nodeSet );
 
     // {number[]} the node indices
@@ -424,6 +424,7 @@ define( function( require ) {
   } );
 
   /**
+   * REVIEW*: Looks an awful lot like ModifiedNodalAnalysisCircuitElement?
    * @param {Object} element - {nodeId0,nodeId1,circuitElement,voltage|current|resistance}
    * @constructor
    */
@@ -449,6 +450,8 @@ define( function( require ) {
     /**
      * Two UnknownCurrents are equal if the refer to the same element.
      * @param {Object} other - an object to compare with this one
+     * REVIEW*: Any untyped {Object} isn't guaranteed to have an 'element' property. Is there any more specific info on
+     * REVIEW*: what type of elements this is called on? Usually a generic equals() would handle null/undefined too.
      * @returns {boolean}
      * @public
      */
@@ -482,6 +485,7 @@ define( function( require ) {
     /**
      * Two UnknownVoltages are equal if they refer to the same node.
      * @param {Object} other - another object to compare with this one
+     * REVIEW*: See above note about equals()
      * @returns {boolean}
      * @public
      */
