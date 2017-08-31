@@ -22,34 +22,27 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
 
   /**
-   * @param {Vertex[]} vertices
-   * @param {Wire[]} wires
-   * @param {Resistor[]} resistors
-   * @param {LightBulb[]} lightBulbs
-   * @param {Battery[]} batteries
-   * @param {Switch[]} switches
    * @constructor
-   * REVIEW*: Only called with empty arrays, recommend no-arg constructor
    */
-  function CircuitStruct( vertices, wires, resistors, lightBulbs, batteries, switches ) {
+  function CircuitStruct() {
 
-    // @private (read-only) {Vertex[]}
-    this.vertices = vertices;
+    // @public {Vertex[]}
+    this.vertices = [];
 
-    // @private (read-only) {Wire[]}
-    this.wires = wires;
+    // @public {Wire[]}
+    this.wires = [];
 
-    // @private (read-only) {Resistor[]}
-    this.resistors = resistors;
+    // @public {Resistor[]}
+    this.resistors = [];
 
-    // @private (read-only) {LightBulb[]}
-    this.lightBulbs = lightBulbs;
+    // @public {LightBulb[]}
+    this.lightBulbs = [];
 
-    // @private (read-only) {Battery[]}
-    this.batteries = batteries;
+    // @public {Battery[]}
+    this.batteries = [];
 
-    // @private (read-only) {Switch[]}
-    this.switches = switches;
+    // @public {Switch[]}
+    this.switches = [];
   }
 
   circuitConstructionKitCommon.register( 'CircuitStruct', CircuitStruct );
@@ -94,7 +87,7 @@ define( function( require ) {
      * @public
      */
     fromStateObject: function( circuitState, resistivityProperty, tandem, options ) {
-      var circuitStruct = new CircuitStruct( [], [], [], [], [], [] );
+      var circuitStruct = new CircuitStruct();
       tandem = tandem.createGroupTandem( 'circuitStructElement' );
       options = _.extend( {
 
