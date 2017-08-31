@@ -4,6 +4,7 @@
  * Data structure that keeps track of running average over a given window.
  *
  * @author Sam Reid (PhET Interactive Simulations)
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';
@@ -14,8 +15,6 @@ define( function( require ) {
 
   /**
    * @param {number} windowSize - number of points to average
-   * REVIEW*: JB noted it would probably be helpful in Dot. Presumably we'd want to be able to grab the average
-   * REVIEW*: when we weren't adding a sample (and maybe other features). Any thoughts on changes to make it common-code?
    * @constructor
    */
   function RunningAverage( windowSize ) {
@@ -57,6 +56,14 @@ define( function( require ) {
     },
 
     /**
+     * Gets the current value of the running average.
+     * @returns {number}
+     */
+    getRunningAverage: function() {
+      return this.total / this.numSamples;
+    },
+
+    /**
      * Add a data point to the average and return the new running average.
      * @param {number} sample
      * @public
@@ -75,7 +82,7 @@ define( function( require ) {
       this.samples[ this.sampleIndex ] = sample;
       this.sampleIndex = ( this.sampleIndex + 1 ) % this.windowSize;
 
-      return this.total / this.numSamples;
+      return this.getRunningAverage();
     }
   } );
 } );
