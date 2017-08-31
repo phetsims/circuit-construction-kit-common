@@ -13,7 +13,7 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
-  var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
+  var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
   var Util = require( 'DOT/Util' );
   var Vector2 = require( 'DOT/Vector2' );
@@ -74,7 +74,7 @@ define( function( require ) {
     // @private
     this.viewTypeProperty = viewTypeProperty;
 
-    FixedLengthCircuitElement.call( this, startVertex, endVertex, DISTANCE_BETWEEN_VERTICES, this.getPathLength( startVertex ), tandem, options );
+    FixedCircuitElement.call( this, startVertex, endVertex, DISTANCE_BETWEEN_VERTICES, this.getPathLength( startVertex ), tandem, options );
 
     // @public (read-only) {number} - the number of decimal places to show in readouts and controls
     this.numberOfDecimalPlaces = this.highResistance ? 0 : 1;
@@ -82,7 +82,7 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'LightBulb', LightBulb );
 
-  return inherit( FixedLengthCircuitElement, LightBulb, {
+  return inherit( FixedCircuitElement, LightBulb, {
 
     /**
      * Updates the charge path length when the view changes between lifelike/schematic
@@ -97,7 +97,7 @@ define( function( require ) {
      * @param {Vertex} startVertex
      * @returns {number}
      * @private
-     * REVIEW*: When FixedLengthCircuitElement's distanceBetweenVertices is removed, getPathLength here should not take parameters
+     * REVIEW*: When FixedCircuitElement's distanceBetweenVertices is removed, getPathLength here should not take parameters
      */
     getPathLength: function( startVertex ) {
       var pathLength = 0;
@@ -165,7 +165,7 @@ define( function( require ) {
      */
     updateMatrixForPoint: function( distanceAlongWire, matrix ) {
 
-      FixedLengthCircuitElement.prototype.updateMatrixForPoint.call( this, distanceAlongWire, matrix );
+      FixedCircuitElement.prototype.updateMatrixForPoint.call( this, distanceAlongWire, matrix );
 
       var previousAccumulatedDistance = 0;
       var accumulatedDistance = 0;

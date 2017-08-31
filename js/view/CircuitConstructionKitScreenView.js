@@ -481,7 +481,7 @@ define( function( require ) {
      * @private
      */
     getCurrent: function( probeNode ) {
-      var mainCurrent = this.getCurrentInLayer( probeNode, this.circuitLayerNode.fixedLengthCircuitElementLayer );
+      var mainCurrent = this.getCurrentInLayer( probeNode, this.circuitLayerNode.fixedCircuitElementLayer );
       if ( mainCurrent !== null ) {
         return mainCurrent;
       }

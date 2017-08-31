@@ -1,7 +1,7 @@
 // Copyright 2016-2017, University of Colorado Boulder
 
 /**
- * Abstract base class for WireNode and FixedLengthCircuitElementNode
+ * Abstract base class for WireNode and FixedCircuitElementNode
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -143,7 +143,7 @@ define( function( require ) {
     },
 
     /**
-     * Hook for view step, overriden in FixedLengthCircuitElementNode
+     * Hook for view step, overriden in FixedCircuitElementNode
      * @public
      */
     step: function() {},

@@ -12,7 +12,7 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
-  var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedLengthCircuitElementNode' );
+  var FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var Shape = require( 'KITE/Shape' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -82,10 +82,10 @@ define( function( require ) {
       scale: battery.distanceBetweenVertices / lifelikeNode.width
     } );
 
-    // Center vertically to match the FixedLengthCircuitElementNode assumption that origin is center left
+    // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
     lifelikeNode.centerY = 0;
 
-    FixedLengthCircuitElementNode.call( this,
+    FixedCircuitElementNode.call( this,
       circuitConstructionKitScreenView,
       circuitLayerNode,
       battery,
@@ -99,7 +99,7 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'BatteryNode', BatteryNode );
 
-  return inherit( FixedLengthCircuitElementNode, BatteryNode, {
+  return inherit( FixedCircuitElementNode, BatteryNode, {
 
     /**
      * Returns true if the node hits the sensor at the given point.

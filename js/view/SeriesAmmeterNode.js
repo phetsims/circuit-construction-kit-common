@@ -14,7 +14,7 @@ define( function( require ) {
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
-  var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedLengthCircuitElementNode' );
+  var FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -153,7 +153,7 @@ define( function( require ) {
     lifelikeNode.mouseArea = lifelikeNode.bounds.copy();
     lifelikeNode.touchArea = lifelikeNode.bounds.copy();
 
-    // Center vertically to match the FixedLengthCircuitElementNode assumption that origin is center left
+    // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
     lifelikeNode.centerY = 0;
 
     // Center the readout within the main body of the sensor
@@ -175,7 +175,7 @@ define( function( require ) {
       circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.addChild( this.frontPanel );
     }
 
-    FixedLengthCircuitElementNode.call( this,
+    FixedCircuitElementNode.call( this,
       circuitConstructionKitScreenView,
       circuitLayerNode,
       seriesAmmeter,
@@ -205,7 +205,7 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'SeriesAmmeterNode', SeriesAmmeterNode );
 
-  return inherit( FixedLengthCircuitElementNode, SeriesAmmeterNode, {
+  return inherit( FixedCircuitElementNode, SeriesAmmeterNode, {
 
     /**
      * @public - dispose resources when no longer used
@@ -213,7 +213,7 @@ define( function( require ) {
      */
     dispose: function() {
       this.disposeSeriesAmmeterNode();
-      FixedLengthCircuitElementNode.prototype.dispose.call( this );
+      FixedCircuitElementNode.prototype.dispose.call( this );
     },
 
     /**
@@ -222,7 +222,7 @@ define( function( require ) {
      * @override
      */
     updateRender: function() {
-      FixedLengthCircuitElementNode.prototype.updateRender.call( this );
+      FixedCircuitElementNode.prototype.updateRender.call( this );
       this.frontPanel.setMatrix( this.contentNode.getMatrix() );
     }
   } );

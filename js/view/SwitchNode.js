@@ -12,7 +12,7 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
-  var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedLengthCircuitElementNode' );
+  var FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
   var Shape = require( 'KITE/Shape' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
@@ -172,7 +172,7 @@ define( function( require ) {
     };
     circuitSwitch.closedProperty.link( closeListener );
 
-    FixedLengthCircuitElementNode.call( this,
+    FixedCircuitElementNode.call( this,
       circuitConstructionKitScreenView,
       circuitLayerNode,
       circuitSwitch,
@@ -225,7 +225,7 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'SwitchNode', SwitchNode );
 
-  return inherit( FixedLengthCircuitElementNode, SwitchNode, {
+  return inherit( FixedCircuitElementNode, SwitchNode, {
 
     /**
      * Determine whether the start side (with the pivot) contains the sensor point.
@@ -269,7 +269,7 @@ define( function( require ) {
      */
     dispose: function() {
       this.disposeSwitchNode();
-      FixedLengthCircuitElementNode.prototype.dispose.call( this );
+      FixedCircuitElementNode.prototype.dispose.call( this );
     }
   } );
 } );

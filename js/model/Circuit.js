@@ -21,7 +21,7 @@ define( function( require ) {
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   var ChargeAnimator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ChargeAnimator' );
   var CurrentType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CurrentType' );
-  var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
+  var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   var InteractionMode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/InteractionMode' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   var ModifiedNodalAnalysisCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuit' );
@@ -544,7 +544,7 @@ define( function( require ) {
     },
 
     /**
-     * Translate all vertices connected to the mainVertex by FixedLengthCircuitElements by the given distance
+     * Translate all vertices connected to the mainVertex by FixedCircuitElements by the given distance
      *
      * Note: do not confuse this with CircuitLayerNode.translateVertexGroup which proposes connections while dragging
      *
@@ -891,7 +891,7 @@ define( function( require ) {
       var visited = [];
       while ( toVisit.length > 0 ) {
 
-        // Find the neighbors joined by a FixedLengthCircuitElement, not a stretchy Wire
+        // Find the neighbors joined by a FixedCircuitElement, not a stretchy Wire
         var currentVertex = toVisit.pop();
 
         // If we haven't visited it before, then explore it
@@ -934,7 +934,7 @@ define( function( require ) {
     },
 
     /**
-     * Find the subgraph where all vertices are connected by FixedLengthCircuitElements, not stretchy wires.
+     * Find the subgraph where all vertices are connected by FixedCircuitElements, not stretchy wires.
      * @param {Vertex} vertex
      * @param {function} [okToVisit] - (startVertex:Vertex,circuitElement:CircuitElement,endVertex:Vertex)=>boolean,
      *                               - rule that determines which vertices are OK to visit
@@ -944,10 +944,10 @@ define( function( require ) {
     findAllFixedVertices: function( vertex, okToVisit ) {
       return this.searchVertices( vertex, function( startVertex, circuitElement, endVertex ) {
         if ( okToVisit ) {
-          return circuitElement instanceof FixedLengthCircuitElement && okToVisit( startVertex, circuitElement, endVertex );
+          return circuitElement instanceof FixedCircuitElement && okToVisit( startVertex, circuitElement, endVertex );
         }
         else {
-          return circuitElement instanceof FixedLengthCircuitElement;
+          return circuitElement instanceof FixedCircuitElement;
         }
       } );
     },

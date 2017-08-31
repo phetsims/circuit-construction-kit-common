@@ -12,7 +12,7 @@ define( function( require ) {
   var NumberProperty = require( 'AXON/NumberProperty' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
+  var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   var inherit = require( 'PHET_CORE/inherit' );
   var BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
 
@@ -34,7 +34,7 @@ define( function( require ) {
       initialOrientation: 'right',
       voltage: 9.0
     }, options );
-    FixedLengthCircuitElement.call( this, startVertex, endVertex, BATTERY_LENGTH, BATTERY_LENGTH, tandem, options );
+    FixedCircuitElement.call( this, startVertex, endVertex, BATTERY_LENGTH, BATTERY_LENGTH, tandem, options );
 
     // @public {NumberProperty} - the voltage of the battery in volts
     this.voltageProperty = new NumberProperty( options.voltage );
@@ -55,7 +55,7 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'Battery', Battery );
 
-  return inherit( FixedLengthCircuitElement, Battery, {
+  return inherit( FixedCircuitElement, Battery, {
 
     /**
      * Get the properties so that the circuit can be solved when changed.

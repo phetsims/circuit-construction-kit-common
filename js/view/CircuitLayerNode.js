@@ -1,7 +1,7 @@
 // Copyright 2015-2017, University of Colorado Boulder
 
 /**
- * The Node that represents a Circuit, including all Wires and FixedLengthCircuitElements, Charge, Solder and Sensors.
+ * The Node that represents a Circuit, including all Wires and FixedCircuitElements, Charge, Solder and Sensors.
  * It also renders the voltmeter and ammeter. It can be zoomed in and out.
  *
  * Each CircuitElementNode may node parts that appear in different layers, such as the highlight and the light bulb
@@ -21,7 +21,7 @@ define( function( require ) {
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
-  var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
+  var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   var SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
@@ -31,7 +31,7 @@ define( function( require ) {
   var ChargeNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ChargeNode' );
   var CircuitConstructionKitLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitLightBulbNode' );
   var CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CustomLightBulbNode' );
-  var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedLengthCircuitElementNode' );
+  var FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorNode' );
   var SeriesAmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SeriesAmmeterNode' );
   var SolderNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SolderNode' );
@@ -117,8 +117,8 @@ define( function( require ) {
       } ) ]
     } );
 
-    // @public {Node} - contains FixedLengthCircuitElements
-    this.fixedLengthCircuitElementLayer = new Node( {
+    // @public {Node} - contains FixedCircuitElements
+    this.fixedCircuitElementLayer = new Node( {
 
       // add a child eagerly so the WebGL block is all allocated when 1st object is dragged out of toolbox
       // @jonathanolson: is there a better way to do this?
@@ -129,7 +129,7 @@ define( function( require ) {
         children: []
           .concat( BatteryNode.webglSpriteNodes )
           .concat( ResistorNode.webglSpriteNodes )
-          .concat( FixedLengthCircuitElementNode.webglSpriteNodes )
+          .concat( FixedCircuitElementNode.webglSpriteNodes )
           .concat( CustomLightBulbNode.webglSpriteNodes )
       } ) ]
     } );
@@ -168,7 +168,7 @@ define( function( require ) {
       this.lightRaysLayer,
       this.wireLayer, // wires go behind other circuit elements
       this.solderLayer,
-      this.fixedLengthCircuitElementLayer, // circuit elements and meters
+      this.fixedCircuitElementLayer, // circuit elements and meters
       this.vertexLayer,
       this.chargeLayer,
       this.lightBulbSocketLayer, // fronts of light bulbs
@@ -183,7 +183,7 @@ define( function( require ) {
     var schematicLayering = [
       this.lightRaysLayer,
       this.wireLayer,
-      this.fixedLengthCircuitElementLayer,
+      this.fixedCircuitElementLayer,
       this.solderLayer,
       this.vertexLayer,
       this.chargeLayer,
@@ -240,7 +240,7 @@ define( function( require ) {
 
           // Show the ValueNode for readouts, though series ammeters already show their own readouts and Wires do not
           // have readouts
-          if ( circuitElement instanceof FixedLengthCircuitElement && !( circuitElement instanceof SeriesAmmeter ) ) {
+          if ( circuitElement instanceof FixedCircuitElement && !( circuitElement instanceof SeriesAmmeter ) ) {
             var valueNode = new ValueNode(
               circuitElement,
               self.model.showValuesProperty,
@@ -280,19 +280,19 @@ define( function( require ) {
     initializeCircuitElementType( Wire, this.wireLayer, tandem.createGroupTandem( 'wireNode' ), function( circuitElement, tandem ) {
       return new WireNode( screenView, self, circuitElement, self.model.viewTypeProperty, tandem );
     } );
-    initializeCircuitElementType( Battery, this.fixedLengthCircuitElementLayer, tandem.createGroupTandem( 'batteryNode' ), function( circuitElement, tandem ) {
+    initializeCircuitElementType( Battery, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'batteryNode' ), function( circuitElement, tandem ) {
       return new BatteryNode( screenView, self, circuitElement, self.model.viewTypeProperty, tandem );
     } );
-    initializeCircuitElementType( LightBulb, this.fixedLengthCircuitElementLayer, tandem.createGroupTandem( 'lightBulbNode' ), function( circuitElement, tandem ) {
+    initializeCircuitElementType( LightBulb, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'lightBulbNode' ), function( circuitElement, tandem ) {
       return new CircuitConstructionKitLightBulbNode( screenView, self, circuitElement, self.model.isValueDepictionEnabledProperty, self.model.viewTypeProperty, tandem );
     } );
-    initializeCircuitElementType( Resistor, this.fixedLengthCircuitElementLayer, tandem.createGroupTandem( 'resistorNode' ), function( circuitElement, tandem ) {
+    initializeCircuitElementType( Resistor, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'resistorNode' ), function( circuitElement, tandem ) {
       return new ResistorNode( screenView, self, circuitElement, self.model.viewTypeProperty, tandem );
     } );
-    initializeCircuitElementType( SeriesAmmeter, this.fixedLengthCircuitElementLayer, tandem.createGroupTandem( 'seriesAmmeterNode' ), function( circuitElement, tandem ) {
+    initializeCircuitElementType( SeriesAmmeter, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'seriesAmmeterNode' ), function( circuitElement, tandem ) {
       return new SeriesAmmeterNode( screenView, self, circuitElement, tandem );
     } );
-    initializeCircuitElementType( Switch, this.fixedLengthCircuitElementLayer, tandem.createGroupTandem( 'switchNode' ), function( circuitElement, tandem ) {
+    initializeCircuitElementType( Switch, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'switchNode' ), function( circuitElement, tandem ) {
       return new SwitchNode( screenView, self, circuitElement, self.model.viewTypeProperty, tandem );
     } );
 
@@ -559,7 +559,7 @@ define( function( require ) {
         return;
       }
 
-      if ( okToRotate && neighbors.length === 1 && neighbors[ 0 ] instanceof FixedLengthCircuitElement ) {
+      if ( okToRotate && neighbors.length === 1 && neighbors[ 0 ] instanceof FixedCircuitElement ) {
 
         var oppositeVertex = neighbors[ 0 ].getOppositeVertex( vertex );
 

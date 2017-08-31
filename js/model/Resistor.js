@@ -12,7 +12,7 @@ define( function( require ) {
   var NumberProperty = require( 'AXON/NumberProperty' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
+  var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   var ResistorType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ResistorType' );
   var inherit = require( 'PHET_CORE/inherit' );
 
@@ -46,7 +46,7 @@ define( function( require ) {
     // resistor. For instance, coins and paper clips are metallic and can have their values read directly.
     this.isMetallic = ResistorType.isMetallic( this.resistorType );
 
-    FixedLengthCircuitElement.call(
+    FixedCircuitElement.call(
       this, startVertex, endVertex, options.resistorLength, options.resistorLength, tandem, options
     );
 
@@ -59,7 +59,7 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'Resistor', Resistor );
 
-  return inherit( FixedLengthCircuitElement, Resistor, {
+  return inherit( FixedCircuitElement, Resistor, {
 
     /**
      * Returns true if the resistance is editable.  Grab bag item resistance is not editable.

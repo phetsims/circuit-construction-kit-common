@@ -12,7 +12,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
+  var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   var inherit = require( 'PHET_CORE/inherit' );
 
   /**
@@ -23,7 +23,7 @@ define( function( require ) {
    * @constructor
    */
   function SeriesAmmeter( startVertex, endVertex, tandem, options ) {
-    FixedLengthCircuitElement.call( this, startVertex, endVertex, CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH,
+    FixedCircuitElement.call( this, startVertex, endVertex, CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH,
       CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH, tandem, options );
 
     // @public (read-only) {Property.<number>} the resistance in ohms.  A constant, but modeled as a property for
@@ -33,7 +33,7 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'SeriesAmmeter', SeriesAmmeter );
 
-  return inherit( FixedLengthCircuitElement, SeriesAmmeter, {
+  return inherit( FixedCircuitElement, SeriesAmmeter, {
 
     /**
      * Get the properties so that the circuit can be solved when changed.

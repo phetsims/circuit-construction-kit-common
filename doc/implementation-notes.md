@@ -18,8 +18,8 @@ This section enumerates types that you'll see used throughout the internal and e
 order:
 
 * CircuitElement - a model object that can participate in a circuit, such as a Wire, Resistor, Battery, etc.
-* FixedLengthCircuitElement - a CircuitElement that cannot be stretched out, such as a Battery or Resistor.  The only
-stretchy element is a Wire, so every CircuitElement that is not a Wire is a FixedLengthCircuitElement.
+* FixedCircuitElement - a CircuitElement that cannot be stretched out, such as a Battery or Resistor.  The only
+stretchy element is a Wire, so every CircuitElement that is not a Wire is a FixedCircuitElement.
 * Vertex - the circuit is organized as a graph, where the edges are CircuitElements and the vertices are Vertex
 instances.  After the circuit is solved for unknown currents, a voltage is assigned to each Vertex.
 * Ammeter - this ammeter is a "non-contact" ammeter which can take readings of a current by measuring magnetic fields
@@ -80,7 +80,7 @@ images.
 ValueNode.js (which shows a text readout over an item when "values" is checked) use a similar pattern of containing
 logic for the different kinds of CircuitElements.  Other ways to solve this may have been:
 (1) create subclasses of CircuitElementEditPanel and ValueNode specific to the types
-(2) create abstract methods in CircuitElement or FixedLengthCircuitElement that can be called by CircuitElementEditPanel
+(2) create abstract methods in CircuitElement or FixedCircuitElement that can be called by CircuitElementEditPanel
 and ValueNode.
 It seems best to isolate the code relevant to each within its file rather than scattering it around, hence there are
 type checks in those view classes.  On the downside, when a new element type is added, these files will need to be

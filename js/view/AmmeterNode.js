@@ -2,7 +2,7 @@
 
 /**
  * The user interface component with a single probe which reads current values from Wires (not from Vertex or
- * FixedLengthCircuitElement instances).
+ * FixedCircuitElement instances).
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

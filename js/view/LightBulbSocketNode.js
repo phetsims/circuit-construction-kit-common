@@ -14,7 +14,7 @@ define( function( require ) {
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
   var CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CustomLightBulbNode' );
-  var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedLengthCircuitElementNode' );
+  var FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -48,7 +48,7 @@ define( function( require ) {
     options = _.extend( {
       pickable: false
     }, options );
-    FixedLengthCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitLayerNode, lightBulb,
+    FixedCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitLayerNode, lightBulb,
       viewTypeProperty, lightBulbNode, new Rectangle( 0, 0, 10, 10 ), tandem, options );
 
     // Suppress the highlight for the socket, the highlight is shown by the CircuitConstructionKitLightBulbNode
@@ -59,7 +59,7 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'LightBulbSocketNode', LightBulbSocketNode );
 
-  return inherit( FixedLengthCircuitElementNode, LightBulbSocketNode, {
+  return inherit( FixedCircuitElementNode, LightBulbSocketNode, {
 
     /**
      * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.

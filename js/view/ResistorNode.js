@@ -12,7 +12,7 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var ResistorType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ResistorType' );
-  var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedLengthCircuitElementNode' );
+  var FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
   var ResistorColors = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorColors' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var Shape = require( 'KITE/Shape' );
@@ -194,7 +194,7 @@ define( function( require ) {
       }
     }
 
-    // Center vertically to match the FixedLengthCircuitElementNode assumption that origin is center left
+    // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
     schematicNode.centerY = 0;
     lifelikeResistorImageNode.centerY = 0;
 
@@ -215,7 +215,7 @@ define( function( require ) {
     }
 
     // Super call
-    FixedLengthCircuitElementNode.call( this,
+    FixedCircuitElementNode.call( this,
       circuitConstructionKitScreenView,
       circuitLayerNode,
       resistor,
@@ -237,7 +237,7 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'ResistorNode', ResistorNode );
 
-  return inherit( FixedLengthCircuitElementNode, ResistorNode, {
+  return inherit( FixedCircuitElementNode, ResistorNode, {
 
     /**
      * Returns true if the node hits the sensor at the given point.
@@ -259,7 +259,7 @@ define( function( require ) {
      */
     dispose: function() {
       this.disposeResistorNode();
-      FixedLengthCircuitElementNode.prototype.dispose.call( this );
+      FixedCircuitElementNode.prototype.dispose.call( this );
     }
   }, {
 

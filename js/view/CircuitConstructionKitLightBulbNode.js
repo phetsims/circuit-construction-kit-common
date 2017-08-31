@@ -17,7 +17,7 @@ define( function( require ) {
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   var CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CustomLightBulbNode' );
-  var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedLengthCircuitElementNode' );
+  var FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
   var LightBulbSocketNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/LightBulbSocketNode' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var Util = require( 'DOT/Util' );
@@ -166,7 +166,7 @@ define( function( require ) {
     schematicNode.mouseArea = schematicNode.bounds.copy().shifted( 9, schematicNode.height );
     schematicNode.touchArea = schematicNode.bounds.copy().shifted( 9, schematicNode.height );
 
-    FixedLengthCircuitElementNode.call(
+    FixedCircuitElementNode.call(
       this,
       circuitConstructionKitScreenView,
       circuitLayerNode,
@@ -220,7 +220,7 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'CircuitConstructionKitLightBulbNode', CircuitConstructionKitLightBulbNode );
 
-  return inherit( FixedLengthCircuitElementNode, CircuitConstructionKitLightBulbNode, {
+  return inherit( FixedCircuitElementNode, CircuitConstructionKitLightBulbNode, {
 
     /**
      * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
@@ -255,7 +255,7 @@ define( function( require ) {
      */
     dispose: function() {
       this.disposeCircuitConstructionKitLightBulbNode();
-      FixedLengthCircuitElementNode.prototype.dispose.call( this );
+      FixedCircuitElementNode.prototype.dispose.call( this );
     },
 
     /**

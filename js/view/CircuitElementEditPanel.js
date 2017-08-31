@@ -29,7 +29,7 @@ define( function( require ) {
    * @param {string} valuePattern - pattern for NumberControl to display the value as text
    * @param {Property.<number>} valueProperty - property this control changes
    * @param {Circuit} circuit - parent circuit
-   * @param {FixedLengthCircuitElement} circuitElement - the CircuitElement controlled by this UI
+   * @param {FixedCircuitElement} circuitElement - the CircuitElement controlled by this UI
    * @param {Tandem} tandem
    * @constructor
    */

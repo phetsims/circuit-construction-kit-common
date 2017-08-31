@@ -14,7 +14,7 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
-  var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
+  var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   var Util = require( 'DOT/Util' );
   var inherit = require( 'PHET_CORE/inherit' );
 
@@ -30,7 +30,7 @@ define( function( require ) {
    * @constructor
    */
   function Switch( startVertex, endVertex, tandem ) {
-    FixedLengthCircuitElement.call( this, startVertex, endVertex, SWITCH_LENGTH, SWITCH_LENGTH, tandem, {
+    FixedCircuitElement.call( this, startVertex, endVertex, SWITCH_LENGTH, SWITCH_LENGTH, tandem, {
 
       // Use the bounding box of the open lifelike switch to show bounds for all combinations of open/closed x lifelike/schematic
       // See https://github.com/phetsims/circuit-construction-kit-dc/issues/132
@@ -51,7 +51,7 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'Switch', Switch );
 
-  return inherit( FixedLengthCircuitElement, Switch, {
+  return inherit( FixedCircuitElement, Switch, {
 
       /**
        * Returns the position and angle of the given point along the Switch
@@ -84,7 +84,7 @@ define( function( require ) {
         else {
 
           // For a closed switch, there is a straight path from the start vertex to the end vertex
-          FixedLengthCircuitElement.prototype.updateMatrixForPoint.call( this, distanceAlongWire, matrix );
+          FixedCircuitElement.prototype.updateMatrixForPoint.call( this, distanceAlongWire, matrix );
           return;
         }
       },

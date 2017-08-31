@@ -1,7 +1,7 @@
 // Copyright 2017, University of Colorado Boulder
 
 /**
- * Node used by FixedLengthCircuitElementNode to show its yellow highlight rectangle.
+ * Node used by FixedCircuitElementNode to show its yellow highlight rectangle.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -19,10 +19,10 @@ define( function( require ) {
   var CORNER_RADIUS = 8; // in view coordinates
 
   /**
-   * @param {FixedLengthCircuitElementNode} fixedLengthCircuitElementNode
+   * @param {FixedCircuitElementNode} fixedCircuitElementNode
    * @constructor
    */
-  function FixedLengthCircuitElementHighlightNode( fixedLengthCircuitElementNode ) {
+  function FixedCircuitElementHighlightNode( fixedCircuitElementNode ) {
 
     Rectangle.call( this, 0, 0, 0, 0,
       CORNER_RADIUS,
@@ -32,20 +32,20 @@ define( function( require ) {
         pickable: false
       } );
 
-    this.recomputeBounds( fixedLengthCircuitElementNode );
+    this.recomputeBounds( fixedCircuitElementNode );
   }
 
-  circuitConstructionKitCommon.register( 'FixedLengthCircuitElementHighlightNode', FixedLengthCircuitElementHighlightNode );
+  circuitConstructionKitCommon.register( 'FixedCircuitElementHighlightNode', FixedCircuitElementHighlightNode );
 
-  return inherit( Rectangle, FixedLengthCircuitElementHighlightNode, {
+  return inherit( Rectangle, FixedCircuitElementHighlightNode, {
 
     /**
      * Update the dimensions of the highlight, called on startup and when components change from lifelike/schematic.
-     * @param {FixedLengthCircuitElementNode} fixedLengthCircuitElementNode
+     * @param {FixedCircuitElementNode} fixedCircuitElementNode
      * @public
      */
-    recomputeBounds: function( fixedLengthCircuitElementNode ) {
-      var localBounds = fixedLengthCircuitElementNode.contentNode.localBounds;
+    recomputeBounds: function( fixedCircuitElementNode ) {
+      var localBounds = fixedCircuitElementNode.contentNode.localBounds;
       this.setRect(
         localBounds.minX - PADDING,
         localBounds.minY - PADDING,

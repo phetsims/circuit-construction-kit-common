@@ -1,7 +1,7 @@
 // Copyright 2016-2017, University of Colorado Boulder
 
 /**
- * Renders and provides interactivity for FixedLengthCircuitElements (all CircuitElements except Wires).
+ * Renders and provides interactivity for FixedCircuitElements (all CircuitElements except Wires).
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -15,7 +15,7 @@ define( function( require ) {
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
-  var FixedLengthCircuitElementHighlightNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedLengthCircuitElementHighlightNode' );
+  var FixedCircuitElementHighlightNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementHighlightNode' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var Vector2 = require( 'DOT/Vector2' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -36,7 +36,7 @@ define( function( require ) {
    * REVIEW*: works, the current way is just quite verbose.
    * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - the main screen view, null for icon
    * @param {CircuitLayerNode} circuitLayerNode - Null if an icon is created
-   * @param {FixedLengthCircuitElement} circuitElement - the corresponding model element
+   * @param {FixedCircuitElement} circuitElement - the corresponding model element
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Node} lifelikeNode - the Node that will display the component as a lifelike object.  Origin must be
    *                            - left-center
@@ -45,8 +45,8 @@ define( function( require ) {
    * @param options
    * @constructor
    */
-  function FixedLengthCircuitElementNode( circuitConstructionKitScreenView, circuitLayerNode, circuitElement,
-                                          viewTypeProperty, lifelikeNode, schematicNode, tandem, options ) {
+  function FixedCircuitElementNode( circuitConstructionKitScreenView, circuitLayerNode, circuitElement,
+                                    viewTypeProperty, lifelikeNode, schematicNode, tandem, options ) {
     assert && assert( lifelikeNode !== schematicNode, 'schematicNode should be different than lifelikeNode' );
     var self = this;
 
@@ -75,7 +75,7 @@ define( function( require ) {
     // Add highlight (but not for icons)
     if ( !options.icon ) {
       //REVIEW*: visibility/type docs
-      this.highlightNode = new FixedLengthCircuitElementHighlightNode( this );
+      this.highlightNode = new FixedCircuitElementHighlightNode( this );
     }
     //REVIEW*: this.markAsDirty.bind( this );
     var markAsDirty = function() { self.markAsDirty(); };
@@ -216,7 +216,7 @@ define( function( require ) {
     }
 
     // @private {function} - for disposal
-    this.disposeFixedLengthCircuitElementNode = function() {
+    this.disposeFixedCircuitElementNode = function() {
 
       // End drag event if it was in progress
       //REVIEW*: consider self.dragHandler.interrupt()
@@ -244,9 +244,9 @@ define( function( require ) {
     };
   }
 
-  circuitConstructionKitCommon.register( 'FixedLengthCircuitElementNode', FixedLengthCircuitElementNode );
+  circuitConstructionKitCommon.register( 'FixedCircuitElementNode', FixedCircuitElementNode );
 
-  return inherit( CircuitElementNode, FixedLengthCircuitElementNode, {
+  return inherit( CircuitElementNode, FixedCircuitElementNode, {
 
     /**
      * Mark dirty to batch changes, so that update can be done once in view step, if necessary
@@ -305,7 +305,7 @@ define( function( require ) {
      * @override
      */
     dispose: function() {
-      this.disposeFixedLengthCircuitElementNode();
+      this.disposeFixedCircuitElementNode();
       CircuitElementNode.prototype.dispose.call( this );
     }
   }, {

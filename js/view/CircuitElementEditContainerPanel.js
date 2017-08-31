@@ -14,7 +14,7 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
-  var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
+  var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   var SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
@@ -68,7 +68,7 @@ define( function( require ) {
 
       // Only fixed length circuit elements are editable, even though wires can be deleted
       var fixedLengthElements = circuit.circuitElements.getArray().filter( function( circuitElement ) {
-        return circuitElement instanceof FixedLengthCircuitElement && circuitElement.interactiveProperty.get();
+        return circuitElement instanceof FixedCircuitElement && circuitElement.interactiveProperty.get();
       } );
       tapInstructionTextNode.visible = fixedLengthElements.length > 0;
     };

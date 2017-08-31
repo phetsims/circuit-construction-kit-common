@@ -1,10 +1,9 @@
 // Copyright 2015-2017, University of Colorado Boulder
 
 /**
- * CircuitElements such as Resistor, Battery, etc have a fixed length (unlike stretchy Wires).  This is their common
- * base class.
- * REVIEW*: Note that it is NOT fixed length (light bulb breaks this), but has fixed vertex positions relative to the
- *          element's transform.
+ * CircuitElements such as Resistor, Battery, etc have a fixed length between vertices (unlike stretchy Wires).  This is
+ * their common base class. Note that it is NOT fixed length (light bulb breaks this), but has fixed vertex positions
+ * relative to the element's transform.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -27,7 +26,7 @@ define( function( require ) {
    * REVIEW*: Consider rename to something like FixedCircuitElement, to properly "handle" the light-bulb case.
    * @constructor
    */
-  function FixedLengthCircuitElement( startVertex, endVertex, distanceBetweenVertices, chargePathLength, tandem, options ) {
+  function FixedCircuitElement( startVertex, endVertex, distanceBetweenVertices, chargePathLength, tandem, options ) {
     //REVIEW*: Recommend getting rid of distanceBetweenVertices, compute it from startVertex/endVertex.
 
     options = _.extend( {
@@ -54,7 +53,7 @@ define( function( require ) {
     this.distanceBetweenVertices = distanceBetweenVertices;
   }
 
-  circuitConstructionKitCommon.register( 'FixedLengthCircuitElement', FixedLengthCircuitElement );
+  circuitConstructionKitCommon.register( 'FixedCircuitElement', FixedCircuitElement );
 
-  return inherit( CircuitElement, FixedLengthCircuitElement );
+  return inherit( CircuitElement, FixedCircuitElement );
 } );
