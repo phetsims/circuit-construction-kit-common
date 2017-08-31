@@ -3,6 +3,7 @@
 /**
  * Shows controls for a single CircuitElement at the bottom of the screen and contained in a
  * CircuitElementEditContainerPanel.
+ * REVIEW*: Careful about naming things *Panel when they don't extend Panel. CircuitElementEditNode preferred.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
