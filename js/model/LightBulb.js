@@ -118,26 +118,23 @@ define( function( require ) {
     },
 
     /**
-     * Maps from the "as the crow flies" path to the circuitous path.
-     * REVIEW*: Doc that it maps points with a transformation such that: startPoint => beginningPoint position, endPoint => endVertex position
+     * Maps from the "as the crow flies" path to the circuitous path. It maps points with a transformation such that:
+     * startPoint => origin, endPoint => endVertex position
      *
      * @param {number} index
-     * @param {Vector2} beginningPoint
+     * @param {Vector2} origin
      * @param {Vector2[]} samplePoints - the array of points to use for sampling
      * @returns {Vector2}
      * @private
      */
-    getFilamentPathPoint: function( index, beginningPoint, samplePoints ) {
+    getFilamentPathPoint: function( index, origin, samplePoints ) {
       var point = samplePoints[ index ];
-
-      var vertexX = beginningPoint.x;
-      var vertexY = beginningPoint.y;
 
       var startPoint = samplePoints[ 0 ];
       var endPoint = samplePoints[ samplePoints.length - 1 ];
 
-      var x = Util.linear( startPoint.x, endPoint.x, vertexX, vertexX + this.vertexDelta.x, point.x );
-      var y = Util.linear( startPoint.y, endPoint.y, vertexY, vertexY + this.vertexDelta.y, point.y );
+      var x = Util.linear( startPoint.x, endPoint.x, origin.x, origin.x + this.vertexDelta.x, point.x );
+      var y = Util.linear( startPoint.y, endPoint.y, origin.y, origin.y + this.vertexDelta.y, point.y );
 
       return new Vector2( x, y );
     },
