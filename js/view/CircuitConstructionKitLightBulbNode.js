@@ -44,6 +44,7 @@ define( function( require ) {
   var INNER_RADIUS = 5;
 
   // cache the raster after creation so it isn't added to the spritesheet multiple times
+  //REVIEW*: Type docs may help here
   var cached = null;
 
   /**
@@ -133,6 +134,7 @@ define( function( require ) {
 
         // Filament
         .moveTo( 0, LEAD_Y )
+        //REVIEW*: Is this lineTo necessary? (if it's to the start of the arc, it shouldn't be needed)
         .lineTo( schematicCircleRadius - INNER_RADIUS, LEAD_Y )
         .arc( schematicCircleRadius, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
         .lineTo( rightLeadX, LEAD_Y );
@@ -176,7 +178,7 @@ define( function( require ) {
       options
     );
 
-    // @private - node that contains the light rays so they can be easily positioned
+    // @private {Node} - node that contains the light rays so they can be easily positioned
     this.rayNodeContainer = new Node( {
       children: lightBulbNode.raysNode ? [ lightBulbNode.raysNode ] : [] // keep centering and translation
     } );
@@ -228,6 +230,7 @@ define( function( require ) {
     updateRender: function() {
       var startPosition = this.circuitElement.startPositionProperty.get();
       var endPosition = this.circuitElement.endPositionProperty.get();
+      //REVIEW*: If a scratch matrix is used below, presumably use a non-GC way of Vector2 subtraction?
       var delta = endPosition.minus( startPosition );
       var angle = delta.angle() + Math.PI / 4;
 
