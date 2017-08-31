@@ -75,10 +75,6 @@ define( function( require ) {
 
     var currentReadoutProperty = new DerivedProperty( [ ammeter.currentProperty ], function( current ) {
 
-      //REVIEW: Why is there a max (that is technically incorrect)?
-      //REVIEW^(samreid): can you elaborate how this is technically incorrect?  When values get too high we wanted to
-      //REVIEW^(samreid): give the impression the value is too high without showing the exact value, so we settled
-      //REVIEW^(samreid): on the ">" idea.
       var max = options.blackBoxStudy ? 1E3 : 1E10;
       var maxString = options.blackBoxStudy ? '> 10^3' : '> 10^10';
 

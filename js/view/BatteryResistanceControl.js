@@ -50,6 +50,7 @@ define( function( require ) {
       batteryResistanceProperty,
       //REVIEW: Extracting info about the 0-10 range may simplify a few things?
       //REVIEW^(samreid): Can you be more specific? This is the only spot I see that range in use.
+      //REVIEW*: Sorry! In tick handling, I see 2 usages of min (0), 2 usages of center (5), and 3 usages of max (10)
       new Range( CircuitConstructionKitCommonConstants.DEFAULT_BATTERY_RESISTANCE, 10 ), {
         trackSize: CircuitConstructionKitCommonConstants.SLIDER_TRACK_SIZE,
         thumbSize: CircuitConstructionKitCommonConstants.THUMB_SIZE,
