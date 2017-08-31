@@ -55,6 +55,12 @@ define( function( require ) {
     lineWidth: CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH
   } ).toDataURLImageSynchronous();
 
+  schematicNode.centerY = 0;
+
+  // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
+  schematicNode.mouseArea = schematicNode.bounds.copy().shiftedY( schematicNode.height / 2 );
+  schematicNode.touchArea = schematicNode.bounds.copy().shiftedY( schematicNode.height / 2 );
+
   /**
    * This constructor is called dynamically and must match the signature of other circuit element nodes.
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - main screen view, null for icon
@@ -78,15 +84,6 @@ define( function( require ) {
 
     // Center vertically to match the FixedLengthCircuitElementNode assumption that origin is center left
     lifelikeNode.centerY = 0;
-
-    //REVIEW*: Why are we mutating a shared "static" instance in every battery's constructor?
-    //REVIEW*: Move all schematicNode changes to the top level?
-    schematicNode.centerY = 0;
-
-    // Expand the pointer areas with a defensive copy, see
-    // https://github.com/phetsims/circuit-construction-kit-common/issues/310
-    schematicNode.mouseArea = schematicNode.bounds.copy().shiftedY( schematicNode.height / 2 );
-    schematicNode.touchArea = schematicNode.bounds.copy().shiftedY( schematicNode.height / 2 );
 
     FixedLengthCircuitElementNode.call( this,
       circuitConstructionKitScreenView,
