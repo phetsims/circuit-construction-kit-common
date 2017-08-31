@@ -13,7 +13,7 @@ define( function( require ) {
   var NumberProperty = require( 'AXON/NumberProperty' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var RunningAverage = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/RunningAverage' );
+  var RunningAverage = require( 'DOT/RunningAverage' );
   var Util = require( 'DOT/Util' );
   var inherit = require( 'PHET_CORE/inherit' );
 
