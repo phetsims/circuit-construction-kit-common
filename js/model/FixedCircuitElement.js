@@ -23,7 +23,6 @@ define( function( require ) {
    * @param {number} chargePathLength - the distance the charges travel (in view coordinates), see CircuitElement.js
    * @param {Tandem} tandem
    * @param {Object} [options]
-   * REVIEW*: Consider rename to something like FixedCircuitElement, to properly "handle" the light-bulb case.
    * @constructor
    */
   function FixedCircuitElement( startVertex, endVertex, distanceBetweenVertices, chargePathLength, tandem, options ) {
