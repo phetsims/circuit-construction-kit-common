@@ -164,32 +164,31 @@ define( function( require ) {
       var previousAccumulatedDistance = 0;
       var accumulatedDistance = 0;
       var samplePoints = this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? LIFELIKE_SAMPLE_POINTS : SCHEMATIC_SAMPLE_POINTS;
-      for ( var i = 0; i < samplePoints.length - 1; i++ ) {
-        //REVIEW*: If it's worth it, don't call getFilamentPathPoint multiple times for a single index
-        var point1 = this.getFilamentPathPoint( i, this.startVertexProperty.get().positionProperty.get(), samplePoints );
-        var point2 = this.getFilamentPathPoint( i + 1, this.startVertexProperty.get().positionProperty.get(), samplePoints );
-
-        accumulatedDistance += point2.distance( point1 );
+      var currentPoint = this.getFilamentPathPoint( 0, this.startVertexProperty.get().positionProperty.get(), samplePoints );
+      for ( var i = 1; i < samplePoints.length; i++ ) {
+        var nextPoint = this.getFilamentPathPoint( i, this.startVertexProperty.get().positionProperty.get(), samplePoints );
+        accumulatedDistance += nextPoint.distance( currentPoint );
 
         // Find what segment the charge is in
         if ( distanceAlongWire <= accumulatedDistance ) {
 
           // Choose the right point along the segment
           var fractionAlongSegment = Util.linear( previousAccumulatedDistance, accumulatedDistance, 0, 1, distanceAlongWire );
-          var positionAlongSegment = point1.blend( point2, fractionAlongSegment );
+          var positionAlongSegment = currentPoint.blend( nextPoint, fractionAlongSegment );
 
           // rotate the point about the start vertex
           var startPoint = this.startPositionProperty.get();
           var vertexDelta = this.endPositionProperty.get().minus( startPoint );
           var relativeAngle = vertexDelta.angle() - this.vertexDelta.angle();
           var position = positionAlongSegment.rotatedAboutPoint( startPoint, relativeAngle );
-          var angle = point2.minus( point1 ).angle();
+          var angle = nextPoint.minus( currentPoint ).angle();
 
           // sampled from createAtPosition
           matrix.setToTranslationRotationPoint( position, angle + matrix.getRotation() + 0.7851354708011367 );
           return;
         }
         previousAccumulatedDistance = accumulatedDistance;
+        currentPoint = nextPoint;
       }
 
       throw new Error( 'exceeded charge path bounds' );
