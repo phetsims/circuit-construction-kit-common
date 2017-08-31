@@ -45,9 +45,10 @@ define( function( require ) {
      * @public
      */
     updateRunningAverage: function( sample ) {
-      //REVIEW*: Probably not too important, but keeping a "total" of all samples in the array, adding/subtracting from
-      //REVIEW*: it on changes, and then dividing it by the length is more efficient (essentially 2 adds, 1 divide per
-      //REVIEW*: operation, instead of N-1 adds, 1 divide).
+      //REVIEW: Probably not too important, but keeping a "total" of all samples in the array, adding/subtracting from
+      //REVIEW: it on changes, and then dividing it by the length is more efficient (essentially 2 adds, 1 divide per
+      //REVIEW: operation, instead of N-1 adds, 1 divide).
+      //REVIEW^(samreid): How to keep track of the number to be subtracted from the total?
       this.samples.push( sample );
       while ( this.samples.length > this.windowSize ) {
         this.samples.shift();
