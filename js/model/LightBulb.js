@@ -11,7 +11,6 @@ define( function( require ) {
   // modules
   var NumberProperty = require( 'AXON/NumberProperty' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
@@ -193,11 +192,9 @@ define( function( require ) {
           var position = positionAlongSegment.rotatedAboutPoint( startPoint, relativeAngle );
           var angle = point2.minus( point1 ).angle();
 
-          return CircuitConstructionKitCommonUtil.setToTranslationRotation(
-            matrix,
-            position,
-            angle + matrix.getRotation() + 0.7851354708011367 // sampled from createAtPosition
-          );
+          // sampled from createAtPosition
+          matrix.setToTranslationRotationPoint( position, angle + matrix.getRotation() + 0.7851354708011367 );
+          return;
         }
         previousAccumulatedDistance = accumulatedDistance;
       }

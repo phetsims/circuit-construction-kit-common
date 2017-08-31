@@ -14,7 +14,6 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   var CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CustomLightBulbNode' );
   var FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
@@ -235,14 +234,13 @@ define( function( require ) {
       var angle = delta.angle() + Math.PI / 4;
 
       // Update the node transform in a single step, see #66
-      CircuitConstructionKitCommonUtil.setToTranslationRotation( SCRATCH_MATRIX, startPosition, angle );
+      SCRATCH_MATRIX.setToTranslationRotationPoint( startPosition, angle );
       this.contentNode.setMatrix( SCRATCH_MATRIX );
       this.rayNodeContainer.setMatrix( SCRATCH_MATRIX );
       this.highlightNode && this.highlightNode.setMatrix( SCRATCH_MATRIX );
 
       // Update the fire transform
-      CircuitConstructionKitCommonUtil.setToTranslationRotation( SCRATCH_MATRIX, startPosition, angle )
-        .multiplyMatrix( SCRATCH_MATRIX_2.setToTranslation( -100, -fireImage.height - 350 ) );
+      SCRATCH_MATRIX.multiplyMatrix( SCRATCH_MATRIX_2.setToTranslation( -100, -fireImage.height - 350 ) );
       this.fireNode && this.fireNode.setMatrix( SCRATCH_MATRIX );
 
       this.socketNode && this.socketNode.updateRender();

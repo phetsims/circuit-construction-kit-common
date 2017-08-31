@@ -11,7 +11,6 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   var Matrix3 = require( 'DOT/Matrix3' );
@@ -32,7 +31,7 @@ define( function( require ) {
   var SCHEMATIC_LINE_WIDTH = CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH; // line width in screen coordinates
 
   // constants
-  var TRANSFORM = new Matrix3(); // The Matrix entries are mutable
+  var MATRIX = new Matrix3(); // The Matrix entries are mutable
   var WIRE_RASTER_LENGTH = 100;
 
   // Node used to render the black line for schematic, cached as toDataURLImageSynchronous so it can render with WebGL
@@ -379,18 +378,16 @@ define( function( require ) {
       var angle = delta.angle();
 
       // Update the node transform
-      CircuitConstructionKitCommonUtil.setToTranslationRotation( TRANSFORM, endPosition, angle );
-      this.endCapParent.setMatrix( TRANSFORM );
+      this.endCapParent.setMatrix( MATRIX.setToTranslationRotationPoint( endPosition, angle ) );
 
       // This transform is done second so the matrix is already in good shape for the scaling step
-      CircuitConstructionKitCommonUtil.setToTranslationRotation( TRANSFORM, startPosition, angle );
-      this.startCapParent.setMatrix( TRANSFORM );
+      this.startCapParent.setMatrix( MATRIX.setToTranslationRotationPoint( startPosition, angle ) );
 
       // Prevent the case where a vertex lies on another vertex, particularly for fuzz testing
       if ( magnitude < 1E-8 ) { magnitude = 1E-8; }
 
-      TRANSFORM.multiplyMatrix( Matrix3.scaling( magnitude / WIRE_RASTER_LENGTH, 1 ) );
-      this.lineNodeParent.setMatrix( TRANSFORM );
+      MATRIX.multiplyMatrix( Matrix3.scaling( magnitude / WIRE_RASTER_LENGTH, 1 ) );
+      this.lineNodeParent.setMatrix( MATRIX );
 
       if ( this.circuitLayerNode ) {
         var selectedCircuitElement = this.circuitLayerNode.circuit.selectedCircuitElementProperty.get();

@@ -28,7 +28,7 @@ define( function( require ) {
   var fireImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
 
   // constants
-  var transform = new Matrix3();
+  var matrix = new Matrix3();
   var rotationMatrix = new Matrix3();
 
   /**
@@ -269,12 +269,12 @@ define( function( require ) {
       var magnitude = Vector2.getDistanceBetweenVectors( startPosition, endPosition );
 
       // Update the node transform in a single step, see #66
-      CircuitConstructionKitCommonUtil.setToTranslationRotation( transform, startPosition, angle );
-      this.contentNode.setMatrix( transform );
+      matrix.setToTranslationRotationPoint( startPosition, angle );
+      this.contentNode.setMatrix( matrix );
 
       //REVIEW*: Usually an if-statement would be more readable here, instead of temp variable + short-circuit?
       var updateHighlight = this.highlightNode && this.circuitLayerNode.circuit.selectedCircuitElementProperty.get() === this.circuitElement;
-      updateHighlight && this.highlightNode.setMatrix( transform );
+      updateHighlight && this.highlightNode.setMatrix( matrix );
 
       // Update the fire transform
       var flameExtent = 0.8;
@@ -282,10 +282,9 @@ define( function( require ) {
       var flameMargin = ( 1 - flameExtent ) / 2;
       var flameX = magnitude * flameMargin / scale;
       var flameY = -fireImage.height;
-      CircuitConstructionKitCommonUtil.setToTranslationRotation( transform, startPosition, angle )
-        .multiplyMatrix( rotationMatrix.setToScale( scale ) )
+      matrix.multiplyMatrix( rotationMatrix.setToScale( scale ) )
         .multiplyMatrix( rotationMatrix.setToTranslation( flameX, flameY ) );
-      this.fireNode && this.fireNode.setMatrix( transform );
+      this.fireNode && this.fireNode.setMatrix( matrix );
     },
 
     /**

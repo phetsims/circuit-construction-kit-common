@@ -29,21 +29,6 @@ define( function( require ) {
   return inherit( Object, CircuitConstructionKitCommonUtil, {}, {
 
     /**
-     * Sets the values of a given Matrix to be translated the rotated
-     * @param {Matrix3} matrix - the matrix to be mutated
-     * @param {Vector2} translation - the translation amount
-     * @param {number} rotation - the amount to rotate in radians
-     * @returns {Matrix3} - the same matrix that was passed in
-     * @public
-     */
-    setToTranslationRotation: function( matrix, translation, rotation ) {
-      var cos = Math.cos( rotation );
-      var sin = Math.sin( rotation );
-
-      return matrix.setToAffine( cos, -sin, translation.x, sin, cos, translation.y, 0, 0, 1 );
-    },
-
-    /**
      * Typically show 2 decimal places for current and voltage readouts in the play area, but if it is a smaller value,
      * between between 0.02 and 0.001, then it should show 3 decimal places.
      * @param {number} value - the value to be formatted for display
@@ -86,8 +71,6 @@ define( function( require ) {
      * @param parent {Node} - parent that contains the child in the scene graph
      * @param child {Node} - child added/removed from scene graph
      * @public
-     * REVIEW: How about putting this in Node.js (we can discuss a potential name)?
-     * REVIEW^(samreid): A general solution should keep track of the ordering--could we accomplish this in a robust way?
      */
     setInSceneGraph: function( inSceneGraph, parent, child ) {
       if ( inSceneGraph && !parent.hasChild( child ) ) {

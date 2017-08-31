@@ -15,7 +15,6 @@ define( function( require ) {
   var NumberProperty = require( 'AXON/NumberProperty' );
   var Property = require( 'AXON/Property' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
   var Vector2 = require( 'DOT/Vector2' );
   var inherit = require( 'PHET_CORE/inherit' );
 
@@ -280,11 +279,8 @@ define( function( require ) {
     updateMatrixForPoint: function( distanceAlongWire, matrix ) {
       var startPosition = this.startPositionProperty.get();
       var endPosition = this.endPositionProperty.get();
-      CircuitConstructionKitCommonUtil.setToTranslationRotation(
-        matrix,
-        startPosition.blend( endPosition, distanceAlongWire / this.chargePathLength ),
-        Vector2.getAngleBetweenVectors( startPosition, endPosition )
-      );
+      var translation = startPosition.blend( endPosition, distanceAlongWire / this.chargePathLength );
+      matrix.setToTranslationRotationPoint( translation, Vector2.getAngleBetweenVectors( startPosition, endPosition ) );
     },
 
     /**

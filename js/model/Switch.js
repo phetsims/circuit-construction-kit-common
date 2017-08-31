@@ -13,7 +13,6 @@ define( function( require ) {
   var NumberProperty = require( 'AXON/NumberProperty' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
   var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   var Util = require( 'DOT/Util' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -74,11 +73,8 @@ define( function( require ) {
           var rotatedPoint = twoThirdsPoint.rotatedAboutPoint( pivot, -Math.PI / 4 );
 
           var distanceAlongSegment = Util.linear( SWITCH_START, SWITCH_END, 0, 1, fractionAlongWire );
-          CircuitConstructionKitCommonUtil.setToTranslationRotation(
-            matrix,
-            pivot.blend( rotatedPoint, distanceAlongSegment ),
-            endPosition.minus( startPosition ).angle()
-          );
+          var translation = pivot.blend( rotatedPoint, distanceAlongSegment );
+          matrix.setToTranslationRotationPoint( translation, endPosition.minus( startPosition ).angle() );
           return;
         }
         else {
