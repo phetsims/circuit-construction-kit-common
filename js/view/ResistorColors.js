@@ -79,7 +79,10 @@ define( function( require ) {
       if ( resistance === 0 ) {
         return [ getEntry( 'name', 'black' ) ];
       }
+      //REVIEW*: Does this have the same issues that caused us to create Util.toFixed (with rounding)?
       var exponential = resistance.toExponential( 1 ); // like `1.5e+7`
+      //REVIEW*: Maybe explicitly rounding (before/after dividing by 10 until it "can't" anymore) would be safer?
+      //REVIEW*: Wouldn't have to parse strings?
       var firstSignificantDigit = exponential[ 0 ];
       assert && assert( exponential[ 1 ] === '.', 'incorrect pattern' );
       var secondSignificantDigit = exponential[ 2 ];
@@ -91,8 +94,10 @@ define( function( require ) {
       var decimalMultiplier = 'e' + exponentNumber;
 
       // Find the lowest tolerance that accommodates the error
+      //REVIEW*: Converting to string (toExponential), parsing the string, reconverting to a string and then re-parsing
+      //REVIEW*: (parseFloat) is a code smell. Let's avoid that if possible.
       var approximateValue = parseFloat( firstSignificantDigit + secondSignificantDigit + decimalMultiplier );
-      var percentError = Math.abs( (resistance - approximateValue) / resistance * 100 );
+      var percentError = Math.abs( ( resistance - approximateValue ) / resistance * 100 );
       var colorsWithTolerance = _.filter( colorTable, function( colorTableEntry ) {
         return colorTableEntry.tolerance !== null;
       } );
