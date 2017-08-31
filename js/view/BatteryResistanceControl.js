@@ -88,8 +88,6 @@ define( function( require ) {
       xMargin: 4,
       yMargin: 3,
       cornerRadius: 0, // radius of the rounded corners on the background
-      //REVIEW*: resize:true is also the default, not needed
-      resize: true, // dynamically resize when content bounds change
       backgroundPickable: false,
       tandem: readoutTextPanelTandem
     } );
