@@ -92,18 +92,18 @@ define( function( require ) {
     },
 
     /**
-     * Determine the new path length
+     * Determine the path length by measuring the segments.
      * @returns {number}
      * @private
      */
     getPathLength: function() {
       var pathLength = 0;
       var samplePoints = this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? LIFELIKE_SAMPLE_POINTS : SCHEMATIC_SAMPLE_POINTS;
-      for ( var i = 0; i < samplePoints.length - 1; i++ ) {
-        //REVIEW*: If it's worth it, don't call getFilamentPathPoint multiple times for a single index
-        var point1 = this.getFilamentPathPoint( i, Vector2.ZERO, samplePoints );
-        var point2 = this.getFilamentPathPoint( i + 1, Vector2.ZERO, samplePoints );
-        pathLength += point2.distance( point1 );
+      var currentPoint = this.getFilamentPathPoint( 0, Vector2.ZERO, samplePoints );
+      for ( var i = 1; i < samplePoints.length; i++ ) {
+        var nextPoint = this.getFilamentPathPoint( i, Vector2.ZERO, samplePoints );
+        pathLength += nextPoint.distance( currentPoint );
+        currentPoint = nextPoint;
       }
       return pathLength;
     },
