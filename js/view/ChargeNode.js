@@ -82,6 +82,8 @@ define( function( require ) {
 
     /**
      * @private - update the transform of the charge node
+     * REVIEW^(samreid): I've updated to use Matrix3 and could use help using it to set Node.matrix here without
+     * REVIEW^(samreid): creating garbage (not sure if we should mutate matrix then restore it), does scenery make Matrix copy?
      */
     updateTransform: function() {
       var charge = this.charge;
