@@ -86,6 +86,7 @@ define( function( require ) {
     // @public {Node} - layer for light rays, since it cannot be rendered in WebGL
     this.lightRaysLayer = new Node();
 
+    //REVIEW*: docs
     this.wireLayer = new Node( {
       renderer: 'webgl',
 
@@ -95,6 +96,7 @@ define( function( require ) {
         children: WireNode.webglSpriteNodes
       } ) ]
     } );
+    //REVIEW*: docs
     this.solderLayer = new Node( {
       renderer: 'webgl',
 
@@ -104,7 +106,7 @@ define( function( require ) {
         children: SolderNode.webglSpriteNodes
       } ) ]
     } );
-
+    //REVIEW*: docs
     this.vertexLayer = new Node( {
       renderer: 'webgl',
 
@@ -120,6 +122,7 @@ define( function( require ) {
 
       // add a child eagerly so the WebGL block is all allocated when 1st object is dragged out of toolbox
       // @jonathanolson: is there a better way to do this?
+      //REVIEW*: Not currently.
       renderer: 'webgl',
       children: [ new Node( {
         visible: false,
@@ -142,6 +145,7 @@ define( function( require ) {
       } ) ]
     } );
 
+    //REVIEW*: docs
     this.chargeLayer = new Node( {
       renderer: 'webgl',
 
@@ -156,6 +160,7 @@ define( function( require ) {
       self.chargeLayer.visible = isValueDepictionEnabled && revealing;
     } );
 
+    //REVIEW*: docs
     this.sensorLayer = new Node();
 
     // For lifelike: Solder should be in front of wires but behind batteries and resistors.
@@ -194,7 +199,7 @@ define( function( require ) {
     // choose layering for schematic vs lifelike.  HEADS UP, this means circuitLayerNode.addChild() will get overwritten
     // so all nodes must be added as children in the array above.
     screenView.model.viewTypeProperty.link( function( view ) {
-      self.children = (view === CircuitElementViewType.LIFELIKE) ? lifelikeLayering : schematicLayering;
+      self.children = ( view === CircuitElementViewType.LIFELIKE ) ? lifelikeLayering : schematicLayering;
     } );
 
     // @public {Property.<Bounds2>} the visible bounds in the coordinate frame of the circuit.  Initialized with a
@@ -235,7 +240,7 @@ define( function( require ) {
 
           // Show the ValueNode for readouts, though series ammeters already show their own readouts and Wires do not
           // have readouts
-          if ( circuitElement instanceof FixedLengthCircuitElement && !(circuitElement instanceof SeriesAmmeter) ) {
+          if ( circuitElement instanceof FixedLengthCircuitElement && !( circuitElement instanceof SeriesAmmeter ) ) {
             var valueNode = new ValueNode(
               circuitElement,
               self.model.showValuesProperty,
@@ -243,6 +248,7 @@ define( function( require ) {
               tandem.createTandem( circuitElement.tandemName ).createTandem( 'valueNode' )
             );
 
+            //REVIEW*: Commented out?
             // self.valueLayer.addChild( valueNode );
             var updateShowValues = function( showValues ) {
               CircuitConstructionKitCommonUtil.setInSceneGraph( showValues, self.valueLayer, valueNode );
@@ -409,7 +415,7 @@ define( function( require ) {
     /**
      * Find drop targets for all the given vertices
      * @param {Vertex[]} vertices
-     * @returns {Object[]}
+     * @returns {Object[]} REVIEW*: Usually more documentation than {Object} is helpful
      * @public
      */
     getAllDropTargets: function( vertices ) {
@@ -434,7 +440,7 @@ define( function( require ) {
      * @param {Vertex[]} vertices
      * @returns {Object|null} Object that indicates the two vertices best suited for connecting as { src: Vertex, dst: Vertex },
      *                        or null if no match is suitable.
-     * @public
+     * @public REVIEW*: could be private?
      */
     getBestDropTarget: function( vertices ) {
       var allDropTargets = this.getAllDropTargets( vertices );
@@ -704,6 +710,7 @@ define( function( require ) {
      * When the zoom level changes, recompute the visible bounds in the coordinate frame of the CircuitLayerNode so
      * that objects cannot be dragged outside the boundary.
      * @public
+     * REVIEW*: Params?
      */
     updateTransform: function( visibleBounds ) {
       this.visibleBoundsInCircuitCoordinateFrameProperty.set( this.parentToLocalBounds( visibleBounds ) );
