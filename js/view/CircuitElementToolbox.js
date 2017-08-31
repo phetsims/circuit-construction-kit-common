@@ -185,6 +185,8 @@ define( function( require ) {
       function( circuitElement ) {
         return circuitElement instanceof Battery &&
                circuitElement.initialOrientation === 'right' &&
+               //REVIEW*: Saw note that both orientations can be created, but (a) it probably doesn't happen in CCK and
+               //REVIEW*: (b) Is it possible to prevent flipping of batteries in a sim that uses this?
                circuitElement.batteryType === BatteryType.NORMAL;
       },
       function( position ) {
@@ -224,6 +226,7 @@ define( function( require ) {
         iconScale: 0.85
       } );
 
+    //REVIEW*: Is this still needed?
     // Override touch area because it has unique dimensions
     // lightBulbToolNode.touchArea = lightBulbToolNode.localBounds.dilatedXY( 11, 8 );
 
@@ -237,6 +240,7 @@ define( function( require ) {
         icon: true
       } ),
       function( circuitElement ) {
+        //REVIEW*: Did this break, since its resistorType comparson isn't from an enumeration?
         return circuitElement instanceof Resistor && circuitElement.resistorType === 'resistor';
       },
       function( position ) {
@@ -262,9 +266,12 @@ define( function( require ) {
         return new Switch( vertexPair.startVertex, vertexPair.endVertex, circuit.switchGroupTandem.createNextTandem() );
       } );
 
+    //REVIEW*: What happens if you want 0 coins but multiple eraser/hands? Not sure what assumptions are being made here.
     if ( options.numberOfCoins ) {
 
       /**
+       * REVIEW*: Can you clarify "grab bag"? Usually to me means a bag where you get something of a random type.
+       * REVIEW*: Is this just for the assorted variants of resistors?
        * Create a ToolNode for a grab bag item
        * @param {ResistorType} resistorType
        * @param {number} resistance
@@ -389,6 +396,7 @@ define( function( require ) {
       );
     }
 
+    //REVIEW*: Same as above... what if I want 0 high-voltage batteries but 2 high-resistance bulbs?
     if ( options.numberOfHighVoltageBatteries ) {
 
       var highVoltageBatteryToolNode = createCircuitElementToolNode(
@@ -404,7 +412,7 @@ define( function( require ) {
           ), viewTypeProperty, tandem.createTandem( 'highVoltageBatteryIcon' ), { icon: true } ),
         function( circuitElement ) {
           return circuitElement instanceof Battery &&
-                 circuitElement.initialOrientation === 'right' &&
+                 circuitElement.initialOrientation === 'right' && //REVIEW*: Similar note about battery orientation as above.
                  circuitElement.batteryType === BatteryType.HIGH_VOLTAGE;
         }, function( position ) {
           var vertexPair = createVertexPair( position, BATTERY_LENGTH );
@@ -490,6 +498,14 @@ define( function( require ) {
       switchToolNode
     ];
 
+    //REVIEW*: There's a default layout and two others (which look like they are the two CCK DC screen layouts?)
+    //REVIEW*: Specifying the quantity of components (and then having the layout conditionally determined) feels very
+    //REVIEW*: weird, like this code is assuming a lot about the combinations of component quantities.
+    //REVIEW*: What if the layout (types with quantities) is passed into this type, and then it creates the relevant tool
+    //REVIEW*: nodes?
+    //REVIEW*: Additionally if the wire is at the top of every page, it would make sense to omit wires in these lists,
+    //REVIEW*: chunk it by 4, and add a wire to the top of every one?
+    //REVIEW*: Personal preference would be to not chunk after, but actively group pages in different arrays at the start.
     if ( options.numberOfCoins && !options.numberOfHighVoltageBatteries ) {
       circuitElementToolNodes = circuitElementToolNodes.concat( [
 
@@ -526,18 +542,19 @@ define( function( require ) {
     }
 
     var ITEMS_PER_PAGE = 5;
-    var SPACING = 5;
+    var SPACING = 5; //REVIEW*: This is used one time. Inline it?
 
     // Carousel was optimized for items of equal size.  To get equal spacing between objects, we create our own pages
     // see https://github.com/phetsims/circuit-construction-kit-dc/issues/91
     var pages = _.chunk( circuitElementToolNodes, ITEMS_PER_PAGE ).map( function( elements ) {
       return new VBox( {
         children: elements,
-        resize: true
+        resize: true //REVIEW*: That's the default, don't need it
       } );
     } );
 
     // The schematic and lifelike icons have different dimensions, so update the spacing when the view type changes
+    //REVIEW*: This really feels like code that should be in the Carousel itself. I vaguely recall discussing this previously.
     viewTypeProperty.link( function() {
 
       // Track the spacings so that any non-filled pages can take the average spacing of the other pages
@@ -548,7 +565,7 @@ define( function( require ) {
         page.setSpacing( 0 );
 
         // Set the spacing so that items will fill the available area
-        var spacing = (CAROUSEL_PAGE_HEIGHT - page.height) / (page.children.length - 1);
+        var spacing = ( CAROUSEL_PAGE_HEIGHT - page.height ) / ( page.children.length - 1 );
         page.setSpacing( spacing );
 
         // Track the spacings of filled pages so that the average can be used for non-filled pages
@@ -567,7 +584,7 @@ define( function( require ) {
 
     // Make sure that non-filled pages have the same top
     var alignGroup = new AlignGroup();
-    var alignedPages = pages.map( function( page ) {return alignGroup.createBox( page, { yAlign: 'top' } );} );
+    var alignedPages = pages.map( function( page ) { return alignGroup.createBox( page, { yAlign: 'top' } ); } );
 
     // create the carousel
     this.carousel = new Carousel( alignedPages, {
@@ -606,6 +623,7 @@ define( function( require ) {
      * @public
      */
     reset: function() {
+      //REVIEW*: How can we not have a carousel by this point in the code?
       this.carousel && this.carousel.reset( { animationEnabled: false } );
     }
   } );
