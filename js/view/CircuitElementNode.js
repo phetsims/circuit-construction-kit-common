@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditContainerPanel' );
+  var CircuitElementEditContainerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditContainerNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Input = require( 'SCENERY/input/Input' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -239,13 +239,13 @@ define( function( require ) {
         var clickToDismissListener = {
           down: function( event ) {
 
-            // if the target was in a CircuitElementEditContainerPanel, don't dismiss the event because the user was
+            // if the target was in a CircuitElementEditContainerNode, don't dismiss the event because the user was
             // dragging the slider or pressing the trash button or another control in that panel
             var trails = event.target.getTrails( function( node ) {
 
               // If the user tapped any component in the CircuitElementContainerPanel or on the selected node
               // allow interaction to proceed normally.  Any other taps will deselect the circuit element
-              return node instanceof CircuitElementEditContainerPanel || node === self;
+              return node instanceof CircuitElementEditContainerNode || node === self;
             } );
 
             if ( trails.length === 0 ) {

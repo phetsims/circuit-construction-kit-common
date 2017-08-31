@@ -1,7 +1,7 @@
 // Copyright 2017, University of Colorado Boulder
 
 /**
- * Readout that appears in the CircuitElementEditContainerPanel that displays whether the switch is open or closed.
+ * Readout that appears in the CircuitElementEditContainerNode that displays whether the switch is open or closed.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

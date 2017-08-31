@@ -179,7 +179,7 @@ define( function( require ) {
     this.vertexDroppedEmitter = new Emitter();
 
     // @public (read-only) {Emitter} - signifies that a component has been modified (for example, with the
-    // CircuitElementEditPanel)
+    // CircuitElementEditNode)
     this.componentEditedEmitter = new Emitter();
 
     var emitCircuitChanged = function() {

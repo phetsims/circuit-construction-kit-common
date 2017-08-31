@@ -3,7 +3,6 @@
 /**
  * This popup control appears at the bottom of the screen and shows circuit element-specific controls, like a
  * resistance control for resistors.
- * REVIEW*: Careful about naming things *Panel when they don't extend Panel. CircuitElementEditContainerNode preferred.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -20,7 +19,7 @@ define( function( require ) {
   var SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
-  var CircuitElementEditPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditPanel' );
+  var CircuitElementEditNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditNode' );
   var SwitchReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SwitchReadoutNode' );
   var TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -51,8 +50,8 @@ define( function( require ) {
    * @param {Tandem} tandem
    * @constructor
    */
-  function CircuitElementEditContainerPanel( circuit, visibleBoundsProperty, modeProperty, tandem ) {
-    var groupTandem = tandem.createGroupTandem( 'circuitElementEditPanel' );
+  function CircuitElementEditContainerNode( circuit, visibleBoundsProperty, modeProperty, tandem ) {
+    var groupTandem = tandem.createGroupTandem( 'circuitElementEditNode' );
     var self = this;
     Node.call( this );
 
@@ -104,7 +103,7 @@ define( function( require ) {
         var isSeriesAmmeter = selectedCircuitElement instanceof SeriesAmmeter;
 
         if ( isResistor && selectedCircuitElement.isResistanceEditable() ) {
-          previousPanel = new CircuitElementEditPanel(
+          previousPanel = new CircuitElementEditNode(
             resistanceString,
 
             // Adapter to take from {{named}} to {0} for usage in common code
@@ -125,7 +124,7 @@ define( function( require ) {
           );
         }
         else if ( isBattery ) {
-          previousPanel = new CircuitElementEditPanel(
+          previousPanel = new CircuitElementEditNode(
             voltageString,
 
             // Adapter to take from {{named}} to {0} for usage in common code
@@ -173,7 +172,7 @@ define( function( require ) {
     visibleBoundsProperty.link( updatePosition );
   }
 
-  circuitConstructionKitCommon.register( 'CircuitElementEditContainerPanel', CircuitElementEditContainerPanel );
+  circuitConstructionKitCommon.register( 'CircuitElementEditContainerNode', CircuitElementEditContainerNode );
 
-  return inherit( Node, CircuitElementEditContainerPanel );
+  return inherit( Node, CircuitElementEditContainerNode );
 } );

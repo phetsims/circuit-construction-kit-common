@@ -1,9 +1,7 @@
 // Copyright 2016-2017, University of Colorado Boulder
 
 /**
- * Shows controls for a single CircuitElement at the bottom of the screen and contained in a
- * CircuitElementEditContainerPanel.
- * REVIEW*: Careful about naming things *Panel when they don't extend Panel. CircuitElementEditNode preferred.
+ * Shows controls for a single CircuitElement at the bottom of the screen and contained in a CircuitElementEditContainerNode.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -33,7 +31,7 @@ define( function( require ) {
    * @param {Tandem} tandem
    * @constructor
    */
-  function CircuitElementEditPanel( title, valuePattern, valueProperty, circuit, circuitElement, tandem ) {
+  function CircuitElementEditNode( title, valuePattern, valueProperty, circuit, circuitElement, tandem ) {
 
     // When the user changes any parameter of any circuit element, signify it.
     var valuePropertyListener = function() {
@@ -70,7 +68,7 @@ define( function( require ) {
     }
 
     // @private {function} - for disposal
-    this.disposeCircuitElementEditPanel = function() {
+    this.disposeCircuitElementEditNode = function() {
       numberControl.dispose();
       valueProperty.unlink( valuePropertyListener );
     };
@@ -82,9 +80,9 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKitCommon.register( 'CircuitElementEditPanel', CircuitElementEditPanel );
+  circuitConstructionKitCommon.register( 'CircuitElementEditNode', CircuitElementEditNode );
 
-  return inherit( HBox, CircuitElementEditPanel, {
+  return inherit( HBox, CircuitElementEditNode, {
 
     /**
      * Dispose resources when no longer used.
@@ -93,7 +91,7 @@ define( function( require ) {
      */
     dispose: function() {
       HBox.prototype.dispose.call( this );
-      this.disposeCircuitElementEditPanel();
+      this.disposeCircuitElementEditNode();
     }
   } );
 } );

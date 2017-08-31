@@ -20,7 +20,7 @@ define( function( require ) {
   var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/AmmeterNode' );
   var BatteryResistanceControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryResistanceControl' );
   var ChargeSpeedThrottlingReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ChargeSpeedThrottlingReadoutNode' );
-  var CircuitElementEditContainerPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditContainerPanel' );
+  var CircuitElementEditContainerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditContainerNode' );
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
   var CircuitElementToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolbox' );
   var CircuitLayerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitLayerNode' );
@@ -84,7 +84,7 @@ define( function( require ) {
 
       showSeriesAmmeters: false,
       showNoncontactAmmeters: true,
-      getCircuitEditPanelLayoutPosition: CircuitElementEditContainerPanel.GET_LAYOUT_POSITION,
+      getCircuitEditPanelLayoutPosition: CircuitElementEditContainerNode.GET_LAYOUT_POSITION,
       showResistivityControl: true,
       showBatteryResistanceControl: true,
 
@@ -221,17 +221,17 @@ define( function( require ) {
     this.addChild( box );
     this.addChild( this.circuitLayerNode );
 
-    var circuitElementEditContainerPanel = new CircuitElementEditContainerPanel(
+    var circuitElementEditContainerNode = new CircuitElementEditContainerNode(
       model.circuit,
       this.visibleBoundsProperty,
       model.modeProperty,
-      tandem.createTandem( 'circuitElementEditContainerPanel' )
+      tandem.createTandem( 'circuitElementEditContainerNode' )
     );
 
-    // @protected {CircuitElementEditContainerPanel} - so the subclass can set the layout
-    this.circuitElementEditContainerPanel = circuitElementEditContainerPanel;
+    // @protected {CircuitElementEditContainerNode} - so the subclass can set the layout
+    this.circuitElementEditContainerNode = circuitElementEditContainerNode;
 
-    this.addChild( circuitElementEditContainerPanel );
+    this.addChild( circuitElementEditContainerNode );
 
     // The voltmeter and ammeter are rendered with the circuit node so they will scale up and down with the circuit
     this.circuitLayerNode.sensorLayer.addChild( voltmeterNode );
