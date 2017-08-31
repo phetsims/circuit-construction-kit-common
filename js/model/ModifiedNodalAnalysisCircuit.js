@@ -424,7 +424,6 @@ define( function( require ) {
   } );
 
   /**
-   * REVIEW*: Looks an awful lot like ModifiedNodalAnalysisCircuitElement?
    * @param {ModifiedNodalAnalysisCircuitElement} element
    * @constructor
    */
