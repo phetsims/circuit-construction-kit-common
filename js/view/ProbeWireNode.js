@@ -36,6 +36,7 @@ define( function( require ) {
     this.bodyPosition = new Vector2();
 
     // @private {function}
+    //REVIEW*: This would be better as a method?
     this.updateWireShape = function() {
 
       var bodyX = self.bodyPosition.x;

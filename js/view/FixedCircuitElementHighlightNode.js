@@ -46,6 +46,7 @@ define( function( require ) {
      */
     recomputeBounds: function( fixedCircuitElementNode ) {
       var localBounds = fixedCircuitElementNode.contentNode.localBounds;
+      //REVIEW*: this.setRectBounds( localBounds.dilated( PADDING ) ); -- if the extra bounds2 created isn't an issue.
       this.setRect(
         localBounds.minX - PADDING,
         localBounds.minY - PADDING,

@@ -28,14 +28,14 @@ define( function( require ) {
    * @param {number} maxNumber
    * @param {function} count - () => number, gets the number of that kind of object in the model, so the icon can be
    *                         - hidden when all items have been created
-   * @param {function} createElement - (Vector2) => CircuitElement
+   * @param {function} createElement - (Vector2) => CircuitElement REVIEW*: doc here about what the vector is?
    * @constructor
    */
   function CircuitElementToolNode( labelText, showLabelsProperty, circuitLayerNode, iconNode, maxNumber, count, createElement ) {
     var circuit = circuitLayerNode.circuit;
     var self = this;
     var labelNode = new Text( labelText, { fontSize: 12, maxWidth: TOOLBOX_ICON_SIZE } );
-    showLabelsProperty.link( function( showLabels ) {labelNode.visible = showLabels;} );
+    showLabelsProperty.link( function( showLabels ) { labelNode.visible = showLabels; } ); //REVIEW*: linkAttribute?
     VBox.call( this, {
       spacing: 6, // Spacing between the icon and the text
       resize: true, //REVIEW*: That's the default, don't need it
@@ -52,7 +52,7 @@ define( function( require ) {
 
       // Adjust for touch.  The object should appear centered on the mouse but vertically above the finger so the finger
       // doesn't obscure the object
-      viewPosition.y = viewPosition.y - (event.pointer.isTouch ? 28 : 0);
+      viewPosition.y = viewPosition.y - ( event.pointer.isTouch ? 28 : 0 );
 
       // Create the new CircuitElement at the correct location
       var circuitElement = createElement( viewPosition, event );
@@ -70,12 +70,15 @@ define( function( require ) {
       allowTouchSnag: true
     } ) );
 
+    //REVIEW*: If there's any way to ever switch components to/away from high-resistance, our count may change without
+    //REVIEW*: the number of circuit elements changing. Presumably this is a valid assumption?
     circuit.circuitElements.lengthProperty.link( function() {
       self.visible = count() < maxNumber;
     } );
 
     // Expand touch area around text, see https://github.com/phetsims/circuit-construction-kit-dc/issues/82
     var touchExpansionWidth = 10;
+    //REVIEW*: Prefer this.localBounds.withOffsets( touchExpansionWidth, 13, touchExpansionWidth, 3 )
     this.touchArea = new Bounds2(
       this.localBounds.minX - touchExpansionWidth,
       this.localBounds.minY - 13,

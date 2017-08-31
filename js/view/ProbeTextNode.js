@@ -35,7 +35,7 @@ define( function( require ) {
 
     options = _.extend( {
       spacing: 6,
-      align: 'center'
+      align: 'center' //REVIEW*: That's the default, can omit?
     }, options );
 
     var readout = new Text( textProperty.value, {

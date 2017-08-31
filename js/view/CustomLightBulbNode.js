@@ -39,7 +39,8 @@ define( function( require ) {
     options = _.extend( {
       baseOnly: false,
       highResistance: true,
-      scale: 1
+      scale: 1 //REVIEW*: Seems weird that this is passed to the Node (this), raysNode, and used in positioning the light rays.
+               //REVIEW*: Has this been verified to work across scales?
     }, options );
 
     // @private (read-only) {boolean]
@@ -57,6 +58,7 @@ define( function( require ) {
 
     var middleNode = new Image( options.baseOnly ? selectedSocketImage : middleImage, {
       scale: BULB_IMAGE_SCALE,
+      //REVIEW*: centerBottom: self.backNode.centerBottom,
       centerX: self.backNode.centerX,
       bottom: self.backNode.bottom,
       pickable: false
@@ -70,27 +72,31 @@ define( function( require ) {
 
       // Show the rays here where they can be easily positioned, but only when more than the base is showing
       var bulbRadius = middleNode.width / 2;
+      //REVIEW*: Don't self, and visibility/type docs before (rather than after on multiline)
       self.raysNode = new LightRaysNode( bulbRadius, {
         x: this.backNode.centerX,
-        y: (middleNode.top + bulbRadius) * options.scale
+        y: ( middleNode.top + bulbRadius ) * options.scale //REVIEW*: scale will apply to this, so why is this needed?
       } ); // @private
-      self.raysNode.mutate( options );
+      self.raysNode.mutate( options ); //REVIEW*: Woah, scale is also applied to the raysNode directly (in addition to CustomLightBulbNode itself)
 
       options.children = [ self.backNode, middleNode ];
     }
 
     Node.call( self, options );
 
-    // @private
+    // @private REVIEW*: Type doc it?
     this.brightnessProperty = brightnessProperty;
 
     // If it shows the rays, update their brightness
     if ( !options.baseOnly ) {
+      //REVIEW*: Don't need self on the outside
+      //REVIEW*: this.brightnessObserver = this.update.bind( this );
+      //REVIEW*: Normal type/visibility docs (add {function})
       self.brightnessObserver = function() { self.update(); }; // @private
       self.brightnessProperty.link( this.brightnessObserver );
     }
 
-    // @private - for disposal
+    // @private {function} - for disposal
     this.disposeCustomLightBulbNode = function() {
       if ( !options.baseOnly ) {
         self.brightnessProperty.unlink( self.brightnessObserver );
@@ -109,9 +115,9 @@ define( function( require ) {
       .lineToRelative( w, 0 )
       .lineToRelative( 0, h * fractionDown )
       .lineToRelative( -w * fractionHorizontalPadding, 0 )
-      .lineToRelative( 0, h * (1 - fractionDown - fractionTrim) )
-      .lineToRelative( -w * (1 - fractionHorizontalPadding * 2), 0 )
-      .lineToRelative( 0, -h * (1 - fractionDown - fractionTrim) )
+      .lineToRelative( 0, h * ( 1 - fractionDown - fractionTrim ) )
+      .lineToRelative( -w * ( 1 - fractionHorizontalPadding * 2 ), 0 )
+      .lineToRelative( 0, -h * ( 1 - fractionDown - fractionTrim ) )
       .lineToRelative( -w * fractionHorizontalPadding, 0 )
       .lineTo( this.localBounds.minX, this.localBounds.minY );
     this.touchArea = this.mouseArea;
@@ -147,6 +153,7 @@ define( function( require ) {
      * @override update when this node becomes visible
      * @param {boolean} visible
      * @public
+     * REVIEW*: Careful about overriding methods that chain. Would want to add "return this", similar to setVisible on Node
      */
     setVisible: function( visible ) {
       var wasVisible = this.visible;

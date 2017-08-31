@@ -1,7 +1,7 @@
 // Copyright 2016-2017, University of Colorado Boulder
 
 /**
- * Ported directly from the Java.
+ * Ported directly from "the Java".
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -121,6 +121,7 @@ define( function( require ) {
      * @public
      */
     getColorNames: function( resistance ) {
+      //REVIEW*: _.map( ..., 'name' )
       return this.getEntries( resistance ).map( GET_NAME );
     },
 
@@ -131,6 +132,7 @@ define( function( require ) {
      * @public
      */
     getColorArray: function( resistance ) {
+      //REVIEW*: _.map( ..., 'color' )
       return this.getEntries( resistance ).map( GET_COLOR );
     }
   };

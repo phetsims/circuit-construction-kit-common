@@ -51,6 +51,7 @@ define( function( require ) {
       viewTypeProperty, lightBulbNode, new Rectangle( 0, 0, 10, 10 ), tandem, options );
 
     // Suppress the highlight for the socket, the highlight is shown by the CircuitConstructionKitLightBulbNode
+    //REVIEW*: Would a super option to omit the highlight work?
     if ( this.highlightNode ) {
       this.highlightNode.stroke = null;
     }
