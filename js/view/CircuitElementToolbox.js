@@ -14,15 +14,16 @@ define( function( require ) {
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   var BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
+  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
+  var ResistorType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ResistorType' );
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
   var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
   var CircuitConstructionKitLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitLightBulbNode' );
   var CircuitElementToolNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolNode' );
-  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorNode' );
   var SwitchNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SwitchNode' );
   var Range = require( 'DOT/Range' );
@@ -263,7 +264,7 @@ define( function( require ) {
 
       /**
        * Create a ToolNode for a grab bag item
-       * @param {string} resistorType
+       * @param {ResistorType} resistorType
        * @param {number} resistance
        * @param {number} resistorLength
        * @param {string} labelString
@@ -292,7 +293,7 @@ define( function( require ) {
 
         /**
          * Create the specified grab bag item
-         * @param {string} resistorType
+         * @param {ResistorType} resistorType
          * @param {number} resistorLength
          * @param {Tandem} tandem
          * @returns {Resistor}
@@ -315,7 +316,7 @@ define( function( require ) {
       var MIN_RESISTANCE = 1E-6;
 
       var dollarBillNode = createGrabBagToolNode(
-        'dollarBill',
+        ResistorType.DOLLAR_BILL,
         HIGH_RESISTANCE,
         CircuitConstructionKitCommonConstants.DOLLAR_BILL_LENGTH,
         dollarBillString,
@@ -325,7 +326,7 @@ define( function( require ) {
         circuit.dollarBillGroupTandem
       );
       var paperClipNode = createGrabBagToolNode(
-        'paperClip',
+        ResistorType.PAPER_CLIP,
         MIN_RESISTANCE,
         CircuitConstructionKitCommonConstants.PAPER_CLIP_LENGTH,
         paperClipString,
@@ -335,7 +336,7 @@ define( function( require ) {
         circuit.paperClipGroupTandem
       );
       var coinToolNode = createGrabBagToolNode(
-        'coin',
+        ResistorType.COIN,
         MIN_RESISTANCE,
         CircuitConstructionKitCommonConstants.COIN_LENGTH,
         coinString,
@@ -345,7 +346,7 @@ define( function( require ) {
         circuit.coinGroupTandem
       );
       var eraserToolNode = createGrabBagToolNode(
-        'eraser',
+        ResistorType.ERASER,
         HIGH_RESISTANCE,
         CircuitConstructionKitCommonConstants.ERASER_LENGTH,
         eraserString,
@@ -355,7 +356,7 @@ define( function( require ) {
         circuit.eraserGroupTandem
       );
       var pencilToolNode = createGrabBagToolNode(
-        'pencil',
+        ResistorType.PENCIL,
         300,
         CircuitConstructionKitCommonConstants.PENCIL_LENGTH,
         pencilString,
@@ -365,7 +366,7 @@ define( function( require ) {
         circuit.pencilGroupTandem
       );
       var handToolNode = createGrabBagToolNode(
-        'hand',
+        ResistorType.HAND,
         Math.pow( 10, 6 ),
         CircuitConstructionKitCommonConstants.HAND_LENGTH,
         handString,
@@ -375,7 +376,7 @@ define( function( require ) {
         circuit.handGroupTandem
       );
       var dogToolNode = createGrabBagToolNode(
-        'dog',
+        ResistorType.DOG,
         HIGH_RESISTANCE,
         CircuitConstructionKitCommonConstants.DOG_LENGTH,
         dogString,
@@ -455,7 +456,7 @@ define( function( require ) {
             new Vertex( Vector2.ZERO ),
             new Vertex( new Vector2( CircuitConstructionKitCommonConstants.RESISTOR_LENGTH, 0 ) ),
             tandem.createTandem( 'highResistanceResistor' ), {
-              resistorType: 'highResistanceResistor', resistance: 1000
+              resistorType: ResistorType.HIGH_RESISTANCE_RESISTOR, resistance: 1000
             } ),
           viewTypeProperty,
           tandem.createTandem( 'highResistanceResistorIcon' ), {
@@ -470,7 +471,7 @@ define( function( require ) {
             vertexPair.startVertex,
             vertexPair.endVertex,
             circuit.resistorGroupTandem.createNextTandem(), {
-              resistorType: 'highResistanceResistor',
+              resistorType: ResistorType.HIGH_RESISTANCE_RESISTOR,
               resistance: CircuitConstructionKitCommonConstants.HIGH_RESISTANCE,
               editableRange: CircuitConstructionKitCommonConstants.HIGH_RESISTANCE_RANGE,
               editorDelta: CircuitConstructionKitCommonConstants.HIGH_EDITOR_DELTA

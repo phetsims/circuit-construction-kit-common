@@ -13,19 +13,11 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
+  var ResistorType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ResistorType' );
   var inherit = require( 'PHET_CORE/inherit' );
 
   // constants
   var RESISTOR_LENGTH = CircuitConstructionKitCommonConstants.RESISTOR_LENGTH;
-  //REVIEW*: Candidate for an enum (maybe with isMetallic(enum) function)
-  var RESISTOR_TYPES = [
-    'resistor', 'highResistanceResistor', 'coin', 'paperClip', 'pencil', 'eraser', 'hand', 'dog', 'dollarBill'
-  ];
-
-  // See isMetallic
-  var METALLIC_RESISTOR_TYPES = [
-    'coin', 'paperClip'
-  ];
 
   /**
    * @param {Vertex} startVertex
@@ -39,20 +31,20 @@ define( function( require ) {
       resistance: CircuitConstructionKitCommonConstants.DEFAULT_RESISTANCE,
 
       // Support for rendering grab bag items or
-      resistorType: RESISTOR_TYPES[ 0 ],
-      resistorLength: RESISTOR_LENGTH,
+      resistorType: ResistorType.VALUES[ 0 ],
+      resistorLength: RESISTOR_LENGTH
     }, options );
 
     // validate resistor type
-    assert && assert( RESISTOR_TYPES.indexOf( options.resistorType ) >= 0, 'Unknown resistor type: ' +
-                                                                           options.resistorType );
+    assert && assert( ResistorType.VALUES.indexOf( options.resistorType ) >= 0, 'Unknown resistor type: ' +
+                                                                                options.resistorType );
 
-    // @public (read-only) {string} indicates one of RESISTOR_TYPES
+    // @public (read-only) {ResistorType} indicates one of ResistorType values
     this.resistorType = options.resistorType;
 
     // @public (read-only) metallic resistors behave like exposed wires--sensor values can be read directly on the
     // resistor. For instance, coins and paper clips are metallic and can have their values read directly.
-    this.isMetallic = METALLIC_RESISTOR_TYPES.indexOf( this.resistorType ) >= 0;
+    this.isMetallic = ResistorType.isMetallic( this.resistorType );
 
     FixedLengthCircuitElement.call(
       this, startVertex, endVertex, options.resistorLength, options.resistorLength, tandem, options

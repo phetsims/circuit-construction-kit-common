@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var ResistorType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ResistorType' );
   var FixedLengthCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedLengthCircuitElementNode' );
   var ResistorColors = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorColors' );
   var Matrix3 = require( 'DOT/Matrix3' );
@@ -76,28 +77,28 @@ define( function( require ) {
 
     var lifelikeResistorImageNode = new Image( lifelikeResistorImage );
 
-    if ( resistor.resistorType === 'coin' ) {
+    if ( resistor.resistorType === ResistorType.COIN ) {
       lifelikeResistorImageNode = new Image( coinImage );
     }
-    else if ( resistor.resistorType === 'paperClip' ) {
+    else if ( resistor.resistorType === ResistorType.PAPER_CLIP ) {
       lifelikeResistorImageNode = new Image( paperClipImage );
     }
-    else if ( resistor.resistorType === 'pencil' ) {
+    else if ( resistor.resistorType === ResistorType.PENCIL ) {
       lifelikeResistorImageNode = new Image( pencilImage );
     }
-    else if ( resistor.resistorType === 'eraser' ) {
+    else if ( resistor.resistorType === ResistorType.ERASER ) {
       lifelikeResistorImageNode = new Image( eraserImage );
     }
-    else if ( resistor.resistorType === 'hand' ) {
+    else if ( resistor.resistorType === ResistorType.HAND ) {
       lifelikeResistorImageNode = new Image( handImage );
     }
-    else if ( resistor.resistorType === 'highResistanceResistor' ) {
+    else if ( resistor.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR ) {
       lifelikeResistorImageNode = new Image( highResistanceResistorImage );
     }
-    else if ( resistor.resistorType === 'dog' ) {
+    else if ( resistor.resistorType === ResistorType.DOG ) {
       lifelikeResistorImageNode = new Image( dogImage );
     }
-    else if ( resistor.resistorType === 'dollarBill' ) {
+    else if ( resistor.resistorType === ResistorType.DOLLAR_BILL ) {
       lifelikeResistorImageNode = new Image( dollarBillImage );
     }
     else {
