@@ -15,7 +15,7 @@ define( function( require ) {
   /**
    * @param {number} nodeId0
    * @param {number} nodeId1
-   * @param {CircuitElement} circuitElement
+   * @param {CircuitElement|null} circuitElement, null during qunit tests
    * @param {number} value - resistance for resistors, voltage for battery or current for current source
    * @constructor
    */
@@ -24,14 +24,20 @@ define( function( require ) {
     assert && assert( typeof nodeId1 === 'number' );
     assert && assert( typeof value === 'number' );
 
-    //REVIEW*: type docs, visibility
+    // @public (read-only) {number} index of the start node
     this.nodeId0 = nodeId0;
+
+    // @public (read-only) {number} index of the end node
     this.nodeId1 = nodeId1;
+
+    // @public (read-only) {CircuitElement|null} index of the start node
     this.circuitElement = circuitElement;
+
+    // @public (read-only) {number} resistance for resistors, voltage for battery or current for current source
     this.value = value;
 
-    //REVIEW*: type docs, visibility
-    this.currentSolution = null; // will be supplied by the modified nodal analysis
+    // @public {number} supplied by the modified nodal analysis
+    this.currentSolution = null;
   }
 
   circuitConstructionKitCommon.register( 'ModifiedNodalAnalysisCircuitElement', ModifiedNodalAnalysisCircuitElement );
