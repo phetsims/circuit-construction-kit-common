@@ -448,9 +448,7 @@ define( function( require ) {
 
     /**
      * Two UnknownCurrents are equal if the refer to the same element.
-     * @param {Object} other - an object to compare with this one
-     * REVIEW*: Any untyped {Object} isn't guaranteed to have an 'element' property. Is there any more specific info on
-     * REVIEW*: what type of elements this is called on? Usually a generic equals() would handle null/undefined too.
+     * @param {UnknownCurrent|UnknownVoltage} other - an UnknownCurrent to compare with this one
      * @returns {boolean}
      * @public
      */
@@ -483,8 +481,7 @@ define( function( require ) {
 
     /**
      * Two UnknownVoltages are equal if they refer to the same node.
-     * @param {Object} other - another object to compare with this one
-     * REVIEW*: See above note about equals()
+     * @param {UnknownVoltage|UnknownCurrent} other - another object to compare with this one
      * @returns {boolean}
      * @public
      */
