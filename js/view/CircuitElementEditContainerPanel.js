@@ -3,6 +3,7 @@
 /**
  * This popup control appears at the bottom of the screen and shows circuit element-specific controls, like a
  * resistance control for resistors.
+ * REVIEW*: Careful about naming things *Panel when they don't extend Panel. CircuitElementEditContainerNode preferred.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -46,6 +47,7 @@ define( function( require ) {
    * @param {Circuit} circuit - the circuit model
    * @param {Property.<boolean>} visibleBoundsProperty - the visible bounds in view coordinates
    * @param {Property.<string>} modeProperty - InteractionMode.EXPLORE|InteractionMode.TEST for Black Box Study
+   * REVIEW*: {Property.<InteractionMode>}?
    * @param {Tandem} tandem
    * @constructor
    */
@@ -61,6 +63,7 @@ define( function( require ) {
 
     // Only show the instructions if there is a circuit element in the play area, so students don't try to tap
     // something in the toolbox.
+    //REVIEW*: A more descriptive name would help (listener => updateInstructions / etc.).
     var listener = function() {
 
       // Only fixed length circuit elements are editable, even though wires can be deleted
@@ -79,14 +82,18 @@ define( function( require ) {
     var updatePosition = function() {
 
       // Layout, but only if we have something to display (otherwise bounds fail out)
+      //REVIEW*: Generally recommend self.bounds.isValid() as the guard for this type of thing
       self.children.length > 0 && self.mutate( GET_LAYOUT_POSITION( visibleBoundsProperty.get() ) );
     };
 
     // When the selected element changes, update the displayed controls
     var previousPanel = null;
+    //REVIEW*: Recommend 'currentPanel' instead of 'previousPanel'. Was confusing when you were actively constructing
+    //REVIEW*: new nodes and assigning them to 'previousPanel'.
+    //REVIEW*: Also, it's not a Panel subtype, so I'd prefer something more akin to "node" or something
     circuit.selectedCircuitElementProperty.link( function( selectedCircuitElement ) {
       previousPanel && self.removeChild( previousPanel );
-      (previousPanel && previousPanel !== tapInstructionTextNode) && previousPanel.dispose();
+      ( previousPanel && previousPanel !== tapInstructionTextNode ) && previousPanel.dispose();
       previousPanel = null;
 
       if ( selectedCircuitElement ) {

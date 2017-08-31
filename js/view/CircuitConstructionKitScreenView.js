@@ -113,6 +113,7 @@ define( function( require ) {
         model.voltmeter.visibleProperty.set( false );
       }
     } );
+    //REVIEW*: Usually visibility like this would be handled in VoltmeterNode. Any advantages here?
     model.voltmeter.visibleProperty.linkAttribute( voltmeterNode, 'visible' );
 
     var ammeterNode = new AmmeterNode( model.ammeter, tandem.createTandem( 'ammeterNode' ), {
@@ -125,6 +126,7 @@ define( function( require ) {
         model.ammeter.visibleProperty.set( false );
       }
     } );
+    //REVIEW*: Usually visibility like this would be handled in AmmeterNode. Any advantages here?
     model.ammeter.visibleProperty.linkAttribute( ammeterNode, 'visible' );
 
     // @public (read-only) {CircuitElementToolbox} - Toolbox from which CircuitElements can be dragged
@@ -240,7 +242,9 @@ define( function( require ) {
      * @param {Node} probeNode
      * @param {Vector2} probeTip
      * @param {number} sign - the direction the probe is rotated
-     * @returns the voltage connection or null if no connection
+     * @returns the voltage connection or null if no connection REVIEW*: Type? Not for-sure it's {number|null}
+     * REVIEW*: On later inspection, it's an object. Consider a file-local type defintion named VoltageConnection
+     * REVIEW*: to make it easy to document / handle?
      */
     var findVoltageConnection = function( probeNode, probeTip, sign ) {
       var probeTipVector = Vector2.createPolar(
@@ -270,6 +274,8 @@ define( function( require ) {
 
     /**
      * Detection for voltmeter probe + circuit intersection is done in the view since view bounds are used
+     * REVIEW*: Also looks like something that would generally be in VoltmeterNode (behind a !options.icon flag)
+     * REVIEW*: Understand if you want to keep here (then remove the comments)
      */
     var updateVoltmeter = function() {
       if ( model.voltmeter.visibleProperty.get() ) {
@@ -313,6 +319,7 @@ define( function( require ) {
 
     /**
      * Detection for ammeter probe + circuit intersection is done in the view since view bounds are used
+     * REVIEW*: Usually this code would be in AmmeterNode?
      */
     var updateAmmeter = function() {
 
@@ -357,7 +364,7 @@ define( function( require ) {
     this.visibleBoundsProperty.link( function( visibleBounds ) {
 
       self.circuitElementToolbox.left = visibleBounds.left + VERTICAL_MARGIN +
-                                        (self.circuitElementToolbox.carousel ? 0 : 12);
+                                        ( self.circuitElementToolbox.carousel ? 0 : 12 );
       self.circuitElementToolbox.top = visibleBounds.top + VERTICAL_MARGIN;
 
       // Float the resetAllButton to the bottom right
@@ -487,7 +494,7 @@ define( function( require ) {
      * Check for an intersection between a probeNode and a wire, return null if no hits.
      * @param {Vector2} position to hit test
      * @param {function} filter - CircuitElement=>boolean the rule to use for checking circuit elements
-     * @returns {WireNode|null}
+     * @returns {WireNode|null} REVIEW*: I don't see why this would be restricted to WireNode. If so, hitWireNode would be better name
      * @public
      */
     hitCircuitElementNode: function( position, filter ) {
@@ -524,7 +531,7 @@ define( function( require ) {
 
     /**
      * Find where the voltmeter probe node intersects the wire, for computing the voltage difference
-     * @param {Image} probeNode - the probe node from the VoltmeterNode
+     * @param {Image} probeNode - the probe node from the VoltmeterNode REVIEW*: Only needs centerTop, consider doc as {Node}
      * @param {Vector2} probePosition
      * @returns {Object|null} if connected returns {vertex,voltage} otherwise null
      * @private
@@ -550,7 +557,8 @@ define( function( require ) {
 
       // Check for intersection with a metallic circuit element, which can provide voltmeter readings
       var metallicCircuitElement = this.hitCircuitElementNode( probePosition, function( circuitElement ) {
-        return (circuitElement instanceof Wire) || (circuitElement instanceof Resistor && circuitElement.isMetallic);
+        //REVIEW*: Consider adding isMetallic:true to Wire?
+        return ( circuitElement instanceof Wire ) || ( circuitElement instanceof Resistor && circuitElement.isMetallic );
       } );
       if ( metallicCircuitElement ) {
 
@@ -559,11 +567,13 @@ define( function( require ) {
         var segmentVector = endPoint.minus( startPoint );
         var probeVector = probeNode.centerTop.minus( startPoint );
 
-        var distanceAlongSegment = segmentVector.magnitude() === 0 ? 0 : (probeVector.dot( segmentVector ) /
-                                                                          segmentVector.magnitude() /
-                                                                          segmentVector.magnitude());
+        //REVIEW*: Divide by segmentVector.magnitudeSquared() instead?
+        var distanceAlongSegment = segmentVector.magnitude() === 0 ? 0 : ( probeVector.dot( segmentVector ) /
+                                                                           segmentVector.magnitude() /
+                                                                           segmentVector.magnitude() );
         distanceAlongSegment = Util.clamp( distanceAlongSegment, 0, 1 );
 
+        //REVIEW*: This was just clamped, not sure an assertion is needed (don't feel strongly)
         assert && assert( distanceAlongSegment >= 0 && distanceAlongSegment <= 1, 'beyond the end of the wire' );
         var voltageAlongWire = Util.linear(
           0,
