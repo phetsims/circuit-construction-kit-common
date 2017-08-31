@@ -24,11 +24,13 @@ define( function( require ) {
     assert && assert( typeof nodeId1 === 'number' );
     assert && assert( typeof value === 'number' );
 
+    //REVIEW*: type docs, visibility
     this.nodeId0 = nodeId0;
     this.nodeId1 = nodeId1;
     this.circuitElement = circuitElement;
     this.value = value;
 
+    //REVIEW*: type docs, visibility
     this.currentSolution = null; // will be supplied by the modified nodal analysis
   }
 
