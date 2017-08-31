@@ -73,7 +73,7 @@ define( function( require ) {
     // @private
     this.viewTypeProperty = viewTypeProperty;
 
-    FixedCircuitElement.call( this, startVertex, endVertex, this.getPathLength( startVertex ), tandem, options );
+    FixedCircuitElement.call( this, startVertex, endVertex, this.getPathLength(), tandem, options );
 
     // @public (read-only) {number} - the number of decimal places to show in readouts and controls
     this.numberOfDecimalPlaces = this.highResistance ? 0 : 1;
@@ -88,25 +88,21 @@ define( function( require ) {
      * @public
      */
     updatePathLength: function() {
-      this.chargePathLength = this.getPathLength( this.startVertexProperty.value );
+      this.chargePathLength = this.getPathLength();
     },
 
     /**
      * Determine the new path length
-     * @param {Vertex} startVertex
      * @returns {number}
      * @private
-     * REVIEW: When FixedCircuitElement's distanceBetweenVertices is removed, getPathLength here should not take parameters
-     * REVIEW^(samreid): We removed distanceBetweenVertices but startVertex is not assigned until after supercall,
-     * REVIEW^(samreid): can you please recommend how to proceed?
      */
-    getPathLength: function( startVertex ) {
+    getPathLength: function() {
       var pathLength = 0;
       var samplePoints = this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? LIFELIKE_SAMPLE_POINTS : SCHEMATIC_SAMPLE_POINTS;
       for ( var i = 0; i < samplePoints.length - 1; i++ ) {
         //REVIEW*: If it's worth it, don't call getFilamentPathPoint multiple times for a single index
-        var point1 = this.getFilamentPathPoint( i, startVertex, samplePoints );
-        var point2 = this.getFilamentPathPoint( i + 1, startVertex, samplePoints );
+        var point1 = this.getFilamentPathPoint( i, Vector2.ZERO, samplePoints );
+        var point2 = this.getFilamentPathPoint( i + 1, Vector2.ZERO, samplePoints );
         pathLength += point2.distance( point1 );
       }
       return pathLength;
@@ -123,19 +119,19 @@ define( function( require ) {
 
     /**
      * Maps from the "as the crow flies" path to the circuitous path.
-     * REVIEW*: Doc that it maps points with a transformation such that: startPoint => startVertex position, endPoint => endVertex position
+     * REVIEW*: Doc that it maps points with a transformation such that: startPoint => beginningPoint position, endPoint => endVertex position
      *
      * @param {number} index
-     * @param {Vertex} startVertex
+     * @param {Vector2} beginningPoint
      * @param {Vector2[]} samplePoints - the array of points to use for sampling
      * @returns {Vector2}
      * @private
      */
-    getFilamentPathPoint: function( index, startVertex, samplePoints ) {
+    getFilamentPathPoint: function( index, beginningPoint, samplePoints ) {
       var point = samplePoints[ index ];
 
-      var vertexX = startVertex.positionProperty.get().x;
-      var vertexY = startVertex.positionProperty.get().y;
+      var vertexX = beginningPoint.x;
+      var vertexY = beginningPoint.y;
 
       var startPoint = samplePoints[ 0 ];
       var endPoint = samplePoints[ samplePoints.length - 1 ];
@@ -173,8 +169,8 @@ define( function( require ) {
       var samplePoints = this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? LIFELIKE_SAMPLE_POINTS : SCHEMATIC_SAMPLE_POINTS;
       for ( var i = 0; i < samplePoints.length - 1; i++ ) {
         //REVIEW*: If it's worth it, don't call getFilamentPathPoint multiple times for a single index
-        var point1 = this.getFilamentPathPoint( i, this.startVertexProperty.get(), samplePoints );
-        var point2 = this.getFilamentPathPoint( i + 1, this.startVertexProperty.get(), samplePoints );
+        var point1 = this.getFilamentPathPoint( i, this.startVertexProperty.get().positionProperty.get(), samplePoints );
+        var point2 = this.getFilamentPathPoint( i + 1, this.startVertexProperty.get().positionProperty.get(), samplePoints );
 
         accumulatedDistance += point2.distance( point1 );
 

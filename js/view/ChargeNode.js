@@ -93,8 +93,6 @@ define( function( require ) {
 
     /**
      * @private - update the transform of the charge node
-     * REVIEW^(samreid): I've updated to use Matrix3 and could use help using it to set Node.matrix here without
-     * REVIEW^(samreid): creating garbage (not sure if we should mutate matrix then restore it), does scenery make Matrix copy?
      */
     updateTransform: function() {
       var charge = this.charge;
@@ -102,11 +100,10 @@ define( function( require ) {
 
       NODE_MATRIX.set( charge.matrix );
 
-      // REVIEW^(samreid): Jon, can you please look over this method and make recommendations?
       if ( charge.charge > 0 ) {
 
         // Rotate if current is running backwards
-        (current < 0) && NODE_MATRIX.multiplyMatrix( HALF_ROTATION );
+        ( current < 0 ) && NODE_MATRIX.multiplyMatrix( HALF_ROTATION );
 
         // Center
         NODE_MATRIX.multiplyMatrix( ARROW_OFFSET );
