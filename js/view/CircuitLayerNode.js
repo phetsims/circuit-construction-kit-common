@@ -46,7 +46,7 @@ define( function( require ) {
   var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementViewType' );
+  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
 
   /**
    * @param {Circuit} circuit - the model Circuit
