@@ -13,6 +13,7 @@ define( function( require ) {
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var ConventionalCurrentArrowNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ConventionalCurrentArrowNode' );
+  var Matrix3 = require( 'DOT/Matrix3' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Image = require( 'SCENERY/nodes/Image' );
   var ElectronChargeNode = require( 'SCENERY_PHET/ElectronChargeNode' );
@@ -29,6 +30,16 @@ define( function( require ) {
   } ).toDataURLImageSynchronous();
   var ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.createStaticTandem( 'arrowNode' ) )
     .toDataURLImageSynchronous();
+
+  var ARROW_OFFSET = Matrix3.translation( -ARROW_NODE.width / 2, -ARROW_NODE.height / 2 );
+  var HALF_ROTATION = Matrix3.rotation2( Math.PI );
+
+  // scratch matrix that is used to set values to scenery
+  var NODE_MATRIX = new Matrix3();
+
+  // position the electron--note the offsets that were used to make it look exactly centered, see
+  // https://github.com/phetsims/circuit-construction-kit-dc/issues/104
+  var ELECTRON_OFFSET = Matrix3.translation( -ELECTRON_CHARGE_NODE.width / 2 - 0.5, -ELECTRON_CHARGE_NODE.height / 2 - 0.5 );
 
   /**
    * @param {Charge} charge - the model element
@@ -88,22 +99,34 @@ define( function( require ) {
     updateTransform: function() {
       var charge = this.charge;
       var current = charge.circuitElement.currentProperty.get();
-      var matrix = charge.matrix;
-      var translation = matrix.translation;
+
+      NODE_MATRIX.set( charge.matrix );
+
+      // REVIEW^(samreid): Jon, can you please look over this method and make recommendations?
       if ( charge.charge > 0 ) {
 
-        // Rotate then center the rotated node
-        this.rotation = charge.matrix.rotation + ( current < 0 ? Math.PI : 0 );
-        this.center = translation;
+        // Rotate if current is running backwards
+        (current < 0) && NODE_MATRIX.multiplyMatrix( HALF_ROTATION );
+
+        // Center
+        NODE_MATRIX.multiplyMatrix( ARROW_OFFSET );
+
+        // Apply the transform
+        this.matrix = NODE_MATRIX;
       }
       else {
 
-        // position the electron--note the offsets that were used to make it look exactly centered, see
-        // https://github.com/phetsims/circuit-construction-kit-dc/issues/104
-        this.setTranslation(
-          translation.x - ELECTRON_CHARGE_NODE.width / 2 - 0.5,
-          translation.y - ELECTRON_CHARGE_NODE.height / 2 - 0.5
-        );
+        // Set rotation to 0 since electrons should always be upside-up
+        NODE_MATRIX.set00( 1 );
+        NODE_MATRIX.set01( 0 );
+        NODE_MATRIX.set10( 0 );
+        NODE_MATRIX.set11( 1 );
+
+        // Center the electrons
+        NODE_MATRIX.multiplyMatrix( ELECTRON_OFFSET );
+
+        // Apply the transform
+        this.matrix = NODE_MATRIX;
       }
       this.updateVisible();
       this.outsideOfBlackBoxProperty.set( !charge.circuitElement.insideTrueBlackBoxProperty.get() );
