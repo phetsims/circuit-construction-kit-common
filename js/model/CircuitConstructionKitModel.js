@@ -214,9 +214,8 @@ define( function( require ) {
       }
 
       // Only move charges if the simulation is not paused.
-      if ( this.isValueDepictionEnabledProperty.value ) {
-        this.circuit.step( dt );
-      }
+
+      this.isValueDepictionEnabledProperty.value && this.circuit.step( dt );
 
       this.circuit.layoutChargesInDirtyCircuitElements();
     },
