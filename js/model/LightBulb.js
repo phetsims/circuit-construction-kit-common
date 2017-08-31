@@ -97,7 +97,9 @@ define( function( require ) {
      * @param {Vertex} startVertex
      * @returns {number}
      * @private
-     * REVIEW*: When FixedCircuitElement's distanceBetweenVertices is removed, getPathLength here should not take parameters
+     * REVIEW: When FixedCircuitElement's distanceBetweenVertices is removed, getPathLength here should not take parameters
+     * REVIEW^(samreid): We removed distanceBetweenVertices but startVertex is not assigned until after supercall,
+     * REVIEW^(samreid): can you please recommend how to proceed?
      */
     getPathLength: function( startVertex ) {
       var pathLength = 0;
