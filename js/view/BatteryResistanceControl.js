@@ -46,26 +46,23 @@ define( function( require ) {
       return new Text( string, { fontSize: 12, tandem: tandem } );
     };
 
-    var slider = new HSlider(
-      batteryResistanceProperty,
-      //REVIEW: Extracting info about the 0-10 range may simplify a few things?
-      //REVIEW^(samreid): Can you be more specific? This is the only spot I see that range in use.
-      //REVIEW*: Sorry! In tick handling, I see 2 usages of min (0), 2 usages of center (5), and 3 usages of max (10)
-      new Range( CircuitConstructionKitCommonConstants.DEFAULT_BATTERY_RESISTANCE, 10 ), {
-        trackSize: CircuitConstructionKitCommonConstants.SLIDER_TRACK_SIZE,
-        thumbSize: CircuitConstructionKitCommonConstants.THUMB_SIZE,
-        majorTickLength: CircuitConstructionKitCommonConstants.MAJOR_TICK_LENGTH,
+    var range = CircuitConstructionKitCommonConstants.BATTERY_RESISTANCE_RANGE;
+    var midpoint = (range.max + range.min) / 2;
+    var slider = new HSlider( batteryResistanceProperty, range, {
+      trackSize: CircuitConstructionKitCommonConstants.SLIDER_TRACK_SIZE,
+      thumbSize: CircuitConstructionKitCommonConstants.THUMB_SIZE,
+      majorTickLength: CircuitConstructionKitCommonConstants.MAJOR_TICK_LENGTH,
 
-        // Snap to the nearest whole number.
-        constrainValue: function( value ) { return Util.roundSymmetric( value ); },
-        tandem: tandem.createTandem( 'slider' )
-      } );
-    slider.addMajorTick( 0, createLabel( '0', tandem.createTandem( 'minLabel' ) ) );
-    slider.addMajorTick( 5 );
-    slider.addMajorTick( 10, createLabel( '10', tandem.createTandem( 'maxLabel' ) ) );
+      // Snap to the nearest whole number.
+      constrainValue: function( value ) { return Util.roundSymmetric( value ); },
+      tandem: tandem.createTandem( 'slider' )
+    } );
+    slider.addMajorTick( range.min, createLabel( range.min.toFixed( 0 ), tandem.createTandem( 'minLabel' ) ) );
+    slider.addMajorTick( midpoint );
+    slider.addMajorTick( range.max, createLabel( range.max.toFixed( 0 ), tandem.createTandem( 'maxLabel' ) ) );
 
-    for ( var i = 1; i < 10; i++ ) {
-      if ( i !== 5 ) {
+    for ( var i = range.min + 1; i < range.max; i++ ) {
+      if ( i !== midpoint ) {
         slider.addMinorTick( i );
       }
     }

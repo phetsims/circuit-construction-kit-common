@@ -29,6 +29,9 @@ define( function( require ) {
     // The resistance of a default battery
     DEFAULT_BATTERY_RESISTANCE: 0,
 
+    // The range of the battery resistance
+    BATTERY_RESISTANCE_RANGE: new Range( 0, 10 ),
+
     // Right side panel minWidth
     RIGHT_SIDE_PANEL_MIN_WIDTH: 190,
 
