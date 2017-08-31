@@ -781,19 +781,6 @@ define( function( require ) {
 
       // Move the charges
       this.chargeAnimator.step( dt );
-
-      //REVIEW: This pattern seems necessary (to avoid copying), but:
-      //REVIEW: (a) you're creating function closures here but avoiding an array copy. Should we ditch the closures?
-      //REVIEW: (b) I'd REALLY like to see a safe way to do this, that sets assertions to ensure there wasn't a
-      //REVIEW: concurrent modification. Maybe forEachVolatile or some other name that adds assertion checks, but
-      //REVIEW: production runtime is fast (and doesn't require the extra ugly getArray() all over the place).
-      //REVIEW^(samreid): CircuitElement.update cannot modify the list of circuit elements, so concurrent modification
-      //REVIEW^(samreid): is not an issue in this case.  I moved the closure out, will that help?
-      //REVIEW^(samreid): Should this become an axon issue for further discussion?  I agree the .getArray() are unwieldy
-      //REVIEW^(samreid): but not sure about adding forEachVolatile (or *volatile for many methods).
-      //REVIEW^(samreid): Did we decide it will be impossible to remove the copies in ObservableArray? (basically making everything volatile?)
-      //REVIEW*: Looks good, commented https://github.com/phetsims/axon/issues/5#issuecomment-326154967
-      //REVIEW*: Remove these comments whenever desired.
       this.circuitElements.getArray().forEach( UPDATE_IF_PRESENT );
     },
 
