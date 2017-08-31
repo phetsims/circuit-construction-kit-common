@@ -45,14 +45,9 @@ define( function( require ) {
      * @public
      */
     recomputeBounds: function( fixedCircuitElementNode ) {
-      var localBounds = fixedCircuitElementNode.contentNode.localBounds;
-      //REVIEW*: this.setRectBounds( localBounds.dilated( PADDING ) ); -- if the extra bounds2 created isn't an issue.
-      this.setRect(
-        localBounds.minX - PADDING,
-        localBounds.minY - PADDING,
-        localBounds.width + PADDING * 2,
-        localBounds.height + PADDING * 2
-      );
+
+      // This is called rarely and hence the extra allocation is OK
+      this.setRectBounds( fixedCircuitElementNode.contentNode.localBounds.dilated( PADDING ) );
     }
   } );
 } );
