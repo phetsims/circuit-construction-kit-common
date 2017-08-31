@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var Emitter = require( 'AXON/Emitter' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var Vector2 = require( 'DOT/Vector2' );
+  var Matrix3 = require( 'DOT/Matrix3' );
   var inherit = require( 'PHET_CORE/inherit' );
 
   /**
@@ -39,11 +39,8 @@ define( function( require ) {
     // @public (read-only) {number} - the distance the charge has traveled in its CircuitElement in view coordinates
     this.distance = distance;
 
-    // @public (read-only) {Vector2} - the 2d position of the charge
-    this.position = Vector2.ZERO;
-
-    // @public (read-only) {number} - the angle of the charge (for showing arrows)
-    this.angle = 0;
+    // @public (read-only) {Matrix3} - rotation and translation for the charge
+    this.matrix = Matrix3.identity();
 
     // @public (read-only) {Property.<boolean>} - whether the charge should be displayed
     this.visibleProperty = visibleProperty;
@@ -67,10 +64,7 @@ define( function( require ) {
      */
     updatePositionAndAngle: function() {
       assert && assert( !isNaN( this.distance ), 'charge position was not a number' );
-      var positionAndAngle = this.circuitElement.getPositionAndAngle( this.distance );
-      this.position = positionAndAngle.position;
-      this.angle = positionAndAngle.angle;
-      assert && assert( !isNaN( this.position.x ) && !isNaN( this.position.y ), 'point was not a number' );
+      this.circuitElement.getPositionAndAngle( this.distance, this.matrix );
 
       // Notify listeners that the position and angle have changed.
       this.changedEmitter.emit();

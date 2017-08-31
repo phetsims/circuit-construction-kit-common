@@ -13,6 +13,7 @@ define( function( require ) {
   var NumberProperty = require( 'AXON/NumberProperty' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
   var Util = require( 'DOT/Util' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -55,11 +56,12 @@ define( function( require ) {
       /**
        * Returns the position and angle of the given point along the Switch
        * @param {number} distanceAlongWire
+       * @param {Matrix3} matrix to be updated with the position and angle, so that garbage isn't created each time
        * @returns {Object} with {position,angle}
        * @overrides
        * @public
        */
-      getPositionAndAngle: function( distanceAlongWire ) {
+      getPositionAndAngle: function( distanceAlongWire, matrix ) {
 
         var startPosition = this.startPositionProperty.get();
         var endPosition = this.endPositionProperty.get();
@@ -73,16 +75,16 @@ define( function( require ) {
           var rotatedPoint = twoThirdsPoint.rotatedAboutPoint( pivot, -Math.PI / 4 );
 
           var distanceAlongSegment = Util.linear( SWITCH_START, SWITCH_END, 0, 1, fractionAlongWire );
-          return {
-
-            position: pivot.blend( rotatedPoint, distanceAlongSegment ),
-            angle: endPosition.minus( startPosition ).angle()
-          };
+          return CircuitConstructionKitCommonUtil.setToTranslationRotation(
+            matrix,
+            pivot.blend( rotatedPoint, distanceAlongSegment ),
+            endPosition.minus( startPosition ).angle()
+          );
         }
         else {
 
           // For a closed switch, there is a straight path from the start vertex to the end vertex
-          return FixedLengthCircuitElement.prototype.getPositionAndAngle.call( this, distanceAlongWire );
+          return FixedLengthCircuitElement.prototype.getPositionAndAngle.call( this, distanceAlongWire, matrix );
         }
       },
 

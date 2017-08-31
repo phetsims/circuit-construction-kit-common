@@ -15,6 +15,8 @@ define( function( require ) {
   var NumberProperty = require( 'AXON/NumberProperty' );
   var Property = require( 'AXON/Property' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
+  var Matrix3 = require( 'DOT/Matrix3' );
   var Vector2 = require( 'DOT/Vector2' );
   var inherit = require( 'PHET_CORE/inherit' );
 
@@ -246,6 +248,7 @@ define( function( require ) {
     /**
      * Gets the 2D Position along the CircuitElement corresponding to the given scalar distance
      * @param {number} distanceAlongWire - the scalar distance from one endpoint to another.
+     * @param {Matrix3} matrix to be updated with the position and angle, so that garbage isn't created each time
      * @returns {Object} with {position:Vector2,angle:number} the position in view coordinates and angle in radians
      * REVIEW: If both are needed, can we just return a Matrix that has the position/angle information (assuming
      * REVIEW: Charge switches to use a Matrix3 instead of position/angle independently)
@@ -275,13 +278,14 @@ define( function( require ) {
      * REVIEW*: in ChargeNode, so it's probably simpler overall).
      * @public
      */
-    getPositionAndAngle: function( distanceAlongWire ) {
+    getPositionAndAngle: function( distanceAlongWire, matrix ) {
       var startPosition = this.startPositionProperty.get();
       var endPosition = this.endPositionProperty.get();
-      return {
-        position: startPosition.blend( endPosition, distanceAlongWire / this.chargePathLength ),
-        angle: Vector2.getAngleBetweenVectors( startPosition, endPosition )
-      };
+      return CircuitConstructionKitCommonUtil.setToTranslationRotation(
+        matrix,
+        startPosition.blend( endPosition, distanceAlongWire / this.chargePathLength ),
+        Vector2.getAngleBetweenVectors( startPosition, endPosition )
+      );
     },
 
     /**

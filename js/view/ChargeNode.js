@@ -86,21 +86,21 @@ define( function( require ) {
     updateTransform: function() {
       var charge = this.charge;
       var current = charge.circuitElement.currentProperty.get();
-      var position = charge.position;
-
+      var matrix = charge.matrix;
+      var translation = matrix.translation;
       if ( charge.charge > 0 ) {
 
         // Rotate then center the rotated node
-        this.rotation = charge.charge < 0 ? 0 : charge.angle + ( current < 0 ? Math.PI : 0 );
-        this.center = position;
+        this.rotation = charge.charge < 0 ? 0 : charge.matrix.rotation + ( current < 0 ? Math.PI : 0 );
+        this.center = translation;
       }
       else {
 
         // position the electron--note the offsets that were used to make it look exactly centered, see
         // https://github.com/phetsims/circuit-construction-kit-dc/issues/104
         this.setTranslation(
-          position.x - ELECTRON_CHARGE_NODE.width / 2 - 0.5,
-          position.y - ELECTRON_CHARGE_NODE.height / 2 - 0.5
+          translation.x - ELECTRON_CHARGE_NODE.width / 2 - 0.5,
+          translation.y - ELECTRON_CHARGE_NODE.height / 2 - 0.5
         );
       }
       this.updateVisible();

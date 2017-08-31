@@ -11,12 +11,14 @@ define( function( require ) {
   // modules
   var NumberProperty = require( 'AXON/NumberProperty' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
+  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   var FixedLengthCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedLengthCircuitElement' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
+  var Matrix3 = require( 'DOT/Matrix3' );
   var Util = require( 'DOT/Util' );
   var Vector2 = require( 'DOT/Vector2' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
 
   // constants
 
@@ -158,13 +160,14 @@ define( function( require ) {
      * Overrides CircuitElement.getPosition to describe the path the charge takes through the light bulb.
      *
      * @param {number} distanceAlongWire - how far along the bulb's length the charge has traveled
+     * @param {Matrix3} matrix to be updated with the position and angle, so that garbage isn't created each time
      * @returns {Object}
      * @override
      * @public
      */
-    getPositionAndAngle: function( distanceAlongWire ) {
+    getPositionAndAngle: function( distanceAlongWire, matrix ) {
 
-      var parentPositionAndAngle = FixedLengthCircuitElement.prototype.getPositionAndAngle.call( this, distanceAlongWire );
+      FixedLengthCircuitElement.prototype.getPositionAndAngle.call( this, distanceAlongWire, matrix );
 
       var previousAccumulatedDistance = 0;
       var accumulatedDistance = 0;
@@ -190,10 +193,11 @@ define( function( require ) {
           var position = positionAlongSegment.rotatedAboutPoint( startPoint, relativeAngle );
           var angle = point2.minus( point1 ).angle();
 
-          return {
-            position: position,
-            angle: angle + parentPositionAndAngle.angle + 0.7851354708011367 // sampled from createAtPosition
-          };
+          return CircuitConstructionKitCommonUtil.setToTranslationRotation(
+            matrix,
+            position,
+            angle + matrix.getRotation() + 0.7851354708011367 // sampled from createAtPosition
+          );
         }
         previousAccumulatedDistance = accumulatedDistance;
       }
