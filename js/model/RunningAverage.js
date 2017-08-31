@@ -14,6 +14,8 @@ define( function( require ) {
 
   /**
    * @param {number} windowSize - number of points to average
+   * REVIEW*: JB noted it would probably be helpful in Dot. Presumably we'd want to be able to grab the average
+   * REVIEW*: when we weren't adding a sample (and maybe other features). Any thoughts on changes to make it common-code?
    * @constructor
    */
   function RunningAverage( windowSize ) {
