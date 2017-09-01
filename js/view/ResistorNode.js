@@ -89,23 +89,15 @@ define( function( require ) {
     // Add color bands for the normal resistor
     if ( resistor.resistorType === ResistorType.RESISTOR ) {
 
-      /**
-       * Get a color band for the given index.
-       * @param {number} index
-       * @returns {Rectangle}
-       */
-      var getColorBand = function( index ) {
+      // Color bands for resistance > 0
+      var colorBands = _.range( 4 ).map( function( index ) {
 
         var additionalOffset = index === 3 ? 12 : 0;
         return new Rectangle(
           COLOR_BAND_PADDING + ( COLOR_BAND_WIDTH + COLOR_BAND_SPACING ) * index + additionalOffset, COLOR_BAND_Y,
           COLOR_BAND_WIDTH, COLOR_BAND_HEIGHT
         );
-      };
-
-      // Color bands for resistance > 0
-      //REVIEW*: getColorBand used once, possibly inline?
-      var colorBands = _.range( 4 ).map( getColorBand );
+      } );
 
       // Single color band when resistance = 0 which appears in the middle
       var singleColorBand = new Rectangle( 0, 0, COLOR_BAND_WIDTH, COLOR_BAND_HEIGHT, {
