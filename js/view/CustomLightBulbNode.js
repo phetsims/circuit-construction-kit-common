@@ -56,9 +56,7 @@ define( function( require ) {
 
     var middleNode = new Image( options.baseOnly ? selectedSocketImage : middleImage, {
       scale: BULB_IMAGE_SCALE,
-      //REVIEW*: centerBottom: self.backNode.centerBottom,
-      centerX: self.backNode.centerX,
-      bottom: self.backNode.bottom,
+      centerBottom: self.backNode.centerBottom,
       pickable: false
     } );
 
