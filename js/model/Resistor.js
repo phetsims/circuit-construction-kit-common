@@ -54,7 +54,7 @@ define( function( require ) {
     this.resistanceProperty = new NumberProperty( options.resistance );
 
     // @public (read-only) {number} - the number of decimal places to show in readouts and controls
-    this.numberOfDecimalPlaces = this.resistorType === 'resistor' ? 1 : 0;
+    this.numberOfDecimalPlaces = this.resistorType === ResistorType.RESISTOR ? 1 : 0;
   }
 
   circuitConstructionKitCommon.register( 'Resistor', Resistor );
@@ -67,7 +67,7 @@ define( function( require ) {
      * @public
      */
     isResistanceEditable: function() {
-      return this.resistorType === 'highResistanceResistor' || this.resistorType === 'resistor';
+      return this.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR || this.resistorType === ResistorType.RESISTOR;
     },
 
     /**

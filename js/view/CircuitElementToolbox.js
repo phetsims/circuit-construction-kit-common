@@ -240,8 +240,7 @@ define( function( require ) {
         icon: true
       } ),
       function( circuitElement ) {
-        //REVIEW*: Did this break, since its resistorType comparson isn't from an enumeration?
-        return circuitElement instanceof Resistor && circuitElement.resistorType === 'resistor';
+        return circuitElement instanceof Resistor && circuitElement.resistorType === ResistorType.RESISTOR;
       },
       function( position ) {
         var vertexPair = createVertexPair( position, RESISTOR_LENGTH );
@@ -473,7 +472,7 @@ define( function( require ) {
             icon: true
           } ),
         function( circuitElement ) {
-          return circuitElement instanceof Resistor && circuitElement.resistorType === 'highResistanceResistor';
+          return circuitElement instanceof Resistor && circuitElement.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR;
         },
         function( position ) {
           var vertexPair = createVertexPair( position, RESISTOR_LENGTH );
