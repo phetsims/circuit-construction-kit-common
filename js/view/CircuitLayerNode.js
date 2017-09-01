@@ -86,7 +86,7 @@ define( function( require ) {
     // @public {Node} - layer for light rays, since it cannot be rendered in WebGL
     this.lightRaysLayer = new Node();
 
-    //REVIEW*: docs
+    // @public {Node} - layer that contains the wires
     this.wireLayer = new Node( {
       renderer: 'webgl',
 
@@ -96,7 +96,8 @@ define( function( require ) {
         children: WireNode.webglSpriteNodes
       } ) ]
     } );
-    //REVIEW*: docs
+
+    // @public {Node} - layer that shows the solder joints
     this.solderLayer = new Node( {
       renderer: 'webgl',
 
@@ -106,7 +107,8 @@ define( function( require ) {
         children: SolderNode.webglSpriteNodes
       } ) ]
     } );
-    //REVIEW*: docs
+
+    // @public {Node} - layer that shows the Vertex instances
     this.vertexLayer = new Node( {
       renderer: 'webgl',
 
@@ -121,8 +123,6 @@ define( function( require ) {
     this.fixedCircuitElementLayer = new Node( {
 
       // add a child eagerly so the WebGL block is all allocated when 1st object is dragged out of toolbox
-      // @jonathanolson: is there a better way to do this?
-      //REVIEW*: Not currently.
       renderer: 'webgl',
       children: [ new Node( {
         visible: false,
@@ -145,7 +145,7 @@ define( function( require ) {
       } ) ]
     } );
 
-    //REVIEW*: docs
+    // @public {Node} - layer that shows the Charge instances
     this.chargeLayer = new Node( {
       renderer: 'webgl',
 
@@ -160,7 +160,7 @@ define( function( require ) {
       self.chargeLayer.visible = isValueDepictionEnabled && revealing;
     } );
 
-    //REVIEW*: docs
+    // @public {Node} - layer that shows the Voltmeter and Ammeter (but not the SeriesAmmeter, which is shown in the fixedCircuitElementLayer)
     this.sensorLayer = new Node();
 
     // For lifelike: Solder should be in front of wires but behind batteries and resistors.
@@ -248,8 +248,6 @@ define( function( require ) {
               tandem.createTandem( circuitElement.tandemName ).createTandem( 'valueNode' )
             );
 
-            //REVIEW*: Commented out?
-            // self.valueLayer.addChild( valueNode );
             var updateShowValues = function( showValues ) {
               CircuitConstructionKitCommonUtil.setInSceneGraph( showValues, self.valueLayer, valueNode );
             };
