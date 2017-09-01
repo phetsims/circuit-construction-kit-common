@@ -42,13 +42,9 @@ define( function( require ) {
     // @public (read-only) {ResistorType} indicates one of ResistorType values
     this.resistorType = options.resistorType;
 
-    // @public (read-only) metallic resistors behave like exposed wires--sensor values can be read directly on the
-    // resistor. For instance, coins and paper clips are metallic and can have their values read directly.
-    this.isMetallic = ResistorType.isMetallic( this.resistorType );
+    options.isMetallic = ResistorType.isMetallic( this.resistorType );
 
-    FixedCircuitElement.call(
-      this, startVertex, endVertex, options.resistorLength, tandem, options
-    );
+    FixedCircuitElement.call( this, startVertex, endVertex, options.resistorLength, tandem, options );
 
     // @public {Property.<number>} the resistance in ohms
     this.resistanceProperty = new NumberProperty( options.resistance );

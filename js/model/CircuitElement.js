@@ -50,8 +50,13 @@ define( function( require ) {
       canBeDroppedInToolbox: true, // In the CCK: Basics intro screen, CircuitElements can't be dropped into the toolbox
       interactive: true, // In CCK: Black Box Study, CircuitElements in the black box cannot be manipulated
       isSizeChangedOnViewChange: true,
-      insideTrueBlackBox: false
+      insideTrueBlackBox: false,
+      isMetallic: false // Metallic items can have their voltage read directly (unshielded)
     }, options );
+
+    // @public (read-only) metallic resistors behave like exposed wires--sensor values can be read directly on the
+    // resistor. For instance, coins and paper clips and wires are metallic and can have their values read directly.
+    this.isMetallic = options.isMetallic;
 
     // @public (read-only) {boolean} - whether the size changes when changing from lifelike/schematic, used to determine
     // whether the highlight region should be changed.  True for everything except the switch.

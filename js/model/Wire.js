@@ -30,7 +30,7 @@ define( function( require ) {
    */
   function Wire( startVertex, endVertex, resistivityProperty, tandem, options ) {
     assert && assert( typeof resistivityProperty !== 'number', 'property should not be a number' );
-    options = _.extend( { wireStub: false }, options );
+    options = _.extend( { wireStub: false, isMetallic: true }, options );
     var chargePathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
     CircuitElement.call( this, startVertex, endVertex, chargePathLength, tandem, options );
 

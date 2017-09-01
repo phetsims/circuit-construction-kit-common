@@ -278,8 +278,6 @@ define( function( require ) {
 
       /**
        * Detection for voltmeter probe + circuit intersection is done in the view since view bounds are used
-       * REVIEW*: Also looks like something that would generally be in VoltmeterNode (behind a !options.icon flag)
-       * REVIEW*: Understand if you want to keep here (then remove the comments)
        */
       var updateVoltmeter = function() {
         if ( voltmeter.visibleProperty.get() ) {
@@ -329,7 +327,7 @@ define( function( require ) {
      * Check for an intersection between a probeNode and a wire, return null if no hits.
      * @param {Vector2} position to hit test
      * @param {function} filter - CircuitElement=>boolean the rule to use for checking circuit elements
-     * @returns {WireNode|null} REVIEW*: I don't see why this would be restricted to WireNode. If so, hitWireNode would be better name
+     * @returns {CircuitElementNode|null}
      * @public
      */
     hitCircuitElementNode: function( position, filter ) {
@@ -366,7 +364,7 @@ define( function( require ) {
 
     /**
      * Find where the voltmeter probe node intersects the wire, for computing the voltage difference
-     * @param {Image} probeNode - the probe node from the VoltmeterNode REVIEW*: Only needs centerTop, consider doc as {Node}
+     * @param {Node} probeNode - the probe node from the VoltmeterNode, to get its position
      * @param {Vector2} probePosition
      * @returns {VoltageConnection|null} if connected returns VoltageConnection otherwise null
      * @private
@@ -389,8 +387,7 @@ define( function( require ) {
 
       // Check for intersection with a metallic circuit element, which can provide voltmeter readings
       var metallicCircuitElement = this.hitCircuitElementNode( probePosition, function( circuitElement ) {
-        //REVIEW*: Consider adding isMetallic:true to Wire?
-        return ( circuitElement instanceof Wire ) || ( circuitElement instanceof Resistor && circuitElement.isMetallic );
+        return circuitElement.isMetallic;
       } );
       if ( metallicCircuitElement ) {
 
