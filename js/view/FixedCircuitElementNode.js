@@ -81,16 +81,14 @@ define( function( require ) {
 
     // Add highlight (but not for icons)
     if ( !options.icon && options.showHighlight ) {
-      //REVIEW*: visibility/type docs
+
+      // @protected (read-only) {FixedCircuitElementHighlightNode}
       this.highlightNode = new FixedCircuitElementHighlightNode( this );
 
       // Update the highlight bounds after it is created
       viewPropertyListener( viewTypeProperty.value );
     }
     var markAsDirty = this.markAsDirty.bind( this );
-
-    // Relink when start vertex changes
-    //REVIEW*: Doc notes "relinking", but I see this just setting dirty flag.
     circuitElement.vertexMovedEmitter.addListener( markAsDirty );
 
     var moveToFront = function() {
@@ -152,11 +150,7 @@ define( function( require ) {
           dragged = true;
         },
         end: function( event ) {
-          //REVIEW*: Why the call()? Are we trying to skip the method (don't see it) overridden on this type?
-          //REVIEW*: self.endDrag( ... ) should be equivalent, no?
-          CircuitElementNode.prototype.endDrag.call( self, event, self.contentNode,
-            [ circuitElement.endVertexProperty.get() ], screenView, circuitLayerNode, startPoint,
-            dragged );
+          self.endDrag( event, self.contentNode, [ circuitElement.endVertexProperty.get() ], screenView, circuitLayerNode, startPoint, dragged );
         },
         tandem: tandem.createTandem( 'dragHandler' )
       } );
