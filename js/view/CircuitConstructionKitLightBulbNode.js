@@ -29,13 +29,11 @@ define( function( require ) {
   var Color = require( 'SCENERY/util/Color' );
 
   // images
-  var fireImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
   var lightBulbImageHigh = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-middle-high.png' );
   var lightBulbImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-middle.png' );
 
   // constants
   var SCRATCH_MATRIX = new Matrix3();
-  var SCRATCH_MATRIX_2 = new Matrix3();
 
   // The height from the vertex to the center of the light bulb schematic circle
   var LEAD_Y = -73;
@@ -234,10 +232,6 @@ define( function( require ) {
       this.contentNode.setMatrix( SCRATCH_MATRIX );
       this.rayNodeContainer.setMatrix( SCRATCH_MATRIX );
       this.highlightNode && this.highlightNode.setMatrix( SCRATCH_MATRIX );
-
-      // Update the fire transform
-      SCRATCH_MATRIX.multiplyMatrix( SCRATCH_MATRIX_2.setToTranslation( -100, -fireImage.height - 350 ) );
-      this.fireNode && this.fireNode.setMatrix( SCRATCH_MATRIX );
 
       this.socketNode && this.socketNode.updateRender();
     },
