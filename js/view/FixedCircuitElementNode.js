@@ -87,18 +87,9 @@ define( function( require ) {
     var markAsDirty = this.markAsDirty.bind( this );
     circuitElement.vertexMovedEmitter.addListener( markAsDirty );
 
-    var moveToFront = function() {
-
-      // Components outside the black box do not move in front of the overlay
-      if ( circuitElement.interactiveProperty.get() ) {
-        self.moveToFront();
-        self.circuitElement.moveToFrontEmitter.emit();
-        self.circuitElement.startVertexProperty.get().relayerEmitter.emit();
-        self.circuitElement.endVertexProperty.get().relayerEmitter.emit();
-      }
-    };
-    circuitElement.connectedEmitter.addListener( moveToFront );
-    circuitElement.vertexSelectedEmitter.addListener( moveToFront );
+    var moveToFrontListener = this.moveFixedCircuitElementNodeToFront.bind( this );
+    circuitElement.connectedEmitter.addListener( moveToFrontListener );
+    circuitElement.vertexSelectedEmitter.addListener( moveToFrontListener );
 
     var circuit = circuitLayerNode && circuitLayerNode.circuit;
 
@@ -214,8 +205,8 @@ define( function( require ) {
 
       circuitElement.vertexMovedEmitter.removeListener( markAsDirty );
       updateHighlightVisibility && circuitLayerNode.circuit.selectedCircuitElementProperty.unlink( updateHighlightVisibility );
-      circuitElement.connectedEmitter.removeListener( moveToFront );
-      circuitElement.vertexSelectedEmitter.removeListener( moveToFront );
+      circuitElement.connectedEmitter.removeListener( moveToFrontListener );
+      circuitElement.vertexSelectedEmitter.removeListener( moveToFrontListener );
 
       if ( options.pickable !== false ) {
         circuitElement.interactiveProperty.unlink( pickableListener );
@@ -276,6 +267,21 @@ define( function( require ) {
       matrix.multiplyMatrix( rotationMatrix.setToScale( scale ) )
         .multiplyMatrix( rotationMatrix.setToTranslation( flameX, flameY ) );
       this.fireNode && this.fireNode.setMatrix( matrix );
+    },
+
+    /**
+     * Move the circuit element node to the front
+     * @private
+     */
+    moveFixedCircuitElementNodeToFront: function() {
+
+      // Components outside the black box do not move in front of the overlay
+      if ( this.circuitElement.interactiveProperty.get() ) {
+        this.moveToFront();
+        this.circuitElement.moveToFrontEmitter.emit();
+        this.circuitElement.startVertexProperty.get().relayerEmitter.emit();
+        this.circuitElement.endVertexProperty.get().relayerEmitter.emit();
+      }
     },
 
     /**
