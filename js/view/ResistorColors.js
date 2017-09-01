@@ -34,22 +34,22 @@ define( function( require ) {
   // Tolerances below gold were eliminated to reduce variance in the tolerance band, see
   // https://github.com/phetsims/circuit-construction-kit-dc/issues/10
   var colorTable = [
-    { name: 'none', significantFigure: '-', multiplier: null, tolerance: 20, color: null },
-    { name: 'pink', significantFigure: '-', multiplier: 'e-3', tolerance: null, color: new Color( 255, 105, 180 ) },
-    { name: 'silver', significantFigure: '-', multiplier: 'e-2', tolerance: 10, color: new Color( 192, 192, 192 ) },
+    { name: 'none', significantFigure: null, multiplier: null, tolerance: 20, color: null },
+    { name: 'pink', significantFigure: null, multiplier: -3, tolerance: null, color: new Color( 255, 105, 180 ) },
+    { name: 'silver', significantFigure: null, multiplier: -2, tolerance: 10, color: new Color( 192, 192, 192 ) },
 
     // chose a different color that shows up better against the resistor color
-    { name: 'gold', significantFigure: '-', multiplier: 'e-1', tolerance: 5, color: new Color( '#e6b600' ) },
-    { name: 'black', significantFigure: '0', multiplier: 'e0', tolerance: null, color: new Color( 0, 0, 0 ) },
-    { name: 'brown', significantFigure: '1', multiplier: 'e1', tolerance: null, color: new Color( 150, 75, 0 ) },
-    { name: 'red', significantFigure: '2', multiplier: 'e2', tolerance: null, color: new Color( 255, 0, 0 ) },
-    { name: 'orange', significantFigure: '3', multiplier: 'e3', tolerance: null, color: new Color( 255, 165, 0 ) },
-    { name: 'yellow', significantFigure: '4', multiplier: 'e4', tolerance: null, color: new Color( 255, 255, 0 ) },
-    { name: 'green', significantFigure: '5', multiplier: 'e5', tolerance: null, color: new Color( 154, 205, 50 ) },
-    { name: 'blue', significantFigure: '6', multiplier: 'e6', tolerance: null, color: new Color( 100, 149, 237 ) },
-    { name: 'violet', significantFigure: '7', multiplier: 'e7', tolerance: null, color: new Color( 148, 0, 211 ) },
-    { name: 'gray', significantFigure: '8', multiplier: 'e8', tolerance: null, color: new Color( 160, 160, 160 ) },
-    { name: 'white', significantFigure: '9', multiplier: 'e9', tolerance: null, color: new Color( 255, 255, 255 ) }
+    { name: 'gold', significantFigure: null, multiplier: -1, tolerance: 5, color: new Color( '#e6b600' ) },
+    { name: 'black', significantFigure: 0, multiplier: 0, tolerance: null, color: new Color( 0, 0, 0 ) },
+    { name: 'brown', significantFigure: 1, multiplier: 1, tolerance: null, color: new Color( 150, 75, 0 ) },
+    { name: 'red', significantFigure: 2, multiplier: 2, tolerance: null, color: new Color( 255, 0, 0 ) },
+    { name: 'orange', significantFigure: 3, multiplier: 3, tolerance: null, color: new Color( 255, 165, 0 ) },
+    { name: 'yellow', significantFigure: 4, multiplier: 4, tolerance: null, color: new Color( 255, 255, 0 ) },
+    { name: 'green', significantFigure: 5, multiplier: 5, tolerance: null, color: new Color( 154, 205, 50 ) },
+    { name: 'blue', significantFigure: 6, multiplier: 6, tolerance: null, color: new Color( 100, 149, 237 ) },
+    { name: 'violet', significantFigure: 7, multiplier: 7, tolerance: null, color: new Color( 148, 0, 211 ) },
+    { name: 'gray', significantFigure: 8, multiplier: 8, tolerance: null, color: new Color( 160, 160, 160 ) },
+    { name: 'white', significantFigure: 9, multiplier: 9, tolerance: null, color: new Color( 255, 255, 255 ) }
   ];
 
   /**
@@ -65,6 +65,12 @@ define( function( require ) {
   };
 
   var ResistorColors = {
+    getEntries: function( resistance ) {
+      for ( var i = 0; i <= 100; i = i + 0.5 ) {
+        this.getEntries2( i );
+      }
+      return this.getEntries2( resistance );
+    },
 
     /**
      * Get the color table entries for the specified resistance.
@@ -72,35 +78,42 @@ define( function( require ) {
      * @returns {Object[]} entries from the color table
      * @private
      */
-    getEntries: function( resistance ) {
+    getEntries2: function( resistance ) {
       assert && assert( resistance >= 0, 'resistance should be non-negative' );
 
       // 0 resistance has a single black band centered on the resistor
       if ( resistance === 0 ) {
         return [ getEntry( 'name', 'black' ) ];
       }
-      //REVIEW*: Does this have the same issues that caused us to create Util.toFixed (with rounding)?
-      var exponential = resistance.toExponential( 1 ); // like `1.5e+7`
-      //REVIEW*: Maybe explicitly rounding (before/after dividing by 10 until it "can't" anymore) would be safer?
-      //REVIEW*: Wouldn't have to parse strings?
-      var firstSignificantDigit = exponential[ 0 ];
-      assert && assert( exponential[ 1 ] === '.', 'incorrect pattern' );
-      var secondSignificantDigit = exponential[ 2 ];
 
-      var exponentString = exponential.substring( exponential.indexOf( 'e' ) + 1 );
-      var exponentNumber = parseInt( exponentString, 10 );
-      exponentNumber = exponentNumber - 1; // Because the decimal is omitted from the number
+      // REVIEW^(samreid): I went for a numerical pattern instead of string-based, can you please take a look?
 
-      var decimalMultiplier = 'e' + exponentNumber;
+      // Estimate the exponent
+      var exponent = Math.round( Math.log( resistance ) / Math.log( 10 ) );
 
-      // Find the lowest tolerance that accommodates the error
-      //REVIEW*: Converting to string (toExponential), parsing the string, reconverting to a string and then re-parsing
-      //REVIEW*: (parseFloat) is a code smell. Let's avoid that if possible.
-      var approximateValue = parseFloat( firstSignificantDigit + secondSignificantDigit + decimalMultiplier );
+      // Divide out to normalize
+      var reduced = resistance / Math.pow( 10, exponent );
+
+      // If we went too far, jump up a digit
+      if ( reduced < 1 ) {
+        reduced = reduced * 10;
+        exponent--;
+      }
+
+      // Chop off the tail to get the first significant digit
+      var firstSignificantDigit = Math.floor( reduced );
+
+      // Chop off first significant digit, then bump up >1 and take first digit
+      var secondSignificantDigit = Math.round( (reduced - firstSignificantDigit) * 10 );//round to prevent cases like resistance=4700 = x2 = 6.99999
+
+      // Estimate the value to obtain tolerance band
+      var approximateValue = (firstSignificantDigit + secondSignificantDigit / 10) * Math.pow( 10, exponent );
       var percentError = Math.abs( ( resistance - approximateValue ) / resistance * 100 );
       var colorsWithTolerance = _.filter( colorTable, function( colorTableEntry ) {
         return colorTableEntry.tolerance !== null;
       } );
+
+      // find the lowest tolerance that fits the value
       var sortedColorsWithTolerance = _.sortBy( colorsWithTolerance, 'tolerance' );
       for ( var i = 0; i < sortedColorsWithTolerance.length; i++ ) {
         var color = sortedColorsWithTolerance[ i ];
@@ -110,11 +123,10 @@ define( function( require ) {
       }
       assert && assert( percentError < color.tolerance, 'no tolerance high enough to accommodate error' );
 
-      // find the lowest tolerance that fits the value
       return [
         getEntry( 'significantFigure', firstSignificantDigit ),
         getEntry( 'significantFigure', secondSignificantDigit ),
-        getEntry( 'multiplier', decimalMultiplier ),
+        getEntry( 'multiplier', exponent - 1 ), // second significant figure counts for a power (see https://en.wikipedia.org/wiki/Electronic_color_code and 4700 ohm example)
         getEntry( 'tolerance', color.tolerance )
       ];
     },
