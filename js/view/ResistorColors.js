@@ -123,9 +123,6 @@ define( function( require ) {
       }
       assert && assert( percentError < color.tolerance, 'no tolerance high enough to accommodate error' );
       console.log( firstSignificantDigit, secondSignificantDigit, exponent, color.tolerance );
-      if ( secondSignificantDigit === 10 ) {
-        debugger;
-      }
       return [
         getEntry( 'significantFigure', firstSignificantDigit ),
         getEntry( 'significantFigure', secondSignificantDigit ),
