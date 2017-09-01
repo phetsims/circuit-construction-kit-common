@@ -250,7 +250,6 @@ define( function( require ) {
       matrix.setToTranslationRotationPoint( startPosition, angle );
       this.contentNode.setMatrix( matrix );
 
-      //REVIEW*: Usually an if-statement would be more readable here, instead of temp variable + short-circuit?
       if ( this.highlightNode && this.circuitLayerNode.circuit.selectedCircuitElementProperty.get() === this.circuitElement ) {
         this.highlightNode.setMatrix( matrix );
       }
