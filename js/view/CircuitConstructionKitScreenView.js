@@ -124,8 +124,6 @@ define( function( require ) {
         model.ammeter.visibleProperty.set( false );
       }
     } );
-    //REVIEW*: Usually visibility like this would be handled in AmmeterNode. Any advantages here?
-    model.ammeter.visibleProperty.linkAttribute( ammeterNode, 'visible' );
 
     // @public (read-only) {CircuitElementToolbox} - Toolbox from which CircuitElements can be dragged
     this.circuitElementToolbox = new CircuitElementToolbox(

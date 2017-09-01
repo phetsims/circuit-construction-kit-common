@@ -136,6 +136,9 @@ define( function( require ) {
 
     if ( !options.icon ) {
 
+      // Show the ammeter in the play area when dragged from toolbox
+      ammeter.visibleProperty.linkAttribute( this, 'visible' );
+
       var probeDragHandler = new MovableDragHandler( ammeter.probePositionProperty, {
         tandem: tandem.createTandem( 'probeDragHandler' )
       } );
