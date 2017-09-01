@@ -65,12 +65,6 @@ define( function( require ) {
   };
 
   var ResistorColors = {
-    getEntries: function( resistance ) {
-      for ( var i = 0; i <= 100; i = i + 0.5 ) {
-        this.getEntries2( i );
-      }
-      return this.getEntries2( resistance );
-    },
 
     /**
      * Get the color table entries for the specified resistance.
@@ -78,7 +72,7 @@ define( function( require ) {
      * @returns {Object[]} entries from the color table
      * @private
      */
-    getEntries2: function( resistance ) {
+    getEntries: function( resistance ) {
       assert && assert( resistance >= 0, 'resistance should be non-negative' );
 
       // 0 resistance has a single black band centered on the resistor
@@ -104,7 +98,13 @@ define( function( require ) {
       var firstSignificantDigit = Math.floor( reduced );
 
       // Chop off first significant digit, then bump up >1 and take first digit
-      var secondSignificantDigit = Math.round( (reduced - firstSignificantDigit) * 10 );//round to prevent cases like resistance=4700 = x2 = 6.99999
+      var x = (reduced - firstSignificantDigit) * 10;
+      var secondSignificantDigit = Math.round( x );//round to prevent cases like resistance=4700 = x2 = 6.99999
+
+      // prevent rounding up from 9.5 to 10.0
+      if ( secondSignificantDigit === 10 ) {
+        secondSignificantDigit = 9;//hack alert
+      }
 
       // Estimate the value to obtain tolerance band
       var approximateValue = (firstSignificantDigit + secondSignificantDigit / 10) * Math.pow( 10, exponent );
@@ -122,7 +122,10 @@ define( function( require ) {
         }
       }
       assert && assert( percentError < color.tolerance, 'no tolerance high enough to accommodate error' );
-
+      console.log( firstSignificantDigit, secondSignificantDigit, exponent, color.tolerance );
+      if ( secondSignificantDigit === 10 ) {
+        debugger;
+      }
       return [
         getEntry( 'significantFigure', firstSignificantDigit ),
         getEntry( 'significantFigure', secondSignificantDigit ),
