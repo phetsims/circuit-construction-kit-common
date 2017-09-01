@@ -38,9 +38,7 @@ define( function( require ) {
 
     options = _.extend( {
       baseOnly: false,
-      highResistance: true,
-      scale: 1 //REVIEW*: Seems weird that this is passed to the Node (this), raysNode, and used in positioning the light rays.
-               //REVIEW*: Has this been verified to work across scales?
+      highResistance: true
     }, options );
 
     // @private (read-only) {boolean]
