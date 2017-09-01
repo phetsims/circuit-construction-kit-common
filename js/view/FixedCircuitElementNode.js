@@ -172,7 +172,10 @@ define( function( require ) {
       //REVIEW^(samreid): That last idea (CircuitElement.isFlammable) seems best to me, and leaving this code here,
       //REVIEW^(samreid): I'll wait to hear your thoughts before proceeding.
       if ( circuitElement instanceof Battery || circuitElement instanceof Resistor ) {
-        //REVIEW*: visibility/type docs, and consider moving declaration (and docs) up top so it is more visible.
+        //REVIEW: consider moving declaration (and docs) up top so it is more visible.
+        //REVIEW^(samreid): Should we resolve the preceding REVIEW section before deciding on this, or can you recommend
+        //REVIEW^(samreid): a line number or neighborhood where this might be most suitable?
+        // @private {Image} - display the fire for flammable CircuitElements
         this.fireNode = new Image( fireImage, { pickable: false, imageOpacity: 0.95 } );
         this.fireNode.mutate( { scale: self.contentNode.width / this.fireNode.width } );
         this.addChild( this.fireNode );
