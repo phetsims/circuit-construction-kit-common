@@ -213,11 +213,8 @@ define( function( require ) {
     // @private {function} - for disposal
     this.disposeFixedCircuitElementNode = function() {
 
-      // End drag event if it was in progress
-      //REVIEW*: consider self.dragHandler.interrupt()
-      if ( self.dragHandler && self.dragHandler.dragging ) {
-        self.dragHandler.endDrag();
-      }
+      // Interrupt the drag event if it was in progress
+      self.dragHandler && self.dragHandler.interrupt();
 
       circuitElement.vertexMovedEmitter.removeListener( markAsDirty );
       updateHighlightVisibility && circuitLayerNode.circuit.selectedCircuitElementProperty.unlink( updateHighlightVisibility );
