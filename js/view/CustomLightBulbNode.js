@@ -56,40 +56,44 @@ define( function( require ) {
 
     var middleNode = new Image( options.baseOnly ? selectedSocketImage : middleImage, {
       scale: BULB_IMAGE_SCALE,
-      centerBottom: self.backNode.centerBottom,
+      centerBottom: this.backNode.centerBottom,
       pickable: false
     } );
 
     // If it is only for showing the socket, omit the rays
     if ( options.baseOnly ) {
-      options.children = [ self.backNode ];
+      options.children = [ this.backNode ];
     }
     else {
 
       // Show the rays here where they can be easily positioned, but only when more than the base is showing
       var bulbRadius = middleNode.width / 2;
-      //REVIEW*: Don't self, and visibility/type docs before (rather than after on multiline)
-      self.raysNode = new LightRaysNode( bulbRadius, {
+
+      // @private {Node} - displays the light rays
+      this.raysNode = new LightRaysNode( bulbRadius, {
         x: this.backNode.centerX,
         y: ( middleNode.top + bulbRadius ) * options.scale //REVIEW*: scale will apply to this, so why is this needed?
-      } ); // @private
-      self.raysNode.mutate( options ); //REVIEW*: Woah, scale is also applied to the raysNode directly (in addition to CustomLightBulbNode itself)
+      } );
 
-      options.children = [ self.backNode, middleNode ];
+      //REVIEW: Woah, scale is also applied to the raysNode directly (in addition to CustomLightBulbNode itself)
+      //REVIEW^(samreid): I removed scale as an stated option, is there a subset of node keys that should be stripped
+      //REVIEW^(samreid): before passing parent options to child mutations?
+      this.raysNode.mutate( options );
+
+      options.children = [ this.backNode, middleNode ];
     }
 
-    Node.call( self, options );
+    Node.call( this, options );
 
     // @private REVIEW*: Type doc it?
     this.brightnessProperty = brightnessProperty;
 
     // If it shows the rays, update their brightness
     if ( !options.baseOnly ) {
-      //REVIEW*: Don't need self on the outside
       //REVIEW*: this.brightnessObserver = this.update.bind( this );
       //REVIEW*: Normal type/visibility docs (add {function})
-      self.brightnessObserver = function() { self.update(); }; // @private
-      self.brightnessProperty.link( this.brightnessObserver );
+      this.brightnessObserver = function() { self.update(); }; // @private
+      this.brightnessProperty.link( this.brightnessObserver );
     }
 
     // @private {function} - for disposal
