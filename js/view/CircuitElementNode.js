@@ -18,7 +18,7 @@ define( function( require ) {
 
   /**
    * @param {CircuitElement} circuitElement - the CircuitElement to be rendered
-   * @param {Circuit} circuit - the circuit which the element can be removed from
+   * @param {Circuit|null} circuit - the circuit which the element can be removed from or null for icons
    * @param {Object} [options]
    * @constructor
    */
@@ -26,7 +26,7 @@ define( function( require ) {
 
     var self = this;
 
-    // @private (read-only) {Circuit}
+    // @private (read-only) {Circuit|null} - the circuit which the element can be removed from or null for icons
     this.circuit = circuit;
 
     // @public (read-only) {CircuitElement} - the CircuitElement rendered by this node

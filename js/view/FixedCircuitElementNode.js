@@ -104,9 +104,6 @@ define( function( require ) {
     circuitElement.connectedEmitter.addListener( moveToFront );
     circuitElement.vertexSelectedEmitter.addListener( moveToFront );
 
-    //REVIEW*: It looks like if circuitLayerNode is null, we'll pass null as a circuit to CircuitElementNode.
-    //REVIEW*: Its documentation does not say anything about null (only {Circuit}), and it doesn't have property docs
-    //REVIEW*: on the value assigned to the object.
     var circuit = circuitLayerNode && circuitLayerNode.circuit;
 
     CircuitElementNode.call( this, circuitElement, circuit, _.extend( {
