@@ -15,8 +15,13 @@ define( function( require ) {
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var CircuitConstructionKitCommonQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonQueryParameters' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
+  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
+  var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
+  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
   var ProbeTextNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ProbeTextNode' );
   var ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ProbeWireNode' );
+  var SolderNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SolderNode' );
+  var Util = require( 'DOT/Util' );
   var Vector2 = require( 'DOT/Vector2' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Image = require( 'SCENERY/nodes/Image' );
@@ -35,6 +40,8 @@ define( function( require ) {
   var voltageString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltage' );
 
   // constants
+  var VOLTMETER_PROBE_TIP_LENGTH = 20; // The probe tip is about 20 view coordinates tall
+  var VOLTMETER_NUMBER_SAMPLE_POINTS = 10; // Number of points along the edge of the voltmeter tip to detect voltages
 
   // measurements for the cubic curve for the wire nodes
   var BODY_WIRE_LEAD_X = 45;
@@ -53,12 +60,15 @@ define( function( require ) {
 
   /**
    * @param {Voltmeter} voltmeter - the model Voltmeter to be shown by this node
+   * @param {CircuitConstructionKitModel} model
+   * @param {CircuitLayerNode} circuitLayerNode TODO: reduce parameters?
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function VoltmeterNode( voltmeter, tandem, options ) {
+  function VoltmeterNode( voltmeter, model, circuitLayerNode, tandem, options ) {
     var self = this;
+    this.circuitLayerNode = circuitLayerNode;
     options = _.extend( {
 
       // Whether this will be used as an icon or not.
@@ -235,12 +245,216 @@ define( function( require ) {
         self.dragHandler.dragBounds = visibleBounds.eroded( CircuitConstructionKitCommonConstants.DRAG_BOUNDS_EROSION );
       } );
       bodyNode.addInputListener( this.dragHandler );
+
+      /**
+       * Starting at the tip, iterate down over several samples and return the first hit, if any.
+       * @param {Node} probeNode
+       * @param {Vector2} probeTip
+       * @param {number} sign - the direction the probe is rotated
+       * @returns {VoltageConnection|null} if connected returns VoltageConnection otherwise null
+       */
+      var findVoltageConnection = function( probeNode, probeTip, sign ) {
+        var probeTipVector = Vector2.createPolar( VOLTMETER_PROBE_TIP_LENGTH, sign * VoltmeterNode.PROBE_ANGLE + Math.PI / 2 );
+        var probeTipTail = probeTip.plus( probeTipVector );
+        for ( var i = 0; i < VOLTMETER_NUMBER_SAMPLE_POINTS; i++ ) {
+          var samplePoint = probeTip.blend( probeTipTail, i / VOLTMETER_NUMBER_SAMPLE_POINTS );
+          var voltageConnection = self.getVoltageConnection( probeNode, samplePoint );
+
+          // For debugging, depict the points where the sampling happens
+          if ( CircuitConstructionKitCommonQueryParameters.showVoltmeterSamplePoints ) {
+
+            // Note, these get erased when changing between lifelike/schematic
+            self.circuitLayerNode.addChild( new Rectangle( -1, -1, 2, 2, {
+              fill: Color.BLACK,
+              translation: samplePoint
+            } ) );
+          }
+          if ( voltageConnection ) {
+            return voltageConnection;
+          }
+        }
+        return null;
+      };
+
+      /**
+       * Detection for voltmeter probe + circuit intersection is done in the view since view bounds are used
+       * REVIEW*: Also looks like something that would generally be in VoltmeterNode (behind a !options.icon flag)
+       * REVIEW*: Understand if you want to keep here (then remove the comments)
+       */
+      var updateVoltmeter = function() {
+        if ( voltmeter.visibleProperty.get() ) {
+          var redConnection = findVoltageConnection(
+            self.redProbeNode, self.voltmeter.redProbePositionProperty.get(), +1
+          );
+          var blackConnection = findVoltageConnection(
+            self.blackProbeNode, self.voltmeter.blackProbePositionProperty.get(), -1
+          );
+
+          if ( redConnection === null || blackConnection === null ) {
+            voltmeter.voltageProperty.set( null );
+          }
+          else if ( !model.circuit.areVerticesElectricallyConnected(
+              redConnection.vertex, blackConnection.vertex
+            ) ) {
+
+            // Voltmeter probes each hit things but they were not connected to each other through the circuit.
+            voltmeter.voltageProperty.set( null );
+          }
+          else if ( redConnection !== null && redConnection.vertex.insideTrueBlackBoxProperty.get() && !model.revealingProperty.get() ) {
+
+            // Cannot read values inside the black box, unless "reveal" is being pressed
+            voltmeter.voltageProperty.set( null );
+          }
+          else if ( blackConnection !== null && blackConnection.vertex.insideTrueBlackBoxProperty.get() && !model.revealingProperty.get() ) {
+
+            // Cannot read values inside the black box, unless "reveal" is being pressed
+            voltmeter.voltageProperty.set( null );
+          }
+          else {
+            voltmeter.voltageProperty.set( redConnection.voltage - blackConnection.voltage );
+          }
+        }
+      };
+      model.circuit.circuitChangedEmitter.addListener( updateVoltmeter );
+      voltmeter.redProbePositionProperty.link( updateVoltmeter );
+      voltmeter.blackProbePositionProperty.link( updateVoltmeter );
     }
   }
 
   circuitConstructionKitCommon.register( 'VoltmeterNode', VoltmeterNode );
 
-  return inherit( Node, VoltmeterNode, {}, {
+  return inherit( Node, VoltmeterNode, {
+
+    /**
+     * Check for an intersection between a probeNode and a wire, return null if no hits.
+     * @param {Vector2} position to hit test
+     * @param {function} filter - CircuitElement=>boolean the rule to use for checking circuit elements
+     * @returns {WireNode|null} REVIEW*: I don't see why this would be restricted to WireNode. If so, hitWireNode would be better name
+     * @public
+     */
+    hitCircuitElementNode: function( position, filter ) {
+      var self = this;
+
+      var circuitElementNodes = this.circuitLayerNode.circuit.circuitElements.getArray()
+        .filter( filter )
+        .map( function( circuitElement ) {
+          return self.circuitLayerNode.getCircuitElementNode( circuitElement );
+        } );
+
+      // Search from the front to the back, because frontmost objects look like they are hitting the sensor, see #143
+      for ( var i = circuitElementNodes.length - 1; i >= 0; i-- ) {
+        var circuitElementNode = circuitElementNodes[ i ];
+
+        // If this code got called before the WireNode has been created, skip it (the Voltmeter hit tests nodes)
+        if ( !circuitElementNode ) {
+          continue;
+        }
+
+        // Don't connect to wires in the black box
+        var revealing = true;
+        var trueBlackBox = circuitElementNode.circuitElement.insideTrueBlackBoxProperty.get();
+        if ( trueBlackBox ) {
+          revealing = this.model.revealingProperty.get();
+        }
+
+        if ( revealing && circuitElementNode.containsSensorPoint( position ) ) {
+          return circuitElementNode;
+        }
+      }
+      return null;
+    },
+
+    /**
+     * Find where the voltmeter probe node intersects the wire, for computing the voltage difference
+     * @param {Image} probeNode - the probe node from the VoltmeterNode REVIEW*: Only needs centerTop, consider doc as {Node}
+     * @param {Vector2} probePosition
+     * @returns {VoltageConnection|null} if connected returns VoltageConnection otherwise null
+     * @private
+     */
+    getVoltageConnection: function( probeNode, probePosition ) {
+
+      // Check for intersection with a vertex, using the solder radius.  This means it will be possible to check for
+      // voltages when nearby the terminal of a battery, not necessarily touching the battery (even when solder is
+      // not shown, this is desirable so that students have a higher chance of getting the desirable reading).
+      // When solder is shown, it is used as the conductive element for the voltmeter (and hence why the solder radius
+      // is used in the computation below.
+      var solderNodes = _.values( this.circuitLayerNode.solderNodes );
+      var hitSolderNode = _.find( solderNodes, function( solderNode ) {
+        var position = solderNode.vertex.positionProperty.get();
+        return probePosition.distance( position ) <= SolderNode.SOLDER_RADIUS;
+      } );
+      if ( hitSolderNode ) {
+        return new VoltageConnection( hitSolderNode.vertex, hitSolderNode.vertex.voltageProperty.get() );
+      }
+
+      // Check for intersection with a metallic circuit element, which can provide voltmeter readings
+      var metallicCircuitElement = this.hitCircuitElementNode( probePosition, function( circuitElement ) {
+        //REVIEW*: Consider adding isMetallic:true to Wire?
+        return ( circuitElement instanceof Wire ) || ( circuitElement instanceof Resistor && circuitElement.isMetallic );
+      } );
+      if ( metallicCircuitElement ) {
+
+        var startPoint = metallicCircuitElement.circuitElement.startPositionProperty.get();
+        var endPoint = metallicCircuitElement.circuitElement.endPositionProperty.get();
+        var segmentVector = endPoint.minus( startPoint );
+        var probeVector = probeNode.centerTop.minus( startPoint );
+
+        //REVIEW*: Divide by segmentVector.magnitudeSquared() instead?
+        var distanceAlongSegment = segmentVector.magnitude() === 0 ? 0 : ( probeVector.dot( segmentVector ) /
+                                                                           segmentVector.magnitude() /
+                                                                           segmentVector.magnitude() );
+        distanceAlongSegment = Util.clamp( distanceAlongSegment, 0, 1 );
+
+        //REVIEW*: This was just clamped, not sure an assertion is needed (don't feel strongly)
+        assert && assert( distanceAlongSegment >= 0 && distanceAlongSegment <= 1, 'beyond the end of the wire' );
+        var voltageAlongWire = Util.linear(
+          0,
+          1,
+          metallicCircuitElement.circuitElement.startVertexProperty.get().voltageProperty.get(),
+          metallicCircuitElement.circuitElement.endVertexProperty.get().voltageProperty.get(),
+          distanceAlongSegment
+        );
+
+        return new VoltageConnection( metallicCircuitElement.circuitElement.startVertexProperty.get(), voltageAlongWire );
+      }
+      else {
+
+        // check for intersection with switch node
+        var switchNode = this.hitCircuitElementNode( probePosition, function( circuitElement ) {
+          return circuitElement instanceof Switch;
+        } );
+        if ( switchNode ) {
+
+          // address closed switch.  Find out whether the probe was near the start or end vertex
+          if ( switchNode.startSideContainsSensorPoint( probePosition ) ) {
+
+            return new VoltageConnection(
+              switchNode.circuitSwitch.startVertexProperty.get(),
+              switchNode.circuitSwitch.startVertexProperty.get().voltageProperty.get()
+            );
+          }
+          else if ( switchNode.endSideContainsSensorPoint( probePosition ) ) {
+            return new VoltageConnection(
+              switchNode.circuitSwitch.endVertexProperty.get(),
+              switchNode.circuitSwitch.endVertexProperty.get().voltageProperty.get()
+            );
+          }
+        }
+        return null;
+      }
+    }
+  }, {
     PROBE_ANGLE: PROBE_ANGLE
   } );
+
+  /**
+   * Indicates a vertex and a voltage measurement at the given vertex.
+   * @param {Vertex} vertex
+   * @param {number} voltage
+   * @constructor
+   */
+  function VoltageConnection( vertex, voltage ) {
+    this.vertex = vertex;
+    this.voltage = voltage;
+  }
 } );

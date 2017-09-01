@@ -78,7 +78,7 @@ define( function( require ) {
 
     // Draggable icon for the voltmeter
     var voltmeter = new Voltmeter( tandem.createTandem( 'voltmeterIconModel' ) );
-    var voltmeterNodeIcon = new VoltmeterNode( voltmeter, tandem.createTandem( 'voltmeterNodeIcon' ), options );
+    var voltmeterNodeIcon = new VoltmeterNode( voltmeter, null, null, tandem.createTandem( 'voltmeterNodeIcon' ), options );
     voltmeterNode.voltmeter.visibleProperty.link( function( visible ) { voltmeterNodeIcon.visible = !visible; } );
     voltmeterNodeIcon.mutate( {
       scale: TOOLBOX_ICON_SIZE * VOLTMETER_ICON_SCALE / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height )
