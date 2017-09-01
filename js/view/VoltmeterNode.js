@@ -399,11 +399,7 @@ define( function( require ) {
                                                                            segmentVector.magnitudeSquared() );
         distanceAlongSegment = Util.clamp( distanceAlongSegment, 0, 1 );
 
-        //REVIEW*: This was just clamped, not sure an assertion is needed (don't feel strongly)
-        assert && assert( distanceAlongSegment >= 0 && distanceAlongSegment <= 1, 'beyond the end of the wire' );
-        var voltageAlongWire = Util.linear(
-          0,
-          1,
+        var voltageAlongWire = Util.linear( 0, 1,
           metallicCircuitElement.circuitElement.startVertexProperty.get().voltageProperty.get(),
           metallicCircuitElement.circuitElement.endVertexProperty.get().voltageProperty.get(),
           distanceAlongSegment
