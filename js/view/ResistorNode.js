@@ -59,8 +59,6 @@ define( function( require ) {
   var schematicRasterCache = {};
 
   /**
-   * This constructor is called dynamically and must match the signature of other circuit element nodes.
-   * REVIEW*: Wait, is this still called dynamically? What is the location? (otherwise remove docs on that everywhere)
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - main screen view, null for icon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {Resistor} resistor

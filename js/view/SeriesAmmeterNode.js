@@ -53,7 +53,6 @@ define( function( require ) {
   } );
 
   /**
-   * This constructor is called dynamically and must match the signature of other circuit element nodes.
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - main screen view, null for icon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {SeriesAmmeter} seriesAmmeter

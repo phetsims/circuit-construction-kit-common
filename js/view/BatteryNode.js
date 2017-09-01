@@ -62,7 +62,6 @@ define( function( require ) {
   schematicNode.touchArea = schematicNode.bounds.copy().shiftedY( schematicNode.height / 2 );
 
   /**
-   * This constructor is called dynamically and must match the signature of other circuit element nodes.
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - main screen view, null for icon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {Battery} battery

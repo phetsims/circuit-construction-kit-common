@@ -22,7 +22,6 @@ define( function( require ) {
   var SCRATCH_MATRIX = new Matrix3();
 
   /**
-   * This constructor is called dynamically and must match the signature of other circuit element nodes.
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - main screen view, null for icon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {LightBulb} lightBulb - the light bulb model
