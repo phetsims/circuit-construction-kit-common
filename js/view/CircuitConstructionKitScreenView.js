@@ -18,7 +18,6 @@ define( function( require ) {
   var BatteryResistanceControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryResistanceControl' );
   var ChargeSpeedThrottlingReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ChargeSpeedThrottlingReadoutNode' );
   var CircuitElementEditContainerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditContainerNode' );
-  var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
   var CircuitElementToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolbox' );
   var CircuitLayerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitLayerNode' );
   var DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/DisplayOptionsPanel' );
@@ -103,7 +102,7 @@ define( function( require ) {
       }
     } );
 
-    var ammeterNode = new AmmeterNode( model.ammeter, tandem.createTandem( 'ammeterNode' ), {
+    var ammeterNode = new AmmeterNode( model.ammeter, model.circuit, this.circuitLayerNode, tandem.createTandem( 'ammeterNode' ), {
       showResultsProperty: model.isValueDepictionEnabledProperty,
       visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty,
       blackBoxStudy: options.blackBoxStudy
@@ -221,21 +220,6 @@ define( function( require ) {
     // The voltmeter and ammeter are rendered with the circuit node so they will scale up and down with the circuit
     this.circuitLayerNode.sensorLayer.addChild( voltmeterNode );
     this.circuitLayerNode.sensorLayer.addChild( ammeterNode );
-
-    /**
-     * Detection for ammeter probe + circuit intersection is done in the view since view bounds are used
-     * REVIEW*: Usually this code would be in AmmeterNode?
-     */
-    var updateAmmeter = function() {
-
-      // Skip work when ammeter is not out, to improve performance.
-      if ( model.ammeter.visibleProperty.get() ) {
-        var current = self.getCurrent( ammeterNode.probeNode );
-        model.ammeter.currentProperty.set( current );
-      }
-    };
-    model.circuit.circuitChangedEmitter.addListener( updateAmmeter );
-    model.ammeter.probePositionProperty.link( updateAmmeter );
 
     // Create the zoom control panel
     var zoomControlPanel = new ZoomControlPanel( model.selectedZoomProperty, {
@@ -357,42 +341,6 @@ define( function( require ) {
       var overToolbox = toolbox.globalBounds.containsPoint( globalMidpoint );
 
       return isSingle && overToolbox && circuitElement.canBeDroppedInToolbox;
-    },
-
-    /**
-     * Find the the current in the given layer (if any CircuitElement hits the sensor)
-     * @param {Node} probeNode
-     * @param {Node} layer
-     * @returns {number|null}
-     * @private
-     */
-    getCurrentInLayer: function( probeNode, layer ) {
-      // See if any CircuitElementNode contains the sensor point
-      for ( var i = 0; i < layer.children.length; i++ ) {
-        var circuitElementNode = layer.children[ i ];
-        if ( circuitElementNode instanceof CircuitElementNode ) {
-          if ( circuitElementNode.containsSensorPoint( probeNode.translation ) ) {
-            return circuitElementNode.circuitElement.currentProperty.get();
-          }
-        }
-      }
-      return null;
-    },
-
-    /**
-     * Find the current under the given probe
-     * @param {Node} probeNode
-     * @returns {number|null}
-     * @private
-     */
-    getCurrent: function( probeNode ) {
-      var mainCurrent = this.getCurrentInLayer( probeNode, this.circuitLayerNode.fixedCircuitElementLayer );
-      if ( mainCurrent !== null ) {
-        return mainCurrent;
-      }
-      else {
-        return this.getCurrentInLayer( probeNode, this.circuitLayerNode.wireLayer );
-      }
     }
   } );
 } );

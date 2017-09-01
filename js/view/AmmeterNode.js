@@ -15,6 +15,7 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
+  var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
   var ProbeTextNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ProbeTextNode' );
   var ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ProbeWireNode' );
   var Vector2 = require( 'DOT/Vector2' );
@@ -47,12 +48,15 @@ define( function( require ) {
 
   /**
    * @param {Ammeter} ammeter
-   * @param {Tandem} tandem
+   * @param {Circuit|null} circuit - to observe changes in the Circuit, or null if rendering an icon
+   * @param {CircuitLayerNode|null} circuitLayerNode - for getting the currents, or null if rendering an icon
+   * @param {Tandem} tandem // TODO: prune parameters
    * @param {Object} [options]
    * @constructor
    */
-  function AmmeterNode( ammeter, tandem, options ) {
+  function AmmeterNode( ammeter, circuit, circuitLayerNode, tandem, options ) {
     var self = this;
+    this.circuitLayerNode = circuitLayerNode;
     options = _.extend( {
 
       // true if it will be used as a toolbox icon
@@ -166,10 +170,62 @@ define( function( require ) {
         probeDragHandler.dragBounds = erodedDragBounds;
       } );
       this.probeNode.addInputListener( probeDragHandler );
+
+      /**
+       * Detection for ammeter probe + circuit intersection is done in the view since view bounds are used
+       */
+      var updateAmmeter = function() {
+
+        // Skip work when ammeter is not out, to improve performance.
+        if ( ammeter.visibleProperty.get() ) {
+          var current = self.getCurrent( self.probeNode );
+          ammeter.currentProperty.set( current );
+        }
+      };
+      circuit.circuitChangedEmitter.addListener( updateAmmeter );
+      ammeter.probePositionProperty.link( updateAmmeter );
     }
   }
 
   circuitConstructionKitCommon.register( 'AmmeterNode', AmmeterNode );
 
-  return inherit( Node, AmmeterNode );
+  return inherit( Node, AmmeterNode, {
+
+    /**
+     * Find the the current in the given layer (if any CircuitElement hits the sensor)
+     * @param {Node} probeNode
+     * @param {Node} layer
+     * @returns {number|null}
+     * @private
+     */
+    getCurrentInLayer: function( probeNode, layer ) {
+
+      // See if any CircuitElementNode contains the sensor point
+      for ( var i = 0; i < layer.children.length; i++ ) {
+        var circuitElementNode = layer.children[ i ];
+        if ( circuitElementNode instanceof CircuitElementNode ) {
+          if ( circuitElementNode.containsSensorPoint( probeNode.translation ) ) {
+            return circuitElementNode.circuitElement.currentProperty.get();
+          }
+        }
+      }
+      return null;
+    },
+
+    /**
+     * Find the current under the given probe
+     * @param {Node} probeNode
+     * @returns {number|null}
+     * @private
+     */
+    getCurrent: function( probeNode ) {
+      var mainCurrent = this.getCurrentInLayer( probeNode, this.circuitLayerNode.fixedCircuitElementLayer );
+      if ( mainCurrent !== null ) {
+        return mainCurrent;
+      }
+      else {
+        return this.getCurrentInLayer( probeNode, this.circuitLayerNode.wireLayer );
+      }
+    }
+  } );
 } );

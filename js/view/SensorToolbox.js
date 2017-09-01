@@ -87,7 +87,7 @@ define( function( require ) {
 
     // Icon for the ammeter
     var ammeter = new Ammeter( tandem.createTandem( 'ammeterIconModel' ) );
-    var ammeterNodeIcon = new AmmeterNode( ammeter, tandem.createTandem( 'ammeterNodeIcon' ), options );
+    var ammeterNodeIcon = new AmmeterNode( ammeter, null, null, tandem.createTandem( 'ammeterNodeIcon' ), options );
     ammeterNode.ammeter.visibleProperty.link( function( visible ) { ammeterNodeIcon.visible = !visible; } );
     ammeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( ammeterNodeIcon.width, ammeterNodeIcon.height ) } );
     ammeterNodeIcon.addInputListener( createListener( ammeterNode.ammeter, ammeterNode ) );
