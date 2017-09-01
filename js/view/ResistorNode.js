@@ -107,7 +107,7 @@ define( function( require ) {
 
       /**
        * When the resistance changes, update the colors of the color bands.
-       * @param resistance REVIEW*: type (presumably {number})
+       * @param {number} resistance
        */
       var updateColorBands = function( resistance ) {
         var colors = ResistorColors.getColorArray( resistance );
