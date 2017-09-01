@@ -78,6 +78,7 @@ define( function( require ) {
       //REVIEW: Woah, scale is also applied to the raysNode directly (in addition to CustomLightBulbNode itself)
       //REVIEW^(samreid): I removed scale as an stated option, is there a subset of node keys that should be stripped
       //REVIEW^(samreid): before passing parent options to child mutations?
+      //REVIEW^(samreid): removing options.scale above broke the centering, see https://github.com/phetsims/circuit-construction-kit-common/issues/397
       this.raysNode.mutate( options );
 
       options.children = [ this.backNode, middleNode ];
