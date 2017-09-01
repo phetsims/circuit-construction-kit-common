@@ -137,12 +137,7 @@ define( function( require ) {
       this.contentNode.addInputListener( this.dragHandler );
 
       if ( options.showHighlight ) {
-        var updateHighlightVisibility = function( lastCircuitElement ) {
-          var visible = ( lastCircuitElement === circuitElement );
-          CircuitConstructionKitCommonUtil.setInSceneGraph( visible, circuitLayerNode.highlightLayer, self.highlightNode );
-          self.markAsDirty();
-        };
-
+        var updateHighlightVisibility = this.setSelectedCircuitElement.bind( this );
         circuitLayerNode.circuit.selectedCircuitElementProperty.link( updateHighlightVisibility );
       }
 
@@ -274,6 +269,17 @@ define( function( require ) {
         this.circuitElement.startVertexProperty.get().relayerEmitter.emit();
         this.circuitElement.endVertexProperty.get().relayerEmitter.emit();
       }
+    },
+
+    /**
+     * Used as a bound callback listener in the constructor to update the highlight visibility
+     * @param {CircuitElement|null} circuitElement
+     * @private
+     */
+    setSelectedCircuitElement: function( circuitElement ) {
+      var visible = ( circuitElement === this.circuitElement );
+      CircuitConstructionKitCommonUtil.setInSceneGraph( visible, this.circuitLayerNode.highlightLayer, this.highlightNode );
+      this.markAsDirty();
     },
 
     /**
