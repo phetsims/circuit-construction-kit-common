@@ -164,7 +164,13 @@ define( function( require ) {
       }
 
       // Show fire for batteries and resistors
-      //REVIEW*: Conditional code based on subtype is probably a sign this code should live in the subtypes?
+      //REVIEW: Conditional code based on subtype is probably a sign this code should live in the subtypes?
+      //REVIEW^(samreid): Battery and Resistor are currently siblings.  Should I create an intermediate parent class for
+      //REVIEW^(samreid): them called FixedCircuitElementWithFire?  Or some kind of mix-in that is mixed in from
+      //REVIEW^(samreid): Battery and Resistor?  Or what about an `addFire` method in FixedCircuitElementNode that
+      //REVIEW^(samreid): can be called by them?  Or even better, what about an `isFlammable` model property?
+      //REVIEW^(samreid): That last idea (CircuitElement.isFlammable) seems best to me, and leaving this code here,
+      //REVIEW^(samreid): I'll wait to hear your thoughts before proceeding.
       if ( circuitElement instanceof Battery || circuitElement instanceof Resistor ) {
         //REVIEW*: visibility/type docs, and consider moving declaration (and docs) up top so it is more visible.
         this.fireNode = new Image( fireImage, { pickable: false, imageOpacity: 0.95 } );
