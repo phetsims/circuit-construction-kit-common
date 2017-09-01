@@ -76,11 +76,15 @@ define( function( require ) {
     } );
 
     // number to be displayed
-    batteryResistanceProperty.link( function( value ) {
+    var updateText = function( value ) {
       readoutTextNode.setText( StringUtils.fillIn( resistanceOhmsString, { resistance: Util.toFixed( value, 1 ) } ) );
-    } );
+    };
+
+    // Use the max to get the right size of the panel
+    updateText( CircuitConstructionKitCommonConstants.BATTERY_RESISTANCE_RANGE.max );
 
     var readoutTextPanel = new Panel( readoutTextNode, {
+      resize: false,
       fill: Color.WHITE,
       stroke: Color.GRAY,
       xMargin: 4,
@@ -89,6 +93,8 @@ define( function( require ) {
       backgroundPickable: false,
       tandem: readoutTextPanelTandem
     } );
+
+    batteryResistanceProperty.link( updateText );
 
     CircuitConstructionKitAccordionBox.call( this, alignGroup.createBox( new VBox( {
       spacing: -4,
