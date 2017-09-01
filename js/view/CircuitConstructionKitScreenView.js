@@ -62,6 +62,17 @@ define( function( require ) {
   } );
 
   /**
+   * Indicates a vertex and a voltage measurement at the given vertex.
+   * @param {Vertex} vertex
+   * @param {number} voltage
+   * @constructor
+   */
+  function VoltageConnection( vertex, voltage ) {
+    this.vertex = vertex;
+    this.voltage = voltage;
+  }
+
+  /**
    * @param {CircuitConstructionKitModel} model
    * @param {Tandem} tandem
    * @param {Object} [options]
@@ -238,9 +249,7 @@ define( function( require ) {
      * @param {Node} probeNode
      * @param {Vector2} probeTip
      * @param {number} sign - the direction the probe is rotated
-     * @returns {Object|null} if connected returns {vertex:Vertex,voltage:number} otherwise null
-     * REVIEW*: On later inspection, it's an object. Consider a file-local type definitions named VoltageConnection
-     * REVIEW*: to make it easy to document / handle?
+     * @returns {VoltageConnection|null} if connected returns VoltageConnection otherwise null
      */
     var findVoltageConnection = function( probeNode, probeTip, sign ) {
       var probeTipVector = Vector2.createPolar( VOLTMETER_PROBE_TIP_LENGTH, sign * VoltmeterNode.PROBE_ANGLE + Math.PI / 2 );
@@ -526,7 +535,7 @@ define( function( require ) {
      * Find where the voltmeter probe node intersects the wire, for computing the voltage difference
      * @param {Image} probeNode - the probe node from the VoltmeterNode REVIEW*: Only needs centerTop, consider doc as {Node}
      * @param {Vector2} probePosition
-     * @returns {Object|null} if connected returns {vertex:Vertex,voltage:number} otherwise null
+     * @returns {VoltageConnection|null} if connected returns VoltageConnection otherwise null
      * @private
      */
     getVoltageConnection: function( probeNode, probePosition ) {
@@ -542,10 +551,7 @@ define( function( require ) {
         return probePosition.distance( position ) <= SolderNode.SOLDER_RADIUS;
       } );
       if ( hitSolderNode ) {
-        return {
-          vertex: hitSolderNode.vertex,
-          voltage: hitSolderNode.vertex.voltageProperty.get()
-        };
+        return new VoltageConnection( hitSolderNode.vertex, hitSolderNode.vertex.voltageProperty.get() );
       }
 
       // Check for intersection with a metallic circuit element, which can provide voltmeter readings
@@ -576,10 +582,7 @@ define( function( require ) {
           distanceAlongSegment
         );
 
-        return {
-          vertex: metallicCircuitElement.circuitElement.startVertexProperty.get(),
-          voltage: voltageAlongWire
-        };
+        return new VoltageConnection( metallicCircuitElement.circuitElement.startVertexProperty.get(), voltageAlongWire );
       }
       else {
 
@@ -592,16 +595,16 @@ define( function( require ) {
           // address closed switch.  Find out whether the probe was near the start or end vertex
           if ( switchNode.startSideContainsSensorPoint( probePosition ) ) {
 
-            return {
-              vertex: switchNode.circuitSwitch.startVertexProperty.get(),
-              voltage: switchNode.circuitSwitch.startVertexProperty.get().voltageProperty.get()
-            };
+            return new VoltageConnection(
+              switchNode.circuitSwitch.startVertexProperty.get(),
+              switchNode.circuitSwitch.startVertexProperty.get().voltageProperty.get()
+            );
           }
           else if ( switchNode.endSideContainsSensorPoint( probePosition ) ) {
-            return {
-              vertex: switchNode.circuitSwitch.endVertexProperty.get(),
-              voltage: switchNode.circuitSwitch.endVertexProperty.get().voltageProperty.get()
-            };
+            return new VoltageConnection(
+              switchNode.circuitSwitch.endVertexProperty.get(),
+              switchNode.circuitSwitch.endVertexProperty.get().voltageProperty.get()
+            );
           }
         }
         return null;
