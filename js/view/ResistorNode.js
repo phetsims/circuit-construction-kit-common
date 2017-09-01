@@ -97,13 +97,10 @@ define( function( require ) {
       var getColorBand = function( index ) {
 
         var additionalOffset = index === 3 ? 12 : 0;
-        //REVIEW*: Why specify rectX,rectY of 0,0, but then x,y?
-        //REVIEW*: If concerned about constructor arg space, use:
-        //REVIEW*: new Rectangle( { rectX: , rectY: , rectWidth: , rectHeight: } )
-        return new Rectangle( 0, 0, COLOR_BAND_WIDTH, COLOR_BAND_HEIGHT, {
-          x: COLOR_BAND_PADDING + ( COLOR_BAND_WIDTH + COLOR_BAND_SPACING ) * index + additionalOffset,
-          y: COLOR_BAND_Y
-        } );
+        return new Rectangle(
+          COLOR_BAND_PADDING + ( COLOR_BAND_WIDTH + COLOR_BAND_SPACING ) * index + additionalOffset, COLOR_BAND_Y,
+          COLOR_BAND_WIDTH, COLOR_BAND_HEIGHT
+        );
       };
 
       // Color bands for resistance > 0
