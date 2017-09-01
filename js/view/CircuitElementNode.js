@@ -239,7 +239,8 @@ define( function( require ) {
 
             if ( trails.length === 0 ) {
               phet.joist.sim.display.removeInputListener( clickToDismissListener );
-              //REVIEW*: Why the extra guard here? Is there a chance of double-removal?
+              //REVIEW: Why the extra guard here? Is there a chance of double-removal?
+              //REVIEW^(samreid): which guard is extra? The trails.length makes sure that the user wasn't interacting with the controls
               var index = self.disposeActions.indexOf( disposeAction );
               if ( index >= 0 ) {
                 self.disposeActions.splice( index, 1 );
