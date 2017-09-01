@@ -70,7 +70,7 @@ define( function( require ) {
   RESISTOR_IMAGE_MAP[ ResistorType.DOLLAR_BILL ] = dollarBillImage;
 
   /**
-   * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - main screen view, null for icon
+   * @param {CircuitConstructionKitScreenView|null} screenView - main screen view, null for icon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {Resistor} resistor
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
@@ -78,7 +78,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function ResistorNode( circuitConstructionKitScreenView, circuitLayerNode, resistor, viewTypeProperty, tandem, options ) {
+  function ResistorNode( screenView, circuitLayerNode, resistor, viewTypeProperty, tandem, options ) {
 
     options = _.extend( { icon: false }, options );
 
@@ -195,7 +195,7 @@ define( function( require ) {
 
     // Super call
     FixedCircuitElementNode.call( this,
-      circuitConstructionKitScreenView,
+      screenView,
       circuitLayerNode,
       resistor,
       viewTypeProperty,

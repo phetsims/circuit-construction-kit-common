@@ -32,9 +32,7 @@ define( function( require ) {
   var rotationMatrix = new Matrix3();
 
   /**
-   * REVIEW*: Usually I'd use 'screenView' instead of 'circuitConstructionKitScreenView' (similar to the model). Either
-   * REVIEW*: works, the current way is just quite verbose.
-   * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - the main screen view, null for icon
+   * @param {CircuitConstructionKitScreenView} screenView - the main screen view, null for icon
    * @param {CircuitLayerNode} circuitLayerNode - Null if an icon is created
    * @param {FixedCircuitElement} circuitElement - the corresponding model element
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
@@ -45,7 +43,7 @@ define( function( require ) {
    * @param options
    * @constructor
    */
-  function FixedCircuitElementNode( circuitConstructionKitScreenView, circuitLayerNode, circuitElement,
+  function FixedCircuitElementNode( screenView, circuitLayerNode, circuitElement,
                                     viewTypeProperty, lifelikeNode, schematicNode, tandem, options ) {
     assert && assert( lifelikeNode !== schematicNode, 'schematicNode should be different than lifelikeNode' );
     var self = this;
@@ -162,7 +160,7 @@ define( function( require ) {
           //REVIEW*: Why the call()? Are we trying to skip the method (don't see it) overridden on this type?
           //REVIEW*: self.endDrag( ... ) should be equivalent, no?
           CircuitElementNode.prototype.endDrag.call( self, event, self.contentNode,
-            [ circuitElement.endVertexProperty.get() ], circuitConstructionKitScreenView, circuitLayerNode, startPoint,
+            [ circuitElement.endVertexProperty.get() ], screenView, circuitLayerNode, startPoint,
             dragged );
         },
         tandem: tandem.createTandem( 'dragHandler' )
@@ -199,7 +197,7 @@ define( function( require ) {
           updateFireMultilink = Property.multilink( [
             circuitElement.currentProperty,
             circuitElement.resistanceProperty,
-            circuitConstructionKitScreenView.model.isValueDepictionEnabledProperty
+            screenView.model.isValueDepictionEnabledProperty
           ], function( current, resistance, isValueDepictionEnabled ) {
             self.fireNode.visible = showFire( current, isValueDepictionEnabled ) && resistance >= 1E-8;
           } );
@@ -209,7 +207,7 @@ define( function( require ) {
           // Show fire in all other circuit elements
           updateFireMultilink = Property.multilink( [
             circuitElement.currentProperty,
-            circuitConstructionKitScreenView.model.isValueDepictionEnabledProperty
+            screenView.model.isValueDepictionEnabledProperty
           ], function( current, isValueDepictionEnabled ) {
             self.fireNode.visible = showFire( current, isValueDepictionEnabled );
           } );

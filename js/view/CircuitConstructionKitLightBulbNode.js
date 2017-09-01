@@ -60,7 +60,7 @@ define( function( require ) {
   }
 
   /**
-   * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - main screen view, null for icon
+   * @param {CircuitConstructionKitScreenView|null} screenView - main screen view, null for icon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {LightBulb} lightBulb - the light bulb model
    * @param {Property.<boolean>} showResultsProperty - true if the sim can display values
@@ -69,7 +69,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function CircuitConstructionKitLightBulbNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb,
+  function CircuitConstructionKitLightBulbNode( screenView, circuitLayerNode, lightBulb,
                                                 showResultsProperty, viewTypeProperty, tandem, options ) {
     var self = this;
     options = _.extend( {
@@ -163,7 +163,7 @@ define( function( require ) {
 
     FixedCircuitElementNode.call(
       this,
-      circuitConstructionKitScreenView,
+      screenView,
       circuitLayerNode,
       lightBulb,
       viewTypeProperty,
@@ -182,7 +182,7 @@ define( function( require ) {
 
       // Render the socket node in the front
       this.socketNode = new LightBulbSocketNode(
-        circuitConstructionKitScreenView,
+        screenView,
         circuitLayerNode,
         lightBulb,
         viewTypeProperty,

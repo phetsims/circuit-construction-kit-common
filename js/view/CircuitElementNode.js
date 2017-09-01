@@ -153,20 +153,20 @@ define( function( require ) {
      * @param {Event} event - scenery event, see https://github.com/phetsims/scenery/issues/608
      * @param {Node} node - the node the input listener is attached to
      * @param {Vertex[]} vertices - the vertices that are dragged
-     * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - the main screen view, null for icon
+     * @param {CircuitConstructionKitScreenView} screenView - the main screen view, null for icon
      * @param {CircuitLayerNode} circuitLayerNode
      * @param {Vector2} start
      * @param {boolean} dragged
      * @public
      */
-    endDrag: function( event, node, vertices, circuitConstructionKitScreenView, circuitLayerNode, start, dragged ) {
+    endDrag: function( event, node, vertices, screenView, circuitLayerNode, start, dragged ) {
       var self = this;
       var circuitElement = this.circuitElement;
 
       if ( circuitElement.interactiveProperty.get() ) {
 
         // If over the toolbox, then drop into it
-        if ( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) ) {
+        if ( screenView.canNodeDropInToolbox( self ) ) {
 
           var lifetime = phet.joist.elapsedTime - self.circuitElement.creationTime;
           var delayMS = Math.max( 500 - lifetime, 0 );
@@ -192,7 +192,7 @@ define( function( require ) {
 
           // End drag for each of the vertices
           vertices.forEach( function( vertex ) {
-            if ( circuitConstructionKitScreenView.model.circuit.vertices.contains( vertex ) ) {
+            if ( screenView.model.circuit.vertices.contains( vertex ) ) {
               circuitLayerNode.endDrag( event, vertex, dragged );
             }
           } );

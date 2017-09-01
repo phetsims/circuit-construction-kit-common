@@ -146,7 +146,7 @@ define( function( require ) {
   ).toDataURLImageSynchronous();
 
   /**
-   * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - main screen view, null for icon
+   * @param {CircuitConstructionKitScreenView|null} screenView - main screen view, null for icon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {Switch} circuitSwitch
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
@@ -154,7 +154,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function SwitchNode( circuitConstructionKitScreenView, circuitLayerNode, circuitSwitch, viewTypeProperty, tandem, options ) {
+  function SwitchNode( screenView, circuitLayerNode, circuitSwitch, viewTypeProperty, tandem, options ) {
 
     var self = this;
 
@@ -170,7 +170,7 @@ define( function( require ) {
     circuitSwitch.closedProperty.link( closeListener );
 
     FixedCircuitElementNode.call( this,
-      circuitConstructionKitScreenView,
+      screenView,
       circuitLayerNode,
       circuitSwitch,
       viewTypeProperty,
@@ -198,7 +198,7 @@ define( function( require ) {
     } );
 
     // Only add the input listener if it is not for a toolbar icon
-    circuitConstructionKitScreenView && this.contentNode.addInputListener( buttonListener );
+    screenView && this.contentNode.addInputListener( buttonListener );
 
     // @private - For hit testing
     this.lifelikeOpenNode = createNode(
@@ -211,7 +211,7 @@ define( function( require ) {
 
       // Surprisingly, the children and button listener must be removed to prevent a memory leak.
       self.removeAllChildren(); // TODO: is this line necessary?
-      circuitConstructionKitScreenView && self.contentNode.removeInputListener( buttonListener );
+      screenView && self.contentNode.removeInputListener( buttonListener );
 
       // Make sure the lifelikeNode and schematicNode are not listed as parents for their children because the children
       // (images) persist.

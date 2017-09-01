@@ -139,14 +139,14 @@ define( function( require ) {
   };
 
   /**
-   * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - null means it's an icon
+   * @param {CircuitConstructionKitScreenView|null} screenView - null means it's an icon
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {Wire} wire
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Tandem} tandem
    * @constructor
    */
-  function WireNode( circuitConstructionKitScreenView, circuitLayerNode, wire, viewTypeProperty, tandem ) {
+  function WireNode( screenView, circuitLayerNode, wire, viewTypeProperty, tandem ) {
     var self = this;
 
     // @private {Property.<CircuitElementViewType>}
@@ -241,7 +241,7 @@ define( function( require ) {
     // Keep track of whether it was dragged
     var dragged = false;
 
-    if ( circuitConstructionKitScreenView ) {
+    if ( screenView ) {
 
       // Input listener for dragging the body of the wire, to translate it.
       this.dragHandler = new SimpleDragHandler( {
@@ -271,7 +271,7 @@ define( function( require ) {
                 wire.startVertexProperty.get(),
                 wire.endVertexProperty.get()
               ],
-              circuitConstructionKitScreenView, circuitLayerNode, startPoint, dragged );
+              screenView, circuitLayerNode, startPoint, dragged );
           }
         }
       );

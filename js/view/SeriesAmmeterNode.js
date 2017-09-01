@@ -53,14 +53,14 @@ define( function( require ) {
   } );
 
   /**
-   * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - main screen view, null for icon
+   * @param {CircuitConstructionKitScreenView|null} screenView - main screen view, null for icon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {SeriesAmmeter} seriesAmmeter
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function SeriesAmmeterNode( circuitConstructionKitScreenView, circuitLayerNode, seriesAmmeter, tandem, options ) {
+  function SeriesAmmeterNode( screenView, circuitLayerNode, seriesAmmeter, tandem, options ) {
     var self = this;
     options = options || {};
 
@@ -81,9 +81,9 @@ define( function( require ) {
       var readout = questionMarkString;
 
       // If it is not an icon and connected at both sides, show the current, otherwise show '?'
-      if ( circuitConstructionKitScreenView ) {
+      if ( screenView ) {
 
-        var circuit = circuitConstructionKitScreenView.model.circuit;
+        var circuit = screenView.model.circuit;
         var startConnection = circuit.getNeighboringVertices( seriesAmmeter.startVertexProperty.get() ).length > 1;
         var endConnection = circuit.getNeighboringVertices( seriesAmmeter.endVertexProperty.get() ).length > 1;
 
@@ -175,7 +175,7 @@ define( function( require ) {
     }
 
     FixedCircuitElementNode.call( this,
-      circuitConstructionKitScreenView,
+      screenView,
       circuitLayerNode,
       seriesAmmeter,
       new Property( CircuitElementViewType.LIFELIKE ),

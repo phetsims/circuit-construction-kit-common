@@ -62,7 +62,7 @@ define( function( require ) {
   schematicNode.touchArea = schematicNode.bounds.copy().shiftedY( schematicNode.height / 2 );
 
   /**
-   * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - main screen view, null for icon
+   * @param {CircuitConstructionKitScreenView|null} screenView - main screen view, null for icon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {Battery} battery
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
@@ -70,7 +70,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function BatteryNode( circuitConstructionKitScreenView, circuitLayerNode, battery, viewTypeProperty, tandem, options ) {
+  function BatteryNode( screenView, circuitLayerNode, battery, viewTypeProperty, tandem, options ) {
 
     // @public (read-only) {Battery} - the Battery rendered by this Node
     this.battery = battery;
@@ -85,7 +85,7 @@ define( function( require ) {
     lifelikeNode.centerY = 0;
 
     FixedCircuitElementNode.call( this,
-      circuitConstructionKitScreenView,
+      screenView,
       circuitLayerNode,
       battery,
       viewTypeProperty,

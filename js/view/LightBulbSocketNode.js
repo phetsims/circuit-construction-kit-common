@@ -22,7 +22,7 @@ define( function( require ) {
   var SCRATCH_MATRIX = new Matrix3();
 
   /**
-   * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - main screen view, null for icon
+   * @param {CircuitConstructionKitScreenView|null} screenView - main screen view, null for icon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {LightBulb} lightBulb - the light bulb model
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
@@ -30,7 +30,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function LightBulbSocketNode( circuitConstructionKitScreenView, circuitLayerNode, lightBulb, viewTypeProperty, tandem, options ) {
+  function LightBulbSocketNode( screenView, circuitLayerNode, lightBulb, viewTypeProperty, tandem, options ) {
 
     // Render the bulb socket only
     var lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ), {
@@ -47,7 +47,7 @@ define( function( require ) {
       // Suppress the highlight for the socket, the highlight is shown by the CircuitConstructionKitLightBulbNode
       showHighlight: false
     }, options );
-    FixedCircuitElementNode.call( this, circuitConstructionKitScreenView, circuitLayerNode, lightBulb,
+    FixedCircuitElementNode.call( this, screenView, circuitLayerNode, lightBulb,
       viewTypeProperty, lightBulbNode, new Rectangle( 0, 0, 10, 10 ), tandem, options );
   }
 
