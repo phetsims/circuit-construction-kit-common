@@ -72,7 +72,7 @@ define( function( require ) {
       // @private {Node} - displays the light rays
       this.raysNode = new LightRaysNode( bulbRadius, {
         x: this.backNode.centerX,
-        y: ( middleNode.top + bulbRadius ) * options.scale //REVIEW*: scale will apply to this, so why is this needed?
+        y: ( middleNode.top + bulbRadius )
       } );
 
       //REVIEW: Woah, scale is also applied to the raysNode directly (in addition to CustomLightBulbNode itself)
@@ -85,14 +85,14 @@ define( function( require ) {
 
     Node.call( this, options );
 
-    // @private REVIEW*: Type doc it?
+    // @private {Property.<number>} - brightness of the bulb
     this.brightnessProperty = brightnessProperty;
 
     // If it shows the rays, update their brightness
     if ( !options.baseOnly ) {
-      //REVIEW*: this.brightnessObserver = this.update.bind( this );
-      //REVIEW*: Normal type/visibility docs (add {function})
-      this.brightnessObserver = function() { self.update(); }; // @private
+
+      // @private {function}
+      this.brightnessObserver = this.update.bind( this );
       this.brightnessProperty.link( this.brightnessObserver );
     }
 
@@ -153,7 +153,6 @@ define( function( require ) {
      * @override update when this node becomes visible
      * @param {boolean} visible
      * @public
-     * REVIEW*: Careful about overriding methods that chain. Would want to add "return this", similar to setVisible on Node
      */
     setVisible: function( visible ) {
       var wasVisible = this.visible;
@@ -161,6 +160,7 @@ define( function( require ) {
       if ( !wasVisible && visible ) {
         this.update();
       }
+      return this;
     }
   }, {
 
