@@ -16,12 +16,13 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
   var inherit = require( 'PHET_CORE/inherit' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+  var Node = require( 'SCENERY/nodes/Node' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Color = require( 'SCENERY/util/Color' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var HSlider = require( 'SUN/HSlider' );
-  var Panel = require( 'SUN/Panel' );
 
   // strings
   var batteryResistanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/batteryResistance' );
@@ -68,37 +69,47 @@ define( function( require ) {
 
     var readoutTextPanelTandem = tandem.createTandem( 'readoutTextPanel' );
 
-    var readoutTextNode = new Text( batteryResistanceProperty.get(), {
+    var readoutText = new Text( batteryResistanceProperty.get(), {
       font: new PhetFont( CircuitConstructionKitCommonConstants.FONT_SIZE ),
       fill: Color.BLACK,
       maxWidth: 100,
-      tandem: readoutTextPanelTandem.createTandem( 'readoutTextNode' )
+      tandem: readoutTextPanelTandem.createTandem( 'readoutTextNode' ),
+      pickable: false
     } );
+
+    var xMargin = 4;
 
     // number to be displayed
     var updateText = function( value ) {
-      readoutTextNode.setText( StringUtils.fillIn( resistanceOhmsString, { resistance: Util.toFixed( value, 1 ) } ) );
+      readoutText.setText( StringUtils.fillIn( resistanceOhmsString, { resistance: Util.toFixed( value, 1 ) } ) );
+
+      // Once there is a textRectangle, stay right-justified
+      if ( textRectangle ) {
+        readoutText.right = textRectangle.right - xMargin;
+      }
     };
 
     // Use the max to get the right size of the panel
     updateText( CircuitConstructionKitCommonConstants.BATTERY_RESISTANCE_RANGE.max );
 
-    var readoutTextPanel = new Panel( readoutTextNode, {
-      resize: false,
+    var textRectangle = Rectangle.bounds( readoutText.bounds.dilatedXY( xMargin, 3 ), {
       fill: Color.WHITE,
       stroke: Color.GRAY,
-      xMargin: 4,
-      yMargin: 3,
       cornerRadius: 0, // radius of the rounded corners on the background
-      backgroundPickable: false,
+      pickable: false,
       tandem: readoutTextPanelTandem
+    } );
+
+    var textContainerNode = new Node( {
+      children: [ textRectangle, readoutText ],
+      pickable: false
     } );
 
     batteryResistanceProperty.link( updateText );
 
     CircuitConstructionKitAccordionBox.call( this, alignGroup.createBox( new VBox( {
       spacing: -4,
-      children: [ readoutTextPanel, slider ]
+      children: [ textContainerNode, slider ]
     } ) ), batteryResistanceString, tandem );
   }
 
