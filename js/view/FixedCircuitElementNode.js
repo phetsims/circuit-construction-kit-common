@@ -63,9 +63,17 @@ define( function( require ) {
 
     // @protected (read-only) {Node} node that shows the component, separate from the part that shows the highlight and
     // the fire
-    this.contentNode = new Node( {
-      children: [ lifelikeNode ] //REVIEW*: viewPropertyListener link below sets this up. create as new Node()?
-    } );
+    this.contentNode = new Node();
+
+    // Show the selected node
+    var viewPropertyListener = function( view ) {
+      self.contentNode.children = [ view === CircuitElementViewType.LIFELIKE ? lifelikeNode : schematicNode ];
+
+      // Update the dimensions of the highlight.  For Switches, retain the original bounds (big enough to encapsulate
+      // both schematic and lifelike open and closed).
+      (circuitElement.isSizeChangedOnViewChange && self.highlightNode ) && self.highlightNode.recomputeBounds( self );
+    };
+    viewTypeProperty.link( viewPropertyListener );
 
     // @private {boolean} - Flag to indicate when updating view is necessary, in order to avoid duplicate work when both
     // vertices move
@@ -75,20 +83,11 @@ define( function( require ) {
     if ( !options.icon && options.showHighlight ) {
       //REVIEW*: visibility/type docs
       this.highlightNode = new FixedCircuitElementHighlightNode( this );
+
+      // Update the highlight bounds after it is created
+      viewPropertyListener( viewTypeProperty.value );
     }
     var markAsDirty = this.markAsDirty.bind( this );
-
-    // Show the selected node
-    var viewPropertyListener = function( view ) {
-      self.contentNode.children = [ view === CircuitElementViewType.LIFELIKE ? lifelikeNode : schematicNode ];
-
-      // Update the dimensions of the highlight.  For Switches, retain the original bounds (big enough to encapsulate
-      // both schematic and lifelike open and closed).
-      if ( circuitElement.isSizeChangedOnViewChange ) {
-        self.highlightNode && self.highlightNode.recomputeBounds( self );
-      }
-    };
-    viewTypeProperty.link( viewPropertyListener );
 
     // Relink when start vertex changes
     //REVIEW*: Doc notes "relinking", but I see this just setting dirty flag.
@@ -114,10 +113,7 @@ define( function( require ) {
 
     CircuitElementNode.call( this, circuitElement, circuit, _.extend( {
       cursor: 'pointer',
-      children: [
-        //REVIEW*: Use 'this' instead of 'self'?
-        self.contentNode
-      ],
+      children: [ this.contentNode ],
       tandem: tandem
     }, options ) );
 
