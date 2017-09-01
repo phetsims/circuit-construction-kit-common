@@ -133,8 +133,6 @@ define( function( require ) {
 
         // Filament
         .moveTo( 0, LEAD_Y )
-        //REVIEW*: Is this lineTo necessary? (if it's to the start of the arc, it shouldn't be needed)
-        .lineTo( schematicCircleRadius - INNER_RADIUS, LEAD_Y )
         .arc( schematicCircleRadius, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
         .lineTo( rightLeadX, LEAD_Y );
     };
