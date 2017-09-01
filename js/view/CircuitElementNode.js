@@ -92,6 +92,10 @@ define( function( require ) {
 
     circuitElement.startDragEmitter.addListener( startDragListener );
 
+    // @private {boolean} - Flag to indicate when updating view is necessary, in order to avoid duplicate work when both
+    // vertices move
+    this.dirty = true;
+
     this.disposeActions.push( function() {
       circuitElement.startDragEmitter.removeListener( startDragListener );
     } );
@@ -100,6 +104,17 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'CircuitElementNode', CircuitElementNode );
 
   return inherit( Node, CircuitElementNode, {
+
+    /**
+     * Mark dirty to batch changes, so that update can be done once in view step, if necessary
+     * @public
+     * REVIEW: markAsDirty this type AND WireNode seem to be duplicates, can this be consolidated into CircuitElementNode?
+     * REVIEW^(samreid): I left the markAsDirty binds in the subclasses because they had different logic, can you check
+     * REVIEW^(samreid): if there's a better way to do that?
+     */
+    markAsDirty: function() {
+      this.dirty = true;
+    },
 
     /**
      * Dispose resources when no longer used.
@@ -143,10 +158,15 @@ define( function( require ) {
     },
 
     /**
-     * Hook for view step, overriden in FixedCircuitElementNode
-     * @public
+     * @public - called during the view step
+     * @override
      */
-    step: function() {},
+    step: function() {
+      if ( this.dirty ) {
+        this.updateRender();
+        this.dirty = false;
+      }
+    },
 
     /**
      * Handles when the node is dropped, called by subclass input listener.

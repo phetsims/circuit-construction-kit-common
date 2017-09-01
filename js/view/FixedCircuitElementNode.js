@@ -75,10 +75,6 @@ define( function( require ) {
     };
     viewTypeProperty.link( viewPropertyListener );
 
-    // @private {boolean} - Flag to indicate when updating view is necessary, in order to avoid duplicate work when both
-    // vertices move
-    this.dirty = true;
-
     // Add highlight (but not for icons)
     if ( !options.icon && options.showHighlight ) {
 
@@ -241,16 +237,6 @@ define( function( require ) {
   return inherit( CircuitElementNode, FixedCircuitElementNode, {
 
     /**
-     * Mark dirty to batch changes, so that update can be done once in view step, if necessary
-     * @public
-     * REVIEW*: The dirty flag, markAsDirty and step functions for this type AND WireNode seem to be duplicates.
-     * REVIEW*: Can this be consolidated into CircuitElementNode?
-     */
-    markAsDirty: function() {
-      this.dirty = true;
-    },
-
-    /**
      * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
      * @protected - CircuitConstructionKitLightBulbNode calls updateRender for its child socket node
      */
@@ -277,18 +263,6 @@ define( function( require ) {
       matrix.multiplyMatrix( rotationMatrix.setToScale( scale ) )
         .multiplyMatrix( rotationMatrix.setToTranslation( flameX, flameY ) );
       this.fireNode && this.fireNode.setMatrix( matrix );
-    },
-
-    /**
-     * @public - called during the view step
-     * @override
-     */
-    step: function() {
-      CircuitElementNode.prototype.step.call( this );
-      if ( this.dirty ) {
-        this.updateRender();
-        this.dirty = false;
-      }
     },
 
     /**

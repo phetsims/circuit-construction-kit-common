@@ -334,14 +334,6 @@ define( function( require ) {
   return inherit( CircuitElementNode, WireNode, {
 
     /**
-     * Mark dirty to batch changes, so that update can be done once in view step, if necessary
-     * @public
-     */
-    markAsDirty: function() {
-      this.dirty = true;
-    },
-
-    /**
      * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
      * @protected - CircuitConstructionKitLightBulbNode calls updateRender for its child socket node
      */
@@ -398,18 +390,6 @@ define( function( require ) {
         }
 
         this.touchArea = getTouchArea( this.wire );
-      }
-    },
-
-    /**
-     * @public - called during the view step
-     * @override
-     */
-    step: function() {
-      CircuitElementNode.prototype.step.call( this );
-      if ( this.dirty ) {
-        this.updateRender();
-        this.dirty = false;
       }
     },
 
