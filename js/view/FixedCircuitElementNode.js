@@ -235,7 +235,7 @@ define( function( require ) {
       if ( options.pickable !== false ) {
         circuitElement.interactiveProperty.unlink( pickableListener );
       }
-      circuitLayerNode && CircuitConstructionKitCommonUtil.setInSceneGraph( false, circuitLayerNode.highlightLayer, self.highlightNode );
+      circuitLayerNode && self.highlightNode && CircuitConstructionKitCommonUtil.setInSceneGraph( false, circuitLayerNode.highlightLayer, self.highlightNode );
       viewTypeProperty.unlink( viewPropertyListener );
 
       if ( !options.icon && updateFireMultilink ) {
