@@ -27,7 +27,6 @@ define( function( require ) {
       stroke: color,
       pickable: false
     } );
-    var self = this;
 
     // @private {Vector2}
     this.probePosition = new Vector2();
@@ -35,30 +34,38 @@ define( function( require ) {
     // @private {Vector2}
     this.bodyPosition = new Vector2();
 
-    // @private {function}
-    //REVIEW*: This would be better as a method?
-    this.updateWireShape = function() {
+    // @private {Vector2}
+    this.bodyControlPointOffset = bodyControlPointOffset;
 
-      var bodyX = self.bodyPosition.x;
-      var bodyY = self.bodyPosition.y;
-      var probeX = self.probePosition.x;
-      var probeY = self.probePosition.y;
+    // @private {Vector2}
+    this.probeControlPointOffset = probeControlPointOffset;
 
-      self.shape = new Shape()
-        .moveTo( bodyX, bodyY )
-        .cubicCurveTo(
-          bodyX + bodyControlPointOffset.x, bodyY + bodyControlPointOffset.y,
-          probeX + probeControlPointOffset.x, probeY + probeControlPointOffset.y,
-          probeX, probeY
-        );
-    };
-
+    // set correct initial shape
     this.updateWireShape();
   }
 
   circuitConstructionKitCommon.register( 'ProbeWireNode', ProbeWireNode );
 
   return inherit( Path, ProbeWireNode, {
+
+    /**
+     * Update the shape of the wire when its end points have translated
+     * @private
+     */
+    updateWireShape: function() {
+      var bodyX = this.bodyPosition.x;
+      var bodyY = this.bodyPosition.y;
+      var probeX = this.probePosition.x;
+      var probeY = this.probePosition.y;
+
+      this.shape = new Shape()
+        .moveTo( bodyX, bodyY )
+        .cubicCurveTo(
+          bodyX + this.bodyControlPointOffset.x, bodyY + this.bodyControlPointOffset.y,
+          probeX + this.probeControlPointOffset.x, probeY + this.probeControlPointOffset.y,
+          probeX, probeY
+        );
+    },
 
     /**
      * @param {Vector2} probePosition - the position of the part of the probe where the wire connects
