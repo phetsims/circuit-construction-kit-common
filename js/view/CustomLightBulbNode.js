@@ -72,7 +72,7 @@ define( function( require ) {
       // @private {Node} - displays the light rays
       this.raysNode = new LightRaysNode( bulbRadius, {
         x: this.backNode.centerX,
-        y: ( middleNode.top + bulbRadius )
+        y: ( middleNode.top + bulbRadius ) * options.scale // The scale here seems essential to line up the rays on the bulb, not sure why, see https://github.com/phetsims/circuit-construction-kit-common/issues/397
       } );
 
       //REVIEW: Woah, scale is also applied to the raysNode directly (in addition to CustomLightBulbNode itself)
