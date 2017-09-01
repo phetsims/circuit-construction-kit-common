@@ -20,6 +20,7 @@ define( function( require ) {
   var LightBulbSocketNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/LightBulbSocketNode' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var Util = require( 'DOT/Util' );
+  var Vector2 = require( 'DOT/Vector2' );
   var Shape = require( 'KITE/Shape' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Image = require( 'SCENERY/nodes/Image' );
@@ -226,9 +227,7 @@ define( function( require ) {
     updateRender: function() {
       var startPosition = this.circuitElement.startPositionProperty.get();
       var endPosition = this.circuitElement.endPositionProperty.get();
-      //REVIEW*: If a scratch matrix is used below, presumably use a non-GC way of Vector2 subtraction?
-      var delta = endPosition.minus( startPosition );
-      var angle = delta.angle() + Math.PI / 4;
+      var angle = Vector2.getAngleBetweenVectors( startPosition, endPosition ) + Math.PI / 4;
 
       // Update the node transform in a single step, see #66
       SCRATCH_MATRIX.setToTranslationRotationPoint( startPosition, angle );
