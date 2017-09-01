@@ -45,8 +45,7 @@ define( function( require ) {
   /**
    * @param {Circuit} circuit - the circuit model
    * @param {Property.<boolean>} visibleBoundsProperty - the visible bounds in view coordinates
-   * @param {Property.<string>} modeProperty - InteractionMode.EXPLORE|InteractionMode.TEST for Black Box Study
-   * REVIEW*: {Property.<InteractionMode>}?
+   * @param {Property.<InteractionMode>} modeProperty
    * @param {Tandem} tandem
    * @constructor
    */
@@ -62,8 +61,7 @@ define( function( require ) {
 
     // Only show the instructions if there is a circuit element in the play area, so students don't try to tap
     // something in the toolbox.
-    //REVIEW*: A more descriptive name would help (listener => updateInstructions / etc.).
-    var listener = function() {
+    var updateInstructionTextVisible = function() {
 
       // Only fixed length circuit elements are editable, even though wires can be deleted
       var fixedLengthElements = circuit.circuitElements.getArray().filter( function( circuitElement ) {
@@ -72,28 +70,26 @@ define( function( require ) {
       tapInstructionTextNode.visible = fixedLengthElements.length > 0;
     };
 
-    circuit.vertexDroppedEmitter.addListener( listener );
+    circuit.vertexDroppedEmitter.addListener( updateInstructionTextVisible );
 
     // Also update on reset all, or if a component is dropped in the toolbox
-    circuit.vertices.addItemRemovedListener( listener );
-    modeProperty.link( listener );
+    circuit.vertices.addItemRemovedListener( updateInstructionTextVisible );
+    modeProperty.link( updateInstructionTextVisible );
 
     var updatePosition = function() {
 
       // Layout, but only if we have something to display (otherwise bounds fail out)
-      //REVIEW*: Generally recommend self.bounds.isValid() as the guard for this type of thing
-      self.children.length > 0 && self.mutate( GET_LAYOUT_POSITION( visibleBoundsProperty.get() ) );
+      //REVIEW: Generally recommend self.bounds.isValid() as the guard for this type of thing
+      //REVIEW^(samreid): Like this?
+      self.bounds.isValid() && self.mutate( GET_LAYOUT_POSITION( visibleBoundsProperty.get() ) );
     };
 
     // When the selected element changes, update the displayed controls
-    var previousPanel = null;
-    //REVIEW*: Recommend 'currentPanel' instead of 'previousPanel'. Was confusing when you were actively constructing
-    //REVIEW*: new nodes and assigning them to 'previousPanel'.
-    //REVIEW*: Also, it's not a Panel subtype, so I'd prefer something more akin to "node" or something
+    var editNode = null;
     circuit.selectedCircuitElementProperty.link( function( selectedCircuitElement ) {
-      previousPanel && self.removeChild( previousPanel );
-      ( previousPanel && previousPanel !== tapInstructionTextNode ) && previousPanel.dispose();
-      previousPanel = null;
+      editNode && self.removeChild( editNode );
+      ( editNode && editNode !== tapInstructionTextNode ) && editNode.dispose();
+      editNode = null;
 
       if ( selectedCircuitElement ) {
         var isResistor = selectedCircuitElement instanceof Resistor || selectedCircuitElement instanceof LightBulb;
@@ -103,7 +99,7 @@ define( function( require ) {
         var isSeriesAmmeter = selectedCircuitElement instanceof SeriesAmmeter;
 
         if ( isResistor && selectedCircuitElement.isResistanceEditable() ) {
-          previousPanel = new CircuitElementEditNode(
+          editNode = new CircuitElementEditNode(
             resistanceString,
 
             // Adapter to take from {{named}} to {0} for usage in common code
@@ -119,12 +115,12 @@ define( function( require ) {
         else if ( isResistor ) {
 
           // Just show a trash button for non-editable resistors which are grab bag items
-          previousPanel = new TrashButton(
+          editNode = new TrashButton(
             circuit, selectedCircuitElement, groupTandem.createNextTandem().createTandem( 'trashButton' )
           );
         }
         else if ( isBattery ) {
-          previousPanel = new CircuitElementEditNode(
+          editNode = new CircuitElementEditNode(
             voltageString,
 
             // Adapter to take from {{named}} to {0} for usage in common code
@@ -138,23 +134,23 @@ define( function( require ) {
           );
         }
         else if ( isSwitch ) {
-          previousPanel = new SwitchReadoutNode( circuit, selectedCircuitElement, groupTandem.createNextTandem() );
+          editNode = new SwitchReadoutNode( circuit, selectedCircuitElement, groupTandem.createNextTandem() );
         }
         else if ( isSeriesAmmeter || isWire ) {
 
           // Just show a trash button
-          previousPanel = new TrashButton(
+          editNode = new TrashButton(
             circuit, selectedCircuitElement, groupTandem.createNextTandem().createTandem( 'trashButton' )
           );
         }
       }
       else {
-        previousPanel = tapInstructionTextNode;
+        editNode = tapInstructionTextNode;
       }
-      if ( previousPanel !== null ) {
-        self.addChild( previousPanel );
+      if ( editNode !== null ) {
+        self.addChild( editNode );
 
-        if ( previousPanel === tapInstructionTextNode ) {
+        if ( editNode === tapInstructionTextNode ) {
           self.mouseArea = null;
           self.touchArea = null;
         }
