@@ -251,8 +251,9 @@ define( function( require ) {
       this.contentNode.setMatrix( matrix );
 
       //REVIEW*: Usually an if-statement would be more readable here, instead of temp variable + short-circuit?
-      var updateHighlight = this.highlightNode && this.circuitLayerNode.circuit.selectedCircuitElementProperty.get() === this.circuitElement;
-      updateHighlight && this.highlightNode.setMatrix( matrix );
+      if ( this.highlightNode && this.circuitLayerNode.circuit.selectedCircuitElementProperty.get() === this.circuitElement ) {
+        this.highlightNode.setMatrix( matrix );
+      }
 
       // Update the fire transform
       var flameExtent = 0.8;
