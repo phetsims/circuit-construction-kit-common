@@ -12,24 +12,6 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Color = require( 'SCENERY/util/Color' );
 
-  /**
-   * Gets the name from a color table entry.
-   * @param {Object} band
-   * @constructor
-   */
-  var GET_NAME = function( band ) {
-    return band.name;
-  };
-
-  /**
-   * Gets the color from a color table entry.
-   * @param {Object} band
-   * @constructor
-   */
-  var GET_COLOR = function( band ) {
-    return band.color;
-  };
-
   // See https://en.wikipedia.org/wiki/Electronic_color_code#Resistor_color-coding
   // Tolerances below gold were eliminated to reduce variance in the tolerance band, see
   // https://github.com/phetsims/circuit-construction-kit-dc/issues/10
@@ -122,7 +104,6 @@ define( function( require ) {
         }
       }
       assert && assert( percentError < color.tolerance, 'no tolerance high enough to accommodate error' );
-      console.log( firstSignificantDigit, secondSignificantDigit, exponent, color.tolerance );
       return [
         getEntry( 'significantFigure', firstSignificantDigit ),
         getEntry( 'significantFigure', secondSignificantDigit ),
@@ -138,8 +119,7 @@ define( function( require ) {
      * @public
      */
     getColorNames: function( resistance ) {
-      //REVIEW*: _.map( ..., 'name' )
-      return this.getEntries( resistance ).map( GET_NAME );
+      return _.map( this.getEntries( resistance ), 'name' );
     },
 
     /**
@@ -149,8 +129,7 @@ define( function( require ) {
      * @public
      */
     getColorArray: function( resistance ) {
-      //REVIEW*: _.map( ..., 'color' )
-      return this.getEntries( resistance ).map( GET_COLOR );
+      return _.map( this.getEntries( resistance ), 'color' );
     }
   };
 
