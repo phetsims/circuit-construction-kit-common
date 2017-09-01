@@ -76,8 +76,7 @@ define( function( require ) {
       //REVIEW*: visibility/type docs
       this.highlightNode = new FixedCircuitElementHighlightNode( this );
     }
-    //REVIEW*: this.markAsDirty.bind( this );
-    var markAsDirty = function() { self.markAsDirty(); };
+    var markAsDirty = this.markAsDirty.bind( this );
 
     // Show the selected node
     var viewPropertyListener = function( view ) {
