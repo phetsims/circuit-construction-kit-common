@@ -395,11 +395,8 @@ define( function( require ) {
         var endPoint = metallicCircuitElement.circuitElement.endPositionProperty.get();
         var segmentVector = endPoint.minus( startPoint );
         var probeVector = probeNode.centerTop.minus( startPoint );
-
-        //REVIEW*: Divide by segmentVector.magnitudeSquared() instead?
         var distanceAlongSegment = segmentVector.magnitude() === 0 ? 0 : ( probeVector.dot( segmentVector ) /
-                                                                           segmentVector.magnitude() /
-                                                                           segmentVector.magnitude() );
+                                                                           segmentVector.magnitudeSquared() );
         distanceAlongSegment = Util.clamp( distanceAlongSegment, 0, 1 );
 
         //REVIEW*: This was just clamped, not sure an assertion is needed (don't feel strongly)
