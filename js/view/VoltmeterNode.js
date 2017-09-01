@@ -183,8 +183,11 @@ define( function( require ) {
       ]
     } );
 
-    // For the real version (not the icon), add drag listeners.
+    // For the real version (not the icon), add drag listeners and update visibility
     if ( !options.icon ) {
+
+      // Show the voltmeter when icon dragged out of the toolbox
+      voltmeter.visibleProperty.linkAttribute( this, 'visible' );
 
       /**
        * Gets a drag handler for one of the probes.

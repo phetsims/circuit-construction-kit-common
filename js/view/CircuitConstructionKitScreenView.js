@@ -113,8 +113,6 @@ define( function( require ) {
         model.voltmeter.visibleProperty.set( false );
       }
     } );
-    //REVIEW*: Usually visibility like this would be handled in VoltmeterNode. Any advantages here?
-    model.voltmeter.visibleProperty.linkAttribute( voltmeterNode, 'visible' );
 
     var ammeterNode = new AmmeterNode( model.ammeter, tandem.createTandem( 'ammeterNode' ), {
       showResultsProperty: model.isValueDepictionEnabledProperty,
