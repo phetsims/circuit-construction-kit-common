@@ -238,8 +238,8 @@ define( function( require ) {
      * @param {Node} probeNode
      * @param {Vector2} probeTip
      * @param {number} sign - the direction the probe is rotated
-     * @returns the voltage connection or null if no connection REVIEW*: Type? Not for-sure it's {number|null}
-     * REVIEW*: On later inspection, it's an object. Consider a file-local type defintion named VoltageConnection
+     * @returns {Object|null} if connected returns {vertex:Vertex,voltage:number} otherwise null
+     * REVIEW*: On later inspection, it's an object. Consider a file-local type definitions named VoltageConnection
      * REVIEW*: to make it easy to document / handle?
      */
     var findVoltageConnection = function( probeNode, probeTip, sign ) {
@@ -529,7 +529,7 @@ define( function( require ) {
      * Find where the voltmeter probe node intersects the wire, for computing the voltage difference
      * @param {Image} probeNode - the probe node from the VoltmeterNode REVIEW*: Only needs centerTop, consider doc as {Node}
      * @param {Vector2} probePosition
-     * @returns {Object|null} if connected returns {vertex,voltage} otherwise null
+     * @returns {Object|null} if connected returns {vertex:Vertex,voltage:number} otherwise null
      * @private
      */
     getVoltageConnection: function( probeNode, probePosition ) {
