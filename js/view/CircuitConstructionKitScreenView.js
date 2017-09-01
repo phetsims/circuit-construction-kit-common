@@ -243,10 +243,7 @@ define( function( require ) {
      * REVIEW*: to make it easy to document / handle?
      */
     var findVoltageConnection = function( probeNode, probeTip, sign ) {
-      var probeTipVector = Vector2.createPolar(
-        VOLTMETER_PROBE_TIP_LENGTH,
-        sign * VoltmeterNode.PROBE_ANGLE + Math.PI / 2
-      );
+      var probeTipVector = Vector2.createPolar( VOLTMETER_PROBE_TIP_LENGTH, sign * VoltmeterNode.PROBE_ANGLE + Math.PI / 2 );
       var probeTipTail = probeTip.plus( probeTipVector );
       for ( var i = 0; i < VOLTMETER_NUMBER_SAMPLE_POINTS; i++ ) {
         var samplePoint = probeTip.blend( probeTipTail, i / VOLTMETER_NUMBER_SAMPLE_POINTS );
