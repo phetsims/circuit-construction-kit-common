@@ -48,6 +48,12 @@ define( function( require ) {
     assert && assert( lifelikeNode !== schematicNode, 'schematicNode should be different than lifelikeNode' );
     var self = this;
 
+    // @private {Node} shows the lifelike view
+    this.lifelikeNode = lifelikeNode;
+
+    // @private {Node} shows the schematic view
+    this.schematicNode = schematicNode;
+
     //REVIEW*: (performance) Lots of closures here. If memory is still an issue, moving these to methods (where possible or convenient) may help.
 
     options = _.extend( {
@@ -66,13 +72,7 @@ define( function( require ) {
     this.contentNode = new Node();
 
     // Show the selected node
-    var viewPropertyListener = function( view ) {
-      self.contentNode.children = [ view === CircuitElementViewType.LIFELIKE ? lifelikeNode : schematicNode ];
-
-      // Update the dimensions of the highlight.  For Switches, retain the original bounds (big enough to encapsulate
-      // both schematic and lifelike open and closed).
-      (circuitElement.isSizeChangedOnViewChange && self.highlightNode ) && self.highlightNode.recomputeBounds( self );
-    };
+    var viewPropertyListener = this.setViewType.bind( this );
     viewTypeProperty.link( viewPropertyListener );
 
     // Add highlight (but not for icons)
@@ -235,6 +235,19 @@ define( function( require ) {
   circuitConstructionKitCommon.register( 'FixedCircuitElementNode', FixedCircuitElementNode );
 
   return inherit( CircuitElementNode, FixedCircuitElementNode, {
+
+    /**
+     * Set the view type
+     * @param {CircuitElementViewType} viewType
+     * @private
+     */
+    setViewType: function( viewType ) {
+      this.contentNode.children = [ viewType === CircuitElementViewType.LIFELIKE ? this.lifelikeNode : this.schematicNode ];
+
+      // Update the dimensions of the highlight.  For Switches, retain the original bounds (big enough to encapsulate
+      // both schematic and lifelike open and closed).
+      (this.circuitElement.isSizeChangedOnViewChange && this.highlightNode ) && this.highlightNode.recomputeBounds( this );
+    },
 
     /**
      * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
