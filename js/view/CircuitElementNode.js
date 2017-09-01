@@ -26,15 +26,14 @@ define( function( require ) {
 
     var self = this;
 
-    //REVIEW*: visibility/type docs
+    // @private (read-only) {Circuit}
     this.circuit = circuit;
 
     // @public (read-only) {CircuitElement} - the CircuitElement rendered by this node
     this.circuitElement = circuitElement;
 
-    // @protected {Object|null} - Supplied by subclasses so that events can be forwarded from the tool icons or null
+    // @protected {SimpleDragHandler|null} - Supplied by subclasses so that events can be forwarded from the tool icons or null
     // if rendering an icon
-    //REVIEW*: Object? Presumably {SimpleDragHandler|null}?
     this.dragHandler = null;
 
     options = _.extend( {
@@ -73,10 +72,11 @@ define( function( require ) {
      * dragging.
      * @param event - scenery event
      */
-    //REVIEW*: var startDragListener = self.dragHandler.startDrag.bind( self.dragHandler )
+      //REVIEW: var startDragListener = self.dragHandler.startDrag.bind( self.dragHandler )
+      //REVIEW^(samreid): this didn't work out of the box because dragHandler is supplied later by subclasses. What do you recommend?
     var startDragListener = function( event ) {
-      self.dragHandler.startDrag( event );
-    };
+        self.dragHandler.startDrag( event );
+      };
 
     // @private {function} - for disposal
     this.disposeCircuitElementNode = function() {
@@ -119,7 +119,7 @@ define( function( require ) {
       var self = this;
 
       // TODO (black-box-study): Replace this with grayscale if we keep it
-      //REVIEW*: I've wished for a scenery-level grayscale/etc. filter. Let me know when you get close to doing this.
+      // TODO (black-box-study): @jonathonolson said: I've wished for a scenery-level grayscale/etc. filter. Let me know when you get close to doing this.
       var interactivityChanged = function( interactive ) {
         self.opacity = interactive ? 1 : 0.5;
       };
@@ -150,68 +150,62 @@ define( function( require ) {
 
     /**
      * Handles when the node is dropped, called by subclass input listener.
-     * @param {Object} event - scenery event REVIEW*: Current doc is {Event}, may change with
-     *                                                https://github.com/phetsims/scenery/issues/608
+     * @param {Event} event - scenery event, see https://github.com/phetsims/scenery/issues/608
      * @param {Node} node - the node the input listener is attached to
      * @param {Vertex[]} vertices - the vertices that are dragged
      * @param {CircuitConstructionKitScreenView} circuitConstructionKitScreenView - the main screen view, null for icon
      * @param {CircuitLayerNode} circuitLayerNode
      * @param {Vector2} start
      * @param {boolean} dragged
-     * REVIEW*: Where is visibility doc? Presumably public, because not called in this file?
+     * @public
      */
     endDrag: function( event, node, vertices, circuitConstructionKitScreenView, circuitLayerNode, start, dragged ) {
       var self = this;
       var circuitElement = this.circuitElement;
 
-      //REVIEW*: Usually either "return" out of the function, or wrap the other if/else? Feels weird to have an empty block.
-      if ( !circuitElement.interactiveProperty.get() ) {
+      if ( circuitElement.interactiveProperty.get() ) {
 
-        // nothing to do
-      }
+        // If over the toolbox, then drop into it
+        if ( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) ) {
 
-      // If over the toolbox, then drop into it, and don't process further
-      else if ( circuitConstructionKitScreenView.canNodeDropInToolbox( self ) ) {
+          var lifetime = phet.joist.elapsedTime - self.circuitElement.creationTime;
+          var delayMS = Math.max( 500 - lifetime, 0 );
 
-        var lifetime = phet.joist.elapsedTime - self.circuitElement.creationTime;
-        var delayMS = Math.max( 500 - lifetime, 0 );
+          //REVIEW*: Removing an input listener like this isn't usually something I see often. I'd like more doc notes.
+          node.removeInputListener( self.dragHandler );
 
-        // If over the toolbox, then drop into it, and don't process further
-        //REVIEW*: "don't process further" usually means "return from function, don't run lines below"?
-        //REVIEW*: Removing an input listener like this isn't usually something I see often. I'd like more doc notes.
-        node.removeInputListener( self.dragHandler );
+          // Make it impossible to drag vertices when about to drop back into box
+          // See https://github.com/phetsims/circuit-construction-kit-common/issues/279
+          //REVIEW*: Usually this would be done by interaction with the drag listeners.
+          //REVIEW*: Setting pickable:false doesn't interrupt drags already in progress.
+          circuitLayerNode.getVertexNode( circuitElement.startVertexProperty.get() ).pickable = false;
+          circuitLayerNode.getVertexNode( circuitElement.endVertexProperty.get() ).pickable = false;
 
-        // Make it impossible to drag vertices when about to drop back into box
-        // See https://github.com/phetsims/circuit-construction-kit-common/issues/279
-        //REVIEW*: Usually this would be done by interaction with the drag listeners.
-        //REVIEW*: Setting pickable:false doesn't interrupt drags already in progress.
-        circuitLayerNode.getVertexNode( circuitElement.startVertexProperty.get() ).pickable = false;
-        circuitLayerNode.getVertexNode( circuitElement.endVertexProperty.get() ).pickable = false;
+          // If disposed by reset all button, clear the timeout
+          //REVIEW*: clearTimeout.bind( null, id ) won't create a function/closure
+          circuitElement.disposeEmitter.addListener( function() { clearTimeout( id ); } );
 
-        // If disposed by reset all button, clear the timeout
-        //REVIEW*: clearTimeout.bind( null, id ) won't create a function/closure
-        circuitElement.disposeEmitter.addListener( function() { clearTimeout( id ); } );
+          // If over the toolbox, then drop into it, and don't process further
+          var id = setTimeout( function() {
+            self.circuit.circuitElements.remove( circuitElement );
+          }, delayMS );
 
-        // If over the toolbox, then drop into it, and don't process further
-        var id = setTimeout( function() {
-          self.circuit.circuitElements.remove( circuitElement );
-        }, delayMS );
+          // If disposed by reset all button, clear the timeout
+          circuitElement.disposeEmitter.addListener( function() { clearTimeout( id ); } );
+        }
+        else {
 
-        // If disposed by reset all button, clear the timeout
-        circuitElement.disposeEmitter.addListener( function() { clearTimeout( id ); } );
-      }
-      else {
+          // End drag for each of the vertices
+          vertices.forEach( function( vertex ) {
+            if ( circuitConstructionKitScreenView.model.circuit.vertices.contains( vertex ) ) {
+              circuitLayerNode.endDrag( event, vertex, dragged );
+            }
+          } );
 
-        // End drag for each of the vertices
-        vertices.forEach( function( vertex ) {
-          if ( circuitConstructionKitScreenView.model.circuit.vertices.contains( vertex ) ) {
-            circuitLayerNode.endDrag( event, vertex, dragged );
-          }
-        } );
-
-        // Only show the editor when tapped, not on every drag.  Also, event could be undefined if this end() was
-        // triggered by dispose()
-        event && self.selectCircuitElementNodeWhenNear( event, circuitLayerNode, start );
+          // Only show the editor when tapped, not on every drag.  Also, event could be undefined if this end() was
+          // triggered by dispose()
+          event && self.selectCircuitElementNodeWhenNear( event, circuitLayerNode, start );
+        }
       }
     },
 
