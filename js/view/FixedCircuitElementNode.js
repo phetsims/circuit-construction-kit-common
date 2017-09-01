@@ -99,14 +99,10 @@ define( function( require ) {
       tandem: tandem
     }, options ) );
 
-    var pickableListener = function( interactive ) {
-      self.pickable = interactive;
-    };
+    var pickableListener = this.setPickable.bind( this );
 
     // LightBulbSocketNode cannot ever be pickable, so let it opt out of this callback
-    if ( options.pickable !== false ) {
-      circuitElement.interactiveProperty.link( pickableListener );
-    }
+    options.pickable && circuitElement.interactiveProperty.link( pickableListener );
 
     // Use whatever the start node currently is (it can change), and let the circuit manage the dependent vertices
     var startPoint = null;
@@ -202,15 +198,11 @@ define( function( require ) {
 
       // Interrupt the drag event if it was in progress
       self.dragHandler && self.dragHandler.interrupt();
-
       circuitElement.vertexMovedEmitter.removeListener( markAsDirty );
       updateHighlightVisibility && circuitLayerNode.circuit.selectedCircuitElementProperty.unlink( updateHighlightVisibility );
       circuitElement.connectedEmitter.removeListener( moveToFrontListener );
       circuitElement.vertexSelectedEmitter.removeListener( moveToFrontListener );
-
-      if ( options.pickable !== false ) {
-        circuitElement.interactiveProperty.unlink( pickableListener );
-      }
+      options.pickable && circuitElement.interactiveProperty.unlink( pickableListener );
       circuitLayerNode && self.highlightNode && CircuitConstructionKitCommonUtil.setInSceneGraph( false, circuitLayerNode.highlightLayer, self.highlightNode );
       viewTypeProperty.unlink( viewPropertyListener );
 
