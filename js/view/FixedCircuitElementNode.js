@@ -167,8 +167,7 @@ define( function( require ) {
         },
         tandem: tandem.createTandem( 'dragHandler' )
       } );
-      //REVIEW*: Why is 'self' used here instead of 'this'?
-      self.contentNode.addInputListener( this.dragHandler );
+      this.contentNode.addInputListener( this.dragHandler );
 
       if ( options.showHighlight ) {
         var updateHighlightVisibility = function( lastCircuitElement ) {

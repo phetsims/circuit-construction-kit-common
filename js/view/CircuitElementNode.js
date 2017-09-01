@@ -171,27 +171,22 @@ define( function( require ) {
           var lifetime = phet.joist.elapsedTime - self.circuitElement.creationTime;
           var delayMS = Math.max( 500 - lifetime, 0 );
 
-          //REVIEW*: Removing an input listener like this isn't usually something I see often. I'd like more doc notes.
+          // If the node hasn't been out too long, it hovers over the toolbox before falling in.  When a user clicks
+          // and releases immediately, the node shows for some 500ms before dropping back into the toolbox so
+          // the user can better see what is happening.  The node is not interactive during the remainder of the 500ms
+          // while it is hovering.
           node.removeInputListener( self.dragHandler );
 
-          // Make it impossible to drag vertices when about to drop back into box
-          // See https://github.com/phetsims/circuit-construction-kit-common/issues/279
-          //REVIEW*: Usually this would be done by interaction with the drag listeners.
-          //REVIEW*: Setting pickable:false doesn't interrupt drags already in progress.
+          // Make it impossible to drag vertices when about to drop back into box, see preceding comment and  https://github.com/phetsims/circuit-construction-kit-common/issues/279
           circuitLayerNode.getVertexNode( circuitElement.startVertexProperty.get() ).pickable = false;
           circuitLayerNode.getVertexNode( circuitElement.endVertexProperty.get() ).pickable = false;
 
-          // If disposed by reset all button, clear the timeout
-          //REVIEW*: clearTimeout.bind( null, id ) won't create a function/closure
-          circuitElement.disposeEmitter.addListener( function() { clearTimeout( id ); } );
-
-          // If over the toolbox, then drop into it, and don't process further
           var id = setTimeout( function() {
             self.circuit.circuitElements.remove( circuitElement );
           }, delayMS );
 
           // If disposed by reset all button, clear the timeout
-          circuitElement.disposeEmitter.addListener( function() { clearTimeout( id ); } );
+          circuitElement.disposeEmitter.addListener( clearTimeout.bind( null, id ) );
         }
         else {
 
@@ -211,7 +206,7 @@ define( function( require ) {
 
     /**
      * On tap events, select the CircuitElement (if it is close enough to the tap)
-     * @param {Object} event - scenery input event REVIEW*: As noted elsewhere, currently {Event}
+     * @param {Event} event - scenery input event
      * @param {CircuitLayerNode} circuitLayerNode
      * @param {Vector2} startPoint
      * @public
