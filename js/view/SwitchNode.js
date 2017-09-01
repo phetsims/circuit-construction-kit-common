@@ -54,7 +54,6 @@ define( function( require ) {
         cornerRadius: edgeRadius,
         fill: fill,
         stroke: Color.BLACK,
-        lineWidth: 1, //REVIEW*: This is the default, don't include it
         pickable: true
       } );
 
@@ -97,7 +96,6 @@ define( function( require ) {
     var rightSegmentNode = new Path( rightSegmentShape, {
       fill: fill,
       stroke: Color.BLACK,
-      lineWidth: 1, //REVIEW*: This is the default, don't include it
       pickable: true
     } );
 
