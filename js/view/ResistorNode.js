@@ -58,6 +58,17 @@ define( function( require ) {
   // cache the rasters so they aren't added to the spritesheet multiple times
   var schematicRasterCache = {};
 
+  var RESISTOR_IMAGE_MAP = {};
+  RESISTOR_IMAGE_MAP[ ResistorType.COIN ] = coinImage;
+  RESISTOR_IMAGE_MAP[ ResistorType.PAPER_CLIP ] = paperClipImage;
+  RESISTOR_IMAGE_MAP[ ResistorType.PENCIL ] = pencilImage;
+  RESISTOR_IMAGE_MAP[ ResistorType.ERASER ] = eraserImage;
+  RESISTOR_IMAGE_MAP[ ResistorType.HAND ] = handImage;
+  RESISTOR_IMAGE_MAP[ ResistorType.HIGH_RESISTANCE_RESISTOR ] = highResistanceResistorImage;
+  RESISTOR_IMAGE_MAP[ ResistorType.RESISTOR ] = lifelikeResistorImage;
+  RESISTOR_IMAGE_MAP[ ResistorType.DOG ] = dogImage;
+  RESISTOR_IMAGE_MAP[ ResistorType.DOLLAR_BILL ] = dollarBillImage;
+
   /**
    * @param {CircuitConstructionKitScreenView|null} circuitConstructionKitScreenView - main screen view, null for icon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
@@ -73,41 +84,10 @@ define( function( require ) {
 
     // @public (read-only) {Resistor} the resistor depicted by this node
     this.resistor = resistor;
+    var lifelikeResistorImageNode = new Image( RESISTOR_IMAGE_MAP[ resistor.resistorType ] );
 
-    var lifelikeResistorImageNode = new Image( lifelikeResistorImage );
-
-    // REVIEW*: Either use a rich enum (feels less clean), or something like:
-    // REVIEW*: var RESISTOR_IMAGE_MAP = {};
-    // REVIEW*: RESISTOR_IMAGE_MAP[ ResistorType.COIN ] = coinImage
-    // REVIEW*: ...
-    // REVIEW*: // then here
-    // REVIEW*: lifelikeResistorImageNode = RESISTOR_IMAGE_MAP[ resistor.resistorType ];
-    // REVIEW*: if ( !lifelikeResistorImageNode ) { ... do the else branch ... }
-    if ( resistor.resistorType === ResistorType.COIN ) {
-      lifelikeResistorImageNode = new Image( coinImage );
-    }
-    else if ( resistor.resistorType === ResistorType.PAPER_CLIP ) {
-      lifelikeResistorImageNode = new Image( paperClipImage );
-    }
-    else if ( resistor.resistorType === ResistorType.PENCIL ) {
-      lifelikeResistorImageNode = new Image( pencilImage );
-    }
-    else if ( resistor.resistorType === ResistorType.ERASER ) {
-      lifelikeResistorImageNode = new Image( eraserImage );
-    }
-    else if ( resistor.resistorType === ResistorType.HAND ) {
-      lifelikeResistorImageNode = new Image( handImage );
-    }
-    else if ( resistor.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR ) {
-      lifelikeResistorImageNode = new Image( highResistanceResistorImage );
-    }
-    else if ( resistor.resistorType === ResistorType.DOG ) {
-      lifelikeResistorImageNode = new Image( dogImage );
-    }
-    else if ( resistor.resistorType === ResistorType.DOLLAR_BILL ) {
-      lifelikeResistorImageNode = new Image( dollarBillImage );
-    }
-    else {
+    // Add color bands for the normal resistor
+    if ( resistor.resistorType === ResistorType.RESISTOR ) {
 
       /**
        * Get a color band for the given index.
