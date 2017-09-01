@@ -413,7 +413,7 @@ define( function( require ) {
     /**
      * Find drop targets for all the given vertices
      * @param {Vertex[]} vertices
-     * @returns {Object[]} REVIEW*: Usually more documentation than {Object} is helpful
+     * @returns {Object[]} candidates for connection, each Object has {src:Vertex,dst:Vertex} indicating what can snap
      * @public
      */
     getAllDropTargets: function( vertices ) {
@@ -438,7 +438,7 @@ define( function( require ) {
      * @param {Vertex[]} vertices
      * @returns {Object|null} Object that indicates the two vertices best suited for connecting as { src: Vertex, dst: Vertex },
      *                        or null if no match is suitable.
-     * @public REVIEW*: could be private?
+     * @private
      */
     getBestDropTarget: function( vertices ) {
       var allDropTargets = this.getAllDropTargets( vertices );
@@ -707,8 +707,8 @@ define( function( require ) {
     /**
      * When the zoom level changes, recompute the visible bounds in the coordinate frame of the CircuitLayerNode so
      * that objects cannot be dragged outside the boundary.
+     * @param {Bounds2} visibleBounds - view coordinates for the visible region
      * @public
-     * REVIEW*: Params?
      */
     updateTransform: function( visibleBounds ) {
       this.visibleBoundsInCircuitCoordinateFrameProperty.set( this.parentToLocalBounds( visibleBounds ) );
