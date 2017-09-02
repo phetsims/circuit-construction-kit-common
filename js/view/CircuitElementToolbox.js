@@ -410,7 +410,10 @@ define( function( require ) {
           ), viewTypeProperty, tandem.createTandem( 'highVoltageBatteryIcon' ), { icon: true } ),
         function( circuitElement ) {
           return circuitElement instanceof Battery &&
-                 circuitElement.initialOrientation === 'right' && //REVIEW*: Similar note about battery orientation as above.
+
+                 //REVIEW: Similar note about battery orientation as above.
+                 //REVIEW^(samreid): see note above and let me know what you recommend
+                 circuitElement.initialOrientation === 'right' &&
                  circuitElement.batteryType === BatteryType.HIGH_VOLTAGE;
         }, function( position ) {
           var vertexPair = createVertexPair( position, BATTERY_LENGTH );
