@@ -30,6 +30,7 @@ define( function( require ) {
   // constants
   var matrix = new Matrix3();
   var rotationMatrix = new Matrix3();
+  var FIRE_THRESHOLD = 15; // Beyond this number of amps, flammable CircuitElements catch on fire
 
   /**
    * @param {CircuitConstructionKitScreenView} screenView - the main screen view, null for icon
@@ -159,7 +160,7 @@ define( function( require ) {
         this.addChild( this.fireNode );
 
         var showFire = function( current, isValueDepictionEnabled ) {
-          return Math.abs( current ) >= 15 && isValueDepictionEnabled;
+          return Math.abs( current ) >= FIRE_THRESHOLD && isValueDepictionEnabled;
         };
 
         var updateFireMultilink = null;
