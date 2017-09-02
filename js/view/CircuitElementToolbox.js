@@ -617,8 +617,7 @@ define( function( require ) {
      * @public
      */
     reset: function() {
-      //REVIEW*: How can we not have a carousel by this point in the code?
-      this.carousel && this.carousel.reset( { animationEnabled: false } );
+      this.carousel.reset( { animationEnabled: false } );
     }
   } );
 } );
