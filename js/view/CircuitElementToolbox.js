@@ -108,7 +108,7 @@ define( function( require ) {
     /**
      * Returns a function which counts the number of circuit elements (not counting those in the true black box).
      * @param {function} predicate - CircuitElement => boolean
-     * @returns {function} REVIEW*: doc would be nice on this
+     * @returns {function} a no-arg function that returns the {number} of CircuitElements of the specified type
      */
     var createCounter = function( predicate ) {
       return function() {
@@ -138,18 +138,18 @@ define( function( require ) {
      * @param {string} labelString
      * @param {number} count
      * @param {Node} icon
-     * @param {function} counterFunction - CircuitElement => boolean
-     * REVIEW*: Nope, counterFunction should be predicate => {number}?
-     * REVIEW*: Wait, counterFunction .... looks like it's the predicate itself. Better naming perhaps?
-     * @param {function} creator REVIEW*: docs?
+     * @param {function} predicate - CircuitElement => boolean, used to count circuit elements of that kind
+     * @param {function} createElement - (Vector2) => CircuitElement Function that creates a CircuitElement at the given location
+     *                                 - for most components it is the center of the component.  For Light Bulbs, it is
+     *                                 - in the center of the socket
      * @param {Object} [options]
      * @returns {CircuitElementToolNode}
      */
-    var createCircuitElementToolNode = function( labelString, count, icon, counterFunction, creator, options ) {
+    var createCircuitElementToolNode = function( labelString, count, icon, predicate, createElement, options ) {
       options = _.extend( { iconScale: 1.0 }, options );
       icon.mutate( { scale: options.iconScale * TOOLBOX_ICON_SIZE / Math.max( icon.width, icon.height ) } );
       return new CircuitElementToolNode(
-        labelString, showLabelsProperty, circuitLayerNode, icon, count, createCounter( counterFunction ), creator
+        labelString, showLabelsProperty, circuitLayerNode, icon, count, createCounter( predicate ), createElement
       );
     };
 
@@ -185,8 +185,13 @@ define( function( require ) {
       function( circuitElement ) {
         return circuitElement instanceof Battery &&
                circuitElement.initialOrientation === 'right' &&
-               //REVIEW*: Saw note that both orientations can be created, but (a) it probably doesn't happen in CCK and
-               //REVIEW*: (b) Is it possible to prevent flipping of batteries in a sim that uses this?
+               //REVIEW: Saw note that both orientations can be created, but (a) it probably doesn't happen in CCK and
+               //REVIEW: (b) Is it possible to prevent flipping of batteries in a sim that uses this?
+               //REVIEW^(samreid): In the design for Circuit Construction Kit: "Basics", we had a toolbox with
+               //REVIEW^(samreid): left-facing batteries and right-facing batteries, so it should probably be supported.
+               //REVIEW^(samreid): I think the users would still be able to flip the batteries, but they would be able
+               //REVIEW^(samreid): to use left-facing and right-facing ones right from the toolbox.
+               //REVIEW^(samreid): Let me know what you recommend.
                circuitElement.batteryType === BatteryType.NORMAL;
       },
       function( position ) {
@@ -225,10 +230,6 @@ define( function( require ) {
       }, {
         iconScale: 0.85
       } );
-
-    //REVIEW*: Is this still needed?
-    // Override touch area because it has unique dimensions
-    // lightBulbToolNode.touchArea = lightBulbToolNode.localBounds.dilatedXY( 11, 8 );
 
     var resistorModel = new Resistor(
       new Vertex( Vector2.ZERO ),
