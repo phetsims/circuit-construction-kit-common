@@ -540,15 +540,11 @@ define( function( require ) {
     }
 
     var ITEMS_PER_PAGE = 5;
-    var SPACING = 5; //REVIEW*: This is used one time. Inline it?
 
     // Carousel was optimized for items of equal size.  To get equal spacing between objects, we create our own pages
     // see https://github.com/phetsims/circuit-construction-kit-dc/issues/91
     var pages = _.chunk( circuitElementToolNodes, ITEMS_PER_PAGE ).map( function( elements ) {
-      return new VBox( {
-        children: elements,
-        resize: true //REVIEW*: That's the default, don't need it
-      } );
+      return new VBox( { children: elements } );
     } );
 
     // The schematic and lifelike icons have different dimensions, so update the spacing when the view type changes
@@ -606,7 +602,7 @@ define( function( require ) {
     } );
 
     HBox.call( this, {
-      spacing: SPACING,
+      spacing: 5,
       children: [ pageControl, this.carousel ]
     } );
   }
