@@ -33,6 +33,16 @@ define( function( require ) {
   var FIRE_THRESHOLD = 15; // Beyond this number of amps, flammable CircuitElements catch on fire
 
   /**
+   * Determine whether fire should be shown on the circuit element.
+   * @param {number} current - in amps
+   * @param {boolean} isValueDepictionEnabled - whether values are shown
+   * @returns {boolean}
+   */
+  var isFireShown = function( current, isValueDepictionEnabled ) {
+    return Math.abs( current ) >= FIRE_THRESHOLD && isValueDepictionEnabled;
+  };
+
+  /**
    * @param {CircuitConstructionKitScreenView} screenView - the main screen view, null for icon
    * @param {CircuitLayerNode} circuitLayerNode - Null if an icon is created
    * @param {FixedCircuitElement} circuitElement - the corresponding model element
@@ -159,10 +169,6 @@ define( function( require ) {
         this.fireNode.mutate( { scale: self.contentNode.width / this.fireNode.width } );
         this.addChild( this.fireNode );
 
-        var showFire = function( current, isValueDepictionEnabled ) {
-          return Math.abs( current ) >= FIRE_THRESHOLD && isValueDepictionEnabled;
-        };
-
         var updateFireMultilink = null;
 
         if ( circuitElement instanceof Resistor ) {
@@ -173,7 +179,7 @@ define( function( require ) {
             circuitElement.resistanceProperty,
             screenView.model.isValueDepictionEnabledProperty
           ], function( current, resistance, isValueDepictionEnabled ) {
-            self.fireNode.visible = showFire( current, isValueDepictionEnabled ) && resistance >= 1E-8;
+            self.fireNode.visible = isFireShown( current, isValueDepictionEnabled ) && resistance >= 1E-8;
           } );
         }
         else {
@@ -183,7 +189,7 @@ define( function( require ) {
             circuitElement.currentProperty,
             screenView.model.isValueDepictionEnabledProperty
           ], function( current, isValueDepictionEnabled ) {
-            self.fireNode.visible = showFire( current, isValueDepictionEnabled );
+            self.fireNode.visible = isFireShown( current, isValueDepictionEnabled );
           } );
         }
       }
