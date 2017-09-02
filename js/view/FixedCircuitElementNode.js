@@ -72,7 +72,7 @@ define( function( require ) {
     }, options );
 
     // @private {boolean} - whether an icon is being rendered
-    this.icon = options.icon; // TODO: reanme isIcon
+    this.icon = options.icon; // TODO: rename isIcon
 
     // @public (read-only) {CircuitElement}
     this.circuitElement = circuitElement;
