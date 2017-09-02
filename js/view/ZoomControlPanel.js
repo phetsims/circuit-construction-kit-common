@@ -20,7 +20,7 @@ define( function( require ) {
   var ZOOMED_OUT = 0.5;
 
   /**
-   * @param {Property} selectedZoomProperty
+   * @param {Property} selectedZoomProperty REVIEW*: Presumably {Property.<number>}?
    * @param {Object} [options]
    * @constructor
    */

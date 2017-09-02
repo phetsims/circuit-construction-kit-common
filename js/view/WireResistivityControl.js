@@ -49,6 +49,7 @@ define( function( require ) {
       return new Text( min ? tinyString : lotsString, { fontSize: 12, maxWidth: 45 } );
     };
 
+    //REVIEW*: For creating labels, maybe just (a) pass in the string, or (b) have a variable for the Text options. Might not be worth a helper function with docs.
     slider.addMajorTick( 0, createLabel( true ) );
     slider.addMajorTick( MAX_RESISTIVITY, createLabel( false ) );
 
