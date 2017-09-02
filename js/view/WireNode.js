@@ -62,8 +62,8 @@ define( function( require ) {
     { point: 1.0, color: new Color( '#3c0c08' ) }
   ];
 
-  var normalGradient = createGradient( colorStops, function( e ) {return e;} );
-  var reverseGradient = createGradient( colorStops.reverse(), function( e ) {return 1.0 - e;} );
+  var normalGradient = createGradient( colorStops, function( e ) { return e; } );
+  var reverseGradient = createGradient( colorStops.reverse(), function( e ) { return 1.0 - e; } );
 
   var PADDING = 2;
 
