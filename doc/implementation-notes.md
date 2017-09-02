@@ -28,7 +28,7 @@ instances.  After the circuit is solved for unknown currents, a voltage is assig
 * Circuit - this contains the CircuitElements and Vertices as well as logic for solving for the unknown voltages
 and currents given the voltages sources and resistances.
 * CircuitNode - this displays the Circuit and contains logic for dragging and connecting vertices to each other.
-* Resistor -  depicts the normal resistor, the high resistance resistor and the grab bag items, which are treated
+* Resistor -  depicts the normal resistor, the high resistance resistor and the household items, which are treated
 as resistors.
 
 ## General

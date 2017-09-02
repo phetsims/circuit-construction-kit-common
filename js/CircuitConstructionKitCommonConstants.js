@@ -80,7 +80,7 @@ define( function( require ) {
     // Length of a resistor
     RESISTOR_LENGTH: 110,
 
-    // Length of grab bag items in view coordinates
+    // Length of household items in view coordinates
     COIN_LENGTH: 85,
     ERASER_LENGTH: 90,
     PENCIL_LENGTH: 130,

@@ -30,7 +30,7 @@ define( function( require ) {
     options = _.extend( {
       resistance: CircuitConstructionKitCommonConstants.DEFAULT_RESISTANCE,
 
-      // Support for rendering grab bag items or
+      // Support for rendering household items or
       resistorType: ResistorType.VALUES[ 0 ],
       resistorLength: RESISTOR_LENGTH
     }, options );
@@ -58,7 +58,7 @@ define( function( require ) {
   return inherit( FixedCircuitElement, Resistor, {
 
     /**
-     * Returns true if the resistance is editable.  Grab bag item resistance is not editable.
+     * Returns true if the resistance is editable.  Household item resistance is not editable.
      * @returns {boolean}
      * @public
      */

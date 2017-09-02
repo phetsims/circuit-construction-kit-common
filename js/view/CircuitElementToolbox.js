@@ -270,9 +270,7 @@ define( function( require ) {
     if ( options.numberOfCoins ) {
 
       /**
-       * REVIEW*: Can you clarify "grab bag"? Usually to me means a bag where you get something of a random type.
-       * REVIEW*: Is this just for the assorted variants of resistors?
-       * Create a ToolNode for a grab bag item
+       * Create a ToolNode for a household item, such as an eraser or dog
        * @param {ResistorType} resistorType
        * @param {number} resistance
        * @param {number} resistorLength
@@ -283,13 +281,13 @@ define( function( require ) {
        * @param {Tandem} groupTandem
        * @returns {CircuitElementToolNode}
        */
-      var createGrabBagToolNode = function( resistorType, resistance, resistorLength, labelString, maxCount,
-                                            iconModelTandem, iconTandem, groupTandem ) {
-        var createGrabBagIcon = function( grabBagItem, tandem ) {
-          return new ResistorNode( null, null, grabBagItem, viewTypeProperty, tandem, { icon: true } );
+      var createHouseholdItemToolNode = function( resistorType, resistance, resistorLength, labelString, maxCount,
+                                                  iconModelTandem, iconTandem, groupTandem ) {
+        var createHouseholdIcon = function( householdItem, tandem ) {
+          return new ResistorNode( null, null, householdItem, viewTypeProperty, tandem, { icon: true } );
         };
 
-        var getGrabBagItemCreator = function( resistorType, resistance, resistorLength, groupTandem ) {
+        var getHouseholdItemCreator = function( resistorType, resistance, resistorLength, groupTandem ) {
           return function( position ) {
             var vertexPair = createVertexPair( position, resistorLength );
             return new Resistor( vertexPair.startVertex, vertexPair.endVertex, groupTandem.createNextTandem(), {
@@ -301,30 +299,30 @@ define( function( require ) {
         };
 
         /**
-         * Create the specified grab bag item
+         * Create the specified household item
          * @param {ResistorType} resistorType
          * @param {number} resistorLength
          * @param {Tandem} tandem
          * @returns {Resistor}
          */
-        var createGrabBagItem = function( resistorType, resistorLength, tandem ) {
+        var createHouseholdItem = function( resistorType, resistorLength, tandem ) {
           return new Resistor( new Vertex( Vector2.ZERO ), new Vertex( new Vector2( resistorLength, 0 ) ), tandem, {
             resistorType: resistorType,
             resistorLength: resistorLength
           } );
         };
-        var createdItem = createGrabBagItem( resistorType, resistorLength, iconModelTandem );
-        return createCircuitElementToolNode( labelString, maxCount, createGrabBagIcon( createdItem, iconTandem ),
+        var createdItem = createHouseholdItem( resistorType, resistorLength, iconModelTandem );
+        return createCircuitElementToolNode( labelString, maxCount, createHouseholdIcon( createdItem, iconTandem ),
           function( circuitElement ) {
             return circuitElement instanceof Resistor && circuitElement.resistorType === resistorType;
           },
-          getGrabBagItemCreator( resistorType, resistance, resistorLength, groupTandem )
+          getHouseholdItemCreator( resistorType, resistance, resistorLength, groupTandem )
         );
       };
 
       var MIN_RESISTANCE = 1E-6;
 
-      var dollarBillNode = createGrabBagToolNode(
+      var dollarBillNode = createHouseholdItemToolNode(
         ResistorType.DOLLAR_BILL,
         HIGH_RESISTANCE,
         CircuitConstructionKitCommonConstants.DOLLAR_BILL_LENGTH,
@@ -334,7 +332,7 @@ define( function( require ) {
         tandem.createTandem( 'dollarBillIcon' ),
         circuit.dollarBillGroupTandem
       );
-      var paperClipNode = createGrabBagToolNode(
+      var paperClipNode = createHouseholdItemToolNode(
         ResistorType.PAPER_CLIP,
         MIN_RESISTANCE,
         CircuitConstructionKitCommonConstants.PAPER_CLIP_LENGTH,
@@ -344,7 +342,7 @@ define( function( require ) {
         tandem.createTandem( 'paperClipIcon' ),
         circuit.paperClipGroupTandem
       );
-      var coinToolNode = createGrabBagToolNode(
+      var coinToolNode = createHouseholdItemToolNode(
         ResistorType.COIN,
         MIN_RESISTANCE,
         CircuitConstructionKitCommonConstants.COIN_LENGTH,
@@ -354,7 +352,7 @@ define( function( require ) {
         tandem.createTandem( 'coinIcon' ),
         circuit.coinGroupTandem
       );
-      var eraserToolNode = createGrabBagToolNode(
+      var eraserToolNode = createHouseholdItemToolNode(
         ResistorType.ERASER,
         HIGH_RESISTANCE,
         CircuitConstructionKitCommonConstants.ERASER_LENGTH,
@@ -364,7 +362,7 @@ define( function( require ) {
         tandem.createTandem( 'eraserIcon' ),
         circuit.eraserGroupTandem
       );
-      var pencilToolNode = createGrabBagToolNode(
+      var pencilToolNode = createHouseholdItemToolNode(
         ResistorType.PENCIL,
         300,
         CircuitConstructionKitCommonConstants.PENCIL_LENGTH,
@@ -374,7 +372,7 @@ define( function( require ) {
         tandem.createTandem( 'pencilIcon' ),
         circuit.pencilGroupTandem
       );
-      var handToolNode = createGrabBagToolNode(
+      var handToolNode = createHouseholdItemToolNode(
         ResistorType.HAND,
         Math.pow( 10, 6 ),
         CircuitConstructionKitCommonConstants.HAND_LENGTH,
@@ -384,7 +382,7 @@ define( function( require ) {
         tandem.createTandem( 'handIcon' ),
         circuit.handGroupTandem
       );
-      var dogToolNode = createGrabBagToolNode(
+      var dogToolNode = createHouseholdItemToolNode(
         ResistorType.DOG,
         HIGH_RESISTANCE,
         CircuitConstructionKitCommonConstants.DOG_LENGTH,

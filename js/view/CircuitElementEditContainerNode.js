@@ -114,7 +114,7 @@ define( function( require ) {
         }
         else if ( isResistor ) {
 
-          // Just show a trash button for non-editable resistors which are grab bag items
+          // Just show a trash button for non-editable resistors which are household items
           editNode = new TrashButton(
             circuit, selectedCircuitElement, groupTandem.createNextTandem().createTandem( 'trashButton' )
           );
