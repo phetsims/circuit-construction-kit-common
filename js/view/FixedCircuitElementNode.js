@@ -31,6 +31,7 @@ define( function( require ) {
   var matrix = new Matrix3();
   var rotationMatrix = new Matrix3();
   var FIRE_THRESHOLD = 15; // Beyond this number of amps, flammable CircuitElements catch on fire
+  var ONE_AMP_PROPERTY = new Property( 1 ); // All batteries are flammable, so treat them as if they have nonzero resistance
 
   /**
    * Determine whether fire should be shown on the circuit element.
@@ -65,12 +66,13 @@ define( function( require ) {
     // @private {Node} shows the schematic view
     this.schematicNode = schematicNode;
 
-    //REVIEW*: (performance) Lots of closures here. If memory is still an issue, moving these to methods (where possible or convenient) may help.
-
     options = _.extend( {
       icon: false,
       showHighlight: true
     }, options );
+
+    // @private {boolean} - whether an icon is being rendered
+    this.icon = options.icon; // TODO: reanme isIcon
 
     // @public (read-only) {CircuitElement}
     this.circuitElement = circuitElement;
@@ -82,9 +84,12 @@ define( function( require ) {
     // the fire
     this.contentNode = new Node();
 
-    // Show the selected node
-    var viewPropertyListener = this.setViewType.bind( this );
-    viewTypeProperty.link( viewPropertyListener );
+    // @private {Property.<CircuitElementViewType>
+    this.viewTypeProperty = viewTypeProperty;
+
+    // @private {function} - Show the selected node
+    this.viewPropertyListener = this.setViewType.bind( this );
+    viewTypeProperty.link( this.viewPropertyListener );
 
     // Add highlight (but not for icons)
     if ( !options.icon && options.showHighlight ) {
@@ -93,27 +98,35 @@ define( function( require ) {
       this.highlightNode = new FixedCircuitElementHighlightNode( this );
 
       // Update the highlight bounds after it is created
-      viewPropertyListener( viewTypeProperty.value );
+      this.viewPropertyListener( viewTypeProperty.value );
     }
-    var markAsDirty = this.markAsDirty.bind( this );
-    circuitElement.vertexMovedEmitter.addListener( markAsDirty );
 
-    var moveToFrontListener = this.moveFixedCircuitElementNodeToFront.bind( this );
-    circuitElement.connectedEmitter.addListener( moveToFrontListener );
-    circuitElement.vertexSelectedEmitter.addListener( moveToFrontListener );
+    // @private {function}
+    this.markDirtyListener = this.markAsDirty.bind( this );
+    circuitElement.vertexMovedEmitter.addListener( this.markDirtyListener );
+
+    // @private {function}
+    this.moveToFrontListener = this.moveFixedCircuitElementNodeToFront.bind( this );
+    circuitElement.connectedEmitter.addListener( this.moveToFrontListener );
+    circuitElement.vertexSelectedEmitter.addListener( this.moveToFrontListener );
 
     var circuit = circuitLayerNode && circuitLayerNode.circuit;
 
     CircuitElementNode.call( this, circuitElement, circuit, _.extend( {
       cursor: 'pointer',
       children: [ this.contentNode ],
-      tandem: tandem
+      tandem: tandem,
+      pickable: true
     }, options ) );
 
-    var pickableListener = this.setPickable.bind( this );
+    // @private {function}
+    this.pickableListener = this.setPickable.bind( this );
 
     // LightBulbSocketNode cannot ever be pickable, so let it opt out of this callback
-    options.pickable && circuitElement.interactiveProperty.link( pickableListener );
+    options.pickable && circuitElement.interactiveProperty.link( this.pickableListener );
+
+    // @private {boolean}
+    this.fixedCircuitElementNodePickable = options.pickable;
 
     // Use whatever the start node currently is (it can change), and let the circuit manage the dependent vertices
     var startPoint = null;
@@ -121,6 +134,7 @@ define( function( require ) {
     if ( !options.icon ) {
 
       // @private {SimpleDragHandler}
+      //REVIEW^(samreid): Would you recommend to eleminate these closures? If so, how?
       this.dragHandler = new SimpleDragHandler( {
         allowTouchSnag: true,
         start: function( event ) {
@@ -148,8 +162,10 @@ define( function( require ) {
       this.contentNode.addInputListener( this.dragHandler );
 
       if ( options.showHighlight ) {
-        var updateHighlightVisibility = this.setSelectedCircuitElement.bind( this );
-        circuitLayerNode.circuit.selectedCircuitElementProperty.link( updateHighlightVisibility );
+
+        // @private {function}
+        this.updateHighlightVisibility = this.setSelectedCircuitElement.bind( this );
+        circuitLayerNode.circuit.selectedCircuitElementProperty.link( this.updateHighlightVisibility );
       }
 
       // Show fire for batteries and resistors
@@ -160,6 +176,7 @@ define( function( require ) {
       //REVIEW^(samreid): can be called by them?  Or even better, what about an `isFlammable` model property?
       //REVIEW^(samreid): That last idea (CircuitElement.isFlammable) seems best to me, and leaving this code here,
       //REVIEW^(samreid): I'll wait to hear your thoughts before proceeding.
+      //REVIEW^(samreid): Update: I simplified the logic below (distinction between battery and resistor)
       if ( circuitElement instanceof Battery || circuitElement instanceof Resistor ) {
         //REVIEW: consider moving declaration (and docs) up top so it is more visible.
         //REVIEW^(samreid): Should we resolve the preceding REVIEW section before deciding on this, or can you recommend
@@ -169,52 +186,14 @@ define( function( require ) {
         this.fireNode.mutate( { scale: self.contentNode.width / this.fireNode.width } );
         this.addChild( this.fireNode );
 
-        var updateFireMultilink = null;
-
-        if ( circuitElement instanceof Resistor ) {
-
-          // Show fire in resistors (but only if they have >0 resistance)
-          updateFireMultilink = Property.multilink( [
-            circuitElement.currentProperty,
-            circuitElement.resistanceProperty,
-            screenView.model.isValueDepictionEnabledProperty
-          ], function( current, resistance, isValueDepictionEnabled ) {
-            self.fireNode.visible = isFireShown( current, isValueDepictionEnabled ) && resistance >= 1E-8;
-          } );
-        }
-        else {
-
-          // Show fire in all other circuit elements
-          updateFireMultilink = Property.multilink( [
-            circuitElement.currentProperty,
-            screenView.model.isValueDepictionEnabledProperty
-          ], function( current, isValueDepictionEnabled ) {
-            self.fireNode.visible = isFireShown( current, isValueDepictionEnabled );
-          } );
-        }
+        // @private {Multilink} - Show fire in batteries and resistors with resistance > 0
+        this.updateFireMultilink = Property.multilink( [
+          circuitElement.currentProperty,
+          (circuitElement instanceof Resistor) ? circuitElement.resistanceProperty : ONE_AMP_PROPERTY,
+          screenView.model.isValueDepictionEnabledProperty
+        ], this.updateFireVisible.bind( this ) );
       }
     }
-
-    // @private {function} - for disposal
-    this.disposeFixedCircuitElementNode = function() {
-
-      // Interrupt the drag event if it was in progress
-      self.dragHandler && self.dragHandler.interrupt();
-      circuitElement.vertexMovedEmitter.removeListener( markAsDirty );
-      updateHighlightVisibility && circuitLayerNode.circuit.selectedCircuitElementProperty.unlink( updateHighlightVisibility );
-      circuitElement.connectedEmitter.removeListener( moveToFrontListener );
-      circuitElement.vertexSelectedEmitter.removeListener( moveToFrontListener );
-      options.pickable && circuitElement.interactiveProperty.unlink( pickableListener );
-      circuitLayerNode && self.highlightNode && CircuitConstructionKitCommonUtil.setInSceneGraph( false, circuitLayerNode.highlightLayer, self.highlightNode );
-      viewTypeProperty.unlink( viewPropertyListener );
-
-      if ( !options.icon && updateFireMultilink ) {
-        Property.unmultilink( updateFireMultilink );
-      }
-
-      // Detach the child nodes which are reused (so they don't have a _parents reference)
-      self.contentNode.dispose();
-    };
   }
 
   circuitConstructionKitCommon.register( 'FixedCircuitElementNode', FixedCircuitElementNode );
@@ -294,8 +273,36 @@ define( function( require ) {
      * @override
      */
     dispose: function() {
-      this.disposeFixedCircuitElementNode();
+
+      // Interrupt the drag event if it was in progress
+      this.dragHandler && this.dragHandler.interrupt();
+      this.circuitElement.vertexMovedEmitter.removeListener( this.markDirtyListener );
+      this.updateHighlightVisibility && this.circuitLayerNode.circuit.selectedCircuitElementProperty.unlink( this.updateHighlightVisibility );
+      this.circuitElement.connectedEmitter.removeListener( this.moveToFrontListener );
+      this.circuitElement.vertexSelectedEmitter.removeListener( this.moveToFrontListener );
+      this.fixedCircuitElementNodePickable && this.circuitElement.interactiveProperty.unlink( this.pickableListener );
+      this.circuitLayerNode && this.highlightNode && CircuitConstructionKitCommonUtil.setInSceneGraph( false, this.circuitLayerNode.highlightLayer, this.highlightNode );
+      this.viewTypeProperty.unlink( this.viewPropertyListener );
+
+      if ( !this.icon && this.updateFireMultilink ) {
+        Property.unmultilink( this.updateFireMultilink );
+      }
+
+      // Detach the child nodes which are reused (so they don't have a _parents reference)
+      this.contentNode.dispose();
+
       CircuitElementNode.prototype.dispose.call( this );
+    },
+
+    /**
+     * Hide or show the fire depending on various parameters
+     * @param {number} current
+     * @param {number} resistance
+     * @param {boolean} isValueDepictionEnabled
+     * @private - for listener bind
+     */
+    updateFireVisible: function( current, resistance, isValueDepictionEnabled ) {
+      this.fireNode.visible = isFireShown( current, isValueDepictionEnabled ) && resistance >= 1E-8;
     }
   }, {
 
