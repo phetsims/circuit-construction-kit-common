@@ -52,11 +52,12 @@ define( function( require ) {
 
   /**
    * @param {CircuitConstructionKitModel} model
+   * @param {CircuitElementToolNode[]} circuitElementToolNodes - to be shown in the carousel
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function CircuitConstructionKitScreenView( model, tandem, options ) {
+  function CircuitConstructionKitScreenView( model, circuitElementToolNodes, tandem, options ) {
     var self = this;
 
     // @public (read-only) {CircuitConstructionKitModel}
@@ -115,12 +116,7 @@ define( function( require ) {
 
     // @public (read-only) {CircuitElementToolbox} - Toolbox from which CircuitElements can be dragged
     this.circuitElementToolbox = new CircuitElementToolbox(
-      model.circuit,
-      model.showLabelsProperty,
-      model.viewTypeProperty,
-      this.circuitLayerNode,
-      tandem.createTandem( 'circuitElementToolbox' ),
-      options
+      model.viewTypeProperty, circuitElementToolNodes, tandem.createTandem( 'circuitElementToolbox' ), options
     );
 
     var chargeSpeedThrottlingReadoutNode = new ChargeSpeedThrottlingReadoutNode(

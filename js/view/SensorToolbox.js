@@ -115,7 +115,10 @@ define( function( require ) {
     var seriesAmmeterToolNode = new CircuitElementToolNode(
       '',
       new Property( false ),
-      circuitLayerNode,
+      circuitLayerNode.circuit,
+      function( point ) {
+        return circuitLayerNode.globalToLocalPoint( point );
+      },
       seriesAmmeterNodeIcon,
       6,
       function() {

@@ -22,7 +22,8 @@ define( function( require ) {
   /**
    * @param {string} labelText
    * @param {BooleanProperty} showLabelsProperty
-   * @param {CircuitLayerNode} circuitLayerNode
+   * @param {Circuit} circuit
+   * @param {function} globalToCircuitLayerNodePoint Vector2=>Vector2 global point to coordinate frame of circuitLayerNode
    * @param {Node} iconNode
    * @param {number} maxNumber
    * @param {function} count - () => number, gets the number of that kind of object in the model, so the icon can be
@@ -32,8 +33,7 @@ define( function( require ) {
    *                                 - in the center of the socket
    * @constructor
    */
-  function CircuitElementToolNode( labelText, showLabelsProperty, circuitLayerNode, iconNode, maxNumber, count, createElement ) {
-    var circuit = circuitLayerNode.circuit;
+  function CircuitElementToolNode( labelText, showLabelsProperty, circuit, globalToCircuitLayerNodePoint, iconNode, maxNumber, count, createElement ) {
     var self = this;
     var labelNode = new Text( labelText, { fontSize: 12, maxWidth: TOOLBOX_ICON_SIZE } );
     showLabelsProperty.linkAttribute( labelNode, 'visible' );
@@ -48,7 +48,7 @@ define( function( require ) {
     this.addInputListener( SimpleDragHandler.createForwardingListener( function( event ) {
 
       // initial position of the pointer in the coordinate frame of the CircuitLayerNode
-      var viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point );
+      var viewPosition = globalToCircuitLayerNodePoint( event.pointer.point );
 
       // Adjust for touch.  The object should appear centered on the mouse but vertically above the finger so the finger
       // doesn't obscure the object
