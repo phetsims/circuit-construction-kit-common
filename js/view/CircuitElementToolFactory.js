@@ -569,7 +569,7 @@ define( function( require ) {
         function( circuitElement ) { return circuitElement instanceof LightBulb && circuitElement.highResistance; },
         function( position ) {
           return LightBulb.createAtPosition( position, self.circuit.vertexGroupTandem,
-            CircuitConstructionKitCommonConstants.HIGH_RESISTANCE, this.viewTypeProperty,
+            CircuitConstructionKitCommonConstants.HIGH_RESISTANCE, self.viewTypeProperty,
             self.circuit.lightBulbGroupTandem.createNextTandem(), {
               highResistance: true,
               editableRange: CircuitConstructionKitCommonConstants.HIGH_RESISTANCE_RANGE,
