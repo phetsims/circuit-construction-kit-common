@@ -72,11 +72,9 @@ define( function( require ) {
      * dragging.
      * @param event - scenery event
      */
-      //REVIEW: var startDragListener = self.dragHandler.startDrag.bind( self.dragHandler )
-      //REVIEW^(samreid): this didn't work out of the box because dragHandler is supplied later by subclasses. What do you recommend?
     var startDragListener = function( event ) {
-        self.dragHandler.startDrag( event );
-      };
+      self.dragHandler.startDrag( event );
+    };
 
     // @private {function} - for disposal
     this.disposeCircuitElementNode = function() {
@@ -108,9 +106,6 @@ define( function( require ) {
     /**
      * Mark dirty to batch changes, so that update can be done once in view step, if necessary
      * @public
-     * REVIEW: markAsDirty this type AND WireNode seem to be duplicates, can this be consolidated into CircuitElementNode?
-     * REVIEW^(samreid): I left the markAsDirty binds in the subclasses because they had different logic, can you check
-     * REVIEW^(samreid): if there's a better way to do that?
      */
     markAsDirty: function() {
       this.dirty = true;
@@ -259,8 +254,6 @@ define( function( require ) {
 
             if ( trails.length === 0 ) {
               phet.joist.sim.display.removeInputListener( clickToDismissListener );
-              //REVIEW: Why the extra guard here? Is there a chance of double-removal?
-              //REVIEW^(samreid): which guard is extra? The trails.length makes sure that the user wasn't interacting with the controls
               var index = self.disposeActions.indexOf( disposeAction );
               if ( index >= 0 ) {
                 self.disposeActions.splice( index, 1 );

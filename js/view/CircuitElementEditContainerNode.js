@@ -79,8 +79,6 @@ define( function( require ) {
     var updatePosition = function() {
 
       // Layout, but only if we have something to display (otherwise bounds fail out)
-      //REVIEW: Generally recommend self.bounds.isValid() as the guard for this type of thing
-      //REVIEW^(samreid): Like this?
       self.bounds.isValid() && self.mutate( GET_LAYOUT_POSITION( visibleBoundsProperty.get() ) );
     };
 

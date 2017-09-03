@@ -135,6 +135,7 @@ define( function( require ) {
 
       // @private {SimpleDragHandler}
       //REVIEW^(samreid): Would you recommend to eleminate these closures? If so, how?
+      //REVIEW*: Usually we've left this type of closure in. Subtyping the drag handler would be best if needed, but leave as-is?
       this.dragHandler = new SimpleDragHandler( {
         allowTouchSnag: true,
         start: function( event ) {
@@ -177,10 +178,12 @@ define( function( require ) {
       //REVIEW^(samreid): That last idea (CircuitElement.isFlammable) seems best to me, and leaving this code here,
       //REVIEW^(samreid): I'll wait to hear your thoughts before proceeding.
       //REVIEW^(samreid): Update: I simplified the logic below (distinction between battery and resistor)
+      //REVIEW*: isFlammable sounds great.
       if ( circuitElement instanceof Battery || circuitElement instanceof Resistor ) {
         //REVIEW: consider moving declaration (and docs) up top so it is more visible.
         //REVIEW^(samreid): Should we resolve the preceding REVIEW section before deciding on this, or can you recommend
         //REVIEW^(samreid): a line number or neighborhood where this might be most suitable?
+        //REVIEW*: No strong preference.
         // @private {Image} - display the fire for flammable CircuitElements
         this.fireNode = new Image( fireImage, { pickable: false, imageOpacity: 0.95 } );
         this.fireNode.mutate( { scale: self.contentNode.width / this.fireNode.width } );

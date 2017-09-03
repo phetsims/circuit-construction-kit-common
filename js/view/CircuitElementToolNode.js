@@ -70,9 +70,6 @@ define( function( require ) {
       allowTouchSnag: true
     } ) );
 
-    //REVIEW: If there's any way to ever switch components to/away from high-resistance, our count may change without
-    //REVIEW: the number of circuit elements changing. Presumably this is a valid assumption?
-    //REVIEW^(samreid): This sim is designed so that types cannot be switched
     circuit.circuitElements.lengthProperty.link( function() {
       self.visible = count() < maxNumber;
     } );

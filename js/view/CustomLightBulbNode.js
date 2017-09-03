@@ -79,6 +79,7 @@ define( function( require ) {
       //REVIEW^(samreid): I removed scale as an stated option, is there a subset of node keys that should be stripped
       //REVIEW^(samreid): before passing parent options to child mutations?
       //REVIEW^(samreid): removing options.scale above broke the centering, see https://github.com/phetsims/circuit-construction-kit-common/issues/397
+      //REVIEW*: Generally I don't recommend options being passed to multiple nodes. Use { ..., someChildOptions: { ... } } preferably when needed?
       this.raysNode.mutate( options );
 
       options.children = [ this.backNode, middleNode ];

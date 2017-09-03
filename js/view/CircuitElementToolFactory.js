@@ -199,13 +199,6 @@ define( function( require ) {
         function( circuitElement ) {
           return circuitElement instanceof Battery &&
                  circuitElement.initialOrientation === 'right' &&
-                 //REVIEW: Saw note that both orientations can be created, but (a) it probably doesn't happen in CCK and
-                 //REVIEW: (b) Is it possible to prevent flipping of batteries in a sim that uses this?
-                 //REVIEW^(samreid): In the design for Circuit Construction Kit: "Basics", we had a toolbox with
-                 //REVIEW^(samreid): left-facing batteries and right-facing batteries, so it should probably be supported.
-                 //REVIEW^(samreid): I think the users would still be able to flip the batteries, but they would be able
-                 //REVIEW^(samreid): to use left-facing and right-facing ones right from the toolbox.
-                 //REVIEW^(samreid): Let me know what you recommend.
                  circuitElement.batteryType === BatteryType.NORMAL;
         },
         function( position ) {
@@ -520,8 +513,6 @@ define( function( require ) {
         function( circuitElement ) {
           return circuitElement instanceof Battery &&
 
-                 //REVIEW: Similar note about battery orientation as above.
-                 //REVIEW^(samreid): see note above and let me know what you recommend
                  circuitElement.initialOrientation === 'right' &&
                  circuitElement.batteryType === BatteryType.HIGH_VOLTAGE;
         }, function( position ) {
