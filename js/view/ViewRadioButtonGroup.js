@@ -26,8 +26,9 @@ define( function( require ) {
   var SCALE = 0.58;
 
   /**
+   * @param {Property.<CircuitElementViewType>} viewTypeProperty - whether to show lifelike or schematic representations
+   * @param {Tandem} tandem
    * @constructor
-   * REVIEW*: type docs
    */
   function ViewRadioButtonGroup( viewTypeProperty, tandem ) {
 
