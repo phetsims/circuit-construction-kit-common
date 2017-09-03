@@ -27,6 +27,7 @@ define( function( require ) {
 
   /**
    * @constructor
+   * REVIEW*: type docs
    */
   function ViewRadioButtonGroup( viewTypeProperty, tandem ) {
 

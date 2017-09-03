@@ -82,7 +82,7 @@ define( function( require ) {
     // @public (read-only) {Voltmeter} - the model
     this.voltmeter = voltmeter;
 
-    // @public (read-only) {Image} - the red probe node
+    // @public (read-only) {Image} - the red probe node REVIEW*: Looks like a Rectangle
     this.redProbeNode = new Rectangle( -2, -2, 4, 4, {
       fill: CircuitConstructionKitCommonQueryParameters.showVoltmeterSamplePoints ? Color.RED : null,
       cursor: 'pointer'
@@ -97,7 +97,7 @@ define( function( require ) {
       y: -5
     } ) );
 
-    // @public (read-only) {Image} - the black probe node
+    // @public (read-only) {Image} - the black probe node REVIEW*: Looks like a Rectangle
     this.blackProbeNode = new Rectangle( -2, -2, 4, 4, {
       fill: CircuitConstructionKitCommonQueryParameters.showVoltmeterSamplePoints ? Color.BLACK : null,
       cursor: 'pointer'
@@ -289,9 +289,7 @@ define( function( require ) {
           if ( redConnection === null || blackConnection === null ) {
             voltmeter.voltageProperty.set( null );
           }
-          else if ( !model.circuit.areVerticesElectricallyConnected(
-              redConnection.vertex, blackConnection.vertex
-            ) ) {
+          else if ( !model.circuit.areVerticesElectricallyConnected( redConnection.vertex, blackConnection.vertex ) ) {
 
             // Voltmeter probes each hit things but they were not connected to each other through the circuit.
             voltmeter.voltageProperty.set( null );

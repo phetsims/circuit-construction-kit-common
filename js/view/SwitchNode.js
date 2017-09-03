@@ -64,6 +64,7 @@ define( function( require ) {
       .lineTo( SWITCH_LENGTH * SWITCH_START - curveDiameter, thickness / 2 )
 
       // similar to the notch below
+      //REVIEW*: May not need this lineTo
       .lineTo( SWITCH_LENGTH * SWITCH_START - curveDiameter, 0 )
       .arc( SWITCH_LENGTH * SWITCH_START - curveDiameter / 2, 0, curveDiameter / 2, Math.PI, 0, false )
       .arc( SWITCH_LENGTH * SWITCH_START + curveDiameter / 2, 0, curveDiameter / 2, Math.PI, 0, true )
@@ -79,6 +80,7 @@ define( function( require ) {
       pickable: true
     } );
 
+    //REVIEW*: prefer .rotation =
     rotatingSegmentNode.setRotation( closed ? 0 : -Math.PI / 4 );
 
     var rightSegmentShape = new Shape()
@@ -119,6 +121,7 @@ define( function( require ) {
       } ) );
     }
 
+    //REVIEW*: Presumably document this in the function return value, since it looks to be important?
     node.leftSegmentNode = leftSegmentNode;
     node.rotatingSegmentNode = rotatingSegmentNode;
     node.rightSegmentNode = rightSegmentNode;

@@ -64,6 +64,7 @@ define( function( require ) {
         voltageReadoutText.bottom = -30;
       };
       vertex.voltageProperty.link( function( voltage ) {
+        //REVIEW*: Does this need i18n?
         var voltageText = Util.toFixed( voltage, 3 ) + 'V';
         voltageReadoutText.setText( vertexDisplay === 'voltage' ? voltageText : vertex.index );
         updateReadoutTextLocation();
@@ -123,6 +124,7 @@ define( function( require ) {
       }
       var desiredChild = circuit.countCircuitElements( vertex ) > 1 ? BLACK_CIRCLE_NODE : RED_CIRCLE_NODE;
       if ( self.getChildAt( 0 ) !== desiredChild ) {
+        //REVIEW*: Usually have self.children = voltageReadoutText ? [ .. both .. ] : [ .. just one ... ]
         self.children = [ desiredChild ];
         voltageReadoutText && self.addChild( voltageReadoutText );
       }
@@ -189,6 +191,7 @@ define( function( require ) {
       },
       drag: function( event ) {
         dragged = true;
+        //REVIEW*: What if draggableProperty turning false interrupts the listener (instead of adding these checks)?
         vertex.draggableProperty.get() && circuitLayerNode.dragVertex( event.pointer.point, vertex, true );
       },
       end: function( event ) {
@@ -256,6 +259,7 @@ define( function( require ) {
     };
     var updateVertexNodePosition = function() {
       var position = vertex.positionProperty.get();
+      //REVIEW*: self.translation = position?
       self.setTranslation( position.x, position.y );
 
       // Update the position of the highlight, but only if it is visible
@@ -273,6 +277,7 @@ define( function( require ) {
     vertex.selectedProperty.link( updateVertexNodePosition );
 
     // @private
+    //REVIEW*: Only if we have memory issues still, I'd recommend removing closures from VertexNode
     this.disposeVertexNode = function() {
       vertex.positionProperty.unlink( updateVertexNodePosition );
       vertex.selectedProperty.unlink( updateVertexNodePosition );

@@ -289,7 +289,7 @@ define( function( require ) {
     getMidpoint: function() {
       var start = this.startVertexProperty.value.positionProperty.value;
       var end = this.endVertexProperty.value.positionProperty.value;
-      return start.blend( end, 0.5 );
+      return start.blend( end, 0.5 ); //REVIEW*: average() may be clearer?
     }
   } );
 } );

@@ -171,7 +171,7 @@ define( function( require ) {
     showValuesProperty.link( updatePosition );
     viewTypeProperty.link( updatePosition );
 
-    // @private
+    // @private {function}
     this.disposeValueNode = function() {
       circuitElement.vertexMovedEmitter.removeListener( updatePosition );
       showValuesProperty.unlink( updatePosition );

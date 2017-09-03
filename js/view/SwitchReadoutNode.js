@@ -58,7 +58,7 @@ define( function( require ) {
       children: [ closedText, openText, trashButton ]
     } );
 
-    // @private
+    // @private {function}
     this.disposeSwitchReadoutNode = function() {
       circuitSwitch.closedProperty.unlink( closedListener );
     };

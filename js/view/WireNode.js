@@ -130,10 +130,11 @@ define( function( require ) {
     else {
 
       // Not enough room for any touch area for this wire
-      touchAreaStart = startPoint.blend( endPoint, 0.5 );
+      touchAreaStart = startPoint.blend( endPoint, 0.5 ); //REVIEW*: average() instead?
       touchAreaEnd = touchAreaStart;
     }
 
+    //REVIEW*: return Shape.lineSegment( touchAreaStart, touchAreaEnd ).getStrokedShape( TOUCH_AREA_LINE_STYLES );
     return Shape.lineSegment( touchAreaStart.x, touchAreaStart.y, touchAreaEnd.x, touchAreaEnd.y )
       .getStrokedShape( TOUCH_AREA_LINE_STYLES );
   };
@@ -245,36 +246,35 @@ define( function( require ) {
 
       // Input listener for dragging the body of the wire, to translate it.
       this.dragHandler = new SimpleDragHandler( {
-          allowTouchSnag: true,
-          tandem: tandem.createTandem( 'dragHandler' ),
-          start: function( event ) {
-            if ( wire.interactiveProperty.get() ) {
+        allowTouchSnag: true,
+        tandem: tandem.createTandem( 'dragHandler' ),
+        start: function( event ) {
+          if ( wire.interactiveProperty.get() ) {
 
-              // Start drag by starting a drag on start and end vertices
-              circuitLayerNode.startDragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
-              circuitLayerNode.startDragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
-              dragged = false;
-              startPoint = event.pointer.point;
-            }
-          },
-          drag: function( event ) {
-            if ( wire.interactiveProperty.get() ) {
-
-              // Drag by translating both of the vertices
-              circuitLayerNode.dragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
-              circuitLayerNode.dragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
-              dragged = true;
-            }
-          },
-          end: function( event ) {
-            CircuitElementNode.prototype.endDrag.call( self, event, self, [
-                wire.startVertexProperty.get(),
-                wire.endVertexProperty.get()
-              ],
-              screenView, circuitLayerNode, startPoint, dragged );
+            // Start drag by starting a drag on start and end vertices
+            circuitLayerNode.startDragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
+            circuitLayerNode.startDragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
+            dragged = false;
+            startPoint = event.pointer.point;
           }
+        },
+        drag: function( event ) {
+          if ( wire.interactiveProperty.get() ) {
+
+            // Drag by translating both of the vertices
+            circuitLayerNode.dragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
+            circuitLayerNode.dragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
+            dragged = true;
+          }
+        },
+        end: function( event ) {
+          CircuitElementNode.prototype.endDrag.call( self, event, self, [
+              wire.startVertexProperty.get(),
+              wire.endVertexProperty.get()
+            ],
+            screenView, circuitLayerNode, startPoint, dragged );
         }
-      );
+      } );
       self.addInputListener( this.dragHandler );
 
       circuitLayerNode.circuit.selectedCircuitElementProperty.link( markAsDirty );
@@ -299,6 +299,7 @@ define( function( require ) {
      * @private - dispose the wire node
      */
     this.disposeWireNode = function() {
+      //REVIEW*: Consider dragHandler.interrupt()
       self.dragHandler.dragging && self.dragHandler.endDrag();
 
       wire.startVertexProperty.unlink( doUpdateTransform );
@@ -358,7 +359,7 @@ define( function( require ) {
         this.endCapParent.visible = true;
       }
       else {
-        (this.lineNode.getChildAt( 0 ) !== BLACK_LINE_NODE) && this.lineNode.setChildren( [ BLACK_LINE_NODE ] );
+        ( this.lineNode.getChildAt( 0 ) !== BLACK_LINE_NODE ) && this.lineNode.setChildren( [ BLACK_LINE_NODE ] );
         this.startCapParent.visible = false;
         this.endCapParent.visible = false;
       }
@@ -386,6 +387,9 @@ define( function( require ) {
         var showHighlight = selectedCircuitElement === this.wire;
         this.highlightNode.visible = showHighlight;
         if ( showHighlight ) {
+          //REVIEW*: Usually changing Shape (and getting stroked shape) is performance-intensive. If there are perf
+          //REVIEW*: issues in this part, consider a more efficient way? Can we compose hit-areas and highlights out of
+          //REVIEW*: parts for the end and center?
           this.highlightNode.shape = getHighlightStrokedShape( this.wire );
         }
 
