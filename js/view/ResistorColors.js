@@ -37,7 +37,7 @@ define( function( require ) {
   /**
    * Gets the color table entry for the specified column in the colorTable
    * @param {string} keyName - the name of the key, such as 'significantFigure'|'multiplier'|'tolerance'
-   * @param value
+   * @param value REVIEW*: type {*} ?
    * @returns {*}
    */
   var getEntry = function( keyName, value ) {
@@ -62,8 +62,6 @@ define( function( require ) {
         return [ getEntry( 'name', 'black' ) ];
       }
 
-      // REVIEW^(samreid): I went for a numerical pattern instead of string-based, can you please take a look?
-
       // Estimate the exponent
       var exponent = Math.round( Math.log( resistance ) / Math.log( 10 ) );
 
@@ -80,16 +78,17 @@ define( function( require ) {
       var firstSignificantDigit = Math.floor( reduced );
 
       // Chop off first significant digit, then bump up >1 and take first digit
-      var x = (reduced - firstSignificantDigit) * 10;
-      var secondSignificantDigit = Math.round( x );//round to prevent cases like resistance=4700 = x2 = 6.99999
+      var x = ( reduced - firstSignificantDigit ) * 10;
+      //REVIEW*: roundSymmetric?
+      var secondSignificantDigit = Math.round( x ); //round to prevent cases like resistance=4700 = x2 = 6.99999
 
       // prevent rounding up from 9.5 to 10.0
       if ( secondSignificantDigit === 10 ) {
-        secondSignificantDigit = 9;//hack alert
+        secondSignificantDigit = 9; //hack alert
       }
 
       // Estimate the value to obtain tolerance band
-      var approximateValue = (firstSignificantDigit + secondSignificantDigit / 10) * Math.pow( 10, exponent );
+      var approximateValue = ( firstSignificantDigit + secondSignificantDigit / 10 ) * Math.pow( 10, exponent );
       var percentError = Math.abs( ( resistance - approximateValue ) / resistance * 100 );
       var colorsWithTolerance = _.filter( colorTable, function( colorTableEntry ) {
         return colorTableEntry.tolerance !== null;

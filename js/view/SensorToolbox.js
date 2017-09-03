@@ -47,6 +47,7 @@ define( function( require ) {
    * @param {boolean} showSeriesAmmeters - whether the series ammeters should be shown in the toolbox
    * @param {boolean} showNoncontactAmmeters - whether the noncontact ammeters should be shown in the toolbox
    * @param {Tandem} tandem
+   * REVIEW*: This is approaching the point where I'd consider options objects for things like boolean flags and properties.
    * @constructor
    */
   function SensorToolbox( alignGroup, circuitLayerNode, voltmeterNode, ammeterNode, showResultsProperty,
@@ -161,7 +162,8 @@ define( function( require ) {
     } );
 
     CircuitConstructionKitPanel.call( this, alignGroup.createBox( new HBox( {
-      spacing: (children.length === 2) ? 20 : 40,
+      //REVIEW*: Sounds easy to break this spacing. Maybe have it conditional on what changes things?
+      spacing: ( children.length === 2 ) ? 20 : 40,
       align: 'bottom',
       children: [ voltmeterToolIcon, ammeterToolIcon ]
     } ) ), tandem, {

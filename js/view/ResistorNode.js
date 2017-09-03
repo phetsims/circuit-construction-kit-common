@@ -122,7 +122,7 @@ define( function( require ) {
           // Show all 4 colors bands and hide the 0-resistance band
           singleColorBand.fill = null;
           for ( var i = 0; i < colorBands.length; i++ ) {
-            colorBands[ i ].fill = colors[ i ] || null;// Last one could be null
+            colorBands[ i ].fill = colors[ i ] || null; // Last one could be null REVIEW*: null || null => null. Is it undefined?
           }
         }
       };
@@ -179,6 +179,7 @@ define( function( require ) {
 
     // Expand the pointer areas with a defensive copy, see
     // https://github.com/phetsims/circuit-construction-kit-common/issues/310
+    //REVIEW*: Don't copy, shiftedY returns a copy.
     schematicNode.mouseArea = schematicNode.bounds.copy().shiftedY( schematicNode.height / 2 );
     schematicNode.touchArea = schematicNode.bounds.copy().shiftedY( schematicNode.height / 2 );
 
@@ -206,7 +207,7 @@ define( function( require ) {
     );
 
     /**
-     * @private - dispose the resistor node
+     * @private {function} - dispose the resistor node
      */
     this.disposeResistorNode = function() {
       updateColorBands && resistor.resistanceProperty.unlink( updateColorBands );

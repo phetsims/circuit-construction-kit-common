@@ -17,6 +17,7 @@ define( function( require ) {
   // constants
   var SOLDER_COLOR = '#ae9f9e';
 
+  //REVIEW*: Not a problem really, but visibility tags on these don't make much sense, as they are not visible outside of scope.
   // @public (read-only) {number} - for hit testing with probes
   var SOLDER_RADIUS = 11.2;
 
@@ -35,6 +36,7 @@ define( function( require ) {
 
     // @private {boolean} - keep track of when the node was disposed because defensive copies for callbacks cause
     // listeners to get called during disposal
+    //REVIEW*: Would checking node.disposed work?
     this.solderNodeDisposed = false;
 
     var circuit = circuitLayerNode.circuit;
@@ -56,7 +58,6 @@ define( function( require ) {
     // Update the fill when the number of attached components changes.
     var updateFill = function() {
 
-      //
       if ( self.solderNodeDisposed ) {
         return;
       }
@@ -70,6 +71,7 @@ define( function( require ) {
     circuit.circuitElements.addItemRemovedListener( updateFill );
 
     var updateSolderNodePosition = function( position ) {
+      //REVIEW*: self.translation = position;  --- or consider linkAttribute
       self.setTranslation( position.x, position.y );
     };
     vertex.positionProperty.link( updateSolderNodePosition );
@@ -111,6 +113,7 @@ define( function( require ) {
      */
     webglSpriteNodes: [ CIRCLE_NODE ],
 
+    //REVIEW*: Visibility (from above) would go here.
     SOLDER_RADIUS: SOLDER_RADIUS
   } );
 } );

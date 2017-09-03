@@ -28,6 +28,8 @@ define( function( require ) {
    */
   function RotateBatteryButton( circuit, battery, tandem ) {
 
+    //REVIEW*: Description of how this was imported (does it need license info?) would be good.
+    //REVIEW*: Includes other path descriptions.
     var batteryIcon = new Path( 'M59.42,9.597v7.807c0,0.719-0.32,1.331-0.957,1.84c-0.641,0.508-1.411,0.762-2.312,0.762v3.254 ' +
                                 'c0,0.894-0.398,1.659-1.199,2.296s-1.762,0.956-2.887,0.956H4.666c-1.125,0-2.086-0.319-2.887-0.956S0.58,24.152,0.58,23.259V3.741 ' +
                                 'c0-0.894,0.398-1.659,1.199-2.297C2.58,0.809,3.541,0.489,4.666,0.489h47.398c1.125,0,2.086,0.319,2.887,0.955 ' +

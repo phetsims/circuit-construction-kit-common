@@ -31,7 +31,7 @@ define( function( require ) {
   var PANEL_HEIGHT = 40;
   var PANEL_WIDTH = CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH;
   var ORANGE = '#f39033';
-  var WIDEST_LABEL = '99.99 A';
+  var WIDEST_LABEL = '99.99 A'; //REVIEW*: Shouldn't we check the localized version with 99.99?
   var CORNER_RADIUS = 4;
 
   /**
@@ -66,7 +66,9 @@ define( function( require ) {
 
     // Charges go behind this panel to give the appearance they go through the ammeter
     var readoutText = new Text( WIDEST_LABEL, { fontSize: 15 } );
+    //REVIEW*: Consider readoutText.maxWidth = readoutText.width;
     readoutText.setMaxWidth( readoutText.width );
+    //REVIEW*: Usually instead of separating out width/height, I'd have maxBounds (and use it to set center below)
     var maxWidth = readoutText.width;
     var maxHeight = readoutText.height;
 
@@ -97,8 +99,8 @@ define( function( require ) {
       readoutText.setText( readout );
 
       // Center the text in the panel
-      readoutText.centerX = (maxWidth + textPanelMarginX * 2) / 2;
-      readoutText.centerY = (maxHeight + textPanelMarginY * 2) / 2;
+      readoutText.centerX = ( maxWidth + textPanelMarginX * 2 ) / 2;
+      readoutText.centerY = ( maxHeight + textPanelMarginY * 2 ) / 2;
     };
 
     seriesAmmeter.currentProperty.link( updateText );
@@ -149,6 +151,7 @@ define( function( require ) {
 
     // Expand the pointer areas with a defensive copy, see
     // https://github.com/phetsims/circuit-construction-kit-common/issues/310
+    //REVIEW*: Don't copy, it doesn't save references.
     lifelikeNode.mouseArea = lifelikeNode.bounds.copy();
     lifelikeNode.touchArea = lifelikeNode.bounds.copy();
 
@@ -156,11 +159,13 @@ define( function( require ) {
     lifelikeNode.centerY = 0;
 
     // Center the readout within the main body of the sensor
+    //REVIEW*: readoutPanel.center = lifelikeNode.center;
     readoutPanel.centerX = lifelikeNode.centerX;
     readoutPanel.centerY = lifelikeNode.centerY;
 
-    // @private - the panel to be shown in front for z-ordering.  Wrap centered in a child node to make the layout
+    // @private {Node} - the panel to be shown in front for z-ordering.  Wrap centered in a child node to make the layout
     // in updateRender trivial.
+    //REVIEW*: Not a panel. 'frontPanelContainer' or another name?
     this.frontPanel = new Node( {
       children: [
         readoutPanel
@@ -188,7 +193,7 @@ define( function( require ) {
     // @private (read-only) {boolean} - whether to show as an icon
     this.icon = options.icon;
 
-    // @private
+    // @private {function}
     this.disposeSeriesAmmeterNode = function() {
       seriesAmmeter.currentProperty.unlink( updateText );
       seriesAmmeter.startVertexProperty.unlink( updateText );

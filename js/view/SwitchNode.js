@@ -194,6 +194,7 @@ define( function( require ) {
         var distance = event.pointer.point.distance( downPoint );
 
         // Toggle the state of the switch, but only if the event is classified as a tap and not a drag
+        //REVIEW*: This comparison is in global/screen coordinates. Is that desired?
         if ( distance < CircuitConstructionKitCommonConstants.TAP_THRESHOLD ) {
           circuitSwitch.closedProperty.value = !circuitSwitch.closedProperty.value;
         }
@@ -203,17 +204,17 @@ define( function( require ) {
     // Only add the input listener if it is not for a toolbar icon
     screenView && this.contentNode.addInputListener( buttonListener );
 
-    // @private - For hit testing
+    // @private {Node} - For hit testing
     this.lifelikeOpenNode = createNode(
       CircuitElementViewType.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, false
     );
 
-    // @private - clean up resources when no longer used.
+    // @private {function} - clean up resources when no longer used.
     this.disposeSwitchNode = function() {
       circuitSwitch.closedProperty.unlink( closeListener );
 
       // Surprisingly, the children and button listener must be removed to prevent a memory leak.
-      self.removeAllChildren(); // TODO: is this line necessary?
+      self.removeAllChildren(); // TODO: is this line necessary? REVIEW*: Is this necessary?
       screenView && self.contentNode.removeInputListener( buttonListener );
 
       // Make sure the lifelikeNode and schematicNode are not listed as parents for their children because the children
@@ -233,6 +234,7 @@ define( function( require ) {
      * @returns {boolean}
      */
     startSideContainsSensorPoint: function( point ) {
+      //REVIEW*: If it's more convenient, this is this.contentNode.parentToLocalPoint( point )
       var localPoint = this.contentNode.getTransform().inversePosition2( point );
 
       var leftSegmentContainsPoint = lifelikeOpenNode.leftSegmentNode.containsPoint( localPoint );
@@ -247,6 +249,7 @@ define( function( require ) {
      * @returns {boolean}
      */
     endSideContainsSensorPoint: function( point ) {
+      //REVIEW*: If it's more convenient, this is this.contentNode.parentToLocalPoint( point )
       var localPoint = this.contentNode.getTransform().inversePosition2( point );
       return lifelikeOpenNode.rightSegmentNode.containsPoint( localPoint );
     },
