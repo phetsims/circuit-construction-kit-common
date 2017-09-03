@@ -134,8 +134,6 @@ define( function( require ) {
     if ( !options.icon ) {
 
       // @private {SimpleDragHandler}
-      //REVIEW^(samreid): Would you recommend to eleminate these closures? If so, how?
-      //REVIEW*: Usually we've left this type of closure in. Subtyping the drag handler would be best if needed, but leave as-is?
       this.dragHandler = new SimpleDragHandler( {
         allowTouchSnag: true,
         start: function( event ) {
