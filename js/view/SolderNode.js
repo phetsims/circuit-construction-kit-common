@@ -65,10 +65,7 @@ define( function( require ) {
     circuit.circuitElements.addItemAddedListener( updateFill );
     circuit.circuitElements.addItemRemovedListener( updateFill );
 
-    var updateSolderNodePosition = function( position ) {
-      //REVIEW*: self.translation = position;  --- or consider linkAttribute
-      self.setTranslation( position.x, position.y );
-    };
+    var updateSolderNodePosition = this.setTranslation.bind( this );
     vertex.positionProperty.link( updateSolderNodePosition );
 
     // @private (read-only) {function} called by dispose()
