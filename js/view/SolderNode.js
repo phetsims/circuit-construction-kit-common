@@ -33,11 +33,6 @@ define( function( require ) {
 
     var self = this;
 
-    // @private {boolean} - keep track of when the node was disposed because defensive copies for callbacks cause
-    // listeners to get called during disposal
-    //REVIEW*: Would checking node.disposed work?
-    this.solderNodeDisposed = false;
-
     var circuit = circuitLayerNode.circuit;
 
     // @public (read-only) {Vertex}
@@ -57,10 +52,11 @@ define( function( require ) {
     // Update the fill when the number of attached components changes.
     var updateFill = function() {
 
-      if ( self.solderNodeDisposed ) {
-        return;
+      // @private {boolean} - defensive copies for callbacks cause listeners to get called during disposal, avoid calling
+      // Node API after diposed
+      if ( !self.disposed ) {
+        self.visible = circuit.countCircuitElements( vertex ) > 1;
       }
-      self.visible = circuit.countCircuitElements( vertex ) > 1;
     };
     circuit.vertices.addItemAddedListener( updateFill );
     circuit.vertices.addItemRemovedListener( updateFill );
@@ -100,7 +96,6 @@ define( function( require ) {
      * @override
      */
     dispose: function() {
-      this.solderNodeDisposed = true;
       this.disposeSolderNode();
       Node.prototype.dispose.call( this );
     }
