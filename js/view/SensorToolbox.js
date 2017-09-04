@@ -157,8 +157,7 @@ define( function( require ) {
     } );
 
     CircuitConstructionKitPanel.call( this, alignGroup.createBox( new HBox( {
-      //REVIEW*: Sounds easy to break this spacing. Maybe have it conditional on what changes things?
-      spacing: ( children.length === 2 ) ? 20 : 40,
+      spacing: ( options.showNoncontactAmmeters && options.showSeriesAmmeters ) ? 20 : 40,
       align: 'bottom',
       children: [ voltmeterToolIcon, ammeterToolIcon ]
     } ) ), tandem, {
