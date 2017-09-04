@@ -51,10 +51,14 @@ define( function( require ) {
       interactive: true, // In CCK: Black Box Study, CircuitElements in the black box cannot be manipulated
       isSizeChangedOnViewChange: true,
       insideTrueBlackBox: false,
-      isMetallic: false // Metallic items can have their voltage read directly (unshielded)
+      isMetallic: false, // Metallic items can have their voltage read directly (unshielded)
+      isFlammable: false
     }, options );
 
-    // @public (read-only) metallic resistors behave like exposed wires--sensor values can be read directly on the
+    // @public (read-only) flammable circuit elements can catch on fire
+    this.isFlammable = options.isFlammable;
+
+    // @public (read-only) metallic circuit elements behave like exposed wires--sensor values can be read directly on the
     // resistor. For instance, coins and paper clips and wires are metallic and can have their values read directly.
     this.isMetallic = options.isMetallic;
 

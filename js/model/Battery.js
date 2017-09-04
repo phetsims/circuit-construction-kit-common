@@ -32,7 +32,8 @@ define( function( require ) {
     assert && assert( BatteryType.VALUES.indexOf( batteryType ) >= 0, 'invalid battery type: ' + batteryType );
     options = _.extend( {
       initialOrientation: 'right',
-      voltage: 9.0
+      voltage: 9.0,
+      isFlammable: true
     }, options );
     FixedCircuitElement.call( this, startVertex, endVertex, BATTERY_LENGTH, tandem, options );
 

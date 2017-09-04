@@ -32,7 +32,8 @@ define( function( require ) {
 
       // Support for rendering household items or
       resistorType: ResistorType.VALUES[ 0 ],
-      resistorLength: RESISTOR_LENGTH
+      resistorLength: RESISTOR_LENGTH,
+      isFlammable: true
     }, options );
 
     // validate resistor type
