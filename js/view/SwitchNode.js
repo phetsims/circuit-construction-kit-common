@@ -78,7 +78,6 @@ define( function( require ) {
       pickable: true
     } );
 
-    //REVIEW*: prefer .rotation =
     rotatingSegmentNode.rotation = closed ? 0 : -Math.PI / 4;
 
     var rightSegmentShape = new Shape()
