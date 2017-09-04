@@ -150,10 +150,10 @@ define( function( require ) {
       ]
     } );
 
-    // Expand the pointer areas with a defensive copy, see
-    // https://github.com/phetsims/circuit-construction-kit-common/issues/310
-    lifelikeNode.mouseArea = lifelikeNode.bounds;
-    lifelikeNode.touchArea = lifelikeNode.bounds;
+    // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
+    // REVIEW^(samreid): I removed the copy and it caused https://github.com/phetsims/circuit-construction-kit-common/issues/398
+    lifelikeNode.mouseArea = lifelikeNode.bounds.copy();
+    lifelikeNode.touchArea = lifelikeNode.bounds.copy();
 
     // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
     lifelikeNode.centerY = 0;
