@@ -81,7 +81,7 @@ define( function( require ) {
     } );
 
     //REVIEW*: prefer .rotation =
-    rotatingSegmentNode.setRotation( closed ? 0 : -Math.PI / 4 );
+    rotatingSegmentNode.rotation = closed ? 0 : -Math.PI / 4;
 
     var rightSegmentShape = new Shape()
       .moveTo( SWITCH_LENGTH * SWITCH_END - curveDiameter, thickness / 2 )
