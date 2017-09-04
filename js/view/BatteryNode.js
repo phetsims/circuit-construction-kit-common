@@ -58,8 +58,8 @@ define( function( require ) {
   schematicNode.centerY = 0;
 
   // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
-  schematicNode.mouseArea = schematicNode.bounds.copy().shiftedY( schematicNode.height / 2 );
-  schematicNode.touchArea = schematicNode.bounds.copy().shiftedY( schematicNode.height / 2 );
+  schematicNode.mouseArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
+  schematicNode.touchArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
 
   /**
    * @param {CircuitConstructionKitScreenView|null} screenView - main screen view, null for icon
