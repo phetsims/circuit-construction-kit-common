@@ -130,7 +130,7 @@ define( function( require ) {
     else {
 
       // Not enough room for any touch area for this wire
-      touchAreaStart = startPoint.blend( endPoint, 0.5 ); //REVIEW*: average() instead?
+      touchAreaStart = startPoint.average( endPoint );
       touchAreaEnd = touchAreaStart;
     }
 
