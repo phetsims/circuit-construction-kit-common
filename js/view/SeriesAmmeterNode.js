@@ -31,7 +31,9 @@ define( function( require ) {
   var PANEL_HEIGHT = 40;
   var PANEL_WIDTH = CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH;
   var ORANGE = '#f39033';
-  var WIDEST_LABEL = '99.99 A'; //REVIEW*: Shouldn't we check the localized version with 99.99?
+
+  // Determine widest text to use for maxWidth
+  var WIDEST_LABEL = CircuitConstructionKitCommonUtil.createCurrentReadout( 99.99 );
   var CORNER_RADIUS = 4;
 
   /**
