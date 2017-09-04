@@ -11,6 +11,7 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var Util = require( 'DOT/Util' );
   var Shape = require( 'KITE/Shape' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -38,7 +39,8 @@ define( function( require ) {
 
     options = _.extend( {
       baseOnly: false,
-      highResistance: true
+      highResistance: true,
+      scale: CircuitConstructionKitCommonConstants.BULB_SCALE
     }, options );
 
     // @private (read-only) {boolean]
@@ -69,18 +71,16 @@ define( function( require ) {
       // Show the rays here where they can be easily positioned, but only when more than the base is showing
       var bulbRadius = middleNode.width / 2;
 
-      // @private {Node} - displays the light rays
+      // @private {Node} - displays the light rays, not a child of this node
       this.raysNode = new LightRaysNode( bulbRadius, {
-        x: this.backNode.centerX,
-        y: ( middleNode.top + bulbRadius ) * options.scale // The scale here seems essential to line up the rays on the bulb, not sure why, see https://github.com/phetsims/circuit-construction-kit-common/issues/397
-      } );
 
-      //REVIEW: Woah, scale is also applied to the raysNode directly (in addition to CustomLightBulbNode itself)
-      //REVIEW^(samreid): I removed scale as an stated option, is there a subset of node keys that should be stripped
-      //REVIEW^(samreid): before passing parent options to child mutations?
-      //REVIEW^(samreid): removing options.scale above broke the centering, see https://github.com/phetsims/circuit-construction-kit-common/issues/397
-      //REVIEW*: Generally I don't recommend options being passed to multiple nodes. Use { ..., someChildOptions: { ... } } preferably when needed?
-      this.raysNode.mutate( options );
+        // Since the raysNode is rendered in another node (not a child of the CustemLightBulbNode), it needs the same scale
+        scale: options.scale,
+        x: this.backNode.centerX,
+
+        // The scale here seems essential to line up the rays on the bulb, not sure why, see https://github.com/phetsims/circuit-construction-kit-common/issues/397
+        y: ( middleNode.top + bulbRadius ) * options.scale
+      } );
 
       options.children = [ this.backNode, middleNode ];
     }

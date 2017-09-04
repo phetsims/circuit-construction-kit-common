@@ -91,9 +91,7 @@ define( function( require ) {
 
         brightnessProperty.value = Util.clamp( brightness, 0, 1 );
       } );
-    var lightBulbNode = new CustomLightBulbNode( brightnessProperty, {
-      scale: CircuitConstructionKitCommonConstants.BULB_SCALE
-    } );
+    var lightBulbNode = new CustomLightBulbNode( brightnessProperty );
 
     // The icon must show the socket as well
     if ( options.icon ) {

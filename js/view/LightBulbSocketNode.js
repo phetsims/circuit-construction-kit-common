@@ -35,8 +35,7 @@ define( function( require ) {
     // Render the bulb socket only
     var lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ), {
       baseOnly: true,
-      highResistance: lightBulb.highResistance,
-      scale: CircuitConstructionKitCommonConstants.BULB_SCALE
+      highResistance: lightBulb.highResistance
     } );
 
     // Interferes with Cut Button selection when the foreground is in front, see
