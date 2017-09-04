@@ -69,7 +69,9 @@ define( function( require ) {
     // Charges go behind this panel to give the appearance they go through the ammeter
     var readoutText = new Text( WIDEST_LABEL, { fontSize: 15 } );
     readoutText.maxWidth = readoutText.width;
-    //REVIEW*: Usually instead of separating out width/height, I'd have maxBounds (and use it to set center below)
+    //REVIEW: Usually instead of separating out width/height, I'd have maxBounds (and use it to set center below)
+    //REVIEW^(samreid): The bounds do not have an origin of 0,0, so I'm not sure of a simpler way to implement this,
+    //REVIEW^(samreid): can you help?
     var maxWidth = readoutText.width;
     var maxHeight = readoutText.height;
 
