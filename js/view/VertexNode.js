@@ -120,16 +120,16 @@ define( function( require ) {
       // This is because the itemRemoved listener in CircuitLayerNode is added (and hence called) before this callback.
       // The CircuitLayerNode listener calls dispose but this listener still gets called back because emitter gets
       // a defensive copy of listeners.
-      if ( self.disposed ) {
-        return;
+      if ( !self.disposed ) {
+
+        var desiredChild = circuit.countCircuitElements( vertex ) > 1 ? BLACK_CIRCLE_NODE : RED_CIRCLE_NODE;
+        if ( self.getChildAt( 0 ) !== desiredChild ) {
+          //REVIEW*: Usually have self.children = voltageReadoutText ? [ .. both .. ] : [ .. just one ... ]
+          self.children = [ desiredChild ];
+          voltageReadoutText && self.addChild( voltageReadoutText );
+        }
+        self.visible = vertex.attachableProperty.get();
       }
-      var desiredChild = circuit.countCircuitElements( vertex ) > 1 ? BLACK_CIRCLE_NODE : RED_CIRCLE_NODE;
-      if ( self.getChildAt( 0 ) !== desiredChild ) {
-        //REVIEW*: Usually have self.children = voltageReadoutText ? [ .. both .. ] : [ .. just one ... ]
-        self.children = [ desiredChild ];
-        voltageReadoutText && self.addChild( voltageReadoutText );
-      }
-      self.visible = vertex.attachableProperty.get();
     };
 
     // Update when any vertex is added or removed, or when the existing circuit values change.
