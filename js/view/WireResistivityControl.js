@@ -21,6 +21,10 @@ define( function( require ) {
   var tinyString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/tiny' );
   var wireResistivityString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/wireResistivity' );
 
+  // constants
+  var TICK_LABEL_TEXT_OPTIONS = { fontSize: 12, maxWidth: 45 };
+  var MAX_RESISTIVITY = 1;
+
   /**
    * @param {Property.<number>} wireResistivityProperty
    * @param {AlignGroup} alignGroup - for alignment with other controls
@@ -28,7 +32,6 @@ define( function( require ) {
    * @constructor
    */
   function WireResistivityControl( wireResistivityProperty, alignGroup, tandem ) {
-    var MAX_RESISTIVITY = 1;
     var slider = new HSlider( wireResistivityProperty, {
       min: CircuitConstructionKitCommonConstants.DEFAULT_RESISTIVITY,
       max: MAX_RESISTIVITY // large enough so that max resistance in a 9v battery slows to a good rate
@@ -39,19 +42,8 @@ define( function( require ) {
       tandem: tandem.createTandem( 'slider' )
     } );
 
-    /**
-     * Creates label for the slider within the control accordionBox
-     * @param {boolean} min - determines whether the label is the minimum or not
-     *
-     * @returns {Text} Text with the value of 'tiny' or 'lots'
-     */
-    var createLabel = function( min ) {
-      return new Text( min ? tinyString : lotsString, { fontSize: 12, maxWidth: 45 } );
-    };
-
-    //REVIEW*: For creating labels, maybe just (a) pass in the string, or (b) have a variable for the Text options. Might not be worth a helper function with docs.
-    slider.addMajorTick( 0, createLabel( true ) );
-    slider.addMajorTick( MAX_RESISTIVITY, createLabel( false ) );
+    slider.addMajorTick( 0, new Text( tinyString, TICK_LABEL_TEXT_OPTIONS ) );
+    slider.addMajorTick( MAX_RESISTIVITY, new Text( lotsString, TICK_LABEL_TEXT_OPTIONS ) );
 
     CircuitConstructionKitAccordionBox.call( this, alignGroup.createBox( slider ), wireResistivityString, tandem );
   }
