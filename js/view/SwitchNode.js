@@ -228,8 +228,7 @@ define( function( require ) {
      * @returns {boolean}
      */
     startSideContainsSensorPoint: function( point ) {
-      //REVIEW*: If it's more convenient, this is this.contentNode.parentToLocalPoint( point )
-      var localPoint = this.contentNode.getTransform().inversePosition2( point );
+      var localPoint = this.contentNode.parentToLocalPoint( point );
 
       var leftSegmentContainsPoint = lifelikeOpenNode.leftSegmentNode.containsPoint( localPoint );
       var node = this.circuitSwitch.closedProperty.get() ? lifelikeClosedNode : lifelikeOpenNode;
@@ -243,8 +242,7 @@ define( function( require ) {
      * @returns {boolean}
      */
     endSideContainsSensorPoint: function( point ) {
-      //REVIEW*: If it's more convenient, this is this.contentNode.parentToLocalPoint( point )
-      var localPoint = this.contentNode.getTransform().inversePosition2( point );
+      var localPoint = this.contentNode.parentToLocalPoint( point );
       return lifelikeOpenNode.rightSegmentNode.containsPoint( localPoint );
     },
 
