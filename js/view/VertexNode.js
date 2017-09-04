@@ -64,7 +64,8 @@ define( function( require ) {
         voltageReadoutText.bottom = -30;
       };
       vertex.voltageProperty.link( function( voltage ) {
-        //REVIEW*: Does this need i18n?
+
+        // No need for i18n because this is for debugging only
         var voltageText = Util.toFixed( voltage, 3 ) + 'V';
         voltageReadoutText.setText( vertexDisplay === 'voltage' ? voltageText : vertex.index );
         updateReadoutTextLocation();
