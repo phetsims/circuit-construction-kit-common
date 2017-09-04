@@ -124,9 +124,7 @@ define( function( require ) {
 
         var desiredChild = circuit.countCircuitElements( vertex ) > 1 ? BLACK_CIRCLE_NODE : RED_CIRCLE_NODE;
         if ( self.getChildAt( 0 ) !== desiredChild ) {
-          //REVIEW*: Usually have self.children = voltageReadoutText ? [ .. both .. ] : [ .. just one ... ]
-          self.children = [ desiredChild ];
-          voltageReadoutText && self.addChild( voltageReadoutText );
+          self.children = voltageReadoutText ? [ desiredChild, voltageReadoutText ] : [ desiredChild ];
         }
         self.visible = vertex.attachableProperty.get();
       }
