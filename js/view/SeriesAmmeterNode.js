@@ -159,9 +159,7 @@ define( function( require ) {
     lifelikeNode.centerY = 0;
 
     // Center the readout within the main body of the sensor
-    //REVIEW*: readoutPanel.center = lifelikeNode.center;
-    readoutPanel.centerX = lifelikeNode.centerX;
-    readoutPanel.centerY = lifelikeNode.centerY;
+    readoutPanel.center = lifelikeNode.center;
 
     // @private {Node} - the panel to be shown in front for z-ordering.  Wrap centered in a child node to make the layout
     // in updateRender trivial.
