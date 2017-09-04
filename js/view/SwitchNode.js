@@ -42,7 +42,7 @@ define( function( require ) {
    * @param {number} thickness
    * @param {number} curveDiameter - the diameter of the circles in the slots
    * @param {boolean} closed - whether the switch is closed
-   * @returns {Node}
+   * @returns {Node} with leftSegmentNode, rotatingSegmentNode and rightSegmentNode properties (also {Node})
    */
   var createNode = function( viewType, fill, thickness, curveDiameter, closed ) {
     var edgeRadius = thickness / 2;
@@ -121,7 +121,6 @@ define( function( require ) {
       } ) );
     }
 
-    //REVIEW*: Presumably document this in the function return value, since it looks to be important?
     node.leftSegmentNode = leftSegmentNode;
     node.rotatingSegmentNode = rotatingSegmentNode;
     node.rightSegmentNode = rightSegmentNode;
