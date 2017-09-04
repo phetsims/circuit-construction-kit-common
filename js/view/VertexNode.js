@@ -185,22 +185,20 @@ define( function( require ) {
       tandem: tandem.createTandem( 'dragHandler' ),
       start: function( event ) {
         eventPoint = event.pointer.point;
-        vertex.draggableProperty.get() && circuitLayerNode.startDragVertex( event.pointer.point, vertex, true );
+        circuitLayerNode.startDragVertex( event.pointer.point, vertex, true );
         dragged = false;
       },
       drag: function( event ) {
         dragged = true;
-        //REVIEW*: What if draggableProperty turning false interrupts the listener (instead of adding these checks)?
-        vertex.draggableProperty.get() && circuitLayerNode.dragVertex( event.pointer.point, vertex, true );
+        circuitLayerNode.dragVertex( event.pointer.point, vertex, true );
       },
       end: function( event ) {
 
         // The vertex can only connect to something if it was actually moved.
-        vertex.draggableProperty.get() && circuitLayerNode.endDrag( event, vertex, dragged );
+        circuitLayerNode.endDrag( event, vertex, dragged );
 
         // Only show on a tap, not on every drag.
-        if ( vertex.interactiveProperty.get() &&
-             event.pointer.point.distance( eventPoint ) < CircuitConstructionKitCommonConstants.TAP_THRESHOLD ) {
+        if ( vertex.interactiveProperty.get() && event.pointer.point.distance( eventPoint ) < CircuitConstructionKitCommonConstants.TAP_THRESHOLD ) {
 
           vertex.selectedProperty.set( true );
 
@@ -223,6 +221,14 @@ define( function( require ) {
         }
       }
     } );
+
+    // When Vertex becomes undraggable, interrupt the input listener
+    var interruptionListener = function( draggable ) {
+      if ( !draggable ) {
+        dragHandler.interrupt();
+      }
+    };
+    vertex.draggableProperty.lazyLink( interruptionListener );
 
     // Don't permit dragging by the scissors or highlight
     this.addInputListener( dragHandler );
@@ -302,6 +308,8 @@ define( function( require ) {
 
       dragHandler.dispose();
       this.removeInputListener( dragHandler );
+
+      vertex.draggableProperty.unlink( interruptionListener );
     };
   }
 
