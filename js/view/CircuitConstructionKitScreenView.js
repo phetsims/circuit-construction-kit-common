@@ -132,11 +132,10 @@ define( function( require ) {
       this.circuitLayerNode,
       voltmeterNode,
       ammeterNode,
-      model.isValueDepictionEnabledProperty,
-      model.showLabelsProperty,
-      options.showSeriesAmmeters,
-      options.showNoncontactAmmeters,
-      tandem.createTandem( 'sensorToolbox' ) );
+      tandem.createTandem( 'sensorToolbox' ), {
+        showSeriesAmmeters: options.showSeriesAmmeters,
+        showNoncontactAmmeters: options.showNoncontactAmmeters
+      } );
 
     // @private {ViewRadioButtonGroup}
     this.viewRadioButtonGroup = new ViewRadioButtonGroup(

@@ -42,22 +42,17 @@ define( function( require ) {
    * @param {Node} circuitLayerNode - the main circuit node to use as a coordinate frame
    * @param {VoltmeterNode} voltmeterNode - node for the Voltmeter
    * @param {AmmeterNode} ammeterNode - node for the Ammeter
-   * @param {Property.<boolean>} showResultsProperty - whether values can be displayed
-   * @param {Property.<boolean>} showLabelsProperty - true if toolbox labels should be shown
-   * @param {boolean} showSeriesAmmeters - whether the series ammeters should be shown in the toolbox
-   * @param {boolean} showNoncontactAmmeters - whether the noncontact ammeters should be shown in the toolbox
    * @param {Tandem} tandem
-   * REVIEW*: This is approaching the point where I'd consider options objects for things like boolean flags and properties.
+   * @param {Object} [options]
    * @constructor
    */
-  function SensorToolbox( alignGroup, circuitLayerNode, voltmeterNode, ammeterNode, showResultsProperty,
-                          showLabelsProperty, showSeriesAmmeters, showNoncontactAmmeters, tandem ) {
+  function SensorToolbox( alignGroup, circuitLayerNode, voltmeterNode, ammeterNode, tandem, options ) {
 
-    // Options for the VoltmeterNode and AmmeterNode
-    var options = {
-      icon: true,
-      showResultsProperty: showResultsProperty
-    };
+    options = _.extend( {
+      showResultsProperty: circuitLayerNode.model.isValueDepictionEnabledProperty,
+      showSeriesAmmeters: true, // whether the series ammeters should be shown in the toolbox
+      showNoncontactAmmeters: true // whether the noncontact ammeters should be shown in the toolbox
+    }, options );
 
     /**
      * @param {Ammeter|Voltmeter} meterModel
@@ -79,7 +74,7 @@ define( function( require ) {
 
     // Draggable icon for the voltmeter
     var voltmeter = new Voltmeter( tandem.createTandem( 'voltmeterIconModel' ) );
-    var voltmeterNodeIcon = new VoltmeterNode( voltmeter, null, null, tandem.createTandem( 'voltmeterNodeIcon' ), options );
+    var voltmeterNodeIcon = new VoltmeterNode( voltmeter, null, null, tandem.createTandem( 'voltmeterNodeIcon' ), { icon: true } );
     voltmeterNode.voltmeter.visibleProperty.link( function( visible ) { voltmeterNodeIcon.visible = !visible; } );
     voltmeterNodeIcon.mutate( {
       scale: TOOLBOX_ICON_SIZE * VOLTMETER_ICON_SCALE / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height )
@@ -88,7 +83,7 @@ define( function( require ) {
 
     // Icon for the ammeter
     var ammeter = new Ammeter( tandem.createTandem( 'ammeterIconModel' ) );
-    var ammeterNodeIcon = new AmmeterNode( ammeter, null, null, tandem.createTandem( 'ammeterNodeIcon' ), options );
+    var ammeterNodeIcon = new AmmeterNode( ammeter, null, null, tandem.createTandem( 'ammeterNodeIcon' ), { icon: true } );
     ammeterNode.ammeter.visibleProperty.link( function( visible ) { ammeterNodeIcon.visible = !visible; } );
     ammeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( ammeterNodeIcon.width, ammeterNodeIcon.height ) } );
     ammeterNodeIcon.addInputListener( createListener( ammeterNode.ammeter, ammeterNode ) );
@@ -131,11 +126,11 @@ define( function( require ) {
 
     // Labels underneath the sensor tool nodes
     var voltmeterText = new Text( voltmeterString, { maxWidth: 60 } );
-    var ammeterText = new Text( showSeriesAmmeters ? ammetersString : ammeterString, { maxWidth: 60 } );
+    var ammeterText = new Text( options.showSeriesAmmeters ? ammetersString : ammeterString, { maxWidth: 60 } );
 
     // Alter the visibility of the labels when the labels checkbox is toggled.
-    showLabelsProperty.linkAttribute( voltmeterText, 'visible' );
-    showLabelsProperty.linkAttribute( ammeterText, 'visible' );
+    circuitLayerNode.model.showLabelsProperty.linkAttribute( voltmeterText, 'visible' );
+    circuitLayerNode.model.showLabelsProperty.linkAttribute( ammeterText, 'visible' );
 
     var voltmeterToolIcon = new VBox( {
       spacing: ICON_TEXT_SPACING,
@@ -146,8 +141,8 @@ define( function( require ) {
     } );
 
     var children = [];
-    showNoncontactAmmeters && children.push( ammeterNodeIcon );
-    showSeriesAmmeters && children.push( seriesAmmeterToolNode );
+    options.showNoncontactAmmeters && children.push( ammeterNodeIcon );
+    options.showSeriesAmmeters && children.push( seriesAmmeterToolNode );
 
     var ammeterToolIcon = new VBox( {
       spacing: ICON_TEXT_SPACING,
