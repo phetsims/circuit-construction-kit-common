@@ -17,8 +17,7 @@ define( function( require ) {
   // constants
   var SOLDER_COLOR = '#ae9f9e';
 
-  //REVIEW*: Not a problem really, but visibility tags on these don't make much sense, as they are not visible outside of scope.
-  // @public (read-only) {number} - for hit testing with probes
+  // for hit testing with probes, in view coordinates
   var SOLDER_RADIUS = 11.2;
 
   // {Image} raster created by init() for WebGL usage
@@ -113,7 +112,7 @@ define( function( require ) {
      */
     webglSpriteNodes: [ CIRCLE_NODE ],
 
-    //REVIEW*: Visibility (from above) would go here.
+    // @public (read-only) {number} - radius of solder in model=view coordinates, for hit testing with probes
     SOLDER_RADIUS: SOLDER_RADIUS
   } );
 } );
