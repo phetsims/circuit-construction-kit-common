@@ -163,18 +163,15 @@ define( function( require ) {
 
     // @private {Node} - the panel to be shown in front for z-ordering.  Wrap centered in a child node to make the layout
     // in updateRender trivial.
-    //REVIEW*: Not a panel. 'frontPanelContainer' or another name?
-    this.frontPanel = new Node( {
-      children: [
-        readoutPanel
-      ]
+    this.frontPanelContainer = new Node( {
+      children: [ readoutPanel ]
     } );
 
     if ( options.icon ) {
-      lifelikeNode.addChild( this.frontPanel.mutate( { centerY: lifelikeNode.height / 2 - 2 } ) );
+      lifelikeNode.addChild( this.frontPanelContainer.mutate( { centerY: lifelikeNode.height / 2 - 2 } ) );
     }
     else {
-      circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.addChild( this.frontPanel );
+      circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.addChild( this.frontPanelContainer );
     }
 
     FixedCircuitElementNode.call( this,
@@ -197,10 +194,10 @@ define( function( require ) {
       seriesAmmeter.startVertexProperty.unlink( updateText );
       seriesAmmeter.endVertexProperty.unlink( updateText );
       if ( !this.icon ) {
-        circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.removeChild( self.frontPanel );
+        circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.removeChild( self.frontPanelContainer );
       }
       lifelikeNode.dispose();
-      self.frontPanel.dispose();
+      self.frontPanelContainer.dispose();
       readoutPanel.dispose();
     };
   }
@@ -225,7 +222,7 @@ define( function( require ) {
      */
     updateRender: function() {
       FixedCircuitElementNode.prototype.updateRender.call( this );
-      this.frontPanel.setMatrix( this.contentNode.getMatrix() );
+      this.frontPanelContainer.setMatrix( this.contentNode.getMatrix() );
     }
   } );
 } );
