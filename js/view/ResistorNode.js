@@ -122,7 +122,7 @@ define( function( require ) {
           // Show all 4 colors bands and hide the 0-resistance band
           singleColorBand.fill = null;
           for ( var i = 0; i < colorBands.length; i++ ) {
-            colorBands[ i ].fill = colors[ i ] || null; // Last one could be null REVIEW*: null || null => null. Is it undefined?
+            colorBands[ i ].fill = colors[ i ];
           }
         }
       };
