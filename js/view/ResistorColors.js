@@ -10,6 +10,7 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var Util = require( 'DOT/Util' );
   var Color = require( 'SCENERY/util/Color' );
 
   // See https://en.wikipedia.org/wiki/Electronic_color_code#Resistor_color-coding
@@ -79,8 +80,7 @@ define( function( require ) {
 
       // Chop off first significant digit, then bump up >1 and take first digit
       var x = ( reduced - firstSignificantDigit ) * 10;
-      //REVIEW*: roundSymmetric?
-      var secondSignificantDigit = Math.round( x ); //round to prevent cases like resistance=4700 = x2 = 6.99999
+      var secondSignificantDigit = Util.roundSymmetric( x ); //round to prevent cases like resistance=4700 = x2 = 6.99999
 
       // prevent rounding up from 9.5 to 10.0
       if ( secondSignificantDigit === 10 ) {
