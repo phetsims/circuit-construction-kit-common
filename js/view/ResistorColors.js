@@ -37,8 +37,8 @@ define( function( require ) {
   /**
    * Gets the color table entry for the specified column in the colorTable
    * @param {string} keyName - the name of the key, such as 'significantFigure'|'multiplier'|'tolerance'
-   * @param value REVIEW*: type {*} ?
-   * @returns {*}
+   * @param {string|number|null} value - the value to search for
+   * @returns {Object} - entry from the color table, see above
    */
   var getEntry = function( keyName, value ) {
     return _.find( colorTable, function( colorTableEntry ) {
