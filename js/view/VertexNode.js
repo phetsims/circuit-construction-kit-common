@@ -258,8 +258,7 @@ define( function( require ) {
     };
     var updateVertexNodePosition = function() {
       var position = vertex.positionProperty.get();
-      //REVIEW*: self.translation = position?
-      self.setTranslation( position.x, position.y );
+      self.translation = position;
 
       // Update the position of the highlight, but only if it is visible
       if ( vertex.selectedProperty.get() ) {
