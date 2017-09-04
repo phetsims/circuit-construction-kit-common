@@ -134,9 +134,7 @@ define( function( require ) {
       touchAreaEnd = touchAreaStart;
     }
 
-    //REVIEW*: return Shape.lineSegment( touchAreaStart, touchAreaEnd ).getStrokedShape( TOUCH_AREA_LINE_STYLES );
-    return Shape.lineSegment( touchAreaStart.x, touchAreaStart.y, touchAreaEnd.x, touchAreaEnd.y )
-      .getStrokedShape( TOUCH_AREA_LINE_STYLES );
+    return Shape.lineSegment( touchAreaStart, touchAreaEnd ).getStrokedShape( TOUCH_AREA_LINE_STYLES );
   };
 
   /**
