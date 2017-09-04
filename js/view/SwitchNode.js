@@ -184,13 +184,14 @@ define( function( require ) {
     // When the user taps the switch, toggle whether it is open or closed.
     var buttonListener = new ButtonListener( {
       down: function( event ) {
-        downPoint = event.pointer.point;
+        downPoint = circuitLayerNode.globalToLocalPoint( event.pointer.point );
       },
       fire: function( event ) {
-        var distance = event.pointer.point.distance( downPoint );
+
+        // Measure how far the switch was dragged in CircuitLayerNode coordinates (if any)
+        var distance = circuitLayerNode.globalToLocalPoint( event.pointer.point ).distance( downPoint );
 
         // Toggle the state of the switch, but only if the event is classified as a tap and not a drag
-        //REVIEW*: This comparison is in global/screen coordinates. Is that desired?
         if ( distance < CircuitConstructionKitCommonConstants.TAP_THRESHOLD ) {
           circuitSwitch.closedProperty.value = !circuitSwitch.closedProperty.value;
         }
