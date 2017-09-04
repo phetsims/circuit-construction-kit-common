@@ -82,35 +82,35 @@ define( function( require ) {
     // @public (read-only) {Voltmeter} - the model
     this.voltmeter = voltmeter;
 
-    // @public (read-only) {Image} - the red probe node REVIEW*: Looks like a Rectangle
-    this.redProbeNode = new Rectangle( -2, -2, 4, 4, {
+    // @public (read-only) {Rectangle} - the red probe node
+    this.redProbeNode = new Rectangle( -2, -2, 4, 4, { // the hit area
       fill: CircuitConstructionKitCommonQueryParameters.showVoltmeterSamplePoints ? Color.RED : null,
-      cursor: 'pointer'
+      cursor: 'pointer',
+      children: [ new Image( redProbe, {
+        scale: PROBE_SCALE,
+        rotation: PROBE_ANGLE,
+
+        // Determined empirically by showing the probe hot spot and zooming in by a factor of 2 in
+        // CircuitConstructionKitModel.  Will need to change if PROBE_ANGLE changes
+        x: -9.5,
+        y: -5
+      } ) ]
     } );
-    this.redProbeNode.addChild( new Image( redProbe, {
-      scale: PROBE_SCALE,
-      rotation: PROBE_ANGLE,
 
-      // Determined empirically by showing the probe hot spot and zooming in by a factor of 2 in
-      // CircuitConstructionKitModel.  Will need to change if PROBE_ANGLE changes
-      x: -9.5,
-      y: -5
-    } ) );
-
-    // @public (read-only) {Image} - the black probe node REVIEW*: Looks like a Rectangle
-    this.blackProbeNode = new Rectangle( -2, -2, 4, 4, {
+    // @public (read-only) {Rectangle} - the black probe node
+    this.blackProbeNode = new Rectangle( -2, -2, 4, 4, { // the hit area
       fill: CircuitConstructionKitCommonQueryParameters.showVoltmeterSamplePoints ? Color.BLACK : null,
-      cursor: 'pointer'
-    } );
-    this.blackProbeNode.addChild( new Image( blackProbe, {
-      scale: PROBE_SCALE,
-      rotation: -PROBE_ANGLE,
+      cursor: 'pointer',
+      children: [ new Image( blackProbe, {
+        scale: PROBE_SCALE,
+        rotation: -PROBE_ANGLE,
 
-      // Determined empirically by showing the probe hot spot and zooming in by a factor of 2 in
-      // CircuitConstructionKitModel.  Will need to change if PROBE_ANGLE changes
-      x: -11,
-      y: +4
-    } ) );
+        // Determined empirically by showing the probe hot spot and zooming in by a factor of 2 in
+        // CircuitConstructionKitModel.  Will need to change if PROBE_ANGLE changes
+        x: -11,
+        y: +4
+      } ) ]
+    } );
 
     // Displays the voltage reading
     var voltageReadoutProperty = new DerivedProperty( [ voltmeter.voltageProperty ], function( voltage ) {
