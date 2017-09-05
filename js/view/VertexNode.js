@@ -129,13 +129,11 @@ define( function( require ) {
 
     var updateSelectedListener = this.updateSelected.bind( this );
     vertex.selectedProperty.link( updateSelectedListener );
-    var updateMoveToFront = function() {
-      self.moveToFront();
-    };
+    var updateMoveToFront = this.moveToFront.bind( this );
     vertex.relayerEmitter.addListener( updateMoveToFront );
 
-    var updatePickable = function( interactive ) { self.pickable = interactive; };
-    vertex.interactiveProperty.link( updatePickable );
+    var pickableListener = this.setPickable.bind( this, false );
+    vertex.interactiveProperty.link( pickableListener );
 
     var eventPoint = null;
     var dragged = false;
@@ -224,7 +222,7 @@ define( function( require ) {
       vertex.positionProperty.unlink( updateVertexNodePosition );
       vertex.selectedProperty.unlink( updateVertexNodePosition );
       vertex.selectedProperty.unlink( updateSelectedListener );
-      vertex.interactiveProperty.unlink( updatePickable );
+      vertex.interactiveProperty.unlink( pickableListener );
       vertex.relayerEmitter.removeListener( updateMoveToFront );
       CircuitConstructionKitCommonUtil.setInSceneGraph( false, circuitLayerNode.buttonLayer, cutButton );
       CircuitConstructionKitCommonUtil.setInSceneGraph( false, circuitLayerNode.highlightLayer, self.highlightNode );
