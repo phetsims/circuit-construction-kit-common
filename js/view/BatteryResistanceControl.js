@@ -58,10 +58,9 @@ define( function( require ) {
       constrainValue: function( value ) { return Util.roundSymmetric( value ); },
       tandem: tandem.createTandem( 'slider' )
     } );
-    //REVIEW*: Use Util.toFixed
-    slider.addMajorTick( range.min, createLabel( range.min.toFixed( 0 ), tandem.createTandem( 'minLabel' ) ) );
+    slider.addMajorTick( range.min, createLabel( Util.toFixed( range.min, 0 ), tandem.createTandem( 'minLabel' ) ) );
     slider.addMajorTick( midpoint );
-    slider.addMajorTick( range.max, createLabel( range.max.toFixed( 0 ), tandem.createTandem( 'maxLabel' ) ) );
+    slider.addMajorTick( range.max, createLabel( Util.toFixed( range.max, 0 ), tandem.createTandem( 'maxLabel' ) ) );
 
     for ( var i = range.min + 1; i < range.max; i++ ) {
       if ( i !== midpoint ) {
