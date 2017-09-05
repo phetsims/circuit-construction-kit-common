@@ -1,7 +1,7 @@
 // Copyright 2017, University of Colorado Boulder
 
 /**
- * Button that reverses a battery
+ * Button that reverses a battery.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

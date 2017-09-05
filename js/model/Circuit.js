@@ -2,7 +2,7 @@
 
 /**
  * A collection of circuit elements in the play area, not necessarily connected.  (For instance it could be 2 disjoint
- * circuits).
+ * circuits). This exists for the life of the sim and hence does not need a dispose implementation.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

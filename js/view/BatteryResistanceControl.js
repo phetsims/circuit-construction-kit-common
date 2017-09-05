@@ -1,7 +1,8 @@
 // Copyright 2017, University of Colorado Boulder
 
 /**
- * Controls for showing and changing the battery internal resistance.
+ * Controls for showing and changing the battery internal resistance.  Exists for the life of the sim and hence does not
+ * require a dispose implementation.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Denzell Barnett (PhET Interactive Simulations)

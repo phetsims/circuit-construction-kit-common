@@ -1,7 +1,8 @@
 // Copyright 2017, University of Colorado Boulder
 
 /**
- * An icon in the circuit element toolbox/carousel that can be used to create circuit elements.
+ * An icon in the circuit element toolbox/carousel that can be used to create circuit elements. Exists for the life of
+ * the sim and hence does not require a dispose implementation.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

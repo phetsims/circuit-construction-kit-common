@@ -1,7 +1,8 @@
 // Copyright 2016-2017, University of Colorado Boulder
 
 /**
- * Creates CircuitElementToolNodes that can be used to create CircuitElements from the toolbox.
+ * Creates CircuitElementToolNodes that can be used to create CircuitElements from the toolbox.  Exists for the life of
+ * the sim and hence does not require a dispose implementation.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

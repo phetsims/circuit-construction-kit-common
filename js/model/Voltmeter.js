@@ -1,7 +1,8 @@
 // Copyright 2016-2017, University of Colorado Boulder
 
 /**
- * The model for a voltmeter, which has a red and black probe and reads out voltage between vertices/wires.
+ * The model for a voltmeter, which has a red and black probe and reads out voltage between vertices/wires. Exists
+ * for the life of the sim and hence a dispose implementation is not needed.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

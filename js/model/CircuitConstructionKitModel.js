@@ -1,7 +1,8 @@
 // Copyright 2015-2017, University of Colorado Boulder
 
 /**
- * Contains circuit, voltmeter, ammeter and properties to indicate what mode the model is in.
+ * Contains circuit, voltmeter, ammeter and properties to indicate what mode the model is in. This exists for the life
+ * of the sim and hence does not need a dispose implementation.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

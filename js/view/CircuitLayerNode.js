@@ -9,6 +9,8 @@
  * socket (in z-ordering). The CircuitElementNode constructors populate different layers of the CircuitLayerNode in
  * their constructors and depopulate in their dispose functions.
  *
+ * Exists for the life of the sim and hence does not require a dispose implementation.
+ *
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Denzell Barnett (PhET Interactive Simulations)
  */

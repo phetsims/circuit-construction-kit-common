@@ -2,7 +2,7 @@
 
 /**
  * This code governs the movement of charges, making sure they are distributed equally among the different
- * CircuitElements.
+ * CircuitElements.  This exists for the life of the sim and hence does not need a dispose implementation.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

@@ -1,7 +1,7 @@
 // Copyright 2015-2017, University of Colorado Boulder
 
 /**
- * Sparse solution containing the solved variables from ModifiedNodalAnalysisCircuit
+ * Sparse solution containing the solved variables from ModifiedNodalAnalysisCircuit. * No listeners are attached and hence no dispose implementation is necessary.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

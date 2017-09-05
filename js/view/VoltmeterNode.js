@@ -1,7 +1,8 @@
 // Copyright 2016-2017, University of Colorado Boulder
 
 /**
- * Displays the Voltmeter, which has 2 probes and detects potential differences.
+ * Displays the Voltmeter, which has 2 probes and detects potential differences. Exists for the life of the sim and
+ * hence does not require a dispose implementation.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

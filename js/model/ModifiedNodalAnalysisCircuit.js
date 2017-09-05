@@ -6,6 +6,8 @@
  * Equations is solved as a linear system.  Here is a good reference that was used during the development of this code
  * https://www.swarthmore.edu/NatSci/echeeve1/Ref/mna/MNA2.html
  *
+ * No listeners are attached and hence no dispose implementation is necessary.
+ *
  * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {

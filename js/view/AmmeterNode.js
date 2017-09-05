@@ -2,7 +2,7 @@
 
 /**
  * The user interface component with a single probe which reads current values from Wires (not from Vertex or
- * FixedCircuitElement instances).
+ * FixedCircuitElement instances). Exists for the life of the sim and hence does not require a dispose implementation.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

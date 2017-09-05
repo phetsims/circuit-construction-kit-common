@@ -1,7 +1,8 @@
 // Copyright 2017, University of Colorado Boulder
 
 /**
- * Controls for showing and changing the wire resistivity.
+ * Controls for showing and changing the wire resistivity.  Exists for the life of the sim and hence does not require a
+ * dispose implementation.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

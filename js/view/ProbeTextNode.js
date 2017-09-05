@@ -1,7 +1,8 @@
 // Copyright 2016-2017, University of Colorado Boulder
 
 /**
- * Shows the title (above) and dynamic readout (below) for the ammeter and voltmeter.
+ * Shows the title (above) and dynamic readout (below) for the ammeter and voltmeter. Exists for the life of the sim
+ * and hence does not require a dispose implementation.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

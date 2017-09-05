@@ -1,7 +1,8 @@
 // Copyright 2016-2017, University of Colorado Boulder
 
 /**
- * This shows a readout that indicates the speed of the simulation is reduced (to prevent a strobe effect).
+ * This shows a readout that indicates the speed of the simulation is reduced (to prevent a strobe effect). Exists for
+ * the life of the sim and hence does not require a dispose implementation.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

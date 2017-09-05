@@ -1,7 +1,8 @@
 // Copyright 2017, University of Colorado Boulder
 
 /**
- * The panel that appears in the bottom left which can be used to zoom in and out on the circuit.
+ * The panel that appears in the bottom left which can be used to zoom in and out on the circuit. Exists for the life
+ * of the sim and hence does not require a dispose implementation.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

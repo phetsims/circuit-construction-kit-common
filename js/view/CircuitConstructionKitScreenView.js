@@ -1,7 +1,8 @@
 // Copyright 2015-2017, University of Colorado Boulder
 
 /**
- * Node that represents a single scene or screen, with a circuit, toolbox, sensors, etc.
+ * Node that represents a single scene or screen, with a circuit, toolbox, sensors, etc. Exists for the life of the sim
+ * and hence does not require a dispose implementation.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

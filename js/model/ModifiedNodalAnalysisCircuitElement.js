@@ -1,7 +1,7 @@
 // Copyright 2017, University of Colorado Boulder
 
 /**
- * Circuit element used for Modified Nodal Analysis.
+ * Circuit element used for Modified Nodal Analysis. * No listeners are attached and hence no dispose implementation is necessary.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

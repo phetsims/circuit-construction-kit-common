@@ -1,7 +1,8 @@
 // Copyright 2017, University of Colorado Boulder
 
 /**
- * Radio buttons that allow the user to choose between Schematic and Lifelike views.
+ * Radio buttons that allow the user to choose between Schematic and Lifelike views. Exists for the life of the sim and
+ * hence does not require a dispose implementation.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

@@ -1,7 +1,9 @@
 // Copyright 2016-2017, University of Colorado Boulder
 
 /**
- * This is the toolbox on the right hand side from which the voltmeter and ammeter can be dragged/dropped.
+ * This is the toolbox on the right hand side from which the voltmeter and ammeter can be dragged/dropped.  Exists for
+ * the life of the sim and hence does not require a dispose implementation.
+ *
  * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {
