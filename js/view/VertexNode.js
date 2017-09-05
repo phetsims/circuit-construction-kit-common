@@ -138,8 +138,9 @@ define( function( require ) {
     var eventPoint = null;
     var dragged = false;
 
-    // @private {function[]}
+    // @private {function[]} - called when the user clicks away from the selected vertex
     this.clickToDismissListeners = [];
+
     var dragHandler = new SimpleDragHandler( {
       allowTouchSnag: true,
       tandem: tandem.createTandem( 'dragHandler' ),
