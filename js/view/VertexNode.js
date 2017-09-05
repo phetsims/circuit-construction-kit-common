@@ -194,11 +194,7 @@ define( function( require ) {
     } );
 
     // @private {function} When Vertex becomes undraggable, interrupt the input listener
-    this.interruptionListener = function( draggable ) {
-      if ( !draggable ) {
-        self.dragHandler.interrupt();
-      }
-    };
+    this.interruptionListener = this.setDraggable.bind( this );
     vertex.draggableProperty.lazyLink( this.interruptionListener );
 
     // Don't permit dragging by the scissors or highlight
@@ -378,6 +374,17 @@ define( function( require ) {
         phet.joist.sim.display.removeInputListener( listener );
       } );
       this.clickToDismissListeners.length = 0;
+    },
+
+    /**
+     * Sets whether the node is draggable, used as a callback for interrupting the drag listener
+     * @param {boolean} draggable
+     * @private
+     */
+    setDraggable: function( draggable ) {
+      if ( !draggable ) {
+        this.dragHandler.interrupt();
+      }
     }
   }, {
     VERTEX_RADIUS: VERTEX_RADIUS,
