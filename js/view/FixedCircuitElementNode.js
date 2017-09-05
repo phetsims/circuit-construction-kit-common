@@ -71,7 +71,8 @@ define( function( require ) {
     }, options );
 
     // @private {boolean} - whether an icon is being rendered
-    this.icon = options.icon; // TODO: rename isIcon
+    // @REVIEW^(samreid): Do you prefer `icon` or `isIcon` for this variable/property/option name?
+    this.icon = options.icon;
 
     // @public (read-only) {CircuitElement}
     this.circuitElement = circuitElement;
