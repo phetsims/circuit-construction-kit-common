@@ -188,6 +188,7 @@ define( function( require ) {
       this.startVertexProperty.unlink( this.linkVertex );
       this.endVertexProperty.unlink( this.linkVertex );
 
+      //REVIEW*: TODO not tagged with qualifier
       // TODO: how are these listeners sometimes already detached? See https://github.com/phetsims/circuit-construction-kit-dc/issues/144
       this.startPositionProperty.hasListener( this.vertexMovedListener ) && this.startPositionProperty.unlink( this.vertexMovedListener );
       this.endPositionProperty.hasListener( this.vertexMovedListener ) && this.endPositionProperty.unlink( this.vertexMovedListener );
