@@ -32,7 +32,7 @@ define( function( require ) {
   var PANEL_WIDTH = CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH;
   var ORANGE = '#f39033';
 
-  // Determine widest text to use for maxWidth
+  // Determine widest text to use for max width
   var WIDEST_LABEL = CircuitConstructionKitCommonUtil.createCurrentReadout( 99.99 );
   var CORNER_RADIUS = 4;
 
@@ -69,12 +69,7 @@ define( function( require ) {
     // Charges go behind this panel to give the appearance they go through the ammeter
     var readoutText = new Text( WIDEST_LABEL, { fontSize: 15 } );
     readoutText.maxWidth = readoutText.width;
-    //REVIEW: Usually instead of separating out width/height, I'd have maxBounds (and use it to set center below)
-    //REVIEW^(samreid): The bounds do not have an origin of 0,0, so I'm not sure of a simpler way to implement this,
-    //REVIEW^(samreid): can you help?
-    //REVIEW*: var maxBounds = readoutText.bounds.   later use maxBounds.width and maxBounds.height instead of maxWidth/maxHeight noted here.
-    var maxWidth = readoutText.width;
-    var maxHeight = readoutText.height;
+    var maxBounds = readoutText.bounds.copy();
 
     // Margins within the numeric readout text box
     var textPanelMarginX = 3;
@@ -103,8 +98,8 @@ define( function( require ) {
       readoutText.setText( readout );
 
       // Center the text in the panel
-      readoutText.centerX = ( maxWidth + textPanelMarginX * 2 ) / 2;
-      readoutText.centerY = ( maxHeight + textPanelMarginY * 2 ) / 2;
+      readoutText.centerX = ( maxBounds.width + textPanelMarginX * 2 ) / 2;
+      readoutText.centerY = ( maxBounds.height + textPanelMarginY * 2 ) / 2;
     };
 
     seriesAmmeter.currentProperty.link( updateText );
@@ -116,7 +111,7 @@ define( function( require ) {
     var readoutPanel = new Panel( new VBox( {
       children: [
         new Text( currentString, { fontSize: 12, maxWidth: 54 } ),
-        new Rectangle( 0, 0, maxWidth + textPanelMarginX * 2, maxHeight + textPanelMarginY * 2, {
+        new Rectangle( 0, 0, maxBounds.width + textPanelMarginX * 2, maxBounds.height + textPanelMarginY * 2, {
           cornerRadius: 4,
           stroke: Color.BLACK,
           fill: Color.WHITE,
