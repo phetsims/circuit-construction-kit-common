@@ -73,7 +73,7 @@ define( function( require ) {
                                                 showResultsProperty, viewTypeProperty, tandem, options ) {
     var self = this;
     options = _.extend( {
-      icon: false
+      isIcon: false
     }, options );
     var brightnessProperty = new NumberProperty( 0 );
     var updateBrightness = Property.multilink(
@@ -93,8 +93,8 @@ define( function( require ) {
       } );
     var lightBulbNode = new CustomLightBulbNode( brightnessProperty );
 
-    // The icon must show the socket as well
-    if ( options.icon ) {
+    // The isIcon must show the socket as well
+    if ( options.isIcon ) {
       lightBulbNode = new Image( lightBulb.highResistance ? lightBulbImageHigh : lightBulbImage, { scale: 0.37 } );
     }
 
@@ -146,7 +146,7 @@ define( function( require ) {
       lineWidth: CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH
     } ).toDataURLImageSynchronous();
     cached = schematicNode;
-    if ( options.icon ) {
+    if ( options.isIcon ) {
       schematicNode = new Path( addSchematicCircle( new Shape() ).transformed( Matrix3.scaling( 1.75 ) ), {
         stroke: Color.BLACK,
         lineWidth: 5

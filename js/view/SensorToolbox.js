@@ -37,7 +37,7 @@ define( function( require ) {
   // constants
   var TOOLBOX_ICON_SIZE = 53;
   var VOLTMETER_ICON_SCALE = 1.4;
-  var ICON_TEXT_SPACING = 3; // distance in view coordinates from the icon to the text below the icon
+  var ICON_TEXT_SPACING = 3; // distance in view coordinates from the isIcon to the text below the isIcon
 
   /**
    * @param {AlignGroup} alignGroup - for alignment with other controls
@@ -74,9 +74,9 @@ define( function( require ) {
       } );
     };
 
-    // Draggable icon for the voltmeter
+    // Draggable isIcon for the voltmeter
     var voltmeter = new Voltmeter( tandem.createTandem( 'voltmeterIconModel' ) );
-    var voltmeterNodeIcon = new VoltmeterNode( voltmeter, null, null, tandem.createTandem( 'voltmeterNodeIcon' ), { icon: true } );
+    var voltmeterNodeIcon = new VoltmeterNode( voltmeter, null, null, tandem.createTandem( 'voltmeterNodeIcon' ), { isIcon: true } );
     voltmeterNode.voltmeter.visibleProperty.link( function( visible ) { voltmeterNodeIcon.visible = !visible; } );
     voltmeterNodeIcon.mutate( {
       scale: TOOLBOX_ICON_SIZE * VOLTMETER_ICON_SCALE / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height )
@@ -85,7 +85,7 @@ define( function( require ) {
 
     // Icon for the ammeter
     var ammeter = new Ammeter( tandem.createTandem( 'ammeterIconModel' ) );
-    var ammeterNodeIcon = new AmmeterNode( ammeter, null, tandem.createTandem( 'ammeterNodeIcon' ), { icon: true } );
+    var ammeterNodeIcon = new AmmeterNode( ammeter, null, tandem.createTandem( 'ammeterNodeIcon' ), { isIcon: true } );
     ammeterNode.ammeter.visibleProperty.link( function( visible ) { ammeterNodeIcon.visible = !visible; } );
     ammeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( ammeterNodeIcon.width, ammeterNodeIcon.height ) } );
     ammeterNodeIcon.addInputListener( createListener( ammeterNode.ammeter, ammeterNode ) );
@@ -97,7 +97,7 @@ define( function( require ) {
       tandem.createTandem( 'seriesAmmeterIconModel' )
     );
     var seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeter, tandem.createTandem( 'seriesAmmeterNodeIcon' ), {
-      icon: true
+      isIcon: true
     } );
     var createSeriesAmmeter = function( position ) {
       var halfLength = CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH / 2;

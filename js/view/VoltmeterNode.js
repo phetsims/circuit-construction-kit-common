@@ -71,7 +71,7 @@ define( function( require ) {
     options = _.extend( {
 
       // Whether this will be used as an icon or not.
-      icon: false,
+      isIcon: false,
 
       // Draggable bounds
       visibleBoundsProperty: null,
@@ -193,7 +193,7 @@ define( function( require ) {
     } );
 
     // For the real version (not the icon), add drag listeners and update visibility
-    if ( !options.icon ) {
+    if ( !options.isIcon ) {
 
       // Show the voltmeter when icon dragged out of the toolbox
       voltmeter.visibleProperty.linkAttribute( this, 'visible' );

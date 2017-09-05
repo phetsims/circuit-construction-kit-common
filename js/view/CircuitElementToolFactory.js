@@ -134,7 +134,7 @@ define( function( require ) {
      * Utility function that creates a CircuitElementToolNode
      * @param {string} labelString
      * @param {number} count
-     * @param {Node} icon
+     * @param {Node} isIcon
      * @param {function} predicate - CircuitElement => boolean, used to count circuit elements of that kind
      * @param {function} createElement - (Vector2) => CircuitElement Function that creates a CircuitElement at the given location
      *                                 - for most components it is the center of the component.  For Light Bulbs, it is
@@ -143,11 +143,11 @@ define( function( require ) {
      * @returns {CircuitElementToolNode}
      * @private
      */
-    createCircuitElementToolNode: function( labelString, count, icon, predicate, createElement, options ) {
+    createCircuitElementToolNode: function( labelString, count, isIcon, predicate, createElement, options ) {
       options = _.extend( { iconScale: 1.0 }, options );
-      icon.mutate( { scale: options.iconScale * TOOLBOX_ICON_SIZE / Math.max( icon.width, icon.height ) } );
+      isIcon.mutate( { scale: options.iconScale * TOOLBOX_ICON_SIZE / Math.max( isIcon.width, isIcon.height ) } );
       return new CircuitElementToolNode(
-        labelString, this.showLabelsProperty, this.circuit, this.globalToCircuitLayerNodePoint, icon, count, this.createCounter( predicate ), createElement
+        labelString, this.showLabelsProperty, this.circuit, this.globalToCircuitLayerNodePoint, isIcon, count, this.createCounter( predicate ), createElement
       );
     },
 
@@ -195,7 +195,7 @@ define( function( require ) {
       var batteryModel = new Battery( new Vertex( Vector2.ZERO ), new Vertex( new Vector2( CircuitConstructionKitCommonConstants.BATTERY_LENGTH, 0 ) ),
         null, BatteryType.NORMAL, tandem.createTandem( 'rightIconBattery' ) );
       var rightBatteryToolNode = this.createCircuitElementToolNode( batteryString, count,
-        new BatteryNode( null, null, batteryModel, this.viewTypeProperty, tandem.createTandem( 'rightBatteryIcon' ), { icon: true }
+        new BatteryNode( null, null, batteryModel, this.viewTypeProperty, tandem.createTandem( 'rightBatteryIcon' ), { isIcon: true }
         ),
         function( circuitElement ) {
           return circuitElement instanceof Battery &&
@@ -235,7 +235,7 @@ define( function( require ) {
       var lightBulbToolNode = this.createCircuitElementToolNode( lightBulbString, count,
         new CircuitConstructionKitLightBulbNode( null, null,
           lightBulbModel,
-          new Property( true ), this.viewTypeProperty, tandem.createTandem( 'lightBulbIcon' ), { icon: true } ),
+          new Property( true ), this.viewTypeProperty, tandem.createTandem( 'lightBulbIcon' ), { isIcon: true } ),
         function( circuitElement ) { return circuitElement instanceof LightBulb && !circuitElement.highResistance; },
         function( position ) {
           return LightBulb.createAtPosition(
@@ -266,7 +266,7 @@ define( function( require ) {
       );
       var resistorToolNode = this.createCircuitElementToolNode( resistorString, count,
         new ResistorNode( null, null, resistorModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
-          icon: true
+          isIcon: true
         } ),
         function( circuitElement ) {
           return circuitElement instanceof Resistor && circuitElement.resistorType === ResistorType.RESISTOR;
@@ -296,7 +296,7 @@ define( function( require ) {
             new Vertex( new Vector2( SWITCH_LENGTH, 0 ) ),
             tandem.createTandem( 'switch' )
           ), this.viewTypeProperty, tandem.createTandem( 'switchIcon' ), {
-            icon: true
+            isIcon: true
           } ),
         function( circuitElement ) { return circuitElement instanceof Switch; },
         function( position ) {
@@ -323,7 +323,7 @@ define( function( require ) {
                                            iconModelTandem, iconTandem, groupTandem ) {
       var self = this;
       var createHouseholdIcon = function( householdItem, tandem ) {
-        return new ResistorNode( null, null, householdItem, self.viewTypeProperty, tandem, { icon: true } );
+        return new ResistorNode( null, null, householdItem, self.viewTypeProperty, tandem, { isIcon: true } );
       };
 
       var getHouseholdItemCreator = function( resistorType, resistance, resistorLength, groupTandem ) {
@@ -510,7 +510,7 @@ define( function( require ) {
             null,
             BatteryType.HIGH_VOLTAGE,
             tandem.createTandem( 'highVoltageIconBattery' )
-          ), this.viewTypeProperty, tandem.createTandem( 'highVoltageBatteryIcon' ), { icon: true } ),
+          ), this.viewTypeProperty, tandem.createTandem( 'highVoltageBatteryIcon' ), { isIcon: true } ),
         function( circuitElement ) {
           return circuitElement instanceof Battery &&
 
@@ -556,7 +556,7 @@ define( function( require ) {
           new Property( true ),
           this.viewTypeProperty,
           tandem.createTandem( 'highResistanceLightBulbIcon' ), {
-            icon: true
+            isIcon: true
           } ),
         function( circuitElement ) { return circuitElement instanceof LightBulb && circuitElement.highResistance; },
         function( position ) {
@@ -590,7 +590,7 @@ define( function( require ) {
             } ),
           this.viewTypeProperty,
           tandem.createTandem( 'highResistanceResistorIcon' ), {
-            icon: true
+            isIcon: true
           } ),
         function( circuitElement ) {
           return circuitElement instanceof Resistor && circuitElement.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR;

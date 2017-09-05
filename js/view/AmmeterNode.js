@@ -59,7 +59,7 @@ define( function( require ) {
     options = _.extend( {
 
       // true if it will be used as a toolbox icon
-      icon: false,
+      isIcon: false,
 
       // allowable drag bounds in view coordinates
       visibleBoundsProperty: null,
@@ -137,7 +137,7 @@ define( function( require ) {
       wireNode.setProbePosition( self.probeNode.centerBottom );
     } );
 
-    if ( !options.icon ) {
+    if ( !options.isIcon ) {
 
       // Show the ammeter in the play area when dragged from toolbox
       ammeter.visibleProperty.linkAttribute( this, 'visible' );

@@ -55,7 +55,7 @@ define( function( require ) {
   } );
 
   /**
-   * @param {CircuitConstructionKitScreenView|null} screenView - main screen view, null for icon
+   * @param {CircuitConstructionKitScreenView|null} screenView - main screen view, null for isIcon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {SeriesAmmeter} seriesAmmeter
    * @param {Tandem} tandem
@@ -171,7 +171,7 @@ define( function( require ) {
       children: [ readoutPanel ]
     } );
 
-    if ( options.icon ) {
+    if ( options.isIcon ) {
       lifelikeNode.addChild( this.frontPanelContainer.mutate( { centerY: lifelikeNode.height / 2 - 2 } ) );
     }
     else {
@@ -189,15 +189,15 @@ define( function( require ) {
       options
     );
 
-    // @private (read-only) {boolean} - whether to show as an icon
-    this.icon = options.icon;
+    // @private (read-only) {boolean} - whether to show as an isIcon
+    this.isIcon = options.isIcon;
 
     // @private {function}
     this.disposeSeriesAmmeterNode = function() {
       seriesAmmeter.currentProperty.unlink( updateText );
       seriesAmmeter.startVertexProperty.unlink( updateText );
       seriesAmmeter.endVertexProperty.unlink( updateText );
-      if ( !this.icon ) {
+      if ( !this.isIcon ) {
         circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.removeChild( self.frontPanelContainer );
       }
       lifelikeNode.dispose();

@@ -48,7 +48,7 @@ define( function( require ) {
   var COLOR_BAND_SPACING = REMAINING_COLOR_BAND_SPACE / 4 - 2; // two spaces before last band
   var COLOR_BAND_Y = COLOR_BAND_TOP + 2.5;
 
-  // Points sampled using Photoshop from a raster of the IEEE icon seen at
+  // Points sampled using Photoshop from a raster of the IEEE isIcon seen at
   // https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
   var SCHEMATIC_SCALE = 0.54;
   var SCHEMATIC_PERIOD = 22 * SCHEMATIC_SCALE;
@@ -70,8 +70,8 @@ define( function( require ) {
   RESISTOR_IMAGE_MAP[ ResistorType.DOLLAR_BILL ] = dollarBillImage;
 
   /**
-   * @param {CircuitConstructionKitScreenView|null} screenView - main screen view, null for icon
-   * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
+   * @param {CircuitConstructionKitScreenView|null} screenView - main screen view, null for isIcon
+   * @param {CircuitLayerNode|null} circuitLayerNode, null for isIcon
    * @param {Resistor} resistor
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Tandem} tandem
@@ -80,7 +80,7 @@ define( function( require ) {
    */
   function ResistorNode( screenView, circuitLayerNode, resistor, viewTypeProperty, tandem, options ) {
 
-    options = _.extend( { icon: false }, options );
+    options = _.extend( { isIcon: false }, options );
 
     // @public (read-only) {Resistor} the resistor depicted by this node
     this.resistor = resistor;
@@ -150,7 +150,7 @@ define( function( require ) {
 
     // Icons should appear the same in the toolbox, see
     // https://github.com/phetsims/circuit-construction-kit-common/issues/389
-    var width = options.icon ? CircuitConstructionKitCommonConstants.RESISTOR_LENGTH : resistor.distanceBetweenVertices;
+    var width = options.isIcon ? CircuitConstructionKitCommonConstants.RESISTOR_LENGTH : resistor.distanceBetweenVertices;
     lifelikeResistorImageNode.mutate( {
       scale: width / lifelikeResistorImageNode.width
     } );
@@ -158,7 +158,7 @@ define( function( require ) {
     var scale = lifelikeResistorImageNode.width / schematicShape.bounds.width;
     schematicShape = schematicShape.transformed( Matrix3.scale( scale, scale ) );
     var schematicNode = null;
-    if ( !options.icon && schematicRasterCache[ resistor.resistorType ] ) {
+    if ( !options.isIcon && schematicRasterCache[ resistor.resistorType ] ) {
       schematicNode = schematicRasterCache[ resistor.resistorType ];
     }
     else {
@@ -168,7 +168,7 @@ define( function( require ) {
       } ).toDataURLImageSynchronous();
 
       // icons are all the same size in the toolbox, so only cache the non-icons (with the correct heights)
-      if ( !options.icon ) {
+      if ( !options.isIcon ) {
         schematicRasterCache[ resistor.resistorType ] = schematicNode;
       }
     }

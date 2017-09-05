@@ -62,7 +62,7 @@ define( function( require ) {
   schematicNode.touchArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
 
   /**
-   * @param {CircuitConstructionKitScreenView|null} screenView - main screen view, null for icon
+   * @param {CircuitConstructionKitScreenView|null} screenView - main screen view, null for isIcon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {Battery} battery
    * @param {Property.<CircuitElementViewType>} viewTypeProperty

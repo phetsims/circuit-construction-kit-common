@@ -43,8 +43,8 @@ define( function( require ) {
   };
 
   /**
-   * @param {CircuitConstructionKitScreenView} screenView - the main screen view, null for icon
-   * @param {CircuitLayerNode} circuitLayerNode - Null if an icon is created
+   * @param {CircuitConstructionKitScreenView} screenView - the main screen view, null for isIcon
+   * @param {CircuitLayerNode} circuitLayerNode - Null if an isIcon is created
    * @param {FixedCircuitElement} circuitElement - the corresponding model element
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Node} lifelikeNode - the Node that will display the component as a lifelike object.  Origin must be
@@ -66,14 +66,14 @@ define( function( require ) {
     this.schematicNode = schematicNode;
 
     options = _.extend( {
-      icon: false,
+      isIcon: false,
       showHighlight: true
     }, options );
 
-    // @private {boolean} - whether an icon is being rendered
-    // @REVIEW^(samreid): Do you prefer `icon` or `isIcon` for this variable/property/option name?
+    // @private {boolean} - whether an isIcon is being rendered
+    // @REVIEW^(samreid): Do you prefer `isIcon` or `isIcon` for this variable/property/option name?
     // REVIEW*: isIcon sounds somewhat clearer, now that you mention it.
-    this.icon = options.icon;
+    this.isIcon = options.isIcon;
 
     // @public (read-only) {CircuitElement}
     this.circuitElement = circuitElement;
@@ -93,7 +93,7 @@ define( function( require ) {
     viewTypeProperty.link( this.viewPropertyListener );
 
     // Add highlight (but not for icons)
-    if ( !options.icon && options.showHighlight ) {
+    if ( !options.isIcon && options.showHighlight ) {
 
       // @protected (read-only) {FixedCircuitElementHighlightNode}
       this.highlightNode = new FixedCircuitElementHighlightNode( this );
@@ -132,7 +132,7 @@ define( function( require ) {
     // Use whatever the start node currently is (it can change), and let the circuit manage the dependent vertices
     var startPoint = null;
     var dragged = false;
-    if ( !options.icon ) {
+    if ( !options.isIcon ) {
 
       // @private {SimpleDragHandler}
       this.dragHandler = new SimpleDragHandler( {
@@ -282,7 +282,7 @@ define( function( require ) {
       this.circuitLayerNode && this.highlightNode && CircuitConstructionKitCommonUtil.setInSceneGraph( false, this.circuitLayerNode.highlightLayer, this.highlightNode );
       this.viewTypeProperty.unlink( this.viewPropertyListener );
 
-      if ( !this.icon && this.updateFireMultilink ) {
+      if ( !this.isIcon && this.updateFireMultilink ) {
         Property.unmultilink( this.updateFireMultilink );
       }
 

@@ -49,7 +49,7 @@ define( function( require ) {
      */
     var createBatteryNode = function( view, tandem ) {
       return new BatteryNode( null, null, battery, new Property( view ), tandem, {
-        icon: true,
+        isIcon: true,
         scale: SCALE
       } );
     };
