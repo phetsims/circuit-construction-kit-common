@@ -71,8 +71,6 @@ define( function( require ) {
     }, options );
 
     // @private {boolean} - whether an isIcon is being rendered
-    // @REVIEW^(samreid): Do you prefer `isIcon` or `isIcon` for this variable/property/option name?
-    // REVIEW*: isIcon sounds somewhat clearer, now that you mention it.
     this.isIcon = options.isIcon;
 
     // @public (read-only) {CircuitElement}
