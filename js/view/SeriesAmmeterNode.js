@@ -149,8 +149,6 @@ define( function( require ) {
     } );
 
     // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
-    // REVIEW^(samreid): I removed the copy and it caused https://github.com/phetsims/circuit-construction-kit-common/issues/398
-    // REVIEW*: Sorry! Looks like it's not creating a copy, since it's null by default. OK to keep
     lifelikeNode.mouseArea = lifelikeNode.bounds.copy();
     lifelikeNode.touchArea = lifelikeNode.bounds.copy();
 
