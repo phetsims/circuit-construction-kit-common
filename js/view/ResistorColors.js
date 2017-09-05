@@ -64,6 +64,7 @@ define( function( require ) {
       }
 
       // Estimate the exponent
+      //REVIEW*: Use roundSymmetric.
       var exponent = Math.round( Math.log( resistance ) / Math.log( 10 ) );
 
       // Divide out to normalize
