@@ -50,9 +50,6 @@ define( function( require ) {
     var self = this;
     var circuit = circuitLayerNode.circuit;
 
-    // @private {Tandem}
-    this.tandem = tandem;
-
     // @private {Circuit}
     this.circuit = circuit;
     var cutButton = circuitLayerNode.cutButton;
@@ -110,53 +107,44 @@ define( function( require ) {
       focusHighlight: 'invisible' // highlights are drawn by the simulation
     } );
 
-    // @private - keyboard listener so that delete or backspace deletes the element - must be disposed
-    this.keyListener = this.addAccessibleInputListener( {
+    // keyboard listener so that delete or backspace deletes the element - must be disposed
+    var keyListener = this.addAccessibleInputListener( {
       keydown: this.keydownListener.bind( this )
     } );
 
     // Shows up as red when disconnected or black when connected.  When unattachable, the dotted line disappears (black
     // box study)
-    this.updateStrokeListener = this.updateStroke.bind( this );
+    var updateStrokeListener = this.updateStroke.bind( this );
 
     // Update when any vertex is added or removed, or when the existing circuit values change.
-    circuit.vertices.addItemAddedListener( this.updateStrokeListener );
-    circuit.vertices.addItemRemovedListener( this.updateStrokeListener );
-    circuit.circuitChangedEmitter.addListener( this.updateStrokeListener );
+    circuit.vertices.addItemAddedListener( updateStrokeListener );
+    circuit.vertices.addItemRemovedListener( updateStrokeListener );
+    circuit.circuitChangedEmitter.addListener( updateStrokeListener );
 
     // In Black Box, other wires can be detached from a vertex and this should also update the solder
-    circuit.circuitElements.addItemAddedListener( this.updateStrokeListener );
-    circuit.circuitElements.addItemRemovedListener( this.updateStrokeListener );
+    circuit.circuitElements.addItemAddedListener( updateStrokeListener );
+    circuit.circuitElements.addItemRemovedListener( updateStrokeListener );
 
-    vertex.attachableProperty.link( this.updateStrokeListener );
+    vertex.attachableProperty.link( updateStrokeListener );
 
-    // @private {function}
-    this.updateSelectedListener = this.updateSelected.bind( this );
+    var updateSelectedListener = this.updateSelected.bind( this );
+    vertex.selectedProperty.link( updateSelectedListener );
+    var updateMoveToFront = self.moveToFront.bind( this );
+    vertex.relayerEmitter.addListener( updateMoveToFront );
 
-    vertex.selectedProperty.link( this.updateSelectedListener );
-
-    // @private {function}
-    this.updateMoveToFront = this.moveToFront.bind( this );
-    vertex.relayerEmitter.addListener( this.updateMoveToFront );
-
-    // @private {function}
-    this.pickableListener = this.setPickable.bind( this, false );
-    vertex.interactiveProperty.link( this.pickableListener );
+    var updatePickable = function( interactive ) { self.pickable = interactive; };
+    vertex.interactiveProperty.link( updatePickable );
 
     var eventPoint = null;
     var dragged = false;
     var clickToDismissListeners = [];
-
-    // @private {function}
-    this.clearClickListeners = function() {
+    var clearClickListeners = function() {
       clickToDismissListeners.forEach( function( listener ) {
         phet.joist.sim.display.removeInputListener( listener );
       } );
       clickToDismissListeners.length = 0;
     };
-
-    // @private {SimpleDragHandler}
-    this.dragHandler = new SimpleDragHandler( {
+    var dragHandler = new SimpleDragHandler( {
       allowTouchSnag: true,
       tandem: tandem.createTandem( 'dragHandler' ),
       start: function( event ) {
@@ -182,7 +170,7 @@ define( function( require ) {
             down: function( event ) {
               if ( !_.includes( event.trail.nodes, self ) && !_.includes( event.trail.nodes, cutButton ) ) {
                 vertex.selectedProperty.set( false );
-                self.clearClickListeners();
+                clearClickListeners();
               }
             }
           };
@@ -193,24 +181,24 @@ define( function( require ) {
 
           // Deselect after dragging so a grayed-out cut button doesn't remain when open vertex is connected
           vertex.selectedProperty.set( false );
-          self.clearClickListeners();
+          clearClickListeners();
         }
       }
     } );
 
-    // @private {function} When Vertex becomes undraggable, interrupt the input listener
-    this.interruptionListener = function( draggable ) {
+    // When Vertex becomes undraggable, interrupt the input listener
+    var interruptionListener = function( draggable ) {
       if ( !draggable ) {
-        self.dragHandler.interrupt();
+        dragHandler.interrupt();
       }
     };
-    vertex.draggableProperty.lazyLink( this.interruptionListener );
+    vertex.draggableProperty.lazyLink( interruptionListener );
 
     // Don't permit dragging by the scissors or highlight
-    this.addInputListener( this.dragHandler );
+    this.addInputListener( dragHandler );
 
-    // @private {function} - Make sure the cut button remains in the visible screen bounds.
-    this.updateVertexNodePosition = function() {
+    // Make sure the cut button remains in the visible screen bounds.
+    var updateVertexNodePosition = function() {
       var position = vertex.positionProperty.get();
       self.translation = position;
 
@@ -223,10 +211,42 @@ define( function( require ) {
       // Update the cut button position, but only if the cut button is showing (to save on CPU)
       vertex.selectedProperty.get() && self.updateCutButtonPosition();
     };
-    vertex.positionProperty.link( this.updateVertexNodePosition );
+    vertex.positionProperty.link( updateVertexNodePosition );
 
     // When showing the highlight, make sure it shows in the right place (not updated while invisible)
-    vertex.selectedProperty.link( this.updateVertexNodePosition );
+    vertex.selectedProperty.link( updateVertexNodePosition );
+
+    // @private
+    //REVIEW*: Only if we have memory issues still, I'd recommend removing closures from VertexNode
+    this.disposeVertexNode = function() {
+      vertex.positionProperty.unlink( updateVertexNodePosition );
+      vertex.selectedProperty.unlink( updateVertexNodePosition );
+      vertex.selectedProperty.unlink( updateSelectedListener );
+      vertex.interactiveProperty.unlink( updatePickable );
+      vertex.relayerEmitter.removeListener( updateMoveToFront );
+      CircuitConstructionKitCommonUtil.setInSceneGraph( false, circuitLayerNode.buttonLayer, cutButton );
+      CircuitConstructionKitCommonUtil.setInSceneGraph( false, circuitLayerNode.highlightLayer, self.highlightNode );
+      circuit.vertices.removeItemAddedListener( updateStrokeListener );
+      circuit.vertices.removeItemRemovedListener( updateStrokeListener );
+
+      // In Black Box, other wires can be detached from a vertex and this should also update the solder
+      circuit.circuitElements.removeItemAddedListener( updateStrokeListener );
+      circuit.circuitElements.removeItemRemovedListener( updateStrokeListener );
+
+      vertex.attachableProperty.unlink( updateStrokeListener );
+      circuit.circuitChangedEmitter.removeListener( updateStrokeListener );
+
+      this.removeAccessibleInputListener( keyListener );
+      tandem.removeInstance( self );
+
+      // Remove the global listener if it was still enabled
+      clearClickListeners();
+
+      dragHandler.dispose();
+      this.removeInputListener( dragHandler );
+
+      vertex.draggableProperty.unlink( interruptionListener );
+    };
   }
 
   circuitConstructionKitCommon.register( 'VertexNode', VertexNode );
@@ -239,38 +259,7 @@ define( function( require ) {
      * @override
      */
     dispose: function() {
-      var vertex = this.vertex;
-      var circuit = this.circuit;
-      var circuitLayerNode = this.circuitLayerNode;
-      var cutButton = this.cutButton;
-      vertex.positionProperty.unlink( this.updateVertexNodePosition );
-      vertex.selectedProperty.unlink( this.updateVertexNodePosition );
-      vertex.selectedProperty.unlink( this.updateSelectedListener );
-      vertex.interactiveProperty.unlink( this.pickableListener );
-      vertex.relayerEmitter.removeListener( this.updateMoveToFront );
-      CircuitConstructionKitCommonUtil.setInSceneGraph( false, circuitLayerNode.buttonLayer, cutButton );
-      CircuitConstructionKitCommonUtil.setInSceneGraph( false, circuitLayerNode.highlightLayer, this.highlightNode );
-      circuit.vertices.removeItemAddedListener( this.updateStrokeListener );
-      circuit.vertices.removeItemRemovedListener( this.updateStrokeListener );
-
-      // In Black Box, other wires can be detached from a vertex and this should also update the solder
-      circuit.circuitElements.removeItemAddedListener( this.updateStrokeListener );
-      circuit.circuitElements.removeItemRemovedListener( this.updateStrokeListener );
-
-      vertex.attachableProperty.unlink( this.updateStrokeListener );
-      circuit.circuitChangedEmitter.removeListener( this.updateStrokeListener );
-
-      this.removeAccessibleInputListener( this.keyListener );
-      this.tandem.removeInstance( self );
-
-      // Remove the global listener if it was still enabled
-      this.clearClickListeners();
-
-      this.dragHandler.dispose();
-      this.removeInputListener( this.dragHandler );
-
-      vertex.draggableProperty.unlink( this.interruptionListener );
-
+      this.disposeVertexNode();
       Node.prototype.dispose.call( this );
     },
 
