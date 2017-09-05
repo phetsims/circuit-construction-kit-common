@@ -70,7 +70,9 @@ define( function( require ) {
         fontSize: 18,
         pickable: false
       } );
-      var updateReadoutTextLocation = function() {
+
+      // @private {function} for debugging
+      this.updateReadoutTextLocation = function() {
         self.voltageReadoutText.centerX = 0;
         self.voltageReadoutText.bottom = -30;
       };
@@ -79,7 +81,7 @@ define( function( require ) {
         // No need for i18n because this is for debugging only
         var voltageText = Util.toFixed( voltage, 3 ) + 'V';
         self.voltageReadoutText.setText( vertexDisplay === 'voltage' ? voltageText : vertex.index );
-        updateReadoutTextLocation();
+        self.updateReadoutTextLocation();
       } );
     }
 
@@ -195,29 +197,17 @@ define( function( require ) {
     this.addInputListener( dragHandler );
 
     // Make sure the cut button remains in the visible screen bounds.
-    var updateVertexNodePosition = function() {
-      var position = vertex.positionProperty.get();
-      self.translation = position;
-
-      // Update the position of the highlight, but only if it is visible
-      if ( vertex.selectedProperty.get() ) {
-        self.highlightNode.translation = position;
-      }
-      updateReadoutTextLocation && updateReadoutTextLocation();
-
-      // Update the cut button position, but only if the cut button is showing (to save on CPU)
-      vertex.selectedProperty.get() && self.updateCutButtonPosition();
-    };
-    vertex.positionProperty.link( updateVertexNodePosition );
+    var updateVertexNodePositionListener = this.updateVertexNodePosition.bind( this );
+    vertex.positionProperty.link( updateVertexNodePositionListener );
 
     // When showing the highlight, make sure it shows in the right place (not updated while invisible)
-    vertex.selectedProperty.link( updateVertexNodePosition );
+    vertex.selectedProperty.link( updateVertexNodePositionListener );
 
     // @private
     //REVIEW*: Only if we have memory issues still, I'd recommend removing closures from VertexNode
     this.disposeVertexNode = function() {
-      vertex.positionProperty.unlink( updateVertexNodePosition );
-      vertex.selectedProperty.unlink( updateVertexNodePosition );
+      vertex.positionProperty.unlink( updateVertexNodePositionListener );
+      vertex.selectedProperty.unlink( updateVertexNodePositionListener );
       vertex.selectedProperty.unlink( updateSelectedListener );
       vertex.interactiveProperty.unlink( updatePickable );
       vertex.relayerEmitter.removeListener( updateMoveToFront );
@@ -353,6 +343,24 @@ define( function( require ) {
 
       var availableBounds = bounds.eroded( this.cutButton.width / 2 );
       this.cutButton.center = availableBounds.closestPointTo( proposedPosition );
+    },
+
+    /**
+     * Move the VertexNode when the Vertex moves.
+     * @private
+     */
+    updateVertexNodePosition: function() {
+      var position = this.vertex.positionProperty.get();
+      this.translation = position;
+
+      // Update the position of the highlight, but only if it is visible
+      if ( this.vertex.selectedProperty.get() ) {
+        this.highlightNode.translation = position;
+      }
+      this.updateReadoutTextLocation && this.updateReadoutTextLocation();
+
+      // Update the cut button position, but only if the cut button is showing (to save on CPU)
+      this.vertex.selectedProperty.get() && this.updateCutButtonPosition();
     },
 
     /**
