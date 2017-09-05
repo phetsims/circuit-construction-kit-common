@@ -500,8 +500,7 @@ define( function( require ) {
       var separation = Math.PI * 2 / neighborCircuitElements.length;
       var results = [];
 
-      //REVIEW: _.sum( angles ) / angles.length
-      var center = angles.reduce( function( a, b ) { return a + b; }, 0 ) / angles.length;
+      var center = _.sum( angles ) / angles.length;
 
       // Move vertices away from cut vertex so that wires don't overlap
       if ( neighborCircuitElements.length === 2 ) {
