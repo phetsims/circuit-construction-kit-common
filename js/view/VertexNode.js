@@ -132,7 +132,7 @@ define( function( require ) {
     var updateMoveToFront = self.moveToFront.bind( this );
     vertex.relayerEmitter.addListener( updateMoveToFront );
 
-    var updatePickable = function( interactive ) { self.pickable = interactive; };
+    var updatePickable = this.setPickable.bind( this );
     vertex.interactiveProperty.link( updatePickable );
 
     var eventPoint = null;
