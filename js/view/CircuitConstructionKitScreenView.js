@@ -171,6 +171,9 @@ define( function( require ) {
     // Reset All button
     if ( options.showResetAllButton ) {
       var resetAllButton = new ResetAllButton( {
+
+        // extend touch area up to the edge of the screen view
+        touchAreaDilation: VERTICAL_MARGIN,
         tandem: tandem.createTandem( 'resetAllButton' ),
         listener: function() {
           model.reset();
