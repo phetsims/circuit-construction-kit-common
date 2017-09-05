@@ -57,6 +57,9 @@ define( function( require ) {
     // @private {RoundPushButton}
     this.cutButton = cutButton;
 
+    // @private {CircuitLayerNode}
+    this.circuitLayerNode = circuitLayerNode;
+
     // Use a query parameter to turn on node voltage readouts for debugging only.
     var vertexDisplay = CircuitConstructionKitCommonQueryParameters.vertexDisplay;
 
@@ -87,8 +90,8 @@ define( function( require ) {
     // or null if not being dragged.
     this.startOffset = null;
 
-    // Highlight is shown when the vertex is selected.
-    var highlightNode = new Circle( 30, {
+    // @private {Circle} - Highlight is shown when the vertex is selected.
+    this.highlightNode = new Circle( 30, {
       stroke: CircuitConstructionKitCommonConstants.HIGHLIGHT_COLOR,
       lineWidth: CircuitConstructionKitCommonConstants.HIGHLIGHT_LINE_WIDTH,
       pickable: false
@@ -124,28 +127,8 @@ define( function( require ) {
 
     vertex.attachableProperty.link( updateStrokeListener );
 
-    var updateSelected = function( selected ) {
-      var neighborCircuitElements = circuit.getNeighborCircuitElements( vertex );
-
-      if ( selected ) {
-
-        // Adjacent components should be in front of the vertex, see #20
-        for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
-          neighborCircuitElements[ i ].vertexSelectedEmitter.emit();
-        }
-        self.moveToFront();
-        self.focus();
-      }
-      CircuitConstructionKitCommonUtil.setInSceneGraph( selected, circuitLayerNode.highlightLayer, highlightNode );
-      var numberConnections = neighborCircuitElements.length;
-      CircuitConstructionKitCommonUtil.setInSceneGraph( selected, circuitLayerNode.buttonLayer, cutButton );
-      selected && updateCutButtonPosition();
-
-      // Show a disabled button as a cue that the vertex could be cuttable, but it isn't right now.
-      var isConnectedBlackBoxVertex = numberConnections === 1 && !self.vertex.draggableProperty.get();
-      cutButton.enabled = numberConnections > 1 || isConnectedBlackBoxVertex;
-    };
-    vertex.selectedProperty.link( updateSelected );
+    var updateSelectedListener = this.updateSelected.bind( this );
+    vertex.selectedProperty.link( updateSelectedListener );
     var updateMoveToFront = function() {
       self.moveToFront();
     };
@@ -217,46 +200,18 @@ define( function( require ) {
     this.addInputListener( dragHandler );
 
     // Make sure the cut button remains in the visible screen bounds.
-    var updateCutButtonPosition = function() {
-      var position = vertex.positionProperty.get();
-
-      var neighbors = circuit.getNeighborCircuitElements( vertex );
-
-      // Compute an unweighted sum of adjacent element directions, and point in the opposite direction so the button
-      // will appear in the least populated area.
-      var sumOfDirections = new Vector2();
-      for ( var i = 0; i < neighbors.length; i++ ) {
-        var v = vertex.positionProperty.get().minus(
-          neighbors[ i ].getOppositeVertex( vertex ).positionProperty.get()
-        );
-        if ( v.magnitude() > 0 ) {
-          sumOfDirections.add( v.normalized() );
-        }
-      }
-      if ( sumOfDirections.magnitude() < 1E-6 ) {
-        sumOfDirections = new Vector2( 0, -1 ); // Show the scissors above
-      }
-
-      var proposedPosition = position.plus( sumOfDirections.normalized().timesScalar( DISTANCE_TO_CUT_BUTTON ) );
-
-      // Property doesn't exist until the node is attached to scene graph
-      var bounds = circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty.get();
-
-      var availableBounds = bounds.eroded( cutButton.width / 2 );
-      cutButton.center = availableBounds.closestPointTo( proposedPosition );
-    };
     var updateVertexNodePosition = function() {
       var position = vertex.positionProperty.get();
       self.translation = position;
 
       // Update the position of the highlight, but only if it is visible
       if ( vertex.selectedProperty.get() ) {
-        highlightNode.translation = position;
+        self.highlightNode.translation = position;
       }
       updateReadoutTextLocation && updateReadoutTextLocation();
 
       // Update the cut button position, but only if the cut button is showing (to save on CPU)
-      vertex.selectedProperty.get() && updateCutButtonPosition();
+      vertex.selectedProperty.get() && self.updateCutButtonPosition();
     };
     vertex.positionProperty.link( updateVertexNodePosition );
 
@@ -268,11 +223,11 @@ define( function( require ) {
     this.disposeVertexNode = function() {
       vertex.positionProperty.unlink( updateVertexNodePosition );
       vertex.selectedProperty.unlink( updateVertexNodePosition );
-      vertex.selectedProperty.unlink( updateSelected );
+      vertex.selectedProperty.unlink( updateSelectedListener );
       vertex.interactiveProperty.unlink( updatePickable );
       vertex.relayerEmitter.removeListener( updateMoveToFront );
       CircuitConstructionKitCommonUtil.setInSceneGraph( false, circuitLayerNode.buttonLayer, cutButton );
-      CircuitConstructionKitCommonUtil.setInSceneGraph( false, circuitLayerNode.highlightLayer, highlightNode );
+      CircuitConstructionKitCommonUtil.setInSceneGraph( false, circuitLayerNode.highlightLayer, self.highlightNode );
       circuit.vertices.removeItemAddedListener( updateStrokeListener );
       circuit.vertices.removeItemRemovedListener( updateStrokeListener );
 
@@ -328,6 +283,33 @@ define( function( require ) {
     },
 
     /**
+     * Update whether the vertex is shown as selected.
+     * @param selected
+     */
+    updateSelected: function( selected ) {
+      var neighborCircuitElements = this.circuit.getNeighborCircuitElements( this.vertex );
+
+      if ( selected ) {
+
+        // Adjacent components should be in front of the vertex, see #20
+        for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
+          neighborCircuitElements[ i ].vertexSelectedEmitter.emit();
+        }
+        this.moveToFront();
+        this.focus();
+      }
+      CircuitConstructionKitCommonUtil.setInSceneGraph( selected, this.circuitLayerNode.highlightLayer, this.highlightNode );
+      var numberConnections = neighborCircuitElements.length;
+      CircuitConstructionKitCommonUtil.setInSceneGraph( selected, this.circuitLayerNode.buttonLayer, this.cutButton );
+      selected && this.updateCutButtonPosition();
+
+      // Show a disabled button as a cue that the vertex could be cuttable, but it isn't right now.
+      var isConnectedBlackBoxVertex = numberConnections === 1 && !this.vertex.draggableProperty.get();
+      this.cutButton.enabled = numberConnections > 1 || isConnectedBlackBoxVertex;
+    },
+
+    /**
+     * Update the stroke
      * @private
      */
     updateStroke: function() {
@@ -344,6 +326,38 @@ define( function( require ) {
         }
         this.visible = this.vertex.attachableProperty.get();
       }
+    },
+
+    /**
+     * @private - update the position of the cut button
+     */
+    updateCutButtonPosition: function() {
+      var position = this.vertex.positionProperty.get();
+
+      var neighbors = this.circuit.getNeighborCircuitElements( this.vertex );
+
+      // Compute an unweighted sum of adjacent element directions, and point in the opposite direction so the button
+      // will appear in the least populated area.
+      var sumOfDirections = new Vector2();
+      for ( var i = 0; i < neighbors.length; i++ ) {
+        var v = this.vertex.positionProperty.get().minus(
+          neighbors[ i ].getOppositeVertex( this.vertex ).positionProperty.get()
+        );
+        if ( v.magnitude() > 0 ) {
+          sumOfDirections.add( v.normalized() );
+        }
+      }
+      if ( sumOfDirections.magnitude() < 1E-6 ) {
+        sumOfDirections = new Vector2( 0, -1 ); // Show the scissors above
+      }
+
+      var proposedPosition = position.plus( sumOfDirections.normalized().timesScalar( DISTANCE_TO_CUT_BUTTON ) );
+
+      // Property doesn't exist until the node is attached to scene graph
+      var bounds = this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty.get();
+
+      var availableBounds = bounds.eroded( this.cutButton.width / 2 );
+      this.cutButton.center = availableBounds.closestPointTo( proposedPosition );
     }
   }, {
     VERTEX_RADIUS: VERTEX_RADIUS,
