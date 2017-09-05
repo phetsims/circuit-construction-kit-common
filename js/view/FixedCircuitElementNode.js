@@ -83,6 +83,9 @@ define( function( require ) {
     // the fire
     this.contentNode = new Node();
 
+    // @private {Image|null} - display the fire for flammable CircuitElements
+    this.fireNode = null;
+
     // @private {Property.<CircuitElementViewType>
     this.viewTypeProperty = viewTypeProperty;
 
@@ -168,16 +171,7 @@ define( function( require ) {
 
       // Show fire for batteries and resistors
       if ( circuitElement.isFlammable ) {
-        //REVIEW: consider moving declaration (and docs) up top so it is more visible.
-        //REVIEW^(samreid): Should we resolve the preceding REVIEW section before deciding on this, or can you recommend
-        //REVIEW^(samreid): a line number or neighborhood where this might be most suitable?
-        //REVIEW: No strong preference.
-        //REVIEW^(samreid): It seems 3 main things happen for non-icons: input listener + highlight + fire, so this seems
-        //REVIEW^(samreid): to be a reasonable place to keep this code.  Let me know if you recommend otherwise,
-        //REVIEW^(samreid): or if this is fine, you can remove these review comments (or reassign to me to do so).
-        //REVIEW^(samreid): Or were you recommending putting this.fireNode = null at the top?
-        //REVIEW*: I was recommending only moving the declaration (and using null), definitely not moving the assignment and related code.
-        // @private {Image} - display the fire for flammable CircuitElements
+
         this.fireNode = new Image( fireImage, { pickable: false, imageOpacity: 0.95 } );
         this.fireNode.mutate( { scale: self.contentNode.width / this.fireNode.width } );
         this.addChild( this.fireNode );
