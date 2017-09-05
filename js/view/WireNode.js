@@ -390,6 +390,10 @@ define( function( require ) {
           //REVIEW^(samreid): It is possible but rare to drag a highlighted wire, so I'm not worried about this part.
           //REVIEW^(samreid): Regarding the getTouchArea, which calls getStrokedShape, do you think it would work
           //REVIEW^(samreid): to just update that on drag end, or should it be done every delta?
+          //REVIEW*: This looks like it gets updated whenever dragging a wire. Can you clarify if this is only
+          //REVIEW*: conditionally called when it is highlighted?
+          //REVIEW*: Preventing it from being highlighted during a drag would allow us to update it only on drag-end,
+          //REVIEW*: which seems like (by far) the easiest way of handling this (or un-highlight if drag starts).
           this.highlightNode.shape = getHighlightStrokedShape( this.wire );
         }
 

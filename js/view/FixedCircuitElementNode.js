@@ -72,6 +72,7 @@ define( function( require ) {
 
     // @private {boolean} - whether an icon is being rendered
     // @REVIEW^(samreid): Do you prefer `icon` or `isIcon` for this variable/property/option name?
+    // REVIEW*: isIcon sounds somewhat clearer, now that you mention it.
     this.icon = options.icon;
 
     // @public (read-only) {CircuitElement}
@@ -177,6 +178,7 @@ define( function( require ) {
         //REVIEW^(samreid): to be a reasonable place to keep this code.  Let me know if you recommend otherwise,
         //REVIEW^(samreid): or if this is fine, you can remove these review comments (or reassign to me to do so).
         //REVIEW^(samreid): Or were you recommending putting this.fireNode = null at the top?
+        //REVIEW*: I was recommending only moving the declaration (and using null), definitely not moving the assignment and related code.
         // @private {Image} - display the fire for flammable CircuitElements
         this.fireNode = new Image( fireImage, { pickable: false, imageOpacity: 0.95 } );
         this.fireNode.mutate( { scale: self.contentNode.width / this.fireNode.width } );

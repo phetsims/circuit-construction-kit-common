@@ -72,6 +72,7 @@ define( function( require ) {
     //REVIEW: Usually instead of separating out width/height, I'd have maxBounds (and use it to set center below)
     //REVIEW^(samreid): The bounds do not have an origin of 0,0, so I'm not sure of a simpler way to implement this,
     //REVIEW^(samreid): can you help?
+    //REVIEW*: var maxBounds = readoutText.bounds.   later use maxBounds.width and maxBounds.height instead of maxWidth/maxHeight noted here.
     var maxWidth = readoutText.width;
     var maxHeight = readoutText.height;
 
@@ -154,6 +155,7 @@ define( function( require ) {
 
     // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
     // REVIEW^(samreid): I removed the copy and it caused https://github.com/phetsims/circuit-construction-kit-common/issues/398
+    // REVIEW*: Sorry! Looks like it's not creating a copy, since it's null by default. OK to keep
     lifelikeNode.mouseArea = lifelikeNode.bounds.copy();
     lifelikeNode.touchArea = lifelikeNode.bounds.copy();
 

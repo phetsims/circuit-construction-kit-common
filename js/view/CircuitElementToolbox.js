@@ -39,8 +39,6 @@ define( function( require ) {
     } );
 
     // The schematic and lifelike icons have different dimensions, so update the spacing when the view type changes
-    //REVIEW: This really feels like code that should be in the Carousel itself. I vaguely recall discussing this previously.
-    //REVIEW^(samreid): This is under discussion in https://github.com/phetsims/sun/issues/307, please review and recommend
     viewTypeProperty.link( function() {
 
       // Track the spacings so that any non-filled pages can take the average spacing of the other pages

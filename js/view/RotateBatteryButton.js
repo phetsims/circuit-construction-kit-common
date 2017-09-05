@@ -34,6 +34,7 @@ define( function( require ) {
     //REVIEW: Includes other path descriptions.
     //REVIEW^(samreid): I added a description of where the paths came from, what did you mean by "includes other path descriptions"?
     //REVIEW^(samreid): Is there an extraneous part of this data that is not necessary for rendering the icon?
+    //REVIEW*: Looks good. I meant adding documentation to the other path descriptions below (lines 53 and 58), as I have no clue what parts of FontAwesomeNode they are from.
     var batteryIcon = new Path( 'M59.42,9.597v7.807c0,0.719-0.32,1.331-0.957,1.84c-0.641,0.508-1.411,0.762-2.312,0.762v3.254 ' +
                                 'c0,0.894-0.398,1.659-1.199,2.296s-1.762,0.956-2.887,0.956H4.666c-1.125,0-2.086-0.319-2.887-0.956S0.58,24.152,0.58,23.259V3.741 ' +
                                 'c0-0.894,0.398-1.659,1.199-2.297C2.58,0.809,3.541,0.489,4.666,0.489h47.398c1.125,0,2.086,0.319,2.887,0.955 ' +
