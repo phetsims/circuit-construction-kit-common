@@ -30,11 +30,6 @@ define( function( require ) {
 
     // This SVG data was exported from assets/flip_battery_icon.ai, which was created by @arouinfar.  Using illustrator,
     // save the AI file as SVG, then inspect the file to get the path declaration.
-    //REVIEW: Description of how this was imported (does it need license info?) would be good.
-    //REVIEW: Includes other path descriptions.
-    //REVIEW^(samreid): I added a description of where the paths came from, what did you mean by "includes other path descriptions"?
-    //REVIEW^(samreid): Is there an extraneous part of this data that is not necessary for rendering the icon?
-    //REVIEW*: Looks good. I meant adding documentation to the other path descriptions below (lines 53 and 58), as I have no clue what parts of FontAwesomeNode they are from.
     var batteryIcon = new Path( 'M59.42,9.597v7.807c0,0.719-0.32,1.331-0.957,1.84c-0.641,0.508-1.411,0.762-2.312,0.762v3.254 ' +
                                 'c0,0.894-0.398,1.659-1.199,2.296s-1.762,0.956-2.887,0.956H4.666c-1.125,0-2.086-0.319-2.887-0.956S0.58,24.152,0.58,23.259V3.741 ' +
                                 'c0-0.894,0.398-1.659,1.199-2.297C2.58,0.809,3.541,0.489,4.666,0.489h47.398c1.125,0,2.086,0.319,2.887,0.955 ' +
@@ -49,12 +44,14 @@ define( function( require ) {
         spacing: 3,
         children: [
 
-          // path split up from FontAwesomeNode
+          // taken from FontAwesomeNode's refresh arrow
           new Path( 'M1511 480q0 -5 -1 -7q-64 -268 -268 -434.5t-478 -166.5q-146 0 -282.5 55t-243.5 157l-129 -129q-19 -19 -45 -19t-45 19t-19 45v448q0 26 19 45t45 19h448q26 0 45 -19t19 -45t-19 -45l-137 -137q71 -66 161 -102t187 -36q134 0 250 65t186 179q11 17 53 117 q8 23 30 23h192q13 0 22.5 -9.5t9.5 -22.5z', {
             fill: Color.BLACK,
             scale: ARROW_ICON_SCALE
           } ),
           batteryIcon,
+
+          // taken from FontAwesomeNode's refresh arrow
           new Path( 'M1536 1280v-448q0 -26 -19 -45t-45 -19h-448q-26 0 -45 19t-19 45t19 45l138 138q-148 137 -349 137q-134 0 -250 -65t-186 -179q-11 -17 -53 -117q-8 -23 -30 -23h-199q-13 0 -22.5 9.5t-9.5 22.5v7q65 268 270 434.5t480 166.5 q146 0 284 -55.5t245 -156.5l130 129q19 19 45 19t45 -19t19 -45z', {
             fill: Color.BLACK,
             scale: ARROW_ICON_SCALE
