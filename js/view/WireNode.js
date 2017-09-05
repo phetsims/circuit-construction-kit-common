@@ -396,7 +396,7 @@ define( function( require ) {
           //REVIEW: which seems like (by far) the easiest way of handling this (or un-highlight if drag starts).
           //REVIEW^(samreid): this code only happens when the node is currently highlighted, which is rare during a drag
           //REVIEW^(samreid): I renamed the var `isCurrentlyHighlighted` to make that more clear, please let me know
-          //REIVEw^(samreid): what you recommend.
+          //REVIEw^(samreid): what you recommend.
           this.highlightNode.shape = getHighlightStrokedShape( this.wire );
         }
 
