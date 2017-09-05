@@ -103,7 +103,7 @@ define( function( require ) {
       }
     } );
 
-    var ammeterNode = new AmmeterNode( model.ammeter, model.circuit, this.circuitLayerNode, tandem.createTandem( 'ammeterNode' ), {
+    var ammeterNode = new AmmeterNode( model.ammeter, this.circuitLayerNode, tandem.createTandem( 'ammeterNode' ), {
       showResultsProperty: model.isValueDepictionEnabledProperty,
       visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty,
       blackBoxStudy: options.blackBoxStudy

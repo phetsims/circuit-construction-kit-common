@@ -48,13 +48,12 @@ define( function( require ) {
 
   /**
    * @param {Ammeter} ammeter
-   * @param {Circuit|null} circuit - to observe changes in the Circuit, or null if rendering an icon
    * @param {CircuitLayerNode|null} circuitLayerNode - for getting the currents, or null if rendering an icon
-   * @param {Tandem} tandem // TODO: prune parameters
+   * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function AmmeterNode( ammeter, circuit, circuitLayerNode, tandem, options ) {
+  function AmmeterNode( ammeter, circuitLayerNode, tandem, options ) {
     var self = this;
     this.circuitLayerNode = circuitLayerNode;
     options = _.extend( {
@@ -182,7 +181,7 @@ define( function( require ) {
           ammeter.currentProperty.set( current );
         }
       };
-      circuit.circuitChangedEmitter.addListener( updateAmmeter );
+      circuitLayerNode.circuit.circuitChangedEmitter.addListener( updateAmmeter );
       ammeter.probePositionProperty.link( updateAmmeter );
     }
   }
