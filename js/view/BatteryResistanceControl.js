@@ -58,6 +58,7 @@ define( function( require ) {
       constrainValue: function( value ) { return Util.roundSymmetric( value ); },
       tandem: tandem.createTandem( 'slider' )
     } );
+    //REVIEW*: Use Util.toFixed
     slider.addMajorTick( range.min, createLabel( range.min.toFixed( 0 ), tandem.createTandem( 'minLabel' ) ) );
     slider.addMajorTick( midpoint );
     slider.addMajorTick( range.max, createLabel( range.max.toFixed( 0 ), tandem.createTandem( 'maxLabel' ) ) );
