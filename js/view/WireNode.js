@@ -384,9 +384,12 @@ define( function( require ) {
         var showHighlight = selectedCircuitElement === this.wire;
         this.highlightNode.visible = showHighlight;
         if ( showHighlight ) {
-          //REVIEW*: Usually changing Shape (and getting stroked shape) is performance-intensive. If there are perf
-          //REVIEW*: issues in this part, consider a more efficient way? Can we compose hit-areas and highlights out of
-          //REVIEW*: parts for the end and center?
+          //REVIEW: Usually changing Shape (and getting stroked shape) is performance-intensive. If there are perf
+          //REVIEW: issues in this part, consider a more efficient way? Can we compose hit-areas and highlights out of
+          //REVIEW: parts for the end and center?
+          //REVIEW^(samreid): It is possible but rare to drag a highlighted wire, so I'm not worried about this part.
+          //REVIEW^(samreid): Regarding the getTouchArea, which calls getStrokedShape, do you think it would work
+          //REVIEW^(samreid): to just update that on drag end, or should it be done every delta?
           this.highlightNode.shape = getHighlightStrokedShape( this.wire );
         }
 
