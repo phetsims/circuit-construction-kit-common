@@ -59,7 +59,7 @@ define( function( require ) {
   /**
    * @param {Voltmeter} voltmeter - the model Voltmeter to be shown by this node
    * @param {CircuitConstructionKitModel} model
-   * @param {CircuitLayerNode} circuitLayerNode TODO: reduce parameters?
+   * @param {CircuitLayerNode} circuitLayerNode
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
