@@ -137,13 +137,9 @@ define( function( require ) {
 
     var eventPoint = null;
     var dragged = false;
-    var clickToDismissListeners = [];
-    var clearClickListeners = function() {
-      clickToDismissListeners.forEach( function( listener ) {
-        phet.joist.sim.display.removeInputListener( listener );
-      } );
-      clickToDismissListeners.length = 0;
-    };
+
+    // @private {function[]}
+    this.clickToDismissListeners = [];
     var dragHandler = new SimpleDragHandler( {
       allowTouchSnag: true,
       tandem: tandem.createTandem( 'dragHandler' ),
@@ -170,18 +166,18 @@ define( function( require ) {
             down: function( event ) {
               if ( !_.includes( event.trail.nodes, self ) && !_.includes( event.trail.nodes, cutButton ) ) {
                 vertex.selectedProperty.set( false );
-                clearClickListeners();
+                self.clearClickListeners();
               }
             }
           };
           phet.joist.sim.display.addInputListener( clickToDismissListener );
-          clickToDismissListeners.push( clickToDismissListener );
+          self.clickToDismissListeners.push( clickToDismissListener );
         }
         else {
 
           // Deselect after dragging so a grayed-out cut button doesn't remain when open vertex is connected
           vertex.selectedProperty.set( false );
-          clearClickListeners();
+          self.clearClickListeners();
         }
       }
     } );
@@ -240,7 +236,7 @@ define( function( require ) {
       tandem.removeInstance( self );
 
       // Remove the global listener if it was still enabled
-      clearClickListeners();
+      this.clearClickListeners();
 
       dragHandler.dispose();
       this.removeInputListener( dragHandler );
@@ -356,6 +352,17 @@ define( function( require ) {
 
       var availableBounds = bounds.eroded( this.cutButton.width / 2 );
       this.cutButton.center = availableBounds.closestPointTo( proposedPosition );
+    },
+
+    /**
+     * Remove click listeners
+     * @private
+     */
+    clearClickListeners: function() {
+      this.clickToDismissListeners.forEach( function( listener ) {
+        phet.joist.sim.display.removeInputListener( listener );
+      } );
+      this.clickToDismissListeners.length = 0;
     }
   }, {
     VERTEX_RADIUS: VERTEX_RADIUS,
