@@ -297,8 +297,7 @@ define( function( require ) {
      * @private - dispose the wire node
      */
     this.disposeWireNode = function() {
-      //REVIEW*: Consider dragHandler.interrupt()
-      self.dragHandler.dragging && self.dragHandler.endDrag();
+      self.dragHandler.interrupt();
 
       wire.startVertexProperty.unlink( doUpdateTransform );
       wire.endVertexProperty.unlink( doUpdateTransform );
