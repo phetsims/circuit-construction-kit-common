@@ -49,25 +49,33 @@ define( function( require ) {
 
     var self = this;
     var circuit = circuitLayerNode.circuit;
+
+    // @private {Circuit}
+    this.circuit = circuit;
     var cutButton = circuitLayerNode.cutButton;
+
+    // @private {RoundPushButton}
+    this.cutButton = cutButton;
 
     // Use a query parameter to turn on node voltage readouts for debugging only.
     var vertexDisplay = CircuitConstructionKitCommonQueryParameters.vertexDisplay;
-    var voltageReadoutText = null;
+
+    // @private {Text} display for debugging only
+    this.voltageReadoutText = null;
     if ( vertexDisplay ) {
-      voltageReadoutText = new Text( '', {
+      this.voltageReadoutText = new Text( '', {
         fontSize: 18,
         pickable: false
       } );
       var updateReadoutTextLocation = function() {
-        voltageReadoutText.centerX = 0;
-        voltageReadoutText.bottom = -30;
+        self.voltageReadoutText.centerX = 0;
+        self.voltageReadoutText.bottom = -30;
       };
       vertex.voltageProperty.link( function( voltage ) {
 
         // No need for i18n because this is for debugging only
         var voltageText = Util.toFixed( voltage, 3 ) + 'V';
-        voltageReadoutText.setText( vertexDisplay === 'voltage' ? voltageText : vertex.index );
+        self.voltageReadoutText.setText( vertexDisplay === 'voltage' ? voltageText : vertex.index );
         updateReadoutTextLocation();
       } );
     }
@@ -98,48 +106,23 @@ define( function( require ) {
 
     // keyboard listener so that delete or backspace deletes the element - must be disposed
     var keyListener = this.addAccessibleInputListener( {
-      keydown: function( event ) {
-        var code = event.keyCode || event.which;
-
-        // on delete or backspace, the focused Vertex should be cut
-        if ( code === Input.KEY_DELETE || code === Input.KEY_BACKSPACE ) {
-
-          // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
-          // https://github.com/phetsims/circuit-construction-kit-common/issues/307
-          event.preventDefault();
-          cutButton.enabled && circuit.cutVertex( circuit.getSelectedVertex() );
-        }
-      }
+      keydown: this.keydownListener.bind( this )
     } );
 
     // Shows up as red when disconnected or black when connected.  When unattachable, the dotted line disappears (black
     // box study)
-    var updateStroke = function() {
-
-      // A memory leak was being caused by children getting added after dispose was called.
-      // This is because the itemRemoved listener in CircuitLayerNode is added (and hence called) before this callback.
-      // The CircuitLayerNode listener calls dispose but this listener still gets called back because emitter gets
-      // a defensive copy of listeners.
-      if ( !self.disposed ) {
-
-        var desiredChild = circuit.countCircuitElements( vertex ) > 1 ? BLACK_CIRCLE_NODE : RED_CIRCLE_NODE;
-        if ( self.getChildAt( 0 ) !== desiredChild ) {
-          self.children = voltageReadoutText ? [ desiredChild, voltageReadoutText ] : [ desiredChild ];
-        }
-        self.visible = vertex.attachableProperty.get();
-      }
-    };
+    var updateStrokeListener = this.updateStroke.bind( this );
 
     // Update when any vertex is added or removed, or when the existing circuit values change.
-    circuit.vertices.addItemAddedListener( updateStroke );
-    circuit.vertices.addItemRemovedListener( updateStroke );
-    circuit.circuitChangedEmitter.addListener( updateStroke );
+    circuit.vertices.addItemAddedListener( updateStrokeListener );
+    circuit.vertices.addItemRemovedListener( updateStrokeListener );
+    circuit.circuitChangedEmitter.addListener( updateStrokeListener );
 
     // In Black Box, other wires can be detached from a vertex and this should also update the solder
-    circuit.circuitElements.addItemAddedListener( updateStroke );
-    circuit.circuitElements.addItemRemovedListener( updateStroke );
+    circuit.circuitElements.addItemAddedListener( updateStrokeListener );
+    circuit.circuitElements.addItemRemovedListener( updateStrokeListener );
 
-    vertex.attachableProperty.link( updateStroke );
+    vertex.attachableProperty.link( updateStrokeListener );
 
     var updateSelected = function( selected ) {
       var neighborCircuitElements = circuit.getNeighborCircuitElements( vertex );
@@ -290,15 +273,15 @@ define( function( require ) {
       vertex.relayerEmitter.removeListener( updateMoveToFront );
       CircuitConstructionKitCommonUtil.setInSceneGraph( false, circuitLayerNode.buttonLayer, cutButton );
       CircuitConstructionKitCommonUtil.setInSceneGraph( false, circuitLayerNode.highlightLayer, highlightNode );
-      circuit.vertices.removeItemAddedListener( updateStroke );
-      circuit.vertices.removeItemRemovedListener( updateStroke );
+      circuit.vertices.removeItemAddedListener( updateStrokeListener );
+      circuit.vertices.removeItemRemovedListener( updateStrokeListener );
 
       // In Black Box, other wires can be detached from a vertex and this should also update the solder
-      circuit.circuitElements.removeItemAddedListener( updateStroke );
-      circuit.circuitElements.removeItemRemovedListener( updateStroke );
+      circuit.circuitElements.removeItemAddedListener( updateStrokeListener );
+      circuit.circuitElements.removeItemRemovedListener( updateStrokeListener );
 
-      vertex.attachableProperty.unlink( updateStroke );
-      circuit.circuitChangedEmitter.removeListener( updateStroke );
+      vertex.attachableProperty.unlink( updateStrokeListener );
+      circuit.circuitChangedEmitter.removeListener( updateStrokeListener );
 
       this.removeAccessibleInputListener( keyListener );
       tandem.removeInstance( self );
@@ -325,6 +308,42 @@ define( function( require ) {
     dispose: function() {
       this.disposeVertexNode();
       Node.prototype.dispose.call( this );
+    },
+
+    /**
+     * @param {Event} event - scenery keyboard event
+     * @private
+     */
+    keydownListener: function( event ) {
+      var code = event.keyCode || event.which;
+
+      // on delete or backspace, the focused Vertex should be cut
+      if ( code === Input.KEY_DELETE || code === Input.KEY_BACKSPACE ) {
+
+        // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
+        // https://github.com/phetsims/circuit-construction-kit-common/issues/307
+        event.preventDefault();
+        this.cutButton.enabled && this.circuit.cutVertex( this.circuit.getSelectedVertex() );
+      }
+    },
+
+    /**
+     * @private
+     */
+    updateStroke: function() {
+
+      // A memory leak was being caused by children getting added after dispose was called.
+      // This is because the itemRemoved listener in CircuitLayerNode is added (and hence called) before this callback.
+      // The CircuitLayerNode listener calls dispose but this listener still gets called back because emitter gets
+      // a defensive copy of listeners.
+      if ( !this.disposed ) {
+
+        var desiredChild = this.circuit.countCircuitElements( this.vertex ) > 1 ? BLACK_CIRCLE_NODE : RED_CIRCLE_NODE;
+        if ( this.getChildAt( 0 ) !== desiredChild ) {
+          this.children = this.voltageReadoutText ? [ desiredChild, this.voltageReadoutText ] : [ desiredChild ];
+        }
+        this.visible = this.vertex.attachableProperty.get();
+      }
     }
   }, {
     VERTEX_RADIUS: VERTEX_RADIUS,
