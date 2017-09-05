@@ -376,10 +376,6 @@ define( function( require ) {
     circuit.charges.addItemAddedListener( function( charge ) {
       self.chargeLayer.addChild( new ChargeNode( charge ) );
     } );
-
-    // @public - Filled in by black box study, if it is running.
-    //REVIEW: Needs type docs? What's going on here?
-    this.blackBoxNode = null;
   }
 
   circuitConstructionKitCommon.register( 'CircuitLayerNode', CircuitLayerNode );
