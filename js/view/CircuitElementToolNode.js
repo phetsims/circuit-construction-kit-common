@@ -32,19 +32,27 @@ define( function( require ) {
    * @param {function} createElement - (Vector2) => CircuitElement Function that creates a CircuitElement at the given location
    *                                 - for most components it is the center of the component.  For Light Bulbs, it is
    *                                 - in the center of the socket
+   * @param {Object} [options]
    * @constructor
    */
-  function CircuitElementToolNode( labelText, showLabelsProperty, circuit, globalToCircuitLayerNodePoint, iconNode, maxNumber, count, createElement ) {
+  function CircuitElementToolNode( labelText, showLabelsProperty, circuit, globalToCircuitLayerNodePoint, iconNode, maxNumber, count, createElement, options ) {
     var self = this;
     var labelNode = new Text( labelText, { fontSize: 12, maxWidth: TOOLBOX_ICON_SIZE } );
     showLabelsProperty.linkAttribute( labelNode, 'visible' );
-    VBox.call( this, {
+    options = _.extend( {
       spacing: 6, // Spacing between the icon and the text
       cursor: 'pointer',
 
       // hack because the series ammeter tool node has text rendered separately (joined with probe ammeter)
-      children: labelText.length > 0 ? [ iconNode, labelNode ] : [ iconNode ]
-    } );
+      children: labelText.length > 0 ? [ iconNode, labelNode ] : [ iconNode ],
+
+      // Expand touch area around text, see https://github.com/phetsims/circuit-construction-kit-dc/issues/82
+      touchAreaExpansionLeft: 10,
+      touchAreaExpansionTop: 13,
+      touchAreaExpansionRight: 10,
+      touchAreaExpansionBottom: 3
+    }, options );
+    VBox.call( this, options );
 
     this.addInputListener( SimpleDragHandler.createForwardingListener( function( event ) {
 
@@ -76,8 +84,12 @@ define( function( require ) {
     } );
 
     // Expand touch area around text, see https://github.com/phetsims/circuit-construction-kit-dc/issues/82
-    var touchExpansionWidth = 10;
-    this.touchArea = this.localBounds.withOffsets( touchExpansionWidth, 13, touchExpansionWidth, 3 );
+    this.touchArea = this.localBounds.withOffsets(
+      options.touchAreaExpansionLeft,
+      options.touchAreaExpansionTop,
+      options.touchAreaExpansionRight,
+      options.touchAreaExpansionBottom
+    );
     this.mouseArea = this.touchArea;
   }
 

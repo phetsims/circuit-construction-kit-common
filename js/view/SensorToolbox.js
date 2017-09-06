@@ -124,7 +124,12 @@ define( function( require ) {
 
           return circuitElement instanceof SeriesAmmeter;
         } );
-      }, createSeriesAmmeter );
+      }, createSeriesAmmeter, {
+        touchAreaExpansionLeft: 3,
+        touchAreaExpansionTop: 15,
+        touchAreaExpansionRight: 3,
+        touchAreaExpansionBottom: 0
+      } );
 
     // Labels underneath the sensor tool nodes
     var voltmeterText = new Text( voltmeterString, { maxWidth: 60 } );
