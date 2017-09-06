@@ -37,6 +37,9 @@ define( function( require ) {
     fontSize: CircuitConstructionKitCommonConstants.FONT_SIZE,
     maxWidth: 120
   };
+  var BOX_ALIGNMENT = { xAlign: 'left' };
+  var SPACING = 10;
+  var LEFT_MARGIN = 30;
 
   /**
    * @param {AlignGroup} alignGroup - box for aligning with other controls
@@ -68,7 +71,6 @@ define( function( require ) {
 
     // Align the Electrons/Conventional text and radio buttons
     var currentTypeRadioButtonLabelGroup = new AlignGroup();
-    var BOX_ALIGNMENT = { xAlign: 'left' };
     var electronsBox = new HBox( {
       children: [
         currentTypeRadioButtonLabelGroup.createBox( new Text( electronsString, TEXT_OPTIONS ), BOX_ALIGNMENT ),
@@ -84,18 +86,22 @@ define( function( require ) {
       spacing: textIconSpacing
     } );
 
-    var electronsRadioButton = createRadioButton(
-      CurrentType.ELECTRONS, electronsBox, tandem.createTandem( 'electronsRadioButton' )
-    );
-    var conventionalRadioButton = createRadioButton(
-      CurrentType.CONVENTIONAL, conventionalBox, tandem.createTandem( 'conventionalRadioButton' )
-    );
+    var electronsRadioButton = createRadioButton( CurrentType.ELECTRONS, electronsBox, tandem.createTandem( 'electronsRadioButton' ) );
+    var conventionalRadioButton = createRadioButton( CurrentType.CONVENTIONAL, conventionalBox, tandem.createTandem( 'conventionalRadioButton' ) );
 
     // Gray out current view options when current is not selected.
     showCurrentProperty.linkAttribute( electronsRadioButton, 'enabled' );
     showCurrentProperty.linkAttribute( conventionalRadioButton, 'enabled' );
 
     var BOX_WIDTH = 16;
+    var showLabelsCheckBox = new CheckBox( new Text( labelsString, TEXT_OPTIONS ), showLabelsProperty, {
+      tandem: tandem.createTandem( 'labelsCheckBox' ),
+      boxWidth: BOX_WIDTH,
+    } );
+    var showValuesCheckBox = new CheckBox( new Text( valuesString, TEXT_OPTIONS ), showValuesProperty, {
+      tandem: tandem.createTandem( 'valuesCheckBox' ),
+      boxWidth: BOX_WIDTH
+    } );
     var children = [
 
       // Show Current and sub-checkboxes
@@ -116,24 +122,18 @@ define( function( require ) {
                 conventionalRadioButton
               ]
             } ), {
-              leftMargin: 30
+              leftMargin: LEFT_MARGIN
             }
           )
         ]
       } ),
-      new CheckBox( new Text( labelsString, TEXT_OPTIONS ), showLabelsProperty, {
-        tandem: tandem.createTandem( 'labelsCheckBox' ),
-        boxWidth: BOX_WIDTH
-      } ),
-      new CheckBox( new Text( valuesString, TEXT_OPTIONS ), showValuesProperty, {
-        tandem: tandem.createTandem( 'valuesCheckBox' ),
-        boxWidth: BOX_WIDTH
-      } )
+      showLabelsCheckBox,
+      showValuesCheckBox
     ];
 
     CircuitConstructionKitPanel.call( this, alignGroup.createBox( new VBox( {
       children: children,
-      spacing: 10,
+      spacing: SPACING,
       align: 'left'
     } ), {
 
@@ -142,6 +142,12 @@ define( function( require ) {
     } ), tandem, {
       yMargin: 10
     } );
+
+    showLabelsCheckBox.touchArea = showLabelsCheckBox.localBounds.dilatedXY( 5, SPACING / 2 ).withMaxX( this.bounds.width - LEFT_MARGIN );
+    showLabelsCheckBox.mouseArea = showLabelsCheckBox.touchArea;
+
+    showValuesCheckBox.touchArea = showValuesCheckBox.localBounds.dilatedXY( 5, SPACING / 2 ).withMaxX( this.bounds.width - LEFT_MARGIN );
+    showValuesCheckBox.mouseArea = showValuesCheckBox.touchArea;
   }
 
   circuitConstructionKitCommon.register( 'DisplayOptionsPanel', DisplayOptionsPanel );
