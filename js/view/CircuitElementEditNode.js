@@ -21,6 +21,7 @@ define( function( require ) {
 
   // constants
   var FONT = new PhetFont( CircuitConstructionKitCommonConstants.FONT_SIZE );
+  var NUMBER_CONTROL_ELEMENT_MAX_WIDTH = 140;
 
   /**
    * @param {string} title - text to show as a title
@@ -40,6 +41,8 @@ define( function( require ) {
 
     // Create the controls
     var numberControl = new NumberControl( title, valueProperty, circuitElement.editableRange, _.extend( {
+      titleMaxWidth: NUMBER_CONTROL_ELEMENT_MAX_WIDTH,
+      valueMaxWidth: NUMBER_CONTROL_ELEMENT_MAX_WIDTH,
       tandem: tandem.createTandem( 'numberControl' ),
       valuePattern: valuePattern
     }, {
