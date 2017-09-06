@@ -19,6 +19,7 @@ define( function( require ) {
   // constants
   var ZOOMED_IN = 1;
   var ZOOMED_OUT = 0.5;
+  var BUTTON_SPACING = 12;
 
   /**
    * @param {Property.<number>} selectedZoomProperty
@@ -27,11 +28,13 @@ define( function( require ) {
    */
   function ZoomControlPanel( selectedZoomProperty, options ) {
     options = _.extend( {
-      spacing: 12,
+      spacing: BUTTON_SPACING,
       tandem: Tandem.tandemRequired()
     }, options );
     var zoomOutButton = new ZoomButton( {
       in: false,
+      touchAreaXDilation: BUTTON_SPACING / 2,
+      touchAreaYDilation: BUTTON_SPACING / 2,
       listener: function() {
         selectedZoomProperty.set( ZOOMED_OUT );
       },
@@ -39,6 +42,8 @@ define( function( require ) {
     } );
     var zoomInButton = new ZoomButton( {
       in: true,
+      touchAreaXDilation: BUTTON_SPACING / 2,
+      touchAreaYDilation: BUTTON_SPACING / 2,
       listener: function() {
         selectedZoomProperty.set( ZOOMED_IN );
       },
