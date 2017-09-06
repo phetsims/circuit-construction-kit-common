@@ -140,14 +140,16 @@ define( function( require ) {
         allowTouchSnag: true,
         start: function( event ) {
           startPoint = event.pointer.point;
-          circuitElement.interactiveProperty.get() && circuitLayerNode.startDragVertex( event.pointer,
+          circuitElement.interactiveProperty.get() && circuitLayerNode.startDragVertex(
+            event.pointer.point,
             circuitElement.endVertexProperty.get(),
             false
           );
           dragged = false;
         },
         drag: function( event ) {
-          circuitElement.interactiveProperty.get() && circuitLayerNode.dragVertex( event.pointer,
+          circuitElement.interactiveProperty.get() && circuitLayerNode.dragVertex(
+            event.pointer.point,
             circuitElement.endVertexProperty.get(),
             false
           );

@@ -250,8 +250,8 @@ define( function( require ) {
           if ( wire.interactiveProperty.get() ) {
 
             // Start drag by starting a drag on start and end vertices
-            circuitLayerNode.startDragVertex( event.pointer, wire.startVertexProperty.get(), false );
-            circuitLayerNode.startDragVertex( event.pointer, wire.endVertexProperty.get(), false );
+            circuitLayerNode.startDragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
+            circuitLayerNode.startDragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
             dragged = false;
             startPoint = event.pointer.point;
           }
@@ -260,8 +260,8 @@ define( function( require ) {
           if ( wire.interactiveProperty.get() ) {
 
             // Drag by translating both of the vertices
-            circuitLayerNode.dragVertex( event.pointer, wire.startVertexProperty.get(), false );
-            circuitLayerNode.dragVertex( event.pointer, wire.endVertexProperty.get(), false );
+            circuitLayerNode.dragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
+            circuitLayerNode.dragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
             dragged = true;
           }
         },
