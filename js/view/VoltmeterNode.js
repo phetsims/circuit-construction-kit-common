@@ -314,6 +314,13 @@ define( function( require ) {
       voltmeter.redProbePositionProperty.link( updateVoltmeter );
       voltmeter.blackProbePositionProperty.link( updateVoltmeter );
     }
+
+    // When rendered as an icon, the touch area should span the bounds (no gaps between probes and body)
+    if ( options.isIcon ) {
+      this.touchArea = this.bounds.copy();
+      this.mouseArea = this.bounds.copy();
+      this.cursor = 'pointer';
+    }
   }
 
   circuitConstructionKitCommon.register( 'VoltmeterNode', VoltmeterNode );
