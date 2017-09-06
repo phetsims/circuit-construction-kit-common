@@ -467,6 +467,27 @@ define( function( require ) {
     },
 
     /**
+     * Returns whether the vertex can be dragged
+     * @param {Vertex} vertex
+     * @returns {boolean}
+     */
+    canDragVertex: function( vertex ) {
+      var vertices = this.circuit.findAllFixedVertices( vertex );
+
+      // If any of the vertices in the subgraph is already being dragged, then this vertex cannot be dragged.
+      for ( var i = 0; i < vertices.length; i++ ) {
+        if ( vertices[ i ].isDragged ) {
+          return false;
+        }
+      }
+      for ( i = 0; i < vertices.length; i++ ) {
+        vertices[ i ].isDragged = true;
+      }
+
+      return true;
+    },
+
+    /**
      * Called when a Vertex drag begins, records the relative click point
      * @param {Vector2} point
      * @param {Vertex} vertex
@@ -662,8 +683,12 @@ define( function( require ) {
       // Find all vertices connected by fixed length nodes.
       var vertices = this.circuit.findAllFixedVertices( vertex );
 
-      // If any of the vertices connected by fixed length nodes is immobile, then the entire subgraph cannot be moved
       for ( var i = 0; i < vertices.length; i++ ) {
+        vertices[ i ].isDragged = false;
+      }
+
+      // If any of the vertices connected by fixed length nodes is immobile, then the entire subgraph cannot be moved
+      for ( i = 0; i < vertices.length; i++ ) {
         if ( !vertices[ i ].draggableProperty.get() ) {
           return;
         }
