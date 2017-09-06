@@ -486,7 +486,8 @@ define( function( require ) {
 
     /**
      * Mark the vertex and its fixed connected vertices as being dragged, so they cannot be dragged by any other pointer.
-     * @param vertex
+     * @param {Vertex} vertex
+     * @public
      */
     setVerticesDragging: function( vertex ) {
       var vertices = this.circuit.findAllFixedVertices( vertex );
