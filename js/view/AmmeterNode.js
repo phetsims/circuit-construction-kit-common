@@ -184,6 +184,13 @@ define( function( require ) {
       circuitLayerNode.circuit.circuitChangedEmitter.addListener( updateAmmeter );
       ammeter.probePositionProperty.link( updateAmmeter );
     }
+
+    // When rendered as an icon, the touch area should span the bounds (no gaps between probes and body)
+    if ( options.isIcon ) {
+      this.touchArea = this.bounds.copy();
+      this.mouseArea = this.bounds.copy();
+      this.cursor = 'pointer';
+    }
   }
 
   circuitConstructionKitCommon.register( 'AmmeterNode', AmmeterNode );
