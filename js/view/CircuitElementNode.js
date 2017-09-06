@@ -208,7 +208,7 @@ define( function( require ) {
           // End drag for each of the vertices
           vertices.forEach( function( vertex ) {
             if ( screenView.model.circuit.vertices.contains( vertex ) ) {
-              circuitLayerNode.endDrag( event, vertex, dragged );
+              circuitLayerNode.endDragVertex( event.pointer, vertex, dragged );
             }
           } );
 

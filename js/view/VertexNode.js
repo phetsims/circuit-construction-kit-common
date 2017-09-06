@@ -156,17 +156,17 @@ define( function( require ) {
       tandem: tandem.createTandem( 'dragHandler' ),
       start: function( event ) {
         eventPoint = event.pointer.point;
-        circuitLayerNode.startDragVertex( event.pointer.point, vertex, true );
+        circuitLayerNode.startDragVertex( event.pointer, vertex, true );
         dragged = false;
       },
       drag: function( event ) {
         dragged = true;
-        circuitLayerNode.dragVertex( event.pointer.point, vertex, true );
+        circuitLayerNode.dragVertex( event.pointer, vertex, true );
       },
       end: function( event ) {
 
         // The vertex can only connect to something if it was actually moved.
-        circuitLayerNode.endDrag( event, vertex, dragged );
+        circuitLayerNode.endDragVertex( event.pointer, vertex, dragged );
 
         // Only show on a tap, not on every drag.
         if ( vertex.interactiveProperty.get() && event.pointer.point.distance( eventPoint ) < CircuitConstructionKitCommonConstants.TAP_THRESHOLD ) {
