@@ -156,8 +156,8 @@ define( function( require ) {
 
           // Clicking nearby (but not directly on) a tweaker button or slider shouldn't dismiss the edit panel,
           // see https://github.com/phetsims/circuit-construction-kit-dc/issues/90
-          self.mouseArea = self.localBounds.dilatedX( 20 );
-          self.touchArea = self.localBounds.dilatedX( 20 );
+          self.mouseArea = self.localBounds.dilatedXY( 20, CircuitConstructionKitCommonConstants.VERTICAL_MARGIN );
+          self.touchArea = self.localBounds.dilatedXY( 20, CircuitConstructionKitCommonConstants.VERTICAL_MARGIN );
         }
       }
       updatePosition();
