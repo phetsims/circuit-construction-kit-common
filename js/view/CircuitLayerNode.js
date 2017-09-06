@@ -467,31 +467,37 @@ define( function( require ) {
     },
 
     /**
-     * Called when a Vertex drag begins, records the relative click point
-     * @param {Pointer} pointer
+     * Returns whether the vertex can be dragged
      * @param {Vertex} vertex
-     * @public
+     * @returns {boolean}
      */
-    startDragVertex: function( pointer, vertex ) {
-
-      // Find all vertices connected by fixed length nodes.
+    canDragVertex: function( vertex ) {
       var vertices = this.circuit.findAllFixedVertices( vertex );
 
       // If any of the vertices in the subgraph is already being dragged, then this vertex cannot be dragged.
       for ( var i = 0; i < vertices.length; i++ ) {
-        if ( vertices[ i ].pointer !== null ) {
-          return;
+        if ( vertices[ i ].isDragged ) {
+          return false;
         }
       }
-
-      // Mark the vertices as being dragged by the given Pointer
       for ( i = 0; i < vertices.length; i++ ) {
-        vertices[ i ].pointer = pointer;
+        vertices[ i ].isDragged = true;
       }
+
+      return true;
+    },
+
+    /**
+     * Called when a Vertex drag begins, records the relative click point
+     * @param {Vector2} point
+     * @param {Vertex} vertex
+     * @public
+     */
+    startDragVertex: function( point, vertex ) {
 
       // If it is the edge of a fixed length circuit element, the element rotates and moves toward the mouse
       var vertexNode = this.getVertexNode( vertex );
-      vertexNode.startOffset = vertexNode.globalToParentPoint( pointer.point ).minus( vertex.unsnappedPositionProperty.get() );
+      vertexNode.startOffset = vertexNode.globalToParentPoint( point ).minus( vertex.unsnappedPositionProperty.get() );
     },
 
     /**
@@ -538,33 +544,24 @@ define( function( require ) {
 
     /**
      * Drag a vertex.
-     * @param {Pointer} point - the scenery pointer dragging the vertex
+     * @param {Vector2} point - the touch position
      * @param {Vertex} vertex - the vertex that is being dragged
      * @param {boolean} okToRotate - true if it is allowed to rotate adjacent CircuitElements
      * @public
      */
-    dragVertex: function( pointer, vertex, okToRotate ) {
-      var point = pointer.point;
-
-      // Find all vertices connected by fixed length nodes.
-      var vertices = this.circuit.findAllFixedVertices( vertex );
-
-      // Bail if it is not the Pointer that initiated dragging
-      for ( var i = 0; i < vertices.length; i++ ) {
-        if ( vertices[ i ].pointer !== pointer ) {
-          return;
-        }
-      }
-
+    dragVertex: function( point, vertex, okToRotate ) {
       var vertexNode = this.getVertexNode( vertex );
       var position = vertexNode.globalToParentPoint( point ).subtract( vertexNode.startOffset );
 
       // If it is the edge of a fixed length circuit element, the element rotates and moves toward the mouse
       var neighbors = this.circuit.getNeighborCircuitElements( vertex );
 
+      // Find all vertices connected by fixed length nodes.
+      var vertices = this.circuit.findAllFixedVertices( vertex );
+
       // If any of the vertices connected by fixed length nodes is immobile, then the entire subgraph cannot be moved
       var rotated = false;
-      for ( i = 0; i < vertices.length; i++ ) {
+      for ( var i = 0; i < vertices.length; i++ ) {
         if ( !vertices[ i ].draggableProperty.get() ) {
 
           // See #108 multiple objects connected to the same origin vertex can cause problems.
@@ -673,25 +670,23 @@ define( function( require ) {
     /**
      * End a vertex drag.
      *
-     * @param {Pointer} pointer
+     * @param {Object} event - event from scenery
      * @param {Vertex} vertex
      * @param {boolean} dragged - true if the vertex actually moved with at least 1 drag call
      * @public
      */
-    endDragVertex: function( pointer, vertex, dragged ) {
+    endDrag: function( event, vertex, dragged ) {
+      assert && assert( typeof dragged === 'boolean', 'didDrag must be supplied' );
+
+      var vertexNode = this.getVertexNode( vertex );
 
       // Find all vertices connected by fixed length nodes.
       var vertices = this.circuit.findAllFixedVertices( vertex );
 
+      // If any of the vertices connected by fixed length nodes is immobile, then the entire subgraph cannot be moved
       for ( var i = 0; i < vertices.length; i++ ) {
-        if ( vertices[ i ].pointer !== pointer ) {
-          return;
-        }
+        vertices[ i ].isDragged = false;
       }
-
-      assert && assert( typeof dragged === 'boolean', 'didDrag must be supplied' );
-
-      var vertexNode = this.getVertexNode( vertex );
 
       // If any of the vertices connected by fixed length nodes is immobile, then the entire subgraph cannot be moved
       for ( i = 0; i < vertices.length; i++ ) {
@@ -713,11 +708,6 @@ define( function( require ) {
 
       // Signify that something has been dropped in the play area, to show the edit panel, unless dropped in the toolbox
       this.circuit.vertexDroppedEmitter.emit1( vertex );
-
-      // Allow all Vertices to be dragged by any Pointer again
-      for ( i = 0; i < vertices.length; i++ ) {
-        vertices[ i ].pointer = null;
-      }
     },
 
     /**

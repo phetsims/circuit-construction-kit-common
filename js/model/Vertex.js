@@ -97,9 +97,8 @@ define( function( require ) {
     // @public {function|null} - added by Circuit.js so that listeners can be removed when vertices are removed
     this.vertexSelectedPropertyListener = null;
 
-    // @public {Pointer|null} - the scenery pointer that is dragging this Vertex, or null if it is not being dragged
-    // This is used to prevent multitouch bugs.
-    this.pointer = null;
+    // @public {boolean} - Whether the vertex is being actively dragged.
+    this.isDragged = false;
 
     // Tandem.addInstance is not necessary because all of the sub-properties are already tracked, we do not need to
     // refer to the Vertex by reference (tandem name) and it doesn't have events other than those in the sub-properties

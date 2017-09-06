@@ -273,6 +273,11 @@ define( function( require ) {
             screenView, circuitLayerNode, startPoint, dragged );
         }
       } );
+      this.dragHandler.startDrag = function( event ) {
+        if ( circuitLayerNode.canDragVertex( wire.startVertexProperty.get() ) && circuitLayerNode.canDragVertex( wire.endVertexProperty.get() ) ) {
+          SimpleDragHandler.prototype.startDrag.call( this, event );
+        }
+      };
       self.addInputListener( this.dragHandler );
 
       circuitLayerNode.circuit.selectedCircuitElementProperty.link( markAsDirty );

@@ -192,6 +192,11 @@ define( function( require ) {
         }
       }
     } );
+    this.dragHandler.startDrag = function( event ) {
+      if ( circuitLayerNode.canDragVertex( vertex ) ) {
+        SimpleDragHandler.prototype.startDrag.call( this, event );
+      }
+    };
 
     // @private {function} When Vertex becomes undraggable, interrupt the input listener
     this.interruptionListener = this.setDraggable.bind( this );

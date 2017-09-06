@@ -158,6 +158,11 @@ define( function( require ) {
         },
         tandem: tandem.createTandem( 'dragHandler' )
       } );
+      this.dragHandler.startDrag = function( event ) {
+        if ( circuitLayerNode.canDragVertex( circuitElement.endVertexProperty.get() ) ) {
+          SimpleDragHandler.prototype.startDrag.call( this, event );
+        }
+      };
       this.contentNode.addInputListener( this.dragHandler );
 
       if ( options.showHighlight ) {
