@@ -143,6 +143,7 @@ define( function( require ) {
       yMargin: 10
     } );
 
+    // Touch & Mouse area extends to the right across the control panel
     showLabelsCheckBox.touchArea = showLabelsCheckBox.localBounds.dilatedXY( 5, SPACING / 2 ).withMaxX( this.bounds.width - LEFT_MARGIN );
     showLabelsCheckBox.mouseArea = showLabelsCheckBox.touchArea;
 
