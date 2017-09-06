@@ -194,6 +194,7 @@ define( function( require ) {
     } );
     this.dragHandler.startDrag = function( event ) {
       if ( circuitLayerNode.canDragVertex( vertex ) ) {
+        circuitLayerNode.setVerticesDragging( vertex );
         SimpleDragHandler.prototype.startDrag.call( this, event );
       }
     };

@@ -275,6 +275,8 @@ define( function( require ) {
       } );
       this.dragHandler.startDrag = function( event ) {
         if ( circuitLayerNode.canDragVertex( wire.startVertexProperty.get() ) && circuitLayerNode.canDragVertex( wire.endVertexProperty.get() ) ) {
+          circuitLayerNode.setVerticesDragging( wire.startVertexProperty.get() );
+          circuitLayerNode.setVerticesDragging( wire.endVertexProperty.get() );
           SimpleDragHandler.prototype.startDrag.call( this, event );
         }
       };

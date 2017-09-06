@@ -480,11 +480,19 @@ define( function( require ) {
           return false;
         }
       }
-      for ( i = 0; i < vertices.length; i++ ) {
-        vertices[ i ].isDragged = true;
-      }
 
       return true;
+    },
+
+    /**
+     * Mark the vertex and its fixed connected vertices as being dragged, so they cannot be dragged by any other pointer.
+     * @param vertex
+     */
+    setVerticesDragging: function( vertex ) {
+      var vertices = this.circuit.findAllFixedVertices( vertex );
+      for ( var i = 0; i < vertices.length; i++ ) {
+        vertices[ i ].isDragged = true;
+      }
     },
 
     /**
