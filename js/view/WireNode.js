@@ -384,19 +384,6 @@ define( function( require ) {
         var isCurrentlyHighlighted = selectedCircuitElement === this.wire;
         this.highlightNode.visible = isCurrentlyHighlighted;
         if ( isCurrentlyHighlighted ) {
-          //REVIEW: Usually changing Shape (and getting stroked shape) is performance-intensive. If there are perf
-          //REVIEW: issues in this part, consider a more efficient way? Can we compose hit-areas and highlights out of
-          //REVIEW: parts for the end and center?
-          //REVIEW^(samreid): It is possible but rare to drag a highlighted wire, so I'm not worried about this part.
-          //REVIEW^(samreid): Regarding the getTouchArea, which calls getStrokedShape, do you think it would work
-          //REVIEW^(samreid): to just update that on drag end, or should it be done every delta?
-          //REVIEW: This looks like it gets updated whenever dragging a wire. Can you clarify if this is only
-          //REVIEW: conditionally called when it is highlighted?
-          //REVIEW: Preventing it from being highlighted during a drag would allow us to update it only on drag-end,
-          //REVIEW: which seems like (by far) the easiest way of handling this (or un-highlight if drag starts).
-          //REVIEW^(samreid): this code only happens when the node is currently highlighted, which is rare during a drag
-          //REVIEW^(samreid): I renamed the var `isCurrentlyHighlighted` to make that more clear, please let me know
-          //REVIEW^(samreid): what you recommend.
           this.highlightNode.shape = getHighlightStrokedShape( this.wire );
         }
 
