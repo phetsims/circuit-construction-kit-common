@@ -23,6 +23,7 @@ define( function( require ) {
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
+  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
@@ -44,11 +45,16 @@ define( function( require ) {
   var Bounds2 = require( 'DOT/Bounds2' );
   var Vector2 = require( 'DOT/Vector2' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var platform = require( 'PHET_CORE/platform' );
   var Node = require( 'SCENERY/nodes/Node' );
   var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
+
+  // constants
+
+  // Use WebGL everywhere it is available except on Mobile Safari 9, see https://github.com/phetsims/circuit-construction-kit-dc/issues/140
+  var RENDERER = platform.mobileSafari && platform.safari9 ? 'svg' : 'webgl';
 
   /**
    * @param {Circuit} circuit - the model Circuit
@@ -90,7 +96,7 @@ define( function( require ) {
 
     // @public {Node} - layer that contains the wires
     this.wireLayer = new Node( {
-      renderer: 'webgl',
+      renderer: RENDERER,
 
       // preallocate sprite sheet
       children: [ new Node( {
@@ -101,7 +107,7 @@ define( function( require ) {
 
     // @public {Node} - layer that shows the solder joints
     this.solderLayer = new Node( {
-      renderer: 'webgl',
+      renderer: RENDERER,
 
       // preallocate sprite sheet
       children: [ new Node( {
@@ -112,7 +118,7 @@ define( function( require ) {
 
     // @public {Node} - layer that shows the Vertex instances
     this.vertexLayer = new Node( {
-      renderer: 'webgl',
+      renderer: RENDERER,
 
       // preallocate sprite sheet
       children: [ new Node( {
@@ -125,7 +131,7 @@ define( function( require ) {
     this.fixedCircuitElementLayer = new Node( {
 
       // add a child eagerly so the WebGL block is all allocated when 1st object is dragged out of toolbox
-      renderer: 'webgl',
+      renderer: RENDERER,
       children: [ new Node( {
         visible: false,
         children: []
@@ -138,7 +144,7 @@ define( function( require ) {
 
     // @public {Node} - CircuitConstructionKitLightBulbNode calls addChild/removeChild to add sockets to the front layer
     this.lightBulbSocketLayer = new Node( {
-      renderer: 'webgl',
+      renderer: RENDERER,
 
       // preallocate sprite sheet
       children: [ new Node( {
@@ -149,7 +155,7 @@ define( function( require ) {
 
     // @public {Node} - layer that shows the Charge instances
     this.chargeLayer = new Node( {
-      renderer: 'webgl',
+      renderer: RENDERER,
 
       // preallocate sprite sheet
       children: [ new Node( {
