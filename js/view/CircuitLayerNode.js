@@ -45,7 +45,6 @@ define( function( require ) {
   var Bounds2 = require( 'DOT/Bounds2' );
   var Vector2 = require( 'DOT/Vector2' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var platform = require( 'PHET_CORE/platform' );
   var Node = require( 'SCENERY/nodes/Node' );
   var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
@@ -53,8 +52,10 @@ define( function( require ) {
 
   // constants
 
-  // Use WebGL everywhere it is available except on Mobile Safari 9, see https://github.com/phetsims/circuit-construction-kit-dc/issues/140
-  var RENDERER = platform.mobileSafari && platform.safari9 ? 'svg' : 'webgl';
+  // In https://github.com/phetsims/circuit-construction-kit-dc/issues/140 we decided to test every platform with
+  // svg rendering to avoid svg/webgl lag issues and have a consistent renderer across platforms.  However, we will
+  // leave in all of the WebGL code in case we have performance problems on a platform that require WebGL to be restored?
+  var RENDERER = 'svg';
 
   /**
    * @param {Circuit} circuit - the model Circuit
