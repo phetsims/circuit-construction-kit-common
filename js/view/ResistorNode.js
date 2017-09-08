@@ -184,12 +184,12 @@ define( function( require ) {
 
     // Adjust the dog so the charges travel along the tail/legs, see
     // https://github.com/phetsims/circuit-construction-kit-common/issues/364
-    if ( resistor.resistorType === 'dog' ) {
+    if ( resistor.resistorType === ResistorType.DOG ) {
       lifelikeResistorImageNode.translate( 0, -40 );
     }
 
     // Adjust hand origin as well
-    if ( resistor.resistorType === 'hand' ) {
+    if ( resistor.resistorType === ResistorType.HAND ) {
       lifelikeResistorImageNode.translate( 0, 14 );
     }
 
