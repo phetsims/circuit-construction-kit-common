@@ -134,7 +134,8 @@ define( function( require ) {
      * Utility function that creates a CircuitElementToolNode
      * @param {string} labelString
      * @param {number} count
-     * @param {Node} isIcon
+     * @param {Node} icon
+     * @param {Property.<CircuitElementViewType>} viewTypeProperty
      * @param {function} predicate - CircuitElement => boolean, used to count circuit elements of that kind
      * @param {function} createElement - (Vector2) => CircuitElement Function that creates a CircuitElement at the given location
      *                                 - for most components it is the center of the component.  For Light Bulbs, it is
@@ -143,11 +144,19 @@ define( function( require ) {
      * @returns {CircuitElementToolNode}
      * @private
      */
-    createCircuitElementToolNode: function( labelString, count, isIcon, predicate, createElement, options ) {
+    createCircuitElementToolNode: function( labelString, count, icon, predicate, createElement, options ) {
       options = _.extend( { iconScale: 1.0 }, options );
-      isIcon.mutate( { scale: options.iconScale * TOOLBOX_ICON_SIZE / Math.max( isIcon.width, isIcon.height ) } );
+      icon.mutate( { scale: options.iconScale * TOOLBOX_ICON_SIZE / Math.max( icon.width, icon.height ) } );
       return new CircuitElementToolNode(
-        labelString, this.showLabelsProperty, this.circuit, this.globalToCircuitLayerNodePoint, isIcon, count, this.createCounter( predicate ), createElement
+        labelString,
+        this.showLabelsProperty,
+        this.viewTypeProperty,
+        this.circuit,
+        this.globalToCircuitLayerNodePoint,
+        icon,
+        count,
+        this.createCounter( predicate ),
+        createElement
       );
     },
 
@@ -168,8 +177,7 @@ define( function( require ) {
       this.viewTypeProperty.link( function( view ) {
         wireNode.children = [ view === CircuitElementViewType.LIFELIKE ? lifelikeWireNode : schematicWireNode ];
       } );
-      var wireToolNode = this.createCircuitElementToolNode( wireString, count,
-        wireNode,
+      return this.createCircuitElementToolNode( wireString, count, wireNode,
         function( circuitElement ) { return circuitElement instanceof Wire; },
         function( position ) {
           var vertexPair = self.createVertexPair( position, WIRE_LENGTH );
@@ -181,7 +189,6 @@ define( function( require ) {
           );
         }
       );
-      return wireToolNode;
     },
 
     /**

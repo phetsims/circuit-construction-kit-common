@@ -393,9 +393,8 @@ define( function( require ) {
         if ( isCurrentlyHighlighted ) {
           this.highlightNode.shape = getHighlightStrokedShape( this.wire );
         }
-
-        this.touchArea = getTouchArea( this.wire );
       }
+      this.touchArea = getTouchArea( this.wire );
     },
 
     /**

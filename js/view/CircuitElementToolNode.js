@@ -23,6 +23,7 @@ define( function( require ) {
   /**
    * @param {string} labelText
    * @param {BooleanProperty} showLabelsProperty
+   * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Circuit} circuit
    * @param {function} globalToCircuitLayerNodePoint Vector2=>Vector2 global point to coordinate frame of circuitLayerNode
    * @param {Node} iconNode
@@ -35,7 +36,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function CircuitElementToolNode( labelText, showLabelsProperty, circuit, globalToCircuitLayerNodePoint, iconNode, maxNumber, count, createElement, options ) {
+  function CircuitElementToolNode( labelText, showLabelsProperty, viewTypeProperty, circuit, globalToCircuitLayerNodePoint, iconNode, maxNumber, count, createElement, options ) {
     var self = this;
     var labelNode = new Text( labelText, { fontSize: 12, maxWidth: TOOLBOX_ICON_SIZE } );
     showLabelsProperty.linkAttribute( labelNode, 'visible' );
@@ -83,14 +84,18 @@ define( function( require ) {
       self.visible = count() < maxNumber;
     } );
 
-    // Expand touch area around text, see https://github.com/phetsims/circuit-construction-kit-dc/issues/82
-    this.touchArea = this.localBounds.withOffsets(
-      options.touchAreaExpansionLeft,
-      options.touchAreaExpansionTop,
-      options.touchAreaExpansionRight,
-      options.touchAreaExpansionBottom
-    );
-    this.mouseArea = this.touchArea;
+    // Update touch areas when lifelike/schematic changes
+    viewTypeProperty.link( function() {
+
+      // Expand touch area around text, see https://github.com/phetsims/circuit-construction-kit-dc/issues/82
+      self.touchArea = self.localBounds.withOffsets(
+        options.touchAreaExpansionLeft,
+        options.touchAreaExpansionTop,
+        options.touchAreaExpansionRight,
+        options.touchAreaExpansionBottom
+      );
+      self.mouseArea = self.touchArea;
+    } );
   }
 
   circuitConstructionKitCommon.register( 'CircuitElementToolNode', CircuitElementToolNode );
