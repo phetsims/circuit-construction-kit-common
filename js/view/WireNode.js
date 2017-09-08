@@ -118,7 +118,7 @@ define( function( require ) {
     var startPoint = wire.startPositionProperty.get();
     var endPoint = wire.endPositionProperty.get();
     var distance = endPoint.distance( startPoint );
-    var vertexInset = 18;
+    var vertexInset = 0; // run to the edge of the wire as we do for FixedCircuitElements
     var touchAreaStart = null;
     var touchAreaEnd = null;
 
