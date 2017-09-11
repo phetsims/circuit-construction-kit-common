@@ -37,6 +37,9 @@ define( function( require ) {
   // scratch matrix that is used to set values to scenery
   var NODE_MATRIX = new Matrix3();
 
+  // Below this amperage, no conventional current will be rendered.
+  var CONVENTIONAL_CHARGE_THRESHOLD = 1E-3;
+
   // position the electron--note the offsets that were used to make it look exactly centered, see
   // https://github.com/phetsims/circuit-construction-kit-dc/issues/104
   var ELECTRON_OFFSET = Matrix3.translation( -ELECTRON_CHARGE_NODE.width / 2 - 0.5, -ELECTRON_CHARGE_NODE.height / 2 - 0.5 );
@@ -135,7 +138,7 @@ define( function( require ) {
     updateVisible: function() {
       this.visible = this.charge.visibleProperty.get() &&
                      this.outsideOfBlackBoxProperty.get() &&
-                     ( Math.abs( this.charge.circuitElement.currentProperty.get() ) > 1E-6 || this.charge.charge < 0 );
+                     ( Math.abs( this.charge.circuitElement.currentProperty.get() ) > CONVENTIONAL_CHARGE_THRESHOLD || this.charge.charge < 0 );
     }
   }, {
 
