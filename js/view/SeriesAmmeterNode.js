@@ -9,19 +9,19 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Property = require( 'AXON/Property' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
+  var Color = require( 'SCENERY/util/Color' );
   var FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var Panel = require( 'SUN/Panel' );
+  var Property = require( 'AXON/Property' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Text = require( 'SCENERY/nodes/Text' );
   var VBox = require( 'SCENERY/nodes/VBox' );
-  var Color = require( 'SCENERY/util/Color' );
-  var Panel = require( 'SUN/Panel' );
 
   // strings
   var currentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/current' );

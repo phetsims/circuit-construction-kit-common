@@ -12,12 +12,12 @@ define( function( require ) {
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
-  var RotateBatteryButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/RotateBatteryButton' );
-  var inherit = require( 'PHET_CORE/inherit' );
   var HBox = require( 'SCENERY/nodes/HBox' );
+  var inherit = require( 'PHET_CORE/inherit' );
   var NumberControl = require( 'SCENERY_PHET/NumberControl' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var RotateBatteryButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/RotateBatteryButton' );
+  var TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
 
   // constants
   var FONT = new PhetFont( CircuitConstructionKitCommonConstants.FONT_SIZE );

@@ -9,22 +9,22 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
-  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
-  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
-  var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
-  var Matrix3 = require( 'DOT/Matrix3' );
-  var Util = require( 'DOT/Util' );
-  var Vector2 = require( 'DOT/Vector2' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  var RichText = require( 'SCENERY/nodes/RichText' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Color = require( 'SCENERY/util/Color' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
+  var Matrix3 = require( 'DOT/Matrix3' );
   var Panel = require( 'SUN/Panel' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
+  var RichText = require( 'SCENERY/nodes/RichText' );
+  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+  var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
+  var Text = require( 'SCENERY/nodes/Text' );
+  var Util = require( 'DOT/Util' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // strings
   var resistanceOhmsSymbolString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhmsSymbol' );

@@ -10,16 +10,16 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   var BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var inherit = require( 'PHET_CORE/inherit' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
+  var Vector2 = require( 'DOT/Vector2' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
-  var Vector2 = require( 'DOT/Vector2' );
-  var inherit = require( 'PHET_CORE/inherit' );
 
   /**
    * @constructor

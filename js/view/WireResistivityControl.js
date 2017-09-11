@@ -10,12 +10,12 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var CircuitConstructionKitAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitAccordionBox' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var CircuitConstructionKitAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitAccordionBox' );
+  var HSlider = require( 'SUN/HSlider' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var HSlider = require( 'SUN/HSlider' );
 
   // strings
   var lotsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/lots' );

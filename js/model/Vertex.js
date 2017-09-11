@@ -10,13 +10,13 @@ define( function( require ) {
 
   // modules
   var BooleanProperty = require( 'AXON/BooleanProperty' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Emitter = require( 'AXON/Emitter' );
+  var inherit = require( 'PHET_CORE/inherit' );
   var NumberProperty = require( 'AXON/NumberProperty' );
   var Property = require( 'AXON/Property' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var TVector2 = require( 'DOT/TVector2' );
-  var inherit = require( 'PHET_CORE/inherit' );
   var Tandem = require( 'TANDEM/Tandem' );
+  var TVector2 = require( 'DOT/TVector2' );
 
   // Index counter for debugging
   var counter = 0;

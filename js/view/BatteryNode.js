@@ -9,16 +9,16 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
-  var FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
-  var Matrix3 = require( 'DOT/Matrix3' );
-  var Shape = require( 'KITE/Shape' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Image = require( 'SCENERY/nodes/Image' );
-  var Path = require( 'SCENERY/nodes/Path' );
   var Color = require( 'SCENERY/util/Color' );
+  var FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
+  var Image = require( 'SCENERY/nodes/Image' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var Matrix3 = require( 'DOT/Matrix3' );
+  var Path = require( 'SCENERY/nodes/Path' );
+  var Shape = require( 'KITE/Shape' );
 
   // images
   var batteryHighImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery-high.png' );

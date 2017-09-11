@@ -10,8 +10,8 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var Util = require( 'DOT/Util' );
   var Color = require( 'SCENERY/util/Color' );
+  var Util = require( 'DOT/Util' );
 
   // See https://en.wikipedia.org/wiki/Electronic_color_code#Resistor_color-coding
   // Tolerances below gold were eliminated to reduce variance in the tolerance band, see

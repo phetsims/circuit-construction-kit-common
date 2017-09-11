@@ -9,14 +9,14 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var NumberProperty = require( 'AXON/NumberProperty' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
-  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
   var Util = require( 'DOT/Util' );
   var Vector2 = require( 'DOT/Vector2' );
-  var inherit = require( 'PHET_CORE/inherit' );
+  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
 
   // constants
 

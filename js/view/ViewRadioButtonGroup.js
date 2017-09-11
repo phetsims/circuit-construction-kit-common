@@ -10,17 +10,17 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Property = require( 'AXON/Property' );
+  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
+  var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
+  var BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
-  var BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
-  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
-  var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
-  var Vector2 = require( 'DOT/Vector2' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Property = require( 'AXON/Property' );
   var RadioButtonGroup = require( 'SUN/buttons/RadioButtonGroup' );
+  var Vector2 = require( 'DOT/Vector2' );
+  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
 
   // constants
   var BATTERY_LENGTH = CircuitConstructionKitCommonConstants.BATTERY_LENGTH;

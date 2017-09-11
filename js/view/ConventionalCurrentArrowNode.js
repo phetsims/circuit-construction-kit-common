@@ -9,10 +9,10 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Color = require( 'SCENERY/util/Color' );
   var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var Color = require( 'SCENERY/util/Color' );
+  var inherit = require( 'PHET_CORE/inherit' );
 
   // constants
   var ARROW_LENGTH = 23; // length of the arrow in view coordinates

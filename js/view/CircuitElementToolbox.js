@@ -10,14 +10,14 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var inherit = require( 'PHET_CORE/inherit' );
   var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
-  var Color = require( 'SCENERY/util/Color' );
   var Carousel = require( 'SUN/Carousel' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var Color = require( 'SCENERY/util/Color' );
+  var HBox = require( 'SCENERY/nodes/HBox' );
+  var inherit = require( 'PHET_CORE/inherit' );
   var PageControl = require( 'SUN/PageControl' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
 
   // constants
   var CAROUSEL_ITEM_SPACING = 27;

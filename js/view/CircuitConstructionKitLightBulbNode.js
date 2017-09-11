@@ -10,27 +10,27 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var NumberProperty = require( 'AXON/NumberProperty' );
-  var Property = require( 'AXON/Property' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
+  var Color = require( 'SCENERY/util/Color' );
   var CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CustomLightBulbNode' );
   var FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
+  var Image = require( 'SCENERY/nodes/Image' );
+  var inherit = require( 'PHET_CORE/inherit' );
   var LightBulbSocketNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/LightBulbSocketNode' );
   var Matrix3 = require( 'DOT/Matrix3' );
+  var Node = require( 'SCENERY/nodes/Node' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
+  var Path = require( 'SCENERY/nodes/Path' );
+  var Property = require( 'AXON/Property' );
+  var Shape = require( 'KITE/Shape' );
   var Util = require( 'DOT/Util' );
   var Vector2 = require( 'DOT/Vector2' );
-  var Shape = require( 'KITE/Shape' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Image = require( 'SCENERY/nodes/Image' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var Color = require( 'SCENERY/util/Color' );
 
   // images
-  var lightBulbImageHigh = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-middle-high.png' );
   var lightBulbImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-middle.png' );
+  var lightBulbImageHigh = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-middle-high.png' );
 
   // constants
   var SCRATCH_MATRIX = new Matrix3();

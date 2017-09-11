@@ -9,22 +9,22 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var Circle = require( 'SCENERY/nodes/Circle' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
-  var Matrix3 = require( 'DOT/Matrix3' );
-  var Vector2 = require( 'DOT/Vector2' );
-  var Shape = require( 'KITE/Shape' );
-  var LineStyles = require( 'KITE/util/LineStyles' );
+  var Color = require( 'SCENERY/util/Color' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-  var Circle = require( 'SCENERY/nodes/Circle' );
   var Line = require( 'SCENERY/nodes/Line' );
+  var LinearGradient = require( 'SCENERY/util/LinearGradient' );
+  var LineStyles = require( 'KITE/util/LineStyles' );
+  var Matrix3 = require( 'DOT/Matrix3' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Path = require( 'SCENERY/nodes/Path' );
-  var Color = require( 'SCENERY/util/Color' );
-  var LinearGradient = require( 'SCENERY/util/LinearGradient' );
+  var Shape = require( 'KITE/Shape' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // constants
   var LIFELIKE_LINE_WIDTH = 16; // line width in screen coordinates

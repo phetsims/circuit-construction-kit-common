@@ -10,29 +10,29 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var Emitter = require( 'AXON/Emitter' );
-  var NumberProperty = require( 'AXON/NumberProperty' );
-  var ObservableArray = require( 'AXON/ObservableArray' );
-  var Property = require( 'AXON/Property' );
+  var Charge = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Charge' );
+  var ChargeAnimator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ChargeAnimator' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var CircuitConstructionKitCommonQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonQueryParameters' );
-  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
-  var ChargeAnimator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ChargeAnimator' );
   var CurrentType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CurrentType' );
+  var Emitter = require( 'AXON/Emitter' );
   var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
+  var inherit = require( 'PHET_CORE/inherit' );
   var InteractionMode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/InteractionMode' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   var ModifiedNodalAnalysisCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuit' );
   var ModifiedNodalAnalysisCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuitElement' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
+  var ObservableArray = require( 'AXON/ObservableArray' );
+  var Property = require( 'AXON/Property' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
+  var Vector2 = require( 'DOT/Vector2' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
-  var Charge = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Charge' );
-  var Vector2 = require( 'DOT/Vector2' );
-  var inherit = require( 'PHET_CORE/inherit' );
 
   // phet-io modules
   var TObject = require( 'ifphetio!PHET_IO/types/TObject' );

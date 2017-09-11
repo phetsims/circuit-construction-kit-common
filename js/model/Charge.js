@@ -9,10 +9,10 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Emitter = require( 'AXON/Emitter' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var Matrix3 = require( 'DOT/Matrix3' );
+  var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Matrix3 = require( 'DOT/Matrix3' );
 
   /**
    * @param {CircuitElement} circuitElement - the circuit element the charge is in.

@@ -13,8 +13,8 @@ define( function( require ) {
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElement' );
-  var Range = require( 'DOT/Range' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Range = require( 'DOT/Range' );
 
   /**
    * @param {Vertex} startVertex

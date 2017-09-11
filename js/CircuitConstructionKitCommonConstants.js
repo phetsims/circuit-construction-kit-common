@@ -10,9 +10,9 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var Color = require( 'SCENERY/util/Color' );
   var Dimension2 = require( 'DOT/Dimension2' );
   var Range = require( 'DOT/Range' );
-  var Color = require( 'SCENERY/util/Color' );
 
   // constants
   var CircuitConstructionKitCommonConstants = {

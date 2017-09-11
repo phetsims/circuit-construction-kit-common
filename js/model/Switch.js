@@ -10,12 +10,12 @@ define( function( require ) {
 
   // modules
   var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var NumberProperty = require( 'AXON/NumberProperty' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
   var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
-  var Util = require( 'DOT/Util' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
+  var Util = require( 'DOT/Util' );
 
   // constants
   var SWITCH_LENGTH = CircuitConstructionKitCommonConstants.SWITCH_LENGTH;

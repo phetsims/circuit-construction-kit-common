@@ -11,10 +11,10 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var inherit = require( 'PHET_CORE/inherit' );
   var HBox = require( 'SCENERY/nodes/HBox' );
-  var ZoomButton = require( 'SCENERY_PHET/buttons/ZoomButton' );
+  var inherit = require( 'PHET_CORE/inherit' );
   var Tandem = require( 'TANDEM/Tandem' );
+  var ZoomButton = require( 'SCENERY_PHET/buttons/ZoomButton' );
 
   // constants
   var ZOOMED_IN = 1;

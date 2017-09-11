@@ -10,12 +10,12 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var Color = require( 'SCENERY/util/Color' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Path = require( 'SCENERY/nodes/Path' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
-  var Color = require( 'SCENERY/util/Color' );
   var PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
   var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
 
   // constants
   var ARROW_ICON_SCALE = 0.012;

@@ -10,31 +10,31 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Property = require( 'AXON/Property' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var CircuitConstructionKitCommonQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonQueryParameters' );
-  var SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
+  var AlignBox = require( 'SCENERY/nodes/AlignBox' );
+  var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
   var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/AmmeterNode' );
   var BatteryResistanceControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryResistanceControl' );
   var ChargeSpeedThrottlingReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ChargeSpeedThrottlingReadoutNode' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CircuitConstructionKitCommonQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonQueryParameters' );
   var CircuitElementEditContainerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditContainerNode' );
   var CircuitElementToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolbox' );
   var CircuitLayerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitLayerNode' );
   var DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/DisplayOptionsPanel' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var Node = require( 'SCENERY/nodes/Node' );
+  var PlayPauseButton = require( 'SCENERY_PHET/buttons/PlayPauseButton' );
+  var Property = require( 'AXON/Property' );
+  var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
+  var ScreenView = require( 'JOIST/ScreenView' );
   var SensorToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SensorToolbox' );
+  var SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
   var ViewRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ViewRadioButtonGroup' );
   var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VoltmeterNode' );
   var WireResistivityControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/WireResistivityControl' );
   var ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ZoomControlPanel' );
-  var ScreenView = require( 'JOIST/ScreenView' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var AlignBox = require( 'SCENERY/nodes/AlignBox' );
-  var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
-  var PlayPauseButton = require( 'SCENERY_PHET/buttons/PlayPauseButton' );
-  var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
 
   // constants
   var VERTICAL_MARGIN = CircuitConstructionKitCommonConstants.VERTICAL_MARGIN;

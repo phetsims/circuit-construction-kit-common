@@ -11,19 +11,19 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var CircuitConstructionKitAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitAccordionBox' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var CircuitConstructionKitAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitAccordionBox' );
-  var Util = require( 'DOT/Util' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
   var Color = require( 'SCENERY/util/Color' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var HSlider = require( 'SUN/HSlider' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var Node = require( 'SCENERY/nodes/Node' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+  var Text = require( 'SCENERY/nodes/Text' );
+  var Util = require( 'DOT/Util' );
+  var VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
   var batteryResistanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/batteryResistance' );

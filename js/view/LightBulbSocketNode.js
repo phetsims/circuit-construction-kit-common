@@ -9,12 +9,12 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var NumberProperty = require( 'AXON/NumberProperty' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CustomLightBulbNode' );
   var FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
-  var Matrix3 = require( 'DOT/Matrix3' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Matrix3 = require( 'DOT/Matrix3' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   // constants

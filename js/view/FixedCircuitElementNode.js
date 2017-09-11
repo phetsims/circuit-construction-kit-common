@@ -9,19 +9,19 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Property = require( 'AXON/Property' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
-  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
-  var FixedCircuitElementHighlightNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementHighlightNode' );
-  var Matrix3 = require( 'DOT/Matrix3' );
-  var Vector2 = require( 'DOT/Vector2' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-  var Image = require( 'SCENERY/nodes/Image' );
-  var Node = require( 'SCENERY/nodes/Node' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
+  var FixedCircuitElementHighlightNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementHighlightNode' );
+  var Image = require( 'SCENERY/nodes/Image' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var Matrix3 = require( 'DOT/Matrix3' );
+  var Node = require( 'SCENERY/nodes/Node' );
+  var Property = require( 'AXON/Property' );
+  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // images
   var fireImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );

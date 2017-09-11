@@ -10,10 +10,10 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
 
   // strings
   var theSwitchIsClosedString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/theSwitchIsClosed' );

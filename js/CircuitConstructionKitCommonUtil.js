@@ -10,9 +10,9 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var Util = require( 'DOT/Util' );
   var inherit = require( 'PHET_CORE/inherit' );
   var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+  var Util = require( 'DOT/Util' );
 
   // strings
   var currentUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/currentUnits' );

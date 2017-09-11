@@ -10,10 +10,10 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var Vector2 = require( 'DOT/Vector2' );
-  var Shape = require( 'KITE/Shape' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Path = require( 'SCENERY/nodes/Path' );
+  var Shape = require( 'KITE/Shape' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   /**
    * @param {Color|string} color - the color of the wire

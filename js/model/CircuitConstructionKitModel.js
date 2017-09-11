@@ -10,21 +10,21 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Ammeter' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var Emitter = require( 'AXON/Emitter' );
-  var NumberProperty = require( 'AXON/NumberProperty' );
-  var Property = require( 'AXON/Property' );
+  var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Circuit' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonQueryParameters' );
-  var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Ammeter' );
-  var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Circuit' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
+  var EaseAnimation = require( 'TWIXT/EaseAnimation' );
+  var Emitter = require( 'AXON/Emitter' );
+  var inherit = require( 'PHET_CORE/inherit' );
   var InteractionMode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/InteractionMode' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
+  var Property = require( 'AXON/Property' );
+  var Util = require( 'DOT/Util' );
   var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Voltmeter' );
   var ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ZoomControlPanel' );
-  var Util = require( 'DOT/Util' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var EaseAnimation = require( 'TWIXT/EaseAnimation' );
 
   // phet-io modules
   var TString = require( 'ifphetio!PHET_IO/types/TString' );
