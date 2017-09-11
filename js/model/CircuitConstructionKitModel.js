@@ -11,22 +11,22 @@ define( function( require ) {
 
   // modules
   var BooleanProperty = require( 'AXON/BooleanProperty' );
+  var Emitter = require( 'AXON/Emitter' );
+  var NumberProperty = require( 'AXON/NumberProperty' );
   var Property = require( 'AXON/Property' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitConstructionKitCommonQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonQueryParameters' );
   var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Ammeter' );
   var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Circuit' );
+  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
+  var InteractionMode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/InteractionMode' );
   var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Voltmeter' );
   var ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ZoomControlPanel' );
   var Util = require( 'DOT/Util' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Emitter = require( 'AXON/Emitter' );
   var EaseAnimation = require( 'TWIXT/EaseAnimation' );
-  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
-  var InteractionMode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/InteractionMode' );
 
   // phet-io modules
-  var TNumber = require( 'ifphetio!PHET_IO/types/TNumber' );
   var TString = require( 'ifphetio!PHET_IO/types/TString' );
 
   // constants
@@ -79,15 +79,13 @@ define( function( require ) {
     } );
 
     // @public {Property.<number>} scaling applied to the circuit node so the user can zoom out and make larger circuits
-    this.selectedZoomProperty = new Property( 1, {
-      tandem: tandem.createTandem( 'selectedZoomProperty' ),
-      phetioValueType: TNumber()
+    this.selectedZoomProperty = new NumberProperty( 1, {
+      tandem: tandem.createTandem( 'selectedZoomProperty' )
     } );
 
     // @public (read-only) {Property.<number>} the animated value of the zoom level
-    this.currentZoomProperty = new Property( this.selectedZoomProperty.get(), {
-      tandem: tandem.createTandem( 'currentZoomProperty' ),
-      phetioValueType: TNumber()
+    this.currentZoomProperty = new NumberProperty( this.selectedZoomProperty.get(), {
+      tandem: tandem.createTandem( 'currentZoomProperty' )
     } );
 
     this.selectedZoomProperty.lazyLink( function( newValue ) {

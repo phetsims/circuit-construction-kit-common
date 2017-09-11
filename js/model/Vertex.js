@@ -18,9 +18,6 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Tandem = require( 'TANDEM/Tandem' );
 
-  // phet-io modules
-  var TNumber = require( 'ifphetio!PHET_IO/types/TNumber' );
-
   // Index counter for debugging
   var counter = 0;
 
@@ -57,7 +54,7 @@ define( function( require ) {
     // @public {NumberProperty} Relative voltage of the node, determined by Circuit.solve
     this.voltageProperty = new NumberProperty( 0, {
       tandem: options.tandem && options.tandem.createTandem( 'voltageProperty' ),
-      phetioValueType: TNumber( { units: 'volts' } )
+      units: 'volts'
     } );
 
     // @public {BooleanProperty} - after the user taps on a vertex it becomes selected, highlighting it and showing a

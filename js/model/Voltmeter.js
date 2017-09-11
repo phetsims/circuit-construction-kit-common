@@ -17,9 +17,6 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var inherit = require( 'PHET_CORE/inherit' );
 
-  // phet-io modules
-  var TNumber = require( 'ifphetio!PHET_IO/types/TNumber' );
-
   /**
    * @param {Tandem} tandem
    * @constructor
@@ -31,7 +28,7 @@ define( function( require ) {
     // @public {Property.<number|null>} the voltage the probe is reading (in volts) or null if unconnected
     this.voltageProperty = new Property( null, {
       tandem: tandem.createTandem( 'voltageProperty' ),
-      phetioValueType: TNumber( { units: 'volts' } )
+      units: 'volts'
     } );
 
     // @public {Property.<Vector2>} - the position of the tip of the red probe in model=view coordinates.

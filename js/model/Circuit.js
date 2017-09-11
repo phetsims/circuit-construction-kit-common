@@ -35,7 +35,6 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
 
   // phet-io modules
-  var TNumber = require( 'ifphetio!PHET_IO/types/TNumber' );
   var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
   var TString = require( 'ifphetio!PHET_IO/types/TString' );
 
@@ -68,15 +67,13 @@ define( function( require ) {
     // @public {NumberProperty} - All wires share the same resistivity, which is defined by
     // resistance = resistivity * length. On the Lab Screen, there is a wire resistivity control
     this.wireResistivityProperty = new NumberProperty( CircuitConstructionKitCommonConstants.DEFAULT_RESISTIVITY, {
-      tandem: tandem.createTandem( 'wireResistivityProperty' ),
-      phetioValueType: TNumber()
+      tandem: tandem.createTandem( 'wireResistivityProperty' )
     } );
 
     // @public {NumberProperty} - All batteries share a single internal resistance value, which can be edited with
     // a control on the Lab Screen
     this.batteryResistanceProperty = new NumberProperty( CircuitConstructionKitCommonConstants.DEFAULT_BATTERY_RESISTANCE, {
-      tandem: tandem.createTandem( 'batteryResistanceProperty' ),
-      phetioValueType: TNumber()
+      tandem: tandem.createTandem( 'batteryResistanceProperty' )
     } );
 
     // @public {ObservableArray.<CircuitElement>} - The different types of CircuitElement the circuit may

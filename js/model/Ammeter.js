@@ -32,7 +32,8 @@ define( function( require ) {
     // display in the view.  Null means the ammeter is not on a wire.
     this.currentProperty = new Property( null, {
       tandem: tandem.createTandem( 'currentProperty' ),
-      phetioValueType: TNumber( { units: 'amperes' } )
+      units: 'amperes',
+      phetioValueType: TNumber
     } );
 
     // @public {Property.<Vector2>} - the position of the tip of the probe
