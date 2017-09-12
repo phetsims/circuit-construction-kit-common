@@ -66,6 +66,19 @@ define( function( require ) {
      */
     getCircuitProperties: function() {
       return [ this.voltageProperty ];
+    },
+
+    /**
+     * Get all intrinsic properties of this object, which can be used to load it at a later time.
+     * @returns {Object}
+     * @public
+     */
+    toIntrinsicStateObject: function() {
+      var parent = FixedCircuitElement.prototype.toIntrinsicStateObject.call( this );
+      return _.extend( parent, {
+        batteryType: this.batteryType,
+        voltage: this.voltageProperty.value
+      } );
     }
   } );
 } );

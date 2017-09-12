@@ -29,6 +29,7 @@ define( function( require ) {
   var ObservableArray = require( 'AXON/ObservableArray' );
   var Property = require( 'AXON/Property' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
+  var SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
   var Vector2 = require( 'DOT/Vector2' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
@@ -60,6 +61,10 @@ define( function( require ) {
    */
   function Circuit( tandem, options ) {
     var self = this;
+
+    setInterval( function() {
+      console.log( self.toStateObject() );
+    }, 2000 );
 
     options = _.extend( { blackBoxStudy: false }, options );
     this.blackBoxStudy = options.blackBoxStudy;
@@ -1200,37 +1205,30 @@ define( function( require ) {
      */
     toStateObject: function() {
       var self = this;
-      var getVertexIndex = function( vertex ) {
-        var vertexIndex = self.vertices.indexOf( vertex );
-        assert && assert( vertexIndex >= 0, 'vertex should have an index' );
-        return vertexIndex;
+
+      // TODO: better way?
+      var typeMap = {
+        wire: Wire,
+        battery: Battery,
+        resistor: Resistor,
+        seriesAmmeter: SeriesAmmeter,
+        lightBulb: LightBulb,
+        switch: Switch
       };
 
-      /**
-       * @param {ObservableArray.<CircuitElement>} circuitElements
-       * @returns {Array}
-       */
-      var getArray = function( circuitElements ) {
-        return circuitElements.getArray().map( function( element ) {
-          return {
-            startVertex: getVertexIndex( element.startVertexProperty.get() ),
-            endVertex: getVertexIndex( element.endVertexProperty.get() )
-
-            // TODO(phet-io): include other circuit-element-specific data for save/load.  Save code should be adjacent
-            // TODO(phet-io): to load code.  If there's a lot of cross-file or shared attributes, it would be helpful to doc.
-            // TODO(phet-io): Presumably toStateObject() should be a method, and fromStateObject( ... ) should be a static method on the circuit element?
-          };
-        } );
+      var getKey = function( circuitElement ) {
+        var keys = _.keys( typeMap );
+        for ( var i = 0; i < keys.length; i++ ) {
+          var key = keys[ i ];
+          if ( circuitElement instanceof typeMap[ key ] ) {
+            return key;
+          }
+        }
       };
+
       return {
-
-        // TODO (phet-io): better save state that matches circuit structure
-        // Return an array of CircuitElement that indicate their type
-        wires: getArray( this.circuitElements.filter( function( c ) {return c instanceof Wire;} ) ),
-        batteries: getArray( this.circuitElements.filter( function( c ) {return c instanceof Battery;} ) ),
-        lightBulbs: getArray( this.circuitElements.filter( function( c ) {return c instanceof LightBulb;} ) ),
-        resistors: getArray( this.circuitElements.filter( function( c ) {return c instanceof Resistor;} ) ),
-        switches: getArray( this.circuitElements.filter( function( c ) {return c instanceof Switch;} ) ),
+        wireResistivity: 0,
+        batteryResistance: 0,
         vertices: this.vertices.getArray().map( function( vertex ) {
           return {
             x: vertex.positionProperty.get().x,
@@ -1240,8 +1238,19 @@ define( function( require ) {
               draggable: vertex.draggableProperty.get()
             }
           };
+        } ),
+        circuitElements: this.circuitElements.getArray().map( function( circuitElement ) {
+          return _.extend( {
+            type: getKey( circuitElement ),
+            startVertex: self.vertices.indexOf( circuitElement.startVertexProperty.get() ),
+            endVertex: self.vertices.indexOf( circuitElement.endVertexProperty.get() )
+          }, circuitElement.toIntrinsicStateObject() );
         } )
       };
+    },
+
+    fromStateObject: function( stateObject ) {
+      this.clear();
     }
   } );
 } );

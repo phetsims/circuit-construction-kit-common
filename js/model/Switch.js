@@ -75,13 +75,11 @@ define( function( require ) {
           var distanceAlongSegment = Util.linear( SWITCH_START, SWITCH_END, 0, 1, fractionAlongWire );
           var translation = pivot.blend( rotatedPoint, distanceAlongSegment );
           matrix.setToTranslationRotationPoint( translation, endPosition.minus( startPosition ).angle() );
-          return;
         }
         else {
 
           // For a closed switch, there is a straight path from the start vertex to the end vertex
           FixedCircuitElement.prototype.updateMatrixForPoint.call( this, distanceAlongWire, matrix );
-          return;
         }
       },
 
@@ -93,7 +91,19 @@ define( function( require ) {
        */
       getCircuitProperties: function() {
         return [ this.resistanceProperty, this.closedProperty ];
-      }
+      },
+
+    /**
+     * Get all intrinsic properties of this object, which can be used to load it at a later time.
+     * @returns {Object}
+     * @public
+     */
+    toIntrinsicStateObject: function() {
+      var parent = FixedCircuitElement.prototype.toIntrinsicStateObject.call( this );
+      return _.extend( parent, {
+        closed: this.closedProperty.value
+      } );
+    }
     }
   );
 } );

@@ -293,6 +293,15 @@ define( function( require ) {
       var start = this.startVertexProperty.value.positionProperty.get();
       var end = this.endVertexProperty.value.positionProperty.get();
       return start.average( end );
+    },
+
+    /**
+     * Get all intrinsic properties of this object, which can be used to load it at a later time.
+     * @returns {Object}
+     * @public
+     */
+    toIntrinsicStateObject: function() {
+      return { tandemName: this.tandemName };
     }
   } );
 } );

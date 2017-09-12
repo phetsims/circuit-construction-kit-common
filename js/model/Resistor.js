@@ -75,6 +75,20 @@ define( function( require ) {
      */
     getCircuitProperties: function() {
       return [ this.resistanceProperty ];
+    },
+
+    /**
+     * Get all intrinsic properties of this object, which can be used to load it at a later time.
+     * @returns {Object}
+     * @public
+     */
+    toIntrinsicStateObject: function() {
+      var parent = FixedCircuitElement.prototype.toIntrinsicStateObject.call( this );
+      return _.extend( parent, {
+        resistorType: this.resistorType,
+        resistance: this.resistanceProperty.value,
+        resistorLength: this.chargePathLength
+      } );
     }
   } );
 } );
