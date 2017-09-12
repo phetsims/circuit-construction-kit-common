@@ -74,7 +74,9 @@ define( function( require ) {
     var electronsBox = new HBox( {
       children: [
         currentTypeRadioButtonLabelGroup.createBox( new Text( electronsString, TEXT_OPTIONS ), BOX_ALIGNMENT ),
-        new ElectronChargeNode()
+
+        // Match the size to the play area electrons, see https://github.com/phetsims/circuit-construction-kit-dc/issues/154
+        new ElectronChargeNode( { scale: 0.75 } )
       ],
       spacing: textIconSpacing
     } );
