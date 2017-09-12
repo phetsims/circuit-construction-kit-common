@@ -42,6 +42,9 @@ define( function( require ) {
                                       // are more of an implementation detail rather than a feature
     }, options );
 
+    // @public (read-only)
+    this.tandem = options.tandem;
+
     // @public {Property.<Vector2>} - location of the vertex
     this.positionProperty = new Property( position, {
       tandem: options.tandem && options.tandem.createTandem( 'positionProperty' ),

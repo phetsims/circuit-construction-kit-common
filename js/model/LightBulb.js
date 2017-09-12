@@ -192,6 +192,19 @@ define( function( require ) {
       }
 
       throw new Error( 'exceeded charge path bounds' );
+    },
+
+    /**
+     * Get all intrinsic properties of this object, which can be used to load it at a later time.
+     * @returns {Object}
+     * @public
+     */
+    toIntrinsicStateObject: function() {
+      var parent = FixedCircuitElement.prototype.toIntrinsicStateObject.call( this );
+      return _.extend( parent, {
+        highResistance: this.highResistance,
+        resistance: this.resistanceProperty.value
+      } );
     }
   }, {
 

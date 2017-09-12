@@ -31,6 +31,7 @@ define( function( require ) {
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   var SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
+  var Tandem = require( 'TANDEM/Tandem' );
   var Vector2 = require( 'DOT/Vector2' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
@@ -62,9 +63,14 @@ define( function( require ) {
   function Circuit( tandem, options ) {
     var self = this;
 
-    // setInterval( function() {
-    //   console.log( self.toStateObject() );
-    // }, 2000 );
+    // TODO: Remove these before RC test
+    window.getCircuitJSONString = function() {
+      console.log( JSON.stringify( self.toStateObject() ) );
+    };
+
+    window.setCircuitFromJSONString = function( string ) {
+      self.setFromStateObject( JSON.parse( string ) );
+    };
 
     options = _.extend( { blackBoxStudy: false }, options );
     this.blackBoxStudy = options.blackBoxStudy;
@@ -1227,8 +1233,8 @@ define( function( require ) {
       };
 
       return {
-        wireResistivity: 0,
-        batteryResistance: 0,
+        wireResistivity: this.wireResistivityProperty.value,
+        batteryResistance: this.batteryResistanceProperty.value,
         vertices: this.vertices.getArray().map( function( vertex ) {
           return {
             x: vertex.positionProperty.get().x,
@@ -1236,21 +1242,48 @@ define( function( require ) {
             options: {
               attachable: vertex.attachableProperty.get(),
               draggable: vertex.draggableProperty.get()
-            }
+            },
+            tandemID: vertex.tandem.id
           };
         } ),
         circuitElements: this.circuitElements.getArray().map( function( circuitElement ) {
           return _.extend( {
             type: getKey( circuitElement ),
-            startVertex: self.vertices.indexOf( circuitElement.startVertexProperty.get() ),
-            endVertex: self.vertices.indexOf( circuitElement.endVertexProperty.get() )
+            tandemID: circuitElement.tandem.id,
+            startVertexIndex: self.vertices.indexOf( circuitElement.startVertexProperty.get() ),
+            endVertexIndex: self.vertices.indexOf( circuitElement.endVertexProperty.get() )
           }, circuitElement.toIntrinsicStateObject() );
         } )
       };
     },
 
-    fromStateObject: function( stateObject ) {
+    /**
+     * Load the given stateObject into this Circuit.
+     * @param {Object} stateObject
+     */
+    setFromStateObject: function( stateObject ) {
+      var self = this;
       this.clear();
+      this.wireResistivityProperty.value = stateObject.wireResistivity;
+      this.batteryResistanceProperty.value = stateObject.batteryResistance;
+
+      stateObject.vertices.forEach( function( stateObjectVertex ) {
+        self.vertices.push( new Vertex( new Vector2( stateObjectVertex.x, stateObjectVertex.y ), {
+          draggable: stateObjectVertex.options.draggable,
+          attachable: stateObjectVertex.options.attachable,
+          tandem: new Tandem( stateObjectVertex.tandemID )
+        } ) );
+      } );
+
+      stateObject.circuitElements.forEach( function( circuitElementStateObject ) {
+        var type = circuitElementStateObject.type;
+        var startVertex = self.vertices.get( circuitElementStateObject.startVertexIndex );
+        var endVertex = self.vertices.get( circuitElementStateObject.endVertexIndex );
+        if ( type === 'wire' ) {
+          var wire = new Wire( startVertex, endVertex, self.wireResistivityProperty, new Tandem( circuitElementStateObject.tandemID ) );
+          self.circuitElements.add( wire );
+        }
+      } );
     }
   } );
 } );
