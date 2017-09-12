@@ -1251,6 +1251,7 @@ define( function( require ) {
     /**
      * Load the given stateObject into this Circuit.
      * @param {Object} stateObject
+     * @param {Property.<string>} viewTypeProperty
      */
     setFromStateObject: function( stateObject, viewTypeProperty ) {
       var self = this;
