@@ -62,9 +62,9 @@ define( function( require ) {
   function Circuit( tandem, options ) {
     var self = this;
 
-    setInterval( function() {
-      console.log( self.toStateObject() );
-    }, 2000 );
+    // setInterval( function() {
+    //   console.log( self.toStateObject() );
+    // }, 2000 );
 
     options = _.extend( { blackBoxStudy: false }, options );
     this.blackBoxStudy = options.blackBoxStudy;
