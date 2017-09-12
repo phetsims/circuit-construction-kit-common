@@ -26,9 +26,13 @@ define( function( require ) {
    * @param {Vertex} startVertex
    * @param {Vertex} endVertex
    * @param {Tandem} tandem
+   * @param {Object} [options]
    * @constructor
    */
-  function Switch( startVertex, endVertex, tandem ) {
+  function Switch( startVertex, endVertex, tandem, options ) {
+
+    options = _.extend( { closed: false }, options );
+
     FixedCircuitElement.call( this, startVertex, endVertex, SWITCH_LENGTH, tandem, {
 
       // Use the bounding box of the open lifelike switch to show bounds for all combinations of open/closed x lifelike/schematic
@@ -41,7 +45,7 @@ define( function( require ) {
     this.resistanceProperty = new NumberProperty( 0 );
 
     // @public (read-only) {BooleanProperty} whether the switch is closed (and current can flow through it)
-    this.closedProperty = new BooleanProperty( false );
+    this.closedProperty = new BooleanProperty( options.closed );
 
     this.closedProperty.link( function( closed ) {
       self.resistanceProperty.value = closed ? 0 : CircuitConstructionKitCommonConstants.MAX_RESISTANCE;

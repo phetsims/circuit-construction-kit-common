@@ -11,6 +11,7 @@ define( function( require ) {
 
   // modules
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
+  var BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var Charge = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Charge' );
   var ChargeAnimator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ChargeAnimator' );
@@ -62,15 +63,6 @@ define( function( require ) {
    */
   function Circuit( tandem, options ) {
     var self = this;
-
-    // TODO: Remove these before RC test
-    window.getCircuitJSONString = function() {
-      console.log( JSON.stringify( self.toStateObject() ) );
-    };
-
-    window.setCircuitFromJSONString = function( string ) {
-      self.setFromStateObject( JSON.parse( string ) );
-    };
 
     options = _.extend( { blackBoxStudy: false }, options );
     this.blackBoxStudy = options.blackBoxStudy;
@@ -1261,7 +1253,7 @@ define( function( require ) {
      * Load the given stateObject into this Circuit.
      * @param {Object} stateObject
      */
-    setFromStateObject: function( stateObject ) {
+    setFromStateObject: function( stateObject, viewTypeProperty ) {
       var self = this;
       this.clear();
       this.wireResistivityProperty.value = stateObject.wireResistivity;
@@ -1279,9 +1271,33 @@ define( function( require ) {
         var type = circuitElementStateObject.type;
         var startVertex = self.vertices.get( circuitElementStateObject.startVertexIndex );
         var endVertex = self.vertices.get( circuitElementStateObject.endVertexIndex );
+        var tandem = new Tandem( circuitElementStateObject.tandemID );
         if ( type === 'wire' ) {
-          var wire = new Wire( startVertex, endVertex, self.wireResistivityProperty, new Tandem( circuitElementStateObject.tandemID ) );
-          self.circuitElements.add( wire );
+          self.circuitElements.add( new Wire( startVertex, endVertex, self.wireResistivityProperty, tandem ) );
+        }
+        else if ( type === 'battery' ) {
+          self.circuitElements.add( new Battery( startVertex, endVertex, self.batteryResistanceProperty, circuitElementStateObject.batteryType, tandem, {
+            voltage: circuitElementStateObject.voltage
+          } ) );
+        }
+        else if ( type === 'resistor' ) {
+          self.circuitElements.add( new Resistor( startVertex, endVertex, tandem, {
+            resistance: circuitElementStateObject.resistance,
+            resistorType: circuitElementStateObject.resistorType,
+            resistorLength: circuitElementStateObject.resistorLength
+          } ) );
+        }
+        else if ( type === 'seriesAmmeter' ) {
+          self.circuitElements.add( new SeriesAmmeter( startVertex, endVertex, tandem, {} ) );
+        }
+        else if ( type === 'lightBulb' ) {
+          self.circuitElements.add( new LightBulb( startVertex, endVertex, circuitElementStateObject.resistance, viewTypeProperty, tandem, {
+            highResistance: circuitElementStateObject.highResistance,
+            resistance: circuitElementStateObject.resistance
+          } ) );
+        }
+        else if ( type === 'switch' ) {
+          self.circuitElements.add( new Switch( startVertex, endVertex, tandem, { closed: circuitElementStateObject.closed } ) )
         }
       } );
     }

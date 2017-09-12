@@ -41,6 +41,15 @@ define( function( require ) {
 
     var self = this;
 
+    // TODO: Remove these before RC test
+    window.getCircuitJSONString = function() {
+      return JSON.stringify( self.circuit.toStateObject() );
+    };
+
+    window.setCircuitFromJSONString = function( string ) {
+      self.circuit.setFromStateObject( JSON.parse( string ), self.viewTypeProperty );
+    };
+
     options = _.extend( {
 
       // Determines whether electrons can be shown.  In black box, electrons can only be shown when the user reveals
