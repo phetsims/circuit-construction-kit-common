@@ -1296,7 +1296,7 @@ define( function( require ) {
           } ) );
         }
         else if ( type === 'switch' ) {
-          self.circuitElements.add( new Switch( startVertex, endVertex, tandem, { closed: circuitElementStateObject.closed } ) )
+          self.circuitElements.add( new Switch( startVertex, endVertex, tandem, { closed: circuitElementStateObject.closed } ) );
         }
       } );
     }
