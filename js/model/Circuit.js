@@ -11,7 +11,6 @@ define( function( require ) {
 
   // modules
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
-  var BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var Charge = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Charge' );
   var ChargeAnimator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ChargeAnimator' );
