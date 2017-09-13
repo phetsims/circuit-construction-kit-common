@@ -242,14 +242,22 @@ define( function( require ) {
         equations.push( new Equation( 0, [ new Term( 1, new UnknownVoltage( referenceNodeIds[ i ] ) ) ] ) );
       }
 
+      // DEBUG && console.log( referenceNodeIds );
+
       // For each node, charge is conserved
       var nodes = this.nodes;
       for ( i = 0; i < nodes.length; i++ ) {
         var node = nodes[ i ];
-        var incomingCurrentTerms = this.getCurrentTerms( node, 'nodeId1', -1 );
-        var outgoingCurrentTerms = this.getCurrentTerms( node, 'nodeId0', +1 );
-        var currentConservationTerms = incomingCurrentTerms.concat( outgoingCurrentTerms );
-        equations.push( new Equation( this.getCurrentSourceTotal( node ), currentConservationTerms ) );
+
+        // having charge conservation at each node is overconstraining and causes problems for QR.  In each connected
+        // circuit element, we must choose exactly one node at which to avoid the current conservation term.
+        if ( referenceNodeIds.indexOf( node ) === -1 ) {
+
+          var incomingCurrentTerms = this.getCurrentTerms( node, 'nodeId1', -1 );
+          var outgoingCurrentTerms = this.getCurrentTerms( node, 'nodeId0', +1 );
+          var currentConservationTerms = incomingCurrentTerms.concat( outgoingCurrentTerms );
+          equations.push( new Equation( this.getCurrentSourceTotal( node ), currentConservationTerms ) );
+        }
       }
 
       // For each battery, voltage drop is given
@@ -321,13 +329,13 @@ define( function( require ) {
       for ( var i = 0; i < equations.length; i++ ) {
         equations[ i ].stamp( i, A, z, getIndex );
       }
-
+      console.log( A.m, A.n );
       DEBUG && console.log( 'Debugging circuit: ' + this.toString() );
       DEBUG && console.log( equations.join( '\n' ) );
       DEBUG && console.log( 'A=\n' + A.toString() );
       DEBUG && console.log( 'z=\n' + z.toString() );
       DEBUG && console.log( 'unknowns=\n' + unknowns.map( function( u ) {
-        return u.toString();
+        return u.toTermName();
       } ).join( '\n' ) );
 
       // solve the linear matrix system for the unknowns
@@ -344,6 +352,9 @@ define( function( require ) {
       }
 
       DEBUG && console.log( 'x=\n' + x.toString() );
+      if ( A.m !== A.n ) {
+        debugger;
+      }
 
       var voltageMap = {};
       for ( i = 0; i < unknownVoltages.length; i++ ) {
