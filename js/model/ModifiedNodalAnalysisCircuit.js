@@ -329,7 +329,7 @@ define( function( require ) {
       for ( var i = 0; i < equations.length; i++ ) {
         equations[ i ].stamp( i, A, z, getIndex );
       }
-      console.log( A.m, A.n );
+      DEBUG && console.log( A.m, A.n );
       DEBUG && console.log( 'Debugging circuit: ' + this.toString() );
       DEBUG && console.log( equations.join( '\n' ) );
       DEBUG && console.log( 'A=\n' + A.toString() );
@@ -352,9 +352,6 @@ define( function( require ) {
       }
 
       DEBUG && console.log( 'x=\n' + x.toString() );
-      if ( A.m !== A.n ) {
-        debugger;
-      }
 
       var voltageMap = {};
       for ( i = 0; i < unknownVoltages.length; i++ ) {
