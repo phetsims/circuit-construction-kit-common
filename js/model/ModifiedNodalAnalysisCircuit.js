@@ -351,6 +351,8 @@ define( function( require ) {
         x = new Matrix( A.n, 1 );
       }
 
+      // The matrix should be square since it is an exact analytical solution, see https://github.com/phetsims/circuit-construction-kit-dc/issues/96
+      assert && assert( A.m === A.n );
       DEBUG && console.log( 'x=\n' + x.toString() );
 
       var voltageMap = {};

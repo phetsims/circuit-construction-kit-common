@@ -38,7 +38,7 @@ define( function( require ) {
   var NODE_MATRIX = new Matrix3();
 
   // Below this amperage, no conventional current will be rendered.
-  var CONVENTIONAL_CHARGE_THRESHOLD = 1E-3;
+  var CONVENTIONAL_CHARGE_THRESHOLD = 1E-6;
 
   // position the electron--note the offsets that were used to make it look exactly centered, see
   // https://github.com/phetsims/circuit-construction-kit-dc/issues/104
