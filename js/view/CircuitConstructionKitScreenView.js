@@ -120,13 +120,6 @@ define( function( require ) {
       model.viewTypeProperty, circuitElementToolNodes, tandem.createTandem( 'circuitElementToolbox' ), options
     );
 
-    var chargeSpeedThrottlingReadoutNode = new ChargeSpeedThrottlingReadoutNode(
-      model.circuit.chargeAnimator.timeScaleProperty,
-      model.circuit.showCurrentProperty,
-      model.isValueDepictionEnabledProperty
-    );
-    this.addChild( chargeSpeedThrottlingReadoutNode );
-
     // @protected {SensorToolbox} - so that subclasses can add a layout circuit element near it
     this.sensorToolbox = new SensorToolbox(
       CONTROL_PANEL_ALIGN_GROUP,
@@ -203,6 +196,13 @@ define( function( require ) {
 
     this.addChild( box );
     this.addChild( this.circuitLayerNode );
+
+    var chargeSpeedThrottlingReadoutNode = new ChargeSpeedThrottlingReadoutNode(
+      model.circuit.chargeAnimator.timeScaleProperty,
+      model.circuit.showCurrentProperty,
+      model.isValueDepictionEnabledProperty
+    );
+    this.addChild( chargeSpeedThrottlingReadoutNode );
 
     var circuitElementEditContainerNode = new CircuitElementEditContainerNode(
       model.circuit,
