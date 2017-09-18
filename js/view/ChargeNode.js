@@ -18,6 +18,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Matrix3 = require( 'DOT/Matrix3' );
   var Tandem = require( 'TANDEM/Tandem' );
+  var Util = require( 'DOT/Util' );
 
   // constants
   var ELECTRON_CHARGE_NODE = new ElectronChargeNode( {
@@ -113,6 +114,10 @@ define( function( require ) {
 
         // Apply the transform
         this.matrix = NODE_MATRIX;
+
+        var opacity = Util.linear( 0.015, CONVENTIONAL_CHARGE_THRESHOLD, 1, 0, Math.abs( charge.circuitElement.currentProperty.get() ) );
+        opacity = Util.clamp( opacity, 0, 1 );
+        this.setImageOpacity( opacity );
       }
       else {
 
@@ -137,8 +142,7 @@ define( function( require ) {
      */
     updateVisible: function() {
       this.visible = this.charge.visibleProperty.get() &&
-                     this.outsideOfBlackBoxProperty.get() &&
-                     ( Math.abs( this.charge.circuitElement.currentProperty.get() ) > CONVENTIONAL_CHARGE_THRESHOLD || this.charge.charge < 0 );
+                     this.outsideOfBlackBoxProperty.get();
     }
   }, {
 
