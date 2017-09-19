@@ -11,7 +11,7 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var NumberProperty = require( 'AXON/NumberProperty' );
   var RunningAverage = require( 'DOT/RunningAverage' );
@@ -23,7 +23,7 @@ define( function( require ) {
   var MINIMUM_CURRENT = 1E-10;
 
   // The furthest an charge can step in one frame before the time scale must be reduced (to prevent a strobe effect)
-  var MAX_POSITION_CHANGE = CircuitConstructionKitCommonConstants.CHARGE_SEPARATION * 0.43;
+  var MAX_POSITION_CHANGE = CCKCConstants.CHARGE_SEPARATION * 0.43;
 
   // Number of times to spread out charges so they don't get bunched up.
   var NUMBER_OF_EQUALIZE_STEPS = 2;

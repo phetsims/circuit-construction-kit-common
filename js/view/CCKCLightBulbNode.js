@@ -1,7 +1,7 @@
 // Copyright 2015-2017, University of Colorado Boulder
 
 /**
- * Named CircuitConstructionKitLightBulbNode to avoid collisions with SCENERY_PHET/LightBulbNode. Renders the bulb shape
+ * Named CCKCLightBulbNode to avoid collisions with SCENERY_PHET/LightBulbNode. Renders the bulb shape
  * and brightness lines. Note that the socket is rendered in LightBulbSocketNode.
  *
  * @author Sam Reid (PhET Interactive Simulations)
@@ -11,7 +11,7 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   var Color = require( 'SCENERY/util/Color' );
   var CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CustomLightBulbNode' );
@@ -60,7 +60,7 @@ define( function( require ) {
   }
 
   /**
-   * @param {CircuitConstructionKitScreenView|null} screenView - main screen view, null for icon
+   * @param {CCKCScreenView|null} screenView - main screen view, null for icon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {LightBulb} lightBulb - the light bulb model
    * @param {Property.<boolean>} showResultsProperty - true if the sim can display values
@@ -69,8 +69,8 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function CircuitConstructionKitLightBulbNode( screenView, circuitLayerNode, lightBulb,
-                                                showResultsProperty, viewTypeProperty, tandem, options ) {
+  function CCKCLightBulbNode( screenView, circuitLayerNode, lightBulb,
+                              showResultsProperty, viewTypeProperty, tandem, options ) {
     var self = this;
     options = _.extend( {
       isIcon: false
@@ -143,7 +143,7 @@ define( function( require ) {
         .lineTo( rightLeadX, delta.y )
     ), {
       stroke: Color.BLACK,
-      lineWidth: CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH
+      lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH
     } ).toDataURLImageSynchronous();
     cached = schematicNode;
     if ( options.isIcon ) {
@@ -212,14 +212,14 @@ define( function( require ) {
     };
   }
 
-  circuitConstructionKitCommon.register( 'CircuitConstructionKitLightBulbNode', CircuitConstructionKitLightBulbNode );
+  circuitConstructionKitCommon.register( 'CCKCLightBulbNode', CCKCLightBulbNode );
 
-  return inherit( FixedCircuitElementNode, CircuitConstructionKitLightBulbNode, {
+  return inherit( FixedCircuitElementNode, CCKCLightBulbNode, {
 
     /**
      * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
      * @override
-     * @protected - CircuitConstructionKitLightBulbNode calls updateRender for its child socket node
+     * @protected - CCKCLightBulbNode calls updateRender for its child socket node
      */
     updateRender: function() {
       var startPosition = this.circuitElement.startPositionProperty.get();

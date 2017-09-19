@@ -12,7 +12,7 @@ define( function( require ) {
   // modules
   var AccordionBox = require( 'SUN/AccordionBox' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var HStrut = require( 'SCENERY/nodes/HStrut' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -25,24 +25,24 @@ define( function( require ) {
    * @param {Tandem} tandem
    * @constructor
    */
-  function CircuitConstructionKitAccordionBox( content, title, tandem ) {
+  function CCKCAccordionBox( content, title, tandem ) {
     AccordionBox.call( this, content, {
-      fill: CircuitConstructionKitCommonConstants.PANEL_COLOR,
-      cornerRadius: CircuitConstructionKitCommonConstants.CORNER_RADIUS,
+      fill: CCKCConstants.PANEL_COLOR,
+      cornerRadius: CCKCConstants.CORNER_RADIUS,
       titleXMargin: 10,
       buttonXMargin: 8,
       buttonYMargin: 8,
       titleYMargin: 4,
       titleXSpacing: 14,
       contentYSpacing: 0,
-      lineWidth: CircuitConstructionKitCommonConstants.PANEL_LINE_WIDTH,
-      minWidth: CircuitConstructionKitCommonConstants.RIGHT_SIDE_PANEL_MIN_WIDTH,
+      lineWidth: CCKCConstants.PANEL_LINE_WIDTH,
+      minWidth: CCKCConstants.RIGHT_SIDE_PANEL_MIN_WIDTH,
       expandedProperty: new Property( false ),
       titleNode: new HBox( {
         children: [
           new HStrut( 10 ),
           new Text( title, {
-            fontSize: CircuitConstructionKitCommonConstants.FONT_SIZE,
+            fontSize: CCKCConstants.FONT_SIZE,
             maxWidth: 175,
             tandem: tandem.createTandem( title )
           } )
@@ -52,7 +52,7 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKitCommon.register( 'CircuitConstructionKitAccordionBox', CircuitConstructionKitAccordionBox );
+  circuitConstructionKitCommon.register( 'CCKCAccordionBox', CCKCAccordionBox );
 
-  return inherit( AccordionBox, CircuitConstructionKitAccordionBox );
+  return inherit( AccordionBox, CCKCAccordionBox );
 } );

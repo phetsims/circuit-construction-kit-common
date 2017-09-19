@@ -14,7 +14,7 @@ define( function( require ) {
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Circuit' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonQueryParameters' );
+  var CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   var EaseAnimation = require( 'TWIXT/EaseAnimation' );
   var Emitter = require( 'AXON/Emitter' );
@@ -64,7 +64,7 @@ define( function( require ) {
     // @public {BooleanProperty} - changes whether the light bulb brightness and ammeter/voltmeter readouts,
     // charges, flame, etc. can be seen
     this.isValueDepictionEnabledProperty = new BooleanProperty(
-      !CircuitConstructionKitCommonQueryParameters.showDepictValuesToggleButton, {
+      !CCKCQueryParameters.showDepictValuesToggleButton, {
         tandem: tandem.createTandem( 'isValueDepictionEnabledProperty' )
       } );
 
@@ -132,7 +132,7 @@ define( function( require ) {
     this.modeProperty.endedCallbacksForChangedEmitter.addListener( function() {
       modeChanging = false;
     } );
-    if ( CircuitConstructionKitCommonQueryParameters.showDepictValuesToggleButton ) {
+    if ( CCKCQueryParameters.showDepictValuesToggleButton ) {
       var pause = function() {
         if ( !modeChanging ) {
           self.isValueDepictionEnabledProperty.value = false;

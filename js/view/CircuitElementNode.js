@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   var CircuitElementEditContainerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditContainerNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Input = require( 'SCENERY/input/Input' );
@@ -168,7 +168,7 @@ define( function( require ) {
      * @param {Event} event - scenery event, see https://github.com/phetsims/scenery/issues/608
      * @param {Node} node - the node the input listener is attached to
      * @param {Vertex[]} vertices - the vertices that are dragged
-     * @param {CircuitConstructionKitScreenView} screenView - the main screen view, null for icon
+     * @param {CCKCScreenView} screenView - the main screen view, null for icon
      * @param {CircuitLayerNode} circuitLayerNode
      * @param {Vector2} start
      * @param {boolean} dragged
@@ -228,7 +228,7 @@ define( function( require ) {
      */
     selectCircuitElementNodeWhenNear: function( event, circuitLayerNode, startPoint ) {
       var self = this;
-      if ( event.pointer.point.distance( startPoint ) < CircuitConstructionKitCommonConstants.TAP_THRESHOLD ) {
+      if ( event.pointer.point.distance( startPoint ) < CCKCConstants.TAP_THRESHOLD ) {
 
         circuitLayerNode.circuit.selectedCircuitElementProperty.set( this.circuitElement );
 

@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
@@ -27,7 +27,7 @@ define( function( require ) {
     RoundPushButton.call( this, {
       baseColor: PhetColorScheme.PHET_LOGO_YELLOW,
       content: new FontAwesomeNode( 'trash', {
-        scale: CircuitConstructionKitCommonConstants.FONT_AWESOME_ICON_SCALE
+        scale: CCKCConstants.FONT_AWESOME_ICON_SCALE
       } ),
       listener: function() {
         circuit.circuitElements.remove( circuitElement );

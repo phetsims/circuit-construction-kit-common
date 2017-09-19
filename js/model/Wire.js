@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   var CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElement' );
   var inherit = require( 'PHET_CORE/inherit' );
   var NumberProperty = require( 'AXON/NumberProperty' );
@@ -38,7 +38,7 @@ define( function( require ) {
     this.wireStub = options.wireStub;
 
     // @public {NumberProperty} - the resistance of the Wire in ohms
-    this.resistanceProperty = new NumberProperty( CircuitConstructionKitCommonConstants.MINIMUM_RESISTANCE );
+    this.resistanceProperty = new NumberProperty( CCKCConstants.MINIMUM_RESISTANCE );
 
     // @public {Property.<number>} - the resistivity of the Wire in ohm-meters
     this.resistivityProperty = resistivityProperty;
@@ -76,7 +76,7 @@ define( function( require ) {
         var modelLength = viewLength * METERS_PER_VIEW_COORDINATE;
         this.lengthProperty.set( modelLength );
         var resistance = modelLength * this.resistivityProperty.get();
-        var clampedResistance = Math.max( CircuitConstructionKitCommonConstants.MINIMUM_RESISTANCE, resistance );
+        var clampedResistance = Math.max( CCKCConstants.MINIMUM_RESISTANCE, resistance );
         assert && assert( !isNaN( clampedResistance ), 'wire resistance should not be NaN' );
         this.resistanceProperty.set( clampedResistance );
         this.chargePathLength = viewLength;

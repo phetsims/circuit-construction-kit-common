@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Property = require( 'AXON/Property' );
@@ -23,7 +23,7 @@ define( function( require ) {
    * @constructor
    */
   function SeriesAmmeter( startVertex, endVertex, tandem, options ) {
-    FixedCircuitElement.call( this, startVertex, endVertex, CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH, tandem, options );
+    FixedCircuitElement.call( this, startVertex, endVertex, CCKCConstants.SERIES_AMMETER_LENGTH, tandem, options );
 
     // @public (read-only) {Property.<number>} the resistance in ohms.  A constant, but modeled as a property for
     // uniformity with other resistive elements.

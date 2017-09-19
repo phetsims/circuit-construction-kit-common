@@ -14,8 +14,8 @@ define( function( require ) {
   var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
   var BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var CircuitConstructionKitLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitLightBulbNode' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  var CCKCLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCLightBulbNode' );
   var CircuitElementToolNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolNode' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   var Color = require( 'SCENERY/util/Color' );
@@ -53,11 +53,11 @@ define( function( require ) {
   var wireIconImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/wire-icon.png' );
 
   // constants
-  var BATTERY_LENGTH = CircuitConstructionKitCommonConstants.BATTERY_LENGTH;
-  var TOOLBOX_ICON_SIZE = CircuitConstructionKitCommonConstants.TOOLBOX_ICON_SIZE;
-  var RESISTOR_LENGTH = CircuitConstructionKitCommonConstants.RESISTOR_LENGTH;
+  var BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
+  var TOOLBOX_ICON_SIZE = CCKCConstants.TOOLBOX_ICON_SIZE;
+  var RESISTOR_LENGTH = CCKCConstants.RESISTOR_LENGTH;
   var WIRE_LENGTH = 100;
-  var SWITCH_LENGTH = CircuitConstructionKitCommonConstants.SWITCH_LENGTH;
+  var SWITCH_LENGTH = CCKCConstants.SWITCH_LENGTH;
   var HIGH_RESISTANCE = Math.pow( 10, 9 );
   var MIN_RESISTANCE = 1E-6;
 
@@ -199,7 +199,7 @@ define( function( require ) {
      */
     createRightBatteryToolNode: function( count, tandem ) {
       var self = this;
-      var batteryModel = new Battery( new Vertex( Vector2.ZERO ), new Vertex( new Vector2( CircuitConstructionKitCommonConstants.BATTERY_LENGTH, 0 ) ),
+      var batteryModel = new Battery( new Vertex( Vector2.ZERO ), new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
         null, BatteryType.NORMAL, tandem.createTandem( 'rightIconBattery' ) );
       var rightBatteryToolNode = this.createCircuitElementToolNode( batteryString, count,
         new BatteryNode( null, null, batteryModel, this.viewTypeProperty, tandem.createTandem( 'rightBatteryIcon' ), { isIcon: true }
@@ -234,13 +234,13 @@ define( function( require ) {
       var lightBulbModel = LightBulb.createAtPosition(
         Vector2.ZERO,
         this.circuit.vertexGroupTandem,
-        CircuitConstructionKitCommonConstants.DEFAULT_RESISTANCE,
+        CCKCConstants.DEFAULT_RESISTANCE,
         this.viewTypeProperty,
         this.circuit.lightBulbGroupTandem.createNextTandem(), {
           highResistance: false
         } );
       var lightBulbToolNode = this.createCircuitElementToolNode( lightBulbString, count,
-        new CircuitConstructionKitLightBulbNode( null, null,
+        new CCKCLightBulbNode( null, null,
           lightBulbModel,
           new Property( true ), this.viewTypeProperty, tandem.createTandem( 'lightBulbIcon' ), { isIcon: true } ),
         function( circuitElement ) { return circuitElement instanceof LightBulb && !circuitElement.highResistance; },
@@ -248,7 +248,7 @@ define( function( require ) {
           return LightBulb.createAtPosition(
             position,
             self.circuit.vertexGroupTandem,
-            CircuitConstructionKitCommonConstants.DEFAULT_RESISTANCE,
+            CCKCConstants.DEFAULT_RESISTANCE,
             self.viewTypeProperty,
             self.circuit.lightBulbGroupTandem.createNextTandem()
           );
@@ -268,7 +268,7 @@ define( function( require ) {
       var self = this;
       var resistorModel = new Resistor(
         new Vertex( Vector2.ZERO ),
-        new Vertex( new Vector2( CircuitConstructionKitCommonConstants.RESISTOR_LENGTH, 0 ) ),
+        new Vertex( new Vector2( CCKCConstants.RESISTOR_LENGTH, 0 ) ),
         tandem.createTandem( 'resistor' )
       );
       var resistorToolNode = this.createCircuitElementToolNode( resistorString, count,
@@ -376,7 +376,7 @@ define( function( require ) {
       return this.createHouseholdItemToolNode(
         ResistorType.DOLLAR_BILL,
         HIGH_RESISTANCE,
-        CircuitConstructionKitCommonConstants.DOLLAR_BILL_LENGTH,
+        CCKCConstants.DOLLAR_BILL_LENGTH,
         dollarBillString,
         count,
         tandem.createTandem( 'dollarBill' ),
@@ -395,7 +395,7 @@ define( function( require ) {
       return this.createHouseholdItemToolNode(
         ResistorType.PAPER_CLIP,
         MIN_RESISTANCE,
-        CircuitConstructionKitCommonConstants.PAPER_CLIP_LENGTH,
+        CCKCConstants.PAPER_CLIP_LENGTH,
         paperClipString,
         count,
         tandem.createTandem( 'paperClip' ),
@@ -414,7 +414,7 @@ define( function( require ) {
       return this.createHouseholdItemToolNode(
         ResistorType.COIN,
         MIN_RESISTANCE,
-        CircuitConstructionKitCommonConstants.COIN_LENGTH,
+        CCKCConstants.COIN_LENGTH,
         coinString,
         count,
         tandem.createTandem( 'coin' ),
@@ -433,7 +433,7 @@ define( function( require ) {
       return this.createHouseholdItemToolNode(
         ResistorType.ERASER,
         HIGH_RESISTANCE,
-        CircuitConstructionKitCommonConstants.ERASER_LENGTH,
+        CCKCConstants.ERASER_LENGTH,
         eraserString,
         count,
         tandem.createTandem( 'eraser' ),
@@ -452,7 +452,7 @@ define( function( require ) {
       return this.createHouseholdItemToolNode(
         ResistorType.PENCIL,
         300,
-        CircuitConstructionKitCommonConstants.PENCIL_LENGTH,
+        CCKCConstants.PENCIL_LENGTH,
         pencilString,
         count,
         tandem.createTandem( 'pencil' ),
@@ -471,7 +471,7 @@ define( function( require ) {
       return this.createHouseholdItemToolNode(
         ResistorType.HAND,
         Math.pow( 10, 6 ),
-        CircuitConstructionKitCommonConstants.HAND_LENGTH,
+        CCKCConstants.HAND_LENGTH,
         handString,
         count,
         tandem.createTandem( 'hand' ),
@@ -490,7 +490,7 @@ define( function( require ) {
       return this.createHouseholdItemToolNode(
         ResistorType.DOG,
         HIGH_RESISTANCE,
-        CircuitConstructionKitCommonConstants.DOG_LENGTH,
+        CCKCConstants.DOG_LENGTH,
         dogString,
         count,
         tandem.createTandem( 'dog' ),
@@ -513,7 +513,7 @@ define( function( require ) {
         new BatteryNode( null, null,
           new Battery(
             new Vertex( Vector2.ZERO ),
-            new Vertex( new Vector2( CircuitConstructionKitCommonConstants.BATTERY_LENGTH, 0 ) ),
+            new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
             null,
             BatteryType.HIGH_VOLTAGE,
             tandem.createTandem( 'highVoltageIconBattery' )
@@ -533,7 +533,7 @@ define( function( require ) {
             self.circuit.rightBatteryTandemGroup.createNextTandem(), {
               voltage: 10000,
               editableRange: new Range( 100, 100000 ),
-              editorDelta: CircuitConstructionKitCommonConstants.HIGH_EDITOR_DELTA
+              editorDelta: CCKCConstants.HIGH_EDITOR_DELTA
             } );
         } );
     },
@@ -549,7 +549,7 @@ define( function( require ) {
       return this.createCircuitElementToolNode(
         lightBulbString,
         count,
-        new CircuitConstructionKitLightBulbNode(
+        new CCKCLightBulbNode(
           null,
           null,
           LightBulb.createAtPosition(
@@ -568,11 +568,11 @@ define( function( require ) {
         function( circuitElement ) { return circuitElement instanceof LightBulb && circuitElement.highResistance; },
         function( position ) {
           return LightBulb.createAtPosition( position, self.circuit.vertexGroupTandem,
-            CircuitConstructionKitCommonConstants.HIGH_RESISTANCE, self.viewTypeProperty,
+            CCKCConstants.HIGH_RESISTANCE, self.viewTypeProperty,
             self.circuit.lightBulbGroupTandem.createNextTandem(), {
               highResistance: true,
-              editableRange: CircuitConstructionKitCommonConstants.HIGH_RESISTANCE_RANGE,
-              editorDelta: CircuitConstructionKitCommonConstants.HIGH_EDITOR_DELTA
+              editableRange: CCKCConstants.HIGH_RESISTANCE_RANGE,
+              editorDelta: CCKCConstants.HIGH_EDITOR_DELTA
             } );
         } );
     },
@@ -591,7 +591,7 @@ define( function( require ) {
         new ResistorNode( null, null,
           new Resistor(
             new Vertex( Vector2.ZERO ),
-            new Vertex( new Vector2( CircuitConstructionKitCommonConstants.RESISTOR_LENGTH, 0 ) ),
+            new Vertex( new Vector2( CCKCConstants.RESISTOR_LENGTH, 0 ) ),
             tandem.createTandem( 'highResistanceResistor' ), {
               resistorType: ResistorType.HIGH_RESISTANCE_RESISTOR, resistance: 1000
             } ),
@@ -609,9 +609,9 @@ define( function( require ) {
             vertexPair.endVertex,
             self.circuit.resistorGroupTandem.createNextTandem(), {
               resistorType: ResistorType.HIGH_RESISTANCE_RESISTOR,
-              resistance: CircuitConstructionKitCommonConstants.HIGH_RESISTANCE,
-              editableRange: CircuitConstructionKitCommonConstants.HIGH_RESISTANCE_RANGE,
-              editorDelta: CircuitConstructionKitCommonConstants.HIGH_EDITOR_DELTA
+              resistance: CCKCConstants.HIGH_RESISTANCE,
+              editableRange: CCKCConstants.HIGH_RESISTANCE_RANGE,
+              editorDelta: CCKCConstants.HIGH_EDITOR_DELTA
             } );
         }
       );

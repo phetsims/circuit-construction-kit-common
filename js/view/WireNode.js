@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var Circle = require( 'SCENERY/nodes/Circle' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   var Color = require( 'SCENERY/util/Color' );
@@ -28,7 +28,7 @@ define( function( require ) {
 
   // constants
   var LIFELIKE_LINE_WIDTH = 16; // line width in screen coordinates
-  var SCHEMATIC_LINE_WIDTH = CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH; // line width in screen coordinates
+  var SCHEMATIC_LINE_WIDTH = CCKCConstants.SCHEMATIC_LINE_WIDTH; // line width in screen coordinates
 
   // constants
   var MATRIX = new Matrix3(); // The Matrix entries are mutable
@@ -138,7 +138,7 @@ define( function( require ) {
   };
 
   /**
-   * @param {CircuitConstructionKitScreenView|null} screenView - null means it's an icon
+   * @param {CCKCScreenView|null} screenView - null means it's an icon
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {Wire} wire
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
@@ -159,8 +159,8 @@ define( function( require ) {
 
     // @private {Node} - the node that shows the yellow highlight for the node when selected
     this.highlightNode = new Path( null, {
-      stroke: CircuitConstructionKitCommonConstants.HIGHLIGHT_COLOR,
-      lineWidth: CircuitConstructionKitCommonConstants.HIGHLIGHT_LINE_WIDTH,
+      stroke: CCKCConstants.HIGHLIGHT_COLOR,
+      lineWidth: CCKCConstants.HIGHLIGHT_LINE_WIDTH,
       pickable: false,
       visible: false
     } );
@@ -340,7 +340,7 @@ define( function( require ) {
 
     /**
      * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
-     * @protected - CircuitConstructionKitLightBulbNode calls updateRender for its child socket node
+     * @protected - CCKCLightBulbNode calls updateRender for its child socket node
      */
     updateRender: function() {
       var view = this.viewTypeProperty.value;

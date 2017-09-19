@@ -10,14 +10,14 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   var inherit = require( 'PHET_CORE/inherit' );
   var NumberProperty = require( 'AXON/NumberProperty' );
   var ResistorType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ResistorType' );
 
   // constants
-  var RESISTOR_LENGTH = CircuitConstructionKitCommonConstants.RESISTOR_LENGTH;
+  var RESISTOR_LENGTH = CCKCConstants.RESISTOR_LENGTH;
 
   /**
    * @param {Vertex} startVertex
@@ -28,7 +28,7 @@ define( function( require ) {
    */
   function Resistor( startVertex, endVertex, tandem, options ) {
     options = _.extend( {
-      resistance: CircuitConstructionKitCommonConstants.DEFAULT_RESISTANCE,
+      resistance: CCKCConstants.DEFAULT_RESISTANCE,
 
       // Support for rendering household items or
       resistorType: ResistorType.VALUES[ 0 ],

@@ -44,7 +44,7 @@ move control panels to the edges to maximize the available play area.
 
 **Query parameters**: Query parameters are used to enable sim-specific features, mainly for debugging and
 testing. All such query parameters are documented in
-[CircuitConstructionKitCommonQueryParameters](https://github.com/phetsims/circuit-construction-kit-common/blob/master/js/CircuitConstructionKitCommonQueryParameters.js).
+[CCKCQueryParameters](https://github.com/phetsims/circuit-construction-kit-common/blob/master/js/CCKCQueryParameters.js).
 
 **Memory management**: This simulation dynamically creates and disposes many objects (no CircuitElements are preallocated).
 This helps in modularity of the code and will provide a straightforward interface for PhET-iO.  However, dispose()

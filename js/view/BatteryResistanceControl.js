@@ -11,9 +11,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CircuitConstructionKitAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitAccordionBox' );
+  var CCKCAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCAccordionBox' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   var Color = require( 'SCENERY/util/Color' );
   var HSlider = require( 'SUN/HSlider' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -47,12 +47,12 @@ define( function( require ) {
       return new Text( string, { fontSize: 12, tandem: tandem } );
     };
 
-    var range = CircuitConstructionKitCommonConstants.BATTERY_RESISTANCE_RANGE;
+    var range = CCKCConstants.BATTERY_RESISTANCE_RANGE;
     var midpoint = (range.max + range.min) / 2;
     var slider = new HSlider( batteryResistanceProperty, range, {
-      trackSize: CircuitConstructionKitCommonConstants.SLIDER_TRACK_SIZE,
-      thumbSize: CircuitConstructionKitCommonConstants.THUMB_SIZE,
-      majorTickLength: CircuitConstructionKitCommonConstants.MAJOR_TICK_LENGTH,
+      trackSize: CCKCConstants.SLIDER_TRACK_SIZE,
+      thumbSize: CCKCConstants.THUMB_SIZE,
+      majorTickLength: CCKCConstants.MAJOR_TICK_LENGTH,
 
       // Snap to the nearest whole number.
       constrainValue: function( value ) { return Util.roundSymmetric( value ); },
@@ -71,7 +71,7 @@ define( function( require ) {
     var readoutTextPanelTandem = tandem.createTandem( 'readoutTextPanel' );
 
     var readoutText = new Text( batteryResistanceProperty.get(), {
-      font: new PhetFont( CircuitConstructionKitCommonConstants.FONT_SIZE ),
+      font: new PhetFont( CCKCConstants.FONT_SIZE ),
       fill: Color.BLACK,
       maxWidth: 100,
       tandem: readoutTextPanelTandem.createTandem( 'readoutTextNode' ),
@@ -91,7 +91,7 @@ define( function( require ) {
     };
 
     // Use the max to get the right size of the panel
-    updateText( CircuitConstructionKitCommonConstants.BATTERY_RESISTANCE_RANGE.max );
+    updateText( CCKCConstants.BATTERY_RESISTANCE_RANGE.max );
 
     var textRectangle = Rectangle.bounds( readoutText.bounds.dilatedXY( xMargin, 3 ), {
       fill: Color.WHITE,
@@ -108,7 +108,7 @@ define( function( require ) {
 
     batteryResistanceProperty.link( updateText );
 
-    CircuitConstructionKitAccordionBox.call( this, alignGroup.createBox( new VBox( {
+    CCKCAccordionBox.call( this, alignGroup.createBox( new VBox( {
       spacing: -4,
       children: [ textContainerNode, slider ]
     } ) ), batteryResistanceString, tandem );
@@ -116,5 +116,5 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'BatteryResistanceControl', BatteryResistanceControl );
 
-  return inherit( CircuitConstructionKitAccordionBox, BatteryResistanceControl );
+  return inherit( CCKCAccordionBox, BatteryResistanceControl );
 } );

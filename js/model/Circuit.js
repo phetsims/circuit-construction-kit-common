@@ -15,8 +15,8 @@ define( function( require ) {
   var Charge = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Charge' );
   var ChargeAnimator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ChargeAnimator' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var CircuitConstructionKitCommonQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonQueryParameters' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  var CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   var CurrentType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CurrentType' );
   var Emitter = require( 'AXON/Emitter' );
   var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
@@ -68,13 +68,13 @@ define( function( require ) {
 
     // @public {NumberProperty} - All wires share the same resistivity, which is defined by
     // resistance = resistivity * length. On the Lab Screen, there is a wire resistivity control
-    this.wireResistivityProperty = new NumberProperty( CircuitConstructionKitCommonConstants.DEFAULT_RESISTIVITY, {
+    this.wireResistivityProperty = new NumberProperty( CCKCConstants.DEFAULT_RESISTIVITY, {
       tandem: tandem.createTandem( 'wireResistivityProperty' )
     } );
 
     // @public {NumberProperty} - All batteries share a single internal resistance value, which can be edited with
     // a control on the Lab Screen
-    this.batteryResistanceProperty = new NumberProperty( CircuitConstructionKitCommonConstants.DEFAULT_BATTERY_RESISTANCE, {
+    this.batteryResistanceProperty = new NumberProperty( CCKCConstants.DEFAULT_BATTERY_RESISTANCE, {
       tandem: tandem.createTandem( 'batteryResistanceProperty' )
     } );
 
@@ -91,7 +91,7 @@ define( function( require ) {
     this.charges = new ObservableArray();
 
     // @public {Property.<CurrentType>} - whether to show charges or conventional current
-    this.currentTypeProperty = new Property( CircuitConstructionKitCommonQueryParameters.currentType, {
+    this.currentTypeProperty = new Property( CCKCQueryParameters.currentType, {
       validValues: CurrentType.VALUES,
       tandem: tandem.createTandem( 'currentTypeProperty' ),
       phetioValueType: TString
@@ -103,7 +103,7 @@ define( function( require ) {
     } );
 
     // @public {BooleanProperty} - whether the current should be displayed
-    this.showCurrentProperty = new BooleanProperty( CircuitConstructionKitCommonQueryParameters.showCurrent, {
+    this.showCurrentProperty = new BooleanProperty( CCKCQueryParameters.showCurrent, {
       tandem: tandem.createTandem( 'showCurrentProperty' )
     } );
 
@@ -1139,13 +1139,13 @@ define( function( require ) {
         var charges = this.getChargesInCircuitElement( circuitElement );
 
         // put charges 1/2 separation from the edge so it will match up with adjacent components
-        var offset = CircuitConstructionKitCommonConstants.CHARGE_SEPARATION / 2;
+        var offset = CCKCConstants.CHARGE_SEPARATION / 2;
         var lastChargePosition = circuitElement.chargePathLength - offset;
         var firstChargePosition = offset;
         var lengthForCharges = lastChargePosition - firstChargePosition;
 
         // Math.round leads to charges too far apart when N=2
-        var numberOfCharges = Math.ceil( lengthForCharges / CircuitConstructionKitCommonConstants.CHARGE_SEPARATION );
+        var numberOfCharges = Math.ceil( lengthForCharges / CCKCConstants.CHARGE_SEPARATION );
 
         // compute distance between adjacent charges
         var spacing = lengthForCharges / ( numberOfCharges - 1 );

@@ -12,9 +12,9 @@ define( function( require ) {
   // modules
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var CircuitConstructionKitCommonQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonQueryParameters' );
-  var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  var CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
+  var CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
   var Color = require( 'SCENERY/util/Color' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var Image = require( 'SCENERY/nodes/Image' );
@@ -85,7 +85,7 @@ define( function( require ) {
 
     // @public (read-only) {Rectangle} - the red probe node
     this.redProbeNode = new Rectangle( -2, -2, 4, 4, { // the hit area
-      fill: CircuitConstructionKitCommonQueryParameters.showVoltmeterSamplePoints ? Color.RED : null,
+      fill: CCKCQueryParameters.showVoltmeterSamplePoints ? Color.RED : null,
       cursor: 'pointer',
       children: [ new Image( redProbe, {
         scale: PROBE_SCALE,
@@ -100,7 +100,7 @@ define( function( require ) {
 
     // @public (read-only) {Rectangle} - the black probe node
     this.blackProbeNode = new Rectangle( -2, -2, 4, 4, { // the hit area
-      fill: CircuitConstructionKitCommonQueryParameters.showVoltmeterSamplePoints ? Color.BLACK : null,
+      fill: CCKCQueryParameters.showVoltmeterSamplePoints ? Color.BLACK : null,
       cursor: 'pointer',
       children: [ new Image( blackProbe, {
         scale: PROBE_SCALE,
@@ -115,7 +115,7 @@ define( function( require ) {
 
     // Displays the voltage reading
     var voltageReadoutProperty = new DerivedProperty( [ voltmeter.voltageProperty ], function( voltage ) {
-      return voltage === null ? questionMarkString : CircuitConstructionKitCommonUtil.createVoltageReadout( voltage );
+      return voltage === null ? questionMarkString : CCKCUtil.createVoltageReadout( voltage );
     } );
 
     var probeTextNode = new ProbeTextNode(
@@ -209,7 +209,7 @@ define( function( require ) {
           tandem: tandem.createTandem( 'redProbeDragHandler' )
         } );
         options.visibleBoundsProperty.link( function( visibleBounds ) {
-          probeDragHandler.dragBounds = visibleBounds.eroded( CircuitConstructionKitCommonConstants.DRAG_BOUNDS_EROSION );
+          probeDragHandler.dragBounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
         } );
         return probeDragHandler;
       };
@@ -241,7 +241,7 @@ define( function( require ) {
         targetNode: self
       } );
       options.visibleBoundsProperty.link( function( visibleBounds ) {
-        self.dragHandler.dragBounds = visibleBounds.eroded( CircuitConstructionKitCommonConstants.DRAG_BOUNDS_EROSION );
+        self.dragHandler.dragBounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
       } );
       bodyNode.addInputListener( this.dragHandler );
 
@@ -260,7 +260,7 @@ define( function( require ) {
           var voltageConnection = self.getVoltageConnection( probeNode, samplePoint );
 
           // For debugging, depict the points where the sampling happens
-          if ( CircuitConstructionKitCommonQueryParameters.showVoltmeterSamplePoints ) {
+          if ( CCKCQueryParameters.showVoltmeterSamplePoints ) {
 
             // Note, these get erased when changing between lifelike/schematic
             self.circuitLayerNode.addChild( new Rectangle( -1, -1, 2, 2, {

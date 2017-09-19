@@ -13,8 +13,8 @@ define( function( require ) {
   var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Ammeter' );
   var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/AmmeterNode' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var CircuitConstructionKitPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitPanel' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  var CCKCPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCPanel' );
   var CircuitElementToolNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolNode' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   var HBox = require( 'SCENERY/nodes/HBox' );
@@ -94,14 +94,14 @@ define( function( require ) {
     // Icon for the series ammeter
     var seriesAmmeter = new SeriesAmmeter(
       new Vertex( Vector2.ZERO ),
-      new Vertex( new Vector2( CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH, 0 ) ),
+      new Vertex( new Vector2( CCKCConstants.SERIES_AMMETER_LENGTH, 0 ) ),
       tandem.createTandem( 'seriesAmmeterIconModel' )
     );
     var seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeter, tandem.createTandem( 'seriesAmmeterNodeIcon' ), {
       isIcon: true
     } );
     var createSeriesAmmeter = function( position ) {
-      var halfLength = CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH / 2;
+      var halfLength = CCKCConstants.SERIES_AMMETER_LENGTH / 2;
       var startVertex = new Vertex( position.plusXY( -halfLength, 0 ) );
       var endVertex = new Vertex( position.plusXY( halfLength, 0 ) );
       return new SeriesAmmeter(
@@ -165,7 +165,7 @@ define( function( require ) {
       ]
     } );
 
-    CircuitConstructionKitPanel.call( this, alignGroup.createBox( new HBox( {
+    CCKCPanel.call( this, alignGroup.createBox( new HBox( {
       spacing: ( options.showNoncontactAmmeters && options.showSeriesAmmeters ) ? 20 : 40,
       align: 'bottom',
       children: [ voltmeterToolIcon, ammeterToolIcon ]
@@ -176,5 +176,5 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'SensorToolbox', SensorToolbox );
 
-  return inherit( CircuitConstructionKitPanel, SensorToolbox );
+  return inherit( CCKCPanel, SensorToolbox );
 } );

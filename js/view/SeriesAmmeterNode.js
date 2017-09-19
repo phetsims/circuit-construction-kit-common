@@ -10,8 +10,8 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  var CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   var Color = require( 'SCENERY/util/Color' );
   var FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
@@ -29,11 +29,11 @@ define( function( require ) {
 
   // constants
   var PANEL_HEIGHT = 40;
-  var PANEL_WIDTH = CircuitConstructionKitCommonConstants.SERIES_AMMETER_LENGTH;
+  var PANEL_WIDTH = CCKCConstants.SERIES_AMMETER_LENGTH;
   var ORANGE = '#f39033';
 
   // Determine widest text to use for max width
-  var WIDEST_LABEL = CircuitConstructionKitCommonUtil.createCurrentReadout( 99.99 );
+  var WIDEST_LABEL = CCKCUtil.createCurrentReadout( 99.99 );
   var CORNER_RADIUS = 4;
 
   /**
@@ -55,7 +55,7 @@ define( function( require ) {
   } );
 
   /**
-   * @param {CircuitConstructionKitScreenView|null} screenView - main screen view, null for isIcon
+   * @param {CCKCScreenView|null} screenView - main screen view, null for isIcon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {SeriesAmmeter} seriesAmmeter
    * @param {Tandem} tandem
@@ -91,7 +91,7 @@ define( function( require ) {
         if ( startConnection && endConnection ) {
 
           // The ammeter doesn't indicate direction
-          readout = CircuitConstructionKitCommonUtil.createCurrentReadout( seriesAmmeter.currentProperty.get() );
+          readout = CCKCUtil.createCurrentReadout( seriesAmmeter.currentProperty.get() );
         }
       }
 
@@ -214,7 +214,7 @@ define( function( require ) {
 
     /**
      * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
-     * @protected - CircuitConstructionKitLightBulbNode calls updateRender for its child socket node
+     * @protected - CCKCLightBulbNode calls updateRender for its child socket node
      * @override
      */
     updateRender: function() {

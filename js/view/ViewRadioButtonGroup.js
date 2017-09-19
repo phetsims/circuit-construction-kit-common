@@ -14,7 +14,7 @@ define( function( require ) {
   var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
   var BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Property = require( 'AXON/Property' );
@@ -23,7 +23,7 @@ define( function( require ) {
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
 
   // constants
-  var BATTERY_LENGTH = CircuitConstructionKitCommonConstants.BATTERY_LENGTH;
+  var BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
   var SCALE = 0.58;
 
   /**
@@ -68,10 +68,10 @@ define( function( require ) {
       orientation: 'horizontal',
       buttonContentXMargin: 14,
       buttonContentYMargin: 7,
-      baseColor: CircuitConstructionKitCommonConstants.PANEL_COLOR,
+      baseColor: CCKCConstants.PANEL_COLOR,
       deselectedButtonOpacity: 0.4,
       overButtonOpacity: 0.7,
-      cornerRadius: CircuitConstructionKitCommonConstants.CORNER_RADIUS,
+      cornerRadius: CCKCConstants.CORNER_RADIUS,
       tandem: tandem
     } );
   }

@@ -23,9 +23,9 @@ define( function( require ) {
   var Bounds2 = require( 'DOT/Bounds2' );
   var ChargeNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ChargeNode' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
-  var CircuitConstructionKitLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitLightBulbNode' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  var CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
+  var CCKCLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCLightBulbNode' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   var CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CustomLightBulbNode' );
   var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
@@ -59,7 +59,7 @@ define( function( require ) {
 
   /**
    * @param {Circuit} circuit - the model Circuit
-   * @param {CircuitConstructionKitScreenView} screenView - for dropping CircuitElement instances back in the toolbox
+   * @param {CCKCScreenView} screenView - for dropping CircuitElement instances back in the toolbox
    * @param {Tandem} tandem
    * @constructor
    */
@@ -143,7 +143,7 @@ define( function( require ) {
       } ) ]
     } );
 
-    // @public {Node} - CircuitConstructionKitLightBulbNode calls addChild/removeChild to add sockets to the front layer
+    // @public {Node} - CCKCLightBulbNode calls addChild/removeChild to add sockets to the front layer
     this.lightBulbSocketLayer = new Node( {
       renderer: RENDERER,
 
@@ -212,7 +212,7 @@ define( function( require ) {
     } );
 
     // @public {Property.<Bounds2>} the visible bounds in the coordinate frame of the circuit.  Initialized with a
-    // placeholder value until it is filled in by CircuitConstructionKitScreenView (after attached to a parent)
+    // placeholder value until it is filled in by CCKCScreenView (after attached to a parent)
     this.visibleBoundsInCircuitCoordinateFrameProperty = new Property( new Bounds2( 0, 0, 1, 1 ) );
 
     // @public (read-only) {Circuit} - the Circuit model depicted by this view
@@ -258,13 +258,13 @@ define( function( require ) {
             );
 
             var updateShowValues = function( showValues ) {
-              CircuitConstructionKitCommonUtil.setInSceneGraph( showValues, self.valueLayer, valueNode );
+              CCKCUtil.setInSceneGraph( showValues, self.valueLayer, valueNode );
             };
             self.model.showValuesProperty.link( updateShowValues );
 
             circuitElement.disposeEmitter.addListener( function() {
               self.model.showValuesProperty.unlink( updateShowValues );
-              CircuitConstructionKitCommonUtil.setInSceneGraph( false, self.valueLayer, valueNode );
+              CCKCUtil.setInSceneGraph( false, self.valueLayer, valueNode );
               valueNode.dispose();
             } );
           }
@@ -291,7 +291,7 @@ define( function( require ) {
       return new BatteryNode( screenView, self, circuitElement, self.model.viewTypeProperty, tandem );
     } );
     initializeCircuitElementType( LightBulb, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'lightBulbNode' ), function( circuitElement, tandem ) {
-      return new CircuitConstructionKitLightBulbNode( screenView, self, circuitElement, self.model.isValueDepictionEnabledProperty, self.model.viewTypeProperty, tandem );
+      return new CCKCLightBulbNode( screenView, self, circuitElement, self.model.isValueDepictionEnabledProperty, self.model.viewTypeProperty, tandem );
     } );
     initializeCircuitElementType( Resistor, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'resistorNode' ), function( circuitElement, tandem ) {
       return new ResistorNode( screenView, self, circuitElement, self.model.viewTypeProperty, tandem );
@@ -310,7 +310,7 @@ define( function( require ) {
     // so there is only a need for one cut button.
     var cutIcon = new FontAwesomeNode( 'cut', {
       rotation: -Math.PI / 2, // scissors point up
-      scale: CircuitConstructionKitCommonConstants.FONT_AWESOME_ICON_SCALE
+      scale: CCKCConstants.FONT_AWESOME_ICON_SCALE
     } );
 
     // @public (read-only)

@@ -16,13 +16,13 @@ define( function( require ) {
   // modules
   var arrayRemove = require( 'PHET_CORE/arrayRemove' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonQueryParameters' );
+  var CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Matrix = require( 'DOT/Matrix' );
   var ModifiedNodalAnalysisSolution = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisSolution' );
 
   // constants
-  var DEBUG = CircuitConstructionKitCommonQueryParameters.debugModifiedNodalAnalysis;
+  var DEBUG = CCKCQueryParameters.debugModifiedNodalAnalysis;
 
   /**
    * @param {ModifiedNodalAnalysisCircuitElement[]} batteries

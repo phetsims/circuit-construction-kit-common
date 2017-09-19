@@ -11,13 +11,13 @@ define( function( require ) {
   // modules
   var BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   var inherit = require( 'PHET_CORE/inherit' );
   var NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
-  var BATTERY_LENGTH = CircuitConstructionKitCommonConstants.BATTERY_LENGTH;
+  var BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
 
   /**
    * @param {Vertex} startVertex - one of the battery vertices

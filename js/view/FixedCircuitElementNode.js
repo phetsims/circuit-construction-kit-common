@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
+  var CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   var FixedCircuitElementHighlightNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementHighlightNode' );
@@ -43,7 +43,7 @@ define( function( require ) {
   };
 
   /**
-   * @param {CircuitConstructionKitScreenView} screenView - the main screen view, null for isIcon
+   * @param {CCKCScreenView} screenView - the main screen view, null for isIcon
    * @param {CircuitLayerNode} circuitLayerNode - Null if an isIcon is created
    * @param {FixedCircuitElement} circuitElement - the corresponding model element
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
@@ -211,7 +211,7 @@ define( function( require ) {
 
     /**
      * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
-     * @protected - CircuitConstructionKitLightBulbNode calls updateRender for its child socket node
+     * @protected - CCKCLightBulbNode calls updateRender for its child socket node
      */
     updateRender: function() {
       var startPosition = this.circuitElement.startPositionProperty.get();
@@ -260,7 +260,7 @@ define( function( require ) {
      */
     setSelectedCircuitElement: function( circuitElement ) {
       var visible = ( circuitElement === this.circuitElement );
-      CircuitConstructionKitCommonUtil.setInSceneGraph( visible, this.circuitLayerNode.highlightLayer, this.highlightNode );
+      CCKCUtil.setInSceneGraph( visible, this.circuitLayerNode.highlightLayer, this.highlightNode );
       this.markAsDirty();
     },
 
@@ -277,7 +277,7 @@ define( function( require ) {
       this.circuitElement.connectedEmitter.removeListener( this.moveToFrontListener );
       this.circuitElement.vertexSelectedEmitter.removeListener( this.moveToFrontListener );
       this.fixedCircuitElementNodePickable && this.circuitElement.interactiveProperty.unlink( this.pickableListener );
-      this.circuitLayerNode && this.highlightNode && CircuitConstructionKitCommonUtil.setInSceneGraph( false, this.circuitLayerNode.highlightLayer, this.highlightNode );
+      this.circuitLayerNode && this.highlightNode && CCKCUtil.setInSceneGraph( false, this.circuitLayerNode.highlightLayer, this.highlightNode );
       this.viewTypeProperty.unlink( this.viewPropertyListener );
 
       if ( !this.isIcon && this.updateFireMultilink ) {

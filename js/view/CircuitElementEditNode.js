@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var inherit = require( 'PHET_CORE/inherit' );
   var NumberControl = require( 'SCENERY_PHET/NumberControl' );
@@ -20,7 +20,7 @@ define( function( require ) {
   var TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
 
   // constants
-  var FONT = new PhetFont( CircuitConstructionKitCommonConstants.FONT_SIZE );
+  var FONT = new PhetFont( CCKCConstants.FONT_SIZE );
   var NUMBER_CONTROL_ELEMENT_MAX_WIDTH = 140;
 
   /**

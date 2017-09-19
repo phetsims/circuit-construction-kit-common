@@ -10,9 +10,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CircuitConstructionKitAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitAccordionBox' );
+  var CCKCAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCAccordionBox' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   var HSlider = require( 'SUN/HSlider' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Text = require( 'SCENERY/nodes/Text' );
@@ -34,22 +34,22 @@ define( function( require ) {
    */
   function WireResistivityControl( wireResistivityProperty, alignGroup, tandem ) {
     var slider = new HSlider( wireResistivityProperty, {
-      min: CircuitConstructionKitCommonConstants.DEFAULT_RESISTIVITY,
+      min: CCKCConstants.DEFAULT_RESISTIVITY,
       max: MAX_RESISTIVITY // large enough so that max resistance in a 9v battery slows to a good rate
     }, {
-      trackSize: CircuitConstructionKitCommonConstants.SLIDER_TRACK_SIZE,
-      thumbSize: CircuitConstructionKitCommonConstants.THUMB_SIZE,
-      majorTickLength: CircuitConstructionKitCommonConstants.MAJOR_TICK_LENGTH,
+      trackSize: CCKCConstants.SLIDER_TRACK_SIZE,
+      thumbSize: CCKCConstants.THUMB_SIZE,
+      majorTickLength: CCKCConstants.MAJOR_TICK_LENGTH,
       tandem: tandem.createTandem( 'slider' )
     } );
 
     slider.addMajorTick( 0, new Text( tinyString, TICK_LABEL_TEXT_OPTIONS ) );
     slider.addMajorTick( MAX_RESISTIVITY, new Text( lotsString, TICK_LABEL_TEXT_OPTIONS ) );
 
-    CircuitConstructionKitAccordionBox.call( this, alignGroup.createBox( slider ), wireResistivityString, tandem );
+    CCKCAccordionBox.call( this, alignGroup.createBox( slider ), wireResistivityString, tandem );
   }
 
   circuitConstructionKitCommon.register( 'WireResistivityControl', WireResistivityControl );
 
-  return inherit( CircuitConstructionKitAccordionBox, WireResistivityControl );
+  return inherit( CCKCAccordionBox, WireResistivityControl );
 } );

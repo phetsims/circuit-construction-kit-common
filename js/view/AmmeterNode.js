@@ -12,8 +12,8 @@ define( function( require ) {
   // modules
   var BooleanProperty = require( 'AXON/BooleanProperty' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  var CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
   var Color = require( 'SCENERY/util/Color' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
@@ -84,7 +84,7 @@ define( function( require ) {
       // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
       return current === null ? questionMarkString :
              Math.abs( current ) > max ? maxString :
-             CircuitConstructionKitCommonUtil.createCurrentReadout( current );
+             CCKCUtil.createCurrentReadout( current );
     } );
 
     var probeTextNode = new ProbeTextNode(
@@ -164,7 +164,7 @@ define( function( require ) {
       } );
       bodyNode.addInputListener( this.dragHandler );
       options.visibleBoundsProperty.link( function( visibleBounds ) {
-        var erodedDragBounds = visibleBounds.eroded( CircuitConstructionKitCommonConstants.DRAG_BOUNDS_EROSION );
+        var erodedDragBounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
         self.dragHandler.dragBounds = erodedDragBounds;
         probeDragHandler.dragBounds = erodedDragBounds;
       } );

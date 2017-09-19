@@ -16,8 +16,8 @@ define( function( require ) {
   var BatteryResistanceControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryResistanceControl' );
   var ChargeSpeedThrottlingReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ChargeSpeedThrottlingReadoutNode' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var CircuitConstructionKitCommonQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonQueryParameters' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  var CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   var CircuitElementEditContainerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditContainerNode' );
   var CircuitElementToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolbox' );
   var CircuitLayerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitLayerNode' );
@@ -37,7 +37,7 @@ define( function( require ) {
   var ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ZoomControlPanel' );
 
   // constants
-  var VERTICAL_MARGIN = CircuitConstructionKitCommonConstants.VERTICAL_MARGIN;
+  var VERTICAL_MARGIN = CCKCConstants.VERTICAL_MARGIN;
 
   // Match margins with the carousel page control and spacing
   var HORIZONTAL_MARGIN = 17;
@@ -58,7 +58,7 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function CircuitConstructionKitScreenView( model, circuitElementToolNodes, tandem, options ) {
+  function CCKCScreenView( model, circuitElementToolNodes, tandem, options ) {
     var self = this;
 
     // @public (read-only) {CircuitConstructionKitModel}
@@ -226,7 +226,7 @@ define( function( require ) {
     } );
 
     // Add the optional Play/Pause button
-    if ( CircuitConstructionKitCommonQueryParameters.showDepictValuesToggleButton ) {
+    if ( CCKCQueryParameters.showDepictValuesToggleButton ) {
       var playPauseButton = new PlayPauseButton( model.isValueDepictionEnabledProperty, {
         tandem: tandem.createTandem( 'playPauseButton' ),
         baseColor: '#33ff44' // the default blue fades into the background too much
@@ -297,9 +297,9 @@ define( function( require ) {
     } );
   }
 
-  circuitConstructionKitCommon.register( 'CircuitConstructionKitScreenView', CircuitConstructionKitScreenView );
+  circuitConstructionKitCommon.register( 'CCKCScreenView', CCKCScreenView );
 
-  return inherit( ScreenView, CircuitConstructionKitScreenView, {
+  return inherit( ScreenView, CCKCScreenView, {
 
     /**
      * Move forward in time by the specified dt

@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Panel = require( 'SUN/Panel' );
 
@@ -20,19 +20,19 @@ define( function( require ) {
    * @param {Object} [options]
    * @constructor
    */
-  function CircuitConstructionKitPanel( content, tandem, options ) {
+  function CCKCPanel( content, tandem, options ) {
     options = _.extend( {
-      fill: CircuitConstructionKitCommonConstants.PANEL_COLOR,
-      lineWidth: CircuitConstructionKitCommonConstants.PANEL_LINE_WIDTH,
+      fill: CCKCConstants.PANEL_COLOR,
+      lineWidth: CCKCConstants.PANEL_LINE_WIDTH,
       xMargin: 15,
       yMargin: 15,
       tandem: tandem,
-      cornerRadius: CircuitConstructionKitCommonConstants.CORNER_RADIUS
+      cornerRadius: CCKCConstants.CORNER_RADIUS
     }, options );
     Panel.call( this, content, options );
   }
 
-  circuitConstructionKitCommon.register( 'CircuitConstructionKitPanel', CircuitConstructionKitPanel );
+  circuitConstructionKitCommon.register( 'CCKCPanel', CCKCPanel );
 
-  return inherit( Panel, CircuitConstructionKitPanel, {} );
+  return inherit( Panel, CCKCPanel, {} );
 } );

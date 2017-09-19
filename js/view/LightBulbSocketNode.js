@@ -21,7 +21,7 @@ define( function( require ) {
   var SCRATCH_MATRIX = new Matrix3();
 
   /**
-   * @param {CircuitConstructionKitScreenView|null} screenView - main screen view, null for icon
+   * @param {CCKCScreenView|null} screenView - main screen view, null for icon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {LightBulb} lightBulb - the light bulb model
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
@@ -42,7 +42,7 @@ define( function( require ) {
     options = _.extend( {
       pickable: false,
 
-      // Suppress the highlight for the socket, the highlight is shown by the CircuitConstructionKitLightBulbNode
+      // Suppress the highlight for the socket, the highlight is shown by the CCKCLightBulbNode
       showHighlight: false
     }, options );
     FixedCircuitElementNode.call( this, screenView, circuitLayerNode, lightBulb,
@@ -56,7 +56,7 @@ define( function( require ) {
     /**
      * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
      * @override
-     * @protected - CircuitConstructionKitLightBulbNode calls updateRender for its child socket node
+     * @protected - CCKCLightBulbNode calls updateRender for its child socket node
      */
     updateRender: function() {
       var startPosition = this.circuitElement.startPositionProperty.get();

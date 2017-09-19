@@ -11,7 +11,7 @@ define( function( require ) {
   // modules
   var BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   var Color = require( 'SCENERY/util/Color' );
   var FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
   var Image = require( 'SCENERY/nodes/Image' );
@@ -45,14 +45,14 @@ define( function( require ) {
     .moveTo( RIGHT_JUNCTION, LARGE_TERMINAL_WIDTH / 2 ) // right plate
     .lineTo( RIGHT_JUNCTION, -LARGE_TERMINAL_WIDTH / 2 );
   var schematicWidth = schematicShape.bounds.width;
-  var desiredWidth = CircuitConstructionKitCommonConstants.BATTERY_LENGTH;
+  var desiredWidth = CCKCConstants.BATTERY_LENGTH;
   var schematicScale = desiredWidth / schematicWidth;
 
   // Scale to fit the correct width
   schematicShape = schematicShape.transformed( Matrix3.scale( schematicScale, schematicScale ) );
   var schematicNode = new Path( schematicShape, {
     stroke: Color.BLACK,
-    lineWidth: CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH
+    lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH
   } ).toDataURLImageSynchronous();
 
   schematicNode.centerY = 0;
@@ -62,7 +62,7 @@ define( function( require ) {
   schematicNode.touchArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
 
   /**
-   * @param {CircuitConstructionKitScreenView|null} screenView - main screen view, null for isIcon
+   * @param {CCKCScreenView|null} screenView - main screen view, null for isIcon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {Battery} battery
    * @param {Property.<CircuitElementViewType>} viewTypeProperty

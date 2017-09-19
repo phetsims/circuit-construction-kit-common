@@ -12,7 +12,7 @@ define( function( require ) {
   var ButtonListener = require( 'SCENERY/input/ButtonListener' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   var Color = require( 'SCENERY/util/Color' );
   var FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
@@ -26,9 +26,9 @@ define( function( require ) {
   // constants
   // dimensions for schematic battery
   var LIFELIKE_DIAMETER = 16;
-  var SWITCH_START = CircuitConstructionKitCommonConstants.SWITCH_START;
-  var SWITCH_END = CircuitConstructionKitCommonConstants.SWITCH_END;
-  var SWITCH_LENGTH = CircuitConstructionKitCommonConstants.SWITCH_LENGTH;
+  var SWITCH_START = CCKCConstants.SWITCH_START;
+  var SWITCH_END = CCKCConstants.SWITCH_END;
+  var SWITCH_LENGTH = CCKCConstants.SWITCH_LENGTH;
 
   var lifelikeNodeThickness = 8;
   var lifelikeGradient = new LinearGradient( 0, -lifelikeNodeThickness / 2, 0, lifelikeNodeThickness / 2 )
@@ -137,15 +137,15 @@ define( function( require ) {
   var lifelikeClosedImage = lifelikeClosedNode.toDataURLImageSynchronous();
 
   var schematicOpenImage = createNode(
-    CircuitElementViewType.SCHEMATIC, Color.BLACK, CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH, 0, false
+    CircuitElementViewType.SCHEMATIC, Color.BLACK, CCKCConstants.SCHEMATIC_LINE_WIDTH, 0, false
   ).toDataURLImageSynchronous();
 
   var schematicClosedImage = createNode(
-    CircuitElementViewType.SCHEMATIC, Color.BLACK, CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH, 0, true
+    CircuitElementViewType.SCHEMATIC, Color.BLACK, CCKCConstants.SCHEMATIC_LINE_WIDTH, 0, true
   ).toDataURLImageSynchronous();
 
   /**
-   * @param {CircuitConstructionKitScreenView|null} screenView - main screen view, null for icon
+   * @param {CCKCScreenView|null} screenView - main screen view, null for icon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
    * @param {Switch} circuitSwitch
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
@@ -192,7 +192,7 @@ define( function( require ) {
         var distance = circuitLayerNode.globalToLocalPoint( event.pointer.point ).distance( downPoint );
 
         // Toggle the state of the switch, but only if the event is classified as a tap and not a drag
-        if ( distance < CircuitConstructionKitCommonConstants.TAP_THRESHOLD ) {
+        if ( distance < CCKCConstants.TAP_THRESHOLD ) {
           circuitSwitch.closedProperty.value = !circuitSwitch.closedProperty.value;
         }
       }

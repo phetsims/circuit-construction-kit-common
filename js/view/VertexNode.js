@@ -11,9 +11,9 @@ define( function( require ) {
   // modules
   var Circle = require( 'SCENERY/nodes/Circle' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var CircuitConstructionKitCommonQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonQueryParameters' );
-  var CircuitConstructionKitCommonUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonUtil' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  var CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
+  var CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
   var Color = require( 'SCENERY/util/Color' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Input = require( 'SCENERY/input/Input' );
@@ -64,7 +64,7 @@ define( function( require ) {
     this.circuitLayerNode = circuitLayerNode;
 
     // Use a query parameter to turn on node voltage readouts for debugging only.
-    var vertexDisplay = CircuitConstructionKitCommonQueryParameters.vertexDisplay;
+    var vertexDisplay = CCKCQueryParameters.vertexDisplay;
 
     // @private {Text} display for debugging only
     this.voltageReadoutText = null;
@@ -97,8 +97,8 @@ define( function( require ) {
 
     // @private {Circle} - Highlight is shown when the vertex is selected.
     this.highlightNode = new Circle( 30, {
-      stroke: CircuitConstructionKitCommonConstants.HIGHLIGHT_COLOR,
-      lineWidth: CircuitConstructionKitCommonConstants.HIGHLIGHT_LINE_WIDTH,
+      stroke: CCKCConstants.HIGHLIGHT_COLOR,
+      lineWidth: CCKCConstants.HIGHLIGHT_LINE_WIDTH,
       pickable: false
     } );
 
@@ -169,7 +169,7 @@ define( function( require ) {
         circuitLayerNode.endDrag( event, vertex, dragged );
 
         // Only show on a tap, not on every drag.
-        if ( vertex.interactiveProperty.get() && event.pointer.point.distance( eventPoint ) < CircuitConstructionKitCommonConstants.TAP_THRESHOLD ) {
+        if ( vertex.interactiveProperty.get() && event.pointer.point.distance( eventPoint ) < CCKCConstants.TAP_THRESHOLD ) {
 
           vertex.selectedProperty.set( true );
 
@@ -233,8 +233,8 @@ define( function( require ) {
       vertex.selectedProperty.unlink( this.updateSelectedListener );
       vertex.interactiveProperty.unlink( this.updatePickableListener );
       vertex.relayerEmitter.removeListener( this.updateMoveToFront );
-      CircuitConstructionKitCommonUtil.setInSceneGraph( false, circuitLayerNode.buttonLayer, cutButton );
-      CircuitConstructionKitCommonUtil.setInSceneGraph( false, circuitLayerNode.highlightLayer, this.highlightNode );
+      CCKCUtil.setInSceneGraph( false, circuitLayerNode.buttonLayer, cutButton );
+      CCKCUtil.setInSceneGraph( false, circuitLayerNode.highlightLayer, this.highlightNode );
       circuit.vertices.removeItemAddedListener( this.updateStrokeListener );
       circuit.vertices.removeItemRemovedListener( this.updateStrokeListener );
 
@@ -291,9 +291,9 @@ define( function( require ) {
         this.moveToFront();
         this.focus();
       }
-      CircuitConstructionKitCommonUtil.setInSceneGraph( selected, this.circuitLayerNode.highlightLayer, this.highlightNode );
+      CCKCUtil.setInSceneGraph( selected, this.circuitLayerNode.highlightLayer, this.highlightNode );
       var numberConnections = neighborCircuitElements.length;
-      CircuitConstructionKitCommonUtil.setInSceneGraph( selected, this.circuitLayerNode.buttonLayer, this.cutButton );
+      CCKCUtil.setInSceneGraph( selected, this.circuitLayerNode.buttonLayer, this.cutButton );
       selected && this.updateCutButtonPosition();
 
       // Show a disabled button as a cue that the vertex could be cuttable, but it isn't right now.

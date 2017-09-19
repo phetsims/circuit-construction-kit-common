@@ -12,7 +12,7 @@ define( function( require ) {
   // modules
   var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   var CircuitElementEditNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditNode' );
   var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -38,7 +38,7 @@ define( function( require ) {
   var GET_LAYOUT_POSITION = function( visibleBounds ) {
     return {
       centerX: visibleBounds.centerX,
-      bottom: visibleBounds.bottom - CircuitConstructionKitCommonConstants.VERTICAL_MARGIN
+      bottom: visibleBounds.bottom - CCKCConstants.VERTICAL_MARGIN
     };
   };
 
@@ -156,8 +156,8 @@ define( function( require ) {
 
           // Clicking nearby (but not directly on) a tweaker button or slider shouldn't dismiss the edit panel,
           // see https://github.com/phetsims/circuit-construction-kit-dc/issues/90
-          self.mouseArea = self.localBounds.dilatedXY( 20, CircuitConstructionKitCommonConstants.VERTICAL_MARGIN );
-          self.touchArea = self.localBounds.dilatedXY( 20, CircuitConstructionKitCommonConstants.VERTICAL_MARGIN );
+          self.mouseArea = self.localBounds.dilatedXY( 20, CCKCConstants.VERTICAL_MARGIN );
+          self.touchArea = self.localBounds.dilatedXY( 20, CCKCConstants.VERTICAL_MARGIN );
         }
       }
       updatePosition();

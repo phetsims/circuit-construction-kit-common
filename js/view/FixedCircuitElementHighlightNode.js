@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
@@ -27,8 +27,8 @@ define( function( require ) {
     Rectangle.call( this, 0, 0, 0, 0,
       CORNER_RADIUS,
       CORNER_RADIUS, {
-        stroke: CircuitConstructionKitCommonConstants.HIGHLIGHT_COLOR,
-        lineWidth: CircuitConstructionKitCommonConstants.HIGHLIGHT_LINE_WIDTH,
+        stroke: CCKCConstants.HIGHLIGHT_COLOR,
+        lineWidth: CCKCConstants.HIGHLIGHT_LINE_WIDTH,
         pickable: false
       } );
 

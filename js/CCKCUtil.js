@@ -21,12 +21,12 @@ define( function( require ) {
   /**
    * @constructor
    */
-  function CircuitConstructionKitCommonUtil() {
+  function CCKCUtil() {
   }
 
-  circuitConstructionKitCommon.register( 'CircuitConstructionKitCommonUtil', CircuitConstructionKitCommonUtil );
+  circuitConstructionKitCommon.register( 'CCKCUtil', CCKCUtil );
 
-  return inherit( Object, CircuitConstructionKitCommonUtil, {}, {
+  return inherit( Object, CCKCUtil, {}, {
 
     /**
      * Typically show 2 decimal places for current and voltage readouts in the play area, but if it is a smaller value,

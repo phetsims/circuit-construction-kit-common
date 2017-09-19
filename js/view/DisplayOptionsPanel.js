@@ -15,8 +15,8 @@ define( function( require ) {
   var AquaRadioButton = require( 'SUN/AquaRadioButton' );
   var CheckBox = require( 'SUN/CheckBox' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
-  var CircuitConstructionKitPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitConstructionKitPanel' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  var CCKCPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCPanel' );
   var ConventionalCurrentArrowNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ConventionalCurrentArrowNode' );
   var CurrentType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CurrentType' );
   var HBox = require( 'SCENERY/nodes/HBox' );
@@ -34,7 +34,7 @@ define( function( require ) {
 
   // constants
   var TEXT_OPTIONS = {
-    fontSize: CircuitConstructionKitCommonConstants.FONT_SIZE,
+    fontSize: CCKCConstants.FONT_SIZE,
     maxWidth: 120
   };
   var BOX_ALIGNMENT = { xAlign: 'left' };
@@ -133,7 +133,7 @@ define( function( require ) {
       showValuesCheckBox
     ];
 
-    CircuitConstructionKitPanel.call( this, alignGroup.createBox( new VBox( {
+    CCKCPanel.call( this, alignGroup.createBox( new VBox( {
       children: children,
       spacing: SPACING,
       align: 'left'
@@ -155,5 +155,5 @@ define( function( require ) {
 
   circuitConstructionKitCommon.register( 'DisplayOptionsPanel', DisplayOptionsPanel );
 
-  return inherit( CircuitConstructionKitPanel, DisplayOptionsPanel );
+  return inherit( CCKCPanel, DisplayOptionsPanel );
 } );

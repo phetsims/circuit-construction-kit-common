@@ -15,7 +15,7 @@ define( function( require ) {
   var Range = require( 'DOT/Range' );
 
   // constants
-  var CircuitConstructionKitCommonConstants = {
+  var CCKCConstants = {
 
     // Maximum size for Width or height of icons in the circuit element toolbox or sensor toolbox
     TOOLBOX_ICON_SIZE: 60,
@@ -125,7 +125,7 @@ define( function( require ) {
     FONT_SIZE: 14
   };
 
-  circuitConstructionKitCommon.register( 'CircuitConstructionKitCommonConstants', CircuitConstructionKitCommonConstants );
+  circuitConstructionKitCommon.register( 'CCKCConstants', CCKCConstants );
 
-  return CircuitConstructionKitCommonConstants;
+  return CCKCConstants;
 } );

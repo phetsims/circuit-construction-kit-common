@@ -11,7 +11,7 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   var Image = require( 'SCENERY/nodes/Image' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LightRaysNode = require( 'SCENERY_PHET/LightRaysNode' );
@@ -40,7 +40,7 @@ define( function( require ) {
     options = _.extend( {
       baseOnly: false,
       highResistance: true,
-      scale: CircuitConstructionKitCommonConstants.BULB_SCALE
+      scale: CCKCConstants.BULB_SCALE
     }, options );
 
     // @private (read-only) {boolean]

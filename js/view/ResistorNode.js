@@ -10,7 +10,7 @@ define( function( require ) {
 
   // modules
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitConstructionKitCommonConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CircuitConstructionKitCommonConstants' );
+  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   var Color = require( 'SCENERY/util/Color' );
   var FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
   var Image = require( 'SCENERY/nodes/Image' );
@@ -70,7 +70,7 @@ define( function( require ) {
   RESISTOR_IMAGE_MAP[ ResistorType.DOLLAR_BILL ] = dollarBillImage;
 
   /**
-   * @param {CircuitConstructionKitScreenView|null} screenView - main screen view, null for isIcon
+   * @param {CCKCScreenView|null} screenView - main screen view, null for isIcon
    * @param {CircuitLayerNode|null} circuitLayerNode, null for isIcon
    * @param {Resistor} resistor
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
@@ -150,7 +150,7 @@ define( function( require ) {
 
     // Icons should appear the same in the toolbox, see
     // https://github.com/phetsims/circuit-construction-kit-common/issues/389
-    var width = options.isIcon ? CircuitConstructionKitCommonConstants.RESISTOR_LENGTH : resistor.distanceBetweenVertices;
+    var width = options.isIcon ? CCKCConstants.RESISTOR_LENGTH : resistor.distanceBetweenVertices;
     lifelikeResistorImageNode.mutate( {
       scale: width / lifelikeResistorImageNode.width
     } );
@@ -164,7 +164,7 @@ define( function( require ) {
     else {
       schematicNode = new Path( schematicShape, {
         stroke: Color.BLACK,
-        lineWidth: CircuitConstructionKitCommonConstants.SCHEMATIC_LINE_WIDTH
+        lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH
       } ).toDataURLImageSynchronous();
 
       // icons are all the same size in the toolbox, so only cache the non-icons (with the correct heights)
