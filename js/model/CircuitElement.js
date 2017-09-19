@@ -188,8 +188,8 @@ define( function( require ) {
       this.disposeEmitter.emit();
       this.disposeEmitter.removeAllListeners();
 
-      this.startVertexProperty.unlink( this.linkVertex );
-      this.endVertexProperty.unlink( this.linkVertex );
+      this.startVertexProperty.unlink( this.linkVertexListener );
+      this.endVertexProperty.unlink( this.linkVertexListener );
 
       this.startPositionProperty.unlink( this.vertexMovedListener );
       this.endPositionProperty.unlink( this.vertexMovedListener );
