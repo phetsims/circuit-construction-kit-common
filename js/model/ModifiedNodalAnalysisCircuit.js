@@ -16,13 +16,9 @@ define( function( require ) {
   // modules
   var arrayRemove = require( 'PHET_CORE/arrayRemove' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Matrix = require( 'DOT/Matrix' );
   var ModifiedNodalAnalysisSolution = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisSolution' );
-
-  // constants
-  var DEBUG = CCKCQueryParameters.debugModifiedNodalAnalysis;
 
   /**
    * @param {ModifiedNodalAnalysisCircuitElement[]} batteries
@@ -242,7 +238,7 @@ define( function( require ) {
         equations.push( new Equation( 0, [ new Term( 1, new UnknownVoltage( referenceNodeIds[ i ] ) ) ] ) );
       }
 
-      // DEBUG && console.log( referenceNodeIds );
+      // phet.log && phet.log( referenceNodeIds );
 
       // For each node, charge is conserved
       var nodes = this.nodes;
@@ -329,12 +325,12 @@ define( function( require ) {
       for ( var i = 0; i < equations.length; i++ ) {
         equations[ i ].stamp( i, A, z, getIndex );
       }
-      DEBUG && console.log( A.m, A.n );
-      DEBUG && console.log( 'Debugging circuit: ' + this.toString() );
-      DEBUG && console.log( equations.join( '\n' ) );
-      DEBUG && console.log( 'A=\n' + A.toString() );
-      DEBUG && console.log( 'z=\n' + z.toString() );
-      DEBUG && console.log( 'unknowns=\n' + unknowns.map( function( u ) {
+      phet.log && phet.log( A.m, A.n );
+      phet.log && phet.log( 'Debugging circuit: ' + this.toString() );
+      phet.log && phet.log( equations.join( '\n' ) );
+      phet.log && phet.log( 'A=\n' + A.toString() );
+      phet.log && phet.log( 'z=\n' + z.toString() );
+      phet.log && phet.log( 'unknowns=\n' + unknowns.map( function( u ) {
         return u.toTermName();
       } ).join( '\n' ) );
 
@@ -353,7 +349,7 @@ define( function( require ) {
 
       // The matrix should be square since it is an exact analytical solution, see https://github.com/phetsims/circuit-construction-kit-dc/issues/96
       assert && assert( A.m === A.n, 'Matrix should be square' );
-      DEBUG && console.log( 'x=\n' + x.toString() );
+      phet.log && phet.log( 'x=\n' + x.toString() );
 
       var voltageMap = {};
       for ( i = 0; i < unknownVoltages.length; i++ ) {
