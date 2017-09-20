@@ -51,6 +51,11 @@ define( function( require ) {
       phetioValueType: TVector2
     } );
 
+    assert && this.positionProperty.link( function( p ) {
+      assert && assert( !isNaN( p.x ), 'x should be a number' );
+      assert && assert( !isNaN( p.y ), 'y should be a number' );
+    } );
+
     // @public {Property.<Vector2>} - where the vertex would be if it hadn't snapped to a proposed connection
     this.unsnappedPositionProperty = new Property( position );
 

@@ -264,7 +264,11 @@ define( function( require ) {
       var startPosition = this.startPositionProperty.get();
       var endPosition = this.endPositionProperty.get();
       var translation = startPosition.blend( endPosition, distanceAlongWire / this.chargePathLength );
-      matrix.setToTranslationRotationPoint( translation, Vector2.getAngleBetweenVectors( startPosition, endPosition ) );
+      assert && assert( !isNaN( translation.x ), 'x should be a number' );
+      assert && assert( !isNaN( translation.y ), 'y should be a number' );
+      var angle = Vector2.getAngleBetweenVectors( startPosition, endPosition );
+      assert && assert( !isNaN( angle ), 'angle should be a number' );
+      matrix.setToTranslationRotationPoint( translation, angle );
     },
 
     /**
