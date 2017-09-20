@@ -514,7 +514,7 @@ define( function( require ) {
           new Battery(
             new Vertex( Vector2.ZERO ),
             new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
-            null,
+            new Property( 0 ),
             BatteryType.HIGH_VOLTAGE,
             tandem.createTandem( 'highVoltageIconBattery' )
           ), this.viewTypeProperty, tandem.createTandem( 'highVoltageBatteryIcon' ), { isIcon: true } ),
