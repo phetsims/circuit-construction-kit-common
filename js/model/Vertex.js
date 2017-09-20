@@ -48,16 +48,18 @@ define( function( require ) {
     // @public {Property.<Vector2>} - location of the vertex
     this.positionProperty = new Property( position, {
       tandem: options.tandem && options.tandem.createTandem( 'positionProperty' ),
-      phetioValueType: TVector2
-    } );
-
-    assert && this.positionProperty.link( function( p ) {
-      assert && assert( !isNaN( p.x ), 'x should be a number' );
-      assert && assert( !isNaN( p.y ), 'y should be a number' );
+      phetioValueType: TVector2,
+      isValidValue: assert && function( p ) {
+        return !isNaN( p.x ) && !isNaN( p.y );
+      }
     } );
 
     // @public {Property.<Vector2>} - where the vertex would be if it hadn't snapped to a proposed connection
-    this.unsnappedPositionProperty = new Property( position );
+    this.unsnappedPositionProperty = new Property( position, {
+      isValidValue: assert && function( p ) {
+        return !isNaN( p.x ) && !isNaN( p.y );
+      }
+    } );
 
     // @public {NumberProperty} Relative voltage of the node, determined by Circuit.solve
     this.voltageProperty = new NumberProperty( 0, {

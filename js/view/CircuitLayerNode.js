@@ -548,8 +548,9 @@ define( function( require ) {
         var fixedNeighbor = fixedNeighbors[ 0 ];
         var fixedVertex = fixedNeighbor.getOppositeVertex( vertex );
         var desiredAngle = position.minus( fixedVertex.positionProperty.get() ).angle();
+        assert && assert( !isNaN( desiredAngle ), 'angle should be a number' );
 
-        var length = fixedNeighbor.distanceBetweenVertices;
+        var length = fixedNeighbor.distanceBetweenVertices || fixedNeighbor.lengthProperty.get();
         var indexOfFixedVertex = vertices.indexOf( fixedVertex );
         vertices.splice( indexOfFixedVertex, 1 );
 
@@ -557,6 +558,8 @@ define( function( require ) {
         var src = vertex.positionProperty.get();
         var delta = dest.minus( src );
         var relative = Vector2.createPolar( length, desiredAngle + Math.PI );
+        assert && assert( !isNaN( relative.x ), 'x should be a number' );
+        assert && assert( !isNaN( relative.y ), 'y should be a number' );
 
         // Do not propose attachments, since connections cannot be made from a rotation.
         var attachable = [];
@@ -684,6 +687,8 @@ define( function( require ) {
       if ( bestDropTarget ) {
         var srcUnsnappedPosition = bestDropTarget.src.unsnappedPositionProperty.get();
         delta = bestDropTarget.dst.unsnappedPositionProperty.get().minus( srcUnsnappedPosition );
+        assert && assert( !isNaN( delta.x ), 'x should be a number' );
+        assert && assert( !isNaN( delta.y ), 'y should be a number' );
       }
 
       for ( i = 0; i < vertices.length; i++ ) {
