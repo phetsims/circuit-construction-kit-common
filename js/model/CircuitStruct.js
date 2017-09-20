@@ -4,6 +4,8 @@
  * The CircuitStruct keeps track of the Circuit components but without wiring up listeners or solving physics.
  * It is necessary in order to keep track of black box state (user created circuit and black box circuit).
  *
+ * TODO: Use new save/load feature instead
+ *
  * @author Sam Reid (PhET Interactive Simulations)
  */
 define( function( require ) {
@@ -15,6 +17,7 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
+  var Property = require( 'AXON/Property' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
   var Vector2 = require( 'DOT/Vector2' );
@@ -114,7 +117,7 @@ define( function( require ) {
         circuitStruct.batteries.push( new Battery(
           circuitStruct.vertices[ circuitState.batteries[ i ].startVertex ],
           circuitStruct.vertices[ circuitState.batteries[ i ].endVertex ],
-          null,
+          new Property( 0 ),
           BatteryType.NORMAL, // TODO(phet-io): save/restore battery type
           tandem.createNextTandem(), {
             voltage: circuitState.batteries[ i ].voltage

@@ -22,14 +22,15 @@ define( function( require ) {
   /**
    * @param {Vertex} startVertex - one of the battery vertices
    * @param {Vertex} endVertex - the other battery vertex
-   * @param {Property.<number>} resistanceProperty - the resistance of the battery
+   * @param {Property.<number>} internalResistanceProperty - the resistance of the battery
    * @param {BatteryType} batteryType - NORMAL | HIGH_VOLTAGE
    * @param {Tandem} tandem
    * @param {Object} [options]
    * @constructor
    */
-  function Battery( startVertex, endVertex, resistanceProperty, batteryType, tandem, options ) {
+  function Battery( startVertex, endVertex, internalResistanceProperty, batteryType, tandem, options ) {
     assert && assert( BatteryType.VALUES.indexOf( batteryType ) >= 0, 'invalid battery type: ' + batteryType );
+    assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
     options = _.extend( {
       initialOrientation: 'right',
       voltage: 9.0,
@@ -41,7 +42,7 @@ define( function( require ) {
     this.voltageProperty = new NumberProperty( options.voltage );
 
     // @public {Property.<number>} the internal resistance of the battery
-    this.internalResistanceProperty = resistanceProperty;
+    this.internalResistanceProperty = internalResistanceProperty;
 
     // @public (read-only) {string} - track which way the battery "button" (plus side) was facing the initial state so
     // the user can only create a certain number of "left" or "right" batteries from the toolbox.

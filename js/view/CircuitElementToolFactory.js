@@ -200,7 +200,7 @@ define( function( require ) {
     createRightBatteryToolNode: function( count, tandem ) {
       var self = this;
       var batteryModel = new Battery( new Vertex( Vector2.ZERO ), new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
-        null, BatteryType.NORMAL, tandem.createTandem( 'rightIconBattery' ) );
+        new Property( 0 ), BatteryType.NORMAL, tandem.createTandem( 'rightIconBattery' ) );
       var rightBatteryToolNode = this.createCircuitElementToolNode( batteryString, count,
         new BatteryNode( null, null, batteryModel, this.viewTypeProperty, tandem.createTandem( 'rightBatteryIcon' ), { isIcon: true }
         ),
