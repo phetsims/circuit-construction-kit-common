@@ -172,9 +172,14 @@ define( function( require ) {
     // @public {Node} - layer that shows the Voltmeter and Ammeter (but not the SeriesAmmeter, which is shown in the fixedCircuitElementLayer)
     this.sensorLayer = new Node();
 
+    // @public (circuit-construction-kit-black-box-study)
+    this.beforeCircuitElementsLayer = new Node();
+    this.afterCircuitElementsLayer = new Node();
+
     // For lifelike: Solder should be in front of wires but behind batteries and resistors.
     var lifelikeLayering = [
       this.lightRaysLayer,
+      this.beforeCircuitElementsLayer,
       this.wireLayer, // wires go behind other circuit elements
       this.solderLayer,
       this.fixedCircuitElementLayer, // circuit elements and meters
@@ -182,6 +187,7 @@ define( function( require ) {
       this.chargeLayer,
       this.lightBulbSocketLayer, // fronts of light bulbs
       this.seriesAmmeterNodeReadoutPanelLayer, // fronts of series ammeters
+      this.afterCircuitElementsLayer,
       this.sensorLayer,
       this.highlightLayer, // highlights go in front of everything else
       this.valueLayer, // values
@@ -191,6 +197,7 @@ define( function( require ) {
     // For schematic: Solder should be in front of all components
     var schematicLayering = [
       this.lightRaysLayer,
+      this.beforeCircuitElementsLayer,
       this.wireLayer,
       this.fixedCircuitElementLayer,
       this.solderLayer,
@@ -198,6 +205,7 @@ define( function( require ) {
       this.chargeLayer,
       this.lightBulbSocketLayer,
       this.seriesAmmeterNodeReadoutPanelLayer,
+      this.afterCircuitElementsLayer,
       this.sensorLayer,
       this.highlightLayer,
       this.valueLayer,
@@ -208,7 +216,7 @@ define( function( require ) {
     // choose layering for schematic vs lifelike.  HEADS UP, this means circuitLayerNode.addChild() will get overwritten
     // so all nodes must be added as children in the array above.
     screenView.model.viewTypeProperty.link( function( view ) {
-      self.children = ( view === CircuitElementViewType.LIFELIKE ) ? lifelikeLayering : schematicLayering;
+      self.children = (view === CircuitElementViewType.LIFELIKE) ? lifelikeLayering : schematicLayering;
     } );
 
     // @public {Property.<Bounds2>} the visible bounds in the coordinate frame of the circuit.  Initialized with a
@@ -249,7 +257,7 @@ define( function( require ) {
 
           // Show the ValueNode for readouts, though series ammeters already show their own readouts and Wires do not
           // have readouts
-          if ( circuitElement instanceof FixedCircuitElement && !( circuitElement instanceof SeriesAmmeter ) ) {
+          if ( circuitElement instanceof FixedCircuitElement && !(circuitElement instanceof SeriesAmmeter) ) {
             var valueNode = new ValueNode(
               circuitElement,
               self.model.showValuesProperty,
