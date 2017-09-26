@@ -25,7 +25,7 @@ define( function( require ) {
   function TrashButton( circuit, circuitElement, tandem ) {
 
     RoundPushButton.call( this, {
-      baseColor: PhetColorScheme.PHET_LOGO_YELLOW,
+      baseColor: PhetColorScheme.BUTTON_YELLOW,
       content: new FontAwesomeNode( 'trash', {
         scale: CCKCConstants.FONT_AWESOME_ICON_SCALE
       } ),
