@@ -295,7 +295,7 @@ define( function( require ) {
      * @returns {Object[]} see createCircuitLocation
      * @private
      */
-    getLocations: function( charge, overshoot, under ) {
+    getLocations: function( charge, overshoot, under, depth ) {
       var vertex;
 
       if ( charge.charge < 0 ) {
@@ -321,22 +321,30 @@ define( function( require ) {
         // The linear algebra solver can result in currents of 1E-12 where it should be zero.  For these cases, don't
         // permit charges to flow. The current is clamped here instead of after the linear algebra so that we don't
         // mess up support for oscillating elements that may need the small values such as capacitors and inductors.
+        var found = false;
         if ( current > MINIMUM_CURRENT && neighbor.startVertexProperty.get() === vertex ) {
 
           // Start near the beginning.
-          distAlongNew = Util.clamp( overshoot, 0, neighbor.chargePathLength );
+          distAlongNew = Util.clamp( overshoot, 0, neighbor.chargePathLength ); // Note, this can be zero
+          found = true;
         }
         else if ( current < -MINIMUM_CURRENT && neighbor.endVertexProperty.get() === vertex ) {
 
           // start near the end
-          distAlongNew = Util.clamp( neighbor.chargePathLength - overshoot, 0, neighbor.chargePathLength );
+          distAlongNew = Util.clamp( neighbor.chargePathLength - overshoot, 0, neighbor.chargePathLength ); // can be zero
+          found = true;
         }
         else {
 
           // Current too small to animate
         }
-        distAlongNew && circuitLocations.push( createCircuitLocation( this.circuit, neighbor, distAlongNew ) );
+        found && circuitLocations.push( createCircuitLocation( this.circuit, neighbor, distAlongNew ) );
       }
+      // TODO: clean up
+      // console.log( circuitLocations.length );
+      // if ( circuitLocations.length === 0 && depth!==999) {
+      //   this.getLocations( charge, overshoot, under,999 );
+      // }
       return circuitLocations;
     }
   } );
