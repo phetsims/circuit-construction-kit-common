@@ -140,7 +140,7 @@ define( function( require ) {
       var maxPositionChange = maxSpeed * MAX_DT; // Use the max dt instead of the true dt to avoid fluctuations
 
       // Slow down the simulation if the fastest step distance exceeds the maximum allowed step
-      this.scale = ( maxPositionChange >= MAX_POSITION_CHANGE ) ? ( MAX_POSITION_CHANGE / maxPositionChange ) : 1;
+      this.scale = (maxPositionChange >= MAX_POSITION_CHANGE) ? (MAX_POSITION_CHANGE / maxPositionChange) : 1;
 
       // Average over scale values to smooth them out
       var averageScale = Util.clamp( this.timeScaleRunningAverage.updateRunningAverage( this.scale ), 0, 1 );
@@ -267,7 +267,7 @@ define( function( require ) {
           // move to a new CircuitElement
           var overshoot = current < 0 ?
                           -newChargePosition :
-                          ( newChargePosition - charge.circuitElement.chargePathLength );
+                          (newChargePosition - charge.circuitElement.chargePathLength);
           var isUnder = newChargePosition < 0;
 
           assert && assert( !isNaN( overshoot ), 'overshoot should be a number' );
@@ -296,9 +296,19 @@ define( function( require ) {
      * @private
      */
     getLocations: function( charge, overshoot, under ) {
-      var vertex = under ?
-                   charge.circuitElement.startVertexProperty.get() :
-                   charge.circuitElement.endVertexProperty.get();
+      var vertex;
+
+      if ( charge.charge < 0 ) {
+        vertex = under ?
+                 charge.circuitElement.startVertexProperty.get() :
+                 charge.circuitElement.endVertexProperty.get();
+      }
+      else {
+        vertex = under ?
+                 charge.circuitElement.endVertexProperty.get() :
+                 charge.circuitElement.startVertexProperty.get();
+      }
+
       var adjacentCircuitElements = this.circuit.getNeighborCircuitElements( vertex );
       var circuitLocations = [];
 
