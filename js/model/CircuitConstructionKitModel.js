@@ -126,13 +126,15 @@ define( function( require ) {
     // However, the simulation should not pause when switching between "Explore" and "Test" and "Reveal" in the black
     // box study sim
     var modeChanging = false;
-    this.modeProperty.startedCallbacksForChangedEmitter.addListener( function() {
-      modeChanging = true;
-    } );
-    this.modeProperty.endedCallbacksForChangedEmitter.addListener( function() {
-      modeChanging = false;
-    } );
+    // this.modeProperty.startedCallbacksForChangedEmitter.addListener( function() {
+    //   modeChanging = true;
+    // } );
+    // this.modeProperty.endedCallbacksForChangedEmitter.addListener( function() {
+    //   modeChanging = false;
+    // } );
     if ( CCKCQueryParameters.showDepictValuesToggleButton ) {
+
+      // TODO: (black-box-study) fix this
       var pause = function() {
         if ( !modeChanging ) {
           self.isValueDepictionEnabledProperty.value = false;
