@@ -109,6 +109,9 @@ define( function( require ) {
      */
     containsSensorPoint: function( point ) {
 
+      // make sure bounds are correct if cut or joined in this animation frame
+      this.step();
+
       // Check against the mouse region
       return !!this.hitTest( point, true, false );
     }

@@ -254,6 +254,10 @@ define( function( require ) {
      * @public
      */
     containsSensorPoint: function( point ) {
+
+      // make sure bounds are correct if cut or joined in this animation frame
+      this.step();
+
       return this.startSideContainsSensorPoint( point ) || this.endSideContainsSensorPoint( point );
     },
 
