@@ -23,12 +23,15 @@ define( function( require ) {
   // constants
   var ELECTRON_CHARGE_NODE = new ElectronChargeNode( {
 
-    // electrons are transparent to signify they are just a representation, not physical electrons
-    opacity: 0.75,
+    // Electrons are transparent to convey they are a representation rather than physical objects
+    // Workaround for https://github.com/phetsims/circuit-construction-kit-dc/issues/160
+    sphereOpacity: 0.75,
+    minusSignOpacity: 0.75,
 
     // selected so an electron will exactly fit the width of a wire
     scale: 0.78
   } ).toDataURLImageSynchronous();
+
   var ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.createStaticTandem( 'arrowNode' ) )
     .toDataURLImageSynchronous();
 
@@ -59,9 +62,6 @@ define( function( require ) {
     Image.call( this, child.image, {
       pickable: false
     } );
-
-    // Negative charges should be transparent
-    this.setImageOpacity( charge.charge < 0 ? 0.75 : 1 );
 
     this.outsideOfBlackBoxProperty = new BooleanProperty( false );
 
@@ -107,7 +107,7 @@ define( function( require ) {
       if ( charge.charge > 0 ) {
 
         // Rotate if current is running backwards
-        ( current < 0 ) && NODE_MATRIX.multiplyMatrix( HALF_ROTATION );
+        (current < 0) && NODE_MATRIX.multiplyMatrix( HALF_ROTATION );
 
         // Center
         NODE_MATRIX.multiplyMatrix( ARROW_OFFSET );
