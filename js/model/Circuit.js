@@ -473,9 +473,15 @@ define( function( require ) {
        */
       var getTranslations = function() {
         return neighborCircuitElements.map( function( circuitElement ) {
-          return circuitElement.getOppositeVertex( vertex ).positionProperty.get()
-            .minus( vertex.positionProperty.get() )
-            .withMagnitude( 30 );
+          var oppositePosition = circuitElement.getOppositeVertex( vertex ).positionProperty.get();
+          var position = vertex.positionProperty.get();
+          var delta = oppositePosition.minus( position );
+
+          // If the vertices were at the same position, move them randomly.  See https://github.com/phetsims/circuit-construction-kit-common/issues/405
+          if ( delta.magnitude() === 0 ) {
+            delta = Vector2.createPolar( 1, phet.joist.random.nextDouble() * Math.PI * 2 );
+          }
+          return delta.withMagnitude( 30 );
         } );
       };
 
@@ -671,7 +677,7 @@ define( function( require ) {
       var self = this;
 
       var batteries = this.circuitElements.getArray().filter( function( b ) { return b instanceof Battery; } );
-      var resistors = this.circuitElements.getArray().filter( function( b ) { return !( b instanceof Battery ); } );
+      var resistors = this.circuitElements.getArray().filter( function( b ) { return !(b instanceof Battery); } );
 
       // introduce a synthetic vertex for each battery to model internal resistance
       var resistorAdapters = resistors.map( function( circuitElement ) {
@@ -1148,13 +1154,13 @@ define( function( require ) {
         var numberOfCharges = Math.ceil( lengthForCharges / CCKCConstants.CHARGE_SEPARATION );
 
         // compute distance between adjacent charges
-        var spacing = lengthForCharges / ( numberOfCharges - 1 );
+        var spacing = lengthForCharges / (numberOfCharges - 1);
 
         for ( var i = 0; i < numberOfCharges; i++ ) {
 
           // If there is a single particle, show it in the middle of the component, otherwise space equally
           var chargePosition = numberOfCharges === 1 ?
-                               ( firstChargePosition + lastChargePosition ) / 2 :
+                               (firstChargePosition + lastChargePosition) / 2 :
                                i * spacing + offset;
 
           var desiredCharge = this.currentTypeProperty.get() === CurrentType.ELECTRONS ? -1 : +1;
