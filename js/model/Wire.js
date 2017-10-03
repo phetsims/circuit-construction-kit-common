@@ -79,7 +79,9 @@ define( function( require ) {
         var clampedResistance = Math.max( CCKCConstants.MINIMUM_RESISTANCE, resistance );
         assert && assert( !isNaN( clampedResistance ), 'wire resistance should not be NaN' );
         this.resistanceProperty.set( clampedResistance );
-        this.chargePathLength = viewLength;
+
+        // Update the charge path length, but don't let it go less than a threshold, see https://github.com/phetsims/circuit-construction-kit-common/issues/405
+        this.chargePathLength = Math.max( viewLength, 1E-6 );
         this.wireDirty = false;
       }
     },
