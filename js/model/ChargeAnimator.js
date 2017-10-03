@@ -295,19 +295,12 @@ define( function( require ) {
      * @returns {Object[]} see createCircuitLocation
      * @private
      */
-    getLocations: function( charge, overshoot, under, depth ) {
+    getLocations: function( charge, overshoot, under ) {
       var vertex;
 
-      if ( charge.charge < 0 ) {
-        vertex = under ?
-                 charge.circuitElement.startVertexProperty.get() :
-                 charge.circuitElement.endVertexProperty.get();
-      }
-      else {
-        vertex = under ?
-                 charge.circuitElement.endVertexProperty.get() :
-                 charge.circuitElement.startVertexProperty.get();
-      }
+      vertex = under ?
+               charge.circuitElement.startVertexProperty.get() :
+               charge.circuitElement.endVertexProperty.get();
 
       var adjacentCircuitElements = this.circuit.getNeighborCircuitElements( vertex );
       var circuitLocations = [];
@@ -340,11 +333,6 @@ define( function( require ) {
         }
         found && circuitLocations.push( createCircuitLocation( this.circuit, neighbor, distAlongNew ) );
       }
-      // TODO: clean up
-      // console.log( circuitLocations.length );
-      // if ( circuitLocations.length === 0 && depth!==999) {
-      //   this.getLocations( charge, overshoot, under,999 );
-      // }
       return circuitLocations;
     }
   } );
