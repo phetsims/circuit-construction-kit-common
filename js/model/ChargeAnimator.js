@@ -212,8 +212,8 @@ define( function( require ) {
 
         var desiredPosition = lower.distance + neighborSeparation / 2;
         var distanceFromDesiredPosition = Math.abs( desiredPosition - currentPosition );
-        var sameDirectionAsCurrent = Math.sign( desiredPosition - currentPosition ) ===
-                                     Math.sign( charge.circuitElement.currentProperty.get() * charge.charge );
+        var sameDirectionAsCurrent = Util.sign( desiredPosition - currentPosition ) ===
+                                     Util.sign( charge.circuitElement.currentProperty.get() * charge.charge );
 
         // never slow down or run the current backwards
         if ( sameDirectionAsCurrent ) {
