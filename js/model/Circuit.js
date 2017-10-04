@@ -1044,7 +1044,10 @@ define( function( require ) {
               var v = self.vertices.get( k );
               if ( neighbor instanceof Wire &&
                    v !== vertex &&
-                   v !== oppositeVertex && v.positionProperty.get().equals( oppositeVertex.positionProperty.get() ) ) {
+                   v !== oppositeVertex &&
+                   v.positionProperty.get().equals( oppositeVertex.positionProperty.get() ) &&
+                   v.isDragged
+              ) {
                 return false;
               }
             }
