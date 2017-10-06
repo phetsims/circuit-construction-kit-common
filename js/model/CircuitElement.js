@@ -198,8 +198,8 @@ define( function( require ) {
       this.startVertexProperty.unlink( this.linkVertexListener );
       this.endVertexProperty.unlink( this.linkVertexListener );
 
-      this.startPositionProperty.unlink( this.vertexMovedListener );
-      this.endPositionProperty.unlink( this.vertexMovedListener );
+      this.startPositionProperty.hasListener( this.vertexMovedListener ) && this.startPositionProperty.unlink( this.vertexMovedListener );
+      this.endPositionProperty.hasListener( this.vertexMovedListener ) && this.endPositionProperty.unlink( this.vertexMovedListener );
     },
 
     /**
