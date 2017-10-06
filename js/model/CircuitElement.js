@@ -144,8 +144,15 @@ define( function( require ) {
      * @param {Vertex} oldVertex - the previous vertex
      */
     linkVertex: function( newVertex, oldVertex ) {
-      oldVertex.positionProperty.unlink( this.vertexMovedListener );
-      newVertex.positionProperty.link( this.vertexMovedListener );
+
+      // These guards prevent errors from the bad transient state caused by the Circuit.flip causing the same Vertex
+      // to be both start and end at the same time.
+      if ( oldVertex.positionProperty.hasListener( this.vertexMovedListener ) ) {
+        oldVertex.positionProperty.unlink( this.vertexMovedListener );
+      }
+      if ( !newVertex.positionProperty.hasListener( this.vertexMovedListener ) ) {
+        newVertex.positionProperty.link( this.vertexMovedListener );
+      }
 
       if ( !oldVertex.positionProperty.get().equals( newVertex.positionProperty.get() ) ) {
         this.vertexMovedEmitter.emit();
