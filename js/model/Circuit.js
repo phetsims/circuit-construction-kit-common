@@ -786,6 +786,25 @@ define( function( require ) {
       // Move the charges
       this.chargeAnimator.step( dt );
       this.circuitElements.getArray().forEach( UPDATE_IF_PRESENT );
+
+      // At the end of each frame, lengthen any short wires, see https://github.com/phetsims/circuit-construction-kit-common/issues/281
+      for ( var i = 0; i < this.circuitElements.length; i++ ) {
+        var wire = this.circuitElements.get( i );
+        if ( wire instanceof Wire ) {
+          var startVertex = wire.startVertexProperty.get();
+          var endVertex = wire.endVertexProperty.get();
+          if ( !startVertex.isDragged && !endVertex.isDragged ) {
+
+            // If the pair is too close, then bump one vertex away from each other.
+            var distance = startVertex.positionProperty.value.distance( endVertex.positionProperty.value );
+            if ( distance < BUMP_AWAY_RADIUS ) {
+
+              // Arbitrarily move away startVertex
+              this.bumpAwaySingleVertex( startVertex, endVertex );
+            }
+          }
+        }
+      }
     },
 
     /**
