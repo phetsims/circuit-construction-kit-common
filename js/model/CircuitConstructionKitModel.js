@@ -126,6 +126,8 @@ define( function( require ) {
     // However, the simulation should not pause when switching between "Explore" and "Test" and "Reveal" in the black
     // box study sim
     var modeChanging = false;
+
+    // TODO: started/endedCallbacksForChangedEmitters don't exist anymore. Rewrite if commented back in.
     // this.modeProperty.startedCallbacksForChangedEmitter.addListener( function() {
     //   modeChanging = true;
     // } );
