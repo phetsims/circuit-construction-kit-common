@@ -787,7 +787,7 @@ define( function( require ) {
       this.chargeAnimator.step( dt );
       this.circuitElements.getArray().forEach( UPDATE_IF_PRESENT );
 
-      // At the end of each frame, lengthen any short wires, see https://github.com/phetsims/circuit-construction-kit-common/issues/281
+      // At the end of each frame, cut any short wires, see https://github.com/phetsims/circuit-construction-kit-common/issues/281
       for ( var i = 0; i < this.circuitElements.length; i++ ) {
         var wire = this.circuitElements.get( i );
         if ( wire instanceof Wire ) {
@@ -800,7 +800,9 @@ define( function( require ) {
             if ( distance < BUMP_AWAY_RADIUS ) {
 
               // Arbitrarily move away startVertex
-              this.bumpAwaySingleVertex( startVertex, endVertex );
+              if ( this.getNeighborCircuitElements( startVertex ).length > 1 && this.getNeighborCircuitElements( endVertex ).length > 1 ) {
+                this.cutVertex( startVertex );
+              }
             }
           }
         }
