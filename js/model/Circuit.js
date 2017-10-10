@@ -1018,6 +1018,11 @@ define( function( require ) {
           return false;
         }
 
+        // (2.5) cannot connect to something that is dragging
+        if ( candidateVertex.isDragged ) {
+          return false;
+        }
+
         // (3) a vertex must be within SNAP_RADIUS (screen coordinates) of the other vertex
         if ( !(vertex.unsnappedPositionProperty.get().distance( candidateVertex.positionProperty.get() ) < SNAP_RADIUS) ) {
           return false;
