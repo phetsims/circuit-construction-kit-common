@@ -240,7 +240,7 @@ define( function( require ) {
           var vertex = lessThanBeginningOfOldCircuitElement ?
                        charge.circuitElement.startVertexProperty.get() :
                        charge.circuitElement.endVertexProperty.get();
-          var circuitLocations = this.getLocations( charge, overshoot, vertex );
+          var circuitLocations = this.getLocations( charge, overshoot, vertex, 0 );
           // if ( circuitLocations.length === 2 ) {
           //   console.log( circuitLocations[ 0 ].under, circuitLocations[ 1 ].under );
           // }
@@ -261,10 +261,11 @@ define( function( require ) {
      * @param {Charge} charge - the charge that is moving
      * @param {number} overshoot - the distance the charge should appear along the next circuit element
      * @param {Vertex} vertex - vertex the charge is passing by
+     * @param {number} depth - number of recursive calls
      * @returns {Object[]} see createCircuitLocation
      * @private
      */
-    getLocations: function( charge, overshoot, vertex ) {
+    getLocations: function( charge, overshoot, vertex, depth ) {
 
       var circuit = this.circuit;
 
@@ -322,10 +323,10 @@ define( function( require ) {
               distanceToClosestElectron: distanceToClosestElectron
             } );
           }
-          else {
+          else if ( depth < 20 ) {
 
-            // check downstream circuit elements
-            var locations = this.getLocations( charge, 0, circuitElement.getOppositeVertex( vertex ) );
+            // check downstream circuit elements, but only if we haven't recursed too far (just in case)
+            var locations = this.getLocations( charge, 0, circuitElement.getOppositeVertex( vertex ), depth + 1 );
 
             // find the one with the closest electron
             var nearest = _.minBy( locations, 'distanceToClosestElectron' );
