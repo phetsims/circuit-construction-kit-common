@@ -322,6 +322,20 @@ define( function( require ) {
               distanceToClosestElectron: distanceToClosestElectron
             } );
           }
+          else {
+
+            // check downstream circuit elements
+            var locations = this.getLocations( charge, 0, circuitElement.getOppositeVertex( vertex ) );
+
+            // find the one with the closest electron
+            var nearest = _.minBy( locations, 'distanceToClosestElectron' );
+
+            circuitLocations.push( {
+              circuitElement: circuitElement,
+              distance: distance,
+              distanceToClosestElectron: nearest.distanceToClosestElectron + circuitElement.chargePathLength
+            } );
+          }
         }
       }
       return circuitLocations;
