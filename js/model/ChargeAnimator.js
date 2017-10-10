@@ -237,7 +237,10 @@ define( function( require ) {
           assert && assert( overshoot >= 0, 'overshoot should be >=0' );
 
           // enumerate all possible circuit elements the charge could go to
-          var circuitLocations = this.getLocations( charge, overshoot, lessThanBeginningOfOldCircuitElement );
+          var vertex = lessThanBeginningOfOldCircuitElement ?
+                       charge.circuitElement.startVertexProperty.get() :
+                       charge.circuitElement.endVertexProperty.get();
+          var circuitLocations = this.getLocations( charge, overshoot, vertex );
           // if ( circuitLocations.length === 2 ) {
           //   console.log( circuitLocations[ 0 ].under, circuitLocations[ 1 ].under );
           // }
@@ -257,19 +260,13 @@ define( function( require ) {
      * Returns the locations where a charge can flow to (connected circuits with current flowing in the right direction)
      * @param {Charge} charge - the charge that is moving
      * @param {number} overshoot - the distance the charge should appear along the next circuit element
-     * @param {boolean} lessThanBeginningOfOldCircuitElement - determines whether the charge will be at the start or end of the circuit element
+     * @param {Vertex} vertex - vertex the charge is passing by
      * @returns {Object[]} see createCircuitLocation
      * @private
      */
-    getLocations: function( charge, overshoot, lessThanBeginningOfOldCircuitElement ) {
+    getLocations: function( charge, overshoot, vertex ) {
 
-      // The vertex the charge is passing by
-      var vertex;
       var circuit = this.circuit;
-
-      vertex = lessThanBeginningOfOldCircuitElement ?
-               charge.circuitElement.startVertexProperty.get() :
-               charge.circuitElement.endVertexProperty.get();
 
       var adjacentCircuitElements = this.circuit.getNeighborCircuitElements( vertex );
       var circuitLocations = [];
