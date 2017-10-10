@@ -325,14 +325,17 @@ define( function( require ) {
             // check downstream circuit elements, but only if we haven't recursed too far (just in case)
             var locations = this.getLocations( charge, 0, circuitElement.getOppositeVertex( vertex ), depth + 1 );
 
-            // find the one with the closest electron
-            var nearest = _.minBy( locations, 'distanceToClosestElectron' );
+            if ( locations.length > 0 ) {
 
-            circuitLocations.push( {
-              circuitElement: circuitElement,
-              distance: distance,
-              distanceToClosestElectron: nearest.distanceToClosestElectron + circuitElement.chargePathLength
-            } );
+              // find the one with the closest electron
+              var nearest = _.minBy( locations, 'distanceToClosestElectron' );
+
+              circuitLocations.push( {
+                circuitElement: circuitElement,
+                distance: distance,
+                distanceToClosestElectron: nearest.distanceToClosestElectron + circuitElement.chargePathLength
+              } );
+            }
           }
         }
       }
