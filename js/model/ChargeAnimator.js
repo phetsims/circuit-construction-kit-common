@@ -241,9 +241,6 @@ define( function( require ) {
                        charge.circuitElement.startVertexProperty.get() :
                        charge.circuitElement.endVertexProperty.get();
           var circuitLocations = this.getLocations( charge, overshoot, vertex, 0 );
-          // if ( circuitLocations.length === 2 ) {
-          //   console.log( circuitLocations[ 0 ].under, circuitLocations[ 1 ].under );
-          // }
           if ( circuitLocations.length > 0 ) {
 
             // choose the CircuitElement with the furthest away electron
