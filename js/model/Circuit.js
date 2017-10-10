@@ -787,26 +787,27 @@ define( function( require ) {
       this.chargeAnimator.step( dt );
       this.circuitElements.getArray().forEach( UPDATE_IF_PRESENT );
 
+      // TODO: decide what to do with this code, see see https://github.com/phetsims/circuit-construction-kit-common/issues/281
       // At the end of each frame, cut any short wires, see https://github.com/phetsims/circuit-construction-kit-common/issues/281
-      for ( var i = 0; i < this.circuitElements.length; i++ ) {
-        var wire = this.circuitElements.get( i );
-        if ( wire instanceof Wire ) {
-          var startVertex = wire.startVertexProperty.get();
-          var endVertex = wire.endVertexProperty.get();
-          if ( !startVertex.isDragged && !endVertex.isDragged ) {
-
-            // If the pair is too close, then bump one vertex away from each other.
-            var distance = startVertex.positionProperty.value.distance( endVertex.positionProperty.value );
-            if ( distance < BUMP_AWAY_RADIUS ) {
-
-              // Arbitrarily move away startVertex
-              if ( this.getNeighborCircuitElements( startVertex ).length > 1 && this.getNeighborCircuitElements( endVertex ).length > 1 ) {
-                this.cutVertex( startVertex );
-              }
-            }
-          }
-        }
-      }
+      // for ( var i = 0; i < this.circuitElements.length; i++ ) {
+      //   var wire = this.circuitElements.get( i );
+      //   if ( wire instanceof Wire ) {
+      //     var startVertex = wire.startVertexProperty.get();
+      //     var endVertex = wire.endVertexProperty.get();
+      //     if ( !startVertex.isDragged && !endVertex.isDragged ) {
+      //
+      //       // If the pair is too close, then bump one vertex away from each other.
+      //       var distance = startVertex.positionProperty.value.distance( endVertex.positionProperty.value );
+      //       if ( distance < BUMP_AWAY_RADIUS ) {
+      //
+      //         // Arbitrarily move away startVertex
+      //         if ( this.getNeighborCircuitElements( startVertex ).length > 1 && this.getNeighborCircuitElements( endVertex ).length > 1 ) {
+      //           this.cutVertex( startVertex );
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
     },
 
     /**
