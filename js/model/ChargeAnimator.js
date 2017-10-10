@@ -46,43 +46,6 @@ define( function( require ) {
   };
 
   /**
-   * Returns an object that indicates a position in a circuit element and can compute the charge density in that
-   * circuit element, so we can find the one with the lowest density and move the charge there.
-   *
-   * @param {Circuit} circuit - the entire circuit
-   * @param {CircuitElement} circuitElement - the circuit element
-   * @param {number} distance - the distance along the circuit element
-   * @returns {Object} combining circuitElement, distance and density
-   */
-  var createCircuitLocation = function( circuit, circuitElement, distance ) {
-    assert && assert( _.isNumber( distance ), 'distance should be a number' );
-    assert && assert( circuitElement.containsScalarLocation( distance ), 'circuitElement should contain distance' );
-    var density = circuit.getChargesInCircuitElement( circuitElement ).length / circuitElement.chargePathLength;
-
-    // If there are no charges in that circuit because it is a short segment, average the density by looking at
-    // downstream neighbors
-    if ( density === 0 && circuitElement.chargePathLength < 30 ) {
-      var distanceFromStart = Math.abs( distance );
-      var distanceFromEnd = Math.abs( circuitElement.chargePathLength - distance );
-
-      // Note it is reversed because we want to check current downstream
-      var selectedVertex = distanceFromStart < distanceFromEnd ?
-                           circuitElement.endVertexProperty.get() :
-                           circuitElement.startVertexProperty.get();
-      var neighbors = circuit.getNeighborCircuitElements( selectedVertex );
-      var densities = neighbors.map( function( neighbor ) {
-        return circuit.getChargesInCircuitElement( neighbor ).length / neighbor.chargePathLength;
-      } );
-      density = _.sum( densities ) / densities.length;
-    }
-    return {
-      circuitElement: circuitElement,
-      distance: distance,
-      density: density
-    };
-  };
-
-  /**
    * @param {Circuit} circuit
    * @constructor
    */
@@ -268,18 +231,21 @@ define( function( require ) {
           var overshoot = current < 0 ?
                           -newChargePosition :
                           (newChargePosition - charge.circuitElement.chargePathLength);
-          var isUnder = newChargePosition < 0;
+          var lessThanBeginningOfOldCircuitElement = newChargePosition < 0;
 
           assert && assert( !isNaN( overshoot ), 'overshoot should be a number' );
           assert && assert( overshoot >= 0, 'overshoot should be >=0' );
 
           // enumerate all possible circuit elements the charge could go to
-          var circuitLocations = this.getLocations( charge, overshoot, isUnder );
+          var circuitLocations = this.getLocations( charge, overshoot, lessThanBeginningOfOldCircuitElement );
+          // if ( circuitLocations.length === 2 ) {
+          //   console.log( circuitLocations[ 0 ].under, circuitLocations[ 1 ].under );
+          // }
           if ( circuitLocations.length > 0 ) {
 
-            // choose the CircuitElement with the lowest density
-            var chosenCircuitLocation = _.minBy( circuitLocations, 'density' );
-            assert && assert( chosenCircuitLocation.distance >= 0, 'position should be >=0' );
+            // choose the CircuitElement with the furthest away electron
+            var chosenCircuitLocation = _.maxBy( circuitLocations, 'distanceToClosestElectron' );
+            assert && assert( chosenCircuitLocation.distanceToClosestElectron >= 0, 'distanceToClosestElectron should be >=0' );
             charge.circuitElement = chosenCircuitLocation.circuitElement;
             charge.distance = chosenCircuitLocation.distance;
           }
@@ -291,14 +257,17 @@ define( function( require ) {
      * Returns the locations where a charge can flow to (connected circuits with current flowing in the right direction)
      * @param {Charge} charge - the charge that is moving
      * @param {number} overshoot - the distance the charge should appear along the next circuit element
-     * @param {boolean} under - determines whether the charge will be at the start or end of the circuit element
+     * @param {boolean} lessThanBeginningOfOldCircuitElement - determines whether the charge will be at the start or end of the circuit element
      * @returns {Object[]} see createCircuitLocation
      * @private
      */
-    getLocations: function( charge, overshoot, under ) {
-      var vertex;
+    getLocations: function( charge, overshoot, lessThanBeginningOfOldCircuitElement ) {
 
-      vertex = under ?
+      // The vertex the charge is passing by
+      var vertex;
+      var circuit = this.circuit;
+
+      vertex = lessThanBeginningOfOldCircuitElement ?
                charge.circuitElement.startVertexProperty.get() :
                charge.circuitElement.endVertexProperty.get();
 
@@ -307,31 +276,56 @@ define( function( require ) {
 
       // Keep only those with outgoing current.
       for ( var i = 0; i < adjacentCircuitElements.length; i++ ) {
-        var neighbor = adjacentCircuitElements[ i ];
-        var current = neighbor.currentProperty.get() * charge.charge;
-        var distAlongNew = null;
+        var circuitElement = adjacentCircuitElements[ i ];
+        var current = circuitElement.currentProperty.get() * charge.charge;
+        var distance = null;
 
         // The linear algebra solver can result in currents of 1E-12 where it should be zero.  For these cases, don't
         // permit charges to flow. The current is clamped here instead of after the linear algebra so that we don't
         // mess up support for oscillating elements that may need the small values such as capacitors and inductors.
         var found = false;
-        if ( current > MINIMUM_CURRENT && neighbor.startVertexProperty.get() === vertex ) {
+        if ( current > MINIMUM_CURRENT && circuitElement.startVertexProperty.get() === vertex ) {
 
           // Start near the beginning.
-          distAlongNew = Util.clamp( overshoot, 0, neighbor.chargePathLength ); // Note, this can be zero
+          distance = Util.clamp( overshoot, 0, circuitElement.chargePathLength ); // Note, this can be zero
           found = true;
         }
-        else if ( current < -MINIMUM_CURRENT && neighbor.endVertexProperty.get() === vertex ) {
+        else if ( current < -MINIMUM_CURRENT && circuitElement.endVertexProperty.get() === vertex ) {
 
           // start near the end
-          distAlongNew = Util.clamp( neighbor.chargePathLength - overshoot, 0, neighbor.chargePathLength ); // can be zero
+          distance = Util.clamp( circuitElement.chargePathLength - overshoot, 0, circuitElement.chargePathLength ); // can be zero
           found = true;
         }
         else {
 
           // Current too small to animate
         }
-        found && circuitLocations.push( createCircuitLocation( this.circuit, neighbor, distAlongNew ) );
+
+        if ( found ) {
+          var charges = circuit.getChargesInCircuitElement( circuitElement );
+          assert && assert(
+            circuitElement.startVertexProperty.get() === vertex ||
+            circuitElement.endVertexProperty.get() === vertex
+          );
+          var atStartOfNewCircuitElement = circuitElement.startVertexProperty.get() === vertex;
+          var distanceToClosestElectron = 0;
+          if ( charges.length > 0 ) {
+
+            // find closest electron to the vertex
+            if ( atStartOfNewCircuitElement ) {
+              distanceToClosestElectron = _.minBy( charges, 'distance' ).distance;
+            }
+            else {
+              distanceToClosestElectron = circuitElement.chargePathLength - _.maxBy( charges, 'distance' ).distance;
+            }
+
+            circuitLocations.push( {
+              circuitElement: circuitElement,
+              distance: distance,
+              distanceToClosestElectron: distanceToClosestElectron
+            } );
+          }
+        }
       }
       return circuitLocations;
     }
