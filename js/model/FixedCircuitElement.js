@@ -43,6 +43,9 @@ define( function( require ) {
     // @public (read-only) {number} The distance from one vertex to another (as the crow flies), used for rotation
     // about a vertex
     this.distanceBetweenVertices = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
+
+    // @public {boolean} keep track of whether it is a fixed length element for assertion testing in CircuitElement
+    this.isFixedCircuitElement = true;
   }
 
   circuitConstructionKitCommon.register( 'FixedCircuitElement', FixedCircuitElement );

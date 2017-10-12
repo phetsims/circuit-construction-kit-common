@@ -182,7 +182,11 @@ define( function( require ) {
      * @private
      */
     emitVertexMoved: function() {
+
+      // For fixed circuit elements, prevent vertices from being at the same spot: https://github.com/phetsims/circuit-construction-kit-common/issues/412
+      assert && this.isFixedCircuitElement && assert( !this.startPositionProperty.value.equals( this.endPositionProperty.value ), 'vertices cannot be in the same spot' );
       this.vertexMovedEmitter.emit();
+      assert && this.isFixedCircuitElement && assert( !this.startPositionProperty.value.equals( this.endPositionProperty.value ), 'vertices cannot be in the same spot' );
     },
 
     /**
