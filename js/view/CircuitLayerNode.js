@@ -691,8 +691,17 @@ define( function( require ) {
         assert && assert( !isNaN( delta.y ), 'y should be a number' );
       }
 
+      // Translate all nodes as a batch before notifying observers so we don't end up with a bad transient state
+      // in which two or more vertices from one FixedCircuitElement have the same location.
+      // See https://github.com/phetsims/circuit-construction-kit-common/issues/412
       for ( i = 0; i < vertices.length; i++ ) {
-        vertices[ i ].positionProperty.set( vertices[ i ].unsnappedPositionProperty.get().plus( delta ) );
+        var newPosition = vertices[ i ].unsnappedPositionProperty.get().plus( delta );
+        var positionReference = vertices[ i ].positionProperty.get();
+        positionReference.x = newPosition.x;
+        positionReference.y = newPosition.y;
+      }
+      for ( i = 0; i < vertices.length; i++ ) {
+        vertices[ i ].positionProperty.notifyListenersStatic();
       }
     },
 
