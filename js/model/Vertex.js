@@ -49,6 +49,7 @@ define( function( require ) {
     this.positionProperty = new Property( position, {
       tandem: options.tandem && options.tandem.createTandem( 'positionProperty' ),
       phetioValueType: TVector2,
+      useDeepEquality: true,
       isValidValue: assert && function( p ) {
         return !isNaN( p.x ) && !isNaN( p.y );
       }
