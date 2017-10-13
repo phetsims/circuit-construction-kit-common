@@ -151,7 +151,7 @@ define( function( require ) {
         oldVertex.positionProperty.unlink( this.vertexMovedListener );
       }
       if ( !newVertex.positionProperty.hasListener( this.vertexMovedListener ) ) {
-        newVertex.positionProperty.link( this.vertexMovedListener );
+        newVertex.positionProperty.lazyLink( this.vertexMovedListener );
       }
 
       if ( !oldVertex.positionProperty.get().equals( newVertex.positionProperty.get() ) ) {
