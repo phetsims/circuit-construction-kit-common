@@ -190,7 +190,7 @@ define( function( require ) {
       // See https://github.com/phetsims/circuit-construction-kit-common/issues/413
       if ( this.startPositionProperty.value.equals( this.endPositionProperty.value ) ) {
         assert && Timer.setTimeout( function() {
-          assert && this.isFixedCircuitElement && assert( !self.startPositionProperty.value.equals( self.endPositionProperty.value ), 'vertices cannot be in the same spot' );
+          assert && self.isFixedCircuitElement && assert( !self.startPositionProperty.value.equals( self.endPositionProperty.value ), 'vertices cannot be in the same spot' );
         }, 0 );
       }
       this.vertexMovedEmitter.emit();
