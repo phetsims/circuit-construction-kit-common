@@ -9,8 +9,8 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   var FixedCircuitElementHighlightNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementHighlightNode' );
@@ -21,6 +21,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var Timer = require( 'PHET_CORE/Timer' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // images
@@ -206,7 +207,7 @@ define( function( require ) {
 
       // Update the dimensions of the highlight.  For Switches, retain the original bounds (big enough to encapsulate
       // both schematic and lifelike open and closed).
-      (this.circuitElement.isSizeChangedOnViewChange && this.highlightNode ) && this.highlightNode.recomputeBounds( this );
+      (this.circuitElement.isSizeChangedOnViewChange && this.highlightNode) && this.highlightNode.recomputeBounds( this );
     },
 
     /**
@@ -214,8 +215,21 @@ define( function( require ) {
      * @protected - CCKCLightBulbNode calls updateRender for its child socket node
      */
     updateRender: function() {
+      var self = this;
       var startPosition = this.circuitElement.startPositionProperty.get();
       var endPosition = this.circuitElement.endPositionProperty.get();
+
+      if ( startPosition.equals( endPosition ) ) {
+
+        // We are (hopefully!) in the middle of updating both vertices and we (hopefully!) will receive another callback
+        // shortly with the correct values for both startPosition and endPosition
+        // See https://github.com/phetsims/circuit-construction-kit-common/issues/413
+        assert && Timer.setTimeout( function() {
+          assert && assert( !self.circuitElement.startPositionProperty.get().equals( self.circuitElement.endPositionProperty.get() ), 'vertices cannot be in the same spot' );
+        }, 0 );
+        return;
+      }
+
       var angle = Vector2.getAngleBetweenVectors( startPosition, endPosition );
       var magnitude = Vector2.getDistanceBetweenVectors( startPosition, endPosition );
 
@@ -230,7 +244,7 @@ define( function( require ) {
       // Update the fire transform
       var flameExtent = 0.8;
       var scale = magnitude / fireImage.width * flameExtent;
-      var flameMargin = ( 1 - flameExtent ) / 2;
+      var flameMargin = (1 - flameExtent) / 2;
       var flameX = magnitude * flameMargin / scale;
       var flameY = -fireImage.height;
       matrix.multiplyMatrix( rotationMatrix.setToScale( scale ) )
@@ -259,7 +273,7 @@ define( function( require ) {
      * @private
      */
     setSelectedCircuitElement: function( circuitElement ) {
-      var visible = ( circuitElement === this.circuitElement );
+      var visible = (circuitElement === this.circuitElement);
       CCKCUtil.setInSceneGraph( visible, this.circuitLayerNode.highlightLayer, this.highlightNode );
       this.markAsDirty();
     },
