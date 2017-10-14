@@ -131,7 +131,7 @@ define( function( require ) {
     // length changes when switching between LIFELIKE |SCHEMATIC
     this.chargePathLength = chargePathLength;
 
-    tandem.addInstance( this, TObject );
+    tandem.addInstance( this, TObject, options );
   }
 
   circuitConstructionKitCommon.register( 'CircuitElement', CircuitElement );
