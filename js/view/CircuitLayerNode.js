@@ -578,68 +578,72 @@ define( function( require ) {
      */
     dragVertex: function( point, vertex, okToRotate ) {
       var vertexNode = this.getVertexNode( vertex );
-      var position = vertexNode.globalToParentPoint( point ).subtract( vertexNode.startOffset );
 
-      // If it is the edge of a fixed length circuit element, the element rotates and moves toward the mouse
-      var neighbors = this.circuit.getNeighborCircuitElements( vertex );
+      // Guard against the case in which the battery is flipped while dragging, see https://github.com/phetsims/circuit-construction-kit-common/issues/416
+      if ( vertexNode.startOffset ) {
+        var position = vertexNode.globalToParentPoint( point ).subtract( vertexNode.startOffset );
 
-      // Find all vertices connected by fixed length nodes.
-      var vertices = this.circuit.findAllFixedVertices( vertex );
+        // If it is the edge of a fixed length circuit element, the element rotates and moves toward the mouse
+        var neighbors = this.circuit.getNeighborCircuitElements( vertex );
 
-      // If any of the vertices connected by fixed length nodes is immobile, then the entire subgraph cannot be moved
-      var rotated = false;
-      for ( var i = 0; i < vertices.length; i++ ) {
-        if ( !vertices[ i ].draggableProperty.get() ) {
+        // Find all vertices connected by fixed length nodes.
+        var vertices = this.circuit.findAllFixedVertices( vertex );
 
-          // See #108 multiple objects connected to the same origin vertex can cause problems.
-          // Restrict ourselves to the case where one wire is attached
-          if ( neighbors.length === 1 ) {
-            this.rotateAboutFixedPivot( point, vertex, okToRotate, vertexNode, position, neighbors, vertices );
+        // If any of the vertices connected by fixed length nodes is immobile, then the entire subgraph cannot be moved
+        var rotated = false;
+        for ( var i = 0; i < vertices.length; i++ ) {
+          if ( !vertices[ i ].draggableProperty.get() ) {
+
+            // See #108 multiple objects connected to the same origin vertex can cause problems.
+            // Restrict ourselves to the case where one wire is attached
+            if ( neighbors.length === 1 ) {
+              this.rotateAboutFixedPivot( point, vertex, okToRotate, vertexNode, position, neighbors, vertices );
+            }
+            rotated = true;
           }
-          rotated = true;
         }
-      }
-      if ( rotated ) {
-        return;
-      }
+        if ( rotated ) {
+          return;
+        }
 
-      if ( okToRotate && neighbors.length === 1 && neighbors[ 0 ] instanceof FixedCircuitElement ) {
+        if ( okToRotate && neighbors.length === 1 && neighbors[ 0 ] instanceof FixedCircuitElement ) {
 
-        var oppositeVertex = neighbors[ 0 ].getOppositeVertex( vertex );
+          var oppositeVertex = neighbors[ 0 ].getOppositeVertex( vertex );
 
-        // Find the new relative angle
-        var angle;
+          // Find the new relative angle
+          var angle;
 
-        if ( vertex.unsnappedPositionProperty.get().x === vertex.positionProperty.get().x &&
-             vertex.unsnappedPositionProperty.get().y === vertex.positionProperty.get().y ) {
+          if ( vertex.unsnappedPositionProperty.get().x === vertex.positionProperty.get().x &&
+               vertex.unsnappedPositionProperty.get().y === vertex.positionProperty.get().y ) {
 
-          // Rotate the way the element is going.
-          angle = position.minus( oppositeVertex.positionProperty.get() ).angle();
+            // Rotate the way the element is going.
+            angle = position.minus( oppositeVertex.positionProperty.get() ).angle();
+          }
+          else {
+
+            // Lock in the angle if a match is proposed, otherwise things rotate uncontrollably
+            angle = vertex.positionProperty.get().minus( oppositeVertex.positionProperty.get() ).angle();
+          }
+
+          // Maintain fixed length
+          var length = neighbors[ 0 ].distanceBetweenVertices;
+          var relative = Vector2.createPolar( length, angle + Math.PI );
+          var oppositePosition = position.plus( relative );
+
+          var rotationDelta = oppositePosition.minus( oppositeVertex.unsnappedPositionProperty.get() );
+
+          this.translateVertexGroup( vertex, vertices, rotationDelta, function() {
+              vertex.unsnappedPositionProperty.set( oppositeVertex.unsnappedPositionProperty.get().minus( relative ) );
+            },
+
+            // allow any vertex connected by fixed length elements to snap, see https://github.com/phetsims/circuit-construction-kit-common/issues/254
+            vertices
+          );
         }
         else {
-
-          // Lock in the angle if a match is proposed, otherwise things rotate uncontrollably
-          angle = vertex.positionProperty.get().minus( oppositeVertex.positionProperty.get() ).angle();
+          var translationDelta = position.minus( vertex.unsnappedPositionProperty.get() );
+          this.translateVertexGroup( vertex, vertices, translationDelta, null, vertices );
         }
-
-        // Maintain fixed length
-        var length = neighbors[ 0 ].distanceBetweenVertices;
-        var relative = Vector2.createPolar( length, angle + Math.PI );
-        var oppositePosition = position.plus( relative );
-
-        var rotationDelta = oppositePosition.minus( oppositeVertex.unsnappedPositionProperty.get() );
-
-        this.translateVertexGroup( vertex, vertices, rotationDelta, function() {
-            vertex.unsnappedPositionProperty.set( oppositeVertex.unsnappedPositionProperty.get().minus( relative ) );
-          },
-
-          // allow any vertex connected by fixed length elements to snap, see https://github.com/phetsims/circuit-construction-kit-common/issues/254
-          vertices
-        );
-      }
-      else {
-        var translationDelta = position.minus( vertex.unsnappedPositionProperty.get() );
-        this.translateVertexGroup( vertex, vertices, translationDelta, null, vertices );
       }
     },
 
