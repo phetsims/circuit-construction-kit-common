@@ -275,8 +275,8 @@ define( function( require ) {
           var minPair = _.minBy( pairs, distance );
           var minDistance = distance( minPair );
 
-          // If the pair is too close, then bump one vertex away from each other.
-          if ( minDistance < BUMP_AWAY_RADIUS ) {
+          // If the pair is too close, then bump one vertex away from each other (but only if both are not user controlled)
+          if ( minDistance < BUMP_AWAY_RADIUS && !minPair.v1.isDragged && !minPair.v2.isDragged ) {
             self.moveVerticesApart( minPair.v1, minPair.v2 );
           }
         }
