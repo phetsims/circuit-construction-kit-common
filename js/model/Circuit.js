@@ -455,7 +455,7 @@ define( function( require ) {
      */
     cutVertex: function( vertex ) {
 
-
+      // Only permit cutting a non-dragged vertex, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
       if ( vertex.isDragged ) {
         return;
       }
