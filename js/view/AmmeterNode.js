@@ -210,7 +210,11 @@ define( function( require ) {
       for ( var i = 0; i < layer.children.length; i++ ) {
         var circuitElementNode = layer.children[ i ];
         if ( circuitElementNode instanceof CircuitElementNode ) {
-          if ( circuitElementNode.containsSensorPoint( probeNode.translation ) ) {
+
+          // This is called between when the circuit element is disposed and when the corresponding view is disposed
+          // so we must take care not to visit circuit elements that have been disposed but still have a view
+          // see https://github.com/phetsims/circuit-construction-kit-common/issues/418
+          if ( !circuitElementNode.circuitElement.circuitElementDisposed && circuitElementNode.containsSensorPoint( probeNode.translation ) ) {
             return circuitElementNode.circuitElement.currentProperty.get();
           }
         }

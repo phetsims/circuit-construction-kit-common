@@ -131,6 +131,11 @@ define( function( require ) {
     // length changes when switching between LIFELIKE |SCHEMATIC
     this.chargePathLength = chargePathLength;
 
+    // The ammeter update is called after items are disposed but before corresponding views are disposed, so we must
+    // take care not to display current for any items that are pending deletion.
+    // See https://github.com/phetsims/circuit-construction-kit-common/issues/418
+    this.circuitElementDisposed = false;
+
     tandem.addInstance( this, TObject, options );
   }
 
@@ -201,6 +206,8 @@ define( function( require ) {
      * @public
      */
     dispose: function() {
+
+      this.circuitElementDisposed = true;
 
       // Notify about intent to dispose first because dispose listeners may need to access state
       this.disposeEmitter.emit();
