@@ -57,7 +57,11 @@ define( function( require ) {
           // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
           // https://github.com/phetsims/circuit-construction-kit-common/issues/307
           event.preventDefault();
-          circuit.circuitElements.remove( circuitElement );
+
+          // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
+          if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
+            circuit.circuitElements.remove( circuitElement );
+          }
         }
       }
     } );

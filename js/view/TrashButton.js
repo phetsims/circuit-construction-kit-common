@@ -30,7 +30,11 @@ define( function( require ) {
         scale: CCKCConstants.FONT_AWESOME_ICON_SCALE
       } ),
       listener: function() {
-        circuit.circuitElements.remove( circuitElement );
+
+        // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
+        if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
+          circuit.circuitElements.remove( circuitElement );
+        }
       },
       minXMargin: 10,
       minYMargin: 10,
