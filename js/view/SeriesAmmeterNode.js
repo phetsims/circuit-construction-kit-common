@@ -98,13 +98,14 @@ define( function( require ) {
       readoutText.setText( readout );
 
       // Center the text in the panel
-      readoutText.centerX = ( maxBounds.width + textPanelMarginX * 2 ) / 2;
-      readoutText.centerY = ( maxBounds.height + textPanelMarginY * 2 ) / 2;
+      readoutText.centerX = (maxBounds.width + textPanelMarginX * 2) / 2;
+      readoutText.centerY = (maxBounds.height + textPanelMarginY * 2) / 2;
     };
 
     seriesAmmeter.currentProperty.link( updateText );
     seriesAmmeter.startVertexProperty.link( updateText );
     seriesAmmeter.endVertexProperty.link( updateText );
+    circuitLayerNode && circuitLayerNode.circuit.circuitChangedEmitter.addListener( updateText );
 
     // The readout panel is in front of the series ammeter node, and makes it look like the charges flow through the
     // series ammeter
@@ -196,6 +197,7 @@ define( function( require ) {
       lifelikeNode.dispose();
       self.frontPanelContainer.dispose();
       readoutPanel.dispose();
+      circuitLayerNode && circuitLayerNode.circuit.circuitChangedEmitter.removeListener( updateText );
     };
   }
 
