@@ -21,7 +21,6 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-  var Timer = require( 'PHET_CORE/Timer' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // images
@@ -215,7 +214,6 @@ define( function( require ) {
      * @protected - CCKCLightBulbNode calls updateRender for its child socket node
      */
     updateRender: function() {
-      var self = this;
       var startPosition = this.circuitElement.startPositionProperty.get();
       var endPosition = this.circuitElement.endPositionProperty.get();
 
@@ -224,9 +222,9 @@ define( function( require ) {
         // We are (hopefully!) in the middle of updating both vertices and we (hopefully!) will receive another callback
         // shortly with the correct values for both startPosition and endPosition
         // See https://github.com/phetsims/circuit-construction-kit-common/issues/413
-        assert && Timer.setTimeout( function() {
-          assert && assert( !self.circuitElement.startPositionProperty.get().equals( self.circuitElement.endPositionProperty.get() ), 'vertices cannot be in the same spot' );
-        }, 0 );
+        // assert && Timer.setTimeout( function() {
+        //   assert && assert( !self.circuitElement.startPositionProperty.get().equals( self.circuitElement.endPositionProperty.get() ), 'vertices cannot be in the same spot' );
+        // }, 0 );
         return;
       }
 

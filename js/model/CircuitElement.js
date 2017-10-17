@@ -17,7 +17,6 @@ define( function( require ) {
   var NumberProperty = require( 'AXON/NumberProperty' );
   var Property = require( 'AXON/Property' );
   var Vector2 = require( 'DOT/Vector2' );
-  var Timer = require( 'PHET_CORE/Timer' );
 
   // phet-io modules
   var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
@@ -188,16 +187,15 @@ define( function( require ) {
      * @private
      */
     emitVertexMoved: function() {
-      var self = this;
 
       // We are (hopefully!) in the middle of updating both vertices and we (hopefully!) will receive another callback
       // shortly with the correct values for both startPosition and endPosition
       // See https://github.com/phetsims/circuit-construction-kit-common/issues/413
-      if ( assert && this.isFixedCircuitElement && this.startPositionProperty.value.equals( this.endPositionProperty.value ) ) {
-        assert && Timer.setTimeout( function() {
-          assert && assert( !self.startPositionProperty.value.equals( self.endPositionProperty.value ), 'vertices cannot be in the same spot' );
-        }, 0 );
-      }
+      // if ( assert && this.isFixedCircuitElement && this.startPositionProperty.value.equals( this.endPositionProperty.value ) ) {
+      //   assert && Timer.setTimeout( function() {
+      //     assert && assert( !self.startPositionProperty.value.equals( self.endPositionProperty.value ), 'vertices cannot be in the same spot' );
+      //   }, 0 );
+      // }
       this.vertexMovedEmitter.emit();
     },
 
