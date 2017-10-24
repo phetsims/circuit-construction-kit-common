@@ -451,7 +451,7 @@ define( function( require ) {
     createPencilToolNode: function( count, tandem ) {
       return this.createHouseholdItemToolNode(
         ResistorType.PENCIL,
-        300,
+        25,
         CCKCConstants.PENCIL_LENGTH,
         pencilString,
         count,
