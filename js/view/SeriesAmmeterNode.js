@@ -32,8 +32,10 @@ define( function( require ) {
   var PANEL_WIDTH = CCKCConstants.SERIES_AMMETER_LENGTH;
   var ORANGE = '#f39033';
 
-  // Determine widest text to use for max width
-  var WIDEST_LABEL = CCKCUtil.createCurrentReadout( 99.99 );
+  // Widest text to use for max width, hardcoded to use english, otherwise uses lengthened translation strings which
+  // may already be too long, see https://github.com/phetsims/circuit-construction-kit-common/issues/419
+  var WIDEST_LABEL = '99.99 A';
+
   var CORNER_RADIUS = 4;
 
   /**
