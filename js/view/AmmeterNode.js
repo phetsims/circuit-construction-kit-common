@@ -90,7 +90,7 @@ define( function( require ) {
     var probeTextNode = new ProbeTextNode(
       currentReadoutProperty, options.showResultsProperty, currentString, tandem.createTandem( 'probeTextNode' ), {
         centerX: ammeterBodyImage.width / 2,
-        centerY: ammeterBodyImage.height / 2
+        centerY: ammeterBodyImage.height / 2+7 // adjust for the top notch design
       } );
 
     var bodyNode = new Image( ammeterBodyImage, {

@@ -35,7 +35,7 @@ define( function( require ) {
   function ProbeTextNode( textProperty, showResultsProperty, title, tandem, options ) {
 
     options = _.extend( {
-      spacing: 6
+      spacing: 3
     }, options );
 
     var readout = new Text( textProperty.value, {
