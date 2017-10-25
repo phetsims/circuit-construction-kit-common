@@ -190,25 +190,7 @@ define( function( require ) {
         // If over the toolbox, then drop into it
         if ( screenView.canNodeDropInToolbox( self ) ) {
 
-          var lifetime = phet.joist.elapsedTime - self.circuitElement.creationTime;
-          var delayMS = Math.max( 500 - lifetime, 0 );
-
-          // If the node hasn't been out too long, it hovers over the toolbox before falling in.  When a user clicks
-          // and releases immediately, the node shows for some 500ms before dropping back into the toolbox so
-          // the user can better see what is happening.  The node is not interactive during the remainder of the 500ms
-          // while it is hovering.
-          node.removeInputListener( self.dragHandler );
-
-          // Make it impossible to drag vertices when about to drop back into box, see preceding comment and  https://github.com/phetsims/circuit-construction-kit-common/issues/279
-          circuitLayerNode.getVertexNode( circuitElement.startVertexProperty.get() ).pickable = false;
-          circuitLayerNode.getVertexNode( circuitElement.endVertexProperty.get() ).pickable = false;
-
-          var id = setTimeout( function() {
-            self.circuit.circuitElements.remove( circuitElement );
-          }, delayMS );
-
-          // If disposed by reset all button, clear the timeout
-          circuitElement.disposeEmitter.addListener( clearTimeout.bind( null, id ) );
+          self.circuit.circuitElements.remove( circuitElement );
         }
         else {
 
