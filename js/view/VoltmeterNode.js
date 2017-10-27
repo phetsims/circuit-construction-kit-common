@@ -11,10 +11,10 @@ define( function( require ) {
 
   // modules
   var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   var CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   var CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Color = require( 'SCENERY/util/Color' );
   var DerivedProperty = require( 'AXON/DerivedProperty' );
   var Image = require( 'SCENERY/nodes/Image' );
@@ -276,9 +276,31 @@ define( function( require ) {
       };
 
       /**
+       * Returns true if the probes are intersecting, or false if not.  Intersecting probes short circuit the voltmeter
+       * to read out 0 V.
+       * @returns {boolean}
+       */
+      var probesOverlap = function() {
+        var redVector = Vector2.createPolar( VOLTMETER_PROBE_TIP_LENGTH, VoltmeterNode.PROBE_ANGLE + Math.PI / 2 );
+        var redTip = self.voltmeter.redProbePositionProperty.get();
+        var redTail = redTip.plus( redVector );
+
+        var blackVector = Vector2.createPolar( VOLTMETER_PROBE_TIP_LENGTH, -1 * VoltmeterNode.PROBE_ANGLE + Math.PI / 2 );
+        var blackTip = self.voltmeter.blackProbePositionProperty.get();
+        var blackTail = blackTip.plus( blackVector );
+
+        var intersection = Util.lineSegmentIntersection(
+          redTail.x, redTail.y, redTip.x, redTip.y,
+          blackTail.x, blackTail.y, blackTip.x, blackTip.y
+        );
+        return intersection !== null;
+      };
+
+      /**
        * Detection for voltmeter probe + circuit intersection is done in the view since view bounds are used
        */
       var updateVoltmeter = function() {
+
         if ( voltmeter.visibleProperty.get() ) {
           var redConnection = findVoltageConnection(
             self.redProbeNode, self.voltmeter.redProbePositionProperty.get(), +1
@@ -287,7 +309,10 @@ define( function( require ) {
             self.blackProbeNode, self.voltmeter.blackProbePositionProperty.get(), -1
           );
 
-          if ( redConnection === null || blackConnection === null ) {
+          if ( probesOverlap() ) {
+            voltmeter.voltageProperty.set( 0 );
+          }
+          else if ( redConnection === null || blackConnection === null ) {
             voltmeter.voltageProperty.set( null );
           }
           else if ( !model.circuit.areVerticesElectricallyConnected( redConnection.vertex, blackConnection.vertex ) ) {
