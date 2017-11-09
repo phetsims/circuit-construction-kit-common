@@ -58,7 +58,7 @@ define( function( require ) {
     this.cutButton = cutButton;
 
     // @private {Tandem}
-    this.tandem = tandem;
+    this.vertexNodeTandem = tandem;
 
     // @private {CircuitLayerNode}
     this.circuitLayerNode = circuitLayerNode;
@@ -246,7 +246,7 @@ define( function( require ) {
       circuit.circuitChangedEmitter.removeListener( this.updateStrokeListener );
 
       this.removeAccessibleInputListener( this.keyListener );
-      this.tandem.removeInstance( this );
+      this.vertexNodeTandem.removeInstance( this );
 
       // Remove the global listener if it was still enabled
       this.clearClickListeners();
