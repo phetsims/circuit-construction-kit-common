@@ -43,7 +43,7 @@ define( function( require ) {
     }, options );
 
     // @public (read-only)
-    this.tandem = options.tandem;
+    this.vertexTandem = options.tandem;
 
     // @public {Property.<Vector2>} - location of the vertex
     this.positionProperty = new Property( position, {

@@ -1253,7 +1253,7 @@ define( function( require ) {
               attachable: vertex.attachableProperty.get(),
               draggable: vertex.draggableProperty.get()
             },
-            tandemID: vertex.tandem.id
+            tandemID: vertex.vertexTandem.id
           };
         } ),
         circuitElements: this.circuitElements.getArray().map( function( circuitElement ) {
