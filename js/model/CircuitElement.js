@@ -36,11 +36,8 @@ define( function( require ) {
     assert && assert( typeof chargePathLength === 'number', 'charge path length should be a number' );
     assert && assert( chargePathLength > 0, 'charge path length must be positive' );
 
-    // @public (read-only) {string} - the tail of the Tandem for creating associated Tandems
-    this.tandemName = tandem.tail;
-
     // @public (read-only) {Tandem} - full tandem
-    this.tandem = tandem;
+    this.circuitElementTandem = tandem;
 
     // @public (read-only) {number} unique identifier for looking up corresponding views
     this.id = index++;
@@ -331,7 +328,7 @@ define( function( require ) {
      * @public
      */
     toIntrinsicStateObject: function() {
-      return { tandemName: this.tandemName };
+      return { tandemName: this.circuitElementTandem.tail };
     }
   } );
 } );
