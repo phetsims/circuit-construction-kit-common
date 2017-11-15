@@ -19,7 +19,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   // phet-io modules
-  var TNumber = require( 'ifphetio!PHET_IO/types/TNumber' );
+  var NumberIO = require( 'ifphetio!PHET_IO/types/NumberIO' );
 
   /**
    * @param {Tandem} tandem
@@ -34,7 +34,7 @@ define( function( require ) {
     this.currentProperty = new Property( null, {
       tandem: tandem.createTandem( 'currentProperty' ),
       units: 'amperes',
-      phetioType: PropertyIO( TNumber )
+      phetioType: PropertyIO( NumberIO )
     } );
 
     // @public {Property.<Vector2>} - the position of the tip of the probe
