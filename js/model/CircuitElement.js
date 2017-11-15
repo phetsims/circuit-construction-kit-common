@@ -19,7 +19,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   // phet-io modules
-  var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
+  var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
 
   var index = 0;
 
@@ -53,7 +53,7 @@ define( function( require ) {
       insideTrueBlackBox: false,
       isMetallic: false, // Metallic items can have their voltage read directly (unshielded)
       isFlammable: false,
-      phetioType: TObject
+      phetioType: ObjectIO
     }, options );
 
     // @public (read-only) flammable circuit elements can catch on fire

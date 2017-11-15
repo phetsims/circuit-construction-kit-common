@@ -28,7 +28,7 @@ define( function( require ) {
   var ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ZoomControlPanel' );
 
   // phet-io modules
-  var TString = require( 'ifphetio!PHET_IO/types/TString' );
+  var StringIO = require( 'ifphetio!PHET_IO/types/StringIO' );
 
   // constants
   var ZOOM_ANIMATION_TIME = 0.35; // seconds
@@ -106,14 +106,14 @@ define( function( require ) {
     this.modeProperty = new Property( InteractionMode.EXPLORE, {
       validValues: InteractionMode.VALUES,
       tandem: tandem.createTandem( 'modeProperty' ),
-      phetioType: PropertyIO( TString )
+      phetioType: PropertyIO( StringIO )
     } );
 
     // @public {Property.<CircuitElementViewType>} - whether to show lifelike or schematic representations
     this.viewTypeProperty = new Property( CircuitElementViewType.LIFELIKE, {
       validValues: CircuitElementViewType.VALUES,
       tandem: tandem.createTandem( 'viewTypeProperty' ),
-      phetioType: PropertyIO( TString )
+      phetioType: PropertyIO( StringIO )
     } );
 
     // When the user manipulates something, hide the readouts, see
@@ -154,7 +154,7 @@ define( function( require ) {
 
       var circuitChangedEmitter = new Emitter( {
         tandem: tandem.createTandem( 'circuitChangedEmitter' ),
-        phetioArgumentTypes: [ TString ]
+        phetioArgumentTypes: [ StringIO ]
       } );
 
       var emitCircuitChanged = function() {

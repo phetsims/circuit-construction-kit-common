@@ -38,8 +38,8 @@ define( function( require ) {
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
 
   // phet-io modules
-  var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
-  var TString = require( 'ifphetio!PHET_IO/types/TString' );
+  var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
+  var StringIO = require( 'ifphetio!PHET_IO/types/StringIO' );
 
   // constants
   var SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
@@ -95,7 +95,7 @@ define( function( require ) {
     this.currentTypeProperty = new Property( CCKCQueryParameters.currentType, {
       validValues: CurrentType.VALUES,
       tandem: tandem.createTandem( 'currentTypeProperty' ),
-      phetioType: PropertyIO( TString )
+      phetioType: PropertyIO( StringIO )
     } );
 
     // When the current type changes, mark everything as dirty and relayout charges
@@ -232,7 +232,7 @@ define( function( require ) {
     // Vertex.selectedProperty.  These strategies can be unified when we work on a11y.
     this.selectedCircuitElementProperty = new Property( null, {
       tandem: tandem.createTandem( 'selectedCircuitElementProperty' ),
-      phetioType: PropertyIO( TObject )
+      phetioType: PropertyIO( ObjectIO )
     } );
 
     this.selectedCircuitElementProperty.link( function( selectedCircuitElement ) {
