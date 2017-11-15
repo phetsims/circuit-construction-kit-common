@@ -14,6 +14,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Meter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Meter' );
   var Property = require( 'AXON/Property' );
+  var TProperty = require( 'AXON/TProperty' );
   var TVector2 = require( 'DOT/TVector2' );
   var Vector2 = require( 'DOT/Vector2' );
 
@@ -33,13 +34,13 @@ define( function( require ) {
     this.currentProperty = new Property( null, {
       tandem: tandem.createTandem( 'currentProperty' ),
       units: 'amperes',
-      phetioValueType: TNumber
+      phetioType: TProperty( TNumber )
     } );
 
     // @public {Property.<Vector2>} - the position of the tip of the probe
     this.probePositionProperty = new Property( Vector2.ZERO, {
       tandem: tandem.createTandem( 'probePositionProperty' ),
-      phetioValueType: TVector2
+      phetioType: TProperty( TVector2 )
     } );
   }
 

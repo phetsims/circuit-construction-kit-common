@@ -14,6 +14,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Meter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Meter' );
   var Property = require( 'AXON/Property' );
+  var TProperty = require( 'AXON/TProperty' );
   var TVector2 = require( 'DOT/TVector2' );
   var Vector2 = require( 'DOT/Vector2' );
 
@@ -34,13 +35,13 @@ define( function( require ) {
     // @public {Property.<Vector2>} - the position of the tip of the red probe in model=view coordinates.
     this.redProbePositionProperty = new Property( Vector2.ZERO, {
       tandem: tandem.createTandem( 'redProbePositionProperty' ),
-      phetioValueType: TVector2
+      phetioType: TProperty( TVector2 )
     } );
 
     // @public {Property.<Vector2>} - the position of the black probe in model=view coordinates
     this.blackProbePositionProperty = new Property( Vector2.ZERO, {
       tandem: tandem.createTandem( 'blackProbePositionProperty' ),
-      phetioValueType: TVector2
+      phetioType: TProperty( TVector2 )
     } );
   }
 

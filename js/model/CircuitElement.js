@@ -52,7 +52,8 @@ define( function( require ) {
       isSizeChangedOnViewChange: true,
       insideTrueBlackBox: false,
       isMetallic: false, // Metallic items can have their voltage read directly (unshielded)
-      isFlammable: false
+      isFlammable: false,
+      phetioType: TObject
     }, options );
 
     // @public (read-only) flammable circuit elements can catch on fire
@@ -132,7 +133,7 @@ define( function( require ) {
     // See https://github.com/phetsims/circuit-construction-kit-common/issues/418
     this.circuitElementDisposed = false;
 
-    tandem.addInstance( this, TObject, options );
+    tandem.addInstance( this, options );
   }
 
   circuitConstructionKitCommon.register( 'CircuitElement', CircuitElement );

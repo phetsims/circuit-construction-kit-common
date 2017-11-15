@@ -12,9 +12,9 @@ define( function( require ) {
   // modules
   var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Ammeter' );
   var BooleanProperty = require( 'AXON/BooleanProperty' );
+  var CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Circuit' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   var EaseAnimation = require( 'TWIXT/EaseAnimation' );
   var Emitter = require( 'AXON/Emitter' );
@@ -22,6 +22,7 @@ define( function( require ) {
   var InteractionMode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/InteractionMode' );
   var NumberProperty = require( 'AXON/NumberProperty' );
   var Property = require( 'AXON/Property' );
+  var TProperty = require( 'AXON/TProperty' );
   var Util = require( 'DOT/Util' );
   var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Voltmeter' );
   var ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ZoomControlPanel' );
@@ -105,14 +106,14 @@ define( function( require ) {
     this.modeProperty = new Property( InteractionMode.EXPLORE, {
       validValues: InteractionMode.VALUES,
       tandem: tandem.createTandem( 'modeProperty' ),
-      phetioValueType: TString
+      phetioType: TProperty( TString )
     } );
 
     // @public {Property.<CircuitElementViewType>} - whether to show lifelike or schematic representations
     this.viewTypeProperty = new Property( CircuitElementViewType.LIFELIKE, {
       validValues: CircuitElementViewType.VALUES,
       tandem: tandem.createTandem( 'viewTypeProperty' ),
-      phetioValueType: TString
+      phetioType: TProperty( TString )
     } );
 
     // When the user manipulates something, hide the readouts, see
