@@ -32,7 +32,7 @@ define( function( require ) {
   var SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var TProperty = require( 'AXON/TProperty' );
+  var PropertyIO = require( 'AXON/PropertyIO' );
   var Vector2 = require( 'DOT/Vector2' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
@@ -95,7 +95,7 @@ define( function( require ) {
     this.currentTypeProperty = new Property( CCKCQueryParameters.currentType, {
       validValues: CurrentType.VALUES,
       tandem: tandem.createTandem( 'currentTypeProperty' ),
-      phetioType: TProperty( TString )
+      phetioType: PropertyIO( TString )
     } );
 
     // When the current type changes, mark everything as dirty and relayout charges
@@ -232,7 +232,7 @@ define( function( require ) {
     // Vertex.selectedProperty.  These strategies can be unified when we work on a11y.
     this.selectedCircuitElementProperty = new Property( null, {
       tandem: tandem.createTandem( 'selectedCircuitElementProperty' ),
-      phetioType: TProperty( TObject )
+      phetioType: PropertyIO( TObject )
     } );
 
     this.selectedCircuitElementProperty.link( function( selectedCircuitElement ) {

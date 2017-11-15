@@ -22,7 +22,7 @@ define( function( require ) {
   var InteractionMode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/InteractionMode' );
   var NumberProperty = require( 'AXON/NumberProperty' );
   var Property = require( 'AXON/Property' );
-  var TProperty = require( 'AXON/TProperty' );
+  var PropertyIO = require( 'AXON/PropertyIO' );
   var Util = require( 'DOT/Util' );
   var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Voltmeter' );
   var ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ZoomControlPanel' );
@@ -106,14 +106,14 @@ define( function( require ) {
     this.modeProperty = new Property( InteractionMode.EXPLORE, {
       validValues: InteractionMode.VALUES,
       tandem: tandem.createTandem( 'modeProperty' ),
-      phetioType: TProperty( TString )
+      phetioType: PropertyIO( TString )
     } );
 
     // @public {Property.<CircuitElementViewType>} - whether to show lifelike or schematic representations
     this.viewTypeProperty = new Property( CircuitElementViewType.LIFELIKE, {
       validValues: CircuitElementViewType.VALUES,
       tandem: tandem.createTandem( 'viewTypeProperty' ),
-      phetioType: TProperty( TString )
+      phetioType: PropertyIO( TString )
     } );
 
     // When the user manipulates something, hide the readouts, see
