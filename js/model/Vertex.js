@@ -17,7 +17,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Tandem = require( 'TANDEM/Tandem' );
   var PropertyIO = require( 'AXON/PropertyIO' );
-  var TVector2 = require( 'DOT/TVector2' );
+  var Vector2IO = require( 'DOT/Vector2IO' );
 
   // Index counter for debugging
   var counter = 0;
@@ -49,7 +49,7 @@ define( function( require ) {
     // @public {Property.<Vector2>} - location of the vertex
     this.positionProperty = new Property( position, {
       tandem: options.tandem && options.tandem.createTandem( 'positionProperty' ),
-      phetioType: PropertyIO( TVector2 ),
+      phetioType: PropertyIO( Vector2IO ),
       useDeepEquality: true,
       isValidValue: assert && function( p ) {
         return !isNaN( p.x ) && !isNaN( p.y );

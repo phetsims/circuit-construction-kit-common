@@ -15,7 +15,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Property = require( 'AXON/Property' );
   var PropertyIO = require( 'AXON/PropertyIO' );
-  var TVector2 = require( 'DOT/TVector2' );
+  var Vector2IO = require( 'DOT/Vector2IO' );
   var Vector2 = require( 'DOT/Vector2' );
 
   /**
@@ -32,7 +32,7 @@ define( function( require ) {
     // @public {Property.<Vector2>} - the location of the body of the meter
     this.bodyPositionProperty = new Property( Vector2.ZERO, {
       tandem: tandem.createTandem( 'bodyPositionProperty' ),
-      phetioType: PropertyIO( TVector2 )
+      phetioType: PropertyIO( Vector2IO )
     } );
 
     // @public {Property.<boolean>} When the meter is dragged from the toolbox, all pieces drag together.

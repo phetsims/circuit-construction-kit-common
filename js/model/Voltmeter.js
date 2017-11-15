@@ -15,7 +15,7 @@ define( function( require ) {
   var Meter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Meter' );
   var Property = require( 'AXON/Property' );
   var PropertyIO = require( 'AXON/PropertyIO' );
-  var TVector2 = require( 'DOT/TVector2' );
+  var Vector2IO = require( 'DOT/Vector2IO' );
   var Vector2 = require( 'DOT/Vector2' );
 
   /**
@@ -35,13 +35,13 @@ define( function( require ) {
     // @public {Property.<Vector2>} - the position of the tip of the red probe in model=view coordinates.
     this.redProbePositionProperty = new Property( Vector2.ZERO, {
       tandem: tandem.createTandem( 'redProbePositionProperty' ),
-      phetioType: PropertyIO( TVector2 )
+      phetioType: PropertyIO( Vector2IO )
     } );
 
     // @public {Property.<Vector2>} - the position of the black probe in model=view coordinates
     this.blackProbePositionProperty = new Property( Vector2.ZERO, {
       tandem: tandem.createTandem( 'blackProbePositionProperty' ),
-      phetioType: PropertyIO( TVector2 )
+      phetioType: PropertyIO( Vector2IO )
     } );
   }
 
