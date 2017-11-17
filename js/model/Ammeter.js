@@ -13,10 +13,11 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Meter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Meter' );
+  var NullableIO = require( 'ifphetio!PHET_IO/types/NullableIO' );
   var Property = require( 'AXON/Property' );
   var PropertyIO = require( 'AXON/PropertyIO' );
-  var Vector2IO = require( 'DOT/Vector2IO' );
   var Vector2 = require( 'DOT/Vector2' );
+  var Vector2IO = require( 'DOT/Vector2IO' );
 
   // phet-io modules
   var NumberIO = require( 'ifphetio!PHET_IO/types/NumberIO' );
@@ -34,7 +35,7 @@ define( function( require ) {
     this.currentProperty = new Property( null, {
       tandem: tandem.createTandem( 'currentProperty' ),
       units: 'amperes',
-      phetioType: PropertyIO( NumberIO )
+      phetioType: PropertyIO( NullableIO( NumberIO ) )
     } );
 
     // @public {Property.<Vector2>} - the position of the tip of the probe

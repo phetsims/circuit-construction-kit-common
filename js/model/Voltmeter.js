@@ -15,8 +15,12 @@ define( function( require ) {
   var Meter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Meter' );
   var Property = require( 'AXON/Property' );
   var PropertyIO = require( 'AXON/PropertyIO' );
-  var Vector2IO = require( 'DOT/Vector2IO' );
   var Vector2 = require( 'DOT/Vector2' );
+  var Vector2IO = require( 'DOT/Vector2IO' );
+
+  // phet-io modules
+  var NullableIO = require( 'ifphetio!PHET_IO/types/NullableIO' );
+  var NumberIO = require( 'ifphetio!PHET_IO/types/NumberIO' );
 
   /**
    * @param {Tandem} tandem
@@ -29,7 +33,8 @@ define( function( require ) {
     // @public {Property.<number|null>} the voltage the probe is reading (in volts) or null if unconnected
     this.voltageProperty = new Property( null, {
       tandem: tandem.createTandem( 'voltageProperty' ),
-      units: 'volts'
+      units: 'volts',
+      phetioType: PropertyIO( NullableIO( NumberIO ))
     } );
 
     // @public {Property.<Vector2>} - the position of the tip of the red probe in model=view coordinates.
