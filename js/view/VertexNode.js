@@ -246,7 +246,6 @@ define( function( require ) {
       circuit.circuitChangedEmitter.removeListener( this.updateStrokeListener );
 
       this.removeAccessibleInputListener( this.keyListener );
-      this.vertexNodeTandem.removeInstance( this );
 
       // Remove the global listener if it was still enabled
       this.clearClickListeners();

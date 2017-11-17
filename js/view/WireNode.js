@@ -320,7 +320,6 @@ define( function( require ) {
       circuitLayerNode && circuitLayerNode.highlightLayer.removeChild( highlightNodeParent );
 
       viewTypeProperty.unlink( markAsDirty );
-      tandem.removeInstance( self );
 
       self.lineNode.dispose();
       self.highlightNode.dispose();
