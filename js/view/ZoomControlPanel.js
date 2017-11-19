@@ -29,7 +29,7 @@ define( function( require ) {
   function ZoomControlPanel( selectedZoomProperty, options ) {
     options = _.extend( {
       spacing: BUTTON_SPACING,
-      tandem: Tandem.tandemRequired()
+      tandem: Tandem.required
     }, options );
     var zoomOutButton = new ZoomButton( {
       in: false,

@@ -32,7 +32,7 @@ define( function( require ) {
     scale: 0.78
   } ).toDataURLImageSynchronous();
 
-  var ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.createStaticTandem( 'arrowNode' ) )
+  var ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.rootTandem.createTandem( 'arrowNode' ) )
     .toDataURLImageSynchronous();
 
   var ARROW_OFFSET = Matrix3.translation( -ARROW_NODE.width / 2, -ARROW_NODE.height / 2 );

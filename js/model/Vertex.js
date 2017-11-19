@@ -39,7 +39,7 @@ define( function( require ) {
       interactive: true, // Black box interface vertices can be interactive (tap to select) without being draggable
       blackBoxInterface: false, // Black box interface vertices cannot be dragged or deleted, but can be connected to
       insideTrueBlackBox: false, // Behavior differs in explore vs test mode
-      tandem: Tandem.tandemOptional() // Temporary vertices (for icons) should not be instrumented since they
+      tandem: Tandem.optional // Temporary vertices (for icons) should not be instrumented since they
                                       // are more of an implementation detail rather than a feature
     }, options );
 
