@@ -16,7 +16,7 @@ define( function( require ) {
   var CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
   var Color = require( 'SCENERY/util/Color' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Input = require( 'SCENERY/input/Input' );
+  var KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   var Node = require( 'SCENERY/nodes/Node' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Text = require( 'SCENERY/nodes/Text' );
@@ -265,7 +265,7 @@ define( function( require ) {
       var code = event.keyCode || event.which;
 
       // on delete or backspace, the focused Vertex should be cut
-      if ( code === Input.KEY_DELETE || code === Input.KEY_BACKSPACE ) {
+      if ( code === KeyboardUtil.KEY_DELETE || code === KeyboardUtil.KEY_BACKSPACE ) {
 
         // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
         // https://github.com/phetsims/circuit-construction-kit-common/issues/307
