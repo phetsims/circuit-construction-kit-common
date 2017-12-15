@@ -1260,7 +1260,7 @@ define( function( require ) {
         circuitElements: this.circuitElements.getArray().map( function( circuitElement ) {
           return _.extend( {
             type: getKey( circuitElement ),
-            tandemID: circuitElement.circuitElementTandem.id,
+            tandemID: circuitElement.phetioObjectTandem.id,
             startVertexIndex: self.vertices.indexOf( circuitElement.startVertexProperty.get() ),
             endVertexIndex: self.vertices.indexOf( circuitElement.endVertexProperty.get() )
           }, circuitElement.toIntrinsicStateObject() );

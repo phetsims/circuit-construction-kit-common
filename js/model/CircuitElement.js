@@ -15,6 +15,7 @@ define( function( require ) {
   var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
   var NumberProperty = require( 'AXON/NumberProperty' );
+  var PhetioObject = require( 'TANDEM/PhetioObject' );
   var Property = require( 'AXON/Property' );
   var Vector2 = require( 'DOT/Vector2' );
 
@@ -36,9 +37,6 @@ define( function( require ) {
     assert && assert( typeof chargePathLength === 'number', 'charge path length should be a number' );
     assert && assert( chargePathLength > 0, 'charge path length must be positive' );
 
-    // @public (read-only) {Tandem} - full tandem
-    this.circuitElementTandem = tandem;
-
     // @public (read-only) {number} unique identifier for looking up corresponding views
     this.id = index++;
 
@@ -53,7 +51,7 @@ define( function( require ) {
       insideTrueBlackBox: false,
       isMetallic: false, // Metallic items can have their voltage read directly (unshielded)
       isFlammable: false,
-      phetioType: ObjectIO
+      tandem: tandem
     }, options );
 
     // @public (read-only) flammable circuit elements can catch on fire
@@ -133,12 +131,12 @@ define( function( require ) {
     // See https://github.com/phetsims/circuit-construction-kit-common/issues/418
     this.circuitElementDisposed = false;
 
-    tandem.addInstance( this, options );
+    PhetioObject.call( this, options );
   }
 
   circuitConstructionKitCommon.register( 'CircuitElement', CircuitElement );
 
-  return inherit( Object, CircuitElement, {
+  return inherit( PhetioObject, CircuitElement, {
 
     /**
      * When the start or end Vertex changes, move the listener from the old Vertex to the new one
@@ -214,6 +212,8 @@ define( function( require ) {
 
       this.startPositionProperty.hasListener( this.vertexMovedListener ) && this.startPositionProperty.unlink( this.vertexMovedListener );
       this.endPositionProperty.hasListener( this.vertexMovedListener ) && this.endPositionProperty.unlink( this.vertexMovedListener );
+
+      PhetioObject.prototype.dispose( this );
     },
 
     /**
@@ -329,7 +329,7 @@ define( function( require ) {
      * @public
      */
     toIntrinsicStateObject: function() {
-      return { tandemName: this.circuitElementTandem.tail };
+      return { tandemName: this.phetioObjectTandem.tail };
     }
   } );
 } );
