@@ -19,9 +19,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Vector2 = require( 'DOT/Vector2' );
 
-  // phet-io modules
-  var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
-
+  // variables
   var index = 0;
 
   /**
