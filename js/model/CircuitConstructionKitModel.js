@@ -26,6 +26,7 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
   var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Voltmeter' );
   var ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ZoomControlPanel' );
+  var EmitterIO = require( 'AXON/EmitterIO' );
 
   // phet-io modules
   var StringIO = require( 'ifphetio!PHET_IO/types/StringIO' );
@@ -154,7 +155,7 @@ define( function( require ) {
 
       var circuitChangedEmitter = new Emitter( {
         tandem: tandem.createTandem( 'circuitChangedEmitter' ),
-        phetioArgumentTypes: [ StringIO ]
+        phetioType: EmitterIO( [ StringIO ] )
       } );
 
       var emitCircuitChanged = function() {
