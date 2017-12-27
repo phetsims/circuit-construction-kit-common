@@ -198,7 +198,7 @@ define( function( require ) {
      * @public
      */
     dispose: function() {
-
+      assert && assert( !this.circuitElementDisposed, 'circuit element was already disposed' );
       this.circuitElementDisposed = true;
 
       // Notify about intent to dispose first because dispose listeners may need to access state
@@ -211,7 +211,7 @@ define( function( require ) {
       this.startPositionProperty.hasListener( this.vertexMovedListener ) && this.startPositionProperty.unlink( this.vertexMovedListener );
       this.endPositionProperty.hasListener( this.vertexMovedListener ) && this.endPositionProperty.unlink( this.vertexMovedListener );
 
-      PhetioObject.prototype.dispose( this );
+      PhetioObject.prototype.dispose.call( this );
     },
 
     /**
