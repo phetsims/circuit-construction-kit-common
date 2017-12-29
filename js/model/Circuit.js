@@ -1254,13 +1254,13 @@ define( function( require ) {
               attachable: vertex.attachableProperty.get(),
               draggable: vertex.draggableProperty.get()
             },
-            tandemID: vertex.vertexTandem.id
+            tandemID: vertex.vertexTandem.phetioID
           };
         } ),
         circuitElements: this.circuitElements.getArray().map( function( circuitElement ) {
           return _.extend( {
             type: getKey( circuitElement ),
-            tandemID: circuitElement.phetioObjectTandem.id,
+            tandemID: circuitElement.phetioObjectTandem.phetioID,
             startVertexIndex: self.vertices.indexOf( circuitElement.startVertexProperty.get() ),
             endVertexIndex: self.vertices.indexOf( circuitElement.endVertexProperty.get() )
           }, circuitElement.toIntrinsicStateObject() );
