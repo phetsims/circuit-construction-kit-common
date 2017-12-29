@@ -44,7 +44,7 @@ define( function( require ) {
           new Text( title, {
             fontSize: CCKCConstants.FONT_SIZE,
             maxWidth: 175,
-            tandem: tandem.createTandem( title )
+            tandem: tandem
           } )
         ]
       } ),
