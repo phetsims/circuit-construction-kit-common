@@ -13,7 +13,7 @@ define( function( require ) {
   var AlignBox = require( 'SCENERY/nodes/AlignBox' );
   var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
   var AquaRadioButton = require( 'SUN/AquaRadioButton' );
-  var CheckBox = require( 'SUN/CheckBox' );
+  var Checkbox = require( 'SUN/Checkbox' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   var CCKCPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCPanel' );
@@ -96,12 +96,12 @@ define( function( require ) {
     showCurrentProperty.linkAttribute( conventionalRadioButton, 'enabled' );
 
     var BOX_WIDTH = 16;
-    var showLabelsCheckBox = new CheckBox( new Text( labelsString, TEXT_OPTIONS ), showLabelsProperty, {
-      tandem: tandem.createTandem( 'labelsCheckBox' ),
+    var showLabelsCheckbox = new Checkbox( new Text( labelsString, TEXT_OPTIONS ), showLabelsProperty, {
+      tandem: tandem.createTandem( 'labelsCheckbox' ),
       boxWidth: BOX_WIDTH,
     } );
-    var showValuesCheckBox = new CheckBox( new Text( valuesString, TEXT_OPTIONS ), showValuesProperty, {
-      tandem: tandem.createTandem( 'valuesCheckBox' ),
+    var showValuesCheckbox = new Checkbox( new Text( valuesString, TEXT_OPTIONS ), showValuesProperty, {
+      tandem: tandem.createTandem( 'valuesCheckbox' ),
       boxWidth: BOX_WIDTH
     } );
     var children = [
@@ -111,9 +111,9 @@ define( function( require ) {
         align: 'left',
         spacing: 8,
         children: [
-          new CheckBox( new Text( showCurrentString, TEXT_OPTIONS ), showCurrentProperty, {
+          new Checkbox( new Text( showCurrentString, TEXT_OPTIONS ), showCurrentProperty, {
             boxWidth: BOX_WIDTH,
-            tandem: tandem.createTandem( 'showCurrentCheckBox' )
+            tandem: tandem.createTandem( 'showCurrentCheckbox' )
           } ),
           new AlignBox(
             new VBox( {
@@ -129,8 +129,8 @@ define( function( require ) {
           )
         ]
       } ),
-      showLabelsCheckBox,
-      showValuesCheckBox
+      showLabelsCheckbox,
+      showValuesCheckbox
     ];
 
     CCKCPanel.call( this, alignGroup.createBox( new VBox( {
@@ -146,11 +146,11 @@ define( function( require ) {
     } );
 
     // Touch & Mouse area extends to the right across the control panel
-    showLabelsCheckBox.touchArea = showLabelsCheckBox.localBounds.dilatedXY( 5, SPACING / 2 ).withMaxX( this.bounds.width - LEFT_MARGIN );
-    showLabelsCheckBox.mouseArea = showLabelsCheckBox.touchArea;
+    showLabelsCheckbox.touchArea = showLabelsCheckbox.localBounds.dilatedXY( 5, SPACING / 2 ).withMaxX( this.bounds.width - LEFT_MARGIN );
+    showLabelsCheckbox.mouseArea = showLabelsCheckbox.touchArea;
 
-    showValuesCheckBox.touchArea = showValuesCheckBox.localBounds.dilatedXY( 5, SPACING / 2 ).withMaxX( this.bounds.width - LEFT_MARGIN );
-    showValuesCheckBox.mouseArea = showValuesCheckBox.touchArea;
+    showValuesCheckbox.touchArea = showValuesCheckbox.localBounds.dilatedXY( 5, SPACING / 2 ).withMaxX( this.bounds.width - LEFT_MARGIN );
+    showValuesCheckbox.mouseArea = showValuesCheckbox.touchArea;
   }
 
   circuitConstructionKitCommon.register( 'DisplayOptionsPanel', DisplayOptionsPanel );
