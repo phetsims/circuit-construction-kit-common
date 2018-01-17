@@ -15,6 +15,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Text = require( 'SCENERY/nodes/Text' );
+  var Touch = require( 'SCENERY/input/Touch' );
   var VBox = require( 'SCENERY/nodes/VBox' );
 
   // constants
@@ -62,7 +63,7 @@ define( function( require ) {
 
       // Adjust for touch.  The object should appear centered on the mouse but vertically above the finger so the finger
       // doesn't obscure the object
-      viewPosition.y = viewPosition.y - ( event.pointer.isTouch ? 28 : 0 );
+      viewPosition.y = viewPosition.y - ( event.pointer instanceof Touch ? 28 : 0 );
 
       // Create the new CircuitElement at the correct location
       var circuitElement = createElement( viewPosition, event );
