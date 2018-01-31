@@ -16,7 +16,7 @@ define( function( require ) {
   var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Circuit' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
-  var EaseAnimation = require( 'TWIXT/EaseAnimation' );
+  var ZoomAnimation = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ZoomAnimation' );
   var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
   var InteractionMode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/InteractionMode' );
@@ -30,9 +30,6 @@ define( function( require ) {
 
   // phet-io modules
   var StringIO = require( 'ifphetio!PHET_IO/types/StringIO' );
-
-  // constants
-  var ZOOM_ANIMATION_TIME = 0.35; // seconds
 
   /**
    * @param {Tandem} tandem
@@ -91,15 +88,10 @@ define( function( require ) {
     } );
 
     this.selectedZoomProperty.lazyLink( function( newValue ) {
-      self.zoomAnimation = new EaseAnimation( {
-        duration: ZOOM_ANIMATION_TIME,
-        initialValue: self.currentZoomProperty.get(),
-        targetValue: newValue,
-        delta: function( delta ) {
-          var proposedZoomValue = self.currentZoomProperty.value + delta;
-          var boundedValue = Util.clamp( proposedZoomValue, ZoomControlPanel.ZOOMED_OUT, ZoomControlPanel.ZOOMED_IN );
-          self.currentZoomProperty.value = boundedValue;
-        }
+      self.zoomAnimation = new ZoomAnimation( self.currentZoomProperty.get(), newValue, function( delta ) {
+        var proposedZoomValue = self.currentZoomProperty.value + delta;
+        var boundedValue = Util.clamp( proposedZoomValue, ZoomControlPanel.ZOOMED_OUT, ZoomControlPanel.ZOOMED_IN );
+        self.currentZoomProperty.value = boundedValue;
       } );
     } );
 
