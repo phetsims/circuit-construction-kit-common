@@ -327,7 +327,7 @@ define( function( require ) {
      * @public
      */
     toIntrinsicStateObject: function() {
-      return { tandemName: this.phetioObjectTandem.tail };
+      return { tandemName: this.tandem.tail };
     }
   } );
 } );

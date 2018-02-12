@@ -262,7 +262,7 @@ define( function( require ) {
               circuitElement,
               self.model.showValuesProperty,
               self.model.viewTypeProperty,
-              tandem.createTandem( circuitElement.phetioObjectTandem.tail ).createTandem( 'valueNode' )
+              tandem.createTandem( circuitElement.tandem.tail ).createTandem( 'valueNode' )
             );
 
             var updateShowValues = function( showValues ) {
