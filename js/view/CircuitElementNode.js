@@ -41,7 +41,7 @@ define( function( require ) {
       // keyboard navigation
       tagName: 'div', // HTML tag name for representative element in the document, see Accessibility.js
       focusable: true,
-      focusHighlight: 'invisible' // highlights are drawn by the simulation
+      focusHighlight: 'invisible' // highlights are drawn by the simulation, invisible is deprecated don't use in future
     }, options );
 
     Node.call( this, options );

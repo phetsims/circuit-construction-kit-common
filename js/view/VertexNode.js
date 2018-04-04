@@ -109,7 +109,7 @@ define( function( require ) {
       // keyboard navigation
       tagName: 'div', // HTML tag name for representative element in the document, see Accessibility.js
       focusable: true,
-      focusHighlight: 'invisible' // highlights are drawn by the simulation
+      focusHighlight: 'invisible' // highlights are drawn by the simulation, invisible is deprecated don't use in future
     } );
 
     // @private - keyboard listener so that delete or backspace deletes the element - must be disposed
