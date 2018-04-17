@@ -113,9 +113,10 @@ define( function( require ) {
     } );
 
     // @private - keyboard listener so that delete or backspace deletes the element - must be disposed
-    this.keyListener = this.addAccessibleInputListener( {
+    this.keyListener = {
       keydown: this.keydownListener.bind( this )
-    } );
+    };
+    this.addAccessibleInputListener( this.keyListener );
 
     // @private {function} Shows up as red when disconnected or black when connected.  When unattachable, the dotted line disappears (black
     // box study)
