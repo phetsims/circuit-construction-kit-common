@@ -47,7 +47,7 @@ define( function( require ) {
     Node.call( this, options );
 
     // keyboard listener so that delete or backspace deletes the element - must be disposed
-    var keyListener = this.addAccessibleInputListener( {
+    var keyListener = {
       keydown: function( event ) {
         var code = event.keyCode || event.which;
 
@@ -64,7 +64,8 @@ define( function( require ) {
           }
         }
       }
-    } );
+    };
+    this.addAccessibleInputListener( keyListener );
 
     // @private {function[]}
     this.disposeActions = [];
