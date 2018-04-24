@@ -1,7 +1,7 @@
 // Copyright 2017, University of Colorado Boulder
 
 /**
- * Unit tests for dot. Please run once in phet brand and once in brand=phet-io to cover all functionality.
+ * Unit tests. Please run once in phet brand and once in brand=phet-io to cover all functionality.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
