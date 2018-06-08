@@ -28,7 +28,7 @@ define( function( require ) {
   var ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ZoomControlPanel' );
   var EmitterIO = require( 'AXON/EmitterIO' );
 
-  // phet-io modules
+  // ifphetio
   var StringIO = require( 'ifphetio!PHET_IO/types/StringIO' );
 
   /**

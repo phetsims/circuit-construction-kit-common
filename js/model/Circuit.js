@@ -37,7 +37,7 @@ define( function( require ) {
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
 
-  // phet-io modules
+  // ifphetio
   var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
   var StringIO = require( 'ifphetio!PHET_IO/types/StringIO' );
 
