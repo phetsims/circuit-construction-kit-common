@@ -120,7 +120,7 @@ define( function( require ) {
         contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
 
           // Using a serif font makes the infinity symbol look less lopsided
-          resistance: resistance > 100000 ? '<font size="26px" face="serif"><b>∞</b></font>' : '0'
+          resistance: resistance > 100000 ? '<span style="font-size: 26px; font-family: serif;"><b>∞</b></span>' : '0'
         } );
 
         // Account for the switch open and close geometry for positioning the label.  When the switch is open
