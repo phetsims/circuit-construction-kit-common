@@ -123,7 +123,7 @@ define( function( require ) {
      */
     webglSpriteNodes: [
       new Image( batteryImage ),
-      new Image( batteryHighImage ),
+      new Image( batteryHighImage )
     ]
   } );
 } );

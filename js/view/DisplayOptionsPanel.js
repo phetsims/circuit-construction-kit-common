@@ -98,7 +98,7 @@ define( function( require ) {
     var BOX_WIDTH = 16;
     var showLabelsCheckbox = new Checkbox( new Text( labelsString, TEXT_OPTIONS ), showLabelsProperty, {
       tandem: tandem.createTandem( 'labelsCheckbox' ),
-      boxWidth: BOX_WIDTH,
+      boxWidth: BOX_WIDTH
     } );
     var showValuesCheckbox = new Checkbox( new Text( valuesString, TEXT_OPTIONS ), showValuesProperty, {
       tandem: tandem.createTandem( 'valuesCheckbox' ),
