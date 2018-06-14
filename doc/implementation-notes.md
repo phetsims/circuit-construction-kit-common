@@ -90,4 +90,4 @@ This document was adapted from the [Implementation Notes for Function Builder](h
 
 ## Unit Tests
 This simulation provides 60+ unit tests to ensure accuracy of the model for a variety of circuit topologies, please
-test by launching localhost/circuit-construction-kit-common/tests/qunit/unit-tests.html
+test by launching localhost/circuit-construction-kit-common/circuit-construction-kit-common-tests.html
