@@ -84,7 +84,7 @@ define( function( require ) {
     this.circuitElements = new ObservableArray();
 
     // @public {ObservableArray.<Vertex>} - Keep track of which terminals are connected to other terminals.
-    // The vertices are also referenced in the CircuitElements above--this ObservableArray is a a central point for
+    // The vertices are also referenced in the CircuitElements above--this ObservableArray is a central point for
     // observing creation/deletion of vertices for showing VertexNodes
     this.vertices = new ObservableArray();
 
