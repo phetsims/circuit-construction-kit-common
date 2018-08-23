@@ -198,7 +198,7 @@ define( function( require ) {
   return inherit( Node, AmmeterNode, {
 
     /**
-     * Find the the current in the given layer (if any CircuitElement hits the sensor)
+     * Find the current in the given layer (if any CircuitElement hits the sensor)
      * @param {Node} probeNode
      * @param {Node} layer
      * @returns {number|null}

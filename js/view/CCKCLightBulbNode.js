@@ -54,7 +54,7 @@ define( function( require ) {
   function toBrightness( multiplier, power ) {
     var maximumBrightness = 1;
 
-    // power at which the the brightness becomes 1
+    // power at which the brightness becomes 1
     var maximumPower = 2000;
     return Math.log( 1 + power * multiplier ) * maximumBrightness / Math.log( 1 + maximumPower * multiplier );
   }
