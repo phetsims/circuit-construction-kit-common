@@ -186,7 +186,7 @@ define( function( require ) {
       // shortly with the correct values for both startPosition and endPosition
       // See https://github.com/phetsims/circuit-construction-kit-common/issues/413
       // if ( assert && this.isFixedCircuitElement && this.startPositionProperty.value.equals( this.endPositionProperty.value ) ) {
-      //   assert && Timer.setTimeout( function() {
+      //   assert && timer.setTimeout( function() {
       //     assert && assert( !self.startPositionProperty.value.equals( self.endPositionProperty.value ), 'vertices cannot be in the same spot' );
       //   }, 0 );
       // }

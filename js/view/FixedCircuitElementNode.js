@@ -222,7 +222,7 @@ define( function( require ) {
         // We are (hopefully!) in the middle of updating both vertices and we (hopefully!) will receive another callback
         // shortly with the correct values for both startPosition and endPosition
         // See https://github.com/phetsims/circuit-construction-kit-common/issues/413
-        // assert && Timer.setTimeout( function() {
+        // assert && timer.setTimeout( function() {
         //   assert && assert( !self.circuitElement.startPositionProperty.get().equals( self.circuitElement.endPositionProperty.get() ), 'vertices cannot be in the same spot' );
         // }, 0 );
         return;
