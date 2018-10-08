@@ -147,7 +147,7 @@ define( function( require ) {
 
       var circuitChangedEmitter = new Emitter( {
         tandem: tandem.createTandem( 'circuitChangedEmitter' ),
-        phetioType: EmitterIO( [ StringIO ] )
+        phetioType: EmitterIO( [ { name: 'circuitJSON', type: StringIO } ] )
       } );
 
       var emitCircuitChanged = function() {
