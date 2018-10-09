@@ -35,7 +35,9 @@ define( function( require ) {
   function CircuitElementEditNode( title, valuePattern, valueProperty, circuit, circuitElement, tandem ) {
 
     // When the user changes any parameter of any circuit element, signify it.
-    var valuePropertyListener = circuit.componentEditedEmitter.emit.bind( circuit.componentEditedEmitter );
+    var valuePropertyListener = function() {
+      circuit.componentEditedEmitter.emit();
+    };
 
     valueProperty.lazyLink( valuePropertyListener );
 
