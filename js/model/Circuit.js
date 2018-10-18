@@ -38,8 +38,8 @@ define( function( require ) {
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
 
   // ifphetio
-  var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
-  var StringIO = require( 'ifphetio!PHET_IO/types/StringIO' );
+  var ObjectIO = require( 'TANDEM/types/ObjectIO' );
+  var StringIO = require( 'TANDEM/types/StringIO' );
 
   // constants
   var SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates

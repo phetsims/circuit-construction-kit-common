@@ -29,7 +29,7 @@ define( function( require ) {
   var EmitterIO = require( 'AXON/EmitterIO' );
 
   // ifphetio
-  var StringIO = require( 'ifphetio!PHET_IO/types/StringIO' );
+  var StringIO = require( 'TANDEM/types/StringIO' );
 
   /**
    * @param {Tandem} tandem
