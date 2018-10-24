@@ -13,14 +13,12 @@ define( function( require ) {
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Meter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Meter' );
+  var NullableIO = require( 'TANDEM/types/NullableIO' );
+  var NumberIO = require( 'TANDEM/types/NumberIO' );
   var Property = require( 'AXON/Property' );
   var PropertyIO = require( 'AXON/PropertyIO' );
   var Vector2 = require( 'DOT/Vector2' );
   var Vector2IO = require( 'DOT/Vector2IO' );
-
-  // ifphetio
-  var NullableIO = require( 'TANDEM/types/NullableIO' );
-  var NumberIO = require( 'TANDEM/types/NumberIO' );
 
   /**
    * @param {Tandem} tandem

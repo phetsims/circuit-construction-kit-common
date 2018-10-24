@@ -36,8 +36,6 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
-
-  // ifphetio
   var ObjectIO = require( 'TANDEM/types/ObjectIO' );
   var StringIO = require( 'TANDEM/types/StringIO' );
 

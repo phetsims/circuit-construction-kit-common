@@ -27,8 +27,6 @@ define( function( require ) {
   var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Voltmeter' );
   var ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ZoomControlPanel' );
   var EmitterIO = require( 'AXON/EmitterIO' );
-
-  // ifphetio
   var StringIO = require( 'TANDEM/types/StringIO' );
 
   /**
