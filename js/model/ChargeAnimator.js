@@ -14,6 +14,7 @@ define( function( require ) {
   var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   var inherit = require( 'PHET_CORE/inherit' );
   var NumberProperty = require( 'AXON/NumberProperty' );
+  var Range = require( 'DOT/Range' );
   var RunningAverage = require( 'DOT/RunningAverage' );
   var Util = require( 'DOT/Util' );
 
@@ -65,7 +66,7 @@ define( function( require ) {
 
     // @public (read-only) {NumberProperty} - how much the time should be slowed, 1 is full speed, 0.5 is running at
     // half speed, etc.
-    this.timeScaleProperty = new NumberProperty( 1, { range: { min: 0, max: 1 } } );
+    this.timeScaleProperty = new NumberProperty( 1, { range: new Range( 0, 1 ) } );
   }
 
   circuitConstructionKitCommon.register( 'ChargeAnimator', ChargeAnimator );
