@@ -15,6 +15,7 @@ define( function( require ) {
   var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   var HSlider = require( 'SUN/HSlider' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Range = require( 'DOT/Range' );
   var Text = require( 'SCENERY/nodes/Text' );
 
   // strings
@@ -33,10 +34,10 @@ define( function( require ) {
    * @constructor
    */
   function WireResistivityControl( wireResistivityProperty, alignGroup, tandem ) {
-    var slider = new HSlider( wireResistivityProperty, {
-      min: CCKCConstants.DEFAULT_RESISTIVITY,
-      max: MAX_RESISTIVITY // large enough so that max resistance in a 9v battery slows to a good rate
-    }, {
+    var slider = new HSlider( wireResistivityProperty, new Range(
+      CCKCConstants.DEFAULT_RESISTIVITY,
+      MAX_RESISTIVITY // large enough so that max resistance in a 9v battery slows to a good rate
+    ), {
       trackSize: CCKCConstants.SLIDER_TRACK_SIZE,
       thumbSize: CCKCConstants.THUMB_SIZE,
       majorTickLength: CCKCConstants.MAJOR_TICK_LENGTH,
