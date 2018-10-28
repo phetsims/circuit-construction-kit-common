@@ -76,7 +76,6 @@ define( function( require ) {
       itemsPerPage: 1,
       spacing: CAROUSEL_ITEM_SPACING, // Determines the vertical margins
       margin: 15,
-      stepper: 'timer',
 
       // Expand the touch area above the up button and below the down button
       buttonTouchAreaYDilation: 8,
