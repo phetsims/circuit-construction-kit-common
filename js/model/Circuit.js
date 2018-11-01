@@ -26,18 +26,18 @@ define( function( require ) {
   var ModifiedNodalAnalysisCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuit' );
   var ModifiedNodalAnalysisCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuitElement' );
   var NumberProperty = require( 'AXON/NumberProperty' );
+  var ObjectIO = require( 'TANDEM/types/ObjectIO' );
   var ObservableArray = require( 'AXON/ObservableArray' );
   var Property = require( 'AXON/Property' );
+  var PropertyIO = require( 'AXON/PropertyIO' );
   var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   var SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
+  var StringIO = require( 'TANDEM/types/StringIO' );
   var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
   var Tandem = require( 'TANDEM/Tandem' );
-  var PropertyIO = require( 'AXON/PropertyIO' );
   var Vector2 = require( 'DOT/Vector2' );
   var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
   var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
-  var ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  var StringIO = require( 'TANDEM/types/StringIO' );
 
   // constants
   var SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates

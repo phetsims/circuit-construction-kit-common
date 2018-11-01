@@ -10,9 +10,9 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var Easing = require( 'TWIXT/Easing' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
 
   // constants
   var ZOOM_ANIMATION_TIME = 0.35; // seconds

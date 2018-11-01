@@ -15,8 +15,8 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var NumberProperty = require( 'AXON/NumberProperty' );
   var Property = require( 'AXON/Property' );
-  var Tandem = require( 'TANDEM/Tandem' );
   var PropertyIO = require( 'AXON/PropertyIO' );
+  var Tandem = require( 'TANDEM/Tandem' );
   var Vector2IO = require( 'DOT/Vector2IO' );
 
   // Index counter for debugging

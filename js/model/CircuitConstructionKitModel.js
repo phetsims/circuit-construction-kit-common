@@ -16,18 +16,18 @@ define( function( require ) {
   var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Circuit' );
   var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
-  var ZoomAnimation = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ZoomAnimation' );
   var Emitter = require( 'AXON/Emitter' );
+  var EmitterIO = require( 'AXON/EmitterIO' );
   var inherit = require( 'PHET_CORE/inherit' );
   var InteractionMode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/InteractionMode' );
   var NumberProperty = require( 'AXON/NumberProperty' );
   var Property = require( 'AXON/Property' );
   var PropertyIO = require( 'AXON/PropertyIO' );
+  var StringIO = require( 'TANDEM/types/StringIO' );
   var Util = require( 'DOT/Util' );
   var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Voltmeter' );
+  var ZoomAnimation = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ZoomAnimation' );
   var ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ZoomControlPanel' );
-  var EmitterIO = require( 'AXON/EmitterIO' );
-  var StringIO = require( 'TANDEM/types/StringIO' );
 
   /**
    * @param {Tandem} tandem
