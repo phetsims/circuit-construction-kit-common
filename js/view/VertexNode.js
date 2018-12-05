@@ -263,14 +263,15 @@ define( function( require ) {
      * @private
      */
     keydownListener: function( event ) {
-      var code = event.keyCode || event.which;
+      var domEvent = event.domEvent;
+      var code = domEvent.keyCode || domEvent.which;
 
       // on delete or backspace, the focused Vertex should be cut
       if ( code === KeyboardUtil.KEY_DELETE || code === KeyboardUtil.KEY_BACKSPACE ) {
 
         // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
         // https://github.com/phetsims/circuit-construction-kit-common/issues/307
-        event.preventDefault();
+        domEvent.preventDefault();
         this.cutButton.enabled && this.circuit.cutVertex( this.circuit.getSelectedVertex() );
       }
     },
