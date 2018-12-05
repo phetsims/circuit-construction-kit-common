@@ -116,7 +116,7 @@ define( function( require ) {
     this.keyListener = {
       keydown: this.keydownListener.bind( this )
     };
-    this.addAccessibleInputListener( this.keyListener );
+    this.addInputListener( this.keyListener );
 
     // @private {function} Shows up as red when disconnected or black when connected.  When unattachable, the dotted line disappears (black
     // box study)
@@ -246,7 +246,7 @@ define( function( require ) {
       vertex.attachableProperty.unlink( this.updateStrokeListener );
       circuit.circuitChangedEmitter.removeListener( this.updateStrokeListener );
 
-      this.removeAccessibleInputListener( this.keyListener );
+      this.removeInputListener( this.keyListener );
 
       // Remove the global listener if it was still enabled
       this.clearClickListeners();

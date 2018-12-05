@@ -65,7 +65,7 @@ define( function( require ) {
         }
       }
     };
-    this.addAccessibleInputListener( keyListener );
+    this.addInputListener( keyListener );
 
     // @private {function[]}
     this.disposeActions = [];
@@ -85,7 +85,7 @@ define( function( require ) {
     this.disposeCircuitElementNode = function() {
 
       // remove the keyboard listener
-      self.removeAccessibleInputListener( keyListener );
+      self.removeInputListener( keyListener );
 
       self.disposeActions.forEach( function( element ) {
         element();
