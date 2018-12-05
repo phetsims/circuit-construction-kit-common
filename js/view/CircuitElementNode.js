@@ -49,14 +49,14 @@ define( function( require ) {
     // keyboard listener so that delete or backspace deletes the element - must be disposed
     var keyListener = {
       keydown: function( event ) {
-        var code = event.keyCode || event.which;
+        var code = event.domEvent.keyCode;
 
         // on delete or backspace, the focused circuit element should be deleted
         if ( code === KeyboardUtil.KEY_DELETE || code === KeyboardUtil.KEY_BACKSPACE ) {
 
           // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
           // https://github.com/phetsims/circuit-construction-kit-common/issues/307
-          event.preventDefault();
+          event.domEvent.preventDefault();
 
           // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
           if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
