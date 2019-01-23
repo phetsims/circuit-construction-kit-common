@@ -681,7 +681,7 @@ define( function( require ) {
       var self = this;
 
       var batteries = this.circuitElements.getArray().filter( function( b ) { return b instanceof Battery; } );
-      var resistors = this.circuitElements.getArray().filter( function( b ) { return !(b instanceof Battery); } );
+      var resistors = this.circuitElements.getArray().filter( function( b ) { return !( b instanceof Battery ); } );
 
       // introduce a synthetic vertex for each battery to model internal resistance
       var resistorAdapters = resistors.map( function( circuitElement ) {
@@ -1006,7 +1006,7 @@ define( function( require ) {
         }
 
         // (3) a vertex must be within SNAP_RADIUS (screen coordinates) of the other vertex
-        if ( !(vertex.unsnappedPositionProperty.get().distance( candidateVertex.positionProperty.get() ) < SNAP_RADIUS) ) {
+        if ( !( vertex.unsnappedPositionProperty.get().distance( candidateVertex.positionProperty.get() ) < SNAP_RADIUS ) ) {
           return false;
         }
 
@@ -1162,17 +1162,17 @@ define( function( require ) {
         var firstChargePosition = offset;
         var lengthForCharges = lastChargePosition - firstChargePosition;
 
-        // Math.round leads to charges too far apart when N=2
+        // Util.roundSymmetric leads to charges too far apart when N=2
         var numberOfCharges = Math.ceil( lengthForCharges / CCKCConstants.CHARGE_SEPARATION );
 
         // compute distance between adjacent charges
-        var spacing = lengthForCharges / (numberOfCharges - 1);
+        var spacing = lengthForCharges / ( numberOfCharges - 1 );
 
         for ( var i = 0; i < numberOfCharges; i++ ) {
 
           // If there is a single particle, show it in the middle of the component, otherwise space equally
           var chargePosition = numberOfCharges === 1 ?
-                               (firstChargePosition + lastChargePosition) / 2 :
+                               ( firstChargePosition + lastChargePosition ) / 2 :
                                i * spacing + offset;
 
           var desiredCharge = this.currentTypeProperty.get() === CurrentType.ELECTRONS ? -1 : +1;
