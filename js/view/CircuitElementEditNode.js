@@ -42,12 +42,11 @@ define( function( require ) {
     valueProperty.lazyLink( valuePropertyListener );
 
     // Create the controls
-    var numberControl = new NumberControl( title, valueProperty, circuitElement.editableRange, _.extend( {
+    var numberControl = new NumberControl( title, valueProperty, circuitElement.editableRange, {
       titleMaxWidth: NUMBER_CONTROL_ELEMENT_MAX_WIDTH,
       valueMaxWidth: NUMBER_CONTROL_ELEMENT_MAX_WIDTH,
       tandem: tandem.createTandem( 'numberControl' ),
-      valuePattern: valuePattern
-    }, {
+      valuePattern: valuePattern,
 
       // Prevent overlap with the navigation bar
       thumbTouchAreaYDilation: 5,
@@ -56,7 +55,7 @@ define( function( require ) {
       valueFont: FONT,
       decimalPlaces: circuitElement.numberOfDecimalPlaces,
       delta: circuitElement.editorDelta
-    } ) );
+    } );
 
     var children = [];
 
