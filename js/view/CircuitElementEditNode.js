@@ -43,18 +43,27 @@ define( function( require ) {
 
     // Create the controls
     var numberControl = new NumberControl( title, valueProperty, circuitElement.editableRange, {
-      titleMaxWidth: NUMBER_CONTROL_ELEMENT_MAX_WIDTH,
-      valueMaxWidth: NUMBER_CONTROL_ELEMENT_MAX_WIDTH,
-      tandem: tandem.createTandem( 'numberControl' ),
-      valuePattern: valuePattern,
+
+      delta: circuitElement.editorDelta,
+
+      // subcomponent options
+      titleNodeOptions: {
+        maxWidth: NUMBER_CONTROL_ELEMENT_MAX_WIDTH,
+        font: FONT
+      },
+      numberDisplayOptions: {
+        maxWidth: NUMBER_CONTROL_ELEMENT_MAX_WIDTH,
+        valuePattern: valuePattern,
+        font: FONT,
+        decimalPlaces: circuitElement.numberOfDecimalPlaces
+      },
 
       // Prevent overlap with the navigation bar
-      thumbTouchAreaYDilation: 5,
+      sliderOptions: {
+        thumbTouchAreaYDilation: 5
+      },
 
-      titleFont: FONT,
-      valueFont: FONT,
-      decimalPlaces: circuitElement.numberOfDecimalPlaces,
-      delta: circuitElement.editorDelta
+      tandem: tandem.createTandem( 'numberControl' )
     } );
 
     var children = [];
