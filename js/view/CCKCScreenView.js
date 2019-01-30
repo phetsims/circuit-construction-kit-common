@@ -255,7 +255,7 @@ define( function( require ) {
       // Float the resetAllButton to the bottom right
       options.showResetAllButton && resetAllButton.mutate( {
         right: visibleBounds.right - HORIZONTAL_MARGIN,
-        bottom: visibleBounds.bottom - VERTICAL_MARGIN
+        bottom: visibleBounds.bottom - HORIZONTAL_MARGIN
       } );
 
       chargeSpeedThrottlingReadoutNode.mutate( {
