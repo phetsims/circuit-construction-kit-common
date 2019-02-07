@@ -100,6 +100,7 @@ define( function( require ) {
           editNode = new CircuitElementEditNode(
             resistanceString,
 
+            //TODO #444 replace '{0}' with SunConstants.VALUE_NAMED_PLACEHOLDER
             // Adapter to take from {{named}} to {0} for usage in common code
             StringUtils.fillIn( resistanceOhmsValuePatternString, {
               resistance: '{0}'
@@ -121,6 +122,7 @@ define( function( require ) {
           editNode = new CircuitElementEditNode(
             voltageString,
 
+            //TODO #444 replace '{0}' with SunConstants.VALUE_NAMED_PLACEHOLDER
             // Adapter to take from {{named}} to {0} for usage in common code
             StringUtils.fillIn( voltageVoltsValuePatternString, {
               voltage: '{0}'
