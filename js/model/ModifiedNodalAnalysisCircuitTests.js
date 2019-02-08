@@ -238,4 +238,46 @@ define( function( require ) {
     const solution = circuit.solve();
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
   } );
+
+  // const testVRCCircuit = ( v, r, c, assert ) => {
+  //   const resistor = new ModifiedNodalAnalysisCircuitElement( 1, 2, null, r );
+  //   const battery = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, v );
+  //   const capacitor = new DynamicCircuit.DynamicCapacitor( new DynamicCircuit.Capacitor( 2, 0, c ), new DynamicCircuit.DynamicElementState( 0.0, v / r ) );
+  //   let circuit = new DynamicCircuit( [], [ resistor ], [], [ battery ], [ capacitor ], [], getSolver() );
+  //
+  //   const dt = 1E-4;
+  //   console.log( 'voltage\n' );
+  //   for ( let i = 0; i < 1000; i++ ) {//takes 0.3 sec on my machine
+  //     const t = i * dt;
+  //
+  //     const companionSolution = circuit.solveItWithSubdivisions( dt );
+  //     const voltage = companionSolution.getVoltage( resistor );
+  //     const desiredVoltageAtTPlusDT = -v * Math.exp( -( t + dt ) / r / c );
+  //     const error = Math.abs( voltage - desiredVoltageAtTPlusDT );
+  //     console.log( -voltage );
+  //     assert.ok( error < 1E-6 ); //sample run indicates largest error is 1.5328E-7, is this acceptable?  See TestRCCircuit
+  //     circuit = circuit.updateWithSubdivisions( dt );
+  //   }
+  // };
+  //
+  // //this is for comparison with TestTheveninCapacitorRC
+  // QUnit.test( 'testVRC991Eminus2', assert => {
+  //   testVRCCircuit( 9, 9, 1E-2, assert );
+  // } );
+  //
+  // QUnit.test( 'test RC Circuit should have voltage exponentially decay with T RC for v 5 r 10 c 1E minus2', assert => {
+  //   testVRCCircuit( 5.0, 10.0, 1.0E-2, assert );
+  // } );
+  //
+  // QUnit.test( 'test RC Circuit should have voltage exponentially decay with T RC for v 10 r 10 c 1E minus2', assert => {
+  //   testVRCCircuit( 10.0, 10.0, 1.0E-2, assert );
+  // } );
+  //
+  // QUnit.test( 'test RC Circuit should have voltage exponentially decay with T RC for v 3  r 7  c 1Eminus1', assert => {
+  //   testVRCCircuit( 3, 7, 1E-1, assert );
+  // } );
+  //
+  // QUnit.test( 'test RC Circuit should have voltage exponentially decay with T RC for v 3  r 7  c 100', assert => {
+  //   testVRCCircuit( 3, 7, 100, assert );
+  // } );
 } );
