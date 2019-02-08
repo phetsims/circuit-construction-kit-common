@@ -7,7 +7,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Denzell Barnett (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -43,9 +43,7 @@ define( function( require ) {
      * @param {Tandem} tandem
      * @returns {Text}
      */
-    const createLabel = function( string, tandem ) {
-      return new Text( string, { fontSize: 12, tandem: tandem } );
-    };
+    const createLabel = ( string, tandem ) => new Text( string, { fontSize: 12, tandem: tandem } );
 
     const range = CCKCConstants.BATTERY_RESISTANCE_RANGE;
     const midpoint = ( range.max + range.min ) / 2;
@@ -55,7 +53,7 @@ define( function( require ) {
       majorTickLength: CCKCConstants.MAJOR_TICK_LENGTH,
 
       // Snap to the nearest whole number.
-      constrainValue: function( value ) { return Util.roundSymmetric( value ); },
+      constrainValue: value => Util.roundSymmetric( value ),
       tandem: tandem.createTandem( 'slider' )
     } );
     slider.addMajorTick( range.min, createLabel( Util.toFixed( range.min, 0 ), tandem.createTandem( 'minLabel' ) ) );
@@ -83,7 +81,7 @@ define( function( require ) {
     let textRectangle = null;
 
     // number to be displayed
-    const updateText = function( value ) {
+    const updateText = value => {
       readoutText.setText( StringUtils.fillIn( resistanceOhmsString, { resistance: Util.toFixed( value, 1 ) } ) );
 
       // Once there is a textRectangle, stay right-justified

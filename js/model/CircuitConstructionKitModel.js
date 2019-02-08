@@ -6,7 +6,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -35,8 +35,6 @@ define( function( require ) {
    * @constructor
    */
   function CircuitConstructionKitModel( tandem, options ) {
-
-    const self = this;
 
     options = _.extend( {
 
@@ -85,11 +83,11 @@ define( function( require ) {
       tandem: tandem.createTandem( 'currentZoomProperty' )
     } );
 
-    this.selectedZoomProperty.lazyLink( function( newValue ) {
-      self.zoomAnimation = new ZoomAnimation( self.currentZoomProperty.get(), newValue, function( delta ) {
-        const proposedZoomValue = self.currentZoomProperty.value + delta;
+    this.selectedZoomProperty.lazyLink( newValue => {
+      this.zoomAnimation = new ZoomAnimation( this.currentZoomProperty.get(), newValue, delta => {
+        const proposedZoomValue = this.currentZoomProperty.value + delta;
         const boundedValue = Util.clamp( proposedZoomValue, ZoomControlPanel.ZOOMED_OUT, ZoomControlPanel.ZOOMED_IN );
-        self.currentZoomProperty.value = boundedValue;
+        this.currentZoomProperty.value = boundedValue;
       } );
     } );
 
@@ -129,9 +127,9 @@ define( function( require ) {
     if ( CCKCQueryParameters.showDepictValuesToggleButton ) {
 
       // TODO: (black-box-study) fix this
-      const pause = function() {
+      const pause = () => {
         if ( !modeChanging ) {
-          self.isValueDepictionEnabledProperty.value = false;
+          this.isValueDepictionEnabledProperty.value = false;
         }
       };
       this.circuit.vertices.lengthProperty.lazyLink( pause );
@@ -148,36 +146,32 @@ define( function( require ) {
         phetioType: EmitterIO( [ { name: 'circuitJSON', type: StringIO } ] )
       } );
 
-      const emitCircuitChanged = function() {
+      const emitCircuitChanged = () => {
 
         // Wait until all vertices have been added so we can get their indices without erroring out.
         // TODO (phet-io): investigate coarse-grained messages (vertex cut, item added, etc) instead of vertex added,
         // which could lead to inconsistent state. On the other hand, why is CircuitElement added before vertex?  That
         // could solve it
-        setTimeout( function() {
-          circuitChangedEmitter.emit1( JSON.stringify( self.circuit.toStateObject() ) );
-        }, 0 );
+        setTimeout( () => circuitChangedEmitter.emit1( JSON.stringify( this.circuit.toStateObject() ) ), 0 );
       };
       this.circuit.vertices.lengthProperty.link( emitCircuitChanged );
       this.circuit.componentEditedEmitter.addListener( emitCircuitChanged );
     }
 
     // When the simulation pauses and resumes, clear the time scaling factor (so it doesn't show a stale value)
-    this.isValueDepictionEnabledProperty.link( function() {
-      self.circuit.chargeAnimator.timeScaleRunningAverage.clear();
-    } );
+    this.isValueDepictionEnabledProperty.link( () => this.circuit.chargeAnimator.timeScaleRunningAverage.clear() );
 
     // When the view changes between schematic/lifelike, update the electron paths (because the LightBulb has a different
     // charge path depending on the view
-    this.viewTypeProperty.link( function() {
+    this.viewTypeProperty.link( () => {
 
       // First update the length of the light bulbs
-      self.circuit.circuitElements.forEach( function( circuitElement ) {
+      this.circuit.circuitElements.forEach( circuitElement => {
         circuitElement.updatePathLength && circuitElement.updatePathLength();
       } );
 
       // Then position the electrons in the new paths
-      self.circuit.relayoutAllCharges();
+      this.circuit.relayoutAllCharges();
     } );
 
     // @public - true when the user is holding down the reveal button and the answer (inside the black box) is showing

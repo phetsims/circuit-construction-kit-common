@@ -5,7 +5,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -36,9 +36,7 @@ define( function( require ) {
    * @param {number} b - another number
    * @returns {boolean} true if the numbers are approximately equal
    */
-  const NUMBER_APPROXIMATELY_EQUALS = function( a, b ) {
-    return Math.abs( a - b ) < 1E-6;
-  };
+  const NUMBER_APPROXIMATELY_EQUALS = ( a, b ) => Math.abs( a - b ) < 1E-6;
 
   return inherit( Object, ModifiedNodalAnalysisSolution, {
 

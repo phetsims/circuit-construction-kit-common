@@ -5,7 +5,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -59,9 +59,7 @@ define( function( require ) {
         ]
       } ),
 
-      listener: function() {
-        circuit.flip( battery );
-      },
+      listener: () => circuit.flip( battery ),
       minXMargin: 10,
       minYMargin: 10,
       tandem: tandem.createTandem( 'RotateBatteryButton' )

@@ -6,7 +6,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -23,11 +23,10 @@ define( function( require ) {
   /**
    * @param {Property.<number>} timeScaleProperty - the fractional rate of time passage (1.0 = full speed)
    * @param {Property.<boolean>} showCurrentProperty - true if currents are visible
-   * @param {Property.<boolean>} isVaolueDepictionEnabledProperty - true if the explore screen is running
+   * @param {Property.<boolean>} isValueDepictionEnabledProperty - true if the explore screen is running
    * @constructor
    */
   function ChargeSpeedThrottlingReadoutNode( timeScaleProperty, showCurrentProperty, isValueDepictionEnabledProperty ) {
-    const self = this;
     Text.call( this, animationSpeedLimitReachedString, {
 
       // Reduce the width of the animation speed limit reached so it doesn't overlap controls
@@ -37,14 +36,14 @@ define( function( require ) {
     } );
 
     Property.multilink( [ timeScaleProperty, showCurrentProperty, isValueDepictionEnabledProperty ],
-      function( timeScale, showCurrent, isValueDepictionEnabled ) {
+      ( timeScale, showCurrent, isValueDepictionEnabled ) => {
         const percent = timeScale * 100;
         const isThrottled = percent < 99.5;
         const fixed = timeScale < 0.01 ? '< 1' : Util.toFixed( percent, 0 );
-        self.setText( StringUtils.fillIn( animationSpeedLimitReachedString, { percent: fixed } ) );
+        this.setText( StringUtils.fillIn( animationSpeedLimitReachedString, { percent: fixed } ) );
 
         // Only show the throttling message if the speed is less than 100% and charges are visible
-        self.visible = isThrottled && showCurrent && isValueDepictionEnabled;
+        this.visible = isThrottled && showCurrent && isValueDepictionEnabled;
       } );
   }
 

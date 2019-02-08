@@ -5,7 +5,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -13,7 +13,7 @@ define( function( require ) {
 
   QUnit.module( 'ResistorColors' );
 
-  QUnit.test( 'test resistor colors', function( assert ) {
+  QUnit.test( 'test resistor colors', assert => {
     assert.deepEqual( ResistorColors.getColorNames( 0 ), [ 'black' ], '0 resistance should have one black band' );
     assert.deepEqual( ResistorColors.getColorNames( 1 ), [ 'brown', 'black', 'gold', 'gold' ], '1 ohm resistor' );
     assert.deepEqual( ResistorColors.getColorNames( 10 ), [ 'brown', 'black', 'black', 'gold' ], '10 ohm resistor' );

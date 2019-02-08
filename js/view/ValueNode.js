@@ -5,7 +5,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -44,8 +44,6 @@ define( function( require ) {
    * @constructor
    */
   function ValueNode( circuitElement, showValuesProperty, viewTypeProperty, tandem ) {
-    const self = this;
-
     const disposeActions = [];
 
     let contentNode = null;
@@ -53,7 +51,7 @@ define( function( require ) {
     if ( circuitElement instanceof Battery ) {
 
       const voltageText = new Text( '', _.extend( { tandem: tandem.createTandem( 'voltageText' ) }, { font: FONT } ) );
-      const voltageListener = function( voltage ) {
+      const voltageListener = voltage => {
 
         voltageText.text = StringUtils.fillIn( voltageUnitsString, {
           voltage: Util.toFixed( voltage, circuitElement.numberOfDecimalPlaces )
@@ -71,7 +69,7 @@ define( function( require ) {
       const resistanceNode = new Text( '', _.extend( {
         tandem: tandem.createTandem( 'resistanceText' )
       }, { font: FONT } ) );
-      const internalResistanceListener = function( internalResistance, lastInternalResistance ) {
+      const internalResistanceListener = ( internalResistance, lastInternalResistance ) => {
         resistanceNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
           resistance: Util.toFixed( internalResistance, 1 )
         } );
@@ -89,7 +87,7 @@ define( function( require ) {
       };
       circuitElement.internalResistanceProperty.link( internalResistanceListener );
 
-      disposeActions.push( function() {
+      disposeActions.push( () => {
         circuitElement.voltageProperty.unlink( voltageListener );
         circuitElement.internalResistanceProperty.unlink( internalResistanceListener );
       } );
@@ -100,16 +98,14 @@ define( function( require ) {
       contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'resistanceText' ) }, { font: FONT } ) );
 
       // Items like the hand and dog and high resistance resistor shouldn't show ".0"
-      const linkResistance = function( resistance ) {
+      const linkResistance = resistance => {
         contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
           resistance: Util.toFixed( resistance, circuitElement.numberOfDecimalPlaces )
         } );
         updatePosition && updatePosition();
       };
       circuitElement.resistanceProperty.link( linkResistance );
-      disposeActions.push( function() {
-        circuitElement.resistanceProperty.unlink( linkResistance );
-      } );
+      disposeActions.push( () => circuitElement.resistanceProperty.unlink( linkResistance ) );
       contentNode.maxWidth = 100;
     }
     else if ( circuitElement instanceof Switch ) {
@@ -117,7 +113,7 @@ define( function( require ) {
       // Make it easier to read the infinity symbol, see https://github.com/phetsims/circuit-construction-kit-dc/issues/135
       contentNode = new RichText( '', { tandem: tandem.createTandem( 'switchText' ), font: FONT } );
 
-      const updateResistance = function( resistance ) {
+      const updateResistance = resistance => {
         contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
 
           // Using a serif font makes the infinity symbol look less lopsided
@@ -129,9 +125,7 @@ define( function( require ) {
         updatePosition && updatePosition();
       };
       circuitElement.resistanceProperty.link( updateResistance );
-      disposeActions.push( function() {
-        circuitElement.resistanceProperty.unlink( updateResistance );
-      } );
+      disposeActions.push( () => circuitElement.resistanceProperty.unlink( updateResistance ) );
       contentNode.maxWidth = 100;
     }
     else {
@@ -151,7 +145,7 @@ define( function( require ) {
 
     const matrix = Matrix3.identity();
 
-    updatePosition = function() {
+    updatePosition = () => {
 
       // Only update position when the value is displayed
       if ( showValuesProperty.get() ) {
@@ -163,7 +157,7 @@ define( function( require ) {
         // The label partially overlaps the component to make it clear which label goes with which component
         circuitElement.updateMatrixForPoint( circuitElement.chargePathLength * distance, matrix );
         const delta = Vector2.createPolar( VERTICAL_OFFSET, matrix.rotation + 3 * Math.PI / 2 );
-        self.center = matrix.translation.plus( delta ); // above light bulb
+        this.center = matrix.translation.plus( delta ); // above light bulb
       }
     };
 
@@ -173,13 +167,11 @@ define( function( require ) {
     viewTypeProperty.link( updatePosition );
 
     // @private {function}
-    this.disposeValueNode = function() {
+    this.disposeValueNode = () => {
       circuitElement.vertexMovedEmitter.removeListener( updatePosition );
       showValuesProperty.unlink( updatePosition );
       viewTypeProperty.unlink( updatePosition );
-      disposeActions.forEach( function( disposeAction ) {
-        disposeAction();
-      } );
+      disposeActions.forEach( disposeAction => disposeAction() );
     };
   }
 

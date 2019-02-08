@@ -6,7 +6,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -35,7 +35,7 @@ define( function( require ) {
   const voltageVoltsValuePatternString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageVoltsValuePattern' );
 
   // constants
-  const GET_LAYOUT_POSITION = function( visibleBounds ) {
+  const GET_LAYOUT_POSITION = visibleBounds => {
     return {
       centerX: visibleBounds.centerX,
       bottom: visibleBounds.bottom - CCKCConstants.VERTICAL_MARGIN
@@ -51,7 +51,6 @@ define( function( require ) {
    */
   function CircuitElementEditContainerNode( circuit, visibleBoundsProperty, modeProperty, tandem ) {
     const groupTandem = tandem.createGroupTandem( 'circuitElementEditNode' );
-    const self = this;
     Node.call( this );
 
     const tapInstructionTextNode = new Text( tapCircuitElementToEditString, {
@@ -61,12 +60,12 @@ define( function( require ) {
 
     // Only show the instructions if there is a circuit element in the play area, so students don't try to tap
     // something in the toolbox.
-    const updateInstructionTextVisible = function() {
+    const updateInstructionTextVisible = () => {
 
       // Only fixed length circuit elements are editable, even though wires can be deleted
-      const fixedLengthElements = circuit.circuitElements.getArray().filter( function( circuitElement ) {
-        return circuitElement instanceof FixedCircuitElement && circuitElement.interactiveProperty.get();
-      } );
+      const fixedLengthElements = circuit.circuitElements.getArray().filter( circuitElement =>
+        circuitElement instanceof FixedCircuitElement && circuitElement.interactiveProperty.get()
+      );
       tapInstructionTextNode.visible = fixedLengthElements.length > 0;
     };
 
@@ -76,16 +75,16 @@ define( function( require ) {
     circuit.vertices.addItemRemovedListener( updateInstructionTextVisible );
     modeProperty.link( updateInstructionTextVisible );
 
-    const updatePosition = function() {
+    const updatePosition = () => {
 
       // Layout, but only if we have something to display (otherwise bounds fail out)
-      self.bounds.isValid() && self.mutate( GET_LAYOUT_POSITION( visibleBoundsProperty.get() ) );
+      this.bounds.isValid() && this.mutate( GET_LAYOUT_POSITION( visibleBoundsProperty.get() ) );
     };
 
     // When the selected element changes, update the displayed controls
     let editNode = null;
-    circuit.selectedCircuitElementProperty.link( function( selectedCircuitElement ) {
-      editNode && self.removeChild( editNode );
+    circuit.selectedCircuitElementProperty.link( selectedCircuitElement => {
+      editNode && this.removeChild( editNode );
       ( editNode && editNode !== tapInstructionTextNode ) && editNode.dispose();
       editNode = null;
 
@@ -148,18 +147,18 @@ define( function( require ) {
         editNode = tapInstructionTextNode;
       }
       if ( editNode !== null ) {
-        self.addChild( editNode );
+        this.addChild( editNode );
 
         if ( editNode === tapInstructionTextNode ) {
-          self.mouseArea = null;
-          self.touchArea = null;
+          this.mouseArea = null;
+          this.touchArea = null;
         }
         else {
 
           // Clicking nearby (but not directly on) a tweaker button or slider shouldn't dismiss the edit panel,
           // see https://github.com/phetsims/circuit-construction-kit-dc/issues/90
-          self.mouseArea = self.localBounds.dilatedXY( 20, CCKCConstants.VERTICAL_MARGIN );
-          self.touchArea = self.localBounds.dilatedXY( 20, CCKCConstants.VERTICAL_MARGIN );
+          this.mouseArea = this.localBounds.dilatedXY( 20, CCKCConstants.VERTICAL_MARGIN );
+          this.touchArea = this.localBounds.dilatedXY( 20, CCKCConstants.VERTICAL_MARGIN );
         }
       }
       updatePosition();

@@ -6,7 +6,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -59,7 +59,6 @@ define( function( require ) {
    * @constructor
    */
   function CCKCScreenView( model, circuitElementToolNodes, tandem, options ) {
-    const self = this;
 
     // @public (read-only) {CircuitConstructionKitModel}
     this.model = model;
@@ -98,8 +97,8 @@ define( function( require ) {
       showResultsProperty: model.isValueDepictionEnabledProperty,
       visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty
     } );
-    model.voltmeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
-      if ( bodyNodeGlobalBounds.intersectsBounds( self.sensorToolbox.globalBounds ) ) {
+    model.voltmeter.droppedEmitter.addListener( bodyNodeGlobalBounds => {
+      if ( bodyNodeGlobalBounds.intersectsBounds( this.sensorToolbox.globalBounds ) ) {
         model.voltmeter.visibleProperty.set( false );
       }
     } );
@@ -109,8 +108,8 @@ define( function( require ) {
       visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty,
       blackBoxStudy: options.blackBoxStudy
     } );
-    model.ammeter.droppedEmitter.addListener( function( bodyNodeGlobalBounds ) {
-      if ( bodyNodeGlobalBounds.intersectsBounds( self.sensorToolbox.globalBounds ) ) {
+    model.ammeter.droppedEmitter.addListener( bodyNodeGlobalBounds => {
+      if ( bodyNodeGlobalBounds.intersectsBounds( this.sensorToolbox.globalBounds ) ) {
         model.ammeter.visibleProperty.set( false );
       }
     } );
@@ -166,9 +165,9 @@ define( function( require ) {
     if ( options.showResetAllButton ) {
       resetAllButton = new ResetAllButton( {
         tandem: tandem.createTandem( 'resetAllButton' ),
-        listener: function() {
+        listener: () => {
           model.reset();
-          self.reset();
+          this.reset();
         }
       } );
       this.addChild( resetAllButton );
@@ -230,7 +229,7 @@ define( function( require ) {
         baseColor: '#33ff44' // the default blue fades into the background too much
       } );
       this.addChild( playPauseButton );
-      this.visibleBoundsProperty.link( function( visibleBounds ) {
+      this.visibleBoundsProperty.link( visibleBounds => {
 
         // Float the playPauseButton to the bottom left
         playPauseButton.mutate( {
@@ -247,11 +246,11 @@ define( function( require ) {
     this.addChild( zoomControlPanel );
 
 
-    this.visibleBoundsProperty.link( function( visibleBounds ) {
+    this.visibleBoundsProperty.link( visibleBounds => {
 
-      self.circuitElementToolbox.left = visibleBounds.left + VERTICAL_MARGIN +
-                                        ( self.circuitElementToolbox.carousel ? 0 : 12 );
-      self.circuitElementToolbox.top = visibleBounds.top + VERTICAL_MARGIN;
+      this.circuitElementToolbox.left = visibleBounds.left + VERTICAL_MARGIN +
+                                        ( this.circuitElementToolbox.carousel ? 0 : 12 );
+      this.circuitElementToolbox.top = visibleBounds.top + VERTICAL_MARGIN;
 
       // Float the resetAllButton to the bottom right
       options.showResetAllButton && resetAllButton.mutate( {
@@ -269,27 +268,27 @@ define( function( require ) {
     } );
 
     // Center the circuit node so that zooms will remain centered.
-    this.circuitLayerNode.setTranslation( self.layoutBounds.centerX, self.layoutBounds.centerY );
-    this.circuitLayerNodeBackLayer.setTranslation( self.layoutBounds.centerX, self.layoutBounds.centerY );
+    this.circuitLayerNode.setTranslation( this.layoutBounds.centerX, this.layoutBounds.centerY );
+    this.circuitLayerNodeBackLayer.setTranslation( this.layoutBounds.centerX, this.layoutBounds.centerY );
 
     // Continuously zoom in and out as the current zoom interpolates, and update when the visible bounds change
-    Property.multilink( [ model.currentZoomProperty, this.visibleBoundsProperty ], function( currentZoom, visibleBounds ) {
-      self.circuitLayerNode.setScaleMagnitude( currentZoom );
-      self.circuitLayerNodeBackLayer.setScaleMagnitude( currentZoom );
-      self.circuitLayerNode.updateTransform( visibleBounds );
+    Property.multilink( [ model.currentZoomProperty, this.visibleBoundsProperty ], ( currentZoom, visibleBounds ) => {
+      this.circuitLayerNode.setScaleMagnitude( currentZoom );
+      this.circuitLayerNodeBackLayer.setScaleMagnitude( currentZoom );
+      this.circuitLayerNode.updateTransform( visibleBounds );
     } );
 
     // When a Vertex is dropped and the CircuitElement is over the CircuitElementToolbox, the CircuitElement will go back
     // into the toolbox
-    this.model.circuit.vertexDroppedEmitter.addListener( function( vertex ) {
+    this.model.circuit.vertexDroppedEmitter.addListener( vertex => {
 
-      const neighbors = self.model.circuit.getNeighborCircuitElements( vertex );
+      const neighbors = this.model.circuit.getNeighborCircuitElements( vertex );
       if ( neighbors.length === 1 ) {
         const circuitElement = neighbors[ 0 ];
-        const circuitElementNode = self.circuitLayerNode.getCircuitElementNode( circuitElement );
+        const circuitElementNode = this.circuitLayerNode.getCircuitElementNode( circuitElement );
 
-        if ( self.canNodeDropInToolbox( circuitElementNode ) ) {
-          self.model.circuit.circuitElements.remove( circuitElement );
+        if ( this.canNodeDropInToolbox( circuitElementNode ) ) {
+          this.model.circuit.circuitElements.remove( circuitElement );
         }
       }
     } );

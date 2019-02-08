@@ -6,7 +6,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -187,7 +187,7 @@ define( function( require ) {
       // See https://github.com/phetsims/circuit-construction-kit-common/issues/413
       // if ( assert && this.isFixedCircuitElement && this.startPositionProperty.value.equals( this.endPositionProperty.value ) ) {
       //   assert && timer.setTimeout( function() {
-      //     assert && assert( !self.startPositionProperty.value.equals( self.endPositionProperty.value ), 'vertices cannot be in the same spot' );
+      //     assert && assert( !this.startPositionProperty.value.equals( this.endPositionProperty.value ), 'vertices cannot be in the same spot' );
       //   }, 0 );
       // }
       this.vertexMovedEmitter.emit();

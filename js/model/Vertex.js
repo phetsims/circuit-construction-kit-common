@@ -5,7 +5,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -40,7 +40,7 @@ define( function( require ) {
       blackBoxInterface: false, // Black box interface vertices cannot be dragged or deleted, but can be connected to
       insideTrueBlackBox: false, // Behavior differs in explore vs test mode
       tandem: Tandem.optional // Temporary vertices (for icons) should not be instrumented since they
-                                      // are more of an implementation detail rather than a feature
+      // are more of an implementation detail rather than a feature
     }, options );
 
     // @public (read-only)
@@ -51,16 +51,12 @@ define( function( require ) {
       tandem: options.tandem && options.tandem.createTandem( 'positionProperty' ),
       phetioType: PropertyIO( Vector2IO ),
       useDeepEquality: true,
-      isValidValue: assert && function( p ) {
-        return !isNaN( p.x ) && !isNaN( p.y );
-      }
+      isValidValue: assert && ( p => !isNaN( p.x ) && !isNaN( p.y ) )
     } );
 
     // @public {Property.<Vector2>} - where the vertex would be if it hadn't snapped to a proposed connection
     this.unsnappedPositionProperty = new Property( position, {
-      isValidValue: assert && function( p ) {
-        return !isNaN( p.x ) && !isNaN( p.y );
-      }
+      isValidValue: assert && ( p => !isNaN( p.x ) && !isNaN( p.y ) )
     } );
 
     // @public {NumberProperty} Relative voltage of the node, determined by Circuit.solve

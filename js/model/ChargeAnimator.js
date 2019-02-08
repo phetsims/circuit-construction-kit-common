@@ -6,7 +6,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -104,7 +104,7 @@ define( function( require ) {
       const maxPositionChange = maxSpeed * MAX_DT; // Use the max dt instead of the true dt to avoid fluctuations
 
       // Slow down the simulation if the fastest step distance exceeds the maximum allowed step
-      this.scale = (maxPositionChange >= MAX_POSITION_CHANGE) ? (MAX_POSITION_CHANGE / maxPositionChange) : 1;
+      this.scale = ( maxPositionChange >= MAX_POSITION_CHANGE ) ? ( MAX_POSITION_CHANGE / maxPositionChange ) : 1;
 
       // Average over scale values to smooth them out
       const averageScale = Util.clamp( this.timeScaleRunningAverage.updateRunningAverage( this.scale ), 0, 1 );
@@ -125,9 +125,7 @@ define( function( require ) {
       }
 
       // After computing the new charge positions (possibly across several deltas), trigger the views to update.
-      this.charges.forEach( function( charge ) {
-        charge.updatePositionAndAngle();
-      } );
+      this.charges.forEach( charge => charge.updatePositionAndAngle() );
     },
 
     /**
@@ -177,7 +175,7 @@ define( function( require ) {
         let desiredPosition = lower.distance + neighborSeparation / 2;
         const distanceFromDesiredPosition = Math.abs( desiredPosition - currentPosition );
         const sameDirectionAsCurrent = Util.sign( desiredPosition - currentPosition ) ===
-                                     Util.sign( charge.circuitElement.currentProperty.get() * charge.charge );
+                                       Util.sign( charge.circuitElement.currentProperty.get() * charge.charge );
 
         // never slow down or run the current backwards
         if ( sameDirectionAsCurrent ) {
@@ -231,7 +229,7 @@ define( function( require ) {
           // move to a new CircuitElement
           const overshoot = current < 0 ?
                             -newChargePosition :
-                            (newChargePosition - charge.circuitElement.chargePathLength);
+                            ( newChargePosition - charge.circuitElement.chargePathLength );
           const lessThanBeginningOfOldCircuitElement = newChargePosition < 0;
 
           assert && assert( !isNaN( overshoot ), 'overshoot should be a number' );

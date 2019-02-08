@@ -10,7 +10,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -72,7 +72,7 @@ define( function( require ) {
       if ( assert ) { // stripped out for builds
         return 'resistors:' + this.resistors.map( resistorToString ).join( ',' ) + ', ' +
                'batteries: ' + this.batteries.map( batteryToString ).join( ',' ) + ', ' +
-               'currentSources: ' + this.currentSources.map( function( c ) { return c.toString(); } )
+               'currentSources: ' + this.currentSources.map( c => c.toString() )
                  .join( ',' );
       }
     },
@@ -309,11 +309,11 @@ define( function( require ) {
     solve: function() {
       const equations = this.getEquations();
       const unknownCurrents = this.getUnknownCurrents();
-      const unknownVoltages = this.nodes.map( function( node ) { return new UnknownVoltage( node ); } );
+      const unknownVoltages = this.nodes.map( node => new UnknownVoltage( node ) );
       const unknowns = unknownCurrents.concat( unknownVoltages );
 
       // Gets the index of the specified unknown.
-      const getIndex = function( unknown ) {
+      const getIndex = unknown => {
         const index = getIndexByEquals( unknowns, unknown );
         assert && assert( index >= 0, 'unknown was missing' );
         return index;
@@ -330,9 +330,7 @@ define( function( require ) {
       phet.log && phet.log( equations.join( '\n' ) );
       phet.log && phet.log( 'A=\n' + A.toString() );
       phet.log && phet.log( 'z=\n' + z.toString() );
-      phet.log && phet.log( 'unknowns=\n' + unknowns.map( function( u ) {
-        return u.toTermName();
-      } ).join( '\n' ) );
+      phet.log && phet.log( 'unknowns=\n' + unknowns.map( u => u.toTermName() ).join( '\n' ) );
 
       // solve the linear matrix system for the unknowns
       let x;
@@ -361,9 +359,7 @@ define( function( require ) {
         unknownCurrent.element.currentSolution = x.get( getIndexByEquals( unknowns, unknownCurrent ), 0 );
       }
 
-      return new ModifiedNodalAnalysisSolution( voltageMap, unknownCurrents.map( function( unknownCurrent ) {
-        return unknownCurrent.element;
-      } ) );
+      return new ModifiedNodalAnalysisSolution( voltageMap, unknownCurrents.map( unknownCurrent => unknownCurrent.element ) );
     }
   } );
 
@@ -375,7 +371,7 @@ define( function( require ) {
    * @param {Object} element
    * @returns {number} the index or -1 if not found
    */
-  const getIndexByEquals = function( array, element ) {
+  const getIndexByEquals = ( array, element ) => {
     for ( let i = 0; i < array.length; i++ ) {
       if ( array[ i ].equals( element ) ) {
         return i;
@@ -389,18 +385,16 @@ define( function( require ) {
    * @param {Resistor} resistor
    * @returns {string}
    */
-  const resistorToString = function( resistor ) {
-    return 'node' + resistor.nodeId0 + ' -> node' + resistor.nodeId1 + ' @ ' + resistor.value + ' Ohms';
-  };
+  const resistorToString = resistor =>
+    'node' + resistor.nodeId0 + ' -> node' + resistor.nodeId1 + ' @ ' + resistor.value + ' Ohms';
 
   /**
    * For debugging, display a Battery as a string
    * @param {Battery} battery
    * @returns {string}
    */
-  const batteryToString = function( battery ) {
-    return 'node' + battery.nodeId0 + ' -> node' + battery.nodeId1 + ' @ ' + battery.value + ' Volts';
-  };
+  const batteryToString = battery =>
+    'node' + battery.nodeId0 + ' -> node' + battery.nodeId1 + ' @ ' + battery.value + ' Volts';
 
   /**
    * @param {number} coefficient - the multiplier for this term
@@ -425,8 +419,8 @@ define( function( require ) {
      */
     toTermString: function() {
       const prefix = this.coefficient === 1 ? '' :
-                   this.coefficient === -1 ? '-' :
-                   this.coefficient + '*';
+                     this.coefficient === -1 ? '-' :
+                     this.coefficient + '*';
       return prefix + this.variable.toTermName();
     }
   } );

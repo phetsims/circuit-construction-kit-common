@@ -5,7 +5,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -35,9 +35,7 @@ define( function( require ) {
   function CircuitElementEditNode( title, valuePattern, valueProperty, circuit, circuitElement, tandem ) {
 
     // When the user changes any parameter of any circuit element, signify it.
-    const valuePropertyListener = function() {
-      circuit.componentEditedEmitter.emit();
-    };
+    const valuePropertyListener = () => circuit.componentEditedEmitter.emit();
 
     valueProperty.lazyLink( valuePropertyListener );
 
@@ -80,7 +78,7 @@ define( function( require ) {
     }
 
     // @private {function} - for disposal
-    this.disposeCircuitElementEditNode = function() {
+    this.disposeCircuitElementEditNode = () => {
       numberControl.dispose();
       valueProperty.unlink( valuePropertyListener );
     };

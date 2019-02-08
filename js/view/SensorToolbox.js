@@ -6,7 +6,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -62,9 +62,8 @@ define( function( require ) {
      * @param {AmmeterNode|VoltmeterNode} meterNode
      * @returns {Object} a listener
      */
-    const createListener = function( meterModel, meterNode ) {
-
-      return SimpleDragHandler.createForwardingListener( function( event ) {
+    const createListener = ( meterModel, meterNode ) =>
+      SimpleDragHandler.createForwardingListener( event => {
         const viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point );
         meterModel.draggingProbesWithBodyProperty.set( true );
         meterModel.visibleProperty.set( true );
@@ -73,12 +72,11 @@ define( function( require ) {
       }, {
         allowTouchSnag: true
       } );
-    };
 
     // Draggable isIcon for the voltmeter
     const voltmeter = new Voltmeter( tandem.createTandem( 'voltmeterIconModel' ) );
     const voltmeterNodeIcon = new VoltmeterNode( voltmeter, null, null, tandem.createTandem( 'voltmeterNodeIcon' ), { isIcon: true } );
-    voltmeterNode.voltmeter.visibleProperty.link( function( visible ) { voltmeterNodeIcon.visible = !visible; } );
+    voltmeterNode.voltmeter.visibleProperty.link( visible => voltmeterNodeIcon.setVisible( !visible ) );
     voltmeterNodeIcon.mutate( {
       scale: TOOLBOX_ICON_SIZE * VOLTMETER_ICON_SCALE / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height )
     } );
@@ -87,7 +85,7 @@ define( function( require ) {
     // Icon for the ammeter
     const ammeter = new Ammeter( tandem.createTandem( 'ammeterIconModel' ) );
     const ammeterNodeIcon = new AmmeterNode( ammeter, null, tandem.createTandem( 'ammeterNodeIcon' ), { isIcon: true } );
-    ammeterNode.ammeter.visibleProperty.link( function( visible ) { ammeterNodeIcon.visible = !visible; } );
+    ammeterNode.ammeter.visibleProperty.link( visible => ammeterNodeIcon.setVisible( !visible ) );
     ammeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( ammeterNodeIcon.width, ammeterNodeIcon.height ) } );
     ammeterNodeIcon.addInputListener( createListener( ammeterNode.ammeter, ammeterNode ) );
 
@@ -100,7 +98,7 @@ define( function( require ) {
     const seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeter, tandem.createTandem( 'seriesAmmeterNodeIcon' ), {
       isIcon: true
     } );
-    const createSeriesAmmeter = function( position ) {
+    const createSeriesAmmeter = position => {
       const halfLength = CCKCConstants.SERIES_AMMETER_LENGTH / 2;
       const startVertex = new Vertex( position.plusXY( -halfLength, 0 ) );
       const endVertex = new Vertex( position.plusXY( halfLength, 0 ) );
@@ -116,17 +114,11 @@ define( function( require ) {
       new Property( false ),
       new Property( CircuitElementViewType.SCHEMATIC ),
       circuitLayerNode.circuit,
-      function( point ) {
-        return circuitLayerNode.globalToLocalPoint( point );
-      },
+      point => circuitLayerNode.globalToLocalPoint( point ),
       seriesAmmeterNodeIcon,
       6,
-      function() {
-        return circuitLayerNode.circuit.circuitElements.count( function( circuitElement ) {
-
-          return circuitElement instanceof SeriesAmmeter;
-        } );
-      }, createSeriesAmmeter, {
+      () => circuitLayerNode.circuit.circuitElements.count( circuitElement => circuitElement instanceof SeriesAmmeter ),
+      createSeriesAmmeter, {
         touchAreaExpansionLeft: 3,
         touchAreaExpansionTop: 15,
         touchAreaExpansionRight: 3,

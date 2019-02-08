@@ -5,7 +5,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -46,8 +46,6 @@ define( function( require ) {
    * @constructor
    */
   function VertexNode( circuitLayerNode, vertex, tandem ) {
-
-    const self = this;
     const circuit = circuitLayerNode.circuit;
 
     // @private {Circuit}
@@ -75,16 +73,16 @@ define( function( require ) {
       } );
 
       // @private {function} for debugging
-      this.updateReadoutTextLocation = function() {
-        self.voltageReadoutText.centerX = 0;
-        self.voltageReadoutText.bottom = -30;
+      this.updateReadoutTextLocation = () => {
+        this.voltageReadoutText.centerX = 0;
+        this.voltageReadoutText.bottom = -30;
       };
-      vertex.voltageProperty.link( function( voltage ) {
+      vertex.voltageProperty.link( voltage => {
 
         // No need for i18n because this is for debugging only
         const voltageText = Util.toFixed( voltage, 3 ) + 'V';
-        self.voltageReadoutText.setText( vertexDisplay === 'voltage' ? voltageText : vertex.index );
-        self.updateReadoutTextLocation();
+        this.voltageReadoutText.setText( vertexDisplay === 'voltage' ? voltageText : vertex.index );
+        this.updateReadoutTextLocation();
       } );
     }
 
@@ -138,7 +136,7 @@ define( function( require ) {
     vertex.selectedProperty.link( this.updateSelectedListener );
 
     // @private {function}
-    this.updateMoveToFront = self.moveToFront.bind( this );
+    this.updateMoveToFront = this.moveToFront.bind( this );
     vertex.relayerEmitter.addListener( this.updateMoveToFront );
 
     // @private {function}
@@ -155,16 +153,16 @@ define( function( require ) {
     this.dragHandler = new SimpleDragHandler( {
       allowTouchSnag: true,
       tandem: tandem.createTandem( 'dragHandler' ),
-      start: function( event ) {
+      start: event => {
         eventPoint = event.pointer.point;
         circuitLayerNode.startDragVertex( event.pointer.point, vertex, true );
         dragged = false;
       },
-      drag: function( event ) {
+      drag: event => {
         dragged = true;
         circuitLayerNode.dragVertex( event.pointer.point, vertex, true );
       },
-      end: function( event ) {
+      end: event => {
 
         // The vertex can only connect to something if it was actually moved.
         circuitLayerNode.endDrag( event, vertex, dragged );
@@ -175,21 +173,21 @@ define( function( require ) {
           vertex.selectedProperty.set( true );
 
           const clickToDismissListener = {
-            down: function( event ) {
-              if ( !_.includes( event.trail.nodes, self ) && !_.includes( event.trail.nodes, cutButton ) ) {
+            down: event => {
+              if ( !_.includes( event.trail.nodes, this ) && !_.includes( event.trail.nodes, cutButton ) ) {
                 vertex.selectedProperty.set( false );
-                self.clearClickListeners();
+                this.clearClickListeners();
               }
             }
           };
           phet.joist.sim.display.addInputListener( clickToDismissListener );
-          self.clickToDismissListeners.push( clickToDismissListener );
+          this.clickToDismissListeners.push( clickToDismissListener );
         }
         else {
 
           // Deselect after dragging so a grayed-out cut button doesn't remain when open vertex is connected
           vertex.selectedProperty.set( false );
-          self.clearClickListeners();
+          this.clearClickListeners();
         }
       }
     } );
@@ -377,9 +375,7 @@ define( function( require ) {
      * @private
      */
     clearClickListeners: function() {
-      this.clickToDismissListeners.forEach( function( listener ) {
-        phet.joist.sim.display.removeInputListener( listener );
-      } );
+      this.clickToDismissListeners.forEach( listener => phet.joist.sim.display.removeInputListener( listener ) );
       this.clickToDismissListeners.length = 0;
     },
 

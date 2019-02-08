@@ -5,7 +5,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -47,7 +47,7 @@ define( function( require ) {
    * @param {function} colorStopPointMap - (Vector2) => number, the operation to apply to create color stops
    * @returns {LinearGradient}
    */
-  const createGradient = function( colorStops, colorStopPointMap ) {
+  const createGradient = ( colorStops, colorStopPointMap ) => {
     const gradient = new LinearGradient( 0, -LIFELIKE_LINE_WIDTH / 2, 0, LIFELIKE_LINE_WIDTH / 2 );
     colorStops.forEach( function( colorStop ) {
       gradient.addColorStop( colorStopPointMap( colorStop.point ), colorStop.color );
@@ -62,8 +62,8 @@ define( function( require ) {
     { point: 1.0, color: new Color( '#3c0c08' ) }
   ];
 
-  const normalGradient = createGradient( colorStops, function( e ) { return e; } );
-  const reverseGradient = createGradient( colorStops.reverse(), function( e ) { return 1.0 - e; } );
+  const normalGradient = createGradient( colorStops, e => e );
+  const reverseGradient = createGradient( colorStops.reverse(), e => 1.0 - e );
 
   const PADDING = 2;
 
@@ -102,7 +102,7 @@ define( function( require ) {
    * @param {Wire} wire
    * @returns {Shape}
    */
-  const getHighlightStrokedShape = function( wire ) {
+  const getHighlightStrokedShape = wire => {
     const startPoint = wire.startPositionProperty.get();
     const endPoint = wire.endPositionProperty.get();
     return Shape.lineSegment( startPoint.x, startPoint.y, endPoint.x, endPoint.y )
@@ -114,7 +114,7 @@ define( function( require ) {
    * @param {Wire} wire
    * @returns {Shape}
    */
-  const getTouchArea = function( wire ) {
+  const getTouchArea = wire => {
     const startPoint = wire.startPositionProperty.get();
     const endPoint = wire.endPositionProperty.get();
     const distance = endPoint.distance( startPoint );
@@ -146,7 +146,6 @@ define( function( require ) {
    * @constructor
    */
   function WireNode( screenView, circuitLayerNode, wire, viewTypeProperty, tandem ) {
-    const self = this;
 
     // @private {Property.<CircuitElementViewType>}
     this.viewTypeProperty = viewTypeProperty;
@@ -171,7 +170,7 @@ define( function( require ) {
 
     // @private
     this.lineNodeParent = new Node( {
-      children: [ self.lineNode ],
+      children: [ this.lineNode ],
       cursor: 'pointer'
     } );
     const highlightNodeParent = new Node( {
@@ -202,15 +201,15 @@ define( function( require ) {
     /**
      * When the view type changes (lifelike vs schematic), update the node
      */
-    const markAsDirty = function() {
-      if ( self.disposed ) {
+    const markAsDirty = () => {
+      if ( this.disposed ) {
         return;
       }
-      self.markAsDirty();
+      this.markAsDirty();
 
       // For the icon, we must update right away since no step() is called
       if ( !circuitLayerNode ) {
-        self.updateRender();
+        this.updateRender();
       }
     };
 
@@ -220,14 +219,14 @@ define( function( require ) {
      * Update whether the WireNode is pickable
      * @param {boolean} interactive
      */
-    const updatePickable = function( interactive ) {
-      self.pickable = interactive;
+    const updatePickable = interactive => {
+      this.pickable = interactive;
     };
     wire.interactiveProperty.link( updatePickable );
 
     // When the start vertex changes to a different instance (say when vertices are soldered together), unlink the
     // old one and link to the new one.
-    const doUpdateTransform = function( newVertex, oldVertex ) {
+    const doUpdateTransform = ( newVertex, oldVertex ) => {
       oldVertex && oldVertex.positionProperty.unlink( markAsDirty );
       newVertex.positionProperty.link( markAsDirty );
     };
@@ -246,7 +245,7 @@ define( function( require ) {
       this.dragHandler = new SimpleDragHandler( {
         allowTouchSnag: true,
         tandem: tandem.createTandem( 'dragHandler' ),
-        start: function( event ) {
+        start: event => {
           if ( wire.interactiveProperty.get() ) {
 
             // Start drag by starting a drag on start and end vertices
@@ -256,7 +255,7 @@ define( function( require ) {
             startPoint = event.pointer.point;
           }
         },
-        drag: function( event ) {
+        drag: event => {
           if ( wire.interactiveProperty.get() ) {
 
             // Drag by translating both of the vertices
@@ -265,8 +264,8 @@ define( function( require ) {
             dragged = true;
           }
         },
-        end: function( event ) {
-          CircuitElementNode.prototype.endDrag.call( self, event, self, [
+        end: event => {
+          CircuitElementNode.prototype.endDrag.call( this, event, this, [
               wire.startVertexProperty.get(),
               wire.endVertexProperty.get()
             ],
@@ -277,10 +276,10 @@ define( function( require ) {
         if ( circuitLayerNode.canDragVertex( wire.startVertexProperty.get() ) && circuitLayerNode.canDragVertex( wire.endVertexProperty.get() ) ) {
           circuitLayerNode.setVerticesDragging( wire.startVertexProperty.get() );
           circuitLayerNode.setVerticesDragging( wire.endVertexProperty.get() );
-          SimpleDragHandler.prototype.startDrag.call( this, event );
+          SimpleDragHandler.prototype.startDrag.call( this, event ); // Note this refers to this listener
         }
       };
-      self.addInputListener( this.dragHandler );
+      this.addInputListener( this.dragHandler );
 
       circuitLayerNode.circuit.selectedCircuitElementProperty.link( markAsDirty );
     }
@@ -289,13 +288,13 @@ define( function( require ) {
      * Move the wire element to the back of the view when connected to another circuit element
      * @private
      */
-    const moveToBack = function() {
+    const moveToBack = () => {
 
       // Components outside the black box do not move in back of the overlay
       if ( wire.interactiveProperty.get() ) {
 
         // Connected wires should always be behind the solder and circuit elements
-        self.moveToBack();
+        this.moveToBack();
       }
     };
     wire.connectedEmitter.addListener( moveToBack );
@@ -303,8 +302,8 @@ define( function( require ) {
     /**
      * @private - dispose the wire node
      */
-    this.disposeWireNode = function() {
-      self.dragHandler.interrupt();
+    this.disposeWireNode = () => {
+      this.dragHandler.interrupt();
 
       wire.startVertexProperty.unlink( doUpdateTransform );
       wire.endVertexProperty.unlink( doUpdateTransform );
@@ -321,12 +320,12 @@ define( function( require ) {
 
       viewTypeProperty.unlink( markAsDirty );
 
-      self.lineNode.dispose();
-      self.highlightNode.dispose();
-      self.lineNodeParent.dispose();
+      this.lineNode.dispose();
+      this.highlightNode.dispose();
+      this.lineNodeParent.dispose();
       highlightNodeParent.dispose();
-      self.startCapParent.dispose();
-      self.endCapParent.dispose();
+      this.startCapParent.dispose();
+      this.endCapParent.dispose();
     };
 
     // For icons, update the end caps

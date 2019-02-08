@@ -6,7 +6,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -47,12 +47,10 @@ define( function( require ) {
      * @param {Tandem} tandem
      * @returns {BatteryNode}
      */
-    const createBatteryNode = function( view, tandem ) {
-      return new BatteryNode( null, null, battery, new Property( view ), tandem, {
-        isIcon: true,
-        scale: SCALE
-      } );
-    };
+    const createBatteryNode = ( view, tandem ) => new BatteryNode( null, null, battery, new Property( view ), tandem, {
+      isIcon: true,
+      scale: SCALE
+    } );
     const lifelikeIcon = createBatteryNode( CircuitElementViewType.LIFELIKE, tandem.createTandem( 'lifelikeIcon' ) );
     const schematicIcon = createBatteryNode( CircuitElementViewType.SCHEMATIC, tandem.createTandem( 'schematicIcon' ) );
     RadioButtonGroup.call( this, viewTypeProperty, [ {

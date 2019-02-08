@@ -5,7 +5,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -29,7 +29,7 @@ define( function( require ) {
       content: new FontAwesomeNode( 'trash', {
         scale: CCKCConstants.FONT_AWESOME_ICON_SCALE
       } ),
-      listener: function() {
+      listener: () => {
 
         // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
         if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {

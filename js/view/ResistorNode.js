@@ -5,7 +5,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -92,7 +92,7 @@ define( function( require ) {
     if ( resistor.resistorType === ResistorType.RESISTOR ) {
 
       // Color bands for resistance > 0
-      const colorBands = _.range( 4 ).map( function( index ) {
+      const colorBands = _.range( 4 ).map( index => {
 
         const additionalOffset = index === 3 ? 12 : 0;
         return new Rectangle(
@@ -111,13 +111,13 @@ define( function( require ) {
        * When the resistance changes, update the colors of the color bands.
        * @param {number} resistance
        */
-      updateColorBands = function( resistance ) {
+      updateColorBands = resistance => {
         const colors = ResistorColors.getColorArray( resistance );
 
         if ( colors.length === 1 ) {
           singleColorBand.fill = colors[ 0 ];
           assert && assert( colors[ 0 ].equals( Color.BLACK ), 'single band should be black' );
-          colorBands.forEach( function( colorBand ) { colorBand.fill = null; } );
+          colorBands.forEach( colorBand => { colorBand.fill = null; } );
         }
         else {
 
@@ -131,9 +131,7 @@ define( function( require ) {
       resistor.resistanceProperty.link( updateColorBands );
 
       // Add the color bands to the resistor image
-      colorBands.forEach( function( colorBand ) {
-        lifelikeResistorImageNode.addChild( colorBand );
-      } );
+      colorBands.forEach( colorBand => lifelikeResistorImageNode.addChild( colorBand ) );
       lifelikeResistorImageNode.addChild( singleColorBand );
     }
 
@@ -210,7 +208,7 @@ define( function( require ) {
     /**
      * @private {function} - dispose the resistor node
      */
-    this.disposeResistorNode = function() {
+    this.disposeResistorNode = () => {
       updateColorBands && resistor.resistanceProperty.unlink( updateColorBands );
       lifelikeResistorImageNode.dispose();
     };

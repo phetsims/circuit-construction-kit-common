@@ -6,7 +6,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -51,13 +51,13 @@ define( function( require ) {
    * @param {number} power - the power through the light bulb
    * @returns {number}
    */
-  function toBrightness( multiplier, power ) {
+  const toBrightness = ( multiplier, power ) => {
     const maximumBrightness = 1;
 
     // power at which the brightness becomes 1
     const maximumPower = 2000;
     return Math.log( 1 + power * multiplier ) * maximumBrightness / Math.log( 1 + maximumPower * multiplier );
-  }
+  };
 
   /**
    * @param {CCKCScreenView|null} screenView - main screen view, null for icon
@@ -71,14 +71,13 @@ define( function( require ) {
    */
   function CCKCLightBulbNode( screenView, circuitLayerNode, lightBulb,
                               showResultsProperty, viewTypeProperty, tandem, options ) {
-    const self = this;
     options = _.extend( {
       isIcon: false
     }, options );
     const brightnessProperty = new NumberProperty( 0 );
     const updateBrightness = Property.multilink(
       [ lightBulb.currentProperty, showResultsProperty, lightBulb.resistanceProperty ],
-      function( current, running, resistance ) {
+      ( current, running, resistance ) => {
         const power = Math.abs( current * current * resistance );
 
         let brightness = toBrightness( 0.35, power );
@@ -120,18 +119,16 @@ define( function( require ) {
      * @param {Shape} shape
      * @returns Shape
      */
-    const addSchematicCircle = function( shape ) {
-      return shape
+    const addSchematicCircle = shape => shape
 
-      // Outer circle
-        .moveTo( 0, LEAD_Y )
-        .arc( rightLeadX / 2, LEAD_Y, schematicCircleRadius, Math.PI, -Math.PI, true )
+    // Outer circle
+      .moveTo( 0, LEAD_Y )
+      .arc( rightLeadX / 2, LEAD_Y, schematicCircleRadius, Math.PI, -Math.PI, true )
 
-        // Filament
-        .moveTo( 0, LEAD_Y )
-        .arc( schematicCircleRadius, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
-        .lineTo( rightLeadX, LEAD_Y );
-    };
+      // Filament
+      .moveTo( 0, LEAD_Y )
+      .arc( schematicCircleRadius, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
+      .lineTo( rightLeadX, LEAD_Y );
     let schematicNode = cached || new Path( addSchematicCircle( new Shape()
 
       // Left lead
@@ -190,8 +187,8 @@ define( function( require ) {
         tandem.createTandem( 'socketNode' ),
         options
       );
-      viewListener = function( view ) {
-        self.rayNodeContainer.visible = view === CircuitElementViewType.LIFELIKE;
+      viewListener = view => {
+        this.rayNodeContainer.visible = view === CircuitElementViewType.LIFELIKE;
       };
       viewTypeProperty.link( viewListener );
       circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.addChild( this.socketNode );
@@ -201,15 +198,15 @@ define( function( require ) {
       circuitLayerNode && circuitLayerNode.addChildToBackground( this.rayNodeContainer );
     }
 
-    this.disposeCircuitConstructionKitLightBulbNode = function() {
+    this.disposeCircuitConstructionKitLightBulbNode = () => {
       updateBrightness.dispose();
-      circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.removeChild( self.socketNode );
+      circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.removeChild( this.socketNode );
 
       // Light rays are supposed to be behind everything else,
       // see https://github.com/phetsims/circuit-construction-kit-common/issues/161
-      circuitLayerNode && circuitLayerNode.removeChildFromBackground( self.rayNodeContainer );
+      circuitLayerNode && circuitLayerNode.removeChildFromBackground( this.rayNodeContainer );
       viewTypeProperty.unlink( viewListener );
-      self.socketNode.dispose();
+      this.socketNode.dispose();
     };
   }
 

@@ -14,7 +14,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Denzell Barnett (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -64,7 +64,6 @@ define( function( require ) {
    * @constructor
    */
   function CircuitLayerNode( circuit, screenView, tandem ) {
-    const self = this;
 
     // @private {Property.<CircuitElementViewType>}
     this.viewTypeProperty = screenView.model.viewTypeProperty;
@@ -165,8 +164,8 @@ define( function( require ) {
       } ) ]
     } );
 
-    Property.multilink( [ screenView.model.isValueDepictionEnabledProperty, screenView.model.revealingProperty ], function( isValueDepictionEnabled, revealing ) {
-      self.chargeLayer.visible = isValueDepictionEnabled && revealing;
+    Property.multilink( [ screenView.model.isValueDepictionEnabledProperty, screenView.model.revealingProperty ], ( isValueDepictionEnabled, revealing ) => {
+      this.chargeLayer.visible = isValueDepictionEnabled && revealing;
     } );
 
     // @public {Node} - layer that shows the Voltmeter and Ammeter (but not the SeriesAmmeter, which is shown in the fixedCircuitElementLayer)
@@ -215,8 +214,8 @@ define( function( require ) {
 
     // choose layering for schematic vs lifelike.  HEADS UP, this means circuitLayerNode.addChild() will get overwritten
     // so all nodes must be added as children in the array above.
-    screenView.model.viewTypeProperty.link( function( view ) {
-      self.children = (view === CircuitElementViewType.LIFELIKE) ? lifelikeLayering : schematicLayering;
+    screenView.model.viewTypeProperty.link( view => {
+      this.children = ( view === CircuitElementViewType.LIFELIKE ) ? lifelikeLayering : schematicLayering;
     } );
 
     // @public {Property.<Bounds2>} the visible bounds in the coordinate frame of the circuit.  Initialized with a
@@ -247,32 +246,30 @@ define( function( require ) {
      * @param {Tandem} groupTandem
      * @param {function} createCircuitElement - creates the node, given a circuitElement and tandem BatteryNode
      */
-    const initializeCircuitElementType = function( type, layer, groupTandem, createCircuitElement ) {
-      const addCircuitElement = function( circuitElement ) {
+    const initializeCircuitElementType = ( type, layer, groupTandem, createCircuitElement ) => {
+      const addCircuitElement = circuitElement => {
         if ( circuitElement instanceof type ) {
           const circuitElementNode = createCircuitElement( circuitElement, groupTandem.createNextTandem() );
-          self.circuitElementNodeMap[ circuitElement.id ] = circuitElementNode;
+          this.circuitElementNodeMap[ circuitElement.id ] = circuitElementNode;
 
           layer.addChild( circuitElementNode );
 
           // Show the ValueNode for readouts, though series ammeters already show their own readouts and Wires do not
           // have readouts
-          if ( circuitElement instanceof FixedCircuitElement && !(circuitElement instanceof SeriesAmmeter) ) {
+          if ( circuitElement instanceof FixedCircuitElement && !( circuitElement instanceof SeriesAmmeter ) ) {
             const valueNode = new ValueNode(
               circuitElement,
-              self.model.showValuesProperty,
-              self.model.viewTypeProperty,
+              this.model.showValuesProperty,
+              this.model.viewTypeProperty,
               tandem.createTandem( circuitElement.tandem.tail ).createTandem( 'valueNode' )
             );
 
-            const updateShowValues = function( showValues ) {
-              CCKCUtil.setInSceneGraph( showValues, self.valueLayer, valueNode );
-            };
-            self.model.showValuesProperty.link( updateShowValues );
+            const updateShowValues = showValues => CCKCUtil.setInSceneGraph( showValues, this.valueLayer, valueNode );
+            this.model.showValuesProperty.link( updateShowValues );
 
-            circuitElement.disposeEmitter.addListener( function() {
-              self.model.showValuesProperty.unlink( updateShowValues );
-              CCKCUtil.setInSceneGraph( false, self.valueLayer, valueNode );
+            circuitElement.disposeEmitter.addListener( () => {
+              this.model.showValuesProperty.unlink( updateShowValues );
+              CCKCUtil.setInSceneGraph( false, this.valueLayer, valueNode );
               valueNode.dispose();
             } );
           }
@@ -280,35 +277,35 @@ define( function( require ) {
       };
       circuit.circuitElements.addItemAddedListener( addCircuitElement );
       circuit.circuitElements.forEach( addCircuitElement );
-      circuit.circuitElements.addItemRemovedListener( function( circuitElement ) {
+      circuit.circuitElements.addItemRemovedListener( circuitElement => {
         if ( circuitElement instanceof type ) {
 
-          const circuitElementNode = self.getCircuitElementNode( circuitElement );
+          const circuitElementNode = this.getCircuitElementNode( circuitElement );
           layer.removeChild( circuitElementNode );
           circuitElementNode.dispose();
 
-          delete self.circuitElementNodeMap[ circuitElement.id ];
+          delete this.circuitElementNodeMap[ circuitElement.id ];
         }
       } );
     };
 
-    initializeCircuitElementType( Wire, this.wireLayer, tandem.createGroupTandem( 'wireNode' ), function( circuitElement, tandem ) {
-      return new WireNode( screenView, self, circuitElement, self.model.viewTypeProperty, tandem );
+    initializeCircuitElementType( Wire, this.wireLayer, tandem.createGroupTandem( 'wireNode' ), ( circuitElement, tandem ) => {
+      return new WireNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem );
     } );
-    initializeCircuitElementType( Battery, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'batteryNode' ), function( circuitElement, tandem ) {
-      return new BatteryNode( screenView, self, circuitElement, self.model.viewTypeProperty, tandem );
+    initializeCircuitElementType( Battery, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'batteryNode' ), ( circuitElement, tandem ) => {
+      return new BatteryNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem );
     } );
-    initializeCircuitElementType( LightBulb, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'lightBulbNode' ), function( circuitElement, tandem ) {
-      return new CCKCLightBulbNode( screenView, self, circuitElement, self.model.isValueDepictionEnabledProperty, self.model.viewTypeProperty, tandem );
+    initializeCircuitElementType( LightBulb, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'lightBulbNode' ), ( circuitElement, tandem ) => {
+      return new CCKCLightBulbNode( screenView, this, circuitElement, this.model.isValueDepictionEnabledProperty, this.model.viewTypeProperty, tandem );
     } );
-    initializeCircuitElementType( Resistor, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'resistorNode' ), function( circuitElement, tandem ) {
-      return new ResistorNode( screenView, self, circuitElement, self.model.viewTypeProperty, tandem );
+    initializeCircuitElementType( Resistor, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'resistorNode' ), ( circuitElement, tandem ) => {
+      return new ResistorNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem );
     } );
-    initializeCircuitElementType( SeriesAmmeter, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'seriesAmmeterNode' ), function( circuitElement, tandem ) {
-      return new SeriesAmmeterNode( screenView, self, circuitElement, tandem );
+    initializeCircuitElementType( SeriesAmmeter, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'seriesAmmeterNode' ), ( circuitElement, tandem ) => {
+      return new SeriesAmmeterNode( screenView, this, circuitElement, tandem );
     } );
-    initializeCircuitElementType( Switch, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'switchNode' ), function( circuitElement, tandem ) {
-      return new SwitchNode( screenView, self, circuitElement, self.model.viewTypeProperty, tandem );
+    initializeCircuitElementType( Switch, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'switchNode' ), ( circuitElement, tandem ) => {
+      return new SwitchNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem );
     } );
 
     // When a vertex is selected, a cut button is shown near to the vertex.  If the vertex is connected to >1 circuit
@@ -329,45 +326,45 @@ define( function( require ) {
       minYMargin: 10,
       tandem: Tandem.rootTandem.createTandem( 'cutButton' )
     } );
-    this.cutButton.addListener( function() {
+    this.cutButton.addListener( () => {
       assert && assert( circuit.getSelectedVertex(), 'Button should only be available if a vertex is selected' );
       circuit.cutVertex( circuit.getSelectedVertex() );
 
       // Make sure no vertices got nudged out of bounds during a cut, see https://github.com/phetsims/circuit-construction-kit-dc/issues/138
-      moveVerticesInBounds( self.visibleBoundsInCircuitCoordinateFrameProperty.value );
+      moveVerticesInBounds( this.visibleBoundsInCircuitCoordinateFrameProperty.value );
     } );
 
     // When a Vertex is added to the model, create the corresponding views
     const vertexNodeGroup = tandem.createGroupTandem( 'vertexNodes' );
-    const addVertexNode = function( vertex ) {
-      const solderNode = new SolderNode( self, vertex );
-      self.solderNodes[ vertex.index ] = solderNode;
-      self.solderLayer.addChild( solderNode );
+    const addVertexNode = vertex => {
+      const solderNode = new SolderNode( this, vertex );
+      this.solderNodes[ vertex.index ] = solderNode;
+      this.solderLayer.addChild( solderNode );
 
-      const vertexNode = new VertexNode( self, vertex, vertexNodeGroup.createNextTandem() );
-      self.vertexNodes[ vertex.index ] = vertexNode;
-      self.vertexLayer.addChild( vertexNode );
+      const vertexNode = new VertexNode( this, vertex, vertexNodeGroup.createNextTandem() );
+      this.vertexNodes[ vertex.index ] = vertexNode;
+      this.vertexLayer.addChild( vertexNode );
     };
     circuit.vertices.addItemAddedListener( addVertexNode );
 
     // When a Vertex is removed from the model, remove and dispose the corresponding views
-    circuit.vertices.addItemRemovedListener( function( vertex ) {
-      const vertexNode = self.getVertexNode( vertex );
-      self.vertexLayer.removeChild( vertexNode );
-      delete self.vertexNodes[ vertex.index ];
+    circuit.vertices.addItemRemovedListener( vertex => {
+      const vertexNode = this.getVertexNode( vertex );
+      this.vertexLayer.removeChild( vertexNode );
+      delete this.vertexNodes[ vertex.index ];
       vertexNode.dispose();
-      assert && assert( !self.getVertexNode( vertex ), 'vertex node should have been removed' );
+      assert && assert( !this.getVertexNode( vertex ), 'vertex node should have been removed' );
 
-      const solderNode = self.getSolderNode( vertex );
-      self.solderLayer.removeChild( solderNode );
-      delete self.solderNodes[ vertex.index ];
+      const solderNode = this.getSolderNode( vertex );
+      this.solderLayer.removeChild( solderNode );
+      delete this.solderNodes[ vertex.index ];
       solderNode.dispose();
-      assert && assert( !self.getSolderNode( vertex ), 'solder node should have been removed' );
+      assert && assert( !this.getSolderNode( vertex ), 'solder node should have been removed' );
     } );
     circuit.vertices.forEach( addVertexNode );
 
     // When the screen is resized or zoomed, move all vertices into view.
-    const moveVerticesInBounds = function( localBounds ) {
+    const moveVerticesInBounds = localBounds => {
 
       // Check all vertices
       for ( let i = 0; i < circuit.vertices.length; i++ ) {
@@ -381,16 +378,14 @@ define( function( require ) {
 
           // Find all vertices connected by fixed length nodes.
           const vertices = circuit.findAllConnectedVertices( vertex );
-          self.translateVertexGroup( vertex, vertices, delta, null, [] );
+          this.translateVertexGroup( vertex, vertices, delta, null, [] );
         }
       }
     };
     this.visibleBoundsInCircuitCoordinateFrameProperty.link( moveVerticesInBounds );
 
     // When a charge is added, add the corresponding ChargeNode (removed it its dispose call)
-    circuit.charges.addItemAddedListener( function( charge ) {
-      self.chargeLayer.addChild( new ChargeNode( charge ) );
-    } );
+    circuit.charges.addItemAddedListener( charge => this.chargeLayer.addChild( new ChargeNode( charge ) ) );
   }
 
   circuitConstructionKitCommon.register( 'CircuitLayerNode', CircuitLayerNode );
@@ -456,9 +451,9 @@ define( function( require ) {
     getBestDropTarget: function( vertices ) {
       const allDropTargets = this.getAllDropTargets( vertices );
       if ( allDropTargets ) {
-        const sorted = _.sortBy( allDropTargets, function( dropTarget ) {
-          return dropTarget.src.unsnappedPositionProperty.get().distance( dropTarget.dst.positionProperty.get() );
-        } );
+        const sorted = _.sortBy( allDropTargets, dropTarget =>
+          dropTarget.src.unsnappedPositionProperty.get().distance( dropTarget.dst.positionProperty.get() )
+        );
         return sorted[ 0 ];
       }
       else {
@@ -472,13 +467,9 @@ define( function( require ) {
      */
     step: function() {
 
-      const self = this;
-
       // paint dirty fixed length circuit element nodes.  This batches changes instead of applying multiple changes
       // per frame
-      this.circuit.circuitElements.getArray().forEach( function( circuitElement ) {
-        self.getCircuitElementNode( circuitElement ).step();
-      } );
+      this.circuit.circuitElements.getArray().forEach( circuitElement => this.getCircuitElementNode( circuitElement ).step() );
     },
 
     /**
@@ -538,12 +529,8 @@ define( function( require ) {
     rotateAboutFixedPivot: function( point, vertex, okToRotate, vertexNode, position, neighbors, vertices ) {
 
       // Don't traverse across the black box interface, or it would rotate objects on the other side
-      vertices = this.circuit.findAllFixedVertices( vertex, function( currentVertex ) {
-        return !currentVertex.blackBoxInterfaceProperty.get();
-      } );
-      const fixedNeighbors = neighbors.filter( function( neighbor ) {
-        return neighbor.getOppositeVertex( vertex ).blackBoxInterfaceProperty.get();
-      } );
+      vertices = this.circuit.findAllFixedVertices( vertex, currentVertex => !currentVertex.blackBoxInterfaceProperty.get() );
+      const fixedNeighbors = neighbors.filter( neighbor => neighbor.getOppositeVertex( vertex ).blackBoxInterfaceProperty.get() );
       if ( fixedNeighbors.length === 1 ) {
         const fixedNeighbor = fixedNeighbors[ 0 ];
         const fixedVertex = fixedNeighbor.getOppositeVertex( vertex );
@@ -563,9 +550,7 @@ define( function( require ) {
 
         // Do not propose attachments, since connections cannot be made from a rotation.
         const attachable = [];
-        this.translateVertexGroup( vertex, vertices, delta, function() {
-          vertex.unsnappedPositionProperty.set( fixedVertex.unsnappedPositionProperty.get().minus( relative ) );
-        }, attachable );
+        this.translateVertexGroup( vertex, vertices, delta, () => vertex.unsnappedPositionProperty.set( fixedVertex.unsnappedPositionProperty.get().minus( relative ) ), attachable );
       }
     },
 
@@ -632,9 +617,7 @@ define( function( require ) {
 
           const rotationDelta = oppositePosition.minus( oppositeVertex.unsnappedPositionProperty.get() );
 
-          this.translateVertexGroup( vertex, vertices, rotationDelta, function() {
-              vertex.unsnappedPositionProperty.set( oppositeVertex.unsnappedPositionProperty.get().minus( relative ) );
-            },
+          this.translateVertexGroup( vertex, vertices, rotationDelta, () => vertex.unsnappedPositionProperty.set( oppositeVertex.unsnappedPositionProperty.get().minus( relative ) ),
 
             // allow any vertex connected by fixed length elements to snap, see https://github.com/phetsims/circuit-construction-kit-common/issues/254
             vertices

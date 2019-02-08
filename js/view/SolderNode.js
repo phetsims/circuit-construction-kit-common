@@ -5,7 +5,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -31,8 +31,6 @@ define( function( require ) {
   function SolderNode( circuitLayerNode, vertex ) {
     assert && assert( CIRCLE_NODE, 'solder image should exist before creating SolderNode' );
 
-    const self = this;
-
     const circuit = circuitLayerNode.circuit;
 
     // @public (read-only) {Vertex}
@@ -50,12 +48,12 @@ define( function( require ) {
     } );
 
     // Update the fill when the number of attached components changes.
-    const updateFill = function() {
+    const updateFill = () => {
 
       // @private {boolean} - defensive copies for callbacks cause listeners to get called during disposal, avoid calling
       // Node API after diposed
-      if ( !self.disposed ) {
-        self.visible = circuit.countCircuitElements( vertex ) > 1;
+      if ( !this.disposed ) {
+        this.visible = circuit.countCircuitElements( vertex ) > 1;
       }
     };
     circuit.vertices.addItemAddedListener( updateFill );
@@ -69,7 +67,7 @@ define( function( require ) {
     vertex.positionProperty.link( updateSolderNodePosition );
 
     // @private (read-only) {function} called by dispose()
-    this.disposeSolderNode = function() {
+    this.disposeSolderNode = () => {
       vertex.positionProperty.unlink( updateSolderNodePosition );
 
       circuit.vertices.removeItemAddedListener( updateFill );

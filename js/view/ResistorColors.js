@@ -5,7 +5,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -41,11 +41,7 @@ define( function( require ) {
    * @param {string|number|null} value - the value to search for
    * @returns {Object} - entry from the color table, see above
    */
-  const getEntry = function( keyName, value ) {
-    return _.find( colorTable, function( colorTableEntry ) {
-      return colorTableEntry[ keyName ] === value;
-    } );
-  };
+  const getEntry = ( keyName, value ) => _.find( colorTable, colorTableEntry => colorTableEntry[ keyName ] === value );
 
   const ResistorColors = {
 
@@ -90,9 +86,7 @@ define( function( require ) {
       // Estimate the value to obtain tolerance band
       const approximateValue = ( firstSignificantDigit + secondSignificantDigit / 10 ) * Math.pow( 10, exponent );
       const percentError = Math.abs( ( resistance - approximateValue ) / resistance * 100 );
-      const colorsWithTolerance = _.filter( colorTable, function( colorTableEntry ) {
-        return colorTableEntry.tolerance !== null;
-      } );
+      const colorsWithTolerance = _.filter( colorTable, colorTableEntry => colorTableEntry.tolerance !== null );
 
       // find the lowest tolerance that fits the value
       const sortedColorsWithTolerance = _.sortBy( colorsWithTolerance, 'tolerance' );

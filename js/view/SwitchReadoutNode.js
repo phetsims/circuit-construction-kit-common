@@ -5,7 +5,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -42,7 +42,7 @@ define( function( require ) {
 
     const maxWidth = Math.max( closedText.width, openText.width );
 
-    const closedListener = function( closed ) {
+    const closedListener = closed => {
       closedText.visible = closed;
       openText.visible = !closed;
     };
@@ -59,9 +59,7 @@ define( function( require ) {
     } );
 
     // @private {function}
-    this.disposeSwitchReadoutNode = function() {
-      circuitSwitch.closedProperty.unlink( closedListener );
-    };
+    this.disposeSwitchReadoutNode = () => circuitSwitch.closedProperty.unlink( closedListener );
   }
 
   circuitConstructionKitCommon.register( 'SwitchReadoutNode', SwitchReadoutNode );

@@ -5,7 +5,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -51,11 +51,10 @@ define( function( require ) {
       type: 'custom',
       defaultValue: CurrentType.ELECTRONS,
       validValues: CurrentType.VALUES,
-      parse: function( string ) {
-        return string === 'electrons' ? CurrentType.ELECTRONS :
-               string === 'conventional' ? CurrentType.CONVENTIONAL :
-               string; // Will error out in validValues check
-      }
+      parse: string =>
+        string === 'electrons' ? CurrentType.ELECTRONS :
+        string === 'conventional' ? CurrentType.CONVENTIONAL :
+        string // Will error out in validValues check
     },
 
     // For Black Box Study & PhET-iO

@@ -5,7 +5,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -38,9 +38,8 @@ define( function( require ) {
    * @param {boolean} isValueDepictionEnabled - whether values are shown
    * @returns {boolean}
    */
-  const isFireShown = function( current, isValueDepictionEnabled ) {
-    return Math.abs( current ) >= FIRE_THRESHOLD && isValueDepictionEnabled;
-  };
+  const isFireShown = ( current, isValueDepictionEnabled ) =>
+    Math.abs( current ) >= FIRE_THRESHOLD && isValueDepictionEnabled;
 
   /**
    * @param {CCKCScreenView} screenView - the main screen view, null for isIcon
@@ -57,7 +56,6 @@ define( function( require ) {
   function FixedCircuitElementNode( screenView, circuitLayerNode, circuitElement,
                                     viewTypeProperty, lifelikeNode, schematicNode, tandem, options ) {
     assert && assert( lifelikeNode !== schematicNode, 'schematicNode should be different than lifelikeNode' );
-    const self = this;
 
     // @private {Node} shows the lifelike view
     this.lifelikeNode = lifelikeNode;
@@ -138,7 +136,7 @@ define( function( require ) {
       // @private {SimpleDragHandler}
       this.dragHandler = new SimpleDragHandler( {
         allowTouchSnag: true,
-        start: function( event ) {
+        start: event => {
           startPoint = event.pointer.point;
           circuitElement.interactiveProperty.get() && circuitLayerNode.startDragVertex(
             event.pointer.point,
@@ -147,7 +145,7 @@ define( function( require ) {
           );
           dragged = false;
         },
-        drag: function( event ) {
+        drag: event => {
           circuitElement.interactiveProperty.get() && circuitLayerNode.dragVertex(
             event.pointer.point,
             circuitElement.endVertexProperty.get(),
@@ -155,9 +153,8 @@ define( function( require ) {
           );
           dragged = true;
         },
-        end: function( event ) {
-          self.endDrag( event, self.contentNode, [ circuitElement.endVertexProperty.get() ], screenView, circuitLayerNode, startPoint, dragged );
-        },
+        end: event =>
+          this.endDrag( event, this.contentNode, [ circuitElement.endVertexProperty.get() ], screenView, circuitLayerNode, startPoint, dragged ),
         tandem: tandem.createTandem( 'dragHandler' )
       } );
       this.dragHandler.startDrag = function( event ) {
@@ -179,13 +176,13 @@ define( function( require ) {
       if ( circuitElement.isFlammable ) {
 
         this.fireNode = new Image( fireImage, { pickable: false, imageOpacity: 0.95 } );
-        this.fireNode.mutate( { scale: self.contentNode.width / this.fireNode.width } );
+        this.fireNode.mutate( { scale: this.contentNode.width / this.fireNode.width } );
         this.addChild( this.fireNode );
 
         // @private {Multilink} - Show fire in batteries and resistors with resistance > 0
         this.updateFireMultilink = Property.multilink( [
           circuitElement.currentProperty,
-          (circuitElement instanceof Resistor) ? circuitElement.resistanceProperty : ONE_AMP_PROPERTY,
+          ( circuitElement instanceof Resistor ) ? circuitElement.resistanceProperty : ONE_AMP_PROPERTY,
           screenView.model.isValueDepictionEnabledProperty
         ], this.updateFireVisible.bind( this ) );
       }
@@ -206,7 +203,7 @@ define( function( require ) {
 
       // Update the dimensions of the highlight.  For Switches, retain the original bounds (big enough to encapsulate
       // both schematic and lifelike open and closed).
-      (this.circuitElement.isSizeChangedOnViewChange && this.highlightNode) && this.highlightNode.recomputeBounds( this );
+      ( this.circuitElement.isSizeChangedOnViewChange && this.highlightNode ) && this.highlightNode.recomputeBounds( this );
     },
 
     /**
@@ -223,7 +220,7 @@ define( function( require ) {
         // shortly with the correct values for both startPosition and endPosition
         // See https://github.com/phetsims/circuit-construction-kit-common/issues/413
         // assert && timer.setTimeout( function() {
-        //   assert && assert( !self.circuitElement.startPositionProperty.get().equals( self.circuitElement.endPositionProperty.get() ), 'vertices cannot be in the same spot' );
+        //   assert && assert( !this.circuitElement.startPositionProperty.get().equals( this.circuitElement.endPositionProperty.get() ), 'vertices cannot be in the same spot' );
         // }, 0 );
         return;
       }

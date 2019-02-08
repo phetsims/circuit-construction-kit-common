@@ -6,7 +6,7 @@
  * @author Chris Malley (PixelZoom, Inc.)
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -35,7 +35,6 @@ define( function( require ) {
    */
   function CustomLightBulbNode( brightnessProperty, options ) {
     assert && assert( brightnessProperty, 'brightness property should exist' );
-    const self = this;
 
     options = _.extend( {
       baseOnly: false,
@@ -99,9 +98,9 @@ define( function( require ) {
     }
 
     // @private {function} - for disposal
-    this.disposeCustomLightBulbNode = function() {
+    this.disposeCustomLightBulbNode = () => {
       if ( !options.baseOnly ) {
-        self.brightnessProperty.unlink( self.brightnessObserver );
+        this.brightnessProperty.unlink( this.brightnessObserver );
       }
     };
 

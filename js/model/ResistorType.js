@@ -5,7 +5,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -27,9 +27,7 @@ define( function( require ) {
 
   ResistorType.VALUES = _.keys( ResistorType );
 
-  ResistorType.isMetallic = function( resistorType ) {
-    return resistorType === ResistorType.COIN || resistorType === ResistorType.PAPER_CLIP;
-  };
+  ResistorType.isMetallic = type => type === ResistorType.COIN || type === ResistorType.PAPER_CLIP;
 
   // verify that enum is immutable, without the runtime penalty in production code
   assert && Object.freeze( ResistorType );

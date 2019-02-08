@@ -6,7 +6,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -66,7 +66,6 @@ define( function( require ) {
    * @constructor
    */
   function VoltmeterNode( voltmeter, model, circuitLayerNode, tandem, options ) {
-    const self = this;
     this.circuitLayerNode = circuitLayerNode;
     options = _.extend( {
 
@@ -114,9 +113,9 @@ define( function( require ) {
     } );
 
     // Displays the voltage reading
-    const voltageReadoutProperty = new DerivedProperty( [ voltmeter.voltageProperty ], function( voltage ) {
-      return voltage === null ? questionMarkString : CCKCUtil.createVoltageReadout( voltage );
-    } );
+    const voltageReadoutProperty = new DerivedProperty( [ voltmeter.voltageProperty ], voltage =>
+      voltage === null ? questionMarkString : CCKCUtil.createVoltageReadout( voltage )
+    );
 
     const probeTextNode = new ProbeTextNode(
       voltageReadoutProperty, options.showResultsProperty, voltageString, tandem.createTandem( 'probeTextNode' ), {
@@ -138,7 +137,7 @@ define( function( require ) {
     );
 
     // When the voltmeter body moves, update the node and wires
-    voltmeter.bodyPositionProperty.link( function( bodyPosition ) {
+    voltmeter.bodyPositionProperty.link( bodyPosition => {
 
       // Drag the body by the center
       bodyNode.center = bodyPosition;
@@ -166,8 +165,8 @@ define( function( require ) {
      * @param {number} sign
      * @returns {function}
      */
-    const probeMovedCallback = function( probeNode, wireNode, sign ) {
-      return function( probePosition ) {
+    const probeMovedCallback = ( probeNode, wireNode, sign ) => {
+      return probePosition => {
         probeNode.translation = probePosition;
 
         // Sampled manually, will need to change if probe angle changes
@@ -204,11 +203,11 @@ define( function( require ) {
        * @param {Tandem} tandem
        * @returns {MovableDragHandler}
        */
-      const getProbeDragHandler = function( positionProperty, tandem ) {
+      const getProbeDragHandler = ( positionProperty, tandem ) => {
         const probeDragHandler = new MovableDragHandler( positionProperty, {
           tandem: tandem.createTandem( 'redProbeDragHandler' )
         } );
-        options.visibleBoundsProperty.link( function( visibleBounds ) {
+        options.visibleBoundsProperty.link( visibleBounds => {
           probeDragHandler.dragBounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
         } );
         return probeDragHandler;
@@ -223,7 +222,7 @@ define( function( require ) {
       // @public (read-only) {MovableDragHandler} - so events can be forwarded from the toolbox
       this.dragHandler = new MovableDragHandler( voltmeter.bodyPositionProperty, {
         tandem: tandem.createTandem( 'dragHandler' ),
-        endDrag: function() {
+        endDrag: () => {
           voltmeter.droppedEmitter.emit1( bodyNode.globalBounds );
 
           // After dropping in the play area the probes move independently of the body
@@ -234,14 +233,14 @@ define( function( require ) {
         },
 
         // use this to do something every time drag is called, such as notify that a user has modified the position
-        onDrag: function( event ) {},
+        onDrag: event => {},
 
         // adds support for zoomed coordinate frame, see
         // https://github.com/phetsims/circuit-construction-kit-common/issues/301
-        targetNode: self
+        targetNode: this
       } );
-      options.visibleBoundsProperty.link( function( visibleBounds ) {
-        self.dragHandler.dragBounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
+      options.visibleBoundsProperty.link( visibleBounds => {
+        this.dragHandler.dragBounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
       } );
       bodyNode.addInputListener( this.dragHandler );
 
@@ -252,18 +251,18 @@ define( function( require ) {
        * @param {number} sign - the direction the probe is rotated
        * @returns {VoltageConnection|null} if connected returns VoltageConnection otherwise null
        */
-      const findVoltageConnection = function( probeNode, probeTip, sign ) {
+      const findVoltageConnection = ( probeNode, probeTip, sign ) => {
         const probeTipVector = Vector2.createPolar( VOLTMETER_PROBE_TIP_LENGTH, sign * VoltmeterNode.PROBE_ANGLE + Math.PI / 2 );
         const probeTipTail = probeTip.plus( probeTipVector );
         for ( let i = 0; i < VOLTMETER_NUMBER_SAMPLE_POINTS; i++ ) {
           const samplePoint = probeTip.blend( probeTipTail, i / VOLTMETER_NUMBER_SAMPLE_POINTS );
-          const voltageConnection = self.getVoltageConnection( probeNode, samplePoint );
+          const voltageConnection = this.getVoltageConnection( probeNode, samplePoint );
 
           // For debugging, depict the points where the sampling happens
           if ( CCKCQueryParameters.showVoltmeterSamplePoints ) {
 
             // Note, these get erased when changing between lifelike/schematic
-            self.circuitLayerNode.addChild( new Rectangle( -1, -1, 2, 2, {
+            this.circuitLayerNode.addChild( new Rectangle( -1, -1, 2, 2, {
               fill: Color.BLACK,
               translation: samplePoint
             } ) );
@@ -278,13 +277,13 @@ define( function( require ) {
       /**
        * Detection for voltmeter probe + circuit intersection is done in the view since view bounds are used
        */
-      const updateVoltmeter = function() {
+      const updateVoltmeter = () => {
         if ( voltmeter.visibleProperty.get() ) {
           const redConnection = findVoltageConnection(
-            self.redProbeNode, self.voltmeter.redProbePositionProperty.get(), +1
+            this.redProbeNode, this.voltmeter.redProbePositionProperty.get(), +1
           );
           const blackConnection = findVoltageConnection(
-            self.blackProbeNode, self.voltmeter.blackProbePositionProperty.get(), -1
+            this.blackProbeNode, this.voltmeter.blackProbePositionProperty.get(), -1
           );
 
           if ( redConnection === null || blackConnection === null ) {
@@ -335,13 +334,10 @@ define( function( require ) {
      * @public
      */
     hitCircuitElementNode: function( position, filter ) {
-      const self = this;
 
       const circuitElementNodes = this.circuitLayerNode.circuit.circuitElements.getArray()
         .filter( filter )
-        .map( function( circuitElement ) {
-          return self.circuitLayerNode.getCircuitElementNode( circuitElement );
-        } );
+        .map( circuitElement => this.circuitLayerNode.getCircuitElementNode( circuitElement ) );
 
       // Search from the front to the back, because frontmost objects look like they are hitting the sensor, see #143
       for ( let i = circuitElementNodes.length - 1; i >= 0; i-- ) {
@@ -381,7 +377,7 @@ define( function( require ) {
       // When solder is shown, it is used as the conductive element for the voltmeter (and hence why the solder radius
       // is used in the computation below.
       const solderNodes = _.values( this.circuitLayerNode.solderNodes );
-      const hitSolderNode = _.find( solderNodes, function( solderNode ) {
+      const hitSolderNode = _.find( solderNodes, solderNode => {
         const position = solderNode.vertex.positionProperty.get();
         return probePosition.distance( position ) <= SolderNode.SOLDER_RADIUS;
       } );
@@ -390,9 +386,7 @@ define( function( require ) {
       }
 
       // Check for intersection with a metallic circuit element, which can provide voltmeter readings
-      const metallicCircuitElement = this.hitCircuitElementNode( probePosition, function( circuitElement ) {
-        return circuitElement.isMetallic;
-      } );
+      const metallicCircuitElement = this.hitCircuitElementNode( probePosition, circuitElement => circuitElement.isMetallic );
       if ( metallicCircuitElement ) {
 
         const startPoint = metallicCircuitElement.circuitElement.startPositionProperty.get();
@@ -414,9 +408,7 @@ define( function( require ) {
       else {
 
         // check for intersection with switch node
-        const switchNode = this.hitCircuitElementNode( probePosition, function( circuitElement ) {
-          return circuitElement instanceof Switch;
-        } );
+        const switchNode = this.hitCircuitElementNode( probePosition, circuitElement => circuitElement instanceof Switch );
         if ( switchNode ) {
 
           // address closed switch.  Find out whether the probe was near the start or end vertex

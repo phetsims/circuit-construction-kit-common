@@ -6,7 +6,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -34,16 +34,14 @@ define( function( require ) {
 
     // Carousel was optimized for items of equal size.  To get equal spacing between objects, we create our own pages
     // see https://github.com/phetsims/circuit-construction-kit-dc/issues/91
-    const pages = _.chunk( circuitElementToolNodes, ITEMS_PER_PAGE ).map( function( elements ) {
-      return new VBox( { children: elements } );
-    } );
+    const pages = _.chunk( circuitElementToolNodes, ITEMS_PER_PAGE ).map( elements => new VBox( { children: elements } ) );
 
     // The schematic and lifelike icons have different dimensions, so update the spacing when the view type changes
-    viewTypeProperty.link( function() {
+    viewTypeProperty.link( () => {
 
       // Track the spacings so that any non-filled pages can take the average spacing of the other pages
       const spacings = [];
-      pages.forEach( function( page ) {
+      pages.forEach( page => {
 
         // Zero out the spacing so we can compute the height without any spacing
         page.setSpacing( 0 );
@@ -59,7 +57,7 @@ define( function( require ) {
       } );
       const averageSpacing = _.sum( spacings ) / spacings.length;
 
-      pages.forEach( function( page ) {
+      pages.forEach( page => {
         if ( page.children.length !== ITEMS_PER_PAGE ) {
           page.setSpacing( averageSpacing );
         }
@@ -68,7 +66,7 @@ define( function( require ) {
 
     // Make sure that non-filled pages have the same top
     const alignGroup = new AlignGroup();
-    const alignedPages = pages.map( function( page ) { return alignGroup.createBox( page, { yAlign: 'top' } ); } );
+    const alignedPages = pages.map( page => alignGroup.createBox( page, { yAlign: 'top' } ) );
 
     // create the carousel
     this.carousel = new Carousel( alignedPages, {

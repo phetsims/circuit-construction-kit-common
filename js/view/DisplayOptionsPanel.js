@@ -6,7 +6,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -60,12 +60,10 @@ define( function( require ) {
      * @param {Tandem} tandem
      * @returns {AquaRadioButton}
      */
-    const createRadioButton = function( currentType, node, tandem ) {
-      return new AquaRadioButton( currentTypeProperty, currentType, node, {
-        radius: 7,
-        tandem: tandem
-      } );
-    };
+    const createRadioButton = ( currentType, node, tandem ) => new AquaRadioButton( currentTypeProperty, currentType, node, {
+      radius: 7,
+      tandem: tandem
+    } );
 
     const textIconSpacing = 11;
 

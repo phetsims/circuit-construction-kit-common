@@ -6,7 +6,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -35,18 +35,14 @@ define( function( require ) {
       in: false,
       touchAreaXDilation: BUTTON_SPACING / 2,
       touchAreaYDilation: BUTTON_SPACING / 2,
-      listener: function() {
-        selectedZoomProperty.set( ZOOMED_OUT );
-      },
+      listener: () => selectedZoomProperty.set( ZOOMED_OUT ),
       tandem: options.tandem.createTandem( 'zoomOutButton' )
     } );
     const zoomInButton = new ZoomButton( {
       in: true,
       touchAreaXDilation: BUTTON_SPACING / 2,
       touchAreaYDilation: BUTTON_SPACING / 2,
-      listener: function() {
-        selectedZoomProperty.set( ZOOMED_IN );
-      },
+      listener: () => selectedZoomProperty.set( ZOOMED_IN ),
       tandem: options.tandem.createTandem( 'zoomInButton' )
     } );
     options.children = [
@@ -54,7 +50,7 @@ define( function( require ) {
       zoomInButton
     ];
     HBox.call( this, options );
-    selectedZoomProperty.link( function( zoomLevel ) {
+    selectedZoomProperty.link( zoomLevel => {
       zoomInButton.setEnabled( zoomLevel === ZOOMED_OUT );
       zoomOutButton.setEnabled( zoomLevel === ZOOMED_IN );
     } );

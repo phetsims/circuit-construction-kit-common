@@ -6,7 +6,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -51,7 +51,7 @@ define( function( require ) {
       fill: Color.WHITE
     } );
 
-    textProperty.link( function( text ) {
+    textProperty.link( text => {
       readout.setText( text );
       if ( text === questionMarkString ) {
 

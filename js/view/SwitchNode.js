@@ -5,7 +5,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -155,14 +155,12 @@ define( function( require ) {
    */
   function SwitchNode( screenView, circuitLayerNode, circuitSwitch, viewTypeProperty, tandem, options ) {
 
-    const self = this;
-
     // @public (read-only) {Switch} - the Switch rendered by this Node
     this.circuitSwitch = circuitSwitch;
 
     const lifelikeNode = new Node();
     const schematicNode = new Node();
-    const closeListener = function( closed ) {
+    const closeListener = closed => {
       lifelikeNode.children = [ closed ? lifelikeClosedImage : lifelikeOpenImage ];
       schematicNode.children = [ closed ? schematicClosedImage : schematicOpenImage ];
     };
@@ -183,10 +181,10 @@ define( function( require ) {
 
     // When the user taps the switch, toggle whether it is open or closed.
     const buttonListener = new ButtonListener( {
-      down: function( event ) {
+      down: event => {
         downPoint = circuitLayerNode.globalToLocalPoint( event.pointer.point );
       },
-      fire: function( event ) {
+      fire: event => {
 
         // Measure how far the switch was dragged in CircuitLayerNode coordinates (if any)
         const distance = circuitLayerNode.globalToLocalPoint( event.pointer.point ).distance( downPoint );
@@ -207,9 +205,9 @@ define( function( require ) {
     );
 
     // @private {function} - clean up resources when no longer used.
-    this.disposeSwitchNode = function() {
+    this.disposeSwitchNode = () => {
       circuitSwitch.closedProperty.unlink( closeListener );
-      screenView && self.contentNode.removeInputListener( buttonListener );
+      screenView && this.contentNode.removeInputListener( buttonListener );
 
       // Make sure the lifelikeNode and schematicNode are not listed as parents for their children because the children
       // (images) persist.

@@ -6,7 +6,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -54,7 +54,6 @@ define( function( require ) {
    * @constructor
    */
   function AmmeterNode( ammeter, circuitLayerNode, tandem, options ) {
-    const self = this;
     this.circuitLayerNode = circuitLayerNode;
     options = _.extend( {
 
@@ -90,7 +89,7 @@ define( function( require ) {
     const probeTextNode = new ProbeTextNode(
       currentReadoutProperty, options.showResultsProperty, currentString, tandem.createTandem( 'probeTextNode' ), {
         centerX: ammeterBodyImage.width / 2,
-        centerY: ammeterBodyImage.height / 2+7 // adjust for the top notch design
+        centerY: ammeterBodyImage.height / 2 + 7 // adjust for the top notch design
       } );
 
     const bodyNode = new Image( ammeterBodyImage, {
@@ -123,7 +122,7 @@ define( function( require ) {
     } );
 
     // When the body position changes, update the body node and the wire
-    ammeter.bodyPositionProperty.link( function( bodyPosition ) {
+    ammeter.bodyPositionProperty.link( bodyPosition => {
       bodyNode.centerTop = bodyPosition;
       wireNode.setBodyPosition( bodyNode.centerTop.plusXY( 0, PROBE_CONNECTION_POINT_DY ) );
       if ( ammeter.draggingProbesWithBodyProperty.get() ) {
@@ -132,9 +131,9 @@ define( function( require ) {
     } );
 
     // When the probe position changes, update the probe node and the wire
-    ammeter.probePositionProperty.link( function( probePosition ) {
-      self.probeNode.centerTop = probePosition;
-      wireNode.setProbePosition( self.probeNode.centerBottom );
+    ammeter.probePositionProperty.link( probePosition => {
+      this.probeNode.centerTop = probePosition;
+      wireNode.setProbePosition( this.probeNode.centerBottom );
     } );
 
     if ( !options.isIcon ) {
@@ -160,12 +159,12 @@ define( function( require ) {
 
         // adds support for zoomed coordinate frame, see
         // https://github.com/phetsims/circuit-construction-kit-common/issues/301
-        targetNode: self
+        targetNode: this
       } );
       bodyNode.addInputListener( this.dragHandler );
-      options.visibleBoundsProperty.link( function( visibleBounds ) {
+      options.visibleBoundsProperty.link( visibleBounds => {
         const erodedDragBounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
-        self.dragHandler.dragBounds = erodedDragBounds;
+        this.dragHandler.dragBounds = erodedDragBounds;
         probeDragHandler.dragBounds = erodedDragBounds;
       } );
       this.probeNode.addInputListener( probeDragHandler );
@@ -173,11 +172,11 @@ define( function( require ) {
       /**
        * Detection for ammeter probe + circuit intersection is done in the view since view bounds are used
        */
-      const updateAmmeter = function() {
+      const updateAmmeter = () => {
 
         // Skip work when ammeter is not out, to improve performance.
         if ( ammeter.visibleProperty.get() ) {
-          const current = self.getCurrent( self.probeNode );
+          const current = this.getCurrent( this.probeNode );
           ammeter.currentProperty.set( current );
         }
       };

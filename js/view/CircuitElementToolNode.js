@@ -6,7 +6,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -38,7 +38,6 @@ define( function( require ) {
    * @constructor
    */
   function CircuitElementToolNode( labelText, showLabelsProperty, viewTypeProperty, circuit, globalToCircuitLayerNodePoint, iconNode, maxNumber, count, createElement, options ) {
-    const self = this;
     const labelNode = new Text( labelText, { fontSize: 12, maxWidth: TOOLBOX_ICON_SIZE } );
     showLabelsProperty.linkAttribute( labelNode, 'visible' );
     options = _.extend( {
@@ -56,7 +55,7 @@ define( function( require ) {
     }, options );
     VBox.call( this, options );
 
-    this.addInputListener( SimpleDragHandler.createForwardingListener( function( event ) {
+    this.addInputListener( SimpleDragHandler.createForwardingListener( event => {
 
       // initial position of the pointer in the coordinate frame of the CircuitLayerNode
       const viewPosition = globalToCircuitLayerNodePoint( event.pointer.point );
@@ -81,21 +80,19 @@ define( function( require ) {
       allowTouchSnag: true
     } ) );
 
-    circuit.circuitElements.lengthProperty.link( function() {
-      self.visible = count() < maxNumber;
-    } );
+    circuit.circuitElements.lengthProperty.link( () => this.setVisible( count() < maxNumber ) );
 
     // Update touch areas when lifelike/schematic changes
-    viewTypeProperty.link( function() {
+    viewTypeProperty.link( () => {
 
       // Expand touch area around text, see https://github.com/phetsims/circuit-construction-kit-dc/issues/82
-      self.touchArea = self.localBounds.withOffsets(
+      this.touchArea = this.localBounds.withOffsets(
         options.touchAreaExpansionLeft,
         options.touchAreaExpansionTop,
         options.touchAreaExpansionRight,
         options.touchAreaExpansionBottom
       );
-      self.mouseArea = self.touchArea;
+      this.mouseArea = this.touchArea;
     } );
   }
 

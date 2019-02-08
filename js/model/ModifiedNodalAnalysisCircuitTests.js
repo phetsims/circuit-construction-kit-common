@@ -5,7 +5,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -15,12 +15,10 @@ define( function( require ) {
 
   QUnit.module( 'ModifiedNodalAnalysisCircuit' );
 
-  const approxEquals = function( a, b ) {
-    return Math.abs( a - b ) < 1E-6;
-  };
+  const approxEquals = ( a, b ) => Math.abs( a - b ) < 1E-6;
 
   QUnit.test( 'test_battery_resistor_circuit_should_have_correct_voltages_and_currents_for_a_simple_circuit',
-    function( assert ) {
+    assert => {
       const battery = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, 4.0 );
       const resistor = new ModifiedNodalAnalysisCircuitElement( 1, 0, null, 4.0 );
       const circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [ resistor ], [] );
@@ -37,7 +35,7 @@ define( function( require ) {
     } );
 
   QUnit.test( 'test_battery_resistor_circuit_should_have_correct_voltages_and_currents_for_a_simple_circuit_ii',
-    function( assert ) {
+    assert => {
       const battery = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, 4.0 );
       const resistor = new ModifiedNodalAnalysisCircuitElement( 1, 0, null, 2.0 );
       const circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [ resistor ], [] );
@@ -50,7 +48,7 @@ define( function( require ) {
     } );
 
 
-  QUnit.test( 'test_should_be_able_to_obtain_current_for_a_resistor', function( assert ) {
+  QUnit.test( 'test_should_be_able_to_obtain_current_for_a_resistor', assert => {
     const battery = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, 4.0 );
     const resistor = new ModifiedNodalAnalysisCircuitElement( 1, 0, null, 2.0 );
     const solution = new ModifiedNodalAnalysisCircuit( [ battery ], [ resistor ], [] ).solve();
@@ -66,7 +64,7 @@ define( function( require ) {
     );
   } );
 
-  QUnit.test( 'test_an_unconnected_resistor_shouldnt_cause_problems', function( assert ) {
+  QUnit.test( 'test_an_unconnected_resistor_shouldnt_cause_problems', assert => {
     const battery = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, 4.0 );
     const resistor1 = new ModifiedNodalAnalysisCircuitElement( 1, 0, null, 4.0 );
     const resistor2 = new ModifiedNodalAnalysisCircuitElement( 2, 3, null, 100 );
@@ -83,7 +81,7 @@ define( function( require ) {
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
   } );
 
-  QUnit.test( 'test_current_source_should_provide_current', function( assert ) {
+  QUnit.test( 'test_current_source_should_provide_current', assert => {
     const currentSource = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, 10 );
     const resistor = new ModifiedNodalAnalysisCircuitElement( 1, 0, null, 4 );
     const circuit = new ModifiedNodalAnalysisCircuit( [], [ resistor ], [ currentSource ] );
@@ -99,7 +97,7 @@ define( function( require ) {
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
   } );
 
-  QUnit.test( 'test_current_should_be_reversed_when_voltage_is_reversed', function( assert ) {
+  QUnit.test( 'test_current_should_be_reversed_when_voltage_is_reversed', assert => {
     const battery = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, -4 );
     const resistor = new ModifiedNodalAnalysisCircuitElement( 1, 0, null, 2 );
     const circuit = new ModifiedNodalAnalysisCircuit( [ battery ], [ resistor ], [] );
@@ -118,7 +116,7 @@ define( function( require ) {
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
   } );
 
-  QUnit.test( 'test_two_batteries_in_series_should_have_voltage_added', function( assert ) {
+  QUnit.test( 'test_two_batteries_in_series_should_have_voltage_added', assert => {
     const battery1 = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, -4 );
     const battery2 = new ModifiedNodalAnalysisCircuitElement( 1, 2, null, -4 );
     const resistor1 = new ModifiedNodalAnalysisCircuitElement( 2, 0, null, 2.0 );
@@ -137,7 +135,7 @@ define( function( require ) {
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
   } );
 
-  QUnit.test( 'test_two_resistors_in_series_should_have_resistance_added', function( assert ) {
+  QUnit.test( 'test_two_resistors_in_series_should_have_resistance_added', assert => {
     const battery = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, 5.0 );
     const resistor1 = new ModifiedNodalAnalysisCircuitElement( 1, 2, null, 10.0 );
     const resistor2 = new ModifiedNodalAnalysisCircuitElement( 2, 0, null, 10.0 );
@@ -157,7 +155,7 @@ define( function( require ) {
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
   } );
 
-  QUnit.test( 'test_A_resistor_with_one_node_unconnected_shouldnt_cause_problems', function( assert ) {
+  QUnit.test( 'test_A_resistor_with_one_node_unconnected_shouldnt_cause_problems', assert => {
     const battery = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, 4.0 );
     const resistor1 = new ModifiedNodalAnalysisCircuitElement( 1, 0, null, 4.0 );
     const resistor2 = new ModifiedNodalAnalysisCircuitElement( 0, 2, null, 100.0 );
@@ -177,7 +175,7 @@ define( function( require ) {
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
   } );
 
-  QUnit.test( 'test_an_unconnected_resistor_shouldnt_cause_problems', function( assert ) {
+  QUnit.test( 'test_an_unconnected_resistor_shouldnt_cause_problems', assert => {
     const battery = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, 4.0 );
     const resistor1 = new ModifiedNodalAnalysisCircuitElement( 1, 0, null, 4.0 );
     const resistor2 = new ModifiedNodalAnalysisCircuitElement( 2, 3, null, 100.0 );
@@ -197,7 +195,7 @@ define( function( require ) {
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
   } );
 
-  QUnit.test( 'test_should_handle_resistors_with_no_resistance', function( assert ) {
+  QUnit.test( 'test_should_handle_resistors_with_no_resistance', assert => {
     const battery = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, 5 );
     const resistor = new ModifiedNodalAnalysisCircuitElement( 2, 0, null, 0 );
     const resistor0 = new ModifiedNodalAnalysisCircuitElement( 1, 2, null, 10 );
@@ -218,7 +216,7 @@ define( function( require ) {
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
   } );
 
-  QUnit.test( 'test_resistors_in_parallel_should_have_harmonic_mean_of_resistance', function( assert ) {
+  QUnit.test( 'test_resistors_in_parallel_should_have_harmonic_mean_of_resistance', assert => {
     const V = 9.0;
     const R1 = 5.0;
     const R2 = 5.0;

@@ -5,7 +5,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -40,14 +40,11 @@ define( function( require ) {
 
   /**
    * Utility function for creating a panel for the sensor body
+   * Rasterize so it can be rendered in WebGL, see https://github.com/phetsims/circuit-construction-kit-dc/issues/67
    * @param {Object} options
    * @returns {Rectangle}
    */
-  const createPanel = function( options ) {
-
-    // Rasterize so it can be rendered in WebGL, see https://github.com/phetsims/circuit-construction-kit-dc/issues/67
-    return new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, options ).toDataURLNodeSynchronous();
-  };
+  const createPanel = options => new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, options ).toDataURLNodeSynchronous();
 
   const orangeBackgroundPanel = createPanel( { cornerRadius: CORNER_RADIUS, fill: ORANGE } );
   const blackBorder = createPanel( {
@@ -65,7 +62,6 @@ define( function( require ) {
    * @constructor
    */
   function SeriesAmmeterNode( screenView, circuitLayerNode, seriesAmmeter, tandem, options ) {
-    const self = this;
     options = options || {};
 
     // Charges go behind this panel to give the appearance they go through the ammeter
@@ -80,7 +76,7 @@ define( function( require ) {
     /**
      * Update the text in the numeric readout text box.  Shows '?' if disconnected.
      */
-    const updateText = function() {
+    const updateText = () => {
       let readout = questionMarkString;
 
       // If it is not an icon and connected at both sides, show the current, otherwise show '?'
@@ -100,8 +96,8 @@ define( function( require ) {
       readoutText.setText( readout );
 
       // Center the text in the panel
-      readoutText.centerX = (maxBounds.width + textPanelMarginX * 2) / 2;
-      readoutText.centerY = (maxBounds.height + textPanelMarginY * 2) / 2;
+      readoutText.centerX = ( maxBounds.width + textPanelMarginX * 2 ) / 2;
+      readoutText.centerY = ( maxBounds.height + textPanelMarginY * 2 ) / 2;
     };
 
     seriesAmmeter.currentProperty.link( updateText );
@@ -189,15 +185,15 @@ define( function( require ) {
     this.isIcon = options.isIcon;
 
     // @private {function}
-    this.disposeSeriesAmmeterNode = function() {
+    this.disposeSeriesAmmeterNode = () => {
       seriesAmmeter.currentProperty.unlink( updateText );
       seriesAmmeter.startVertexProperty.unlink( updateText );
       seriesAmmeter.endVertexProperty.unlink( updateText );
       if ( !this.isIcon ) {
-        circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.removeChild( self.frontPanelContainer );
+        circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.removeChild( this.frontPanelContainer );
       }
       lifelikeNode.dispose();
-      self.frontPanelContainer.dispose();
+      this.frontPanelContainer.dispose();
       readoutPanel.dispose();
       circuitLayerNode && circuitLayerNode.circuit.circuitChangedEmitter.removeListener( updateText );
     };

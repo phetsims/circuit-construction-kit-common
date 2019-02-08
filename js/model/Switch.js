@@ -5,7 +5,7 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
@@ -39,7 +39,6 @@ define( function( require ) {
       // See https://github.com/phetsims/circuit-construction-kit-dc/issues/132
       isSizeChangedOnViewChange: false
     } );
-    const self = this;
 
     // @public (read-only) {NumberProperty} the resistance in ohms
     this.resistanceProperty = new NumberProperty( 0 );
@@ -47,8 +46,8 @@ define( function( require ) {
     // @public (read-only) {BooleanProperty} whether the switch is closed (and current can flow through it)
     this.closedProperty = new BooleanProperty( options.closed );
 
-    this.closedProperty.link( function( closed ) {
-      self.resistanceProperty.value = closed ? 0 : CCKCConstants.MAX_RESISTANCE;
+    this.closedProperty.link( closed => {
+      this.resistanceProperty.value = closed ? 0 : CCKCConstants.MAX_RESISTANCE;
     } );
   }
 
