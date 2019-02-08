@@ -10,7 +10,6 @@ define( require => {
 
   // modules
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Text = require( 'SCENERY/nodes/Text' );
   const TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
@@ -22,57 +21,56 @@ define( require => {
   // constants
   const MAX_TEXT_WIDTH = 300;
 
-  /**
-   * @param {Circuit} circuit - the circuit from which the switch can be removed when the trash button is pressed
-   * @param {Switch} circuitSwitch - the switch
-   * @param {Tandem} tandem
-   * @constructor
-   */
-  function SwitchReadoutNode( circuit, circuitSwitch, tandem ) {
+  class SwitchReadoutNode extends Node {
 
-    // Create both texts and display both so they remain aligned as the value changes
-    const closedText = new Text( theSwitchIsClosedString, {
-      fontSize: 24,
-      maxWidth: MAX_TEXT_WIDTH
-    } );
-    const openText = new Text( theSwitchIsOpenString, {
-      fontSize: 24,
-      maxWidth: MAX_TEXT_WIDTH
-    } );
+    /**
+     * @param {Circuit} circuit - the circuit from which the switch can be removed when the trash button is pressed
+     * @param {Switch} circuitSwitch - the switch
+     * @param {Tandem} tandem
+     */
+    constructor( circuit, circuitSwitch, tandem ) {
 
-    const maxWidth = Math.max( closedText.width, openText.width );
+      // Create both texts and display both so they remain aligned as the value changes
+      const closedText = new Text( theSwitchIsClosedString, {
+        fontSize: 24,
+        maxWidth: MAX_TEXT_WIDTH
+      } );
+      const openText = new Text( theSwitchIsOpenString, {
+        fontSize: 24,
+        maxWidth: MAX_TEXT_WIDTH
+      } );
 
-    const closedListener = closed => {
-      closedText.visible = closed;
-      openText.visible = !closed;
-    };
-    circuitSwitch.closedProperty.link( closedListener );
+      const maxWidth = Math.max( closedText.width, openText.width );
 
-    // Show a trash button to the right of the text
-    const trashButton = new TrashButton( circuit, circuitSwitch, tandem.createTandem( 'trashButton' ) ).mutate( {
-      left: maxWidth + 10,
-      centerY: closedText.centerY
-    } );
+      const closedListener = closed => {
+        closedText.visible = closed;
+        openText.visible = !closed;
+      };
+      circuitSwitch.closedProperty.link( closedListener );
 
-    Node.call( this, {
-      children: [ closedText, openText, trashButton ]
-    } );
+      // Show a trash button to the right of the text
+      const trashButton = new TrashButton( circuit, circuitSwitch, tandem.createTandem( 'trashButton' ) ).mutate( {
+        left: maxWidth + 10,
+        centerY: closedText.centerY
+      } );
 
-    // @private {function}
-    this.disposeSwitchReadoutNode = () => circuitSwitch.closedProperty.unlink( closedListener );
-  }
+      super( {
+        children: [ closedText, openText, trashButton ]
+      } );
 
-  circuitConstructionKitCommon.register( 'SwitchReadoutNode', SwitchReadoutNode );
-
-  return inherit( Node, SwitchReadoutNode, {
+      // @private {function}
+      this.disposeSwitchReadoutNode = () => circuitSwitch.closedProperty.unlink( closedListener );
+    }
 
     /**
      * @public - dispose when no longer used
      * @override
      */
-    dispose: function() {
+    dispose() {
       this.disposeSwitchReadoutNode();
-      Node.prototype.dispose.call( this );
+      super.dispose();
     }
-  } );
+  }
+
+  return circuitConstructionKitCommon.register( 'SwitchReadoutNode', SwitchReadoutNode );
 } );

@@ -15,7 +15,6 @@ define( require => {
   const CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
   const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   const Color = require( 'SCENERY/util/Color' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const Line = require( 'SCENERY/nodes/Line' );
   const LinearGradient = require( 'SCENERY/util/LinearGradient' );
   const LineStyles = require( 'KITE/util/LineStyles' );
@@ -137,210 +136,214 @@ define( require => {
     return Shape.lineSegment( touchAreaStart, touchAreaEnd ).getStrokedShape( TOUCH_AREA_LINE_STYLES );
   };
 
-  /**
-   * @param {CCKCScreenView|null} screenView - null means it's an icon
-   * @param {CircuitLayerNode} circuitLayerNode
-   * @param {Wire} wire
-   * @param {Property.<CircuitElementViewType>} viewTypeProperty
-   * @param {Tandem} tandem
-   * @constructor
-   */
-  function WireNode( screenView, circuitLayerNode, wire, viewTypeProperty, tandem ) {
-
-    // @private {Property.<CircuitElementViewType>}
-    this.viewTypeProperty = viewTypeProperty;
-
-    // @private {CircuitLayerNode}
-    this.circuitLayerNode = circuitLayerNode;
-
-    // @public (read-only) {Wire}
-    this.wire = wire;
-
-    // @private {Node} - the node that shows the yellow highlight for the node when selected
-    this.highlightNode = new Path( null, {
-      stroke: CCKCConstants.HIGHLIGHT_COLOR,
-      lineWidth: CCKCConstants.HIGHLIGHT_LINE_WIDTH,
-      pickable: false,
-      visible: false
-    } );
-
-    // @private - the node that displays the main line (for both schematic and lifelike).  This does not include
-    // the rounded caps for the lifelike view
-    this.lineNode = new Node();
-
-    // @private
-    this.lineNodeParent = new Node( {
-      children: [ this.lineNode ],
-      cursor: 'pointer'
-    } );
-    const highlightNodeParent = new Node( {
-      children: [ this.highlightNode ]
-    } );
-
-    // @private
-    this.startCapParent = new Node( {
-      children: [ lifelikeRoundedCapNormal ]
-    } );
-
-    // @private
-    this.endCapParent = new Node( {
-      children: [ lifelikeRoundedCapNormal ]
-    } );
-
-    circuitLayerNode && circuitLayerNode.highlightLayer.addChild( highlightNodeParent );
-
-    const circuit = circuitLayerNode && circuitLayerNode.circuit;
-    CircuitElementNode.call( this, wire, circuit, {
-      children: [
-        this.startCapParent,
-        this.endCapParent,
-        this.lineNodeParent
-      ]
-    } );
+  class WireNode extends CircuitElementNode {
 
     /**
-     * When the view type changes (lifelike vs schematic), update the node
+     * @param {CCKCScreenView|null} screenView - null means it's an icon
+     * @param {CircuitLayerNode} circuitLayerNode
+     * @param {Wire} wire
+     * @param {Property.<CircuitElementViewType>} viewTypeProperty
+     * @param {Tandem} tandem
      */
-    const markAsDirty = () => {
-      if ( this.disposed ) {
-        return;
-      }
-      this.markAsDirty();
+    constructor( screenView, circuitLayerNode, wire, viewTypeProperty, tandem ) {
 
-      // For the icon, we must update right away since no step() is called
-      if ( !circuitLayerNode ) {
-        this.updateRender();
-      }
-    };
-
-    viewTypeProperty.link( markAsDirty );
-
-    /**
-     * Update whether the WireNode is pickable
-     * @param {boolean} interactive
-     */
-    const updatePickable = interactive => {
-      this.pickable = interactive;
-    };
-    wire.interactiveProperty.link( updatePickable );
-
-    // When the start vertex changes to a different instance (say when vertices are soldered together), unlink the
-    // old one and link to the new one.
-    const doUpdateTransform = ( newVertex, oldVertex ) => {
-      oldVertex && oldVertex.positionProperty.unlink( markAsDirty );
-      newVertex.positionProperty.link( markAsDirty );
-    };
-    wire.startVertexProperty.link( doUpdateTransform );
-    wire.endVertexProperty.link( doUpdateTransform );
-
-    // Keep track of the start point to see if it was dragged or tapped to be selected
-    let startPoint = null;
-
-    // Keep track of whether it was dragged
-    let dragged = false;
-
-    if ( screenView ) {
-
-      // Input listener for dragging the body of the wire, to translate it.
-      this.dragHandler = new SimpleDragHandler( {
-        allowTouchSnag: true,
-        tandem: tandem.createTandem( 'dragHandler' ),
-        start: event => {
-          if ( wire.interactiveProperty.get() ) {
-
-            // Start drag by starting a drag on start and end vertices
-            circuitLayerNode.startDragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
-            circuitLayerNode.startDragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
-            dragged = false;
-            startPoint = event.pointer.point;
-          }
-        },
-        drag: event => {
-          if ( wire.interactiveProperty.get() ) {
-
-            // Drag by translating both of the vertices
-            circuitLayerNode.dragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
-            circuitLayerNode.dragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
-            dragged = true;
-          }
-        },
-        end: event => {
-          CircuitElementNode.prototype.endDrag.call( this, event, this, [
-              wire.startVertexProperty.get(),
-              wire.endVertexProperty.get()
-            ],
-            screenView, circuitLayerNode, startPoint, dragged );
-        }
+      // @private
+      const startCapParent = new Node( {
+        children: [ lifelikeRoundedCapNormal ]
       } );
-      this.dragHandler.startDrag = function( event ) {
-        if ( circuitLayerNode.canDragVertex( wire.startVertexProperty.get() ) && circuitLayerNode.canDragVertex( wire.endVertexProperty.get() ) ) {
-          circuitLayerNode.setVerticesDragging( wire.startVertexProperty.get() );
-          circuitLayerNode.setVerticesDragging( wire.endVertexProperty.get() );
-          SimpleDragHandler.prototype.startDrag.call( this, event ); // Note this refers to this listener
+
+      // @private
+      const endCapParent = new Node( {
+        children: [ lifelikeRoundedCapNormal ]
+      } );
+
+      // @private {Node} - the node that shows the yellow highlight for the node when selected
+      const highlightNode = new Path( null, {
+        stroke: CCKCConstants.HIGHLIGHT_COLOR,
+        lineWidth: CCKCConstants.HIGHLIGHT_LINE_WIDTH,
+        pickable: false,
+        visible: false
+      } );
+
+      // @private - the node that displays the main line (for both schematic and lifelike).  This does not include
+      // the rounded caps for the lifelike view
+      const lineNode = new Node();
+
+      // @private
+      const lineNodeParent = new Node( {
+        children: [ lineNode ],
+        cursor: 'pointer'
+      } );
+      const highlightNodeParent = new Node( {
+        children: [ highlightNode ]
+      } );
+
+      circuitLayerNode && circuitLayerNode.highlightLayer.addChild( highlightNodeParent );
+
+      const circuit = circuitLayerNode && circuitLayerNode.circuit;
+      super( wire, circuit, {
+        children: [
+          startCapParent,
+          endCapParent,
+          lineNodeParent
+        ]
+      } );
+
+      // @private {Property.<CircuitElementViewType>}
+      this.viewTypeProperty = viewTypeProperty;
+
+      // @private {CircuitLayerNode}
+      this.circuitLayerNode = circuitLayerNode;
+
+      // @public (read-only) {Wire}
+      this.wire = wire;
+
+      // @private
+      this.startCapParent = startCapParent;
+      this.endCapParent = endCapParent;
+      this.lineNodeParent = lineNodeParent;
+      this.lineNode = lineNode;
+      this.highlightNode = highlightNode;
+
+      /**
+       * When the view type changes (lifelike vs schematic), update the node
+       */
+      const markAsDirty = () => {
+        if ( this.disposed ) {
+          return;
+        }
+        this.markAsDirty();
+
+        // For the icon, we must update right away since no step() is called
+        if ( !circuitLayerNode ) {
+          this.updateRender();
         }
       };
-      this.addInputListener( this.dragHandler );
 
-      circuitLayerNode.circuit.selectedCircuitElementProperty.link( markAsDirty );
-    }
+      viewTypeProperty.link( markAsDirty );
 
-    /**
-     * Move the wire element to the back of the view when connected to another circuit element
-     * @private
-     */
-    const moveToBack = () => {
+      /**
+       * Update whether the WireNode is pickable
+       * @param {boolean} interactive
+       */
+      const updatePickable = interactive => {
+        this.pickable = interactive;
+      };
+      wire.interactiveProperty.link( updatePickable );
 
-      // Components outside the black box do not move in back of the overlay
-      if ( wire.interactiveProperty.get() ) {
+      // When the start vertex changes to a different instance (say when vertices are soldered together), unlink the
+      // old one and link to the new one.
+      const doUpdateTransform = ( newVertex, oldVertex ) => {
+        oldVertex && oldVertex.positionProperty.unlink( markAsDirty );
+        newVertex.positionProperty.link( markAsDirty );
+      };
+      wire.startVertexProperty.link( doUpdateTransform );
+      wire.endVertexProperty.link( doUpdateTransform );
 
-        // Connected wires should always be behind the solder and circuit elements
-        this.moveToBack();
+      // Keep track of the start point to see if it was dragged or tapped to be selected
+      let startPoint = null;
+
+      // Keep track of whether it was dragged
+      let dragged = false;
+
+      if ( screenView ) {
+
+        // Input listener for dragging the body of the wire, to translate it.
+        this.dragHandler = new SimpleDragHandler( {
+          allowTouchSnag: true,
+          tandem: tandem.createTandem( 'dragHandler' ),
+          start: event => {
+            if ( wire.interactiveProperty.get() ) {
+
+              // Start drag by starting a drag on start and end vertices
+              circuitLayerNode.startDragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
+              circuitLayerNode.startDragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
+              dragged = false;
+              startPoint = event.pointer.point;
+            }
+          },
+          drag: event => {
+            if ( wire.interactiveProperty.get() ) {
+
+              // Drag by translating both of the vertices
+              circuitLayerNode.dragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
+              circuitLayerNode.dragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
+              dragged = true;
+            }
+          },
+          end: event => {
+            CircuitElementNode.prototype.endDrag.call( this, event, this, [
+                wire.startVertexProperty.get(),
+                wire.endVertexProperty.get()
+              ],
+              screenView, circuitLayerNode, startPoint, dragged );
+          }
+        } );
+        this.dragHandler.startDrag = function( event ) {
+          if ( circuitLayerNode.canDragVertex( wire.startVertexProperty.get() ) && circuitLayerNode.canDragVertex( wire.endVertexProperty.get() ) ) {
+            circuitLayerNode.setVerticesDragging( wire.startVertexProperty.get() );
+            circuitLayerNode.setVerticesDragging( wire.endVertexProperty.get() );
+            SimpleDragHandler.prototype.startDrag.call( this, event ); // Note this refers to this listener
+          }
+        };
+        this.addInputListener( this.dragHandler );
+
+        circuitLayerNode.circuit.selectedCircuitElementProperty.link( markAsDirty );
       }
-    };
-    wire.connectedEmitter.addListener( moveToBack );
 
-    /**
-     * @private - dispose the wire node
-     */
-    this.disposeWireNode = () => {
-      this.dragHandler.interrupt();
+      /**
+       * Move the wire element to the back of the view when connected to another circuit element
+       * @private
+       */
+      const moveToBack = () => {
 
-      wire.startVertexProperty.unlink( doUpdateTransform );
-      wire.endVertexProperty.unlink( doUpdateTransform );
+        // Components outside the black box do not move in back of the overlay
+        if ( wire.interactiveProperty.get() ) {
 
-      circuitLayerNode && circuitLayerNode.circuit.selectedCircuitElementProperty.unlink( markAsDirty );
-      wire.interactiveProperty.unlink( updatePickable );
+          // Connected wires should always be behind the solder and circuit elements
+          this.moveToBack();
+        }
+      };
+      wire.connectedEmitter.addListener( moveToBack );
 
-      wire.startPositionProperty.unlink( markAsDirty );
-      wire.endPositionProperty.unlink( markAsDirty );
+      /**
+       * @private - dispose the wire node
+       */
+      this.disposeWireNode = () => {
+        this.dragHandler.interrupt();
 
-      wire.connectedEmitter.removeListener( moveToBack );
+        wire.startVertexProperty.unlink( doUpdateTransform );
+        wire.endVertexProperty.unlink( doUpdateTransform );
 
-      circuitLayerNode && circuitLayerNode.highlightLayer.removeChild( highlightNodeParent );
+        circuitLayerNode && circuitLayerNode.circuit.selectedCircuitElementProperty.unlink( markAsDirty );
+        wire.interactiveProperty.unlink( updatePickable );
 
-      viewTypeProperty.unlink( markAsDirty );
+        wire.startPositionProperty.unlink( markAsDirty );
+        wire.endPositionProperty.unlink( markAsDirty );
 
-      this.lineNode.dispose();
-      this.highlightNode.dispose();
-      this.lineNodeParent.dispose();
-      highlightNodeParent.dispose();
-      this.startCapParent.dispose();
-      this.endCapParent.dispose();
-    };
+        wire.connectedEmitter.removeListener( moveToBack );
 
-    // For icons, update the end caps
-    !circuitLayerNode && this.updateRender();
-  }
+        circuitLayerNode && circuitLayerNode.highlightLayer.removeChild( highlightNodeParent );
 
-  circuitConstructionKitCommon.register( 'WireNode', WireNode );
+        viewTypeProperty.unlink( markAsDirty );
 
-  return inherit( CircuitElementNode, WireNode, {
+        this.lineNode.dispose();
+        this.highlightNode.dispose();
+        this.lineNodeParent.dispose();
+        highlightNodeParent.dispose();
+        this.startCapParent.dispose();
+        this.endCapParent.dispose();
+      };
+
+      // For icons, update the end caps
+      !circuitLayerNode && this.updateRender();
+    }
 
     /**
      * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
      * @protected - CCKCLightBulbNode calls updateRender for its child socket node
      */
-    updateRender: function() {
+    updateRender() {
       const view = this.viewTypeProperty.value;
       if ( view === CircuitElementViewType.LIFELIKE ) {
 
@@ -392,28 +395,29 @@ define( require => {
         }
       }
       this.touchArea = getTouchArea( this.wire );
-    },
+    }
 
     /**
      * Dispose the WireNode when it will no longer be used.
      * @public
      * @override
      */
-    dispose: function() {
+    dispose() {
       this.disposeWireNode();
-      CircuitElementNode.prototype.dispose.call( this );
+      super.dispose();
     }
-  }, {
+  }
 
-    /**
-     * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-     * @public {Array.<Image>}
-     */
-    webglSpriteNodes: [
-      BLACK_LINE_NODE,
-      lifelikeNodeNormal,
-      lifelikeNodeReversed,
-      lifelikeRoundedCapNormal
-    ]
-  } );
+  /**
+   * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
+   * @public {Array.<Image>}
+   */
+  WireNode.webglSpriteNodes = [
+    BLACK_LINE_NODE,
+    lifelikeNodeNormal,
+    lifelikeNodeReversed,
+    lifelikeRoundedCapNormal
+  ];
+
+  return circuitConstructionKitCommon.register( 'WireNode', WireNode );
 } );

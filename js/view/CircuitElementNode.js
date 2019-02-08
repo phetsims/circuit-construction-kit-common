@@ -12,117 +12,113 @@ define( require => {
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CircuitElementEditContainerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditContainerNode' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   const Node = require( 'SCENERY/nodes/Node' );
 
-  /**
-   * @param {CircuitElement} circuitElement - the CircuitElement to be rendered
-   * @param {Circuit|null} circuit - the circuit which the element can be removed from or null for icons
-   * @param {Object} [options]
-   * @constructor
-   */
-  function CircuitElementNode( circuitElement, circuit, options ) {
-
-    // @private (read-only) {Circuit|null} - the circuit which the element can be removed from or null for icons
-    this.circuit = circuit;
-
-    // @public (read-only) {CircuitElement} - the CircuitElement rendered by this node
-    this.circuitElement = circuitElement;
-
-    // @protected {SimpleDragHandler|null} - Supplied by subclasses so that events can be forwarded from the tool icons or null
-    // if rendering an icon
-    this.dragHandler = null;
-
-    options = _.extend( {
-
-      // keyboard navigation
-      tagName: 'div', // HTML tag name for representative element in the document, see Accessibility.js
-      focusable: true,
-      focusHighlight: 'invisible' // highlights are drawn by the simulation, invisible is deprecated don't use in future
-    }, options );
-
-    Node.call( this, options );
-
-    // keyboard listener so that delete or backspace deletes the element - must be disposed
-    const keyListener = {
-      keydown: event => {
-        const code = event.domEvent.keyCode;
-
-        // on delete or backspace, the focused circuit element should be deleted
-        if ( code === KeyboardUtil.KEY_DELETE || code === KeyboardUtil.KEY_BACKSPACE ) {
-
-          // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
-          // https://github.com/phetsims/circuit-construction-kit-common/issues/307
-          event.domEvent.preventDefault();
-
-          // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
-          if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
-            circuit.circuitElements.remove( circuitElement );
-          }
-        }
-      }
-    };
-    this.addInputListener( keyListener );
-
-    // @private {function[]}
-    this.disposeActions = [];
-
-    this.updateOpacityOnInteractiveChange();
+  class CircuitElementNode extends Node {
 
     /**
-     * When the object is created and dragged from the toolbox, the start drag method is forwarded through to start the
-     * dragging.
-     * @param event - scenery event
+     * @param {CircuitElement} circuitElement - the CircuitElement to be rendered
+     * @param {Circuit|null} circuit - the circuit which the element can be removed from or null for icons
+     * @param {Object} [options]
      */
-    const startDragListener = event => this.dragHandler.startDrag( event );
+    constructor( circuitElement, circuit, options ) {
 
-    // @private {function} - for disposal
-    this.disposeCircuitElementNode = () => {
+      options = _.extend( {
 
-      // remove the keyboard listener
-      this.removeInputListener( keyListener );
+        // keyboard navigation
+        tagName: 'div', // HTML tag name for representative element in the document, see Accessibility.js
+        focusable: true,
+        focusHighlight: 'invisible' // highlights are drawn by the simulation, invisible is deprecated don't use in future
+      }, options );
 
-      this.disposeActions.forEach( element => element() );
-      this.disposeActions.length = 0;
-    };
+      super( options );
 
-    circuitElement.startDragEmitter.addListener( startDragListener );
+      // @private (read-only) {Circuit|null} - the circuit which the element can be removed from or null for icons
+      this.circuit = circuit;
 
-    // @private {boolean} - Flag to indicate when updating view is necessary, in order to avoid duplicate work when both
-    // vertices move
-    this.dirty = true;
+      // @public (read-only) {CircuitElement} - the CircuitElement rendered by this node
+      this.circuitElement = circuitElement;
 
-    this.disposeActions.push( () => circuitElement.startDragEmitter.removeListener( startDragListener ) );
-  }
+      // @protected {SimpleDragHandler|null} - Supplied by subclasses so that events can be forwarded from the tool icons or null
+      // if rendering an icon
+      this.dragHandler = null;
 
-  circuitConstructionKitCommon.register( 'CircuitElementNode', CircuitElementNode );
+      // keyboard listener so that delete or backspace deletes the element - must be disposed
+      const keyListener = {
+        keydown: event => {
+          const code = event.domEvent.keyCode;
 
-  return inherit( Node, CircuitElementNode, {
+          // on delete or backspace, the focused circuit element should be deleted
+          if ( code === KeyboardUtil.KEY_DELETE || code === KeyboardUtil.KEY_BACKSPACE ) {
+
+            // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
+            // https://github.com/phetsims/circuit-construction-kit-common/issues/307
+            event.domEvent.preventDefault();
+
+            // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
+            if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
+              circuit.circuitElements.remove( circuitElement );
+            }
+          }
+        }
+      };
+      this.addInputListener( keyListener );
+
+      // @private {function[]}
+      this.disposeActions = [];
+
+      this.updateOpacityOnInteractiveChange();
+
+      /**
+       * When the object is created and dragged from the toolbox, the start drag method is forwarded through to start the
+       * dragging.
+       * @param event - scenery event
+       */
+      const startDragListener = event => this.dragHandler.startDrag( event );
+
+      // @private {function} - for disposal
+      this.disposeCircuitElementNode = () => {
+
+        // remove the keyboard listener
+        this.removeInputListener( keyListener );
+
+        this.disposeActions.forEach( element => element() );
+        this.disposeActions.length = 0;
+      };
+
+      circuitElement.startDragEmitter.addListener( startDragListener );
+
+      // @private {boolean} - Flag to indicate when updating view is necessary, in order to avoid duplicate work when both
+      // vertices move
+      this.dirty = true;
+
+      this.disposeActions.push( () => circuitElement.startDragEmitter.removeListener( startDragListener ) );
+    }
 
     /**
      * Mark dirty to batch changes, so that update can be done once in view step, if necessary
      * @public
      */
-    markAsDirty: function() {
+    markAsDirty() {
       this.dirty = true;
-    },
+    }
 
     /**
      * Dispose resources when no longer used.
      * @public
      * @override
      */
-    dispose: function() {
+    dispose() {
       this.disposeCircuitElementNode();
-      Node.prototype.dispose.call( this );
-    },
+      super.dispose();
+    }
 
     /**
      * When interactivity changes, update the opacity.  Overriden.
      * @public
      */
-    updateOpacityOnInteractiveChange: function() {
+    updateOpacityOnInteractiveChange() {
 
       // TODO (black-box-study): Replace this with grayscale if we keep it
       // TODO (black-box-study): @jonathonolson said: I've wished for a scenery-level grayscale/etc. filter. Let me know when you get close to doing this.
@@ -132,7 +128,7 @@ define( require => {
       this.circuitElement.interactiveProperty.link( interactivityChanged );
 
       this.disposeActions.push( () => this.circuitElement.interactiveProperty.unlink( interactivityChanged ) );
-    },
+    }
 
     /**
      * Returns true if the node hits the sensor at the given point. It is the caller's responsibility to call
@@ -140,25 +136,25 @@ define( require => {
      * @returns {boolean}
      * @public
      */
-    containsSensorPoint: function( point ) {
+    containsSensorPoint( point ) {
 
       // make sure bounds are correct if cut or joined in this animation frame
       this.step();
 
       // default implementation is a scenery geometry containment test
       return this.containsPoint( point );
-    },
+    }
 
     /**
      * @public - called during the view step
      * @override
      */
-    step: function() {
+    step() {
       if ( this.dirty ) {
         this.updateRender();
         this.dirty = false;
       }
-    },
+    }
 
     /**
      * Handles when the node is dropped, called by subclass input listener.
@@ -171,7 +167,7 @@ define( require => {
      * @param {boolean} dragged
      * @public
      */
-    endDrag: function( event, node, vertices, screenView, circuitLayerNode, start, dragged ) {
+    endDrag( event, node, vertices, screenView, circuitLayerNode, start, dragged ) {
       const circuitElement = this.circuitElement;
 
       if ( circuitElement.interactiveProperty.get() ) {
@@ -195,7 +191,7 @@ define( require => {
           event && this.selectCircuitElementNodeWhenNear( event, circuitLayerNode, start );
         }
       }
-    },
+    }
 
     /**
      * On tap events, select the CircuitElement (if it is close enough to the tap)
@@ -204,7 +200,7 @@ define( require => {
      * @param {Vector2} startPoint
      * @public
      */
-    selectCircuitElementNodeWhenNear: function( event, circuitLayerNode, startPoint ) {
+    selectCircuitElementNodeWhenNear( event, circuitLayerNode, startPoint ) {
       if ( event.pointer.point.distance( startPoint ) < CCKCConstants.TAP_THRESHOLD ) {
 
         circuitLayerNode.circuit.selectedCircuitElementProperty.set( this.circuitElement );
@@ -250,5 +246,7 @@ define( require => {
         circuitLayerNode.circuit.selectedCircuitElementProperty.set( null );
       }
     }
-  } );
+  }
+
+  return circuitConstructionKitCommon.register( 'CircuitElementNode', CircuitElementNode );
 } );

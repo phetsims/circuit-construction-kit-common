@@ -12,7 +12,6 @@ define( require => {
   // modules
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const Text = require( 'SCENERY/nodes/Text' );
@@ -24,66 +23,66 @@ define( require => {
   // constants
   const TEXT_BOX_WIDTH = 140;
 
-  /**
-   * @param {Property.<string>} textProperty - the text that should be displayed
-   * @param {Property.<boolean>} showResultsProperty - true if the text should be displayed
-   * @param {string} title - the title
-   * @param {Tandem} tandem
-   * @param {Object} [options]
-   * @constructor
-   */
-  function ProbeTextNode( textProperty, showResultsProperty, title, tandem, options ) {
+  class ProbeTextNode extends VBox {
 
-    options = _.extend( {
-      spacing: 3
-    }, options );
+    /**
+     * @param {Property.<string>} textProperty - the text that should be displayed
+     * @param {Property.<boolean>} showResultsProperty - true if the text should be displayed
+     * @param {string} title - the title
+     * @param {Tandem} tandem
+     * @param {Object} [options]
+     */
+    constructor( textProperty, showResultsProperty, title, tandem, options ) {
 
-    const readout = new Text( textProperty.value, {
-      fontSize: 40,
-      maxWidth: TEXT_BOX_WIDTH - 20,
-      tandem: tandem.createTandem( 'readoutText' )
-    } );
+      options = _.extend( {
+        spacing: 3
+      }, options );
 
-    const textBox = new Rectangle( 0, 0, TEXT_BOX_WIDTH, 52, {
-      cornerRadius: 10,
-      lineWidth: 2,
-      stroke: Color.BLACK,
-      fill: Color.WHITE
-    } );
+      const readout = new Text( textProperty.value, {
+        fontSize: 40,
+        maxWidth: TEXT_BOX_WIDTH - 20,
+        tandem: tandem.createTandem( 'readoutText' )
+      } );
 
-    textProperty.link( text => {
-      readout.setText( text );
-      if ( text === questionMarkString ) {
+      const textBox = new Rectangle( 0, 0, TEXT_BOX_WIDTH, 52, {
+        cornerRadius: 10,
+        lineWidth: 2,
+        stroke: Color.BLACK,
+        fill: Color.WHITE
+      } );
 
-        // ? is centered
-        readout.centerX = textBox.centerX;
-      }
-      else {
+      textProperty.link( text => {
+        readout.setText( text );
+        if ( text === questionMarkString ) {
 
-        // numbers are right-aligned
-        readout.right = textBox.right - 10;
-      }
+          // ? is centered
+          readout.centerX = textBox.centerX;
+        }
+        else {
 
-      // vertically center
-      readout.centerY = textBox.centerY;
-    } );
+          // numbers are right-aligned
+          readout.right = textBox.right - 10;
+        }
 
-    // Update visibility when show results property changes
-    showResultsProperty.linkAttribute( readout, 'visible' );
+        // vertically center
+        readout.centerY = textBox.centerY;
+      } );
 
-    // set the children
-    options.children = [ new Text( title, {
-      fontSize: 42,
-      maxWidth: 190,
-      tandem: tandem.createTandem( 'titleText' )
-    } ), new Node( {
-      children: [ textBox, readout ]
-    } ) ];
+      // Update visibility when show results property changes
+      showResultsProperty.linkAttribute( readout, 'visible' );
 
-    VBox.call( this, options );
+      // set the children
+      options.children = [ new Text( title, {
+        fontSize: 42,
+        maxWidth: 190,
+        tandem: tandem.createTandem( 'titleText' )
+      } ), new Node( {
+        children: [ textBox, readout ]
+      } ) ];
+
+      super( options );
+    }
   }
 
-  circuitConstructionKitCommon.register( 'ProbeTextNode', ProbeTextNode );
-
-  return inherit( VBox, ProbeTextNode );
+  return circuitConstructionKitCommon.register( 'ProbeTextNode', ProbeTextNode );
 } );

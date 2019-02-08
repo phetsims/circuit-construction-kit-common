@@ -13,7 +13,6 @@ define( require => {
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const HBox = require( 'SCENERY/nodes/HBox' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const NumberControl = require( 'SCENERY_PHET/NumberControl' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const RotateBatteryButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/RotateBatteryButton' );
@@ -23,85 +22,84 @@ define( require => {
   const FONT = new PhetFont( CCKCConstants.FONT_SIZE );
   const NUMBER_CONTROL_ELEMENT_MAX_WIDTH = 140;
 
-  /**
-   * @param {string} title - text to show as a title
-   * @param {string} valuePattern - pattern for NumberControl to display the value as text
-   * @param {Property.<number>} valueProperty - property this control changes
-   * @param {Circuit} circuit - parent circuit
-   * @param {FixedCircuitElement} circuitElement - the CircuitElement controlled by this UI
-   * @param {Tandem} tandem
-   * @constructor
-   */
-  function CircuitElementEditNode( title, valuePattern, valueProperty, circuit, circuitElement, tandem ) {
+  class CircuitElementEditNode extends HBox {
 
-    // When the user changes any parameter of any circuit element, signify it.
-    const valuePropertyListener = () => circuit.componentEditedEmitter.emit();
+    /**
+     * @param {string} title - text to show as a title
+     * @param {string} valuePattern - pattern for NumberControl to display the value as text
+     * @param {Property.<number>} valueProperty - property this control changes
+     * @param {Circuit} circuit - parent circuit
+     * @param {FixedCircuitElement} circuitElement - the CircuitElement controlled by this UI
+     * @param {Tandem} tandem
+     */
+    constructor( title, valuePattern, valueProperty, circuit, circuitElement, tandem ) {
 
-    valueProperty.lazyLink( valuePropertyListener );
+      // When the user changes any parameter of any circuit element, signify it.
+      const valuePropertyListener = () => circuit.componentEditedEmitter.emit();
 
-    // Create the controls
-    const numberControl = new NumberControl( title, valueProperty, circuitElement.editableRange, {
+      valueProperty.lazyLink( valuePropertyListener );
 
-      delta: circuitElement.editorDelta,
+      // Create the controls
+      const numberControl = new NumberControl( title, valueProperty, circuitElement.editableRange, {
 
-      // subcomponent options
-      titleNodeOptions: {
-        maxWidth: NUMBER_CONTROL_ELEMENT_MAX_WIDTH,
-        font: FONT
-      },
-      numberDisplayOptions: {
-        maxWidth: NUMBER_CONTROL_ELEMENT_MAX_WIDTH,
-        valuePattern: valuePattern,
-        font: FONT,
-        decimalPlaces: circuitElement.numberOfDecimalPlaces
-      },
+        delta: circuitElement.editorDelta,
 
-      // Prevent overlap with the navigation bar
-      sliderOptions: {
-        thumbTouchAreaYDilation: 5
-      },
+        // subcomponent options
+        titleNodeOptions: {
+          maxWidth: NUMBER_CONTROL_ELEMENT_MAX_WIDTH,
+          font: FONT
+        },
+        numberDisplayOptions: {
+          maxWidth: NUMBER_CONTROL_ELEMENT_MAX_WIDTH,
+          valuePattern: valuePattern,
+          font: FONT,
+          decimalPlaces: circuitElement.numberOfDecimalPlaces
+        },
 
-      tandem: tandem.createTandem( 'numberControl' )
-    } );
+        // Prevent overlap with the navigation bar
+        sliderOptions: {
+          thumbTouchAreaYDilation: 5
+        },
 
-    const children = [];
+        tandem: tandem.createTandem( 'numberControl' )
+      } );
 
-    // Batteries can be reversed
-    if ( circuitElement instanceof Battery ) {
-      children.push( new RotateBatteryButton( circuit, circuitElement, tandem.createTandem( 'reverseBatteryButton' ) ) );
+      const children = [];
+
+      // Batteries can be reversed
+      if ( circuitElement instanceof Battery ) {
+        children.push( new RotateBatteryButton( circuit, circuitElement, tandem.createTandem( 'reverseBatteryButton' ) ) );
+      }
+      children.push( numberControl );
+
+      // The button that deletes the circuit component
+      if ( circuitElement.canBeDroppedInToolbox ) {
+        children.push( new TrashButton( circuit, circuitElement, tandem.createTandem( 'trashButton' ) ) );
+      }
+
+      super( {
+        spacing: 40,
+        children: children,
+        align: 'bottom'
+      } );
+
+      // @private {function} - for disposal
+      this.disposeCircuitElementEditNode = () => {
+        numberControl.dispose();
+        valueProperty.unlink( valuePropertyListener );
+      };
     }
-    children.push( numberControl );
-
-    // The button that deletes the circuit component
-    if ( circuitElement.canBeDroppedInToolbox ) {
-      children.push( new TrashButton( circuit, circuitElement, tandem.createTandem( 'trashButton' ) ) );
-    }
-
-    // @private {function} - for disposal
-    this.disposeCircuitElementEditNode = () => {
-      numberControl.dispose();
-      valueProperty.unlink( valuePropertyListener );
-    };
-
-    HBox.call( this, {
-      spacing: 40,
-      children: children,
-      align: 'bottom'
-    } );
-  }
-
-  circuitConstructionKitCommon.register( 'CircuitElementEditNode', CircuitElementEditNode );
-
-  return inherit( HBox, CircuitElementEditNode, {
 
     /**
      * Dispose resources when no longer used.
      * @public
      * @override
      */
-    dispose: function() {
-      HBox.prototype.dispose.call( this );
+    dispose() {
+      super.dispose();
       this.disposeCircuitElementEditNode();
     }
-  } );
+  }
+
+  return circuitConstructionKitCommon.register( 'CircuitElementEditNode', CircuitElementEditNode );
 } );

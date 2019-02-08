@@ -15,7 +15,6 @@ define( require => {
   const ConventionalCurrentArrowNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ConventionalCurrentArrowNode' );
   const ElectronChargeNode = require( 'SCENERY_PHET/ElectronChargeNode' );
   const Image = require( 'SCENERY/nodes/Image' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const Matrix3 = require( 'DOT/Matrix3' );
   const Tandem = require( 'TANDEM/Tandem' );
   const Util = require( 'DOT/Util' );
@@ -48,57 +47,54 @@ define( require => {
   // https://github.com/phetsims/circuit-construction-kit-dc/issues/104
   const ELECTRON_OFFSET = Matrix3.translation( -ELECTRON_CHARGE_NODE.width / 2 - 0.5, -ELECTRON_CHARGE_NODE.height / 2 - 0.5 );
 
-  /**
-   * @param {Charge} charge - the model element
-   * @constructor
-   */
-  function ChargeNode( charge ) {
+  class ChargeNode extends Image {
 
-    // @public (read-only) {Charge} - the model depicted by this node
-    this.charge = charge;
+    /**
+     * @param {Charge} charge - the model element
+     */
+    constructor( charge ) {
 
-    const child = charge.charge > 0 ? ARROW_NODE : ELECTRON_CHARGE_NODE;
+      const child = charge.charge > 0 ? ARROW_NODE : ELECTRON_CHARGE_NODE;
 
-    Image.call( this, child.image, {
-      pickable: false
-    } );
+      super( child.image, {
+        pickable: false
+      } );
 
-    this.outsideOfBlackBoxProperty = new BooleanProperty( false );
+      // @public (read-only) {Charge} - the model depicted by this node
+      this.charge = charge;
 
-    // Update the visibility accordingly.  A multilink will not work because the charge circuitElement changes.
-    this.updateVisibleListener = this.updateVisible.bind( this );
+      this.outsideOfBlackBoxProperty = new BooleanProperty( false );
 
-    // When the model position changes, update the node position
-    this.updateTransformListener = this.updateTransform.bind( this );
+      // Update the visibility accordingly.  A multilink will not work because the charge circuitElement changes.
+      this.updateVisibleListener = this.updateVisible.bind( this );
 
-    charge.changedEmitter.addListener( this.updateTransformListener );
-    charge.visibleProperty.link( this.updateVisibleListener );
-    this.outsideOfBlackBoxProperty.link( this.updateVisibleListener );
+      // When the model position changes, update the node position
+      this.updateTransformListener = this.updateTransform.bind( this );
 
-    charge.disposeEmitter.addListener( this.dispose.bind( this ) );
+      charge.changedEmitter.addListener( this.updateTransformListener );
+      charge.visibleProperty.link( this.updateVisibleListener );
+      this.outsideOfBlackBoxProperty.link( this.updateVisibleListener );
 
-    this.updateTransformListener();
-  }
+      charge.disposeEmitter.addListener( this.dispose.bind( this ) );
 
-  circuitConstructionKitCommon.register( 'ChargeNode', ChargeNode );
-
-  return inherit( Image, ChargeNode, {
+      this.updateTransformListener();
+    }
 
     /**
      * Dispose resources when no longer used.
      * @public
      */
-    dispose: function() {
+    dispose() {
       this.charge.changedEmitter.removeListener( this.updateTransformListener );
       this.charge.visibleProperty.unlink( this.updateVisibleListener );
       this.outsideOfBlackBoxProperty.unlink( this.updateVisibleListener );
-      Image.prototype.dispose.call( this );
-    },
+      super.dispose();
+    }
 
     /**
      * @private - update the transform of the charge node
      */
-    updateTransform: function() {
+    updateTransform() {
       const charge = this.charge;
       const current = charge.circuitElement.currentProperty.get();
 
@@ -107,7 +103,7 @@ define( require => {
       if ( charge.charge > 0 ) {
 
         // Rotate if current is running backwards
-        (current < 0) && NODE_MATRIX.multiplyMatrix( HALF_ROTATION );
+        ( current < 0 ) && NODE_MATRIX.multiplyMatrix( HALF_ROTATION );
 
         // Center
         NODE_MATRIX.multiplyMatrix( ARROW_OFFSET );
@@ -135,23 +131,22 @@ define( require => {
       }
       this.updateVisible();
       this.outsideOfBlackBoxProperty.set( !charge.circuitElement.insideTrueBlackBoxProperty.get() );
-    },
+    }
 
     /**
      * @private - update the visibility
      */
-    updateVisible: function() {
+    updateVisible() {
       this.visible = this.charge.visibleProperty.get() &&
                      this.outsideOfBlackBoxProperty.get();
     }
-  }, {
+  }
 
-    /**
-     * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-     * @public {Array.<Image>}
-     */
-    webglSpriteNodes: [
-      ELECTRON_CHARGE_NODE, ARROW_NODE
-    ]
-  } );
+  /**
+   * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
+   * @public {Array.<Image>}
+   */
+  ChargeNode.webglSpriteNodes = [ ELECTRON_CHARGE_NODE, ARROW_NODE ];
+
+  return circuitConstructionKitCommon.register( 'ChargeNode', ChargeNode );
 } );

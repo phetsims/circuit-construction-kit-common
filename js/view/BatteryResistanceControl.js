@@ -16,7 +16,6 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
   const HSlider = require( 'SUN/HSlider' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const Node = require( 'SCENERY/nodes/Node' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -29,92 +28,91 @@ define( require => {
   const batteryResistanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/batteryResistance' );
   const resistanceOhmsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhms' );
 
-  /**
-   * @param {Property.<number>} batteryResistanceProperty - axon Property for the internal resistance of all Batteries
-   * @param {AlignGroup} alignGroup
-   * @param {Tandem} tandem
-   * @constructor
-   */
-  function BatteryResistanceControl( batteryResistanceProperty, alignGroup, tandem ) {
-
+  class BatteryResistanceControl extends CCKCAccordionBox {
     /**
-     * Creates label to be used for slider
-     * @param {string} string
+     * @param {Property.<number>} batteryResistanceProperty - axon Property for the internal resistance of all Batteries
+     * @param {AlignGroup} alignGroup
      * @param {Tandem} tandem
-     * @returns {Text}
      */
-    const createLabel = ( string, tandem ) => new Text( string, { fontSize: 12, tandem: tandem } );
+    constructor( batteryResistanceProperty, alignGroup, tandem ) {
 
-    const range = CCKCConstants.BATTERY_RESISTANCE_RANGE;
-    const midpoint = ( range.max + range.min ) / 2;
-    const slider = new HSlider( batteryResistanceProperty, range, {
-      trackSize: CCKCConstants.SLIDER_TRACK_SIZE,
-      thumbSize: CCKCConstants.THUMB_SIZE,
-      majorTickLength: CCKCConstants.MAJOR_TICK_LENGTH,
+      /**
+       * Creates label to be used for slider
+       * @param {string} string
+       * @param {Tandem} tandem
+       * @returns {Text}
+       */
+      const createLabel = ( string, tandem ) => new Text( string, { fontSize: 12, tandem: tandem } );
 
-      // Snap to the nearest whole number.
-      constrainValue: value => Util.roundSymmetric( value ),
-      tandem: tandem.createTandem( 'slider' )
-    } );
-    slider.addMajorTick( range.min, createLabel( Util.toFixed( range.min, 0 ), tandem.createTandem( 'minLabel' ) ) );
-    slider.addMajorTick( midpoint );
-    slider.addMajorTick( range.max, createLabel( Util.toFixed( range.max, 0 ), tandem.createTandem( 'maxLabel' ) ) );
+      const range = CCKCConstants.BATTERY_RESISTANCE_RANGE;
+      const midpoint = ( range.max + range.min ) / 2;
+      const slider = new HSlider( batteryResistanceProperty, range, {
+        trackSize: CCKCConstants.SLIDER_TRACK_SIZE,
+        thumbSize: CCKCConstants.THUMB_SIZE,
+        majorTickLength: CCKCConstants.MAJOR_TICK_LENGTH,
 
-    for ( let i = range.min + 1; i < range.max; i++ ) {
-      if ( i !== midpoint ) {
-        slider.addMinorTick( i );
+        // Snap to the nearest whole number.
+        constrainValue: value => Util.roundSymmetric( value ),
+        tandem: tandem.createTandem( 'slider' )
+      } );
+      slider.addMajorTick( range.min, createLabel( Util.toFixed( range.min, 0 ), tandem.createTandem( 'minLabel' ) ) );
+      slider.addMajorTick( midpoint );
+      slider.addMajorTick( range.max, createLabel( Util.toFixed( range.max, 0 ), tandem.createTandem( 'maxLabel' ) ) );
+
+      for ( let i = range.min + 1; i < range.max; i++ ) {
+        if ( i !== midpoint ) {
+          slider.addMinorTick( i );
+        }
       }
+
+      const readoutTextPanelTandem = tandem.createTandem( 'readoutTextPanel' );
+
+      const readoutText = new Text( batteryResistanceProperty.get(), {
+        font: new PhetFont( CCKCConstants.FONT_SIZE ),
+        fill: Color.BLACK,
+        maxWidth: 100,
+        tandem: readoutTextPanelTandem.createTandem( 'readoutTextNode' ),
+        pickable: false
+      } );
+
+      const xMargin = 4;
+
+      let textRectangle = null;
+
+      // number to be displayed
+      const updateText = value => {
+        readoutText.setText( StringUtils.fillIn( resistanceOhmsString, { resistance: Util.toFixed( value, 1 ) } ) );
+
+        // Once there is a textRectangle, stay right-justified
+        if ( textRectangle ) {
+          readoutText.right = textRectangle.right - xMargin;
+        }
+      };
+
+      // Use the max to get the right size of the panel
+      updateText( CCKCConstants.BATTERY_RESISTANCE_RANGE.max );
+
+      textRectangle = Rectangle.bounds( readoutText.bounds.dilatedXY( xMargin, 3 ), {
+        fill: Color.WHITE,
+        stroke: Color.GRAY,
+        cornerRadius: 0, // radius of the rounded corners on the background
+        pickable: false,
+        tandem: readoutTextPanelTandem
+      } );
+
+      const textContainerNode = new Node( {
+        children: [ textRectangle, readoutText ],
+        pickable: false
+      } );
+
+      batteryResistanceProperty.link( updateText );
+
+      super( alignGroup.createBox( new VBox( {
+        spacing: -4,
+        children: [ textContainerNode, slider ]
+      } ) ), batteryResistanceString, tandem );
     }
-
-    const readoutTextPanelTandem = tandem.createTandem( 'readoutTextPanel' );
-
-    const readoutText = new Text( batteryResistanceProperty.get(), {
-      font: new PhetFont( CCKCConstants.FONT_SIZE ),
-      fill: Color.BLACK,
-      maxWidth: 100,
-      tandem: readoutTextPanelTandem.createTandem( 'readoutTextNode' ),
-      pickable: false
-    } );
-
-    const xMargin = 4;
-
-    let textRectangle = null;
-
-    // number to be displayed
-    const updateText = value => {
-      readoutText.setText( StringUtils.fillIn( resistanceOhmsString, { resistance: Util.toFixed( value, 1 ) } ) );
-
-      // Once there is a textRectangle, stay right-justified
-      if ( textRectangle ) {
-        readoutText.right = textRectangle.right - xMargin;
-      }
-    };
-
-    // Use the max to get the right size of the panel
-    updateText( CCKCConstants.BATTERY_RESISTANCE_RANGE.max );
-
-    textRectangle = Rectangle.bounds( readoutText.bounds.dilatedXY( xMargin, 3 ), {
-      fill: Color.WHITE,
-      stroke: Color.GRAY,
-      cornerRadius: 0, // radius of the rounded corners on the background
-      pickable: false,
-      tandem: readoutTextPanelTandem
-    } );
-
-    const textContainerNode = new Node( {
-      children: [ textRectangle, readoutText ],
-      pickable: false
-    } );
-
-    batteryResistanceProperty.link( updateText );
-
-    CCKCAccordionBox.call( this, alignGroup.createBox( new VBox( {
-      spacing: -4,
-      children: [ textContainerNode, slider ]
-    } ) ), batteryResistanceString, tandem );
   }
 
-  circuitConstructionKitCommon.register( 'BatteryResistanceControl', BatteryResistanceControl );
-
-  return inherit( CCKCAccordionBox, BatteryResistanceControl );
+  return circuitConstructionKitCommon.register( 'BatteryResistanceControl', BatteryResistanceControl );
 } );

@@ -12,7 +12,6 @@ define( require => {
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const Matrix3 = require( 'DOT/Matrix3' );
   const Panel = require( 'SUN/Panel' );
@@ -36,156 +35,155 @@ define( require => {
   // Big enough to see when zoomed out
   const FONT = new PhetFont( { size: 22 } );
 
-  /**
-   * @param {CircuitElement} circuitElement
-   * @param {Property.<boolean>} showValuesProperty
-   * @param {Property.<CircuitElementViewType>} viewTypeProperty
-   * @param {Tandem} tandem
-   * @constructor
-   */
-  function ValueNode( circuitElement, showValuesProperty, viewTypeProperty, tandem ) {
-    const disposeActions = [];
+  class ValueNode extends Panel {
 
-    let contentNode = null;
-    let updatePosition = null;
-    if ( circuitElement instanceof Battery ) {
+    /**
+     * @param {CircuitElement} circuitElement
+     * @param {Property.<boolean>} showValuesProperty
+     * @param {Property.<CircuitElementViewType>} viewTypeProperty
+     * @param {Tandem} tandem
+     */
+    constructor( circuitElement, showValuesProperty, viewTypeProperty, tandem ) {
+      const disposeActions = [];
 
-      const voltageText = new Text( '', _.extend( { tandem: tandem.createTandem( 'voltageText' ) }, { font: FONT } ) );
-      const voltageListener = voltage => {
+      let contentNode = null;
+      let updatePosition = null;
+      if ( circuitElement instanceof Battery ) {
 
-        voltageText.text = StringUtils.fillIn( voltageUnitsString, {
-          voltage: Util.toFixed( voltage, circuitElement.numberOfDecimalPlaces )
-        } );
-        updatePosition && updatePosition();
-      };
-      circuitElement.voltageProperty.link( voltageListener );
+        const voltageText = new Text( '', _.extend( { tandem: tandem.createTandem( 'voltageText' ) }, { font: FONT } ) );
+        const voltageListener = voltage => {
 
-      // Battery readouts shows voltage and internal resistance if it is nonzero
-      contentNode = new VBox( {
-        align: 'right',
-        children: [ voltageText ]
-      } );
+          voltageText.text = StringUtils.fillIn( voltageUnitsString, {
+            voltage: Util.toFixed( voltage, circuitElement.numberOfDecimalPlaces )
+          } );
+          updatePosition && updatePosition();
+        };
+        circuitElement.voltageProperty.link( voltageListener );
 
-      const resistanceNode = new Text( '', _.extend( {
-        tandem: tandem.createTandem( 'resistanceText' )
-      }, { font: FONT } ) );
-      const internalResistanceListener = ( internalResistance, lastInternalResistance ) => {
-        resistanceNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
-          resistance: Util.toFixed( internalResistance, 1 )
+        // Battery readouts shows voltage and internal resistance if it is nonzero
+        contentNode = new VBox( {
+          align: 'right',
+          children: [ voltageText ]
         } );
 
-        // If the children should change, update them here
-        if ( lastInternalResistance === null || ( internalResistance === 0 || lastInternalResistance === 0 ) ) {
-          const desiredChildren = internalResistance > 0 ? [ voltageText, resistanceNode ] : [ voltageText ];
+        const resistanceNode = new Text( '', _.extend( {
+          tandem: tandem.createTandem( 'resistanceText' )
+        }, { font: FONT } ) );
+        const internalResistanceListener = ( internalResistance, lastInternalResistance ) => {
+          resistanceNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
+            resistance: Util.toFixed( internalResistance, 1 )
+          } );
 
-          // Only set children if changed
-          if ( contentNode.getChildrenCount() !== desiredChildren.length ) {
-            contentNode.children = desiredChildren;
+          // If the children should change, update them here
+          if ( lastInternalResistance === null || ( internalResistance === 0 || lastInternalResistance === 0 ) ) {
+            const desiredChildren = internalResistance > 0 ? [ voltageText, resistanceNode ] : [ voltageText ];
+
+            // Only set children if changed
+            if ( contentNode.getChildrenCount() !== desiredChildren.length ) {
+              contentNode.children = desiredChildren;
+            }
           }
-        }
-        updatePosition && updatePosition();
-      };
-      circuitElement.internalResistanceProperty.link( internalResistanceListener );
+          updatePosition && updatePosition();
+        };
+        circuitElement.internalResistanceProperty.link( internalResistanceListener );
 
-      disposeActions.push( () => {
-        circuitElement.voltageProperty.unlink( voltageListener );
-        circuitElement.internalResistanceProperty.unlink( internalResistanceListener );
-      } );
-      contentNode.maxWidth = 100;
-    }
-
-    else if ( circuitElement instanceof Resistor || circuitElement instanceof LightBulb ) {
-      contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'resistanceText' ) }, { font: FONT } ) );
-
-      // Items like the hand and dog and high resistance resistor shouldn't show ".0"
-      const linkResistance = resistance => {
-        contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
-          resistance: Util.toFixed( resistance, circuitElement.numberOfDecimalPlaces )
+        disposeActions.push( () => {
+          circuitElement.voltageProperty.unlink( voltageListener );
+          circuitElement.internalResistanceProperty.unlink( internalResistanceListener );
         } );
-        updatePosition && updatePosition();
-      };
-      circuitElement.resistanceProperty.link( linkResistance );
-      disposeActions.push( () => circuitElement.resistanceProperty.unlink( linkResistance ) );
-      contentNode.maxWidth = 100;
-    }
-    else if ( circuitElement instanceof Switch ) {
-
-      // Make it easier to read the infinity symbol, see https://github.com/phetsims/circuit-construction-kit-dc/issues/135
-      contentNode = new RichText( '', { tandem: tandem.createTandem( 'switchText' ), font: FONT } );
-
-      const updateResistance = resistance => {
-        contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
-
-          // Using a serif font makes the infinity symbol look less lopsided
-          resistance: resistance > 100000 ? '<span style="font-size: 26px; font-family: serif;"><b>∞</b></span>' : '0'
-        } );
-
-        // Account for the switch open and close geometry for positioning the label.  When the switch is open
-        // the label must be higher
-        updatePosition && updatePosition();
-      };
-      circuitElement.resistanceProperty.link( updateResistance );
-      disposeActions.push( () => circuitElement.resistanceProperty.unlink( updateResistance ) );
-      contentNode.maxWidth = 100;
-    }
-    else {
-      throw new Error( 'ValueNode cannot be shown for ' + circuitElement.constructor.name );
-    }
-
-    assert && assert( contentNode, 'Content node should be defined' );
-
-    Panel.call( this, contentNode, {
-      stroke: null,
-      fill: new Color( 255, 255, 255, 0.6 ),// put transparency in the color so that the children aren't transparent
-      tandem: tandem,
-      cornerRadius: 3,
-      xMargin: 3,
-      yMargin: 1
-    } );
-
-    const matrix = Matrix3.identity();
-
-    updatePosition = () => {
-
-      // Only update position when the value is displayed
-      if ( showValuesProperty.get() ) {
-
-        // For a light bulb, choose the part of the filament in the top center for the label, see
-        // https://github.com/phetsims/circuit-construction-kit-common/issues/325
-        const distance = circuitElement instanceof LightBulb ? 0.56 : 0.5;
-
-        // The label partially overlaps the component to make it clear which label goes with which component
-        circuitElement.updateMatrixForPoint( circuitElement.chargePathLength * distance, matrix );
-        const delta = Vector2.createPolar( VERTICAL_OFFSET, matrix.rotation + 3 * Math.PI / 2 );
-        this.center = matrix.translation.plus( delta ); // above light bulb
+        contentNode.maxWidth = 100;
       }
-    };
 
-    circuitElement.vertexMovedEmitter.addListener( updatePosition );
-    updatePosition();
-    showValuesProperty.link( updatePosition );
-    viewTypeProperty.link( updatePosition );
+      else if ( circuitElement instanceof Resistor || circuitElement instanceof LightBulb ) {
+        contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'resistanceText' ) }, { font: FONT } ) );
 
-    // @private {function}
-    this.disposeValueNode = () => {
-      circuitElement.vertexMovedEmitter.removeListener( updatePosition );
-      showValuesProperty.unlink( updatePosition );
-      viewTypeProperty.unlink( updatePosition );
-      disposeActions.forEach( disposeAction => disposeAction() );
-    };
-  }
+        // Items like the hand and dog and high resistance resistor shouldn't show ".0"
+        const linkResistance = resistance => {
+          contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
+            resistance: Util.toFixed( resistance, circuitElement.numberOfDecimalPlaces )
+          } );
+          updatePosition && updatePosition();
+        };
+        circuitElement.resistanceProperty.link( linkResistance );
+        disposeActions.push( () => circuitElement.resistanceProperty.unlink( linkResistance ) );
+        contentNode.maxWidth = 100;
+      }
+      else if ( circuitElement instanceof Switch ) {
 
-  circuitConstructionKitCommon.register( 'ValueNode', ValueNode );
+        // Make it easier to read the infinity symbol, see https://github.com/phetsims/circuit-construction-kit-dc/issues/135
+        contentNode = new RichText( '', { tandem: tandem.createTandem( 'switchText' ), font: FONT } );
 
-  return inherit( Panel, ValueNode, {
+        const updateResistance = resistance => {
+          contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
+
+            // Using a serif font makes the infinity symbol look less lopsided
+            resistance: resistance > 100000 ? '<span style="font-size: 26px; font-family: serif;"><b>∞</b></span>' : '0'
+          } );
+
+          // Account for the switch open and close geometry for positioning the label.  When the switch is open
+          // the label must be higher
+          updatePosition && updatePosition();
+        };
+        circuitElement.resistanceProperty.link( updateResistance );
+        disposeActions.push( () => circuitElement.resistanceProperty.unlink( updateResistance ) );
+        contentNode.maxWidth = 100;
+      }
+      else {
+        throw new Error( 'ValueNode cannot be shown for ' + circuitElement.constructor.name );
+      }
+
+      assert && assert( contentNode, 'Content node should be defined' );
+
+      super( contentNode, {
+        stroke: null,
+        fill: new Color( 255, 255, 255, 0.6 ),// put transparency in the color so that the children aren't transparent
+        tandem: tandem,
+        cornerRadius: 3,
+        xMargin: 3,
+        yMargin: 1
+      } );
+
+      const matrix = Matrix3.identity();
+
+      updatePosition = () => {
+
+        // Only update position when the value is displayed
+        if ( showValuesProperty.get() ) {
+
+          // For a light bulb, choose the part of the filament in the top center for the label, see
+          // https://github.com/phetsims/circuit-construction-kit-common/issues/325
+          const distance = circuitElement instanceof LightBulb ? 0.56 : 0.5;
+
+          // The label partially overlaps the component to make it clear which label goes with which component
+          circuitElement.updateMatrixForPoint( circuitElement.chargePathLength * distance, matrix );
+          const delta = Vector2.createPolar( VERTICAL_OFFSET, matrix.rotation + 3 * Math.PI / 2 );
+          this.center = matrix.translation.plus( delta ); // above light bulb
+        }
+      };
+
+      circuitElement.vertexMovedEmitter.addListener( updatePosition );
+      updatePosition();
+      showValuesProperty.link( updatePosition );
+      viewTypeProperty.link( updatePosition );
+
+      // @private {function}
+      this.disposeValueNode = () => {
+        circuitElement.vertexMovedEmitter.removeListener( updatePosition );
+        showValuesProperty.unlink( updatePosition );
+        viewTypeProperty.unlink( updatePosition );
+        disposeActions.forEach( disposeAction => disposeAction() );
+      };
+    }
 
     /**
      * @public - dispose when no longer used
      * @override
      */
-    dispose: function() {
-      Panel.prototype.dispose.call( this );
+    dispose() {
+      super.dispose();
       this.disposeValueNode();
     }
-  } );
+  }
+
+  return circuitConstructionKitCommon.register( 'ValueNode', ValueNode );
 } );

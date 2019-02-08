@@ -15,7 +15,6 @@ define( require => {
   const Color = require( 'SCENERY/util/Color' );
   const FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
   const Image = require( 'SCENERY/nodes/Image' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const Matrix3 = require( 'DOT/Matrix3' );
   const Path = require( 'SCENERY/nodes/Path' );
   const Shape = require( 'KITE/Shape' );
@@ -61,44 +60,40 @@ define( require => {
   schematicNode.mouseArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
   schematicNode.touchArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
 
-  /**
-   * @param {CCKCScreenView|null} screenView - main screen view, null for isIcon
-   * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
-   * @param {Battery} battery
-   * @param {Property.<CircuitElementViewType>} viewTypeProperty
-   * @param {Tandem} tandem
-   * @param {Object} [options]
-   * @constructor
-   */
-  function BatteryNode( screenView, circuitLayerNode, battery, viewTypeProperty, tandem, options ) {
+  class BatteryNode extends FixedCircuitElementNode {
 
-    // @public (read-only) {Battery} - the Battery rendered by this Node
-    this.battery = battery;
+    /**
+     * @param {CCKCScreenView|null} screenView - main screen view, null for isIcon
+     * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
+     * @param {Battery} battery
+     * @param {Property.<CircuitElementViewType>} viewTypeProperty
+     * @param {Tandem} tandem
+     * @param {Object} [options]
+     */
+    constructor( screenView, circuitLayerNode, battery, viewTypeProperty, tandem, options ) {
+      const lifelikeNode = new Image( battery.batteryType === BatteryType.NORMAL ? batteryImage : batteryHighImage );
 
-    const lifelikeNode = new Image( battery.batteryType === BatteryType.NORMAL ? batteryImage : batteryHighImage );
+      lifelikeNode.mutate( {
+        scale: battery.distanceBetweenVertices / lifelikeNode.width
+      } );
 
-    lifelikeNode.mutate( {
-      scale: battery.distanceBetweenVertices / lifelikeNode.width
-    } );
+      // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
+      lifelikeNode.centerY = 0;
 
-    // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
-    lifelikeNode.centerY = 0;
+      super(
+        screenView,
+        circuitLayerNode,
+        battery,
+        viewTypeProperty,
+        lifelikeNode,
+        schematicNode,
+        tandem,
+        options
+      );
 
-    FixedCircuitElementNode.call( this,
-      screenView,
-      circuitLayerNode,
-      battery,
-      viewTypeProperty,
-      lifelikeNode,
-      schematicNode,
-      tandem,
-      options
-    );
-  }
-
-  circuitConstructionKitCommon.register( 'BatteryNode', BatteryNode );
-
-  return inherit( FixedCircuitElementNode, BatteryNode, {
+      // @public (read-only) {Battery} - the Battery rendered by this Node
+      this.battery = battery;
+    }
 
     /**
      * Returns true if the node hits the sensor at the given point.
@@ -107,7 +102,7 @@ define( require => {
      * @overrides
      * @public
      */
-    containsSensorPoint: function( point ) {
+    containsSensorPoint( point ) {
 
       // make sure bounds are correct if cut or joined in this animation frame
       this.step();
@@ -115,15 +110,16 @@ define( require => {
       // Check against the mouse region
       return !!this.hitTest( point, true, false );
     }
-  }, {
+  }
 
-    /**
-     * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-     * @public {Array.<Image>}
-     */
-    webglSpriteNodes: [
-      new Image( batteryImage ),
-      new Image( batteryHighImage )
-    ]
-  } );
+  /**
+   * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
+   * @public {Array.<Image>}
+   */
+  BatteryNode.webglSpriteNodes = [
+    new Image( batteryImage ),
+    new Image( batteryHighImage )
+  ];
+
+  return circuitConstructionKitCommon.register( 'BatteryNode', BatteryNode );
 } );

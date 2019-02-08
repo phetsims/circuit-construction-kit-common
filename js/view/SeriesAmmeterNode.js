@@ -15,7 +15,6 @@ define( require => {
   const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   const Color = require( 'SCENERY/util/Color' );
   const FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Panel = require( 'SUN/Panel' );
   const Property = require( 'AXON/Property' );
@@ -53,173 +52,172 @@ define( require => {
     lineWidth: 2.4
   } );
 
-  /**
-   * @param {CCKCScreenView|null} screenView - main screen view, null for isIcon
-   * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
-   * @param {SeriesAmmeter} seriesAmmeter
-   * @param {Tandem} tandem
-   * @param {Object} [options]
-   * @constructor
-   */
-  function SeriesAmmeterNode( screenView, circuitLayerNode, seriesAmmeter, tandem, options ) {
-    options = options || {};
-
-    // Charges go behind this panel to give the appearance they go through the ammeter
-    const readoutText = new Text( WIDEST_LABEL, { fontSize: 15 } );
-    readoutText.maxWidth = readoutText.width;
-    const maxBounds = readoutText.bounds.copy();
-
-    // Margins within the numeric readout text box
-    const textPanelMarginX = 3;
-    const textPanelMarginY = 1;
+  class SeriesAmmeterNode extends FixedCircuitElementNode {
 
     /**
-     * Update the text in the numeric readout text box.  Shows '?' if disconnected.
+     * @param {CCKCScreenView|null} screenView - main screen view, null for isIcon
+     * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
+     * @param {SeriesAmmeter} seriesAmmeter
+     * @param {Tandem} tandem
+     * @param {Object} [options]
      */
-    const updateText = () => {
-      let readout = questionMarkString;
+    constructor( screenView, circuitLayerNode, seriesAmmeter, tandem, options ) {
+      options = options || {};
 
-      // If it is not an icon and connected at both sides, show the current, otherwise show '?'
-      if ( screenView ) {
+      // Charges go behind this panel to give the appearance they go through the ammeter
+      const readoutText = new Text( WIDEST_LABEL, { fontSize: 15 } );
+      readoutText.maxWidth = readoutText.width;
+      const maxBounds = readoutText.bounds.copy();
 
-        const circuit = screenView.model.circuit;
-        const startConnection = circuit.getNeighboringVertices( seriesAmmeter.startVertexProperty.get() ).length > 1;
-        const endConnection = circuit.getNeighboringVertices( seriesAmmeter.endVertexProperty.get() ).length > 1;
+      // Margins within the numeric readout text box
+      const textPanelMarginX = 3;
+      const textPanelMarginY = 1;
 
-        if ( startConnection && endConnection ) {
+      /**
+       * Update the text in the numeric readout text box.  Shows '?' if disconnected.
+       */
+      const updateText = () => {
+        let readout = questionMarkString;
 
-          // The ammeter doesn't indicate direction
-          readout = CCKCUtil.createCurrentReadout( seriesAmmeter.currentProperty.get() );
+        // If it is not an icon and connected at both sides, show the current, otherwise show '?'
+        if ( screenView ) {
+
+          const circuit = screenView.model.circuit;
+          const startConnection = circuit.getNeighboringVertices( seriesAmmeter.startVertexProperty.get() ).length > 1;
+          const endConnection = circuit.getNeighboringVertices( seriesAmmeter.endVertexProperty.get() ).length > 1;
+
+          if ( startConnection && endConnection ) {
+
+            // The ammeter doesn't indicate direction
+            readout = CCKCUtil.createCurrentReadout( seriesAmmeter.currentProperty.get() );
+          }
         }
+
+        readoutText.setText( readout );
+
+        // Center the text in the panel
+        readoutText.centerX = ( maxBounds.width + textPanelMarginX * 2 ) / 2;
+        readoutText.centerY = ( maxBounds.height + textPanelMarginY * 2 ) / 2;
+      };
+
+      seriesAmmeter.currentProperty.link( updateText );
+      seriesAmmeter.startVertexProperty.link( updateText );
+      seriesAmmeter.endVertexProperty.link( updateText );
+      circuitLayerNode && circuitLayerNode.circuit.circuitChangedEmitter.addListener( updateText );
+
+      // The readout panel is in front of the series ammeter node, and makes it look like the charges flow through the
+      // series ammeter
+      const readoutPanel = new Panel( new VBox( {
+        children: [
+          new Text( currentString, { fontSize: 12, maxWidth: 54 } ),
+          new Rectangle( 0, 0, maxBounds.width + textPanelMarginX * 2, maxBounds.height + textPanelMarginY * 2, {
+            cornerRadius: 4,
+            stroke: Color.BLACK,
+            fill: Color.WHITE,
+            lineWidth: 0.75,
+            children: [
+              readoutText
+            ]
+          } )
+        ]
+      } ), {
+        pickable: false,
+        fill: ORANGE,
+        stroke: null,
+        xMargin: 4,
+        yMargin: 0,
+        tandem: tandem.createTandem( 'readoutPanel' )
+      } );
+
+      // This node only has a lifelike representation because it is a sensor
+      const lifelikeNode = new Node( {
+        children: [
+
+          // orange background panel
+          orangeBackgroundPanel,
+
+          // gray track
+          new Rectangle( 0, 0, PANEL_WIDTH, 20, {
+            fill: '#bcbdbf',
+            centerY: PANEL_HEIGHT / 2
+          } ),
+
+          // black border
+          blackBorder
+        ]
+      } );
+
+      // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
+      lifelikeNode.mouseArea = lifelikeNode.bounds.copy();
+      lifelikeNode.touchArea = lifelikeNode.bounds.copy();
+
+      // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
+      lifelikeNode.centerY = 0;
+
+      // Center the readout within the main body of the sensor
+      readoutPanel.center = lifelikeNode.center;
+
+      super(
+        screenView,
+        circuitLayerNode,
+        seriesAmmeter,
+        new Property( CircuitElementViewType.LIFELIKE ),
+        lifelikeNode,
+        new Node( { children: [ lifelikeNode ] } ),// reuse lifelike view for the schematic view
+        tandem,
+        options
+      );
+
+      // @private {Node} - the panel to be shown in front for z-ordering.  Wrap centered in a child node to make the layout
+      // in updateRender trivial.
+      this.frontPanelContainer = new Node( {
+        children: [ readoutPanel ]
+      } );
+
+      if ( options.isIcon ) {
+        lifelikeNode.addChild( this.frontPanelContainer.mutate( { centerY: lifelikeNode.height / 2 - 2 } ) );
+      }
+      else {
+        circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.addChild( this.frontPanelContainer );
       }
 
-      readoutText.setText( readout );
+      // @private (read-only) {boolean} - whether to show as an isIcon
+      this.isIcon = options.isIcon;
 
-      // Center the text in the panel
-      readoutText.centerX = ( maxBounds.width + textPanelMarginX * 2 ) / 2;
-      readoutText.centerY = ( maxBounds.height + textPanelMarginY * 2 ) / 2;
-    };
-
-    seriesAmmeter.currentProperty.link( updateText );
-    seriesAmmeter.startVertexProperty.link( updateText );
-    seriesAmmeter.endVertexProperty.link( updateText );
-    circuitLayerNode && circuitLayerNode.circuit.circuitChangedEmitter.addListener( updateText );
-
-    // The readout panel is in front of the series ammeter node, and makes it look like the charges flow through the
-    // series ammeter
-    const readoutPanel = new Panel( new VBox( {
-      children: [
-        new Text( currentString, { fontSize: 12, maxWidth: 54 } ),
-        new Rectangle( 0, 0, maxBounds.width + textPanelMarginX * 2, maxBounds.height + textPanelMarginY * 2, {
-          cornerRadius: 4,
-          stroke: Color.BLACK,
-          fill: Color.WHITE,
-          lineWidth: 0.75,
-          children: [
-            readoutText
-          ]
-        } )
-      ]
-    } ), {
-      pickable: false,
-      fill: ORANGE,
-      stroke: null,
-      xMargin: 4,
-      yMargin: 0,
-      tandem: tandem.createTandem( 'readoutPanel' )
-    } );
-
-    // This node only has a lifelike representation because it is a sensor
-    const lifelikeNode = new Node( {
-      children: [
-
-        // orange background panel
-        orangeBackgroundPanel,
-
-        // gray track
-        new Rectangle( 0, 0, PANEL_WIDTH, 20, {
-          fill: '#bcbdbf',
-          centerY: PANEL_HEIGHT / 2
-        } ),
-
-        // black border
-        blackBorder
-      ]
-    } );
-
-    // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
-    lifelikeNode.mouseArea = lifelikeNode.bounds.copy();
-    lifelikeNode.touchArea = lifelikeNode.bounds.copy();
-
-    // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
-    lifelikeNode.centerY = 0;
-
-    // Center the readout within the main body of the sensor
-    readoutPanel.center = lifelikeNode.center;
-
-    // @private {Node} - the panel to be shown in front for z-ordering.  Wrap centered in a child node to make the layout
-    // in updateRender trivial.
-    this.frontPanelContainer = new Node( {
-      children: [ readoutPanel ]
-    } );
-
-    if ( options.isIcon ) {
-      lifelikeNode.addChild( this.frontPanelContainer.mutate( { centerY: lifelikeNode.height / 2 - 2 } ) );
+      // @private {function}
+      this.disposeSeriesAmmeterNode = () => {
+        seriesAmmeter.currentProperty.unlink( updateText );
+        seriesAmmeter.startVertexProperty.unlink( updateText );
+        seriesAmmeter.endVertexProperty.unlink( updateText );
+        if ( !this.isIcon ) {
+          circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.removeChild( this.frontPanelContainer );
+        }
+        lifelikeNode.dispose();
+        this.frontPanelContainer.dispose();
+        readoutPanel.dispose();
+        circuitLayerNode && circuitLayerNode.circuit.circuitChangedEmitter.removeListener( updateText );
+      };
     }
-    else {
-      circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.addChild( this.frontPanelContainer );
-    }
-
-    FixedCircuitElementNode.call( this,
-      screenView,
-      circuitLayerNode,
-      seriesAmmeter,
-      new Property( CircuitElementViewType.LIFELIKE ),
-      lifelikeNode,
-      new Node( { children: [ lifelikeNode ] } ),// reuse lifelike view for the schematic view
-      tandem,
-      options
-    );
-
-    // @private (read-only) {boolean} - whether to show as an isIcon
-    this.isIcon = options.isIcon;
-
-    // @private {function}
-    this.disposeSeriesAmmeterNode = () => {
-      seriesAmmeter.currentProperty.unlink( updateText );
-      seriesAmmeter.startVertexProperty.unlink( updateText );
-      seriesAmmeter.endVertexProperty.unlink( updateText );
-      if ( !this.isIcon ) {
-        circuitLayerNode.seriesAmmeterNodeReadoutPanelLayer.removeChild( this.frontPanelContainer );
-      }
-      lifelikeNode.dispose();
-      this.frontPanelContainer.dispose();
-      readoutPanel.dispose();
-      circuitLayerNode && circuitLayerNode.circuit.circuitChangedEmitter.removeListener( updateText );
-    };
-  }
-
-  circuitConstructionKitCommon.register( 'SeriesAmmeterNode', SeriesAmmeterNode );
-
-  return inherit( FixedCircuitElementNode, SeriesAmmeterNode, {
 
     /**
      * @public - dispose resources when no longer used
      * @override
      */
-    dispose: function() {
+    dispose() {
       this.disposeSeriesAmmeterNode();
-      FixedCircuitElementNode.prototype.dispose.call( this );
-    },
+      super.dispose();
+    }
 
     /**
      * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
      * @protected - CCKCLightBulbNode calls updateRender for its child socket node
      * @override
      */
-    updateRender: function() {
-      FixedCircuitElementNode.prototype.updateRender.call( this );
+    updateRender() {
+      super.updateRender();
       this.frontPanelContainer.setMatrix( this.contentNode.getMatrix() );
     }
-  } );
+  }
+
+  return circuitConstructionKitCommon.register( 'SeriesAmmeterNode', SeriesAmmeterNode );
 } );

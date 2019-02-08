@@ -159,7 +159,7 @@ define( require => {
      */
     updateMatrixForPoint( distanceAlongWire, matrix ) {
 
-      FixedCircuitElement.prototype.updateMatrixForPoint.call( this, distanceAlongWire, matrix );
+      super.updateMatrixForPoint( distanceAlongWire, matrix );
 
       let previousAccumulatedDistance = 0;
       let accumulatedDistance = 0;
@@ -200,7 +200,7 @@ define( require => {
      * @public
      */
     toIntrinsicStateObject() {
-      const parent = FixedCircuitElement.prototype.toIntrinsicStateObject.call( this );
+      const parent = super.toIntrinsicStateObject();
       return _.extend( parent, {
         highResistance: this.highResistance,
         resistance: this.resistanceProperty.value

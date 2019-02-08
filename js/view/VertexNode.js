@@ -15,7 +15,6 @@ define( require => {
   const Circle = require( 'SCENERY/nodes/Circle' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   const Node = require( 'SCENERY/nodes/Node' );
   const SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
@@ -39,190 +38,188 @@ define( require => {
     stroke: Color.BLACK
   } ) ).toDataURLImageSynchronous();
 
-  /**
-   * @param {CircuitLayerNode} circuitLayerNode - the entire CircuitLayerNode
-   * @param {Vertex} vertex - the Vertex that will be displayed
-   * @param {Tandem} tandem
-   * @constructor
-   */
-  function VertexNode( circuitLayerNode, vertex, tandem ) {
-    const circuit = circuitLayerNode.circuit;
+  class VertexNode extends Node {
 
-    // @private {Circuit}
-    this.circuit = circuit;
-    const cutButton = circuitLayerNode.cutButton;
+    /**
+     * @param {CircuitLayerNode} circuitLayerNode - the entire CircuitLayerNode
+     * @param {Vertex} vertex - the Vertex that will be displayed
+     * @param {Tandem} tandem
+     */
+    constructor( circuitLayerNode, vertex, tandem ) {
 
-    // @private {RoundPushButton}
-    this.cutButton = cutButton;
+      super( {
+        tandem: tandem,
+        cursor: 'pointer',
 
-    // @private {Tandem}
-    this.vertexNodeTandem = tandem;
+        // keyboard navigation
+        tagName: 'div', // HTML tag name for representative element in the document, see Accessibility.js
+        focusable: true,
+        focusHighlight: 'invisible' // highlights are drawn by the simulation, invisible is deprecated don't use in future
+      } );
 
-    // @private {CircuitLayerNode}
-    this.circuitLayerNode = circuitLayerNode;
+      const circuit = circuitLayerNode.circuit;
 
-    // Use a query parameter to turn on node voltage readouts for debugging only.
-    const vertexDisplay = CCKCQueryParameters.vertexDisplay;
+      // @private {Circuit}
+      this.circuit = circuit;
+      const cutButton = circuitLayerNode.cutButton;
 
-    // @private {Text} display for debugging only
-    this.voltageReadoutText = null;
-    if ( vertexDisplay ) {
-      this.voltageReadoutText = new Text( '', {
-        fontSize: 18,
+      // @private {RoundPushButton}
+      this.cutButton = cutButton;
+
+      // @private {Tandem}
+      this.vertexNodeTandem = tandem;
+
+      // @private {CircuitLayerNode}
+      this.circuitLayerNode = circuitLayerNode;
+
+      // Use a query parameter to turn on node voltage readouts for debugging only.
+      const vertexDisplay = CCKCQueryParameters.vertexDisplay;
+
+      // @private {Text} display for debugging only
+      this.voltageReadoutText = null;
+      if ( vertexDisplay ) {
+        this.voltageReadoutText = new Text( '', {
+          fontSize: 18,
+          pickable: false
+        } );
+
+        // @private {function} for debugging
+        this.updateReadoutTextLocation = () => {
+          this.voltageReadoutText.centerX = 0;
+          this.voltageReadoutText.bottom = -30;
+        };
+        vertex.voltageProperty.link( voltage => {
+
+          // No need for i18n because this is for debugging only
+          const voltageText = Util.toFixed( voltage, 3 ) + 'V';
+          this.voltageReadoutText.setText( vertexDisplay === 'voltage' ? voltageText : vertex.index );
+          this.updateReadoutTextLocation();
+        } );
+      }
+
+      // @public (read-only) {Vertex} - the vertex associated with this node
+      this.vertex = vertex;
+
+      // @public (read-only) {Vector2|null} - added by CircuitLayerNode during dragging, used for relative drag location,
+      // or null if not being dragged.
+      this.startOffset = null;
+
+      // @private {Circle} - Highlight is shown when the vertex is selected.
+      this.highlightNode = new Circle( 30, {
+        stroke: CCKCConstants.HIGHLIGHT_COLOR,
+        lineWidth: CCKCConstants.HIGHLIGHT_LINE_WIDTH,
         pickable: false
       } );
 
-      // @private {function} for debugging
-      this.updateReadoutTextLocation = () => {
-        this.voltageReadoutText.centerX = 0;
-        this.voltageReadoutText.bottom = -30;
+      // @private - keyboard listener so that delete or backspace deletes the element - must be disposed
+      this.keyListener = {
+        keydown: this.keydownListener.bind( this )
       };
-      vertex.voltageProperty.link( voltage => {
+      this.addInputListener( this.keyListener );
 
-        // No need for i18n because this is for debugging only
-        const voltageText = Util.toFixed( voltage, 3 ) + 'V';
-        this.voltageReadoutText.setText( vertexDisplay === 'voltage' ? voltageText : vertex.index );
-        this.updateReadoutTextLocation();
-      } );
-    }
+      // @private {function} Shows up as red when disconnected or black when connected.  When unattachable, the dotted line disappears (black
+      // box study)
+      this.updateStrokeListener = this.updateStroke.bind( this );
 
-    // @public (read-only) {Vertex} - the vertex associated with this node
-    this.vertex = vertex;
+      // Update when any vertex is added or removed, or when the existing circuit values change.
+      circuit.vertices.addItemAddedListener( this.updateStrokeListener );
+      circuit.vertices.addItemRemovedListener( this.updateStrokeListener );
+      circuit.circuitChangedEmitter.addListener( this.updateStrokeListener );
 
-    // @public (read-only) {Vector2|null} - added by CircuitLayerNode during dragging, used for relative drag location,
-    // or null if not being dragged.
-    this.startOffset = null;
+      // In Black Box, other wires can be detached from a vertex and this should also update the solder
+      circuit.circuitElements.addItemAddedListener( this.updateStrokeListener );
+      circuit.circuitElements.addItemRemovedListener( this.updateStrokeListener );
 
-    // @private {Circle} - Highlight is shown when the vertex is selected.
-    this.highlightNode = new Circle( 30, {
-      stroke: CCKCConstants.HIGHLIGHT_COLOR,
-      lineWidth: CCKCConstants.HIGHLIGHT_LINE_WIDTH,
-      pickable: false
-    } );
+      vertex.attachableProperty.link( this.updateStrokeListener );
 
-    Node.call( this, {
-      tandem: tandem,
-      cursor: 'pointer',
+      // @private {function}
+      this.updateSelectedListener = this.updateSelected.bind( this );
+      vertex.selectedProperty.link( this.updateSelectedListener );
 
-      // keyboard navigation
-      tagName: 'div', // HTML tag name for representative element in the document, see Accessibility.js
-      focusable: true,
-      focusHighlight: 'invisible' // highlights are drawn by the simulation, invisible is deprecated don't use in future
-    } );
+      // @private {function}
+      this.updateMoveToFront = this.moveToFront.bind( this );
+      vertex.relayerEmitter.addListener( this.updateMoveToFront );
 
-    // @private - keyboard listener so that delete or backspace deletes the element - must be disposed
-    this.keyListener = {
-      keydown: this.keydownListener.bind( this )
-    };
-    this.addInputListener( this.keyListener );
+      // @private {function}
+      this.updatePickableListener = this.setPickable.bind( this );
+      vertex.interactiveProperty.link( this.updatePickableListener );
 
-    // @private {function} Shows up as red when disconnected or black when connected.  When unattachable, the dotted line disappears (black
-    // box study)
-    this.updateStrokeListener = this.updateStroke.bind( this );
+      let eventPoint = null;
+      let dragged = false;
 
-    // Update when any vertex is added or removed, or when the existing circuit values change.
-    circuit.vertices.addItemAddedListener( this.updateStrokeListener );
-    circuit.vertices.addItemRemovedListener( this.updateStrokeListener );
-    circuit.circuitChangedEmitter.addListener( this.updateStrokeListener );
+      // @private {function[]} - called when the user clicks away from the selected vertex
+      this.clickToDismissListeners = [];
 
-    // In Black Box, other wires can be detached from a vertex and this should also update the solder
-    circuit.circuitElements.addItemAddedListener( this.updateStrokeListener );
-    circuit.circuitElements.addItemRemovedListener( this.updateStrokeListener );
+      // @private {SimpleDragHandler}
+      this.dragHandler = new SimpleDragHandler( {
+        allowTouchSnag: true,
+        tandem: tandem.createTandem( 'dragHandler' ),
+        start: event => {
+          eventPoint = event.pointer.point;
+          circuitLayerNode.startDragVertex( event.pointer.point, vertex, true );
+          dragged = false;
+        },
+        drag: event => {
+          dragged = true;
+          circuitLayerNode.dragVertex( event.pointer.point, vertex, true );
+        },
+        end: event => {
 
-    vertex.attachableProperty.link( this.updateStrokeListener );
+          // The vertex can only connect to something if it was actually moved.
+          circuitLayerNode.endDrag( event, vertex, dragged );
 
-    // @private {function}
-    this.updateSelectedListener = this.updateSelected.bind( this );
-    vertex.selectedProperty.link( this.updateSelectedListener );
+          // Only show on a tap, not on every drag.
+          if ( vertex.interactiveProperty.get() && event.pointer.point.distance( eventPoint ) < CCKCConstants.TAP_THRESHOLD ) {
 
-    // @private {function}
-    this.updateMoveToFront = this.moveToFront.bind( this );
-    vertex.relayerEmitter.addListener( this.updateMoveToFront );
+            vertex.selectedProperty.set( true );
 
-    // @private {function}
-    this.updatePickableListener = this.setPickable.bind( this );
-    vertex.interactiveProperty.link( this.updatePickableListener );
-
-    let eventPoint = null;
-    let dragged = false;
-
-    // @private {function[]} - called when the user clicks away from the selected vertex
-    this.clickToDismissListeners = [];
-
-    // @private {SimpleDragHandler}
-    this.dragHandler = new SimpleDragHandler( {
-      allowTouchSnag: true,
-      tandem: tandem.createTandem( 'dragHandler' ),
-      start: event => {
-        eventPoint = event.pointer.point;
-        circuitLayerNode.startDragVertex( event.pointer.point, vertex, true );
-        dragged = false;
-      },
-      drag: event => {
-        dragged = true;
-        circuitLayerNode.dragVertex( event.pointer.point, vertex, true );
-      },
-      end: event => {
-
-        // The vertex can only connect to something if it was actually moved.
-        circuitLayerNode.endDrag( event, vertex, dragged );
-
-        // Only show on a tap, not on every drag.
-        if ( vertex.interactiveProperty.get() && event.pointer.point.distance( eventPoint ) < CCKCConstants.TAP_THRESHOLD ) {
-
-          vertex.selectedProperty.set( true );
-
-          const clickToDismissListener = {
-            down: event => {
-              if ( !_.includes( event.trail.nodes, this ) && !_.includes( event.trail.nodes, cutButton ) ) {
-                vertex.selectedProperty.set( false );
-                this.clearClickListeners();
+            const clickToDismissListener = {
+              down: event => {
+                if ( !_.includes( event.trail.nodes, this ) && !_.includes( event.trail.nodes, cutButton ) ) {
+                  vertex.selectedProperty.set( false );
+                  this.clearClickListeners();
+                }
               }
-            }
-          };
-          phet.joist.sim.display.addInputListener( clickToDismissListener );
-          this.clickToDismissListeners.push( clickToDismissListener );
+            };
+            phet.joist.sim.display.addInputListener( clickToDismissListener );
+            this.clickToDismissListeners.push( clickToDismissListener );
+          }
+          else {
+
+            // Deselect after dragging so a grayed-out cut button doesn't remain when open vertex is connected
+            vertex.selectedProperty.set( false );
+            this.clearClickListeners();
+          }
         }
-        else {
-
-          // Deselect after dragging so a grayed-out cut button doesn't remain when open vertex is connected
-          vertex.selectedProperty.set( false );
-          this.clearClickListeners();
+      } );
+      this.dragHandler.startDrag = function( event ) {
+        if ( circuitLayerNode.canDragVertex( vertex ) ) {
+          circuitLayerNode.setVerticesDragging( vertex );
+          SimpleDragHandler.prototype.startDrag.call( this, event );
         }
-      }
-    } );
-    this.dragHandler.startDrag = function( event ) {
-      if ( circuitLayerNode.canDragVertex( vertex ) ) {
-        circuitLayerNode.setVerticesDragging( vertex );
-        SimpleDragHandler.prototype.startDrag.call( this, event );
-      }
-    };
+      };
 
-    // @private {function} When Vertex becomes undraggable, interrupt the input listener
-    this.interruptionListener = this.setDraggable.bind( this );
-    vertex.draggableProperty.lazyLink( this.interruptionListener );
+      // @private {function} When Vertex becomes undraggable, interrupt the input listener
+      this.interruptionListener = this.setDraggable.bind( this );
+      vertex.draggableProperty.lazyLink( this.interruptionListener );
 
-    // Don't permit dragging by the scissors or highlight
-    this.addInputListener( this.dragHandler );
+      // Don't permit dragging by the scissors or highlight
+      this.addInputListener( this.dragHandler );
 
-    // Make sure the cut button remains in the visible screen bounds.
-    this.updateVertexNodePositionListener = this.updateVertexNodePosition.bind( this );
-    vertex.positionProperty.link( this.updateVertexNodePositionListener );
+      // Make sure the cut button remains in the visible screen bounds.
+      this.updateVertexNodePositionListener = this.updateVertexNodePosition.bind( this );
+      vertex.positionProperty.link( this.updateVertexNodePositionListener );
 
-    // When showing the highlight, make sure it shows in the right place (not updated while invisible)
-    vertex.selectedProperty.link( this.updateVertexNodePositionListener );
-  }
-
-  circuitConstructionKitCommon.register( 'VertexNode', VertexNode );
-
-  return inherit( Node, VertexNode, {
+      // When showing the highlight, make sure it shows in the right place (not updated while invisible)
+      vertex.selectedProperty.link( this.updateVertexNodePositionListener );
+    }
 
     /**
      * Dispose resources when no longer used.
      * @public
      * @override
      */
-    dispose: function() {
+    dispose() {
       const vertex = this.vertex;
       const circuit = this.circuit;
       const cutButton = this.circuitLayerNode.cutButton;
@@ -253,14 +250,14 @@ define( require => {
       this.removeInputListener( this.dragHandler );
 
       vertex.draggableProperty.unlink( this.interruptionListener );
-      Node.prototype.dispose.call( this );
-    },
+      super.dispose();
+    }
 
     /**
      * @param {Event} event - scenery keyboard event
      * @private
      */
-    keydownListener: function( event ) {
+    keydownListener( event ) {
       const domEvent = event.domEvent;
       const code = domEvent.keyCode || domEvent.which;
 
@@ -272,13 +269,13 @@ define( require => {
         domEvent.preventDefault();
         this.cutButton.enabled && this.circuit.cutVertex( this.circuit.getSelectedVertex() );
       }
-    },
+    }
 
     /**
      * Update whether the vertex is shown as selected.
      * @param selected
      */
-    updateSelected: function( selected ) {
+    updateSelected( selected ) {
       const neighborCircuitElements = this.circuit.getNeighborCircuitElements( this.vertex );
 
       if ( selected ) {
@@ -298,13 +295,13 @@ define( require => {
       // Show a disabled button as a cue that the vertex could be cuttable, but it isn't right now.
       const isConnectedBlackBoxVertex = numberConnections === 1 && !this.vertex.draggableProperty.get();
       this.cutButton.enabled = numberConnections > 1 || isConnectedBlackBoxVertex;
-    },
+    }
 
     /**
      * Update the stroke
      * @private
      */
-    updateStroke: function() {
+    updateStroke() {
 
       // A memory leak was being caused by children getting added after dispose was called.
       // This is because the itemRemoved listener in CircuitLayerNode is added (and hence called) before this callback.
@@ -318,12 +315,12 @@ define( require => {
         }
         this.visible = this.vertex.attachableProperty.get();
       }
-    },
+    }
 
     /**
      * @private - update the position of the cut button
      */
-    updateCutButtonPosition: function() {
+    updateCutButtonPosition() {
       const position = this.vertex.positionProperty.get();
 
       const neighbors = this.circuit.getNeighborCircuitElements( this.vertex );
@@ -350,13 +347,13 @@ define( require => {
 
       const availableBounds = bounds.eroded( this.cutButton.width / 2 );
       this.cutButton.center = availableBounds.closestPointTo( proposedPosition );
-    },
+    }
 
     /**
      * Move the VertexNode when the Vertex moves.
      * @private
      */
-    updateVertexNodePosition: function() {
+    updateVertexNodePosition() {
       const position = this.vertex.positionProperty.get();
       this.translation = position;
 
@@ -368,36 +365,38 @@ define( require => {
 
       // Update the cut button position, but only if the cut button is showing (to save on CPU)
       this.vertex.selectedProperty.get() && this.updateCutButtonPosition();
-    },
+    }
 
     /**
      * Remove click listeners
      * @private
      */
-    clearClickListeners: function() {
+    clearClickListeners() {
       this.clickToDismissListeners.forEach( listener => phet.joist.sim.display.removeInputListener( listener ) );
       this.clickToDismissListeners.length = 0;
-    },
+    }
 
     /**
      * Sets whether the node is draggable, used as a callback for interrupting the drag listener
      * @param {boolean} draggable
      * @private
      */
-    setDraggable: function( draggable ) {
+    setDraggable( draggable ) {
       if ( !draggable ) {
         this.dragHandler.interrupt();
       }
     }
-  }, {
-    VERTEX_RADIUS: VERTEX_RADIUS,
 
-    /**
-     * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
-     * @public {Array.<Image>}
-     */
-    webglSpriteNodes: [
-      BLACK_CIRCLE_NODE, RED_CIRCLE_NODE
-    ]
-  } );
+  }
+
+  VertexNode.VERTEX_RADIUS = VERTEX_RADIUS;
+
+  /**
+   * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
+   * @public {Array.<Image>}
+   */
+  VertexNode.webglSpriteNodes = [
+    BLACK_CIRCLE_NODE, RED_CIRCLE_NODE
+  ];
+  return circuitConstructionKitCommon.register( 'VertexNode', VertexNode );
 } );

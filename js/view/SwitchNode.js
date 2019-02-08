@@ -16,7 +16,6 @@ define( require => {
   const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   const Color = require( 'SCENERY/util/Color' );
   const FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const LinearGradient = require( 'SCENERY/util/LinearGradient' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
@@ -144,105 +143,102 @@ define( require => {
     CircuitElementViewType.SCHEMATIC, Color.BLACK, CCKCConstants.SCHEMATIC_LINE_WIDTH, 0, true
   ).toDataURLImageSynchronous();
 
-  /**
-   * @param {CCKCScreenView|null} screenView - main screen view, null for icon
-   * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
-   * @param {Switch} circuitSwitch
-   * @param {Property.<CircuitElementViewType>} viewTypeProperty
-   * @param {Tandem} tandem
-   * @param {Object} [options]
-   * @constructor
-   */
-  function SwitchNode( screenView, circuitLayerNode, circuitSwitch, viewTypeProperty, tandem, options ) {
+  class SwitchNode extends FixedCircuitElementNode {
 
-    // @public (read-only) {Switch} - the Switch rendered by this Node
-    this.circuitSwitch = circuitSwitch;
+    /**
+     * @param {CCKCScreenView|null} screenView - main screen view, null for icon
+     * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
+     * @param {Switch} circuitSwitch
+     * @param {Property.<CircuitElementViewType>} viewTypeProperty
+     * @param {Tandem} tandem
+     * @param {Object} [options]
+     */
+    constructor( screenView, circuitLayerNode, circuitSwitch, viewTypeProperty, tandem, options ) {
 
-    const lifelikeNode = new Node();
-    const schematicNode = new Node();
-    const closeListener = closed => {
-      lifelikeNode.children = [ closed ? lifelikeClosedImage : lifelikeOpenImage ];
-      schematicNode.children = [ closed ? schematicClosedImage : schematicOpenImage ];
-    };
-    circuitSwitch.closedProperty.link( closeListener );
+      const lifelikeNode = new Node();
+      const schematicNode = new Node();
+      const closeListener = closed => {
+        lifelikeNode.children = [ closed ? lifelikeClosedImage : lifelikeOpenImage ];
+        schematicNode.children = [ closed ? schematicClosedImage : schematicOpenImage ];
+      };
+      circuitSwitch.closedProperty.link( closeListener );
 
-    FixedCircuitElementNode.call( this,
-      screenView,
-      circuitLayerNode,
-      circuitSwitch,
-      viewTypeProperty,
-      lifelikeNode,
-      schematicNode,
-      tandem,
-      options
-    );
+      super(
+        screenView,
+        circuitLayerNode,
+        circuitSwitch,
+        viewTypeProperty,
+        lifelikeNode,
+        schematicNode,
+        tandem,
+        options
+      );
 
-    let downPoint = null;
+      // @public (read-only) {Switch} - the Switch rendered by this Node
+      this.circuitSwitch = circuitSwitch;
 
-    // When the user taps the switch, toggle whether it is open or closed.
-    const buttonListener = new ButtonListener( {
-      down: event => {
-        downPoint = circuitLayerNode.globalToLocalPoint( event.pointer.point );
-      },
-      fire: event => {
+      let downPoint = null;
 
-        // Measure how far the switch was dragged in CircuitLayerNode coordinates (if any)
-        const distance = circuitLayerNode.globalToLocalPoint( event.pointer.point ).distance( downPoint );
+      // When the user taps the switch, toggle whether it is open or closed.
+      const buttonListener = new ButtonListener( {
+        down: event => {
+          downPoint = circuitLayerNode.globalToLocalPoint( event.pointer.point );
+        },
+        fire: event => {
 
-        // Toggle the state of the switch, but only if the event is classified as a tap and not a drag
-        if ( distance < CCKCConstants.TAP_THRESHOLD ) {
-          circuitSwitch.closedProperty.value = !circuitSwitch.closedProperty.value;
+          // Measure how far the switch was dragged in CircuitLayerNode coordinates (if any)
+          const distance = circuitLayerNode.globalToLocalPoint( event.pointer.point ).distance( downPoint );
+
+          // Toggle the state of the switch, but only if the event is classified as a tap and not a drag
+          if ( distance < CCKCConstants.TAP_THRESHOLD ) {
+            circuitSwitch.closedProperty.value = !circuitSwitch.closedProperty.value;
+          }
         }
-      }
-    } );
+      } );
 
-    // Only add the input listener if it is not for a toolbar icon
-    screenView && this.contentNode.addInputListener( buttonListener );
+      // Only add the input listener if it is not for a toolbar icon
+      screenView && this.contentNode.addInputListener( buttonListener );
 
-    // @private {Node} - For hit testing
-    this.lifelikeOpenNode = createNode(
-      CircuitElementViewType.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, false
-    );
+      // @private {Node} - For hit testing
+      this.lifelikeOpenNode = createNode(
+        CircuitElementViewType.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, false
+      );
 
-    // @private {function} - clean up resources when no longer used.
-    this.disposeSwitchNode = () => {
-      circuitSwitch.closedProperty.unlink( closeListener );
-      screenView && this.contentNode.removeInputListener( buttonListener );
+      // @private {function} - clean up resources when no longer used.
+      this.disposeSwitchNode = () => {
+        circuitSwitch.closedProperty.unlink( closeListener );
+        screenView && this.contentNode.removeInputListener( buttonListener );
 
-      // Make sure the lifelikeNode and schematicNode are not listed as parents for their children because the children
-      // (images) persist.
-      lifelikeNode.dispose();
-      schematicNode.dispose();
-    };
-  }
-
-  circuitConstructionKitCommon.register( 'SwitchNode', SwitchNode );
-
-  return inherit( FixedCircuitElementNode, SwitchNode, {
+        // Make sure the lifelikeNode and schematicNode are not listed as parents for their children because the children
+        // (images) persist.
+        lifelikeNode.dispose();
+        schematicNode.dispose();
+      };
+    }
 
     /**
      * Determine whether the start side (with the pivot) contains the sensor point.
      * @param {Vector2} point - in view coordinates
      * @returns {boolean}
      */
-    startSideContainsSensorPoint: function( point ) {
+    startSideContainsSensorPoint( point ) {
       const localPoint = this.contentNode.parentToLocalPoint( point );
 
       const leftSegmentContainsPoint = lifelikeOpenNode.leftSegmentNode.containsPoint( localPoint );
       const node = this.circuitSwitch.closedProperty.get() ? lifelikeClosedNode : lifelikeOpenNode;
       const rotatingSegmentContainsPoint = node.rotatingSegmentNode.containsPoint( localPoint );
       return leftSegmentContainsPoint || rotatingSegmentContainsPoint;
-    },
+    }
 
     /**
      * Determine whether the start side (without the pivot) contains the sensor point.
      * @param {Vector2} point - in view coordinates
      * @returns {boolean}
      */
-    endSideContainsSensorPoint: function( point ) {
+    endSideContainsSensorPoint( point ) {
       const localPoint = this.contentNode.parentToLocalPoint( point );
       return lifelikeOpenNode.rightSegmentNode.containsPoint( localPoint );
-    },
+    }
 
     /**
      * Returns true if the node hits the sensor at the given point.
@@ -251,22 +247,24 @@ define( require => {
      * @overrides
      * @public
      */
-    containsSensorPoint: function( point ) {
+    containsSensorPoint( point ) {
 
       // make sure bounds are correct if cut or joined in this animation frame
       this.step();
 
       return this.startSideContainsSensorPoint( point ) || this.endSideContainsSensorPoint( point );
-    },
+    }
 
     /**
      * Clean up resources when no longer used.
      * @public
      * @override
      */
-    dispose: function() {
+    dispose() {
       this.disposeSwitchNode();
-      FixedCircuitElementNode.prototype.dispose.call( this );
+      super.dispose();
     }
-  } );
+  }
+
+  return circuitConstructionKitCommon.register( 'SwitchNode', SwitchNode );
 } );

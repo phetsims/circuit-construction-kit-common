@@ -71,7 +71,7 @@ define( require => {
      * @public
      */
     toIntrinsicStateObject() {
-      const parent = FixedCircuitElement.prototype.toIntrinsicStateObject.call( this );
+      const parent = super.toIntrinsicStateObject();
       return _.extend( parent, {
         batteryType: this.batteryType,
         voltage: this.voltageProperty.value

@@ -18,7 +18,6 @@ define( require => {
   const CircuitElementToolNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolNode' );
   const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   const HBox = require( 'SCENERY/nodes/HBox' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const Property = require( 'AXON/Property' );
   const SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
   const SeriesAmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SeriesAmmeterNode' );
@@ -40,133 +39,133 @@ define( require => {
   const VOLTMETER_ICON_SCALE = 1.4;
   const ICON_TEXT_SPACING = 3; // distance in view coordinates from the isIcon to the text below the isIcon
 
-  /**
-   * @param {AlignGroup} alignGroup - for alignment with other controls
-   * @param {Node} circuitLayerNode - the main circuit node to use as a coordinate frame
-   * @param {VoltmeterNode} voltmeterNode - node for the Voltmeter
-   * @param {AmmeterNode} ammeterNode - node for the Ammeter
-   * @param {Tandem} tandem
-   * @param {Object} [options]
-   * @constructor
-   */
-  function SensorToolbox( alignGroup, circuitLayerNode, voltmeterNode, ammeterNode, tandem, options ) {
-
-    options = _.extend( {
-      showResultsProperty: circuitLayerNode.model.isValueDepictionEnabledProperty,
-      showSeriesAmmeters: true, // whether the series ammeters should be shown in the toolbox
-      showNoncontactAmmeters: true // whether the noncontact ammeters should be shown in the toolbox
-    }, options );
+  class SensorToolbox extends CCKCPanel {
 
     /**
-     * @param {Ammeter|Voltmeter} meterModel
-     * @param {AmmeterNode|VoltmeterNode} meterNode
-     * @returns {Object} a listener
+     * @param {AlignGroup} alignGroup - for alignment with other controls
+     * @param {Node} circuitLayerNode - the main circuit node to use as a coordinate frame
+     * @param {VoltmeterNode} voltmeterNode - node for the Voltmeter
+     * @param {AmmeterNode} ammeterNode - node for the Ammeter
+     * @param {Tandem} tandem
+     * @param {Object} [options]
      */
-    const createListener = ( meterModel, meterNode ) =>
-      SimpleDragHandler.createForwardingListener( event => {
-        const viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point );
-        meterModel.draggingProbesWithBodyProperty.set( true );
-        meterModel.visibleProperty.set( true );
-        meterModel.bodyPositionProperty.set( viewPosition );
-        meterNode.dragHandler.startDrag( event );
-      }, {
-        allowTouchSnag: true
+    constructor( alignGroup, circuitLayerNode, voltmeterNode, ammeterNode, tandem, options ) {
+
+      options = _.extend( {
+        showResultsProperty: circuitLayerNode.model.isValueDepictionEnabledProperty,
+        showSeriesAmmeters: true, // whether the series ammeters should be shown in the toolbox
+        showNoncontactAmmeters: true // whether the noncontact ammeters should be shown in the toolbox
+      }, options );
+
+      /**
+       * @param {Ammeter|Voltmeter} meterModel
+       * @param {AmmeterNode|VoltmeterNode} meterNode
+       * @returns {Object} a listener
+       */
+      const createListener = ( meterModel, meterNode ) =>
+        SimpleDragHandler.createForwardingListener( event => {
+          const viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point );
+          meterModel.draggingProbesWithBodyProperty.set( true );
+          meterModel.visibleProperty.set( true );
+          meterModel.bodyPositionProperty.set( viewPosition );
+          meterNode.dragHandler.startDrag( event );
+        }, {
+          allowTouchSnag: true
+        } );
+
+      // Draggable isIcon for the voltmeter
+      const voltmeter = new Voltmeter( tandem.createTandem( 'voltmeterIconModel' ) );
+      const voltmeterNodeIcon = new VoltmeterNode( voltmeter, null, null, tandem.createTandem( 'voltmeterNodeIcon' ), { isIcon: true } );
+      voltmeterNode.voltmeter.visibleProperty.link( visible => voltmeterNodeIcon.setVisible( !visible ) );
+      voltmeterNodeIcon.mutate( {
+        scale: TOOLBOX_ICON_SIZE * VOLTMETER_ICON_SCALE / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height )
       } );
+      voltmeterNodeIcon.addInputListener( createListener( voltmeterNode.voltmeter, voltmeterNode ) );
 
-    // Draggable isIcon for the voltmeter
-    const voltmeter = new Voltmeter( tandem.createTandem( 'voltmeterIconModel' ) );
-    const voltmeterNodeIcon = new VoltmeterNode( voltmeter, null, null, tandem.createTandem( 'voltmeterNodeIcon' ), { isIcon: true } );
-    voltmeterNode.voltmeter.visibleProperty.link( visible => voltmeterNodeIcon.setVisible( !visible ) );
-    voltmeterNodeIcon.mutate( {
-      scale: TOOLBOX_ICON_SIZE * VOLTMETER_ICON_SCALE / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height )
-    } );
-    voltmeterNodeIcon.addInputListener( createListener( voltmeterNode.voltmeter, voltmeterNode ) );
+      // Icon for the ammeter
+      const ammeter = new Ammeter( tandem.createTandem( 'ammeterIconModel' ) );
+      const ammeterNodeIcon = new AmmeterNode( ammeter, null, tandem.createTandem( 'ammeterNodeIcon' ), { isIcon: true } );
+      ammeterNode.ammeter.visibleProperty.link( visible => ammeterNodeIcon.setVisible( !visible ) );
+      ammeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( ammeterNodeIcon.width, ammeterNodeIcon.height ) } );
+      ammeterNodeIcon.addInputListener( createListener( ammeterNode.ammeter, ammeterNode ) );
 
-    // Icon for the ammeter
-    const ammeter = new Ammeter( tandem.createTandem( 'ammeterIconModel' ) );
-    const ammeterNodeIcon = new AmmeterNode( ammeter, null, tandem.createTandem( 'ammeterNodeIcon' ), { isIcon: true } );
-    ammeterNode.ammeter.visibleProperty.link( visible => ammeterNodeIcon.setVisible( !visible ) );
-    ammeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( ammeterNodeIcon.width, ammeterNodeIcon.height ) } );
-    ammeterNodeIcon.addInputListener( createListener( ammeterNode.ammeter, ammeterNode ) );
-
-    // Icon for the series ammeter
-    const seriesAmmeter = new SeriesAmmeter(
-      new Vertex( Vector2.ZERO ),
-      new Vertex( new Vector2( CCKCConstants.SERIES_AMMETER_LENGTH, 0 ) ),
-      tandem.createTandem( 'seriesAmmeterIconModel' )
-    );
-    const seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeter, tandem.createTandem( 'seriesAmmeterNodeIcon' ), {
-      isIcon: true
-    } );
-    const createSeriesAmmeter = position => {
-      const halfLength = CCKCConstants.SERIES_AMMETER_LENGTH / 2;
-      const startVertex = new Vertex( position.plusXY( -halfLength, 0 ) );
-      const endVertex = new Vertex( position.plusXY( halfLength, 0 ) );
-      return new SeriesAmmeter(
-        startVertex,
-        endVertex,
-        circuitLayerNode.circuit.seriesAmmeterGroupTandem.createNextTandem()
+      // Icon for the series ammeter
+      const seriesAmmeter = new SeriesAmmeter(
+        new Vertex( Vector2.ZERO ),
+        new Vertex( new Vector2( CCKCConstants.SERIES_AMMETER_LENGTH, 0 ) ),
+        tandem.createTandem( 'seriesAmmeterIconModel' )
       );
-    };
-    seriesAmmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / seriesAmmeterNodeIcon.width } );
-    const seriesAmmeterToolNode = new CircuitElementToolNode(
-      '',
-      new Property( false ),
-      new Property( CircuitElementViewType.SCHEMATIC ),
-      circuitLayerNode.circuit,
-      point => circuitLayerNode.globalToLocalPoint( point ),
-      seriesAmmeterNodeIcon,
-      6,
-      () => circuitLayerNode.circuit.circuitElements.count( circuitElement => circuitElement instanceof SeriesAmmeter ),
-      createSeriesAmmeter, {
-        touchAreaExpansionLeft: 3,
-        touchAreaExpansionTop: 15,
-        touchAreaExpansionRight: 3,
-        touchAreaExpansionBottom: 0
+      const seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeter, tandem.createTandem( 'seriesAmmeterNodeIcon' ), {
+        isIcon: true
+      } );
+      const createSeriesAmmeter = position => {
+        const halfLength = CCKCConstants.SERIES_AMMETER_LENGTH / 2;
+        const startVertex = new Vertex( position.plusXY( -halfLength, 0 ) );
+        const endVertex = new Vertex( position.plusXY( halfLength, 0 ) );
+        return new SeriesAmmeter(
+          startVertex,
+          endVertex,
+          circuitLayerNode.circuit.seriesAmmeterGroupTandem.createNextTandem()
+        );
+      };
+      seriesAmmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / seriesAmmeterNodeIcon.width } );
+      const seriesAmmeterToolNode = new CircuitElementToolNode(
+        '',
+        new Property( false ),
+        new Property( CircuitElementViewType.SCHEMATIC ),
+        circuitLayerNode.circuit,
+        point => circuitLayerNode.globalToLocalPoint( point ),
+        seriesAmmeterNodeIcon,
+        6,
+        () => circuitLayerNode.circuit.circuitElements.count( circuitElement => circuitElement instanceof SeriesAmmeter ),
+        createSeriesAmmeter, {
+          touchAreaExpansionLeft: 3,
+          touchAreaExpansionTop: 15,
+          touchAreaExpansionRight: 3,
+          touchAreaExpansionBottom: 0
+        } );
+
+      // Labels underneath the sensor tool nodes
+      const voltmeterText = new Text( voltmeterString, { maxWidth: 60 } );
+      const ammeterText = new Text( options.showSeriesAmmeters ? ammetersString : ammeterString, { maxWidth: 60 } );
+
+      // Alter the visibility of the labels when the labels checkbox is toggled.
+      circuitLayerNode.model.showLabelsProperty.linkAttribute( voltmeterText, 'visible' );
+      circuitLayerNode.model.showLabelsProperty.linkAttribute( ammeterText, 'visible' );
+
+      const voltmeterToolIcon = new VBox( {
+        spacing: ICON_TEXT_SPACING,
+        children: [
+          voltmeterNodeIcon,
+          voltmeterText
+        ]
       } );
 
-    // Labels underneath the sensor tool nodes
-    const voltmeterText = new Text( voltmeterString, { maxWidth: 60 } );
-    const ammeterText = new Text( options.showSeriesAmmeters ? ammetersString : ammeterString, { maxWidth: 60 } );
+      const children = [];
+      options.showNoncontactAmmeters && children.push( ammeterNodeIcon );
+      options.showSeriesAmmeters && children.push( seriesAmmeterToolNode );
 
-    // Alter the visibility of the labels when the labels checkbox is toggled.
-    circuitLayerNode.model.showLabelsProperty.linkAttribute( voltmeterText, 'visible' );
-    circuitLayerNode.model.showLabelsProperty.linkAttribute( ammeterText, 'visible' );
+      const ammeterToolIcon = new VBox( {
+        spacing: ICON_TEXT_SPACING,
+        children: [
+          new HBox( {
+            spacing: 8,
+            align: 'bottom',
+            children: children
+          } ),
+          ammeterText
+        ]
+      } );
 
-    const voltmeterToolIcon = new VBox( {
-      spacing: ICON_TEXT_SPACING,
-      children: [
-        voltmeterNodeIcon,
-        voltmeterText
-      ]
-    } );
-
-    const children = [];
-    options.showNoncontactAmmeters && children.push( ammeterNodeIcon );
-    options.showSeriesAmmeters && children.push( seriesAmmeterToolNode );
-
-    const ammeterToolIcon = new VBox( {
-      spacing: ICON_TEXT_SPACING,
-      children: [
-        new HBox( {
-          spacing: 8,
-          align: 'bottom',
-          children: children
-        } ),
-        ammeterText
-      ]
-    } );
-
-    CCKCPanel.call( this, alignGroup.createBox( new HBox( {
-      spacing: ( options.showNoncontactAmmeters && options.showSeriesAmmeters ) ? 20 : 40,
-      align: 'bottom',
-      children: [ voltmeterToolIcon, ammeterToolIcon ]
-    } ) ), tandem, {
-      yMargin: 8
-    } );
+      super( alignGroup.createBox( new HBox( {
+        spacing: ( options.showNoncontactAmmeters && options.showSeriesAmmeters ) ? 20 : 40,
+        align: 'bottom',
+        children: [ voltmeterToolIcon, ammeterToolIcon ]
+      } ) ), tandem, {
+        yMargin: 8
+      } );
+    }
   }
 
-  circuitConstructionKitCommon.register( 'SensorToolbox', SensorToolbox );
-
-  return inherit( CCKCPanel, SensorToolbox );
+  return circuitConstructionKitCommon.register( 'SensorToolbox', SensorToolbox );
 } );

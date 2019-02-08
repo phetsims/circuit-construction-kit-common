@@ -20,7 +20,6 @@ define( require => {
   const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   const Color = require( 'SCENERY/util/Color' );
   const Image = require( 'SCENERY/nodes/Image' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const Line = require( 'SCENERY/nodes/Line' );
   const Node = require( 'SCENERY/nodes/Node' );
@@ -61,32 +60,29 @@ define( require => {
   const HIGH_RESISTANCE = Math.pow( 10, 9 );
   const MIN_RESISTANCE = 1E-6;
 
-  /**
-   * @param {Circuit} circuit
-   * @param {Property.<boolean>} showLabelsProperty
-   * @param {Property.<CircuitElementViewType>} viewTypeProperty
-   * @param {function} globalToCircuitLayerNodePoint Vector2=>Vector2 global point to coordinate frame of circuitLayerNode
-   * @constructor
-   */
-  function CircuitElementToolFactory( circuit, showLabelsProperty, viewTypeProperty, globalToCircuitLayerNodePoint ) {
-    this.circuit = circuit;
-    this.showLabelsProperty = showLabelsProperty;
-    this.viewTypeProperty = viewTypeProperty;
-    this.globalToCircuitLayerNodePoint = globalToCircuitLayerNodePoint;
-  }
+  class CircuitElementToolFactory {
 
-  circuitConstructionKitCommon.register( 'CircuitElementToolFactory', CircuitElementToolFactory );
-
-  return inherit( Object, CircuitElementToolFactory, {
+    /**
+     * @param {Circuit} circuit
+     * @param {Property.<boolean>} showLabelsProperty
+     * @param {Property.<CircuitElementViewType>} viewTypeProperty
+     * @param {function} globalToCircuitLayerNodePoint Vector2=>Vector2 global point to coordinate frame of circuitLayerNode
+     */
+    constructor( circuit, showLabelsProperty, viewTypeProperty, globalToCircuitLayerNodePoint ) {
+      this.circuit = circuit;
+      this.showLabelsProperty = showLabelsProperty;
+      this.viewTypeProperty = viewTypeProperty;
+      this.globalToCircuitLayerNodePoint = globalToCircuitLayerNodePoint;
+    }
 
     /**
      * Resets the toolbox.
      * @override
      * @public
      */
-    reset: function() {
+    reset() {
       this.carousel.reset( { animationEnabled: false } );
-    },
+    }
 
 
     /**
@@ -95,9 +91,9 @@ define( require => {
      * @returns {Vertex}
      * @private
      */
-    createVertex: function( position ) {
+    createVertex( position ) {
       return new Vertex( position, { tandem: this.circuit.vertexGroupTandem.createNextTandem() } );
-    },
+    }
 
     /**
      * Returns a function which counts the number of circuit elements (not counting those in the true black box).
@@ -105,14 +101,14 @@ define( require => {
      * @returns {function} a no-arg function that returns the {number} of CircuitElements of the specified type
      * @private
      */
-    createCounter: function( predicate ) {
+    createCounter( predicate ) {
       return () =>
         this.circuit.circuitElements.getArray().filter( circuitElement =>
 
           // Count according to the predicate, but don't count elements inside the true black box
           predicate( circuitElement ) && !circuitElement.insideTrueBlackBoxProperty.get()
         ).length;
-    },
+    }
 
     /**
      * Create a pair of vertices to be used for a new CircuitElement
@@ -121,12 +117,12 @@ define( require => {
      * @returns {{startVertex: Vertex, endVertex: Vertex}}
      * @private
      */
-    createVertexPair: function( position, length ) {
+    createVertexPair( position, length ) {
       return {
         startVertex: this.createVertex( position.plusXY( -length / 2, 0 ) ),
         endVertex: this.createVertex( position.plusXY( length / 2, 0 ) )
       };
-    },
+    }
 
     /**
      * Utility function that creates a CircuitElementToolNode
@@ -142,7 +138,7 @@ define( require => {
      * @returns {CircuitElementToolNode}
      * @private
      */
-    createCircuitElementToolNode: function( labelString, count, icon, predicate, createElement, options ) {
+    createCircuitElementToolNode( labelString, count, icon, predicate, createElement, options ) {
       options = _.extend( { iconScale: 1.0 }, options );
       icon.mutate( { scale: options.iconScale * TOOLBOX_ICON_SIZE / Math.max( icon.width, icon.height ) } );
       return new CircuitElementToolNode(
@@ -156,7 +152,7 @@ define( require => {
         this.createCounter( predicate ),
         createElement
       );
-    },
+    }
 
     /**
      * @param {number} count - the number that can be dragged out at once
@@ -164,7 +160,7 @@ define( require => {
      * @returns {CircuitElementToolNode}
      * @public
      */
-    createWireToolNode: function( count, tandem ) {
+    createWireToolNode( count, tandem ) {
       const lifelikeWireNode = new Image( wireIconImage );
       const schematicWireNode = new Line( 0, 0, 120, 0, {
         stroke: Color.BLACK,
@@ -186,7 +182,7 @@ define( require => {
           );
         }
       );
-    },
+    }
 
     /**
      * @param {number} count - the number that can be dragged out at once
@@ -194,7 +190,7 @@ define( require => {
      * @returns {CircuitElementToolNode}
      * @public
      */
-    createRightBatteryToolNode: function( count, tandem ) {
+    createRightBatteryToolNode( count, tandem ) {
       const batteryModel = new Battery( new Vertex( Vector2.ZERO ), new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
         new Property( 0 ), BatteryType.NORMAL, tandem.createTandem( 'rightIconBattery' ) );
       const rightBatteryToolNode = this.createCircuitElementToolNode( batteryString, count,
@@ -215,7 +211,7 @@ define( require => {
         }
       );
       return rightBatteryToolNode;
-    },
+    }
 
     /**
      * @param {number} count - the number that can be dragged out at once
@@ -223,7 +219,7 @@ define( require => {
      * @returns {CircuitElementToolNode}
      * @public
      */
-    createLightBulbToolNode: function( count, tandem ) {
+    createLightBulbToolNode( count, tandem ) {
       const lightBulbModel = LightBulb.createAtPosition(
         Vector2.ZERO,
         this.circuit.vertexGroupTandem,
@@ -247,7 +243,7 @@ define( require => {
           iconScale: 0.85
         } );
       return lightBulbToolNode;
-    },
+    }
 
     /**
      * @param {number} count - the number that can be dragged out at once
@@ -255,7 +251,7 @@ define( require => {
      * @returns {CircuitElementToolNode}
      * @public
      */
-    createResistorToolNode: function( count, tandem ) {
+    createResistorToolNode( count, tandem ) {
       const resistorModel = new Resistor(
         new Vertex( Vector2.ZERO ),
         new Vertex( new Vector2( CCKCConstants.RESISTOR_LENGTH, 0 ) ),
@@ -274,7 +270,7 @@ define( require => {
         }
       );
       return resistorToolNode;
-    },
+    }
 
     /**
      * @param {number} count - the number that can be dragged out at once
@@ -282,7 +278,7 @@ define( require => {
      * @returns {CircuitElementToolNode}
      * @public
      */
-    createSwitchToolNode: function( count, tandem ) {
+    createSwitchToolNode( count, tandem ) {
       const switchToolNode = this.createCircuitElementToolNode( switchString, count,
         new SwitchNode( null, null,
           new Switch(
@@ -298,7 +294,7 @@ define( require => {
           return new Switch( vertexPair.startVertex, vertexPair.endVertex, this.circuit.switchGroupTandem.createNextTandem() );
         } );
       return switchToolNode;
-    },
+    }
 
     /**
      * Create a ToolNode for a household item, such as an eraser or dog
@@ -313,8 +309,8 @@ define( require => {
      * @returns {CircuitElementToolNode}
      * @private
      */
-    createHouseholdItemToolNode: function( resistorType, resistance, resistorLength, labelString, maxCount,
-                                           iconModelTandem, iconTandem, groupTandem ) {
+    createHouseholdItemToolNode( resistorType, resistance, resistorLength, labelString, maxCount,
+                                 iconModelTandem, iconTandem, groupTandem ) {
       const createHouseholdIcon = ( householdItem, tandem ) => {
         return new ResistorNode( null, null, householdItem, this.viewTypeProperty, tandem, { isIcon: true } );
       };
@@ -348,7 +344,7 @@ define( require => {
         circuitElement => circuitElement instanceof Resistor && circuitElement.resistorType === resistorType,
         getHouseholdItemCreator( resistorType, resistance, resistorLength, groupTandem )
       );
-    },
+    }
 
     /**
      * @param {number} count - the number that can be dragged out at once
@@ -356,7 +352,7 @@ define( require => {
      * @returns {CircuitElementToolNode}
      * @public
      */
-    createDollarBillToolNode: function( count, tandem ) {
+    createDollarBillToolNode( count, tandem ) {
       return this.createHouseholdItemToolNode(
         ResistorType.DOLLAR_BILL,
         HIGH_RESISTANCE,
@@ -367,7 +363,7 @@ define( require => {
         tandem.createTandem( 'dollarBillIcon' ),
         this.circuit.dollarBillGroupTandem
       );
-    },
+    }
 
     /**
      * @param {number} count - the number that can be dragged out at once
@@ -375,7 +371,7 @@ define( require => {
      * @returns {CircuitElementToolNode}
      * @public
      */
-    createPaperClipToolNode: function( count, tandem ) {
+    createPaperClipToolNode( count, tandem ) {
       return this.createHouseholdItemToolNode(
         ResistorType.PAPER_CLIP,
         MIN_RESISTANCE,
@@ -386,7 +382,7 @@ define( require => {
         tandem.createTandem( 'paperClipIcon' ),
         this.circuit.paperClipGroupTandem
       );
-    },
+    }
 
     /**
      * @param {number} count - the number that can be dragged out at once
@@ -394,7 +390,7 @@ define( require => {
      * @returns {CircuitElementToolNode}
      * @public
      */
-    createCoinToolNode: function( count, tandem ) {
+    createCoinToolNode( count, tandem ) {
       return this.createHouseholdItemToolNode(
         ResistorType.COIN,
         MIN_RESISTANCE,
@@ -405,7 +401,7 @@ define( require => {
         tandem.createTandem( 'coinIcon' ),
         this.circuit.coinGroupTandem
       );
-    },
+    }
 
     /**
      * @param {number} count - the number that can be dragged out at once
@@ -413,7 +409,7 @@ define( require => {
      * @returns {CircuitElementToolNode}
      * @public
      */
-    createEraserToolNode: function( count, tandem ) {
+    createEraserToolNode( count, tandem ) {
       return this.createHouseholdItemToolNode(
         ResistorType.ERASER,
         HIGH_RESISTANCE,
@@ -424,7 +420,7 @@ define( require => {
         tandem.createTandem( 'eraserIcon' ),
         this.circuit.eraserGroupTandem
       );
-    },
+    }
 
     /**
      * @param {number} count - the number that can be dragged out at once
@@ -432,7 +428,7 @@ define( require => {
      * @returns {CircuitElementToolNode}
      * @public
      */
-    createPencilToolNode: function( count, tandem ) {
+    createPencilToolNode( count, tandem ) {
       return this.createHouseholdItemToolNode(
         ResistorType.PENCIL,
         25,
@@ -443,7 +439,7 @@ define( require => {
         tandem.createTandem( 'pencilIcon' ),
         this.circuit.pencilGroupTandem
       );
-    },
+    }
 
     /**
      * @param {number} count - the number that can be dragged out at once
@@ -451,7 +447,7 @@ define( require => {
      * @returns {CircuitElementToolNode}
      * @public
      */
-    createHandToolNode: function( count, tandem ) {
+    createHandToolNode( count, tandem ) {
       return this.createHouseholdItemToolNode(
         ResistorType.HAND,
         Math.pow( 10, 6 ),
@@ -462,7 +458,7 @@ define( require => {
         tandem.createTandem( 'handIcon' ),
         this.circuit.handGroupTandem
       );
-    },
+    }
 
     /**
      * @param {number} count - the number that can be dragged out at once
@@ -470,7 +466,7 @@ define( require => {
      * @returns {CircuitElementToolNode}
      * @public
      */
-    createDogToolNode: function( count, tandem ) {
+    createDogToolNode( count, tandem ) {
       return this.createHouseholdItemToolNode(
         ResistorType.DOG,
         HIGH_RESISTANCE,
@@ -481,7 +477,7 @@ define( require => {
         tandem.createTandem( 'dogIcon' ),
         this.circuit.dogGroupTandem
       );
-    },
+    }
 
     /**
      * @param {number} count - the number that can be dragged out at once
@@ -489,7 +485,7 @@ define( require => {
      * @returns {CircuitElementToolNode}
      * @public
      */
-    createHighVoltageBatteryToolNode: function( count, tandem ) {
+    createHighVoltageBatteryToolNode( count, tandem ) {
       return this.createCircuitElementToolNode(
         batteryString,
         count,
@@ -517,7 +513,7 @@ define( require => {
               editorDelta: CCKCConstants.HIGH_EDITOR_DELTA
             } );
         } );
-    },
+    }
 
     /**
      * @param {number} count - the number that can be dragged out at once
@@ -525,7 +521,7 @@ define( require => {
      * @returns {CircuitElementToolNode}
      * @public
      */
-    createHighResistanceBulbToolNode: function( count, tandem ) {
+    createHighResistanceBulbToolNode( count, tandem ) {
       return this.createCircuitElementToolNode(
         lightBulbString,
         count,
@@ -553,7 +549,7 @@ define( require => {
             editableRange: CCKCConstants.HIGH_RESISTANCE_RANGE,
             editorDelta: CCKCConstants.HIGH_EDITOR_DELTA
           } ) );
-    },
+    }
 
     /**
      * @param {number} count - the number that can be dragged out at once
@@ -561,7 +557,7 @@ define( require => {
      * @returns {CircuitElementToolNode}
      * @public
      */
-    createHighResistanceResistorToolNode: function( count, tandem ) {
+    createHighResistanceResistorToolNode( count, tandem ) {
       return this.createCircuitElementToolNode(
         resistorString,
         count,
@@ -591,5 +587,7 @@ define( require => {
         }
       );
     }
-  } );
+  }
+
+  return circuitConstructionKitCommon.register( 'CircuitElementToolFactory', CircuitElementToolFactory );
 } );

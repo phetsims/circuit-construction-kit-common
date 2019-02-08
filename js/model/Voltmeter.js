@@ -53,7 +53,7 @@ define( require => {
      * @override
      */
     reset() {
-      Meter.prototype.reset.call( this );
+      super.reset();
       this.voltageProperty.reset();
       this.redProbePositionProperty.reset();
       this.blackProbePositionProperty.reset();

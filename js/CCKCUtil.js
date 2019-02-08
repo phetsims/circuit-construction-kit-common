@@ -10,7 +10,6 @@ define( require => {
 
   // modules
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Util = require( 'DOT/Util' );
 
@@ -18,15 +17,7 @@ define( require => {
   const currentUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/currentUnits' );
   const voltageUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageUnits' );
 
-  /**
-   * @constructor
-   */
-  function CCKCUtil() {
-  }
-
-  circuitConstructionKitCommon.register( 'CCKCUtil', CCKCUtil );
-
-  return inherit( Object, CCKCUtil, {}, {
+  const CCKCUtil = {
 
     /**
      * Typically show 2 decimal places for current and voltage readouts in the play area, but if it is a smaller value,
@@ -35,7 +26,7 @@ define( require => {
      * @returns {number} - the number of decimal places to use for the display
      */
     getNumberOfDecimalPoints: function( value ) {
-      return (value >= 0.001 && value < 0.02 ) ? 3 : 2;
+      return ( value >= 0.001 && value < 0.02 ) ? 3 : 2;
     },
 
     /**
@@ -80,5 +71,7 @@ define( require => {
         parent.removeChild( child );
       }
     }
-  } );
+  };
+
+  return circuitConstructionKitCommon.register( 'CCKCUtil', CCKCUtil );
 } );

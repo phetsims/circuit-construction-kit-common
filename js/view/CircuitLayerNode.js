@@ -31,7 +31,6 @@ define( require => {
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   const FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
   const FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Property = require( 'AXON/Property' );
@@ -57,340 +56,336 @@ define( require => {
   // leave in all of the WebGL code in case we have performance problems on a platform that require WebGL to be restored?
   const RENDERER = 'svg';
 
-  /**
-   * @param {Circuit} circuit - the model Circuit
-   * @param {CCKCScreenView} screenView - for dropping CircuitElement instances back in the toolbox
-   * @param {Tandem} tandem
-   * @constructor
-   */
-  function CircuitLayerNode( circuit, screenView, tandem ) {
-
-    // @private {Property.<CircuitElementViewType>}
-    this.viewTypeProperty = screenView.model.viewTypeProperty;
-
-    // @private (read-only) {CircuitConstructionKitModel}
-    this.model = screenView.model;
-
-    // @private (read-only) {Property.<Bounds2>} - the part of the screen that can be seen in view coordinates
-    this.visibleBoundsProperty = screenView.visibleBoundsProperty;
-
-    // @private {Node} - the layer behind the control panels
-    this.circuitLayerNodeBackLayer = screenView.circuitLayerNodeBackLayer;
-
-    // @public {Node} - CircuitElementNodes add highlights directly to this layer when they are constructed
-    this.highlightLayer = new Node();
-
-    // @public {Node} - SeriesAmmeterNodes add to this layer when they are constructed
-    // Shows the front panel of SeriesAmmeterNodes (which shows the current readout) so the charges look like they
-    // flow through.
-    this.seriesAmmeterNodeReadoutPanelLayer = new Node();
-
-    // @public {Node} - layer for vertex buttons
-    this.buttonLayer = new Node();
-
-    // @public {Node} - layer for "show values"
-    this.valueLayer = new Node();
-
-    // @public {Node} - layer for light rays, since it cannot be rendered in WebGL
-    this.lightRaysLayer = new Node();
-
-    // @public {Node} - layer that contains the wires
-    this.wireLayer = new Node( {
-      renderer: RENDERER,
-
-      // preallocate sprite sheet
-      children: [ new Node( {
-        visible: false,
-        children: WireNode.webglSpriteNodes
-      } ) ]
-    } );
-
-    // @public {Node} - layer that shows the solder joints
-    this.solderLayer = new Node( {
-      renderer: RENDERER,
-
-      // preallocate sprite sheet
-      children: [ new Node( {
-        visible: false,
-        children: SolderNode.webglSpriteNodes
-      } ) ]
-    } );
-
-    // @public {Node} - layer that shows the Vertex instances
-    this.vertexLayer = new Node( {
-      renderer: RENDERER,
-
-      // preallocate sprite sheet
-      children: [ new Node( {
-        visible: false,
-        children: VertexNode.webglSpriteNodes
-      } ) ]
-    } );
-
-    // @public {Node} - contains FixedCircuitElements
-    this.fixedCircuitElementLayer = new Node( {
-
-      // add a child eagerly so the WebGL block is all allocated when 1st object is dragged out of toolbox
-      renderer: RENDERER,
-      children: [ new Node( {
-        visible: false,
-        children: []
-          .concat( BatteryNode.webglSpriteNodes )
-          .concat( ResistorNode.webglSpriteNodes )
-          .concat( FixedCircuitElementNode.webglSpriteNodes )
-          .concat( CustomLightBulbNode.webglSpriteNodes )
-      } ) ]
-    } );
-
-    // @public {Node} - CCKCLightBulbNode calls addChild/removeChild to add sockets to the front layer
-    this.lightBulbSocketLayer = new Node( {
-      renderer: RENDERER,
-
-      // preallocate sprite sheet
-      children: [ new Node( {
-        visible: false,
-        children: CustomLightBulbNode.webglSpriteNodes
-      } ) ]
-    } );
-
-    // @public {Node} - layer that shows the Charge instances
-    this.chargeLayer = new Node( {
-      renderer: RENDERER,
-
-      // preallocate sprite sheet
-      children: [ new Node( {
-        visible: false,
-        children: ChargeNode.webglSpriteNodes
-      } ) ]
-    } );
-
-    Property.multilink( [ screenView.model.isValueDepictionEnabledProperty, screenView.model.revealingProperty ], ( isValueDepictionEnabled, revealing ) => {
-      this.chargeLayer.visible = isValueDepictionEnabled && revealing;
-    } );
-
-    // @public {Node} - layer that shows the Voltmeter and Ammeter (but not the SeriesAmmeter, which is shown in the fixedCircuitElementLayer)
-    this.sensorLayer = new Node();
-
-    // @public (circuit-construction-kit-black-box-study)
-    this.beforeCircuitElementsLayer = new Node();
-    this.afterCircuitElementsLayer = new Node();
-
-    // For lifelike: Solder should be in front of wires but behind batteries and resistors.
-    const lifelikeLayering = [
-      this.lightRaysLayer,
-      this.beforeCircuitElementsLayer,
-      this.wireLayer, // wires go behind other circuit elements
-      this.solderLayer,
-      this.fixedCircuitElementLayer, // circuit elements and meters
-      this.vertexLayer,
-      this.chargeLayer,
-      this.lightBulbSocketLayer, // fronts of light bulbs
-      this.seriesAmmeterNodeReadoutPanelLayer, // fronts of series ammeters
-      this.afterCircuitElementsLayer,
-      this.sensorLayer,
-      this.highlightLayer, // highlights go in front of everything else
-      this.valueLayer, // values
-      this.buttonLayer // vertex buttons
-    ];
-
-    // For schematic: Solder should be in front of all components
-    const schematicLayering = [
-      this.lightRaysLayer,
-      this.beforeCircuitElementsLayer,
-      this.wireLayer,
-      this.fixedCircuitElementLayer,
-      this.solderLayer,
-      this.vertexLayer,
-      this.chargeLayer,
-      this.lightBulbSocketLayer,
-      this.seriesAmmeterNodeReadoutPanelLayer,
-      this.afterCircuitElementsLayer,
-      this.sensorLayer,
-      this.highlightLayer,
-      this.valueLayer,
-      this.buttonLayer
-    ];
-    Node.call( this );
-
-    // choose layering for schematic vs lifelike.  HEADS UP, this means circuitLayerNode.addChild() will get overwritten
-    // so all nodes must be added as children in the array above.
-    screenView.model.viewTypeProperty.link( view => {
-      this.children = ( view === CircuitElementViewType.LIFELIKE ) ? lifelikeLayering : schematicLayering;
-    } );
-
-    // @public {Property.<Bounds2>} the visible bounds in the coordinate frame of the circuit.  Initialized with a
-    // placeholder value until it is filled in by CCKCScreenView (after attached to a parent)
-    this.visibleBoundsInCircuitCoordinateFrameProperty = new Property( new Bounds2( 0, 0, 1, 1 ) );
-
-    // @public (read-only) {Circuit} - the Circuit model depicted by this view
-    this.circuit = circuit;
-
-    // @private {Object} - Map to find CircuitElement=>CircuitElementNode. key is CircuitElement.id, value is
-    // CircuitElementNode
-    this.circuitElementNodeMap = {};
-
-    // @private {Object} - Map of Vertex.index => SolderNode
-    this.solderNodes = {};
-
-    // @public (read-only) {Object} Map of Vertex.index => VertexNode
-    this.vertexNodes = {};
-
+  class CircuitLayerNode extends Node {
     /**
-     * For each CircuitElement type, do the following:
-     * (a) Add nodes for pre-existing model elements
-     * (b) Add a listener that adds nodes when model elements are added
-     * (c) Add a listener that removes nodes when model elements are removed
-     *
-     * @param {function} type - the type of the CircuitElement, such as Battery or Wire
-     * @param {Node} layer
-     * @param {Tandem} groupTandem
-     * @param {function} createCircuitElement - creates the node, given a circuitElement and tandem BatteryNode
+     * @param {Circuit} circuit - the model Circuit
+     * @param {CCKCScreenView} screenView - for dropping CircuitElement instances back in the toolbox
+     * @param {Tandem} tandem
      */
-    const initializeCircuitElementType = ( type, layer, groupTandem, createCircuitElement ) => {
-      const addCircuitElement = circuitElement => {
-        if ( circuitElement instanceof type ) {
-          const circuitElementNode = createCircuitElement( circuitElement, groupTandem.createNextTandem() );
-          this.circuitElementNodeMap[ circuitElement.id ] = circuitElementNode;
+    constructor( circuit, screenView, tandem ) {
+      super();
 
-          layer.addChild( circuitElementNode );
+      // @private {Property.<CircuitElementViewType>}
+      this.viewTypeProperty = screenView.model.viewTypeProperty;
 
-          // Show the ValueNode for readouts, though series ammeters already show their own readouts and Wires do not
-          // have readouts
-          if ( circuitElement instanceof FixedCircuitElement && !( circuitElement instanceof SeriesAmmeter ) ) {
-            const valueNode = new ValueNode(
-              circuitElement,
-              this.model.showValuesProperty,
-              this.model.viewTypeProperty,
-              tandem.createTandem( circuitElement.tandem.tail ).createTandem( 'valueNode' )
-            );
+      // @private (read-only) {CircuitConstructionKitModel}
+      this.model = screenView.model;
 
-            const updateShowValues = showValues => CCKCUtil.setInSceneGraph( showValues, this.valueLayer, valueNode );
-            this.model.showValuesProperty.link( updateShowValues );
+      // @private (read-only) {Property.<Bounds2>} - the part of the screen that can be seen in view coordinates
+      this.visibleBoundsProperty = screenView.visibleBoundsProperty;
 
-            circuitElement.disposeEmitter.addListener( () => {
-              this.model.showValuesProperty.unlink( updateShowValues );
-              CCKCUtil.setInSceneGraph( false, this.valueLayer, valueNode );
-              valueNode.dispose();
-            } );
+      // @private {Node} - the layer behind the control panels
+      this.circuitLayerNodeBackLayer = screenView.circuitLayerNodeBackLayer;
+
+      // @public {Node} - CircuitElementNodes add highlights directly to this layer when they are constructed
+      this.highlightLayer = new Node();
+
+      // @public {Node} - SeriesAmmeterNodes add to this layer when they are constructed
+      // Shows the front panel of SeriesAmmeterNodes (which shows the current readout) so the charges look like they
+      // flow through.
+      this.seriesAmmeterNodeReadoutPanelLayer = new Node();
+
+      // @public {Node} - layer for vertex buttons
+      this.buttonLayer = new Node();
+
+      // @public {Node} - layer for "show values"
+      this.valueLayer = new Node();
+
+      // @public {Node} - layer for light rays, since it cannot be rendered in WebGL
+      this.lightRaysLayer = new Node();
+
+      // @public {Node} - layer that contains the wires
+      this.wireLayer = new Node( {
+        renderer: RENDERER,
+
+        // preallocate sprite sheet
+        children: [ new Node( {
+          visible: false,
+          children: WireNode.webglSpriteNodes
+        } ) ]
+      } );
+
+      // @public {Node} - layer that shows the solder joints
+      this.solderLayer = new Node( {
+        renderer: RENDERER,
+
+        // preallocate sprite sheet
+        children: [ new Node( {
+          visible: false,
+          children: SolderNode.webglSpriteNodes
+        } ) ]
+      } );
+
+      // @public {Node} - layer that shows the Vertex instances
+      this.vertexLayer = new Node( {
+        renderer: RENDERER,
+
+        // preallocate sprite sheet
+        children: [ new Node( {
+          visible: false,
+          children: VertexNode.webglSpriteNodes
+        } ) ]
+      } );
+
+      // @public {Node} - contains FixedCircuitElements
+      this.fixedCircuitElementLayer = new Node( {
+
+        // add a child eagerly so the WebGL block is all allocated when 1st object is dragged out of toolbox
+        renderer: RENDERER,
+        children: [ new Node( {
+          visible: false,
+          children: []
+            .concat( BatteryNode.webglSpriteNodes )
+            .concat( ResistorNode.webglSpriteNodes )
+            .concat( FixedCircuitElementNode.webglSpriteNodes )
+            .concat( CustomLightBulbNode.webglSpriteNodes )
+        } ) ]
+      } );
+
+      // @public {Node} - CCKCLightBulbNode calls addChild/removeChild to add sockets to the front layer
+      this.lightBulbSocketLayer = new Node( {
+        renderer: RENDERER,
+
+        // preallocate sprite sheet
+        children: [ new Node( {
+          visible: false,
+          children: CustomLightBulbNode.webglSpriteNodes
+        } ) ]
+      } );
+
+      // @public {Node} - layer that shows the Charge instances
+      this.chargeLayer = new Node( {
+        renderer: RENDERER,
+
+        // preallocate sprite sheet
+        children: [ new Node( {
+          visible: false,
+          children: ChargeNode.webglSpriteNodes
+        } ) ]
+      } );
+
+      Property.multilink( [ screenView.model.isValueDepictionEnabledProperty, screenView.model.revealingProperty ], ( isValueDepictionEnabled, revealing ) => {
+        this.chargeLayer.visible = isValueDepictionEnabled && revealing;
+      } );
+
+      // @public {Node} - layer that shows the Voltmeter and Ammeter (but not the SeriesAmmeter, which is shown in the fixedCircuitElementLayer)
+      this.sensorLayer = new Node();
+
+      // @public (circuit-construction-kit-black-box-study)
+      this.beforeCircuitElementsLayer = new Node();
+      this.afterCircuitElementsLayer = new Node();
+
+      // For lifelike: Solder should be in front of wires but behind batteries and resistors.
+      const lifelikeLayering = [
+        this.lightRaysLayer,
+        this.beforeCircuitElementsLayer,
+        this.wireLayer, // wires go behind other circuit elements
+        this.solderLayer,
+        this.fixedCircuitElementLayer, // circuit elements and meters
+        this.vertexLayer,
+        this.chargeLayer,
+        this.lightBulbSocketLayer, // fronts of light bulbs
+        this.seriesAmmeterNodeReadoutPanelLayer, // fronts of series ammeters
+        this.afterCircuitElementsLayer,
+        this.sensorLayer,
+        this.highlightLayer, // highlights go in front of everything else
+        this.valueLayer, // values
+        this.buttonLayer // vertex buttons
+      ];
+
+      // For schematic: Solder should be in front of all components
+      const schematicLayering = [
+        this.lightRaysLayer,
+        this.beforeCircuitElementsLayer,
+        this.wireLayer,
+        this.fixedCircuitElementLayer,
+        this.solderLayer,
+        this.vertexLayer,
+        this.chargeLayer,
+        this.lightBulbSocketLayer,
+        this.seriesAmmeterNodeReadoutPanelLayer,
+        this.afterCircuitElementsLayer,
+        this.sensorLayer,
+        this.highlightLayer,
+        this.valueLayer,
+        this.buttonLayer
+      ];
+
+      // choose layering for schematic vs lifelike.  HEADS UP, this means circuitLayerNode.addChild() will get overwritten
+      // so all nodes must be added as children in the array above.
+      screenView.model.viewTypeProperty.link( view => {
+        this.children = ( view === CircuitElementViewType.LIFELIKE ) ? lifelikeLayering : schematicLayering;
+      } );
+
+      // @public {Property.<Bounds2>} the visible bounds in the coordinate frame of the circuit.  Initialized with a
+      // placeholder value until it is filled in by CCKCScreenView (after attached to a parent)
+      this.visibleBoundsInCircuitCoordinateFrameProperty = new Property( new Bounds2( 0, 0, 1, 1 ) );
+
+      // @public (read-only) {Circuit} - the Circuit model depicted by this view
+      this.circuit = circuit;
+
+      // @private {Object} - Map to find CircuitElement=>CircuitElementNode. key is CircuitElement.id, value is
+      // CircuitElementNode
+      this.circuitElementNodeMap = {};
+
+      // @private {Object} - Map of Vertex.index => SolderNode
+      this.solderNodes = {};
+
+      // @public (read-only) {Object} Map of Vertex.index => VertexNode
+      this.vertexNodes = {};
+
+      /**
+       * For each CircuitElement type, do the following:
+       * (a) Add nodes for pre-existing model elements
+       * (b) Add a listener that adds nodes when model elements are added
+       * (c) Add a listener that removes nodes when model elements are removed
+       *
+       * @param {function} type - the type of the CircuitElement, such as Battery or Wire
+       * @param {Node} layer
+       * @param {Tandem} groupTandem
+       * @param {function} createCircuitElement - creates the node, given a circuitElement and tandem BatteryNode
+       */
+      const initializeCircuitElementType = ( type, layer, groupTandem, createCircuitElement ) => {
+        const addCircuitElement = circuitElement => {
+          if ( circuitElement instanceof type ) {
+            const circuitElementNode = createCircuitElement( circuitElement, groupTandem.createNextTandem() );
+            this.circuitElementNodeMap[ circuitElement.id ] = circuitElementNode;
+
+            layer.addChild( circuitElementNode );
+
+            // Show the ValueNode for readouts, though series ammeters already show their own readouts and Wires do not
+            // have readouts
+            if ( circuitElement instanceof FixedCircuitElement && !( circuitElement instanceof SeriesAmmeter ) ) {
+              const valueNode = new ValueNode(
+                circuitElement,
+                this.model.showValuesProperty,
+                this.model.viewTypeProperty,
+                tandem.createTandem( circuitElement.tandem.tail ).createTandem( 'valueNode' )
+              );
+
+              const updateShowValues = showValues => CCKCUtil.setInSceneGraph( showValues, this.valueLayer, valueNode );
+              this.model.showValuesProperty.link( updateShowValues );
+
+              circuitElement.disposeEmitter.addListener( () => {
+                this.model.showValuesProperty.unlink( updateShowValues );
+                CCKCUtil.setInSceneGraph( false, this.valueLayer, valueNode );
+                valueNode.dispose();
+              } );
+            }
+          }
+        };
+        circuit.circuitElements.addItemAddedListener( addCircuitElement );
+        circuit.circuitElements.forEach( addCircuitElement );
+        circuit.circuitElements.addItemRemovedListener( circuitElement => {
+          if ( circuitElement instanceof type ) {
+
+            const circuitElementNode = this.getCircuitElementNode( circuitElement );
+            layer.removeChild( circuitElementNode );
+            circuitElementNode.dispose();
+
+            delete this.circuitElementNodeMap[ circuitElement.id ];
+          }
+        } );
+      };
+
+      initializeCircuitElementType( Wire, this.wireLayer, tandem.createGroupTandem( 'wireNode' ), ( circuitElement, tandem ) => {
+        return new WireNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem );
+      } );
+      initializeCircuitElementType( Battery, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'batteryNode' ), ( circuitElement, tandem ) => {
+        return new BatteryNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem );
+      } );
+      initializeCircuitElementType( LightBulb, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'lightBulbNode' ), ( circuitElement, tandem ) => {
+        return new CCKCLightBulbNode( screenView, this, circuitElement, this.model.isValueDepictionEnabledProperty, this.model.viewTypeProperty, tandem );
+      } );
+      initializeCircuitElementType( Resistor, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'resistorNode' ), ( circuitElement, tandem ) => {
+        return new ResistorNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem );
+      } );
+      initializeCircuitElementType( SeriesAmmeter, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'seriesAmmeterNode' ), ( circuitElement, tandem ) => {
+        return new SeriesAmmeterNode( screenView, this, circuitElement, tandem );
+      } );
+      initializeCircuitElementType( Switch, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'switchNode' ), ( circuitElement, tandem ) => {
+        return new SwitchNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem );
+      } );
+
+      // When a vertex is selected, a cut button is shown near to the vertex.  If the vertex is connected to >1 circuit
+      // element, the button is enabled.  Pressing the button will cut the vertex from the neighbors.  Only one cutButton
+      // is allocated for all vertices (per screen) to use because it is too performance demanding to create these
+      // dynamically when circuit elements are dragged from the toolbox.  Also, only one vertex can be selected at once
+      // so there is only a need for one cut button.
+      const cutIcon = new FontAwesomeNode( 'cut', {
+        rotation: -Math.PI / 2, // scissors point up
+        scale: CCKCConstants.FONT_AWESOME_ICON_SCALE
+      } );
+
+      // @public (read-only)
+      this.cutButton = new RoundPushButton( {
+        baseColor: 'yellow',
+        content: cutIcon,
+        minXMargin: 10,
+        minYMargin: 10,
+        tandem: Tandem.rootTandem.createTandem( 'cutButton' )
+      } );
+      this.cutButton.addListener( () => {
+        assert && assert( circuit.getSelectedVertex(), 'Button should only be available if a vertex is selected' );
+        circuit.cutVertex( circuit.getSelectedVertex() );
+
+        // Make sure no vertices got nudged out of bounds during a cut, see https://github.com/phetsims/circuit-construction-kit-dc/issues/138
+        moveVerticesInBounds( this.visibleBoundsInCircuitCoordinateFrameProperty.value );
+      } );
+
+      // When a Vertex is added to the model, create the corresponding views
+      const vertexNodeGroup = tandem.createGroupTandem( 'vertexNodes' );
+      const addVertexNode = vertex => {
+        const solderNode = new SolderNode( this, vertex );
+        this.solderNodes[ vertex.index ] = solderNode;
+        this.solderLayer.addChild( solderNode );
+
+        const vertexNode = new VertexNode( this, vertex, vertexNodeGroup.createNextTandem() );
+        this.vertexNodes[ vertex.index ] = vertexNode;
+        this.vertexLayer.addChild( vertexNode );
+      };
+      circuit.vertices.addItemAddedListener( addVertexNode );
+
+      // When a Vertex is removed from the model, remove and dispose the corresponding views
+      circuit.vertices.addItemRemovedListener( vertex => {
+        const vertexNode = this.getVertexNode( vertex );
+        this.vertexLayer.removeChild( vertexNode );
+        delete this.vertexNodes[ vertex.index ];
+        vertexNode.dispose();
+        assert && assert( !this.getVertexNode( vertex ), 'vertex node should have been removed' );
+
+        const solderNode = this.getSolderNode( vertex );
+        this.solderLayer.removeChild( solderNode );
+        delete this.solderNodes[ vertex.index ];
+        solderNode.dispose();
+        assert && assert( !this.getSolderNode( vertex ), 'solder node should have been removed' );
+      } );
+      circuit.vertices.forEach( addVertexNode );
+
+      // When the screen is resized or zoomed, move all vertices into view.
+      const moveVerticesInBounds = localBounds => {
+
+        // Check all vertices
+        for ( let i = 0; i < circuit.vertices.length; i++ ) {
+          const vertex = circuit.vertices.get( i );
+          const position = vertex.positionProperty.get();
+
+          // If any Vertex is out of bounds, move it and all connected Vertices (to preserve geometry) in bounds.
+          if ( !localBounds.containsPoint( position ) ) {
+            const closestPoint = localBounds.getClosestPoint( position.x, position.y );
+            const delta = closestPoint.minus( position );
+
+            // Find all vertices connected by fixed length nodes.
+            const vertices = circuit.findAllConnectedVertices( vertex );
+            this.translateVertexGroup( vertex, vertices, delta, null, [] );
           }
         }
       };
-      circuit.circuitElements.addItemAddedListener( addCircuitElement );
-      circuit.circuitElements.forEach( addCircuitElement );
-      circuit.circuitElements.addItemRemovedListener( circuitElement => {
-        if ( circuitElement instanceof type ) {
+      this.visibleBoundsInCircuitCoordinateFrameProperty.link( moveVerticesInBounds );
 
-          const circuitElementNode = this.getCircuitElementNode( circuitElement );
-          layer.removeChild( circuitElementNode );
-          circuitElementNode.dispose();
-
-          delete this.circuitElementNodeMap[ circuitElement.id ];
-        }
-      } );
-    };
-
-    initializeCircuitElementType( Wire, this.wireLayer, tandem.createGroupTandem( 'wireNode' ), ( circuitElement, tandem ) => {
-      return new WireNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem );
-    } );
-    initializeCircuitElementType( Battery, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'batteryNode' ), ( circuitElement, tandem ) => {
-      return new BatteryNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem );
-    } );
-    initializeCircuitElementType( LightBulb, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'lightBulbNode' ), ( circuitElement, tandem ) => {
-      return new CCKCLightBulbNode( screenView, this, circuitElement, this.model.isValueDepictionEnabledProperty, this.model.viewTypeProperty, tandem );
-    } );
-    initializeCircuitElementType( Resistor, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'resistorNode' ), ( circuitElement, tandem ) => {
-      return new ResistorNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem );
-    } );
-    initializeCircuitElementType( SeriesAmmeter, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'seriesAmmeterNode' ), ( circuitElement, tandem ) => {
-      return new SeriesAmmeterNode( screenView, this, circuitElement, tandem );
-    } );
-    initializeCircuitElementType( Switch, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'switchNode' ), ( circuitElement, tandem ) => {
-      return new SwitchNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem );
-    } );
-
-    // When a vertex is selected, a cut button is shown near to the vertex.  If the vertex is connected to >1 circuit
-    // element, the button is enabled.  Pressing the button will cut the vertex from the neighbors.  Only one cutButton
-    // is allocated for all vertices (per screen) to use because it is too performance demanding to create these
-    // dynamically when circuit elements are dragged from the toolbox.  Also, only one vertex can be selected at once
-    // so there is only a need for one cut button.
-    const cutIcon = new FontAwesomeNode( 'cut', {
-      rotation: -Math.PI / 2, // scissors point up
-      scale: CCKCConstants.FONT_AWESOME_ICON_SCALE
-    } );
-
-    // @public (read-only)
-    this.cutButton = new RoundPushButton( {
-      baseColor: 'yellow',
-      content: cutIcon,
-      minXMargin: 10,
-      minYMargin: 10,
-      tandem: Tandem.rootTandem.createTandem( 'cutButton' )
-    } );
-    this.cutButton.addListener( () => {
-      assert && assert( circuit.getSelectedVertex(), 'Button should only be available if a vertex is selected' );
-      circuit.cutVertex( circuit.getSelectedVertex() );
-
-      // Make sure no vertices got nudged out of bounds during a cut, see https://github.com/phetsims/circuit-construction-kit-dc/issues/138
-      moveVerticesInBounds( this.visibleBoundsInCircuitCoordinateFrameProperty.value );
-    } );
-
-    // When a Vertex is added to the model, create the corresponding views
-    const vertexNodeGroup = tandem.createGroupTandem( 'vertexNodes' );
-    const addVertexNode = vertex => {
-      const solderNode = new SolderNode( this, vertex );
-      this.solderNodes[ vertex.index ] = solderNode;
-      this.solderLayer.addChild( solderNode );
-
-      const vertexNode = new VertexNode( this, vertex, vertexNodeGroup.createNextTandem() );
-      this.vertexNodes[ vertex.index ] = vertexNode;
-      this.vertexLayer.addChild( vertexNode );
-    };
-    circuit.vertices.addItemAddedListener( addVertexNode );
-
-    // When a Vertex is removed from the model, remove and dispose the corresponding views
-    circuit.vertices.addItemRemovedListener( vertex => {
-      const vertexNode = this.getVertexNode( vertex );
-      this.vertexLayer.removeChild( vertexNode );
-      delete this.vertexNodes[ vertex.index ];
-      vertexNode.dispose();
-      assert && assert( !this.getVertexNode( vertex ), 'vertex node should have been removed' );
-
-      const solderNode = this.getSolderNode( vertex );
-      this.solderLayer.removeChild( solderNode );
-      delete this.solderNodes[ vertex.index ];
-      solderNode.dispose();
-      assert && assert( !this.getSolderNode( vertex ), 'solder node should have been removed' );
-    } );
-    circuit.vertices.forEach( addVertexNode );
-
-    // When the screen is resized or zoomed, move all vertices into view.
-    const moveVerticesInBounds = localBounds => {
-
-      // Check all vertices
-      for ( let i = 0; i < circuit.vertices.length; i++ ) {
-        const vertex = circuit.vertices.get( i );
-        const position = vertex.positionProperty.get();
-
-        // If any Vertex is out of bounds, move it and all connected Vertices (to preserve geometry) in bounds.
-        if ( !localBounds.containsPoint( position ) ) {
-          const closestPoint = localBounds.getClosestPoint( position.x, position.y );
-          const delta = closestPoint.minus( position );
-
-          // Find all vertices connected by fixed length nodes.
-          const vertices = circuit.findAllConnectedVertices( vertex );
-          this.translateVertexGroup( vertex, vertices, delta, null, [] );
-        }
-      }
-    };
-    this.visibleBoundsInCircuitCoordinateFrameProperty.link( moveVerticesInBounds );
-
-    // When a charge is added, add the corresponding ChargeNode (removed it its dispose call)
-    circuit.charges.addItemAddedListener( charge => this.chargeLayer.addChild( new ChargeNode( charge ) ) );
-  }
-
-  circuitConstructionKitCommon.register( 'CircuitLayerNode', CircuitLayerNode );
-
-  return inherit( Node, CircuitLayerNode, {
+      // When a charge is added, add the corresponding ChargeNode (removed it its dispose call)
+      circuit.charges.addItemAddedListener( charge => this.chargeLayer.addChild( new ChargeNode( charge ) ) );
+    }
 
     /**
      * Returns the circuit element node that matches the given circuit element.
@@ -398,9 +393,9 @@ define( require => {
      * @returns {CircuitElementNode}
      * @private
      */
-    getCircuitElementNode: function( circuitElement ) {
+    getCircuitElementNode( circuitElement ) {
       return this.circuitElementNodeMap[ circuitElement.id ];
-    },
+    }
 
     /**
      * Get the solder node associated with the specified Vertex
@@ -408,7 +403,7 @@ define( require => {
      * @returns {SolderNode}
      * @public
      */
-    getSolderNode: function( vertex ) { return this.solderNodes[ vertex.index ]; },
+    getSolderNode( vertex ) { return this.solderNodes[ vertex.index ]; }
 
     /**
      * Get the VertexNode associated with the specified Vertex
@@ -416,7 +411,7 @@ define( require => {
      * @returns {VertexNode}
      * @public
      */
-    getVertexNode: function( vertex ) { return this.vertexNodes[ vertex.index ]; },
+    getVertexNode( vertex ) { return this.vertexNodes[ vertex.index ]; }
 
     /**
      * Find drop targets for all the given vertices
@@ -424,7 +419,7 @@ define( require => {
      * @returns {Object[]} candidates for connection, each Object has {src:Vertex,dst:Vertex} indicating what can snap
      * @public
      */
-    getAllDropTargets: function( vertices ) {
+    getAllDropTargets( vertices ) {
       const allDropTargets = [];
 
       for ( let i = 0; i < vertices.length; i++ ) {
@@ -439,7 +434,7 @@ define( require => {
         }
       }
       return allDropTargets;
-    },
+    }
 
     /**
      * Finds the closest drop target for any of the given vertices
@@ -448,7 +443,7 @@ define( require => {
      *                        or null if no match is suitable.
      * @private
      */
-    getBestDropTarget: function( vertices ) {
+    getBestDropTarget( vertices ) {
       const allDropTargets = this.getAllDropTargets( vertices );
       if ( allDropTargets ) {
         const sorted = _.sortBy( allDropTargets, dropTarget =>
@@ -459,25 +454,25 @@ define( require => {
       else {
         return null;
       }
-    },
+    }
 
     /**
      * Updates the view
      * @public
      */
-    step: function() {
+    step() {
 
       // paint dirty fixed length circuit element nodes.  This batches changes instead of applying multiple changes
       // per frame
       this.circuit.circuitElements.getArray().forEach( circuitElement => this.getCircuitElementNode( circuitElement ).step() );
-    },
+    }
 
     /**
      * Returns whether the vertex can be dragged
      * @param {Vertex} vertex
      * @returns {boolean}
      */
-    canDragVertex: function( vertex ) {
+    canDragVertex( vertex ) {
       const vertices = this.circuit.findAllFixedVertices( vertex );
 
       // If any of the vertices in the subgraph is already being dragged, then this vertex cannot be dragged.
@@ -488,19 +483,19 @@ define( require => {
       }
 
       return true;
-    },
+    }
 
     /**
      * Mark the vertex and its fixed connected vertices as being dragged, so they cannot be dragged by any other pointer.
      * @param {Vertex} vertex
      * @public
      */
-    setVerticesDragging: function( vertex ) {
+    setVerticesDragging( vertex ) {
       const vertices = this.circuit.findAllFixedVertices( vertex );
       for ( let i = 0; i < vertices.length; i++ ) {
         vertices[ i ].isDragged = true;
       }
-    },
+    }
 
     /**
      * Called when a Vertex drag begins, records the relative click point
@@ -508,12 +503,12 @@ define( require => {
      * @param {Vertex} vertex
      * @public
      */
-    startDragVertex: function( point, vertex ) {
+    startDragVertex( point, vertex ) {
 
       // If it is the edge of a fixed length circuit element, the element rotates and moves toward the mouse
       const vertexNode = this.getVertexNode( vertex );
       vertexNode.startOffset = vertexNode.globalToParentPoint( point ).minus( vertex.unsnappedPositionProperty.get() );
-    },
+    }
 
     /**
      * Vertices connected to the black box cannot be moved, but they can be rotated.  Called when dragging a subcircuit.
@@ -526,7 +521,7 @@ define( require => {
      * @param {Vertex[]} vertices
      * @private
      */
-    rotateAboutFixedPivot: function( point, vertex, okToRotate, vertexNode, position, neighbors, vertices ) {
+    rotateAboutFixedPivot( point, vertex, okToRotate, vertexNode, position, neighbors, vertices ) {
 
       // Don't traverse across the black box interface, or it would rotate objects on the other side
       vertices = this.circuit.findAllFixedVertices( vertex, currentVertex => !currentVertex.blackBoxInterfaceProperty.get() );
@@ -552,7 +547,7 @@ define( require => {
         const attachable = [];
         this.translateVertexGroup( vertex, vertices, delta, () => vertex.unsnappedPositionProperty.set( fixedVertex.unsnappedPositionProperty.get().minus( relative ) ), attachable );
       }
-    },
+    }
 
     /**
      * Drag a vertex.
@@ -561,7 +556,7 @@ define( require => {
      * @param {boolean} okToRotate - true if it is allowed to rotate adjacent CircuitElements
      * @public
      */
-    dragVertex: function( point, vertex, okToRotate ) {
+    dragVertex( point, vertex, okToRotate ) {
       const vertexNode = this.getVertexNode( vertex );
 
       // Guard against the case in which the battery is flipped while dragging, see https://github.com/phetsims/circuit-construction-kit-common/issues/416
@@ -628,7 +623,7 @@ define( require => {
           this.translateVertexGroup( vertex, vertices, translationDelta, null, vertices );
         }
       }
-    },
+    }
 
     /**
      * Translate a group of vertices, used when dragging by a circuit element or by a one-neighbor vertex
@@ -643,7 +638,7 @@ define( require => {
      * @param {Array.<Vertex>} attachable - the nodes that are candidates for attachment
      * @public
      */
-    translateVertexGroup: function( vertex, vertices, unsnappedDelta, updatePositions, attachable ) {
+    translateVertexGroup( vertex, vertices, unsnappedDelta, updatePositions, attachable ) {
 
       const screenBounds = this.visibleBoundsProperty.get();
       const bounds = this.parentToLocalBounds( screenBounds );
@@ -690,7 +685,7 @@ define( require => {
       for ( let i = 0; i < vertices.length; i++ ) {
         vertices[ i ].positionProperty.notifyListenersStatic();
       }
-    },
+    }
 
     /**
      * End a vertex drag.
@@ -700,7 +695,7 @@ define( require => {
      * @param {boolean} dragged - true if the vertex actually moved with at least 1 drag call
      * @public
      */
-    endDrag: function( event, vertex, dragged ) {
+    endDrag( event, vertex, dragged ) {
       assert && assert( typeof dragged === 'boolean', 'didDrag must be supplied' );
 
       const vertexNode = this.getVertexNode( vertex );
@@ -733,25 +728,25 @@ define( require => {
 
       // Signify that something has been dropped in the play area, to show the edit panel, unless dropped in the toolbox
       this.circuit.vertexDroppedEmitter.emit1( vertex );
-    },
+    }
 
     /**
      * Adds a child to a layer behind the control panels.
      * @param {Node} child - the Node to add
      * @public
      */
-    addChildToBackground: function( child ) {
+    addChildToBackground( child ) {
       this.circuitLayerNodeBackLayer.addChild( child );
-    },
+    }
 
     /**
      * Removes a child from the layer behind the control panels.
      * @param {Node} child - the Node to remove
      * @public
      */
-    removeChildFromBackground: function( child ) {
+    removeChildFromBackground( child ) {
       this.circuitLayerNodeBackLayer.removeChild( child );
-    },
+    }
 
     /**
      * When the zoom level changes, recompute the visible bounds in the coordinate frame of the CircuitLayerNode so
@@ -759,8 +754,10 @@ define( require => {
      * @param {Bounds2} visibleBounds - view coordinates for the visible region
      * @public
      */
-    updateTransform: function( visibleBounds ) {
+    updateTransform( visibleBounds ) {
       this.visibleBoundsInCircuitCoordinateFrameProperty.set( this.parentToLocalBounds( visibleBounds ) );
     }
-  } );
+  }
+
+  return circuitConstructionKitCommon.register( 'CircuitLayerNode', CircuitLayerNode );
 } );

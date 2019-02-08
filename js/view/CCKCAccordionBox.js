@@ -15,44 +15,42 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const HStrut = require( 'SCENERY/nodes/HStrut' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const Property = require( 'AXON/Property' );
   const Text = require( 'SCENERY/nodes/Text' );
 
-  /**
-   * @param {Node} content - the content to display in the accordion box when it is expanded
-   * @param {string} title - the text to display in the title bar
-   * @param {Tandem} tandem
-   * @constructor
-   */
-  function CCKCAccordionBox( content, title, tandem ) {
-    AccordionBox.call( this, content, {
-      fill: CCKCConstants.PANEL_COLOR,
-      cornerRadius: CCKCConstants.CORNER_RADIUS,
-      titleXMargin: 10,
-      buttonXMargin: 8,
-      buttonYMargin: 8,
-      titleYMargin: 4,
-      titleXSpacing: 14,
-      contentYSpacing: 0,
-      lineWidth: CCKCConstants.PANEL_LINE_WIDTH,
-      minWidth: CCKCConstants.RIGHT_SIDE_PANEL_MIN_WIDTH,
-      expandedProperty: new Property( false ),
-      titleNode: new HBox( {
-        children: [
-          new HStrut( 10 ),
-          new Text( title, {
-            fontSize: CCKCConstants.FONT_SIZE,
-            maxWidth: 175,
-            tandem: tandem
-          } )
-        ]
-      } ),
-      tandem: tandem
-    } );
+  class CCKCAccordionBox extends AccordionBox {
+    /**
+     * @param {Node} content - the content to display in the accordion box when it is expanded
+     * @param {string} title - the text to display in the title bar
+     * @param {Tandem} tandem
+     */
+    constructor( content, title, tandem ) {
+      super( content, {
+        fill: CCKCConstants.PANEL_COLOR,
+        cornerRadius: CCKCConstants.CORNER_RADIUS,
+        titleXMargin: 10,
+        buttonXMargin: 8,
+        buttonYMargin: 8,
+        titleYMargin: 4,
+        titleXSpacing: 14,
+        contentYSpacing: 0,
+        lineWidth: CCKCConstants.PANEL_LINE_WIDTH,
+        minWidth: CCKCConstants.RIGHT_SIDE_PANEL_MIN_WIDTH,
+        expandedProperty: new Property( false ),
+        titleNode: new HBox( {
+          children: [
+            new HStrut( 10 ),
+            new Text( title, {
+              fontSize: CCKCConstants.FONT_SIZE,
+              maxWidth: 175,
+              tandem: tandem
+            } )
+          ]
+        } ),
+        tandem: tandem
+      } );
+    }
   }
 
-  circuitConstructionKitCommon.register( 'CCKCAccordionBox', CCKCAccordionBox );
-
-  return inherit( AccordionBox, CCKCAccordionBox );
+  return circuitConstructionKitCommon.register( 'CCKCAccordionBox', CCKCAccordionBox );
 } );

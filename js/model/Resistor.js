@@ -79,7 +79,7 @@ define( require => {
      * @public
      */
     toIntrinsicStateObject() {
-      const parent = FixedCircuitElement.prototype.toIntrinsicStateObject.call( this );
+      const parent = super.toIntrinsicStateObject();
       return _.extend( parent, {
         resistorType: this.resistorType,
         resistance: this.resistanceProperty.value,

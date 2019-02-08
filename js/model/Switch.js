@@ -78,7 +78,7 @@ define( require => {
       else {
 
         // For a closed switch, there is a straight path from the start vertex to the end vertex
-        FixedCircuitElement.prototype.updateMatrixForPoint.call( this, distanceAlongWire, matrix );
+        super.updateMatrixForPoint( distanceAlongWire, matrix );
       }
     }
 
@@ -98,7 +98,7 @@ define( require => {
      * @public
      */
     toIntrinsicStateObject() {
-      const parent = FixedCircuitElement.prototype.toIntrinsicStateObject.call( this );
+      const parent = super.toIntrinsicStateObject();
       return _.extend( parent, {
         closed: this.closedProperty.value
       } );

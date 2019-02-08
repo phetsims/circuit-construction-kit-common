@@ -207,7 +207,7 @@ define( require => {
       this.startPositionProperty.hasListener( this.vertexMovedListener ) && this.startPositionProperty.unlink( this.vertexMovedListener );
       this.endPositionProperty.hasListener( this.vertexMovedListener ) && this.endPositionProperty.unlink( this.vertexMovedListener );
 
-      PhetioObject.prototype.dispose.call( this );
+      super.dispose();
     }
 
     /**

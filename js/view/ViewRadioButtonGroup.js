@@ -16,7 +16,6 @@ define( require => {
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const Property = require( 'AXON/Property' );
   const RadioButtonGroup = require( 'SUN/buttons/RadioButtonGroup' );
   const Vector2 = require( 'DOT/Vector2' );
@@ -26,55 +25,55 @@ define( require => {
   const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
   const SCALE = 0.58;
 
-  /**
-   * @param {Property.<CircuitElementViewType>} viewTypeProperty - whether to show lifelike or schematic representations
-   * @param {Tandem} tandem
-   * @constructor
-   */
-  function ViewRadioButtonGroup( viewTypeProperty, tandem ) {
-
-    // Create a battery which can be used in the views
-    const startVertex = new Vertex( new Vector2( BATTERY_LENGTH / 2, 0 ) );
-    const endVertex = new Vertex( new Vector2( -BATTERY_LENGTH / 2, 0 ) );
-    const battery = new Battery( endVertex, startVertex, new Property( 0 ), BatteryType.NORMAL, tandem.createTandem( 'battery' ), {
-      initialOrientation: 'left'
-    } );
+  class ViewRadioButtonGroup extends RadioButtonGroup {
 
     /**
-     * Create a battery node to be used as an icon.
-     *
-     * @param {CircuitElementViewType} view
+     * @param {Property.<CircuitElementViewType>} viewTypeProperty - whether to show lifelike or schematic representations
      * @param {Tandem} tandem
-     * @returns {BatteryNode}
      */
-    const createBatteryNode = ( view, tandem ) => new BatteryNode( null, null, battery, new Property( view ), tandem, {
-      isIcon: true,
-      scale: SCALE
-    } );
-    const lifelikeIcon = createBatteryNode( CircuitElementViewType.LIFELIKE, tandem.createTandem( 'lifelikeIcon' ) );
-    const schematicIcon = createBatteryNode( CircuitElementViewType.SCHEMATIC, tandem.createTandem( 'schematicIcon' ) );
-    RadioButtonGroup.call( this, viewTypeProperty, [ {
-      value: CircuitElementViewType.LIFELIKE,
-      node: lifelikeIcon,
-      tandemName: 'lifelikeRadioButton'
-    }, {
-      value: CircuitElementViewType.SCHEMATIC,
-      node: schematicIcon,
-      tandemName: 'schematicRadioButton'
-    } ], {
-      spacing: 13.5, // Fitted to make this control have the same width as the rest of the panels
-      orientation: 'horizontal',
-      buttonContentXMargin: 14,
-      buttonContentYMargin: 7,
-      baseColor: CCKCConstants.PANEL_COLOR,
-      deselectedButtonOpacity: 0.4,
-      overButtonOpacity: 0.7,
-      cornerRadius: CCKCConstants.CORNER_RADIUS,
-      tandem: tandem
-    } );
+    constructor( viewTypeProperty, tandem ) {
+
+      // Create a battery which can be used in the views
+      const startVertex = new Vertex( new Vector2( BATTERY_LENGTH / 2, 0 ) );
+      const endVertex = new Vertex( new Vector2( -BATTERY_LENGTH / 2, 0 ) );
+      const battery = new Battery( endVertex, startVertex, new Property( 0 ), BatteryType.NORMAL, tandem.createTandem( 'battery' ), {
+        initialOrientation: 'left'
+      } );
+
+      /**
+       * Create a battery node to be used as an icon.
+       *
+       * @param {CircuitElementViewType} view
+       * @param {Tandem} tandem
+       * @returns {BatteryNode}
+       */
+      const createBatteryNode = ( view, tandem ) => new BatteryNode( null, null, battery, new Property( view ), tandem, {
+        isIcon: true,
+        scale: SCALE
+      } );
+      const lifelikeIcon = createBatteryNode( CircuitElementViewType.LIFELIKE, tandem.createTandem( 'lifelikeIcon' ) );
+      const schematicIcon = createBatteryNode( CircuitElementViewType.SCHEMATIC, tandem.createTandem( 'schematicIcon' ) );
+      super( viewTypeProperty, [ {
+        value: CircuitElementViewType.LIFELIKE,
+        node: lifelikeIcon,
+        tandemName: 'lifelikeRadioButton'
+      }, {
+        value: CircuitElementViewType.SCHEMATIC,
+        node: schematicIcon,
+        tandemName: 'schematicRadioButton'
+      } ], {
+        spacing: 13.5, // Fitted to make this control have the same width as the rest of the panels
+        orientation: 'horizontal',
+        buttonContentXMargin: 14,
+        buttonContentYMargin: 7,
+        baseColor: CCKCConstants.PANEL_COLOR,
+        deselectedButtonOpacity: 0.4,
+        overButtonOpacity: 0.7,
+        cornerRadius: CCKCConstants.CORNER_RADIUS,
+        tandem: tandem
+      } );
+    }
   }
 
-  circuitConstructionKitCommon.register( 'ViewRadioButtonGroup', ViewRadioButtonGroup );
-
-  return inherit( RadioButtonGroup, ViewRadioButtonGroup );
+  return circuitConstructionKitCommon.register( 'ViewRadioButtonGroup', ViewRadioButtonGroup );
 } );

@@ -10,49 +10,45 @@ define( require => {
 
   // modules
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const Path = require( 'SCENERY/nodes/Path' );
   const Shape = require( 'KITE/Shape' );
   const Vector2 = require( 'DOT/Vector2' );
 
-  /**
-   * @param {Color|string} color - the color of the wire
-   * @param {Vector2} bodyControlPointOffset - delta from the body to its control point
-   * @param {Vector2} probeControlPointOffset - delta from the probe to its control point
-   * @constructor
-   */
-  function ProbeWireNode( color, bodyControlPointOffset, probeControlPointOffset ) {
-    Path.call( this, null, {
-      lineWidth: 3,
-      stroke: color,
-      pickable: false
-    } );
+  class ProbeWireNode extends Path {
+    /**
+     * @param {Color|string} color - the color of the wire
+     * @param {Vector2} bodyControlPointOffset - delta from the body to its control point
+     * @param {Vector2} probeControlPointOffset - delta from the probe to its control point
+     */
+    constructor( color, bodyControlPointOffset, probeControlPointOffset ) {
+      super( null, {
+        lineWidth: 3,
+        stroke: color,
+        pickable: false
+      } );
 
-    // @private {Vector2}
-    this.probePosition = new Vector2();
+      // @private {Vector2}
+      this.probePosition = new Vector2();
 
-    // @private {Vector2}
-    this.bodyPosition = new Vector2();
+      // @private {Vector2}
+      this.bodyPosition = new Vector2();
 
-    // @private {Vector2}
-    this.bodyControlPointOffset = bodyControlPointOffset;
+      // @private {Vector2}
+      this.bodyControlPointOffset = bodyControlPointOffset;
 
-    // @private {Vector2}
-    this.probeControlPointOffset = probeControlPointOffset;
+      // @private {Vector2}
+      this.probeControlPointOffset = probeControlPointOffset;
 
-    // set correct initial shape
-    this.updateWireShape();
-  }
+      // set correct initial shape
+      this.updateWireShape();
+    }
 
-  circuitConstructionKitCommon.register( 'ProbeWireNode', ProbeWireNode );
-
-  return inherit( Path, ProbeWireNode, {
 
     /**
      * Update the shape of the wire when its end points have translated
      * @private
      */
-    updateWireShape: function() {
+    updateWireShape() {
       const bodyX = this.bodyPosition.x;
       const bodyY = this.bodyPosition.y;
       const probeX = this.probePosition.x;
@@ -65,24 +61,26 @@ define( require => {
           probeX + this.probeControlPointOffset.x, probeY + this.probeControlPointOffset.y,
           probeX, probeY
         );
-    },
+    }
 
     /**
      * @param {Vector2} probePosition - the position of the part of the probe where the wire connects
      * @public
      */
-    setProbePosition: function( probePosition ) {
+    setProbePosition( probePosition ) {
       this.probePosition = probePosition;
       this.updateWireShape();
-    },
+    }
 
     /**
      * @param {Vector2} bodyPosition - the position of the part of the meter body where the wire connects
      * @public
      */
-    setBodyPosition: function( bodyPosition ) {
+    setBodyPosition( bodyPosition ) {
       this.bodyPosition = bodyPosition;
       this.updateWireShape();
     }
-  } );
+  }
+
+  return circuitConstructionKitCommon.register( 'ProbeWireNode', ProbeWireNode );
 } );

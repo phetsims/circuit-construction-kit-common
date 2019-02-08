@@ -107,7 +107,7 @@ define( require => {
     dispose() {
       this.vertexMovedEmitter.removeListener( this.markWireDirtyListener );
       this.resistivityProperty.unlink( this.markWireDirtyListener );
-      CircuitElement.prototype.dispose.call( this );
+      super.dispose();
     }
   }
 
