@@ -12,7 +12,6 @@ define( require => {
   // modules
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Range = require( 'DOT/Range' );
   const RunningAverage = require( 'DOT/RunningAverage' );
@@ -46,48 +45,46 @@ define( require => {
     return Math.abs( circuitElement.currentProperty.get() );
   };
 
-  /**
-   * @param {Circuit} circuit
-   * @constructor
-   */
-  function ChargeAnimator( circuit ) {
+  class ChargeAnimator {
 
-    // @private (read-only) {ObservableArray.<Charge>} - the ObservableArray of Charge instances
-    this.charges = circuit.charges;
+    /**
+     * @param {Circuit} circuit
+     * @constructor
+     */
+    constructor( circuit ) {
 
-    // @private (read-only) {Circuit} - the Circuit
-    this.circuit = circuit;
+      // @private (read-only) {ObservableArray.<Charge>} - the ObservableArray of Charge instances
+      this.charges = circuit.charges;
 
-    // @private (read-only) {number} - factor that reduces the overall propagator speed when maximum speed is exceeded
-    this.scale = 1;
+      // @private (read-only) {Circuit} - the Circuit
+      this.circuit = circuit;
 
-    // @public {RunningAverage} - a running average over last time steps as a smoothing step
-    this.timeScaleRunningAverage = new RunningAverage( 30 );
+      // @private (read-only) {number} - factor that reduces the overall propagator speed when maximum speed is exceeded
+      this.scale = 1;
 
-    // @public (read-only) {NumberProperty} - how much the time should be slowed, 1 is full speed, 0.5 is running at
-    // half speed, etc.
-    this.timeScaleProperty = new NumberProperty( 1, { range: new Range( 0, 1 ) } );
-  }
+      // @public {RunningAverage} - a running average over last time steps as a smoothing step
+      this.timeScaleRunningAverage = new RunningAverage( 30 );
 
-  circuitConstructionKitCommon.register( 'ChargeAnimator', ChargeAnimator );
-
-  return inherit( Object, ChargeAnimator, {
+      // @public (read-only) {NumberProperty} - how much the time should be slowed, 1 is full speed, 0.5 is running at
+      // half speed, etc.
+      this.timeScaleProperty = new NumberProperty( 1, { range: new Range( 0, 1 ) } );
+    }
 
     /**
      * Restores to the initial state
      * @public
      */
-    reset: function() {
+    reset() {
       this.timeScaleProperty.reset();
       this.timeScaleRunningAverage.clear();
-    },
+    }
 
     /**
      * Update the location of the charges based on the circuit currents
      * @param {number} dt - elapsed time in seconds
      * @public
      */
-    step: function( dt ) {
+    step( dt ) {
 
       if ( this.charges.length === 0 || this.circuit.circuitElements.length === 0 ) {
         return;
@@ -126,14 +123,14 @@ define( require => {
 
       // After computing the new charge positions (possibly across several deltas), trigger the views to update.
       this.charges.forEach( charge => charge.updatePositionAndAngle() );
-    },
+    }
 
     /**
      * Make the charges repel each other so they don't bunch up.
      * @param {number} dt - the elapsed time in seconds
      * @private
      */
-    equalizeAll: function( dt ) {
+    equalizeAll( dt ) {
 
       // Update them in a stochastic order to avoid systematic sources of error building up.
       const indices = phet.joist.random.shuffle( _.range( this.charges.length ) );
@@ -147,7 +144,7 @@ define( require => {
           this.equalizeCharge( charge, dt );
         }
       }
-    },
+    }
 
     /**
      * Adjust the charge so it is more closely centered between its neighbors.  This prevents charges from getting
@@ -156,7 +153,7 @@ define( require => {
      * @param {number} dt - seconds
      * @private
      */
-    equalizeCharge: function( charge, dt ) {
+    equalizeCharge( charge, dt ) {
 
       const circuitElementCharges = this.circuit.getChargesInCircuitElement( charge.circuitElement );
 
@@ -201,7 +198,7 @@ define( require => {
           }
         }
       }
-    },
+    }
 
     /**
      * Move the charge forward in time by the specified amount.
@@ -209,7 +206,7 @@ define( require => {
      * @param {number} dt - elapsed time in seconds
      * @private
      */
-    propagate: function( charge, dt ) {
+    propagate( charge, dt ) {
       const chargePosition = charge.distance;
       assert && assert( _.isNumber( chargePosition ), 'distance along wire should be a number' );
       const current = charge.circuitElement.currentProperty.get() * charge.charge;
@@ -250,7 +247,7 @@ define( require => {
           }
         }
       }
-    },
+    }
 
     /**
      * Returns the locations where a charge can flow to (connected circuits with current flowing in the right direction)
@@ -261,7 +258,7 @@ define( require => {
      * @returns {Object[]} see createCircuitLocation
      * @private
      */
-    getLocations: function( charge, overshoot, vertex, depth ) {
+    getLocations( charge, overshoot, vertex, depth ) {
 
       const circuit = this.circuit;
 
@@ -340,5 +337,7 @@ define( require => {
       }
       return circuitLocations;
     }
-  } );
+  }
+
+  return circuitConstructionKitCommon.register( 'ChargeAnimator', ChargeAnimator );
 } );

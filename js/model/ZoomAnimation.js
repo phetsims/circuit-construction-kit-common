@@ -12,33 +12,30 @@ define( require => {
   // modules
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Easing = require( 'TWIXT/Easing' );
-  const inherit = require( 'PHET_CORE/inherit' );
 
   // constants
   const ZOOM_ANIMATION_TIME = 0.35; // seconds
 
-  /**
-   * @param {number} initialZoom
-   * @param {number} targetZoom
-   * @param {function} zoomCallback
-   * @constructor
-   */
-  function ZoomAnimation( initialZoom, targetZoom, zoomCallback ) {
-    this.easing = Easing.CUBIC_IN_OUT;
+  class ZoomAnimation {
 
-    this.ratio = 0;
-    this.totalDelta = targetZoom - initialZoom;
-    this.zoomCallback = zoomCallback;
-  }
+    /**
+     * @param {number} initialZoom
+     * @param {number} targetZoom
+     * @param {function} zoomCallback
+     * @constructor
+     */
+    class( initialZoom, targetZoom, zoomCallback ) {
+      this.easing = Easing.CUBIC_IN_OUT;
 
-  circuitConstructionKitCommon.register( 'ZoomAnimation', ZoomAnimation );
-
-  return inherit( Object, ZoomAnimation, {
+      this.ratio = 0;
+      this.totalDelta = targetZoom - initialZoom;
+      this.zoomCallback = zoomCallback;
+    }
 
     /**
      * @param {number} dt - elapsed time in seconds
      */
-    step: function( dt ) {
+    step( dt ) {
       const oldRatio = this.ratio;
 
       if ( oldRatio < 1 ) {
@@ -51,5 +48,7 @@ define( require => {
         this.zoomCallback( ratioDelta * this.totalDelta );
       }
     }
-  } );
+  }
+
+  return circuitConstructionKitCommon.register( 'ZoomAnimation', ZoomAnimation );
 } );

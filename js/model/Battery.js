@@ -13,51 +13,47 @@ define( require => {
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
   const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
 
-  /**
-   * @param {Vertex} startVertex - one of the battery vertices
-   * @param {Vertex} endVertex - the other battery vertex
-   * @param {Property.<number>} internalResistanceProperty - the resistance of the battery
-   * @param {BatteryType} batteryType - NORMAL | HIGH_VOLTAGE
-   * @param {Tandem} tandem
-   * @param {Object} [options]
-   * @constructor
-   */
-  function Battery( startVertex, endVertex, internalResistanceProperty, batteryType, tandem, options ) {
-    assert && assert( BatteryType.VALUES.indexOf( batteryType ) >= 0, 'invalid battery type: ' + batteryType );
-    assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
-    options = _.extend( {
-      initialOrientation: 'right',
-      voltage: 9.0,
-      isFlammable: true
-    }, options );
-    FixedCircuitElement.call( this, startVertex, endVertex, BATTERY_LENGTH, tandem, options );
+  class Battery extends FixedCircuitElement {
 
-    // @public {NumberProperty} - the voltage of the battery in volts
-    this.voltageProperty = new NumberProperty( options.voltage );
+    /**
+     * @param {Vertex} startVertex - one of the battery vertices
+     * @param {Vertex} endVertex - the other battery vertex
+     * @param {Property.<number>} internalResistanceProperty - the resistance of the battery
+     * @param {BatteryType} batteryType - NORMAL | HIGH_VOLTAGE
+     * @param {Tandem} tandem
+     * @param {Object} [options]
+     */
+    constructor( startVertex, endVertex, internalResistanceProperty, batteryType, tandem, options ) {
+      assert && assert( BatteryType.VALUES.indexOf( batteryType ) >= 0, 'invalid battery type: ' + batteryType );
+      assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
+      options = _.extend( {
+        initialOrientation: 'right',
+        voltage: 9.0,
+        isFlammable: true
+      }, options );
+      super( startVertex, endVertex, BATTERY_LENGTH, tandem, options );
 
-    // @public {Property.<number>} the internal resistance of the battery
-    this.internalResistanceProperty = internalResistanceProperty;
+      // @public {NumberProperty} - the voltage of the battery in volts
+      this.voltageProperty = new NumberProperty( options.voltage );
 
-    // @public (read-only) {string} - track which way the battery "button" (plus side) was facing the initial state so
-    // the user can only create a certain number of "left" or "right" batteries from the toolbox.
-    this.initialOrientation = options.initialOrientation;
+      // @public {Property.<number>} the internal resistance of the battery
+      this.internalResistanceProperty = internalResistanceProperty;
 
-    // @public (read-only) {BatteryType} - the type of the battery - NORMAL | HIGH_VOLTAGE
-    this.batteryType = batteryType;
+      // @public (read-only) {string} - track which way the battery "button" (plus side) was facing the initial state so
+      // the user can only create a certain number of "left" or "right" batteries from the toolbox.
+      this.initialOrientation = options.initialOrientation;
 
-    // @public (read-only) {number} - the number of decimal places to show in readouts and controls
-    this.numberOfDecimalPlaces = this.batteryType === BatteryType.NORMAL ? 1 : 0;
-  }
+      // @public (read-only) {BatteryType} - the type of the battery - NORMAL | HIGH_VOLTAGE
+      this.batteryType = batteryType;
 
-  circuitConstructionKitCommon.register( 'Battery', Battery );
-
-  return inherit( FixedCircuitElement, Battery, {
+      // @public (read-only) {number} - the number of decimal places to show in readouts and controls
+      this.numberOfDecimalPlaces = this.batteryType === BatteryType.NORMAL ? 1 : 0;
+    }
 
     /**
      * Get the properties so that the circuit can be solved when changed.
@@ -65,21 +61,23 @@ define( require => {
      * @override
      * @public
      */
-    getCircuitProperties: function() {
+    getCircuitProperties() {
       return [ this.voltageProperty ];
-    },
+    }
 
     /**
      * Get all intrinsic properties of this object, which can be used to load it at a later time.
      * @returns {Object}
      * @public
      */
-    toIntrinsicStateObject: function() {
+    toIntrinsicStateObject() {
       const parent = FixedCircuitElement.prototype.toIntrinsicStateObject.call( this );
       return _.extend( parent, {
         batteryType: this.batteryType,
         voltage: this.voltageProperty.value
       } );
     }
-  } );
+  }
+
+  return circuitConstructionKitCommon.register( 'Battery', Battery );
 } );

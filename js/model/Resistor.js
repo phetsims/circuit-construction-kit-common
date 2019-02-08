@@ -12,60 +12,56 @@ define( require => {
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const ResistorType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ResistorType' );
 
   // constants
   const RESISTOR_LENGTH = CCKCConstants.RESISTOR_LENGTH;
 
-  /**
-   * @param {Vertex} startVertex
-   * @param {Vertex} endVertex
-   * @param {Tandem} tandem
-   * @param {Object} [options]
-   * @constructor
-   */
-  function Resistor( startVertex, endVertex, tandem, options ) {
-    options = _.extend( {
-      resistance: CCKCConstants.DEFAULT_RESISTANCE,
+  class Resistor extends FixedCircuitElement {
 
-      // Support for rendering household items or
-      resistorType: ResistorType.VALUES[ 0 ],
-      resistorLength: RESISTOR_LENGTH,
-      isFlammable: true
-    }, options );
+    /**
+     * @param {Vertex} startVertex
+     * @param {Vertex} endVertex
+     * @param {Tandem} tandem
+     * @param {Object} [options]
+     */
+    constructor( startVertex, endVertex, tandem, options ) {
+      options = _.extend( {
+        resistance: CCKCConstants.DEFAULT_RESISTANCE,
 
-    // validate resistor type
-    assert && assert( ResistorType.VALUES.indexOf( options.resistorType ) >= 0, 'Unknown resistor type: ' +
-                                                                                options.resistorType );
+        // Support for rendering household items or
+        resistorType: ResistorType.VALUES[ 0 ],
+        resistorLength: RESISTOR_LENGTH,
+        isFlammable: true
+      }, options );
 
-    // @public (read-only) {ResistorType} indicates one of ResistorType values
-    this.resistorType = options.resistorType;
+      // validate resistor type
+      assert && assert( ResistorType.VALUES.indexOf( options.resistorType ) >= 0, 'Unknown resistor type: ' +
+                                                                                  options.resistorType );
 
-    options.isMetallic = ResistorType.isMetallic( this.resistorType );
+      super( startVertex, endVertex, options.resistorLength, tandem, options );
 
-    FixedCircuitElement.call( this, startVertex, endVertex, options.resistorLength, tandem, options );
+      // @public (read-only) {ResistorType} indicates one of ResistorType values
+      this.resistorType = options.resistorType;
 
-    // @public {Property.<number>} the resistance in ohms
-    this.resistanceProperty = new NumberProperty( options.resistance );
+      options.isMetallic = ResistorType.isMetallic( this.resistorType );
 
-    // @public (read-only) {number} - the number of decimal places to show in readouts and controls
-    this.numberOfDecimalPlaces = this.resistorType === ResistorType.RESISTOR ? 1 : 0;
-  }
+      // @public {Property.<number>} the resistance in ohms
+      this.resistanceProperty = new NumberProperty( options.resistance );
 
-  circuitConstructionKitCommon.register( 'Resistor', Resistor );
-
-  return inherit( FixedCircuitElement, Resistor, {
+      // @public (read-only) {number} - the number of decimal places to show in readouts and controls
+      this.numberOfDecimalPlaces = this.resistorType === ResistorType.RESISTOR ? 1 : 0;
+    }
 
     /**
      * Returns true if the resistance is editable.  Household item resistance is not editable.
      * @returns {boolean}
      * @public
      */
-    isResistanceEditable: function() {
+    isResistanceEditable() {
       return this.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR || this.resistorType === ResistorType.RESISTOR;
-    },
+    }
 
     /**
      * Get the properties so that the circuit can be solved when changed.
@@ -73,16 +69,16 @@ define( require => {
      * @returns {Property.<*>[]}
      * @public
      */
-    getCircuitProperties: function() {
+    getCircuitProperties() {
       return [ this.resistanceProperty ];
-    },
+    }
 
     /**
      * Get all intrinsic properties of this object, which can be used to load it at a later time.
      * @returns {Object}
      * @public
      */
-    toIntrinsicStateObject: function() {
+    toIntrinsicStateObject() {
       const parent = FixedCircuitElement.prototype.toIntrinsicStateObject.call( this );
       return _.extend( parent, {
         resistorType: this.resistorType,
@@ -90,5 +86,7 @@ define( require => {
         resistorLength: this.chargePathLength
       } );
     }
-  } );
+  }
+
+  return circuitConstructionKitCommon.register( 'Resistor', Resistor );
 } );

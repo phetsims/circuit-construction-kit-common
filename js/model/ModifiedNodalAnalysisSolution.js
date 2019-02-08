@@ -10,35 +10,22 @@ define( require => {
 
   // modules
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const inherit = require( 'PHET_CORE/inherit' );
 
-  /**
-   * @param {Object} nodeVoltages - see below
-   * @param {ModifiedNodalAnalysisCircuitElement[]} elements
-   * @constructor
-   */
-  function ModifiedNodalAnalysisSolution( nodeVoltages, elements ) {
+  class ModifiedNodalAnalysisSolution {
 
-    // @public (read-only) {Object} - the solved node voltages.
-    // keys are {number} indicating the node id, values are {number} for the voltage at the node
-    this.nodeVoltages = nodeVoltages;
+    /**
+     * @param {Object} nodeVoltages - see below
+     * @param {ModifiedNodalAnalysisCircuitElement[]} elements
+     */
+    constructor( nodeVoltages, elements ) {
 
-    // @public (read-only) {ModifiedNodalAnalysisCircuitElement[]} - circuit elements in the solution
-    this.elements = elements;
-  }
+      // @public (read-only) {Object} - the solved node voltages.
+      // keys are {number} indicating the node id, values are {number} for the voltage at the node
+      this.nodeVoltages = nodeVoltages;
 
-  circuitConstructionKitCommon.register( 'ModifiedNodalAnalysisSolution', ModifiedNodalAnalysisSolution );
-
-  /**
-   * Returns true if the numbers are approximately equal.
-   *
-   * @param {number} a - a number
-   * @param {number} b - another number
-   * @returns {boolean} true if the numbers are approximately equal
-   */
-  const NUMBER_APPROXIMATELY_EQUALS = ( a, b ) => Math.abs( a - b ) < 1E-6;
-
-  return inherit( Object, ModifiedNodalAnalysisSolution, {
+      // @public (read-only) {ModifiedNodalAnalysisCircuitElement[]} - circuit elements in the solution
+      this.elements = elements;
+    }
 
     /**
      * Compare two solutions, and provide detailed qunit equal test if equal is provided.  For the AC CCK, this method
@@ -48,7 +35,7 @@ define( require => {
      * @returns {boolean}
      * @public
      */
-    approxEquals: function( modifiedNodalAnalysisSolution, qassert ) {
+    approxEquals( modifiedNodalAnalysisSolution, qassert ) {
       const keys = _.keys( this.nodeVoltages );
       const otherKeys = _.keys( modifiedNodalAnalysisSolution.nodeVoltages );
       const keyDifference = _.difference( keys, otherKeys );
@@ -75,14 +62,14 @@ define( require => {
         return false;
       }
       return true;
-    },
+    }
 
     /**
      * For equality testing, make sure all of the specified elements and currents match ours
      * @param modifiedNodalAnalysisSolution
      * @private
      */
-    hasAllCurrents: function( modifiedNodalAnalysisSolution ) {
+    hasAllCurrents( modifiedNodalAnalysisSolution ) {
       for ( let i = 0; i < modifiedNodalAnalysisSolution.elements.length; i++ ) {
         const element = modifiedNodalAnalysisSolution.elements[ i ];
         if ( !this.hasMatchingElement( element ) ) {
@@ -90,7 +77,7 @@ define( require => {
         }
       }
       return true;
-    },
+    }
 
     /**
      * Returns true if this solution has an element that matches the provided element.
@@ -98,7 +85,7 @@ define( require => {
      * @returns {boolean}
      * @private
      */
-    hasMatchingElement: function( element ) {
+    hasMatchingElement( element ) {
       for ( let i = 0; i < this.elements.length; i++ ) {
         const proposedElement = this.elements[ i ];
         if ( proposedElement.nodeId0 === element.nodeId0 &&
@@ -108,7 +95,7 @@ define( require => {
         }
       }
       return false;
-    },
+    }
 
     /**
      * Use Ohm's law to compute the current for a resistor with resistance>0
@@ -116,10 +103,10 @@ define( require => {
      * @returns {number}
      * @public
      */
-    getCurrentForResistor: function( resistor ) {
+    getCurrentForResistor( resistor ) {
       assert && assert( resistor.value > 0, 'resistor must have resistance to use Ohms Law' );
       return -this.getVoltage( resistor ) / resistor.value;
-    },
+    }
 
     /**
      * Returns the voltage of the specified node.
@@ -127,9 +114,9 @@ define( require => {
      * @returns {number} the voltage of the node
      * @private
      */
-    getNodeVoltage: function( nodeIndex ) {
+    getNodeVoltage( nodeIndex ) {
       return this.nodeVoltages[ nodeIndex ];
-    },
+    }
 
     /**
      * Returns the voltage across a circuit element.
@@ -137,8 +124,19 @@ define( require => {
      * @returns {number} - the voltage
      * @private
      */
-    getVoltage: function( element ) {
+    getVoltage( element ) {
       return this.nodeVoltages[ element.nodeId1 ] - this.nodeVoltages[ element.nodeId0 ];
     }
-  } );
+  }
+
+  /**
+   * Returns true if the numbers are approximately equal.
+   *
+   * @param {number} a - a number
+   * @param {number} b - another number
+   * @returns {boolean} true if the numbers are approximately equal
+   */
+  const NUMBER_APPROXIMATELY_EQUALS = ( a, b ) => Math.abs( a - b ) < 1E-6;
+
+  return circuitConstructionKitCommon.register( 'ModifiedNodalAnalysisSolution', ModifiedNodalAnalysisSolution );
 } );

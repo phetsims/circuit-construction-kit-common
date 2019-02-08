@@ -12,63 +12,59 @@ define( require => {
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElement' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
   // Conversion factor between model=view coordinates and meters, in order to use resistivity to compute resistance.
   const METERS_PER_VIEW_COORDINATE = 0.015273409966500692;
 
-  /**
-   * Wire main constructor
-   * @param {Vertex} startVertex
-   * @param {Vertex} endVertex
-   * @param {Property.<number>} resistivityProperty
-   * @param {Tandem} tandem
-   * @param {Object} [options]
-   * @constructor
-   */
-  function Wire( startVertex, endVertex, resistivityProperty, tandem, options ) {
-    assert && assert( typeof resistivityProperty !== 'number', 'property should not be a number' );
-    options = _.extend( { wireStub: false, isMetallic: true }, options );
-    const chargePathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
-    CircuitElement.call( this, startVertex, endVertex, chargePathLength, tandem, options );
+  class Wire extends CircuitElement {
 
-    // @public (read-only) {boolean} - if the wire is a small stub attached to the black box
-    this.wireStub = options.wireStub;
+    /**
+     * Wire main constructor
+     * @param {Vertex} startVertex
+     * @param {Vertex} endVertex
+     * @param {Property.<number>} resistivityProperty
+     * @param {Tandem} tandem
+     * @param {Object} [options]
+     */
+    constructor( startVertex, endVertex, resistivityProperty, tandem, options ) {
+      assert && assert( typeof resistivityProperty !== 'number', 'property should not be a number' );
+      options = _.extend( { wireStub: false, isMetallic: true }, options );
+      const chargePathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
+      super( startVertex, endVertex, chargePathLength, tandem, options );
 
-    // @public {NumberProperty} - the resistance of the Wire in ohms
-    this.resistanceProperty = new NumberProperty( CCKCConstants.MINIMUM_RESISTANCE );
+      // @public (read-only) {boolean} - if the wire is a small stub attached to the black box
+      this.wireStub = options.wireStub;
 
-    // @public {Property.<number>} - the resistivity of the Wire in ohm-meters
-    this.resistivityProperty = resistivityProperty;
+      // @public {NumberProperty} - the resistance of the Wire in ohms
+      this.resistanceProperty = new NumberProperty( CCKCConstants.MINIMUM_RESISTANCE );
 
-    // @public {Property.<number>} - when the length changes layoutCharges must be called
-    this.lengthProperty = new NumberProperty( 0 );
+      // @public {Property.<number>} - the resistivity of the Wire in ohm-meters
+      this.resistivityProperty = resistivityProperty;
 
-    // @private {boolean} - batch changes so that the length doesn't change incrementally when individual vertices move
-    this.wireDirty = true;
+      // @public {Property.<number>} - when the length changes layoutCharges must be called
+      this.lengthProperty = new NumberProperty( 0 );
 
-    // When the vertex moves, updates the resistance and charge path length.
-    this.markWireDirtyListener = this.markWireDirty.bind( this );
+      // @private {boolean} - batch changes so that the length doesn't change incrementally when individual vertices move
+      this.wireDirty = true;
 
-    this.vertexMovedEmitter.addListener( this.markWireDirtyListener );
+      // When the vertex moves, updates the resistance and charge path length.
+      this.markWireDirtyListener = this.markWireDirty.bind( this );
 
-    // When resistivity changes, update the resistance
-    this.resistivityProperty.link( this.markWireDirtyListener );
+      this.vertexMovedEmitter.addListener( this.markWireDirtyListener );
 
-    this.update(); // initialize state
-  }
+      // When resistivity changes, update the resistance
+      this.resistivityProperty.link( this.markWireDirtyListener );
 
-  circuitConstructionKitCommon.register( 'Wire', Wire );
-
-  return inherit( CircuitElement, Wire, {
+      this.update(); // initialize state
+    }
 
     /**
      * Batch changes so that the length doesn't change incrementally when both vertices move one at a time.
      * @public
      */
-    update: function() {
+    update() {
       if ( this.wireDirty ) {
         const startPosition = this.startPositionProperty.get();
         const endPosition = this.endPositionProperty.get();
@@ -84,14 +80,14 @@ define( require => {
         this.chargePathLength = Math.max( viewLength, 1E-6 );
         this.wireDirty = false;
       }
-    },
+    }
 
     /**
      * @private - mark the wire as needing to have its geometry and resistance updated
      */
-    markWireDirty: function() {
+    markWireDirty() {
       this.wireDirty = true;
-    },
+    }
 
     /**
      * Get the properties so that the circuit can be solved when changed.
@@ -99,19 +95,21 @@ define( require => {
      * @returns {Property.<*>[]}
      * @public
      */
-    getCircuitProperties: function() {
+    getCircuitProperties() {
       return [ this.resistanceProperty ];
-    },
+    }
 
     /**
      * Releases all resources related to the Wire, called when it will no longer be used.
      * @public
      * @override
      */
-    dispose: function() {
+    dispose() {
       this.vertexMovedEmitter.removeListener( this.markWireDirtyListener );
       this.resistivityProperty.unlink( this.markWireDirtyListener );
       CircuitElement.prototype.dispose.call( this );
     }
-  } );
+  }
+
+  return circuitConstructionKitCommon.register( 'Wire', Wire );
 } );

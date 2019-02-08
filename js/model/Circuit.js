@@ -20,7 +20,6 @@ define( require => {
   const CurrentType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CurrentType' );
   const Emitter = require( 'AXON/Emitter' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const InteractionMode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/InteractionMode' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const ModifiedNodalAnalysisCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuit' );
@@ -52,237 +51,234 @@ define( require => {
    */
   const UPDATE_IF_PRESENT = circuitElement => circuitElement.update && circuitElement.update();
 
-  /**
-   * @param {Tandem} tandem
-   * @param {Object} [options]
-   * @constructor
-   */
-  function Circuit( tandem, options ) {
+  class Circuit {
 
-    options = _.extend( { blackBoxStudy: false }, options );
-    this.blackBoxStudy = options.blackBoxStudy;
+    /**
+     * @param {Tandem} tandem
+     * @param {Object} [options]
+     */
+    constructor( tandem, options ) {
 
-    // @public {NumberProperty} - All wires share the same resistivity, which is defined by
-    // resistance = resistivity * length. On the Lab Screen, there is a wire resistivity control
-    this.wireResistivityProperty = new NumberProperty( CCKCConstants.DEFAULT_RESISTIVITY, {
-      tandem: tandem.createTandem( 'wireResistivityProperty' )
-    } );
+      options = _.extend( { blackBoxStudy: false }, options );
+      this.blackBoxStudy = options.blackBoxStudy;
 
-    // @public {NumberProperty} - All batteries share a single internal resistance value, which can be edited with
-    // a control on the Lab Screen
-    this.batteryResistanceProperty = new NumberProperty( CCKCConstants.DEFAULT_BATTERY_RESISTANCE, {
-      tandem: tandem.createTandem( 'batteryResistanceProperty' )
-    } );
+      // @public {NumberProperty} - All wires share the same resistivity, which is defined by
+      // resistance = resistivity * length. On the Lab Screen, there is a wire resistivity control
+      this.wireResistivityProperty = new NumberProperty( CCKCConstants.DEFAULT_RESISTIVITY, {
+        tandem: tandem.createTandem( 'wireResistivityProperty' )
+      } );
 
-    // @public {ObservableArray.<CircuitElement>} - The different types of CircuitElement the circuit may
-    // contain, including Wire, Battery, Switch, Resistor, LightBulb, etc.
-    this.circuitElements = new ObservableArray();
+      // @public {NumberProperty} - All batteries share a single internal resistance value, which can be edited with
+      // a control on the Lab Screen
+      this.batteryResistanceProperty = new NumberProperty( CCKCConstants.DEFAULT_BATTERY_RESISTANCE, {
+        tandem: tandem.createTandem( 'batteryResistanceProperty' )
+      } );
 
-    // @public {ObservableArray.<Vertex>} - Keep track of which terminals are connected to other terminals.
-    // The vertices are also referenced in the CircuitElements above--this ObservableArray is a central point for
-    // observing creation/deletion of vertices for showing VertexNodes
-    this.vertices = new ObservableArray();
+      // @public {ObservableArray.<CircuitElement>} - The different types of CircuitElement the circuit may
+      // contain, including Wire, Battery, Switch, Resistor, LightBulb, etc.
+      this.circuitElements = new ObservableArray();
 
-    // @public {ObservableArray.<Charge>} - the charges in the circuit
-    this.charges = new ObservableArray();
+      // @public {ObservableArray.<Vertex>} - Keep track of which terminals are connected to other terminals.
+      // The vertices are also referenced in the CircuitElements above--this ObservableArray is a central point for
+      // observing creation/deletion of vertices for showing VertexNodes
+      this.vertices = new ObservableArray();
 
-    // @public {Property.<CurrentType>} - whether to show charges or conventional current
-    this.currentTypeProperty = new Property( CCKCQueryParameters.currentType, {
-      validValues: CurrentType.VALUES,
-      tandem: tandem.createTandem( 'currentTypeProperty' ),
-      phetioType: PropertyIO( StringIO )
-    } );
+      // @public {ObservableArray.<Charge>} - the charges in the circuit
+      this.charges = new ObservableArray();
 
-    // When the current type changes, mark everything as dirty and relayout charges
-    this.currentTypeProperty.lazyLink( () => this.relayoutAllCharges() );
+      // @public {Property.<CurrentType>} - whether to show charges or conventional current
+      this.currentTypeProperty = new Property( CCKCQueryParameters.currentType, {
+        validValues: CurrentType.VALUES,
+        tandem: tandem.createTandem( 'currentTypeProperty' ),
+        phetioType: PropertyIO( StringIO )
+      } );
 
-    // @public {BooleanProperty} - whether the current should be displayed
-    this.showCurrentProperty = new BooleanProperty( CCKCQueryParameters.showCurrent, {
-      tandem: tandem.createTandem( 'showCurrentProperty' )
-    } );
+      // When the current type changes, mark everything as dirty and relayout charges
+      this.currentTypeProperty.lazyLink( () => this.relayoutAllCharges() );
 
-    // @public {ChargeAnimator} - move the charges with speed proportional to current
-    this.chargeAnimator = new ChargeAnimator( this );
+      // @public {BooleanProperty} - whether the current should be displayed
+      this.showCurrentProperty = new BooleanProperty( CCKCQueryParameters.showCurrent, {
+        tandem: tandem.createTandem( 'showCurrentProperty' )
+      } );
 
-    // Re-solve the circuit when voltages or resistances change.
-    const solveListener = this.solve.bind( this );
+      // @public {ChargeAnimator} - move the charges with speed proportional to current
+      this.chargeAnimator = new ChargeAnimator( this );
 
-    // Solve the circuit when any of the circuit element attributes change.
-    this.circuitElements.addItemAddedListener( circuitElement => {
-      circuitElement.getCircuitProperties().forEach( property => property.lazyLink( solveListener ) );
+      // Re-solve the circuit when voltages or resistances change.
+      const solveListener = this.solve.bind( this );
 
-      // When a new circuit element is added to a circuit, it has two unconnected vertices
+      // Solve the circuit when any of the circuit element attributes change.
+      this.circuitElements.addItemAddedListener( circuitElement => {
+        circuitElement.getCircuitProperties().forEach( property => property.lazyLink( solveListener ) );
 
-      // Vertices may already exist for a Circuit when loading
-      this.addVertexIfNew( circuitElement.startVertexProperty.get() );
-      this.addVertexIfNew( circuitElement.endVertexProperty.get() );
+        // When a new circuit element is added to a circuit, it has two unconnected vertices
 
-      // When any vertex moves, relayout all charges within the fixed-length connected component, see #100
-      circuitElement.chargeLayoutDirty = true;
+        // Vertices may already exist for a Circuit when loading
+        this.addVertexIfNew( circuitElement.startVertexProperty.get() );
+        this.addVertexIfNew( circuitElement.endVertexProperty.get() );
 
-      const updateCharges = () => this.markAllConnectedCircuitElementsDirty( circuitElement.startVertexProperty.get() );
+        // When any vertex moves, relayout all charges within the fixed-length connected component, see #100
+        circuitElement.chargeLayoutDirty = true;
 
-      // For circuit elements that can change their length, make sure to update charges when the length changes.
-      if ( circuitElement.lengthProperty ) {
-        circuitElement.lengthProperty.link( updateCharges );
-        circuitElement.disposeEmitter.addListener( () => circuitElement.lengthProperty.unlink( updateCharges ) );
-      }
+        const updateCharges = () => this.markAllConnectedCircuitElementsDirty( circuitElement.startVertexProperty.get() );
 
-      this.solve();
-    } );
-    this.circuitElements.addItemRemovedListener( circuitElement => {
+        // For circuit elements that can change their length, make sure to update charges when the length changes.
+        if ( circuitElement.lengthProperty ) {
+          circuitElement.lengthProperty.link( updateCharges );
+          circuitElement.disposeEmitter.addListener( () => circuitElement.lengthProperty.unlink( updateCharges ) );
+        }
 
-      // Delete orphaned vertices
-      this.removeVertexIfOrphaned( circuitElement.startVertexProperty.get() );
-      this.removeVertexIfOrphaned( circuitElement.endVertexProperty.get() );
+        this.solve();
+      } );
+      this.circuitElements.addItemRemovedListener( circuitElement => {
 
-      // Clear the selected element property so that the Edit panel for the element will disappear
-      if ( this.selectedCircuitElementProperty.get() === circuitElement ) {
-        this.selectedCircuitElementProperty.set( null );
-      }
+        // Delete orphaned vertices
+        this.removeVertexIfOrphaned( circuitElement.startVertexProperty.get() );
+        this.removeVertexIfOrphaned( circuitElement.endVertexProperty.get() );
 
-      circuitElement.getCircuitProperties().forEach( property => property.unlink( solveListener ) );
-
-      circuitElement.dispose();
-
-      this.charges.removeAll( this.getChargesInCircuitElement( circuitElement ) );
-
-      // Explicit call to solve since it is possible to remove a CircuitElement without removing any vertices.
-      this.solve();
-    } );
-
-    // When a Charge is removed from the list, dispose it
-    this.charges.addItemRemovedListener( charge => charge.dispose() );
-
-    // @public (read-only) {Emitter} After the circuit physics is recomputed in solve(), some listeners need to update
-    // themselves, such as the voltmeter and ammeter
-    this.circuitChangedEmitter = new Emitter();
-
-    // @public (read-only) {Emitter} - Some actions only take place after an item has been dropped
-    this.vertexDroppedEmitter = new Emitter();
-
-    // @public (read-only) {Emitter} - signifies that a component has been modified (for example, with the
-    // CircuitElementEditNode)
-    this.componentEditedEmitter = new Emitter();
-
-    const emitCircuitChanged = () => this.circuitChangedEmitter.emit();
-
-    this.vertices.addItemAddedListener( vertex => {
-
-      // Observe the change in location of the vertices, to update the ammeter and voltmeter
-      vertex.positionProperty.link( emitCircuitChanged );
-
-      const filtered = this.vertices.filter( candidateVertex => vertex === candidateVertex );
-      assert && assert( filtered.length === 1, 'should only have one copy of each vertex' );
-
-      // if one vertex becomes selected, deselect the other vertices and circuit elements
-      const vertexSelectedPropertyListener = selected => {
-        if ( selected ) {
-          this.vertices.forEach( v => {
-            if ( v !== vertex ) {
-              v.selectedProperty.set( false );
-            }
-          } );
+        // Clear the selected element property so that the Edit panel for the element will disappear
+        if ( this.selectedCircuitElementProperty.get() === circuitElement ) {
           this.selectedCircuitElementProperty.set( null );
         }
-      };
-      vertex.vertexSelectedPropertyListener = vertexSelectedPropertyListener;
-      vertex.selectedProperty.link( vertexSelectedPropertyListener );
-    } );
 
-    // Stop watching the vertex positions for updating the voltmeter and ammeter
-    this.vertices.addItemRemovedListener( vertex => {
+        circuitElement.getCircuitProperties().forEach( property => property.unlink( solveListener ) );
 
-      // Sanity checks for the listeners
-      assert && assert( vertex.positionProperty.hasListener( emitCircuitChanged ), 'should have had the listener' );
-      vertex.positionProperty.unlink( emitCircuitChanged );
+        circuitElement.dispose();
 
-      // More sanity checks for the listeners
-      assert && assert( !vertex.positionProperty.hasListener( emitCircuitChanged ), 'Listener should be removed' );
+        this.charges.removeAll( this.getChargesInCircuitElement( circuitElement ) );
 
-      vertex.selectedProperty.unlink( vertex.vertexSelectedPropertyListener );
-      vertex.vertexSelectedPropertyListener = null;
-    } );
+        // Explicit call to solve since it is possible to remove a CircuitElement without removing any vertices.
+        this.solve();
+      } );
 
-    // @public {Property.<CircuitElement|null>} - When the user taps on a CircuitElement, it becomes selected and
-    // highlighted, and shows additional controls at the bottom of the screen. When the sim launches or when the user
-    // taps away from a selected circuit element, the selection is `null`.  Once this simulation is instrumented
-    // for a11y, the focus property can be used to track this. Note that vertex selection is done via
-    // Vertex.selectedProperty.  These strategies can be unified when we work on a11y.
-    this.selectedCircuitElementProperty = new Property( null, {
-      tandem: tandem.createTandem( 'selectedCircuitElementProperty' ),
-      phetioType: PropertyIO( ObjectIO )
-    } );
+      // When a Charge is removed from the list, dispose it
+      this.charges.addItemRemovedListener( charge => charge.dispose() );
 
-    this.selectedCircuitElementProperty.link( selectedCircuitElement => {
+      // @public (read-only) {Emitter} After the circuit physics is recomputed in solve(), some listeners need to update
+      // themselves, such as the voltmeter and ammeter
+      this.circuitChangedEmitter = new Emitter();
 
-      // When a circuit element is selected, deselect all the vertices
-      if ( selectedCircuitElement ) {
-        this.vertices.forEach( vertex => vertex.selectedProperty.set( false ) );
-      }
-    } );
+      // @public (read-only) {Emitter} - Some actions only take place after an item has been dropped
+      this.vertexDroppedEmitter = new Emitter();
 
-    // @private {function[]} - Actions that will be invoked during the step function
-    this.stepActions = [];
+      // @public (read-only) {Emitter} - signifies that a component has been modified (for example, with the
+      // CircuitElementEditNode)
+      this.componentEditedEmitter = new Emitter();
 
-    // When any vertex is dropped, check it and its neighbors for overlap.  If any overlap, move them apart.
-    this.vertexDroppedEmitter.addListener( vertex => {
-      this.stepActions.push( () => {
+      const emitCircuitChanged = () => this.circuitChangedEmitter.emit();
 
-        // Collect adjacent vertices
-        const neighbors = this.getNeighboringVertices( vertex );
+      this.vertices.addItemAddedListener( vertex => {
 
-        // Also consider the vertex being dropped for comparison with neighbors
-        neighbors.push( vertex );
-        const pairs = [];
-        neighbors.forEach( neighbor => {
-          this.vertices.forEach( vertex => {
+        // Observe the change in location of the vertices, to update the ammeter and voltmeter
+        vertex.positionProperty.link( emitCircuitChanged );
 
-            // Make sure nodes are different
-            if ( neighbor !== vertex ) {
+        const filtered = this.vertices.filter( candidateVertex => vertex === candidateVertex );
+        assert && assert( filtered.length === 1, 'should only have one copy of each vertex' );
 
-              // Add to the list to be checked
-              pairs.push( { v1: neighbor, v2: vertex } );
-            }
-          } );
-        } );
-        if ( pairs.length > 0 ) {
-
-          // Find the closest pair
-          const distance = pair => pair.v2.unsnappedPositionProperty.get().distance( pair.v1.unsnappedPositionProperty.get() );
-          const minPair = _.minBy( pairs, distance );
-          const minDistance = distance( minPair );
-
-          // If the pair is too close, then bump one vertex away from each other (but only if both are not user controlled)
-          if ( minDistance < BUMP_AWAY_RADIUS && !minPair.v1.isDragged && !minPair.v2.isDragged ) {
-            this.moveVerticesApart( minPair.v1, minPair.v2 );
+        // if one vertex becomes selected, deselect the other vertices and circuit elements
+        const vertexSelectedPropertyListener = selected => {
+          if ( selected ) {
+            this.vertices.forEach( v => {
+              if ( v !== vertex ) {
+                v.selectedProperty.set( false );
+              }
+            } );
+            this.selectedCircuitElementProperty.set( null );
           }
+        };
+        vertex.vertexSelectedPropertyListener = vertexSelectedPropertyListener;
+        vertex.selectedProperty.link( vertexSelectedPropertyListener );
+      } );
+
+      // Stop watching the vertex positions for updating the voltmeter and ammeter
+      this.vertices.addItemRemovedListener( vertex => {
+
+        // Sanity checks for the listeners
+        assert && assert( vertex.positionProperty.hasListener( emitCircuitChanged ), 'should have had the listener' );
+        vertex.positionProperty.unlink( emitCircuitChanged );
+
+        // More sanity checks for the listeners
+        assert && assert( !vertex.positionProperty.hasListener( emitCircuitChanged ), 'Listener should be removed' );
+
+        vertex.selectedProperty.unlink( vertex.vertexSelectedPropertyListener );
+        vertex.vertexSelectedPropertyListener = null;
+      } );
+
+      // @public {Property.<CircuitElement|null>} - When the user taps on a CircuitElement, it becomes selected and
+      // highlighted, and shows additional controls at the bottom of the screen. When the sim launches or when the user
+      // taps away from a selected circuit element, the selection is `null`.  Once this simulation is instrumented
+      // for a11y, the focus property can be used to track this. Note that vertex selection is done via
+      // Vertex.selectedProperty.  These strategies can be unified when we work on a11y.
+      this.selectedCircuitElementProperty = new Property( null, {
+        tandem: tandem.createTandem( 'selectedCircuitElementProperty' ),
+        phetioType: PropertyIO( ObjectIO )
+      } );
+
+      this.selectedCircuitElementProperty.link( selectedCircuitElement => {
+
+        // When a circuit element is selected, deselect all the vertices
+        if ( selectedCircuitElement ) {
+          this.vertices.forEach( vertex => vertex.selectedProperty.set( false ) );
         }
       } );
-    } );
 
-    this.batteryResistanceProperty.link( solveListener );
+      // @private {function[]} - Actions that will be invoked during the step function
+      this.stepActions = [];
 
-    // @public (read-only) - for creating tandems
-    this.vertexGroupTandem = tandem.createGroupTandem( 'vertices' );
-    this.wireGroupTandem = tandem.createGroupTandem( 'wires' );
-    this.resistorGroupTandem = tandem.createGroupTandem( 'resistors' );
-    this.seriesAmmeterGroupTandem = tandem.createGroupTandem( 'seriesAmmeters' );
-    this.switchGroupTandem = tandem.createGroupTandem( 'switches' );
-    this.coinGroupTandem = tandem.createGroupTandem( 'coins' );
-    this.eraserGroupTandem = tandem.createGroupTandem( 'erasers' );
-    this.pencilGroupTandem = tandem.createGroupTandem( 'pencils' );
-    this.handGroupTandem = tandem.createGroupTandem( 'hands' );
-    this.dogGroupTandem = tandem.createGroupTandem( 'dogs' );
-    this.dollarBillGroupTandem = tandem.createGroupTandem( 'dollarBills' );
-    this.paperClipGroupTandem = tandem.createGroupTandem( 'paperClips' );
-    this.rightBatteryTandemGroup = tandem.createGroupTandem( 'rightBatteries' );
-    this.lightBulbGroupTandem = tandem.createGroupTandem( 'lightBulbs' );
-  }
+      // When any vertex is dropped, check it and its neighbors for overlap.  If any overlap, move them apart.
+      this.vertexDroppedEmitter.addListener( vertex => {
+        this.stepActions.push( () => {
 
-  circuitConstructionKitCommon.register( 'Circuit', Circuit );
+          // Collect adjacent vertices
+          const neighbors = this.getNeighboringVertices( vertex );
 
-  return inherit( Object, Circuit, {
+          // Also consider the vertex being dropped for comparison with neighbors
+          neighbors.push( vertex );
+          const pairs = [];
+          neighbors.forEach( neighbor => {
+            this.vertices.forEach( vertex => {
+
+              // Make sure nodes are different
+              if ( neighbor !== vertex ) {
+
+                // Add to the list to be checked
+                pairs.push( { v1: neighbor, v2: vertex } );
+              }
+            } );
+          } );
+          if ( pairs.length > 0 ) {
+
+            // Find the closest pair
+            const distance = pair => pair.v2.unsnappedPositionProperty.get().distance( pair.v1.unsnappedPositionProperty.get() );
+            const minPair = _.minBy( pairs, distance );
+            const minDistance = distance( minPair );
+
+            // If the pair is too close, then bump one vertex away from each other (but only if both are not user controlled)
+            if ( minDistance < BUMP_AWAY_RADIUS && !minPair.v1.isDragged && !minPair.v2.isDragged ) {
+              this.moveVerticesApart( minPair.v1, minPair.v2 );
+            }
+          }
+        } );
+      } );
+
+      this.batteryResistanceProperty.link( solveListener );
+
+      // @public (read-only) - for creating tandems
+      this.vertexGroupTandem = tandem.createGroupTandem( 'vertices' );
+      this.wireGroupTandem = tandem.createGroupTandem( 'wires' );
+      this.resistorGroupTandem = tandem.createGroupTandem( 'resistors' );
+      this.seriesAmmeterGroupTandem = tandem.createGroupTandem( 'seriesAmmeters' );
+      this.switchGroupTandem = tandem.createGroupTandem( 'switches' );
+      this.coinGroupTandem = tandem.createGroupTandem( 'coins' );
+      this.eraserGroupTandem = tandem.createGroupTandem( 'erasers' );
+      this.pencilGroupTandem = tandem.createGroupTandem( 'pencils' );
+      this.handGroupTandem = tandem.createGroupTandem( 'hands' );
+      this.dogGroupTandem = tandem.createGroupTandem( 'dogs' );
+      this.dollarBillGroupTandem = tandem.createGroupTandem( 'dollarBills' );
+      this.paperClipGroupTandem = tandem.createGroupTandem( 'paperClips' );
+      this.rightBatteryTandemGroup = tandem.createGroupTandem( 'rightBatteries' );
+      this.lightBulbGroupTandem = tandem.createGroupTandem( 'lightBulbs' );
+    }
 
     /**
      * When over Vertex is released or bumped over another Vertex, rotate one away so it doesn't appear connected.
@@ -290,7 +286,7 @@ define( require => {
      * @param {Vertex} v2
      * @private
      */
-    moveVerticesApart: function( v1, v2 ) {
+    moveVerticesApart( v1, v2 ) {
       const v1Neighbors = this.getNeighboringVertices( v1 );
       const v2Neighbors = this.getNeighboringVertices( v2 );
 
@@ -302,16 +298,16 @@ define( require => {
       else if ( v2Neighbors.length === 1 && !v2.blackBoxInterfaceProperty.get() ) {
         this.bumpAwaySingleVertex( v2, v2Neighbors[ 0 ] ); // Arbitrarily choose 0th neighbor to move away from
       }
-    },
+    }
 
     /**
      * Update the position of all charges.
      * @public
      */
-    relayoutAllCharges: function() {
+    relayoutAllCharges() {
       this.circuitElements.getArray().forEach( circuitElement => {circuitElement.chargeLayoutDirty = true;} );
       this.layoutChargesInDirtyCircuitElements();
-    },
+    }
 
     /**
      * When two Vertices are dropped/bumped too close together, move away the pre-existing one by rotating or
@@ -321,7 +317,7 @@ define( require => {
      * @param {Vertex} pivotVertex - the vertex to rotate about
      * @private
      */
-    bumpAwaySingleVertex: function( vertex, pivotVertex ) {
+    bumpAwaySingleVertex( vertex, pivotVertex ) {
       const distance = vertex.positionProperty.value.distance( pivotVertex.positionProperty.value );
 
       // If the vertices are too close, they must be translated away
@@ -354,7 +350,7 @@ define( require => {
           this.rotateSingleVertexByAngle( vertex, pivotVertex, 2 * searchAngle );
         }
       }
-    },
+    }
 
     /**
      * Rotate the given Vertex about the specified Vertex by the given angle
@@ -363,7 +359,7 @@ define( require => {
      * @param {number} deltaAngle - angle in radians to rotate
      * @private
      */
-    rotateSingleVertexByAngle: function( vertex, pivotVertex, deltaAngle ) {
+    rotateSingleVertexByAngle( vertex, pivotVertex, deltaAngle ) {
       const position = vertex.positionProperty.get();
       const pivotPosition = pivotVertex.positionProperty.get();
 
@@ -373,7 +369,7 @@ define( require => {
       const newPosition = pivotPosition.plus( Vector2.createPolar( distanceFromVertex, angle + deltaAngle ) );
       vertex.unsnappedPositionProperty.set( newPosition );
       vertex.positionProperty.set( newPosition );
-    },
+    }
 
     /**
      * Determine the distance to the closest Vertex
@@ -381,7 +377,7 @@ define( require => {
      * @returns {number} - distance to nearest other Vertex in view coordinates
      * @private
      */
-    closestDistanceToOtherVertex: function( vertex ) {
+    closestDistanceToOtherVertex( vertex ) {
       let closestDistance = null;
       for ( let i = 0; i < this.vertices.length; i++ ) {
         const v = this.vertices.get( i );
@@ -393,13 +389,13 @@ define( require => {
         }
       }
       return closestDistance;
-    },
+    }
 
     /**
      * Remove all elements from the circuit.
      * @public
      */
-    clear: function() {
+    clear() {
 
       this.selectedCircuitElementProperty.reset();
 
@@ -422,14 +418,14 @@ define( require => {
         }
         assert && assert( this.vertices.length === 0, 'vertices should have been removed' );
       }
-    },
+    }
 
     /**
      * Split the Vertex into separate vertices.
      * @param {Vertex} vertex - the vertex to be cut.
      * @public
      */
-    cutVertex: function( vertex ) {
+    cutVertex( vertex ) {
 
       // Only permit cutting a non-dragged vertex, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
       if ( vertex.isDragged ) {
@@ -522,7 +518,7 @@ define( require => {
 
       // Update the physics
       this.solve();
-    },
+    }
 
     /**
      * Translate all vertices connected to the mainVertex by FixedCircuitElements by the given distance
@@ -533,7 +529,7 @@ define( require => {
      * @param {Vector2} delta - the vector by which to move the vertex group
      * @private
      */
-    translateVertexGroup: function( mainVertex, delta ) {
+    translateVertexGroup( mainVertex, delta ) {
       const vertexGroup = this.findAllFixedVertices( mainVertex );
 
       for ( let j = 0; j < vertexGroup.length; j++ ) {
@@ -544,7 +540,7 @@ define( require => {
           vertex.setPosition( vertex.positionProperty.value.plus( delta ) );
         }
       }
-    },
+    }
 
     /**
      * Returns true if the given vertex has a fixed connection to a black box interface vertex.
@@ -552,10 +548,10 @@ define( require => {
      * @returns {boolean}
      * @private
      */
-    hasFixedConnectionToBlackBoxInterfaceVertex: function( vertex ) {
+    hasFixedConnectionToBlackBoxInterfaceVertex( vertex ) {
       const fixedVertices = this.findAllFixedVertices( vertex );
       return _.some( fixedVertices, fixedVertex => fixedVertex.blackBoxInterfaceProperty.get() );
-    },
+    }
 
     /**
      * Returns true if the CircuitElement is not connected to any other CircuitElement.
@@ -563,32 +559,32 @@ define( require => {
      * @returns {boolean}
      * @public
      */
-    isSingle: function( circuitElement ) {
+    isSingle( circuitElement ) {
       return this.getNeighborCircuitElements( circuitElement.startVertexProperty.get() ).length === 1 &&
              this.getNeighborCircuitElements( circuitElement.endVertexProperty.get() ).length === 1;
-    },
+    }
 
     /**
      * When removing a CircuitElement, also remove its start/end Vertex if it can be removed.
      * @param {Vertex} vertex
      * @private
      */
-    removeVertexIfOrphaned: function( vertex ) {
+    removeVertexIfOrphaned( vertex ) {
       if ( this.getNeighborCircuitElements( vertex ).length === 0 && !vertex.blackBoxInterfaceProperty.get() ) {
         this.vertices.remove( vertex );
       }
-    },
+    }
 
     /**
      * Add the given vertex if it doesn't already belong to the circuit.
      * @param {Vertex} vertex
      * @private
      */
-    addVertexIfNew: function( vertex ) {
+    addVertexIfNew( vertex ) {
       if ( !this.vertices.contains( vertex ) ) {
         this.vertices.add( vertex );
       }
-    },
+    }
 
     /**
      * Get all of the CircuitElements that contain the given Vertex.
@@ -596,9 +592,9 @@ define( require => {
      * @returns {CircuitElement[]}
      * @public
      */
-    getNeighborCircuitElements: function( vertex ) {
+    getNeighborCircuitElements( vertex ) {
       return this.circuitElements.getArray().filter( circuitElement => circuitElement.containsVertex( vertex ) );
-    },
+    }
 
     /**
      * Gets the number of CircuitElements connected to the specified Vertex
@@ -606,9 +602,9 @@ define( require => {
      * @returns {number}
      * @public
      */
-    countCircuitElements: function( vertex ) {
+    countCircuitElements( vertex ) {
       return this.circuitElements.count( circuitElement => circuitElement.containsVertex( vertex ) );
-    },
+    }
 
     /**
      * Determines whether the specified Vertices are electrically connected through any arbitrary connections.  An
@@ -618,7 +614,7 @@ define( require => {
      * @returns {boolean}
      * @public
      */
-    areVerticesElectricallyConnected: function( vertex1, vertex2 ) {
+    areVerticesElectricallyConnected( vertex1, vertex2 ) {
       const connectedVertices = this.searchVertices( vertex1, ( startVertex, circuitElement ) => {
 
           // If the circuit element has a closed property (like a Switch), it is only OK to traverse if the element is
@@ -634,14 +630,14 @@ define( require => {
         }
       );
       return connectedVertices.indexOf( vertex2 ) >= 0;
-    },
+    }
 
     /**
      * Solve for the unknown currents and voltages of the circuit using Modified Nodal Analysis.  The solved values
      * are set to the CircuitElements and Vertices.
      * @public
      */
-    solve: function() {
+    solve() {
 
       // Must run the solver even if there is only 1 battery, because it solves for the voltage difference between
       // the vertices
@@ -704,7 +700,7 @@ define( require => {
       } );
 
       this.circuitChangedEmitter.emit();
-    },
+    }
 
     /**
      * Connect the vertices, merging oldVertex into vertex1 and deleting oldVertex
@@ -712,7 +708,7 @@ define( require => {
      * @param {Vertex} oldVertex
      * @public
      */
-    connect: function( targetVertex, oldVertex ) {
+    connect( targetVertex, oldVertex ) {
       assert && assert( targetVertex.attachableProperty.get() && oldVertex.attachableProperty.get(),
         'both vertices should be attachable' );
 
@@ -738,14 +734,14 @@ define( require => {
         // Make sure the solder is displayed in the correct z-order
         targetVertex.relayerEmitter.emit();
       }
-    },
+    }
 
     /**
      * Move forward in time
      * @param {number} dt - the elapsed time in seconds
      * @public
      */
-    step: function( dt ) {
+    step( dt ) {
 
       // Invoke any scheduled actions
       this.stepActions.forEach( stepAction => stepAction() );
@@ -754,7 +750,7 @@ define( require => {
       // Move the charges
       this.chargeAnimator.step( dt );
       this.circuitElements.getArray().forEach( UPDATE_IF_PRESENT );
-    },
+    }
 
     /**
      * When a circuit element is marked as dirty (such as when it changed length or moved), it needs to have
@@ -762,9 +758,9 @@ define( require => {
      * elements.
      * @public
      */
-    layoutChargesInDirtyCircuitElements: function() {
+    layoutChargesInDirtyCircuitElements() {
       this.circuitElements.getArray().forEach( circuitElement => this.layoutCharges( circuitElement ) );
-    },
+    }
 
     /**
      * Determine if one Vertex is adjacent to another Vertex.  The only way for two vertices to be adjacent is for them
@@ -774,7 +770,7 @@ define( require => {
      * @returns {boolean}
      * @private
      */
-    isVertexAdjacent: function( a, b ) {
+    isVertexAdjacent( a, b ) {
 
       // A vertex cannot be adjacent to itself.
       if ( a === b ) {
@@ -782,7 +778,7 @@ define( require => {
       }
 
       return this.circuitElements.some( circuitElement => circuitElement.containsBothVertices( a, b ) );
-    },
+    }
 
     /**
      * Find the neighbor vertices within the given group of circuit elements
@@ -791,7 +787,7 @@ define( require => {
      * @returns {Vertex[]}
      * @private
      */
-    getNeighborVerticesInGroup: function( vertex, circuitElements ) {
+    getNeighborVerticesInGroup( vertex, circuitElements ) {
       const neighbors = [];
       for ( let i = 0; i < circuitElements.length; i++ ) {
         const circuitElement = circuitElements[ i ];
@@ -800,7 +796,7 @@ define( require => {
         }
       }
       return neighbors;
-    },
+    }
 
     /**
      * Get an array of all the vertices adjacent to the specified Vertex.
@@ -808,17 +804,17 @@ define( require => {
      * @returns {Vertex[]}
      * @private
      */
-    getNeighboringVertices: function( vertex ) {
+    getNeighboringVertices( vertex ) {
       const neighborCircuitElements = this.getNeighborCircuitElements( vertex );
       return this.getNeighborVerticesInGroup( vertex, neighborCircuitElements );
-    },
+    }
 
     /**
      * Marks all connected circuit elements as dirty (so electrons will be layed out again), called when any wire length is changed.
      * @param {Vertex} vertex
      * @private
      */
-    markAllConnectedCircuitElementsDirty: function( vertex ) {
+    markAllConnectedCircuitElementsDirty( vertex ) {
       const allConnectedVertices = this.findAllConnectedVertices( vertex );
 
       // This is called many times while dragging a wire vertex, so for loops (as opposed to functional style) are used
@@ -831,16 +827,16 @@ define( require => {
           neighborCircuitElements[ k ].chargeLayoutDirty = true;
         }
       }
-    },
+    }
 
     /**
      * Find the subgraph where all vertices are connected by any kind of CircuitElements
      * @param {Vertex} vertex
      * @public
      */
-    findAllConnectedVertices: function( vertex ) {
+    findAllConnectedVertices( vertex ) {
       return this.searchVertices( vertex, trueFunction );
-    },
+    }
 
     /**
      * Find the subgraph where all vertices are connected, given the list of traversible circuit elements
@@ -850,7 +846,7 @@ define( require => {
      * @returns {Vertex[]}
      * @private
      */
-    searchVertices: function( vertex, okToVisit ) {
+    searchVertices( vertex, okToVisit ) {
       assert && assert( this.vertices.indexOf( vertex ) >= 0, 'Vertex wasn\'t in the model' );
 
       const fixedVertices = [];
@@ -888,7 +884,7 @@ define( require => {
         }
       }
       return _.uniq( fixedVertices );
-    },
+    }
 
     /**
      * Get the charges that are in the specified circuit element.
@@ -896,9 +892,9 @@ define( require => {
      * @returns {Charge[]}
      * @public
      */
-    getChargesInCircuitElement: function( circuitElement ) {
+    getChargesInCircuitElement( circuitElement ) {
       return this.charges.getArray().filter( charge => charge.circuitElement === circuitElement );
-    },
+    }
 
     /**
      * Find the subgraph where all vertices are connected by FixedCircuitElements, not stretchy wires.
@@ -908,7 +904,7 @@ define( require => {
      * @returns {Vertex[]}
      * @public
      */
-    findAllFixedVertices: function( vertex, okToVisit ) {
+    findAllFixedVertices( vertex, okToVisit ) {
       return this.searchVertices( vertex, ( startVertex, circuitElement, endVertex ) => {
         if ( okToVisit ) {
           return circuitElement instanceof FixedCircuitElement && okToVisit( startVertex, circuitElement, endVertex );
@@ -917,16 +913,16 @@ define( require => {
           return circuitElement instanceof FixedCircuitElement;
         }
       } );
-    },
+    }
 
     /**
      * Returns the selected Vertex or null if none is selected
      * @returns {Vertex|null}
      */
-    getSelectedVertex: function() {
+    getSelectedVertex() {
       const selectedVertex = _.find( this.vertices.getArray(), vertex => vertex.selectedProperty.get() );
       return selectedVertex || null;
-    },
+    }
 
     /**
      * A vertex has been dragged, is it a candidate for joining with other vertices?  If so, return the candidate
@@ -937,7 +933,7 @@ define( require => {
      * @returns {Vertex|null} - the vertex it will be able to connect to, if dropped or null if no connection is available
      * @public
      */
-    getDropTarget: function( vertex, mode, blackBoxBounds ) {
+    getDropTarget( vertex, mode, blackBoxBounds ) {
 
       if ( mode === InteractionMode.TEST ) {
         assert && assert( blackBoxBounds, 'bounds should be provided for build mode' );
@@ -1077,13 +1073,13 @@ define( require => {
         vertex.unsnappedPositionProperty.get().distance( candidateVertex.positionProperty.get() )
       );
       return sorted[ 0 ];
-    },
+    }
 
     /**
      * Flip the given CircuitElement
      * @param {CircuitElement} circuitElement - the circuit element to flip
      */
-    flip: function( circuitElement ) {
+    flip( circuitElement ) {
       const startVertex = circuitElement.startVertexProperty.value;
       const endVertex = circuitElement.endVertexProperty.value;
       circuitElement.startVertexProperty.value = endVertex;
@@ -1093,14 +1089,14 @@ define( require => {
       circuitElement.chargeLayoutDirty = true;
       this.layoutChargesInDirtyCircuitElements();
       this.solve();
-    },
+    }
 
     /**
      * Creates and positions charges in the specified circuit element.
      * @param {CircuitElement} circuitElement - the circuit element within which the charges will be updated
      * @public
      */
-    layoutCharges: function( circuitElement ) {
+    layoutCharges( circuitElement ) {
 
       // Avoid unnecessary work to improve performance
       if ( circuitElement.chargeLayoutDirty ) {
@@ -1152,13 +1148,13 @@ define( require => {
         // Any charges that did not get recycled should be removed
         this.charges.removeAll( charges );
       }
-    },
+    }
 
     /**
      * Reset the Circuit to its initial state.
      * @public
      */
-    reset: function() {
+    reset() {
       this.clear();
       this.showCurrentProperty.reset();
       this.currentTypeProperty.reset();
@@ -1166,13 +1162,13 @@ define( require => {
       this.batteryResistanceProperty.reset();
       this.chargeAnimator.reset();
       this.selectedCircuitElementProperty.reset();
-    },
+    }
 
     /**
      * Convert the Circuit to a state object which can be serialized or printed.
      * @public
      */
-    toStateObject: function() {
+    toStateObject() {
 
       // TODO: better way?
       const typeMap = {
@@ -1217,14 +1213,14 @@ define( require => {
           }, circuitElement.toIntrinsicStateObject() );
         } )
       };
-    },
+    }
 
     /**
      * Load the given stateObject into this Circuit.
      * @param {Object} stateObject
      * @param {Property.<string>} viewTypeProperty
      */
-    setFromStateObject: function( stateObject, viewTypeProperty ) {
+    setFromStateObject( stateObject, viewTypeProperty ) {
       this.clear();
       this.wireResistivityProperty.value = stateObject.wireResistivity;
       this.batteryResistanceProperty.value = stateObject.batteryResistance;
@@ -1271,5 +1267,7 @@ define( require => {
         }
       } );
     }
-  } );
+  }
+
+  return circuitConstructionKitCommon.register( 'Circuit', Circuit );
 } );

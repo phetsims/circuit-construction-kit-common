@@ -12,7 +12,6 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Util = require( 'DOT/Util' );
   const Vector2 = require( 'DOT/Vector2' );
@@ -49,54 +48,55 @@ define( require => {
     new Vector2( 0.89, 1.474 )                                            // bottom right
   ];
 
-  /**
-   * @param {Vertex} startVertex - the side Vertex
-   * @param {Vertex} endVertex - the bottom Vertex
-   * @param {number} resistance - in ohms
-   * @param {Property.<CircuitElementViewType>} viewTypeProperty
-   * @param {Tandem} tandem
-   * @param {Object} [options]
-   * @constructor
-   */
-  function LightBulb( startVertex, endVertex, resistance, viewTypeProperty, tandem, options ) {
-    options = _.extend( { highResistance: false }, options );
+  class LightBulb extends FixedCircuitElement {
 
-    // @public (read-only) {boolean} - true if the light bulb is a high resistance light bulb
-    this.highResistance = options.highResistance;
+    /**
+     * @param {Vertex} startVertex - the side Vertex
+     * @param {Vertex} endVertex - the bottom Vertex
+     * @param {number} resistance - in ohms
+     * @param {Property.<CircuitElementViewType>} viewTypeProperty
+     * @param {Tandem} tandem
+     * @param {Object} [options]
+     */
+    constructor( startVertex, endVertex, resistance, viewTypeProperty, tandem, options ) {
+      options = _.extend( { highResistance: false }, options );
 
-    // @public {Property.<number>} - the resistance of the light bulb which can be edited with the UI
-    this.resistanceProperty = new NumberProperty( resistance );
+      // getPathLength not available yet, so use a nonzero charge path length then override.
+      super( startVertex, endVertex, 1, tandem, options );
 
-    // @private (read-only) {Vector2} the vector between the vertices
-    this.vertexDelta = endVertex.positionProperty.get().minus( startVertex.positionProperty.get() );
+      // @public (read-only) {boolean} - true if the light bulb is a high resistance light bulb
+      this.highResistance = options.highResistance;
 
-    // @private
-    this.viewTypeProperty = viewTypeProperty;
+      // @public {Property.<number>} - the resistance of the light bulb which can be edited with the UI
+      this.resistanceProperty = new NumberProperty( resistance );
 
-    FixedCircuitElement.call( this, startVertex, endVertex, this.getPathLength(), tandem, options );
+      // @private (read-only) {Vector2} the vector between the vertices
+      this.vertexDelta = endVertex.positionProperty.get().minus( startVertex.positionProperty.get() );
 
-    // @public (read-only) {number} - the number of decimal places to show in readouts and controls
-    this.numberOfDecimalPlaces = this.highResistance ? 0 : 1;
-  }
+      // @private
+      this.viewTypeProperty = viewTypeProperty;
 
-  circuitConstructionKitCommon.register( 'LightBulb', LightBulb );
+      // @public (read-only) {number} - the number of decimal places to show in readouts and controls
+      this.numberOfDecimalPlaces = this.highResistance ? 0 : 1;
 
-  return inherit( FixedCircuitElement, LightBulb, {
+      // Fill in the chargePathLength, TODO: make sure this works after refactor
+      this.changePathLength = this.getPathLength();
+    }
 
     /**
      * Updates the charge path length when the view changes between lifelike/schematic
      * @public
      */
-    updatePathLength: function() {
+    updatePathLength() {
       this.chargePathLength = this.getPathLength();
-    },
+    }
 
     /**
      * Determine the path length by measuring the segments.
      * @returns {number}
      * @private
      */
-    getPathLength: function() {
+    getPathLength() {
       let pathLength = 0;
       const samplePoints = this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? LIFELIKE_SAMPLE_POINTS : SCHEMATIC_SAMPLE_POINTS;
       let currentPoint = this.getFilamentPathPoint( 0, Vector2.ZERO, samplePoints );
@@ -106,16 +106,16 @@ define( require => {
         currentPoint = nextPoint;
       }
       return pathLength;
-    },
+    }
 
     /**
      * Returns true because all light bulbs can have their resistance changed.
      * @returns {boolean}
      * @public
      */
-    isResistanceEditable: function() {
+    isResistanceEditable() {
       return true;
-    },
+    }
 
     /**
      * Maps from the "as the crow flies" path to the circuitous path. It maps points with a transformation such that:
@@ -127,7 +127,7 @@ define( require => {
      * @returns {Vector2}
      * @private
      */
-    getFilamentPathPoint: function( index, origin, samplePoints ) {
+    getFilamentPathPoint( index, origin, samplePoints ) {
       const point = samplePoints[ index ];
 
       const startPoint = samplePoints[ 0 ];
@@ -137,7 +137,7 @@ define( require => {
       const y = Util.linear( startPoint.y, endPoint.y, origin.y, origin.y + this.vertexDelta.y, point.y );
 
       return new Vector2( x, y );
-    },
+    }
 
     /**
      * Get the properties so that the circuit can be solved when changed.
@@ -145,9 +145,9 @@ define( require => {
      * @returns {Property.<*>[]}
      * @public
      */
-    getCircuitProperties: function() {
+    getCircuitProperties() {
       return [ this.resistanceProperty ];
-    },
+    }
 
     /**
      * Overrides CircuitElement.getPosition to describe the path the charge takes through the light bulb.
@@ -157,7 +157,7 @@ define( require => {
      * @override
      * @public
      */
-    updateMatrixForPoint: function( distanceAlongWire, matrix ) {
+    updateMatrixForPoint( distanceAlongWire, matrix ) {
 
       FixedCircuitElement.prototype.updateMatrixForPoint.call( this, distanceAlongWire, matrix );
 
@@ -192,53 +192,54 @@ define( require => {
       }
 
       throw new Error( 'exceeded charge path bounds' );
-    },
+    }
 
     /**
      * Get all intrinsic properties of this object, which can be used to load it at a later time.
      * @returns {Object}
      * @public
      */
-    toIntrinsicStateObject: function() {
+    toIntrinsicStateObject() {
       const parent = FixedCircuitElement.prototype.toIntrinsicStateObject.call( this );
       return _.extend( parent, {
         highResistance: this.highResistance,
         resistance: this.resistanceProperty.value
       } );
     }
-  }, {
+  }
 
-    /**
-     * Create a LightBulb at the specified position
-     * @param {Vector2} position
-     * @param {Tandem} circuitVertexGroupTandem
-     * @param {number} resistance
-     * @param {Property.<CircuitElementViewType>} viewTypeProperty
-     * @param {Tandem} tandem
-     * @param {Object} [options]
-     * @returns {LightBulb}
-     * @public
-     */
-    createAtPosition: function( position, circuitVertexGroupTandem, resistance, viewTypeProperty, tandem, options ) {
+  /**
+   * Create a LightBulb at the specified position
+   * @param {Vector2} position
+   * @param {Tandem} circuitVertexGroupTandem
+   * @param {number} resistance
+   * @param {Property.<CircuitElementViewType>} viewTypeProperty
+   * @param {Tandem} tandem
+   * @param {Object} [options]
+   * @returns {LightBulb}
+   * @public
+   */
+  LightBulb.createAtPosition = ( position, circuitVertexGroupTandem, resistance, viewTypeProperty, tandem, options ) => {
 
-      options = options || {};
-      const translation = new Vector2( 19, 10 );
+    options = options || {};
+    const translation = new Vector2( 19, 10 );
 
-      // Connect at the side and bottom
-      const startPoint = new Vector2( position.x - DISTANCE_BETWEEN_VERTICES / 2, position.y ).plus( translation );
+    // Connect at the side and bottom
+    const startPoint = new Vector2( position.x - DISTANCE_BETWEEN_VERTICES / 2, position.y ).plus( translation );
 
-      // Position the vertices so the light bulb is upright
-      const endPoint = startPoint.plus( Vector2.createPolar( DISTANCE_BETWEEN_VERTICES, -Math.PI / 4 ) );
+    // Position the vertices so the light bulb is upright
+    const endPoint = startPoint.plus( Vector2.createPolar( DISTANCE_BETWEEN_VERTICES, -Math.PI / 4 ) );
 
-      // start vertex is at the bottom
-      const startVertex = new Vertex( startPoint, {
-        tandem: circuitVertexGroupTandem.createNextTandem()
-      } );
-      const endVertex = new Vertex( endPoint, {
-        tandem: circuitVertexGroupTandem.createNextTandem()
-      } );
+    // start vertex is at the bottom
+    const startVertex = new Vertex( startPoint, {
+      tandem: circuitVertexGroupTandem.createNextTandem()
+    } );
+    const endVertex = new Vertex( endPoint, {
+      tandem: circuitVertexGroupTandem.createNextTandem()
+    } );
 
-      return new LightBulb( startVertex, endVertex, resistance, viewTypeProperty, tandem, options );
-    }
-  } );
+    return new LightBulb( startVertex, endVertex, resistance, viewTypeProperty, tandem, options );
+  };
+
+  return circuitConstructionKitCommon.register( 'LightBulb', LightBulb );
 } );

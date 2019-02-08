@@ -11,7 +11,6 @@ define( require => {
 
   // modules
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const Meter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Meter' );
   const NullableIO = require( 'TANDEM/types/NullableIO' );
   const NumberIO = require( 'TANDEM/types/NumberIO' );
@@ -20,48 +19,46 @@ define( require => {
   const Vector2 = require( 'DOT/Vector2' );
   const Vector2IO = require( 'DOT/Vector2IO' );
 
-  /**
-   * @param {Tandem} tandem
-   * @constructor
-   */
-  function Voltmeter( tandem ) {
+  class Voltmeter extends Meter {
 
-    Meter.call( this, tandem );
+    /**
+     * @param {Tandem} tandem
+     */
+    constructor( tandem ) {
+      super( tandem );
 
-    // @public {Property.<number|null>} the voltage the probe is reading (in volts) or null if unconnected
-    this.voltageProperty = new Property( null, {
-      tandem: tandem.createTandem( 'voltageProperty' ),
-      units: 'volts',
-      phetioType: PropertyIO( NullableIO( NumberIO ))
-    } );
+      // @public {Property.<number|null>} the voltage the probe is reading (in volts) or null if unconnected
+      this.voltageProperty = new Property( null, {
+        tandem: tandem.createTandem( 'voltageProperty' ),
+        units: 'volts',
+        phetioType: PropertyIO( NullableIO( NumberIO ) )
+      } );
 
-    // @public {Property.<Vector2>} - the position of the tip of the red probe in model=view coordinates.
-    this.redProbePositionProperty = new Property( Vector2.ZERO, {
-      tandem: tandem.createTandem( 'redProbePositionProperty' ),
-      phetioType: PropertyIO( Vector2IO )
-    } );
+      // @public {Property.<Vector2>} - the position of the tip of the red probe in model=view coordinates.
+      this.redProbePositionProperty = new Property( Vector2.ZERO, {
+        tandem: tandem.createTandem( 'redProbePositionProperty' ),
+        phetioType: PropertyIO( Vector2IO )
+      } );
 
-    // @public {Property.<Vector2>} - the position of the black probe in model=view coordinates
-    this.blackProbePositionProperty = new Property( Vector2.ZERO, {
-      tandem: tandem.createTandem( 'blackProbePositionProperty' ),
-      phetioType: PropertyIO( Vector2IO )
-    } );
-  }
-
-  circuitConstructionKitCommon.register( 'Voltmeter', Voltmeter );
-
-  return inherit( Meter, Voltmeter, {
+      // @public {Property.<Vector2>} - the position of the black probe in model=view coordinates
+      this.blackProbePositionProperty = new Property( Vector2.ZERO, {
+        tandem: tandem.createTandem( 'blackProbePositionProperty' ),
+        phetioType: PropertyIO( Vector2IO )
+      } );
+    }
 
     /**
      * Reset the voltmeter, called when reset all is pressed.
      * @public
      * @override
      */
-    reset: function() {
+    reset() {
       Meter.prototype.reset.call( this );
       this.voltageProperty.reset();
       this.redProbePositionProperty.reset();
       this.blackProbePositionProperty.reset();
     }
-  } );
+  }
+
+  return circuitConstructionKitCommon.register( 'Voltmeter', Voltmeter );
 } );

@@ -16,66 +16,62 @@ define( require => {
   // modules
   const arrayRemove = require( 'PHET_CORE/arrayRemove' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const inherit = require( 'PHET_CORE/inherit' );
   const Matrix = require( 'DOT/Matrix' );
   const ModifiedNodalAnalysisSolution = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisSolution' );
 
-  /**
-   * @param {ModifiedNodalAnalysisCircuitElement[]} batteries
-   * @param {ModifiedNodalAnalysisCircuitElement[]} resistors
-   * @param {ModifiedNodalAnalysisCircuitElement[]} currentSources
-   * @constructor
-   */
-  function ModifiedNodalAnalysisCircuit( batteries, resistors, currentSources ) {
-    assert && assert( batteries, 'batteries should be defined' );
-    assert && assert( resistors, 'resistors should be defined' );
-    assert && assert( currentSources, 'currentSources should be defined' );
+  class ModifiedNodalAnalysisCircuit {
 
-    // @public (read-only) {ModifiedNodalAnalysisCircuitElement[]}
-    this.batteries = batteries;
+    /**
+     * @param {ModifiedNodalAnalysisCircuitElement[]} batteries
+     * @param {ModifiedNodalAnalysisCircuitElement[]} resistors
+     * @param {ModifiedNodalAnalysisCircuitElement[]} currentSources
+     */
+    constructor( batteries, resistors, currentSources ) {
+      assert && assert( batteries, 'batteries should be defined' );
+      assert && assert( resistors, 'resistors should be defined' );
+      assert && assert( currentSources, 'currentSources should be defined' );
 
-    // @public (read-only) {ModifiedNodalAnalysisCircuitElement[]}
-    this.resistors = resistors;
+      // @public (read-only) {ModifiedNodalAnalysisCircuitElement[]}
+      this.batteries = batteries;
 
-    // @public (read-only) {ModifiedNodalAnalysisCircuitElement[]}
-    this.currentSources = currentSources;
+      // @public (read-only) {ModifiedNodalAnalysisCircuitElement[]}
+      this.resistors = resistors;
 
-    // @public (read-only) {ModifiedNodalAnalysisCircuitElement[]} - the list of all the elements for ease of access
-    this.elements = this.batteries.concat( this.resistors ).concat( this.currentSources );
+      // @public (read-only) {ModifiedNodalAnalysisCircuitElement[]}
+      this.currentSources = currentSources;
 
-    // @public (read-only) {Object} - an object with index for all keys that have a node in the circuit, such as:
-    // {0:0, 1:1, 2:2, 7:7}
-    this.nodeSet = {};
-    for ( let k = 0; k < this.elements.length; k++ ) {
-      const element = this.elements[ k ];
-      this.nodeSet[ element.nodeId0 ] = element.nodeId0;
-      this.nodeSet[ element.nodeId1 ] = element.nodeId1;
+      // @public (read-only) {ModifiedNodalAnalysisCircuitElement[]} - the list of all the elements for ease of access
+      this.elements = this.batteries.concat( this.resistors ).concat( this.currentSources );
+
+      // @public (read-only) {Object} - an object with index for all keys that have a node in the circuit, such as:
+      // {0:0, 1:1, 2:2, 7:7}
+      this.nodeSet = {};
+      for ( let k = 0; k < this.elements.length; k++ ) {
+        const element = this.elements[ k ];
+        this.nodeSet[ element.nodeId0 ] = element.nodeId0;
+        this.nodeSet[ element.nodeId1 ] = element.nodeId1;
+      }
+
+      // @public {number} - the number of nodes in the set
+      this.nodeCount = _.size( this.nodeSet );
+
+      // {number[]} the node indices
+      this.nodes = _.values( this.nodeSet );
     }
-
-    // @public {number} - the number of nodes in the set
-    this.nodeCount = _.size( this.nodeSet );
-
-    // {number[]} the node indices
-    this.nodes = _.values( this.nodeSet );
-  }
-
-  circuitConstructionKitCommon.register( 'ModifiedNodalAnalysisCircuit', ModifiedNodalAnalysisCircuit );
-
-  inherit( Object, ModifiedNodalAnalysisCircuit, {
 
     /**
      * Returns a string representation of the circuit for debugging.
      * @returns {string}
      * @private
      */
-    toString: function() {
+    toString() {
       if ( assert ) { // stripped out for builds
         return 'resistors:' + this.resistors.map( resistorToString ).join( ',' ) + ', ' +
                'batteries: ' + this.batteries.map( batteryToString ).join( ',' ) + ', ' +
                'currentSources: ' + this.currentSources.map( c => c.toString() )
                  .join( ',' );
       }
-    },
+    }
 
     /**
      * Counts the number of unknown currents in the circuit.  There is an unknown current in each battery and
@@ -83,7 +79,7 @@ define( require => {
      * @returns {number}
      * @private
      */
-    getCurrentCount: function() {
+    getCurrentCount() {
       let numberOfResistanceFreeResistors = 0;
       for ( let i = 0; i < this.resistors.length; i++ ) {
         if ( this.resistors[ i ].value === 0 ) {
@@ -91,16 +87,16 @@ define( require => {
         }
       }
       return this.batteries.length + numberOfResistanceFreeResistors;
-    },
+    }
 
     /**
      * Gets the number of variables for the system, one for each voltage and one for each current.
      * @returns {number}
      * @private
      */
-    getNumVars: function() {
+    getNumVars() {
       return this.nodeCount + this.getCurrentCount();
-    },
+    }
 
     /**
      * Sums all of the current leaving the node (subtracting current flowing into the node).
@@ -109,7 +105,7 @@ define( require => {
      * @returns {number}
      * @private
      */
-    getCurrentSourceTotal: function( nodeIndex ) {
+    getCurrentSourceTotal( nodeIndex ) {
       let currentSourceTotal = 0.0;
       for ( let i = 0; i < this.currentSources.length; i++ ) {
         const currentSource = this.currentSources[ i ];
@@ -125,7 +121,7 @@ define( require => {
         }
       }
       return currentSourceTotal;
-    },
+    }
 
     /**
      * Gets current conservation terms going into or out of a node. Incoming current is negative, outgoing is positive.
@@ -135,7 +131,7 @@ define( require => {
      * @returns {Term[]}
      * @private
      */
-    getCurrentTerms: function( node, side, sign ) {
+    getCurrentTerms( node, side, sign ) {
       assert && assert( typeof node === 'number', 'node should be a number' );
       const nodeTerms = [];
 
@@ -167,14 +163,14 @@ define( require => {
         }
       }
       return nodeTerms;
-    },
+    }
 
     /**
      * Selects one node for each connected component to have the reference voltage of 0 volts.
      * @returns {number[]} - the node IDs selected for references
      * @private
      */
-    getReferenceNodeIds: function() {
+    getReferenceNodeIds() {
 
       // The nodes which need to be visited.
       const toVisit = _.values( this.nodeSet );
@@ -193,7 +189,7 @@ define( require => {
         }
       }
       return referenceNodeIds;
-    },
+    }
 
     /**
      * Finds all nodes connected (by any path) to the given node
@@ -201,7 +197,7 @@ define( require => {
      * @returns {number[]}
      * @private
      */
-    getConnectedNodeIds: function( node ) {
+    getConnectedNodeIds( node ) {
       assert && assert( typeof node === 'number', 'node should be a number' );
       const visited = [];
       const toVisit = [ node ];
@@ -221,7 +217,7 @@ define( require => {
         }
       }
       return _.uniq( visited );
-    },
+    }
 
     /**
      * Returns an array of Equation instances that will be solved as a linear algebra problem to find the unknown
@@ -229,7 +225,7 @@ define( require => {
      * @returns {Equation[]}
      * @private
      */
-    getEquations: function() {
+    getEquations() {
       const equations = [];
 
       // Reference node in each connected circuit element has a voltage of 0.0
@@ -277,14 +273,14 @@ define( require => {
       }
 
       return equations;
-    },
+    }
 
     /**
      * Gets an array of the unknown currents in the circuit.
      * @returns {Array}
      * @private
      */
-    getUnknownCurrents: function() {
+    getUnknownCurrents() {
       const unknownCurrents = [];
 
       // Each battery has an unknown current
@@ -299,14 +295,14 @@ define( require => {
         }
       }
       return unknownCurrents;
-    },
+    }
 
     /**
      * Solves for all unknown currents and voltages in the circuit.
      * @returns {ModifiedNodalAnalysisSolution}
      * @public
      */
-    solve: function() {
+    solve() {
       const equations = this.getEquations();
       const unknownCurrents = this.getUnknownCurrents();
       const unknownVoltages = this.nodes.map( node => new UnknownVoltage( node ) );
@@ -361,7 +357,9 @@ define( require => {
 
       return new ModifiedNodalAnalysisSolution( voltageMap, unknownCurrents.map( unknownCurrent => unknownCurrent.element ) );
     }
-  } );
+  }
+
+  circuitConstructionKitCommon.register( 'ModifiedNodalAnalysisCircuit', ModifiedNodalAnalysisCircuit );
 
   /**
    * Find the index of an element in an array comparing with the equals() method.
@@ -396,57 +394,54 @@ define( require => {
   const batteryToString = battery =>
     'node' + battery.nodeId0 + ' -> node' + battery.nodeId1 + ' @ ' + battery.value + ' Volts';
 
-  /**
-   * @param {number} coefficient - the multiplier for this term
-   * @param {UnknownCurrent|UnknownVoltage} variable - the variable for this term, like the x variable in 7x
-   * @constructor
-   */
-  function Term( coefficient, variable ) {
+  class Term {
 
-    // @public (read-only) {number} the coefficient for the term, like '7' in 7x
-    this.coefficient = coefficient;
+    /**
+     * @param {number} coefficient - the multiplier for this term
+     * @param {UnknownCurrent|UnknownVoltage} variable - the variable for this term, like the x variable in 7x
+     */
+    constructor( coefficient, variable ) {
 
-    // @public (read-only) {UnknownCurrent|UnknownVoltage} the variable for the term, like the x variable in 7x
-    this.variable = variable;
-  }
+      // @public (read-only) {number} the coefficient for the term, like '7' in 7x
+      this.coefficient = coefficient;
 
-  inherit( Object, Term, {
+      // @public (read-only) {UnknownCurrent|UnknownVoltage} the variable for the term, like the x variable in 7x
+      this.variable = variable;
+    }
 
     /**
      * Returns a string representation for debugging.
      * @returns {string}
      * @public
      */
-    toTermString: function() {
+    toTermString() {
       const prefix = this.coefficient === 1 ? '' :
                      this.coefficient === -1 ? '-' :
                      this.coefficient + '*';
       return prefix + this.variable.toTermName();
     }
-  } );
-
-  /**
-   * @param {ModifiedNodalAnalysisCircuitElement} element
-   * @constructor
-   */
-  function UnknownCurrent( element ) {
-
-    assert && assert( element, 'element should be defined' );
-
-    // @public (read-only) {Object}
-    this.element = element;
   }
 
-  inherit( Object, UnknownCurrent, {
+  class UnknownCurrent {
+
+    /**
+     * @param {ModifiedNodalAnalysisCircuitElement} element
+     */
+    constructor( element ) {
+      assert && assert( element, 'element should be defined' );
+
+      // @public (read-only) {Object}
+      this.element = element;
+    }
 
     /**
      * Returns the name of the term for debugging.
      * @returns {string}
      * @public
      */
-    toTermName: function() {
+    toTermName() {
       return 'I' + this.element.nodeId0 + '_' + this.element.nodeId1;
-    },
+    }
 
     /**
      * Two UnknownCurrents are equal if the refer to the same element.
@@ -454,32 +449,30 @@ define( require => {
      * @returns {boolean}
      * @public
      */
-    equals: function( other ) {
+    equals( other ) {
       return other.element === this.element;
     }
-  } );
-
-  /**
-   * @param {number} node - the index of the node
-   * @constructor
-   */
-  function UnknownVoltage( node ) {
-    assert && assert( typeof node === 'number', 'nodes should be numbers' );
-
-    // @public (read-only) {number}
-    this.node = node;
   }
 
-  inherit( Object, UnknownVoltage, {
+  class UnknownVoltage {
+    /**
+     * @param {number} node - the index of the node
+     */
+    constructor( node ) {
+      assert && assert( typeof node === 'number', 'nodes should be numbers' );
+
+      // @public (read-only) {number}
+      this.node = node;
+    }
 
     /**
      * Returns a string variable name for this term, for debugging.
      * @returns {string}
      * @public
      */
-    toTermName: function() {
+    toTermName() {
       return 'V' + this.node;
-    },
+    }
 
     /**
      * Two UnknownVoltages are equal if they refer to the same node.
@@ -487,27 +480,29 @@ define( require => {
      * @returns {boolean}
      * @public
      */
-    equals: function( other ) {
+    equals( other ) {
       return other.node === this.node;
     }
-  } );
-
-  /**
-   * @param {number} value - the value on the right hand side of the equation, such as x+y=7
-   * @param {Term[]} terms
-   * @constructor
-   */
-  function Equation( value, terms ) {
-
-    // @public (read-only) {number} the value of the equation.  For instance in x+3y=12, the value is 12
-    this.value = value;
-
-    // @public (read-only) {Term[]} the terms on the left-hand side of the equation.  E.g., in 3x+y=12 the terms are 3x
-    // and y
-    this.terms = terms;
   }
 
-  inherit( Object, Equation, {
+  // TODO: do I need to register these in namespaces?
+
+  class Equation {
+
+    /**
+     * @param {number} value - the value on the right hand side of the equation, such as x+y=7
+     * @param {Term[]} terms
+     * @constructor
+     */
+    constructor( value, terms ) {
+
+      // @public (read-only) {number} the value of the equation.  For instance in x+3y=12, the value is 12
+      this.value = value;
+
+      // @public (read-only) {Term[]} the terms on the left-hand side of the equation.  E.g., in 3x+y=12 the terms are 3x
+      // and y
+      this.terms = terms;
+    }
 
     /**
      * Enter this Equation into the given Matrices for solving the system.
@@ -517,7 +512,7 @@ define( require => {
      * @param {function} getIndex - (UnknownCurrent|UnknownVoltage) => number
      * @public
      */
-    stamp: function( row, a, z, getIndex ) {
+    stamp( row, a, z, getIndex ) {
 
       // Set the equation's value into the solution matrix
       z.set( row, 0, this.value );
@@ -528,14 +523,14 @@ define( require => {
         const index = getIndex( term.variable );
         a.set( row, index, term.coefficient + a.get( row, index ) );
       }
-    },
+    }
 
     /**
      * Returns a string representation for debugging.
      * @returns {string}
      * @public
      */
-    toString: function() {
+    toString() {
       const termList = [];
       for ( let i = 0; i < this.terms.length; i++ ) {
         termList.push( this.terms[ i ].toTermString() );
@@ -545,7 +540,7 @@ define( require => {
       // replace +- with -. For instance, x+-3 should just be x-3
       return result.replace( '\\+\\-', '\\-' );
     }
-  } );
+  }
 
   return ModifiedNodalAnalysisCircuit;
 } );
