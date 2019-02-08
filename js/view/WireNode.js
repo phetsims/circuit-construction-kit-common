@@ -9,33 +9,33 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var Circle = require( 'SCENERY/nodes/Circle' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
-  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
-  var Color = require( 'SCENERY/util/Color' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Line = require( 'SCENERY/nodes/Line' );
-  var LinearGradient = require( 'SCENERY/util/LinearGradient' );
-  var LineStyles = require( 'KITE/util/LineStyles' );
-  var Matrix3 = require( 'DOT/Matrix3' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var Shape = require( 'KITE/Shape' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-  var Vector2 = require( 'DOT/Vector2' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const Circle = require( 'SCENERY/nodes/Circle' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
+  const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
+  const Color = require( 'SCENERY/util/Color' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Line = require( 'SCENERY/nodes/Line' );
+  const LinearGradient = require( 'SCENERY/util/LinearGradient' );
+  const LineStyles = require( 'KITE/util/LineStyles' );
+  const Matrix3 = require( 'DOT/Matrix3' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Path = require( 'SCENERY/nodes/Path' );
+  const Shape = require( 'KITE/Shape' );
+  const SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   // constants
-  var LIFELIKE_LINE_WIDTH = 16; // line width in screen coordinates
-  var SCHEMATIC_LINE_WIDTH = CCKCConstants.SCHEMATIC_LINE_WIDTH; // line width in screen coordinates
+  const LIFELIKE_LINE_WIDTH = 16; // line width in screen coordinates
+  const SCHEMATIC_LINE_WIDTH = CCKCConstants.SCHEMATIC_LINE_WIDTH; // line width in screen coordinates
 
   // constants
-  var MATRIX = new Matrix3(); // The Matrix entries are mutable
-  var WIRE_RASTER_LENGTH = 100;
+  const MATRIX = new Matrix3(); // The Matrix entries are mutable
+  const WIRE_RASTER_LENGTH = 100;
 
   // Node used to render the black line for schematic, cached as toDataURLImageSynchronous so it can render with WebGL
-  var BLACK_LINE_NODE = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
+  const BLACK_LINE_NODE = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
     lineWidth: SCHEMATIC_LINE_WIDTH,
     stroke: Color.BLACK
   } ).toDataURLImageSynchronous( 0, LIFELIKE_LINE_WIDTH / 2, WIRE_RASTER_LENGTH, LIFELIKE_LINE_WIDTH );
@@ -47,53 +47,53 @@ define( function( require ) {
    * @param {function} colorStopPointMap - (Vector2) => number, the operation to apply to create color stops
    * @returns {LinearGradient}
    */
-  var createGradient = function( colorStops, colorStopPointMap ) {
-    var gradient = new LinearGradient( 0, -LIFELIKE_LINE_WIDTH / 2, 0, LIFELIKE_LINE_WIDTH / 2 );
+  const createGradient = function( colorStops, colorStopPointMap ) {
+    const gradient = new LinearGradient( 0, -LIFELIKE_LINE_WIDTH / 2, 0, LIFELIKE_LINE_WIDTH / 2 );
     colorStops.forEach( function( colorStop ) {
       gradient.addColorStop( colorStopPointMap( colorStop.point ), colorStop.color );
     } );
     return gradient;
   };
 
-  var colorStops = [
+  const colorStops = [
     { point: 0.0, color: new Color( '#993f35' ) },
     { point: 0.2, color: new Color( '#cd7767' ) },
     { point: 0.3, color: new Color( '#f6bda0' ) },
     { point: 1.0, color: new Color( '#3c0c08' ) }
   ];
 
-  var normalGradient = createGradient( colorStops, function( e ) { return e; } );
-  var reverseGradient = createGradient( colorStops.reverse(), function( e ) { return 1.0 - e; } );
+  const normalGradient = createGradient( colorStops, function( e ) { return e; } );
+  const reverseGradient = createGradient( colorStops.reverse(), function( e ) { return 1.0 - e; } );
 
-  var PADDING = 2;
+  const PADDING = 2;
 
-  var lifelikeNodeNormal = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
+  const lifelikeNodeNormal = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
     lineWidth: LIFELIKE_LINE_WIDTH,
     stroke: normalGradient
   } ).toDataURLImageSynchronous( 0, LIFELIKE_LINE_WIDTH / 2 + PADDING, WIRE_RASTER_LENGTH, LIFELIKE_LINE_WIDTH + 2 * PADDING );
 
-  var lifelikeNodeReversed = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
+  const lifelikeNodeReversed = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
     lineWidth: LIFELIKE_LINE_WIDTH,
     stroke: reverseGradient
   } ).toDataURLImageSynchronous( 0, LIFELIKE_LINE_WIDTH / 2 + PADDING, WIRE_RASTER_LENGTH, LIFELIKE_LINE_WIDTH + 2 * PADDING );
 
   // Make sure the heights are the same as the wires so they will line up properly, see
   // https://github.com/phetsims/circuit-construction-kit-common/issues/390
-  var lifelikeRoundedCapNormal = new Circle( LIFELIKE_LINE_WIDTH / 2, {
+  const lifelikeRoundedCapNormal = new Circle( LIFELIKE_LINE_WIDTH / 2, {
     fill: normalGradient
   } ).toDataURLImageSynchronous( LIFELIKE_LINE_WIDTH / 2 + PADDING, LIFELIKE_LINE_WIDTH / 2 + PADDING, LIFELIKE_LINE_WIDTH + 2 * PADDING, LIFELIKE_LINE_WIDTH + 2 * PADDING );
 
-  var lifelikeRoundedCapReversed = new Circle( LIFELIKE_LINE_WIDTH / 2, {
+  const lifelikeRoundedCapReversed = new Circle( LIFELIKE_LINE_WIDTH / 2, {
     fill: reverseGradient
   } ).toDataURLImageSynchronous( LIFELIKE_LINE_WIDTH / 2 + PADDING, LIFELIKE_LINE_WIDTH / 2 + PADDING, LIFELIKE_LINE_WIDTH + 2 * PADDING, LIFELIKE_LINE_WIDTH + 2 * PADDING );
 
-  var HIGHLIGHT_STROKE_LINE_STYLES = new LineStyles( {
+  const HIGHLIGHT_STROKE_LINE_STYLES = new LineStyles( {
     lineWidth: 26,
     lineCap: 'round',
     lineJoin: 'round'
   } );
 
-  var TOUCH_AREA_LINE_STYLES = new LineStyles( {
+  const TOUCH_AREA_LINE_STYLES = new LineStyles( {
     lineWidth: 23
   } );
 
@@ -102,9 +102,9 @@ define( function( require ) {
    * @param {Wire} wire
    * @returns {Shape}
    */
-  var getHighlightStrokedShape = function( wire ) {
-    var startPoint = wire.startPositionProperty.get();
-    var endPoint = wire.endPositionProperty.get();
+  const getHighlightStrokedShape = function( wire ) {
+    const startPoint = wire.startPositionProperty.get();
+    const endPoint = wire.endPositionProperty.get();
     return Shape.lineSegment( startPoint.x, startPoint.y, endPoint.x, endPoint.y )
       .getStrokedShape( HIGHLIGHT_STROKE_LINE_STYLES );
   };
@@ -114,13 +114,13 @@ define( function( require ) {
    * @param {Wire} wire
    * @returns {Shape}
    */
-  var getTouchArea = function( wire ) {
-    var startPoint = wire.startPositionProperty.get();
-    var endPoint = wire.endPositionProperty.get();
-    var distance = endPoint.distance( startPoint );
-    var vertexInset = 0; // run to the edge of the wire as we do for FixedCircuitElements
-    var touchAreaStart = null;
-    var touchAreaEnd = null;
+  const getTouchArea = function( wire ) {
+    const startPoint = wire.startPositionProperty.get();
+    const endPoint = wire.endPositionProperty.get();
+    const distance = endPoint.distance( startPoint );
+    const vertexInset = 0; // run to the edge of the wire as we do for FixedCircuitElements
+    let touchAreaStart = null;
+    let touchAreaEnd = null;
 
     // Extend the touch area from vertex to vertex
     if ( distance > vertexInset * 2 ) {
@@ -146,7 +146,7 @@ define( function( require ) {
    * @constructor
    */
   function WireNode( screenView, circuitLayerNode, wire, viewTypeProperty, tandem ) {
-    var self = this;
+    const self = this;
 
     // @private {Property.<CircuitElementViewType>}
     this.viewTypeProperty = viewTypeProperty;
@@ -174,7 +174,7 @@ define( function( require ) {
       children: [ self.lineNode ],
       cursor: 'pointer'
     } );
-    var highlightNodeParent = new Node( {
+    const highlightNodeParent = new Node( {
       children: [ this.highlightNode ]
     } );
 
@@ -190,7 +190,7 @@ define( function( require ) {
 
     circuitLayerNode && circuitLayerNode.highlightLayer.addChild( highlightNodeParent );
 
-    var circuit = circuitLayerNode && circuitLayerNode.circuit;
+    const circuit = circuitLayerNode && circuitLayerNode.circuit;
     CircuitElementNode.call( this, wire, circuit, {
       children: [
         this.startCapParent,
@@ -202,7 +202,7 @@ define( function( require ) {
     /**
      * When the view type changes (lifelike vs schematic), update the node
      */
-    var markAsDirty = function() {
+    const markAsDirty = function() {
       if ( self.disposed ) {
         return;
       }
@@ -220,14 +220,14 @@ define( function( require ) {
      * Update whether the WireNode is pickable
      * @param {boolean} interactive
      */
-    var updatePickable = function( interactive ) {
+    const updatePickable = function( interactive ) {
       self.pickable = interactive;
     };
     wire.interactiveProperty.link( updatePickable );
 
     // When the start vertex changes to a different instance (say when vertices are soldered together), unlink the
     // old one and link to the new one.
-    var doUpdateTransform = function( newVertex, oldVertex ) {
+    const doUpdateTransform = function( newVertex, oldVertex ) {
       oldVertex && oldVertex.positionProperty.unlink( markAsDirty );
       newVertex.positionProperty.link( markAsDirty );
     };
@@ -235,10 +235,10 @@ define( function( require ) {
     wire.endVertexProperty.link( doUpdateTransform );
 
     // Keep track of the start point to see if it was dragged or tapped to be selected
-    var startPoint = null;
+    let startPoint = null;
 
     // Keep track of whether it was dragged
-    var dragged = false;
+    let dragged = false;
 
     if ( screenView ) {
 
@@ -289,7 +289,7 @@ define( function( require ) {
      * Move the wire element to the back of the view when connected to another circuit element
      * @private
      */
-    var moveToBack = function() {
+    const moveToBack = function() {
 
       // Components outside the black box do not move in back of the overlay
       if ( wire.interactiveProperty.get() ) {
@@ -342,19 +342,19 @@ define( function( require ) {
      * @protected - CCKCLightBulbNode calls updateRender for its child socket node
      */
     updateRender: function() {
-      var view = this.viewTypeProperty.value;
+      const view = this.viewTypeProperty.value;
       if ( view === CircuitElementViewType.LIFELIKE ) {
 
         // determine whether to use the forward or reverse gradient based on the angle
-        var startPoint = this.wire.startPositionProperty.get();
-        var endPoint = this.wire.endPositionProperty.get();
-        var lightingDirection = new Vector2( 0.916, 0.4 ); // sampled manually
-        var wireVector = endPoint.minus( startPoint );
-        var dot = lightingDirection.dot( wireVector );
+        const startPoint = this.wire.startPositionProperty.get();
+        const endPoint = this.wire.endPositionProperty.get();
+        const lightingDirection = new Vector2( 0.916, 0.4 ); // sampled manually
+        const wireVector = endPoint.minus( startPoint );
+        const dot = lightingDirection.dot( wireVector );
 
         // only change children if necessary
-        var lineNodeChild = dot < 0 ? lifelikeNodeReversed : lifelikeNodeNormal;
-        var capChild = dot < 0 ? lifelikeRoundedCapReversed : lifelikeRoundedCapNormal;
+        const lineNodeChild = dot < 0 ? lifelikeNodeReversed : lifelikeNodeNormal;
+        const capChild = dot < 0 ? lifelikeRoundedCapReversed : lifelikeRoundedCapNormal;
         this.lineNode.getChildAt( 0 ) !== lineNodeChild && this.lineNode.setChildren( [ lineNodeChild ] );
         this.endCapParent.getChildAt( 0 ) !== capChild && this.endCapParent.setChildren( [ capChild ] );
         this.startCapParent.getChildAt( 0 ) !== capChild && this.startCapParent.setChildren( [ capChild ] );
@@ -367,11 +367,13 @@ define( function( require ) {
         this.endCapParent.visible = false;
       }
 
-      var startPosition = this.circuitElement.startPositionProperty.get();
-      var endPosition = this.circuitElement.endPositionProperty.get();
-      var delta = endPosition.minus( startPosition );
-      var magnitude = delta.magnitude();
-      var angle = delta.angle();
+      const startPosition = this.circuitElement.startPositionProperty.get();
+      const endPosition = this.circuitElement.endPositionProperty.get();
+      const delta = endPosition.minus( startPosition );
+
+      // Prevent the case where a vertex lies on another vertex, particularly for fuzz testing
+      const magnitude = Math.max( delta.magnitude(), 1E-8 );
+      const angle = delta.angle();
 
       // Update the node transform
       this.endCapParent.setMatrix( MATRIX.setToTranslationRotationPoint( endPosition, angle ) );
@@ -379,15 +381,12 @@ define( function( require ) {
       // This transform is done second so the matrix is already in good shape for the scaling step
       this.startCapParent.setMatrix( MATRIX.setToTranslationRotationPoint( startPosition, angle ) );
 
-      // Prevent the case where a vertex lies on another vertex, particularly for fuzz testing
-      if ( magnitude < 1E-8 ) { magnitude = 1E-8; }
-
       MATRIX.multiplyMatrix( Matrix3.scaling( magnitude / WIRE_RASTER_LENGTH, 1 ) );
       this.lineNodeParent.setMatrix( MATRIX );
 
       if ( this.circuitLayerNode ) {
-        var selectedCircuitElement = this.circuitLayerNode.circuit.selectedCircuitElementProperty.get();
-        var isCurrentlyHighlighted = selectedCircuitElement === this.wire;
+        const selectedCircuitElement = this.circuitLayerNode.circuit.selectedCircuitElementProperty.get();
+        const isCurrentlyHighlighted = selectedCircuitElement === this.wire;
         this.highlightNode.visible = isCurrentlyHighlighted;
         if ( isCurrentlyHighlighted ) {
           this.highlightNode.shape = getHighlightStrokedShape( this.wire );

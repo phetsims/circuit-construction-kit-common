@@ -9,16 +9,16 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CustomLightBulbNode' );
-  var FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Matrix3 = require( 'DOT/Matrix3' );
-  var NumberProperty = require( 'AXON/NumberProperty' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CustomLightBulbNode' );
+  const FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Matrix3 = require( 'DOT/Matrix3' );
+  const NumberProperty = require( 'AXON/NumberProperty' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   // constants
-  var SCRATCH_MATRIX = new Matrix3();
+  const SCRATCH_MATRIX = new Matrix3();
 
   /**
    * @param {CCKCScreenView|null} screenView - main screen view, null for icon
@@ -32,7 +32,7 @@ define( function( require ) {
   function LightBulbSocketNode( screenView, circuitLayerNode, lightBulb, viewTypeProperty, tandem, options ) {
 
     // Render the bulb socket only
-    var lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ), {
+    const lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ), {
       baseOnly: true,
       highResistance: lightBulb.highResistance
     } );
@@ -59,9 +59,9 @@ define( function( require ) {
      * @protected - CCKCLightBulbNode calls updateRender for its child socket node
      */
     updateRender: function() {
-      var startPosition = this.circuitElement.startPositionProperty.get();
-      var endPosition = this.circuitElement.endPositionProperty.get();
-      var angle = endPosition.minus( startPosition ).angle() + Math.PI / 4;
+      const startPosition = this.circuitElement.startPositionProperty.get();
+      const endPosition = this.circuitElement.endPositionProperty.get();
+      const angle = endPosition.minus( startPosition ).angle() + Math.PI / 4;
 
       // Update the node transform in a single step, see #66
       this.contentNode.setMatrix( SCRATCH_MATRIX.setToTranslationRotationPoint( startPosition, angle ) );

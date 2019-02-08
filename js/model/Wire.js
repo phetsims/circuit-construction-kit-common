@@ -9,15 +9,15 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElement' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var NumberProperty = require( 'AXON/NumberProperty' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElement' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
   // Conversion factor between model=view coordinates and meters, in order to use resistivity to compute resistance.
-  var METERS_PER_VIEW_COORDINATE = 0.015273409966500692;
+  const METERS_PER_VIEW_COORDINATE = 0.015273409966500692;
 
   /**
    * Wire main constructor
@@ -31,7 +31,7 @@ define( function( require ) {
   function Wire( startVertex, endVertex, resistivityProperty, tandem, options ) {
     assert && assert( typeof resistivityProperty !== 'number', 'property should not be a number' );
     options = _.extend( { wireStub: false, isMetallic: true }, options );
-    var chargePathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
+    const chargePathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
     CircuitElement.call( this, startVertex, endVertex, chargePathLength, tandem, options );
 
     // @public (read-only) {boolean} - if the wire is a small stub attached to the black box
@@ -70,13 +70,13 @@ define( function( require ) {
      */
     update: function() {
       if ( this.wireDirty ) {
-        var startPosition = this.startPositionProperty.get();
-        var endPosition = this.endPositionProperty.get();
-        var viewLength = startPosition.distance( endPosition );
-        var modelLength = viewLength * METERS_PER_VIEW_COORDINATE;
+        const startPosition = this.startPositionProperty.get();
+        const endPosition = this.endPositionProperty.get();
+        const viewLength = startPosition.distance( endPosition );
+        const modelLength = viewLength * METERS_PER_VIEW_COORDINATE;
         this.lengthProperty.set( modelLength );
-        var resistance = modelLength * this.resistivityProperty.get();
-        var clampedResistance = Math.max( CCKCConstants.MINIMUM_RESISTANCE, resistance );
+        const resistance = modelLength * this.resistivityProperty.get();
+        const clampedResistance = Math.max( CCKCConstants.MINIMUM_RESISTANCE, resistance );
         assert && assert( !isNaN( clampedResistance ), 'wire resistance should not be NaN' );
         this.resistanceProperty.set( clampedResistance );
 

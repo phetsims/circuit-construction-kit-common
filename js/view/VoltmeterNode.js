@@ -10,52 +10,52 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
-  var CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var Color = require( 'SCENERY/util/Color' );
-  var DerivedProperty = require( 'AXON/DerivedProperty' );
-  var Image = require( 'SCENERY/nodes/Image' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var ProbeTextNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ProbeTextNode' );
-  var ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ProbeWireNode' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var SolderNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SolderNode' );
-  var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
-  var Util = require( 'DOT/Util' );
-  var Vector2 = require( 'DOT/Vector2' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
+  const CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const Color = require( 'SCENERY/util/Color' );
+  const DerivedProperty = require( 'AXON/DerivedProperty' );
+  const Image = require( 'SCENERY/nodes/Image' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const ProbeTextNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ProbeTextNode' );
+  const ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ProbeWireNode' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const SolderNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SolderNode' );
+  const Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
+  const Util = require( 'DOT/Util' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   // images
-  var blackProbe = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/probe-black.png' );
-  var redProbe = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/probe-red.png' );
-  var voltmeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltmeter-body.png' );
+  const blackProbe = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/probe-black.png' );
+  const redProbe = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/probe-red.png' );
+  const voltmeterBodyImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltmeter-body.png' );
 
   // strings
-  var questionMarkString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/questionMark' );
-  var voltageString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltage' );
+  const questionMarkString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/questionMark' );
+  const voltageString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltage' );
 
   // constants
-  var VOLTMETER_PROBE_TIP_LENGTH = 20; // The probe tip is about 20 view coordinates tall
-  var VOLTMETER_NUMBER_SAMPLE_POINTS = 10; // Number of points along the edge of the voltmeter tip to detect voltages
+  const VOLTMETER_PROBE_TIP_LENGTH = 20; // The probe tip is about 20 view coordinates tall
+  const VOLTMETER_NUMBER_SAMPLE_POINTS = 10; // Number of points along the edge of the voltmeter tip to detect voltages
 
   // measurements for the cubic curve for the wire nodes
-  var BODY_WIRE_LEAD_X = 45;
-  var BODY_LEAD_Y = 15;
-  var PROBE_LEAD_X = 0;
-  var PROBE_LEAD_Y = 60;
-  var PROBE_CONTROL_POINT_X = 20;
+  const BODY_WIRE_LEAD_X = 45;
+  const BODY_LEAD_Y = 15;
+  const PROBE_LEAD_X = 0;
+  const PROBE_LEAD_Y = 60;
+  const PROBE_CONTROL_POINT_X = 20;
 
   // unsigned measurements for the circles on the voltmeter body image, for where the probe wires connect
-  var PROBE_CONNECTION_POINT_DY = -18;
-  var PROBE_CONNECTION_POINT_DX = 8;
+  const PROBE_CONNECTION_POINT_DY = -18;
+  const PROBE_CONNECTION_POINT_DX = 8;
 
-  var SCALE = 0.5; // overall scale factor for the nodes
-  var PROBE_SCALE = 0.67 * SCALE; // multiplied by the SCALE above
-  var PROBE_ANGLE = 22 * Math.PI * 2 / 360;
+  const SCALE = 0.5; // overall scale factor for the nodes
+  const PROBE_SCALE = 0.67 * SCALE; // multiplied by the SCALE above
+  const PROBE_ANGLE = 22 * Math.PI * 2 / 360;
 
   /**
    * @param {Voltmeter} voltmeter - the model Voltmeter to be shown by this node
@@ -66,7 +66,7 @@ define( function( require ) {
    * @constructor
    */
   function VoltmeterNode( voltmeter, model, circuitLayerNode, tandem, options ) {
-    var self = this;
+    const self = this;
     this.circuitLayerNode = circuitLayerNode;
     options = _.extend( {
 
@@ -114,26 +114,26 @@ define( function( require ) {
     } );
 
     // Displays the voltage reading
-    var voltageReadoutProperty = new DerivedProperty( [ voltmeter.voltageProperty ], function( voltage ) {
+    const voltageReadoutProperty = new DerivedProperty( [ voltmeter.voltageProperty ], function( voltage ) {
       return voltage === null ? questionMarkString : CCKCUtil.createVoltageReadout( voltage );
     } );
 
-    var probeTextNode = new ProbeTextNode(
+    const probeTextNode = new ProbeTextNode(
       voltageReadoutProperty, options.showResultsProperty, voltageString, tandem.createTandem( 'probeTextNode' ), {
         centerX: voltmeterBodyImage[ 0 ].width / 2,
         centerY: voltmeterBodyImage[ 0 ].height / 2
       } );
 
-    var bodyNode = new Image( voltmeterBodyImage, {
+    const bodyNode = new Image( voltmeterBodyImage, {
       scale: SCALE,
       cursor: 'pointer',
       children: [ probeTextNode ]
     } );
 
-    var redWireNode = new ProbeWireNode(
+    const redWireNode = new ProbeWireNode(
       Color.RED, new Vector2( -BODY_WIRE_LEAD_X, BODY_LEAD_Y ), new Vector2( PROBE_LEAD_X - PROBE_CONTROL_POINT_X, PROBE_LEAD_Y )
     );
-    var blackWireNode = new ProbeWireNode(
+    const blackWireNode = new ProbeWireNode(
       Color.BLACK, new Vector2( BODY_WIRE_LEAD_X, BODY_LEAD_Y ), new Vector2( PROBE_LEAD_X + PROBE_CONTROL_POINT_X, PROBE_LEAD_Y )
     );
 
@@ -152,8 +152,8 @@ define( function( require ) {
 
       // When dragging out of the toolbox, the probes move with the body
       if ( voltmeter.draggingProbesWithBodyProperty.get() ) {
-        var probeY = -30 - bodyNode.height / 2;
-        var probeOffsetX = 78;
+        const probeY = -30 - bodyNode.height / 2;
+        const probeOffsetX = 78;
         voltmeter.redProbePositionProperty.set( bodyPosition.plusXY( -probeOffsetX, probeY ) );
         voltmeter.blackProbePositionProperty.set( bodyPosition.plusXY( +probeOffsetX, probeY ) );
       }
@@ -166,7 +166,7 @@ define( function( require ) {
      * @param {number} sign
      * @returns {function}
      */
-    var probeMovedCallback = function( probeNode, wireNode, sign ) {
+    const probeMovedCallback = function( probeNode, wireNode, sign ) {
       return function( probePosition ) {
         probeNode.translation = probePosition;
 
@@ -204,8 +204,8 @@ define( function( require ) {
        * @param {Tandem} tandem
        * @returns {MovableDragHandler}
        */
-      var getProbeDragHandler = function( positionProperty, tandem ) {
-        var probeDragHandler = new MovableDragHandler( positionProperty, {
+      const getProbeDragHandler = function( positionProperty, tandem ) {
+        const probeDragHandler = new MovableDragHandler( positionProperty, {
           tandem: tandem.createTandem( 'redProbeDragHandler' )
         } );
         options.visibleBoundsProperty.link( function( visibleBounds ) {
@@ -214,8 +214,8 @@ define( function( require ) {
         return probeDragHandler;
       };
 
-      var redProbeDragHandler = getProbeDragHandler( voltmeter.redProbePositionProperty, tandem.createTandem( 'redProbeDragHandler' ) );
-      var blackProbeDragHandler = getProbeDragHandler( voltmeter.blackProbePositionProperty, tandem.createTandem( 'blackProbeDragHandler' ) );
+      const redProbeDragHandler = getProbeDragHandler( voltmeter.redProbePositionProperty, tandem.createTandem( 'redProbeDragHandler' ) );
+      const blackProbeDragHandler = getProbeDragHandler( voltmeter.blackProbePositionProperty, tandem.createTandem( 'blackProbeDragHandler' ) );
 
       this.redProbeNode.addInputListener( redProbeDragHandler );
       this.blackProbeNode.addInputListener( blackProbeDragHandler );
@@ -252,12 +252,12 @@ define( function( require ) {
        * @param {number} sign - the direction the probe is rotated
        * @returns {VoltageConnection|null} if connected returns VoltageConnection otherwise null
        */
-      var findVoltageConnection = function( probeNode, probeTip, sign ) {
-        var probeTipVector = Vector2.createPolar( VOLTMETER_PROBE_TIP_LENGTH, sign * VoltmeterNode.PROBE_ANGLE + Math.PI / 2 );
-        var probeTipTail = probeTip.plus( probeTipVector );
-        for ( var i = 0; i < VOLTMETER_NUMBER_SAMPLE_POINTS; i++ ) {
-          var samplePoint = probeTip.blend( probeTipTail, i / VOLTMETER_NUMBER_SAMPLE_POINTS );
-          var voltageConnection = self.getVoltageConnection( probeNode, samplePoint );
+      const findVoltageConnection = function( probeNode, probeTip, sign ) {
+        const probeTipVector = Vector2.createPolar( VOLTMETER_PROBE_TIP_LENGTH, sign * VoltmeterNode.PROBE_ANGLE + Math.PI / 2 );
+        const probeTipTail = probeTip.plus( probeTipVector );
+        for ( let i = 0; i < VOLTMETER_NUMBER_SAMPLE_POINTS; i++ ) {
+          const samplePoint = probeTip.blend( probeTipTail, i / VOLTMETER_NUMBER_SAMPLE_POINTS );
+          const voltageConnection = self.getVoltageConnection( probeNode, samplePoint );
 
           // For debugging, depict the points where the sampling happens
           if ( CCKCQueryParameters.showVoltmeterSamplePoints ) {
@@ -278,12 +278,12 @@ define( function( require ) {
       /**
        * Detection for voltmeter probe + circuit intersection is done in the view since view bounds are used
        */
-      var updateVoltmeter = function() {
+      const updateVoltmeter = function() {
         if ( voltmeter.visibleProperty.get() ) {
-          var redConnection = findVoltageConnection(
+          const redConnection = findVoltageConnection(
             self.redProbeNode, self.voltmeter.redProbePositionProperty.get(), +1
           );
-          var blackConnection = findVoltageConnection(
+          const blackConnection = findVoltageConnection(
             self.blackProbeNode, self.voltmeter.blackProbePositionProperty.get(), -1
           );
 
@@ -335,17 +335,17 @@ define( function( require ) {
      * @public
      */
     hitCircuitElementNode: function( position, filter ) {
-      var self = this;
+      const self = this;
 
-      var circuitElementNodes = this.circuitLayerNode.circuit.circuitElements.getArray()
+      const circuitElementNodes = this.circuitLayerNode.circuit.circuitElements.getArray()
         .filter( filter )
         .map( function( circuitElement ) {
           return self.circuitLayerNode.getCircuitElementNode( circuitElement );
         } );
 
       // Search from the front to the back, because frontmost objects look like they are hitting the sensor, see #143
-      for ( var i = circuitElementNodes.length - 1; i >= 0; i-- ) {
-        var circuitElementNode = circuitElementNodes[ i ];
+      for ( let i = circuitElementNodes.length - 1; i >= 0; i-- ) {
+        const circuitElementNode = circuitElementNodes[ i ];
 
         // If this code got called before the WireNode has been created, skip it (the Voltmeter hit tests nodes)
         if ( !circuitElementNode ) {
@@ -353,8 +353,8 @@ define( function( require ) {
         }
 
         // Don't connect to wires in the black box
-        var revealing = true;
-        var trueBlackBox = circuitElementNode.circuitElement.insideTrueBlackBoxProperty.get();
+        let revealing = true;
+        const trueBlackBox = circuitElementNode.circuitElement.insideTrueBlackBoxProperty.get();
         if ( trueBlackBox ) {
           revealing = this.model.revealingProperty.get();
         }
@@ -380,9 +380,9 @@ define( function( require ) {
       // not shown, this is desirable so that students have a higher chance of getting the desirable reading).
       // When solder is shown, it is used as the conductive element for the voltmeter (and hence why the solder radius
       // is used in the computation below.
-      var solderNodes = _.values( this.circuitLayerNode.solderNodes );
-      var hitSolderNode = _.find( solderNodes, function( solderNode ) {
-        var position = solderNode.vertex.positionProperty.get();
+      const solderNodes = _.values( this.circuitLayerNode.solderNodes );
+      const hitSolderNode = _.find( solderNodes, function( solderNode ) {
+        const position = solderNode.vertex.positionProperty.get();
         return probePosition.distance( position ) <= SolderNode.SOLDER_RADIUS;
       } );
       if ( hitSolderNode ) {
@@ -390,20 +390,20 @@ define( function( require ) {
       }
 
       // Check for intersection with a metallic circuit element, which can provide voltmeter readings
-      var metallicCircuitElement = this.hitCircuitElementNode( probePosition, function( circuitElement ) {
+      const metallicCircuitElement = this.hitCircuitElementNode( probePosition, function( circuitElement ) {
         return circuitElement.isMetallic;
       } );
       if ( metallicCircuitElement ) {
 
-        var startPoint = metallicCircuitElement.circuitElement.startPositionProperty.get();
-        var endPoint = metallicCircuitElement.circuitElement.endPositionProperty.get();
-        var segmentVector = endPoint.minus( startPoint );
-        var probeVector = probeNode.centerTop.minus( startPoint );
-        var distanceAlongSegment = segmentVector.magnitude() === 0 ? 0 : ( probeVector.dot( segmentVector ) /
+        const startPoint = metallicCircuitElement.circuitElement.startPositionProperty.get();
+        const endPoint = metallicCircuitElement.circuitElement.endPositionProperty.get();
+        const segmentVector = endPoint.minus( startPoint );
+        const probeVector = probeNode.centerTop.minus( startPoint );
+        let distanceAlongSegment = segmentVector.magnitude() === 0 ? 0 : ( probeVector.dot( segmentVector ) /
                                                                            segmentVector.magnitudeSquared() );
         distanceAlongSegment = Util.clamp( distanceAlongSegment, 0, 1 );
 
-        var voltageAlongWire = Util.linear( 0, 1,
+        const voltageAlongWire = Util.linear( 0, 1,
           metallicCircuitElement.circuitElement.startVertexProperty.get().voltageProperty.get(),
           metallicCircuitElement.circuitElement.endVertexProperty.get().voltageProperty.get(),
           distanceAlongSegment
@@ -414,7 +414,7 @@ define( function( require ) {
       else {
 
         // check for intersection with switch node
-        var switchNode = this.hitCircuitElementNode( probePosition, function( circuitElement ) {
+        const switchNode = this.hitCircuitElementNode( probePosition, function( circuitElement ) {
           return circuitElement instanceof Switch;
         } );
         if ( switchNode ) {

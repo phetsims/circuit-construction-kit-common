@@ -9,19 +9,19 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Circle = require( 'SCENERY/nodes/Circle' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
+  const Circle = require( 'SCENERY/nodes/Circle' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Node = require( 'SCENERY/nodes/Node' );
 
   // constants
-  var SOLDER_COLOR = '#ae9f9e';
+  const SOLDER_COLOR = '#ae9f9e';
 
   // for hit testing with probes, in view coordinates
-  var SOLDER_RADIUS = 11.2;
+  const SOLDER_RADIUS = 11.2;
 
   // {Image} raster created by init() for WebGL usage
-  var CIRCLE_NODE = new Circle( SOLDER_RADIUS, { fill: SOLDER_COLOR } ).toDataURLImageSynchronous();
+  const CIRCLE_NODE = new Circle( SOLDER_RADIUS, { fill: SOLDER_COLOR } ).toDataURLImageSynchronous();
 
   /**
    * @param {CircuitLayerNode} circuitLayerNode
@@ -31,9 +31,9 @@ define( function( require ) {
   function SolderNode( circuitLayerNode, vertex ) {
     assert && assert( CIRCLE_NODE, 'solder image should exist before creating SolderNode' );
 
-    var self = this;
+    const self = this;
 
-    var circuit = circuitLayerNode.circuit;
+    const circuit = circuitLayerNode.circuit;
 
     // @public (read-only) {Vertex}
     this.vertex = vertex;
@@ -50,7 +50,7 @@ define( function( require ) {
     } );
 
     // Update the fill when the number of attached components changes.
-    var updateFill = function() {
+    const updateFill = function() {
 
       // @private {boolean} - defensive copies for callbacks cause listeners to get called during disposal, avoid calling
       // Node API after diposed
@@ -65,7 +65,7 @@ define( function( require ) {
     circuit.circuitElements.addItemAddedListener( updateFill );
     circuit.circuitElements.addItemRemovedListener( updateFill );
 
-    var updateSolderNodePosition = this.setTranslation.bind( this );
+    const updateSolderNodePosition = this.setTranslation.bind( this );
     vertex.positionProperty.link( updateSolderNodePosition );
 
     // @private (read-only) {function} called by dispose()

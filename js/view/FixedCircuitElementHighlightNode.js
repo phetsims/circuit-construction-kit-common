@@ -9,14 +9,14 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
   // constants
-  var PADDING = 10; // in view coordinates
-  var CORNER_RADIUS = 8; // in view coordinates
+  const PADDING = 10; // in view coordinates
+  const CORNER_RADIUS = 8; // in view coordinates
 
   /**
    * @param {FixedCircuitElementNode} fixedCircuitElementNode

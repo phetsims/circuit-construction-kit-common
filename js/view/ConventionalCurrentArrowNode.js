@@ -9,13 +9,13 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var Color = require( 'SCENERY/util/Color' );
-  var inherit = require( 'PHET_CORE/inherit' );
+  const ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const Color = require( 'SCENERY/util/Color' );
+  const inherit = require( 'PHET_CORE/inherit' );
 
   // constants
-  var ARROW_LENGTH = 23; // length of the arrow in view coordinates
+  const ARROW_LENGTH = 23; // length of the arrow in view coordinates
 
   /**
    * @param {Tandem} tandem

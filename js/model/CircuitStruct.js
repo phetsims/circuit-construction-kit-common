@@ -12,17 +12,17 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
-  var BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
-  var Property = require( 'AXON/Property' );
-  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
-  var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
-  var Vector2 = require( 'DOT/Vector2' );
-  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
-  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
+  const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
+  const BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
+  const Property = require( 'AXON/Property' );
+  const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
+  const Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
+  const Vector2 = require( 'DOT/Vector2' );
+  const Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
+  const Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
 
   /**
    * @constructor
@@ -90,19 +90,19 @@ define( function( require ) {
      * @public
      */
     fromStateObject: function( circuitState, resistivityProperty, tandem, options ) {
-      var circuitStruct = new CircuitStruct();
+      const circuitStruct = new CircuitStruct();
       tandem = tandem.createGroupTandem( 'circuitStructElement' );
       options = _.extend( {
 
         // See CircuitElement.js for options
       }, options );
-      for ( var i = 0; i < circuitState.vertices.length; i++ ) {
+      for ( let i = 0; i < circuitState.vertices.length; i++ ) {
         options = circuitState.vertices[ i ].options || {};
         options.tandem = tandem.createNextTandem();
-        var vertex = new Vertex( new Vector2( circuitState.vertices[ i ].x, circuitState.vertices[ i ].y ), options );
+        const vertex = new Vertex( new Vector2( circuitState.vertices[ i ].x, circuitState.vertices[ i ].y ), options );
         circuitStruct.vertices.push( vertex );
       }
-      for ( i = 0; i < circuitState.wires.length; i++ ) {
+      for ( let i = 0; i < circuitState.wires.length; i++ ) {
         options = circuitState.wires[ i ].options || {};
         circuitStruct.wires.push( new Wire(
           circuitStruct.vertices[ circuitState.wires[ i ].startVertex ],
@@ -112,7 +112,7 @@ define( function( require ) {
           options
         ) );
       }
-      for ( i = 0; i < circuitState.batteries.length; i++ ) {
+      for ( let i = 0; i < circuitState.batteries.length; i++ ) {
         options = circuitState.batteries[ i ].options || {};
         circuitStruct.batteries.push( new Battery(
           circuitStruct.vertices[ circuitState.batteries[ i ].startVertex ],
@@ -124,7 +124,7 @@ define( function( require ) {
           }
         ) );
       }
-      for ( i = 0; i < circuitState.resistors.length; i++ ) {
+      for ( let i = 0; i < circuitState.resistors.length; i++ ) {
         options = circuitState.resistors[ i ].options || {};
         circuitStruct.resistors.push( new Resistor(
           circuitStruct.vertices[ circuitState.resistors[ i ].startVertex ],
@@ -134,7 +134,7 @@ define( function( require ) {
           }
         ) );
       }
-      for ( i = 0; i < circuitState.lightBulbs.length; i++ ) {
+      for ( let i = 0; i < circuitState.lightBulbs.length; i++ ) {
         options = circuitState.lightBulbs[ i ].options || {};
         circuitStruct.lightBulbs.push( new LightBulb(
           circuitStruct.vertices[ circuitState.lightBulbs[ i ].startVertex ],
@@ -145,7 +145,7 @@ define( function( require ) {
           options
         ) );
       }
-      for ( i = 0; i < circuitState.switches.length; i++ ) {
+      for ( let i = 0; i < circuitState.switches.length; i++ ) {
         options = circuitState.switches[ i ].options || {};
         circuitStruct.switches.push( new Switch(
           circuitStruct.vertices[ circuitState.switches[ i ].startVertex ],

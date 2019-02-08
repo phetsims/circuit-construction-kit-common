@@ -10,15 +10,15 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Meter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Meter' );
-  var NullableIO = require( 'TANDEM/types/NullableIO' );
-  var NumberIO = require( 'TANDEM/types/NumberIO' );
-  var Property = require( 'AXON/Property' );
-  var PropertyIO = require( 'AXON/PropertyIO' );
-  var Vector2 = require( 'DOT/Vector2' );
-  var Vector2IO = require( 'DOT/Vector2IO' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Meter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Meter' );
+  const NullableIO = require( 'TANDEM/types/NullableIO' );
+  const NumberIO = require( 'TANDEM/types/NumberIO' );
+  const Property = require( 'AXON/Property' );
+  const PropertyIO = require( 'AXON/PropertyIO' );
+  const Vector2 = require( 'DOT/Vector2' );
+  const Vector2IO = require( 'DOT/Vector2IO' );
 
   /**
    * @param {Tandem} tandem

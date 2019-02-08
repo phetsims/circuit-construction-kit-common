@@ -9,33 +9,33 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var Color = require( 'SCENERY/util/Color' );
-  var FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
-  var Image = require( 'SCENERY/nodes/Image' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Matrix3 = require( 'DOT/Matrix3' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var Shape = require( 'KITE/Shape' );
+  const BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const Color = require( 'SCENERY/util/Color' );
+  const FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
+  const Image = require( 'SCENERY/nodes/Image' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Matrix3 = require( 'DOT/Matrix3' );
+  const Path = require( 'SCENERY/nodes/Path' );
+  const Shape = require( 'KITE/Shape' );
 
   // images
-  var batteryHighImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery-high.png' );
-  var batteryImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
+  const batteryHighImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery-high.png' );
+  const batteryImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
 
   // constants
   // dimensions for schematic battery
-  var SMALL_TERMINAL_WIDTH = 50;
-  var LARGE_TERMINAL_WIDTH = 104;
-  var WIDTH = 188;
-  var GAP = 33;
-  var LEFT_JUNCTION = WIDTH / 2 - GAP / 2;
-  var RIGHT_JUNCTION = WIDTH / 2 + GAP / 2;
+  const SMALL_TERMINAL_WIDTH = 50;
+  const LARGE_TERMINAL_WIDTH = 104;
+  const WIDTH = 188;
+  const GAP = 33;
+  const LEFT_JUNCTION = WIDTH / 2 - GAP / 2;
+  const RIGHT_JUNCTION = WIDTH / 2 + GAP / 2;
 
   // Points sampled using Photoshop from a raster of the IEEE icon seen at
   // https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
-  var schematicShape = new Shape()
+  let schematicShape = new Shape()
     .moveTo( 0, 0 ) // left wire
     .lineTo( LEFT_JUNCTION, 0 )
     .moveTo( LEFT_JUNCTION, SMALL_TERMINAL_WIDTH / 2 ) // left plate
@@ -44,13 +44,13 @@ define( function( require ) {
     .lineTo( WIDTH, 0 )
     .moveTo( RIGHT_JUNCTION, LARGE_TERMINAL_WIDTH / 2 ) // right plate
     .lineTo( RIGHT_JUNCTION, -LARGE_TERMINAL_WIDTH / 2 );
-  var schematicWidth = schematicShape.bounds.width;
-  var desiredWidth = CCKCConstants.BATTERY_LENGTH;
-  var schematicScale = desiredWidth / schematicWidth;
+  const schematicWidth = schematicShape.bounds.width;
+  const desiredWidth = CCKCConstants.BATTERY_LENGTH;
+  const schematicScale = desiredWidth / schematicWidth;
 
   // Scale to fit the correct width
   schematicShape = schematicShape.transformed( Matrix3.scale( schematicScale, schematicScale ) );
-  var schematicNode = new Path( schematicShape, {
+  const schematicNode = new Path( schematicShape, {
     stroke: Color.BLACK,
     lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH
   } ).toDataURLImageSynchronous();
@@ -75,7 +75,7 @@ define( function( require ) {
     // @public (read-only) {Battery} - the Battery rendered by this Node
     this.battery = battery;
 
-    var lifelikeNode = new Image( battery.batteryType === BatteryType.NORMAL ? batteryImage : batteryHighImage );
+    const lifelikeNode = new Image( battery.batteryType === BatteryType.NORMAL ? batteryImage : batteryHighImage );
 
     lifelikeNode.mutate( {
       scale: battery.distanceBetweenVertices / lifelikeNode.width

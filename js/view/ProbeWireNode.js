@@ -9,11 +9,11 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var Shape = require( 'KITE/Shape' );
-  var Vector2 = require( 'DOT/Vector2' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Path = require( 'SCENERY/nodes/Path' );
+  const Shape = require( 'KITE/Shape' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   /**
    * @param {Color|string} color - the color of the wire
@@ -53,10 +53,10 @@ define( function( require ) {
      * @private
      */
     updateWireShape: function() {
-      var bodyX = this.bodyPosition.x;
-      var bodyY = this.bodyPosition.y;
-      var probeX = this.probePosition.x;
-      var probeY = this.probePosition.y;
+      const bodyX = this.bodyPosition.x;
+      const bodyY = this.bodyPosition.y;
+      const probeX = this.probePosition.x;
+      const probeY = this.probePosition.y;
 
       this.shape = new Shape()
         .moveTo( bodyX, bodyY )

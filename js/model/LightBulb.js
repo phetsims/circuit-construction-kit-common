@@ -9,27 +9,27 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
-  var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var NumberProperty = require( 'AXON/NumberProperty' );
-  var Util = require( 'DOT/Util' );
-  var Vector2 = require( 'DOT/Vector2' );
-  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
+  const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const NumberProperty = require( 'AXON/NumberProperty' );
+  const Util = require( 'DOT/Util' );
+  const Vector2 = require( 'DOT/Vector2' );
+  const Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
 
   // constants
 
   // The distance (as the crow flies) between start and end vertex
-  var DISTANCE_BETWEEN_VERTICES = 36;
+  const DISTANCE_BETWEEN_VERTICES = 36;
 
   // Tinker with coordinates to get thing to match up
-  var LEFT_CURVE_X_SCALE = 1.5;
-  var TOP_Y_SCALE = 0.6;
-  var RIGHT_CURVE_X_SCALE = 0.87;
+  const LEFT_CURVE_X_SCALE = 1.5;
+  const TOP_Y_SCALE = 0.6;
+  const RIGHT_CURVE_X_SCALE = 0.87;
 
   // The sampled points for the wire/filament curves
-  var LIFELIKE_SAMPLE_POINTS = [
+  const LIFELIKE_SAMPLE_POINTS = [
     new Vector2( 0.623, 2.063 ),                                          // bottom center
     new Vector2( 0.623, 1.014 * 0.75 ),                                   // first curve
     new Vector2( 0.314 * LEFT_CURVE_X_SCALE, 0.704 * TOP_Y_SCALE * 1.1 ), // left curve 1
@@ -42,7 +42,7 @@ define( function( require ) {
     new Vector2( 0.927 * 0.8 * 1.2, 1.474 )                               // exit
   ];
 
-  var SCHEMATIC_SAMPLE_POINTS = [
+  const SCHEMATIC_SAMPLE_POINTS = [
     new Vector2( 0.50, 2.06 ),                                            // bottom left
     new Vector2( 0.50, 0.34 ),                                            // top left
     new Vector2( 0.89, 0.34 ),                                            // top right
@@ -97,11 +97,11 @@ define( function( require ) {
      * @private
      */
     getPathLength: function() {
-      var pathLength = 0;
-      var samplePoints = this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? LIFELIKE_SAMPLE_POINTS : SCHEMATIC_SAMPLE_POINTS;
-      var currentPoint = this.getFilamentPathPoint( 0, Vector2.ZERO, samplePoints );
-      for ( var i = 1; i < samplePoints.length; i++ ) {
-        var nextPoint = this.getFilamentPathPoint( i, Vector2.ZERO, samplePoints );
+      let pathLength = 0;
+      const samplePoints = this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? LIFELIKE_SAMPLE_POINTS : SCHEMATIC_SAMPLE_POINTS;
+      let currentPoint = this.getFilamentPathPoint( 0, Vector2.ZERO, samplePoints );
+      for ( let i = 1; i < samplePoints.length; i++ ) {
+        const nextPoint = this.getFilamentPathPoint( i, Vector2.ZERO, samplePoints );
         pathLength += nextPoint.distance( currentPoint );
         currentPoint = nextPoint;
       }
@@ -128,13 +128,13 @@ define( function( require ) {
      * @private
      */
     getFilamentPathPoint: function( index, origin, samplePoints ) {
-      var point = samplePoints[ index ];
+      const point = samplePoints[ index ];
 
-      var startPoint = samplePoints[ 0 ];
-      var endPoint = samplePoints[ samplePoints.length - 1 ];
+      const startPoint = samplePoints[ 0 ];
+      const endPoint = samplePoints[ samplePoints.length - 1 ];
 
-      var x = Util.linear( startPoint.x, endPoint.x, origin.x, origin.x + this.vertexDelta.x, point.x );
-      var y = Util.linear( startPoint.y, endPoint.y, origin.y, origin.y + this.vertexDelta.y, point.y );
+      const x = Util.linear( startPoint.x, endPoint.x, origin.x, origin.x + this.vertexDelta.x, point.x );
+      const y = Util.linear( startPoint.y, endPoint.y, origin.y, origin.y + this.vertexDelta.y, point.y );
 
       return new Vector2( x, y );
     },
@@ -161,27 +161,27 @@ define( function( require ) {
 
       FixedCircuitElement.prototype.updateMatrixForPoint.call( this, distanceAlongWire, matrix );
 
-      var previousAccumulatedDistance = 0;
-      var accumulatedDistance = 0;
-      var samplePoints = this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? LIFELIKE_SAMPLE_POINTS : SCHEMATIC_SAMPLE_POINTS;
-      var currentPoint = this.getFilamentPathPoint( 0, this.startVertexProperty.get().positionProperty.get(), samplePoints );
-      for ( var i = 1; i < samplePoints.length; i++ ) {
-        var nextPoint = this.getFilamentPathPoint( i, this.startVertexProperty.get().positionProperty.get(), samplePoints );
+      let previousAccumulatedDistance = 0;
+      let accumulatedDistance = 0;
+      const samplePoints = this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? LIFELIKE_SAMPLE_POINTS : SCHEMATIC_SAMPLE_POINTS;
+      let currentPoint = this.getFilamentPathPoint( 0, this.startVertexProperty.get().positionProperty.get(), samplePoints );
+      for ( let i = 1; i < samplePoints.length; i++ ) {
+        const nextPoint = this.getFilamentPathPoint( i, this.startVertexProperty.get().positionProperty.get(), samplePoints );
         accumulatedDistance += nextPoint.distance( currentPoint );
 
         // Find what segment the charge is in
         if ( distanceAlongWire <= accumulatedDistance ) {
 
           // Choose the right point along the segment
-          var fractionAlongSegment = Util.linear( previousAccumulatedDistance, accumulatedDistance, 0, 1, distanceAlongWire );
-          var positionAlongSegment = currentPoint.blend( nextPoint, fractionAlongSegment );
+          const fractionAlongSegment = Util.linear( previousAccumulatedDistance, accumulatedDistance, 0, 1, distanceAlongWire );
+          const positionAlongSegment = currentPoint.blend( nextPoint, fractionAlongSegment );
 
           // rotate the point about the start vertex
-          var startPoint = this.startPositionProperty.get();
-          var vertexDelta = this.endPositionProperty.get().minus( startPoint );
-          var relativeAngle = vertexDelta.angle() - this.vertexDelta.angle();
-          var position = positionAlongSegment.rotatedAboutPoint( startPoint, relativeAngle );
-          var angle = nextPoint.minus( currentPoint ).angle();
+          const startPoint = this.startPositionProperty.get();
+          const vertexDelta = this.endPositionProperty.get().minus( startPoint );
+          const relativeAngle = vertexDelta.angle() - this.vertexDelta.angle();
+          const position = positionAlongSegment.rotatedAboutPoint( startPoint, relativeAngle );
+          const angle = nextPoint.minus( currentPoint ).angle();
 
           // sampled from createAtPosition
           matrix.setToTranslationRotationPoint( position, angle + matrix.getRotation() + 0.7851354708011367 );
@@ -200,7 +200,7 @@ define( function( require ) {
      * @public
      */
     toIntrinsicStateObject: function() {
-      var parent = FixedCircuitElement.prototype.toIntrinsicStateObject.call( this );
+      const parent = FixedCircuitElement.prototype.toIntrinsicStateObject.call( this );
       return _.extend( parent, {
         highResistance: this.highResistance,
         resistance: this.resistanceProperty.value
@@ -222,19 +222,19 @@ define( function( require ) {
     createAtPosition: function( position, circuitVertexGroupTandem, resistance, viewTypeProperty, tandem, options ) {
 
       options = options || {};
-      var translation = new Vector2( 19, 10 );
+      const translation = new Vector2( 19, 10 );
 
       // Connect at the side and bottom
-      var startPoint = new Vector2( position.x - DISTANCE_BETWEEN_VERTICES / 2, position.y ).plus( translation );
+      const startPoint = new Vector2( position.x - DISTANCE_BETWEEN_VERTICES / 2, position.y ).plus( translation );
 
       // Position the vertices so the light bulb is upright
-      var endPoint = startPoint.plus( Vector2.createPolar( DISTANCE_BETWEEN_VERTICES, -Math.PI / 4 ) );
+      const endPoint = startPoint.plus( Vector2.createPolar( DISTANCE_BETWEEN_VERTICES, -Math.PI / 4 ) );
 
       // start vertex is at the bottom
-      var startVertex = new Vertex( startPoint, {
+      const startVertex = new Vertex( startPoint, {
         tandem: circuitVertexGroupTandem.createNextTandem()
       } );
-      var endVertex = new Vertex( endPoint, {
+      const endVertex = new Vertex( endPoint, {
         tandem: circuitVertexGroupTandem.createNextTandem()
       } );
 

@@ -9,15 +9,15 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var NumberProperty = require( 'AXON/NumberProperty' );
+  const BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
-  var BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
+  const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
 
   /**
    * @param {Vertex} startVertex - one of the battery vertices
@@ -75,7 +75,7 @@ define( function( require ) {
      * @public
      */
     toIntrinsicStateObject: function() {
-      var parent = FixedCircuitElement.prototype.toIntrinsicStateObject.call( this );
+      const parent = FixedCircuitElement.prototype.toIntrinsicStateObject.call( this );
       return _.extend( parent, {
         batteryType: this.batteryType,
         voltage: this.voltageProperty.value

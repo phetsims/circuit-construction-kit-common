@@ -9,29 +9,29 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ButtonListener = require( 'SCENERY/input/ButtonListener' );
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var Circle = require( 'SCENERY/nodes/Circle' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
-  var Color = require( 'SCENERY/util/Color' );
-  var FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var LinearGradient = require( 'SCENERY/util/LinearGradient' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var Shape = require( 'KITE/Shape' );
+  const ButtonListener = require( 'SCENERY/input/ButtonListener' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const Circle = require( 'SCENERY/nodes/Circle' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
+  const Color = require( 'SCENERY/util/Color' );
+  const FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const LinearGradient = require( 'SCENERY/util/LinearGradient' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Path = require( 'SCENERY/nodes/Path' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const Shape = require( 'KITE/Shape' );
 
   // constants
   // dimensions for schematic battery
-  var LIFELIKE_DIAMETER = 16;
-  var SWITCH_START = CCKCConstants.SWITCH_START;
-  var SWITCH_END = CCKCConstants.SWITCH_END;
-  var SWITCH_LENGTH = CCKCConstants.SWITCH_LENGTH;
+  const LIFELIKE_DIAMETER = 16;
+  const SWITCH_START = CCKCConstants.SWITCH_START;
+  const SWITCH_END = CCKCConstants.SWITCH_END;
+  const SWITCH_LENGTH = CCKCConstants.SWITCH_LENGTH;
 
-  var lifelikeNodeThickness = 8;
-  var lifelikeGradient = new LinearGradient( 0, -lifelikeNodeThickness / 2, 0, lifelikeNodeThickness / 2 )
+  const lifelikeNodeThickness = 8;
+  const lifelikeGradient = new LinearGradient( 0, -lifelikeNodeThickness / 2, 0, lifelikeNodeThickness / 2 )
     .addColorStop( 0, '#d48270' )
     .addColorStop( 0.3, '#e39b8c' )
     .addColorStop( 1, '#b56351' );
@@ -44,10 +44,10 @@ define( function( require ) {
    * @param {boolean} closed - whether the switch is closed
    * @returns {Node} with leftSegmentNode, rotatingSegmentNode and rightSegmentNode properties (also {Node})
    */
-  var createNode = function( viewType, fill, thickness, curveDiameter, closed ) {
-    var edgeRadius = thickness / 2;
+  const createNode = function( viewType, fill, thickness, curveDiameter, closed ) {
+    const edgeRadius = thickness / 2;
 
-    var leftSegmentNode = new Rectangle( 0,
+    const leftSegmentNode = new Rectangle( 0,
       -thickness / 2,
       SWITCH_LENGTH * SWITCH_START,
       thickness, {
@@ -59,7 +59,7 @@ define( function( require ) {
 
     // See the picture at https://github.com/phetsims/circuit-construction-kit-common/issues/313
     // This part has a curved notch that fits into the other segment
-    var shape = new Shape()
+    const shape = new Shape()
       .moveTo( 0, thickness / 2 )
       .lineTo( SWITCH_LENGTH * SWITCH_START - curveDiameter, thickness / 2 )
 
@@ -70,7 +70,7 @@ define( function( require ) {
 
       .lineTo( 0, -thickness / 2 )
       .lineTo( 0, thickness / 2 );
-    var rotatingSegmentNode = new Path( shape, {
+    const rotatingSegmentNode = new Path( shape, {
       x: SWITCH_LENGTH * SWITCH_START,
       fill: fill,
       stroke: Color.BLACK,
@@ -80,7 +80,7 @@ define( function( require ) {
 
     rotatingSegmentNode.rotation = closed ? 0 : -Math.PI / 4;
 
-    var rightSegmentShape = new Shape()
+    const rightSegmentShape = new Shape()
       .moveTo( SWITCH_LENGTH * SWITCH_END - curveDiameter, thickness / 2 )
 
       // similar to the notch above
@@ -92,20 +92,20 @@ define( function( require ) {
       .lineTo( SWITCH_LENGTH - edgeRadius, -thickness / 2 )
       .arc( SWITCH_LENGTH - edgeRadius, 0, edgeRadius, -Math.PI / 2, Math.PI / 2 )
       .lineTo( SWITCH_LENGTH * SWITCH_END - curveDiameter, thickness / 2 );
-    var rightSegmentNode = new Path( rightSegmentShape, {
+    const rightSegmentNode = new Path( rightSegmentShape, {
       fill: fill,
       stroke: Color.BLACK,
       pickable: true
     } );
 
-    var lifelikeHinge = new Circle( thickness * 0.6, {
+    const lifelikeHinge = new Circle( thickness * 0.6, {
       fill: '#a7a8ab',
       stroke: Color.BLACK,
       lineWidth: 4,
       x: SWITCH_LENGTH * SWITCH_START
     } );
 
-    var node = new Node( {
+    const node = new Node( {
       children: [ leftSegmentNode, rotatingSegmentNode, rightSegmentNode, lifelikeHinge ]
     } );
 
@@ -126,21 +126,21 @@ define( function( require ) {
   };
 
   // Create all of the images
-  var lifelikeOpenNode = createNode(
+  const lifelikeOpenNode = createNode(
     CircuitElementViewType.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, false
   );
-  var lifelikeOpenImage = lifelikeOpenNode.toDataURLImageSynchronous();
+  const lifelikeOpenImage = lifelikeOpenNode.toDataURLImageSynchronous();
 
-  var lifelikeClosedNode = createNode(
+  const lifelikeClosedNode = createNode(
     CircuitElementViewType.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, true
   );
-  var lifelikeClosedImage = lifelikeClosedNode.toDataURLImageSynchronous();
+  const lifelikeClosedImage = lifelikeClosedNode.toDataURLImageSynchronous();
 
-  var schematicOpenImage = createNode(
+  const schematicOpenImage = createNode(
     CircuitElementViewType.SCHEMATIC, Color.BLACK, CCKCConstants.SCHEMATIC_LINE_WIDTH, 0, false
   ).toDataURLImageSynchronous();
 
-  var schematicClosedImage = createNode(
+  const schematicClosedImage = createNode(
     CircuitElementViewType.SCHEMATIC, Color.BLACK, CCKCConstants.SCHEMATIC_LINE_WIDTH, 0, true
   ).toDataURLImageSynchronous();
 
@@ -155,14 +155,14 @@ define( function( require ) {
    */
   function SwitchNode( screenView, circuitLayerNode, circuitSwitch, viewTypeProperty, tandem, options ) {
 
-    var self = this;
+    const self = this;
 
     // @public (read-only) {Switch} - the Switch rendered by this Node
     this.circuitSwitch = circuitSwitch;
 
-    var lifelikeNode = new Node();
-    var schematicNode = new Node();
-    var closeListener = function( closed ) {
+    const lifelikeNode = new Node();
+    const schematicNode = new Node();
+    const closeListener = function( closed ) {
       lifelikeNode.children = [ closed ? lifelikeClosedImage : lifelikeOpenImage ];
       schematicNode.children = [ closed ? schematicClosedImage : schematicOpenImage ];
     };
@@ -179,17 +179,17 @@ define( function( require ) {
       options
     );
 
-    var downPoint = null;
+    let downPoint = null;
 
     // When the user taps the switch, toggle whether it is open or closed.
-    var buttonListener = new ButtonListener( {
+    const buttonListener = new ButtonListener( {
       down: function( event ) {
         downPoint = circuitLayerNode.globalToLocalPoint( event.pointer.point );
       },
       fire: function( event ) {
 
         // Measure how far the switch was dragged in CircuitLayerNode coordinates (if any)
-        var distance = circuitLayerNode.globalToLocalPoint( event.pointer.point ).distance( downPoint );
+        const distance = circuitLayerNode.globalToLocalPoint( event.pointer.point ).distance( downPoint );
 
         // Toggle the state of the switch, but only if the event is classified as a tap and not a drag
         if ( distance < CCKCConstants.TAP_THRESHOLD ) {
@@ -228,11 +228,11 @@ define( function( require ) {
      * @returns {boolean}
      */
     startSideContainsSensorPoint: function( point ) {
-      var localPoint = this.contentNode.parentToLocalPoint( point );
+      const localPoint = this.contentNode.parentToLocalPoint( point );
 
-      var leftSegmentContainsPoint = lifelikeOpenNode.leftSegmentNode.containsPoint( localPoint );
-      var node = this.circuitSwitch.closedProperty.get() ? lifelikeClosedNode : lifelikeOpenNode;
-      var rotatingSegmentContainsPoint = node.rotatingSegmentNode.containsPoint( localPoint );
+      const leftSegmentContainsPoint = lifelikeOpenNode.leftSegmentNode.containsPoint( localPoint );
+      const node = this.circuitSwitch.closedProperty.get() ? lifelikeClosedNode : lifelikeOpenNode;
+      const rotatingSegmentContainsPoint = node.rotatingSegmentNode.containsPoint( localPoint );
       return leftSegmentContainsPoint || rotatingSegmentContainsPoint;
     },
 
@@ -242,7 +242,7 @@ define( function( require ) {
      * @returns {boolean}
      */
     endSideContainsSensorPoint: function( point ) {
-      var localPoint = this.contentNode.parentToLocalPoint( point );
+      const localPoint = this.contentNode.parentToLocalPoint( point );
       return lifelikeOpenNode.rightSegmentNode.containsPoint( localPoint );
     },
 

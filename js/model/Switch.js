@@ -9,18 +9,18 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var NumberProperty = require( 'AXON/NumberProperty' );
-  var Util = require( 'DOT/Util' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const NumberProperty = require( 'AXON/NumberProperty' );
+  const Util = require( 'DOT/Util' );
 
   // constants
-  var SWITCH_LENGTH = CCKCConstants.SWITCH_LENGTH;
-  var SWITCH_START = CCKCConstants.SWITCH_START;
-  var SWITCH_END = CCKCConstants.SWITCH_END;
+  const SWITCH_LENGTH = CCKCConstants.SWITCH_LENGTH;
+  const SWITCH_START = CCKCConstants.SWITCH_START;
+  const SWITCH_END = CCKCConstants.SWITCH_END;
 
   /**
    * @param {Vertex} startVertex
@@ -39,7 +39,7 @@ define( function( require ) {
       // See https://github.com/phetsims/circuit-construction-kit-dc/issues/132
       isSizeChangedOnViewChange: false
     } );
-    var self = this;
+    const self = this;
 
     // @public (read-only) {NumberProperty} the resistance in ohms
     this.resistanceProperty = new NumberProperty( 0 );
@@ -65,19 +65,19 @@ define( function( require ) {
        */
       updateMatrixForPoint: function( distanceAlongWire, matrix ) {
 
-        var startPosition = this.startPositionProperty.get();
-        var endPosition = this.endPositionProperty.get();
-        var fractionAlongWire = distanceAlongWire / this.chargePathLength;
+        const startPosition = this.startPositionProperty.get();
+        const endPosition = this.endPositionProperty.get();
+        const fractionAlongWire = distanceAlongWire / this.chargePathLength;
 
         // If the charge is halfway up the switch lever for an open switch, show it along the raised lever
         if ( fractionAlongWire > SWITCH_START && fractionAlongWire < SWITCH_END && !this.closedProperty.get() ) {
-          var pivot = startPosition.blend( endPosition, SWITCH_START );
+          const pivot = startPosition.blend( endPosition, SWITCH_START );
 
-          var twoThirdsPoint = startPosition.blend( endPosition, SWITCH_END );
-          var rotatedPoint = twoThirdsPoint.rotatedAboutPoint( pivot, -Math.PI / 4 );
+          const twoThirdsPoint = startPosition.blend( endPosition, SWITCH_END );
+          const rotatedPoint = twoThirdsPoint.rotatedAboutPoint( pivot, -Math.PI / 4 );
 
-          var distanceAlongSegment = Util.linear( SWITCH_START, SWITCH_END, 0, 1, fractionAlongWire );
-          var translation = pivot.blend( rotatedPoint, distanceAlongSegment );
+          const distanceAlongSegment = Util.linear( SWITCH_START, SWITCH_END, 0, 1, fractionAlongWire );
+          const translation = pivot.blend( rotatedPoint, distanceAlongSegment );
           matrix.setToTranslationRotationPoint( translation, endPosition.minus( startPosition ).angle() );
         }
         else {
@@ -103,7 +103,7 @@ define( function( require ) {
      * @public
      */
     toIntrinsicStateObject: function() {
-      var parent = FixedCircuitElement.prototype.toIntrinsicStateObject.call( this );
+      const parent = FixedCircuitElement.prototype.toIntrinsicStateObject.call( this );
       return _.extend( parent, {
         closed: this.closedProperty.value
       } );

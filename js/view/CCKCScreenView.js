@@ -10,42 +10,42 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var AlignBox = require( 'SCENERY/nodes/AlignBox' );
-  var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
-  var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/AmmeterNode' );
-  var BatteryResistanceControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryResistanceControl' );
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
-  var ChargeSpeedThrottlingReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ChargeSpeedThrottlingReadoutNode' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitElementEditContainerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditContainerNode' );
-  var CircuitElementToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolbox' );
-  var CircuitLayerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitLayerNode' );
-  var DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/DisplayOptionsPanel' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var PlayPauseButton = require( 'SCENERY_PHET/buttons/PlayPauseButton' );
-  var Property = require( 'AXON/Property' );
-  var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
-  var ScreenView = require( 'JOIST/ScreenView' );
-  var SensorToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SensorToolbox' );
-  var SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
-  var ViewRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ViewRadioButtonGroup' );
-  var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VoltmeterNode' );
-  var WireResistivityControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/WireResistivityControl' );
-  var ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ZoomControlPanel' );
+  const AlignBox = require( 'SCENERY/nodes/AlignBox' );
+  const AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
+  const AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/AmmeterNode' );
+  const BatteryResistanceControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryResistanceControl' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
+  const ChargeSpeedThrottlingReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ChargeSpeedThrottlingReadoutNode' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const CircuitElementEditContainerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditContainerNode' );
+  const CircuitElementToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolbox' );
+  const CircuitLayerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitLayerNode' );
+  const DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/DisplayOptionsPanel' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const PlayPauseButton = require( 'SCENERY_PHET/buttons/PlayPauseButton' );
+  const Property = require( 'AXON/Property' );
+  const ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
+  const ScreenView = require( 'JOIST/ScreenView' );
+  const SensorToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SensorToolbox' );
+  const SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
+  const VBox = require( 'SCENERY/nodes/VBox' );
+  const ViewRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ViewRadioButtonGroup' );
+  const VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VoltmeterNode' );
+  const WireResistivityControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/WireResistivityControl' );
+  const ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ZoomControlPanel' );
 
   // constants
-  var VERTICAL_MARGIN = CCKCConstants.VERTICAL_MARGIN;
+  const VERTICAL_MARGIN = CCKCConstants.VERTICAL_MARGIN;
 
   // Match margins with the carousel page control and spacing
-  var HORIZONTAL_MARGIN = 17;
+  const HORIZONTAL_MARGIN = 17;
 
   // Group for aligning the content in the panels and accordion boxes.  This is a class variable instead of an
   // instance variable so the control panels will have the same width across all screens,
   // see https://github.com/phetsims/circuit-construction-kit-dc/issues/9
-  var CONTROL_PANEL_ALIGN_GROUP = new AlignGroup( {
+  const CONTROL_PANEL_ALIGN_GROUP = new AlignGroup( {
 
     // Elements should have the same widths but not constrained to have the same heights
     matchVertical: false
@@ -59,7 +59,7 @@ define( function( require ) {
    * @constructor
    */
   function CCKCScreenView( model, circuitElementToolNodes, tandem, options ) {
-    var self = this;
+    const self = this;
 
     // @public (read-only) {CircuitConstructionKitModel}
     this.model = model;
@@ -94,7 +94,7 @@ define( function( require ) {
       model.circuit, this, tandem.createTandem( 'circuitLayerNode' )
     );
 
-    var voltmeterNode = new VoltmeterNode( model.voltmeter, model, this.circuitLayerNode, tandem.createTandem( 'voltmeterNode' ), {
+    const voltmeterNode = new VoltmeterNode( model.voltmeter, model, this.circuitLayerNode, tandem.createTandem( 'voltmeterNode' ), {
       showResultsProperty: model.isValueDepictionEnabledProperty,
       visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty
     } );
@@ -104,7 +104,7 @@ define( function( require ) {
       }
     } );
 
-    var ammeterNode = new AmmeterNode( model.ammeter, this.circuitLayerNode, tandem.createTandem( 'ammeterNode' ), {
+    const ammeterNode = new AmmeterNode( model.ammeter, this.circuitLayerNode, tandem.createTandem( 'ammeterNode' ), {
       showResultsProperty: model.isValueDepictionEnabledProperty,
       visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty,
       blackBoxStudy: options.blackBoxStudy
@@ -162,8 +162,9 @@ define( function( require ) {
     this.addChild( this.circuitLayerNodeBackLayer );
 
     // Reset All button
+    let resetAllButton = null;
     if ( options.showResetAllButton ) {
-      var resetAllButton = new ResetAllButton( {
+      resetAllButton = new ResetAllButton( {
         tandem: tandem.createTandem( 'resetAllButton' ),
         listener: function() {
           model.reset();
@@ -175,7 +176,7 @@ define( function( require ) {
 
     this.addChild( this.circuitElementToolbox );
 
-    var controlPanelVBox = new VBox( {
+    const controlPanelVBox = new VBox( {
       spacing: VERTICAL_MARGIN,
       children: !options.showResistivityControl ?
         [ this.displayOptionsPanel, this.sensorToolbox, this.viewRadioButtonGroup ] :
@@ -183,7 +184,7 @@ define( function( require ) {
           this.viewRadioButtonGroup ]
     } );
 
-    var box = new AlignBox( controlPanelVBox, {
+    const box = new AlignBox( controlPanelVBox, {
       xAlign: 'right',
       yAlign: 'top',
       xMargin: HORIZONTAL_MARGIN,
@@ -194,14 +195,14 @@ define( function( require ) {
     this.addChild( box );
     this.addChild( this.circuitLayerNode );
 
-    var chargeSpeedThrottlingReadoutNode = new ChargeSpeedThrottlingReadoutNode(
+    const chargeSpeedThrottlingReadoutNode = new ChargeSpeedThrottlingReadoutNode(
       model.circuit.chargeAnimator.timeScaleProperty,
       model.circuit.showCurrentProperty,
       model.isValueDepictionEnabledProperty
     );
     this.addChild( chargeSpeedThrottlingReadoutNode );
 
-    var circuitElementEditContainerNode = new CircuitElementEditContainerNode(
+    const circuitElementEditContainerNode = new CircuitElementEditContainerNode(
       model.circuit,
       this.visibleBoundsProperty,
       model.modeProperty,
@@ -218,13 +219,13 @@ define( function( require ) {
     this.circuitLayerNode.sensorLayer.addChild( ammeterNode );
 
     // Create the zoom control panel
-    var zoomControlPanel = new ZoomControlPanel( model.selectedZoomProperty, {
+    const zoomControlPanel = new ZoomControlPanel( model.selectedZoomProperty, {
       tandem: tandem.createTandem( 'zoomControlPanel' )
     } );
 
     // Add the optional Play/Pause button
     if ( CCKCQueryParameters.showDepictValuesToggleButton ) {
-      var playPauseButton = new PlayPauseButton( model.isValueDepictionEnabledProperty, {
+      const playPauseButton = new PlayPauseButton( model.isValueDepictionEnabledProperty, {
         tandem: tandem.createTandem( 'playPauseButton' ),
         baseColor: '#33ff44' // the default blue fades into the background too much
       } );
@@ -282,10 +283,10 @@ define( function( require ) {
     // into the toolbox
     this.model.circuit.vertexDroppedEmitter.addListener( function( vertex ) {
 
-      var neighbors = self.model.circuit.getNeighborCircuitElements( vertex );
+      const neighbors = self.model.circuit.getNeighborCircuitElements( vertex );
       if ( neighbors.length === 1 ) {
-        var circuitElement = neighbors[ 0 ];
-        var circuitElementNode = self.circuitLayerNode.getCircuitElementNode( circuitElement );
+        const circuitElement = neighbors[ 0 ];
+        const circuitElementNode = self.circuitLayerNode.getCircuitElementNode( circuitElement );
 
         if ( self.canNodeDropInToolbox( circuitElementNode ) ) {
           self.model.circuit.circuitElements.remove( circuitElement );
@@ -324,17 +325,17 @@ define( function( require ) {
      * @public
      */
     canNodeDropInToolbox: function( circuitElementNode ) {
-      var circuitElement = circuitElementNode.circuitElement;
+      const circuitElement = circuitElementNode.circuitElement;
 
       // Only single (unconnected) elements can be dropped into the toolbox
-      var isSingle = this.model.circuit.isSingle( circuitElement );
+      const isSingle = this.model.circuit.isSingle( circuitElement );
 
       // SeriesAmmeters should be dropped in the sensor toolbox
-      var toolbox = circuitElement instanceof SeriesAmmeter ? this.sensorToolbox : this.circuitElementToolbox;
+      const toolbox = circuitElement instanceof SeriesAmmeter ? this.sensorToolbox : this.circuitElementToolbox;
 
       // Detect whether the midpoint between the vertices overlaps the toolbox
-      var globalMidpoint = circuitElementNode.localToGlobalPoint( circuitElement.getMidpoint() );
-      var overToolbox = toolbox.globalBounds.containsPoint( globalMidpoint );
+      const globalMidpoint = circuitElementNode.localToGlobalPoint( circuitElement.getMidpoint() );
+      const overToolbox = toolbox.globalBounds.containsPoint( globalMidpoint );
 
       return isSingle && overToolbox && circuitElement.canBeDroppedInToolbox;
     }

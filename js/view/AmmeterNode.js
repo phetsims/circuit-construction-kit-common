@@ -10,41 +10,41 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
-  var Color = require( 'SCENERY/util/Color' );
-  var DerivedProperty = require( 'AXON/DerivedProperty' );
-  var Image = require( 'SCENERY/nodes/Image' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var ProbeNode = require( 'SCENERY_PHET/ProbeNode' );
-  var ProbeTextNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ProbeTextNode' );
-  var ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ProbeWireNode' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var Vector2 = require( 'DOT/Vector2' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
+  const Color = require( 'SCENERY/util/Color' );
+  const DerivedProperty = require( 'AXON/DerivedProperty' );
+  const Image = require( 'SCENERY/nodes/Image' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const ProbeNode = require( 'SCENERY_PHET/ProbeNode' );
+  const ProbeTextNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ProbeTextNode' );
+  const ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ProbeWireNode' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   // images
-  var ammeterBodyImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeter-body.png' );
+  const ammeterBodyImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeter-body.png' );
 
   // strings
-  var currentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/current' );
-  var questionMarkString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/questionMark' );
+  const currentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/current' );
+  const questionMarkString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/questionMark' );
 
   // constants
   // measurements for the cubic curve for the wire nodes
-  var BODY_LEAD_Y = -30; // in model=view coordinates
-  var PROBE_LEAD_Y = 15; // in model=view coordinates
-  var HANDLE_WIDTH = 50;
+  const BODY_LEAD_Y = -30; // in model=view coordinates
+  const PROBE_LEAD_Y = 15; // in model=view coordinates
+  const HANDLE_WIDTH = 50;
 
   // overall scale factor for the body and probe
-  var SCALE_FACTOR = 0.5;
+  const SCALE_FACTOR = 0.5;
 
   // unsigned measurements for the circles on the voltmeter body image, for where the probe wires connect
-  var PROBE_CONNECTION_POINT_DY = 8;
+  const PROBE_CONNECTION_POINT_DY = 8;
 
   /**
    * @param {Ammeter} ammeter
@@ -54,7 +54,7 @@ define( function( require ) {
    * @constructor
    */
   function AmmeterNode( ammeter, circuitLayerNode, tandem, options ) {
-    var self = this;
+    const self = this;
     this.circuitLayerNode = circuitLayerNode;
     options = _.extend( {
 
@@ -74,12 +74,12 @@ define( function( require ) {
     // @public (read-only) {Ammeter} - the model associated with this view
     this.ammeter = ammeter;
 
-    var wireNode = new ProbeWireNode( Color.BLACK, new Vector2( 0, BODY_LEAD_Y ), new Vector2( 0, PROBE_LEAD_Y ) );
+    const wireNode = new ProbeWireNode( Color.BLACK, new Vector2( 0, BODY_LEAD_Y ), new Vector2( 0, PROBE_LEAD_Y ) );
 
-    var currentReadoutProperty = new DerivedProperty( [ ammeter.currentProperty ], function( current ) {
+    const currentReadoutProperty = new DerivedProperty( [ ammeter.currentProperty ], function( current ) {
 
-      var max = options.blackBoxStudy ? 1E3 : 1E10;
-      var maxString = options.blackBoxStudy ? '> 10^3' : '> 10^10';
+      const max = options.blackBoxStudy ? 1E3 : 1E10;
+      const maxString = options.blackBoxStudy ? '> 10^3' : '> 10^10';
 
       // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
       return current === null ? questionMarkString :
@@ -87,13 +87,13 @@ define( function( require ) {
              CCKCUtil.createCurrentReadout( current );
     } );
 
-    var probeTextNode = new ProbeTextNode(
+    const probeTextNode = new ProbeTextNode(
       currentReadoutProperty, options.showResultsProperty, currentString, tandem.createTandem( 'probeTextNode' ), {
         centerX: ammeterBodyImage.width / 2,
         centerY: ammeterBodyImage.height / 2+7 // adjust for the top notch design
       } );
 
-    var bodyNode = new Image( ammeterBodyImage, {
+    const bodyNode = new Image( ammeterBodyImage, {
       scale: SCALE_FACTOR,
       cursor: 'pointer',
       children: [ probeTextNode ]
@@ -142,7 +142,7 @@ define( function( require ) {
       // Show the ammeter in the play area when dragged from toolbox
       ammeter.visibleProperty.linkAttribute( this, 'visible' );
 
-      var probeDragHandler = new MovableDragHandler( ammeter.probePositionProperty, {
+      const probeDragHandler = new MovableDragHandler( ammeter.probePositionProperty, {
         tandem: tandem.createTandem( 'probeDragHandler' )
       } );
 
@@ -164,7 +164,7 @@ define( function( require ) {
       } );
       bodyNode.addInputListener( this.dragHandler );
       options.visibleBoundsProperty.link( function( visibleBounds ) {
-        var erodedDragBounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
+        const erodedDragBounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
         self.dragHandler.dragBounds = erodedDragBounds;
         probeDragHandler.dragBounds = erodedDragBounds;
       } );
@@ -173,11 +173,11 @@ define( function( require ) {
       /**
        * Detection for ammeter probe + circuit intersection is done in the view since view bounds are used
        */
-      var updateAmmeter = function() {
+      const updateAmmeter = function() {
 
         // Skip work when ammeter is not out, to improve performance.
         if ( ammeter.visibleProperty.get() ) {
-          var current = self.getCurrent( self.probeNode );
+          const current = self.getCurrent( self.probeNode );
           ammeter.currentProperty.set( current );
         }
       };
@@ -207,8 +207,8 @@ define( function( require ) {
     getCurrentInLayer: function( probeNode, layer ) {
 
       // See if any CircuitElementNode contains the sensor point
-      for ( var i = 0; i < layer.children.length; i++ ) {
-        var circuitElementNode = layer.children[ i ];
+      for ( let i = 0; i < layer.children.length; i++ ) {
+        const circuitElementNode = layer.children[ i ];
         if ( circuitElementNode instanceof CircuitElementNode ) {
 
           // This is called between when the circuit element is disposed and when the corresponding view is disposed
@@ -229,7 +229,7 @@ define( function( require ) {
      * @private
      */
     getCurrent: function( probeNode ) {
-      var mainCurrent = this.getCurrentInLayer( probeNode, this.circuitLayerNode.fixedCircuitElementLayer );
+      const mainCurrent = this.getCurrentInLayer( probeNode, this.circuitLayerNode.fixedCircuitElementLayer );
       if ( mainCurrent !== null ) {
         return mainCurrent;
       }

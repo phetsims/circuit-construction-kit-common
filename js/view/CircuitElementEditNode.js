@@ -9,19 +9,19 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var NumberControl = require( 'SCENERY_PHET/NumberControl' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var RotateBatteryButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/RotateBatteryButton' );
-  var TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
+  const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const HBox = require( 'SCENERY/nodes/HBox' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const NumberControl = require( 'SCENERY_PHET/NumberControl' );
+  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const RotateBatteryButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/RotateBatteryButton' );
+  const TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
 
   // constants
-  var FONT = new PhetFont( CCKCConstants.FONT_SIZE );
-  var NUMBER_CONTROL_ELEMENT_MAX_WIDTH = 140;
+  const FONT = new PhetFont( CCKCConstants.FONT_SIZE );
+  const NUMBER_CONTROL_ELEMENT_MAX_WIDTH = 140;
 
   /**
    * @param {string} title - text to show as a title
@@ -35,14 +35,14 @@ define( function( require ) {
   function CircuitElementEditNode( title, valuePattern, valueProperty, circuit, circuitElement, tandem ) {
 
     // When the user changes any parameter of any circuit element, signify it.
-    var valuePropertyListener = function() {
+    const valuePropertyListener = function() {
       circuit.componentEditedEmitter.emit();
     };
 
     valueProperty.lazyLink( valuePropertyListener );
 
     // Create the controls
-    var numberControl = new NumberControl( title, valueProperty, circuitElement.editableRange, {
+    const numberControl = new NumberControl( title, valueProperty, circuitElement.editableRange, {
 
       delta: circuitElement.editorDelta,
 
@@ -66,7 +66,7 @@ define( function( require ) {
       tandem: tandem.createTandem( 'numberControl' )
     } );
 
-    var children = [];
+    const children = [];
 
     // Batteries can be reversed
     if ( circuitElement instanceof Battery ) {

@@ -9,33 +9,33 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
-  var CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
-  var Circle = require( 'SCENERY/nodes/Circle' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var Color = require( 'SCENERY/util/Color' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var Util = require( 'DOT/Util' );
-  var Vector2 = require( 'DOT/Vector2' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
+  const CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
+  const Circle = require( 'SCENERY/nodes/Circle' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const Color = require( 'SCENERY/util/Color' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const Util = require( 'DOT/Util' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   // constants
-  var DISTANCE_TO_CUT_BUTTON = 70; // How far in view coordinates the cut button appears from the vertex node
-  var VERTEX_RADIUS = 16; // for hit testing with probes
+  const DISTANCE_TO_CUT_BUTTON = 70; // How far in view coordinates the cut button appears from the vertex node
+  const VERTEX_RADIUS = 16; // for hit testing with probes
 
   // rasterize the images for the red and black dotted lines so they can be rendered with WebGL to improve performance
-  var CIRCLE_OPTIONS = {
+  const CIRCLE_OPTIONS = {
     lineWidth: 1.3,
     lineDash: [ 6, 4 ]
   };
-  var RED_CIRCLE_NODE = new Circle( VERTEX_RADIUS, _.extend( CIRCLE_OPTIONS, {
+  const RED_CIRCLE_NODE = new Circle( VERTEX_RADIUS, _.extend( CIRCLE_OPTIONS, {
     stroke: Color.RED
   } ) ).toDataURLImageSynchronous();
-  var BLACK_CIRCLE_NODE = new Circle( VERTEX_RADIUS, _.extend( CIRCLE_OPTIONS, {
+  const BLACK_CIRCLE_NODE = new Circle( VERTEX_RADIUS, _.extend( CIRCLE_OPTIONS, {
     stroke: Color.BLACK
   } ) ).toDataURLImageSynchronous();
 
@@ -47,12 +47,12 @@ define( function( require ) {
    */
   function VertexNode( circuitLayerNode, vertex, tandem ) {
 
-    var self = this;
-    var circuit = circuitLayerNode.circuit;
+    const self = this;
+    const circuit = circuitLayerNode.circuit;
 
     // @private {Circuit}
     this.circuit = circuit;
-    var cutButton = circuitLayerNode.cutButton;
+    const cutButton = circuitLayerNode.cutButton;
 
     // @private {RoundPushButton}
     this.cutButton = cutButton;
@@ -64,7 +64,7 @@ define( function( require ) {
     this.circuitLayerNode = circuitLayerNode;
 
     // Use a query parameter to turn on node voltage readouts for debugging only.
-    var vertexDisplay = CCKCQueryParameters.vertexDisplay;
+    const vertexDisplay = CCKCQueryParameters.vertexDisplay;
 
     // @private {Text} display for debugging only
     this.voltageReadoutText = null;
@@ -82,7 +82,7 @@ define( function( require ) {
       vertex.voltageProperty.link( function( voltage ) {
 
         // No need for i18n because this is for debugging only
-        var voltageText = Util.toFixed( voltage, 3 ) + 'V';
+        const voltageText = Util.toFixed( voltage, 3 ) + 'V';
         self.voltageReadoutText.setText( vertexDisplay === 'voltage' ? voltageText : vertex.index );
         self.updateReadoutTextLocation();
       } );
@@ -145,8 +145,8 @@ define( function( require ) {
     this.updatePickableListener = this.setPickable.bind( this );
     vertex.interactiveProperty.link( this.updatePickableListener );
 
-    var eventPoint = null;
-    var dragged = false;
+    let eventPoint = null;
+    let dragged = false;
 
     // @private {function[]} - called when the user clicks away from the selected vertex
     this.clickToDismissListeners = [];
@@ -174,7 +174,7 @@ define( function( require ) {
 
           vertex.selectedProperty.set( true );
 
-          var clickToDismissListener = {
+          const clickToDismissListener = {
             down: function( event ) {
               if ( !_.includes( event.trail.nodes, self ) && !_.includes( event.trail.nodes, cutButton ) ) {
                 vertex.selectedProperty.set( false );
@@ -225,10 +225,10 @@ define( function( require ) {
      * @override
      */
     dispose: function() {
-      var vertex = this.vertex;
-      var circuit = this.circuit;
-      var cutButton = this.circuitLayerNode.cutButton;
-      var circuitLayerNode = this.circuitLayerNode;
+      const vertex = this.vertex;
+      const circuit = this.circuit;
+      const cutButton = this.circuitLayerNode.cutButton;
+      const circuitLayerNode = this.circuitLayerNode;
       vertex.positionProperty.unlink( this.updateVertexNodePositionListener );
       vertex.selectedProperty.unlink( this.updateVertexNodePositionListener );
       vertex.selectedProperty.unlink( this.updateSelectedListener );
@@ -263,8 +263,8 @@ define( function( require ) {
      * @private
      */
     keydownListener: function( event ) {
-      var domEvent = event.domEvent;
-      var code = domEvent.keyCode || domEvent.which;
+      const domEvent = event.domEvent;
+      const code = domEvent.keyCode || domEvent.which;
 
       // on delete or backspace, the focused Vertex should be cut
       if ( code === KeyboardUtil.KEY_DELETE || code === KeyboardUtil.KEY_BACKSPACE ) {
@@ -281,24 +281,24 @@ define( function( require ) {
      * @param selected
      */
     updateSelected: function( selected ) {
-      var neighborCircuitElements = this.circuit.getNeighborCircuitElements( this.vertex );
+      const neighborCircuitElements = this.circuit.getNeighborCircuitElements( this.vertex );
 
       if ( selected ) {
 
         // Adjacent components should be in front of the vertex, see #20
-        for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
+        for ( let i = 0; i < neighborCircuitElements.length; i++ ) {
           neighborCircuitElements[ i ].vertexSelectedEmitter.emit();
         }
         this.moveToFront();
         this.focus();
       }
       CCKCUtil.setInSceneGraph( selected, this.circuitLayerNode.highlightLayer, this.highlightNode );
-      var numberConnections = neighborCircuitElements.length;
+      const numberConnections = neighborCircuitElements.length;
       CCKCUtil.setInSceneGraph( selected, this.circuitLayerNode.buttonLayer, this.cutButton );
       selected && this.updateCutButtonPosition();
 
       // Show a disabled button as a cue that the vertex could be cuttable, but it isn't right now.
-      var isConnectedBlackBoxVertex = numberConnections === 1 && !this.vertex.draggableProperty.get();
+      const isConnectedBlackBoxVertex = numberConnections === 1 && !this.vertex.draggableProperty.get();
       this.cutButton.enabled = numberConnections > 1 || isConnectedBlackBoxVertex;
     },
 
@@ -314,7 +314,7 @@ define( function( require ) {
       // a defensive copy of listeners.
       if ( !this.disposed ) {
 
-        var desiredChild = this.circuit.countCircuitElements( this.vertex ) > 1 ? BLACK_CIRCLE_NODE : RED_CIRCLE_NODE;
+        const desiredChild = this.circuit.countCircuitElements( this.vertex ) > 1 ? BLACK_CIRCLE_NODE : RED_CIRCLE_NODE;
         if ( this.getChildAt( 0 ) !== desiredChild ) {
           this.children = this.voltageReadoutText ? [ desiredChild, this.voltageReadoutText ] : [ desiredChild ];
         }
@@ -326,15 +326,15 @@ define( function( require ) {
      * @private - update the position of the cut button
      */
     updateCutButtonPosition: function() {
-      var position = this.vertex.positionProperty.get();
+      const position = this.vertex.positionProperty.get();
 
-      var neighbors = this.circuit.getNeighborCircuitElements( this.vertex );
+      const neighbors = this.circuit.getNeighborCircuitElements( this.vertex );
 
       // Compute an unweighted sum of adjacent element directions, and point in the opposite direction so the button
       // will appear in the least populated area.
-      var sumOfDirections = new Vector2();
-      for ( var i = 0; i < neighbors.length; i++ ) {
-        var v = this.vertex.positionProperty.get().minus(
+      const sumOfDirections = new Vector2();
+      for ( let i = 0; i < neighbors.length; i++ ) {
+        const v = this.vertex.positionProperty.get().minus(
           neighbors[ i ].getOppositeVertex( this.vertex ).positionProperty.get()
         );
         if ( v.magnitude() > 0 ) {
@@ -342,15 +342,15 @@ define( function( require ) {
         }
       }
       if ( sumOfDirections.magnitude() < 1E-6 ) {
-        sumOfDirections = new Vector2( 0, -1 ); // Show the scissors above
+        sumOfDirections.setXY( 0, -1 ); // Show the scissors above
       }
 
-      var proposedPosition = position.plus( sumOfDirections.normalized().timesScalar( DISTANCE_TO_CUT_BUTTON ) );
+      const proposedPosition = position.plus( sumOfDirections.normalized().timesScalar( DISTANCE_TO_CUT_BUTTON ) );
 
       // Property doesn't exist until the node is attached to scene graph
-      var bounds = this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty.get();
+      const bounds = this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty.get();
 
-      var availableBounds = bounds.eroded( this.cutButton.width / 2 );
+      const availableBounds = bounds.eroded( this.cutButton.width / 2 );
       this.cutButton.center = availableBounds.closestPointTo( proposedPosition );
     },
 
@@ -359,7 +359,7 @@ define( function( require ) {
      * @private
      */
     updateVertexNodePosition: function() {
-      var position = this.vertex.positionProperty.get();
+      const position = this.vertex.positionProperty.get();
       this.translation = position;
 
       // Update the position of the highlight, but only if it is visible

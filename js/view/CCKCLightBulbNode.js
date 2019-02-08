@@ -10,40 +10,40 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
-  var Color = require( 'SCENERY/util/Color' );
-  var CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CustomLightBulbNode' );
-  var FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
-  var Image = require( 'SCENERY/nodes/Image' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var LightBulbSocketNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/LightBulbSocketNode' );
-  var Matrix3 = require( 'DOT/Matrix3' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var NumberProperty = require( 'AXON/NumberProperty' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var Property = require( 'AXON/Property' );
-  var Shape = require( 'KITE/Shape' );
-  var Util = require( 'DOT/Util' );
-  var Vector2 = require( 'DOT/Vector2' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
+  const Color = require( 'SCENERY/util/Color' );
+  const CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CustomLightBulbNode' );
+  const FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
+  const Image = require( 'SCENERY/nodes/Image' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const LightBulbSocketNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/LightBulbSocketNode' );
+  const Matrix3 = require( 'DOT/Matrix3' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const NumberProperty = require( 'AXON/NumberProperty' );
+  const Path = require( 'SCENERY/nodes/Path' );
+  const Property = require( 'AXON/Property' );
+  const Shape = require( 'KITE/Shape' );
+  const Util = require( 'DOT/Util' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   // images
-  var lightBulbImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-middle.png' );
-  var lightBulbImageHigh = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-middle-high.png' );
+  const lightBulbImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-middle.png' );
+  const lightBulbImageHigh = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-middle-high.png' );
 
   // constants
-  var SCRATCH_MATRIX = new Matrix3();
+  const SCRATCH_MATRIX = new Matrix3();
 
   // The height from the vertex to the center of the light bulb schematic circle
-  var LEAD_Y = -73;
+  const LEAD_Y = -73;
 
   // The "blip" in the filament that looks like an upside down "u" semicircle
-  var INNER_RADIUS = 5;
+  const INNER_RADIUS = 5;
 
   // {Node} The raster is created during instance construction and cached for future use so it isn't added to the
   // spritesheet multiple times
-  var cached = null;
+  let cached = null;
 
   /**
    * Determine the brightness for a given power
@@ -52,10 +52,10 @@ define( function( require ) {
    * @returns {number}
    */
   function toBrightness( multiplier, power ) {
-    var maximumBrightness = 1;
+    const maximumBrightness = 1;
 
     // power at which the brightness becomes 1
-    var maximumPower = 2000;
+    const maximumPower = 2000;
     return Math.log( 1 + power * multiplier ) * maximumBrightness / Math.log( 1 + maximumPower * multiplier );
   }
 
@@ -71,17 +71,17 @@ define( function( require ) {
    */
   function CCKCLightBulbNode( screenView, circuitLayerNode, lightBulb,
                               showResultsProperty, viewTypeProperty, tandem, options ) {
-    var self = this;
+    const self = this;
     options = _.extend( {
       isIcon: false
     }, options );
-    var brightnessProperty = new NumberProperty( 0 );
-    var updateBrightness = Property.multilink(
+    const brightnessProperty = new NumberProperty( 0 );
+    const updateBrightness = Property.multilink(
       [ lightBulb.currentProperty, showResultsProperty, lightBulb.resistanceProperty ],
       function( current, running, resistance ) {
-        var power = Math.abs( current * current * resistance );
+        const power = Math.abs( current * current * resistance );
 
-        var brightness = toBrightness( 0.35, power );
+        let brightness = toBrightness( 0.35, power );
 
         // Workaround for SCENERY_PHET/LightBulbNode which shows highlight even for current = 1E-16, so clamp it off
         // see https://github.com/phetsims/scenery-phet/issues/225
@@ -91,7 +91,7 @@ define( function( require ) {
 
         brightnessProperty.value = Util.clamp( brightness, 0, 1 );
       } );
-    var lightBulbNode = new CustomLightBulbNode( brightnessProperty );
+    let lightBulbNode = new CustomLightBulbNode( brightnessProperty );
 
     // The isIcon must show the socket as well
     if ( options.isIcon ) {
@@ -108,19 +108,19 @@ define( function( require ) {
     }, options );
 
     // Schematic creation begins here.
-    var endPosition = lightBulb.endPositionProperty.get();
-    var startPosition = lightBulb.startPositionProperty.get();
-    var delta = endPosition.minus( startPosition );
+    const endPosition = lightBulb.endPositionProperty.get();
+    const startPosition = lightBulb.startPositionProperty.get();
+    const delta = endPosition.minus( startPosition );
 
-    var rightLeadX = delta.x;
-    var schematicCircleRadius = delta.x / 2;
+    const rightLeadX = delta.x;
+    const schematicCircleRadius = delta.x / 2;
 
     /**
      * Adds the schematic circle with filament to the given Shape.
      * @param {Shape} shape
      * @returns Shape
      */
-    var addSchematicCircle = function( shape ) {
+    const addSchematicCircle = function( shape ) {
       return shape
 
       // Outer circle
@@ -132,7 +132,7 @@ define( function( require ) {
         .arc( schematicCircleRadius, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
         .lineTo( rightLeadX, LEAD_Y );
     };
-    var schematicNode = cached || new Path( addSchematicCircle( new Shape()
+    let schematicNode = cached || new Path( addSchematicCircle( new Shape()
 
       // Left lead
       .moveTo( 0, 0 )
@@ -178,6 +178,7 @@ define( function( require ) {
       children: lightBulbNode.raysNode ? [ lightBulbNode.raysNode ] : [] // keep centering and translation
     } );
 
+    let viewListener = null;
     if ( circuitLayerNode ) {
 
       // Render the socket node in the front
@@ -189,7 +190,7 @@ define( function( require ) {
         tandem.createTandem( 'socketNode' ),
         options
       );
-      var viewListener = function( view ) {
+      viewListener = function( view ) {
         self.rayNodeContainer.visible = view === CircuitElementViewType.LIFELIKE;
       };
       viewTypeProperty.link( viewListener );
@@ -222,9 +223,9 @@ define( function( require ) {
      * @protected - CCKCLightBulbNode calls updateRender for its child socket node
      */
     updateRender: function() {
-      var startPosition = this.circuitElement.startPositionProperty.get();
-      var endPosition = this.circuitElement.endPositionProperty.get();
-      var angle = Vector2.getAngleBetweenVectors( startPosition, endPosition ) + Math.PI / 4;
+      const startPosition = this.circuitElement.startPositionProperty.get();
+      const endPosition = this.circuitElement.endPositionProperty.get();
+      const angle = Vector2.getAngleBetweenVectors( startPosition, endPosition ) + Math.PI / 4;
 
       // Update the node transform in a single step, see #66
       SCRATCH_MATRIX.setToTranslationRotationPoint( startPosition, angle );

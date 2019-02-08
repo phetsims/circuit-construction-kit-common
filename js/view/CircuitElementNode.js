@@ -9,12 +9,12 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitElementEditContainerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditContainerNode' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
-  var Node = require( 'SCENERY/nodes/Node' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const CircuitElementEditContainerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditContainerNode' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
+  const Node = require( 'SCENERY/nodes/Node' );
 
   /**
    * @param {CircuitElement} circuitElement - the CircuitElement to be rendered
@@ -24,7 +24,7 @@ define( function( require ) {
    */
   function CircuitElementNode( circuitElement, circuit, options ) {
 
-    var self = this;
+    const self = this;
 
     // @private (read-only) {Circuit|null} - the circuit which the element can be removed from or null for icons
     this.circuit = circuit;
@@ -47,9 +47,9 @@ define( function( require ) {
     Node.call( this, options );
 
     // keyboard listener so that delete or backspace deletes the element - must be disposed
-    var keyListener = {
+    const keyListener = {
       keydown: function( event ) {
-        var code = event.domEvent.keyCode;
+        const code = event.domEvent.keyCode;
 
         // on delete or backspace, the focused circuit element should be deleted
         if ( code === KeyboardUtil.KEY_DELETE || code === KeyboardUtil.KEY_BACKSPACE ) {
@@ -77,7 +77,7 @@ define( function( require ) {
      * dragging.
      * @param event - scenery event
      */
-    var startDragListener = function( event ) {
+    const startDragListener = function( event ) {
       self.dragHandler.startDrag( event );
     };
 
@@ -131,11 +131,11 @@ define( function( require ) {
      * @public
      */
     updateOpacityOnInteractiveChange: function() {
-      var self = this;
+      const self = this;
 
       // TODO (black-box-study): Replace this with grayscale if we keep it
       // TODO (black-box-study): @jonathonolson said: I've wished for a scenery-level grayscale/etc. filter. Let me know when you get close to doing this.
-      var interactivityChanged = function( interactive ) {
+      const interactivityChanged = function( interactive ) {
         self.opacity = interactive ? 1 : 0.5;
       };
       this.circuitElement.interactiveProperty.link( interactivityChanged );
@@ -183,8 +183,8 @@ define( function( require ) {
      * @public
      */
     endDrag: function( event, node, vertices, screenView, circuitLayerNode, start, dragged ) {
-      var self = this;
-      var circuitElement = this.circuitElement;
+      const self = this;
+      const circuitElement = this.circuitElement;
 
       if ( circuitElement.interactiveProperty.get() ) {
 
@@ -217,7 +217,7 @@ define( function( require ) {
      * @public
      */
     selectCircuitElementNodeWhenNear: function( event, circuitLayerNode, startPoint ) {
-      var self = this;
+      const self = this;
       if ( event.pointer.point.distance( startPoint ) < CCKCConstants.TAP_THRESHOLD ) {
 
         circuitLayerNode.circuit.selectedCircuitElementProperty.set( this.circuitElement );
@@ -225,17 +225,17 @@ define( function( require ) {
         // focus the element for keyboard interaction
         this.focus();
 
-        var disposeAction = function() {
+        const disposeAction = function() {
           phet.joist.sim.display.removeInputListener( clickToDismissListener );
         };
 
         // listener for 'click outside to dismiss'
-        var clickToDismissListener = {
+        const clickToDismissListener = {
           down: function( event ) {
 
             // if the target was in a CircuitElementEditContainerNode, don't dismiss the event because the user was
             // dragging the slider or pressing the trash button or another control in that panel
-            var trails = event.target.getTrails( function( node ) {
+            const trails = event.target.getTrails( function( node ) {
 
               // If the user tapped any component in the CircuitElementContainerPanel or on the selected node
               // allow interaction to proceed normally.  Any other taps will deselect the circuit element
@@ -244,7 +244,7 @@ define( function( require ) {
 
             if ( trails.length === 0 ) {
               phet.joist.sim.display.removeInputListener( clickToDismissListener );
-              var index = self.disposeActions.indexOf( disposeAction );
+              const index = self.disposeActions.indexOf( disposeAction );
               if ( index >= 0 ) {
                 self.disposeActions.splice( index, 1 );
               }

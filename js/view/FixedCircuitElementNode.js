@@ -9,28 +9,28 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
-  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
-  var FixedCircuitElementHighlightNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementHighlightNode' );
-  var Image = require( 'SCENERY/nodes/Image' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Matrix3 = require( 'DOT/Matrix3' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Property = require( 'AXON/Property' );
-  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-  var Vector2 = require( 'DOT/Vector2' );
+  const CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
+  const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
+  const FixedCircuitElementHighlightNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementHighlightNode' );
+  const Image = require( 'SCENERY/nodes/Image' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Matrix3 = require( 'DOT/Matrix3' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Property = require( 'AXON/Property' );
+  const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
+  const SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   // images
-  var fireImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
+  const fireImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/fire.png' );
 
   // constants
-  var matrix = new Matrix3();
-  var rotationMatrix = new Matrix3();
-  var FIRE_THRESHOLD = 15; // Beyond this number of amps, flammable CircuitElements catch on fire
-  var ONE_AMP_PROPERTY = new Property( 1 ); // All batteries are flammable, so treat them as if they have nonzero resistance
+  const matrix = new Matrix3();
+  const rotationMatrix = new Matrix3();
+  const FIRE_THRESHOLD = 15; // Beyond this number of amps, flammable CircuitElements catch on fire
+  const ONE_AMP_PROPERTY = new Property( 1 ); // All batteries are flammable, so treat them as if they have nonzero resistance
 
   /**
    * Determine whether fire should be shown on the circuit element.
@@ -38,7 +38,7 @@ define( function( require ) {
    * @param {boolean} isValueDepictionEnabled - whether values are shown
    * @returns {boolean}
    */
-  var isFireShown = function( current, isValueDepictionEnabled ) {
+  const isFireShown = function( current, isValueDepictionEnabled ) {
     return Math.abs( current ) >= FIRE_THRESHOLD && isValueDepictionEnabled;
   };
 
@@ -57,7 +57,7 @@ define( function( require ) {
   function FixedCircuitElementNode( screenView, circuitLayerNode, circuitElement,
                                     viewTypeProperty, lifelikeNode, schematicNode, tandem, options ) {
     assert && assert( lifelikeNode !== schematicNode, 'schematicNode should be different than lifelikeNode' );
-    var self = this;
+    const self = this;
 
     // @private {Node} shows the lifelike view
     this.lifelikeNode = lifelikeNode;
@@ -112,7 +112,7 @@ define( function( require ) {
     circuitElement.connectedEmitter.addListener( this.moveToFrontListener );
     circuitElement.vertexSelectedEmitter.addListener( this.moveToFrontListener );
 
-    var circuit = circuitLayerNode && circuitLayerNode.circuit;
+    const circuit = circuitLayerNode && circuitLayerNode.circuit;
 
     CircuitElementNode.call( this, circuitElement, circuit, _.extend( {
       cursor: 'pointer',
@@ -131,8 +131,8 @@ define( function( require ) {
     this.fixedCircuitElementNodePickable = options.pickable;
 
     // Use whatever the start node currently is (it can change), and let the circuit manage the dependent vertices
-    var startPoint = null;
-    var dragged = false;
+    let startPoint = null;
+    let dragged = false;
     if ( !options.isIcon ) {
 
       // @private {SimpleDragHandler}
@@ -214,8 +214,8 @@ define( function( require ) {
      * @protected - CCKCLightBulbNode calls updateRender for its child socket node
      */
     updateRender: function() {
-      var startPosition = this.circuitElement.startPositionProperty.get();
-      var endPosition = this.circuitElement.endPositionProperty.get();
+      const startPosition = this.circuitElement.startPositionProperty.get();
+      const endPosition = this.circuitElement.endPositionProperty.get();
 
       if ( startPosition.equals( endPosition ) ) {
 
@@ -228,8 +228,8 @@ define( function( require ) {
         return;
       }
 
-      var angle = Vector2.getAngleBetweenVectors( startPosition, endPosition );
-      var magnitude = Vector2.getDistanceBetweenVectors( startPosition, endPosition );
+      const angle = Vector2.getAngleBetweenVectors( startPosition, endPosition );
+      const magnitude = Vector2.getDistanceBetweenVectors( startPosition, endPosition );
 
       // Update the node transform in a single step, see #66
       matrix.setToTranslationRotationPoint( startPosition, angle );
@@ -240,11 +240,11 @@ define( function( require ) {
       }
 
       // Update the fire transform
-      var flameExtent = 0.8;
-      var scale = magnitude / fireImage.width * flameExtent;
-      var flameMargin = (1 - flameExtent) / 2;
-      var flameX = magnitude * flameMargin / scale;
-      var flameY = -fireImage.height;
+      const flameExtent = 0.8;
+      const scale = magnitude / fireImage.width * flameExtent;
+      const flameMargin = ( 1 - flameExtent ) / 2;
+      const flameX = magnitude * flameMargin / scale;
+      const flameY = -fireImage.height;
       matrix.multiplyMatrix( rotationMatrix.setToScale( scale ) )
         .multiplyMatrix( rotationMatrix.setToTranslation( flameX, flameY ) );
       this.fireNode && this.fireNode.setMatrix( matrix );
@@ -271,7 +271,7 @@ define( function( require ) {
      * @private
      */
     setSelectedCircuitElement: function( circuitElement ) {
-      var visible = (circuitElement === this.circuitElement);
+      const visible = ( circuitElement === this.circuitElement );
       CCKCUtil.setInSceneGraph( visible, this.circuitLayerNode.highlightLayer, this.highlightNode );
       this.markAsDirty();
     },

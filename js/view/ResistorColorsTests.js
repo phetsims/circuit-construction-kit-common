@@ -9,7 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var ResistorColors = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorColors' );
+  const ResistorColors = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorColors' );
 
   QUnit.module( 'ResistorColors' );
 

@@ -9,15 +9,15 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var NumberProperty = require( 'AXON/NumberProperty' );
-  var ResistorType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ResistorType' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const NumberProperty = require( 'AXON/NumberProperty' );
+  const ResistorType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ResistorType' );
 
   // constants
-  var RESISTOR_LENGTH = CCKCConstants.RESISTOR_LENGTH;
+  const RESISTOR_LENGTH = CCKCConstants.RESISTOR_LENGTH;
 
   /**
    * @param {Vertex} startVertex
@@ -83,7 +83,7 @@ define( function( require ) {
      * @public
      */
     toIntrinsicStateObject: function() {
-      var parent = FixedCircuitElement.prototype.toIntrinsicStateObject.call( this );
+      const parent = FixedCircuitElement.prototype.toIntrinsicStateObject.call( this );
       return _.extend( parent, {
         resistorType: this.resistorType,
         resistance: this.resistanceProperty.value,

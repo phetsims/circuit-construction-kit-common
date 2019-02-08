@@ -11,23 +11,23 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CCKCAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCAccordionBox' );
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var Color = require( 'SCENERY/util/Color' );
-  var HSlider = require( 'SUN/HSlider' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var Util = require( 'DOT/Util' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
+  const CCKCAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCAccordionBox' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const Color = require( 'SCENERY/util/Color' );
+  const HSlider = require( 'SUN/HSlider' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const Util = require( 'DOT/Util' );
+  const VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
-  var batteryResistanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/batteryResistance' );
-  var resistanceOhmsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhms' );
+  const batteryResistanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/batteryResistance' );
+  const resistanceOhmsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhms' );
 
   /**
    * @param {Property.<number>} batteryResistanceProperty - axon Property for the internal resistance of all Batteries
@@ -43,13 +43,13 @@ define( function( require ) {
      * @param {Tandem} tandem
      * @returns {Text}
      */
-    var createLabel = function( string, tandem ) {
+    const createLabel = function( string, tandem ) {
       return new Text( string, { fontSize: 12, tandem: tandem } );
     };
 
-    var range = CCKCConstants.BATTERY_RESISTANCE_RANGE;
-    var midpoint = (range.max + range.min) / 2;
-    var slider = new HSlider( batteryResistanceProperty, range, {
+    const range = CCKCConstants.BATTERY_RESISTANCE_RANGE;
+    const midpoint = ( range.max + range.min ) / 2;
+    const slider = new HSlider( batteryResistanceProperty, range, {
       trackSize: CCKCConstants.SLIDER_TRACK_SIZE,
       thumbSize: CCKCConstants.THUMB_SIZE,
       majorTickLength: CCKCConstants.MAJOR_TICK_LENGTH,
@@ -62,15 +62,15 @@ define( function( require ) {
     slider.addMajorTick( midpoint );
     slider.addMajorTick( range.max, createLabel( Util.toFixed( range.max, 0 ), tandem.createTandem( 'maxLabel' ) ) );
 
-    for ( var i = range.min + 1; i < range.max; i++ ) {
+    for ( let i = range.min + 1; i < range.max; i++ ) {
       if ( i !== midpoint ) {
         slider.addMinorTick( i );
       }
     }
 
-    var readoutTextPanelTandem = tandem.createTandem( 'readoutTextPanel' );
+    const readoutTextPanelTandem = tandem.createTandem( 'readoutTextPanel' );
 
-    var readoutText = new Text( batteryResistanceProperty.get(), {
+    const readoutText = new Text( batteryResistanceProperty.get(), {
       font: new PhetFont( CCKCConstants.FONT_SIZE ),
       fill: Color.BLACK,
       maxWidth: 100,
@@ -78,10 +78,12 @@ define( function( require ) {
       pickable: false
     } );
 
-    var xMargin = 4;
+    const xMargin = 4;
+
+    let textRectangle = null;
 
     // number to be displayed
-    var updateText = function( value ) {
+    const updateText = function( value ) {
       readoutText.setText( StringUtils.fillIn( resistanceOhmsString, { resistance: Util.toFixed( value, 1 ) } ) );
 
       // Once there is a textRectangle, stay right-justified
@@ -93,7 +95,7 @@ define( function( require ) {
     // Use the max to get the right size of the panel
     updateText( CCKCConstants.BATTERY_RESISTANCE_RANGE.max );
 
-    var textRectangle = Rectangle.bounds( readoutText.bounds.dilatedXY( xMargin, 3 ), {
+    textRectangle = Rectangle.bounds( readoutText.bounds.dilatedXY( xMargin, 3 ), {
       fill: Color.WHITE,
       stroke: Color.GRAY,
       cornerRadius: 0, // radius of the rounded corners on the background
@@ -101,7 +103,7 @@ define( function( require ) {
       tandem: readoutTextPanelTandem
     } );
 
-    var textContainerNode = new Node( {
+    const textContainerNode = new Node( {
       children: [ textRectangle, readoutText ],
       pickable: false
     } );

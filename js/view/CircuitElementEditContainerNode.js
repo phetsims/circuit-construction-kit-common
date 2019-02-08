@@ -10,32 +10,32 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitElementEditNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditNode' );
-  var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
-  var SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
-  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
-  var SwitchReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SwitchReadoutNode' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
-  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
+  const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const CircuitElementEditNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditNode' );
+  const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
+  const SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
+  const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+  const Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
+  const SwitchReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SwitchReadoutNode' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
+  const Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
 
   // strings
-  var resistanceOhmsValuePatternString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhmsValuePattern' );
-  var resistanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistance' );
-  var tapCircuitElementToEditString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/tapCircuitElementToEdit' );
-  var voltageString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltage' );
-  var voltageVoltsValuePatternString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageVoltsValuePattern' );
+  const resistanceOhmsValuePatternString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhmsValuePattern' );
+  const resistanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistance' );
+  const tapCircuitElementToEditString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/tapCircuitElementToEdit' );
+  const voltageString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltage' );
+  const voltageVoltsValuePatternString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageVoltsValuePattern' );
 
   // constants
-  var GET_LAYOUT_POSITION = function( visibleBounds ) {
+  const GET_LAYOUT_POSITION = function( visibleBounds ) {
     return {
       centerX: visibleBounds.centerX,
       bottom: visibleBounds.bottom - CCKCConstants.VERTICAL_MARGIN
@@ -50,21 +50,21 @@ define( function( require ) {
    * @constructor
    */
   function CircuitElementEditContainerNode( circuit, visibleBoundsProperty, modeProperty, tandem ) {
-    var groupTandem = tandem.createGroupTandem( 'circuitElementEditNode' );
-    var self = this;
+    const groupTandem = tandem.createGroupTandem( 'circuitElementEditNode' );
+    const self = this;
     Node.call( this );
 
-    var tapInstructionTextNode = new Text( tapCircuitElementToEditString, {
+    const tapInstructionTextNode = new Text( tapCircuitElementToEditString, {
       fontSize: 24,
       maxWidth: 300
     } );
 
     // Only show the instructions if there is a circuit element in the play area, so students don't try to tap
     // something in the toolbox.
-    var updateInstructionTextVisible = function() {
+    const updateInstructionTextVisible = function() {
 
       // Only fixed length circuit elements are editable, even though wires can be deleted
-      var fixedLengthElements = circuit.circuitElements.getArray().filter( function( circuitElement ) {
+      const fixedLengthElements = circuit.circuitElements.getArray().filter( function( circuitElement ) {
         return circuitElement instanceof FixedCircuitElement && circuitElement.interactiveProperty.get();
       } );
       tapInstructionTextNode.visible = fixedLengthElements.length > 0;
@@ -76,25 +76,25 @@ define( function( require ) {
     circuit.vertices.addItemRemovedListener( updateInstructionTextVisible );
     modeProperty.link( updateInstructionTextVisible );
 
-    var updatePosition = function() {
+    const updatePosition = function() {
 
       // Layout, but only if we have something to display (otherwise bounds fail out)
       self.bounds.isValid() && self.mutate( GET_LAYOUT_POSITION( visibleBoundsProperty.get() ) );
     };
 
     // When the selected element changes, update the displayed controls
-    var editNode = null;
+    let editNode = null;
     circuit.selectedCircuitElementProperty.link( function( selectedCircuitElement ) {
       editNode && self.removeChild( editNode );
       ( editNode && editNode !== tapInstructionTextNode ) && editNode.dispose();
       editNode = null;
 
       if ( selectedCircuitElement ) {
-        var isResistor = selectedCircuitElement instanceof Resistor || selectedCircuitElement instanceof LightBulb;
-        var isBattery = selectedCircuitElement instanceof Battery;
-        var isWire = selectedCircuitElement instanceof Wire;
-        var isSwitch = selectedCircuitElement instanceof Switch;
-        var isSeriesAmmeter = selectedCircuitElement instanceof SeriesAmmeter;
+        const isResistor = selectedCircuitElement instanceof Resistor || selectedCircuitElement instanceof LightBulb;
+        const isBattery = selectedCircuitElement instanceof Battery;
+        const isWire = selectedCircuitElement instanceof Wire;
+        const isSwitch = selectedCircuitElement instanceof Switch;
+        const isSeriesAmmeter = selectedCircuitElement instanceof SeriesAmmeter;
 
         if ( isResistor && selectedCircuitElement.isResistanceEditable() ) {
           editNode = new CircuitElementEditNode(

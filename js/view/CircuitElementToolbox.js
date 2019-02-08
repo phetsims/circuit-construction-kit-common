@@ -10,19 +10,19 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
-  var Carousel = require( 'SUN/Carousel' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var Color = require( 'SCENERY/util/Color' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var PageControl = require( 'SUN/PageControl' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
+  const AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
+  const Carousel = require( 'SUN/Carousel' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const Color = require( 'SCENERY/util/Color' );
+  const HBox = require( 'SCENERY/nodes/HBox' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const PageControl = require( 'SUN/PageControl' );
+  const VBox = require( 'SCENERY/nodes/VBox' );
 
   // constants
-  var CAROUSEL_ITEM_SPACING = 27;
-  var CAROUSEL_PAGE_HEIGHT = 352; // so the carousels will be the same size on each screen
-  var ITEMS_PER_PAGE = 5;
+  const CAROUSEL_ITEM_SPACING = 27;
+  const CAROUSEL_PAGE_HEIGHT = 352; // so the carousels will be the same size on each screen
+  const ITEMS_PER_PAGE = 5;
 
   /**
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
@@ -34,7 +34,7 @@ define( function( require ) {
 
     // Carousel was optimized for items of equal size.  To get equal spacing between objects, we create our own pages
     // see https://github.com/phetsims/circuit-construction-kit-dc/issues/91
-    var pages = _.chunk( circuitElementToolNodes, ITEMS_PER_PAGE ).map( function( elements ) {
+    const pages = _.chunk( circuitElementToolNodes, ITEMS_PER_PAGE ).map( function( elements ) {
       return new VBox( { children: elements } );
     } );
 
@@ -42,14 +42,14 @@ define( function( require ) {
     viewTypeProperty.link( function() {
 
       // Track the spacings so that any non-filled pages can take the average spacing of the other pages
-      var spacings = [];
+      const spacings = [];
       pages.forEach( function( page ) {
 
         // Zero out the spacing so we can compute the height without any spacing
         page.setSpacing( 0 );
 
         // Set the spacing so that items will fill the available area
-        var spacing = ( CAROUSEL_PAGE_HEIGHT - page.height ) / ( page.children.length - 1 );
+        const spacing = ( CAROUSEL_PAGE_HEIGHT - page.height ) / ( page.children.length - 1 );
         page.setSpacing( spacing );
 
         // Track the spacings of filled pages so that the average can be used for non-filled pages
@@ -57,7 +57,7 @@ define( function( require ) {
           spacings.push( spacing );
         }
       } );
-      var averageSpacing = _.sum( spacings ) / spacings.length;
+      const averageSpacing = _.sum( spacings ) / spacings.length;
 
       pages.forEach( function( page ) {
         if ( page.children.length !== ITEMS_PER_PAGE ) {
@@ -67,8 +67,8 @@ define( function( require ) {
     } );
 
     // Make sure that non-filled pages have the same top
-    var alignGroup = new AlignGroup();
-    var alignedPages = pages.map( function( page ) { return alignGroup.createBox( page, { yAlign: 'top' } ); } );
+    const alignGroup = new AlignGroup();
+    const alignedPages = pages.map( function( page ) { return alignGroup.createBox( page, { yAlign: 'top' } ); } );
 
     // create the carousel
     this.carousel = new Carousel( alignedPages, {
@@ -82,7 +82,7 @@ define( function( require ) {
       tandem: tandem.createTandem( 'carousel' )
     } );
 
-    var pageControl = new PageControl( this.carousel.numberOfPages, this.carousel.pageNumberProperty, {
+    const pageControl = new PageControl( this.carousel.numberOfPages, this.carousel.pageNumberProperty, {
       orientation: 'vertical',
       pageFill: Color.WHITE,
       pageStroke: Color.BLACK,

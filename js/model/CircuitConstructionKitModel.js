@@ -10,24 +10,24 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Ammeter' );
-  var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
-  var Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Circuit' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
-  var Emitter = require( 'AXON/Emitter' );
-  var EmitterIO = require( 'AXON/EmitterIO' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var InteractionMode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/InteractionMode' );
-  var NumberProperty = require( 'AXON/NumberProperty' );
-  var Property = require( 'AXON/Property' );
-  var PropertyIO = require( 'AXON/PropertyIO' );
-  var StringIO = require( 'TANDEM/types/StringIO' );
-  var Util = require( 'DOT/Util' );
-  var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Voltmeter' );
-  var ZoomAnimation = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ZoomAnimation' );
-  var ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ZoomControlPanel' );
+  const Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Ammeter' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
+  const Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Circuit' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
+  const Emitter = require( 'AXON/Emitter' );
+  const EmitterIO = require( 'AXON/EmitterIO' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const InteractionMode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/InteractionMode' );
+  const NumberProperty = require( 'AXON/NumberProperty' );
+  const Property = require( 'AXON/Property' );
+  const PropertyIO = require( 'AXON/PropertyIO' );
+  const StringIO = require( 'TANDEM/types/StringIO' );
+  const Util = require( 'DOT/Util' );
+  const Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Voltmeter' );
+  const ZoomAnimation = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ZoomAnimation' );
+  const ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ZoomControlPanel' );
 
   /**
    * @param {Tandem} tandem
@@ -36,7 +36,7 @@ define( function( require ) {
    */
   function CircuitConstructionKitModel( tandem, options ) {
 
-    var self = this;
+    const self = this;
 
     options = _.extend( {
 
@@ -87,8 +87,8 @@ define( function( require ) {
 
     this.selectedZoomProperty.lazyLink( function( newValue ) {
       self.zoomAnimation = new ZoomAnimation( self.currentZoomProperty.get(), newValue, function( delta ) {
-        var proposedZoomValue = self.currentZoomProperty.value + delta;
-        var boundedValue = Util.clamp( proposedZoomValue, ZoomControlPanel.ZOOMED_OUT, ZoomControlPanel.ZOOMED_IN );
+        const proposedZoomValue = self.currentZoomProperty.value + delta;
+        const boundedValue = Util.clamp( proposedZoomValue, ZoomControlPanel.ZOOMED_OUT, ZoomControlPanel.ZOOMED_IN );
         self.currentZoomProperty.value = boundedValue;
       } );
     } );
@@ -117,7 +117,7 @@ define( function( require ) {
     // https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/16
     // However, the simulation should not pause when switching between "Explore" and "Test" and "Reveal" in the black
     // box study sim
-    var modeChanging = false;
+    const modeChanging = false;
 
     // TODO: started/endedCallbacksForChangedEmitters don't exist anymore. Rewrite if commented back in.
     // this.modeProperty.startedCallbacksForChangedEmitter.addListener( function() {
@@ -129,7 +129,7 @@ define( function( require ) {
     if ( CCKCQueryParameters.showDepictValuesToggleButton ) {
 
       // TODO: (black-box-study) fix this
-      var pause = function() {
+      const pause = function() {
         if ( !modeChanging ) {
           self.isValueDepictionEnabledProperty.value = false;
         }
@@ -143,12 +143,12 @@ define( function( require ) {
     // stream. Only do this for phet-io brand so it doesn't disturb performance of other brands
     if ( phet.phetio ) {
 
-      var circuitChangedEmitter = new Emitter( {
+      const circuitChangedEmitter = new Emitter( {
         tandem: tandem.createTandem( 'circuitChangedEmitter' ),
         phetioType: EmitterIO( [ { name: 'circuitJSON', type: StringIO } ] )
       } );
 
-      var emitCircuitChanged = function() {
+      const emitCircuitChanged = function() {
 
         // Wait until all vertices have been added so we can get their indices without erroring out.
         // TODO (phet-io): investigate coarse-grained messages (vertex cut, item added, etc) instead of vertex added,
@@ -202,7 +202,7 @@ define( function( require ) {
     step: function( dt ) {
 
       if ( this.zoomAnimation ) {
-        var overflow = this.zoomAnimation.step( dt );
+        const overflow = this.zoomAnimation.step( dt );
         if ( overflow > 0 ) {
           this.zoomAnimation = null;
         }

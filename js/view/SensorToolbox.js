@@ -10,35 +10,35 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Ammeter' );
-  var AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/AmmeterNode' );
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var CCKCPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCPanel' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitElementToolNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolNode' );
-  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Property = require( 'AXON/Property' );
-  var SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
-  var SeriesAmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SeriesAmmeterNode' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
-  var Vector2 = require( 'DOT/Vector2' );
-  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
-  var Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Voltmeter' );
-  var VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VoltmeterNode' );
+  const Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Ammeter' );
+  const AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/AmmeterNode' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const CCKCPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCPanel' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const CircuitElementToolNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolNode' );
+  const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
+  const HBox = require( 'SCENERY/nodes/HBox' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Property = require( 'AXON/Property' );
+  const SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
+  const SeriesAmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SeriesAmmeterNode' );
+  const SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const VBox = require( 'SCENERY/nodes/VBox' );
+  const Vector2 = require( 'DOT/Vector2' );
+  const Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
+  const Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Voltmeter' );
+  const VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VoltmeterNode' );
 
   // strings
-  var ammetersString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeters' );
-  var ammeterString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeter' );
-  var voltmeterString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltmeter' );
+  const ammetersString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeters' );
+  const ammeterString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeter' );
+  const voltmeterString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltmeter' );
 
   // constants
-  var TOOLBOX_ICON_SIZE = 53;
-  var VOLTMETER_ICON_SCALE = 1.4;
-  var ICON_TEXT_SPACING = 3; // distance in view coordinates from the isIcon to the text below the isIcon
+  const TOOLBOX_ICON_SIZE = 53;
+  const VOLTMETER_ICON_SCALE = 1.4;
+  const ICON_TEXT_SPACING = 3; // distance in view coordinates from the isIcon to the text below the isIcon
 
   /**
    * @param {AlignGroup} alignGroup - for alignment with other controls
@@ -62,10 +62,10 @@ define( function( require ) {
      * @param {AmmeterNode|VoltmeterNode} meterNode
      * @returns {Object} a listener
      */
-    var createListener = function( meterModel, meterNode ) {
+    const createListener = function( meterModel, meterNode ) {
 
       return SimpleDragHandler.createForwardingListener( function( event ) {
-        var viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point );
+        const viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point );
         meterModel.draggingProbesWithBodyProperty.set( true );
         meterModel.visibleProperty.set( true );
         meterModel.bodyPositionProperty.set( viewPosition );
@@ -76,8 +76,8 @@ define( function( require ) {
     };
 
     // Draggable isIcon for the voltmeter
-    var voltmeter = new Voltmeter( tandem.createTandem( 'voltmeterIconModel' ) );
-    var voltmeterNodeIcon = new VoltmeterNode( voltmeter, null, null, tandem.createTandem( 'voltmeterNodeIcon' ), { isIcon: true } );
+    const voltmeter = new Voltmeter( tandem.createTandem( 'voltmeterIconModel' ) );
+    const voltmeterNodeIcon = new VoltmeterNode( voltmeter, null, null, tandem.createTandem( 'voltmeterNodeIcon' ), { isIcon: true } );
     voltmeterNode.voltmeter.visibleProperty.link( function( visible ) { voltmeterNodeIcon.visible = !visible; } );
     voltmeterNodeIcon.mutate( {
       scale: TOOLBOX_ICON_SIZE * VOLTMETER_ICON_SCALE / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height )
@@ -85,25 +85,25 @@ define( function( require ) {
     voltmeterNodeIcon.addInputListener( createListener( voltmeterNode.voltmeter, voltmeterNode ) );
 
     // Icon for the ammeter
-    var ammeter = new Ammeter( tandem.createTandem( 'ammeterIconModel' ) );
-    var ammeterNodeIcon = new AmmeterNode( ammeter, null, tandem.createTandem( 'ammeterNodeIcon' ), { isIcon: true } );
+    const ammeter = new Ammeter( tandem.createTandem( 'ammeterIconModel' ) );
+    const ammeterNodeIcon = new AmmeterNode( ammeter, null, tandem.createTandem( 'ammeterNodeIcon' ), { isIcon: true } );
     ammeterNode.ammeter.visibleProperty.link( function( visible ) { ammeterNodeIcon.visible = !visible; } );
     ammeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( ammeterNodeIcon.width, ammeterNodeIcon.height ) } );
     ammeterNodeIcon.addInputListener( createListener( ammeterNode.ammeter, ammeterNode ) );
 
     // Icon for the series ammeter
-    var seriesAmmeter = new SeriesAmmeter(
+    const seriesAmmeter = new SeriesAmmeter(
       new Vertex( Vector2.ZERO ),
       new Vertex( new Vector2( CCKCConstants.SERIES_AMMETER_LENGTH, 0 ) ),
       tandem.createTandem( 'seriesAmmeterIconModel' )
     );
-    var seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeter, tandem.createTandem( 'seriesAmmeterNodeIcon' ), {
+    const seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeter, tandem.createTandem( 'seriesAmmeterNodeIcon' ), {
       isIcon: true
     } );
-    var createSeriesAmmeter = function( position ) {
-      var halfLength = CCKCConstants.SERIES_AMMETER_LENGTH / 2;
-      var startVertex = new Vertex( position.plusXY( -halfLength, 0 ) );
-      var endVertex = new Vertex( position.plusXY( halfLength, 0 ) );
+    const createSeriesAmmeter = function( position ) {
+      const halfLength = CCKCConstants.SERIES_AMMETER_LENGTH / 2;
+      const startVertex = new Vertex( position.plusXY( -halfLength, 0 ) );
+      const endVertex = new Vertex( position.plusXY( halfLength, 0 ) );
       return new SeriesAmmeter(
         startVertex,
         endVertex,
@@ -111,7 +111,7 @@ define( function( require ) {
       );
     };
     seriesAmmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / seriesAmmeterNodeIcon.width } );
-    var seriesAmmeterToolNode = new CircuitElementToolNode(
+    const seriesAmmeterToolNode = new CircuitElementToolNode(
       '',
       new Property( false ),
       new Property( CircuitElementViewType.SCHEMATIC ),
@@ -134,14 +134,14 @@ define( function( require ) {
       } );
 
     // Labels underneath the sensor tool nodes
-    var voltmeterText = new Text( voltmeterString, { maxWidth: 60 } );
-    var ammeterText = new Text( options.showSeriesAmmeters ? ammetersString : ammeterString, { maxWidth: 60 } );
+    const voltmeterText = new Text( voltmeterString, { maxWidth: 60 } );
+    const ammeterText = new Text( options.showSeriesAmmeters ? ammetersString : ammeterString, { maxWidth: 60 } );
 
     // Alter the visibility of the labels when the labels checkbox is toggled.
     circuitLayerNode.model.showLabelsProperty.linkAttribute( voltmeterText, 'visible' );
     circuitLayerNode.model.showLabelsProperty.linkAttribute( ammeterText, 'visible' );
 
-    var voltmeterToolIcon = new VBox( {
+    const voltmeterToolIcon = new VBox( {
       spacing: ICON_TEXT_SPACING,
       children: [
         voltmeterNodeIcon,
@@ -149,11 +149,11 @@ define( function( require ) {
       ]
     } );
 
-    var children = [];
+    const children = [];
     options.showNoncontactAmmeters && children.push( ammeterNodeIcon );
     options.showSeriesAmmeters && children.push( seriesAmmeterToolNode );
 
-    var ammeterToolIcon = new VBox( {
+    const ammeterToolIcon = new VBox( {
       spacing: ICON_TEXT_SPACING,
       children: [
         new HBox( {

@@ -9,56 +9,56 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var Color = require( 'SCENERY/util/Color' );
-  var FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
-  var Image = require( 'SCENERY/nodes/Image' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Matrix3 = require( 'DOT/Matrix3' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var ResistorColors = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorColors' );
-  var ResistorType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ResistorType' );
-  var Shape = require( 'KITE/Shape' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const Color = require( 'SCENERY/util/Color' );
+  const FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
+  const Image = require( 'SCENERY/nodes/Image' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Matrix3 = require( 'DOT/Matrix3' );
+  const Path = require( 'SCENERY/nodes/Path' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const ResistorColors = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorColors' );
+  const ResistorType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ResistorType' );
+  const Shape = require( 'KITE/Shape' );
 
   // images
-  var coinImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/coin.png' );
-  var dogImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/dog.png' );
-  var dollarBillImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/dollar-bill.png' );
-  var eraserImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/eraser.png' );
-  var handImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/hand.png' );
-  var highResistanceResistorImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor-high.png' );
-  var lifelikeResistorImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor.png' );
-  var paperClipImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/paper-clip.png' );
-  var pencilImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/pencil.png' );
+  const coinImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/coin.png' );
+  const dogImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/dog.png' );
+  const dollarBillImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/dollar-bill.png' );
+  const eraserImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/eraser.png' );
+  const handImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/hand.png' );
+  const highResistanceResistorImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor-high.png' );
+  const lifelikeResistorImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor.png' );
+  const paperClipImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/paper-clip.png' );
+  const pencilImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/pencil.png' );
 
   // constants
 
   // hard coded because Image.width and Image.initialWidth sometimes return bad values in the built version
-  var LIFELIKE_IMAGE_WIDTH = 150;
-  var COLOR_BAND_WIDTH = 10;
-  var COLOR_BAND_HEIGHT = 39.75;
-  var COLOR_BAND_TOP = -0.25;
-  var COLOR_BAND_PADDING = 33;
-  var AVAILABLE_COLOR_BAND_SPACE = LIFELIKE_IMAGE_WIDTH - 2 * COLOR_BAND_PADDING;
+  const LIFELIKE_IMAGE_WIDTH = 150;
+  const COLOR_BAND_WIDTH = 10;
+  const COLOR_BAND_HEIGHT = 39.75;
+  const COLOR_BAND_TOP = -0.25;
+  const COLOR_BAND_PADDING = 33;
+  const AVAILABLE_COLOR_BAND_SPACE = LIFELIKE_IMAGE_WIDTH - 2 * COLOR_BAND_PADDING;
 
   // max is 4 bands, even though they are not always shown
-  var REMAINING_COLOR_BAND_SPACE = AVAILABLE_COLOR_BAND_SPACE - 4 * COLOR_BAND_WIDTH;
-  var COLOR_BAND_SPACING = REMAINING_COLOR_BAND_SPACE / 4 - 2; // two spaces before last band
-  var COLOR_BAND_Y = COLOR_BAND_TOP + 2.5;
+  const REMAINING_COLOR_BAND_SPACE = AVAILABLE_COLOR_BAND_SPACE - 4 * COLOR_BAND_WIDTH;
+  const COLOR_BAND_SPACING = REMAINING_COLOR_BAND_SPACE / 4 - 2; // two spaces before last band
+  const COLOR_BAND_Y = COLOR_BAND_TOP + 2.5;
 
   // Points sampled using Photoshop from a raster of the IEEE isIcon seen at
   // https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
-  var SCHEMATIC_SCALE = 0.54;
-  var SCHEMATIC_PERIOD = 22 * SCHEMATIC_SCALE;
-  var SCHEMATIC_STEM_WIDTH = 84 * SCHEMATIC_SCALE;
-  var SCHEMATIC_WAVELENGTH = 54 * SCHEMATIC_SCALE;
+  const SCHEMATIC_SCALE = 0.54;
+  const SCHEMATIC_PERIOD = 22 * SCHEMATIC_SCALE;
+  const SCHEMATIC_STEM_WIDTH = 84 * SCHEMATIC_SCALE;
+  const SCHEMATIC_WAVELENGTH = 54 * SCHEMATIC_SCALE;
 
   // cache the rasters so they aren't added to the spritesheet multiple times
-  var schematicRasterCache = {};
+  const schematicRasterCache = {};
 
-  var RESISTOR_IMAGE_MAP = {};
+  const RESISTOR_IMAGE_MAP = {};
   RESISTOR_IMAGE_MAP[ ResistorType.COIN ] = coinImage;
   RESISTOR_IMAGE_MAP[ ResistorType.PAPER_CLIP ] = paperClipImage;
   RESISTOR_IMAGE_MAP[ ResistorType.PENCIL ] = pencilImage;
@@ -84,15 +84,17 @@ define( function( require ) {
 
     // @public (read-only) {Resistor} the resistor depicted by this node
     this.resistor = resistor;
-    var lifelikeResistorImageNode = new Image( RESISTOR_IMAGE_MAP[ resistor.resistorType ] );
+    const lifelikeResistorImageNode = new Image( RESISTOR_IMAGE_MAP[ resistor.resistorType ] );
+
+    let updateColorBands = null;
 
     // Add color bands for the normal resistor
     if ( resistor.resistorType === ResistorType.RESISTOR ) {
 
       // Color bands for resistance > 0
-      var colorBands = _.range( 4 ).map( function( index ) {
+      const colorBands = _.range( 4 ).map( function( index ) {
 
-        var additionalOffset = index === 3 ? 12 : 0;
+        const additionalOffset = index === 3 ? 12 : 0;
         return new Rectangle(
           COLOR_BAND_PADDING + ( COLOR_BAND_WIDTH + COLOR_BAND_SPACING ) * index + additionalOffset, COLOR_BAND_Y,
           COLOR_BAND_WIDTH, COLOR_BAND_HEIGHT
@@ -100,7 +102,7 @@ define( function( require ) {
       } );
 
       // Single color band when resistance = 0 which appears in the middle
-      var singleColorBand = new Rectangle( 0, 0, COLOR_BAND_WIDTH, COLOR_BAND_HEIGHT, {
+      const singleColorBand = new Rectangle( 0, 0, COLOR_BAND_WIDTH, COLOR_BAND_HEIGHT, {
         centerX: COLOR_BAND_PADDING + AVAILABLE_COLOR_BAND_SPACE / 2,
         y: COLOR_BAND_Y
       } );
@@ -109,8 +111,8 @@ define( function( require ) {
        * When the resistance changes, update the colors of the color bands.
        * @param {number} resistance
        */
-      var updateColorBands = function( resistance ) {
-        var colors = ResistorColors.getColorArray( resistance );
+      updateColorBands = function( resistance ) {
+        const colors = ResistorColors.getColorArray( resistance );
 
         if ( colors.length === 1 ) {
           singleColorBand.fill = colors[ 0 ];
@@ -121,7 +123,7 @@ define( function( require ) {
 
           // Show all 4 colors bands and hide the 0-resistance band
           singleColorBand.fill = null;
-          for ( var i = 0; i < colorBands.length; i++ ) {
+          for ( let i = 0; i < colorBands.length; i++ ) {
             colorBands[ i ].fill = colors[ i ];
           }
         }
@@ -136,7 +138,7 @@ define( function( require ) {
     }
 
     // Classical zig-zag shape
-    var schematicShape = new Shape()
+    let schematicShape = new Shape()
       .moveTo( 0, lifelikeResistorImageNode.height * SCHEMATIC_SCALE )
       .lineToRelative( SCHEMATIC_STEM_WIDTH, 0 )
       .lineToRelative( SCHEMATIC_PERIOD / 2, -SCHEMATIC_WAVELENGTH / 2 )
@@ -150,14 +152,14 @@ define( function( require ) {
 
     // Icons should appear the same in the toolbox, see
     // https://github.com/phetsims/circuit-construction-kit-common/issues/389
-    var width = options.isIcon ? CCKCConstants.RESISTOR_LENGTH : resistor.distanceBetweenVertices;
+    const width = options.isIcon ? CCKCConstants.RESISTOR_LENGTH : resistor.distanceBetweenVertices;
     lifelikeResistorImageNode.mutate( {
       scale: width / lifelikeResistorImageNode.width
     } );
 
-    var scale = lifelikeResistorImageNode.width / schematicShape.bounds.width;
+    const scale = lifelikeResistorImageNode.width / schematicShape.bounds.width;
     schematicShape = schematicShape.transformed( Matrix3.scale( scale, scale ) );
-    var schematicNode = null;
+    let schematicNode = null;
     if ( !options.isIcon && schematicRasterCache[ resistor.resistorType ] ) {
       schematicNode = schematicRasterCache[ resistor.resistorType ];
     }

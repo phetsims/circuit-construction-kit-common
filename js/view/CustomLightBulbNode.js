@@ -10,23 +10,23 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var Image = require( 'SCENERY/nodes/Image' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var LightRaysNode = require( 'SCENERY_PHET/LightRaysNode' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Shape = require( 'KITE/Shape' );
-  var Util = require( 'DOT/Util' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const Image = require( 'SCENERY/nodes/Image' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const LightRaysNode = require( 'SCENERY_PHET/LightRaysNode' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Shape = require( 'KITE/Shape' );
+  const Util = require( 'DOT/Util' );
 
   // images
-  var backImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-back.png' );
-  var highResistanceSocketImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-front-high.png' );
-  var middleImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-middle.png' );
-  var socketImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-front.png' );
+  const backImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-back.png' );
+  const highResistanceSocketImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-front-high.png' );
+  const middleImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-middle.png' );
+  const socketImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-front.png' );
 
   // constants
-  var BULB_IMAGE_SCALE = 0.125;
+  const BULB_IMAGE_SCALE = 0.125;
 
   /**
    * @param {Property.<number>} brightnessProperty 0 (off) to 1 (full brightness)
@@ -35,7 +35,7 @@ define( function( require ) {
    */
   function CustomLightBulbNode( brightnessProperty, options ) {
     assert && assert( brightnessProperty, 'brightness property should exist' );
-    var self = this;
+    const self = this;
 
     options = _.extend( {
       baseOnly: false,
@@ -46,7 +46,7 @@ define( function( require ) {
     // @private (read-only) {boolean]
     this.baseOnly = options.baseOnly;
 
-    var selectedSocketImage = options.highResistance ? highResistanceSocketImage : socketImage;
+    const selectedSocketImage = options.highResistance ? highResistanceSocketImage : socketImage;
 
     // @private {Image}
     this.backNode = new Image( options.baseOnly ? selectedSocketImage : backImage, {
@@ -56,7 +56,7 @@ define( function( require ) {
       pickable: false
     } );
 
-    var middleNode = new Image( options.baseOnly ? selectedSocketImage : middleImage, {
+    const middleNode = new Image( options.baseOnly ? selectedSocketImage : middleImage, {
       scale: BULB_IMAGE_SCALE,
       centerBottom: this.backNode.centerBottom,
       pickable: false
@@ -69,7 +69,7 @@ define( function( require ) {
     else {
 
       // Show the rays here where they can be easily positioned, but only when more than the base is showing
-      var bulbRadius = middleNode.width / 2;
+      const bulbRadius = middleNode.width / 2;
 
       // @private {Node} - displays the light rays, not a child of this node
       this.raysNode = new LightRaysNode( bulbRadius, {
@@ -107,11 +107,11 @@ define( function( require ) {
 
     // Custom mouse and touch area for the bulb, so it doesn't interfere with the vertices,
     // see https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/5
-    var w = this.localBounds.width;
-    var h = this.localBounds.height;
-    var fractionDown = 0.6; // How far the top part of the bulb extends over the image
-    var fractionTrim = 0.1; // How much to trim off of the bottom of the bulb.
-    var fractionHorizontalPadding = 0.25;
+    const w = this.localBounds.width;
+    const h = this.localBounds.height;
+    const fractionDown = 0.6; // How far the top part of the bulb extends over the image
+    const fractionTrim = 0.1; // How much to trim off of the bottom of the bulb.
+    const fractionHorizontalPadding = 0.25;
     this.mouseArea = new Shape()
       .moveTo( this.localBounds.minX, this.localBounds.minY )
       .lineToRelative( w, 0 )
@@ -141,7 +141,7 @@ define( function( require ) {
      */
     update: function() {
       if ( this.visible && !this.baseOnly ) {
-        var brightness = this.brightnessProperty.value;
+        const brightness = this.brightnessProperty.value;
         assert && assert( brightness >= 0 && brightness <= 1 );
         this.backNode.visible = ( brightness > 0 );
         if ( this.backNode.visible ) {
@@ -157,7 +157,7 @@ define( function( require ) {
      * @public
      */
     setVisible: function( visible ) {
-      var wasVisible = this.visible;
+      const wasVisible = this.visible;
       Node.prototype.setVisible.call( this, visible );
       if ( !wasVisible && visible ) {
         this.update();

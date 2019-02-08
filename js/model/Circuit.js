@@ -10,47 +10,47 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
-  var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
-  var Charge = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Charge' );
-  var ChargeAnimator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ChargeAnimator' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CurrentType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CurrentType' );
-  var Emitter = require( 'AXON/Emitter' );
-  var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var InteractionMode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/InteractionMode' );
-  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
-  var ModifiedNodalAnalysisCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuit' );
-  var ModifiedNodalAnalysisCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuitElement' );
-  var NumberProperty = require( 'AXON/NumberProperty' );
-  var ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  var ObservableArray = require( 'AXON/ObservableArray' );
-  var Property = require( 'AXON/Property' );
-  var PropertyIO = require( 'AXON/PropertyIO' );
-  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
-  var SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
-  var StringIO = require( 'TANDEM/types/StringIO' );
-  var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
-  var Tandem = require( 'TANDEM/Tandem' );
-  var Vector2 = require( 'DOT/Vector2' );
-  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
-  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
+  const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
+  const Charge = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Charge' );
+  const ChargeAnimator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ChargeAnimator' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const CurrentType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CurrentType' );
+  const Emitter = require( 'AXON/Emitter' );
+  const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const InteractionMode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/InteractionMode' );
+  const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
+  const ModifiedNodalAnalysisCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuit' );
+  const ModifiedNodalAnalysisCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuitElement' );
+  const NumberProperty = require( 'AXON/NumberProperty' );
+  const ObjectIO = require( 'TANDEM/types/ObjectIO' );
+  const ObservableArray = require( 'AXON/ObservableArray' );
+  const Property = require( 'AXON/Property' );
+  const PropertyIO = require( 'AXON/PropertyIO' );
+  const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
+  const SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
+  const StringIO = require( 'TANDEM/types/StringIO' );
+  const Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
+  const Tandem = require( 'TANDEM/Tandem' );
+  const Vector2 = require( 'DOT/Vector2' );
+  const Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
+  const Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
 
   // constants
-  var SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
-  var BUMP_AWAY_RADIUS = 20; // If two vertices are too close together after one is released, and they could not be
+  const SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
+  const BUMP_AWAY_RADIUS = 20; // If two vertices are too close together after one is released, and they could not be
                              // joined then bump them apart so they do not look connected.
 
-  var trueFunction = _.constant( true ); // Lower cased so IDEA doesn't think it is a constructor
+  const trueFunction = _.constant( true ); // Lower cased so IDEA doesn't think it is a constructor
 
   /**
    * Given a CircuitElement, call its update function (if it has one).
    * @param {CircuitElement} circuitElement
    */
-  var UPDATE_IF_PRESENT = function( circuitElement ) {
+  const UPDATE_IF_PRESENT = function( circuitElement ) {
     circuitElement.update && circuitElement.update();
   };
 
@@ -60,7 +60,7 @@ define( function( require ) {
    * @constructor
    */
   function Circuit( tandem, options ) {
-    var self = this;
+    const self = this;
 
     options = _.extend( { blackBoxStudy: false }, options );
     this.blackBoxStudy = options.blackBoxStudy;
@@ -110,7 +110,7 @@ define( function( require ) {
     this.chargeAnimator = new ChargeAnimator( this );
 
     // Re-solve the circuit when voltages or resistances change.
-    var solveListener = this.solve.bind( this );
+    const solveListener = this.solve.bind( this );
 
     // Solve the circuit when any of the circuit element attributes change.
     this.circuitElements.addItemAddedListener( function( circuitElement ) {
@@ -127,7 +127,7 @@ define( function( require ) {
       // When any vertex moves, relayout all charges within the fixed-length connected component, see #100
       circuitElement.chargeLayoutDirty = true;
 
-      var updateCharges = function() {
+      const updateCharges = function() {
         self.markAllConnectedCircuitElementsDirty( circuitElement.startVertexProperty.get() );
       };
 
@@ -180,7 +180,7 @@ define( function( require ) {
     // CircuitElementEditNode)
     this.componentEditedEmitter = new Emitter();
 
-    var emitCircuitChanged = function() {
+    const emitCircuitChanged = function() {
       self.circuitChangedEmitter.emit();
     };
 
@@ -189,13 +189,13 @@ define( function( require ) {
       // Observe the change in location of the vertices, to update the ammeter and voltmeter
       vertex.positionProperty.link( emitCircuitChanged );
 
-      var filtered = self.vertices.filter( function( candidateVertex ) {
+      const filtered = self.vertices.filter( function( candidateVertex ) {
         return vertex === candidateVertex;
       } );
       assert && assert( filtered.length === 1, 'should only have one copy of each vertex' );
 
       // if one vertex becomes selected, deselect the other vertices and circuit elements
-      var vertexSelectedPropertyListener = function( selected ) {
+      const vertexSelectedPropertyListener = function( selected ) {
         if ( selected ) {
           self.vertices.forEach( function( v ) {
             if ( v !== vertex ) {
@@ -249,11 +249,11 @@ define( function( require ) {
       self.stepActions.push( function() {
 
         // Collect adjacent vertices
-        var neighbors = self.getNeighboringVertices( vertex );
+        const neighbors = self.getNeighboringVertices( vertex );
 
         // Also consider the vertex being dropped for comparison with neighbors
         neighbors.push( vertex );
-        var pairs = [];
+        const pairs = [];
         neighbors.forEach( function( neighbor ) {
           self.vertices.forEach( function( vertex ) {
 
@@ -268,11 +268,11 @@ define( function( require ) {
         if ( pairs.length > 0 ) {
 
           // Find the closest pair
-          var distance = function( pair ) {
+          const distance = function( pair ) {
             return pair.v2.unsnappedPositionProperty.get().distance( pair.v1.unsnappedPositionProperty.get() );
           };
-          var minPair = _.minBy( pairs, distance );
-          var minDistance = distance( minPair );
+          const minPair = _.minBy( pairs, distance );
+          const minDistance = distance( minPair );
 
           // If the pair is too close, then bump one vertex away from each other (but only if both are not user controlled)
           if ( minDistance < BUMP_AWAY_RADIUS && !minPair.v1.isDragged && !minPair.v2.isDragged ) {
@@ -312,8 +312,8 @@ define( function( require ) {
      * @private
      */
     moveVerticesApart: function( v1, v2 ) {
-      var v1Neighbors = this.getNeighboringVertices( v1 );
-      var v2Neighbors = this.getNeighboringVertices( v2 );
+      const v1Neighbors = this.getNeighboringVertices( v1 );
+      const v2Neighbors = this.getNeighboringVertices( v2 );
 
       // When vertex v1 is too close (but not connected) to v2, we choose vertex v3 as a reference point for moving
       // vertex v1 (or vice versa).
@@ -345,19 +345,19 @@ define( function( require ) {
      * @private
      */
     bumpAwaySingleVertex: function( vertex, pivotVertex ) {
-      var distance = vertex.positionProperty.value.distance( pivotVertex.positionProperty.value );
+      const distance = vertex.positionProperty.value.distance( pivotVertex.positionProperty.value );
 
       // If the vertices are too close, they must be translated away
       if ( distance < BUMP_AWAY_RADIUS ) {
 
-        var difference = pivotVertex.positionProperty.value.minus( vertex.positionProperty.value );
+        let difference = pivotVertex.positionProperty.value.minus( vertex.positionProperty.value );
 
         // Support when vertex is on the pivot, mainly for fuzz testing.  In that case, just move directly to the right
         if ( difference.magnitude() === 0 ) {
           difference = new Vector2( 1, 0 );
         }
 
-        var delta = difference.normalized().times( -SNAP_RADIUS * 1.5 );
+        const delta = difference.normalized().times( -SNAP_RADIUS * 1.5 );
         this.translateVertexGroup( vertex, delta );
       }
       else {
@@ -366,11 +366,11 @@ define( function( require ) {
         // batteries (which are around 100 view units long), rotate Math.PI/4. Longer components don't need to rotate
         // by such a large angle because the arc length will be proportionately longer,
         // see https://github.com/phetsims/circuit-construction-kit-common/issues/344
-        var searchAngle = Math.PI / 4 * 100 / distance;
+        const searchAngle = Math.PI / 4 * 100 / distance;
         this.rotateSingleVertexByAngle( vertex, pivotVertex, searchAngle );
-        var distance1 = this.closestDistanceToOtherVertex( vertex );
+        const distance1 = this.closestDistanceToOtherVertex( vertex );
         this.rotateSingleVertexByAngle( vertex, pivotVertex, -2 * searchAngle );
-        var distance2 = this.closestDistanceToOtherVertex( vertex );
+        const distance2 = this.closestDistanceToOtherVertex( vertex );
         if ( distance2 <= distance1 ) {
 
           // go back to the best spot
@@ -387,13 +387,13 @@ define( function( require ) {
      * @private
      */
     rotateSingleVertexByAngle: function( vertex, pivotVertex, deltaAngle ) {
-      var position = vertex.positionProperty.get();
-      var pivotPosition = pivotVertex.positionProperty.get();
+      const position = vertex.positionProperty.get();
+      const pivotPosition = pivotVertex.positionProperty.get();
 
-      var distanceFromVertex = position.distance( pivotPosition );
-      var angle = position.minus( pivotPosition ).angle();
+      const distanceFromVertex = position.distance( pivotPosition );
+      const angle = position.minus( pivotPosition ).angle();
 
-      var newPosition = pivotPosition.plus( Vector2.createPolar( distanceFromVertex, angle + deltaAngle ) );
+      const newPosition = pivotPosition.plus( Vector2.createPolar( distanceFromVertex, angle + deltaAngle ) );
       vertex.unsnappedPositionProperty.set( newPosition );
       vertex.positionProperty.set( newPosition );
     },
@@ -405,11 +405,11 @@ define( function( require ) {
      * @private
      */
     closestDistanceToOtherVertex: function( vertex ) {
-      var closestDistance = null;
-      for ( var i = 0; i < this.vertices.length; i++ ) {
-        var v = this.vertices.get( i );
+      let closestDistance = null;
+      for ( let i = 0; i < this.vertices.length; i++ ) {
+        const v = this.vertices.get( i );
         if ( v !== vertex ) {
-          var distance = v.positionProperty.get().distance( vertex.positionProperty.get() );
+          const distance = v.positionProperty.get().distance( vertex.positionProperty.get() );
           if ( closestDistance === null || distance < closestDistance ) {
             closestDistance = distance;
           }
@@ -458,8 +458,8 @@ define( function( require ) {
       if ( vertex.isDragged ) {
         return;
       }
-      var self = this;
-      var neighborCircuitElements = this.getNeighborCircuitElements( vertex );
+      const self = this;
+      let neighborCircuitElements = this.getNeighborCircuitElements( vertex );
       if ( neighborCircuitElements.length <= 1 ) {
 
         // No need to cut a solo vertex
@@ -475,11 +475,11 @@ define( function( require ) {
        * Function that identifies where vertices would go if pulled toward their neighbors
        * @returns {Array}
        */
-      var getTranslations = function() {
+      const getTranslations = function() {
         return neighborCircuitElements.map( function( circuitElement ) {
-          var oppositePosition = circuitElement.getOppositeVertex( vertex ).positionProperty.get();
-          var position = vertex.positionProperty.get();
-          var delta = oppositePosition.minus( position );
+          const oppositePosition = circuitElement.getOppositeVertex( vertex ).positionProperty.get();
+          const position = vertex.positionProperty.get();
+          let delta = oppositePosition.minus( position );
 
           // If the vertices were at the same position, move them randomly.  See https://github.com/phetsims/circuit-construction-kit-common/issues/405
           if ( delta.magnitude() === 0 ) {
@@ -490,14 +490,14 @@ define( function( require ) {
       };
 
       // Track where they would go if they moved toward their opposite vertices
-      var translations = getTranslations();
-      var angles = translations.map( function( t ) {return t.angle();} );
+      let translations = getTranslations();
+      let angles = translations.map( function( t ) {return t.angle();} );
 
       if ( neighborCircuitElements.length > 2 ) {
 
         // Reorder elements based on angle so they don't cross over when spread out
         neighborCircuitElements = _.sortBy( neighborCircuitElements, function( n ) {
-          var index = neighborCircuitElements.indexOf( n );
+          const index = neighborCircuitElements.indexOf( n );
           return angles[ index ];
         } );
 
@@ -506,23 +506,23 @@ define( function( require ) {
         angles = translations.map( function( t ) { return t.angle(); } );
       }
 
-      var separation = Math.PI * 2 / neighborCircuitElements.length;
-      var results = [];
+      const separation = Math.PI * 2 / neighborCircuitElements.length;
+      let results = [];
 
-      var center = _.sum( angles ) / angles.length;
+      const center = _.sum( angles ) / angles.length;
 
       // Move vertices away from cut vertex so that wires don't overlap
       if ( neighborCircuitElements.length === 2 ) {
 
-        var ax = Vector2.createPolar( 30, center - separation / neighborCircuitElements.length );
-        var bx = Vector2.createPolar( 30, center + separation / neighborCircuitElements.length );
+        const ax = Vector2.createPolar( 30, center - separation / neighborCircuitElements.length );
+        const bx = Vector2.createPolar( 30, center + separation / neighborCircuitElements.length );
 
-        var da = angles[ 0 ] - center;
+        const da = angles[ 0 ] - center;
 
         results = da < 0 ? [ ax, bx ] : [ bx, ax ];
       }
       else {
-        var distance = neighborCircuitElements.length <= 5 ? 30 : neighborCircuitElements.length * 30 / 5;
+        const distance = neighborCircuitElements.length <= 5 ? 30 : neighborCircuitElements.length * 30 / 5;
         neighborCircuitElements.forEach( function( circuitElement, k ) {
           results.push( Vector2.createPolar( distance, separation * k + angles[ 0 ] ) );
         } );
@@ -530,7 +530,7 @@ define( function( require ) {
 
       neighborCircuitElements.forEach( function( circuitElement, i ) {
 
-        var newVertex = new Vertex( vertex.positionProperty.get(), {
+        const newVertex = new Vertex( vertex.positionProperty.get(), {
           tandem: self.vertexGroupTandem.createNextTandem()
         } );
 
@@ -561,10 +561,10 @@ define( function( require ) {
      * @private
      */
     translateVertexGroup: function( mainVertex, delta ) {
-      var vertexGroup = this.findAllFixedVertices( mainVertex );
+      const vertexGroup = this.findAllFixedVertices( mainVertex );
 
-      for ( var j = 0; j < vertexGroup.length; j++ ) {
-        var vertex = vertexGroup[ j ];
+      for ( let j = 0; j < vertexGroup.length; j++ ) {
+        const vertex = vertexGroup[ j ];
 
         // Only translate vertices that are movable and not connected to the black box interface by FixedLength elements
         if ( vertex.draggableProperty.get() && !this.hasFixedConnectionToBlackBoxInterfaceVertex( vertex ) ) {
@@ -580,7 +580,7 @@ define( function( require ) {
      * @private
      */
     hasFixedConnectionToBlackBoxInterfaceVertex: function( vertex ) {
-      var fixedVertices = this.findAllFixedVertices( vertex );
+      const fixedVertices = this.findAllFixedVertices( vertex );
       return _.some( fixedVertices, function( fixedVertex ) {
         return fixedVertex.blackBoxInterfaceProperty.get();
       } );
@@ -652,7 +652,7 @@ define( function( require ) {
      * @public
      */
     areVerticesElectricallyConnected: function( vertex1, vertex2 ) {
-      var connectedVertices = this.searchVertices( vertex1, function( startVertex, circuitElement ) {
+      const connectedVertices = this.searchVertices( vertex1, function( startVertex, circuitElement ) {
 
           // If the circuit element has a closed property (like a Switch), it is only OK to traverse if the element is
           // closed.
@@ -678,13 +678,13 @@ define( function( require ) {
 
       // Must run the solver even if there is only 1 battery, because it solves for the voltage difference between
       // the vertices
-      var self = this;
+      const self = this;
 
-      var batteries = this.circuitElements.getArray().filter( function( b ) { return b instanceof Battery; } );
-      var resistors = this.circuitElements.getArray().filter( function( b ) { return !( b instanceof Battery ); } );
+      const batteries = this.circuitElements.getArray().filter( function( b ) { return b instanceof Battery; } );
+      const resistors = this.circuitElements.getArray().filter( function( b ) { return !( b instanceof Battery ); } );
 
       // introduce a synthetic vertex for each battery to model internal resistance
-      var resistorAdapters = resistors.map( function( circuitElement ) {
+      const resistorAdapters = resistors.map( function( circuitElement ) {
         return new ModifiedNodalAnalysisCircuitElement(
           self.vertices.indexOf( circuitElement.startVertexProperty.get() ), // the index of vertex corresponds to position in list.
           self.vertices.indexOf( circuitElement.endVertexProperty.get() ),
@@ -692,9 +692,9 @@ define( function( require ) {
           circuitElement.resistanceProperty.value
         );
       } );
-      var batteryAdapters = [];
+      const batteryAdapters = [];
 
-      var nextSyntheticVertexIndex = self.vertices.length;
+      let nextSyntheticVertexIndex = self.vertices.length;
       batteries.forEach( function( battery ) {
 
         // add a voltage source from startVertex to syntheticVertex
@@ -717,7 +717,7 @@ define( function( require ) {
         nextSyntheticVertexIndex++;
       } );
 
-      var solution = new ModifiedNodalAnalysisCircuit( batteryAdapters, resistorAdapters, [] ).solve();
+      const solution = new ModifiedNodalAnalysisCircuit( batteryAdapters, resistorAdapters, [] ).solve();
 
       // Apply the node voltages to the vertices
       this.vertices.getArray().forEach( function( vertex, i ) {
@@ -799,7 +799,7 @@ define( function( require ) {
      * @public
      */
     layoutChargesInDirtyCircuitElements: function() {
-      var self = this;
+      const self = this;
       this.circuitElements.getArray().forEach( function( circuitElement ) {
         self.layoutCharges( circuitElement );
       } );
@@ -833,9 +833,9 @@ define( function( require ) {
      * @private
      */
     getNeighborVerticesInGroup: function( vertex, circuitElements ) {
-      var neighbors = [];
-      for ( var i = 0; i < circuitElements.length; i++ ) {
-        var circuitElement = circuitElements[ i ];
+      const neighbors = [];
+      for ( let i = 0; i < circuitElements.length; i++ ) {
+        const circuitElement = circuitElements[ i ];
         if ( circuitElement.containsVertex( vertex ) ) {
           neighbors.push( circuitElement.getOppositeVertex( vertex ) );
         }
@@ -850,7 +850,7 @@ define( function( require ) {
      * @private
      */
     getNeighboringVertices: function( vertex ) {
-      var neighborCircuitElements = this.getNeighborCircuitElements( vertex );
+      const neighborCircuitElements = this.getNeighborCircuitElements( vertex );
       return this.getNeighborVerticesInGroup( vertex, neighborCircuitElements );
     },
 
@@ -860,13 +860,13 @@ define( function( require ) {
      * @private
      */
     markAllConnectedCircuitElementsDirty: function( vertex ) {
-      var allConnectedVertices = this.findAllConnectedVertices( vertex );
+      const allConnectedVertices = this.findAllConnectedVertices( vertex );
 
       // This is called many times while dragging a wire vertex, so for loops (as opposed to functional style) are used
       // to avoid garbage
-      for ( var i = 0; i < allConnectedVertices.length; i++ ) {
-        var neighborCircuitElements = this.getNeighborCircuitElements( allConnectedVertices[ i ] );
-        for ( var k = 0; k < neighborCircuitElements.length; k++ ) {
+      for ( let i = 0; i < allConnectedVertices.length; i++ ) {
+        const neighborCircuitElements = this.getNeighborCircuitElements( allConnectedVertices[ i ] );
+        for ( let k = 0; k < neighborCircuitElements.length; k++ ) {
 
           // Note the same circuit element may be marked dirty twice, but this does not cause any problems.
           neighborCircuitElements[ k ].chargeLayoutDirty = true;
@@ -894,22 +894,22 @@ define( function( require ) {
     searchVertices: function( vertex, okToVisit ) {
       assert && assert( this.vertices.indexOf( vertex ) >= 0, 'Vertex wasn\'t in the model' );
 
-      var fixedVertices = [];
-      var toVisit = [ vertex ];
-      var visited = [];
+      const fixedVertices = [];
+      const toVisit = [ vertex ];
+      const visited = [];
       while ( toVisit.length > 0 ) {
 
         // Find the neighbors joined by a FixedCircuitElement, not a stretchy Wire
-        var currentVertex = toVisit.pop();
+        const currentVertex = toVisit.pop();
 
         // If we haven't visited it before, then explore it
         if ( visited.indexOf( currentVertex ) < 0 ) {
 
-          var neighborCircuitElements = this.getNeighborCircuitElements( currentVertex );
+          const neighborCircuitElements = this.getNeighborCircuitElements( currentVertex );
 
-          for ( var i = 0; i < neighborCircuitElements.length; i++ ) {
-            var neighborCircuitElement = neighborCircuitElements[ i ];
-            var neighborVertex = neighborCircuitElement.getOppositeVertex( currentVertex );
+          for ( let i = 0; i < neighborCircuitElements.length; i++ ) {
+            const neighborCircuitElement = neighborCircuitElements[ i ];
+            const neighborVertex = neighborCircuitElement.getOppositeVertex( currentVertex );
 
             // If the node was already visited, don't visit again
             if ( visited.indexOf( neighborVertex ) < 0 &&
@@ -965,7 +965,7 @@ define( function( require ) {
      * @returns {Vertex|null}
      */
     getSelectedVertex: function() {
-      var selectedVertex = _.find( this.vertices.getArray(), function( vertex ) {
+      const selectedVertex = _.find( this.vertices.getArray(), function( vertex ) {
         return vertex.selectedProperty.get();
       } );
       return selectedVertex || null;
@@ -981,14 +981,14 @@ define( function( require ) {
      * @public
      */
     getDropTarget: function( vertex, mode, blackBoxBounds ) {
-      var self = this;
+      const self = this;
 
       if ( mode === InteractionMode.TEST ) {
         assert && assert( blackBoxBounds, 'bounds should be provided for build mode' );
       }
 
       // Rules for a vertex connecting to another vertex.
-      var candidateVertices = this.vertices.getArray().filter( function( candidateVertex ) {
+      let candidateVertices = this.vertices.getArray().filter( function( candidateVertex ) {
 
         // (1) A vertex may not connect to an adjacent vertex.
         if ( self.isVertexAdjacent( vertex, candidateVertex ) ) {
@@ -1020,9 +1020,9 @@ define( function( require ) {
 
         // if something else is already snapping to candidateVertex, then we cannot snap to it as well.
         // check the neighbor vertices
-        for ( var i = 0; i < self.vertices.length; i++ ) {
-          var circuitVertex = self.vertices.get( i );
-          var adjacent = self.isVertexAdjacent( circuitVertex, vertex );
+        for ( let i = 0; i < self.vertices.length; i++ ) {
+          const circuitVertex = self.vertices.get( i );
+          const adjacent = self.isVertexAdjacent( circuitVertex, vertex );
 
           // If the adjacent vertex has the same position as the candidate vertex, that means it is already "snapped"
           // there and hence another vertex should not snap there at the same time.
@@ -1031,10 +1031,10 @@ define( function( require ) {
           }
         }
 
-        var fixedVertices = self.findAllFixedVertices( vertex );
+        const fixedVertices = self.findAllFixedVertices( vertex );
 
         // (6) a vertex cannot be connected to its own fixed subgraph (no wire)
-        for ( i = 0; i < fixedVertices.length; i++ ) {
+        for ( let i = 0; i < fixedVertices.length; i++ ) {
           if ( fixedVertices[ i ] === candidateVertex ) {
             return false;
           }
@@ -1043,14 +1043,14 @@ define( function( require ) {
         // (7) a wire vertex cannot connect if its neighbor is already proposing a connection
         // You can always attach to a black box interface
         if ( !candidateVertex.blackBoxInterfaceProperty.get() ) {
-          var neighbors = self.getNeighborCircuitElements( candidateVertex );
-          for ( i = 0; i < neighbors.length; i++ ) {
-            var neighbor = neighbors[ i ];
-            var oppositeVertex = neighbor.getOppositeVertex( candidateVertex );
+          const neighbors = self.getNeighborCircuitElements( candidateVertex );
+          for ( let i = 0; i < neighbors.length; i++ ) {
+            const neighbor = neighbors[ i ];
+            const oppositeVertex = neighbor.getOppositeVertex( candidateVertex );
 
             // is another node proposing a match to that node?
-            for ( var k = 0; k < self.vertices.length; k++ ) {
-              var v = self.vertices.get( k );
+            for ( let k = 0; k < self.vertices.length; k++ ) {
+              const v = self.vertices.get( k );
               if ( neighbor instanceof Wire &&
                    v !== vertex &&
                    v !== oppositeVertex &&
@@ -1064,9 +1064,9 @@ define( function( require ) {
         }
 
         // (8) a wire vertex cannot double connect to an object, creating a tiny short circuit
-        var candidateNeighbors = self.getNeighboringVertices( candidateVertex );
-        var myNeighbors = self.getNeighboringVertices( vertex );
-        var intersection = _.intersection( candidateNeighbors, myNeighbors );
+        const candidateNeighbors = self.getNeighboringVertices( candidateVertex );
+        const myNeighbors = self.getNeighboringVertices( vertex );
+        const intersection = _.intersection( candidateNeighbors, myNeighbors );
         if ( intersection.length !== 0 ) {
           return false;
         }
@@ -1079,7 +1079,7 @@ define( function( require ) {
       // (9) When in Black Box "build" mode (i.e. building inside the black box), a vertex user cannot connect to
       // a black box interface vertex if its other vertices would be outside of the black box.  See #136
       if ( mode === InteractionMode.TEST ) {
-        var fixedVertices2 = this.findAllFixedVertices( vertex );
+        const fixedVertices2 = this.findAllFixedVertices( vertex );
         candidateVertices = candidateVertices.filter( function( candidateVertex ) {
 
           // Don't connect to vertices that might have sneaked outside of the black box, say by a rotation.
@@ -1088,11 +1088,11 @@ define( function( require ) {
           }
 
           // How far the vertex would be moved if it joined to the candidate
-          var delta = candidateVertex.positionProperty.get().minus( vertex.positionProperty.get() );
+          const delta = candidateVertex.positionProperty.get().minus( vertex.positionProperty.get() );
 
           if ( candidateVertex.blackBoxInterfaceProperty.get() || blackBoxBounds.containsPoint( candidateVertex.positionProperty.get() ) ) {
-            for ( var i = 0; i < fixedVertices2.length; i++ ) {
-              var connectedVertex = fixedVertices2[ i ];
+            for ( let i = 0; i < fixedVertices2.length; i++ ) {
+              const connectedVertex = fixedVertices2[ i ];
               if ( connectedVertex.blackBoxInterfaceProperty.get() ) {
 
                 // OK for black box interface vertex to be slightly outside the box
@@ -1119,7 +1119,7 @@ define( function( require ) {
       if ( candidateVertices.length === 0 ) { return null; }
 
       // Find the closest match
-      var sorted = _.sortBy( candidateVertices, function( candidateVertex ) {
+      const sorted = _.sortBy( candidateVertices, function( candidateVertex ) {
         return vertex.unsnappedPositionProperty.get().distance( candidateVertex.positionProperty.get() );
       } );
       return sorted[ 0 ];
@@ -1130,8 +1130,8 @@ define( function( require ) {
      * @param {CircuitElement} circuitElement - the circuit element to flip
      */
     flip: function( circuitElement ) {
-      var startVertex = circuitElement.startVertexProperty.value;
-      var endVertex = circuitElement.endVertexProperty.value;
+      const startVertex = circuitElement.startVertexProperty.value;
+      const endVertex = circuitElement.endVertexProperty.value;
       circuitElement.startVertexProperty.value = endVertex;
       circuitElement.endVertexProperty.value = startVertex;
 
@@ -1154,35 +1154,35 @@ define( function( require ) {
         circuitElement.chargeLayoutDirty = false;
 
         // Identify charges that were already in the branch.
-        var charges = this.getChargesInCircuitElement( circuitElement );
+        const charges = this.getChargesInCircuitElement( circuitElement );
 
         // put charges 1/2 separation from the edge so it will match up with adjacent components
-        var offset = CCKCConstants.CHARGE_SEPARATION / 2;
-        var lastChargePosition = circuitElement.chargePathLength - offset;
-        var firstChargePosition = offset;
-        var lengthForCharges = lastChargePosition - firstChargePosition;
+        const offset = CCKCConstants.CHARGE_SEPARATION / 2;
+        const lastChargePosition = circuitElement.chargePathLength - offset;
+        const firstChargePosition = offset;
+        const lengthForCharges = lastChargePosition - firstChargePosition;
 
         // Util.roundSymmetric leads to charges too far apart when N=2
-        var numberOfCharges = Math.ceil( lengthForCharges / CCKCConstants.CHARGE_SEPARATION );
+        const numberOfCharges = Math.ceil( lengthForCharges / CCKCConstants.CHARGE_SEPARATION );
 
         // compute distance between adjacent charges
-        var spacing = lengthForCharges / ( numberOfCharges - 1 );
+        const spacing = lengthForCharges / ( numberOfCharges - 1 );
 
-        for ( var i = 0; i < numberOfCharges; i++ ) {
+        for ( let i = 0; i < numberOfCharges; i++ ) {
 
           // If there is a single particle, show it in the middle of the component, otherwise space equally
-          var chargePosition = numberOfCharges === 1 ?
+          const chargePosition = numberOfCharges === 1 ?
                                ( firstChargePosition + lastChargePosition ) / 2 :
                                i * spacing + offset;
 
-          var desiredCharge = this.currentTypeProperty.get() === CurrentType.ELECTRONS ? -1 : +1;
+          const desiredCharge = this.currentTypeProperty.get() === CurrentType.ELECTRONS ? -1 : +1;
 
           if ( charges.length > 0 &&
                charges[ 0 ].charge === desiredCharge &&
                charges[ 0 ].circuitElement === circuitElement &&
                charges[ 0 ].visibleProperty === this.showCurrentProperty ) {
 
-            var c = charges.shift(); // remove 1st element, since it's the charge we checked in the guard
+            const c = charges.shift(); // remove 1st element, since it's the charge we checked in the guard
             c.circuitElement = circuitElement;
             c.distance = chargePosition;
             c.updatePositionAndAngle();
@@ -1190,7 +1190,7 @@ define( function( require ) {
           else {
 
             // nothing suitable in the pool, create something new
-            var charge = new Charge( circuitElement, chargePosition, this.showCurrentProperty, desiredCharge );
+            const charge = new Charge( circuitElement, chargePosition, this.showCurrentProperty, desiredCharge );
             this.charges.add( charge );
           }
         }
@@ -1219,10 +1219,10 @@ define( function( require ) {
      * @public
      */
     toStateObject: function() {
-      var self = this;
+      const self = this;
 
       // TODO: better way?
-      var typeMap = {
+      const typeMap = {
         wire: Wire,
         battery: Battery,
         resistor: Resistor,
@@ -1231,10 +1231,10 @@ define( function( require ) {
         switch: Switch
       };
 
-      var getKey = function( circuitElement ) {
-        var keys = _.keys( typeMap );
-        for ( var i = 0; i < keys.length; i++ ) {
-          var key = keys[ i ];
+      const getKey = function( circuitElement ) {
+        const keys = _.keys( typeMap );
+        for ( let i = 0; i < keys.length; i++ ) {
+          const key = keys[ i ];
           if ( circuitElement instanceof typeMap[ key ] ) {
             return key;
           }
@@ -1272,7 +1272,7 @@ define( function( require ) {
      * @param {Property.<string>} viewTypeProperty
      */
     setFromStateObject: function( stateObject, viewTypeProperty ) {
-      var self = this;
+      const self = this;
       this.clear();
       this.wireResistivityProperty.value = stateObject.wireResistivity;
       this.batteryResistanceProperty.value = stateObject.batteryResistance;
@@ -1286,10 +1286,10 @@ define( function( require ) {
       } );
 
       stateObject.circuitElements.forEach( function( circuitElementStateObject ) {
-        var type = circuitElementStateObject.type;
-        var startVertex = self.vertices.get( circuitElementStateObject.startVertexIndex );
-        var endVertex = self.vertices.get( circuitElementStateObject.endVertexIndex );
-        var tandem = new Tandem( circuitElementStateObject.tandemID );
+        const type = circuitElementStateObject.type;
+        const startVertex = self.vertices.get( circuitElementStateObject.startVertexIndex );
+        const endVertex = self.vertices.get( circuitElementStateObject.endVertexIndex );
+        const tandem = new Tandem( circuitElementStateObject.tandemID );
         if ( type === 'wire' ) {
           self.circuitElements.add( new Wire( startVertex, endVertex, self.wireResistivityProperty, tandem ) );
         }

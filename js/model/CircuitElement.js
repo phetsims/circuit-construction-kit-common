@@ -10,17 +10,17 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var Emitter = require( 'AXON/Emitter' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var NumberProperty = require( 'AXON/NumberProperty' );
-  var PhetioObject = require( 'TANDEM/PhetioObject' );
-  var Property = require( 'AXON/Property' );
-  var Vector2 = require( 'DOT/Vector2' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const Emitter = require( 'AXON/Emitter' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const NumberProperty = require( 'AXON/NumberProperty' );
+  const PhetioObject = require( 'TANDEM/PhetioObject' );
+  const Property = require( 'AXON/Property' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   // variables
-  var index = 0;
+  let index = 0;
 
   /**
    * @param {Vertex} startVertex
@@ -221,8 +221,8 @@ define( function( require ) {
      * @public
      */
     replaceVertex: function( oldVertex, newVertex ) {
-      var startVertex = this.startVertexProperty.get();
-      var endVertex = this.endVertexProperty.get();
+      const startVertex = this.startVertexProperty.get();
+      const endVertex = this.endVertexProperty.get();
 
       assert && assert( oldVertex !== newVertex, 'Cannot replace with the same vertex' );
       assert && assert( oldVertex === startVertex || oldVertex === endVertex, 'Cannot replace a nonexistent vertex' );
@@ -280,12 +280,12 @@ define( function( require ) {
      * @public
      */
     updateMatrixForPoint: function( distanceAlongWire, matrix ) {
-      var startPosition = this.startPositionProperty.get();
-      var endPosition = this.endPositionProperty.get();
-      var translation = startPosition.blend( endPosition, distanceAlongWire / this.chargePathLength );
+      const startPosition = this.startPositionProperty.get();
+      const endPosition = this.endPositionProperty.get();
+      const translation = startPosition.blend( endPosition, distanceAlongWire / this.chargePathLength );
       assert && assert( !isNaN( translation.x ), 'x should be a number' );
       assert && assert( !isNaN( translation.y ), 'y should be a number' );
-      var angle = Vector2.getAngleBetweenVectors( startPosition, endPosition );
+      const angle = Vector2.getAngleBetweenVectors( startPosition, endPosition );
       assert && assert( !isNaN( angle ), 'angle should be a number' );
       matrix.setToTranslationRotationPoint( translation, angle );
     },
@@ -316,8 +316,8 @@ define( function( require ) {
      * @public
      */
     getMidpoint: function() {
-      var start = this.startVertexProperty.value.positionProperty.get();
-      var end = this.endVertexProperty.value.positionProperty.get();
+      const start = this.startVertexProperty.value.positionProperty.get();
+      const end = this.endVertexProperty.value.positionProperty.get();
       return start.average( end );
     },
 

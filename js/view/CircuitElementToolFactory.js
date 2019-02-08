@@ -10,56 +10,56 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
-  var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
-  var BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var CCKCLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCLightBulbNode' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitElementToolNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolNode' );
-  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
-  var Color = require( 'SCENERY/util/Color' );
-  var Image = require( 'SCENERY/nodes/Image' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
-  var Line = require( 'SCENERY/nodes/Line' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Property = require( 'AXON/Property' );
-  var Range = require( 'DOT/Range' );
-  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
-  var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorNode' );
-  var ResistorType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ResistorType' );
-  var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
-  var SwitchNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SwitchNode' );
-  var Vector2 = require( 'DOT/Vector2' );
-  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
-  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
+  const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
+  const BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
+  const BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const CCKCLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCLightBulbNode' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const CircuitElementToolNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolNode' );
+  const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
+  const Color = require( 'SCENERY/util/Color' );
+  const Image = require( 'SCENERY/nodes/Image' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
+  const Line = require( 'SCENERY/nodes/Line' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Property = require( 'AXON/Property' );
+  const Range = require( 'DOT/Range' );
+  const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
+  const ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorNode' );
+  const ResistorType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ResistorType' );
+  const Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
+  const SwitchNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SwitchNode' );
+  const Vector2 = require( 'DOT/Vector2' );
+  const Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
+  const Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
 
   // strings
-  var batteryString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery' );
-  var coinString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/coin' );
-  var dogString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/dog' );
-  var dollarBillString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/dollarBill' );
-  var eraserString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/eraser' );
-  var handString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/hand' );
-  var lightBulbString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightBulb' );
-  var paperClipString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/paperClip' );
-  var pencilString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/pencil' );
-  var resistorString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor' );
-  var switchString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/switch' );
-  var wireString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/wire' );
+  const batteryString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery' );
+  const coinString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/coin' );
+  const dogString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/dog' );
+  const dollarBillString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/dollarBill' );
+  const eraserString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/eraser' );
+  const handString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/hand' );
+  const lightBulbString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightBulb' );
+  const paperClipString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/paperClip' );
+  const pencilString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/pencil' );
+  const resistorString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistor' );
+  const switchString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/switch' );
+  const wireString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/wire' );
 
   // images
-  var wireIconImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/wire-icon.png' );
+  const wireIconImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/wire-icon.png' );
 
   // constants
-  var BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
-  var TOOLBOX_ICON_SIZE = CCKCConstants.TOOLBOX_ICON_SIZE;
-  var RESISTOR_LENGTH = CCKCConstants.RESISTOR_LENGTH;
-  var WIRE_LENGTH = 100;
-  var SWITCH_LENGTH = CCKCConstants.SWITCH_LENGTH;
-  var HIGH_RESISTANCE = Math.pow( 10, 9 );
-  var MIN_RESISTANCE = 1E-6;
+  const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
+  const TOOLBOX_ICON_SIZE = CCKCConstants.TOOLBOX_ICON_SIZE;
+  const RESISTOR_LENGTH = CCKCConstants.RESISTOR_LENGTH;
+  const WIRE_LENGTH = 100;
+  const SWITCH_LENGTH = CCKCConstants.SWITCH_LENGTH;
+  const HIGH_RESISTANCE = Math.pow( 10, 9 );
+  const MIN_RESISTANCE = 1E-6;
 
   /**
    * @param {Circuit} circuit
@@ -106,7 +106,7 @@ define( function( require ) {
      * @private
      */
     createCounter: function( predicate ) {
-      var self = this;
+      const self = this;
       return function() {
         return self.circuit.circuitElements.getArray().filter( function( circuitElement ) {
 
@@ -167,20 +167,20 @@ define( function( require ) {
      * @public
      */
     createWireToolNode: function( count, tandem ) {
-      var self = this;
-      var lifelikeWireNode = new Image( wireIconImage );
-      var schematicWireNode = new Line( 0, 0, 120, 0, {
+      const self = this;
+      const lifelikeWireNode = new Image( wireIconImage );
+      const schematicWireNode = new Line( 0, 0, 120, 0, {
         stroke: Color.BLACK,
         lineWidth: 4.5 // match with other toolbox icons
       } );
-      var wireNode = new Node();
+      const wireNode = new Node();
       this.viewTypeProperty.link( function( view ) {
         wireNode.children = [ view === CircuitElementViewType.LIFELIKE ? lifelikeWireNode : schematicWireNode ];
       } );
       return this.createCircuitElementToolNode( wireString, count, wireNode,
         function( circuitElement ) { return circuitElement instanceof Wire; },
         function( position ) {
-          var vertexPair = self.createVertexPair( position, WIRE_LENGTH );
+          const vertexPair = self.createVertexPair( position, WIRE_LENGTH );
           return new Wire(
             vertexPair.startVertex,
             vertexPair.endVertex,
@@ -198,10 +198,10 @@ define( function( require ) {
      * @public
      */
     createRightBatteryToolNode: function( count, tandem ) {
-      var self = this;
-      var batteryModel = new Battery( new Vertex( Vector2.ZERO ), new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
+      const self = this;
+      const batteryModel = new Battery( new Vertex( Vector2.ZERO ), new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
         new Property( 0 ), BatteryType.NORMAL, tandem.createTandem( 'rightIconBattery' ) );
-      var rightBatteryToolNode = this.createCircuitElementToolNode( batteryString, count,
+      const rightBatteryToolNode = this.createCircuitElementToolNode( batteryString, count,
         new BatteryNode( null, null, batteryModel, this.viewTypeProperty, tandem.createTandem( 'rightBatteryIcon' ), { isIcon: true }
         ),
         function( circuitElement ) {
@@ -210,7 +210,7 @@ define( function( require ) {
                  circuitElement.batteryType === BatteryType.NORMAL;
         },
         function( position ) {
-          var vertexPair = self.createVertexPair( position, BATTERY_LENGTH );
+          const vertexPair = self.createVertexPair( position, BATTERY_LENGTH );
           return new Battery(
             vertexPair.startVertex,
             vertexPair.endVertex,
@@ -230,8 +230,8 @@ define( function( require ) {
      * @public
      */
     createLightBulbToolNode: function( count, tandem ) {
-      var self = this;
-      var lightBulbModel = LightBulb.createAtPosition(
+      const self = this;
+      const lightBulbModel = LightBulb.createAtPosition(
         Vector2.ZERO,
         this.circuit.vertexGroupTandem,
         CCKCConstants.DEFAULT_RESISTANCE,
@@ -239,7 +239,7 @@ define( function( require ) {
         this.circuit.lightBulbGroupTandem.createNextTandem(), {
           highResistance: false
         } );
-      var lightBulbToolNode = this.createCircuitElementToolNode( lightBulbString, count,
+      const lightBulbToolNode = this.createCircuitElementToolNode( lightBulbString, count,
         new CCKCLightBulbNode( null, null,
           lightBulbModel,
           new Property( true ), this.viewTypeProperty, tandem.createTandem( 'lightBulbIcon' ), { isIcon: true } ),
@@ -265,13 +265,13 @@ define( function( require ) {
      * @public
      */
     createResistorToolNode: function( count, tandem ) {
-      var self = this;
-      var resistorModel = new Resistor(
+      const self = this;
+      const resistorModel = new Resistor(
         new Vertex( Vector2.ZERO ),
         new Vertex( new Vector2( CCKCConstants.RESISTOR_LENGTH, 0 ) ),
         tandem.createTandem( 'resistor' )
       );
-      var resistorToolNode = this.createCircuitElementToolNode( resistorString, count,
+      const resistorToolNode = this.createCircuitElementToolNode( resistorString, count,
         new ResistorNode( null, null, resistorModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
           isIcon: true
         } ),
@@ -279,7 +279,7 @@ define( function( require ) {
           return circuitElement instanceof Resistor && circuitElement.resistorType === ResistorType.RESISTOR;
         },
         function( position ) {
-          var vertexPair = self.createVertexPair( position, RESISTOR_LENGTH );
+          const vertexPair = self.createVertexPair( position, RESISTOR_LENGTH );
           return new Resistor(
             vertexPair.startVertex, vertexPair.endVertex, self.circuit.resistorGroupTandem.createNextTandem()
           );
@@ -295,8 +295,8 @@ define( function( require ) {
      * @public
      */
     createSwitchToolNode: function( count, tandem ) {
-      var self = this;
-      var switchToolNode = this.createCircuitElementToolNode( switchString, count,
+      const self = this;
+      const switchToolNode = this.createCircuitElementToolNode( switchString, count,
         new SwitchNode( null, null,
           new Switch(
             new Vertex( Vector2.ZERO ),
@@ -307,7 +307,7 @@ define( function( require ) {
           } ),
         function( circuitElement ) { return circuitElement instanceof Switch; },
         function( position ) {
-          var vertexPair = self.createVertexPair( position, SWITCH_LENGTH );
+          const vertexPair = self.createVertexPair( position, SWITCH_LENGTH );
           return new Switch( vertexPair.startVertex, vertexPair.endVertex, self.circuit.switchGroupTandem.createNextTandem() );
         } );
       return switchToolNode;
@@ -328,14 +328,14 @@ define( function( require ) {
      */
     createHouseholdItemToolNode: function( resistorType, resistance, resistorLength, labelString, maxCount,
                                            iconModelTandem, iconTandem, groupTandem ) {
-      var self = this;
-      var createHouseholdIcon = function( householdItem, tandem ) {
+      const self = this;
+      const createHouseholdIcon = function( householdItem, tandem ) {
         return new ResistorNode( null, null, householdItem, self.viewTypeProperty, tandem, { isIcon: true } );
       };
 
-      var getHouseholdItemCreator = function( resistorType, resistance, resistorLength, groupTandem ) {
+      const getHouseholdItemCreator = function( resistorType, resistance, resistorLength, groupTandem ) {
         return function( position ) {
-          var vertexPair = self.createVertexPair( position, resistorLength );
+          const vertexPair = self.createVertexPair( position, resistorLength );
           return new Resistor( vertexPair.startVertex, vertexPair.endVertex, groupTandem.createNextTandem(), {
             resistance: resistance,
             resistorType: resistorType,
@@ -351,13 +351,13 @@ define( function( require ) {
        * @param {Tandem} tandem
        * @returns {Resistor}
        */
-      var createHouseholdItem = function( resistorType, resistorLength, tandem ) {
+      const createHouseholdItem = function( resistorType, resistorLength, tandem ) {
         return new Resistor( new Vertex( Vector2.ZERO ), new Vertex( new Vector2( resistorLength, 0 ) ), tandem, {
           resistorType: resistorType,
           resistorLength: resistorLength
         } );
       };
-      var createdItem = createHouseholdItem( resistorType, resistorLength, iconModelTandem );
+      const createdItem = createHouseholdItem( resistorType, resistorLength, iconModelTandem );
       return this.createCircuitElementToolNode( labelString, maxCount, createHouseholdIcon( createdItem, iconTandem ),
         function( circuitElement ) {
           return circuitElement instanceof Resistor && circuitElement.resistorType === resistorType;
@@ -506,7 +506,7 @@ define( function( require ) {
      * @public
      */
     createHighVoltageBatteryToolNode: function( count, tandem ) {
-      var self = this;
+      const self = this;
       return this.createCircuitElementToolNode(
         batteryString,
         count,
@@ -524,7 +524,7 @@ define( function( require ) {
                  circuitElement.initialOrientation === 'right' &&
                  circuitElement.batteryType === BatteryType.HIGH_VOLTAGE;
         }, function( position ) {
-          var vertexPair = self.createVertexPair( position, BATTERY_LENGTH );
+          const vertexPair = self.createVertexPair( position, BATTERY_LENGTH );
           return new Battery(
             vertexPair.startVertex,
             vertexPair.endVertex,
@@ -545,7 +545,7 @@ define( function( require ) {
      * @public
      */
     createHighResistanceBulbToolNode: function( count, tandem ) {
-      var self = this;
+      const self = this;
       return this.createCircuitElementToolNode(
         lightBulbString,
         count,
@@ -584,7 +584,7 @@ define( function( require ) {
      * @public
      */
     createHighResistanceResistorToolNode: function( count, tandem ) {
-      var self = this;
+      const self = this;
       return this.createCircuitElementToolNode(
         resistorString,
         count,
@@ -603,7 +603,7 @@ define( function( require ) {
           return circuitElement instanceof Resistor && circuitElement.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR;
         },
         function( position ) {
-          var vertexPair = self.createVertexPair( position, RESISTOR_LENGTH );
+          const vertexPair = self.createVertexPair( position, RESISTOR_LENGTH );
           return new Resistor(
             vertexPair.startVertex,
             vertexPair.endVertex,

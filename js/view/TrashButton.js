@@ -9,12 +9,12 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
-  var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
+  const RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
 
   /**
    * @param {Circuit} circuit - the circuit from which the CircuitElement can be removed

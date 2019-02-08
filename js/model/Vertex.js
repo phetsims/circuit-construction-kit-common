@@ -9,18 +9,18 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var Emitter = require( 'AXON/Emitter' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var NumberProperty = require( 'AXON/NumberProperty' );
-  var Property = require( 'AXON/Property' );
-  var PropertyIO = require( 'AXON/PropertyIO' );
-  var Tandem = require( 'TANDEM/Tandem' );
-  var Vector2IO = require( 'DOT/Vector2IO' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const Emitter = require( 'AXON/Emitter' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const NumberProperty = require( 'AXON/NumberProperty' );
+  const Property = require( 'AXON/Property' );
+  const PropertyIO = require( 'AXON/PropertyIO' );
+  const Tandem = require( 'TANDEM/Tandem' );
+  const Vector2IO = require( 'DOT/Vector2IO' );
 
   // Index counter for debugging
-  var counter = 0;
+  let counter = 0;
 
   /**
    * @param {Vector2} position - position in view coordinates

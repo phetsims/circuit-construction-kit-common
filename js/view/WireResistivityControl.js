@@ -10,22 +10,22 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CCKCAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCAccordionBox' );
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var HSlider = require( 'SUN/HSlider' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Range = require( 'DOT/Range' );
-  var Text = require( 'SCENERY/nodes/Text' );
+  const CCKCAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCAccordionBox' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const HSlider = require( 'SUN/HSlider' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Range = require( 'DOT/Range' );
+  const Text = require( 'SCENERY/nodes/Text' );
 
   // strings
-  var lotsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/lots' );
-  var tinyString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/tiny' );
-  var wireResistivityString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/wireResistivity' );
+  const lotsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/lots' );
+  const tinyString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/tiny' );
+  const wireResistivityString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/wireResistivity' );
 
   // constants
-  var TICK_LABEL_TEXT_OPTIONS = { fontSize: 12, maxWidth: 45 };
-  var MAX_RESISTIVITY = 1;
+  const TICK_LABEL_TEXT_OPTIONS = { fontSize: 12, maxWidth: 45 };
+  const MAX_RESISTIVITY = 1;
 
   /**
    * @param {Property.<number>} wireResistivityProperty
@@ -34,7 +34,7 @@ define( function( require ) {
    * @constructor
    */
   function WireResistivityControl( wireResistivityProperty, alignGroup, tandem ) {
-    var slider = new HSlider( wireResistivityProperty, new Range(
+    const slider = new HSlider( wireResistivityProperty, new Range(
       CCKCConstants.DEFAULT_RESISTIVITY,
       MAX_RESISTIVITY // large enough so that max resistance in a 9v battery slows to a good rate
     ), {

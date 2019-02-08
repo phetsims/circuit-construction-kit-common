@@ -10,18 +10,18 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var BooleanProperty = require( 'AXON/BooleanProperty' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var ConventionalCurrentArrowNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ConventionalCurrentArrowNode' );
-  var ElectronChargeNode = require( 'SCENERY_PHET/ElectronChargeNode' );
-  var Image = require( 'SCENERY/nodes/Image' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Matrix3 = require( 'DOT/Matrix3' );
-  var Tandem = require( 'TANDEM/Tandem' );
-  var Util = require( 'DOT/Util' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const ConventionalCurrentArrowNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ConventionalCurrentArrowNode' );
+  const ElectronChargeNode = require( 'SCENERY_PHET/ElectronChargeNode' );
+  const Image = require( 'SCENERY/nodes/Image' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Matrix3 = require( 'DOT/Matrix3' );
+  const Tandem = require( 'TANDEM/Tandem' );
+  const Util = require( 'DOT/Util' );
 
   // constants
-  var ELECTRON_CHARGE_NODE = new ElectronChargeNode( {
+  const ELECTRON_CHARGE_NODE = new ElectronChargeNode( {
 
     // Electrons are transparent to convey they are a representation rather than physical objects
     // Workaround for https://github.com/phetsims/circuit-construction-kit-dc/issues/160
@@ -32,21 +32,21 @@ define( function( require ) {
     scale: 0.78
   } ).toDataURLImageSynchronous();
 
-  var ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.rootTandem.createTandem( 'arrowNode' ) )
+  const ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.rootTandem.createTandem( 'arrowNode' ) )
     .toDataURLImageSynchronous();
 
-  var ARROW_OFFSET = Matrix3.translation( -ARROW_NODE.width / 2, -ARROW_NODE.height / 2 );
-  var HALF_ROTATION = Matrix3.rotation2( Math.PI );
+  const ARROW_OFFSET = Matrix3.translation( -ARROW_NODE.width / 2, -ARROW_NODE.height / 2 );
+  const HALF_ROTATION = Matrix3.rotation2( Math.PI );
 
   // scratch matrix that is used to set values to scenery
-  var NODE_MATRIX = new Matrix3();
+  const NODE_MATRIX = new Matrix3();
 
   // Below this amperage, no conventional current will be rendered.
-  var CONVENTIONAL_CHARGE_THRESHOLD = 1E-6;
+  const CONVENTIONAL_CHARGE_THRESHOLD = 1E-6;
 
   // position the electron--note the offsets that were used to make it look exactly centered, see
   // https://github.com/phetsims/circuit-construction-kit-dc/issues/104
-  var ELECTRON_OFFSET = Matrix3.translation( -ELECTRON_CHARGE_NODE.width / 2 - 0.5, -ELECTRON_CHARGE_NODE.height / 2 - 0.5 );
+  const ELECTRON_OFFSET = Matrix3.translation( -ELECTRON_CHARGE_NODE.width / 2 - 0.5, -ELECTRON_CHARGE_NODE.height / 2 - 0.5 );
 
   /**
    * @param {Charge} charge - the model element
@@ -57,7 +57,7 @@ define( function( require ) {
     // @public (read-only) {Charge} - the model depicted by this node
     this.charge = charge;
 
-    var child = charge.charge > 0 ? ARROW_NODE : ELECTRON_CHARGE_NODE;
+    const child = charge.charge > 0 ? ARROW_NODE : ELECTRON_CHARGE_NODE;
 
     Image.call( this, child.image, {
       pickable: false
@@ -99,8 +99,8 @@ define( function( require ) {
      * @private - update the transform of the charge node
      */
     updateTransform: function() {
-      var charge = this.charge;
-      var current = charge.circuitElement.currentProperty.get();
+      const charge = this.charge;
+      const current = charge.circuitElement.currentProperty.get();
 
       NODE_MATRIX.set( charge.matrix );
 
@@ -115,7 +115,7 @@ define( function( require ) {
         // Apply the transform
         this.matrix = NODE_MATRIX;
 
-        var opacity = Util.linear( 0.015, CONVENTIONAL_CHARGE_THRESHOLD, 1, 0, Math.abs( charge.circuitElement.currentProperty.get() ) );
+        let opacity = Util.linear( 0.015, CONVENTIONAL_CHARGE_THRESHOLD, 1, 0, Math.abs( charge.circuitElement.currentProperty.get() ) );
         opacity = Util.clamp( opacity, 0, 1 );
         this.setImageOpacity( opacity );
       }

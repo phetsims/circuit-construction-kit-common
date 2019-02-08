@@ -9,9 +9,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
 
-  var ResistorType = {
+  const ResistorType = {
     RESISTOR: 'RESISTOR',
     HIGH_RESISTANCE_RESISTOR: 'HIGH_RESISTANCE_RESISTOR',
     COIN: 'COIN',

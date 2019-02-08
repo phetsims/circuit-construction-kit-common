@@ -9,18 +9,18 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
 
   // strings
-  var theSwitchIsClosedString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/theSwitchIsClosed' );
-  var theSwitchIsOpenString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/theSwitchIsOpen' );
+  const theSwitchIsClosedString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/theSwitchIsClosed' );
+  const theSwitchIsOpenString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/theSwitchIsOpen' );
 
   // constants
-  var MAX_TEXT_WIDTH = 300;
+  const MAX_TEXT_WIDTH = 300;
 
   /**
    * @param {Circuit} circuit - the circuit from which the switch can be removed when the trash button is pressed
@@ -31,25 +31,25 @@ define( function( require ) {
   function SwitchReadoutNode( circuit, circuitSwitch, tandem ) {
 
     // Create both texts and display both so they remain aligned as the value changes
-    var closedText = new Text( theSwitchIsClosedString, {
+    const closedText = new Text( theSwitchIsClosedString, {
       fontSize: 24,
       maxWidth: MAX_TEXT_WIDTH
     } );
-    var openText = new Text( theSwitchIsOpenString, {
+    const openText = new Text( theSwitchIsOpenString, {
       fontSize: 24,
       maxWidth: MAX_TEXT_WIDTH
     } );
 
-    var maxWidth = Math.max( closedText.width, openText.width );
+    const maxWidth = Math.max( closedText.width, openText.width );
 
-    var closedListener = function( closed ) {
+    const closedListener = function( closed ) {
       closedText.visible = closed;
       openText.visible = !closed;
     };
     circuitSwitch.closedProperty.link( closedListener );
 
     // Show a trash button to the right of the text
-    var trashButton = new TrashButton( circuit, circuitSwitch, tandem.createTandem( 'trashButton' ) ).mutate( {
+    const trashButton = new TrashButton( circuit, circuitSwitch, tandem.createTandem( 'trashButton' ) ).mutate( {
       left: maxWidth + 10,
       centerY: closedText.centerY
     } );

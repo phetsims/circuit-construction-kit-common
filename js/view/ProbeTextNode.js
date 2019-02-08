@@ -10,19 +10,19 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var Color = require( 'SCENERY/util/Color' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const Color = require( 'SCENERY/util/Color' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
-  var questionMarkString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/questionMark' );
+  const questionMarkString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/questionMark' );
 
   // constants
-  var TEXT_BOX_WIDTH = 140;
+  const TEXT_BOX_WIDTH = 140;
 
   /**
    * @param {Property.<string>} textProperty - the text that should be displayed
@@ -38,13 +38,13 @@ define( function( require ) {
       spacing: 3
     }, options );
 
-    var readout = new Text( textProperty.value, {
+    const readout = new Text( textProperty.value, {
       fontSize: 40,
       maxWidth: TEXT_BOX_WIDTH - 20,
       tandem: tandem.createTandem( 'readoutText' )
     } );
 
-    var textBox = new Rectangle( 0, 0, TEXT_BOX_WIDTH, 52, {
+    const textBox = new Rectangle( 0, 0, TEXT_BOX_WIDTH, 52, {
       cornerRadius: 10,
       lineWidth: 2,
       stroke: Color.BLACK,

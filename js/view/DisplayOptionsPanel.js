@@ -10,36 +10,36 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var AlignBox = require( 'SCENERY/nodes/AlignBox' );
-  var AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
-  var AquaRadioButton = require( 'SUN/AquaRadioButton' );
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var CCKCPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCPanel' );
-  var Checkbox = require( 'SUN/Checkbox' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var ConventionalCurrentArrowNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ConventionalCurrentArrowNode' );
-  var CurrentType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CurrentType' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
+  const AlignBox = require( 'SCENERY/nodes/AlignBox' );
+  const AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
+  const AquaRadioButton = require( 'SUN/AquaRadioButton' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const CCKCPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCPanel' );
+  const Checkbox = require( 'SUN/Checkbox' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const ConventionalCurrentArrowNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ConventionalCurrentArrowNode' );
+  const CurrentType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CurrentType' );
+  const HBox = require( 'SCENERY/nodes/HBox' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
-  var conventionalString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/conventional' );
-  var ElectronChargeNode = require( 'SCENERY_PHET/ElectronChargeNode' );
-  var electronsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/electrons' );
-  var labelsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/labels' );
-  var showCurrentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/showCurrent' );
-  var valuesString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/values' );
+  const conventionalString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/conventional' );
+  const ElectronChargeNode = require( 'SCENERY_PHET/ElectronChargeNode' );
+  const electronsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/electrons' );
+  const labelsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/labels' );
+  const showCurrentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/showCurrent' );
+  const valuesString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/values' );
 
   // constants
-  var TEXT_OPTIONS = {
+  const TEXT_OPTIONS = {
     fontSize: CCKCConstants.FONT_SIZE,
     maxWidth: 120
   };
-  var BOX_ALIGNMENT = { xAlign: 'left' };
-  var SPACING = 10;
-  var LEFT_MARGIN = 30;
+  const BOX_ALIGNMENT = { xAlign: 'left' };
+  const SPACING = 10;
+  const LEFT_MARGIN = 30;
 
   /**
    * @param {AlignGroup} alignGroup - box for aligning with other controls
@@ -60,18 +60,18 @@ define( function( require ) {
      * @param {Tandem} tandem
      * @returns {AquaRadioButton}
      */
-    var createRadioButton = function( currentType, node, tandem ) {
+    const createRadioButton = function( currentType, node, tandem ) {
       return new AquaRadioButton( currentTypeProperty, currentType, node, {
         radius: 7,
         tandem: tandem
       } );
     };
 
-    var textIconSpacing = 11;
+    const textIconSpacing = 11;
 
     // Align the Electrons/Conventional text and radio buttons
-    var currentTypeRadioButtonLabelGroup = new AlignGroup();
-    var electronsBox = new HBox( {
+    const currentTypeRadioButtonLabelGroup = new AlignGroup();
+    const electronsBox = new HBox( {
       children: [
         currentTypeRadioButtonLabelGroup.createBox( new Text( electronsString, TEXT_OPTIONS ), BOX_ALIGNMENT ),
 
@@ -80,7 +80,7 @@ define( function( require ) {
       ],
       spacing: textIconSpacing
     } );
-    var conventionalBox = new HBox( {
+    const conventionalBox = new HBox( {
       children: [
         currentTypeRadioButtonLabelGroup.createBox( new Text( conventionalString, TEXT_OPTIONS ), BOX_ALIGNMENT ),
         new ConventionalCurrentArrowNode( tandem.createTandem( 'arrowNode' ) )
@@ -88,23 +88,23 @@ define( function( require ) {
       spacing: textIconSpacing
     } );
 
-    var electronsRadioButton = createRadioButton( CurrentType.ELECTRONS, electronsBox, tandem.createTandem( 'electronsRadioButton' ) );
-    var conventionalRadioButton = createRadioButton( CurrentType.CONVENTIONAL, conventionalBox, tandem.createTandem( 'conventionalRadioButton' ) );
+    const electronsRadioButton = createRadioButton( CurrentType.ELECTRONS, electronsBox, tandem.createTandem( 'electronsRadioButton' ) );
+    const conventionalRadioButton = createRadioButton( CurrentType.CONVENTIONAL, conventionalBox, tandem.createTandem( 'conventionalRadioButton' ) );
 
     // Gray out current view options when current is not selected.
     showCurrentProperty.linkAttribute( electronsRadioButton, 'enabled' );
     showCurrentProperty.linkAttribute( conventionalRadioButton, 'enabled' );
 
-    var BOX_WIDTH = 16;
-    var showLabelsCheckbox = new Checkbox( new Text( labelsString, TEXT_OPTIONS ), showLabelsProperty, {
+    const BOX_WIDTH = 16;
+    const showLabelsCheckbox = new Checkbox( new Text( labelsString, TEXT_OPTIONS ), showLabelsProperty, {
       tandem: tandem.createTandem( 'labelsCheckbox' ),
       boxWidth: BOX_WIDTH
     } );
-    var showValuesCheckbox = new Checkbox( new Text( valuesString, TEXT_OPTIONS ), showValuesProperty, {
+    const showValuesCheckbox = new Checkbox( new Text( valuesString, TEXT_OPTIONS ), showValuesProperty, {
       tandem: tandem.createTandem( 'valuesCheckbox' ),
       boxWidth: BOX_WIDTH
     } );
-    var children = [
+    const children = [
 
       // Show Current and sub-checkboxes
       new VBox( {

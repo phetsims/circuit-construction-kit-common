@@ -9,8 +9,8 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var inherit = require( 'PHET_CORE/inherit' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const inherit = require( 'PHET_CORE/inherit' );
 
   /**
    * @param {Object} nodeVoltages - see below
@@ -36,7 +36,7 @@ define( function( require ) {
    * @param {number} b - another number
    * @returns {boolean} true if the numbers are approximately equal
    */
-  var NUMBER_APPROXIMATELY_EQUALS = function( a, b ) {
+  const NUMBER_APPROXIMATELY_EQUALS = function( a, b ) {
     return Math.abs( a - b ) < 1E-6;
   };
 
@@ -51,13 +51,13 @@ define( function( require ) {
      * @public
      */
     approxEquals: function( modifiedNodalAnalysisSolution, qassert ) {
-      var keys = _.keys( this.nodeVoltages );
-      var otherKeys = _.keys( modifiedNodalAnalysisSolution.nodeVoltages );
-      var keyDifference = _.difference( keys, otherKeys );
+      const keys = _.keys( this.nodeVoltages );
+      const otherKeys = _.keys( modifiedNodalAnalysisSolution.nodeVoltages );
+      const keyDifference = _.difference( keys, otherKeys );
       assert && assert( keyDifference.length === 0, 'wrong keys in compared solution' );
-      for ( var i = 0; i < keys.length; i++ ) {
-        var key = keys[ i ];
-        var closeEnough = NUMBER_APPROXIMATELY_EQUALS(
+      for ( let i = 0; i < keys.length; i++ ) {
+        const key = keys[ i ];
+        const closeEnough = NUMBER_APPROXIMATELY_EQUALS(
           this.getNodeVoltage( key ),
           modifiedNodalAnalysisSolution.getNodeVoltage( key )
         );
@@ -85,8 +85,8 @@ define( function( require ) {
      * @private
      */
     hasAllCurrents: function( modifiedNodalAnalysisSolution ) {
-      for ( var i = 0; i < modifiedNodalAnalysisSolution.elements.length; i++ ) {
-        var element = modifiedNodalAnalysisSolution.elements[ i ];
+      for ( let i = 0; i < modifiedNodalAnalysisSolution.elements.length; i++ ) {
+        const element = modifiedNodalAnalysisSolution.elements[ i ];
         if ( !this.hasMatchingElement( element ) ) {
           return false;
         }
@@ -101,8 +101,8 @@ define( function( require ) {
      * @private
      */
     hasMatchingElement: function( element ) {
-      for ( var i = 0; i < this.elements.length; i++ ) {
-        var proposedElement = this.elements[ i ];
+      for ( let i = 0; i < this.elements.length; i++ ) {
+        const proposedElement = this.elements[ i ];
         if ( proposedElement.nodeId0 === element.nodeId0 &&
              proposedElement.nodeId1 === element.nodeId1 &&
              NUMBER_APPROXIMATELY_EQUALS( proposedElement.currentSolution, element.currentSolution ) ) {

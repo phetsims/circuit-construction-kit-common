@@ -10,21 +10,21 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
-  var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
-  var BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Property = require( 'AXON/Property' );
-  var RadioButtonGroup = require( 'SUN/buttons/RadioButtonGroup' );
-  var Vector2 = require( 'DOT/Vector2' );
-  var Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
+  const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
+  const BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
+  const BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Property = require( 'AXON/Property' );
+  const RadioButtonGroup = require( 'SUN/buttons/RadioButtonGroup' );
+  const Vector2 = require( 'DOT/Vector2' );
+  const Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
 
   // constants
-  var BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
-  var SCALE = 0.58;
+  const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
+  const SCALE = 0.58;
 
   /**
    * @param {Property.<CircuitElementViewType>} viewTypeProperty - whether to show lifelike or schematic representations
@@ -34,9 +34,9 @@ define( function( require ) {
   function ViewRadioButtonGroup( viewTypeProperty, tandem ) {
 
     // Create a battery which can be used in the views
-    var startVertex = new Vertex( new Vector2( BATTERY_LENGTH / 2, 0 ) );
-    var endVertex = new Vertex( new Vector2( -BATTERY_LENGTH / 2, 0 ) );
-    var battery = new Battery( endVertex, startVertex, new Property( 0 ), BatteryType.NORMAL, tandem.createTandem( 'battery' ), {
+    const startVertex = new Vertex( new Vector2( BATTERY_LENGTH / 2, 0 ) );
+    const endVertex = new Vertex( new Vector2( -BATTERY_LENGTH / 2, 0 ) );
+    const battery = new Battery( endVertex, startVertex, new Property( 0 ), BatteryType.NORMAL, tandem.createTandem( 'battery' ), {
       initialOrientation: 'left'
     } );
 
@@ -47,14 +47,14 @@ define( function( require ) {
      * @param {Tandem} tandem
      * @returns {BatteryNode}
      */
-    var createBatteryNode = function( view, tandem ) {
+    const createBatteryNode = function( view, tandem ) {
       return new BatteryNode( null, null, battery, new Property( view ), tandem, {
         isIcon: true,
         scale: SCALE
       } );
     };
-    var lifelikeIcon = createBatteryNode( CircuitElementViewType.LIFELIKE, tandem.createTandem( 'lifelikeIcon' ) );
-    var schematicIcon = createBatteryNode( CircuitElementViewType.SCHEMATIC, tandem.createTandem( 'schematicIcon' ) );
+    const lifelikeIcon = createBatteryNode( CircuitElementViewType.LIFELIKE, tandem.createTandem( 'lifelikeIcon' ) );
+    const schematicIcon = createBatteryNode( CircuitElementViewType.SCHEMATIC, tandem.createTandem( 'schematicIcon' ) );
     RadioButtonGroup.call( this, viewTypeProperty, [ {
       value: CircuitElementViewType.LIFELIKE,
       node: lifelikeIcon,

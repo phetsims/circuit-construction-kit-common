@@ -18,44 +18,44 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
-  var BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
-  var Bounds2 = require( 'DOT/Bounds2' );
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var CCKCLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCLightBulbNode' );
-  var CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
-  var ChargeNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ChargeNode' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
-  var CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CustomLightBulbNode' );
-  var FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
-  var FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
-  var FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Property = require( 'AXON/Property' );
-  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
-  var ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorNode' );
-  var RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
-  var SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
-  var SeriesAmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SeriesAmmeterNode' );
-  var SolderNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SolderNode' );
-  var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
-  var SwitchNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SwitchNode' );
-  var Tandem = require( 'TANDEM/Tandem' );
-  var ValueNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ValueNode' );
-  var Vector2 = require( 'DOT/Vector2' );
-  var VertexNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VertexNode' );
-  var Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
-  var WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/WireNode' );
+  const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
+  const BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
+  const Bounds2 = require( 'DOT/Bounds2' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const CCKCLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCLightBulbNode' );
+  const CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
+  const ChargeNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ChargeNode' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
+  const CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CustomLightBulbNode' );
+  const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
+  const FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
+  const FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Property = require( 'AXON/Property' );
+  const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
+  const ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorNode' );
+  const RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
+  const SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
+  const SeriesAmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SeriesAmmeterNode' );
+  const SolderNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SolderNode' );
+  const Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
+  const SwitchNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SwitchNode' );
+  const Tandem = require( 'TANDEM/Tandem' );
+  const ValueNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ValueNode' );
+  const Vector2 = require( 'DOT/Vector2' );
+  const VertexNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VertexNode' );
+  const Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
+  const WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/WireNode' );
 
   // constants
 
   // In https://github.com/phetsims/circuit-construction-kit-dc/issues/140 we decided to test every platform with
   // svg rendering to avoid svg/webgl lag issues and have a consistent renderer across platforms.  However, we will
   // leave in all of the WebGL code in case we have performance problems on a platform that require WebGL to be restored?
-  var RENDERER = 'svg';
+  const RENDERER = 'svg';
 
   /**
    * @param {Circuit} circuit - the model Circuit
@@ -64,7 +64,7 @@ define( function( require ) {
    * @constructor
    */
   function CircuitLayerNode( circuit, screenView, tandem ) {
-    var self = this;
+    const self = this;
 
     // @private {Property.<CircuitElementViewType>}
     this.viewTypeProperty = screenView.model.viewTypeProperty;
@@ -177,7 +177,7 @@ define( function( require ) {
     this.afterCircuitElementsLayer = new Node();
 
     // For lifelike: Solder should be in front of wires but behind batteries and resistors.
-    var lifelikeLayering = [
+    const lifelikeLayering = [
       this.lightRaysLayer,
       this.beforeCircuitElementsLayer,
       this.wireLayer, // wires go behind other circuit elements
@@ -195,7 +195,7 @@ define( function( require ) {
     ];
 
     // For schematic: Solder should be in front of all components
-    var schematicLayering = [
+    const schematicLayering = [
       this.lightRaysLayer,
       this.beforeCircuitElementsLayer,
       this.wireLayer,
@@ -247,10 +247,10 @@ define( function( require ) {
      * @param {Tandem} groupTandem
      * @param {function} createCircuitElement - creates the node, given a circuitElement and tandem BatteryNode
      */
-    var initializeCircuitElementType = function( type, layer, groupTandem, createCircuitElement ) {
-      var addCircuitElement = function( circuitElement ) {
+    const initializeCircuitElementType = function( type, layer, groupTandem, createCircuitElement ) {
+      const addCircuitElement = function( circuitElement ) {
         if ( circuitElement instanceof type ) {
-          var circuitElementNode = createCircuitElement( circuitElement, groupTandem.createNextTandem() );
+          const circuitElementNode = createCircuitElement( circuitElement, groupTandem.createNextTandem() );
           self.circuitElementNodeMap[ circuitElement.id ] = circuitElementNode;
 
           layer.addChild( circuitElementNode );
@@ -258,14 +258,14 @@ define( function( require ) {
           // Show the ValueNode for readouts, though series ammeters already show their own readouts and Wires do not
           // have readouts
           if ( circuitElement instanceof FixedCircuitElement && !(circuitElement instanceof SeriesAmmeter) ) {
-            var valueNode = new ValueNode(
+            const valueNode = new ValueNode(
               circuitElement,
               self.model.showValuesProperty,
               self.model.viewTypeProperty,
               tandem.createTandem( circuitElement.tandem.tail ).createTandem( 'valueNode' )
             );
 
-            var updateShowValues = function( showValues ) {
+            const updateShowValues = function( showValues ) {
               CCKCUtil.setInSceneGraph( showValues, self.valueLayer, valueNode );
             };
             self.model.showValuesProperty.link( updateShowValues );
@@ -283,7 +283,7 @@ define( function( require ) {
       circuit.circuitElements.addItemRemovedListener( function( circuitElement ) {
         if ( circuitElement instanceof type ) {
 
-          var circuitElementNode = self.getCircuitElementNode( circuitElement );
+          const circuitElementNode = self.getCircuitElementNode( circuitElement );
           layer.removeChild( circuitElementNode );
           circuitElementNode.dispose();
 
@@ -316,7 +316,7 @@ define( function( require ) {
     // is allocated for all vertices (per screen) to use because it is too performance demanding to create these
     // dynamically when circuit elements are dragged from the toolbox.  Also, only one vertex can be selected at once
     // so there is only a need for one cut button.
-    var cutIcon = new FontAwesomeNode( 'cut', {
+    const cutIcon = new FontAwesomeNode( 'cut', {
       rotation: -Math.PI / 2, // scissors point up
       scale: CCKCConstants.FONT_AWESOME_ICON_SCALE
     } );
@@ -338,13 +338,13 @@ define( function( require ) {
     } );
 
     // When a Vertex is added to the model, create the corresponding views
-    var vertexNodeGroup = tandem.createGroupTandem( 'vertexNodes' );
-    var addVertexNode = function( vertex ) {
-      var solderNode = new SolderNode( self, vertex );
+    const vertexNodeGroup = tandem.createGroupTandem( 'vertexNodes' );
+    const addVertexNode = function( vertex ) {
+      const solderNode = new SolderNode( self, vertex );
       self.solderNodes[ vertex.index ] = solderNode;
       self.solderLayer.addChild( solderNode );
 
-      var vertexNode = new VertexNode( self, vertex, vertexNodeGroup.createNextTandem() );
+      const vertexNode = new VertexNode( self, vertex, vertexNodeGroup.createNextTandem() );
       self.vertexNodes[ vertex.index ] = vertexNode;
       self.vertexLayer.addChild( vertexNode );
     };
@@ -352,13 +352,13 @@ define( function( require ) {
 
     // When a Vertex is removed from the model, remove and dispose the corresponding views
     circuit.vertices.addItemRemovedListener( function( vertex ) {
-      var vertexNode = self.getVertexNode( vertex );
+      const vertexNode = self.getVertexNode( vertex );
       self.vertexLayer.removeChild( vertexNode );
       delete self.vertexNodes[ vertex.index ];
       vertexNode.dispose();
       assert && assert( !self.getVertexNode( vertex ), 'vertex node should have been removed' );
 
-      var solderNode = self.getSolderNode( vertex );
+      const solderNode = self.getSolderNode( vertex );
       self.solderLayer.removeChild( solderNode );
       delete self.solderNodes[ vertex.index ];
       solderNode.dispose();
@@ -367,20 +367,20 @@ define( function( require ) {
     circuit.vertices.forEach( addVertexNode );
 
     // When the screen is resized or zoomed, move all vertices into view.
-    var moveVerticesInBounds = function( localBounds ) {
+    const moveVerticesInBounds = function( localBounds ) {
 
       // Check all vertices
-      for ( var i = 0; i < circuit.vertices.length; i++ ) {
-        var vertex = circuit.vertices.get( i );
-        var position = vertex.positionProperty.get();
+      for ( let i = 0; i < circuit.vertices.length; i++ ) {
+        const vertex = circuit.vertices.get( i );
+        const position = vertex.positionProperty.get();
 
         // If any Vertex is out of bounds, move it and all connected Vertices (to preserve geometry) in bounds.
         if ( !localBounds.containsPoint( position ) ) {
-          var closestPoint = localBounds.getClosestPoint( position.x, position.y );
-          var delta = closestPoint.minus( position );
+          const closestPoint = localBounds.getClosestPoint( position.x, position.y );
+          const delta = closestPoint.minus( position );
 
           // Find all vertices connected by fixed length nodes.
-          var vertices = circuit.findAllConnectedVertices( vertex );
+          const vertices = circuit.findAllConnectedVertices( vertex );
           self.translateVertexGroup( vertex, vertices, delta, null, [] );
         }
       }
@@ -430,11 +430,11 @@ define( function( require ) {
      * @public
      */
     getAllDropTargets: function( vertices ) {
-      var allDropTargets = [];
+      const allDropTargets = [];
 
-      for ( var i = 0; i < vertices.length; i++ ) {
-        var vertex = vertices[ i ];
-        var targetVertex = this.circuit.getDropTarget(
+      for ( let i = 0; i < vertices.length; i++ ) {
+        const vertex = vertices[ i ];
+        const targetVertex = this.circuit.getDropTarget(
           vertex,
           this.model.modeProperty.get(),
           this.model.blackBoxBounds
@@ -454,9 +454,9 @@ define( function( require ) {
      * @private
      */
     getBestDropTarget: function( vertices ) {
-      var allDropTargets = this.getAllDropTargets( vertices );
+      const allDropTargets = this.getAllDropTargets( vertices );
       if ( allDropTargets ) {
-        var sorted = _.sortBy( allDropTargets, function( dropTarget ) {
+        const sorted = _.sortBy( allDropTargets, function( dropTarget ) {
           return dropTarget.src.unsnappedPositionProperty.get().distance( dropTarget.dst.positionProperty.get() );
         } );
         return sorted[ 0 ];
@@ -472,7 +472,7 @@ define( function( require ) {
      */
     step: function() {
 
-      var self = this;
+      const self = this;
 
       // paint dirty fixed length circuit element nodes.  This batches changes instead of applying multiple changes
       // per frame
@@ -487,10 +487,10 @@ define( function( require ) {
      * @returns {boolean}
      */
     canDragVertex: function( vertex ) {
-      var vertices = this.circuit.findAllFixedVertices( vertex );
+      const vertices = this.circuit.findAllFixedVertices( vertex );
 
       // If any of the vertices in the subgraph is already being dragged, then this vertex cannot be dragged.
-      for ( var i = 0; i < vertices.length; i++ ) {
+      for ( let i = 0; i < vertices.length; i++ ) {
         if ( vertices[ i ].isDragged ) {
           return false;
         }
@@ -505,8 +505,8 @@ define( function( require ) {
      * @public
      */
     setVerticesDragging: function( vertex ) {
-      var vertices = this.circuit.findAllFixedVertices( vertex );
-      for ( var i = 0; i < vertices.length; i++ ) {
+      const vertices = this.circuit.findAllFixedVertices( vertex );
+      for ( let i = 0; i < vertices.length; i++ ) {
         vertices[ i ].isDragged = true;
       }
     },
@@ -520,7 +520,7 @@ define( function( require ) {
     startDragVertex: function( point, vertex ) {
 
       // If it is the edge of a fixed length circuit element, the element rotates and moves toward the mouse
-      var vertexNode = this.getVertexNode( vertex );
+      const vertexNode = this.getVertexNode( vertex );
       vertexNode.startOffset = vertexNode.globalToParentPoint( point ).minus( vertex.unsnappedPositionProperty.get() );
     },
 
@@ -541,28 +541,28 @@ define( function( require ) {
       vertices = this.circuit.findAllFixedVertices( vertex, function( currentVertex ) {
         return !currentVertex.blackBoxInterfaceProperty.get();
       } );
-      var fixedNeighbors = neighbors.filter( function( neighbor ) {
+      const fixedNeighbors = neighbors.filter( function( neighbor ) {
         return neighbor.getOppositeVertex( vertex ).blackBoxInterfaceProperty.get();
       } );
       if ( fixedNeighbors.length === 1 ) {
-        var fixedNeighbor = fixedNeighbors[ 0 ];
-        var fixedVertex = fixedNeighbor.getOppositeVertex( vertex );
-        var desiredAngle = position.minus( fixedVertex.positionProperty.get() ).angle();
+        const fixedNeighbor = fixedNeighbors[ 0 ];
+        const fixedVertex = fixedNeighbor.getOppositeVertex( vertex );
+        const desiredAngle = position.minus( fixedVertex.positionProperty.get() ).angle();
         assert && assert( !isNaN( desiredAngle ), 'angle should be a number' );
 
-        var length = fixedNeighbor.distanceBetweenVertices || fixedNeighbor.lengthProperty.get();
-        var indexOfFixedVertex = vertices.indexOf( fixedVertex );
+        const length = fixedNeighbor.distanceBetweenVertices || fixedNeighbor.lengthProperty.get();
+        const indexOfFixedVertex = vertices.indexOf( fixedVertex );
         vertices.splice( indexOfFixedVertex, 1 );
 
-        var dest = Vector2.createPolar( length, desiredAngle ).plus( fixedVertex.positionProperty.get() );
-        var src = vertex.positionProperty.get();
-        var delta = dest.minus( src );
-        var relative = Vector2.createPolar( length, desiredAngle + Math.PI );
+        const dest = Vector2.createPolar( length, desiredAngle ).plus( fixedVertex.positionProperty.get() );
+        const src = vertex.positionProperty.get();
+        const delta = dest.minus( src );
+        const relative = Vector2.createPolar( length, desiredAngle + Math.PI );
         assert && assert( !isNaN( relative.x ), 'x should be a number' );
         assert && assert( !isNaN( relative.y ), 'y should be a number' );
 
         // Do not propose attachments, since connections cannot be made from a rotation.
-        var attachable = [];
+        const attachable = [];
         this.translateVertexGroup( vertex, vertices, delta, function() {
           vertex.unsnappedPositionProperty.set( fixedVertex.unsnappedPositionProperty.get().minus( relative ) );
         }, attachable );
@@ -577,21 +577,21 @@ define( function( require ) {
      * @public
      */
     dragVertex: function( point, vertex, okToRotate ) {
-      var vertexNode = this.getVertexNode( vertex );
+      const vertexNode = this.getVertexNode( vertex );
 
       // Guard against the case in which the battery is flipped while dragging, see https://github.com/phetsims/circuit-construction-kit-common/issues/416
       if ( vertexNode.startOffset ) {
-        var position = vertexNode.globalToParentPoint( point ).subtract( vertexNode.startOffset );
+        const position = vertexNode.globalToParentPoint( point ).subtract( vertexNode.startOffset );
 
         // If it is the edge of a fixed length circuit element, the element rotates and moves toward the mouse
-        var neighbors = this.circuit.getNeighborCircuitElements( vertex );
+        const neighbors = this.circuit.getNeighborCircuitElements( vertex );
 
         // Find all vertices connected by fixed length nodes.
-        var vertices = this.circuit.findAllFixedVertices( vertex );
+        const vertices = this.circuit.findAllFixedVertices( vertex );
 
         // If any of the vertices connected by fixed length nodes is immobile, then the entire subgraph cannot be moved
-        var rotated = false;
-        for ( var i = 0; i < vertices.length; i++ ) {
+        let rotated = false;
+        for ( let i = 0; i < vertices.length; i++ ) {
           if ( !vertices[ i ].draggableProperty.get() ) {
 
             // See #108 multiple objects connected to the same origin vertex can cause problems.
@@ -608,10 +608,10 @@ define( function( require ) {
 
         if ( okToRotate && neighbors.length === 1 && neighbors[ 0 ] instanceof FixedCircuitElement ) {
 
-          var oppositeVertex = neighbors[ 0 ].getOppositeVertex( vertex );
+          const oppositeVertex = neighbors[ 0 ].getOppositeVertex( vertex );
 
           // Find the new relative angle
-          var angle;
+          let angle;
 
           if ( vertex.unsnappedPositionProperty.get().x === vertex.positionProperty.get().x &&
                vertex.unsnappedPositionProperty.get().y === vertex.positionProperty.get().y ) {
@@ -626,11 +626,11 @@ define( function( require ) {
           }
 
           // Maintain fixed length
-          var length = neighbors[ 0 ].distanceBetweenVertices;
-          var relative = Vector2.createPolar( length, angle + Math.PI );
-          var oppositePosition = position.plus( relative );
+          const length = neighbors[ 0 ].distanceBetweenVertices;
+          const relative = Vector2.createPolar( length, angle + Math.PI );
+          const oppositePosition = position.plus( relative );
 
-          var rotationDelta = oppositePosition.minus( oppositeVertex.unsnappedPositionProperty.get() );
+          const rotationDelta = oppositePosition.minus( oppositeVertex.unsnappedPositionProperty.get() );
 
           this.translateVertexGroup( vertex, vertices, rotationDelta, function() {
               vertex.unsnappedPositionProperty.set( oppositeVertex.unsnappedPositionProperty.get().minus( relative ) );
@@ -641,7 +641,7 @@ define( function( require ) {
           );
         }
         else {
-          var translationDelta = position.minus( vertex.unsnappedPositionProperty.get() );
+          const translationDelta = position.minus( vertex.unsnappedPositionProperty.get() );
           this.translateVertexGroup( vertex, vertices, translationDelta, null, vertices );
         }
       }
@@ -662,23 +662,23 @@ define( function( require ) {
      */
     translateVertexGroup: function( vertex, vertices, unsnappedDelta, updatePositions, attachable ) {
 
-      var screenBounds = this.visibleBoundsProperty.get();
-      var bounds = this.parentToLocalBounds( screenBounds );
+      const screenBounds = this.visibleBoundsProperty.get();
+      const bounds = this.parentToLocalBounds( screenBounds );
 
       // Modify the delta to guarantee all vertices remain in bounds
-      for ( i = 0; i < vertices.length; i++ ) {
-        var proposedPosition = vertices[ i ].unsnappedPositionProperty.get().plus( unsnappedDelta );
+      for ( let i = 0; i < vertices.length; i++ ) {
+        const proposedPosition = vertices[ i ].unsnappedPositionProperty.get().plus( unsnappedDelta );
         if ( !bounds.containsPoint( proposedPosition ) ) {
-          var closestPosition = bounds.getClosestPoint( proposedPosition.x, proposedPosition.y );
-          var keepInBoundsDelta = closestPosition.minus( proposedPosition );
+          const closestPosition = bounds.getClosestPoint( proposedPosition.x, proposedPosition.y );
+          const keepInBoundsDelta = closestPosition.minus( proposedPosition );
           unsnappedDelta = unsnappedDelta.plus( keepInBoundsDelta );
         }
       }
 
       // Update the unsnapped position of the entire subgraph, i.e. where it would be if no matches are proposed.
       // Must do this before calling getBestDropTarget, because the unsnapped positions are used for target matching
-      for ( var i = 0; i < vertices.length; i++ ) {
-        var unsnappedPosition = vertices[ i ].unsnappedPositionProperty.get().plus( unsnappedDelta );
+      for ( let i = 0; i < vertices.length; i++ ) {
+        const unsnappedPosition = vertices[ i ].unsnappedPositionProperty.get().plus( unsnappedDelta );
         vertices[ i ].unsnappedPositionProperty.set( unsnappedPosition );
       }
 
@@ -686,10 +686,10 @@ define( function( require ) {
 
       // Is there a nearby vertex any of these could snap to?  If so, move to its location temporarily.
       // Find drop targets for *any* of the dragged vertices
-      var bestDropTarget = this.getBestDropTarget( attachable );
-      var delta = Vector2.ZERO;
+      const bestDropTarget = this.getBestDropTarget( attachable );
+      let delta = Vector2.ZERO;
       if ( bestDropTarget ) {
-        var srcUnsnappedPosition = bestDropTarget.src.unsnappedPositionProperty.get();
+        const srcUnsnappedPosition = bestDropTarget.src.unsnappedPositionProperty.get();
         delta = bestDropTarget.dst.unsnappedPositionProperty.get().minus( srcUnsnappedPosition );
         assert && assert( !isNaN( delta.x ), 'x should be a number' );
         assert && assert( !isNaN( delta.y ), 'y should be a number' );
@@ -698,13 +698,13 @@ define( function( require ) {
       // Translate all nodes as a batch before notifying observers so we don't end up with a bad transient state
       // in which two or more vertices from one FixedCircuitElement have the same location.
       // See https://github.com/phetsims/circuit-construction-kit-common/issues/412
-      for ( i = 0; i < vertices.length; i++ ) {
-        var newPosition = vertices[ i ].unsnappedPositionProperty.get().plus( delta );
-        var positionReference = vertices[ i ].positionProperty.get();
+      for ( let i = 0; i < vertices.length; i++ ) {
+        const newPosition = vertices[ i ].unsnappedPositionProperty.get().plus( delta );
+        const positionReference = vertices[ i ].positionProperty.get();
         positionReference.x = newPosition.x;
         positionReference.y = newPosition.y;
       }
-      for ( i = 0; i < vertices.length; i++ ) {
+      for ( let i = 0; i < vertices.length; i++ ) {
         vertices[ i ].positionProperty.notifyListenersStatic();
       }
     },
@@ -720,29 +720,29 @@ define( function( require ) {
     endDrag: function( event, vertex, dragged ) {
       assert && assert( typeof dragged === 'boolean', 'didDrag must be supplied' );
 
-      var vertexNode = this.getVertexNode( vertex );
+      const vertexNode = this.getVertexNode( vertex );
 
       // Find all vertices connected by fixed length nodes.
-      var vertices = this.circuit.findAllFixedVertices( vertex );
+      const vertices = this.circuit.findAllFixedVertices( vertex );
 
       // If any of the vertices connected by fixed length nodes is immobile, then the entire subgraph cannot be moved
-      for ( var i = 0; i < vertices.length; i++ ) {
+      for ( let i = 0; i < vertices.length; i++ ) {
         vertices[ i ].isDragged = false;
       }
 
       // If any of the vertices connected by fixed length nodes is immobile, then the entire subgraph cannot be moved
-      for ( i = 0; i < vertices.length; i++ ) {
+      for ( let i = 0; i < vertices.length; i++ ) {
         if ( !vertices[ i ].draggableProperty.get() ) {
           return;
         }
       }
 
-      var bestDropTarget = this.getBestDropTarget( vertices );
+      const bestDropTarget = this.getBestDropTarget( vertices );
       if ( bestDropTarget && dragged ) {
         this.circuit.connect( bestDropTarget.src, bestDropTarget.dst );
 
         // Set the new reference point for next drag
-        for ( i = 0; i < vertices.length; i++ ) {
+        for ( let i = 0; i < vertices.length; i++ ) {
           vertices[ i ].unsnappedPositionProperty.set( vertices[ i ].positionProperty.get() );
         }
       }

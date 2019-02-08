@@ -10,16 +10,16 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var Touch = require( 'SCENERY/input/Touch' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const Touch = require( 'SCENERY/input/Touch' );
+  const VBox = require( 'SCENERY/nodes/VBox' );
 
   // constants
-  var TOOLBOX_ICON_SIZE = CCKCConstants.TOOLBOX_ICON_SIZE;
+  const TOOLBOX_ICON_SIZE = CCKCConstants.TOOLBOX_ICON_SIZE;
 
   /**
    * @param {string} labelText
@@ -38,8 +38,8 @@ define( function( require ) {
    * @constructor
    */
   function CircuitElementToolNode( labelText, showLabelsProperty, viewTypeProperty, circuit, globalToCircuitLayerNodePoint, iconNode, maxNumber, count, createElement, options ) {
-    var self = this;
-    var labelNode = new Text( labelText, { fontSize: 12, maxWidth: TOOLBOX_ICON_SIZE } );
+    const self = this;
+    const labelNode = new Text( labelText, { fontSize: 12, maxWidth: TOOLBOX_ICON_SIZE } );
     showLabelsProperty.linkAttribute( labelNode, 'visible' );
     options = _.extend( {
       spacing: 6, // Spacing between the icon and the text
@@ -59,14 +59,14 @@ define( function( require ) {
     this.addInputListener( SimpleDragHandler.createForwardingListener( function( event ) {
 
       // initial position of the pointer in the coordinate frame of the CircuitLayerNode
-      var viewPosition = globalToCircuitLayerNodePoint( event.pointer.point );
+      const viewPosition = globalToCircuitLayerNodePoint( event.pointer.point );
 
       // Adjust for touch.  The object should appear centered on the mouse but vertically above the finger so the finger
       // doesn't obscure the object
       viewPosition.y = viewPosition.y - ( event.pointer instanceof Touch ? 28 : 0 );
 
       // Create the new CircuitElement at the correct location
-      var circuitElement = createElement( viewPosition, event );
+      const circuitElement = createElement( viewPosition, event );
 
       // Add the CircuitElement to the Circuit
       circuit.circuitElements.add( circuitElement );

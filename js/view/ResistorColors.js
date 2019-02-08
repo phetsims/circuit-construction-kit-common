@@ -9,14 +9,14 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var Color = require( 'SCENERY/util/Color' );
-  var Util = require( 'DOT/Util' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const Color = require( 'SCENERY/util/Color' );
+  const Util = require( 'DOT/Util' );
 
   // See https://en.wikipedia.org/wiki/Electronic_color_code#Resistor_color-coding
   // Tolerances below gold were eliminated to reduce variance in the tolerance band, see
   // https://github.com/phetsims/circuit-construction-kit-dc/issues/10
-  var colorTable = [
+  const colorTable = [
     { name: 'none', significantFigure: null, multiplier: null, tolerance: 20, color: null },
     { name: 'pink', significantFigure: null, multiplier: -3, tolerance: null, color: new Color( 255, 105, 180 ) },
     { name: 'silver', significantFigure: null, multiplier: -2, tolerance: 10, color: new Color( 192, 192, 192 ) },
@@ -41,13 +41,13 @@ define( function( require ) {
    * @param {string|number|null} value - the value to search for
    * @returns {Object} - entry from the color table, see above
    */
-  var getEntry = function( keyName, value ) {
+  const getEntry = function( keyName, value ) {
     return _.find( colorTable, function( colorTableEntry ) {
       return colorTableEntry[ keyName ] === value;
     } );
   };
 
-  var ResistorColors = {
+  const ResistorColors = {
 
     /**
      * Get the color table entries for the specified resistance.
@@ -64,10 +64,10 @@ define( function( require ) {
       }
 
       // Estimate the exponent
-      var exponent = Util.roundSymmetric( Math.log( resistance ) / Math.log( 10 ) );
+      let exponent = Util.roundSymmetric( Math.log( resistance ) / Math.log( 10 ) );
 
       // Divide out to normalize
-      var reduced = resistance / Math.pow( 10, exponent );
+      let reduced = resistance / Math.pow( 10, exponent );
 
       // If we went too far, jump up a digit
       if ( reduced < 1 ) {
@@ -76,11 +76,11 @@ define( function( require ) {
       }
 
       // Chop off the tail to get the first significant digit
-      var firstSignificantDigit = Math.floor( reduced );
+      const firstSignificantDigit = Math.floor( reduced );
 
       // Chop off first significant digit, then bump up >1 and take first digit
-      var x = ( reduced - firstSignificantDigit ) * 10;
-      var secondSignificantDigit = Util.roundSymmetric( x ); //round to prevent cases like resistance=4700 = x2 = 6.99999
+      const x = ( reduced - firstSignificantDigit ) * 10;
+      let secondSignificantDigit = Util.roundSymmetric( x ); //round to prevent cases like resistance=4700 = x2 = 6.99999
 
       // prevent rounding up from 9.5 to 10.0
       if ( secondSignificantDigit === 10 ) {
@@ -88,16 +88,17 @@ define( function( require ) {
       }
 
       // Estimate the value to obtain tolerance band
-      var approximateValue = ( firstSignificantDigit + secondSignificantDigit / 10 ) * Math.pow( 10, exponent );
-      var percentError = Math.abs( ( resistance - approximateValue ) / resistance * 100 );
-      var colorsWithTolerance = _.filter( colorTable, function( colorTableEntry ) {
+      const approximateValue = ( firstSignificantDigit + secondSignificantDigit / 10 ) * Math.pow( 10, exponent );
+      const percentError = Math.abs( ( resistance - approximateValue ) / resistance * 100 );
+      const colorsWithTolerance = _.filter( colorTable, function( colorTableEntry ) {
         return colorTableEntry.tolerance !== null;
       } );
 
       // find the lowest tolerance that fits the value
-      var sortedColorsWithTolerance = _.sortBy( colorsWithTolerance, 'tolerance' );
-      for ( var i = 0; i < sortedColorsWithTolerance.length; i++ ) {
-        var color = sortedColorsWithTolerance[ i ];
+      const sortedColorsWithTolerance = _.sortBy( colorsWithTolerance, 'tolerance' );
+      let color = null;
+      for ( let i = 0; i < sortedColorsWithTolerance.length; i++ ) {
+        color = sortedColorsWithTolerance[ i ];
         if ( color.tolerance > percentError ) {
           break;
         }

@@ -9,48 +9,48 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  var CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
-  var Color = require( 'SCENERY/util/Color' );
-  var FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
-  var Panel = require( 'SUN/Panel' );
-  var Property = require( 'AXON/Property' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
+  const Color = require( 'SCENERY/util/Color' );
+  const FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Node = require( 'SCENERY/nodes/Node' );
+  const Panel = require( 'SUN/Panel' );
+  const Property = require( 'AXON/Property' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
-  var currentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/current' );
-  var questionMarkString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/questionMark' );
+  const currentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/current' );
+  const questionMarkString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/questionMark' );
 
   // constants
-  var PANEL_HEIGHT = 40;
-  var PANEL_WIDTH = CCKCConstants.SERIES_AMMETER_LENGTH;
-  var ORANGE = '#f39033';
+  const PANEL_HEIGHT = 40;
+  const PANEL_WIDTH = CCKCConstants.SERIES_AMMETER_LENGTH;
+  const ORANGE = '#f39033';
 
   // Widest text to use for max width, hardcoded to use english, otherwise uses lengthened translation strings which
   // may already be too long, see https://github.com/phetsims/circuit-construction-kit-common/issues/419
-  var WIDEST_LABEL = '99.99 A';
+  const WIDEST_LABEL = '99.99 A';
 
-  var CORNER_RADIUS = 4;
+  const CORNER_RADIUS = 4;
 
   /**
    * Utility function for creating a panel for the sensor body
    * @param {Object} options
    * @returns {Rectangle}
    */
-  var createPanel = function( options ) {
+  const createPanel = function( options ) {
 
     // Rasterize so it can be rendered in WebGL, see https://github.com/phetsims/circuit-construction-kit-dc/issues/67
     return new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, options ).toDataURLNodeSynchronous();
   };
 
-  var orangeBackgroundPanel = createPanel( { cornerRadius: CORNER_RADIUS, fill: ORANGE } );
-  var blackBorder = createPanel( {
+  const orangeBackgroundPanel = createPanel( { cornerRadius: CORNER_RADIUS, fill: ORANGE } );
+  const blackBorder = createPanel( {
     cornerRadius: CORNER_RADIUS,
     stroke: '#231f20',
     lineWidth: 2.4
@@ -65,30 +65,30 @@ define( function( require ) {
    * @constructor
    */
   function SeriesAmmeterNode( screenView, circuitLayerNode, seriesAmmeter, tandem, options ) {
-    var self = this;
+    const self = this;
     options = options || {};
 
     // Charges go behind this panel to give the appearance they go through the ammeter
-    var readoutText = new Text( WIDEST_LABEL, { fontSize: 15 } );
+    const readoutText = new Text( WIDEST_LABEL, { fontSize: 15 } );
     readoutText.maxWidth = readoutText.width;
-    var maxBounds = readoutText.bounds.copy();
+    const maxBounds = readoutText.bounds.copy();
 
     // Margins within the numeric readout text box
-    var textPanelMarginX = 3;
-    var textPanelMarginY = 1;
+    const textPanelMarginX = 3;
+    const textPanelMarginY = 1;
 
     /**
      * Update the text in the numeric readout text box.  Shows '?' if disconnected.
      */
-    var updateText = function() {
-      var readout = questionMarkString;
+    const updateText = function() {
+      let readout = questionMarkString;
 
       // If it is not an icon and connected at both sides, show the current, otherwise show '?'
       if ( screenView ) {
 
-        var circuit = screenView.model.circuit;
-        var startConnection = circuit.getNeighboringVertices( seriesAmmeter.startVertexProperty.get() ).length > 1;
-        var endConnection = circuit.getNeighboringVertices( seriesAmmeter.endVertexProperty.get() ).length > 1;
+        const circuit = screenView.model.circuit;
+        const startConnection = circuit.getNeighboringVertices( seriesAmmeter.startVertexProperty.get() ).length > 1;
+        const endConnection = circuit.getNeighboringVertices( seriesAmmeter.endVertexProperty.get() ).length > 1;
 
         if ( startConnection && endConnection ) {
 
@@ -111,7 +111,7 @@ define( function( require ) {
 
     // The readout panel is in front of the series ammeter node, and makes it look like the charges flow through the
     // series ammeter
-    var readoutPanel = new Panel( new VBox( {
+    const readoutPanel = new Panel( new VBox( {
       children: [
         new Text( currentString, { fontSize: 12, maxWidth: 54 } ),
         new Rectangle( 0, 0, maxBounds.width + textPanelMarginX * 2, maxBounds.height + textPanelMarginY * 2, {
@@ -134,7 +134,7 @@ define( function( require ) {
     } );
 
     // This node only has a lifelike representation because it is a sensor
-    var lifelikeNode = new Node( {
+    const lifelikeNode = new Node( {
       children: [
 
         // orange background panel

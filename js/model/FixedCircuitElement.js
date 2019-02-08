@@ -11,10 +11,10 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElement' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Range = require( 'DOT/Range' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElement' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Range = require( 'DOT/Range' );
 
   /**
    * @param {Vertex} startVertex

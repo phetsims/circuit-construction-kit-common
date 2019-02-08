@@ -9,13 +9,13 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var Color = require( 'SCENERY/util/Color' );
-  var Dimension2 = require( 'DOT/Dimension2' );
-  var Range = require( 'DOT/Range' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const Color = require( 'SCENERY/util/Color' );
+  const Dimension2 = require( 'DOT/Dimension2' );
+  const Range = require( 'DOT/Range' );
 
   // constants
-  var CCKCConstants = {
+  const CCKCConstants = {
 
     // Maximum size for Width or height of icons in the circuit element toolbox or sensor toolbox
     TOOLBOX_ICON_SIZE: 60,

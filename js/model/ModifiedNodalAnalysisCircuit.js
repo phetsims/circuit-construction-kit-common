@@ -14,11 +14,11 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var arrayRemove = require( 'PHET_CORE/arrayRemove' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Matrix = require( 'DOT/Matrix' );
-  var ModifiedNodalAnalysisSolution = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisSolution' );
+  const arrayRemove = require( 'PHET_CORE/arrayRemove' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Matrix = require( 'DOT/Matrix' );
+  const ModifiedNodalAnalysisSolution = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisSolution' );
 
   /**
    * @param {ModifiedNodalAnalysisCircuitElement[]} batteries
@@ -46,8 +46,8 @@ define( function( require ) {
     // @public (read-only) {Object} - an object with index for all keys that have a node in the circuit, such as:
     // {0:0, 1:1, 2:2, 7:7}
     this.nodeSet = {};
-    for ( var k = 0; k < this.elements.length; k++ ) {
-      var element = this.elements[ k ];
+    for ( let k = 0; k < this.elements.length; k++ ) {
+      const element = this.elements[ k ];
       this.nodeSet[ element.nodeId0 ] = element.nodeId0;
       this.nodeSet[ element.nodeId1 ] = element.nodeId1;
     }
@@ -84,8 +84,8 @@ define( function( require ) {
      * @private
      */
     getCurrentCount: function() {
-      var numberOfResistanceFreeResistors = 0;
-      for ( var i = 0; i < this.resistors.length; i++ ) {
+      let numberOfResistanceFreeResistors = 0;
+      for ( let i = 0; i < this.resistors.length; i++ ) {
         if ( this.resistors[ i ].value === 0 ) {
           numberOfResistanceFreeResistors++;
         }
@@ -110,9 +110,9 @@ define( function( require ) {
      * @private
      */
     getCurrentSourceTotal: function( nodeIndex ) {
-      var currentSourceTotal = 0.0;
-      for ( var i = 0; i < this.currentSources.length; i++ ) {
-        var currentSource = this.currentSources[ i ];
+      let currentSourceTotal = 0.0;
+      for ( let i = 0; i < this.currentSources.length; i++ ) {
+        const currentSource = this.currentSources[ i ];
         if ( currentSource.nodeId1 === nodeIndex ) {
 
           // positive current is entering the node, and the convention is for incoming current to be negative
@@ -137,19 +137,19 @@ define( function( require ) {
      */
     getCurrentTerms: function( node, side, sign ) {
       assert && assert( typeof node === 'number', 'node should be a number' );
-      var nodeTerms = [];
+      const nodeTerms = [];
 
       // Each battery introduces an unknown current through the battery
-      for ( var i = 0; i < this.batteries.length; i++ ) {
-        var battery = this.batteries[ i ];
+      for ( let i = 0; i < this.batteries.length; i++ ) {
+        const battery = this.batteries[ i ];
         if ( battery[ side ] === node ) {
           nodeTerms.push( new Term( sign, new UnknownCurrent( battery ) ) );
         }
       }
-      var resistor;
+      let resistor;
 
       // Each resistor with 0 resistance introduces an unknown current
-      for ( i = 0; i < this.resistors.length; i++ ) {
+      for ( let i = 0; i < this.resistors.length; i++ ) {
         resistor = this.resistors[ i ];
 
         // Treat resistors with R=0 as having unknown current and v1=v2
@@ -159,7 +159,7 @@ define( function( require ) {
       }
 
       // Each resistor with nonzero resistance has an unknown voltage
-      for ( i = 0; i < this.resistors.length; i++ ) {
+      for ( let i = 0; i < this.resistors.length; i++ ) {
         resistor = this.resistors[ i ];
         if ( resistor[ side ] === node && resistor.value !== 0 ) {
           nodeTerms.push( new Term( -sign / resistor.value, new UnknownVoltage( resistor.nodeId1 ) ) );
@@ -177,18 +177,18 @@ define( function( require ) {
     getReferenceNodeIds: function() {
 
       // The nodes which need to be visited.
-      var toVisit = _.values( this.nodeSet );
+      const toVisit = _.values( this.nodeSet );
 
       // Mark reference nodes as they are discovered
-      var referenceNodeIds = [];
+      const referenceNodeIds = [];
       while ( toVisit.length > 0 ) {
 
-        var referenceNodeId = toVisit[ 0 ];
+        const referenceNodeId = toVisit[ 0 ];
         referenceNodeIds.push( referenceNodeId );
-        var connectedNodeIds = this.getConnectedNodeIds( referenceNodeId );
+        const connectedNodeIds = this.getConnectedNodeIds( referenceNodeId );
 
         // No need to visit any nodes connected to the reference node, since their connected component already has a reference node.
-        for ( var i = 0; i < connectedNodeIds.length; i++ ) {
+        for ( let i = 0; i < connectedNodeIds.length; i++ ) {
           arrayRemove( toVisit, connectedNodeIds[ i ] );
         }
       }
@@ -203,17 +203,17 @@ define( function( require ) {
      */
     getConnectedNodeIds: function( node ) {
       assert && assert( typeof node === 'number', 'node should be a number' );
-      var visited = [];
-      var toVisit = [ node ];
+      const visited = [];
+      const toVisit = [ node ];
 
       while ( toVisit.length > 0 ) {
 
-        var nodeToVisit = toVisit.shift();
+        const nodeToVisit = toVisit.shift();
         visited.push( nodeToVisit );
-        for ( var i = 0; i < this.elements.length; i++ ) {
-          var element = this.elements[ i ];
+        for ( let i = 0; i < this.elements.length; i++ ) {
+          const element = this.elements[ i ];
           if ( element.containsNodeId( nodeToVisit ) ) {
-            var oppositeNode = element.getOppositeNode( nodeToVisit );
+            const oppositeNode = element.getOppositeNode( nodeToVisit );
             if ( visited.indexOf( oppositeNode ) === -1 ) {
               toVisit.push( oppositeNode );
             }
@@ -230,35 +230,35 @@ define( function( require ) {
      * @private
      */
     getEquations: function() {
-      var equations = [];
+      const equations = [];
 
       // Reference node in each connected circuit element has a voltage of 0.0
-      var referenceNodeIds = this.getReferenceNodeIds();
-      for ( var i = 0; i < referenceNodeIds.length; i++ ) {
+      const referenceNodeIds = this.getReferenceNodeIds();
+      for ( let i = 0; i < referenceNodeIds.length; i++ ) {
         equations.push( new Equation( 0, [ new Term( 1, new UnknownVoltage( referenceNodeIds[ i ] ) ) ] ) );
       }
 
       // phet.log && phet.log( referenceNodeIds );
 
       // For each node, charge is conserved
-      var nodes = this.nodes;
-      for ( i = 0; i < nodes.length; i++ ) {
-        var node = nodes[ i ];
+      const nodes = this.nodes;
+      for ( let i = 0; i < nodes.length; i++ ) {
+        const node = nodes[ i ];
 
         // having charge conservation at each node is overconstraining and causes problems for QR.  In each connected
         // circuit element, we must choose exactly one node at which to avoid the current conservation term.
         if ( referenceNodeIds.indexOf( node ) === -1 ) {
 
-          var incomingCurrentTerms = this.getCurrentTerms( node, 'nodeId1', -1 );
-          var outgoingCurrentTerms = this.getCurrentTerms( node, 'nodeId0', +1 );
-          var currentConservationTerms = incomingCurrentTerms.concat( outgoingCurrentTerms );
+          const incomingCurrentTerms = this.getCurrentTerms( node, 'nodeId1', -1 );
+          const outgoingCurrentTerms = this.getCurrentTerms( node, 'nodeId0', +1 );
+          const currentConservationTerms = incomingCurrentTerms.concat( outgoingCurrentTerms );
           equations.push( new Equation( this.getCurrentSourceTotal( node ), currentConservationTerms ) );
         }
       }
 
       // For each battery, voltage drop is given
-      for ( i = 0; i < this.batteries.length; i++ ) {
-        var battery = this.batteries[ i ];
+      for ( let i = 0; i < this.batteries.length; i++ ) {
+        const battery = this.batteries[ i ];
         equations.push( new Equation( battery.value, [
           new Term( -1, new UnknownVoltage( battery.nodeId0 ) ),
           new Term( 1, new UnknownVoltage( battery.nodeId1 ) )
@@ -266,8 +266,8 @@ define( function( require ) {
       }
 
       // If resistor has no resistance, nodeId0 and nodeId1 should have same voltage
-      for ( i = 0; i < this.resistors.length; i++ ) {
-        var resistor = this.resistors[ i ];
+      for ( let i = 0; i < this.resistors.length; i++ ) {
+        const resistor = this.resistors[ i ];
         if ( resistor.value === 0 ) {
           equations.push( new Equation( 0, [
             new Term( 1, new UnknownVoltage( resistor.nodeId0 ) ),
@@ -285,15 +285,15 @@ define( function( require ) {
      * @private
      */
     getUnknownCurrents: function() {
-      var unknownCurrents = [];
+      const unknownCurrents = [];
 
       // Each battery has an unknown current
-      for ( var i = 0; i < this.batteries.length; i++ ) {
+      for ( let i = 0; i < this.batteries.length; i++ ) {
         unknownCurrents.push( new UnknownCurrent( this.batteries[ i ] ) );
       }
 
       // Treat resisters with R=0 as having unknown current and v1=v2
-      for ( i = 0; i < this.resistors.length; i++ ) {
+      for ( let i = 0; i < this.resistors.length; i++ ) {
         if ( this.resistors[ i ].value === 0 ) {
           unknownCurrents.push( new UnknownCurrent( this.resistors[ i ] ) );
         }
@@ -307,22 +307,22 @@ define( function( require ) {
      * @public
      */
     solve: function() {
-      var equations = this.getEquations();
-      var unknownCurrents = this.getUnknownCurrents();
-      var unknownVoltages = this.nodes.map( function( node ) { return new UnknownVoltage( node ); } );
-      var unknowns = unknownCurrents.concat( unknownVoltages );
+      const equations = this.getEquations();
+      const unknownCurrents = this.getUnknownCurrents();
+      const unknownVoltages = this.nodes.map( function( node ) { return new UnknownVoltage( node ); } );
+      const unknowns = unknownCurrents.concat( unknownVoltages );
 
       // Gets the index of the specified unknown.
-      var getIndex = function( unknown ) {
-        var index = getIndexByEquals( unknowns, unknown );
+      const getIndex = function( unknown ) {
+        const index = getIndexByEquals( unknowns, unknown );
         assert && assert( index >= 0, 'unknown was missing' );
         return index;
       };
 
       // Prepare the A and z matrices for the linear system Ax=z
-      var A = new Matrix( equations.length, this.getNumVars() );
-      var z = new Matrix( equations.length, 1 );
-      for ( var i = 0; i < equations.length; i++ ) {
+      const A = new Matrix( equations.length, this.getNumVars() );
+      const z = new Matrix( equations.length, 1 );
+      for ( let i = 0; i < equations.length; i++ ) {
         equations[ i ].stamp( i, A, z, getIndex );
       }
       phet.log && phet.log( A.m, A.n );
@@ -335,7 +335,7 @@ define( function( require ) {
       } ).join( '\n' ) );
 
       // solve the linear matrix system for the unknowns
-      var x;
+      let x;
       try {
         x = A.solve( z );
       }
@@ -351,13 +351,13 @@ define( function( require ) {
       assert && assert( A.m === A.n, 'Matrix should be square' );
       phet.log && phet.log( 'x=\n' + x.toString() );
 
-      var voltageMap = {};
-      for ( i = 0; i < unknownVoltages.length; i++ ) {
-        var unknownVoltage = unknownVoltages[ i ];
+      const voltageMap = {};
+      for ( let i = 0; i < unknownVoltages.length; i++ ) {
+        const unknownVoltage = unknownVoltages[ i ];
         voltageMap[ unknownVoltage.node ] = x.get( getIndexByEquals( unknowns, unknownVoltage ), 0 );
       }
-      for ( i = 0; i < unknownCurrents.length; i++ ) {
-        var unknownCurrent = unknownCurrents[ i ];
+      for ( let i = 0; i < unknownCurrents.length; i++ ) {
+        const unknownCurrent = unknownCurrents[ i ];
         unknownCurrent.element.currentSolution = x.get( getIndexByEquals( unknowns, unknownCurrent ), 0 );
       }
 
@@ -375,8 +375,8 @@ define( function( require ) {
    * @param {Object} element
    * @returns {number} the index or -1 if not found
    */
-  var getIndexByEquals = function( array, element ) {
-    for ( var i = 0; i < array.length; i++ ) {
+  const getIndexByEquals = function( array, element ) {
+    for ( let i = 0; i < array.length; i++ ) {
       if ( array[ i ].equals( element ) ) {
         return i;
       }
@@ -389,7 +389,7 @@ define( function( require ) {
    * @param {Resistor} resistor
    * @returns {string}
    */
-  var resistorToString = function( resistor ) {
+  const resistorToString = function( resistor ) {
     return 'node' + resistor.nodeId0 + ' -> node' + resistor.nodeId1 + ' @ ' + resistor.value + ' Ohms';
   };
 
@@ -398,7 +398,7 @@ define( function( require ) {
    * @param {Battery} battery
    * @returns {string}
    */
-  var batteryToString = function( battery ) {
+  const batteryToString = function( battery ) {
     return 'node' + battery.nodeId0 + ' -> node' + battery.nodeId1 + ' @ ' + battery.value + ' Volts';
   };
 
@@ -424,7 +424,7 @@ define( function( require ) {
      * @public
      */
     toTermString: function() {
-      var prefix = this.coefficient === 1 ? '' :
+      const prefix = this.coefficient === 1 ? '' :
                    this.coefficient === -1 ? '-' :
                    this.coefficient + '*';
       return prefix + this.variable.toTermName();
@@ -529,9 +529,9 @@ define( function( require ) {
       z.set( row, 0, this.value );
 
       // For each term, augment the coefficient matrix
-      for ( var i = 0; i < this.terms.length; i++ ) {
-        var term = this.terms[ i ];
-        var index = getIndex( term.variable );
+      for ( let i = 0; i < this.terms.length; i++ ) {
+        const term = this.terms[ i ];
+        const index = getIndex( term.variable );
         a.set( row, index, term.coefficient + a.get( row, index ) );
       }
     },
@@ -542,11 +542,11 @@ define( function( require ) {
      * @public
      */
     toString: function() {
-      var termList = [];
-      for ( var i = 0; i < this.terms.length; i++ ) {
+      const termList = [];
+      for ( let i = 0; i < this.terms.length; i++ ) {
         termList.push( this.terms[ i ].toTermString() );
       }
-      var result = '' + termList.join( '+' ) + '=' + this.value;
+      const result = '' + termList.join( '+' ) + '=' + this.value;
 
       // replace +- with -. For instance, x+-3 should just be x-3
       return result.replace( '\\+\\-', '\\-' );

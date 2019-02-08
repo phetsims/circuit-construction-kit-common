@@ -10,16 +10,16 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var HBox = require( 'SCENERY/nodes/HBox' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Tandem = require( 'TANDEM/Tandem' );
-  var ZoomButton = require( 'SCENERY_PHET/buttons/ZoomButton' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const HBox = require( 'SCENERY/nodes/HBox' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Tandem = require( 'TANDEM/Tandem' );
+  const ZoomButton = require( 'SCENERY_PHET/buttons/ZoomButton' );
 
   // constants
-  var ZOOMED_IN = 1;
-  var ZOOMED_OUT = 0.5;
-  var BUTTON_SPACING = 12;
+  const ZOOMED_IN = 1;
+  const ZOOMED_OUT = 0.5;
+  const BUTTON_SPACING = 12;
 
   /**
    * @param {Property.<number>} selectedZoomProperty
@@ -31,7 +31,7 @@ define( function( require ) {
       spacing: BUTTON_SPACING,
       tandem: Tandem.required
     }, options );
-    var zoomOutButton = new ZoomButton( {
+    const zoomOutButton = new ZoomButton( {
       in: false,
       touchAreaXDilation: BUTTON_SPACING / 2,
       touchAreaYDilation: BUTTON_SPACING / 2,
@@ -40,7 +40,7 @@ define( function( require ) {
       },
       tandem: options.tandem.createTandem( 'zoomOutButton' )
     } );
-    var zoomInButton = new ZoomButton( {
+    const zoomInButton = new ZoomButton( {
       in: true,
       touchAreaXDilation: BUTTON_SPACING / 2,
       touchAreaYDilation: BUTTON_SPACING / 2,

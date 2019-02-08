@@ -9,32 +9,32 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var Color = require( 'SCENERY/util/Color' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
-  var Matrix3 = require( 'DOT/Matrix3' );
-  var Panel = require( 'SUN/Panel' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
-  var RichText = require( 'SCENERY/nodes/RichText' );
-  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  var Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var Util = require( 'DOT/Util' );
-  var VBox = require( 'SCENERY/nodes/VBox' );
-  var Vector2 = require( 'DOT/Vector2' );
+  const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const Color = require( 'SCENERY/util/Color' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
+  const Matrix3 = require( 'DOT/Matrix3' );
+  const Panel = require( 'SUN/Panel' );
+  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
+  const RichText = require( 'SCENERY/nodes/RichText' );
+  const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+  const Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const Util = require( 'DOT/Util' );
+  const VBox = require( 'SCENERY/nodes/VBox' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   // strings
-  var resistanceOhmsSymbolString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhmsSymbol' );
-  var voltageUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageUnits' );
+  const resistanceOhmsSymbolString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhmsSymbol' );
+  const voltageUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageUnits' );
 
   // constants
-  var VERTICAL_OFFSET = 24;
+  const VERTICAL_OFFSET = 24;
 
   // Big enough to see when zoomed out
-  var FONT = new PhetFont( { size: 22 } );
+  const FONT = new PhetFont( { size: 22 } );
 
   /**
    * @param {CircuitElement} circuitElement
@@ -44,15 +44,16 @@ define( function( require ) {
    * @constructor
    */
   function ValueNode( circuitElement, showValuesProperty, viewTypeProperty, tandem ) {
-    var self = this;
+    const self = this;
 
-    var disposeActions = [];
+    const disposeActions = [];
 
-    var contentNode = null;
+    let contentNode = null;
+    let updatePosition = null;
     if ( circuitElement instanceof Battery ) {
 
-      var voltageText = new Text( '', _.extend( { tandem: tandem.createTandem( 'voltageText' ) }, { font: FONT } ) );
-      var voltageListener = function( voltage ) {
+      const voltageText = new Text( '', _.extend( { tandem: tandem.createTandem( 'voltageText' ) }, { font: FONT } ) );
+      const voltageListener = function( voltage ) {
 
         voltageText.text = StringUtils.fillIn( voltageUnitsString, {
           voltage: Util.toFixed( voltage, circuitElement.numberOfDecimalPlaces )
@@ -67,17 +68,17 @@ define( function( require ) {
         children: [ voltageText ]
       } );
 
-      var resistanceNode = new Text( '', _.extend( {
+      const resistanceNode = new Text( '', _.extend( {
         tandem: tandem.createTandem( 'resistanceText' )
       }, { font: FONT } ) );
-      var internalResistanceListener = function( internalResistance, lastInternalResistance ) {
+      const internalResistanceListener = function( internalResistance, lastInternalResistance ) {
         resistanceNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
           resistance: Util.toFixed( internalResistance, 1 )
         } );
 
         // If the children should change, update them here
-        if ( lastInternalResistance === null || (internalResistance === 0 || lastInternalResistance === 0) ) {
-          var desiredChildren = internalResistance > 0 ? [ voltageText, resistanceNode ] : [ voltageText ];
+        if ( lastInternalResistance === null || ( internalResistance === 0 || lastInternalResistance === 0 ) ) {
+          const desiredChildren = internalResistance > 0 ? [ voltageText, resistanceNode ] : [ voltageText ];
 
           // Only set children if changed
           if ( contentNode.getChildrenCount() !== desiredChildren.length ) {
@@ -99,7 +100,7 @@ define( function( require ) {
       contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'resistanceText' ) }, { font: FONT } ) );
 
       // Items like the hand and dog and high resistance resistor shouldn't show ".0"
-      var linkResistance = function( resistance ) {
+      const linkResistance = function( resistance ) {
         contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
           resistance: Util.toFixed( resistance, circuitElement.numberOfDecimalPlaces )
         } );
@@ -116,7 +117,7 @@ define( function( require ) {
       // Make it easier to read the infinity symbol, see https://github.com/phetsims/circuit-construction-kit-dc/issues/135
       contentNode = new RichText( '', { tandem: tandem.createTandem( 'switchText' ), font: FONT } );
 
-      var updateResistance = function( resistance ) {
+      const updateResistance = function( resistance ) {
         contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
 
           // Using a serif font makes the infinity symbol look less lopsided
@@ -148,20 +149,20 @@ define( function( require ) {
       yMargin: 1
     } );
 
-    var matrix = Matrix3.identity();
+    const matrix = Matrix3.identity();
 
-    var updatePosition = function() {
+    updatePosition = function() {
 
       // Only update position when the value is displayed
       if ( showValuesProperty.get() ) {
 
         // For a light bulb, choose the part of the filament in the top center for the label, see
         // https://github.com/phetsims/circuit-construction-kit-common/issues/325
-        var distance = circuitElement instanceof LightBulb ? 0.56 : 0.5;
+        const distance = circuitElement instanceof LightBulb ? 0.56 : 0.5;
 
         // The label partially overlaps the component to make it clear which label goes with which component
         circuitElement.updateMatrixForPoint( circuitElement.chargePathLength * distance, matrix );
-        var delta = Vector2.createPolar( VERTICAL_OFFSET, matrix.rotation + 3 * Math.PI / 2 );
+        const delta = Vector2.createPolar( VERTICAL_OFFSET, matrix.rotation + 3 * Math.PI / 2 );
         self.center = matrix.translation.plus( delta ); // above light bulb
       }
     };

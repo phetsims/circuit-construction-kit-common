@@ -9,14 +9,14 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  var Util = require( 'DOT/Util' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+  const Util = require( 'DOT/Util' );
 
   // strings
-  var currentUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/currentUnits' );
-  var voltageUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageUnits' );
+  const currentUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/currentUnits' );
+  const voltageUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageUnits' );
 
   /**
    * @constructor
@@ -45,8 +45,8 @@ define( function( require ) {
      * @public
      */
     createCurrentReadout: function( current ) {
-      var absoluteCurrent = Math.abs( current );
-      var decimals = this.getNumberOfDecimalPoints( absoluteCurrent );
+      const absoluteCurrent = Math.abs( current );
+      const decimals = this.getNumberOfDecimalPoints( absoluteCurrent );
 
       // Show 3 decimal places so that current can still be seen with a glowing high-resistance bulb
       return StringUtils.fillIn( currentUnitsString, { current: Util.toFixed( absoluteCurrent, decimals ) } );
@@ -59,7 +59,7 @@ define( function( require ) {
      * @public
      */
     createVoltageReadout: function( value ) {
-      var decimals = this.getNumberOfDecimalPoints( value );
+      const decimals = this.getNumberOfDecimalPoints( value );
 
       return StringUtils.fillIn( voltageUnitsString, { voltage: Util.toFixed( value, decimals ) } );
     },

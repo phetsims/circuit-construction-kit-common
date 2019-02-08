@@ -10,15 +10,15 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Property = require( 'AXON/Property' );
-  var StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var Util = require( 'DOT/Util' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Property = require( 'AXON/Property' );
+  const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+  const Text = require( 'SCENERY/nodes/Text' );
+  const Util = require( 'DOT/Util' );
 
   // strings
-  var animationSpeedLimitReachedString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/animationSpeedLimitReached' );
+  const animationSpeedLimitReachedString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/animationSpeedLimitReached' );
 
   /**
    * @param {Property.<number>} timeScaleProperty - the fractional rate of time passage (1.0 = full speed)
@@ -27,7 +27,7 @@ define( function( require ) {
    * @constructor
    */
   function ChargeSpeedThrottlingReadoutNode( timeScaleProperty, showCurrentProperty, isValueDepictionEnabledProperty ) {
-    var self = this;
+    const self = this;
     Text.call( this, animationSpeedLimitReachedString, {
 
       // Reduce the width of the animation speed limit reached so it doesn't overlap controls
@@ -38,9 +38,9 @@ define( function( require ) {
 
     Property.multilink( [ timeScaleProperty, showCurrentProperty, isValueDepictionEnabledProperty ],
       function( timeScale, showCurrent, isValueDepictionEnabled ) {
-        var percent = timeScale * 100;
-        var isThrottled = percent < 99.5;
-        var fixed = timeScale < 0.01 ? '< 1' : Util.toFixed( percent, 0 );
+        const percent = timeScale * 100;
+        const isThrottled = percent < 99.5;
+        const fixed = timeScale < 0.01 ? '< 1' : Util.toFixed( percent, 0 );
         self.setText( StringUtils.fillIn( animationSpeedLimitReachedString, { percent: fixed } ) );
 
         // Only show the throttling message if the speed is less than 100% and charges are visible
