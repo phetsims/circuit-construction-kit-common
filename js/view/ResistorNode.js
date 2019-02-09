@@ -18,7 +18,7 @@ define( require => {
   const Path = require( 'SCENERY/nodes/Path' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const ResistorColors = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorColors' );
-  const ResistorType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ResistorType' );
+  const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   const Shape = require( 'KITE/Shape' );
 
   // images
@@ -58,15 +58,15 @@ define( require => {
   const schematicRasterCache = {};
 
   const RESISTOR_IMAGE_MAP = {};
-  RESISTOR_IMAGE_MAP[ ResistorType.COIN ] = coinImage;
-  RESISTOR_IMAGE_MAP[ ResistorType.PAPER_CLIP ] = paperClipImage;
-  RESISTOR_IMAGE_MAP[ ResistorType.PENCIL ] = pencilImage;
-  RESISTOR_IMAGE_MAP[ ResistorType.ERASER ] = eraserImage;
-  RESISTOR_IMAGE_MAP[ ResistorType.HAND ] = handImage;
-  RESISTOR_IMAGE_MAP[ ResistorType.HIGH_RESISTANCE_RESISTOR ] = highResistanceResistorImage;
-  RESISTOR_IMAGE_MAP[ ResistorType.RESISTOR ] = lifelikeResistorImage;
-  RESISTOR_IMAGE_MAP[ ResistorType.DOG ] = dogImage;
-  RESISTOR_IMAGE_MAP[ ResistorType.DOLLAR_BILL ] = dollarBillImage;
+  RESISTOR_IMAGE_MAP[ Resistor.ResistorType.COIN ] = coinImage;
+  RESISTOR_IMAGE_MAP[ Resistor.ResistorType.PAPER_CLIP ] = paperClipImage;
+  RESISTOR_IMAGE_MAP[ Resistor.ResistorType.PENCIL ] = pencilImage;
+  RESISTOR_IMAGE_MAP[ Resistor.ResistorType.ERASER ] = eraserImage;
+  RESISTOR_IMAGE_MAP[ Resistor.ResistorType.HAND ] = handImage;
+  RESISTOR_IMAGE_MAP[ Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR ] = highResistanceResistorImage;
+  RESISTOR_IMAGE_MAP[ Resistor.ResistorType.RESISTOR ] = lifelikeResistorImage;
+  RESISTOR_IMAGE_MAP[ Resistor.ResistorType.DOG ] = dogImage;
+  RESISTOR_IMAGE_MAP[ Resistor.ResistorType.DOLLAR_BILL ] = dollarBillImage;
 
   class ResistorNode extends FixedCircuitElementNode {
 
@@ -87,7 +87,7 @@ define( require => {
       let updateColorBands = null;
 
       // Add color bands for the normal resistor
-      if ( resistor.resistorType === ResistorType.RESISTOR ) {
+      if ( resistor.resistorType === Resistor.ResistorType.RESISTOR ) {
 
         // Color bands for resistance > 0
         const colorBands = _.range( 4 ).map( index => {
@@ -182,12 +182,12 @@ define( require => {
 
       // Adjust the dog so the charges travel along the tail/legs, see
       // https://github.com/phetsims/circuit-construction-kit-common/issues/364
-      if ( resistor.resistorType === ResistorType.DOG ) {
+      if ( resistor.resistorType === Resistor.ResistorType.DOG ) {
         lifelikeResistorImageNode.translate( 0, -40 );
       }
 
       // Adjust hand origin as well
-      if ( resistor.resistorType === ResistorType.HAND ) {
+      if ( resistor.resistorType === Resistor.ResistorType.HAND ) {
         lifelikeResistorImageNode.translate( 0, 14 );
       }
 

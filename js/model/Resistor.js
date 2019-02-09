@@ -11,9 +11,9 @@ define( require => {
   // modules
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const Enumeration = require( 'PHET_CORE/Enumeration' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   const NumberProperty = require( 'AXON/NumberProperty' );
-  const ResistorType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ResistorType' );
 
   // constants
   const RESISTOR_LENGTH = CCKCConstants.RESISTOR_LENGTH;
@@ -31,27 +31,27 @@ define( require => {
         resistance: CCKCConstants.DEFAULT_RESISTANCE,
 
         // Support for rendering household items or
-        resistorType: ResistorType.VALUES[ 0 ],
+        resistorType: Resistor.ResistorType.VALUES[ 0 ],
         resistorLength: RESISTOR_LENGTH,
         isFlammable: true
       }, options );
 
       // validate resistor type
-      assert && assert( ResistorType.VALUES.indexOf( options.resistorType ) >= 0, 'Unknown resistor type: ' +
-                                                                                  options.resistorType );
+      assert && assert( Resistor.ResistorType.VALUES.indexOf( options.resistorType ) >= 0, 'Unknown resistor type: ' +
+                                                                                           options.resistorType );
 
       super( startVertex, endVertex, options.resistorLength, tandem, options );
 
-      // @public (read-only) {ResistorType} indicates one of ResistorType values
+      // @public (read-only) {Resistor.ResistorType} indicates one of ResistorType values
       this.resistorType = options.resistorType;
 
-      options.isMetallic = ResistorType.isMetallic( this.resistorType );
+      options.isMetallic = Resistor.ResistorType.isMetallic( this.resistorType );
 
       // @public {Property.<number>} the resistance in ohms
       this.resistanceProperty = new NumberProperty( options.resistance );
 
       // @public (read-only) {number} - the number of decimal places to show in readouts and controls
-      this.numberOfDecimalPlaces = this.resistorType === ResistorType.RESISTOR ? 1 : 0;
+      this.numberOfDecimalPlaces = this.resistorType === Resistor.ResistorType.RESISTOR ? 1 : 0;
     }
 
     /**
@@ -60,7 +60,8 @@ define( require => {
      * @public
      */
     isResistanceEditable() {
-      return this.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR || this.resistorType === ResistorType.RESISTOR;
+      return this.resistorType === Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR ||
+             this.resistorType === Resistor.ResistorType.RESISTOR;
     }
 
     /**
@@ -87,6 +88,21 @@ define( require => {
       } );
     }
   }
+
+  // Enumeration for the different resistor types.
+  Resistor.ResistorType = new Enumeration( [
+    'RESISTOR',
+    'HIGH_RESISTANCE_RESISTOR',
+    'COIN',
+    'PAPER_CLIP',
+    'PENCIL',
+    'ERASER',
+    'HAND',
+    'DOG',
+    'DOLLAR_BILL'
+  ], ResistorType => {
+    ResistorType.isMetallic = type => type === ResistorType.COIN || type === ResistorType.PAPER_CLIP;
+  } );
 
   return circuitConstructionKitCommon.register( 'Resistor', Resistor );
 } );

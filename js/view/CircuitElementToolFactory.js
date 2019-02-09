@@ -26,7 +26,6 @@ define( require => {
   const Range = require( 'DOT/Range' );
   const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   const ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorNode' );
-  const ResistorType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ResistorType' );
   const Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
   const SwitchNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SwitchNode' );
   const Vector2 = require( 'DOT/Vector2' );
@@ -260,7 +259,7 @@ define( require => {
         new ResistorNode( null, null, resistorModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
           isIcon: true
         } ),
-        circuitElement => circuitElement instanceof Resistor && circuitElement.resistorType === ResistorType.RESISTOR,
+        circuitElement => circuitElement instanceof Resistor && circuitElement.resistorType === Resistor.ResistorType.RESISTOR,
         position => {
           const vertexPair = this.createVertexPair( position, RESISTOR_LENGTH );
           return new Resistor(
@@ -297,7 +296,7 @@ define( require => {
 
     /**
      * Create a ToolNode for a household item, such as an eraser or dog
-     * @param {ResistorType} resistorType
+     * @param {Resistor.ResistorType} resistorType
      * @param {number} resistance
      * @param {number} resistorLength
      * @param {string} labelString
@@ -327,7 +326,7 @@ define( require => {
 
       /**
        * Create the specified household item
-       * @param {ResistorType} resistorType
+       * @param {Resistor.ResistorType} resistorType
        * @param {number} resistorLength
        * @param {Tandem} tandem
        * @returns {Resistor}
@@ -353,7 +352,7 @@ define( require => {
      */
     createDollarBillToolNode( count, tandem ) {
       return this.createHouseholdItemToolNode(
-        ResistorType.DOLLAR_BILL,
+        Resistor.ResistorType.DOLLAR_BILL,
         HIGH_RESISTANCE,
         CCKCConstants.DOLLAR_BILL_LENGTH,
         dollarBillString,
@@ -372,7 +371,7 @@ define( require => {
      */
     createPaperClipToolNode( count, tandem ) {
       return this.createHouseholdItemToolNode(
-        ResistorType.PAPER_CLIP,
+        Resistor.ResistorType.PAPER_CLIP,
         MIN_RESISTANCE,
         CCKCConstants.PAPER_CLIP_LENGTH,
         paperClipString,
@@ -391,7 +390,7 @@ define( require => {
      */
     createCoinToolNode( count, tandem ) {
       return this.createHouseholdItemToolNode(
-        ResistorType.COIN,
+        Resistor.ResistorType.COIN,
         MIN_RESISTANCE,
         CCKCConstants.COIN_LENGTH,
         coinString,
@@ -410,7 +409,7 @@ define( require => {
      */
     createEraserToolNode( count, tandem ) {
       return this.createHouseholdItemToolNode(
-        ResistorType.ERASER,
+        Resistor.ResistorType.ERASER,
         HIGH_RESISTANCE,
         CCKCConstants.ERASER_LENGTH,
         eraserString,
@@ -429,7 +428,7 @@ define( require => {
      */
     createPencilToolNode( count, tandem ) {
       return this.createHouseholdItemToolNode(
-        ResistorType.PENCIL,
+        Resistor.ResistorType.PENCIL,
         25,
         CCKCConstants.PENCIL_LENGTH,
         pencilString,
@@ -448,7 +447,7 @@ define( require => {
      */
     createHandToolNode( count, tandem ) {
       return this.createHouseholdItemToolNode(
-        ResistorType.HAND,
+        Resistor.ResistorType.HAND,
         Math.pow( 10, 6 ),
         CCKCConstants.HAND_LENGTH,
         handString,
@@ -467,7 +466,7 @@ define( require => {
      */
     createDogToolNode( count, tandem ) {
       return this.createHouseholdItemToolNode(
-        ResistorType.DOG,
+        Resistor.ResistorType.DOG,
         HIGH_RESISTANCE,
         CCKCConstants.DOG_LENGTH,
         dogString,
@@ -565,20 +564,20 @@ define( require => {
             new Vertex( Vector2.ZERO ),
             new Vertex( new Vector2( CCKCConstants.RESISTOR_LENGTH, 0 ) ),
             tandem.createTandem( 'highResistanceResistor' ), {
-              resistorType: ResistorType.HIGH_RESISTANCE_RESISTOR, resistance: 1000
+              resistorType: Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR, resistance: 1000
             } ),
           this.viewTypeProperty,
           tandem.createTandem( 'highResistanceResistorIcon' ), {
             isIcon: true
           } ),
-        circuitElement => circuitElement instanceof Resistor && circuitElement.resistorType === ResistorType.HIGH_RESISTANCE_RESISTOR,
+        circuitElement => circuitElement instanceof Resistor && circuitElement.resistorType === Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR,
         position => {
           const vertexPair = this.createVertexPair( position, RESISTOR_LENGTH );
           return new Resistor(
             vertexPair.startVertex,
             vertexPair.endVertex,
             this.circuit.resistorGroupTandem.createNextTandem(), {
-              resistorType: ResistorType.HIGH_RESISTANCE_RESISTOR,
+              resistorType: Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR,
               resistance: CCKCConstants.HIGH_RESISTANCE,
               editableRange: CCKCConstants.HIGH_RESISTANCE_RANGE,
               editorDelta: CCKCConstants.HIGH_EDITOR_DELTA
