@@ -1,7 +1,9 @@
 // Copyright 2017, University of Colorado Boulder
 
 /**
- * Enumeration for how to render the circuit elements: lifelike or schematic
+ * Enumeration for how to render the circuit elements: lifelike or schematic.
+ * Because of how this file is used in the model and query parameter file, it must be declared separately
+ * to avoid circular module loading errors.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -10,18 +12,9 @@ define( require => {
 
   // modules
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const Enumeration = require( 'PHET_CORE/Enumeration' );
 
-  const CircuitElementViewType = {
-    LIFELIKE: 'LIFELIKE',
-    SCHEMATIC: 'SCHEMATIC'
-  };
+  const CircuitElementViewType = new Enumeration( [ 'LIFELIKE', 'SCHEMATIC' ] );
 
-  circuitConstructionKitCommon.register( 'CircuitElementViewType', CircuitElementViewType );
-
-  CircuitElementViewType.VALUES = [ CircuitElementViewType.LIFELIKE, CircuitElementViewType.SCHEMATIC ];
-
-  // verify that enum is immutable, without the runtime penalty in production code
-  assert && Object.freeze( CircuitElementViewType );
-
-  return CircuitElementViewType;
+  return circuitConstructionKitCommon.register( 'CircuitElementViewType', CircuitElementViewType );
 } );
