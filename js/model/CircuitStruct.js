@@ -13,7 +13,6 @@ define( require => {
 
   // modules
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
-  const BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const Property = require( 'AXON/Property' );
@@ -111,7 +110,7 @@ define( require => {
         circuitStruct.vertices[ circuitState.batteries[ i ].startVertex ],
         circuitStruct.vertices[ circuitState.batteries[ i ].endVertex ],
         new Property( 0 ),
-        BatteryType.NORMAL, // TODO(phet-io): save/restore battery type
+        Battery.BatteryType.NORMAL, // TODO(phet-io): save/restore battery type
         tandem.createNextTandem(), {
           voltage: circuitState.batteries[ i ].voltage
         }

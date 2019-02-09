@@ -12,7 +12,6 @@ define( require => {
   // modules
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
-  const BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCLightBulbNode' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
@@ -192,20 +191,20 @@ define( require => {
      */
     createRightBatteryToolNode( count, tandem ) {
       const batteryModel = new Battery( new Vertex( Vector2.ZERO ), new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
-        new Property( 0 ), BatteryType.NORMAL, tandem.createTandem( 'rightIconBattery' ) );
+        new Property( 0 ), Battery.BatteryType.NORMAL, tandem.createTandem( 'rightIconBattery' ) );
       const rightBatteryToolNode = this.createCircuitElementToolNode( batteryString, count,
         new BatteryNode( null, null, batteryModel, this.viewTypeProperty, tandem.createTandem( 'rightBatteryIcon' ), { isIcon: true }
         ),
         circuitElement => circuitElement instanceof Battery &&
                           circuitElement.initialOrientation === 'right' &&
-                          circuitElement.batteryType === BatteryType.NORMAL,
+                          circuitElement.batteryType === Battery.BatteryType.NORMAL,
         position => {
           const vertexPair = this.createVertexPair( position, BATTERY_LENGTH );
           return new Battery(
             vertexPair.startVertex,
             vertexPair.endVertex,
             this.circuit.batteryResistanceProperty,
-            BatteryType.NORMAL,
+            Battery.BatteryType.NORMAL,
             this.circuit.rightBatteryTandemGroup.createNextTandem()
           );
         }
@@ -494,19 +493,19 @@ define( require => {
             new Vertex( Vector2.ZERO ),
             new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
             new Property( 0 ),
-            BatteryType.HIGH_VOLTAGE,
+            Battery.BatteryType.HIGH_VOLTAGE,
             tandem.createTandem( 'highVoltageIconBattery' )
           ), this.viewTypeProperty, tandem.createTandem( 'highVoltageBatteryIcon' ), { isIcon: true } ),
         circuitElement => circuitElement instanceof Battery &&
 
                           circuitElement.initialOrientation === 'right' &&
-                          circuitElement.batteryType === BatteryType.HIGH_VOLTAGE, position => {
+                          circuitElement.batteryType === Battery.BatteryType.HIGH_VOLTAGE, position => {
           const vertexPair = this.createVertexPair( position, BATTERY_LENGTH );
           return new Battery(
             vertexPair.startVertex,
             vertexPair.endVertex,
             this.circuit.batteryResistanceProperty,
-            BatteryType.HIGH_VOLTAGE,
+            Battery.BatteryType.HIGH_VOLTAGE,
             this.circuit.rightBatteryTandemGroup.createNextTandem(), {
               voltage: 10000,
               editableRange: new Range( 100, 100000 ),

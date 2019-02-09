@@ -9,7 +9,7 @@ define( require => {
   'use strict';
 
   // modules
-  const BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
+  const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
@@ -71,7 +71,7 @@ define( require => {
      * @param {Object} [options]
      */
     constructor( screenView, circuitLayerNode, battery, viewTypeProperty, tandem, options ) {
-      const lifelikeNode = new Image( battery.batteryType === BatteryType.NORMAL ? batteryImage : batteryHighImage );
+      const lifelikeNode = new Image( battery.batteryType === Battery.BatteryType.NORMAL ? batteryImage : batteryHighImage );
 
       lifelikeNode.mutate( {
         scale: battery.distanceBetweenVertices / lifelikeNode.width

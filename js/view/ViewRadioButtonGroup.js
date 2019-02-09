@@ -12,7 +12,6 @@ define( require => {
   // modules
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
-  const BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
@@ -36,7 +35,7 @@ define( require => {
       // Create a battery which can be used in the views
       const startVertex = new Vertex( new Vector2( BATTERY_LENGTH / 2, 0 ) );
       const endVertex = new Vertex( new Vector2( -BATTERY_LENGTH / 2, 0 ) );
-      const battery = new Battery( endVertex, startVertex, new Property( 0 ), BatteryType.NORMAL, tandem.createTandem( 'battery' ), {
+      const battery = new Battery( endVertex, startVertex, new Property( 0 ), Battery.BatteryType.NORMAL, tandem.createTandem( 'battery' ), {
         initialOrientation: 'left'
       } );
 

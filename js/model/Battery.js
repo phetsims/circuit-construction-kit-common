@@ -9,9 +9,9 @@ define( require => {
   'use strict';
 
   // modules
-  const BatteryType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/BatteryType' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const Enumeration = require( 'PHET_CORE/Enumeration' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   const NumberProperty = require( 'AXON/NumberProperty' );
 
@@ -24,12 +24,12 @@ define( require => {
      * @param {Vertex} startVertex - one of the battery vertices
      * @param {Vertex} endVertex - the other battery vertex
      * @param {Property.<number>} internalResistanceProperty - the resistance of the battery
-     * @param {BatteryType} batteryType - NORMAL | HIGH_VOLTAGE
+     * @param {Battery.BatteryType} batteryType - NORMAL | HIGH_VOLTAGE
      * @param {Tandem} tandem
      * @param {Object} [options]
      */
     constructor( startVertex, endVertex, internalResistanceProperty, batteryType, tandem, options ) {
-      assert && assert( BatteryType.VALUES.indexOf( batteryType ) >= 0, 'invalid battery type: ' + batteryType );
+      assert && assert( Battery.BatteryType.VALUES.indexOf( batteryType ) >= 0, 'invalid battery type: ' + batteryType );
       assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
       options = _.extend( {
         initialOrientation: 'right',
@@ -48,11 +48,11 @@ define( require => {
       // the user can only create a certain number of "left" or "right" batteries from the toolbox.
       this.initialOrientation = options.initialOrientation;
 
-      // @public (read-only) {BatteryType} - the type of the battery - NORMAL | HIGH_VOLTAGE
+      // @public (read-only) {Battery.BatteryType} - the type of the battery - NORMAL | HIGH_VOLTAGE
       this.batteryType = batteryType;
 
       // @public (read-only) {number} - the number of decimal places to show in readouts and controls
-      this.numberOfDecimalPlaces = this.batteryType === BatteryType.NORMAL ? 1 : 0;
+      this.numberOfDecimalPlaces = this.batteryType === Battery.BatteryType.NORMAL ? 1 : 0;
     }
 
     /**
@@ -78,6 +78,9 @@ define( require => {
       } );
     }
   }
+
+  // Enumeration for the different types of Battery, NORMAL or HIGH_VOLTAGE
+  Battery.BatteryType = new Enumeration( [ 'NORMAL', 'HIGH_VOLTAGE' ] );
 
   return circuitConstructionKitCommon.register( 'Battery', Battery );
 } );
