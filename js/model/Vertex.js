@@ -73,7 +73,7 @@ define( require => {
       } );
 
       // Some of the following properties overlap.  For example, if 'insideTrueBlackBox' is true, then the interactive
-      // flag will be set to false when the circuit is in InteractionMode.TEST mode.
+      // flag will be set to false when the circuit is in Circuit.InteractionMode.TEST mode.
 
       // @public {BooleanProperty} - Vertices on the black box interface persist between build/investigate, and cannot be
       // moved/deleted

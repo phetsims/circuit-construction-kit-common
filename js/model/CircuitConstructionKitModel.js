@@ -18,7 +18,6 @@ define( require => {
   const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   const Emitter = require( 'AXON/Emitter' );
   const EmitterIO = require( 'AXON/EmitterIO' );
-  const InteractionMode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/InteractionMode' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Property = require( 'AXON/Property' );
   const PropertyIO = require( 'AXON/PropertyIO' );
@@ -91,9 +90,9 @@ define( require => {
         } );
       } );
 
-      // @public {Property.<InteractionMode>} - whether the user is in the InteractionMode.EXPLORE or InteractionMode.TEST mode
-      this.modeProperty = new Property( InteractionMode.EXPLORE, {
-        validValues: InteractionMode.VALUES,
+      // @public {Property.<InteractionMode>} - whether the user is in the CircuitConstructionKitModel.InteractionMode.EXPLORE or CircuitConstructionKitModel.InteractionMode.TEST mode
+      this.modeProperty = new Property( Circuit.InteractionMode.EXPLORE, {
+        validValues: Circuit.InteractionMode.VALUES,
         tandem: tandem.createTandem( 'modeProperty' ),
         phetioType: PropertyIO( StringIO )
       } );

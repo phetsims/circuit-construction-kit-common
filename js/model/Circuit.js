@@ -19,8 +19,8 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CurrentType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CurrentType' );
   const Emitter = require( 'AXON/Emitter' );
+  const Enumeration = require( 'PHET_CORE/Enumeration' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
-  const InteractionMode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/InteractionMode' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const ModifiedNodalAnalysisCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuit' );
   const ModifiedNodalAnalysisCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuitElement' );
@@ -928,14 +928,14 @@ define( require => {
      * A vertex has been dragged, is it a candidate for joining with other vertices?  If so, return the candidate
      * vertex.  Otherwise, return null.
      * @param {Vertex} vertex - the dragged vertex
-     * @param {InteractionMode} mode - the application mode InteractionMode.TEST | InteractionMode.EXPLORE
+     * @param {InteractionMode} mode - the application mode Circuit.InteractionMode.TEST | Circuit.InteractionMode.EXPLORE
      * @param {Bounds2|undefined} blackBoxBounds - the bounds of the black box, if there is one
      * @returns {Vertex|null} - the vertex it will be able to connect to, if dropped or null if no connection is available
      * @public
      */
     getDropTarget( vertex, mode, blackBoxBounds ) {
 
-      if ( mode === InteractionMode.TEST ) {
+      if ( mode === Circuit.InteractionMode.TEST ) {
         assert && assert( blackBoxBounds, 'bounds should be provided for build mode' );
       }
 
@@ -1030,7 +1030,7 @@ define( require => {
       // TODO(black-box-study): integrate rule (9) with the other rules above
       // (9) When in Black Box "build" mode (i.e. building inside the black box), a vertex user cannot connect to
       // a black box interface vertex if its other vertices would be outside of the black box.  See #136
-      if ( mode === InteractionMode.TEST ) {
+      if ( mode === Circuit.InteractionMode.TEST ) {
         const fixedVertices2 = this.findAllFixedVertices( vertex );
         candidateVertices = candidateVertices.filter( candidateVertex => {
 
@@ -1268,6 +1268,11 @@ define( require => {
       } );
     }
   }
+
+  // Enumeration for the different types of interaction:
+  // EXPLORE (used for open-ended exploration)
+  // TEST (when testing out a black box circuit)
+  Circuit.InteractionMode = new Enumeration( [ 'EXPLORE', 'TEST' ] );
 
   return circuitConstructionKitCommon.register( 'Circuit', Circuit );
 } );
