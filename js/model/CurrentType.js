@@ -1,7 +1,9 @@
 // Copyright 2017, University of Colorado Boulder
 
 /**
- * Enumeration for how to render the current: electrons or conventional (arrows)
+ * Enumeration for how to render the current: electrons or conventional (arrows).
+ * Because of how this file is used in the model and query parameter file, it must be declared separately
+ * to avoid circular module loading errors.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -10,18 +12,7 @@ define( require => {
 
   // modules
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const Enumeration = require( 'PHET_CORE/Enumeration' );
 
-  const CurrentType = {
-    ELECTRONS: 'ELECTRONS',
-    CONVENTIONAL: 'CONVENTIONAL'
-  };
-
-  circuitConstructionKitCommon.register( 'CurrentType', CurrentType );
-
-  CurrentType.VALUES = [ CurrentType.ELECTRONS, CurrentType.CONVENTIONAL ];
-
-  // verify that enum is immutable, without the runtime penalty in production code
-  if ( assert ) { Object.freeze( CurrentType ); }
-
-  return CurrentType;
+  return circuitConstructionKitCommon.register( 'CurrentType', new Enumeration( [ 'ELECTRONS', 'CONVENTIONAL' ] ) );
 } );

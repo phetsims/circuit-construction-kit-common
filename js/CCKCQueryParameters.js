@@ -70,10 +70,7 @@ define( require => {
     }
   } );
 
-  circuitConstructionKitCommon.register(
-    'CCKCQueryParameters',
-    CCKCQueryParameters
-  );
+  circuitConstructionKitCommon.register( 'CCKCQueryParameters', CCKCQueryParameters );
 
   return CCKCQueryParameters;
 } );
