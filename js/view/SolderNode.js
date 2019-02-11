@@ -52,7 +52,7 @@ define( require => {
 
         // @private {boolean} - defensive copies for callbacks cause listeners to get called during disposal, avoid calling
         // Node API after diposed
-        if ( !this.disposed ) {
+        if ( !this.isDisposed ) {
           this.visible = circuit.countCircuitElements( vertex ) > 1;
         }
       };

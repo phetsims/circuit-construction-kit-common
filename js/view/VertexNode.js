@@ -307,7 +307,7 @@ define( require => {
       // This is because the itemRemoved listener in CircuitLayerNode is added (and hence called) before this callback.
       // The CircuitLayerNode listener calls dispose but this listener still gets called back because emitter gets
       // a defensive copy of listeners.
-      if ( !this.disposed ) {
+      if ( !this.isDisposed ) {
 
         const desiredChild = this.circuit.countCircuitElements( this.vertex ) > 1 ? BLACK_CIRCLE_NODE : RED_CIRCLE_NODE;
         if ( this.getChildAt( 0 ) !== desiredChild ) {

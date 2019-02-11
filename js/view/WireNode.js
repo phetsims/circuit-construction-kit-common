@@ -209,7 +209,7 @@ define( require => {
        * When the view type changes (lifelike vs schematic), update the node
        */
       const markAsDirty = () => {
-        if ( this.disposed ) {
+        if ( this.isDisposed ) {
           return;
         }
         this.markAsDirty();
