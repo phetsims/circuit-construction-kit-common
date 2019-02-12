@@ -225,10 +225,10 @@ define( require => {
         const companionVoltage = state.voltage + companionResistance * state.current;
 
         // TODO: How does the system know this is a battery and not a resistor?
-        const battery = new ModifiedNodalAnalysisCircuitElement( newNode, inductor.node0, companionVoltage );
+        const battery = new ModifiedNodalAnalysisCircuitElement( newNode, inductor.nodeId0, null, companionVoltage );
 
         // TODO: How does the system know this is a resistor and not a battery?
-        const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, inductor.node1, companionResistance );
+        const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, inductor.nodeId1, null, companionResistance );
         companionBatteries.push( battery );
         companionResistors.push( resistor );
 
@@ -236,7 +236,7 @@ define( require => {
         //in series, so current is same through both companion components
         currentCompanions.push( {
           element: inductor,
-          getValueForSolution: solution => solution.getCurrent( battery )
+          getValueForSolution: solution => -solution.getCurrentForResistor( resistor ) // TODO: check sign, this was converted from battery to resistor
         } );
       } );
 
@@ -380,12 +380,12 @@ define( require => {
     }
   }
 
-  // class Inductor extends ModifiedNodalAnalysisCircuitElement {
-  //   constructor( node0, node1, inductance ) {
-  //     super( node0, node1, null, 0 );
-  //     this.inductance = inductance;
-  //   }
-  // }
+  class Inductor extends ModifiedNodalAnalysisCircuitElement {
+    constructor( node0, node1, inductance ) {
+      super( node0, node1, null, 0 );
+      this.inductance = inductance;
+    }
+  }
 
   class ResistiveBattery extends ModifiedNodalAnalysisCircuitElement {
     constructor( node0, node1, voltage, resistance ) {
@@ -480,7 +480,7 @@ define( require => {
         return companion.getValueForSolution( this.mnaSolution );
       }
       else {
-        return this.mnaSolution.getCurrent( element );
+        return this.mnaSolution.getCurrentForResistor( element );
       }
     }
 
@@ -493,10 +493,11 @@ define( require => {
     }
   }
 
-
   DynamicCircuit.Capacitor = Capacitor;
+  DynamicCircuit.Inductor = Inductor;
   DynamicCircuit.DynamicElementState = DynamicElementState;
   DynamicCircuit.DynamicCapacitor = DynamicCapacitor;
+  DynamicCircuit.DynamicInductor = DynamicInductor;
   DynamicCircuit.ResistiveBattery = ResistiveBattery;
 
   return circuitConstructionKitCommon.register( 'DynamicCircuit', DynamicCircuit );

@@ -63,4 +63,42 @@ define( require => {
     testVRCCircuit( 3, 7, 100, assert );
   } );
 
+  const testVRLCircuit = ( V, R, L, assert ) => {
+    const start = Date.now();
+    const resistor = new ModifiedNodalAnalysisCircuitElement( 1, 2, null, R );
+    const battery = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, V );
+    const inductor = new DynamicCircuit.DynamicInductor( new DynamicCircuit.Inductor( 2, 0, L ), new DynamicCircuit.DynamicElementState( V, 0.0 ) );
+    let circuit = new DynamicCircuit( [ battery ], [ resistor ], [], [], [], [ inductor ] );
+
+    const dt = 1E-4;
+    for ( let i = 0; i < 1000; i++ ) {
+      const t = i * dt;
+      const solution = circuit.solveItWithSubdivisions( dt );
+      const current = solution.getCurrent( resistor );
+      const expectedCurrent = V / R * ( 1 - Math.exp( -( t + dt ) * R / L ) );//positive, by definition of MNA.Battery
+      const error = Math.abs( current - expectedCurrent );
+      console.log( current );
+      assert.ok( error < 1E-4 );
+      circuit = circuit.updateWithSubdivisions( dt );
+    }
+    const end = Date.now();
+    const elapsed = ( end - start ) / 1000.0;
+    console.log( 'elapsed = ' + elapsed );
+  };
+
+  QUnit.test( 'test_RL_Circuit_should_have_correct_behavior_for_V_5_R_10_L_1', assert => {
+    testVRLCircuit( 5, 10, 1, assert );
+  } );
+
+  QUnit.test( 'test_RL_Circuit_should_have_correct_behavior_for_V_3_R_11_L_2_5', assert => {
+    testVRLCircuit( 3, 11, 2.5, assert );
+  } );
+
+  QUnit.test( 'test_RL_Circuit_should_have_correct_behavior_for_V_7_R_13_L_1E4', assert => {
+    testVRLCircuit( 7, 13, 1E4, assert );
+  } );
+
+  QUnit.test( 'test_RL_Circuit_should_have_correct_behavior_for_V_7_R_13_L_1Eminus4', assert => {
+    testVRLCircuit( 7, 13, 1E-4, assert );
+  } );
 } );
