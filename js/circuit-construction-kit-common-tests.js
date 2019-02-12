@@ -11,6 +11,7 @@ define( require => {
   // modules
   require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuitTests' );
   require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorColorsTests' );
+  require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/DynamicCircuitTests' );
 
   // Since our tests are loaded asynchronously, we must direct QUnit to begin the tests
   QUnit.start();
