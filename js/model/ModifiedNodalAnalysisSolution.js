@@ -112,7 +112,7 @@ define( require => {
      * Returns the voltage of the specified node.
      * @param {number} nodeIndex - the index of the node
      * @returns {number} the voltage of the node
-     * @private
+     * @public
      */
     getNodeVoltage( nodeIndex ) {
       return this.nodeVoltages[ nodeIndex ];

@@ -1,7 +1,9 @@
 // Copyright 2019, University of Colorado Boulder
 
 /**
- * TODO: Documentation
+ * There are two parts to solving a dynamic circuit:
+ * 1. Splitting up dynamic components such as capacitors and inductors into their respective linear companion models.
+ * 2. Adjusting the dt so that integration steps are accurate.  This is done through TimestepSubdivisions.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -16,8 +18,14 @@ define( require => {
 
   class DynamicCircuit {
 
-    //    public DynamicCircuit( List<LinearCircuitSolver.Battery> batteries, List<LinearCircuitSolver.Resistor> resistors, List<LinearCircuitSolver.CurrentSource> currents, List<ResistiveBattery> resistiveBatteries, List<DynamicCapacitor> capacitors, List<DynamicInductor> inductors, LinearCircuitSolver solver ) {
-    //     }
+    /**
+     * @param {ModifiedNodalAnalysisCircuitElement[]} batteries
+     * @param {ModifiedNodalAnalysisCircuitElement[]} resistors
+     * @param {???} currents TODO: type
+     * @param {ResistiveBattery[]} resistiveBatteries
+     * @param {Capacitor[]} capacitors
+     * @param {Inductor[]} inductors
+     */
     constructor( batteries, resistors, currents, resistiveBatteries, capacitors, inductors ) {
       this.batteries = batteries;
       this.capacitors = capacitors;
@@ -27,8 +35,12 @@ define( require => {
       this.resistors = resistors;
     }
 
-    //Solving the companion model is the same as propagating forward in time by dt.
-    // public DynamicCircuitSolution
+    /**
+     * Solving the companion model is the same as propagating forward in time by dt.
+     *
+     * @param {number} dt
+     * @returns {DynamicCircuitSolution}
+     */
     solvePropagate( dt ) {
       const result = this.toMNACircuit( dt );
       const mnaSolution = result.mnaCircuit.solve();
@@ -417,7 +429,6 @@ define( require => {
   }
 
   class Result {
-
     constructor( mnaCircuit, currentCompanions ) {
       this.mnaCircuit = mnaCircuit;
       this.currentCompanions = currentCompanions;
@@ -452,7 +463,7 @@ define( require => {
     /**
      * @param {DynamicCircuit} circuit
      * @param {ModifiedNodalAnalysisSolution} mnaSolution
-     * @param {HashMap<LinearCircuitSolver.Element, SolutionToDouble>} currentCompanions
+     * @param {Object[]} currentCompanions
      * @constructor
      */
     constructor( circuit, mnaSolution, currentCompanions ) {
@@ -462,15 +473,15 @@ define( require => {
     }
 
     /**
-     *@param {number} node -index
+     * @param {number} nodeIndex - index
      * @returns {number}
      */
-    getNodeVoltage( node ) {
-      return this.mnaSolution.getNodeVoltage( node );
+    getNodeVoltage( nodeIndex ) {
+      return this.mnaSolution.getNodeVoltage( nodeIndex );
     }
 
     /**
-     * @param {LinearCircuitSolver.Element} element
+     * @param {ModifiedNodalAnalysisCircuitElement} element
      * @returns {number}
      */
     getCurrent( element ) {
@@ -485,7 +496,7 @@ define( require => {
     }
 
     /**
-     * @param {LinearCircuitSolver.Element} element
+     * @param {ModifiedNodalAnalysisCircuitElement} element
      * @returns {number}
      */
     getVoltage( element ) {
