@@ -12,6 +12,7 @@ define( require => {
   // modules
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   const Charge = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Charge' );
@@ -267,6 +268,7 @@ define( require => {
       this.vertexGroupTandem = tandem.createGroupTandem( 'vertices' );
       this.wireGroupTandem = tandem.createGroupTandem( 'wires' );
       this.resistorGroupTandem = tandem.createGroupTandem( 'resistors' );
+      this.capacitorGroupTandem = tandem.createGroupTandem( 'capacitors' );
       this.seriesAmmeterGroupTandem = tandem.createGroupTandem( 'seriesAmmeters' );
       this.switchGroupTandem = tandem.createGroupTandem( 'switches' );
       this.coinGroupTandem = tandem.createGroupTandem( 'coins' );
@@ -642,8 +644,8 @@ define( require => {
       // Must run the solver even if there is only 1 battery, because it solves for the voltage difference between
       // the vertices
 
-      const batteries = this.circuitElements.getArray().filter( b => b instanceof Battery );
-      const resistors = this.circuitElements.getArray().filter( b => !( b instanceof Battery ) );
+      const batteries = this.circuitElements.getArray().filter( b => b instanceof Battery && !( b instanceof Capacitor ) );
+      const resistors = this.circuitElements.getArray().filter( b => !( b instanceof Battery ) && !( b instanceof Capacitor ) );
 
       // introduce a synthetic vertex for each battery to model internal resistance
       const resistorAdapters = resistors.map( circuitElement =>

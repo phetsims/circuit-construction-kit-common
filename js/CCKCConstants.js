@@ -80,6 +80,8 @@ define( require => {
     // Length of a resistor
     RESISTOR_LENGTH: 110,
 
+    CAPACITOR_LENGTH: 110,
+
     // Length of household items in view coordinates
     COIN_LENGTH: 85,
     ERASER_LENGTH: 90,

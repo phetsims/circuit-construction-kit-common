@@ -12,6 +12,8 @@ define( require => {
   // modules
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
+  const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
+  const CapacitorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CapacitorNode' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCLightBulbNode' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
@@ -268,6 +270,33 @@ define( require => {
         }
       );
       return resistorToolNode;
+    }
+
+    /**
+     * @param {number} count - the number that can be dragged out at once
+     * @param {Tandem} tandem
+     * @returns {CircuitElementToolNode}
+     * @public
+     */
+    createCapacitorToolNode( count, tandem ) {
+      const capacitorModel = new Capacitor(
+        new Vertex( Vector2.ZERO ),
+        new Vertex( new Vector2( CCKCConstants.CAPACITOR_LENGTH, 0 ) ),
+        tandem.createTandem( 'resistor' )
+      );
+      const capacitorToolNode = this.createCircuitElementToolNode( 'CAPACITOR', count,
+        new CapacitorNode( null, null, capacitorModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
+          isIcon: true
+        } ),
+        circuitElement => circuitElement instanceof Capacitor,
+        position => {
+          const vertexPair = this.createVertexPair( position, CCKCConstants.CAPACITOR_LENGTH );
+          return new Capacitor(
+            vertexPair.startVertex, vertexPair.endVertex, this.circuit.capacitorGroupTandem.createNextTandem()
+          );
+        }
+      );
+      return capacitorToolNode;
     }
 
     /**

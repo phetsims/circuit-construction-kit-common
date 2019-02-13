@@ -21,6 +21,9 @@ define( require => {
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
   const Bounds2 = require( 'DOT/Bounds2' );
+  const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
+  const CapacitorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view' +
+                                 '/CapacitorNode' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCLightBulbNode' );
   const CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
@@ -299,6 +302,9 @@ define( require => {
       } );
       initializeCircuitElementType( Resistor, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'resistorNode' ), ( circuitElement, tandem ) => {
         return new ResistorNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem );
+      } );
+      initializeCircuitElementType( Capacitor, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'capacitorNode' ), ( circuitElement, tandem ) => {
+        return new CapacitorNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem );
       } );
       initializeCircuitElementType( SeriesAmmeter, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'seriesAmmeterNode' ), ( circuitElement, tandem ) => {
         return new SeriesAmmeterNode( screenView, this, circuitElement, tandem );
