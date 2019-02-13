@@ -1,4 +1,4 @@
-// Copyright 2016-2017, University of Colorado Boulder
+// Copyright 2016-2019, University of Colorado Boulder
 
 /**
  * Model for the Ammeter, which adds the probe position and current readout.  There is only one ammeter per screen and

@@ -1,4 +1,4 @@
-// Copyright 2017, University of Colorado Boulder
+// Copyright 2017-2019, University of Colorado Boulder
 
 /**
  * Circuit element used for Modified Nodal Analysis. * No listeners are attached and hence no dispose implementation is necessary.

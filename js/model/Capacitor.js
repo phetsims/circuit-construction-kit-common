@@ -1,7 +1,7 @@
-// Copyright 2015-2017, University of Colorado Boulder
+// Copyright 2019, University of Colorado Boulder
 
 /**
- * Model for a resistor.
+ * Model for a capacitor.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
