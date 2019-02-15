@@ -9,6 +9,7 @@ define( require => {
   'use strict';
 
   // modules
+  const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
   const Dimension2 = require( 'DOT/Dimension2' );
@@ -124,7 +125,10 @@ define( require => {
     MAJOR_TICK_LENGTH: 20,
 
     // The main font size to use for labels and controls
-    FONT_SIZE: 14
+    FONT_SIZE: 14,
+
+    // Number of wires that can be dragged out of the toolbox
+    NUMBER_OF_WIRES: CCKCQueryParameters.moreWires ? 50 : 25
   };
 
   circuitConstructionKitCommon.register( 'CCKCConstants', CCKCConstants );
