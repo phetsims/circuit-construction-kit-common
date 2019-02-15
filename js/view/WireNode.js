@@ -375,7 +375,7 @@ define( require => {
 
       // Prevent the case where a vertex lies on another vertex, particularly for fuzz testing
       const magnitude = Math.max( delta.magnitude(), 1E-8 );
-      const angle = delta.angle();
+      const angle = delta.angle;
 
       // Update the node transform
       this.endCapParent.setMatrix( MATRIX.setToTranslationRotationPoint( endPosition, angle ) );

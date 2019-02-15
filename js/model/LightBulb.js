@@ -179,9 +179,9 @@ define( require => {
           // rotate the point about the start vertex
           const startPoint = this.startPositionProperty.get();
           const vertexDelta = this.endPositionProperty.get().minus( startPoint );
-          const relativeAngle = vertexDelta.angle() - this.vertexDelta.angle();
+          const relativeAngle = vertexDelta.angle - this.vertexDelta.angle;
           const position = positionAlongSegment.rotatedAboutPoint( startPoint, relativeAngle );
-          const angle = nextPoint.minus( currentPoint ).angle();
+          const angle = nextPoint.minus( currentPoint ).angle;
 
           // sampled from createAtPosition
           matrix.setToTranslationRotationPoint( position, angle + matrix.getRotation() + 0.7851354708011367 );

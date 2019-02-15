@@ -73,7 +73,7 @@ define( require => {
 
         const distanceAlongSegment = Util.linear( SWITCH_START, SWITCH_END, 0, 1, fractionAlongWire );
         const translation = pivot.blend( rotatedPoint, distanceAlongSegment );
-        matrix.setToTranslationRotationPoint( translation, endPosition.minus( startPosition ).angle() );
+        matrix.setToTranslationRotationPoint( translation, endPosition.minus( startPosition ).angle );
       }
       else {
 

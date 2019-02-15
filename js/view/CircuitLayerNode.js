@@ -535,7 +535,7 @@ define( require => {
       if ( fixedNeighbors.length === 1 ) {
         const fixedNeighbor = fixedNeighbors[ 0 ];
         const fixedVertex = fixedNeighbor.getOppositeVertex( vertex );
-        const desiredAngle = position.minus( fixedVertex.positionProperty.get() ).angle();
+        const desiredAngle = position.minus( fixedVertex.positionProperty.get() ).angle;
         assert && assert( !isNaN( desiredAngle ), 'angle should be a number' );
 
         const length = fixedNeighbor.distanceBetweenVertices || fixedNeighbor.lengthProperty.get();
@@ -603,12 +603,12 @@ define( require => {
                vertex.unsnappedPositionProperty.get().y === vertex.positionProperty.get().y ) {
 
             // Rotate the way the element is going.
-            angle = position.minus( oppositeVertex.positionProperty.get() ).angle();
+            angle = position.minus( oppositeVertex.positionProperty.get() ).angle;
           }
           else {
 
             // Lock in the angle if a match is proposed, otherwise things rotate uncontrollably
-            angle = vertex.positionProperty.get().minus( oppositeVertex.positionProperty.get() ).angle();
+            angle = vertex.positionProperty.get().minus( oppositeVertex.positionProperty.get() ).angle;
           }
 
           // Maintain fixed length

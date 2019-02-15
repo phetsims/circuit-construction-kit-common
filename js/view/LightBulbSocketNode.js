@@ -57,7 +57,7 @@ define( require => {
     updateRender() {
       const startPosition = this.circuitElement.startPositionProperty.get();
       const endPosition = this.circuitElement.endPositionProperty.get();
-      const angle = endPosition.minus( startPosition ).angle() + Math.PI / 4;
+      const angle = endPosition.minus( startPosition ).angle + Math.PI / 4;
 
       // Update the node transform in a single step, see #66
       this.contentNode.setMatrix( SCRATCH_MATRIX.setToTranslationRotationPoint( startPosition, angle ) );

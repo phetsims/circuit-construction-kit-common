@@ -366,7 +366,7 @@ define( require => {
       const pivotPosition = pivotVertex.positionProperty.get();
 
       const distanceFromVertex = position.distance( pivotPosition );
-      const angle = position.minus( pivotPosition ).angle();
+      const angle = position.minus( pivotPosition ).angle;
 
       const newPosition = pivotPosition.plus( Vector2.createPolar( distanceFromVertex, angle + deltaAngle ) );
       vertex.unsnappedPositionProperty.set( newPosition );
@@ -462,7 +462,7 @@ define( require => {
 
       // Track where they would go if they moved toward their opposite vertices
       let translations = getTranslations();
-      let angles = translations.map( t => t.angle() );
+      let angles = translations.map( t => t.angle );
 
       if ( neighborCircuitElements.length > 2 ) {
 
@@ -474,7 +474,7 @@ define( require => {
 
         // Get the angles in the corrected order
         translations = getTranslations();
-        angles = translations.map( t => t.angle() );
+        angles = translations.map( t => t.angle );
       }
 
       const separation = Math.PI * 2 / neighborCircuitElements.length;
