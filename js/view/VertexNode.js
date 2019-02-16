@@ -327,7 +327,7 @@ define( require => {
 
       // Compute an unweighted sum of adjacent element directions, and point in the opposite direction so the button
       // will appear in the least populated area.
-      const sumOfDirections = new Vector2();
+      const sumOfDirections = new Vector2( 0, 0 );
       for ( let i = 0; i < neighbors.length; i++ ) {
         const v = this.vertex.positionProperty.get().minus(
           neighbors[ i ].getOppositeVertex( this.vertex ).positionProperty.get()

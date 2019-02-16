@@ -28,10 +28,10 @@ define( require => {
       } );
 
       // @private {Vector2}
-      this.probePosition = new Vector2();
+      this.probePosition = new Vector2( 0, 0 );
 
       // @private {Vector2}
-      this.bodyPosition = new Vector2();
+      this.bodyPosition = new Vector2( 0, 0 );
 
       // @private {Vector2}
       this.bodyControlPointOffset = bodyControlPointOffset;
