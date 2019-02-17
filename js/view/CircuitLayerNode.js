@@ -18,6 +18,8 @@ define( require => {
   'use strict';
 
   // modules
+  const ACSource = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACSource' );
+  const ACSourceNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ACSourceNode' );
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
   const Bounds2 = require( 'DOT/Bounds2' );
@@ -291,27 +293,22 @@ define( require => {
         } );
       };
 
-      initializeCircuitElementType( Wire, this.wireLayer, tandem.createGroupTandem( 'wireNode' ), ( circuitElement, tandem ) => {
-        return new WireNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem );
-      } );
-      initializeCircuitElementType( Battery, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'batteryNode' ), ( circuitElement, tandem ) => {
-        return new BatteryNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem );
-      } );
-      initializeCircuitElementType( LightBulb, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'lightBulbNode' ), ( circuitElement, tandem ) => {
-        return new CCKCLightBulbNode( screenView, this, circuitElement, this.model.isValueDepictionEnabledProperty, this.model.viewTypeProperty, tandem );
-      } );
-      initializeCircuitElementType( Resistor, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'resistorNode' ), ( circuitElement, tandem ) => {
-        return new ResistorNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem );
-      } );
-      initializeCircuitElementType( Capacitor, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'capacitorNode' ), ( circuitElement, tandem ) => {
-        return new CapacitorNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem );
-      } );
-      initializeCircuitElementType( SeriesAmmeter, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'seriesAmmeterNode' ), ( circuitElement, tandem ) => {
-        return new SeriesAmmeterNode( screenView, this, circuitElement, tandem );
-      } );
-      initializeCircuitElementType( Switch, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'switchNode' ), ( circuitElement, tandem ) => {
-        return new SwitchNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem );
-      } );
+      initializeCircuitElementType( Wire, this.wireLayer, tandem.createGroupTandem( 'wireNode' ),
+        ( circuitElement, tandem ) => new WireNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
+      initializeCircuitElementType( Battery, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'batteryNode' ),
+        ( circuitElement, tandem ) => new BatteryNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
+      initializeCircuitElementType( LightBulb, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'lightBulbNode' ),
+        ( circuitElement, tandem ) => new CCKCLightBulbNode( screenView, this, circuitElement, this.model.isValueDepictionEnabledProperty, this.model.viewTypeProperty, tandem ) );
+      initializeCircuitElementType( Resistor, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'resistorNode' ),
+        ( circuitElement, tandem ) => new ResistorNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
+      initializeCircuitElementType( Capacitor, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'capacitorNode' ),
+        ( circuitElement, tandem ) => new CapacitorNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
+      initializeCircuitElementType( SeriesAmmeter, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'seriesAmmeterNode' ),
+        ( circuitElement, tandem ) => new SeriesAmmeterNode( screenView, this, circuitElement, tandem ) );
+      initializeCircuitElementType( Switch, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'switchNode' ),
+        ( circuitElement, tandem ) => new SwitchNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
+      initializeCircuitElementType( ACSource, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'acSourceNode' ),
+        ( circuitElement, tandem ) => new ACSourceNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
 
       // When a vertex is selected, a cut button is shown near to the vertex.  If the vertex is connected to >1 circuit
       // element, the button is enabled.  Pressing the button will cut the vertex from the neighbors.  Only one cutButton

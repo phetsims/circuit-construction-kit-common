@@ -10,6 +10,7 @@ define( require => {
   'use strict';
 
   // modules
+  const ACSource = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACSource' );
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const BooleanProperty = require( 'AXON/BooleanProperty' );
   const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
@@ -45,12 +46,6 @@ define( require => {
   // joined then bump them apart so they do not look connected.
 
   const trueFunction = _.constant( true ); // Lower cased so IDEA doesn't think it is a constructor
-
-  /**
-   * Given a CircuitElement, call its update function (if it has one).
-   * @param {CircuitElement} circuitElement
-   */
-  const UPDATE_IF_PRESENT = circuitElement => circuitElement.update && circuitElement.update();
 
   class Circuit {
 
@@ -263,6 +258,9 @@ define( require => {
       } );
 
       this.batteryResistanceProperty.link( solveListener );
+
+      // @public (read-only) elapsed time for the circuit model
+      this.time = 0;
 
       // @public (read-only) - for creating tandems
       this.vertexGroupTandem = tandem.createGroupTandem( 'vertices' );
@@ -644,8 +642,8 @@ define( require => {
       // Must run the solver even if there is only 1 battery, because it solves for the voltage difference between
       // the vertices
 
-      const batteries = this.circuitElements.getArray().filter( b => b instanceof Battery && !( b instanceof Capacitor ) );
-      const resistors = this.circuitElements.getArray().filter( b => !( b instanceof Battery ) && !( b instanceof Capacitor ) );
+      const batteries = this.circuitElements.getArray().filter( b => b instanceof Battery || b instanceof ACSource && !( b instanceof Capacitor ) );
+      const resistors = this.circuitElements.getArray().filter( b => !( b instanceof Battery ) && !( b instanceof Capacitor ) && !( b instanceof ACSource ) );
 
       // introduce a synthetic vertex for each battery to model internal resistance
       const resistorAdapters = resistors.map( circuitElement =>
@@ -751,7 +749,12 @@ define( require => {
 
       // Move the charges
       this.chargeAnimator.step( dt );
-      this.circuitElements.getArray().forEach( UPDATE_IF_PRESENT );
+
+      this.time = this.time + dt;
+
+      // TODO: Should we combine step and update?
+      this.circuitElements.getArray().forEach( circuitElement => circuitElement.step && circuitElement.step( this.time, dt ) );
+      this.circuitElements.getArray().forEach( circuitElement => circuitElement.update && circuitElement.update() );
     }
 
     /**

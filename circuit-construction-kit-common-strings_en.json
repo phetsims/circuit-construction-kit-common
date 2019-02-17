@@ -5,6 +5,9 @@
   "animationSpeedLimitReached": {
     "value": "Animation speed limit reached! Simulation speed reduced to {{percent}}% normal."
   },
+  "acSource": {
+    "value": "AC Source"
+  },
   "resistor": {
     "value": "Resistor"
   },

@@ -9,6 +9,7 @@ define( require => {
   'use strict';
 
   // modules
+  const ACSource = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACSource' );
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
@@ -49,7 +50,7 @@ define( require => {
 
       let contentNode = null;
       let updatePosition = null;
-      if ( circuitElement instanceof Battery ) {
+      if ( circuitElement instanceof Battery || circuitElement instanceof ACSource ) {
 
         const voltageText = new Text( '', _.extend( { tandem: tandem.createTandem( 'voltageText' ) }, { font: FONT } ) );
         const voltageListener = voltage => {

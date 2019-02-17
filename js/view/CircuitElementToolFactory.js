@@ -10,6 +10,8 @@ define( require => {
   'use strict';
 
   // modules
+  const ACSource = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACSource' );
+  const ACSourceNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ACSourceNode' );
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
   const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
@@ -35,6 +37,7 @@ define( require => {
   const Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
 
   // strings
+  const acSourceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/acSource' );
   const batteryString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery' );
   const coinString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/coin' );
   const dogString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/dog' );
@@ -211,6 +214,33 @@ define( require => {
         }
       );
       return rightBatteryToolNode;
+    }
+
+    /**
+     * @param {number} count - the number that can be dragged out at once
+     * @param {Tandem} tandem
+     * @returns {CircuitElementToolNode}
+     * @public
+     */
+    createACSourceToolNode( count, tandem ) {
+      const acSource = new ACSource(
+        new Vertex( Vector2.ZERO ),
+        new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
+        new Property( 0 ), tandem.createTandem( 'rightIconBattery' )
+      );
+      return this.createCircuitElementToolNode( acSourceString, count,
+        new ACSourceNode( null, null, acSource, this.viewTypeProperty, tandem.createTandem( 'acSourceIcon' ), { isIcon: true } ),
+        circuitElement => circuitElement instanceof ACSource,
+        position => {
+          const vertexPair = this.createVertexPair( position, BATTERY_LENGTH );
+          return new ACSource(
+            vertexPair.startVertex,
+            vertexPair.endVertex,
+            this.circuit.batteryResistanceProperty,
+            this.circuit.rightBatteryTandemGroup.createNextTandem()
+          );
+        }
+      );
     }
 
     /**
