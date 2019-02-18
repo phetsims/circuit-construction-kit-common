@@ -10,13 +10,16 @@ define( require => {
   'use strict';
 
   // modules
+  const ACSource = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACSource' );
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CircuitElementEditNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditNode' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
+  const HBox = require( 'SCENERY/nodes/HBox' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const Node = require( 'SCENERY/nodes/Node' );
+  const Range = require( 'DOT/Range' );
   const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   const SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
@@ -27,6 +30,8 @@ define( require => {
   const Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
 
   // strings
+  const frequencyHzValuePatternString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/frequencyHzValuePattern' );
+  const frequencyString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/frequency' );
   const resistanceOhmsValuePatternString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhmsValuePattern' );
   const resistanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistance' );
   const tapCircuitElementToEditString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/tapCircuitElementToEdit' );
@@ -94,6 +99,7 @@ define( require => {
           const isWire = selectedCircuitElement instanceof Wire;
           const isSwitch = selectedCircuitElement instanceof Switch;
           const isSeriesAmmeter = selectedCircuitElement instanceof SeriesAmmeter;
+          const isACSource = selectedCircuitElement instanceof ACSource;
 
           if ( isResistor && selectedCircuitElement.isResistanceEditable() ) {
             editNode = new CircuitElementEditNode(
@@ -141,6 +147,46 @@ define( require => {
             editNode = new TrashButton(
               circuit, selectedCircuitElement, groupTandem.createNextTandem().createTandem( 'trashButton' )
             );
+          }
+          else if ( isACSource ) {
+            editNode = new HBox( {
+              spacing: 30,
+              children: [
+                new CircuitElementEditNode(
+                  voltageString,
+
+                  //TODO #444 replace '{0}' with SunConstants.VALUE_NAMED_PLACEHOLDER
+                  // Adapter to take from {{named}} to {0} for usage in common code
+                  StringUtils.fillIn( voltageVoltsValuePatternString, {
+                    voltage: '{0}'
+                  } ),
+                  selectedCircuitElement.maximumVoltageProperty,
+                  circuit,
+                  selectedCircuitElement,
+                  groupTandem.createNextTandem(), {
+                    showTrashCan: false
+                  }
+                ),
+                new CircuitElementEditNode(
+                  frequencyString,
+
+                  //TODO #444 replace '{0}' with SunConstants.VALUE_NAMED_PLACEHOLDER
+                  // Adapter to take from {{named}} to {0} for usage in common code
+                  StringUtils.fillIn( frequencyHzValuePatternString, {
+                    frequency: '{0}'
+                  } ),
+                  selectedCircuitElement.frequencyProperty,
+                  circuit,
+                  selectedCircuitElement,
+                  groupTandem.createNextTandem(), {
+
+                    // TODO: We need a different feature for this.  Maybe each CircuitElement has a map of editable things, not
+                    // TODO: just one editable thing.
+                    delta: 0.1,
+                    editableRange: new Range( 0.1, 2 ) // TODO: what range here?
+                  }
+                ) ]
+            } );
           }
         }
         else {
