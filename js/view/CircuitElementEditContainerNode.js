@@ -156,7 +156,6 @@ define( require => {
                 new CircuitElementEditNode(
                   voltageString,
 
-                  //TODO #444 replace '{0}' with SunConstants.VALUE_NAMED_PLACEHOLDER
                   // Adapter to take from {{named}} to {0} for usage in common code
                   StringUtils.fillIn( voltageVoltsValuePatternString, {
                     voltage: SunConstants.VALUE_NAMED_PLACEHOLDER
@@ -171,7 +170,6 @@ define( require => {
                 new CircuitElementEditNode(
                   frequencyString,
 
-                  //TODO #444 replace '{0}' with SunConstants.VALUE_NAMED_PLACEHOLDER
                   // Adapter to take from {{named}} to {0} for usage in common code
                   StringUtils.fillIn( frequencyHzValuePatternString, {
                     frequency: SunConstants.VALUE_NAMED_PLACEHOLDER
