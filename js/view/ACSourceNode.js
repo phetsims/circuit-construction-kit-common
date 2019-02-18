@@ -10,7 +10,6 @@ define( require => {
 
   // modules
   const ACSource = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACSource' );
-  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const Circle = require( 'SCENERY/nodes/Circle' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Dimension2 = require( 'DOT/Dimension2' );
@@ -22,13 +21,11 @@ define( require => {
   const Shape = require( 'KITE/Shape' );
 
   // constants
-  const WIDTH = 188;
-
   const sineCurveShape = new Shape();
-  const f = x => 13 * Math.sin( x );
+  const f = x => 9 * Math.sin( x );
 
   for ( let x = 0; x < Math.PI * 2; x += Math.PI / 2 / 100 ) {
-    const a = x * 10;
+    const a = x * 5.5;
     if ( x === 0 ) {
       sineCurveShape.moveTo( a, f( x ) );
     }
@@ -40,26 +37,30 @@ define( require => {
   // Scale to fit the correct width
   const sineCurvePath = new Path( sineCurveShape, {
     stroke: 'black',
-    lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH,
+    lineWidth: 2,
     centerX: 0
   } );
-  const signSeparation = 27;
+
+  const CIRCLE_DIAMETER = 54;
+  const signSeparation = CIRCLE_DIAMETER * 0.32;
+  const signScale = 0.8;
   const template = new Node( {
-    x: WIDTH / 4,
+    x: 47,
     children: [
-      new Circle( WIDTH / 4, {
+      new Circle( CIRCLE_DIAMETER / 2, {
         stroke: 'black',
-        lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH,
+        fill: 'white',
+        lineWidth: 2,
         centerX: 0
       } ),
       sineCurvePath,
       new PlusNode( {
-        size: new Dimension2( 10, 2.5 ),
+        size: new Dimension2( 10 * signScale, 2.5 * signScale ),
         centerX: 0,
         centerY: -signSeparation
       } ),
       new MinusNode( {
-        size: new Dimension2( 10, 2.5 ),
+        size: new Dimension2( 10 * signScale, 2.5 * signScale ),
         centerX: 0,
         centerY: signSeparation
       } )
