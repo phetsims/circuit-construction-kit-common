@@ -10,6 +10,7 @@ define( require => {
 
   // modules
   const ACSource = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACSource' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const Circle = require( 'SCENERY/nodes/Circle' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Dimension2 = require( 'DOT/Dimension2' );
@@ -45,7 +46,7 @@ define( require => {
   const signSeparation = CIRCLE_DIAMETER * 0.32;
   const signScale = 0.8;
   const template = new Node( {
-    x: 47,
+    x: CCKCConstants.AC_SOURCE_LENGTH / 2,
     children: [
       new Circle( CIRCLE_DIAMETER / 2, {
         stroke: 'black',

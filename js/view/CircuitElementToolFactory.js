@@ -56,6 +56,7 @@ define( require => {
 
   // constants
   const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
+  const AC_SOURCE_LENGTH = CCKCConstants.AC_SOURCE_LENGTH;
   const TOOLBOX_ICON_SIZE = CCKCConstants.TOOLBOX_ICON_SIZE;
   const RESISTOR_LENGTH = CCKCConstants.RESISTOR_LENGTH;
   const WIRE_LENGTH = 100;
@@ -225,14 +226,14 @@ define( require => {
     createACSourceToolNode( count, tandem ) {
       const acSource = new ACSource(
         new Vertex( Vector2.ZERO ),
-        new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
+        new Vertex( new Vector2( AC_SOURCE_LENGTH, 0 ) ),
         new Property( 0 ), tandem.createTandem( 'rightIconBattery' )
       );
       return this.createCircuitElementToolNode( acSourceString, count,
         new ACSourceNode( null, null, acSource, this.viewTypeProperty, tandem.createTandem( 'acSourceIcon' ), { isIcon: true } ),
         circuitElement => circuitElement instanceof ACSource,
         position => {
-          const vertexPair = this.createVertexPair( position, BATTERY_LENGTH );
+          const vertexPair = this.createVertexPair( position, AC_SOURCE_LENGTH );
           return new ACSource(
             vertexPair.startVertex,
             vertexPair.endVertex,
