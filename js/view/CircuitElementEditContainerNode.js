@@ -23,6 +23,7 @@ define( require => {
   const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   const SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
+  const SunConstants = require( 'SUN/SunConstants' );
   const Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
   const SwitchReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SwitchReadoutNode' );
   const Text = require( 'SCENERY/nodes/Text' );
@@ -158,7 +159,7 @@ define( require => {
                   //TODO #444 replace '{0}' with SunConstants.VALUE_NAMED_PLACEHOLDER
                   // Adapter to take from {{named}} to {0} for usage in common code
                   StringUtils.fillIn( voltageVoltsValuePatternString, {
-                    voltage: '{0}'
+                    voltage: SunConstants.VALUE_NAMED_PLACEHOLDER
                   } ),
                   selectedCircuitElement.maximumVoltageProperty,
                   circuit,
@@ -173,7 +174,7 @@ define( require => {
                   //TODO #444 replace '{0}' with SunConstants.VALUE_NAMED_PLACEHOLDER
                   // Adapter to take from {{named}} to {0} for usage in common code
                   StringUtils.fillIn( frequencyHzValuePatternString, {
-                    frequency: '{0}'
+                    frequency: SunConstants.VALUE_NAMED_PLACEHOLDER
                   } ),
                   selectedCircuitElement.frequencyProperty,
                   circuit,
