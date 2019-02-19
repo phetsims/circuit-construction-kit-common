@@ -13,7 +13,8 @@
     "generatedUnitTests": true,
     "requirejsNamespace": "CIRCUIT_CONSTRUCTION_KIT_COMMON",
     "phetLibs": [
-      "twixt"
+      "twixt",
+      "griddle"
     ],
     "preload": [
       "../sherpa/lib/Tween-r12.js"

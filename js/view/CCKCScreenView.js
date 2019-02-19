@@ -32,6 +32,7 @@ define( require => {
   const VBox = require( 'SCENERY/nodes/VBox' );
   const ViewRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ViewRadioButtonGroup' );
   const VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VoltmeterNode' );
+  const VoltageChartNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VoltageChartNode' );
   const WireResistivityControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/WireResistivityControl' );
   const ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ZoomControlPanel' );
 
@@ -113,6 +114,9 @@ define( require => {
           model.ammeter.visibleProperty.set( false );
         }
       } );
+
+      this.voltageChartNode = new VoltageChartNode( model.circuit.timeProperty );
+      this.addChild( this.voltageChartNode );
 
       // @public (read-only) {CircuitElementToolbox} - Toolbox from which CircuitElements can be dragged
       this.circuitElementToolbox = new CircuitElementToolbox(

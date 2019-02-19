@@ -260,7 +260,7 @@ define( require => {
       this.batteryResistanceProperty.link( solveListener );
 
       // @public (read-only) elapsed time for the circuit model
-      this.time = 0;
+      this.timeProperty = new NumberProperty( 0 );
 
       // @public (read-only) - for creating tandems
       this.vertexGroupTandem = tandem.createGroupTandem( 'vertices' );
@@ -750,10 +750,10 @@ define( require => {
       // Move the charges
       this.chargeAnimator.step( dt );
 
-      this.time = this.time + dt;
+      this.timeProperty.value += dt;
 
       // TODO: Should we combine step and update?
-      this.circuitElements.getArray().forEach( circuitElement => circuitElement.step && circuitElement.step( this.time, dt ) );
+      this.circuitElements.getArray().forEach( circuitElement => circuitElement.step && circuitElement.step( this.timeProperty.value, dt ) );
       this.circuitElements.getArray().forEach( circuitElement => circuitElement.update && circuitElement.update() );
     }
 
