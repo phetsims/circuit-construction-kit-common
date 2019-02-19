@@ -332,11 +332,11 @@ define( require => {
         const v = this.vertex.positionProperty.get().minus(
           neighbors[ i ].getOppositeVertex( this.vertex ).positionProperty.get()
         );
-        if ( v.magnitude() > 0 ) {
+        if ( v.magnitude > 0 ) {
           sumOfDirections.add( v.normalized() );
         }
       }
-      if ( sumOfDirections.magnitude() < 1E-6 ) {
+      if ( sumOfDirections.magnitude < 1E-6 ) {
         sumOfDirections.setXY( 0, -1 ); // Show the scissors above
       }
 

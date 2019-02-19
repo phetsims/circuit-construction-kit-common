@@ -396,8 +396,8 @@ define( require => {
         const endPoint = metallicCircuitElement.circuitElement.endPositionProperty.get();
         const segmentVector = endPoint.minus( startPoint );
         const probeVector = probeNode.centerTop.minus( startPoint );
-        let distanceAlongSegment = segmentVector.magnitude() === 0 ? 0 : ( probeVector.dot( segmentVector ) /
-                                                                           segmentVector.magnitudeSquared() );
+        let distanceAlongSegment = segmentVector.magnitude === 0 ? 0 : ( probeVector.dot( segmentVector ) /
+                                                                         segmentVector.magnitudeSquared() );
         distanceAlongSegment = Util.clamp( distanceAlongSegment, 0, 1 );
 
         const voltageAlongWire = Util.linear( 0, 1,
