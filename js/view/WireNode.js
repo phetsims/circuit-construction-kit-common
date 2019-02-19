@@ -374,7 +374,7 @@ define( require => {
       const delta = endPosition.minus( startPosition );
 
       // Prevent the case where a vertex lies on another vertex, particularly for fuzz testing
-      const magnitude = Math.max( delta.magnitude(), 1E-8 );
+      const magnitude = Math.max( delta.magnitude, 1E-8 );
       const angle = delta.angle;
 
       // Update the node transform

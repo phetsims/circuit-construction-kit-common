@@ -326,7 +326,7 @@ define( require => {
         let difference = pivotVertex.positionProperty.value.minus( vertex.positionProperty.value );
 
         // Support when vertex is on the pivot, mainly for fuzz testing.  In that case, just move directly to the right
-        if ( difference.magnitude() === 0 ) {
+        if ( difference.magnitude === 0 ) {
           difference = new Vector2( 1, 0 );
         }
 
@@ -452,7 +452,7 @@ define( require => {
           let delta = oppositePosition.minus( position );
 
           // If the vertices were at the same position, move them randomly.  See https://github.com/phetsims/circuit-construction-kit-common/issues/405
-          if ( delta.magnitude() === 0 ) {
+          if ( delta.magnitude === 0 ) {
             delta = Vector2.createPolar( 1, phet.joist.random.nextDouble() * Math.PI * 2 );
           }
           return delta.withMagnitude( 30 );
