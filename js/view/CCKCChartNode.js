@@ -10,6 +10,7 @@ define( require => {
 
   // modules
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const DragListener = require( 'SCENERY/listeners/DragListener' );
   const DynamicSeries = require( 'GRIDDLE/DynamicSeries' );
   const LabeledScrollingChartNode = require( 'GRIDDLE/LabeledScrollingChartNode' );
   const Node = require( 'SCENERY/nodes/Node' );
@@ -34,7 +35,15 @@ define( require => {
         height: 110
       } ), new Text( 'verticalAxisTitle' ), new Text( 'scale indicator' ), 'time' );
 
-      this.addChild( new Panel( this.labeledScrollingChartNode ) );
+      const paneledNode = new Panel( this.labeledScrollingChartNode, {
+        cursor: 'pointer',
+        backgroundPickable: true
+      } );
+      this.addChild( paneledNode );
+
+      paneledNode.addInputListener( new DragListener( {
+        translateNode: true
+      } ) );
     }
   }
 
