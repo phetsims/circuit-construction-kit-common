@@ -80,6 +80,9 @@
   "voltage": {
     "value": "Voltage"
   },
+  "frequency": {
+    "value": "Frequency"
+  },
   "voltmeter": {
     "value": "Voltmeter"
   },
@@ -103,6 +106,9 @@
   },
   "voltageVoltsValuePattern": {
     "value": "{{voltage}} volts"
+  },
+  "frequencyHzValuePattern": {
+    "value": "{{frequency}} Hz"
   },
   "currentUnits": {
     "value": "{{current}} A"

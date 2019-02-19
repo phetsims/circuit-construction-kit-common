@@ -227,7 +227,7 @@ define( require => {
       const acSource = new ACSource(
         new Vertex( Vector2.ZERO ),
         new Vertex( new Vector2( AC_SOURCE_LENGTH, 0 ) ),
-        new Property( 0 ), tandem.createTandem( 'rightIconBattery' )
+        new Property( 0 ), tandem.createTandem( 'acSourceIconModel' )
       );
       return this.createCircuitElementToolNode( acSourceString, count,
         new ACSourceNode( null, null, acSource, this.viewTypeProperty, tandem.createTandem( 'acSourceIcon' ), { isIcon: true } ),
@@ -240,6 +240,8 @@ define( require => {
             this.circuit.batteryResistanceProperty,
             this.circuit.rightBatteryTandemGroup.createNextTandem()
           );
+        }, {
+          iconScale: 0.68
         }
       );
     }

@@ -35,8 +35,13 @@ define( require => {
       }, options );
       super( startVertex, endVertex, BATTERY_LENGTH, tandem, options );
 
-      // @public {NumberProperty} - the voltage of the battery in volts
-      this.voltageProperty = new NumberProperty( options.voltage );
+      // @public {NumberProperty} - the current voltage of the battery in volts, oscillates as the model updates
+      this.voltageProperty = new NumberProperty( 0 );
+
+      // @public {NumberProperty} - the maximum voltage, which can be controlled by the CircuitElementEditNode
+      this.maximumVoltageProperty = new NumberProperty( options.voltage );
+
+      this.frequencyProperty = new NumberProperty( 0.5 );
 
       // @public {Property.<number>} the internal resistance of the battery
       this.internalResistanceProperty = internalResistanceProperty;
@@ -78,7 +83,9 @@ define( require => {
      * @public
      */
     step( time, dt ) {
-      this.voltageProperty.set( 10 * Math.sin( time ) );
+      this.voltageProperty.set(
+        this.maximumVoltageProperty.value * Math.sin( 2 * Math.PI * this.frequencyProperty.value * time )
+      );
     }
   }
 
