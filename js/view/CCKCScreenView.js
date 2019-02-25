@@ -14,6 +14,7 @@ define( require => {
   const AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
   const AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/AmmeterNode' );
   const BatteryResistanceControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryResistanceControl' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   const ChargeSpeedThrottlingReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ChargeSpeedThrottlingReadoutNode' );
@@ -22,9 +23,11 @@ define( require => {
   const CircuitElementToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolbox' );
   const CircuitLayerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitLayerNode' );
   const DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/DisplayOptionsPanel' );
+  const DragListener = require( 'SCENERY/listeners/DragListener' );
   const Node = require( 'SCENERY/nodes/Node' );
   const PlayPauseButton = require( 'SCENERY_PHET/buttons/PlayPauseButton' );
   const Property = require( 'AXON/Property' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   const ScreenView = require( 'JOIST/ScreenView' );
   const SensorToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SensorToolbox' );
@@ -115,7 +118,52 @@ define( require => {
         }
       } );
 
-      this.voltageChartNode = new VoltageChartNode( model.circuit.timeProperty );
+      const chartPanel = new Rectangle( 0, 0, 100, 100, { fill: 'blue' } );
+      this.addChild( chartPanel );
+
+      /**
+       * Checks if the toolbox intersects the given bounds, to see if a tool can be dropped back into the toolbox.
+       * @param {Bounds2} b
+       * @returns {boolean}
+       */
+      const toolboxIntersects = b => chartPanel.parentToGlobalBounds( chartPanel.bounds ).intersectsBounds( b );
+
+      this.voltageChartNode = new VoltageChartNode( model.circuit.timeProperty, new BooleanProperty( true ), this.visibleBoundsProperty );
+
+      // TODO: Copied from WavesScreenView, can anything be factored out?
+      this.voltageChartNode.setDragListener( new DragListener( {
+        dragBoundsProperty: this.visibleBoundsProperty,
+        translateNode: true,
+        start: () => {
+          if ( this.voltageChartNode.synchronizeProbeLocations ) {
+
+            // Align the probes each time the MeterBodyNode translates, so they will stay in sync
+            this.voltageChartNode.alignProbesEmitter.emit();
+          }
+        },
+        drag: () => {
+
+          if ( this.voltageChartNode.synchronizeProbeLocations ) {
+
+            // Align the probes each time the MeterBodyNode translates, so they will stay in sync
+            this.voltageChartNode.alignProbesEmitter.emit();
+          }
+        },
+        end: () => {
+
+          // Drop in toolbox, using the bounds of the entire this.voltageChartNode since it cannot be centered over the toolbox
+          // (too close to the edge of the screen)
+          if ( toolboxIntersects( this.voltageChartNode.getBackgroundNodeGlobalBounds() ) ) {
+            this.voltageChartNode.alignProbesEmitter.emit();
+            this.voltageChartNode.isInPlayAreaProperty.value = false;
+          }
+
+          // Move probes to center line (if water side view model)
+          this.voltageChartNode.droppedEmitter.emit();
+          this.voltageChartNode.synchronizeProbeLocations = false;
+        }
+      } ) );
+
       this.addChild( this.voltageChartNode );
 
       // @public (read-only) {CircuitElementToolbox} - Toolbox from which CircuitElements can be dragged

@@ -11,6 +11,9 @@
   "resistor": {
     "value": "Resistor"
   },
+  "time": {
+    "value": "time"
+  },
   "tiny": {
     "value": "tiny"
   },

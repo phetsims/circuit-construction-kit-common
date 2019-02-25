@@ -18,8 +18,8 @@ define( require => {
      * @param {NumberProperty} timeProperty
      * @param {Object} [options]
      */
-    constructor( timeProperty, options ) {
-      super( timeProperty, options );
+    constructor( a, b, c, d, e, f, g ) { // TODO: name args once stabilized
+      super( a, b, c, d, e, f, g );
     }
   }
 
