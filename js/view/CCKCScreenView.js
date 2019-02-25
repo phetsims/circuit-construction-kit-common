@@ -316,6 +316,7 @@ define( require => {
       this.circuitElementToolbox.reset();
       this.batteryResistanceControl.expandedProperty.reset();
       this.wireResistivityControl.expandedProperty.reset();
+      this.voltageChartNode.reset();
     }
 
     /**

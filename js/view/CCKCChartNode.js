@@ -61,6 +61,15 @@ define( require => {
 
       // TODO: series data must be pruned
     }
+
+    /**
+     * Clear the data from the chart.
+     * @public
+     */
+    reset() {
+      this.series1.clear();
+      this.series2.clear();
+    }
   }
 
   return circuitConstructionKitCommon.register( 'CCKCChartNode', CCKCChartNode );
