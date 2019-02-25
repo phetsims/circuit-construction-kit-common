@@ -58,6 +58,8 @@ define( require => {
 
       this.series2.data.push( new Vector2( time, Math.cos( time ) ) );
       this.series2.emitter.emit();
+
+      // TODO: series data must be pruned
     }
   }
 
