@@ -305,6 +305,7 @@ define( require => {
      */
     step( dt ) {
       this.circuitLayerNode.step( dt );
+      this.voltageChartNode.step( this.model.circuit.timeProperty.value, dt );
     }
 
     /**
