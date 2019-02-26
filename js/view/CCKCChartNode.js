@@ -107,9 +107,9 @@ define( require => {
         [ leftBottomProperty ],
         position => position.isFinite() ? position.plusXY( 0, -10 ) : Vector2.ZERO
       );
-      this.probeNode1 = this.initializeSeries( SERIES_1_COLOR, WIRE_1_COLOR, 5, 10, aboveBottomLeft1 );
+      this.probeNode1 = this.addProbeNode( SERIES_1_COLOR, WIRE_1_COLOR, 5, 10, aboveBottomLeft1 );
       this.series1 = new DynamicSeries( { color: SERIES_1_COLOR } );
-      this.probeNode2 = this.initializeSeries( SERIES_2_COLOR, WIRE_2_COLOR, 36, 54, aboveBottomLeft2 );
+      this.probeNode2 = this.addProbeNode( SERIES_2_COLOR, WIRE_2_COLOR, 36, 54, aboveBottomLeft2 );
       this.series2 = new DynamicSeries( { color: SERIES_2_COLOR } );
 
       const verticalAxisTitleNode = new Text( 'verticalAxisLabel', {
@@ -125,8 +125,6 @@ define( require => {
       // Create the scrolling chart content and add it to the background.  There is an order-of-creation cycle which
       // prevents the scrolling node from being added to the background before the super() call, so this will have to
       // suffice.
-      //
-
       const scrollingChartNode = new LabeledScrollingChartNode(
         new ScrollingChartNode( timeProperty, [ this.series1, this.series2 ], {
           width: 150,
@@ -153,7 +151,7 @@ define( require => {
      * @returns {DynamicSeries}
      * @protected
      */
-    initializeSeries( color, wireColor, dx, dy, connectionProperty ) {
+    addProbeNode( color, wireColor, dx, dy, connectionProperty ) {
 
       const probeNode = new CCKCProbeNode( this.visibleBoundsProperty, { color: color } );
 
