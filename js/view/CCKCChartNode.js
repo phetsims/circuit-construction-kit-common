@@ -107,8 +107,10 @@ define( require => {
         [ leftBottomProperty ],
         position => position.isFinite() ? position.plusXY( 0, -10 ) : Vector2.ZERO
       );
-      this.series1 = this.initializeSeries( SERIES_1_COLOR, WIRE_1_COLOR, 5, 10, aboveBottomLeft1 );
-      this.series2 = this.initializeSeries( SERIES_2_COLOR, WIRE_2_COLOR, 36, 54, aboveBottomLeft2 );
+      this.probeNode1 = this.initializeSeries( SERIES_1_COLOR, WIRE_1_COLOR, 5, 10, aboveBottomLeft1 );
+      this.series1 = new DynamicSeries( { color: SERIES_1_COLOR } );
+      this.probeNode2 = this.initializeSeries( SERIES_2_COLOR, WIRE_2_COLOR, 36, 54, aboveBottomLeft2 );
+      this.series2 = new DynamicSeries( { color: SERIES_2_COLOR } );
 
       const verticalAxisTitleNode = new Text( 'verticalAxisLabel', {
         fontSize: LABEL_FONT_SIZE,
@@ -176,12 +178,7 @@ define( require => {
       };
       this.on( 'visibility', alignProbes );
       this.alignProbesEmitter.addListener( alignProbes );
-
-      const dynamicSeries = new DynamicSeries( { color: color } );
-      dynamicSeries.probeNode = probeNode;
-
-      // TODO: Return object with {series,probeNode}
-      return dynamicSeries;
+      return probeNode;
     }
 
     /**
@@ -191,8 +188,8 @@ define( require => {
      */
     step( time, dt ) {
 
-      const redPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.series1.probeNode.translation ) );
-      const blackPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.series2.probeNode.translation ) );
+      const redPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode1.translation ) );
+      const blackPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode2.translation ) );
 
       const red = this.circuitLayerNode.getVoltageConnection( redPoint );
       const black = this.circuitLayerNode.getVoltageConnection( blackPoint );
