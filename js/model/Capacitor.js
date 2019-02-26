@@ -27,12 +27,12 @@ define( require => {
      */
     constructor( startVertex, endVertex, tandem, options ) {
       options = _.extend( {
-        capacitance: 10 // TODO: choose default capacitance and put in CCKCConstants.DEFAULT_RESISTANCE
+        capacitance: CCKCConstants.DEFAULT_CAPACITANCE
       }, options );
 
       super( startVertex, endVertex, CAPACITOR_LENGTH, tandem, options );
 
-      // @public {Property.<number>} the capacitance in TODO: units
+      // @public {Property.<number>} the capacitance in farads
       this.capacitanceProperty = new NumberProperty( options.capacitance );
     }
 

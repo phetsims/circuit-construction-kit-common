@@ -61,6 +61,16 @@ define( require => {
     }
 
     /**
+     * Move forward in time
+     * @param {number} time - total elapsed time in seconds
+     * @param {number} dt - seconds since last step
+     * @public
+     */
+    step( time, dt ) {
+      this.update();
+    }
+
+    /**
      * Batch changes so that the length doesn't change incrementally when both vertices move one at a time.
      * @public
      */

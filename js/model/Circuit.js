@@ -751,10 +751,7 @@ define( require => {
       this.chargeAnimator.step( dt );
 
       this.timeProperty.value += dt;
-
-      // TODO: Should we combine step and update?
-      this.circuitElements.getArray().forEach( circuitElement => circuitElement.step && circuitElement.step( this.timeProperty.value, dt ) );
-      this.circuitElements.getArray().forEach( circuitElement => circuitElement.update && circuitElement.update() );
+      this.circuitElements.getArray().forEach( element => element.step && element.step( this.timeProperty.value, dt ) );
     }
 
     /**

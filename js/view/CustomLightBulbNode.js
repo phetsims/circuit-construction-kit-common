@@ -138,6 +138,16 @@ define( require => {
     }
 
     /**
+     * Move forward in time
+     * @param {number} time - total elapsed time in seconds
+     * @param {number} dt - seconds since last step
+     * @public
+     */
+    step( time, dt ) {
+      this.update();
+    }
+
+    /**
      * @private - update when the brightness changes
      */
     update() {

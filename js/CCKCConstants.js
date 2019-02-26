@@ -30,6 +30,9 @@ define( require => {
     // The resistance of a default battery
     DEFAULT_BATTERY_RESISTANCE: 0,
 
+    // The default capacitance in farads
+    DEFAULT_CAPACITANCE: 10,
+
     // The range of the battery resistance
     BATTERY_RESISTANCE_RANGE: new Range( 0, 10 ),
 
