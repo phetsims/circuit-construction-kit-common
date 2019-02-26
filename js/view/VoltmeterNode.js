@@ -184,7 +184,7 @@ define( require => {
         ]
       } );
 
-      // @private
+      // @private {CircuitLayerNode}
       this.circuitLayerNode = circuitLayerNode;
 
       // @public (read-only) {Voltmeter} - the model
@@ -261,7 +261,7 @@ define( require => {
           const probeTipTail = probeTip.plus( probeTipVector );
           for ( let i = 0; i < VOLTMETER_NUMBER_SAMPLE_POINTS; i++ ) {
             const samplePoint = probeTip.blend( probeTipTail, i / VOLTMETER_NUMBER_SAMPLE_POINTS );
-            const voltageConnection = this.circuitLayerNode.getVoltageConnection( probeNode, samplePoint );
+            const voltageConnection = circuitLayerNode.getVoltageConnection( samplePoint );
 
             // For debugging, depict the points where the sampling happens
             if ( CCKCQueryParameters.showVoltmeterSamplePoints ) {

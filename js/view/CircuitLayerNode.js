@@ -800,12 +800,11 @@ define( require => {
 
     /**
      * Find where the voltmeter probe node intersects the wire, for computing the voltage difference
-     * @param {Node} probeNode - the probe node from the VoltmeterNode, to get its position - TODO: Change to Vector2
      * @param {Vector2} probePosition
      * @returns {VoltageConnection|null} if connected returns VoltageConnection otherwise null
      * @private
      */
-    getVoltageConnection( probeNode, probePosition ) {
+    getVoltageConnection( probePosition ) {
 
       // Check for intersection with a vertex, using the solder radius.  This means it will be possible to check for
       // voltages when nearby the terminal of a battery, not necessarily touching the battery (even when solder is
@@ -828,7 +827,7 @@ define( require => {
         const startPoint = metallicCircuitElement.circuitElement.startPositionProperty.get();
         const endPoint = metallicCircuitElement.circuitElement.endPositionProperty.get();
         const segmentVector = endPoint.minus( startPoint );
-        const probeVector = probeNode.centerTop.minus( startPoint );
+        const probeVector = probePosition.minus( startPoint );
         let distanceAlongSegment = segmentVector.magnitude === 0 ? 0 : ( probeVector.dot( segmentVector ) /
                                                                          segmentVector.magnitudeSquared() );
         distanceAlongSegment = Util.clamp( distanceAlongSegment, 0, 1 );

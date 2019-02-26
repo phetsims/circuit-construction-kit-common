@@ -11,6 +11,7 @@ define( require => {
 
   // modules
   const CCKCProbeNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCProbeNode' );
+  const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
@@ -20,6 +21,7 @@ define( require => {
   const Node = require( 'SCENERY/nodes/Node' );
   const NodeProperty = require( 'SCENERY/util/NodeProperty' );
   const Property = require( 'AXON/Property' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const ScrollingChartNode = require( 'GRIDDLE/ScrollingChartNode' );
   const ShadedRectangle = require( 'SCENERY_PHET/ShadedRectangle' );
   const Text = require( 'SCENERY/nodes/Text' );
@@ -73,7 +75,7 @@ define( require => {
       this.visibleBoundsProperty = visibleBoundsProperty;
 
       // @public (read-only) {Node} - shows the background for the MeterBodyNode.  Any attached probes or other
-      // supplemental nodes should not be children if the backgroundNode if they need to translate independently.
+      // supplemental nodes should not be children of the backgroundNode if they need to translate independently.
       this.backgroundNode = backgroundNode;
 
       // @private {DragListener} - set by setDragListener
@@ -178,24 +180,7 @@ define( require => {
       const dynamicSeries = new DynamicSeries( { color: color } );
       dynamicSeries.probeNode = probeNode;
 
-      const updateSamples = () => {
-
-        // Set the range by incorporating the model's time units, so it will match with the timer.
-        const maxSeconds = NUMBER_OF_TIME_DIVISIONS;
-
-        if ( this.isInPlayAreaProperty.get() ) {
-          dynamicSeries.data.push( new Vector2( this.timeProperty.value, 0 ) );
-        }
-        while ( dynamicSeries.data.length > 0 && dynamicSeries.data[ 0 ].x < this.timeProperty.value - maxSeconds ) {
-          dynamicSeries.data.shift();
-        }
-        dynamicSeries.emitter.emit();
-      };
-
-      // When the wave is paused and the user is dragging the entire MeterBodyNode with the probes aligned, they
-      // need to sample their new locations.
-      probeNode.on( 'transform', updateSamples );
-
+      // TODO: Return object with {series,probeNode}
       return dynamicSeries;
     }
 
@@ -205,15 +190,36 @@ define( require => {
      * @param {number} dt - delta time since last update
      */
     step( time, dt ) {
-      // const voltage = this.circuitLayerNode.getVoltage(); // TODO: Start here
 
-      this.series1.data.push( new Vector2( time, Math.sin( time ) ) );
+      const redPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.series1.probeNode.translation ) );
+      const blackPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.series2.probeNode.translation ) );
+
+      const red = this.circuitLayerNode.getVoltageConnection( redPoint );
+      const black = this.circuitLayerNode.getVoltageConnection( blackPoint );
+      const voltage = this.circuitLayerNode.getVoltage( red, black );
+
+      // TODO: add scaling to ScrollingChartNode
+      this.series1.data.push( new Vector2( time, voltage / 10 || 0 ) );
       this.series1.emitter.emit();
 
-      this.series2.data.push( new Vector2( time, Math.cos( time ) ) );
-      this.series2.emitter.emit();
+      // this.series2.data.push( new Vector2( time, Math.cos( time ) ) );
+      // this.series2.emitter.emit();
+
+      // For debugging, depict the points where the sampling happens
+      if ( CCKCQueryParameters.showVoltmeterSamplePoints ) {
+
+        // These get erased when changing between lifelike/schematic
+        this.circuitLayerNode.addChild( new Rectangle( -1, -1, 2, 2, {
+          fill: Color.BLACK,
+          translation: redPoint
+        } ) );
+      }
 
       // TODO: series data must be pruned
+
+      //   while ( dynamicSeries.data.length > 0 && dynamicSeries.data[ 0 ].x < this.timeProperty.value - maxSeconds ) {
+      //     dynamicSeries.data.shift();
+      //   }
     }
 
     /**
