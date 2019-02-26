@@ -128,7 +128,7 @@ define( require => {
        */
       const toolboxIntersects = b => chartPanel.parentToGlobalBounds( chartPanel.bounds ).intersectsBounds( b );
 
-      this.voltageChartNode = new VoltageChartNode( model.circuit.timeProperty, new BooleanProperty( true ), this.visibleBoundsProperty );
+      this.voltageChartNode = new VoltageChartNode( this.circuitLayerNode, model.circuit.timeProperty, new BooleanProperty( true ), this.visibleBoundsProperty );
 
       // TODO: Copied from WavesScreenView, can anything be factored out?
       this.voltageChartNode.setDragListener( new DragListener( {

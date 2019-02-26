@@ -45,9 +45,10 @@ define( require => {
   class CCKCChartNode extends Node {
 
     /**
+     * TODO: @param
      * @param {Object} [options]
      */
-    constructor( timeProperty, isInPlayAreaProperty, visibleBoundsProperty, options ) {
+    constructor( circuitLayerNode, timeProperty, isInPlayAreaProperty, visibleBoundsProperty, options ) {
       options = _.extend( {
         timeDivisions: NUMBER_OF_TIME_DIVISIONS,
 
@@ -58,6 +59,9 @@ define( require => {
       const backgroundNode = new Node( { cursor: 'pointer' } );
 
       super();
+
+      // @private
+      this.circuitLayerNode = circuitLayerNode;
 
       // @private
       this.timeProperty = timeProperty;
@@ -201,6 +205,8 @@ define( require => {
      * @param {number} dt - delta time since last update
      */
     step( time, dt ) {
+      // const voltage = this.circuitLayerNode.getVoltage(); // TODO: Start here
+
       this.series1.data.push( new Vector2( time, Math.sin( time ) ) );
       this.series1.emitter.emit();
 
