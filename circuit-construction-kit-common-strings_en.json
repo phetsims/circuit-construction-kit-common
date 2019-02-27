@@ -12,7 +12,10 @@
     "value": "Resistor"
   },
   "time": {
-    "value": "time"
+    "value": "Time"
+  },
+  "oneSecond": {
+    "value": "1 s"
   },
   "tiny": {
     "value": "tiny"

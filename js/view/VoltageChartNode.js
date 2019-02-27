@@ -17,6 +17,9 @@ define( require => {
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const Vector2 = require( 'DOT/Vector2' );
 
+  // strings
+  const voltageString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltage' );
+
   // constants
   const NUMBER_OF_TIME_DIVISIONS = 4;
 
@@ -36,7 +39,7 @@ define( require => {
       }, options );
 
       const series = new DynamicSeries( { color: '#717274' } ); // dark gray sampled from the design doc
-      super( circuitLayerNode, timeProperty, isInPlayAreaProperty, visibleBoundsProperty, [ series ], options );
+      super( circuitLayerNode, timeProperty, isInPlayAreaProperty, visibleBoundsProperty, [ series ], voltageString, options );
 
       // @private
       this.series = series;

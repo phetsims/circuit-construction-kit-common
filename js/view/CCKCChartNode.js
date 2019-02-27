@@ -27,6 +27,7 @@ define( require => {
 
   // strings
   const timeString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/time' );
+  const oneSecondString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/oneSecond' );
 
   // constants
   const SERIES_1_COLOR = '#5c5d5f'; // same as in Bending Light
@@ -48,9 +49,11 @@ define( require => {
      * @param {BooleanProperty} isInPlayAreaProperty
      * @param {Property.<Bounds2>} visibleBoundsProperty
      * @param {DynamicSeries[]} seriesArray
+     * @param {string} verticalAxisLabel
      * @param {Object} [options]
      */
-    constructor( circuitLayerNode, timeProperty, isInPlayAreaProperty, visibleBoundsProperty, seriesArray, options ) {
+    constructor( circuitLayerNode, timeProperty, isInPlayAreaProperty, visibleBoundsProperty, seriesArray,
+                 verticalAxisLabel, options ) {
       options = _.extend( {
 
         // Prevent adjustment of the control panel rendering while dragging,
@@ -110,12 +113,12 @@ define( require => {
         position => position.isFinite() ? position.plusXY( 0, -10 ) : Vector2.ZERO
       );
 
-      const verticalAxisTitleNode = new Text( 'verticalAxisLabel', {
+      const verticalAxisTitleNode = new Text( verticalAxisLabel, {
         fontSize: LABEL_FONT_SIZE,
         rotation: -Math.PI / 2,
         fill: AXIS_LABEL_FILL
       } );
-      const scaleIndicatorText = new Text( 'scaleIndicatorText', {
+      const scaleIndicatorText = new Text( oneSecondString, {
         fontSize: 11,
         fill: 'white'
       } );
