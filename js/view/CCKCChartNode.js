@@ -33,7 +33,6 @@ define( require => {
   const SERIES_2_COLOR = '#ccced0'; // same as in Bending Light
   const WIRE_1_COLOR = SERIES_1_COLOR;
   const WIRE_2_COLOR = new Color( SERIES_2_COLOR ).darkerColor( 0.7 );
-  const NUMBER_OF_TIME_DIVISIONS = 4;
   const AXIS_LABEL_FILL = 'white';
   const LABEL_FONT_SIZE = 14;
 
@@ -53,7 +52,6 @@ define( require => {
      */
     constructor( circuitLayerNode, timeProperty, isInPlayAreaProperty, visibleBoundsProperty, seriesArray, options ) {
       options = _.extend( {
-        timeDivisions: NUMBER_OF_TIME_DIVISIONS,
 
         // Prevent adjustment of the control panel rendering while dragging,
         // see https://github.com/phetsims/wave-interference/issues/212

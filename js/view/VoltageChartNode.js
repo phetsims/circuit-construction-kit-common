@@ -17,6 +17,9 @@ define( require => {
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const Vector2 = require( 'DOT/Vector2' );
 
+  // constants
+  const NUMBER_OF_TIME_DIVISIONS = 4;
+
   class VoltageChartNode extends CCKCChartNode {
 
     /**
@@ -27,6 +30,11 @@ define( require => {
      * @param {Object} [options]
      */
     constructor( circuitLayerNode, timeProperty, isInPlayAreaProperty, visibleBoundsProperty, options ) {
+
+      options = _.extend( {
+        timeDivisions: NUMBER_OF_TIME_DIVISIONS,
+      }, options );
+
       const series = new DynamicSeries( { color: '#717274' } ); // dark gray sampled from the design doc
       super( circuitLayerNode, timeProperty, isInPlayAreaProperty, visibleBoundsProperty, [ series ], options );
 
@@ -62,11 +70,9 @@ define( require => {
         } ) );
       }
 
-      // TODO: series data must be pruned
-
-      //   while ( dynamicSeries.data.length > 0 && dynamicSeries.data[ 0 ].x < this.timeProperty.value - maxSeconds ) {
-      //     dynamicSeries.data.shift();
-      //   }
+      while ( this.series.data.length > 0 && this.series.data[ 0 ].x < this.timeProperty.value - NUMBER_OF_TIME_DIVISIONS ) {
+        this.series.data.shift();
+      }
     }
   }
 
