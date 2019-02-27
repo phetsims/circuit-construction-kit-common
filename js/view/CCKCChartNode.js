@@ -11,17 +11,14 @@ define( require => {
 
   // modules
   const CCKCProbeNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCProbeNode' );
-  const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
-  const DynamicSeries = require( 'GRIDDLE/DynamicSeries' );
   const Emitter = require( 'AXON/Emitter' );
   const LabeledScrollingChartNode = require( 'GRIDDLE/LabeledScrollingChartNode' );
   const Node = require( 'SCENERY/nodes/Node' );
   const NodeProperty = require( 'SCENERY/util/NodeProperty' );
   const Property = require( 'AXON/Property' );
-  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const ScrollingChartNode = require( 'GRIDDLE/ScrollingChartNode' );
   const ShadedRectangle = require( 'SCENERY_PHET/ShadedRectangle' );
   const Text = require( 'SCENERY/nodes/Text' );
@@ -47,10 +44,14 @@ define( require => {
   class CCKCChartNode extends Node {
 
     /**
-     * TODO: @param
+     * @param {CircuitLayerNode} circuitLayerNode
+     * @param {NumberProperty} timeProperty
+     * @param {BooleanProperty} isInPlayAreaProperty
+     * @param {Property.<Bounds2>} visibleBoundsProperty
+     * @param {DynamicSeries[]} seriesArray
      * @param {Object} [options]
      */
-    constructor( circuitLayerNode, timeProperty, isInPlayAreaProperty, visibleBoundsProperty, options ) {
+    constructor( circuitLayerNode, timeProperty, isInPlayAreaProperty, visibleBoundsProperty, seriesArray, options ) {
       options = _.extend( {
         timeDivisions: NUMBER_OF_TIME_DIVISIONS,
 
@@ -61,6 +62,9 @@ define( require => {
       const backgroundNode = new Node( { cursor: 'pointer' } );
 
       super();
+
+      // @private
+      this.seriesArray = seriesArray;
 
       // @private
       this.circuitLayerNode = circuitLayerNode;
@@ -107,10 +111,6 @@ define( require => {
         [ leftBottomProperty ],
         position => position.isFinite() ? position.plusXY( 0, -10 ) : Vector2.ZERO
       );
-      this.probeNode1 = this.addProbeNode( SERIES_1_COLOR, WIRE_1_COLOR, 5, 10, aboveBottomLeft1 );
-      this.series1 = new DynamicSeries( { color: SERIES_1_COLOR } );
-      this.probeNode2 = this.addProbeNode( SERIES_2_COLOR, WIRE_2_COLOR, 36, 54, aboveBottomLeft2 );
-      this.series2 = new DynamicSeries( { color: SERIES_2_COLOR } );
 
       const verticalAxisTitleNode = new Text( 'verticalAxisLabel', {
         fontSize: LABEL_FONT_SIZE,
@@ -122,11 +122,14 @@ define( require => {
         fill: 'white'
       } );
 
+      this.probeNode1 = this.addProbeNode( SERIES_1_COLOR, WIRE_1_COLOR, 5, 10, aboveBottomLeft1 );
+      this.probeNode2 = this.addProbeNode( SERIES_2_COLOR, WIRE_2_COLOR, 36, 54, aboveBottomLeft2 );
+
       // Create the scrolling chart content and add it to the background.  There is an order-of-creation cycle which
       // prevents the scrolling node from being added to the background before the super() call, so this will have to
       // suffice.
       const scrollingChartNode = new LabeledScrollingChartNode(
-        new ScrollingChartNode( timeProperty, [ this.series1, this.series2 ], {
+        new ScrollingChartNode( timeProperty, seriesArray, {
           width: 150,
           height: 110
         } ),
@@ -180,50 +183,11 @@ define( require => {
     }
 
     /**
-     * Steps in time
-     * @param {number} time - total elapsed time in seconds
-     * @param {number} dt - delta time since last update
-     */
-    step( time, dt ) {
-
-      const redPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode1.translation ) );
-      const blackPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode2.translation ) );
-
-      const red = this.circuitLayerNode.getVoltageConnection( redPoint );
-      const black = this.circuitLayerNode.getVoltageConnection( blackPoint );
-      const voltage = this.circuitLayerNode.getVoltage( red, black );
-
-      // TODO: add scaling to ScrollingChartNode
-      this.series1.data.push( new Vector2( time, voltage / 10 || 0 ) );
-      this.series1.emitter.emit();
-
-      // this.series2.data.push( new Vector2( time, Math.cos( time ) ) );
-      // this.series2.emitter.emit();
-
-      // For debugging, depict the points where the sampling happens
-      if ( CCKCQueryParameters.showVoltmeterSamplePoints ) {
-
-        // These get erased when changing between lifelike/schematic
-        this.circuitLayerNode.addChild( new Rectangle( -1, -1, 2, 2, {
-          fill: Color.BLACK,
-          translation: redPoint
-        } ) );
-      }
-
-      // TODO: series data must be pruned
-
-      //   while ( dynamicSeries.data.length > 0 && dynamicSeries.data[ 0 ].x < this.timeProperty.value - maxSeconds ) {
-      //     dynamicSeries.data.shift();
-      //   }
-    }
-
-    /**
      * Clear the data from the chart.
      * @public
      */
     reset() {
-      this.series1.clear();
-      this.series2.clear();
+      this.seriesArray.forEach( series => series.clear() );
     }
 
     /**

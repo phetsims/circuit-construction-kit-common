@@ -1,7 +1,7 @@
 // Copyright 2019, University of Colorado Boulder
 
 /**
- * TODO: Documentation
+ * Shows the voltage as a function of time on a scrolling chart.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -10,16 +10,63 @@ define( require => {
 
   // modules
   const CCKCChartNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCChartNode' );
+  const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const Color = require( 'SCENERY/util/Color' );
+  const DynamicSeries = require( 'GRIDDLE/DynamicSeries' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   class VoltageChartNode extends CCKCChartNode {
 
     /**
+     * @param {CircuitLayerNode} circuitLayerNode
      * @param {NumberProperty} timeProperty
+     * @param {BooleanProperty} isInPlayAreaProperty
+     * @param {Property.<Bounds2>} visibleBoundsProperty
      * @param {Object} [options]
      */
-    constructor( a, b, c, d, e, f, g ) { // TODO: name args once stabilized
-      super( a, b, c, d, e, f, g );
+    constructor( circuitLayerNode, timeProperty, isInPlayAreaProperty, visibleBoundsProperty, options ) {
+      const series = new DynamicSeries( { color: '#717274' } ); // dark gray sampled from the design doc
+      super( circuitLayerNode, timeProperty, isInPlayAreaProperty, visibleBoundsProperty, [ series ], options );
+
+      // @private
+      this.series = series;
+    }
+
+    /**
+     * Steps in time
+     * @param {number} time - total elapsed time in seconds
+     * @param {number} dt - delta time since last update
+     */
+    step( time, dt ) {
+
+      const redPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode1.translation ) );
+      const blackPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode2.translation ) );
+
+      const red = this.circuitLayerNode.getVoltageConnection( redPoint );
+      const black = this.circuitLayerNode.getVoltageConnection( blackPoint );
+      const voltage = this.circuitLayerNode.getVoltage( red, black );
+
+      // TODO: add scaling to ScrollingChartNode
+      this.series.data.push( new Vector2( time, voltage / 10 || 0 ) );
+      this.series.emitter.emit();
+
+      // For debugging, depict the points where the sampling happens
+      if ( CCKCQueryParameters.showVoltmeterSamplePoints ) {
+
+        // These get erased when changing between lifelike/schematic
+        this.circuitLayerNode.addChild( new Rectangle( -1, -1, 2, 2, {
+          fill: Color.BLACK,
+          translation: redPoint
+        } ) );
+      }
+
+      // TODO: series data must be pruned
+
+      //   while ( dynamicSeries.data.length > 0 && dynamicSeries.data[ 0 ].x < this.timeProperty.value - maxSeconds ) {
+      //     dynamicSeries.data.shift();
+      //   }
     }
   }
 
