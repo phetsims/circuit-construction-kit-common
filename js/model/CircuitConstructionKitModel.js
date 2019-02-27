@@ -151,7 +151,7 @@ define( require => {
           // TODO (phet-io): investigate coarse-grained messages (vertex cut, item added, etc) instead of vertex added,
           // which could lead to inconsistent state. On the other hand, why is CircuitElement added before vertex?  That
           // could solve it
-          setTimeout( () => circuitChangedEmitter.emit1( JSON.stringify( this.circuit.toStateObject() ) ), 0 );
+          setTimeout( () => circuitChangedEmitter.emit( JSON.stringify( this.circuit.toStateObject() ) ), 0 );
         };
         this.circuit.vertices.lengthProperty.link( emitCircuitChanged );
         this.circuit.componentEditedEmitter.addListener( emitCircuitChanged );

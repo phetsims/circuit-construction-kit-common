@@ -74,7 +74,7 @@ define( require => {
         // @jonathanolson and I looked into the way Charges and Fields just calls startDrag(event) on the play area drag
         // listener (which adds a listener to the pointer, in the usual SimpleDragHandler way), and it seems like a good
         // pattern.
-        circuitElement.startDragEmitter.emit1( event );
+        circuitElement.startDragEmitter.emit( event );
       }, {
         allowTouchSnag: true
       } ) );

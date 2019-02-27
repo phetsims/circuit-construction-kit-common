@@ -151,7 +151,7 @@ define( require => {
         this.dragHandler = new MovableDragHandler( ammeter.bodyPositionProperty, {
           tandem: tandem.createTandem( 'dragHandler' ),
           endDrag: function() {
-            ammeter.droppedEmitter.emit1( bodyNode.globalBounds );
+            ammeter.droppedEmitter.emit( bodyNode.globalBounds );
 
             // After dropping in the play area the probes move independently of the body
             ammeter.draggingProbesWithBodyProperty.set( false );

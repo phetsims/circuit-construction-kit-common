@@ -104,7 +104,7 @@ define( require => {
 
       // @public (read-only) {Emitter} - indicate when the circuit element has started being dragged, when it is created
       // in the toolbox
-      this.startDragEmitter = new Emitter();
+      this.startDragEmitter = new Emitter( { validationEnabled: false } );
 
       // @public (read-only) {Emitter} - indicate when the circuit element has been disposed
       this.disposeEmitter = new Emitter();

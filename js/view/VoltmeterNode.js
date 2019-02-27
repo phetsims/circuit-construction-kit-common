@@ -228,7 +228,7 @@ define( require => {
         this.dragHandler = new MovableDragHandler( voltmeter.bodyPositionProperty, {
           tandem: tandem.createTandem( 'dragHandler' ),
           endDrag: () => {
-            voltmeter.droppedEmitter.emit1( bodyNode.globalBounds );
+            voltmeter.droppedEmitter.emit( bodyNode.globalBounds );
 
             // After dropping in the play area the probes move independently of the body
             voltmeter.draggingProbesWithBodyProperty.set( false );

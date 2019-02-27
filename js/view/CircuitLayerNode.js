@@ -731,7 +731,7 @@ define( require => {
       vertexNode.startOffset = null;
 
       // Signify that something has been dropped in the play area, to show the edit panel, unless dropped in the toolbox
-      this.circuit.vertexDroppedEmitter.emit1( vertex );
+      this.circuit.vertexDroppedEmitter.emit( vertex );
     }
 
     /**
