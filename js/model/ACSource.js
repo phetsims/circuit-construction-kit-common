@@ -52,6 +52,19 @@ define( require => {
 
       // @public (read-only) {number} - the number of decimal places to show in readouts and controls
       this.numberOfDecimalPlaces = 1;
+
+      // @private
+      this.phase = 0;
+
+      // @private
+      this.time = 0;
+
+      // Phase matching so the chart doesn't get jagged
+      this.frequencyProperty.link( ( frequency, oldFrequency ) => {
+        const oldArgument = 2 * Math.PI * oldFrequency * this.time + this.phase;
+        //  2 * Math.PI * frequency * this.time + newPhase  = oldArg;
+        this.phase = oldArgument - 2 * Math.PI * frequency * this.time;
+      } );
     }
 
     /**
@@ -83,8 +96,9 @@ define( require => {
      * @public
      */
     step( time, dt ) {
+      this.time = time;
       this.voltageProperty.set(
-        this.maximumVoltageProperty.value * Math.sin( 2 * Math.PI * this.frequencyProperty.value * time )
+        this.maximumVoltageProperty.value * Math.sin( 2 * Math.PI * this.frequencyProperty.value * time + this.phase )
       );
     }
   }
