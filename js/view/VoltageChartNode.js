@@ -32,7 +32,7 @@ define( require => {
     constructor( circuitLayerNode, timeProperty, isInPlayAreaProperty, visibleBoundsProperty, options ) {
 
       options = _.extend( {
-        timeDivisions: NUMBER_OF_TIME_DIVISIONS,
+        timeDivisions: NUMBER_OF_TIME_DIVISIONS
       }, options );
 
       const series = new DynamicSeries( { color: '#717274' } ); // dark gray sampled from the design doc
