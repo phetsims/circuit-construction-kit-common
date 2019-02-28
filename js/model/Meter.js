@@ -10,6 +10,7 @@ define( require => {
 
   // modules
   const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const Bounds2 = require( 'DOT/Bounds2' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Emitter = require( 'AXON/Emitter' );
   const Property = require( 'AXON/Property' );
@@ -41,7 +42,7 @@ define( require => {
       } );
 
       // @public (read-only) {Emitter} Fires an event when the meter is dropped
-      this.droppedEmitter = new Emitter( { validationEnabled: false } ); // Fire event when dropped
+      this.droppedEmitter = new Emitter( { validators: [ { valueType: Bounds2 } ] } );
     }
 
     /**

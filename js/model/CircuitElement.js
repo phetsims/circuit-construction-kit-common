@@ -13,6 +13,7 @@ define( require => {
   const BooleanProperty = require( 'AXON/BooleanProperty' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Emitter = require( 'AXON/Emitter' );
+  const Event = require( 'SCENERY/input/Event' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
   const Property = require( 'AXON/Property' );
@@ -104,7 +105,7 @@ define( require => {
 
       // @public (read-only) {Emitter} - indicate when the circuit element has started being dragged, when it is created
       // in the toolbox
-      this.startDragEmitter = new Emitter( { validationEnabled: false } );
+      this.startDragEmitter = new Emitter( { validators: [ { valueType: Event } ] } );
 
       // @public (read-only) {Emitter} - indicate when the circuit element has been disposed
       this.disposeEmitter = new Emitter();
