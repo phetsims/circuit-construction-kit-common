@@ -27,7 +27,6 @@ define( require => {
   const Node = require( 'SCENERY/nodes/Node' );
   const PlayPauseButton = require( 'SCENERY_PHET/buttons/PlayPauseButton' );
   const Property = require( 'AXON/Property' );
-  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   const ScreenView = require( 'JOIST/ScreenView' );
   const SensorToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SensorToolbox' );
@@ -118,16 +117,6 @@ define( require => {
         }
       } );
 
-      const chartPanel = new Rectangle( 0, 0, 100, 100, { fill: 'blue' } );
-      this.addChild( chartPanel );
-
-      /**
-       * Checks if the toolbox intersects the given bounds, to see if a tool can be dropped back into the toolbox.
-       * @param {Bounds2} b
-       * @returns {boolean}
-       */
-      const toolboxIntersects = b => chartPanel.parentToGlobalBounds( chartPanel.bounds ).intersectsBounds( b );
-
       this.voltageChartNode = new VoltageChartNode( this.circuitLayerNode, model.circuit.timeProperty, new BooleanProperty( true ), this.visibleBoundsProperty );
 
       // TODO: Copied from WavesScreenView, can anything be factored out?
@@ -153,7 +142,8 @@ define( require => {
 
           // Drop in toolbox, using the bounds of the entire this.voltageChartNode since it cannot be centered over the toolbox
           // (too close to the edge of the screen)
-          if ( toolboxIntersects( this.voltageChartNode.getBackgroundNodeGlobalBounds() ) ) {
+
+          if ( this.sensorToolbox.globalBounds.intersectsBounds( this.voltageChartNode.getBackgroundNodeGlobalBounds() ) ) {
             this.voltageChartNode.alignProbesEmitter.emit();
             this.voltageChartNode.isInPlayAreaProperty.value = false;
           }
