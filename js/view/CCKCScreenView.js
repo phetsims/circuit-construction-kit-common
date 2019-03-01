@@ -167,6 +167,7 @@ define( require => {
         this.circuitLayerNode,
         voltmeterNode,
         ammeterNode,
+        this.voltageChartNode,
         tandem.createTandem( 'sensorToolbox' ), {
           showSeriesAmmeters: options.showSeriesAmmeters,
           showNoncontactAmmeters: options.showNoncontactAmmeters

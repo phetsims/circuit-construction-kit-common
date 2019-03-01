@@ -86,6 +86,9 @@
   "voltage": {
     "value": "Voltage"
   },
+  "voltageChart": {
+    "value": "Voltage Chart"
+  },
   "frequency": {
     "value": "Frequency"
   },

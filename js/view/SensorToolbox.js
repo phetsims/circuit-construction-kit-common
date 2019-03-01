@@ -12,12 +12,16 @@ define( require => {
   // modules
   const Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Ammeter' );
   const AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/AmmeterNode' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const Bounds2 = require( 'DOT/Bounds2' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCPanel' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CircuitElementToolNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolNode' );
   const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   const HBox = require( 'SCENERY/nodes/HBox' );
+  const HSeparator = require( 'SUN/HSeparator' );
+  const NumberProperty = require( 'AXON/NumberProperty' );
   const Property = require( 'AXON/Property' );
   const SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
   const SeriesAmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SeriesAmmeterNode' );
@@ -26,6 +30,7 @@ define( require => {
   const VBox = require( 'SCENERY/nodes/VBox' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
+  const VoltageChartNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VoltageChartNode' );
   const Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Voltmeter' );
   const VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VoltmeterNode' );
 
@@ -33,6 +38,7 @@ define( require => {
   const ammetersString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeters' );
   const ammeterString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeter' );
   const voltmeterString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltmeter' );
+  const voltageChartString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageChart' );
 
   // constants
   const TOOLBOX_ICON_SIZE = 53;
@@ -46,10 +52,12 @@ define( require => {
      * @param {Node} circuitLayerNode - the main circuit node to use as a coordinate frame
      * @param {VoltmeterNode} voltmeterNode - node for the Voltmeter
      * @param {AmmeterNode} ammeterNode - node for the Ammeter
+     * @param {VoltageChartNode} voltageChartNode - node for the VoltageChartNode
      * @param {Tandem} tandem
      * @param {Object} [options]
      */
-    constructor( alignGroup, circuitLayerNode, voltmeterNode, ammeterNode, tandem, options ) {
+    // TODO: voltageChartNode should be optional and only appear in the AC sim
+    constructor( alignGroup, circuitLayerNode, voltmeterNode, ammeterNode, voltageChartNode, tandem, options ) {
 
       options = _.extend( {
         showResultsProperty: circuitLayerNode.model.isValueDepictionEnabledProperty,
@@ -128,6 +136,7 @@ define( require => {
       // Labels underneath the sensor tool nodes
       const voltmeterText = new Text( voltmeterString, { maxWidth: 60 } );
       const ammeterText = new Text( options.showSeriesAmmeters ? ammetersString : ammeterString, { maxWidth: 60 } );
+      const voltageChartText = new Text( voltageChartString, { maxWidth: 60 } );
 
       // Alter the visibility of the labels when the labels checkbox is toggled.
       circuitLayerNode.model.showLabelsProperty.linkAttribute( voltmeterText, 'visible' );
@@ -157,11 +166,36 @@ define( require => {
         ]
       } );
 
-      super( alignGroup.createBox( new HBox( {
+      const voltageChartNodeIcon = new VoltageChartNode( circuitLayerNode, new NumberProperty( 0 ), new BooleanProperty( false ),
+        new Property( Bounds2.EVERYTHING ) );
+      const voltageChartToolIcon = new VBox( {
+        spacing: ICON_TEXT_SPACING,
+        children: [ voltageChartNodeIcon, voltageChartText ]
+      } );
+
+      // Make the voltage chart the same width as the voltmeter
+      voltageChartNodeIcon.scale( voltmeterToolIcon.width / voltageChartNodeIcon.width );
+
+      const topBox = alignGroup.createBox( new HBox( {
         spacing: ( options.showNoncontactAmmeters && options.showSeriesAmmeters ) ? 20 : 40,
         align: 'bottom',
         children: [ voltmeterToolIcon, ammeterToolIcon ]
-      } ) ), tandem, {
+      } ) );
+
+      const chartBox = alignGroup.createBox( new HBox( {
+        spacing: ( options.showNoncontactAmmeters && options.showSeriesAmmeters ) ? 20 : 40,
+        align: 'bottom',
+        children: [ voltageChartToolIcon ]
+      } ) );
+
+      super( new VBox( {
+        spacing: 5,
+        children: [
+          topBox,
+          new HSeparator( 160 ),
+          chartBox
+        ]
+      } ), tandem, {
         yMargin: 8
       } );
     }
