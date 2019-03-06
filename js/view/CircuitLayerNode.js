@@ -829,7 +829,7 @@ define( require => {
         const segmentVector = endPoint.minus( startPoint );
         const probeVector = probePosition.minus( startPoint );
         let distanceAlongSegment = segmentVector.magnitude === 0 ? 0 : ( probeVector.dot( segmentVector ) /
-                                                                         segmentVector.magnitudeSquared() );
+                                                                         segmentVector.magnitudeSquared );
         distanceAlongSegment = Util.clamp( distanceAlongSegment, 0, 1 );
 
         const voltageAlongWire = Util.linear( 0, 1,
