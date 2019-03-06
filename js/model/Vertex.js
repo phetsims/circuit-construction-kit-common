@@ -14,9 +14,8 @@ define( require => {
   const Emitter = require( 'AXON/Emitter' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Property = require( 'AXON/Property' );
-  const PropertyIO = require( 'AXON/PropertyIO' );
   const Tandem = require( 'TANDEM/Tandem' );
-  const Vector2IO = require( 'DOT/Vector2IO' );
+  const Vector2Property = require( 'DOT/Vector2Property' );
 
   // Index counter for debugging
   let counter = 0;
@@ -47,9 +46,8 @@ define( require => {
       this.vertexTandem = options.tandem;
 
       // @public {Property.<Vector2>} - location of the vertex
-      this.positionProperty = new Property( position, {
+      this.positionProperty = new Vector2Property( position, {
         tandem: options.tandem && options.tandem.createTandem( 'positionProperty' ),
-        phetioType: PropertyIO( Vector2IO ),
         useDeepEquality: true,
         isValidValue: assert && ( p => !isNaN( p.x ) && !isNaN( p.y ) )
       } );

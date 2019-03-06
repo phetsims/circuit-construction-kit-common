@@ -13,10 +13,8 @@ define( require => {
   const Bounds2 = require( 'DOT/Bounds2' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Emitter = require( 'AXON/Emitter' );
-  const Property = require( 'AXON/Property' );
-  const PropertyIO = require( 'AXON/PropertyIO' );
   const Vector2 = require( 'DOT/Vector2' );
-  const Vector2IO = require( 'DOT/Vector2IO' );
+  const Vector2Property = require( 'DOT/Vector2Property' );
 
   class Meter {
 
@@ -31,9 +29,8 @@ define( require => {
       } );
 
       // @public {Property.<Vector2>} - the location of the body of the meter
-      this.bodyPositionProperty = new Property( Vector2.ZERO, {
-        tandem: tandem.createTandem( 'bodyPositionProperty' ),
-        phetioType: PropertyIO( Vector2IO )
+      this.bodyPositionProperty = new Vector2Property( Vector2.ZERO, {
+        tandem: tandem.createTandem( 'bodyPositionProperty' )
       } );
 
       // @public {Property.<boolean>} When the meter is dragged from the toolbox, all pieces drag together.

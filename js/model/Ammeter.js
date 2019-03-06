@@ -17,7 +17,7 @@ define( require => {
   const Property = require( 'AXON/Property' );
   const PropertyIO = require( 'AXON/PropertyIO' );
   const Vector2 = require( 'DOT/Vector2' );
-  const Vector2IO = require( 'DOT/Vector2IO' );
+  const Vector2Property = require( 'DOT/Vector2Property' );
 
   class Ammeter extends Meter {
 
@@ -36,9 +36,8 @@ define( require => {
       } );
 
       // @public {Property.<Vector2>} - the position of the tip of the probe
-      this.probePositionProperty = new Property( Vector2.ZERO, {
-        tandem: tandem.createTandem( 'probePositionProperty' ),
-        phetioType: PropertyIO( Vector2IO )
+      this.probePositionProperty = new Vector2Property( Vector2.ZERO, {
+        tandem: tandem.createTandem( 'probePositionProperty' )
       } );
     }
 

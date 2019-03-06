@@ -17,7 +17,7 @@ define( require => {
   const Property = require( 'AXON/Property' );
   const PropertyIO = require( 'AXON/PropertyIO' );
   const Vector2 = require( 'DOT/Vector2' );
-  const Vector2IO = require( 'DOT/Vector2IO' );
+  const Vector2Property = require( 'DOT/Vector2Property' );
 
   class Voltmeter extends Meter {
 
@@ -35,15 +35,13 @@ define( require => {
       } );
 
       // @public {Property.<Vector2>} - the position of the tip of the red probe in model=view coordinates.
-      this.redProbePositionProperty = new Property( Vector2.ZERO, {
-        tandem: tandem.createTandem( 'redProbePositionProperty' ),
-        phetioType: PropertyIO( Vector2IO )
+      this.redProbePositionProperty = new Vector2Property( Vector2.ZERO, {
+        tandem: tandem.createTandem( 'redProbePositionProperty' )
       } );
 
       // @public {Property.<Vector2>} - the position of the black probe in model=view coordinates
       this.blackProbePositionProperty = new Property( Vector2.ZERO, {
-        tandem: tandem.createTandem( 'blackProbePositionProperty' ),
-        phetioType: PropertyIO( Vector2IO )
+        tandem: tandem.createTandem( 'blackProbePositionProperty' )
       } );
     }
 
