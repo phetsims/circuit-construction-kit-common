@@ -35,7 +35,7 @@ define( require => {
         phetioType: PropertyIO( NullableIO( NumberIO ) )
       } );
 
-      // @public {Property.<Vector2>} - the position of the tip of the probe
+      // @public - the position of the tip of the probe
       this.probePositionProperty = new Vector2Property( Vector2.ZERO, {
         tandem: tandem.createTandem( 'probePositionProperty' )
       } );

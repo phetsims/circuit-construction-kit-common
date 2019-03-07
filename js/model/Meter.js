@@ -28,7 +28,7 @@ define( require => {
         tandem: tandem.createTandem( 'visibleProperty' )
       } );
 
-      // @public {Property.<Vector2>} - the location of the body of the meter
+      // @public - the location of the body of the meter
       this.bodyPositionProperty = new Vector2Property( Vector2.ZERO, {
         tandem: tandem.createTandem( 'bodyPositionProperty' )
       } );

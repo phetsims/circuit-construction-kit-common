@@ -34,13 +34,13 @@ define( require => {
         phetioType: PropertyIO( NullableIO( NumberIO ) )
       } );
 
-      // @public {Property.<Vector2>} - the position of the tip of the red probe in model=view coordinates.
+      // @public - the position of the tip of the red probe in model=view coordinates.
       this.redProbePositionProperty = new Vector2Property( Vector2.ZERO, {
         tandem: tandem.createTandem( 'redProbePositionProperty' )
       } );
 
-      // @public {Property.<Vector2>} - the position of the black probe in model=view coordinates
-      this.blackProbePositionProperty = new Property( Vector2.ZERO, {
+      // @public - the position of the black probe in model=view coordinates
+      this.blackProbePositionProperty = new Vector2Property( Vector2.ZERO, {
         tandem: tandem.createTandem( 'blackProbePositionProperty' )
       } );
     }

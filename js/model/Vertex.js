@@ -13,7 +13,6 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Emitter = require( 'AXON/Emitter' );
   const NumberProperty = require( 'AXON/NumberProperty' );
-  const Property = require( 'AXON/Property' );
   const Tandem = require( 'TANDEM/Tandem' );
   const Vector2Property = require( 'DOT/Vector2Property' );
 
@@ -45,15 +44,15 @@ define( require => {
       // @public (read-only)
       this.vertexTandem = options.tandem;
 
-      // @public {Property.<Vector2>} - location of the vertex
+      // @public - location of the vertex
       this.positionProperty = new Vector2Property( position, {
         tandem: options.tandem && options.tandem.createTandem( 'positionProperty' ),
         useDeepEquality: true,
         isValidValue: assert && ( p => !isNaN( p.x ) && !isNaN( p.y ) )
       } );
 
-      // @public {Property.<Vector2>} - where the vertex would be if it hadn't snapped to a proposed connection
-      this.unsnappedPositionProperty = new Property( position, {
+      // @public - where the vertex would be if it hadn't snapped to a proposed connection
+      this.unsnappedPositionProperty = new Vector2Property( position, {
         isValidValue: assert && ( p => !isNaN( p.x ) && !isNaN( p.y ) )
       } );
 
