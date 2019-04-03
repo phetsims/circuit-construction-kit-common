@@ -1231,7 +1231,7 @@ define( require => {
         this.vertices.push( new Vertex( new Vector2( stateObjectVertex.x, stateObjectVertex.y ), {
           draggable: stateObjectVertex.options.draggable,
           attachable: stateObjectVertex.options.attachable,
-          tandem: new Tandem( stateObjectVertex.tandemID )
+          tandem: new Tandem( null, stateObjectVertex.tandemID )
         } ) );
       } );
 
@@ -1239,7 +1239,7 @@ define( require => {
         const type = circuitElementStateObject.type;
         const startVertex = this.vertices.get( circuitElementStateObject.startVertexIndex );
         const endVertex = this.vertices.get( circuitElementStateObject.endVertexIndex );
-        const tandem = new Tandem( circuitElementStateObject.tandemID );
+        const tandem = new Tandem( null, circuitElementStateObject.tandemID );
         if ( type === 'wire' ) {
           this.circuitElements.add( new Wire( startVertex, endVertex, this.wireResistivityProperty, tandem ) );
         }
