@@ -26,8 +26,8 @@ define( require => {
   const WireNode = require( 'SCENERY_PHET/WireNode' );
 
   // strings
-  const timeString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/time' );
   const oneSecondString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/oneSecond' );
+  const timeString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/time' );
 
   // constants
   const SERIES_1_COLOR = '#5c5d5f'; // same as in Bending Light
