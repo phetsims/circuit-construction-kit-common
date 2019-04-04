@@ -58,7 +58,7 @@ define( require => {
 
       const scale = lifelikeFuseImage.width / schematicShape.bounds.width;
       schematicShape = schematicShape.transformed( Matrix3.scale( scale, scale ) );
-      let schematicNode = new Path( schematicShape, {
+      const schematicNode = new Path( schematicShape, {
         stroke: Color.BLACK,
         lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH
       } ).toDataURLImageSynchronous();
