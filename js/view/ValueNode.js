@@ -14,6 +14,7 @@ define( require => {
   const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
+  const Fuse = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Fuse' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const Matrix3 = require( 'DOT/Matrix3' );
   const Panel = require( 'SUN/Panel' );
@@ -96,7 +97,9 @@ define( require => {
         contentNode.maxWidth = 100;
       }
 
-      else if ( circuitElement instanceof Resistor || circuitElement instanceof LightBulb ) {
+      else if ( circuitElement instanceof Resistor ||
+                circuitElement instanceof LightBulb ||
+                circuitElement instanceof Fuse ) {
         contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'resistanceText' ) }, { font: FONT } ) );
 
         // Items like the hand and dog and high resistance resistor shouldn't show ".0"

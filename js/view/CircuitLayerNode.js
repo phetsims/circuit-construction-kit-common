@@ -36,6 +36,8 @@ define( require => {
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   const FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
   const FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
+  const Fuse = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Fuse' );
+  const FuseNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FuseNode' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Property = require( 'AXON/Property' );
@@ -310,6 +312,8 @@ define( require => {
         ( circuitElement, tandem ) => new SwitchNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
       initializeCircuitElementType( ACSource, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'acSourceNode' ),
         ( circuitElement, tandem ) => new ACSourceNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
+      initializeCircuitElementType( Fuse, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'fuseNode' ),
+        ( circuitElement, tandem ) => new FuseNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
 
       // When a vertex is selected, a cut button is shown near to the vertex.  If the vertex is connected to >1 circuit
       // element, the button is enabled.  Pressing the button will cut the vertex from the neighbors.  Only one cutButton

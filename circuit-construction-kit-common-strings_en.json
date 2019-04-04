@@ -11,6 +11,9 @@
   "resistor": {
     "value": "Resistor"
   },
+  "fuse": {
+    "value": "Fuse"
+  },
   "time": {
     "value": "Time"
   },

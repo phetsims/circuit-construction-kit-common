@@ -22,6 +22,8 @@ define( require => {
   const CircuitElementToolNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolNode' );
   const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   const Color = require( 'SCENERY/util/Color' );
+  const Fuse = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Fuse' );
+  const FuseNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FuseNode' );
   const Image = require( 'SCENERY/nodes/Image' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const Line = require( 'SCENERY/nodes/Line' );
@@ -43,6 +45,7 @@ define( require => {
   const dogString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/dog' );
   const dollarBillString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/dollarBill' );
   const eraserString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/eraser' );
+  const fuseString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/fuse' );
   const handString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/hand' );
   const lightBulbString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightBulb' );
   const paperClipString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/paperClip' );
@@ -303,6 +306,33 @@ define( require => {
         }
       );
       return resistorToolNode;
+    }
+
+    /**
+     * @param {number} count - the number that can be dragged out at once
+     * @param {Tandem} tandem
+     * @returns {CircuitElementToolNode}
+     * @public
+     */
+    createFuseToolNode( count, tandem ) {
+      const fuseModel = new Fuse(
+        new Vertex( Vector2.ZERO ),
+        new Vertex( new Vector2( CCKCConstants.RESISTOR_LENGTH, 0 ) ),
+        tandem.createTandem( 'resistor' )
+      );
+      const fuseToolNode = this.createCircuitElementToolNode( fuseString, count,
+        new FuseNode( null, null, fuseModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
+          isIcon: true
+        } ),
+        circuitElement => circuitElement instanceof Fuse,
+        position => {
+          const vertexPair = this.createVertexPair( position, RESISTOR_LENGTH );
+          return new Fuse(
+            vertexPair.startVertex, vertexPair.endVertex, this.circuit.resistorGroupTandem.createNextTandem()
+          );
+        }
+      );
+      return fuseToolNode;
     }
 
     /**

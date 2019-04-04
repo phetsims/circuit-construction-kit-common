@@ -43,7 +43,8 @@ define( require => {
         insideTrueBlackBox: false,
         isMetallic: false, // Metallic items can have their voltage read directly (unshielded)
         isFlammable: false,
-        tandem: tandem
+        tandem: tandem,
+        isCurrentReentrant: false
       }, options );
 
       super( options );
@@ -78,7 +79,9 @@ define( require => {
       this.endVertexProperty = new Property( endVertex );
 
       // @public {NumberProperty} - the flowing current, in amps.
-      this.currentProperty = new NumberProperty( 0 );
+      this.currentProperty = new NumberProperty( 0, {
+        reentrant: options.isCurrentReentrant
+      } );
 
       // @public (read-only) {BooleanProperty} - true if the CircuitElement can be edited and dragged
       this.interactiveProperty = new BooleanProperty( options.interactive );
