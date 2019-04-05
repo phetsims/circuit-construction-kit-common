@@ -32,7 +32,6 @@ define( require => {
       } );
       fuse.isTrippedProperty.link( isTripped => {
         this.setEnabled( isTripped );
-        console.log( 'setting enabled: ' + isTripped )
       } );
     }
   }
