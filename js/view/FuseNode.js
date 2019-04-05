@@ -22,12 +22,16 @@ define( require => {
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const Shape = require( 'KITE/Shape' );
   const Util = require( 'DOT/Util' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   // images
   const fuseImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/fuse.png' );
 
   // constants
   const SCHEMATIC_STEM_WIDTH = 20;
+  const HORIZONTAL_ZIG_ZAG_DISTANCE = 5;
+  const VERTICAL_ZIG_ZAG_HEIGHT = 4;
+  const CAP_WIDTH = 15; // horizontal size of each cap in the image
 
   class FuseNode extends FixedCircuitElementNode {
 
@@ -45,22 +49,45 @@ define( require => {
 
       options = _.extend( { isIcon: false }, options );
 
-      const DX = 5;
-      const DY = 4;
-
-      const inset = 15;
-
       const fuseImageNode = new Image( fuseImage );
+      const numberOfZigZags = ( fuseImageNode.width - CAP_WIDTH * 2 ) / HORIZONTAL_ZIG_ZAG_DISTANCE / 2;
 
-      const numberOfZigZags = ( fuseImageNode.width - inset * 2 ) / DX / 2;
+      /**
+       * @param {Vector2} start - the beginning of the shape
+       * @param {Vector2} end - the end of the shape
+       * @param {number} amplitude - the vertical amplitude of the zig zag wave
+       * @param {number} numberZigZags - the number of oscillations
+       * @param {Shape} shape - to fill with moveTo/lineTo commands
+       */
+      const zigZag = ( start, end, amplitude, numberZigZags, shape ) => {
+
+        const delta = end.minus( start );
+        const v = delta.normalized();
+        const n = v.perpendicular.times( amplitude );
+        const wavelength = delta.magnitude / numberZigZags;
+
+        shape.moveToPoint( start );
+        for ( let i = 0; i < numberZigZags; i++ ) {
+          const waveOrigin = v.times( i * wavelength ).plus( start );
+
+          const topPoint = waveOrigin.plus( v.times( wavelength / 4 ) ).plus( n );
+          const bottomPoint = waveOrigin.plus( v.times( 3 * wavelength / 4 ) ).minus( n );
+          shape.lineToPoint( topPoint );
+          shape.lineToPoint( bottomPoint );
+        }
+        shape.lineToPoint( end );
+      };
 
       // zig-zag shape
-      const filamentShape = new Shape()
-        .moveTo( inset, 0 );
-      for ( let i = 0; i < numberOfZigZags; i++ ) {
-        filamentShape.lineToRelative( DX, DY );
-        filamentShape.lineToRelative( DX, -DY );
-      }
+      const filamentShape = new Shape();
+      const startPoint = new Vector2( CAP_WIDTH, 0 );
+      const endPoint = new Vector2( fuseImageNode.width - CAP_WIDTH, 0 );
+      zigZag( startPoint, endPoint, VERTICAL_ZIG_ZAG_HEIGHT, numberOfZigZags, filamentShape );
+
+      const SPLIT_DY = 5;
+      const brokenFilamentShape = new Shape();
+      zigZag( startPoint, new Vector2( fuseImageNode.width / 2, SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, numberOfZigZags / 2, brokenFilamentShape );
+      zigZag( endPoint, new Vector2( fuseImageNode.width / 2, -SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, numberOfZigZags / 2, brokenFilamentShape );
 
       const filamentPath = new Path( filamentShape, {
         stroke: '#302b2b',
@@ -74,7 +101,7 @@ define( require => {
 
       const verticalGlassMargin = 3;
       const DEFAULT_GLASS_FILL = '#c3dbfd';
-      const glassNode = new Rectangle( inset, verticalGlassMargin, fuseImage.width - inset * 2, fuseImage.height - verticalGlassMargin * 2, {
+      const glassNode = new Rectangle( CAP_WIDTH, verticalGlassMargin, fuseImage.width - CAP_WIDTH * 2, fuseImage.height - verticalGlassMargin * 2, {
         fill: DEFAULT_GLASS_FILL,
         opacity: 0.5,
         stroke: 'black',
@@ -123,19 +150,21 @@ define( require => {
       // @public (read-only) {Fuse} the fuse depicted by this node
       this.fuse = fuse;
 
-      const handleTrip = isTripped => {
+      // Update the look when the fuse is tripped
+      const updateTripped = isTripped => {
         if ( isTripped ) {
           circuitLayerNode.addChild( new FuseTripAnimation( { center: this.center } ) );
         }
         glassNode.fill = isTripped ? '#4e4e4e' : DEFAULT_GLASS_FILL;
+        filamentPath.shape = isTripped ? brokenFilamentShape : filamentShape;
       };
-      ( !options.isIcon ) && this.fuse.isTrippedProperty.link( handleTrip );
+      ( !options.isIcon ) && this.fuse.isTrippedProperty.link( updateTripped );
 
       // @private
       this.disposeResistorNode = () => {
         lifelikeFuseNode.dispose();
         fuse.currentRatingProperty.unlink( updateFilamentPathLineWidth );
-        ( !options.isIcon ) && this.fuse.isTrippedProperty.unlink( handleTrip );
+        ( !options.isIcon ) && this.fuse.isTrippedProperty.unlink( updateTripped );
       };
     }
 
