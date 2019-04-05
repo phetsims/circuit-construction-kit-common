@@ -10,8 +10,8 @@ define( require => {
   'use strict';
 
   // modules
-  const ACSource = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACSource' );
-  const ACSourceNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ACSourceNode' );
+  const ACVoltage = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACVoltage' );
+  const ACVoltageNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ACVoltageNode' );
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
   const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
@@ -227,17 +227,17 @@ define( require => {
      * @public
      */
     createACSourceToolNode( count, tandem ) {
-      const acSource = new ACSource(
+      const acSource = new ACVoltage(
         new Vertex( Vector2.ZERO ),
         new Vertex( new Vector2( AC_VOLTAGE_LENGTH, 0 ) ),
         new Property( 0 ), tandem.createTandem( 'acSourceIconModel' )
       );
       return this.createCircuitElementToolNode( acSourceString, count,
-        new ACSourceNode( null, null, acSource, this.viewTypeProperty, tandem.createTandem( 'acSourceIcon' ), { isIcon: true } ),
-        circuitElement => circuitElement instanceof ACSource,
+        new ACVoltageNode( null, null, acSource, this.viewTypeProperty, tandem.createTandem( 'acSourceIcon' ), { isIcon: true } ),
+        circuitElement => circuitElement instanceof ACVoltage,
         position => {
           const vertexPair = this.createVertexPair( position, AC_VOLTAGE_LENGTH );
-          return new ACSource(
+          return new ACVoltage(
             vertexPair.startVertex,
             vertexPair.endVertex,
             this.circuit.batteryResistanceProperty,

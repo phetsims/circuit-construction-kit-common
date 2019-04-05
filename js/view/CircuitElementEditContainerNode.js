@@ -10,7 +10,7 @@ define( require => {
   'use strict';
 
   // modules
-  const ACSource = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACSource' );
+  const ACVoltage = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACVoltage' );
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
@@ -104,7 +104,7 @@ define( require => {
           const isWire = selectedCircuitElement instanceof Wire;
           const isSwitch = selectedCircuitElement instanceof Switch;
           const isSeriesAmmeter = selectedCircuitElement instanceof SeriesAmmeter;
-          const isACSource = selectedCircuitElement instanceof ACSource;
+          const isACSource = selectedCircuitElement instanceof ACVoltage;
 
           if ( isResistor && selectedCircuitElement.isResistanceEditable() ) {
             editNode = new CircuitElementEditNode(

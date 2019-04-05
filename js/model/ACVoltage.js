@@ -1,7 +1,7 @@
 // Copyright 2015-2019, University of Colorado Boulder
 
 /**
- * The ACSource is a circuit element that provides an oscillating voltage difference.
+ * The ACVoltage is a circuit element that provides an oscillating voltage difference.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -17,7 +17,7 @@ define( require => {
   // constants
   const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
 
-  class ACSource extends FixedCircuitElement {
+  class ACVoltage extends FixedCircuitElement {
 
     /**
      * @param {Vertex} startVertex - one of the battery vertices
@@ -103,5 +103,5 @@ define( require => {
     }
   }
 
-  return circuitConstructionKitCommon.register( 'ACSource', ACSource );
+  return circuitConstructionKitCommon.register( 'ACVoltage', ACVoltage );
 } );

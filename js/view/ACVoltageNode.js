@@ -1,7 +1,7 @@
 // Copyright 2019, University of Colorado Boulder
 
 /**
- * Renders the lifelike/schematic view for a ACSource.
+ * Renders the lifelike/schematic view for a ACVoltage.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -9,7 +9,7 @@ define( require => {
   'use strict';
 
   // modules
-  const ACSource = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACSource' );
+  const ACVoltage = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACVoltage' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const Circle = require( 'SCENERY/nodes/Circle' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
@@ -76,18 +76,18 @@ define( require => {
   schematicNode.mouseArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
   schematicNode.touchArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
 
-  class ACSourceNode extends FixedCircuitElementNode {
+  class ACVoltageNode extends FixedCircuitElementNode {
 
     /**
      * @param {CCKCScreenView|null} screenView - main screen view, null for isIcon
      * @param {CircuitLayerNode|null} circuitLayerNode, null for icon
-     * @param {ACSource} acSource
+     * @param {ACVoltage} acSource
      * @param {Property.<CircuitElementViewType>} viewTypeProperty
      * @param {Tandem} tandem
      * @param {Object} [options]
      */
     constructor( screenView, circuitLayerNode, acSource, viewTypeProperty, tandem, options ) {
-      assert && assert( acSource instanceof ACSource, 'should be AC voltage' );
+      assert && assert( acSource instanceof ACVoltage, 'should be AC voltage' );
 
       // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
       lifelikeNode.centerY = 0;
@@ -103,7 +103,7 @@ define( require => {
         options
       );
 
-      // @public (read-only) {ACSource} - the ACSource rendered by this Node
+      // @public (read-only) {ACVoltage} - the ACVoltage rendered by this Node
       this.acSource = acSource;
 
       // @public (read-only) For ValueNode
@@ -131,7 +131,7 @@ define( require => {
    * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
    * @public {Array.<Image>}
    */
-  ACSourceNode.webglSpriteNodes = [ schematicNode, lifelikeNode ];
+  ACVoltageNode.webglSpriteNodes = [ schematicNode, lifelikeNode ];
 
-  return circuitConstructionKitCommon.register( 'ACSourceNode', ACSourceNode );
+  return circuitConstructionKitCommon.register( 'ACVoltageNode', ACVoltageNode );
 } );

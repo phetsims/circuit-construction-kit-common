@@ -40,11 +40,11 @@ define( require => {
       options = _.extend( {
         showTrashCan: true,
 
-        // TODO: A better way of doing this, see note in ACSource
+        // TODO: A better way of doing this, see note in ACVoltage
         // Takes precedence over value specified in the CircuitElement
         delta: null,
 
-        // TODO: A better way of doing this, see note in ACSource
+        // TODO: A better way of doing this, see note in ACVoltage
         // Takes precedence over value specified in the CircuitElement
         editableRange: null
       }, options );

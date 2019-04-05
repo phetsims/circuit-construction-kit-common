@@ -10,7 +10,7 @@ define( require => {
   'use strict';
 
   // modules
-  const ACSource = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACSource' );
+  const ACVoltage = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACVoltage' );
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const BooleanProperty = require( 'AXON/BooleanProperty' );
   const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
@@ -642,8 +642,8 @@ define( require => {
       // Must run the solver even if there is only 1 battery, because it solves for the voltage difference between
       // the vertices
 
-      const batteries = this.circuitElements.getArray().filter( b => b instanceof Battery || b instanceof ACSource && !( b instanceof Capacitor ) );
-      const resistors = this.circuitElements.getArray().filter( b => !( b instanceof Battery ) && !( b instanceof Capacitor ) && !( b instanceof ACSource ) );
+      const batteries = this.circuitElements.getArray().filter( b => b instanceof Battery || b instanceof ACVoltage && !( b instanceof Capacitor ) );
+      const resistors = this.circuitElements.getArray().filter( b => !( b instanceof Battery ) && !( b instanceof Capacitor ) && !( b instanceof ACVoltage ) );
 
       // introduce a synthetic vertex for each battery to model internal resistance
       const resistorAdapters = resistors.map( circuitElement =>

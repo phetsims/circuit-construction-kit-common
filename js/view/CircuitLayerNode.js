@@ -18,8 +18,8 @@ define( require => {
   'use strict';
 
   // modules
-  const ACSource = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACSource' );
-  const ACSourceNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ACSourceNode' );
+  const ACVoltage = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACVoltage' );
+  const ACVoltageNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ACVoltageNode' );
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
   const Bounds2 = require( 'DOT/Bounds2' );
@@ -311,8 +311,8 @@ define( require => {
         ( circuitElement, tandem ) => new SeriesAmmeterNode( screenView, this, circuitElement, tandem ) );
       initializeCircuitElementType( Switch, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'switchNode' ),
         ( circuitElement, tandem ) => new SwitchNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
-      initializeCircuitElementType( ACSource, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'acSourceNode' ),
-        ( circuitElement, tandem ) => new ACSourceNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
+      initializeCircuitElementType( ACVoltage, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'acSourceNode' ),
+        ( circuitElement, tandem ) => new ACVoltageNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
       initializeCircuitElementType( Fuse, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'fuseNode' ),
         ( circuitElement, tandem ) => new FuseNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
 
