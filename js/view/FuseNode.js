@@ -17,8 +17,11 @@ define( require => {
   const FuseTripAnimation = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FuseTripAnimation' );
   const Image = require( 'SCENERY/nodes/Image' );
   const Matrix3 = require( 'DOT/Matrix3' );
+  const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const Shape = require( 'KITE/Shape' );
+  const Util = require( 'DOT/Util' );
 
   // images
   const fuseImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/fuse.png' );
@@ -42,7 +45,45 @@ define( require => {
 
       options = _.extend( { isIcon: false }, options );
 
-      const lifelikeFuseImage = new Image( fuseImage );
+      const DX = 5;
+      const DY = 4;
+
+      const inset = 15;
+
+      const fuseImageNode = new Image( fuseImage );
+
+      const numberOfZigZags = ( fuseImageNode.width - inset * 2 ) / DX / 2;
+
+      // zig-zag shape
+      const filamentShape = new Shape()
+        .moveTo( inset, 0 );
+      for ( let i = 0; i < numberOfZigZags; i++ ) {
+        filamentShape.lineToRelative( DX, DY );
+        filamentShape.lineToRelative( DX, -DY );
+      }
+
+      const filamentPath = new Path( filamentShape, {
+        stroke: '#302b2b',
+        lineWidth: 4,
+        center: fuseImageNode.center
+      } );
+      const updateFilamentPathLineWidth = currentRating => filamentPath.setLineWidth( Util.linear(
+        fuse.currentRatingProperty.range.min, fuse.currentRatingProperty.range.max, 1, 4, currentRating
+      ) );
+      fuse.currentRatingProperty.link( updateFilamentPathLineWidth );
+
+      const verticalGlassMargin = 3;
+      const glassCovering = new Rectangle( inset, verticalGlassMargin, fuseImage.width - inset * 2, fuseImage.height - verticalGlassMargin * 2, {
+        fill: '#c3dbfd',
+        opacity: 0.5
+      } );
+      const lifelikeFuseNode = new Node( {
+        children: [
+          filamentPath,
+          glassCovering,
+          fuseImageNode
+        ]
+      } );
 
       // Line with a box around it
       const BOX_HEIGHT = 30;
@@ -55,9 +96,9 @@ define( require => {
       // Icons should appear the same in the toolbox, see
       // https://github.com/phetsims/circuit-construction-kit-common/issues/389
       const width = options.isIcon ? CCKCConstants.RESISTOR_LENGTH : fuse.distanceBetweenVertices;
-      lifelikeFuseImage.mutate( { scale: width / lifelikeFuseImage.width } );
+      lifelikeFuseNode.mutate( { scale: width / lifelikeFuseNode.width } );
 
-      const scale = lifelikeFuseImage.width / schematicShape.bounds.width;
+      const scale = lifelikeFuseNode.width / schematicShape.bounds.width;
       schematicShape = schematicShape.transformed( Matrix3.scale( scale, scale ) );
       const schematicNode = new Path( schematicShape, {
         stroke: Color.BLACK,
@@ -66,14 +107,14 @@ define( require => {
 
       // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
       schematicNode.centerY = 0;
-      lifelikeFuseImage.centerY = 0;
+      lifelikeFuseNode.centerY = 0;
 
       // Expand the pointer areas with a defensive copy, see
       // https://github.com/phetsims/circuit-construction-kit-common/issues/310
       schematicNode.mouseArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
       schematicNode.touchArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
 
-      super( screenView, circuitLayerNode, fuse, viewTypeProperty, lifelikeFuseImage, schematicNode, tandem, options );
+      super( screenView, circuitLayerNode, fuse, viewTypeProperty, lifelikeFuseNode, schematicNode, tandem, options );
 
       // @public (read-only) {Fuse} the fuse depicted by this node
       this.fuse = fuse;
@@ -87,7 +128,10 @@ define( require => {
       } );
 
       // @private
-      this.disposeResistorNode = () => lifelikeFuseImage.dispose();
+      this.disposeResistorNode = () => {
+        lifelikeFuseNode.dispose();
+        fuse.currentRatingProperty.unlink( updateFilamentPathLineWidth );
+      };
     }
 
     /**

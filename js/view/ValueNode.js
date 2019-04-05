@@ -150,11 +150,11 @@ define( require => {
       }
       else if ( circuitElement instanceof Fuse ) {
         contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'fuseText' ) }, { font: FONT } ) );
-        const multilink = Property.multilink( [ circuitElement.currentProperty, circuitElement.maxCurrentProperty ],
-          ( current, maxCurrent ) => {
+        const multilink = Property.multilink( [ circuitElement.currentProperty, circuitElement.currentRatingProperty ],
+          ( current, currentRating ) => {
             contentNode.text = StringUtils.fillIn( fuseValueString, {
               current: Util.toFixed( Math.abs( current ), circuitElement.numberOfDecimalPlaces ),
-              maxCurrent: Util.toFixed( maxCurrent, circuitElement.numberOfDecimalPlaces )
+              currentRating: Util.toFixed( currentRating, circuitElement.numberOfDecimalPlaces )
             } );
             updatePosition && updatePosition();
           }

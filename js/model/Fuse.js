@@ -15,6 +15,7 @@ define( require => {
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   const NumberProperty = require( 'AXON/NumberProperty' );
+  const Range = require( 'DOT/Range' );
 
   // constants
   const RESISTOR_LENGTH = CCKCConstants.RESISTOR_LENGTH;
@@ -32,15 +33,16 @@ define( require => {
         resistance: CCKCConstants.MINIMUM_RESISTANCE,
         resistorLength: RESISTOR_LENGTH,
         isFlammable: false,
-        maxCurrent: 4,
+        currentRating: 4,
         isCurrentReentrant: true // Changing the current can trip a fuse, which changes the current
       }, options );
 
       super( startVertex, endVertex, options.resistorLength, tandem, options );
 
       // @public {Property.<number>} the current at which the fuse trips, in amps
-      this.maxCurrentProperty = new NumberProperty( options.maxCurrent, {
-        isValidValue: v => v >= 0
+      this.currentRatingProperty = new NumberProperty( options.currentRating, {
+        isValidValue: v => v >= 0,
+        range: new Range( 0, 20 )
       } );
 
       // @public - true if the fuse is tripped
@@ -72,7 +74,7 @@ define( require => {
 
       // When the current exceeds the max, trip the fuse.  This cannot be modeled as a property link because it
       // creates a reentrant property loop which doesn't update the reset fuse button properly
-      if ( Math.abs( this.currentProperty.value ) > this.maxCurrentProperty.value ) {
+      if ( Math.abs( this.currentProperty.value ) > this.currentRatingProperty.value ) {
         this.isTrippedProperty.value = true;
       }
     }
@@ -99,7 +101,7 @@ define( require => {
       const parent = super.toIntrinsicStateObject();
       return _.extend( parent, {
         resistance: this.resistanceProperty.value,
-        maxCurrent: this.maxCurrentProperty.value,
+        currentRating: this.currentRatingProperty.value,
         resistorLength: this.chargePathLength
       } );
     }

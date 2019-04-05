@@ -148,10 +148,12 @@ define( require => {
               StringUtils.fillIn( currentUnitsString, {
                 current: SunConstants.VALUE_NAMED_PLACEHOLDER
               } ),
-              selectedCircuitElement.maxCurrentProperty,
+              selectedCircuitElement.currentRatingProperty,
               circuit,
               selectedCircuitElement,
-              groupTandem.createNextTandem()
+              groupTandem.createNextTandem(), {
+                editableRange: selectedCircuitElement.currentRatingProperty.range
+              }
             );
           }
           else if ( isSwitch ) {
