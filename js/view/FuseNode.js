@@ -14,6 +14,7 @@ define( require => {
   const Color = require( 'SCENERY/util/Color' );
   const FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
   const Fuse = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Fuse' );
+  const FuseTripAnimation = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FuseTripAnimation' );
   const Image = require( 'SCENERY/nodes/Image' );
   const Matrix3 = require( 'DOT/Matrix3' );
   const Path = require( 'SCENERY/nodes/Path' );
@@ -76,6 +77,14 @@ define( require => {
 
       // @public (read-only) {Fuse} the fuse depicted by this node
       this.fuse = fuse;
+
+      ( !options.isIcon ) && this.fuse.isTrippedProperty.link( isTripped => {
+        if ( isTripped ) {
+          circuitLayerNode.addChild( new FuseTripAnimation( {
+            center: this.center
+          } ) );
+        }
+      } );
 
       // @private
       this.disposeResistorNode = () => lifelikeFuseImage.dispose();
