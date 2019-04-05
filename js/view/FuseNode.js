@@ -73,16 +73,18 @@ define( require => {
       fuse.currentRatingProperty.link( updateFilamentPathLineWidth );
 
       const verticalGlassMargin = 3;
-      const glassCovering = new Rectangle( inset, verticalGlassMargin, fuseImage.width - inset * 2, fuseImage.height - verticalGlassMargin * 2, {
-        fill: '#c3dbfd',
+      const DEFAULT_GLASS_FILL = '#c3dbfd';
+      const glassNode = new Rectangle( inset, verticalGlassMargin, fuseImage.width - inset * 2, fuseImage.height - verticalGlassMargin * 2, {
+        fill: DEFAULT_GLASS_FILL,
         opacity: 0.5,
         stroke: 'black',
         lineWidth: 0.5
       } );
+
       const lifelikeFuseNode = new Node( {
         children: [
           filamentPath,
-          glassCovering,
+          glassNode,
           fuseImageNode
         ]
       } );
@@ -121,18 +123,19 @@ define( require => {
       // @public (read-only) {Fuse} the fuse depicted by this node
       this.fuse = fuse;
 
-      ( !options.isIcon ) && this.fuse.isTrippedProperty.link( isTripped => {
+      const handleTrip = isTripped => {
         if ( isTripped ) {
-          circuitLayerNode.addChild( new FuseTripAnimation( {
-            center: this.center
-          } ) );
+          circuitLayerNode.addChild( new FuseTripAnimation( { center: this.center } ) );
         }
-      } );
+        glassNode.fill = isTripped ? '#4e4e4e' : DEFAULT_GLASS_FILL;
+      };
+      ( !options.isIcon ) && this.fuse.isTrippedProperty.link( handleTrip );
 
       // @private
       this.disposeResistorNode = () => {
         lifelikeFuseNode.dispose();
         fuse.currentRatingProperty.unlink( updateFilamentPathLineWidth );
+        ( !options.isIcon ) && this.fuse.isTrippedProperty.unlink( handleTrip );
       };
     }
 
