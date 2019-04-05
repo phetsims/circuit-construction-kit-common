@@ -46,7 +46,7 @@ define( require => {
   const signSeparation = CIRCLE_DIAMETER * 0.32;
   const signScale = 0.8;
   const template = new Node( {
-    x: CCKCConstants.AC_SOURCE_LENGTH / 2,
+    x: CCKCConstants.AC_VOLTAGE_LENGTH / 2,
     children: [
       new Circle( CIRCLE_DIAMETER / 2, {
         stroke: 'black',
@@ -87,7 +87,7 @@ define( require => {
      * @param {Object} [options]
      */
     constructor( screenView, circuitLayerNode, acSource, viewTypeProperty, tandem, options ) {
-      assert && assert( acSource instanceof ACSource, 'should be AC source' );
+      assert && assert( acSource instanceof ACSource, 'should be AC voltage' );
 
       // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
       lifelikeNode.centerY = 0;

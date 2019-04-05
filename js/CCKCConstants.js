@@ -75,8 +75,8 @@ define( require => {
     // Length of a battery
     BATTERY_LENGTH: 102,
 
-    // Length of the AC Source
-    AC_SOURCE_LENGTH: 68,
+    // Length of the AC Voltage
+    AC_VOLTAGE_LENGTH: 68,
 
     // Length of a switch, not so wide that electrons appear in the notches
     SWITCH_LENGTH: 112,
