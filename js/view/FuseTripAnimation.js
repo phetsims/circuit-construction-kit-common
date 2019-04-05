@@ -58,7 +58,6 @@ define( require => {
           const opacity = Util.clamp( Util.linear( 0.3, 1, 1, 0, value ), 0, 1 );
           this.setScaleMagnitude( scale );
           this.setOpacity( opacity );
-          path.setLineWidth( 2 / scale );
           this.center = center;
         },
         from: 0,
