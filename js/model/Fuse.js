@@ -74,9 +74,8 @@ define( require => {
 
       // When the current exceeds the max, trip the fuse.  This cannot be modeled as a property link because it
       // creates a reentrant property loop which doesn't update the reset fuse button properly
-      if ( Math.abs( this.currentProperty.value ) > this.currentRatingProperty.value ) {
-
-        // TODO: what about rounding it, so that if the readouts say 4.0/4.0 it should trip
+      // Account for roundoff error in the circuit solve step
+      if ( Math.abs( this.currentProperty.value ) > this.currentRatingProperty.value + 1E-6 ) {
         this.isTrippedProperty.value = true;
       }
     }
