@@ -147,6 +147,7 @@ define( require => {
             .concat( ResistorNode.webglSpriteNodes )
             .concat( FixedCircuitElementNode.webglSpriteNodes )
             .concat( CustomLightBulbNode.webglSpriteNodes )
+            .concat( FuseNode.webglSpriteNodes )
         } ) ]
       } );
 
