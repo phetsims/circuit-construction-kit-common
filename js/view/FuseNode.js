@@ -75,7 +75,9 @@ define( require => {
       const verticalGlassMargin = 3;
       const glassCovering = new Rectangle( inset, verticalGlassMargin, fuseImage.width - inset * 2, fuseImage.height - verticalGlassMargin * 2, {
         fill: '#c3dbfd',
-        opacity: 0.5
+        opacity: 0.5,
+        stroke: 'black',
+        lineWidth: 0.5
       } );
       const lifelikeFuseNode = new Node( {
         children: [
