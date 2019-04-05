@@ -26,7 +26,8 @@ define( require => {
     constructor( options ) {
       super();
 
-      // Specified in the SVG polylines
+      // Geometry sampled by exporting circuit-construction-kit-common/assets/spark.ai to SVG then selecting the
+      // polylines data
       const polylines = [
         '29.2,11.5 34.3,1.9 34.7,12.8 50.7,1.8 38.7,16.9 49.6,17.6 39.8,22.5',
         '11.1,22.5 1.5,17.3 12.4,16.9 1.3,1 16.5,13 17.2,2.1 22.1,11.8',
