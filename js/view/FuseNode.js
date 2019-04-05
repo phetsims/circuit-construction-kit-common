@@ -49,7 +49,7 @@ define( require => {
 
       options = _.extend( { isIcon: false }, options );
 
-      const fuseImageNode = new Image( fuseImage );
+      const fuseImageNode = new Image( fuseImage, { scale: 150 / 217 } );
       const numberOfZigZags = ( fuseImageNode.width - CAP_WIDTH * 2 ) / HORIZONTAL_ZIG_ZAG_DISTANCE / 2;
 
       /**
@@ -101,7 +101,7 @@ define( require => {
 
       const verticalGlassMargin = 3;
       const DEFAULT_GLASS_FILL = '#c3dbfd';
-      const glassNode = new Rectangle( CAP_WIDTH, verticalGlassMargin, fuseImage.width - CAP_WIDTH * 2, fuseImage.height - verticalGlassMargin * 2, {
+      const glassNode = new Rectangle( CAP_WIDTH, verticalGlassMargin, fuseImageNode.width - CAP_WIDTH * 2, fuseImageNode.height - verticalGlassMargin * 2, {
         fill: DEFAULT_GLASS_FILL,
         opacity: 0.5,
         stroke: 'black',
