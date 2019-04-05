@@ -48,22 +48,21 @@ define( require => {
 
       const path = new Path( shape, { stroke: 'yellow', lineWidth: 2 } );
       options.children = [ path ];
-      options.scale = 2;
       this.mutate( options );
 
       const animation = new Animation( {
         setValue: value => {
           const center = this.center;
-          const scale = Util.linear( 0, 1, 1, 4, value );
-          const opacity = Util.clamp( Util.linear( 0.3, 1, 1, 0, value ), 0, 1 );
+          const scale = Util.linear( 0, 1, 0.75, 2, value );
+          const opacity = Util.clamp( Util.linear( 0.8, 1, 1, 0, value ), 0, 1 );
           this.setScaleMagnitude( scale );
           this.setOpacity( opacity );
           this.center = center;
         },
         from: 0,
         to: 1,
-        duration: 1.5,
-        easing: Easing.CUBIC_OUT
+        duration: 0.3,
+        easing: Easing.QUADRATIC_IN_OUT
       } );
       animation.endedEmitter.addListener( () => this.dispose() );
       animation.start();
