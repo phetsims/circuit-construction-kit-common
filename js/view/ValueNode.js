@@ -19,6 +19,7 @@ define( require => {
   const Matrix3 = require( 'DOT/Matrix3' );
   const Panel = require( 'SUN/Panel' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const Property = require( 'AXON/Property' );
   const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   const RichText = require( 'SCENERY/nodes/RichText' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
@@ -31,6 +32,7 @@ define( require => {
   // strings
   const resistanceOhmsSymbolString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhmsSymbol' );
   const voltageUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageUnits' );
+  const fuseValueString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/fuseValue' );
 
   // constants
   const VERTICAL_OFFSET = 24;
@@ -98,8 +100,7 @@ define( require => {
       }
 
       else if ( circuitElement instanceof Resistor ||
-                circuitElement instanceof LightBulb ||
-                circuitElement instanceof Fuse ) {
+                circuitElement instanceof LightBulb ) {
         contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'resistanceText' ) }, { font: FONT } ) );
 
         // Items like the hand and dog and high resistance resistor shouldn't show ".0"
@@ -145,6 +146,20 @@ define( require => {
         };
         circuitElement.resistanceProperty.link( updateResistance );
         disposeActions.push( () => circuitElement.resistanceProperty.unlink( updateResistance ) );
+        contentNode.maxWidth = 100;
+      }
+      else if ( circuitElement instanceof Fuse ) {
+        contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'fuseText' ) }, { font: FONT } ) );
+        const multilink = Property.multilink( [ circuitElement.currentProperty, circuitElement.maxCurrentProperty ],
+          ( current, maxCurrent ) => {
+            contentNode.text = StringUtils.fillIn( fuseValueString, {
+              current: Util.toFixed( Math.abs( current ), circuitElement.numberOfDecimalPlaces ),
+              maxCurrent: Util.toFixed( maxCurrent, circuitElement.numberOfDecimalPlaces )
+            } );
+            updatePosition && updatePosition();
+          }
+        );
+        disposeActions.push( () => multilink.dispose() );
         contentNode.maxWidth = 100;
       }
       else {

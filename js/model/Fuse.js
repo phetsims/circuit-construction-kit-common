@@ -39,7 +39,9 @@ define( require => {
       super( startVertex, endVertex, options.resistorLength, tandem, options );
 
       // @public {Property.<number>} the current at which the fuse trips, in amps
-      this.maxCurrentProperty = new NumberProperty( options.maxCurrent );
+      this.maxCurrentProperty = new NumberProperty( options.maxCurrent, {
+        isValidValue: v => v >= 0
+      } );
 
       // @public - true if the fuse is tripped
       this.isTrippedProperty = new BooleanProperty( false );
