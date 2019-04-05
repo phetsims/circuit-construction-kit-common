@@ -110,7 +110,7 @@ define( require => {
             editNode = new CircuitElementEditNode(
               resistanceString,
 
-              // Adapter to take from {{named}} to {0} for usage in common code
+              // Adapter to take from {{named}} to {{value}} for usage in common code
               StringUtils.fillIn( resistanceOhmsValuePatternString, {
                 resistance: SunConstants.VALUE_NAMED_PLACEHOLDER
               } ),
@@ -131,7 +131,7 @@ define( require => {
             editNode = new CircuitElementEditNode(
               voltageString,
 
-              // Adapter to take from {{named}} to {0} for usage in common code
+              // Adapter to take from {{named}} to {{value}} for usage in common code
               StringUtils.fillIn( voltageVoltsValuePatternString, {
                 voltage: SunConstants.VALUE_NAMED_PLACEHOLDER
               } ),
@@ -144,7 +144,7 @@ define( require => {
           else if ( isFuse ) {
             editNode = new CircuitElementEditNode( currentRatingString,
 
-              // Adapter to take from {{named}} to {0} for usage in common code
+              // Adapter to take from {{named}} to {{value}} for usage in common code
               StringUtils.fillIn( currentUnitsString, {
                 current: SunConstants.VALUE_NAMED_PLACEHOLDER
               } ),
@@ -173,7 +173,7 @@ define( require => {
                 new CircuitElementEditNode(
                   voltageString,
 
-                  // Adapter to take from {{named}} to {0} for usage in common code
+                  // Adapter to take from {{named}} to {{value}} for usage in common code
                   StringUtils.fillIn( voltageVoltsValuePatternString, {
                     voltage: SunConstants.VALUE_NAMED_PLACEHOLDER
                   } ),
@@ -187,7 +187,7 @@ define( require => {
                 new CircuitElementEditNode(
                   frequencyString,
 
-                  // Adapter to take from {{named}} to {0} for usage in common code
+                  // Adapter to take from {{named}} to {{value}} for usage in common code
                   StringUtils.fillIn( frequencyHzValuePatternString, {
                     frequency: SunConstants.VALUE_NAMED_PLACEHOLDER
                   } ),
