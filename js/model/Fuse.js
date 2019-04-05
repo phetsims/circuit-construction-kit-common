@@ -12,9 +12,9 @@ define( require => {
   const BooleanProperty = require( 'AXON/BooleanProperty' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const DerivedProperty = require( 'AXON/DerivedProperty' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   const NumberProperty = require( 'AXON/NumberProperty' );
-  const Property = require( 'AXON/Property' );
 
   // constants
   const RESISTOR_LENGTH = CCKCConstants.RESISTOR_LENGTH;
@@ -38,21 +38,41 @@ define( require => {
 
       super( startVertex, endVertex, options.resistorLength, tandem, options );
 
-      // @public {Property.<number>} the resistance in ohms
-      this.resistanceProperty = new NumberProperty( options.resistance );
-
       // @public {Property.<number>} the current at which the fuse trips, in amps
       this.maxCurrentProperty = new NumberProperty( options.maxCurrent );
 
+      // @public - true if the fuse is tripped
       this.isTrippedProperty = new BooleanProperty( false );
 
-      // When the current exceeds the max, trip the fuse
-      Property.multilink( [ this.currentProperty, this.maxCurrentProperty ], ( current, maxCurrent ) => {
-        if ( Math.abs( current ) > maxCurrent ) {
-          this.isTrippedProperty.value = true;
-          this.resistanceProperty.value = CCKCConstants.MAX_RESISTANCE;
-        }
-      } );
+      // @public {Property.<number>} the resistance in ohms
+      this.resistanceProperty = new DerivedProperty( [ this.isTrippedProperty ],
+        isTripped => isTripped ? CCKCConstants.MAX_RESISTANCE : CCKCConstants.MINIMUM_RESISTANCE
+      );
+
+      // @public (read-only) Used in CircuitElementEditNode
+      this.numberOfDecimalPlaces = 1;
+    }
+
+    /**
+     * Reset the fuse so it is no longer tripped.
+     * @public
+     */
+    resetFuse() {
+      this.isTrippedProperty.reset();
+    }
+
+    /**
+     * @param {number} time - total elapsed time
+     * @param {number} dt - delta between last frame and current frame
+     * @public
+     */
+    step( time, dt ) {
+
+      // When the current exceeds the max, trip the fuse.  This cannot be modeled as a property link because it
+      // creates a reentrant property loop which doesn't update the reset fuse button properly
+      if ( Math.abs( this.currentProperty.value ) > this.maxCurrentProperty.value ) {
+        this.isTrippedProperty.value = true;
+      }
     }
 
     /**
@@ -62,7 +82,10 @@ define( require => {
      * @public
      */
     getCircuitProperties() {
-      return [ this.resistanceProperty ];
+      return [ this.resistanceProperty,
+
+        // update the circuit when the fuse is reset
+        this.isTrippedProperty ];
     }
 
     /**

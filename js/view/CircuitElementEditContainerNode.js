@@ -16,6 +16,7 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CircuitElementEditNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditNode' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
+  const Fuse = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Fuse' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const Node = require( 'SCENERY/nodes/Node' );
@@ -38,6 +39,8 @@ define( require => {
   const tapCircuitElementToEditString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/tapCircuitElementToEdit' );
   const voltageString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltage' );
   const voltageVoltsValuePatternString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageVoltsValuePattern' );
+  const currentUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/currentUnits' );
+  const currentRatingString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/currentRating' );
 
   // constants
   const GET_LAYOUT_POSITION = visibleBounds => {
@@ -97,6 +100,7 @@ define( require => {
         if ( selectedCircuitElement ) {
           const isResistor = selectedCircuitElement instanceof Resistor || selectedCircuitElement instanceof LightBulb;
           const isBattery = selectedCircuitElement instanceof Battery;
+          const isFuse = selectedCircuitElement instanceof Fuse;
           const isWire = selectedCircuitElement instanceof Wire;
           const isSwitch = selectedCircuitElement instanceof Switch;
           const isSeriesAmmeter = selectedCircuitElement instanceof SeriesAmmeter;
@@ -132,6 +136,19 @@ define( require => {
                 voltage: SunConstants.VALUE_NAMED_PLACEHOLDER
               } ),
               selectedCircuitElement.voltageProperty,
+              circuit,
+              selectedCircuitElement,
+              groupTandem.createNextTandem()
+            );
+          }
+          else if ( isFuse ) {
+            editNode = new CircuitElementEditNode( currentRatingString,
+
+              // Adapter to take from {{named}} to {0} for usage in common code
+              StringUtils.fillIn( currentUnitsString, {
+                current: SunConstants.VALUE_NAMED_PLACEHOLDER
+              } ),
+              selectedCircuitElement.maxCurrentProperty,
               circuit,
               selectedCircuitElement,
               groupTandem.createNextTandem()

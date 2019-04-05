@@ -20,6 +20,7 @@ define( require => {
   const ARROW_ICON_SCALE = 0.012;
 
   class RotateBatteryButton extends RoundPushButton {
+
     /**
      * @param {Circuit} circuit - the circuit that contains the battery
      * @param {CircuitElement} battery - the Battery to rotate
@@ -61,7 +62,7 @@ define( require => {
         listener: () => circuit.flip( battery ),
         minXMargin: 10,
         minYMargin: 10,
-        tandem: tandem.createTandem( 'RotateBatteryButton' )
+        tandem: tandem
       } );
     }
   }

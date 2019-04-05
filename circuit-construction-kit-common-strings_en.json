@@ -20,6 +20,9 @@
   "oneSecond": {
     "value": "1 s"
   },
+  "currentRating": {
+    "value": "Current Rating"
+  },
   "tiny": {
     "value": "tiny"
   },

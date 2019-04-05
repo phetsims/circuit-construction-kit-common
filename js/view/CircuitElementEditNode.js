@@ -12,9 +12,11 @@ define( require => {
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const Fuse = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Fuse' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const NumberControl = require( 'SCENERY_PHET/NumberControl' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  const ResetFuseButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResetFuseButton' );
   const RotateBatteryButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/RotateBatteryButton' );
   const TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
 
@@ -82,6 +84,9 @@ define( require => {
       // Batteries can be reversed
       if ( circuitElement instanceof Battery ) {
         children.push( new RotateBatteryButton( circuit, circuitElement, tandem.createTandem( 'reverseBatteryButton' ) ) );
+      }
+      if ( circuitElement instanceof Fuse ) {
+        children.push( new ResetFuseButton( circuitElement, tandem.createTandem( 'resetFuseButton' ) ) );
       }
       children.push( numberControl );
 
