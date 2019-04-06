@@ -227,7 +227,7 @@ define( require => {
             if ( trails.length === 0 ) {
               phet.joist.sim.display.removeInputListener( clickToDismissListener );
               if ( this.disposeEmitter.hasListener( disposeListener ) ) {
-                this.disposeEmitter.removeListener( disposeListener )
+                this.disposeEmitter.removeListener( disposeListener );
               }
               circuitLayerNode.circuit.selectedCircuitElementProperty.set( null );
             }
