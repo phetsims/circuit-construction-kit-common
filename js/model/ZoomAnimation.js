@@ -22,9 +22,8 @@ define( require => {
      * @param {number} initialZoom
      * @param {number} targetZoom
      * @param {function} zoomCallback
-     * @constructor
      */
-    class( initialZoom, targetZoom, zoomCallback ) {
+    constructor( initialZoom, targetZoom, zoomCallback ) {
       this.easing = Easing.CUBIC_IN_OUT;
 
       this.ratio = 0;
