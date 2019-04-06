@@ -50,7 +50,7 @@ define( require => {
      * @param {Tandem} tandem
      */
     constructor( circuitElement, showValuesProperty, viewTypeProperty, tandem ) {
-      const disposeEmitter = new Emitter();
+      const disposeEmitterValueNode = new Emitter();
 
       let contentNode = null;
       let updatePosition = null;
@@ -93,7 +93,7 @@ define( require => {
         };
         circuitElement.internalResistanceProperty.link( internalResistanceListener );
 
-        disposeEmitter.addListener( () => {
+        disposeEmitterValueNode.addListener( () => {
           circuitElement.voltageProperty.unlink( voltageListener );
           circuitElement.internalResistanceProperty.unlink( internalResistanceListener );
         } );
@@ -112,7 +112,7 @@ define( require => {
           updatePosition && updatePosition();
         };
         circuitElement.resistanceProperty.link( linkResistance );
-        disposeEmitter.addListener( () => circuitElement.resistanceProperty.unlink( linkResistance ) );
+        disposeEmitterValueNode.addListener( () => circuitElement.resistanceProperty.unlink( linkResistance ) );
         contentNode.maxWidth = 100;
       }
       else if ( circuitElement instanceof Capacitor ) {
@@ -126,7 +126,7 @@ define( require => {
           updatePosition && updatePosition();
         };
         circuitElement.capacitanceProperty.link( linkCapacitance );
-        disposeEmitter.addListener( () => circuitElement.capacitanceProperty.unlink( linkCapacitance ) );
+        disposeEmitterValueNode.addListener( () => circuitElement.capacitanceProperty.unlink( linkCapacitance ) );
         contentNode.maxWidth = 100;
       }
       else if ( circuitElement instanceof Switch ) {
@@ -146,7 +146,7 @@ define( require => {
           updatePosition && updatePosition();
         };
         circuitElement.resistanceProperty.link( updateResistance );
-        disposeEmitter.addListener( () => circuitElement.resistanceProperty.unlink( updateResistance ) );
+        disposeEmitterValueNode.addListener( () => circuitElement.resistanceProperty.unlink( updateResistance ) );
         contentNode.maxWidth = 100;
       }
       else if ( circuitElement instanceof Fuse ) {
@@ -160,7 +160,7 @@ define( require => {
             updatePosition && updatePosition();
           }
         );
-        disposeEmitter.addListener( () => multilink.dispose() );
+        disposeEmitterValueNode.addListener( () => multilink.dispose() );
         contentNode.maxWidth = 100;
       }
       else {
@@ -206,7 +206,7 @@ define( require => {
         circuitElement.vertexMovedEmitter.removeListener( updatePosition );
         showValuesProperty.unlink( updatePosition );
         viewTypeProperty.unlink( updatePosition );
-        disposeEmitter.emit();
+        disposeEmitterValueNode.emit();
       };
     }
 
