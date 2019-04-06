@@ -168,48 +168,50 @@ define( require => {
         ]
       } );
 
-      const voltageChartNodeIcon = new VoltageChartNode( circuitLayerNode, new NumberProperty( 0 ),
-        new Property( Bounds2.EVERYTHING ) );
-
-      // Make the voltage chart the same width as the voltmeter, since the icons will be aligned in a grid
-      voltageChartNodeIcon.scale( voltmeterToolIcon.width / voltageChartNodeIcon.width );
-
-      // Rasterization comes out blurry, instead put an overlay to intercept input events.
-      const voltageChartOverlay = Rectangle.bounds( voltageChartNodeIcon.bounds, { fill: 'blue', opacity: 0 } );
-      const container = new Node( {
-        children: [
-          voltageChartNodeIcon,
-          voltageChartOverlay
-        ],
-        cursor: 'pointer'
-      } );
-      const voltageChartToolIcon = new VBox( {
-        spacing: ICON_TEXT_SPACING,
-        children: [ container, voltageChartText ]
-      } );
-
-      voltageChartNode.meter.visibleProperty.link( visible => voltageChartNodeIcon.setVisible( !visible ) );
-      voltageChartOverlay.addInputListener( createListener( voltageChartNode.meter, voltageChartNode ) );
-
       const topBox = alignGroup.createBox( new HBox( {
         spacing: ( options.showNoncontactAmmeters && options.showSeriesAmmeters ) ? 20 : 40,
         align: 'bottom',
         children: [ voltmeterToolIcon, ammeterToolIcon ]
       } ) );
 
-      const chartBox = alignGroup.createBox( new HBox( {
-        spacing: ( options.showNoncontactAmmeters && options.showSeriesAmmeters ) ? 20 : 40,
-        align: 'bottom',
-        children: [ voltageChartToolIcon ]
-      } ) );
+      const rows = [ topBox ];
+      if ( options.showCharts ) {
+        const voltageChartNodeIcon = new VoltageChartNode( circuitLayerNode, new NumberProperty( 0 ),
+          new Property( Bounds2.EVERYTHING ) );
+
+        // Make the voltage chart the same width as the voltmeter, since the icons will be aligned in a grid
+        voltageChartNodeIcon.scale( voltmeterToolIcon.width / voltageChartNodeIcon.width );
+
+        // Rasterization comes out blurry, instead put an overlay to intercept input events.
+        const voltageChartOverlay = Rectangle.bounds( voltageChartNodeIcon.bounds, { fill: 'blue', opacity: 0 } );
+        const container = new Node( {
+          children: [
+            voltageChartNodeIcon,
+            voltageChartOverlay
+          ],
+          cursor: 'pointer'
+        } );
+        const voltageChartToolIcon = new VBox( {
+          spacing: ICON_TEXT_SPACING,
+          children: [ container, voltageChartText ]
+        } );
+
+        voltageChartNode.meter.visibleProperty.link( visible => voltageChartNodeIcon.setVisible( !visible ) );
+        voltageChartOverlay.addInputListener( createListener( voltageChartNode.meter, voltageChartNode ) );
+
+        const chartBox = alignGroup.createBox( new HBox( {
+          spacing: ( options.showNoncontactAmmeters && options.showSeriesAmmeters ) ? 20 : 40,
+          align: 'bottom',
+          children: [ voltageChartToolIcon ]
+        } ) );
+
+        rows.push( new HSeparator( 160 ) );
+        rows.push( chartBox );
+      }
 
       super( new VBox( {
         spacing: 5,
-        children: options.showCharts ? [
-          topBox,
-          new HSeparator( 160 ),
-          chartBox
-        ] : [ topBox ]
+        children: rows
       } ), tandem, {
         yMargin: 8
       } );
