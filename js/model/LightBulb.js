@@ -79,8 +79,8 @@ define( require => {
       // @public (read-only) {number} - the number of decimal places to show in readouts and controls
       this.numberOfDecimalPlaces = this.highResistance ? 0 : 1;
 
-      // Fill in the chargePathLength, TODO: make sure this works after refactor
-      this.changePathLength = this.getPathLength();
+      // Fill in the chargePathLength
+      this.chargePathLength = this.getPathLength();
     }
 
     /**
