@@ -203,7 +203,7 @@ define( require => {
 
       // Notify about intent to dispose first because dispose listeners may need to access state
       this.disposeEmitter.emit();
-      this.disposeEmitter.removeAllListeners();
+      this.disposeEmitter.dispose();
 
       this.startVertexProperty.unlink( this.linkVertexListener );
       this.endVertexProperty.unlink( this.linkVertexListener );

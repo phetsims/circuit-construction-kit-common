@@ -14,6 +14,7 @@ define( require => {
   const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
+  const Emitter = require( 'AXON/Emitter' );
   const Fuse = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Fuse' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const Matrix3 = require( 'DOT/Matrix3' );
@@ -30,9 +31,9 @@ define( require => {
   const Vector2 = require( 'DOT/Vector2' );
 
   // strings
+  const fuseValueString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/fuseValue' );
   const resistanceOhmsSymbolString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhmsSymbol' );
   const voltageUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageUnits' );
-  const fuseValueString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/fuseValue' );
 
   // constants
   const VERTICAL_OFFSET = 24;
@@ -49,7 +50,7 @@ define( require => {
      * @param {Tandem} tandem
      */
     constructor( circuitElement, showValuesProperty, viewTypeProperty, tandem ) {
-      const disposeActions = [];
+      const disposeEmitter = new Emitter();
 
       let contentNode = null;
       let updatePosition = null;
@@ -92,7 +93,7 @@ define( require => {
         };
         circuitElement.internalResistanceProperty.link( internalResistanceListener );
 
-        disposeActions.push( () => {
+        disposeEmitter.addListener( () => {
           circuitElement.voltageProperty.unlink( voltageListener );
           circuitElement.internalResistanceProperty.unlink( internalResistanceListener );
         } );
@@ -111,7 +112,7 @@ define( require => {
           updatePosition && updatePosition();
         };
         circuitElement.resistanceProperty.link( linkResistance );
-        disposeActions.push( () => circuitElement.resistanceProperty.unlink( linkResistance ) );
+        disposeEmitter.addListener( () => circuitElement.resistanceProperty.unlink( linkResistance ) );
         contentNode.maxWidth = 100;
       }
       else if ( circuitElement instanceof Capacitor ) {
@@ -125,7 +126,7 @@ define( require => {
           updatePosition && updatePosition();
         };
         circuitElement.capacitanceProperty.link( linkCapacitance );
-        disposeActions.push( () => circuitElement.capacitanceProperty.unlink( linkCapacitance ) );
+        disposeEmitter.addListener( () => circuitElement.capacitanceProperty.unlink( linkCapacitance ) );
         contentNode.maxWidth = 100;
       }
       else if ( circuitElement instanceof Switch ) {
@@ -145,7 +146,7 @@ define( require => {
           updatePosition && updatePosition();
         };
         circuitElement.resistanceProperty.link( updateResistance );
-        disposeActions.push( () => circuitElement.resistanceProperty.unlink( updateResistance ) );
+        disposeEmitter.addListener( () => circuitElement.resistanceProperty.unlink( updateResistance ) );
         contentNode.maxWidth = 100;
       }
       else if ( circuitElement instanceof Fuse ) {
@@ -159,7 +160,7 @@ define( require => {
             updatePosition && updatePosition();
           }
         );
-        disposeActions.push( () => multilink.dispose() );
+        disposeEmitter.addListener( () => multilink.dispose() );
         contentNode.maxWidth = 100;
       }
       else {
@@ -205,7 +206,7 @@ define( require => {
         circuitElement.vertexMovedEmitter.removeListener( updatePosition );
         showValuesProperty.unlink( updatePosition );
         viewTypeProperty.unlink( updatePosition );
-        disposeActions.forEach( disposeAction => disposeAction() );
+        disposeEmitter.emit();
       };
     }
 

@@ -12,6 +12,7 @@ define( require => {
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CircuitElementEditContainerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditContainerNode' );
+  const Emitter = require( 'AXON/Emitter' );
   const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
   const Node = require( 'SCENERY/nodes/Node' );
 
@@ -65,8 +66,8 @@ define( require => {
       };
       this.addInputListener( keyListener );
 
-      // @private {function[]}
-      this.disposeActions = [];
+      // @private
+      this.disposeEmitter = new Emitter();
 
       this.updateOpacityOnInteractiveChange();
 
@@ -83,8 +84,8 @@ define( require => {
         // remove the keyboard listener
         this.removeInputListener( keyListener );
 
-        this.disposeActions.forEach( element => element() );
-        this.disposeActions.length = 0;
+        this.disposeEmitter.emit();
+        this.disposeEmitter.dispose();
       };
 
       circuitElement.startDragEmitter.addListener( startDragListener );
@@ -93,7 +94,7 @@ define( require => {
       // vertices move
       this.dirty = true;
 
-      this.disposeActions.push( () => circuitElement.startDragEmitter.removeListener( startDragListener ) );
+      this.disposeEmitter.addListener( () => circuitElement.startDragEmitter.removeListener( startDragListener ) );
     }
 
     /**
@@ -127,7 +128,7 @@ define( require => {
       };
       this.circuitElement.interactiveProperty.link( interactivityChanged );
 
-      this.disposeActions.push( () => this.circuitElement.interactiveProperty.unlink( interactivityChanged ) );
+      this.disposeEmitter.addListener( () => this.circuitElement.interactiveProperty.unlink( interactivityChanged ) );
     }
 
     /**
@@ -208,7 +209,7 @@ define( require => {
         // focus the element for keyboard interaction
         this.focus();
 
-        const disposeAction = () => phet.joist.sim.display.removeInputListener( clickToDismissListener );
+        const disposeListener = () => phet.joist.sim.display.removeInputListener( clickToDismissListener );
 
         // listener for 'click outside to dismiss'
         const clickToDismissListener = {
@@ -225,9 +226,8 @@ define( require => {
 
             if ( trails.length === 0 ) {
               phet.joist.sim.display.removeInputListener( clickToDismissListener );
-              const index = this.disposeActions.indexOf( disposeAction );
-              if ( index >= 0 ) {
-                this.disposeActions.splice( index, 1 );
+              if ( this.disposeEmitter.hasListener( disposeListener ) ) {
+                this.disposeEmitter.removeListener( disposeListener )
               }
               circuitLayerNode.circuit.selectedCircuitElementProperty.set( null );
             }
@@ -238,7 +238,7 @@ define( require => {
         // If the user deletes the element with the delete button, make sure to detach the display input listener
         // so the next drag will work right away,
         // see https://github.com/phetsims/circuit-construction-kit-common/issues/368
-        this.disposeActions.push( disposeAction );
+        this.disposeEmitter.addListener( disposeListener );
       }
       else {
 
