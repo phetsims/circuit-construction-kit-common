@@ -62,7 +62,7 @@ define( require => {
       const voltage = this.circuitLayerNode.getVoltage( red, black );
 
       // TODO: add scaling to ScrollingChartNode
-      this.series.data.push( new Vector2( time, voltage / 10 || 0 ) );
+      this.series.data.push( new Vector2( time, voltage === null ? NaN : voltage / 10 || 0 ) );
       this.series.emitter.emit();
 
       // For debugging, depict the points where the sampling happens
