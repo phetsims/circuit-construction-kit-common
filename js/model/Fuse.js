@@ -42,7 +42,7 @@ define( require => {
       // @public {Property.<number>} the current at which the fuse trips, in amps
       this.currentRatingProperty = new NumberProperty( options.currentRating, {
         isValidValue: v => v >= 0,
-        range: new Range( 0, 20 )
+        range: new Range( 0.5, 20 )
       } );
 
       // @public - true if the fuse is tripped
