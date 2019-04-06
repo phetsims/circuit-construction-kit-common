@@ -77,6 +77,7 @@ define( require => {
         getCircuitEditPanelLayoutPosition: CircuitElementEditContainerNode.GET_LAYOUT_POSITION,
         showResistivityControl: true,
         showBatteryResistanceControl: true,
+        showCharts: false,
 
         blackBoxStudy: false
       }, options );
@@ -117,44 +118,46 @@ define( require => {
         }
       } );
 
-      this.voltageChartNode = new VoltageChartNode( this.circuitLayerNode, model.circuit.timeProperty, new BooleanProperty( true ), this.visibleBoundsProperty );
+      if ( options.showCharts ) {
+        this.voltageChartNode = new VoltageChartNode( this.circuitLayerNode, model.circuit.timeProperty, new BooleanProperty( true ), this.visibleBoundsProperty );
 
-      // TODO: Copied from WavesScreenView, can anything be factored out?
-      this.voltageChartNode.setDragListener( new DragListener( {
-        dragBoundsProperty: this.visibleBoundsProperty,
-        translateNode: true,
-        start: () => {
-          if ( this.voltageChartNode.synchronizeProbeLocations ) {
+        // TODO: Copied from WavesScreenView, can anything be factored out?
+        this.voltageChartNode.setDragListener( new DragListener( {
+          dragBoundsProperty: this.visibleBoundsProperty,
+          translateNode: true,
+          start: () => {
+            if ( this.voltageChartNode.synchronizeProbeLocations ) {
 
-            // Align the probes each time the MeterBodyNode translates, so they will stay in sync
-            this.voltageChartNode.alignProbesEmitter.emit();
+              // Align the probes each time the MeterBodyNode translates, so they will stay in sync
+              this.voltageChartNode.alignProbesEmitter.emit();
+            }
+          },
+          drag: () => {
+
+            if ( this.voltageChartNode.synchronizeProbeLocations ) {
+
+              // Align the probes each time the MeterBodyNode translates, so they will stay in sync
+              this.voltageChartNode.alignProbesEmitter.emit();
+            }
+          },
+          end: () => {
+
+            // Drop in toolbox, using the bounds of the entire this.voltageChartNode since it cannot be centered over the toolbox
+            // (too close to the edge of the screen)
+
+            if ( this.sensorToolbox.globalBounds.intersectsBounds( this.voltageChartNode.getBackgroundNodeGlobalBounds() ) ) {
+              this.voltageChartNode.alignProbesEmitter.emit();
+              this.voltageChartNode.isInPlayAreaProperty.value = false;
+            }
+
+            // Move probes to center line (if water side view model)
+            this.voltageChartNode.droppedEmitter.emit();
+            this.voltageChartNode.synchronizeProbeLocations = false;
           }
-        },
-        drag: () => {
+        } ) );
 
-          if ( this.voltageChartNode.synchronizeProbeLocations ) {
-
-            // Align the probes each time the MeterBodyNode translates, so they will stay in sync
-            this.voltageChartNode.alignProbesEmitter.emit();
-          }
-        },
-        end: () => {
-
-          // Drop in toolbox, using the bounds of the entire this.voltageChartNode since it cannot be centered over the toolbox
-          // (too close to the edge of the screen)
-
-          if ( this.sensorToolbox.globalBounds.intersectsBounds( this.voltageChartNode.getBackgroundNodeGlobalBounds() ) ) {
-            this.voltageChartNode.alignProbesEmitter.emit();
-            this.voltageChartNode.isInPlayAreaProperty.value = false;
-          }
-
-          // Move probes to center line (if water side view model)
-          this.voltageChartNode.droppedEmitter.emit();
-          this.voltageChartNode.synchronizeProbeLocations = false;
-        }
-      } ) );
-
-      this.addChild( this.voltageChartNode );
+        this.addChild( this.voltageChartNode );
+      }
 
       // @public (read-only) {CircuitElementToolbox} - Toolbox from which CircuitElements can be dragged
       this.circuitElementToolbox = new CircuitElementToolbox(
@@ -170,7 +173,8 @@ define( require => {
         this.voltageChartNode,
         tandem.createTandem( 'sensorToolbox' ), {
           showSeriesAmmeters: options.showSeriesAmmeters,
-          showNoncontactAmmeters: options.showNoncontactAmmeters
+          showNoncontactAmmeters: options.showNoncontactAmmeters,
+          showCharts: options.showCharts
         } );
 
       // @private {ViewRadioButtonGroup}
@@ -344,7 +348,7 @@ define( require => {
      */
     step( dt ) {
       this.circuitLayerNode.step( dt );
-      this.voltageChartNode.step( this.model.circuit.timeProperty.value, dt );
+      this.voltageChartNode && this.voltageChartNode.step( this.model.circuit.timeProperty.value, dt );
     }
 
     /**

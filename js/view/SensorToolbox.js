@@ -62,7 +62,8 @@ define( require => {
       options = _.extend( {
         showResultsProperty: circuitLayerNode.model.isValueDepictionEnabledProperty,
         showSeriesAmmeters: true, // whether the series ammeters should be shown in the toolbox
-        showNoncontactAmmeters: true // whether the noncontact ammeters should be shown in the toolbox
+        showNoncontactAmmeters: true, // whether the noncontact ammeters should be shown in the toolbox
+        showCharts: false
       }, options );
 
       /**
@@ -190,11 +191,11 @@ define( require => {
 
       super( new VBox( {
         spacing: 5,
-        children: [
+        children: options.showCharts ? [
           topBox,
           new HSeparator( 160 ),
           chartBox
-        ]
+        ] : [ topBox ]
       } ), tandem, {
         yMargin: 8
       } );
