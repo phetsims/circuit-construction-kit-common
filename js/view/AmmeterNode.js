@@ -234,6 +234,14 @@ define( require => {
         return this.getCurrentInLayer( probeNode, this.circuitLayerNode.wireLayer );
       }
     }
+
+    /**
+     * Forward a drag from the toolbox to the play area node.
+     * @param {Event} event
+     */
+    startDrag( event ) {
+      this.dragHandler.startDrag( event );
+    }
   }
 
   return circuitConstructionKitCommon.register( 'AmmeterNode', AmmeterNode );

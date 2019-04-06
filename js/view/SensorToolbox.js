@@ -12,7 +12,6 @@ define( require => {
   // modules
   const Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Ammeter' );
   const AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/AmmeterNode' );
-  const BooleanProperty = require( 'AXON/BooleanProperty' );
   const Bounds2 = require( 'DOT/Bounds2' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCPanel' );
@@ -21,8 +20,10 @@ define( require => {
   const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const HSeparator = require( 'SUN/HSeparator' );
+  const Node = require( 'SCENERY/nodes/Node' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Property = require( 'AXON/Property' );
+  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
   const SeriesAmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SeriesAmmeterNode' );
   const SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
@@ -67,7 +68,7 @@ define( require => {
       }, options );
 
       /**
-       * @param {Ammeter|Voltmeter} meterModel
+       * @param {Meter} meterModel
        * @param {AmmeterNode|VoltmeterNode} meterNode
        * @returns {Object} a listener
        */
@@ -77,7 +78,7 @@ define( require => {
           meterModel.draggingProbesWithBodyProperty.set( true );
           meterModel.visibleProperty.set( true );
           meterModel.bodyPositionProperty.set( viewPosition );
-          meterNode.dragHandler.startDrag( event );
+          meterNode.startDrag( event );
         }, {
           allowTouchSnag: true
         } );
@@ -167,15 +168,28 @@ define( require => {
         ]
       } );
 
-      const voltageChartNodeIcon = new VoltageChartNode( circuitLayerNode, new NumberProperty( 0 ), new BooleanProperty( false ),
+      const voltageChartNodeIcon = new VoltageChartNode( circuitLayerNode, new NumberProperty( 0 ),
         new Property( Bounds2.EVERYTHING ) );
+
+      // Make the voltage chart the same width as the voltmeter, since the icons will be aligned in a grid
+      voltageChartNodeIcon.scale( voltmeterToolIcon.width / voltageChartNodeIcon.width );
+
+      // Rasterization comes out blurry, instead put an overlay to intercept input events.
+      const voltageChartOverlay = Rectangle.bounds( voltageChartNodeIcon.bounds, { fill: 'blue', opacity: 0 } );
+      const container = new Node( {
+        children: [
+          voltageChartNodeIcon,
+          voltageChartOverlay
+        ],
+        cursor: 'pointer'
+      } );
       const voltageChartToolIcon = new VBox( {
         spacing: ICON_TEXT_SPACING,
-        children: [ voltageChartNodeIcon, voltageChartText ]
+        children: [ container, voltageChartText ]
       } );
 
-      // Make the voltage chart the same width as the voltmeter
-      voltageChartNodeIcon.scale( voltmeterToolIcon.width / voltageChartNodeIcon.width );
+      voltageChartNode.meter.visibleProperty.link( visible => voltageChartNodeIcon.setVisible( !visible ) );
+      voltageChartOverlay.addInputListener( createListener( voltageChartNode.meter, voltageChartNode ) );
 
       const topBox = alignGroup.createBox( new HBox( {
         spacing: ( options.showNoncontactAmmeters && options.showSeriesAmmeters ) ? 20 : 40,

@@ -304,6 +304,14 @@ define( require => {
         this.cursor = 'pointer';
       }
     }
+
+    /**
+     * Forward a drag from the toolbox to the play area node.
+     * @param {Event} event
+     */
+    startDrag( event ) {
+      this.dragHandler.startDrag( event );
+    }
   }
 
   VoltmeterNode.PROBE_ANGLE = PROBE_ANGLE;

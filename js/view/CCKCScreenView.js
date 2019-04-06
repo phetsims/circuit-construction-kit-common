@@ -14,7 +14,6 @@ define( require => {
   const AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
   const AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/AmmeterNode' );
   const BatteryResistanceControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryResistanceControl' );
-  const BooleanProperty = require( 'AXON/BooleanProperty' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   const ChargeSpeedThrottlingReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ChargeSpeedThrottlingReadoutNode' );
@@ -119,7 +118,10 @@ define( require => {
       } );
 
       if ( options.showCharts ) {
-        this.voltageChartNode = new VoltageChartNode( this.circuitLayerNode, model.circuit.timeProperty, new BooleanProperty( true ), this.visibleBoundsProperty );
+        this.voltageChartNode = new VoltageChartNode( this.circuitLayerNode, model.circuit.timeProperty, this.visibleBoundsProperty );
+
+        // TODO: a way to set the default value during construction
+        this.voltageChartNode.meter.visibleProperty.value = false;
 
         // TODO: Copied from WavesScreenView, can anything be factored out?
         this.voltageChartNode.setDragListener( new DragListener( {
@@ -147,7 +149,7 @@ define( require => {
 
             if ( this.sensorToolbox.globalBounds.intersectsBounds( this.voltageChartNode.getBackgroundNodeGlobalBounds() ) ) {
               this.voltageChartNode.alignProbesEmitter.emit();
-              this.voltageChartNode.isInPlayAreaProperty.value = false;
+              this.voltageChartNode.meter.visibleProperty.value = false;
             }
 
             // Move probes to center line (if water side view model)
@@ -156,7 +158,6 @@ define( require => {
           }
         } ) );
 
-        this.addChild( this.voltageChartNode );
       }
 
       // @public (read-only) {CircuitElementToolbox} - Toolbox from which CircuitElements can be dragged
@@ -339,6 +340,8 @@ define( require => {
           }
         }
       } );
+
+      this.voltageChartNode && this.addChild( this.voltageChartNode );
     }
 
     /**

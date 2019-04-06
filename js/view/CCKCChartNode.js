@@ -16,10 +16,12 @@ define( require => {
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Emitter = require( 'AXON/Emitter' );
   const LabeledScrollingChartNode = require( 'GRIDDLE/LabeledScrollingChartNode' );
+  const Meter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Meter' );
   const Node = require( 'SCENERY/nodes/Node' );
   const NodeProperty = require( 'SCENERY/util/NodeProperty' );
   const ScrollingChartNode = require( 'GRIDDLE/ScrollingChartNode' );
   const ShadedRectangle = require( 'SCENERY_PHET/ShadedRectangle' );
+  const Tandem = require( 'TANDEM/Tandem' );
   const Text = require( 'SCENERY/nodes/Text' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vector2Property = require( 'DOT/Vector2Property' );
@@ -52,17 +54,19 @@ define( require => {
      * @param {string} verticalAxisLabel
      * @param {Object} [options]
      */
-    constructor( circuitLayerNode, timeProperty, isInPlayAreaProperty, visibleBoundsProperty, seriesArray,
-                 verticalAxisLabel, options ) {
+    constructor( circuitLayerNode, timeProperty, visibleBoundsProperty, seriesArray, verticalAxisLabel, options ) {
       options = _.extend( {
 
         // Prevent adjustment of the control panel rendering while dragging,
         // see https://github.com/phetsims/wave-interference/issues/212
-        preventFit: true
+        preventFit: true,
+        tandem: Tandem.optional
       }, options );
       const backgroundNode = new Node( { cursor: 'pointer' } );
 
       super();
+
+      this.meter = new Meter( options.tandem.createTandem( 'meter' ) );
 
       // @private
       this.seriesArray = seriesArray;
@@ -72,9 +76,6 @@ define( require => {
 
       // @private
       this.timeProperty = timeProperty;
-
-      // @private
-      this.isInPlayAreaProperty = isInPlayAreaProperty;
 
       // @private
       this.visibleBoundsProperty = visibleBoundsProperty;
@@ -144,6 +145,8 @@ define( require => {
       backgroundNode.addChild( shadedRectangle );
 
       this.alignProbesEmitter.emit();
+
+      this.meter.visibleProperty.link( visible => this.setVisible( visible ) );
     }
 
     /**

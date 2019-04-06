@@ -15,6 +15,7 @@ define( require => {
   const Color = require( 'SCENERY/util/Color' );
   const DynamicSeries = require( 'GRIDDLE/DynamicSeries' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  const Tandem = require( 'TANDEM/Tandem' );
   const Vector2 = require( 'DOT/Vector2' );
 
   // strings
@@ -32,14 +33,15 @@ define( require => {
      * @param {Property.<Bounds2>} visibleBoundsProperty
      * @param {Object} [options]
      */
-    constructor( circuitLayerNode, timeProperty, isInPlayAreaProperty, visibleBoundsProperty, options ) {
+    constructor( circuitLayerNode, timeProperty, visibleBoundsProperty, options ) {
 
       options = _.extend( {
-        timeDivisions: NUMBER_OF_TIME_DIVISIONS
+        timeDivisions: NUMBER_OF_TIME_DIVISIONS,
+        tandem: Tandem.optional
       }, options );
 
       const series = new DynamicSeries( { color: '#717274' } ); // dark gray sampled from the design doc
-      super( circuitLayerNode, timeProperty, isInPlayAreaProperty, visibleBoundsProperty, [ series ], voltageString, options );
+      super( circuitLayerNode, timeProperty, visibleBoundsProperty, [ series ], voltageString, options );
 
       // @private
       this.series = series;
