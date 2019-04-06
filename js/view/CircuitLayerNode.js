@@ -275,7 +275,7 @@ define( require => {
               const updateShowValues = showValues => CCKCUtil.setInSceneGraph( showValues, this.valueLayer, valueNode );
               this.model.showValuesProperty.link( updateShowValues );
 
-              circuitElement.disposeEmitter.addListener( () => {
+              circuitElement.disposeEmitterCircuitElement.addListener( () => {
                 this.model.showValuesProperty.unlink( updateShowValues );
                 CCKCUtil.setInSceneGraph( false, this.valueLayer, valueNode );
                 valueNode.dispose();

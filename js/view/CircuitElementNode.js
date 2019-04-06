@@ -67,7 +67,7 @@ define( require => {
       this.addInputListener( keyListener );
 
       // @private
-      this.disposeEmitter = new Emitter();
+      this.disposeEmitterCircuitElementNode = new Emitter();
 
       this.updateOpacityOnInteractiveChange();
 
@@ -84,8 +84,8 @@ define( require => {
         // remove the keyboard listener
         this.removeInputListener( keyListener );
 
-        this.disposeEmitter.emit();
-        this.disposeEmitter.dispose();
+        this.disposeEmitterCircuitElementNode.emit();
+        this.disposeEmitterCircuitElementNode.dispose();
       };
 
       circuitElement.startDragEmitter.addListener( startDragListener );
@@ -94,7 +94,7 @@ define( require => {
       // vertices move
       this.dirty = true;
 
-      this.disposeEmitter.addListener( () => circuitElement.startDragEmitter.removeListener( startDragListener ) );
+      this.disposeEmitterCircuitElementNode.addListener( () => circuitElement.startDragEmitter.removeListener( startDragListener ) );
     }
 
     /**
@@ -128,7 +128,7 @@ define( require => {
       };
       this.circuitElement.interactiveProperty.link( interactivityChanged );
 
-      this.disposeEmitter.addListener( () => this.circuitElement.interactiveProperty.unlink( interactivityChanged ) );
+      this.disposeEmitterCircuitElementNode.addListener( () => this.circuitElement.interactiveProperty.unlink( interactivityChanged ) );
     }
 
     /**
@@ -226,8 +226,8 @@ define( require => {
 
             if ( trails.length === 0 ) {
               phet.joist.sim.display.removeInputListener( clickToDismissListener );
-              if ( this.disposeEmitter.hasListener( disposeListener ) ) {
-                this.disposeEmitter.removeListener( disposeListener );
+              if ( this.disposeEmitterCircuitElementNode.hasListener( disposeListener ) ) {
+                this.disposeEmitterCircuitElementNode.removeListener( disposeListener );
               }
               circuitLayerNode.circuit.selectedCircuitElementProperty.set( null );
             }
@@ -238,7 +238,7 @@ define( require => {
         // If the user deletes the element with the delete button, make sure to detach the display input listener
         // so the next drag will work right away,
         // see https://github.com/phetsims/circuit-construction-kit-common/issues/368
-        this.disposeEmitter.addListener( disposeListener );
+        this.disposeEmitterCircuitElementNode.addListener( disposeListener );
       }
       else {
 

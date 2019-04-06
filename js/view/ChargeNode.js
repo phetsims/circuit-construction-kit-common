@@ -75,7 +75,7 @@ define( require => {
       charge.visibleProperty.link( this.updateVisibleListener );
       this.outsideOfBlackBoxProperty.link( this.updateVisibleListener );
 
-      charge.disposeEmitter.addListener( this.dispose.bind( this ) );
+      charge.disposeEmitterCharge.addListener( this.dispose.bind( this ) );
 
       this.updateTransformListener();
     }

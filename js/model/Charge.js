@@ -49,7 +49,7 @@ define( require => {
       this.changedEmitter = new Emitter();
 
       // @public (read-only) {Emitter} send notifications when the charge is disposed, so the view can be disposed.
-      this.disposeEmitter = new Emitter();
+      this.disposeEmitterCharge = new Emitter();
 
       this.updatePositionAndAngle();
     }
@@ -71,8 +71,8 @@ define( require => {
      * @public
      */
     dispose() {
-      this.disposeEmitter.emit();
-      this.disposeEmitter.removeAllListeners();
+      this.disposeEmitterCharge.emit();
+      this.disposeEmitterCharge.removeAllListeners();
       this.changedEmitter.dispose();
     }
   }

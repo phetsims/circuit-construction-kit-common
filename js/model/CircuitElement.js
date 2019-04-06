@@ -111,7 +111,7 @@ define( require => {
       this.startDragEmitter = new Emitter( { validators: [ { valueType: Event } ] } );
 
       // @public (read-only) {Emitter} - indicate when the circuit element has been disposed
-      this.disposeEmitter = new Emitter();
+      this.disposeEmitterCircuitElement = new Emitter();
 
       // @private {function} - Signify that a Vertex moved
       this.vertexMovedListener = this.emitVertexMoved.bind( this );
@@ -202,8 +202,8 @@ define( require => {
       this.circuitElementDisposed = true;
 
       // Notify about intent to dispose first because dispose listeners may need to access state
-      this.disposeEmitter.emit();
-      this.disposeEmitter.dispose();
+      this.disposeEmitterCircuitElement.emit();
+      this.disposeEmitterCircuitElement.dispose();
 
       this.startVertexProperty.unlink( this.linkVertexListener );
       this.endVertexProperty.unlink( this.linkVertexListener );
