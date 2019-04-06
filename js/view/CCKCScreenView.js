@@ -157,7 +157,6 @@ define( require => {
             this.voltageChartNode.meter.draggingProbesWithBodyProperty.value = false;
           }
         } ) );
-
       }
 
       // @public (read-only) {CircuitElementToolbox} - Toolbox from which CircuitElements can be dragged
