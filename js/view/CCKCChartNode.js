@@ -92,10 +92,6 @@ define( require => {
       // Mutate after backgroundNode is added as a child
       this.mutate( options );
 
-      // @public {boolean} - true if dragging the MeterBodyNode also causes attached probes to translate.
-      // This is accomplished by calling alignProbes() on drag start and each drag event.
-      this.synchronizeProbeLocations = false;
-
       // @public - emits when the probes should be put in standard relative location to the body
       this.alignProbesEmitter = new Emitter();
 

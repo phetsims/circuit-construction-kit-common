@@ -128,7 +128,7 @@ define( require => {
           dragBoundsProperty: this.visibleBoundsProperty,
           translateNode: true,
           start: () => {
-            if ( this.voltageChartNode.synchronizeProbeLocations ) {
+            if ( this.voltageChartNode.meter.draggingProbesWithBodyProperty.value ) {
 
               // Align the probes each time the MeterBodyNode translates, so they will stay in sync
               this.voltageChartNode.alignProbesEmitter.emit();
@@ -136,7 +136,7 @@ define( require => {
           },
           drag: () => {
 
-            if ( this.voltageChartNode.synchronizeProbeLocations ) {
+            if ( this.voltageChartNode.meter.draggingProbesWithBodyProperty.value ) {
 
               // Align the probes each time the MeterBodyNode translates, so they will stay in sync
               this.voltageChartNode.alignProbesEmitter.emit();
@@ -154,7 +154,7 @@ define( require => {
 
             // Move probes to center line (if water side view model)
             this.voltageChartNode.droppedEmitter.emit();
-            this.voltageChartNode.synchronizeProbeLocations = false;
+            this.voltageChartNode.meter.draggingProbesWithBodyProperty.value = false;
           }
         } ) );
 
