@@ -20,6 +20,7 @@ define( require => {
   const HBox = require( 'SCENERY/nodes/HBox' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const Node = require( 'SCENERY/nodes/Node' );
+  const Panel = require( 'SUN/Panel' );
   const Range = require( 'DOT/Range' );
   const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   const SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
@@ -32,6 +33,8 @@ define( require => {
   const Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
 
   // strings
+  const currentRatingString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/currentRating' );
+  const currentUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/currentUnits' );
   const frequencyHzValuePatternString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/frequencyHzValuePattern' );
   const frequencyString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/frequency' );
   const resistanceOhmsValuePatternString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhmsValuePattern' );
@@ -39,8 +42,6 @@ define( require => {
   const tapCircuitElementToEditString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/tapCircuitElementToEdit' );
   const voltageString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltage' );
   const voltageVoltsValuePatternString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageVoltsValuePattern' );
-  const currentUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/currentUnits' );
-  const currentRatingString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/currentRating' );
 
   // constants
   const GET_LAYOUT_POSITION = visibleBounds => {
@@ -107,7 +108,7 @@ define( require => {
           const isACSource = selectedCircuitElement instanceof ACVoltage;
 
           if ( isResistor && selectedCircuitElement.isResistanceEditable() ) {
-            editNode = new CircuitElementEditNode(
+            editNode = new EditPanel( new CircuitElementEditNode(
               resistanceString,
 
               // Adapter to take from {{named}} to {{value}} for usage in common code
@@ -118,7 +119,7 @@ define( require => {
               circuit,
               selectedCircuitElement,
               groupTandem.createNextTandem()
-            );
+            ) );
           }
           else if ( isResistor ) {
 
@@ -128,7 +129,7 @@ define( require => {
             );
           }
           else if ( isBattery ) {
-            editNode = new CircuitElementEditNode(
+            editNode = new EditPanel( new CircuitElementEditNode(
               voltageString,
 
               // Adapter to take from {{named}} to {{value}} for usage in common code
@@ -139,10 +140,10 @@ define( require => {
               circuit,
               selectedCircuitElement,
               groupTandem.createNextTandem()
-            );
+            ) );
           }
           else if ( isFuse ) {
-            editNode = new CircuitElementEditNode( currentRatingString,
+            editNode = new EditPanel( new CircuitElementEditNode( currentRatingString,
 
               // Adapter to take from {{named}} to {{value}} for usage in common code
               StringUtils.fillIn( currentUnitsString, {
@@ -154,7 +155,7 @@ define( require => {
               groupTandem.createNextTandem(), {
                 editableRange: selectedCircuitElement.currentRatingProperty.range
               }
-            );
+            ) );
           }
           else if ( isSwitch ) {
             editNode = new SwitchReadoutNode( circuit, selectedCircuitElement, groupTandem.createNextTandem() );
@@ -167,7 +168,7 @@ define( require => {
             );
           }
           else if ( isACSource ) {
-            editNode = new HBox( {
+            editNode = new EditPanel( new HBox( {
               spacing: 30,
               children: [
                 new CircuitElementEditNode(
@@ -202,7 +203,7 @@ define( require => {
                     editableRange: new Range( 0.1, 2 ) // TODO: what range here?
                   }
                 ) ]
-            } );
+            } ) );
           }
         }
         else {
@@ -227,6 +228,21 @@ define( require => {
       } );
 
       visibleBoundsProperty.link( updatePosition );
+    }
+  }
+
+  /**
+   * Panel to facilitate in visual layout of the controls.
+   */
+  class EditPanel extends Panel {
+    constructor( content ) {
+      super( content, {
+        fill: '#caddfa',
+        stroke: null,
+        xMargin: 13,
+        yMargin: 13,
+        cornerRadius: 13
+      } );
     }
   }
 
