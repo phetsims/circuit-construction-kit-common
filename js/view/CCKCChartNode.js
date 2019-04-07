@@ -142,6 +142,7 @@ define( require => {
       this.alignProbesEmitter.emit();
 
       this.meter.visibleProperty.link( visible => this.setVisible( visible ) );
+      this.meter.bodyPositionProperty.link( bodyPosition => backgroundNode.setCenter( bodyPosition ) );
     }
 
     /**

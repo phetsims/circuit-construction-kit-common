@@ -118,15 +118,18 @@ define( require => {
       } );
 
       if ( options.showCharts ) {
-        this.voltageChartNode = new VoltageChartNode( this.circuitLayerNode, model.circuit.timeProperty, this.visibleBoundsProperty );
+        this.voltageChartNode = new VoltageChartNode( this.circuitLayerNode, model.circuit.timeProperty,
+          this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty );
+        this.voltageChartNode.alignProbesEmitter.emit();
 
         // TODO: a way to set the default value during construction
         this.voltageChartNode.meter.visibleProperty.value = false;
+        this.voltageChartNode.meter.draggingProbesWithBodyProperty.value = true;
 
         // TODO: Copied from WavesScreenView, can anything be factored out?
         this.voltageChartNode.setDragListener( new DragListener( {
-          dragBoundsProperty: this.visibleBoundsProperty,
-          translateNode: true,
+          dragBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty,
+          locationProperty: this.voltageChartNode.meter.bodyPositionProperty,
           start: () => {
             if ( this.voltageChartNode.meter.draggingProbesWithBodyProperty.value ) {
 
@@ -263,6 +266,7 @@ define( require => {
       // The voltmeter and ammeter are rendered with the circuit node so they will scale up and down with the circuit
       this.circuitLayerNode.sensorLayer.addChild( voltmeterNode );
       this.circuitLayerNode.sensorLayer.addChild( ammeterNode );
+      this.voltageChartNode && this.circuitLayerNode.sensorLayer.addChild( this.voltageChartNode );
 
       // Create the zoom control panel
       const zoomControlPanel = new ZoomControlPanel( model.selectedZoomProperty, {
@@ -339,8 +343,6 @@ define( require => {
           }
         }
       } );
-
-      this.voltageChartNode && this.addChild( this.voltageChartNode );
     }
 
     /**
