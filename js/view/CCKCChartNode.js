@@ -48,7 +48,6 @@ define( require => {
     /**
      * @param {CircuitLayerNode} circuitLayerNode
      * @param {NumberProperty} timeProperty
-     * @param {BooleanProperty} isInPlayAreaProperty
      * @param {Property.<Bounds2>} visibleBoundsProperty
      * @param {DynamicSeries[]} seriesArray
      * @param {string} verticalAxisLabel
