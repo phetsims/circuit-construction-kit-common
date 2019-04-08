@@ -209,7 +209,7 @@ define( require => {
     startDrag( event ) {
 
       // Forward the event to the drag listener
-      this.backgroundDragListener.press( event, this.backgroundNode );
+      this.backgroundDragListener.startDrag( event );
     }
 
     /**
