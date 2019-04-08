@@ -55,8 +55,8 @@ define( require => {
      * @param {Node} circuitLayerNode - the main circuit node to use as a coordinate frame
      * @param {VoltmeterNode} voltmeterNode - node for the Voltmeter
      * @param {AmmeterNode} ammeterNode - node for the Ammeter
-     * @param {VoltageChartNode} voltageChartNode - node for the VoltageChartNode
-     * @param {CurrentChartNode} currentChartNode - node for the VoltageChartNode
+     * @param {VoltageChartNode|undefined} voltageChartNode - node for the VoltageChartNode
+     * @param {CurrentChartNode|undefined} currentChartNode - node for the VoltageChartNode
      * @param {Tandem} tandem
      * @param {Object} [options]
      */
@@ -215,11 +215,11 @@ define( require => {
           new Text( currentChartString, { maxWidth: 60 } )
         );
 
-        const chartBox = alignGroup.createBox( new HBox( {
-          spacing: ( options.showNoncontactAmmeters && options.showSeriesAmmeters ) ? 20 : 40,
-          align: 'bottom',
+        voltageChartToolIcon.centerX = voltmeterToolIcon.centerX;
+        currentChartToolIcon.centerX = ammeterToolIcon.centerX;
+        const chartBox = new Node( {
           children: [ voltageChartToolIcon, currentChartToolIcon ]
-        } ) );
+        } );
 
         rows.push( new HSeparator( 160 ) );
         rows.push( chartBox );
