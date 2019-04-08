@@ -23,6 +23,10 @@ define( require => {
 
   // constants
   const NUMBER_OF_TIME_DIVISIONS = 4;
+  const SERIES_1_COLOR = '#5c5d5f'; // same as in Bending Light
+  const SERIES_2_COLOR = '#ccced0'; // same as in Bending Light
+  const WIRE_1_COLOR = SERIES_1_COLOR;
+  const WIRE_2_COLOR = new Color( SERIES_2_COLOR ).darkerColor( 0.7 );
 
   class VoltageChartNode extends CCKCChartNode {
 
@@ -45,6 +49,11 @@ define( require => {
 
       // @private
       this.series = series;
+      this.probeNode1 = this.addProbeNode( SERIES_1_COLOR, WIRE_1_COLOR, 5, 10, this.aboveBottomLeft1 );
+      this.probeNode2 = this.addProbeNode( SERIES_2_COLOR, WIRE_2_COLOR, 36, 54, this.aboveBottomLeft2 );
+
+      // Align probes after positioning the body so icons will have the correct bounds
+      this.alignProbesEmitter.emit();
     }
 
     /**

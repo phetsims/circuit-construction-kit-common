@@ -13,7 +13,6 @@ define( require => {
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCProbeNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCProbeNode' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const Color = require( 'SCENERY/util/Color' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Emitter = require( 'AXON/Emitter' );
   const LabeledScrollingChartNode = require( 'GRIDDLE/LabeledScrollingChartNode' );
@@ -34,10 +33,6 @@ define( require => {
   const timeString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/time' );
 
   // constants
-  const SERIES_1_COLOR = '#5c5d5f'; // same as in Bending Light
-  const SERIES_2_COLOR = '#ccced0'; // same as in Bending Light
-  const WIRE_1_COLOR = SERIES_1_COLOR;
-  const WIRE_2_COLOR = new Color( SERIES_2_COLOR ).darkerColor( 0.7 );
   const AXIS_LABEL_FILL = 'white';
   const LABEL_FONT_SIZE = 14;
 
@@ -103,11 +98,14 @@ define( require => {
       // @public - emits when the CCKCChartNode has been dropped
       this.droppedEmitter = new Emitter();
 
-      const aboveBottomLeft1 = new DerivedProperty(
+      // @protected - for attaching probes
+      this.aboveBottomLeft1 = new DerivedProperty(
         [ leftBottomProperty ],
         position => position.isFinite() ? position.plusXY( 0, -20 ) : Vector2.ZERO
       );
-      const aboveBottomLeft2 = new DerivedProperty(
+
+      // @protected - for attaching probes
+      this.aboveBottomLeft2 = new DerivedProperty(
         [ leftBottomProperty ],
         position => position.isFinite() ? position.plusXY( 0, -10 ) : Vector2.ZERO
       );
@@ -122,17 +120,11 @@ define( require => {
         fill: 'white'
       } );
 
-      this.probeNode1 = this.addProbeNode( SERIES_1_COLOR, WIRE_1_COLOR, 5, 10, aboveBottomLeft1 );
-      this.probeNode2 = this.addProbeNode( SERIES_2_COLOR, WIRE_2_COLOR, 36, 54, aboveBottomLeft2 );
-
       // Create the scrolling chart content and add it to the background.  There is an order-of-creation cycle which
       // prevents the scrolling node from being added to the background before the super() call, so this will have to
       // suffice.
       const scrollingChartNode = new LabeledScrollingChartNode(
-        new ScrollingChartNode( timeProperty, seriesArray, {
-          width: 150,
-          height: 110
-        } ),
+        new ScrollingChartNode( timeProperty, seriesArray, { width: 150, height: 110 } ),
         verticalAxisTitleNode,
         scaleIndicatorText,
         timeString,
@@ -144,9 +136,6 @@ define( require => {
 
       this.meter.visibleProperty.link( visible => this.setVisible( visible ) );
       this.meter.bodyPositionProperty.link( bodyPosition => backgroundNode.setCenter( bodyPosition ) );
-
-      // Align probes after positioning the body so icons will have the correct bounds
-      this.alignProbesEmitter.emit();
     }
 
     /**
