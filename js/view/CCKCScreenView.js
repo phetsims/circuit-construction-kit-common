@@ -120,7 +120,6 @@ define( require => {
       if ( options.showCharts ) {
         this.voltageChartNode = new VoltageChartNode( this.circuitLayerNode, model.circuit.timeProperty,
           this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty );
-        this.voltageChartNode.alignProbesEmitter.emit();
 
         // TODO: a way to set the default value during construction
         this.voltageChartNode.meter.visibleProperty.value = false;
