@@ -18,6 +18,7 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CircuitElementToolNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolNode' );
   const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
+  const CurrentChartNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CurrentChartNode' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const HSeparator = require( 'SUN/HSeparator' );
   const Node = require( 'SCENERY/nodes/Node' );
@@ -54,11 +55,12 @@ define( require => {
      * @param {VoltmeterNode} voltmeterNode - node for the Voltmeter
      * @param {AmmeterNode} ammeterNode - node for the Ammeter
      * @param {VoltageChartNode} voltageChartNode - node for the VoltageChartNode
+     * @param {CurrentChartNode} currentChartNode - node for the VoltageChartNode
      * @param {Tandem} tandem
      * @param {Object} [options]
      */
-    // TODO: voltageChartNode should be optional and only appear in the AC sim
-    constructor( alignGroup, circuitLayerNode, voltmeterNode, ammeterNode, voltageChartNode, tandem, options ) {
+    // TODO: voltageChartNode and currentChartNode should be optional and only appear in the AC sim
+    constructor( alignGroup, circuitLayerNode, voltmeterNode, ammeterNode, voltageChartNode, currentChartNode, tandem, options ) {
 
       options = _.extend( {
         showResultsProperty: circuitLayerNode.model.isValueDepictionEnabledProperty,
@@ -176,33 +178,36 @@ define( require => {
 
       const rows = [ topBox ];
       if ( options.showCharts ) {
-        const voltageChartNodeIcon = new VoltageChartNode( circuitLayerNode, new NumberProperty( 0 ),
-          new Property( Bounds2.EVERYTHING ) );
+        const everything = new Property( Bounds2.EVERYTHING );
 
-        // Make the voltage chart the same width as the voltmeter, since the icons will be aligned in a grid
-        voltageChartNodeIcon.scale( voltmeterToolIcon.width / voltageChartNodeIcon.width );
+        const createChartToolIcon = ( chartNode, chartNodeIcon ) => {
 
-        // Rasterization comes out blurry, instead put an overlay to intercept input events.
-        const voltageChartOverlay = Rectangle.bounds( voltageChartNodeIcon.bounds, { fill: 'blue', opacity: 0 } );
-        const container = new Node( {
-          children: [
-            voltageChartNodeIcon,
-            voltageChartOverlay
-          ],
-          cursor: 'pointer'
-        } );
-        const voltageChartToolIcon = new VBox( {
-          spacing: ICON_TEXT_SPACING,
-          children: [ container, voltageChartText ]
-        } );
+          // Make the voltage chart the same width as the voltmeter, since the icons will be aligned in a grid
+          chartNodeIcon.scale( voltmeterToolIcon.width / chartNodeIcon.width );
 
-        voltageChartNode.meter.visibleProperty.link( visible => voltageChartNodeIcon.setVisible( !visible ) );
-        voltageChartOverlay.addInputListener( createListener( voltageChartNode.meter, voltageChartNode ) );
+          // Rasterization comes out blurry, instead put an overlay to intercept input events.
+          const overlay = Rectangle.bounds( chartNodeIcon.bounds, { fill: 'blue', opacity: 0 } );
+          const container = new Node( {
+            children: [ chartNodeIcon, overlay ],
+            cursor: 'pointer'
+          } );
+          const chartToolIcon = new VBox( {
+            spacing: ICON_TEXT_SPACING,
+            children: [ container, voltageChartText ]
+          } );
+
+          chartNode.meter.visibleProperty.link( visible => chartNodeIcon.setVisible( !visible ) );
+          overlay.addInputListener( createListener( chartNode.meter, chartNode ) );
+
+          return chartToolIcon;
+        };
+        const voltageChartToolIcon = createChartToolIcon( voltageChartNode, new VoltageChartNode( circuitLayerNode, new NumberProperty( 0 ), everything ) );
+        const currentChartToolIcon = createChartToolIcon( currentChartNode, new CurrentChartNode( circuitLayerNode, new NumberProperty( 0 ), everything ) );
 
         const chartBox = alignGroup.createBox( new HBox( {
           spacing: ( options.showNoncontactAmmeters && options.showSeriesAmmeters ) ? 20 : 40,
           align: 'bottom',
-          children: [ voltageChartToolIcon ]
+          children: [ voltageChartToolIcon, currentChartToolIcon ]
         } ) );
 
         rows.push( new HSeparator( 160 ) );

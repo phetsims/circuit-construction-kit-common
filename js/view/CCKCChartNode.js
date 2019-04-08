@@ -69,6 +69,7 @@ define( require => {
 
       this.meter = new Meter( options.tandem.createTandem( 'meter' ) );
 
+      // TODO: Copied from WavesScreenView, can anything be factored out?
       // @private
       this.seriesArray = seriesArray;
 

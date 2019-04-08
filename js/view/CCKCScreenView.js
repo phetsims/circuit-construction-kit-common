@@ -21,6 +21,7 @@ define( require => {
   const CircuitElementEditContainerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditContainerNode' );
   const CircuitElementToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolbox' );
   const CircuitLayerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitLayerNode' );
+  const CurrentChartNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CurrentChartNode' );
   const DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/DisplayOptionsPanel' );
   const Node = require( 'SCENERY/nodes/Node' );
   const PlayPauseButton = require( 'SCENERY_PHET/buttons/PlayPauseButton' );
@@ -123,10 +124,16 @@ define( require => {
         // TODO: a way to set the default value during construction
         this.voltageChartNode.meter.visibleProperty.value = false;
         this.voltageChartNode.meter.draggingProbesWithBodyProperty.value = true;
-
-        // TODO: Copied from WavesScreenView, can anything be factored out?
-
         this.voltageChartNode.initializeBodyDragListener( this );
+
+        // TODO: some duplicated code with above
+        this.currentChartNode = new CurrentChartNode( this.circuitLayerNode, model.circuit.timeProperty,
+          this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty );
+
+        // TODO: a way to set the default value during construction
+        this.currentChartNode.meter.visibleProperty.value = false;
+        this.currentChartNode.meter.draggingProbesWithBodyProperty.value = true;
+        this.currentChartNode.initializeBodyDragListener( this );
       }
 
       // @public (read-only) {CircuitElementToolbox} - Toolbox from which CircuitElements can be dragged
@@ -141,6 +148,7 @@ define( require => {
         voltmeterNode,
         ammeterNode,
         this.voltageChartNode,
+        this.currentChartNode,
         tandem.createTandem( 'sensorToolbox' ), {
           showSeriesAmmeters: options.showSeriesAmmeters,
           showNoncontactAmmeters: options.showNoncontactAmmeters,
@@ -234,6 +242,7 @@ define( require => {
       this.circuitLayerNode.sensorLayer.addChild( voltmeterNode );
       this.circuitLayerNode.sensorLayer.addChild( ammeterNode );
       this.voltageChartNode && this.circuitLayerNode.sensorLayer.addChild( this.voltageChartNode );
+      this.currentChartNode && this.circuitLayerNode.sensorLayer.addChild( this.currentChartNode );
 
       // Create the zoom control panel
       const zoomControlPanel = new ZoomControlPanel( model.selectedZoomProperty, {

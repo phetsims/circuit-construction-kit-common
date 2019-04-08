@@ -24,8 +24,8 @@ define( require => {
   const BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
   const Bounds2 = require( 'DOT/Bounds2' );
   const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
-  const CapacitorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view' +
-                                 '/CapacitorNode' );
+  const CapacitorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CapacitorNode' );
+  const CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCLightBulbNode' );
   const CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
@@ -899,6 +899,48 @@ define( require => {
       }
       else {
         return redConnection.voltage - blackConnection.voltage;
+      }
+    }
+
+    /**
+     * Find the current in the given layer (if any CircuitElement hits the sensor)
+     * @param {Node} probeNode
+     * @param {Node} layer
+     * @returns {number|null}
+     * @private
+     */
+    getCurrentInLayer( probeNode, layer ) {
+
+      // See if any CircuitElementNode contains the sensor point
+      for ( let i = 0; i < layer.children.length; i++ ) {
+        const circuitElementNode = layer.children[ i ];
+        if ( circuitElementNode instanceof CircuitElementNode ) {
+
+          // This is called between when the circuit element is disposed and when the corresponding view is disposed
+          // so we must take care not to visit circuit elements that have been disposed but still have a view
+          // see https://github.com/phetsims/circuit-construction-kit-common/issues/418
+          // TODO: I suspect the coordinate frame is wrong for CurrentChartNode
+          if ( !circuitElementNode.circuitElement.circuitElementDisposed && circuitElementNode.containsSensorPoint( probeNode.translation ) ) {
+            return circuitElementNode.circuitElement.currentProperty.get();
+          }
+        }
+      }
+      return null;
+    }
+
+    /**
+     * Find the current under the given probe
+     * @param {Node} probeNode
+     * @returns {number|null}
+     * @private
+     */
+    getCurrent( probeNode ) {
+      const mainCurrent = this.getCurrentInLayer( probeNode, this.fixedCircuitElementLayer );
+      if ( mainCurrent !== null ) {
+        return mainCurrent;
+      }
+      else {
+        return this.getCurrentInLayer( probeNode, this.wireLayer );
       }
     }
   }
