@@ -10,6 +10,7 @@ define( require => {
   'use strict';
 
   // modules
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCProbeNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCProbeNode' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
@@ -17,6 +18,7 @@ define( require => {
   const Emitter = require( 'AXON/Emitter' );
   const LabeledScrollingChartNode = require( 'GRIDDLE/LabeledScrollingChartNode' );
   const Meter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Meter' );
+  const MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   const Node = require( 'SCENERY/nodes/Node' );
   const NodeProperty = require( 'SCENERY/util/NodeProperty' );
   const ScrollingChartNode = require( 'GRIDDLE/ScrollingChartNode' );
@@ -216,12 +218,66 @@ define( require => {
     /**
      * Set the drag listener, wires it up and uses it for forwarding events from the toolbox icon.
      * @param {DragListener} dragListener
-     * @public
+     * @private - TODO: inline this function into initializeBodyDragListener
      */
     setDragListener( dragListener ) {
       assert && assert( this.backgroundDragListener === null, 'setDragListener must be called no more than once' );
       this.backgroundDragListener = dragListener;
       this.backgroundNode.addInputListener( dragListener );
+    }
+
+    /**
+     * For a CCKCChartNode that is not an icon, add a listener that
+     * (1) drags the body
+     * (2) constrains the drag to the screenView bounds
+     * (3) drops back into the toolbox
+     * @param {CCKCScreenView} screenView
+     * @public
+     */
+    initializeBodyDragListener( screenView ) {
+
+      // I tried using DragListener, but AmmeterNode and VoltmeterNode are using MovableDragHandler, so to reuse
+      // the same strategy in SensorToolNode (regarding Meter) we need to use MovableDragHandler.  DragListener
+      // led to incorrect and unresolved offsets and behavior.
+      const movableDragHandler = new MovableDragHandler( this.meter.bodyPositionProperty, {
+        targetNode: this.backgroundNode,
+        startDrag: () => {
+          if ( this.meter.draggingProbesWithBodyProperty.value ) {
+
+            // Align the probes each time the MeterBodyNode translates, so they will stay in sync
+            this.alignProbesEmitter.emit();
+          }
+        },
+        onDrag: () => {
+          if ( this.meter.draggingProbesWithBodyProperty.value ) {
+
+            // Align the probes each time the MeterBodyNode translates, so they will stay in sync
+            this.alignProbesEmitter.emit();
+          }
+        },
+        endDrag: () => {
+
+          // Drop in toolbox, using the bounds of the entire this since it cannot be centered over the toolbox
+          // (too close to the edge of the screen)
+          if ( screenView.sensorToolbox.globalBounds.intersectsBounds( this.getBackgroundNodeGlobalBounds() ) ) {
+            this.alignProbesEmitter.emit();
+            this.meter.visibleProperty.value = false;
+          }
+
+          // Move probes to center line (if water side view model)
+          this.droppedEmitter.emit();
+          this.meter.draggingProbesWithBodyProperty.value = false;
+        }
+      } );
+
+      // Constrain the chart node to be within the visible bounds
+      screenView.visibleBoundsProperty.link( visibleBounds => {
+        const bounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
+        const b1 = screenView.localToGlobalBounds( bounds );
+        movableDragHandler.dragBounds = this.backgroundNode.globalToParentBounds( b1 );
+      } );
+
+      this.setDragListener( movableDragHandler );
     }
   }
 

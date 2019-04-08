@@ -22,7 +22,6 @@ define( require => {
   const CircuitElementToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolbox' );
   const CircuitLayerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitLayerNode' );
   const DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/DisplayOptionsPanel' );
-  const MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   const Node = require( 'SCENERY/nodes/Node' );
   const PlayPauseButton = require( 'SCENERY_PHET/buttons/PlayPauseButton' );
   const Property = require( 'AXON/Property' );
@@ -127,48 +126,7 @@ define( require => {
 
         // TODO: Copied from WavesScreenView, can anything be factored out?
 
-        // TODO: move most of this to CCKChartNode
-        // I tried using DragListener, but AmmeterNode and VoltmeterNode are using MovableDragHandler, so to reuse
-        // the same strategy in SensorToolNode (regarding Meter) we need to use MovableDragHandler
-        const movableDragHandler = new MovableDragHandler( this.voltageChartNode.meter.bodyPositionProperty, {
-          targetNode: this.voltageChartNode.backgroundNode,
-          startDrag: () => {
-            if ( this.voltageChartNode.meter.draggingProbesWithBodyProperty.value ) {
-
-              // Align the probes each time the MeterBodyNode translates, so they will stay in sync
-              this.voltageChartNode.alignProbesEmitter.emit();
-            }
-          },
-          onDrag: () => {
-            if ( this.voltageChartNode.meter.draggingProbesWithBodyProperty.value ) {
-
-              // Align the probes each time the MeterBodyNode translates, so they will stay in sync
-              this.voltageChartNode.alignProbesEmitter.emit();
-            }
-          },
-          endDrag: () => {
-
-            // Drop in toolbox, using the bounds of the entire this.voltageChartNode since it cannot be centered over the toolbox
-            // (too close to the edge of the screen)
-            if ( this.sensorToolbox.globalBounds.intersectsBounds( this.voltageChartNode.getBackgroundNodeGlobalBounds() ) ) {
-              this.voltageChartNode.alignProbesEmitter.emit();
-              this.voltageChartNode.meter.visibleProperty.value = false;
-            }
-
-            // Move probes to center line (if water side view model)
-            this.voltageChartNode.droppedEmitter.emit();
-            this.voltageChartNode.meter.draggingProbesWithBodyProperty.value = false;
-          }
-        } );
-        this.voltageChartNode.setDragListener( movableDragHandler );
-
-        // Constrain the chart node to be within the visible bounds
-        this.visibleBoundsProperty.link( visibleBounds => {
-          const bounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
-          const b1 = this.localToGlobalBounds( bounds );
-          const b2 = this.voltageChartNode.backgroundNode.globalToParentBounds( b1 );
-          movableDragHandler.dragBounds = b2;
-        } );
+        this.voltageChartNode.initializeBodyDragListener( this );
       }
 
       // @public (read-only) {CircuitElementToolbox} - Toolbox from which CircuitElements can be dragged
