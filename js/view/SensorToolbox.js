@@ -182,9 +182,6 @@ define( require => {
 
         const createChartToolIcon = ( chartNode, chartNodeIcon, labelNode ) => {
 
-          // Make the voltage chart the same width as the voltmeter, since the icons will be aligned in a grid
-          chartNodeIcon.scale( voltmeterToolIcon.width / chartNodeIcon.width );
-
           // Rasterization comes out blurry, instead put an overlay to intercept input events.
           const overlay = Rectangle.bounds( chartNodeIcon.bounds, { fill: 'blue', opacity: 0 } );
           const container = new Node( {
@@ -201,14 +198,20 @@ define( require => {
 
           return chartToolIcon;
         };
+
+        // Make the voltage chart the same width as the voltmeter, since the icons will be aligned in a grid
+        const voltageChartNodeIconContents = new VoltageChartNode( circuitLayerNode, new NumberProperty( 0 ), everything );
+        const scale = voltmeterToolIcon.width / voltageChartNodeIconContents.width;
+        voltageChartNodeIconContents.scale( scale );
+
         const voltageChartToolIcon = createChartToolIcon(
           voltageChartNode,
-          new VoltageChartNode( circuitLayerNode, new NumberProperty( 0 ), everything ),
+          voltageChartNodeIconContents,
           new Text( voltageChartString, { maxWidth: 60 } )
         );
         const currentChartToolIcon = createChartToolIcon(
           currentChartNode,
-          new CurrentChartNode( circuitLayerNode, new NumberProperty( 0 ), everything ),
+          new CurrentChartNode( circuitLayerNode, new NumberProperty( 0 ), everything, { scale: scale } ),
           new Text( currentChartString, { maxWidth: 60 } )
         );
 
