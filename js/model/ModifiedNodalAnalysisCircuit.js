@@ -485,8 +485,6 @@ define( require => {
     }
   }
 
-  // TODO: do I need to register these in namespaces?
-
   class Equation {
 
     /**
