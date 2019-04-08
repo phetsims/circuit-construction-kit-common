@@ -56,9 +56,6 @@ define( require => {
      * @param {number} dt - delta time since last update
      */
     step( time, dt ) {
-
-      // const blackPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode1.translation ) );
-      // const black = this.circuitLayerNode.getVoltageConnection( blackPoint );
       const current = this.circuitLayerNode.getCurrent( this.probeNode1 );
 
       // TODO: add scaling to ScrollingChartNode

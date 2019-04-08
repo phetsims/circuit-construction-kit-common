@@ -68,7 +68,7 @@ define( require => {
       // @private
       this.seriesArray = seriesArray;
 
-      // @private
+      // @private {CircuitLayerNode}
       this.circuitLayerNode = circuitLayerNode;
 
       // @private
