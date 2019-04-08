@@ -1,7 +1,7 @@
 // Copyright 2019, University of Colorado Boulder
 
 /**
- * TODO: Documentation
+ * A progression of states over time, obtained from TimestepSubdivisions.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -20,8 +20,20 @@ define( require => {
       this.states = states;
     }
 
+    /**
+     * Returns the last element in the list of states.
+     *
+     * @returns {Object}
+     * @public
+     */
     getFinalState() {return this.states[ this.states.length - 1 ].state;}
 
+    /**
+     * Returns the total amount of time elapsed over all the states.
+     *
+     * @returns {number}
+     * @public
+     */
     getTotalTime() {
       let sum = 0;
       this.states.forEach( state => {sum += state.dt;} );

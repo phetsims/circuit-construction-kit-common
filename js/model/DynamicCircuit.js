@@ -21,7 +21,7 @@ define( require => {
     /**
      * @param {ModifiedNodalAnalysisCircuitElement[]} batteries
      * @param {ModifiedNodalAnalysisCircuitElement[]} resistors
-     * @param {???} currents TODO: type
+     * @param {Object[]} currents - TODO: unused, will this be used after capacitors and inductors have companions?
      * @param {ResistiveBattery[]} resistiveBatteries
      * @param {Capacitor[]} capacitors
      * @param {Inductor[]} inductors
