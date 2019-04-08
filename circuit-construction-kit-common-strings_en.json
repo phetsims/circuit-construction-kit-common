@@ -95,6 +95,9 @@
   "voltageChart": {
     "value": "Voltage Chart"
   },
+  "currentChart": {
+    "value": "Current Chart"
+  },
   "frequency": {
     "value": "Frequency"
   },

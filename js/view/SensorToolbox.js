@@ -40,6 +40,7 @@ define( require => {
   const ammetersString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeters' );
   const ammeterString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeter' );
   const voltageChartString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageChart' );
+  const currentChartString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/currentChart' );
   const voltmeterString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltmeter' );
 
   // constants
@@ -140,7 +141,6 @@ define( require => {
       // Labels underneath the sensor tool nodes
       const voltmeterText = new Text( voltmeterString, { maxWidth: 60 } );
       const ammeterText = new Text( options.showSeriesAmmeters ? ammetersString : ammeterString, { maxWidth: 60 } );
-      const voltageChartText = new Text( voltageChartString, { maxWidth: 60 } );
 
       // Alter the visibility of the labels when the labels checkbox is toggled.
       circuitLayerNode.model.showLabelsProperty.linkAttribute( voltmeterText, 'visible' );
@@ -180,7 +180,7 @@ define( require => {
       if ( options.showCharts ) {
         const everything = new Property( Bounds2.EVERYTHING );
 
-        const createChartToolIcon = ( chartNode, chartNodeIcon ) => {
+        const createChartToolIcon = ( chartNode, chartNodeIcon, labelNode ) => {
 
           // Make the voltage chart the same width as the voltmeter, since the icons will be aligned in a grid
           chartNodeIcon.scale( voltmeterToolIcon.width / chartNodeIcon.width );
@@ -193,7 +193,7 @@ define( require => {
           } );
           const chartToolIcon = new VBox( {
             spacing: ICON_TEXT_SPACING,
-            children: [ container, voltageChartText ]
+            children: [ container, labelNode ]
           } );
 
           chartNode.meter.visibleProperty.link( visible => chartNodeIcon.setVisible( !visible ) );
@@ -201,8 +201,16 @@ define( require => {
 
           return chartToolIcon;
         };
-        const voltageChartToolIcon = createChartToolIcon( voltageChartNode, new VoltageChartNode( circuitLayerNode, new NumberProperty( 0 ), everything ) );
-        const currentChartToolIcon = createChartToolIcon( currentChartNode, new CurrentChartNode( circuitLayerNode, new NumberProperty( 0 ), everything ) );
+        const voltageChartToolIcon = createChartToolIcon(
+          voltageChartNode,
+          new VoltageChartNode( circuitLayerNode, new NumberProperty( 0 ), everything ),
+          new Text( voltageChartString, { maxWidth: 60 } )
+        );
+        const currentChartToolIcon = createChartToolIcon(
+          currentChartNode,
+          new CurrentChartNode( circuitLayerNode, new NumberProperty( 0 ), everything ),
+          new Text( currentChartString, { maxWidth: 60 } )
+        );
 
         const chartBox = alignGroup.createBox( new HBox( {
           spacing: ( options.showNoncontactAmmeters && options.showSeriesAmmeters ) ? 20 : 40,
