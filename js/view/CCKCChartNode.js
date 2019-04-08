@@ -139,10 +139,11 @@ define( require => {
       shadedRectangle.addChild( scrollingChartNode );
       backgroundNode.addChild( shadedRectangle );
 
-      this.alignProbesEmitter.emit();
-
       this.meter.visibleProperty.link( visible => this.setVisible( visible ) );
-      this.meter.bodyPositionProperty.link( bodyPosition => backgroundNode.setCenter( bodyPosition ) );
+      this.meter.bodyPositionProperty.link( bodyPosition => {backgroundNode.setCenter( bodyPosition )} );
+
+      // Align probes after positioning the body so icons will have the correct bounds
+      this.alignProbesEmitter.emit();
     }
 
     /**
