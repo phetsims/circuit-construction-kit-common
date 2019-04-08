@@ -26,7 +26,7 @@ define( require => {
   const SERIES_1_COLOR = '#404041'; // same as in Bending Light
   const SERIES_2_COLOR = '#ec3223';
   const WIRE_1_COLOR = SERIES_1_COLOR;
-  const WIRE_2_COLOR = new Color( SERIES_2_COLOR ).darkerColor( 0.7 );
+  const WIRE_2_COLOR = SERIES_2_COLOR;
 
   class VoltageChartNode extends CCKCChartNode {
 
