@@ -55,6 +55,9 @@ define( require => {
 
       // @public (read-only) Used in CircuitElementEditNode
       this.numberOfDecimalPlaces = 1;
+
+      // @private - time in seconds the current rating has been exceeded
+      this.timeCurrentRatingExceeded = 0;
     }
 
     /**
@@ -63,6 +66,7 @@ define( require => {
      */
     resetFuse() {
       this.isTrippedProperty.reset();
+      this.timeCurrentRatingExceeded = 0;
     }
 
     /**
@@ -75,7 +79,11 @@ define( require => {
       // When the current exceeds the max, trip the fuse.  This cannot be modeled as a property link because it
       // creates a reentrant property loop which doesn't update the reset fuse button properly
       // Account for roundoff error in the circuit solve step
-      if ( Math.abs( this.currentProperty.value ) > this.currentRatingProperty.value + 1E-6 ) {
+      const currentRatingExceeded = Math.abs( this.currentProperty.value ) > this.currentRatingProperty.value + 1E-6;
+      if ( currentRatingExceeded ) {
+        this.timeCurrentRatingExceeded += dt;
+      }
+      if ( this.timeCurrentRatingExceeded > 0.1 ) {
         this.isTrippedProperty.value = true;
       }
     }
