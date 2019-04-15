@@ -83,6 +83,9 @@ define( require => {
       if ( currentRatingExceeded ) {
         this.timeCurrentRatingExceeded += dt;
       }
+      else {
+        this.timeCurrentRatingExceeded = 0; // If not exceeded, the fuse "cools off" right away
+      }
       if ( this.timeCurrentRatingExceeded > 0.1 ) {
         this.isTrippedProperty.value = true;
       }
