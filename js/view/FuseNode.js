@@ -87,8 +87,8 @@ define( require => {
       const SPLIT_DY = 13;
       const SPLIT_DX = 8;
       const brokenFilamentShape = new Shape();
-      zigZag( startPoint, new Vector2( fuseImageNode.width / 2 - SPLIT_DX, SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, Math.round( numberOfZigZags / 2 ) - 1, brokenFilamentShape );
-      zigZag( endPoint, new Vector2( fuseImageNode.width / 2 + SPLIT_DX, -SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, Math.round( numberOfZigZags / 2 ) - 1, brokenFilamentShape );
+      zigZag( startPoint, new Vector2( fuseImageNode.width / 2 - SPLIT_DX, SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, Util.roundSymmetric( numberOfZigZags / 2 ) - 1, brokenFilamentShape );
+      zigZag( endPoint, new Vector2( fuseImageNode.width / 2 + SPLIT_DX, -SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, Util.roundSymmetric( numberOfZigZags / 2 ) - 1, brokenFilamentShape );
 
       const filamentPath = new Path( filamentShape, {
         stroke: '#302b2b',
