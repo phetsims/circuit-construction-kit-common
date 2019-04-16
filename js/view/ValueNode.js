@@ -12,6 +12,7 @@ define( require => {
   const ACVoltage = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACVoltage' );
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
   const Emitter = require( 'AXON/Emitter' );
@@ -40,6 +41,8 @@ define( require => {
 
   // Big enough to see when zoomed out
   const FONT = new PhetFont( { size: 22 } );
+
+  const infinitySpan = '<span style="font-size: 26px; font-family: serif;"><b>∞</b></span>';
 
   class ValueNode extends Panel {
 
@@ -138,7 +141,7 @@ define( require => {
           contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
 
             // Using a serif font makes the infinity symbol look less lopsided
-            resistance: resistance > 100000 ? '<span style="font-size: 26px; font-family: serif;"><b>∞</b></span>' : '0'
+            resistance: resistance > 100000 ? infinitySpan : '0'
           } );
 
           // Account for the switch open and close geometry for positioning the label.  When the switch is open
@@ -150,13 +153,15 @@ define( require => {
         contentNode.maxWidth = 100;
       }
       else if ( circuitElement instanceof Fuse ) {
-        contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'fuseText' ) }, { font: FONT } ) );
+        contentNode = new RichText( '', _.extend( { tandem: tandem.createTandem( 'fuseText' ) }, { font: FONT } ) );
         const multilink = Property.multilink( [ circuitElement.resistanceProperty, circuitElement.currentRatingProperty ],
           ( resistance, currentRating ) => {
+            const milliOhmString = resistance === CCKCConstants.MAX_RESISTANCE ? infinitySpan :
+                                   Util.toFixed( resistance * 1000, circuitElement.numberOfDecimalPlaces );
             contentNode.text = StringUtils.fillIn( fuseValueString, {
 
               // Convert to milli
-              resistance: Util.toFixed( resistance * 1000, circuitElement.numberOfDecimalPlaces ),
+              resistance: milliOhmString,
               currentRating: Util.toFixed( currentRating, circuitElement.numberOfDecimalPlaces )
             } );
             updatePosition && updatePosition();
