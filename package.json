@@ -15,9 +15,6 @@
     "phetLibs": [
       "twixt",
       "griddle"
-    ],
-    "preload": [
-      "../sherpa/lib/Tween-r12.js"
     ]
   },
   "eslintConfig": {
