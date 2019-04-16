@@ -59,6 +59,7 @@ define( require => {
       let updatePosition = null;
       if ( circuitElement instanceof Battery || circuitElement instanceof ACVoltage ) {
 
+        // TODO: Rewrite with RichText?
         const voltageText = new Text( '', _.extend( { tandem: tandem.createTandem( 'voltageText' ) }, { font: FONT } ) );
         const voltageListener = voltage => {
 
