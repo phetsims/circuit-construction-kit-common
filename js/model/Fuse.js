@@ -12,7 +12,6 @@ define( require => {
   const BooleanProperty = require( 'AXON/BooleanProperty' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const DerivedProperty = require( 'AXON/DerivedProperty' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Range = require( 'DOT/Range' );
@@ -48,10 +47,10 @@ define( require => {
       // @public - true if the fuse is tripped
       this.isTrippedProperty = new BooleanProperty( false );
 
-      // @public {Property.<number>} the resistance in ohms
-      this.resistanceProperty = new DerivedProperty( [ this.isTrippedProperty ],
-        isTripped => isTripped ? CCKCConstants.MAX_RESISTANCE : CCKCConstants.MINIMUM_RESISTANCE
-      );
+      // @public {Property.<number>} the resistance in ohms.  Computed in step() as a function of isTrippedProperty and
+      // currentRatingProperty.  Computed in step instead of as a DerivedProperty to avoid a re-entrant loop,
+      // see https://github.com/phetsims/circuit-construction-kit-common/issues/480#issuecomment-483430822
+      this.resistanceProperty = new NumberProperty( CCKCConstants.MINIMUM_RESISTANCE );
 
       // @public (read-only) Used in CircuitElementEditNode
       this.numberOfDecimalPlaces = 1;
@@ -89,6 +88,10 @@ define( require => {
       if ( this.timeCurrentRatingExceeded > 0.1 ) {
         this.isTrippedProperty.value = true;
       }
+
+      // The resistance varies inversely with the current rating, with 20.0 A at 3 mΩ.
+      this.resistanceProperty.value = this.isTrippedProperty.value ? CCKCConstants.MAX_RESISTANCE :
+                                      1 / this.currentRatingProperty.value * 0.06;
     }
 
     /**
