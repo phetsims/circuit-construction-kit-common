@@ -23,6 +23,7 @@ define( require => {
   const Shape = require( 'KITE/Shape' );
   const Util = require( 'DOT/Util' );
   const Vector2 = require( 'DOT/Vector2' );
+  const zigZag = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/zigZag' );
 
   // images
   const fuseImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/fuse.png' );
@@ -51,32 +52,6 @@ define( require => {
 
       const fuseImageNode = new Image( fuseImage, { scale: 150 / 217 } );
       const numberOfZigZags = ( fuseImageNode.width - CAP_WIDTH * 2 ) / HORIZONTAL_ZIG_ZAG_DISTANCE / 2;
-
-      /**
-       * @param {Vector2} start - the beginning of the shape
-       * @param {Vector2} end - the end of the shape
-       * @param {number} amplitude - the vertical amplitude of the zig zag wave
-       * @param {number} numberZigZags - the number of oscillations
-       * @param {Shape} shape - to fill with moveTo/lineTo commands
-       */
-      const zigZag = ( start, end, amplitude, numberZigZags, shape ) => {
-
-        const delta = end.minus( start );
-        const v = delta.normalized();
-        const n = v.perpendicular.times( amplitude );
-        const wavelength = delta.magnitude / numberZigZags;
-
-        shape.moveToPoint( start );
-        for ( let i = 0; i < numberZigZags; i++ ) {
-          const waveOrigin = v.times( i * wavelength ).plus( start );
-
-          const topPoint = waveOrigin.plus( v.times( wavelength / 4 ) ).plus( n );
-          const bottomPoint = waveOrigin.plus( v.times( 3 * wavelength / 4 ) ).minus( n );
-          shape.lineToPoint( topPoint );
-          shape.lineToPoint( bottomPoint );
-        }
-        shape.lineToPoint( end );
-      };
 
       // zig-zag shape
       const filamentShape = new Shape();

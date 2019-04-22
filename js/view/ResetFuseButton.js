@@ -9,11 +9,15 @@ define( require => {
   'use strict';
 
   // modules
+  const Circle = require( 'SCENERY/nodes/Circle' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
   const PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
-  const ResetShape = require( 'SCENERY_PHET/ResetShape' );
   const RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
+  const Shape = require( 'KITE/Shape' );
+  const Vector2 = require( 'DOT/Vector2' );
+  const zigZag = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/zigZag' );
 
   class ResetFuseButton extends RoundPushButton {
 
@@ -22,12 +26,25 @@ define( require => {
      * @param {Tandem} tandem
      */
     constructor( fuse, tandem ) {
+
+      const shape = new Shape();
+      zigZag( new Vector2( 0, 0 ), new Vector2( 35, 0 ), 4.7, 4, shape );
+
       super( {
         baseColor: PhetColorScheme.BUTTON_YELLOW,
-        content: new Path( new ResetShape( 23 ), { fill: 'black' } ),
+        content: new Node( {
+          children: [ new Path( shape, {
+            stroke: 'black',
+            lineWidth: 1.2,
+            centerX: 0,
+            centerY: 0
+          } ), new Circle( 2.2, { fill: 'black', centerX: 0, centerY: 0 } ) ]
+        } ),
         listener: () => fuse.resetFuse(),
-        minXMargin: 10,
-        minYMargin: 10,
+
+        // Adjusted until the ResetFuseButton is the same height as the trash can button
+        minXMargin: 8,
+        minYMargin: 8,
         tandem: tandem
       } );
       fuse.isTrippedProperty.link( isTripped => {
