@@ -23,7 +23,6 @@ define( require => {
   const Shape = require( 'KITE/Shape' );
   const Util = require( 'DOT/Util' );
   const Vector2 = require( 'DOT/Vector2' );
-  const zigZag = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/zigZag' );
 
   // images
   const fuseImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/fuse.png' );
@@ -54,16 +53,18 @@ define( require => {
       const numberOfZigZags = ( fuseImageNode.width - CAP_WIDTH * 2 ) / HORIZONTAL_ZIG_ZAG_DISTANCE / 2;
 
       // zig-zag shape
-      const filamentShape = new Shape();
       const startPoint = new Vector2( CAP_WIDTH, 0 );
       const endPoint = new Vector2( fuseImageNode.width - CAP_WIDTH, 0 );
-      zigZag( startPoint, endPoint, VERTICAL_ZIG_ZAG_HEIGHT, numberOfZigZags, filamentShape );
+      const filamentShape = new Shape().moveToPoint( startPoint )
+        .zigZagToPoint( endPoint, VERTICAL_ZIG_ZAG_HEIGHT, numberOfZigZags );
 
       const SPLIT_DY = 13;
       const SPLIT_DX = 8;
-      const brokenFilamentShape = new Shape();
-      zigZag( startPoint, new Vector2( fuseImageNode.width / 2 - SPLIT_DX, SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, Util.roundSymmetric( numberOfZigZags / 2 ) - 1, brokenFilamentShape );
-      zigZag( endPoint, new Vector2( fuseImageNode.width / 2 + SPLIT_DX, -SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, Util.roundSymmetric( numberOfZigZags / 2 ) - 1, brokenFilamentShape );
+      const brokenFilamentShape = new Shape().moveToPoint( startPoint )
+        .zigZagToPoint( new Vector2( fuseImageNode.width / 2 - SPLIT_DX, SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, Util.roundSymmetric( numberOfZigZags / 2 ) - 1 );
+      brokenFilamentShape.moveToPoint( endPoint );
+      brokenFilamentShape
+        .zigZagToPoint( new Vector2( fuseImageNode.width / 2 + SPLIT_DX, -SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, Util.roundSymmetric( numberOfZigZags / 2 ) - 1 );
 
       const filamentPath = new Path( filamentShape, {
         stroke: '#302b2b',

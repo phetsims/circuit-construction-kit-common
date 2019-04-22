@@ -17,7 +17,6 @@ define( require => {
   const RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
   const Shape = require( 'KITE/Shape' );
   const Vector2 = require( 'DOT/Vector2' );
-  const zigZag = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/zigZag' );
 
   class ResetFuseButton extends RoundPushButton {
 
@@ -27,8 +26,7 @@ define( require => {
      */
     constructor( fuse, tandem ) {
 
-      const shape = new Shape();
-      zigZag( new Vector2( 0, 0 ), new Vector2( 35, 0 ), 4.7, 4, shape );
+      const shape = new Shape().moveTo( 0, 0 ).zigZagToPoint( new Vector2( 35, 0 ), 4.7, 4 );
 
       super( {
         baseColor: PhetColorScheme.BUTTON_YELLOW,
