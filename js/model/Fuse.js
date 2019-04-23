@@ -32,7 +32,7 @@ define( require => {
         resistance: CCKCConstants.MINIMUM_RESISTANCE,
         resistorLength: RESISTOR_LENGTH,
         isFlammable: false,
-        currentRating: 4,
+        currentRating: 4, // Amps
         isCurrentReentrant: true // Changing the current can trip a fuse, which changes the current
       }, options );
 
@@ -40,7 +40,6 @@ define( require => {
 
       // @public {Property.<number>} the current at which the fuse trips, in amps
       this.currentRatingProperty = new NumberProperty( options.currentRating, {
-        isValidValue: v => v >= 0,
         range: new Range( 0.5, 20 )
       } );
 
