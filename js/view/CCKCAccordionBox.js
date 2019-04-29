@@ -18,6 +18,9 @@ define( require => {
   const Property = require( 'AXON/Property' );
   const Text = require( 'SCENERY/nodes/Text' );
 
+  // constants
+  const BUTTON_MARGIN = 8;
+
   class CCKCAccordionBox extends AccordionBox {
     /**
      * @param {Node} content - the content to display in the accordion box when it is expanded
@@ -29,14 +32,20 @@ define( require => {
         fill: CCKCConstants.PANEL_COLOR,
         cornerRadius: CCKCConstants.CORNER_RADIUS,
         titleXMargin: 10,
-        buttonXMargin: 8,
-        buttonYMargin: 8,
+        buttonXMargin: BUTTON_MARGIN,
+        buttonYMargin: BUTTON_MARGIN,
         titleYMargin: 4,
         titleXSpacing: 14,
         contentYSpacing: 0,
         lineWidth: CCKCConstants.PANEL_LINE_WIDTH,
         minWidth: CCKCConstants.RIGHT_SIDE_PANEL_MIN_WIDTH,
         expandedProperty: new Property( false ),
+
+        // Expand touch area to match the margins
+        expandCollapseButtonOptions: {
+          touchAreaYDilation: BUTTON_MARGIN,
+          touchAreaXDilation: BUTTON_MARGIN
+        },
         titleNode: new HBox( {
           children: [
             new HStrut( 10 ),
