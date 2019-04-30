@@ -154,7 +154,10 @@ define( require => {
         contentNode.maxWidth = 100;
       }
       else if ( circuitElement instanceof Fuse ) {
-        contentNode = new RichText( '', _.extend( { tandem: tandem.createTandem( 'fuseText' ) }, { font: FONT } ) );
+        contentNode = new RichText( '', _.extend( { tandem: tandem.createTandem( 'fuseText' ) }, {
+          font: FONT,
+          align: 'right'
+        } ) );
         const multilink = Property.multilink( [ circuitElement.resistanceProperty, circuitElement.currentRatingProperty ],
           ( resistance, currentRating ) => {
             const milliOhmString = resistance === CCKCConstants.MAX_RESISTANCE ? infinitySpan :

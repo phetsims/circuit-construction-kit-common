@@ -132,7 +132,7 @@
     "value": "{{current}} A"
   },
   "fuseValue": {
-    "value": "{{resistance}} mΩ<br>≤ {{currentRating}} A"
+    "value": "{{resistance}} mΩ<br><span style=\"font-size: 16px;\">≤ {{currentRating}} A</span>"
   },
   "resistanceOhmsSymbol": {
     "value": "{{resistance}} Ω"
