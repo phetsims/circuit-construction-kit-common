@@ -26,7 +26,7 @@ define( require => {
      */
     constructor( fuse, tandem ) {
 
-      const shape = new Shape().moveTo( 0, 0 ).zigZagToPoint( new Vector2( 35, 0 ), 4.7, 4 );
+      const shape = new Shape().moveTo( 0, 0 ).zigZagToPoint( new Vector2( 35, 0 ), 4.7, 4, false );
 
       super( {
         baseColor: PhetColorScheme.BUTTON_YELLOW,

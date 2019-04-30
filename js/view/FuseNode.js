@@ -56,15 +56,15 @@ define( require => {
       const startPoint = new Vector2( CAP_WIDTH, 0 );
       const endPoint = new Vector2( fuseImageNode.width - CAP_WIDTH, 0 );
       const filamentShape = new Shape().moveToPoint( startPoint )
-        .zigZagToPoint( endPoint, VERTICAL_ZIG_ZAG_HEIGHT, numberOfZigZags );
+        .zigZagToPoint( endPoint, VERTICAL_ZIG_ZAG_HEIGHT, numberOfZigZags, false );
 
       const SPLIT_DY = 13;
       const SPLIT_DX = 8;
       const brokenFilamentShape = new Shape().moveToPoint( startPoint )
-        .zigZagToPoint( new Vector2( fuseImageNode.width / 2 - SPLIT_DX, SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, Util.roundSymmetric( numberOfZigZags / 2 ) - 1 );
+        .zigZagToPoint( new Vector2( fuseImageNode.width / 2 - SPLIT_DX, SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, Util.roundSymmetric( numberOfZigZags / 2 ) - 1, false );
       brokenFilamentShape.moveToPoint( endPoint );
       brokenFilamentShape
-        .zigZagToPoint( new Vector2( fuseImageNode.width / 2 + SPLIT_DX, -SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, Util.roundSymmetric( numberOfZigZags / 2 ) - 1 );
+        .zigZagToPoint( new Vector2( fuseImageNode.width / 2 + SPLIT_DX, -SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, Util.roundSymmetric( numberOfZigZags / 2 ) - 1, false );
 
       const filamentPath = new Path( filamentShape, {
         stroke: '#302b2b',
