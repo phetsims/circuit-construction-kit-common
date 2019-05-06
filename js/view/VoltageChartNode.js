@@ -23,8 +23,8 @@ define( require => {
 
   // constants
   const NUMBER_OF_TIME_DIVISIONS = 4;
-  const SERIES_1_COLOR = '#404041'; // same as in Bending Light
-  const SERIES_2_COLOR = '#ec3223';
+  const SERIES_1_COLOR = '#ec3223';
+  const SERIES_2_COLOR = '#404041'; // same as in Bending Light
   const WIRE_1_COLOR = SERIES_1_COLOR;
   const WIRE_2_COLOR = SERIES_2_COLOR;
 

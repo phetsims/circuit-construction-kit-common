@@ -76,10 +76,10 @@ define( require => {
         showResultsProperty: new BooleanProperty( true )
       }, options );
 
-      const redProbeNode = new Rectangle( -2, -2, 4, 4, { // the hit area
-        fill: CCKCQueryParameters.showVoltmeterSamplePoints ? Color.RED : null,
+      const blackProbeNode = new Rectangle( -2, -2, 4, 4, { // the hit area
+        fill: CCKCQueryParameters.showVoltmeterSamplePoints ? Color.BLACK : null,
         cursor: 'pointer',
-        children: [ new Image( redProbe, {
+        children: [ new Image( blackProbe, {
           scale: PROBE_SCALE,
           rotation: PROBE_ANGLE,
 
@@ -91,10 +91,10 @@ define( require => {
       } );
 
 
-      const blackProbeNode = new Rectangle( -2, -2, 4, 4, { // the hit area
-        fill: CCKCQueryParameters.showVoltmeterSamplePoints ? Color.BLACK : null,
+      const redProbeNode = new Rectangle( -2, -2, 4, 4, { // the hit area
+        fill: CCKCQueryParameters.showVoltmeterSamplePoints ? Color.RED : null,
         cursor: 'pointer',
-        children: [ new Image( blackProbe, {
+        children: [ new Image( redProbe, {
           scale: PROBE_SCALE,
           rotation: -PROBE_ANGLE,
 
@@ -122,11 +122,11 @@ define( require => {
         children: [ probeTextNode ]
       } );
 
-      const redWireNode = new ProbeWireNode(
-        Color.RED, new Vector2( -BODY_WIRE_LEAD_X, BODY_LEAD_Y ), new Vector2( PROBE_LEAD_X - PROBE_CONTROL_POINT_X, PROBE_LEAD_Y )
-      );
       const blackWireNode = new ProbeWireNode(
-        Color.BLACK, new Vector2( BODY_WIRE_LEAD_X, BODY_LEAD_Y ), new Vector2( PROBE_LEAD_X + PROBE_CONTROL_POINT_X, PROBE_LEAD_Y )
+        Color.BLACK, new Vector2( -BODY_WIRE_LEAD_X, BODY_LEAD_Y ), new Vector2( PROBE_LEAD_X - PROBE_CONTROL_POINT_X, PROBE_LEAD_Y )
+      );
+      const redWireNode = new ProbeWireNode(
+        Color.RED, new Vector2( BODY_WIRE_LEAD_X, BODY_LEAD_Y ), new Vector2( PROBE_LEAD_X + PROBE_CONTROL_POINT_X, PROBE_LEAD_Y )
       );
 
       // When the voltmeter body moves, update the node and wires
@@ -135,10 +135,10 @@ define( require => {
         // Drag the body by the center
         bodyNode.center = bodyPosition;
 
-        redWireNode.setBodyPosition(
+        blackWireNode.setBodyPosition(
           bodyNode.centerBottom.plusXY( -PROBE_CONNECTION_POINT_DX, PROBE_CONNECTION_POINT_DY )
         );
-        blackWireNode.setBodyPosition(
+        redWireNode.setBodyPosition(
           bodyNode.centerBottom.plusXY( PROBE_CONNECTION_POINT_DX, PROBE_CONNECTION_POINT_DY )
         );
 
@@ -146,8 +146,8 @@ define( require => {
         if ( voltmeter.draggingProbesWithBodyProperty.get() ) {
           const probeY = -30 - bodyNode.height / 2;
           const probeOffsetX = 78;
-          voltmeter.redProbePositionProperty.set( bodyPosition.plusXY( -probeOffsetX, probeY ) );
-          voltmeter.blackProbePositionProperty.set( bodyPosition.plusXY( +probeOffsetX, probeY ) );
+          voltmeter.redProbePositionProperty.set( bodyPosition.plusXY( +probeOffsetX, probeY ) );
+          voltmeter.blackProbePositionProperty.set( bodyPosition.plusXY( -probeOffsetX, probeY ) );
         }
       } );
 
@@ -163,7 +163,7 @@ define( require => {
           probeNode.translation = probePosition;
 
           // Sampled manually, will need to change if probe angle changes
-          wireNode.setProbePosition( probeNode.centerBottom.plusXY( -32 * sign, -4 ) );
+          wireNode.setProbePosition( probeNode.centerBottom.plusXY( 32 * sign, -4 ) );
         };
       };
 
@@ -176,11 +176,11 @@ define( require => {
         children: [
           bodyNode,
 
-          redWireNode,
-          redProbeNode,
-
           blackWireNode,
-          blackProbeNode
+          blackProbeNode,
+
+          redWireNode,
+          redProbeNode
         ]
       } );
 
@@ -210,7 +210,7 @@ define( require => {
          */
         const getProbeDragHandler = ( positionProperty, tandem ) => {
           const probeDragHandler = new MovableDragHandler( positionProperty, {
-            tandem: tandem.createTandem( 'redProbeDragHandler' )
+            tandem: tandem.createTandem( 'probeDragHandler' )
           } );
           options.visibleBoundsProperty.link( visibleBounds => {
             probeDragHandler.dragBounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
@@ -284,8 +284,8 @@ define( require => {
          */
         const updateVoltmeter = () => {
           if ( voltmeter.visibleProperty.get() ) {
-            const redConnection = findConnection( redProbeNode, voltmeter.redProbePositionProperty.get(), +1 );
-            const blackConnection = findConnection( blackProbeNode, voltmeter.blackProbePositionProperty.get(), -1 );
+            const blackConnection = findConnection( blackProbeNode, voltmeter.blackProbePositionProperty.get(), +1 );
+            const redConnection = findConnection( redProbeNode, voltmeter.redProbePositionProperty.get(), -1 );
 
             // TODO: move to CircuitLayerNode or model
             const voltage = this.circuitLayerNode.getVoltage( redConnection, blackConnection );
