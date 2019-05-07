@@ -39,8 +39,8 @@ define( require => {
   // strings
   const ammetersString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeters' );
   const ammeterString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeter' );
-  const voltageChartString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageChart' );
   const currentChartString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/currentChart' );
+  const voltageChartString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageChart' );
   const voltmeterString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltmeter' );
 
   // constants
