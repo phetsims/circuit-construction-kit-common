@@ -120,7 +120,7 @@ define( require => {
     containsSensorPoint( point ) {
 
       // make sure bounds are correct if cut or joined in this animation frame
-      this.step(); // TODO: Shouldn't step take dt?
+      this.step();
 
       // Check against the mouse region
       return !!this.hitTest( point, true, false );

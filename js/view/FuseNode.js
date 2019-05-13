@@ -78,6 +78,7 @@ define( require => {
       ) );
       fuse.currentRatingProperty.link( updateFilamentPathLineWidth );
 
+      // glass covering
       const glassNode = new Rectangle( CAP_WIDTH, VERTICAL_GLASS_MARGIN, fuseImageNode.width - CAP_WIDTH * 2, fuseImageNode.height - VERTICAL_GLASS_MARGIN * 2, {
         fill: DEFAULT_GLASS_FILL,
         opacity: 0.5,
@@ -86,14 +87,10 @@ define( require => {
       } );
 
       const lifelikeFuseNode = new Node( {
-        children: [
-          filamentPath,
-          glassNode,
-          fuseImageNode
-        ]
+        children: [ filamentPath, glassNode, fuseImageNode ]
       } );
 
-      // Line with a box around it
+      // Schematic view is a line with a box around it, looks the same whether tripped or untripped.
       const boxHeight = 30;
       let schematicShape = new Shape()
         .moveTo( 0, 0 )
@@ -150,13 +147,13 @@ define( require => {
     }
 
     /**
-     * Returns true if the node hits the sensor at the given point.
+     * Returns true if the node hits the sensor at the given point.  Matches the implementation in other types
+     * like ResistorNode
      * @param {Vector2} point
      * @returns {boolean}
      * @overrides
      * @public
      */
-    // TODO: this implementation is duplicated too much
     containsSensorPoint( point ) {
 
       // make sure bounds are correct if cut or joined in this animation frame
