@@ -1,7 +1,8 @@
 // Copyright 2019, University of Colorado Boulder
 
 /**
- * Model for a fuse.
+ * Model for a fuse.  This circuit element trips (i.e., becomes very high resistance) when its current rating is
+ * exceeded.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -16,9 +17,6 @@ define( require => {
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Range = require( 'DOT/Range' );
 
-  // constants
-  const RESISTOR_LENGTH = CCKCConstants.RESISTOR_LENGTH;
-
   class Fuse extends FixedCircuitElement {
 
     /**
@@ -30,13 +28,13 @@ define( require => {
     constructor( startVertex, endVertex, tandem, options ) {
       options = _.extend( {
         resistance: CCKCConstants.MINIMUM_RESISTANCE,
-        resistorLength: RESISTOR_LENGTH,
+        fuseLength: CCKCConstants.RESISTOR_LENGTH, // Same length as a resistor
         isFlammable: false,
         currentRating: 4, // Amps
         isCurrentReentrant: true // Changing the current can trip a fuse, which changes the current
       }, options );
 
-      super( startVertex, endVertex, options.resistorLength, tandem, options );
+      super( startVertex, endVertex, options.fuseLength, tandem, options );
 
       // @public {Property.<number>} the current at which the fuse trips, in amps
       this.currentRatingProperty = new NumberProperty( options.currentRating, {
@@ -116,7 +114,7 @@ define( require => {
       return _.extend( parent, {
         resistance: this.resistanceProperty.value,
         currentRating: this.currentRatingProperty.value,
-        resistorLength: this.chargePathLength
+        fuseLength: this.chargePathLength
       } );
     }
   }

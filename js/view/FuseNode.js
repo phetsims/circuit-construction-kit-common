@@ -32,6 +32,10 @@ define( require => {
   const HORIZONTAL_ZIG_ZAG_DISTANCE = 5;
   const VERTICAL_ZIG_ZAG_HEIGHT = 4;
   const CAP_WIDTH = 15; // horizontal size of each cap in the image
+  const SPLIT_DY = 13;
+  const SPLIT_DX = 8;
+  const VERTICAL_GLASS_MARGIN = 3;
+  const DEFAULT_GLASS_FILL = '#c3dbfd';
 
   class FuseNode extends FixedCircuitElementNode {
 
@@ -49,7 +53,7 @@ define( require => {
 
       options = _.extend( { isIcon: false }, options );
 
-      const fuseImageNode = new Image( fuseImage, { scale: 150 / 217 } );
+      const fuseImageNode = new Image( fuseImage, { scale: 0.691 } );
       const numberOfZigZags = ( fuseImageNode.width - CAP_WIDTH * 2 ) / HORIZONTAL_ZIG_ZAG_DISTANCE / 2;
 
       // zig-zag shape
@@ -58,8 +62,6 @@ define( require => {
       const filamentShape = new Shape().moveToPoint( startPoint )
         .zigZagToPoint( endPoint, VERTICAL_ZIG_ZAG_HEIGHT, numberOfZigZags, false );
 
-      const SPLIT_DY = 13;
-      const SPLIT_DX = 8;
       const brokenFilamentShape = new Shape().moveToPoint( startPoint )
         .zigZagToPoint( new Vector2( fuseImageNode.width / 2 - SPLIT_DX, SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, Util.roundSymmetric( numberOfZigZags / 2 ) - 1, false );
       brokenFilamentShape.moveToPoint( endPoint );
@@ -76,9 +78,7 @@ define( require => {
       ) );
       fuse.currentRatingProperty.link( updateFilamentPathLineWidth );
 
-      const verticalGlassMargin = 3;
-      const DEFAULT_GLASS_FILL = '#c3dbfd';
-      const glassNode = new Rectangle( CAP_WIDTH, verticalGlassMargin, fuseImageNode.width - CAP_WIDTH * 2, fuseImageNode.height - verticalGlassMargin * 2, {
+      const glassNode = new Rectangle( CAP_WIDTH, VERTICAL_GLASS_MARGIN, fuseImageNode.width - CAP_WIDTH * 2, fuseImageNode.height - VERTICAL_GLASS_MARGIN * 2, {
         fill: DEFAULT_GLASS_FILL,
         opacity: 0.5,
         stroke: 'black',
@@ -94,12 +94,12 @@ define( require => {
       } );
 
       // Line with a box around it
-      const BOX_HEIGHT = 30;
+      const boxHeight = 30;
       let schematicShape = new Shape()
         .moveTo( 0, 0 )
         .lineToRelative( fuse.chargePathLength, 0 )
         .moveTo( 0, 0 )
-        .rect( SCHEMATIC_STEM_WIDTH, -BOX_HEIGHT / 2, fuse.chargePathLength - SCHEMATIC_STEM_WIDTH * 2, BOX_HEIGHT );
+        .rect( SCHEMATIC_STEM_WIDTH, -boxHeight / 2, fuse.chargePathLength - SCHEMATIC_STEM_WIDTH * 2, boxHeight );
 
       // Icons should appear the same in the toolbox, see
       // https://github.com/phetsims/circuit-construction-kit-common/issues/389
@@ -135,13 +135,17 @@ define( require => {
         glassNode.fill = isTripped ? '#4e4e4e' : DEFAULT_GLASS_FILL;
         filamentPath.shape = isTripped ? brokenFilamentShape : filamentShape;
       };
-      ( !options.isIcon ) && this.fuse.isTrippedProperty.link( updateTripped );
+      if ( !options.isIcon ) {
+        this.fuse.isTrippedProperty.link( updateTripped );
+      }
 
       // @private
       this.disposeResistorNode = () => {
         lifelikeFuseNode.dispose();
         fuse.currentRatingProperty.unlink( updateFilamentPathLineWidth );
-        ( !options.isIcon ) && this.fuse.isTrippedProperty.unlink( updateTripped );
+        if ( !options.isIcon ) {
+          this.fuse.isTrippedProperty.unlink( updateTripped );
+        }
       };
     }
 
