@@ -60,7 +60,7 @@ define( require => {
       const startPoint = new Vector2( CAP_WIDTH, 0 );
       const endPoint = new Vector2( fuseImageNode.width - CAP_WIDTH, 0 );
       const filamentShape = new Shape().moveToPoint( startPoint )
-        .zigZagToPoint( endPoint, VERTICAL_ZIG_ZAG_HEIGHT, numberOfZigZags, false );
+        .zigZagToPoint( endPoint, VERTICAL_ZIG_ZAG_HEIGHT, Util.roundSymmetric( numberOfZigZags ), false );
 
       const brokenFilamentShape = new Shape().moveToPoint( startPoint )
         .zigZagToPoint( new Vector2( fuseImageNode.width / 2 - SPLIT_DX, SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, Util.roundSymmetric( numberOfZigZags / 2 ) - 1, false );
