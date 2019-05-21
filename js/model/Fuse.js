@@ -41,8 +41,7 @@ define( require => {
         range: new Range( 0.5, 20 )
       } );
 
-      // REVIEW: Type doc? {Property.<boolean>}?
-      // @public - true if the fuse is tripped
+      // @public {Property.<boolean>} - true if the fuse is tripped
       this.isTrippedProperty = new BooleanProperty( false );
 
       // @public {Property.<number>} the resistance in ohms.  Computed in step() as a function of isTrippedProperty and
@@ -50,12 +49,10 @@ define( require => {
       // see https://github.com/phetsims/circuit-construction-kit-common/issues/480#issuecomment-483430822
       this.resistanceProperty = new NumberProperty( CCKCConstants.MINIMUM_RESISTANCE );
 
-      // REVIEW: Type doc? {number} ?
-      // @public (read-only) Used in CircuitElementEditNode
+      // @public (read-only) {number} - Used in CircuitElementEditNode
       this.numberOfDecimalPlaces = 1;
 
-      // REVIEW: Type doc? {number} ?
-      // @private - time in seconds the current rating has been exceeded
+      // @private {number} - time in seconds the current rating has been exceeded
       this.timeCurrentRatingExceeded = 0;
     }
 
