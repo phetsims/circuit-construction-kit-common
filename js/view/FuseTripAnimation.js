@@ -35,6 +35,9 @@ define( require => {
         '40.9,29.5 50.5,34.7 39.6,35.1 50.7,51 35.5,39 34.8,49.9 29.9,40.2' ];
 
       const shape = new Shape();
+
+      // REVIEW: Add doc for this block of code. Perhaps this may work...
+      // REVIEW: For each pair of polylines data create a Vector2 and draw a line to the point.
       polylines.forEach( polyline => {
         const pairs = polyline.split( ' ' );
         const vectors = pairs.map( pair => {

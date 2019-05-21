@@ -1,7 +1,7 @@
 // Copyright 2019, University of Colorado Boulder
 
 /**
- * Button that resets a Fuse
+ * Button that resets a Fuse.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

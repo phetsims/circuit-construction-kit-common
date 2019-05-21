@@ -32,8 +32,8 @@ define( require => {
   const HORIZONTAL_ZIG_ZAG_DISTANCE = 5;
   const VERTICAL_ZIG_ZAG_HEIGHT = 4;
   const CAP_WIDTH = 15; // horizontal size of each cap in the image
-  const SPLIT_DY = 13;
-  const SPLIT_DX = 8;
+  const SPLIT_DY = 13; // REVIEW: Doc would be helpful here
+  const SPLIT_DX = 8; // REVIEW: Doc would be helpful here
   const VERTICAL_GLASS_MARGIN = 3;
   const DEFAULT_GLASS_FILL = '#c3dbfd';
 
@@ -73,12 +73,14 @@ define( require => {
         lineWidth: 4,
         center: fuseImageNode.center
       } );
+
+      // REVIEW: Added doc? "Fuse filament thickness should resemble its rating."
       const updateFilamentPathLineWidth = currentRating => filamentPath.setLineWidth( Util.linear(
         fuse.currentRatingProperty.range.min, fuse.currentRatingProperty.range.max, 1, 4, currentRating
       ) );
       fuse.currentRatingProperty.link( updateFilamentPathLineWidth );
 
-      // glass covering
+      // Glass covering
       const glassNode = new Rectangle( CAP_WIDTH, VERTICAL_GLASS_MARGIN, fuseImageNode.width - CAP_WIDTH * 2, fuseImageNode.height - VERTICAL_GLASS_MARGIN * 2, {
         fill: DEFAULT_GLASS_FILL,
         opacity: 0.5,
@@ -137,6 +139,7 @@ define( require => {
       }
 
       // @private
+      // REVIEW: Possibly change to disposeFuseNode()?
       this.disposeResistorNode = () => {
         lifelikeFuseNode.dispose();
         fuse.currentRatingProperty.unlink( updateFilamentPathLineWidth );
@@ -160,6 +163,7 @@ define( require => {
       this.step();
 
       // Check against the mouse region
+      //
       return !!this.hitTest( point, true, false );
     }
 
@@ -169,6 +173,7 @@ define( require => {
      * @override
      */
     dispose() {
+      // REVIEW: Possibly change to disposeFuseNode()?
       this.disposeResistorNode();
       super.dispose();
     }

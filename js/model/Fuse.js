@@ -1,7 +1,7 @@
 // Copyright 2019, University of Colorado Boulder
 
 /**
- * Model for a fuse.  This circuit element trips (i.e., becomes very high resistance) when its current rating is
+ * Model for a fuse. This circuit element trips (i.e., becomes very high resistance) when its current rating is
  * exceeded.
  *
  * @author Sam Reid (PhET Interactive Simulations)
@@ -29,7 +29,7 @@ define( require => {
       options = _.extend( {
         resistance: CCKCConstants.MINIMUM_RESISTANCE,
         fuseLength: CCKCConstants.RESISTOR_LENGTH, // Same length as a resistor
-        isFlammable: false,
+        isFlammable: false, // REVIEW: Default option initialized in supertype is false. No need to reinstate here
         currentRating: 4, // Amps
         isCurrentReentrant: true // Changing the current can trip a fuse, which changes the current
       }, options );
@@ -41,6 +41,7 @@ define( require => {
         range: new Range( 0.5, 20 )
       } );
 
+      // REVIEW: Type doc? {Property.<boolean>}?
       // @public - true if the fuse is tripped
       this.isTrippedProperty = new BooleanProperty( false );
 
@@ -49,9 +50,11 @@ define( require => {
       // see https://github.com/phetsims/circuit-construction-kit-common/issues/480#issuecomment-483430822
       this.resistanceProperty = new NumberProperty( CCKCConstants.MINIMUM_RESISTANCE );
 
+      // REVIEW: Type doc? {number} ?
       // @public (read-only) Used in CircuitElementEditNode
       this.numberOfDecimalPlaces = 1;
 
+      // REVIEW: Type doc? {number} ?
       // @private - time in seconds the current rating has been exceeded
       this.timeCurrentRatingExceeded = 0;
     }
@@ -65,23 +68,30 @@ define( require => {
       this.timeCurrentRatingExceeded = 0;
     }
 
+    // REVIEW: Unused parameter (time). Can we remove?
     /**
      * @param {number} time - total elapsed time
      * @param {number} dt - delta between last frame and current frame
      * @public
      */
     step( time, dt ) {
-
       // When the current exceeds the max, trip the fuse.  This cannot be modeled as a property link because it
       // creates a reentrant property loop which doesn't update the reset fuse button properly
       // Account for roundoff error in the circuit solve step
       const currentRatingExceeded = Math.abs( this.currentProperty.value ) > this.currentRatingProperty.value + 1E-6;
+
+      // REVIEW: Optional ternary operator to minimize if/else loop? Dev choice.
+      // // If not exceeded, the fuse "cools off" right away
+      // this.timeCurrentRatingExceeded = currentRatingExceeded ? this.timeCurrentRatingExceeded += dt : 0;
       if ( currentRatingExceeded ) {
         this.timeCurrentRatingExceeded += dt;
       }
       else {
-        this.timeCurrentRatingExceeded = 0; // If not exceeded, the fuse "cools off" right away
+        this.timeCurrentRatingExceeded = 0;
       }
+
+      // REVIEW: Inline conditional statement? Dev choice.
+      // this.isTrippedProperty.value = this.timeCurrentRatingExceeded > 0.1;
       if ( this.timeCurrentRatingExceeded > 0.1 ) {
         this.isTrippedProperty.value = true;
       }
@@ -100,6 +110,8 @@ define( require => {
     getCircuitProperties() {
       return [ this.resistanceProperty,
 
+        // REVIEW: this.isTrippedProperty isn't being updated in this function. The current documentation should be moved
+        // REVIEW: to where it is being updated.
         // update the circuit when the fuse is reset
         this.isTrippedProperty ];
     }
