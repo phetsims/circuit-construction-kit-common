@@ -76,9 +76,7 @@ define( require => {
       // Account for roundoff error in the circuit solve step
       const currentRatingExceeded = Math.abs( this.currentProperty.value ) > this.currentRatingProperty.value + 1E-6;
 
-      // REVIEW: Optional ternary operator to minimize if/else loop? Dev choice.
-      // // If not exceeded, the fuse "cools off" right away
-      // this.timeCurrentRatingExceeded = currentRatingExceeded ? this.timeCurrentRatingExceeded += dt : 0;
+      // If not exceeded, the fuse "cools off" right away.
       if ( currentRatingExceeded ) {
         this.timeCurrentRatingExceeded += dt;
       }
