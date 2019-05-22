@@ -36,8 +36,7 @@ define( require => {
 
       const shape = new Shape();
 
-      // REVIEW: Add doc for this block of code. Perhaps this may work...
-      // REVIEW: For each pair of polylines data create a Vector2 and draw a line to the point.
+      // Parse the string data and render each string as a set of connected line segments.
       polylines.forEach( polyline => {
         const pairs = polyline.split( ' ' );
         const vectors = pairs.map( pair => {
