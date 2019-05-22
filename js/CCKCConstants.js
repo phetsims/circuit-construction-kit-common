@@ -60,8 +60,7 @@ define( require => {
     // Default resistivity for Wires and Switches (whose resistance varies with length)
     DEFAULT_RESISTIVITY: 1E-5,
 
-    // REVIEW: Update docs to include Fuse. Fuse.js uses this in the constructor default options.
-    // The lowest resistance a Wire or Switch can have
+    // The lowest resistance a CircuitElement can have
     MINIMUM_RESISTANCE: 1E-8,
 
     // How far to erode the visible bounds for keeping the probes in bounds.
