@@ -65,9 +65,8 @@ define( require => {
       this.timeCurrentRatingExceeded = 0;
     }
 
-    // REVIEW: Unused parameter (time). Can we remove?
     /**
-     * @param {number} time - total elapsed time
+     * @param {number} time - total elapsed time. Unused, but provided to match signature defined in body of Circuit.step
      * @param {number} dt - delta between last frame and current frame
      * @public
      */
