@@ -327,7 +327,7 @@ define( require => {
      * @public
      */
     toIntrinsicStateObject() {
-      return { tandemName: this.tandem.tail };
+      return { tandemName: this.tandem.name };
     }
 
   }

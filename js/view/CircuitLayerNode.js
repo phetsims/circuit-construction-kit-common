@@ -269,7 +269,7 @@ define( require => {
                 circuitElement,
                 this.model.showValuesProperty,
                 this.model.viewTypeProperty,
-                tandem.createTandem( circuitElement.tandem.tail ).createTandem( 'valueNode' )
+                tandem.createTandem( circuitElement.tandem.name ).createTandem( 'valueNode' )
               );
 
               const updateShowValues = showValues => CCKCUtil.setInSceneGraph( showValues, this.valueLayer, valueNode );
