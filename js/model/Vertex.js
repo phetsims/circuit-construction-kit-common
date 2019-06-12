@@ -101,9 +101,6 @@ define( require => {
 
       // @public {boolean} - Whether the vertex is being actively dragged.
       this.isDragged = false;
-
-      // Tandem.addInstance is not necessary because all of the sub-properties are already tracked, we do not need to
-      // refer to the Vertex by reference (tandem name) and it doesn't have events other than those in the sub-properties
     }
 
     /**
