@@ -29,7 +29,6 @@ define( require => {
       options = _.extend( {
         resistance: CCKCConstants.MINIMUM_RESISTANCE,
         fuseLength: CCKCConstants.RESISTOR_LENGTH, // Same length as a resistor
-        isFlammable: false, // REVIEW: Default option initialized in supertype is false. No need to reinstate here
         currentRating: 4, // Amps
         isCurrentReentrant: true // Changing the current can trip a fuse, which changes the current
       }, options );
@@ -84,8 +83,7 @@ define( require => {
         this.timeCurrentRatingExceeded = 0;
       }
 
-      // REVIEW: Inline conditional statement? Dev choice.
-      // this.isTrippedProperty.value = this.timeCurrentRatingExceeded > 0.1;
+      // Trip the fuse if it has exceeded the current rating beyond the threshold time
       if ( this.timeCurrentRatingExceeded > 0.1 ) {
         this.isTrippedProperty.value = true;
       }
@@ -96,18 +94,13 @@ define( require => {
     }
 
     /**
-     * Get the properties so that the circuit can be solved when changed.
+     * Get the properties that, when changed, require the circuit to be re-solved.
      * @override
      * @returns {Property.<*>[]}
      * @public
      */
     getCircuitProperties() {
-      return [ this.resistanceProperty,
-
-        // REVIEW: this.isTrippedProperty isn't being updated in this function. The current documentation should be moved
-        // REVIEW: to where it is being updated.
-        // update the circuit when the fuse is reset
-        this.isTrippedProperty ];
+      return [ this.resistanceProperty, this.isTrippedProperty ];
     }
 
     /**

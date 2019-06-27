@@ -32,8 +32,8 @@ define( require => {
   const HORIZONTAL_ZIG_ZAG_DISTANCE = 5;
   const VERTICAL_ZIG_ZAG_HEIGHT = 4;
   const CAP_WIDTH = 15; // horizontal size of each cap in the image
-  const SPLIT_DY = 13; // REVIEW: Doc would be helpful here
-  const SPLIT_DX = 8; // REVIEW: Doc would be helpful here
+  const SPLIT_DY = 13; // in view coordinates, amplitude of the zig-zag pattern when the fuse is tripped
+  const SPLIT_DX = 8; // in view coordinates, half the distance of the split part of the fuse when tripped
   const VERTICAL_GLASS_MARGIN = 3;
   const DEFAULT_GLASS_FILL = '#c3dbfd';
 
@@ -74,7 +74,7 @@ define( require => {
         center: fuseImageNode.center
       } );
 
-      // REVIEW: Added doc? "Fuse filament thickness should resemble its rating."
+      // Fuse filament thickness is proportional to its current rating
       const updateFilamentPathLineWidth = currentRating => filamentPath.setLineWidth( Util.linear(
         fuse.currentRatingProperty.range.min, fuse.currentRatingProperty.range.max, 1, 4, currentRating
       ) );
@@ -139,8 +139,7 @@ define( require => {
       }
 
       // @private
-      // REVIEW: Possibly change to disposeFuseNode()?
-      this.disposeResistorNode = () => {
+      this.disposeFuseNode = () => {
         lifelikeFuseNode.dispose();
         fuse.currentRatingProperty.unlink( updateFilamentPathLineWidth );
         if ( !options.isIcon ) {
@@ -173,8 +172,7 @@ define( require => {
      * @override
      */
     dispose() {
-      // REVIEW: Possibly change to disposeFuseNode()?
-      this.disposeResistorNode();
+      this.disposeFuseNode();
       super.dispose();
     }
   }
