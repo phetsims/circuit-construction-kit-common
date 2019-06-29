@@ -189,7 +189,6 @@ define( require => {
       }
     }
 
-
     /**
      * Set the view type
      * @param {CircuitElementViewType} viewType
