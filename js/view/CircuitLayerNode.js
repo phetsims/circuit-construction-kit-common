@@ -332,7 +332,7 @@ define( require => {
         content: cutIcon,
         minXMargin: 10,
         minYMargin: 10,
-        tandem: Tandem.rootTandem.createTandem( 'cutButton' )
+        tandem: Tandem.globalTandem.createTandem( 'cutButton' )
       } );
       this.cutButton.addListener( () => {
         assert && assert( circuit.getSelectedVertex(), 'Button should only be available if a vertex is selected' );

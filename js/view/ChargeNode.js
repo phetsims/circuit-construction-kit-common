@@ -31,7 +31,7 @@ define( require => {
     scale: 0.78
   } ).toDataURLImageSynchronous();
 
-  const ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.rootTandem.createTandem( 'arrowNode' ) )
+  const ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.globalTandem.createTandem( 'arrowNode' ) )
     .toDataURLImageSynchronous();
 
   const ARROW_OFFSET = Matrix3.translation( -ARROW_NODE.width / 2, -ARROW_NODE.height / 2 );
