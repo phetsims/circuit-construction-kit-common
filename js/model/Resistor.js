@@ -100,8 +100,10 @@ define( require => {
     'HAND',
     'DOG',
     'DOLLAR_BILL'
-  ], ResistorType => {
-    ResistorType.isMetallic = type => type === ResistorType.COIN || type === ResistorType.PAPER_CLIP;
+  ], {
+    beforeFreeze: ResistorType => {
+      ResistorType.isMetallic = type => type === ResistorType.COIN || type === ResistorType.PAPER_CLIP;
+    }
   } );
 
   return circuitConstructionKitCommon.register( 'Resistor', Resistor );
