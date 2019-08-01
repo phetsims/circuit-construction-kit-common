@@ -155,7 +155,7 @@ define( require => {
       this.circuitChangedEmitter = new Emitter();
 
       // @public (read-only) {Emitter} - Some actions only take place after an item has been dropped
-      this.vertexDroppedEmitter = new Emitter( { validators: [ { valueType: Vertex } ] } );
+      this.vertexDroppedEmitter = new Emitter( { parameters: [ { valueType: Vertex } ] } );
 
       // @public (read-only) {Emitter} - signifies that a component has been modified (for example, with the
       // CircuitElementEditNode)

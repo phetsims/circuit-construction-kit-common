@@ -39,7 +39,7 @@ define( require => {
       } );
 
       // @public (read-only) {Emitter} Fires an event when the meter is dropped
-      this.droppedEmitter = new Emitter( { validators: [ { valueType: Bounds2 } ] } );
+      this.droppedEmitter = new Emitter( { parameters: [ { valueType: Bounds2 } ] } );
     }
 
     /**
