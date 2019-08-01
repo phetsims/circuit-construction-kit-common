@@ -17,7 +17,6 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   const Emitter = require( 'AXON/Emitter' );
-  const EmitterIO = require( 'AXON/EmitterIO' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Property = require( 'AXON/Property' );
   const PropertyIO = require( 'AXON/PropertyIO' );
@@ -142,7 +141,7 @@ define( require => {
 
         const circuitChangedEmitter = new Emitter( {
           tandem: tandem.createTandem( 'circuitChangedEmitter' ),
-          phetioType: EmitterIO( [ { name: 'circuitJSON', type: StringIO } ] )
+          parameters: [ { name: 'circuitJSON', phetioType: StringIO } ]
         } );
 
         const emitCircuitChanged = () => {
