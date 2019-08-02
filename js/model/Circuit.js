@@ -35,7 +35,6 @@ define( require => {
   const PropertyIO = require( 'AXON/PropertyIO' );
   const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   const SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
-  const StringIO = require( 'TANDEM/types/StringIO' );
   const Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
   const Tandem = require( 'TANDEM/Tandem' );
   const Vector2 = require( 'DOT/Vector2' );
