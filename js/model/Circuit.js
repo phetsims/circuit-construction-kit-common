@@ -22,10 +22,12 @@ define( require => {
   const CurrentType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CurrentType' );
   const Emitter = require( 'AXON/Emitter' );
   const Enumeration = require( 'PHET_CORE/Enumeration' );
+  const EnumerationProperty = require( 'AXON/EnumerationProperty' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const ModifiedNodalAnalysisCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuit' );
   const ModifiedNodalAnalysisCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuitElement' );
+  const NullableIO = require( 'TANDEM/types/NullableIO' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const ObjectIO = require( 'TANDEM/types/ObjectIO' );
   const ObservableArray = require( 'AXON/ObservableArray' );
@@ -83,10 +85,8 @@ define( require => {
       this.charges = new ObservableArray();
 
       // @public {Property.<CurrentType>} - whether to show charges or conventional current
-      this.currentTypeProperty = new Property( CCKCQueryParameters.currentType, {
-        validValues: CurrentType.VALUES,
-        tandem: tandem.createTandem( 'currentTypeProperty' ),
-        phetioType: PropertyIO( StringIO )
+      this.currentTypeProperty = new EnumerationProperty( CurrentType, CCKCQueryParameters.currentType, {
+        tandem: tandem.createTandem( 'currentTypeProperty' )
       } );
 
       // When the current type changes, mark everything as dirty and relayout charges
@@ -207,7 +207,7 @@ define( require => {
       // Vertex.selectedProperty.  These strategies can be unified when we work on a11y.
       this.selectedCircuitElementProperty = new Property( null, {
         tandem: tandem.createTandem( 'selectedCircuitElementProperty' ),
-        phetioType: PropertyIO( ObjectIO )
+        phetioType: PropertyIO( NullableIO( ObjectIO ) )
       } );
 
       this.selectedCircuitElementProperty.link( selectedCircuitElement => {

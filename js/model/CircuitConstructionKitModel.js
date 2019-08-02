@@ -17,6 +17,7 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   const Emitter = require( 'AXON/Emitter' );
+  const EnumerationProperty = require( 'AXON/EnumerationProperty' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Property = require( 'AXON/Property' );
   const PropertyIO = require( 'AXON/PropertyIO' );
@@ -90,17 +91,13 @@ define( require => {
       } );
 
       // @public {Property.<InteractionMode>} - whether the user is in the CircuitConstructionKitModel.InteractionMode.EXPLORE or CircuitConstructionKitModel.InteractionMode.TEST mode
-      this.modeProperty = new Property( Circuit.InteractionMode.EXPLORE, {
-        validValues: Circuit.InteractionMode.VALUES,
-        tandem: tandem.createTandem( 'modeProperty' ),
-        phetioType: PropertyIO( StringIO )
+      this.modeProperty = new EnumerationProperty( Circuit.InteractionMode, Circuit.InteractionMode.EXPLORE, {
+        tandem: tandem.createTandem( 'modeProperty' )
       } );
 
       // @public {Property.<CircuitElementViewType>} - whether to show lifelike or schematic representations
-      this.viewTypeProperty = new Property( CircuitElementViewType.LIFELIKE, {
-        validValues: CircuitElementViewType.VALUES,
-        tandem: tandem.createTandem( 'viewTypeProperty' ),
-        phetioType: PropertyIO( StringIO )
+      this.viewTypeProperty = new EnumerationProperty( CircuitElementViewType, CircuitElementViewType.LIFELIKE, {
+        tandem: tandem.createTandem( 'viewTypeProperty' )
       } );
 
       // When the user manipulates something, hide the readouts, see
