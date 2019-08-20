@@ -21,7 +21,6 @@ define( require => {
   class Wire extends CircuitElement {
 
     /**
-     * Wire main constructor
      * @param {Vertex} startVertex
      * @param {Vertex} endVertex
      * @param {Property.<number>} resistivityProperty
