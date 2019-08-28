@@ -9,7 +9,6 @@ define( require => {
   'use strict';
 
   // modules
-  const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
@@ -20,15 +19,14 @@ define( require => {
   const Shape = require( 'KITE/Shape' );
 
   // images
-  const batteryHighImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery-high.png' );
   const batteryImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
 
   // constants
-  // dimensions for schematic battery
-  const SMALL_TERMINAL_WIDTH = 50;
+  // dimensions for schematic
+  const SMALL_TERMINAL_WIDTH = 104;
   const LARGE_TERMINAL_WIDTH = 104;
   const WIDTH = 188;
-  const GAP = 33;
+  const GAP = 30;
   const LEFT_JUNCTION = WIDTH / 2 - GAP / 2;
   const RIGHT_JUNCTION = WIDTH / 2 + GAP / 2;
 
@@ -71,7 +69,7 @@ define( require => {
      * @param {Object} [options]
      */
     constructor( screenView, circuitLayerNode, capacitor, viewTypeProperty, tandem, options ) {
-      const lifelikeNode = new Image( capacitor.batteryType === Battery.BatteryType.NORMAL ? batteryImage : batteryHighImage );
+      const lifelikeNode = new Image( batteryImage );
 
       lifelikeNode.mutate( {
         scale: capacitor.distanceBetweenVertices / lifelikeNode.width
@@ -117,8 +115,7 @@ define( require => {
    * @public {Array.<Image>}
    */
   CapacitorNode.webglSpriteNodes = [
-    new Image( batteryImage ),
-    new Image( batteryHighImage )
+    new Image( batteryImage )
   ];
 
   return circuitConstructionKitCommon.register( 'CapacitorNode', CapacitorNode );
