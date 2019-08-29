@@ -75,7 +75,8 @@ define( require => {
           return euclideanDistance( aCurrents, bCurrents );
         }
       };
-      //turing the error threshold too low here can fail the inductor tests in MNATestCase
+
+      // Turning the error threshold too low here can fail the inductor tests in MNATestCase
       const x = timestepSubdivisions.stepInTimeWithHistory( new DynamicState( this, null ), steppable, dt );
       return new CircuitResult( x );
     }
