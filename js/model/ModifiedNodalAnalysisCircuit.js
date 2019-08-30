@@ -48,6 +48,8 @@ define( require => {
       this.nodeSet = {};
       for ( let k = 0; k < this.elements.length; k++ ) {
         const element = this.elements[ k ];
+        assert && assert( typeof ( element.nodeId0 ) === 'number', 'nodeID should be a number' );
+        assert && assert( typeof ( element.nodeId1 ) === 'number', 'nodeID should be a number' );
         this.nodeSet[ element.nodeId0 ] = element.nodeId0;
         this.nodeSet[ element.nodeId1 ] = element.nodeId1;
       }

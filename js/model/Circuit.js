@@ -20,11 +20,13 @@ define( require => {
   const ChargeAnimator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ChargeAnimator' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CurrentType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CurrentType' );
+  const DynamicCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/DynamicCircuit' );
   const Emitter = require( 'AXON/Emitter' );
   const Enumeration = require( 'PHET_CORE/Enumeration' );
   const EnumerationProperty = require( 'AXON/EnumerationProperty' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
+  const ModifiedNodalAnalysisAdapter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisAdapter' );
   const ModifiedNodalAnalysisCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuit' );
   const ModifiedNodalAnalysisCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuitElement' );
   const NullableIO = require( 'TANDEM/types/NullableIO' );
@@ -638,6 +640,8 @@ define( require => {
      */
     solve() {
 
+      // TODO: reconcile this with step(dt)
+
       // Must run the solver even if there is only 1 battery, because it solves for the voltage difference between
       // the vertices
 
@@ -701,6 +705,10 @@ define( require => {
       this.circuitChangedEmitter.emit();
     }
 
+    setSolution( solution ) {
+      this.solution = solution;
+    }
+
     /**
      * Connect the vertices, merging oldVertex into vertex1 and deleting oldVertex
      * @param {Vertex} targetVertex
@@ -751,6 +759,12 @@ define( require => {
 
       this.timeProperty.value += dt;
       this.circuitElements.getArray().forEach( element => element.step && element.step( this.timeProperty.value, dt ) );
+
+      ModifiedNodalAnalysisAdapter.apply( this, dt );
+
+      // TODO: reconcile this with step(dt)
+
+      this.circuitChangedEmitter.emit();
     }
 
     /**

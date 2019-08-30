@@ -40,6 +40,7 @@ define( require => {
      *
      * @param {number} dt
      * @returns {DynamicCircuitSolution}
+     * @public
      */
     solvePropagate( dt ) {
       const result = this.toMNACircuit( dt );
@@ -127,12 +128,12 @@ define( require => {
      * Applies the specified solution to the circuit.
      *
      * @param {DynamicCircuitSolution} solution
-     * @returns DynamicCircuit
+     * @returns {DynamicCircuit}
      */
     updateCircuit( solution ) {
-      const updatedCapacitors = this.capacitors.map( c => new DynamicCapacitor( c.capacitor, new DynamicElementState(
-        solution.getNodeVoltage( c.capacitor.nodeId1 ) - solution.getNodeVoltage( c.capacitor.nodeId0 ),
-        solution.getCurrent( c.capacitor ) ) )
+      const updatedCapacitors = this.capacitors.map( c => new DynamicCapacitor( c, new DynamicElementState(
+        solution.getNodeVoltage( c.capacitor.nodeId1 ) - solution.getNodeVoltage( c.nodeId0 ),
+        solution.getCurrent( c ) ) )
       );
       const updatedInductors = this.inductors.map( i => new DynamicInductor( i.inductor, new DynamicElementState(
         solution.getNodeVoltage( i.inductor.nodeId1 ) - solution.getNodeVoltage( i.inductor.nodeId0 ),
@@ -160,8 +161,8 @@ define( require => {
       elements.push( ...this.resistors );
       elements.push( ...this.resistiveBatteries );
       elements.push( ...this.currents );
-      this.capacitors.forEach( c => elements.push( c.capacitor ) );
-      this.inductors.forEach( i => elements.push( i.inductor ) );
+      this.capacitors.forEach( c => elements.push( c ) );
+      this.inductors.forEach( i => elements.push( i ) );
       elements.forEach( e => {
         usedNodes[ e.nodeId0 ] = true;
         usedNodes[ e.nodeId1 ] = true;
@@ -198,7 +199,7 @@ define( require => {
       //        double vc = state.v;
       //        double rc = dt / c;
       this.capacitors.forEach( c => { // c is DynamicCapacitor
-        const capacitor = c.capacitor;
+        const capacitor = c;
         const state = c.state;
         //in series
         const keys = Object.keys( usedNodes ).map( x => parseInt( x, 10 ) );
