@@ -82,6 +82,9 @@ define( require => {
       this.currentProperty = new NumberProperty( 0, {
         reentrant: options.isCurrentReentrant
       } );
+      this.currentProperty.link( c => {
+        assert && assert( !isNaN( c ) );
+      } );
 
       // @public (read-only) {BooleanProperty} - true if the CircuitElement can be edited and dragged
       this.interactiveProperty = new BooleanProperty( options.interactive );

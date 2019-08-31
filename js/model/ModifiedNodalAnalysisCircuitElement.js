@@ -24,6 +24,10 @@ define( require => {
       assert && assert( typeof nodeId1 === 'number' );
       assert && assert( typeof value === 'number' );
 
+      assert && assert( !isNaN( nodeId0 ) );
+      assert && assert( !isNaN( nodeId1 ) );
+      assert && assert( !isNaN( value ) );
+
       // @public (read-only) {number} index of the start node
       this.nodeId0 = nodeId0;
 

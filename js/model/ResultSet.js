@@ -36,7 +36,7 @@ define( require => {
      */
     getTotalTime() {
       let sum = 0;
-      this.states.forEach( state => {sum += state.dt;} );
+      this.states.forEach( state => {sum += state.subdivisionDT;} );
       return sum;
     }
   }

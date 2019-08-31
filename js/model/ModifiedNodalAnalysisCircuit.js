@@ -212,6 +212,7 @@ define( require => {
           const element = this.elements[ i ];
           if ( element.containsNodeId( nodeToVisit ) ) {
             const oppositeNode = element.getOppositeNode( nodeToVisit );
+            assert && assert( !isNaN( oppositeNode ) );
             if ( visited.indexOf( oppositeNode ) === -1 ) {
               toVisit.push( oppositeNode );
             }
@@ -350,11 +351,16 @@ define( require => {
       const voltageMap = {};
       for ( let i = 0; i < unknownVoltages.length; i++ ) {
         const unknownVoltage = unknownVoltages[ i ];
-        voltageMap[ unknownVoltage.node ] = x.get( getIndexByEquals( unknowns, unknownVoltage ), 0 );
+        const rhs = x.get( getIndexByEquals( unknowns, unknownVoltage ), 0 );
+        assert && assert( !isNaN( rhs ) );
+        voltageMap[ unknownVoltage.node ] = rhs;
       }
       for ( let i = 0; i < unknownCurrents.length; i++ ) {
         const unknownCurrent = unknownCurrents[ i ];
         unknownCurrent.element.currentSolution = x.get( getIndexByEquals( unknowns, unknownCurrent ), 0 );
+      }
+      if ( _.keys( voltageMap ).length > 0 ) {
+        // debugger;
       }
 
       return new ModifiedNodalAnalysisSolution( voltageMap, unknownCurrents.map( unknownCurrent => unknownCurrent.element ) );
@@ -495,6 +501,8 @@ define( require => {
      * @constructor
      */
     constructor( value, terms ) {
+
+      assert && assert( !isNaN( value ) );
 
       // @public (read-only) {number} the value of the equation.  For instance in x+3y=12, the value is 12
       this.value = value;

@@ -34,6 +34,10 @@ define( require => {
 
       // @public {Property.<number>} the capacitance in farads
       this.capacitanceProperty = new NumberProperty( options.capacitance );
+
+      // TODO: factor out to a parent type for Capacitor and Inductor
+      this.mnaVoltageDrop = 0;
+      this.mnaCurrent = 0;
     }
 
     /**

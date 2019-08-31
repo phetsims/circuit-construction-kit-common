@@ -641,6 +641,7 @@ define( require => {
     solve() {
 
       // TODO: reconcile this with step(dt)
+      // TODO: this is being moved to ModifiedNodalAnalaysisAdapter.js
 
       // Must run the solver even if there is only 1 battery, because it solves for the voltage difference between
       // the vertices

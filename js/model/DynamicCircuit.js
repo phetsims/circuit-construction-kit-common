@@ -131,10 +131,13 @@ define( require => {
      * @returns {DynamicCircuit}
      */
     updateCircuit( solution ) {
-      const updatedCapacitors = this.capacitors.map( c => new DynamicCapacitor( c, new DynamicElementState(
-        solution.getNodeVoltage( c.capacitor.nodeId1 ) - solution.getNodeVoltage( c.nodeId0 ),
-        solution.getCurrent( c ) ) )
-      );
+      const updatedCapacitors = this.capacitors.map( capacitor => {
+        const dynamicElementState = new DynamicElementState(
+          solution.getNodeVoltage( capacitor.capacitor.nodeId1 ) - solution.getNodeVoltage( capacitor.capacitor.nodeId0 ),
+          solution.getCurrent( capacitor )
+        );
+        return new DynamicCapacitor( capacitor.capacitor, dynamicElementState );
+      } );
       const updatedInductors = this.inductors.map( i => new DynamicInductor( i.inductor, new DynamicElementState(
         solution.getNodeVoltage( i.inductor.nodeId1 ) - solution.getNodeVoltage( i.inductor.nodeId0 ),
         solution.getCurrent( i.inductor ) ) )
@@ -164,9 +167,21 @@ define( require => {
       this.capacitors.forEach( c => elements.push( c ) );
       this.inductors.forEach( i => elements.push( i ) );
       elements.forEach( e => {
-        usedNodes[ e.nodeId0 ] = true;
-        usedNodes[ e.nodeId1 ] = true;
+
+        // TODO: Surely there must be a better way!
+        if ( e.capacitor ) {
+          usedNodes[ e.capacitor.nodeId0 ] = true;
+          usedNodes[ e.capacitor.nodeId1 ] = true;
+        }
+        else {
+          assert && assert( typeof e.nodeId0 === 'number' && !isNaN( e.nodeId0 ) );
+          assert && assert( typeof e.nodeId1 === 'number' && !isNaN( e.nodeId1 ) );
+          usedNodes[ e.nodeId0 ] = true;
+          usedNodes[ e.nodeId1 ] = true;
+        }
+
       } );
+      // debugger;
 
       //each resistive battery is a resistor in series with a battery
       this.resistiveBatteries.forEach( resistiveBattery => {
@@ -185,7 +200,7 @@ define( require => {
         //we need to be able to get the current for this component
         currentCompanions.push( {
           element: resistiveBattery,
-          getValueForSolution: solution => solution.getCurrent( idealBattery )
+          getValueForSolution: solution => solution.getCurrentForResistor( idealBattery )
         } );
       } );
 
@@ -206,12 +221,13 @@ define( require => {
         const newNode = Math.max( ...keys ) + 1;
         usedNodes[ newNode ] = true;
 
-        const companionResistance = dt / 2.0 / capacitor.capacitance;
+        const companionResistance = dt / 2.0 / capacitor.capacitor.capacitance;
         const companionVoltage = state.voltage - companionResistance * state.current; //TODO: explain the difference between this sign and the one in TestTheveninCapacitorRC
         //      println("companion resistance = "+companionResistance+", companion voltage = "+companionVoltage)
 
-        const battery = new ModifiedNodalAnalysisCircuitElement( capacitor.nodeId0, newNode, null, companionVoltage );
-        const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, capacitor.nodeId1, null, companionResistance );
+        const battery = new ModifiedNodalAnalysisCircuitElement( capacitor.capacitor.nodeId0, newNode, null, companionVoltage );
+        const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, capacitor.capacitor.nodeId1, null, companionResistance );
+        // debugger;
         companionBatteries.push( battery );
         companionResistors.push( resistor );
 
@@ -246,8 +262,8 @@ define( require => {
         companionBatteries.push( battery );
         companionResistors.push( resistor );
 
-        //we need to be able to get the current for this component
-        //in series, so current is same through both companion components
+        // we need to be able to get the current for this component
+        // in series, so current is same through both companion components
         currentCompanions.push( {
           element: inductor,
           getValueForSolution: solution => -solution.getCurrentForResistor( resistor ) // TODO: check sign, this was converted from battery to resistor
@@ -291,10 +307,14 @@ define( require => {
      */
     getTimeAverageCurrent( element ) {
       let weightedSum = 0.0;
-      this.resultSet.forEach( state => {
-        weightedSum += state.state.getSolution().getCurrent( element ) * state.dt;//todo: make sure this is right
+      this.resultSet.states.forEach( state => {
+        weightedSum += state.state.getSolution().getCurrent( element ) * state.subdivisionDT;//todo: make sure this is right
+        assert && assert( !isNaN( weightedSum ) );
       } );
-      return weightedSum / this.resultSet.getTotalTime();
+
+      const number = weightedSum / this.resultSet.getTotalTime();
+      assert && assert( !isNaN( number ) );
+      return number;
     }
 
     /**
@@ -357,6 +377,7 @@ define( require => {
     // public DynamicCapacitor( Capacitor capacitor, DynamicElementState state ) {
     constructor( capacitor, state ) {
       assert && assert( !isNaN( state.current ), 'current should be numeric' );
+      assert && assert( capacitor instanceof DynamicCircuit.Capacitor );
       this.capacitor = capacitor;
       this.state = state;
       this.current = state.current;
@@ -487,7 +508,7 @@ define( require => {
      * @returns {number}
      */
     getCurrent( element ) {
-      const companion = _.find( this.currentCompanions, c => c.element === element );
+      const companion = _.find( this.currentCompanions, c => c.element === element || c.element.capacitor === element );
 
       if ( companion ) {
         return companion.getValueForSolution( this.mnaSolution );
