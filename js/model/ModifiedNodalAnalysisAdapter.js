@@ -9,6 +9,7 @@ define( require => {
   'use strict';
 
   // modules
+  const ACVoltage = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACVoltage' );
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
@@ -34,9 +35,9 @@ define( require => {
     applySolution( result ) {
 
       //don't set voltage on the battery; that actually changes its nominal voltage
-      // TODO: we don't need either of these, right?
+      // TODO: we don't need this, right?
       // this.battery.setMNACurrent( result.getInstantaneousCurrent( this ) );
-      // this.battery.setCurrent( result.getTimeAverageCurrent( this ) );
+      this.battery.currentProperty.value = result.getTimeAverageCurrent( this );
     }
   }
 
@@ -81,21 +82,22 @@ define( require => {
     }
   }
 
-  class InductorAdapter extends DynamicCircuit.DynamicInductor {
-
-    constructor( c, inductor ) {
-      super( new DynamicCircuit.Inductor( c.vertices.indexOf( inductor.startVertexProperty.value ), c.vertices.indexOf( inductor.endVertexProperty.value ), inductor.getInductance() ),
-        new DynamicCircuit.DynamicElementState( inductor.getMNAVoltageDrop(), -inductor.getMNACurrent() ) );//todo: sign error
-      this.inductor = inductor;
-    }
-
-    applySolution( solution ) {
-      this.inductor.setCurrent( -solution.getTimeAverageCurrent( this.getInductor() ) );//todo: sign error
-      this.inductor.setMNACurrent( -solution.getInstantaneousCurrent( this.getInductor() ) );
-      this.inductor.setVoltageDrop( solution.getTimeAverageVoltage( this.getInductor() ) );
-      this.inductor.setMNAVoltageDrop( solution.getInstantaneousVoltage( this.getInductor() ) );
-    }
-  }
+  // TODO:
+  // class InductorAdapter extends DynamicCircuit.DynamicInductor {
+  //
+  //   constructor( c, inductor ) {
+  //     super( new DynamicCircuit.Inductor( c.vertices.indexOf( inductor.startVertexProperty.value ), c.vertices.indexOf( inductor.endVertexProperty.value ), inductor.getInductance() ),
+  //       new DynamicCircuit.DynamicElementState( inductor.getMNAVoltageDrop(), -inductor.getMNACurrent() ) );//todo: sign error
+  //     this.inductor = inductor;
+  //   }
+  //
+  //   applySolution( solution ) {
+  //     this.inductor.setCurrent( -solution.getTimeAverageCurrent( this.getInductor() ) );//todo: sign error
+  //     this.inductor.setMNACurrent( -solution.getInstantaneousCurrent( this.getInductor() ) );
+  //     this.inductor.setVoltageDrop( solution.getTimeAverageVoltage( this.getInductor() ) );
+  //     this.inductor.setMNAVoltageDrop( solution.getInstantaneousVoltage( this.getInductor() ) );
+  //   }
+  // }
 
   class ModifiedNodalAnalysisAdapter {
 
@@ -132,6 +134,10 @@ define( require => {
         else if ( branch instanceof Capacitor ) {
           capacitors.push( new CapacitorAdapter( circuit, branch ) );
         }
+        else if ( branch instanceof ACVoltage ) {
+          batteries.push( new ResistiveBatteryAdapter( circuit, branch ) );
+        }
+        // TODO: Inductors!
         // else if ( branch instanceof Inductor ) {
         //   inductors.push( new InductorAdapter( circuit, branch ) );
         // }

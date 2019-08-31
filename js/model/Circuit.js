@@ -10,25 +10,20 @@ define( require => {
   'use strict';
 
   // modules
-  const ACVoltage = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACVoltage' );
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const BooleanProperty = require( 'AXON/BooleanProperty' );
-  const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   const Charge = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Charge' );
   const ChargeAnimator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ChargeAnimator' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CurrentType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CurrentType' );
-  const DynamicCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/DynamicCircuit' );
   const Emitter = require( 'AXON/Emitter' );
   const Enumeration = require( 'PHET_CORE/Enumeration' );
   const EnumerationProperty = require( 'AXON/EnumerationProperty' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const ModifiedNodalAnalysisAdapter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisAdapter' );
-  const ModifiedNodalAnalysisCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuit' );
-  const ModifiedNodalAnalysisCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuitElement' );
   const NullableIO = require( 'TANDEM/types/NullableIO' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const ObjectIO = require( 'TANDEM/types/ObjectIO' );
@@ -97,6 +92,9 @@ define( require => {
       this.showCurrentProperty = new BooleanProperty( CCKCQueryParameters.showCurrent, {
         tandem: tandem.createTandem( 'showCurrentProperty' )
       } );
+
+      // @public (read-only) elapsed time for the circuit model
+      this.timeProperty = new NumberProperty( 0 );
 
       // @public {ChargeAnimator} - move the charges with speed proportional to current
       this.chargeAnimator = new ChargeAnimator( this );
@@ -259,9 +257,6 @@ define( require => {
       } );
 
       this.batteryResistanceProperty.link( solveListener );
-
-      // @public (read-only) elapsed time for the circuit model
-      this.timeProperty = new NumberProperty( 0 );
 
       // @public (read-only) - for creating tandems
       this.vertexGroupTandem = tandem.createGroupTandem( 'vertices' );
@@ -640,70 +635,9 @@ define( require => {
      */
     solve() {
 
-      // TODO: reconcile this with step(dt)
-      // TODO: this is being moved to ModifiedNodalAnalaysisAdapter.js
-
-      // Must run the solver even if there is only 1 battery, because it solves for the voltage difference between
-      // the vertices
-
-      const batteries = this.circuitElements.getArray().filter( b => b instanceof Battery || b instanceof ACVoltage && !( b instanceof Capacitor ) );
-      const resistors = this.circuitElements.getArray().filter( b => !( b instanceof Battery ) && !( b instanceof Capacitor ) && !( b instanceof ACVoltage ) );
-
-      // introduce a synthetic vertex for each battery to model internal resistance
-      const resistorAdapters = resistors.map( circuitElement =>
-        new ModifiedNodalAnalysisCircuitElement(
-          this.vertices.indexOf( circuitElement.startVertexProperty.get() ), // the index of vertex corresponds to position in list.
-          this.vertices.indexOf( circuitElement.endVertexProperty.get() ),
-          circuitElement,
-          circuitElement.resistanceProperty.value
-        )
-      );
-      const batteryAdapters = [];
-
-      let nextSyntheticVertexIndex = this.vertices.length;
-      batteries.forEach( battery => {
-
-        // add a voltage source from startVertex to syntheticVertex
-        batteryAdapters.push( new ModifiedNodalAnalysisCircuitElement(
-          this.vertices.indexOf( battery.startVertexProperty.value ),
-          nextSyntheticVertexIndex,
-          battery,
-          battery.voltageProperty.value
-        ) );
-
-        // add a resistor from syntheticVertex to endVertex
-        resistorAdapters.push( new ModifiedNodalAnalysisCircuitElement(
-          nextSyntheticVertexIndex,
-          this.vertices.indexOf( battery.endVertexProperty.value ),
-          battery,
-          battery.internalResistanceProperty.value
-        ) );
-
-        // Prepare for next battery, if any
-        nextSyntheticVertexIndex++;
-      } );
-
-      const solution = new ModifiedNodalAnalysisCircuit( batteryAdapters, resistorAdapters, [] ).solve();
-
-      // Apply the node voltages to the vertices
-      this.vertices.getArray().forEach( ( vertex, i ) => {
-
-        // Unconnected vertices like those in the black box may not have an entry in the matrix, so mark them as zero.
-        vertex.voltageProperty.set( solution.nodeVoltages[ i ] || 0 );
-      } );
-
-      // Apply the currents through the CircuitElements
-      solution.elements.forEach( element => element.circuitElement.currentProperty.set( element.currentSolution ) );
-
-      // For resistors with r>0, Ohm's Law gives the current.  For components with no resistance (like closed switch or
-      // 0-resistance battery), the current is given by the matrix solution.
-      resistorAdapters.forEach( resistorAdapter => {
-        if ( resistorAdapter.value !== 0 ) {
-          resistorAdapter.circuitElement.currentProperty.set( solution.getCurrentForResistor( resistorAdapter ) );
-        }
-      } );
-
-      this.circuitChangedEmitter.emit();
+      // TODO: the solver code has been moved to step(), but how can we immediately update the circuit on a topology
+      // TODO: change without waiting for step?  We cannot wait for step() to run, and we cannot run step with dt=0
+      // TODO: also, maybe code that used to call solve() should not call it any more?
     }
 
     setSolution( solution ) {
@@ -761,9 +695,9 @@ define( require => {
       this.timeProperty.value += dt;
       this.circuitElements.getArray().forEach( element => element.step && element.step( this.timeProperty.value, dt ) );
 
-      ModifiedNodalAnalysisAdapter.apply( this, dt );
-
-      // TODO: reconcile this with step(dt)
+      // TODO: We will need to tune dt or make sure it is calibrated
+      // TODO: use an actual decay curve for calibration
+      ModifiedNodalAnalysisAdapter.apply( this, dt * 100 );
 
       this.circuitChangedEmitter.emit();
     }

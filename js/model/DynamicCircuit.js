@@ -189,10 +189,9 @@ define( require => {
         const newNode = Math.max( ...keys ) + 1;
         usedNodes[ newNode ] = true;
 
-        // TODO: JS how to indicate this is battery?  It is lost in
         const idealBattery = new ModifiedNodalAnalysisCircuitElement( resistiveBattery.nodeId0, newNode, null, resistiveBattery.voltage ); // final LinearCircuitSolver.Battery
 
-        // TODO: JS how to indicate this is resistor?
+        // same type as idealBattery, but treated like a resistor because it goes in the resistor array
         const idealResistor = new ModifiedNodalAnalysisCircuitElement( newNode, resistiveBattery.nodeId1, null, resistiveBattery.resistance ); // LinearCircuitSolver.Resistor
         companionBatteries.push( idealBattery );
         companionResistors.push( idealResistor );
@@ -200,7 +199,7 @@ define( require => {
         //we need to be able to get the current for this component
         currentCompanions.push( {
           element: resistiveBattery,
-          getValueForSolution: solution => solution.getCurrentForResistor( idealBattery )
+          getValueForSolution: solution => idealBattery.currentSolution
         } );
       } );
 
@@ -236,7 +235,7 @@ define( require => {
         // TODO: used to use battery to get current.  Check sign is correct.
         currentCompanions.push( {
           element: capacitor,
-          getValueForSolution: solution => solution.getCurrentForResistor( resistor )
+          getValueForSolution: solution => battery.currentSolution
         } );
       } );
 
@@ -508,13 +507,27 @@ define( require => {
      * @returns {number}
      */
     getCurrent( element ) {
+
+      // For resistors with r>0, Ohm's Law gives the current.  For components with no resistance (like closed switch or
+      // 0-resistance battery), the current is given by the matrix solution.
+      // TODO: can the nan check be done at assignment time?
+      if ( element.currentSolution ) {
+        assert && assert( !isNaN( element.currentSolution ) );
+        return element.currentSolution;
+      }
+
       const companion = _.find( this.currentCompanions, c => c.element === element || c.element.capacitor === element );
 
       if ( companion ) {
-        return companion.getValueForSolution( this.mnaSolution );
+        // TODO: maybe a passthrough assertNumber function?
+        const x = companion.getValueForSolution( this.mnaSolution );
+        assert && assert( !isNaN( x ) );
+        return x;
       }
       else {
-        return this.mnaSolution.getCurrentForResistor( element );
+        const y = this.mnaSolution.getCurrentForResistor( element );
+        assert && assert( !isNaN( y ) );
+        return y;
       }
     }
 
