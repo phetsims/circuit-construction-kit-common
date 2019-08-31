@@ -117,9 +117,6 @@ define( require => {
         else if ( branch instanceof Wire ) {
           resistors.push( new ResistorAdapter( circuit, branch ) );
         }
-        // else if ( branch instanceof Filament ) {
-        //   resistors.push( new ResistorAdapter( circuit, branch ) );
-        // }
         else if ( branch instanceof Switch ) {
           if ( branch.isClosed() ) {
             resistors.push( new ResistorAdapter( circuit, branch ) );
