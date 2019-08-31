@@ -77,7 +77,7 @@ define( require => {
     applySolution( solution ) {
       this._capacitor.currentProperty.value = solution.getTimeAverageCurrent( this.capacitor );
       this._capacitor.mnaCurrent = solution.getInstantaneousCurrent( this.capacitor );
-      // this._capacitor.setVoltageDrop( solution.getTimeAverageVoltage( this.capacitor ) ); // TODO: hallo?
+      // this._capacitor.setVoltageDrop( solution.getTimeAverageVoltage( this.capacitor ) ); // TODO: is this needed?
       this._capacitor.mnaVoltageDrop = solution.getInstantaneousVoltage( this.capacitor );
     }
   }
