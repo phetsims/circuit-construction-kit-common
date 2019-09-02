@@ -20,6 +20,9 @@
   "oneSecond": {
     "value": "1 s"
   },
+  "capacitance": {
+    "value": "Capacitance"
+  },
   "currentRating": {
     "value": "Current Rating"
   },
@@ -130,6 +133,9 @@
   },
   "currentUnits": {
     "value": "{{current}} A"
+  },
+  "capacitanceUnits": {
+    "value": "{{capacitance}} F"
   },
   "fuseValue": {
     "value": "{{resistance}} mΩ<br><span style=\"font-size: 16px;\">≤ {{currentRating}} A</span>"

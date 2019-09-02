@@ -12,6 +12,7 @@ define( require => {
   // modules
   const ACVoltage = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACVoltage' );
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
+  const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CircuitElementEditNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditNode' );
@@ -33,6 +34,8 @@ define( require => {
   const Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
 
   // strings
+  const capacitanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/capacitance' );
+  const capacitanceUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/capacitanceUnits' );
   const currentRatingString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/currentRating' );
   const currentUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/currentUnits' );
   const frequencyHzValuePatternString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/frequencyHzValuePattern' );
@@ -106,6 +109,7 @@ define( require => {
           const isSwitch = selectedCircuitElement instanceof Switch;
           const isSeriesAmmeter = selectedCircuitElement instanceof SeriesAmmeter;
           const isACSource = selectedCircuitElement instanceof ACVoltage;
+          const isCapacitor = selectedCircuitElement instanceof Capacitor;
 
           if ( isResistor && selectedCircuitElement.isResistanceEditable() ) {
             editNode = new EditPanel( new CircuitElementEditNode(
@@ -204,6 +208,21 @@ define( require => {
                   }
                 ) ]
             } ) );
+          }
+          else if ( isCapacitor ) {
+            editNode = new EditPanel( new CircuitElementEditNode( capacitanceString,
+
+              // Adapter to take from {{named}} to {{value}} for usage in common code
+              StringUtils.fillIn( capacitanceUnitsString, {
+                capacitance: SunConstants.VALUE_NAMED_PLACEHOLDER
+              } ),
+              selectedCircuitElement.capacitanceProperty,
+              circuit,
+              selectedCircuitElement,
+              groupTandem.createNextTandem(), {
+                editableRange: selectedCircuitElement.capacitanceProperty.range
+              }
+            ) );
           }
         }
         else {

@@ -695,9 +695,7 @@ define( require => {
       this.timeProperty.value += dt;
       this.circuitElements.getArray().forEach( element => element.step && element.step( this.timeProperty.value, dt ) );
 
-      // TODO: We will need to tune dt or make sure it is calibrated
-      // TODO: use an actual decay curve for calibration
-      ModifiedNodalAnalysisAdapter.apply( this, dt * 100 );
+      ModifiedNodalAnalysisAdapter.apply( this, dt );
 
       this.circuitChangedEmitter.emit();
     }

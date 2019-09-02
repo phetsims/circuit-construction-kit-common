@@ -13,6 +13,7 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   const NumberProperty = require( 'AXON/NumberProperty' );
+  const Range = require( 'DOT/Range' );
 
   // constants
   const CAPACITOR_LENGTH = CCKCConstants.CAPACITOR_LENGTH;
@@ -33,11 +34,17 @@ define( require => {
       super( startVertex, endVertex, CAPACITOR_LENGTH, tandem, options );
 
       // @public {Property.<number>} the capacitance in farads
-      this.capacitanceProperty = new NumberProperty( options.capacitance );
+      this.capacitanceProperty = new NumberProperty( options.capacitance, {
+        range: new Range( 0.05, 0.20 )
+      } );
 
       // TODO: factor out to a parent type for Capacitor and Inductor
       this.mnaVoltageDrop = 0;
       this.mnaCurrent = 0;
+
+      // TODO: move this to parent circuit element type
+      this.numberOfDecimalPlaces = 2;
+      this.editorDelta = 0.01;
     }
 
     /**
