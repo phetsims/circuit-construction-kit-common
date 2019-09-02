@@ -118,7 +118,7 @@ define( require => {
           resistors.push( new ResistorAdapter( circuit, branch ) );
         }
         else if ( branch instanceof Switch ) {
-          if ( branch.isClosed() ) {
+          if ( branch.closedProperty.value ) {
             resistors.push( new ResistorAdapter( circuit, branch ) );
           } //else do nothing, since no closed circuit there; see below where current is zeroed out
         }
@@ -156,9 +156,9 @@ define( require => {
         const branch = circuit.circuitElements.get( i );
         if ( branch instanceof Switch ) {
           const sw = branch;
-          if ( !sw.isClosed() ) {
-            sw.setCurrent( 0.0 );
-            sw.setVoltageDrop( 0.0 );
+          if ( !sw.closedProperty.value ) {
+            sw.currentProperty.value = 0.0;
+            // sw.setVoltageDrop( 0.0 );
           }
         }
       }

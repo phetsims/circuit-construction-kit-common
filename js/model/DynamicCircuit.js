@@ -511,7 +511,7 @@ define( require => {
       // For resistors with r>0, Ohm's Law gives the current.  For components with no resistance (like closed switch or
       // 0-resistance battery), the current is given by the matrix solution.
       // TODO: can the nan check be done at assignment time?
-      if ( element.currentSolution ) {
+      if ( element.currentSolution !== null ) {
         assert && assert( !isNaN( element.currentSolution ) );
         return element.currentSolution;
       }
