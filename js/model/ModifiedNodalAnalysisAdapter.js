@@ -130,6 +130,10 @@ define( require => {
                   ( branch instanceof Switch && branch.closedProperty.value ) ) {
           resistors.push( new ResistorAdapter( circuit, branch ) );
         }
+        else if ( branch instanceof Switch && !branch.closedProperty.value ) {
+
+          // no element for an open switch
+        }
         else if ( branch instanceof Capacitor ) {
           capacitors.push( new CapacitorAdapter( circuit, branch ) );
         }
