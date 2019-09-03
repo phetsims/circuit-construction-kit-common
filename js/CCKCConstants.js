@@ -89,6 +89,8 @@ define( require => {
 
     CAPACITOR_LENGTH: 110,
 
+    INDUCTOR_LENGTH: 110,
+
     // Length of household items in view coordinates
     COIN_LENGTH: 85,
     ERASER_LENGTH: 90,

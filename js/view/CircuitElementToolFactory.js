@@ -16,6 +16,7 @@ define( require => {
   const BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
   const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
   const CapacitorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CapacitorNode' );
+  const InductorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/InductorNode' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCLightBulbNode' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
@@ -25,6 +26,7 @@ define( require => {
   const Fuse = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Fuse' );
   const FuseNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FuseNode' );
   const Image = require( 'SCENERY/nodes/Image' );
+  const Inductor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Inductor' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const Line = require( 'SCENERY/nodes/Line' );
   const Node = require( 'SCENERY/nodes/Node' );
@@ -360,6 +362,33 @@ define( require => {
         }
       );
       return capacitorToolNode;
+    }
+
+    /**
+     * @param {number} count - the number that can be dragged out at once
+     * @param {Tandem} tandem
+     * @returns {CircuitElementToolNode}
+     * @public
+     */
+    createInductorToolNode( count, tandem ) {
+      const inductorModel = new Inductor(
+        new Vertex( Vector2.ZERO ),
+        new Vertex( new Vector2( CCKCConstants.INDUCTOR_LENGTH, 0 ) ),
+        tandem.createTandem( 'resistor' )
+      );
+      const inductorToolNode = this.createCircuitElementToolNode( 'INDUCTOR', count,
+        new InductorNode( null, null, inductorModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
+          isIcon: true
+        } ),
+        circuitElement => circuitElement instanceof Inductor,
+        position => {
+          const vertexPair = this.createVertexPair( position, CCKCConstants.INDUCTOR_LENGTH );
+          return new Inductor(
+            vertexPair.startVertex, vertexPair.endVertex, this.circuit.inductorGroupTandem.createNextTandem()
+          );
+        }
+      );
+      return inductorToolNode;
     }
 
     /**

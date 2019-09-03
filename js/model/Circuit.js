@@ -263,6 +263,7 @@ define( require => {
       this.wireGroupTandem = tandem.createGroupTandem( 'wires' );
       this.resistorGroupTandem = tandem.createGroupTandem( 'resistors' );
       this.capacitorGroupTandem = tandem.createGroupTandem( 'capacitors' );
+      this.inductorGroupTandem = tandem.createGroupTandem( 'inductors' );
       this.seriesAmmeterGroupTandem = tandem.createGroupTandem( 'seriesAmmeters' );
       this.switchGroupTandem = tandem.createGroupTandem( 'switches' );
       this.coinGroupTandem = tandem.createGroupTandem( 'coins' );

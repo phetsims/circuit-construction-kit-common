@@ -19,6 +19,7 @@ define( require => {
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   const Fuse = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Fuse' );
   const HBox = require( 'SCENERY/nodes/HBox' );
+  const Inductor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Inductor' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Panel = require( 'SUN/Panel' );
@@ -35,7 +36,9 @@ define( require => {
 
   // strings
   const capacitanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/capacitance' );
+  const inductanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/inductance' );
   const capacitanceUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/capacitanceUnits' );
+  const inductanceUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/inductanceUnits' );
   const currentRatingString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/currentRating' );
   const currentUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/currentUnits' );
   const frequencyHzValuePatternString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/frequencyHzValuePattern' );
@@ -110,6 +113,7 @@ define( require => {
           const isSeriesAmmeter = selectedCircuitElement instanceof SeriesAmmeter;
           const isACSource = selectedCircuitElement instanceof ACVoltage;
           const isCapacitor = selectedCircuitElement instanceof Capacitor;
+          const isInductor = selectedCircuitElement instanceof Inductor;
 
           if ( isResistor && selectedCircuitElement.isResistanceEditable() ) {
             editNode = new EditPanel( new CircuitElementEditNode(
@@ -221,6 +225,21 @@ define( require => {
               selectedCircuitElement,
               groupTandem.createNextTandem(), {
                 editableRange: selectedCircuitElement.capacitanceProperty.range
+              }
+            ) );
+          }
+          else if ( isInductor ) {
+            editNode = new EditPanel( new CircuitElementEditNode( inductanceString,
+
+              // Adapter to take from {{named}} to {{value}} for usage in common code
+              StringUtils.fillIn( inductanceUnitsString, {
+                inductance: SunConstants.VALUE_NAMED_PLACEHOLDER
+              } ),
+              selectedCircuitElement.inductanceProperty,
+              circuit,
+              selectedCircuitElement,
+              groupTandem.createNextTandem(), {
+                editableRange: selectedCircuitElement.inductanceProperty.range
               }
             ) );
           }

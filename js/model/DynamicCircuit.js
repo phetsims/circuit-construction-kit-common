@@ -138,10 +138,13 @@ define( require => {
         );
         return new DynamicCapacitor( capacitor.capacitor, dynamicElementState );
       } );
-      const updatedInductors = this.inductors.map( i => new DynamicInductor( i.inductor, new DynamicElementState(
-        solution.getNodeVoltage( i.inductor.nodeId1 ) - solution.getNodeVoltage( i.inductor.nodeId0 ),
-        solution.getCurrent( i.inductor ) ) )
-      );
+      const updatedInductors = this.inductors.map( inductor => {
+        const dynamicElementState = new DynamicElementState(
+          solution.getNodeVoltage( inductor.inductor.nodeId1 ) - solution.getNodeVoltage( inductor.inductor.nodeId0 ),
+          solution.getCurrent( inductor )
+        );
+        return new DynamicInductor( inductor.inductor, dynamicElementState );
+      } );
       return new DynamicCircuit( this.batteries, this.resistors, this.currents, this.resistiveBatteries, updatedCapacitors, updatedInductors );
     }
 
@@ -164,8 +167,8 @@ define( require => {
       elements.push( ...this.resistors );
       elements.push( ...this.resistiveBatteries );
       elements.push( ...this.currents );
-      this.capacitors.forEach( c => elements.push( c ) );
-      this.inductors.forEach( i => elements.push( i ) );
+      elements.push( ...this.capacitors );
+      elements.push( ...this.inductors );
       elements.forEach( e => {
 
         // TODO: Surely there must be a better way!
@@ -173,15 +176,17 @@ define( require => {
           usedNodes[ e.capacitor.nodeId0 ] = true;
           usedNodes[ e.capacitor.nodeId1 ] = true;
         }
+        else if ( e.inductor ) {
+          usedNodes[ e.inductor.nodeId0 ] = true;
+          usedNodes[ e.inductor.nodeId1 ] = true;
+        }
         else {
           assert && assert( typeof e.nodeId0 === 'number' && !isNaN( e.nodeId0 ) );
           assert && assert( typeof e.nodeId1 === 'number' && !isNaN( e.nodeId1 ) );
           usedNodes[ e.nodeId0 ] = true;
           usedNodes[ e.nodeId1 ] = true;
         }
-
       } );
-      // debugger;
 
       //each resistive battery is a resistor in series with a battery
       this.resistiveBatteries.forEach( resistiveBattery => {
@@ -253,10 +258,7 @@ define( require => {
         const companionResistance = 2 * inductor.inductance / dt;
         const companionVoltage = state.voltage + companionResistance * state.current;
 
-        // TODO: How does the system know this is a battery and not a resistor?
         const battery = new ModifiedNodalAnalysisCircuitElement( newNode, inductor.nodeId0, null, companionVoltage );
-
-        // TODO: How does the system know this is a resistor and not a battery?
         const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, inductor.nodeId1, null, companionResistance );
         companionBatteries.push( battery );
         companionResistors.push( resistor );
@@ -378,7 +380,7 @@ define( require => {
       assert && assert( capacitor instanceof DynamicCircuit.Capacitor );
       this.capacitor = capacitor;
       this.state = state;
-      this.current = state.current;
+      this.current = state.current; // TODO: is this used?  Why is it different than the method?
     }
 
     getCurrent() {
@@ -387,7 +389,6 @@ define( require => {
   }
 
   class DynamicInductor {
-    // public DynamicInductor( Inductor inductor, DynamicElementState state ) {
     constructor( inductor, state ) {
       this.inductor = inductor;
       this.state = state;
@@ -407,7 +408,7 @@ define( require => {
   }
 
   class Capacitor extends ModifiedNodalAnalysisCircuitElement {
-    constructor( node0, node1, capacitance ) {// public Capacitor( int node0, int node1, double capacitance ) {
+    constructor( node0, node1, capacitance ) {
       super( node0, node1, null, 0 );
       this.capacitance = capacitance;
     }
@@ -515,7 +516,10 @@ define( require => {
         return element.currentSolution;
       }
 
-      const companion = _.find( this.currentCompanions, c => c.element === element || c.element.capacitor === element );
+      // TODO: the comparisons are asymmetrical, how can they both work?
+      const companion = _.find( this.currentCompanions, c => c.element === element ||
+                                                             c.element.capacitor === element ||
+                                                             c.element === element.inductor );
 
       if ( companion ) {
         // TODO: maybe a passthrough assertNumber function?

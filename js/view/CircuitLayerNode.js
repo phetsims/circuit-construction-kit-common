@@ -25,6 +25,7 @@ define( require => {
   const Bounds2 = require( 'DOT/Bounds2' );
   const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
   const CapacitorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CapacitorNode' );
+  const InductorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/InductorNode' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCLightBulbNode' );
   const CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
@@ -38,6 +39,7 @@ define( require => {
   const FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   const Fuse = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Fuse' );
   const FuseNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FuseNode' );
+  const Inductor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Inductor' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Property = require( 'AXON/Property' );
@@ -315,6 +317,8 @@ define( require => {
         ( circuitElement, tandem ) => new ACVoltageNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
       initializeCircuitElementType( Fuse, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'fuseNode' ),
         ( circuitElement, tandem ) => new FuseNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
+      initializeCircuitElementType( Inductor, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'inductorNode' ),
+        ( circuitElement, tandem ) => new InductorNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
 
       // When a vertex is selected, a cut button is shown near to the vertex.  If the vertex is connected to >1 circuit
       // element, the button is enabled.  Pressing the button will cut the vertex from the neighbors.  Only one cutButton

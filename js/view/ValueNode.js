@@ -12,6 +12,7 @@ define( require => {
   const ACVoltage = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACVoltage' );
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
+  const Inductor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Inductor' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
@@ -124,6 +125,8 @@ define( require => {
 
         // Items like the hand and dog and high resistance resistor shouldn't show ".0"
         const linkCapacitance = capacitance => {
+
+          // TODO: resistance seems incorrect
           contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
             resistance: Util.toFixed( capacitance, circuitElement.numberOfDecimalPlaces )
           } );
@@ -131,6 +134,20 @@ define( require => {
         };
         circuitElement.capacitanceProperty.link( linkCapacitance );
         disposeEmitterValueNode.addListener( () => circuitElement.capacitanceProperty.unlink( linkCapacitance ) );
+        contentNode.maxWidth = 100;
+      }
+      else if ( circuitElement instanceof Inductor ) {
+        contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'inductorText' ) }, { font: FONT } ) );
+
+        // Items like the hand and dog and high resistance resistor shouldn't show ".0"
+        const linkInductance = inductance => {
+          contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
+            resistance: Util.toFixed( inductance, circuitElement.numberOfDecimalPlaces )
+          } );
+          updatePosition && updatePosition();
+        };
+        circuitElement.inductanceProperty.link( linkInductance );
+        disposeEmitterValueNode.addListener( () => circuitElement.inductanceProperty.unlink( linkInductance ) );
         contentNode.maxWidth = 100;
       }
       else if ( circuitElement instanceof Switch ) {
