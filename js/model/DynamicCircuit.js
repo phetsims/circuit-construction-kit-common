@@ -373,7 +373,6 @@ define( require => {
   }
 
   class DynamicCapacitor {
-    // public DynamicCapacitor( Capacitor capacitor, DynamicElementState state ) {
     constructor( capacitor, state ) {
       assert && assert( !isNaN( state.current ), 'current should be numeric' );
       assert && assert( capacitor instanceof DynamicCircuit.Capacitor );
@@ -503,7 +502,7 @@ define( require => {
     }
 
     /**
-     * @param {ModifiedNodalAnalysisCircuitElement} element
+     * @param {ModifiedNodalAnalysisCircuitElement|CapacitorAdapter|InductorAdapter} element
      * @returns {number}
      */
     getCurrent( element ) {
@@ -511,7 +510,7 @@ define( require => {
       // For resistors with r>0, Ohm's Law gives the current.  For components with no resistance (like closed switch or
       // 0-resistance battery), the current is given by the matrix solution.
       // TODO: can the nan check be done at assignment time?
-      if ( element.currentSolution !== null ) {
+      if ( element.hasOwnProperty( 'currentSolution' ) && element.currentSolution !== null ) {
         assert && assert( !isNaN( element.currentSolution ) );
         return element.currentSolution;
       }
