@@ -159,12 +159,9 @@ define( require => {
       //zero out currents on open branches
       for ( let i = 0; i < circuit.circuitElements.length; i++ ) {
         const branch = circuit.circuitElements.get( i );
-        if ( branch instanceof Switch ) {
-          const sw = branch;
-          if ( !sw.closedProperty.value ) {
-            sw.currentProperty.value = 0.0;
-            // sw.setVoltageDrop( 0.0 );
-          }
+        if ( branch instanceof Switch && !branch.closedProperty.value ) {
+          branch.currentProperty.value = 0.0;
+          // sw.setVoltageDrop( 0.0 );
         }
       }
       circuit.setSolution( results );
