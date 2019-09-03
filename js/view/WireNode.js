@@ -33,7 +33,7 @@ define( require => {
   const MATRIX = new Matrix3(); // The Matrix entries are mutable
   const WIRE_RASTER_LENGTH = 100;
 
-  // Node used to render the black line for schematic, cached as toDataURLImageSynchronous so it can render with WebGL
+  // Node used to render the black line for schematic, rasterized so it can render with WebGL
   const BLACK_LINE_NODE = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
     lineWidth: SCHEMATIC_LINE_WIDTH,
     stroke: Color.BLACK

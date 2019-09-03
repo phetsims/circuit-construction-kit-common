@@ -43,7 +43,7 @@ define( require => {
    * @param {Object} options
    * @returns {Rectangle}
    */
-  const createPanel = options => new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, options ).toDataURLNodeSynchronous();
+  const createPanel = options => new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, options ).rasterized( { wrap: false } );
 
   const orangeBackgroundPanel = createPanel( { cornerRadius: CORNER_RADIUS, fill: ORANGE } );
   const blackBorder = createPanel( {
