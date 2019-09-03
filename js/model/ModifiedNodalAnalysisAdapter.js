@@ -14,6 +14,7 @@ define( require => {
   const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const DynamicCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/DynamicCircuit' );
+  const Fuse = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Fuse' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const ModifiedNodalAnalysisCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuitElement' );
   const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
@@ -111,21 +112,14 @@ define( require => {
         if ( branch instanceof Battery ) {
           batteries.push( new ResistiveBatteryAdapter( circuit, branch ) );
         }
-        else if ( branch instanceof Resistor ) {
-          resistors.push( new ResistorAdapter( circuit, branch ) );
-        }
-        else if ( branch instanceof Wire ) {
-          resistors.push( new ResistorAdapter( circuit, branch ) );
-        }
-        else if ( branch instanceof Switch ) {
-          if ( branch.closedProperty.value ) {
-            resistors.push( new ResistorAdapter( circuit, branch ) );
-          } //else do nothing, since no closed circuit there; see below where current is zeroed out
-        }
-        else if ( branch instanceof LightBulb ) {
-          resistors.push( new ResistorAdapter( circuit, branch ) );
-        }
-        else if ( branch instanceof SeriesAmmeter ) {
+        else if ( branch instanceof Resistor ||
+                  branch instanceof Fuse ||
+                  branch instanceof Wire ||
+                  branch instanceof LightBulb ||
+                  branch instanceof SeriesAmmeter ||
+
+                  // Since no closed circuit there; see below where current is zeroed out
+                  ( branch instanceof Switch && branch.closedProperty.value ) ) {
           resistors.push( new ResistorAdapter( circuit, branch ) );
         }
         else if ( branch instanceof Capacitor ) {
@@ -139,7 +133,7 @@ define( require => {
         //   inductors.push( new InductorAdapter( circuit, branch ) );
         // }
         else {
-          assert && assert( false, 'Type not found' );
+          assert && assert( false, 'Type not found: ' + branch.constructor.name );
         }
       }
 
