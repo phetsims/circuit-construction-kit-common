@@ -149,6 +149,12 @@
   "resistanceOhmsSymbol": {
     "value": "{{resistance}} Ω"
   },
+  "capacitanceFaradsSymbol": {
+    "value": "{{resistance}} F"
+  },
+  "inductanceHenriesSymbol": {
+    "value": "{{resistance}} H"
+  },
   "resistanceOhms": {
     "value": "{{resistance}} ohms"
   },

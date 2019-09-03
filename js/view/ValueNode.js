@@ -34,6 +34,8 @@ define( require => {
 
   // strings
   const fuseValueString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/fuseValue' );
+  const capacitanceFaradsSymbolString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/capacitanceFaradsSymbol' );
+  const inductanceHenriesSymbolString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/inductanceHenriesSymbol' );
   const resistanceOhmsSymbolString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhmsSymbol' );
   const voltageUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageUnits' );
 
@@ -126,8 +128,7 @@ define( require => {
         // Items like the hand and dog and high resistance resistor shouldn't show ".0"
         const linkCapacitance = capacitance => {
 
-          // TODO: resistance seems incorrect
-          contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
+          contentNode.text = StringUtils.fillIn( capacitanceFaradsSymbolString, {
             resistance: Util.toFixed( capacitance, circuitElement.numberOfDecimalPlaces )
           } );
           updatePosition && updatePosition();
@@ -141,7 +142,7 @@ define( require => {
 
         // Items like the hand and dog and high resistance resistor shouldn't show ".0"
         const linkInductance = inductance => {
-          contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
+          contentNode.text = StringUtils.fillIn( inductanceHenriesSymbolString, {
             resistance: Util.toFixed( inductance, circuitElement.numberOfDecimalPlaces )
           } );
           updatePosition && updatePosition();
