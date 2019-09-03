@@ -21,7 +21,6 @@ define( require => {
   // constants
   const CAROUSEL_ITEM_SPACING = 27;
   const CAROUSEL_PAGE_HEIGHT = 352; // so the carousels will be the same size on each screen
-  const ITEMS_PER_PAGE = 5;
 
   class CircuitElementToolbox extends HBox {
 
@@ -29,12 +28,17 @@ define( require => {
      * @param {Property.<CircuitElementViewType>} viewTypeProperty
      * @param {CircuitElementToolNode[]} circuitElementToolNodes
      * @param {Tandem} tandem
+     * @param {Object} [options]
      */
-    constructor( viewTypeProperty, circuitElementToolNodes, tandem ) {
+    constructor( viewTypeProperty, circuitElementToolNodes, tandem, options ) {
+
+      options = _.extend( {
+        itemsPerPage: 5
+      }, options );
 
       // Carousel was optimized for items of equal size.  To get equal spacing between objects, we create our own pages
       // see https://github.com/phetsims/circuit-construction-kit-dc/issues/91
-      const pages = _.chunk( circuitElementToolNodes, ITEMS_PER_PAGE ).map( elements => new VBox( { children: elements } ) );
+      const pages = _.chunk( circuitElementToolNodes, options.itemsPerPage ).map( elements => new VBox( { children: elements } ) );
 
       // The schematic and lifelike icons have different dimensions, so update the spacing when the view type changes
       viewTypeProperty.link( () => {
@@ -51,14 +55,14 @@ define( require => {
           page.setSpacing( spacing );
 
           // Track the spacings of filled pages so that the average can be used for non-filled pages
-          if ( page.children.length === ITEMS_PER_PAGE ) {
+          if ( page.children.length === options.itemsPerPage ) {
             spacings.push( spacing );
           }
         } );
         const averageSpacing = _.sum( spacings ) / spacings.length;
 
         pages.forEach( page => {
-          if ( page.children.length !== ITEMS_PER_PAGE ) {
+          if ( page.children.length !== options.itemsPerPage ) {
             page.setSpacing( averageSpacing );
           }
         } );
@@ -71,7 +75,7 @@ define( require => {
       // create the carousel
       const carousel = new Carousel( alignedPages, {
         orientation: 'vertical',
-        itemsPerPage: 1,
+        itemsPerPage: 1, // TODO: document this workaround
         spacing: CAROUSEL_ITEM_SPACING, // Determines the vertical margins
         margin: 15,
 
