@@ -150,11 +150,11 @@ define( require => {
 
       const dynamicCircuit = new DynamicCircuit( [], resistors, [], batteries, capacitors, inductors ); // new ObjectOrientedMNA() );
 
-      const results = dynamicCircuit.solveWithSubdivisions( new TimestepSubdivisions( errorThreshold, minDT ), dt );
-      batteries.forEach( batteryAdapter => batteryAdapter.applySolution( results ) );
-      resistors.forEach( resistorAdapter => resistorAdapter.applySolution( results ) );
-      capacitors.forEach( capacitorAdapter => capacitorAdapter.applySolution( results ) );
-      inductors.forEach( inductorAdapter => inductorAdapter.applySolution( results ) );
+      const circuitResult = dynamicCircuit.solveWithSubdivisions( new TimestepSubdivisions( errorThreshold, minDT ), dt );
+      batteries.forEach( batteryAdapter => batteryAdapter.applySolution( circuitResult ) );
+      resistors.forEach( resistorAdapter => resistorAdapter.applySolution( circuitResult ) );
+      capacitors.forEach( capacitorAdapter => capacitorAdapter.applySolution( circuitResult ) );
+      inductors.forEach( inductorAdapter => inductorAdapter.applySolution( circuitResult ) );
 
       //zero out currents on open branches
       for ( let i = 0; i < circuit.circuitElements.length; i++ ) {
@@ -164,7 +164,17 @@ define( require => {
           // sw.setVoltageDrop( 0.0 );
         }
       }
-      circuit.setSolution( results );
+      circuit.setSolution( circuitResult );
+
+      // Apply the node voltages to the vertices
+      circuit.vertices.getArray().forEach( ( vertex, i ) => {
+
+        // Unconnected vertices like those in the black box may not have an entry in the matrix, so mark them as zero.
+        // TODO: should this average over states?
+        const v = circuitResult.resultSet.states[ 0 ].state.solution.getNodeVoltage( i );
+        vertex.voltageProperty.set( v || 0 );
+      } );
+
       // fireCircuitSolved();
     }
   }
