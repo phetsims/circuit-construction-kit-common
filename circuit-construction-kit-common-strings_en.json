@@ -11,6 +11,9 @@
   "resistor": {
     "value": "Resistor"
   },
+  "stopwatch": {
+    "value": "Stopwatch"
+  },
   "fuse": {
     "value": "Fuse"
   },

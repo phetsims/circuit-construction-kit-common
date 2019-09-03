@@ -30,6 +30,7 @@ define( require => {
   const labelsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/labels' );
   const showCurrentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/showCurrent' );
   const valuesString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/values' );
+  const stopwatchString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/stopwatch' );
 
   // constants
   const TEXT_OPTIONS = {
@@ -41,16 +42,18 @@ define( require => {
   const LEFT_MARGIN = 30;
 
   class DisplayOptionsPanel extends CCKCPanel {
+
     /**
      * @param {AlignGroup} alignGroup - box for aligning with other controls
      * @param {Property.<boolean>} showCurrentProperty - true if current should be shown
      * @param {Property.<boolean>} currentTypeProperty - true if current should be shown as electrons or conventional
      * @param {Property.<boolean>} showValuesProperty - true if values should be shown
      * @param {Property.<boolean>} showLabelsProperty - true if toolbox labels should be shown
+     * @param {Property.<boolean>|undefined} showStopwatchProperty - true if stopwatch should be shown
      * @param {Tandem} tandem
      */
-    constructor( alignGroup, showCurrentProperty, currentTypeProperty, showValuesProperty,
-                 showLabelsProperty, tandem ) {
+    constructor( alignGroup, showCurrentProperty, currentTypeProperty, showValuesProperty, showLabelsProperty,
+                 showStopwatchProperty, tandem ) {
 
       /**
        * Create an AquaRadioButton for the specified kind of current
@@ -127,7 +130,11 @@ define( require => {
           ]
         } ),
         showLabelsCheckbox,
-        showValuesCheckbox
+        showValuesCheckbox,
+        ...( showStopwatchProperty ? [ new Checkbox( new Text( stopwatchString, TEXT_OPTIONS ), showStopwatchProperty, {
+          tandem: tandem.createTandem( 'stopwatchCheckbox' ),
+          boxWidth: BOX_WIDTH
+        } ) ] : [] )
       ];
 
       super( alignGroup.createBox( new VBox( {

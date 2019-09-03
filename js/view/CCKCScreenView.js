@@ -167,6 +167,7 @@ define( require => {
         model.circuit.currentTypeProperty,
         model.showValuesProperty,
         model.showLabelsProperty,
+        model.showStopwatchProperty, // may be undefined
         tandem.createTandem( 'displayOptionsPanel' )
       );
 
