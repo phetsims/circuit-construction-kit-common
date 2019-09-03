@@ -52,7 +52,7 @@ define( require => {
   const schematicNode = new Path( schematicShape, {
     stroke: Color.BLACK,
     lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH
-  } ).toDataURLImageSynchronous();
+  } ).rasterized( { wrap: false } );
 
   schematicNode.centerY = 0;
 

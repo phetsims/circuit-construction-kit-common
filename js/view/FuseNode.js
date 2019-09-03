@@ -110,7 +110,7 @@ define( require => {
       const schematicNode = new Path( schematicShape, {
         stroke: Color.BLACK,
         lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH
-      } ).toDataURLImageSynchronous();
+      } ).rasterized( { wrap: false } );
 
       // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
       schematicNode.centerY = 0;

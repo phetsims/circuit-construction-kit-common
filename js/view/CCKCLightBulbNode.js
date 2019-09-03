@@ -141,7 +141,7 @@ define( require => {
       ), {
         stroke: Color.BLACK,
         lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH
-      } ).toDataURLImageSynchronous();
+      } ).rasterized( { wrap: false } );
       cached = schematicNode;
       if ( options.isIcon ) {
         schematicNode = new Path( addSchematicCircle( new Shape() ).transformed( Matrix3.scaling( 1.75 ) ), {

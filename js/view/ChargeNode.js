@@ -29,10 +29,10 @@ define( require => {
 
     // selected so an electron will exactly fit the width of a wire
     scale: 0.78
-  } ).toDataURLImageSynchronous();
+  } ).rasterized( { wrap: false } );
 
   const ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.globalTandem.createTandem( 'arrowNode' ) )
-    .toDataURLImageSynchronous();
+    .rasterized( { wrap: false } );
 
   const ARROW_OFFSET = Matrix3.translation( -ARROW_NODE.width / 2, -ARROW_NODE.height / 2 );
   const HALF_ROTATION = Matrix3.rotation2( Math.PI );

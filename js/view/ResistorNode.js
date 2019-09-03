@@ -163,7 +163,7 @@ define( require => {
         schematicNode = new Path( schematicShape, {
           stroke: Color.BLACK,
           lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH
-        } ).toDataURLImageSynchronous();
+        } ).rasterized( { wrap: false } );
 
         // icons are all the same size in the toolbox, so only cache the non-icons (with the correct heights)
         if ( !options.isIcon ) {

@@ -20,7 +20,7 @@ define( require => {
   const SOLDER_RADIUS = 11.2;
 
   // {Image} raster created by init() for WebGL usage
-  const CIRCLE_NODE = new Circle( SOLDER_RADIUS, { fill: SOLDER_COLOR } ).toDataURLImageSynchronous();
+  const CIRCLE_NODE = new Circle( SOLDER_RADIUS, { fill: SOLDER_COLOR } ).rasterized( { wrap: false } );
 
   class SolderNode extends Node {
 

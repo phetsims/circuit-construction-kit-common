@@ -37,7 +37,7 @@ define( require => {
   const BLACK_LINE_NODE = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
     lineWidth: SCHEMATIC_LINE_WIDTH,
     stroke: Color.BLACK
-  } ).toDataURLImageSynchronous( 0, LIFELIKE_LINE_WIDTH / 2, WIRE_RASTER_LENGTH, LIFELIKE_LINE_WIDTH );
+  } ).rasterized( { wrap: false } );
 
   /**
    * Create a LinearGradient for the wire, depending on the orientation relative to the shading (light comes from
@@ -64,27 +64,25 @@ define( require => {
   const normalGradient = createGradient( colorStops, e => e );
   const reverseGradient = createGradient( colorStops.reverse(), e => 1.0 - e );
 
-  const PADDING = 2;
-
   const lifelikeNodeNormal = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
     lineWidth: LIFELIKE_LINE_WIDTH,
     stroke: normalGradient
-  } ).toDataURLImageSynchronous( 0, LIFELIKE_LINE_WIDTH / 2 + PADDING, WIRE_RASTER_LENGTH, LIFELIKE_LINE_WIDTH + 2 * PADDING );
+  } ).rasterized( { wrap: false } );
 
   const lifelikeNodeReversed = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
     lineWidth: LIFELIKE_LINE_WIDTH,
     stroke: reverseGradient
-  } ).toDataURLImageSynchronous( 0, LIFELIKE_LINE_WIDTH / 2 + PADDING, WIRE_RASTER_LENGTH, LIFELIKE_LINE_WIDTH + 2 * PADDING );
+  } ).rasterized( { wrap: false } );
 
   // Make sure the heights are the same as the wires so they will line up properly, see
   // https://github.com/phetsims/circuit-construction-kit-common/issues/390
   const lifelikeRoundedCapNormal = new Circle( LIFELIKE_LINE_WIDTH / 2, {
     fill: normalGradient
-  } ).toDataURLImageSynchronous( LIFELIKE_LINE_WIDTH / 2 + PADDING, LIFELIKE_LINE_WIDTH / 2 + PADDING, LIFELIKE_LINE_WIDTH + 2 * PADDING, LIFELIKE_LINE_WIDTH + 2 * PADDING );
+  } ).rasterized( { wrap: false } );
 
   const lifelikeRoundedCapReversed = new Circle( LIFELIKE_LINE_WIDTH / 2, {
     fill: reverseGradient
-  } ).toDataURLImageSynchronous( LIFELIKE_LINE_WIDTH / 2 + PADDING, LIFELIKE_LINE_WIDTH / 2 + PADDING, LIFELIKE_LINE_WIDTH + 2 * PADDING, LIFELIKE_LINE_WIDTH + 2 * PADDING );
+  } ).rasterized( { wrap: false } );
 
   const HIGHLIGHT_STROKE_LINE_STYLES = new LineStyles( {
     lineWidth: 26,

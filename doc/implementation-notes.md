@@ -74,7 +74,7 @@ CircuitElementNode constructors populate different layers of the CircuitLayerNod
 in their dispose functions.
 * To attain reasonable performance on iPad2, some of the CircuitLayerNode child node layers have been implemented in
 WebGL using `renderer:'webgl'`.  This means all of the nodes must be rendered with solid-fill Rectangle (without rounded
-corners or gradients), and images.  Node.toDataURLImageSynchronous is used throughout these view layers to rasterize as
+corners or gradients), and images.  Node.rasterized is used throughout these view layers to rasterize as
 images.
 * CircuitElementEditNode (which appears at the bottom of the screen when a CircuitElement is selected) and
 ValueNode.js (which shows a text readout over an item when "values" is checked) use a similar pattern of containing

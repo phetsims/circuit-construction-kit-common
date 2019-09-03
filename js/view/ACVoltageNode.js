@@ -67,8 +67,8 @@ define( require => {
       } )
     ]
   } );
-  const schematicNode = template.toDataURLImageSynchronous();
-  const lifelikeNode = template.toDataURLImageSynchronous();
+  const schematicNode = template.rasterized( { wrap: false } );
+  const lifelikeNode = template.rasterized( { wrap: false } );
 
   schematicNode.centerY = 0;
 

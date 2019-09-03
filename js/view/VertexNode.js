@@ -33,10 +33,10 @@ define( require => {
   };
   const RED_CIRCLE_NODE = new Circle( VERTEX_RADIUS, _.extend( CIRCLE_OPTIONS, {
     stroke: Color.RED
-  } ) ).toDataURLImageSynchronous();
+  } ) ).rasterized( { wrap: false } );
   const BLACK_CIRCLE_NODE = new Circle( VERTEX_RADIUS, _.extend( CIRCLE_OPTIONS, {
     stroke: Color.BLACK
-  } ) ).toDataURLImageSynchronous();
+  } ) ).rasterized( { wrap: false } );
 
   class VertexNode extends Node {
 

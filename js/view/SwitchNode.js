@@ -128,20 +128,20 @@ define( require => {
   const lifelikeOpenNode = createNode(
     CircuitElementViewType.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, false
   );
-  const lifelikeOpenImage = lifelikeOpenNode.toDataURLImageSynchronous();
+  const lifelikeOpenImage = lifelikeOpenNode.rasterized( { wrap: false } );
 
   const lifelikeClosedNode = createNode(
     CircuitElementViewType.LIFELIKE, lifelikeGradient, LIFELIKE_DIAMETER, 6, true
   );
-  const lifelikeClosedImage = lifelikeClosedNode.toDataURLImageSynchronous();
+  const lifelikeClosedImage = lifelikeClosedNode.rasterized( { wrap: false } );
 
   const schematicOpenImage = createNode(
     CircuitElementViewType.SCHEMATIC, Color.BLACK, CCKCConstants.SCHEMATIC_LINE_WIDTH, 0, false
-  ).toDataURLImageSynchronous();
+  ).rasterized( { wrap: false } );
 
   const schematicClosedImage = createNode(
     CircuitElementViewType.SCHEMATIC, Color.BLACK, CCKCConstants.SCHEMATIC_LINE_WIDTH, 0, true
-  ).toDataURLImageSynchronous();
+  ).rasterized( { wrap: false } );
 
   class SwitchNode extends FixedCircuitElementNode {
 
