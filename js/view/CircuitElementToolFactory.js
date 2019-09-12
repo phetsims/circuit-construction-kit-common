@@ -228,7 +228,7 @@ define( require => {
      * @returns {CircuitElementToolNode}
      * @public
      */
-    createACSourceToolNode( count, tandem ) {
+    createACVoltageToolNode( count, tandem ) {
       const acSource = new ACVoltage(
         new Vertex( Vector2.ZERO ),
         new Vertex( new Vector2( AC_VOLTAGE_LENGTH, 0 ) ),
