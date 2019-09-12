@@ -20,7 +20,6 @@ define( require => {
 
   // constants
   const CAROUSEL_ITEM_SPACING = 27;
-  const CAROUSEL_PAGE_HEIGHT = 352; // so the carousels will be the same size on each screen
 
   class CircuitElementToolbox extends HBox {
 
@@ -33,7 +32,8 @@ define( require => {
     constructor( viewTypeProperty, circuitElementToolNodes, tandem, options ) {
 
       options = _.extend( {
-        itemsPerPage: 5
+        itemsPerPage: 5,
+        pageHeight: 352 // so the carousels can easily be the same size on each screen
       }, options );
 
       // Carousel was optimized for items of equal size.  To get equal spacing between objects, we create our own pages
@@ -51,7 +51,7 @@ define( require => {
           page.setSpacing( 0 );
 
           // Set the spacing so that items will fill the available area
-          const spacing = ( CAROUSEL_PAGE_HEIGHT - page.height ) / ( page.children.length - 1 );
+          const spacing = ( options.pageHeight - page.height ) / ( page.children.length - 1 );
           page.setSpacing( spacing );
 
           // Track the spacings of filled pages so that the average can be used for non-filled pages
@@ -81,6 +81,9 @@ define( require => {
 
         // Expand the touch area above the up button and below the down button
         buttonTouchAreaYDilation: 8,
+
+        // TODO: we probably should just use Panel in this case
+        hideDisabledButtons: options.hideDisabledButtons,
         tandem: tandem.createTandem( 'carousel' )
       } );
 
