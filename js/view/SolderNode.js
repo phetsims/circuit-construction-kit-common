@@ -51,7 +51,7 @@ define( require => {
       const updateFill = () => {
 
         // @private {boolean} - defensive copies for callbacks cause listeners to get called during disposal, avoid calling
-        // Node API after diposed
+        // Node API after disposed
         if ( !this.isDisposed ) {
           this.visible = circuit.countCircuitElements( vertex ) > 1;
         }
