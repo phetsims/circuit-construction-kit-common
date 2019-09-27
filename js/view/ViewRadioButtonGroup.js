@@ -22,7 +22,7 @@ define( require => {
 
   // constants
   const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
-  const SCALE = 0.58;
+  const SCALE = 0.4;
 
   class ViewRadioButtonGroup extends RadioButtonGroup {
 
@@ -61,10 +61,10 @@ define( require => {
         node: schematicIcon,
         tandemName: 'schematicRadioButton'
       } ], {
-        spacing: 13.5, // Fitted to make this control have the same width as the rest of the panels
-        orientation: 'horizontal',
-        buttonContentXMargin: 14,
-        buttonContentYMargin: 7,
+        spacing: 4,
+        orientation: 'vertical',
+        buttonContentXMargin: 8,
+        buttonContentYMargin: 4,
         baseColor: CCKCConstants.PANEL_COLOR,
         deselectedButtonOpacity: 0.4,
         overButtonOpacity: 0.7,

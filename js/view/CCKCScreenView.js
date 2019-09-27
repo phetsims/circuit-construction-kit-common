@@ -201,13 +201,13 @@ define( require => {
       }
 
       this.addChild( this.circuitElementToolbox );
+      this.addChild( this.viewRadioButtonGroup );
 
       const controlPanelVBox = new VBox( {
         spacing: VERTICAL_MARGIN,
         children: !options.showResistivityControl ?
-          [ this.displayOptionsPanel, this.sensorToolbox, this.viewRadioButtonGroup ] :
-          [ this.displayOptionsPanel, this.sensorToolbox, this.wireResistivityControl, this.batteryResistanceControl,
-            this.viewRadioButtonGroup ]
+          [ this.displayOptionsPanel, this.sensorToolbox ] :
+          [ this.displayOptionsPanel, this.sensorToolbox, this.wireResistivityControl, this.batteryResistanceControl ]
       } );
 
       const box = new AlignBox( controlPanelVBox, {
@@ -280,6 +280,8 @@ define( require => {
         this.circuitElementToolbox.left = visibleBounds.left + VERTICAL_MARGIN +
                                           ( this.circuitElementToolbox.carousel ? 0 : 12 );
         this.circuitElementToolbox.top = visibleBounds.top + VERTICAL_MARGIN;
+        this.viewRadioButtonGroup.top = this.circuitElementToolbox.bottom + 10;
+        this.viewRadioButtonGroup.centerX = this.circuitElementToolbox.right - this.circuitElementToolbox.carousel.width / 2;
 
         // Float the resetAllButton to the bottom right
         options.showResetAllButton && resetAllButton.mutate( {
