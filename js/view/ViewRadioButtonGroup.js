@@ -63,8 +63,8 @@ define( require => {
       } ], {
         spacing: 4,
         orientation: 'vertical',
-        buttonContentXMargin: 8,
-        buttonContentYMargin: 4,
+        buttonContentXMargin: 9,
+        buttonContentYMargin: 5,
         baseColor: CCKCConstants.PANEL_COLOR,
         deselectedButtonOpacity: 0.4,
         overButtonOpacity: 0.7,
