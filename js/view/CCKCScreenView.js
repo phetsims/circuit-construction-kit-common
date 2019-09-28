@@ -331,7 +331,16 @@ define( require => {
      * @public
      */
     step( dt ) {
+
+      // If the step is large, it probably means that the screen was hidden for a while, so just ignore it.
+      // see https://github.com/phetsims/circuit-construction-kit-common/issues/476
+      if ( dt >= CCKCConstants.MAX_DT ) {
+        return;
+      }
+
       this.circuitLayerNode.step( dt );
+
+      // TODO: avoid work if tools are in the toolbox?
       this.voltageChartNode && this.voltageChartNode.step( this.model.circuit.timeProperty.value, dt );
       this.currentChartNode && this.currentChartNode.step( this.model.circuit.timeProperty.value, dt );
     }

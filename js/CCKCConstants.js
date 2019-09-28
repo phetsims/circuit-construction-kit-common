@@ -136,7 +136,9 @@ define( require => {
     FONT_SIZE: 14,
 
     // Number of wires that can be dragged out of the toolbox
-    NUMBER_OF_WIRES: CCKCQueryParameters.moreWires ? 50 : 25
+    NUMBER_OF_WIRES: CCKCQueryParameters.moreWires ? 50 : 25,
+
+    MAX_DT: 0.5 // see https://github.com/phetsims/circuit-construction-kit-common/issues/476 and https://github.com/phetsims/joist/issues/130
   };
 
   circuitConstructionKitCommon.register( 'CCKCConstants', CCKCConstants );

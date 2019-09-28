@@ -12,6 +12,7 @@ define( require => {
   // modules
   const Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Ammeter' );
   const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   const Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Circuit' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
@@ -183,6 +184,12 @@ define( require => {
      * @public
      */
     step( dt ) {
+
+      // If the step is large, it probably means that the screen was hidden for a while, so just ignore it.
+      // see https://github.com/phetsims/circuit-construction-kit-common/issues/476
+      if ( dt >= CCKCConstants.MAX_DT ) {
+        return;
+      }
 
       if ( this.zoomAnimation ) {
         const overflow = this.zoomAnimation.step( dt );
