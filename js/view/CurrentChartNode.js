@@ -39,7 +39,8 @@ define( require => {
       }, options );
 
       // TODO: same color as dark color in voltage chart node
-      const series = new DynamicSeries( { color: '#717274' } ); // dark gray sampled from the design doc
+      // dark gray sampled from the design doc
+      const series = new DynamicSeries( { color: '#717274', lineWidth: 1.5 } );
       super( circuitLayerNode, timeProperty, visibleBoundsProperty, [ series ], currentString, options );
 
       // @private

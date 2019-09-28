@@ -43,7 +43,9 @@ define( require => {
         tandem: Tandem.optional
       }, options );
 
-      const series = new DynamicSeries( { color: '#717274' } ); // dark gray sampled from the design doc
+      // dark gray sampled from the design doc
+      // lineWidth increased beyond 1.0 to avoid aliasing problems in the chart
+      const series = new DynamicSeries( { color: '#717274', lineWidth: 1.5 } );
       super( circuitLayerNode, timeProperty, visibleBoundsProperty, [ series ], voltageString, options );
 
       // @private
