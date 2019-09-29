@@ -21,9 +21,10 @@ define( require => {
   const Node = require( 'SCENERY/nodes/Node' );
   const ProbeNode = require( 'SCENERY_PHET/ProbeNode' );
   const ProbeTextNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ProbeTextNode' );
-  const ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ProbeWireNode' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const Vector2 = require( 'DOT/Vector2' );
+  const Vector2Property = require( 'DOT/Vector2Property' );
+  const WireNode = require( 'SCENERY_PHET/WireNode' );
 
   // images
   const ammeterBodyImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeter-body.png' );
@@ -68,7 +69,19 @@ define( require => {
         blackBoxStudy: false
       }, options );
 
-      const wireNode = new ProbeWireNode( Color.BLACK, new Vector2( 0, BODY_LEAD_Y ), new Vector2( 0, PROBE_LEAD_Y ) );
+      // TODO: Should this be factored out to a type?  Or maybe WireNode should provide access to its parts?
+      const wireBodyPositionProperty = new Vector2Property( new Vector2( 0, 0 ) );
+      const wireProbePositionProperty = new Vector2Property( new Vector2( 0, 0 ) );
+      const wireNode = new WireNode(
+        wireBodyPositionProperty,
+        new Vector2Property( new Vector2( 0, BODY_LEAD_Y ) ),
+        wireProbePositionProperty,
+        new Vector2Property( new Vector2( 0, PROBE_LEAD_Y ) ), {
+          stroke: Color.BLACK,
+          lineWidth: 3,
+          pickable: false
+        }
+      );
 
       const currentReadoutProperty = new DerivedProperty( [ ammeter.currentProperty ], function( current ) {
 
@@ -125,7 +138,7 @@ define( require => {
       // When the body position changes, update the body node and the wire
       ammeter.bodyPositionProperty.link( bodyPosition => {
         bodyNode.centerTop = bodyPosition;
-        wireNode.setBodyPosition( bodyNode.centerTop.plusXY( 0, PROBE_CONNECTION_POINT_DY ) );
+        wireBodyPositionProperty.value = bodyNode.centerTop.plusXY( 0, PROBE_CONNECTION_POINT_DY );
         if ( ammeter.draggingProbesWithBodyProperty.get() ) {
           ammeter.probePositionProperty.set( bodyPosition.plusXY( 40, -80 ) );
         }
@@ -134,7 +147,7 @@ define( require => {
       // When the probe position changes, update the probe node and the wire
       ammeter.probePositionProperty.link( probePosition => {
         this.probeNode.centerTop = probePosition;
-        wireNode.setProbePosition( this.probeNode.centerBottom );
+        wireProbePositionProperty.value = this.probeNode.centerBottom;
       } );
 
       if ( !options.isIcon ) {

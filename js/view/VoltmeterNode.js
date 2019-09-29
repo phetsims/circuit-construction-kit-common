@@ -21,9 +21,10 @@ define( require => {
   const MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   const Node = require( 'SCENERY/nodes/Node' );
   const ProbeTextNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ProbeTextNode' );
-  const ProbeWireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ProbeWireNode' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const Vector2 = require( 'DOT/Vector2' );
+  const Vector2Property = require( 'DOT/Vector2Property' );
+  const WireNode = require( 'SCENERY_PHET/WireNode' );
 
   // images
   const blackProbe = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/probe-black.png' );
@@ -37,13 +38,6 @@ define( require => {
   // constants
   const VOLTMETER_PROBE_TIP_LENGTH = 20; // The probe tip is about 20 view coordinates tall
   const VOLTMETER_NUMBER_SAMPLE_POINTS = 10; // Number of points along the edge of the voltmeter tip to detect voltages
-
-  // measurements for the cubic curve for the wire nodes
-  const BODY_WIRE_LEAD_X = 45;
-  const BODY_LEAD_Y = 15;
-  const PROBE_LEAD_X = 0;
-  const PROBE_LEAD_Y = 60;
-  const PROBE_CONTROL_POINT_X = 20;
 
   // unsigned measurements for the circles on the voltmeter body image, for where the probe wires connect
   const PROBE_CONNECTION_POINT_DY = -18;
@@ -122,11 +116,27 @@ define( require => {
         children: [ probeTextNode ]
       } );
 
-      const blackWireNode = new ProbeWireNode(
-        Color.BLACK, new Vector2( -BODY_WIRE_LEAD_X, BODY_LEAD_Y ), new Vector2( PROBE_LEAD_X - PROBE_CONTROL_POINT_X, PROBE_LEAD_Y )
+      // TODO: Should this be factored out to a type, or perhaps WireNode should export these members?
+      const blackWireBodyPositionProperty = new Vector2Property( new Vector2( 0, 0 ) );
+      const blackWireProbePositionProperty = new Vector2Property( new Vector2( 0, 0 ) );
+      const blackWireNode = new WireNode(
+        blackWireBodyPositionProperty, new Vector2Property( new Vector2( -30, 15 ) ), // TODO: Factor out
+        blackWireProbePositionProperty, new Vector2Property( new Vector2( -30, 60 ) ), {
+          stroke: Color.BLACK,
+          lineWidth: 3,
+          pickable: false
+        }
       );
-      const redWireNode = new ProbeWireNode(
-        Color.RED, new Vector2( BODY_WIRE_LEAD_X, BODY_LEAD_Y ), new Vector2( PROBE_LEAD_X + PROBE_CONTROL_POINT_X, PROBE_LEAD_Y )
+
+      const redWireBodyPositionProperty = new Vector2Property( new Vector2( 0, 0 ) );
+      const redWireProbePositionProperty = new Vector2Property( new Vector2( 0, 0 ) );
+      const redWireNode = new WireNode(
+        redWireBodyPositionProperty, new Vector2Property( new Vector2( 30, 15 ) ),
+        redWireProbePositionProperty, new Vector2Property( new Vector2( 30, 60 ) ), {
+          stroke: Color.RED,
+          lineWidth: 3,
+          pickable: false
+        }
       );
 
       // When the voltmeter body moves, update the node and wires
@@ -135,12 +145,8 @@ define( require => {
         // Drag the body by the center
         bodyNode.center = bodyPosition;
 
-        blackWireNode.setBodyPosition(
-          bodyNode.centerBottom.plusXY( -PROBE_CONNECTION_POINT_DX, PROBE_CONNECTION_POINT_DY )
-        );
-        redWireNode.setBodyPosition(
-          bodyNode.centerBottom.plusXY( PROBE_CONNECTION_POINT_DX, PROBE_CONNECTION_POINT_DY )
-        );
+        blackWireBodyPositionProperty.value = bodyNode.centerBottom.plusXY( -PROBE_CONNECTION_POINT_DX, PROBE_CONNECTION_POINT_DY );
+        redWireBodyPositionProperty.value = bodyNode.centerBottom.plusXY( PROBE_CONNECTION_POINT_DX, PROBE_CONNECTION_POINT_DY );
 
         // When dragging out of the toolbox, the probes move with the body
         if ( voltmeter.draggingProbesWithBodyProperty.get() ) {
@@ -154,22 +160,22 @@ define( require => {
       /**
        * Creates listeners for the link function to update the probe node and wire when probe position changes.
        * @param {Node} probeNode
-       * @param {ProbeWireNode} wireNode
+       * @param {Vector2Property} probePositionProperty
        * @param {number} sign
        * @returns {function}
        */
-      const probeMovedCallback = ( probeNode, wireNode, sign ) => {
+      const probeMovedCallback = ( probeNode, probePositionProperty, sign ) => {
         return probePosition => {
           probeNode.translation = probePosition;
 
           // Sampled manually, will need to change if probe angle changes
-          wireNode.setProbePosition( probeNode.centerBottom.plusXY( 32 * sign, -4 ) );
+          probePositionProperty.value = probeNode.centerBottom.plusXY( 32 * sign, -4 );
         };
       };
 
       // When the probe moves, update the node and wire
-      voltmeter.redProbePositionProperty.link( probeMovedCallback( redProbeNode, redWireNode, +1 ) );
-      voltmeter.blackProbePositionProperty.link( probeMovedCallback( blackProbeNode, blackWireNode, -1 ) );
+      voltmeter.redProbePositionProperty.link( probeMovedCallback( redProbeNode, redWireProbePositionProperty, +1 ) );
+      voltmeter.blackProbePositionProperty.link( probeMovedCallback( blackProbeNode, blackWireProbePositionProperty, -1 ) );
 
       super( {
         pickable: true,
