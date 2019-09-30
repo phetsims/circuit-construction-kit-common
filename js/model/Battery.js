@@ -10,7 +10,9 @@ define( require => {
 
   // modules
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Enumeration = require( 'PHET_CORE/Enumeration' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   const NumberProperty = require( 'AXON/NumberProperty' );
@@ -43,7 +45,15 @@ define( require => {
       this.voltageProperty = new NumberProperty( options.voltage );
 
       // @public {Property.<number>} the internal resistance of the battery
-      this.internalResistanceProperty = internalResistanceProperty;
+      this.internalResistanceProperty = new DerivedProperty( [ internalResistanceProperty, this.currentProperty ],
+        ( internalResistance, current ) => {
+          if ( Math.abs( current ) >= CCKCQueryParameters.batteryCurrentThreshold ) {
+            return CCKCQueryParameters.batteryInternalResistanceWhenCurrentThresholdExceeded;
+          }
+          else {
+            return internalResistance;
+          }
+        } );
 
       // @public (read-only) {string} - track which way the battery "button" (plus side) was facing the initial state so
       // the user can only create a certain number of "left" or "right" batteries from the toolbox.

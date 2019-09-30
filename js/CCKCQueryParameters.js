@@ -73,6 +73,16 @@ define( require => {
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/432
     moreWires: {
       type: 'flag'
+    },
+
+    batteryCurrentThreshold: {
+      type: 'number',
+      defaultValue: Number.POSITIVE_INFINITY
+    },
+
+    batteryInternalResistanceWhenCurrentThresholdExceeded: {
+      type: 'number',
+      defaultValue: 0
     }
   } );
 
