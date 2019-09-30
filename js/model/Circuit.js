@@ -634,11 +634,6 @@ define( require => {
       this.dirty = true;
     }
 
-    // TODO: docs
-    setSolution( solution ) {
-      this.solution = solution;
-    }
-
     /**
      * Connect the vertices, merging oldVertex into vertex1 and deleting oldVertex
      * @param {Vertex} targetVertex

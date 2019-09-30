@@ -164,7 +164,6 @@ define( require => {
           // sw.setVoltageDrop( 0.0 );
         }
       }
-      circuit.setSolution( circuitResult );
 
       // Apply the node voltages to the vertices
       circuit.vertices.getArray().forEach( ( vertex, i ) => {
