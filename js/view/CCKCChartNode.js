@@ -149,7 +149,7 @@ define( require => {
      */
     addProbeNode( color, wireColor, dx, dy, connectionProperty ) {
 
-      const probeNode = new CCKCProbeNode( this.visibleBoundsProperty, { color: color } );
+      const probeNode = new CCKCProbeNode( this, this.visibleBoundsProperty, { color: color } );
 
       // Add the wire behind the probe.
       this.addChild( new WireNode( connectionProperty, new Vector2Property( new Vector2( -NORMAL_DISTANCE, 0 ) ),
@@ -232,6 +232,7 @@ define( require => {
       const movableDragHandler = new MovableDragHandler( this.meter.bodyPositionProperty, {
         targetNode: this.backgroundNode,
         startDrag: () => {
+          this.moveToFront();
           if ( this.meter.draggingProbesWithBodyProperty.value ) {
 
             // Align the probes each time the MeterBodyNode translates, so they will stay in sync

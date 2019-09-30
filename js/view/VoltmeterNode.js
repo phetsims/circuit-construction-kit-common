@@ -216,6 +216,7 @@ define( require => {
          */
         const getProbeDragHandler = ( positionProperty, tandem ) => {
           const probeDragHandler = new MovableDragHandler( positionProperty, {
+            startDrag: () => this.moveToFront(),
             tandem: tandem.createTandem( 'probeDragHandler' )
           } );
           options.visibleBoundsProperty.link( visibleBounds => {
@@ -233,6 +234,7 @@ define( require => {
         // @public (read-only) {MovableDragHandler} - so events can be forwarded from the toolbox
         this.dragHandler = new MovableDragHandler( voltmeter.bodyPositionProperty, {
           tandem: tandem.createTandem( 'dragHandler' ),
+          startDrag: () => this.moveToFront(),
           endDrag: () => {
             voltmeter.droppedEmitter.emit( bodyNode.globalBounds );
 

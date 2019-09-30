@@ -156,12 +156,14 @@ define( require => {
         ammeter.visibleProperty.linkAttribute( this, 'visible' );
 
         const probeDragHandler = new MovableDragHandler( ammeter.probePositionProperty, {
-          tandem: tandem.createTandem( 'probeDragHandler' )
+          tandem: tandem.createTandem( 'probeDragHandler' ),
+          startDrag: () => this.moveToFront()
         } );
 
         // @public (read-only) {MovableDragHandler} - so events can be forwarded from the toolbox
         this.dragHandler = new MovableDragHandler( ammeter.bodyPositionProperty, {
           tandem: tandem.createTandem( 'dragHandler' ),
+          startDrag: () => this.moveToFront(),
           endDrag: function() {
             ammeter.droppedEmitter.emit( bodyNode.globalBounds );
 

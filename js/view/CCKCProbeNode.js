@@ -16,10 +16,11 @@ define( require => {
   class CCKCProbeNode extends ProbeNode {
 
     /**
+     * @param {Node} node container node which should move to front on press
      * @param {Property.<Bounds2>} visibleBoundsProperty - visible bounds of the ScreenView
      * @param {Object} [options]
      */
-    constructor( visibleBoundsProperty, options ) {
+    constructor( node, visibleBoundsProperty, options ) {
 
       options = _.extend( {
         cursor: 'pointer',
@@ -35,6 +36,7 @@ define( require => {
       this.addInputListener( new DragListener( {
         translateNode: true,
         dragBoundsProperty: visibleBoundsProperty,
+        press: () => node.moveToFront(),
         drag: () => options.drag()
       } ) );
     }
