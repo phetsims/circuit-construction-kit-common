@@ -137,6 +137,7 @@ define( require => {
         this.dragHandler = new SimpleDragHandler( {
           allowTouchSnag: true,
           start: event => {
+            this.moveToFront();
             startPoint = event.pointer.point;
             circuitElement.interactiveProperty.get() && circuitLayerNode.startDragVertex(
               event.pointer.point,

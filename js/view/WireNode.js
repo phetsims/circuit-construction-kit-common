@@ -277,7 +277,9 @@ define( require => {
               screenView, circuitLayerNode, startPoint, dragged );
           }
         } );
+        const self = this;
         this.dragHandler.startDrag = function( event ) {
+          self.moveToFront();
           if ( circuitLayerNode.canDragVertex( wire.startVertexProperty.get() ) && circuitLayerNode.canDragVertex( wire.endVertexProperty.get() ) ) {
             circuitLayerNode.setVerticesDragging( wire.startVertexProperty.get() );
             circuitLayerNode.setVerticesDragging( wire.endVertexProperty.get() );
