@@ -157,8 +157,7 @@ define( require => {
       const companionResistors = [];//new ArrayList<LinearCircuitSolver.Resistor>();
       const companionCurrents = [];//new ArrayList<LinearCircuitSolver.CurrentSource>();
 
-      // HashMap<LinearCircuitSolver.Element, SolutionToDouble>
-      const currentCompanions = []; // TODO: HashMap won't work in JS
+      const currentCompanions = [];
       const usedNodes = {}; // Keys only for integer used node set
       const elements = [];//new ArrayList<LinearCircuitSolver.Element>();
       elements.push( ...this.batteries );
