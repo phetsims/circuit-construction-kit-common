@@ -11,14 +11,14 @@ define( require => {
   // modules
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
+  const DynamicCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/DynamicCircuitElement' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Range = require( 'DOT/Range' );
 
   // constants
   const CAPACITOR_LENGTH = CCKCConstants.CAPACITOR_LENGTH;
 
-  class Capacitor extends FixedCircuitElement {
+  class Capacitor extends DynamicCircuitElement {
 
     /**
      * @param {Vertex} startVertex
@@ -37,10 +37,6 @@ define( require => {
       this.capacitanceProperty = new NumberProperty( options.capacitance, {
         range: new Range( 0.05, 0.20 )
       } );
-
-      // TODO: factor out to a parent type for Capacitor and Inductor
-      this.mnaVoltageDrop = 0;
-      this.mnaCurrent = 0;
 
       // TODO: move this to parent circuit element type
       this.numberOfDecimalPlaces = 2;

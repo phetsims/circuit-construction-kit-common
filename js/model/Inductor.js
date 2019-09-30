@@ -11,14 +11,14 @@ define( require => {
   // modules
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
+  const DynamicCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/DynamicCircuitElement' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Range = require( 'DOT/Range' );
 
   // constants
   const INDUCTOR_LENGTH = CCKCConstants.INDUCTOR_LENGTH;
 
-  class Inductor extends FixedCircuitElement {
+  class Inductor extends DynamicCircuitElement {
 
     /**
      * @param {Vertex} startVertex
@@ -37,10 +37,6 @@ define( require => {
       this.inductanceProperty = new NumberProperty( options.inductance, {
         range: new Range( 10, 100 )
       } );
-
-      // TODO: factor out to a parent type for Inductor and Inductor
-      this.mnaVoltageDrop = 0;
-      this.mnaCurrent = 0;
 
       // TODO: move this to parent circuit element type
       this.numberOfDecimalPlaces = 0;
