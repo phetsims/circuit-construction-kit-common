@@ -36,6 +36,9 @@ define( require => {
         isFlammable: true
       }, options );
 
+      assert && assert( !options.hasOwnProperty( 'numberOfDecimalPlaces' ), 'supplied by Resistor' );
+      options.numberOfDecimalPlaces = options.resistorType === Resistor.ResistorType.RESISTOR ? 1 : 0;
+
       // validate resistor type
       assert && assert( Resistor.ResistorType.VALUES.indexOf( options.resistorType ) >= 0, 'Unknown resistor type: ' +
                                                                                            options.resistorType );
@@ -49,9 +52,6 @@ define( require => {
 
       // @public {Property.<number>} the resistance in ohms
       this.resistanceProperty = new NumberProperty( options.resistance );
-
-      // @public (read-only) {number} - the number of decimal places to show in readouts and controls
-      this.numberOfDecimalPlaces = this.resistorType === Resistor.ResistorType.RESISTOR ? 1 : 0;
     }
 
     /**

@@ -30,7 +30,8 @@ define( require => {
         resistance: CCKCConstants.MINIMUM_RESISTANCE,
         fuseLength: CCKCConstants.RESISTOR_LENGTH, // Same length as a resistor
         currentRating: 4, // Amps
-        isCurrentReentrant: true // Changing the current can trip a fuse, which changes the current
+        isCurrentReentrant: true, // Changing the current can trip a fuse, which changes the current
+        numberOfDecimalPlaces: 1
       }, options );
 
       super( startVertex, endVertex, options.fuseLength, tandem, options );
@@ -47,9 +48,6 @@ define( require => {
       // currentRatingProperty.  Computed in step instead of as a DerivedProperty to avoid a re-entrant loop,
       // see https://github.com/phetsims/circuit-construction-kit-common/issues/480#issuecomment-483430822
       this.resistanceProperty = new NumberProperty( CCKCConstants.MINIMUM_RESISTANCE );
-
-      // @public (read-only) {number} - Used in CircuitElementEditNode
-      this.numberOfDecimalPlaces = 1;
 
       // @private {number} - time in seconds the current rating has been exceeded
       this.timeCurrentRatingExceeded = 0;

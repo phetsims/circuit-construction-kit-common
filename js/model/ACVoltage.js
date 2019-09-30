@@ -31,7 +31,8 @@ define( require => {
       options = _.extend( {
         initialOrientation: 'right',
         voltage: 9.0,
-        isFlammable: true
+        isFlammable: true,
+        numberOfDecimalPlaces: 1
       }, options );
       super( startVertex, endVertex, BATTERY_LENGTH, tandem, options );
 
@@ -49,9 +50,6 @@ define( require => {
       // @public (read-only) {string} - track which way the battery "button" (plus side) was facing the initial state so
       // the user can only create a certain number of "left" or "right" batteries from the toolbox.
       this.initialOrientation = options.initialOrientation;
-
-      // @public (read-only) {number} - the number of decimal places to show in readouts and controls
-      this.numberOfDecimalPlaces = 1;
 
       // @private
       this.phase = 0;

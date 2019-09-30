@@ -34,7 +34,8 @@ define( require => {
       options = _.extend( {
         initialOrientation: 'right',
         voltage: 9.0,
-        isFlammable: true
+        isFlammable: true,
+        numberOfDecimalPlaces: batteryType === Battery.BatteryType.NORMAL ? 1 : 0
       }, options );
       super( startVertex, endVertex, BATTERY_LENGTH, tandem, options );
 
@@ -50,9 +51,6 @@ define( require => {
 
       // @public (read-only) {Battery.BatteryType} - the type of the battery - NORMAL | HIGH_VOLTAGE
       this.batteryType = batteryType;
-
-      // @public (read-only) {number} - the number of decimal places to show in readouts and controls
-      this.numberOfDecimalPlaces = this.batteryType === Battery.BatteryType.NORMAL ? 1 : 0;
     }
 
     /**

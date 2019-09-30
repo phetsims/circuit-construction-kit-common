@@ -28,7 +28,8 @@ define( require => {
      */
     constructor( startVertex, endVertex, tandem, options ) {
       options = _.extend( {
-        capacitance: CCKCConstants.DEFAULT_CAPACITANCE
+        capacitance: CCKCConstants.DEFAULT_CAPACITANCE,
+        numberOfDecimalPlaces: 2
       }, options );
 
       super( startVertex, endVertex, CAPACITOR_LENGTH, tandem, options );
@@ -39,7 +40,6 @@ define( require => {
       } );
 
       // TODO: move this to parent circuit element type
-      this.numberOfDecimalPlaces = 2;
       this.editorDelta = 0.01;
     }
 

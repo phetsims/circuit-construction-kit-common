@@ -28,7 +28,8 @@ define( require => {
      */
     constructor( startVertex, endVertex, tandem, options ) {
       options = _.extend( {
-        inductance: 50
+        inductance: 50,
+        numberOfDecialPlaces: 0 // TODO: is this correct?
       }, options );
 
       super( startVertex, endVertex, INDUCTOR_LENGTH, tandem, options );
@@ -39,7 +40,6 @@ define( require => {
       } );
 
       // TODO: move this to parent circuit element type
-      this.numberOfDecimalPlaces = 0;
       this.editorDelta = 1;
     }
 

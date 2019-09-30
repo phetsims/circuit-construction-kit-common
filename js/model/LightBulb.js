@@ -60,6 +60,8 @@ define( require => {
      */
     constructor( startVertex, endVertex, resistance, viewTypeProperty, tandem, options ) {
       options = _.extend( { highResistance: false }, options );
+      assert && assert( !options.hasOwnProperty( 'numberOfDecimalPlaces' ), 'supplied by LightBulb' );
+      options.numberOfDecimalPlaces = options.highResistance ? 0 : 1;
 
       // getPathLength not available yet, so use a nonzero charge path length then override.
       super( startVertex, endVertex, 1, tandem, options );
@@ -75,9 +77,6 @@ define( require => {
 
       // @private
       this.viewTypeProperty = viewTypeProperty;
-
-      // @public (read-only) {number} - the number of decimal places to show in readouts and controls
-      this.numberOfDecimalPlaces = this.highResistance ? 0 : 1;
 
       // Fill in the chargePathLength
       this.chargePathLength = this.getPathLength();

@@ -28,7 +28,8 @@ define( require => {
 
       options = _.extend( {
         editableRange: new Range( 0, 120 ),
-        editorDelta: 0.5
+        editorDelta: 0.5,
+        numberOfDecimalPlaces: 1
       }, options );
 
       // Super constructor
@@ -36,6 +37,9 @@ define( require => {
 
       // @public (read-only) {Range} - the range of values the CircuitElement can take
       this.editableRange = options.editableRange;
+
+      // @public (read-only) {number} - the number of decimal places to show in readouts and controls
+      this.numberOfDecimalPlaces = options.numberOfDecimalPlaces;
 
       // @public (read-only) {number} - the tweaker value for the controls
       this.editorDelta = options.editorDelta;

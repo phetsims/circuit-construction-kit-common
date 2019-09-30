@@ -87,6 +87,9 @@ define( require => {
      * @param {Object} [options]
      */
     constructor( screenView, circuitLayerNode, acSource, viewTypeProperty, tandem, options ) {
+      options = _.extend( {
+        numberOfDecimalPlaces: 1
+      }, options );
       assert && assert( acSource instanceof ACVoltage, 'should be AC voltage' );
 
       // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
@@ -105,9 +108,6 @@ define( require => {
 
       // @public (read-only) {ACVoltage} - the ACVoltage rendered by this Node
       this.acSource = acSource;
-
-      // @public (read-only) For ValueNode
-      this.numberOfDecimalPlaces = 1;
     }
 
     /**
