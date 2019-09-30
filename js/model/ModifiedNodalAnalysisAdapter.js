@@ -148,7 +148,7 @@ define( require => {
         }
       }
 
-      const dynamicCircuit = new DynamicCircuit( [], resistors, [], batteries, capacitors, inductors ); // new ObjectOrientedMNA() );
+      const dynamicCircuit = new DynamicCircuit( [], resistors, batteries, capacitors, inductors ); // new ObjectOrientedMNA() );
 
       const circuitResult = dynamicCircuit.solveWithSubdivisions( new TimestepSubdivisions( errorThreshold, minDT ), dt );
       batteries.forEach( batteryAdapter => batteryAdapter.applySolution( circuitResult ) );

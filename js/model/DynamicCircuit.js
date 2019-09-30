@@ -21,15 +21,13 @@ define( require => {
     /**
      * @param {ModifiedNodalAnalysisCircuitElement[]} batteries
      * @param {ModifiedNodalAnalysisCircuitElement[]} resistors
-     * @param {Object[]} currents - TODO: unused, will this be used after capacitors and inductors have companions?
      * @param {ResistiveBattery[]} resistiveBatteries
      * @param {Capacitor[]} capacitors
      * @param {Inductor[]} inductors
      */
-    constructor( batteries, resistors, currents, resistiveBatteries, capacitors, inductors ) {
+    constructor( batteries, resistors, resistiveBatteries, capacitors, inductors ) {
       this.batteries = batteries;
       this.capacitors = capacitors;
-      this.currents = currents;
       this.inductors = inductors;
       this.resistiveBatteries = resistiveBatteries;
       this.resistors = resistors;
@@ -145,7 +143,7 @@ define( require => {
         );
         return new DynamicInductor( inductor.inductor, dynamicElementState );
       } );
-      return new DynamicCircuit( this.batteries, this.resistors, this.currents, this.resistiveBatteries, updatedCapacitors, updatedInductors );
+      return new DynamicCircuit( this.batteries, this.resistors, this.resistiveBatteries, updatedCapacitors, updatedInductors );
     }
 
     //TODO: why not give every component a companion in the MNACircuit?
@@ -166,7 +164,6 @@ define( require => {
       elements.push( ...this.batteries );
       elements.push( ...this.resistors );
       elements.push( ...this.resistiveBatteries );
-      elements.push( ...this.currents );
       elements.push( ...this.capacitors );
       elements.push( ...this.inductors );
       elements.forEach( e => {
@@ -218,6 +215,7 @@ define( require => {
       //        double vc = state.v;
       //        double rc = dt / c;
       this.capacitors.forEach( c => { // c is DynamicCapacitor
+        assert && assert( c instanceof DynamicCapacitor, 'Should have been DynamicCapacitor' );
         const capacitor = c;
         const state = c.state;
         //in series
@@ -280,7 +278,7 @@ define( require => {
       newBatteryList.push( ...companionBatteries );
       const newResistorList = [ ...this.resistors ];
       newResistorList.push( ...companionResistors );
-      const newCurrentList = [ ...this.currents ];
+      const newCurrentList = [];
       newCurrentList.push( ...companionCurrents );
 
       const mnaCircuit = new ModifiedNodalAnalysisCircuit( newBatteryList, newResistorList, newCurrentList );

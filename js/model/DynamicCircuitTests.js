@@ -25,7 +25,7 @@ define( require => {
       new DynamicCircuit.Capacitor( 2, 0, c ),
       new DynamicCircuit.DynamicElementState( 0.0, v / r )
     );
-    let dynamicCircuit = new DynamicCircuit( [], [ resistor ], [], [ battery ], [ capacitor ], [] );
+    let dynamicCircuit = new DynamicCircuit( [], [ resistor ], [ battery ], [ capacitor ], [] );
 
     const dt = 1E-4;
     // console.log( 'voltage\n' );
@@ -67,7 +67,7 @@ define( require => {
     const resistor = new ModifiedNodalAnalysisCircuitElement( 1, 2, null, R );
     const battery = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, V );
     const inductor = new DynamicCircuit.DynamicInductor( new DynamicCircuit.Inductor( 2, 0, L ), new DynamicCircuit.DynamicElementState( V, 0.0 ) );
-    let circuit = new DynamicCircuit( [ battery ], [ resistor ], [], [], [], [ inductor ] );
+    let circuit = new DynamicCircuit( [ battery ], [ resistor ], [], [], [ inductor ] );
 
     const dt = 1E-4;
     for ( let i = 0; i < 1000; i++ ) {
