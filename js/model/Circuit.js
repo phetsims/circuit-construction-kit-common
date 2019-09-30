@@ -18,6 +18,7 @@ define( require => {
   const ChargeAnimator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ChargeAnimator' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CurrentType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CurrentType' );
+  const DynamicCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/DynamicCircuitElement' );
   const Emitter = require( 'AXON/Emitter' );
   const Enumeration = require( 'PHET_CORE/Enumeration' );
   const EnumerationProperty = require( 'AXON/EnumerationProperty' );
@@ -99,12 +100,12 @@ define( require => {
       // @public {ChargeAnimator} - move the charges with speed proportional to current
       this.chargeAnimator = new ChargeAnimator( this );
 
-      // Re-solve the circuit when voltages or resistances change.
-      const solveListener = this.solve.bind( this );
+      // Mark as dirty when voltages or resistances change.
+      const markDirtyListener = this.markDirty.bind( this );
 
       // Solve the circuit when any of the circuit element attributes change.
       this.circuitElements.addItemAddedListener( circuitElement => {
-        circuitElement.getCircuitProperties().forEach( property => property.lazyLink( solveListener ) );
+        circuitElement.getCircuitProperties().forEach( property => property.lazyLink( markDirtyListener ) );
 
         // When a new circuit element is added to a circuit, it has two unconnected vertices
 
@@ -123,7 +124,7 @@ define( require => {
           circuitElement.disposeEmitterCircuitElement.addListener( () => circuitElement.lengthProperty.unlink( updateCharges ) );
         }
 
-        this.solve();
+        this.markDirty();
       } );
       this.circuitElements.addItemRemovedListener( circuitElement => {
 
@@ -136,14 +137,10 @@ define( require => {
           this.selectedCircuitElementProperty.set( null );
         }
 
-        circuitElement.getCircuitProperties().forEach( property => property.unlink( solveListener ) );
-
+        circuitElement.getCircuitProperties().forEach( property => property.unlink( markDirtyListener ) );
         circuitElement.dispose();
-
         this.charges.removeAll( this.getChargesInCircuitElement( circuitElement ) );
-
-        // Explicit call to solve since it is possible to remove a CircuitElement without removing any vertices.
-        this.solve();
+        this.markDirty();
       } );
 
       // When a Charge is removed from the list, dispose it
@@ -256,7 +253,7 @@ define( require => {
         } );
       } );
 
-      this.batteryResistanceProperty.link( solveListener );
+      this.batteryResistanceProperty.link( markDirtyListener );
 
       // @public (read-only) - for creating tandems
       this.vertexGroupTandem = tandem.createGroupTandem( 'vertices' );
@@ -275,6 +272,9 @@ define( require => {
       this.paperClipGroupTandem = tandem.createGroupTandem( 'paperClips' );
       this.rightBatteryTandemGroup = tandem.createGroupTandem( 'rightBatteries' );
       this.lightBulbGroupTandem = tandem.createGroupTandem( 'lightBulbs' );
+
+      // @private {boolean} - whether physical characteristics have changed and warrant solving for currents and voltages
+      this.dirty = false;
     }
 
     /**
@@ -403,9 +403,7 @@ define( require => {
         this.circuitElements.clear();
 
         this.vertices.clear();
-
-        // Update the physics
-        this.solve();
+        this.markDirty();
       }
       else {
 
@@ -512,9 +510,7 @@ define( require => {
       if ( !vertex.blackBoxInterfaceProperty.get() ) {
         this.vertices.remove( vertex );
       }
-
-      // Update the physics
-      this.solve();
+      this.markDirty();
     }
 
     /**
@@ -630,17 +626,15 @@ define( require => {
     }
 
     /**
-     * Solve for the unknown currents and voltages of the circuit using Modified Nodal Analysis.  The solved values
-     * are set to the CircuitElements and Vertices.
+     * When some physical characteristic has changed, we must recompute the voltages and currents.  Mark as
+     * dirty and compute in step if anything has changed.
      * @public
      */
-    solve() {
-
-      // TODO: the solver code has been moved to step(), but how can we immediately update the circuit on a topology
-      // TODO: change without waiting for step?  We cannot wait for step() to run, and we cannot run step with dt=0
-      // TODO: also, maybe code that used to call solve() should not call it any more?
+    markDirty() {
+      this.dirty = true;
     }
 
+    // TODO: docs
     setSolution( solution ) {
       this.solution = solution;
     }
@@ -670,9 +664,7 @@ define( require => {
         } );
         this.vertices.remove( oldVertex );
         assert && assert( !oldVertex.positionProperty.hasListeners(), 'Removed vertex should not have any listeners' );
-
-        // Update the physics
-        this.solve();
+        this.markDirty();
 
         // Make sure the solder is displayed in the correct z-order
         targetVertex.relayerEmitter.emit();
@@ -693,12 +685,20 @@ define( require => {
       // Move the charges
       this.chargeAnimator.step( dt );
 
+      // Move forward time
       this.timeProperty.value += dt;
-      this.circuitElements.getArray().forEach( element => element.step && element.step( this.timeProperty.value, dt ) );
 
-      ModifiedNodalAnalysisAdapter.apply( this, dt );
+      // Update the
+      const circuitElementsArray = this.circuitElements.getArray();
+      const stepElements = circuitElementsArray.filter( element => element.step );
+      const dynamicElements = circuitElementsArray.filter( element => element instanceof DynamicCircuitElement );
+      stepElements.forEach( element => element.step( this.timeProperty.value, dt ) );
 
-      this.circuitChangedEmitter.emit();
+      if ( this.dirty || stepElements.length > 0 || dynamicElements.length > 0 ) {
+        ModifiedNodalAnalysisAdapter.apply( this, dt );
+        this.dirty = false;
+        this.circuitChangedEmitter.emit();
+      }
     }
 
     /**
@@ -1037,7 +1037,7 @@ define( require => {
       // Layout the charges in the circuitElement but nowhere else, since that creates a discontinuity in the motion
       circuitElement.chargeLayoutDirty = true;
       this.layoutChargesInDirtyCircuitElements();
-      this.solve();
+      this.markDirty();
     }
 
     /**
