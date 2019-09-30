@@ -29,7 +29,8 @@ define( require => {
     constructor( startVertex, endVertex, tandem, options ) {
       options = _.extend( {
         capacitance: CCKCConstants.DEFAULT_CAPACITANCE,
-        numberOfDecimalPlaces: 2
+        numberOfDecimalPlaces: 2,
+        editorDelta: 0.01
       }, options );
 
       super( startVertex, endVertex, CAPACITOR_LENGTH, tandem, options );
@@ -38,9 +39,6 @@ define( require => {
       this.capacitanceProperty = new NumberProperty( options.capacitance, {
         range: new Range( 0.05, 0.20 )
       } );
-
-      // TODO: move this to parent circuit element type
-      this.editorDelta = 0.01;
     }
 
     /**
