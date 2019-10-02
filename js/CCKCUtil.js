@@ -21,12 +21,13 @@ define( require => {
 
     /**
      * Typically show 2 decimal places for current and voltage readouts in the play area, but if it is a smaller value,
-     * between between 0.02 and 0.001, then it should show 3 decimal places.
+     * below 0.02 and 0.001, then it should show 3 decimal places.
      * @param {number} value - the value to be formatted for display
      * @returns {number} - the number of decimal places to use for the display
      */
     getNumberOfDecimalPoints: function( value ) {
-      return ( value >= 0.001 && value < 0.02 ) ? 3 : 2;
+      const abs = Math.abs( value );
+      return ( abs >= 0 && abs < 0.02 ) ? 3 : 2;
     },
 
     /**
