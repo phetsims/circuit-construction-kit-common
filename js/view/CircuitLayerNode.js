@@ -925,7 +925,11 @@ define( require => {
           // see https://github.com/phetsims/circuit-construction-kit-common/issues/418
           // TODO: I suspect the coordinate frame is wrong for CurrentChartNode
           if ( !circuitElementNode.circuitElement.circuitElementDisposed && circuitElementNode.containsSensorPoint( probeNode.translation ) ) {
-            return circuitElementNode.circuitElement.currentProperty.get();
+            let rawCurrent = circuitElementNode.circuitElement.currentProperty.get();
+            if ( circuitElementNode.circuitElement.isInitialCurrentNegative ) {
+              rawCurrent = -rawCurrent;
+            }
+            return rawCurrent;
           }
         }
       }

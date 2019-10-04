@@ -86,6 +86,31 @@ define( require => {
         assert && assert( !isNaN( c ) );
       } );
 
+      // @public (read-only) {boolean|null} - in order to keep the current signs consistent throughout a circuit
+      // we assign the directionality based on the initial current direction, so the initial current is always positive.
+      // see https://github.com/phetsims/circuit-construction-kit-common/issues/508
+      this.isInitialCurrentNegative = null;
+      this.currentProperty.link( current => {
+
+        // Avoid measuring noise from the matrix solves in disconnected circuits
+        const epsilon = 1E-6;
+        if ( current < -epsilon ) {
+          if ( this.isInitialCurrentNegative === null ) {
+            this.isInitialCurrentNegative = true;
+          }
+        }
+        else if ( current > epsilon ) {
+          if ( this.isInitialCurrentNegative === null ) {
+            this.isInitialCurrentNegative = false;
+          }
+        }
+        else {
+
+          // Reset directionality, and take new directionality when current flows again
+          this.isInitialCurrentNegative = null;
+        }
+      } );
+
       // @public (read-only) {BooleanProperty} - true if the CircuitElement can be edited and dragged
       this.interactiveProperty = new BooleanProperty( options.interactive );
 
