@@ -58,7 +58,7 @@ define( require => {
   schematicNode.mouseArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
   schematicNode.touchArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
 
-  class CapacitorNode extends FixedCircuitElementNode {
+  class CapacitorCircuitElementNode extends FixedCircuitElementNode {
 
     /**
      * @param {CCKCScreenView|null} screenView - main screen view, null for isIcon
@@ -114,9 +114,9 @@ define( require => {
    * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
    * @public {Array.<Image>}
    */
-  CapacitorNode.webglSpriteNodes = [
+  CapacitorCircuitElementNode.webglSpriteNodes = [
     new Image( batteryImage )
   ];
 
-  return circuitConstructionKitCommon.register( 'CapacitorNode', CapacitorNode );
+  return circuitConstructionKitCommon.register( 'CapacitorCircuitElementNode', CapacitorCircuitElementNode );
 } );

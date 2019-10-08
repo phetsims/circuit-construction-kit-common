@@ -15,7 +15,7 @@ define( require => {
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
   const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
-  const CapacitorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CapacitorNode' );
+  const CapacitorCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CapacitorCircuitElementNode' );
   const InductorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/InductorNode' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCLightBulbNode' );
@@ -350,7 +350,7 @@ define( require => {
         tandem.createTandem( 'resistor' )
       );
       const capacitorToolNode = this.createCircuitElementToolNode( 'CAPACITOR', count,
-        new CapacitorNode( null, null, capacitorModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
+        new CapacitorCircuitElementNode( null, null, capacitorModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
           isIcon: true
         } ),
         circuitElement => circuitElement instanceof Capacitor,
