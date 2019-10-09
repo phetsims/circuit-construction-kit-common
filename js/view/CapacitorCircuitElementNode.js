@@ -9,14 +9,23 @@ define( require => {
   'use strict';
 
   // modules
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const Bounds3 = require( 'DOT/Bounds3' );
+  const CapacitorConstants = require( 'SCENERY_PHET/capacitor/CapacitorConstants' );
+  const CapacitorNode = require( 'SCENERY_PHET/capacitor/CapacitorNode' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const CLBModelViewTransform3D = require( 'SCENERY_PHET/capacitor/CLBModelViewTransform3D' );
   const Color = require( 'SCENERY/util/Color' );
   const FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
   const Image = require( 'SCENERY/nodes/Image' );
   const Matrix3 = require( 'DOT/Matrix3' );
+  const NumberProperty = require( 'AXON/NumberProperty' );
   const Path = require( 'SCENERY/nodes/Path' );
+  const Property = require( 'AXON/Property' );
   const Shape = require( 'KITE/Shape' );
+  const Tandem = require( 'TANDEM/Tandem' );
+  const Util = require( 'DOT/Util' );
 
   // images
   const batteryImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
@@ -69,10 +78,45 @@ define( require => {
      * @param {Object} [options]
      */
     constructor( screenView, circuitLayerNode, capacitor, viewTypeProperty, tandem, options ) {
-      const lifelikeNode = new Image( batteryImage );
+
+      // TODO: Consider making CapacitorNode more view-oriented?
+      const plateBounds = new Bounds3( 0, 0, 0, 0.01414213562373095, CapacitorConstants.PLATE_HEIGHT, 0.01414213562373095 );
+      const V = 4.426999999999999e-13 / 10 * 4;
+
+      // TODO: OK to use a mock object like this, or should we create a model type
+      const circuit = {
+        maxPlateCharge: 2.6562e-12,
+        capacitor: {
+          plateSizeProperty: new Property( plateBounds ),
+          plateSeparationProperty: new NumberProperty( 0.004 ),
+          plateVoltageProperty: new NumberProperty( 1.5 ),
+          plateChargeProperty: new NumberProperty( V ),
+          getEffectiveEField() {
+            return 0;
+          }
+        }
+      };
+
+      // TODO: DynamicProperty for getting the voltages?  Or step during model step?
+      setInterval( () => {
+        const value = Util.linear( -9, 9, -V, V, capacitor.getVoltage() );
+        circuit.capacitor.plateChargeProperty.value = -value;
+      }, 10 );
+      const modelViewTransform = new CLBModelViewTransform3D();
+      const plateChargeVisibleProperty = new BooleanProperty( true );
+      const electricFieldVisibleProperty = new BooleanProperty( true );
+
+      // TODO: This is probably creating far too many <canvas> elements, and also making the charges blurry
+      const lifelikeNode = new CapacitorNode( circuit, modelViewTransform, plateChargeVisibleProperty, electricFieldVisibleProperty,
+        Tandem.optional );
 
       lifelikeNode.mutate( {
-        scale: capacitor.distanceBetweenVertices / lifelikeNode.width
+        scale: 0.45,
+        rotation: -Math.PI / 2
+      } );
+
+      lifelikeNode.mutate( {
+        centerX: capacitor.distanceBetweenVertices / 2
       } );
 
       // Center vertically to match the FixedCircuitElementNode assumption that origin is center left

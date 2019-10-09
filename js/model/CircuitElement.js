@@ -165,6 +165,15 @@ define( require => {
     }
 
     /**
+     * Returns the difference in voltage between the end and start vertices.
+     * @returns {number}
+     * @public
+     */
+    getVoltage() {
+      return this.endVertexProperty.value.voltageProperty.value - this.startVertexProperty.value.voltageProperty.value;
+    }
+
+    /**
      * When the start or end Vertex changes, move the listener from the old Vertex to the new one
      * @private
      * @param {Vertex} newVertex - the new vertex
