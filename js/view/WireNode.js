@@ -138,12 +138,15 @@ define( require => {
 
     /**
      * @param {CCKCScreenView|null} screenView - null means it's an icon
-     * @param {CircuitLayerNode} circuitLayerNode
+     * @param {CircuitLayerNode|null} circuitLayerNode
      * @param {Wire} wire
      * @param {Property.<CircuitElementViewType>} viewTypeProperty
      * @param {Tandem} tandem
      */
     constructor( screenView, circuitLayerNode, wire, viewTypeProperty, tandem ) {
+
+      // TODO: It looks like screenView is always defined.  If so, we should update the rest of the codebase around that
+      assert && assert( screenView, 'screenView should be defined' );
 
       // @private
       const startCapParent = new Node( {

@@ -20,6 +20,7 @@ define( require => {
   const FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
   const Image = require( 'SCENERY/nodes/Image' );
   const Matrix3 = require( 'DOT/Matrix3' );
+  const Node = require( 'SCENERY/nodes/Node' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Path = require( 'SCENERY/nodes/Path' );
   const Property = require( 'AXON/Property' );
@@ -28,7 +29,7 @@ define( require => {
   const Util = require( 'DOT/Util' );
 
   // images
-  const batteryImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
+  const wireIconImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/wire-icon.png' );
 
   // constants
   // dimensions for schematic
@@ -79,6 +80,8 @@ define( require => {
      */
     constructor( screenView, circuitLayerNode, capacitor, viewTypeProperty, tandem, options ) {
 
+      const wireImage = new Image( wireIconImage );
+
       // TODO: Consider making CapacitorNode more view-oriented?
       const plateBounds = new Bounds3( 0, 0, 0, 0.01414213562373095, CapacitorConstants.PLATE_HEIGHT, 0.01414213562373095 );
       const V = 4.426999999999999e-13 / 10 * 4;
@@ -116,18 +119,24 @@ define( require => {
       } );
 
       lifelikeNode.mutate( {
-        centerX: capacitor.distanceBetweenVertices / 2
-      } );
+        centerX: capacitor.distanceBetweenVertices / 2,
 
-      // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
-      lifelikeNode.centerY = 0;
+        // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
+        centerY: 0
+      } );
+      wireImage.mutate( {
+        centerX: lifelikeNode.centerX,
+        centerY: lifelikeNode.centerY
+      } );
 
       super(
         screenView,
         circuitLayerNode,
         capacitor,
         viewTypeProperty,
-        lifelikeNode,
+        new Node( {
+          children: [ wireImage, lifelikeNode ]
+        } ),
         schematicNode,
         tandem,
         options
@@ -159,7 +168,7 @@ define( require => {
    * @public {Array.<Image>}
    */
   CapacitorCircuitElementNode.webglSpriteNodes = [
-    new Image( batteryImage )
+    new Image( wireIconImage )
   ];
 
   return circuitConstructionKitCommon.register( 'CapacitorCircuitElementNode', CapacitorCircuitElementNode );
