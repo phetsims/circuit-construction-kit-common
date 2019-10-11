@@ -37,7 +37,8 @@ define( require => {
 
       // @public {Property.<number>} the capacitance in farads
       this.capacitanceProperty = new NumberProperty( options.capacitance, {
-        range: new Range( 0.05, 0.20 )
+        range: new Range( 0.05, 0.20 ),
+        tandem: tandem.createTandem( 'capacitanceProperty' )
       } );
     }
 

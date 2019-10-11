@@ -11,11 +11,11 @@ define( require => {
 
   // modules
   const AccordionBox = require( 'SUN/AccordionBox' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const HStrut = require( 'SCENERY/nodes/HStrut' );
-  const Property = require( 'AXON/Property' );
   const Text = require( 'SCENERY/nodes/Text' );
 
   // constants
@@ -39,7 +39,9 @@ define( require => {
         contentYSpacing: 0,
         lineWidth: CCKCConstants.PANEL_LINE_WIDTH,
         minWidth: CCKCConstants.RIGHT_SIDE_PANEL_MIN_WIDTH,
-        expandedProperty: new Property( false ),
+        expandedProperty: new BooleanProperty( false, {
+          tandem: tandem.createTandem( 'expandedProperty' )
+        } ),
 
         // Expand touch area to match the margins
         expandCollapseButtonOptions: {
@@ -52,7 +54,7 @@ define( require => {
             new Text( title, {
               fontSize: CCKCConstants.FONT_SIZE,
               maxWidth: 175,
-              tandem: tandem
+              tandem: tandem.createTandem( 'titleNode' )
             } )
           ]
         } ),

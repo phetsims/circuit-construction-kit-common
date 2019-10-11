@@ -18,6 +18,8 @@ define( require => {
   const CircuitElementEditNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditNode' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   const Fuse = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Fuse' );
+  const Group = require( 'TANDEM/Group' );
+  const GroupIO = require( 'TANDEM/GroupIO' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const Inductor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Inductor' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
@@ -32,17 +34,18 @@ define( require => {
   const SwitchReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SwitchReadoutNode' );
   const Text = require( 'SCENERY/nodes/Text' );
   const TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
+  const TrashButtonIO = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButtonIO' );
   const Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
 
   // strings
   const capacitanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/capacitance' );
-  const inductanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/inductance' );
   const capacitanceUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/capacitanceUnits' );
-  const inductanceUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/inductanceUnits' );
   const currentRatingString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/currentRating' );
   const currentUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/currentUnits' );
   const frequencyHzValuePatternString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/frequencyHzValuePattern' );
   const frequencyString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/frequency' );
+  const inductanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/inductance' );
+  const inductanceUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/inductanceUnits' );
   const resistanceOhmsValuePatternString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhmsValuePattern' );
   const resistanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistance' );
   const tapCircuitElementToEditString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/tapCircuitElementToEdit' );
@@ -67,6 +70,16 @@ define( require => {
      */
     constructor( circuit, visibleBoundsProperty, modeProperty, tandem ) {
       const groupTandem = tandem.createGroupTandem( 'circuitElementEditNode' );
+
+      const trashButtonGroup = new Group( 'trashButton', {
+        prototype: {
+          create: ( tandem, prototype, circuitElement ) => new TrashButton( circuit, circuitElement, tandem ),
+          defaultArguments: [ null ]
+        }
+      }, {
+        phetioType: GroupIO( TrashButtonIO ),
+        tandem: tandem.createTandem( 'trashButtonGroup' )
+      } );
       super();
 
       const tapInstructionTextNode = new Text( tapCircuitElementToEditString, {
@@ -100,8 +113,8 @@ define( require => {
       // When the selected element changes, update the displayed controls
       let editNode = null;
       circuit.selectedCircuitElementProperty.link( selectedCircuitElement => {
-        editNode && this.removeChild( editNode );
-        ( editNode && editNode !== tapInstructionTextNode ) && editNode.dispose();
+        editNode && this.hasChild( editNode ) && this.removeChild( editNode );
+        ( editNode && editNode !== tapInstructionTextNode ) && !editNode.isDisposed && editNode.dispose();
         editNode = null;
 
         if ( selectedCircuitElement ) {
@@ -132,9 +145,7 @@ define( require => {
           else if ( isResistor ) {
 
             // Just show a trash button for non-editable resistors which are household items
-            editNode = new TrashButton(
-              circuit, selectedCircuitElement, groupTandem.createNextTandem().createTandem( 'trashButton' )
-            );
+            editNode = trashButtonGroup.createNextGroupMember( selectedCircuitElement );
           }
           else if ( isBattery ) {
             editNode = new EditPanel( new CircuitElementEditNode(
@@ -171,9 +182,7 @@ define( require => {
           else if ( isSeriesAmmeter || isWire ) {
 
             // Just show a trash button
-            editNode = new TrashButton(
-              circuit, selectedCircuitElement, groupTandem.createNextTandem().createTandem( 'trashButton' )
-            );
+            editNode = trashButtonGroup.createNextGroupMember( selectedCircuitElement );
           }
           else if ( isACSource ) {
             editNode = new EditPanel( new HBox( {

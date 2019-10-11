@@ -45,8 +45,13 @@ define( require => {
       // @private {ZoomAnimation|null} - animation for the zoom level or null if not animating
       this.zoomAnimation = null;
 
+      // @public {Property.<CircuitElementViewType>} - whether to show lifelike or schematic representations
+      this.viewTypeProperty = new EnumerationProperty( CircuitElementViewType, CircuitElementViewType.LIFELIKE, {
+        tandem: tandem.createTandem( 'viewTypeProperty' )
+      } );
+
       // @public (read-only) {Circuit} - contains CircuitElements, Vertices, etc.
-      this.circuit = new Circuit( tandem.createTandem( 'circuit' ), { blackBoxStudy: options.blackBoxStudy } );
+      this.circuit = new Circuit( this.viewTypeProperty, tandem.createTandem( 'circuit' ), { blackBoxStudy: options.blackBoxStudy } );
 
       // @public (read-only) {Voltmeter}
       this.voltmeter = new Voltmeter( tandem.createTandem( 'voltmeter' ) );
@@ -92,11 +97,6 @@ define( require => {
       // @public {Property.<InteractionMode>} - whether the user is in the CircuitConstructionKitModel.InteractionMode.EXPLORE or CircuitConstructionKitModel.InteractionMode.TEST mode
       this.modeProperty = new EnumerationProperty( Circuit.InteractionMode, Circuit.InteractionMode.EXPLORE, {
         tandem: tandem.createTandem( 'modeProperty' )
-      } );
-
-      // @public {Property.<CircuitElementViewType>} - whether to show lifelike or schematic representations
-      this.viewTypeProperty = new EnumerationProperty( CircuitElementViewType, CircuitElementViewType.LIFELIKE, {
-        tandem: tandem.createTandem( 'viewTypeProperty' )
       } );
 
       // When the user manipulates something, hide the readouts, see

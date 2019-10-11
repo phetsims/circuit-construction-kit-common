@@ -51,7 +51,9 @@ define( require => {
       options.isMetallic = Resistor.ResistorType.isMetallic( this.resistorType );
 
       // @public {Property.<number>} the resistance in ohms
-      this.resistanceProperty = new NumberProperty( options.resistance );
+      this.resistanceProperty = new NumberProperty( options.resistance, {
+        tandem: tandem.createTandem( 'resistanceProperty' )
+      } );
     }
 
     /**

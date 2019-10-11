@@ -29,7 +29,10 @@ define( require => {
      */
     constructor( startVertex, endVertex, resistivityProperty, tandem, options ) {
       assert && assert( typeof resistivityProperty !== 'number', 'property should not be a number' );
-      options = _.extend( { wireStub: false, isMetallic: true }, options );
+      options = _.extend( {
+        wireStub: false,
+        isMetallic: true
+      }, options );
       const chargePathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
       super( startVertex, endVertex, chargePathLength, tandem, options );
 

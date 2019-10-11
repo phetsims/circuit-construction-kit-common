@@ -15,7 +15,6 @@ define( require => {
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Util = require( 'DOT/Util' );
   const Vector2 = require( 'DOT/Vector2' );
-  const Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
 
   // constants
 
@@ -70,7 +69,9 @@ define( require => {
       this.highResistance = options.highResistance;
 
       // @public {Property.<number>} - the resistance of the light bulb which can be edited with the UI
-      this.resistanceProperty = new NumberProperty( resistance );
+      this.resistanceProperty = new NumberProperty( resistance, {
+        tandem: tandem.createTandem( 'resistanceProperty' )
+      } );
 
       // @private (read-only) {Vector2} the vector between the vertices
       this.vertexDelta = endVertex.positionProperty.get().minus( startVertex.positionProperty.get() );
@@ -210,7 +211,7 @@ define( require => {
   /**
    * Create a LightBulb at the specified position
    * @param {Vector2} position
-   * @param {Tandem} circuitVertexGroupTandem
+   * @param {Circuit} circuit
    * @param {number} resistance
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Tandem} tandem
@@ -218,9 +219,16 @@ define( require => {
    * @returns {LightBulb}
    * @public
    */
-  LightBulb.createAtPosition = ( position, circuitVertexGroupTandem, resistance, viewTypeProperty, tandem, options ) => {
+  LightBulb.createAtPosition = ( position, circuit, resistance, viewTypeProperty, tandem, options ) => {
 
     options = options || {};
+    const vertexPair = LightBulb.createVertexPair( position, circuit );
+
+    return new LightBulb( vertexPair.startVertex, vertexPair.endVertex, resistance, viewTypeProperty, tandem, options );
+  };
+
+  LightBulb.createVertexPair = ( position, circuit ) => {
+
     const translation = new Vector2( 19, 10 );
 
     // Connect at the side and bottom
@@ -230,14 +238,9 @@ define( require => {
     const endPoint = startPoint.plus( Vector2.createPolar( DISTANCE_BETWEEN_VERTICES, -Math.PI / 4 ) );
 
     // start vertex is at the bottom
-    const startVertex = new Vertex( startPoint, {
-      tandem: circuitVertexGroupTandem.createNextTandem()
-    } );
-    const endVertex = new Vertex( endPoint, {
-      tandem: circuitVertexGroupTandem.createNextTandem()
-    } );
-
-    return new LightBulb( startVertex, endVertex, resistance, viewTypeProperty, tandem, options );
+    const startVertex = circuit.vertexGroup.createNextGroupMember( startPoint );
+    const endVertex = circuit.vertexGroup.createNextGroupMember( endPoint );
+    return { startVertex: startVertex, endVertex: endVertex };
   };
 
   return circuitConstructionKitCommon.register( 'LightBulb', LightBulb );

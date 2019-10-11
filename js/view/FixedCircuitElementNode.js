@@ -223,6 +223,7 @@ define( require => {
       }
 
       const angle = Vector2.getAngleBetweenVectors( startPosition, endPosition );
+
       const magnitude = Vector2.getDistanceBetweenVectors( startPosition, endPosition );
 
       // Update the node transform in a single step, see #66

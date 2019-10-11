@@ -10,39 +10,50 @@ define( require => {
   'use strict';
 
   // modules
+  const ACVoltage = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACVoltage' );
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   const Charge = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Charge' );
   const ChargeAnimator = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ChargeAnimator' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const CircuitElementIO = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementIO' );
   const CurrentType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CurrentType' );
   const DynamicCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/DynamicCircuitElement' );
   const Emitter = require( 'AXON/Emitter' );
   const Enumeration = require( 'PHET_CORE/Enumeration' );
   const EnumerationProperty = require( 'AXON/EnumerationProperty' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
+  const Group = require( 'TANDEM/Group' );
+  const GroupIO = require( 'TANDEM/GroupIO' );
+  const Inductor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Inductor' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const ModifiedNodalAnalysisAdapter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisAdapter' );
   const NullableIO = require( 'TANDEM/types/NullableIO' );
   const NumberProperty = require( 'AXON/NumberProperty' );
-  const ObjectIO = require( 'TANDEM/types/ObjectIO' );
   const ObservableArray = require( 'AXON/ObservableArray' );
+  const ObservableArrayIO = require( 'AXON/ObservableArrayIO' );
   const Property = require( 'AXON/Property' );
   const PropertyIO = require( 'AXON/PropertyIO' );
+  const ReferenceIO = require( 'TANDEM/types/ReferenceIO' );
   const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   const SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
   const Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
   const Tandem = require( 'TANDEM/Tandem' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
+  const VertexIO = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/VertexIO' );
   const Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
 
   // constants
   const SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
   const BUMP_AWAY_RADIUS = 20; // If two vertices are too close together after one is released, and they could not be
   // joined then bump them apart so they do not look connected.
+
+  const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
+  const WIRE_LENGTH = 100; // TODO: factor out
 
   const trueFunction = _.constant( true ); // Lower cased so IDEA doesn't think it is a constructor
 
@@ -52,7 +63,8 @@ define( require => {
      * @param {Tandem} tandem
      * @param {Object} [options]
      */
-    constructor( tandem, options ) {
+    constructor( viewTypeProperty, tandem, options ) {
+      this.viewTypeProperty = viewTypeProperty;
 
       options = _.extend( { blackBoxStudy: false }, options );
       this.blackBoxStudy = options.blackBoxStudy;
@@ -71,7 +83,11 @@ define( require => {
 
       // @public {ObservableArray.<CircuitElement>} - The different types of CircuitElement the circuit may
       // contain, including Wire, Battery, Switch, Resistor, LightBulb, etc.
-      this.circuitElements = new ObservableArray();
+      this.circuitElements = new ObservableArray( {
+        phetioState: true,
+        phetioType: ObservableArrayIO( ReferenceIO ),
+        tandem: tandem.createTandem( 'circuitElements' )
+      } );
 
       // @public {ObservableArray.<Vertex>} - Keep track of which terminals are connected to other terminals.
       // The vertices are also referenced in the CircuitElements above--this ObservableArray is a central point for
@@ -138,7 +154,6 @@ define( require => {
         }
 
         circuitElement.getCircuitProperties().forEach( property => property.unlink( markDirtyListener ) );
-        circuitElement.dispose();
         this.charges.removeAll( this.getChargesInCircuitElement( circuitElement ) );
         this.markDirty();
       } );
@@ -203,7 +218,7 @@ define( require => {
       // Vertex.selectedProperty.  These strategies can be unified when we work on a11y.
       this.selectedCircuitElementProperty = new Property( null, {
         tandem: tandem.createTandem( 'selectedCircuitElementProperty' ),
-        phetioType: PropertyIO( NullableIO( ObjectIO ) )
+        phetioType: PropertyIO( NullableIO( ReferenceIO ) )
       } );
 
       this.selectedCircuitElementProperty.link( selectedCircuitElement => {
@@ -256,13 +271,8 @@ define( require => {
       this.batteryResistanceProperty.link( markDirtyListener );
 
       // @public (read-only) - for creating tandems
-      this.vertexGroupTandem = tandem.createGroupTandem( 'vertices' );
-      this.wireGroupTandem = tandem.createGroupTandem( 'wires' );
       this.resistorGroupTandem = tandem.createGroupTandem( 'resistors' );
-      this.capacitorGroupTandem = tandem.createGroupTandem( 'capacitors' );
-      this.inductorGroupTandem = tandem.createGroupTandem( 'inductors' );
       this.seriesAmmeterGroupTandem = tandem.createGroupTandem( 'seriesAmmeters' );
-      this.switchGroupTandem = tandem.createGroupTandem( 'switches' );
       this.coinGroupTandem = tandem.createGroupTandem( 'coins' );
       this.eraserGroupTandem = tandem.createGroupTandem( 'erasers' );
       this.pencilGroupTandem = tandem.createGroupTandem( 'pencils' );
@@ -270,11 +280,145 @@ define( require => {
       this.dogGroupTandem = tandem.createGroupTandem( 'dogs' );
       this.dollarBillGroupTandem = tandem.createGroupTandem( 'dollarBills' );
       this.paperClipGroupTandem = tandem.createGroupTandem( 'paperClips' );
-      this.rightBatteryTandemGroup = tandem.createGroupTandem( 'rightBatteries' );
-      this.lightBulbGroupTandem = tandem.createGroupTandem( 'lightBulbs' );
+
+      this.vertexGroup = new Group( 'vertex', {
+        prototype: {
+          create: ( tandem, prototypeName, position ) => new Vertex( position, {
+            tandem: tandem,
+            phetioType: VertexIO
+          } ),
+          defaultArguments: [ new Vector2( 0, 0 ) ]
+        }
+      }, {
+        phetioType: GroupIO( VertexIO ),
+        tandem: tandem.createTandem( 'vertexGroup' )
+      } );
+
+      this.wireGroup = new Group( 'wire', {
+        prototype: {
+          create: ( tandem, prototypeName, startVertex, endVertex ) => {
+            return new Wire( startVertex, endVertex, this.wireResistivityProperty, tandem );
+          },
+          defaultArguments: () => this.createVertexPairArray( new Vector2( 0, 0 ), WIRE_LENGTH )
+        }
+      }, {
+        phetioType: GroupIO( CircuitElementIO ),
+        tandem: tandem.createTandem( 'wireGroup' )
+      } );
+
+      this.batteryGroup = new Group( 'battery', {
+        prototype: {
+          create: ( tandem, prototypeName, startVertex, endVertex ) => {
+            return new Battery( startVertex, endVertex, this.batteryResistanceProperty, Battery.BatteryType.NORMAL,
+              tandem );
+          },
+          defaultArguments: () => this.createVertexPairArray( new Vector2( 0, 0 ), BATTERY_LENGTH )
+        }
+      }, {
+        phetioType: GroupIO( CircuitElementIO ),
+        tandem: tandem.createTandem( 'batteryGroup' )
+      } );
+
+      this.acVoltageGroup = new Group( 'acVoltage', {
+        prototype: {
+          create: ( tandem, prototypeName, startVertex, endVertex ) => {
+            return new ACVoltage( startVertex, endVertex, this.batteryResistanceProperty, tandem );
+          },
+          defaultArguments: () => this.createVertexPairArray( new Vector2( 0, 0 ), CCKCConstants.AC_VOLTAGE_LENGTH )
+        }
+      }, {
+        phetioType: GroupIO( CircuitElementIO ),
+        tandem: tandem.createTandem( 'acVoltageGroup' )
+      } );
+
+      this.resistorGroup = new Group( 'resistor', {
+        prototype: {
+          create: ( tandem, prototypeName, startVertex, endVertex ) => new Resistor( startVertex, endVertex, tandem ),
+          defaultArguments: () => this.createVertexPairArray( new Vector2( 0, 0 ), CCKCConstants.RESISTOR_LENGTH )
+        }
+      }, {
+        phetioType: GroupIO( CircuitElementIO ),
+        tandem: tandem.createTandem( 'resistorGroup' )
+      } );
+
+      this.capacitorGroup = new Group( 'capacitor', {
+        prototype: {
+          create: ( tandem, prototypeName, startVertex, endVertex ) => new Capacitor( startVertex, endVertex, tandem ),
+          defaultArguments: () => this.createVertexPairArray( new Vector2( 0, 0 ), CCKCConstants.CAPACITOR_LENGTH )
+        }
+      }, {
+        phetioType: GroupIO( CircuitElementIO ),
+        tandem: tandem.createTandem( 'capacitorGroup' )
+      } );
+
+      this.inductorGroup = new Group( 'inductor', {
+        prototype: {
+          create: ( tandem, prototypeName, startVertex, endVertex ) => new Inductor( startVertex, endVertex, tandem ),
+          defaultArguments: () => this.createVertexPairArray( new Vector2( 0, 0 ), CCKCConstants.INDUCTOR_LENGTH )
+        }
+      }, {
+        phetioType: GroupIO( CircuitElementIO ),
+        tandem: tandem.createTandem( 'inductorGroup' )
+      } );
+
+      this.switchGroup = new Group( 'switch', {
+        prototype: {
+          create: ( tandem, prototypeName, startVertex, endVertex ) => new Switch( startVertex, endVertex, tandem ),
+          defaultArguments: () => this.createVertexPairArray( new Vector2( 0, 0 ), CCKCConstants.SWITCH_LENGTH )
+        }
+      }, {
+        phetioType: GroupIO( CircuitElementIO ),
+        tandem: tandem.createTandem( 'switchGroup' )
+      } );
+
+      this.lightBulbGroup = new Group( 'lightBulb', {
+        prototype: {
+          create: ( tandem, prototypeName, startVertex, endVertex ) => {
+            return new LightBulb( startVertex, endVertex, CCKCConstants.DEFAULT_RESISTANCE, this.viewTypeProperty, tandem );
+          },
+          defaultArguments: () => {
+            const x = LightBulb.createVertexPair( new Vector2( 0, 0 ), this );
+            return [ x.startVertex, x.endVertex ];
+          }
+        }
+      }, {
+        phetioType: GroupIO( CircuitElementIO ),
+        tandem: tandem.createTandem( 'lightBulbGroup' )
+      } );
 
       // @private {boolean} - whether physical characteristics have changed and warrant solving for currents and voltages
       this.dirty = false;
+    }
+
+    /**
+     * Create a pair of vertices to be used for a new CircuitElement
+     * @param {Vector2} position - the position of the center of the CircuitElement
+     * @param {number} length - the distance between the vertices
+     * @returns {{startVertex: Vertex, endVertex: Vertex}}
+     * @private
+     */
+    createVertexPair( position, length ) {
+      assert && assert( position, 'position should be defined' );
+      return {
+        startVertex: this.createVertex( position.plusXY( -length / 2, 0 ) ),
+        endVertex: this.createVertex( position.plusXY( length / 2, 0 ) )
+      };
+    }
+
+    // TODO: Will we need this and createVertexPair?
+    createVertexPairArray( position, length ) {
+      const pair = this.createVertexPair( position, length );
+      return [ pair.startVertex, pair.endVertex ];
+    }
+
+    /**
+     * Create a Vertex at the specified location, convenience function for creating the vertices for CircuitElements.
+     * @param {Vector2} position - the position of the Vertex in view = model coordinates
+     * @returns {Vertex}
+     * @private
+     */
+    createVertex( position ) {
+      return this.vertexGroup.createNextGroupMember( position );
     }
 
     /**
@@ -494,9 +638,7 @@ define( require => {
 
       neighborCircuitElements.forEach( ( circuitElement, i ) => {
 
-        const newVertex = new Vertex( vertex.positionProperty.get(), {
-          tandem: this.vertexGroupTandem.createNextTandem()
-        } );
+        const newVertex = this.vertexGroup.createNextGroupMember( vertex.positionProperty.get() );
 
         // Add the new vertex to the model first so that it can be updated in subsequent calls
         this.vertices.add( newVertex );
@@ -1177,6 +1319,7 @@ define( require => {
         } ) );
       } );
 
+      // TODO: Eliminate
       stateObject.circuitElements.forEach( circuitElementStateObject => {
         const type = circuitElementStateObject.type;
         const startVertex = this.vertices.get( circuitElementStateObject.startVertexIndex );

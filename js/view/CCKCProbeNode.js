@@ -12,6 +12,7 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const DragListener = require( 'SCENERY/listeners/DragListener' );
   const ProbeNode = require( 'SCENERY_PHET/ProbeNode' );
+  const Tandem = require( 'TANDEM/Tandem' );
 
   class CCKCProbeNode extends ProbeNode {
 
@@ -26,7 +27,8 @@ define( require => {
         cursor: 'pointer',
         sensorTypeFunction: ProbeNode.crosshairs( { stroke: 'white' } ),
         scale: 0.4,
-        drag: () => {}
+        drag: () => {},
+        tandem: Tandem.optional
       }, options );
 
       super( options );
@@ -37,7 +39,8 @@ define( require => {
         translateNode: true,
         dragBoundsProperty: visibleBoundsProperty,
         press: () => node.moveToFront(),
-        drag: () => options.drag()
+        drag: () => options.drag(),
+        tandem: options.tandem.createTandem( 'dragListener' )
       } ) );
     }
   }

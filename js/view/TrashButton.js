@@ -14,16 +14,18 @@ define( require => {
   const FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   const PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
   const RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
+  const TrashButtonIO = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButtonIO' );
 
   class TrashButton extends RoundPushButton {
 
     /**
      * @param {Circuit} circuit - the circuit from which the CircuitElement can be removed
-     * @param {CircuitElement} circuitElement - the CircuitElement to remove when the button is pressed
+     * @param {CircuitElement|null} circuitElement - the CircuitElement to remove when the button is pressed, or null if for a prototype
      * @param {Tandem} tandem
      */
     constructor( circuit, circuitElement, tandem ) {
 
+      assert( circuitElement !== undefined, 'circuit element should be null or defined' );
       super( {
         baseColor: PhetColorScheme.BUTTON_YELLOW,
         content: new FontAwesomeNode( 'trash', {
@@ -38,8 +40,14 @@ define( require => {
         },
         minXMargin: 10,
         minYMargin: 10,
-        tandem: tandem.createTandem( 'trashButton' )
+        tandem: tandem,
+        phetioDynamicElement: true,
+        phetioType: TrashButtonIO,
+        phetioState: true
       } );
+
+      // @public (read-only, phet-io)
+      this.circuitElement = circuitElement;
     }
   }
 

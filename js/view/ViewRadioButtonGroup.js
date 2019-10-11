@@ -17,6 +17,7 @@ define( require => {
   const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   const Property = require( 'AXON/Property' );
   const RadioButtonGroup = require( 'SUN/buttons/RadioButtonGroup' );
+  const Tandem = require( 'TANDEM/Tandem' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
 
@@ -35,7 +36,7 @@ define( require => {
       // Create a battery which can be used in the views
       const startVertex = new Vertex( new Vector2( BATTERY_LENGTH / 2, 0 ) );
       const endVertex = new Vertex( new Vector2( -BATTERY_LENGTH / 2, 0 ) );
-      const battery = new Battery( endVertex, startVertex, new Property( 0 ), Battery.BatteryType.NORMAL, tandem.createTandem( 'battery' ), {
+      const battery = new Battery( endVertex, startVertex, new Property( 0 ), Battery.BatteryType.NORMAL, Tandem.optional, {
         initialOrientation: 'left'
       } );
 

@@ -31,14 +31,15 @@ define( require => {
      */
     constructor( startVertex, endVertex, tandem, options ) {
 
-      options = _.extend( { closed: false }, options );
-
-      super( startVertex, endVertex, SWITCH_LENGTH, tandem, {
+      options = _.extend( {
+        closed: false,
 
         // Use the bounding box of the open lifelike switch to show bounds for all combinations of open/closed x lifelike/schematic
         // See https://github.com/phetsims/circuit-construction-kit-dc/issues/132
         isSizeChangedOnViewChange: false
-      } );
+      }, options );
+
+      super( startVertex, endVertex, SWITCH_LENGTH, tandem, options );
 
       // @public (read-only) {NumberProperty} the resistance in ohms
       this.resistanceProperty = new NumberProperty( 0 );

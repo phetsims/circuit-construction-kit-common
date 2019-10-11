@@ -12,6 +12,7 @@ define( require => {
   // modules
   const BooleanProperty = require( 'AXON/BooleanProperty' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const CircuitElementIO = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementIO' );
   const Emitter = require( 'AXON/Emitter' );
   const Event = require( 'SCENERY/input/Event' );
   const NumberProperty = require( 'AXON/NumberProperty' );
@@ -44,7 +45,9 @@ define( require => {
         isMetallic: false, // Metallic items can have their voltage read directly (unshielded)
         isFlammable: false,
         tandem: tandem,
-        isCurrentReentrant: false
+        isCurrentReentrant: false,
+        phetioDynamicElement: true,
+        phetioType: CircuitElementIO
       }, options );
 
       super( options );

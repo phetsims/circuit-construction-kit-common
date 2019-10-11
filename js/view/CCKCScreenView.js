@@ -119,7 +119,9 @@ define( require => {
 
       if ( options.showCharts ) {
         this.voltageChartNode = new VoltageChartNode( this.circuitLayerNode, model.circuit.timeProperty,
-          this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty );
+          this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty, {
+            tandem: tandem.createTandem( 'voltageChartNode' )
+          } );
 
         // TODO: a way to set the default value during construction
         this.voltageChartNode.meter.visibleProperty.value = false;
@@ -128,7 +130,9 @@ define( require => {
 
         // TODO: some duplicated code with above
         this.currentChartNode = new CurrentChartNode( this.circuitLayerNode, model.circuit.timeProperty,
-          this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty );
+          this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty, {
+            tandem: tandem.createTandem( 'currentChartNode' )
+          } );
 
         // TODO: a way to set the default value during construction
         this.currentChartNode.meter.visibleProperty.value = false;
@@ -322,6 +326,11 @@ define( require => {
             this.model.circuit.circuitElements.remove( circuitElement );
           }
         }
+      } );
+
+      // Re-render after setting state
+      _.hasIn( window, 'phet.phetIo.phetioEngine' ) && phet.phetIo.phetioEngine.phetioStateEngine.stateSetEmitter.addListener( () => {
+        this.step( 1 / 60 );
       } );
     }
 

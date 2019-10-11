@@ -128,7 +128,7 @@ define( require => {
         verticalAxisTitleNode,
         scaleIndicatorText,
         timeString,
-        _.omit( options, 'scale' ) // Don't apply the scale to both parent and children
+        _.omit( options, 'scale', 'tandem' ) // Don't apply the scale to both parent and children
       );
       const shadedRectangle = new ShadedRectangle( scrollingChartNode.bounds.dilated( 7 ) );
       shadedRectangle.addChild( scrollingChartNode );
@@ -147,9 +147,9 @@ define( require => {
      * @returns {DynamicSeries}
      * @protected
      */
-    addProbeNode( color, wireColor, dx, dy, connectionProperty ) {
+    addProbeNode( color, wireColor, dx, dy, connectionProperty, tandem ) {
 
-      const probeNode = new CCKCProbeNode( this, this.visibleBoundsProperty, { color: color } );
+      const probeNode = new CCKCProbeNode( this, this.visibleBoundsProperty, { color: color, tandem: tandem } );
 
       // Add the wire behind the probe.
       this.addChild( new WireNode( connectionProperty, new Vector2Property( new Vector2( -NORMAL_DISTANCE, 0 ) ),
@@ -230,6 +230,7 @@ define( require => {
       // the same strategy in SensorToolNode (regarding Meter) we need to use MovableDragHandler.  DragListener
       // led to incorrect and unresolved offsets and behavior.
       const movableDragHandler = new MovableDragHandler( this.meter.bodyPositionProperty, {
+        tandem: this.tandem.createTandem( 'dragHandler' ),
         targetNode: this.backgroundNode,
         startDrag: () => {
           this.moveToFront();

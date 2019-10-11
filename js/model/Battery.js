@@ -42,7 +42,9 @@ define( require => {
       super( startVertex, endVertex, BATTERY_LENGTH, tandem, options );
 
       // @public {NumberProperty} - the voltage of the battery in volts
-      this.voltageProperty = new NumberProperty( options.voltage );
+      this.voltageProperty = new NumberProperty( options.voltage, {
+        tandem: tandem.createTandem( 'voltageProperty' )
+      } );
 
       // @public {Property.<number>} the internal resistance of the battery
       this.internalResistanceProperty = new DerivedProperty( [ internalResistanceProperty, this.currentProperty ],

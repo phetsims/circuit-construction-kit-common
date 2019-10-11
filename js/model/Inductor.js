@@ -37,7 +37,8 @@ define( require => {
 
       // @public {Property.<number>} the inductance in Henries
       this.inductanceProperty = new NumberProperty( options.inductance, {
-        range: new Range( 10, 100 )
+        range: new Range( 10, 100 ),
+        tandem: tandem.createTandem( 'inductanceProperty' )
       } );
     }
 

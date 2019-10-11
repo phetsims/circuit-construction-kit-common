@@ -50,8 +50,8 @@ define( require => {
 
       // @private
       this.series = series;
-      this.probeNode1 = this.addProbeNode( SERIES_1_COLOR, WIRE_1_COLOR, 5, 10, this.aboveBottomLeft1 );
-      this.probeNode2 = this.addProbeNode( SERIES_2_COLOR, WIRE_2_COLOR, 36, 54, this.aboveBottomLeft2 );
+      this.probeNode1 = this.addProbeNode( SERIES_1_COLOR, WIRE_1_COLOR, 5, 10, this.aboveBottomLeft1, options.tandem.createTandem( 'probeNode1' ) );
+      this.probeNode2 = this.addProbeNode( SERIES_2_COLOR, WIRE_2_COLOR, 36, 54, this.aboveBottomLeft2, options.tandem.createTandem( 'probeNode2' ) );
 
       // Align probes after positioning the body so icons will have the correct bounds
       this.alignProbesEmitter.emit();

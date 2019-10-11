@@ -13,13 +13,14 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Emitter = require( 'AXON/Emitter' );
   const NumberProperty = require( 'AXON/NumberProperty' );
+  const PhetioObject = require( 'TANDEM/PhetioObject' );
   const Tandem = require( 'TANDEM/Tandem' );
   const Vector2Property = require( 'DOT/Vector2Property' );
 
   // Index counter for debugging
   let counter = 0;
 
-  class Vertex {
+  class Vertex extends PhetioObject {
 
     /**
      * @param {Vector2} position - position in view coordinates
@@ -27,19 +28,22 @@ define( require => {
      */
     constructor( position, options ) {
 
-      // @private {number} - Index counter for hashing in CircuitLayerNode.  Also useful for debugging and can be shown
-      // with ?vertexDisplay=index
-      this.index = counter++;
-
       options = _.extend( {
         draggable: true, // whether the vertex can be dragged, false for Black Box elements
         attachable: true, // Black box interior elements cannot be connected while the box is closed
         interactive: true, // Black box interface vertices can be interactive (tap to select) without being draggable
         blackBoxInterface: false, // Black box interface vertices cannot be dragged or deleted, but can be connected to
         insideTrueBlackBox: false, // Behavior differs in explore vs test mode
-        tandem: Tandem.optional // Temporary vertices (for icons) should not be instrumented since they
+        tandem: Tandem.optional, // Temporary vertices (for icons) should not be instrumented since they
+        phetioDynamicElement: true
         // are more of an implementation detail rather than a feature
       }, options );
+
+      super( options );
+
+      // @private {number} - Index counter for hashing in CircuitLayerNode.  Also useful for debugging and can be shown
+      // with ?vertexDisplay=index
+      this.index = counter++;
 
       // @public (read-only)
       this.vertexTandem = options.tandem;

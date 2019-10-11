@@ -16,7 +16,6 @@ define( require => {
   const BatteryNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryNode' );
   const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
   const CapacitorCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CapacitorCircuitElementNode' );
-  const InductorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/InductorNode' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCLightBulbNode' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
@@ -27,15 +26,16 @@ define( require => {
   const FuseNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FuseNode' );
   const Image = require( 'SCENERY/nodes/Image' );
   const Inductor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Inductor' );
+  const InductorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/InductorNode' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const Line = require( 'SCENERY/nodes/Line' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Property = require( 'AXON/Property' );
-  const Range = require( 'DOT/Range' );
   const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   const ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorNode' );
   const Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
   const SwitchNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SwitchNode' );
+  const Tandem = require( 'TANDEM/Tandem' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
   const Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
@@ -93,17 +93,6 @@ define( require => {
       this.carousel.reset( { animationEnabled: false } );
     }
 
-
-    /**
-     * Create a Vertex at the specified location, convenience function for creating the vertices for CircuitElements.
-     * @param {Vector2} position - the position of the Vertex in view = model coordinates
-     * @returns {Vertex}
-     * @private
-     */
-    createVertex( position ) {
-      return new Vertex( position, { tandem: this.circuit.vertexGroupTandem.createNextTandem() } );
-    }
-
     /**
      * Returns a function which counts the number of circuit elements (not counting those in the true black box).
      * @param {function} predicate - CircuitElement => boolean
@@ -117,20 +106,6 @@ define( require => {
           // Count according to the predicate, but don't count elements inside the true black box
           predicate( circuitElement ) && !circuitElement.insideTrueBlackBoxProperty.get()
         ).length;
-    }
-
-    /**
-     * Create a pair of vertices to be used for a new CircuitElement
-     * @param {Vector2} position - the position of the center of the CircuitElement
-     * @param {number} length - the distance between the vertices
-     * @returns {{startVertex: Vertex, endVertex: Vertex}}
-     * @private
-     */
-    createVertexPair( position, length ) {
-      return {
-        startVertex: this.createVertex( position.plusXY( -length / 2, 0 ) ),
-        endVertex: this.createVertex( position.plusXY( length / 2, 0 ) )
-      };
     }
 
     /**
@@ -182,13 +157,8 @@ define( require => {
       return this.createCircuitElementToolNode( wireString, count, wireNode,
         circuitElement => circuitElement instanceof Wire,
         position => {
-          const vertexPair = this.createVertexPair( position, WIRE_LENGTH );
-          return new Wire(
-            vertexPair.startVertex,
-            vertexPair.endVertex,
-            this.circuit.wireResistivityProperty,
-            this.circuit.wireGroupTandem.createNextTandem()
-          );
+          const vertexPair = this.circuit.createVertexPair( position, WIRE_LENGTH );
+          return this.circuit.wireGroup.createNextGroupMember( vertexPair.startVertex, vertexPair.endVertex );
         }
       );
     }
@@ -200,26 +170,20 @@ define( require => {
      * @public
      */
     createRightBatteryToolNode( count, tandem ) {
-      const batteryModel = new Battery( new Vertex( Vector2.ZERO ), new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
-        new Property( 0 ), Battery.BatteryType.NORMAL, tandem.createTandem( 'rightIconBattery' ) );
-      const rightBatteryToolNode = this.createCircuitElementToolNode( batteryString, count,
-        new BatteryNode( null, null, batteryModel, this.viewTypeProperty, tandem.createTandem( 'rightBatteryIcon' ), { isIcon: true }
-        ),
+      const batteryModel = new Battery(
+        new Vertex( Vector2.ZERO ), new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
+        new Property( 0 ), Battery.BatteryType.NORMAL, Tandem.optional
+      );
+      return this.createCircuitElementToolNode( batteryString, count,
+        new BatteryNode( null, null, batteryModel, this.viewTypeProperty, tandem.createTandem( 'rightBatteryIcon' ), { isIcon: true } ),
         circuitElement => circuitElement instanceof Battery &&
                           circuitElement.initialOrientation === 'right' &&
                           circuitElement.batteryType === Battery.BatteryType.NORMAL,
         position => {
-          const vertexPair = this.createVertexPair( position, BATTERY_LENGTH );
-          return new Battery(
-            vertexPair.startVertex,
-            vertexPair.endVertex,
-            this.circuit.batteryResistanceProperty,
-            Battery.BatteryType.NORMAL,
-            this.circuit.rightBatteryTandemGroup.createNextTandem()
-          );
+          const vertexPair = this.circuit.createVertexPair( position, BATTERY_LENGTH );
+          return this.circuit.batteryGroup.createNextGroupMember( vertexPair.startVertex, vertexPair.endVertex );
         }
       );
-      return rightBatteryToolNode;
     }
 
     /**
@@ -232,19 +196,15 @@ define( require => {
       const acSource = new ACVoltage(
         new Vertex( Vector2.ZERO ),
         new Vertex( new Vector2( AC_VOLTAGE_LENGTH, 0 ) ),
-        new Property( 0 ), tandem.createTandem( 'acSourceIconModel' )
+        new Property( 0 ),
+        Tandem.optional
       );
       return this.createCircuitElementToolNode( acSourceString, count,
         new ACVoltageNode( null, null, acSource, this.viewTypeProperty, tandem.createTandem( 'acSourceIcon' ), { isIcon: true } ),
         circuitElement => circuitElement instanceof ACVoltage,
         position => {
-          const vertexPair = this.createVertexPair( position, AC_VOLTAGE_LENGTH );
-          return new ACVoltage(
-            vertexPair.startVertex,
-            vertexPair.endVertex,
-            this.circuit.batteryResistanceProperty,
-            this.circuit.rightBatteryTandemGroup.createNextTandem()
-          );
+          const vertexPair = this.circuit.createVertexPair( position, AC_VOLTAGE_LENGTH );
+          return this.circuit.acVoltageGroup.createNextGroupMember( vertexPair.startVertex, vertexPair.endVertex );
         }, {
           iconScale: 0.68
         }
@@ -260,10 +220,10 @@ define( require => {
     createLightBulbToolNode( count, tandem ) {
       const lightBulbModel = LightBulb.createAtPosition(
         Vector2.ZERO,
-        this.circuit.vertexGroupTandem,
+        this.circuit,
         CCKCConstants.DEFAULT_RESISTANCE,
         this.viewTypeProperty,
-        this.circuit.lightBulbGroupTandem.createNextTandem(), {
+        Tandem.optional, {
           highResistance: false
         } );
       const lightBulbToolNode = this.createCircuitElementToolNode( lightBulbString, count,
@@ -271,13 +231,11 @@ define( require => {
           lightBulbModel,
           new Property( true ), this.viewTypeProperty, tandem.createTandem( 'lightBulbIcon' ), { isIcon: true } ),
         circuitElement => circuitElement instanceof LightBulb && !circuitElement.highResistance,
-        position => LightBulb.createAtPosition(
-          position,
-          this.circuit.vertexGroupTandem,
-          CCKCConstants.DEFAULT_RESISTANCE,
-          this.viewTypeProperty,
-          this.circuit.lightBulbGroupTandem.createNextTandem()
-        ), {
+        position => {
+          const vertexPair = LightBulb.createVertexPair( position, this.circuit );
+          return this.circuit.lightBulbGroup.createNextGroupMember( vertexPair.startVertex, vertexPair.endVertex,
+            CCKCConstants.DEFAULT_RESISTANCE );
+        }, {
           iconScale: 0.85
         } );
       return lightBulbToolNode;
@@ -293,21 +251,18 @@ define( require => {
       const resistorModel = new Resistor(
         new Vertex( Vector2.ZERO ),
         new Vertex( new Vector2( CCKCConstants.RESISTOR_LENGTH, 0 ) ),
-        tandem.createTandem( 'resistor' )
+        Tandem.optional
       );
-      const resistorToolNode = this.createCircuitElementToolNode( resistorString, count,
+      return this.createCircuitElementToolNode( resistorString, count,
         new ResistorNode( null, null, resistorModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
           isIcon: true
         } ),
         circuitElement => circuitElement instanceof Resistor && circuitElement.resistorType === Resistor.ResistorType.RESISTOR,
         position => {
-          const vertexPair = this.createVertexPair( position, RESISTOR_LENGTH );
-          return new Resistor(
-            vertexPair.startVertex, vertexPair.endVertex, this.circuit.resistorGroupTandem.createNextTandem()
-          );
+          const vertexPair = this.circuit.createVertexPair( position, RESISTOR_LENGTH );
+          return this.circuit.resistorGroup.createNextGroupMember( vertexPair.startVertex, vertexPair.endVertex );
         }
       );
-      return resistorToolNode;
     }
 
     /**
@@ -320,7 +275,7 @@ define( require => {
       const fuseModel = new Fuse(
         new Vertex( Vector2.ZERO ),
         new Vertex( new Vector2( CCKCConstants.RESISTOR_LENGTH, 0 ) ),
-        tandem.createTandem( 'resistor' )
+        Tandem.optional
       );
       const fuseToolNode = this.createCircuitElementToolNode( fuseString, count,
         new FuseNode( null, null, fuseModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
@@ -328,7 +283,7 @@ define( require => {
         } ),
         circuitElement => circuitElement instanceof Fuse,
         position => {
-          const vertexPair = this.createVertexPair( position, RESISTOR_LENGTH );
+          const vertexPair = this.circuit.createVertexPair( position, RESISTOR_LENGTH );
           return new Fuse(
             vertexPair.startVertex, vertexPair.endVertex, this.circuit.resistorGroupTandem.createNextTandem()
           );
@@ -347,7 +302,7 @@ define( require => {
       const capacitorModel = new Capacitor(
         new Vertex( Vector2.ZERO ),
         new Vertex( new Vector2( CCKCConstants.CAPACITOR_LENGTH, 0 ) ),
-        tandem.createTandem( 'resistor' )
+        Tandem.optional
       );
       const capacitorToolNode = this.createCircuitElementToolNode( 'CAPACITOR', count,
         new CapacitorCircuitElementNode( null, null, capacitorModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
@@ -355,10 +310,8 @@ define( require => {
         } ),
         circuitElement => circuitElement instanceof Capacitor,
         position => {
-          const vertexPair = this.createVertexPair( position, CCKCConstants.CAPACITOR_LENGTH );
-          return new Capacitor(
-            vertexPair.startVertex, vertexPair.endVertex, this.circuit.capacitorGroupTandem.createNextTandem()
-          );
+          const vertexPair = this.circuit.createVertexPair( position, CCKCConstants.CAPACITOR_LENGTH );
+          return this.circuit.capacitorGroup.createNextGroupMember( vertexPair.startVertex, vertexPair.endVertex );
         }
       );
       return capacitorToolNode;
@@ -374,7 +327,7 @@ define( require => {
       const inductorModel = new Inductor(
         new Vertex( Vector2.ZERO ),
         new Vertex( new Vector2( CCKCConstants.INDUCTOR_LENGTH, 0 ) ),
-        tandem.createTandem( 'resistor' )
+        Tandem.optional
       );
       const inductorToolNode = this.createCircuitElementToolNode( 'INDUCTOR', count,
         new InductorNode( null, null, inductorModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
@@ -382,10 +335,8 @@ define( require => {
         } ),
         circuitElement => circuitElement instanceof Inductor,
         position => {
-          const vertexPair = this.createVertexPair( position, CCKCConstants.INDUCTOR_LENGTH );
-          return new Inductor(
-            vertexPair.startVertex, vertexPair.endVertex, this.circuit.inductorGroupTandem.createNextTandem()
-          );
+          const vertexPair = this.circuit.createVertexPair( position, CCKCConstants.INDUCTOR_LENGTH );
+          return this.circuit.inductorGroup.createNextGroupMember( vertexPair.startVertex, vertexPair.endVertex );
         }
       );
       return inductorToolNode;
@@ -398,21 +349,20 @@ define( require => {
      * @public
      */
     createSwitchToolNode( count, tandem ) {
-      const switchToolNode = this.createCircuitElementToolNode( switchString, count,
+      return this.createCircuitElementToolNode( switchString, count,
         new SwitchNode( null, null,
           new Switch(
             new Vertex( Vector2.ZERO ),
             new Vertex( new Vector2( SWITCH_LENGTH, 0 ) ),
-            tandem.createTandem( 'switch' )
+            Tandem.optional
           ), this.viewTypeProperty, tandem.createTandem( 'switchIcon' ), {
             isIcon: true
           } ),
         circuitElement => circuitElement instanceof Switch,
         position => {
-          const vertexPair = this.createVertexPair( position, SWITCH_LENGTH );
-          return new Switch( vertexPair.startVertex, vertexPair.endVertex, this.circuit.switchGroupTandem.createNextTandem() );
+          const vertexPair = this.circuit.createVertexPair( position, SWITCH_LENGTH );
+          return this.circuit.switchGroup.createNextGroupMember( vertexPair.startVertex, vertexPair.endVertex );
         } );
-      return switchToolNode;
     }
 
     /**
@@ -436,7 +386,7 @@ define( require => {
 
       const getHouseholdItemCreator = ( resistorType, resistance, resistorLength, groupTandem ) => {
         return position => {
-          const vertexPair = this.createVertexPair( position, resistorLength );
+          const vertexPair = this.circuit.createVertexPair( position, resistorLength );
           return new Resistor( vertexPair.startVertex, vertexPair.endVertex, groupTandem.createNextTandem(), {
             resistance: resistance,
             resistorType: resistorType,
@@ -478,7 +428,7 @@ define( require => {
         CCKCConstants.DOLLAR_BILL_LENGTH,
         dollarBillString,
         count,
-        tandem.createTandem( 'dollarBill' ),
+        Tandem.optional,
         tandem.createTandem( 'dollarBillIcon' ),
         this.circuit.dollarBillGroupTandem
       );
@@ -497,7 +447,7 @@ define( require => {
         CCKCConstants.PAPER_CLIP_LENGTH,
         paperClipString,
         count,
-        tandem.createTandem( 'paperClip' ),
+        Tandem.optional,
         tandem.createTandem( 'paperClipIcon' ),
         this.circuit.paperClipGroupTandem
       );
@@ -516,7 +466,7 @@ define( require => {
         CCKCConstants.COIN_LENGTH,
         coinString,
         count,
-        tandem.createTandem( 'coin' ),
+        Tandem.optional,
         tandem.createTandem( 'coinIcon' ),
         this.circuit.coinGroupTandem
       );
@@ -535,7 +485,7 @@ define( require => {
         CCKCConstants.ERASER_LENGTH,
         eraserString,
         count,
-        tandem.createTandem( 'eraser' ),
+        Tandem.optional,
         tandem.createTandem( 'eraserIcon' ),
         this.circuit.eraserGroupTandem
       );
@@ -554,7 +504,7 @@ define( require => {
         CCKCConstants.PENCIL_LENGTH,
         pencilString,
         count,
-        tandem.createTandem( 'pencil' ),
+        Tandem.optional,
         tandem.createTandem( 'pencilIcon' ),
         this.circuit.pencilGroupTandem
       );
@@ -573,7 +523,7 @@ define( require => {
         CCKCConstants.HAND_LENGTH,
         handString,
         count,
-        tandem.createTandem( 'hand' ),
+        Tandem.optional,
         tandem.createTandem( 'handIcon' ),
         this.circuit.handGroupTandem
       );
@@ -592,7 +542,7 @@ define( require => {
         CCKCConstants.DOG_LENGTH,
         dogString,
         count,
-        tandem.createTandem( 'dog' ),
+        Tandem.optional,
         tandem.createTandem( 'dogIcon' ),
         this.circuit.dogGroupTandem
       );
@@ -614,23 +564,13 @@ define( require => {
             new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
             new Property( 0 ),
             Battery.BatteryType.HIGH_VOLTAGE,
-            tandem.createTandem( 'highVoltageIconBattery' )
+            Tandem.optional
           ), this.viewTypeProperty, tandem.createTandem( 'highVoltageBatteryIcon' ), { isIcon: true } ),
         circuitElement => circuitElement instanceof Battery &&
 
                           circuitElement.initialOrientation === 'right' &&
                           circuitElement.batteryType === Battery.BatteryType.HIGH_VOLTAGE, position => {
-          const vertexPair = this.createVertexPair( position, BATTERY_LENGTH );
-          return new Battery(
-            vertexPair.startVertex,
-            vertexPair.endVertex,
-            this.circuit.batteryResistanceProperty,
-            Battery.BatteryType.HIGH_VOLTAGE,
-            this.circuit.rightBatteryTandemGroup.createNextTandem(), {
-              voltage: 10000,
-              editableRange: new Range( 100, 100000 ),
-              editorDelta: CCKCConstants.HIGH_EDITOR_DELTA
-            } );
+          return this.circuit.batteryGroup.create( position );
         } );
     }
 
@@ -649,10 +589,10 @@ define( require => {
           null,
           LightBulb.createAtPosition(
             Vector2.ZERO,
-            this.circuit.vertexGroupTandem,
+            this.circuit,
             1000,
             this.viewTypeProperty,
-            this.circuit.lightBulbGroupTandem.createNextTandem(), {
+            Tandem.optional, {
               highResistance: true
             } ),
           new Property( true ),
@@ -661,9 +601,9 @@ define( require => {
             isIcon: true
           } ),
         circuitElement => circuitElement instanceof LightBulb && circuitElement.highResistance,
-        position => LightBulb.createAtPosition( position, this.circuit.vertexGroupTandem,
+        position => LightBulb.createAtPosition( position, this.circuit,
           CCKCConstants.HIGH_RESISTANCE, this.viewTypeProperty,
-          this.circuit.lightBulbGroupTandem.createNextTandem(), {
+          Tandem.optional, {
             highResistance: true,
             editableRange: CCKCConstants.HIGH_RESISTANCE_RANGE,
             editorDelta: CCKCConstants.HIGH_EDITOR_DELTA
@@ -684,7 +624,7 @@ define( require => {
           new Resistor(
             new Vertex( Vector2.ZERO ),
             new Vertex( new Vector2( CCKCConstants.RESISTOR_LENGTH, 0 ) ),
-            tandem.createTandem( 'highResistanceResistor' ), {
+            Tandem.optional, {
               resistorType: Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR, resistance: 1000
             } ),
           this.viewTypeProperty,
@@ -693,11 +633,11 @@ define( require => {
           } ),
         circuitElement => circuitElement instanceof Resistor && circuitElement.resistorType === Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR,
         position => {
-          const vertexPair = this.createVertexPair( position, RESISTOR_LENGTH );
+          const vertexPair = this.circuit.createVertexPair( position, RESISTOR_LENGTH );
           return new Resistor(
             vertexPair.startVertex,
             vertexPair.endVertex,
-            this.circuit.resistorGroupTandem.createNextTandem(), {
+            Tandem.optional, {
               resistorType: Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR,
               resistance: CCKCConstants.HIGH_RESISTANCE,
               editableRange: CCKCConstants.HIGH_RESISTANCE_RANGE,

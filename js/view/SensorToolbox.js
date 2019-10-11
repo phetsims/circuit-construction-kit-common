@@ -28,6 +28,7 @@ define( require => {
   const SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
   const SeriesAmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SeriesAmmeterNode' );
   const SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  const Tandem = require( 'TANDEM/Tandem' );
   const Text = require( 'SCENERY/nodes/Text' );
   const VBox = require( 'SCENERY/nodes/VBox' );
   const Vector2 = require( 'DOT/Vector2' );
@@ -87,7 +88,7 @@ define( require => {
         } );
 
       // Draggable isIcon for the voltmeter
-      const voltmeter = new Voltmeter( tandem.createTandem( 'voltmeterIconModel' ) );
+      const voltmeter = new Voltmeter( Tandem.optional );
       const voltmeterNodeIcon = new VoltmeterNode( voltmeter, null, null, tandem.createTandem( 'voltmeterNodeIcon' ), { isIcon: true } );
       voltmeterNode.voltmeter.visibleProperty.link( visible => voltmeterNodeIcon.setVisible( !visible ) );
       voltmeterNodeIcon.mutate( {
@@ -106,7 +107,7 @@ define( require => {
       const seriesAmmeter = new SeriesAmmeter(
         new Vertex( Vector2.ZERO ),
         new Vertex( new Vector2( CCKCConstants.SERIES_AMMETER_LENGTH, 0 ) ),
-        tandem.createTandem( 'seriesAmmeterIconModel' )
+        Tandem.optional
       );
       const seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeter, tandem.createTandem( 'seriesAmmeterNodeIcon' ), {
         isIcon: true

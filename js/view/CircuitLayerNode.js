@@ -259,7 +259,7 @@ define( require => {
       const initializeCircuitElementType = ( type, layer, groupTandem, createCircuitElement ) => {
         const addCircuitElement = circuitElement => {
           if ( circuitElement instanceof type ) {
-            const circuitElementNode = createCircuitElement( circuitElement, groupTandem.createNextTandem() );
+            const circuitElementNode = createCircuitElement( circuitElement, Tandem.optional );
             this.circuitElementNodeMap[ circuitElement.id ] = circuitElementNode;
 
             layer.addChild( circuitElementNode );
@@ -271,7 +271,7 @@ define( require => {
                 circuitElement,
                 this.model.showValuesProperty,
                 this.model.viewTypeProperty,
-                tandem.createTandem( circuitElement.tandem.name ).createTandem( 'valueNode' )
+                Tandem.optional
               );
 
               const updateShowValues = showValues => CCKCUtil.setInSceneGraph( showValues, this.valueLayer, valueNode );
@@ -336,7 +336,7 @@ define( require => {
         content: cutIcon,
         minXMargin: 10,
         minYMargin: 10,
-        tandem: Tandem.globalTandem.createTandem( 'cutButton' )
+        tandem: tandem.createTandem( 'cutButton' )
       } );
       this.cutButton.addListener( () => {
         assert && assert( circuit.getSelectedVertex(), 'Button should only be available if a vertex is selected' );
@@ -347,13 +347,12 @@ define( require => {
       } );
 
       // When a Vertex is added to the model, create the corresponding views
-      const vertexNodeGroup = tandem.createGroupTandem( 'vertexNodes' );
       const addVertexNode = vertex => {
         const solderNode = new SolderNode( this, vertex );
         this.solderNodes[ vertex.index ] = solderNode;
         this.solderLayer.addChild( solderNode );
 
-        const vertexNode = new VertexNode( this, vertex, vertexNodeGroup.createNextTandem() );
+        const vertexNode = new VertexNode( this, vertex, Tandem.optional );
         this.vertexNodes[ vertex.index ] = vertexNode;
         this.vertexLayer.addChild( vertexNode );
       };
