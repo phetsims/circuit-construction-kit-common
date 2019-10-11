@@ -226,7 +226,7 @@ define( require => {
         Tandem.optional, {
           highResistance: false
         } );
-      const lightBulbToolNode = this.createCircuitElementToolNode( lightBulbString, count,
+      return this.createCircuitElementToolNode( lightBulbString, count,
         new CCKCLightBulbNode( null, null,
           lightBulbModel,
           new Property( true ), this.viewTypeProperty, tandem.createTandem( 'lightBulbIcon' ), { isIcon: true } ),
@@ -238,7 +238,6 @@ define( require => {
         }, {
           iconScale: 0.85
         } );
-      return lightBulbToolNode;
     }
 
     /**
@@ -277,7 +276,7 @@ define( require => {
         new Vertex( new Vector2( CCKCConstants.RESISTOR_LENGTH, 0 ) ),
         Tandem.optional
       );
-      const fuseToolNode = this.createCircuitElementToolNode( fuseString, count,
+      return this.createCircuitElementToolNode( fuseString, count,
         new FuseNode( null, null, fuseModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
           isIcon: true
         } ),
@@ -289,7 +288,6 @@ define( require => {
           );
         }
       );
-      return fuseToolNode;
     }
 
     /**
@@ -304,7 +302,7 @@ define( require => {
         new Vertex( new Vector2( CCKCConstants.CAPACITOR_LENGTH, 0 ) ),
         Tandem.optional
       );
-      const capacitorToolNode = this.createCircuitElementToolNode( 'CAPACITOR', count,
+      return this.createCircuitElementToolNode( 'CAPACITOR', count,
         new CapacitorCircuitElementNode( null, null, capacitorModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
           isIcon: true
         } ),
@@ -314,7 +312,6 @@ define( require => {
           return this.circuit.capacitorGroup.createNextGroupMember( vertexPair.startVertex, vertexPair.endVertex );
         }
       );
-      return capacitorToolNode;
     }
 
     /**
@@ -329,7 +326,7 @@ define( require => {
         new Vertex( new Vector2( CCKCConstants.INDUCTOR_LENGTH, 0 ) ),
         Tandem.optional
       );
-      const inductorToolNode = this.createCircuitElementToolNode( 'INDUCTOR', count,
+      return this.createCircuitElementToolNode( 'INDUCTOR', count,
         new InductorNode( null, null, inductorModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
           isIcon: true
         } ),
@@ -339,7 +336,6 @@ define( require => {
           return this.circuit.inductorGroup.createNextGroupMember( vertexPair.startVertex, vertexPair.endVertex );
         }
       );
-      return inductorToolNode;
     }
 
     /**
