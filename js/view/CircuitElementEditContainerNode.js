@@ -18,8 +18,8 @@ define( require => {
   const CircuitElementEditNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditNode' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   const Fuse = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Fuse' );
-  const Group = require( 'TANDEM/Group' );
-  const GroupIO = require( 'TANDEM/GroupIO' );
+  const PhetioGroup = require( 'TANDEM/PhetioGroup' );
+  const PhetioGroupIO = require( 'TANDEM/PhetioGroupIO' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const Inductor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Inductor' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
@@ -72,10 +72,10 @@ define( require => {
       const groupTandem = tandem.createGroupTandem( 'circuitElementEditNode' );
 
       // TODO: uninstrument or keep group?  See comment in CircuitElementEditNode Tandem.optional for NumberControl
-      const trashButtonGroup = new Group( 'trashButton',
+      const trashButtonGroup = new PhetioGroup( 'trashButton',
         ( tandem, circuitElement ) => new TrashButton( circuit, circuitElement, tandem ),
         [ null ], {
-          phetioType: GroupIO( TrashButtonIO ),
+          phetioType: PhetioGroupIO( TrashButtonIO ),
           tandem: tandem.createTandem( 'trashButtonGroup' )
         } );
       super();

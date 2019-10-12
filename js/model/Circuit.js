@@ -26,8 +26,8 @@ define( require => {
   const Enumeration = require( 'PHET_CORE/Enumeration' );
   const EnumerationProperty = require( 'AXON/EnumerationProperty' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
-  const Group = require( 'TANDEM/Group' );
-  const GroupIO = require( 'TANDEM/GroupIO' );
+  const PhetioGroup = require( 'TANDEM/PhetioGroup' );
+  const PhetioGroupIO = require( 'TANDEM/PhetioGroupIO' );
   const Inductor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Inductor' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const ModifiedNodalAnalysisAdapter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisAdapter' );
@@ -162,13 +162,13 @@ define( require => {
 
       const emitCircuitChanged = () => this.circuitChangedEmitter.emit();
 
-      this.vertexGroup = new Group( 'vertex', ( tandem, position ) => {
+      this.vertexGroup = new PhetioGroup( 'vertex', ( tandem, position ) => {
         return new Vertex( position, {
           tandem: tandem,
           phetioType: VertexIO
         } );
       }, [ new Vector2( -1000, 0 ) ], {
-        phetioType: GroupIO( VertexIO ),
+        phetioType: PhetioGroupIO( VertexIO ),
         tandem: tandem.createTandem( 'vertexGroup' )
       } );
 
@@ -279,71 +279,71 @@ define( require => {
       this.dollarBillGroupTandem = tandem.createGroupTandem( 'dollarBills' );
       this.paperClipGroupTandem = tandem.createGroupTandem( 'paperClips' );
 
-      this.wireGroup = new Group( 'wire', ( tandem, startVertex, endVertex ) => {
+      this.wireGroup = new PhetioGroup( 'wire', ( tandem, startVertex, endVertex ) => {
         return new Wire( startVertex, endVertex, this.wireResistivityProperty, tandem );
       }, () => this.createVertexPairArray2( new Vector2( -1000, 0 ), WIRE_LENGTH ), {
-        phetioType: GroupIO( CircuitElementIO ),
+        phetioType: PhetioGroupIO( CircuitElementIO ),
         tandem: tandem.createTandem( 'wireGroup' )
       } );
 
-      this.batteryGroup = new Group( 'battery', ( tandem, startVertex, endVertex ) => {
+      this.batteryGroup = new PhetioGroup( 'battery', ( tandem, startVertex, endVertex ) => {
         return new Battery( startVertex, endVertex, this.batteryResistanceProperty, Battery.BatteryType.NORMAL,
           tandem );
       }, () => this.createVertexPairArray2( new Vector2( -1000, 0 ), BATTERY_LENGTH ), {
-        phetioType: GroupIO( CircuitElementIO ),
+        phetioType: PhetioGroupIO( CircuitElementIO ),
         tandem: tandem.createTandem( 'batteryGroup' )
       } );
 
-      this.highVoltageBatteryGroup = new Group( 'battery', ( tandem, startVertex, endVertex ) => {
+      this.highVoltageBatteryGroup = new PhetioGroup( 'battery', ( tandem, startVertex, endVertex ) => {
         return new Battery( startVertex, endVertex, this.batteryResistanceProperty, Battery.BatteryType.NORMAL,
           tandem );
       }, () => this.createVertexPairArray2( new Vector2( -1000, 0 ), BATTERY_LENGTH ), {
-        phetioType: GroupIO( CircuitElementIO ),
+        phetioType: PhetioGroupIO( CircuitElementIO ),
         tandem: tandem.createTandem( 'highVoltageBatteryGroup' )
       } );
 
-      this.acVoltageGroup = new Group( 'acVoltage', ( tandem, startVertex, endVertex ) => {
+      this.acVoltageGroup = new PhetioGroup( 'acVoltage', ( tandem, startVertex, endVertex ) => {
         return new ACVoltage( startVertex, endVertex, this.batteryResistanceProperty, tandem );
       }, () => this.createVertexPairArray2( new Vector2( -1000, 0 ), CCKCConstants.AC_VOLTAGE_LENGTH ), {
-        phetioType: GroupIO( CircuitElementIO ),
+        phetioType: PhetioGroupIO( CircuitElementIO ),
         tandem: tandem.createTandem( 'acVoltageGroup' )
       } );
 
-      this.resistorGroup = new Group( 'resistor',
+      this.resistorGroup = new PhetioGroup( 'resistor',
         ( tandem, startVertex, endVertex ) => new Resistor( startVertex, endVertex, tandem ),
         () => this.createVertexPairArray2( new Vector2( -1000, 0 ), CCKCConstants.RESISTOR_LENGTH ), {
-          phetioType: GroupIO( CircuitElementIO ),
+          phetioType: PhetioGroupIO( CircuitElementIO ),
           tandem: tandem.createTandem( 'resistorGroup' )
         } );
 
-      this.capacitorGroup = new Group( 'capacitor',
+      this.capacitorGroup = new PhetioGroup( 'capacitor',
         ( tandem, startVertex, endVertex ) => new Capacitor( startVertex, endVertex, tandem ),
         () => this.createVertexPairArray2( new Vector2( -1000, 0 ), CCKCConstants.CAPACITOR_LENGTH ), {
-          phetioType: GroupIO( CircuitElementIO ),
+          phetioType: PhetioGroupIO( CircuitElementIO ),
           tandem: tandem.createTandem( 'capacitorGroup' )
         } );
 
-      this.inductorGroup = new Group( 'inductor',
+      this.inductorGroup = new PhetioGroup( 'inductor',
         ( tandem, startVertex, endVertex ) => new Inductor( startVertex, endVertex, tandem ),
         () => this.createVertexPairArray2( new Vector2( -1000, 0 ), CCKCConstants.INDUCTOR_LENGTH ), {
-          phetioType: GroupIO( CircuitElementIO ),
+          phetioType: PhetioGroupIO( CircuitElementIO ),
           tandem: tandem.createTandem( 'inductorGroup' )
         } );
 
-      this.switchGroup = new Group( 'switch',
+      this.switchGroup = new PhetioGroup( 'switch',
         ( tandem, startVertex, endVertex ) => new Switch( startVertex, endVertex, tandem ),
         () => this.createVertexPairArray2( new Vector2( -1000, 0 ), CCKCConstants.SWITCH_LENGTH ), {
-          phetioType: GroupIO( CircuitElementIO ),
+          phetioType: PhetioGroupIO( CircuitElementIO ),
           tandem: tandem.createTandem( 'switchGroup' )
         } );
 
-      this.lightBulbGroup = new Group( 'lightBulb',
+      this.lightBulbGroup = new PhetioGroup( 'lightBulb',
         ( tandem, startVertex, endVertex ) => {
           return new LightBulb( startVertex, endVertex, CCKCConstants.DEFAULT_RESISTANCE, this.viewTypeProperty, tandem );
         }, () => {
           return [ new Vertex( new Vector2( -1000, 0 ) ), new Vertex( new Vector2( -1100, 0 ) ) ];
         }, {
-          phetioType: GroupIO( CircuitElementIO ),
+          phetioType: PhetioGroupIO( CircuitElementIO ),
           tandem: tandem.createTandem( 'lightBulbGroup' )
         } );
 
