@@ -355,7 +355,7 @@ define( require => {
     disposeFromGroup( circuitElement ) {
       const keys = _.keys( this );
       keys.forEach( key => {
-        if ( key.endsWith( 'Group' ) && this[ key ] instanceof Group && this[ key ].array.indexOf( circuitElement ) >= 0 ) {
+        if ( key.endsWith( 'Group' ) && this[ key ] instanceof PhetioGroup && this[ key ].array.indexOf( circuitElement ) >= 0 ) {
           this[ key ].disposeGroupMember( circuitElement );
         }
       } );
