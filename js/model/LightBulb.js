@@ -248,8 +248,8 @@ define( require => {
     const endPoint = startPoint.plus( Vector2.createPolar( DISTANCE_BETWEEN_VERTICES, -Math.PI / 4 ) );
 
     // start vertex is at the bottom
-    const startVertex = icon ? new Vertex( startPoint ) : circuit.vertexGroup.createNextGroupMember( startPoint );
-    const endVertex = icon ? new Vertex( endPoint ) : circuit.vertexGroup.createNextGroupMember( endPoint );
+    const startVertex = icon ? new Vertex( startPoint ) : circuit.vertexGroup.createNextMember( startPoint );
+    const endVertex = icon ? new Vertex( endPoint ) : circuit.vertexGroup.createNextMember( endPoint );
     return { startVertex: startVertex, endVertex: endVertex };
   };
 

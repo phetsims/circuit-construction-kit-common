@@ -394,7 +394,7 @@ define( require => {
      * @private
      */
     createVertex( position ) {
-      return this.vertexGroup.createNextGroupMember( position );
+      return this.vertexGroup.createNextMember( position );
     }
 
     /**
@@ -621,7 +621,7 @@ define( require => {
       neighborCircuitElements.forEach( ( circuitElement, i ) => {
 
         // Add the new vertex to the model first so that it can be updated in subsequent calls
-        const newVertex = this.vertexGroup.createNextGroupMember( vertex.positionProperty.get() );
+        const newVertex = this.vertexGroup.createNextMember( vertex.positionProperty.get() );
 
         circuitElement.replaceVertex( vertex, newVertex );
 

@@ -143,7 +143,7 @@ define( require => {
           else if ( isResistor ) {
 
             // Just show a trash button for non-editable resistors which are household items
-            editNode = trashButtonGroup.createNextGroupMember( selectedCircuitElement );
+            editNode = trashButtonGroup.createNextMember( selectedCircuitElement );
           }
           else if ( isBattery ) {
             editNode = new EditPanel( new CircuitElementEditNode(
@@ -182,7 +182,7 @@ define( require => {
           else if ( isSeriesAmmeter || isWire ) {
 
             // Just show a trash button
-            editNode = trashButtonGroup.createNextGroupMember( selectedCircuitElement );
+            editNode = trashButtonGroup.createNextMember( selectedCircuitElement );
           }
           else if ( isACSource ) {
             editNode = new EditPanel( new HBox( {

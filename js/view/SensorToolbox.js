@@ -115,8 +115,8 @@ define( require => {
       } );
       const createSeriesAmmeter = ( position, isIcon ) => {
         const halfLength = CCKCConstants.SERIES_AMMETER_LENGTH / 2;
-        const startVertex = circuit.vertexGroup.createNextGroupMember( position.plusXY( -halfLength, 0 ) );
-        const endVertex = circuit.vertexGroup.createNextGroupMember( position.plusXY( halfLength, 0 ) );
+        const startVertex = circuit.vertexGroup.createNextMember( position.plusXY( -halfLength, 0 ) );
+        const endVertex = circuit.vertexGroup.createNextMember( position.plusXY( halfLength, 0 ) );
         return new SeriesAmmeter(
           startVertex,
           endVertex,

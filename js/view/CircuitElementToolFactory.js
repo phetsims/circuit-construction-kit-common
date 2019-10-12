@@ -158,7 +158,7 @@ define( require => {
         circuitElement => circuitElement instanceof Wire,
         position => {
           const vertexPair = this.circuit.createVertexPair( position, WIRE_LENGTH );
-          return this.circuit.wireGroup.createNextGroupMember( vertexPair.startVertex, vertexPair.endVertex );
+          return this.circuit.wireGroup.createNextMember( vertexPair.startVertex, vertexPair.endVertex );
         }
       );
     }
@@ -181,7 +181,7 @@ define( require => {
                           circuitElement.batteryType === Battery.BatteryType.NORMAL,
         position => {
           const vertexPair = this.circuit.createVertexPair( position, BATTERY_LENGTH );
-          return this.circuit.batteryGroup.createNextGroupMember( vertexPair.startVertex, vertexPair.endVertex );
+          return this.circuit.batteryGroup.createNextMember( vertexPair.startVertex, vertexPair.endVertex );
         }
       );
     }
@@ -204,7 +204,7 @@ define( require => {
         circuitElement => circuitElement instanceof ACVoltage,
         position => {
           const vertexPair = this.circuit.createVertexPair( position, AC_VOLTAGE_LENGTH );
-          return this.circuit.acVoltageGroup.createNextGroupMember( vertexPair.startVertex, vertexPair.endVertex );
+          return this.circuit.acVoltageGroup.createNextMember( vertexPair.startVertex, vertexPair.endVertex );
         }, {
           iconScale: 0.68
         }
@@ -234,7 +234,7 @@ define( require => {
         circuitElement => circuitElement instanceof LightBulb && !circuitElement.highResistance,
         position => {
           const vertexPair = LightBulb.createVertexPair( position, this.circuit );
-          return this.circuit.lightBulbGroup.createNextGroupMember( vertexPair.startVertex, vertexPair.endVertex,
+          return this.circuit.lightBulbGroup.createNextMember( vertexPair.startVertex, vertexPair.endVertex,
             CCKCConstants.DEFAULT_RESISTANCE );
         }, {
           iconScale: 0.85
@@ -260,7 +260,7 @@ define( require => {
         circuitElement => circuitElement instanceof Resistor && circuitElement.resistorType === Resistor.ResistorType.RESISTOR,
         position => {
           const vertexPair = this.circuit.createVertexPair( position, RESISTOR_LENGTH );
-          return this.circuit.resistorGroup.createNextGroupMember( vertexPair.startVertex, vertexPair.endVertex );
+          return this.circuit.resistorGroup.createNextMember( vertexPair.startVertex, vertexPair.endVertex );
         }
       );
     }
@@ -310,7 +310,7 @@ define( require => {
         circuitElement => circuitElement instanceof Capacitor,
         position => {
           const vertexPair = this.circuit.createVertexPair( position, CCKCConstants.CAPACITOR_LENGTH );
-          return this.circuit.capacitorGroup.createNextGroupMember( vertexPair.startVertex, vertexPair.endVertex );
+          return this.circuit.capacitorGroup.createNextMember( vertexPair.startVertex, vertexPair.endVertex );
         }
       );
     }
@@ -334,7 +334,7 @@ define( require => {
         circuitElement => circuitElement instanceof Inductor,
         position => {
           const vertexPair = this.circuit.createVertexPair( position, CCKCConstants.INDUCTOR_LENGTH );
-          return this.circuit.inductorGroup.createNextGroupMember( vertexPair.startVertex, vertexPair.endVertex );
+          return this.circuit.inductorGroup.createNextMember( vertexPair.startVertex, vertexPair.endVertex );
         }
       );
     }
@@ -358,7 +358,7 @@ define( require => {
         circuitElement => circuitElement instanceof Switch,
         position => {
           const vertexPair = this.circuit.createVertexPair( position, SWITCH_LENGTH );
-          return this.circuit.switchGroup.createNextGroupMember( vertexPair.startVertex, vertexPair.endVertex );
+          return this.circuit.switchGroup.createNextMember( vertexPair.startVertex, vertexPair.endVertex );
         } );
     }
 
@@ -568,7 +568,7 @@ define( require => {
                           circuitElement.initialOrientation === 'right' &&
                           circuitElement.batteryType === Battery.BatteryType.HIGH_VOLTAGE, position => {
           const vertexPair = this.circuit.createVertexPair( position, SWITCH_LENGTH );
-          return this.circuit.highVoltageBatteryGroup.createNextGroupMember( vertexPair.startVertex, vertexPair.endVertex );
+          return this.circuit.highVoltageBatteryGroup.createNextMember( vertexPair.startVertex, vertexPair.endVertex );
         } );
     }
 
