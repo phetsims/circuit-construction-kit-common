@@ -71,15 +71,13 @@ define( require => {
     constructor( circuit, visibleBoundsProperty, modeProperty, tandem ) {
       const groupTandem = tandem.createGroupTandem( 'circuitElementEditNode' );
 
-      const trashButtonGroup = new Group( 'trashButton', {
-        prototype: {
-          create: ( tandem, prototype, circuitElement ) => new TrashButton( circuit, circuitElement, tandem ),
-          defaultArguments: [ null ]
-        }
-      }, {
-        phetioType: GroupIO( TrashButtonIO ),
-        tandem: tandem.createTandem( 'trashButtonGroup' )
-      } );
+      // TODO: uninstrument or keep group?  See comment in CircuitElementEditNode Tandem.optional for NumberControl
+      const trashButtonGroup = new Group( 'trashButton',
+        ( tandem, circuitElement ) => new TrashButton( circuit, circuitElement, tandem ),
+        [ null ], {
+          phetioType: GroupIO( TrashButtonIO ),
+          tandem: tandem.createTandem( 'trashButtonGroup' )
+        } );
       super();
 
       const tapInstructionTextNode = new Text( tapCircuitElementToEditString, {
@@ -101,7 +99,7 @@ define( require => {
       circuit.vertexDroppedEmitter.addListener( updateInstructionTextVisible );
 
       // Also update on reset all, or if a component is dropped in the toolbox
-      circuit.vertices.addItemRemovedListener( updateInstructionTextVisible );
+      circuit.vertexGroup.addMemberDisposedListener( updateInstructionTextVisible );
       modeProperty.link( updateInstructionTextVisible );
 
       const updatePosition = () => {
@@ -158,7 +156,9 @@ define( require => {
               selectedCircuitElement.voltageProperty,
               circuit,
               selectedCircuitElement,
-              groupTandem.createNextTandem()
+              groupTandem.createNextTandem(), {
+                phetioState: false
+              }
             ) );
           }
           else if ( isFuse ) {
@@ -177,7 +177,7 @@ define( require => {
             ) );
           }
           else if ( isSwitch ) {
-            editNode = new SwitchReadoutNode( circuit, selectedCircuitElement, groupTandem.createNextTandem() );
+            editNode = new SwitchReadoutNode( circuit, selectedCircuitElement, groupTandem.createNextTandem(), trashButtonGroup );
           }
           else if ( isSeriesAmmeter || isWire ) {
 

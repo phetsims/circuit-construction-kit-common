@@ -56,8 +56,8 @@ define( require => {
           this.visible = circuit.countCircuitElements( vertex ) > 1;
         }
       };
-      circuit.vertices.addItemAddedListener( updateFill );
-      circuit.vertices.addItemRemovedListener( updateFill );
+      circuit.vertexGroup.addMemberCreatedListener( updateFill );
+      circuit.vertexGroup.addMemberDisposedListener( updateFill );
 
       // In Black Box, other wires can be detached from a vertex and this should also update the solder
       circuit.circuitElements.addItemAddedListener( updateFill );
@@ -70,8 +70,8 @@ define( require => {
       this.disposeSolderNode = () => {
         vertex.positionProperty.unlink( updateSolderNodePosition );
 
-        circuit.vertices.removeItemAddedListener( updateFill );
-        circuit.vertices.removeItemRemovedListener( updateFill );
+        circuit.vertexGroup.removeMemberCreatedListener( updateFill );
+        circuit.vertexGroup.removeMemberDisposedListener( updateFill );
 
         // In Black Box, other wires can be detached from a vertex and this should also update the solder
         circuit.circuitElements.removeItemAddedListener( updateFill );

@@ -356,10 +356,10 @@ define( require => {
         this.vertexNodes[ vertex.index ] = vertexNode;
         this.vertexLayer.addChild( vertexNode );
       };
-      circuit.vertices.addItemAddedListener( addVertexNode );
+      circuit.vertexGroup.addMemberCreatedListener( addVertexNode );
 
       // When a Vertex is removed from the model, remove and dispose the corresponding views
-      circuit.vertices.addItemRemovedListener( vertex => {
+      circuit.vertexGroup.addMemberDisposedListener( vertex => {
         const vertexNode = this.getVertexNode( vertex );
         this.vertexLayer.removeChild( vertexNode );
         delete this.vertexNodes[ vertex.index ];
@@ -372,14 +372,14 @@ define( require => {
         solderNode.dispose();
         assert && assert( !this.getSolderNode( vertex ), 'solder node should have been removed' );
       } );
-      circuit.vertices.forEach( addVertexNode );
+      circuit.vertexGroup.array.forEach( addVertexNode );
 
       // When the screen is resized or zoomed, move all vertices into view.
       const moveVerticesInBounds = localBounds => {
 
         // Check all vertices
-        for ( let i = 0; i < circuit.vertices.length; i++ ) {
-          const vertex = circuit.vertices.get( i );
+        for ( let i = 0; i < circuit.vertexGroup.array.length; i++ ) {
+          const vertex = circuit.vertexGroup.array[ i ];
           const position = vertex.positionProperty.get();
 
           // If any Vertex is out of bounds, move it and all connected Vertices (to preserve geometry) in bounds.

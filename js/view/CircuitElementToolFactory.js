@@ -219,12 +219,13 @@ define( require => {
      */
     createLightBulbToolNode( count, tandem ) {
       const lightBulbModel = LightBulb.createAtPosition(
-        Vector2.ZERO,
+        new Vector2( -1000, 0 ), // TODO: put back at 0,0
         this.circuit,
         CCKCConstants.DEFAULT_RESISTANCE,
         this.viewTypeProperty,
         Tandem.optional, {
-          highResistance: false
+          highResistance: false,
+          icon: true
         } );
       return this.createCircuitElementToolNode( lightBulbString, count,
         new CCKCLightBulbNode( null, null,
@@ -566,7 +567,8 @@ define( require => {
 
                           circuitElement.initialOrientation === 'right' &&
                           circuitElement.batteryType === Battery.BatteryType.HIGH_VOLTAGE, position => {
-          return this.circuit.batteryGroup.create( position );
+          const vertexPair = this.circuit.createVertexPair( position, SWITCH_LENGTH );
+          return this.circuit.highVoltageBatteryGroup.createNextGroupMember( vertexPair.startVertex, vertexPair.endVertex );
         } );
     }
 
@@ -589,7 +591,8 @@ define( require => {
             1000,
             this.viewTypeProperty,
             Tandem.optional, {
-              highResistance: true
+              highResistance: true,
+              icon: true
             } ),
           new Property( true ),
           this.viewTypeProperty,

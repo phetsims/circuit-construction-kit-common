@@ -41,7 +41,6 @@ define( require => {
   const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   const SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
   const Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
-  const Tandem = require( 'TANDEM/Tandem' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
   const VertexIO = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/VertexIO' );
@@ -89,11 +88,6 @@ define( require => {
         tandem: tandem.createTandem( 'circuitElements' )
       } );
 
-      // @public {ObservableArray.<Vertex>} - Keep track of which terminals are connected to other terminals.
-      // The vertices are also referenced in the CircuitElements above--this ObservableArray is a central point for
-      // observing creation/deletion of vertices for showing VertexNodes
-      this.vertices = new ObservableArray();
-
       // @public {ObservableArray.<Charge>} - the charges in the circuit
       this.charges = new ObservableArray();
 
@@ -122,12 +116,6 @@ define( require => {
       // Solve the circuit when any of the circuit element attributes change.
       this.circuitElements.addItemAddedListener( circuitElement => {
         circuitElement.getCircuitProperties().forEach( property => property.lazyLink( markDirtyListener ) );
-
-        // When a new circuit element is added to a circuit, it has two unconnected vertices
-
-        // Vertices may already exist for a Circuit when loading
-        this.addVertexIfNew( circuitElement.startVertexProperty.get() );
-        this.addVertexIfNew( circuitElement.endVertexProperty.get() );
 
         // When any vertex moves, relayout all charges within the fixed-length connected component, see #100
         circuitElement.chargeLayoutDirty = true;
@@ -174,18 +162,28 @@ define( require => {
 
       const emitCircuitChanged = () => this.circuitChangedEmitter.emit();
 
-      this.vertices.addItemAddedListener( vertex => {
+      this.vertexGroup = new Group( 'vertex', ( tandem, position ) => {
+        return new Vertex( position, {
+          tandem: tandem,
+          phetioType: VertexIO
+        } );
+      }, [ new Vector2( -1000, 0 ) ], {
+        phetioType: GroupIO( VertexIO ),
+        tandem: tandem.createTandem( 'vertexGroup' )
+      } );
+
+      this.vertexGroup.addMemberCreatedListener( vertex => {
 
         // Observe the change in location of the vertices, to update the ammeter and voltmeter
         vertex.positionProperty.link( emitCircuitChanged );
 
-        const filtered = this.vertices.filter( candidateVertex => vertex === candidateVertex );
+        const filtered = this.vertexGroup.array.filter( candidateVertex => vertex === candidateVertex );
         assert && assert( filtered.length === 1, 'should only have one copy of each vertex' );
 
         // if one vertex becomes selected, deselect the other vertices and circuit elements
         const vertexSelectedPropertyListener = selected => {
           if ( selected ) {
-            this.vertices.forEach( v => {
+            this.vertexGroup.array.forEach( v => {
               if ( v !== vertex ) {
                 v.selectedProperty.set( false );
               }
@@ -198,7 +196,7 @@ define( require => {
       } );
 
       // Stop watching the vertex positions for updating the voltmeter and ammeter
-      this.vertices.addItemRemovedListener( vertex => {
+      this.vertexGroup.addMemberDisposedListener( vertex => {
 
         // Sanity checks for the listeners
         assert && assert( vertex.positionProperty.hasListener( emitCircuitChanged ), 'should have had the listener' );
@@ -225,7 +223,7 @@ define( require => {
 
         // When a circuit element is selected, deselect all the vertices
         if ( selectedCircuitElement ) {
-          this.vertices.forEach( vertex => vertex.selectedProperty.set( false ) );
+          this.vertexGroup.array.forEach( vertex => vertex.selectedProperty.set( false ) );
         }
       } );
 
@@ -243,7 +241,7 @@ define( require => {
           neighbors.push( vertex );
           const pairs = [];
           neighbors.forEach( neighbor => {
-            this.vertices.forEach( vertex => {
+            this.vertexGroup.array.forEach( vertex => {
 
               // Make sure nodes are different
               if ( neighbor !== vertex ) {
@@ -281,113 +279,86 @@ define( require => {
       this.dollarBillGroupTandem = tandem.createGroupTandem( 'dollarBills' );
       this.paperClipGroupTandem = tandem.createGroupTandem( 'paperClips' );
 
-      this.vertexGroup = new Group( 'vertex', {
-        prototype: {
-          create: ( tandem, prototypeName, position ) => new Vertex( position, {
-            tandem: tandem,
-            phetioType: VertexIO
-          } ),
-          defaultArguments: [ new Vector2( 0, 0 ) ]
-        }
-      }, {
-        phetioType: GroupIO( VertexIO ),
-        tandem: tandem.createTandem( 'vertexGroup' )
-      } );
-
-      this.wireGroup = new Group( 'wire', {
-        prototype: {
-          create: ( tandem, prototypeName, startVertex, endVertex ) => {
-            return new Wire( startVertex, endVertex, this.wireResistivityProperty, tandem );
-          },
-          defaultArguments: () => this.createVertexPairArray( new Vector2( 0, 0 ), WIRE_LENGTH )
-        }
-      }, {
+      this.wireGroup = new Group( 'wire', ( tandem, startVertex, endVertex ) => {
+        return new Wire( startVertex, endVertex, this.wireResistivityProperty, tandem );
+      }, () => this.createVertexPairArray2( new Vector2( -1000, 0 ), WIRE_LENGTH ), {
         phetioType: GroupIO( CircuitElementIO ),
         tandem: tandem.createTandem( 'wireGroup' )
       } );
 
-      this.batteryGroup = new Group( 'battery', {
-        prototype: {
-          create: ( tandem, prototypeName, startVertex, endVertex ) => {
-            return new Battery( startVertex, endVertex, this.batteryResistanceProperty, Battery.BatteryType.NORMAL,
-              tandem );
-          },
-          defaultArguments: () => this.createVertexPairArray( new Vector2( 0, 0 ), BATTERY_LENGTH )
-        }
-      }, {
+      this.batteryGroup = new Group( 'battery', ( tandem, startVertex, endVertex ) => {
+        return new Battery( startVertex, endVertex, this.batteryResistanceProperty, Battery.BatteryType.NORMAL,
+          tandem );
+      }, () => this.createVertexPairArray2( new Vector2( -1000, 0 ), BATTERY_LENGTH ), {
         phetioType: GroupIO( CircuitElementIO ),
         tandem: tandem.createTandem( 'batteryGroup' )
       } );
 
-      this.acVoltageGroup = new Group( 'acVoltage', {
-        prototype: {
-          create: ( tandem, prototypeName, startVertex, endVertex ) => {
-            return new ACVoltage( startVertex, endVertex, this.batteryResistanceProperty, tandem );
-          },
-          defaultArguments: () => this.createVertexPairArray( new Vector2( 0, 0 ), CCKCConstants.AC_VOLTAGE_LENGTH )
-        }
-      }, {
+      this.highVoltageBatteryGroup = new Group( 'battery', ( tandem, startVertex, endVertex ) => {
+        return new Battery( startVertex, endVertex, this.batteryResistanceProperty, Battery.BatteryType.NORMAL,
+          tandem );
+      }, () => this.createVertexPairArray2( new Vector2( -1000, 0 ), BATTERY_LENGTH ), {
+        phetioType: GroupIO( CircuitElementIO ),
+        tandem: tandem.createTandem( 'highVoltageBatteryGroup' )
+      } );
+
+      this.acVoltageGroup = new Group( 'acVoltage', ( tandem, startVertex, endVertex ) => {
+        return new ACVoltage( startVertex, endVertex, this.batteryResistanceProperty, tandem );
+      }, () => this.createVertexPairArray2( new Vector2( -1000, 0 ), CCKCConstants.AC_VOLTAGE_LENGTH ), {
         phetioType: GroupIO( CircuitElementIO ),
         tandem: tandem.createTandem( 'acVoltageGroup' )
       } );
 
-      this.resistorGroup = new Group( 'resistor', {
-        prototype: {
-          create: ( tandem, prototypeName, startVertex, endVertex ) => new Resistor( startVertex, endVertex, tandem ),
-          defaultArguments: () => this.createVertexPairArray( new Vector2( 0, 0 ), CCKCConstants.RESISTOR_LENGTH )
-        }
-      }, {
-        phetioType: GroupIO( CircuitElementIO ),
-        tandem: tandem.createTandem( 'resistorGroup' )
-      } );
+      this.resistorGroup = new Group( 'resistor',
+        ( tandem, startVertex, endVertex ) => new Resistor( startVertex, endVertex, tandem ),
+        () => this.createVertexPairArray2( new Vector2( -1000, 0 ), CCKCConstants.RESISTOR_LENGTH ), {
+          phetioType: GroupIO( CircuitElementIO ),
+          tandem: tandem.createTandem( 'resistorGroup' )
+        } );
 
-      this.capacitorGroup = new Group( 'capacitor', {
-        prototype: {
-          create: ( tandem, prototypeName, startVertex, endVertex ) => new Capacitor( startVertex, endVertex, tandem ),
-          defaultArguments: () => this.createVertexPairArray( new Vector2( 0, 0 ), CCKCConstants.CAPACITOR_LENGTH )
-        }
-      }, {
-        phetioType: GroupIO( CircuitElementIO ),
-        tandem: tandem.createTandem( 'capacitorGroup' )
-      } );
+      this.capacitorGroup = new Group( 'capacitor',
+        ( tandem, startVertex, endVertex ) => new Capacitor( startVertex, endVertex, tandem ),
+        () => this.createVertexPairArray2( new Vector2( -1000, 0 ), CCKCConstants.CAPACITOR_LENGTH ), {
+          phetioType: GroupIO( CircuitElementIO ),
+          tandem: tandem.createTandem( 'capacitorGroup' )
+        } );
 
-      this.inductorGroup = new Group( 'inductor', {
-        prototype: {
-          create: ( tandem, prototypeName, startVertex, endVertex ) => new Inductor( startVertex, endVertex, tandem ),
-          defaultArguments: () => this.createVertexPairArray( new Vector2( 0, 0 ), CCKCConstants.INDUCTOR_LENGTH )
-        }
-      }, {
-        phetioType: GroupIO( CircuitElementIO ),
-        tandem: tandem.createTandem( 'inductorGroup' )
-      } );
+      this.inductorGroup = new Group( 'inductor',
+        ( tandem, startVertex, endVertex ) => new Inductor( startVertex, endVertex, tandem ),
+        () => this.createVertexPairArray2( new Vector2( -1000, 0 ), CCKCConstants.INDUCTOR_LENGTH ), {
+          phetioType: GroupIO( CircuitElementIO ),
+          tandem: tandem.createTandem( 'inductorGroup' )
+        } );
 
-      this.switchGroup = new Group( 'switch', {
-        prototype: {
-          create: ( tandem, prototypeName, startVertex, endVertex ) => new Switch( startVertex, endVertex, tandem ),
-          defaultArguments: () => this.createVertexPairArray( new Vector2( 0, 0 ), CCKCConstants.SWITCH_LENGTH )
-        }
-      }, {
-        phetioType: GroupIO( CircuitElementIO ),
-        tandem: tandem.createTandem( 'switchGroup' )
-      } );
+      this.switchGroup = new Group( 'switch',
+        ( tandem, startVertex, endVertex ) => new Switch( startVertex, endVertex, tandem ),
+        () => this.createVertexPairArray2( new Vector2( -1000, 0 ), CCKCConstants.SWITCH_LENGTH ), {
+          phetioType: GroupIO( CircuitElementIO ),
+          tandem: tandem.createTandem( 'switchGroup' )
+        } );
 
-      this.lightBulbGroup = new Group( 'lightBulb', {
-        prototype: {
-          create: ( tandem, prototypeName, startVertex, endVertex ) => {
-            return new LightBulb( startVertex, endVertex, CCKCConstants.DEFAULT_RESISTANCE, this.viewTypeProperty, tandem );
-          },
-          defaultArguments: () => {
-            const x = LightBulb.createVertexPair( new Vector2( 0, 0 ), this );
-            return [ x.startVertex, x.endVertex ];
-          }
-        }
-      }, {
-        phetioType: GroupIO( CircuitElementIO ),
-        tandem: tandem.createTandem( 'lightBulbGroup' )
-      } );
+      this.lightBulbGroup = new Group( 'lightBulb',
+        ( tandem, startVertex, endVertex ) => {
+          return new LightBulb( startVertex, endVertex, CCKCConstants.DEFAULT_RESISTANCE, this.viewTypeProperty, tandem );
+        }, () => {
+          return [ new Vertex( new Vector2( -1000, 0 ) ), new Vertex( new Vector2( -1100, 0 ) ) ];
+        }, {
+          phetioType: GroupIO( CircuitElementIO ),
+          tandem: tandem.createTandem( 'lightBulbGroup' )
+        } );
 
       // @private {boolean} - whether physical characteristics have changed and warrant solving for currents and voltages
       this.dirty = false;
+    }
+
+    // TODO: Find a better way
+    disposeFromGroup( circuitElement ) {
+      const keys = _.keys( this );
+      keys.forEach( key => {
+        if ( key.endsWith( 'Group' ) && this[ key ] instanceof Group && this[ key ].array.indexOf( circuitElement ) >= 0 ) {
+          this[ key ].disposeGroupMember( circuitElement );
+        }
+      } );
     }
 
     /**
@@ -409,6 +380,11 @@ define( require => {
     createVertexPairArray( position, length ) {
       const pair = this.createVertexPair( position, length );
       return [ pair.startVertex, pair.endVertex ];
+    }
+
+    // TODO: Find a better way
+    createVertexPairArray2( position, length ) {
+      return [ new Vertex( position ), new Vertex( position.plusXY( length, 0 ) ) ];
     }
 
     /**
@@ -520,8 +496,8 @@ define( require => {
      */
     closestDistanceToOtherVertex( vertex ) {
       let closestDistance = null;
-      for ( let i = 0; i < this.vertices.length; i++ ) {
-        const v = this.vertices.get( i );
+      for ( let i = 0; i < this.vertexGroup.array.length; i++ ) {
+        const v = this.vertexGroup.array[ i ];
         if ( v !== vertex ) {
           const distance = v.positionProperty.get().distance( vertex.positionProperty.get() );
           if ( closestDistance === null || distance < closestDistance ) {
@@ -546,16 +522,22 @@ define( require => {
         // clear references, do not dispose because some items get added back in the black box.
         this.circuitElements.clear();
 
-        this.vertices.clear();
+        this.vertexGroup.clear();
         this.markDirty();
       }
       else {
 
         // Dispose of elements
         while ( this.circuitElements.length > 0 ) {
-          this.circuitElements.remove( this.circuitElements.get( 0 ) );
+          const circuitElement = this.circuitElements.get( 0 );
+          this.circuitElements.remove( circuitElement );
+          this.disposeFromGroup( circuitElement );
+          this.removeVertexIfOrphaned( circuitElement.startVertexProperty.value );
+          this.removeVertexIfOrphaned( circuitElement.endVertexProperty.value );
+
+          this.vertexGroup.clear(); // TODO: why isn't the preceding code removing the vertices?
         }
-        assert && assert( this.vertices.length === 0, 'vertices should have been removed' );
+        assert && assert( this.vertexGroup.array.length === 0, 'vertices should have been removed' );
       }
     }
 
@@ -638,10 +620,8 @@ define( require => {
 
       neighborCircuitElements.forEach( ( circuitElement, i ) => {
 
-        const newVertex = this.vertexGroup.createNextGroupMember( vertex.positionProperty.get() );
-
         // Add the new vertex to the model first so that it can be updated in subsequent calls
-        this.vertices.add( newVertex );
+        const newVertex = this.vertexGroup.createNextGroupMember( vertex.positionProperty.get() );
 
         circuitElement.replaceVertex( vertex, newVertex );
 
@@ -650,7 +630,7 @@ define( require => {
       } );
 
       if ( !vertex.blackBoxInterfaceProperty.get() ) {
-        this.vertices.remove( vertex );
+        this.vertexGroup.disposeGroupMember( vertex );
       }
       this.markDirty();
     }
@@ -705,19 +685,12 @@ define( require => {
      * @private
      */
     removeVertexIfOrphaned( vertex ) {
-      if ( this.getNeighborCircuitElements( vertex ).length === 0 && !vertex.blackBoxInterfaceProperty.get() ) {
-        this.vertices.remove( vertex );
-      }
-    }
-
-    /**
-     * Add the given vertex if it doesn't already belong to the circuit.
-     * @param {Vertex} vertex
-     * @private
-     */
-    addVertexIfNew( vertex ) {
-      if ( !this.vertices.contains( vertex ) ) {
-        this.vertices.add( vertex );
+      if (
+        this.getNeighborCircuitElements( vertex ).length === 0 &&
+        !vertex.blackBoxInterfaceProperty.get() &&
+        !vertex.isDisposed
+      ) {
+        this.vertexGroup.disposeGroupMember( vertex );
       }
     }
 
@@ -799,7 +772,7 @@ define( require => {
             circuitElement.connectedEmitter.emit();
           }
         } );
-        this.vertices.remove( oldVertex );
+        this.vertexGroup.disposeGroupMember( oldVertex );
         assert && assert( !oldVertex.positionProperty.hasListeners(), 'Removed vertex should not have any listeners' );
         this.markDirty();
 
@@ -933,7 +906,7 @@ define( require => {
      * @private
      */
     searchVertices( vertex, okToVisit ) {
-      assert && assert( this.vertices.indexOf( vertex ) >= 0, 'Vertex wasn\'t in the model' );
+      assert && assert( this.vertexGroup.array.indexOf( vertex ) >= 0, 'Vertex wasn\'t in the model' );
 
       const fixedVertices = [];
       const toVisit = [ vertex ];
@@ -1006,7 +979,7 @@ define( require => {
      * @returns {Vertex|null}
      */
     getSelectedVertex() {
-      const selectedVertex = _.find( this.vertices.getArray(), vertex => vertex.selectedProperty.get() );
+      const selectedVertex = _.find( this.vertexGroup.array, vertex => vertex.selectedProperty.get() );
       return selectedVertex || null;
     }
 
@@ -1026,7 +999,7 @@ define( require => {
       }
 
       // Rules for a vertex connecting to another vertex.
-      let candidateVertices = this.vertices.getArray().filter( candidateVertex => {
+      let candidateVertices = this.vertexGroup.array.filter( candidateVertex => {
 
         // (1) A vertex may not connect to an adjacent vertex.
         if ( this.isVertexAdjacent( vertex, candidateVertex ) ) {
@@ -1058,8 +1031,8 @@ define( require => {
 
         // if something else is already snapping to candidateVertex, then we cannot snap to it as well.
         // check the neighbor vertices
-        for ( let i = 0; i < this.vertices.length; i++ ) {
-          const circuitVertex = this.vertices.get( i );
+        for ( let i = 0; i < this.vertexGroup.array.length; i++ ) {
+          const circuitVertex = this.vertexGroup.array[ i ];
           const adjacent = this.isVertexAdjacent( circuitVertex, vertex );
 
           // If the adjacent vertex has the same position as the candidate vertex, that means it is already "snapped"
@@ -1087,8 +1060,8 @@ define( require => {
             const oppositeVertex = neighbor.getOppositeVertex( candidateVertex );
 
             // is another node proposing a match to that node?
-            for ( let k = 0; k < this.vertices.length; k++ ) {
-              const v = this.vertices.get( k );
+            for ( let k = 0; k < this.vertexGroup.array.length; k++ ) {
+              const v = this.vertexGroup.array[ k ];
               if ( neighbor instanceof Wire &&
                    v !== vertex &&
                    v !== oppositeVertex &&
@@ -1279,7 +1252,7 @@ define( require => {
       return {
         wireResistivity: this.wireResistivityProperty.value,
         batteryResistance: this.batteryResistanceProperty.value,
-        vertices: this.vertices.getArray().map( vertex => {
+        vertices: this.vertexGroup.array.map( vertex => {
           return {
             x: vertex.positionProperty.get().x,
             y: vertex.positionProperty.get().y,
@@ -1294,65 +1267,11 @@ define( require => {
           return _.extend( {
             type: getKey( circuitElement ),
             tandemID: circuitElement.tandem.phetioID,
-            startVertexIndex: this.vertices.indexOf( circuitElement.startVertexProperty.get() ),
-            endVertexIndex: this.vertices.indexOf( circuitElement.endVertexProperty.get() )
+            startVertexIndex: this.vertexGroup.array.indexOf( circuitElement.startVertexProperty.get() ),
+            endVertexIndex: this.vertexGroup.array.indexOf( circuitElement.endVertexProperty.get() )
           }, circuitElement.toIntrinsicStateObject() );
         } )
       };
-    }
-
-    /**
-     * Load the given stateObject into this Circuit.
-     * @param {Object} stateObject
-     * @param {Property.<string>} viewTypeProperty
-     */
-    setFromStateObject( stateObject, viewTypeProperty ) {
-      this.clear();
-      this.wireResistivityProperty.value = stateObject.wireResistivity;
-      this.batteryResistanceProperty.value = stateObject.batteryResistance;
-
-      stateObject.vertices.forEach( stateObjectVertex => {
-        this.vertices.push( new Vertex( new Vector2( stateObjectVertex.x, stateObjectVertex.y ), {
-          draggable: stateObjectVertex.options.draggable,
-          attachable: stateObjectVertex.options.attachable,
-          tandem: Tandem.createFromPhetioID( stateObjectVertex.tandemID )
-        } ) );
-      } );
-
-      // TODO: Eliminate
-      stateObject.circuitElements.forEach( circuitElementStateObject => {
-        const type = circuitElementStateObject.type;
-        const startVertex = this.vertices.get( circuitElementStateObject.startVertexIndex );
-        const endVertex = this.vertices.get( circuitElementStateObject.endVertexIndex );
-        const tandem = Tandem.createFromPhetioID( circuitElementStateObject.tandemID );
-        if ( type === 'wire' ) {
-          this.circuitElements.add( new Wire( startVertex, endVertex, this.wireResistivityProperty, tandem ) );
-        }
-        else if ( type === 'battery' ) {
-          this.circuitElements.add( new Battery( startVertex, endVertex, this.batteryResistanceProperty, circuitElementStateObject.batteryType, tandem, {
-            voltage: circuitElementStateObject.voltage
-          } ) );
-        }
-        else if ( type === 'resistor' ) {
-          this.circuitElements.add( new Resistor( startVertex, endVertex, tandem, {
-            resistance: circuitElementStateObject.resistance,
-            resistorType: circuitElementStateObject.resistorType,
-            resistorLength: circuitElementStateObject.resistorLength
-          } ) );
-        }
-        else if ( type === 'seriesAmmeter' ) {
-          this.circuitElements.add( new SeriesAmmeter( startVertex, endVertex, tandem, {} ) );
-        }
-        else if ( type === 'lightBulb' ) {
-          this.circuitElements.add( new LightBulb( startVertex, endVertex, circuitElementStateObject.resistance, viewTypeProperty, tandem, {
-            highResistance: circuitElementStateObject.highResistance,
-            resistance: circuitElementStateObject.resistance
-          } ) );
-        }
-        else if ( type === 'switch' ) {
-          this.circuitElements.add( new Switch( startVertex, endVertex, tandem, { closed: circuitElementStateObject.closed } ) );
-        }
-      } );
     }
   }
 

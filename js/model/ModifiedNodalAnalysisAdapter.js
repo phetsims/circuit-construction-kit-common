@@ -30,7 +30,7 @@ define( require => {
   class ResistiveBatteryAdapter extends DynamicCircuit.ResistiveBattery {
 
     constructor( c, battery ) {
-      super( c.vertices.indexOf( battery.startVertexProperty.value ), c.vertices.indexOf( battery.endVertexProperty.value ), battery.voltageProperty.value, battery.internalResistanceProperty.value );
+      super( c.vertexGroup.array.indexOf( battery.startVertexProperty.value ), c.vertexGroup.array.indexOf( battery.endVertexProperty.value ), battery.voltageProperty.value, battery.internalResistanceProperty.value );
       this.battery = battery;
     }
 
@@ -46,8 +46,8 @@ define( require => {
   class ResistorAdapter extends ModifiedNodalAnalysisCircuitElement {
     constructor( c, resistor ) {
       super(
-        c.vertices.indexOf( resistor.startVertexProperty.value ),
-        c.vertices.indexOf( resistor.endVertexProperty.value ),
+        c.vertexGroup.array.indexOf( resistor.startVertexProperty.value ),
+        c.vertexGroup.array.indexOf( resistor.endVertexProperty.value ),
         resistor,
         resistor.resistanceProperty.value
       );
@@ -68,8 +68,8 @@ define( require => {
 
     constructor( c, capacitor ) {
       const dynamicCircuitCapacitor = new DynamicCircuit.Capacitor(
-        c.vertices.indexOf( capacitor.startVertexProperty.value ),
-        c.vertices.indexOf( capacitor.endVertexProperty.value ),
+        c.vertexGroup.array.indexOf( capacitor.startVertexProperty.value ),
+        c.vertexGroup.array.indexOf( capacitor.endVertexProperty.value ),
         capacitor.capacitanceProperty.value
       );
       super( dynamicCircuitCapacitor, new DynamicCircuit.DynamicElementState( capacitor.mnaVoltageDrop, capacitor.mnaCurrent ) );
@@ -88,8 +88,8 @@ define( require => {
 
     constructor( c, inductor ) {
       const dynamicCircuitInductor = new DynamicCircuit.Inductor(
-        c.vertices.indexOf( inductor.startVertexProperty.value ),
-        c.vertices.indexOf( inductor.endVertexProperty.value ),
+        c.vertexGroup.array.indexOf( inductor.startVertexProperty.value ),
+        c.vertexGroup.array.indexOf( inductor.endVertexProperty.value ),
         inductor.inductanceProperty.value
       );
 
@@ -166,7 +166,7 @@ define( require => {
       }
 
       // Apply the node voltages to the vertices
-      circuit.vertices.getArray().forEach( ( vertex, i ) => {
+      circuit.vertexGroup.array.forEach( ( vertex, i ) => {
 
         // Unconnected vertices like those in the black box may not have an entry in the matrix, so mark them as zero.
         // TODO: should this average over states?

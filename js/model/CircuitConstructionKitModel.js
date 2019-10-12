@@ -126,7 +126,8 @@ define( require => {
             this.isValueDepictionEnabledProperty.value = false;
           }
         };
-        this.circuit.vertices.lengthProperty.lazyLink( pause );
+        this.circuit.vertexGroup.addMemberCreatedListener( pause );
+        this.circuit.vertexGroup.addMemberDisposedListener( pause );
         this.circuit.componentEditedEmitter.addListener( pause );
         this.circuit.circuitElements.lengthProperty.link( pause );
       }
@@ -148,7 +149,8 @@ define( require => {
           // could solve it
           setTimeout( () => circuitChangedEmitter.emit( JSON.stringify( this.circuit.toStateObject() ) ), 0 );
         };
-        this.circuit.vertices.lengthProperty.link( emitCircuitChanged );
+        this.circuit.vertexGroup.addMemberCreatedListener( emitCircuitChanged );
+        this.circuit.vertexGroup.addMemberDisposedListener( emitCircuitChanged );
         this.circuit.componentEditedEmitter.addListener( emitCircuitChanged );
       }
 

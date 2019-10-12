@@ -12,7 +12,6 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Text = require( 'SCENERY/nodes/Text' );
-  const TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
 
   // strings
   const theSwitchIsClosedString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/theSwitchIsClosed' );
@@ -28,7 +27,7 @@ define( require => {
      * @param {Switch} circuitSwitch - the switch
      * @param {Tandem} tandem
      */
-    constructor( circuit, circuitSwitch, tandem ) {
+    constructor( circuit, circuitSwitch, tandem, trashButtonGroup ) {
 
       // Create both texts and display both so they remain aligned as the value changes
       const closedText = new Text( theSwitchIsClosedString, {
@@ -49,7 +48,8 @@ define( require => {
       circuitSwitch.closedProperty.link( closedListener );
 
       // Show a trash button to the right of the text
-      const trashButton = new TrashButton( circuit, circuitSwitch, tandem.createTandem( 'trashButton' ) ).mutate( {
+      const trashButton = trashButtonGroup.createNextGroupMember( circuitSwitch );
+      trashButton.mutate( {
         left: maxWidth + 10,
         centerY: closedText.centerY
       } );

@@ -63,6 +63,7 @@ define( require => {
      */
     // TODO: voltageChartNode and currentChartNode should be optional and only appear in the AC sim
     constructor( alignGroup, circuitLayerNode, voltmeterNode, ammeterNode, voltageChartNode, currentChartNode, tandem, options ) {
+      const circuit = circuitLayerNode.circuit;
 
       options = _.extend( {
         showResultsProperty: circuitLayerNode.model.isValueDepictionEnabledProperty,
@@ -104,22 +105,22 @@ define( require => {
       ammeterNodeIcon.addInputListener( createListener( ammeterNode.ammeter, ammeterNode ) );
 
       // Icon for the series ammeter
-      const seriesAmmeter = new SeriesAmmeter(
+      const seriesAmmeterIcon = new SeriesAmmeter(
         new Vertex( Vector2.ZERO ),
         new Vertex( new Vector2( CCKCConstants.SERIES_AMMETER_LENGTH, 0 ) ),
         Tandem.optional
       );
-      const seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeter, tandem.createTandem( 'seriesAmmeterNodeIcon' ), {
+      const seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeterIcon, tandem.createTandem( 'seriesAmmeterNodeIcon' ), {
         isIcon: true
       } );
-      const createSeriesAmmeter = position => {
+      const createSeriesAmmeter = ( position, isIcon ) => {
         const halfLength = CCKCConstants.SERIES_AMMETER_LENGTH / 2;
-        const startVertex = new Vertex( position.plusXY( -halfLength, 0 ) );
-        const endVertex = new Vertex( position.plusXY( halfLength, 0 ) );
+        const startVertex = circuit.vertexGroup.createNextGroupMember( position.plusXY( -halfLength, 0 ) );
+        const endVertex = circuit.vertexGroup.createNextGroupMember( position.plusXY( halfLength, 0 ) );
         return new SeriesAmmeter(
           startVertex,
           endVertex,
-          circuitLayerNode.circuit.seriesAmmeterGroupTandem.createNextTandem()
+          circuit.seriesAmmeterGroupTandem.createNextTandem()
         );
       };
       seriesAmmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / seriesAmmeterNodeIcon.width } );
@@ -127,11 +128,11 @@ define( require => {
         '',
         new Property( false ),
         new Property( CircuitElementViewType.SCHEMATIC ),
-        circuitLayerNode.circuit,
+        circuit,
         point => circuitLayerNode.globalToLocalPoint( point ),
         seriesAmmeterNodeIcon,
         6,
-        () => circuitLayerNode.circuit.circuitElements.count( circuitElement => circuitElement instanceof SeriesAmmeter ),
+        () => circuit.circuitElements.count( circuitElement => circuitElement instanceof SeriesAmmeter ),
         createSeriesAmmeter, {
           touchAreaExpansionLeft: 3,
           touchAreaExpansionTop: 15,

@@ -57,6 +57,15 @@ define( require => {
     }
 
     /**
+     * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
+     * @public
+     */
+    dispose() {
+      this.resistanceProperty.dispose();
+      super.dispose();
+    }
+
+    /**
      * Returns true if the resistance is editable.  Household item resistance is not editable.
      * @returns {boolean}
      * @public

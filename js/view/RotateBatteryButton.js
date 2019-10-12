@@ -62,7 +62,15 @@ define( require => {
         listener: () => circuit.flip( battery ),
         minXMargin: 10,
         minYMargin: 10,
-        tandem: tandem
+
+        tandem: tandem,
+
+        // TODO: are these unnecessary?  Could we just uninstrument as we did for NumberControl?
+        phetioState: false,
+
+        phetioComponentOptions: {
+          phetioState: false
+        }
       } );
     }
   }

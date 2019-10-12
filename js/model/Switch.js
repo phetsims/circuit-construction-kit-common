@@ -45,11 +45,22 @@ define( require => {
       this.resistanceProperty = new NumberProperty( 0 );
 
       // @public (read-only) {BooleanProperty} whether the switch is closed (and current can flow through it)
-      this.closedProperty = new BooleanProperty( options.closed );
+      this.closedProperty = new BooleanProperty( options.closed, {
+        tandem: tandem.createTandem( 'closedProperty' )
+      } );
 
       this.closedProperty.link( closed => {
         this.resistanceProperty.value = closed ? 0 : CCKCConstants.MAX_RESISTANCE;
       } );
+    }
+
+    /**
+     * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
+     * @public
+     */
+    dispose() {
+      this.closedProperty.dispose();
+      super.dispose();
     }
 
     /**

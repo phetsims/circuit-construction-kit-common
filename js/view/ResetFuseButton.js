@@ -43,7 +43,13 @@ define( require => {
         // Adjusted until the ResetFuseButton is the same height as the trash can button
         minXMargin: 8,
         minYMargin: 8,
-        tandem: tandem
+        tandem: tandem,
+
+        // TODO: are these unnecessary?  Could we just uninstrument as we did for NumberControl?
+        phetioState: false,
+        phetioComponentOptions: {
+          phetioState: false
+        }
       } );
       fuse.isTrippedProperty.link( isTripped => {
         this.setEnabled( isTripped );

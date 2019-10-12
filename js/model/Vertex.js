@@ -116,6 +116,17 @@ define( require => {
       this.positionProperty.set( position );
       this.unsnappedPositionProperty.set( position );
     }
+
+    /**
+     * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
+     * @public
+     */
+    dispose() {
+      this.positionProperty.dispose();
+      this.voltageProperty.dispose();
+      this.selectedProperty.dispose();
+      super.dispose();
+    }
   }
 
   return circuitConstructionKitCommon.register( 'Vertex', Vertex );

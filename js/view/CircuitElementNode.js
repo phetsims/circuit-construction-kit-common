@@ -182,7 +182,7 @@ define( require => {
 
           // End drag for each of the vertices
           vertices.forEach( vertex => {
-            if ( screenView.model.circuit.vertices.contains( vertex ) ) {
+            if ( screenView.model.circuit.vertexGroup.array.indexOf( vertex ) >= 0 ) {
               circuitLayerNode.endDrag( event, vertex, dragged );
             }
           } );

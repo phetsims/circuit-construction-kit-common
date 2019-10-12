@@ -72,6 +72,17 @@ define( require => {
     }
 
     /**
+     * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
+     * @public
+     */
+    dispose() {
+      this.voltageProperty.dispose();
+      this.maximumVoltageProperty.dispose();
+      this.frequencyProperty.dispose();
+      super.dispose();
+    }
+
+    /**
      * Get the properties so that the circuit can be solved when changed.
      * @returns {Property.<*>[]}
      * @override

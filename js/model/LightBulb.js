@@ -15,6 +15,7 @@ define( require => {
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Util = require( 'DOT/Util' );
   const Vector2 = require( 'DOT/Vector2' );
+  const Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
 
   // constants
 
@@ -115,6 +116,15 @@ define( require => {
      */
     isResistanceEditable() {
       return true;
+    }
+
+    /**
+     * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
+     * @public
+     */
+    dispose() {
+      this.resistanceProperty.dispose();
+      super.dispose();
     }
 
     /**
@@ -221,13 +231,13 @@ define( require => {
    */
   LightBulb.createAtPosition = ( position, circuit, resistance, viewTypeProperty, tandem, options ) => {
 
-    options = options || {};
-    const vertexPair = LightBulb.createVertexPair( position, circuit );
+    options = _.extend( { icon: false }, options );
+    const vertexPair = LightBulb.createVertexPair( position, circuit, !!options.icon );
 
     return new LightBulb( vertexPair.startVertex, vertexPair.endVertex, resistance, viewTypeProperty, tandem, options );
   };
 
-  LightBulb.createVertexPair = ( position, circuit ) => {
+  LightBulb.createVertexPair = ( position, circuit, icon ) => {
 
     const translation = new Vector2( 19, 10 );
 
@@ -238,8 +248,8 @@ define( require => {
     const endPoint = startPoint.plus( Vector2.createPolar( DISTANCE_BETWEEN_VERTICES, -Math.PI / 4 ) );
 
     // start vertex is at the bottom
-    const startVertex = circuit.vertexGroup.createNextGroupMember( startPoint );
-    const endVertex = circuit.vertexGroup.createNextGroupMember( endPoint );
+    const startVertex = icon ? new Vertex( startPoint ) : circuit.vertexGroup.createNextGroupMember( startPoint );
+    const endVertex = icon ? new Vertex( endPoint ) : circuit.vertexGroup.createNextGroupMember( endPoint );
     return { startVertex: startVertex, endVertex: endVertex };
   };
 

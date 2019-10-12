@@ -18,6 +18,7 @@ define( require => {
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const ResetFuseButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResetFuseButton' );
   const RotateBatteryButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/RotateBatteryButton' );
+  const Tandem = require( 'TANDEM/Tandem' );
   const TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
 
   // constants
@@ -76,13 +77,19 @@ define( require => {
           thumbTouchAreaYDilation: 5
         },
 
-        tandem: tandem.createTandem( 'numberControl' )
+        // Trick the NumberControl into thinking it and its children do not need to be instrumented
+        // This prevents it from ending up in the state.  Luckily somehow, it still works properly
+        // in the state wrapper, probably from this code being called anyways from when the circuit element
+        // is selected.
+        tandem: Tandem.optional
       } );
 
       const children = [];
 
       // Batteries can be reversed
       if ( circuitElement instanceof Battery ) {
+
+        // TODO: Rename type to reverse
         children.push( new RotateBatteryButton( circuit, circuitElement, tandem.createTandem( 'reverseBatteryButton' ) ) );
       }
       if ( circuitElement instanceof Fuse ) {
@@ -92,7 +99,9 @@ define( require => {
 
       // The button that deletes the circuit component
       if ( circuitElement.canBeDroppedInToolbox && options.showTrashCan ) {
-        children.push( new TrashButton( circuit, circuitElement, tandem.createTandem( 'trashButton' ) ) );
+        children.push( new TrashButton( circuit, circuitElement, tandem.createTandem( 'trashButton' ), {
+          phetioState: false
+        } ) );
       }
 
       super( {
