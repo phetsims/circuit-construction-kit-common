@@ -53,14 +53,18 @@ define( require => {
 
     /**
      * @param {Charge} charge - the model element
+     * @param {CircuitLayerNode} circuitLayerNode
      */
-    constructor( charge ) {
+    constructor( charge, circuitLayerNode ) {
 
       const child = charge.charge > 0 ? ARROW_NODE : ELECTRON_CHARGE_NODE;
 
       super( child.image, {
         pickable: false
       } );
+
+      // @private - to look up the CapacitorNode for clipping
+      this.circuitLayerNode = circuitLayerNode;
 
       // @public (read-only) {Charge} - the model depicted by this node
       this.charge = charge;
@@ -144,9 +148,8 @@ define( require => {
                                    Shape.rect( -50, 58, 100, 100 ) : // latter half of the capacitor, clip when leaving the far plate.
                                    Shape.rect( -50, -135, 100, 100 ); // close half of the capacitor, clip when entering the plate
 
-
-        // TODO: HACK ALERT, see https://github.com/phetsims/circuit-construction-kit-common/issues/524
-        const globalShape = capacitorClipShape.transformed( this.charge.circuitElement.node.getLocalToGlobalMatrix() );
+        const capacitorNode = this.circuitLayerNode.getCircuitElementNode( this.charge.circuitElement ).lifelikeNode;
+        const globalShape = capacitorClipShape.transformed( capacitorNode.getLocalToGlobalMatrix() );
         const localShape = globalShape.transformed( this.getGlobalToLocalMatrix() );
 
         // this.path.shape = s;

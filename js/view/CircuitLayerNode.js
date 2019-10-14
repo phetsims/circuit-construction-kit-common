@@ -396,7 +396,7 @@ define( require => {
       this.visibleBoundsInCircuitCoordinateFrameProperty.link( moveVerticesInBounds );
 
       // When a charge is added, add the corresponding ChargeNode (removed it its dispose call)
-      circuit.charges.addItemAddedListener( charge => this.chargeLayer.addChild( new ChargeNode( charge ) ) );
+      circuit.charges.addItemAddedListener( charge => this.chargeLayer.addChild( new ChargeNode( charge, this ) ) );
     }
 
     /**
