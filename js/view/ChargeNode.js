@@ -11,11 +11,13 @@ define( require => {
 
   // modules
   const BooleanProperty = require( 'AXON/BooleanProperty' );
+  const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const ConventionalCurrentArrowNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ConventionalCurrentArrowNode' );
   const ElectronChargeNode = require( 'SCENERY_PHET/ElectronChargeNode' );
   const Image = require( 'SCENERY/nodes/Image' );
   const Matrix3 = require( 'DOT/Matrix3' );
+  const Shape = require( 'KITE/Shape' );
   const Tandem = require( 'TANDEM/Tandem' );
   const Util = require( 'DOT/Util' );
 
@@ -77,6 +79,9 @@ define( require => {
 
       charge.disposeEmitterCharge.addListener( this.dispose.bind( this ) );
 
+      // this.path = new Path( null, { stroke: 'blue' } );
+      // this.addChild( this.path );
+
       this.updateTransformListener();
     }
 
@@ -131,6 +136,26 @@ define( require => {
       }
       this.updateVisible();
       this.outsideOfBlackBoxProperty.set( !charge.circuitElement.insideTrueBlackBoxProperty.get() );
+
+      if ( this.charge.circuitElement instanceof Capacitor ) {
+
+        // For unknown reasons, the x and y coordinates are swapped here.  The values were determined empirically.
+        const capacitorClipShape = this.charge.distance > this.charge.circuitElement.chargePathLength / 2 ?
+                                   Shape.rect( -50, 58, 100, 100 ) : // latter half of the capacitor, clip when leaving the far plate.
+                                   Shape.rect( -50, -135, 100, 100 ); // close half of the capacitor, clip when entering the plate
+
+
+        // TODO: HACK ALERT, see https://github.com/phetsims/circuit-construction-kit-common/issues/524
+        const globalShape = capacitorClipShape.transformed( this.charge.circuitElement.node.getLocalToGlobalMatrix() );
+        const localShape = globalShape.transformed( this.getGlobalToLocalMatrix() );
+
+        // this.path.shape = s;
+        this.clipArea = localShape;
+      }
+      else {
+        this.clipArea = null;
+        // this.path.shape = null;
+      }
     }
 
     /**

@@ -144,6 +144,16 @@ define( require => {
 
       // @public (read-only) {Capacitor} - the Capacitor rendered by this Node
       this.capacitor = capacitor;
+
+      // TODO: HACK ALERT, see https://github.com/phetsims/circuit-construction-kit-common/issues/524
+      this.capacitor.node = lifelikeNode;
+    }
+
+    dispose() {
+
+      // TODO: HACK ALERT, see https://github.com/phetsims/circuit-construction-kit-common/issues/524
+      delete this.capacitor.node;
+      super.dispose();
     }
 
     /**
