@@ -144,6 +144,7 @@ define( require => {
       this.updateVisible();
       this.outsideOfBlackBoxProperty.set( !charge.circuitElement.insideTrueBlackBoxProperty.get() );
 
+      // In order to show that no actual charges transfer between the plates of a capacitor, we clip their rendering.
       if ( this.charge.circuitElement instanceof Capacitor ) {
         const capacitorNode = this.circuitLayerNode.getCircuitElementNode( this.charge.circuitElement );
 
@@ -152,11 +153,16 @@ define( require => {
 
         const isLifelike = this.circuitLayerNode.model.viewTypeProperty.value === CircuitElementViewType.LIFELIKE;
         if ( isLifelike ) {
+
+          // For the lifelike view, we clip based on the pseudo-3d effect, so the charges come from "behind" the edge
+          // of the back plate and the "in front of" center of the front plate.
           capacitorClipShape = this.charge.distance < this.charge.circuitElement.chargePathLength / 2 ?
                                Shape.rect( -50, -135, 100, 100 ) : // close half of the capacitor, clip when entering the plate
                                Shape.rect( -50, 58, 100, 100 ); // latter half of the capacitor, clip when leaving the far plate.
         }
         else {
+
+          // For the schematic view, we clip out the center between the plates.
           capacitorClipShape = this.charge.distance < this.charge.circuitElement.chargePathLength / 2 ?
                                Shape.rect( -20, -50, 60, 100 ) : // latter half of the capacitor, clip when leaving the far plate.
                                Shape.rect( 60, -50, 60, 100 ); // close half of the capacitor, clip when entering the plate
