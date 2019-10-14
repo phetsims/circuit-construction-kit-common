@@ -15,7 +15,7 @@ define( require => {
   const CapacitorNode = require( 'SCENERY_PHET/capacitor/CapacitorNode' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const CLBModelViewTransform3D = require( 'SCENERY_PHET/capacitor/CLBModelViewTransform3D' );
+  const YawPitchModelViewTransform3 = require( 'SCENERY_PHET/capacitor/YawPitchModelViewTransform3' );
   const Color = require( 'SCENERY/util/Color' );
   const FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
   const Image = require( 'SCENERY/nodes/Image' );
@@ -105,7 +105,7 @@ define( require => {
         const value = Util.linear( -9, 9, -V, V, capacitor.getVoltage() );
         circuit.capacitor.plateChargeProperty.value = -value;
       }, 10 );
-      const modelViewTransform = new CLBModelViewTransform3D();
+      const modelViewTransform = new YawPitchModelViewTransform3();
       const plateChargeVisibleProperty = new BooleanProperty( true );
       const electricFieldVisibleProperty = new BooleanProperty( true );
 
