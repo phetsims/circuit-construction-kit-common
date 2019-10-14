@@ -166,7 +166,7 @@ define( require => {
       }
 
       // Apply the node voltages to the vertices
-      circuit.vertexGroup.array.forEach( ( vertex, i ) => {
+      circuit.vertexGroup.forEach( ( vertex, i ) => {
 
         // Unconnected vertices like those in the black box may not have an entry in the matrix, so mark them as zero.
         // TODO: should this average over states?

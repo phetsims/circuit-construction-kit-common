@@ -177,13 +177,13 @@ define( require => {
         // Observe the change in location of the vertices, to update the ammeter and voltmeter
         vertex.positionProperty.link( emitCircuitChanged );
 
-        const filtered = this.vertexGroup.array.filter( candidateVertex => vertex === candidateVertex );
+        const filtered = this.vertexGroup.filter( candidateVertex => vertex === candidateVertex );
         assert && assert( filtered.length === 1, 'should only have one copy of each vertex' );
 
         // if one vertex becomes selected, deselect the other vertices and circuit elements
         const vertexSelectedPropertyListener = selected => {
           if ( selected ) {
-            this.vertexGroup.array.forEach( v => {
+            this.vertexGroup.forEach( v => {
               if ( v !== vertex ) {
                 v.selectedProperty.set( false );
               }
@@ -223,7 +223,7 @@ define( require => {
 
         // When a circuit element is selected, deselect all the vertices
         if ( selectedCircuitElement ) {
-          this.vertexGroup.array.forEach( vertex => vertex.selectedProperty.set( false ) );
+          this.vertexGroup.forEach( vertex => vertex.selectedProperty.set( false ) );
         }
       } );
 
@@ -241,7 +241,7 @@ define( require => {
           neighbors.push( vertex );
           const pairs = [];
           neighbors.forEach( neighbor => {
-            this.vertexGroup.array.forEach( vertex => {
+            this.vertexGroup.forEach( vertex => {
 
               // Make sure nodes are different
               if ( neighbor !== vertex ) {
@@ -496,7 +496,7 @@ define( require => {
      */
     closestDistanceToOtherVertex( vertex ) {
       let closestDistance = null;
-      for ( let i = 0; i < this.vertexGroup.array.length; i++ ) {
+      for ( let i = 0; i < this.vertexGroup.length; i++ ) {
         const v = this.vertexGroup.array[ i ];
         if ( v !== vertex ) {
           const distance = v.positionProperty.get().distance( vertex.positionProperty.get() );
@@ -537,7 +537,7 @@ define( require => {
 
           this.vertexGroup.clear(); // TODO: why isn't the preceding code removing the vertices?
         }
-        assert && assert( this.vertexGroup.array.length === 0, 'vertices should have been removed' );
+        assert && assert( this.vertexGroup.length === 0, 'vertices should have been removed' );
       }
     }
 
@@ -906,7 +906,7 @@ define( require => {
      * @private
      */
     searchVertices( vertex, okToVisit ) {
-      assert && assert( this.vertexGroup.array.indexOf( vertex ) >= 0, 'Vertex wasn\'t in the model' );
+      assert && assert( this.vertexGroup.contains( vertex ), 'Vertex wasn\'t in the model' );
 
       const fixedVertices = [];
       const toVisit = [ vertex ];
@@ -999,7 +999,7 @@ define( require => {
       }
 
       // Rules for a vertex connecting to another vertex.
-      let candidateVertices = this.vertexGroup.array.filter( candidateVertex => {
+      let candidateVertices = this.vertexGroup.filter( candidateVertex => {
 
         // (1) A vertex may not connect to an adjacent vertex.
         if ( this.isVertexAdjacent( vertex, candidateVertex ) ) {
@@ -1031,7 +1031,7 @@ define( require => {
 
         // if something else is already snapping to candidateVertex, then we cannot snap to it as well.
         // check the neighbor vertices
-        for ( let i = 0; i < this.vertexGroup.array.length; i++ ) {
+        for ( let i = 0; i < this.vertexGroup.length; i++ ) {
           const circuitVertex = this.vertexGroup.array[ i ];
           const adjacent = this.isVertexAdjacent( circuitVertex, vertex );
 
@@ -1060,7 +1060,7 @@ define( require => {
             const oppositeVertex = neighbor.getOppositeVertex( candidateVertex );
 
             // is another node proposing a match to that node?
-            for ( let k = 0; k < this.vertexGroup.array.length; k++ ) {
+            for ( let k = 0; k < this.vertexGroup.length; k++ ) {
               const v = this.vertexGroup.array[ k ];
               if ( neighbor instanceof Wire &&
                    v !== vertex &&
@@ -1252,7 +1252,7 @@ define( require => {
       return {
         wireResistivity: this.wireResistivityProperty.value,
         batteryResistance: this.batteryResistanceProperty.value,
-        vertices: this.vertexGroup.array.map( vertex => {
+        vertices: this.vertexGroup.map( vertex => {
           return {
             x: vertex.positionProperty.get().x,
             y: vertex.positionProperty.get().y,

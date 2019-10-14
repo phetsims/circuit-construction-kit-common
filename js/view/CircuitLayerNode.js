@@ -372,13 +372,13 @@ define( require => {
         solderNode.dispose();
         assert && assert( !this.getSolderNode( vertex ), 'solder node should have been removed' );
       } );
-      circuit.vertexGroup.array.forEach( addVertexNode );
+      circuit.vertexGroup.forEach( addVertexNode );
 
       // When the screen is resized or zoomed, move all vertices into view.
       const moveVerticesInBounds = localBounds => {
 
         // Check all vertices
-        for ( let i = 0; i < circuit.vertexGroup.array.length; i++ ) {
+        for ( let i = 0; i < circuit.vertexGroup.length; i++ ) {
           const vertex = circuit.vertexGroup.array[ i ];
           const position = vertex.positionProperty.get();
 
