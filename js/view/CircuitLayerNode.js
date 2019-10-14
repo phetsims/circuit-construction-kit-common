@@ -78,7 +78,7 @@ define( require => {
       // @private {Property.<CircuitElementViewType>}
       this.viewTypeProperty = screenView.model.viewTypeProperty;
 
-      // @private (read-only) {CircuitConstructionKitModel}
+      // @public (read-only) {CircuitConstructionKitModel}
       this.model = screenView.model;
 
       // @private (read-only) {Property.<Bounds2>} - the part of the screen that can be seen in view coordinates

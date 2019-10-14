@@ -129,6 +129,10 @@ define( require => {
         centerY: lifelikeNode.centerY
       } );
 
+      // Wrap in another layer so it can be used for clipping
+      const schematicNodeContainer = new Node( {
+        children: [ schematicNode ]
+      } );
       super(
         screenView,
         circuitLayerNode,
@@ -137,7 +141,7 @@ define( require => {
         new Node( {
           children: [ wireImage, lifelikeNode ]
         } ),
-        schematicNode,
+        schematicNodeContainer,
         tandem,
         options
       );
@@ -145,8 +149,11 @@ define( require => {
       // @public (read-only) {Capacitor} - the Capacitor rendered by this Node
       this.capacitor = capacitor;
 
-      // @public (read-only)
-      this.lifelikeNode = lifelikeNode;
+      // @public (read-only) - for clipping in ChargeNode
+      this.capacitorCircuitElementLifelikeNode = lifelikeNode;
+
+      // @public (read-only) - for clipping in ChargeNode
+      this.capacitorCircuitElementSchematicNode = schematicNodeContainer;
     }
 
     /**

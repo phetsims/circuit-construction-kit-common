@@ -13,6 +13,7 @@ define( require => {
   const BooleanProperty = require( 'AXON/BooleanProperty' );
   const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   const ConventionalCurrentArrowNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ConventionalCurrentArrowNode' );
   const ElectronChargeNode = require( 'SCENERY_PHET/ElectronChargeNode' );
   const Image = require( 'SCENERY/nodes/Image' );
@@ -74,7 +75,8 @@ define( require => {
       // Update the visibility accordingly.  A multilink will not work because the charge circuitElement changes.
       this.updateVisibleListener = this.updateVisible.bind( this );
 
-      // When the model position changes, update the node position
+      // When the model position changes, update the node position.
+      // TODO: We will also need to update when the capacitor position changes.
       this.updateTransformListener = this.updateTransform.bind( this );
 
       charge.changedEmitter.addListener( this.updateTransformListener );
@@ -83,6 +85,7 @@ define( require => {
 
       charge.disposeEmitterCharge.addListener( this.dispose.bind( this ) );
 
+      // For debugging, show the clipping regions
       // this.path = new Path( null, { stroke: 'blue' } );
       // this.addChild( this.path );
 
@@ -142,18 +145,31 @@ define( require => {
       this.outsideOfBlackBoxProperty.set( !charge.circuitElement.insideTrueBlackBoxProperty.get() );
 
       if ( this.charge.circuitElement instanceof Capacitor ) {
+        const capacitorNode = this.circuitLayerNode.getCircuitElementNode( this.charge.circuitElement );
 
         // For unknown reasons, the x and y coordinates are swapped here.  The values were determined empirically.
-        const capacitorClipShape = this.charge.distance > this.charge.circuitElement.chargePathLength / 2 ?
-                                   Shape.rect( -50, 58, 100, 100 ) : // latter half of the capacitor, clip when leaving the far plate.
-                                   Shape.rect( -50, -135, 100, 100 ); // close half of the capacitor, clip when entering the plate
+        let capacitorClipShape = null;
 
-        const capacitorNode = this.circuitLayerNode.getCircuitElementNode( this.charge.circuitElement ).lifelikeNode;
-        const globalShape = capacitorClipShape.transformed( capacitorNode.getLocalToGlobalMatrix() );
+        const isLifelike = this.circuitLayerNode.model.viewTypeProperty.value === CircuitElementViewType.LIFELIKE;
+        if ( isLifelike ) {
+          capacitorClipShape = this.charge.distance < this.charge.circuitElement.chargePathLength / 2 ?
+                               Shape.rect( -50, -135, 100, 100 ) : // close half of the capacitor, clip when entering the plate
+                               Shape.rect( -50, 58, 100, 100 ); // latter half of the capacitor, clip when leaving the far plate.
+        }
+        else {
+          capacitorClipShape = this.charge.distance < this.charge.circuitElement.chargePathLength / 2 ?
+                               Shape.rect( -20, -50, 60, 100 ) : // latter half of the capacitor, clip when leaving the far plate.
+                               Shape.rect( 60, -50, 60, 100 ); // close half of the capacitor, clip when entering the plate
+        }
+
+        const selectedViewNode = isLifelike ?
+                                 capacitorNode.capacitorCircuitElementLifelikeNode :
+                                 capacitorNode.capacitorCircuitElementSchematicNode;
+        const globalShape = capacitorClipShape.transformed( selectedViewNode.getLocalToGlobalMatrix() );
         const localShape = globalShape.transformed( this.getGlobalToLocalMatrix() );
 
-        // this.path.shape = s;
         this.clipArea = localShape;
+        // this.path.shape = localShape;
       }
       else {
         this.clipArea = null;
