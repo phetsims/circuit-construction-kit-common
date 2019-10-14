@@ -25,7 +25,7 @@ define( require => {
      */
     constructor( circuit, circuitElement, tandem, options ) {
 
-      assert( circuitElement !== undefined, 'circuit element should be null or defined' );
+      assert && assert( circuitElement !== undefined, 'circuit element should be null or defined' );
       super( _.extend( {
         baseColor: PhetColorScheme.BUTTON_YELLOW,
         content: new FontAwesomeNode( 'trash', {
