@@ -81,7 +81,7 @@ define( require => {
    * @returns {CircuitStruct}
    * @public
    */
-  CircuitStruct.fromStateObject = ( circuitState, resistivityProperty, tandem, options ) => {
+  CircuitStruct.fromStateObject = ( circuit, circuitState, resistivityProperty, tandem, options ) => {
     const circuitStruct = new CircuitStruct();
     tandem = tandem.createGroupTandem( 'circuitStructElement' );
     options = _.extend( {
@@ -91,7 +91,7 @@ define( require => {
     for ( let i = 0; i < circuitState.vertices.length; i++ ) {
       options = circuitState.vertices[ i ].options || {};
       options.tandem = tandem.createNextTandem();
-      const vertex = new Vertex( new Vector2( circuitState.vertices[ i ].x, circuitState.vertices[ i ].y ), options );
+      const vertex = circuit.vertexGroup.createNextMember( new Vector2( circuitState.vertices[ i ].x, circuitState.vertices[ i ].y ), options );
       circuitStruct.vertices.push( vertex );
     }
     for ( let i = 0; i < circuitState.wires.length; i++ ) {
