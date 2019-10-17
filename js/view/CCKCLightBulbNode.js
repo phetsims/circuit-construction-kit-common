@@ -19,6 +19,7 @@ define( require => {
   const Image = require( 'SCENERY/nodes/Image' );
   const LightBulbSocketNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/LightBulbSocketNode' );
   const Matrix3 = require( 'DOT/Matrix3' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Path = require( 'SCENERY/nodes/Path' );
@@ -71,7 +72,7 @@ define( require => {
      */
     constructor( screenView, circuitLayerNode, lightBulb,
                  showResultsProperty, viewTypeProperty, tandem, options ) {
-      options = _.extend( {
+      options = merge( {
         isIcon: false
       }, options );
       const brightnessProperty = new NumberProperty( 0 );
@@ -98,7 +99,7 @@ define( require => {
       }
 
       // General options used throughout bulb node
-      options = _.extend( {
+      options = merge( {
 
         // Override the dimensions of the bulb node because the invisible rays contribute to the bounds. Used to set up
         // the highlight region.

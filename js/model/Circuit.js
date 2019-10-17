@@ -26,15 +26,16 @@ define( require => {
   const Enumeration = require( 'PHET_CORE/Enumeration' );
   const EnumerationProperty = require( 'AXON/EnumerationProperty' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
-  const PhetioGroup = require( 'TANDEM/PhetioGroup' );
-  const PhetioGroupIO = require( 'TANDEM/PhetioGroupIO' );
   const Inductor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Inductor' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
+  const merge = require( 'PHET_CORE/merge' );
   const ModifiedNodalAnalysisAdapter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisAdapter' );
   const NullableIO = require( 'TANDEM/types/NullableIO' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const ObservableArray = require( 'AXON/ObservableArray' );
   const ObservableArrayIO = require( 'AXON/ObservableArrayIO' );
+  const PhetioGroup = require( 'TANDEM/PhetioGroup' );
+  const PhetioGroupIO = require( 'TANDEM/PhetioGroupIO' );
   const Property = require( 'AXON/Property' );
   const PropertyIO = require( 'AXON/PropertyIO' );
   const ReferenceIO = require( 'TANDEM/types/ReferenceIO' );
@@ -65,7 +66,7 @@ define( require => {
     constructor( viewTypeProperty, tandem, options ) {
       this.viewTypeProperty = viewTypeProperty;
 
-      options = _.extend( { blackBoxStudy: false }, options );
+      options = merge( { blackBoxStudy: false }, options );
       this.blackBoxStudy = options.blackBoxStudy;
 
       // @public {NumberProperty} - All wires share the same resistivity, which is defined by
@@ -1266,7 +1267,7 @@ define( require => {
           };
         } ),
         circuitElements: this.circuitElements.getArray().map( circuitElement => {
-          return _.extend( {
+          return merge( {
             type: getKey( circuitElement ),
             tandemID: circuitElement.tandem.phetioID,
             startVertexIndex: this.vertexGroup.array.indexOf( circuitElement.startVertexProperty.get() ),

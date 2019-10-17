@@ -13,6 +13,7 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Enumeration = require( 'PHET_CORE/Enumeration' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
+  const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
@@ -27,7 +28,7 @@ define( require => {
      * @param {Object} [options]
      */
     constructor( startVertex, endVertex, tandem, options ) {
-      options = _.extend( {
+      options = merge( {
         resistance: CCKCConstants.DEFAULT_RESISTANCE,
 
         // Support for rendering household items or
@@ -92,7 +93,7 @@ define( require => {
      */
     toIntrinsicStateObject() {
       const parent = super.toIntrinsicStateObject();
-      return _.extend( parent, {
+      return merge( parent, {
         resistorType: this.resistorType,
         resistance: this.resistanceProperty.value,
         resistorLength: this.chargePathLength

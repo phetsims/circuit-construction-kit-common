@@ -15,6 +15,7 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Dimension2 = require( 'DOT/Dimension2' );
   const FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
+  const merge = require( 'PHET_CORE/merge' );
   const MinusNode = require( 'SCENERY_PHET/MinusNode' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
@@ -87,7 +88,7 @@ define( require => {
      * @param {Object} [options]
      */
     constructor( screenView, circuitLayerNode, acSource, viewTypeProperty, tandem, options ) {
-      options = _.extend( {
+      options = merge( {
         numberOfDecimalPlaces: 1
       }, options );
       assert && assert( acSource instanceof ACVoltage, 'should be AC voltage' );

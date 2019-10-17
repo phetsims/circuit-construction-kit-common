@@ -13,6 +13,7 @@ define( require => {
   const CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CustomLightBulbNode' );
   const FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
   const Matrix3 = require( 'DOT/Matrix3' );
+  const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
 
@@ -39,7 +40,7 @@ define( require => {
 
       // Interferes with Cut Button selection when the foreground is in front, see
       // https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/18
-      options = _.extend( {
+      options = merge( {
         pickable: false,
 
         // Suppress the highlight for the socket, the highlight is shown by the CCKCLightBulbNode

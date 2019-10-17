@@ -12,6 +12,7 @@ define( require => {
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElement' );
+  const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
@@ -29,7 +30,7 @@ define( require => {
      */
     constructor( startVertex, endVertex, resistivityProperty, tandem, options ) {
       assert && assert( typeof resistivityProperty !== 'number', 'property should not be a number' );
-      options = _.extend( {
+      options = merge( {
         wireStub: false,
         isMetallic: true
       }, options );

@@ -12,6 +12,7 @@ define( require => {
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
+  const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
@@ -28,7 +29,7 @@ define( require => {
      */
     constructor( startVertex, endVertex, internalResistanceProperty, tandem, options ) {
       assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
-      options = _.extend( {
+      options = merge( {
         initialOrientation: 'right',
         voltage: 9.0,
         isFlammable: true,
@@ -99,7 +100,7 @@ define( require => {
      */
     toIntrinsicStateObject() {
       const parent = super.toIntrinsicStateObject();
-      return _.extend( parent, {
+      return merge( parent, {
         batteryType: this.batteryType,
         voltage: this.voltageProperty.value
       } );

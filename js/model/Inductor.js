@@ -12,6 +12,7 @@ define( require => {
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const DynamicCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/DynamicCircuitElement' );
+  const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Range = require( 'DOT/Range' );
 
@@ -27,7 +28,7 @@ define( require => {
      * @param {Object} [options]
      */
     constructor( startVertex, endVertex, tandem, options ) {
-      options = _.extend( {
+      options = merge( {
         inductance: 50,
         numberOfDecimalPlaces: 0,
         editorDelta: 1
@@ -68,7 +69,7 @@ define( require => {
      */
     toIntrinsicStateObject() {
       const parent = super.toIntrinsicStateObject();
-      return _.extend( parent, {
+      return merge( parent, {
         inductance: this.inductanceProperty.value
       } );
     }

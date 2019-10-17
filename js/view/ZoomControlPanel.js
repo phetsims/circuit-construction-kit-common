@@ -12,6 +12,7 @@ define( require => {
   // modules
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const HBox = require( 'SCENERY/nodes/HBox' );
+  const merge = require( 'PHET_CORE/merge' );
   const Tandem = require( 'TANDEM/Tandem' );
   const ZoomButton = require( 'SCENERY_PHET/buttons/ZoomButton' );
 
@@ -27,7 +28,7 @@ define( require => {
      * @param {Object} [options]
      */
     constructor( selectedZoomProperty, options ) {
-      options = _.extend( {
+      options = merge( {
         spacing: BUTTON_SPACING,
         tandem: Tandem.required
       }, options );

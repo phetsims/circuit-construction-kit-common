@@ -15,6 +15,7 @@ define( require => {
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
+  const merge = require( 'PHET_CORE/merge' );
   const Property = require( 'AXON/Property' );
   const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   const Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
@@ -83,7 +84,7 @@ define( require => {
   CircuitStruct.fromStateObject = ( circuit, circuitState, resistivityProperty, tandem, options ) => {
     const circuitStruct = new CircuitStruct();
     tandem = tandem.createGroupTandem( 'circuitStructElement' );
-    options = _.extend( {
+    options = merge( {
 
       // See CircuitElement.js for options
     }, options );

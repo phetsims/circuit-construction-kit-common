@@ -29,6 +29,7 @@ define( require => {
   const InductorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/InductorNode' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const Line = require( 'SCENERY/nodes/Line' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Property = require( 'AXON/Property' );
   const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
@@ -123,7 +124,7 @@ define( require => {
      * @private
      */
     createCircuitElementToolNode( labelString, count, icon, predicate, createElement, options ) {
-      options = _.extend( { iconScale: 1.0 }, options );
+      options = merge( { iconScale: 1.0 }, options );
       icon.mutate( { scale: options.iconScale * TOOLBOX_ICON_SIZE / Math.max( icon.width, icon.height ) } );
       return new CircuitElementToolNode(
         labelString,
