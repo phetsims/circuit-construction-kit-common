@@ -14,6 +14,7 @@ define( require => {
   const CircuitElementEditContainerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditContainerNode' );
   const Emitter = require( 'AXON/Emitter' );
   const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
 
   class CircuitElementNode extends Node {
@@ -25,7 +26,7 @@ define( require => {
      */
     constructor( circuitElement, circuit, options ) {
 
-      options = _.extend( {
+      options = merge( {
 
         // keyboard navigation
         tagName: 'div', // HTML tag name for representative element in the document, see Accessibility.js

@@ -12,6 +12,7 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
+  const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Util = require( 'DOT/Util' );
   const Vector2 = require( 'DOT/Vector2' );
@@ -59,7 +60,7 @@ define( require => {
      * @param {Object} [options]
      */
     constructor( startVertex, endVertex, resistance, viewTypeProperty, tandem, options ) {
-      options = _.extend( { highResistance: false }, options );
+      options = merge( { highResistance: false }, options );
       assert && assert( !options.hasOwnProperty( 'numberOfDecimalPlaces' ), 'supplied by LightBulb' );
       options.numberOfDecimalPlaces = options.highResistance ? 0 : 1;
 
@@ -211,7 +212,7 @@ define( require => {
      */
     toIntrinsicStateObject() {
       const parent = super.toIntrinsicStateObject();
-      return _.extend( parent, {
+      return merge( parent, {
         highResistance: this.highResistance,
         resistance: this.resistanceProperty.value
       } );
@@ -231,7 +232,7 @@ define( require => {
    */
   LightBulb.createAtPosition = ( position, circuit, resistance, viewTypeProperty, tandem, options ) => {
 
-    options = _.extend( { icon: false }, options );
+    options = merge( { icon: false }, options );
     const vertexPair = LightBulb.createVertexPair( position, circuit, !!options.icon );
 
     return new LightBulb( vertexPair.startVertex, vertexPair.endVertex, resistance, viewTypeProperty, tandem, options );

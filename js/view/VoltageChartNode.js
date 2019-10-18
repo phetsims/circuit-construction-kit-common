@@ -14,6 +14,7 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
   const DynamicSeries = require( 'GRIDDLE/DynamicSeries' );
+  const merge = require( 'PHET_CORE/merge' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const Tandem = require( 'TANDEM/Tandem' );
   const Vector2 = require( 'DOT/Vector2' );
@@ -38,7 +39,7 @@ define( require => {
      */
     constructor( circuitLayerNode, timeProperty, visibleBoundsProperty, options ) {
 
-      options = _.extend( {
+      options = merge( {
         timeDivisions: NUMBER_OF_TIME_DIVISIONS,
         tandem: Tandem.optional
       }, options );

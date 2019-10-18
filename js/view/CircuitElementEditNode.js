@@ -14,6 +14,7 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Fuse = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Fuse' );
   const HBox = require( 'SCENERY/nodes/HBox' );
+  const merge = require( 'PHET_CORE/merge' );
   const NumberControl = require( 'SCENERY_PHET/NumberControl' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const ResetFuseButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResetFuseButton' );
@@ -38,7 +39,7 @@ define( require => {
      */
     constructor( title, valuePattern, valueProperty, circuit, circuitElement, tandem, options ) {
 
-      options = _.extend( {
+      options = merge( {
         showTrashCan: true,
 
         // TODO: A better way of doing this, see note in ACVoltage

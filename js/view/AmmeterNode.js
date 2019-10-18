@@ -17,6 +17,7 @@ define( require => {
   const Color = require( 'SCENERY/util/Color' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Image = require( 'SCENERY/nodes/Image' );
+  const merge = require( 'PHET_CORE/merge' );
   const MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   const Node = require( 'SCENERY/nodes/Node' );
   const ProbeNode = require( 'SCENERY_PHET/ProbeNode' );
@@ -54,7 +55,7 @@ define( require => {
      * @param {Object} [options]
      */
     constructor( ammeter, circuitLayerNode, tandem, options ) {
-      options = _.extend( {
+      options = merge( {
 
         // true if it will be used as a toolbox icon
         isIcon: false,

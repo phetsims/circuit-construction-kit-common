@@ -16,6 +16,7 @@ define( require => {
   const FixedCircuitElementHighlightNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementHighlightNode' );
   const Image = require( 'SCENERY/nodes/Image' );
   const Matrix3 = require( 'DOT/Matrix3' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Property = require( 'AXON/Property' );
   const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
@@ -59,7 +60,7 @@ define( require => {
       const circuit = circuitLayerNode && circuitLayerNode.circuit;
 
       const contentNode = new Node();
-      super( circuitElement, circuit, _.extend( {
+      super( circuitElement, circuit, merge( {
         cursor: 'pointer',
         children: [ contentNode ],
         tandem: tandem,
@@ -72,7 +73,7 @@ define( require => {
       // @private {Node} shows the schematic view
       this.schematicNode = schematicNode;
 
-      options = _.extend( {
+      options = merge( {
         isIcon: false,
         showHighlight: true
       }, options );

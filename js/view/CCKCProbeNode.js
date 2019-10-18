@@ -11,6 +11,7 @@ define( require => {
   // modules
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const DragListener = require( 'SCENERY/listeners/DragListener' );
+  const merge = require( 'PHET_CORE/merge' );
   const ProbeNode = require( 'SCENERY_PHET/ProbeNode' );
   const Tandem = require( 'TANDEM/Tandem' );
 
@@ -23,7 +24,7 @@ define( require => {
      */
     constructor( node, visibleBoundsProperty, options ) {
 
-      options = _.extend( {
+      options = merge( {
         cursor: 'pointer',
         sensorTypeFunction: ProbeNode.crosshairs( { stroke: 'white' } ),
         scale: 0.4,

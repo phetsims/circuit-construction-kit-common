@@ -9,6 +9,7 @@ define( require => {
   'use strict';
 
   // modules
+  const merge = require( 'PHET_CORE/merge' );
   const ModifiedNodalAnalysisCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuit' );
   const ModifiedNodalAnalysisCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuitElement' );
   const ModifiedNodalAnalysisSolution = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisSolution' );
@@ -42,7 +43,7 @@ define( require => {
       const desiredSolution = new ModifiedNodalAnalysisSolution( {
         0: 0,
         1: 4
-      }, [ _.extend( {}, battery, { currentSolution: 2.0 } ) ] );
+      }, [ merge( {}, battery, { currentSolution: 2.0 } ) ] );
       const solution = circuit.solve();
       assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solution should match' );
     } );
@@ -55,7 +56,7 @@ define( require => {
     const desiredSolution = new ModifiedNodalAnalysisSolution( {
       0: 0,
       1: 4
-    }, [ _.extend( {}, battery, { currentSolution: 2 } ) ] );
+    }, [ merge( {}, battery, { currentSolution: 2 } ) ] );
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solution should match' );
 
     // same magnitude as battery: positive because current flows from node 1 to 0
@@ -75,7 +76,7 @@ define( require => {
       2: 0,
       3: 0
     }, [
-      _.extend( {}, battery, { currentSolution: 1.0 } )
+      merge( {}, battery, { currentSolution: 1.0 } )
     ] );
     const solution = circuit.solve();
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
@@ -106,7 +107,7 @@ define( require => {
       1: -4
     };
 
-    const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [ _.extend(
+    const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [ merge(
       {},
       battery,
       {
@@ -128,8 +129,8 @@ define( require => {
       2: -8
     };
     const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [
-      _.extend( {}, battery1, { currentSolution: -4 } ),
-      _.extend( {}, battery2, { currentSolution: -4 } )
+      merge( {}, battery1, { currentSolution: -4 } ),
+      merge( {}, battery2, { currentSolution: -4 } )
     ] );
     const solution = circuit.solve();
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
@@ -149,7 +150,7 @@ define( require => {
       2: 2.5
     };
     const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [
-      _.extend( {}, battery, { currentSolution: 5 / 20.0 } )
+      merge( {}, battery, { currentSolution: 5 / 20.0 } )
     ] );
     const solution = circuit.solve();
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
@@ -169,7 +170,7 @@ define( require => {
       2: 0
     };
     const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [
-      _.extend( {}, battery, { currentSolution: 1.0 } )
+      merge( {}, battery, { currentSolution: 1.0 } )
     ] );
     const solution = circuit.solve();
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
@@ -189,7 +190,7 @@ define( require => {
     };
 
     const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [
-      _.extend( {}, battery, { currentSolution: 1.0 } )
+      merge( {}, battery, { currentSolution: 1.0 } )
     ] );
     const solution = circuit.solve();
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
@@ -209,8 +210,8 @@ define( require => {
       2: 0
     };
     const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [
-      _.extend( {}, battery, { currentSolution: 5.0 / 10.0 } ),
-      _.extend( {}, resistor, { currentSolution: 5.0 / 10.0 } )
+      merge( {}, battery, { currentSolution: 5.0 / 10.0 } ),
+      merge( {}, resistor, { currentSolution: 5.0 / 10.0 } )
     ] );
     const solution = circuit.solve();
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
@@ -231,7 +232,7 @@ define( require => {
     const voltageMap = { 0: 0, 1: V };
 
     const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [
-      _.extend( {}, battery, { currentSolution: V / Req } )
+      merge( {}, battery, { currentSolution: V / Req } )
     ] );
     const solution = circuit.solve();
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );

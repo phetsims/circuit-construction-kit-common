@@ -15,6 +15,7 @@ define( require => {
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Enumeration = require( 'PHET_CORE/Enumeration' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
+  const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
 
   // constants
@@ -33,7 +34,7 @@ define( require => {
     constructor( startVertex, endVertex, internalResistanceProperty, batteryType, tandem, options ) {
       assert && assert( Battery.BatteryType.VALUES.indexOf( batteryType ) >= 0, 'invalid battery type: ' + batteryType );
       assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
-      options = _.extend( {
+      options = merge( {
         initialOrientation: 'right',
         voltage: 9.0,
         isFlammable: true,
@@ -91,7 +92,7 @@ define( require => {
      */
     toIntrinsicStateObject() {
       const parent = super.toIntrinsicStateObject();
-      return _.extend( parent, {
+      return merge( parent, {
         batteryType: this.batteryType,
         voltage: this.voltageProperty.value
       } );

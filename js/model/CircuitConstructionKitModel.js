@@ -19,6 +19,7 @@ define( require => {
   const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   const Emitter = require( 'AXON/Emitter' );
   const EnumerationProperty = require( 'AXON/EnumerationProperty' );
+  const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const StringIO = require( 'TANDEM/types/StringIO' );
   const Util = require( 'DOT/Util' );
@@ -34,7 +35,7 @@ define( require => {
      */
     constructor( tandem, options ) {
 
-      options = _.extend( {
+      options = merge( {
 
         // Determines whether electrons can be shown.  In black box, electrons can only be shown when the user reveals
         // the answer by pressing the reveal answer button.

@@ -17,6 +17,7 @@ define( require => {
   const FuseTripAnimation = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FuseTripAnimation' );
   const Image = require( 'SCENERY/nodes/Image' );
   const Matrix3 = require( 'DOT/Matrix3' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -51,7 +52,7 @@ define( require => {
 
       assert && assert( fuse instanceof Fuse, 'fuse should be a Fuse' );
 
-      options = _.extend( { isIcon: false }, options );
+      options = merge( { isIcon: false }, options );
 
       const fuseImageNode = new Image( fuseImage, { scale: 0.691 } );
       const numberOfZigZags = ( fuseImageNode.width - CAP_WIDTH * 2 ) / HORIZONTAL_ZIG_ZAG_DISTANCE / 2;

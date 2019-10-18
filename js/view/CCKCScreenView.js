@@ -23,6 +23,7 @@ define( require => {
   const CircuitLayerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitLayerNode' );
   const CurrentChartNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CurrentChartNode' );
   const DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/DisplayOptionsPanel' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const PlayPauseButton = require( 'SCENERY_PHET/buttons/PlayPauseButton' );
   const Property = require( 'AXON/Property' );
@@ -62,7 +63,7 @@ define( require => {
      */
     constructor( model, circuitElementToolNodes, tandem, options ) {
 
-      options = _.extend( {
+      options = merge( {
 
         // When used as a scene, the reset all button is suppressed here, added in the screen so that it may reset all
         // scenes (including but not limited to this one).

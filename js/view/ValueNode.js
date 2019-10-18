@@ -12,14 +12,15 @@ define( require => {
   const ACVoltage = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACVoltage' );
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
-  const Inductor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Inductor' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
   const Emitter = require( 'AXON/Emitter' );
   const Fuse = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Fuse' );
+  const Inductor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Inductor' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const Matrix3 = require( 'DOT/Matrix3' );
+  const merge = require( 'PHET_CORE/merge' );
   const Panel = require( 'SUN/Panel' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Property = require( 'AXON/Property' );
@@ -33,8 +34,8 @@ define( require => {
   const Vector2 = require( 'DOT/Vector2' );
 
   // strings
-  const fuseValueString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/fuseValue' );
   const capacitanceFaradsSymbolString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/capacitanceFaradsSymbol' );
+  const fuseValueString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/fuseValue' );
   const inductanceHenriesSymbolString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/inductanceHenriesSymbol' );
   const resistanceOhmsSymbolString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhmsSymbol' );
   const voltageUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageUnits' );
@@ -63,7 +64,7 @@ define( require => {
       if ( circuitElement instanceof Battery || circuitElement instanceof ACVoltage ) {
 
         // TODO: Rewrite with RichText?
-        const voltageText = new Text( '', _.extend( { tandem: tandem.createTandem( 'voltageText' ) }, { font: FONT } ) );
+        const voltageText = new Text( '', merge( { tandem: tandem.createTandem( 'voltageText' ) }, { font: FONT } ) );
         const voltageListener = voltage => {
 
           voltageText.text = StringUtils.fillIn( voltageUnitsString, {
@@ -79,7 +80,7 @@ define( require => {
           children: [ voltageText ]
         } );
 
-        const resistanceNode = new Text( '', _.extend( {
+        const resistanceNode = new Text( '', merge( {
           tandem: tandem.createTandem( 'resistanceText' )
         }, { font: FONT } ) );
         const internalResistanceListener = ( internalResistance, lastInternalResistance ) => {
@@ -109,7 +110,7 @@ define( require => {
 
       else if ( circuitElement instanceof Resistor ||
                 circuitElement instanceof LightBulb ) {
-        contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'resistanceText' ) }, { font: FONT } ) );
+        contentNode = new Text( '', merge( { tandem: tandem.createTandem( 'resistanceText' ) }, { font: FONT } ) );
 
         // Items like the hand and dog and high resistance resistor shouldn't show ".0"
         const linkResistance = resistance => {
@@ -123,7 +124,7 @@ define( require => {
         contentNode.maxWidth = 100;
       }
       else if ( circuitElement instanceof Capacitor ) {
-        contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'capacitorText' ) }, { font: FONT } ) );
+        contentNode = new Text( '', merge( { tandem: tandem.createTandem( 'capacitorText' ) }, { font: FONT } ) );
 
         // Items like the hand and dog and high resistance resistor shouldn't show ".0"
         const linkCapacitance = capacitance => {
@@ -138,7 +139,7 @@ define( require => {
         contentNode.maxWidth = 100;
       }
       else if ( circuitElement instanceof Inductor ) {
-        contentNode = new Text( '', _.extend( { tandem: tandem.createTandem( 'inductorText' ) }, { font: FONT } ) );
+        contentNode = new Text( '', merge( { tandem: tandem.createTandem( 'inductorText' ) }, { font: FONT } ) );
 
         // Items like the hand and dog and high resistance resistor shouldn't show ".0"
         const linkInductance = inductance => {
@@ -172,7 +173,7 @@ define( require => {
         contentNode.maxWidth = 100;
       }
       else if ( circuitElement instanceof Fuse ) {
-        contentNode = new RichText( '', _.extend( { tandem: tandem.createTandem( 'fuseText' ) }, {
+        contentNode = new RichText( '', merge( { tandem: tandem.createTandem( 'fuseText' ) }, {
           font: FONT,
           align: 'right'
         } ) );

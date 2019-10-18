@@ -15,6 +15,7 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
   const HBox = require( 'SCENERY/nodes/HBox' );
+  const merge = require( 'PHET_CORE/merge' );
   const PageControl = require( 'SUN/PageControl' );
   const VBox = require( 'SCENERY/nodes/VBox' );
 
@@ -31,7 +32,7 @@ define( require => {
      */
     constructor( viewTypeProperty, circuitElementToolNodes, tandem, options ) {
 
-      options = _.extend( {
+      options = merge( {
         itemsPerPage: 5,
         pageHeight: 352 // so the carousels can easily be the same size on each screen
       }, options );

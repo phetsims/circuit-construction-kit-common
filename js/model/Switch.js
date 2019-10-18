@@ -13,6 +13,7 @@ define( require => {
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
+  const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Util = require( 'DOT/Util' );
 
@@ -31,7 +32,7 @@ define( require => {
      */
     constructor( startVertex, endVertex, tandem, options ) {
 
-      options = _.extend( {
+      options = merge( {
         closed: false,
 
         // Use the bounding box of the open lifelike switch to show bounds for all combinations of open/closed x lifelike/schematic
@@ -111,7 +112,7 @@ define( require => {
      */
     toIntrinsicStateObject() {
       const parent = super.toIntrinsicStateObject();
-      return _.extend( parent, {
+      return merge( parent, {
         closed: this.closedProperty.value
       } );
     }

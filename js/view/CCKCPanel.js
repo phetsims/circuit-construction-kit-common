@@ -11,6 +11,7 @@ define( require => {
   // modules
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const merge = require( 'PHET_CORE/merge' );
   const Panel = require( 'SUN/Panel' );
 
   class CCKCPanel extends Panel {
@@ -21,7 +22,7 @@ define( require => {
      * @param {Object} [options]
      */
     constructor( content, tandem, options ) {
-      options = _.extend( {
+      options = merge( {
         fill: CCKCConstants.PANEL_COLOR,
         lineWidth: CCKCConstants.PANEL_LINE_WIDTH,
         xMargin: 15,

@@ -15,6 +15,7 @@ define( require => {
   const FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
   const Image = require( 'SCENERY/nodes/Image' );
   const Matrix3 = require( 'DOT/Matrix3' );
+  const merge = require( 'PHET_CORE/merge' );
   const Path = require( 'SCENERY/nodes/Path' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
@@ -80,7 +81,7 @@ define( require => {
      */
     constructor( screenView, circuitLayerNode, resistor, viewTypeProperty, tandem, options ) {
 
-      options = _.extend( { isIcon: false }, options );
+      options = merge( { isIcon: false }, options );
 
       const lifelikeResistorImageNode = new Image( RESISTOR_IMAGE_MAP[ resistor.resistorType ] );
 

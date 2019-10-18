@@ -15,6 +15,7 @@ define( require => {
   const CircuitElementIO = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementIO' );
   const Emitter = require( 'AXON/Emitter' );
   const Event = require( 'SCENERY/input/Event' );
+  const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
   const Property = require( 'AXON/Property' );
@@ -37,7 +38,7 @@ define( require => {
       assert && assert( typeof chargePathLength === 'number', 'charge path length should be a number' );
       assert && assert( chargePathLength > 0, 'charge path length must be positive' );
 
-      options = _.extend( {
+      options = merge( {
         canBeDroppedInToolbox: true, // In the CCK: Basics intro screen, CircuitElements can't be dropped into the toolbox
         interactive: true, // In CCK: Black Box Study, CircuitElements in the black box cannot be manipulated
         isSizeChangedOnViewChange: true,

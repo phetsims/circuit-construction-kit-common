@@ -12,6 +12,7 @@ define( require => {
   // modules
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const Text = require( 'SCENERY/nodes/Text' );
@@ -34,7 +35,7 @@ define( require => {
      */
     constructor( textProperty, showResultsProperty, title, tandem, options ) {
 
-      options = _.extend( {
+      options = merge( {
         spacing: 3
       }, options );
 

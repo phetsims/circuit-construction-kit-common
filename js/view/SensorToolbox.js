@@ -21,6 +21,7 @@ define( require => {
   const CurrentChartNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CurrentChartNode' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const HSeparator = require( 'SUN/HSeparator' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Property = require( 'AXON/Property' );
@@ -65,7 +66,7 @@ define( require => {
     constructor( alignGroup, circuitLayerNode, voltmeterNode, ammeterNode, voltageChartNode, currentChartNode, tandem, options ) {
       const circuit = circuitLayerNode.circuit;
 
-      options = _.extend( {
+      options = merge( {
         showResultsProperty: circuitLayerNode.model.isValueDepictionEnabledProperty,
         showSeriesAmmeters: true, // whether the series ammeters should be shown in the toolbox
         showNoncontactAmmeters: true, // whether the noncontact ammeters should be shown in the toolbox

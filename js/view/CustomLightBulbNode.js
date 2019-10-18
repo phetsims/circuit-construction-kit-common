@@ -14,6 +14,7 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Image = require( 'SCENERY/nodes/Image' );
   const LightRaysNode = require( 'SCENERY_PHET/LightRaysNode' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Shape = require( 'KITE/Shape' );
   const Util = require( 'DOT/Util' );
@@ -36,7 +37,7 @@ define( require => {
     constructor( brightnessProperty, options ) {
       assert && assert( brightnessProperty, 'brightness property should exist' );
 
-      options = _.extend( {
+      options = merge( {
         baseOnly: false,
         highResistance: true,
         scale: CCKCConstants.BULB_SCALE

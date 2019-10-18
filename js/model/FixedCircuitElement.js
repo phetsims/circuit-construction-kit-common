@@ -13,6 +13,7 @@ define( require => {
   // modules
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElement' );
+  const merge = require( 'PHET_CORE/merge' );
   const Range = require( 'DOT/Range' );
 
   class FixedCircuitElement extends CircuitElement {
@@ -26,7 +27,7 @@ define( require => {
      */
     constructor( startVertex, endVertex, chargePathLength, tandem, options ) {
 
-      options = _.extend( {
+      options = merge( {
         editableRange: new Range( 0, 120 ),
         editorDelta: 0.5,
         numberOfDecimalPlaces: 1

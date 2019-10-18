@@ -12,6 +12,7 @@ define( require => {
   const BooleanProperty = require( 'AXON/BooleanProperty' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Emitter = require( 'AXON/Emitter' );
+  const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const PhetioObject = require( 'TANDEM/PhetioObject' );
   const Tandem = require( 'TANDEM/Tandem' );
@@ -28,7 +29,7 @@ define( require => {
      */
     constructor( position, options ) {
 
-      options = _.extend( {
+      options = merge( {
         draggable: true, // whether the vertex can be dragged, false for Black Box elements
         attachable: true, // Black box interior elements cannot be connected while the box is closed
         interactive: true, // Black box interface vertices can be interactive (tap to select) without being draggable

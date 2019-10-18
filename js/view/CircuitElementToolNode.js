@@ -12,6 +12,7 @@ define( require => {
   // modules
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const merge = require( 'PHET_CORE/merge' );
   const SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   const Text = require( 'SCENERY/nodes/Text' );
   const Touch = require( 'SCENERY/input/Touch' );
@@ -39,7 +40,7 @@ define( require => {
     constructor( labelText, showLabelsProperty, viewTypeProperty, circuit, globalToCircuitLayerNodePoint, iconNode, maxNumber, count, createElement, options ) {
       const labelNode = new Text( labelText, { fontSize: 12, maxWidth: TOOLBOX_ICON_SIZE } );
       showLabelsProperty.linkAttribute( labelNode, 'visible' );
-      options = _.extend( {
+      options = merge( {
         spacing: 6, // Spacing between the icon and the text
         cursor: 'pointer',
 

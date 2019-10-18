@@ -16,6 +16,7 @@ define( require => {
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Emitter = require( 'AXON/Emitter' );
   const LabeledScrollingChartNode = require( 'GRIDDLE/LabeledScrollingChartNode' );
+  const merge = require( 'PHET_CORE/merge' );
   const Meter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Meter' );
   const MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   const Node = require( 'SCENERY/nodes/Node' );
@@ -51,7 +52,7 @@ define( require => {
      * @param {Object} [options]
      */
     constructor( circuitLayerNode, timeProperty, visibleBoundsProperty, seriesArray, verticalAxisLabel, options ) {
-      options = _.extend( {
+      options = merge( {
 
         // Prevent adjustment of the control panel rendering while dragging,
         // see https://github.com/phetsims/wave-interference/issues/212
