@@ -157,11 +157,7 @@ define( require => {
       } );
       return this.createCircuitElementToolNode( wireString, count, wireNode,
         circuitElement => circuitElement instanceof Wire,
-        position => {
-          const vertexPair = this.circuit.createVertexPair( position, WIRE_LENGTH );
-          return this.circuit.wireGroup.createNextMember( vertexPair.startVertex, vertexPair.endVertex );
-        }
-      );
+        position => this.circuit.wireGroup.createNextMember( ...this.circuit.createVertexPairArray( position, WIRE_LENGTH ) ) );
     }
 
     /**
@@ -180,11 +176,7 @@ define( require => {
         circuitElement => circuitElement instanceof Battery &&
                           circuitElement.initialOrientation === 'right' &&
                           circuitElement.batteryType === Battery.BatteryType.NORMAL,
-        position => {
-          const vertexPair = this.circuit.createVertexPair( position, BATTERY_LENGTH );
-          return this.circuit.batteryGroup.createNextMember( vertexPair.startVertex, vertexPair.endVertex );
-        }
-      );
+        position => this.circuit.batteryGroup.createNextMember( ...this.circuit.createVertexPairArray( position, BATTERY_LENGTH ) ) );
     }
 
     /**
@@ -203,10 +195,7 @@ define( require => {
       return this.createCircuitElementToolNode( acSourceString, count,
         new ACVoltageNode( null, null, acSource, this.viewTypeProperty, tandem.createTandem( 'acSourceIcon' ), { isIcon: true } ),
         circuitElement => circuitElement instanceof ACVoltage,
-        position => {
-          const vertexPair = this.circuit.createVertexPair( position, AC_VOLTAGE_LENGTH );
-          return this.circuit.acVoltageGroup.createNextMember( vertexPair.startVertex, vertexPair.endVertex );
-        }, {
+        position => this.circuit.acVoltageGroup.createNextMember( ...this.circuit.createVertexPairArray( position, AC_VOLTAGE_LENGTH ) ), {
           iconScale: 0.68
         }
       );
@@ -259,11 +248,7 @@ define( require => {
           isIcon: true
         } ),
         circuitElement => circuitElement instanceof Resistor && circuitElement.resistorType === Resistor.ResistorType.RESISTOR,
-        position => {
-          const vertexPair = this.circuit.createVertexPair( position, RESISTOR_LENGTH );
-          return this.circuit.resistorGroup.createNextMember( vertexPair.startVertex, vertexPair.endVertex );
-        }
-      );
+        position => this.circuit.resistorGroup.createNextMember( ...this.circuit.createVertexPairArray( position, RESISTOR_LENGTH ) ) );
     }
 
     /**
@@ -283,12 +268,7 @@ define( require => {
           isIcon: true
         } ),
         circuitElement => circuitElement instanceof Fuse,
-        position => {
-          const vertexPair = this.circuit.createVertexPair( position, RESISTOR_LENGTH );
-          return new Fuse(
-            vertexPair.startVertex, vertexPair.endVertex, this.circuit.resistorGroupTandem.createNextTandem()
-          );
-        }
+        position => this.circuit.fuseGroup.createNextMember( ...this.circuit.createVertexPairArray( position, RESISTOR_LENGTH ) )  // TODO: Should this be FUSE_LENGTH?
       );
     }
 
@@ -309,11 +289,7 @@ define( require => {
           isIcon: true
         } ),
         circuitElement => circuitElement instanceof Capacitor,
-        position => {
-          const vertexPair = this.circuit.createVertexPair( position, CCKCConstants.CAPACITOR_LENGTH );
-          return this.circuit.capacitorGroup.createNextMember( vertexPair.startVertex, vertexPair.endVertex );
-        }
-      );
+        position => this.circuit.capacitorGroup.createNextMember( ...this.circuit.createVertexPairArray( position, CCKCConstants.CAPACITOR_LENGTH ) ) );
     }
 
     /**
@@ -333,11 +309,7 @@ define( require => {
           isIcon: true
         } ),
         circuitElement => circuitElement instanceof Inductor,
-        position => {
-          const vertexPair = this.circuit.createVertexPair( position, CCKCConstants.INDUCTOR_LENGTH );
-          return this.circuit.inductorGroup.createNextMember( vertexPair.startVertex, vertexPair.endVertex );
-        }
-      );
+        position => this.circuit.inductorGroup.createNextMember( ...this.circuit.createVertexPairArray( position, CCKCConstants.INDUCTOR_LENGTH ) ) );
     }
 
     /**
@@ -357,10 +329,7 @@ define( require => {
             isIcon: true
           } ),
         circuitElement => circuitElement instanceof Switch,
-        position => {
-          const vertexPair = this.circuit.createVertexPair( position, SWITCH_LENGTH );
-          return this.circuit.switchGroup.createNextMember( vertexPair.startVertex, vertexPair.endVertex );
-        } );
+        position => this.circuit.switchGroup.createNextMember( ...this.circuit.createVertexPairArray( position, SWITCH_LENGTH ) ) );
     }
 
     /**
@@ -384,6 +353,8 @@ define( require => {
 
       const getHouseholdItemCreator = ( resistorType, resistance, resistorLength, groupTandem ) => {
         return position => {
+
+          // TODO: groupify
           const vertexPair = this.circuit.createVertexPair( position, resistorLength );
           return new Resistor( vertexPair.startVertex, vertexPair.endVertex, groupTandem.createNextTandem(), {
             resistance: resistance,
@@ -568,8 +539,7 @@ define( require => {
 
                           circuitElement.initialOrientation === 'right' &&
                           circuitElement.batteryType === Battery.BatteryType.HIGH_VOLTAGE, position => {
-          const vertexPair = this.circuit.createVertexPair( position, SWITCH_LENGTH );
-          return this.circuit.highVoltageBatteryGroup.createNextMember( vertexPair.startVertex, vertexPair.endVertex );
+          return this.circuit.highVoltageBatteryGroup.createNextMember( ...this.circuit.createVertexPairArray( position, SWITCH_LENGTH ) );
         } );
     }
 
