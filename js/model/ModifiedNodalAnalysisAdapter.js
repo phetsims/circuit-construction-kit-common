@@ -112,6 +112,7 @@ define( require => {
 
   class ModifiedNodalAnalysisAdapter {
 
+    // TODO: Rename and documentation
     static apply( circuit, dt ) {
       const batteries = []; // ResistiveBatteryAdapter
       const resistors = []; // ResistorAdapter
