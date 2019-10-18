@@ -12,6 +12,7 @@ define( require => {
   const ACVoltage = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACVoltage' );
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
+  const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const DynamicCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/DynamicCircuit' );
   const Fuse = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Fuse' );
@@ -30,9 +31,10 @@ define( require => {
   const timestepSubdivisions = new TimestepSubdivisions( errorThreshold, minDT );
 
   class ResistiveBatteryAdapter extends DynamicCircuit.ResistiveBattery {
-
     constructor( c, battery ) {
       super( c.vertexGroup.array.indexOf( battery.startVertexProperty.value ), c.vertexGroup.array.indexOf( battery.endVertexProperty.value ), battery.voltageProperty.value, battery.internalResistanceProperty.value );
+
+      // @public (read-only)
       this.battery = battery;
     }
 
@@ -114,14 +116,15 @@ define( require => {
 
     // TODO: Rename and documentation
     static apply( circuit, dt ) {
-      const batteries = []; // ResistiveBatteryAdapter
-      const resistors = []; // ResistorAdapter
-      const capacitors = []; // CapacitorAdapter
-      const inductors = []; // InductorAdapter
+      const resistiveBatteryAdapters = [];
+      const resistorAdapters = [];
+      const capacitorAdapters = [];
+      const inductorAdapters = [];
       for ( let i = 0; i < circuit.circuitElements.length; i++ ) {
-        const branch = circuit.circuitElements.get( i ); // Branch
+        const branch = circuit.circuitElements.get( i );
         if ( branch instanceof Battery ) {
-          batteries.push( new ResistiveBatteryAdapter( circuit, branch ) );
+          branch.passProperty.reset(); // also resets the internalResistance for the first pass computation
+          resistiveBatteryAdapters.push( new ResistiveBatteryAdapter( circuit, branch ) );
         }
         else if ( branch instanceof Resistor ||
                   branch instanceof Fuse ||
@@ -131,34 +134,49 @@ define( require => {
 
                   // Since no closed circuit there; see below where current is zeroed out
                   ( branch instanceof Switch && branch.closedProperty.value ) ) {
-          resistors.push( new ResistorAdapter( circuit, branch ) );
+          resistorAdapters.push( new ResistorAdapter( circuit, branch ) );
         }
         else if ( branch instanceof Switch && !branch.closedProperty.value ) {
 
           // no element for an open switch
         }
         else if ( branch instanceof Capacitor ) {
-          capacitors.push( new CapacitorAdapter( circuit, branch ) );
+          capacitorAdapters.push( new CapacitorAdapter( circuit, branch ) );
         }
         else if ( branch instanceof ACVoltage ) {
-          batteries.push( new ResistiveBatteryAdapter( circuit, branch ) );
+          resistiveBatteryAdapters.push( new ResistiveBatteryAdapter( circuit, branch ) );
         }
         else if ( branch instanceof Inductor ) {
-          inductors.push( new InductorAdapter( circuit, branch ) );
+          inductorAdapters.push( new InductorAdapter( circuit, branch ) );
         }
         else {
           assert && assert( false, 'Type not found: ' + branch.constructor.name );
         }
       }
 
-      const dynamicCircuit = new DynamicCircuit( [], resistors, batteries, capacitors, inductors ); // new ObjectOrientedMNA() );
-      const circuitResult = dynamicCircuit.solveWithSubdivisions( timestepSubdivisions, dt );
-      batteries.forEach( batteryAdapter => batteryAdapter.applySolution( circuitResult ) );
-      resistors.forEach( resistorAdapter => resistorAdapter.applySolution( circuitResult ) );
-      capacitors.forEach( capacitorAdapter => capacitorAdapter.applySolution( circuitResult ) );
-      inductors.forEach( inductorAdapter => inductorAdapter.applySolution( circuitResult ) );
+      const dynamicCircuit = new DynamicCircuit( [], resistorAdapters, resistiveBatteryAdapters, capacitorAdapters, inductorAdapters );
+      let circuitResult = dynamicCircuit.solveWithSubdivisions( timestepSubdivisions, dt );
 
-      //zero out currents on open branches
+      // if any battery exceeds its current threshold, increase its resistance and run the solution again.
+      // see https://github.com/phetsims/circuit-construction-kit-common/issues/245
+      let needsHelp = false;
+      resistiveBatteryAdapters.forEach( batteryAdapter => {
+        if ( circuitResult.getTimeAverageCurrent( batteryAdapter ) > CCKCQueryParameters.batteryCurrentThreshold ) {
+          batteryAdapter.battery.passProperty.value = 2;
+          batteryAdapter.resistance = batteryAdapter.battery.internalResistanceProperty.value;
+          needsHelp = true;
+        }
+      } );
+      if ( needsHelp ) {
+        circuitResult = dynamicCircuit.solveWithSubdivisions( timestepSubdivisions, dt );
+      }
+
+      resistiveBatteryAdapters.forEach( batteryAdapter => batteryAdapter.applySolution( circuitResult ) );
+      resistorAdapters.forEach( resistorAdapter => resistorAdapter.applySolution( circuitResult ) );
+      capacitorAdapters.forEach( capacitorAdapter => capacitorAdapter.applySolution( circuitResult ) );
+      inductorAdapters.forEach( inductorAdapter => inductorAdapter.applySolution( circuitResult ) );
+
+      // zero out currents on open branches
       for ( let i = 0; i < circuit.circuitElements.length; i++ ) {
         const branch = circuit.circuitElements.get( i );
         if ( branch instanceof Switch && !branch.closedProperty.value ) {

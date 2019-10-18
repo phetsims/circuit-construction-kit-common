@@ -47,10 +47,13 @@ define( require => {
         tandem: tandem.createTandem( 'voltageProperty' )
       } );
 
+      // @public
+      this.passProperty = new NumberProperty( 1 );
+
       // @public {Property.<number>} the internal resistance of the battery
-      this.internalResistanceProperty = new DerivedProperty( [ internalResistanceProperty, this.currentProperty ],
-        ( internalResistance, current ) => {
-          if ( Math.abs( current ) >= CCKCQueryParameters.batteryCurrentThreshold ) {
+      this.internalResistanceProperty = new DerivedProperty( [ internalResistanceProperty, this.currentProperty, this.passProperty ],
+        ( internalResistance, current, pass ) => {
+          if ( pass === 2 ) {
             return CCKCQueryParameters.batteryInternalResistanceWhenCurrentThresholdExceeded;
           }
           else {

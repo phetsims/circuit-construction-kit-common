@@ -421,7 +421,11 @@ define( require => {
   class ResistiveBattery extends ModifiedNodalAnalysisCircuitElement {
     constructor( node0, node1, voltage, resistance ) {
       super( node0, node1, null, 0 );
+
+      // @public
       this.voltage = voltage;
+
+      // @public
       this.resistance = resistance;
     }
   }
