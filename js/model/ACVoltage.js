@@ -39,7 +39,7 @@ define( require => {
 
       // @public {NumberProperty} - the current voltage of the battery in volts, oscillates as the model updates
       this.voltageProperty = new NumberProperty( 0, {
-        tandem: tandem.createTandem( 'voltageProperty' ) // TODO: Should this be instrumented?
+        tandem: tandem.createTandem( 'voltageProperty' )
       } );
 
       // @public {NumberProperty} - the maximum voltage, which can be controlled by the CircuitElementEditNode

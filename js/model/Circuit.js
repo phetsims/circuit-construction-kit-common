@@ -53,7 +53,7 @@ define( require => {
   // joined then bump them apart so they do not look connected.
 
   const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
-  const WIRE_LENGTH = 100; // TODO: factor out
+  const WIRE_LENGTH = CCKCConstants.WIRE_LENGTH;
 
   const trueFunction = _.constant( true ); // Lower cased so IDEA doesn't think it is a constructor
 

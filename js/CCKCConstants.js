@@ -86,6 +86,7 @@ define( require => {
 
     // Length of a resistor
     RESISTOR_LENGTH: 110,
+    WIRE_LENGTH: 100,
 
     CAPACITOR_LENGTH: 110,
 
