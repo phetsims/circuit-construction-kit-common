@@ -24,8 +24,10 @@ define( require => {
   const TimestepSubdivisions = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/TimestepSubdivisions' );
   const Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
 
+  // constants
   const errorThreshold = 1E-5;
   const minDT = 1E-5;
+  const timestepSubdivisions = new TimestepSubdivisions( errorThreshold, minDT );
 
   class ResistiveBatteryAdapter extends DynamicCircuit.ResistiveBattery {
 
@@ -149,8 +151,7 @@ define( require => {
       }
 
       const dynamicCircuit = new DynamicCircuit( [], resistors, batteries, capacitors, inductors ); // new ObjectOrientedMNA() );
-
-      const circuitResult = dynamicCircuit.solveWithSubdivisions( new TimestepSubdivisions( errorThreshold, minDT ), dt );
+      const circuitResult = dynamicCircuit.solveWithSubdivisions( timestepSubdivisions, dt );
       batteries.forEach( batteryAdapter => batteryAdapter.applySolution( circuitResult ) );
       resistors.forEach( resistorAdapter => resistorAdapter.applySolution( circuitResult ) );
       capacitors.forEach( capacitorAdapter => capacitorAdapter.applySolution( circuitResult ) );
@@ -173,8 +174,6 @@ define( require => {
         const v = circuitResult.resultSet.states[ 0 ].state.solution.getNodeVoltage( i );
         vertex.voltageProperty.set( v || 0 );
       } );
-
-      // fireCircuitSolved();
     }
   }
 
