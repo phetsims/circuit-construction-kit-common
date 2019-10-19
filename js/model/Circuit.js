@@ -26,6 +26,7 @@ define( require => {
   const Enumeration = require( 'PHET_CORE/Enumeration' );
   const EnumerationProperty = require( 'AXON/EnumerationProperty' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
+  const Fuse = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Fuse' );
   const Inductor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Inductor' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const merge = require( 'PHET_CORE/merge' );
@@ -315,6 +316,13 @@ define( require => {
         () => this.createVertexPairArray2( new Vector2( -1000, 0 ), CCKCConstants.RESISTOR_LENGTH ), {
           phetioType: PhetioGroupIO( CircuitElementIO ),
           tandem: tandem.createTandem( 'resistorGroup' )
+        } );
+
+      this.fuseGroup = new PhetioGroup( 'fuse',
+        ( tandem, startVertex, endVertex ) => new Fuse( startVertex, endVertex, tandem ),
+        () => this.createVertexPairArray2( new Vector2( -1000, 0 ), CCKCConstants.RESISTOR_LENGTH ), { // TODO: create FUSE_LENGTH
+          phetioType: PhetioGroupIO( CircuitElementIO ),
+          tandem: tandem.createTandem( 'fuseGroup' )
         } );
 
       this.capacitorGroup = new PhetioGroup( 'capacitor',
