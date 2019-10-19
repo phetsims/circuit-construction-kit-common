@@ -320,7 +320,7 @@ define( require => {
 
       this.fuseGroup = new PhetioGroup( 'fuse',
         ( tandem, startVertex, endVertex ) => new Fuse( startVertex, endVertex, tandem ),
-        () => this.createVertexPairArray2( new Vector2( -1000, 0 ), CCKCConstants.RESISTOR_LENGTH ), { // TODO: create FUSE_LENGTH
+        () => this.createVertexPairArray2( new Vector2( -1000, 0 ), CCKCConstants.FUSE_LENGTH ), {
           phetioType: PhetioGroupIO( CircuitElementIO ),
           tandem: tandem.createTandem( 'fuseGroup' )
         } );

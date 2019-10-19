@@ -65,6 +65,7 @@ define( require => {
   const AC_VOLTAGE_LENGTH = CCKCConstants.AC_VOLTAGE_LENGTH;
   const TOOLBOX_ICON_SIZE = CCKCConstants.TOOLBOX_ICON_SIZE;
   const RESISTOR_LENGTH = CCKCConstants.RESISTOR_LENGTH;
+  const FUSE_LENGTH = CCKCConstants.FUSE_LENGTH;
   const WIRE_LENGTH = CCKCConstants.WIRE_LENGTH;
   const SWITCH_LENGTH = CCKCConstants.SWITCH_LENGTH;
   const HIGH_RESISTANCE = Math.pow( 10, 9 );
@@ -268,7 +269,7 @@ define( require => {
           isIcon: true
         } ),
         circuitElement => circuitElement instanceof Fuse,
-        position => this.circuit.fuseGroup.createNextMember( ...this.circuit.createVertexPairArray( position, RESISTOR_LENGTH ) )  // TODO: Should this be FUSE_LENGTH?
+        position => this.circuit.fuseGroup.createNextMember( ...this.circuit.createVertexPairArray( position, FUSE_LENGTH ) )
       );
     }
 
