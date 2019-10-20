@@ -127,9 +127,6 @@ define( require => {
 
       super( { children: [ bodyNode, wireNode, probeNode ] } );
 
-      // TODO: Annotation
-      this.circuitLayerNode = circuitLayerNode;
-
       // @public (read-only) {ProbeNode}
       this.probeNode = probeNode;
 
@@ -193,7 +190,7 @@ define( require => {
 
           // Skip work when ammeter is not out, to improve performance.
           if ( ammeter.visibleProperty.get() ) {
-            const current = this.circuitLayerNode.getCurrent( this.probeNode );
+            const current = circuitLayerNode.getCurrent( this.probeNode );
             ammeter.currentProperty.set( current );
           }
         };

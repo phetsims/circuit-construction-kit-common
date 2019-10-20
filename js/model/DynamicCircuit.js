@@ -234,16 +234,16 @@ define( require => {
 
         //we need to be able to get the current for this component
         //in series, so current is same through both companion components );
-        // TODO: used to use battery to get current.  Check sign is correct.
+        // TODO: Previously used resistor to get current.  Check sign is correct.
         currentCompanions.push( {
           element: capacitor,
           getValueForSolution: solution => battery.currentSolution
         } );
       } );
 
-      //see also http://circsimproj.blogspot.com/2009/07/companion-models.html
-      //see najm page 279
-      //pillage p 86
+      // See also http://circsimproj.blogspot.com/2009/07/companion-models.html
+      // See najm page 279
+      // See Pillage page 86
       this.inductors.forEach( i => {
         const inductor = i.getInductor();
         const state = i.state;
