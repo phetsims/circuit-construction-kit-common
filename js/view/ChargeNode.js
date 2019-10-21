@@ -156,6 +156,7 @@ define( require => {
 
           // For the lifelike view, we clip based on the pseudo-3d effect, so the charges come from "behind" the edge
           // of the back plate and the "in front of" center of the front plate.
+          // Clip area must be synchronized with CapacitorCircuitElementNode.js
           capacitorClipShape = this.charge.distance < this.charge.circuitElement.chargePathLength / 2 ?
                                Shape.rect( -50, -135, 100, 100 ) : // close half of the capacitor, clip when entering the plate
                                Shape.rect( -50, 58, 100, 100 ); // latter half of the capacitor, clip when leaving the far plate.

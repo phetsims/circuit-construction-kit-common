@@ -81,6 +81,8 @@ define( require => {
     constructor( screenView, circuitLayerNode, capacitor, viewTypeProperty, tandem, options ) {
 
       const wireImage = new Image( wireIconImage );
+      const wireImageLeftClip = new Image( wireIconImage );
+      wireImageLeftClip.clipArea = Shape.rect( 0, 0, 48, 100 ); // Clip area must be synchronized with ChargeNode.js
 
       // TODO: Consider making CapacitorNode more view-oriented?
       const plateBounds = new Bounds3( 0, 0, 0, 0.01414213562373095, CapacitorConstants.PLATE_HEIGHT, 0.01414213562373095 );
@@ -128,6 +130,7 @@ define( require => {
         centerX: lifelikeNode.centerX,
         centerY: lifelikeNode.centerY
       } );
+      wireImageLeftClip.translation = wireImage.translation;
 
       // Wrap in another layer so it can be used for clipping
       const schematicNodeContainer = new Node( {
@@ -139,7 +142,7 @@ define( require => {
         capacitor,
         viewTypeProperty,
         new Node( {
-          children: [ wireImage, lifelikeNode ]
+          children: [ wireImage, lifelikeNode, wireImageLeftClip ]
         } ),
         schematicNodeContainer,
         tandem,
