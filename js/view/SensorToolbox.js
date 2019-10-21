@@ -19,6 +19,7 @@ define( require => {
   const CircuitElementToolNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementToolNode' );
   const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   const CurrentChartNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CurrentChartNode' );
+  const DerivedProperty = require( 'AXON/DerivedProperty' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const HSeparator = require( 'SUN/HSeparator' );
   const merge = require( 'PHET_CORE/merge' );
@@ -55,15 +56,15 @@ define( require => {
     /**
      * @param {AlignGroup} alignGroup - for alignment with other controls
      * @param {Node} circuitLayerNode - the main circuit node to use as a coordinate frame
-     * @param {VoltmeterNode} voltmeterNode - node for the Voltmeter
-     * @param {AmmeterNode} ammeterNode - node for the Ammeter
+     * @param {VoltmeterNode[]} voltmeterNodes - nodes that display the Voltmeters
+     * @param {AmmeterNode[]} ammeterNodes - nodes that display the Ammeters
      * @param {VoltageChartNode|undefined} voltageChartNode - node for the VoltageChartNode
      * @param {CurrentChartNode|undefined} currentChartNode - node for the VoltageChartNode
      * @param {Tandem} tandem
      * @param {Object} [options]
      */
     // TODO: voltageChartNode and currentChartNode should be optional and only appear in the AC sim
-    constructor( alignGroup, circuitLayerNode, voltmeterNode, ammeterNode, voltageChartNode, currentChartNode, tandem, options ) {
+    constructor( alignGroup, circuitLayerNode, voltmeterNodes, ammeterNodes, voltageChartNode, currentChartNode, tandem, options ) {
       const circuit = circuitLayerNode.circuit;
 
       options = merge( {
@@ -89,21 +90,49 @@ define( require => {
           allowTouchSnag: true
         } );
 
+      /**
+       * @param {VoltmeterNode[]|AmmeterNode[]} meterNodes
+       * @param {string} meterModelName 'ammeter'|'voltmeter' for looking up the correpsponding models
+       * @returns {Object} a listener
+       */
+      const createListenerMulti = ( meterNodes, meterModelName ) =>
+        SimpleDragHandler.createForwardingListener( event => {
+
+          // Select a non-visible meter node
+          const meterNode = _.find( meterNodes, meterNode => !meterNode.visible );
+          const meterModel = meterNode[ meterModelName ];
+          const viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point );
+          meterModel.draggingProbesWithBodyProperty.value = true;
+          meterModel.visibleProperty.value = true;
+          meterModel.bodyPositionProperty.value = viewPosition;
+          meterNode.startDrag( event );
+        }, {
+          allowTouchSnag: true
+        } );
+
       // Draggable isIcon for the voltmeter
       const voltmeter = new Voltmeter( Tandem.optional );
-      const voltmeterNodeIcon = new VoltmeterNode( voltmeter, null, null, tandem.createTandem( 'voltmeterNodeIcon' ), { isIcon: true } );
-      voltmeterNode.voltmeter.visibleProperty.link( visible => voltmeterNodeIcon.setVisible( !visible ) );
+      const voltmeterNodeIcon = new VoltmeterNode( voltmeter, null, null, tandem.createTandem( 'voltmeterNodeIcon' ), {
+        isIcon: true
+      } );
+      const allVoltmetersVisibleProperty = DerivedProperty.and( voltmeterNodes.map( voltmeterNode => voltmeterNode.voltmeter.visibleProperty ) );
+      allVoltmetersVisibleProperty.link( visible => voltmeterNodeIcon.setVisible( !visible ) );
       voltmeterNodeIcon.mutate( {
         scale: TOOLBOX_ICON_SIZE * VOLTMETER_ICON_SCALE / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height )
       } );
-      voltmeterNodeIcon.addInputListener( createListener( voltmeterNode.voltmeter, voltmeterNode ) );
+      voltmeterNodeIcon.addInputListener( createListenerMulti( voltmeterNodes, 'voltmeter' ) );
 
       // Icon for the ammeter
       const ammeter = new Ammeter( tandem.createTandem( 'ammeterIconModel' ) );
-      const ammeterNodeIcon = new AmmeterNode( ammeter, null, tandem.createTandem( 'ammeterNodeIcon' ), { isIcon: true } );
-      ammeterNode.ammeter.visibleProperty.link( visible => ammeterNodeIcon.setVisible( !visible ) );
-      ammeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / Math.max( ammeterNodeIcon.width, ammeterNodeIcon.height ) } );
-      ammeterNodeIcon.addInputListener( createListener( ammeterNode.ammeter, ammeterNode ) );
+      const ammeterNodeIcon = new AmmeterNode( ammeter, null, tandem.createTandem( 'ammeterNodeIcon' ), {
+        isIcon: true
+      } );
+      const allAmmetersVisibleProperty = DerivedProperty.and( ammeterNodes.map( ammeterNode => ammeterNode.ammeter.visibleProperty ) );
+      allAmmetersVisibleProperty.link( visible => ammeterNodeIcon.setVisible( !visible ) );
+      ammeterNodeIcon.mutate( {
+        scale: TOOLBOX_ICON_SIZE / Math.max( ammeterNodeIcon.width, ammeterNodeIcon.height )
+      } );
+      ammeterNodeIcon.addInputListener( createListenerMulti( ammeterNodes, 'ammeter' ) );
 
       // Icon for the series ammeter
       const seriesAmmeterIcon = new SeriesAmmeter(

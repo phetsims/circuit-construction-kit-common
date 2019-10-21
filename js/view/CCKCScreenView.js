@@ -97,25 +97,33 @@ define( require => {
         model.circuit, this, tandem.createTandem( 'circuitLayerNode' )
       );
 
-      const voltmeterNode = new VoltmeterNode( model.voltmeter, model, this.circuitLayerNode, tandem.createTandem( 'voltmeterNode' ), {
-        showResultsProperty: model.isValueDepictionEnabledProperty,
-        visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty
-      } );
-      model.voltmeter.droppedEmitter.addListener( bodyNodeGlobalBounds => {
-        if ( bodyNodeGlobalBounds.intersectsBounds( this.sensorToolbox.globalBounds ) ) {
-          model.voltmeter.visibleProperty.set( false );
-        }
+      const voltmeterNodes = model.voltmeters.map( voltmeter => {
+        const voltmeterTandem = tandem.createTandem( 'voltmeterNode' + voltmeter.phetioIndex );
+        const voltmeterNode = new VoltmeterNode( voltmeter, model, this.circuitLayerNode, voltmeterTandem, {
+          showResultsProperty: model.isValueDepictionEnabledProperty,
+          visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty
+        } );
+        voltmeter.droppedEmitter.addListener( bodyNodeGlobalBounds => {
+          if ( bodyNodeGlobalBounds.intersectsBounds( this.sensorToolbox.globalBounds ) ) {
+            voltmeter.visibleProperty.value = false;
+          }
+        } );
+        return voltmeterNode;
       } );
 
-      const ammeterNode = new AmmeterNode( model.ammeter, this.circuitLayerNode, tandem.createTandem( 'ammeterNode' ), {
-        showResultsProperty: model.isValueDepictionEnabledProperty,
-        visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty,
-        blackBoxStudy: options.blackBoxStudy
-      } );
-      model.ammeter.droppedEmitter.addListener( bodyNodeGlobalBounds => {
-        if ( bodyNodeGlobalBounds.intersectsBounds( this.sensorToolbox.globalBounds ) ) {
-          model.ammeter.visibleProperty.set( false );
-        }
+      const ammeterNodes = model.ammeters.map( ammeter => {
+        const ammeterTandem = tandem.createTandem( 'ammeterNode' + ammeter.phetioIndex );
+        const ammeterNode = new AmmeterNode( ammeter, this.circuitLayerNode, ammeterTandem, {
+          showResultsProperty: model.isValueDepictionEnabledProperty,
+          visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty,
+          blackBoxStudy: options.blackBoxStudy
+        } );
+        ammeter.droppedEmitter.addListener( bodyNodeGlobalBounds => {
+          if ( bodyNodeGlobalBounds.intersectsBounds( this.sensorToolbox.globalBounds ) ) {
+            ammeter.visibleProperty.value = false;
+          }
+        } );
+        return ammeterNode;
       } );
 
       if ( options.showCharts ) {
@@ -151,8 +159,8 @@ define( require => {
       this.sensorToolbox = new SensorToolbox(
         CONTROL_PANEL_ALIGN_GROUP,
         this.circuitLayerNode,
-        voltmeterNode,
-        ammeterNode,
+        voltmeterNodes,
+        ammeterNodes,
         this.voltageChartNode,
         this.currentChartNode,
         tandem.createTandem( 'sensorToolbox' ), {
@@ -246,8 +254,8 @@ define( require => {
       this.addChild( circuitElementEditContainerNode );
 
       // The voltmeter and ammeter are rendered with the circuit node so they will scale up and down with the circuit
-      this.circuitLayerNode.sensorLayer.addChild( voltmeterNode );
-      this.circuitLayerNode.sensorLayer.addChild( ammeterNode );
+      voltmeterNodes.forEach( voltmeterNode => this.circuitLayerNode.sensorLayer.addChild( voltmeterNode ) );
+      ammeterNodes.forEach( ammeterNode => this.circuitLayerNode.sensorLayer.addChild( ammeterNode ) );
       this.voltageChartNode && this.circuitLayerNode.sensorLayer.addChild( this.voltageChartNode );
       this.currentChartNode && this.circuitLayerNode.sensorLayer.addChild( this.currentChartNode );
 

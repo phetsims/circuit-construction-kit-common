@@ -23,9 +23,10 @@ define( require => {
 
     /**
      * @param {Tandem} tandem
+     * @param {number} phetioIndex
      */
-    constructor( tandem ) {
-      super( tandem );
+    constructor( tandem, phetioIndex ) {
+      super( tandem, phetioIndex );
 
       // @public {Property.<number|null>} the voltage the probe is reading (in volts) or null if unconnected
       this.voltageProperty = new Property( null, {

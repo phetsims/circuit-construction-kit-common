@@ -54,11 +54,17 @@ define( require => {
       // @public (read-only) {Circuit} - contains CircuitElements, Vertices, etc.
       this.circuit = new Circuit( this.viewTypeProperty, tandem.createTandem( 'circuit' ), { blackBoxStudy: options.blackBoxStudy } );
 
-      // @public (read-only) {Voltmeter}
-      this.voltmeter = new Voltmeter( tandem.createTandem( 'voltmeter' ) );
+      // @public (read-only) {Voltmeter[]} - created statically and indexed starting at 1 for human-readability for PhET-iO
+      this.voltmeters = [
+        new Voltmeter( tandem.createTandem( 'voltmeter1' ), 1 ),
+        new Voltmeter( tandem.createTandem( 'voltmeter2' ), 2 )
+      ];
 
-      // @public (read-only) {Ammeter}
-      this.ammeter = new Ammeter( tandem.createTandem( 'ammeter' ) );
+      // @public (read-only) {Ammeter[]} - created statically and indexed starting at 1 for human-readability for PhET-iO
+      this.ammeters = [
+        new Ammeter( tandem.createTandem( 'ammeter1' ), 1 ),
+        new Ammeter( tandem.createTandem( 'ammeter2' ), 2 )
+      ];
 
       // @public {BooleanProperty} - changes whether the light bulb brightness and ammeter/voltmeter readouts,
       // charges, flame, etc. can be seen
@@ -217,8 +223,8 @@ define( require => {
       this.showValuesProperty.reset();
       this.modeProperty.reset();
       this.circuit.reset();
-      this.voltmeter.reset();
-      this.ammeter.reset();
+      this.voltmeters.forEach( voltmeter => voltmeter.reset() );
+      this.ammeters.forEach( ammeter => ammeter.reset() );
       this.viewTypeProperty.reset();
       this.currentZoomProperty.reset();
       this.selectedZoomProperty.reset();

@@ -23,9 +23,13 @@ define( require => {
 
     /**
      * @param {Tandem} tandem
+     * @param {number} phetioIndex
      */
-    constructor( tandem ) {
-      super( tandem );
+    constructor( tandem, phetioIndex ) {
+      super( tandem, phetioIndex );
+
+      // public (read-only) {number} - lightweight index for naming the tandem view correspondingly
+      this.phetioIndex = phetioIndex;
 
       // @public {Property.<number|null>} the full-precision reading on the ammeter. It will be formatted for
       // display in the view.  Null means the ammeter is not on a wire.
