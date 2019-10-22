@@ -82,18 +82,19 @@ define( require => {
 
       const wireImage = new Image( wireIconImage );
       const wireImageLeftClip = new Image( wireIconImage );
-      wireImageLeftClip.clipArea = Shape.rect( 0, 0, 48, 100 ); // Clip area must be synchronized with ChargeNode.js
 
-      // TODO: Consider making CapacitorNode more view-oriented?
+      // TODO: Consider making CapacitorNode more view-oriented, at least in its dimensions?
       const plateBounds = new Bounds3( 0, 0, 0, 0.01414213562373095, CapacitorConstants.PLATE_HEIGHT, 0.01414213562373095 );
       const V = 4.426999999999999e-13 / 10 * 4;
 
       // TODO: OK to use a mock object like this, or should we create a model type
+      const plateSeparationProperty = new NumberProperty( 0.004 );
+
       const circuit = {
         maxPlateCharge: 2.6562e-12,
         capacitor: {
           plateSizeProperty: new Property( plateBounds ),
-          plateSeparationProperty: new NumberProperty( 0.004 ),
+          plateSeparationProperty: plateSeparationProperty,
           plateVoltageProperty: new NumberProperty( 1.5 ),
           plateChargeProperty: new NumberProperty( V ),
           getEffectiveEField() {
@@ -159,6 +160,23 @@ define( require => {
 
       // @public (read-only) - for clipping in ChargeNode
       this.capacitorCircuitElementSchematicNode = schematicNodeContainer;
+
+      // @public (read-only) - for clipping in ChargeNode
+      this.majorClipX = null;
+
+      capacitor.capacitanceProperty.link( capacitance => {
+
+        // compute proportionality constant based on defaults.
+        const k = 0.1 * 0.004;
+
+        // inverse relationship between plate separation and capacitance.
+        plateSeparationProperty.value = k / capacitance;
+
+        // Adjust clipping region of left wire accordingly
+        const width = 60 - 2880 * plateSeparationProperty.value;
+        wireImageLeftClip.clipArea = Shape.rect( 0, 0, width, 100 ); // Clip area must be synchronized with ChargeNode.js
+        this.majorClipX = width;
+      } );
     }
 
     /**

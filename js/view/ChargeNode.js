@@ -146,7 +146,8 @@ define( require => {
 
       // In order to show that no actual charges transfer between the plates of a capacitor, we clip their rendering.
       if ( this.charge.circuitElement instanceof Capacitor ) {
-        const capacitorNode = this.circuitLayerNode.getCircuitElementNode( this.charge.circuitElement );
+        const capacitorCircuitElementNode = this.circuitLayerNode.getCircuitElementNode( this.charge.circuitElement );
+        const x = capacitorCircuitElementNode.majorClipX;
 
         // For unknown reasons, the x and y coordinates are swapped here.  The values were determined empirically.
         let capacitorClipShape = null;
@@ -158,8 +159,8 @@ define( require => {
           // of the back plate and the "in front of" center of the front plate.
           // Clip area must be synchronized with CapacitorCircuitElementNode.js
           capacitorClipShape = this.charge.distance < this.charge.circuitElement.chargePathLength / 2 ?
-                               Shape.rect( -50, -135, 100, 100 ) : // close half of the capacitor, clip when entering the plate
-                               Shape.rect( -50, 58, 100, 100 ); // latter half of the capacitor, clip when leaving the far plate.
+                               Shape.rect( -50, -135, 100 - x + 48, 100 ) : // close half of the capacitor, clip at plate center
+                               Shape.rect( -50, 58, 100 - x - 48, 100 ); // latter half of the capacitor, clip at plate edge
         }
         else {
 
@@ -170,8 +171,8 @@ define( require => {
         }
 
         const selectedViewNode = isLifelike ?
-                                 capacitorNode.capacitorCircuitElementLifelikeNode :
-                                 capacitorNode.capacitorCircuitElementSchematicNode;
+                                 capacitorCircuitElementNode.capacitorCircuitElementLifelikeNode :
+                                 capacitorCircuitElementNode.capacitorCircuitElementSchematicNode;
         const globalShape = capacitorClipShape.transformed( selectedViewNode.getLocalToGlobalMatrix() );
         const localShape = globalShape.transformed( this.getGlobalToLocalMatrix() );
 
