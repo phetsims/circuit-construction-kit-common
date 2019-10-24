@@ -3,7 +3,7 @@
 This document contains miscellaneous notes related to the implementation of circuit-construction-kit-common. It
 supplements the internal (source code) documentation, and (hopefully) provides insight into "big picture" implementation
 issues.  The audience for this document is software developers who are familiar with JavaScript and PhET simulation
-development (as described in [PhET Development Overview](http://bit.ly/phet-html5-development-overview)).
+development (as described in [PhET Development Overview](https://github.com/phetsims/phet-info/blob/master/doc/phet-development-overview.md)).
 
 This repo is supposed to contain code that would be used in potentially any circuit construction kit offshoot.
 However, since we don't have designs for some of the sims (such as AC), it is kind of like a kitchen sink **or** a
