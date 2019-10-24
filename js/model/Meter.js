@@ -20,8 +20,12 @@ define( require => {
 
     /**
      * @param {Tandem} tandem
+     * @param {number} phetioIndex - for assigning corresponding tandems
      */
-    constructor( tandem ) {
+    constructor( tandem, phetioIndex ) {
+
+      // @public (read-only) {number}
+      this.phetioIndex = phetioIndex;
 
       // @public {Property.<boolean>} - indicates whether the meter is in the play area
       this.visibleProperty = new BooleanProperty( false, {
