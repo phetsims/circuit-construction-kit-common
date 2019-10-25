@@ -18,7 +18,6 @@ define( require => {
   const ElectronChargeNode = require( 'SCENERY_PHET/ElectronChargeNode' );
   const Image = require( 'SCENERY/nodes/Image' );
   const Matrix3 = require( 'DOT/Matrix3' );
-  const Path = require( 'SCENERY/nodes/Path' );
   const Shape = require( 'KITE/Shape' );
   const Tandem = require( 'TANDEM/Tandem' );
   const Util = require( 'DOT/Util' );
