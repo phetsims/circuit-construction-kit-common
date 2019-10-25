@@ -87,7 +87,7 @@ define( require => {
       charge.disposeEmitterCharge.addListener( this.dispose.bind( this ) );
 
       // For debugging, show the clipping regions // TODO: remove for production
-      this.path = new Path( null, { stroke: 'blue' } );
+      // this.path = new Path( null, { stroke: 'blue' } );
       // this.addChild( this.path );
 
       this.updateTransformListener();
@@ -165,18 +165,21 @@ define( require => {
         else {
 
           // For the schematic view, we clip out the center between the plates.
-          globalClipShape = this.charge.distance < this.charge.circuitElement.chargePathLength / 2 ?
-                            Shape.rect( -20, -50, 60, 100 ) : // latter half of the capacitor, clip when leaving the far plate.
-                            Shape.rect( 60, -50, 60, 100 ); // close half of the capacitor, clip when entering the plate
+          // Tuned empirically based on metrics of the schematic shape.  If this is too fragile, the above approach can be used instead.
+          const localShape = this.charge.distance < this.charge.circuitElement.chargePathLength / 2 ?
+                             Shape.rect( -19.5, -50, 60, 100 ) : // latter half of the capacitor, clip when leaving the far plate.
+                             Shape.rect( 61.5, -50, 60, 100 ); // close half of the capacitor, clip when entering the plate
+
+          globalClipShape = localShape.transformed( capacitorCircuitElementNode.capacitorCircuitElementSchematicNode.getLocalToGlobalMatrix() );
         }
 
         const localShape = globalClipShape.transformed( this.getGlobalToLocalMatrix() );
         this.clipArea = localShape;
-        this.path.shape = localShape;
+        // this.path.shape = localShape;
       }
       else {
         this.clipArea = null;
-        this.path.shape = null;
+        // this.path.shape = null;
       }
     }
 
