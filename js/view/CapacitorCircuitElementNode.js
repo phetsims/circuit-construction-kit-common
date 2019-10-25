@@ -97,9 +97,7 @@ define( require => {
           plateSeparationProperty: plateSeparationProperty,
           plateVoltageProperty: new NumberProperty( 1.5 ),
           plateChargeProperty: new NumberProperty( V ),
-          getEffectiveEField() {
-            return 0;
-          }
+          getEffectiveEField: () => 0
         }
       };
 
@@ -173,9 +171,12 @@ define( require => {
         plateSeparationProperty.value = k / capacitance;
 
         // Adjust clipping region of left wire accordingly
-        const width = 60 - 2880 * plateSeparationProperty.value;
-        wireImageLeftClip.clipArea = Shape.rect( 0, 0, width, 100 ); // Clip area must be synchronized with ChargeNode.js
-        this.majorClipX = width;
+        const topPlateCenterToGlobal = this.capacitorCircuitElementLifelikeNode.getTopPlateCenterToGlobal();
+        const topPlateCenterLocal = wireImageLeftClip.globalToLocalPoint( topPlateCenterToGlobal );
+        wireImageLeftClip.clipArea = Shape.rect( 0, 0, topPlateCenterLocal.x, 100 );
+
+        // TODO: eliminate
+        this.majorClipX = topPlateCenterLocal.x;
       } );
     }
 

@@ -18,6 +18,7 @@ define( require => {
   const ElectronChargeNode = require( 'SCENERY_PHET/ElectronChargeNode' );
   const Image = require( 'SCENERY/nodes/Image' );
   const Matrix3 = require( 'DOT/Matrix3' );
+  const Path = require( 'SCENERY/nodes/Path' );
   const Shape = require( 'KITE/Shape' );
   const Tandem = require( 'TANDEM/Tandem' );
   const Util = require( 'DOT/Util' );
@@ -86,8 +87,8 @@ define( require => {
       charge.disposeEmitterCharge.addListener( this.dispose.bind( this ) );
 
       // For debugging, show the clipping regions
-      // this.path = new Path( null, { stroke: 'blue' } );
-      // this.addChild( this.path );
+      this.path = new Path( null, { stroke: 'blue' } );
+      this.addChild( this.path );
 
       this.updateTransformListener();
     }
@@ -147,7 +148,11 @@ define( require => {
       // In order to show that no actual charges transfer between the plates of a capacitor, we clip their rendering.
       if ( this.charge.circuitElement instanceof Capacitor ) {
         const capacitorCircuitElementNode = this.circuitLayerNode.getCircuitElementNode( this.charge.circuitElement );
-        const x = capacitorCircuitElementNode.majorClipX;
+
+        const glob = capacitorCircuitElementNode.capacitorCircuitElementLifelikeNode.getTopPlateCenterToGlobal();
+        const local = capacitorCircuitElementNode.capacitorCircuitElementLifelikeNode.globalToLocalPoint( glob );
+
+        const x = local.x;
 
         // For unknown reasons, the x and y coordinates are swapped here.  The values were determined empirically.
         let capacitorClipShape = null;
@@ -159,8 +164,8 @@ define( require => {
           // of the back plate and the "in front of" center of the front plate.
           // Clip area must be synchronized with CapacitorCircuitElementNode.js
           capacitorClipShape = this.charge.distance < this.charge.circuitElement.chargePathLength / 2 ?
-                               Shape.rect( -50, -135, 100 - x + 48, 100 ) : // close half of the capacitor, clip at plate center
-                               Shape.rect( -50, 58, 100 - x - 48, 100 ); // latter half of the capacitor, clip at plate edge
+                               Shape.rect( -50, -135, 200, 100 + x ) : // close half of the capacitor, clip at plate center
+                               Shape.rect( -50, 58, 200, 100 + x ); // latter half of the capacitor, clip at plate edge
         }
         else {
 
@@ -174,14 +179,19 @@ define( require => {
                                  capacitorCircuitElementNode.capacitorCircuitElementLifelikeNode :
                                  capacitorCircuitElementNode.capacitorCircuitElementSchematicNode;
         const globalShape = capacitorClipShape.transformed( selectedViewNode.getLocalToGlobalMatrix() );
-        const localShape = globalShape.transformed( this.getGlobalToLocalMatrix() );
+        if ( this.getParents()[ 0 ] ) {
+          const localShape = globalShape.transformed( this.getGlobalToLocalMatrix() );
+          // const angle = this.charge.circuitElement.getAngle();
+          // const localShape = Shape.rect( 0, 0, 100, 100 ).transformed( Matrix3.rotation2( angle ) );
 
-        this.clipArea = localShape;
-        // this.path.shape = localShape;
+          this.clipArea = localShape;
+          this.path.shape = localShape;
+        }
+
       }
       else {
         this.clipArea = null;
-        // this.path.shape = null;
+        this.path.shape = null;
       }
     }
 
