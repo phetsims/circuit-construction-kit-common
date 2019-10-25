@@ -86,9 +86,9 @@ define( require => {
 
       charge.disposeEmitterCharge.addListener( this.dispose.bind( this ) );
 
-      // For debugging, show the clipping regions
+      // For debugging, show the clipping regions // TODO: remove for production
       this.path = new Path( null, { stroke: 'blue' } );
-      this.addChild( this.path );
+      // this.addChild( this.path );
 
       this.updateTransformListener();
     }
@@ -149,13 +149,8 @@ define( require => {
       if ( this.charge.circuitElement instanceof Capacitor ) {
         const capacitorCircuitElementNode = this.circuitLayerNode.getCircuitElementNode( this.charge.circuitElement );
 
-        const glob = capacitorCircuitElementNode.capacitorCircuitElementLifelikeNode.getTopPlateCenterToGlobal();
-        const local = capacitorCircuitElementNode.capacitorCircuitElementLifelikeNode.globalToLocalPoint( glob );
-
-        const x = local.x;
-
         // For unknown reasons, the x and y coordinates are swapped here.  The values were determined empirically.
-        let capacitorClipShape = null;
+        let globalClipShape = null;
 
         const isLifelike = this.circuitLayerNode.model.viewTypeProperty.value === CircuitElementViewType.LIFELIKE;
         if ( isLifelike ) {
@@ -163,31 +158,21 @@ define( require => {
           // For the lifelike view, we clip based on the pseudo-3d effect, so the charges come from "behind" the edge
           // of the back plate and the "in front of" center of the front plate.
           // Clip area must be synchronized with CapacitorCircuitElementNode.js
-          capacitorClipShape = this.charge.distance < this.charge.circuitElement.chargePathLength / 2 ?
-                               Shape.rect( -50, -135, 200, 100 + x ) : // close half of the capacitor, clip at plate center
-                               Shape.rect( -50, 58, 200, 100 + x ); // latter half of the capacitor, clip at plate edge
+          globalClipShape = this.charge.distance < this.charge.circuitElement.chargePathLength / 2 ?
+                            capacitorCircuitElementNode.capacitorCircuitElementLifelikeNode.getTopPlateClipShapeToGlobal() : // close half of the capacitor, clip at plate center
+                            capacitorCircuitElementNode.capacitorCircuitElementLifelikeNode.getBottomPlateClipShapeToGlobal(); // latter half of the capacitor, clip at plate edge
         }
         else {
 
           // For the schematic view, we clip out the center between the plates.
-          capacitorClipShape = this.charge.distance < this.charge.circuitElement.chargePathLength / 2 ?
-                               Shape.rect( -20, -50, 60, 100 ) : // latter half of the capacitor, clip when leaving the far plate.
-                               Shape.rect( 60, -50, 60, 100 ); // close half of the capacitor, clip when entering the plate
+          globalClipShape = this.charge.distance < this.charge.circuitElement.chargePathLength / 2 ?
+                            Shape.rect( -20, -50, 60, 100 ) : // latter half of the capacitor, clip when leaving the far plate.
+                            Shape.rect( 60, -50, 60, 100 ); // close half of the capacitor, clip when entering the plate
         }
 
-        const selectedViewNode = isLifelike ?
-                                 capacitorCircuitElementNode.capacitorCircuitElementLifelikeNode :
-                                 capacitorCircuitElementNode.capacitorCircuitElementSchematicNode;
-        const globalShape = capacitorClipShape.transformed( selectedViewNode.getLocalToGlobalMatrix() );
-        if ( this.getParents()[ 0 ] ) {
-          const localShape = globalShape.transformed( this.getGlobalToLocalMatrix() );
-          // const angle = this.charge.circuitElement.getAngle();
-          // const localShape = Shape.rect( 0, 0, 100, 100 ).transformed( Matrix3.rotation2( angle ) );
-
-          this.clipArea = localShape;
-          this.path.shape = localShape;
-        }
-
+        const localShape = globalClipShape.transformed( this.getGlobalToLocalMatrix() );
+        this.clipArea = localShape;
+        this.path.shape = localShape;
       }
       else {
         this.clipArea = null;

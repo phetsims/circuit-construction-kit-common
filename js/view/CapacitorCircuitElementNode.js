@@ -80,8 +80,8 @@ define( require => {
      */
     constructor( screenView, circuitLayerNode, capacitor, viewTypeProperty, tandem, options ) {
 
-      const wireImage = new Image( wireIconImage );
       const wireImageLeftClip = new Image( wireIconImage );
+      const wireImageRightClip = new Image( wireIconImage );
 
       // TODO: Consider making CapacitorNode more view-oriented, at least in its dimensions?
       const plateBounds = new Bounds3( 0, 0, 0, 0.01414213562373095, CapacitorConstants.PLATE_HEIGHT, 0.01414213562373095 );
@@ -127,11 +127,14 @@ define( require => {
         // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
         centerY: 0
       } );
-      wireImage.mutate( {
+      wireImageLeftClip.mutate( {
         centerX: lifelikeNode.centerX,
         centerY: lifelikeNode.centerY
       } );
-      wireImageLeftClip.translation = wireImage.translation;
+      wireImageRightClip.mutate( {
+        centerX: lifelikeNode.centerX,
+        centerY: lifelikeNode.centerY
+      } );
 
       // Wrap in another layer so it can be used for clipping
       const schematicNodeContainer = new Node( {
@@ -143,7 +146,7 @@ define( require => {
         capacitor,
         viewTypeProperty,
         new Node( {
-          children: [ wireImage, lifelikeNode, wireImageLeftClip ]
+          children: [ lifelikeNode, wireImageLeftClip, wireImageRightClip ]
         } ),
         schematicNodeContainer,
         tandem,
@@ -159,9 +162,6 @@ define( require => {
       // @public (read-only) - for clipping in ChargeNode
       this.capacitorCircuitElementSchematicNode = schematicNodeContainer;
 
-      // @public (read-only) - for clipping in ChargeNode
-      this.majorClipX = null;
-
       capacitor.capacitanceProperty.link( capacitance => {
 
         // compute proportionality constant based on defaults.
@@ -170,13 +170,12 @@ define( require => {
         // inverse relationship between plate separation and capacitance.
         plateSeparationProperty.value = k / capacitance;
 
-        // Adjust clipping region of left wire accordingly
-        const topPlateCenterToGlobal = this.capacitorCircuitElementLifelikeNode.getTopPlateCenterToGlobal();
-        const topPlateCenterLocal = wireImageLeftClip.globalToLocalPoint( topPlateCenterToGlobal );
-        wireImageLeftClip.clipArea = Shape.rect( 0, 0, topPlateCenterLocal.x, 100 );
+        // Adjust clipping region of wires accordingly
+        const topPlateCenterToGlobal = this.capacitorCircuitElementLifelikeNode.getTopPlateClipShapeToGlobal();
+        wireImageLeftClip.clipArea = topPlateCenterToGlobal.transformed( wireImageLeftClip.getGlobalToLocalMatrix() );
 
-        // TODO: eliminate
-        this.majorClipX = topPlateCenterLocal.x;
+        const bottomPlateCenterToGlobal = this.capacitorCircuitElementLifelikeNode.getBottomPlateClipShapeToGlobal();
+        wireImageRightClip.clipArea = bottomPlateCenterToGlobal.transformed( wireImageRightClip.getGlobalToLocalMatrix() );
       } );
     }
 
