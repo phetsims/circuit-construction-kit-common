@@ -185,6 +185,12 @@ define( require => {
       // @public {Bounds2} - bounds of the black box, if any.  Set by subclass in Black Box Study. Specifically, filled
       // in by the BlackBoxSceneView after the black box node is created and positioned
       this.blackBoxBounds = null;
+
+      // @public {Property.<boolean>} - true if the stopwatch should be shown in the play area
+      // TODO: this is duplicated, but why?
+      this.showStopwatchProperty = new BooleanProperty( false, {
+        tandem: tandem.createTandem( 'showStopwatchProperty' )
+      } );
     }
 
     /**

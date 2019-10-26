@@ -50,10 +50,11 @@ define( require => {
      * @param {Property.<boolean>} showValuesProperty - true if values should be shown
      * @param {Property.<boolean>} showLabelsProperty - true if toolbox labels should be shown
      * @param {Property.<boolean>|undefined} showStopwatchProperty - true if stopwatch should be shown
+     * @param {boolean} showStopwatchCheckbox - true if stopwatch should be shown
      * @param {Tandem} tandem
      */
     constructor( alignGroup, showCurrentProperty, currentTypeProperty, showValuesProperty, showLabelsProperty,
-                 showStopwatchProperty, tandem ) {
+                 showStopwatchProperty, showStopwatchCheckbox, tandem ) {
 
       /**
        * Create an AquaRadioButton for the specified kind of current
@@ -131,7 +132,7 @@ define( require => {
         } ),
         showLabelsCheckbox,
         showValuesCheckbox,
-        ...( showStopwatchProperty ? [ new Checkbox( new Text( stopwatchString, TEXT_OPTIONS ), showStopwatchProperty, {
+        ...( showStopwatchCheckbox ? [ new Checkbox( new Text( stopwatchString, TEXT_OPTIONS ), showStopwatchProperty, {
           tandem: tandem.createTandem( 'stopwatchCheckbox' ),
           boxWidth: BOX_WIDTH
         } ) ] : [] )

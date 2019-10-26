@@ -79,7 +79,8 @@ define( require => {
         showBatteryResistanceControl: true,
         showCharts: false,
 
-        blackBoxStudy: false
+        blackBoxStudy: false,
+        showStopwatchCheckbox: false
       }, options );
 
       super();
@@ -181,7 +182,8 @@ define( require => {
         model.circuit.currentTypeProperty,
         model.showValuesProperty,
         model.showLabelsProperty,
-        model.showStopwatchProperty, // may be undefined
+        model.showStopwatchProperty,
+        options.showStopwatchCheckbox,
         tandem.createTandem( 'displayOptionsPanel' )
       );
 
