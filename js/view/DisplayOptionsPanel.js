@@ -105,6 +105,15 @@ define( require => {
         tandem: tandem.createTandem( 'valuesCheckbox' ),
         boxWidth: BOX_WIDTH
       } );
+
+      let stopwatchCheckbox = null;
+      if ( showStopwatchCheckbox ) {
+        stopwatchCheckbox = new Checkbox( new Text( stopwatchString, TEXT_OPTIONS ), showStopwatchProperty, {
+          tandem: tandem.createTandem( 'stopwatchCheckbox' ),
+          boxWidth: BOX_WIDTH
+        } );
+      }
+
       const children = [
 
         // Show Current and sub-checkboxes
@@ -132,10 +141,7 @@ define( require => {
         } ),
         showLabelsCheckbox,
         showValuesCheckbox,
-        ...( showStopwatchCheckbox ? [ new Checkbox( new Text( stopwatchString, TEXT_OPTIONS ), showStopwatchProperty, {
-          tandem: tandem.createTandem( 'stopwatchCheckbox' ),
-          boxWidth: BOX_WIDTH
-        } ) ] : [] )
+        ...( showStopwatchCheckbox ? [ stopwatchCheckbox ] : [] )
       ];
 
       super( alignGroup.createBox( new VBox( {
@@ -156,6 +162,8 @@ define( require => {
 
       showValuesCheckbox.touchArea = showValuesCheckbox.localBounds.dilatedXY( 5, SPACING / 2 ).withMaxX( this.bounds.width - LEFT_MARGIN );
       showValuesCheckbox.mouseArea = showValuesCheckbox.touchArea;
+
+      this.stopwatchCheckbox = stopwatchCheckbox;
     }
   }
 

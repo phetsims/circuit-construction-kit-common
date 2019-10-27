@@ -14,6 +14,7 @@ define( require => {
   const AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
   const AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/AmmeterNode' );
   const BatteryResistanceControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryResistanceControl' );
+  const BooleanProperty = require( 'AXON/BooleanProperty' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   const ChargeSpeedThrottlingReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ChargeSpeedThrottlingReadoutNode' );
@@ -25,12 +26,14 @@ define( require => {
   const DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/DisplayOptionsPanel' );
   const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
+  const NumberProperty = require( 'AXON/NumberProperty' );
   const PlayPauseButton = require( 'SCENERY_PHET/buttons/PlayPauseButton' );
   const Property = require( 'AXON/Property' );
   const ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   const ScreenView = require( 'JOIST/ScreenView' );
   const SensorToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SensorToolbox' );
   const SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
+  const TimerNode = require( 'SCENERY_PHET/TimerNode' );
   const VBox = require( 'SCENERY/nodes/VBox' );
   const ViewRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ViewRadioButtonGroup' );
   const VoltageChartNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VoltageChartNode' );
@@ -343,6 +346,32 @@ define( require => {
       _.hasIn( window, 'phet.phetIo.phetioEngine' ) && phet.phetIo.phetioEngine.phetioStateEngine.stateSetEmitter.addListener( () => {
         this.step( 1 / 60 );
       } );
+
+      // @public - the TimerNode
+      // TODO: consider generalizing Stopwatch and StopwatchNode from gas-properties
+      // TODO: if statement or subtype?  Think of it as a mix-in.
+      if ( options.showStopwatchCheckbox ) {
+        const stopwatchNodeTandem = tandem.createTandem( 'stopwatchNode' );
+        const isTimerRunningProperty = new BooleanProperty( false, { tandem: stopwatchNodeTandem.createTandem( 'isRunningProperty' ) } );
+        this.timerNode = new TimerNode( new NumberProperty( 0 ), isTimerRunningProperty, { // todo rename stopwatchNode
+          tandem: stopwatchNodeTandem,
+          right: controlPanelVBox.left - HORIZONTAL_MARGIN
+        } );
+        this.addChild( this.timerNode );
+        let hasStopwatchBeenDisplayed = false;
+
+        // Show the TimerNode when the checkbox is checked
+        model.showStopwatchProperty.link( showStopwatch => {
+          if ( showStopwatch && !hasStopwatchBeenDisplayed ) {
+
+            // Compute bounds lazily now that everything is attached to the scene graph
+            const globalBounds = this.displayOptionsPanel.stopwatchCheckbox.globalBounds;
+            this.timerNode.centerY = this.globalToLocalBounds( globalBounds ).centerY;
+            hasStopwatchBeenDisplayed = true;
+          }
+          this.timerNode.visible = showStopwatch;
+        } );
+      }
     }
 
     /**

@@ -187,7 +187,6 @@ define( require => {
       this.blackBoxBounds = null;
 
       // @public {Property.<boolean>} - true if the stopwatch should be shown in the play area
-      // TODO: this is duplicated, but why?
       this.showStopwatchProperty = new BooleanProperty( false, {
         tandem: tandem.createTandem( 'showStopwatchProperty' )
       } );
