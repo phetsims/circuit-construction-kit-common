@@ -807,9 +807,10 @@ define( require => {
     }
 
     /**
-     * Find where the voltmeter probe node intersects the wire, for computing the voltage difference
-     * @param {Vector2} probePosition
-     * @returns {VoltageConnection|null} if connected returns VoltageConnection otherwise null
+     * Find where the voltmeter probe node intersects the wire, for computing the voltage difference to display in the
+     * voltmeter.
+     * @param {Vector2} probePosition - TODO document coordinate frame, is this global?
+     * @returns {VoltageConnection|null} returns VoltageConnection if connected, otherwise null
      * @private
      */
     getVoltageConnection( probePosition ) {
@@ -825,7 +826,7 @@ define( require => {
         return probePosition.distance( position ) <= SolderNode.SOLDER_RADIUS;
       } );
       if ( hitSolderNode ) {
-        return new VoltageConnection( hitSolderNode.vertex, hitSolderNode.vertex.voltageProperty.get() );
+        return new VoltageConnection( hitSolderNode.vertex );
       }
 
       // Check for intersection with a metallic circuit element, which can provide voltmeter readings
@@ -856,17 +857,24 @@ define( require => {
 
           // address closed switch.  Find out whether the probe was near the start or end vertex
           if ( switchNode.startSideContainsSensorPoint( probePosition ) ) {
-
-            return new VoltageConnection(
-              switchNode.circuitSwitch.startVertexProperty.get(),
-              switchNode.circuitSwitch.startVertexProperty.get().voltageProperty.get()
-            );
+            return new VoltageConnection( switchNode.circuitSwitch.startVertexProperty.get() );
           }
           else if ( switchNode.endSideContainsSensorPoint( probePosition ) ) {
-            return new VoltageConnection(
-              switchNode.circuitSwitch.endVertexProperty.get(),
-              switchNode.circuitSwitch.endVertexProperty.get().voltageProperty.get()
-            );
+            return new VoltageConnection( switchNode.circuitSwitch.endVertexProperty.get() );
+          }
+        }
+
+        const capacitorNode = this.hitCircuitElementNode( probePosition, circuitElement => circuitElement instanceof Capacitor );
+        if ( capacitorNode ) {
+
+          const globalPoint = this.localToGlobalPoint( probePosition );
+
+          // Check front first since it visually looks like it would be touching the probe
+          if ( capacitorNode.frontSideContainsSensorPoint( globalPoint ) ) {
+            return new VoltageConnection( capacitorNode.circuitElement.startVertexProperty.get() );
+          }
+          else if ( capacitorNode.backSideContainsSensorPoint( globalPoint ) ) {
+            return new VoltageConnection( capacitorNode.circuitElement.endVertexProperty.get() );
           }
         }
         return null;
@@ -958,9 +966,9 @@ define( require => {
     /**
      * Indicates a vertex and a voltage measurement at the given vertex.
      * @param {Vertex} vertex
-     * @param {number} voltage
+     * @param {number} [voltage]
      */
-    constructor( vertex, voltage ) {
+    constructor( vertex, voltage = vertex.voltageProperty.value ) {
       this.vertex = vertex;
       this.voltage = voltage;
     }

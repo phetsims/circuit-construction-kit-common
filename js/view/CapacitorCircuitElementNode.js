@@ -15,7 +15,7 @@ define( require => {
   const CapacitorNode = require( 'SCENERY_PHET/capacitor/CapacitorNode' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const YawPitchModelViewTransform3 = require( 'SCENERY_PHET/capacitor/YawPitchModelViewTransform3' );
+  const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   const Color = require( 'SCENERY/util/Color' );
   const FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
   const Image = require( 'SCENERY/nodes/Image' );
@@ -27,6 +27,7 @@ define( require => {
   const Shape = require( 'KITE/Shape' );
   const Tandem = require( 'TANDEM/Tandem' );
   const Util = require( 'DOT/Util' );
+  const YawPitchModelViewTransform3 = require( 'SCENERY_PHET/capacitor/YawPitchModelViewTransform3' );
 
   // images
   const wireIconImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/wire-icon.png' );
@@ -59,12 +60,14 @@ define( require => {
   schematicShape = schematicShape.transformed( Matrix3.scale( schematicScale, schematicScale ) );
   const schematicNode = new Path( schematicShape, {
     stroke: Color.BLACK,
-    lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH
-  } ).rasterized( { wrap: false } );
+    lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH,
+    pickable: true
+  } );
 
   schematicNode.centerY = 0;
 
   // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
+  // TODO: double check this, it looks incorrect
   schematicNode.mouseArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
   schematicNode.touchArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
 
@@ -80,12 +83,18 @@ define( require => {
      */
     constructor( screenView, circuitLayerNode, capacitor, viewTypeProperty, tandem, options ) {
 
-      const wireImageLeftClip = new Image( wireIconImage );
-      const wireImageRightClip = new Image( wireIconImage );
+      const wireStubOptions = {
+
+        // mark as pickable so we can perform hit testing with the voltmeter probes
+        pickable: true
+      };
+      const leftWireStub = new Image( wireIconImage, wireStubOptions );
+      const rightWireStub = new Image( wireIconImage, wireStubOptions );
 
       // TODO: Consider making CapacitorNode more view-oriented, at least in its dimensions?
-      const plateBounds = new Bounds3( 0, 0, 0, 0.01414213562373095, CapacitorConstants.PLATE_HEIGHT, 0.01414213562373095 );
-      const V = 4.426999999999999e-13 / 10 * 4;
+      const thickness = 0.01414213562373095;
+      const plateBounds = new Bounds3( 0, 0, 0, thickness, CapacitorConstants.PLATE_HEIGHT, thickness );
+      const V = 1.7707999999999996e-13;
 
       // TODO: OK to use a mock object like this, or should we create a model type
       const plateSeparationProperty = new NumberProperty( 0.004 );
@@ -127,18 +136,19 @@ define( require => {
         // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
         centerY: 0
       } );
-      wireImageLeftClip.mutate( {
+      leftWireStub.mutate( {
         centerX: lifelikeNode.centerX,
         centerY: lifelikeNode.centerY
       } );
-      wireImageRightClip.mutate( {
+      rightWireStub.mutate( {
         centerX: lifelikeNode.centerX,
         centerY: lifelikeNode.centerY
       } );
 
       // Wrap in another layer so it can be used for clipping
       const schematicNodeContainer = new Node( {
-        children: [ schematicNode ]
+        children: [ schematicNode ],
+        pickable: true // so that we can use hit detection for the voltmeter probes
       } );
       super(
         screenView,
@@ -146,7 +156,7 @@ define( require => {
         capacitor,
         viewTypeProperty,
         new Node( {
-          children: [ lifelikeNode, wireImageLeftClip, wireImageRightClip ]
+          children: [ lifelikeNode, leftWireStub, rightWireStub ]
         } ),
         schematicNodeContainer,
         tandem,
@@ -162,6 +172,11 @@ define( require => {
       // @public (read-only) - for clipping in ChargeNode
       this.capacitorCircuitElementSchematicNode = schematicNodeContainer;
 
+      // @private
+      this.leftWireStub = leftWireStub;
+      this.rightWireStub = rightWireStub;
+      this.schematicNodeContainer = schematicNodeContainer;
+
       capacitor.capacitanceProperty.link( capacitance => {
 
         // compute proportionality constant based on defaults.
@@ -172,10 +187,10 @@ define( require => {
 
         // Adjust clipping region of wires accordingly
         const topPlateCenterToGlobal = this.capacitorCircuitElementLifelikeNode.getTopPlateClipShapeToGlobal();
-        wireImageLeftClip.clipArea = topPlateCenterToGlobal.transformed( wireImageLeftClip.getGlobalToLocalMatrix() );
+        leftWireStub.clipArea = topPlateCenterToGlobal.transformed( leftWireStub.getGlobalToLocalMatrix() );
 
         const bottomPlateCenterToGlobal = this.capacitorCircuitElementLifelikeNode.getBottomPlateClipShapeToGlobal();
-        wireImageRightClip.clipArea = bottomPlateCenterToGlobal.transformed( wireImageRightClip.getGlobalToLocalMatrix() );
+        rightWireStub.clipArea = bottomPlateCenterToGlobal.transformed( rightWireStub.getGlobalToLocalMatrix() );
       } );
     }
 
@@ -188,11 +203,49 @@ define( require => {
      */
     containsSensorPoint( point ) {
 
+      // TODO: why is this called
+
       // make sure bounds are correct if cut or joined in this animation frame
       this.step();
 
       // Check against the mouse region
       return !!this.hitTest( point, true, false );
+    }
+
+    /**
+     * Determine whether the start side (with the pivot) contains the sensor point.
+     * @param {Vector2} globalPoint
+     * @returns {boolean}
+     */
+    frontSideContainsSensorPoint( globalPoint ) {
+
+      if ( this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ) {
+        return this.capacitorCircuitElementLifelikeNode.frontSideContainsSensorPoint( globalPoint ) ||
+               this.leftWireStub.containsPoint( this.leftWireStub.globalToParentPoint( globalPoint ) );
+      }
+      else {
+
+        // TODO: this isn't working yet
+        return this.schematicNodeContainer.containsPoint( this.schematicNodeContainer.globalToParentPoint( globalPoint ) );
+      }
+    }
+
+    /**
+     * Determine whether the end side (with the pivot) contains the sensor point.
+     * @param {Vector2} globalPoint
+     * @returns {boolean}
+     */
+    backSideContainsSensorPoint( globalPoint ) {
+
+      if ( this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ) {
+        return this.capacitorCircuitElementLifelikeNode.backSideContainsSensorPoint( globalPoint ) ||
+               this.rightWireStub.containsPoint( this.rightWireStub.globalToParentPoint( globalPoint ) );
+      }
+      else {
+
+        // TODO: also check schematic
+        return false;
+      }
     }
   }
 

@@ -94,7 +94,7 @@ define( require => {
       // @private {Image|null} - display the fire for flammable CircuitElements
       this.fireNode = null;
 
-      // @private {Property.<CircuitElementViewType>
+      // @protected (read-only) {Property.<CircuitElementViewType>
       this.viewTypeProperty = viewTypeProperty;
 
       // @private {function} - Show the selected node

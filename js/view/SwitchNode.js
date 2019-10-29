@@ -53,7 +53,7 @@ define( require => {
         cornerRadius: edgeRadius,
         fill: fill,
         stroke: Color.BLACK,
-        pickable: true
+        pickable: true // TODO: is this so it can be hit tested?
       } );
 
     // See the picture at https://github.com/phetsims/circuit-construction-kit-common/issues/313
@@ -175,7 +175,7 @@ define( require => {
       );
 
       // @public (read-only) {Switch} - the Switch rendered by this Node
-      this.circuitSwitch = circuitSwitch;
+      this.circuitSwitch = circuitSwitch; // TODO: use this.circuitElement instead
 
       let downPoint = null;
 
@@ -231,7 +231,7 @@ define( require => {
     }
 
     /**
-     * Determine whether the start side (without the pivot) contains the sensor point.
+     * Determine whether the end side (with the pivot) contains the sensor point.
      * @param {Vector2} point - in view coordinates
      * @returns {boolean}
      */
