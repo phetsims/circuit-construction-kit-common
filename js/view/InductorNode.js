@@ -48,12 +48,18 @@ define( require => {
   const desiredWidth = CCKCConstants.BATTERY_LENGTH;
   const schematicScale = desiredWidth / schematicWidth;
 
+  const LIFELIKE_HEIGHT = 60;
+  const LIFELIKE_WIDTH = CCKCConstants.BATTERY_LENGTH;
+  const LIFELIKE_RADIUS_X = 5;
+  const LIFELIKE_RADIUS_Y = LIFELIKE_HEIGHT / 2;
+  const LIFELIKE_WIRE_LINE_WIDTH = 3;
+
   // Scale to fit the correct width
   schematicShape = schematicShape.transformed( Matrix3.scale( schematicScale, schematicScale ) );
   const schematicNode = new Path( schematicShape, {
     stroke: Color.BLACK,
     lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH
-  } ).rasterized( { wrap: false } );
+  } ).rasterized( { wrap: false } ); // TODO: don't rasterize, it is blurry
 
   schematicNode.centerY = 0;
 
@@ -72,54 +78,49 @@ define( require => {
      * @param {Object} [options]
      */
     constructor( screenView, circuitLayerNode, inductor, viewTypeProperty, tandem, options ) {
-      const radiusX = 5;
-      const height = 60;
-      const width = CCKCConstants.BATTERY_LENGTH;
-      const radiusY = height / 2;
-      const frontShape = new Shape()
-        .lineTo( width, 0 )// TODO: eliminate unnecessary lineTos.  arc automatically lineTos
-        .ellipticalArc( width, height / 2, radiusX, radiusY, 0, -Math.PI / 2, Math.PI / 2, false )
-        .lineTo( 0, height )
-        .ellipticalArc( 0, height / 2, radiusX, radiusY, 0, Math.PI / 2, -Math.PI / 2, true )
-        .close();
-      const frontPath = new Path( frontShape, { fill: 'white', stroke: 'black' } );
 
-      const backCap = new Shape()
-        .ellipticalArc( 0, height / 2, radiusX, radiusY, 0, 0, Math.PI * 2, false )
+      // The main body, in front.
+      const lifelikeBodyShape = new Shape()
+        .ellipticalArc( LIFELIKE_WIDTH, LIFELIKE_HEIGHT / 2, LIFELIKE_RADIUS_X, LIFELIKE_RADIUS_Y, 0, -Math.PI / 2, Math.PI / 2, false )
+        .ellipticalArc( 0, LIFELIKE_HEIGHT / 2, LIFELIKE_RADIUS_X, LIFELIKE_RADIUS_Y, 0, Math.PI / 2, -Math.PI / 2, true )
         .close();
-      const backCapPath = new Path( backCap, {
+      const lifelikeBodyPath = new Path( lifelikeBodyShape, { fill: 'white', stroke: 'black' } );
+
+      // The elliptical edge shown to the left of the main body.
+      const lifelikeEndCapShape = new Shape()
+        .ellipticalArc( 0, LIFELIKE_HEIGHT / 2, LIFELIKE_RADIUS_X, LIFELIKE_RADIUS_Y, 0, 0, Math.PI * 2, false )
+        .close();
+      const lifelikeEndCapPath = new Path( lifelikeEndCapShape, {
         fill: '#c4c4c4',
         stroke: 'black'
       } );
 
-      const wireWrappingNode = new Node();
-
-
+      // Container that has individual wire loops.
+      const wireWrapNode = new Node();
       inductor.inductanceProperty.link( inductance => {
 
-        const children = [];
         const numLoops = Util.roundSymmetric( Util.linear( 10, 100, 5, 20, inductance ) );
+        const children = [];
         for ( let i = 0; i < numLoops; i++ ) {
-          const WIRE_LINE_WIDTH = 3;
           const wireShape = new Shape()
-            .ellipticalArc( 0, height / 2, radiusX, radiusY, 0, -Math.PI / 2, Math.PI / 2, false )
-            .getStrokedShape( new LineStyles( { lineWidth: WIRE_LINE_WIDTH } ) );
+            .ellipticalArc( 0, LIFELIKE_HEIGHT / 2, LIFELIKE_RADIUS_X, LIFELIKE_RADIUS_Y, 0, -Math.PI / 2, Math.PI / 2, false )
+            .getStrokedShape( new LineStyles( { lineWidth: LIFELIKE_WIRE_LINE_WIDTH } ) );
           const wirePath = new Path( wireShape, {
             fill: '#dc9180',
             stroke: 'black',
             x: Util.linear(
               numLoops / 2, numLoops / 2 + 1,
-              width / 2 + radiusX / 2, width / 2 + WIRE_LINE_WIDTH + radiusX / 2,
+              LIFELIKE_WIDTH / 2 + LIFELIKE_RADIUS_X / 2, LIFELIKE_WIDTH / 2 + LIFELIKE_WIRE_LINE_WIDTH + LIFELIKE_RADIUS_X / 2,
               i )
           } );
-          wireWrappingNode.addChild( wirePath );
+          wireWrapNode.addChild( wirePath );
           children.push( wirePath );
         }
-        wireWrappingNode.children = children;
+        wireWrapNode.children = children;
       } );
 
       const lifelikeNode = new Node( {
-        children: [ backCapPath, frontPath, wireWrappingNode ],
+        children: [ lifelikeEndCapPath, lifelikeBodyPath, wireWrapNode ],
         centerY: 0
       } );
 
@@ -134,7 +135,7 @@ define( require => {
         options
       );
 
-      // @public (read-only) {Capacitor} - the Capacitor rendered by this Node
+      // @public (read-only) {Inductor}
       this.inductor = inductor;
     }
 
