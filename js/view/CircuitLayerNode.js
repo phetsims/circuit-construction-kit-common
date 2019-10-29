@@ -774,10 +774,11 @@ define( require => {
      * Check for an intersection between a probeNode and a wire, return null if no hits.
      * @param {Vector2} position to hit test
      * @param {function} filter - CircuitElement=>boolean the rule to use for checking circuit elements
+     * @param {Vector2} globalPoint
      * @returns {CircuitElementNode|null}
      * @public
      */
-    hitCircuitElementNode( position, filter ) {
+    hitCircuitElementNode( position, filter, globalPoint ) {
 
       const circuitElementNodes = this.circuit.circuitElements.getArray()
         .filter( filter )
@@ -799,7 +800,7 @@ define( require => {
           revealing = this.model.revealingProperty.get();
         }
 
-        if ( revealing && circuitElementNode.containsSensorPoint( position ) ) {
+        if ( revealing && circuitElementNode.containsSensorPoint( position, globalPoint ) ) {
           return circuitElementNode;
         }
       }
@@ -864,10 +865,9 @@ define( require => {
           }
         }
 
-        const capacitorNode = this.hitCircuitElementNode( probePosition, circuitElement => circuitElement instanceof Capacitor );
+        const globalPoint = this.localToGlobalPoint( probePosition );
+        const capacitorNode = this.hitCircuitElementNode( probePosition, circuitElement => circuitElement instanceof Capacitor, globalPoint );
         if ( capacitorNode ) {
-
-          const globalPoint = this.localToGlobalPoint( probePosition );
 
           // Check front first since it visually looks like it would be touching the probe
           if ( capacitorNode.frontSideContainsSensorPoint( globalPoint ) ) {
@@ -922,6 +922,8 @@ define( require => {
      */
     getCurrentInLayer( probeNode, layer ) {
 
+      const global = probeNode.parentToGlobalPoint( probeNode.translation );
+
       // See if any CircuitElementNode contains the sensor point
       for ( let i = 0; i < layer.children.length; i++ ) {
         const circuitElementNode = layer.children[ i ];
@@ -931,7 +933,8 @@ define( require => {
           // so we must take care not to visit circuit elements that have been disposed but still have a view
           // see https://github.com/phetsims/circuit-construction-kit-common/issues/418
           // TODO: I suspect the coordinate frame is wrong for CurrentChartNode
-          if ( !circuitElementNode.circuitElement.circuitElementDisposed && circuitElementNode.containsSensorPoint( probeNode.translation ) ) {
+          // TODO: some implementations use local point, some use global point?  Can they all use global?
+          if ( !circuitElementNode.circuitElement.circuitElementDisposed && circuitElementNode.containsSensorPoint( probeNode.translation, global ) ) {
             let rawCurrent = circuitElementNode.circuitElement.currentProperty.get();
             if ( circuitElementNode.circuitElement.isInitialCurrentNegative ) {
               rawCurrent = -rawCurrent;

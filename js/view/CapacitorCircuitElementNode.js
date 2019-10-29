@@ -43,33 +43,22 @@ define( require => {
 
   // Points sampled using Photoshop from a raster of the IEEE icon seen at
   // https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
-  let schematicShape = new Shape()
+  let leftSchematicShape = new Shape()
     .moveTo( 0, 0 ) // left wire
     .lineTo( LEFT_JUNCTION, 0 )
     .moveTo( LEFT_JUNCTION, SMALL_TERMINAL_WIDTH / 2 ) // left plate
-    .lineTo( LEFT_JUNCTION, -SMALL_TERMINAL_WIDTH / 2 )
+    .lineTo( LEFT_JUNCTION, -SMALL_TERMINAL_WIDTH / 2 );
+
+  let rightSchematicShape = new Shape()
     .moveTo( RIGHT_JUNCTION, 0 ) // right wire
     .lineTo( WIDTH, 0 )
     .moveTo( RIGHT_JUNCTION, LARGE_TERMINAL_WIDTH / 2 ) // right plate
     .lineTo( RIGHT_JUNCTION, -LARGE_TERMINAL_WIDTH / 2 );
-  const schematicWidth = schematicShape.bounds.width;
-  const desiredWidth = CCKCConstants.BATTERY_LENGTH;
-  const schematicScale = desiredWidth / schematicWidth;
+  const SCHEMATIC_SCALE = 0.5425531914893617; // Tuned so the entire component has the same width as battery
 
   // Scale to fit the correct width
-  schematicShape = schematicShape.transformed( Matrix3.scale( schematicScale, schematicScale ) );
-  const schematicNode = new Path( schematicShape, {
-    stroke: Color.BLACK,
-    lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH,
-    pickable: true
-  } );
-
-  schematicNode.centerY = 0;
-
-  // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
-  // TODO: double check this, it looks incorrect
-  schematicNode.mouseArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
-  schematicNode.touchArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
+  leftSchematicShape = leftSchematicShape.transformed( Matrix3.scale( SCHEMATIC_SCALE, SCHEMATIC_SCALE ) );
+  rightSchematicShape = rightSchematicShape.transformed( Matrix3.scale( SCHEMATIC_SCALE, SCHEMATIC_SCALE ) );
 
   class CapacitorCircuitElementNode extends FixedCircuitElementNode {
 
@@ -145,20 +134,35 @@ define( require => {
         centerY: lifelikeNode.centerY
       } );
 
+      const schematicPathOptions = {
+        stroke: Color.BLACK,
+        lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH,
+        strokePickable: true, // DO WE NEED NEXT LINE?
+        pickable: true // so that we can use hit detection for the voltmeter probes.  TODO: do we need all of these?
+      };
+      const leftSchematicPath = new Path( leftSchematicShape, schematicPathOptions );
+      const rightSchematicPath = new Path( rightSchematicShape, schematicPathOptions );
+
       // Wrap in another layer so it can be used for clipping
-      const schematicNodeContainer = new Node( {
-        children: [ schematicNode ],
-        pickable: true // so that we can use hit detection for the voltmeter probes
+      const schematicNode = new Node( {
+        children: [ leftSchematicPath, rightSchematicPath ],
+        pickable: true // so that we can use hit detection for the voltmeter probes TODO: do we need all of these?
+      } );
+
+      // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
+      schematicNode.mouseArea = schematicNode.localBounds.dilated( 2 );
+      schematicNode.touchArea = schematicNode.localBounds.dilated( 2 );
+
+      const lifelikeNodeContainer = new Node( {
+        children: [ lifelikeNode, leftWireStub, rightWireStub ]
       } );
       super(
         screenView,
         circuitLayerNode,
         capacitor,
         viewTypeProperty,
-        new Node( {
-          children: [ lifelikeNode, leftWireStub, rightWireStub ]
-        } ),
-        schematicNodeContainer,
+        lifelikeNodeContainer,
+        schematicNode,
         tandem,
         options
       );
@@ -170,12 +174,13 @@ define( require => {
       this.capacitorCircuitElementLifelikeNode = lifelikeNode;
 
       // @public (read-only) - for clipping in ChargeNode
-      this.capacitorCircuitElementSchematicNode = schematicNodeContainer;
+      this.capacitorCircuitElementSchematicNode = schematicNode;
 
       // @private
       this.leftWireStub = leftWireStub;
       this.rightWireStub = rightWireStub;
-      this.schematicNodeContainer = schematicNodeContainer;
+      this.leftSchematicPath = leftSchematicPath;
+      this.rightSchematicPath = rightSchematicPath;
 
       capacitor.capacitanceProperty.link( capacitance => {
 
@@ -201,15 +206,12 @@ define( require => {
      * @overrides
      * @public
      */
-    containsSensorPoint( point ) {
-
-      // TODO: why is this called
+    containsSensorPoint( point, globalPoint ) {
 
       // make sure bounds are correct if cut or joined in this animation frame
       this.step();
 
-      // Check against the mouse region
-      return !!this.hitTest( point, true, false );
+      return this.frontSideContainsSensorPoint( globalPoint ) || this.backSideContainsSensorPoint( globalPoint );
     }
 
     /**
@@ -224,9 +226,7 @@ define( require => {
                this.leftWireStub.containsPoint( this.leftWireStub.globalToParentPoint( globalPoint ) );
       }
       else {
-
-        // TODO: this isn't working yet
-        return this.schematicNodeContainer.containsPoint( this.schematicNodeContainer.globalToParentPoint( globalPoint ) );
+        return this.leftSchematicPath.containsPoint( this.leftSchematicPath.globalToParentPoint( globalPoint ) );
       }
     }
 
@@ -242,9 +242,7 @@ define( require => {
                this.rightWireStub.containsPoint( this.rightWireStub.globalToParentPoint( globalPoint ) );
       }
       else {
-
-        // TODO: also check schematic
-        return false;
+        return this.rightSchematicPath.containsPoint( this.rightSchematicPath.globalToParentPoint( globalPoint ) );
       }
     }
   }
