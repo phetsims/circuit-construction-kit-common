@@ -14,9 +14,12 @@ define( require => {
   const Color = require( 'SCENERY/util/Color' );
   const FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
   const Image = require( 'SCENERY/nodes/Image' );
+  const LineStyles = require( 'KITE/util/LineStyles' );
   const Matrix3 = require( 'DOT/Matrix3' );
+  const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
   const Shape = require( 'KITE/Shape' );
+  const Util = require( 'DOT/Util' );
 
   // images
   const batteryImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
@@ -69,14 +72,56 @@ define( require => {
      * @param {Object} [options]
      */
     constructor( screenView, circuitLayerNode, inductor, viewTypeProperty, tandem, options ) {
-      const lifelikeNode = new Image( batteryImage );
+      const radiusX = 5;
+      const height = 60;
+      const width = CCKCConstants.BATTERY_LENGTH;
+      const radiusY = height / 2;
+      const frontShape = new Shape()
+        .lineTo( width, 0 )// TODO: eliminate unnecessary lineTos.  arc automatically lineTos
+        .ellipticalArc( width, height / 2, radiusX, radiusY, 0, -Math.PI / 2, Math.PI / 2, false )
+        .lineTo( 0, height )
+        .ellipticalArc( 0, height / 2, radiusX, radiusY, 0, Math.PI / 2, -Math.PI / 2, true )
+        .close();
+      const frontPath = new Path( frontShape, { fill: 'white', stroke: 'black' } );
 
-      lifelikeNode.mutate( {
-        scale: inductor.distanceBetweenVertices / lifelikeNode.width
+      const backCap = new Shape()
+        .ellipticalArc( 0, height / 2, radiusX, radiusY, 0, 0, Math.PI * 2, false )
+        .close();
+      const backCapPath = new Path( backCap, {
+        fill: '#c4c4c4',
+        stroke: 'black'
       } );
 
-      // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
-      lifelikeNode.centerY = 0;
+      const wireWrappingNode = new Node();
+
+
+      inductor.inductanceProperty.link( inductance => {
+
+        const children = [];
+        const numLoops = Util.roundSymmetric( Util.linear( 10, 100, 5, 20, inductance ) );
+        for ( let i = 0; i < numLoops; i++ ) {
+          const WIRE_LINE_WIDTH = 3;
+          const wireShape = new Shape()
+            .ellipticalArc( 0, height / 2, radiusX, radiusY, 0, -Math.PI / 2, Math.PI / 2, false )
+            .getStrokedShape( new LineStyles( { lineWidth: WIRE_LINE_WIDTH } ) );
+          const wirePath = new Path( wireShape, {
+            fill: '#dc9180',
+            stroke: 'black',
+            x: Util.linear(
+              numLoops / 2, numLoops / 2 + 1,
+              width / 2 + radiusX / 2, width / 2 + WIRE_LINE_WIDTH + radiusX / 2,
+              i )
+          } );
+          wireWrappingNode.addChild( wirePath );
+          children.push( wirePath );
+        }
+        wireWrappingNode.children = children;
+      } );
+
+      const lifelikeNode = new Node( {
+        children: [ backCapPath, frontPath, wireWrappingNode ],
+        centerY: 0
+      } );
 
       super(
         screenView,
