@@ -1,4 +1,4 @@
-// Copyright 2017-2019, University of Colorado Boulder
+// Copyright 2019, University of Colorado Boulder
 
 /**
  * Button that clears the magnetic field from an inductor or electric field from a capacitor.
