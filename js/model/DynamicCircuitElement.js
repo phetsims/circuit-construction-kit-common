@@ -32,6 +32,16 @@ define( require => {
       // the currentProperty.  TODO: Can we use currentProperty instead?
       this.mnaCurrent = 0;
     }
+
+    /**
+     * Reset the dynamic variable for the modified nodal analysis solver. This has the effect of clearing the
+     * electric field (capacitor) or clearing the magnetic field (inductor)
+     * @public
+     */
+    clear() {
+      this.mnaVoltageDrop = 0;
+      this.mnaCurrent = 0;
+    }
   }
 
   return circuitConstructionKitCommon.register( 'DynamicCircuitElement', DynamicCircuitElement );

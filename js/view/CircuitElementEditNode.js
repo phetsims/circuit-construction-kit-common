@@ -10,10 +10,13 @@ define( require => {
 
   // modules
   const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
+  const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const ClearDynamicsButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ClearDynamicsButton' );
   const Fuse = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Fuse' );
   const HBox = require( 'SCENERY/nodes/HBox' );
+  const Inductor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Inductor' );
   const merge = require( 'PHET_CORE/merge' );
   const NumberControl = require( 'SCENERY_PHET/NumberControl' );
   const PhetFont = require( 'SCENERY_PHET/PhetFont' );
@@ -92,6 +95,12 @@ define( require => {
 
         // TODO: Rename type to reverse
         children.push( new RotateBatteryButton( circuit, circuitElement, tandem.createTandem( 'reverseBatteryButton' ) ) );
+      }
+      if ( circuitElement instanceof Inductor ) {
+        children.push( new ClearDynamicsButton( circuitElement, tandem.createTandem( 'clearInductorButton' ) ) );
+      }
+      if ( circuitElement instanceof Capacitor ) {
+        children.push( new ClearDynamicsButton( circuitElement, tandem.createTandem( 'clearCapacitorButton' ) ) );
       }
       if ( circuitElement instanceof Fuse ) {
         children.push( new ResetFuseButton( circuitElement, tandem.createTandem( 'resetFuseButton' ) ) );
