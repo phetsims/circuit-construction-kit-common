@@ -25,6 +25,7 @@ define( require => {
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Panel = require( 'SUN/Panel' );
+  const PhaseShiftControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/PhaseShiftControl' );
   const Range = require( 'DOT/Range' );
   const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   const SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
@@ -219,7 +220,9 @@ define( require => {
                     delta: 0.1,
                     editableRange: new Range( 0.1, 2 ) // TODO: what range here?
                   }
-                ) ]
+                ), new PhaseShiftControl( selectedCircuitElement, {
+                  tandem: groupTandem.createNextTandem()
+                } ) ]
             } ) );
           }
           else if ( isCapacitor ) {

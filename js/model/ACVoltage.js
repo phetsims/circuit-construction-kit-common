@@ -14,6 +14,8 @@ define( require => {
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
+  const Range = require( 'DOT/Range' );
+  const Util = require( 'DOT/Util' );
 
   // constants
   const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
@@ -58,17 +60,24 @@ define( require => {
       // the user can only create a certain number of "left" or "right" batteries from the toolbox.
       this.initialOrientation = options.initialOrientation;
 
-      // @private
-      this.phase = 0;
+      // @public (read-only)
+      this.phaseProperty = new NumberProperty( 0, {
+        range: new Range( -180, 180 ),
+        tandem: tandem.createTandem( 'phaseProperty' ),
+        units: 'degrees'
+      } );
 
       // @private
       this.time = 0;
 
       // Phase matching so the chart doesn't get jagged
       this.frequencyProperty.link( ( frequency, oldFrequency ) => {
-        const oldArgument = 2 * Math.PI * oldFrequency * this.time + this.phase;
+
+        // TODO: compute all this in degrees
+        const oldArgument = 2 * Math.PI * oldFrequency * this.time + this.phaseProperty.value * Math.PI / 180;
+
         //  2 * Math.PI * frequency * this.time + newPhase  = oldArg;
-        this.phase = oldArgument - 2 * Math.PI * frequency * this.time;
+        this.phaseProperty.value = Util.moduloBetweenDown( ( oldArgument - 2 * Math.PI * frequency * this.time ) * 180 / Math.PI, -180, 180 );
       } );
     }
 
@@ -114,7 +123,7 @@ define( require => {
     step( time, dt ) {
       this.time = time;
       this.voltageProperty.set(
-        this.maximumVoltageProperty.value * Math.sin( 2 * Math.PI * this.frequencyProperty.value * time + this.phase )
+        this.maximumVoltageProperty.value * Math.sin( 2 * Math.PI * this.frequencyProperty.value * time + this.phaseProperty.value * Math.PI / 180 )
       );
     }
   }
