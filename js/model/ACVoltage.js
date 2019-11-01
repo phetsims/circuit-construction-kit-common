@@ -69,16 +69,6 @@ define( require => {
 
       // @private
       this.time = 0;
-
-      // Phase matching so the chart doesn't get jagged
-      this.frequencyProperty.link( ( frequency, oldFrequency ) => {
-
-        // TODO: compute all this in degrees
-        const oldArgument = 2 * Math.PI * oldFrequency * this.time + this.phaseProperty.value * Math.PI / 180;
-
-        //  2 * Math.PI * frequency * this.time + newPhase  = oldArg;
-        this.phaseProperty.value = Util.moduloBetweenDown( ( oldArgument - 2 * Math.PI * frequency * this.time ) * 180 / Math.PI, -180, 180 );
-      } );
     }
 
     /**
