@@ -15,7 +15,6 @@ define( require => {
   const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Range = require( 'DOT/Range' );
-  const Util = require( 'DOT/Util' );
 
   // constants
   const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
