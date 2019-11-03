@@ -54,6 +54,8 @@ define( require => {
     .lineTo( WIDTH, 0 )
     .moveTo( RIGHT_JUNCTION, LARGE_TERMINAL_WIDTH / 2 ) // right plate
     .lineTo( RIGHT_JUNCTION, -LARGE_TERMINAL_WIDTH / 2 );
+
+  // TODO: the icon should also have the same width as other icons in the toolbox.
   const SCHEMATIC_SCALE = 0.5825531914893617; // Tuned so the component fits between the vertices
 
   // Scale to fit the correct width
