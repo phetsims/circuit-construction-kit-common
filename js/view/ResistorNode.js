@@ -55,9 +55,6 @@ define( require => {
   const SCHEMATIC_STEM_WIDTH = 84 * SCHEMATIC_SCALE;
   const SCHEMATIC_WAVELENGTH = 54 * SCHEMATIC_SCALE;
 
-  // cache the rasters so they aren't added to the spritesheet multiple times
-  const schematicRasterCache = {};
-
   const RESISTOR_IMAGE_MAP = {};
   RESISTOR_IMAGE_MAP[ Resistor.ResistorType.COIN ] = coinImage;
   RESISTOR_IMAGE_MAP[ Resistor.ResistorType.PAPER_CLIP ] = paperClipImage;
@@ -156,21 +153,10 @@ define( require => {
 
       const scale = lifelikeResistorImageNode.width / schematicShape.bounds.width;
       schematicShape = schematicShape.transformed( Matrix3.scale( scale, scale ) );
-      let schematicNode = null;
-      if ( !options.isIcon && schematicRasterCache[ resistor.resistorType ] ) {
-        schematicNode = schematicRasterCache[ resistor.resistorType ];
-      }
-      else {
-        schematicNode = new Path( schematicShape, {
-          stroke: Color.BLACK,
-          lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH
-        } ).rasterized( { wrap: false } );
-
-        // icons are all the same size in the toolbox, so only cache the non-icons (with the correct heights)
-        if ( !options.isIcon ) {
-          schematicRasterCache[ resistor.resistorType ] = schematicNode;
-        }
-      }
+      const schematicNode = new Path( schematicShape, {
+        stroke: Color.BLACK,
+        lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH
+      } );
 
       // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
       schematicNode.centerY = 0;
