@@ -13,59 +13,36 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
   const FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
-  const Image = require( 'SCENERY/nodes/Image' );
   const LineStyles = require( 'KITE/util/LineStyles' );
   const Matrix3 = require( 'DOT/Matrix3' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
   const Shape = require( 'KITE/Shape' );
   const Util = require( 'DOT/Util' );
 
-  // images
-  const batteryImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/battery.png' );
-
   // constants
   // dimensions for schematic
-  const SMALL_TERMINAL_WIDTH = 104;
-  const LARGE_TERMINAL_WIDTH = 104;
-  const WIDTH = 188;
-  const GAP = 30;
-  const LEFT_JUNCTION = WIDTH / 2 - GAP / 2;
-  const RIGHT_JUNCTION = WIDTH / 2 + GAP / 2;
+  const NUMBER_OF_BUMPS = 4;
+  const SCHEMATIC_WIDTH = CCKCConstants.BATTERY_LENGTH;
+  const SCHEMATIC_MARGIN = 20;
+  const SCHEMATIC_ARC_RADIUS = ( SCHEMATIC_WIDTH - SCHEMATIC_MARGIN * 2 ) / NUMBER_OF_BUMPS / 2;
 
-  // Points sampled using Photoshop from a raster of the IEEE icon seen at
-  // https://upload.wikimedia.org/wikipedia/commons/c/cb/Circuit_elements.svg
-  let schematicShape = new Shape()
+  // TODO: this and capacitor don't extend all the way to rightmost vertex
+  const schematicShape = new Shape()
     .moveTo( 0, 0 ) // left wire
-    .lineTo( LEFT_JUNCTION, 0 )
-    .moveTo( LEFT_JUNCTION, SMALL_TERMINAL_WIDTH / 2 ) // left plate
-    .lineTo( LEFT_JUNCTION, -SMALL_TERMINAL_WIDTH / 2 )
-    .moveTo( RIGHT_JUNCTION, 0 ) // right wire
-    .lineTo( WIDTH, 0 )
-    .moveTo( RIGHT_JUNCTION, LARGE_TERMINAL_WIDTH / 2 ) // right plate
-    .lineTo( RIGHT_JUNCTION, -LARGE_TERMINAL_WIDTH / 2 );
-  const schematicWidth = schematicShape.bounds.width;
-  const desiredWidth = CCKCConstants.BATTERY_LENGTH;
-  const schematicScale = desiredWidth / schematicWidth;
+    .lineTo( SCHEMATIC_MARGIN, 0 )
+    .arc( SCHEMATIC_MARGIN + SCHEMATIC_ARC_RADIUS * 1, 0, SCHEMATIC_ARC_RADIUS, Math.PI, 0, false ) // left plate
+    .arc( SCHEMATIC_MARGIN + SCHEMATIC_ARC_RADIUS * 3, 0, SCHEMATIC_ARC_RADIUS, Math.PI, 0, false ) // left plate
+    .arc( SCHEMATIC_MARGIN + SCHEMATIC_ARC_RADIUS * 5, 0, SCHEMATIC_ARC_RADIUS, Math.PI, 0, false ) // left plate
+    .arc( SCHEMATIC_MARGIN + SCHEMATIC_ARC_RADIUS * 7, 0, SCHEMATIC_ARC_RADIUS, Math.PI, 0, false ) // left plate
+    .lineTo( SCHEMATIC_WIDTH, 0 );
 
   const LIFELIKE_HEIGHT = 60;
   const LIFELIKE_WIDTH = CCKCConstants.BATTERY_LENGTH;
   const LIFELIKE_RADIUS_X = 5;
   const LIFELIKE_RADIUS_Y = LIFELIKE_HEIGHT / 2;
   const LIFELIKE_WIRE_LINE_WIDTH = 3;
-
-  // Scale to fit the correct width
-  schematicShape = schematicShape.transformed( Matrix3.scale( schematicScale, schematicScale ) );
-  const schematicNode = new Path( schematicShape, {
-    stroke: Color.BLACK,
-    lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH
-  } ).rasterized( { wrap: false } ); // TODO: don't rasterize, it is blurry
-
-  schematicNode.centerY = 0;
-
-  // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
-  schematicNode.mouseArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
-  schematicNode.touchArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
 
   class InductorNode extends FixedCircuitElementNode {
 
@@ -78,6 +55,8 @@ define( require => {
      * @param {Object} [options]
      */
     constructor( screenView, circuitLayerNode, inductor, viewTypeProperty, tandem, options ) {
+
+      options = merge( { isIcon: false }, options );
 
       // The main body, in front.
       const lifelikeBodyShape = new Shape()
@@ -124,6 +103,24 @@ define( require => {
         centerY: 0
       } );
 
+      const width = options.isIcon ? CCKCConstants.INDUCTOR_LENGTH : inductor.distanceBetweenVertices;
+      lifelikeNode.mutate( {
+        scale: width / lifelikeNode.width
+      } );
+
+      const scale = lifelikeNode.width / schematicShape.bounds.width;
+
+      // Scale to fit the correct width
+      const scaledShape = schematicShape.transformed( Matrix3.scale( scale, scale ) );
+      const schematicNode = new Path( scaledShape, {
+        stroke: Color.BLACK,
+        lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH
+      } );
+
+      // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
+      schematicNode.mouseArea = schematicNode.bounds.dilated( 2 );
+      schematicNode.touchArea = schematicNode.bounds.dilated( 2 );
+
       super(
         screenView,
         circuitLayerNode,
@@ -160,9 +157,7 @@ define( require => {
    * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
    * @public {Array.<Image>}
    */
-  InductorNode.webglSpriteNodes = [
-    new Image( batteryImage )
-  ];
+  InductorNode.webglSpriteNodes = [];
 
   return circuitConstructionKitCommon.register( 'InductorNode', InductorNode );
 } );
