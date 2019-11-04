@@ -4,7 +4,7 @@
  * The CircuitStruct keeps track of the Circuit components but without wiring up listeners or solving physics.
  * It is necessary in order to keep track of black box state (user created circuit and black box circuit).
  *
- * TODO: Use new save/load feature instead
+ * TODO (black-box-study): Use new save/load feature instead
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -74,6 +74,7 @@ define( require => {
 
   /**
    * Create a CircuitStruct from a plain object for deserialization.
+   * @param {Object} circuit
    * @param {Object} circuitState
    * @param {NumberProperty} resistivityProperty - shared value for resistivity across all of the wires
    * @param {Tandem} tandem
@@ -110,7 +111,7 @@ define( require => {
         circuitStruct.vertices[ circuitState.batteries[ i ].startVertex ],
         circuitStruct.vertices[ circuitState.batteries[ i ].endVertex ],
         new Property( 0 ),
-        Battery.BatteryType.NORMAL, // TODO(phet-io): save/restore battery type
+        Battery.BatteryType.NORMAL, // TODO (black-box-study): save/restore battery type
         tandem.createNextTandem(), {
           voltage: circuitState.batteries[ i ].voltage
         }
@@ -132,7 +133,7 @@ define( require => {
         circuitStruct.vertices[ circuitState.lightBulbs[ i ].startVertex ],
         circuitStruct.vertices[ circuitState.lightBulbs[ i ].endVertex ],
         circuitState.lightBulbs[ i ].resistance,
-        null, // TODO (phet-io) pass this value somehow
+        null, // TODO (black-box-study) pass this value somehow
         tandem.createNextTandem(),
         options
       ) );

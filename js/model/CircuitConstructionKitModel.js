@@ -117,7 +117,7 @@ define( require => {
       // box study sim
       const modeChanging = false;
 
-      // TODO: started/endedCallbacksForChangedEmitters don't exist anymore. Rewrite if commented back in.
+      // TODO (black-box-study): started/endedCallbacksForChangedEmitters don't exist anymore. Rewrite if commented back in.
       // this.modeProperty.startedCallbacksForChangedEmitter.addListener( function() {
       //   modeChanging = true;
       // } );
@@ -126,7 +126,7 @@ define( require => {
       // } );
       if ( CCKCQueryParameters.showDepictValuesToggleButton ) {
 
-        // TODO: (black-box-study) fix this
+        // TODO (black-box-study) fix this
         const pause = () => {
           if ( !modeChanging ) {
             this.isValueDepictionEnabledProperty.value = false;

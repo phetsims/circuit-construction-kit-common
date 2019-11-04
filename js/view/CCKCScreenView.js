@@ -353,7 +353,7 @@ define( require => {
       if ( options.showStopwatchCheckbox ) {
         const stopwatchNodeTandem = tandem.createTandem( 'stopwatchNode' );
         const isTimerRunningProperty = new BooleanProperty( false, { tandem: stopwatchNodeTandem.createTandem( 'isRunningProperty' ) } );
-        this.timerNode = new TimerNode( new NumberProperty( 0 ), isTimerRunningProperty, { // todo rename stopwatchNode
+        this.timerNode = new TimerNode( new NumberProperty( 0 ), isTimerRunningProperty, { // TODO: rename stopwatchNode
           tandem: stopwatchNodeTandem,
           right: controlPanelVBox.left - HORIZONTAL_MARGIN
         } );

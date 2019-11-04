@@ -460,10 +460,14 @@ define( require => {
 
   class DynamicState {
 
-    constructor( circuit, solution ) {
-      assert && assert( circuit, 'circuit should be defined' );
-      this.circuit = circuit;
-      this.solution = solution;
+    /**
+     * @param {DynamicCircuit} dynamicCircuit
+     * @param {DynamicCircuitSolution} dynamicCircuitSolution
+     */
+    constructor( dynamicCircuit, dynamicCircuitSolution ) {
+      assert && assert( dynamicCircuit, 'circuit should be defined' );
+      this.circuit = dynamicCircuit;
+      this.solution = dynamicCircuitSolution;
     }
 
     update( dt ) {

@@ -1094,7 +1094,7 @@ define( require => {
         return true;
       } );
 
-      // TODO(black-box-study): integrate rule (9) with the other rules above
+      // TODO (black-box-study): integrate rule (9) with the other rules above
       // (9) When in Black Box "build" mode (i.e. building inside the black box), a vertex user cannot connect to
       // a black box interface vertex if its other vertices would be outside of the black box.  See #136
       if ( mode === Circuit.InteractionMode.TEST ) {
