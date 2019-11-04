@@ -55,9 +55,10 @@ define( require => {
         font: FONT
       } );
 
-      const spinner = new NumberSpinner( acVoltage.phaseProperty, valueRangeProperty, merge( {}, spinnerOptions, {
+      const numberSpinner = new NumberSpinner( acVoltage.phaseProperty, valueRangeProperty, merge( {}, spinnerOptions, {
         arrowsPosition: 'leftRight',
-        valuePattern: '{{value}}' + MathSymbols.DEGREES // Does not require internationalization
+        valuePattern: '{{value}}' + MathSymbols.DEGREES, // Does not require internationalization
+        tandem: options.tandem.createTandem( 'numberSpinner' )
       } ) );
 
       options = merge( {
@@ -65,7 +66,7 @@ define( require => {
       }, options );
 
       assert && assert( !options.children, 'children not supported' );
-      options.children = [ title, spinner ];
+      options.children = [ title, numberSpinner ];
 
       super( options );
     }
