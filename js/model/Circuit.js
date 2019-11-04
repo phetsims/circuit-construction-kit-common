@@ -546,8 +546,6 @@ define( require => {
           this.disposeFromGroup( circuitElement );
           this.removeVertexIfOrphaned( circuitElement.startVertexProperty.value );
           this.removeVertexIfOrphaned( circuitElement.endVertexProperty.value );
-
-          this.vertexGroup.clear(); // TODO: why isn't the preceding code removing the vertices?
         }
         assert && assert( this.vertexGroup.length === 0, 'vertices should have been removed' );
       }
