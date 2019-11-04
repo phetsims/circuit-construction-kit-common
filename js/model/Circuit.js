@@ -356,18 +356,29 @@ define( require => {
           tandem: tandem.createTandem( 'lightBulbGroup' )
         } );
 
+      this.groups = [
+        this.wireGroup,
+        this.batteryGroup,
+        this.highVoltageBatteryGroup,
+        this.acVoltageGroup,
+        this.resistorGroup,
+        this.fuseGroup,
+        this.capacitorGroup,
+        this.inductorGroup,
+        this.switchGroup,
+        this.lightBulbGroup
+      ];
+
       // @private {boolean} - whether physical characteristics have changed and warrant solving for currents and voltages
       this.dirty = false;
     }
 
-    // TODO: Find a better way
+    /**
+     * Find the corresponding group that contains the circuitElement and dispose it.
+     * @param {CircuitElement} circuitElement
+     */
     disposeFromGroup( circuitElement ) {
-      const keys = _.keys( this );
-      keys.forEach( key => {
-        if ( key.endsWith( 'Group' ) && this[ key ] instanceof PhetioGroup && this[ key ].array.indexOf( circuitElement ) >= 0 ) {
-          this[ key ].disposeGroupMember( circuitElement );
-        }
-      } );
+      this.groups.forEach( group => group.contains( circuitElement ) && group.disposeGroupMember( circuitElement ) );
     }
 
     /**
