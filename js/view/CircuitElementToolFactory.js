@@ -356,8 +356,8 @@ define( require => {
         return position => {
 
           // TODO: groupify
-          const vertexPair = this.circuit.createVertexPair( position, resistorLength );
-          return new Resistor( vertexPair.startVertex, vertexPair.endVertex, groupTandem.createNextTandem(), {
+          const vertexPair = this.circuit.createVertexPairArray( position, resistorLength );
+          return new Resistor( vertexPair[ 0 ], vertexPair[ 1 ], groupTandem.createNextTandem(), {
             resistance: resistance,
             resistorType: resistorType,
             resistorLength: resistorLength
@@ -604,10 +604,10 @@ define( require => {
           } ),
         circuitElement => circuitElement instanceof Resistor && circuitElement.resistorType === Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR,
         position => {
-          const vertexPair = this.circuit.createVertexPair( position, RESISTOR_LENGTH );
+          const vertices = this.circuit.createVertexPairArray( position, RESISTOR_LENGTH );
           return new Resistor(
-            vertexPair.startVertex,
-            vertexPair.endVertex,
+            vertices[ 0 ],
+            vertices[ 1 ],
             Tandem.optional, {
               resistorType: Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR,
               resistance: CCKCConstants.HIGH_RESISTANCE,

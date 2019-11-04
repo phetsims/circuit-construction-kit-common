@@ -385,21 +385,14 @@ define( require => {
      * Create a pair of vertices to be used for a new CircuitElement
      * @param {Vector2} position - the position of the center of the CircuitElement
      * @param {number} length - the distance between the vertices
-     * @returns {{startVertex: Vertex, endVertex: Vertex}}
+     * @returns {Vertex[]} with 2 elements
      * @private
      */
-    createVertexPair( position, length ) {
-      assert && assert( position, 'position should be defined' );
-      return {
-        startVertex: this.createVertex( position.plusXY( -length / 2, 0 ) ),
-        endVertex: this.createVertex( position.plusXY( length / 2, 0 ) )
-      };
-    }
-
-    // TODO: Will we need this and createVertexPair?
     createVertexPairArray( position, length ) {
-      const pair = this.createVertexPair( position, length );
-      return [ pair.startVertex, pair.endVertex ];
+      return [
+        this.createVertex( position.plusXY( -length / 2, 0 ) ),
+        this.createVertex( position.plusXY( length / 2, 0 ) )
+      ];
     }
 
     // TODO: Find a better way
