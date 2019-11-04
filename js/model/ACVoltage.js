@@ -92,19 +92,6 @@ define( require => {
     }
 
     /**
-     * Get all intrinsic properties of this object, which can be used to load it at a later time.
-     * @returns {Object}
-     * @public
-     */
-    toIntrinsicStateObject() {
-      const parent = super.toIntrinsicStateObject();
-      return merge( parent, {
-        batteryType: this.batteryType,
-        voltage: this.voltageProperty.value
-      } );
-    }
-
-    /**
      * @param {number} time - total elapsed time
      * @param {number} dt - delta between last frame and current frame
      * @public

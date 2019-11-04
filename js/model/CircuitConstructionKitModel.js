@@ -21,7 +21,6 @@ define( require => {
   const EnumerationProperty = require( 'AXON/EnumerationProperty' );
   const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
-  const StringIO = require( 'TANDEM/types/StringIO' );
   const Util = require( 'DOT/Util' );
   const Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Voltmeter' );
   const ZoomAnimation = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ZoomAnimation' );
@@ -139,27 +138,16 @@ define( require => {
         this.circuit.circuitElements.lengthProperty.link( pause );
       }
 
-      // For PhET-iO, when a component is edited or a vertex is added, connected, or cut, output the circuit to the data
-      // stream. Only do this for phet-io brand so it doesn't disturb performance of other brands
-      if ( phet.phetio ) {
+      // Broad channel for PhET-iO that signifies a change in the circuit. Wrapper listeners can call get state after circuit
+      // changes to obtain the new circuit.
+      const circuitChangedEmitter = new Emitter( {
+        tandem: tandem.createTandem( 'circuitChangedEmitter' )
+      } );
 
-        const circuitChangedEmitter = new Emitter( {
-          tandem: tandem.createTandem( 'circuitChangedEmitter' ),
-          parameters: [ { name: 'circuitJSON', phetioType: StringIO } ]
-        } );
-
-        const emitCircuitChanged = () => {
-
-          // Wait until all vertices have been added so we can get their indices without erroring out.
-          // TODO (phet-io): investigate coarse-grained messages (vertex cut, item added, etc) instead of vertex added,
-          // which could lead to inconsistent state. On the other hand, why is CircuitElement added before vertex?  That
-          // could solve it
-          setTimeout( () => circuitChangedEmitter.emit( JSON.stringify( this.circuit.toStateObject() ) ), 0 );
-        };
-        this.circuit.vertexGroup.addMemberCreatedListener( emitCircuitChanged );
-        this.circuit.vertexGroup.addMemberDisposedListener( emitCircuitChanged );
-        this.circuit.componentEditedEmitter.addListener( emitCircuitChanged );
-      }
+      const emitCircuitChanged = () => circuitChangedEmitter.emit();
+      this.circuit.vertexGroup.addMemberCreatedListener( emitCircuitChanged );
+      this.circuit.vertexGroup.addMemberDisposedListener( emitCircuitChanged );
+      this.circuit.componentEditedEmitter.addListener( emitCircuitChanged );
 
       // When the simulation pauses and resumes, clear the time scaling factor (so it doesn't show a stale value)
       this.isValueDepictionEnabledProperty.link( () => this.circuit.chargeAnimator.timeScaleRunningAverage.clear() );

@@ -41,7 +41,6 @@ define( require => {
   const PropertyIO = require( 'AXON/PropertyIO' );
   const ReferenceIO = require( 'TANDEM/types/ReferenceIO' );
   const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
-  const SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
   const Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
@@ -1230,57 +1229,6 @@ define( require => {
       this.batteryResistanceProperty.reset();
       this.chargeAnimator.reset();
       this.selectedCircuitElementProperty.reset();
-    }
-
-    /**
-     * Convert the Circuit to a state object which can be serialized or printed.
-     * @public
-     */
-    toStateObject() {
-
-      // TODO: better way?
-      const typeMap = {
-        wire: Wire,
-        battery: Battery,
-        resistor: Resistor,
-        seriesAmmeter: SeriesAmmeter,
-        lightBulb: LightBulb,
-        switch: Switch
-      };
-
-      const getKey = circuitElement => {
-        const keys = _.keys( typeMap );
-        for ( let i = 0; i < keys.length; i++ ) {
-          const key = keys[ i ];
-          if ( circuitElement instanceof typeMap[ key ] ) {
-            return key;
-          }
-        }
-      };
-
-      return {
-        wireResistivity: this.wireResistivityProperty.value,
-        batteryResistance: this.batteryResistanceProperty.value,
-        vertices: this.vertexGroup.map( vertex => {
-          return {
-            x: vertex.positionProperty.get().x,
-            y: vertex.positionProperty.get().y,
-            options: {
-              attachable: vertex.attachableProperty.get(),
-              draggable: vertex.draggableProperty.get()
-            },
-            tandemID: vertex.vertexTandem.phetioID
-          };
-        } ),
-        circuitElements: this.circuitElements.getArray().map( circuitElement => {
-          return merge( {
-            type: getKey( circuitElement ),
-            tandemID: circuitElement.tandem.phetioID,
-            startVertexIndex: this.vertexGroup.array.indexOf( circuitElement.startVertexProperty.get() ),
-            endVertexIndex: this.vertexGroup.array.indexOf( circuitElement.endVertexProperty.get() )
-          }, circuitElement.toIntrinsicStateObject() );
-        } )
-      };
     }
   }
 

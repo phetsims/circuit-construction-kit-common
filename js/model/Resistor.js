@@ -85,20 +85,6 @@ define( require => {
     getCircuitProperties() {
       return [ this.resistanceProperty ];
     }
-
-    /**
-     * Get all intrinsic properties of this object, which can be used to load it at a later time.
-     * @returns {Object}
-     * @public
-     */
-    toIntrinsicStateObject() {
-      const parent = super.toIntrinsicStateObject();
-      return merge( parent, {
-        resistorType: this.resistorType,
-        resistance: this.resistanceProperty.value,
-        resistorLength: this.chargePathLength
-      } );
-    }
   }
 
   // Enumeration for the different resistor types.

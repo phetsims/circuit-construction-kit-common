@@ -101,20 +101,6 @@ define( require => {
     getCircuitProperties() {
       return [ this.resistanceProperty, this.isTrippedProperty ];
     }
-
-    /**
-     * Get all intrinsic properties of this object, which can be used to load it at a later time.
-     * @returns {Object}
-     * @public
-     */
-    toIntrinsicStateObject() {
-      const parent = super.toIntrinsicStateObject();
-      return merge( parent, {
-        resistance: this.resistanceProperty.value,
-        currentRating: this.currentRatingProperty.value,
-        fuseLength: this.chargePathLength
-      } );
-    }
   }
 
   return circuitConstructionKitCommon.register( 'Fuse', Fuse );

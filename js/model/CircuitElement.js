@@ -361,16 +361,6 @@ define( require => {
       const end = this.endVertexProperty.value.positionProperty.get();
       return start.average( end );
     }
-
-    /**
-     * Get all intrinsic properties of this object, which can be used to load it at a later time.
-     * @returns {Object}
-     * @public
-     */
-    toIntrinsicStateObject() {
-      return { tandemName: this.tandem.name };
-    }
-
   }
 
   return circuitConstructionKitCommon.register( 'CircuitElement', CircuitElement );

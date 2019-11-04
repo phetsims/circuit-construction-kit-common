@@ -104,18 +104,6 @@ define( require => {
     getCircuitProperties() {
       return [ this.resistanceProperty, this.closedProperty ];
     }
-
-    /**
-     * Get all intrinsic properties of this object, which can be used to load it at a later time.
-     * @returns {Object}
-     * @public
-     */
-    toIntrinsicStateObject() {
-      const parent = super.toIntrinsicStateObject();
-      return merge( parent, {
-        closed: this.closedProperty.value
-      } );
-    }
   }
 
   return circuitConstructionKitCommon.register( 'Switch', Switch );

@@ -87,19 +87,6 @@ define( require => {
     getCircuitProperties() {
       return [ this.voltageProperty ];
     }
-
-    /**
-     * Get all intrinsic properties of this object, which can be used to load it at a later time.
-     * @returns {Object}
-     * @public
-     */
-    toIntrinsicStateObject() {
-      const parent = super.toIntrinsicStateObject();
-      return merge( parent, {
-        batteryType: this.batteryType,
-        voltage: this.voltageProperty.value
-      } );
-    }
   }
 
   // Enumeration for the different types of Battery, NORMAL or HIGH_VOLTAGE
