@@ -281,9 +281,16 @@ define( require => {
       this.dollarBillGroupTandem = tandem.createGroupTandem( 'dollarBills' );
       this.paperClipGroupTandem = tandem.createGroupTandem( 'paperClips' );
 
+      // Create vertices for the API validated/baseline circuit elements.  These are not present in the vertexGroup and
+      // hence not transmitted in the state.
+      const createVertices = length => {
+        const startPosition = new Vector2( -1000, 0 );
+        return [ new Vertex( startPosition ), new Vertex( startPosition.plusXY( length, 0 ) ) ];
+      };
+
       this.wireGroup = new PhetioGroup( 'wire', ( tandem, startVertex, endVertex ) => {
         return new Wire( startVertex, endVertex, this.wireResistivityProperty, tandem );
-      }, () => this.createVertexPairArray2( new Vector2( -1000, 0 ), WIRE_LENGTH ), {
+      }, () => createVertices( WIRE_LENGTH ), {
         phetioType: PhetioGroupIO( CircuitElementIO ),
         tandem: tandem.createTandem( 'wireGroup' )
       } );
@@ -291,7 +298,7 @@ define( require => {
       this.batteryGroup = new PhetioGroup( 'battery', ( tandem, startVertex, endVertex ) => {
         return new Battery( startVertex, endVertex, this.batteryResistanceProperty, Battery.BatteryType.NORMAL,
           tandem );
-      }, () => this.createVertexPairArray2( new Vector2( -1000, 0 ), BATTERY_LENGTH ), {
+      }, () => createVertices( BATTERY_LENGTH ), {
         phetioType: PhetioGroupIO( CircuitElementIO ),
         tandem: tandem.createTandem( 'batteryGroup' )
       } );
@@ -299,62 +306,59 @@ define( require => {
       this.highVoltageBatteryGroup = new PhetioGroup( 'battery', ( tandem, startVertex, endVertex ) => {
         return new Battery( startVertex, endVertex, this.batteryResistanceProperty, Battery.BatteryType.NORMAL,
           tandem );
-      }, () => this.createVertexPairArray2( new Vector2( -1000, 0 ), BATTERY_LENGTH ), {
+      }, () => createVertices( BATTERY_LENGTH ), {
         phetioType: PhetioGroupIO( CircuitElementIO ),
         tandem: tandem.createTandem( 'highVoltageBatteryGroup' )
       } );
 
       this.acVoltageGroup = new PhetioGroup( 'acVoltage', ( tandem, startVertex, endVertex ) => {
         return new ACVoltage( startVertex, endVertex, this.batteryResistanceProperty, tandem );
-      }, () => this.createVertexPairArray2( new Vector2( -1000, 0 ), CCKCConstants.AC_VOLTAGE_LENGTH ), {
+      }, () => createVertices( CCKCConstants.AC_VOLTAGE_LENGTH ), {
         phetioType: PhetioGroupIO( CircuitElementIO ),
         tandem: tandem.createTandem( 'acVoltageGroup' )
       } );
 
       this.resistorGroup = new PhetioGroup( 'resistor',
         ( tandem, startVertex, endVertex ) => new Resistor( startVertex, endVertex, tandem ),
-        () => this.createVertexPairArray2( new Vector2( -1000, 0 ), CCKCConstants.RESISTOR_LENGTH ), {
+        () => createVertices( CCKCConstants.RESISTOR_LENGTH ), {
           phetioType: PhetioGroupIO( CircuitElementIO ),
           tandem: tandem.createTandem( 'resistorGroup' )
         } );
 
       this.fuseGroup = new PhetioGroup( 'fuse',
         ( tandem, startVertex, endVertex ) => new Fuse( startVertex, endVertex, tandem ),
-        () => this.createVertexPairArray2( new Vector2( -1000, 0 ), CCKCConstants.FUSE_LENGTH ), {
+        () => createVertices( CCKCConstants.FUSE_LENGTH ), {
           phetioType: PhetioGroupIO( CircuitElementIO ),
           tandem: tandem.createTandem( 'fuseGroup' )
         } );
 
       this.capacitorGroup = new PhetioGroup( 'capacitor',
         ( tandem, startVertex, endVertex ) => new Capacitor( startVertex, endVertex, tandem ),
-        () => this.createVertexPairArray2( new Vector2( -1000, 0 ), CCKCConstants.CAPACITOR_LENGTH ), {
+        () => createVertices( CCKCConstants.CAPACITOR_LENGTH ), {
           phetioType: PhetioGroupIO( CircuitElementIO ),
           tandem: tandem.createTandem( 'capacitorGroup' )
         } );
 
       this.inductorGroup = new PhetioGroup( 'inductor',
         ( tandem, startVertex, endVertex ) => new Inductor( startVertex, endVertex, tandem ),
-        () => this.createVertexPairArray2( new Vector2( -1000, 0 ), CCKCConstants.INDUCTOR_LENGTH ), {
+        () => createVertices( CCKCConstants.INDUCTOR_LENGTH ), {
           phetioType: PhetioGroupIO( CircuitElementIO ),
           tandem: tandem.createTandem( 'inductorGroup' )
         } );
 
       this.switchGroup = new PhetioGroup( 'switch',
         ( tandem, startVertex, endVertex ) => new Switch( startVertex, endVertex, tandem ),
-        () => this.createVertexPairArray2( new Vector2( -1000, 0 ), CCKCConstants.SWITCH_LENGTH ), {
+        () => createVertices( CCKCConstants.SWITCH_LENGTH ), {
           phetioType: PhetioGroupIO( CircuitElementIO ),
           tandem: tandem.createTandem( 'switchGroup' )
         } );
 
-      this.lightBulbGroup = new PhetioGroup( 'lightBulb',
-        ( tandem, startVertex, endVertex ) => {
-          return new LightBulb( startVertex, endVertex, CCKCConstants.DEFAULT_RESISTANCE, this.viewTypeProperty, tandem );
-        }, () => {
-          return [ new Vertex( new Vector2( -1000, 0 ) ), new Vertex( new Vector2( -1100, 0 ) ) ];
-        }, {
-          phetioType: PhetioGroupIO( CircuitElementIO ),
-          tandem: tandem.createTandem( 'lightBulbGroup' )
-        } );
+      this.lightBulbGroup = new PhetioGroup( 'lightBulb', ( tandem, startVertex, endVertex ) => {
+        return new LightBulb( startVertex, endVertex, CCKCConstants.DEFAULT_RESISTANCE, this.viewTypeProperty, tandem );
+      }, () => createVertices( 100 ), {
+        phetioType: PhetioGroupIO( CircuitElementIO ),
+        tandem: tandem.createTandem( 'lightBulbGroup' )
+      } );
 
       this.groups = [
         this.wireGroup,
@@ -393,11 +397,6 @@ define( require => {
         this.createVertex( position.plusXY( -length / 2, 0 ) ),
         this.createVertex( position.plusXY( length / 2, 0 ) )
       ];
-    }
-
-    // TODO: Find a better way
-    createVertexPairArray2( position, length ) {
-      return [ new Vertex( position ), new Vertex( position.plusXY( length, 0 ) ) ];
     }
 
     /**
