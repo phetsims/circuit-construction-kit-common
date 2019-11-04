@@ -917,9 +917,6 @@ define( require => {
      */
     searchVertices( vertex, okToVisit ) {
 
-      // TODO: Restore this assertion, it was failing for black box study
-      // assert && assert( this.vertexGroup.contains( vertex ), 'Vertex wasn\'t in the model' );
-
       const fixedVertices = [];
       const toVisit = [ vertex ];
       const visited = [];
