@@ -185,7 +185,6 @@ define( require => {
       // Req = dt/2/C
       this.capacitors.forEach( dynamicCapacitor => {
         assert && assert( dynamicCapacitor instanceof DynamicCapacitor, 'Should have been DynamicCapacitor' );
-        const state = dynamicCapacitor.state;
 
         const newNode = _.max( usedNodes ) + 1;
         usedNodes.push( newNode );
@@ -193,7 +192,7 @@ define( require => {
         const companionResistance = dt / 2.0 / dynamicCapacitor.capacitor.capacitance;
 
         // TODO: This sign contradicts the equation above
-        const companionVoltage = state.voltage - companionResistance * state.current;
+        const companionVoltage = dynamicCapacitor.state.voltage - companionResistance * dynamicCapacitor.state.current;
 
         const battery = new ModifiedNodalAnalysisCircuitElement( dynamicCapacitor.capacitor.nodeId0, newNode, null, companionVoltage );
         const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, dynamicCapacitor.capacitor.nodeId1, null, companionResistance );
@@ -212,14 +211,13 @@ define( require => {
       // See najm page 279 and Pillage page 86
       this.inductors.forEach( dynamicInductor => {
         const inductor = dynamicInductor.inductor;
-        const state = dynamicInductor.state;
 
         // In series
         const newNode = _.max( usedNodes ) + 1;
         usedNodes.push( newNode );
 
         const companionResistance = 2 * inductor.inductance / dt;
-        const companionVoltage = state.voltage + companionResistance * state.current;
+        const companionVoltage = dynamicInductor.state.voltage + companionResistance * dynamicInductor.state.current;
 
         const battery = new ModifiedNodalAnalysisCircuitElement( newNode, inductor.nodeId0, null, companionVoltage );
         const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, inductor.nodeId1, null, companionResistance );
