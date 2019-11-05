@@ -47,7 +47,7 @@ define( require => {
         tandem: tandem.createTandem( 'voltageProperty' )
       } );
 
-      // @public
+      // @public - keeps track of which solve iteration pass is in process, see https://github.com/phetsims/circuit-construction-kit-common/issues/245
       this.passProperty = new NumberProperty( 1 );
 
       // @public {Property.<number>} the internal resistance of the battery
