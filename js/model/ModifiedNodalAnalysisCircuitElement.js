@@ -18,8 +18,9 @@ define( require => {
      * @param {number} nodeId1
      * @param {CircuitElement|null} circuitElement, null during qunit tests
      * @param {number} value - resistance for resistors, voltage for battery or current for current source
+     * @param {number|null} currentSolution
      */
-    constructor( nodeId0, nodeId1, circuitElement, value ) {
+    constructor( nodeId0, nodeId1, circuitElement, value, currentSolution = null ) {
       assert && assert( typeof nodeId0 === 'number' );
       assert && assert( typeof nodeId1 === 'number' );
       assert && assert( typeof value === 'number' );
@@ -41,7 +42,18 @@ define( require => {
       this.value = value;
 
       // @public {number} supplied by the modified nodal analysis
-      this.currentSolution = null;
+      this.currentSolution = currentSolution;
+    }
+
+    /**
+     * Creates a new instance matching this one but with a newly specified currentSolution.
+     * Used in unit testing.
+     * @param {number} currentSolution
+     * @returns {ModifiedNodalAnalysisCircuitElement}
+     * @public (unit-tests)
+     */
+    withCurrentSolution( currentSolution ) {
+      return new ModifiedNodalAnalysisCircuitElement( this.nodeId0, this.nodeId1, this.circuitElement, this.value, currentSolution );
     }
 
     /**

@@ -9,12 +9,11 @@ define( require => {
   'use strict';
 
   // modules
-  const merge = require( 'PHET_CORE/merge' );
   const ModifiedNodalAnalysisCircuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuit' );
   const ModifiedNodalAnalysisCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisCircuitElement' );
   const ModifiedNodalAnalysisSolution = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ModifiedNodalAnalysisSolution' );
 
-  QUnit.module( 'ModifiedNodalAnalysisCircuit' );
+  QUnit.module( 'ModifiedNodalAnalysisCircuitTests' );
 
   const approxEquals = ( a, b ) => Math.abs( a - b ) < 1E-6;
 
@@ -43,7 +42,7 @@ define( require => {
       const desiredSolution = new ModifiedNodalAnalysisSolution( {
         0: 0,
         1: 4
-      }, [ merge( {}, battery, { currentSolution: 2.0 } ) ] );
+      }, [ battery.withCurrentSolution( 2.0 ) ] );
       const solution = circuit.solve();
       assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solution should match' );
     } );
@@ -56,7 +55,7 @@ define( require => {
     const desiredSolution = new ModifiedNodalAnalysisSolution( {
       0: 0,
       1: 4
-    }, [ merge( {}, battery, { currentSolution: 2 } ) ] );
+    }, [ battery.withCurrentSolution( 2.0 ) ] );
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solution should match' );
 
     // same magnitude as battery: positive because current flows from node 1 to 0
@@ -75,9 +74,7 @@ define( require => {
       1: 4,
       2: 0,
       3: 0
-    }, [
-      merge( {}, battery, { currentSolution: 1.0 } )
-    ] );
+    }, [ battery.withCurrentSolution( 1.0 ) ] );
     const solution = circuit.solve();
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
   } );
@@ -107,12 +104,7 @@ define( require => {
       1: -4
     };
 
-    const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [ merge(
-      {},
-      battery,
-      {
-        currentSolution: -2
-      } ) ] );
+    const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [ battery.withCurrentSolution( -2 ) ] );
     const solution = circuit.solve();
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
   } );
@@ -129,8 +121,8 @@ define( require => {
       2: -8
     };
     const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [
-      merge( {}, battery1, { currentSolution: -4 } ),
-      merge( {}, battery2, { currentSolution: -4 } )
+      battery1.withCurrentSolution( -4 ),
+      battery2.withCurrentSolution( -4 )
     ] );
     const solution = circuit.solve();
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
@@ -149,9 +141,7 @@ define( require => {
       1: 5,
       2: 2.5
     };
-    const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [
-      merge( {}, battery, { currentSolution: 5 / 20.0 } )
-    ] );
+    const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [ battery.withCurrentSolution( 5 / 20.0 ) ] );
     const solution = circuit.solve();
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
   } );
@@ -169,9 +159,7 @@ define( require => {
       1: 4,
       2: 0
     };
-    const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [
-      merge( {}, battery, { currentSolution: 1.0 } )
-    ] );
+    const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [ battery.withCurrentSolution( 1.0 ) ] );
     const solution = circuit.solve();
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
   } );
@@ -189,9 +177,7 @@ define( require => {
       1: 4, 2: 0, 3: 0
     };
 
-    const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [
-      merge( {}, battery, { currentSolution: 1.0 } )
-    ] );
+    const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [ battery.withCurrentSolution( 1.0 ) ] );
     const solution = circuit.solve();
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
   } );
@@ -210,8 +196,8 @@ define( require => {
       2: 0
     };
     const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [
-      merge( {}, battery, { currentSolution: 5.0 / 10.0 } ),
-      merge( {}, resistor, { currentSolution: 5.0 / 10.0 } )
+      battery.withCurrentSolution( 5 / 10 ),
+      resistor.withCurrentSolution( 5 / 10 )
     ] );
     const solution = circuit.solve();
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
@@ -231,9 +217,7 @@ define( require => {
     ], [] );
     const voltageMap = { 0: 0, 1: V };
 
-    const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [
-      merge( {}, battery, { currentSolution: V / Req } )
-    ] );
+    const desiredSolution = new ModifiedNodalAnalysisSolution( voltageMap, [ battery.withCurrentSolution( V / Req ) ] );
     const solution = circuit.solve();
     assert.equal( solution.approxEquals( desiredSolution, assert ), true, 'solutions should match' );
   } );
