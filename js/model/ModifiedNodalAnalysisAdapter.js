@@ -190,7 +190,7 @@ define( require => {
 
         // Unconnected vertices like those in the black box may not have an entry in the matrix, so mark them as zero.
         // TODO: should this average over states?
-        const v = circuitResult.resultSet.states[ 0 ].state.solution.getNodeVoltage( i );
+        const v = circuitResult.resultSet.states[ 0 ].state.dynamicCircuitSolution.getNodeVoltage( i );
         vertex.voltageProperty.set( v || 0 );
       } );
     }

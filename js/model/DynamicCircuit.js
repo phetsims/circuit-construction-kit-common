@@ -57,19 +57,19 @@ define( require => {
         update: ( a, dt ) => a.update( dt ),
         distance: ( a, b ) => {
           const aCurrents = [];
-          for ( let i = 0; i < a.circuit.capacitors.length; i++ ) {
-            aCurrents.push( a.circuit.capacitors[ i ].getCurrent() );
+          for ( let i = 0; i < a.dynamicCircuit.capacitors.length; i++ ) {
+            aCurrents.push( a.dynamicCircuit.capacitors[ i ].getCurrent() );
           }
-          for ( let i = 0; i < a.circuit.inductors.length; i++ ) {
-            aCurrents.push( a.circuit.inductors[ i ].getCurrent() );
+          for ( let i = 0; i < a.dynamicCircuit.inductors.length; i++ ) {
+            aCurrents.push( a.dynamicCircuit.inductors[ i ].getCurrent() );
           }
 
           const bCurrents = [];
-          for ( let i = 0; i < b.circuit.capacitors.length; i++ ) {
-            bCurrents.push( b.circuit.capacitors[ i ].getCurrent() );
+          for ( let i = 0; i < b.dynamicCircuit.capacitors.length; i++ ) {
+            bCurrents.push( b.dynamicCircuit.capacitors[ i ].getCurrent() );
           }
-          for ( let i = 0; i < b.circuit.inductors.length; i++ ) {
-            bCurrents.push( b.circuit.inductors[ i ].getCurrent() );//todo: read from companion object
+          for ( let i = 0; i < b.dynamicCircuit.inductors.length; i++ ) {
+            bCurrents.push( b.dynamicCircuit.inductors[ i ].getCurrent() );//todo: read from companion object
           }
           return euclideanDistance( aCurrents, bCurrents );
         }
@@ -102,7 +102,7 @@ define( require => {
      * @returns DynamicCircuitSolution
      */
     solveItWithSubdivisions( dt ) {
-      return this.solveWithSubdivisions2( dt ).getFinalState().getSolution();
+      return this.solveWithSubdivisions2( dt ).getFinalState().dynamicCircuitSolution;
     }
 
     /**
@@ -111,7 +111,7 @@ define( require => {
      * @returns DynamicCircuitSolution
      */
     solveItWithSubdivisions2( timestepSubdivisions, dt ) {
-      return this.solveWithSubdivisions( timestepSubdivisions, dt ).getFinalState().getSolution();
+      return this.solveWithSubdivisions( timestepSubdivisions, dt ).getFinalState().dynamicCircuitSolution;
     }
 
     /**
@@ -306,7 +306,7 @@ define( require => {
     getTimeAverageCurrent( element ) {
       let weightedSum = 0.0;
       this.resultSet.states.forEach( state => {
-        weightedSum += state.state.getSolution().getCurrent( element ) * state.subdivisionDT;//todo: make sure this is right
+        weightedSum += state.state.dynamicCircuitSolution.getCurrent( element ) * state.subdivisionDT;//todo: make sure this is right
         assert && assert( !isNaN( weightedSum ) );
       } );
 
@@ -320,7 +320,7 @@ define( require => {
      * @returns {number}
      */
     getInstantaneousCurrent( element ) {
-      return this.getFinalState().getSolution().getCurrent( element );
+      return this.getFinalState().dynamicCircuitSolution.getCurrent( element );
     }
 
     /**
@@ -330,7 +330,7 @@ define( require => {
     getTimeAverageVoltage( element ) {
       let weightedSum = 0.0;
       this.resultSet.forEach( state => {
-        weightedSum += state.state.getSolution().getVoltage( element ) * state.dt;//todo: make sure this is right
+        weightedSum += state.state.dynamicCircuitSolution.getVoltage( element ) * state.dt;//todo: make sure this is right
       } );
       return weightedSum / this.resultSet.getTotalTime();
     }
@@ -340,7 +340,7 @@ define( require => {
      * @returns {number}
      */
     getInstantaneousVoltage( element ) {
-      return this.getFinalState().getSolution().getVoltage( element );
+      return this.getFinalState().dynamicCircuitSolution.getVoltage( element );
     }
 
     /**
@@ -355,7 +355,7 @@ define( require => {
      * @returns {number}
      */
     getInstantaneousNodeVoltage( node ) {
-      return this.getFinalState().getSolution().getNodeVoltage( node );
+      return this.getFinalState().dynamicCircuitSolution.getNodeVoltage( node );
     }
 
     /**
@@ -365,7 +365,7 @@ define( require => {
     getAverageNodeVoltage( node ) {
       let weightedSum = 0.0;
       this.resultSet.forEach( state => {
-        weightedSum += state.state.getSolution().getNodeVoltage( node ) * state.dt;//todo: make sure this is right too
+        weightedSum += state.state.dynamicCircuitSolution.getNodeVoltage( node ) * state.dt;//todo: make sure this is right too
       } );
       return weightedSum / this.resultSet.getTotalTime();
     }
@@ -462,26 +462,22 @@ define( require => {
 
     /**
      * @param {DynamicCircuit} dynamicCircuit
-     * @param {DynamicCircuitSolution} dynamicCircuitSolution
+     * @param {DynamicCircuitSolution|null} dynamicCircuitSolution
      */
     constructor( dynamicCircuit, dynamicCircuitSolution ) {
       assert && assert( dynamicCircuit, 'circuit should be defined' );
-      this.circuit = dynamicCircuit;
-      this.solution = dynamicCircuitSolution;
+
+      // @public (read-only)
+      this.dynamicCircuit = dynamicCircuit;
+
+      // @public (read-only)
+      this.dynamicCircuitSolution = dynamicCircuitSolution;
     }
 
     update( dt ) {
-      this.solution = this.circuit.solvePropagate( dt );
-      const newCircuit = this.circuit.updateCircuit( this.solution );
+      this.solution = this.dynamicCircuit.solvePropagate( dt );
+      const newCircuit = this.dynamicCircuit.updateCircuit( this.solution );
       return new DynamicState( newCircuit, this.solution );
-    }
-
-    getCircuit() {
-      return this.circuit;
-    }
-
-    getSolution() {
-      return this.solution;
     }
   }
 
