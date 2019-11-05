@@ -41,7 +41,7 @@ define( require => {
      * @public
      */
     solvePropagate( dt ) {
-      const result = this.toMNACircuit( dt );
+      const result = this.toMNAResult( dt );
       const mnaSolution = result.mnaCircuit.solve();
       return new DynamicCircuitSolution( this, mnaSolution, result.currentCompanions );
     }
@@ -129,12 +129,11 @@ define( require => {
       return new DynamicCircuit( this.resistors, this.resistiveBatteries, updatedCapacitors, updatedInductors );
     }
 
-    //TODO: why not give every component a companion in the MNACircuit?
     /**
      * @param {number} dt
      * @returns {Result}
      */
-    toMNACircuit( dt ) {
+    toMNAResult( dt ) {
 
       const companionBatteries = []; // {ModifiedNodalAnalysisCircuitElement[]}
       const companionResistors = []; // {ModifiedNodalAnalysisCircuitElement[]}
@@ -189,21 +188,22 @@ define( require => {
       //BACKWARD EULER
       //        double vc = state.v;
       //        double rc = dt / c;
-      this.capacitors.forEach( c => { // c is DynamicCapacitor
-        assert && assert( c instanceof DynamicCapacitor, 'Should have been DynamicCapacitor' );
-        const capacitor = c;
-        const state = c.state;
+      this.capacitors.forEach( dynamicCapacitor => {
+        assert && assert( dynamicCapacitor instanceof DynamicCapacitor, 'Should have been DynamicCapacitor' );
+        const state = dynamicCapacitor.state;
 
         // in series
         const keys = Object.keys( usedNodes ).map( x => parseInt( x, 10 ) );
         const newNode = Math.max( ...keys ) + 1;
         usedNodes[ newNode ] = true;
 
-        const companionResistance = dt / 2.0 / capacitor.capacitor.capacitance;
-        const companionVoltage = state.voltage - companionResistance * state.current; // TODO: is this sign correct?
+        const companionResistance = dt / 2.0 / dynamicCapacitor.capacitor.capacitance;
 
-        const battery = new ModifiedNodalAnalysisCircuitElement( capacitor.capacitor.nodeId0, newNode, null, companionVoltage );
-        const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, capacitor.capacitor.nodeId1, null, companionResistance );
+        // TODO: This sign contradicts the equation above
+        const companionVoltage = state.voltage - companionResistance * state.current;
+
+        const battery = new ModifiedNodalAnalysisCircuitElement( dynamicCapacitor.capacitor.nodeId0, newNode, null, companionVoltage );
+        const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, dynamicCapacitor.capacitor.nodeId1, null, companionResistance );
         companionBatteries.push( battery );
         companionResistors.push( resistor );
 
@@ -211,7 +211,7 @@ define( require => {
         //in series, so current is same through both companion components );
         // TODO: Previously used resistor to get current.  Check sign is correct.
         currentCompanions.push( {
-          element: capacitor,
+          element: dynamicCapacitor,
           getValueForSolution: solution => battery.currentSolution
         } );
       } );
