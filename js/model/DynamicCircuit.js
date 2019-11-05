@@ -26,6 +26,8 @@ define( require => {
      * @param {Inductor[]} inductors
      */
     constructor( batteries, resistors, resistiveBatteries, capacitors, inductors ) {
+
+      // @private
       this.batteries = batteries;
       this.resistors = resistors;
       this.resistiveBatteries = resistiveBatteries;
@@ -144,22 +146,22 @@ define( require => {
 
       // Keys only for integer used node set
       const usedNodes = {};
-      this.elements.forEach( e => {
+      this.elements.forEach( element => {
 
         // TODO: Surely there must be a better way!
-        if ( e.capacitor ) {
-          usedNodes[ e.capacitor.nodeId0 ] = true;
-          usedNodes[ e.capacitor.nodeId1 ] = true;
+        if ( element.capacitor ) {
+          usedNodes[ element.capacitor.nodeId0 ] = true;
+          usedNodes[ element.capacitor.nodeId1 ] = true;
         }
-        else if ( e.inductor ) {
-          usedNodes[ e.inductor.nodeId0 ] = true;
-          usedNodes[ e.inductor.nodeId1 ] = true;
+        else if ( element.inductor ) {
+          usedNodes[ element.inductor.nodeId0 ] = true;
+          usedNodes[ element.inductor.nodeId1 ] = true;
         }
         else {
-          assert && assert( typeof e.nodeId0 === 'number' && !isNaN( e.nodeId0 ) );
-          assert && assert( typeof e.nodeId1 === 'number' && !isNaN( e.nodeId1 ) );
-          usedNodes[ e.nodeId0 ] = true;
-          usedNodes[ e.nodeId1 ] = true;
+          assert && assert( typeof element.nodeId0 === 'number' && !isNaN( element.nodeId0 ) );
+          assert && assert( typeof element.nodeId1 === 'number' && !isNaN( element.nodeId1 ) );
+          usedNodes[ element.nodeId0 ] = true;
+          usedNodes[ element.nodeId1 ] = true;
         }
       } );
 
@@ -196,7 +198,8 @@ define( require => {
         assert && assert( c instanceof DynamicCapacitor, 'Should have been DynamicCapacitor' );
         const capacitor = c;
         const state = c.state;
-        //in series
+
+        // in series
         const keys = Object.keys( usedNodes ).map( x => parseInt( x, 10 ) );
         const newNode = Math.max( ...keys ) + 1;
         usedNodes[ newNode ] = true;
@@ -220,8 +223,7 @@ define( require => {
       } );
 
       // See also http://circsimproj.blogspot.com/2009/07/companion-models.html
-      // See najm page 279
-      // See Pillage page 86
+      // See najm page 279 and Pillage page 86
       this.inductors.forEach( i => {
         const inductor = i.getInductor();
         const state = i.state;
@@ -246,16 +248,9 @@ define( require => {
         } );
       } );
 
-      //        println("currentCompanions = " + currentCompanions)
-      //    for (i <- inductors) {
-      //      mnaBatteries += new Battery
-      //      mnaCurrents += new CurrentSource
-      //    }
-      const newBatteryList = [ ...this.batteries ];
-      newBatteryList.push( ...companionBatteries );
-      const newResistorList = [ ...this.resistors ];
-      newResistorList.push( ...companionResistors );
-      const newCurrentList = [];
+      const newBatteryList = [].concat( this.batteries, companionBatteries );
+      const newResistorList = [].concat( this.resistors, companionResistors );
+      const newCurrentList = []; // Placeholder for if we add other circuit elements in the future
 
       const mnaCircuit = new ModifiedNodalAnalysisCircuit( newBatteryList, newResistorList, newCurrentList );
       return new Result( mnaCircuit, currentCompanions );
