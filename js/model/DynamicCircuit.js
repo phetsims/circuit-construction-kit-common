@@ -179,15 +179,13 @@ define( require => {
         } );
       } );
 
-      //add companion models for capacitor
+      // Add companion models for capacitor
 
-      //TRAPEZOIDAL
-      //        double vc = state.v + dt / 2 / c * state.i;
-      //        double rc = dt / 2 / c;
-
-      //BACKWARD EULER
-      //        double vc = state.v;
-      //        double rc = dt / c;
+      // TRAPEZOIDAL: battery and resistor in series.  TODO: can this be done with one BatteryWithResistance?
+      // We use trapezoidal rather than backward Euler because we do not model current sources and it seems to work well.
+      // See http://circsimproj.blogspot.com/2009/07/companion-models.html
+      // Veq = V + dt*I/2/C;
+      // Req = dt/2/C
       this.capacitors.forEach( dynamicCapacitor => {
         assert && assert( dynamicCapacitor instanceof DynamicCapacitor, 'Should have been DynamicCapacitor' );
         const state = dynamicCapacitor.state;
