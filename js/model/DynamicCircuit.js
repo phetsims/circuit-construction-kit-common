@@ -19,7 +19,7 @@ define( require => {
   class DynamicCircuit {
 
     /**
-     * @param {ModifiedNodalAnalysisCircuitElement[]} batteries  // TODO: is this unused, since all our batteries are ultimately resistive?
+     * @param {ModifiedNodalAnalysisCircuitElement[]} batteries  // TODO: is this unused, since all our batteries are ultimately resistive?  I see one usage but it's in a unit test.
      * @param {ResistorAdapter[]} resistors
      * @param {ResistiveBatteryAdapter[]} resistiveBatteries
      * @param {CapacitorAdapter[]} capacitors
