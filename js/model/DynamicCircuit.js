@@ -19,11 +19,11 @@ define( require => {
   class DynamicCircuit {
 
     /**
-     * @param {ModifiedNodalAnalysisCircuitElement[]} batteries
-     * @param {ModifiedNodalAnalysisCircuitElement[]} resistors
-     * @param {ResistiveBattery[]} resistiveBatteries
-     * @param {Capacitor[]} capacitors
-     * @param {Inductor[]} inductors
+     * @param {ModifiedNodalAnalysisCircuitElement[]} batteries  // TODO: is this unused, since all our batteries are ultimately resistive?
+     * @param {ResistorAdapter[]} resistors
+     * @param {ResistiveBatteryAdapter[]} resistiveBatteries
+     * @param {CapacitorAdapter[]} capacitors
+     * @param {InductorAdapter[]} inductors
      */
     constructor( batteries, resistors, resistiveBatteries, capacitors, inductors ) {
 
@@ -33,9 +33,6 @@ define( require => {
       this.resistiveBatteries = resistiveBatteries;
       this.capacitors = capacitors;
       this.inductors = inductors;
-
-      // {ModifiedNodalAnalysisCircuitElement[]}
-      this.elements = [].concat( batteries, resistors, resistiveBatteries, capacitors, inductors );
     }
 
     /**
@@ -146,23 +143,22 @@ define( require => {
 
       // Keys only for integer used node set
       const usedNodes = {};
-      this.elements.forEach( element => {
 
-        // TODO: Surely there must be a better way!
-        if ( element.capacitor ) {
-          usedNodes[ element.capacitor.nodeId0 ] = true;
-          usedNodes[ element.capacitor.nodeId1 ] = true;
-        }
-        else if ( element.inductor ) {
-          usedNodes[ element.inductor.nodeId0 ] = true;
-          usedNodes[ element.inductor.nodeId1 ] = true;
-        }
-        else {
-          assert && assert( typeof element.nodeId0 === 'number' && !isNaN( element.nodeId0 ) );
-          assert && assert( typeof element.nodeId1 === 'number' && !isNaN( element.nodeId1 ) );
-          usedNodes[ element.nodeId0 ] = true;
-          usedNodes[ element.nodeId1 ] = true;
-        }
+      this.capacitors.forEach( capacitorAdapter => {
+        usedNodes[ capacitorAdapter.capacitor.nodeId0 ] = true;
+        usedNodes[ capacitorAdapter.capacitor.nodeId1 ] = true;
+      } );
+
+      this.inductors.forEach( inductorAdapters => {
+        usedNodes[ inductorAdapters.inductor.nodeId0 ] = true;
+        usedNodes[ inductorAdapters.inductor.nodeId1 ] = true;
+      } );
+
+      [].concat( this.batteries, this.resistors, this.resistiveBatteries ).forEach( element => {
+        assert && assert( typeof element.nodeId0 === 'number' && !isNaN( element.nodeId0 ) );
+        assert && assert( typeof element.nodeId1 === 'number' && !isNaN( element.nodeId1 ) );
+        usedNodes[ element.nodeId0 ] = true;
+        usedNodes[ element.nodeId1 ] = true;
       } );
 
       // Each resistive battery is a resistor in series with a battery
