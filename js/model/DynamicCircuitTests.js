@@ -42,7 +42,7 @@ define( require => {
     }
   };
 
-  //this is for comparison with TestTheveninCapacitorRC
+  // This is for comparison with TestTheveninCapacitorRC
   QUnit.test( 'testVRC991Eminus2', assert => {
     testVRCCircuit( 9, 9, 1E-2, assert );
   } );

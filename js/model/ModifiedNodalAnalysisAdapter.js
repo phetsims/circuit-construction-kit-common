@@ -1,7 +1,8 @@
 // Copyright 2019, University of Colorado Boulder
 
 /**
- * TODO: Documentation
+ * Takes a Circuit, creates a corresponding DynamicCircuit, solves the DynamicCircuit and applies the results back
+ * to the original Circuit.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -26,9 +27,9 @@ define( require => {
   const Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
 
   // constants
-  const errorThreshold = 1E-5;
-  const minDT = 1E-5;
-  const timestepSubdivisions = new TimestepSubdivisions( errorThreshold, minDT );
+  const ERROR_THRESHOLD = 1E-5;
+  const MINIMUM_DT = 1E-5;
+  const TIMESTEP_SUBDIVISIONS = new TimestepSubdivisions( ERROR_THRESHOLD, MINIMUM_DT );
 
   class ResistiveBatteryAdapter extends DynamicCircuit.ResistiveBattery {
     constructor( c, battery ) {
@@ -64,7 +65,9 @@ define( require => {
       // TODO: is this necessary?  Where would it be used?
       //use average since it doesn't feed back in to the MNA solution
       // this.resistor.setVoltageDrop( solution.getTimeAverageVoltage( this ) );
-      // this.resistor.setMNACurrent( solution.getInstantaneousCurrent( this ) ); // TODO: only used for capacitors and inductors
+
+      // TODO: only used for capacitors and inductors
+      // this.resistor.setMNACurrent( solution.getInstantaneousCurrent( this ) );
     }
   }
 
@@ -83,7 +86,9 @@ define( require => {
     applySolution( solution ) {
       this._capacitor.currentProperty.value = solution.getTimeAverageCurrent( this.capacitor );
       this._capacitor.mnaCurrent = solution.getInstantaneousCurrent( this.capacitor );
-      // this._capacitor.setVoltageDrop( solution.getTimeAverageVoltage( this.capacitor ) ); // TODO: is this needed?
+
+      // TODO: is this needed?
+      // this._capacitor.setVoltageDrop( solution.getTimeAverageVoltage( this.capacitor ) );
       this._capacitor.mnaVoltageDrop = solution.getInstantaneousVoltage( this.capacitor );
     }
   }
@@ -97,7 +102,7 @@ define( require => {
         inductor.inductanceProperty.value
       );
 
-      //todo: sign error
+      // TODO: sign error
       super( dynamicCircuitInductor, new DynamicCircuit.DynamicElementState( inductor.mnaVoltageDrop, -inductor.mnaCurrent ) );
       this._inductor = inductor;
     }
@@ -155,7 +160,7 @@ define( require => {
       }
 
       const dynamicCircuit = new DynamicCircuit( [], resistorAdapters, resistiveBatteryAdapters, capacitorAdapters, inductorAdapters );
-      let circuitResult = dynamicCircuit.solveWithSubdivisions( timestepSubdivisions, dt );
+      let circuitResult = dynamicCircuit.solveWithSubdivisions( TIMESTEP_SUBDIVISIONS, dt );
 
       // if any battery exceeds its current threshold, increase its resistance and run the solution again.
       // see https://github.com/phetsims/circuit-construction-kit-common/issues/245
@@ -168,7 +173,7 @@ define( require => {
         }
       } );
       if ( needsHelp ) {
-        circuitResult = dynamicCircuit.solveWithSubdivisions( timestepSubdivisions, dt );
+        circuitResult = dynamicCircuit.solveWithSubdivisions( TIMESTEP_SUBDIVISIONS, dt );
       }
 
       resistiveBatteryAdapters.forEach( batteryAdapter => batteryAdapter.applySolution( circuitResult ) );

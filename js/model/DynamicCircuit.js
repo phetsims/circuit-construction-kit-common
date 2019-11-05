@@ -201,8 +201,7 @@ define( require => {
         usedNodes[ newNode ] = true;
 
         const companionResistance = dt / 2.0 / capacitor.capacitor.capacitance;
-        const companionVoltage = state.voltage - companionResistance * state.current; //TODO: explain the difference between this sign and the one in TestTheveninCapacitorRC
-        //      println("companion resistance = "+companionResistance+", companion voltage = "+companionVoltage)
+        const companionVoltage = state.voltage - companionResistance * state.current; // TODO: is this sign correct?
 
         const battery = new ModifiedNodalAnalysisCircuitElement( capacitor.capacitor.nodeId0, newNode, null, companionVoltage );
         const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, capacitor.capacitor.nodeId1, null, companionResistance );
@@ -223,7 +222,8 @@ define( require => {
       this.inductors.forEach( i => {
         const inductor = i.getInductor();
         const state = i.state;
-        //in series
+
+        // In series
         const keys = Object.keys( usedNodes ).map( x => parseInt( x, 10 ) );  // TODO: factor out these 3 lines
         const newNode = Math.max( ...keys ) + 1;
         usedNodes[ newNode ] = true;
@@ -240,7 +240,9 @@ define( require => {
         // in series, so current is same through both companion components
         currentCompanions.push( {
           element: inductor,
-          getValueForSolution: solution => -solution.getCurrentForResistor( resistor ) // TODO: check sign, this was converted from battery to resistor
+
+          // TODO: check sign, this was converted from battery to resistor
+          getValueForSolution: solution => -solution.getCurrentForResistor( resistor )
         } );
       } );
 
@@ -274,7 +276,9 @@ define( require => {
     getTimeAverageCurrent( element ) {
       let weightedSum = 0.0;
       this.resultSet.states.forEach( state => {
-        weightedSum += state.state.dynamicCircuitSolution.getCurrent( element ) * state.subdivisionDT;//todo: make sure this is right
+
+        // TODO: make sure this is right
+        weightedSum += state.state.dynamicCircuitSolution.getCurrent( element ) * state.subdivisionDT;
         assert && assert( !isNaN( weightedSum ) );
       } );
 
@@ -298,7 +302,9 @@ define( require => {
     getTimeAverageVoltage( element ) {
       let weightedSum = 0.0;
       this.resultSet.forEach( state => {
-        weightedSum += state.state.dynamicCircuitSolution.getVoltage( element ) * state.dt;//todo: make sure this is right
+
+        // TODO: make sure this is right
+        weightedSum += state.state.dynamicCircuitSolution.getVoltage( element ) * state.dt;
       } );
       return weightedSum / this.resultSet.getTotalTime();
     }
@@ -333,7 +339,9 @@ define( require => {
     getAverageNodeVoltage( node ) {
       let weightedSum = 0.0;
       this.resultSet.forEach( state => {
-        weightedSum += state.state.dynamicCircuitSolution.getNodeVoltage( node ) * state.dt;//todo: make sure this is right too
+
+        // TODO: make sure this is right too
+        weightedSum += state.state.dynamicCircuitSolution.getNodeVoltage( node ) * state.dt;
       } );
       return weightedSum / this.resultSet.getTotalTime();
     }
@@ -345,7 +353,9 @@ define( require => {
       assert && assert( capacitor instanceof DynamicCircuit.Capacitor );
       this.capacitor = capacitor;
       this.state = state;
-      this.current = state.current; // TODO: is this used?  Why is it different than the method?
+
+      // TODO: is this used?  Why is it different than the method?
+      this.current = state.current;
     }
 
     getCurrent() {
@@ -456,7 +466,7 @@ define( require => {
      */
     getCharacteristicArray() {
 
-      //todo: read from companion object, or perhaps the solution.  Though the solution has been applied to the circuit.
+      // TODO: read from companion object, or perhaps the solution.  Though the solution has been applied to the circuit.
       const currents = [];
       for ( let i = 0; i < this.dynamicCircuit.capacitors.length; i++ ) {
         currents.push( this.dynamicCircuit.capacitors[ i ].getCurrent() );
