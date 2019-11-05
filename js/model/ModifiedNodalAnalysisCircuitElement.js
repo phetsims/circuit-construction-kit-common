@@ -1,7 +1,7 @@
 // Copyright 2017-2019, University of Colorado Boulder
 
 /**
- * Circuit element used for Modified Nodal Analysis. * No listeners are attached and hence no dispose implementation is necessary.
+ * Circuit element used for Modified Nodal Analysis.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -58,8 +58,7 @@ define( require => {
 
     /**
      * Determine if the element contains the given node id
-     * @param {Element} element
-     * @param {number} node
+     * @param {number} nodeId
      * @returns {boolean}
      */
     containsNodeId( nodeId ) {
@@ -68,8 +67,7 @@ define( require => {
 
     /**
      * Find the node across from the specified node.
-     * @param {Element} element
-     * @param {number} node
+     * @param {number} nodeId
      */
     getOppositeNode( nodeId ) {
       assert && assert( this.nodeId0 === nodeId || this.nodeId1 === nodeId );

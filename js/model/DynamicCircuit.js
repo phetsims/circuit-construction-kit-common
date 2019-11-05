@@ -139,31 +139,28 @@ define( require => {
       const companionResistors = []; // {ModifiedNodalAnalysisCircuitElement[]}
       const currentCompanions = [];
 
-      // Keys only for integer used node set
-      const usedNodes = {};
+      // Node indices that have been used
+      const usedNodes = [];
 
       this.capacitors.forEach( capacitorAdapter => {
-        usedNodes[ capacitorAdapter.capacitor.nodeId0 ] = true;
-        usedNodes[ capacitorAdapter.capacitor.nodeId1 ] = true;
+        usedNodes.push( capacitorAdapter.capacitor.nodeId0 );
+        usedNodes.push( capacitorAdapter.capacitor.nodeId1 );
       } );
 
       this.inductors.forEach( inductorAdapters => {
-        usedNodes[ inductorAdapters.inductor.nodeId0 ] = true;
-        usedNodes[ inductorAdapters.inductor.nodeId1 ] = true;
+        usedNodes.push( inductorAdapters.inductor.nodeId0 );
+        usedNodes.push( inductorAdapters.inductor.nodeId1 );
       } );
 
       [].concat( this.resistors, this.resistiveBatteries ).forEach( element => {
-        assert && assert( typeof element.nodeId0 === 'number' && !isNaN( element.nodeId0 ) );
-        assert && assert( typeof element.nodeId1 === 'number' && !isNaN( element.nodeId1 ) );
-        usedNodes[ element.nodeId0 ] = true;
-        usedNodes[ element.nodeId1 ] = true;
+        usedNodes.push( element.nodeId0 );
+        usedNodes.push( element.nodeId1 );
       } );
 
       // Each resistive battery is a resistor in series with a battery
       this.resistiveBatteries.forEach( resistiveBattery => {
-        const keys = Object.keys( usedNodes ).map( x => parseInt( x, 10 ) );
-        const newNode = Math.max( ...keys ) + 1;
-        usedNodes[ newNode ] = true;
+        const newNode = _.max( usedNodes ) + 1;
+        usedNodes.push( newNode );
 
         const idealBattery = new ModifiedNodalAnalysisCircuitElement( resistiveBattery.nodeId0, newNode, null, resistiveBattery.voltage ); // final LinearCircuitSolver.Battery
 
@@ -181,7 +178,7 @@ define( require => {
 
       // Add companion models for capacitor
 
-      // TRAPEZOIDAL: battery and resistor in series.  TODO: can this be done with one BatteryWithResistance?
+      // TRAPEZOIDAL: battery and resistor in series.
       // We use trapezoidal rather than backward Euler because we do not model current sources and it seems to work well.
       // See http://circsimproj.blogspot.com/2009/07/companion-models.html
       // Veq = V + dt*I/2/C;
@@ -190,10 +187,8 @@ define( require => {
         assert && assert( dynamicCapacitor instanceof DynamicCapacitor, 'Should have been DynamicCapacitor' );
         const state = dynamicCapacitor.state;
 
-        // in series
-        const keys = Object.keys( usedNodes ).map( x => parseInt( x, 10 ) );
-        const newNode = Math.max( ...keys ) + 1;
-        usedNodes[ newNode ] = true;
+        const newNode = _.max( usedNodes ) + 1;
+        usedNodes.push( newNode );
 
         const companionResistance = dt / 2.0 / dynamicCapacitor.capacitor.capacitance;
 
@@ -205,8 +200,7 @@ define( require => {
         companionBatteries.push( battery );
         companionResistors.push( resistor );
 
-        //we need to be able to get the current for this component
-        //in series, so current is same through both companion components );
+        // We need to be able to get the current for this component. In series, so the current is the same through both.
         // TODO: Previously used resistor to get current.  Check sign is correct.
         currentCompanions.push( {
           element: dynamicCapacitor,
@@ -221,9 +215,8 @@ define( require => {
         const state = i.state;
 
         // In series
-        const keys = Object.keys( usedNodes ).map( x => parseInt( x, 10 ) );  // TODO: factor out these 3 lines
-        const newNode = Math.max( ...keys ) + 1;
-        usedNodes[ newNode ] = true;
+        const newNode = _.max( usedNodes ) + 1;
+        usedNodes.push( newNode );
 
         const companionResistance = 2 * inductor.inductance / dt;
         const companionVoltage = state.voltage + companionResistance * state.current;
