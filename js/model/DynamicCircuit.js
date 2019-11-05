@@ -55,24 +55,7 @@ define( require => {
     solveWithSubdivisions( timestepSubdivisions, dt ) {
       const steppable = {
         update: ( a, dt ) => a.update( dt ),
-        distance: ( a, b ) => {
-          const aCurrents = [];
-          for ( let i = 0; i < a.dynamicCircuit.capacitors.length; i++ ) {
-            aCurrents.push( a.dynamicCircuit.capacitors[ i ].getCurrent() );
-          }
-          for ( let i = 0; i < a.dynamicCircuit.inductors.length; i++ ) {
-            aCurrents.push( a.dynamicCircuit.inductors[ i ].getCurrent() );
-          }
-
-          const bCurrents = [];
-          for ( let i = 0; i < b.dynamicCircuit.capacitors.length; i++ ) {
-            bCurrents.push( b.dynamicCircuit.capacitors[ i ].getCurrent() );
-          }
-          for ( let i = 0; i < b.dynamicCircuit.inductors.length; i++ ) {
-            bCurrents.push( b.dynamicCircuit.inductors[ i ].getCurrent() );//todo: read from companion object
-          }
-          return euclideanDistance( aCurrents, bCurrents );
-        }
+        distance: ( a, b ) => euclideanDistance( a.getCharacteristicArray(), b.getCharacteristicArray() )
       };
 
       // Turning the error threshold too low here can fail the inductor tests in MNATestCase
@@ -94,7 +77,7 @@ define( require => {
      * @returns DynamicCircuit
      */
     updateWithSubdivisions( dt ) {
-      return this.solveWithSubdivisions2( dt ).getFinalState().getCircuit();
+      return this.solveWithSubdivisions2( dt ).getFinalState().dynamicCircuit;
     }
 
     /**
@@ -478,6 +461,25 @@ define( require => {
       this.solution = this.dynamicCircuit.solvePropagate( dt );
       const newCircuit = this.dynamicCircuit.updateCircuit( this.solution );
       return new DynamicState( newCircuit, this.solution );
+    }
+
+    /**
+     * Returns an array of characteristic measurements from the solution, in order to determine
+     * deviations.
+     * @returns {number[]}
+     * @public
+     */
+    getCharacteristicArray() {
+
+      //todo: read from companion object, or perhaps the solution.  Though the solution has been applied to the circuit.
+      const currents = [];
+      for ( let i = 0; i < this.dynamicCircuit.capacitors.length; i++ ) {
+        currents.push( this.dynamicCircuit.capacitors[ i ].getCurrent() );
+      }
+      for ( let i = 0; i < this.dynamicCircuit.inductors.length; i++ ) {
+        currents.push( this.dynamicCircuit.inductors[ i ].getCurrent() );
+      }
+      return currents;
     }
   }
 
