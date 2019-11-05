@@ -19,16 +19,14 @@ define( require => {
   class DynamicCircuit {
 
     /**
-     * @param {ModifiedNodalAnalysisCircuitElement[]} batteries  // TODO: is this unused, since all our batteries are ultimately resistive?  I see one usage but it's in a unit test.
      * @param {ResistorAdapter[]} resistors
      * @param {ResistiveBatteryAdapter[]} resistiveBatteries
      * @param {CapacitorAdapter[]} capacitors
      * @param {InductorAdapter[]} inductors
      */
-    constructor( batteries, resistors, resistiveBatteries, capacitors, inductors ) {
+    constructor( resistors, resistiveBatteries, capacitors, inductors ) {
 
       // @private
-      this.batteries = batteries;
       this.resistors = resistors;
       this.resistiveBatteries = resistiveBatteries;
       this.capacitors = capacitors;
@@ -127,7 +125,8 @@ define( require => {
         );
         return new DynamicInductor( inductor.inductor, dynamicElementState );
       } );
-      return new DynamicCircuit( this.batteries, this.resistors, this.resistiveBatteries, updatedCapacitors, updatedInductors );
+
+      return new DynamicCircuit( this.resistors, this.resistiveBatteries, updatedCapacitors, updatedInductors );
     }
 
     //TODO: why not give every component a companion in the MNACircuit?
@@ -154,7 +153,7 @@ define( require => {
         usedNodes[ inductorAdapters.inductor.nodeId1 ] = true;
       } );
 
-      [].concat( this.batteries, this.resistors, this.resistiveBatteries ).forEach( element => {
+      [].concat( this.resistors, this.resistiveBatteries ).forEach( element => {
         assert && assert( typeof element.nodeId0 === 'number' && !isNaN( element.nodeId0 ) );
         assert && assert( typeof element.nodeId1 === 'number' && !isNaN( element.nodeId1 ) );
         usedNodes[ element.nodeId0 ] = true;
@@ -246,7 +245,7 @@ define( require => {
         } );
       } );
 
-      const newBatteryList = [].concat( this.batteries, companionBatteries );
+      const newBatteryList = companionBatteries;
       const newResistorList = [].concat( this.resistors, companionResistors );
       const newCurrentList = []; // Placeholder for if we add other circuit elements in the future
 

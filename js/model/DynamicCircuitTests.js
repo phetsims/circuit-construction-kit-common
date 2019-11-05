@@ -25,7 +25,7 @@ define( require => {
       new DynamicCircuit.Capacitor( 2, 0, c ),
       new DynamicCircuit.DynamicElementState( 0.0, v / r )
     );
-    let dynamicCircuit = new DynamicCircuit( [], [ resistor ], [ battery ], [ capacitor ], [] );
+    let dynamicCircuit = new DynamicCircuit( [ resistor ], [ battery ], [ capacitor ], [] );
 
     const dt = 1E-4;
     // console.log( 'voltage\n' );
@@ -64,10 +64,10 @@ define( require => {
   } );
 
   const testVRLCircuit = ( V, R, L, assert ) => {
-    const resistor = new ModifiedNodalAnalysisCircuitElement( 1, 2, null, R );
-    const battery = new ModifiedNodalAnalysisCircuitElement( 0, 1, null, V );
+    const resistor = new ModifiedNodalAnalysisCircuitElement( 1, 2, null, R ); // TODO: now that Battery is using ResistiveBatteryAdapter only, can this be named ResistorElement?  What other elements does it represent?
+    const battery = new DynamicCircuit.ResistiveBattery( 0, 1, V, 0 );
     const inductor = new DynamicCircuit.DynamicInductor( new DynamicCircuit.Inductor( 2, 0, L ), new DynamicCircuit.DynamicElementState( V, 0.0 ) );
-    let circuit = new DynamicCircuit( [ battery ], [ resistor ], [], [], [ inductor ] );
+    let circuit = new DynamicCircuit( [ resistor ], [ battery ], [], [ inductor ] );
 
     const dt = 1E-4;
     for ( let i = 0; i < 1000; i++ ) {
@@ -76,7 +76,6 @@ define( require => {
       const current = solution.getCurrent( resistor );
       const expectedCurrent = V / R * ( 1 - Math.exp( -( t + dt ) * R / L ) );//positive, by definition of MNA.Battery
       const error = Math.abs( current - expectedCurrent );
-      // console.log( current );
       assert.ok( error < 1E-4 );
       circuit = circuit.updateWithSubdivisions( dt );
     }

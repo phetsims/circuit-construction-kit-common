@@ -159,7 +159,7 @@ define( require => {
         }
       }
 
-      const dynamicCircuit = new DynamicCircuit( [], resistorAdapters, resistiveBatteryAdapters, capacitorAdapters, inductorAdapters );
+      const dynamicCircuit = new DynamicCircuit( resistorAdapters, resistiveBatteryAdapters, capacitorAdapters, inductorAdapters );
       let circuitResult = dynamicCircuit.solveWithSubdivisions( TIMESTEP_SUBDIVISIONS, dt );
 
       // if any battery exceeds its current threshold, increase its resistance and run the solution again.
