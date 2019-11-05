@@ -27,10 +27,13 @@ define( require => {
      */
     constructor( batteries, resistors, resistiveBatteries, capacitors, inductors ) {
       this.batteries = batteries;
+      this.resistors = resistors;
+      this.resistiveBatteries = resistiveBatteries;
       this.capacitors = capacitors;
       this.inductors = inductors;
-      this.resistiveBatteries = resistiveBatteries;
-      this.resistors = resistors;
+
+      // {ModifiedNodalAnalysisCircuitElement[]}
+      this.elements = [].concat( batteries, resistors, resistiveBatteries, capacitors, inductors );
     }
 
     /**
@@ -135,19 +138,13 @@ define( require => {
      */
     toMNACircuit( dt ) {
 
-      const companionBatteries = [];//new ArrayList<LinearCircuitSolver.Battery>();
-      const companionResistors = [];//new ArrayList<LinearCircuitSolver.Resistor>();
-      const companionCurrents = [];//new ArrayList<LinearCircuitSolver.CurrentSource>();
-
+      const companionBatteries = []; // {ModifiedNodalAnalysisCircuitElement[]}
+      const companionResistors = []; // {ModifiedNodalAnalysisCircuitElement[]}
       const currentCompanions = [];
-      const usedNodes = {}; // Keys only for integer used node set
-      const elements = [];//new ArrayList<LinearCircuitSolver.Element>();
-      elements.push( ...this.batteries );
-      elements.push( ...this.resistors );
-      elements.push( ...this.resistiveBatteries );
-      elements.push( ...this.capacitors );
-      elements.push( ...this.inductors );
-      elements.forEach( e => {
+
+      // Keys only for integer used node set
+      const usedNodes = {};
+      this.elements.forEach( e => {
 
         // TODO: Surely there must be a better way!
         if ( e.capacitor ) {
@@ -166,7 +163,7 @@ define( require => {
         }
       } );
 
-      //each resistive battery is a resistor in series with a battery
+      // Each resistive battery is a resistor in series with a battery
       this.resistiveBatteries.forEach( resistiveBattery => {
         const keys = Object.keys( usedNodes ).map( x => parseInt( x, 10 ) );
         const newNode = Math.max( ...keys ) + 1;
@@ -174,12 +171,12 @@ define( require => {
 
         const idealBattery = new ModifiedNodalAnalysisCircuitElement( resistiveBattery.nodeId0, newNode, null, resistiveBattery.voltage ); // final LinearCircuitSolver.Battery
 
-        // same type as idealBattery, but treated like a resistor because it goes in the resistor array
+        // Same type as idealBattery, but treated like a resistor because it goes in the resistor array
         const idealResistor = new ModifiedNodalAnalysisCircuitElement( newNode, resistiveBattery.nodeId1, null, resistiveBattery.resistance ); // LinearCircuitSolver.Resistor
         companionBatteries.push( idealBattery );
         companionResistors.push( idealResistor );
 
-        //we need to be able to get the current for this component
+        // We need to be able to get the current for this component
         currentCompanions.push( {
           element: resistiveBattery,
           getValueForSolution: solution => idealBattery.currentSolution
@@ -210,7 +207,6 @@ define( require => {
 
         const battery = new ModifiedNodalAnalysisCircuitElement( capacitor.capacitor.nodeId0, newNode, null, companionVoltage );
         const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, capacitor.capacitor.nodeId1, null, companionResistance );
-        // debugger;
         companionBatteries.push( battery );
         companionResistors.push( resistor );
 
@@ -260,7 +256,6 @@ define( require => {
       const newResistorList = [ ...this.resistors ];
       newResistorList.push( ...companionResistors );
       const newCurrentList = [];
-      newCurrentList.push( ...companionCurrents );
 
       const mnaCircuit = new ModifiedNodalAnalysisCircuit( newBatteryList, newResistorList, newCurrentList );
       return new Result( mnaCircuit, currentCompanions );
