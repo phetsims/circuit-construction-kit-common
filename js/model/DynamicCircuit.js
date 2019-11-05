@@ -210,9 +210,9 @@ define( require => {
 
       // See also http://circsimproj.blogspot.com/2009/07/companion-models.html
       // See najm page 279 and Pillage page 86
-      this.inductors.forEach( i => {
-        const inductor = i.getInductor();
-        const state = i.state;
+      this.inductors.forEach( dynamicInductor => {
+        const inductor = dynamicInductor.inductor;
+        const state = dynamicInductor.state;
 
         // In series
         const newNode = _.max( usedNodes ) + 1;
@@ -338,37 +338,30 @@ define( require => {
   }
 
   class DynamicCapacitor {
+
+    /**
+     * @param {Capacitor} capacitor
+     * @param {DynamicElementState} state
+     */
     constructor( capacitor, state ) {
-      assert && assert( !isNaN( state.current ), 'current should be numeric' );
-      assert && assert( capacitor instanceof DynamicCircuit.Capacitor );
       this.capacitor = capacitor;
       this.state = state;
-
-      // TODO: is this used?  Why is it different than the method?
-      this.current = state.current;
-    }
-
-    getCurrent() {
-      return this.state.current;
     }
   }
 
   class DynamicInductor {
+    /**
+     *
+     * @param {Inductor} inductor
+     * @param {DynamicElementState} state
+     */
     constructor( inductor, state ) {
       this.inductor = inductor;
       this.state = state;
     }
 
-    getCurrent() {
-      return this.state.current;
-    }
-
     getInductor() {
       return this.inductor;
-    }
-
-    getState() {
-      return this.state;
     }
   }
 
@@ -459,10 +452,10 @@ define( require => {
       // TODO: read from companion object, or perhaps the solution.  Though the solution has been applied to the circuit.
       const currents = [];
       for ( let i = 0; i < this.dynamicCircuit.capacitors.length; i++ ) {
-        currents.push( this.dynamicCircuit.capacitors[ i ].getCurrent() );
+        currents.push( this.dynamicCircuit.capacitors[ i ].state.current );
       }
       for ( let i = 0; i < this.dynamicCircuit.inductors.length; i++ ) {
-        currents.push( this.dynamicCircuit.inductors[ i ].getCurrent() );
+        currents.push( this.dynamicCircuit.inductors[ i ].state.current );
       }
       return currents;
     }
