@@ -46,7 +46,6 @@ define( require => {
       return new DynamicCircuitSolution( this, mnaSolution, result.currentCompanions );
     }
 
-    //TODO: generalize distance criterion, will be simpler if solutions are incorporated
     /**
      * @param {TimestepSubdivisions} timestepSubdivisions
      * @param {number} dt
