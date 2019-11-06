@@ -39,12 +39,12 @@ define( require => {
       this.battery = battery;
     }
 
-    applySolution( result ) {
+    applySolution( dynamicCircuit ) {
 
       //don't set voltage on the battery; that actually changes its nominal voltage
       // TODO: we don't need this, right?
       // this.battery.setMNACurrent( result.getInstantaneousCurrent( this ) );
-      this.battery.currentProperty.value = result.getTimeAverageCurrent( this );
+      this.battery.currentProperty.value = dynamicCircuit.getTimeAverageCurrent( this );
     }
   }
 
@@ -59,8 +59,8 @@ define( require => {
       this.resistor = resistor;
     }
 
-    applySolution( solution ) {
-      this.resistor.currentProperty.value = solution.getTimeAverageCurrent( this );
+    applySolution( dynamicCircuit ) {
+      this.resistor.currentProperty.value = dynamicCircuit.getTimeAverageCurrent( this );
 
       // TODO: is this necessary?  Where would it be used?
       //use average since it doesn't feed back in to the MNA solution
@@ -83,13 +83,13 @@ define( require => {
       this._capacitor = capacitor;
     }
 
-    applySolution( solution ) {
-      this._capacitor.currentProperty.value = solution.getTimeAverageCurrent( this.capacitor );
-      this._capacitor.mnaCurrent = solution.getInstantaneousCurrent( this.capacitor );
+    applySolution( dynamicCircuit ) {
+      this._capacitor.currentProperty.value = dynamicCircuit.getTimeAverageCurrent( this.capacitor );
+      this._capacitor.mnaCurrent = dynamicCircuit.getInstantaneousCurrent( this.capacitor );
 
       // TODO: is this needed?
       // this._capacitor.setVoltageDrop( solution.getTimeAverageVoltage( this.capacitor ) );
-      this._capacitor.mnaVoltageDrop = solution.getInstantaneousVoltage( this.capacitor );
+      this._capacitor.mnaVoltageDrop = dynamicCircuit.getInstantaneousVoltage( this.capacitor );
     }
   }
 
@@ -107,14 +107,14 @@ define( require => {
       this._inductor = inductor;
     }
 
-    applySolution( solution ) {
+    applySolution( dynamicCircuit ) {
 
       // TODO: differentiate this.inductor from this._inductor.  They are very different types
       // TODO(sign-error): Why is there a negative sign here?
-      this._inductor.currentProperty.value = -solution.getTimeAverageCurrent( this.inductor );
-      this._inductor.mnaCurrent = -solution.getInstantaneousCurrent( this.inductor );
+      this._inductor.currentProperty.value = -dynamicCircuit.getTimeAverageCurrent( this.inductor );
+      this._inductor.mnaCurrent = -dynamicCircuit.getInstantaneousCurrent( this.inductor );
       // this._inductor.setVoltageDrop( solution.getTimeAverageVoltage( this.inductor ) ); // TODO: is this needed?
-      this._inductor.mnaVoltageDrop = solution.getInstantaneousVoltage( this.inductor );
+      this._inductor.mnaVoltageDrop = dynamicCircuit.getInstantaneousVoltage( this.inductor );
     }
   }
 
