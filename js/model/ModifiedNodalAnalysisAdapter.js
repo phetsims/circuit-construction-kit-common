@@ -73,10 +73,16 @@ define( require => {
 
   class CapacitorAdapter extends DynamicCircuit.DynamicCapacitor {
 
-    constructor( c, capacitor ) {
+    /**
+     * @param {Circuit} circuit
+     * @param {Capacitor} capacitor
+     */
+    constructor( circuit, capacitor ) {
+
+      // TODO: we extend DynamicCircuit.DynamicCapacitor and compose DynamicCircuit.Capacitor???  What is going on?
       const dynamicCircuitCapacitor = new DynamicCircuit.Capacitor(
-        c.vertexGroup.array.indexOf( capacitor.startVertexProperty.value ),
-        c.vertexGroup.array.indexOf( capacitor.endVertexProperty.value ),
+        circuit.vertexGroup.array.indexOf( capacitor.startVertexProperty.value ),
+        circuit.vertexGroup.array.indexOf( capacitor.endVertexProperty.value ),
         capacitor.capacitanceProperty.value
       );
       super( dynamicCircuitCapacitor, new DynamicCircuit.DynamicElementState( capacitor.mnaVoltageDrop, capacitor.mnaCurrent ) );
