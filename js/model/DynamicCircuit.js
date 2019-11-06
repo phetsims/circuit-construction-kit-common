@@ -42,7 +42,6 @@ define( require => {
      */
     solvePropagate( dt ) {
 
-
       const companionBatteries = []; // {ModifiedNodalAnalysisCircuitElement[]}
       const companionResistors = []; // {ModifiedNodalAnalysisCircuitElement[]}
       const currentCompanions = [];
@@ -71,8 +70,6 @@ define( require => {
         usedNodes.push( newNode );
 
         const idealBattery = new ModifiedNodalAnalysisCircuitElement( resistiveBattery.nodeId0, newNode, null, resistiveBattery.voltage ); // final LinearCircuitSolver.Battery
-
-        // Same type as idealBattery, but treated like a resistor because it goes in the resistor array
         const idealResistor = new ModifiedNodalAnalysisCircuitElement( newNode, resistiveBattery.nodeId1, null, resistiveBattery.resistance ); // LinearCircuitSolver.Resistor
         companionBatteries.push( idealBattery );
         companionResistors.push( idealResistor );
