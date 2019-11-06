@@ -133,7 +133,7 @@ define( require => {
         // we need to be able to get the current for this component
         // in series, so current is same through both companion components
         currentCompanions.push( {
-          element: inductor,
+          element: dynamicInductor,
 
           // TODO(sign-error): check sign, this was converted from battery to resistor
           getValueForSolution: solution => -solution.getCurrentForResistor( resistor )
@@ -480,7 +480,7 @@ define( require => {
       // TODO: the comparisons are asymmetrical, how can they both work?
       const companion = _.find( this.currentCompanions, c => c.element === element ||
                                                              c.element.capacitor === element ||
-                                                             c.element === element.inductor );
+                                                             c.element.inductor === element );
 
       if ( companion ) {
         return companion.getValueForSolution( this.mnaSolution );
