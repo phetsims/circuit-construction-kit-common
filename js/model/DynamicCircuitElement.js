@@ -1,7 +1,7 @@
 // Copyright 2019, University of Colorado Boulder
 
 /**
- * Circuit element with time-dependent dynamics and a fixed length.
+ * Circuit element with time-dependent dynamics, such as an inductor or capacitor.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
