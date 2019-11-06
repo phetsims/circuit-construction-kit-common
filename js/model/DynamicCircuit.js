@@ -401,13 +401,6 @@ define( require => {
     }
   }
 
-  class Result {
-    constructor( mnaCircuit, currentCompanions ) {
-      this.mnaCircuit = mnaCircuit;
-      this.currentCompanions = currentCompanions;
-    }
-  }
-
   class DynamicState {
 
     /**
