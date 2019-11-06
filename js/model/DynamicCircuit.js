@@ -96,7 +96,7 @@ define( require => {
 
         const companionResistance = dt / 2.0 / dynamicCapacitor.capacitor.capacitance;
 
-        // TODO: This sign contradicts the equation above, perhaps the current is backwards?
+        // TODO(sign-error): This sign contradicts the equation above, perhaps the current is backwards?
         // Flipping getValueForSolution and CapacitorAdapter.getTimeAverageCurrent seems to help
         const companionVoltage = dynamicCapacitor.state.voltage - companionResistance * dynamicCapacitor.state.current;
 
@@ -106,7 +106,7 @@ define( require => {
         companionResistors.push( resistor );
 
         // We need to be able to get the current for this component. In series, so the current is the same through both.
-        // TODO: Previously used resistor to get current.  Check sign is correct.
+        // TODO(sign-error): Previously used resistor to get current.  Check sign is correct.
         currentCompanions.push( {
           element: dynamicCapacitor,
           getValueForSolution: solution => solution.getCurrentForResistor( resistor )
@@ -135,7 +135,7 @@ define( require => {
         currentCompanions.push( {
           element: inductor,
 
-          // TODO: check sign, this was converted from battery to resistor
+          // TODO(sign-error): check sign, this was converted from battery to resistor
           getValueForSolution: solution => -solution.getCurrentForResistor( resistor )
         } );
       } );
@@ -249,15 +249,15 @@ define( require => {
     }
 
     /**
-     * @param {LinearCircuitSolver.Element} element
+     * @param {ModifiedNodalAnalysisCircuitElement} element
      * @returns {number}
      */
     getTimeAverageCurrent( element ) {
       let weightedSum = 0.0;
-      this.resultSet.states.forEach( state => {
+      this.resultSet.states.forEach( stateObject => {
 
         // TODO: make sure this is right
-        weightedSum += state.state.dynamicCircuitSolution.getCurrent( element ) * state.subdivisionDT;
+        weightedSum += stateObject.state.dynamicCircuitSolution.getCurrent( element ) * stateObject.subdivisionDT;
         assert && assert( !isNaN( weightedSum ) );
       } );
 
@@ -267,7 +267,7 @@ define( require => {
     }
 
     /**
-     * @param {LinearCircuitSolver.Element} element
+     * @param {ModifiedNodalAnalysisCircuitElement} element
      * @returns {number}
      */
     getInstantaneousCurrent( element ) {
@@ -275,7 +275,7 @@ define( require => {
     }
 
     /**
-     * @param {LinearCircuitSolver.Element} element
+     * @param {ModifiedNodalAnalysisCircuitElement} element
      * @returns {number}
      */
     getTimeAverageVoltage( element ) {
@@ -289,7 +289,7 @@ define( require => {
     }
 
     /**
-     * @param {LinearCircuitSolver.Element} element
+     * @param {ModifiedNodalAnalysisCircuitElement} element
      * @returns {number}
      */
     getInstantaneousVoltage( element ) {

@@ -110,7 +110,8 @@ define( require => {
     applySolution( solution ) {
 
       // TODO: differentiate this.inductor from this._inductor.  They are very different types
-      this._inductor.currentProperty.value = -solution.getTimeAverageCurrent( this.inductor );//todo: sign error
+      // TODO(sign-error): sign error
+      this._inductor.currentProperty.value = -solution.getTimeAverageCurrent( this.inductor );
       this._inductor.mnaCurrent = -solution.getInstantaneousCurrent( this.inductor );
       // this._inductor.setVoltageDrop( solution.getTimeAverageVoltage( this.inductor ) ); // TODO: is this needed?
       this._inductor.mnaVoltageDrop = solution.getInstantaneousVoltage( this.inductor );
