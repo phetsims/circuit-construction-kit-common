@@ -1,7 +1,8 @@
 // Copyright 2017-2019, University of Colorado Boulder
 
 /**
- * Circuit element used for Modified Nodal Analysis.
+ * Circuit element used for Modified Nodal Analysis.  The same type represents batteries and resistors--what matters
+ * is what array they are placed into in the DynamicCircuit.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

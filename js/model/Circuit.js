@@ -814,7 +814,7 @@ define( require => {
       stepElements.forEach( element => element.step( this.timeProperty.value, dt ) );
 
       if ( this.dirty || stepElements.length > 0 || dynamicElements.length > 0 ) {
-        ModifiedNodalAnalysisAdapter.apply( this, dt );
+        ModifiedNodalAnalysisAdapter.solveModifiedNodalAnalysis( this, dt );
         this.dirty = false;
         this.circuitChangedEmitter.emit();
       }

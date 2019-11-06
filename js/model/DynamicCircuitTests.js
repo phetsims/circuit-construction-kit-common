@@ -64,7 +64,7 @@ define( require => {
   } );
 
   const testVRLCircuit = ( V, R, L, assert ) => {
-    const resistor = new ModifiedNodalAnalysisCircuitElement( 1, 2, null, R ); // TODO: now that Battery is using ResistiveBatteryAdapter only, can this be named ResistorElement?  What other elements does it represent?
+    const resistor = new ModifiedNodalAnalysisCircuitElement( 1, 2, null, R );
     const battery = new DynamicCircuit.ResistiveBattery( 0, 1, V, 0 );
     const inductor = new DynamicCircuit.DynamicInductor( new DynamicCircuit.Inductor( 2, 0, L ), new DynamicCircuit.DynamicElementState( V, 0.0 ) );
     let circuit = new DynamicCircuit( [ resistor ], [ battery ], [], [ inductor ] );

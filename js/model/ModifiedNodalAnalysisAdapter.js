@@ -102,7 +102,7 @@ define( require => {
         inductor.inductanceProperty.value
       );
 
-      // TODO: sign error
+      // TODO(sign-error): sign error
       super( dynamicCircuitInductor, new DynamicCircuit.DynamicElementState( inductor.mnaVoltageDrop, -inductor.mnaCurrent ) );
       this._inductor = inductor;
     }
@@ -110,7 +110,7 @@ define( require => {
     applySolution( solution ) {
 
       // TODO: differentiate this.inductor from this._inductor.  They are very different types
-      // TODO(sign-error): sign error
+      // TODO(sign-error): Why is there a negative sign here?
       this._inductor.currentProperty.value = -solution.getTimeAverageCurrent( this.inductor );
       this._inductor.mnaCurrent = -solution.getInstantaneousCurrent( this.inductor );
       // this._inductor.setVoltageDrop( solution.getTimeAverageVoltage( this.inductor ) ); // TODO: is this needed?
@@ -120,8 +120,12 @@ define( require => {
 
   class ModifiedNodalAnalysisAdapter {
 
-    // TODO: Rename and documentation
-    static apply( circuit, dt ) {
+    /**
+     * Solves the system with Modified Nodal Analysis, and apply the results back to the Circuit.
+     * @param {Circuit} circuit
+     * @param {number} dt
+     */
+    static solveModifiedNodalAnalysis( circuit, dt ) {
       const resistiveBatteryAdapters = [];
       const resistorAdapters = [];
       const capacitorAdapters = [];
@@ -193,10 +197,9 @@ define( require => {
 
       // Apply the node voltages to the vertices
       circuit.vertexGroup.forEach( ( vertex, i ) => {
+        const v = circuitResult.resultSet.getFinalState().dynamicCircuitSolution.getNodeVoltage( i );
 
         // Unconnected vertices like those in the black box may not have an entry in the matrix, so mark them as zero.
-        // TODO: should this average over states?
-        const v = circuitResult.resultSet.states[ 0 ].state.dynamicCircuitSolution.getNodeVoltage( i );
         vertex.voltageProperty.set( v || 0 );
       } );
     }

@@ -473,9 +473,7 @@ define( require => {
 
       // For resistors with r>0, Ohm's Law gives the current.  For components with no resistance (like closed switch or
       // 0-resistance battery), the current is given by the matrix solution.
-      // TODO: can the nan check be done at assignment time?
       if ( element.hasOwnProperty( 'currentSolution' ) && element.currentSolution !== null ) {
-        assert && assert( !isNaN( element.currentSolution ) );
         return element.currentSolution;
       }
 
@@ -485,15 +483,10 @@ define( require => {
                                                              c.element === element.inductor );
 
       if ( companion ) {
-        // TODO: maybe a passthrough assertNumber function?
-        const x = companion.getValueForSolution( this.mnaSolution );
-        assert && assert( !isNaN( x ) );
-        return x;
+        return companion.getValueForSolution( this.mnaSolution );
       }
       else {
-        const y = this.mnaSolution.getCurrentForResistor( element );
-        assert && assert( !isNaN( y ) );
-        return y;
+        return this.mnaSolution.getCurrentForResistor( element );
       }
     }
 
