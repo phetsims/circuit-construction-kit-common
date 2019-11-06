@@ -41,9 +41,116 @@ define( require => {
      * @public
      */
     solvePropagate( dt ) {
-      const result = this.toMNAResult( dt );
-      const mnaSolution = result.mnaCircuit.solve();
-      return new DynamicCircuitSolution( this, mnaSolution, result.currentCompanions );
+
+
+      const companionBatteries = []; // {ModifiedNodalAnalysisCircuitElement[]}
+      const companionResistors = []; // {ModifiedNodalAnalysisCircuitElement[]}
+      const currentCompanions = [];
+
+      // Node indices that have been used
+      const usedNodes = [];
+
+      this.capacitors.forEach( capacitorAdapter => {
+        usedNodes.push( capacitorAdapter.capacitor.nodeId0 );
+        usedNodes.push( capacitorAdapter.capacitor.nodeId1 );
+      } );
+
+      this.inductors.forEach( inductorAdapters => {
+        usedNodes.push( inductorAdapters.inductor.nodeId0 );
+        usedNodes.push( inductorAdapters.inductor.nodeId1 );
+      } );
+
+      [].concat( this.resistors, this.resistiveBatteries ).forEach( element => {
+        usedNodes.push( element.nodeId0 );
+        usedNodes.push( element.nodeId1 );
+      } );
+
+      // Each resistive battery is a resistor in series with a battery
+      this.resistiveBatteries.forEach( resistiveBattery => {
+        const newNode = _.max( usedNodes ) + 1;
+        usedNodes.push( newNode );
+
+        const idealBattery = new ModifiedNodalAnalysisCircuitElement( resistiveBattery.nodeId0, newNode, null, resistiveBattery.voltage ); // final LinearCircuitSolver.Battery
+
+        // Same type as idealBattery, but treated like a resistor because it goes in the resistor array
+        const idealResistor = new ModifiedNodalAnalysisCircuitElement( newNode, resistiveBattery.nodeId1, null, resistiveBattery.resistance ); // LinearCircuitSolver.Resistor
+        companionBatteries.push( idealBattery );
+        companionResistors.push( idealResistor );
+
+        // We need to be able to get the current for this component
+        currentCompanions.push( {
+          element: resistiveBattery,
+          getValueForSolution: solution => idealBattery.currentSolution
+        } );
+      } );
+
+      // Add companion models for capacitor
+
+      // TRAPEZOIDAL: battery and resistor in series.
+      // We use trapezoidal rather than backward Euler because we do not model current sources and it seems to work well.
+      // See http://circsimproj.blogspot.com/2009/07/companion-models.html
+      // Veq = V + dt*I/2/C;
+      // Req = dt/2/C
+      this.capacitors.forEach( dynamicCapacitor => {
+        assert && assert( dynamicCapacitor instanceof DynamicCapacitor, 'Should have been DynamicCapacitor' );
+
+        const newNode = _.max( usedNodes ) + 1;
+        usedNodes.push( newNode );
+
+        const companionResistance = dt / 2.0 / dynamicCapacitor.capacitor.capacitance;
+
+        // TODO: This sign contradicts the equation above, perhaps the current is backwards?
+        // Flipping getValueForSolution and CapacitorAdapter.getTimeAverageCurrent seems to help
+        const companionVoltage = dynamicCapacitor.state.voltage - companionResistance * dynamicCapacitor.state.current;
+
+        const battery = new ModifiedNodalAnalysisCircuitElement( dynamicCapacitor.capacitor.nodeId0, newNode, null, companionVoltage );
+        const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, dynamicCapacitor.capacitor.nodeId1, null, companionResistance );
+        companionBatteries.push( battery );
+        companionResistors.push( resistor );
+
+        // We need to be able to get the current for this component. In series, so the current is the same through both.
+        // TODO: Previously used resistor to get current.  Check sign is correct.
+        currentCompanions.push( {
+          element: dynamicCapacitor,
+          getValueForSolution: solution => solution.getCurrentForResistor( resistor )
+        } );
+      } );
+
+      // See also http://circsimproj.blogspot.com/2009/07/companion-models.html
+      // See najm page 279 and Pillage page 86
+      this.inductors.forEach( dynamicInductor => {
+        const inductor = dynamicInductor.inductor;
+
+        // In series
+        const newNode = _.max( usedNodes ) + 1;
+        usedNodes.push( newNode );
+
+        const companionResistance = 2 * inductor.inductance / dt;
+        const companionVoltage = dynamicInductor.state.voltage + companionResistance * dynamicInductor.state.current;
+
+        const battery = new ModifiedNodalAnalysisCircuitElement( newNode, inductor.nodeId0, null, companionVoltage );
+        const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, inductor.nodeId1, null, companionResistance );
+        companionBatteries.push( battery );
+        companionResistors.push( resistor );
+
+        // we need to be able to get the current for this component
+        // in series, so current is same through both companion components
+        currentCompanions.push( {
+          element: inductor,
+
+          // TODO: check sign, this was converted from battery to resistor
+          getValueForSolution: solution => -solution.getCurrentForResistor( resistor )
+        } );
+      } );
+
+      const newBatteryList = companionBatteries;
+      const newResistorList = [].concat( this.resistors, companionResistors );
+      const newCurrentList = []; // Placeholder for if we add other circuit elements in the future
+
+      const mnaCircuit = new ModifiedNodalAnalysisCircuit( newBatteryList, newResistorList, newCurrentList );
+
+      const mnaSolution = mnaCircuit.solve();
+      return new DynamicCircuitSolution( this, mnaSolution, currentCompanions );
     }
 
     /**
@@ -127,119 +234,6 @@ define( require => {
       } );
 
       return new DynamicCircuit( this.resistors, this.resistiveBatteries, updatedCapacitors, updatedInductors );
-    }
-
-    /**
-     * @param {number} dt
-     * @returns {Result}
-     */
-    toMNAResult( dt ) {
-
-      const companionBatteries = []; // {ModifiedNodalAnalysisCircuitElement[]}
-      const companionResistors = []; // {ModifiedNodalAnalysisCircuitElement[]}
-      const currentCompanions = [];
-
-      // Node indices that have been used
-      const usedNodes = [];
-
-      this.capacitors.forEach( capacitorAdapter => {
-        usedNodes.push( capacitorAdapter.capacitor.nodeId0 );
-        usedNodes.push( capacitorAdapter.capacitor.nodeId1 );
-      } );
-
-      this.inductors.forEach( inductorAdapters => {
-        usedNodes.push( inductorAdapters.inductor.nodeId0 );
-        usedNodes.push( inductorAdapters.inductor.nodeId1 );
-      } );
-
-      [].concat( this.resistors, this.resistiveBatteries ).forEach( element => {
-        usedNodes.push( element.nodeId0 );
-        usedNodes.push( element.nodeId1 );
-      } );
-
-      // Each resistive battery is a resistor in series with a battery
-      this.resistiveBatteries.forEach( resistiveBattery => {
-        const newNode = _.max( usedNodes ) + 1;
-        usedNodes.push( newNode );
-
-        const idealBattery = new ModifiedNodalAnalysisCircuitElement( resistiveBattery.nodeId0, newNode, null, resistiveBattery.voltage ); // final LinearCircuitSolver.Battery
-
-        // Same type as idealBattery, but treated like a resistor because it goes in the resistor array
-        const idealResistor = new ModifiedNodalAnalysisCircuitElement( newNode, resistiveBattery.nodeId1, null, resistiveBattery.resistance ); // LinearCircuitSolver.Resistor
-        companionBatteries.push( idealBattery );
-        companionResistors.push( idealResistor );
-
-        // We need to be able to get the current for this component
-        currentCompanions.push( {
-          element: resistiveBattery,
-          getValueForSolution: solution => idealBattery.currentSolution
-        } );
-      } );
-
-      // Add companion models for capacitor
-
-      // TRAPEZOIDAL: battery and resistor in series.
-      // We use trapezoidal rather than backward Euler because we do not model current sources and it seems to work well.
-      // See http://circsimproj.blogspot.com/2009/07/companion-models.html
-      // Veq = V + dt*I/2/C;
-      // Req = dt/2/C
-      this.capacitors.forEach( dynamicCapacitor => {
-        assert && assert( dynamicCapacitor instanceof DynamicCapacitor, 'Should have been DynamicCapacitor' );
-
-        const newNode = _.max( usedNodes ) + 1;
-        usedNodes.push( newNode );
-
-        const companionResistance = dt / 2.0 / dynamicCapacitor.capacitor.capacitance;
-
-        // TODO: This sign contradicts the equation above
-        const companionVoltage = dynamicCapacitor.state.voltage - companionResistance * dynamicCapacitor.state.current;
-
-        const battery = new ModifiedNodalAnalysisCircuitElement( dynamicCapacitor.capacitor.nodeId0, newNode, null, companionVoltage );
-        const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, dynamicCapacitor.capacitor.nodeId1, null, companionResistance );
-        companionBatteries.push( battery );
-        companionResistors.push( resistor );
-
-        // We need to be able to get the current for this component. In series, so the current is the same through both.
-        // TODO: Previously used resistor to get current.  Check sign is correct.
-        currentCompanions.push( {
-          element: dynamicCapacitor,
-          getValueForSolution: solution => battery.currentSolution
-        } );
-      } );
-
-      // See also http://circsimproj.blogspot.com/2009/07/companion-models.html
-      // See najm page 279 and Pillage page 86
-      this.inductors.forEach( dynamicInductor => {
-        const inductor = dynamicInductor.inductor;
-
-        // In series
-        const newNode = _.max( usedNodes ) + 1;
-        usedNodes.push( newNode );
-
-        const companionResistance = 2 * inductor.inductance / dt;
-        const companionVoltage = dynamicInductor.state.voltage + companionResistance * dynamicInductor.state.current;
-
-        const battery = new ModifiedNodalAnalysisCircuitElement( newNode, inductor.nodeId0, null, companionVoltage );
-        const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, inductor.nodeId1, null, companionResistance );
-        companionBatteries.push( battery );
-        companionResistors.push( resistor );
-
-        // we need to be able to get the current for this component
-        // in series, so current is same through both companion components
-        currentCompanions.push( {
-          element: inductor,
-
-          // TODO: check sign, this was converted from battery to resistor
-          getValueForSolution: solution => -solution.getCurrentForResistor( resistor )
-        } );
-      } );
-
-      const newBatteryList = companionBatteries;
-      const newResistorList = [].concat( this.resistors, companionResistors );
-      const newCurrentList = []; // Placeholder for if we add other circuit elements in the future
-
-      const mnaCircuit = new ModifiedNodalAnalysisCircuit( newBatteryList, newResistorList, newCurrentList );
-      return new Result( mnaCircuit, currentCompanions );
     }
   }
 
