@@ -115,7 +115,6 @@ define( require => {
      * @param {string} labelString
      * @param {number} count
      * @param {Node} icon
-     * @param {Property.<CircuitElementViewType>} viewTypeProperty
      * @param {function} predicate - CircuitElement => boolean, used to count circuit elements of that kind
      * @param {function} createElement - (Vector2) => CircuitElement Function that creates a CircuitElement at the given location
      *                                 - for most components it is the center of the component.  For Light Bulbs, it is
@@ -125,8 +124,11 @@ define( require => {
      * @private
      */
     createCircuitElementToolNode( labelString, count, icon, predicate, createElement, options ) {
-      options = merge( { iconScale: 1.0 }, options );
-      icon.mutate( { scale: options.iconScale * TOOLBOX_ICON_SIZE / Math.max( icon.width, icon.height ) } );
+      options = merge( {
+        iconScale: 1.0,
+        limitingMaxDimension: Math.max( icon.width, icon.height )
+      }, options );
+      icon.mutate( { scale: options.iconScale * TOOLBOX_ICON_SIZE / options.limitingMaxDimension } );
       return new CircuitElementToolNode(
         labelString,
         this.showLabelsProperty,
@@ -285,12 +287,19 @@ define( require => {
         new Vertex( new Vector2( CCKCConstants.CAPACITOR_LENGTH, 0 ) ),
         Tandem.optional
       );
+      const icon = new CapacitorCircuitElementNode( null, null, capacitorModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
+        isIcon: true
+      } );
+      debugger;
       return this.createCircuitElementToolNode( 'CAPACITOR', count,
-        new CapacitorCircuitElementNode( null, null, capacitorModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
-          isIcon: true
-        } ),
+        icon,
         circuitElement => circuitElement instanceof Capacitor,
-        position => this.circuit.capacitorGroup.createNextMember( ...this.circuit.createVertexPairArray( position, CCKCConstants.CAPACITOR_LENGTH ) ) );
+        position => this.circuit.capacitorGroup.createNextMember( ...this.circuit.createVertexPairArray( position, CCKCConstants.CAPACITOR_LENGTH ) ), {
+
+          // Capacitor is tall, so to make sure the icon has the same width as other components, we need to specify the
+          // scaling is based on width
+          limitingMaxDimension: icon.width
+        } );
     }
 
     /**
