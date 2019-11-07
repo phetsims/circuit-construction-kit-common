@@ -22,6 +22,7 @@ define( require => {
   const Matrix3 = require( 'DOT/Matrix3' );
   const Node = require( 'SCENERY/nodes/Node' );
   const NumberProperty = require( 'AXON/NumberProperty' );
+  const Orientation = require( 'PHET_CORE/Orientation' );
   const Path = require( 'SCENERY/nodes/Path' );
   const Property = require( 'AXON/Property' );
   const Shape = require( 'KITE/Shape' );
@@ -113,7 +114,7 @@ define( require => {
       // TODO: This is probably creating far too many <canvas> elements, and also making the charges blurry
       const lifelikeNode = new CapacitorNode( circuit, modelViewTransform, plateChargeVisibleProperty, electricFieldVisibleProperty, {
         tandem: Tandem.optional,
-        orientation: 'horizontal' // so the "-" charges are upside-up in the default orientation
+        orientation: Orientation.HORIZONTAL // so the "-" charges are upside-up in the default orientation
       } );
 
       lifelikeNode.mutate( {
