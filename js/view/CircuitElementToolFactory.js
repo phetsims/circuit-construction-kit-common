@@ -290,7 +290,6 @@ define( require => {
       const icon = new CapacitorCircuitElementNode( null, null, capacitorModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
         isIcon: true
       } );
-      debugger;
       return this.createCircuitElementToolNode( 'CAPACITOR', count,
         icon,
         circuitElement => circuitElement instanceof Capacitor,
