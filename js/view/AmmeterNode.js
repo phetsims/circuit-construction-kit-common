@@ -70,7 +70,6 @@ define( require => {
         blackBoxStudy: false
       }, options );
 
-      // TODO: Should this be factored out to a type?  Or maybe WireNode should provide access to its parts?
       const wireBodyPositionProperty = new Vector2Property( new Vector2( 0, 0 ) );
       const wireProbePositionProperty = new Vector2Property( new Vector2( 0, 0 ) );
       const wireNode = new WireNode(
