@@ -111,10 +111,10 @@ define( require => {
       const electricFieldVisibleProperty = new BooleanProperty( true );
 
       // TODO: This is probably creating far too many <canvas> elements, and also making the charges blurry
-      const lifelikeNode = new CapacitorNode( circuit, modelViewTransform, plateChargeVisibleProperty, electricFieldVisibleProperty,
-        Tandem.optional, {
-          orientation: 'horizontal' // so the "-" charges are upside-up in the default orientation
-        } );
+      const lifelikeNode = new CapacitorNode( circuit, modelViewTransform, plateChargeVisibleProperty, electricFieldVisibleProperty, {
+        tandem: Tandem.optional,
+        orientation: 'horizontal' // so the "-" charges are upside-up in the default orientation
+      } );
 
       lifelikeNode.mutate( {
         scale: 0.45,
