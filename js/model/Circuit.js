@@ -381,7 +381,7 @@ define( require => {
      * @param {CircuitElement} circuitElement
      */
     disposeFromGroup( circuitElement ) {
-      this.groups.forEach( group => group.contains( circuitElement ) && group.disposeGroupMember( circuitElement ) );
+      this.groups.forEach( group => group.contains( circuitElement ) && group.disposeMember( circuitElement ) );
     }
 
     /**
@@ -639,7 +639,7 @@ define( require => {
       } );
 
       if ( !vertex.blackBoxInterfaceProperty.get() ) {
-        this.vertexGroup.disposeGroupMember( vertex );
+        this.vertexGroup.disposeMember( vertex );
       }
       this.markDirty();
     }
@@ -699,7 +699,7 @@ define( require => {
         !vertex.blackBoxInterfaceProperty.get() &&
         !vertex.isDisposed
       ) {
-        this.vertexGroup.disposeGroupMember( vertex );
+        this.vertexGroup.disposeMember( vertex );
       }
     }
 
@@ -781,7 +781,7 @@ define( require => {
             circuitElement.connectedEmitter.emit();
           }
         } );
-        this.vertexGroup.disposeGroupMember( oldVertex );
+        this.vertexGroup.disposeMember( oldVertex );
         assert && assert( !oldVertex.positionProperty.hasListeners(), 'Removed vertex should not have any listeners' );
         this.markDirty();
 
