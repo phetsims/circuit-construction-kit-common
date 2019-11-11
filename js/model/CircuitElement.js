@@ -153,8 +153,15 @@ define( require => {
 
       this.startPositionProperty.link( this.vertexMovedListener );
       this.endPositionProperty.link( this.vertexMovedListener );
-      this.startVertexProperty.lazyLink( this.linkVertexListener );
-      this.endVertexProperty.lazyLink( this.linkVertexListener );
+
+      // @public - named so it doesn't collide with the specified voltageProperty in Battery or ACVoltage
+      this.voltageDifferenceProperty = new NumberProperty( this.computeVoltageDifference() );
+
+      // @private
+      this.vertexVoltageListener = () => this.voltageDifferenceProperty.set( this.computeVoltageDifference() );
+
+      this.startVertexProperty.link( this.linkVertexListener );
+      this.endVertexProperty.link( this.linkVertexListener );
 
       // @public (read-only by clients, writable-by-subclasses) {number} the distance the charges must take to get to the
       // other side of the component. This is typically the distance between vertices, but not for light bulbs.  This
@@ -169,12 +176,13 @@ define( require => {
     }
 
     /**
-     * Returns the difference in voltage between the end and start vertices.
+     * Determine the voltage difference between end vertex and start vertex
      * @returns {number}
-     * @public
+     * @private
      */
-    getVoltage() {
-      return this.endVertexProperty.value.voltageProperty.value - this.startVertexProperty.value.voltageProperty.value;
+    computeVoltageDifference() {
+      return this.endVertexProperty.value.voltageProperty.value -
+             this.startVertexProperty.value.voltageProperty.value;
     }
 
     /**
@@ -187,16 +195,20 @@ define( require => {
 
       // These guards prevent errors from the bad transient state caused by the Circuit.flip causing the same Vertex
       // to be both start and end at the same time.
-      if ( oldVertex.positionProperty.hasListener( this.vertexMovedListener ) ) {
+      if ( oldVertex && oldVertex.positionProperty.hasListener( this.vertexMovedListener ) ) {
         oldVertex.positionProperty.unlink( this.vertexMovedListener );
       }
       if ( !newVertex.positionProperty.hasListener( this.vertexMovedListener ) ) {
         newVertex.positionProperty.lazyLink( this.vertexMovedListener );
       }
 
-      if ( !oldVertex.positionProperty.get().equals( newVertex.positionProperty.get() ) ) {
+      if ( oldVertex && !oldVertex.positionProperty.get().equals( newVertex.positionProperty.get() ) ) {
         this.vertexMovedEmitter.emit();
       }
+
+      this.voltageDifferenceProperty.set( this.computeVoltageDifference() );
+      oldVertex && oldVertex.voltageProperty.unlink( this.vertexVoltageListener );
+      newVertex.voltageProperty.link( this.vertexVoltageListener );
     }
 
     /**
@@ -251,6 +263,9 @@ define( require => {
 
       this.startPositionProperty.hasListener( this.vertexMovedListener ) && this.startPositionProperty.unlink( this.vertexMovedListener );
       this.endPositionProperty.hasListener( this.vertexMovedListener ) && this.endPositionProperty.unlink( this.vertexMovedListener );
+
+      this.startVertexProperty.value.voltageProperty.unlink( this.vertexVoltageListener );
+      this.endVertexProperty.value.voltageProperty.unlink( this.vertexVoltageListener );
 
       super.dispose();
     }

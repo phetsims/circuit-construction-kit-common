@@ -102,11 +102,6 @@ define( require => {
         }
       };
 
-      // TODO: DynamicProperty for getting the voltages?  Or step during model step?
-      setInterval( () => {
-        const value = Util.linear( -9, 9, -V, V, capacitor.getVoltage() );
-        circuit.capacitor.plateChargeProperty.value = -value;
-      }, 10 );
       const modelViewTransform = new YawPitchModelViewTransform3();
       const plateChargeVisibleProperty = new BooleanProperty( true );
       const electricFieldVisibleProperty = new BooleanProperty( true );
@@ -116,6 +111,9 @@ define( require => {
         tandem: Tandem.optional,
         orientation: Orientation.HORIZONTAL // so the "-" charges are upside-up in the default orientation
       } );
+
+      const voltageToPlateCharge = v => circuit.capacitor.plateChargeProperty.set( -Util.linear( -9, 9, -V, V, v ) );
+      capacitor.voltageDifferenceProperty.link( voltageToPlateCharge );
 
       lifelikeNode.mutate( {
         scale: 0.45,
@@ -200,6 +198,15 @@ define( require => {
         const bottomPlateCenterToGlobal = this.capacitorCircuitElementLifelikeNode.getBottomPlateClipShapeToGlobal();
         rightWireStub.clipArea = bottomPlateCenterToGlobal.transformed( rightWireStub.getGlobalToLocalMatrix() );
       } );
+
+      // @private
+      this.disposeCapacitorCircuitElementNode = () => capacitor.voltageDifferenceProperty.unlink( voltageToPlateCharge );
+    }
+
+    // @public
+    dispose() {
+      this.disposeCapacitorCircuitElementNode();
+      super.dispose();
     }
 
     /**
