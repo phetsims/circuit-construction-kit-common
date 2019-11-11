@@ -82,7 +82,7 @@ define( require => {
       // supplemental nodes should not be children of the backgroundNode if they need to translate independently.
       this.backgroundNode = backgroundNode;
 
-      // @private {DragListener} - set by setDragListener
+      // @private {DragListener} - set in initializeBodyDragListener
       this.backgroundDragListener = null;
 
       this.addChild( this.backgroundNode );
@@ -207,17 +207,6 @@ define( require => {
     }
 
     /**
-     * Set the drag listener, wires it up and uses it for forwarding events from the toolbox icon.
-     * @param {DragListener} dragListener
-     * @private - TODO: inline this function into initializeBodyDragListener
-     */
-    setDragListener( dragListener ) {
-      assert && assert( this.backgroundDragListener === null, 'setDragListener must be called no more than once' );
-      this.backgroundDragListener = dragListener;
-      this.backgroundNode.addInputListener( dragListener );
-    }
-
-    /**
      * For a CCKCChartNode that is not an icon, add a listener that
      * (1) drags the body
      * (2) constrains the drag to the screenView bounds
@@ -270,7 +259,8 @@ define( require => {
         movableDragHandler.dragBounds = this.backgroundNode.globalToParentBounds( b1 );
       } );
 
-      this.setDragListener( movableDragHandler );
+      this.backgroundDragListener = movableDragHandler;
+      this.backgroundNode.addInputListener( movableDragHandler );
     }
   }
 
