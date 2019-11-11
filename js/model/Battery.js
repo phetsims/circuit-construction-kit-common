@@ -51,10 +51,12 @@ define( require => {
       this.passProperty = new NumberProperty( 1 );
 
       // @public {Property.<number>} the internal resistance of the battery
-      this.internalResistanceProperty = new DerivedProperty( [ internalResistanceProperty, this.currentProperty, this.passProperty ],
-        ( internalResistance, current, pass ) => {
+      this.internalResistanceProperty = new DerivedProperty( [ this.voltageProperty, internalResistanceProperty, this.currentProperty, this.passProperty ],
+        ( voltage, internalResistance, current, pass ) => {
           if ( pass === 2 ) {
-            return CCKCQueryParameters.batteryInternalResistanceWhenCurrentThresholdExceeded;
+
+            return CCKCQueryParameters.batteryInternalResistanceWhenCurrentThresholdExceededOffset +
+                   CCKCQueryParameters.batteryInternalResistanceWhenCurrentThresholdExceededVoltageScaleFactor * voltage;
           }
           else {
             return internalResistance;
