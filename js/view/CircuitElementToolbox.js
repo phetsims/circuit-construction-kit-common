@@ -33,6 +33,7 @@ define( require => {
     constructor( viewTypeProperty, circuitElementToolNodes, tandem, options ) {
 
       options = merge( {
+        hideDisabledButtons: false,
         itemsPerPage: 5,
         pageHeight: 352 // so the carousels can easily be the same size on each screen
       }, options );

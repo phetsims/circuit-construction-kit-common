@@ -152,8 +152,10 @@ define( require => {
 
       // @public (read-only) {CircuitElementToolbox} - Toolbox from which CircuitElements can be dragged
       this.circuitElementToolbox = new CircuitElementToolbox(
-        // TODO: use nested options pattern instead of all options
-        model.viewTypeProperty, circuitElementToolNodes, tandem.createTandem( 'circuitElementToolbox' ), options
+        model.viewTypeProperty,
+        circuitElementToolNodes,
+        tandem.createTandem( 'circuitElementToolbox' ),
+        options.circuitElementToolboxOptions
       );
 
       // @protected {SensorToolbox} - so that subclasses can add a layout circuit element near it
