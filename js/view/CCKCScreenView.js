@@ -136,9 +136,6 @@ define( require => {
             tandem: tandem.createTandem( 'voltageChartNode' )
           } );
 
-        // TODO: a way to set the default value during construction
-        this.voltageChartNode.meter.visibleProperty.value = false;
-        this.voltageChartNode.meter.draggingProbesWithBodyProperty.value = true;
         this.voltageChartNode.initializeBodyDragListener( this );
 
         // TODO: some duplicated code with above
@@ -147,9 +144,6 @@ define( require => {
             tandem: tandem.createTandem( 'currentChartNode' )
           } );
 
-        // TODO: a way to set the default value during construction
-        this.currentChartNode.meter.visibleProperty.value = false;
-        this.currentChartNode.meter.draggingProbesWithBodyProperty.value = true;
         this.currentChartNode.initializeBodyDragListener( this );
       }
 

@@ -216,6 +216,10 @@ define( require => {
      */
     initializeBodyDragListener( screenView ) {
 
+      // Since this will be shown from the toolbox, make the play area icon invisible and prepare to drag with probes
+      this.meter.visibleProperty.value = false;
+      this.meter.draggingProbesWithBodyProperty.value = true;
+
       // I tried using DragListener, but AmmeterNode and VoltmeterNode are using MovableDragHandler, so to reuse
       // the same strategy in SensorToolNode (regarding Meter) we need to use MovableDragHandler.  DragListener
       // led to incorrect and unresolved offsets and behavior.

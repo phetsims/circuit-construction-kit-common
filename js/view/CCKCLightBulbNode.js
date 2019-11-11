@@ -262,7 +262,7 @@ define( require => {
      */
     updateOpacityOnInteractiveChange() {
 
-      // TODO (black-box-study): Make the light bulb images look faded out.
+      // TODO(black-box-study): Make the light bulb images look faded out.
     }
   }
 
