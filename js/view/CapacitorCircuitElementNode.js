@@ -200,7 +200,10 @@ define( require => {
       } );
 
       // @private
-      this.disposeCapacitorCircuitElementNode = () => capacitor.voltageDifferenceProperty.unlink( voltageToPlateCharge );
+      this.disposeCapacitorCircuitElementNode = () => {
+        capacitor.voltageDifferenceProperty.unlink( voltageToPlateCharge );
+        lifelikeNode.dispose();
+      };
     }
 
     // @public
