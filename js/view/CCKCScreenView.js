@@ -131,19 +131,22 @@ define( require => {
       } );
 
       if ( options.showCharts ) {
-        this.voltageChartNode = new VoltageChartNode( this.circuitLayerNode, model.circuit.timeProperty,
+        this.voltageChartNode = new VoltageChartNode(
+          this.circuitLayerNode,
+          model.circuit.timeProperty,
           this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty, {
             tandem: tandem.createTandem( 'voltageChartNode' )
-          } );
-
+          }
+        );
         this.voltageChartNode.initializeBodyDragListener( this );
 
-        // TODO: some duplicated code with above
-        this.currentChartNode = new CurrentChartNode( this.circuitLayerNode, model.circuit.timeProperty,
+        this.currentChartNode = new CurrentChartNode(
+          this.circuitLayerNode,
+          model.circuit.timeProperty,
           this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty, {
             tandem: tandem.createTandem( 'currentChartNode' )
-          } );
-
+          }
+        );
         this.currentChartNode.initializeBodyDragListener( this );
       }
 
