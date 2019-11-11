@@ -138,16 +138,15 @@ define( require => {
       const schematicPathOptions = {
         stroke: Color.BLACK,
         lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH,
-        strokePickable: true, // DO WE NEED NEXT LINE?
-        pickable: true // so that we can use hit detection for the voltmeter probes.  TODO: do we need all of these?
+        strokePickable: true,
+        pickable: true // so that we can use hit detection for the voltmeter probes.
       };
       const leftSchematicPath = new Path( leftSchematicShape, schematicPathOptions );
       const rightSchematicPath = new Path( rightSchematicShape, schematicPathOptions );
 
       // Wrap in another layer so it can be used for clipping
       const schematicNode = new Node( {
-        children: [ leftSchematicPath, rightSchematicPath ],
-        pickable: true // so that we can use hit detection for the voltmeter probes TODO: do we need all of these?
+        children: [ leftSchematicPath, rightSchematicPath ]
       } );
 
       // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
