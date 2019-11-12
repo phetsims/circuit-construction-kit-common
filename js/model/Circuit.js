@@ -724,6 +724,40 @@ define( require => {
     }
 
     /**
+     * Gets the voltage between two points.  Computed in the view because view coordinates are used in the computation.
+     * @param {VoltageConnection} redConnection
+     * @param {VoltageConnection} blackConnection
+     * @param {boolean} revealing - whether the black box is in "reveal" model
+     * @returns {number|null}
+     *
+     * @public
+     */
+    getVoltageBetweenConnections( redConnection, blackConnection, revealing ) {
+
+      if ( redConnection === null || blackConnection === null ) {
+        return null;
+      }
+      else if ( !this.areVerticesElectricallyConnected( redConnection.vertex, blackConnection.vertex ) ) {
+
+        // Voltmeter probes each hit things but they were not connected to each other through the circuit.
+        return null;
+      }
+      else if ( redConnection.vertex.insideTrueBlackBoxProperty.get() && !revealing ) {
+
+        // Cannot read values inside the black box, unless "reveal" is being pressed
+        return null;
+      }
+      else if ( blackConnection.vertex.insideTrueBlackBoxProperty.get() && !revealing ) {
+
+        // Cannot read values inside the black box, unless "reveal" is being pressed
+        return null;
+      }
+      else {
+        return redConnection.voltage - blackConnection.voltage;
+      }
+    }
+
+    /**
      * Determines whether the specified Vertices are electrically connected through any arbitrary connections.  An
      * open switch breaks the connection.
      * @param {Vertex} vertex1

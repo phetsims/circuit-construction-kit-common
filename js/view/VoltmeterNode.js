@@ -295,9 +295,7 @@ define( require => {
           if ( voltmeter.visibleProperty.get() ) {
             const blackConnection = findConnection( blackProbeNode, voltmeter.blackProbePositionProperty.get(), +1 );
             const redConnection = findConnection( redProbeNode, voltmeter.redProbePositionProperty.get(), -1 );
-
-            // TODO: move to CircuitLayerNode or model
-            const voltage = this.circuitLayerNode.getVoltage( redConnection, blackConnection );
+            const voltage = this.circuitLayerNode.circuit.getVoltageBetweenConnections( redConnection, blackConnection );
             voltmeter.voltageProperty.set( voltage );
           }
         };

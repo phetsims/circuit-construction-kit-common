@@ -56,6 +56,7 @@ define( require => {
   const ValueNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ValueNode' );
   const Vector2 = require( 'DOT/Vector2' );
   const VertexNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VertexNode' );
+  const VoltageConnection = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/VoltageConnection' );
   const Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
   const WireNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/WireNode' );
 
@@ -882,38 +883,6 @@ define( require => {
     }
 
     /**
-     * Gets the voltage between two points.  Computed in the view because view coordinates are used in the computation.
-     * @returns {number|null}
-     *
-     * TODO: Move to model or VoltageConnection
-     * @public
-     */
-    getVoltage( redConnection, blackConnection ) {
-
-      if ( redConnection === null || blackConnection === null ) {
-        return null;
-      }
-      else if ( !this.circuit.areVerticesElectricallyConnected( redConnection.vertex, blackConnection.vertex ) ) {
-
-        // Voltmeter probes each hit things but they were not connected to each other through the circuit.
-        return null;
-      }
-      else if ( redConnection.vertex.insideTrueBlackBoxProperty.get() && !this.model.revealingProperty.get() ) {
-
-        // Cannot read values inside the black box, unless "reveal" is being pressed
-        return null;
-      }
-      else if ( blackConnection.vertex.insideTrueBlackBoxProperty.get() && !this.model.revealingProperty.get() ) {
-
-        // Cannot read values inside the black box, unless "reveal" is being pressed
-        return null;
-      }
-      else {
-        return redConnection.voltage - blackConnection.voltage;
-      }
-    }
-
-    /**
      * Find the current in the given layer (if any CircuitElement hits the sensor)
      * @param {Node} probeNode
      * @param {Node} layer
@@ -960,20 +929,6 @@ define( require => {
       else {
         return this.getCurrentInLayer( probeNode, this.wireLayer );
       }
-    }
-  }
-
-  // TODO: namespace or move top level
-  class VoltageConnection {
-
-    /**
-     * Indicates a vertex and a voltage measurement at the given vertex.
-     * @param {Vertex} vertex
-     * @param {number} [voltage]
-     */
-    constructor( vertex, voltage = vertex.voltageProperty.value ) {
-      this.vertex = vertex;
-      this.voltage = voltage;
     }
   }
 

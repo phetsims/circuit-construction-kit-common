@@ -70,7 +70,7 @@ define( require => {
 
         const redConnection = this.circuitLayerNode.getVoltageConnection( redPoint );
         const blackConnection = this.circuitLayerNode.getVoltageConnection( blackPoint );
-        const voltage = this.circuitLayerNode.getVoltage( redConnection, blackConnection );
+        const voltage = this.circuitLayerNode.circuit.getVoltageBetweenConnections( redConnection, blackConnection );
 
         // TODO: add scaling to ScrollingChartNode
         this.series.data.push( new Vector2( time, voltage === null ? NaN : voltage / 10 || 0 ) );
