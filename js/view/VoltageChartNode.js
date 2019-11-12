@@ -64,30 +64,31 @@ define( require => {
      * @param {number} dt - delta time since last update
      */
     step( time, dt ) {
+      if ( this.meter.visibleProperty.value ) {
+        const redPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode1.translation ) );
+        const blackPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode2.translation ) );
 
-      const redPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode1.translation ) );
-      const blackPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode2.translation ) );
+        const red = this.circuitLayerNode.getVoltageConnection( redPoint );
+        const black = this.circuitLayerNode.getVoltageConnection( blackPoint );
+        const voltage = this.circuitLayerNode.getVoltage( red, black );
 
-      const red = this.circuitLayerNode.getVoltageConnection( redPoint );
-      const black = this.circuitLayerNode.getVoltageConnection( blackPoint );
-      const voltage = this.circuitLayerNode.getVoltage( red, black );
+        // TODO: add scaling to ScrollingChartNode
+        this.series.data.push( new Vector2( time, voltage === null ? NaN : voltage / 10 || 0 ) );
+        this.series.emitter.emit();
 
-      // TODO: add scaling to ScrollingChartNode
-      this.series.data.push( new Vector2( time, voltage === null ? NaN : voltage / 10 || 0 ) );
-      this.series.emitter.emit();
+        // For debugging, depict the points where the sampling happens
+        if ( CCKCQueryParameters.showVoltmeterSamplePoints ) {
 
-      // For debugging, depict the points where the sampling happens
-      if ( CCKCQueryParameters.showVoltmeterSamplePoints ) {
+          // These get erased when changing between lifelike/schematic
+          this.circuitLayerNode.addChild( new Rectangle( -1, -1, 2, 2, {
+            fill: Color.BLACK,
+            translation: redPoint
+          } ) );
+        }
 
-        // These get erased when changing between lifelike/schematic
-        this.circuitLayerNode.addChild( new Rectangle( -1, -1, 2, 2, {
-          fill: Color.BLACK,
-          translation: redPoint
-        } ) );
-      }
-
-      while ( this.series.data.length > 0 && this.series.data[ 0 ].x < this.timeProperty.value - NUMBER_OF_TIME_DIVISIONS ) {
-        this.series.data.shift();
+        while ( this.series.data.length > 0 && this.series.data[ 0 ].x < this.timeProperty.value - NUMBER_OF_TIME_DIVISIONS ) {
+          this.series.data.shift();
+        }
       }
     }
   }

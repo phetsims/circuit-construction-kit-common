@@ -58,14 +58,17 @@ define( require => {
      * @param {number} dt - delta time since last update
      */
     step( time, dt ) {
-      const current = this.circuitLayerNode.getCurrent( this.probeNode1 );
 
-      // TODO: add scaling to ScrollingChartNode
-      this.series.data.push( new Vector2( time, current === null ? NaN : current / 10 || 0 ) );
-      this.series.emitter.emit();
+      if ( this.meter.visibleProperty.value ) {
+        const current = this.circuitLayerNode.getCurrent( this.probeNode1 );
 
-      while ( this.series.data.length > 0 && this.series.data[ 0 ].x < this.timeProperty.value - NUMBER_OF_TIME_DIVISIONS ) {
-        this.series.data.shift();
+        // TODO: add scaling to ScrollingChartNode
+        this.series.data.push( new Vector2( time, current === null ? NaN : current / 10 || 0 ) );
+        this.series.emitter.emit();
+
+        while ( this.series.data.length > 0 && this.series.data[ 0 ].x < this.timeProperty.value - NUMBER_OF_TIME_DIVISIONS ) {
+          this.series.data.shift();
+        }
       }
     }
   }

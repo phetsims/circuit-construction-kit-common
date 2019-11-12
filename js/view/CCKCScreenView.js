@@ -388,7 +388,6 @@ define( require => {
 
       this.circuitLayerNode.step( dt );
 
-      // TODO: avoid work if tools are in the toolbox?
       this.voltageChartNode && this.voltageChartNode.step( this.model.circuit.timeProperty.value, dt );
       this.currentChartNode && this.currentChartNode.step( this.model.circuit.timeProperty.value, dt );
     }
