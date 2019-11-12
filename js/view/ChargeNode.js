@@ -85,10 +85,6 @@ define( require => {
 
       charge.disposeEmitterCharge.addListener( this.dispose.bind( this ) );
 
-      // For debugging, show the clipping regions // TODO: remove for production
-      // this.path = new Path( null, { stroke: 'blue' } );
-      // this.addChild( this.path );
-
       this.updateTransformListener();
     }
 
@@ -172,13 +168,10 @@ define( require => {
           globalClipShape = localShape.transformed( capacitorCircuitElementNode.capacitorCircuitElementSchematicNode.getLocalToGlobalMatrix() );
         }
 
-        const localShape = globalClipShape.transformed( this.getGlobalToLocalMatrix() );
-        this.clipArea = localShape;
-        // this.path.shape = localShape;
+        this.clipArea = globalClipShape.transformed( this.getGlobalToLocalMatrix() );
       }
       else {
         this.clipArea = null;
-        // this.path.shape = null;
       }
     }
 
