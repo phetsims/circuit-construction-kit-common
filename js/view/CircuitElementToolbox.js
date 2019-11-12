@@ -39,7 +39,7 @@ define( require => {
       }, options );
 
       // Carousel was optimized for items of equal size.  To get equal spacing between objects, we create our own pages
-      // see https://github.com/phetsims/circuit-construction-kit-dc/issues/91
+      // see https://github.com/phetsims/circuit-construction-kit-dc/issues/91 and https://github.com/phetsims/sun/issues/541
       const pages = _.chunk( circuitElementToolNodes, options.itemsPerPage ).map( elements => new VBox( { children: elements } ) );
 
       // The schematic and lifelike icons have different dimensions, so update the spacing when the view type changes
@@ -77,7 +77,10 @@ define( require => {
       // create the carousel
       const carousel = new Carousel( alignedPages, {
         orientation: 'vertical',
-        itemsPerPage: 1, // TODO: document this workaround
+
+        // Carousel was optimized for items of equal size.  To get equal spacing between objects, we create our own pages
+        // see https://github.com/phetsims/circuit-construction-kit-dc/issues/91 and https://github.com/phetsims/sun/issues/541
+        itemsPerPage: 1,
         spacing: CAROUSEL_ITEM_SPACING, // Determines the vertical margins
         margin: 15,
 
