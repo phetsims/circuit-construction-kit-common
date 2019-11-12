@@ -827,7 +827,7 @@ define( require => {
      * @public
      */
     layoutChargesInDirtyCircuitElements() {
-      this.circuitElements.getArray().forEach( circuitElement => this.layoutCharges( circuitElement ) );
+      this.circuitElements.forEach( circuitElement => this.layoutCharges( circuitElement ) );
     }
 
     /**

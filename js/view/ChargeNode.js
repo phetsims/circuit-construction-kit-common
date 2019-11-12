@@ -76,9 +76,7 @@ define( require => {
       this.updateVisibleListener = this.updateVisible.bind( this );
 
       // When the model position changes, update the node position.
-      // TODO: We will also need to update when the capacitor position changes.
-      this.updateTransformListener = this.updateTransform.bind( this );
-
+      this.updateTransformListener = () => this.updateTransform();
       charge.changedEmitter.addListener( this.updateTransformListener );
       charge.visibleProperty.link( this.updateVisibleListener );
       this.outsideOfBlackBoxProperty.link( this.updateVisibleListener );
