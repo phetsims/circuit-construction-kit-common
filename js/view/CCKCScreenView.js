@@ -352,11 +352,11 @@ define( require => {
       if ( options.showStopwatchCheckbox ) {
         const stopwatchNodeTandem = tandem.createTandem( 'stopwatchNode' );
         const isTimerRunningProperty = new BooleanProperty( false, { tandem: stopwatchNodeTandem.createTandem( 'isRunningProperty' ) } );
-        this.timerNode = new TimerNode( new NumberProperty( 0 ), isTimerRunningProperty, { // TODO: rename stopwatchNode
+        const stopwatchNode = new TimerNode( new NumberProperty( 0 ), isTimerRunningProperty, {
           tandem: stopwatchNodeTandem,
           right: controlPanelVBox.left - HORIZONTAL_MARGIN
         } );
-        this.addChild( this.timerNode );
+        this.addChild( stopwatchNode );
         let hasStopwatchBeenDisplayed = false;
 
         // Show the TimerNode when the checkbox is checked
@@ -365,10 +365,10 @@ define( require => {
 
             // Compute bounds lazily now that everything is attached to the scene graph
             const globalBounds = this.displayOptionsPanel.stopwatchCheckbox.globalBounds;
-            this.timerNode.centerY = this.globalToLocalBounds( globalBounds ).centerY;
+            stopwatchNode.centerY = this.globalToLocalBounds( globalBounds ).centerY;
             hasStopwatchBeenDisplayed = true;
           }
-          this.timerNode.visible = showStopwatch;
+          stopwatchNode.visible = showStopwatch;
         } );
       }
     }
