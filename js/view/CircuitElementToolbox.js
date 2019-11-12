@@ -87,7 +87,7 @@ define( require => {
         // Expand the touch area above the up button and below the down button
         buttonTouchAreaYDilation: 8,
 
-        // TODO: we probably should just use Panel in this case
+        // TODO: we probably should just use Panel in this case, see https://github.com/phetsims/circuit-construction-kit-common/issues/507
         hideDisabledButtons: options.hideDisabledButtons,
         tandem: tandem.createTandem( 'carousel' )
       } );
