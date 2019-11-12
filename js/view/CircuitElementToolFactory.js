@@ -212,7 +212,7 @@ define( require => {
      */
     createLightBulbToolNode( count, tandem ) {
       const lightBulbModel = LightBulb.createAtPosition(
-        new Vector2( -1000, 0 ), // TODO: put back at 0,0
+        new Vector2( 0, 0 ),
         this.circuit,
         CCKCConstants.DEFAULT_RESISTANCE,
         this.viewTypeProperty,
