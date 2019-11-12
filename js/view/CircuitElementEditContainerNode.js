@@ -72,7 +72,7 @@ define( require => {
     constructor( circuit, visibleBoundsProperty, modeProperty, tandem ) {
       const groupTandem = tandem.createGroupTandem( 'circuitElementEditNode' );
 
-      // TODO: uninstrument or keep group?  See comment in CircuitElementEditNode Tandem.optional for NumberControl
+      // TODO(phet-io): uninstrument or keep group?  See comment in CircuitElementEditNode Tandem.optional for NumberControl
       const trashButtonGroup = new PhetioGroup( 'trashButton',
         ( tandem, circuitElement ) => new TrashButton( circuit, circuitElement, tandem ),
         [ null ], {

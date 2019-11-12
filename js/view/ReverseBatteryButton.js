@@ -19,7 +19,7 @@ define( require => {
   // constants
   const ARROW_ICON_SCALE = 0.012;
 
-  class RotateBatteryButton extends RoundPushButton {
+  class ReverseBatteryButton extends RoundPushButton {
 
     /**
      * @param {Circuit} circuit - the circuit that contains the battery
@@ -75,5 +75,5 @@ define( require => {
     }
   }
 
-  return circuitConstructionKitCommon.register( 'RotateBatteryButton', RotateBatteryButton );
+  return circuitConstructionKitCommon.register( 'ReverseBatteryButton', ReverseBatteryButton );
 } );

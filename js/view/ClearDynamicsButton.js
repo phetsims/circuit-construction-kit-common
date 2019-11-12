@@ -53,7 +53,7 @@ define( require => {
 
         listener: () => dynamicCircuitElement.clear(),
 
-        // TODO: these values are shared by RotateBatteryButton
+        // TODO: these values are shared by ReverseBatteryButton
         minXMargin: 10,
         minYMargin: 10,
 
