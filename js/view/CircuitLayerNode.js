@@ -810,7 +810,7 @@ define( require => {
     /**
      * Find where the voltmeter probe node intersects the wire, for computing the voltage difference to display in the
      * voltmeter.
-     * @param {Vector2} probePosition - TODO: document coordinate frame, is this global?
+     * @param {Vector2} probePosition - in the local coordinate frame of the CircuitLayerNode
      * @returns {VoltageConnection|null} returns VoltageConnection if connected, otherwise null
      * @private
      */

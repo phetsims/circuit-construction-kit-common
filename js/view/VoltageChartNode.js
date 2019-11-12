@@ -68,9 +68,9 @@ define( require => {
         const redPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode1.translation ) );
         const blackPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode2.translation ) );
 
-        const red = this.circuitLayerNode.getVoltageConnection( redPoint );
-        const black = this.circuitLayerNode.getVoltageConnection( blackPoint );
-        const voltage = this.circuitLayerNode.getVoltage( red, black );
+        const redConnection = this.circuitLayerNode.getVoltageConnection( redPoint );
+        const blackConnection = this.circuitLayerNode.getVoltageConnection( blackPoint );
+        const voltage = this.circuitLayerNode.getVoltage( redConnection, blackConnection );
 
         // TODO: add scaling to ScrollingChartNode
         this.series.data.push( new Vector2( time, voltage === null ? NaN : voltage / 10 || 0 ) );

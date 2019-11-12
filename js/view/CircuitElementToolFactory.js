@@ -363,7 +363,7 @@ define( require => {
       const getHouseholdItemCreator = ( resistorType, resistance, resistorLength, groupTandem ) => {
         return position => {
 
-          // TODO: groupify
+          // TODO(phet-io): groupify
           const vertexPair = this.circuit.createVertexPairArray( position, resistorLength );
           return new Resistor( vertexPair[ 0 ], vertexPair[ 1 ], groupTandem.createNextTandem(), {
             resistance: resistance,
