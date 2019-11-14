@@ -28,13 +28,17 @@ define( require => {
       };
     }
 
+    static fromStateObject( stateObject ) {
+      return { position: Vector2IO.fromStateObject( stateObject.position ) };
+    }
+
     /**
      * @override
-     * @param {Object} stateObject - see VertexIO.toStateObject
+     * @param {Object} state - see VertexIO.toStateObject
      * @returns {Array.<*>}
      */
-    static stateObjectToArgs( stateObject ) {
-      return [ Vector2IO.fromStateObject( stateObject.position ) ];
+    static stateToArgs( state ) {
+      return [ state.position ];
     }
   }
 

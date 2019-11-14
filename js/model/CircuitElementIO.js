@@ -24,22 +24,26 @@ define( require => {
       };
     }
 
-    /**
-     * @override
-     * @param {Object} stateObject - see CircuitElementIO.toStateObject
-     * @returns {Array.<*>}
-     */
-    static stateObjectToArgs( stateObject ) {
+    static fromStateObject( stateObject ) {
       if ( phet.phetIo.phetioEngine.hasPhetioObject( stateObject.startVertexID ) &&
            phet.phetIo.phetioEngine.hasPhetioObject( stateObject.endVertexID ) ) {
-        return [
-          phet.phetIo.phetioEngine.getPhetioObject( stateObject.startVertexID ),
-          phet.phetIo.phetioEngine.getPhetioObject( stateObject.endVertexID )
-        ];
+        return {
+          startVertex: phet.phetIo.phetioEngine.getPhetioObject( stateObject.startVertexID ),
+          endVertex: phet.phetIo.phetioEngine.getPhetioObject( stateObject.endVertexID )
+        };
       }
       else {
         throw new CouldNotYetDeserializeError();
       }
+    }
+
+    /**
+     * @override
+     * @param {Object} state - see CircuitElementIO.toStateObject
+     * @returns {Array.<*>}
+     */
+    static stateToArgs( state ) {
+      return [ state.startVertex, state.endVertex ];
     }
   }
 

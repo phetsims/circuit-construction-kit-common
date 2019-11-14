@@ -23,23 +23,25 @@ define( require => {
       };
     }
 
-    /**
-     * @override
-     * @param {Object} stateObject - see TrashButtonIO.toStateObject
-     * @returns {Array.<*>}
-     */
-    static stateObjectToArgs( stateObject ) {
+    static fromStateObject( stateObject ) {
       if ( stateObject.circuitElementID === null ) {
-        return [ null ];
+        return { circuitElement: null };
       }
       if ( phet.phetIo.phetioEngine.hasPhetioObject( stateObject.circuitElementID ) ) {
-        return [
-          phet.phetIo.phetioEngine.getPhetioObject( stateObject.circuitElementID )
-        ];
+        return { circuitElement: phet.phetIo.phetioEngine.getPhetioObject( stateObject.circuitElementID ) };
       }
       else {
         throw new CouldNotYetDeserializeError();
       }
+    }
+
+    /**
+     * @override
+     * @param {Object} state - see TrashButtonIO.toStateObject
+     * @returns {Array.<*>}
+     */
+    static stateToArgs( state ) {
+      return [ state.circuitElement ];
     }
   }
 
