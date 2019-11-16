@@ -186,7 +186,7 @@ define( require => {
     }
 
     /**
-     * When the start or end Vertex changes, move the listener from the old Vertex to the new one
+     * When the start or end Vertex changes, move the listeners from the old Vertex to the new one
      * @private
      * @param {Vertex} newVertex - the new vertex
      * @param {Vertex} oldVertex - the previous vertex
@@ -195,20 +195,23 @@ define( require => {
 
       // These guards prevent errors from the bad transient state caused by the Circuit.flip causing the same Vertex
       // to be both start and end at the same time.
-      if ( oldVertex && oldVertex.positionProperty.hasListener( this.vertexMovedListener ) ) {
-        oldVertex.positionProperty.unlink( this.vertexMovedListener );
+      if ( oldVertex ) {
+        oldVertex.positionProperty.hasListener( this.vertexMovedListener ) && oldVertex.positionProperty.unlink( this.vertexMovedListener );
+        oldVertex.voltageProperty.hasListener( this.vertexVoltageListener ) && oldVertex.voltageProperty.unlink( this.vertexVoltageListener );
+
+        if ( !oldVertex.positionProperty.get().equals( newVertex.positionProperty.get() ) ) {
+          this.vertexMovedEmitter.emit();
+        }
       }
+
       if ( !newVertex.positionProperty.hasListener( this.vertexMovedListener ) ) {
         newVertex.positionProperty.lazyLink( this.vertexMovedListener );
       }
-
-      if ( oldVertex && !oldVertex.positionProperty.get().equals( newVertex.positionProperty.get() ) ) {
-        this.vertexMovedEmitter.emit();
+      if ( !newVertex.voltageProperty.hasListener( this.vertexVoltageListener ) ) {
+        newVertex.voltageProperty.link( this.vertexVoltageListener );
       }
 
       this.voltageDifferenceProperty.set( this.computeVoltageDifference() );
-      oldVertex && oldVertex.voltageProperty.unlink( this.vertexVoltageListener );
-      newVertex.voltageProperty.link( this.vertexVoltageListener );
     }
 
     /**
