@@ -79,9 +79,6 @@ define( require => {
     // Length of a battery
     BATTERY_LENGTH: 102,
 
-    // Length of an inductor
-    INDUCTOR_LENGTH: 102,
-
     // Length of the AC Voltage
     AC_VOLTAGE_LENGTH: 68,
 
