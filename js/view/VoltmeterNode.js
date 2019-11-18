@@ -48,6 +48,10 @@ define( require => {
   const PROBE_SCALE = 0.67 * SCALE; // multiplied by the SCALE above
   const PROBE_ANGLE = 22 * Math.PI * 2 / 360;
 
+  const CONTROL_POINT_X = 30;
+  const CONTROL_POINT_Y1 = 15;
+  const CONTROL_POINT_Y2 = 60;
+
   class VoltmeterNode extends Node {
 
     /**
@@ -117,23 +121,31 @@ define( require => {
         children: [ probeTextNode ]
       } );
 
-      // TODO: Should this be factored out to a type, or perhaps WireNode should export these members?
-      const blackWireBodyPositionProperty = new Vector2Property( new Vector2( 0, 0 ) );
-      const blackWireProbePositionProperty = new Vector2Property( new Vector2( 0, 0 ) );
+      /**
+       * Creates a Vector2Property with a new Vector2 at the specified location.
+       * @param {number} [x]
+       * @param {number} [y]
+       */
+      const createVector2Property = function( x = 0, y = 0 ) {
+        return new Vector2Property( new Vector2( x, y ) );
+      };
+
+      const blackWireBodyPositionProperty = createVector2Property();
+      const blackWireProbePositionProperty = createVector2Property();
       const blackWireNode = new WireNode(
-        blackWireBodyPositionProperty, new Vector2Property( new Vector2( -30, 15 ) ), // TODO: Factor out
-        blackWireProbePositionProperty, new Vector2Property( new Vector2( -30, 60 ) ), {
+        blackWireBodyPositionProperty, createVector2Property( -CONTROL_POINT_X, CONTROL_POINT_Y1 ),
+        blackWireProbePositionProperty, createVector2Property( -CONTROL_POINT_X, CONTROL_POINT_Y2 ), {
           stroke: Color.BLACK,
           lineWidth: 3,
           pickable: false
         }
       );
 
-      const redWireBodyPositionProperty = new Vector2Property( new Vector2( 0, 0 ) );
-      const redWireProbePositionProperty = new Vector2Property( new Vector2( 0, 0 ) );
+      const redWireBodyPositionProperty = createVector2Property();
+      const redWireProbePositionProperty = createVector2Property();
       const redWireNode = new WireNode(
-        redWireBodyPositionProperty, new Vector2Property( new Vector2( 30, 15 ) ),
-        redWireProbePositionProperty, new Vector2Property( new Vector2( 30, 60 ) ), {
+        redWireBodyPositionProperty, createVector2Property( CONTROL_POINT_X, CONTROL_POINT_Y1 ),
+        redWireProbePositionProperty, createVector2Property( CONTROL_POINT_X, CONTROL_POINT_Y2 ), {
           stroke: Color.RED,
           lineWidth: 3,
           pickable: false
