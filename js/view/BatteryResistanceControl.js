@@ -28,6 +28,7 @@ define( require => {
   const resistanceOhmsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/resistanceOhms' );
 
   class BatteryResistanceControl extends CCKCAccordionBox {
+
     /**
      * @param {Property.<number>} batteryResistanceProperty - axon Property for the internal resistance of all Batteries
      * @param {AlignGroup} alignGroup
