@@ -133,18 +133,20 @@ define( require => {
     }
 
     /**
-     * Returns true if the node hits the sensor at the given point. It is the caller's responsibility to call
-     * @param {Vector2} point
+     * Returns true if the node hits the sensor at the given point.
+     * @param {Vector2} globalPoint
      * @returns {boolean}
      * @public
      */
-    containsSensorPoint( point ) {
+    containsSensorPoint( globalPoint ) {
+
+      const localPoint = this.globalToParentPoint( globalPoint );
 
       // make sure bounds are correct if cut or joined in this animation frame
       this.step();
 
       // default implementation is a scenery geometry containment test
-      return this.containsPoint( point );
+      return this.containsPoint( localPoint );
     }
 
     /**

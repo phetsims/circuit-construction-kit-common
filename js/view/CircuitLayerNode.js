@@ -775,11 +775,13 @@ define( require => {
      * Check for an intersection between a probeNode and a wire, return null if no hits.
      * @param {Vector2} position to hit test
      * @param {function} filter - CircuitElement=>boolean the rule to use for checking circuit elements
-     * @param {Vector2} globalPoint
+     * @param {Vector2|null} globalPoint
      * @returns {CircuitElementNode|null}
      * @public
      */
     hitCircuitElementNode( position, filter, globalPoint ) {
+
+      assert && assert( globalPoint !== undefined );
 
       const circuitElementNodes = this.circuit.circuitElements.getArray()
         .filter( filter )
@@ -801,7 +803,7 @@ define( require => {
           revealing = this.model.revealingProperty.get();
         }
 
-        if ( revealing && circuitElementNode.containsSensorPoint( position, globalPoint ) ) {
+        if ( revealing && circuitElementNode.containsSensorPoint( globalPoint ) ) {
           return circuitElementNode;
         }
       }
@@ -816,6 +818,8 @@ define( require => {
      * @private
      */
     getVoltageConnection( probePosition ) {
+
+      const globalPoint = this.localToGlobalPoint( probePosition );
 
       // Check for intersection with a vertex, using the solder radius.  This means it will be possible to check for
       // voltages when nearby the terminal of a battery, not necessarily touching the battery (even when solder is
@@ -832,7 +836,7 @@ define( require => {
       }
 
       // Check for intersection with a metallic circuit element, which can provide voltmeter readings
-      const metallicCircuitElement = this.hitCircuitElementNode( probePosition, circuitElement => circuitElement.isMetallic );
+      const metallicCircuitElement = this.hitCircuitElementNode( probePosition, circuitElement => circuitElement.isMetallic, globalPoint );
       if ( metallicCircuitElement ) {
 
         const startPoint = metallicCircuitElement.circuitElement.startPositionProperty.get();
@@ -854,7 +858,7 @@ define( require => {
       else {
 
         // check for intersection with switch node
-        const switchNode = this.hitCircuitElementNode( probePosition, circuitElement => circuitElement instanceof Switch );
+        const switchNode = this.hitCircuitElementNode( probePosition, circuitElement => circuitElement instanceof Switch, globalPoint );
         if ( switchNode ) {
 
           // address closed switch.  Find out whether the probe was near the start or end vertex
@@ -866,7 +870,6 @@ define( require => {
           }
         }
 
-        const globalPoint = this.localToGlobalPoint( probePosition );
         const capacitorNode = this.hitCircuitElementNode( probePosition, circuitElement => circuitElement instanceof Capacitor, globalPoint );
         if ( capacitorNode ) {
 
@@ -891,7 +894,7 @@ define( require => {
      */
     getCurrentInLayer( probeNode, layer ) {
 
-      const global = probeNode.parentToGlobalPoint( probeNode.translation );
+      const globalPoint = probeNode.parentToGlobalPoint( probeNode.translation );
 
       // See if any CircuitElementNode contains the sensor point
       for ( let i = 0; i < layer.children.length; i++ ) {
@@ -901,9 +904,7 @@ define( require => {
           // This is called between when the circuit element is disposed and when the corresponding view is disposed
           // so we must take care not to visit circuit elements that have been disposed but still have a view
           // see https://github.com/phetsims/circuit-construction-kit-common/issues/418
-          // TODO: I suspect the coordinate frame is wrong for CurrentChartNode
-          // TODO: some implementations use local point, some use global point?  Can they all use global?
-          if ( !circuitElementNode.circuitElement.circuitElementDisposed && circuitElementNode.containsSensorPoint( probeNode.translation, global ) ) {
+          if ( !circuitElementNode.circuitElement.circuitElementDisposed && circuitElementNode.containsSensorPoint( globalPoint ) ) {
             let rawCurrent = circuitElementNode.circuitElement.currentProperty.get();
             if ( circuitElementNode.circuitElement.isInitialCurrentNegative ) {
               rawCurrent = -rawCurrent;

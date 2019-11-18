@@ -241,18 +241,20 @@ define( require => {
 
     /**
      * Returns true if the node hits the sensor at the given point.
-     * @param {Vector2} point
+     * @param {Vector2} globalPoint
      * @returns {boolean}
      * @overrides
      * @public
      */
-    containsSensorPoint( point ) {
+    containsSensorPoint( globalPoint ) {
+
+      const localPoint = this.globalToParentPoint( globalPoint );
 
       // make sure bounds are correct if cut or joined in this animation frame
       this.step();
 
       // Check against the mouse region
-      return !!this.hitTest( point, true, false );
+      return !!this.hitTest( localPoint, true, false );
     }
 
     /**

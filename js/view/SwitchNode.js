@@ -242,17 +242,19 @@ define( require => {
 
     /**
      * Returns true if the node hits the sensor at the given point.
-     * @param {Vector2} point
+     * @param {Vector2} globalPoint
      * @returns {boolean}
      * @overrides
      * @public
      */
-    containsSensorPoint( point ) {
+    containsSensorPoint( globalPoint ) {
+
+      const localPoint = this.globalToParentPoint( globalPoint );
 
       // make sure bounds are correct if cut or joined in this animation frame
       this.step();
 
-      return this.startSideContainsSensorPoint( point ) || this.endSideContainsSensorPoint( point );
+      return this.startSideContainsSensorPoint( localPoint ) || this.endSideContainsSensorPoint( localPoint );
     }
 
     /**
