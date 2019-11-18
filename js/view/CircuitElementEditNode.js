@@ -19,14 +19,12 @@ define( require => {
   const Inductor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Inductor' );
   const merge = require( 'PHET_CORE/merge' );
   const NumberControl = require( 'SCENERY_PHET/NumberControl' );
-  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const ResetFuseButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResetFuseButton' );
   const ReverseBatteryButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ReverseBatteryButton' );
   const Tandem = require( 'TANDEM/Tandem' );
   const TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
 
   // constants
-  const FONT = new PhetFont( CCKCConstants.FONT_SIZE );
   const NUMBER_CONTROL_ELEMENT_MAX_WIDTH = 140;
 
   class CircuitElementEditNode extends HBox {
@@ -45,11 +43,11 @@ define( require => {
       options = merge( {
         showTrashCan: true,
 
-        // TODO: A better way of doing this, see note in ACVoltage
+        // TODO: A better way of doing this, see note in CircuitElementEditContainerNode
         // Takes precedence over value specified in the CircuitElement
         delta: null,
 
-        // TODO: A better way of doing this, see note in ACVoltage
+        // TODO: A better way of doing this, see note in CircuitElementEditContainerNode
         // Takes precedence over value specified in the CircuitElement
         editableRange: null
       }, options );
@@ -67,12 +65,12 @@ define( require => {
         // subcomponent options
         titleNodeOptions: {
           maxWidth: NUMBER_CONTROL_ELEMENT_MAX_WIDTH,
-          font: FONT
+          font: CCKCConstants.DEFAULT_FONT
         },
         numberDisplayOptions: {
           maxWidth: NUMBER_CONTROL_ELEMENT_MAX_WIDTH,
           valuePattern: valuePattern,
-          font: FONT,
+          font: CCKCConstants.DEFAULT_FONT,
           decimalPlaces: circuitElement.numberOfDecimalPlaces
         },
 

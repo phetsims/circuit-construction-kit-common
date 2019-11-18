@@ -347,8 +347,7 @@ define( require => {
       } );
 
       // @public - the TimerNode
-      // TODO: consider generalizing Stopwatch and StopwatchNode from gas-properties
-      // TODO: if statement or subtype?  Think of it as a mix-in.
+      // TODO: consider generalizing Stopwatch and StopwatchNode from gas-properties.
       if ( options.showStopwatchCheckbox ) {
         const stopwatchNodeTandem = tandem.createTandem( 'stopwatchNode' );
         const isTimerRunningProperty = new BooleanProperty( false, { tandem: stopwatchNodeTandem.createTandem( 'isRunningProperty' ) } );

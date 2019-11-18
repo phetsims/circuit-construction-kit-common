@@ -215,8 +215,7 @@ define( require => {
                   selectedCircuitElement,
                   groupTandem.createNextTandem(), {
 
-                    // TODO: We need a different feature for this.  Maybe each CircuitElement has a map of editable things, not
-                    // TODO: just one editable thing.
+                    // TODO: We need a different feature for this. Maybe each CircuitElement has a map of editable things, not just one editable thing.
                     delta: 0.1,
                     editableRange: new Range( 0.1, 2 ) // TODO: what range here?
                   }

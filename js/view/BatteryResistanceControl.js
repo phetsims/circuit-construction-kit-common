@@ -17,7 +17,6 @@ define( require => {
   const Color = require( 'SCENERY/util/Color' );
   const HSlider = require( 'SUN/HSlider' );
   const Node = require( 'SCENERY/nodes/Node' );
-  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
@@ -68,7 +67,7 @@ define( require => {
       const readoutTextPanelTandem = tandem.createTandem( 'readoutTextPanel' );
 
       const readoutText = new Text( batteryResistanceProperty.get(), {
-        font: new PhetFont( CCKCConstants.FONT_SIZE ),
+        font: CCKCConstants.DEFAULT_FONT,
         fill: Color.BLACK,
         maxWidth: 100,
         tandem: readoutTextPanelTandem.createTandem( 'readoutTextNode' ),

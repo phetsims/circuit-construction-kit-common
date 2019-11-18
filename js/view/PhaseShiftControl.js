@@ -15,13 +15,10 @@ define( require => {
   const MathSymbols = require( 'SCENERY_PHET/MathSymbols' );
   const merge = require( 'PHET_CORE/merge' );
   const NumberSpinner = require( 'SUN/NumberSpinner' );
-  const PhetFont = require( 'SCENERY_PHET/PhetFont' );
   const Property = require( 'AXON/Property' );
   const Range = require( 'DOT/Range' );
   const Text = require( 'SCENERY/nodes/Text' );
   const VBox = require( 'SCENERY/nodes/VBox' );
-
-  const FONT = new PhetFont( CCKCConstants.FONT_SIZE ); // TODO: factor out
 
   class PhaseShiftControl extends VBox {
 
@@ -49,10 +46,10 @@ define( require => {
         deltaValue: 10,
         backgroundMinWidth: 60,
         xMargin: 10,
-        font: FONT
+        font: CCKCConstants.DEFAULT_FONT
       };
       const title = new Text( 'Phase Shift', {
-        font: FONT
+        font: CCKCConstants.DEFAULT_FONT
       } );
 
       const numberSpinner = new NumberSpinner( acVoltage.phaseProperty, valueRangeProperty, merge( {}, spinnerOptions, {
