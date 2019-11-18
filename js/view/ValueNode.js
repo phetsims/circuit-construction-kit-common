@@ -49,12 +49,14 @@ define( require => {
   /**
    * For convenience, creates a Text node with empty content and the specified tandem.
    * @param {Tandem} tandem
+   * @param {Object} [options]
    */
   const createText = ( tandem, options ) => new Text( '', merge( { tandem: tandem, font: FONT }, options ) );
 
   /**
    * For convenience, creates a RichText node with empty content and the specified tandem.
    * @param {Tandem} tandem
+   * @param {Object} [options]
    */
   const createRichText = ( tandem, options ) => new RichText( '', merge( { tandem: tandem, font: FONT }, options ) );
 
