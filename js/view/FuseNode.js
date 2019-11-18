@@ -52,7 +52,7 @@ define( require => {
 
       assert && assert( fuse instanceof Fuse, 'fuse should be a Fuse' );
 
-      options = merge( { isIcon: false }, options );
+      options = merge( { isIcon: false, useHitTestForSensors: true }, options );
 
       const fuseImageNode = new Image( fuseImage, { scale: 0.691 } );
       const numberOfZigZags = ( fuseImageNode.width - CAP_WIDTH * 2 ) / HORIZONTAL_ZIG_ZAG_DISTANCE / 2;
@@ -147,25 +147,6 @@ define( require => {
           this.fuse.isTrippedProperty.unlink( updateTripped );
         }
       };
-    }
-
-    /**
-     * Returns true if the node hits the sensor at the given point.  Matches the implementation in other types
-     * like ResistorNode
-     * @param {Vector2} globalPoint
-     * @returns {boolean}
-     * @overrides
-     * @public
-     */
-    containsSensorPoint( globalPoint ) {
-
-      const localPoint = this.globalToParentPoint( globalPoint );
-
-      // make sure bounds are correct if cut or joined in this animation frame
-      this.step();
-
-      // Check against the mouse region
-      return !!this.hitTest( localPoint, true, false );
     }
 
     /**

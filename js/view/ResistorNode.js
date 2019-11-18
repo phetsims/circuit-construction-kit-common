@@ -78,7 +78,7 @@ define( require => {
      */
     constructor( screenView, circuitLayerNode, resistor, viewTypeProperty, tandem, options ) {
 
-      options = merge( { isIcon: false }, options );
+      options = merge( { isIcon: false, useHitTestForSensors: true }, options );
 
       const lifelikeResistorImageNode = new Image( RESISTOR_IMAGE_MAP[ resistor.resistorType ] );
 
@@ -200,24 +200,6 @@ define( require => {
         updateColorBands && resistor.resistanceProperty.unlink( updateColorBands );
         lifelikeResistorImageNode.dispose();
       };
-    }
-
-    /**
-     * Returns true if the node hits the sensor at the given point.
-     * @param {Vector2} globalPoint
-     * @returns {boolean}
-     * @overrides
-     * @public
-     */
-    containsSensorPoint( globalPoint ) {
-
-      const localPoint = this.globalToParentPoint( globalPoint );
-
-      // make sure bounds are correct if cut or joined in this animation frame
-      this.step();
-
-      // Check against the mouse region
-      return !!this.hitTest( localPoint, true, false );
     }
 
     /**

@@ -73,7 +73,8 @@ define( require => {
     constructor( screenView, circuitLayerNode, lightBulb,
                  showResultsProperty, viewTypeProperty, tandem, options ) {
       options = merge( {
-        isIcon: false
+        isIcon: false,
+        useHitTestForSensors: true
       }, options );
       const brightnessProperty = new NumberProperty( 0 );
       const updateBrightness = Property.multilink(
@@ -237,24 +238,6 @@ define( require => {
     dispose() {
       this.disposeCircuitConstructionKitLightBulbNode();
       super.dispose();
-    }
-
-    /**
-     * Returns true if the node hits the sensor at the given point.
-     * @param {Vector2} globalPoint
-     * @returns {boolean}
-     * @overrides
-     * @public
-     */
-    containsSensorPoint( globalPoint ) {
-
-      const localPoint = this.globalToParentPoint( globalPoint );
-
-      // make sure bounds are correct if cut or joined in this animation frame
-      this.step();
-
-      // Check against the mouse region
-      return !!this.hitTest( localPoint, true, false );
     }
 
     /**

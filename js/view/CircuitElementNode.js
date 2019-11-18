@@ -31,10 +31,14 @@ define( require => {
         // keyboard navigation
         tagName: 'div', // HTML tag name for representative element in the document, see Accessibility.js
         focusable: true,
-        focusHighlight: 'invisible' // highlights are drawn by the simulation, invisible is deprecated don't use in future
+        focusHighlight: 'invisible', // highlights are drawn by the simulation, invisible is deprecated don't use in future
+        useHitTestForSensors: false // if true, use the scenery mouse region hit test for fine-grained region. Otherwise, use bounds test.
       }, options );
 
       super( options );
+
+      // @private - see above
+      this.useHitTestForSensors = options.useHitTestForSensors;
 
       // @private (read-only) {Circuit|null} - the circuit which the element can be removed from or null for icons
       this.circuit = circuit;
@@ -145,8 +149,16 @@ define( require => {
       // make sure bounds are correct if cut or joined in this animation frame
       this.step();
 
-      // default implementation is a scenery geometry containment test
-      return this.containsPoint( localPoint );
+      if ( this.useHitTestForSensors ) {
+
+        // Check against the mouse region
+        return !!this.hitTest( localPoint, true, false );
+      }
+      else {
+
+        // default implementation is a scenery geometry containment test
+        return this.containsPoint( localPoint );
+      }
     }
 
     /**

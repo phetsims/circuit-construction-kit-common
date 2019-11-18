@@ -89,7 +89,8 @@ define( require => {
      */
     constructor( screenView, circuitLayerNode, acSource, viewTypeProperty, tandem, options ) {
       options = merge( {
-        numberOfDecimalPlaces: 1
+        numberOfDecimalPlaces: 1,
+        useHitTestForSensors: true
       }, options );
       assert && assert( acSource instanceof ACVoltage, 'should be AC voltage' );
 
@@ -109,24 +110,6 @@ define( require => {
 
       // @public (read-only) {ACVoltage} - the ACVoltage rendered by this Node
       this.acSource = acSource;
-    }
-
-    /**
-     * Returns true if the node hits the sensor at the given point.
-     * @param {Vector2} globalPoint
-     * @returns {boolean}
-     * @overrides
-     * @public
-     */
-    containsSensorPoint( globalPoint ) {
-
-      const localPoint = this.globalToParentPoint( globalPoint );
-
-      // make sure bounds are correct if cut or joined in this animation frame
-      this.step();
-
-      // Check against the mouse region
-      return !!this.hitTest( localPoint, true, false );
     }
   }
 

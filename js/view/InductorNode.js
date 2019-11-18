@@ -56,7 +56,7 @@ define( require => {
      */
     constructor( screenView, circuitLayerNode, inductor, viewTypeProperty, tandem, options ) {
 
-      options = merge( { isIcon: false }, options );
+      options = merge( { isIcon: false, useHitTestForSensors: true }, options );
 
       // The main body, in front.
       const lifelikeBodyShape = new Shape()
@@ -134,24 +134,6 @@ define( require => {
 
       // @public (read-only) {Inductor}
       this.inductor = inductor;
-    }
-
-    /**
-     * Returns true if the node hits the sensor at the given point.
-     * @param {Vector2} globalPoint
-     * @returns {boolean}
-     * @overrides
-     * @public
-     */
-    containsSensorPoint( globalPoint ) {
-
-      const localPoint = this.globalToParentPoint( globalPoint );
-
-      // make sure bounds are correct if cut or joined in this animation frame
-      this.step();
-
-      // Check against the mouse region
-      return !!this.hitTest( localPoint, true, false );
     }
   }
 

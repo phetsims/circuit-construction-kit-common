@@ -16,6 +16,7 @@ define( require => {
   const FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
   const Image = require( 'SCENERY/nodes/Image' );
   const Matrix3 = require( 'DOT/Matrix3' );
+  const merge = require( 'PHET_CORE/merge' );
   const Path = require( 'SCENERY/nodes/Path' );
   const Shape = require( 'KITE/Shape' );
 
@@ -71,6 +72,8 @@ define( require => {
      * @param {Object} [options]
      */
     constructor( screenView, circuitLayerNode, battery, viewTypeProperty, tandem, options ) {
+
+      options = merge( { useHitTestForSensors: true }, options );
       const lifelikeNode = new Image( battery.batteryType === Battery.BatteryType.NORMAL ? batteryImage : batteryHighImage );
 
       lifelikeNode.mutate( {
@@ -93,24 +96,6 @@ define( require => {
 
       // @public (read-only) {Battery} - the Battery rendered by this Node
       this.battery = battery;
-    }
-
-    /**
-     * Returns true if the node hits the sensor at the given point.
-     * @param {Vector2} globalPoint
-     * @returns {boolean}
-     * @overrides
-     * @public
-     */
-    containsSensorPoint( globalPoint ) {
-
-      const localPoint = this.globalToParentPoint( globalPoint );
-
-      // make sure bounds are correct if cut or joined in this animation frame
-      this.step();
-
-      // Check against the mouse region
-      return !!this.hitTest( localPoint, true, false );
     }
   }
 
