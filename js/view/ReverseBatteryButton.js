@@ -10,16 +10,15 @@ define( require => {
 
   // modules
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const CCKCRoundPushButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCRoundPushButton' );
   const Color = require( 'SCENERY/util/Color' );
   const Path = require( 'SCENERY/nodes/Path' );
-  const PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
-  const RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
   const VBox = require( 'SCENERY/nodes/VBox' );
 
   // constants
   const ARROW_ICON_SCALE = 0.012;
 
-  class ReverseBatteryButton extends RoundPushButton {
+  class ReverseBatteryButton extends CCKCRoundPushButton {
 
     /**
      * @param {Circuit} circuit - the circuit that contains the battery
@@ -38,9 +37,8 @@ define( require => {
                                     'c-0.238,0-0.433,0.062-0.589,0.184C3.925,3.396,3.85,3.552,3.85,3.741v19.518c0,0.189,0.075,0.345,0.228,0.467 ' +
                                     'c0.156,0.121,0.351,0.184,0.589,0.184h47.398c0.238,0,0.436-0.062,0.589-0.184c0.152-0.122,0.227-0.277,0.227-0.467V17.403z ' +
                                     'M43.614,2.819v21.486H3.866V2.819H43.614z', { scale: 0.45, fill: Color.BLACK } );
-      super( {
-        baseColor: PhetColorScheme.BUTTON_YELLOW,
-        content: new VBox( {
+
+      super( new VBox( {
           spacing: 3,
           children: [
 
@@ -58,20 +56,9 @@ define( require => {
             } )
           ]
         } ),
-
-        listener: () => circuit.flip( battery ),
-        minXMargin: 10,
-        minYMargin: 10,
-
-        tandem: tandem,
-
-        // TODO: are these unnecessary?  Could we just uninstrument as we did for NumberControl?
-        phetioState: false,
-
-        phetioComponentOptions: {
-          phetioState: false
-        }
-      } );
+        () => circuit.flip( battery ),
+        tandem
+      );
     }
   }
 

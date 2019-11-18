@@ -10,13 +10,12 @@ define( require => {
 
   // modules
   const BanNode = require( 'SCENERY_PHET/BanNode' );
+  const CCKCRoundPushButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCRoundPushButton' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
   const Matrix3 = require( 'DOT/Matrix3' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
-  const PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
-  const RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
   const Shape = require( 'KITE/Shape' );
   const Vector2 = require( 'DOT/Vector2' );
 
@@ -24,7 +23,7 @@ define( require => {
   const SCALE = 0.032;
   const SHAPE_MATRIX = Matrix3.createFromPool( SCALE, 0, 0, 0, -SCALE, 0, 0, 0, 1 ); // to create a unity-scale icon
 
-  class ClearDynamicsButton extends RoundPushButton {
+  class ClearDynamicsButton extends CCKCRoundPushButton {
 
     /**
      * @param {DynamicCircuitElement} dynamicCircuitElement
@@ -39,9 +38,8 @@ define( require => {
         fill: Color.BLACK,
         center: Vector2.ZERO
       } );
-      super( {
-        baseColor: PhetColorScheme.BUTTON_YELLOW,
-        content: new Node( {
+
+      super( new Node( {
           children: [
             icon,
             new BanNode( {
@@ -49,23 +47,8 @@ define( require => {
               radius: 17
             } )
           ]
-        } ),
-
-        listener: () => dynamicCircuitElement.clear(),
-
-        // TODO: these values are shared by ReverseBatteryButton
-        minXMargin: 10,
-        minYMargin: 10,
-
-        tandem: tandem,
-
-        // TODO: are these unnecessary?  Could we just uninstrument as we did for NumberControl?
-        phetioState: false,
-
-        phetioComponentOptions: {
-          phetioState: false
-        }
-      } );
+        } ), () => dynamicCircuitElement.clear(),
+        tandem );
     }
   }
 
