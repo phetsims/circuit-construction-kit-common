@@ -46,6 +46,18 @@ define( require => {
   // Big enough to see when zoomed out
   const FONT = new PhetFont( { size: 22 } );
 
+  /**
+   * For convenience, creates a Text node with empty content and the specified tandem.
+   * @param {Tandem} tandem
+   */
+  const createText = ( tandem, options ) => new Text( '', merge( { tandem: tandem, font: FONT }, options ) );
+
+  /**
+   * For convenience, creates a RichText node with empty content and the specified tandem.
+   * @param {Tandem} tandem
+   */
+  const createRichText = ( tandem, options ) => new RichText( '', merge( { tandem: tandem, font: FONT }, options ) );
+
   const infinitySpan = '<span style="font-size: 26px; font-family: serif;"><b>∞</b></span>';
 
   class ValueNode extends Panel {
@@ -63,8 +75,7 @@ define( require => {
       let updatePosition = null;
       if ( circuitElement instanceof Battery || circuitElement instanceof ACVoltage ) {
 
-        // TODO: Rewrite with RichText?
-        const voltageText = new Text( '', merge( { tandem: tandem.createTandem( 'voltageText' ) }, { font: FONT } ) );
+        const voltageText = createText( tandem.createTandem( 'voltageText' ) );
         const voltageListener = voltage => {
 
           voltageText.text = StringUtils.fillIn( voltageUnitsString, {
@@ -80,9 +91,7 @@ define( require => {
           children: [ voltageText ]
         } );
 
-        const resistanceNode = new Text( '', merge( {
-          tandem: tandem.createTandem( 'resistanceText' )
-        }, { font: FONT } ) );
+        const resistanceNode = createText( tandem.createTandem( 'resistanceText' ) );
         const internalResistanceListener = ( internalResistance, lastInternalResistance ) => {
           resistanceNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
             resistance: Util.toFixed( internalResistance, 1 )
@@ -110,7 +119,7 @@ define( require => {
 
       else if ( circuitElement instanceof Resistor ||
                 circuitElement instanceof LightBulb ) {
-        contentNode = new Text( '', merge( { tandem: tandem.createTandem( 'resistanceText' ) }, { font: FONT } ) );
+        contentNode = createText( tandem.createTandem( 'resistanceText' ) );
 
         // Items like the hand and dog and high resistance resistor shouldn't show ".0"
         const linkResistance = resistance => {
@@ -124,7 +133,7 @@ define( require => {
         contentNode.maxWidth = 100;
       }
       else if ( circuitElement instanceof Capacitor ) {
-        contentNode = new Text( '', merge( { tandem: tandem.createTandem( 'capacitorText' ) }, { font: FONT } ) );
+        contentNode = createText( tandem.createTandem( 'capacitorText' ) );
 
         // Items like the hand and dog and high resistance resistor shouldn't show ".0"
         const linkCapacitance = capacitance => {
@@ -139,7 +148,7 @@ define( require => {
         contentNode.maxWidth = 100;
       }
       else if ( circuitElement instanceof Inductor ) {
-        contentNode = new Text( '', merge( { tandem: tandem.createTandem( 'inductorText' ) }, { font: FONT } ) );
+        contentNode = createText( tandem.createTandem( 'inductorText' ) );
 
         // Items like the hand and dog and high resistance resistor shouldn't show ".0"
         const linkInductance = inductance => {
@@ -155,7 +164,7 @@ define( require => {
       else if ( circuitElement instanceof Switch ) {
 
         // Make it easier to read the infinity symbol, see https://github.com/phetsims/circuit-construction-kit-dc/issues/135
-        contentNode = new RichText( '', { tandem: tandem.createTandem( 'switchText' ), font: FONT } );
+        contentNode = createRichText( tandem.createTandem( 'switchText' ) );
 
         const updateResistance = resistance => {
           contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
@@ -173,10 +182,9 @@ define( require => {
         contentNode.maxWidth = 100;
       }
       else if ( circuitElement instanceof Fuse ) {
-        contentNode = new RichText( '', merge( { tandem: tandem.createTandem( 'fuseText' ) }, {
-          font: FONT,
+        contentNode = createRichText( tandem.createTandem( 'fuseText' ), {
           align: 'right'
-        } ) );
+        } );
         const multilink = Property.multilink( [ circuitElement.resistanceProperty, circuitElement.currentRatingProperty ],
           ( resistance, currentRating ) => {
             const milliOhmString = resistance === CCKCConstants.MAX_RESISTANCE ? infinitySpan :
