@@ -137,16 +137,14 @@ define( require => {
   class WireNode extends CircuitElementNode {
 
     /**
-     * @param {CCKCScreenView|null} screenView - null means it's an icon
+     * @param {CCKCScreenView} screenView - the icon is created separately in CircuitElementToolFactory, so (unlike
+     *                                    - other CircuitElement types) the screenView is required
      * @param {CircuitLayerNode|null} circuitLayerNode
      * @param {Wire} wire
      * @param {Property.<CircuitElementViewType>} viewTypeProperty
      * @param {Tandem} tandem
      */
     constructor( screenView, circuitLayerNode, wire, viewTypeProperty, tandem ) {
-
-      // TODO: It looks like screenView is always defined.  If so, we should update the rest of the codebase around that
-      assert && assert( screenView, 'screenView should be defined' );
 
       // @private
       const startCapParent = new Node( {
