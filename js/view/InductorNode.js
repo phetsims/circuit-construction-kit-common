@@ -24,11 +24,10 @@ define( require => {
   // constants
   // dimensions for schematic
   const NUMBER_OF_BUMPS = 4;
-  const SCHEMATIC_WIDTH = CCKCConstants.BATTERY_LENGTH;
+  const SCHEMATIC_WIDTH = CCKCConstants.INDUCTOR_LENGTH;
   const SCHEMATIC_MARGIN = 20;
   const SCHEMATIC_ARC_RADIUS = ( SCHEMATIC_WIDTH - SCHEMATIC_MARGIN * 2 ) / NUMBER_OF_BUMPS / 2;
 
-  // TODO: this and capacitor don't extend all the way to rightmost vertex
   const schematicShape = new Shape()
     .moveTo( 0, 0 ) // left wire
     .lineTo( SCHEMATIC_MARGIN, 0 )
@@ -39,7 +38,7 @@ define( require => {
     .lineTo( SCHEMATIC_WIDTH, 0 );
 
   const LIFELIKE_HEIGHT = 60;
-  const LIFELIKE_WIDTH = CCKCConstants.BATTERY_LENGTH;
+  const LIFELIKE_WIDTH = CCKCConstants.INDUCTOR_LENGTH;
   const LIFELIKE_RADIUS_X = 5;
   const LIFELIKE_RADIUS_Y = LIFELIKE_HEIGHT / 2;
   const LIFELIKE_WIRE_LINE_WIDTH = 3;
