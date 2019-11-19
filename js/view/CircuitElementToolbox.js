@@ -33,7 +33,6 @@ define( require => {
     constructor( viewTypeProperty, circuitElementToolNodes, tandem, options ) {
 
       options = merge( {
-        hideDisabledButtons: false,
         itemsPerPage: 5,
         pageHeight: 352 // so the carousels can easily be the same size on each screen
       }, options );
@@ -87,8 +86,6 @@ define( require => {
         // Expand the touch area above the up button and below the down button
         buttonTouchAreaYDilation: 8,
 
-        // TODO: we probably should just use Panel in this case, see https://github.com/phetsims/circuit-construction-kit-common/issues/507
-        hideDisabledButtons: options.hideDisabledButtons,
         tandem: tandem.createTandem( 'carousel' )
       } );
 
