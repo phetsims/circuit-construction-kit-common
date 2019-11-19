@@ -151,6 +151,9 @@ define( require => {
     // beyond 1.0 to avoid aliasing problems in the chart
     DYNAMIC_SERIES_OPTIONS: { color: '#717274', lineWidth: 1.5 },
 
+    NUMBER_OF_TIME_DIVISIONS: 4,
+    CHART_SERIES_COLOR: '#404041',
+
     MAX_DT: 0.5 // see https://github.com/phetsims/circuit-construction-kit-common/issues/476 and https://github.com/phetsims/joist/issues/130
   };
 

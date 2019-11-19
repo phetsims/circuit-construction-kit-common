@@ -24,11 +24,8 @@ define( require => {
   const voltageString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltage' );
 
   // constants
-  const NUMBER_OF_TIME_DIVISIONS = 4;
   const SERIES_1_COLOR = '#ec3223';
-  const SERIES_2_COLOR = '#404041'; // same as in Bending Light
-  const WIRE_1_COLOR = SERIES_1_COLOR;
-  const WIRE_2_COLOR = SERIES_2_COLOR;
+  const SERIES_2_COLOR = CCKCConstants.CHART_SERIES_COLOR;
 
   class VoltageChartNode extends CCKCChartNode {
 
@@ -41,7 +38,7 @@ define( require => {
     constructor( circuitLayerNode, timeProperty, visibleBoundsProperty, options ) {
 
       options = merge( {
-        timeDivisions: NUMBER_OF_TIME_DIVISIONS,
+        timeDivisions: CCKCConstants.NUMBER_OF_TIME_DIVISIONS,
         tandem: Tandem.optional
       }, options );
 
@@ -50,17 +47,18 @@ define( require => {
 
       // @private
       this.series = series;
-      this.probeNode1 = this.addProbeNode( SERIES_1_COLOR, WIRE_1_COLOR, 5, 10, this.aboveBottomLeft1, options.tandem.createTandem( 'probeNode1' ) );
-      this.probeNode2 = this.addProbeNode( SERIES_2_COLOR, WIRE_2_COLOR, 36, 54, this.aboveBottomLeft2, options.tandem.createTandem( 'probeNode2' ) );
+      this.probeNode1 = this.addProbeNode( SERIES_1_COLOR, SERIES_1_COLOR, 5, 10, this.aboveBottomLeft1, options.tandem.createTandem( 'probeNode1' ) );
+      this.probeNode2 = this.addProbeNode( SERIES_2_COLOR, SERIES_2_COLOR, 36, 54, this.aboveBottomLeft2, options.tandem.createTandem( 'probeNode2' ) );
 
       // Align probes after positioning the body so icons will have the correct bounds
       this.alignProbesEmitter.emit();
     }
 
     /**
-     * Steps in time
+     * Records data and displays it on the chart
      * @param {number} time - total elapsed time in seconds
      * @param {number} dt - delta time since last update
+     * @public
      */
     step( time, dt ) {
       if ( this.meter.visibleProperty.value ) {
@@ -71,8 +69,8 @@ define( require => {
         const blackConnection = this.circuitLayerNode.getVoltageConnection( blackPoint );
         const voltage = this.circuitLayerNode.circuit.getVoltageBetweenConnections( redConnection, blackConnection );
 
-        // TODO: add scaling to ScrollingChartNode
-        this.series.data.push( new Vector2( time, voltage === null ? NaN : voltage / 10 || 0 ) );
+        const data = this.series.data;
+        data.push( new Vector2( time, voltage === null ? NaN : voltage / 10 || 0 ) );
         this.series.emitter.emit();
 
         // For debugging, depict the points where the sampling happens
@@ -85,8 +83,8 @@ define( require => {
           } ) );
         }
 
-        while ( this.series.data.length > 0 && this.series.data[ 0 ].x < this.timeProperty.value - NUMBER_OF_TIME_DIVISIONS ) {
-          this.series.data.shift();
+        while ( data.length > 0 && data[ 0 ].x < this.timeProperty.value - CCKCConstants.NUMBER_OF_TIME_DIVISIONS ) {
+          data.shift();
         }
       }
     }
