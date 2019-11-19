@@ -163,6 +163,11 @@ define( require => {
       showValuesCheckbox.touchArea = showValuesCheckbox.localBounds.dilatedXY( 5, SPACING / 2 ).withMaxX( this.bounds.width - LEFT_MARGIN );
       showValuesCheckbox.mouseArea = showValuesCheckbox.touchArea;
 
+      if ( showStopwatchCheckbox ) {
+        stopwatchCheckbox.touchArea = stopwatchCheckbox.localBounds.dilatedXY( 5, SPACING / 2 ).withMaxX( this.bounds.width - LEFT_MARGIN );
+        stopwatchCheckbox.mouseArea = stopwatchCheckbox.touchArea;
+      }
+
       this.stopwatchCheckbox = stopwatchCheckbox;
     }
   }
