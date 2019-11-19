@@ -174,8 +174,8 @@ define( require => {
         options
       );
 
-      // @public (read-only) {Switch} - the Switch rendered by this Node
-      this.circuitSwitch = circuitSwitch; // TODO: use this.circuitElement instead
+      // @public (read-only) {Switch} - the Switch rendered by this Node, equivalent to this.circuitElement
+      this.circuitSwitch = circuitSwitch;
 
       let downPoint = null;
 
