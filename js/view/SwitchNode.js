@@ -53,7 +53,7 @@ define( require => {
         cornerRadius: edgeRadius,
         fill: fill,
         stroke: Color.BLACK,
-        pickable: true // TODO: is this so it can be hit tested?
+        pickable: true // This is necessary because we use scenery hit testing for the probe hit testing
       } );
 
     // See the picture at https://github.com/phetsims/circuit-construction-kit-common/issues/313
@@ -74,7 +74,7 @@ define( require => {
       fill: fill,
       stroke: Color.BLACK,
       lineWidth: viewType === CircuitElementViewType.SCHEMATIC ? 0 : 1,
-      pickable: true
+      pickable: true // This is necessary because we use scenery hit testing for the probe hit testing
     } );
 
     rotatingSegmentNode.rotation = closed ? 0 : -Math.PI / 4;
