@@ -58,12 +58,11 @@ define( require => {
      * @param {Node} circuitLayerNode - the main circuit node to use as a coordinate frame
      * @param {VoltmeterNode[]} voltmeterNodes - nodes that display the Voltmeters
      * @param {AmmeterNode[]} ammeterNodes - nodes that display the Ammeters
-     * @param {VoltageChartNode|undefined} voltageChartNode - node for the VoltageChartNode
-     * @param {CurrentChartNode|undefined} currentChartNode - node for the VoltageChartNode
+     * @param {VoltageChartNode|null} voltageChartNode - node for the VoltageChartNode, if present
+     * @param {CurrentChartNode|null} currentChartNode - node for the VoltageChartNode, if present
      * @param {Tandem} tandem
      * @param {Object} [options]
      */
-    // TODO: voltageChartNode and currentChartNode should be optional and only appear in the AC sim
     constructor( alignGroup, circuitLayerNode, voltmeterNodes, ammeterNodes, voltageChartNode, currentChartNode, tandem, options ) {
       const circuit = circuitLayerNode.circuit;
 

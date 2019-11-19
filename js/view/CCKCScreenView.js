@@ -130,25 +130,23 @@ define( require => {
         return ammeterNode;
       } );
 
-      if ( options.showCharts ) {
-        this.voltageChartNode = new VoltageChartNode(
-          this.circuitLayerNode,
-          model.circuit.timeProperty,
-          this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty, {
-            tandem: tandem.createTandem( 'voltageChartNode' )
-          }
-        );
-        this.voltageChartNode.initializeBodyDragListener( this );
-
-        this.currentChartNode = new CurrentChartNode(
-          this.circuitLayerNode,
-          model.circuit.timeProperty,
-          this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty, {
-            tandem: tandem.createTandem( 'currentChartNode' )
-          }
-        );
-        this.currentChartNode.initializeBodyDragListener( this );
-      }
+      // Optionally initialize the chart nodes
+      this.voltageChartNode = options.showCharts ? new VoltageChartNode(
+        this.circuitLayerNode,
+        model.circuit.timeProperty,
+        this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty, {
+          tandem: tandem.createTandem( 'voltageChartNode' )
+        }
+      ) : null;
+      this.currentChartNode = options.showCharts ? new CurrentChartNode(
+        this.circuitLayerNode,
+        model.circuit.timeProperty,
+        this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty, {
+          tandem: tandem.createTandem( 'currentChartNode' )
+        }
+      ) : null;
+      this.voltageChartNode && this.voltageChartNode.initializeBodyDragListener( this );
+      this.currentChartNode && this.currentChartNode.initializeBodyDragListener( this );
 
       // @public (read-only) {CircuitElementToolbox} - Toolbox from which CircuitElements can be dragged
       this.circuitElementToolbox = new CircuitElementToolbox(
