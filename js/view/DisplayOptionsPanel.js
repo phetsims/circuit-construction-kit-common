@@ -168,6 +168,7 @@ define( require => {
         stopwatchCheckbox.mouseArea = stopwatchCheckbox.touchArea;
       }
 
+      // @public (read-only) - So the stopwatch can be shown near the checkbox
       this.stopwatchCheckbox = stopwatchCheckbox;
     }
   }
