@@ -16,18 +16,21 @@ define( require => {
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CircuitElementEditNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditNode' );
+  const ClearDynamicsButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ClearDynamicsButton' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   const Fuse = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Fuse' );
-  const PhetioGroup = require( 'TANDEM/PhetioGroup' );
-  const PhetioGroupIO = require( 'TANDEM/PhetioGroupIO' );
   const HBox = require( 'SCENERY/nodes/HBox' );
   const Inductor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Inductor' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Panel = require( 'SUN/Panel' );
   const PhaseShiftControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/PhaseShiftControl' );
+  const PhetioGroup = require( 'TANDEM/PhetioGroup' );
+  const PhetioGroupIO = require( 'TANDEM/PhetioGroupIO' );
   const Range = require( 'DOT/Range' );
+  const ResetFuseButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResetFuseButton' );
   const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
+  const ReverseBatteryButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ReverseBatteryButton' );
   const SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const SunConstants = require( 'SUN/SunConstants' );
@@ -117,7 +120,7 @@ define( require => {
         editNode = null;
 
         if ( selectedCircuitElement ) {
-          const isResistor = selectedCircuitElement instanceof Resistor || selectedCircuitElement instanceof LightBulb;
+          const isResistive = selectedCircuitElement instanceof Resistor || selectedCircuitElement instanceof LightBulb;
           const isBattery = selectedCircuitElement instanceof Battery;
           const isFuse = selectedCircuitElement instanceof Fuse;
           const isWire = selectedCircuitElement instanceof Wire;
@@ -127,8 +130,8 @@ define( require => {
           const isCapacitor = selectedCircuitElement instanceof Capacitor;
           const isInductor = selectedCircuitElement instanceof Inductor;
 
-          if ( isResistor && selectedCircuitElement.isResistanceEditable() ) {
-            editNode = new EditPanel( new CircuitElementEditNode(
+          if ( isResistive && selectedCircuitElement.isResistanceEditable() ) {
+            const resistanceControl = new CircuitElementEditNode(
               resistanceString,
 
               // Adapter to take from {{named}} to {{value}} for usage in common code
@@ -139,15 +142,23 @@ define( require => {
               circuit,
               selectedCircuitElement,
               groupTandem.createNextTandem()
-            ) );
+            );
+            const hbox = new EditHBox( [
+                resistanceControl,
+                new TrashButton( circuit, selectedCircuitElement, tandem.createTandem( 'trashButton' ), {
+                  phetioState: false
+                } )
+              ]
+            );
+            editNode = new EditPanel( hbox );
           }
-          else if ( isResistor ) {
+          else if ( isResistive ) {
 
             // Just show a trash button for non-editable resistors which are household items
             editNode = trashButtonGroup.createNextMember( selectedCircuitElement );
           }
           else if ( isBattery ) {
-            editNode = new EditPanel( new CircuitElementEditNode(
+            const circuitElementEditNode = new CircuitElementEditNode(
               voltageString,
 
               // Adapter to take from {{named}} to {{value}} for usage in common code
@@ -160,10 +171,25 @@ define( require => {
               groupTandem.createNextTandem(), {
                 phetioState: false
               }
-            ) );
+            );
+
+            const hbox = new EditHBox( [
+
+                // Batteries can be reversed
+                new ReverseBatteryButton( circuit, selectedCircuitElement, tandem.createTandem( 'reverseBatteryButton' ) ),
+
+                circuitElementEditNode,
+
+                new TrashButton( circuit, selectedCircuitElement, tandem.createTandem( 'trashButton' ), {
+                  phetioState: false
+                } )
+              ]
+            );
+
+            editNode = new EditPanel( hbox );
           }
           else if ( isFuse ) {
-            editNode = new EditPanel( new CircuitElementEditNode( currentRatingString,
+            const fuseCurrentRatingControl = new CircuitElementEditNode( currentRatingString,
 
               // Adapter to take from {{named}} to {{value}} for usage in common code
               StringUtils.fillIn( currentUnitsString, {
@@ -175,7 +201,22 @@ define( require => {
               groupTandem.createNextTandem(), {
                 editableRange: selectedCircuitElement.currentRatingProperty.range
               }
-            ) );
+            );
+
+            const hbox = new EditHBox( [
+
+                // Batteries can be reversed
+                new ResetFuseButton( selectedCircuitElement, tandem.createTandem( 'resetFuseButton' ) ),
+
+                fuseCurrentRatingControl,
+
+                new TrashButton( circuit, selectedCircuitElement, tandem.createTandem( 'trashButton' ), {
+                  phetioState: false
+                } )
+              ]
+            );
+
+            editNode = new EditPanel( hbox );
           }
           else if ( isSwitch ) {
             editNode = new SwitchReadoutNode( circuit, selectedCircuitElement, groupTandem.createNextTandem(), trashButtonGroup );
@@ -186,46 +227,46 @@ define( require => {
             editNode = trashButtonGroup.createNextMember( selectedCircuitElement );
           }
           else if ( isACSource ) {
-            editNode = new EditPanel( new HBox( {
-              spacing: 30,
-              children: [
-                new CircuitElementEditNode(
-                  voltageString,
+            editNode = new EditPanel( new EditHBox( [
+              new CircuitElementEditNode(
+                voltageString,
 
-                  // Adapter to take from {{named}} to {{value}} for usage in common code
-                  StringUtils.fillIn( voltageVoltsValuePatternString, {
-                    voltage: SunConstants.VALUE_NAMED_PLACEHOLDER
-                  } ),
-                  selectedCircuitElement.maximumVoltageProperty,
-                  circuit,
-                  selectedCircuitElement,
-                  groupTandem.createNextTandem(), {
-                    showTrashCan: false
-                  }
-                ),
-                new CircuitElementEditNode(
-                  frequencyString,
+                // Adapter to take from {{named}} to {{value}} for usage in common code
+                StringUtils.fillIn( voltageVoltsValuePatternString, {
+                  voltage: SunConstants.VALUE_NAMED_PLACEHOLDER
+                } ),
+                selectedCircuitElement.maximumVoltageProperty,
+                circuit,
+                selectedCircuitElement,
+                groupTandem.createNextTandem()
+              ),
+              new CircuitElementEditNode(
+                frequencyString,
 
-                  // Adapter to take from {{named}} to {{value}} for usage in common code
-                  StringUtils.fillIn( frequencyHzValuePatternString, {
-                    frequency: SunConstants.VALUE_NAMED_PLACEHOLDER
-                  } ),
-                  selectedCircuitElement.frequencyProperty,
-                  circuit,
-                  selectedCircuitElement,
-                  groupTandem.createNextTandem(), {
+                // Adapter to take from {{named}} to {{value}} for usage in common code
+                StringUtils.fillIn( frequencyHzValuePatternString, {
+                  frequency: SunConstants.VALUE_NAMED_PLACEHOLDER
+                } ),
+                selectedCircuitElement.frequencyProperty,
+                circuit,
+                selectedCircuitElement,
+                groupTandem.createNextTandem(), {
 
-                    // TODO: We need a different feature for this. Maybe each CircuitElement has a map of editable things, not just one editable thing.
-                    delta: 0.1,
-                    editableRange: new Range( 0.1, 2 )
-                  }
-                ), new PhaseShiftControl( selectedCircuitElement, {
-                  tandem: groupTandem.createNextTandem()
-                } ) ]
-            } ) );
+                  // TODO: We need a different feature for this. Maybe each CircuitElement has a map of editable things, not just one editable thing.
+                  delta: 0.1,
+                  editableRange: new Range( 0.1, 2 )
+                }
+              ),
+              new PhaseShiftControl( selectedCircuitElement, {
+                tandem: groupTandem.createNextTandem()
+              } ),
+              new TrashButton( circuit, selectedCircuitElement, tandem.createTandem( 'trashButton' ), {
+                phetioState: false
+              } ) ]
+            ) );
           }
           else if ( isCapacitor ) {
-            editNode = new EditPanel( new CircuitElementEditNode( capacitanceString,
+            const capacitorEditControl = new CircuitElementEditNode( capacitanceString,
 
               // Adapter to take from {{named}} to {{value}} for usage in common code
               StringUtils.fillIn( capacitanceUnitsString, {
@@ -237,10 +278,19 @@ define( require => {
               groupTandem.createNextTandem(), {
                 editableRange: selectedCircuitElement.capacitanceProperty.range
               }
-            ) );
+            );
+
+            const hbox = new EditHBox( [
+              new ClearDynamicsButton( selectedCircuitElement, tandem.createTandem( 'clearCapacitorButton' ) ),
+              capacitorEditControl,
+              new TrashButton( circuit, selectedCircuitElement, tandem.createTandem( 'trashButton' ), {
+                phetioState: false
+              } )
+            ] );
+            editNode = new EditPanel( hbox );
           }
           else if ( isInductor ) {
-            editNode = new EditPanel( new CircuitElementEditNode( inductanceString,
+            const inductanceControl = new CircuitElementEditNode( inductanceString,
 
               // Adapter to take from {{named}} to {{value}} for usage in common code
               StringUtils.fillIn( inductanceUnitsString, {
@@ -252,7 +302,16 @@ define( require => {
               groupTandem.createNextTandem(), {
                 editableRange: selectedCircuitElement.inductanceProperty.range
               }
-            ) );
+            );
+            const hbox = new EditHBox( [
+                new ClearDynamicsButton( selectedCircuitElement, tandem.createTandem( 'clearInductorButton' ) ),
+                inductanceControl,
+                new TrashButton( circuit, selectedCircuitElement, tandem.createTandem( 'trashButton' ), {
+                  phetioState: false
+                } )
+              ]
+            );
+            editNode = new EditPanel( hbox );
           }
         }
         else {
@@ -277,6 +336,19 @@ define( require => {
       } );
 
       visibleBoundsProperty.link( updatePosition );
+    }
+  }
+
+  /**
+   * HBox with standardized options
+   */
+  class EditHBox extends HBox {
+    constructor( children ) {
+      super( {
+        spacing: 40,
+        align: 'bottom',
+        children: children
+      } );
     }
   }
 

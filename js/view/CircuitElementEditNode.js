@@ -9,25 +9,17 @@ define( require => {
   'use strict';
 
   // modules
-  const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
-  const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const ClearDynamicsButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ClearDynamicsButton' );
-  const Fuse = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Fuse' );
-  const HBox = require( 'SCENERY/nodes/HBox' );
-  const Inductor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Inductor' );
   const merge = require( 'PHET_CORE/merge' );
+  const Node = require( 'SCENERY/nodes/Node' );
   const NumberControl = require( 'SCENERY_PHET/NumberControl' );
-  const ResetFuseButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResetFuseButton' );
-  const ReverseBatteryButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ReverseBatteryButton' );
   const Tandem = require( 'TANDEM/Tandem' );
-  const TrashButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButton' );
 
   // constants
   const NUMBER_CONTROL_ELEMENT_MAX_WIDTH = 140;
 
-  class CircuitElementEditNode extends HBox {
+  class CircuitElementEditNode extends Node {
 
     /**
      * @param {string} title - text to show as a title
@@ -41,7 +33,6 @@ define( require => {
     constructor( title, valuePattern, valueProperty, circuit, circuitElement, tandem, options ) {
 
       options = merge( {
-        showTrashCan: true,
 
         // TODO: A better way of doing this, see note in CircuitElementEditContainerNode
         // Takes precedence over value specified in the CircuitElement
@@ -86,34 +77,8 @@ define( require => {
         tandem: Tandem.optional
       } );
 
-      const children = [];
-
-      // Batteries can be reversed
-      if ( circuitElement instanceof Battery ) {
-        children.push( new ReverseBatteryButton( circuit, circuitElement, tandem.createTandem( 'reverseBatteryButton' ) ) );
-      }
-      if ( circuitElement instanceof Inductor ) {
-        children.push( new ClearDynamicsButton( circuitElement, tandem.createTandem( 'clearInductorButton' ) ) );
-      }
-      if ( circuitElement instanceof Capacitor ) {
-        children.push( new ClearDynamicsButton( circuitElement, tandem.createTandem( 'clearCapacitorButton' ) ) );
-      }
-      if ( circuitElement instanceof Fuse ) {
-        children.push( new ResetFuseButton( circuitElement, tandem.createTandem( 'resetFuseButton' ) ) );
-      }
-      children.push( numberControl );
-
-      // The button that deletes the circuit component
-      if ( circuitElement.canBeDroppedInToolbox && options.showTrashCan ) {
-        children.push( new TrashButton( circuit, circuitElement, tandem.createTandem( 'trashButton' ), {
-          phetioState: false
-        } ) );
-      }
-
       super( {
-        spacing: 40,
-        children: children,
-        align: 'bottom'
+        children: [ numberControl ]
       } );
 
       // @private {function} - for disposal
