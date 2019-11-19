@@ -88,7 +88,8 @@ define( require => {
       const plateBounds = new Bounds3( 0, 0, 0, thickness, CapacitorConstants.PLATE_HEIGHT, thickness );
       const V = 1.7707999999999996e-13;
 
-      // TODO: OK to use a mock object like this, or should we create a model type
+      // TODO: OK to use a mock object like this, or should we create a model type?  If we transform the CapacitorNode
+      // to more of a view-oriented component, this may not be necessary.  See https://github.com/phetsims/scenery-phet/issues/555
       const plateSeparationProperty = new NumberProperty( 0.004 );
 
       const circuit = {
