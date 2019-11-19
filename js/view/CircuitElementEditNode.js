@@ -12,14 +12,13 @@ define( require => {
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const merge = require( 'PHET_CORE/merge' );
-  const Node = require( 'SCENERY/nodes/Node' );
   const NumberControl = require( 'SCENERY_PHET/NumberControl' );
   const Tandem = require( 'TANDEM/Tandem' );
 
   // constants
   const NUMBER_CONTROL_ELEMENT_MAX_WIDTH = 140;
 
-  class CircuitElementEditNode extends Node {
+  class CircuitElementEditNode extends NumberControl {
 
     /**
      * @param {string} title - text to show as a title
@@ -49,7 +48,7 @@ define( require => {
       valueProperty.lazyLink( valuePropertyListener );
 
       // Create the controls
-      const numberControl = new NumberControl( title, valueProperty, options.editableRange || circuitElement.editableRange, {
+      super( title, valueProperty, options.editableRange || circuitElement.editableRange, {
 
         delta: options.delta || circuitElement.editorDelta,
 
@@ -77,13 +76,8 @@ define( require => {
         tandem: Tandem.optional
       } );
 
-      super( {
-        children: [ numberControl ]
-      } );
-
       // @private {function} - for disposal
       this.disposeCircuitElementEditNode = () => {
-        numberControl.dispose();
         valueProperty.unlink( valuePropertyListener );
       };
     }
