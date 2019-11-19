@@ -10,6 +10,7 @@ define( require => {
 
   // modules
   const CCKCChartNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCChartNode' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
@@ -44,9 +45,7 @@ define( require => {
         tandem: Tandem.optional
       }, options );
 
-      // dark gray sampled from the design doc
-      // lineWidth increased beyond 1.0 to avoid aliasing problems in the chart
-      const series = new DynamicSeries( { color: '#717274', lineWidth: 1.5 } );
+      const series = new DynamicSeries( CCKCConstants.DYNAMIC_SERIES_OPTIONS );
       super( circuitLayerNode, timeProperty, visibleBoundsProperty, [ series ], voltageString, options );
 
       // @private

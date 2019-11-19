@@ -10,6 +10,7 @@ define( require => {
 
   // modules
   const CCKCChartNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCChartNode' );
+  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const DynamicSeries = require( 'GRIDDLE/DynamicSeries' );
   const merge = require( 'PHET_CORE/merge' );
@@ -39,9 +40,7 @@ define( require => {
         tandem: Tandem.optional
       }, options );
 
-      // TODO: same color as dark color in voltage chart node
-      // dark gray sampled from the design doc
-      const series = new DynamicSeries( { color: '#717274', lineWidth: 1.5 } );
+      const series = new DynamicSeries( CCKCConstants.DYNAMIC_SERIES_OPTIONS );
       super( circuitLayerNode, timeProperty, visibleBoundsProperty, [ series ], currentString, options );
 
       // @private
