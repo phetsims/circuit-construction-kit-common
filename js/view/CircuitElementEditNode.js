@@ -90,7 +90,6 @@ define( require => {
 
       // Batteries can be reversed
       if ( circuitElement instanceof Battery ) {
-
         children.push( new ReverseBatteryButton( circuit, circuitElement, tandem.createTandem( 'reverseBatteryButton' ) ) );
       }
       if ( circuitElement instanceof Inductor ) {
