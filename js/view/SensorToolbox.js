@@ -245,8 +245,6 @@ define( require => {
           new CurrentChartNode( circuitLayerNode, new NumberProperty( 0 ), everything, { scale: scale } ),
           new Text( currentChartString, { maxWidth: 60 } )
         );
-
-        // TODO: we will need to change to a grid layout for this, don't forget to support options.showSeriesAmmeters
         voltageChartToolIcon.centerX = voltmeterToolIcon.centerX;
         currentChartToolIcon.centerX = ammeterToolIcon.centerX;
         const chartBox = new Node( {
