@@ -15,7 +15,7 @@ define( require => {
   const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const CircuitElementEditNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditNode' );
+  const CircuitElementNumberControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNumberControl' );
   const ClearDynamicsButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ClearDynamicsButton' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   const Fuse = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Fuse' );
@@ -75,7 +75,7 @@ define( require => {
     constructor( circuit, visibleBoundsProperty, modeProperty, tandem ) {
       const groupTandem = tandem.createGroupTandem( 'circuitElementEditNode' );
 
-      // TODO(phet-io): uninstrument or keep group?  See comment in CircuitElementEditNode Tandem.optional for NumberControl
+      // TODO(phet-io): uninstrument or keep group?  See comment in CircuitElementNumberControl Tandem.optional for NumberControl
       const trashButtonGroup = new PhetioGroup( 'trashButton',
         ( tandem, circuitElement ) => new TrashButton( circuit, circuitElement, tandem ),
         [ null ], {
@@ -131,7 +131,7 @@ define( require => {
           const isInductor = selectedCircuitElement instanceof Inductor;
 
           if ( isResistive && selectedCircuitElement.isResistanceEditable() ) {
-            const resistanceControl = new CircuitElementEditNode(
+            const resistanceControl = new CircuitElementNumberControl(
               resistanceString,
 
               // Adapter to take from {{named}} to {{value}} for usage in common code
@@ -158,7 +158,7 @@ define( require => {
             editNode = trashButtonGroup.createNextMember( selectedCircuitElement );
           }
           else if ( isBattery ) {
-            const circuitElementEditNode = new CircuitElementEditNode(
+            const circuitElementEditNode = new CircuitElementNumberControl(
               voltageString,
 
               // Adapter to take from {{named}} to {{value}} for usage in common code
@@ -189,7 +189,7 @@ define( require => {
             editNode = new EditPanel( hbox );
           }
           else if ( isFuse ) {
-            const fuseCurrentRatingControl = new CircuitElementEditNode( currentRatingString,
+            const fuseCurrentRatingControl = new CircuitElementNumberControl( currentRatingString,
 
               // Adapter to take from {{named}} to {{value}} for usage in common code
               StringUtils.fillIn( currentUnitsString, {
@@ -228,7 +228,7 @@ define( require => {
           }
           else if ( isACSource ) {
             editNode = new EditPanel( new EditHBox( [
-              new CircuitElementEditNode(
+              new CircuitElementNumberControl(
                 voltageString,
 
                 // Adapter to take from {{named}} to {{value}} for usage in common code
@@ -240,7 +240,7 @@ define( require => {
                 selectedCircuitElement,
                 groupTandem.createNextTandem()
               ),
-              new CircuitElementEditNode(
+              new CircuitElementNumberControl(
                 frequencyString,
 
                 // Adapter to take from {{named}} to {{value}} for usage in common code
@@ -266,7 +266,7 @@ define( require => {
             ) );
           }
           else if ( isCapacitor ) {
-            const capacitorEditControl = new CircuitElementEditNode( capacitanceString,
+            const capacitorEditControl = new CircuitElementNumberControl( capacitanceString,
 
               // Adapter to take from {{named}} to {{value}} for usage in common code
               StringUtils.fillIn( capacitanceUnitsString, {
@@ -290,7 +290,7 @@ define( require => {
             editNode = new EditPanel( hbox );
           }
           else if ( isInductor ) {
-            const inductanceControl = new CircuitElementEditNode( inductanceString,
+            const inductanceControl = new CircuitElementNumberControl( inductanceString,
 
               // Adapter to take from {{named}} to {{value}} for usage in common code
               StringUtils.fillIn( inductanceUnitsString, {

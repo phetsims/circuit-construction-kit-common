@@ -18,7 +18,7 @@ define( require => {
   // constants
   const NUMBER_CONTROL_ELEMENT_MAX_WIDTH = 140;
 
-  class CircuitElementEditNode extends NumberControl {
+  class CircuitElementNumberControl extends NumberControl {
 
     /**
      * @param {string} title - text to show as a title
@@ -77,7 +77,7 @@ define( require => {
       } );
 
       // @private {function} - for disposal
-      this.disposeCircuitElementEditNode = () => {
+      this.disposeCircuitElementNumberControl = () => {
         valueProperty.unlink( valuePropertyListener );
       };
     }
@@ -89,9 +89,9 @@ define( require => {
      */
     dispose() {
       super.dispose();
-      this.disposeCircuitElementEditNode();
+      this.disposeCircuitElementNumberControl();
     }
   }
 
-  return circuitConstructionKitCommon.register( 'CircuitElementEditNode', CircuitElementEditNode );
+  return circuitConstructionKitCommon.register( 'CircuitElementNumberControl', CircuitElementNumberControl );
 } );

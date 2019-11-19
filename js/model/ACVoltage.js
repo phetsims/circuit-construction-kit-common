@@ -43,7 +43,7 @@ define( require => {
         tandem: tandem.createTandem( 'voltageProperty' )
       } );
 
-      // @public {NumberProperty} - the maximum voltage, which can be controlled by the CircuitElementEditNode
+      // @public {NumberProperty} - the maximum voltage, which can be controlled by the CircuitElementNumberControl
       this.maximumVoltageProperty = new NumberProperty( options.voltage, {
         tandem: tandem.createTandem( 'maximumVoltageProperty' )
       } );
