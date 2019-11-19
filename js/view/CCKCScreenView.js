@@ -347,7 +347,7 @@ define( require => {
       } );
 
       // @public - the TimerNode
-      // TODO: consider generalizing Stopwatch and StopwatchNode from gas-properties.
+      // TODO: consider generalizing Stopwatch and StopwatchNode from gas-properties, see https://github.com/phetsims/gas-properties/issues/170
       if ( options.showStopwatchCheckbox ) {
         const stopwatchNodeTandem = tandem.createTandem( 'stopwatchNode' );
         const isTimerRunningProperty = new BooleanProperty( false, { tandem: stopwatchNodeTandem.createTandem( 'isRunningProperty' ) } );
