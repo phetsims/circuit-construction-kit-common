@@ -36,12 +36,6 @@ define( require => {
       // options for all spinners
       const spinnerOptions = {
         enabledProperty: enabledProperty,
-
-        // TODO: fine tune touch areas
-        // touchAreaXDilation: 20,
-        // touchAreaYDilation: 10,
-        // mouseAreaXDilation: 10,
-        // mouseAreaYDilation: 5,
         decimalPlaces: 0,
         deltaValue: 10,
         backgroundMinWidth: 60,
