@@ -542,7 +542,9 @@ define( require => {
             new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
             new Property( 0 ),
             Battery.BatteryType.HIGH_VOLTAGE,
-            Tandem.optional
+            Tandem.optional, {
+              voltage: 1000
+            }
           ), this.viewTypeProperty, tandem.createTandem( 'highVoltageBatteryIcon' ), { isIcon: true } ),
         circuitElement => circuitElement instanceof Battery &&
 

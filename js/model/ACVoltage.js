@@ -45,11 +45,13 @@ define( require => {
 
       // @public {NumberProperty} - the maximum voltage, which can be controlled by the CircuitElementNumberControl
       this.maximumVoltageProperty = new NumberProperty( options.voltage, {
-        tandem: tandem.createTandem( 'maximumVoltageProperty' )
+        tandem: tandem.createTandem( 'maximumVoltageProperty' ),
+        range: new Range( 0, 120 )
       } );
 
       this.frequencyProperty = new NumberProperty( 0.5, {
-        tandem: tandem.createTandem( 'frequencyProperty' )
+        tandem: tandem.createTandem( 'frequencyProperty' ),
+        range: new Range( 0.1, 2.0 )
       } );
 
       // @public {Property.<number>} the internal resistance of the battery

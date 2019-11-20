@@ -15,6 +15,7 @@ define( require => {
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
+  const Range = require( 'DOT/Range' );
 
   // constants
   const RESISTOR_LENGTH = CCKCConstants.RESISTOR_LENGTH;
@@ -53,7 +54,20 @@ define( require => {
 
       // @public {Property.<number>} the resistance in ohms
       this.resistanceProperty = new NumberProperty( options.resistance, {
-        tandem: tandem.createTandem( 'resistanceProperty' )
+        tandem: tandem.createTandem( 'resistanceProperty' ),
+
+        // Specify the Property range for seamless PhET-iO interoperation
+        // TODO: Rich enumeration pattern?
+        // TODO: Get the ranges correct for grab bag objects
+        range: options.resistorType === Resistor.ResistorType.RESISTOR ? new Range( 0, 120 ) :
+               options.resistorType === Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR ? new Range( 100, 10000 ) :
+               options.resistorType === Resistor.ResistorType.COIN ? new Range( 0, 10000 ) :
+               options.resistorType === Resistor.ResistorType.PENCIL ? new Range( 0, 1000000000 ) :
+               options.resistorType === Resistor.ResistorType.ERASER ? new Range( 0, 1000000000 ) :
+               options.resistorType === Resistor.ResistorType.HAND ? new Range( 0, 1000000000 ) :
+               options.resistorType === Resistor.ResistorType.DOG ? new Range( 0, 1000000000 ) :
+               options.resistorType === Resistor.ResistorType.DOLLAR_BILL ? new Range( 0, 1000000000 ) :
+               null
       } );
     }
 

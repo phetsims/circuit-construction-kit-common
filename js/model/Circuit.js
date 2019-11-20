@@ -303,8 +303,10 @@ define( require => {
       } );
 
       this.highVoltageBatteryGroup = new PhetioGroup( 'battery', ( tandem, startVertex, endVertex ) => {
-        return new Battery( startVertex, endVertex, this.batteryResistanceProperty, Battery.BatteryType.NORMAL,
-          tandem );
+        return new Battery( startVertex, endVertex, this.batteryResistanceProperty, Battery.BatteryType.HIGH_VOLTAGE,
+          tandem, {
+            voltage: 1000
+          } );
       }, () => createVertices( BATTERY_LENGTH ), {
         phetioType: PhetioGroupIO( CircuitElementIO ),
         tandem: tandem.createTandem( 'highVoltageBatteryGroup' )
@@ -316,6 +318,8 @@ define( require => {
         phetioType: PhetioGroupIO( CircuitElementIO ),
         tandem: tandem.createTandem( 'acVoltageGroup' )
       } );
+
+      // TODO: Did we do high resistance resistor?
 
       this.resistorGroup = new PhetioGroup( 'resistor',
         ( tandem, startVertex, endVertex ) => new Resistor( startVertex, endVertex, tandem ),

@@ -31,16 +31,7 @@ define( require => {
      */
     constructor( title, valuePattern, valueProperty, circuit, circuitElement, tandem, options ) {
 
-      options = merge( {
-
-        // TODO: A better way of doing this, see note in CircuitElementEditContainerNode
-        // Takes precedence over value specified in the CircuitElement
-        delta: null,
-
-        // TODO: A better way of doing this, see note in CircuitElementEditContainerNode
-        // Takes precedence over value specified in the CircuitElement
-        editableRange: null
-      }, options );
+      assert && assert( !!valueProperty.range, 'Range must be provided' );
 
       // When the user changes any parameter of any circuit element, signify it.
       const valuePropertyListener = () => circuit.componentEditedEmitter.emit();
@@ -48,9 +39,7 @@ define( require => {
       valueProperty.lazyLink( valuePropertyListener );
 
       // Create the controls
-      super( title, valueProperty, options.editableRange || circuitElement.editableRange, {
-
-        delta: options.delta || circuitElement.editorDelta,
+      super( title, valueProperty, valueProperty.range, merge( {
 
         // subcomponent options
         titleNodeOptions: {
@@ -74,12 +63,10 @@ define( require => {
         // in the state wrapper, probably from this code being called anyways from when the circuit element
         // is selected.
         tandem: Tandem.optional
-      } );
+      }, options ) );
 
       // @private {function} - for disposal
-      this.disposeCircuitElementNumberControl = () => {
-        valueProperty.unlink( valuePropertyListener );
-      };
+      this.disposeCircuitElementNumberControl = () => valueProperty.unlink( valuePropertyListener );
     }
 
     /**

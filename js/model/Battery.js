@@ -17,6 +17,7 @@ define( require => {
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
+  const Range = require( 'DOT/Range' );
 
   // constants
   const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
@@ -44,7 +45,8 @@ define( require => {
 
       // @public {NumberProperty} - the voltage of the battery in volts
       this.voltageProperty = new NumberProperty( options.voltage, {
-        tandem: tandem.createTandem( 'voltageProperty' )
+        tandem: tandem.createTandem( 'voltageProperty' ),
+        range: batteryType === Battery.BatteryType.NORMAL ? new Range( 0, 120 ) : new Range( 100, 100000 )
       } );
 
       // @public - keeps track of which solve iteration pass is in process, see https://github.com/phetsims/circuit-construction-kit-common/issues/245

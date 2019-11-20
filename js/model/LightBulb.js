@@ -14,6 +14,7 @@ define( require => {
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
+  const Range = require( 'DOT/Range' );
   const Util = require( 'DOT/Util' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
@@ -72,7 +73,8 @@ define( require => {
 
       // @public {Property.<number>} - the resistance of the light bulb which can be edited with the UI
       this.resistanceProperty = new NumberProperty( resistance, {
-        tandem: tandem.createTandem( 'resistanceProperty' )
+        tandem: tandem.createTandem( 'resistanceProperty' ),
+        range: options.highResistance ? new Range( 100, 10000 ) : new Range( 0, 120 )
       } );
 
       // @private (read-only) {Vector2} the vector between the vertices
