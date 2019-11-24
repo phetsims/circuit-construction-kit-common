@@ -40,20 +40,20 @@ define( require => {
     }
 
     applySolution( circuitResult ) {
-
-      //don't set voltage on the battery; that actually changes its nominal voltage
-      // TODO: we don't need this, right?
-      // this.battery.setMNACurrent( result.getInstantaneousCurrent( this ) );
       this.battery.currentProperty.value = circuitResult.getTimeAverageCurrent( this );
     }
   }
 
   class ResistorAdapter extends ModifiedNodalAnalysisCircuitElement {
-    // TODO: docs
-    constructor( c, resistor ) {
+
+    /**
+     * @param {Circuit} circuit
+     * @param {Resistor} resistor
+     */
+    constructor( circuit, resistor ) {
       super(
-        c.vertexGroup.array.indexOf( resistor.startVertexProperty.value ),
-        c.vertexGroup.array.indexOf( resistor.endVertexProperty.value ),
+        circuit.vertexGroup.array.indexOf( resistor.startVertexProperty.value ),
+        circuit.vertexGroup.array.indexOf( resistor.endVertexProperty.value ),
         resistor,
         resistor.resistanceProperty.value
       );
