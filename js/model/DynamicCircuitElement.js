@@ -28,8 +28,9 @@ define( require => {
       // to the typical voltage calculation which is based on vertices.
       this.mnaVoltageDrop = 0;
 
-      // @public {number} - value of the current set and read by the modified nodal analysis.  This is in addition to the
-      // the currentProperty.  TODO: Can we use currentProperty instead?
+      // @public {number} - value of the current set and read by the modified nodal analysis.  This is an instantaneous
+      // value based on the throughput computation at the final timestep, as opposed to the currentProperty.value which
+      // takes a time average across the values, so we can show transient spikes, see https://phet.unfuddle.com/a#/projects/9404/tickets/by_number/2270?cycle=true
       this.mnaCurrent = 0;
     }
 
