@@ -304,24 +304,28 @@ define( require => {
      * @param {DynamicElementState} state
      */
     constructor( capacitor, state ) {
+
+      // @public {Capacitor}
       this.capacitor = capacitor;
+
+      // @public {DynamicElementState}
       this.state = state;
     }
   }
 
   class DynamicInductor {
+
     /**
-     *
      * @param {Inductor} inductor
      * @param {DynamicElementState} state
      */
     constructor( inductor, state ) {
-      this.inductor = inductor;
-      this.state = state;
-    }
 
-    getInductor() {
-      return this.inductor;
+      // @public {Inductor}
+      this.inductor = inductor;
+
+      // @public {DynamicElementState}
+      this.state = state;
     }
   }
 
