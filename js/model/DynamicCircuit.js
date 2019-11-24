@@ -245,7 +245,7 @@ define( require => {
      * @param {ResultSet<DynamicCircuit.DynamicState>} resultSet
      */
     constructor( resultSet ) {
-      this.resultSet = resultSet; // private ResultSet<DynamicCircuit.DynamicState>
+      this.resultSet = resultSet;
     }
 
     /**
@@ -255,12 +255,8 @@ define( require => {
     getTimeAverageCurrent( element ) {
       let weightedSum = 0.0;
       this.resultSet.states.forEach( stateObject => {
-
-        // TODO: make sure this is right
         weightedSum += stateObject.state.dynamicCircuitSolution.getCurrent( element ) * stateObject.subdivisionDT;
-        assert && assert( !isNaN( weightedSum ) );
       } );
-
       const number = weightedSum / this.resultSet.getTotalTime();
       assert && assert( !isNaN( number ) );
       return number;
@@ -272,20 +268,6 @@ define( require => {
      */
     getInstantaneousCurrent( element ) {
       return this.getFinalState().dynamicCircuitSolution.getCurrent( element );
-    }
-
-    /**
-     * @param {ModifiedNodalAnalysisCircuitElement} element
-     * @returns {number}
-     */
-    getTimeAverageVoltage( element ) {
-      let weightedSum = 0.0;
-      this.resultSet.forEach( state => {
-
-        // TODO: make sure this is right
-        weightedSum += state.state.dynamicCircuitSolution.getVoltage( element ) * state.dt;
-      } );
-      return weightedSum / this.resultSet.getTotalTime();
     }
 
     /**

@@ -61,13 +61,6 @@ define( require => {
 
     applySolution( circuitResult ) {
       this.resistor.currentProperty.value = circuitResult.getTimeAverageCurrent( this );
-
-      // TODO: is this necessary?  Where would it be used?
-      //use average since it doesn't feed back in to the MNA solution
-      // this.resistor.setVoltageDrop( solution.getTimeAverageVoltage( this ) );
-
-      // TODO: only used for capacitors and inductors
-      // this.resistor.setMNACurrent( solution.getInstantaneousCurrent( this ) );
     }
   }
 
@@ -92,9 +85,6 @@ define( require => {
     applySolution( circuitResult ) {
       this._capacitor.currentProperty.value = circuitResult.getTimeAverageCurrent( this.capacitor );
       this._capacitor.mnaCurrent = circuitResult.getInstantaneousCurrent( this.capacitor );
-
-      // TODO: is this needed?
-      // this._capacitor.setVoltageDrop( solution.getTimeAverageVoltage( this.capacitor ) );
       this._capacitor.mnaVoltageDrop = circuitResult.getInstantaneousVoltage( this.capacitor );
     }
   }
@@ -119,7 +109,6 @@ define( require => {
       // TODO(sign-error): Why is there a negative sign here?
       this._inductor.currentProperty.value = -circuitResult.getTimeAverageCurrent( this.inductor );
       this._inductor.mnaCurrent = -circuitResult.getInstantaneousCurrent( this.inductor );
-      // this._inductor.setVoltageDrop( solution.getTimeAverageVoltage( this.inductor ) ); // TODO: is this needed?
       this._inductor.mnaVoltageDrop = circuitResult.getInstantaneousVoltage( this.inductor );
     }
   }

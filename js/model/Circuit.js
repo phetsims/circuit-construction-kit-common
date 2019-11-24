@@ -270,6 +270,7 @@ define( require => {
       this.batteryResistanceProperty.link( markDirtyListener );
 
       // @public (read-only) - for creating tandems
+      // TODO: Convert to group pattern?
       this.resistorGroupTandem = tandem.createGroupTandem( 'resistors' );
       this.seriesAmmeterGroupTandem = tandem.createGroupTandem( 'seriesAmmeters' );
       this.coinGroupTandem = tandem.createGroupTandem( 'coins' );
