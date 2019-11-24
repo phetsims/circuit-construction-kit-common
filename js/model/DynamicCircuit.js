@@ -399,14 +399,14 @@ define( require => {
     }
 
     /**
-     * Returns an array of characteristic measurements from the solution, in order to determine
-     * deviations.
+     * Returns an array of characteristic measurements from the solution, in order to determine whether more subdivisions
+     * are needed in the timestep.
      * @returns {number[]}
      * @public
      */
     getCharacteristicArray() {
 
-      // TODO: read from companion object, or perhaps the solution.  Though the solution has been applied to the circuit.
+      // The solution has been applied to the this.dynamicCircuit, so we can read values from it
       const currents = [];
       for ( let i = 0; i < this.dynamicCircuit.capacitors.length; i++ ) {
         currents.push( this.dynamicCircuit.capacitors[ i ].state.current );
