@@ -270,7 +270,7 @@ define( require => {
       this.batteryResistanceProperty.link( markDirtyListener );
 
       // @public (read-only) - for creating tandems
-      // TODO: Convert to group pattern?
+      // TODO(phet-io): Convert to group pattern?
       this.resistorGroupTandem = tandem.createGroupTandem( 'resistors' );
       this.seriesAmmeterGroupTandem = tandem.createGroupTandem( 'seriesAmmeters' );
       this.coinGroupTandem = tandem.createGroupTandem( 'coins' );
@@ -320,7 +320,7 @@ define( require => {
         tandem: tandem.createTandem( 'acVoltageGroup' )
       } );
 
-      // TODO: Did we do high resistance resistor?
+      // TODO(phet-io): Did we do high resistance resistor?
 
       this.resistorGroup = new PhetioGroup( 'resistor',
         ( tandem, startVertex, endVertex ) => new Resistor( startVertex, endVertex, tandem ),
