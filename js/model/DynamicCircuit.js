@@ -295,20 +295,6 @@ define( require => {
     getInstantaneousNodeVoltage( node ) {
       return this.getFinalState().dynamicCircuitSolution.getNodeVoltage( node );
     }
-
-    /**
-     * @param {number} node
-     * @returns {number}
-     */
-    getAverageNodeVoltage( node ) {
-      let weightedSum = 0.0;
-      this.resultSet.forEach( state => {
-
-        // TODO: make sure this is right too
-        weightedSum += state.state.dynamicCircuitSolution.getNodeVoltage( node ) * state.dt;
-      } );
-      return weightedSum / this.resultSet.getTotalTime();
-    }
   }
 
   class DynamicCapacitor {
