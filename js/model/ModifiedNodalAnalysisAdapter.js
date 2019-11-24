@@ -49,6 +49,7 @@ define( require => {
   }
 
   class ResistorAdapter extends ModifiedNodalAnalysisCircuitElement {
+    // TODO: docs
     constructor( c, resistor ) {
       super(
         c.vertexGroup.array.indexOf( resistor.startVertexProperty.value ),

@@ -19,18 +19,18 @@ define( require => {
   class DynamicCircuit {
 
     /**
-     * @param {ResistorAdapter[]} resistors
-     * @param {ResistiveBatteryAdapter[]} resistiveBatteries
-     * @param {CapacitorAdapter[]} capacitors
-     * @param {InductorAdapter[]} inductors
+     * @param {ResistorAdapter[]} resistorAdapters
+     * @param {ResistiveBatteryAdapter[]} resistiveBatteryAdapters
+     * @param {CapacitorAdapter[]} capacitorAdapters
+     * @param {InductorAdapter[]} inductorAdapters
      */
-    constructor( resistors, resistiveBatteries, capacitors, inductors ) {
+    constructor( resistorAdapters, resistiveBatteryAdapters, capacitorAdapters, inductorAdapters ) {
 
       // @private
-      this.resistors = resistors;
-      this.resistiveBatteries = resistiveBatteries;
-      this.capacitors = capacitors;
-      this.inductors = inductors;
+      this.resistorAdapters = resistorAdapters;
+      this.resistiveBatteryAdapters = resistiveBatteryAdapters;
+      this.capacitorAdapters = capacitorAdapters;
+      this.inductorAdapters = inductorAdapters;
     }
 
     /**
@@ -49,34 +49,34 @@ define( require => {
       // Node indices that have been used
       const usedNodes = [];
 
-      this.capacitors.forEach( capacitorAdapter => {
+      this.capacitorAdapters.forEach( capacitorAdapter => {
         usedNodes.push( capacitorAdapter.capacitor.nodeId0 );
         usedNodes.push( capacitorAdapter.capacitor.nodeId1 );
       } );
 
-      this.inductors.forEach( inductorAdapters => {
-        usedNodes.push( inductorAdapters.inductor.nodeId0 );
-        usedNodes.push( inductorAdapters.inductor.nodeId1 );
+      this.inductorAdapters.forEach( inductorAdapter => {
+        usedNodes.push( inductorAdapter.inductor.nodeId0 );
+        usedNodes.push( inductorAdapter.inductor.nodeId1 );
       } );
 
-      [].concat( this.resistors, this.resistiveBatteries ).forEach( element => {
+      [].concat( this.resistorAdapters, this.resistiveBatteryAdapters ).forEach( element => {
         usedNodes.push( element.nodeId0 );
         usedNodes.push( element.nodeId1 );
       } );
 
       // Each resistive battery is a resistor in series with a battery
-      this.resistiveBatteries.forEach( resistiveBattery => {
+      this.resistiveBatteryAdapters.forEach( resistiveBatteryAdapter => {
         const newNode = _.max( usedNodes ) + 1;
         usedNodes.push( newNode );
 
-        const idealBattery = new ModifiedNodalAnalysisCircuitElement( resistiveBattery.nodeId0, newNode, null, resistiveBattery.voltage ); // final LinearCircuitSolver.Battery
-        const idealResistor = new ModifiedNodalAnalysisCircuitElement( newNode, resistiveBattery.nodeId1, null, resistiveBattery.resistance ); // LinearCircuitSolver.Resistor
+        const idealBattery = new ModifiedNodalAnalysisCircuitElement( resistiveBatteryAdapter.nodeId0, newNode, null, resistiveBatteryAdapter.voltage ); // final LinearCircuitSolver.Battery
+        const idealResistor = new ModifiedNodalAnalysisCircuitElement( newNode, resistiveBatteryAdapter.nodeId1, null, resistiveBatteryAdapter.resistance ); // LinearCircuitSolver.Resistor
         companionBatteries.push( idealBattery );
         companionResistors.push( idealResistor );
 
         // We need to be able to get the current for this component
         currentCompanions.push( {
-          element: resistiveBattery,
+          element: resistiveBatteryAdapter,
           getValueForSolution: solution => idealBattery.currentSolution
         } );
       } );
@@ -88,42 +88,42 @@ define( require => {
       // See http://circsimproj.blogspot.com/2009/07/companion-models.html
       // Veq = V + dt*I/2/C;
       // Req = dt/2/C
-      this.capacitors.forEach( dynamicCapacitor => {
-        assert && assert( dynamicCapacitor instanceof DynamicCapacitor, 'Should have been DynamicCapacitor' );
+      this.capacitorAdapters.forEach( capacitorAdapter => {
+        assert && assert( capacitorAdapter instanceof DynamicCapacitor, 'Should have been DynamicCapacitor' );
 
         const newNode = _.max( usedNodes ) + 1;
         usedNodes.push( newNode );
 
-        const companionResistance = dt / 2.0 / dynamicCapacitor.capacitor.capacitance;
+        const companionResistance = dt / 2.0 / capacitorAdapter.capacitor.capacitance;
 
         // TODO(sign-error): This sign contradicts the equation above, perhaps the current is backwards?
         // Flipping getValueForSolution and CapacitorAdapter.getTimeAverageCurrent seems to help
-        const companionVoltage = dynamicCapacitor.state.voltage - companionResistance * dynamicCapacitor.state.current;
+        const companionVoltage = capacitorAdapter.state.voltage - companionResistance * capacitorAdapter.state.current;
 
-        const battery = new ModifiedNodalAnalysisCircuitElement( dynamicCapacitor.capacitor.nodeId0, newNode, null, companionVoltage );
-        const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, dynamicCapacitor.capacitor.nodeId1, null, companionResistance );
+        const battery = new ModifiedNodalAnalysisCircuitElement( capacitorAdapter.capacitor.nodeId0, newNode, null, companionVoltage );
+        const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, capacitorAdapter.capacitor.nodeId1, null, companionResistance );
         companionBatteries.push( battery );
         companionResistors.push( resistor );
 
         // We need to be able to get the current for this component. In series, so the current is the same through both.
         // TODO(sign-error): Previously used resistor to get current.  Check sign is correct.
         currentCompanions.push( {
-          element: dynamicCapacitor,
+          element: capacitorAdapter,
           getValueForSolution: solution => solution.getCurrentForResistor( resistor )
         } );
       } );
 
       // See also http://circsimproj.blogspot.com/2009/07/companion-models.html
       // See najm page 279 and Pillage page 86
-      this.inductors.forEach( dynamicInductor => {
-        const inductor = dynamicInductor.inductor;
+      this.inductorAdapters.forEach( inductorAdapter => {
+        const inductor = inductorAdapter.inductor;
 
         // In series
         const newNode = _.max( usedNodes ) + 1;
         usedNodes.push( newNode );
 
         const companionResistance = 2 * inductor.inductance / dt;
-        const companionVoltage = dynamicInductor.state.voltage + companionResistance * dynamicInductor.state.current;
+        const companionVoltage = inductorAdapter.state.voltage + companionResistance * inductorAdapter.state.current;
 
         const battery = new ModifiedNodalAnalysisCircuitElement( newNode, inductor.nodeId0, null, companionVoltage );
         const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, inductor.nodeId1, null, companionResistance );
@@ -133,7 +133,7 @@ define( require => {
         // we need to be able to get the current for this component
         // in series, so current is same through both companion components
         currentCompanions.push( {
-          element: dynamicInductor,
+          element: inductorAdapter,
 
           // TODO(sign-error): check sign, this was converted from battery to resistor
           getValueForSolution: solution => -solution.getCurrentForResistor( resistor )
@@ -141,7 +141,7 @@ define( require => {
       } );
 
       const newBatteryList = companionBatteries;
-      const newResistorList = [].concat( this.resistors, companionResistors );
+      const newResistorList = [].concat( this.resistorAdapters, companionResistors );
       const newCurrentList = []; // Placeholder for if we add other circuit elements in the future
 
       const mnaCircuit = new ModifiedNodalAnalysisCircuit( newBatteryList, newResistorList, newCurrentList );
@@ -215,14 +215,14 @@ define( require => {
      * @returns {DynamicCircuit}
      */
     updateCircuit( solution ) {
-      const updatedCapacitors = this.capacitors.map( capacitor => {
+      const updatedCapacitors = this.capacitorAdapters.map( capacitor => {
         const dynamicElementState = new DynamicElementState(
           solution.getNodeVoltage( capacitor.capacitor.nodeId1 ) - solution.getNodeVoltage( capacitor.capacitor.nodeId0 ),
           solution.getCurrent( capacitor )
         );
         return new DynamicCapacitor( capacitor.capacitor, dynamicElementState );
       } );
-      const updatedInductors = this.inductors.map( inductor => {
+      const updatedInductors = this.inductorAdapters.map( inductor => {
         const dynamicElementState = new DynamicElementState(
           solution.getNodeVoltage( inductor.inductor.nodeId1 ) - solution.getNodeVoltage( inductor.inductor.nodeId0 ),
           solution.getCurrent( inductor )
@@ -230,7 +230,7 @@ define( require => {
         return new DynamicInductor( inductor.inductor, dynamicElementState );
       } );
 
-      return new DynamicCircuit( this.resistors, this.resistiveBatteries, updatedCapacitors, updatedInductors );
+      return new DynamicCircuit( this.resistorAdapters, this.resistiveBatteryAdapters, updatedCapacitors, updatedInductors );
     }
   }
 
@@ -408,11 +408,11 @@ define( require => {
 
       // The solution has been applied to the this.dynamicCircuit, so we can read values from it
       const currents = [];
-      for ( let i = 0; i < this.dynamicCircuit.capacitors.length; i++ ) {
-        currents.push( this.dynamicCircuit.capacitors[ i ].state.current );
+      for ( let i = 0; i < this.dynamicCircuit.capacitorAdapters.length; i++ ) {
+        currents.push( this.dynamicCircuit.capacitorAdapters[ i ].state.current );
       }
-      for ( let i = 0; i < this.dynamicCircuit.inductors.length; i++ ) {
-        currents.push( this.dynamicCircuit.inductors[ i ].state.current );
+      for ( let i = 0; i < this.dynamicCircuit.inductorAdapters.length; i++ ) {
+        currents.push( this.dynamicCircuit.inductorAdapters[ i ].state.current );
       }
       return currents;
     }
@@ -452,7 +452,7 @@ define( require => {
         return element.currentSolution;
       }
 
-      // TODO: the comparisons are asymmetrical, how can they both work?
+      // Support
       const companion = _.find( this.currentCompanions, c => c.element === element ||
                                                              c.element.capacitor === element ||
                                                              c.element.inductor === element );
