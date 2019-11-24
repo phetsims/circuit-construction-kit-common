@@ -236,8 +236,8 @@ define( require => {
 
   /**
    * This class represents the solution obtained by a timestep-subdivision-oriented MNA solve with companion models.
-   * The distinction between instantaneous and average currents/voltages is made because we need to maintain the correct dynamics
-   * (using instantaneous solutions) but also to show intermediate states (using the average results), see #2270.
+   * The distinction between instantaneous and average currents/voltages is made because we need to maintain the correct
+   * dynamics (using instantaneous solutions) but also to show intermediate states (using the average results), see #2270.
    */
   class CircuitResult {
 
@@ -249,6 +249,8 @@ define( require => {
     }
 
     /**
+     * The time averaged current is used to show transient values in current, such as a current spike when a battery+
+     * capacitor (no resistance) circuit is wired up, see https://phet.unfuddle.com/a#/projects/9404/tickets/by_number/2270?cycle=true
      * @param {ModifiedNodalAnalysisCircuitElement} element
      * @returns {number}
      */
@@ -263,6 +265,7 @@ define( require => {
     }
 
     /**
+     * The instantaneous current is used for computing the next modified nodal analysis state and integration.
      * @param {ModifiedNodalAnalysisCircuitElement} element
      * @returns {number}
      */
