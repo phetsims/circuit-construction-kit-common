@@ -59,15 +59,7 @@ define( require => {
         // Specify the Property range for seamless PhET-iO interoperation
         // TODO: Rich enumeration pattern?
         // TODO: Get the ranges correct for grab bag objects
-        range: options.resistorType === Resistor.ResistorType.RESISTOR ? new Range( 0, 120 ) :
-               options.resistorType === Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR ? new Range( 100, 10000 ) :
-               options.resistorType === Resistor.ResistorType.COIN ? new Range( 0, 10000 ) :
-               options.resistorType === Resistor.ResistorType.PENCIL ? new Range( 0, 1000000000 ) :
-               options.resistorType === Resistor.ResistorType.ERASER ? new Range( 0, 1000000000 ) :
-               options.resistorType === Resistor.ResistorType.HAND ? new Range( 0, 1000000000 ) :
-               options.resistorType === Resistor.ResistorType.DOG ? new Range( 0, 1000000000 ) :
-               options.resistorType === Resistor.ResistorType.DOLLAR_BILL ? new Range( 0, 1000000000 ) :
-               null
+        range: options.resistorType.range
       } );
     }
 
@@ -115,6 +107,15 @@ define( require => {
   ], {
     beforeFreeze: ResistorType => {
       ResistorType.isMetallic = type => type === ResistorType.COIN || type === ResistorType.PAPER_CLIP;
+
+      ResistorType.RESISTOR.range = new Range( 0, 120 );
+      ResistorType.HIGH_RESISTANCE_RESISTOR.range = new Range( 100, 10000 );
+      ResistorType.COIN.range = new Range( 0, 10000 );
+      ResistorType.PENCIL.range = new Range( 0, 1000000000 );
+      ResistorType.ERASER.range = new Range( 0, 1000000000 );
+      ResistorType.HAND.range = new Range( 0, 1000000000 );
+      ResistorType.DOG.range = new Range( 0, 1000000000 );
+      ResistorType.DOLLAR_BILL.range = new Range( 0, 1000000000 );
     }
   } );
 
