@@ -57,8 +57,6 @@ define( require => {
         tandem: tandem.createTandem( 'resistanceProperty' ),
 
         // Specify the Property range for seamless PhET-iO interoperation
-        // TODO: Rich enumeration pattern?
-        // TODO: Get the ranges correct for grab bag objects
         range: options.resistorType.range
       } );
     }
@@ -108,6 +106,7 @@ define( require => {
     beforeFreeze: ResistorType => {
       ResistorType.isMetallic = type => type === ResistorType.COIN || type === ResistorType.PAPER_CLIP;
 
+      // TODO: Get the ranges correct for grab bag objects
       ResistorType.RESISTOR.range = new Range( 0, 120 );
       ResistorType.HIGH_RESISTANCE_RESISTOR.range = new Range( 100, 10000 );
       ResistorType.COIN.range = new Range( 0, 10000 );
