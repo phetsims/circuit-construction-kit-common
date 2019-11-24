@@ -2,7 +2,6 @@
 
 /**
  * Provides simulation-specific values and customizations to display a ScrollingChartNode in a MeterBodyNode.
- * TODO: Copied from WaveMeterNode, can anything be factored out?
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -65,7 +64,6 @@ define( require => {
 
       this.meter = new Meter( options.tandem.createTandem( 'meter' ) );
 
-      // TODO: Copied from WavesScreenView, can anything be factored out?
       // @private
       this.seriesArray = seriesArray;
 
