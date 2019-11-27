@@ -22,6 +22,7 @@ define( require => {
   const HBox = require( 'SCENERY/nodes/HBox' );
   const Inductor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Inductor' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
+  const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Panel = require( 'SUN/Panel' );
   const PhaseShiftControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/PhaseShiftControl' );
@@ -71,8 +72,13 @@ define( require => {
      * @param {Property.<boolean>} visibleBoundsProperty - the visible bounds in view coordinates
      * @param {Property.<InteractionMode>} modeProperty
      * @param {Tandem} tandem
+     * @param {Object} [options]
      */
-    constructor( circuit, visibleBoundsProperty, modeProperty, tandem ) {
+    constructor( circuit, visibleBoundsProperty, modeProperty, tandem, options ) {
+
+      options = merge( {
+        showPhaseShiftControl: false
+      }, options );
       const groupTandem = tandem.createGroupTandem( 'circuitElementEditNode' );
 
       // TODO(phet-io): uninstrument or keep group?  See comment in CircuitElementNumberControl Tandem.optional for NumberControl
@@ -177,15 +183,12 @@ define( require => {
 
                 // Batteries can be reversed
                 new ReverseBatteryButton( circuit, selectedCircuitElement, tandem.createTandem( 'reverseBatteryButton' ) ),
-
                 circuitElementEditNode,
-
                 new TrashButton( circuit, selectedCircuitElement, tandem.createTandem( 'trashButton' ), {
                   phetioState: false
                 } )
               ]
             );
-
             editNode = new EditPanel( hbox );
           }
           else if ( isFuse ) {
@@ -227,7 +230,7 @@ define( require => {
             editNode = trashButtonGroup.createNextMember( selectedCircuitElement );
           }
           else if ( isACSource ) {
-            editNode = new EditPanel( new EditHBox( [
+            const children = [
               new CircuitElementNumberControl(
                 voltageString,
 
@@ -254,14 +257,17 @@ define( require => {
                   delta: 0.1,
                   editableRange: new Range( 0.1, 2 )
                 }
-              ),
-              new PhaseShiftControl( selectedCircuitElement, {
+              ) ];
+
+            if ( options.showPhaseShiftControl ) {
+              children.push( new PhaseShiftControl( selectedCircuitElement, {
                 tandem: groupTandem.createNextTandem()
-              } ),
-              new TrashButton( circuit, selectedCircuitElement, tandem.createTandem( 'trashButton' ), {
-                phetioState: false
-              } ) ]
-            ) );
+              } ) );
+            }
+            children.push( new TrashButton( circuit, selectedCircuitElement, tandem.createTandem( 'trashButton' ), {
+              phetioState: false
+            } ) );
+            editNode = new EditPanel( new EditHBox( children ) );
           }
           else if ( isCapacitor ) {
             const capacitorEditControl = new CircuitElementNumberControl( capacitanceString,

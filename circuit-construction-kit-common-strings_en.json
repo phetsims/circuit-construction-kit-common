@@ -38,6 +38,9 @@
   "lots": {
     "value": "lots"
   },
+  "phaseShift": {
+    "value": "Phase Shift"
+  },
   "coin": {
     "value": "Coin"
   },

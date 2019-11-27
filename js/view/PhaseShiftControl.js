@@ -1,7 +1,7 @@
 // Copyright 2019, University of Colorado Boulder
 
 /**
- * Control that allows the user to change the phase of the ac voltage source.
+ * Control that allows the user to change the phase of the ac voltage source on the AC Lab Screen.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -19,6 +19,9 @@ define( require => {
   const Range = require( 'DOT/Range' );
   const Text = require( 'SCENERY/nodes/Text' );
   const VBox = require( 'SCENERY/nodes/VBox' );
+
+  // strings
+  const phaseShiftString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/phaseShift' );
 
   class PhaseShiftControl extends VBox {
 
@@ -42,7 +45,7 @@ define( require => {
         xMargin: 10,
         font: CCKCConstants.DEFAULT_FONT
       };
-      const title = new Text( 'Phase Shift', {
+      const title = new Text( phaseShiftString, {
         font: CCKCConstants.DEFAULT_FONT
       } );
 

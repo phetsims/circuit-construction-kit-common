@@ -81,9 +81,9 @@ define( require => {
         showResistivityControl: true,
         showBatteryResistanceControl: true,
         showCharts: false,
-
         blackBoxStudy: false,
-        showStopwatchCheckbox: false
+        showStopwatchCheckbox: false,
+        showPhaseShiftControl: false
       }, options );
 
       super();
@@ -247,7 +247,9 @@ define( require => {
         model.circuit,
         this.visibleBoundsProperty,
         model.modeProperty,
-        tandem.createTandem( 'circuitElementEditContainerNode' )
+        tandem.createTandem( 'circuitElementEditContainerNode' ), {
+          showPhaseShiftControl: options.showPhaseShiftControl
+        }
       );
 
       // @protected {CircuitElementEditContainerNode} - so the subclass can set the layout
