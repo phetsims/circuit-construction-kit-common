@@ -76,6 +76,8 @@ define( require => {
      */
     constructor( circuit, visibleBoundsProperty, modeProperty, tandem, options ) {
 
+      super();
+
       options = merge( {
         showPhaseShiftControl: false
       }, options );
@@ -88,7 +90,6 @@ define( require => {
           phetioType: PhetioGroupIO( TrashButtonIO ),
           tandem: tandem.createTandem( 'trashButtonGroup' )
         } );
-      super();
 
       const tapInstructionTextNode = new Text( tapCircuitElementToEditString, {
         fontSize: 24,
@@ -149,14 +150,11 @@ define( require => {
               selectedCircuitElement,
               groupTandem.createNextTandem()
             );
-            const hbox = new EditHBox( [
+            editNode = new EditPanel( [
                 resistanceControl,
-                new TrashButton( circuit, selectedCircuitElement, tandem.createTandem( 'trashButton' ), {
-                  phetioState: false
-                } )
+                trashButtonGroup.createNextMember( selectedCircuitElement )
               ]
             );
-            editNode = new EditPanel( hbox );
           }
           else if ( isResistive ) {
 
@@ -179,17 +177,14 @@ define( require => {
               }
             );
 
-            const hbox = new EditHBox( [
+            editNode = new EditPanel( [
 
                 // Batteries can be reversed
                 new ReverseBatteryButton( circuit, selectedCircuitElement, tandem.createTandem( 'reverseBatteryButton' ) ),
                 circuitElementEditNode,
-                new TrashButton( circuit, selectedCircuitElement, tandem.createTandem( 'trashButton' ), {
-                  phetioState: false
-                } )
+                trashButtonGroup.createNextMember( selectedCircuitElement )
               ]
             );
-            editNode = new EditPanel( hbox );
           }
           else if ( isFuse ) {
             const fuseCurrentRatingControl = new CircuitElementNumberControl( currentRatingString,
@@ -206,20 +201,14 @@ define( require => {
               }
             );
 
-            const hbox = new EditHBox( [
+            editNode = new EditPanel( [
 
                 // Batteries can be reversed
                 new ResetFuseButton( selectedCircuitElement, tandem.createTandem( 'resetFuseButton' ) ),
-
                 fuseCurrentRatingControl,
-
-                new TrashButton( circuit, selectedCircuitElement, tandem.createTandem( 'trashButton' ), {
-                  phetioState: false
-                } )
+                trashButtonGroup.createNextMember( selectedCircuitElement )
               ]
             );
-
-            editNode = new EditPanel( hbox );
           }
           else if ( isSwitch ) {
             editNode = new SwitchReadoutNode( circuit, selectedCircuitElement, groupTandem.createNextTandem(), trashButtonGroup );
@@ -264,10 +253,8 @@ define( require => {
                 tandem: groupTandem.createNextTandem()
               } ) );
             }
-            children.push( new TrashButton( circuit, selectedCircuitElement, tandem.createTandem( 'trashButton' ), {
-              phetioState: false
-            } ) );
-            editNode = new EditPanel( new EditHBox( children ) );
+            children.push( trashButtonGroup.createNextMember( selectedCircuitElement ) );
+            editNode = new EditPanel( children );
           }
           else if ( isCapacitor ) {
             const capacitorEditControl = new CircuitElementNumberControl( capacitanceString,
@@ -284,14 +271,11 @@ define( require => {
               }
             );
 
-            const hbox = new EditHBox( [
+            editNode = new EditPanel( [
               new ClearDynamicsButton( selectedCircuitElement, tandem.createTandem( 'clearCapacitorButton' ) ),
               capacitorEditControl,
-              new TrashButton( circuit, selectedCircuitElement, tandem.createTandem( 'trashButton' ), {
-                phetioState: false
-              } )
+              trashButtonGroup.createNextMember( selectedCircuitElement )
             ] );
-            editNode = new EditPanel( hbox );
           }
           else if ( isInductor ) {
             const inductanceControl = new CircuitElementNumberControl( inductanceString,
@@ -307,15 +291,12 @@ define( require => {
                 editableRange: selectedCircuitElement.inductanceProperty.range
               }
             );
-            const hbox = new EditHBox( [
+            editNode = new EditPanel( [
                 new ClearDynamicsButton( selectedCircuitElement, tandem.createTandem( 'clearInductorButton' ) ),
                 inductanceControl,
-                new TrashButton( circuit, selectedCircuitElement, tandem.createTandem( 'trashButton' ), {
-                  phetioState: false
-                } )
+                trashButtonGroup.createNextMember( selectedCircuitElement )
               ]
             );
-            editNode = new EditPanel( hbox );
           }
         }
         else {
@@ -360,8 +341,8 @@ define( require => {
    * Panel to facilitate in visual layout of the controls.
    */
   class EditPanel extends Panel {
-    constructor( content ) {
-      super( content, {
+    constructor( children ) {
+      super( new EditHBox( children ), {
         fill: '#caddfa',
         stroke: null,
         xMargin: 13,
