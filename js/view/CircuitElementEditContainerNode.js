@@ -17,6 +17,7 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CircuitElementNumberControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNumberControl' );
   const ClearDynamicsButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ClearDynamicsButton' );
+  const ClearDynamicsButtonIO = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ClearDynamicsButtonIO' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   const Fuse = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Fuse' );
   const HBox = require( 'SCENERY/nodes/HBox' );
@@ -89,6 +90,13 @@ define( require => {
         [ null ], {
           phetioType: PhetioGroupIO( TrashButtonIO ),
           tandem: tandem.createTandem( 'trashButtonGroup' )
+        } );
+
+      const clearDynamicsButtonGroup = new PhetioGroup( 'clearDynamicsButton',
+        ( tandem, circuitElement ) => new ClearDynamicsButton( circuitElement, tandem ),
+        [ null ], {
+          phetioType: PhetioGroupIO( ClearDynamicsButtonIO ),
+          tandem: tandem.createTandem( 'clearDynamicsButtonGroup' )
         } );
 
       const reverseBatteryButtonGroup = new PhetioGroup( 'reverseBatteryButton',
@@ -279,7 +287,7 @@ define( require => {
             );
 
             editNode = new EditPanel( [
-              new ClearDynamicsButton( selectedCircuitElement, tandem.createTandem( 'clearCapacitorButton' ) ),
+              clearDynamicsButtonGroup.createNextMember( selectedCircuitElement ),
               capacitorEditControl,
               trashButtonGroup.createNextMember( selectedCircuitElement )
             ] );
@@ -299,7 +307,7 @@ define( require => {
               }
             );
             editNode = new EditPanel( [
-                new ClearDynamicsButton( selectedCircuitElement, tandem.createTandem( 'clearInductorButton' ) ),
+                clearDynamicsButtonGroup.createNextMember( selectedCircuitElement ),
                 inductanceControl,
                 trashButtonGroup.createNextMember( selectedCircuitElement )
               ]

@@ -12,6 +12,7 @@ define( require => {
   const BanNode = require( 'SCENERY_PHET/BanNode' );
   const CCKCRoundPushButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCRoundPushButton' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const ClearDynamicsButtonIO = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ClearDynamicsButtonIO' );
   const Color = require( 'SCENERY/util/Color' );
   const Matrix3 = require( 'DOT/Matrix3' );
   const Node = require( 'SCENERY/nodes/Node' );
@@ -48,7 +49,10 @@ define( require => {
             } )
           ]
         } ), () => dynamicCircuitElement.clear(),
-        tandem );
+        tandem, {
+          phetioDynamicElement: true,
+          phetioType: ClearDynamicsButtonIO
+        } );
     }
   }
 
