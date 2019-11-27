@@ -1,7 +1,7 @@
 // Copyright 2019, University of Colorado Boulder
 
 /**
- * IO type for Trash Button
+ * IO type for Battery Reverse Button.  TODO: This shares a lot of code with TrashButtonIO
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -14,7 +14,7 @@ define( require => {
   const ObjectIO = require( 'TANDEM/types/ObjectIO' );
   const validate = require( 'AXON/validate' );
 
-  class TrashButtonIO extends ObjectIO {
+  class ReverseBatteryButtonIO extends ObjectIO {
 
     static toStateObject( trashButton ) {
       validate( trashButton, this.validator );
@@ -37,7 +37,7 @@ define( require => {
 
     /**
      * @override
-     * @param {Object} state - see TrashButtonIO.toStateObject
+     * @param {Object} state - see ReverseBatteryButtonIO.toStateObject
      * @returns {Array.<*>}
      */
     static stateToArgs( state ) {
@@ -45,11 +45,11 @@ define( require => {
     }
   }
 
-  TrashButtonIO.methods = {};
-  TrashButtonIO.documentation = 'Button that disposes a Circuit Element';
-  TrashButtonIO.validator = { isValidValue: v => v instanceof phet.circuitConstructionKitCommon.TrashButton };
-  TrashButtonIO.typeName = 'TrashButtonIO';
-  ObjectIO.validateSubtype( TrashButtonIO );
+  ReverseBatteryButtonIO.methods = {};
+  ReverseBatteryButtonIO.documentation = 'Button that disposes a Circuit Element';
+  ReverseBatteryButtonIO.validator = { isValidValue: v => v instanceof phet.circuitConstructionKitCommon.ReverseBatteryButton };
+  ReverseBatteryButtonIO.typeName = 'ReverseBatteryButtonIO';
+  ObjectIO.validateSubtype( ReverseBatteryButtonIO );
 
-  return circuitConstructionKitCommon.register( 'TrashButtonIO', TrashButtonIO );
+  return circuitConstructionKitCommon.register( 'ReverseBatteryButtonIO', ReverseBatteryButtonIO );
 } );

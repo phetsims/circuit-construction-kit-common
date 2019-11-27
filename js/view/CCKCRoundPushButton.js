@@ -10,6 +10,7 @@ define( require => {
 
   // modules
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const merge = require( 'PHET_CORE/merge' );
   const PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
   const RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
 
@@ -19,9 +20,10 @@ define( require => {
      * @param {Node} icon - the circuit that contains the battery
      * @param {function} listener
      * @param {Tandem} tandem
+     * @param {Object} [options]
      */
-    constructor( icon, listener, tandem ) {
-      super( {
+    constructor( icon, listener, tandem, options ) {
+      super( merge( {
         baseColor: PhetColorScheme.BUTTON_YELLOW,
         content: icon,
 
@@ -37,7 +39,7 @@ define( require => {
         phetioComponentOptions: {
           phetioState: false
         }
-      } );
+      }, options ) );
     }
   }
 

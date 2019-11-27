@@ -9,10 +9,11 @@ define( require => {
   'use strict';
 
   // modules
-  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CCKCRoundPushButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCRoundPushButton' );
+  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
   const Path = require( 'SCENERY/nodes/Path' );
+  const ReverseBatteryButtonIO = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ReverseBatteryButtonIO' );
   const VBox = require( 'SCENERY/nodes/VBox' );
 
   // constants
@@ -57,7 +58,10 @@ define( require => {
           ]
         } ),
         () => circuit.flip( battery ),
-        tandem
+        tandem, {
+          phetioDynamicElement: true,
+          phetioType: ReverseBatteryButtonIO
+        }
       );
     }
   }

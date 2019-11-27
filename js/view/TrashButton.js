@@ -17,12 +17,14 @@ define( require => {
   const RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
   const TrashButtonIO = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButtonIO' );
 
+  // TODO: Should this use CCKCRoundPushButton?
   class TrashButton extends RoundPushButton {
 
     /**
      * @param {Circuit} circuit - the circuit from which the CircuitElement can be removed
      * @param {CircuitElement|null} circuitElement - the CircuitElement to remove when the button is pressed, or null if for a prototype
      * @param {Tandem} tandem
+     * @param {Object} options
      */
     constructor( circuit, circuitElement, tandem, options ) {
 
@@ -46,8 +48,7 @@ define( require => {
         minYMargin: 10,
         tandem: tandem,
         phetioDynamicElement: true,
-        phetioType: TrashButtonIO,
-        phetioState: true
+        phetioType: TrashButtonIO
       }, options ) );
 
       // @public (read-only, phet-io)

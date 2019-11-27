@@ -32,6 +32,7 @@ define( require => {
   const ResetFuseButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResetFuseButton' );
   const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   const ReverseBatteryButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ReverseBatteryButton' );
+  const ReverseBatteryButtonIO = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ReverseBatteryButtonIO' );
   const SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const SunConstants = require( 'SUN/SunConstants' );
@@ -83,12 +84,18 @@ define( require => {
       }, options );
       const groupTandem = tandem.createGroupTandem( 'circuitElementEditNode' );
 
-      // TODO(phet-io): uninstrument or keep group?  See comment in CircuitElementNumberControl Tandem.optional for NumberControl
       const trashButtonGroup = new PhetioGroup( 'trashButton',
         ( tandem, circuitElement ) => new TrashButton( circuit, circuitElement, tandem ),
         [ null ], {
           phetioType: PhetioGroupIO( TrashButtonIO ),
           tandem: tandem.createTandem( 'trashButtonGroup' )
+        } );
+
+      const reverseBatteryButtonGroup = new PhetioGroup( 'reverseBatteryButton',
+        ( tandem, circuitElement ) => new ReverseBatteryButton( circuit, circuitElement, tandem ),
+        [ null ], {
+          phetioType: PhetioGroupIO( ReverseBatteryButtonIO ),
+          tandem: tandem.createTandem( 'reverseBatteryButtonGroup' )
         } );
 
       const tapInstructionTextNode = new Text( tapCircuitElementToEditString, {
@@ -180,7 +187,7 @@ define( require => {
             editNode = new EditPanel( [
 
                 // Batteries can be reversed
-                new ReverseBatteryButton( circuit, selectedCircuitElement, tandem.createTandem( 'reverseBatteryButton' ) ),
+                reverseBatteryButtonGroup.createNextMember( selectedCircuitElement ),
                 circuitElementEditNode,
                 trashButtonGroup.createNextMember( selectedCircuitElement )
               ]
