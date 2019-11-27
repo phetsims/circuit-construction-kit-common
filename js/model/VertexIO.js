@@ -37,7 +37,7 @@ define( require => {
      * @param {Object} state - see VertexIO.toStateObject
      * @returns {Array.<*>}
      */
-    static stateToArgs( state ) {
+    static stateToArgsForConstructor( state ) {
       return [ state.position ];
     }
   }

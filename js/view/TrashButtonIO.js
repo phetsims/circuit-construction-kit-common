@@ -40,7 +40,7 @@ define( require => {
      * @param {Object} state - see TrashButtonIO.toStateObject
      * @returns {Array.<*>}
      */
-    static stateToArgs( state ) {
+    static stateToArgsForConstructor( state ) {
       return [ state.circuitElement ];
     }
   }

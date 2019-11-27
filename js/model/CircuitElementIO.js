@@ -42,7 +42,7 @@ define( require => {
      * @param {Object} state - see CircuitElementIO.toStateObject
      * @returns {Array.<*>}
      */
-    static stateToArgs( state ) {
+    static stateToArgsForConstructor( state ) {
       return [ state.startVertex, state.endVertex ];
     }
   }

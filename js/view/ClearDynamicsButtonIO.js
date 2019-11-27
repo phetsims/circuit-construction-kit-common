@@ -40,7 +40,7 @@ define( require => {
      * @param {Object} state - see ClearDynamicsButtonIO.toStateObject
      * @returns {Array.<*>}
      */
-    static stateToArgs( state ) {
+    static stateToArgsForConstructor( state ) {
       return [ state.circuitElement ];
     }
   }
