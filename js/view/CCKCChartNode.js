@@ -110,8 +110,12 @@ define( require => {
       );
 
       const verticalAxisTitleNode = new Text( verticalAxisLabel, {
-        fontSize: LABEL_FONT_SIZE,
         rotation: -Math.PI / 2,
+        fontSize: LABEL_FONT_SIZE,
+        fill: AXIS_LABEL_FILL
+      } );
+      const horizontalAxisTitleNode = new Text( timeString, {
+        fontSize: LABEL_FONT_SIZE,
         fill: AXIS_LABEL_FILL
       } );
       const scaleIndicatorText = new Text( oneSecondString, {
@@ -126,7 +130,7 @@ define( require => {
         new ScrollingChartNode( timeProperty, seriesArray, { width: 150, height: 110 } ),
         verticalAxisTitleNode,
         scaleIndicatorText,
-        timeString,
+        horizontalAxisTitleNode,
         _.omit( options, 'scale', 'tandem' ) // Don't apply the scale to both parent and children
       );
       const shadedRectangle = new ShadedRectangle( scrollingChartNode.bounds.dilated( 7 ) );
