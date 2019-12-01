@@ -14,7 +14,6 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Emitter = require( 'AXON/Emitter' );
-  const LabeledScrollingChartNode = require( 'GRIDDLE/LabeledScrollingChartNode' );
   const merge = require( 'PHET_CORE/merge' );
   const Meter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Meter' );
   const MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
@@ -126,13 +125,12 @@ define( require => {
       // Create the scrolling chart content and add it to the background.  There is an order-of-creation cycle which
       // prevents the scrolling node from being added to the background before the super() call, so this will have to
       // suffice.
-      const scrollingChartNode = new LabeledScrollingChartNode(
-        new ScrollingChartNode( timeProperty, seriesArray, { width: 150, height: 110 } ),
-        verticalAxisTitleNode,
-        scaleIndicatorText,
-        horizontalAxisTitleNode,
-        _.omit( options, 'scale', 'tandem' ) // Don't apply the scale to both parent and children
-      );
+      const scrollingChartNode = new ScrollingChartNode( timeProperty, seriesArray, {
+        width: 150, height: 110,
+        verticalAxisLabelNode: verticalAxisTitleNode,
+        horizontalAxisLabelNode: horizontalAxisTitleNode,
+        spanLabelNode: scaleIndicatorText
+      } );
       const shadedRectangle = new ShadedRectangle( scrollingChartNode.bounds.dilated( 7 ) );
       shadedRectangle.addChild( scrollingChartNode );
       backgroundNode.addChild( shadedRectangle );
