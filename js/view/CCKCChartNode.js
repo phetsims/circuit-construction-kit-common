@@ -19,6 +19,7 @@ define( require => {
   const MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
   const Node = require( 'SCENERY/nodes/Node' );
   const NodeProperty = require( 'SCENERY/util/NodeProperty' );
+  const Range = require( 'DOT/Range' );
   const ScrollingChartNode = require( 'GRIDDLE/ScrollingChartNode' );
   const ShadedRectangle = require( 'SCENERY_PHET/ShadedRectangle' );
   const Tandem = require( 'TANDEM/Tandem' );
@@ -127,7 +128,8 @@ define( require => {
       // suffice.
       const scrollingChartNode = new ScrollingChartNode( timeProperty, seriesArray, verticalAxisTitleNode, horizontalAxisTitleNode,
         scaleIndicatorText, {
-          width: 150, height: 110
+          width: 150, height: 110,
+          verticalRange: new Range( -10, 10 )
         } );
       const shadedRectangle = new ShadedRectangle( scrollingChartNode.bounds.dilated( 7 ) );
       shadedRectangle.addChild( scrollingChartNode );

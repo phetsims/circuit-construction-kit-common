@@ -70,7 +70,7 @@ define( require => {
         const voltage = this.circuitLayerNode.circuit.getVoltageBetweenConnections( redConnection, blackConnection );
 
         const data = this.series.data;
-        data.push( new Vector2( time, voltage === null ? NaN : voltage / 10 || 0 ) );
+        data.push( new Vector2( time, voltage === null ? NaN : voltage || 0 ) );
         this.series.emitter.emit();
 
         // For debugging, depict the points where the sampling happens

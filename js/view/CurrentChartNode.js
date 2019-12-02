@@ -64,9 +64,8 @@ define( require => {
       if ( this.meter.visibleProperty.value ) {
         const current = this.circuitLayerNode.getCurrent( this.probeNode1 );
 
-        // TODO: add scaling to ScrollingChartNode
         const data = this.series.data;
-        data.push( new Vector2( time, current === null ? NaN : current / 10 || 0 ) );
+        data.push( new Vector2( time, current === null ? NaN : current || 0 ) );
         this.series.emitter.emit();
 
         while ( data.length > 0 && data[ 0 ].x < this.timeProperty.value - CCKCConstants.NUMBER_OF_TIME_DIVISIONS ) {
