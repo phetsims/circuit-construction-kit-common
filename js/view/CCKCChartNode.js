@@ -125,12 +125,10 @@ define( require => {
       // Create the scrolling chart content and add it to the background.  There is an order-of-creation cycle which
       // prevents the scrolling node from being added to the background before the super() call, so this will have to
       // suffice.
-      const scrollingChartNode = new ScrollingChartNode( timeProperty, seriesArray, {
-        width: 150, height: 110,
-        verticalAxisLabelNode: verticalAxisTitleNode,
-        horizontalAxisLabelNode: horizontalAxisTitleNode,
-        spanLabelNode: scaleIndicatorText
-      } );
+      const scrollingChartNode = new ScrollingChartNode( timeProperty, seriesArray, verticalAxisTitleNode, horizontalAxisTitleNode,
+        scaleIndicatorText, {
+          width: 150, height: 110
+        } );
       const shadedRectangle = new ShadedRectangle( scrollingChartNode.bounds.dilated( 7 ) );
       shadedRectangle.addChild( scrollingChartNode );
       backgroundNode.addChild( shadedRectangle );
