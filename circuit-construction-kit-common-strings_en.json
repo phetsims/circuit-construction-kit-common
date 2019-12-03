@@ -104,8 +104,14 @@
   "voltage": {
     "value": "Voltage"
   },
+  "voltageWithUnits": {
+    "value": "Voltage (V)"
+  },
   "voltageChart": {
     "value": "Voltage Chart"
+  },
+  "currentWithUnits": {
+    "value": "Current (A)"
   },
   "currentChart": {
     "value": "Current Chart"

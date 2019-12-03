@@ -18,7 +18,7 @@ define( require => {
   const Vector2 = require( 'DOT/Vector2' );
 
   // strings
-  const currentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/current' );
+  const currentWithUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/currentWithUnits' );
 
   class CurrentChartNode extends CCKCChartNode {
 
@@ -36,7 +36,7 @@ define( require => {
       }, options );
 
       const series = new DynamicSeries( CCKCConstants.DYNAMIC_SERIES_OPTIONS );
-      super( circuitLayerNode, timeProperty, visibleBoundsProperty, [ series ], currentString, options );
+      super( circuitLayerNode, timeProperty, visibleBoundsProperty, [ series ], currentWithUnitsString, options );
 
       // @private
       this.series = series;

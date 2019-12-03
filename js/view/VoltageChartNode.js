@@ -21,7 +21,7 @@ define( require => {
   const Vector2 = require( 'DOT/Vector2' );
 
   // strings
-  const voltageString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltage' );
+  const voltageWithUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageWithUnits' );
 
   // constants
   const SERIES_1_COLOR = '#ec3223';
@@ -43,7 +43,7 @@ define( require => {
       }, options );
 
       const series = new DynamicSeries( CCKCConstants.DYNAMIC_SERIES_OPTIONS );
-      super( circuitLayerNode, timeProperty, visibleBoundsProperty, [ series ], voltageString, options );
+      super( circuitLayerNode, timeProperty, visibleBoundsProperty, [ series ], voltageWithUnitsString, options );
 
       // @private
       this.series = series;
