@@ -30,8 +30,7 @@ define( require => {
     constructor( startVertex, endVertex, tandem, options ) {
       options = merge( {
         inductance: 50,
-        numberOfDecimalPlaces: 0,
-        editorDelta: 1
+        numberOfDecimalPlaces: 0
       }, options );
 
       super( startVertex, endVertex, INDUCTOR_LENGTH, tandem, options );

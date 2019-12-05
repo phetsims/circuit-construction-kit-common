@@ -586,8 +586,7 @@ define( require => {
           CCKCConstants.HIGH_RESISTANCE, this.viewTypeProperty,
           Tandem.optional, {
             highResistance: true,
-            editableRange: CCKCConstants.HIGH_RESISTANCE_RANGE,
-            editorDelta: CCKCConstants.HIGH_EDITOR_DELTA
+            editableRange: CCKCConstants.HIGH_RESISTANCE_RANGE
           } ) );
     }
 
@@ -621,8 +620,7 @@ define( require => {
             Tandem.optional, {
               resistorType: Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR,
               resistance: CCKCConstants.HIGH_RESISTANCE,
-              editableRange: CCKCConstants.HIGH_RESISTANCE_RANGE,
-              editorDelta: CCKCConstants.HIGH_EDITOR_DELTA
+              editableRange: CCKCConstants.HIGH_RESISTANCE_RANGE
             } );
         }
       );

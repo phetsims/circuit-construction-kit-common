@@ -30,8 +30,7 @@ define( require => {
     constructor( startVertex, endVertex, tandem, options ) {
       options = merge( {
         capacitance: CCKCConstants.DEFAULT_CAPACITANCE,
-        numberOfDecimalPlaces: 2,
-        editorDelta: 0.01
+        numberOfDecimalPlaces: 2
       }, options );
 
       super( startVertex, endVertex, CAPACITOR_LENGTH, tandem, options );

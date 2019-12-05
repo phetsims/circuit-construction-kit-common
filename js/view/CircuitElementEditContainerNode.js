@@ -282,6 +282,7 @@ define( require => {
               circuit,
               selectedCircuitElement,
               groupTandem.createNextTandem(), {
+                delta: 0.01,
                 editableRange: selectedCircuitElement.capacitanceProperty.range
               }
             );

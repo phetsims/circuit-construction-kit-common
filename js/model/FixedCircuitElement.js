@@ -29,7 +29,6 @@ define( require => {
 
       options = merge( {
         editableRange: new Range( 0, 120 ),
-        editorDelta: 0.5,
         numberOfDecimalPlaces: 1
       }, options );
 
@@ -41,9 +40,6 @@ define( require => {
 
       // @public (read-only) {number} - the number of decimal places to show in readouts and controls
       this.numberOfDecimalPlaces = options.numberOfDecimalPlaces;
-
-      // @public (read-only) {number} - the tweaker value for the controls
-      this.editorDelta = options.editorDelta;
 
       // @public (read-only) {number} The distance from one vertex to another (as the crow flies), used for rotation
       // about a vertex
