@@ -113,7 +113,16 @@ define( require => {
       } );
 
       // q = CV
-      const voltageToPlateCharge = ( C, V ) => circuit.capacitor.plateChargeProperty.set( 2E-13 * C * V );
+      const voltageToPlateCharge = ( C, V ) => {
+
+        let q = 2E-13 * C * V;
+
+        // Guard against noisy oscillations around 0
+        if ( Math.abs( q ) < 1E-18 ) {
+          q = 0;
+        }
+        circuit.capacitor.plateChargeProperty.set( q );
+      };
       const capacitanceVoltageListener = Property.multilink( [
         capacitor.capacitanceProperty,
         capacitor.voltageDifferenceProperty
