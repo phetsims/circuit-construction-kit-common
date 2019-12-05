@@ -86,7 +86,6 @@ define( require => {
       // TODO: Consider making CapacitorNode more view-oriented, at least in its dimensions? See https://github.com/phetsims/scenery-phet/issues/555
       const thickness = 0.01414213562373095;
       const plateBounds = new Bounds3( 0, 0, 0, thickness, CapacitorConstants.PLATE_HEIGHT, thickness );
-      const V = 1.7707999999999996e-13;
 
       // TODO: OK to use a mock object like this, or should we create a model type?  If we transform the CapacitorNode
       // to more of a view-oriented component, this may not be necessary.  See https://github.com/phetsims/scenery-phet/issues/555
@@ -98,7 +97,7 @@ define( require => {
           plateSizeProperty: new Property( plateBounds ),
           plateSeparationProperty: plateSeparationProperty,
           plateVoltageProperty: new NumberProperty( 1.5 ),
-          plateChargeProperty: new NumberProperty( V ),
+          plateChargeProperty: new NumberProperty( 0 ),
           getEffectiveEField: () => 0
         }
       };
@@ -113,8 +112,12 @@ define( require => {
         orientation: Orientation.HORIZONTAL // so the "-" charges are upside-up in the default orientation
       } );
 
-      const voltageToPlateCharge = v => circuit.capacitor.plateChargeProperty.set( -Util.linear( -9, 9, -V, V, v ) );
-      capacitor.voltageDifferenceProperty.link( voltageToPlateCharge );
+      // q = CV
+      const voltageToPlateCharge = ( C, V ) => circuit.capacitor.plateChargeProperty.set( 2E-13 * C * V );
+      const capacitanceVoltageListener = Property.multilink( [
+        capacitor.capacitanceProperty,
+        capacitor.voltageDifferenceProperty
+      ], voltageToPlateCharge );
 
       lifelikeNode.mutate( {
         scale: 0.45,
@@ -201,7 +204,7 @@ define( require => {
 
       // @private
       this.disposeCapacitorCircuitElementNode = () => {
-        capacitor.voltageDifferenceProperty.unlink( voltageToPlateCharge );
+        capacitanceVoltageListener.dispose();
         lifelikeNode.dispose();
       };
     }
