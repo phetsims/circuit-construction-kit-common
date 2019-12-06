@@ -123,7 +123,7 @@ define( require => {
     ERASER: new ResistorEnumValue( new Range( 0, 1000000000 ), false ),
     HAND: new ResistorEnumValue( new Range( 0, 1000000000 ), false ),
     DOG: new ResistorEnumValue( new Range( 0, 1000000000 ), false ),
-    DOLLAR_BILL: new ResistorEnumValue( new Range( 0, 1000000000 ), false ),
+    DOLLAR_BILL: new ResistorEnumValue( new Range( 0, 1000000000 ), false )
   } );
 
   return circuitConstructionKitCommon.register( 'Resistor', Resistor );
