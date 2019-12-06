@@ -50,7 +50,10 @@ define( require => {
       // @public (read-only) {Resistor.ResistorType} indicates one of ResistorType values
       this.resistorType = options.resistorType;
 
-      options.isMetallic = Resistor.ResistorType.isMetallic( this.resistorType );
+      assert && assert( typeof this.resistorType.isMetallic === 'boolean' );
+
+      // @public (read-only)
+      options.isMetallic = this.resistorType.isMetallic;
 
       // @public {Property.<number>} the resistance in ohms
       this.resistanceProperty = new NumberProperty( options.resistance, {
@@ -91,31 +94,36 @@ define( require => {
     }
   }
 
-  // Enumeration for the different resistor types.
-  Resistor.ResistorType = Enumeration.byKeys( [
-    'RESISTOR',
-    'HIGH_RESISTANCE_RESISTOR',
-    'COIN',
-    'PAPER_CLIP',
-    'PENCIL',
-    'ERASER',
-    'HAND',
-    'DOG',
-    'DOLLAR_BILL'
-  ], {
-    beforeFreeze: ResistorType => {
-      ResistorType.isMetallic = type => type === ResistorType.COIN || type === ResistorType.PAPER_CLIP;
+  /**
+   * Values for the ResistorTypeEnum
+   */
+  class ResistorEnumValue {
 
-      // TODO: Get the ranges correct for grab bag objects
-      ResistorType.RESISTOR.range = new Range( 0, 120 );
-      ResistorType.HIGH_RESISTANCE_RESISTOR.range = new Range( 100, 10000 );
-      ResistorType.COIN.range = new Range( 0, 10000 );
-      ResistorType.PENCIL.range = new Range( 0, 1000000000 );
-      ResistorType.ERASER.range = new Range( 0, 1000000000 );
-      ResistorType.HAND.range = new Range( 0, 1000000000 );
-      ResistorType.DOG.range = new Range( 0, 1000000000 );
-      ResistorType.DOLLAR_BILL.range = new Range( 0, 1000000000 );
+    /**
+     * @param {Range} range - possible values for the resistance
+     * @param isMetallic - whether the item is metallic (non-insulated) and hence can have its value read at any point
+     */
+    constructor( range, isMetallic ) {
+
+      // @public (read-only)
+      this.range = range;
+
+      // @public (read-only)
+      this.isMetallic = isMetallic;
     }
+  }
+
+  // Enumeration for the different resistor types.
+  Resistor.ResistorType = Enumeration.byMap( {
+    RESISTOR: new ResistorEnumValue( new Range( 0, 120 ), false ),
+    HIGH_RESISTANCE_RESISTOR: new ResistorEnumValue( new Range( 100, 10000 ), false ),
+    COIN: new ResistorEnumValue( new Range( 0, 10000 ), true ),
+    PAPER_CLIP: new ResistorEnumValue( new Range( 0, 1000000000 ), true ),
+    PENCIL: new ResistorEnumValue( new Range( 0, 1000000000 ), false ),
+    ERASER: new ResistorEnumValue( new Range( 0, 1000000000 ), false ),
+    HAND: new ResistorEnumValue( new Range( 0, 1000000000 ), false ),
+    DOG: new ResistorEnumValue( new Range( 0, 1000000000 ), false ),
+    DOLLAR_BILL: new ResistorEnumValue( new Range( 0, 1000000000 ), false ),
   } );
 
   return circuitConstructionKitCommon.register( 'Resistor', Resistor );
