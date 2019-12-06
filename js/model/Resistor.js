@@ -92,7 +92,7 @@ define( require => {
   }
 
   // Enumeration for the different resistor types.
-  Resistor.ResistorType = new Enumeration( [
+  Resistor.ResistorType = Enumeration.byKeys( [
     'RESISTOR',
     'HIGH_RESISTANCE_RESISTOR',
     'COIN',

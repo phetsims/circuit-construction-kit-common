@@ -94,7 +94,7 @@ define( require => {
   }
 
   // Enumeration for the different types of Battery, NORMAL or HIGH_VOLTAGE
-  Battery.BatteryType = new Enumeration( [ 'NORMAL', 'HIGH_VOLTAGE' ] );
+  Battery.BatteryType = Enumeration.byKeys( [ 'NORMAL', 'HIGH_VOLTAGE' ] );
 
   return circuitConstructionKitCommon.register( 'Battery', Battery );
 } );

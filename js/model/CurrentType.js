@@ -14,5 +14,5 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Enumeration = require( 'PHET_CORE/Enumeration' );
 
-  return circuitConstructionKitCommon.register( 'CurrentType', new Enumeration( [ 'ELECTRONS', 'CONVENTIONAL' ] ) );
+  return circuitConstructionKitCommon.register( 'CurrentType', Enumeration.byKeys( [ 'ELECTRONS', 'CONVENTIONAL' ] ) );
 } );

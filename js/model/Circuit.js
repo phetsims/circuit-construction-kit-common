@@ -1274,7 +1274,7 @@ define( require => {
   // Enumeration for the different types of interaction:
   // EXPLORE (used for open-ended exploration)
   // TEST (when testing out a black box circuit)
-  Circuit.InteractionMode = new Enumeration( [ 'EXPLORE', 'TEST' ] );
+  Circuit.InteractionMode = Enumeration.byKeys( [ 'EXPLORE', 'TEST' ] );
 
   return circuitConstructionKitCommon.register( 'Circuit', Circuit );
 } );

@@ -14,7 +14,7 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Enumeration = require( 'PHET_CORE/Enumeration' );
 
-  const CircuitElementViewType = new Enumeration( [ 'LIFELIKE', 'SCHEMATIC' ] );
+  const CircuitElementViewType = Enumeration.byKeys( [ 'LIFELIKE', 'SCHEMATIC' ] );
 
   return circuitConstructionKitCommon.register( 'CircuitElementViewType', CircuitElementViewType );
 } );
