@@ -16,7 +16,6 @@ define( require => {
   const merge = require( 'PHET_CORE/merge' );
   const TrashButtonIO = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButtonIO' );
 
-  // TODO: Should this use CCKCRoundPushButton?
   class TrashButton extends CCKCRoundPushButton {
 
     /**
