@@ -187,9 +187,9 @@ define( require => {
 
     /**
      * When the start or end Vertex changes, move the listeners from the old Vertex to the new one
-     * @private
      * @param {Vertex} newVertex - the new vertex
      * @param {Vertex} oldVertex - the previous vertex
+     * @private
      */
     linkVertex( newVertex, oldVertex ) {
 
@@ -267,8 +267,16 @@ define( require => {
       this.startPositionProperty.hasListener( this.vertexMovedListener ) && this.startPositionProperty.unlink( this.vertexMovedListener );
       this.endPositionProperty.hasListener( this.vertexMovedListener ) && this.endPositionProperty.unlink( this.vertexMovedListener );
 
-      this.startVertexProperty.value.voltageProperty.unlink( this.vertexVoltageListener );
-      this.endVertexProperty.value.voltageProperty.unlink( this.vertexVoltageListener );
+      const startVoltageProperty = this.startVertexProperty.value.voltageProperty;
+      const endVoltageProperty = this.endVertexProperty.value.voltageProperty;
+
+      if ( startVoltageProperty.hasListener( this.vertexVoltageListener ) ) {
+        startVoltageProperty.unlink( this.vertexVoltageListener );
+      }
+
+      if ( endVoltageProperty.hasListener( this.vertexVoltageListener ) ) {
+        endVoltageProperty.unlink( this.vertexVoltageListener );
+      }
 
       super.dispose();
     }
