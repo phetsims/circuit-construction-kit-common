@@ -80,14 +80,18 @@ define( require => {
       );
       super( dynamicCircuitCapacitor, new DynamicCircuit.DynamicElementState( capacitor.mnaVoltageDrop, capacitor.mnaCurrent ) );
 
-      // @private
-      this._capacitor = capacitor;
+      // @private - alongside this.dynamicCircuitCapacitor assigned in the supertype
+      this.capacitor = capacitor;
     }
 
+    /**
+     * @param {CircuitResult} circuitResult
+     * @public
+     */
     applySolution( circuitResult ) {
-      this._capacitor.currentProperty.value = circuitResult.getTimeAverageCurrent( this.dynamicCircuitCapacitor );
-      this._capacitor.mnaCurrent = circuitResult.getInstantaneousCurrent( this.dynamicCircuitCapacitor );
-      this._capacitor.mnaVoltageDrop = circuitResult.getInstantaneousVoltage( this.dynamicCircuitCapacitor );
+      this.capacitor.currentProperty.value = circuitResult.getTimeAverageCurrent( this.dynamicCircuitCapacitor );
+      this.capacitor.mnaCurrent = circuitResult.getInstantaneousCurrent( this.dynamicCircuitCapacitor );
+      this.capacitor.mnaVoltageDrop = circuitResult.getInstantaneousVoltage( this.dynamicCircuitCapacitor );
     }
   }
 
@@ -106,16 +110,21 @@ define( require => {
 
       // TODO(sign-error): sign error
       super( dynamicCircuitInductor, new DynamicCircuit.DynamicElementState( inductor.mnaVoltageDrop, -inductor.mnaCurrent ) );
-      this._inductor = inductor;
+
+      // @private - alongside this.dynamicCircuitInductor assigned in the supertype
+      this.inductor = inductor;
     }
 
+    /**
+     * @param {CircuitResult} circuitResult
+     * @public
+     */
     applySolution( circuitResult ) {
 
-      // TODO: differentiate this.inductor from this._inductor.  They are very different types
       // TODO(sign-error): Why is there a negative sign here?
-      this._inductor.currentProperty.value = -circuitResult.getTimeAverageCurrent( this.dynamicCircuitInductor );
-      this._inductor.mnaCurrent = -circuitResult.getInstantaneousCurrent( this.dynamicCircuitInductor );
-      this._inductor.mnaVoltageDrop = circuitResult.getInstantaneousVoltage( this.dynamicCircuitInductor );
+      this.inductor.currentProperty.value = -circuitResult.getTimeAverageCurrent( this.dynamicCircuitInductor );
+      this.inductor.mnaCurrent = -circuitResult.getInstantaneousCurrent( this.dynamicCircuitInductor );
+      this.inductor.mnaVoltageDrop = circuitResult.getInstantaneousVoltage( this.dynamicCircuitInductor );
     }
   }
 
