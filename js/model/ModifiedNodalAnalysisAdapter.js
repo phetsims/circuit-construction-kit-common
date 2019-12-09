@@ -73,29 +73,34 @@ define( require => {
      */
     constructor( circuit, capacitor ) {
 
-      // TODO: we extend DynamicCircuit.DynamicCapacitor and compose DynamicCircuit.Capacitor???  What is going on?
       const dynamicCircuitCapacitor = new DynamicCircuit.Capacitor(
         circuit.vertexGroup.array.indexOf( capacitor.startVertexProperty.value ),
         circuit.vertexGroup.array.indexOf( capacitor.endVertexProperty.value ),
         capacitor.capacitanceProperty.value
       );
       super( dynamicCircuitCapacitor, new DynamicCircuit.DynamicElementState( capacitor.mnaVoltageDrop, capacitor.mnaCurrent ) );
+
+      // @private
       this._capacitor = capacitor;
     }
 
     applySolution( circuitResult ) {
-      this._capacitor.currentProperty.value = circuitResult.getTimeAverageCurrent( this.capacitor );
-      this._capacitor.mnaCurrent = circuitResult.getInstantaneousCurrent( this.capacitor );
-      this._capacitor.mnaVoltageDrop = circuitResult.getInstantaneousVoltage( this.capacitor );
+      this._capacitor.currentProperty.value = circuitResult.getTimeAverageCurrent( this.dynamicCircuitCapacitor );
+      this._capacitor.mnaCurrent = circuitResult.getInstantaneousCurrent( this.dynamicCircuitCapacitor );
+      this._capacitor.mnaVoltageDrop = circuitResult.getInstantaneousVoltage( this.dynamicCircuitCapacitor );
     }
   }
 
   class InductorAdapter extends DynamicCircuit.DynamicInductor {
 
-    constructor( c, inductor ) {
+    /**
+     * @param {Circuit} circuit
+     * @param {Inductor} inductor
+     */
+    constructor( circuit, inductor ) {
       const dynamicCircuitInductor = new DynamicCircuit.Inductor(
-        c.vertexGroup.array.indexOf( inductor.startVertexProperty.value ),
-        c.vertexGroup.array.indexOf( inductor.endVertexProperty.value ),
+        circuit.vertexGroup.array.indexOf( inductor.startVertexProperty.value ),
+        circuit.vertexGroup.array.indexOf( inductor.endVertexProperty.value ),
         inductor.inductanceProperty.value
       );
 
@@ -108,9 +113,9 @@ define( require => {
 
       // TODO: differentiate this.inductor from this._inductor.  They are very different types
       // TODO(sign-error): Why is there a negative sign here?
-      this._inductor.currentProperty.value = -circuitResult.getTimeAverageCurrent( this.inductor );
-      this._inductor.mnaCurrent = -circuitResult.getInstantaneousCurrent( this.inductor );
-      this._inductor.mnaVoltageDrop = circuitResult.getInstantaneousVoltage( this.inductor );
+      this._inductor.currentProperty.value = -circuitResult.getTimeAverageCurrent( this.dynamicCircuitInductor );
+      this._inductor.mnaCurrent = -circuitResult.getInstantaneousCurrent( this.dynamicCircuitInductor );
+      this._inductor.mnaVoltageDrop = circuitResult.getInstantaneousVoltage( this.dynamicCircuitInductor );
     }
   }
 
