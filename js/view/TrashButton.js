@@ -10,15 +10,14 @@ define( require => {
 
   // modules
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
+  const CCKCRoundPushButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCRoundPushButton' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   const merge = require( 'PHET_CORE/merge' );
-  const PhetColorScheme = require( 'SCENERY_PHET/PhetColorScheme' );
-  const RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
   const TrashButtonIO = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/TrashButtonIO' );
 
   // TODO: Should this use CCKCRoundPushButton?
-  class TrashButton extends RoundPushButton {
+  class TrashButton extends CCKCRoundPushButton {
 
     /**
      * @param {Circuit} circuit - the circuit from which the CircuitElement can be removed
@@ -29,24 +28,18 @@ define( require => {
     constructor( circuit, circuitElement, tandem, options ) {
 
       assert && assert( circuitElement !== undefined, 'circuit element should be null or defined' );
-      super( merge( {
-        baseColor: PhetColorScheme.BUTTON_YELLOW,
-        content: new FontAwesomeNode( 'trash', {
-          scale: CCKCConstants.FONT_AWESOME_ICON_SCALE
-        } ),
-        listener: () => {
+      super( new FontAwesomeNode( 'trash', {
+        scale: CCKCConstants.FONT_AWESOME_ICON_SCALE
+      } ), () => {
 
-          // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
-          if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
-            circuit.circuitElements.remove( circuitElement );
-            circuit.disposeFromGroup( circuitElement );// TODO(phet-io): improve somehow
+        // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
+        if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
+          circuit.circuitElements.remove( circuitElement );
+          circuit.disposeFromGroup( circuitElement );// TODO(phet-io): improve somehow
 
-            !this.isDisposed && this.dispose();
-          }
-        },
-        minXMargin: 10,
-        minYMargin: 10,
-        tandem: tandem,
+          !this.isDisposed && this.dispose();
+        }
+      }, tandem, merge( {
         phetioDynamicElement: true,
         phetioType: TrashButtonIO
       }, options ) );

@@ -17,6 +17,7 @@ define( require => {
   class CCKCRoundPushButton extends RoundPushButton {
 
     /**
+     * TODO: I don't think we should change the button interface, let's move these back to options.
      * @param {Node} icon - the circuit that contains the battery
      * @param {function} listener
      * @param {Tandem} tandem
@@ -26,16 +27,11 @@ define( require => {
       super( merge( {
         baseColor: PhetColorScheme.BUTTON_YELLOW,
         content: icon,
-
         minXMargin: 10,
         minYMargin: 10,
-        listener: listener,
-
-        tandem: tandem,
 
         // TODO(phet-io): These elements will need to be members of a PhetioGroup
         phetioState: false,
-
         phetioComponentOptions: {
           phetioState: false
         }
