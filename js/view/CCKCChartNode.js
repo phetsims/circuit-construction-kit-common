@@ -131,7 +131,8 @@ define( require => {
           width: 150, height: 110,
           verticalRanges: [ new Range( -1, 1 ), new Range( -10, 10 ), new Range( -100, 100 ), new Range( -1000, 1000 ) ],
           initialVerticalRangeIndex: 1,
-          verticalGridLabelNumberOfDecimalPlaces: 1
+          verticalGridLabelNumberOfDecimalPlaces: 1,
+          tandem: options.tandem.createTandem( 'scrollingChartNode' )
         } );
       const shadedRectangle = new ShadedRectangle( scrollingChartNode.bounds.dilated( 7 ), {
         baseColor: '#327198'
