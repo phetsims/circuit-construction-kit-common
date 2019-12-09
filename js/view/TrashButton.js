@@ -28,18 +28,21 @@ define( require => {
     constructor( circuit, circuitElement, tandem, options ) {
 
       assert && assert( circuitElement !== undefined, 'circuit element should be null or defined' );
-      super( new FontAwesomeNode( 'trash', {
-        scale: CCKCConstants.FONT_AWESOME_ICON_SCALE
-      } ), () => {
+      super( merge( {
+        content: new FontAwesomeNode( 'trash', {
+          scale: CCKCConstants.FONT_AWESOME_ICON_SCALE
+        } ),
+        listener: () => {
 
-        // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
-        if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
-          circuit.circuitElements.remove( circuitElement );
-          circuit.disposeFromGroup( circuitElement );// TODO(phet-io): improve somehow
+          // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
+          if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
+            circuit.circuitElements.remove( circuitElement );
+            circuit.disposeFromGroup( circuitElement );// TODO(phet-io): improve somehow
 
-          !this.isDisposed && this.dispose();
-        }
-      }, tandem, merge( {
+            !this.isDisposed && this.dispose();
+          }
+        },
+        tandem: tandem,
         phetioDynamicElement: true,
         phetioType: TrashButtonIO
       }, options ) );

@@ -17,16 +17,11 @@ define( require => {
   class CCKCRoundPushButton extends RoundPushButton {
 
     /**
-     * TODO: I don't think we should change the button interface, let's move these back to options.
-     * @param {Node} icon - the circuit that contains the battery
-     * @param {function} listener
-     * @param {Tandem} tandem
      * @param {Object} [options]
      */
-    constructor( icon, listener, tandem, options ) {
+    constructor( options ) {
       super( merge( {
         baseColor: PhetColorScheme.BUTTON_YELLOW,
-        content: icon,
         minXMargin: 10,
         minYMargin: 10,
 

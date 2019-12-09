@@ -37,7 +37,11 @@ define( require => {
         scale: 0.9 // to match the size of the trash can icon
       } );
 
-      super( icon, () => fuse.resetFuse(), tandem );
+      super( {
+        content: icon,
+        listener: () => fuse.resetFuse(),
+        tandem: tandem
+      } );
       fuse.isTrippedProperty.link( isTripped => {
         this.setEnabled( isTripped );
       } );

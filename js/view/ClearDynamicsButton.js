@@ -40,7 +40,8 @@ define( require => {
         center: Vector2.ZERO
       } );
 
-      super( new Node( {
+      super( {
+        content: new Node( {
           children: [
             icon,
             new BanNode( {
@@ -48,11 +49,12 @@ define( require => {
               radius: 17
             } )
           ]
-        } ), () => dynamicCircuitElement.clear(),
-        tandem, {
-          phetioDynamicElement: true,
-          phetioType: ClearDynamicsButtonIO
-        } );
+        } ),
+        listener: () => dynamicCircuitElement.clear(),
+        tandem: tandem,
+        phetioDynamicElement: true,
+        phetioType: ClearDynamicsButtonIO
+      } );
     }
   }
 
