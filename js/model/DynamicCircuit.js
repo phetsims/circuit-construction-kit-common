@@ -215,21 +215,20 @@ define( require => {
      * @returns {DynamicCircuit}
      */
     updateCircuit( solution ) {
-      const updatedCapacitors = this.capacitorAdapters.map( capacitor => {
-        const dynamicElementState = new DynamicElementState(
-          solution.getNodeVoltage( capacitor.capacitor.nodeId1 ) - solution.getNodeVoltage( capacitor.capacitor.nodeId0 ),
-          solution.getCurrent( capacitor )
+      const updatedCapacitors = this.capacitorAdapters.map( capacitorAdapter => {
+        const newState = new DynamicElementState(
+          solution.getNodeVoltage( capacitorAdapter.capacitor.nodeId1 ) - solution.getNodeVoltage( capacitorAdapter.capacitor.nodeId0 ),
+          solution.getCurrent( capacitorAdapter )
         );
-        return new DynamicCapacitor( capacitor.capacitor, dynamicElementState );
+        return new DynamicCapacitor( capacitorAdapter.capacitor, newState );
       } );
-      const updatedInductors = this.inductorAdapters.map( inductor => {
-        const dynamicElementState = new DynamicElementState(
-          solution.getNodeVoltage( inductor.inductor.nodeId1 ) - solution.getNodeVoltage( inductor.inductor.nodeId0 ),
-          solution.getCurrent( inductor )
+      const updatedInductors = this.inductorAdapters.map( inductorAdapter => {
+        const newState = new DynamicElementState(
+          solution.getNodeVoltage( inductorAdapter.inductor.nodeId1 ) - solution.getNodeVoltage( inductorAdapter.inductor.nodeId0 ),
+          solution.getCurrent( inductorAdapter )
         );
-        return new DynamicInductor( inductor.inductor, dynamicElementState );
+        return new DynamicInductor( inductorAdapter.inductor, newState );
       } );
-
       return new DynamicCircuit( this.resistorAdapters, this.resistiveBatteryAdapters, updatedCapacitors, updatedInductors );
     }
   }
@@ -300,12 +299,12 @@ define( require => {
   class DynamicCapacitor {
 
     /**
-     * @param {Capacitor} capacitor
+     * @param {DynamicCircuit.Capacitor} capacitor
      * @param {DynamicElementState} state
      */
     constructor( capacitor, state ) {
 
-      // @public {Capacitor}
+      // @public {DynamicCircuit.Capacitor}
       this.capacitor = capacitor;
 
       // @public {DynamicElementState}
