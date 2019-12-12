@@ -30,7 +30,7 @@ define( require => {
     constructor( selectedZoomProperty, options ) {
       options = merge( {
         spacing: BUTTON_SPACING,
-        tandem: Tandem.required
+        tandem: Tandem.REQUIRED
       }, options );
       const zoomOutButton = new ZoomButton( {
         in: false,

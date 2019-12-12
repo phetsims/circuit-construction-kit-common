@@ -36,7 +36,7 @@ define( require => {
       // Create a battery which can be used in the views
       const startVertex = new Vertex( new Vector2( BATTERY_LENGTH / 2, 0 ) );
       const endVertex = new Vertex( new Vector2( -BATTERY_LENGTH / 2, 0 ) );
-      const battery = new Battery( endVertex, startVertex, new Property( 0 ), Battery.BatteryType.NORMAL, Tandem.optional, {
+      const battery = new Battery( endVertex, startVertex, new Property( 0 ), Battery.BatteryType.NORMAL, Tandem.OPTIONAL, {
         initialOrientation: 'left'
       } );
 

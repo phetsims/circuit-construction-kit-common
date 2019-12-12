@@ -29,7 +29,7 @@ define( require => {
         sensorTypeFunction: ProbeNode.crosshairs( { stroke: 'white' } ),
         scale: 0.4,
         drag: () => {},
-        tandem: Tandem.optional
+        tandem: Tandem.OPTIONAL
       }, options );
 
       super( options );

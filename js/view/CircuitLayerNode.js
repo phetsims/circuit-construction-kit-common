@@ -260,7 +260,7 @@ define( require => {
       const initializeCircuitElementType = ( type, layer, groupTandem, createCircuitElement ) => {
         const addCircuitElement = circuitElement => {
           if ( circuitElement instanceof type ) {
-            const circuitElementNode = createCircuitElement( circuitElement, Tandem.optional );
+            const circuitElementNode = createCircuitElement( circuitElement, Tandem.OPTIONAL );
             this.circuitElementNodeMap[ circuitElement.id ] = circuitElementNode;
 
             layer.addChild( circuitElementNode );
@@ -272,7 +272,7 @@ define( require => {
                 circuitElement,
                 this.model.showValuesProperty,
                 this.model.viewTypeProperty,
-                Tandem.optional
+                Tandem.OPTIONAL
               );
 
               const updateShowValues = showValues => CCKCUtil.setInSceneGraph( showValues, this.valueLayer, valueNode );
@@ -353,7 +353,7 @@ define( require => {
         this.solderNodes[ vertex.index ] = solderNode;
         this.solderLayer.addChild( solderNode );
 
-        const vertexNode = new VertexNode( this, vertex, Tandem.optional );
+        const vertexNode = new VertexNode( this, vertex, Tandem.OPTIONAL );
         this.vertexNodes[ vertex.index ] = vertexNode;
         this.vertexLayer.addChild( vertexNode );
       };

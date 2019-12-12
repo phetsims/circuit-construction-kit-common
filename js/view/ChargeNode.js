@@ -34,7 +34,7 @@ define( require => {
     scale: 0.78
   } ).rasterized( { wrap: false } );
 
-  const ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.globalTandem.createTandem( 'arrowNode' ) )
+  const ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.GLOBAL.createTandem( 'arrowNode' ) )
     .rasterized( { wrap: false } );
 
   const ARROW_OFFSET = Matrix3.translation( -ARROW_NODE.width / 2, -ARROW_NODE.height / 2 );

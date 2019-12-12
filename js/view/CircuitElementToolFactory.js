@@ -172,7 +172,7 @@ define( require => {
     createRightBatteryToolNode( count, tandem ) {
       const batteryModel = new Battery(
         new Vertex( Vector2.ZERO ), new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
-        new Property( 0 ), Battery.BatteryType.NORMAL, Tandem.optional
+        new Property( 0 ), Battery.BatteryType.NORMAL, Tandem.OPTIONAL
       );
       return this.createCircuitElementToolNode( batteryString, count,
         new BatteryNode( null, null, batteryModel, this.viewTypeProperty, tandem.createTandem( 'rightBatteryIcon' ), { isIcon: true } ),
@@ -193,7 +193,7 @@ define( require => {
         new Vertex( Vector2.ZERO ),
         new Vertex( new Vector2( AC_VOLTAGE_LENGTH, 0 ) ),
         new Property( 0 ),
-        Tandem.optional
+        Tandem.OPTIONAL
       );
       return this.createCircuitElementToolNode( acSourceString, count,
         new ACVoltageNode( null, null, acSource, this.viewTypeProperty, tandem.createTandem( 'acSourceIcon' ), { isIcon: true } ),
@@ -216,7 +216,7 @@ define( require => {
         this.circuit,
         CCKCConstants.DEFAULT_RESISTANCE,
         this.viewTypeProperty,
-        Tandem.optional, {
+        Tandem.OPTIONAL, {
           highResistance: false,
           icon: true
         } );
@@ -244,7 +244,7 @@ define( require => {
       const resistorModel = new Resistor(
         new Vertex( Vector2.ZERO ),
         new Vertex( new Vector2( CCKCConstants.RESISTOR_LENGTH, 0 ) ),
-        Tandem.optional
+        Tandem.OPTIONAL
       );
       return this.createCircuitElementToolNode( resistorString, count,
         new ResistorNode( null, null, resistorModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
@@ -264,7 +264,7 @@ define( require => {
       const fuseModel = new Fuse(
         new Vertex( Vector2.ZERO ),
         new Vertex( new Vector2( CCKCConstants.RESISTOR_LENGTH, 0 ) ),
-        Tandem.optional
+        Tandem.OPTIONAL
       );
       return this.createCircuitElementToolNode( fuseString, count,
         new FuseNode( null, null, fuseModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
@@ -285,7 +285,7 @@ define( require => {
       const capacitorModel = new Capacitor(
         new Vertex( Vector2.ZERO ),
         new Vertex( new Vector2( CCKCConstants.CAPACITOR_LENGTH, 0 ) ),
-        Tandem.optional
+        Tandem.OPTIONAL
       );
       const icon = new CapacitorCircuitElementNode( null, null, capacitorModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
         isIcon: true
@@ -311,7 +311,7 @@ define( require => {
       const inductorModel = new Inductor(
         new Vertex( Vector2.ZERO ),
         new Vertex( new Vector2( CCKCConstants.INDUCTOR_LENGTH, 0 ) ),
-        Tandem.optional
+        Tandem.OPTIONAL
       );
       return this.createCircuitElementToolNode( 'INDUCTOR', count,
         new InductorNode( null, null, inductorModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
@@ -333,7 +333,7 @@ define( require => {
           new Switch(
             new Vertex( Vector2.ZERO ),
             new Vertex( new Vector2( SWITCH_LENGTH, 0 ) ),
-            Tandem.optional
+            Tandem.OPTIONAL
           ), this.viewTypeProperty, tandem.createTandem( 'switchIcon' ), {
             isIcon: true
           } ),
@@ -406,7 +406,7 @@ define( require => {
         CCKCConstants.DOLLAR_BILL_LENGTH,
         dollarBillString,
         count,
-        Tandem.optional,
+        Tandem.OPTIONAL,
         tandem.createTandem( 'dollarBillIcon' ),
         this.circuit.dollarBillGroupTandem
       );
@@ -425,7 +425,7 @@ define( require => {
         CCKCConstants.PAPER_CLIP_LENGTH,
         paperClipString,
         count,
-        Tandem.optional,
+        Tandem.OPTIONAL,
         tandem.createTandem( 'paperClipIcon' ),
         this.circuit.paperClipGroupTandem
       );
@@ -444,7 +444,7 @@ define( require => {
         CCKCConstants.COIN_LENGTH,
         coinString,
         count,
-        Tandem.optional,
+        Tandem.OPTIONAL,
         tandem.createTandem( 'coinIcon' ),
         this.circuit.coinGroupTandem
       );
@@ -463,7 +463,7 @@ define( require => {
         CCKCConstants.ERASER_LENGTH,
         eraserString,
         count,
-        Tandem.optional,
+        Tandem.OPTIONAL,
         tandem.createTandem( 'eraserIcon' ),
         this.circuit.eraserGroupTandem
       );
@@ -482,7 +482,7 @@ define( require => {
         CCKCConstants.PENCIL_LENGTH,
         pencilString,
         count,
-        Tandem.optional,
+        Tandem.OPTIONAL,
         tandem.createTandem( 'pencilIcon' ),
         this.circuit.pencilGroupTandem
       );
@@ -501,7 +501,7 @@ define( require => {
         CCKCConstants.HAND_LENGTH,
         handString,
         count,
-        Tandem.optional,
+        Tandem.OPTIONAL,
         tandem.createTandem( 'handIcon' ),
         this.circuit.handGroupTandem
       );
@@ -520,7 +520,7 @@ define( require => {
         CCKCConstants.DOG_LENGTH,
         dogString,
         count,
-        Tandem.optional,
+        Tandem.OPTIONAL,
         tandem.createTandem( 'dogIcon' ),
         this.circuit.dogGroupTandem
       );
@@ -542,7 +542,7 @@ define( require => {
             new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
             new Property( 0 ),
             Battery.BatteryType.HIGH_VOLTAGE,
-            Tandem.optional, {
+            Tandem.OPTIONAL, {
               voltage: 1000
             }
           ), this.viewTypeProperty, tandem.createTandem( 'highVoltageBatteryIcon' ), { isIcon: true } ),
@@ -572,7 +572,7 @@ define( require => {
             this.circuit,
             1000,
             this.viewTypeProperty,
-            Tandem.optional, {
+            Tandem.OPTIONAL, {
               highResistance: true,
               icon: true
             } ),
@@ -584,7 +584,7 @@ define( require => {
         circuitElement => circuitElement instanceof LightBulb && circuitElement.highResistance,
         position => LightBulb.createAtPosition( position, this.circuit,
           CCKCConstants.HIGH_RESISTANCE, this.viewTypeProperty,
-          Tandem.optional, {
+          Tandem.OPTIONAL, {
             highResistance: true,
             editableRange: CCKCConstants.HIGH_RESISTANCE_RANGE
           } ) );
@@ -604,7 +604,7 @@ define( require => {
           new Resistor(
             new Vertex( Vector2.ZERO ),
             new Vertex( new Vector2( CCKCConstants.RESISTOR_LENGTH, 0 ) ),
-            Tandem.optional, {
+            Tandem.OPTIONAL, {
               resistorType: Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR, resistance: 1000
             } ),
           this.viewTypeProperty,
@@ -617,7 +617,7 @@ define( require => {
           return new Resistor(
             vertices[ 0 ],
             vertices[ 1 ],
-            Tandem.optional, {
+            Tandem.OPTIONAL, {
               resistorType: Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR,
               resistance: CCKCConstants.HIGH_RESISTANCE,
               editableRange: CCKCConstants.HIGH_RESISTANCE_RANGE

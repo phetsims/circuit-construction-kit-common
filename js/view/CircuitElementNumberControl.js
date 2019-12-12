@@ -62,7 +62,7 @@ define( require => {
         // This prevents it from ending up in the state.  Luckily somehow, it still works properly
         // in the state wrapper, probably from this code being called anyways from when the circuit element
         // is selected.
-        tandem: Tandem.optional
+        tandem: Tandem.OPTIONAL
       }, options ) );
 
       // @private {function} - for disposal

@@ -107,7 +107,7 @@ define( require => {
 
       // TODO: This is probably creating far too many <canvas> elements, and also making the charges blurry
       const lifelikeNode = new CapacitorNode( circuit, modelViewTransform, plateChargeVisibleProperty, electricFieldVisibleProperty, {
-        tandem: Tandem.optional,
+        tandem: Tandem.OPTIONAL,
         orientation: Orientation.HORIZONTAL // so the "-" charges are upside-up in the default orientation
       } );
 

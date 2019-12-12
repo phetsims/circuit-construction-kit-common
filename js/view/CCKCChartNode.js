@@ -56,7 +56,7 @@ define( require => {
         // Prevent adjustment of the control panel rendering while dragging,
         // see https://github.com/phetsims/wave-interference/issues/212
         preventFit: true,
-        tandem: Tandem.optional
+        tandem: Tandem.OPTIONAL
       }, options );
       const backgroundNode = new Node( { cursor: 'pointer' } );
 

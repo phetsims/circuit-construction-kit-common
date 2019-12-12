@@ -39,7 +39,7 @@ define( require => {
 
       options = merge( {
         timeDivisions: CCKCConstants.NUMBER_OF_TIME_DIVISIONS,
-        tandem: Tandem.optional
+        tandem: Tandem.OPTIONAL
       }, options );
 
       const series = new DynamicSeries( CCKCConstants.DYNAMIC_SERIES_OPTIONS );

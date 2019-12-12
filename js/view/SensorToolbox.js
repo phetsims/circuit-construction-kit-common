@@ -110,7 +110,7 @@ define( require => {
         } );
 
       // Draggable isIcon for the voltmeter
-      const voltmeter = new Voltmeter( Tandem.optional );
+      const voltmeter = new Voltmeter( Tandem.OPTIONAL );
       const voltmeterNodeIcon = new VoltmeterNode( voltmeter, null, null, tandem.createTandem( 'voltmeterNodeIcon' ), {
         isIcon: true
       } );
@@ -137,7 +137,7 @@ define( require => {
       const seriesAmmeterIcon = new SeriesAmmeter(
         new Vertex( Vector2.ZERO ),
         new Vertex( new Vector2( CCKCConstants.SERIES_AMMETER_LENGTH, 0 ) ),
-        Tandem.optional
+        Tandem.OPTIONAL
       );
       const seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeterIcon, tandem.createTandem( 'seriesAmmeterNodeIcon' ), {
         isIcon: true
