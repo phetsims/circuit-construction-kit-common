@@ -85,21 +85,21 @@ define( require => {
       }, options );
       const groupTandem = tandem.createGroupTandem( 'circuitElementEditNode' );
 
-      const trashButtonGroup = new PhetioGroup( 'trashButton',
+      const trashButtonGroup = new PhetioGroup(
         ( tandem, circuitElement ) => new TrashButton( circuit, circuitElement, tandem ),
         [ null ], {
           phetioType: PhetioGroupIO( TrashButtonIO ),
           tandem: tandem.createTandem( 'trashButtonGroup' )
         } );
 
-      const clearDynamicsButtonGroup = new PhetioGroup( 'clearDynamicsButton',
+      const clearDynamicsButtonGroup = new PhetioGroup(
         ( tandem, circuitElement ) => new ClearDynamicsButton( circuitElement, tandem ),
         [ null ], {
           phetioType: PhetioGroupIO( ClearDynamicsButtonIO ),
           tandem: tandem.createTandem( 'clearDynamicsButtonGroup' )
         } );
 
-      const reverseBatteryButtonGroup = new PhetioGroup( 'reverseBatteryButton',
+      const reverseBatteryButtonGroup = new PhetioGroup(
         ( tandem, circuitElement ) => new ReverseBatteryButton( circuit, circuitElement, tandem ),
         [ null ], {
           phetioType: PhetioGroupIO( ReverseBatteryButtonIO ),
