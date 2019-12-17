@@ -49,12 +49,12 @@ define( require => {
      * @param {Property.<boolean>} currentTypeProperty - true if current should be shown as electrons or conventional
      * @param {Property.<boolean>} showValuesProperty - true if values should be shown
      * @param {Property.<boolean>} showLabelsProperty - true if toolbox labels should be shown
-     * @param {Property.<boolean>|undefined} showStopwatchProperty - true if stopwatch should be shown
+     * @param {Property.<boolean>|undefined} stopwatchIsVisibleProperty - true if stopwatch should be shown TODO: https://github.com/phetsims/gas-properties/issues/170 should we pass the stopwatch instance?
      * @param {boolean} showStopwatchCheckbox - true if stopwatch should be shown
      * @param {Tandem} tandem
      */
     constructor( alignGroup, showCurrentProperty, currentTypeProperty, showValuesProperty, showLabelsProperty,
-                 showStopwatchProperty, showStopwatchCheckbox, tandem ) {
+                 stopwatchIsVisibleProperty, showStopwatchCheckbox, tandem ) {
 
       /**
        * Create an AquaRadioButton for the specified kind of current
@@ -108,7 +108,7 @@ define( require => {
 
       let stopwatchCheckbox = null;
       if ( showStopwatchCheckbox ) {
-        stopwatchCheckbox = new Checkbox( new Text( stopwatchString, TEXT_OPTIONS ), showStopwatchProperty, {
+        stopwatchCheckbox = new Checkbox( new Text( stopwatchString, TEXT_OPTIONS ), stopwatchIsVisibleProperty, {
           tandem: tandem.createTandem( 'stopwatchCheckbox' ),
           boxWidth: BOX_WIDTH
         } );

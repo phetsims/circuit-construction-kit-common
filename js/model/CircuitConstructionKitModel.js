@@ -21,6 +21,7 @@ define( require => {
   const EnumerationProperty = require( 'AXON/EnumerationProperty' );
   const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
+  const Stopwatch = require( 'SCENERY_PHET/Stopwatch' );
   const Util = require( 'DOT/Util' );
   const Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Voltmeter' );
   const ZoomAnimation = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ZoomAnimation' );
@@ -174,9 +175,9 @@ define( require => {
       // in by the BlackBoxSceneView after the black box node is created and positioned
       this.blackBoxBounds = null;
 
-      // @public {Property.<boolean>} - true if the stopwatch should be shown in the play area
-      this.showStopwatchProperty = new BooleanProperty( false, {
-        tandem: tandem.createTandem( 'showStopwatchProperty' )
+      // @public
+      this.stopwatch = new Stopwatch( {
+        tandem: tandem.createTandem( 'stopwatch' )
       } );
     }
 
@@ -204,6 +205,7 @@ define( require => {
       this.isValueDepictionEnabledProperty.value && this.circuit.step( dt );
 
       this.circuit.layoutChargesInDirtyCircuitElements();
+      this.stopwatch.step( dt );
     }
 
     /**
@@ -221,6 +223,7 @@ define( require => {
       this.viewTypeProperty.reset();
       this.currentZoomProperty.reset();
       this.selectedZoomProperty.reset();
+      this.stopwatch.reset();
 
       // cancel any animation in progress, including (but not limited to) one that may have just been caused by reset
       this.zoomAnimation = null;

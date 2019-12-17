@@ -14,7 +14,6 @@ define( require => {
   const AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
   const AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/AmmeterNode' );
   const BatteryResistanceControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryResistanceControl' );
-  const BooleanProperty = require( 'AXON/BooleanProperty' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   const ChargeSpeedThrottlingReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ChargeSpeedThrottlingReadoutNode' );
@@ -26,15 +25,15 @@ define( require => {
   const DisplayOptionsPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/DisplayOptionsPanel' );
   const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
-  const NumberProperty = require( 'AXON/NumberProperty' );
   const PlayPauseButton = require( 'SCENERY_PHET/buttons/PlayPauseButton' );
   const Property = require( 'AXON/Property' );
   const ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   const ScreenView = require( 'JOIST/ScreenView' );
   const SensorToolbox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SensorToolbox' );
   const SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
-  const TimerNode = require( 'SCENERY_PHET/TimerNode' );
+  const StopwatchNode = require( 'SCENERY_PHET/StopwatchNode' );
   const VBox = require( 'SCENERY/nodes/VBox' );
+  const Vector2 = require( 'DOT/Vector2' );
   const ViewRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ViewRadioButtonGroup' );
   const VoltageChartNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VoltageChartNode' );
   const VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VoltmeterNode' );
@@ -182,7 +181,7 @@ define( require => {
         model.circuit.currentTypeProperty,
         model.showValuesProperty,
         model.showLabelsProperty,
-        model.showStopwatchProperty,
+        model.stopwatch.isVisibleProperty,
         options.showStopwatchCheckbox,
         tandem.createTandem( 'displayOptionsPanel' )
       );
@@ -346,28 +345,31 @@ define( require => {
         this.step( 1 / 60 );
       } );
 
-      // @public - the TimerNode
-      // TODO: consider generalizing Stopwatch and StopwatchNode from gas-properties, see https://github.com/phetsims/gas-properties/issues/170
+      // @private - note whether the stopwatch should be repositioned when selected.  Otherwise it remembers its position
+      this.stopwatchNodePositionDirty = true;
+
+      // @public - the StopwatchNode
       if ( options.showStopwatchCheckbox ) {
-        const stopwatchNodeTandem = tandem.createTandem( 'stopwatchNode' );
-        const isTimerRunningProperty = new BooleanProperty( false, { tandem: stopwatchNodeTandem.createTandem( 'isRunningProperty' ) } );
-        const stopwatchNode = new TimerNode( new NumberProperty( 0 ), isTimerRunningProperty, {
-          tandem: stopwatchNodeTandem,
-          right: controlPanelVBox.left - HORIZONTAL_MARGIN
+        const stopwatchNode = new StopwatchNode( model.stopwatch, {
+          visibleBoundsProperty: this.visibleBoundsProperty,
+          right: controlPanelVBox.left - HORIZONTAL_MARGIN,
+          tandem: tandem.createTandem( 'stopwatchNode' )
         } );
         this.addChild( stopwatchNode );
-        let hasStopwatchBeenDisplayed = false;
 
-        // Show the TimerNode when the checkbox is checked
-        model.showStopwatchProperty.link( showStopwatch => {
-          if ( showStopwatch && !hasStopwatchBeenDisplayed ) {
+        // Show the StopwatchNode when the checkbox is checked
+        model.stopwatch.isVisibleProperty.link( isVisible => {
+          if ( isVisible && this.stopwatchNodePositionDirty ) {
 
             // Compute bounds lazily now that everything is attached to the scene graph
-            const globalBounds = this.displayOptionsPanel.stopwatchCheckbox.globalBounds;
-            stopwatchNode.centerY = this.globalToLocalBounds( globalBounds ).centerY;
-            hasStopwatchBeenDisplayed = true;
+            model.stopwatch.positionProperty.value = new Vector2(
+              controlPanelVBox.left - stopwatchNode.width - 10,
+
+              // center the text are vertically on the checkbox, so the non-draggable buttons aren't right next to the checkbox
+              this.globalToLocalBounds( this.displayOptionsPanel.stopwatchCheckbox.globalBounds ).centerY - stopwatchNode.height * 0.2
+            );
+            this.stopwatchNodePositionDirty = false;
           }
-          stopwatchNode.visible = showStopwatch;
         } );
       }
     }
@@ -396,6 +398,7 @@ define( require => {
      * @public
      */
     reset() {
+      this.stopwatchNodePositionDirty = true;
       this.circuitElementToolbox.reset();
       this.batteryResistanceControl.expandedProperty.reset();
       this.wireResistivityControl.expandedProperty.reset();
