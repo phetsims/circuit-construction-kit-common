@@ -181,7 +181,7 @@ define( require => {
         model.circuit.currentTypeProperty,
         model.showValuesProperty,
         model.showLabelsProperty,
-        model.stopwatch.isVisibleProperty,
+        model.stopwatch,
         options.showStopwatchCheckbox,
         tandem.createTandem( 'displayOptionsPanel' )
       );
