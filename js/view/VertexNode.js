@@ -255,7 +255,7 @@ define( require => {
     }
 
     /**
-     * @param {Event} event - scenery keyboard event
+     * @param {SceneryEvent} event - scenery keyboard event
      * @private
      */
     keydownListener( event ) {

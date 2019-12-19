@@ -174,7 +174,7 @@ define( require => {
 
     /**
      * Handles when the node is dropped, called by subclass input listener.
-     * @param {Event} event - scenery event, see https://github.com/phetsims/scenery/issues/608
+     * @param {SceneryEvent} event - scenery event, see https://github.com/phetsims/scenery/issues/608
      * @param {Node} node - the node the input listener is attached to
      * @param {Vertex[]} vertices - the vertices that are dragged
      * @param {CCKCScreenView} screenView - the main screen view, null for icon
@@ -211,7 +211,7 @@ define( require => {
 
     /**
      * On tap events, select the CircuitElement (if it is close enough to the tap)
-     * @param {Event} event - scenery input event
+     * @param {SceneryEvent} event - scenery input event
      * @param {CircuitLayerNode} circuitLayerNode
      * @param {Vector2} startPoint
      * @public

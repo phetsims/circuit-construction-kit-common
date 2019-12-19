@@ -326,7 +326,7 @@ define( require => {
 
     /**
      * Forward a drag from the toolbox to the play area node.
-     * @param {Event} event
+     * @param {SceneryEvent} event
      */
     startDrag( event ) {
       this.dragHandler.startDrag( event );
