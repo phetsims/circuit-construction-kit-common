@@ -77,17 +77,17 @@ define( require => {
 
     batteryCurrentThreshold: {
       type: 'number',
-      defaultValue: Number.POSITIVE_INFINITY
+      defaultValue: 4000
     },
 
     batteryInternalResistanceWhenCurrentThresholdExceededOffset: {
       type: 'number',
-      defaultValue: 0
+      defaultValue: 4E-5
     },
 
     batteryInternalResistanceWhenCurrentThresholdExceededVoltageScaleFactor: {
       type: 'number',
-      defaultValue: 0
+      defaultValue: 2E-4
     }
   } );
 
