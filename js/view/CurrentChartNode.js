@@ -15,7 +15,6 @@ define( require => {
   const DynamicSeries = require( 'GRIDDLE/DynamicSeries' );
   const merge = require( 'PHET_CORE/merge' );
   const Tandem = require( 'TANDEM/Tandem' );
-  const Vector2 = require( 'DOT/Vector2' );
 
   // strings
   const currentWithUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/currentWithUnits' );
@@ -60,16 +59,11 @@ define( require => {
      * @public
      */
     step( time, dt ) {
-
       if ( this.meter.visibleProperty.value ) {
         const current = this.circuitLayerNode.getCurrent( this.probeNode1 );
-
-        const data = this.series.data;
-        data.push( new Vector2( time, current === null ? NaN : current || 0 ) );
-        this.series.emitter.emit();
-
-        while ( data.length > 0 && data[ 0 ].x < this.timeProperty.value - CCKCConstants.NUMBER_OF_TIME_DIVISIONS ) {
-          data.shift();
+        this.series.addXYDataPoint( time, current === null ? NaN : current || 0 );
+        while ( this.series.hasData() && this.series.getDataPoint( 0 ).x < this.timeProperty.value - CCKCConstants.NUMBER_OF_TIME_DIVISIONS ) {
+          this.series.shiftData();
         }
       }
     }

@@ -18,7 +18,6 @@ define( require => {
   const merge = require( 'PHET_CORE/merge' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const Tandem = require( 'TANDEM/Tandem' );
-  const Vector2 = require( 'DOT/Vector2' );
 
   // strings
   const voltageWithUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageWithUnits' );
@@ -69,9 +68,7 @@ define( require => {
         const blackConnection = this.circuitLayerNode.getVoltageConnection( blackPoint );
         const voltage = this.circuitLayerNode.circuit.getVoltageBetweenConnections( redConnection, blackConnection );
 
-        const data = this.series.data;
-        data.push( new Vector2( time, voltage === null ? NaN : voltage || 0 ) );
-        this.series.emitter.emit();
+        this.series.addXYDataPoint( time, voltage === null ? NaN : voltage || 0 );
 
         // For debugging, depict the points where the sampling happens
         if ( CCKCQueryParameters.showVoltmeterSamplePoints ) {
@@ -83,8 +80,8 @@ define( require => {
           } ) );
         }
 
-        while ( data.length > 0 && data[ 0 ].x < this.timeProperty.value - CCKCConstants.NUMBER_OF_TIME_DIVISIONS ) {
-          data.shift();
+        while ( this.series.hasData() && this.series.getDataPoint( 0 ).x < this.timeProperty.value - CCKCConstants.NUMBER_OF_TIME_DIVISIONS ) {
+          this.series.shiftData();
         }
       }
     }
