@@ -13,7 +13,7 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CircuitElementEditContainerNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementEditContainerNode' );
   const Emitter = require( 'AXON/Emitter' );
-  const KeyboardUtil = require( 'SCENERY/accessibility/KeyboardUtil' );
+  const KeyboardUtils = require( 'SCENERY/accessibility/KeyboardUtils' );
   const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
 
@@ -56,7 +56,7 @@ define( require => {
           const code = event.domEvent.keyCode;
 
           // on delete or backspace, the focused circuit element should be deleted
-          if ( code === KeyboardUtil.KEY_DELETE || code === KeyboardUtil.KEY_BACKSPACE ) {
+          if ( code === KeyboardUtils.KEY_DELETE || code === KeyboardUtils.KEY_BACKSPACE ) {
 
             // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
             // https://github.com/phetsims/circuit-construction-kit-common/issues/307
