@@ -12,7 +12,7 @@ define( require => {
   // modules
   const BooleanProperty = require( 'AXON/BooleanProperty' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  const CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
+  const CCKCUtils = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtils' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
@@ -91,7 +91,7 @@ define( require => {
         // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
         return current === null ? questionMarkString :
                Math.abs( current ) > max ? maxString :
-               CCKCUtil.createCurrentReadout( current );
+               CCKCUtils.createCurrentReadout( current );
       } );
 
       const probeTextNode = new ProbeTextNode(

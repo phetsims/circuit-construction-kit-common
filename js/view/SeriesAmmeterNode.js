@@ -10,7 +10,7 @@ define( require => {
 
   // modules
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  const CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
+  const CCKCUtils = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtils' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   const Color = require( 'SCENERY/util/Color' );
@@ -89,7 +89,7 @@ define( require => {
           if ( startConnection && endConnection ) {
 
             // The ammeter doesn't indicate direction
-            readout = CCKCUtil.createCurrentReadout( seriesAmmeter.currentProperty.get() );
+            readout = CCKCUtils.createCurrentReadout( seriesAmmeter.currentProperty.get() );
           }
         }
 

@@ -17,7 +17,7 @@ define( require => {
   const currentUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/currentUnits' );
   const voltageUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/voltageUnits' );
 
-  const CCKCUtil = {
+  const CCKCUtils = {
 
     /**
      * Typically show 2 decimal places for current and voltage readouts in the play area, but if it is a smaller value,
@@ -74,5 +74,5 @@ define( require => {
     }
   };
 
-  return circuitConstructionKitCommon.register( 'CCKCUtil', CCKCUtil );
+  return circuitConstructionKitCommon.register( 'CCKCUtils', CCKCUtils );
 } );

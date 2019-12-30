@@ -11,7 +11,7 @@ define( require => {
   // modules
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
-  const CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
+  const CCKCUtils = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtils' );
   const Circle = require( 'SCENERY/nodes/Circle' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
@@ -230,8 +230,8 @@ define( require => {
       vertex.selectedProperty.unlink( this.updateSelectedListener );
       vertex.interactiveProperty.unlink( this.updatePickableListener );
       vertex.relayerEmitter.removeListener( this.updateMoveToFront );
-      CCKCUtil.setInSceneGraph( false, circuitLayerNode.buttonLayer, cutButton );
-      CCKCUtil.setInSceneGraph( false, circuitLayerNode.highlightLayer, this.highlightNode );
+      CCKCUtils.setInSceneGraph( false, circuitLayerNode.buttonLayer, cutButton );
+      CCKCUtils.setInSceneGraph( false, circuitLayerNode.highlightLayer, this.highlightNode );
       circuit.vertexGroup.removeMemberCreatedListener( this.updateStrokeListener );
       circuit.vertexGroup.removeMemberDisposedListener( this.updateStrokeListener );
 
@@ -288,9 +288,9 @@ define( require => {
         this.moveToFront();
         this.focus();
       }
-      CCKCUtil.setInSceneGraph( selected, this.circuitLayerNode.highlightLayer, this.highlightNode );
+      CCKCUtils.setInSceneGraph( selected, this.circuitLayerNode.highlightLayer, this.highlightNode );
       const numberConnections = neighborCircuitElements.length;
-      CCKCUtil.setInSceneGraph( selected, this.circuitLayerNode.buttonLayer, this.cutButton );
+      CCKCUtils.setInSceneGraph( selected, this.circuitLayerNode.buttonLayer, this.cutButton );
       selected && this.updateCutButtonPosition();
 
       // Show a disabled button as a cue that the vertex could be cuttable, but it isn't right now.

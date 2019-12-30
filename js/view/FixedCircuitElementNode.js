@@ -9,7 +9,7 @@ define( require => {
   'use strict';
 
   // modules
-  const CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
+  const CCKCUtils = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtils' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
   const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
@@ -268,7 +268,7 @@ define( require => {
      */
     setSelectedCircuitElement( circuitElement ) {
       const visible = ( circuitElement === this.circuitElement );
-      CCKCUtil.setInSceneGraph( visible, this.circuitLayerNode.highlightLayer, this.highlightNode );
+      CCKCUtils.setInSceneGraph( visible, this.circuitLayerNode.highlightLayer, this.highlightNode );
       this.markAsDirty();
     }
 
@@ -285,7 +285,7 @@ define( require => {
       this.circuitElement.connectedEmitter.removeListener( this.moveToFrontListener );
       this.circuitElement.vertexSelectedEmitter.removeListener( this.moveToFrontListener );
       this.fixedCircuitElementNodePickable && this.circuitElement.interactiveProperty.unlink( this.pickableListener );
-      this.circuitLayerNode && this.highlightNode && CCKCUtil.setInSceneGraph( false, this.circuitLayerNode.highlightLayer, this.highlightNode );
+      this.circuitLayerNode && this.highlightNode && CCKCUtils.setInSceneGraph( false, this.circuitLayerNode.highlightLayer, this.highlightNode );
       this.viewTypeProperty.unlink( this.viewPropertyListener );
 
       if ( !this.isIcon && this.updateFireMultilink ) {

@@ -28,7 +28,7 @@ define( require => {
   const InductorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/InductorNode' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCLightBulbNode' );
-  const CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
+  const CCKCUtils = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtils' );
   const ChargeNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ChargeNode' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
@@ -275,12 +275,12 @@ define( require => {
                 Tandem.OPTIONAL
               );
 
-              const updateShowValues = showValues => CCKCUtil.setInSceneGraph( showValues, this.valueLayer, valueNode );
+              const updateShowValues = showValues => CCKCUtils.setInSceneGraph( showValues, this.valueLayer, valueNode );
               this.model.showValuesProperty.link( updateShowValues );
 
               circuitElement.disposeEmitterCircuitElement.addListener( () => {
                 this.model.showValuesProperty.unlink( updateShowValues );
-                CCKCUtil.setInSceneGraph( false, this.valueLayer, valueNode );
+                CCKCUtils.setInSceneGraph( false, this.valueLayer, valueNode );
                 valueNode.dispose();
               } );
             }

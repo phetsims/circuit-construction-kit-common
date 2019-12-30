@@ -13,7 +13,7 @@ define( require => {
   const BooleanProperty = require( 'AXON/BooleanProperty' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
-  const CCKCUtil = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtil' );
+  const CCKCUtils = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtils' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
@@ -106,7 +106,7 @@ define( require => {
 
       // Displays the voltage reading
       const voltageReadoutProperty = new DerivedProperty( [ voltmeter.voltageProperty ], voltage =>
-        voltage === null ? questionMarkString : CCKCUtil.createVoltageReadout( voltage )
+        voltage === null ? questionMarkString : CCKCUtils.createVoltageReadout( voltage )
       );
 
       const probeTextNode = new ProbeTextNode(
