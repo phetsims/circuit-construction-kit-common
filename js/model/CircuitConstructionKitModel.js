@@ -22,7 +22,7 @@ define( require => {
   const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Stopwatch = require( 'SCENERY_PHET/Stopwatch' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Voltmeter' );
   const ZoomAnimation = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ZoomAnimation' );
   const ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ZoomControlPanel' );
@@ -96,7 +96,7 @@ define( require => {
       this.selectedZoomProperty.lazyLink( newValue => {
         this.zoomAnimation = new ZoomAnimation( this.currentZoomProperty.get(), newValue, delta => {
           const proposedZoomValue = this.currentZoomProperty.value + delta;
-          const boundedValue = Util.clamp( proposedZoomValue, ZoomControlPanel.ZOOMED_OUT, ZoomControlPanel.ZOOMED_IN );
+          const boundedValue = Utils.clamp( proposedZoomValue, ZoomControlPanel.ZOOMED_OUT, ZoomControlPanel.ZOOMED_IN );
           this.currentZoomProperty.value = boundedValue;
         } );
       } );

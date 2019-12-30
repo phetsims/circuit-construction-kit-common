@@ -11,7 +11,7 @@ define( require => {
   // modules
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const Color = require( 'SCENERY/util/Color' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
 
   // See https://en.wikipedia.org/wiki/Electronic_color_code#Resistor_color-coding
   // Tolerances below gold were eliminated to reduce variance in the tolerance band, see
@@ -60,7 +60,7 @@ define( require => {
       }
 
       // Estimate the exponent
-      let exponent = Util.roundSymmetric( Math.log( resistance ) / Math.log( 10 ) );
+      let exponent = Utils.roundSymmetric( Math.log( resistance ) / Math.log( 10 ) );
 
       // Divide out to normalize
       let reduced = resistance / Math.pow( 10, exponent );
@@ -76,7 +76,7 @@ define( require => {
 
       // Chop off first significant digit, then bump up >1 and take first digit
       const x = ( reduced - firstSignificantDigit ) * 10;
-      let secondSignificantDigit = Util.roundSymmetric( x ); //round to prevent cases like resistance=4700 = x2 = 6.99999
+      let secondSignificantDigit = Utils.roundSymmetric( x ); //round to prevent cases like resistance=4700 = x2 = 6.99999
 
       // prevent rounding up from 9.5 to 10.0
       if ( secondSignificantDigit === 10 ) {

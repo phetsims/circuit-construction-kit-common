@@ -19,7 +19,7 @@ define( require => {
   const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
   const Shape = require( 'KITE/Shape' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
 
   // constants
   // dimensions for schematic
@@ -88,7 +88,7 @@ define( require => {
       inductor.inductanceProperty.link( inductance => {
 
         // Determine the number of loops, including the start and end segments, which are each half.
-        const numLoops = Util.roundSymmetric( Util.linear( 10, 100, 5, 20, inductance ) );
+        const numLoops = Utils.roundSymmetric( Utils.linear( 10, 100, 5, 20, inductance ) );
         const children = [];
         for ( let i = 0; i < numLoops; i++ ) {
 
@@ -98,7 +98,7 @@ define( require => {
           const anticounterclockwise = i === numLoops - 1;
 
           // Positioning for the loop arc
-          const x = Util.linear(
+          const x = Utils.linear(
             numLoops / 2, numLoops / 2 + 1,
             LIFELIKE_WIDTH / 2 + LIFELIKE_RADIUS_X / 2, LIFELIKE_WIDTH / 2 + LIFELIKE_WIRE_LINE_WIDTH + LIFELIKE_RADIUS_X / 2,
             i );

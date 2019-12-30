@@ -22,7 +22,7 @@ define( require => {
   const Path = require( 'SCENERY/nodes/Path' );
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const Shape = require( 'KITE/Shape' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const Vector2 = require( 'DOT/Vector2' );
 
   // images
@@ -61,13 +61,13 @@ define( require => {
       const startPoint = new Vector2( CAP_WIDTH, 0 );
       const endPoint = new Vector2( fuseImageNode.width - CAP_WIDTH, 0 );
       const filamentShape = new Shape().moveToPoint( startPoint )
-        .zigZagToPoint( endPoint, VERTICAL_ZIG_ZAG_HEIGHT, Util.roundSymmetric( numberOfZigZags ), false );
+        .zigZagToPoint( endPoint, VERTICAL_ZIG_ZAG_HEIGHT, Utils.roundSymmetric( numberOfZigZags ), false );
 
       const brokenFilamentShape = new Shape().moveToPoint( startPoint )
-        .zigZagToPoint( new Vector2( fuseImageNode.width / 2 - SPLIT_DX, SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, Util.roundSymmetric( numberOfZigZags / 2 ) - 1, false );
+        .zigZagToPoint( new Vector2( fuseImageNode.width / 2 - SPLIT_DX, SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, Utils.roundSymmetric( numberOfZigZags / 2 ) - 1, false );
       brokenFilamentShape.moveToPoint( endPoint );
       brokenFilamentShape
-        .zigZagToPoint( new Vector2( fuseImageNode.width / 2 + SPLIT_DX, -SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, Util.roundSymmetric( numberOfZigZags / 2 ) - 1, false );
+        .zigZagToPoint( new Vector2( fuseImageNode.width / 2 + SPLIT_DX, -SPLIT_DY ), VERTICAL_ZIG_ZAG_HEIGHT, Utils.roundSymmetric( numberOfZigZags / 2 ) - 1, false );
 
       const filamentPath = new Path( filamentShape, {
         stroke: '#302b2b',
@@ -76,7 +76,7 @@ define( require => {
       } );
 
       // Fuse filament thickness is proportional to its current rating
-      const updateFilamentPathLineWidth = currentRating => filamentPath.setLineWidth( Util.linear(
+      const updateFilamentPathLineWidth = currentRating => filamentPath.setLineWidth( Utils.linear(
         fuse.currentRatingProperty.range.min, fuse.currentRatingProperty.range.max, 1, 4, currentRating
       ) );
       fuse.currentRatingProperty.link( updateFilamentPathLineWidth );

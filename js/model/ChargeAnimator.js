@@ -15,7 +15,7 @@ define( require => {
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Range = require( 'DOT/Range' );
   const RunningAverage = require( 'DOT/RunningAverage' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
 
   // constants
 
@@ -104,7 +104,7 @@ define( require => {
       this.scale = ( maxPositionChange >= MAX_POSITION_CHANGE ) ? ( MAX_POSITION_CHANGE / maxPositionChange ) : 1;
 
       // Average over scale values to smooth them out
-      const averageScale = Util.clamp( this.timeScaleRunningAverage.updateRunningAverage( this.scale ), 0, 1 );
+      const averageScale = Utils.clamp( this.timeScaleRunningAverage.updateRunningAverage( this.scale ), 0, 1 );
       this.timeScaleProperty.set( averageScale );
 
       for ( let i = 0; i < this.charges.length; i++ ) {
@@ -171,8 +171,8 @@ define( require => {
 
         let desiredPosition = lower.distance + neighborSeparation / 2;
         const distanceFromDesiredPosition = Math.abs( desiredPosition - currentPosition );
-        const sameDirectionAsCurrent = Util.sign( desiredPosition - currentPosition ) ===
-                                       Util.sign( charge.circuitElement.currentProperty.get() * charge.charge );
+        const sameDirectionAsCurrent = Utils.sign( desiredPosition - currentPosition ) ===
+                                       Utils.sign( charge.circuitElement.currentProperty.get() * charge.charge );
 
         // never slow down or run the current backwards
         if ( sameDirectionAsCurrent ) {
@@ -278,13 +278,13 @@ define( require => {
         if ( current > MINIMUM_CURRENT && circuitElement.startVertexProperty.get() === vertex ) {
 
           // Start near the beginning.
-          distance = Util.clamp( overshoot, 0, circuitElement.chargePathLength ); // Note, this can be zero
+          distance = Utils.clamp( overshoot, 0, circuitElement.chargePathLength ); // Note, this can be zero
           found = true;
         }
         else if ( current < -MINIMUM_CURRENT && circuitElement.endVertexProperty.get() === vertex ) {
 
           // start near the end
-          distance = Util.clamp( circuitElement.chargePathLength - overshoot, 0, circuitElement.chargePathLength ); // can be zero
+          distance = Utils.clamp( circuitElement.chargePathLength - overshoot, 0, circuitElement.chargePathLength ); // can be zero
           found = true;
         }
         else {

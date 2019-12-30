@@ -15,7 +15,7 @@ define( require => {
   const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Range = require( 'DOT/Range' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const Vector2 = require( 'DOT/Vector2' );
   const Vertex = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Vertex' );
 
@@ -146,8 +146,8 @@ define( require => {
       const startPoint = samplePoints[ 0 ];
       const endPoint = samplePoints[ samplePoints.length - 1 ];
 
-      const x = Util.linear( startPoint.x, endPoint.x, origin.x, origin.x + this.vertexDelta.x, point.x );
-      const y = Util.linear( startPoint.y, endPoint.y, origin.y, origin.y + this.vertexDelta.y, point.y );
+      const x = Utils.linear( startPoint.x, endPoint.x, origin.x, origin.x + this.vertexDelta.x, point.x );
+      const y = Utils.linear( startPoint.y, endPoint.y, origin.y, origin.y + this.vertexDelta.y, point.y );
 
       return new Vector2( x, y );
     }
@@ -186,7 +186,7 @@ define( require => {
         if ( distanceAlongWire <= accumulatedDistance ) {
 
           // Choose the right point along the segment
-          const fractionAlongSegment = Util.linear( previousAccumulatedDistance, accumulatedDistance, 0, 1, distanceAlongWire );
+          const fractionAlongSegment = Utils.linear( previousAccumulatedDistance, accumulatedDistance, 0, 1, distanceAlongWire );
           const positionAlongSegment = currentPoint.blend( nextPoint, fractionAlongSegment );
 
           // rotate the point about the start vertex

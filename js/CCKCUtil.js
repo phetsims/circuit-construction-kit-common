@@ -11,7 +11,7 @@ define( require => {
   // modules
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
 
   // strings
   const currentUnitsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/currentUnits' );
@@ -41,7 +41,7 @@ define( require => {
       const decimals = this.getNumberOfDecimalPoints( absoluteCurrent );
 
       // Show 3 decimal places so that current can still be seen with a glowing high-resistance bulb
-      return StringUtils.fillIn( currentUnitsString, { current: Util.toFixed( absoluteCurrent, decimals ) } );
+      return StringUtils.fillIn( currentUnitsString, { current: Utils.toFixed( absoluteCurrent, decimals ) } );
     },
 
     /**
@@ -53,7 +53,7 @@ define( require => {
     createVoltageReadout: function( value ) {
       const decimals = this.getNumberOfDecimalPoints( value );
 
-      return StringUtils.fillIn( voltageUnitsString, { voltage: Util.toFixed( value, decimals ) } );
+      return StringUtils.fillIn( voltageUnitsString, { voltage: Utils.toFixed( value, decimals ) } );
     },
 
     /**

@@ -52,7 +52,7 @@ define( require => {
   const Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
   const SwitchNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SwitchNode' );
   const Tandem = require( 'TANDEM/Tandem' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const ValueNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ValueNode' );
   const Vector2 = require( 'DOT/Vector2' );
   const VertexNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VertexNode' );
@@ -845,9 +845,9 @@ define( require => {
         const probeVector = probePosition.minus( startPoint );
         let distanceAlongSegment = segmentVector.magnitude === 0 ? 0 : ( probeVector.dot( segmentVector ) /
                                                                          segmentVector.magnitudeSquared );
-        distanceAlongSegment = Util.clamp( distanceAlongSegment, 0, 1 );
+        distanceAlongSegment = Utils.clamp( distanceAlongSegment, 0, 1 );
 
-        const voltageAlongWire = Util.linear( 0, 1,
+        const voltageAlongWire = Utils.linear( 0, 1,
           metallicCircuitElement.circuitElement.startVertexProperty.get().voltageProperty.get(),
           metallicCircuitElement.circuitElement.endVertexProperty.get().voltageProperty.get(),
           distanceAlongSegment

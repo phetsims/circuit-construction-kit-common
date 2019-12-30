@@ -14,7 +14,7 @@ define( require => {
   const Property = require( 'AXON/Property' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
 
   // strings
   const animationSpeedLimitReachedString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/animationSpeedLimitReached' );
@@ -39,7 +39,7 @@ define( require => {
         ( timeScale, showCurrent, isValueDepictionEnabled ) => {
           const percent = timeScale * 100;
           const isThrottled = percent < 99.5;
-          const fixed = timeScale < 0.01 ? '< 1' : Util.toFixed( percent, 0 );
+          const fixed = timeScale < 0.01 ? '< 1' : Utils.toFixed( percent, 0 );
           this.setText( StringUtils.fillIn( animationSpeedLimitReachedString, { percent: fixed } ) );
 
           // Only show the throttling message if the speed is less than 100% and charges are visible

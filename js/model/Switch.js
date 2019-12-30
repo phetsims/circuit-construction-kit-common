@@ -15,7 +15,7 @@ define( require => {
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
 
   // constants
   const SWITCH_LENGTH = CCKCConstants.SWITCH_LENGTH;
@@ -84,7 +84,7 @@ define( require => {
         const twoThirdsPoint = startPosition.blend( endPosition, SWITCH_END );
         const rotatedPoint = twoThirdsPoint.rotatedAboutPoint( pivot, -Math.PI / 4 );
 
-        const distanceAlongSegment = Util.linear( SWITCH_START, SWITCH_END, 0, 1, fractionAlongWire );
+        const distanceAlongSegment = Utils.linear( SWITCH_START, SWITCH_END, 0, 1, fractionAlongWire );
         const translation = pivot.blend( rotatedPoint, distanceAlongSegment );
         matrix.setToTranslationRotationPoint( translation, endPosition.minus( startPosition ).angle );
       }

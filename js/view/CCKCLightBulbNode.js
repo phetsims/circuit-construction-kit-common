@@ -25,7 +25,7 @@ define( require => {
   const Path = require( 'SCENERY/nodes/Path' );
   const Property = require( 'AXON/Property' );
   const Shape = require( 'KITE/Shape' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const Vector2 = require( 'DOT/Vector2' );
 
   // images
@@ -90,7 +90,7 @@ define( require => {
             brightness = 0;
           }
 
-          brightnessProperty.value = Util.clamp( brightness, 0, 1 );
+          brightnessProperty.value = Utils.clamp( brightness, 0, 1 );
         } );
       let lightBulbNode = new CustomLightBulbNode( brightnessProperty );
 

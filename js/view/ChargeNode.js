@@ -20,7 +20,7 @@ define( require => {
   const Matrix3 = require( 'DOT/Matrix3' );
   const Shape = require( 'KITE/Shape' );
   const Tandem = require( 'TANDEM/Tandem' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
 
   // constants
   const ELECTRON_CHARGE_NODE = new ElectronChargeNode( {
@@ -117,8 +117,8 @@ define( require => {
         // Apply the transform
         this.matrix = NODE_MATRIX;
 
-        let opacity = Util.linear( 0.015, CONVENTIONAL_CHARGE_THRESHOLD, 1, 0, Math.abs( charge.circuitElement.currentProperty.get() ) );
-        opacity = Util.clamp( opacity, 0, 1 );
+        let opacity = Utils.linear( 0.015, CONVENTIONAL_CHARGE_THRESHOLD, 1, 0, Math.abs( charge.circuitElement.currentProperty.get() ) );
+        opacity = Utils.clamp( opacity, 0, 1 );
         this.setImageOpacity( opacity );
       }
       else {

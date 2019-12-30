@@ -17,7 +17,7 @@ define( require => {
   const merge = require( 'PHET_CORE/merge' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Shape = require( 'KITE/Shape' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
 
   // images
   const backImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-back.png' );
@@ -157,7 +157,7 @@ define( require => {
         assert && assert( brightness >= 0 && brightness <= 1 );
         this.backNode.visible = ( brightness > 0 );
         if ( this.backNode.visible ) {
-          this.backNode.imageOpacity = Util.clamp( Util.linear( 0, 0.5, 0, 1, brightness ), 0, 1 );
+          this.backNode.imageOpacity = Utils.clamp( Utils.linear( 0, 0.5, 0, 1, brightness ), 0, 1 );
         }
         this.raysNode.setBrightness( brightness );
       }

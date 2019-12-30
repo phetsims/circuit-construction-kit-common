@@ -15,7 +15,7 @@ define( require => {
   const Node = require( 'SCENERY/nodes/Node' );
   const Path = require( 'SCENERY/nodes/Path' );
   const Shape = require( 'KITE/Shape' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const Vector2 = require( 'DOT/Vector2' );
 
   class FuseTripAnimation extends Node {
@@ -56,8 +56,8 @@ define( require => {
       const animation = new Animation( {
         setValue: value => {
           const center = this.center;
-          const scale = Util.linear( 0, 1, 0.75, 2, value );
-          const opacity = Util.clamp( Util.linear( 0.8, 1, 1, 0, value ), 0, 1 );
+          const scale = Utils.linear( 0, 1, 0.75, 2, value );
+          const opacity = Utils.clamp( Utils.linear( 0.8, 1, 1, 0, value ), 0, 1 );
           this.setScaleMagnitude( scale );
           this.setOpacity( opacity );
           this.center = center;

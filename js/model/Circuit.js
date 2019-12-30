@@ -1219,7 +1219,7 @@ define( require => {
         const firstChargePosition = offset;
         const lengthForCharges = lastChargePosition - firstChargePosition;
 
-        // Util.roundSymmetric leads to charges too far apart when N=2
+        // Utils.roundSymmetric leads to charges too far apart when N=2
         const numberOfCharges = Math.ceil( lengthForCharges / CCKCConstants.CHARGE_SEPARATION );
 
         // compute distance between adjacent charges

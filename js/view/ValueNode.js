@@ -29,7 +29,7 @@ define( require => {
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
   const Text = require( 'SCENERY/nodes/Text' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const VBox = require( 'SCENERY/nodes/VBox' );
   const Vector2 = require( 'DOT/Vector2' );
 
@@ -81,7 +81,7 @@ define( require => {
         const voltageListener = voltage => {
 
           voltageText.text = StringUtils.fillIn( voltageUnitsString, {
-            voltage: Util.toFixed( voltage, circuitElement.numberOfDecimalPlaces )
+            voltage: Utils.toFixed( voltage, circuitElement.numberOfDecimalPlaces )
           } );
           updatePosition && updatePosition();
         };
@@ -96,7 +96,7 @@ define( require => {
         const resistanceNode = createText( tandem.createTandem( 'resistanceText' ) );
         const internalResistanceListener = ( internalResistance, lastInternalResistance ) => {
           resistanceNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
-            resistance: Util.toFixed( internalResistance, 1 )
+            resistance: Utils.toFixed( internalResistance, 1 )
           } );
 
           // If the children should change, update them here
@@ -126,7 +126,7 @@ define( require => {
         // Items like the hand and dog and high resistance resistor shouldn't show ".0"
         const linkResistance = resistance => {
           contentNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
-            resistance: Util.toFixed( resistance, circuitElement.numberOfDecimalPlaces )
+            resistance: Utils.toFixed( resistance, circuitElement.numberOfDecimalPlaces )
           } );
           updatePosition && updatePosition();
         };
@@ -141,7 +141,7 @@ define( require => {
         const linkCapacitance = capacitance => {
 
           contentNode.text = StringUtils.fillIn( capacitanceFaradsSymbolString, {
-            resistance: Util.toFixed( capacitance, circuitElement.numberOfDecimalPlaces )
+            resistance: Utils.toFixed( capacitance, circuitElement.numberOfDecimalPlaces )
           } );
           updatePosition && updatePosition();
         };
@@ -155,7 +155,7 @@ define( require => {
         // Items like the hand and dog and high resistance resistor shouldn't show ".0"
         const linkInductance = inductance => {
           contentNode.text = StringUtils.fillIn( inductanceHenriesSymbolString, {
-            resistance: Util.toFixed( inductance, circuitElement.numberOfDecimalPlaces )
+            resistance: Utils.toFixed( inductance, circuitElement.numberOfDecimalPlaces )
           } );
           updatePosition && updatePosition();
         };
@@ -190,12 +190,12 @@ define( require => {
         const multilink = Property.multilink( [ circuitElement.resistanceProperty, circuitElement.currentRatingProperty ],
           ( resistance, currentRating ) => {
             const milliOhmString = resistance === CCKCConstants.MAX_RESISTANCE ? infinitySpan :
-                                   Util.toFixed( resistance * 1000, circuitElement.numberOfDecimalPlaces );
+                                   Utils.toFixed( resistance * 1000, circuitElement.numberOfDecimalPlaces );
             contentNode.text = StringUtils.fillIn( fuseValueString, {
 
               // Convert to milli
               resistance: milliOhmString,
-              currentRating: Util.toFixed( currentRating, circuitElement.numberOfDecimalPlaces )
+              currentRating: Utils.toFixed( currentRating, circuitElement.numberOfDecimalPlaces )
             } );
             updatePosition && updatePosition();
           }

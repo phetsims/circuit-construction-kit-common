@@ -20,7 +20,7 @@ define( require => {
   const Node = require( 'SCENERY/nodes/Node' );
   const SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   const Text = require( 'SCENERY/nodes/Text' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const Vector2 = require( 'DOT/Vector2' );
 
   // constants
@@ -92,7 +92,7 @@ define( require => {
         vertex.voltageProperty.link( voltage => {
 
           // No need for i18n because this is for debugging only
-          const voltageText = Util.toFixed( voltage, 3 ) + 'V';
+          const voltageText = Utils.toFixed( voltage, 3 ) + 'V';
           this.voltageReadoutText.setText( vertexDisplay === 'voltage' ? voltageText : vertex.index );
           this.updateReadoutTextLocation();
         } );

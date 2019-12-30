@@ -20,7 +20,7 @@ define( require => {
   const Rectangle = require( 'SCENERY/nodes/Rectangle' );
   const StringUtils = require( 'PHETCOMMON/util/StringUtils' );
   const Text = require( 'SCENERY/nodes/Text' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
@@ -52,12 +52,12 @@ define( require => {
         majorTickLength: CCKCConstants.MAJOR_TICK_LENGTH,
 
         // Snap to the nearest whole number.
-        constrainValue: value => Util.roundSymmetric( value ),
+        constrainValue: value => Utils.roundSymmetric( value ),
         tandem: tandem.createTandem( 'slider' )
       } );
-      slider.addMajorTick( range.min, createLabel( Util.toFixed( range.min, 0 ), tandem.createTandem( 'minLabel' ) ) );
+      slider.addMajorTick( range.min, createLabel( Utils.toFixed( range.min, 0 ), tandem.createTandem( 'minLabel' ) ) );
       slider.addMajorTick( midpoint );
-      slider.addMajorTick( range.max, createLabel( Util.toFixed( range.max, 0 ), tandem.createTandem( 'maxLabel' ) ) );
+      slider.addMajorTick( range.max, createLabel( Utils.toFixed( range.max, 0 ), tandem.createTandem( 'maxLabel' ) ) );
 
       for ( let i = range.min + 1; i < range.max; i++ ) {
         if ( i !== midpoint ) {
@@ -81,7 +81,7 @@ define( require => {
 
       // number to be displayed
       const updateText = value => {
-        readoutText.setText( StringUtils.fillIn( resistanceOhmsString, { resistance: Util.toFixed( value, 1 ) } ) );
+        readoutText.setText( StringUtils.fillIn( resistanceOhmsString, { resistance: Utils.toFixed( value, 1 ) } ) );
 
         // Once there is a textRectangle, stay right-justified
         if ( textRectangle ) {
