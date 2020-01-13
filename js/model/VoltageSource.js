@@ -50,9 +50,9 @@ define( require => {
         ( voltage, internalResistance, current, pass ) => {
 
           const result = pass === 2 ? CCKCQueryParameters.batteryInternalResistanceWhenCurrentThresholdExceededOffset +
-                                      CCKCQueryParameters.batteryInternalResistanceWhenCurrentThresholdExceededVoltageScaleFactor * voltage :
+                                      CCKCQueryParameters.batteryInternalResistanceWhenCurrentThresholdExceededVoltageScaleFactor * Math.abs( voltage ) :
                          internalResistance;
-          console.log( voltage, internalResistance, current, pass, result );
+          // console.log( `voltage: ${voltage}, internalResistance: ${internalResistance}, current: ${current}, pass: ${pass}, result: ${result}` );
           return result;
         } );
 
