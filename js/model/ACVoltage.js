@@ -11,15 +11,16 @@ define( require => {
   // modules
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Range = require( 'DOT/Range' );
+  const VoltageSource = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/VoltageSource' );
 
   // constants
   const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
+  const MAX_VOLTAGE = 120;
 
-  class ACVoltage extends FixedCircuitElement {
+  class ACVoltage extends VoltageSource {
 
     /**
      * @param {Vertex} startVertex - one of the battery vertices
@@ -34,32 +35,23 @@ define( require => {
         initialOrientation: 'right',
         voltage: 9.0,
         isFlammable: true,
-        numberOfDecimalPlaces: 1
+        numberOfDecimalPlaces: 1,
+        voltagePropertyOptions: {
+          range: new Range( -MAX_VOLTAGE, MAX_VOLTAGE )
+        }
       }, options );
-      super( startVertex, endVertex, BATTERY_LENGTH, tandem, options );
-
-      // @public {NumberProperty} - the current voltage of the battery in volts, oscillates as the model updates
-      this.voltageProperty = new NumberProperty( 0, {
-        tandem: tandem.createTandem( 'voltageProperty' )
-      } );
+      super( startVertex, endVertex, internalResistanceProperty, BATTERY_LENGTH, tandem, options );
 
       // @public {NumberProperty} - the maximum voltage, which can be controlled by the CircuitElementNumberControl
       this.maximumVoltageProperty = new NumberProperty( options.voltage, {
         tandem: tandem.createTandem( 'maximumVoltageProperty' ),
-        range: new Range( 0, 120 )
+        range: new Range( 0, MAX_VOLTAGE )
       } );
 
       this.frequencyProperty = new NumberProperty( 0.5, {
         tandem: tandem.createTandem( 'frequencyProperty' ),
         range: new Range( 0.1, 2.0 )
       } );
-
-      // @public {Property.<number>} the internal resistance of the battery
-      this.internalResistanceProperty = internalResistanceProperty;
-
-      // @public (read-only) {string} - track which way the battery "button" (plus side) was facing the initial state so
-      // the user can only create a certain number of "left" or "right" batteries from the toolbox.
-      this.initialOrientation = options.initialOrientation;
 
       // @public (read-only)
       this.phaseProperty = new NumberProperty( 0, {
@@ -77,20 +69,10 @@ define( require => {
      * @public
      */
     dispose() {
-      this.voltageProperty.dispose();
       this.maximumVoltageProperty.dispose();
       this.frequencyProperty.dispose();
+      this.phaseProperty.dispose();
       super.dispose();
-    }
-
-    /**
-     * Get the properties so that the circuit can be solved when changed.
-     * @returns {Property.<*>[]}
-     * @override
-     * @public
-     */
-    getCircuitProperties() {
-      return [ this.voltageProperty ];
     }
 
     /**

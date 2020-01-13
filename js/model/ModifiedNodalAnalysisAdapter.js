@@ -10,8 +10,6 @@ define( require => {
   'use strict';
 
   // modules
-  const ACVoltage = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACVoltage' );
-  const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
   const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
@@ -24,6 +22,7 @@ define( require => {
   const SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
   const Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
   const TimestepSubdivisions = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/TimestepSubdivisions' );
+  const VoltageSource = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/VoltageSource' );
   const Wire = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Wire' );
 
   // constants
@@ -142,7 +141,7 @@ define( require => {
       const inductorAdapters = [];
       for ( let i = 0; i < circuit.circuitElements.length; i++ ) {
         const branch = circuit.circuitElements.get( i );
-        if ( branch instanceof Battery ) {
+        if ( branch instanceof VoltageSource ) {
           branch.passProperty.reset(); // also resets the internalResistance for the first pass computation
           resistiveBatteryAdapters.push( new ResistiveBatteryAdapter( circuit, branch ) );
         }
@@ -163,9 +162,6 @@ define( require => {
         else if ( branch instanceof Capacitor ) {
           capacitorAdapters.push( new CapacitorAdapter( circuit, branch ) );
         }
-        else if ( branch instanceof ACVoltage ) {
-          resistiveBatteryAdapters.push( new ResistiveBatteryAdapter( circuit, branch ) );
-        }
         else if ( branch instanceof Inductor ) {
           inductorAdapters.push( new InductorAdapter( circuit, branch ) );
         }
@@ -181,7 +177,7 @@ define( require => {
       // see https://github.com/phetsims/circuit-construction-kit-common/issues/245
       let needsHelp = false;
       resistiveBatteryAdapters.forEach( batteryAdapter => {
-        if ( circuitResult.getTimeAverageCurrent( batteryAdapter ) > CCKCQueryParameters.batteryCurrentThreshold ) {
+        if ( Math.abs( circuitResult.getTimeAverageCurrent( batteryAdapter ) ) > CCKCQueryParameters.batteryCurrentThreshold ) {
           batteryAdapter.battery.passProperty.value = 2;
           batteryAdapter.resistance = batteryAdapter.battery.internalResistanceProperty.value;
           needsHelp = true;
