@@ -13,7 +13,7 @@ define( require => {
   const AlignBox = require( 'SCENERY/nodes/AlignBox' );
   const AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
   const AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/AmmeterNode' );
-  const BatteryResistanceControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/BatteryResistanceControl' );
+  const AdvancedControlsAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/AdvancedControlsAccordionBox' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   const ChargeSpeedThrottlingReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ChargeSpeedThrottlingReadoutNode' );
@@ -37,8 +37,11 @@ define( require => {
   const ViewRadioButtonGroup = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ViewRadioButtonGroup' );
   const VoltageChartNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VoltageChartNode' );
   const VoltmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/VoltmeterNode' );
-  const WireResistivityControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/WireResistivityControl' );
   const ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ZoomControlPanel' );
+
+  // strings
+  const batteryResistanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/batteryResistance' );
+  const sourceResistanceString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/sourceResistance' );
 
   // constants
   const VERTICAL_MARGIN = CCKCConstants.VERTICAL_MARGIN;
@@ -77,12 +80,12 @@ define( require => {
         showSeriesAmmeters: false,
         showNoncontactAmmeters: true,
         getCircuitEditPanelLayoutPosition: CircuitElementEditContainerNode.GET_LAYOUT_POSITION,
-        showResistivityControl: true,
-        showBatteryResistanceControl: true,
+        showAdvancedControls: true, // TODO: Combine, see https://github.com/phetsims/circuit-construction-kit-common/issues/540
         showCharts: false,
         blackBoxStudy: false,
         showStopwatchCheckbox: false,
-        showPhaseShiftControl: false
+        showPhaseShiftControl: false,
+        hasACandDCVoltageSources: false // determines the string shown in the AdvancedControlsAccordionBox
       }, options );
 
       super();
@@ -186,18 +189,12 @@ define( require => {
         tandem.createTandem( 'displayOptionsPanel' )
       );
 
-      // @private {WireResistivityControl}
-      this.wireResistivityControl = new WireResistivityControl(
-        model.circuit.wireResistivityProperty,
+      this.advancedControlsAccordionBox = new AdvancedControlsAccordionBox(
+        model.circuit,
         CONTROL_PANEL_ALIGN_GROUP,
-        tandem.createTandem( 'wireResistivityControl' )
+        options.hasACandDCVoltageSources ? sourceResistanceString : batteryResistanceString,
+        tandem.createTandem( 'advancedControlsAccordionBox' )
       );
-
-      // @private {BatteryResistanceControl}
-      this.batteryResistanceControl = new BatteryResistanceControl(
-        model.circuit.batteryResistanceProperty,
-        CONTROL_PANEL_ALIGN_GROUP,
-        tandem.createTandem( 'batteryResistanceControl' ) );
 
       this.addChild( this.circuitLayerNodeBackLayer );
 
@@ -219,9 +216,9 @@ define( require => {
 
       const controlPanelVBox = new VBox( {
         spacing: VERTICAL_MARGIN,
-        children: !options.showResistivityControl ?
-          [ this.displayOptionsPanel, this.sensorToolbox ] :
-          [ this.displayOptionsPanel, this.sensorToolbox, this.wireResistivityControl, this.batteryResistanceControl ]
+        children: options.showAdvancedControls ?
+          [ this.displayOptionsPanel, this.sensorToolbox, this.advancedControlsAccordionBox ] :
+          [ this.displayOptionsPanel, this.sensorToolbox ]
       } );
 
       const box = new AlignBox( controlPanelVBox, {

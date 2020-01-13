@@ -77,8 +77,8 @@ define( require => {
 
       // @public {NumberProperty} - All batteries share a single internal resistance value, which can be edited with
       // a control on the Lab Screen
-      this.batteryResistanceProperty = new NumberProperty( CCKCConstants.DEFAULT_BATTERY_RESISTANCE, {
-        tandem: tandem.createTandem( 'batteryResistanceProperty' )
+      this.sourceResistanceProperty = new NumberProperty( CCKCConstants.DEFAULT_BATTERY_RESISTANCE, {
+        tandem: tandem.createTandem( 'sourceResistanceProperty' )
       } );
 
       // @public {ObservableArray.<CircuitElement>} - The different types of CircuitElement the circuit may
@@ -267,7 +267,7 @@ define( require => {
         } );
       } );
 
-      this.batteryResistanceProperty.link( markDirtyListener );
+      this.sourceResistanceProperty.link( markDirtyListener );
 
       // @public (read-only) - for creating tandems
       // TODO(phet-io): Convert to group pattern?
@@ -296,7 +296,7 @@ define( require => {
       } );
 
       this.batteryGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
-        return new Battery( startVertex, endVertex, this.batteryResistanceProperty, Battery.BatteryType.NORMAL,
+        return new Battery( startVertex, endVertex, this.sourceResistanceProperty, Battery.BatteryType.NORMAL,
           tandem );
       }, () => createVertices( BATTERY_LENGTH ), {
         phetioType: PhetioGroupIO( CircuitElementIO ),
@@ -304,7 +304,7 @@ define( require => {
       } );
 
       this.highVoltageBatteryGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
-        return new Battery( startVertex, endVertex, this.batteryResistanceProperty, Battery.BatteryType.HIGH_VOLTAGE,
+        return new Battery( startVertex, endVertex, this.sourceResistanceProperty, Battery.BatteryType.HIGH_VOLTAGE,
           tandem, {
             voltage: 1000
           } );
@@ -315,7 +315,7 @@ define( require => {
       } );
 
       this.acVoltageGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
-        return new ACVoltage( startVertex, endVertex, this.batteryResistanceProperty, tandem );
+        return new ACVoltage( startVertex, endVertex, this.sourceResistanceProperty, tandem );
       }, () => createVertices( CCKCConstants.AC_VOLTAGE_LENGTH ), {
         phetioType: PhetioGroupIO( CircuitElementIO ),
         tandem: tandem.createTandem( 'acVoltageGroup' )
@@ -1266,7 +1266,7 @@ define( require => {
       this.showCurrentProperty.reset();
       this.currentTypeProperty.reset();
       this.wireResistivityProperty.reset();
-      this.batteryResistanceProperty.reset();
+      this.sourceResistanceProperty.reset();
       this.chargeAnimator.reset();
       this.selectedCircuitElementProperty.reset();
     }

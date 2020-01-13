@@ -8,6 +8,9 @@
   "acSource": {
     "value": "AC Voltage"
   },
+  "advanced": {
+    "value": "Advanced"
+  },
   "resistor": {
     "value": "Resistor"
   },
@@ -67,6 +70,9 @@
   },
   "batteryResistance": {
     "value": "Battery Resistance"
+  },
+  "sourceResistance": {
+    "value": "Source Resistance"
   },
   "battery": {
     "value": "Battery"
@@ -166,9 +172,6 @@
   },
   "inductanceHenriesSymbol": {
     "value": "{{resistance}} H"
-  },
-  "resistanceOhms": {
-    "value": "{{resistance}} ohms"
   },
   "resistanceOhmsValuePattern": {
     "value": "{{resistance}} ohms"

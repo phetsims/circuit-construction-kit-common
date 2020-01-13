@@ -10,12 +10,12 @@ define( require => {
   'use strict';
 
   // modules
-  const CCKCAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCAccordionBox' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const HSlider = require( 'SUN/HSlider' );
   const Range = require( 'DOT/Range' );
   const Text = require( 'SCENERY/nodes/Text' );
+  const VBox = require( 'SCENERY/nodes/VBox' );
 
   // strings
   const lotsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/lots' );
@@ -26,7 +26,7 @@ define( require => {
   const TICK_LABEL_TEXT_OPTIONS = { fontSize: 12, maxWidth: 45 };
   const MAX_RESISTIVITY = 1;
 
-  class WireResistivityControl extends CCKCAccordionBox {
+  class WireResistivityControl extends VBox {
 
     /**
      * @param {Property.<number>} wireResistivityProperty
@@ -34,6 +34,9 @@ define( require => {
      * @param {Tandem} tandem
      */
     constructor( wireResistivityProperty, alignGroup, tandem ) {
+
+      const titleNode = new Text( wireResistivityString, { fontSize: 12 } );
+
       const slider = new HSlider( wireResistivityProperty, new Range(
         CCKCConstants.DEFAULT_RESISTIVITY,
         MAX_RESISTIVITY // large enough so that max resistance in a 9v battery slows to a good rate
@@ -47,7 +50,9 @@ define( require => {
       slider.addMajorTick( 0, new Text( tinyString, TICK_LABEL_TEXT_OPTIONS ) );
       slider.addMajorTick( MAX_RESISTIVITY, new Text( lotsString, TICK_LABEL_TEXT_OPTIONS ) );
 
-      super( alignGroup.createBox( slider ), wireResistivityString, tandem );
+      super( {
+        children: [ titleNode, slider ]
+      } );
     }
   }
 
