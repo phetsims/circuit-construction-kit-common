@@ -122,7 +122,7 @@ define( require => {
     PENCIL: new ResistorEnumValue( new Range( 0, 1000000000 ), false ),
     ERASER: new ResistorEnumValue( new Range( 0, 1000000000 ), false ),
     HAND: new ResistorEnumValue( new Range( 0, 100000 ), false ),
-    DOG: new ResistorEnumValue( new Range( 0, 1000000000 ), false ),
+    DOG: new ResistorEnumValue( new Range( 0, 100000 ), false ),
     DOLLAR_BILL: new ResistorEnumValue( new Range( 0, 1000000000 ), false )
   } );
 
