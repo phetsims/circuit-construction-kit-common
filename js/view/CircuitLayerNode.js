@@ -25,7 +25,6 @@ define( require => {
   const Bounds2 = require( 'DOT/Bounds2' );
   const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
   const CapacitorCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CapacitorCircuitElementNode' );
-  const InductorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/InductorNode' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCLightBulbNode' );
   const CCKCUtils = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtils' );
@@ -34,17 +33,20 @@ define( require => {
   const CircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CircuitElementNode' );
   const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
   const CustomLightBulbNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CustomLightBulbNode' );
+  const Dog = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Dog' );
   const FixedCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/FixedCircuitElement' );
   const FixedCircuitElementNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FixedCircuitElementNode' );
   const FontAwesomeNode = require( 'SUN/FontAwesomeNode' );
   const Fuse = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Fuse' );
   const FuseNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/FuseNode' );
   const Inductor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Inductor' );
+  const InductorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/InductorNode' );
   const LightBulb = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/LightBulb' );
   const Node = require( 'SCENERY/nodes/Node' );
   const Property = require( 'AXON/Property' );
   const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
   const ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorNode' );
+  const DogNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/DogNode' );
   const RoundPushButton = require( 'SUN/buttons/RoundPushButton' );
   const SeriesAmmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/SeriesAmmeter' );
   const SeriesAmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SeriesAmmeterNode' );
@@ -252,14 +254,14 @@ define( require => {
        * (b) Add a listener that adds nodes when model elements are added
        * (c) Add a listener that removes nodes when model elements are removed
        *
-       * @param {function} type - the type of the CircuitElement, such as Battery or Wire
+       * @param {function} predicate
        * @param {Node} layer
        * @param {Tandem} groupTandem
        * @param {function} createCircuitElement - creates the node, given a circuitElement and tandem BatteryNode
        */
-      const initializeCircuitElementType = ( type, layer, groupTandem, createCircuitElement ) => {
+      const initializeCircuitElementType = ( predicate, layer, groupTandem, createCircuitElement ) => {
         const addCircuitElement = circuitElement => {
-          if ( circuitElement instanceof type ) {
+          if ( predicate( circuitElement ) ) {
             const circuitElementNode = createCircuitElement( circuitElement, Tandem.OPTIONAL );
             this.circuitElementNodeMap[ circuitElement.id ] = circuitElementNode;
 
@@ -289,7 +291,7 @@ define( require => {
         circuit.circuitElements.addItemAddedListener( addCircuitElement );
         circuit.circuitElements.forEach( addCircuitElement );
         circuit.circuitElements.addItemRemovedListener( circuitElement => {
-          if ( circuitElement instanceof type ) {
+          if ( predicate( circuitElement ) ) {
 
             const circuitElementNode = this.getCircuitElementNode( circuitElement );
             layer.removeChild( circuitElementNode );
@@ -300,25 +302,27 @@ define( require => {
         } );
       };
 
-      initializeCircuitElementType( Wire, this.wireLayer, tandem.createGroupTandem( 'wireNode' ),
+      initializeCircuitElementType( e => e instanceof Wire, this.wireLayer, tandem.createGroupTandem( 'wireNode' ),
         ( circuitElement, tandem ) => new WireNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
-      initializeCircuitElementType( Battery, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'batteryNode' ),
+      initializeCircuitElementType( e => e instanceof Battery, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'batteryNode' ),
         ( circuitElement, tandem ) => new BatteryNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
-      initializeCircuitElementType( LightBulb, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'lightBulbNode' ),
+      initializeCircuitElementType( e => e instanceof LightBulb, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'lightBulbNode' ),
         ( circuitElement, tandem ) => new CCKCLightBulbNode( screenView, this, circuitElement, this.model.isValueDepictionEnabledProperty, this.model.viewTypeProperty, tandem ) );
-      initializeCircuitElementType( Resistor, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'resistorNode' ),
+      initializeCircuitElementType( e => e instanceof Resistor && !( e instanceof Dog ), this.fixedCircuitElementLayer, tandem.createGroupTandem( 'resistorNode' ),
         ( circuitElement, tandem ) => new ResistorNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
-      initializeCircuitElementType( Capacitor, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'capacitorNode' ),
+      initializeCircuitElementType( e => e instanceof Dog, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'resistorNode' ),
+        ( circuitElement, tandem ) => new DogNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
+      initializeCircuitElementType( e => e instanceof Capacitor, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'capacitorNode' ),
         ( circuitElement, tandem ) => new CapacitorCircuitElementNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
-      initializeCircuitElementType( SeriesAmmeter, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'seriesAmmeterNode' ),
+      initializeCircuitElementType( e => e instanceof SeriesAmmeter, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'seriesAmmeterNode' ),
         ( circuitElement, tandem ) => new SeriesAmmeterNode( screenView, this, circuitElement, tandem ) );
-      initializeCircuitElementType( Switch, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'switchNode' ),
+      initializeCircuitElementType( e => e instanceof Switch, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'switchNode' ),
         ( circuitElement, tandem ) => new SwitchNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
-      initializeCircuitElementType( ACVoltage, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'acSourceNode' ),
+      initializeCircuitElementType( e => e instanceof ACVoltage, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'acSourceNode' ),
         ( circuitElement, tandem ) => new ACVoltageNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
-      initializeCircuitElementType( Fuse, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'fuseNode' ),
+      initializeCircuitElementType( e => e instanceof Fuse, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'fuseNode' ),
         ( circuitElement, tandem ) => new FuseNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
-      initializeCircuitElementType( Inductor, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'inductorNode' ),
+      initializeCircuitElementType( e => e instanceof Inductor, this.fixedCircuitElementLayer, tandem.createGroupTandem( 'inductorNode' ),
         ( circuitElement, tandem ) => new InductorNode( screenView, this, circuitElement, this.model.viewTypeProperty, tandem ) );
 
       // When a vertex is selected, a cut button is shown near to the vertex.  If the vertex is connected to >1 circuit

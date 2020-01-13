@@ -324,7 +324,7 @@ define( require => {
       // TODO(phet-io): Did we do high resistance resistor?
 
       this.resistorGroup = new PhetioGroup(
-        ( tandem, startVertex, endVertex ) => new Resistor( startVertex, endVertex, tandem ),
+        ( tandem, startVertex, endVertex ) => new Resistor( startVertex, endVertex, Resistor.ResistorType.RESISTOR, tandem ),
         () => createVertices( CCKCConstants.RESISTOR_LENGTH ), {
           phetioType: PhetioGroupIO( CircuitElementIO ),
           tandem: tandem.createTandem( 'resistorGroup' )
@@ -851,7 +851,7 @@ define( require => {
       const circuitElementsArray = this.circuitElements.getArray();
       const stepElements = circuitElementsArray.filter( element => element.step );
       const dynamicElements = circuitElementsArray.filter( element => element instanceof DynamicCircuitElement );
-      stepElements.forEach( element => element.step( this.timeProperty.value, dt ) );
+      stepElements.forEach( element => element.step( this.timeProperty.value, dt, this ) );
 
       if ( this.dirty || stepElements.length > 0 || dynamicElements.length > 0 ) {
         ModifiedNodalAnalysisAdapter.solveModifiedNodalAnalysis( this, dt );

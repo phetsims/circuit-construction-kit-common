@@ -80,6 +80,7 @@ define( require => {
 
       options = merge( { isIcon: false, useHitTestForSensors: true }, options );
 
+      // Assigned to instance variable after super()
       const lifelikeResistorImageNode = new Image( RESISTOR_IMAGE_MAP[ resistor.resistorType ] );
 
       let updateColorBands = null;
@@ -169,6 +170,7 @@ define( require => {
 
       // Adjust the dog so the charges travel along the tail/legs, see
       // https://github.com/phetsims/circuit-construction-kit-common/issues/364
+      // TODO: Move these into Resistor.ResistorType enumeration values
       if ( resistor.resistorType === Resistor.ResistorType.DOG ) {
         lifelikeResistorImageNode.translate( 0, -40 );
       }
@@ -192,6 +194,9 @@ define( require => {
 
       // @public (read-only) {Resistor} the resistor depicted by this node
       this.resistor = resistor;
+
+      // @protected
+      this.lifelikeResistorImageNode = lifelikeResistorImageNode;
 
       /**
        * @private {function} - dispose the resistor node

@@ -33,6 +33,7 @@ define( require => {
   const Node = require( 'SCENERY/nodes/Node' );
   const Property = require( 'AXON/Property' );
   const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
+  const Dog = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Dog' );
   const ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorNode' );
   const Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
   const SwitchNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SwitchNode' );
@@ -244,6 +245,7 @@ define( require => {
       const resistorModel = new Resistor(
         new Vertex( Vector2.ZERO ),
         new Vertex( new Vector2( CCKCConstants.RESISTOR_LENGTH, 0 ) ),
+        Resistor.ResistorType.RESISTOR,
         Tandem.OPTIONAL
       );
       return this.createCircuitElementToolNode( resistorString, count,
@@ -365,11 +367,13 @@ define( require => {
 
           // TODO(phet-io): groupify
           const vertexPair = this.circuit.createVertexPairArray( position, resistorLength );
-          return new Resistor( vertexPair[ 0 ], vertexPair[ 1 ], groupTandem.createNextTandem(), {
-            resistance: resistance,
-            resistorType: resistorType,
-            resistorLength: resistorLength
-          } );
+          return resistorType === Resistor.ResistorType.DOG ?
+                 new Dog( vertexPair[ 0 ], vertexPair[ 1 ], groupTandem.createNextTandem(), {
+                   resistorLength: resistorLength
+                 } ) :
+                 new Resistor( vertexPair[ 0 ], vertexPair[ 1 ], resistorType, groupTandem.createNextTandem(), {
+                   resistorLength: resistorLength
+                 } );
         };
       };
 
@@ -381,10 +385,13 @@ define( require => {
        * @returns {Resistor}
        */
       const createHouseholdItem = function( resistorType, resistorLength, tandem ) {
-        return new Resistor( new Vertex( Vector2.ZERO ), new Vertex( new Vector2( resistorLength, 0 ) ), tandem, {
-          resistorType: resistorType,
-          resistorLength: resistorLength
-        } );
+        return resistorType === Resistor.ResistorType.DOG ?
+               new Dog( new Vertex( Vector2.ZERO ), new Vertex( new Vector2( resistorLength, 0 ) ), tandem, {
+                 resistorLength: resistorLength
+               } ) :
+               new Resistor( new Vertex( Vector2.ZERO ), new Vertex( new Vector2( resistorLength, 0 ) ), resistorType, tandem, {
+                 resistorLength: resistorLength
+               } );
       };
       const createdItem = createHouseholdItem( resistorType, resistorLength, iconModelTandem );
       return this.createCircuitElementToolNode( labelString, maxCount, createHouseholdIcon( createdItem, iconTandem ),
@@ -497,7 +504,7 @@ define( require => {
     createHandToolNode( count, tandem ) {
       return this.createHouseholdItemToolNode(
         Resistor.ResistorType.HAND,
-        Math.pow( 10, 6 ),
+        CCKCConstants.HAND_RESISTANCE,
         CCKCConstants.HAND_LENGTH,
         handString,
         count,
@@ -516,7 +523,7 @@ define( require => {
     createDogToolNode( count, tandem ) {
       return this.createHouseholdItemToolNode(
         Resistor.ResistorType.DOG,
-        HIGH_RESISTANCE,
+        CCKCConstants.DOG_RESISTANCE,
         CCKCConstants.DOG_LENGTH,
         dogString,
         count,
@@ -604,9 +611,8 @@ define( require => {
           new Resistor(
             new Vertex( Vector2.ZERO ),
             new Vertex( new Vector2( CCKCConstants.RESISTOR_LENGTH, 0 ) ),
-            Tandem.OPTIONAL, {
-              resistorType: Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR, resistance: 1000
-            } ),
+            Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR,
+            Tandem.OPTIONAL ),
           this.viewTypeProperty,
           tandem.createTandem( 'highResistanceResistorIcon' ), {
             isIcon: true
@@ -617,9 +623,8 @@ define( require => {
           return new Resistor(
             vertices[ 0 ],
             vertices[ 1 ],
+            Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR,
             Tandem.OPTIONAL, {
-              resistorType: Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR,
-              resistance: CCKCConstants.HIGH_RESISTANCE,
               editableRange: CCKCConstants.HIGH_RESISTANCE_RANGE
             } );
         }

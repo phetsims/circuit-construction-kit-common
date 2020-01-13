@@ -16,6 +16,7 @@ define( require => {
   const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Range = require( 'DOT/Range' );
+  const validate = require( 'AXON/validate' );
 
   // constants
   const RESISTOR_LENGTH = CCKCConstants.RESISTOR_LENGTH;
@@ -25,42 +26,42 @@ define( require => {
     /**
      * @param {Vertex} startVertex
      * @param {Vertex} endVertex
+     * @param {Resistor.ResistorType} resistorType
      * @param {Tandem} tandem
      * @param {Object} [options]
      */
-    constructor( startVertex, endVertex, tandem, options ) {
+    constructor( startVertex, endVertex, resistorType, tandem, options ) {
       options = merge( {
-        resistance: CCKCConstants.DEFAULT_RESISTANCE,
 
-        // Support for rendering household items or
-        resistorType: Resistor.ResistorType.VALUES[ 0 ],
+        // Support for rendering household items
         resistorLength: RESISTOR_LENGTH,
         isFlammable: true
       }, options );
+
+      assert && assert( !options.hasOwnProperty( 'resistance' ), 'Resistance should be passed through resistorType' );
 
       assert && assert( !options.hasOwnProperty( 'numberOfDecimalPlaces' ), 'supplied by Resistor' );
       options.numberOfDecimalPlaces = options.resistorType === Resistor.ResistorType.RESISTOR ? 1 : 0;
 
       // validate resistor type
-      assert && assert( Resistor.ResistorType.VALUES.indexOf( options.resistorType ) >= 0, 'Unknown resistor type: ' +
-                                                                                           options.resistorType );
+      validate( resistorType, { valueType: Resistor.ResistorType } );
 
       super( startVertex, endVertex, options.resistorLength, tandem, options );
 
       // @public (read-only) {Resistor.ResistorType} indicates one of ResistorType values
-      this.resistorType = options.resistorType;
+      this.resistorType = resistorType;
 
       assert && assert( typeof this.resistorType.isMetallic === 'boolean' );
 
-      // @public (read-only)
+      // @public (read-only) // TODO: is this correct?  Is it necessary?
       options.isMetallic = this.resistorType.isMetallic;
 
       // @public {Property.<number>} the resistance in ohms
-      this.resistanceProperty = new NumberProperty( options.resistance, {
+      this.resistanceProperty = new NumberProperty( resistorType.defaultResistance, {
         tandem: tandem.createTandem( 'resistanceProperty' ),
 
         // Specify the Property range for seamless PhET-iO interoperation
-        range: options.resistorType.range
+        range: this.resistorType.range
       } );
     }
 
@@ -100,30 +101,36 @@ define( require => {
   class ResistorEnumValue {
 
     /**
-     * @param {Range} range - possible values for the resistance
+     * @param {number} defaultResistance - default value for resistance, in Ohms
+     * @param {Range} resistanceRange - possible values for the resistance, in Ohms
      * @param isMetallic - whether the item is metallic (non-insulated) and hence can have its value read at any point
      */
-    constructor( range, isMetallic ) {
+    constructor( defaultResistance, resistanceRange, isMetallic ) { // TODO: Move length into this enum
 
-      // @public (read-only)
-      this.range = range;
+      // @public (read-only) {number} - in Ohms
+      this.defaultResistance = defaultResistance;
 
-      // @public (read-only)
+      // @public (read-only) {Range} - in Ohms
+      this.range = resistanceRange;
+
+      // @public (read-only) {boolean}
       this.isMetallic = isMetallic;
     }
   }
 
   // Enumeration for the different resistor types.
   Resistor.ResistorType = Enumeration.byMap( {
-    RESISTOR: new ResistorEnumValue( new Range( 0, 120 ), false ),
-    HIGH_RESISTANCE_RESISTOR: new ResistorEnumValue( new Range( 100, 10000 ), false ),
-    COIN: new ResistorEnumValue( new Range( 0, 10000 ), true ),
-    PAPER_CLIP: new ResistorEnumValue( new Range( 0, 1000000000 ), true ),
-    PENCIL: new ResistorEnumValue( new Range( 0, 1000000000 ), false ),
-    ERASER: new ResistorEnumValue( new Range( 0, 1000000000 ), false ),
-    HAND: new ResistorEnumValue( new Range( 0, 100000 ), false ),
-    DOG: new ResistorEnumValue( new Range( 0, 100000 ), false ),
-    DOLLAR_BILL: new ResistorEnumValue( new Range( 0, 1000000000 ), false )
+    RESISTOR: new ResistorEnumValue( 10, new Range( 0, 120 ), false ),
+    HIGH_RESISTANCE_RESISTOR: new ResistorEnumValue( 1000, new Range( 100, 10000 ), false ),
+
+    // TODO: better API
+    COIN: new ResistorEnumValue( 10000, new Range( 10000, 10000 ), true ),
+    PAPER_CLIP: new ResistorEnumValue( 1000000000, new Range( 1000000000, 1000000000 ), true ),
+    PENCIL: new ResistorEnumValue( 1000000000, new Range( 1000000000, 1000000000 ), false ),
+    ERASER: new ResistorEnumValue( 1000000000, new Range( 1000000000, 1000000000 ), false ),
+    HAND: new ResistorEnumValue( 100000, new Range( 100000, 100000 ), false ),
+    DOG: new ResistorEnumValue( 100000, new Range( 100000, 100000 ), false ),
+    DOLLAR_BILL: new ResistorEnumValue( 1000000000, new Range( 1000000000, 1000000000 ), false )
   } );
 
   return circuitConstructionKitCommon.register( 'Resistor', Resistor );
