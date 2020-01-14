@@ -46,7 +46,8 @@ define( require => {
             icon,
             new BanNode( {
               lineWidth: 3,
-              radius: 17
+              radius: 17,
+              fill: null
             } )
           ]
         } ),
