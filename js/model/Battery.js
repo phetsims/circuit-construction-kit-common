@@ -75,15 +75,6 @@ define( require => {
       // @public (read-only) {Battery.BatteryType} - the type of the battery - NORMAL | HIGH_VOLTAGE
       this.batteryType = batteryType;
     }
-
-    /**
-     * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
-     * @public
-     */
-    dispose() {
-      this.voltageProperty.dispose();
-      super.dispose();
-    }
   }
 
   // Enumeration for the different types of Battery, NORMAL or HIGH_VOLTAGE

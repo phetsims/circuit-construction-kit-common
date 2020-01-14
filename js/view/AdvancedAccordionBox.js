@@ -32,7 +32,7 @@ define( require => {
         spacing: 10,
         children: [
           new WireResistivityControl( circuit.wireResistivityProperty, alignGroup, tandem.createTandem( 'wireResistivityControl' ) ),
-          new SourceResistanceControl( circuit.sourceResistanceProperty, alignGroup, batteryResistanceControlString, tandem.createTandem( 'batteryResistanceControl' ) )
+          new SourceResistanceControl( circuit.sourceResistanceProperty, alignGroup, batteryResistanceControlString, tandem.createTandem( 'sourceResistanceControl' ) )
         ]
       } ) ), advancedString, tandem, {
 
