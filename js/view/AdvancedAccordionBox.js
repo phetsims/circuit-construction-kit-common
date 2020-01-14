@@ -18,7 +18,7 @@ define( require => {
   // strings
   const advancedString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/advanced' );
 
-  class AdvancedControlsAccordionBox extends CCKCAccordionBox {
+  class AdvancedAccordionBox extends CCKCAccordionBox {
 
     /**
      * @param {Circuit} circuit
@@ -46,5 +46,5 @@ define( require => {
     }
   }
 
-  return circuitConstructionKitCommon.register( 'AdvancedControlsAccordionBox', AdvancedControlsAccordionBox );
+  return circuitConstructionKitCommon.register( 'AdvancedAccordionBox', AdvancedAccordionBox );
 } );

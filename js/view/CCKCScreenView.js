@@ -13,7 +13,7 @@ define( require => {
   const AlignBox = require( 'SCENERY/nodes/AlignBox' );
   const AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
   const AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/AmmeterNode' );
-  const AdvancedControlsAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/AdvancedControlsAccordionBox' );
+  const AdvancedAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/AdvancedAccordionBox' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   const ChargeSpeedThrottlingReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ChargeSpeedThrottlingReadoutNode' );
@@ -85,7 +85,7 @@ define( require => {
         blackBoxStudy: false,
         showStopwatchCheckbox: false,
         showPhaseShiftControl: false,
-        hasACandDCVoltageSources: false // determines the string shown in the AdvancedControlsAccordionBox
+        hasACandDCVoltageSources: false // determines the string shown in the AdvancedAccordionBox
       }, options );
 
       super();
@@ -189,11 +189,11 @@ define( require => {
         tandem.createTandem( 'displayOptionsPanel' )
       );
 
-      this.advancedControlsAccordionBox = new AdvancedControlsAccordionBox(
+      this.advancedAccordionBox = new AdvancedAccordionBox(
         model.circuit,
         CONTROL_PANEL_ALIGN_GROUP,
         options.hasACandDCVoltageSources ? sourceResistanceString : batteryResistanceString,
-        tandem.createTandem( 'advancedControlsAccordionBox' )
+        tandem.createTandem( 'advancedAccordionBox' )
       );
 
       this.addChild( this.circuitLayerNodeBackLayer );
@@ -217,7 +217,7 @@ define( require => {
       const controlPanelVBox = new VBox( {
         spacing: VERTICAL_MARGIN,
         children: options.showAdvancedControls ?
-          [ this.displayOptionsPanel, this.sensorToolbox, this.advancedControlsAccordionBox ] :
+          [ this.displayOptionsPanel, this.sensorToolbox, this.advancedAccordionBox ] :
           [ this.displayOptionsPanel, this.sensorToolbox ]
       } );
 
