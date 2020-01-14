@@ -96,7 +96,7 @@ define( require => {
 
         const companionResistance = dt / 2.0 / capacitorAdapter.dynamicCircuitCapacitor.capacitance;
 
-        // TODO(sign-error): This sign contradicts the equation above, perhaps the current is backwards?
+        // TODO: (sign-error) This sign contradicts the equation above, perhaps the current is backwards?
         // Flipping getValueForSolution and CapacitorAdapter.getTimeAverageCurrent seems to help
         const companionVoltage = capacitorAdapter.state.voltage - companionResistance * capacitorAdapter.state.current;
 
@@ -106,7 +106,7 @@ define( require => {
         companionResistors.push( resistor );
 
         // We need to be able to get the current for this component. In series, so the current is the same through both.
-        // TODO(sign-error): Previously used resistor to get current.  Check sign is correct.
+        // TODO: (sign-error) Previously used resistor to get current.  Check sign is correct.
         currentCompanions.push( {
           element: capacitorAdapter,
           getValueForSolution: solution => solution.getCurrentForResistor( resistor )
@@ -135,7 +135,7 @@ define( require => {
         currentCompanions.push( {
           element: inductorAdapter,
 
-          // TODO(sign-error): check sign, this was converted from battery to resistor
+          // TODO: (sign-error) check sign, this was converted from battery to resistor
           getValueForSolution: solution => -solution.getCurrentForResistor( resistor )
         } );
       } );

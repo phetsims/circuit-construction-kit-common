@@ -1,7 +1,8 @@
 // Copyright 2020, University of Colorado Boulder
 
 /**
- * TODO: Documentation
+ * Advanced control panel that appears in "Lab" screens which allows the user to adjust the resistivity of wires
+ * and the internal resistance of voltage sources.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

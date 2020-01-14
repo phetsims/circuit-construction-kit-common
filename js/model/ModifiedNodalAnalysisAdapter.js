@@ -107,7 +107,7 @@ define( require => {
         inductor.inductanceProperty.value
       );
 
-      // TODO(sign-error): sign error
+      // TODO: (sign-error)
       super( dynamicCircuitInductor, new DynamicCircuit.DynamicElementState( inductor.mnaVoltageDrop, -inductor.mnaCurrent ) );
 
       // @private - alongside this.dynamicCircuitInductor assigned in the supertype
@@ -120,7 +120,7 @@ define( require => {
      */
     applySolution( circuitResult ) {
 
-      // TODO(sign-error): Why is there a negative sign here?
+      // TODO: sign-error:
       this.inductor.currentProperty.value = -circuitResult.getTimeAverageCurrent( this.dynamicCircuitInductor );
       this.inductor.mnaCurrent = -circuitResult.getInstantaneousCurrent( this.dynamicCircuitInductor );
       this.inductor.mnaVoltageDrop = circuitResult.getInstantaneousVoltage( this.dynamicCircuitInductor );
