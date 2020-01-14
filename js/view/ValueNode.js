@@ -9,8 +9,6 @@ define( require => {
   'use strict';
 
   // modules
-  const ACVoltage = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ACVoltage' );
-  const Battery = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Battery' );
   const Capacitor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Capacitor' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
@@ -32,6 +30,7 @@ define( require => {
   const Utils = require( 'DOT/Utils' );
   const VBox = require( 'SCENERY/nodes/VBox' );
   const Vector2 = require( 'DOT/Vector2' );
+  const VoltageSource = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/VoltageSource' );
 
   // strings
   const capacitanceFaradsSymbolString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/capacitanceFaradsSymbol' );
@@ -75,7 +74,7 @@ define( require => {
 
       let contentNode = null;
       let updatePosition = null;
-      if ( circuitElement instanceof Battery || circuitElement instanceof ACVoltage ) {
+      if ( circuitElement instanceof VoltageSource ) {
 
         const voltageText = createText( tandem.createTandem( 'voltageText' ) );
         const voltageListener = voltage => {
