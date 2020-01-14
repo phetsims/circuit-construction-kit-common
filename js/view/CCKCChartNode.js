@@ -126,7 +126,7 @@ define( require => {
       // Create the scrolling chart content and add it to the background.  There is an order-of-creation cycle which
       // prevents the scrolling node from being added to the background before the super() call, so this will have to
       // suffice.
-      const scrollingChartNode = new ScrollingChartNode( timeProperty, seriesArray, verticalAxisTitleNode, horizontalAxisTitleNode,
+      this.scrollingChartNode = new ScrollingChartNode( timeProperty, seriesArray, verticalAxisTitleNode, horizontalAxisTitleNode,
         scaleIndicatorText, {
           width: 150, height: 110,
           verticalRanges: [ new Range( -1, 1 ), new Range( -10, 10 ), new Range( -100, 100 ), new Range( -1000, 1000 ) ],
@@ -134,10 +134,10 @@ define( require => {
           verticalGridLabelNumberOfDecimalPlaces: 1,
           tandem: options.tandem.createTandem( 'scrollingChartNode' )
         } );
-      const shadedRectangle = new ShadedRectangle( scrollingChartNode.bounds.dilated( 7 ), {
+      const shadedRectangle = new ShadedRectangle( this.scrollingChartNode.bounds.dilated( 7 ), {
         baseColor: '#327198'
       } );
-      shadedRectangle.addChild( scrollingChartNode );
+      shadedRectangle.addChild( this.scrollingChartNode );
       backgroundNode.addChild( shadedRectangle );
 
       this.meter.visibleProperty.link( visible => this.setVisible( visible ) );
@@ -188,6 +188,7 @@ define( require => {
     reset() {
       this.seriesArray.forEach( series => series.clear() );
       this.meter.reset();
+      this.scrollingChartNode.reset();
     }
 
     /**
