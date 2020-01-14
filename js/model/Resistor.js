@@ -46,15 +46,16 @@ define( require => {
       // validate resistor type
       validate( resistorType, { valueType: Resistor.ResistorType } );
 
+      // @public (read-only)
+      assert && assert( !options.hasOwnProperty( 'isMetallic' ), 'isMetallic is given by the resistorType' );
+      options.isMetallic = resistorType.isMetallic;
+
       super( startVertex, endVertex, options.resistorLength, tandem, options );
 
       // @public (read-only) {Resistor.ResistorType} indicates one of ResistorType values
       this.resistorType = resistorType;
 
       assert && assert( typeof this.resistorType.isMetallic === 'boolean' );
-
-      // @public (read-only) // TODO: is this correct?  Is it necessary?
-      options.isMetallic = this.resistorType.isMetallic;
 
       // @public {Property.<number>} the resistance in ohms
       this.resistanceProperty = new NumberProperty( resistorType.defaultResistance, {
