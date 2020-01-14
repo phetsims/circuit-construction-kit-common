@@ -38,7 +38,7 @@ define( require => {
        * @param {Tandem} tandem
        * @returns {Text}
        */
-      const createLabel = ( string, tandem ) => new Text( string, { fontSize: 12, tandem: tandem } );
+      const createLabel = ( string, tandem ) => new Text( string, { fontSize: 12, tandem: tandem, maxWidth: 45 } );
 
       const range = CCKCConstants.BATTERY_RESISTANCE_RANGE;
       const midpoint = ( range.max + range.min ) / 2;
@@ -61,9 +61,8 @@ define( require => {
         }
       }
 
-      const titleNode = new Text( batteryResistanceControlString, { fontSize: 12 } );
+      const titleNode = new Text( batteryResistanceControlString, { fontSize: 12, maxWidth: 200 } ); // TODO: duplicated in WireResistivityControl
       super( {
-        spacing: -4,
         children: [ titleNode, slider ]
       } );
     }

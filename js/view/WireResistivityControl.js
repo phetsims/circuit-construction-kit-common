@@ -35,7 +35,7 @@ define( require => {
      */
     constructor( wireResistivityProperty, alignGroup, tandem ) {
 
-      const titleNode = new Text( wireResistivityString, { fontSize: 12 } );
+      const titleNode = new Text( wireResistivityString, { fontSize: 12, maxWidth: 200 } );
 
       const slider = new HSlider( wireResistivityProperty, new Range(
         CCKCConstants.DEFAULT_RESISTIVITY,
