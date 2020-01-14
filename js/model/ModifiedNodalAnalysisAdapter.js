@@ -1,4 +1,4 @@
-// Copyright 2019, University of Colorado Boulder
+// Copyright 2019-2020, University of Colorado Boulder
 
 /**
  * Takes a Circuit, creates a corresponding DynamicCircuit, solves the DynamicCircuit and applies the results back
