@@ -17,7 +17,9 @@ define( require => {
 
   // constants
   // Conversion factor between model=view coordinates and meters, in order to use resistivity to compute resistance.
-  const METERS_PER_VIEW_COORDINATE = 0.015273409966500692;
+  // Chosen so that a battery is around 5cm long.  See CCKCConstants for the default lengths of the elements in view
+  // coordinates.
+  const METERS_PER_VIEW_COORDINATE = 0.0005;
 
   class Wire extends CircuitElement {
 
@@ -81,16 +83,19 @@ define( require => {
       if ( this.wireDirty ) {
         const startPosition = this.startPositionProperty.get();
         const endPosition = this.endPositionProperty.get();
-        const viewLength = startPosition.distance( endPosition );
-        const modelLength = viewLength * METERS_PER_VIEW_COORDINATE;
+        const distanceBetweenVertices = startPosition.distance( endPosition ); // same as view coordinates
+        const modelLength = distanceBetweenVertices * METERS_PER_VIEW_COORDINATE;
         this.lengthProperty.set( modelLength );
-        const resistance = modelLength * this.resistivityProperty.get();
+
+        // R = rho * L / A.  Resistance = resistivity * Length / cross sectional area.
+        const resistance = this.resistivityProperty.get() * modelLength / CCKCConstants.WIRE_CROSS_SECTIONAL_AREA;
+
         const clampedResistance = Math.max( CCKCConstants.MINIMUM_RESISTANCE, resistance );
         assert && assert( !isNaN( clampedResistance ), 'wire resistance should not be NaN' );
         this.resistanceProperty.set( clampedResistance );
 
         // Update the charge path length, but don't let it go less than a threshold, see https://github.com/phetsims/circuit-construction-kit-common/issues/405
-        this.chargePathLength = Math.max( viewLength, 1E-6 );
+        this.chargePathLength = Math.max( distanceBetweenVertices, 1E-6 );
         this.wireDirty = false;
       }
     }

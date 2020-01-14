@@ -62,7 +62,12 @@ define( require => {
     HIGHLIGHT_LINE_WIDTH: 5,
 
     // Default resistivity for Wires and Switches (whose resistance varies with length)
-    DEFAULT_RESISTIVITY: 1E-5,
+    // R = rho * L / A.  Resistance = resistivity * Length / cross sectional area.
+    // https://en.wikipedia.org/wiki/Electrical_resistivity_and_conductivity says copper has rho=1.68E-8 Ohm * m
+    // According to http://www.sengpielaudio.com/calculator-cross-section.htm AWG Wire Gauge of 20 has 0.52mm^2 = 5.2e-7m^2
+    DEFAULT_RESISTIVITY: 1.68E-8, // Ohm * m
+
+    WIRE_CROSS_SECTIONAL_AREA: 5.2E-7, // meters squared
 
     // The lowest resistance a CircuitElement can have
     MINIMUM_RESISTANCE: 1E-8,
