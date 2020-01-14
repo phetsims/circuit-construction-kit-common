@@ -399,6 +399,7 @@ define( require => {
       this.circuitElementToolbox.reset();
       this.advancedAccordionBox.expandedProperty.reset();
       this.voltageChartNode && this.voltageChartNode.reset();
+      this.currentChartNode && this.currentChartNode.reset();
     }
 
     /**

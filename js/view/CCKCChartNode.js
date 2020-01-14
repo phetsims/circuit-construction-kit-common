@@ -187,6 +187,7 @@ define( require => {
      */
     reset() {
       this.seriesArray.forEach( series => series.clear() );
+      this.meter.reset();
     }
 
     /**
