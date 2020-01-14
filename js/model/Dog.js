@@ -1,4 +1,4 @@
-// Copyright 2019, University of Colorado Boulder
+// Copyright 2020, University of Colorado Boulder
 
 /**
  * The Dog is a Resistor that barks and cuts Vertex instances when the current threshold is exceeded.
