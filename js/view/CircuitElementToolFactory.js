@@ -390,6 +390,12 @@ define( require => {
       return this.createResistorToolNode( count, Resistor.ResistorType.DOG, tandem.createTandem( 'dogIcon' ), dogString );
     }
 
+    // Same docs as for createPaperClipToolNode
+    createHighResistanceResistorToolNode( count, tandem ) {
+      return this.createResistorToolNode( count, Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR, tandem.createTandem( 'highResistanceResistorIcon' ), resistorString );
+    }
+
+
     /**
      * @param {number} count - the number that can be dragged out at once
      * @param {Tandem} tandem
@@ -452,41 +458,6 @@ define( require => {
             highResistance: true,
             editableRange: CCKCConstants.HIGH_RESISTANCE_RANGE
           } ) );
-    }
-
-    /**
-     * TODO: Combine with other resistor tools above
-     * @param {number} count - the number that can be dragged out at once
-     * @param {Tandem} tandem
-     * @returns {CircuitElementToolNode}
-     * @public
-     */
-    createHighResistanceResistorToolNode( count, tandem ) {
-      return this.createCircuitElementToolNode(
-        resistorString,
-        count,
-        new ResistorNode( null, null,
-          new Resistor(
-            new Vertex( Vector2.ZERO ),
-            new Vertex( new Vector2( CCKCConstants.RESISTOR_LENGTH, 0 ) ),
-            Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR,
-            Tandem.OPTIONAL ),
-          this.viewTypeProperty,
-          tandem.createTandem( 'highResistanceResistorIcon' ), {
-            isIcon: true
-          } ),
-        circuitElement => circuitElement instanceof Resistor && circuitElement.resistorType === Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR,
-        position => {
-          const vertices = this.circuit.createVertexPairArray( position, RESISTOR_LENGTH );
-          return new Resistor(
-            vertices[ 0 ],
-            vertices[ 1 ],
-            Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR,
-            Tandem.OPTIONAL, {
-              editableRange: CCKCConstants.HIGH_RESISTANCE_RANGE
-            } );
-        }
-      );
     }
   }
 
