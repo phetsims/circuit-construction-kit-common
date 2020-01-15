@@ -122,9 +122,10 @@ define( require => {
      * @param {boolean} isMetallic
      * @param {number} length
      * @returns {ResistorEnumValue}
+     * @private (only used in this file)
      */
     static fixed( resistance, isMetallic, length ) {
-      return new ResistorEnumValue( resistance, new Range( resistance, resistance ), isMetallic, length )
+      return new ResistorEnumValue( resistance, new Range( resistance, resistance ), isMetallic, length );
     }
   }
 
