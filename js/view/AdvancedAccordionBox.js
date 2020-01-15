@@ -29,11 +29,13 @@ define( require => {
      * @param {Object} [options]
      */
     constructor( circuit, alignGroup, batteryResistanceControlString, tandem, options ) {
+
+      const titleConfig = { fontSize: 12, maxWidth: 200 }; // Factor out for both titles
       super( alignGroup.createBox( new VBox( {
         spacing: 10,
         children: [
-          new WireResistivityControl( circuit.wireResistivityProperty, alignGroup, tandem.createTandem( 'wireResistivityControl' ) ),
-          new SourceResistanceControl( circuit.sourceResistanceProperty, alignGroup, batteryResistanceControlString, tandem.createTandem( 'sourceResistanceControl' ) )
+          new WireResistivityControl( circuit.wireResistivityProperty, alignGroup, titleConfig, tandem.createTandem( 'wireResistivityControl' ) ),
+          new SourceResistanceControl( circuit.sourceResistanceProperty, alignGroup, batteryResistanceControlString, titleConfig, tandem.createTandem( 'sourceResistanceControl' ) )
         ]
       } ) ), advancedString, tandem, {
 

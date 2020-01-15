@@ -28,9 +28,10 @@ define( require => {
      * @param {Property.<number>} sourceResistanceProperty - axon Property for the internal resistance of all Batteries
      * @param {AlignGroup} alignGroup
      * @param {string} batteryResistanceControlString
+     * @param {Object} titleConfig
      * @param {Tandem} tandem
      */
-    constructor( sourceResistanceProperty, alignGroup, batteryResistanceControlString, tandem ) {
+    constructor( sourceResistanceProperty, alignGroup, batteryResistanceControlString, titleConfig, tandem ) {
 
       /**
        * Creates label to be used for slider
@@ -61,7 +62,7 @@ define( require => {
         }
       }
 
-      const titleNode = new Text( batteryResistanceControlString, { fontSize: 12, maxWidth: 200 } ); // TODO: duplicated in WireResistivityControl
+      const titleNode = new Text( batteryResistanceControlString, titleConfig );
       super( {
         children: [ titleNode, slider ]
       } );

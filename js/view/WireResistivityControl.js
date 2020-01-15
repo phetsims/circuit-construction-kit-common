@@ -33,11 +33,12 @@ define( require => {
     /**
      * @param {Property.<number>} wireResistivityProperty
      * @param {AlignGroup} alignGroup - for alignment with other controls
+     * @param {Object} titleConfig
      * @param {Tandem} tandem
      */
-    constructor( wireResistivityProperty, alignGroup, tandem ) {
+    constructor( wireResistivityProperty, alignGroup, titleConfig, tandem ) {
 
-      const titleNode = new Text( wireResistivityString, { fontSize: 12, maxWidth: 200 } );
+      const titleNode = new Text( wireResistivityString, titleConfig );
 
       const slider = new HSlider( wireResistivityProperty, new Range(
         CCKCConstants.DEFAULT_RESISTIVITY,

@@ -100,8 +100,9 @@ define( require => {
      * @param {Range} resistanceRange - possible values for the resistance, in Ohms
      * @param {boolean} isMetallic - whether the item is metallic (non-insulated) and hence can have its value read at any point
      * @param {number} length
+     * @param {number} [verticalOffset=0]
      */
-    constructor( defaultResistance, resistanceRange, isMetallic, length ) {
+    constructor( defaultResistance, resistanceRange, isMetallic, length, verticalOffset = 0 ) {
 
       // @public (read-only) {number} - in Ohms
       this.defaultResistance = defaultResistance;
@@ -114,6 +115,9 @@ define( require => {
 
       // @public (read-only} {number} - in view coordinates
       this.length = length;
+
+      // @public (read-only) amount the view is shifted down in view coordinates
+      this.verticalOffset = verticalOffset;
     }
 
     /**
@@ -121,11 +125,12 @@ define( require => {
      * @param {number} resistance
      * @param {boolean} isMetallic
      * @param {number} length
+     * @param {number} [verticalOffset=0]
      * @returns {ResistorEnumValue}
      * @private (only used in this file)
      */
-    static fixed( resistance, isMetallic, length ) {
-      return new ResistorEnumValue( resistance, new Range( resistance, resistance ), isMetallic, length );
+    static fixed( resistance, isMetallic, length, verticalOffset = 0 ) {
+      return new ResistorEnumValue( resistance, new Range( resistance, resistance ), isMetallic, length, verticalOffset );
     }
   }
 
@@ -137,8 +142,10 @@ define( require => {
     PAPER_CLIP: ResistorEnumValue.fixed( 1000000000, true, CCKCConstants.PAPER_CLIP_LENGTH ),
     PENCIL: ResistorEnumValue.fixed( 1000000000, false, CCKCConstants.PENCIL_LENGTH ),
     ERASER: ResistorEnumValue.fixed( 1000000000, false, CCKCConstants.ERASER_LENGTH ),
-    HAND: ResistorEnumValue.fixed( 100000, false, CCKCConstants.HAND_LENGTH ),
-    DOG: ResistorEnumValue.fixed( 100000, false, CCKCConstants.DOG_LENGTH ),
+    HAND: ResistorEnumValue.fixed( 100000, false, CCKCConstants.HAND_LENGTH, 15 ),
+
+    // Adjust the dog so the charges travel along the tail/legs, see https://github.com/phetsims/circuit-construction-kit-common/issues/364
+    DOG: ResistorEnumValue.fixed( 100000, false, CCKCConstants.DOG_LENGTH, -40 ),
     DOLLAR_BILL: ResistorEnumValue.fixed( 1000000000, false, CCKCConstants.DOLLAR_BILL_LENGTH )
   } );
 

@@ -163,22 +163,11 @@ define( require => {
       schematicNode.centerY = 0;
       lifelikeResistorImageNode.centerY = 0;
 
-      // Expand the pointer areas with a defensive copy, see
-      // https://github.com/phetsims/circuit-construction-kit-common/issues/310
+      // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
       schematicNode.mouseArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
       schematicNode.touchArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
 
-      // Adjust the dog so the charges travel along the tail/legs, see
-      // https://github.com/phetsims/circuit-construction-kit-common/issues/364
-      // TODO: Move these into Resistor.ResistorType enumeration values
-      if ( resistor.resistorType === Resistor.ResistorType.DOG ) {
-        lifelikeResistorImageNode.translate( 0, -40 );
-      }
-
-      // Adjust hand origin as well
-      if ( resistor.resistorType === Resistor.ResistorType.HAND ) {
-        lifelikeResistorImageNode.translate( 0, 14 );
-      }
+      lifelikeResistorImageNode.translate( 0, resistor.resistorType.verticalOffset );
 
       // Super call
       super(
