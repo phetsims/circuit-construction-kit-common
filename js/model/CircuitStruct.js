@@ -122,9 +122,8 @@ define( require => {
       circuitStruct.resistors.push( new Resistor(
         circuitStruct.vertices[ circuitState.resistors[ i ].startVertex ],
         circuitStruct.vertices[ circuitState.resistors[ i ].endVertex ],
-        tandem.createNextTandem(), {
-          resistance: circuitState.resistors[ i ].resistance
-        }
+        Resistor.ResistorType.RESISTOR,
+        tandem.createNextTandem() // TODO(black-box-study): a way to set the resistance
       ) );
     }
     for ( let i = 0; i < circuitState.lightBulbs.length; i++ ) {
