@@ -67,7 +67,7 @@ define( require => {
     // According to http://www.sengpielaudio.com/calculator-cross-section.htm AWG Wire Gauge of 20 has 0.52mm^2 = 5.2e-7m^2
     DEFAULT_RESISTIVITY: 1.68E-8, // Ohm * m
 
-    WIRE_CROSS_SECTIONAL_AREA: 5.2E-7, // meters squared
+    WIRE_CROSS_SECTIONAL_AREA: 5E-4, // meters squared
 
     // The lowest resistance a CircuitElement can have
     MINIMUM_RESISTANCE: 1E-8,

@@ -25,8 +25,8 @@ define( require => {
   // constants
   const TICK_LABEL_TEXT_OPTIONS = { fontSize: 12, maxWidth: 45 };
 
-  // Chosen so that current through battery+long wire+long wire+resistor would match prior verison, see https://github.com/phetsims/circuit-construction-kit-common/issues/553
-  const MAX_RESISTIVITY = CCKCConstants.DEFAULT_RESISTIVITY * 1000;
+  // Chosen so that current through battery+long wire+long wire+resistor would match prior version, see https://github.com/phetsims/circuit-construction-kit-common/issues/553
+  const MAX_RESISTIVITY = CCKCConstants.DEFAULT_RESISTIVITY * 1000000;
 
   class WireResistivityControl extends VBox {
 
