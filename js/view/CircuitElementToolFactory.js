@@ -33,7 +33,6 @@ define( require => {
   const Node = require( 'SCENERY/nodes/Node' );
   const Property = require( 'AXON/Property' );
   const Resistor = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Resistor' );
-  const Dog = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Dog' );
   const ResistorNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ResistorNode' );
   const Switch = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Switch' );
   const SwitchNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SwitchNode' );
@@ -69,8 +68,6 @@ define( require => {
   const FUSE_LENGTH = CCKCConstants.FUSE_LENGTH;
   const WIRE_LENGTH = CCKCConstants.WIRE_LENGTH;
   const SWITCH_LENGTH = CCKCConstants.SWITCH_LENGTH;
-  const HIGH_RESISTANCE = Math.pow( 10, 9 );
-  const MIN_RESISTANCE = 1E-6;
 
   class CircuitElementToolFactory {
 
@@ -237,23 +234,32 @@ define( require => {
 
     /**
      * @param {number} count - the number that can be dragged out at once
+     * @param {Resistor.ResistorType} resistorType
      * @param {Tandem} tandem
+     * @param {string} [labelString]
+     * @param {number} [resistorLength]
      * @returns {CircuitElementToolNode}
      * @public
      */
-    createResistorToolNode( count, tandem ) {
+    createResistorToolNode( count, resistorType, tandem, labelString = resistorString, resistorLength = CCKCConstants.RESISTOR_LENGTH ) {
       const resistorModel = new Resistor(
         new Vertex( Vector2.ZERO ),
-        new Vertex( new Vector2( CCKCConstants.RESISTOR_LENGTH, 0 ) ),
-        Resistor.ResistorType.RESISTOR,
+        new Vertex( new Vector2( resistorLength, 0 ) ),
+        resistorType,
         Tandem.OPTIONAL
       );
-      return this.createCircuitElementToolNode( resistorString, count,
+
+      return this.createCircuitElementToolNode(
+        labelString,
+        count,
         new ResistorNode( null, null, resistorModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
           isIcon: true
         } ),
-        circuitElement => circuitElement instanceof Resistor && circuitElement.resistorType === Resistor.ResistorType.RESISTOR,
-        position => this.circuit.resistorGroup.createNextMember( ...this.circuit.createVertexPairArray( position, RESISTOR_LENGTH ) ) );
+        circuitElement => circuitElement instanceof Resistor && circuitElement.resistorType === resistorType,
+        position => {
+          const vertices = this.circuit.createVertexPairArray( position, resistorLength );
+          return this.circuit.resistorGroup.createNextMember( vertices[ 0 ], vertices[ 1 ], resistorType );
+        } );
     }
 
     /**
@@ -346,58 +352,15 @@ define( require => {
     /**
      * Create a ToolNode for a household item, such as an eraser or dog
      * @param {Resistor.ResistorType} resistorType
-     * @param {number} resistance
      * @param {number} resistorLength
      * @param {string} labelString
-     * @param {number} maxCount
-     * @param {Tandem} iconModelTandem
+     * @param {number} count
      * @param {Tandem} iconTandem
-     * @param {Tandem} groupTandem
      * @returns {CircuitElementToolNode}
      * @private
      */
-    createHouseholdItemToolNode( resistorType, resistance, resistorLength, labelString, maxCount,
-                                 iconModelTandem, iconTandem, groupTandem ) {
-      const createHouseholdIcon = ( householdItem, tandem ) => {
-        return new ResistorNode( null, null, householdItem, this.viewTypeProperty, tandem, { isIcon: true } );
-      };
-
-      const getHouseholdItemCreator = ( resistorType, resistance, resistorLength, groupTandem ) => {
-        return position => {
-
-          // TODO(phet-io): groupify
-          const vertexPair = this.circuit.createVertexPairArray( position, resistorLength );
-          return resistorType === Resistor.ResistorType.DOG ?
-                 new Dog( vertexPair[ 0 ], vertexPair[ 1 ], groupTandem.createNextTandem(), {
-                   resistorLength: resistorLength
-                 } ) :
-                 new Resistor( vertexPair[ 0 ], vertexPair[ 1 ], resistorType, groupTandem.createNextTandem(), {
-                   resistorLength: resistorLength
-                 } );
-        };
-      };
-
-      /**
-       * Create the specified household item
-       * @param {Resistor.ResistorType} resistorType
-       * @param {number} resistorLength
-       * @param {Tandem} tandem
-       * @returns {Resistor}
-       */
-      const createHouseholdItem = function( resistorType, resistorLength, tandem ) {
-        return resistorType === Resistor.ResistorType.DOG ?
-               new Dog( new Vertex( Vector2.ZERO ), new Vertex( new Vector2( resistorLength, 0 ) ), tandem, {
-                 resistorLength: resistorLength
-               } ) :
-               new Resistor( new Vertex( Vector2.ZERO ), new Vertex( new Vector2( resistorLength, 0 ) ), resistorType, tandem, {
-                 resistorLength: resistorLength
-               } );
-      };
-      const createdItem = createHouseholdItem( resistorType, resistorLength, iconModelTandem );
-      return this.createCircuitElementToolNode( labelString, maxCount, createHouseholdIcon( createdItem, iconTandem ),
-        circuitElement => circuitElement instanceof Resistor && circuitElement.resistorType === resistorType,
-        getHouseholdItemCreator( resistorType, resistance, resistorLength, groupTandem )
-      );
+    createHouseholdItemToolNode( resistorType, resistorLength, labelString, count, iconTandem ) {
+      return this.createResistorToolNode( count, resistorType, iconTandem, labelString, resistorLength );
     }
 
     /**
@@ -409,13 +372,10 @@ define( require => {
     createDollarBillToolNode( count, tandem ) {
       return this.createHouseholdItemToolNode(
         Resistor.ResistorType.DOLLAR_BILL,
-        HIGH_RESISTANCE,
         CCKCConstants.DOLLAR_BILL_LENGTH,
         dollarBillString,
         count,
-        Tandem.OPTIONAL,
-        tandem.createTandem( 'dollarBillIcon' ),
-        this.circuit.dollarBillGroupTandem
+        tandem.createTandem( 'dollarBillIcon' )
       );
     }
 
@@ -426,111 +386,32 @@ define( require => {
      * @public
      */
     createPaperClipToolNode( count, tandem ) {
-      return this.createHouseholdItemToolNode(
-        Resistor.ResistorType.PAPER_CLIP,
-        MIN_RESISTANCE,
-        CCKCConstants.PAPER_CLIP_LENGTH,
-        paperClipString,
-        count,
-        Tandem.OPTIONAL,
-        tandem.createTandem( 'paperClipIcon' ),
-        this.circuit.paperClipGroupTandem
-      );
+      return this.createHouseholdItemToolNode( Resistor.ResistorType.PAPER_CLIP, CCKCConstants.PAPER_CLIP_LENGTH, paperClipString, count, tandem.createTandem( 'paperClipIcon' ) );
     }
 
-    /**
-     * @param {number} count - the number that can be dragged out at once
-     * @param {Tandem} tandem
-     * @returns {CircuitElementToolNode}
-     * @public
-     */
+    // Same docs as for createPaperClipToolNode
     createCoinToolNode( count, tandem ) {
-      return this.createHouseholdItemToolNode(
-        Resistor.ResistorType.COIN,
-        MIN_RESISTANCE,
-        CCKCConstants.COIN_LENGTH,
-        coinString,
-        count,
-        Tandem.OPTIONAL,
-        tandem.createTandem( 'coinIcon' ),
-        this.circuit.coinGroupTandem
-      );
+      return this.createHouseholdItemToolNode( Resistor.ResistorType.COIN, CCKCConstants.COIN_LENGTH, coinString, count, tandem.createTandem( 'coinIcon' ) );
     }
 
-    /**
-     * @param {number} count - the number that can be dragged out at once
-     * @param {Tandem} tandem
-     * @returns {CircuitElementToolNode}
-     * @public
-     */
+    // Same docs as for createPaperClipToolNode
     createEraserToolNode( count, tandem ) {
-      return this.createHouseholdItemToolNode(
-        Resistor.ResistorType.ERASER,
-        HIGH_RESISTANCE,
-        CCKCConstants.ERASER_LENGTH,
-        eraserString,
-        count,
-        Tandem.OPTIONAL,
-        tandem.createTandem( 'eraserIcon' ),
-        this.circuit.eraserGroupTandem
-      );
+      return this.createHouseholdItemToolNode( Resistor.ResistorType.ERASER, CCKCConstants.ERASER_LENGTH, eraserString, count, tandem.createTandem( 'eraserIcon' ) );
     }
 
-    /**
-     * @param {number} count - the number that can be dragged out at once
-     * @param {Tandem} tandem
-     * @returns {CircuitElementToolNode}
-     * @public
-     */
+    // Same docs as for createPaperClipToolNode
     createPencilToolNode( count, tandem ) {
-      return this.createHouseholdItemToolNode(
-        Resistor.ResistorType.PENCIL,
-        25,
-        CCKCConstants.PENCIL_LENGTH,
-        pencilString,
-        count,
-        Tandem.OPTIONAL,
-        tandem.createTandem( 'pencilIcon' ),
-        this.circuit.pencilGroupTandem
-      );
+      return this.createHouseholdItemToolNode( Resistor.ResistorType.PENCIL, CCKCConstants.PENCIL_LENGTH, pencilString, count, tandem.createTandem( 'pencilIcon' ) );
     }
 
-    /**
-     * @param {number} count - the number that can be dragged out at once
-     * @param {Tandem} tandem
-     * @returns {CircuitElementToolNode}
-     * @public
-     */
+    // Same docs as for createPaperClipToolNode
     createHandToolNode( count, tandem ) {
-      return this.createHouseholdItemToolNode(
-        Resistor.ResistorType.HAND,
-        CCKCConstants.HAND_RESISTANCE,
-        CCKCConstants.HAND_LENGTH,
-        handString,
-        count,
-        Tandem.OPTIONAL,
-        tandem.createTandem( 'handIcon' ),
-        this.circuit.handGroupTandem
-      );
+      return this.createHouseholdItemToolNode( Resistor.ResistorType.HAND, CCKCConstants.HAND_LENGTH, handString, count, tandem.createTandem( 'handIcon' ) );
     }
 
-    /**
-     * @param {number} count - the number that can be dragged out at once
-     * @param {Tandem} tandem
-     * @returns {CircuitElementToolNode}
-     * @public
-     */
+    // Same docs as for createPaperClipToolNode
     createDogToolNode( count, tandem ) {
-      return this.createHouseholdItemToolNode(
-        Resistor.ResistorType.DOG,
-        CCKCConstants.DOG_RESISTANCE,
-        CCKCConstants.DOG_LENGTH,
-        dogString,
-        count,
-        Tandem.OPTIONAL,
-        tandem.createTandem( 'dogIcon' ),
-        this.circuit.dogGroupTandem
-      );
+      return this.createHouseholdItemToolNode( Resistor.ResistorType.DOG, CCKCConstants.DOG_LENGTH, dogString, count, tandem.createTandem( 'dogIcon' ) );
     }
 
     /**
@@ -598,6 +479,7 @@ define( require => {
     }
 
     /**
+     * TODO: Combine with other resistor tools above
      * @param {number} count - the number that can be dragged out at once
      * @param {Tandem} tandem
      * @returns {CircuitElementToolNode}

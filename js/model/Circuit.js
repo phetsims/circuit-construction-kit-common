@@ -321,10 +321,9 @@ define( require => {
         tandem: tandem.createTandem( 'acVoltageGroup' )
       } );
 
-      // TODO(phet-io): Did we do high resistance resistor?
-
       this.resistorGroup = new PhetioGroup(
-        ( tandem, startVertex, endVertex ) => new Resistor( startVertex, endVertex, Resistor.ResistorType.RESISTOR, tandem ),
+        // TODO: new Dog()
+        ( tandem, startVertex, endVertex, resistorType ) => new Resistor( startVertex, endVertex, resistorType, tandem ),
         () => createVertices( CCKCConstants.RESISTOR_LENGTH ), {
           phetioType: PhetioGroupIO( CircuitElementIO ),
           tandem: tandem.createTandem( 'resistorGroup' )
