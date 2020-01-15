@@ -80,7 +80,7 @@ define( require => {
         showSeriesAmmeters: false,
         showNoncontactAmmeters: true,
         getCircuitEditPanelLayoutPosition: CircuitElementEditContainerNode.GET_LAYOUT_POSITION,
-        showAdvancedControls: true, // TODO: Combine, see https://github.com/phetsims/circuit-construction-kit-common/issues/540
+        showAdvancedControls: true,
         showCharts: false,
         blackBoxStudy: false,
         showStopwatchCheckbox: false,
