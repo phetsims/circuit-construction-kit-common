@@ -327,7 +327,7 @@ define( require => {
                                                             new Dog( startVertex, endVertex, tandem ) :
                                                             new Resistor( startVertex, endVertex, resistorType, tandem ),
         () => {
-          const argumentArray = createVertices( resistorType.length );
+          const argumentArray = createVertices( Resistor.ResistorType.RESISTOR.length );
           argumentArray.push( Resistor.ResistorType.RESISTOR );
           return argumentArray;
         }, {
@@ -388,10 +388,13 @@ define( require => {
     }
 
     /**
-     * Find the corresponding group that contains the circuitElement and dispose it.
      * @param {CircuitElement} circuitElement
+     * @public
      */
-    disposeFromGroup( circuitElement ) {
+    disposeCircuitElement( circuitElement ) {
+      this.circuitElements.remove( circuitElement );
+
+      // Find the corresponding group that contains the circuitElement and dispose it.
       this.groups.forEach( group => group.contains( circuitElement ) && group.disposeMember( circuitElement ) );
     }
 
@@ -552,8 +555,7 @@ define( require => {
         // Dispose of elements
         while ( this.circuitElements.length > 0 ) {
           const circuitElement = this.circuitElements.get( 0 );
-          this.circuitElements.remove( circuitElement );
-          this.disposeFromGroup( circuitElement );
+          this.circuit.disposeCircuitElement( circuitElement );
           this.removeVertexIfOrphaned( circuitElement.startVertexProperty.value );
           this.removeVertexIfOrphaned( circuitElement.endVertexProperty.value );
         }

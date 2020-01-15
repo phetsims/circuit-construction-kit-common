@@ -64,7 +64,7 @@ define( require => {
 
             // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
             if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
-              circuit.circuitElements.remove( circuitElement );
+              circuit.disposeCircuitElement( circuitElement );
             }
           }
         }
@@ -190,8 +190,7 @@ define( require => {
 
         // If over the toolbox, then drop into it
         if ( screenView.canNodeDropInToolbox( this ) ) {
-
-          this.circuit.circuitElements.remove( circuitElement );
+          this.circuit.disposeCircuitElement( circuitElement );
         }
         else {
 

@@ -332,7 +332,7 @@ define( require => {
           const circuitElementNode = this.circuitLayerNode.getCircuitElementNode( circuitElement );
 
           if ( this.canNodeDropInToolbox( circuitElementNode ) ) {
-            this.model.circuit.circuitElements.remove( circuitElement );
+            this.model.circuit.disposeCircuitElement( circuitElement );
           }
         }
       } );

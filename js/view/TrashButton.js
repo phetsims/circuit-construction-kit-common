@@ -35,9 +35,7 @@ define( require => {
 
           // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
           if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
-            circuit.circuitElements.remove( circuitElement );
-            circuit.disposeFromGroup( circuitElement );// TODO(phet-io): improve somehow
-
+            circuit.disposeCircuitElement( circuitElement );
             !this.isDisposed && this.dispose();
           }
         },
