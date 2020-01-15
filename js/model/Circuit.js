@@ -555,7 +555,7 @@ define( require => {
         // Dispose of elements
         while ( this.circuitElements.length > 0 ) {
           const circuitElement = this.circuitElements.get( 0 );
-          this.circuit.disposeCircuitElement( circuitElement );
+          this.disposeCircuitElement( circuitElement );
           this.removeVertexIfOrphaned( circuitElement.startVertexProperty.value );
           this.removeVertexIfOrphaned( circuitElement.endVertexProperty.value );
         }
