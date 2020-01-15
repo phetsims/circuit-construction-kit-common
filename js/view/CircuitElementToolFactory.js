@@ -395,7 +395,6 @@ define( require => {
       return this.createResistorToolNode( count, Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR, tandem.createTandem( 'highResistanceResistorIcon' ), resistorString );
     }
 
-
     /**
      * @param {number} count - the number that can be dragged out at once
      * @param {Tandem} tandem
