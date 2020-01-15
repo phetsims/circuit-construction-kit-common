@@ -115,21 +115,30 @@ define( require => {
       // @public (read-only} {number} - in view coordinates
       this.length = length;
     }
+
+    /**
+     * Convenience function for creating a fixed-resistance resistor, like a household item.
+     * @param {number} resistance
+     * @param {boolean} isMetallic
+     * @param {number} length
+     * @returns {ResistorEnumValue}
+     */
+    static fixed( resistance, isMetallic, length ) {
+      return new ResistorEnumValue( resistance, new Range( resistance, resistance ), isMetallic, length )
+    }
   }
 
   // Enumeration for the different resistor types.
   Resistor.ResistorType = Enumeration.byMap( {
     RESISTOR: new ResistorEnumValue( 10, new Range( 0, 120 ), false, CCKCConstants.RESISTOR_LENGTH ),
     HIGH_RESISTANCE_RESISTOR: new ResistorEnumValue( 1000, new Range( 100, 10000 ), false, CCKCConstants.RESISTOR_LENGTH ),
-
-    // TODO: better API
-    COIN: new ResistorEnumValue( 10000, new Range( 10000, 10000 ), true, CCKCConstants.COIN_LENGTH ),
-    PAPER_CLIP: new ResistorEnumValue( 1000000000, new Range( 1000000000, 1000000000 ), true, CCKCConstants.PAPER_CLIP_LENGTH ),
-    PENCIL: new ResistorEnumValue( 1000000000, new Range( 1000000000, 1000000000 ), false, CCKCConstants.PENCIL_LENGTH ),
-    ERASER: new ResistorEnumValue( 1000000000, new Range( 1000000000, 1000000000 ), false, CCKCConstants.ERASER_LENGTH ),
-    HAND: new ResistorEnumValue( 100000, new Range( 100000, 100000 ), false, CCKCConstants.HAND_LENGTH ),
-    DOG: new ResistorEnumValue( 100000, new Range( 100000, 100000 ), false, CCKCConstants.DOG_LENGTH ),
-    DOLLAR_BILL: new ResistorEnumValue( 1000000000, new Range( 1000000000, 1000000000 ), false, CCKCConstants.DOLLAR_BILL_LENGTH )
+    COIN: ResistorEnumValue.fixed( 10000, true, CCKCConstants.COIN_LENGTH ),
+    PAPER_CLIP: ResistorEnumValue.fixed( 1000000000, true, CCKCConstants.PAPER_CLIP_LENGTH ),
+    PENCIL: ResistorEnumValue.fixed( 1000000000, false, CCKCConstants.PENCIL_LENGTH ),
+    ERASER: ResistorEnumValue.fixed( 1000000000, false, CCKCConstants.ERASER_LENGTH ),
+    HAND: ResistorEnumValue.fixed( 100000, false, CCKCConstants.HAND_LENGTH ),
+    DOG: ResistorEnumValue.fixed( 100000, false, CCKCConstants.DOG_LENGTH ),
+    DOLLAR_BILL: ResistorEnumValue.fixed( 1000000000, false, CCKCConstants.DOLLAR_BILL_LENGTH )
   } );
 
   return circuitConstructionKitCommon.register( 'Resistor', Resistor );
