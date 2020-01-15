@@ -14,10 +14,10 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const DerivedProperty = require( 'AXON/DerivedProperty' );
   const Enumeration = require( 'PHET_CORE/Enumeration' );
-  const VoltageSource = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/VoltageSource' );
   const merge = require( 'PHET_CORE/merge' );
   const NumberProperty = require( 'AXON/NumberProperty' );
   const Range = require( 'DOT/Range' );
+  const VoltageSource = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/VoltageSource' );
 
   // constants
   const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;

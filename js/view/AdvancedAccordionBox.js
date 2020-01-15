@@ -10,9 +10,9 @@ define( require => {
   'use strict';
 
   // modules
-  const SourceResistanceControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SourceResistanceControl' );
   const CCKCAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCAccordionBox' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+  const SourceResistanceControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SourceResistanceControl' );
   const VBox = require( 'SCENERY/nodes/VBox' );
   const WireResistivityControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/WireResistivityControl' );
 

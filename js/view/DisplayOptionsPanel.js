@@ -29,8 +29,8 @@ define( require => {
   const electronsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/electrons' );
   const labelsString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/labels' );
   const showCurrentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/showCurrent' );
-  const valuesString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/values' );
   const stopwatchString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/stopwatch' );
+  const valuesString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/values' );
 
   // constants
   const TEXT_OPTIONS = {

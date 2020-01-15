@@ -10,10 +10,10 @@ define( require => {
   'use strict';
 
   // modules
+  const AdvancedAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/AdvancedAccordionBox' );
   const AlignBox = require( 'SCENERY/nodes/AlignBox' );
   const AlignGroup = require( 'SCENERY/nodes/AlignGroup' );
   const AmmeterNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/AmmeterNode' );
-  const AdvancedAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/AdvancedAccordionBox' );
   const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
   const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
   const ChargeSpeedThrottlingReadoutNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ChargeSpeedThrottlingReadoutNode' );
