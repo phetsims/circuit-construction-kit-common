@@ -21,6 +21,7 @@ define( require => {
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const CircuitElementIO = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementIO' );
   const CurrentType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CurrentType' );
+  const Dog = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Dog' );
   const DynamicCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/DynamicCircuitElement' );
   const Emitter = require( 'AXON/Emitter' );
   const Enumeration = require( 'PHET_CORE/Enumeration' );
@@ -322,9 +323,14 @@ define( require => {
       } );
 
       this.resistorGroup = new PhetioGroup(
-        // TODO: new Dog()
-        ( tandem, startVertex, endVertex, resistorType ) => new Resistor( startVertex, endVertex, resistorType, tandem ),
-        () => createVertices( CCKCConstants.RESISTOR_LENGTH ), {
+        ( tandem, startVertex, endVertex, resistorType ) => resistorType === Resistor.ResistorType.DOG ?
+                                                            new Dog( startVertex, endVertex, tandem ) :
+                                                            new Resistor( startVertex, endVertex, resistorType, tandem ),
+        () => {
+          const argumentArray = createVertices( resistorType.length );
+          argumentArray.push( Resistor.ResistorType.RESISTOR );
+          return argumentArray;
+        }, {
           phetioType: PhetioGroupIO( CircuitElementIO ),
           tandem: tandem.createTandem( 'resistorGroup' )
         } );

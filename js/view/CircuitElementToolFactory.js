@@ -237,14 +237,15 @@ define( require => {
      * @param {Resistor.ResistorType} resistorType
      * @param {Tandem} tandem
      * @param {string} [labelString]
-     * @param {number} [resistorLength]
      * @returns {CircuitElementToolNode}
      * @public
      */
-    createResistorToolNode( count, resistorType, tandem, labelString = resistorString, resistorLength = CCKCConstants.RESISTOR_LENGTH ) {
+    createResistorToolNode( count, resistorType, tandem, labelString = resistorString ) {
+
+      // Create the icon model without using the PhetioGroup, so it will not be PhET-iO instrumented.
       const resistorModel = new Resistor(
         new Vertex( Vector2.ZERO ),
-        new Vertex( new Vector2( resistorLength, 0 ) ),
+        new Vertex( new Vector2( resistorType.length, 0 ) ),
         resistorType,
         Tandem.OPTIONAL
       );
@@ -257,7 +258,7 @@ define( require => {
         } ),
         circuitElement => circuitElement instanceof Resistor && circuitElement.resistorType === resistorType,
         position => {
-          const vertices = this.circuit.createVertexPairArray( position, resistorLength );
+          const vertices = this.circuit.createVertexPairArray( position, resistorType.length );
           return this.circuit.resistorGroup.createNextMember( vertices[ 0 ], vertices[ 1 ], resistorType );
         } );
     }
@@ -356,37 +357,37 @@ define( require => {
      * @public
      */
     createPaperClipToolNode( count, tandem ) {
-      return this.createResistorToolNode( count, Resistor.ResistorType.PAPER_CLIP, tandem.createTandem( 'paperClipIcon' ), paperClipString, CCKCConstants.PAPER_CLIP_LENGTH );
+      return this.createResistorToolNode( count, Resistor.ResistorType.PAPER_CLIP, tandem.createTandem( 'paperClipIcon' ), paperClipString );
     }
 
     // Same docs as for createPaperClipToolNode
     createCoinToolNode( count, tandem ) {
-      return this.createResistorToolNode( count, Resistor.ResistorType.COIN, tandem.createTandem( 'coinIcon' ), coinString, CCKCConstants.COIN_LENGTH );
+      return this.createResistorToolNode( count, Resistor.ResistorType.COIN, tandem.createTandem( 'coinIcon' ), coinString );
     }
 
     // Same docs as for createPaperClipToolNode
     createDollarBillToolNode( count, tandem ) {
-      return this.createResistorToolNode( count, Resistor.ResistorType.DOLLAR_BILL, tandem.createTandem( 'dollarBillIcon' ), dollarBillString, CCKCConstants.DOLLAR_BILL_LENGTH );
+      return this.createResistorToolNode( count, Resistor.ResistorType.DOLLAR_BILL, tandem.createTandem( 'dollarBillIcon' ), dollarBillString );
     }
 
     // Same docs as for createPaperClipToolNode
     createEraserToolNode( count, tandem ) {
-      return this.createResistorToolNode( count, Resistor.ResistorType.ERASER, tandem.createTandem( 'eraserIcon' ), eraserString, CCKCConstants.ERASER_LENGTH );
+      return this.createResistorToolNode( count, Resistor.ResistorType.ERASER, tandem.createTandem( 'eraserIcon' ), eraserString );
     }
 
     // Same docs as for createPaperClipToolNode
     createPencilToolNode( count, tandem ) {
-      return this.createResistorToolNode( count, Resistor.ResistorType.PENCIL, tandem.createTandem( 'pencilIcon' ), pencilString, CCKCConstants.PENCIL_LENGTH );
+      return this.createResistorToolNode( count, Resistor.ResistorType.PENCIL, tandem.createTandem( 'pencilIcon' ), pencilString );
     }
 
     // Same docs as for createPaperClipToolNode
     createHandToolNode( count, tandem ) {
-      return this.createResistorToolNode( count, Resistor.ResistorType.HAND, tandem.createTandem( 'handIcon' ), handString, CCKCConstants.HAND_LENGTH );
+      return this.createResistorToolNode( count, Resistor.ResistorType.HAND, tandem.createTandem( 'handIcon' ), handString );
     }
 
     // Same docs as for createPaperClipToolNode
     createDogToolNode( count, tandem ) {
-      return this.createResistorToolNode( count, Resistor.ResistorType.DOG, tandem.createTandem( 'dogIcon' ), dogString, CCKCConstants.DOG_LENGTH );
+      return this.createResistorToolNode( count, Resistor.ResistorType.DOG, tandem.createTandem( 'dogIcon' ), dogString );
     }
 
     /**

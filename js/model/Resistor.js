@@ -18,9 +18,6 @@ define( require => {
   const Range = require( 'DOT/Range' );
   const validate = require( 'AXON/validate' );
 
-  // constants
-  const RESISTOR_LENGTH = CCKCConstants.RESISTOR_LENGTH;
-
   class Resistor extends FixedCircuitElement {
 
     /**
@@ -32,10 +29,7 @@ define( require => {
      */
     constructor( startVertex, endVertex, resistorType, tandem, options ) {
       options = merge( {
-
-        // Support for rendering household items
-        resistorLength: RESISTOR_LENGTH,
-        isFlammable: true
+        isFlammable: true // All resistors are flammable except for the dog, which automatically disconnects at high current.
       }, options );
 
       assert && assert( !options.hasOwnProperty( 'resistance' ), 'Resistance should be passed through resistorType' );
@@ -50,7 +44,7 @@ define( require => {
       assert && assert( !options.hasOwnProperty( 'isMetallic' ), 'isMetallic is given by the resistorType' );
       options.isMetallic = resistorType.isMetallic;
 
-      super( startVertex, endVertex, options.resistorLength, tandem, options );
+      super( startVertex, endVertex, resistorType.length, tandem, options );
 
       // @public (read-only) {Resistor.ResistorType} indicates one of ResistorType values
       this.resistorType = resistorType;
@@ -104,9 +98,10 @@ define( require => {
     /**
      * @param {number} defaultResistance - default value for resistance, in Ohms
      * @param {Range} resistanceRange - possible values for the resistance, in Ohms
-     * @param isMetallic - whether the item is metallic (non-insulated) and hence can have its value read at any point
+     * @param {boolean} isMetallic - whether the item is metallic (non-insulated) and hence can have its value read at any point
+     * @param {number} length
      */
-    constructor( defaultResistance, resistanceRange, isMetallic ) { // TODO: Move length into this enum
+    constructor( defaultResistance, resistanceRange, isMetallic, length ) {
 
       // @public (read-only) {number} - in Ohms
       this.defaultResistance = defaultResistance;
@@ -116,22 +111,25 @@ define( require => {
 
       // @public (read-only) {boolean}
       this.isMetallic = isMetallic;
+
+      // @public (read-only} {number} - in view coordinates
+      this.length = length;
     }
   }
 
   // Enumeration for the different resistor types.
   Resistor.ResistorType = Enumeration.byMap( {
-    RESISTOR: new ResistorEnumValue( 10, new Range( 0, 120 ), false ),
-    HIGH_RESISTANCE_RESISTOR: new ResistorEnumValue( 1000, new Range( 100, 10000 ), false ),
+    RESISTOR: new ResistorEnumValue( 10, new Range( 0, 120 ), false, CCKCConstants.RESISTOR_LENGTH ),
+    HIGH_RESISTANCE_RESISTOR: new ResistorEnumValue( 1000, new Range( 100, 10000 ), false, CCKCConstants.RESISTOR_LENGTH ),
 
     // TODO: better API
-    COIN: new ResistorEnumValue( 10000, new Range( 10000, 10000 ), true ),
-    PAPER_CLIP: new ResistorEnumValue( 1000000000, new Range( 1000000000, 1000000000 ), true ),
-    PENCIL: new ResistorEnumValue( 1000000000, new Range( 1000000000, 1000000000 ), false ),
-    ERASER: new ResistorEnumValue( 1000000000, new Range( 1000000000, 1000000000 ), false ),
-    HAND: new ResistorEnumValue( 100000, new Range( 100000, 100000 ), false ),
-    DOG: new ResistorEnumValue( 100000, new Range( 100000, 100000 ), false ),
-    DOLLAR_BILL: new ResistorEnumValue( 1000000000, new Range( 1000000000, 1000000000 ), false )
+    COIN: new ResistorEnumValue( 10000, new Range( 10000, 10000 ), true, CCKCConstants.COIN_LENGTH ),
+    PAPER_CLIP: new ResistorEnumValue( 1000000000, new Range( 1000000000, 1000000000 ), true, CCKCConstants.PAPER_CLIP_LENGTH ),
+    PENCIL: new ResistorEnumValue( 1000000000, new Range( 1000000000, 1000000000 ), false, CCKCConstants.PENCIL_LENGTH ),
+    ERASER: new ResistorEnumValue( 1000000000, new Range( 1000000000, 1000000000 ), false, CCKCConstants.ERASER_LENGTH ),
+    HAND: new ResistorEnumValue( 100000, new Range( 100000, 100000 ), false, CCKCConstants.HAND_LENGTH ),
+    DOG: new ResistorEnumValue( 100000, new Range( 100000, 100000 ), false, CCKCConstants.DOG_LENGTH ),
+    DOLLAR_BILL: new ResistorEnumValue( 1000000000, new Range( 1000000000, 1000000000 ), false, CCKCConstants.DOLLAR_BILL_LENGTH )
   } );
 
   return circuitConstructionKitCommon.register( 'Resistor', Resistor );
