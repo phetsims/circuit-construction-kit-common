@@ -350,68 +350,43 @@ define( require => {
     }
 
     /**
-     * Create a ToolNode for a household item, such as an eraser or dog
-     * @param {Resistor.ResistorType} resistorType
-     * @param {number} resistorLength
-     * @param {string} labelString
-     * @param {number} count
-     * @param {Tandem} iconTandem
-     * @returns {CircuitElementToolNode}
-     * @private
-     */
-    createHouseholdItemToolNode( resistorType, resistorLength, labelString, count, iconTandem ) {
-      return this.createResistorToolNode( count, resistorType, iconTandem, labelString, resistorLength );
-    }
-
-    /**
-     * @param {number} count - the number that can be dragged out at once
-     * @param {Tandem} tandem
-     * @returns {CircuitElementToolNode}
-     * @public
-     */
-    createDollarBillToolNode( count, tandem ) {
-      return this.createHouseholdItemToolNode(
-        Resistor.ResistorType.DOLLAR_BILL,
-        CCKCConstants.DOLLAR_BILL_LENGTH,
-        dollarBillString,
-        count,
-        tandem.createTandem( 'dollarBillIcon' )
-      );
-    }
-
-    /**
      * @param {number} count - the number that can be dragged out at once
      * @param {Tandem} tandem
      * @returns {CircuitElementToolNode}
      * @public
      */
     createPaperClipToolNode( count, tandem ) {
-      return this.createHouseholdItemToolNode( Resistor.ResistorType.PAPER_CLIP, CCKCConstants.PAPER_CLIP_LENGTH, paperClipString, count, tandem.createTandem( 'paperClipIcon' ) );
+      return this.createResistorToolNode( count, Resistor.ResistorType.PAPER_CLIP, tandem.createTandem( 'paperClipIcon' ), paperClipString, CCKCConstants.PAPER_CLIP_LENGTH );
     }
 
     // Same docs as for createPaperClipToolNode
     createCoinToolNode( count, tandem ) {
-      return this.createHouseholdItemToolNode( Resistor.ResistorType.COIN, CCKCConstants.COIN_LENGTH, coinString, count, tandem.createTandem( 'coinIcon' ) );
+      return this.createResistorToolNode( count, Resistor.ResistorType.COIN, tandem.createTandem( 'coinIcon' ), coinString, CCKCConstants.COIN_LENGTH );
+    }
+
+    // Same docs as for createPaperClipToolNode
+    createDollarBillToolNode( count, tandem ) {
+      return this.createResistorToolNode( count, Resistor.ResistorType.DOLLAR_BILL, tandem.createTandem( 'dollarBillIcon' ), dollarBillString, CCKCConstants.DOLLAR_BILL_LENGTH );
     }
 
     // Same docs as for createPaperClipToolNode
     createEraserToolNode( count, tandem ) {
-      return this.createHouseholdItemToolNode( Resistor.ResistorType.ERASER, CCKCConstants.ERASER_LENGTH, eraserString, count, tandem.createTandem( 'eraserIcon' ) );
+      return this.createResistorToolNode( count, Resistor.ResistorType.ERASER, tandem.createTandem( 'eraserIcon' ), eraserString, CCKCConstants.ERASER_LENGTH );
     }
 
     // Same docs as for createPaperClipToolNode
     createPencilToolNode( count, tandem ) {
-      return this.createHouseholdItemToolNode( Resistor.ResistorType.PENCIL, CCKCConstants.PENCIL_LENGTH, pencilString, count, tandem.createTandem( 'pencilIcon' ) );
+      return this.createResistorToolNode( count, Resistor.ResistorType.PENCIL, tandem.createTandem( 'pencilIcon' ), pencilString, CCKCConstants.PENCIL_LENGTH );
     }
 
     // Same docs as for createPaperClipToolNode
     createHandToolNode( count, tandem ) {
-      return this.createHouseholdItemToolNode( Resistor.ResistorType.HAND, CCKCConstants.HAND_LENGTH, handString, count, tandem.createTandem( 'handIcon' ) );
+      return this.createResistorToolNode( count, Resistor.ResistorType.HAND, tandem.createTandem( 'handIcon' ), handString, CCKCConstants.HAND_LENGTH );
     }
 
     // Same docs as for createPaperClipToolNode
     createDogToolNode( count, tandem ) {
-      return this.createHouseholdItemToolNode( Resistor.ResistorType.DOG, CCKCConstants.DOG_LENGTH, dogString, count, tandem.createTandem( 'dogIcon' ) );
+      return this.createResistorToolNode( count, Resistor.ResistorType.DOG, tandem.createTandem( 'dogIcon' ), dogString, CCKCConstants.DOG_LENGTH );
     }
 
     /**
