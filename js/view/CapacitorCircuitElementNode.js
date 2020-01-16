@@ -120,7 +120,7 @@ define( require => {
         if ( Math.abs( q ) < 1E-18 ) {
           q = 0;
         }
-        circuit.capacitor.plateChargeProperty.set( q );
+        circuit.capacitor.plateChargeProperty.set( -q );
       };
       const capacitanceVoltageListener = Property.multilink( [
         capacitor.capacitanceProperty,
