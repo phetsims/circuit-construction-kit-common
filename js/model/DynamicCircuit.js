@@ -106,7 +106,6 @@ define( require => {
         companionResistors.push( resistor );
 
         // We need to be able to get the current for this component. In series, so the current is the same through both.
-        // TODO: (sign-error) Previously used resistor to get current.  Check sign is correct.
         currentCompanions.push( {
           element: capacitorAdapter,
           getValueForSolution: solution => solution.getCurrentForResistor( resistor )

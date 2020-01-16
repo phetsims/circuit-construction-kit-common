@@ -105,6 +105,9 @@ define( require => {
      */
     getCurrentForResistor( resistor ) {
       assert && assert( resistor.value > 0, 'resistor must have resistance to use Ohms Law' );
+
+      // TODO: (sign-error) Previously used resistor to get current.  Check sign is correct.
+      // This makes sense because the conventional current moves from high to low voltage, so to get the current
       return -this.getVoltage( resistor ) / resistor.value;
     }
 
