@@ -41,8 +41,7 @@ define( require => {
 
         // Left align the title, with no padding
         titleAlignX: 'left',
-        titleXMargin: 0,
-        strutWidth: 0
+        titleXSpacing: 0
       } );
 
       this.mutate( options );
