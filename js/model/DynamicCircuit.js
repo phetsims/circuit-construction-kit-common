@@ -117,7 +117,9 @@ define( require => {
         } );
       } );
 
-      // See also http://circsimproj.blogspot.com/2009/07/companion-models.html
+      // See also http://circsimproj.blogspot.com/2009/07/companion-models.html, which reports:
+      // Req = 2L/dt
+      // Veq = -2Li/dt-v
       // See najm page 279 and Pillage page 86
       this.inductorAdapters.forEach( inductorAdapter => {
         const inductor = inductorAdapter.dynamicCircuitInductor;
@@ -127,9 +129,9 @@ define( require => {
         usedNodes.push( newNode );
 
         const companionResistance = 2 * inductor.inductance / dt;
-        const companionVoltage = inductorAdapter.state.voltage + companionResistance * inductorAdapter.state.current;
+        const companionVoltage = -inductorAdapter.state.voltage - companionResistance * inductorAdapter.state.current;
 
-        const battery = new ModifiedNodalAnalysisCircuitElement( newNode, inductor.nodeId0, null, companionVoltage );
+        const battery = new ModifiedNodalAnalysisCircuitElement( inductor.nodeId0, newNode, null, companionVoltage );
         const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, inductor.nodeId1, null, companionResistance );
         companionBatteries.push( battery );
         companionResistors.push( resistor );
