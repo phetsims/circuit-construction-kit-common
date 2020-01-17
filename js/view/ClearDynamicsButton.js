@@ -9,7 +9,7 @@ define( require => {
   'use strict';
 
   // modules
-  const BanNode = require( 'SCENERY_PHET/BanNode' );
+  const BannedNode = require( 'SCENERY_PHET/BannedNode' );
   const CCKCRoundPushButton = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCRoundPushButton' );
   const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
   const ClearDynamicsButtonIO = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ClearDynamicsButtonIO' );
@@ -44,7 +44,7 @@ define( require => {
         content: new Node( {
           children: [
             icon,
-            new BanNode( {
+            new BannedNode( {
               lineWidth: 3,
               radius: 17,
               fill: null
