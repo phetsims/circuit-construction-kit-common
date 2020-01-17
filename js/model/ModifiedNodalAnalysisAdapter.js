@@ -107,8 +107,7 @@ define( require => {
         inductor.inductanceProperty.value
       );
 
-      // TODO: (sign-error)
-      super( dynamicCircuitInductor, new DynamicCircuit.DynamicElementState( inductor.mnaVoltageDrop, -inductor.mnaCurrent ) );
+      super( dynamicCircuitInductor, new DynamicCircuit.DynamicElementState( inductor.mnaVoltageDrop, inductor.mnaCurrent ) );
 
       // @private - alongside this.dynamicCircuitInductor assigned in the supertype
       this.inductor = inductor;
@@ -122,7 +121,7 @@ define( require => {
 
       // TODO: (sign-error):
       this.inductor.currentProperty.value = -circuitResult.getTimeAverageCurrent( this.dynamicCircuitInductor );
-      this.inductor.mnaCurrent = -circuitResult.getInstantaneousCurrent( this.dynamicCircuitInductor );
+      this.inductor.mnaCurrent = circuitResult.getInstantaneousCurrent( this.dynamicCircuitInductor );
       this.inductor.mnaVoltageDrop = circuitResult.getInstantaneousVoltage( this.dynamicCircuitInductor );
     }
   }
