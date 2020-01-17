@@ -138,9 +138,9 @@ define( require => {
   Resistor.ResistorType = Enumeration.byMap( {
     RESISTOR: new ResistorEnumValue( 10, new Range( 0, 120 ), false, CCKCConstants.RESISTOR_LENGTH ),
     HIGH_RESISTANCE_RESISTOR: new ResistorEnumValue( 1000, new Range( 100, 10000 ), false, CCKCConstants.RESISTOR_LENGTH ),
-    COIN: ResistorEnumValue.fixed( 10000, true, CCKCConstants.COIN_LENGTH ),
-    PAPER_CLIP: ResistorEnumValue.fixed( 1000000000, true, CCKCConstants.PAPER_CLIP_LENGTH ),
-    PENCIL: ResistorEnumValue.fixed( 1000000000, false, CCKCConstants.PENCIL_LENGTH ),
+    COIN: ResistorEnumValue.fixed( 0, true, CCKCConstants.COIN_LENGTH ),
+    PAPER_CLIP: ResistorEnumValue.fixed( 0, true, CCKCConstants.PAPER_CLIP_LENGTH ),
+    PENCIL: ResistorEnumValue.fixed( 25, false, CCKCConstants.PENCIL_LENGTH ),
     ERASER: ResistorEnumValue.fixed( 1000000000, false, CCKCConstants.ERASER_LENGTH ),
     HAND: ResistorEnumValue.fixed( 100000, false, CCKCConstants.HAND_LENGTH, 15 ),
 
