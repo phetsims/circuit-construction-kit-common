@@ -98,8 +98,11 @@ define( require => {
 
         const companionResistance = dt / 2.0 / capacitorAdapter.dynamicCircuitCapacitor.capacitance;
 
-        // TODO: (sign-error) This sign contradicts the equation above, perhaps the current is backwards?
-        // Flipping getValueForSolution and CapacitorAdapter.getTimeAverageCurrent seems to help
+        // The capacitor is modeled as a battery in series with a resistor.  Hence the voltage drop across the capacitor
+        // is equal to the voltage drop across the battery plus the voltage drop across the resistor.
+        // V = Vbattery + Vresistor.  We need to solve for the voltage across the battery to use it in the companion
+        // model, so we have Vbattery = V-Vresistor.  The magnitude of the voltage drop across the resistor is given by
+        // |V|=|IReq| and sign is unchanged since the conventional current flows from high to low voltage.
         const companionVoltage = capacitorAdapter.state.voltage - companionResistance * capacitorAdapter.state.current;
 
         const battery = new ModifiedNodalAnalysisCircuitElement( capacitorAdapter.dynamicCircuitCapacitor.nodeId0, newNode, null, companionVoltage );
@@ -137,6 +140,7 @@ define( require => {
           element: inductorAdapter,
 
           // TODO: (sign-error) check sign, this was converted from battery to resistor
+
           getValueForSolution: solution => -solution.getCurrentForResistor( resistor )
         } );
       } );
@@ -370,9 +374,14 @@ define( require => {
   };
 
   class DynamicElementState {
+
+    /**
+     * @param {number} voltage - the voltage drop v1-v0
+     * @param {number} current - the conventional current as it moves from node 0 to node 1
+     */
     constructor( voltage, current ) {
-      this.current = current;
       this.voltage = voltage;
+      this.current = current;
     }
   }
 
