@@ -106,8 +106,12 @@ define( require => {
     getCurrentForResistor( resistor ) {
       assert && assert( resistor.value > 0, 'resistor must have resistance to use Ohms Law' );
 
-      // TODO: (sign-error) Previously used resistor to get current.  Check sign is correct.
-      // This makes sense because the conventional current moves from high to low voltage, so to get the current
+      // To help understand the minus sign here:
+      // Imagine a resistor that goes from node r0 to r1, with a conventional current flowing from r0 to r1.  Then
+      // the voltage drop is v1-v0.  Assuming for the sake of discussion that v1>v0 (and hence the voltage is positive),
+      // the current sign should be negative since conventional current flows from high to low potential.
+      // Conversely, if v0>v1, then voltage is negative, so for the conventional current to flow to the right we must
+      // multiply it by a negative.
       return -this.getVoltage( resistor ) / resistor.value;
     }
 
