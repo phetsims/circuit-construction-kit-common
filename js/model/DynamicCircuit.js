@@ -90,6 +90,8 @@ define( require => {
       // Req = dt/2/C
       this.capacitorAdapters.forEach( capacitorAdapter => {
         assert && assert( capacitorAdapter instanceof DynamicCapacitor, 'Should have been DynamicCapacitor' );
+        assert && assert( capacitorAdapter.dynamicCircuitCapacitor.capacitance >= 0, 'capacitance should be non-negative' );
+        assert && assert( dt >= 0, 'dt should be non-negative' );
 
         const newNode = _.max( usedNodes ) + 1;
         usedNodes.push( newNode );
