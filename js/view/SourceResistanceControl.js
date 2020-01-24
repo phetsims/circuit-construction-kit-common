@@ -47,6 +47,7 @@ define( require => {
         trackSize: CCKCConstants.SLIDER_TRACK_SIZE,
         thumbSize: CCKCConstants.THUMB_SIZE,
         majorTickLength: CCKCConstants.MAJOR_TICK_LENGTH,
+        minorTickLength: CCKCConstants.MINOR_TICK_LENGTH,
 
         // Snap to the nearest whole number.
         constrainValue: value => Utils.roundSymmetric( value ),

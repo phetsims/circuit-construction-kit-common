@@ -140,9 +140,10 @@ define( require => {
 
     PANEL_LINE_WIDTH: 1.3,
 
-    THUMB_SIZE: new Dimension2( 18, 34 ),
+    THUMB_SIZE: new Dimension2( 13, 24 ),
 
-    MAJOR_TICK_LENGTH: 20,
+    MAJOR_TICK_LENGTH: 18,
+    MINOR_TICK_LENGTH: 12,
 
     // The main font size to use for labels and controls
     FONT_SIZE: FONT_SIZE,
