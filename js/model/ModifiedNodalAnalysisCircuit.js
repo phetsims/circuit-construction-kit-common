@@ -1,4 +1,4 @@
-// Copyright 2015-2019, University of Colorado Boulder
+// Copyright 2015-2020, University of Colorado Boulder
 
 /**
  * Modified Nodal Analysis for a circuit.  An Equation is a sum of Terms equal to a numeric value.  A Term is composed
@@ -358,9 +358,6 @@ define( require => {
       for ( let i = 0; i < unknownCurrents.length; i++ ) {
         const unknownCurrent = unknownCurrents[ i ];
         unknownCurrent.element.currentSolution = x.get( getIndexByEquals( unknowns, unknownCurrent ), 0 );
-      }
-      if ( _.keys( voltageMap ).length > 0 ) {
-        // debugger;
       }
 
       return new ModifiedNodalAnalysisSolution( voltageMap, unknownCurrents.map( unknownCurrent => unknownCurrent.element ) );
