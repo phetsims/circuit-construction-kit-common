@@ -285,8 +285,7 @@ define( require => {
       zoomControlPanel.setScaleMagnitude( 0.8 );
 
       // Add it in front of everything (should never be obscured by a CircuitElement)
-      this.addChild( zoomControlPanel );
-
+      // this.addChild( zoomControlPanel );
 
       this.visibleBoundsProperty.link( visibleBounds => {
 
