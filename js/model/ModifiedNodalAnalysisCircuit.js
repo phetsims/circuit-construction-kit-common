@@ -359,9 +359,6 @@ define( require => {
         const unknownCurrent = unknownCurrents[ i ];
         unknownCurrent.element.currentSolution = x.get( getIndexByEquals( unknowns, unknownCurrent ), 0 );
       }
-      if ( _.keys( voltageMap ).length > 0 ) {
-        // debugger;
-      }
 
       return new ModifiedNodalAnalysisSolution( voltageMap, unknownCurrents.map( unknownCurrent => unknownCurrent.element ) );
     }
