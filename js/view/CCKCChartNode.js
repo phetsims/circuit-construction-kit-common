@@ -129,9 +129,22 @@ define( require => {
       this.scrollingChartNode = new ScrollingChartNode( timeProperty, seriesArray, verticalAxisTitleNode, horizontalAxisTitleNode,
         scaleIndicatorText, {
           width: 150, height: 110,
-          verticalRanges: [ new Range( -1, 1 ), new Range( -10, 10 ), new Range( -100, 100 ), new Range( -1000, 1000 ) ],
+          verticalRanges: [
+            new Range( -2, 2 ),
+            new Range( -10, 10 ),
+            new Range( -20, 20 ),
+            new Range( -50, 50 ),
+            new Range( -100, 100 ),
+            new Range( -150, 150 ),
+            new Range( -200, 200 ),
+            new Range( -400, 400 ),
+            new Range( -600, 600 ),
+            new Range( -800, 800 ),
+            new Range( -1000, 1000 ),
+            new Range( -1200, 1200 )
+          ],
           initialVerticalRangeIndex: 1,
-          verticalGridLabelNumberOfDecimalPlaces: 1,
+          verticalGridLabelNumberOfDecimalPlaces: 0,
           tandem: options.tandem.createTandem( 'scrollingChartNode' )
         } );
       const shadedRectangle = new ShadedRectangle( this.scrollingChartNode.bounds.dilated( 7 ), {
