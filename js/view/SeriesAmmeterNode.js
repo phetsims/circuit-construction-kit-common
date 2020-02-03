@@ -40,7 +40,7 @@ define( require => {
   /**
    * Utility function for creating a panel for the sensor body
    * Rasterize so it can be rendered in WebGL, see https://github.com/phetsims/circuit-construction-kit-dc/issues/67
-   * @param {Object} options
+   * @param {Object} [options]
    * @returns {Rectangle}
    */
   const createPanel = options => new Rectangle( 0, 0, PANEL_WIDTH, PANEL_HEIGHT, options ).rasterized( { wrap: false } );

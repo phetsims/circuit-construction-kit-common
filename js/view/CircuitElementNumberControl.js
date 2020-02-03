@@ -27,7 +27,7 @@ define( require => {
      * @param {Circuit} circuit - parent circuit
      * @param {FixedCircuitElement} circuitElement - the CircuitElement controlled by this UI
      * @param {Tandem} tandem
-     * @param {Object} options
+     * @param {Object} [options]
      */
     constructor( title, valuePattern, valueProperty, circuit, circuitElement, tandem, options ) {
 

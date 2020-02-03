@@ -22,7 +22,7 @@ define( require => {
      * @param {Circuit} circuit - the circuit from which the CircuitElement can be removed
      * @param {CircuitElement|null} circuitElement - the CircuitElement to remove when the button is pressed, or null if for a prototype
      * @param {Tandem} tandem
-     * @param {Object} options
+     * @param {Object} [options]
      */
     constructor( circuit, circuitElement, tandem, options ) {
 
