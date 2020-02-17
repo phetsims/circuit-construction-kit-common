@@ -22,7 +22,7 @@ define( require => {
   // images
   const backImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-back.png' );
   const highResistanceSocketImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-front-high.png' );
-  const middleImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-middle.png' );
+  const middleImage = require( 'mipmap!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-middle.png' );
   const socketImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/lightbulb-front.png' );
 
   // constants
