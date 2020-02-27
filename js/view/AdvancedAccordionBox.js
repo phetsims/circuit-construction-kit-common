@@ -6,47 +6,44 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const CCKCAccordionBox = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/CCKCAccordionBox' );
-  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const SourceResistanceControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/SourceResistanceControl' );
-  const VBox = require( 'SCENERY/nodes/VBox' );
-  const WireResistivityControl = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/WireResistivityControl' );
+import VBox from '../../../scenery/js/nodes/VBox.js';
+import circuitConstructionKitCommonStrings from '../circuit-construction-kit-common-strings.js';
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CCKCAccordionBox from './CCKCAccordionBox.js';
+import SourceResistanceControl from './SourceResistanceControl.js';
+import WireResistivityControl from './WireResistivityControl.js';
 
-  // strings
-  const advancedString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/advanced' );
+const advancedString = circuitConstructionKitCommonStrings.advanced;
 
-  class AdvancedAccordionBox extends CCKCAccordionBox {
+class AdvancedAccordionBox extends CCKCAccordionBox {
 
-    /**
-     * @param {Circuit} circuit
-     * @param {AlignGroup} alignGroup - to match the width of other panels
-     * @param {string} batteryResistanceControlString
-     * @param {Tandem} tandem
-     * @param {Object} [options]
-     */
-    constructor( circuit, alignGroup, batteryResistanceControlString, tandem, options ) {
+  /**
+   * @param {Circuit} circuit
+   * @param {AlignGroup} alignGroup - to match the width of other panels
+   * @param {string} batteryResistanceControlString
+   * @param {Tandem} tandem
+   * @param {Object} [options]
+   */
+  constructor( circuit, alignGroup, batteryResistanceControlString, tandem, options ) {
 
-      const titleConfig = { fontSize: 12, maxWidth: 200 }; // Factor out for both titles
-      super( alignGroup.createBox( new VBox( {
-        spacing: 10,
-        children: [
-          new WireResistivityControl( circuit.wireResistivityProperty, alignGroup, titleConfig, tandem.createTandem( 'wireResistivityControl' ) ),
-          new SourceResistanceControl( circuit.sourceResistanceProperty, alignGroup, batteryResistanceControlString, titleConfig, tandem.createTandem( 'sourceResistanceControl' ) )
-        ]
-      } ) ), advancedString, tandem, {
+    const titleConfig = { fontSize: 12, maxWidth: 200 }; // Factor out for both titles
+    super( alignGroup.createBox( new VBox( {
+      spacing: 10,
+      children: [
+        new WireResistivityControl( circuit.wireResistivityProperty, alignGroup, titleConfig, tandem.createTandem( 'wireResistivityControl' ) ),
+        new SourceResistanceControl( circuit.sourceResistanceProperty, alignGroup, batteryResistanceControlString, titleConfig, tandem.createTandem( 'sourceResistanceControl' ) )
+      ]
+    } ) ), advancedString, tandem, {
 
-        // Left align the title, with no padding
-        titleAlignX: 'left',
-        titleXSpacing: 0
-      } );
+      // Left align the title, with no padding
+      titleAlignX: 'left',
+      titleXSpacing: 0
+    } );
 
-      this.mutate( options );
-    }
+    this.mutate( options );
   }
+}
 
-  return circuitConstructionKitCommon.register( 'AdvancedAccordionBox', AdvancedAccordionBox );
-} );
+circuitConstructionKitCommon.register( 'AdvancedAccordionBox', AdvancedAccordionBox );
+export default AdvancedAccordionBox;

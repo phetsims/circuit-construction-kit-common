@@ -5,48 +5,44 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  const validate = require( 'AXON/validate' );
-  const Vector2IO = require( 'DOT/Vector2IO' );
+import validate from '../../../axon/js/validate.js';
+import Vector2IO from '../../../dot/js/Vector2IO.js';
+import ObjectIO from '../../../tandem/js/types/ObjectIO.js';
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
-  class VertexIO extends ObjectIO {
+class VertexIO extends ObjectIO {
 
-    /**
-     * @param {Vertex} vertex
-     * @returns {Object}
-     * @override
-     */
-    static toStateObject( vertex ) {
-      validate( vertex, this.validator );
-      return {
-        position: Vector2IO.toStateObject( vertex.positionProperty.value )
-      };
-    }
-
-    static fromStateObject( stateObject ) {
-      return { position: Vector2IO.fromStateObject( stateObject.position ) };
-    }
-
-    /**
-     * @override
-     * @param {Object} state - see VertexIO.toStateObject
-     * @returns {Array.<*>}
-     */
-    static stateToArgsForConstructor( state ) {
-      return [ state.position ];
-    }
+  /**
+   * @param {Vertex} vertex
+   * @returns {Object}
+   * @override
+   */
+  static toStateObject( vertex ) {
+    validate( vertex, this.validator );
+    return {
+      position: Vector2IO.toStateObject( vertex.positionProperty.value )
+    };
   }
 
-  VertexIO.documentation = 'A vertex';
-  VertexIO.validator = { isValidValue: v => v instanceof phet.circuitConstructionKitCommon.Vertex };
-  VertexIO.typeName = 'VertexIO';
-  ObjectIO.validateSubtype( VertexIO );
+  static fromStateObject( stateObject ) {
+    return { position: Vector2IO.fromStateObject( stateObject.position ) };
+  }
 
-  return circuitConstructionKitCommon.register( 'VertexIO', VertexIO );
-} );
+  /**
+   * @override
+   * @param {Object} state - see VertexIO.toStateObject
+   * @returns {Array.<*>}
+   */
+  static stateToArgsForConstructor( state ) {
+    return [ state.position ];
+  }
+}
 
+VertexIO.documentation = 'A vertex';
+VertexIO.validator = { isValidValue: v => v instanceof phet.circuitConstructionKitCommon.Vertex };
+VertexIO.typeName = 'VertexIO';
+ObjectIO.validateSubtype( VertexIO );
+
+circuitConstructionKitCommon.register( 'VertexIO', VertexIO );
+export default VertexIO;

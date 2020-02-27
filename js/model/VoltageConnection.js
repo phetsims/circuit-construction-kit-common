@@ -5,27 +5,24 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
-  class VoltageConnection {
+class VoltageConnection {
 
-    /**
-     * @param {Vertex} vertex
-     * @param {number} [voltage]
-     */
-    constructor( vertex, voltage = vertex.voltageProperty.value ) {
+  /**
+   * @param {Vertex} vertex
+   * @param {number} [voltage]
+   */
+  constructor( vertex, voltage = vertex.voltageProperty.value ) {
 
-      // @public
-      this.vertex = vertex;
+    // @public
+    this.vertex = vertex;
 
-      // @public
-      this.voltage = voltage;
-    }
+    // @public
+    this.voltage = voltage;
   }
+}
 
-  return circuitConstructionKitCommon.register( 'VoltageConnection', VoltageConnection );
-} );
+circuitConstructionKitCommon.register( 'VoltageConnection', VoltageConnection );
+export default VoltageConnection;

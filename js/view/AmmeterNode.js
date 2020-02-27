@@ -6,213 +6,208 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const BooleanProperty = require( 'AXON/BooleanProperty' );
-  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  const CCKCUtils = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCUtils' );
-  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const Color = require( 'SCENERY/util/Color' );
-  const DerivedProperty = require( 'AXON/DerivedProperty' );
-  const Image = require( 'SCENERY/nodes/Image' );
-  const merge = require( 'PHET_CORE/merge' );
-  const MovableDragHandler = require( 'SCENERY_PHET/input/MovableDragHandler' );
-  const Node = require( 'SCENERY/nodes/Node' );
-  const ProbeNode = require( 'SCENERY_PHET/ProbeNode' );
-  const ProbeTextNode = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ProbeTextNode' );
-  const Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  const Vector2 = require( 'DOT/Vector2' );
-  const Vector2Property = require( 'DOT/Vector2Property' );
-  const WireNode = require( 'SCENERY_PHET/WireNode' );
+import BooleanProperty from '../../../axon/js/BooleanProperty.js';
+import DerivedProperty from '../../../axon/js/DerivedProperty.js';
+import Vector2 from '../../../dot/js/Vector2.js';
+import Vector2Property from '../../../dot/js/Vector2Property.js';
+import merge from '../../../phet-core/js/merge.js';
+import MovableDragHandler from '../../../scenery-phet/js/input/MovableDragHandler.js';
+import ProbeNode from '../../../scenery-phet/js/ProbeNode.js';
+import WireNode from '../../../scenery-phet/js/WireNode.js';
+import Image from '../../../scenery/js/nodes/Image.js';
+import Node from '../../../scenery/js/nodes/Node.js';
+import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
+import Color from '../../../scenery/js/util/Color.js';
+import ammeterBodyImage from '../../images/ammeter-body_png.js';
+import CCKCConstants from '../CCKCConstants.js';
+import CCKCUtils from '../CCKCUtils.js';
+import circuitConstructionKitCommonStrings from '../circuit-construction-kit-common-strings.js';
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import ProbeTextNode from './ProbeTextNode.js';
 
-  // images
-  const ammeterBodyImage = require( 'image!CIRCUIT_CONSTRUCTION_KIT_COMMON/ammeter-body.png' );
+const currentString = circuitConstructionKitCommonStrings.current;
+const questionMarkString = circuitConstructionKitCommonStrings.questionMark;
 
-  // strings
-  const currentString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/current' );
-  const questionMarkString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/questionMark' );
+// constants
+// measurements for the cubic curve for the wire nodes
+const BODY_LEAD_Y = -30; // in model=view coordinates
+const PROBE_LEAD_Y = 15; // in model=view coordinates
+const HANDLE_WIDTH = 50;
 
-  // constants
-  // measurements for the cubic curve for the wire nodes
-  const BODY_LEAD_Y = -30; // in model=view coordinates
-  const PROBE_LEAD_Y = 15; // in model=view coordinates
-  const HANDLE_WIDTH = 50;
+// overall scale factor for the body and probe
+const SCALE_FACTOR = 0.5;
 
-  // overall scale factor for the body and probe
-  const SCALE_FACTOR = 0.5;
+// unsigned measurements for the circles on the voltmeter body image, for where the probe wires connect
+const PROBE_CONNECTION_POINT_DY = 8;
 
-  // unsigned measurements for the circles on the voltmeter body image, for where the probe wires connect
-  const PROBE_CONNECTION_POINT_DY = 8;
+class AmmeterNode extends Node {
 
-  class AmmeterNode extends Node {
+  /**
+   * @param {Ammeter} ammeter
+   * @param {CircuitLayerNode|null} circuitLayerNode - for getting the currents, or null if rendering an icon
+   * @param {Tandem} tandem
+   * @param {Object} [options]
+   */
+  constructor( ammeter, circuitLayerNode, tandem, options ) {
+    options = merge( {
 
-    /**
-     * @param {Ammeter} ammeter
-     * @param {CircuitLayerNode|null} circuitLayerNode - for getting the currents, or null if rendering an icon
-     * @param {Tandem} tandem
-     * @param {Object} [options]
-     */
-    constructor( ammeter, circuitLayerNode, tandem, options ) {
-      options = merge( {
+      // true if it will be used as a toolbox icon
+      isIcon: false,
 
-        // true if it will be used as a toolbox icon
-        isIcon: false,
+      // allowable drag bounds in view coordinates
+      visibleBoundsProperty: null,
 
-        // allowable drag bounds in view coordinates
-        visibleBoundsProperty: null,
+      // For some CCK Black Box modes, when the user makes a change, the results are hidden
+      showResultsProperty: new BooleanProperty( true ),
 
-        // For some CCK Black Box modes, when the user makes a change, the results are hidden
-        showResultsProperty: new BooleanProperty( true ),
+      // For the black box study, there is a different current threshold in the readout
+      blackBoxStudy: false
+    }, options );
 
-        // For the black box study, there is a different current threshold in the readout
-        blackBoxStudy: false
-      }, options );
-
-      const wireBodyPositionProperty = new Vector2Property( new Vector2( 0, 0 ) );
-      const wireProbePositionProperty = new Vector2Property( new Vector2( 0, 0 ) );
-      const wireNode = new WireNode(
-        wireBodyPositionProperty,
-        new Vector2Property( new Vector2( 0, BODY_LEAD_Y ) ),
-        wireProbePositionProperty,
-        new Vector2Property( new Vector2( 0, PROBE_LEAD_Y ) ), {
-          stroke: Color.BLACK,
-          lineWidth: 3,
-          pickable: false
-        }
-      );
-
-      const currentReadoutProperty = new DerivedProperty( [ ammeter.currentProperty ], function( current ) {
-
-        const max = options.blackBoxStudy ? 1E3 : 1E10;
-        const maxString = options.blackBoxStudy ? '> 10^3' : '> 10^10';
-
-        // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
-        return current === null ? questionMarkString :
-               Math.abs( current ) > max ? maxString :
-               CCKCUtils.createCurrentReadout( current );
-      } );
-
-      const probeTextNode = new ProbeTextNode(
-        currentReadoutProperty, options.showResultsProperty, currentString, tandem.createTandem( 'probeTextNode' ), {
-          centerX: ammeterBodyImage.width / 2,
-          centerY: ammeterBodyImage.height / 2 + 7 // adjust for the top notch design
-        } );
-
-      const bodyNode = new Image( ammeterBodyImage, {
-        scale: SCALE_FACTOR,
-        cursor: 'pointer',
-        children: [ probeTextNode ]
-      } );
-
-      const probeNode = new ProbeNode( {
-        cursor: 'pointer',
-        sensorTypeFunction: ProbeNode.crosshairs(),
-        scale: SCALE_FACTOR,
-        handleWidth: HANDLE_WIDTH,
-        color: '#2c2c2b', // The dark gray border
-        innerRadius: 43,
-
-        // Add a decoration on the handle to match the color scheme
-        children: [
-          new Rectangle( 0, 52, HANDLE_WIDTH * 0.72, 19, {
-            cornerRadius: 6,
-            centerX: 0,
-            fill: '#e79547' // Match the orange of the ammeter image
-          } )
-        ]
-      } );
-
-      super( { children: [ bodyNode, wireNode, probeNode ] } );
-
-      // @public (read-only) {ProbeNode}
-      this.probeNode = probeNode;
-
-      // @public (read-only) {Ammeter} - the model associated with this view
-      this.ammeter = ammeter;
-
-      // When the body position changes, update the body node and the wire
-      ammeter.bodyPositionProperty.link( bodyPosition => {
-        bodyNode.centerTop = bodyPosition;
-        wireBodyPositionProperty.value = bodyNode.centerTop.plusXY( 0, PROBE_CONNECTION_POINT_DY );
-        if ( ammeter.draggingProbesWithBodyProperty.get() ) {
-          ammeter.probePositionProperty.set( bodyPosition.plusXY( 40, -80 ) );
-        }
-      } );
-
-      // When the probe position changes, update the probe node and the wire
-      ammeter.probePositionProperty.link( probePosition => {
-        this.probeNode.centerTop = probePosition;
-        wireProbePositionProperty.value = this.probeNode.centerBottom;
-      } );
-
-      if ( !options.isIcon ) {
-
-        // Show the ammeter in the play area when dragged from toolbox
-        ammeter.visibleProperty.linkAttribute( this, 'visible' );
-
-        const probeDragHandler = new MovableDragHandler( ammeter.probePositionProperty, {
-          tandem: tandem.createTandem( 'probeDragHandler' ),
-          startDrag: () => this.moveToFront()
-        } );
-
-        // @public (read-only) {MovableDragHandler} - so events can be forwarded from the toolbox
-        this.dragHandler = new MovableDragHandler( ammeter.bodyPositionProperty, {
-          tandem: tandem.createTandem( 'dragHandler' ),
-          startDrag: () => this.moveToFront(),
-          endDrag: function() {
-            ammeter.droppedEmitter.emit( bodyNode.globalBounds );
-
-            // After dropping in the play area the probes move independently of the body
-            ammeter.draggingProbesWithBodyProperty.set( false );
-
-            probeDragHandler.constrainToBounds();
-          },
-
-          // adds support for zoomed coordinate frame, see
-          // https://github.com/phetsims/circuit-construction-kit-common/issues/301
-          targetNode: this
-        } );
-        bodyNode.addInputListener( this.dragHandler );
-        options.visibleBoundsProperty.link( visibleBounds => {
-          const erodedDragBounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
-          this.dragHandler.dragBounds = erodedDragBounds;
-          probeDragHandler.dragBounds = erodedDragBounds;
-        } );
-        this.probeNode.addInputListener( probeDragHandler );
-
-        /**
-         * Detection for ammeter probe + circuit intersection is done in the view since view bounds are used
-         */
-        const updateAmmeter = () => {
-
-          // Skip work when ammeter is not out, to improve performance.
-          if ( ammeter.visibleProperty.get() ) {
-            const current = circuitLayerNode.getCurrent( this.probeNode );
-            ammeter.currentProperty.set( current );
-          }
-        };
-        circuitLayerNode.circuit.circuitChangedEmitter.addListener( updateAmmeter );
-        ammeter.probePositionProperty.link( updateAmmeter );
+    const wireBodyPositionProperty = new Vector2Property( new Vector2( 0, 0 ) );
+    const wireProbePositionProperty = new Vector2Property( new Vector2( 0, 0 ) );
+    const wireNode = new WireNode(
+      wireBodyPositionProperty,
+      new Vector2Property( new Vector2( 0, BODY_LEAD_Y ) ),
+      wireProbePositionProperty,
+      new Vector2Property( new Vector2( 0, PROBE_LEAD_Y ) ), {
+        stroke: Color.BLACK,
+        lineWidth: 3,
+        pickable: false
       }
+    );
 
-      // When rendered as an icon, the touch area should span the bounds (no gaps between probes and body)
-      if ( options.isIcon ) {
-        this.touchArea = this.bounds.copy();
-        this.mouseArea = this.bounds.copy();
-        this.cursor = 'pointer';
+    const currentReadoutProperty = new DerivedProperty( [ ammeter.currentProperty ], function( current ) {
+
+      const max = options.blackBoxStudy ? 1E3 : 1E10;
+      const maxString = options.blackBoxStudy ? '> 10^3' : '> 10^10';
+
+      // Ammeters in this sim only show positive values, not direction (which is arbitrary anyways)
+      return current === null ? questionMarkString :
+             Math.abs( current ) > max ? maxString :
+             CCKCUtils.createCurrentReadout( current );
+    } );
+
+    const probeTextNode = new ProbeTextNode(
+      currentReadoutProperty, options.showResultsProperty, currentString, tandem.createTandem( 'probeTextNode' ), {
+        centerX: ammeterBodyImage.width / 2,
+        centerY: ammeterBodyImage.height / 2 + 7 // adjust for the top notch design
+      } );
+
+    const bodyNode = new Image( ammeterBodyImage, {
+      scale: SCALE_FACTOR,
+      cursor: 'pointer',
+      children: [ probeTextNode ]
+    } );
+
+    const probeNode = new ProbeNode( {
+      cursor: 'pointer',
+      sensorTypeFunction: ProbeNode.crosshairs(),
+      scale: SCALE_FACTOR,
+      handleWidth: HANDLE_WIDTH,
+      color: '#2c2c2b', // The dark gray border
+      innerRadius: 43,
+
+      // Add a decoration on the handle to match the color scheme
+      children: [
+        new Rectangle( 0, 52, HANDLE_WIDTH * 0.72, 19, {
+          cornerRadius: 6,
+          centerX: 0,
+          fill: '#e79547' // Match the orange of the ammeter image
+        } )
+      ]
+    } );
+
+    super( { children: [ bodyNode, wireNode, probeNode ] } );
+
+    // @public (read-only) {ProbeNode}
+    this.probeNode = probeNode;
+
+    // @public (read-only) {Ammeter} - the model associated with this view
+    this.ammeter = ammeter;
+
+    // When the body position changes, update the body node and the wire
+    ammeter.bodyPositionProperty.link( bodyPosition => {
+      bodyNode.centerTop = bodyPosition;
+      wireBodyPositionProperty.value = bodyNode.centerTop.plusXY( 0, PROBE_CONNECTION_POINT_DY );
+      if ( ammeter.draggingProbesWithBodyProperty.get() ) {
+        ammeter.probePositionProperty.set( bodyPosition.plusXY( 40, -80 ) );
       }
+    } );
+
+    // When the probe position changes, update the probe node and the wire
+    ammeter.probePositionProperty.link( probePosition => {
+      this.probeNode.centerTop = probePosition;
+      wireProbePositionProperty.value = this.probeNode.centerBottom;
+    } );
+
+    if ( !options.isIcon ) {
+
+      // Show the ammeter in the play area when dragged from toolbox
+      ammeter.visibleProperty.linkAttribute( this, 'visible' );
+
+      const probeDragHandler = new MovableDragHandler( ammeter.probePositionProperty, {
+        tandem: tandem.createTandem( 'probeDragHandler' ),
+        startDrag: () => this.moveToFront()
+      } );
+
+      // @public (read-only) {MovableDragHandler} - so events can be forwarded from the toolbox
+      this.dragHandler = new MovableDragHandler( ammeter.bodyPositionProperty, {
+        tandem: tandem.createTandem( 'dragHandler' ),
+        startDrag: () => this.moveToFront(),
+        endDrag: function() {
+          ammeter.droppedEmitter.emit( bodyNode.globalBounds );
+
+          // After dropping in the play area the probes move independently of the body
+          ammeter.draggingProbesWithBodyProperty.set( false );
+
+          probeDragHandler.constrainToBounds();
+        },
+
+        // adds support for zoomed coordinate frame, see
+        // https://github.com/phetsims/circuit-construction-kit-common/issues/301
+        targetNode: this
+      } );
+      bodyNode.addInputListener( this.dragHandler );
+      options.visibleBoundsProperty.link( visibleBounds => {
+        const erodedDragBounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
+        this.dragHandler.dragBounds = erodedDragBounds;
+        probeDragHandler.dragBounds = erodedDragBounds;
+      } );
+      this.probeNode.addInputListener( probeDragHandler );
+
+      /**
+       * Detection for ammeter probe + circuit intersection is done in the view since view bounds are used
+       */
+      const updateAmmeter = () => {
+
+        // Skip work when ammeter is not out, to improve performance.
+        if ( ammeter.visibleProperty.get() ) {
+          const current = circuitLayerNode.getCurrent( this.probeNode );
+          ammeter.currentProperty.set( current );
+        }
+      };
+      circuitLayerNode.circuit.circuitChangedEmitter.addListener( updateAmmeter );
+      ammeter.probePositionProperty.link( updateAmmeter );
     }
 
-    /**
-     * Forward a drag from the toolbox to the play area node.
-     * @param {SceneryEvent} event
-     */
-    startDrag( event ) {
-      this.dragHandler.startDrag( event );
+    // When rendered as an icon, the touch area should span the bounds (no gaps between probes and body)
+    if ( options.isIcon ) {
+      this.touchArea = this.bounds.copy();
+      this.mouseArea = this.bounds.copy();
+      this.cursor = 'pointer';
     }
   }
 
-  return circuitConstructionKitCommon.register( 'AmmeterNode', AmmeterNode );
-} );
+  /**
+   * Forward a drag from the toolbox to the play area node.
+   * @param {SceneryEvent} event
+   */
+  startDrag( event ) {
+    this.dragHandler.startDrag( event );
+  }
+}
+
+circuitConstructionKitCommon.register( 'AmmeterNode', AmmeterNode );
+export default AmmeterNode;

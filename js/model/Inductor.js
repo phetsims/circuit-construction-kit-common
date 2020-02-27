@@ -5,62 +5,59 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const DynamicCircuitElement = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/DynamicCircuitElement' );
-  const merge = require( 'PHET_CORE/merge' );
-  const NumberProperty = require( 'AXON/NumberProperty' );
-  const Range = require( 'DOT/Range' );
+import NumberProperty from '../../../axon/js/NumberProperty.js';
+import Range from '../../../dot/js/Range.js';
+import merge from '../../../phet-core/js/merge.js';
+import CCKCConstants from '../CCKCConstants.js';
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import DynamicCircuitElement from './DynamicCircuitElement.js';
 
-  // constants
-  const INDUCTOR_LENGTH = CCKCConstants.INDUCTOR_LENGTH;
+// constants
+const INDUCTOR_LENGTH = CCKCConstants.INDUCTOR_LENGTH;
 
-  class Inductor extends DynamicCircuitElement {
+class Inductor extends DynamicCircuitElement {
 
-    /**
-     * @param {Vertex} startVertex
-     * @param {Vertex} endVertex
-     * @param {Tandem} tandem
-     * @param {Object} [options]
-     */
-    constructor( startVertex, endVertex, tandem, options ) {
-      options = merge( {
-        inductance: 50,
-        numberOfDecimalPlaces: 0
-      }, options );
+  /**
+   * @param {Vertex} startVertex
+   * @param {Vertex} endVertex
+   * @param {Tandem} tandem
+   * @param {Object} [options]
+   */
+  constructor( startVertex, endVertex, tandem, options ) {
+    options = merge( {
+      inductance: 50,
+      numberOfDecimalPlaces: 0
+    }, options );
 
-      super( startVertex, endVertex, INDUCTOR_LENGTH, tandem, options );
+    super( startVertex, endVertex, INDUCTOR_LENGTH, tandem, options );
 
-      // @public {Property.<number>} the inductance in Henries
-      this.inductanceProperty = new NumberProperty( options.inductance, {
-        range: new Range( 10, 100 ),
-        tandem: tandem.createTandem( 'inductanceProperty' )
-      } );
-    }
-
-    /**
-     * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
-     * @public
-     */
-    dispose() {
-      this.inductanceProperty.dispose();
-      super.dispose();
-    }
-
-    /**
-     * Get the properties so that the circuit can be solved when changed.
-     * @override
-     * @returns {Property.<*>[]}
-     * @public
-     */
-    getCircuitProperties() {
-      return [ this.inductanceProperty ];
-    }
+    // @public {Property.<number>} the inductance in Henries
+    this.inductanceProperty = new NumberProperty( options.inductance, {
+      range: new Range( 10, 100 ),
+      tandem: tandem.createTandem( 'inductanceProperty' )
+    } );
   }
 
-  return circuitConstructionKitCommon.register( 'Inductor', Inductor );
-} );
+  /**
+   * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
+   * @public
+   */
+  dispose() {
+    this.inductanceProperty.dispose();
+    super.dispose();
+  }
+
+  /**
+   * Get the properties so that the circuit can be solved when changed.
+   * @override
+   * @returns {Property.<*>[]}
+   * @public
+   */
+  getCircuitProperties() {
+    return [ this.inductanceProperty ];
+  }
+}
+
+circuitConstructionKitCommon.register( 'Inductor', Inductor );
+export default Inductor;

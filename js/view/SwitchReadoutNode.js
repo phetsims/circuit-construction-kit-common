@@ -5,72 +5,69 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const Node = require( 'SCENERY/nodes/Node' );
-  const Text = require( 'SCENERY/nodes/Text' );
+import Node from '../../../scenery/js/nodes/Node.js';
+import Text from '../../../scenery/js/nodes/Text.js';
+import circuitConstructionKitCommonStrings from '../circuit-construction-kit-common-strings.js';
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
-  // strings
-  const theSwitchIsClosedString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/theSwitchIsClosed' );
-  const theSwitchIsOpenString = require( 'string!CIRCUIT_CONSTRUCTION_KIT_COMMON/theSwitchIsOpen' );
+const theSwitchIsClosedString = circuitConstructionKitCommonStrings.theSwitchIsClosed;
+const theSwitchIsOpenString = circuitConstructionKitCommonStrings.theSwitchIsOpen;
 
-  // constants
-  const MAX_TEXT_WIDTH = 300;
+// constants
+const MAX_TEXT_WIDTH = 300;
 
-  class SwitchReadoutNode extends Node {
+class SwitchReadoutNode extends Node {
 
-    /**
-     * @param {Circuit} circuit - the circuit from which the switch can be removed when the trash button is pressed
-     * @param {Switch} circuitSwitch - the switch
-     * @param {Tandem} tandem
-     */
-    constructor( circuit, circuitSwitch, tandem, trashButtonGroup ) {
+  /**
+   * @param {Circuit} circuit - the circuit from which the switch can be removed when the trash button is pressed
+   * @param {Switch} circuitSwitch - the switch
+   * @param {Tandem} tandem
+   */
+  constructor( circuit, circuitSwitch, tandem, trashButtonGroup ) {
 
-      // Create both texts and display both so they remain aligned as the value changes
-      const closedText = new Text( theSwitchIsClosedString, {
-        fontSize: 24,
-        maxWidth: MAX_TEXT_WIDTH
-      } );
-      const openText = new Text( theSwitchIsOpenString, {
-        fontSize: 24,
-        maxWidth: MAX_TEXT_WIDTH
-      } );
+    // Create both texts and display both so they remain aligned as the value changes
+    const closedText = new Text( theSwitchIsClosedString, {
+      fontSize: 24,
+      maxWidth: MAX_TEXT_WIDTH
+    } );
+    const openText = new Text( theSwitchIsOpenString, {
+      fontSize: 24,
+      maxWidth: MAX_TEXT_WIDTH
+    } );
 
-      const maxWidth = Math.max( closedText.width, openText.width );
+    const maxWidth = Math.max( closedText.width, openText.width );
 
-      const closedListener = closed => {
-        closedText.visible = closed;
-        openText.visible = !closed;
-      };
-      circuitSwitch.closedProperty.link( closedListener );
+    const closedListener = closed => {
+      closedText.visible = closed;
+      openText.visible = !closed;
+    };
+    circuitSwitch.closedProperty.link( closedListener );
 
-      // Show a trash button to the right of the text
-      const trashButton = trashButtonGroup.createNextMember( circuitSwitch );
-      trashButton.mutate( {
-        left: maxWidth + 10,
-        centerY: closedText.centerY
-      } );
+    // Show a trash button to the right of the text
+    const trashButton = trashButtonGroup.createNextMember( circuitSwitch );
+    trashButton.mutate( {
+      left: maxWidth + 10,
+      centerY: closedText.centerY
+    } );
 
-      super( {
-        children: [ closedText, openText, trashButton ]
-      } );
+    super( {
+      children: [ closedText, openText, trashButton ]
+    } );
 
-      // @private {function}
-      this.disposeSwitchReadoutNode = () => circuitSwitch.closedProperty.unlink( closedListener );
-    }
-
-    /**
-     * @public - dispose when no longer used
-     * @override
-     */
-    dispose() {
-      this.disposeSwitchReadoutNode();
-      super.dispose();
-    }
+    // @private {function}
+    this.disposeSwitchReadoutNode = () => circuitSwitch.closedProperty.unlink( closedListener );
   }
 
-  return circuitConstructionKitCommon.register( 'SwitchReadoutNode', SwitchReadoutNode );
-} );
+  /**
+   * @public - dispose when no longer used
+   * @override
+   */
+  dispose() {
+    this.disposeSwitchReadoutNode();
+    super.dispose();
+  }
+}
+
+circuitConstructionKitCommon.register( 'SwitchReadoutNode', SwitchReadoutNode );
+export default SwitchReadoutNode;

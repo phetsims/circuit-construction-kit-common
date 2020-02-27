@@ -6,229 +6,226 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const Ammeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Ammeter' );
-  const BooleanProperty = require( 'AXON/BooleanProperty' );
-  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  const CCKCQueryParameters = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCQueryParameters' );
-  const Circuit = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Circuit' );
-  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const CircuitElementViewType = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/CircuitElementViewType' );
-  const Emitter = require( 'AXON/Emitter' );
-  const EnumerationProperty = require( 'AXON/EnumerationProperty' );
-  const merge = require( 'PHET_CORE/merge' );
-  const NumberProperty = require( 'AXON/NumberProperty' );
-  const Stopwatch = require( 'SCENERY_PHET/Stopwatch' );
-  const Utils = require( 'DOT/Utils' );
-  const Voltmeter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Voltmeter' );
-  const ZoomAnimation = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/ZoomAnimation' );
-  const ZoomControlPanel = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/view/ZoomControlPanel' );
+import BooleanProperty from '../../../axon/js/BooleanProperty.js';
+import Emitter from '../../../axon/js/Emitter.js';
+import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
+import NumberProperty from '../../../axon/js/NumberProperty.js';
+import Utils from '../../../dot/js/Utils.js';
+import merge from '../../../phet-core/js/merge.js';
+import Stopwatch from '../../../scenery-phet/js/Stopwatch.js';
+import CCKCConstants from '../CCKCConstants.js';
+import CCKCQueryParameters from '../CCKCQueryParameters.js';
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import ZoomControlPanel from '../view/ZoomControlPanel.js';
+import Ammeter from './Ammeter.js';
+import Circuit from './Circuit.js';
+import CircuitElementViewType from './CircuitElementViewType.js';
+import Voltmeter from './Voltmeter.js';
+import ZoomAnimation from './ZoomAnimation.js';
 
-  class CircuitConstructionKitModel {
+class CircuitConstructionKitModel {
 
-    /**
-     * @param {Tandem} tandem
-     * @param {Object} [options]
-     */
-    constructor( tandem, options ) {
+  /**
+   * @param {Tandem} tandem
+   * @param {Object} [options]
+   */
+  constructor( tandem, options ) {
 
-      options = merge( {
+    options = merge( {
 
-        // Determines whether electrons can be shown.  In black box, electrons can only be shown when the user reveals
-        // the answer by pressing the reveal answer button.
-        revealing: true,
-        blackBoxStudy: false
-      }, options );
+      // Determines whether electrons can be shown.  In black box, electrons can only be shown when the user reveals
+      // the answer by pressing the reveal answer button.
+      revealing: true,
+      blackBoxStudy: false
+    }, options );
 
-      // @private {ZoomAnimation|null} - animation for the zoom level or null if not animating
-      this.zoomAnimation = null;
+    // @private {ZoomAnimation|null} - animation for the zoom level or null if not animating
+    this.zoomAnimation = null;
 
-      // @public {Property.<CircuitElementViewType>} - whether to show lifelike or schematic representations
-      this.viewTypeProperty = new EnumerationProperty( CircuitElementViewType, CircuitElementViewType.LIFELIKE, {
-        tandem: tandem.createTandem( 'viewTypeProperty' )
+    // @public {Property.<CircuitElementViewType>} - whether to show lifelike or schematic representations
+    this.viewTypeProperty = new EnumerationProperty( CircuitElementViewType, CircuitElementViewType.LIFELIKE, {
+      tandem: tandem.createTandem( 'viewTypeProperty' )
+    } );
+
+    // @public (read-only) {Circuit} - contains CircuitElements, Vertices, etc.
+    this.circuit = new Circuit( this.viewTypeProperty, tandem.createTandem( 'circuit' ), { blackBoxStudy: options.blackBoxStudy } );
+
+    // @public (read-only) {Voltmeter[]} - created statically and indexed starting at 1 for human-readability for PhET-iO
+    this.voltmeters = [
+      new Voltmeter( tandem.createTandem( 'voltmeter1' ), 1 ),
+      new Voltmeter( tandem.createTandem( 'voltmeter2' ), 2 )
+    ];
+
+    // @public (read-only) {Ammeter[]} - created statically and indexed starting at 1 for human-readability for PhET-iO
+    this.ammeters = [
+      new Ammeter( tandem.createTandem( 'ammeter1' ), 1 ),
+      new Ammeter( tandem.createTandem( 'ammeter2' ), 2 )
+    ];
+
+    // @public {BooleanProperty} - changes whether the light bulb brightness and ammeter/voltmeter readouts,
+    // charges, flame, etc. can be seen
+    this.isValueDepictionEnabledProperty = new BooleanProperty(
+      !CCKCQueryParameters.showDepictValuesToggleButton, {
+        tandem: tandem.createTandem( 'isValueDepictionEnabledProperty' )
       } );
 
-      // @public (read-only) {Circuit} - contains CircuitElements, Vertices, etc.
-      this.circuit = new Circuit( this.viewTypeProperty, tandem.createTandem( 'circuit' ), { blackBoxStudy: options.blackBoxStudy } );
+    // @public {BooleanProperty} - true if the labels in the toolbox should be shown
+    this.showLabelsProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'showLabelsProperty' )
+    } );
 
-      // @public (read-only) {Voltmeter[]} - created statically and indexed starting at 1 for human-readability for PhET-iO
-      this.voltmeters = [
-        new Voltmeter( tandem.createTandem( 'voltmeter1' ), 1 ),
-        new Voltmeter( tandem.createTandem( 'voltmeter2' ), 2 )
-      ];
+    // @public {BooleanProperty} - true if the labels in the toolbox should be shown
+    this.showValuesProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'showValuesProperty' )
+    } );
 
-      // @public (read-only) {Ammeter[]} - created statically and indexed starting at 1 for human-readability for PhET-iO
-      this.ammeters = [
-        new Ammeter( tandem.createTandem( 'ammeter1' ), 1 ),
-        new Ammeter( tandem.createTandem( 'ammeter2' ), 2 )
-      ];
+    // @public {Property.<number>} scaling applied to the circuit node so the user can zoom out and make larger circuits
+    this.selectedZoomProperty = new NumberProperty( 1, {
+      tandem: tandem.createTandem( 'selectedZoomProperty' )
+    } );
 
-      // @public {BooleanProperty} - changes whether the light bulb brightness and ammeter/voltmeter readouts,
-      // charges, flame, etc. can be seen
-      this.isValueDepictionEnabledProperty = new BooleanProperty(
-        !CCKCQueryParameters.showDepictValuesToggleButton, {
-          tandem: tandem.createTandem( 'isValueDepictionEnabledProperty' )
-        } );
+    // @public (read-only) {Property.<number>} the animated value of the zoom level
+    this.currentZoomProperty = new NumberProperty( this.selectedZoomProperty.get(), {
+      tandem: tandem.createTandem( 'currentZoomProperty' )
+    } );
 
-      // @public {BooleanProperty} - true if the labels in the toolbox should be shown
-      this.showLabelsProperty = new BooleanProperty( true, {
-        tandem: tandem.createTandem( 'showLabelsProperty' )
+    this.selectedZoomProperty.lazyLink( newValue => {
+      this.zoomAnimation = new ZoomAnimation( this.currentZoomProperty.get(), newValue, delta => {
+        const proposedZoomValue = this.currentZoomProperty.value + delta;
+        const boundedValue = Utils.clamp( proposedZoomValue, ZoomControlPanel.ZOOMED_OUT, ZoomControlPanel.ZOOMED_IN );
+        this.currentZoomProperty.value = boundedValue;
       } );
+    } );
 
-      // @public {BooleanProperty} - true if the labels in the toolbox should be shown
-      this.showValuesProperty = new BooleanProperty( false, {
-        tandem: tandem.createTandem( 'showValuesProperty' )
-      } );
+    // @public {Property.<InteractionMode>} - whether the user is in the CircuitConstructionKitModel.InteractionMode.EXPLORE or CircuitConstructionKitModel.InteractionMode.TEST mode
+    this.modeProperty = new EnumerationProperty( Circuit.InteractionMode, Circuit.InteractionMode.EXPLORE, {
+      tandem: tandem.createTandem( 'modeProperty' )
+    } );
 
-      // @public {Property.<number>} scaling applied to the circuit node so the user can zoom out and make larger circuits
-      this.selectedZoomProperty = new NumberProperty( 1, {
-        tandem: tandem.createTandem( 'selectedZoomProperty' )
-      } );
+    // When the user manipulates something, hide the readouts, see
+    // https://github.com/phetsims/circuit-construction-kit/issues/130
+    // The following cases result in hiding the readouts:
+    // 1. More components are dragged out of the toolbox
+    // 2. Any vertex is broken
+    // 3. Component voltage/resistance is edited
+    // 4. A component within a circuit is deleted, see
+    // https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/16
+    // However, the simulation should not pause when switching between "Explore" and "Test" and "Reveal" in the black
+    // box study sim
+    const modeChanging = false;
 
-      // @public (read-only) {Property.<number>} the animated value of the zoom level
-      this.currentZoomProperty = new NumberProperty( this.selectedZoomProperty.get(), {
-        tandem: tandem.createTandem( 'currentZoomProperty' )
-      } );
+    // TODO (black-box-study): started/endedCallbacksForChangedEmitters don't exist anymore. Rewrite if commented back in.
+    // this.modeProperty.startedCallbacksForChangedEmitter.addListener( function() {
+    //   modeChanging = true;
+    // } );
+    // this.modeProperty.endedCallbacksForChangedEmitter.addListener( function() {
+    //   modeChanging = false;
+    // } );
+    if ( CCKCQueryParameters.showDepictValuesToggleButton ) {
 
-      this.selectedZoomProperty.lazyLink( newValue => {
-        this.zoomAnimation = new ZoomAnimation( this.currentZoomProperty.get(), newValue, delta => {
-          const proposedZoomValue = this.currentZoomProperty.value + delta;
-          const boundedValue = Utils.clamp( proposedZoomValue, ZoomControlPanel.ZOOMED_OUT, ZoomControlPanel.ZOOMED_IN );
-          this.currentZoomProperty.value = boundedValue;
-        } );
-      } );
-
-      // @public {Property.<InteractionMode>} - whether the user is in the CircuitConstructionKitModel.InteractionMode.EXPLORE or CircuitConstructionKitModel.InteractionMode.TEST mode
-      this.modeProperty = new EnumerationProperty( Circuit.InteractionMode, Circuit.InteractionMode.EXPLORE, {
-        tandem: tandem.createTandem( 'modeProperty' )
-      } );
-
-      // When the user manipulates something, hide the readouts, see
-      // https://github.com/phetsims/circuit-construction-kit/issues/130
-      // The following cases result in hiding the readouts:
-      // 1. More components are dragged out of the toolbox
-      // 2. Any vertex is broken
-      // 3. Component voltage/resistance is edited
-      // 4. A component within a circuit is deleted, see
-      // https://github.com/phetsims/circuit-construction-kit-black-box-study/issues/16
-      // However, the simulation should not pause when switching between "Explore" and "Test" and "Reveal" in the black
-      // box study sim
-      const modeChanging = false;
-
-      // TODO (black-box-study): started/endedCallbacksForChangedEmitters don't exist anymore. Rewrite if commented back in.
-      // this.modeProperty.startedCallbacksForChangedEmitter.addListener( function() {
-      //   modeChanging = true;
-      // } );
-      // this.modeProperty.endedCallbacksForChangedEmitter.addListener( function() {
-      //   modeChanging = false;
-      // } );
-      if ( CCKCQueryParameters.showDepictValuesToggleButton ) {
-
-        // TODO (black-box-study) fix this
-        const pause = () => {
-          if ( !modeChanging ) {
-            this.isValueDepictionEnabledProperty.value = false;
-          }
-        };
-        this.circuit.vertexGroup.addMemberCreatedListener( pause );
-        this.circuit.vertexGroup.addMemberDisposedListener( pause );
-        this.circuit.componentEditedEmitter.addListener( pause );
-        this.circuit.circuitElements.lengthProperty.link( pause );
-      }
-
-      // Broad channel for PhET-iO that signifies a change in the circuit. Wrapper listeners can call get state after circuit
-      // changes to obtain the new circuit.
-      const circuitChangedEmitter = new Emitter( {
-        tandem: tandem.createTandem( 'circuitChangedEmitter' )
-      } );
-
-      const emitCircuitChanged = () => circuitChangedEmitter.emit();
-      this.circuit.vertexGroup.addMemberCreatedListener( emitCircuitChanged );
-      this.circuit.vertexGroup.addMemberDisposedListener( emitCircuitChanged );
-      this.circuit.componentEditedEmitter.addListener( emitCircuitChanged );
-
-      // When the simulation pauses and resumes, clear the time scaling factor (so it doesn't show a stale value)
-      this.isValueDepictionEnabledProperty.link( () => this.circuit.chargeAnimator.timeScaleRunningAverage.clear() );
-
-      // When the view changes between schematic/lifelike, update the electron paths (because the LightBulb has a different
-      // charge path depending on the view
-      this.viewTypeProperty.link( () => {
-
-        // First update the length of the light bulbs
-        this.circuit.circuitElements.forEach( circuitElement => {
-          circuitElement.updatePathLength && circuitElement.updatePathLength();
-        } );
-
-        // Then position the electrons in the new paths
-        this.circuit.relayoutAllCharges();
-      } );
-
-      // @public - true when the user is holding down the reveal button and the answer (inside the black box) is showing
-      this.revealingProperty = new BooleanProperty( options.revealing, {
-        tandem: tandem.createTandem( 'revealingProperty' )
-      } );
-
-      // @public {Bounds2} - bounds of the black box, if any.  Set by subclass in Black Box Study. Specifically, filled
-      // in by the BlackBoxSceneView after the black box node is created and positioned
-      this.blackBoxBounds = null;
-
-      // @public
-      this.stopwatch = new Stopwatch( {
-        tandem: tandem.createTandem( 'stopwatch' )
-      } );
-    }
-
-    /**
-     * Update the circuit and zoom level when the simulation clock steps.
-     * @param {number} dt - elapsed time in seconds
-     * @public
-     */
-    step( dt ) {
-
-      // If the step is large, it probably means that the screen was hidden for a while, so just ignore it.
-      // see https://github.com/phetsims/circuit-construction-kit-common/issues/476
-      if ( dt >= CCKCConstants.MAX_DT ) {
-        return;
-      }
-
-      if ( this.zoomAnimation ) {
-        const overflow = this.zoomAnimation.step( dt );
-        if ( overflow > 0 ) {
-          this.zoomAnimation = null;
+      // TODO (black-box-study) fix this
+      const pause = () => {
+        if ( !modeChanging ) {
+          this.isValueDepictionEnabledProperty.value = false;
         }
-      }
-
-      // Only move charges if the simulation is not paused.
-      this.isValueDepictionEnabledProperty.value && this.circuit.step( dt );
-
-      this.circuit.layoutChargesInDirtyCircuitElements();
-      this.stopwatch.step( dt );
+      };
+      this.circuit.vertexGroup.addMemberCreatedListener( pause );
+      this.circuit.vertexGroup.addMemberDisposedListener( pause );
+      this.circuit.componentEditedEmitter.addListener( pause );
+      this.circuit.circuitElements.lengthProperty.link( pause );
     }
 
-    /**
-     * Reset the circuit.
-     * @public
-     */
-    reset() {
-      this.isValueDepictionEnabledProperty.reset();
-      this.showLabelsProperty.reset();
-      this.showValuesProperty.reset();
-      this.modeProperty.reset();
-      this.circuit.reset();
-      this.voltmeters.forEach( voltmeter => voltmeter.reset() );
-      this.ammeters.forEach( ammeter => ammeter.reset() );
-      this.viewTypeProperty.reset();
-      this.currentZoomProperty.reset();
-      this.selectedZoomProperty.reset();
-      this.stopwatch.reset();
+    // Broad channel for PhET-iO that signifies a change in the circuit. Wrapper listeners can call get state after circuit
+    // changes to obtain the new circuit.
+    const circuitChangedEmitter = new Emitter( {
+      tandem: tandem.createTandem( 'circuitChangedEmitter' )
+    } );
 
-      // cancel any animation in progress, including (but not limited to) one that may have just been caused by reset
-      this.zoomAnimation = null;
-    }
+    const emitCircuitChanged = () => circuitChangedEmitter.emit();
+    this.circuit.vertexGroup.addMemberCreatedListener( emitCircuitChanged );
+    this.circuit.vertexGroup.addMemberDisposedListener( emitCircuitChanged );
+    this.circuit.componentEditedEmitter.addListener( emitCircuitChanged );
+
+    // When the simulation pauses and resumes, clear the time scaling factor (so it doesn't show a stale value)
+    this.isValueDepictionEnabledProperty.link( () => this.circuit.chargeAnimator.timeScaleRunningAverage.clear() );
+
+    // When the view changes between schematic/lifelike, update the electron paths (because the LightBulb has a different
+    // charge path depending on the view
+    this.viewTypeProperty.link( () => {
+
+      // First update the length of the light bulbs
+      this.circuit.circuitElements.forEach( circuitElement => {
+        circuitElement.updatePathLength && circuitElement.updatePathLength();
+      } );
+
+      // Then position the electrons in the new paths
+      this.circuit.relayoutAllCharges();
+    } );
+
+    // @public - true when the user is holding down the reveal button and the answer (inside the black box) is showing
+    this.revealingProperty = new BooleanProperty( options.revealing, {
+      tandem: tandem.createTandem( 'revealingProperty' )
+    } );
+
+    // @public {Bounds2} - bounds of the black box, if any.  Set by subclass in Black Box Study. Specifically, filled
+    // in by the BlackBoxSceneView after the black box node is created and positioned
+    this.blackBoxBounds = null;
+
+    // @public
+    this.stopwatch = new Stopwatch( {
+      tandem: tandem.createTandem( 'stopwatch' )
+    } );
   }
 
-  return circuitConstructionKitCommon.register( 'CircuitConstructionKitModel', CircuitConstructionKitModel );
-} );
+  /**
+   * Update the circuit and zoom level when the simulation clock steps.
+   * @param {number} dt - elapsed time in seconds
+   * @public
+   */
+  step( dt ) {
+
+    // If the step is large, it probably means that the screen was hidden for a while, so just ignore it.
+    // see https://github.com/phetsims/circuit-construction-kit-common/issues/476
+    if ( dt >= CCKCConstants.MAX_DT ) {
+      return;
+    }
+
+    if ( this.zoomAnimation ) {
+      const overflow = this.zoomAnimation.step( dt );
+      if ( overflow > 0 ) {
+        this.zoomAnimation = null;
+      }
+    }
+
+    // Only move charges if the simulation is not paused.
+    this.isValueDepictionEnabledProperty.value && this.circuit.step( dt );
+
+    this.circuit.layoutChargesInDirtyCircuitElements();
+    this.stopwatch.step( dt );
+  }
+
+  /**
+   * Reset the circuit.
+   * @public
+   */
+  reset() {
+    this.isValueDepictionEnabledProperty.reset();
+    this.showLabelsProperty.reset();
+    this.showValuesProperty.reset();
+    this.modeProperty.reset();
+    this.circuit.reset();
+    this.voltmeters.forEach( voltmeter => voltmeter.reset() );
+    this.ammeters.forEach( ammeter => ammeter.reset() );
+    this.viewTypeProperty.reset();
+    this.currentZoomProperty.reset();
+    this.selectedZoomProperty.reset();
+    this.stopwatch.reset();
+
+    // cancel any animation in progress, including (but not limited to) one that may have just been caused by reset
+    this.zoomAnimation = null;
+  }
+}
+
+circuitConstructionKitCommon.register( 'CircuitConstructionKitModel', CircuitConstructionKitModel );
+export default CircuitConstructionKitModel;

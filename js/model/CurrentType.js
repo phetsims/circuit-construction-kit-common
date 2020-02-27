@@ -7,12 +7,8 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const Enumeration = require( 'PHET_CORE/Enumeration' );
+import Enumeration from '../../../phet-core/js/Enumeration.js';
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
-  return circuitConstructionKitCommon.register( 'CurrentType', Enumeration.byKeys( [ 'ELECTRONS', 'CONVENTIONAL' ] ) );
-} );
+export default circuitConstructionKitCommon.register( 'CurrentType', Enumeration.byKeys( [ 'ELECTRONS', 'CONVENTIONAL' ] ) );

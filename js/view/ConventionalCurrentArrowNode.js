@@ -5,34 +5,31 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
-  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const Color = require( 'SCENERY/util/Color' );
+import ArrowNode from '../../../scenery-phet/js/ArrowNode.js';
+import Color from '../../../scenery/js/util/Color.js';
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
-  // constants
-  const ARROW_LENGTH = 23; // length of the arrow in view coordinates
+// constants
+const ARROW_LENGTH = 23; // length of the arrow in view coordinates
 
-  class ConventionalCurrentArrowNode extends ArrowNode {
+class ConventionalCurrentArrowNode extends ArrowNode {
 
-    /**
-     * @param {Tandem} tandem
-     */
-    constructor( tandem ) {
+  /**
+   * @param {Tandem} tandem
+   */
+  constructor( tandem ) {
 
-      super( 0, 0, ARROW_LENGTH, 0, {
-        headHeight: 10,
-        headWidth: 12,
-        tailWidth: 3,
-        fill: Color.RED,
-        stroke: Color.WHITE,
-        tandem: tandem
-      } );
-    }
+    super( 0, 0, ARROW_LENGTH, 0, {
+      headHeight: 10,
+      headWidth: 12,
+      tailWidth: 3,
+      fill: Color.RED,
+      stroke: Color.WHITE,
+      tandem: tandem
+    } );
   }
+}
 
-  return circuitConstructionKitCommon.register( 'ConventionalCurrentArrowNode', ConventionalCurrentArrowNode );
-} );
+circuitConstructionKitCommon.register( 'ConventionalCurrentArrowNode', ConventionalCurrentArrowNode );
+export default ConventionalCurrentArrowNode;

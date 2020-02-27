@@ -5,34 +5,31 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const CCKCConstants = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/CCKCConstants' );
-  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const merge = require( 'PHET_CORE/merge' );
-  const Panel = require( 'SUN/Panel' );
+import merge from '../../../phet-core/js/merge.js';
+import Panel from '../../../sun/js/Panel.js';
+import CCKCConstants from '../CCKCConstants.js';
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
-  class CCKCPanel extends Panel {
+class CCKCPanel extends Panel {
 
-    /**
-     * @param {Node} content - what will appear in the panel
-     * @param {Tandem} tandem
-     * @param {Object} [options]
-     */
-    constructor( content, tandem, options ) {
-      options = merge( {
-        fill: CCKCConstants.PANEL_COLOR,
-        lineWidth: CCKCConstants.PANEL_LINE_WIDTH,
-        xMargin: 15,
-        yMargin: 15,
-        tandem: tandem,
-        cornerRadius: CCKCConstants.CORNER_RADIUS
-      }, options );
-      super( content, options );
-    }
+  /**
+   * @param {Node} content - what will appear in the panel
+   * @param {Tandem} tandem
+   * @param {Object} [options]
+   */
+  constructor( content, tandem, options ) {
+    options = merge( {
+      fill: CCKCConstants.PANEL_COLOR,
+      lineWidth: CCKCConstants.PANEL_LINE_WIDTH,
+      xMargin: 15,
+      yMargin: 15,
+      tandem: tandem,
+      cornerRadius: CCKCConstants.CORNER_RADIUS
+    }, options );
+    super( content, options );
   }
+}
 
-  return circuitConstructionKitCommon.register( 'CCKCPanel', CCKCPanel );
-} );
+circuitConstructionKitCommon.register( 'CCKCPanel', CCKCPanel );
+export default CCKCPanel;

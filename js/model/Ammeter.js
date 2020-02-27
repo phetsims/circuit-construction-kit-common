@@ -6,56 +6,53 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const Meter = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/model/Meter' );
-  const NullableIO = require( 'TANDEM/types/NullableIO' );
-  const NumberIO = require( 'TANDEM/types/NumberIO' );
-  const Property = require( 'AXON/Property' );
-  const PropertyIO = require( 'AXON/PropertyIO' );
-  const Vector2 = require( 'DOT/Vector2' );
-  const Vector2Property = require( 'DOT/Vector2Property' );
+import Property from '../../../axon/js/Property.js';
+import PropertyIO from '../../../axon/js/PropertyIO.js';
+import Vector2 from '../../../dot/js/Vector2.js';
+import Vector2Property from '../../../dot/js/Vector2Property.js';
+import NullableIO from '../../../tandem/js/types/NullableIO.js';
+import NumberIO from '../../../tandem/js/types/NumberIO.js';
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import Meter from './Meter.js';
 
-  class Ammeter extends Meter {
+class Ammeter extends Meter {
 
-    /**
-     * @param {Tandem} tandem
-     * @param {number} phetioIndex
-     */
-    constructor( tandem, phetioIndex ) {
-      super( tandem, phetioIndex );
+  /**
+   * @param {Tandem} tandem
+   * @param {number} phetioIndex
+   */
+  constructor( tandem, phetioIndex ) {
+    super( tandem, phetioIndex );
 
-      // public (read-only) {number} - lightweight index for naming the tandem view correspondingly
-      this.phetioIndex = phetioIndex;
+    // public (read-only) {number} - lightweight index for naming the tandem view correspondingly
+    this.phetioIndex = phetioIndex;
 
-      // @public {Property.<number|null>} the full-precision reading on the ammeter. It will be formatted for
-      // display in the view.  Null means the ammeter is not on a wire.
-      this.currentProperty = new Property( null, {
-        tandem: tandem.createTandem( 'currentProperty' ),
-        units: 'amperes',
-        phetioType: PropertyIO( NullableIO( NumberIO ) )
-      } );
+    // @public {Property.<number|null>} the full-precision reading on the ammeter. It will be formatted for
+    // display in the view.  Null means the ammeter is not on a wire.
+    this.currentProperty = new Property( null, {
+      tandem: tandem.createTandem( 'currentProperty' ),
+      units: 'amperes',
+      phetioType: PropertyIO( NullableIO( NumberIO ) )
+    } );
 
-      // @public - the position of the tip of the probe
-      this.probePositionProperty = new Vector2Property( Vector2.ZERO, {
-        tandem: tandem.createTandem( 'probePositionProperty' )
-      } );
-    }
-
-    /**
-     * Restore the ammeter to its initial conditions
-     * @public
-     * @override
-     */
-    reset() {
-      super.reset();
-      this.currentProperty.reset();
-      this.probePositionProperty.reset();
-    }
+    // @public - the position of the tip of the probe
+    this.probePositionProperty = new Vector2Property( Vector2.ZERO, {
+      tandem: tandem.createTandem( 'probePositionProperty' )
+    } );
   }
 
-  return circuitConstructionKitCommon.register( 'Ammeter', Ammeter );
-} );
+  /**
+   * Restore the ammeter to its initial conditions
+   * @public
+   * @override
+   */
+  reset() {
+    super.reset();
+    this.currentProperty.reset();
+    this.probePositionProperty.reset();
+  }
+}
+
+circuitConstructionKitCommon.register( 'Ammeter', Ammeter );
+export default Ammeter;

@@ -7,14 +7,11 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const circuitConstructionKitCommon = require( 'CIRCUIT_CONSTRUCTION_KIT_COMMON/circuitConstructionKitCommon' );
-  const Enumeration = require( 'PHET_CORE/Enumeration' );
+import Enumeration from '../../../phet-core/js/Enumeration.js';
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
-  const CircuitElementViewType = Enumeration.byKeys( [ 'LIFELIKE', 'SCHEMATIC' ] );
+const CircuitElementViewType = Enumeration.byKeys( [ 'LIFELIKE', 'SCHEMATIC' ] );
 
-  return circuitConstructionKitCommon.register( 'CircuitElementViewType', CircuitElementViewType );
-} );
+circuitConstructionKitCommon.register( 'CircuitElementViewType', CircuitElementViewType );
+export default CircuitElementViewType;
