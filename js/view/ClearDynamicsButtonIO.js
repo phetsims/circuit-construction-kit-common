@@ -1,4 +1,4 @@
-// Copyright 2019, University of Colorado Boulder
+// Copyright 2019-2020, University of Colorado Boulder
 
 /**
  * IO type for ClearDynamicsButton.  TODO(phet-io): This shares a lot of code with TrashButtonIO

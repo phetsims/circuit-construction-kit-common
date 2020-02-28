@@ -1,4 +1,4 @@
-// Copyright 2017-2019, University of Colorado Boulder
+// Copyright 2017-2020, University of Colorado Boulder
 
 /**
  * Circuit element used for Modified Nodal Analysis.  The same type represents batteries and resistors--what matters
