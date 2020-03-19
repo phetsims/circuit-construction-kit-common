@@ -46,8 +46,10 @@ class CircuitElementNumberControl extends NumberControl {
       numberDisplayOptions: {
         maxWidth: NUMBER_CONTROL_ELEMENT_MAX_WIDTH,
         valuePattern: valuePattern,
-        font: CCKCConstants.DEFAULT_FONT,
-        decimalPlaces: circuitElement.numberOfDecimalPlaces
+        decimalPlaces: circuitElement.numberOfDecimalPlaces,
+        textOptions: {
+          font: CCKCConstants.DEFAULT_FONT
+        }
       },
 
       // Prevent overlap with the navigation bar
