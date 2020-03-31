@@ -8,7 +8,7 @@
 
 import Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
-import circuitConstructionKitCommonStrings from '../circuit-construction-kit-common-strings.js';
+import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 const theSwitchIsClosedString = circuitConstructionKitCommonStrings.theSwitchIsClosed;

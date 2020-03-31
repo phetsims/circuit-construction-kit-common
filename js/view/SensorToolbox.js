@@ -22,7 +22,7 @@ import VBox from '../../../scenery/js/nodes/VBox.js';
 import HSeparator from '../../../sun/js/HSeparator.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommonStrings from '../circuit-construction-kit-common-strings.js';
+import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Ammeter from '../model/Ammeter.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';

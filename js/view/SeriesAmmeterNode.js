@@ -15,7 +15,7 @@ import Color from '../../../scenery/js/util/Color.js';
 import Panel from '../../../sun/js/Panel.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCUtils from '../CCKCUtils.js';
-import circuitConstructionKitCommonStrings from '../circuit-construction-kit-common-strings.js';
+import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';

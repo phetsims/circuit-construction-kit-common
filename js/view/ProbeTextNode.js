@@ -13,7 +13,7 @@ import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import VBox from '../../../scenery/js/nodes/VBox.js';
 import Color from '../../../scenery/js/util/Color.js';
-import circuitConstructionKitCommonStrings from '../circuit-construction-kit-common-strings.js';
+import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 const questionMarkString = circuitConstructionKitCommonStrings.questionMark;

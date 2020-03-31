@@ -16,7 +16,7 @@ import VBox from '../../../scenery/js/nodes/VBox.js';
 import AquaRadioButton from '../../../sun/js/AquaRadioButton.js';
 import Checkbox from '../../../sun/js/Checkbox.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommonStrings from '../circuit-construction-kit-common-strings.js';
+import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CurrentType from '../model/CurrentType.js';
 import CCKCPanel from './CCKCPanel.js';

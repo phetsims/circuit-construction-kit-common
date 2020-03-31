@@ -8,7 +8,7 @@
 
 import Utils from '../../dot/js/Utils.js';
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
-import circuitConstructionKitCommonStrings from './circuit-construction-kit-common-strings.js';
+import circuitConstructionKitCommonStrings from './circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
 
 const currentUnitsString = circuitConstructionKitCommonStrings.currentUnits;

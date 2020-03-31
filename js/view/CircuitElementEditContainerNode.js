@@ -18,7 +18,7 @@ import SunConstants from '../../../sun/js/SunConstants.js';
 import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
 import PhetioGroupIO from '../../../tandem/js/PhetioGroupIO.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommonStrings from '../circuit-construction-kit-common-strings.js';
+import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ACVoltage from '../model/ACVoltage.js';
 import Battery from '../model/Battery.js';

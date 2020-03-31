@@ -17,7 +17,7 @@ import Color from '../../../scenery/js/util/Color.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import wireIconImage from '../../images/wire-icon_png.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommonStrings from '../circuit-construction-kit-common-strings.js';
+import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ACVoltage from '../model/ACVoltage.js';
 import Battery from '../model/Battery.js';

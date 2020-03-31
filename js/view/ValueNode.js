@@ -20,7 +20,7 @@ import VBox from '../../../scenery/js/nodes/VBox.js';
 import Color from '../../../scenery/js/util/Color.js';
 import Panel from '../../../sun/js/Panel.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommonStrings from '../circuit-construction-kit-common-strings.js';
+import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Capacitor from '../model/Capacitor.js';
 import Fuse from '../model/Fuse.js';

@@ -14,7 +14,7 @@ import Text from '../../../scenery/js/nodes/Text.js';
 import VBox from '../../../scenery/js/nodes/VBox.js';
 import HSlider from '../../../sun/js/HSlider.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommonStrings from '../circuit-construction-kit-common-strings.js';
+import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 const resistanceOhmsSymbolString = circuitConstructionKitCommonStrings.resistanceOhmsSymbol;

@@ -22,7 +22,7 @@ import Color from '../../../scenery/js/util/Color.js';
 import ammeterBodyImage from '../../images/ammeter-body_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCUtils from '../CCKCUtils.js';
-import circuitConstructionKitCommonStrings from '../circuit-construction-kit-common-strings.js';
+import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ProbeTextNode from './ProbeTextNode.js';
 

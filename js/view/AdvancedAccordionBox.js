@@ -8,7 +8,7 @@
  */
 
 import VBox from '../../../scenery/js/nodes/VBox.js';
-import circuitConstructionKitCommonStrings from '../circuit-construction-kit-common-strings.js';
+import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CCKCAccordionBox from './CCKCAccordionBox.js';
 import SourceResistanceControl from './SourceResistanceControl.js';

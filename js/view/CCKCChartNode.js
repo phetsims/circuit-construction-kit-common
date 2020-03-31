@@ -21,7 +21,7 @@ import Text from '../../../scenery/js/nodes/Text.js';
 import NodeProperty from '../../../scenery/js/util/NodeProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommonStrings from '../circuit-construction-kit-common-strings.js';
+import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Meter from '../model/Meter.js';
 import CCKCProbeNode from './CCKCProbeNode.js';

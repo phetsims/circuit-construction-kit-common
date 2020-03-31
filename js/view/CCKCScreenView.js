@@ -20,7 +20,7 @@ import Node from '../../../scenery/js/nodes/Node.js';
 import VBox from '../../../scenery/js/nodes/VBox.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
-import circuitConstructionKitCommonStrings from '../circuit-construction-kit-common-strings.js';
+import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import SeriesAmmeter from '../model/SeriesAmmeter.js';
 import AdvancedAccordionBox from './AdvancedAccordionBox.js';
