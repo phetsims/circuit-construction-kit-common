@@ -83,7 +83,7 @@ class Circuit {
     // contain, including Wire, Battery, Switch, Resistor, LightBulb, etc.
     this.circuitElements = new ObservableArray( {
       phetioState: true,
-      phetioType: ObservableArrayIO( ReferenceIO ),
+      phetioType: ObservableArrayIO( ReferenceIO( CircuitElementIO ) ),
       tandem: tandem.createTandem( 'circuitElements' )
     } );
 
@@ -215,7 +215,7 @@ class Circuit {
     // Vertex.selectedProperty.  These strategies can be unified when we work on a11y.
     this.selectedCircuitElementProperty = new Property( null, {
       tandem: tandem.createTandem( 'selectedCircuitElementProperty' ),
-      phetioType: PropertyIO( NullableIO( ReferenceIO ) )
+      phetioType: PropertyIO( NullableIO( ReferenceIO( CircuitElementIO ) ) )
     } );
 
     this.selectedCircuitElementProperty.link( selectedCircuitElement => {
