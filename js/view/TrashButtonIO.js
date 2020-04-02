@@ -24,8 +24,8 @@ class TrashButtonIO extends ObjectIO {
     if ( stateObject.circuitElementID === null ) {
       return { circuitElement: null };
     }
-    if ( phet.phetIo.phetioEngine.hasPhetioObject( stateObject.circuitElementID ) ) {
-      return { circuitElement: phet.phetIo.phetioEngine.getPhetioObject( stateObject.circuitElementID ) };
+    if ( phet.phetio.phetioEngine.hasPhetioObject( stateObject.circuitElementID ) ) {
+      return { circuitElement: phet.phetio.phetioEngine.getPhetioObject( stateObject.circuitElementID ) };
     }
     else {
       throw new CouldNotYetDeserializeError();

@@ -22,11 +22,11 @@ class CircuitElementIO extends ObjectIO {
   }
 
   static fromStateObject( stateObject ) {
-    if ( phet.phetIo.phetioEngine.hasPhetioObject( stateObject.startVertexID ) &&
-         phet.phetIo.phetioEngine.hasPhetioObject( stateObject.endVertexID ) ) {
+    if ( phet.phetio.phetioEngine.hasPhetioObject( stateObject.startVertexID ) &&
+         phet.phetio.phetioEngine.hasPhetioObject( stateObject.endVertexID ) ) {
       return {
-        startVertex: phet.phetIo.phetioEngine.getPhetioObject( stateObject.startVertexID ),
-        endVertex: phet.phetIo.phetioEngine.getPhetioObject( stateObject.endVertexID )
+        startVertex: phet.phetio.phetioEngine.getPhetioObject( stateObject.startVertexID ),
+        endVertex: phet.phetio.phetioEngine.getPhetioObject( stateObject.endVertexID )
       };
     }
     else {
