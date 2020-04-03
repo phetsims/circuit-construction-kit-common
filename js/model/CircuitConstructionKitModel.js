@@ -98,6 +98,11 @@ class CircuitConstructionKitModel {
       } );
     } );
 
+    // True if the simulation is playing, controlled by the TimeControlNode
+    this.isPlayingProperty = new BooleanProperty( true, {
+      tandem: tandem.createTandem( 'isPlayingProperty' )
+    } );
+
     // @public {Property.<InteractionMode>} - whether the user is in the CircuitConstructionKitModel.InteractionMode.EXPLORE or CircuitConstructionKitModel.InteractionMode.TEST mode
     this.modeProperty = new EnumerationProperty( Circuit.InteractionMode, Circuit.InteractionMode.EXPLORE, {
       tandem: tandem.createTandem( 'modeProperty' )
@@ -176,6 +181,34 @@ class CircuitConstructionKitModel {
     this.stopwatch = new Stopwatch( {
       tandem: tandem.createTandem( 'stopwatch' )
     } );
+
+    // Indicates when the model has updated, some views need to update accordingly
+    this.stepEmitter = new Emitter( {
+      parameters: [ { valueType: 'number' } ]
+    } );
+  }
+
+  /**
+   * @public
+   */
+  stepSingleStep() {
+
+    // 6/60 = 0.1 second, run over multiple steps to maintain smooth curves in the charts
+    _.times( 6, () => this.stepOnce( 1 / 60 ) );
+    this.circuit.layoutChargesInDirtyCircuitElements();
+  }
+
+  /**
+   * Step forward one step, whether automatically or when the step button is pressed.
+   * @param dt
+   * @private
+   */
+  stepOnce( dt ) {
+
+    // Only move charges if the simulation is not paused.
+    this.isValueDepictionEnabledProperty.value && this.circuit.step( dt );
+    this.stopwatch.step( dt );
+    this.stepEmitter.emit( dt );
   }
 
   /**
@@ -198,11 +231,10 @@ class CircuitConstructionKitModel {
       }
     }
 
-    // Only move charges if the simulation is not paused.
-    this.isValueDepictionEnabledProperty.value && this.circuit.step( dt );
-
-    this.circuit.layoutChargesInDirtyCircuitElements();
-    this.stopwatch.step( dt );
+    if ( this.isPlayingProperty.value ) {
+      this.stepOnce( dt );
+      this.circuit.layoutChargesInDirtyCircuitElements();
+    }
   }
 
   /**

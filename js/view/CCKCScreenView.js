@@ -14,14 +14,15 @@ import merge from '../../../phet-core/js/merge.js';
 import PlayPauseButton from '../../../scenery-phet/js/buttons/PlayPauseButton.js';
 import ResetAllButton from '../../../scenery-phet/js/buttons/ResetAllButton.js';
 import StopwatchNode from '../../../scenery-phet/js/StopwatchNode.js';
+import TimeControlNode from '../../../scenery-phet/js/TimeControlNode.js';
 import AlignBox from '../../../scenery/js/nodes/AlignBox.js';
 import AlignGroup from '../../../scenery/js/nodes/AlignGroup.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import VBox from '../../../scenery/js/nodes/VBox.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
-import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import SeriesAmmeter from '../model/SeriesAmmeter.js';
 import AdvancedAccordionBox from './AdvancedAccordionBox.js';
 import AmmeterNode from './AmmeterNode.js';
@@ -281,6 +282,15 @@ class CCKCScreenView extends ScreenView {
     // Make it as wide as the circuit element toolbox
     zoomControlPanel.setScaleMagnitude( 0.8 );
 
+    const timeControlNode = new TimeControlNode( model.isPlayingProperty, {
+      playPauseStepButtonOptions: {
+        stepForwardButtonOptions: {
+          listener: () => model.stepSingleStep()
+        }
+      }
+    } );
+    this.addChild( timeControlNode );
+
     // Add it in front of everything (should never be obscured by a CircuitElement)
     // this.addChild( zoomControlPanel );
 
@@ -296,6 +306,18 @@ class CCKCScreenView extends ScreenView {
       options.showResetAllButton && resetAllButton.mutate( {
         right: visibleBounds.right - HORIZONTAL_MARGIN,
         bottom: visibleBounds.bottom - HORIZONTAL_MARGIN
+      } );
+
+      // Match the TimeControlNode height to the ResetAllButtonHeight
+      let timeControlNodeScale = 1;
+      if ( options.showResetAllButton ) {
+        timeControlNodeScale = resetAllButton.height / timeControlNode.height;
+      }
+
+      timeControlNode.mutate( {
+        left: controlPanelVBox.left,
+        bottom: visibleBounds.bottom - HORIZONTAL_MARGIN,
+        scale: timeControlNodeScale
       } );
 
       chargeSpeedThrottlingReadoutNode.mutate( {
@@ -365,6 +387,21 @@ class CCKCScreenView extends ScreenView {
         }
       } );
     }
+
+    model.stepEmitter.addListener( dt => this.stepOnce( dt ) );
+  }
+
+  // called from model steps
+  stepOnce( dt ) {
+
+    // If the step is large, it probably means that the screen was hidden for a while, so just ignore it.
+    // see https://github.com/phetsims/circuit-construction-kit-common/issues/476
+    if ( dt >= CCKCConstants.MAX_DT ) {
+      return;
+    }
+
+    this.voltageChartNode && this.voltageChartNode.step( this.model.circuit.timeProperty.value, dt );
+    this.currentChartNode && this.currentChartNode.step( this.model.circuit.timeProperty.value, dt );
   }
 
   /**
@@ -374,16 +411,8 @@ class CCKCScreenView extends ScreenView {
    */
   step( dt ) {
 
-    // If the step is large, it probably means that the screen was hidden for a while, so just ignore it.
-    // see https://github.com/phetsims/circuit-construction-kit-common/issues/476
-    if ( dt >= CCKCConstants.MAX_DT ) {
-      return;
-    }
-
+    // noting from the main step
     this.circuitLayerNode.step( dt );
-
-    this.voltageChartNode && this.voltageChartNode.step( this.model.circuit.timeProperty.value, dt );
-    this.currentChartNode && this.currentChartNode.step( this.model.circuit.timeProperty.value, dt );
   }
 
   /**
