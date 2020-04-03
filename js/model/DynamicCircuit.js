@@ -176,7 +176,7 @@ class DynamicCircuit {
    * @returns MNAAdapter.CircuitResult
    */
   solveWithSubdivisions2( dt ) {
-    return this.solveWithSubdivisions( new TimestepSubdivisions( 1E-6, 1E-8 ), dt );
+    return this.solveWithSubdivisions( new TimestepSubdivisions( 1E-6, 1E-14 ), dt );
   }
 
   /**

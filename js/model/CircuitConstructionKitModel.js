@@ -231,10 +231,9 @@ class CircuitConstructionKitModel {
       }
     }
 
-    if ( this.isPlayingProperty.value ) {
-      this.stepOnce( dt );
-      this.circuit.layoutChargesInDirtyCircuitElements();
-    }
+    // Still need physics to update, like capacitors clearing and electrons updating.  But don't propagate time very far!
+    this.stepOnce( this.isPlayingProperty.value ? dt : 1E-10 );
+    this.circuit.layoutChargesInDirtyCircuitElements();
   }
 
   /**
@@ -253,6 +252,7 @@ class CircuitConstructionKitModel {
     this.currentZoomProperty.reset();
     this.selectedZoomProperty.reset();
     this.stopwatch.reset();
+    this.isPlayingProperty.reset();
 
     // cancel any animation in progress, including (but not limited to) one that may have just been caused by reset
     this.zoomAnimation = null;

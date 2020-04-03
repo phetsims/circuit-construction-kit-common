@@ -24,8 +24,7 @@ import Wire from './Wire.js';
 
 // constants
 const ERROR_THRESHOLD = 1E-5;
-const MINIMUM_DT = 1E-5;
-const TIMESTEP_SUBDIVISIONS = new TimestepSubdivisions( ERROR_THRESHOLD, MINIMUM_DT );
+const TIMESTEP_SUBDIVISIONS = new TimestepSubdivisions( ERROR_THRESHOLD, 1E-14 );
 
 class ResistiveBatteryAdapter extends DynamicCircuit.ResistiveBattery {
   constructor( c, battery ) {
