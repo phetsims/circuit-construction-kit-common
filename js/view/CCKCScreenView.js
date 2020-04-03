@@ -7,6 +7,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import ScreenView from '../../../joist/js/ScreenView.js';
@@ -45,7 +46,7 @@ const sourceResistanceString = circuitConstructionKitCommonStrings.sourceResista
 const VERTICAL_MARGIN = CCKCConstants.VERTICAL_MARGIN;
 
 // Match margins with the carousel page control and spacing
-const HORIZONTAL_MARGIN = 17;
+const HORIZONTAL_MARGIN = CCKCConstants.HORIZONTAL_MARGIN;
 
 // Group for aligning the content in the panels and accordion boxes.  This is a class variable instead of an
 // instance variable so the control panels will have the same width across all screens,
@@ -237,16 +238,21 @@ class CCKCScreenView extends ScreenView {
     );
     this.addChild( chargeSpeedThrottlingReadoutNode );
 
+    // The center between the left toolbox and the right control panels
+    const playAreaCenterXProperty = new NumberProperty( 0 );
+
     const circuitElementEditContainerNode = new CircuitElementEditContainerNode(
       model.circuit,
       this.visibleBoundsProperty,
       model.modeProperty,
+      playAreaCenterXProperty,
       tandem.createTandem( 'circuitElementEditContainerNode' ), {
         showPhaseShiftControl: options.showPhaseShiftControl
       }
     );
 
     // @protected {CircuitElementEditContainerNode} - so the subclass can set the layout
+    // TODO: This appears unused
     this.circuitElementEditContainerNode = circuitElementEditContainerNode;
 
     this.addChild( circuitElementEditContainerNode );
@@ -327,6 +333,8 @@ class CCKCScreenView extends ScreenView {
 
       zoomControlPanel.left = visibleBounds.left + HORIZONTAL_MARGIN;
       zoomControlPanel.bottom = visibleBounds.bottom - VERTICAL_MARGIN;
+
+      playAreaCenterXProperty.value = ( controlPanelVBox.left + this.circuitElementToolbox.right ) / 2;
     } );
 
     // Center the circuit node so that zooms will remain centered.

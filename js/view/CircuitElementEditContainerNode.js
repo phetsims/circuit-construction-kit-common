@@ -18,8 +18,8 @@ import SunConstants from '../../../sun/js/SunConstants.js';
 import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
 import PhetioGroupIO from '../../../tandem/js/PhetioGroupIO.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import ACVoltage from '../model/ACVoltage.js';
 import Battery from '../model/Battery.js';
 import Capacitor from '../model/Capacitor.js';
@@ -57,10 +57,10 @@ const voltageString = circuitConstructionKitCommonStrings.voltage;
 const voltageVoltsValuePatternString = circuitConstructionKitCommonStrings.voltageVoltsValuePattern;
 
 // constants
-const GET_LAYOUT_POSITION = visibleBounds => {
+const GET_LAYOUT_POSITION = (visibleBounds,centerX) => {
   return {
-    centerX: visibleBounds.centerX,
-    bottom: visibleBounds.bottom - CCKCConstants.VERTICAL_MARGIN
+    centerX: centerX,
+    bottom: visibleBounds.bottom - CCKCConstants.HORIZONTAL_MARGIN
   };
 };
 
@@ -70,10 +70,11 @@ class CircuitElementEditContainerNode extends Node {
    * @param {Circuit} circuit - the circuit model
    * @param {Property.<boolean>} visibleBoundsProperty - the visible bounds in view coordinates
    * @param {Property.<InteractionMode>} modeProperty
+   * @param {Property.<Number>} playAreaCenterXProperty
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( circuit, visibleBoundsProperty, modeProperty, tandem, options ) {
+  constructor( circuit, visibleBoundsProperty, modeProperty, playAreaCenterXProperty, tandem, options ) {
 
     super();
 
@@ -128,7 +129,7 @@ class CircuitElementEditContainerNode extends Node {
     const updatePosition = () => {
 
       // Layout, but only if we have something to display (otherwise bounds fail out)
-      this.bounds.isValid() && this.mutate( GET_LAYOUT_POSITION( visibleBoundsProperty.get() ) );
+      this.bounds.isValid() && this.mutate( GET_LAYOUT_POSITION( visibleBoundsProperty.get(), playAreaCenterXProperty.value ) );
     };
 
     // When the selected element changes, update the displayed controls
@@ -346,7 +347,7 @@ class CircuitElementEditContainerNode extends Node {
 class EditHBox extends HBox {
   constructor( children ) {
     super( {
-      spacing: 40,
+      spacing: 25,
       align: 'bottom',
       children: children
     } );
@@ -361,9 +362,9 @@ class EditPanel extends Panel {
     super( new EditHBox( children ), {
       fill: '#caddfa',
       stroke: null,
-      xMargin: 13,
-      yMargin: 13,
-      cornerRadius: 13
+      xMargin: 10,
+      yMargin: 10,
+      cornerRadius: 10
     } );
   }
 }

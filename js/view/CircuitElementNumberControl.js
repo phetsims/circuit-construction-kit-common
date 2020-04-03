@@ -6,6 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import Dimension2 from '../../../dot/js/Dimension2.js';
 import merge from '../../../phet-core/js/merge.js';
 import NumberControl from '../../../scenery-phet/js/NumberControl.js';
 import Tandem from '../../../tandem/js/Tandem.js';
@@ -51,10 +52,15 @@ class CircuitElementNumberControl extends NumberControl {
           font: CCKCConstants.DEFAULT_FONT
         }
       },
+      layoutFunction: NumberControl.createLayoutFunction1({
+        arrowButtonsXSpacing: 9
+      }),
 
       // Prevent overlap with the navigation bar
       sliderOptions: {
-        thumbTouchAreaYDilation: 5
+        thumbTouchAreaYDilation: 5,
+        thumbSize: new Dimension2( 10, 20 ),
+        trackSize: new Dimension2( 120, 4 )
       },
 
       // Trick the NumberControl into thinking it and its children do not need to be instrumented
