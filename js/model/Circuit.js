@@ -858,9 +858,19 @@ class Circuit {
     stepElements.forEach( element => element.step( this.timeProperty.value, dt, this ) );
 
     if ( this.dirty || stepElements.length > 0 || dynamicElements.length > 0 ) {
-      ModifiedNodalAnalysisAdapter.solveModifiedNodalAnalysis( this, dt );
-      this.dirty = false;
-      this.circuitChangedEmitter.emit();
+      try {
+        ModifiedNodalAnalysisAdapter.solveModifiedNodalAnalysis( this, dt );
+        this.dirty = false;
+        this.circuitChangedEmitter.emit();
+      }
+      catch( e ) {
+        if ( e.message === 'nonlinear' ) {
+          console.log( e.message );
+        }
+        else {
+          throw e;
+        }
+      }
     }
   }
 

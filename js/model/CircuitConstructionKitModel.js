@@ -232,7 +232,13 @@ class CircuitConstructionKitModel {
     }
 
     // Still need physics to update, like capacitors clearing and electrons updating.  But don't propagate time very far!
-    this.stepOnce( this.isPlayingProperty.value ? dt : 1E-10 );
+
+    // dt * 60 times/sec * 60 sec/minute * 60 minutes/hour  * 24 hours/day * 365 days /year
+    //
+    // dt = acceptable level = 1E-3 in one year = 0.001
+    //
+    // dt = 1E-3/60/60/60/24/365 = 5.284965330627432e-13
+    this.stepOnce( this.isPlayingProperty.value ? dt : 5E-13 );
     this.circuit.layoutChargesInDirtyCircuitElements();
   }
 

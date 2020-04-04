@@ -23,8 +23,7 @@ import VoltageSource from './VoltageSource.js';
 import Wire from './Wire.js';
 
 // constants
-const ERROR_THRESHOLD = 1E-5;
-const TIMESTEP_SUBDIVISIONS = new TimestepSubdivisions( ERROR_THRESHOLD, 1E-14 );
+const TIMESTEP_SUBDIVISIONS = new TimestepSubdivisions();
 
 class ResistiveBatteryAdapter extends DynamicCircuit.ResistiveBattery {
   constructor( c, battery ) {

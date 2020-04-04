@@ -12,22 +12,24 @@
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ResultSet from './ResultSet.js';
 
-class TimestepSubdivisions {
+// threshold for determining whether 2 states are similar enough; any error less than errorThreshold will be tolerated.
+const MIN_DT = 1E-13 / 20;
 
-  constructor( errorThreshold, minDT ) {
-    this.errorThreshold = errorThreshold; //threshold for determining whether 2 states are similar enough; any error less than errorThreshold will be tolerated.
-    this.minDT = minDT; //lowest possible value for DT, independent of how the error scales with reduced time step
-  }
+//threshold for determining whether 2 states are similar enough; any error less than errorThreshold will be tolerated.
+const ERROR_THRESHOLD = 1E-5;
+
+class TimestepSubdivisions {
 
   stepInTimeWithHistory( originalState, steppable, dt ) {
     let state = originalState;
     let elapsed = 0.0;
     const states = [];
     while ( elapsed < dt ) {
-      const seedValue = states.length > 0 ? states[ states.length - 1 ].subdivisionDT : dt;//use the last obtained dt as a starting value, if possible
 
-      // try to increase first, in case higher dt has acceptable error
-      // but don't try to double dt if it is first state
+      //use the last obtained dt as a starting value, if possible
+      const seedValue = states.length > 0 ? states[ states.length - 1 ].subdivisionDT : dt;
+
+      // try to increase first, in case higher dt has acceptable error, but don't try to double dt if it is first state
       const startScale = states.length > 0 ? 2 : 1;
       let subdivisionDT = this.getTimestep( state, steppable, seedValue * startScale );
       if ( subdivisionDT + elapsed > dt ) {
@@ -47,15 +49,14 @@ class TimestepSubdivisions {
   /**
    * Recursively searches for a value of dt that has acceptable error, starting with the value dt
    *
-   * @param state     the initial state
-   * @param steppable the update algorithm and distance metric
-   * @param dt        the initial value to use for dt
-   * @returns the selected timestep that has acceptable error or meets the minimum allowed
+   * @param {Object} state     the initial state
+   * @param {} steppable the update algorithm and distance metric
+   * @param {number} dt        the initial value to use for dt
+   * @returns {number} the selected timestep that has acceptable error or meets the minimum allowed
    */
   getTimestep( state, steppable, dt ) {
-    if ( dt < this.minDT ) {
-      console.log( 'Time step too small: ' + dt );
-      return this.minDT;
+    if ( dt < MIN_DT ) {
+      throw new Error( 'nonlinear' );
     }
     else if ( this.errorAcceptable( state, steppable, dt ) ) {
       return dt;
@@ -71,7 +72,7 @@ class TimestepSubdivisions {
     const b2 = steppable.update( b1, dt / 2 );
     const distance = steppable.distance( a, b2 );
     assert && assert( !isNaN( distance ), 'distance should be numeric' );
-    return distance < this.errorThreshold;
+    return distance < ERROR_THRESHOLD;
   }
 }
 
