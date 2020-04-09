@@ -89,7 +89,7 @@ class CCKCChartNode extends Node {
     this.alignProbesEmitter = new Emitter();
 
     // These do not need to be disposed because there is no connection to the "outside world"
-    const leftBottomProperty = new NodeProperty( backgroundNode, 'bounds', 'leftBottom' );
+    const leftBottomProperty = new NodeProperty( backgroundNode, backgroundNode.boundsProperty, 'leftBottom' );
 
     // @public - emits when the CCKCChartNode has been dropped
     this.droppedEmitter = new Emitter();
@@ -169,7 +169,7 @@ class CCKCChartNode extends Node {
 
     // Add the wire behind the probe.
     this.addChild( new WireNode( connectionProperty, new Vector2Property( new Vector2( -NORMAL_DISTANCE, 0 ) ),
-      new NodeProperty( probeNode, 'bounds', 'centerBottom' ), new Vector2Property( new Vector2( 0, NORMAL_DISTANCE ) ), {
+      new NodeProperty( probeNode, probeNode.boundsProperty, 'centerBottom' ), new Vector2Property( new Vector2( 0, NORMAL_DISTANCE ) ), {
         lineWidth: WIRE_LINE_WIDTH,
         stroke: wireColor
       }
@@ -186,7 +186,7 @@ class CCKCChartNode extends Node {
       // Prevent the probes from going out of the visible bounds when tagging along with the dragged CCKCChartNode
       probeNode.translation = this.visibleBoundsProperty.value.closestPointTo( probeNode.translation );
     };
-    this.on( 'visibility', alignProbes );
+    this.visibleProperty.lazyLink( alignProbes );
     this.alignProbesEmitter.addListener( alignProbes );
     return probeNode;
   }
