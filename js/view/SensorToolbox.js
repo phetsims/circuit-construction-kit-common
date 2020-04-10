@@ -179,7 +179,8 @@ class SensorToolbox extends CCKCPanel {
       children: [
         voltmeterNodeIcon,
         voltmeterText
-      ]
+      ],
+      excludeInvisibleChildrenFromBounds: false
     } );
 
     const children = [];
@@ -192,10 +193,12 @@ class SensorToolbox extends CCKCPanel {
         new HBox( {
           spacing: 8,
           align: 'bottom',
-          children: children
+          children: children,
+          excludeInvisibleChildrenFromBounds: false
         } ),
         ammeterText
-      ]
+      ],
+      excludeInvisibleChildrenFromBounds: false
     } );
 
     const topBox = alignGroup.createBox( new HBox( {

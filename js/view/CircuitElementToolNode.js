@@ -48,7 +48,9 @@ class CircuitElementToolNode extends VBox {
       touchAreaExpansionLeft: 10,
       touchAreaExpansionTop: 13,
       touchAreaExpansionRight: 10,
-      touchAreaExpansionBottom: 3
+      touchAreaExpansionBottom: 3,
+
+      excludeInvisibleChildrenFromBounds: false
     }, options );
     super( options );
 
