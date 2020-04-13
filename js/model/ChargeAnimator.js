@@ -255,7 +255,7 @@ class ChargeAnimator {
    * @returns {Object[]}
    * @private
    */
-  getPositions(charge, overshoot, vertex, depth ) {
+  getPositions( charge, overshoot, vertex, depth ) {
 
     const circuit = this.circuit;
 
