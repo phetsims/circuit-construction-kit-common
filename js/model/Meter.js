@@ -29,7 +29,7 @@ class Meter {
       tandem: tandem.createTandem( 'visibleProperty' )
     } );
 
-    // @public - the location of the body of the meter
+    // @public - the position of the body of the meter
     this.bodyPositionProperty = new Vector2Property( Vector2.ZERO, {
       tandem: tandem.createTandem( 'bodyPositionProperty' )
     } );

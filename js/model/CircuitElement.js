@@ -338,7 +338,7 @@ class CircuitElement extends PhetioObject {
   }
 
   /**
-   * Updates the given matrix with the position and angle at the specified location along the element.
+   * Updates the given matrix with the position and angle at the specified position along the element.
    * @param {number} distanceAlongWire - the scalar distance from one endpoint to another.
    * @param {Matrix3} matrix to be updated with the position and angle, so that garbage isn't created each time
    * @public
@@ -355,13 +355,13 @@ class CircuitElement extends PhetioObject {
   }
 
   /**
-   * Returns true if this CircuitElement contains the specified scalar location.
-   * @param {number} scalarLocation
+   * Returns true if this CircuitElement contains the specified scalar position.
+   * @param {number} scalarPosition
    * @returns {boolean}
    * @public
    */
-  containsScalarLocation( scalarLocation ) {
-    return scalarLocation >= 0 && scalarLocation <= this.chargePathLength;
+  containsScalarPosition( scalarPosition ) {
+    return scalarPosition >= 0 && scalarPosition <= this.chargePathLength;
   }
 
   /**

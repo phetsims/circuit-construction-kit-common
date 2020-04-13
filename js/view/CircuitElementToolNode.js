@@ -29,7 +29,7 @@ class CircuitElementToolNode extends VBox {
    * @param {number} maxNumber
    * @param {function} count - () => number, gets the number of that kind of object in the model, so the icon can be
    *                         - hidden when all items have been created
-   * @param {function} createElement - (Vector2) => CircuitElement Function that creates a CircuitElement at the given location
+   * @param {function} createElement - (Vector2) => CircuitElement Function that creates a CircuitElement at the given position
    *                                 - for most components it is the center of the component.  For Light Bulbs, it is
    *                                 - in the center of the socket
    * @param {Object} [options]
@@ -63,7 +63,7 @@ class CircuitElementToolNode extends VBox {
       // doesn't obscure the object
       viewPosition.y = viewPosition.y - ( event.pointer instanceof Touch ? 28 : 0 );
 
-      // Create the new CircuitElement at the correct location
+      // Create the new CircuitElement at the correct position
       const circuitElement = createElement( viewPosition, event );
 
       // Add the CircuitElement to the Circuit

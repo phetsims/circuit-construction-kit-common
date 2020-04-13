@@ -85,7 +85,7 @@ class CCKCChartNode extends Node {
     // Mutate after backgroundNode is added as a child
     this.mutate( options );
 
-    // @public - emits when the probes should be put in standard relative location to the body
+    // @public - emits when the probes should be put in standard relative position to the body
     this.alignProbesEmitter = new Emitter();
 
     // These do not need to be disposed because there is no connection to the "outside world"
@@ -176,7 +176,7 @@ class CCKCChartNode extends Node {
     ) );
     this.addChild( probeNode );
 
-    // Standard location in toolbox and when dragging out of toolbox.
+    // Standard position in toolbox and when dragging out of toolbox.
     const alignProbes = () => {
       probeNode.mutate( {
         right: this.backgroundNode.left - dx,

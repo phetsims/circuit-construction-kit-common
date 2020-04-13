@@ -46,7 +46,7 @@ class Vertex extends PhetioObject {
     // @public (read-only)
     this.vertexTandem = options.tandem;
 
-    // @public - location of the vertex
+    // @public - position of the vertex
     this.positionProperty = new Vector2Property( position, {
       tandem: options.tandem && options.tandem.createTandem( 'positionProperty' ),
       useDeepEquality: true,

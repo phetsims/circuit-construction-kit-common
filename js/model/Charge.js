@@ -28,9 +28,9 @@ class Charge {
     // Validate inputs
     assert && assert( _.isNumber( distance ), 'distance should be a number' );
     assert && assert( distance >= 0, 'charge was below the origin of the circuit element' );
-    assert && assert( circuitElement.containsScalarLocation( distance ), 'charge was not within the circuit element' );
+    assert && assert( circuitElement.containsScalarPosition( distance ), 'charge was not within the circuit element' );
 
-    // @public (read-only) {CircuitElement} - the CircuitElement the Charge is in, changed by Charge.setLocation
+    // @public (read-only) {CircuitElement} - the CircuitElement the Charge is in, changed by Charge.updatePositionAndAngle
     this.circuitElement = circuitElement;
 
     // @public (read-only) {number} - the distance the charge has traveled in its CircuitElement in view coordinates

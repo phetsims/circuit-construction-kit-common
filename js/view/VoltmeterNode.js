@@ -117,7 +117,7 @@ class VoltmeterNode extends Node {
     } );
 
     /**
-     * Creates a Vector2Property with a new Vector2 at the specified location.
+     * Creates a Vector2Property with a new Vector2 at the specified position.
      * @param {number} [x]
      * @param {number} [y]
      */

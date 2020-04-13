@@ -82,7 +82,7 @@ class VertexNode extends Node {
       } );
 
       // @private {function} for debugging
-      this.updateReadoutTextLocation = () => {
+      this.updateReadoutTextPosition = () => {
         this.voltageReadoutText.centerX = 0;
         this.voltageReadoutText.bottom = -30;
       };
@@ -91,14 +91,14 @@ class VertexNode extends Node {
         // No need for i18n because this is for debugging only
         const voltageText = Utils.toFixed( voltage, 3 ) + 'V';
         this.voltageReadoutText.setText( vertexDisplay === 'voltage' ? voltageText : vertex.index );
-        this.updateReadoutTextLocation();
+        this.updateReadoutTextPosition();
       } );
     }
 
     // @public (read-only) {Vertex} - the vertex associated with this node
     this.vertex = vertex;
 
-    // @public (read-only) {Vector2|null} - added by CircuitLayerNode during dragging, used for relative drag location,
+    // @public (read-only) {Vector2|null} - added by CircuitLayerNode during dragging, used for relative drag position,
     // or null if not being dragged.
     this.startOffset = null;
 
@@ -359,7 +359,7 @@ class VertexNode extends Node {
     if ( this.vertex.selectedProperty.get() ) {
       this.highlightNode.translation = position;
     }
-    this.updateReadoutTextLocation && this.updateReadoutTextLocation();
+    this.updateReadoutTextPosition && this.updateReadoutTextPosition();
 
     // Update the cut button position, but only if the cut button is showing (to save on CPU)
     this.vertex.selectedProperty.get() && this.updateCutButtonPosition();

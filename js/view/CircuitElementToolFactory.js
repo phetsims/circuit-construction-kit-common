@@ -109,7 +109,7 @@ class CircuitElementToolFactory {
    * @param {number} count
    * @param {Node} icon
    * @param {function} predicate - CircuitElement => boolean, used to count circuit elements of that kind
-   * @param {function} createElement - (Vector2) => CircuitElement Function that creates a CircuitElement at the given location
+   * @param {function} createElement - (Vector2) => CircuitElement Function that creates a CircuitElement at the given position
    *                                 - for most components it is the center of the component.  For Light Bulbs, it is
    *                                 - in the center of the socket
    * @param {Object} [options]

@@ -41,7 +41,7 @@ class SolderNode extends Node {
     // @public (read-only) {Vertex}
     this.vertex = vertex;
 
-    // @public {Vector2|null} - added by CircuitLayerNode during dragging, used for relative drag location.
+    // @public {Vector2|null} - added by CircuitLayerNode during dragging, used for relative drag position.
     this.startOffset = null;
 
     // Update the fill when the number of attached components changes.

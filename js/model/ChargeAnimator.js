@@ -77,7 +77,7 @@ class ChargeAnimator {
   }
 
   /**
-   * Update the location of the charges based on the circuit currents
+   * Update the position of the charges based on the circuit currents
    * @param {number} dt - elapsed time in seconds
    * @public
    */
@@ -215,7 +215,7 @@ class ChargeAnimator {
       const newChargePosition = chargePosition + chargePositionDelta;
 
       // Step within a single circuit element
-      if ( charge.circuitElement.containsScalarLocation( newChargePosition ) ) {
+      if ( charge.circuitElement.containsScalarPosition( newChargePosition ) ) {
         charge.distance = newChargePosition;
       }
       else {
@@ -233,34 +233,34 @@ class ChargeAnimator {
         const vertex = lessThanBeginningOfOldCircuitElement ?
                        charge.circuitElement.startVertexProperty.get() :
                        charge.circuitElement.endVertexProperty.get();
-        const circuitLocations = this.getLocations( charge, overshoot, vertex, 0 );
-        if ( circuitLocations.length > 0 ) {
+        const circuitPositions = this.getPositions( charge, overshoot, vertex, 0 );
+        if ( circuitPositions.length > 0 ) {
 
           // choose the CircuitElement with the furthest away electron
-          const chosenCircuitLocation = _.maxBy( circuitLocations, 'distanceToClosestElectron' );
-          assert && assert( chosenCircuitLocation.distanceToClosestElectron >= 0, 'distanceToClosestElectron should be >=0' );
-          charge.circuitElement = chosenCircuitLocation.circuitElement;
-          charge.distance = chosenCircuitLocation.distance;
+          const chosenCircuitPosition = _.maxBy( circuitPositions, 'distanceToClosestElectron' );
+          assert && assert( chosenCircuitPosition.distanceToClosestElectron >= 0, 'distanceToClosestElectron should be >=0' );
+          charge.circuitElement = chosenCircuitPosition.circuitElement;
+          charge.distance = chosenCircuitPosition.distance;
         }
       }
     }
   }
 
   /**
-   * Returns the locations where a charge can flow to (connected circuits with current flowing in the right direction)
+   * Returns the positions where a charge can flow to (connected circuits with current flowing in the right direction)
    * @param {Charge} charge - the charge that is moving
    * @param {number} overshoot - the distance the charge should appear along the next circuit element
    * @param {Vertex} vertex - vertex the charge is passing by
    * @param {number} depth - number of recursive calls
-   * @returns {Object[]} see createCircuitLocation
+   * @returns {Object[]}
    * @private
    */
-  getLocations( charge, overshoot, vertex, depth ) {
+  getPositions(charge, overshoot, vertex, depth ) {
 
     const circuit = this.circuit;
 
     const adjacentCircuitElements = this.circuit.getNeighborCircuitElements( vertex );
-    const circuitLocations = [];
+    const circuitPositions = [];
 
     // Keep only those with outgoing current.
     for ( let i = 0; i < adjacentCircuitElements.length; i++ ) {
@@ -307,7 +307,7 @@ class ChargeAnimator {
             distanceToClosestElectron = circuitElement.chargePathLength - _.maxBy( charges, 'distance' ).distance;
           }
 
-          circuitLocations.push( {
+          circuitPositions.push( {
             circuitElement: circuitElement,
             distance: distance,
             distanceToClosestElectron: distanceToClosestElectron
@@ -316,14 +316,14 @@ class ChargeAnimator {
         else if ( depth < 20 ) {
 
           // check downstream circuit elements, but only if we haven't recursed too far (just in case)
-          const locations = this.getLocations( charge, 0, circuitElement.getOppositeVertex( vertex ), depth + 1 );
+          const positions = this.getPositions( charge, 0, circuitElement.getOppositeVertex( vertex ), depth + 1 );
 
-          if ( locations.length > 0 ) {
+          if ( positions.length > 0 ) {
 
             // find the one with the closest electron
-            const nearest = _.minBy( locations, 'distanceToClosestElectron' );
+            const nearest = _.minBy( positions, 'distanceToClosestElectron' );
 
-            circuitLocations.push( {
+            circuitPositions.push( {
               circuitElement: circuitElement,
               distance: distance,
               distanceToClosestElectron: nearest.distanceToClosestElectron + circuitElement.chargePathLength
@@ -332,7 +332,7 @@ class ChargeAnimator {
         }
       }
     }
-    return circuitLocations;
+    return circuitPositions;
   }
 }
 

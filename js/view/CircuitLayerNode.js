@@ -676,7 +676,7 @@ class CircuitLayerNode extends Node {
 
     updatePositions && updatePositions();
 
-    // Is there a nearby vertex any of these could snap to?  If so, move to its location temporarily.
+    // Is there a nearby vertex any of these could snap to?  If so, move to its position temporarily.
     // Find drop targets for *any* of the dragged vertices
     const bestDropTarget = this.getBestDropTarget( attachable );
     let delta = Vector2.ZERO;
@@ -688,7 +688,7 @@ class CircuitLayerNode extends Node {
     }
 
     // Translate all nodes as a batch before notifying observers so we don't end up with a bad transient state
-    // in which two or more vertices from one FixedCircuitElement have the same location.
+    // in which two or more vertices from one FixedCircuitElement have the same position.
     // See https://github.com/phetsims/circuit-construction-kit-common/issues/412
     for ( let i = 0; i < vertices.length; i++ ) {
       const newPosition = vertices[ i ].unsnappedPositionProperty.get().plus( delta );

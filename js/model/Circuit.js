@@ -173,7 +173,7 @@ class Circuit {
 
     this.vertexGroup.addMemberCreatedListener( vertex => {
 
-      // Observe the change in location of the vertices, to update the ammeter and voltmeter
+      // Observe the change in position of the vertices, to update the ammeter and voltmeter
       vertex.positionProperty.link( emitCircuitChanged );
 
       const filtered = this.vertexGroup.filter( candidateVertex => vertex === candidateVertex );
@@ -410,7 +410,7 @@ class Circuit {
   }
 
   /**
-   * Create a Vertex at the specified location, convenience function for creating the vertices for CircuitElements.
+   * Create a Vertex at the specified position, convenience function for creating the vertices for CircuitElements.
    * @param {Vector2} position - the position of the Vertex in view = model coordinates
    * @returns {Vertex}
    * @private
