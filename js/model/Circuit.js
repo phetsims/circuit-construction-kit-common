@@ -392,7 +392,7 @@ class Circuit {
     this.circuitElements.remove( circuitElement );
 
     // Find the corresponding group that contains the circuitElement and dispose it.
-    this.groups.forEach( group => group.contains( circuitElement ) && group.disposeMember( circuitElement ) );
+    this.groups.forEach( group => group.contains( circuitElement ) && group.disposeElement( circuitElement ) );
   }
 
   /**
@@ -416,7 +416,7 @@ class Circuit {
    * @private
    */
   createVertex( position ) {
-    return this.vertexGroup.createNextMember( position );
+    return this.vertexGroup.createNextElement( position );
   }
 
   /**
@@ -640,7 +640,7 @@ class Circuit {
     neighborCircuitElements.forEach( ( circuitElement, i ) => {
 
       // Add the new vertex to the model first so that it can be updated in subsequent calls
-      const newVertex = this.vertexGroup.createNextMember( vertex.positionProperty.get() );
+      const newVertex = this.vertexGroup.createNextElement( vertex.positionProperty.get() );
 
       circuitElement.replaceVertex( vertex, newVertex );
 
@@ -649,7 +649,7 @@ class Circuit {
     } );
 
     if ( !vertex.blackBoxInterfaceProperty.get() ) {
-      this.vertexGroup.disposeMember( vertex );
+      this.vertexGroup.disposeElement( vertex );
     }
     this.markDirty();
   }
@@ -709,7 +709,7 @@ class Circuit {
       !vertex.blackBoxInterfaceProperty.get() &&
       !vertex.isDisposed
     ) {
-      this.vertexGroup.disposeMember( vertex );
+      this.vertexGroup.disposeElement( vertex );
     }
   }
 
@@ -825,7 +825,7 @@ class Circuit {
           circuitElement.connectedEmitter.emit();
         }
       } );
-      this.vertexGroup.disposeMember( oldVertex );
+      this.vertexGroup.disposeElement( oldVertex );
       assert && assert( !oldVertex.positionProperty.hasListeners(), 'Removed vertex should not have any listeners' );
       this.markDirty();
 

@@ -165,14 +165,14 @@ class CircuitElementEditContainerNode extends Node {
           );
           editNode = new EditPanel( [
               resistanceControl,
-              trashButtonGroup.createNextMember( selectedCircuitElement )
+              trashButtonGroup.createNextElement( selectedCircuitElement )
             ]
           );
         }
         else if ( isResistive ) {
 
           // Just show a trash button for non-editable resistors which are household items
-          editNode = trashButtonGroup.createNextMember( selectedCircuitElement );
+          editNode = trashButtonGroup.createNextElement( selectedCircuitElement );
         }
         else if ( isBattery ) {
           const circuitElementEditNode = new CircuitElementNumberControl(
@@ -196,9 +196,9 @@ class CircuitElementEditContainerNode extends Node {
           editNode = new EditPanel( [
 
               // Batteries can be reversed
-              reverseBatteryButtonGroup.createNextMember( selectedCircuitElement ),
+              reverseBatteryButtonGroup.createNextElement( selectedCircuitElement ),
               circuitElementEditNode,
-              trashButtonGroup.createNextMember( selectedCircuitElement )
+              trashButtonGroup.createNextElement( selectedCircuitElement )
             ]
           );
         }
@@ -222,7 +222,7 @@ class CircuitElementEditContainerNode extends Node {
               // Batteries can be reversed
               new ResetFuseButton( selectedCircuitElement, tandem.createTandem( 'resetFuseButton' ) ),
               fuseCurrentRatingControl,
-              trashButtonGroup.createNextMember( selectedCircuitElement )
+              trashButtonGroup.createNextElement( selectedCircuitElement )
             ]
           );
         }
@@ -232,7 +232,7 @@ class CircuitElementEditContainerNode extends Node {
         else if ( isSeriesAmmeter || isWire ) {
 
           // Just show a trash button
-          editNode = trashButtonGroup.createNextMember( selectedCircuitElement );
+          editNode = trashButtonGroup.createNextElement( selectedCircuitElement );
         }
         else if ( isACSource ) {
           const children = [
@@ -269,7 +269,7 @@ class CircuitElementEditContainerNode extends Node {
               tandem: groupTandem.createNextTandem()
             } ) );
           }
-          children.push( trashButtonGroup.createNextMember( selectedCircuitElement ) );
+          children.push( trashButtonGroup.createNextElement( selectedCircuitElement ) );
           editNode = new EditPanel( children );
         }
         else if ( isCapacitor ) {
@@ -289,9 +289,9 @@ class CircuitElementEditContainerNode extends Node {
           );
 
           editNode = new EditPanel( [
-            clearDynamicsButtonGroup.createNextMember( selectedCircuitElement ),
+            clearDynamicsButtonGroup.createNextElement( selectedCircuitElement ),
             capacitorEditControl,
-            trashButtonGroup.createNextMember( selectedCircuitElement )
+            trashButtonGroup.createNextElement( selectedCircuitElement )
           ] );
         }
         else if ( isInductor ) {
@@ -309,9 +309,9 @@ class CircuitElementEditContainerNode extends Node {
             }
           );
           editNode = new EditPanel( [
-              clearDynamicsButtonGroup.createNextMember( selectedCircuitElement ),
+              clearDynamicsButtonGroup.createNextElement( selectedCircuitElement ),
               inductanceControl,
-              trashButtonGroup.createNextMember( selectedCircuitElement )
+              trashButtonGroup.createNextElement( selectedCircuitElement )
             ]
           );
         }

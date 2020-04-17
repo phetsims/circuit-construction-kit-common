@@ -45,7 +45,7 @@ class SwitchReadoutNode extends Node {
     circuitSwitch.closedProperty.link( closedListener );
 
     // Show a trash button to the right of the text
-    const trashButton = trashButtonGroup.createNextMember( circuitSwitch );
+    const trashButton = trashButtonGroup.createNextElement( circuitSwitch );
     trashButton.mutate( {
       left: maxWidth + 10,
       centerY: closedText.centerY

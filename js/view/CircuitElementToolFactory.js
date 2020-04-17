@@ -153,7 +153,7 @@ class CircuitElementToolFactory {
     } );
     return this.createCircuitElementToolNode( wireString, count, wireNode,
       circuitElement => circuitElement instanceof Wire,
-      position => this.circuit.wireGroup.createNextMember( ...this.circuit.createVertexPairArray( position, WIRE_LENGTH ) ) );
+      position => this.circuit.wireGroup.createNextElement( ...this.circuit.createVertexPairArray( position, WIRE_LENGTH ) ) );
   }
 
   /**
@@ -172,7 +172,7 @@ class CircuitElementToolFactory {
       circuitElement => circuitElement instanceof Battery &&
                         circuitElement.initialOrientation === 'right' &&
                         circuitElement.batteryType === Battery.BatteryType.NORMAL,
-      position => this.circuit.batteryGroup.createNextMember( ...this.circuit.createVertexPairArray( position, BATTERY_LENGTH ) ) );
+      position => this.circuit.batteryGroup.createNextElement( ...this.circuit.createVertexPairArray( position, BATTERY_LENGTH ) ) );
   }
 
   /**
@@ -191,7 +191,7 @@ class CircuitElementToolFactory {
     return this.createCircuitElementToolNode( acSourceString, count,
       new ACVoltageNode( null, null, acSource, this.viewTypeProperty, tandem.createTandem( 'acSourceIcon' ), { isIcon: true } ),
       circuitElement => circuitElement instanceof ACVoltage,
-      position => this.circuit.acVoltageGroup.createNextMember( ...this.circuit.createVertexPairArray( position, AC_VOLTAGE_LENGTH ) ), {
+      position => this.circuit.acVoltageGroup.createNextElement( ...this.circuit.createVertexPairArray( position, AC_VOLTAGE_LENGTH ) ), {
         iconScale: 0.68
       }
     );
@@ -220,7 +220,7 @@ class CircuitElementToolFactory {
       circuitElement => circuitElement instanceof LightBulb && !circuitElement.highResistance,
       position => {
         const vertexPair = LightBulb.createVertexPair( position, this.circuit );
-        return this.circuit.lightBulbGroup.createNextMember( vertexPair.startVertex, vertexPair.endVertex,
+        return this.circuit.lightBulbGroup.createNextElement( vertexPair.startVertex, vertexPair.endVertex,
           CCKCConstants.DEFAULT_RESISTANCE );
       }, {
         iconScale: 0.85
@@ -254,7 +254,7 @@ class CircuitElementToolFactory {
       circuitElement => circuitElement instanceof Resistor && circuitElement.resistorType === resistorType,
       position => {
         const vertices = this.circuit.createVertexPairArray( position, resistorType.length );
-        return this.circuit.resistorGroup.createNextMember( vertices[ 0 ], vertices[ 1 ], resistorType );
+        return this.circuit.resistorGroup.createNextElement( vertices[ 0 ], vertices[ 1 ], resistorType );
       } );
   }
 
@@ -275,7 +275,7 @@ class CircuitElementToolFactory {
         isIcon: true
       } ),
       circuitElement => circuitElement instanceof Fuse,
-      position => this.circuit.fuseGroup.createNextMember( ...this.circuit.createVertexPairArray( position, FUSE_LENGTH ) )
+      position => this.circuit.fuseGroup.createNextElement( ...this.circuit.createVertexPairArray( position, FUSE_LENGTH ) )
     );
   }
 
@@ -297,7 +297,7 @@ class CircuitElementToolFactory {
     return this.createCircuitElementToolNode( 'CAPACITOR', count,
       icon,
       circuitElement => circuitElement instanceof Capacitor,
-      position => this.circuit.capacitorGroup.createNextMember( ...this.circuit.createVertexPairArray( position, CCKCConstants.CAPACITOR_LENGTH ) ), {
+      position => this.circuit.capacitorGroup.createNextElement( ...this.circuit.createVertexPairArray( position, CCKCConstants.CAPACITOR_LENGTH ) ), {
 
         // Capacitor is tall, so to make sure the icon has the same width as other components, we need to specify the
         // scaling is based on width
@@ -322,7 +322,7 @@ class CircuitElementToolFactory {
         isIcon: true
       } ),
       circuitElement => circuitElement instanceof Inductor,
-      position => this.circuit.inductorGroup.createNextMember( ...this.circuit.createVertexPairArray( position, CCKCConstants.INDUCTOR_LENGTH ) ) );
+      position => this.circuit.inductorGroup.createNextElement( ...this.circuit.createVertexPairArray( position, CCKCConstants.INDUCTOR_LENGTH ) ) );
   }
 
   /**
@@ -342,7 +342,7 @@ class CircuitElementToolFactory {
           isIcon: true
         } ),
       circuitElement => circuitElement instanceof Switch,
-      position => this.circuit.switchGroup.createNextMember( ...this.circuit.createVertexPairArray( position, SWITCH_LENGTH ) ) );
+      position => this.circuit.switchGroup.createNextElement( ...this.circuit.createVertexPairArray( position, SWITCH_LENGTH ) ) );
   }
 
   /**
@@ -414,7 +414,7 @@ class CircuitElementToolFactory {
 
                         circuitElement.initialOrientation === 'right' &&
                         circuitElement.batteryType === Battery.BatteryType.HIGH_VOLTAGE, position => {
-        return this.circuit.highVoltageBatteryGroup.createNextMember( ...this.circuit.createVertexPairArray( position, SWITCH_LENGTH ) );
+        return this.circuit.highVoltageBatteryGroup.createNextElement( ...this.circuit.createVertexPairArray( position, SWITCH_LENGTH ) );
       } );
   }
 

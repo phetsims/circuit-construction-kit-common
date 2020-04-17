@@ -141,8 +141,8 @@ class SensorToolbox extends CCKCPanel {
     } );
     const createSeriesAmmeter = ( position, isIcon ) => {
       const halfLength = CCKCConstants.SERIES_AMMETER_LENGTH / 2;
-      const startVertex = circuit.vertexGroup.createNextMember( position.plusXY( -halfLength, 0 ) );
-      const endVertex = circuit.vertexGroup.createNextMember( position.plusXY( halfLength, 0 ) );
+      const startVertex = circuit.vertexGroup.createNextElement( position.plusXY( -halfLength, 0 ) );
+      const endVertex = circuit.vertexGroup.createNextElement( position.plusXY( halfLength, 0 ) );
       return new SeriesAmmeter(
         startVertex,
         endVertex,

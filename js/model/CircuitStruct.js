@@ -89,7 +89,7 @@ CircuitStruct.fromStateObject = ( circuit, circuitState, resistivityProperty, ta
   for ( let i = 0; i < circuitState.vertices.length; i++ ) {
     options = circuitState.vertices[ i ].options || {};
     options.tandem = tandem.createNextTandem();
-    const vertex = circuit.vertexGroup.createNextMember( new Vector2( circuitState.vertices[ i ].x, circuitState.vertices[ i ].y ), options );
+    const vertex = circuit.vertexGroup.createNextElement( new Vector2( circuitState.vertices[ i ].x, circuitState.vertices[ i ].y ), options );
     circuitStruct.vertices.push( vertex );
   }
   for ( let i = 0; i < circuitState.wires.length; i++ ) {
