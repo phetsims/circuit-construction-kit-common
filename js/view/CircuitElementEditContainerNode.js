@@ -123,7 +123,7 @@ class CircuitElementEditContainerNode extends Node {
     circuit.vertexDroppedEmitter.addListener( updateInstructionTextVisible );
 
     // Also update on reset all, or if a component is dropped in the toolbox
-    circuit.vertexGroup.addMemberDisposedListener( updateInstructionTextVisible );
+    circuit.vertexGroup.elementDisposedEmitter.addListener( updateInstructionTextVisible );
     modeProperty.link( updateInstructionTextVisible );
 
     const updatePosition = () => {

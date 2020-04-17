@@ -171,7 +171,7 @@ class Circuit {
       tandem: tandem.createTandem( 'vertexGroup' )
     } );
 
-    this.vertexGroup.addMemberCreatedListener( vertex => {
+    this.vertexGroup.elementCreatedEmitter.addListener( vertex => {
 
       // Observe the change in position of the vertices, to update the ammeter and voltmeter
       vertex.positionProperty.link( emitCircuitChanged );
@@ -195,7 +195,7 @@ class Circuit {
     } );
 
     // Stop watching the vertex positions for updating the voltmeter and ammeter
-    this.vertexGroup.addMemberDisposedListener( vertex => {
+    this.vertexGroup.elementDisposedEmitter.addListener( vertex => {
 
       // Sanity checks for the listeners
       assert && assert( vertex.positionProperty.hasListener( emitCircuitChanged ), 'should have had the listener' );

@@ -53,8 +53,8 @@ class SolderNode extends Node {
         this.visible = circuit.countCircuitElements( vertex ) > 1;
       }
     };
-    circuit.vertexGroup.addMemberCreatedListener( updateFill );
-    circuit.vertexGroup.addMemberDisposedListener( updateFill );
+    circuit.vertexGroup.elementCreatedEmitter.addListener( updateFill );
+    circuit.vertexGroup.elementDisposedEmitter.addListener( updateFill );
 
     // In Black Box, other wires can be detached from a vertex and this should also update the solder
     circuit.circuitElements.addItemAddedListener( updateFill );
@@ -67,8 +67,8 @@ class SolderNode extends Node {
     this.disposeSolderNode = () => {
       vertex.positionProperty.unlink( updateSolderNodePosition );
 
-      circuit.vertexGroup.removeMemberCreatedListener( updateFill );
-      circuit.vertexGroup.removeMemberDisposedListener( updateFill );
+      circuit.vertexGroup.elementCreatedEmitter.removeListener( updateFill );
+      circuit.vertexGroup.elementDisposedEmitter.removeListener( updateFill );
 
       // In Black Box, other wires can be detached from a vertex and this should also update the solder
       circuit.circuitElements.removeItemAddedListener( updateFill );

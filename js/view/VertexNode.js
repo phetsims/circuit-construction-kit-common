@@ -120,8 +120,8 @@ class VertexNode extends Node {
     this.updateStrokeListener = this.updateStroke.bind( this );
 
     // Update when any vertex is added or removed, or when the existing circuit values change.
-    circuit.vertexGroup.addMemberCreatedListener( this.updateStrokeListener );
-    circuit.vertexGroup.addMemberDisposedListener( this.updateStrokeListener );
+    circuit.vertexGroup.elementCreatedEmitter.addListener( this.updateStrokeListener );
+    circuit.vertexGroup.elementDisposedEmitter.addListener( this.updateStrokeListener );
     circuit.circuitChangedEmitter.addListener( this.updateStrokeListener );
 
     // In Black Box, other wires can be detached from a vertex and this should also update the solder
@@ -229,8 +229,8 @@ class VertexNode extends Node {
     vertex.relayerEmitter.removeListener( this.updateMoveToFront );
     CCKCUtils.setInSceneGraph( false, circuitLayerNode.buttonLayer, cutButton );
     CCKCUtils.setInSceneGraph( false, circuitLayerNode.highlightLayer, this.highlightNode );
-    circuit.vertexGroup.removeMemberCreatedListener( this.updateStrokeListener );
-    circuit.vertexGroup.removeMemberDisposedListener( this.updateStrokeListener );
+    circuit.vertexGroup.elementCreatedEmitter.removeListener( this.updateStrokeListener );
+    circuit.vertexGroup.elementDisposedEmitter.removeListener( this.updateStrokeListener );
 
     // In Black Box, other wires can be detached from a vertex and this should also update the solder
     circuit.circuitElements.removeItemAddedListener( this.updateStrokeListener );

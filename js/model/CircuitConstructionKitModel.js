@@ -135,8 +135,8 @@ class CircuitConstructionKitModel {
           this.isValueDepictionEnabledProperty.value = false;
         }
       };
-      this.circuit.vertexGroup.addMemberCreatedListener( pause );
-      this.circuit.vertexGroup.addMemberDisposedListener( pause );
+       this.circuit.vertexGroup.elementCreatedEmitter.addListener( pause );
+      this.circuit.vertexGroup.elementDisposedEmitter.addListener( pause );
       this.circuit.componentEditedEmitter.addListener( pause );
       this.circuit.circuitElements.lengthProperty.link( pause );
     }
@@ -148,8 +148,8 @@ class CircuitConstructionKitModel {
     } );
 
     const emitCircuitChanged = () => circuitChangedEmitter.emit();
-    this.circuit.vertexGroup.addMemberCreatedListener( emitCircuitChanged );
-    this.circuit.vertexGroup.addMemberDisposedListener( emitCircuitChanged );
+    this.circuit.vertexGroup.elementCreatedEmitter.addListener( emitCircuitChanged );
+    this.circuit.vertexGroup.elementDisposedEmitter.addListener( emitCircuitChanged );
     this.circuit.componentEditedEmitter.addListener( emitCircuitChanged );
 
     // When the simulation pauses and resumes, clear the time scaling factor (so it doesn't show a stale value)

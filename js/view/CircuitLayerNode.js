@@ -358,10 +358,10 @@ class CircuitLayerNode extends Node {
       this.vertexNodes[ vertex.index ] = vertexNode;
       this.vertexLayer.addChild( vertexNode );
     };
-    circuit.vertexGroup.addMemberCreatedListener( addVertexNode );
+    circuit.vertexGroup.elementCreatedEmitter.addListener( addVertexNode );
 
     // When a Vertex is removed from the model, remove and dispose the corresponding views
-    circuit.vertexGroup.addMemberDisposedListener( vertex => {
+    circuit.vertexGroup.elementDisposedEmitter.addListener( vertex => {
       const vertexNode = this.getVertexNode( vertex );
       this.vertexLayer.removeChild( vertexNode );
       delete this.vertexNodes[ vertex.index ];
