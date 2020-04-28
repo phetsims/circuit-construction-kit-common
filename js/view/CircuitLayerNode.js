@@ -381,7 +381,7 @@ class CircuitLayerNode extends Node {
 
       // Check all vertices
       for ( let i = 0; i < circuit.vertexGroup.length; i++ ) {
-        const vertex = circuit.vertexGroup.array[ i ];
+        const vertex = circuit.vertexGroup.getElement( i );
         const position = vertex.positionProperty.get();
 
         // If any Vertex is out of bounds, move it and all connected Vertices (to preserve geometry) in bounds.

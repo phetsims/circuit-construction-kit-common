@@ -27,7 +27,12 @@ const TIMESTEP_SUBDIVISIONS = new TimestepSubdivisions();
 
 class ResistiveBatteryAdapter extends DynamicCircuit.ResistiveBattery {
   constructor( c, battery ) {
-    super( c.vertexGroup.array.indexOf( battery.startVertexProperty.value ), c.vertexGroup.array.indexOf( battery.endVertexProperty.value ), battery.voltageProperty.value, battery.internalResistanceProperty.value );
+    super(
+      c.vertexGroup.indexOf( battery.startVertexProperty.value ),
+      c.vertexGroup.indexOf( battery.endVertexProperty.value ),
+      battery.voltageProperty.value,
+      battery.internalResistanceProperty.value
+    );
 
     // @public (read-only)
     this.battery = battery;
@@ -46,8 +51,8 @@ class ResistorAdapter extends ModifiedNodalAnalysisCircuitElement {
    */
   constructor( circuit, resistor ) {
     super(
-      circuit.vertexGroup.array.indexOf( resistor.startVertexProperty.value ),
-      circuit.vertexGroup.array.indexOf( resistor.endVertexProperty.value ),
+      circuit.vertexGroup.indexOf( resistor.startVertexProperty.value ),
+      circuit.vertexGroup.indexOf( resistor.endVertexProperty.value ),
       resistor,
       resistor.resistanceProperty.value
     );
@@ -68,8 +73,8 @@ class CapacitorAdapter extends DynamicCircuit.DynamicCapacitor {
   constructor( circuit, capacitor ) {
 
     const dynamicCircuitCapacitor = new DynamicCircuit.Capacitor(
-      circuit.vertexGroup.array.indexOf( capacitor.startVertexProperty.value ),
-      circuit.vertexGroup.array.indexOf( capacitor.endVertexProperty.value ),
+      circuit.vertexGroup.indexOf( capacitor.startVertexProperty.value ),
+      circuit.vertexGroup.indexOf( capacitor.endVertexProperty.value ),
       capacitor.capacitanceProperty.value
     );
     super( dynamicCircuitCapacitor, new DynamicCircuit.DynamicElementState( capacitor.mnaVoltageDrop, capacitor.mnaCurrent ) );
@@ -97,8 +102,8 @@ class InductorAdapter extends DynamicCircuit.DynamicInductor {
    */
   constructor( circuit, inductor ) {
     const dynamicCircuitInductor = new DynamicCircuit.Inductor(
-      circuit.vertexGroup.array.indexOf( inductor.startVertexProperty.value ),
-      circuit.vertexGroup.array.indexOf( inductor.endVertexProperty.value ),
+      circuit.vertexGroup.indexOf( inductor.startVertexProperty.value ),
+      circuit.vertexGroup.indexOf( inductor.endVertexProperty.value ),
       inductor.inductanceProperty.value
     );
 

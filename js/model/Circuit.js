@@ -519,7 +519,7 @@ class Circuit {
   closestDistanceToOtherVertex( vertex ) {
     let closestDistance = null;
     for ( let i = 0; i < this.vertexGroup.length; i++ ) {
-      const v = this.vertexGroup.array[ i ];
+      const v = this.vertexGroup.getElement( i );
       if ( v !== vertex ) {
         const distance = v.positionProperty.get().distance( vertex.positionProperty.get() );
         if ( closestDistance === null || distance < closestDistance ) {
@@ -1041,7 +1041,7 @@ class Circuit {
    * @returns {Vertex|null}
    */
   getSelectedVertex() {
-    const selectedVertex = _.find( this.vertexGroup.array, vertex => vertex.selectedProperty.get() );
+    const selectedVertex = _.find( this.vertexGroup.getArray(), vertex => vertex.selectedProperty.get() );
     return selectedVertex || null;
   }
 
@@ -1094,7 +1094,7 @@ class Circuit {
       // if something else is already snapping to candidateVertex, then we cannot snap to it as well.
       // check the neighbor vertices
       for ( let i = 0; i < this.vertexGroup.length; i++ ) {
-        const circuitVertex = this.vertexGroup.array[ i ];
+        const circuitVertex = this.vertexGroup.getElement( i );
         const adjacent = this.isVertexAdjacent( circuitVertex, vertex );
 
         // If the adjacent vertex has the same position as the candidate vertex, that means it is already "snapped"
@@ -1123,7 +1123,7 @@ class Circuit {
 
           // is another node proposing a match to that node?
           for ( let k = 0; k < this.vertexGroup.length; k++ ) {
-            const v = this.vertexGroup.array[ k ];
+            const v = this.vertexGroup.getElement( k );
             if ( neighbor instanceof Wire &&
                  v !== vertex &&
                  v !== oppositeVertex &&
