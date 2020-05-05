@@ -65,7 +65,7 @@ class CCKCDemoScreenView extends ScreenView {
 
     const lightBulbPath = new Path( originalBulbShape, {
       lineWidth: 4,
-      stroke: 'blue',
+      stroke: 'green',
       top: resistorPath.bottom + 20,
       centerX: resistorPath.centerX
     } );
