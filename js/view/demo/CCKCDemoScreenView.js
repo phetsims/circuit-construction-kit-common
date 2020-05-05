@@ -4,11 +4,13 @@ import ScreenView from '../../../../joist/js/ScreenView.js';
 import Shape from '../../../../kite/js/Shape.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
 
+// Constants for the resistor
 const SCHEMATIC_SCALE = 0.54;
 const SCHEMATIC_PERIOD = 22 * SCHEMATIC_SCALE;
 const SCHEMATIC_STEM_WIDTH = 84 * SCHEMATIC_SCALE;
 const SCHEMATIC_WAVELENGTH = 54 * SCHEMATIC_SCALE;
 
+// Constants for the light bulb
 // The height from the vertex to the center of the light bulb schematic circle
 const LEAD_Y = -73;
 
