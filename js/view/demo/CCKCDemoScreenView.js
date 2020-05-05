@@ -70,6 +70,26 @@ class CCKCDemoScreenView extends ScreenView {
       centerX: resistorPath.centerX
     } );
     this.addChild( lightBulbPath );
+
+    //////////
+    /// FUSE
+    ///////////
+
+    // Schematic view is a line with a box around it, looks the same whether tripped or untripped.
+    const boxHeight = 30;
+    const chargePathLength = 150;
+    const fuseShape = new Shape()
+      .moveTo( 0, 0 )
+      .lineToRelative( chargePathLength, 0 )
+      .moveTo( 0, 0 )
+      .rect( SCHEMATIC_STEM_WIDTH, -boxHeight / 2, chargePathLength - SCHEMATIC_STEM_WIDTH * 2, boxHeight );
+
+    this.addChild( new Path( fuseShape, {
+      lineWidth: 4,
+      stroke: 'red',
+      bottom: resistorPath.top - 20,
+      centerX: resistorPath.centerX
+    } ) );
   }
 }
 
