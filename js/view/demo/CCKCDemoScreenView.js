@@ -30,7 +30,7 @@ class CCKCDemoScreenView extends ScreenView {
       .lineToRelative( SCHEMATIC_STEM_WIDTH, 0 );
 
     const resistorPath = new Path( schematicShape, {
-      lineWidth: 4,
+      lineWidth: 3,
       stroke: 'black',
       center: this.layoutBounds.center
     } );
@@ -52,7 +52,7 @@ class CCKCDemoScreenView extends ScreenView {
       .arc( schematicCircleRadius, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
       .lineTo( rightLeadX, LEAD_Y );
 
-    const result = addSchematicCircle( new Shape()
+    const lightBulbShape = addSchematicCircle( new Shape()
 
       // Left lead
       .moveTo( 0, 0 )
@@ -63,12 +63,13 @@ class CCKCDemoScreenView extends ScreenView {
       .lineTo( rightLeadX, 0 )
     );
 
-    this.addChild( new Path( result, {
+    const lightBulbPath = new Path( lightBulbShape, {
       lineWidth: 4,
       stroke: 'blue',
       top: resistorPath.bottom + 20,
       centerX: resistorPath.centerX
-    } ) );
+    } );
+    this.addChild( lightBulbPath );
   }
 }
 
