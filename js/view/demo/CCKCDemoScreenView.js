@@ -43,7 +43,16 @@ class CCKCDemoScreenView extends ScreenView {
 
     // The "blip" in the filament that looks like an upside down "u" semicircle
     const INNER_RADIUS = 5;
-    const addSchematicCircle = shape => shape
+
+    const originalBulbShape = new Shape()
+
+      // Left lead
+      .moveTo( 0, 0 )
+      .lineTo( 0, LEAD_Y )
+
+      // Right lead
+      .moveTo( rightLeadX, LEAD_Y )
+      .lineTo( rightLeadX, 0 )
 
       // Outer circle
       .moveTo( 0, LEAD_Y )
@@ -54,18 +63,7 @@ class CCKCDemoScreenView extends ScreenView {
       .arc( schematicCircleRadius, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
       .lineTo( rightLeadX, LEAD_Y );
 
-    const lightBulbShape = addSchematicCircle( new Shape()
-
-      // Left lead
-      .moveTo( 0, 0 )
-      .lineTo( 0, LEAD_Y )
-
-      // Right lead
-      .moveTo( rightLeadX, LEAD_Y )
-      .lineTo( rightLeadX, 0 )
-    );
-
-    const lightBulbPath = new Path( lightBulbShape, {
+    const lightBulbPath = new Path( originalBulbShape, {
       lineWidth: 4,
       stroke: 'blue',
       top: resistorPath.bottom + 20,
