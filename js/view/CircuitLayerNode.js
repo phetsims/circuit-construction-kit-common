@@ -380,7 +380,7 @@ class CircuitLayerNode extends Node {
     const moveVerticesInBounds = localBounds => {
 
       // Check all vertices
-      for ( let i = 0; i < circuit.vertexGroup.length; i++ ) {
+      for ( let i = 0; i < circuit.vertexGroup.count; i++ ) {
         const vertex = circuit.vertexGroup.getElement( i );
         const position = vertex.positionProperty.get();
 
