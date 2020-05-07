@@ -518,7 +518,7 @@ class Circuit {
    */
   closestDistanceToOtherVertex( vertex ) {
     let closestDistance = null;
-    for ( let i = 0; i < this.vertexGroup.length; i++ ) {
+    for ( let i = 0; i < this.vertexGroup.count; i++ ) {
       const v = this.vertexGroup.getElement( i );
       if ( v !== vertex ) {
         const distance = v.positionProperty.get().distance( vertex.positionProperty.get() );
@@ -556,7 +556,7 @@ class Circuit {
         this.removeVertexIfOrphaned( circuitElement.startVertexProperty.value );
         this.removeVertexIfOrphaned( circuitElement.endVertexProperty.value );
       }
-      assert && assert( this.vertexGroup.length === 0, 'vertices should have been removed' );
+      assert && assert( this.vertexGroup.count === 0, 'vertices should have been removed' );
     }
   }
 
@@ -666,7 +666,7 @@ class Circuit {
   translateVertexGroup( mainVertex, delta ) {
     const vertexGroup = this.findAllFixedVertices( mainVertex );
 
-    for ( let j = 0; j < vertexGroup.length; j++ ) {
+    for ( let j = 0; j < vertexGroup.count; j++ ) {
       const vertex = vertexGroup[ j ];
 
       // Only translate vertices that are movable and not connected to the black box interface by FixedLength elements
@@ -1093,7 +1093,7 @@ class Circuit {
 
       // if something else is already snapping to candidateVertex, then we cannot snap to it as well.
       // check the neighbor vertices
-      for ( let i = 0; i < this.vertexGroup.length; i++ ) {
+      for ( let i = 0; i < this.vertexGroup.count; i++ ) {
         const circuitVertex = this.vertexGroup.getElement( i );
         const adjacent = this.isVertexAdjacent( circuitVertex, vertex );
 
@@ -1122,7 +1122,7 @@ class Circuit {
           const oppositeVertex = neighbor.getOppositeVertex( candidateVertex );
 
           // is another node proposing a match to that node?
-          for ( let k = 0; k < this.vertexGroup.length; k++ ) {
+          for ( let k = 0; k < this.vertexGroup.count; k++ ) {
             const v = this.vertexGroup.getElement( k );
             if ( neighbor instanceof Wire &&
                  v !== vertex &&
