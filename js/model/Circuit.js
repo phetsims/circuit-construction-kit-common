@@ -198,8 +198,8 @@ class Circuit {
     this.vertexGroup.elementDisposedEmitter.addListener( vertex => {
 
       // Sanity checks for the listeners
-      assert && assert( vertex.positionProperty.hasListener( emitCircuitChanged ), 'should have had the listener' );
-      vertex.positionProperty.unlink( emitCircuitChanged );
+      // assert && assert( vertex.positionProperty.hasListener( emitCircuitChanged ), 'should have had the listener' );
+      // vertex.positionProperty.unlink( emitCircuitChanged );
 
       // More sanity checks for the listeners
       assert && assert( !vertex.positionProperty.hasListener( emitCircuitChanged ), 'Listener should be removed' );
