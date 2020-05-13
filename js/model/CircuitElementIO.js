@@ -13,6 +13,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 class CircuitElementIO extends ObjectIO {
 
+  // @public
   static toStateObject( circuitElement ) {
     validate( circuitElement, this.validator );
     return {
@@ -21,6 +22,7 @@ class CircuitElementIO extends ObjectIO {
     };
   }
 
+  // @public
   static fromStateObject( stateObject ) {
     if ( phet.phetio.phetioEngine.hasPhetioObject( stateObject.startVertexID ) &&
          phet.phetio.phetioEngine.hasPhetioObject( stateObject.endVertexID ) ) {
@@ -38,6 +40,7 @@ class CircuitElementIO extends ObjectIO {
    * @override
    * @param {Object} state - see CircuitElementIO.toStateObject
    * @returns {Array.<*>}
+   * @public
    */
   static stateToArgsForConstructor( state ) {
     return [ state.startVertex, state.endVertex ];

@@ -355,37 +355,37 @@ class CircuitElementToolFactory {
     return this.createResistorToolNode( count, Resistor.ResistorType.PAPER_CLIP, tandem.createTandem( 'paperClipIcon' ), paperClipString );
   }
 
-  // Same docs as for createPaperClipToolNode
+  // @public - Same docs as for createPaperClipToolNode
   createCoinToolNode( count, tandem ) {
     return this.createResistorToolNode( count, Resistor.ResistorType.COIN, tandem.createTandem( 'coinIcon' ), coinString );
   }
 
-  // Same docs as for createPaperClipToolNode
+  // @public - Same docs as as for createPaperClipToolNode
   createDollarBillToolNode( count, tandem ) {
     return this.createResistorToolNode( count, Resistor.ResistorType.DOLLAR_BILL, tandem.createTandem( 'dollarBillIcon' ), dollarBillString );
   }
 
-  // Same docs as for createPaperClipToolNode
+  // @public - Same docs as for createPaperClipToolNode
   createEraserToolNode( count, tandem ) {
     return this.createResistorToolNode( count, Resistor.ResistorType.ERASER, tandem.createTandem( 'eraserIcon' ), eraserString );
   }
 
-  // Same docs as for createPaperClipToolNode
+  // @public - Same docs as for createPaperClipToolNode
   createPencilToolNode( count, tandem ) {
     return this.createResistorToolNode( count, Resistor.ResistorType.PENCIL, tandem.createTandem( 'pencilIcon' ), pencilString );
   }
 
-  // Same docs as for createPaperClipToolNode
+  // @public - Same docs as for createPaperClipToolNode
   createHandToolNode( count, tandem ) {
     return this.createResistorToolNode( count, Resistor.ResistorType.HAND, tandem.createTandem( 'handIcon' ), handString );
   }
 
-  // Same docs as for createPaperClipToolNode
+  // @public - Same docs as for createPaperClipToolNode
   createDogToolNode( count, tandem ) {
     return this.createResistorToolNode( count, Resistor.ResistorType.DOG, tandem.createTandem( 'dogIcon' ), dogString );
   }
 
-  // Same docs as for createPaperClipToolNode
+  // @public - Same docs as for createPaperClipToolNode
   createHighResistanceResistorToolNode( count, tandem ) {
     return this.createResistorToolNode( count, Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR, tandem.createTandem( 'highResistanceResistorIcon' ), resistorString );
   }

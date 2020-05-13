@@ -198,8 +198,8 @@ class Circuit {
     this.vertexGroup.elementDisposedEmitter.addListener( vertex => {
 
       // Sanity checks for the listeners
-      assert && assert( vertex.positionProperty.hasListener( emitCircuitChanged ), 'should have had the listener' );
-      vertex.positionProperty.unlink( emitCircuitChanged );
+      // assert && assert( vertex.positionProperty.hasListener( emitCircuitChanged ), 'should have had the listener' );
+      // vertex.positionProperty.unlink( emitCircuitChanged );
 
       // More sanity checks for the listeners
       assert && assert( !vertex.positionProperty.hasListener( emitCircuitChanged ), 'Listener should be removed' );
@@ -1039,6 +1039,7 @@ class Circuit {
   /**
    * Returns the selected Vertex or null if none is selected
    * @returns {Vertex|null}
+   * @public
    */
   getSelectedVertex() {
     const selectedVertex = _.find( this.vertexGroup.getArray(), vertex => vertex.selectedProperty.get() );
@@ -1199,6 +1200,7 @@ class Circuit {
   /**
    * Flip the given CircuitElement
    * @param {CircuitElement} circuitElement - the circuit element to flip
+   * @public
    */
   flip( circuitElement ) {
     const startVertex = circuitElement.startVertexProperty.value;

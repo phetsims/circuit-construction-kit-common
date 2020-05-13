@@ -399,7 +399,7 @@ class CCKCScreenView extends ScreenView {
     model.stepEmitter.addListener( dt => this.stepOnce( dt ) );
   }
 
-  // called from model steps
+  // @public - called from model steps
   stepOnce( dt ) {
 
     // If the step is large, it probably means that the screen was hidden for a while, so just ignore it.

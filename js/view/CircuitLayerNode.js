@@ -485,6 +485,7 @@ class CircuitLayerNode extends Node {
    * Returns whether the vertex can be dragged
    * @param {Vertex} vertex
    * @returns {boolean}
+   * @public
    */
   canDragVertex( vertex ) {
     const vertices = this.circuit.findAllFixedVertices( vertex );

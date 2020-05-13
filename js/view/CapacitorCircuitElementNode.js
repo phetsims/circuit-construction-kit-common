@@ -237,6 +237,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
    * Determine whether the start side (with the pivot) contains the sensor point.
    * @param {Vector2} globalPoint
    * @returns {boolean}
+   * @public
    */
   frontSideContainsSensorPoint( globalPoint ) {
 
@@ -253,6 +254,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
    * Determine whether the end side (with the pivot) contains the sensor point.
    * @param {Vector2} globalPoint
    * @returns {boolean}
+   * @public
    */
   backSideContainsSensorPoint( globalPoint ) {
 
