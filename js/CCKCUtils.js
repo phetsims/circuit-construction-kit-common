@@ -12,7 +12,7 @@ import circuitConstructionKitCommonStrings from './circuitConstructionKitCommonS
 import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
 
 const currentUnitsString = circuitConstructionKitCommonStrings.currentUnits;
-const voltageUnitsString = circuitConstructionKitCommonStrings.voltageUnits;
+const voltageUnitsString = circuitConstructionKitCommonStrings.voltageUnits
 
 const CCKCUtils = {
 
