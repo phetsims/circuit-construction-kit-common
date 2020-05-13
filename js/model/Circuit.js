@@ -1039,6 +1039,7 @@ class Circuit {
   /**
    * Returns the selected Vertex or null if none is selected
    * @returns {Vertex|null}
+   * @public
    */
   getSelectedVertex() {
     const selectedVertex = _.find( this.vertexGroup.getArray(), vertex => vertex.selectedProperty.get() );
@@ -1199,6 +1200,7 @@ class Circuit {
   /**
    * Flip the given CircuitElement
    * @param {CircuitElement} circuitElement - the circuit element to flip
+   * @public
    */
   flip( circuitElement ) {
     const startVertex = circuitElement.startVertexProperty.value;

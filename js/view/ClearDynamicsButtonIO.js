@@ -13,6 +13,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 class ClearDynamicsButtonIO extends ObjectIO {
 
+  // @public
   static toStateObject( trashButton ) {
     validate( trashButton, this.validator );
     return {
@@ -20,6 +21,7 @@ class ClearDynamicsButtonIO extends ObjectIO {
     };
   }
 
+  // @public
   static fromStateObject( stateObject ) {
     if ( stateObject.circuitElementID === null ) {
       return { circuitElement: null };
@@ -36,6 +38,7 @@ class ClearDynamicsButtonIO extends ObjectIO {
    * @override
    * @param {Object} state - see ClearDynamicsButtonIO.toStateObject
    * @returns {Array.<*>}
+   * @public
    */
   static stateToArgsForConstructor( state ) {
     return [ state.circuitElement ];

@@ -158,6 +158,7 @@ class DynamicCircuit {
    * @param {TimestepSubdivisions} timestepSubdivisions
    * @param {number} dt
    * @returns {CircuitResult}
+   * @public
    */
   solveWithSubdivisions( timestepSubdivisions, dt ) {
     const steppable = {
@@ -196,17 +197,9 @@ class DynamicCircuit {
   }
 
   /**
-   * @param {TimestepSubdivisions<DynamicState>} timestepSubdivisions
-   * @param {number} dt
-   * @returns DynamicCircuitSolution
-   */
-  solveItWithSubdivisions2( timestepSubdivisions, dt ) {
-    return this.solveWithSubdivisions( timestepSubdivisions, dt ).getFinalState().dynamicCircuitSolution;
-  }
-
-  /**
    * @param {number} dt
    * @returns DynamicCircuit
+   * @public
    */
   update( dt ) {
     return this.updateCircuit( this.solvePropagate( dt ) );
