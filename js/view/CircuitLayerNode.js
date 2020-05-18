@@ -478,7 +478,7 @@ class CircuitLayerNode extends Node {
 
     // paint dirty fixed length circuit element nodes.  This batches changes instead of applying multiple changes
     // per frame
-    this.circuit.circuitElements.getArray().forEach( circuitElement => this.getCircuitElementNode( circuitElement ).step() );
+    this.circuit.circuitElements.forEach( circuitElement => this.getCircuitElementNode( circuitElement ).step() );
   }
 
   /**

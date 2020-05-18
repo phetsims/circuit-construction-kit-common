@@ -114,7 +114,7 @@ class CircuitElementEditContainerNode extends Node {
     const updateInstructionTextVisible = () => {
 
       // Only fixed length circuit elements are editable, even though wires can be deleted
-      const fixedLengthElements = circuit.circuitElements.getArray().filter( circuitElement =>
+      const fixedLengthElements = circuit.circuitElements.filter( circuitElement =>
         circuitElement instanceof FixedCircuitElement && circuitElement.interactiveProperty.get()
       );
       tapInstructionTextNode.visible = fixedLengthElements.length > 0;

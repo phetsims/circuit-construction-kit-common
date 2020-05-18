@@ -444,7 +444,7 @@ class Circuit {
    * @public
    */
   relayoutAllCharges() {
-    this.circuitElements.getArray().forEach( circuitElement => {circuitElement.chargeLayoutDirty = true;} );
+    this.circuitElements.forEach( circuitElement => {circuitElement.chargeLayoutDirty = true;} );
     this.layoutChargesInDirtyCircuitElements();
   }
 
@@ -720,7 +720,7 @@ class Circuit {
    * @public
    */
   getNeighborCircuitElements( vertex ) {
-    return this.circuitElements.getArray().filter( circuitElement => circuitElement.containsVertex( vertex ) );
+    return this.circuitElements.filter( circuitElement => circuitElement.containsVertex( vertex ) );
   }
 
   /**
@@ -819,7 +819,7 @@ class Circuit {
       this.connect( oldVertex, targetVertex );
     }
     else {
-      this.circuitElements.getArray().forEach( circuitElement => {
+      this.circuitElements.forEach( circuitElement => {
         if ( circuitElement.containsVertex( oldVertex ) ) {
           circuitElement.replaceVertex( oldVertex, targetVertex );
           circuitElement.connectedEmitter.emit();
@@ -1014,7 +1014,7 @@ class Circuit {
    * @public
    */
   getChargesInCircuitElement( circuitElement ) {
-    return this.charges.getArray().filter( charge => charge.circuitElement === circuitElement );
+    return this.charges.filter( charge => charge.circuitElement === circuitElement );
   }
 
   /**

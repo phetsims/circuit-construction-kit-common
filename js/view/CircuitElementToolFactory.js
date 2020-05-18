@@ -96,7 +96,7 @@ class CircuitElementToolFactory {
    */
   createCounter( predicate ) {
     return () =>
-      this.circuit.circuitElements.getArray().filter( circuitElement =>
+      this.circuit.circuitElements.filter( circuitElement =>
 
         // Count according to the predicate, but don't count elements inside the true black box
         predicate( circuitElement ) && !circuitElement.insideTrueBlackBoxProperty.get()
