@@ -25,12 +25,17 @@ class CircuitElementNode extends Node {
 
     options = merge( {
 
-      // keyboard navigation
-      tagName: 'div', // HTML tag name for representative element in the document, see ParallelDOM.js
-      focusable: true,
-      focusHighlight: 'invisible', // highlights are drawn by the simulation, invisible is deprecated don't use in future
       useHitTestForSensors: false // if true, use the scenery mouse region hit test for fine-grained region. Otherwise, use bounds test.
     }, options );
+
+    // When not an icon, enable keyboard navigation
+    if ( circuit ) {
+      options = merge( {
+        tagName: 'div', // HTML tag name for representative element in the document, see ParallelDOM.js
+        focusable: true,
+        focusHighlight: 'invisible' // highlights are drawn by the simulation, invisible is deprecated don't use in future
+      }, options );
+    }
 
     super( options );
 
