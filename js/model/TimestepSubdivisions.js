@@ -20,6 +20,13 @@ const ERROR_THRESHOLD = 1E-5;
 
 class TimestepSubdivisions {
 
+  /**
+   * @param {Object} originalState
+   * @param {Object} steppable with update function
+   * @param {number} dt
+   * @returns {ResultSet}
+   * @public
+   */
   stepInTimeWithHistory( originalState, steppable, dt ) {
     let state = originalState;
     let elapsed = 0.0;
@@ -42,17 +49,14 @@ class TimestepSubdivisions {
     return new ResultSet( states );
   }
 
-  stepInTime( originalState, steppable, dt ) {
-    return this.stepInTimeWithHistory( originalState, steppable, dt ).getFinalState();
-  }
-
   /**
    * Recursively searches for a value of dt that has acceptable error, starting with the value dt
    *
    * @param {Object} state     the initial state
-   * @param {} steppable the update algorithm and distance metric
+   * @param {Object} steppable the update algorithm and distance metric
    * @param {number} dt        the initial value to use for dt
    * @returns {number} the selected timestep that has acceptable error or meets the minimum allowed
+   * @private
    */
   getTimestep( state, steppable, dt ) {
     if ( dt < MIN_DT ) {
@@ -66,6 +70,13 @@ class TimestepSubdivisions {
     }
   }
 
+  /**
+   * @param {Object} state
+   * @param {Object} steppable with update function
+   * @param {number} dt
+   * @returns {boolean}
+   * @private
+   */
   errorAcceptable( state, steppable, dt ) {
     const a = steppable.update( state, dt );
     const b1 = steppable.update( state, dt / 2 );

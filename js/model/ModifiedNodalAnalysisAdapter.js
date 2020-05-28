@@ -38,6 +38,10 @@ class ResistiveBatteryAdapter extends DynamicCircuit.ResistiveBattery {
     this.battery = battery;
   }
 
+  /**
+   * @param circuitResult
+   * @public
+   */
   applySolution( circuitResult ) {
     this.battery.currentProperty.value = circuitResult.getTimeAverageCurrent( this );
   }
@@ -59,6 +63,10 @@ class ResistorAdapter extends ModifiedNodalAnalysisCircuitElement {
     this.resistor = resistor;
   }
 
+  /**
+   * @param circuitResult
+   * @public
+   */
   applySolution( circuitResult ) {
     this.resistor.currentProperty.value = circuitResult.getTimeAverageCurrent( this );
   }
@@ -132,6 +140,7 @@ class ModifiedNodalAnalysisAdapter {
    * Solves the system with Modified Nodal Analysis, and apply the results back to the Circuit.
    * @param {Circuit} circuit
    * @param {number} dt
+   * @public
    */
   static solveModifiedNodalAnalysis( circuit, dt ) {
     const resistiveBatteryAdapters = [];

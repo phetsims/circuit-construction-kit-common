@@ -13,6 +13,11 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 class TrashButtonIO extends ObjectIO {
 
+  /**
+   * @param {TrashButton} trashButton
+   * @returns {Object}
+   * @public
+   */
   static toStateObject( trashButton ) {
     validate( trashButton, this.validator );
     return {
@@ -20,6 +25,11 @@ class TrashButtonIO extends ObjectIO {
     };
   }
 
+  /**
+   * @param {Object} stateObject
+   * @returns {Object}
+   * @public
+   */
   static fromStateObject( stateObject ) {
     if ( stateObject.circuitElementID === null ) {
       return { circuitElement: null };
@@ -36,6 +46,7 @@ class TrashButtonIO extends ObjectIO {
    * @override
    * @param {Object} state - see TrashButtonIO.toStateObject
    * @returns {Array.<*>}
+   * @public
    */
   static stateToArgsForConstructor( state ) {
     return [ state.circuitElement ];

@@ -17,6 +17,7 @@ class VertexIO extends ObjectIO {
    * @param {Vertex} vertex
    * @returns {Object}
    * @override
+   * @public
    */
   static toStateObject( vertex ) {
     validate( vertex, this.validator );
@@ -25,6 +26,11 @@ class VertexIO extends ObjectIO {
     };
   }
 
+  /**
+   * @param {Object} stateObject
+   * @returns {Object}
+   * @public
+   */
   static fromStateObject( stateObject ) {
     return { position: Vector2IO.fromStateObject( stateObject.position ) };
   }
@@ -33,6 +39,7 @@ class VertexIO extends ObjectIO {
    * @override
    * @param {Object} state - see VertexIO.toStateObject
    * @returns {Array.<*>}
+   * @public
    */
   static stateToArgsForConstructor( state ) {
     return [ state.position ];

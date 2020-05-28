@@ -30,6 +30,7 @@ class ZoomAnimation {
 
   /**
    * @param {number} dt - elapsed time in seconds
+   * @public
    */
   step( dt ) {
     const oldRatio = this.ratio;

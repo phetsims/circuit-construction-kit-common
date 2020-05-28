@@ -217,6 +217,7 @@ class SwitchNode extends FixedCircuitElementNode {
    * Determine whether the start side (with the pivot) contains the sensor point.
    * @param {Vector2} point - in view coordinates
    * @returns {boolean}
+   * @public
    */
   startSideContainsSensorPoint( point ) {
     const localPoint = this.contentNode.parentToLocalPoint( point );
@@ -231,6 +232,7 @@ class SwitchNode extends FixedCircuitElementNode {
    * Determine whether the end side (with the pivot) contains the sensor point.
    * @param {Vector2} point - in view coordinates
    * @returns {boolean}
+   * @public
    */
   endSideContainsSensorPoint( point ) {
     const localPoint = this.contentNode.parentToLocalPoint( point );

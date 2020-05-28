@@ -272,6 +272,7 @@ class VertexNode extends Node {
   /**
    * Update whether the vertex is shown as selected.
    * @param selected
+   * @private
    */
   updateSelected( selected ) {
     const neighborCircuitElements = this.circuit.getNeighborCircuitElements( this.vertex );

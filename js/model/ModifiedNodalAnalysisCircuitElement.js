@@ -58,6 +58,7 @@ class ModifiedNodalAnalysisCircuitElement {
    * Determine if the element contains the given node id
    * @param {number} nodeId
    * @returns {boolean}
+   * @private
    */
   containsNodeId( nodeId ) {
     return this.nodeId0 === nodeId || this.nodeId1 === nodeId;
@@ -66,6 +67,7 @@ class ModifiedNodalAnalysisCircuitElement {
   /**
    * Find the node across from the specified node.
    * @param {number} nodeId
+   * @private
    */
   getOppositeNode( nodeId ) {
     assert && assert( this.nodeId0 === nodeId || this.nodeId1 === nodeId );

@@ -322,6 +322,7 @@ class VoltmeterNode extends Node {
   /**
    * Forward a drag from the toolbox to the play area node.
    * @param {SceneryEvent} event
+   * @public
    */
   startDrag( event ) {
     this.dragHandler.startDrag( event );

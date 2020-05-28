@@ -172,9 +172,9 @@ class DynamicCircuit {
   }
 
   /**
-   *
    * @param {number} dt
    * @returns MNAAdapter.CircuitResult
+   * @private
    */
   solveWithSubdivisions2( dt ) {
     return this.solveWithSubdivisions( new TimestepSubdivisions(), dt );
@@ -183,6 +183,7 @@ class DynamicCircuit {
   /**
    * @param {number} dt
    * @returns DynamicCircuit
+   * @private
    */
   updateWithSubdivisions( dt ) {
     return this.solveWithSubdivisions2( dt ).getFinalState().dynamicCircuit;
@@ -191,6 +192,7 @@ class DynamicCircuit {
   /**
    * @param {number} dt
    * @returns DynamicCircuitSolution
+   * @public (unit-tests)
    */
   solveItWithSubdivisions( dt ) {
     return this.solveWithSubdivisions2( dt ).getFinalState().dynamicCircuitSolution;
@@ -210,6 +212,7 @@ class DynamicCircuit {
    *
    * @param {DynamicCircuitSolution} solution
    * @returns {DynamicCircuit}
+   * @public
    */
   updateCircuit( solution ) {
     const updatedCapacitors = this.capacitorAdapters.map( capacitorAdapter => {
@@ -249,6 +252,7 @@ class CircuitResult {
    * capacitor (no resistance) circuit is wired up, see https://phet.unfuddle.com/a#/projects/9404/tickets/by_number/2270?cycle=true
    * @param {ModifiedNodalAnalysisCircuitElement} element
    * @returns {number}
+   * @public
    */
   getTimeAverageCurrent( element ) {
     let weightedSum = 0.0;
@@ -264,6 +268,7 @@ class CircuitResult {
    * The instantaneous current is used for computing the next modified nodal analysis state and integration.
    * @param {ModifiedNodalAnalysisCircuitElement} element
    * @returns {number}
+   * @public
    */
   getInstantaneousCurrent( element ) {
     return this.getFinalState().dynamicCircuitSolution.getCurrent( element );
@@ -272,6 +277,7 @@ class CircuitResult {
   /**
    * @param {ModifiedNodalAnalysisCircuitElement} element
    * @returns {number}
+   * @public
    */
   getInstantaneousVoltage( element ) {
     return this.getFinalState().dynamicCircuitSolution.getVoltage( element );
@@ -279,17 +285,10 @@ class CircuitResult {
 
   /**
    * @returns {DynamicCircuit.DynamicState}
+   * @private
    */
   getFinalState() {
     return this.resultSet.getFinalState();
-  }
-
-  /**
-   * @param {number} node
-   * @returns {number}
-   */
-  getInstantaneousNodeVoltage( node ) {
-    return this.getFinalState().dynamicCircuitSolution.getNodeVoltage( node );
   }
 }
 
@@ -393,6 +392,11 @@ class DynamicState {
     this.dynamicCircuitSolution = dynamicCircuitSolution;
   }
 
+  /**
+   * @param {number} dt
+   * @returns {DynamicState}
+   * @public
+   */
   update( dt ) {
     this.solution = this.dynamicCircuit.solvePropagate( dt );
     const newCircuit = this.dynamicCircuit.updateCircuit( this.solution );
@@ -436,6 +440,7 @@ class DynamicCircuitSolution {
   /**
    * @param {number} nodeIndex - index
    * @returns {number}
+   * @public
    */
   getNodeVoltage( nodeIndex ) {
     return this.mnaSolution.getNodeVoltage( nodeIndex );
@@ -444,6 +449,7 @@ class DynamicCircuitSolution {
   /**
    * @param {ModifiedNodalAnalysisCircuitElement|CapacitorAdapter|InductorAdapter} element
    * @returns {number}
+   * @public
    */
   getCurrent( element ) {
 
@@ -469,6 +475,7 @@ class DynamicCircuitSolution {
   /**
    * @param {ModifiedNodalAnalysisCircuitElement} element
    * @returns {number}
+   * @public
    */
   getVoltage( element ) {
     return this.getNodeVoltage( element.nodeId1 ) - this.getNodeVoltage( element.nodeId0 );

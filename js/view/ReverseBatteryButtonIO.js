@@ -13,13 +13,23 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 class ReverseBatteryButtonIO extends ObjectIO {
 
-  static toStateObject( trashButton ) {
-    validate( trashButton, this.validator );
+  /**
+   * @param {ReverseBatteryButton} reverseBatteryButton
+   * @returns {Object}
+   * @public
+   */
+  static toStateObject( reverseBatteryButton ) {
+    validate( reverseBatteryButton, this.validator );
     return {
-      circuitElementID: trashButton.circuitElement ? trashButton.circuitElement.tandem.phetioID : null
+      circuitElementID: reverseBatteryButton.circuitElement ? reverseBatteryButton.circuitElement.tandem.phetioID : null
     };
   }
 
+  /**
+   * @param {Object} stateObject
+   * @returns {Object}
+   * @public
+   */
   static fromStateObject( stateObject ) {
     if ( stateObject.circuitElementID === null ) {
       return { circuitElement: null };
@@ -36,6 +46,7 @@ class ReverseBatteryButtonIO extends ObjectIO {
    * @override
    * @param {Object} state - see ReverseBatteryButtonIO.toStateObject
    * @returns {Array.<*>}
+   * @public
    */
   static stateToArgsForConstructor( state ) {
     return [ state.circuitElement ];
