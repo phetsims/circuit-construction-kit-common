@@ -20,6 +20,7 @@ import AlignBox from '../../../scenery/js/nodes/AlignBox.js';
 import AlignGroup from '../../../scenery/js/nodes/AlignGroup.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import VBox from '../../../scenery/js/nodes/VBox.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -364,7 +365,7 @@ class CCKCScreenView extends ScreenView {
     } );
 
     // Re-render after setting state
-    _.hasIn( window, 'phet.phetio.phetioEngine' ) && phet.phetio.phetioEngine.phetioStateEngine.stateSetEmitter.addListener( () => {
+    Tandem.PHET_IO_ENABLED && phet.phetio.phetioEngine.phetioStateEngine.stateSetEmitter.addListener( () => {
       this.step( 1 / 60 );
     } );
 
