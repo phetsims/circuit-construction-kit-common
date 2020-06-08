@@ -14,8 +14,6 @@ import dogBarkSound from '../../sounds/dog-bark_mp3.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ResistorNode from './ResistorNode.js';
 
-// sounds
-
 class DogNode extends ResistorNode {
 
   /**
