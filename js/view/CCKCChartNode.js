@@ -1,7 +1,7 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
- * Provides simulation-specific values and customizations to display a ScrollingChartNode in a MeterBodyNode.
+ * Provides simulation-specific values and customizations to display a SeismographNode in a MeterBodyNode.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -11,7 +11,7 @@ import Emitter from '../../../axon/js/Emitter.js';
 import Range from '../../../dot/js/Range.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
-import ScrollingChartNode from '../../../griddle/js/ScrollingChartNode.js';
+import SeismographNode from '../../../griddle/js/SeismographNode.js';
 import merge from '../../../phet-core/js/merge.js';
 import MovableDragHandler from '../../../scenery-phet/js/input/MovableDragHandler.js';
 import ShadedRectangle from '../../../scenery-phet/js/ShadedRectangle.js';
@@ -123,7 +123,7 @@ class CCKCChartNode extends Node {
     // Create the scrolling chart content and add it to the background.  There is an order-of-creation cycle which
     // prevents the scrolling node from being added to the background before the super() call, so this will have to
     // suffice.
-    this.scrollingChartNode = new ScrollingChartNode( timeProperty, seriesArray, verticalAxisTitleNode, horizontalAxisTitleNode,
+    this.seismographNode = new SeismographNode( timeProperty, seriesArray, verticalAxisTitleNode, horizontalAxisTitleNode,
       scaleIndicatorText, {
         width: 150, height: 110,
         verticalRanges: [
@@ -142,12 +142,12 @@ class CCKCChartNode extends Node {
         ],
         initialVerticalRangeIndex: 1,
         verticalGridLabelNumberOfDecimalPlaces: 0,
-        tandem: options.tandem.createTandem( 'scrollingChartNode' )
+        tandem: options.tandem.createTandem( 'seismographNode' )
       } );
-    const shadedRectangle = new ShadedRectangle( this.scrollingChartNode.bounds.dilated( 7 ), {
+    const shadedRectangle = new ShadedRectangle( this.seismographNode.bounds.dilated( 7 ), {
       baseColor: '#327198'
     } );
-    shadedRectangle.addChild( this.scrollingChartNode );
+    shadedRectangle.addChild( this.seismographNode );
     backgroundNode.addChild( shadedRectangle );
 
     this.meter.visibleProperty.link( visible => this.setVisible( visible ) );
@@ -198,7 +198,7 @@ class CCKCChartNode extends Node {
   reset() {
     this.seriesArray.forEach( series => series.clear() );
     this.meter.reset();
-    this.scrollingChartNode.reset();
+    this.seismographNode.reset();
   }
 
   /**
