@@ -123,27 +123,28 @@ class CCKCChartNode extends Node {
     // Create the scrolling chart content and add it to the background.  There is an order-of-creation cycle which
     // prevents the scrolling node from being added to the background before the super() call, so this will have to
     // suffice.
-    this.seismographNode = new SeismographNode( timeProperty, seriesArray, verticalAxisTitleNode, horizontalAxisTitleNode,
-      scaleIndicatorText, {
-        width: 150, height: 110,
-        verticalRanges: [
-          new Range( -2, 2 ),
-          new Range( -10, 10 ),
-          new Range( -20, 20 ),
-          new Range( -50, 50 ),
-          new Range( -100, 100 ),
-          new Range( -150, 150 ),
-          new Range( -200, 200 ),
-          new Range( -400, 400 ),
-          new Range( -600, 600 ),
-          new Range( -800, 800 ),
-          new Range( -1000, 1000 ),
-          new Range( -1200, 1200 )
-        ],
-        initialVerticalRangeIndex: 1,
-        verticalGridLabelNumberOfDecimalPlaces: 0,
-        tandem: options.tandem.createTandem( 'seismographNode' )
-      } );
+    this.seismographNode = new SeismographNode( timeProperty, seriesArray, scaleIndicatorText, {
+      width: 150, height: 110,
+      horizontalAxisLabelNode: horizontalAxisTitleNode,
+      verticalAxisLabelNode: verticalAxisTitleNode,
+      verticalRanges: [
+        new Range( -2, 2 ),
+        new Range( -10, 10 ),
+        new Range( -20, 20 ),
+        new Range( -50, 50 ),
+        new Range( -100, 100 ),
+        new Range( -150, 150 ),
+        new Range( -200, 200 ),
+        new Range( -400, 400 ),
+        new Range( -600, 600 ),
+        new Range( -800, 800 ),
+        new Range( -1000, 1000 ),
+        new Range( -1200, 1200 )
+      ],
+      initialVerticalRangeIndex: 1,
+      verticalGridLabelNumberOfDecimalPlaces: 0,
+      tandem: options.tandem.createTandem( 'seismographNode' )
+    } );
     const shadedRectangle = new ShadedRectangle( this.seismographNode.bounds.dilated( 7 ), {
       baseColor: '#327198'
     } );
