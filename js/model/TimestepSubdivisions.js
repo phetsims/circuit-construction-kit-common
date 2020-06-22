@@ -9,7 +9,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ResultSet from './ResultSet.js';
 
@@ -39,8 +38,7 @@ class TimestepSubdivisions {
 
       // try to increase first, in case higher dt has acceptable error, but don't try to double dt if it is first state
       const startScale = states.length > 0 ? 2 : 1;
-      let subdivisionDT = this.getTimestep( state, steppable, dt === CCKCConstants.PAUSED_DT ? dt :
-                                                              seedValue * startScale );
+      let subdivisionDT = this.getTimestep( state, steppable, seedValue * startScale );
       if ( subdivisionDT + elapsed > dt ) {
         subdivisionDT = dt - elapsed; // don't exceed max allowed dt
       }
