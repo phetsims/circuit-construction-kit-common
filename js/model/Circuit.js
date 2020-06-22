@@ -574,7 +574,7 @@ class Circuit {
     let neighborCircuitElements = this.getNeighborCircuitElements( vertex );
     if ( neighborCircuitElements.length <= 1 ) {
 
-      // No need to cut a solo vertex
+      // No work necessary for an unattached vertex
       return;
     }
 
@@ -583,10 +583,10 @@ class Circuit {
 
     /**
      * Function that identifies where vertices would go if pulled toward their neighbors
-     * @returns {Array}
+     * @returns {Vector2[]}
      */
-    const getTranslations = () =>
-      neighborCircuitElements.map( circuitElement => {
+    const getTranslations = () => {
+      return neighborCircuitElements.map( circuitElement => {
         const oppositePosition = circuitElement.getOppositeVertex( vertex ).positionProperty.get();
         const position = vertex.positionProperty.get();
         let delta = oppositePosition.minus( position );
@@ -597,6 +597,7 @@ class Circuit {
         }
         return delta.withMagnitude( 30 );
       } );
+    };
 
     // Track where they would go if they moved toward their opposite vertices
     let translations = getTranslations();
@@ -618,17 +619,17 @@ class Circuit {
     const separation = Math.PI * 2 / neighborCircuitElements.length;
     let results = [];
 
-    const center = _.sum( angles ) / angles.length;
+    const centerAngle = _.sum( angles ) / angles.length;
 
     // Move vertices away from cut vertex so that wires don't overlap
     if ( neighborCircuitElements.length === 2 ) {
 
-      const ax = Vector2.createPolar( 30, center - separation / neighborCircuitElements.length );
-      const bx = Vector2.createPolar( 30, center + separation / neighborCircuitElements.length );
+      const ax = Vector2.createPolar( 30, centerAngle - separation / neighborCircuitElements.length );
+      const bx = Vector2.createPolar( 30, centerAngle + separation / neighborCircuitElements.length );
 
-      const da = angles[ 0 ] - center;
+      const deltaAngle = angles[ 0 ] - centerAngle;
 
-      results = da < 0 ? [ ax, bx ] : [ bx, ax ];
+      results = deltaAngle < 0 ? [ ax, bx ] : [ bx, ax ];
     }
     else {
       const distance = neighborCircuitElements.length <= 5 ? 30 : neighborCircuitElements.length * 30 / 5;
