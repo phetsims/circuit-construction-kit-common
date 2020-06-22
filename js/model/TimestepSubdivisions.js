@@ -9,11 +9,12 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ResultSet from './ResultSet.js';
 
 // threshold for determining whether 2 states are similar enough; any error less than errorThreshold will be tolerated.
-const MIN_DT = 1E-13 / 20;
+const MIN_DT = 1E-5;
 
 //threshold for determining whether 2 states are similar enough; any error less than errorThreshold will be tolerated.
 const ERROR_THRESHOLD = 1E-5;
@@ -31,7 +32,8 @@ class TimestepSubdivisions {
 
       // try to increase first, in case higher dt has acceptable error, but don't try to double dt if it is first state
       const startScale = states.length > 0 ? 2 : 1;
-      let subdivisionDT = this.getTimestep( state, steppable, seedValue * startScale );
+      let subdivisionDT = this.getTimestep( state, steppable, dt === CCKCConstants.PAUSED_DT ? dt :
+                                                              seedValue * startScale );
       if ( subdivisionDT + elapsed > dt ) {
         subdivisionDT = dt - elapsed; // don't exceed max allowed dt
       }
@@ -56,7 +58,7 @@ class TimestepSubdivisions {
    */
   getTimestep( state, steppable, dt ) {
     if ( dt < MIN_DT ) {
-      throw new Error( 'nonlinear' );
+      return MIN_DT;
     }
     else if ( this.errorAcceptable( state, steppable, dt ) ) {
       return dt;
