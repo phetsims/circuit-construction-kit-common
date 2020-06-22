@@ -665,10 +665,10 @@ class Circuit {
    * @private
    */
   translateVertexGroup( mainVertex, delta ) {
-    const vertexGroup = this.findAllFixedVertices( mainVertex );
+    const vertexArray = this.findAllFixedVertices( mainVertex );
 
-    for ( let j = 0; j < vertexGroup.count; j++ ) {
-      const vertex = vertexGroup[ j ];
+    for ( let j = 0; j < vertexArray.length; j++ ) {
+      const vertex = vertexArray[ j ];
 
       // Only translate vertices that are movable and not connected to the black box interface by FixedLength elements
       if ( vertex.draggableProperty.get() && !this.hasFixedConnectionToBlackBoxInterfaceVertex( vertex ) ) {
