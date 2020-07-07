@@ -392,7 +392,7 @@ class Circuit {
     this.circuitElements.remove( circuitElement );
 
     // Find the corresponding group that contains the circuitElement and dispose it.
-    this.groups.forEach( group => group.contains( circuitElement ) && group.disposeElement( circuitElement ) );
+    this.groups.forEach( group => group.includes( circuitElement ) && group.disposeElement( circuitElement ) );
   }
 
   /**

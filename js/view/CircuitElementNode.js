@@ -198,7 +198,7 @@ class CircuitElementNode extends Node {
 
         // End drag for each of the vertices
         vertices.forEach( vertex => {
-          if ( screenView.model.circuit.vertexGroup.contains( vertex ) ) {
+          if ( screenView.model.circuit.vertexGroup.includes( vertex ) ) {
             circuitLayerNode.endDrag( event, vertex, dragged );
           }
         } );
