@@ -38,8 +38,10 @@ class PhaseShiftControl extends VBox {
       enabledProperty: enabledProperty,
       deltaValue: 10,
       numberDisplayOptions: {
+        align: 'center',
         decimalPlaces: 0,
         xMargin: 10,
+        yMargin: 3,
         minBackgroundWidth: 60,
         textOptions: {
           font: CCKCConstants.DEFAULT_FONT
