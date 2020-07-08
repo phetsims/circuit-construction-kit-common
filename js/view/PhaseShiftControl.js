@@ -15,8 +15,8 @@ import Text from '../../../scenery/js/nodes/Text.js';
 import VBox from '../../../scenery/js/nodes/VBox.js';
 import NumberSpinner from '../../../sun/js/NumberSpinner.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 
 const phaseShiftString = circuitConstructionKitCommonStrings.phaseShift;
 
@@ -36,11 +36,15 @@ class PhaseShiftControl extends VBox {
     // options for all spinners
     const spinnerOptions = {
       enabledProperty: enabledProperty,
-      decimalPlaces: 0,
       deltaValue: 10,
-      backgroundMinWidth: 60,
-      xMargin: 10,
-      font: CCKCConstants.DEFAULT_FONT
+      numberDisplayOptions: {
+        decimalPlaces: 0,
+        xMargin: 10,
+        minBackgroundWidth: 60,
+        textOptions: {
+          font: CCKCConstants.DEFAULT_FONT
+        }
+      }
     };
     const title = new Text( phaseShiftString, {
       font: CCKCConstants.DEFAULT_FONT
@@ -48,7 +52,9 @@ class PhaseShiftControl extends VBox {
 
     const numberSpinner = new NumberSpinner( acVoltage.phaseProperty, valueRangeProperty, merge( {}, spinnerOptions, {
       arrowsPosition: 'leftRight',
-      valuePattern: '{{value}}' + MathSymbols.DEGREES, // Does not require internationalization
+      numberDisplayOptions: {
+        valuePattern: '{{value}}' + MathSymbols.DEGREES // Does not require internationalization
+      },
       tandem: options.tandem.createTandem( 'numberSpinner' )
     } ) );
 
