@@ -168,8 +168,8 @@ class ChargeAnimator {
 
       let desiredPosition = lower.distance + neighborSeparation / 2;
       const distanceFromDesiredPosition = Math.abs( desiredPosition - currentPosition );
-      const sameDirectionAsCurrent = Utils.sign( desiredPosition - currentPosition ) ===
-                                     Utils.sign( charge.circuitElement.currentProperty.get() * charge.charge );
+      const sameDirectionAsCurrent = Math.sign( desiredPosition - currentPosition ) ===
+                                     Math.sign( charge.circuitElement.currentProperty.get() * charge.charge );
 
       // never slow down or run the current backwards
       if ( sameDirectionAsCurrent ) {
