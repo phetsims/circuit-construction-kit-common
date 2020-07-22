@@ -187,6 +187,7 @@ class VoltmeterNode extends Node {
 
     super( {
       pickable: true,
+      tandem: tandem,
       children: [
         bodyNode,
 
