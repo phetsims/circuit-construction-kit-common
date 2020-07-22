@@ -290,6 +290,7 @@ class CCKCScreenView extends ScreenView {
     zoomControlPanel.setScaleMagnitude( 0.8 );
 
     const timeControlNode = new TimeControlNode( model.isPlayingProperty, {
+      tandem: tandem.createTandem( 'timeControlNode' ),
       playPauseStepButtonOptions: {
         stepForwardButtonOptions: {
           listener: () => model.stepSingleStep()

@@ -100,7 +100,8 @@ class CircuitConstructionKitModel {
 
     // True if the simulation is playing, controlled by the TimeControlNode
     this.isPlayingProperty = new BooleanProperty( true, {
-      tandem: tandem.createTandem( 'isPlayingProperty' )
+      tandem: tandem.createTandem( 'isPlayingProperty' ),
+      phetioFeatured: true
     } );
 
     // @public {Property.<InteractionMode>} - whether the user is in the CircuitConstructionKitModel.InteractionMode.EXPLORE or CircuitConstructionKitModel.InteractionMode.TEST mode
@@ -135,7 +136,7 @@ class CircuitConstructionKitModel {
           this.isValueDepictionEnabledProperty.value = false;
         }
       };
-       this.circuit.vertexGroup.elementCreatedEmitter.addListener( pause );
+      this.circuit.vertexGroup.elementCreatedEmitter.addListener( pause );
       this.circuit.vertexGroup.elementDisposedEmitter.addListener( pause );
       this.circuit.componentEditedEmitter.addListener( pause );
       this.circuit.circuitElements.lengthProperty.link( pause );
