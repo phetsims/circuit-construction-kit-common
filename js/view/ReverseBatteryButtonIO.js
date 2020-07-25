@@ -26,30 +26,21 @@ class ReverseBatteryButtonIO extends ObjectIO {
   }
 
   /**
-   * @param {Object} stateObject
-   * @returns {Object}
+   * @override
+   * @param {Object} stateObject - see ReverseBatteryButtonIO.toStateObject
+   * @returns {Array.<*>}
    * @public
    */
-  static fromStateObject( stateObject ) {
+  static stateToArgsForConstructor( stateObject ) {
     if ( stateObject.circuitElementID === null ) {
-      return { circuitElement: null };
+      return [ null ];
     }
     if ( phet.phetio.phetioEngine.hasPhetioObject( stateObject.circuitElementID ) ) {
-      return { circuitElement: phet.phetio.phetioEngine.getPhetioObject( stateObject.circuitElementID ) };
+      return [ phet.phetio.phetioEngine.getPhetioObject( stateObject.circuitElementID ) ];
     }
     else {
       throw new CouldNotYetDeserializeError();
     }
-  }
-
-  /**
-   * @override
-   * @param {Object} state - see ReverseBatteryButtonIO.toStateObject
-   * @returns {Array.<*>}
-   * @public
-   */
-  static stateToArgsForConstructor( state ) {
-    return [ state.circuitElement ];
   }
 }
 

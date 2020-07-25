@@ -22,28 +22,23 @@ class CircuitElementIO extends ObjectIO {
     };
   }
 
-  // @public
-  static fromStateObject( stateObject ) {
+  /**
+   * @override
+   * @param {Object} stateObject - see CircuitElementIO.toStateObject
+   * @returns {Array.<*>}
+   * @public
+   */
+  static stateToArgsForConstructor( stateObject ) {
     if ( phet.phetio.phetioEngine.hasPhetioObject( stateObject.startVertexID ) &&
          phet.phetio.phetioEngine.hasPhetioObject( stateObject.endVertexID ) ) {
-      return {
-        startVertex: phet.phetio.phetioEngine.getPhetioObject( stateObject.startVertexID ),
-        endVertex: phet.phetio.phetioEngine.getPhetioObject( stateObject.endVertexID )
-      };
+      return [
+        phet.phetio.phetioEngine.getPhetioObject( stateObject.startVertexID ),
+        phet.phetio.phetioEngine.getPhetioObject( stateObject.endVertexID )
+      ];
     }
     else {
       throw new CouldNotYetDeserializeError();
     }
-  }
-
-  /**
-   * @override
-   * @param {Object} state - see CircuitElementIO.toStateObject
-   * @returns {Array.<*>}
-   * @public
-   */
-  static stateToArgsForConstructor( state ) {
-    return [ state.startVertex, state.endVertex ];
   }
 }
 

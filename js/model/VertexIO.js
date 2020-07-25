@@ -27,22 +27,13 @@ class VertexIO extends ObjectIO {
   }
 
   /**
-   * @param {Object} stateObject
-   * @returns {Object}
-   * @public
-   */
-  static fromStateObject( stateObject ) {
-    return { position: Vector2IO.fromStateObject( stateObject.position ) };
-  }
-
-  /**
    * @override
-   * @param {Object} state - see VertexIO.toStateObject
+   * @param {Object} stateObject - see VertexIO.toStateObject
    * @returns {Array.<*>}
    * @public
    */
-  static stateToArgsForConstructor( state ) {
-    return [ state.position ];
+  static stateToArgsForConstructor( stateObject ) {
+    return [ Vector2IO.fromStateObject( stateObject.position ) ];
   }
 }
 

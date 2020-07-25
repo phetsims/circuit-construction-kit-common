@@ -44,12 +44,20 @@ class TrashButtonIO extends ObjectIO {
 
   /**
    * @override
-   * @param {Object} state - see TrashButtonIO.toStateObject
+   * @param {Object} stateObject - see TrashButtonIO.toStateObject
    * @returns {Array.<*>}
    * @public
    */
-  static stateToArgsForConstructor( state ) {
-    return [ state.circuitElement ];
+  static stateToArgsForConstructor( stateObject ) {
+    if ( stateObject.circuitElementID === null ) {
+      return [ null ];
+    }
+    if ( phet.phetio.phetioEngine.hasPhetioObject( stateObject.circuitElementID ) ) {
+      return [ phet.phetio.phetioEngine.getPhetioObject( stateObject.circuitElementID ) ];
+    }
+    else {
+      throw new CouldNotYetDeserializeError();
+    }
   }
 }
 
