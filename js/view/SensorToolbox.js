@@ -92,16 +92,20 @@ class SensorToolbox extends CCKCPanel {
      * @returns {Object} a listener
      */
     const createListenerMulti = ( meterNodes, meterModelName ) =>
+
+      // TODO: Use PressListener instead of SimpleDragHandler
       SimpleDragHandler.createForwardingListener( event => {
 
         // Select a non-visible meter node
         const meterNode = _.find( meterNodes, meterNode => !meterNode.visible );
-        const meterModel = meterNode[ meterModelName ];
-        const viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point );
-        meterModel.draggingProbesWithBodyProperty.value = true;
-        meterModel.visibleProperty.value = true;
-        meterModel.bodyPositionProperty.value = viewPosition;
-        meterNode.startDrag( event );
+        if ( meterNode ) {
+          const meterModel = meterNode[ meterModelName ];
+          const viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point );
+          meterModel.draggingProbesWithBodyProperty.value = true;
+          meterModel.visibleProperty.value = true;
+          meterModel.bodyPositionProperty.value = viewPosition;
+          meterNode.startDrag( event );
+        }
       }, {
         allowTouchSnag: true
       } );
