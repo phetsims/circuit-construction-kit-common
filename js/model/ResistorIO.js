@@ -8,21 +8,19 @@
 
 import validate from '../../../axon/js/validate.js';
 import EnumerationIO from '../../../phet-core/js/EnumerationIO.js';
-import CouldNotYetDeserializeError from '../../../tandem/js/CouldNotYetDeserializeError.js';
 import ObjectIO from '../../../tandem/js/types/ObjectIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitElementIO from './CircuitElementIO.js';
 import Resistor from './Resistor.js';
 
-class ResistorIO extends ObjectIO {
+class ResistorIO extends CircuitElementIO {
 
   // @public
   static toStateObject( resistor ) {
     validate( resistor, this.validator );
-    return {
-      startVertexID: resistor.startVertexProperty.value.tandem.phetioID,
-      endVertexID: resistor.endVertexProperty.value.tandem.phetioID,
-      resistorType: EnumerationIO( Resistor.ResistorType ).toStateObject( resistor.resistorType )
-    };
+    const stateObject = CircuitElementIO.toStateObject( resistor );
+    stateObject.resistorType = EnumerationIO( Resistor.ResistorType ).toStateObject( resistor.resistorType );
+    return stateObject;
   }
 
   /**
@@ -32,17 +30,9 @@ class ResistorIO extends ObjectIO {
    * @public
    */
   static stateToArgsForConstructor( stateObject ) {
-    if ( phet.phetio.phetioEngine.hasPhetioObject( stateObject.startVertexID ) &&
-         phet.phetio.phetioEngine.hasPhetioObject( stateObject.endVertexID ) ) {
-      return [
-        phet.phetio.phetioEngine.getPhetioObject( stateObject.startVertexID ),
-        phet.phetio.phetioEngine.getPhetioObject( stateObject.endVertexID ),
-        EnumerationIO( Resistor.ResistorType ).fromStateObject( stateObject.resistorType )
-      ];
-    }
-    else {
-      throw new CouldNotYetDeserializeError();
-    }
+    const args = CircuitElementIO.stateToArgsForConstructor( stateObject );
+    args.push( EnumerationIO( Resistor.ResistorType ).fromStateObject( stateObject.resistorType ) );
+    return args;
   }
 }
 
