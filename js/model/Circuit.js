@@ -40,6 +40,7 @@ import Inductor from './Inductor.js';
 import LightBulb from './LightBulb.js';
 import ModifiedNodalAnalysisAdapter from './ModifiedNodalAnalysisAdapter.js';
 import Resistor from './Resistor.js';
+import ResistorIO from './ResistorIO.js';
 import Switch from './Switch.js';
 import Vertex from './Vertex.js';
 import VertexIO from './VertexIO.js';
@@ -328,7 +329,7 @@ class Circuit {
         argumentArray.push( Resistor.ResistorType.RESISTOR );
         return argumentArray;
       }, {
-        phetioType: PhetioGroupIO( CircuitElementIO ),
+        phetioType: PhetioGroupIO( ResistorIO ),
         tandem: tandem.createTandem( 'resistorGroup' )
       } );
 

@@ -14,6 +14,7 @@ import merge from '../../../phet-core/js/merge.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import FixedCircuitElement from './FixedCircuitElement.js';
+import ResistorIO from './ResistorIO.js';
 
 class Resistor extends FixedCircuitElement {
 
@@ -26,7 +27,8 @@ class Resistor extends FixedCircuitElement {
    */
   constructor( startVertex, endVertex, resistorType, tandem, options ) {
     options = merge( {
-      isFlammable: true // All resistors are flammable except for the dog, which automatically disconnects at high current.
+      isFlammable: true, // All resistors are flammable except for the dog, which automatically disconnects at high current.
+      phetioType: ResistorIO
     }, options );
 
     assert && assert( !options.hasOwnProperty( 'resistance' ), 'Resistance should be passed through resistorType' );
