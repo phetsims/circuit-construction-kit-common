@@ -133,13 +133,17 @@ class AmmeterNode extends Node {
     // @public (read-only) {Ammeter} - the model associated with this view
     this.ammeter = ammeter;
 
+    const alignProbeToBody = () => {
+      if ( ammeter.draggingProbesWithBodyProperty.get() ) {
+        ammeter.probePositionProperty.set( ammeter.bodyPositionProperty.value.plusXY( 40, -80 ) );
+      }
+    };
+
     // When the body position changes, update the body node and the wire
     ammeter.bodyPositionProperty.link( bodyPosition => {
       bodyNode.centerTop = bodyPosition;
       wireBodyPositionProperty.value = bodyNode.centerTop.plusXY( 0, PROBE_CONNECTION_POINT_DY );
-      if ( ammeter.draggingProbesWithBodyProperty.get() ) {
-        ammeter.probePositionProperty.set( bodyPosition.plusXY( 40, -80 ) );
-      }
+      alignProbeToBody();
     } );
 
     // When the probe position changes, update the probe node and the wire
@@ -152,6 +156,7 @@ class AmmeterNode extends Node {
 
       // Show the ammeter in the play area when dragged from toolbox
       ammeter.visibleProperty.linkAttribute( this, 'visible' );
+      ammeter.visibleProperty.link( alignProbeToBody );
 
       const probeDragHandler = new MovableDragHandler( ammeter.probePositionProperty, {
         tandem: tandem.createTandem( 'probeDragHandler' ),

@@ -922,7 +922,7 @@ class CircuitLayerNode extends Node {
    * Find the current under the given probe
    * @param {Node} probeNode
    * @returns {number|null}
-   * @private
+   * @public
    */
   getCurrent( probeNode ) {
     const mainCurrent = this.getCurrentInLayer( probeNode, this.fixedCircuitElementLayer );
