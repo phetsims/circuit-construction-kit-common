@@ -124,15 +124,16 @@ class SensorToolbox extends CCKCPanel {
 
     // Icon for the ammeter
     const ammeter = new Ammeter( tandem.createTandem( 'ammeterIconModel' ) );
-    const ammeterNodeIcon = new AmmeterNode( ammeter, null, tandem.createTandem( 'ammeterNodeIcon' ), {
-      isIcon: true
+    const ammeterToolNode = new AmmeterNode( ammeter, null, {
+      isIcon: true,
+      tandem: tandem.createTandem( 'ammeterToolNode' )
     } );
     const allAmmetersVisibleProperty = DerivedProperty.and( ammeterNodes.map( ammeterNode => ammeterNode.ammeter.visibleProperty ) );
-    allAmmetersVisibleProperty.link( visible => ammeterNodeIcon.setVisible( !visible ) );
-    ammeterNodeIcon.mutate( {
-      scale: TOOLBOX_ICON_SIZE / Math.max( ammeterNodeIcon.width, ammeterNodeIcon.height )
+    allAmmetersVisibleProperty.link( visible => ammeterToolNode.setVisible( !visible ) );
+    ammeterToolNode.mutate( {
+      scale: TOOLBOX_ICON_SIZE / Math.max( ammeterToolNode.width, ammeterToolNode.height )
     } );
-    ammeterNodeIcon.addInputListener( createListenerMulti( ammeterNodes, 'ammeter' ) );
+    ammeterToolNode.addInputListener( createListenerMulti( ammeterNodes, 'ammeter' ) );
 
     // Icon for the series ammeter
     const seriesAmmeterIcon = new SeriesAmmeter(
@@ -167,12 +168,19 @@ class SensorToolbox extends CCKCPanel {
         touchAreaExpansionLeft: 3,
         touchAreaExpansionTop: 15,
         touchAreaExpansionRight: 3,
-        touchAreaExpansionBottom: 0
+        touchAreaExpansionBottom: 0,
+        tandem: tandem.createTandem( 'seriesAmmeterToolNode' )
       } );
 
     // Labels underneath the sensor tool nodes
-    const voltmeterText = new Text( voltmeterString, { maxWidth: 60 } );
-    const ammeterText = new Text( options.showSeriesAmmeters ? ammetersString : ammeterString, { maxWidth: 60 } );
+    const voltmeterText = new Text( voltmeterString, {
+      maxWidth: 60,
+      tandem: tandem.createTandem( 'voltmeterLabel' )
+    } );
+    const ammeterText = new Text( options.showSeriesAmmeters ? ammetersString : ammeterString, {
+      maxWidth: 60,
+      tandem: tandem.createTandem( 'ammeterLabel' )
+    } );
 
     // Alter the visibility of the labels when the labels checkbox is toggled.
     circuitLayerNode.model.showLabelsProperty.linkAttribute( voltmeterText, 'visible' );
@@ -184,11 +192,12 @@ class SensorToolbox extends CCKCPanel {
         voltmeterNodeIcon,
         voltmeterText
       ],
-      excludeInvisibleChildrenFromBounds: false
+      excludeInvisibleChildrenFromBounds: false,
+      tandem: tandem.createTandem( 'voltmeterToolIconWithLabel' )
     } );
 
     const children = [];
-    options.showNoncontactAmmeters && children.push( ammeterNodeIcon );
+    options.showNoncontactAmmeters && children.push( ammeterToolNode );
     options.showSeriesAmmeters && children.push( seriesAmmeterToolNode );
 
     const ammeterToolIcon = new VBox( {
@@ -202,7 +211,8 @@ class SensorToolbox extends CCKCPanel {
         } ),
         ammeterText
       ],
-      excludeInvisibleChildrenFromBounds: false
+      excludeInvisibleChildrenFromBounds: false,
+      tandem: tandem.createTandem( 'ammeterToolIconWithLabel' )
     } );
 
     const topBox = alignGroup.createBox( new HBox( {

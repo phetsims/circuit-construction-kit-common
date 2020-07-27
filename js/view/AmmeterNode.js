@@ -19,6 +19,7 @@ import Image from '../../../scenery/js/nodes/Image.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Color from '../../../scenery/js/util/Color.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import ammeterBodyImage from '../../images/ammeter-body_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCUtils from '../CCKCUtils.js';
@@ -46,10 +47,9 @@ class AmmeterNode extends Node {
   /**
    * @param {Ammeter} ammeter
    * @param {CircuitLayerNode|null} circuitLayerNode - for getting the currents, or null if rendering an icon
-   * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( ammeter, circuitLayerNode, tandem, options ) {
+  constructor( ammeter, circuitLayerNode, options ) {
     options = merge( {
 
       // true if it will be used as a toolbox icon
@@ -62,8 +62,11 @@ class AmmeterNode extends Node {
       showResultsProperty: new BooleanProperty( true ),
 
       // For the black box study, there is a different current threshold in the readout
-      blackBoxStudy: false
+      blackBoxStudy: false,
+
+      tandem: Tandem.REQUIRED
     }, options );
+    const tandem = options.tandem;
 
     const wireBodyPositionProperty = new Vector2Property( new Vector2( 0, 0 ) );
     const wireProbePositionProperty = new Vector2Property( new Vector2( 0, 0 ) );
@@ -119,7 +122,10 @@ class AmmeterNode extends Node {
       ]
     } );
 
-    super( { children: [ bodyNode, wireNode, probeNode ] } );
+    super( {
+      children: [ bodyNode, wireNode, probeNode ],
+      tandem: options.tandem // TODO: merge all options?
+    } );
 
     // @public (read-only) {ProbeNode}
     this.probeNode = probeNode;

@@ -118,8 +118,8 @@ class CCKCScreenView extends ScreenView {
     } );
 
     const ammeterNodes = model.ammeters.map( ammeter => {
-      const ammeterTandem = tandem.createTandem( 'ammeterNode' + ammeter.phetioIndex );
-      const ammeterNode = new AmmeterNode( ammeter, this.circuitLayerNode, ammeterTandem, {
+      const ammeterNode = new AmmeterNode( ammeter, this.circuitLayerNode, {
+        tandem: tandem.createTandem( 'ammeterNode' + ammeter.phetioIndex ), // TODO: Group?
         showResultsProperty: model.isValueDepictionEnabledProperty,
         visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty,
         blackBoxStudy: options.blackBoxStudy
