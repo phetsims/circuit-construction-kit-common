@@ -12,6 +12,7 @@ import merge from '../../../phet-core/js/merge.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
 import HBox from '../../../scenery/js/nodes/HBox.js';
 import Node from '../../../scenery/js/nodes/Node.js';
+import NodeIO from '../../../scenery/js/nodes/NodeIO.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import Panel from '../../../sun/js/Panel.js';
 import SunConstants from '../../../sun/js/SunConstants.js';
@@ -57,7 +58,7 @@ const voltageString = circuitConstructionKitCommonStrings.voltage;
 const voltageVoltsValuePatternString = circuitConstructionKitCommonStrings.voltageVoltsValuePattern;
 
 // constants
-const GET_LAYOUT_POSITION = (visibleBounds,centerX) => {
+const GET_LAYOUT_POSITION = ( visibleBounds, centerX ) => {
   return {
     centerX: centerX,
     bottom: visibleBounds.bottom - CCKCConstants.HORIZONTAL_MARGIN
@@ -88,6 +89,13 @@ class CircuitElementEditContainerNode extends Node {
       [ null ], {
         phetioType: PhetioGroupIO( TrashButtonIO ),
         tandem: tandem.createTandem( 'trashButtonGroup' )
+      } );
+
+    const resetFuseButtonGroup = new PhetioGroup(
+      ( tandem, circuitElement ) => new ResetFuseButton( circuitElement, tandem ),
+      [ null ], {
+        phetioType: PhetioGroupIO( NodeIO ),
+        tandem: tandem.createTandem( 'resetFuseButtonGroup' )
       } );
 
     const clearDynamicsButtonGroup = new PhetioGroup(
@@ -218,9 +226,7 @@ class CircuitElementEditContainerNode extends Node {
           );
 
           editNode = new EditPanel( [
-
-              // Batteries can be reversed
-              new ResetFuseButton( selectedCircuitElement, tandem.createTandem( 'resetFuseButton' ) ),
+              resetFuseButtonGroup.createNextElement( selectedCircuitElement ),
               fuseCurrentRatingControl,
               trashButtonGroup.createNextElement( selectedCircuitElement )
             ]

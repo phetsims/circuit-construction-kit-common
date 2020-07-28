@@ -37,7 +37,8 @@ class ResetFuseButton extends CCKCRoundPushButton {
     super( {
       content: icon,
       listener: () => fuse.resetFuse(),
-      tandem: tandem
+      tandem: tandem,
+      phetioDynamicElement: true
     } );
     fuse.isTrippedProperty.link( isTripped => {
       this.setEnabled( isTripped );
