@@ -29,6 +29,8 @@ class Wire extends CircuitElement {
    */
   constructor( startVertex, endVertex, resistivityProperty, tandem, options ) {
     assert && assert( typeof resistivityProperty !== 'number', 'property should not be a number' );
+    assert && assert( !startVertex.isDisposed, 'vertex should not be disposed' );
+    assert && assert( !endVertex.isDisposed, 'vertex should not be disposed' );
     options = merge( {
       wireStub: false,
       isMetallic: true

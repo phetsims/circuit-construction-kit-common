@@ -545,7 +545,10 @@ class Circuit {
       // clear references, do not dispose because some items get added back in the black box.
       this.circuitElements.clear();
 
-      this.vertexGroup.clear();
+      // Only dispose vertices not attached to the black box
+      const toDispose = this.vertexGroup.filter( vertex => !vertex.blackBoxInterfaceProperty.value );
+      toDispose.forEach( vertex => this.vertexGroup.disposeElement( vertex ) );
+
       this.markDirty();
     }
     else {
