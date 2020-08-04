@@ -17,10 +17,10 @@ import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 class ResetFuseButton extends CCKCRoundPushButton {
 
   /**
-   * @param {Fuse} fuse - the Fuse to reset
    * @param {Tandem} tandem
+   * @param {Fuse} fuse - the Fuse to reset
    */
-  constructor( fuse, tandem ) {
+  constructor( tandem, fuse ) {
 
     const shape = new Shape().moveTo( 0, 0 ).zigZagToPoint( new Vector2( 35, 0 ), 4.7, 4, false );
 

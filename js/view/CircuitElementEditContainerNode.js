@@ -8,6 +8,7 @@
  */
 
 import Range from '../../../dot/js/Range.js';
+import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
 import HBox from '../../../scenery/js/nodes/HBox.js';
@@ -18,6 +19,7 @@ import Panel from '../../../sun/js/Panel.js';
 import SunConstants from '../../../sun/js/SunConstants.js';
 import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
 import PhetioGroupIO from '../../../tandem/js/PhetioGroupIO.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
@@ -31,6 +33,7 @@ import LightBulb from '../model/LightBulb.js';
 import Resistor from '../model/Resistor.js';
 import SeriesAmmeter from '../model/SeriesAmmeter.js';
 import Switch from '../model/Switch.js';
+import Vertex from '../model/Vertex.js';
 import Wire from '../model/Wire.js';
 import CircuitElementNumberControl from './CircuitElementNumberControl.js';
 import ClearDynamicsButton from './ClearDynamicsButton.js';
@@ -92,8 +95,8 @@ class CircuitElementEditContainerNode extends Node {
       } );
 
     const resetFuseButtonGroup = new PhetioGroup(
-      ( tandem, circuitElement ) => new ResetFuseButton( circuitElement, tandem ),
-      [ null ], {
+      ( tandem, circuitElement ) => new ResetFuseButton( tandem, circuitElement ),
+      [ new Fuse( new Vertex( Vector2.ZERO ), new Vertex( Vector2.ZERO ), Tandem.OPT_OUT, {} ) ], {
         phetioType: PhetioGroupIO( NodeIO ),
         tandem: tandem.createTandem( 'resetFuseButtonGroup' )
       } );
