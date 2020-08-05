@@ -31,7 +31,7 @@ class VoltageSource extends FixedCircuitElement {
       isFlammable: true,
       numberOfDecimalPlaces: 1,
       voltagePropertyOptions: {
-        tandem: tandem.createTandem( 'voltageSourceProperty' ) // TODO: Collides with Battery.voltageProperty
+        tandem: tandem.createTandem( 'voltageProperty' )
       }
     }, options );
     super( startVertex, endVertex, length, tandem, options );

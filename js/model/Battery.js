@@ -43,12 +43,6 @@ class Battery extends VoltageSource {
     }, options );
     super( startVertex, endVertex, internalResistanceProperty, BATTERY_LENGTH, tandem, options );
 
-    // @public {NumberProperty} - the voltage of the battery in volts
-    this.voltageProperty = new NumberProperty( options.voltage, {
-      tandem: tandem.createTandem( 'voltageProperty' ),
-      range: batteryType === Battery.BatteryType.NORMAL ? new Range( 0, 120 ) : new Range( 100, 100000 )
-    } );
-
     // @public - keeps track of which solve iteration pass is in process, see https://github.com/phetsims/circuit-construction-kit-common/issues/245
     this.passProperty = new NumberProperty( 1 );
 
