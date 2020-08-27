@@ -378,6 +378,11 @@ class CCKCScreenView extends ScreenView {
       const stopwatchNode = new StopwatchNode( model.stopwatch, {
         visibleBoundsProperty: this.visibleBoundsProperty,
         right: controlPanelVBox.left - HORIZONTAL_MARGIN,
+        numberDisplayOptions: {
+          numberFormatter: StopwatchNode.getRichNumberFormatter( {
+            numberOfDecimalPlaces: 1
+          } )
+        },
         tandem: tandem.createTandem( 'stopwatchNode' )
       } );
       this.addChild( stopwatchNode );
