@@ -270,15 +270,7 @@ class Circuit {
 
     // @public (read-only) - for creating tandems
     // TODO(phet-io): Convert to group pattern?
-    this.resistorGroupTandem = tandem.createGroupTandem( 'resistors' );
     this.seriesAmmeterGroupTandem = tandem.createGroupTandem( 'seriesAmmeters' );
-    this.coinGroupTandem = tandem.createGroupTandem( 'coins' );
-    this.eraserGroupTandem = tandem.createGroupTandem( 'erasers' );
-    this.pencilGroupTandem = tandem.createGroupTandem( 'pencils' );
-    this.handGroupTandem = tandem.createGroupTandem( 'hands' );
-    this.dogGroupTandem = tandem.createGroupTandem( 'dogs' );
-    this.dollarBillGroupTandem = tandem.createGroupTandem( 'dollarBills' );
-    this.paperClipGroupTandem = tandem.createGroupTandem( 'paperClips' );
 
     // Create vertices for the API validated/baseline circuit elements.  These are not present in the vertexGroup and
     // hence not transmitted in the state.
