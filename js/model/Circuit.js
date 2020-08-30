@@ -41,6 +41,7 @@ import LightBulb from './LightBulb.js';
 import ModifiedNodalAnalysisAdapter from './ModifiedNodalAnalysisAdapter.js';
 import Resistor from './Resistor.js';
 import ResistorIO from './ResistorIO.js';
+import SeriesAmmeter from './SeriesAmmeter.js';
 import Switch from './Switch.js';
 import Vertex from './Vertex.js';
 import VertexIO from './VertexIO.js';
@@ -268,9 +269,13 @@ class Circuit {
 
     this.sourceResistanceProperty.link( markDirtyListener );
 
-    // @public (read-only) - for creating tandems
-    // TODO(phet-io): Convert to group pattern?
-    this.seriesAmmeterGroupTandem = tandem.createGroupTandem( 'seriesAmmeters' );
+    // @public
+    this.seriesAmmeterGroup = new PhetioGroup(
+      ( tandem, startVertex, endVertex ) => new SeriesAmmeter( startVertex, endVertex, tandem ),
+      () => createVertices( CCKCConstants.SERIES_AMMETER_LENGTH ), {
+        phetioType: PhetioGroupIO( CircuitElementIO ),
+        tandem: tandem.createTandem( 'seriesAmmeterGroup' )
+      } );
 
     // Create vertices for the API validated/baseline circuit elements.  These are not present in the vertexGroup and
     // hence not transmitted in the state.
