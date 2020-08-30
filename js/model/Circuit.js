@@ -269,27 +269,6 @@ class Circuit {
 
     this.sourceResistanceProperty.link( markDirtyListener );
 
-    // @public
-    this.seriesAmmeterGroup = new PhetioGroup(
-      ( tandem, startVertex, endVertex ) => new SeriesAmmeter( startVertex, endVertex, tandem ),
-      () => createVertices( CCKCConstants.SERIES_AMMETER_LENGTH ), {
-        phetioType: PhetioGroupIO( CircuitElementIO ),
-        tandem: tandem.createTandem( 'seriesAmmeterGroup' )
-      } );
-
-    // @public
-    this.highResistanceLightBulbGroup = new PhetioGroup(
-      ( tandem, startVertex, endVertex ) => {
-        return LightBulb.createAtPosition( startVertex, endVertex, this, CCKCConstants.HIGH_RESISTANCE,
-          this.viewTypeProperty, tandem, {
-            highResistance: true,
-            editableRange: CCKCConstants.HIGH_RESISTANCE_RANGE
-          } );
-      }, () => createVertices( 100 ), {
-        phetioType: PhetioGroupIO( CircuitElementIO ),
-        tandem: tandem.createTandem( 'highResistanceLightBulbGroup' )
-      } );
-
     // Create vertices for the API validated/baseline circuit elements.  These are not present in the vertexGroup and
     // hence not transmitted in the state.
     const createVertices = length => {
@@ -348,6 +327,27 @@ class Circuit {
       () => createVertices( CCKCConstants.FUSE_LENGTH ), {
         phetioType: PhetioGroupIO( CircuitElementIO ),
         tandem: tandem.createTandem( 'fuseGroup' )
+      } );
+
+    // @public
+    this.seriesAmmeterGroup = new PhetioGroup(
+      ( tandem, startVertex, endVertex ) => new SeriesAmmeter( startVertex, endVertex, tandem ),
+      () => createVertices( CCKCConstants.SERIES_AMMETER_LENGTH ), {
+        phetioType: PhetioGroupIO( CircuitElementIO ),
+        tandem: tandem.createTandem( 'seriesAmmeterGroup' )
+      } );
+
+    // @public
+    this.highResistanceLightBulbGroup = new PhetioGroup(
+      ( tandem, startVertex, endVertex ) => {
+        return LightBulb.createAtPosition( startVertex, endVertex, this, CCKCConstants.HIGH_RESISTANCE,
+          this.viewTypeProperty, tandem, {
+            highResistance: true,
+            editableRange: CCKCConstants.HIGH_RESISTANCE_RANGE
+          } );
+      }, () => createVertices( 100 ), {
+        phetioType: PhetioGroupIO( CircuitElementIO ),
+        tandem: tandem.createTandem( 'highResistanceLightBulbGroup' )
       } );
 
     this.capacitorGroup = new PhetioGroup(
