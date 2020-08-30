@@ -17,32 +17,34 @@ class TrashButton extends CCKCRoundPushButton {
 
   /**
    * @param {Circuit} circuit - the circuit from which the CircuitElement can be removed
-   * @param {CircuitElement|null} circuitElement - the CircuitElement to remove when the button is pressed, or null if for a archetype
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( circuit, circuitElement, tandem, options ) {
+  constructor( circuit, tandem, options ) {
 
-    assert && assert( circuitElement !== undefined, 'circuit element should be null or defined' );
     super( merge( {
       content: new FontAwesomeNode( 'trash', {
         scale: CCKCConstants.FONT_AWESOME_ICON_SCALE
       } ),
       listener: () => {
 
-        // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
-        if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
-          circuit.disposeCircuitElement( circuitElement );
-          !this.isDisposed && this.dispose();
+        const circuitElement = circuit.selectedCircuitElementProperty.value;
+        if ( circuitElement ) {
+
+          // Only permit deletion when not being dragged, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
+          if ( !circuitElement.startVertexProperty.value.isDragged && !circuitElement.endVertexProperty.value.isDragged ) {
+            circuit.disposeCircuitElement( circuitElement );
+          }
         }
       },
       tandem: tandem,
-      phetioDynamicElement: true,
       phetioType: TrashButtonIO
     }, options ) );
+  }
 
-    // @public (read-only, phet-io)
-    this.circuitElement = circuitElement;
+  // @public
+  dispose() {
+    assert && assert( false, 'should not be disposed' );
   }
 }
 

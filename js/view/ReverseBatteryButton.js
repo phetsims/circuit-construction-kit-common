@@ -10,6 +10,7 @@ import Path from '../../../scenery/js/nodes/Path.js';
 import VBox from '../../../scenery/js/nodes/VBox.js';
 import Color from '../../../scenery/js/util/Color.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import Battery from '../model/Battery.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 import ReverseBatteryButtonIO from './ReverseBatteryButtonIO.js';
 
@@ -20,10 +21,9 @@ class ReverseBatteryButton extends CCKCRoundPushButton {
 
   /**
    * @param {Circuit} circuit - the circuit that contains the battery
-   * @param {CircuitElement} battery - the Battery to rotate
    * @param {Tandem} tandem
    */
-  constructor( circuit, battery, tandem ) {
+  constructor( circuit, tandem ) {
 
     // This SVG data was exported from assets/flip_battery_icon.ai, which was created by @arouinfar.  Using illustrator,
     // save the AI file as SVG, then inspect the file to get the path declaration.
@@ -55,12 +55,20 @@ class ReverseBatteryButton extends CCKCRoundPushButton {
             } )
           ]
         } ),
-        listener: () => circuit.flip( battery ),
+        listener: () => {
+          const battery = circuit.selectedCircuitElementProperty.value;
+          assert && assert( battery instanceof Battery );
+          circuit.flip( battery );
+        },
         tandem: tandem,
-        phetioDynamicElement: true,
         phetioType: ReverseBatteryButtonIO
       }
     );
+  }
+
+  // @public
+  dispose() {
+    assert && assert( false, 'should not be disposed' );
   }
 }
 

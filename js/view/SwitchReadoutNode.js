@@ -23,8 +23,9 @@ class SwitchReadoutNode extends Node {
    * @param {Circuit} circuit - the circuit from which the switch can be removed when the trash button is pressed
    * @param {Switch} circuitSwitch - the switch
    * @param {Tandem} tandem
+   * @param {TrashButton} trashButton
    */
-  constructor( circuit, circuitSwitch, tandem, trashButtonGroup ) {
+  constructor( circuit, circuitSwitch, tandem, trashButton ) {
 
     // Create both texts and display both so they remain aligned as the value changes
     const closedText = new Text( theSwitchIsClosedString, {
@@ -45,7 +46,6 @@ class SwitchReadoutNode extends Node {
     circuitSwitch.closedProperty.link( closedListener );
 
     // Show a trash button to the right of the text
-    const trashButton = trashButtonGroup.createNextElement( circuitSwitch );
     trashButton.mutate( {
       left: maxWidth + 10,
       centerY: closedText.centerY

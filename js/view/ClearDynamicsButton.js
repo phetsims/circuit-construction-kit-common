@@ -14,6 +14,7 @@ import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import Color from '../../../scenery/js/util/Color.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import DynamicCircuitElement from '../model/DynamicCircuitElement.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 import ClearDynamicsButtonIO from './ClearDynamicsButtonIO.js';
 
@@ -24,10 +25,10 @@ const SHAPE_MATRIX = Matrix3.createFromPool( SCALE, 0, 0, 0, -SCALE, 0, 0, 0, 1 
 class ClearDynamicsButton extends CCKCRoundPushButton {
 
   /**
-   * @param {DynamicCircuitElement} dynamicCircuitElement
+   * @param {Circuit} circuit
    * @param {Tandem} tandem
    */
-  constructor( dynamicCircuitElement, tandem ) {
+  constructor( circuit, tandem ) {
 
     // This SVG data was exported from assets/flip_battery_icon.ai, which was created by @arouinfar.  Using illustrator,
     // save the AI file as SVG, then inspect the file to get the path declaration.
@@ -47,11 +48,22 @@ class ClearDynamicsButton extends CCKCRoundPushButton {
           } )
         ]
       } ),
-      listener: () => dynamicCircuitElement.clear(),
+      listener: () => {
+        const dynamicCircuitElement = circuit.selectedCircuitElementProperty.value;
+
+        // TODO: Should this be an assertion instead?  See other cases from CircuitElementContainerNode as well
+        if ( dynamicCircuitElement instanceof DynamicCircuitElement ) {
+          dynamicCircuitElement.clear();
+        }
+      },
       tandem: tandem,
-      phetioDynamicElement: true,
       phetioType: ClearDynamicsButtonIO
     } );
+  }
+
+  // @public
+  dispose() {
+    assert && assert( false, 'should not be disposed' );
   }
 }
 

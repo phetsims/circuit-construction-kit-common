@@ -8,18 +8,13 @@
  */
 
 import Range from '../../../dot/js/Range.js';
-import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
 import HBox from '../../../scenery/js/nodes/HBox.js';
 import Node from '../../../scenery/js/nodes/Node.js';
-import NodeIO from '../../../scenery/js/nodes/NodeIO.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import Panel from '../../../sun/js/Panel.js';
 import SunConstants from '../../../sun/js/SunConstants.js';
-import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
-import PhetioGroupIO from '../../../tandem/js/PhetioGroupIO.js';
-import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
@@ -33,18 +28,14 @@ import LightBulb from '../model/LightBulb.js';
 import Resistor from '../model/Resistor.js';
 import SeriesAmmeter from '../model/SeriesAmmeter.js';
 import Switch from '../model/Switch.js';
-import Vertex from '../model/Vertex.js';
 import Wire from '../model/Wire.js';
 import CircuitElementNumberControl from './CircuitElementNumberControl.js';
 import ClearDynamicsButton from './ClearDynamicsButton.js';
-import ClearDynamicsButtonIO from './ClearDynamicsButtonIO.js';
 import PhaseShiftControl from './PhaseShiftControl.js';
 import ResetFuseButton from './ResetFuseButton.js';
 import ReverseBatteryButton from './ReverseBatteryButton.js';
-import ReverseBatteryButtonIO from './ReverseBatteryButtonIO.js';
 import SwitchReadoutNode from './SwitchReadoutNode.js';
 import TrashButton from './TrashButton.js';
-import TrashButtonIO from './TrashButtonIO.js';
 
 const capacitanceString = circuitConstructionKitCommonStrings.capacitance;
 const capacitanceUnitsString = circuitConstructionKitCommonStrings.capacitanceUnits;
@@ -87,33 +78,10 @@ class CircuitElementEditContainerNode extends Node {
     }, options );
     const groupTandem = tandem.createGroupTandem( 'circuitElementEditNode' );
 
-    const trashButtonGroup = new PhetioGroup(
-      ( tandem, circuitElement ) => new TrashButton( circuit, circuitElement, tandem ),
-      [ null ], {
-        phetioType: PhetioGroupIO( TrashButtonIO ),
-        tandem: tandem.createTandem( 'trashButtonGroup' )
-      } );
-
-    const resetFuseButtonGroup = new PhetioGroup(
-      ( tandem, circuitElement ) => new ResetFuseButton( tandem, circuitElement ),
-      [ new Fuse( new Vertex( Vector2.ZERO ), new Vertex( Vector2.ZERO ), Tandem.OPT_OUT, {} ) ], {
-        phetioType: PhetioGroupIO( NodeIO ),
-        tandem: tandem.createTandem( 'resetFuseButtonGroup' )
-      } );
-
-    const clearDynamicsButtonGroup = new PhetioGroup(
-      ( tandem, circuitElement ) => new ClearDynamicsButton( circuitElement, tandem ),
-      [ null ], {
-        phetioType: PhetioGroupIO( ClearDynamicsButtonIO ),
-        tandem: tandem.createTandem( 'clearDynamicsButtonGroup' )
-      } );
-
-    const reverseBatteryButtonGroup = new PhetioGroup(
-      ( tandem, circuitElement ) => new ReverseBatteryButton( circuit, circuitElement, tandem ),
-      [ null ], {
-        phetioType: PhetioGroupIO( ReverseBatteryButtonIO ),
-        tandem: tandem.createTandem( 'reverseBatteryButtonGroup' )
-      } );
+    const trashButton = new TrashButton( circuit, tandem.createTandem( 'trashButton' ) );
+    const resetFuseButton = new ResetFuseButton( circuit, tandem.createTandem( 'resetFuseButton' ) );
+    const clearDynamicsButton = new ClearDynamicsButton( circuit, tandem.createTandem( 'clearDynamicsButton' ) );
+    const reverseBatteryButton = new ReverseBatteryButton( circuit, tandem.createTandem( 'reverseBatteryButton' ) );
 
     const tapInstructionTextNode = new Text( tapCircuitElementToEditString, {
       fontSize: 24,
@@ -146,8 +114,13 @@ class CircuitElementEditContainerNode extends Node {
     // When the selected element changes, update the displayed controls
     let editNode = null;
     circuit.selectedCircuitElementProperty.link( selectedCircuitElement => {
-      editNode && this.hasChild( editNode ) && this.removeChild( editNode );
-      ( editNode && editNode !== tapInstructionTextNode ) && !editNode.isDisposed && editNode.dispose();
+      if ( editNode ) {
+        this.hasChild( editNode ) && this.removeChild( editNode );
+        if ( editNode !== tapInstructionTextNode && editNode !== trashButton ) {
+          editNode.dispose();
+        }
+      }
+
       editNode = null;
 
       if ( selectedCircuitElement ) {
@@ -176,14 +149,14 @@ class CircuitElementEditContainerNode extends Node {
           );
           editNode = new EditPanel( [
               resistanceControl,
-              trashButtonGroup.createNextElement( selectedCircuitElement )
+              trashButton
             ]
           );
         }
         else if ( isResistive ) {
 
           // Just show a trash button for non-editable resistors which are household items
-          editNode = trashButtonGroup.createNextElement( selectedCircuitElement );
+          editNode = trashButton;
         }
         else if ( isBattery ) {
           const circuitElementEditNode = new CircuitElementNumberControl(
@@ -207,9 +180,9 @@ class CircuitElementEditContainerNode extends Node {
           editNode = new EditPanel( [
 
               // Batteries can be reversed
-              reverseBatteryButtonGroup.createNextElement( selectedCircuitElement ),
+              reverseBatteryButton,
               circuitElementEditNode,
-              trashButtonGroup.createNextElement( selectedCircuitElement )
+              trashButton
             ]
           );
         }
@@ -229,19 +202,19 @@ class CircuitElementEditContainerNode extends Node {
           );
 
           editNode = new EditPanel( [
-              resetFuseButtonGroup.createNextElement( selectedCircuitElement ),
+              resetFuseButton,
               fuseCurrentRatingControl,
-              trashButtonGroup.createNextElement( selectedCircuitElement )
+              trashButton
             ]
           );
         }
         else if ( isSwitch ) {
-          editNode = new SwitchReadoutNode( circuit, selectedCircuitElement, groupTandem.createNextTandem(), trashButtonGroup );
+          editNode = new SwitchReadoutNode( circuit, selectedCircuitElement, groupTandem.createNextTandem(), trashButton );
         }
         else if ( isSeriesAmmeter || isWire ) {
 
           // Just show a trash button
-          editNode = trashButtonGroup.createNextElement( selectedCircuitElement );
+          editNode = trashButton;
         }
         else if ( isACSource ) {
           const children = [
@@ -278,7 +251,7 @@ class CircuitElementEditContainerNode extends Node {
               tandem: groupTandem.createNextTandem()
             } ) );
           }
-          children.push( trashButtonGroup.createNextElement( selectedCircuitElement ) );
+          children.push( trashButton );
           editNode = new EditPanel( children );
         }
         else if ( isCapacitor ) {
@@ -298,9 +271,9 @@ class CircuitElementEditContainerNode extends Node {
           );
 
           editNode = new EditPanel( [
-            clearDynamicsButtonGroup.createNextElement( selectedCircuitElement ),
+            clearDynamicsButton,
             capacitorEditControl,
-            trashButtonGroup.createNextElement( selectedCircuitElement )
+            trashButton
           ] );
         }
         else if ( isInductor ) {
@@ -318,9 +291,9 @@ class CircuitElementEditContainerNode extends Node {
             }
           );
           editNode = new EditPanel( [
-              clearDynamicsButtonGroup.createNextElement( selectedCircuitElement ),
+              clearDynamicsButton,
               inductanceControl,
-              trashButtonGroup.createNextElement( selectedCircuitElement )
+              trashButton
             ]
           );
         }
@@ -368,13 +341,23 @@ class EditHBox extends HBox {
  */
 class EditPanel extends Panel {
   constructor( children ) {
-    super( new EditHBox( children ), {
+    const hbox = new EditHBox( children );
+    super( hbox, {
       fill: '#caddfa',
       stroke: null,
       xMargin: 10,
       yMargin: 10,
       cornerRadius: 10
     } );
+
+    // @private
+    this.hbox = hbox;
+  }
+
+  // @public
+  dispose() {
+    this.hbox.dispose();
+    super.dispose();
   }
 }
 

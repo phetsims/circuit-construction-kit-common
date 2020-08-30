@@ -12,15 +12,16 @@ import Circle from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import Fuse from '../model/Fuse.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
 
 class ResetFuseButton extends CCKCRoundPushButton {
 
   /**
+   * @param {Circuit} circuit
    * @param {Tandem} tandem
-   * @param {Fuse} fuse - the Fuse to reset
    */
-  constructor( tandem, fuse ) {
+  constructor( circuit, tandem ) {
 
     const shape = new Shape().moveTo( 0, 0 ).zigZagToPoint( new Vector2( 35, 0 ), 4.7, 4, false );
 
@@ -36,13 +37,29 @@ class ResetFuseButton extends CCKCRoundPushButton {
 
     super( {
       content: icon,
-      listener: () => fuse.resetFuse(),
-      tandem: tandem,
-      phetioDynamicElement: true
+      listener: () => {
+        const fuse = circuit.selectedCircuitElementProperty.value;
+        assert && assert( fuse instanceof Fuse );
+        fuse.resetFuse();
+      },
+      tandem: tandem
     } );
-    fuse.isTrippedProperty.link( isTripped => {
-      this.setEnabled( isTripped );
+
+    const isTrippedListener = isTripped => this.setEnabled( isTripped );
+
+    let oldFuse = null;
+    circuit.selectedCircuitElementProperty.link( fuse => {
+      if ( fuse instanceof Fuse ) {
+        oldFuse && oldFuse.isTrippedProperty.unlink( isTrippedListener );
+        fuse.isTrippedProperty.link( isTrippedListener );
+        oldFuse = fuse;
+      }
     } );
+  }
+
+  // @public
+  dispose() {
+    assert && assert( false, 'should not be disposed' );
   }
 }
 
