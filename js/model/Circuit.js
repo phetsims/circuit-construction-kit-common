@@ -285,10 +285,7 @@ class Circuit {
             highResistance: true,
             editableRange: CCKCConstants.HIGH_RESISTANCE_RANGE
           } );
-      }, () => {
-        const pair = LightBulb.createVertexPair( Vector2.ZERO, this, true );
-        return [ pair.startVertex, pair.endVertex ];
-      }, {
+      }, () => createVertices( 100 ), {
         phetioType: PhetioGroupIO( CircuitElementIO ),
         tandem: tandem.createTandem( 'highResistanceLightBulbGroup' )
       } );
@@ -391,7 +388,9 @@ class Circuit {
       this.capacitorGroup,
       this.inductorGroup,
       this.switchGroup,
-      this.lightBulbGroup
+      this.lightBulbGroup,
+      this.highResistanceLightBulbGroup,
+      this.seriesAmmeterGroup
     ];
 
     // @private {boolean} - whether physical characteristics have changed and warrant solving for currents and voltages
