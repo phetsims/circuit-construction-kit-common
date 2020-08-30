@@ -212,8 +212,10 @@ class CircuitElementToolFactory {
    * @public
    */
   createLightBulbToolNode( count, tandem ) {
+    const vertexPair = LightBulb.createVertexPair( Vector2.ZERO, this.circuit, true );
     const lightBulbModel = LightBulb.createAtPosition(
-      new Vector2( 0, 0 ),
+      vertexPair.startVertex,
+      vertexPair.endVertex,
       this.circuit,
       CCKCConstants.DEFAULT_RESISTANCE,
       this.viewTypeProperty,
@@ -429,7 +431,6 @@ class CircuitElementToolFactory {
           }
         ), this.viewTypeProperty, tandem.createTandem( 'highVoltageBatteryIcon' ), { isIcon: true } ),
       circuitElement => circuitElement instanceof Battery &&
-
                         circuitElement.initialOrientation === 'right' &&
                         circuitElement.batteryType === Battery.BatteryType.HIGH_VOLTAGE, position => {
         return this.circuit.highVoltageBatteryGroup.createNextElement( ...this.circuit.createVertexPairArray( position, SWITCH_LENGTH ) );
@@ -445,6 +446,7 @@ class CircuitElementToolFactory {
    * @public
    */
   createHighResistanceBulbToolNode( count, tandem ) {
+    const vertexPair = LightBulb.createVertexPair( Vector2.ZERO, this.circuit, true );
     return this.createCircuitElementToolNode(
       lightBulbString,
       count,
@@ -452,7 +454,8 @@ class CircuitElementToolFactory {
         null,
         null,
         LightBulb.createAtPosition(
-          Vector2.ZERO,
+          vertexPair.startVertex,
+          vertexPair.endVertex,
           this.circuit,
           1000,
           this.viewTypeProperty,
@@ -466,12 +469,10 @@ class CircuitElementToolFactory {
           isIcon: true
         } ),
       circuitElement => circuitElement instanceof LightBulb && circuitElement.highResistance,
-      position => LightBulb.createAtPosition( position, this.circuit,
-        CCKCConstants.HIGH_RESISTANCE, this.viewTypeProperty,
-        Tandem.OPTIONAL, {
-          highResistance: true,
-          editableRange: CCKCConstants.HIGH_RESISTANCE_RANGE
-        } ), {
+      position => {
+        const vertexPair = LightBulb.createVertexPair( position, this.circuit, false );
+        return this.circuit.highResistanceLightBulbGroup.createNextElement( vertexPair.startVertex, vertexPair.endVertex );
+      }, {
         tandem: tandem
       } );
   }

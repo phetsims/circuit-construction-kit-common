@@ -277,6 +277,22 @@ class Circuit {
         tandem: tandem.createTandem( 'seriesAmmeterGroup' )
       } );
 
+    // @public
+    this.highResistanceLightBulbGroup = new PhetioGroup(
+      ( tandem, startVertex, endVertex ) => {
+        return LightBulb.createAtPosition( startVertex, endVertex, this, CCKCConstants.HIGH_RESISTANCE,
+          this.viewTypeProperty, tandem, {
+            highResistance: true,
+            editableRange: CCKCConstants.HIGH_RESISTANCE_RANGE
+          } );
+      }, () => {
+        const pair = LightBulb.createVertexPair( Vector2.ZERO, this, true );
+        return [ pair.startVertex, pair.endVertex ];
+      }, {
+        phetioType: PhetioGroupIO( CircuitElementIO ),
+        tandem: tandem.createTandem( 'highResistanceLightBulbGroup' )
+      } );
+
     // Create vertices for the API validated/baseline circuit elements.  These are not present in the vertexGroup and
     // hence not transmitted in the state.
     const createVertices = length => {
