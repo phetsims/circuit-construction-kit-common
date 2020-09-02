@@ -1,7 +1,7 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
- * IO type for ClearDynamicsButton.  TODO(phet-io): This shares a lot of code with TrashButtonIO
+ * IO Type for ClearDynamicsButton.  TODO(phet-io): This shares a lot of code with TrashButtonIO
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

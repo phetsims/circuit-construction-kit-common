@@ -1,7 +1,7 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
- * IO type for Vertex
+ * IO Type for Vertex
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

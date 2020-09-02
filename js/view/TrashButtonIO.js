@@ -1,7 +1,7 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
- * IO type for Trash Button
+ * IO Type for Trash Button
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */

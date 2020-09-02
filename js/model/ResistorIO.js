@@ -1,7 +1,7 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
- * IO type for CircuitElement
+ * IO Type for CircuitElement
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
