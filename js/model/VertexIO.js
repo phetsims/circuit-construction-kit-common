@@ -40,7 +40,7 @@ class VertexIO extends ObjectIO {
 VertexIO.documentation = 'A vertex';
 VertexIO.validator = { isValidValue: v => v instanceof phet.circuitConstructionKitCommon.Vertex };
 VertexIO.typeName = 'VertexIO';
-ObjectIO.validateSubtype( VertexIO );
+ObjectIO.validateIOType( VertexIO );
 
 circuitConstructionKitCommon.register( 'VertexIO', VertexIO );
 export default VertexIO;

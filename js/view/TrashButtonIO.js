@@ -65,7 +65,7 @@ TrashButtonIO.methods = {};
 TrashButtonIO.documentation = 'Button that disposes a Circuit Element';
 TrashButtonIO.validator = { isValidValue: v => v instanceof phet.circuitConstructionKitCommon.TrashButton };
 TrashButtonIO.typeName = 'TrashButtonIO';
-ObjectIO.validateSubtype( TrashButtonIO );
+ObjectIO.validateIOType( TrashButtonIO );
 
 circuitConstructionKitCommon.register( 'TrashButtonIO', TrashButtonIO );
 export default TrashButtonIO;

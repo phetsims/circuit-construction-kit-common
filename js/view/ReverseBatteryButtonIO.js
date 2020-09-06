@@ -48,7 +48,7 @@ ReverseBatteryButtonIO.methods = {};
 ReverseBatteryButtonIO.documentation = 'Button that disposes a Circuit Element';
 ReverseBatteryButtonIO.validator = { isValidValue: v => v instanceof phet.circuitConstructionKitCommon.ReverseBatteryButton };
 ReverseBatteryButtonIO.typeName = 'ReverseBatteryButtonIO';
-ObjectIO.validateSubtype( ReverseBatteryButtonIO );
+ObjectIO.validateIOType( ReverseBatteryButtonIO );
 
 circuitConstructionKitCommon.register( 'ReverseBatteryButtonIO', ReverseBatteryButtonIO );
 export default ReverseBatteryButtonIO;

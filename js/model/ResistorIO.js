@@ -40,7 +40,7 @@ ResistorIO.methods = {};
 ResistorIO.documentation = 'A resistor';
 ResistorIO.validator = { isValidValue: v => v instanceof phet.circuitConstructionKitCommon.Resistor };
 ResistorIO.typeName = 'ResistorIO';
-ObjectIO.validateSubtype( ResistorIO );
+ObjectIO.validateIOType( ResistorIO );
 
 circuitConstructionKitCommon.register( 'ResistorIO', ResistorIO );
 export default ResistorIO;

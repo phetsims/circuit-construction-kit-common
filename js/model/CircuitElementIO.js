@@ -46,7 +46,7 @@ CircuitElementIO.methods = {};
 CircuitElementIO.documentation = 'A Circuit Element, such as battery, resistor or wire';
 CircuitElementIO.validator = { isValidValue: v => v instanceof phet.circuitConstructionKitCommon.CircuitElement };
 CircuitElementIO.typeName = 'CircuitElementIO';
-ObjectIO.validateSubtype( CircuitElementIO );
+ObjectIO.validateIOType( CircuitElementIO );
 
 circuitConstructionKitCommon.register( 'CircuitElementIO', CircuitElementIO );
 export default CircuitElementIO;

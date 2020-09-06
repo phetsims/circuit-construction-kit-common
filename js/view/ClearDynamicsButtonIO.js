@@ -44,7 +44,7 @@ ClearDynamicsButtonIO.methods = {};
 ClearDynamicsButtonIO.documentation = 'Button that clears the dynamics from a Capacitor or Inductor';
 ClearDynamicsButtonIO.validator = { isValidValue: v => v instanceof phet.circuitConstructionKitCommon.ClearDynamicsButton };
 ClearDynamicsButtonIO.typeName = 'ClearDynamicsButtonIO';
-ObjectIO.validateSubtype( ClearDynamicsButtonIO );
+ObjectIO.validateIOType( ClearDynamicsButtonIO );
 
 circuitConstructionKitCommon.register( 'ClearDynamicsButtonIO', ClearDynamicsButtonIO );
 export default ClearDynamicsButtonIO;
