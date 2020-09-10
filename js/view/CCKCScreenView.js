@@ -78,6 +78,7 @@ class CCKCScreenView extends ScreenView {
       /* SEE ALSO OPTIONS IN CircuitElementToolbox*/
 
       showSeriesAmmeters: false,
+      showTimeControls: false,
       showNoncontactAmmeters: true,
       getCircuitEditPanelLayoutPosition: CircuitElementEditContainerNode.GET_LAYOUT_POSITION,
       showAdvancedControls: true,
@@ -285,15 +286,18 @@ class CCKCScreenView extends ScreenView {
     // Make it as wide as the circuit element toolbox
     zoomControlPanel.setScaleMagnitude( 0.8 );
 
-    const timeControlNode = new TimeControlNode( model.isPlayingProperty, {
-      tandem: tandem.createTandem( 'timeControlNode' ),
-      playPauseStepButtonOptions: {
-        stepForwardButtonOptions: {
-          listener: () => model.stepSingleStep()
+    let timeControlNode = null;
+    if ( options.showTimeControls ) {
+      timeControlNode = new TimeControlNode( model.isPlayingProperty, {
+        tandem: tandem.createTandem( 'timeControlNode' ),
+        playPauseStepButtonOptions: {
+          stepForwardButtonOptions: {
+            listener: () => model.stepSingleStep()
+          }
         }
-      }
-    } );
-    this.addChild( timeControlNode );
+      } );
+      this.addChild( timeControlNode );
+    }
 
     // Add it in front of everything (should never be obscured by a CircuitElement)
     // this.addChild( zoomControlPanel );
@@ -312,7 +316,7 @@ class CCKCScreenView extends ScreenView {
         bottom: visibleBounds.bottom - HORIZONTAL_MARGIN
       } );
 
-      timeControlNode.mutate( {
+      timeControlNode && timeControlNode.mutate( {
         left: controlPanelVBox.left,
         bottom: visibleBounds.bottom - HORIZONTAL_MARGIN
       } );
