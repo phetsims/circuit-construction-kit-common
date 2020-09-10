@@ -312,16 +312,9 @@ class CCKCScreenView extends ScreenView {
         bottom: visibleBounds.bottom - HORIZONTAL_MARGIN
       } );
 
-      // Match the TimeControlNode height to the ResetAllButtonHeight
-      let timeControlNodeScale = 1;
-      if ( options.showResetAllButton ) {
-        timeControlNodeScale = resetAllButton.height / timeControlNode.height;
-      }
-
       timeControlNode.mutate( {
         left: controlPanelVBox.left,
-        bottom: visibleBounds.bottom - HORIZONTAL_MARGIN,
-        scale: timeControlNodeScale
+        bottom: visibleBounds.bottom - HORIZONTAL_MARGIN
       } );
 
       chargeSpeedThrottlingReadoutNode.mutate( {
