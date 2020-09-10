@@ -252,10 +252,6 @@ class CCKCScreenView extends ScreenView {
       }
     );
 
-    // @protected {CircuitElementEditContainerNode} - so the subclass can set the layout
-    // TODO: This appears unused
-    this.circuitElementEditContainerNode = circuitElementEditContainerNode;
-
     this.addChild( circuitElementEditContainerNode );
 
     // The voltmeter and ammeter are rendered with the circuit node so they will scale up and down with the circuit
