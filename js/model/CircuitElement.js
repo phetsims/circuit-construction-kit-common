@@ -239,7 +239,7 @@ class CircuitElement extends PhetioObject {
     // shortly with the correct values for both startPosition and endPosition
     // See https://github.com/phetsims/circuit-construction-kit-common/issues/413
     // if ( assert && this.isFixedCircuitElement && this.startPositionProperty.value.equals( this.endPositionProperty.value ) ) {
-    //   assert && timer.setTimeout( function() {
+    //   assert && stepTimer.setTimeout( function() {
     //     assert && assert( !this.startPositionProperty.value.equals( this.endPositionProperty.value ), 'vertices cannot be in the same spot' );
     //   }, 0 );
     // }
