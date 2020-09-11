@@ -12,7 +12,6 @@ import Color from '../../../scenery/js/util/Color.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Battery from '../model/Battery.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
-import ReverseBatteryButtonIO from './ReverseBatteryButtonIO.js';
 
 // constants
 const ARROW_ICON_SCALE = 0.012;
@@ -60,8 +59,7 @@ class ReverseBatteryButton extends CCKCRoundPushButton {
           assert && assert( battery instanceof Battery );
           circuit.flip( battery );
         },
-        tandem: tandem,
-        phetioType: ReverseBatteryButtonIO
+        tandem: tandem
       }
     );
   }
