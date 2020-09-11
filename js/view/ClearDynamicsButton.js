@@ -16,7 +16,6 @@ import Color from '../../../scenery/js/util/Color.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import DynamicCircuitElement from '../model/DynamicCircuitElement.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
-import ClearDynamicsButtonIO from './ClearDynamicsButtonIO.js';
 
 // constants
 const SCALE = 0.032;
@@ -56,8 +55,7 @@ class ClearDynamicsButton extends CCKCRoundPushButton {
           dynamicCircuitElement.clear();
         }
       },
-      tandem: tandem,
-      phetioType: ClearDynamicsButtonIO
+      tandem: tandem
     } );
   }
 
