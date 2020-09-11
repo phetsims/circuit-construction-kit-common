@@ -11,7 +11,6 @@ import FontAwesomeNode from '../../../sun/js/FontAwesomeNode.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
-import TrashButtonIO from './TrashButtonIO.js';
 
 class TrashButton extends CCKCRoundPushButton {
 
@@ -37,8 +36,7 @@ class TrashButton extends CCKCRoundPushButton {
           }
         }
       },
-      tandem: tandem,
-      phetioType: TrashButtonIO
+      tandem: tandem
     }, options ) );
   }
 

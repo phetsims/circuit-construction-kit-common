@@ -1,7 +1,7 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
- * IO Type for Battery Reverse Button.  TODO(phet-io): This shares a lot of code with TrashButtonIO
+ * IO Type for Battery Reverse Button
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
