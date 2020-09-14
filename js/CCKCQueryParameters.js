@@ -17,6 +17,7 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
 
   // For Black Box Study & PhET-iO
   currentType: {
+    public: true,
     type: 'custom',
     defaultValue: CurrentType.ELECTRONS,
     validValues: CurrentType.VALUES,
@@ -28,6 +29,7 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
 
   // Whether the current is initially displayed
   showCurrent: {
+    public: true,
     type: 'boolean',
     defaultValue: true
   },
@@ -35,6 +37,7 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
   // Increases the number of wires that can be dragged from the toolbox
   // see https://github.com/phetsims/circuit-construction-kit-common/issues/432
   moreWires: {
+    public: true,
     type: 'flag'
   },
 
