@@ -1,5 +1,6 @@
 /* eslint-disable */
 import simLauncher from '../../joist/js/simLauncher.js';
+
 const mipmaps = [
   {
     "width": 72,
