@@ -128,6 +128,7 @@ class CCKCChartNode extends Node {
       horizontalAxisLabelNode: horizontalAxisTitleNode,
       verticalAxisLabelNode: verticalAxisTitleNode,
       verticalRanges: [
+        new Range( -0.4, 0.4 ),
         new Range( -2, 2 ),
         new Range( -10, 10 ),
         new Range( -20, 20 ),
@@ -145,6 +146,14 @@ class CCKCChartNode extends Node {
       verticalGridLabelNumberOfDecimalPlaces: 0,
       tandem: options.tandem.createTandem( 'seismographNode' )
     } );
+
+    this.seismographNode.verticalRangeProperty.link( verticalRange => {
+      this.seismographNode.setVerticalGridLabelNumberOfDecimalPlaces( verticalRange.max <= 1 ? 1 : 0 );
+      this.seismographNode.setLineSpacings( {
+        majorHorizontalLineSpacing: verticalRange.max / 2
+      } );
+    } );
+
     const shadedRectangle = new ShadedRectangle( this.seismographNode.bounds.dilated( 7 ), {
       baseColor: '#327198'
     } );
@@ -161,6 +170,7 @@ class CCKCChartNode extends Node {
    * @param {number} dx - initial relative x coordinate for the probe
    * @param {number} dy - initial relative y coordinate for the probe
    * @param {Property.<Vector2>} connectionProperty
+   * @param {Tandem} tandem
    * @returns {DynamicSeries}
    * @protected
    */
