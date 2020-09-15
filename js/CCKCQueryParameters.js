@@ -41,6 +41,13 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
     type: 'flag'
   },
 
+  schematic: {
+    public: true,
+    type: 'string',
+    defaultValue: 'ieee',
+    validValues: [ 'ieee', 'iec' ]
+  },
+
   //------------------------------------------------------------------------------------------------------------------
   // For internal use only
   //------------------------------------------------------------------------------------------------------------------
