@@ -27,6 +27,8 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Resistor from '../model/Resistor.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
 import ResistorColors from './ResistorColors.js';
+import SchematicType from './SchematicType.js';
+import schematicTypeProperty from './schematicTypeProperty.js';
 
 // constants
 
@@ -127,8 +129,15 @@ class ResistorNode extends FixedCircuitElementNode {
       lifelikeResistorImageNode.addChild( singleColorBand );
     }
 
+    // Icons should appear the same in the toolbox, see
+    // https://github.com/phetsims/circuit-construction-kit-common/issues/389
+    const width = options.isIcon ? CCKCConstants.RESISTOR_LENGTH : resistor.distanceBetweenVertices;
+    lifelikeResistorImageNode.mutate( {
+      scale: width / lifelikeResistorImageNode.width
+    } );
+
     // Classical zig-zag shape
-    let schematicShape = new Shape()
+    let ieeeSchematicShape = new Shape()
       .moveTo( 0, lifelikeResistorImageNode.height * SCHEMATIC_SCALE )
       .lineToRelative( SCHEMATIC_STEM_WIDTH, 0 )
       .lineToRelative( SCHEMATIC_PERIOD / 2, -SCHEMATIC_WAVELENGTH / 2 )
@@ -140,18 +149,49 @@ class ResistorNode extends FixedCircuitElementNode {
       .lineToRelative( SCHEMATIC_PERIOD / 2, -SCHEMATIC_WAVELENGTH / 2 )
       .lineToRelative( SCHEMATIC_STEM_WIDTH, 0 );
 
-    // Icons should appear the same in the toolbox, see
-    // https://github.com/phetsims/circuit-construction-kit-common/issues/389
-    const width = options.isIcon ? CCKCConstants.RESISTOR_LENGTH : resistor.distanceBetweenVertices;
-    lifelikeResistorImageNode.mutate( {
-      scale: width / lifelikeResistorImageNode.width
-    } );
+    let scale = lifelikeResistorImageNode.width / ieeeSchematicShape.bounds.width;
+    ieeeSchematicShape = ieeeSchematicShape.transformed( Matrix3.scale( scale, scale ) );
+    const offsetX = ieeeSchematicShape.bounds.minX;
+    const offsetY = ieeeSchematicShape.bounds.minY;
+    ieeeSchematicShape = ieeeSchematicShape.transformed( Matrix3.translation( -offsetX, -offsetY ) );
 
-    const scale = lifelikeResistorImageNode.width / schematicShape.bounds.width;
-    schematicShape = schematicShape.transformed( Matrix3.scale( scale, scale ) );
-    const schematicNode = new Path( schematicShape, {
+    // IEC Resistor: it is a box with a left horizontal lead and a right horizontal lead
+    const boxHeight = 30;
+    const boxLength = 70;
+    let iecSchematicShape = new Shape()
+      .moveTo( 0, boxHeight / 2 )
+
+      // left horizontal lead
+      .lineToRelative( SCHEMATIC_STEM_WIDTH, 0 )
+
+      // upper half of the box
+      .lineToRelative( 0, -boxHeight / 2 )
+      .lineToRelative( boxLength, 0 )
+      .lineToRelative( 0, boxHeight / 2 )
+
+      // right horizontal lead
+      .lineToRelative( SCHEMATIC_STEM_WIDTH, 0 )
+
+      // go back along the right horizontal lead
+      .lineToRelative( -SCHEMATIC_STEM_WIDTH, 0 )
+
+      // lower half of the box
+      .lineToRelative( 0, boxHeight / 2 )
+      .lineToRelative( -boxLength, 0 )
+      .lineToRelative( 0, -boxHeight / 2 );
+
+    scale = lifelikeResistorImageNode.width / iecSchematicShape.bounds.width;
+    iecSchematicShape = iecSchematicShape.transformed( Matrix3.scale( scale, scale ) );
+    // iecSchematicShape = iecSchematicShape.transformed( Matrix3.scale( scale, scale ) );
+
+    const schematicNode = new Path( ieeeSchematicShape, {
       stroke: Color.BLACK,
       lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH
+    } );
+
+    schematicTypeProperty.link( schematicType => {
+      schematicNode.shape = schematicType === SchematicType.IEEE ? ieeeSchematicShape :
+                            iecSchematicShape;
     } );
 
     // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
