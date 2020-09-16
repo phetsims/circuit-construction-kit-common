@@ -26,6 +26,8 @@ import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CustomLightBulbNode from './CustomLightBulbNode.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
 import LightBulbSocketNode from './LightBulbSocketNode.js';
+import SchematicType from './SchematicType.js';
+import schematicTypeProperty from './schematicTypeProperty.js';
 
 // constants
 const SCRATCH_MATRIX = new Matrix3();
@@ -35,10 +37,6 @@ const LEAD_Y = -73;
 
 // The "blip" in the filament that looks like an upside down "u" semicircle
 const INNER_RADIUS = 5;
-
-// {Node} The raster is created during instance construction and cached for future use so it isn't added to the
-// spritesheet multiple times
-let cached = null;
 
 /**
  * Determine the brightness for a given power
@@ -116,7 +114,7 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
      * @param {Shape} shape
      * @returns Shape
      */
-    const addSchematicCircle = shape => shape
+    const addIEEESchematicCircle = shape => shape
 
       // Outer circle
       .moveTo( 0, LEAD_Y )
@@ -126,7 +124,34 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
       .moveTo( 0, LEAD_Y )
       .arc( schematicCircleRadius, LEAD_Y, INNER_RADIUS, Math.PI, 0, false )
       .lineTo( rightLeadX, LEAD_Y );
-    let schematicNode = cached || new Path( addSchematicCircle( new Shape()
+
+    const schematicCircleDiameter = 2 * schematicCircleRadius;
+    const cosPi4 = Math.cos( Math.PI / 4 );
+    const sinPi4 = Math.sin( Math.PI / 4 );
+
+    const addIECSchematicCircle = shape => shape
+
+      .moveTo( 0, LEAD_Y )
+
+      // the circle
+      .arc( rightLeadX / 2, LEAD_Y, schematicCircleRadius, Math.PI, -Math.PI, true )
+
+      // go to circle center to draw the 'x' (2 crossed lines) inside it.
+      // Addition of 0.5 seems to visually work better!
+      .moveTo( schematicCircleRadius + 0.5, LEAD_Y )
+
+      // a line from center to circumference
+      .lineToRelative( schematicCircleRadius * cosPi4, -schematicCircleRadius * sinPi4 )
+
+      // continue the line to the other side of the circle
+      .lineToRelative( -schematicCircleDiameter * cosPi4, schematicCircleDiameter * sinPi4 )
+
+      // repeat to draw the other line at 90 degrees to the first
+      .moveTo( schematicCircleRadius, LEAD_Y )
+      .lineToRelative( -schematicCircleRadius * cosPi4, -schematicCircleRadius * sinPi4 )
+      .lineToRelative( schematicCircleDiameter * cosPi4, schematicCircleDiameter * sinPi4 );
+
+    const addLeads = shape => shape
 
       // Left lead
       .moveTo( 0, 0 )
@@ -134,19 +159,30 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
 
       // Right lead
       .moveTo( rightLeadX, LEAD_Y )
-      .lineTo( rightLeadX, delta.y )
-    ), {
+      .lineTo( rightLeadX, delta.y );
+    const ieeeShapeWithLeads = addLeads( addIEEESchematicCircle( new Shape() ) );
+    const iecShapeWithLeads = addLeads( addIECSchematicCircle( new Shape() ) );
+
+    const ieeeShapeIcon = addIEEESchematicCircle( new Shape() ).transformed( Matrix3.scaling( 1.75 ) );
+    const iecShapeIcon = addIECSchematicCircle( new Shape() ).transformed( Matrix3.scaling( 1.75 ) );
+
+    const schematicNode = new Path( ieeeShapeIcon, {
       stroke: Color.BLACK,
-      lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH
-    } ).rasterized( { wrap: false } );
-    cached = schematicNode;
+      lineWidth: options.isIcon ? 5 : CCKCConstants.SCHEMATIC_LINE_WIDTH
+    } );
+
     if ( options.isIcon ) {
-      schematicNode = new Path( addSchematicCircle( new Shape() ).transformed( Matrix3.scaling( 1.75 ) ), {
-        stroke: Color.BLACK,
-        lineWidth: 5
-      } );
       schematicNode.center = lightBulbNode.center.plusXY( 0, 22 );
     }
+
+    schematicTypeProperty.link( schematicType => {
+      if ( options.isIcon ) {
+        schematicNode.shape = schematicType === SchematicType.IEEE ? ieeeShapeIcon : iecShapeIcon;
+      }
+      else {
+        schematicNode.shape = schematicType === SchematicType.IEEE ? ieeeShapeWithLeads : iecShapeWithLeads;
+      }
+    } );
 
     // Expand the pointer areas with a defensive copy, see
     // https://github.com/phetsims/circuit-construction-kit-common/issues/310
