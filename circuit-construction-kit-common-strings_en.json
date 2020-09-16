@@ -2,6 +2,15 @@
   "circuit-construction-kit-common.title": {
     "value": "Circuit Construction Kit"
   },
+  "electronicSymbolStandard": {
+    "value": "Electronic Symbol Standard"
+  },
+  "ieee": {
+    "value": "IEEE"
+  },
+  "iec": {
+    "value": "IEC"
+  },
   "animationSpeedLimitReached": {
     "value": "Animation speed limit reached! Simulation speed reduced to {{percent}}% normal."
   },

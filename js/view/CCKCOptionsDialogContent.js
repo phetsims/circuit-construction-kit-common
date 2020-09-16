@@ -9,6 +9,7 @@ import Text from '../../../scenery/js/nodes/Text.js';
 import VBox from '../../../scenery/js/nodes/VBox.js';
 import VerticalAquaRadioButtonGroup from '../../../sun/js/VerticalAquaRadioButtonGroup.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import SchematicType from './SchematicType.js';
 import schematicTypeProperty from './schematicTypeProperty.js';
 
@@ -22,10 +23,10 @@ class CCKCOptionsDialogContent extends VBox {
       align: 'left',
       spacing: 22,
       children: [
-        new Text( 'Electronic Symbol Standard', textOptions ),
+        new Text( circuitConstructionKitCommonStrings.electronicSymbolStandard, textOptions ),
         new VerticalAquaRadioButtonGroup( schematicTypeProperty, [
-          { node: new Text( 'IEEE', textOptions ), value: SchematicType.IEEE },
-          { node: new Text( 'IEC', textOptions ), value: SchematicType.IEC }
+          { node: new Text( circuitConstructionKitCommonStrings.ieee, textOptions ), value: SchematicType.IEEE },
+          { node: new Text( circuitConstructionKitCommonStrings.iec, textOptions ), value: SchematicType.IEC }
         ], {
           radioButtonOptions: {
             radius: 9
