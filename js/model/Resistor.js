@@ -28,13 +28,11 @@ class Resistor extends FixedCircuitElement {
   constructor( startVertex, endVertex, resistorType, tandem, options ) {
     options = merge( {
       isFlammable: true, // All resistors are flammable except for the dog, which automatically disconnects at high current.
-      phetioType: ResistorIO
+      phetioType: ResistorIO,
+      numberOfDecimalPlaces: resistorType === Resistor.ResistorType.RESISTOR ? 1 : 0
     }, options );
 
     assert && assert( !options.hasOwnProperty( 'resistance' ), 'Resistance should be passed through resistorType' );
-
-    assert && assert( !options.hasOwnProperty( 'numberOfDecimalPlaces' ), 'supplied by Resistor' );
-    options.numberOfDecimalPlaces = options.resistorType === Resistor.ResistorType.RESISTOR ? 1 : 0;
 
     // validate resistor type
     validate( resistorType, { valueType: Resistor.ResistorType } );

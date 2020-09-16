@@ -145,7 +145,12 @@ class CircuitElementEditContainerNode extends Node {
             selectedCircuitElement.resistanceProperty,
             circuit,
             selectedCircuitElement,
-            groupTandem.createNextTandem()
+            groupTandem.createNextTandem(), {
+              delta: selectedCircuitElement.resistorType === Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR ? 10 : 0.5,
+              numberDisplayOptions: {
+                decimalPlaces: selectedCircuitElement.numberOfDecimalPlaces
+              }
+            }
           );
           editNode = new EditPanel( [
               resistanceControl,
@@ -170,9 +175,10 @@ class CircuitElementEditContainerNode extends Node {
             circuit,
             selectedCircuitElement,
             groupTandem.createNextTandem(), {
-
-              // TODO: Set the delta correctly for this and high voltage battery, and for high resistance resistor.
-              // TODO: See values from https://github.com/phetsims/circuit-construction-kit-common/commit/73e4b297759b7d8bbd12e319e574a589e2b76e8a
+              delta: selectedCircuitElement.batteryType === Battery.BatteryType.HIGH_VOLTAGE ? 10 : 0.5,
+              numberDisplayOptions: {
+                decimalPlaces: selectedCircuitElement.numberOfDecimalPlaces
+              },
               phetioState: false
             }
           );
