@@ -115,9 +115,8 @@ class FuseNode extends FixedCircuitElementNode {
     // (see https://github.com/phetsims/circuit-construction-kit-common/issues/429 for a figure)
 
     const boxLength7th = boxWidth / 7;
-    const SCHEMATIC_SCALE = 0.54;
     const fuseIEC = new Shape()
-      .moveTo( 0, 50 * SCHEMATIC_SCALE )
+      .moveTo( 0, schematicShape.bounds.centerY )
 
       // left horizontal lead
       .lineToRelative( SCHEMATIC_STEM_WIDTH, 0 )
