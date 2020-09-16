@@ -14,7 +14,7 @@ import SchematicType from './SchematicType.js';
 import schematicTypeProperty from './schematicTypeProperty.js';
 
 class CCKCOptionsDialogContent extends VBox {
-  constructor() {
+  constructor( tandem ) {
 
     const textOptions = {
       fontSize: 23
@@ -22,12 +22,14 @@ class CCKCOptionsDialogContent extends VBox {
     super( {
       align: 'left',
       spacing: 22,
+      tandem: tandem,
       children: [
         new Text( circuitConstructionKitCommonStrings.electronicSymbolStandard, textOptions ),
         new VerticalAquaRadioButtonGroup( schematicTypeProperty, [
-          { node: new Text( circuitConstructionKitCommonStrings.ieee, textOptions ), value: SchematicType.IEEE },
-          { node: new Text( circuitConstructionKitCommonStrings.iec, textOptions ), value: SchematicType.IEC }
+          { node: new Text( circuitConstructionKitCommonStrings.ieee, textOptions ), value: SchematicType.IEEE, tandemName: 'ieeeRadioButton' },
+          { node: new Text( circuitConstructionKitCommonStrings.iec, textOptions ), value: SchematicType.IEC, tandemName: 'iecRadioButton' }
         ], {
+          tandem: tandem.createTandem( 'schematicTypeRadioButtonGroup' ),
           radioButtonOptions: {
             radius: 9
           }
