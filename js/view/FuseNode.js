@@ -22,6 +22,8 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Fuse from '../model/Fuse.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
 import FuseTripAnimation from './FuseTripAnimation.js';
+import SchematicType from './SchematicType.js';
+import schematicTypeProperty from './schematicTypeProperty.js';
 
 // constants
 const SCHEMATIC_STEM_WIDTH = 20;
@@ -90,11 +92,12 @@ class FuseNode extends FixedCircuitElementNode {
 
     // Schematic view is a line with a box around it, looks the same whether tripped or untripped.
     const boxHeight = 30;
+    const boxWidth = fuse.chargePathLength - SCHEMATIC_STEM_WIDTH * 2;
     let schematicShape = new Shape()
       .moveTo( 0, 0 )
       .lineToRelative( fuse.chargePathLength, 0 )
       .moveTo( 0, 0 )
-      .rect( SCHEMATIC_STEM_WIDTH, -boxHeight / 2, fuse.chargePathLength - SCHEMATIC_STEM_WIDTH * 2, boxHeight );
+      .rect( SCHEMATIC_STEM_WIDTH, -boxHeight / 2, boxWidth, boxHeight );
 
     // Icons should appear the same in the toolbox, see
     // https://github.com/phetsims/circuit-construction-kit-common/issues/389
@@ -106,7 +109,48 @@ class FuseNode extends FixedCircuitElementNode {
     const schematicNode = new Path( schematicShape, {
       stroke: Color.BLACK,
       lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH
-    } ).rasterized( { wrap: false } );
+    } );
+
+    ///// IEC fuse: also a box with two horizontal leads (left and right) and two small vertical lines on the inside
+    // (see https://github.com/phetsims/circuit-construction-kit-common/issues/429 for a figure)
+
+    const boxLength7th = boxWidth / 7;
+    const SCHEMATIC_SCALE = 0.54;
+    const fuseIEC = new Shape()
+      .moveTo( 0, 50 * SCHEMATIC_SCALE )
+
+      // left horizontal lead
+      .lineToRelative( SCHEMATIC_STEM_WIDTH, 0 )
+
+      // upper half of the box
+      .lineToRelative( 0, -boxHeight / 2 )
+      .lineToRelative( boxWidth, 0 )
+      .lineToRelative( 0, boxHeight / 2 )
+
+      // right horizontal lead
+      .lineToRelative( SCHEMATIC_STEM_WIDTH, 0 )
+
+      // go back along the right horizontal lead
+      .lineToRelative( -SCHEMATIC_STEM_WIDTH, 0 )
+
+      // lower half og the box
+      .lineToRelative( 0, boxHeight / 2 )
+      .lineToRelative( -boxWidth, 0 )
+
+      // small left vertical line. Place it at x = boxLength / 7 (seems to be visually a good place)
+      .lineToRelative( 0, -boxHeight )
+      .lineToRelative( boxLength7th, 0 )
+      .lineToRelative( 0, boxHeight )
+
+      /* small right vertical line: the 1st 'lineToRelative' below takes to starting point, at the cost
+      of drawing a line on an already existing one. */
+      .lineToRelative( boxWidth - 2 * boxLength7th, 0 )
+      .lineToRelative( 0, -boxHeight );
+
+    schematicTypeProperty.link( schematicType => {
+      schematicNode.shape = schematicType === SchematicType.IEEE ? schematicShape :
+                            fuseIEC;
+    } );
 
     // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
     schematicNode.centerY = 0;
