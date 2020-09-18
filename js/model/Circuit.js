@@ -12,7 +12,6 @@ import Emitter from '../../../axon/js/Emitter.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import ObservableArray from '../../../axon/js/ObservableArray.js';
-import ObservableArrayIO from '../../../axon/js/ObservableArrayIO.js';
 import Property from '../../../axon/js/Property.js';
 import PropertyIO from '../../../axon/js/PropertyIO.js';
 import Vector2 from '../../../dot/js/Vector2.js';
@@ -85,7 +84,7 @@ class Circuit {
     // contain, including Wire, Battery, Switch, Resistor, LightBulb, etc.
     this.circuitElements = new ObservableArray( {
       phetioState: true,
-      phetioType: ObservableArrayIO( ReferenceIO( CircuitElementIO ) ),
+      phetioType: ObservableArray.ObservableArrayIO( ReferenceIO( CircuitElementIO ) ),
       tandem: tandem.createTandem( 'circuitElements' )
     } );
 
