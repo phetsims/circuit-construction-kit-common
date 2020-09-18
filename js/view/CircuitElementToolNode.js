@@ -79,7 +79,16 @@ class CircuitElementToolNode extends VBox {
       allowTouchSnag: true
     } ) );
 
-    circuit.circuitElements.lengthProperty.link( () => this.setVisible( count() < maxNumber ) );
+    // Make the tool icon visible if we can create more of the item. But be careful to only update visibility when
+    // the specific count for this item changes, so we can support PhET-iO hiding the icons via visibility.
+    let lastCount = null;
+    circuit.circuitElements.lengthProperty.link( () => {
+      const currentCount = count();
+      if ( lastCount !== currentCount ) {
+        this.setVisible( currentCount < maxNumber );
+      }
+      lastCount = currentCount;
+    } );
 
     // Update touch areas when lifelike/schematic changes
     viewTypeProperty.link( () => {
