@@ -6,41 +6,23 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import validate from '../../../axon/js/validate.js';
 import Vector2IO from '../../../dot/js/Vector2IO.js';
-import ObjectIO from '../../../tandem/js/types/ObjectIO.js';
+import IOType from '../../../tandem/js/types/IOType.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
-class VertexIO extends ObjectIO {
-
-  /**
-   * @param {Vertex} vertex
-   * @returns {Object}
-   * @override
-   * @public
-   */
-  static toStateObject( vertex ) {
-    validate( vertex, this.validator );
+const VertexIO = new IOType( 'VertexIO', {
+  isValidValue: v => v instanceof phet.circuitConstructionKitCommon.Vertex,
+  documentation: 'A vertex',
+  toStateObject( vertex ) {
     return {
       position: Vector2IO.toStateObject( vertex.positionProperty.value )
     };
-  }
+  },
 
-  /**
-   * @override
-   * @param {Object} stateObject - see VertexIO.toStateObject
-   * @returns {Array.<*>}
-   * @public
-   */
-  static stateToArgsForConstructor( stateObject ) {
+  stateToArgsForConstructor( stateObject ) {
     return [ Vector2IO.fromStateObject( stateObject.position ) ];
   }
-}
-
-VertexIO.documentation = 'A vertex';
-VertexIO.validator = { isValidValue: v => v instanceof phet.circuitConstructionKitCommon.Vertex };
-VertexIO.typeName = 'VertexIO';
-ObjectIO.validateIOType( VertexIO );
+} );
 
 circuitConstructionKitCommon.register( 'VertexIO', VertexIO );
 export default VertexIO;

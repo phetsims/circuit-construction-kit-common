@@ -6,21 +6,21 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import validate from '../../../axon/js/validate.js';
 import CouldNotYetDeserializeError from '../../../tandem/js/CouldNotYetDeserializeError.js';
-import ObjectIO from '../../../tandem/js/types/ObjectIO.js';
+import IOType from '../../../tandem/js/types/IOType.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
-class CircuitElementIO extends ObjectIO {
+const CircuitElementIO = new IOType( 'CircuitElementIO', {
+  isValidValue: v => v instanceof phet.circuitConstructionKitCommon.CircuitElement,
+  documentation: 'A Circuit Element, such as battery, resistor or wire',
 
   // @public
-  static toStateObject( circuitElement ) {
-    validate( circuitElement, this.validator );
+  toStateObject( circuitElement ) {
     return {
       startVertexID: circuitElement.startVertexProperty.value.tandem.phetioID,
       endVertexID: circuitElement.endVertexProperty.value.tandem.phetioID
     };
-  }
+  },
 
   /**
    * @override
@@ -28,7 +28,7 @@ class CircuitElementIO extends ObjectIO {
    * @returns {Array.<*>}
    * @public
    */
-  static stateToArgsForConstructor( stateObject ) {
+  stateToArgsForConstructor( stateObject ) {
     if ( phet.phetio.phetioEngine.hasPhetioObject( stateObject.startVertexID ) &&
          phet.phetio.phetioEngine.hasPhetioObject( stateObject.endVertexID ) ) {
       return [
@@ -40,13 +40,7 @@ class CircuitElementIO extends ObjectIO {
       throw new CouldNotYetDeserializeError();
     }
   }
-}
-
-CircuitElementIO.methods = {};
-CircuitElementIO.documentation = 'A Circuit Element, such as battery, resistor or wire';
-CircuitElementIO.validator = { isValidValue: v => v instanceof phet.circuitConstructionKitCommon.CircuitElement };
-CircuitElementIO.typeName = 'CircuitElementIO';
-ObjectIO.validateIOType( CircuitElementIO );
+} );
 
 circuitConstructionKitCommon.register( 'CircuitElementIO', CircuitElementIO );
 export default CircuitElementIO;
