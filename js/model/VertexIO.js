@@ -13,15 +13,8 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 const VertexIO = new IOType( 'VertexIO', {
   isValidValue: v => v instanceof phet.circuitConstructionKitCommon.Vertex,
   documentation: 'A vertex',
-  toStateObject( vertex ) {
-    return {
-      position: Vector2IO.toStateObject( vertex.positionProperty.value )
-    };
-  },
-
-  stateToArgsForConstructor( stateObject ) {
-    return [ Vector2IO.fromStateObject( stateObject.position ) ];
-  }
+  toStateObject: vertex => ( { position: Vector2IO.toStateObject( vertex.positionProperty.value ) } ),
+  stateToArgsForConstructor: stateObject => [ Vector2IO.fromStateObject( stateObject.position ) ]
 } );
 
 circuitConstructionKitCommon.register( 'VertexIO', VertexIO );

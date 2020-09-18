@@ -13,20 +13,11 @@ import Resistor from './Resistor.js';
 const ResistorIO = new IOType( 'ResistorIO', {
   isValidValue: v => v instanceof phet.circuitConstructionKitCommon.Resistor,
   supertype: CircuitElementIO,
-
-  // @public
-  toStateObject( resistor ) {
+  toStateObject: resistor => {
     const stateObject = CircuitElementIO.toStateObject( resistor );
     stateObject.resistorType = EnumerationIO( Resistor.ResistorType ).toStateObject( resistor.resistorType );
     return stateObject;
   },
-
-  /**
-   * @override
-   * @param {Object} stateObject - see ResistorIO.toStateObject
-   * @returns {Array.<*>}
-   * @public
-   */
   stateToArgsForConstructor( stateObject ) {
     const args = CircuitElementIO.stateToArgsForConstructor( stateObject );
     args.push( EnumerationIO( Resistor.ResistorType ).fromStateObject( stateObject.resistorType ) );

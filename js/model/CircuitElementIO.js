@@ -13,22 +13,11 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 const CircuitElementIO = new IOType( 'CircuitElementIO', {
   isValidValue: v => v instanceof phet.circuitConstructionKitCommon.CircuitElement,
   documentation: 'A Circuit Element, such as battery, resistor or wire',
-
-  // @public
-  toStateObject( circuitElement ) {
-    return {
-      startVertexID: circuitElement.startVertexProperty.value.tandem.phetioID,
-      endVertexID: circuitElement.endVertexProperty.value.tandem.phetioID
-    };
-  },
-
-  /**
-   * @override
-   * @param {Object} stateObject - see CircuitElementIO.toStateObject
-   * @returns {Array.<*>}
-   * @public
-   */
-  stateToArgsForConstructor( stateObject ) {
+  toStateObject: circuitElement => ( {
+    startVertexID: circuitElement.startVertexProperty.value.tandem.phetioID,
+    endVertexID: circuitElement.endVertexProperty.value.tandem.phetioID
+  } ),
+  stateToArgsForConstructor: stateObject => {
     if ( phet.phetio.phetioEngine.hasPhetioObject( stateObject.startVertexID ) &&
          phet.phetio.phetioEngine.hasPhetioObject( stateObject.endVertexID ) ) {
       return [
