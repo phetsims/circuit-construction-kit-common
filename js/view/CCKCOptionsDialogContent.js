@@ -19,22 +19,33 @@ class CCKCOptionsDialogContent extends VBox {
     const textOptions = {
       fontSize: 23
     };
+    const verticalAquaRadioButtonGroup = new VerticalAquaRadioButtonGroup( schematicTypeProperty, [
+      { node: new Text( circuitConstructionKitCommonStrings.ieee, textOptions ), value: SchematicType.IEEE, tandemName: 'ieeeRadioButton' },
+      { node: new Text( circuitConstructionKitCommonStrings.iec, textOptions ), value: SchematicType.IEC, tandemName: 'iecRadioButton' }
+    ], {
+      tandem: tandem.createTandem( 'schematicTypeRadioButtonGroup' ),
+      radioButtonOptions: {
+        radius: 9
+      }
+    } );
     super( {
       align: 'left',
       spacing: 22,
       tandem: tandem,
       children: [
         new Text( circuitConstructionKitCommonStrings.electronicSymbolStandard, textOptions ),
-        new VerticalAquaRadioButtonGroup( schematicTypeProperty, [
-          { node: new Text( circuitConstructionKitCommonStrings.ieee, textOptions ), value: SchematicType.IEEE, tandemName: 'ieeeRadioButton' },
-          { node: new Text( circuitConstructionKitCommonStrings.iec, textOptions ), value: SchematicType.IEC, tandemName: 'iecRadioButton' }
-        ], {
-          tandem: tandem.createTandem( 'schematicTypeRadioButtonGroup' ),
-          radioButtonOptions: {
-            radius: 9
-          }
-        } ) ]
+        verticalAquaRadioButtonGroup ]
     } );
+
+    this.disposeCCKCOptionsDialogContent = () => {
+      verticalAquaRadioButtonGroup.dispose();
+    };
+  }
+
+  // @public
+  dispose() {
+    this.disposeCCKCOptionsDialogContent();
+    super.dispose();
   }
 }
 
