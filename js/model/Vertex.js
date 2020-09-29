@@ -9,10 +9,12 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
+import Vector2IO from '../../../dot/js/Vector2IO.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import merge from '../../../phet-core/js/merge.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import IOType from '../../../tandem/js/types/IOType.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 // Index counter for debugging
@@ -126,6 +128,12 @@ class Vertex extends PhetioObject {
     super.dispose();
   }
 }
+
+Vertex.VertexIO = new IOType( 'VertexIO', {
+  valueType: Vertex,
+  toStateObject: vertex => ( { position: Vector2IO.toStateObject( vertex.positionProperty.value ) } ),
+  stateToArgsForConstructor: stateObject => [ Vector2IO.fromStateObject( stateObject.position ) ]
+} );
 
 circuitConstructionKitCommon.register( 'Vertex', Vertex );
 export default Vertex;

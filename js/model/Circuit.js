@@ -41,7 +41,6 @@ import Resistor from './Resistor.js';
 import SeriesAmmeter from './SeriesAmmeter.js';
 import Switch from './Switch.js';
 import Vertex from './Vertex.js';
-import VertexIO from './VertexIO.js';
 import Wire from './Wire.js';
 
 // constants
@@ -163,10 +162,10 @@ class Circuit {
     this.vertexGroup = new PhetioGroup( ( tandem, position ) => {
       return new Vertex( position, {
         tandem: tandem,
-        phetioType: VertexIO
+        phetioType: Vertex.VertexIO
       } );
     }, [ new Vector2( -1000, 0 ) ], {
-      phetioType: PhetioGroupIO( VertexIO ),
+      phetioType: PhetioGroupIO( Vertex.VertexIO ),
       tandem: tandem.createTandem( 'vertexGroup' )
     } );
 
