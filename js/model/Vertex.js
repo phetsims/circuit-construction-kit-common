@@ -9,7 +9,7 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import Vector2IO from '../../../dot/js/Vector2IO.js';
+import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import merge from '../../../phet-core/js/merge.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
@@ -131,8 +131,8 @@ class Vertex extends PhetioObject {
 
 Vertex.VertexIO = new IOType( 'VertexIO', {
   valueType: Vertex,
-  toStateObject: vertex => ( { position: Vector2IO.toStateObject( vertex.positionProperty.value ) } ),
-  stateToArgsForConstructor: stateObject => [ Vector2IO.fromStateObject( stateObject.position ) ]
+  toStateObject: vertex => ( { position: Vector2.Vector2IO.toStateObject( vertex.positionProperty.value ) } ),
+  stateToArgsForConstructor: stateObject => [ Vector2.Vector2IO.fromStateObject( stateObject.position ) ]
 } );
 
 circuitConstructionKitCommon.register( 'Vertex', Vertex );
