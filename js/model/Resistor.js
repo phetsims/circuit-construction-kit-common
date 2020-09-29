@@ -10,11 +10,13 @@ import NumberProperty from '../../../axon/js/NumberProperty.js';
 import validate from '../../../axon/js/validate.js';
 import Range from '../../../dot/js/Range.js';
 import Enumeration from '../../../phet-core/js/Enumeration.js';
+import EnumerationIO from '../../../phet-core/js/EnumerationIO.js';
 import merge from '../../../phet-core/js/merge.js';
+import IOType from '../../../tandem/js/types/IOType.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitElement from './CircuitElement.js';
 import FixedCircuitElement from './FixedCircuitElement.js';
-import ResistorIO from './ResistorIO.js';
 
 class Resistor extends FixedCircuitElement {
 
@@ -28,7 +30,7 @@ class Resistor extends FixedCircuitElement {
   constructor( startVertex, endVertex, resistorType, tandem, options ) {
     options = merge( {
       isFlammable: true, // All resistors are flammable except for the dog, which automatically disconnects at high current.
-      phetioType: ResistorIO,
+      phetioType: Resistor.ResistorIO,
       numberOfDecimalPlaces: resistorType === Resistor.ResistorType.RESISTOR ? 1 : 0
     }, options );
 
@@ -144,6 +146,21 @@ Resistor.ResistorType = Enumeration.byMap( {
   // Adjust the dog so the charges travel along the tail/legs, see https://github.com/phetsims/circuit-construction-kit-common/issues/364
   DOG: ResistorEnumValue.fixed( 100000, false, CCKCConstants.DOG_LENGTH, -40 ),
   DOLLAR_BILL: ResistorEnumValue.fixed( 1000000000, false, CCKCConstants.DOLLAR_BILL_LENGTH )
+} );
+
+Resistor.ResistorIO = new IOType( 'ResistorIO', {
+  valueType: Resistor,
+  supertype: CircuitElement.CircuitElementIO,
+  toStateObject: resistor => {
+    const stateObject = CircuitElement.CircuitElementIO.toStateObject( resistor );
+    stateObject.resistorType = EnumerationIO( Resistor.ResistorType ).toStateObject( resistor.resistorType );
+    return stateObject;
+  },
+  stateToArgsForConstructor( stateObject ) {
+    const args = CircuitElement.CircuitElementIO.stateToArgsForConstructor( stateObject );
+    args.push( EnumerationIO( Resistor.ResistorType ).fromStateObject( stateObject.resistorType ) );
+    return args;
+  }
 } );
 
 circuitConstructionKitCommon.register( 'Resistor', Resistor );
