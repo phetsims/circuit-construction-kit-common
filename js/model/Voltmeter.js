@@ -8,7 +8,6 @@
  */
 
 import Property from '../../../axon/js/Property.js';
-import PropertyIO from '../../../axon/js/PropertyIO.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import NullableIO from '../../../tandem/js/types/NullableIO.js';
@@ -29,7 +28,7 @@ class Voltmeter extends Meter {
     this.voltageProperty = new Property( null, {
       tandem: tandem.createTandem( 'voltageProperty' ),
       units: 'volts',
-      phetioType: PropertyIO( NullableIO( NumberIO ) )
+      phetioType: Property.PropertyIO( NullableIO( NumberIO ) )
     } );
 
     // @public - the position of the tip of the red probe in model=view coordinates.

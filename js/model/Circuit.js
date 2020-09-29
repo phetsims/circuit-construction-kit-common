@@ -13,7 +13,6 @@ import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import ObservableArray from '../../../axon/js/ObservableArray.js';
 import Property from '../../../axon/js/Property.js';
-import PropertyIO from '../../../axon/js/PropertyIO.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Enumeration from '../../../phet-core/js/Enumeration.js';
 import merge from '../../../phet-core/js/merge.js';
@@ -216,7 +215,7 @@ class Circuit {
     // Vertex.selectedProperty.  These strategies can be unified when we work on a11y.
     this.selectedCircuitElementProperty = new Property( null, {
       tandem: tandem.createTandem( 'selectedCircuitElementProperty' ),
-      phetioType: PropertyIO( NullableIO( ReferenceIO( CircuitElementIO ) ) )
+      phetioType: Property.PropertyIO( NullableIO( ReferenceIO( CircuitElementIO ) ) )
     } );
 
     this.selectedCircuitElementProperty.link( selectedCircuitElement => {

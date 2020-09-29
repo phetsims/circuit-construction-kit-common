@@ -8,7 +8,6 @@
  */
 
 import Property from '../../../axon/js/Property.js';
-import PropertyIO from '../../../axon/js/PropertyIO.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import NullableIO from '../../../tandem/js/types/NullableIO.js';
@@ -33,7 +32,7 @@ class Ammeter extends Meter {
     this.currentProperty = new Property( null, {
       tandem: tandem.createTandem( 'currentProperty' ),
       units: 'amperes',
-      phetioType: PropertyIO( NullableIO( NumberIO ) )
+      phetioType: Property.PropertyIO( NullableIO( NumberIO ) )
     } );
 
     // @public - the position of the tip of the probe
