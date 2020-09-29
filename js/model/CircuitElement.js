@@ -14,9 +14,10 @@ import Property from '../../../axon/js/Property.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
 import SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
+import CouldNotYetDeserializeError from '../../../tandem/js/CouldNotYetDeserializeError.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
+import IOType from '../../../tandem/js/types/IOType.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitElementIO from './CircuitElementIO.js';
 
 // variables
 let index = 0;
@@ -45,7 +46,7 @@ class CircuitElement extends PhetioObject {
       tandem: tandem,
       isCurrentReentrant: false,
       phetioDynamicElement: true,
-      phetioType: CircuitElementIO
+      phetioType: CircuitElement.CircuitElementIO
     }, options );
 
     super( options );
@@ -385,6 +386,27 @@ class CircuitElement extends PhetioObject {
     return start.average( end );
   }
 }
+
+CircuitElement.CircuitElementIO = new IOType( 'CircuitElementIO', {
+  valueType: CircuitElement,
+  documentation: 'A Circuit Element, such as battery, resistor or wire',
+  toStateObject: circuitElement => ( {
+    startVertexID: circuitElement.startVertexProperty.value.tandem.phetioID,
+    endVertexID: circuitElement.endVertexProperty.value.tandem.phetioID
+  } ),
+  stateToArgsForConstructor: stateObject => {
+    if ( phet.phetio.phetioEngine.hasPhetioObject( stateObject.startVertexID ) &&
+         phet.phetio.phetioEngine.hasPhetioObject( stateObject.endVertexID ) ) {
+      return [
+        phet.phetio.phetioEngine.getPhetioObject( stateObject.startVertexID ),
+        phet.phetio.phetioEngine.getPhetioObject( stateObject.endVertexID )
+      ];
+    }
+    else {
+      throw new CouldNotYetDeserializeError();
+    }
+  }
+} );
 
 circuitConstructionKitCommon.register( 'CircuitElement', CircuitElement );
 export default CircuitElement;
