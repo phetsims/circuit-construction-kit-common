@@ -17,7 +17,6 @@ import Vector2 from '../../../dot/js/Vector2.js';
 import Enumeration from '../../../phet-core/js/Enumeration.js';
 import merge from '../../../phet-core/js/merge.js';
 import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
-import PhetioGroupIO from '../../../tandem/js/PhetioGroupIO.js';
 import NullableIO from '../../../tandem/js/types/NullableIO.js';
 import ReferenceIO from '../../../tandem/js/types/ReferenceIO.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -165,7 +164,7 @@ class Circuit {
         phetioType: Vertex.VertexIO
       } );
     }, [ new Vector2( -1000, 0 ) ], {
-      phetioType: PhetioGroupIO( Vertex.VertexIO ),
+      phetioType: PhetioGroup.PhetioGroupIO( Vertex.VertexIO ),
       tandem: tandem.createTandem( 'vertexGroup' )
     } );
 
@@ -275,7 +274,7 @@ class Circuit {
     this.wireGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
       return new Wire( startVertex, endVertex, this.wireResistivityProperty, tandem );
     }, () => createVertices( WIRE_LENGTH ), {
-      phetioType: PhetioGroupIO( CircuitElement.CircuitElementIO ),
+      phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
       tandem: tandem.createTandem( 'wireGroup' )
     } );
 
@@ -283,7 +282,7 @@ class Circuit {
       return new Battery( startVertex, endVertex, this.sourceResistanceProperty, Battery.BatteryType.NORMAL,
         tandem );
     }, () => createVertices( BATTERY_LENGTH ), {
-      phetioType: PhetioGroupIO( CircuitElement.CircuitElementIO ),
+      phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
       tandem: tandem.createTandem( 'batteryGroup' )
     } );
 
@@ -293,7 +292,7 @@ class Circuit {
           voltage: 1000
         } );
     }, () => createVertices( BATTERY_LENGTH ), {
-      phetioType: PhetioGroupIO( CircuitElement.CircuitElementIO ),
+      phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
       tandem: tandem.createTandem( 'highVoltageBatteryGroup' ),
       phetioDynamicElementName: 'battery'
     } );
@@ -301,7 +300,7 @@ class Circuit {
     this.acVoltageGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
       return new ACVoltage( startVertex, endVertex, this.sourceResistanceProperty, tandem );
     }, () => createVertices( CCKCConstants.AC_VOLTAGE_LENGTH ), {
-      phetioType: PhetioGroupIO( CircuitElement.CircuitElementIO ),
+      phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
       tandem: tandem.createTandem( 'acVoltageGroup' )
     } );
 
@@ -314,14 +313,14 @@ class Circuit {
         argumentArray.push( Resistor.ResistorType.RESISTOR );
         return argumentArray;
       }, {
-        phetioType: PhetioGroupIO( Resistor.ResistorIO ),
+        phetioType: PhetioGroup.PhetioGroupIO( Resistor.ResistorIO ),
         tandem: tandem.createTandem( 'resistorGroup' )
       } );
 
     this.fuseGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => new Fuse( startVertex, endVertex, tandem ),
       () => createVertices( CCKCConstants.FUSE_LENGTH ), {
-        phetioType: PhetioGroupIO( CircuitElement.CircuitElementIO ),
+        phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
         tandem: tandem.createTandem( 'fuseGroup' )
       } );
 
@@ -329,7 +328,7 @@ class Circuit {
     this.seriesAmmeterGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => new SeriesAmmeter( startVertex, endVertex, tandem ),
       () => createVertices( CCKCConstants.SERIES_AMMETER_LENGTH ), {
-        phetioType: PhetioGroupIO( CircuitElement.CircuitElementIO ),
+        phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
         tandem: tandem.createTandem( 'seriesAmmeterGroup' )
       } );
 
@@ -342,35 +341,35 @@ class Circuit {
             editableRange: CCKCConstants.HIGH_RESISTANCE_RANGE
           } );
       }, () => createVertices( 100 ), {
-        phetioType: PhetioGroupIO( CircuitElement.CircuitElementIO ),
+        phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
         tandem: tandem.createTandem( 'highResistanceLightBulbGroup' )
       } );
 
     this.capacitorGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => new Capacitor( startVertex, endVertex, tandem ),
       () => createVertices( CCKCConstants.CAPACITOR_LENGTH ), {
-        phetioType: PhetioGroupIO( CircuitElement.CircuitElementIO ),
+        phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
         tandem: tandem.createTandem( 'capacitorGroup' )
       } );
 
     this.inductorGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => new Inductor( startVertex, endVertex, tandem ),
       () => createVertices( CCKCConstants.INDUCTOR_LENGTH ), {
-        phetioType: PhetioGroupIO( CircuitElement.CircuitElementIO ),
+        phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
         tandem: tandem.createTandem( 'inductorGroup' )
       } );
 
     this.switchGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => new Switch( startVertex, endVertex, tandem ),
       () => createVertices( CCKCConstants.SWITCH_LENGTH ), {
-        phetioType: PhetioGroupIO( CircuitElement.CircuitElementIO ),
+        phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
         tandem: tandem.createTandem( 'switchGroup' )
       } );
 
     this.lightBulbGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
       return new LightBulb( startVertex, endVertex, CCKCConstants.DEFAULT_RESISTANCE, this.viewTypeProperty, tandem );
     }, () => createVertices( 100 ), {
-      phetioType: PhetioGroupIO( CircuitElement.CircuitElementIO ),
+      phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
       tandem: tandem.createTandem( 'lightBulbGroup' )
     } );
 
