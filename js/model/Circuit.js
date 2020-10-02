@@ -11,7 +11,7 @@ import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
-import ObservableArray from '../../../axon/js/ObservableArray.js';
+import createObservableArray from '../../../axon/js/createObservableArray.js';
 import Property from '../../../axon/js/Property.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Enumeration from '../../../phet-core/js/Enumeration.js';
@@ -78,14 +78,14 @@ class Circuit {
 
     // @public {ObservableArray.<CircuitElement>} - The different types of CircuitElement the circuit may
     // contain, including Wire, Battery, Switch, Resistor, LightBulb, etc.
-    this.circuitElements = new ObservableArray( {
+    this.circuitElements = createObservableArray( {
       phetioState: true,
-      phetioType: ObservableArray.ObservableArrayIO( ReferenceIO( CircuitElement.CircuitElementIO ) ),
+      phetioType: createObservableArray.ObservableArrayIO( ReferenceIO( CircuitElement.CircuitElementIO ) ),
       tandem: tandem.createTandem( 'circuitElements' )
     } );
 
     // @public {ObservableArray.<Charge>} - the charges in the circuit
-    this.charges = new ObservableArray();
+    this.charges = createObservableArray();
 
     // @public {Property.<CurrentType>} - whether to show charges or conventional current
     this.currentTypeProperty = new EnumerationProperty( CurrentType, CCKCQueryParameters.currentType, {
