@@ -50,7 +50,7 @@ class ChargeAnimator {
    */
   constructor( circuit ) {
 
-    // @private (read-only) {ObservableArray.<Charge>} - the ObservableArray of Charge instances
+    // @private (read-only) {ObservableArrayDef.<Charge>} - the Charge instances
     this.charges = circuit.charges;
 
     // @private (read-only) {Circuit} - the Circuit

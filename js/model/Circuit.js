@@ -76,7 +76,7 @@ class Circuit {
       tandem: tandem.createTandem( 'sourceResistanceProperty' )
     } );
 
-    // @public {ObservableArray.<CircuitElement>} - The different types of CircuitElement the circuit may
+    // @public {ObservableArrayDef.<CircuitElement>} - The different types of CircuitElement the circuit may
     // contain, including Wire, Battery, Switch, Resistor, LightBulb, etc.
     this.circuitElements = createObservableArray( {
       phetioState: true,
@@ -84,7 +84,7 @@ class Circuit {
       tandem: tandem.createTandem( 'circuitElements' )
     } );
 
-    // @public {ObservableArray.<Charge>} - the charges in the circuit
+    // @public {ObservableArrayDef.<Charge>} - the charges in the circuit
     this.charges = createObservableArray();
 
     // @public {Property.<CurrentType>} - whether to show charges or conventional current
