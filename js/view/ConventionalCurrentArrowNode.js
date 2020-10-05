@@ -28,6 +28,9 @@ class ConventionalCurrentArrowNode extends ArrowNode {
       stroke: Color.WHITE,
       tandem: tandem
     } );
+
+    const center = this.center;
+    this.translate( -center.x, -center.y );
   }
 }
 

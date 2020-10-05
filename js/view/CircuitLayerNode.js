@@ -166,13 +166,13 @@ class CircuitLayerNode extends Node {
 
     // @public {Node} - layer that shows the Charge instances
     this.chargeLayer = new Node( {
-      renderer: RENDERER,
+      renderer: RENDERER
 
       // preallocate sprite sheet
-      children: [ new Node( {
-        visible: false,
-        children: ChargeNode.webglSpriteNodes
-      } ) ]
+      // children: [ new Node( {
+      //   visible: false,
+      //   // children: ChargeNode.webglSpriteNodes
+      // } ) ]
     } );
 
     Property.multilink( [ screenView.model.isValueDepictionEnabledProperty, screenView.model.revealingProperty ], ( isValueDepictionEnabled, revealing ) => {

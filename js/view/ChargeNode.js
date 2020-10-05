@@ -8,11 +8,10 @@
  */
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
-import Matrix3 from '../../../dot/js/Matrix3.js';
 import Utils from '../../../dot/js/Utils.js';
 import Shape from '../../../kite/js/Shape.js';
 import ElectronChargeNode from '../../../scenery-phet/js/ElectronChargeNode.js';
-import Image from '../../../scenery/js/nodes/Image.js';
+import Node from '../../../scenery/js/nodes/Node.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Capacitor from '../model/Capacitor.js';
@@ -31,23 +30,12 @@ const ELECTRON_CHARGE_NODE = new ElectronChargeNode( {
   scale: 0.78
 } ).rasterized( { wrap: false } );
 
-const ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.GLOBAL.createTandem( 'arrowNode' ) )
-  .rasterized( { wrap: false } );
-
-const ARROW_OFFSET = Matrix3.translation( -ARROW_NODE.width / 2, -ARROW_NODE.height / 2 );
-const HALF_ROTATION = Matrix3.rotation2( Math.PI );
-
-// scratch matrix that is used to set values to scenery
-const NODE_MATRIX = new Matrix3();
+const ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.GLOBAL.createTandem( 'arrowNode' ) ).rasterized( { wrap: false } );
 
 // Below this amperage, no conventional current will be rendered.
 const CONVENTIONAL_CHARGE_THRESHOLD = 1E-6;
 
-// position the electron--note the offsets that were used to make it look exactly centered, see
-// https://github.com/phetsims/circuit-construction-kit-dc/issues/104
-const ELECTRON_OFFSET = Matrix3.translation( -ELECTRON_CHARGE_NODE.width / 2 - 0.5, -ELECTRON_CHARGE_NODE.height / 2 - 0.5 );
-
-class ChargeNode extends Image {
+class ChargeNode extends Node {
 
   /**
    * @param {Charge} charge - the model element
@@ -57,8 +45,9 @@ class ChargeNode extends Image {
 
     const child = charge.charge > 0 ? ARROW_NODE : ELECTRON_CHARGE_NODE;
 
-    super( child.image, {
-      pickable: false
+    super( {
+      pickable: false,
+      children: [ child ]
     } );
 
     // @private - to look up the CapacitorNode for clipping
@@ -101,36 +90,18 @@ class ChargeNode extends Image {
     const charge = this.charge;
     const current = charge.circuitElement.currentProperty.get();
 
-    NODE_MATRIX.set( charge.matrix );
-
     if ( charge.charge > 0 ) {
+      this.translation = charge.matrix.getTranslation();
+      this.rotation = charge.matrix.getRotation() + ( current < 0 ? Math.PI : 0 );
 
-      // Rotate if current is running backwards
-      ( current < 0 ) && NODE_MATRIX.multiplyMatrix( HALF_ROTATION );
-
-      // Center
-      NODE_MATRIX.multiplyMatrix( ARROW_OFFSET );
-
-      // Apply the transform
-      this.matrix = NODE_MATRIX;
-
-      let opacity = Utils.linear( 0.015, CONVENTIONAL_CHARGE_THRESHOLD, 1, 0, Math.abs( charge.circuitElement.currentProperty.get() ) );
-      opacity = Utils.clamp( opacity, 0, 1 );
-      this.setImageOpacity( opacity );
+      const opacity = Utils.linear( 0.015, CONVENTIONAL_CHARGE_THRESHOLD, 1, 0, Math.abs( charge.circuitElement.currentProperty.get() ) );
+      const clampedOpacity = Utils.clamp( opacity, 0, 1 );
+      this.children[ 0 ].setImageOpacity( clampedOpacity );
     }
     else {
 
-      // Set rotation to 0 since electrons should always be upside-up
-      NODE_MATRIX.set00( 1 );
-      NODE_MATRIX.set01( 0 );
-      NODE_MATRIX.set10( 0 );
-      NODE_MATRIX.set11( 1 );
-
-      // Center the electrons
-      NODE_MATRIX.multiplyMatrix( ELECTRON_OFFSET );
-
-      // Apply the transform
-      this.matrix = NODE_MATRIX;
+      // Electrons are always upside up
+      this.translation = charge.matrix.getTranslation();
     }
     this.updateVisible();
     this.outsideOfBlackBoxProperty.set( !charge.circuitElement.insideTrueBlackBoxProperty.get() );
