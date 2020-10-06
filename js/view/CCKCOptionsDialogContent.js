@@ -33,7 +33,7 @@ class CCKCOptionsDialogContent extends VBox {
       spacing: 22,
       tandem: tandem,
       children: [
-        new Text( circuitConstructionKitCommonStrings.electronicSymbolStandard, textOptions ),
+        new Text( circuitConstructionKitCommonStrings.schematicStandard, textOptions ),
         verticalAquaRadioButtonGroup ]
     } );
 
