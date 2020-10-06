@@ -17,6 +17,7 @@ import NumberSpinner from '../../../sun/js/NumberSpinner.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
+import CircuitElementNumberControl from './CircuitElementNumberControl.js';
 
 const phaseShiftString = circuitConstructionKitCommonStrings.phaseShift;
 
@@ -49,7 +50,8 @@ class PhaseShiftControl extends VBox {
       }
     };
     const title = new Text( phaseShiftString, {
-      font: CCKCConstants.DEFAULT_FONT
+      font: CCKCConstants.DEFAULT_FONT,
+      maxWidth: CircuitElementNumberControl.NUMBER_CONTROL_ELEMENT_MAX_WIDTH
     } );
 
     const numberSpinner = new NumberSpinner( acVoltage.phaseProperty, valueRangeProperty, merge( {}, spinnerOptions, {
@@ -57,11 +59,12 @@ class PhaseShiftControl extends VBox {
       numberDisplayOptions: {
         valuePattern: '{{value}}' + MathSymbols.DEGREES // Does not require internationalization
       },
+      arrowsScale: 0.9,
       tandem: options.tandem.createTandem( 'numberSpinner' )
     } ) );
 
     options = merge( {
-      spacing: 10
+      spacing: 7
     }, options );
 
     assert && assert( !options.children, 'children not supported' );

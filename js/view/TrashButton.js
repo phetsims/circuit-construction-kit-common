@@ -23,7 +23,7 @@ class TrashButton extends CCKCRoundPushButton {
 
     super( merge( {
       content: new FontAwesomeNode( 'trash', {
-        scale: CCKCConstants.FONT_AWESOME_ICON_SCALE
+        scale: CCKCConstants.FONT_AWESOME_ICON_SCALE * 0.8
       } ),
       listener: () => {
 

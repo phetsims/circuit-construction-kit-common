@@ -14,7 +14,8 @@ import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 // constants
-const NUMBER_CONTROL_ELEMENT_MAX_WIDTH = 140;
+const NUMBER_CONTROL_ELEMENT_MAX_WIDTH = 115;
+const READOUT_MAX_WIDTH = 80;
 
 class CircuitElementNumberControl extends NumberControl {
 
@@ -45,16 +46,16 @@ class CircuitElementNumberControl extends NumberControl {
         font: CCKCConstants.DEFAULT_FONT
       },
       numberDisplayOptions: {
-        maxWidth: NUMBER_CONTROL_ELEMENT_MAX_WIDTH,
+        maxWidth: READOUT_MAX_WIDTH,
         valuePattern: valuePattern,
         decimalPlaces: circuitElement.numberOfDecimalPlaces,
         textOptions: {
           font: CCKCConstants.DEFAULT_FONT
         }
       },
-      layoutFunction: NumberControl.createLayoutFunction1({
+      layoutFunction: NumberControl.createLayoutFunction1( {
         arrowButtonsXSpacing: 9
-      }),
+      } ),
 
       // Prevent overlap with the navigation bar
       sliderOptions: {
@@ -84,6 +85,8 @@ class CircuitElementNumberControl extends NumberControl {
     this.disposeCircuitElementNumberControl();
   }
 }
+
+CircuitElementNumberControl.NUMBER_CONTROL_ELEMENT_MAX_WIDTH = NUMBER_CONTROL_ELEMENT_MAX_WIDTH;
 
 circuitConstructionKitCommon.register( 'CircuitElementNumberControl', CircuitElementNumberControl );
 export default CircuitElementNumberControl;
