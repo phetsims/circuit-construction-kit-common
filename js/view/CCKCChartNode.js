@@ -149,12 +149,8 @@ class CCKCChartNode extends Node {
 
     this.seismographNode.verticalRangeProperty.link( verticalRange => {
       const decimalPlaces = verticalRange.max <= 1 ? 1 : 0;
-      this.seismographNode.setVerticalGridLabelNumberOfDecimalPlaces( decimalPlaces );
       this.seismographNode.setGridLinePrecision( decimalPlaces );
-
-      this.seismographNode.setLineSpacings( {
-        majorHorizontalLineSpacing: verticalRange.max / 2
-      } );
+      this.seismographNode.setVerticalGridLabelNumberOfDecimalPlaces( decimalPlaces );
     } );
 
     const shadedRectangle = new ShadedRectangle( this.seismographNode.bounds.dilated( 7 ), {
