@@ -232,7 +232,10 @@ class CircuitConstructionKitModel {
       }
     }
 
-    this.stepOnce( this.isPlayingProperty.value ? dt : CCKCConstants.PAUSED_DT );
+    if ( this.isPlayingProperty.value || this.circuit.dirty ) {
+      this.stepOnce( this.isPlayingProperty.value ? dt : CCKCConstants.PAUSED_DT );
+    }
+
     this.circuit.layoutChargesInDirtyCircuitElements();
   }
 

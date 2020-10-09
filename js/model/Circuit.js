@@ -112,6 +112,12 @@ class Circuit {
     // Solve the circuit when any of the circuit element attributes change.
     this.circuitElements.addItemAddedListener( circuitElement => {
       circuitElement.getCircuitProperties().forEach( property => property.lazyLink( markDirtyListener ) );
+      if ( circuitElement instanceof DynamicCircuitElement ) {
+        circuitElement.clearEmitter.addListener( markDirtyListener );
+        circuitElement.disposeEmitterCircuitElement.addListener( () => {
+          circuitElement.clearEmitter.removeListener( markDirtyListener );
+        } );
+      }
 
       // When any vertex moves, relayout all charges within the fixed-length connected component, see #100
       circuitElement.chargeLayoutDirty = true;
@@ -156,7 +162,10 @@ class Circuit {
     // CircuitElementNumberControl)
     this.componentEditedEmitter = new Emitter();
 
-    const emitCircuitChanged = () => this.circuitChangedEmitter.emit();
+    const emitCircuitChanged = () => {
+      this.dirty = true;
+      this.circuitChangedEmitter.emit();
+    };
 
     this.vertexGroup = new PhetioGroup( ( tandem, position ) => {
       return new Vertex( position, {
@@ -951,6 +960,7 @@ class Circuit {
         neighborCircuitElements[ k ].chargeLayoutDirty = true;
       }
     }
+    this.dirty = true;
   }
 
   /**

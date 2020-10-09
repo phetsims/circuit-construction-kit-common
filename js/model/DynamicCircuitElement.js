@@ -6,6 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import Emitter from '../../../axon/js/Emitter.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import FixedCircuitElement from './FixedCircuitElement.js';
 
@@ -29,6 +30,9 @@ class DynamicCircuitElement extends FixedCircuitElement {
     // value based on the throughput computation at the final timestep, as opposed to the currentProperty.value which
     // takes a time average across the values, so we can show transient spikes, see https://phet.unfuddle.com/a#/projects/9404/tickets/by_number/2270?cycle=true
     this.mnaCurrent = 0;
+
+    // @public (listen-only)
+    this.clearEmitter = new Emitter();
   }
 
   /**
@@ -39,6 +43,16 @@ class DynamicCircuitElement extends FixedCircuitElement {
   clear() {
     this.mnaVoltageDrop = 0;
     this.mnaCurrent = 0;
+    this.clearEmitter.emit();
+  }
+
+  /**
+   * @public
+   * @override
+   */
+  dispose() {
+    this.clearEmitter.dispose();
+    super.dispose();
   }
 }
 
