@@ -91,7 +91,7 @@ class ChargeAnimator {
     dt = Math.min( dt, MAX_DT );
 
     // Find the fastest current in any circuit element
-    const maxCurrentMagnitude = CURRENT_MAGNITUDE( _.maxBy( this.circuit.circuitElements.getArray(), CURRENT_MAGNITUDE ) );
+    const maxCurrentMagnitude = CURRENT_MAGNITUDE( _.maxBy( this.circuit.circuitElements, CURRENT_MAGNITUDE ) );
     assert && assert( maxCurrentMagnitude >= 0, 'max current should be positive' );
 
     const maxSpeed = maxCurrentMagnitude * SPEED_SCALE;

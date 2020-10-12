@@ -785,8 +785,7 @@ class CircuitLayerNode extends Node {
 
     assert && assert( globalPoint !== undefined );
 
-    const circuitElementNodes = this.circuit.circuitElements.getArray()
-      .filter( filter )
+    const circuitElementNodes = this.circuit.circuitElements.filter( filter )
       .map( circuitElement => this.getCircuitElementNode( circuitElement ) );
 
     // Search from the front to the back, because frontmost objects look like they are hitting the sensor, see #143
