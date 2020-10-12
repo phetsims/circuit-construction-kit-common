@@ -873,9 +873,8 @@ class Circuit {
     this.timeProperty.value += dt;
 
     // Update the
-    const circuitElementsArray = this.circuitElements.getArray();
-    const stepElements = circuitElementsArray.filter( element => element.step );
-    const dynamicElements = circuitElementsArray.filter( element => element instanceof DynamicCircuitElement );
+    const stepElements = this.circuitElements.filter( element => element.step );
+    const dynamicElements = this.circuitElements.filter( element => element instanceof DynamicCircuitElement );
     stepElements.forEach( element => element.step( this.timeProperty.value, dt, this ) );
 
     if ( this.dirty || stepElements.length > 0 || dynamicElements.length > 0 ) {
