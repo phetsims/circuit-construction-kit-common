@@ -24,7 +24,7 @@ class CCKCRoundPushButton extends RoundPushButton {
 
       // TODO(phet-io): These elements will need to be members of a PhetioGroup
       phetioState: false,
-      phetioComponentOptions: {
+      visiblePropertyOptions: {
         phetioState: false
       }
     }, options ) );
