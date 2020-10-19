@@ -15,6 +15,7 @@ import Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import Panel from '../../../sun/js/Panel.js';
 import SunConstants from '../../../sun/js/SunConstants.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
@@ -76,7 +77,6 @@ class CircuitElementEditContainerNode extends Node {
     options = merge( {
       showPhaseShiftControl: false
     }, options );
-    const groupTandem = tandem.createGroupTandem( 'circuitElementEditNode' );
 
     const trashButton = new TrashButton( circuit, tandem.createTandem( 'trashButton' ) );
     const resetFuseButton = new ResetFuseButton( circuit, tandem.createTandem( 'resetFuseButton' ) );
@@ -145,7 +145,7 @@ class CircuitElementEditContainerNode extends Node {
             selectedCircuitElement.resistanceProperty,
             circuit,
             selectedCircuitElement,
-            groupTandem.createNextTandem(), {
+            Tandem.OPT_OUT, {
               delta: selectedCircuitElement.resistorType === Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR ? 10 : 0.5,
               numberDisplayOptions: {
                 decimalPlaces: selectedCircuitElement.numberOfDecimalPlaces
@@ -174,7 +174,7 @@ class CircuitElementEditContainerNode extends Node {
             selectedCircuitElement.voltageProperty,
             circuit,
             selectedCircuitElement,
-            groupTandem.createNextTandem(), {
+            Tandem.OPT_OUT, {
               delta: selectedCircuitElement.batteryType === Battery.BatteryType.HIGH_VOLTAGE ? 10 : 0.5,
               numberDisplayOptions: {
                 decimalPlaces: selectedCircuitElement.numberOfDecimalPlaces
@@ -202,7 +202,7 @@ class CircuitElementEditContainerNode extends Node {
             selectedCircuitElement.currentRatingProperty,
             circuit,
             selectedCircuitElement,
-            groupTandem.createNextTandem(), {
+            Tandem.OPT_OUT, {
               editableRange: selectedCircuitElement.currentRatingProperty.range
             }
           );
@@ -215,7 +215,7 @@ class CircuitElementEditContainerNode extends Node {
           );
         }
         else if ( isSwitch ) {
-          editNode = new SwitchReadoutNode( circuit, selectedCircuitElement, groupTandem.createNextTandem(), trashButton );
+          editNode = new SwitchReadoutNode( circuit, selectedCircuitElement, Tandem.OPT_OUT, trashButton );
         }
         else if ( isSeriesAmmeter || isWire ) {
 
@@ -234,7 +234,7 @@ class CircuitElementEditContainerNode extends Node {
               selectedCircuitElement.maximumVoltageProperty,
               circuit,
               selectedCircuitElement,
-              groupTandem.createNextTandem()
+              Tandem.OPT_OUT
             ),
             new CircuitElementNumberControl(
               frequencyString,
@@ -246,7 +246,7 @@ class CircuitElementEditContainerNode extends Node {
               selectedCircuitElement.frequencyProperty,
               circuit,
               selectedCircuitElement,
-              groupTandem.createNextTandem(), {
+              Tandem.OPT_OUT, {
                 delta: 0.1,
                 editableRange: new Range( 0.1, 2 )
               }
@@ -254,7 +254,7 @@ class CircuitElementEditContainerNode extends Node {
 
           if ( options.showPhaseShiftControl ) {
             children.push( new PhaseShiftControl( selectedCircuitElement, {
-              tandem: groupTandem.createNextTandem()
+              tandem: Tandem.OPT_OUT
             } ) );
           }
           children.push( trashButton );
@@ -270,7 +270,7 @@ class CircuitElementEditContainerNode extends Node {
             selectedCircuitElement.capacitanceProperty,
             circuit,
             selectedCircuitElement,
-            groupTandem.createNextTandem(), {
+            Tandem.OPT_OUT, {
               delta: 0.01,
               editableRange: selectedCircuitElement.capacitanceProperty.range
             }
@@ -292,7 +292,7 @@ class CircuitElementEditContainerNode extends Node {
             selectedCircuitElement.inductanceProperty,
             circuit,
             selectedCircuitElement,
-            groupTandem.createNextTandem(), {
+            Tandem.OPT_OUT, {
               editableRange: selectedCircuitElement.inductanceProperty.range
             }
           );
