@@ -10,8 +10,6 @@ import Matrix3 from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Shape from '../../../kite/js/Shape.js';
 import LineStyles from '../../../kite/js/util/LineStyles.js';
-import SimpleDragHandler from '../../../scenery/js/input/SimpleDragHandler.js';
-import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import Line from '../../../scenery/js/nodes/Line.js';
 import Node from '../../../scenery/js/nodes/Node.js';
@@ -22,6 +20,7 @@ import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CircuitElementNode from './CircuitElementNode.js';
+import CircuitLayerNodeDragListener from './CircuitLayerNodeDragListener.js';
 
 // constants
 const LIFELIKE_LINE_WIDTH = 16; // line width in screen coordinates
@@ -247,7 +246,10 @@ class WireNode extends CircuitElementNode {
     if ( screenView ) {
 
       // Input listener for dragging the body of the wire, to translate it.
-      this.dragListener = new DragListener( {
+      this.dragListener = new CircuitLayerNodeDragListener( circuitLayerNode, [
+        () => wire.startVertexProperty.get(),
+        () => wire.endVertexProperty.get()
+      ], {
         tandem: tandem.createTandem( 'dragListener' ),
         start: event => {
           if ( wire.interactiveProperty.get() ) {
@@ -278,17 +280,6 @@ class WireNode extends CircuitElementNode {
           ], screenView, circuitLayerNode, initialPoint, latestPoint, dragged );
         }
       } );
-      const self = this;
-
-      // TODO: Use traditional override, see https://github.com/phetsims/circuit-construction-kit-common/issues/607
-      this.dragListener.startDrag = function( event ) {
-        self.moveToFront();
-        if ( circuitLayerNode.canDragVertex( wire.startVertexProperty.get() ) && circuitLayerNode.canDragVertex( wire.endVertexProperty.get() ) ) {
-          circuitLayerNode.setVerticesDragging( wire.startVertexProperty.get() );
-          circuitLayerNode.setVerticesDragging( wire.endVertexProperty.get() );
-          SimpleDragHandler.prototype.startDrag.call( this, event ); // Note this refers to this listener
-        }
-      };
       this.addInputListener( this.dragListener );
 
       circuitLayerNode.circuit.selectedCircuitElementProperty.link( markAsDirty );

@@ -10,8 +10,6 @@ import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
 import KeyboardUtils from '../../../scenery/js/accessibility/KeyboardUtils.js';
-import SimpleDragHandler from '../../../scenery/js/input/SimpleDragHandler.js';
-import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
@@ -20,6 +18,7 @@ import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitLayerNodeDragListener from './CircuitLayerNodeDragListener.js';
 
 // constants
 const DISTANCE_TO_CUT_BUTTON = 70; // How far in view coordinates the cut button appears from the vertex node
@@ -151,7 +150,7 @@ class VertexNode extends Node {
     this.clickToDismissListeners = [];
 
     // @private {DragListener}
-    this.dragListener = new DragListener( {
+    this.dragListener = new CircuitLayerNodeDragListener( circuitLayerNode, [ () => vertex ], {
       tandem: tandem.createTandem( 'dragListener' ),
       start: event => {
         initialPoint = event.pointer.point;
@@ -193,14 +192,6 @@ class VertexNode extends Node {
         }
       }
     } );
-
-    // TODO: Use traditional override, see https://github.com/phetsims/circuit-construction-kit-common/issues/607
-    this.dragListener.startDrag = function( event ) {
-      if ( circuitLayerNode.canDragVertex( vertex ) ) {
-        circuitLayerNode.setVerticesDragging( vertex );
-        SimpleDragHandler.prototype.startDrag.call( this, event );
-      }
-    };
 
     // @private {function} When Vertex becomes undraggable, interrupt the input listener
     this.interruptionListener = this.setDraggable.bind( this );

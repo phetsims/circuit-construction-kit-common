@@ -10,8 +10,6 @@ import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
-import SimpleDragHandler from '../../../scenery/js/input/SimpleDragHandler.js';
-import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import fireImage from '../../images/fire_png.js';
@@ -20,6 +18,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Resistor from '../model/Resistor.js';
 import CircuitElementNode from './CircuitElementNode.js';
+import CircuitLayerNodeDragListener from './CircuitLayerNodeDragListener.js';
 import FixedCircuitElementHighlightNode from './FixedCircuitElementHighlightNode.js';
 
 // constants
@@ -133,7 +132,7 @@ class FixedCircuitElementNode extends CircuitElementNode {
     if ( !options.isIcon ) {
 
       // @private {DragListener}
-      this.dragListener = new DragListener( {
+      this.dragListener = new CircuitLayerNodeDragListener( circuitLayerNode, [ () => circuitElement.endVertexProperty.get() ], {
         start: event => {
           this.moveToFront();
           initialPoint = event.pointer.point.copy();
@@ -160,14 +159,6 @@ class FixedCircuitElementNode extends CircuitElementNode {
             initialPoint, latestPoint, dragged ),
         tandem: tandem.createTandem( 'dragListener' )
       } );
-
-      // TODO: use traditional override, see https://github.com/phetsims/circuit-construction-kit-common/issues/607
-      this.dragListener.startDrag = function( event ) {
-        if ( circuitLayerNode.canDragVertex( circuitElement.endVertexProperty.get() ) ) {
-          circuitLayerNode.setVerticesDragging( circuitElement.endVertexProperty.get() );
-          SimpleDragHandler.prototype.startDrag.call( this, event );
-        }
-      };
       this.contentNode.addInputListener( this.dragListener );
 
       if ( options.showHighlight ) {
