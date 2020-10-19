@@ -7,7 +7,7 @@
  */
 
 import Shape from '../../../kite/js/Shape.js';
-import ButtonListener from '../../../scenery/js/input/ButtonListener.js';
+import FireListener from '../../../scenery/js/listeners/FireListener.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
@@ -177,8 +177,9 @@ class SwitchNode extends FixedCircuitElementNode {
     let downPoint = null;
 
     // When the user taps the switch, toggle whether it is open or closed.
-    const buttonListener = new ButtonListener( {
-      down: event => {
+    const buttonListener = new FireListener( {
+      attach: false,
+      press: event => {
         downPoint = circuitLayerNode.globalToLocalPoint( event.pointer.point );
       },
       fire: event => {
