@@ -11,6 +11,7 @@ import Matrix3 from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
 import SimpleDragHandler from '../../../scenery/js/input/SimpleDragHandler.js';
+import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import fireImage from '../../images/fire_png.js';
@@ -125,24 +126,28 @@ class FixedCircuitElementNode extends CircuitElementNode {
     this.fixedCircuitElementNodePickable = options.pickable;
 
     // Use whatever the start node currently is (it can change), and let the circuit manage the dependent vertices
-    let startPoint = null;
+    let initialPoint = null;
+    let latestPoint = null;
     let dragged = false;
+
     if ( !options.isIcon ) {
 
-      // @private {SimpleDragHandler}
-      this.dragHandler = new SimpleDragHandler( {
-        allowTouchSnag: true,
+      // @private {DragListener}
+      this.dragListener = new DragListener( {
         start: event => {
           this.moveToFront();
-          startPoint = event.pointer.point;
+          initialPoint = event.pointer.point.copy();
+          latestPoint = event.pointer.point.copy();
           circuitElement.interactiveProperty.get() && circuitLayerNode.startDragVertex(
             event.pointer.point,
             circuitElement.endVertexProperty.get(),
             false
           );
           dragged = false;
+
         },
         drag: event => {
+          latestPoint = event.pointer.point.copy();
           circuitElement.interactiveProperty.get() && circuitLayerNode.dragVertex(
             event.pointer.point,
             circuitElement.endVertexProperty.get(),
@@ -151,16 +156,19 @@ class FixedCircuitElementNode extends CircuitElementNode {
           dragged = true;
         },
         end: event =>
-          this.endDrag( event, this.contentNode, [ circuitElement.endVertexProperty.get() ], screenView, circuitLayerNode, startPoint, dragged ),
-        tandem: tandem.createTandem( 'dragHandler' )
+          this.endDrag( this.contentNode, [ circuitElement.endVertexProperty.get() ], screenView, circuitLayerNode,
+            initialPoint, latestPoint, dragged ),
+        tandem: tandem.createTandem( 'dragListener' )
       } );
-      this.dragHandler.startDrag = function( event ) {
+
+      // TODO: use traditional override, see https://github.com/phetsims/circuit-construction-kit-common/issues/607
+      this.dragListener.startDrag = function( event ) {
         if ( circuitLayerNode.canDragVertex( circuitElement.endVertexProperty.get() ) ) {
           circuitLayerNode.setVerticesDragging( circuitElement.endVertexProperty.get() );
           SimpleDragHandler.prototype.startDrag.call( this, event );
         }
       };
-      this.contentNode.addInputListener( this.dragHandler );
+      this.contentNode.addInputListener( this.dragListener );
 
       if ( options.showHighlight ) {
 
@@ -274,7 +282,7 @@ class FixedCircuitElementNode extends CircuitElementNode {
   dispose() {
 
     // Interrupt the drag event if it was in progress
-    this.dragHandler && this.dragHandler.interrupt();
+    this.dragListener && this.dragListener.interrupt();
     this.circuitElement.vertexMovedEmitter.removeListener( this.markDirtyListener );
     this.updateHighlightVisibility && this.circuitLayerNode.circuit.selectedCircuitElementProperty.unlink( this.updateHighlightVisibility );
     this.circuitElement.connectedEmitter.removeListener( this.moveToFrontListener );

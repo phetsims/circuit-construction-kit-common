@@ -11,6 +11,7 @@ import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
 import KeyboardUtils from '../../../scenery/js/accessibility/KeyboardUtils.js';
 import SimpleDragHandler from '../../../scenery/js/input/SimpleDragHandler.js';
+import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
@@ -142,32 +143,34 @@ class VertexNode extends Node {
     this.updatePickableListener = this.setPickable.bind( this );
     vertex.interactiveProperty.link( this.updatePickableListener );
 
-    let eventPoint = null;
+    let initialPoint = null;
+    let latestPoint = null;
     let dragged = false;
 
     // @private {function[]} - called when the user clicks away from the selected vertex
     this.clickToDismissListeners = [];
 
-    // @private {SimpleDragHandler}
-    this.dragHandler = new SimpleDragHandler( {
-      allowTouchSnag: true,
-      tandem: tandem.createTandem( 'dragHandler' ),
+    // @private {DragListener}
+    this.dragListener = new DragListener( {
+      tandem: tandem.createTandem( 'dragListener' ),
       start: event => {
-        eventPoint = event.pointer.point;
+        initialPoint = event.pointer.point;
+        latestPoint = event.pointer.point.copy(); // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/607 is this duplicated with line above?
         circuitLayerNode.startDragVertex( event.pointer.point, vertex, true );
         dragged = false;
       },
       drag: event => {
+        latestPoint = event.pointer.point.copy(); // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/607 is this duplicated with line above?
         dragged = true;
         circuitLayerNode.dragVertex( event.pointer.point, vertex, true );
       },
       end: event => {
 
         // The vertex can only connect to something if it was actually moved.
-        circuitLayerNode.endDrag( event, vertex, dragged );
+        circuitLayerNode.endDrag( vertex, dragged );
 
         // Only show on a tap, not on every drag.
-        if ( vertex.interactiveProperty.get() && event.pointer.point.distance( eventPoint ) < CCKCConstants.TAP_THRESHOLD ) {
+        if ( vertex.interactiveProperty.get() && latestPoint.distance( initialPoint ) < CCKCConstants.TAP_THRESHOLD ) {
 
           vertex.selectedProperty.set( true );
 
@@ -190,7 +193,9 @@ class VertexNode extends Node {
         }
       }
     } );
-    this.dragHandler.startDrag = function( event ) {
+
+    // TODO: Use traditional override, see https://github.com/phetsims/circuit-construction-kit-common/issues/607
+    this.dragListener.startDrag = function( event ) {
       if ( circuitLayerNode.canDragVertex( vertex ) ) {
         circuitLayerNode.setVerticesDragging( vertex );
         SimpleDragHandler.prototype.startDrag.call( this, event );
@@ -202,7 +207,7 @@ class VertexNode extends Node {
     vertex.draggableProperty.lazyLink( this.interruptionListener );
 
     // Don't permit dragging by the scissors or highlight
-    this.addInputListener( this.dragHandler );
+    this.addInputListener( this.dragListener );
 
     // Make sure the cut button remains in the visible screen bounds.
     this.updateVertexNodePositionListener = this.updateVertexNodePosition.bind( this );
@@ -244,8 +249,8 @@ class VertexNode extends Node {
     // Remove the global listener if it was still enabled
     this.clearClickListeners();
 
-    this.dragHandler.dispose();
-    this.removeInputListener( this.dragHandler );
+    this.dragListener.dispose();
+    this.removeInputListener( this.dragListener );
 
     vertex.draggableProperty.unlink( this.interruptionListener );
     super.dispose();
@@ -382,7 +387,7 @@ class VertexNode extends Node {
    */
   setDraggable( draggable ) {
     if ( !draggable ) {
-      this.dragHandler.interrupt();
+      this.dragListener.interrupt();
     }
   }
 

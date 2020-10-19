@@ -8,8 +8,8 @@
  */
 
 import merge from '../../../phet-core/js/merge.js';
-import SimpleDragHandler from '../../../scenery/js/input/SimpleDragHandler.js';
 import Touch from '../../../scenery/js/input/Touch.js';
+import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import VBox from '../../../scenery/js/nodes/VBox.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -54,7 +54,7 @@ class CircuitElementToolNode extends VBox {
     }, options );
     super( options );
 
-    this.addInputListener( SimpleDragHandler.createForwardingListener( event => {
+    this.addInputListener( DragListener.createForwardingListener( event => {
 
       // initial position of the pointer in the coordinate frame of the CircuitLayerNode
       const viewPosition = globalToCircuitLayerNodePoint( event.pointer.point );
@@ -70,10 +70,6 @@ class CircuitElementToolNode extends VBox {
       circuit.circuitElements.add( circuitElement );
 
       // Send the start drag event through so the new element will begin dragging.
-      // From: https://github.com/phetsims/scenery-phet/issues/195#issuecomment-186300071
-      // @jonathanolson and I looked into the way Charges and Fields just calls startDrag(event) on the play area drag
-      // listener (which adds a listener to the pointer, in the usual SimpleDragHandler way), and it seems like a good
-      // pattern.
       circuitElement.startDragEmitter.emit( event );
     }, {
       allowTouchSnag: true

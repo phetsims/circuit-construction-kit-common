@@ -704,12 +704,11 @@ class CircuitLayerNode extends Node {
   /**
    * End a vertex drag.
    *
-   * @param {Object} event - event from scenery
    * @param {Vertex} vertex
    * @param {boolean} dragged - true if the vertex actually moved with at least 1 drag call
    * @public
    */
-  endDrag( event, vertex, dragged ) {
+  endDrag( vertex, dragged ) {
     assert && assert( typeof dragged === 'boolean', 'didDrag must be supplied' );
 
     const vertexNode = this.getVertexNode( vertex );

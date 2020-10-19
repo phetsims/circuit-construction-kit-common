@@ -11,6 +11,7 @@ import Vector2 from '../../../dot/js/Vector2.js';
 import Shape from '../../../kite/js/Shape.js';
 import LineStyles from '../../../kite/js/util/LineStyles.js';
 import SimpleDragHandler from '../../../scenery/js/input/SimpleDragHandler.js';
+import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import Line from '../../../scenery/js/nodes/Line.js';
 import Node from '../../../scenery/js/nodes/Node.js';
@@ -237,7 +238,8 @@ class WireNode extends CircuitElementNode {
     wire.endVertexProperty.link( doUpdateTransform );
 
     // Keep track of the start point to see if it was dragged or tapped to be selected
-    let startPoint = null;
+    let initialPoint = null;
+    let latestPoint = null;
 
     // Keep track of whether it was dragged
     let dragged = false;
@@ -245,9 +247,8 @@ class WireNode extends CircuitElementNode {
     if ( screenView ) {
 
       // Input listener for dragging the body of the wire, to translate it.
-      this.dragHandler = new SimpleDragHandler( {
-        allowTouchSnag: true,
-        tandem: tandem.createTandem( 'dragHandler' ),
+      this.dragListener = new DragListener( {
+        tandem: tandem.createTandem( 'dragListener' ),
         start: event => {
           if ( wire.interactiveProperty.get() ) {
 
@@ -255,11 +256,14 @@ class WireNode extends CircuitElementNode {
             circuitLayerNode.startDragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
             circuitLayerNode.startDragVertex( event.pointer.point, wire.endVertexProperty.get(), false );
             dragged = false;
-            startPoint = event.pointer.point;
+            initialPoint = event.pointer.point.copy();
+            latestPoint = event.pointer.point.copy();
           }
         },
         drag: event => {
           if ( wire.interactiveProperty.get() ) {
+
+            latestPoint = event.pointer.point.copy();
 
             // Drag by translating both of the vertices
             circuitLayerNode.dragVertex( event.pointer.point, wire.startVertexProperty.get(), false );
@@ -267,16 +271,17 @@ class WireNode extends CircuitElementNode {
             dragged = true;
           }
         },
-        end: event => {
-          CircuitElementNode.prototype.endDrag.call( this, event, this, [
-              wire.startVertexProperty.get(),
-              wire.endVertexProperty.get()
-            ],
-            screenView, circuitLayerNode, startPoint, dragged );
+        end: () => {
+          this.endDrag( this, [
+            wire.startVertexProperty.get(),
+            wire.endVertexProperty.get()
+          ], screenView, circuitLayerNode, initialPoint, latestPoint, dragged );
         }
       } );
       const self = this;
-      this.dragHandler.startDrag = function( event ) {
+
+      // TODO: Use traditional override, see https://github.com/phetsims/circuit-construction-kit-common/issues/607
+      this.dragListener.startDrag = function( event ) {
         self.moveToFront();
         if ( circuitLayerNode.canDragVertex( wire.startVertexProperty.get() ) && circuitLayerNode.canDragVertex( wire.endVertexProperty.get() ) ) {
           circuitLayerNode.setVerticesDragging( wire.startVertexProperty.get() );
@@ -284,7 +289,7 @@ class WireNode extends CircuitElementNode {
           SimpleDragHandler.prototype.startDrag.call( this, event ); // Note this refers to this listener
         }
       };
-      this.addInputListener( this.dragHandler );
+      this.addInputListener( this.dragListener );
 
       circuitLayerNode.circuit.selectedCircuitElementProperty.link( markAsDirty );
     }
@@ -308,7 +313,7 @@ class WireNode extends CircuitElementNode {
      * @private - dispose the wire node
      */
     this.disposeWireNode = () => {
-      this.dragHandler.interrupt();
+      this.dragListener.interrupt();
 
       wire.startVertexProperty.unlink( doUpdateTransform );
       wire.endVertexProperty.unlink( doUpdateTransform );

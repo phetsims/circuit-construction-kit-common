@@ -48,7 +48,7 @@ class CircuitElementNode extends Node {
     // @public (read-only) {CircuitElement} - the CircuitElement rendered by this node
     this.circuitElement = circuitElement;
 
-    // @protected {SimpleDragHandler|null} - Supplied by subclasses so that events can be forwarded from the tool icons or null
+    // @protected {DragListener|null} - Supplied by subclasses so that events can be forwarded from the tool icons or null
     // if rendering an icon
     this.dragHandler = null;
 
@@ -83,7 +83,7 @@ class CircuitElementNode extends Node {
      * dragging.
      * @param event - scenery event
      */
-    const startDragListener = event => this.dragHandler.startDrag( event );
+    const startDragListener = event => this.dragListener.down( event );
 
     // @private {function} - for disposal
     this.disposeCircuitElementNode = () => {
@@ -176,16 +176,16 @@ class CircuitElementNode extends Node {
 
   /**
    * Handles when the node is dropped, called by subclass input listener.
-   * @param {SceneryEvent} event - scenery event, see https://github.com/phetsims/scenery/issues/608
    * @param {Node} node - the node the input listener is attached to
    * @param {Vertex[]} vertices - the vertices that are dragged
    * @param {CCKCScreenView} screenView - the main screen view, null for icon
    * @param {CircuitLayerNode} circuitLayerNode
-   * @param {Vector2} start
+   * @param {Vector2} initialPoint
+   * @param {Vector2} latestPoint
    * @param {boolean} dragged
    * @public
    */
-  endDrag( event, node, vertices, screenView, circuitLayerNode, start, dragged ) {
+  endDrag( node, vertices, screenView, circuitLayerNode, initialPoint, latestPoint, dragged ) {
     const circuitElement = this.circuitElement;
 
     if ( circuitElement.interactiveProperty.get() ) {
@@ -199,26 +199,28 @@ class CircuitElementNode extends Node {
         // End drag for each of the vertices
         vertices.forEach( vertex => {
           if ( screenView.model.circuit.vertexGroup.includes( vertex ) ) {
-            circuitLayerNode.endDrag( event, vertex, dragged );
+            circuitLayerNode.endDrag( vertex, dragged );
           }
         } );
 
         // Only show the editor when tapped, not on every drag.  Also, event could be undefined if this end() was
         // triggered by dispose()
-        event && this.selectCircuitElementNodeWhenNear( event, circuitLayerNode, start );
+        this.selectCircuitElementNodeWhenNear( latestPoint, circuitLayerNode, initialPoint );
       }
     }
   }
 
   /**
    * On tap events, select the CircuitElement (if it is close enough to the tap)
-   * @param {SceneryEvent} event - scenery input event
+   * @param {Vector2|null} latestPoint
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {Vector2} startPoint
    * @public
    */
-  selectCircuitElementNodeWhenNear( event, circuitLayerNode, startPoint ) {
-    if ( event.pointer.point.distance( startPoint ) < CCKCConstants.TAP_THRESHOLD ) {
+  selectCircuitElementNodeWhenNear( latestPoint, circuitLayerNode, startPoint ) {
+
+    // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/607 record lastDragPoint
+    if ( latestPoint && latestPoint.distance( startPoint ) < CCKCConstants.TAP_THRESHOLD ) {
 
       circuitLayerNode.circuit.selectedCircuitElementProperty.set( this.circuitElement );
 
