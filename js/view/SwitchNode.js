@@ -177,7 +177,7 @@ class SwitchNode extends FixedCircuitElementNode {
     let downPoint = null;
 
     // When the user taps the switch, toggle whether it is open or closed.
-    const buttonListener = new FireListener( {
+    const fireListener = new FireListener( {
       attach: false,
       press: event => {
         downPoint = circuitLayerNode.globalToLocalPoint( event.pointer.point );
@@ -195,7 +195,7 @@ class SwitchNode extends FixedCircuitElementNode {
     } );
 
     // Only add the input listener if it is not for a toolbar icon
-    screenView && this.contentNode.addInputListener( buttonListener );
+    screenView && this.contentNode.addInputListener( fireListener );
 
     // @private {Node} - For hit testing
     this.lifelikeOpenNode = createNode(
@@ -205,7 +205,7 @@ class SwitchNode extends FixedCircuitElementNode {
     // @private {function} - clean up resources when no longer used.
     this.disposeSwitchNode = () => {
       circuitSwitch.closedProperty.unlink( closeListener );
-      screenView && this.contentNode.removeInputListener( buttonListener );
+      screenView && this.contentNode.removeInputListener( fireListener );
 
       // Make sure the lifelikeNode and schematicNode are not listed as parents for their children because the children
       // (images) persist.
