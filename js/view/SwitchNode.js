@@ -178,6 +178,7 @@ class SwitchNode extends FixedCircuitElementNode {
 
     // When the user taps the switch, toggle whether it is open or closed.
     const fireListener = new FireListener( {
+      tandem: tandem.createTandem( 'fireListener' ),
       attach: false,
       press: event => {
         downPoint = circuitLayerNode.globalToLocalPoint( event.pointer.point );
