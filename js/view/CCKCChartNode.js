@@ -13,9 +13,9 @@ import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import SeismographNode from '../../../griddle/js/SeismographNode.js';
 import merge from '../../../phet-core/js/merge.js';
-import MovableDragHandler from '../../../scenery-phet/js/input/MovableDragHandler.js';
 import ShadedRectangle from '../../../scenery-phet/js/ShadedRectangle.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
+import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import NodeProperty from '../../../scenery/js/util/NodeProperty.js';
@@ -230,7 +230,7 @@ class CCKCChartNode extends Node {
   startDrag( event ) {
 
     // Forward the event to the drag listener
-    this.backgroundDragListener.startDrag( event );
+    this.backgroundDragListener.press( event );
   }
 
   /**
@@ -247,13 +247,11 @@ class CCKCChartNode extends Node {
     this.meter.visibleProperty.value = false;
     this.meter.draggingProbesWithBodyProperty.value = true;
 
-    // I tried using DragListener, but AmmeterNode and VoltmeterNode are using MovableDragHandler, so to reuse
-    // the same strategy in SensorToolNode (regarding Meter) we need to use MovableDragHandler.  DragListener
-    // led to incorrect and unresolved offsets and behavior.
-    const movableDragHandler = new MovableDragHandler( this.meter.bodyPositionProperty, {
+    const dragListener = new DragListener( {
+      positionProperty: this.meter.bodyPositionProperty,
+      useParentOffset: true,
       tandem: this.tandem.createTandem( 'dragHandler' ),
-      targetNode: this.backgroundNode,
-      startDrag: () => {
+      start: () => {
         this.moveToFront();
         if ( this.meter.draggingProbesWithBodyProperty.value ) {
 
@@ -261,14 +259,14 @@ class CCKCChartNode extends Node {
           this.alignProbesEmitter.emit();
         }
       },
-      onDrag: () => {
+      drag: () => {
         if ( this.meter.draggingProbesWithBodyProperty.value ) {
 
           // Align the probes each time the MeterBodyNode translates, so they will stay in sync
           this.alignProbesEmitter.emit();
         }
       },
-      endDrag: () => {
+      end: () => {
 
         // Drop in toolbox, using the bounds of the entire this since it cannot be centered over the toolbox
         // (too close to the edge of the screen)
@@ -287,11 +285,11 @@ class CCKCChartNode extends Node {
     screenView.visibleBoundsProperty.link( visibleBounds => {
       const bounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
       const b1 = screenView.localToGlobalBounds( bounds );
-      movableDragHandler.dragBounds = this.backgroundNode.globalToParentBounds( b1 );
+      dragListener.dragBounds = this.backgroundNode.globalToParentBounds( b1 );
     } );
 
-    this.backgroundDragListener = movableDragHandler;
-    this.backgroundNode.addInputListener( movableDragHandler );
+    this.backgroundDragListener = dragListener;
+    this.backgroundNode.addInputListener( dragListener );
   }
 }
 

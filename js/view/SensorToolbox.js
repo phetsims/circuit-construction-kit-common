@@ -13,7 +13,7 @@ import Property from '../../../axon/js/Property.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
-import SimpleDragHandler from '../../../scenery/js/input/SimpleDragHandler.js';
+import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import HBox from '../../../scenery/js/nodes/HBox.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
@@ -76,7 +76,7 @@ class SensorToolbox extends CCKCPanel {
      * @returns {Object} a listener
      */
     const createListener = ( meterModel, meterNode ) =>
-      SimpleDragHandler.createForwardingListener( event => {
+      DragListener.createForwardingListener( event => {
         const viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point );
         meterModel.draggingProbesWithBodyProperty.set( true );
         meterModel.visibleProperty.set( true );
@@ -93,8 +93,7 @@ class SensorToolbox extends CCKCPanel {
      */
     const createListenerMulti = ( meterNodes, meterModelName ) =>
 
-      // TODO: Use PressListener instead of SimpleDragHandler
-      SimpleDragHandler.createForwardingListener( event => {
+      DragListener.createForwardingListener( event => {
 
         // Select a non-visible meter node
         const meterNode = _.find( meterNodes, meterNode => !meterNode.visible );

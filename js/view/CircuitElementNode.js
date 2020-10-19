@@ -205,21 +205,20 @@ class CircuitElementNode extends Node {
 
         // Only show the editor when tapped, not on every drag.  Also, event could be undefined if this end() was
         // triggered by dispose()
-        this.selectCircuitElementNodeWhenNear( latestPoint, circuitLayerNode, initialPoint );
+        this.selectCircuitElementNodeWhenNear( circuitLayerNode, initialPoint, latestPoint );
       }
     }
   }
 
   /**
    * On tap events, select the CircuitElement (if it is close enough to the tap)
-   * @param {Vector2|null} latestPoint
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {Vector2} startPoint
+   * @param {Vector2|null} latestPoint
    * @public
    */
-  selectCircuitElementNodeWhenNear( latestPoint, circuitLayerNode, startPoint ) {
+  selectCircuitElementNodeWhenNear( circuitLayerNode, startPoint, latestPoint ) {
 
-    // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/607 record lastDragPoint
     if ( latestPoint && latestPoint.distance( startPoint ) < CCKCConstants.TAP_THRESHOLD ) {
 
       circuitLayerNode.circuit.selectedCircuitElementProperty.set( this.circuitElement );

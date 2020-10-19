@@ -12,9 +12,9 @@ import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import merge from '../../../phet-core/js/merge.js';
-import MovableDragHandler from '../../../scenery-phet/js/input/MovableDragHandler.js';
 import ProbeNode from '../../../scenery-phet/js/ProbeNode.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
+import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
@@ -158,22 +158,26 @@ class AmmeterNode extends Node {
       ammeter.visibleProperty.linkAttribute( this, 'visible' );
       ammeter.visibleProperty.link( alignProbeToBody );
 
-      const probeDragHandler = new MovableDragHandler( ammeter.probePositionProperty, {
+      const probeDragHandler = new DragListener( {
+        positionProperty: ammeter.probePositionProperty,
+        useParentOffset: true,
         tandem: tandem.createTandem( 'probeDragHandler' ),
-        startDrag: () => this.moveToFront()
+        start: () => this.moveToFront()
       } );
 
       // @public (read-only) {MovableDragHandler} - so events can be forwarded from the toolbox
-      this.dragHandler = new MovableDragHandler( ammeter.bodyPositionProperty, {
+      this.dragHandler = new DragListener( {
+        useParentOffset: true,
+        positionProperty: ammeter.bodyPositionProperty,
         tandem: tandem.createTandem( 'dragHandler' ),
-        startDrag: () => this.moveToFront(),
-        endDrag: function() {
+        start: () => this.moveToFront(),
+        end: function() {
           ammeter.droppedEmitter.emit( bodyNode.globalBounds );
 
           // After dropping in the play area the probes move independently of the body
           ammeter.draggingProbesWithBodyProperty.set( false );
 
-          probeDragHandler.constrainToBounds();
+          // probeDragHandler.constrainToBounds();
         },
 
         // adds support for zoomed coordinate frame, see
@@ -217,7 +221,7 @@ class AmmeterNode extends Node {
    * @public
    */
   startDrag( event ) {
-    this.dragHandler.startDrag( event );
+    this.dragHandler.press( event );
   }
 }
 

@@ -155,12 +155,12 @@ class VertexNode extends Node {
       tandem: tandem.createTandem( 'dragListener' ),
       start: event => {
         initialPoint = event.pointer.point;
-        latestPoint = event.pointer.point.copy(); // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/607 is this duplicated with line above?
-        circuitLayerNode.startDragVertex( event.pointer.point, vertex, true );
+        latestPoint = event.pointer.point.copy();
+        circuitLayerNode.startDragVertex( event.pointer.point, vertex );
         dragged = false;
       },
       drag: event => {
-        latestPoint = event.pointer.point.copy(); // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/607 is this duplicated with line above?
+        latestPoint = event.pointer.point.copy();
         dragged = true;
         circuitLayerNode.dragVertex( event.pointer.point, vertex, true );
       },

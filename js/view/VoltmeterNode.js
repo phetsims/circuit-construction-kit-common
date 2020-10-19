@@ -12,8 +12,8 @@ import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
 import merge from '../../../phet-core/js/merge.js';
-import MovableDragHandler from '../../../scenery-phet/js/input/MovableDragHandler.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
+import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
@@ -223,35 +223,41 @@ class VoltmeterNode extends Node {
        * @param {Tandem} tandem
        * @returns {MovableDragHandler}
        */
-      const getProbeDragHandler = ( positionProperty, tandem ) => {
-        const probeDragHandler = new MovableDragHandler( positionProperty, {
-          startDrag: () => this.moveToFront(),
-          tandem: tandem.createTandem( 'probeDragHandler' )
+      const createProbeDragListener = ( positionProperty, tandem ) => {
+        const probeDragListener = new DragListener( {
+          positionProperty: positionProperty,
+          start: () => this.moveToFront(),
+          tandem: tandem.createTandem( 'probeDragListener' )
         } );
         options.visibleBoundsProperty.link( visibleBounds => {
-          probeDragHandler.dragBounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
+          probeDragListener.dragBounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
         } );
-        return probeDragHandler;
+        return probeDragListener;
       };
 
-      const redProbeDragHandler = getProbeDragHandler( voltmeter.redProbePositionProperty, tandem.createTandem( 'redProbeDragHandler' ) );
-      const blackProbeDragHandler = getProbeDragHandler( voltmeter.blackProbePositionProperty, tandem.createTandem( 'blackProbeDragHandler' ) );
+      const redProbeDragListener = createProbeDragListener( voltmeter.redProbePositionProperty, tandem.createTandem( 'redProbeDragListener' ) );
+      const blackProbeDragListener = createProbeDragListener( voltmeter.blackProbePositionProperty, tandem.createTandem( 'blackProbeDragListener' ) );
 
-      this.redProbeNode.addInputListener( redProbeDragHandler );
-      this.blackProbeNode.addInputListener( blackProbeDragHandler );
+      this.redProbeNode.addInputListener( redProbeDragListener );
+      this.blackProbeNode.addInputListener( blackProbeDragListener );
 
       // @public (read-only) {MovableDragHandler} - so events can be forwarded from the toolbox
-      this.dragHandler = new MovableDragHandler( voltmeter.bodyPositionProperty, {
+      this.dragHandler = new DragListener( {
+
+        positionProperty: voltmeter.bodyPositionProperty,
         tandem: tandem.createTandem( 'dragHandler' ),
-        startDrag: () => this.moveToFront(),
-        endDrag: () => {
+        useParentOffset: true,
+        start: event => {
+          this.moveToFront();
+        },
+        end: () => {
           voltmeter.droppedEmitter.emit( bodyNode.globalBounds );
 
           // After dropping in the play area the probes move independently of the body
           voltmeter.draggingProbesWithBodyProperty.set( false );
 
-          redProbeDragHandler.constrainToBounds();
-          blackProbeDragHandler.constrainToBounds();
+          // redProbeDragListener.constrainToBounds();
+          // blackProbeDragListener.constrainToBounds();
         },
 
         // use this to do something every time drag is called, such as notify that a user has modified the position
@@ -326,7 +332,7 @@ class VoltmeterNode extends Node {
    * @public
    */
   startDrag( event ) {
-    this.dragHandler.startDrag( event );
+    this.dragHandler.press( event );
   }
 }
 
