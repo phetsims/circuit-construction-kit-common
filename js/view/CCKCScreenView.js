@@ -120,7 +120,7 @@ class CCKCScreenView extends ScreenView {
 
     const ammeterNodes = model.ammeters.map( ammeter => {
       const ammeterNode = new AmmeterNode( ammeter, this.circuitLayerNode, {
-        tandem: tandem.createTandem( 'ammeterNode' + ammeter.phetioIndex ), // TODO: Group?
+        tandem: tandem.createTandem( 'ammeterNode' + ammeter.phetioIndex ), // TODO(phet-io): Group?
         showResultsProperty: model.isValueDepictionEnabledProperty,
         visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty,
         blackBoxStudy: options.blackBoxStudy
