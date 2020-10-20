@@ -13,19 +13,8 @@ import CCKCDemoScreenView from './view/demo/CCKCDemoScreenView.js';
 import circuitConstructionKitCommonStrings from './circuitConstructionKitCommonStrings.js';
 
 const simOptions = {
-  title: circuitConstructionKitCommonStrings[ 'circuit-construction-kit-common' ].title,
-  credits: {
-    //TODO fill in credits, all of these fields are optional, see joist.CreditsNode
-    leadDesign: '',
-    softwareDevelopment: '',
-    team: '',
-    qualityAssurance: '',
-    graphicArts: '',
-    soundDesign: '',
-    thanks: ''
-  }
+  title: circuitConstructionKitCommonStrings[ 'circuit-construction-kit-common' ].title
 };
-
 
 // until the images are fully loaded, see https://github.com/phetsims/coulombs-law/issues/70
 simLauncher.launch( () => {
