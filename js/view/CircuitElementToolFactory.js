@@ -213,7 +213,7 @@ class CircuitElementToolFactory {
    * @returns {CircuitElementToolNode}
    * @public
    */
-  createLightBulbToolNode( count, tandem, lightBulbGroup, string = lightBulbString ) {
+  createLightBulbToolNode( count, tandem, lightBulbGroup = this.circuit.lightBulbGroup, string = lightBulbString ) {
     const vertexPair = LightBulb.createVertexPair( Vector2.ZERO, this.circuit, true );
     const lightBulbModel = LightBulb.createAtPosition(
       vertexPair.startVertex,
