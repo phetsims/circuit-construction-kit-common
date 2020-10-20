@@ -58,12 +58,18 @@ class LightBulb extends FixedCircuitElement {
    * @param {Object} [options]
    */
   constructor( startVertex, endVertex, resistance, viewTypeProperty, tandem, options ) {
-    options = merge( { highResistance: false }, options );
+    options = merge( {
+      highResistance: false,
+      ohmic: true
+    }, options );
     assert && assert( !options.hasOwnProperty( 'numberOfDecimalPlaces' ), 'supplied by LightBulb' );
     options.numberOfDecimalPlaces = options.highResistance ? 0 : 1;
 
     // getPathLength not available yet, so use a nonzero charge path length then override.
     super( startVertex, endVertex, 1, tandem, options );
+
+    // @public (read-only) {boolean} - true if R is constant, false if R is a function of current
+    this.ohmic = options.ohmic;
 
     // @public (read-only) {boolean} - true if the light bulb is a high resistance light bulb
     this.highResistance = options.highResistance;

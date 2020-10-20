@@ -208,10 +208,12 @@ class CircuitElementToolFactory {
   /**
    * @param {number} count - the number that can be dragged out at once
    * @param {Tandem} tandem
+   * @param {PhetioGroup} lightBulbGroup
+   * @param {string} string
    * @returns {CircuitElementToolNode}
    * @public
    */
-  createLightBulbToolNode( count, tandem ) {
+  createLightBulbToolNode( count, tandem, lightBulbGroup, string = lightBulbString ) {
     const vertexPair = LightBulb.createVertexPair( Vector2.ZERO, this.circuit, true );
     const lightBulbModel = LightBulb.createAtPosition(
       vertexPair.startVertex,
@@ -223,15 +225,14 @@ class CircuitElementToolFactory {
         highResistance: false,
         icon: true
       } );
-    return this.createCircuitElementToolNode( lightBulbString, count,
+    return this.createCircuitElementToolNode( string, count,
       new CCKCLightBulbNode( null, null,
         lightBulbModel,
         new Property( true ), this.viewTypeProperty, tandem.createTandem( 'lightBulbIcon' ), { isIcon: true } ),
       circuitElement => circuitElement instanceof LightBulb && !circuitElement.highResistance,
       position => {
         const vertexPair = LightBulb.createVertexPair( position, this.circuit );
-        return this.circuit.lightBulbGroup.createNextElement( vertexPair.startVertex, vertexPair.endVertex,
-          CCKCConstants.DEFAULT_RESISTANCE );
+        return lightBulbGroup.createNextElement( vertexPair.startVertex, vertexPair.endVertex, CCKCConstants.DEFAULT_RESISTANCE );
       }, {
         iconScale: 0.85,
         tandem: tandem

@@ -14,8 +14,10 @@ import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Shape from '../../../kite/js/Shape.js';
 import merge from '../../../phet-core/js/merge.js';
+import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import Node from '../../../scenery/js/nodes/Node.js';
+import Text from '../../../scenery/js/nodes/Text.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import Color from '../../../scenery/js/util/Color.js';
 import lightBulbImageHigh from '../../mipmaps/lightbulb-middle-high_png.js';
@@ -90,6 +92,14 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
     // The isIcon must show the socket as well
     if ( options.isIcon ) {
       lightBulbNode = new Image( lightBulb.highResistance ? lightBulbImageHigh : lightBulbImage, { scale: 0.37 } );
+    }
+
+    if ( !lightBulb.ohmic ) {
+      lightBulbNode.addChild( new Text( 'non-ohmic', {
+        font: new PhetFont( 6 ),
+        centerX: 0,
+        centerY: -30
+      } ) );
     }
 
     // General options used throughout bulb node

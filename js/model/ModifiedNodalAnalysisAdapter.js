@@ -184,6 +184,14 @@ class ModifiedNodalAnalysisAdapter {
     // if any battery exceeds its current threshold, increase its resistance and run the solution again.
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/245
     let needsHelp = false;
+
+    resistorAdapters.forEach( resistorAdapter => {
+      if ( resistorAdapter.circuitElement instanceof LightBulb && !resistorAdapter.circuitElement.ohmic ) {
+        resistorAdapter.resistance = 1.0;
+        needsHelp = true;
+      }
+    } );
+
     resistiveBatteryAdapters.forEach( batteryAdapter => {
       if ( Math.abs( circuitResult.getTimeAverageCurrent( batteryAdapter ) ) > CCKCQueryParameters.batteryCurrentThreshold ) {
         batteryAdapter.battery.passProperty.value = 2;
@@ -191,6 +199,31 @@ class ModifiedNodalAnalysisAdapter {
         needsHelp = true;
       }
     } );
+
+    resistorAdapters.forEach( resistorAdapter => {
+      if ( resistorAdapter.circuitElement instanceof LightBulb && !resistorAdapter.circuitElement.ohmic ) {
+
+        const logWithBase = ( value, base ) => Math.log( value ) / Math.log( base );
+
+        const v0 = circuitResult.resultSet.getFinalState().dynamicCircuitSolution.getNodeVoltage( resistorAdapter.nodeId0 );
+        const v1 = circuitResult.resultSet.getFinalState().dynamicCircuitSolution.getNodeVoltage( resistorAdapter.nodeId1 );
+        const V = Math.abs( v1 - v0 );
+
+        const base = 2;
+
+        // I = ln(V)
+        // V=IR
+        // V=ln(V)R
+        // R = V/ln(V)
+
+        // Adjust so it looks good in comparison to a standard bulb
+        const coefficient = 3;
+
+        // shift by base so at V=0 the log is 1
+        resistorAdapter.value = coefficient * V / logWithBase( V + base, base );
+      }
+    } );
+
     if ( needsHelp ) {
       circuitResult = dynamicCircuit.solveWithSubdivisions( TIMESTEP_SUBDIVISIONS, dt );
     }
