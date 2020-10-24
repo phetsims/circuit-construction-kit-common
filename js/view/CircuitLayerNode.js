@@ -335,8 +335,8 @@ class CircuitLayerNode extends Node {
     this.cutButton = new RoundPushButton( {
       baseColor: 'yellow',
       content: cutIcon,
-      minXMargin: 10,
-      minYMargin: 10,
+      xMargin: 10,
+      yMargin: 10,
       tandem: tandem.createTandem( 'cutButton' )
     } );
     this.cutButton.addListener( () => {
