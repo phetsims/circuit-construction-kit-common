@@ -9,7 +9,7 @@
 
 import Property from '../../../axon/js/Property.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import RadioButtonGroup from '../../../sun/js/buttons/RadioButtonGroup.js';
+import RectangularRadioButtonGroup from '../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -22,7 +22,7 @@ import BatteryNode from './BatteryNode.js';
 const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
 const SCALE = 0.4;
 
-class ViewRadioButtonGroup extends RadioButtonGroup {
+class ViewRadioButtonGroup extends RectangularRadioButtonGroup {
 
   /**
    * @param {Property.<CircuitElementViewType>} viewTypeProperty - whether to show lifelike or schematic representations
