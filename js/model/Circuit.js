@@ -891,6 +891,23 @@ class Circuit {
     if ( this.dirty || stepElements.length > 0 || dynamicElements.length > 0 ) {
       ModifiedNodalAnalysisAdapter.solveModifiedNodalAnalysis( this, dt );
       this.dirty = false;
+
+      // check the incoming and outgoing current to each inductor.  If it is all 0, then clear the inductor.
+      const inductors = this.circuitElements.filter( element => element instanceof Inductor );
+      inductors.forEach( inductor => {
+
+        const hasCurrent = vertex => {
+          const neighborsWithCurrent = this.getNeighborCircuitElements( vertex )
+            .filter( neighbor => neighbor !== inductor )
+            .filter( neighbor => Math.abs( neighbor.currentProperty.value ) > 1E-4 );
+          return neighborsWithCurrent.length > 0;
+        };
+
+        if ( !hasCurrent( inductor.startVertexProperty.value ) && !hasCurrent( inductor.endVertexProperty.value ) ) {
+          inductor.clear();
+        }
+      } );
+
       this.circuitChangedEmitter.emit();
     }
   }
