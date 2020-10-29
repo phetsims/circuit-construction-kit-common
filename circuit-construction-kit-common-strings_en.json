@@ -5,6 +5,9 @@
   "schematicStandard": {
     "value": "Schematic Standard"
   },
+  "realisticBulb": {
+    "value": "Realistic Bulb"
+  },
   "ieee": {
     "value": "IEEE"
   },
