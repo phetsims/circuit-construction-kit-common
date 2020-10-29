@@ -220,7 +220,7 @@ class ModifiedNodalAnalysisAdapter {
         const coefficient = 3;
 
         // shift by base so at V=0 the log is 1
-        resistorAdapter.value = coefficient * V / logWithBase( V + base, base );
+        resistorAdapter.value = 10 + coefficient * V / logWithBase( V + base, base );
       }
     } );
 
