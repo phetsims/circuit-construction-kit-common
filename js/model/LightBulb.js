@@ -69,6 +69,8 @@ class LightBulb extends FixedCircuitElement {
     super( startVertex, endVertex, 1, tandem, options );
 
     // @public (read-only) {boolean} - true if R is constant, false if R is a function of current
+
+    // TODO: Rename to "realistic" or "isRealistic"
     this.ohmic = options.ohmic;
 
     // @public (read-only) {boolean} - true if the light bulb is a high resistance light bulb
