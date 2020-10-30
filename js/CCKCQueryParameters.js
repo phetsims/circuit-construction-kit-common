@@ -90,6 +90,10 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
   batteryInternalResistanceWhenCurrentThresholdExceededVoltageScaleFactor: {
     type: 'number',
     defaultValue: 2E-4
+  },
+
+  addRealisticBulbs: {
+    type: 'flag'
   }
 } );
 

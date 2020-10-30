@@ -49,7 +49,7 @@ class CircuitConstructionKitModel {
     } );
 
     // @public {Property.<Boolean>} - whether the carousel shows realistic bulbs
-    this.addRealisticBulbsProperty = new BooleanProperty( false, {
+    this.addRealisticBulbsProperty = new BooleanProperty( CCKCQueryParameters.addRealisticBulbs, {
       tandem: tandem.createTandem( 'addRealisticBulbsProperty' )
     } );
 
