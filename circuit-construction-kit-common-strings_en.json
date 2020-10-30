@@ -92,6 +92,9 @@
   "lightBulb": {
     "value": "Light Bulb"
   },
+  "addRealisticBulbs": {
+    "value": "Add Realistic Bulbs"
+  },
   "switch": {
     "value": "Switch"
   },

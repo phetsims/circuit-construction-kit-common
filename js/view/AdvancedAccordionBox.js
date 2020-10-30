@@ -8,13 +8,14 @@
  */
 
 import VBox from '../../../scenery/js/nodes/VBox.js';
+import Text from '../../../scenery/js/nodes/Text.js';
+import VStrut from '../../../scenery/js/nodes/VStrut.js';
+import Checkbox from '../../../sun/js/Checkbox.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CCKCAccordionBox from './CCKCAccordionBox.js';
 import SourceResistanceControl from './SourceResistanceControl.js';
 import WireResistivityControl from './WireResistivityControl.js';
-
-const advancedString = circuitConstructionKitCommonStrings.advanced;
 
 class AdvancedAccordionBox extends CCKCAccordionBox {
 
@@ -27,14 +28,17 @@ class AdvancedAccordionBox extends CCKCAccordionBox {
    */
   constructor( circuit, alignGroup, batteryResistanceControlString, tandem, options ) {
 
-    const titleConfig = { fontSize: 12, maxWidth: 200 }; // Factor out for both titles
+    const titleConfig = { fontSize: 12, maxWidth: 200 }; // Factor out titles
     super( alignGroup.createBox( new VBox( {
-      spacing: 10,
+      align: 'left',
       children: [
         new WireResistivityControl( circuit.wireResistivityProperty, alignGroup, titleConfig, tandem.createTandem( 'wireResistivityControl' ) ),
-        new SourceResistanceControl( circuit.sourceResistanceProperty, alignGroup, batteryResistanceControlString, titleConfig, tandem.createTandem( 'sourceResistanceControl' ) )
+        new VStrut( 10 ),
+        new SourceResistanceControl( circuit.sourceResistanceProperty, alignGroup, batteryResistanceControlString, titleConfig, tandem.createTandem( 'sourceResistanceControl' ) ),
+        new VStrut( 20 ),
+        new Checkbox( new Text( circuitConstructionKitCommonStrings.addRealisticBulbs, titleConfig ), circuit.addRealisticBulbsProperty )
       ]
-    } ) ), advancedString, tandem, {
+    } ) ), circuitConstructionKitCommonStrings.advanced, tandem, {
 
       // Left align the title, with no padding
       titleAlignX: 'left',

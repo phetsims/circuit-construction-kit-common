@@ -55,11 +55,14 @@ const trueFunction = _.constant( true ); // Lower cased so IDEA doesn't think it
 class Circuit {
 
   /**
+   * @param {Property<CircuitElementViewType>} viewTypeProperty
+   * @param {Property<Boolean>} addRealisticBulbsProperty
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( viewTypeProperty, tandem, options ) {
+  constructor( viewTypeProperty, addRealisticBulbsProperty, tandem, options ) {
     this.viewTypeProperty = viewTypeProperty;
+    this.addRealisticBulbsProperty = addRealisticBulbsProperty;
 
     options = merge( { blackBoxStudy: false }, options );
     this.blackBoxStudy = options.blackBoxStudy;

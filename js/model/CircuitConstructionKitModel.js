@@ -48,8 +48,13 @@ class CircuitConstructionKitModel {
       tandem: tandem.createTandem( 'viewTypeProperty' )
     } );
 
+    // @public {Property.<Boolean>} - whether the carousel shows realistic bulbs
+    this.addRealisticBulbsProperty = new BooleanProperty( false, {
+      tandem: tandem.createTandem( 'addRealisticBulbsProperty' )
+    } );
+
     // @public (read-only) {Circuit} - contains CircuitElements, Vertices, etc.
-    this.circuit = new Circuit( this.viewTypeProperty, tandem.createTandem( 'circuit' ), { blackBoxStudy: options.blackBoxStudy } );
+    this.circuit = new Circuit( this.viewTypeProperty, this.addRealisticBulbsProperty, tandem.createTandem( 'circuit' ), { blackBoxStudy: options.blackBoxStudy } );
 
     // @public (read-only) {Voltmeter[]} - created statically and indexed starting at 1 for human-readability for PhET-iO
     this.voltmeters = [
