@@ -261,6 +261,7 @@ class CircuitConstructionKitModel {
     this.selectedZoomProperty.reset();
     this.stopwatch.reset();
     this.isPlayingProperty.reset();
+    this.addRealisticBulbsProperty.reset();
 
     // cancel any animation in progress, including (but not limited to) one that may have just been caused by reset
     this.zoomAnimation = null;
