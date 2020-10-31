@@ -36,7 +36,9 @@ class AdvancedAccordionBox extends CCKCAccordionBox {
         new VStrut( 10 ),
         new SourceResistanceControl( circuit.sourceResistanceProperty, alignGroup, batteryResistanceControlString, titleConfig, tandem.createTandem( 'sourceResistanceControl' ) ),
         new VStrut( 20 ),
-        new Checkbox( new Text( circuitConstructionKitCommonStrings.addRealisticBulbs, titleConfig ), circuit.addRealisticBulbsProperty )
+        new Checkbox( new Text( circuitConstructionKitCommonStrings.addRealisticBulbs, titleConfig ), circuit.addRealisticBulbsProperty, {
+          tandem: tandem.createTandem( 'addRealisticBulbsCheckbox' )
+        } )
       ]
     } ) ), circuitConstructionKitCommonStrings.advanced, tandem, {
 
