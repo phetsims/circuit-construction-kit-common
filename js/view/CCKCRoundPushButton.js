@@ -20,13 +20,7 @@ class CCKCRoundPushButton extends RoundPushButton {
     super( merge( {
       baseColor: PhetColorScheme.BUTTON_YELLOW,
       xMargin: 10,
-      yMargin: 10,
-
-      // TODO(phet-io): These elements will need to be members of a PhetioGroup
-      phetioState: false,
-      visiblePropertyOptions: {
-        phetioState: false
-      }
+      yMargin: 10
     }, options ) );
   }
 }
