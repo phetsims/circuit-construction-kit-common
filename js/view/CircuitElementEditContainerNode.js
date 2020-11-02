@@ -8,6 +8,7 @@
  */
 
 import Range from '../../../dot/js/Range.js';
+import Utils from '../../../dot/js/Utils.js';
 import merge from '../../../phet-core/js/merge.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
 import HBox from '../../../scenery/js/nodes/HBox.js';
@@ -146,7 +147,16 @@ class CircuitElementEditContainerNode extends Node {
             circuit,
             selectedCircuitElement,
             Tandem.OPT_OUT, {
+
+              // For the tweakers
               delta: selectedCircuitElement.resistorType === Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR ? 10 : 0.5,
+
+              // For dragging the slider knob
+              sliderOptions: {
+                constrainValue: selectedCircuitElement.resistorType === Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR ?
+                                value => Utils.roundToInterval( value, 100 ) :
+                                value => Utils.roundToInterval( value, 0.5 )
+              },
               numberDisplayOptions: {
                 decimalPlaces: selectedCircuitElement.numberOfDecimalPlaces
               }
@@ -175,7 +185,16 @@ class CircuitElementEditContainerNode extends Node {
             circuit,
             selectedCircuitElement,
             Tandem.OPT_OUT, {
+
+              // For the tweakers
               delta: selectedCircuitElement.batteryType === Battery.BatteryType.HIGH_VOLTAGE ? 10 : 0.5,
+
+              // For dragging the slider knob
+              sliderOptions: {
+                constrainValue: selectedCircuitElement.batteryType === Battery.BatteryType.HIGH_VOLTAGE ?
+                                value => Utils.roundToInterval( value, 100 ) :
+                                value => Utils.roundToInterval( value, 0.5 )
+              },
               numberDisplayOptions: {
                 decimalPlaces: selectedCircuitElement.numberOfDecimalPlaces
               },
