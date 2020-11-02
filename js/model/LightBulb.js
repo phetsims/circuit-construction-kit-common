@@ -79,7 +79,9 @@ class LightBulb extends FixedCircuitElement {
     // @public {Property.<number>} - the resistance of the light bulb which can be edited with the UI
     this.resistanceProperty = new NumberProperty( resistance, {
       tandem: tandem.createTandem( 'resistanceProperty' ),
-      range: options.highResistance ? new Range( 100, 10000 ) : new Range( 0, 120 )
+      range: options.highResistance ? new Range( 100, 10000 ) :
+             options.ohmic ? new Range( 0, 120 ) :
+             new Range( 0, 1E6 ) // The non-ohmic bulb has its resistance computed in ModifiedNodalAnalysisAdapter.js
     } );
 
     // @private (read-only) {Vector2} the vector between the vertices
