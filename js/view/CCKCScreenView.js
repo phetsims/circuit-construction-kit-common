@@ -372,7 +372,7 @@ class CCKCScreenView extends ScreenView {
         visibleBoundsProperty: this.visibleBoundsProperty,
         right: controlPanelVBox.left - HORIZONTAL_MARGIN,
         numberDisplayOptions: {
-          numberFormatter: StopwatchNode.getRichNumberFormatter( {
+          numberFormatter: StopwatchNode.createRichTextNumberFormatter( {
             numberOfDecimalPlaces: 1
           } )
         },
