@@ -51,21 +51,26 @@ class CircuitElementToolbox extends HBox {
         page.setSpacing( 0 );
 
         // Set the spacing so that items will fill the available area
-        const spacing = ( options.pageHeight - page.height ) / ( page.children.length - 1 );
-        page.setSpacing( spacing );
+        const denominator = page.children.length - 1;
+        if ( denominator > 0 ) {
+          const spacing = ( options.pageHeight - page.height ) / denominator;
+          page.setSpacing( spacing );
 
-        // Track the spacings of filled pages so that the average can be used for non-filled pages
-        if ( page.children.length === options.itemsPerPage ) {
-          spacings.push( spacing );
+          // Track the spacings of filled pages so that the average can be used for non-filled pages
+          if ( page.children.length === options.itemsPerPage ) {
+            spacings.push( spacing );
+          }
         }
       } );
-      const averageSpacing = _.sum( spacings ) / spacings.length;
+      if ( spacings.length > 0 ) {
+        const averageSpacing = _.sum( spacings ) / spacings.length;
 
-      pages.forEach( page => {
-        if ( page.children.length !== options.itemsPerPage ) {
-          page.setSpacing( averageSpacing );
-        }
-      } );
+        pages.forEach( page => {
+          if ( page.children.length !== options.itemsPerPage ) {
+            page.setSpacing( averageSpacing );
+          }
+        } );
+      }
     } );
 
     // Make sure that non-filled pages have the same top
