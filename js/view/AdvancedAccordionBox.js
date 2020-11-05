@@ -11,6 +11,7 @@ import VBox from '../../../scenery/js/nodes/VBox.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import VStrut from '../../../scenery/js/nodes/VStrut.js';
 import Checkbox from '../../../sun/js/Checkbox.js';
+import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CCKCAccordionBox from './CCKCAccordionBox.js';
@@ -28,7 +29,10 @@ class AdvancedAccordionBox extends CCKCAccordionBox {
    */
   constructor( circuit, alignGroup, batteryResistanceControlString, tandem, options ) {
 
-    const titleConfig = { fontSize: 12, maxWidth: 200 }; // Factor out titles
+    const titleConfig = {
+      fontSize: CCKCConstants.FONT_SIZE,
+      maxWidth: 120
+    }; // Factor out titles
     super( alignGroup.createBox( new VBox( {
       align: 'left',
       children: [
