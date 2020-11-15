@@ -37,7 +37,8 @@ class CircuitElementToolbox extends HBox {
     // Carousel was optimized for items of equal size.  To get equal spacing between objects, we create our own pages
     // see https://github.com/phetsims/circuit-construction-kit-dc/issues/91 and https://github.com/phetsims/sun/issues/541
     const pages = _.chunk( circuitElementToolNodes, options.itemsPerPage ).map( elements => new VBox( {
-      children: elements
+      children: elements,
+      excludeInvisibleChildrenFromBounds: false
     } ) );
 
     // The schematic and lifelike icons have different dimensions, so update the spacing when the view type changes
