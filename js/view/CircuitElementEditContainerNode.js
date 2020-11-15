@@ -61,6 +61,11 @@ const GET_LAYOUT_POSITION = ( visibleBounds, centerX ) => {
   };
 };
 
+const NORMAL_SLIDER_KNOB_DELTA = 1;
+const HIGH_SLIDER_KNOB_DELTA = 100;
+const NORMAL_TWEAKER_DELTA = 0.1;
+const HIGH_TWEAKER_DELTA = 10;
+
 class CircuitElementEditContainerNode extends Node {
 
   /**
@@ -136,6 +141,9 @@ class CircuitElementEditContainerNode extends Node {
         const isInductor = selectedCircuitElement instanceof Inductor;
 
         if ( isResistive && selectedCircuitElement.isResistanceEditable() ) {
+
+          const isHighResistance = selectedCircuitElement.resistorType === Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR ||
+                                   selectedCircuitElement instanceof LightBulb && selectedCircuitElement.highResistance;
           const resistanceControl = new CircuitElementNumberControl(
             resistanceString,
 
@@ -149,13 +157,11 @@ class CircuitElementEditContainerNode extends Node {
             Tandem.OPT_OUT, {
 
               // For the tweakers
-              delta: selectedCircuitElement.resistorType === Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR ? 10 : 0.5,
+              delta: isHighResistance ? HIGH_TWEAKER_DELTA : NORMAL_TWEAKER_DELTA,
 
               // For dragging the slider knob
               sliderOptions: {
-                constrainValue: selectedCircuitElement.resistorType === Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR ?
-                                value => Utils.roundToInterval( value, 100 ) :
-                                value => Utils.roundToInterval( value, 0.5 )
+                constrainValue: value => Utils.roundToInterval( value, isHighResistance ? HIGH_SLIDER_KNOB_DELTA : NORMAL_SLIDER_KNOB_DELTA )
               },
               numberDisplayOptions: {
                 decimalPlaces: selectedCircuitElement.numberOfDecimalPlaces
@@ -174,6 +180,8 @@ class CircuitElementEditContainerNode extends Node {
           editNode = trashButton;
         }
         else if ( isBattery ) {
+          const knobDelta = selectedCircuitElement.batteryType === Battery.BatteryType.HIGH_VOLTAGE ?
+                            HIGH_SLIDER_KNOB_DELTA : NORMAL_SLIDER_KNOB_DELTA;
           const circuitElementEditNode = new CircuitElementNumberControl(
             voltageString,
 
@@ -187,13 +195,11 @@ class CircuitElementEditContainerNode extends Node {
             Tandem.OPT_OUT, {
 
               // For the tweakers
-              delta: selectedCircuitElement.batteryType === Battery.BatteryType.HIGH_VOLTAGE ? 10 : 0.5,
+              delta: selectedCircuitElement.batteryType === Battery.BatteryType.HIGH_VOLTAGE ? HIGH_TWEAKER_DELTA : NORMAL_TWEAKER_DELTA,
 
               // For dragging the slider knob
               sliderOptions: {
-                constrainValue: selectedCircuitElement.batteryType === Battery.BatteryType.HIGH_VOLTAGE ?
-                                value => Utils.roundToInterval( value, 100 ) :
-                                value => Utils.roundToInterval( value, 0.5 )
+                constrainValue: value => Utils.roundToInterval( value, knobDelta )
               },
               numberDisplayOptions: {
                 decimalPlaces: selectedCircuitElement.numberOfDecimalPlaces
