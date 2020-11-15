@@ -385,14 +385,14 @@ class Circuit {
       tandem: tandem.createTandem( 'lightBulbGroup' )
     } );
 
-    this.nonOhmicLightBulbGroup = new PhetioGroup(
+    this.realisticLightBulbGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => {
         return new LightBulb( startVertex, endVertex, CCKCConstants.DEFAULT_RESISTANCE, this.viewTypeProperty, tandem, {
-          ohmic: false
+          realistic: true
         } );
       }, () => createVertices( 100 ), {
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
-        tandem: tandem.createTandem( 'nonOhmicLightBulbGroup' )
+        tandem: tandem.createTandem( 'realisticLightBulbGroup' )
       } );
 
     this.groups = [
@@ -406,7 +406,7 @@ class Circuit {
       this.inductorGroup,
       this.switchGroup,
       this.lightBulbGroup,
-      this.nonOhmicLightBulbGroup,
+      this.realisticLightBulbGroup,
       this.highResistanceLightBulbGroup,
       this.seriesAmmeterGroup
     ];

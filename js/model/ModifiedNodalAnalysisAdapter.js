@@ -186,7 +186,7 @@ class ModifiedNodalAnalysisAdapter {
     let needsHelp = false;
 
     resistorAdapters.forEach( resistorAdapter => {
-      if ( resistorAdapter.circuitElement instanceof LightBulb && !resistorAdapter.circuitElement.ohmic ) {
+      if ( resistorAdapter.circuitElement instanceof LightBulb && resistorAdapter.circuitElement.realistic ) {
         resistorAdapter.resistance = 1.0;
         needsHelp = true;
       }
@@ -201,7 +201,7 @@ class ModifiedNodalAnalysisAdapter {
     } );
 
     resistorAdapters.forEach( resistorAdapter => {
-      if ( resistorAdapter.circuitElement instanceof LightBulb && !resistorAdapter.circuitElement.ohmic ) {
+      if ( resistorAdapter.circuitElement instanceof LightBulb && resistorAdapter.circuitElement.realistic ) {
 
         const logWithBase = ( value, base ) => Math.log( value ) / Math.log( base );
 

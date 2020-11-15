@@ -60,7 +60,7 @@ class LightBulb extends FixedCircuitElement {
   constructor( startVertex, endVertex, resistance, viewTypeProperty, tandem, options ) {
     options = merge( {
       highResistance: false,
-      ohmic: true
+      realistic: false
     }, options );
     assert && assert( !options.hasOwnProperty( 'numberOfDecimalPlaces' ), 'supplied by LightBulb' );
     options.numberOfDecimalPlaces = options.highResistance ? 0 : 1;
@@ -70,8 +70,8 @@ class LightBulb extends FixedCircuitElement {
 
     // @public (read-only) {boolean} - true if R is constant, false if R is a function of current
 
-    // TODO: Rename to "realistic" or "isRealistic"
-    this.ohmic = options.ohmic;
+    // Not an enum because in the future we may have a realistic high resistance bulb.
+    this.realistic = options.realistic;
 
     // @public (read-only) {boolean} - true if the light bulb is a high resistance light bulb
     this.highResistance = options.highResistance;
@@ -80,8 +80,8 @@ class LightBulb extends FixedCircuitElement {
     this.resistanceProperty = new NumberProperty( resistance, {
       tandem: tandem.createTandem( 'resistanceProperty' ),
       range: options.highResistance ? new Range( 100, 10000 ) :
-             options.ohmic ? new Range( 0, 120 ) :
-             new Range( 0, 1E6 ) // The non-ohmic bulb has its resistance computed in ModifiedNodalAnalysisAdapter.js
+             options.realistic ? new Range( 0, 1E6 ) : // The non-ohmic bulb has its resistance computed in ModifiedNodalAnalysisAdapter.js
+             new Range( 0, 120 )
     } );
 
     // @private (read-only) {Vector2} the vector between the vertices

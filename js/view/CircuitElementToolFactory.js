@@ -210,10 +210,11 @@ class CircuitElementToolFactory {
    * @param {Tandem} tandem
    * @param {PhetioGroup} lightBulbGroup
    * @param {string} string
+   * @param {boolean} realistic
    * @returns {CircuitElementToolNode}
    * @public
    */
-  createLightBulbToolNode( count, tandem, lightBulbGroup = this.circuit.lightBulbGroup, string = lightBulbString ) {
+  createLightBulbToolNode( count, tandem, lightBulbGroup = this.circuit.lightBulbGroup, string = lightBulbString, realistic = false ) {
     const vertexPair = LightBulb.createVertexPair( Vector2.ZERO, this.circuit, true );
     const lightBulbModel = LightBulb.createAtPosition(
       vertexPair.startVertex,
@@ -223,7 +224,8 @@ class CircuitElementToolFactory {
       this.viewTypeProperty,
       Tandem.OPTIONAL, {
         highResistance: false,
-        icon: true
+        icon: true,
+        realistic: realistic
       } );
     return this.createCircuitElementToolNode( string, count,
       new CCKCLightBulbNode( null, null,
