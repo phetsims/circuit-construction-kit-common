@@ -20,6 +20,7 @@ import Path from '../../../scenery/js/nodes/Path.js';
 import Color from '../../../scenery/js/util/Color.js';
 import lightBulbMiddleHighImage from '../../mipmaps/lightbulb-middle-high_png.js';
 import lightBulbMiddleRealisticImage from '../../mipmaps/lightbulb-middle-realistic_png.js';
+import realisticSocketImage from '../../images/lightbulb-front-realistic_png.js';
 import lightBulbImage from '../../mipmaps/lightbulb-middle_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -95,6 +96,11 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
       lightBulbNode = new Image( lightBulb.highResistance ? lightBulbMiddleHighImage :
                                  lightBulb.realistic ? lightBulbMiddleRealisticImage :
                                  lightBulbImage, { scale: 0.37 } );
+
+      // tack on the socket
+      if ( lightBulb.realistic ) {
+        lightBulbNode.addChild( new Image( realisticSocketImage ) );
+      }
     }
 
     // General options used throughout bulb node
