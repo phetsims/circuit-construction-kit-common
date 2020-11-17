@@ -52,7 +52,7 @@ class CCKCChartNode extends Node {
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {NumberProperty} timeProperty
    * @param {Property.<Bounds2>} visibleBoundsProperty
-   * @param {DynamicSeries[]} seriesArray
+   * @param {DynamicSeries[]} seriesArray - TODO: Do we still want to use DynamicSeries?
    * @param {string} verticalAxisLabel
    * @param {Object} [options]
    */
