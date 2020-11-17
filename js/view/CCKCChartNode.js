@@ -8,13 +8,22 @@
 
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
+import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Range from '../../../dot/js/Range.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
-import SeismographNode from '../../../griddle/js/SeismographNode.js';
+import ChartModel from '../../../griddle/js/bamboo/ChartModel.js';
+import ChartRectangle from '../../../griddle/js/bamboo/ChartRectangle.js';
+import GridLineSet from '../../../griddle/js/bamboo/GridLineSet.js';
+import LabelSet from '../../../griddle/js/bamboo/LabelSet.js';
+import LinePlot from '../../../griddle/js/bamboo/LinePlot.js';
+import ScatterPlot from '../../../griddle/js/bamboo/ScatterPlot.js';
+import SpanNode from '../../../griddle/js/SpanNode.js';
 import merge from '../../../phet-core/js/merge.js';
+import Orientation from '../../../phet-core/js/Orientation.js';
 import ShadedRectangle from '../../../scenery-phet/js/ShadedRectangle.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
+import ZoomButtonGroup from '../../../scenery-phet/js/ZoomButtonGroup.js';
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
@@ -106,56 +115,149 @@ class CCKCChartNode extends Node {
       position => position.isFinite() ? position.plusXY( 0, -10 ) : Vector2.ZERO
     );
 
-    const verticalAxisTitleNode = new Text( verticalAxisLabel, {
-      rotation: -Math.PI / 2,
-      fontSize: LABEL_FONT_SIZE,
-      fill: AXIS_LABEL_FILL
+    const chartModel = new ChartModel( 150, 100, {
+      modelXRange: new Range( 0, 4.25 ),
+      modelYRange: new Range( -2, 2 )
     } );
+    const chartBackground = new ChartRectangle( chartModel, {
+      fill: 'white',
+      cornerXRadius: 6,
+      cornerYRadius: 6
+    } );
+
     const horizontalAxisTitleNode = new Text( timeString, {
       fontSize: LABEL_FONT_SIZE,
-      fill: AXIS_LABEL_FILL
+      fill: AXIS_LABEL_FILL,
+      centerTop: chartBackground.centerBottom.plusXY( 0, 5 )
     } );
     const scaleIndicatorText = new Text( oneSecondString, {
       fontSize: 11,
       fill: 'white'
     } );
 
-    // Create the scrolling chart content and add it to the background.  There is an order-of-creation cycle which
-    // prevents the scrolling node from being added to the background before the super() call, so this will have to
-    // suffice.
-    this.seismographNode = new SeismographNode( timeProperty, seriesArray, scaleIndicatorText, {
-      width: 150, height: 110,
-      horizontalAxisLabelNode: horizontalAxisTitleNode,
-      verticalAxisLabelNode: verticalAxisTitleNode,
-      verticalRanges: [
-        new Range( -0.4, 0.4 ),
-        new Range( -2, 2 ),
-        new Range( -10, 10 ),
-        new Range( -20, 20 ),
-        new Range( -50, 50 ),
-        new Range( -100, 100 ),
-        new Range( -150, 150 ),
-        new Range( -200, 200 ),
-        new Range( -400, 400 ),
-        new Range( -600, 600 ),
-        new Range( -800, 800 ),
-        new Range( -1000, 1000 ),
-        new Range( -1200, 1200 )
-      ],
-      initialVerticalRangeIndex: 1,
-      verticalGridLabelNumberOfDecimalPlaces: 0,
-      tandem: options.tandem.createTandem( 'seismographNode' )
+    const zoomRanges = [
+      new Range( -1200, 1200 ),
+      new Range( -1000, 1000 ),
+      new Range( -800, 800 ),
+      new Range( -600, 600 ),
+      new Range( -400, 400 ),
+      new Range( -200, 200 ),
+      new Range( -150, 150 ),
+      new Range( -100, 100 ),
+      new Range( -50, 50 ),
+      new Range( -20, 20 ),
+      new Range( -10, 10 ),
+      new Range( -2, 2 ), // default
+      new Range( -0.4, 0.4 )
+    ];
+    const zoomLevelProperty = new NumberProperty( zoomRanges.length - 2, { range: new Range( 0, zoomRanges.length - 1 ) } );
+
+    const gridLineOptions = {
+      stroke: 'lightGray',
+      lineDash: [ 5, 5 ],
+      lineWidth: 0.8,
+      lineDashOffset: 5 / 2
+    };
+
+    const horizontalGridLineSet = new GridLineSet( chartModel, Orientation.HORIZONTAL, 1, gridLineOptions );
+    const verticalGridLineSet = new GridLineSet( chartModel, Orientation.VERTICAL, 1, gridLineOptions );
+
+    const verticalLabelSet = new LabelSet( chartModel, Orientation.VERTICAL, 1, {
+      edge: 'min',
+      extent: 1.5,
+      createLabel: value => new Text( value.toFixed( zoomLevelProperty.value === zoomRanges.length - 1 ? 1 : 0 ), {
+        fontSize: 10,
+        fill: 'white'
+      } )
     } );
 
-    this.seismographNode.verticalRangeProperty.link( verticalRange => {
-      const decimalPlaces = verticalRange.max <= 1 ? 1 : 0;
-      this.seismographNode.setVerticalGridLabelNumberOfDecimalPlaces( decimalPlaces );
+    const zoomButtonGroup = new ZoomButtonGroup( zoomLevelProperty, {
+      orientation: 'vertical',
+      left: chartBackground.right + 2,
+      top: chartBackground.top
+    } );
+    zoomLevelProperty.link( zoomLevel => {
+      chartModel.setModelYRange( zoomRanges[ zoomLevel ] );
+      verticalGridLineSet.setSpacing( zoomRanges[ zoomLevel ].max / 2 );
+      verticalLabelSet.setSpacing( zoomRanges[ zoomLevel ].max / 2 );
     } );
 
-    const shadedRectangle = new ShadedRectangle( this.seismographNode.bounds.dilated( 7 ), {
+    const penData = [ new Vector2( 0, 0 ) ];
+
+    const pen = new ScatterPlot( chartModel, penData, {
+      fill: '#717274',
+      stroke: '#717274',
+      radius: 4
+    } );
+    const updatePen = () => {
+      penData[ 0 ].x = timeProperty.value;
+      const length = seriesArray[ 0 ].data.length;
+      if ( length > 0 ) {
+        const y = seriesArray[ 0 ].data[ length - 1 ].y;
+        penData[ 0 ].y = isNaN( y ) ? 0 : y;
+      }
+      else {
+        penData[ 0 ].y = 0;
+      }
+      pen.update();
+    };
+    timeProperty.link( time => {
+
+      // Show 4 seconds, plus a lead time of 0.25 sec
+      chartModel.setModelXRange( new Range( time - 4, time + 0.25 ) );
+      verticalGridLineSet.setLineDashOffset( time * chartModel.modelToViewDelta( Orientation.HORIZONTAL, 1 ) );
+      updatePen();
+    } );
+
+    const linePlot = new LinePlot( chartModel, seriesArray[ 0 ].data, {
+      stroke: '#717274',
+      lineWidth: 1.5
+    } );
+
+    seriesArray[ 0 ].addDynamicSeriesListener( () => {
+      linePlot.update();
+      updatePen();
+    } );
+
+    // Anything you want clipped goes in here
+    const chartClip = new Node( {
+      clipArea: chartBackground.getShape(),
+      children: [
+
+        // Minor grid lines
+        horizontalGridLineSet,
+        verticalGridLineSet,
+
+        linePlot,
+        pen
+      ]
+    } );
+
+    const verticalAxisTitleNode = new Text( verticalAxisLabel, {
+      rotation: -Math.PI / 2,
+      fontSize: LABEL_FONT_SIZE,
+      fill: AXIS_LABEL_FILL,
+      rightCenter: verticalLabelSet.leftCenter.plusXY( -10, 0 )
+    } );
+    const chartNode = new Node( {
+      children: [
+        chartBackground,
+        chartClip,
+        zoomButtonGroup,
+        verticalAxisTitleNode,
+        horizontalAxisTitleNode,
+        verticalLabelSet,
+        new SpanNode( scaleIndicatorText, chartModel.modelToViewDelta( Orientation.HORIZONTAL, 1 ), {
+          left: chartBackground.left,
+          top: chartBackground.bottom + 3
+        } )
+      ]
+    } );
+
+    const shadedRectangle = new ShadedRectangle( chartNode.bounds.dilated( 7 ), {
       baseColor: '#327198'
     } );
-    shadedRectangle.addChild( this.seismographNode );
+    shadedRectangle.addChild( chartNode );
     backgroundNode.addChild( shadedRectangle );
 
     this.meter.visibleProperty.link( visible => this.setVisible( visible ) );
