@@ -1,7 +1,7 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
- * Provides simulation-specific values and customizations to display a SeismographNode in a MeterBodyNode.
+ * Provides simulation-specific values and customizations to display time-series data in a MeterBodyNode.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -309,7 +309,6 @@ class CCKCChartNode extends Node {
   reset() {
     this.seriesArray.forEach( series => series.clear() );
     this.meter.reset();
-    this.seismographNode.reset();
   }
 
   /**
