@@ -159,8 +159,8 @@ class CCKCChartNode extends Node {
       lineDashOffset: 5 / 2
     };
 
-    const verticalGridLineSet = new GridLineSet( chartModel, Orientation.HORIZONTAL, 1, gridLineOptions );
-    const horizontalGridLineSet = new GridLineSet( chartModel, Orientation.VERTICAL, 1, gridLineOptions );
+    const horizontalGridLineSet = new GridLineSet( chartModel, Orientation.HORIZONTAL, 1, gridLineOptions );
+    const verticalGridLineSet = new GridLineSet( chartModel, Orientation.VERTICAL, 1, gridLineOptions );
 
     const verticalLabelSet = new LabelSet( chartModel, Orientation.VERTICAL, 1, {
       edge: 'min',
