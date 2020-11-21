@@ -7,6 +7,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
@@ -120,7 +121,8 @@ class CircuitElementToolFactory {
     options = merge( {
       iconScale: 1.0,
       limitingMaxDimension: Math.max( icon.width, icon.height ),
-      tandem: Tandem.REQUIRED
+      tandem: Tandem.REQUIRED,
+      additionalProperty: new BooleanProperty( true )
     }, options );
     icon.mutate( { scale: options.iconScale * TOOLBOX_ICON_SIZE / options.limitingMaxDimension } );
     return new CircuitElementToolNode(
@@ -133,7 +135,8 @@ class CircuitElementToolFactory {
       count,
       this.createCounter( predicate ),
       createElement, {
-        tandem: options.tandem
+        tandem: options.tandem,
+        additionalProperty: options.additionalProperty
       }
     );
   }
@@ -211,10 +214,11 @@ class CircuitElementToolFactory {
    * @param {PhetioGroup} lightBulbGroup
    * @param {string} string
    * @param {boolean} realistic
+   * @param {Property<Boolean>} addRealisticBulbsProperty
    * @returns {CircuitElementToolNode}
    * @public
    */
-  createLightBulbToolNode( count, tandem, lightBulbGroup = this.circuit.lightBulbGroup, string = lightBulbString, realistic = false ) {
+  createLightBulbToolNode( count, tandem, lightBulbGroup = this.circuit.lightBulbGroup, string = lightBulbString, realistic = false, addRealisticBulbsProperty = null ) {
     const vertexPair = LightBulb.createVertexPair( Vector2.ZERO, this.circuit, true );
     const lightBulbModel = LightBulb.createAtPosition(
       vertexPair.startVertex,
@@ -237,7 +241,8 @@ class CircuitElementToolFactory {
         return lightBulbGroup.createNextElement( vertexPair.startVertex, vertexPair.endVertex, CCKCConstants.DEFAULT_RESISTANCE );
       }, {
         iconScale: 0.85,
-        tandem: tandem
+        tandem: tandem,
+        additionalProperty: addRealisticBulbsProperty || new BooleanProperty(true)
       } );
   }
 

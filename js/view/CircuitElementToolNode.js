@@ -7,6 +7,8 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import BooleanProperty from '../../../axon/js/BooleanProperty.js';
+import Property from '../../../axon/js/Property.js';
 import merge from '../../../phet-core/js/merge.js';
 import Touch from '../../../scenery/js/input/Touch.js';
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
@@ -50,7 +52,8 @@ class CircuitElementToolNode extends VBox {
       touchAreaExpansionRight: 10,
       touchAreaExpansionBottom: 3,
 
-      excludeInvisibleChildrenFromBounds: false
+      excludeInvisibleChildrenFromBounds: false,
+      additionalProperty: new BooleanProperty( true )
     }, options );
     super( options );
 
@@ -78,12 +81,15 @@ class CircuitElementToolNode extends VBox {
     // Make the tool icon visible if we can create more of the item. But be careful to only update visibility when
     // the specific count for this item changes, so we can support PhET-iO hiding the icons via visibility.
     let lastCount = null;
-    circuit.circuitElements.lengthProperty.link( () => {
+    let lastValue = null;
+
+    Property.multilink( [ circuit.circuitElements.lengthProperty, options.additionalProperty ], ( length, additionalValue ) => {
       const currentCount = count();
-      if ( lastCount !== currentCount ) {
-        this.setVisible( currentCount < maxNumber );
+      if ( lastCount !== currentCount || lastValue !== additionalValue ) {
+        this.setVisible( ( currentCount < maxNumber ) && additionalValue );
       }
       lastCount = currentCount;
+      lastValue = additionalValue;
     } );
 
     // Update touch areas when lifelike/schematic changes
