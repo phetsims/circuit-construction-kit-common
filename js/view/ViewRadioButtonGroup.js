@@ -9,6 +9,7 @@
 
 import Property from '../../../axon/js/Property.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import merge from '../../../phet-core/js/merge.js';
 import RectangularRadioButtonGroup from '../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -27,8 +28,21 @@ class ViewRadioButtonGroup extends RectangularRadioButtonGroup {
   /**
    * @param {Property.<CircuitElementViewType>} viewTypeProperty - whether to show lifelike or schematic representations
    * @param {Tandem} tandem
+   * @param {Object} [options]
    */
-  constructor( viewTypeProperty, tandem ) {
+  constructor( viewTypeProperty, tandem, options ) {
+
+    options = merge( {
+      spacing: 4,
+      orientation: 'horizontal',
+      buttonContentXMargin: 9,
+      buttonContentYMargin: 5,
+      baseColor: CCKCConstants.PANEL_COLOR,
+      deselectedButtonOpacity: 0.4,
+      overButtonOpacity: 0.7,
+      cornerRadius: CCKCConstants.CORNER_RADIUS,
+      tandem: tandem
+    }, options );
 
     // Create a battery which can be used in the views
     const startVertex = new Vertex( new Vector2( BATTERY_LENGTH / 2, 0 ) );
@@ -58,17 +72,7 @@ class ViewRadioButtonGroup extends RectangularRadioButtonGroup {
       value: CircuitElementViewType.SCHEMATIC,
       node: schematicIcon,
       tandemName: 'schematicRadioButton'
-    } ], {
-      spacing: 4,
-      orientation: 'vertical',
-      buttonContentXMargin: 9,
-      buttonContentYMargin: 5,
-      baseColor: CCKCConstants.PANEL_COLOR,
-      deselectedButtonOpacity: 0.4,
-      overButtonOpacity: 0.7,
-      cornerRadius: CCKCConstants.CORNER_RADIUS,
-      tandem: tandem
-    } );
+    } ], options );
   }
 }
 

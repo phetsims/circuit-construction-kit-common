@@ -175,7 +175,10 @@ class CCKCScreenView extends ScreenView {
 
     // @private {ViewRadioButtonGroup}
     this.viewRadioButtonGroup = new ViewRadioButtonGroup(
-      model.viewTypeProperty, tandem.createTandem( 'viewRadioButtonGroup' )
+      model.viewTypeProperty,
+      tandem.createTandem( 'viewRadioButtonGroup' ), {
+        maxWidth: this.circuitElementToolbox.carousel.backgroundWidth
+      }
     );
 
     // @protected {DisplayOptionsPanel}
@@ -263,6 +266,7 @@ class CCKCScreenView extends ScreenView {
 
     // Create the zoom control panel
     const zoomControlPanel = new ZoomControlPanel( model.selectedZoomProperty, {
+      maxWidth: this.circuitElementToolbox.carousel.backgroundWidth,
       tandem: tandem.createTandem( 'zoomControlPanel' )
     } );
 
@@ -283,9 +287,6 @@ class CCKCScreenView extends ScreenView {
       } );
     }
 
-    // Make it as wide as the circuit element toolbox
-    zoomControlPanel.setScaleMagnitude( 0.8 );
-
     let timeControlNode = null;
     if ( options.showTimeControls ) {
       timeControlNode = new TimeControlNode( model.isPlayingProperty, {
@@ -300,7 +301,7 @@ class CCKCScreenView extends ScreenView {
     }
 
     // Add it in front of everything (should never be obscured by a CircuitElement)
-    // this.addChild( zoomControlPanel );
+    this.addChild( zoomControlPanel );
 
     this.visibleBoundsProperty.link( visibleBounds => {
 
