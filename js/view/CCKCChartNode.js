@@ -18,7 +18,7 @@ import GridLineSet from '../../../bamboo/js/GridLineSet.js';
 import LabelSet from '../../../bamboo/js/LabelSet.js';
 import LinePlot from '../../../bamboo/js/LinePlot.js';
 import ScatterPlot from '../../../bamboo/js/ScatterPlot.js';
-import SpanNode from '../../../griddle/js/SpanNode.js';
+import SpanNode from '../../../bamboo/js/SpanNode.js';
 import merge from '../../../phet-core/js/merge.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
 import ShadedRectangle from '../../../scenery-phet/js/ShadedRectangle.js';
