@@ -368,9 +368,8 @@ class CCKCChartNode extends Node {
       },
       end: () => {
 
-        // Drop in toolbox, using the bounds of the entire this since it cannot be centered over the toolbox
-        // (too close to the edge of the screen)
-        if ( screenView.sensorToolbox.globalBounds.intersectsBounds( this.getBackgroundNodeGlobalBounds() ) ) {
+        // Drop in the toolbox if the center of the chart is within the sensor toolbox bounds
+        if ( screenView.sensorToolbox.globalBounds.containsPoint( this.getBackgroundNodeGlobalBounds().center ) ) {
           this.alignProbesEmitter.emit();
           this.meter.visibleProperty.value = false;
         }
