@@ -26,6 +26,12 @@
   "resistor": {
     "value": "Resistor"
   },
+  "capacitor": {
+    "value": "Capacitor"
+  },
+  "inductor": {
+    "value": "Inductor"
+  },
   "stopwatch": {
     "value": "Stopwatch"
   },

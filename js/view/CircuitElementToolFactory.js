@@ -42,6 +42,8 @@ import ResistorNode from './ResistorNode.js';
 import SwitchNode from './SwitchNode.js';
 
 const acSourceString = circuitConstructionKitCommonStrings.acSource;
+const capacitorString = circuitConstructionKitCommonStrings.capacitor;
+const inductorString = circuitConstructionKitCommonStrings.inductor;
 const batteryString = circuitConstructionKitCommonStrings.battery;
 const coinString = circuitConstructionKitCommonStrings.coin;
 const dogString = circuitConstructionKitCommonStrings.dog;
@@ -55,7 +57,6 @@ const pencilString = circuitConstructionKitCommonStrings.pencil;
 const resistorString = circuitConstructionKitCommonStrings.resistor;
 const switchString = circuitConstructionKitCommonStrings.switch;
 const wireString = circuitConstructionKitCommonStrings.wire;
-
 
 // constants
 const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
@@ -242,7 +243,7 @@ class CircuitElementToolFactory {
       }, {
         iconScale: 0.85,
         tandem: tandem,
-        additionalProperty: addRealisticBulbsProperty || new BooleanProperty(true)
+        additionalProperty: addRealisticBulbsProperty || new BooleanProperty( true )
       } );
   }
 
@@ -317,7 +318,7 @@ class CircuitElementToolFactory {
     const icon = new CapacitorCircuitElementNode( null, null, capacitorModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
       isIcon: true
     } );
-    return this.createCircuitElementToolNode( 'CAPACITOR', count,
+    return this.createCircuitElementToolNode( capacitorString, count,
       icon,
       circuitElement => circuitElement instanceof Capacitor,
       position => this.circuit.capacitorGroup.createNextElement( ...this.circuit.createVertexPairArray( position, CCKCConstants.CAPACITOR_LENGTH ) ), {
@@ -341,7 +342,7 @@ class CircuitElementToolFactory {
       new Vertex( new Vector2( CCKCConstants.INDUCTOR_LENGTH, 0 ) ),
       Tandem.OPTIONAL
     );
-    return this.createCircuitElementToolNode( 'INDUCTOR', count,
+    return this.createCircuitElementToolNode( inductorString, count,
       new InductorNode( null, null, inductorModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
         isIcon: true
       } ),
