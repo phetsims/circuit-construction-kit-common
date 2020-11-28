@@ -197,7 +197,9 @@ class CCKCScreenView extends ScreenView {
       model.circuit,
       CONTROL_PANEL_ALIGN_GROUP,
       options.hasACandDCVoltageSources ? sourceResistanceString : batteryResistanceString,
-      tandem.createTandem( 'advancedAccordionBox' )
+      tandem.createTandem( 'advancedAccordionBox' ), {
+        showRealisticBulbsCheckbox: !options.hasACandDCVoltageSources
+      }
     );
 
     this.addChild( this.circuitLayerNodeBackLayer );

@@ -7,6 +7,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import merge from '../../../phet-core/js/merge.js';
 import VBox from '../../../scenery/js/nodes/VBox.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import VStrut from '../../../scenery/js/nodes/VStrut.js';
@@ -29,21 +30,31 @@ class AdvancedAccordionBox extends CCKCAccordionBox {
    */
   constructor( circuit, alignGroup, batteryResistanceControlString, tandem, options ) {
 
+    options = merge( {
+      showRealisticBulbsCheckbox: true
+    }, options );
+
     const titleConfig = {
       fontSize: CCKCConstants.FONT_SIZE,
       maxWidth: 120
     }; // Factor out titles
-    super( alignGroup.createBox( new VBox( {
-      align: 'left',
-      children: [
-        new WireResistivityControl( circuit.wireResistivityProperty, alignGroup, titleConfig, tandem.createTandem( 'wireResistivityControl' ) ),
-        new VStrut( 10 ),
-        new SourceResistanceControl( circuit.sourceResistanceProperty, alignGroup, batteryResistanceControlString, titleConfig, tandem.createTandem( 'sourceResistanceControl' ) ),
+    const children = [
+      new WireResistivityControl( circuit.wireResistivityProperty, alignGroup, titleConfig, tandem.createTandem( 'wireResistivityControl' ) ),
+      new VStrut( 10 ),
+      new SourceResistanceControl( circuit.sourceResistanceProperty, alignGroup, batteryResistanceControlString, titleConfig, tandem.createTandem( 'sourceResistanceControl' ) )
+    ];
+
+    if ( options.showRealisticBulbsCheckbox ) {
+      children.push(
         new VStrut( 20 ),
         new Checkbox( new Text( circuitConstructionKitCommonStrings.addRealisticBulbs, titleConfig ), circuit.addRealisticBulbsProperty, {
           tandem: tandem.createTandem( 'addRealisticBulbsCheckbox' )
         } )
-      ]
+      );
+    }
+    super( alignGroup.createBox( new VBox( {
+      align: 'left',
+      children: children
     } ) ), circuitConstructionKitCommonStrings.advanced, tandem, {
 
       // Left align the title, with no padding
