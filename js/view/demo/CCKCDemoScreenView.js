@@ -100,26 +100,26 @@ class CCKCDemoScreenView extends ScreenView {
     const halfBoxHeight = boxHeight / 2;
     const boxLength = 70;
     const resistorIEC = new Shape()
-        .moveTo( 0, 50 * SCHEMATIC_SCALE )
+      .moveTo( 0, 50 * SCHEMATIC_SCALE )
 
-        // left horizontal lead
-        .lineToRelative( SCHEMATIC_STEM_WIDTH, 0 )
+      // left horizontal lead
+      .lineToRelative( SCHEMATIC_STEM_WIDTH, 0 )
 
-        // upper half of the box
-        .lineToRelative(0, -halfBoxHeight )
-        .lineToRelative( boxLength, 0)
-        .lineToRelative(0, halfBoxHeight)
+      // upper half of the box
+      .lineToRelative( 0, -halfBoxHeight )
+      .lineToRelative( boxLength, 0 )
+      .lineToRelative( 0, halfBoxHeight )
 
-        // right horizontal lead
-        .lineToRelative( SCHEMATIC_STEM_WIDTH, 0 )
+      // right horizontal lead
+      .lineToRelative( SCHEMATIC_STEM_WIDTH, 0 )
 
-        // go back along the right horizontal lead
-        .lineToRelative( -SCHEMATIC_STEM_WIDTH, 0 )
+      // go back along the right horizontal lead
+      .lineToRelative( -SCHEMATIC_STEM_WIDTH, 0 )
 
-        // lower half of the box
-        .lineToRelative(0, halfBoxHeight )
-        .lineToRelative( -boxLength, 0 )
-        .lineToRelative(0, -halfBoxHeight );
+      // lower half of the box
+      .lineToRelative( 0, halfBoxHeight )
+      .lineToRelative( -boxLength, 0 )
+      .lineToRelative( 0, -halfBoxHeight );
 
     const resistorPathIEC = new Path( resistorIEC, {
       lineWidth: 3,
@@ -134,35 +134,35 @@ class CCKCDemoScreenView extends ScreenView {
 
     const boxLength7th = boxLength / 7;
     const fuseIEC = new Shape()
-        .moveTo( 0, 50 * SCHEMATIC_SCALE )
+      .moveTo( 0, 50 * SCHEMATIC_SCALE )
 
-        // left horizontal lead
-        .lineToRelative( SCHEMATIC_STEM_WIDTH, 0 )
+      // left horizontal lead
+      .lineToRelative( SCHEMATIC_STEM_WIDTH, 0 )
 
-        // upper half og the box
-        .lineToRelative(0, -halfBoxHeight )
-        .lineToRelative( boxLength, 0)
-        .lineToRelative(0, halfBoxHeight)
+      // upper half og the box
+      .lineToRelative( 0, -halfBoxHeight )
+      .lineToRelative( boxLength, 0 )
+      .lineToRelative( 0, halfBoxHeight )
 
-        // right horizontal lead
-        .lineToRelative( SCHEMATIC_STEM_WIDTH, 0 )
+      // right horizontal lead
+      .lineToRelative( SCHEMATIC_STEM_WIDTH, 0 )
 
-        // go back along the right horizontal lead
-        .lineToRelative( -SCHEMATIC_STEM_WIDTH, 0 )
+      // go back along the right horizontal lead
+      .lineToRelative( -SCHEMATIC_STEM_WIDTH, 0 )
 
-        // lower half og the box
-        .lineToRelative(0, halfBoxHeight)
-        .lineToRelative( -boxLength, 0 )
+      // lower half og the box
+      .lineToRelative( 0, halfBoxHeight )
+      .lineToRelative( -boxLength, 0 )
 
-        // small left vertical line. Place it at x = boxLength / 7 (seems to be visually a good place)
-        .lineToRelative(0, -boxHeight )
-        .lineToRelative( boxLength7th, 0 )
-        .lineToRelative(0, boxHeight )
+      // small left vertical line. Place it at x = boxLength / 7 (seems to be visually a good place)
+      .lineToRelative( 0, -boxHeight )
+      .lineToRelative( boxLength7th, 0 )
+      .lineToRelative( 0, boxHeight )
 
-        /* small right vertical line: the 1st 'lineToRelative' below takes to starting point, at the cost
-        of drawing a line on an already existing one. */
-        .lineToRelative(boxLength - 2 * boxLength7th, 0 )
-        .lineToRelative(0, -boxHeight );
+      /* small right vertical line: the 1st 'lineToRelative' below takes to starting point, at the cost
+      of drawing a line on an already existing one. */
+      .lineToRelative( boxLength - 2 * boxLength7th, 0 )
+      .lineToRelative( 0, -boxHeight );
 
     const fusePathIEC = new Path( fuseIEC, {
       lineWidth: 3,
@@ -176,35 +176,35 @@ class CCKCDemoScreenView extends ScreenView {
     // (see https://github.com/phetsims/circuit-construction-kit-common/issues/429 for a figure)
 
     const schematicCircleDiameter = 2 * schematicCircleRadius;
-    const cosPi4 = Math.cos(Math.PI / 4);
-    const sinPi4 = Math.sin( Math.PI / 4);
+    const cosPi4 = Math.cos( Math.PI / 4 );
+    const sinPi4 = Math.sin( Math.PI / 4 );
     const bulbIEC = new Shape()
-        .moveTo( 0, LEAD_Y )
+      .moveTo( 0, LEAD_Y )
 
-        // the circle
-        .arc( rightLeadX / 2, LEAD_Y, schematicCircleRadius, Math.PI, -Math.PI, true )
+      // the circle
+      .arc( rightLeadX / 2, LEAD_Y, schematicCircleRadius, Math.PI, -Math.PI, true )
 
-        // left lead
-        .horizontalLineToRelative(-SCHEMATIC_STEM_WIDTH)
+      // left lead
+      .horizontalLineToRelative( -SCHEMATIC_STEM_WIDTH )
 
-        // go to the other side of the circle and draw the right lead
-        .moveTo(schematicCircleDiameter, LEAD_Y)
-        .horizontalLineToRelative(SCHEMATIC_STEM_WIDTH)
+      // go to the other side of the circle and draw the right lead
+      .moveTo( schematicCircleDiameter, LEAD_Y )
+      .horizontalLineToRelative( SCHEMATIC_STEM_WIDTH )
 
-        // go to circle center to draw the 'x' (2 crossed lines) inside it.
-        // Addition of 0.5 seems to visually work better!
-        .moveTo(schematicCircleRadius + 0.5, LEAD_Y)
+      // go to circle center to draw the 'x' (2 crossed lines) inside it.
+      // Addition of 0.5 seems to visually work better!
+      .moveTo( schematicCircleRadius + 0.5, LEAD_Y )
 
-        // a line from center to circumference
-        .lineToRelative(schematicCircleRadius * cosPi4, -schematicCircleRadius * sinPi4)
+      // a line from center to circumference
+      .lineToRelative( schematicCircleRadius * cosPi4, -schematicCircleRadius * sinPi4 )
 
-        // continue the line to the other side of the circle
-        .lineToRelative(-schematicCircleDiameter * cosPi4, schematicCircleDiameter * sinPi4)
+      // continue the line to the other side of the circle
+      .lineToRelative( -schematicCircleDiameter * cosPi4, schematicCircleDiameter * sinPi4 )
 
-        // repeat to draw the other line at 90 degrees to the first
-        .moveTo(schematicCircleRadius, LEAD_Y)
-        .lineToRelative(-schematicCircleRadius * cosPi4, -schematicCircleRadius * sinPi4)
-        .lineToRelative(schematicCircleDiameter * cosPi4, schematicCircleDiameter * sinPi4);
+      // repeat to draw the other line at 90 degrees to the first
+      .moveTo( schematicCircleRadius, LEAD_Y )
+      .lineToRelative( -schematicCircleRadius * cosPi4, -schematicCircleRadius * sinPi4 )
+      .lineToRelative( schematicCircleDiameter * cosPi4, schematicCircleDiameter * sinPi4 );
 
     const bulbPathIEC = new Path( bulbIEC, {
       lineWidth: 3,
