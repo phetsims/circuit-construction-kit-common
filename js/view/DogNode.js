@@ -8,10 +8,9 @@
 
 import SoundClip from '../../../tambo/js/sound-generators/SoundClip.js';
 import soundManager from '../../../tambo/js/soundManager.js';
-import dogBarkingImage from '../../images/dog-bark_png.js';
-import dogImage from '../../images/dog_png.js';
 import dogBarkSound from '../../sounds/dog-bark_mp3.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import BarkNode from './BarkNode.js';
 import ResistorNode from './ResistorNode.js';
 
 class DogNode extends ResistorNode {
@@ -30,8 +29,26 @@ class DogNode extends ResistorNode {
     const soundClip = new SoundClip( dogBarkSound );
     soundManager.addSoundGenerator( soundClip );
 
+    this.barkNode = new BarkNode( {
+      scale: 1.2
+    } );
+    this.addChild( this.barkNode );
+
+    const positionBark = () => {
+      if ( dog.isBarkingProperty.value ) {
+        this.barkNode.right = this.contentNode.left + 20;
+        this.barkNode.centerY = this.contentNode.centerY - 46;
+      }
+    };
+
+    this.contentNode.boundsProperty.link( bounds => positionBark() );
+
     dog.isBarkingProperty.link( isBarking => {
-      this.lifelikeResistorImageNode.image = isBarking ? dogBarkingImage : dogImage;
+
+      // Position next to the dog's mouth
+      positionBark();
+
+      this.barkNode.visible = isBarking;
     } );
 
     dog.isBarkingProperty.lazyLink( isBarking => {

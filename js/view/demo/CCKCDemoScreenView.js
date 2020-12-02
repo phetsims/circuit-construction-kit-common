@@ -3,6 +3,7 @@
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import Shape from '../../../../kite/js/Shape.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
+import BarkNode from '../BarkNode.js';
 
 // Constants for the resistor
 const SCHEMATIC_SCALE = 0.54;
@@ -214,6 +215,12 @@ class CCKCDemoScreenView extends ScreenView {
     } );
     this.addChild( bulbPathIEC );
 
+    const barkNode = new BarkNode( {
+      center: this.layoutBounds.center.plusXY( 200, 0 ),
+      align: 'bottom',
+      scale: 1.5
+    } );
+    this.addChild( barkNode );
   }
 }
 
