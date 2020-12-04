@@ -36,8 +36,11 @@ class DogNode extends ResistorNode {
 
     const positionBark = () => {
       if ( dog.isBarkingProperty.value ) {
-        this.barkNode.right = this.contentNode.left + 20;
-        this.barkNode.centerY = this.contentNode.centerY - 46;
+        const startPosition = this.circuitElement.startVertexProperty.value.positionProperty.value;
+        const endPosition = this.circuitElement.endVertexProperty.value.positionProperty.value;
+        const unitVector = endPosition.minus( startPosition ).normalized();
+        const normalVector = unitVector.getPerpendicular();
+        this.barkNode.rightBottom = startPosition.plus( normalVector.timesScalar( 55 ) ).plus( unitVector.timesScalar( 12 ) );
       }
     };
 
