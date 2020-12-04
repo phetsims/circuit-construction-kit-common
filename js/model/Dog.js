@@ -42,7 +42,8 @@ class Dog extends Resistor {
       this.lastBarkTime = time;
     }
 
-    if ( this.isBarkingProperty.value && time - this.lastBarkTime > 0.2 ) {
+    const BARK_TIME = 0.5;
+    if ( this.isBarkingProperty.value && time - this.lastBarkTime > BARK_TIME ) {
       this.isBarkingProperty.value = false;
       this.lastBarkTime = 0;
     }
