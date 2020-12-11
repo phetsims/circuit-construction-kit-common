@@ -12,7 +12,7 @@ import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Range from '../../../dot/js/Range.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
-import ChartModel from '../../../bamboo/js/ChartModel.js';
+import ChartTransform from '../../../bamboo/js/ChartTransform.js';
 import ChartRectangle from '../../../bamboo/js/ChartRectangle.js';
 import GridLineSet from '../../../bamboo/js/GridLineSet.js';
 import LabelSet from '../../../bamboo/js/LabelSet.js';
@@ -115,11 +115,11 @@ class CCKCChartNode extends Node {
       position => position.isFinite() ? position.plusXY( 0, -10 ) : Vector2.ZERO
     );
 
-    const chartModel = new ChartModel( 150, 100, {
+    const chartTransform = new ChartTransform( 150, 100, {
       modelXRange: new Range( 0, 4.25 ),
       modelYRange: new Range( -2, 2 )
     } );
-    const chartBackground = new ChartRectangle( chartModel, {
+    const chartBackground = new ChartRectangle( chartTransform, {
       fill: 'white',
       cornerXRadius: 6,
       cornerYRadius: 6
@@ -159,10 +159,10 @@ class CCKCChartNode extends Node {
       lineDashOffset: 5 / 2
     };
 
-    const horizontalGridLineSet = new GridLineSet( chartModel, Orientation.HORIZONTAL, 1, gridLineOptions );
-    const verticalGridLineSet = new GridLineSet( chartModel, Orientation.VERTICAL, 1, gridLineOptions );
+    const horizontalGridLineSet = new GridLineSet( chartTransform, Orientation.HORIZONTAL, 1, gridLineOptions );
+    const verticalGridLineSet = new GridLineSet( chartTransform, Orientation.VERTICAL, 1, gridLineOptions );
 
-    const verticalLabelSet = new LabelSet( chartModel, Orientation.VERTICAL, 1, {
+    const verticalLabelSet = new LabelSet( chartTransform, Orientation.VERTICAL, 1, {
       edge: 'min',
       extent: 1.5,
       createLabel: value => new Text( value.toFixed( zoomLevelProperty.value === zoomRanges.length - 1 ? 1 : 0 ), {
@@ -177,14 +177,14 @@ class CCKCChartNode extends Node {
       top: chartBackground.top
     } );
     zoomLevelProperty.link( zoomLevel => {
-      chartModel.setModelYRange( zoomRanges[ zoomLevel ] );
+      chartTransform.setModelYRange( zoomRanges[ zoomLevel ] );
       verticalGridLineSet.setSpacing( zoomRanges[ zoomLevel ].max / 2 );
       verticalLabelSet.setSpacing( zoomRanges[ zoomLevel ].max / 2 );
     } );
 
     const penData = [ new Vector2( 0, 0 ) ];
 
-    const pen = new ScatterPlot( chartModel, penData, {
+    const pen = new ScatterPlot( chartTransform, penData, {
       fill: '#717274',
       stroke: '#717274',
       radius: 4
@@ -204,12 +204,12 @@ class CCKCChartNode extends Node {
     timeProperty.link( time => {
 
       // Show 4 seconds, plus a lead time of 0.25 sec
-      chartModel.setModelXRange( new Range( time - 4, time + 0.25 ) );
-      verticalGridLineSet.setLineDashOffset( time * chartModel.modelToViewDelta( Orientation.HORIZONTAL, 1 ) );
+      chartTransform.setModelXRange( new Range( time - 4, time + 0.25 ) );
+      verticalGridLineSet.setLineDashOffset( time * chartTransform.modelToViewDelta( Orientation.HORIZONTAL, 1 ) );
       updatePen();
     } );
 
-    const linePlot = new LinePlot( chartModel, seriesArray[ 0 ].data, {
+    const linePlot = new LinePlot( chartTransform, seriesArray[ 0 ].data, {
       stroke: '#717274',
       lineWidth: 1.5
     } );
@@ -247,7 +247,7 @@ class CCKCChartNode extends Node {
         verticalAxisTitleNode,
         horizontalAxisTitleNode,
         verticalLabelSet,
-        new SpanNode( scaleIndicatorText, chartModel.modelToViewDelta( Orientation.HORIZONTAL, 1 ), {
+        new SpanNode( scaleIndicatorText, chartTransform.modelToViewDelta( Orientation.HORIZONTAL, 1 ), {
           left: chartBackground.left,
           top: chartBackground.bottom + 3
         } )
