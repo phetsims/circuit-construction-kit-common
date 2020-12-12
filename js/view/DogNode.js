@@ -38,13 +38,17 @@ class DogNode extends ResistorNode {
       if ( dog.isBarkingProperty.value ) {
         const startPosition = this.circuitElement.startVertexProperty.value.positionProperty.value;
         const endPosition = this.circuitElement.endVertexProperty.value.positionProperty.value;
+        const angle = endPosition.minus( startPosition ).getAngle();
         const unitVector = endPosition.minus( startPosition ).normalized();
         const normalVector = unitVector.getPerpendicular();
-        this.barkNode.rightBottom = startPosition.plus( normalVector.timesScalar( 55 ) ).plus( unitVector.timesScalar( 12 ) );
+        const translation = startPosition.plus( normalVector.timesScalar( 55 ) ).plus( unitVector.timesScalar( 12 ) );
+
+        this.barkNode.setRotation( angle );
+        this.barkNode.setTranslation( translation );
       }
     };
 
-    this.contentNode.boundsProperty.link( bounds => positionBark() );
+    this.contentNode.boundsProperty.link( () => positionBark() );
 
     dog.isBarkingProperty.link( isBarking => {
 
@@ -54,9 +58,7 @@ class DogNode extends ResistorNode {
       this.barkNode.visible = isBarking;
     } );
 
-    dog.isBarkingProperty.lazyLink( isBarking => {
-      isBarking && soundClip.play();
-    } );
+    dog.isBarkingProperty.lazyLink( isBarking => isBarking && soundClip.play() );
   }
 }
 
