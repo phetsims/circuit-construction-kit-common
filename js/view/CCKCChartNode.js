@@ -115,7 +115,9 @@ class CCKCChartNode extends Node {
       position => position.isFinite() ? position.plusXY( 0, -10 ) : Vector2.ZERO
     );
 
-    const chartTransform = new ChartTransform( 150, 100, {
+    const chartTransform = new ChartTransform( {
+      viewWidth: 150,
+      viewHeight: 100,
       modelXRange: new Range( 0, 4.25 ),
       modelYRange: new Range( -2, 2 )
     } );
