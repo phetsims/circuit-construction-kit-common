@@ -8,8 +8,9 @@
  */
 
 import merge from '../../../phet-core/js/merge.js';
-import ZoomButton from '../../../scenery-phet/js/buttons/ZoomButton.js';
-import HBox from '../../../scenery/js/nodes/HBox.js';
+import MagnifyingGlassZoomButtonGroup from '../../../scenery-phet/js/MagnifyingGlassZoomButtonGroup.js';
+import PhetColorScheme from '../../../scenery-phet/js/PhetColorScheme.js';
+import RectangularButton from '../../../sun/js/buttons/RectangularButton.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
@@ -18,40 +19,22 @@ const ZOOMED_IN = 1;
 const ZOOMED_OUT = 0.5;
 const BUTTON_SPACING = 12;
 
-class ZoomControlPanel extends HBox {
+class ZoomControlPanel extends MagnifyingGlassZoomButtonGroup {
 
   /**
-   * @param {Property.<number>} selectedZoomProperty
+   * @param {NumberProperty} selectedZoomProperty
    * @param {Object} [options]
    */
   constructor( selectedZoomProperty, options ) {
     options = merge( {
       spacing: BUTTON_SPACING,
-      tandem: Tandem.REQUIRED
+      tandem: Tandem.REQUIRED,
+      buttonOptions: {
+        buttonAppearanceStrategy: RectangularButton.ThreeDAppearanceStrategy,
+        baseColor: PhetColorScheme.BUTTON_YELLOW
+      }
     }, options );
-    const zoomOutButton = new ZoomButton( {
-      in: false,
-      touchAreaXDilation: BUTTON_SPACING / 2,
-      touchAreaYDilation: BUTTON_SPACING / 2,
-      listener: () => selectedZoomProperty.set( ZOOMED_OUT ),
-      tandem: options.tandem.createTandem( 'zoomOutButton' )
-    } );
-    const zoomInButton = new ZoomButton( {
-      in: true,
-      touchAreaXDilation: BUTTON_SPACING / 2,
-      touchAreaYDilation: BUTTON_SPACING / 2,
-      listener: () => selectedZoomProperty.set( ZOOMED_IN ),
-      tandem: options.tandem.createTandem( 'zoomInButton' )
-    } );
-    options.children = [
-      zoomOutButton,
-      zoomInButton
-    ];
-    super( options );
-    selectedZoomProperty.link( zoomLevel => {
-      zoomInButton.setEnabled( zoomLevel === ZOOMED_OUT );
-      zoomOutButton.setEnabled( zoomLevel === ZOOMED_IN );
-    } );
+    super( selectedZoomProperty, options );
   }
 }
 
