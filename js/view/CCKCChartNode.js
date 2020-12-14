@@ -21,7 +21,7 @@ import ScatterPlot from '../../../bamboo/js/ScatterPlot.js';
 import SpanNode from '../../../bamboo/js/SpanNode.js';
 import merge from '../../../phet-core/js/merge.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
-import PlusMinusZoomButtonGroup from '../../../scenery-phet/js/PlusMinusZoomButtonGroup.js';
+import MagnifyingGlassZoomButtonGroup from '../../../scenery-phet/js/MagnifyingGlassZoomButtonGroup.js';
 import ShadedRectangle from '../../../scenery-phet/js/ShadedRectangle.js';
 import WireNode from '../../../scenery-phet/js/WireNode.js';
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
@@ -173,13 +173,16 @@ class CCKCChartNode extends Node {
       } )
     } );
 
-    const zoomButtonGroup = new PlusMinusZoomButtonGroup( zoomLevelProperty, {
+    const zoomButtonGroup = new MagnifyingGlassZoomButtonGroup( zoomLevelProperty, {
       orientation: 'vertical',
       left: chartBackground.right + 2,
       top: chartBackground.top,
+      magnifyingGlassNodeOptions: {
+        maxWidth: 15
+      },
       buttonOptions: {
-        xMargin: 7,
-        yMargin: 7
+        xMargin: 3,
+        yMargin: 3
       }
     } );
     zoomLevelProperty.link( zoomLevel => {
