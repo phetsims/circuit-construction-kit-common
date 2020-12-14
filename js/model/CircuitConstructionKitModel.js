@@ -13,6 +13,7 @@ import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Utils from '../../../dot/js/Utils.js';
 import merge from '../../../phet-core/js/merge.js';
+import Range from '../../../dot/js/Range.js';
 import Stopwatch from '../../../scenery-phet/js/Stopwatch.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
@@ -87,7 +88,8 @@ class CircuitConstructionKitModel {
 
     // @public {Property.<number>} scaling applied to the circuit node so the user can zoom out and make larger circuits
     this.selectedZoomProperty = new NumberProperty( 1, {
-      tandem: tandem.createTandem( 'selectedZoomProperty' )
+      tandem: tandem.createTandem( 'selectedZoomProperty' ),
+      range: new Range( 0, 1 )
     } );
 
     // @public (read-only) {Property.<number>} the animated value of the zoom level
