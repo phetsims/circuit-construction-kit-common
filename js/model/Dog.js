@@ -35,8 +35,8 @@ class Dog extends Resistor {
    * @public
    */
   step( time, dt, circuit ) {
-    const current = this.currentProperty.value;
-    if ( Math.abs( current ) > 0.1 ) {
+    const voltage = this.voltageDifferenceProperty.value;
+    if ( Math.abs( voltage ) > 100 ) {
       circuit.cutVertex( this.startVertexProperty.value );
       this.isBarkingProperty.value = true;
       this.lastBarkTime = time;
