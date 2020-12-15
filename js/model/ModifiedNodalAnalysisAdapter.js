@@ -127,7 +127,7 @@ class InductorAdapter extends DynamicCircuit.DynamicInductor {
    */
   applySolution( circuitResult ) {
 
-    // TODO (sign-error):
+    // TODO: (sign-error):
     this.inductor.currentProperty.value = -circuitResult.getTimeAverageCurrent( this.dynamicCircuitInductor );
     this.inductor.mnaCurrent = circuitResult.getInstantaneousCurrent( this.dynamicCircuitInductor );
     this.inductor.mnaVoltageDrop = circuitResult.getInstantaneousVoltage( this.dynamicCircuitInductor );

@@ -40,7 +40,7 @@ class CircuitElementToolNode extends VBox {
     const labelNode = new Text( labelText, { fontSize: 12, maxWidth: TOOLBOX_ICON_SIZE } );
     showLabelsProperty.linkAttribute( labelNode, 'visible' );
     options = merge( {
-      spacing: 3, // Spacing between the icon and the text
+      spacing: 6, // Spacing between the icon and the text
       cursor: 'pointer',
 
       // hack because the series ammeter tool node has text rendered separately (joined with probe ammeter)

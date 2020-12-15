@@ -37,44 +37,42 @@ class CircuitElementToolbox extends HBox {
     // Carousel was optimized for items of equal size.  To get equal spacing between objects, we create our own pages
     // see https://github.com/phetsims/circuit-construction-kit-dc/issues/91 and https://github.com/phetsims/sun/issues/541
     const pages = _.chunk( circuitElementToolNodes, options.itemsPerPage ).map( elements => new VBox( {
-      spacing: 5,
       children: elements,
       excludeInvisibleChildrenFromBounds: false
     } ) );
 
     // The schematic and lifelike icons have different dimensions, so update the spacing when the view type changes
-    // viewTypeProperty.link( () => {
-    //
-    //   // Track the spacings so that any non-filled pages can take the average spacing of the other pages
-    //   const spacings = [];
-    //   pages.forEach( page => {
-    //
-    //     // Zero out the spacing so we can compute the height without any spacing
-    //     page.setSpacing( 0 );
-    //
-    //     // Set the spacing so that items will fill the available area
-    //     const denominator = page.children.length - 1;
-    //     if ( denominator > 0 ) {
-    //       const spacing = ( options.pageHeight - page.height ) / denominator;
-    //       console.log('spacing',spacing);
-    //       page.setSpacing( spacing );
-    //
-    //       // Track the spacings of filled pages so that the average can be used for non-filled pages
-    //       if ( page.children.length === options.itemsPerPage ) {
-    //         spacings.push( spacing );
-    //       }
-    //     }
-    //   } );
-    //   if ( spacings.length > 0 ) {
-    //     const averageSpacing = _.sum( spacings ) / spacings.length;
-    //
-    //     pages.forEach( page => {
-    //       if ( page.children.length !== options.itemsPerPage ) {
-    //         page.setSpacing( averageSpacing );
-    //       }
-    //     } );
-    //   }
-    // } );
+    viewTypeProperty.link( () => {
+
+      // Track the spacings so that any non-filled pages can take the average spacing of the other pages
+      const spacings = [];
+      pages.forEach( page => {
+
+        // Zero out the spacing so we can compute the height without any spacing
+        page.setSpacing( 0 );
+
+        // Set the spacing so that items will fill the available area
+        const denominator = page.children.length - 1;
+        if ( denominator > 0 ) {
+          const spacing = ( options.pageHeight - page.height ) / denominator;
+          page.setSpacing( spacing );
+
+          // Track the spacings of filled pages so that the average can be used for non-filled pages
+          if ( page.children.length === options.itemsPerPage ) {
+            spacings.push( spacing );
+          }
+        }
+      } );
+      if ( spacings.length > 0 ) {
+        const averageSpacing = _.sum( spacings ) / spacings.length;
+
+        pages.forEach( page => {
+          if ( page.children.length !== options.itemsPerPage ) {
+            page.setSpacing( averageSpacing );
+          }
+        } );
+      }
+    } );
 
     // Make sure that non-filled pages have the same top
     const alignGroup = new AlignGroup();

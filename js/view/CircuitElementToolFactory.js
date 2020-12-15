@@ -475,8 +475,7 @@ class CircuitElementToolFactory {
         new Property( true ),
         this.viewTypeProperty,
         tandem.createTandem( 'highResistanceLightBulbIcon' ), {
-          isIcon: true,
-          scale: 0.2
+          isIcon: true
         } ),
       circuitElement => circuitElement instanceof LightBulb && circuitElement.highResistance,
       position => {
