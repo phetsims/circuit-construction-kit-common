@@ -256,7 +256,8 @@ class CCKCChartNode extends Node {
         verticalAxisTitleNode,
         horizontalAxisTitleNode,
         verticalLabelSet,
-        new SpanNode( scaleIndicatorText, chartTransform.modelToViewDelta( Orientation.HORIZONTAL, 1 ), {
+        new SpanNode( chartTransform, Orientation.HORIZONTAL, 1, scaleIndicatorText, {
+          color: 'white',
           left: chartBackground.left,
           top: chartBackground.bottom + 3
         } )
