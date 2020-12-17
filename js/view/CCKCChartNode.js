@@ -28,6 +28,7 @@ import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import NodeProperty from '../../../scenery/js/util/NodeProperty.js';
+import ButtonNode from '../../../sun/js/buttons/ButtonNode.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
@@ -178,9 +179,13 @@ class CCKCChartNode extends Node {
       left: chartBackground.right + 2,
       top: chartBackground.top,
       magnifyingGlassNodeOptions: {
+        glassRadius: 10,
         maxWidth: 15
       },
       buttonOptions: {
+        baseColor: 'white',
+        buttonAppearanceStrategy: ButtonNode.FlatAppearanceStrategy,
+        cornerRadius: 0,
         xMargin: 3,
         yMargin: 3
       }
