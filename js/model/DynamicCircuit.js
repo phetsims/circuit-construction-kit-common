@@ -137,9 +137,6 @@ class DynamicCircuit {
       // in series, so current is same through both companion components
       currentCompanions.push( {
         element: inductorAdapter,
-
-        // TODO: (sign-error) check sign, this was converted from battery to resistor
-
         getValueForSolution: solution => -solution.getCurrentForResistor( resistor )
       } );
     } );
