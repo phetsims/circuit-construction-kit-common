@@ -95,7 +95,6 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
     const plateChargeVisibleProperty = new BooleanProperty( true );
     const electricFieldVisibleProperty = new BooleanProperty( true );
 
-    // TODO: This is probably creating far too many <canvas> elements, and also making the charges blurry
     const lifelikeNode = new CapacitorNode( circuit, modelViewTransform, plateChargeVisibleProperty, electricFieldVisibleProperty, {
       tandem: Tandem.OPTIONAL,
       orientation: Orientation.HORIZONTAL // so the "-" charges are upside-up in the default orientation
