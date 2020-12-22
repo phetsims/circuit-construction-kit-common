@@ -49,8 +49,6 @@ class ClearDynamicsButton extends CCKCRoundPushButton {
       } ),
       listener: () => {
         const dynamicCircuitElement = circuit.selectedCircuitElementProperty.value;
-
-        // TODO: Should this be an assertion instead?  See other cases from CircuitElementContainerNode as well
         if ( dynamicCircuitElement instanceof DynamicCircuitElement ) {
           dynamicCircuitElement.clear();
         }
