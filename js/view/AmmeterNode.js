@@ -122,10 +122,10 @@ class AmmeterNode extends Node {
       ]
     } );
 
-    super( {
-      children: [ bodyNode, wireNode, probeNode ],
-      tandem: options.tandem // TODO: merge all options?
-    } );
+    assert && assert( !options.hasOwnProperty( 'children' ), 'children will be supplied by AmmeterNode' );
+    options.children = [ bodyNode, wireNode, probeNode ];
+
+    super( options );
 
     // @public (read-only) {ProbeNode}
     this.probeNode = probeNode;
