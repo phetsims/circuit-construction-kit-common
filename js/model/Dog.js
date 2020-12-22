@@ -35,6 +35,7 @@ class Dog extends Resistor {
    * @public
    */
   step( time, dt, circuit ) {
+    super.step( time, dt, circuit );
     const voltage = this.voltageDifferenceProperty.value;
     if ( Math.abs( voltage ) > 100 ) {
       circuit.cutVertex( this.startVertexProperty.value );

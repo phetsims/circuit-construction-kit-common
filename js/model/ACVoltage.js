@@ -77,7 +77,8 @@ class ACVoltage extends VoltageSource {
    * @param {number} dt - delta between last frame and current frame
    * @public
    */
-  step( time, dt ) {
+  step( time, dt, circuit ) {
+    super.step( time, dt, circuit );
     this.time = time;
     this.voltageProperty.set(
       this.maximumVoltageProperty.value * Math.sin( 2 * Math.PI * this.frequencyProperty.value * time + this.phaseProperty.value * Math.PI / 180 )

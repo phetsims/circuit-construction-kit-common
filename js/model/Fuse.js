@@ -63,9 +63,11 @@ class Fuse extends FixedCircuitElement {
   /**
    * @param {number} time - total elapsed time. Unused, but provided to match signature defined in body of Circuit.step
    * @param {number} dt - delta between last frame and current frame
+   * @param {Circuit} circuit
    * @public
    */
-  step( time, dt ) {
+  step( time, dt, circuit ) {
+    super.step( time, dt, circuit );
     // When the current exceeds the max, trip the fuse.  This cannot be modeled as a property link because it
     // creates a reentrant property loop which doesn't update the reset fuse button properly
     // Account for roundoff error in the circuit solve step

@@ -92,26 +92,8 @@ class CircuitElement extends PhetioObject {
     // we assign the directionality based on the initial current direction, so the initial current is always positive.
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/508
     this.isInitialCurrentNegative = null;
-    this.currentProperty.link( current => {
 
-      // Avoid measuring noise from the matrix solves in disconnected circuits
-      const epsilon = 1E-6;
-      if ( current < -epsilon ) {
-        if ( this.isInitialCurrentNegative === null ) {
-          this.isInitialCurrentNegative = true;
-        }
-      }
-      else if ( current > epsilon ) {
-        if ( this.isInitialCurrentNegative === null ) {
-          this.isInitialCurrentNegative = false;
-        }
-      }
-      else {
-
-        // Reset directionality, and take new directionality when current flows again
-        this.isInitialCurrentNegative = null;
-      }
-    } );
+    this.dataSet = [];
 
     // @public (read-only) {BooleanProperty} - true if the CircuitElement can be edited and dragged
     this.interactiveProperty = new BooleanProperty( options.interactive );
@@ -210,6 +192,42 @@ class CircuitElement extends PhetioObject {
     }
 
     this.voltageDifferenceProperty.set( this.computeVoltageDifference() );
+  }
+
+  // @public
+  step( time, dt, circuit ) {
+
+    const current = this.currentProperty.value;
+
+    // Keep 2 data points to track the slope
+    this.dataSet.push( { current: current, time: time } );
+    while ( this.dataSet.length > 2 ) {
+      this.dataSet.shift();
+    }
+
+    if ( this.dataSet.length < 2 ) {
+      return;
+    }
+
+    const dCurrent = this.dataSet[ 1 ].current - this.dataSet[ 0 ].current;
+    const dTime = this.dataSet[ 1 ].time - this.dataSet[ 0 ].time;
+    assert && assert( dTime > 0, 'cannot divide by 0' );
+    const slope = dCurrent / dTime;
+
+    const epsilon = 1E-6;
+    const isReadyToClear = Math.abs( slope ) < epsilon && Math.abs( current ) < epsilon;
+
+    // Take an initial current sign, but avoid measuring noise from the matrix solves in disconnected circuits
+    if ( this.isInitialCurrentNegative === null ) {
+      this.isInitialCurrentNegative = current < -epsilon ? true :
+                                      current > epsilon ? false :
+                                      null;
+    }
+    else if ( isReadyToClear ) {
+
+      // Reset directionality, and take new directionality when current flows again
+      this.isInitialCurrentNegative = null;
+    }
   }
 
   /**

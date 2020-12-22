@@ -68,9 +68,11 @@ class Wire extends CircuitElement {
    * Move forward in time
    * @param {number} time - total elapsed time in seconds
    * @param {number} dt - seconds since last step
+   * @param {Circuit} circuit
    * @public
    */
-  step( time, dt ) {
+  step( time, dt, circuit ) {
+    super.step( time, dt, circuit );
     this.update();
   }
 
