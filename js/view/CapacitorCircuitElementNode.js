@@ -77,14 +77,9 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
     const leftWireStub = new Image( wireIconImage, wireStubOptions );
     const rightWireStub = new Image( wireIconImage, wireStubOptions );
 
-    // TODO: Consider making CapacitorNode more view-oriented, at least in its dimensions? See https://github.com/phetsims/scenery-phet/issues/555
     const thickness = 0.01414213562373095;
     const plateBounds = new Bounds3( 0, 0, 0, thickness, CapacitorConstants.PLATE_HEIGHT, thickness );
-
-    // TODO: OK to use a mock object like this, or should we create a model type?  If we transform the CapacitorNode
-    // to more of a view-oriented component, this may not be necessary.  See https://github.com/phetsims/scenery-phet/issues/555
     const plateSeparationProperty = new NumberProperty( 0.004 );
-
     const circuit = {
       maxPlateCharge: 2.6562e-12,
       capacitor: {
