@@ -88,7 +88,7 @@ class SensorToolbox extends CCKCPanel {
 
     /**
      * @param {VoltmeterNode[]|AmmeterNode[]} meterNodes
-     * @param {string} meterModelName 'ammeter'|'voltmeter' for looking up the correpsponding models
+     * @param {string} meterModelName 'ammeter'|'voltmeter' for looking up the corresponding models
      * @returns {Object} a listener
      */
     const createListenerMulti = ( meterNodes, meterModelName ) =>
