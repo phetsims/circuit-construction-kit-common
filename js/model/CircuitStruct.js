@@ -120,7 +120,7 @@ CircuitStruct.fromStateObject = ( circuit, circuitState, resistivityProperty, ta
       circuitStruct.vertices[ circuitState.resistors[ i ].startVertex ],
       circuitStruct.vertices[ circuitState.resistors[ i ].endVertex ],
       Resistor.ResistorType.RESISTOR,
-      tandem.createNextTandem() // TODO(black-box-study): a way to set the resistance
+      tandem.createNextTandem() // TODO (black-box-study): a way to set the resistance
     ) );
   }
   for ( let i = 0; i < circuitState.lightBulbs.length; i++ ) {

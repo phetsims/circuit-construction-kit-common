@@ -94,7 +94,7 @@ class CCKCScreenView extends ScreenView {
     // @public (read-only) {CircuitConstructionKitModel}
     this.model = model;
 
-    // TODO(black-box-study): change background color to gray when isValueDepictionEnabledProperty goes false
+    // TODO (black-box-study): change background color to gray when isValueDepictionEnabledProperty goes false
 
     // @private - contains parts of the circuit that should be shown behind the controls
     this.circuitLayerNodeBackLayer = new Node();
@@ -120,7 +120,7 @@ class CCKCScreenView extends ScreenView {
 
     const ammeterNodes = model.ammeters.map( ammeter => {
       const ammeterNode = new AmmeterNode( ammeter, this.circuitLayerNode, {
-        tandem: tandem.createTandem( 'ammeterNode' + ammeter.phetioIndex ), // TODO(phet-io): Group?
+        tandem: tandem.createTandem( 'ammeterNode' + ammeter.phetioIndex ), // TODO (phet-io): Group?
         showResultsProperty: model.isValueDepictionEnabledProperty,
         visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty,
         blackBoxStudy: options.blackBoxStudy
