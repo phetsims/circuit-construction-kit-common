@@ -369,6 +369,10 @@ class CCKCChartNode extends Node {
     const dragListener = new DragListener( {
       positionProperty: this.meter.bodyPositionProperty,
       useParentOffset: true,
+
+      // adds support for zoomed coordinate frame, see
+      // https://github.com/phetsims/circuit-construction-kit-common/issues/301
+      targetNode: this,
       tandem: this.tandem.createTandem( 'dragHandler' ),
       start: () => {
         this.moveToFront();
@@ -399,13 +403,15 @@ class CCKCChartNode extends Node {
       }
     } );
 
-    // Constrain the chart node to be within the visible bounds
-    screenView.visibleBoundsProperty.link( visibleBounds => {
-      const bounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
-      const b1 = screenView.localToGlobalBounds( bounds );
-      dragListener.dragBounds = this.backgroundNode.globalToParentBounds( b1 );
-    } );
+    const update = () => {
+      const bounds = screenView.visibleBoundsProperty.value.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
+      const globalBounds = screenView.localToGlobalBounds( bounds );
+      dragListener.dragBounds = this.globalToParentBounds( globalBounds );
+      this.meter.bodyPositionProperty.value = dragListener.dragBounds.closestPointTo( this.meter.bodyPositionProperty.value );
+    };
+    screenView.visibleBoundsProperty.link( update );
 
+    this.circuitLayerNode.transformEmitter.addListener( update );
     this.backgroundDragListener = dragListener;
     this.backgroundNode.addInputListener( dragListener );
   }
