@@ -132,7 +132,7 @@ class CircuitElementToolFactory {
     lifelikeIcon.maxHeight = TOOLBOX_ICON_HEIGHT;
 
     const schematicIcon = createIcon( SCHEMATIC_PROPERTY );
-    schematicIcon.maxWidth = 80;
+    schematicIcon.maxWidth = TOOLBOX_ICON_WIDTH;
     schematicIcon.maxHeight = TOOLBOX_ICON_HEIGHT;
 
     options = merge( {
