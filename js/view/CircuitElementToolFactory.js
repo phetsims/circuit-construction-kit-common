@@ -140,11 +140,9 @@ class CircuitElementToolFactory {
       additionalProperty: new BooleanProperty( true )
     }, options );
 
-    const miniGroup = new AlignGroup();
-
-    const n = new ToggleNode( this.viewTypeProperty, [
-      { value: CircuitElementViewType.LIFELIKE, node: miniGroup.createBox( lifelikeIcon, { yAlign: 'bottom' } ) },
-      { value: CircuitElementViewType.SCHEMATIC, node: miniGroup.createBox( schematicIcon, { yAlign: 'bottom' } ) }
+    const toggleNode = new ToggleNode( this.viewTypeProperty, [
+      { value: CircuitElementViewType.LIFELIKE, node: lifelikeIcon },
+      { value: CircuitElementViewType.SCHEMATIC, node: schematicIcon }
     ] );
 
     this.viewTypeProperty.link( viewType => {
@@ -158,7 +156,7 @@ class CircuitElementToolFactory {
       this.viewTypeProperty,
       this.circuit,
       this.globalToCircuitLayerNodePoint,
-      iconAlignGroup.createBox( n, { yAlign: 'bottom' } ),
+      iconAlignGroup.createBox( toggleNode, { yAlign: 'bottom' } ),
       count,
       this.createCounter( predicate ),
       createElement, {
