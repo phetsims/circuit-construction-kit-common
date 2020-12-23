@@ -89,7 +89,7 @@ class CircuitConstructionKitModel {
     // @public {Property.<number>} scaling applied to the circuit node so the user can zoom out and make larger circuits
     this.selectedZoomProperty = new NumberProperty( 1, {
       tandem: tandem.createTandem( 'selectedZoomProperty' ),
-      range: new Range( 0, 1 )
+      range: new Range( 0, 1 ) // TODO: This looks buggy
     } );
 
     // @public (read-only) {Property.<number>} the animated value of the zoom level
