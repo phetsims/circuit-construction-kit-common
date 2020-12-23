@@ -310,7 +310,7 @@ class CCKCScreenView extends ScreenView {
       this.circuitElementToolbox.left = visibleBounds.left + VERTICAL_MARGIN +
                                         ( this.circuitElementToolbox.carousel ? 0 : 12 );
       this.circuitElementToolbox.top = visibleBounds.top + VERTICAL_MARGIN;
-      this.viewRadioButtonGroup.top = this.circuitElementToolbox.bottom + 20;
+      this.viewRadioButtonGroup.top = this.circuitElementToolbox.bottom + 14;
       this.viewRadioButtonGroup.centerX = this.circuitElementToolbox.right - this.circuitElementToolbox.carousel.width / 2;
 
       // Float the resetAllButton to the bottom right

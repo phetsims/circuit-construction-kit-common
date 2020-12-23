@@ -44,7 +44,7 @@ const voltageChartString = circuitConstructionKitCommonStrings.voltageChart;
 const voltmeterString = circuitConstructionKitCommonStrings.voltmeter;
 
 // constants
-const TOOLBOX_ICON_SIZE = 53;
+const TOOLBOX_ICON_HEIGHT = 53;
 const VOLTMETER_ICON_SCALE = 1.4;
 const ICON_TEXT_SPACING = 3; // distance in view coordinates from the isIcon to the text below the isIcon
 
@@ -117,7 +117,7 @@ class SensorToolbox extends CCKCPanel {
     const allVoltmetersVisibleProperty = DerivedProperty.and( voltmeterNodes.map( voltmeterNode => voltmeterNode.voltmeter.visibleProperty ) );
     allVoltmetersVisibleProperty.link( visible => voltmeterNodeIcon.setVisible( !visible ) );
     voltmeterNodeIcon.mutate( {
-      scale: TOOLBOX_ICON_SIZE * VOLTMETER_ICON_SCALE / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height )
+      scale: TOOLBOX_ICON_HEIGHT * VOLTMETER_ICON_SCALE / Math.max( voltmeterNodeIcon.width, voltmeterNodeIcon.height )
     } );
     voltmeterNodeIcon.addInputListener( createListenerMulti( voltmeterNodes, 'voltmeter' ) );
 
@@ -130,7 +130,7 @@ class SensorToolbox extends CCKCPanel {
     const allAmmetersVisibleProperty = DerivedProperty.and( ammeterNodes.map( ammeterNode => ammeterNode.ammeter.visibleProperty ) );
     allAmmetersVisibleProperty.link( visible => ammeterToolNode.setVisible( !visible ) );
     ammeterToolNode.mutate( {
-      scale: TOOLBOX_ICON_SIZE / Math.max( ammeterToolNode.width, ammeterToolNode.height )
+      scale: TOOLBOX_ICON_HEIGHT / Math.max( ammeterToolNode.width, ammeterToolNode.height )
     } );
     ammeterToolNode.addInputListener( createListenerMulti( ammeterNodes, 'ammeter' ) );
 
@@ -149,7 +149,7 @@ class SensorToolbox extends CCKCPanel {
       const endVertex = circuit.vertexGroup.createNextElement( position.plusXY( halfLength, 0 ) );
       return circuit.seriesAmmeterGroup.createNextElement( startVertex, endVertex );
     };
-    seriesAmmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_SIZE / seriesAmmeterNodeIcon.width } );
+    seriesAmmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_HEIGHT / seriesAmmeterNodeIcon.width } );
     const seriesAmmeterToolNode = new CircuitElementToolNode(
       '',
       new Property( false ),

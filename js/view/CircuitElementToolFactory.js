@@ -11,10 +11,11 @@ import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
+import AlignGroup from '../../../scenery/js/nodes/AlignGroup.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import Line from '../../../scenery/js/nodes/Line.js';
-import Node from '../../../scenery/js/nodes/Node.js';
 import Color from '../../../scenery/js/util/Color.js';
+import ToggleNode from '../../../sun/js/ToggleNode.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import wireIconImage from '../../images/wire-icon_png.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -61,10 +62,16 @@ const wireString = circuitConstructionKitCommonStrings.wire;
 // constants
 const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
 const AC_VOLTAGE_LENGTH = CCKCConstants.AC_VOLTAGE_LENGTH;
-const TOOLBOX_ICON_SIZE = CCKCConstants.TOOLBOX_ICON_SIZE;
+const TOOLBOX_ICON_HEIGHT = CCKCConstants.TOOLBOX_ICON_HEIGHT;
+const TOOLBOX_ICON_WIDTH = CCKCConstants.TOOLBOX_ICON_WIDTH;
 const FUSE_LENGTH = CCKCConstants.FUSE_LENGTH;
 const WIRE_LENGTH = CCKCConstants.WIRE_LENGTH;
 const SWITCH_LENGTH = CCKCConstants.SWITCH_LENGTH;
+
+// Separate icons are made for schematic/lifelike so they can be aligned
+const iconAlignGroup = new AlignGroup();
+const LIFELIKE_PROPERTY = new Property( CircuitElementViewType.LIFELIKE );
+const SCHEMATIC_PROPERTY = new Property( CircuitElementViewType.SCHEMATIC );
 
 class CircuitElementToolFactory {
 
@@ -109,7 +116,7 @@ class CircuitElementToolFactory {
    * Utility function that creates a CircuitElementToolNode
    * @param {string} labelString
    * @param {number} count
-   * @param {Node} icon
+   * @param {function(Property<CircuitElementViewType>):Node} createIcon
    * @param {function} predicate - CircuitElement => boolean, used to count circuit elements of that kind
    * @param {function} createElement - (Vector2) => CircuitElement Function that creates a CircuitElement at the given position
    *                                 - for most components it is the center of the component.  For Light Bulbs, it is
@@ -118,21 +125,40 @@ class CircuitElementToolFactory {
    * @returns {CircuitElementToolNode}
    * @private
    */
-  createCircuitElementToolNode( labelString, count, icon, predicate, createElement, options ) {
+  createCircuitElementToolNode( labelString, count, createIcon, predicate, createElement, options ) {
+
+    const lifelikeIcon = createIcon( LIFELIKE_PROPERTY );
+    lifelikeIcon.maxWidth = TOOLBOX_ICON_WIDTH;
+    lifelikeIcon.maxHeight = TOOLBOX_ICON_HEIGHT;
+
+    const schematicIcon = createIcon( SCHEMATIC_PROPERTY );
+    schematicIcon.maxWidth = 80;
+    schematicIcon.maxHeight = TOOLBOX_ICON_HEIGHT;
+
     options = merge( {
-      iconScale: 1.0,
-      limitingMaxDimension: Math.max( icon.width, icon.height ),
       tandem: Tandem.REQUIRED,
       additionalProperty: new BooleanProperty( true )
     }, options );
-    icon.mutate( { scale: options.iconScale * TOOLBOX_ICON_SIZE / options.limitingMaxDimension } );
+
+    const miniGroup = new AlignGroup();
+
+    const n = new ToggleNode( this.viewTypeProperty, [
+      { value: CircuitElementViewType.LIFELIKE, node: miniGroup.createBox( lifelikeIcon, { yAlign: 'bottom' } ) },
+      { value: CircuitElementViewType.SCHEMATIC, node: miniGroup.createBox( schematicIcon, { yAlign: 'bottom' } ) }
+    ] );
+
+    this.viewTypeProperty.link( viewType => {
+      lifelikeIcon.visible = viewType === CircuitElementViewType.LIFELIKE;
+      schematicIcon.visible = viewType === CircuitElementViewType.SCHEMATIC;
+    } );
+
     return new CircuitElementToolNode(
       labelString,
       this.showLabelsProperty,
       this.viewTypeProperty,
       this.circuit,
       this.globalToCircuitLayerNodePoint,
-      icon,
+      iconAlignGroup.createBox( n, { yAlign: 'bottom' } ),
       count,
       this.createCounter( predicate ),
       createElement, {
@@ -154,11 +180,7 @@ class CircuitElementToolFactory {
       stroke: Color.BLACK,
       lineWidth: 4.5 // match with other toolbox icons
     } );
-    const wireNode = new Node();
-    this.viewTypeProperty.link( view => {
-      wireNode.children = [ view === CircuitElementViewType.LIFELIKE ? lifelikeWireNode : schematicWireNode ];
-    } );
-    return this.createCircuitElementToolNode( wireString, count, wireNode,
+    return this.createCircuitElementToolNode( wireString, count, viewType => viewType.value === CircuitElementViewType.LIFELIKE ? lifelikeWireNode : schematicWireNode,
       circuitElement => circuitElement instanceof Wire,
       position => this.circuit.wireGroup.createNextElement( ...this.circuit.createVertexPairArray( position, WIRE_LENGTH ) ), {
         tandem: tandem
@@ -177,7 +199,7 @@ class CircuitElementToolFactory {
       new Property( 0 ), Battery.BatteryType.NORMAL, Tandem.OPTIONAL
     );
     return this.createCircuitElementToolNode( batteryString, count,
-      new BatteryNode( null, null, batteryModel, this.viewTypeProperty, tandem.createTandem( 'rightBatteryIcon' ), { isIcon: true } ),
+      viewTypeProperty => new BatteryNode( null, null, batteryModel, viewTypeProperty, tandem.createTandem( 'rightBatteryIcon' ), { isIcon: true } ),
       circuitElement => circuitElement instanceof Battery &&
                         circuitElement.initialOrientation === 'right' &&
                         circuitElement.batteryType === Battery.BatteryType.NORMAL,
@@ -200,11 +222,10 @@ class CircuitElementToolFactory {
       Tandem.OPTIONAL
     );
     return this.createCircuitElementToolNode( acSourceString, count,
-      new ACVoltageNode( null, null, acSource, this.viewTypeProperty, tandem.createTandem( 'acSourceIcon' ), { isIcon: true } ),
+      viewTypeProperty => new ACVoltageNode( null, null, acSource, viewTypeProperty, tandem.createTandem( 'acSourceIcon' ), { isIcon: true, scale: 0.68 } ),
       circuitElement => circuitElement instanceof ACVoltage,
       position => this.circuit.acVoltageGroup.createNextElement( ...this.circuit.createVertexPairArray( position, AC_VOLTAGE_LENGTH ) ), {
-        tandem: tandem,
-        iconScale: 0.68
+        tandem: tandem
       }
     );
   }
@@ -233,15 +254,14 @@ class CircuitElementToolFactory {
         realistic: realistic
       } );
     return this.createCircuitElementToolNode( string, count,
-      new CCKCLightBulbNode( null, null,
+      viewTypeProperty => new CCKCLightBulbNode( null, null,
         lightBulbModel,
-        new Property( true ), this.viewTypeProperty, tandem.createTandem( 'lightBulbIcon' ), { isIcon: true } ),
+        new Property( true ), viewTypeProperty, tandem.createTandem( 'lightBulbIcon' ), { isIcon: true, scale: 0.85 } ),
       circuitElement => circuitElement instanceof LightBulb && !circuitElement.highResistance,
       position => {
         const vertexPair = LightBulb.createVertexPair( position, this.circuit );
         return lightBulbGroup.createNextElement( vertexPair.startVertex, vertexPair.endVertex, CCKCConstants.DEFAULT_RESISTANCE );
       }, {
-        iconScale: 0.85,
         tandem: tandem,
         additionalProperty: addRealisticBulbsProperty || new BooleanProperty( true )
       } );
@@ -268,7 +288,7 @@ class CircuitElementToolFactory {
     return this.createCircuitElementToolNode(
       labelString,
       count,
-      new ResistorNode( null, null, resistorModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
+      viewTypeProperty => new ResistorNode( null, null, resistorModel, viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
         isIcon: true
       } ),
       circuitElement => circuitElement instanceof Resistor && circuitElement.resistorType === resistorType,
@@ -293,7 +313,7 @@ class CircuitElementToolFactory {
       Tandem.OPTIONAL
     );
     return this.createCircuitElementToolNode( fuseString, count,
-      new FuseNode( null, null, fuseModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
+      viewTypeProperty => new FuseNode( null, null, fuseModel, viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
         isIcon: true
       } ),
       circuitElement => circuitElement instanceof Fuse,
@@ -315,17 +335,12 @@ class CircuitElementToolFactory {
       new Vertex( new Vector2( CCKCConstants.CAPACITOR_LENGTH, 0 ) ),
       Tandem.OPTIONAL
     );
-    const icon = new CapacitorCircuitElementNode( null, null, capacitorModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
-      isIcon: true
-    } );
     return this.createCircuitElementToolNode( capacitorString, count,
-      icon,
+      viewTypeProperty => new CapacitorCircuitElementNode( null, null, capacitorModel, viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
+        isIcon: true
+      } ),
       circuitElement => circuitElement instanceof Capacitor,
       position => this.circuit.capacitorGroup.createNextElement( ...this.circuit.createVertexPairArray( position, CCKCConstants.CAPACITOR_LENGTH ) ), {
-
-        // Capacitor is tall, so to make sure the icon has the same width as other components, we need to specify the
-        // scaling is based on width
-        limitingMaxDimension: icon.width,
         tandem: tandem
       } );
   }
@@ -343,8 +358,9 @@ class CircuitElementToolFactory {
       Tandem.OPTIONAL
     );
     return this.createCircuitElementToolNode( inductorString, count,
-      new InductorNode( null, null, inductorModel, this.viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
-        isIcon: true
+      viewTypeProperty => new InductorNode( null, null, inductorModel, viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
+        isIcon: true,
+        scale: 0.75
       } ),
       circuitElement => circuitElement instanceof Inductor,
       position => this.circuit.inductorGroup.createNextElement( ...this.circuit.createVertexPairArray( position, CCKCConstants.INDUCTOR_LENGTH ) ), {
@@ -360,12 +376,12 @@ class CircuitElementToolFactory {
    */
   createSwitchToolNode( count, tandem ) {
     return this.createCircuitElementToolNode( switchString, count,
-      new SwitchNode( null, null,
+      viewTypeProperty => new SwitchNode( null, null,
         new Switch(
           new Vertex( Vector2.ZERO ),
           new Vertex( new Vector2( SWITCH_LENGTH, 0 ) ),
           Tandem.OPTIONAL
-        ), this.viewTypeProperty, tandem.createTandem( 'switchIcon' ), {
+        ), viewTypeProperty, tandem.createTandem( 'switchIcon' ), {
           isIcon: true
         } ),
       circuitElement => circuitElement instanceof Switch,
@@ -429,7 +445,7 @@ class CircuitElementToolFactory {
     return this.createCircuitElementToolNode(
       batteryString,
       count,
-      new BatteryNode( null, null,
+      viewTypeProperty => new BatteryNode( null, null,
         new Battery(
           new Vertex( Vector2.ZERO ),
           new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
@@ -438,7 +454,7 @@ class CircuitElementToolFactory {
           Tandem.OPTIONAL, {
             voltage: 1000
           }
-        ), this.viewTypeProperty, tandem.createTandem( 'highVoltageBatteryIcon' ), { isIcon: true } ),
+        ), viewTypeProperty, tandem.createTandem( 'highVoltageBatteryIcon' ), { isIcon: true } ),
       circuitElement => circuitElement instanceof Battery &&
                         circuitElement.initialOrientation === 'right' &&
                         circuitElement.batteryType === Battery.BatteryType.HIGH_VOLTAGE, position => {
@@ -459,7 +475,7 @@ class CircuitElementToolFactory {
     return this.createCircuitElementToolNode(
       lightBulbString,
       count,
-      new CCKCLightBulbNode(
+      viewTypeProperty => new CCKCLightBulbNode(
         null,
         null,
         LightBulb.createAtPosition(
@@ -473,7 +489,7 @@ class CircuitElementToolFactory {
             icon: true
           } ),
         new Property( true ),
-        this.viewTypeProperty,
+        viewTypeProperty,
         tandem.createTandem( 'highResistanceLightBulbIcon' ), {
           isIcon: true
         } ),

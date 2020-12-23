@@ -18,9 +18,10 @@ import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 // constants
-const TOOLBOX_ICON_SIZE = CCKCConstants.TOOLBOX_ICON_SIZE;
+const TOOLBOX_ICON_WIDTH = CCKCConstants.TOOLBOX_ICON_WIDTH;
 
 class CircuitElementToolNode extends VBox {
+
   /**
    * @param {string} labelText
    * @param {BooleanProperty} showLabelsProperty
@@ -37,10 +38,10 @@ class CircuitElementToolNode extends VBox {
    * @param {Object} [options]
    */
   constructor( labelText, showLabelsProperty, viewTypeProperty, circuit, globalToCircuitLayerNodePoint, iconNode, maxNumber, count, createElement, options ) {
-    const labelNode = new Text( labelText, { fontSize: 12, maxWidth: TOOLBOX_ICON_SIZE } );
+    const labelNode = new Text( labelText, { fontSize: 12, maxWidth: TOOLBOX_ICON_WIDTH } );
     showLabelsProperty.linkAttribute( labelNode, 'visible' );
     options = merge( {
-      spacing: 6, // Spacing between the icon and the text
+      spacing: 2, // Spacing between the icon and the text
       cursor: 'pointer',
 
       // hack because the series ammeter tool node has text rendered separately (joined with probe ammeter)
