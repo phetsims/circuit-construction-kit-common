@@ -6,7 +6,8 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import DynamicSeries from '../../../griddle/js/DynamicSeries.js';
+import createObservableArray from '../../../axon/js/createObservableArray.js';
+import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -31,7 +32,7 @@ class CurrentChartNode extends CCKCChartNode {
       tandem: Tandem.OPTIONAL
     }, options );
 
-    const series = new DynamicSeries( CCKCConstants.DYNAMIC_SERIES_OPTIONS );
+    const series = createObservableArray();
     super( circuitLayerNode, timeProperty, visibleBoundsProperty, [ series ], currentWithUnitsString, options );
 
     // @private
@@ -58,9 +59,9 @@ class CurrentChartNode extends CCKCChartNode {
   step( time, dt ) {
     if ( this.meter.visibleProperty.value ) {
       const current = this.circuitLayerNode.getCurrent( this.probeNode1 );
-      this.series.addXYDataPoint( time, current === null ? NaN : current || 0 );
-      while ( this.series.hasData() && this.series.getDataPoint( 0 ).x < this.timeProperty.value - CCKCConstants.NUMBER_OF_TIME_DIVISIONS ) {
-        this.series.shiftData();
+      this.series.push( new Vector2( time, current === null ? NaN : current || 0 ) );
+      while ( this.series.length > 0 && this.series[ 0 ].x < this.timeProperty.value - CCKCConstants.NUMBER_OF_TIME_DIVISIONS ) {
+        this.series.shift();
       }
     }
   }

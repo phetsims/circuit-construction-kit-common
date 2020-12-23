@@ -53,7 +53,7 @@ class CCKCChartNode extends Node {
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {NumberProperty} timeProperty
    * @param {Property.<Bounds2>} visibleBoundsProperty
-   * @param {DynamicSeries[]} seriesArray
+   * @param {ObservableArrayDef[]} seriesArray
    * @param {string} verticalAxisLabel
    * @param {Object} [options]
    */
@@ -205,9 +205,9 @@ class CCKCChartNode extends Node {
     } );
     const updatePen = () => {
       penData[ 0 ].x = timeProperty.value;
-      const length = seriesArray[ 0 ].data.length;
+      const length = seriesArray[ 0 ].length;
       if ( length > 0 ) {
-        const y = seriesArray[ 0 ].data[ length - 1 ].y;
+        const y = seriesArray[ 0 ][ length - 1 ].y;
         penData[ 0 ].y = isNaN( y ) ? 0 : y;
       }
       else {
@@ -223,12 +223,16 @@ class CCKCChartNode extends Node {
       updatePen();
     } );
 
-    const linePlot = new LinePlot( chartTransform, seriesArray[ 0 ].data, {
+    const linePlot = new LinePlot( chartTransform, seriesArray[ 0 ], {
       stroke: '#717274',
       lineWidth: 1.5
     } );
 
-    seriesArray[ 0 ].addDynamicSeriesListener( () => {
+    seriesArray[ 0 ].elementAddedEmitter.addListener( () => {
+      linePlot.update();
+      updatePen();
+    } );
+    seriesArray[ 0 ].elementRemovedEmitter.addListener( () => {
       linePlot.update();
       updatePen();
     } );
@@ -286,7 +290,7 @@ class CCKCChartNode extends Node {
    * @param {number} dy - initial relative y coordinate for the probe
    * @param {Property.<Vector2>} connectionProperty
    * @param {Tandem} tandem
-   * @returns {DynamicSeries}
+   * @returns {CCKCProbeNode}
    * @protected
    */
   addProbeNode( color, wireColor, dx, dy, connectionProperty, tandem ) {

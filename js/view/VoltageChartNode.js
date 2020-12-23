@@ -6,7 +6,8 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import DynamicSeries from '../../../griddle/js/DynamicSeries.js';
+import createObservableArray from '../../../axon/js/createObservableArray.js';
+import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Color from '../../../scenery/js/util/Color.js';
@@ -38,7 +39,7 @@ class VoltageChartNode extends CCKCChartNode {
       tandem: Tandem.OPTIONAL
     }, options );
 
-    const series = new DynamicSeries( CCKCConstants.DYNAMIC_SERIES_OPTIONS );
+    const series = createObservableArray();
     super( circuitLayerNode, timeProperty, visibleBoundsProperty, [ series ], voltageWithUnitsString, options );
 
     // @private
@@ -65,7 +66,7 @@ class VoltageChartNode extends CCKCChartNode {
       const blackConnection = this.circuitLayerNode.getVoltageConnection( blackPoint );
       const voltage = this.circuitLayerNode.circuit.getVoltageBetweenConnections( redConnection, blackConnection );
 
-      this.series.addXYDataPoint( time, voltage === null ? NaN : voltage || 0 );
+      this.series.push( new Vector2( time, voltage === null ? NaN : voltage || 0 ) );
 
       // For debugging, depict the points where the sampling happens
       if ( CCKCQueryParameters.showVoltmeterSamplePoints ) {
@@ -77,8 +78,8 @@ class VoltageChartNode extends CCKCChartNode {
         } ) );
       }
 
-      while ( this.series.hasData() && this.series.getDataPoint( 0 ).x < this.timeProperty.value - CCKCConstants.NUMBER_OF_TIME_DIVISIONS ) {
-        this.series.shiftData();
+      while ( this.series.length > 0 && this.series[ 0 ].x < this.timeProperty.value - CCKCConstants.NUMBER_OF_TIME_DIVISIONS ) {
+        this.series.shift();
       }
     }
   }

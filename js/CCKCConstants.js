@@ -159,10 +159,6 @@ const CCKCConstants = {
   // Number of wires that can be dragged out of the toolbox
   NUMBER_OF_WIRES: CCKCQueryParameters.moreWires ? 50 : 25,
 
-  // Options to new DynamicSeries, used in the charts. Dark gray sampled from the design doc.  Line width increased
-  // beyond 1.0 to avoid aliasing problems in the chart
-  DYNAMIC_SERIES_OPTIONS: { color: '#717274', lineWidth: 1.5 },
-
   NUMBER_OF_TIME_DIVISIONS: 4,
   CHART_SERIES_COLOR: '#404041',
 
