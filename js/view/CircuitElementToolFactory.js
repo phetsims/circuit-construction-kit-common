@@ -330,13 +330,13 @@ class CircuitElementToolFactory {
    * @public
    */
   createCapacitorToolNode( count, tandem ) {
-    const capacitorModel = new Capacitor(
+    const capacitor = new Capacitor(
       new Vertex( Vector2.ZERO ),
       new Vertex( new Vector2( CCKCConstants.CAPACITOR_LENGTH, 0 ) ),
       Tandem.OPTIONAL
     );
     return this.createCircuitElementToolNode( capacitorString, count,
-      viewTypeProperty => new CapacitorCircuitElementNode( null, null, capacitorModel, viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
+      viewTypeProperty => new CapacitorCircuitElementNode( null, null, capacitor, viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
         isIcon: true
       } ),
       circuitElement => circuitElement instanceof Capacitor,

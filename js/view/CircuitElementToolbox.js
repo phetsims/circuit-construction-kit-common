@@ -31,6 +31,9 @@ class CircuitElementToolbox extends HBox {
 
     options = merge( {
       carouselOptions: {
+
+        itemsPerPage: 5,
+
         orientation: 'vertical',
 
         // Determines the vertical margins
