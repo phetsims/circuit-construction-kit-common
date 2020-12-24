@@ -182,7 +182,6 @@ class ResistorNode extends FixedCircuitElementNode {
 
     scale = lifelikeResistorImageNode.width / iecSchematicShape.bounds.width;
     iecSchematicShape = iecSchematicShape.transformed( Matrix3.scale( scale, scale ) );
-    // iecSchematicShape = iecSchematicShape.transformed( Matrix3.scale( scale, scale ) );
 
     const schematicNode = new Path( ieeeSchematicShape, {
       stroke: Color.BLACK,
@@ -194,13 +193,12 @@ class ResistorNode extends FixedCircuitElementNode {
                             iecSchematicShape;
     } );
 
+    schematicNode.mouseArea = schematicNode.localBounds;
+    schematicNode.touchArea = schematicNode.localBounds;
+
     // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
     schematicNode.centerY = 0;
     lifelikeResistorImageNode.centerY = 0;
-
-    // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
-    schematicNode.mouseArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
-    schematicNode.touchArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
 
     lifelikeResistorImageNode.translate( 0, resistor.resistorType.verticalOffset );
 
