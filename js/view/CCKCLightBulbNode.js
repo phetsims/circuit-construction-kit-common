@@ -195,10 +195,9 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
       }
     } );
 
-    // Expand the pointer areas with a defensive copy, see
-    // https://github.com/phetsims/circuit-construction-kit-common/issues/310
+    // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
     if ( !options.isIcon ) {
-      schematicNode.mouseArea = schematicNode.bounds.shifted( 4, schematicNode.height );
+      schematicNode.mouseArea = schematicNode.bounds.dilated( 2 );
       schematicNode.touchArea = schematicNode.mouseArea;
     }
 
