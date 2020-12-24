@@ -389,6 +389,7 @@ class WireNode extends CircuitElementNode {
       }
     }
     this.touchArea = getTouchArea( this.wire );
+    this.mouseArea = this.touchArea;
   }
 
   /**
