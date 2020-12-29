@@ -59,8 +59,9 @@ class CurrentChartNode extends CCKCChartNode {
   step( time, dt ) {
     if ( this.meter.visibleProperty.value ) {
       const current = this.circuitLayerNode.getCurrent( this.probeNode1 );
-      this.series.push( new Vector2( time, current === null ? NaN : current || 0 ) );
-      while ( this.series.length > 0 && this.series[ 0 ].x < this.timeProperty.value - CCKCConstants.NUMBER_OF_TIME_DIVISIONS ) {
+      this.series.push( current === null ? null : new Vector2( time, current || 0 ) );
+      while ( ( this.series[ 0 ] === null ) ||
+              ( this.series.length > 0 && this.series[ 0 ].x < this.timeProperty.value - CCKCConstants.NUMBER_OF_TIME_DIVISIONS ) ) {
         this.series.shift();
       }
     }

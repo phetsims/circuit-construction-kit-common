@@ -207,8 +207,8 @@ class CCKCChartNode extends Node {
       penData[ 0 ].x = timeProperty.value;
       const length = seriesArray[ 0 ].length;
       if ( length > 0 ) {
-        const y = seriesArray[ 0 ][ length - 1 ].y;
-        penData[ 0 ].y = isNaN( y ) ? 0 : y;
+        const point = seriesArray[ 0 ][ length - 1 ];
+        penData[ 0 ].y = point === null ? 0 : point.y;
       }
       else {
         penData[ 0 ].y = 0;

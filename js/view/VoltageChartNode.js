@@ -66,7 +66,7 @@ class VoltageChartNode extends CCKCChartNode {
       const blackConnection = this.circuitLayerNode.getVoltageConnection( blackPoint );
       const voltage = this.circuitLayerNode.circuit.getVoltageBetweenConnections( redConnection, blackConnection );
 
-      this.series.push( new Vector2( time, voltage === null ? NaN : voltage || 0 ) );
+      this.series.push( voltage === null ? null : new Vector2( time, voltage || 0 ) );
 
       // For debugging, depict the points where the sampling happens
       if ( CCKCQueryParameters.showVoltmeterSamplePoints ) {
@@ -78,7 +78,8 @@ class VoltageChartNode extends CCKCChartNode {
         } ) );
       }
 
-      while ( this.series.length > 0 && this.series[ 0 ].x < this.timeProperty.value - CCKCConstants.NUMBER_OF_TIME_DIVISIONS ) {
+      while ( ( this.series[ 0 ] === null ) ||
+              ( this.series.length > 0 && this.series[ 0 ].x < this.timeProperty.value - CCKCConstants.NUMBER_OF_TIME_DIVISIONS ) ) {
         this.series.shift();
       }
     }
