@@ -9,6 +9,8 @@
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
+import CanvasLinePlot from '../../../bamboo/js/CanvasLinePlot.js';
+import ChartCanvasNode from '../../../bamboo/js/ChartCanvasNode.js';
 import Range from '../../../dot/js/Range.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
@@ -16,7 +18,6 @@ import ChartTransform from '../../../bamboo/js/ChartTransform.js';
 import ChartRectangle from '../../../bamboo/js/ChartRectangle.js';
 import GridLineSet from '../../../bamboo/js/GridLineSet.js';
 import LabelSet from '../../../bamboo/js/LabelSet.js';
-import LinePlot from '../../../bamboo/js/LinePlot.js';
 import ScatterPlot from '../../../bamboo/js/ScatterPlot.js';
 import SpanNode from '../../../bamboo/js/SpanNode.js';
 import merge from '../../../phet-core/js/merge.js';
@@ -223,10 +224,10 @@ class CCKCChartNode extends Node {
       updatePen();
     } );
 
-    const linePlot = new LinePlot( chartTransform, seriesArray[ 0 ], {
+    const linePlot = new ChartCanvasNode( chartTransform, [ new CanvasLinePlot( chartTransform, seriesArray[ 0 ], {
       stroke: '#717274',
       lineWidth: 1.5
-    } );
+    } ) ] );
 
     seriesArray[ 0 ].elementAddedEmitter.addListener( () => {
       linePlot.update();
