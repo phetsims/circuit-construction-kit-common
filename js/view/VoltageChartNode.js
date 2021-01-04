@@ -8,6 +8,7 @@
 
 import createObservableArray from '../../../axon/js/createObservableArray.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import Range from '../../../dot/js/Range.js';
 import merge from '../../../phet-core/js/merge.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Color from '../../../scenery/js/util/Color.js';
@@ -35,6 +36,7 @@ class VoltageChartNode extends CCKCChartNode {
   constructor( circuitLayerNode, timeProperty, visibleBoundsProperty, options ) {
 
     options = merge( {
+      defaultZoomLevel: new Range(-10,10),
       timeDivisions: CCKCConstants.NUMBER_OF_TIME_DIVISIONS,
       tandem: Tandem.OPTIONAL
     }, options );

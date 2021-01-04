@@ -60,6 +60,7 @@ class CCKCChartNode extends Node {
    */
   constructor( circuitLayerNode, timeProperty, visibleBoundsProperty, seriesArray, verticalAxisLabel, options ) {
     options = merge( {
+      defaultZoomLevel: new Range( -2, 2 ),
 
       // Prevent adjustment of the control panel rendering while dragging,
       // see https://github.com/phetsims/wave-interference/issues/212
@@ -151,10 +152,11 @@ class CCKCChartNode extends Node {
       new Range( -50, 50 ),
       new Range( -20, 20 ),
       new Range( -10, 10 ),
-      new Range( -2, 2 ), // default
+      new Range( -2, 2 ),
       new Range( -0.4, 0.4 )
     ];
-    const zoomLevelProperty = new NumberProperty( zoomRanges.length - 2, { range: new Range( 0, zoomRanges.length - 1 ) } );
+    const initialZoomIndex = zoomRanges.findIndex( e => e.equals( options.defaultZoomLevel ) );
+    const zoomLevelProperty = new NumberProperty( initialZoomIndex, { range: new Range( 0, zoomRanges.length - 1 ) } );
 
     const gridLineOptions = {
       stroke: 'lightGray',
