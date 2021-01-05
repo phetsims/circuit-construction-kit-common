@@ -65,8 +65,8 @@ const template = new Node( {
     } )
   ]
 } );
-const schematicNode = template.rasterized( { wrap: false } );
-const lifelikeNode = template.rasterized( { wrap: false } );
+const schematicNode = template.rasterized( { wrap: false, resolution: 2 } );
+const lifelikeNode = template.rasterized( { wrap: false, resolution: 2 } );
 
 schematicNode.centerY = 0;
 
@@ -111,8 +111,8 @@ class ACVoltageNode extends FixedCircuitElementNode {
 }
 
 /**
- * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
- * @public {Array.<Image>}
+ * Identifies the images used to render this node so they can be pre-populated in the WebGL sprite sheet.
+ * @public {Array.<Node>}
  */
 ACVoltageNode.webglSpriteNodes = [ schematicNode, lifelikeNode ];
 
