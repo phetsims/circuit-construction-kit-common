@@ -48,10 +48,10 @@ class CircuitElementToolNode extends VBox {
       children: labelText.length > 0 ? [ iconNode, labelNode ] : [ iconNode ],
 
       // Expand touch area around text, see https://github.com/phetsims/circuit-construction-kit-dc/issues/82
-      touchAreaExpansionLeft: 10,
-      touchAreaExpansionTop: 13,
-      touchAreaExpansionRight: 10,
-      touchAreaExpansionBottom: 3,
+      touchAreaExpansionLeft: 0,
+      touchAreaExpansionTop: 0,
+      touchAreaExpansionRight: 0,
+      touchAreaExpansionBottom: 0,
 
       excludeInvisibleChildrenFromBounds: false,
       additionalProperty: new BooleanProperty( true )
@@ -94,7 +94,7 @@ class CircuitElementToolNode extends VBox {
     } );
 
     // Update touch areas when lifelike/schematic changes
-    viewTypeProperty.link( () => {
+    const updatePointerAreas = () => {
 
       // Expand touch area around text, see https://github.com/phetsims/circuit-construction-kit-dc/issues/82
       this.touchArea = this.localBounds.withOffsets(
@@ -104,7 +104,10 @@ class CircuitElementToolNode extends VBox {
         options.touchAreaExpansionBottom
       );
       this.mouseArea = this.touchArea;
-    } );
+    };
+    viewTypeProperty.link( updatePointerAreas );
+
+    this.localBoundsProperty.link( updatePointerAreas );
   }
 }
 
