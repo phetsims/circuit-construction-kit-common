@@ -62,8 +62,6 @@ const wireString = circuitConstructionKitCommonStrings.wire;
 // constants
 const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
 const AC_VOLTAGE_LENGTH = CCKCConstants.AC_VOLTAGE_LENGTH;
-const TOOLBOX_ICON_HEIGHT = CCKCConstants.TOOLBOX_ICON_HEIGHT;
-const TOOLBOX_ICON_WIDTH = CCKCConstants.TOOLBOX_ICON_WIDTH;
 const FUSE_LENGTH = CCKCConstants.FUSE_LENGTH;
 const WIRE_LENGTH = CCKCConstants.WIRE_LENGTH;
 const SWITCH_LENGTH = CCKCConstants.SWITCH_LENGTH;
@@ -133,12 +131,12 @@ class CircuitElementToolFactory {
     }, options );
 
     const lifelikeIcon = createIcon( options.tandem.createTandem( 'lifelikeIcon' ), LIFELIKE_PROPERTY );
-    lifelikeIcon.maxWidth = TOOLBOX_ICON_WIDTH;
-    lifelikeIcon.maxHeight = TOOLBOX_ICON_HEIGHT;
+    lifelikeIcon.maxWidth = CCKCConstants.TOOLBOX_ICON_WIDTH;
+    lifelikeIcon.maxHeight = CCKCConstants.TOOLBOX_ICON_HEIGHT;
 
     const schematicIcon = createIcon( options.tandem.createTandem( 'schematicIcon' ), SCHEMATIC_PROPERTY );
-    schematicIcon.maxWidth = TOOLBOX_ICON_WIDTH;
-    schematicIcon.maxHeight = TOOLBOX_ICON_HEIGHT;
+    schematicIcon.maxWidth = CCKCConstants.TOOLBOX_ICON_WIDTH;
+    schematicIcon.maxHeight = CCKCConstants.TOOLBOX_ICON_HEIGHT;
 
     const toggleNode = new ToggleNode( this.viewTypeProperty, [
       { value: CircuitElementViewType.LIFELIKE, node: lifelikeIcon },

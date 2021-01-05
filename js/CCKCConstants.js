@@ -30,9 +30,6 @@ const CCKCConstants = {
   TOOLBOX_ICON_HEIGHT: 35,
   TOOLBOX_ICON_WIDTH: 60,
 
-  // Spacing between adjacent items in the circuit element toolbox or sensor toolbox
-  TOOLBOX_ITEM_SPACING: 30,
-
   // The resistance of a default resistor, also used in icons
   DEFAULT_RESISTANCE: 10,
 
