@@ -12,6 +12,7 @@ import Property from '../../../axon/js/Property.js';
 import Bounds3 from '../../../dot/js/Bounds3.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Shape from '../../../kite/js/Shape.js';
+import merge from '../../../phet-core/js/merge.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
 import CapacitorConstants from '../../../scenery-phet/js/capacitor/CapacitorConstants.js';
 import CapacitorNode from '../../../scenery-phet/js/capacitor/CapacitorNode.js';
@@ -69,6 +70,10 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
    */
   constructor( screenView, circuitLayerNode, capacitor, viewTypeProperty, tandem, options ) {
 
+    options = merge( {
+      isIcon: false
+    }, options );
+
     const wireStubOptions = {
 
       // mark as pickable so we can perform hit testing with the voltmeter probes
@@ -97,7 +102,8 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
 
     const lifelikeNode = new CapacitorNode( circuit, modelViewTransform, plateChargeVisibleProperty, electricFieldVisibleProperty, {
       tandem: Tandem.OPTIONAL,
-      orientation: Orientation.HORIZONTAL // so the "-" charges are upside-up in the default orientation
+      orientation: Orientation.HORIZONTAL, // so the "-" charges are upside-up in the default orientation
+      includeChargeNode: !options.isIcon
     } );
 
     // q = CV
