@@ -41,11 +41,9 @@ class VoltageChartNode extends CCKCChartNode {
       tandem: Tandem.OPTIONAL
     }, options );
 
-    const series = createObservableArray();
-    super( circuitLayerNode, timeProperty, visibleBoundsProperty, [ series ], voltageWithUnitsString, options );
+    super( circuitLayerNode, timeProperty, visibleBoundsProperty, createObservableArray(), voltageWithUnitsString, options );
 
     // @private
-    this.series = series;
     this.probeNode1 = this.addProbeNode( SERIES_1_COLOR, SERIES_1_COLOR, 5, 10, this.aboveBottomLeft1, options.tandem.createTandem( 'probeNode1' ) );
     this.probeNode2 = this.addProbeNode( SERIES_2_COLOR, SERIES_2_COLOR, 36, 54, this.aboveBottomLeft2, options.tandem.createTandem( 'probeNode2' ) );
 

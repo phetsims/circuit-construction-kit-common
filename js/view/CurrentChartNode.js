@@ -32,11 +32,9 @@ class CurrentChartNode extends CCKCChartNode {
       tandem: Tandem.OPTIONAL
     }, options );
 
-    const series = createObservableArray();
-    super( circuitLayerNode, timeProperty, visibleBoundsProperty, [ series ], currentWithUnitsString, options );
+    super( circuitLayerNode, timeProperty, visibleBoundsProperty, createObservableArray(), currentWithUnitsString, options );
 
     // @private
-    this.series = series;
     this.probeNode1 = this.addProbeNode(
       CCKCConstants.CHART_SERIES_COLOR,
       CCKCConstants.CHART_SERIES_COLOR,

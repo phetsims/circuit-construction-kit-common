@@ -54,11 +54,11 @@ class CCKCChartNode extends Node {
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {NumberProperty} timeProperty
    * @param {Property.<Bounds2>} visibleBoundsProperty
-   * @param {ObservableArrayDef[]} seriesArray
+   * @param {ObservableArrayDef} series
    * @param {string} verticalAxisLabel
    * @param {Object} [options]
    */
-  constructor( circuitLayerNode, timeProperty, visibleBoundsProperty, seriesArray, verticalAxisLabel, options ) {
+  constructor( circuitLayerNode, timeProperty, visibleBoundsProperty, series, verticalAxisLabel, options ) {
     options = merge( {
       defaultZoomLevel: new Range( -2, 2 ),
 
@@ -73,8 +73,8 @@ class CCKCChartNode extends Node {
 
     this.meter = new Meter( options.tandem.createTandem( 'meter' ) );
 
-    // @private
-    this.seriesArray = seriesArray;
+    // @protected
+    this.series = series;
 
     // @private {CircuitLayerNode}
     this.circuitLayerNode = circuitLayerNode;
@@ -208,9 +208,9 @@ class CCKCChartNode extends Node {
     } );
     const updatePen = () => {
       penData[ 0 ].x = timeProperty.value;
-      const length = seriesArray[ 0 ].length;
+      const length = series.length;
       if ( length > 0 ) {
-        const point = seriesArray[ 0 ][ length - 1 ];
+        const point = series[ length - 1 ];
         penData[ 0 ].y = point === null ? 0 : point.y;
       }
       else {
@@ -226,16 +226,16 @@ class CCKCChartNode extends Node {
       updatePen();
     } );
 
-    const linePlot = new ChartCanvasNode( chartTransform, [ new CanvasLinePlot( chartTransform, seriesArray[ 0 ], {
+    const linePlot = new ChartCanvasNode( chartTransform, [ new CanvasLinePlot( chartTransform, series, {
       stroke: '#717274',
       lineWidth: 1.5
     } ) ] );
 
-    seriesArray[ 0 ].elementAddedEmitter.addListener( () => {
+    series.elementAddedEmitter.addListener( () => {
       linePlot.update();
       updatePen();
     } );
-    seriesArray[ 0 ].elementRemovedEmitter.addListener( () => {
+    series.elementRemovedEmitter.addListener( () => {
       linePlot.update();
       updatePen();
     } );
@@ -329,7 +329,7 @@ class CCKCChartNode extends Node {
    * @public
    */
   reset() {
-    this.seriesArray.forEach( series => series.clear() );
+    this.series.clear();
     this.meter.reset();
   }
 
