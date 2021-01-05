@@ -7,6 +7,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
@@ -52,7 +53,7 @@ class SensorToolbox extends CCKCPanel {
 
   /**
    * @param {AlignGroup} alignGroup - for alignment with other controls
-   * @param {Node} circuitLayerNode - the main circuit node to use as a coordinate frame
+   * @param {CircuitLayerNode} circuitLayerNode - the main circuit node to use as a coordinate frame
    * @param {VoltmeterNode[]} voltmeterNodes - nodes that display the Voltmeters
    * @param {AmmeterNode[]} ammeterNodes - nodes that display the Ammeters
    * @param {VoltageChartNode|null} voltageChartNode - node for the VoltageChartNode, if present
@@ -143,7 +144,7 @@ class SensorToolbox extends CCKCPanel {
     const seriesAmmeterNodeIcon = new SeriesAmmeterNode( null, null, seriesAmmeterIcon, tandem.createTandem( 'seriesAmmeterNodeIcon' ), {
       isIcon: true
     } );
-    const createSeriesAmmeter = ( position, isIcon ) => {
+    const createSeriesAmmeter = position => {
       const halfLength = CCKCConstants.SERIES_AMMETER_LENGTH / 2;
       const startVertex = circuit.vertexGroup.createNextElement( position.plusXY( -halfLength, 0 ) );
       const endVertex = circuit.vertexGroup.createNextElement( position.plusXY( halfLength, 0 ) );
@@ -152,7 +153,7 @@ class SensorToolbox extends CCKCPanel {
     seriesAmmeterNodeIcon.mutate( { scale: TOOLBOX_ICON_HEIGHT / seriesAmmeterNodeIcon.width } );
     const seriesAmmeterToolNode = new CircuitElementToolNode(
       '',
-      new Property( false ),
+      new BooleanProperty( false ),
       new Property( CircuitElementViewType.SCHEMATIC ),
       circuit,
       point => circuitLayerNode.globalToLocalPoint( point ),
