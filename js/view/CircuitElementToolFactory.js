@@ -9,6 +9,7 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
+import Node from '../../../scenery/js/nodes/Node.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
 import AlignGroup from '../../../scenery/js/nodes/AlignGroup.js';
@@ -130,13 +131,17 @@ class CircuitElementToolFactory {
       additionalProperty: new BooleanProperty( true )
     }, options );
 
-    const lifelikeIcon = createIcon( options.tandem.createTandem( 'lifelikeIcon' ), LIFELIKE_PROPERTY );
-    lifelikeIcon.maxWidth = CCKCConstants.TOOLBOX_ICON_WIDTH;
-    lifelikeIcon.maxHeight = CCKCConstants.TOOLBOX_ICON_HEIGHT;
+    const wrap = node => {
+      node.mutate( { scale: 4 } );
+      return new Node( {
+        children: [ node ],
+        maxWidth: CCKCConstants.TOOLBOX_ICON_WIDTH,
+        maxHeight: CCKCConstants.TOOLBOX_ICON_HEIGHT
+      } );
+    };
 
-    const schematicIcon = createIcon( options.tandem.createTandem( 'schematicIcon' ), SCHEMATIC_PROPERTY );
-    schematicIcon.maxWidth = CCKCConstants.TOOLBOX_ICON_WIDTH;
-    schematicIcon.maxHeight = CCKCConstants.TOOLBOX_ICON_HEIGHT;
+    const lifelikeIcon = wrap( createIcon( options.tandem.createTandem( 'lifelikeIcon' ), LIFELIKE_PROPERTY ) );
+    const schematicIcon = wrap( createIcon( options.tandem.createTandem( 'schematicIcon' ), SCHEMATIC_PROPERTY ) );
 
     const toggleNode = new ToggleNode( this.viewTypeProperty, [
       { value: CircuitElementViewType.LIFELIKE, node: lifelikeIcon },
