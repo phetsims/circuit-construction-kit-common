@@ -56,12 +56,12 @@ class SensorToolbox extends CCKCPanel {
    * @param {CircuitLayerNode} circuitLayerNode - the main circuit node to use as a coordinate frame
    * @param {VoltmeterNode[]} voltmeterNodes - nodes that display the Voltmeters
    * @param {AmmeterNode[]} ammeterNodes - nodes that display the Ammeters
-   * @param {VoltageChartNode|null} voltageChartNode - node for the VoltageChartNode, if present
-   * @param {CurrentChartNode|null} currentChartNode - node for the VoltageChartNode, if present
+   * @param {VoltageChartNode[]} voltageChartNodes - nodes for the VoltageChartNode, if present
+   * @param {CurrentChartNode[]} currentChartNodes - nodes for the CurrentChartNode, if present
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( alignGroup, circuitLayerNode, voltmeterNodes, ammeterNodes, voltageChartNode, currentChartNode, tandem, options ) {
+  constructor( alignGroup, circuitLayerNode, voltmeterNodes, ammeterNodes, voltageChartNodes, currentChartNodes, tandem, options ) {
     const circuit = circuitLayerNode.circuit;
 
     options = merge( {
@@ -72,24 +72,8 @@ class SensorToolbox extends CCKCPanel {
     }, options );
 
     /**
-     * @param {Meter} meterModel
-     * @param {AmmeterNode|VoltmeterNode} meterNode
-     * @returns {Object} a listener
-     */
-    const createListener = ( meterModel, meterNode ) =>
-      DragListener.createForwardingListener( event => {
-        const viewPosition = circuitLayerNode.globalToLocalPoint( event.pointer.point );
-        meterModel.draggingProbesWithBodyProperty.set( true );
-        meterModel.visibleProperty.set( true );
-        meterModel.bodyPositionProperty.set( viewPosition );
-        meterNode.startDrag( event );
-      }, {
-        allowTouchSnag: true
-      } );
-
-    /**
-     * @param {VoltmeterNode[]|AmmeterNode[]} meterNodes
-     * @param {string} meterModelName 'ammeter'|'voltmeter' for looking up the corresponding models
+     * @param {VoltmeterNode[]|AmmeterNode[]|VoltageChartNode[]|CurrentChartNode[]} meterNodes
+     * @param {string} meterModelName 'ammeter'|'voltmeter'|'meter' for looking up the corresponding models
      * @returns {Object} a listener
      */
     const createListenerMulti = ( meterNodes, meterModelName ) =>
@@ -221,7 +205,7 @@ class SensorToolbox extends CCKCPanel {
     if ( options.showCharts ) {
       const everything = new Property( Bounds2.EVERYTHING );
 
-      const createChartToolIcon = ( chartNode, chartNodeIcon, labelNode ) => {
+      const createChartToolIcon = ( chartNodes, chartNodeIcon, labelNode ) => {
 
         // Rasterization comes out blurry, instead put an overlay to intercept input events.
         const overlay = Rectangle.bounds( chartNodeIcon.bounds, { fill: 'blue', opacity: 0 } );
@@ -234,8 +218,9 @@ class SensorToolbox extends CCKCPanel {
           children: [ container, labelNode ]
         } );
 
-        chartNode.meter.visibleProperty.link( visible => chartNodeIcon.setVisible( !visible ) );
-        overlay.addInputListener( createListener( chartNode.meter, chartNode ) );
+        const iconVisibleProperty = DerivedProperty.and( chartNodes.map( chartNode => chartNode.meter.visibleProperty ) );
+        iconVisibleProperty.link( visible => chartNodeIcon.setVisible( !visible ) );
+        overlay.addInputListener( createListenerMulti( chartNodes, 'meter' ) );
 
         return chartToolIcon;
       };
@@ -245,13 +230,11 @@ class SensorToolbox extends CCKCPanel {
       const scale = voltmeterToolIcon.width / voltageChartNodeIconContents.width;
       voltageChartNodeIconContents.scale( scale );
 
-      const voltageChartToolIcon = createChartToolIcon(
-        voltageChartNode,
+      const voltageChartToolIcon = createChartToolIcon( voltageChartNodes,
         voltageChartNodeIconContents,
         new Text( voltageChartString, { maxWidth: 60 } )
       );
-      const currentChartToolIcon = createChartToolIcon(
-        currentChartNode,
+      const currentChartToolIcon = createChartToolIcon( currentChartNodes,
         new CurrentChartNode( circuitLayerNode, new NumberProperty( 0 ), everything, { scale: scale } ),
         new Text( currentChartString, { maxWidth: 60 } )
       );

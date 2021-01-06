@@ -133,23 +133,38 @@ class CCKCScreenView extends ScreenView {
       return ammeterNode;
     } );
 
+    // @private
+    this.chartNodes = [];
+
     // Optionally initialize the chart nodes
-    this.voltageChartNode = options.showCharts ? new VoltageChartNode(
-      this.circuitLayerNode,
-      model.circuit.timeProperty,
-      this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty, {
-        tandem: tandem.createTandem( 'voltageChartNode' )
-      }
-    ) : null;
-    this.currentChartNode = options.showCharts ? new CurrentChartNode(
-      this.circuitLayerNode,
-      model.circuit.timeProperty,
-      this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty, {
-        tandem: tandem.createTandem( 'currentChartNode' )
-      }
-    ) : null;
-    this.voltageChartNode && this.voltageChartNode.initializeBodyDragListener( this );
-    this.currentChartNode && this.currentChartNode.initializeBodyDragListener( this );
+    if ( options.showCharts ) {
+
+      const createVoltageChartNode = tandemName => {
+        const voltageChartNode = new VoltageChartNode( this.circuitLayerNode, model.circuit.timeProperty,
+          this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty, {
+            tandem: tandem.createTandem( tandemName )
+          }
+        );
+        voltageChartNode.initializeBodyDragListener( this );
+        return voltageChartNode;
+      };
+      const createCurrentChartNode = tandemName => {
+        const currentChartNode = new CurrentChartNode( this.circuitLayerNode, model.circuit.timeProperty,
+          this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty, {
+            tandem: tandem.createTandem( tandemName )
+          }
+        );
+        currentChartNode.initializeBodyDragListener( this );
+        return currentChartNode;
+      };
+      this.voltageChartNode1 = createVoltageChartNode( 'voltageChartNode1' );
+      this.voltageChartNode2 = createVoltageChartNode( 'voltageChartNode2' );
+
+      this.currentChartNode1 = createCurrentChartNode( 'currentChartNode1' );
+      this.currentChartNode2 = createCurrentChartNode( 'currentChartNode2' );
+
+      this.chartNodes.push( this.voltageChartNode1, this.voltageChartNode2, this.currentChartNode1, this.currentChartNode2 );
+    }
 
     // @public (read-only) {CircuitElementToolbox} - Toolbox from which CircuitElements can be dragged
     this.circuitElementToolbox = new CircuitElementToolbox(
@@ -165,8 +180,8 @@ class CCKCScreenView extends ScreenView {
       this.circuitLayerNode,
       voltmeterNodes,
       ammeterNodes,
-      this.voltageChartNode,
-      this.currentChartNode,
+      [ this.voltageChartNode1, this.voltageChartNode2 ],
+      [ this.currentChartNode1, this.currentChartNode2 ],
       tandem.createTandem( 'sensorToolbox' ), {
         showSeriesAmmeters: options.showSeriesAmmeters,
         showNoncontactAmmeters: options.showNoncontactAmmeters,
@@ -263,8 +278,7 @@ class CCKCScreenView extends ScreenView {
     // The voltmeter and ammeter are rendered with the circuit node so they will scale up and down with the circuit
     voltmeterNodes.forEach( voltmeterNode => this.circuitLayerNode.sensorLayer.addChild( voltmeterNode ) );
     ammeterNodes.forEach( ammeterNode => this.circuitLayerNode.sensorLayer.addChild( ammeterNode ) );
-    this.voltageChartNode && this.circuitLayerNode.sensorLayer.addChild( this.voltageChartNode );
-    this.currentChartNode && this.circuitLayerNode.sensorLayer.addChild( this.currentChartNode );
+    this.chartNodes.forEach( chartNode => this.circuitLayerNode.sensorLayer.addChild( chartNode ) );
 
     // Create the zoom control panel
     const zoomControlPanel = new ZoomControlPanel( model.selectedZoomProperty, {
@@ -411,8 +425,7 @@ class CCKCScreenView extends ScreenView {
       return;
     }
 
-    this.voltageChartNode && this.voltageChartNode.step( this.model.circuit.timeProperty.value, dt );
-    this.currentChartNode && this.currentChartNode.step( this.model.circuit.timeProperty.value, dt );
+    this.chartNodes.forEach( chartNode => chartNode.step( this.model.circuit.timeProperty.value, dt ) );
   }
 
   /**
@@ -434,8 +447,7 @@ class CCKCScreenView extends ScreenView {
     this.stopwatchNodePositionDirty = true;
     this.circuitElementToolbox.reset();
     this.advancedAccordionBox.expandedProperty.reset();
-    this.voltageChartNode && this.voltageChartNode.reset();
-    this.currentChartNode && this.currentChartNode.reset();
+    this.chartNodes.forEach( chartNode => chartNode.reset() );
   }
 
   /**
