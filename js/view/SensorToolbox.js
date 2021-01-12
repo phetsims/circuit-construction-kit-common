@@ -157,7 +157,7 @@ class SensorToolbox extends CCKCPanel {
       maxWidth: 60,
       tandem: tandem.createTandem( 'voltmeterLabel' )
     } );
-    const ammeterText = new Text( options.showSeriesAmmeters ? ammetersString : ammeterString, {
+    const ammeterText = new Text( options.showSeriesAmmeters && options.showNoncontactAmmeters? ammetersString : ammeterString, {
       maxWidth: 60,
       tandem: tandem.createTandem( 'ammeterLabel' )
     } );
