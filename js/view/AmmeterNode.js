@@ -135,7 +135,12 @@ class AmmeterNode extends Node {
 
     const alignProbeToBody = () => {
       if ( ammeter.draggingProbesWithBodyProperty.get() ) {
-        ammeter.probePositionProperty.set( ammeter.bodyPositionProperty.value.plusXY( 40, -80 ) );
+
+        const constrain = pt => options.visibleBoundsProperty ?
+                                options.visibleBoundsProperty.value.eroded( CCKCConstants.DRAG_BOUNDS_EROSION ).closestPointTo( pt ) :
+                                pt;
+
+        ammeter.probePositionProperty.set( constrain( ammeter.bodyPositionProperty.value.plusXY( 40, -80 ) ) );
       }
     };
 
@@ -176,8 +181,6 @@ class AmmeterNode extends Node {
 
           // After dropping in the play area the probes move independently of the body
           ammeter.draggingProbesWithBodyProperty.set( false );
-
-          // probeDragHandler.constrainToBounds();
         },
 
         // adds support for zoomed coordinate frame, see

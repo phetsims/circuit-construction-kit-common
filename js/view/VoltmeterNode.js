@@ -84,7 +84,6 @@ class VoltmeterNode extends Node {
       } ) ]
     } );
 
-
     const redProbeNode = new Rectangle( -2, -2, 4, 4, { // the hit area
       fill: CCKCQueryParameters.showVoltmeterSamplePoints ? Color.RED : null,
       cursor: 'pointer',
@@ -160,8 +159,13 @@ class VoltmeterNode extends Node {
       if ( voltmeter.draggingProbesWithBodyProperty.get() ) {
         const probeY = -30 - bodyNode.height / 2;
         const probeOffsetX = 78;
-        voltmeter.redProbePositionProperty.set( bodyPosition.plusXY( +probeOffsetX, probeY ) );
-        voltmeter.blackProbePositionProperty.set( bodyPosition.plusXY( -probeOffsetX, probeY ) );
+
+        const constrain = pt => options.visibleBoundsProperty ?
+                                options.visibleBoundsProperty.value.eroded( CCKCConstants.DRAG_BOUNDS_EROSION ).closestPointTo( pt ) :
+                                pt;
+
+        voltmeter.redProbePositionProperty.set( constrain( bodyPosition.plusXY( +probeOffsetX, probeY ) ) );
+        voltmeter.blackProbePositionProperty.set( constrain( bodyPosition.plusXY( -probeOffsetX, probeY ) ) );
       }
     } );
 
