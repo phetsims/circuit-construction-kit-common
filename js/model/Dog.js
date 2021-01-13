@@ -26,6 +26,10 @@ class Dog extends Resistor {
 
     // @private - time since last bark, to determine whether the bark has ended
     this.lastBarkTime = 0;
+
+    // @private - When connecting a voltage source (without completing the circuit), there is one frame where there is an unbalanced
+    // voltage.  We need to wait until the next frame to see if the voltage difference is sustained.
+    this.triggerCount = 0;
   }
 
   /**
@@ -37,10 +41,22 @@ class Dog extends Resistor {
   step( time, dt, circuit ) {
     super.step( time, dt, circuit );
     const voltage = this.voltageDifferenceProperty.value;
+
+    // When connecting a voltage source (without completing the circuit), there is one frame where there is an unbalanced
+    // voltage.  We need to wait until the next frame to see if the voltage difference is sustained.
+    // See https://github.com/phetsims/circuit-construction-kit-common/issues/649#issuecomment-758671266
     if ( Math.abs( voltage ) > 100 ) {
+      this.triggerCount++;
+    }
+    else {
+      this.triggerCount = 0;
+    }
+
+    if ( this.triggerCount >= 2 ) {
       circuit.cutVertex( this.startVertexProperty.value );
       this.isBarkingProperty.value = true;
       this.lastBarkTime = time;
+      this.triggerCount = 0;
     }
 
     const BARK_TIME = 0.5;
