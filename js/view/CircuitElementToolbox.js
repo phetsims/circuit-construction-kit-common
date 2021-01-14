@@ -17,7 +17,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 // constants
 
 // This specifies the spacing between items and also the space before and after the first and last items
-const CAROUSEL_ITEM_SPACING = 8;
+const CAROUSEL_ITEM_SPACING = 6.5;
 
 class CircuitElementToolbox extends HBox {
 
@@ -40,7 +40,7 @@ class CircuitElementToolbox extends HBox {
         spacing: CAROUSEL_ITEM_SPACING,
 
         // this is only the horizontal margin
-        margin: 10,
+        margin: 15,
 
         // Expand the touch area above the up button and below the down button
         buttonTouchAreaYDilation: 8,

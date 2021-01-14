@@ -27,8 +27,8 @@ const CCKCConstants = {
   PAUSED_DT: 5E-13,
 
   // Maximum size for Width or height of icons in the circuit element toolbox or sensor toolbox
-  TOOLBOX_ICON_HEIGHT: 36,
-  TOOLBOX_ICON_WIDTH: 58,
+  TOOLBOX_ICON_HEIGHT: 37.24,
+  TOOLBOX_ICON_WIDTH: 60,
 
   // The resistance of a default resistor, also used in icons
   DEFAULT_RESISTANCE: 10,
