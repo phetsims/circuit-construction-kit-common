@@ -267,6 +267,7 @@ class CircuitLayerNode extends Node {
           // have readouts
           if ( circuitElement instanceof FixedCircuitElement && !( circuitElement instanceof SeriesAmmeter ) ) {
             const valueNode = new ValueNode(
+              circuit.sourceResistanceProperty,
               circuitElement,
               this.model.showValuesProperty,
               this.model.viewTypeProperty,

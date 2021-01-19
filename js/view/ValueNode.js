@@ -61,12 +61,13 @@ const infinitySpan = '<span style="font-size: 26px; font-family: serif;"><b>∞<
 class ValueNode extends Panel {
 
   /**
+   * @param {NumberProperty} sourceResistanceProperty - user-specified value for internal resistance for batteries
    * @param {CircuitElement} circuitElement
    * @param {Property.<boolean>} showValuesProperty
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Tandem} tandem
    */
-  constructor( circuitElement, showValuesProperty, viewTypeProperty, tandem ) {
+  constructor( sourceResistanceProperty, circuitElement, showValuesProperty, viewTypeProperty, tandem ) {
     const disposeEmitterValueNode = new Emitter();
 
     let contentNode = null;
@@ -90,7 +91,7 @@ class ValueNode extends Panel {
       } );
 
       const resistanceNode = createText( tandem.createTandem( 'resistanceText' ) );
-      const internalResistanceListener = ( internalResistance, lastInternalResistance ) => {
+      const sourceResistanceListener = ( internalResistance, lastInternalResistance ) => {
         resistanceNode.text = StringUtils.fillIn( resistanceOhmsSymbolString, {
           resistance: Utils.toFixed( internalResistance, 1 )
         } );
@@ -106,11 +107,11 @@ class ValueNode extends Panel {
         }
         updatePosition && updatePosition();
       };
-      circuitElement.internalResistanceProperty.link( internalResistanceListener );
+      sourceResistanceProperty.link( sourceResistanceListener );
 
       disposeEmitterValueNode.addListener( () => {
         circuitElement.voltageProperty.unlink( voltageListener );
-        circuitElement.internalResistanceProperty.unlink( internalResistanceListener );
+        sourceResistanceProperty.unlink( sourceResistanceListener );
       } );
       contentNode.maxWidth = 100;
     }
