@@ -338,15 +338,15 @@ class CCKCScreenView extends ScreenView {
         bottom: visibleBounds.bottom - HORIZONTAL_MARGIN
       } );
 
-      chargeSpeedThrottlingReadoutNode.mutate( {
-        centerX: visibleBounds.centerX,
-        bottom: visibleBounds.bottom - 100 // so it doesn't overlap the component controls
-      } );
-
       zoomControlPanel.left = visibleBounds.left + HORIZONTAL_MARGIN;
       zoomControlPanel.bottom = visibleBounds.bottom - VERTICAL_MARGIN;
 
       playAreaCenterXProperty.value = ( controlPanelVBox.left + this.circuitElementToolbox.right ) / 2;
+
+      chargeSpeedThrottlingReadoutNode.mutate( {
+        centerX: playAreaCenterXProperty.value,
+        bottom: visibleBounds.bottom - 100 // so it doesn't overlap the component controls
+      } );
     } );
 
     // Center the circuit node so that zooms will remain centered.
