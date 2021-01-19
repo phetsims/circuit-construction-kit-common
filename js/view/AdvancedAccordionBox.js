@@ -11,11 +11,11 @@ import merge from '../../../phet-core/js/merge.js';
 import VBox from '../../../scenery/js/nodes/VBox.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import VStrut from '../../../scenery/js/nodes/VStrut.js';
-import Checkbox from '../../../sun/js/Checkbox.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CCKCAccordionBox from './CCKCAccordionBox.js';
+import CCKCCheckbox from './CCKCCheckbox.js';
 import SourceResistanceControl from './SourceResistanceControl.js';
 import WireResistivityControl from './WireResistivityControl.js';
 
@@ -47,7 +47,7 @@ class AdvancedAccordionBox extends CCKCAccordionBox {
     if ( options.showRealisticBulbsCheckbox ) {
       children.push(
         new VStrut( 20 ),
-        new Checkbox( new Text( circuitConstructionKitCommonStrings.addRealisticBulbs, titleConfig ), circuit.addRealisticBulbsProperty, {
+        new CCKCCheckbox( new Text( circuitConstructionKitCommonStrings.addRealisticBulbs, titleConfig ), circuit.addRealisticBulbsProperty, {
           tandem: tandem.createTandem( 'addRealisticBulbsCheckbox' )
         } )
       );

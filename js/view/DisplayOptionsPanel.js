@@ -14,11 +14,11 @@ import HBox from '../../../scenery/js/nodes/HBox.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import VBox from '../../../scenery/js/nodes/VBox.js';
 import AquaRadioButton from '../../../sun/js/AquaRadioButton.js';
-import Checkbox from '../../../sun/js/Checkbox.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CurrentType from '../model/CurrentType.js';
+import CCKCCheckbox from './CCKCCheckbox.js';
 import CCKCPanel from './CCKCPanel.js';
 import ConventionalCurrentArrowNode from './ConventionalCurrentArrowNode.js';
 
@@ -93,21 +93,18 @@ class DisplayOptionsPanel extends CCKCPanel {
     showCurrentProperty.linkAttribute( electronsRadioButton, 'enabled' );
     showCurrentProperty.linkAttribute( conventionalRadioButton, 'enabled' );
 
-    const BOX_WIDTH = 16;
-    const showLabelsCheckbox = new Checkbox( new Text( labelsString, TEXT_OPTIONS ), showLabelsProperty, {
-      tandem: tandem.createTandem( 'labelsCheckbox' ),
-      boxWidth: BOX_WIDTH
+
+    const showLabelsCheckbox = new CCKCCheckbox( new Text( labelsString, TEXT_OPTIONS ), showLabelsProperty, {
+      tandem: tandem.createTandem( 'labelsCheckbox' )
     } );
-    const showValuesCheckbox = new Checkbox( new Text( valuesString, TEXT_OPTIONS ), showValuesProperty, {
-      tandem: tandem.createTandem( 'valuesCheckbox' ),
-      boxWidth: BOX_WIDTH
+    const showValuesCheckbox = new CCKCCheckbox( new Text( valuesString, TEXT_OPTIONS ), showValuesProperty, {
+      tandem: tandem.createTandem( 'valuesCheckbox' )
     } );
 
     let stopwatchCheckbox = null;
     if ( showStopwatchCheckbox ) {
-      stopwatchCheckbox = new Checkbox( new Text( stopwatchString, TEXT_OPTIONS ), stopwatch.isVisibleProperty, {
-        tandem: tandem.createTandem( 'stopwatchCheckbox' ),
-        boxWidth: BOX_WIDTH
+      stopwatchCheckbox = new CCKCCheckbox( new Text( stopwatchString, TEXT_OPTIONS ), stopwatch.isVisibleProperty, {
+        tandem: tandem.createTandem( 'stopwatchCheckbox' )
       } );
     }
 
@@ -118,8 +115,7 @@ class DisplayOptionsPanel extends CCKCPanel {
         align: 'left',
         spacing: 8,
         children: [
-          new Checkbox( new Text( showCurrentString, TEXT_OPTIONS ), showCurrentProperty, {
-            boxWidth: BOX_WIDTH,
+          new CCKCCheckbox( new Text( showCurrentString, TEXT_OPTIONS ), showCurrentProperty, {
             tandem: tandem.createTandem( 'showCurrentCheckbox' )
           } ),
           new AlignBox(
