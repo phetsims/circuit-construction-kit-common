@@ -228,7 +228,14 @@ class CircuitElementEditContainerNode extends Node {
             circuit,
             selectedCircuitElement,
             Tandem.OPT_OUT, {
-              editableRange: selectedCircuitElement.currentRatingProperty.range
+              editableRange: selectedCircuitElement.currentRatingProperty.range,
+
+              // For the tweakers
+              delta: NORMAL_TWEAKER_DELTA,
+
+              sliderOptions: {
+                constrainValue: value => Utils.roundToInterval( value, NORMAL_SLIDER_KNOB_DELTA )
+              }
             }
           );
 
