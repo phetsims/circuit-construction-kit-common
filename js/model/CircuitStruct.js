@@ -12,6 +12,7 @@
 import Property from '../../../axon/js/Property.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Battery from './Battery.js';
 import LightBulb from './LightBulb.js';
@@ -81,14 +82,12 @@ class CircuitStruct {
  */
 CircuitStruct.fromStateObject = ( circuit, circuitState, resistivityProperty, tandem, options ) => {
   const circuitStruct = new CircuitStruct();
-  tandem = tandem.createGroupTandem( 'circuitStructElement' );
   options = merge( {
 
     // See CircuitElement.js for options
   }, options );
   for ( let i = 0; i < circuitState.vertices.length; i++ ) {
     options = circuitState.vertices[ i ].options || {};
-    options.tandem = tandem.createNextTandem();
     const vertex = circuit.vertexGroup.createNextElement( new Vector2( circuitState.vertices[ i ].x, circuitState.vertices[ i ].y ), options );
     circuitStruct.vertices.push( vertex );
   }
@@ -98,7 +97,7 @@ CircuitStruct.fromStateObject = ( circuit, circuitState, resistivityProperty, ta
       circuitStruct.vertices[ circuitState.wires[ i ].startVertex ],
       circuitStruct.vertices[ circuitState.wires[ i ].endVertex ],
       resistivityProperty,
-      tandem.createNextTandem(),
+      Tandem.OPT_OUT,
       options
     ) );
   }
@@ -109,7 +108,7 @@ CircuitStruct.fromStateObject = ( circuit, circuitState, resistivityProperty, ta
       circuitStruct.vertices[ circuitState.batteries[ i ].endVertex ],
       new Property( 0 ),
       Battery.BatteryType.NORMAL, // TODO (black-box-study): save/restore battery type
-      tandem.createNextTandem(), {
+      Tandem.OPT_OUT, {
         voltage: circuitState.batteries[ i ].voltage
       }
     ) );
@@ -120,7 +119,7 @@ CircuitStruct.fromStateObject = ( circuit, circuitState, resistivityProperty, ta
       circuitStruct.vertices[ circuitState.resistors[ i ].startVertex ],
       circuitStruct.vertices[ circuitState.resistors[ i ].endVertex ],
       Resistor.ResistorType.RESISTOR,
-      tandem.createNextTandem() // TODO (black-box-study): a way to set the resistance
+      Tandem.OPT_OUT // TODO (black-box-study): a way to set the resistance
     ) );
   }
   for ( let i = 0; i < circuitState.lightBulbs.length; i++ ) {
@@ -130,7 +129,7 @@ CircuitStruct.fromStateObject = ( circuit, circuitState, resistivityProperty, ta
       circuitStruct.vertices[ circuitState.lightBulbs[ i ].endVertex ],
       circuitState.lightBulbs[ i ].resistance,
       null, // TODO (black-box-study) pass this value somehow
-      tandem.createNextTandem(),
+      Tandem.OPT_OUT,
       options
     ) );
   }
@@ -140,7 +139,7 @@ CircuitStruct.fromStateObject = ( circuit, circuitState, resistivityProperty, ta
       circuitStruct.vertices[ circuitState.switches[ i ].startVertex ],
       circuitStruct.vertices[ circuitState.switches[ i ].endVertex ],
       circuitState.wires[ i ].resistivity,
-      tandem.createNextTandem(),
+      Tandem.OPT_OUT,
       options
     ) );
   }
