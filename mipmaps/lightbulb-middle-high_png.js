@@ -1,5 +1,5 @@
 /* eslint-disable */
-import simLauncher from '../../joist/js/simLauncher.js';
+import asyncLoader from '../../phet-core/js/asyncLoader.js';
 
 const mipmaps = [
   {
@@ -30,7 +30,7 @@ const mipmaps = [
 ];
 mipmaps.forEach( mipmap => {
   mipmap.img = new Image();
-  const unlock = simLauncher.createLock( mipmap.img );
+  const unlock = asyncLoader.createLock( mipmap.img );
   mipmap.img.onload = unlock;
   mipmap.img.src = mipmap.url; // trigger the loading of the image for its level
   mipmap.canvas = document.createElement( 'canvas' );
