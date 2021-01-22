@@ -226,7 +226,7 @@ class CircuitElementNode extends Node {
       // focus the element for keyboard interaction
       this.focus();
 
-      const disposeListener = () => phet.joist.sim.display.removeInputListener( clickToDismissListener );
+      const disposeListener = () => phet.joist.display.removeInputListener( clickToDismissListener );
 
       // listener for 'click outside to dismiss'
       const clickToDismissListener = {
@@ -242,7 +242,7 @@ class CircuitElementNode extends Node {
           } );
 
           if ( trails.length === 0 ) {
-            phet.joist.sim.display.removeInputListener( clickToDismissListener );
+            phet.joist.display.removeInputListener( clickToDismissListener );
             if ( this.disposeEmitterCircuitElementNode.hasListener( disposeListener ) ) {
               this.disposeEmitterCircuitElementNode.removeListener( disposeListener );
             }
@@ -250,7 +250,7 @@ class CircuitElementNode extends Node {
           }
         }
       };
-      phet.joist.sim.display.addInputListener( clickToDismissListener );
+      phet.joist.display.addInputListener( clickToDismissListener );
 
       // If the user deletes the element with the delete button, make sure to detach the display input listener
       // so the next drag will work right away,

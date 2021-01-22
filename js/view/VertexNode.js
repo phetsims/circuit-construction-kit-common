@@ -181,7 +181,7 @@ class VertexNode extends Node {
               }
             }
           };
-          phet.joist.sim.display.addInputListener( clickToDismissListener );
+          phet.joist.display.addInputListener( clickToDismissListener );
           this.clickToDismissListeners.push( clickToDismissListener );
         }
         else {
@@ -367,7 +367,7 @@ class VertexNode extends Node {
    * @private
    */
   clearClickListeners() {
-    this.clickToDismissListeners.forEach( listener => phet.joist.sim.display.removeInputListener( listener ) );
+    this.clickToDismissListeners.forEach( listener => phet.joist.display.removeInputListener( listener ) );
     this.clickToDismissListeners.length = 0;
   }
 
