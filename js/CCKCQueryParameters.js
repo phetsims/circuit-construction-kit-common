@@ -34,6 +34,11 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
     defaultValue: true
   },
 
+  addRealisticBulbs: {
+    type: 'flag',
+    public: true
+  },
+
   // Increases the number of wires that can be dragged from the toolbox
   // see https://github.com/phetsims/circuit-construction-kit-common/issues/432
   moreWires: {
@@ -90,10 +95,6 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
   batteryInternalResistanceWhenCurrentThresholdExceededVoltageScaleFactor: {
     type: 'number',
     defaultValue: 2E-4
-  },
-
-  addRealisticBulbs: {
-    type: 'flag'
   }
 } );
 
