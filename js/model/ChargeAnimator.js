@@ -8,6 +8,7 @@
  */
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
+import dotRandom from '../../../dot/js/dotRandom.js';
 import Range from '../../../dot/js/Range.js';
 import RunningAverage from '../../../dot/js/RunningAverage.js';
 import Utils from '../../../dot/js/Utils.js';
@@ -130,7 +131,7 @@ class ChargeAnimator {
   equalizeAll( dt ) {
 
     // Update them in a stochastic order to avoid systematic sources of error building up.
-    const indices = phet.joist.random.shuffle( _.range( this.charges.length ) );
+    const indices = dotRandom.shuffle( _.range( this.charges.length ) );
     for ( let i = 0; i < this.charges.length; i++ ) {
       const charge = this.charges.get( indices[ i ] );
 

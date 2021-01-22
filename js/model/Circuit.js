@@ -13,6 +13,7 @@ import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import createObservableArray from '../../../axon/js/createObservableArray.js';
 import Property from '../../../axon/js/Property.js';
+import dotRandom from '../../../dot/js/dotRandom.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Enumeration from '../../../phet-core/js/Enumeration.js';
 import merge from '../../../phet-core/js/merge.js';
@@ -627,7 +628,7 @@ class Circuit {
 
         // If the vertices were at the same position, move them randomly.  See https://github.com/phetsims/circuit-construction-kit-common/issues/405
         if ( delta.magnitude === 0 ) {
-          delta = Vector2.createPolar( 1, phet.joist.random.nextDouble() * Math.PI * 2 );
+          delta = Vector2.createPolar( 1, dotRandom.nextDouble() * Math.PI * 2 );
         }
         return delta.withMagnitude( 30 );
       } );
