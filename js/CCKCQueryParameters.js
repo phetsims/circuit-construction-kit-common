@@ -34,7 +34,7 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
     defaultValue: true
   },
 
-  addRealisticBulbs: {
+  addRealBulbs: {
     type: 'flag',
     public: true
   },

@@ -213,7 +213,7 @@ class CCKCScreenView extends ScreenView {
       CONTROL_PANEL_ALIGN_GROUP,
       options.hasACandDCVoltageSources ? sourceResistanceString : batteryResistanceString,
       tandem.createTandem( 'advancedAccordionBox' ), {
-        showRealisticBulbsCheckbox: !options.hasACandDCVoltageSources
+        showRealBulbsCheckbox: !options.hasACandDCVoltageSources
       }
     );
 

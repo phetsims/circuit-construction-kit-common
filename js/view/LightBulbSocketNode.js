@@ -33,7 +33,7 @@ class LightBulbSocketNode extends FixedCircuitElementNode {
     const lightBulbNode = new CustomLightBulbNode( new NumberProperty( 0 ), {
       baseOnly: true,
       highResistance: lightBulb.highResistance,
-      realistic: lightBulb.realistic
+      real: lightBulb.real
     } );
 
     // Interferes with Cut Button selection when the foreground is in front, see

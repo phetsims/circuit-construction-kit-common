@@ -130,7 +130,7 @@ class CircuitElementEditContainerNode extends Node {
       editNode = null;
 
       if ( selectedCircuitElement ) {
-        const isResistive = selectedCircuitElement instanceof Resistor || ( selectedCircuitElement instanceof LightBulb && !selectedCircuitElement.realistic );
+        const isResistive = selectedCircuitElement instanceof Resistor || ( selectedCircuitElement instanceof LightBulb && !selectedCircuitElement.real );
         const isBattery = selectedCircuitElement instanceof Battery;
         const isFuse = selectedCircuitElement instanceof Fuse;
         const isWire = selectedCircuitElement instanceof Wire;
@@ -174,9 +174,9 @@ class CircuitElementEditContainerNode extends Node {
             ]
           );
         }
-        else if ( isResistive || ( selectedCircuitElement instanceof LightBulb && selectedCircuitElement.realistic ) ) {
+        else if ( isResistive || ( selectedCircuitElement instanceof LightBulb && selectedCircuitElement.real ) ) {
 
-          // Just show a trash button for non-editable resistors which are household items and for realistic bulbs
+          // Just show a trash button for non-editable resistors which are household items and for real bulbs
           editNode = trashButton;
         }
         else if ( isBattery ) {

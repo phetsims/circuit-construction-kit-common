@@ -49,13 +49,13 @@ class CircuitConstructionKitModel {
       tandem: tandem.createTandem( 'viewTypeProperty' )
     } );
 
-    // @public {Property.<Boolean>} - whether the carousel shows realistic bulbs
-    this.addRealisticBulbsProperty = new BooleanProperty( CCKCQueryParameters.addRealisticBulbs, {
-      tandem: tandem.createTandem( 'addRealisticBulbsProperty' )
+    // @public {Property.<Boolean>} - whether the carousel shows real bulbs
+    this.addRealBulbsProperty = new BooleanProperty( CCKCQueryParameters.addRealBulbs, {
+      tandem: tandem.createTandem( 'addRealBulbsProperty' )
     } );
 
     // @public (read-only) {Circuit} - contains CircuitElements, Vertices, etc.
-    this.circuit = new Circuit( this.viewTypeProperty, this.addRealisticBulbsProperty, tandem.createTandem( 'circuit' ), { blackBoxStudy: options.blackBoxStudy } );
+    this.circuit = new Circuit( this.viewTypeProperty, this.addRealBulbsProperty, tandem.createTandem( 'circuit' ), { blackBoxStudy: options.blackBoxStudy } );
 
     // @public (read-only) {Voltmeter[]} - created statically and indexed starting at 1 for human-readability for PhET-iO
     this.voltmeters = [
@@ -263,7 +263,7 @@ class CircuitConstructionKitModel {
     this.selectedZoomProperty.reset();
     this.stopwatch.reset();
     this.isPlayingProperty.reset();
-    this.addRealisticBulbsProperty.reset();
+    this.addRealBulbsProperty.reset();
 
     // cancel any animation in progress, including (but not limited to) one that may have just been caused by reset
     this.zoomAnimation = null;

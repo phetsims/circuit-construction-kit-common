@@ -240,12 +240,12 @@ class CircuitElementToolFactory {
    * @param {Tandem} tandem
    * @param {PhetioGroup} lightBulbGroup
    * @param {string} string
-   * @param {boolean} realistic
-   * @param {Property<Boolean>} addRealisticBulbsProperty
+   * @param {boolean} real
+   * @param {Property<Boolean>} addRealBulbsProperty
    * @returns {CircuitElementToolNode}
    * @public
    */
-  createLightBulbToolNode( count, tandem, lightBulbGroup = this.circuit.lightBulbGroup, string = lightBulbString, realistic = false, addRealisticBulbsProperty = null ) {
+  createLightBulbToolNode( count, tandem, lightBulbGroup = this.circuit.lightBulbGroup, string = lightBulbString, real = false, addRealBulbsProperty = null ) {
     const vertexPair = LightBulb.createVertexPair( Vector2.ZERO, this.circuit, true );
     const lightBulbModel = LightBulb.createAtPosition(
       vertexPair.startVertex,
@@ -256,7 +256,7 @@ class CircuitElementToolFactory {
       Tandem.OPTIONAL, {
         highResistance: false,
         icon: true,
-        realistic: realistic
+        real: real
       } );
     return this.createCircuitElementToolNode( string, count,
       ( tandem, viewTypeProperty ) => new CCKCLightBulbNode( null, null,
@@ -268,7 +268,7 @@ class CircuitElementToolFactory {
         return lightBulbGroup.createNextElement( vertexPair.startVertex, vertexPair.endVertex, CCKCConstants.DEFAULT_RESISTANCE );
       }, {
         tandem: tandem,
-        additionalProperty: addRealisticBulbsProperty || new BooleanProperty( true )
+        additionalProperty: addRealBulbsProperty || new BooleanProperty( true )
       } );
   }
 

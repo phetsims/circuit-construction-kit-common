@@ -57,13 +57,13 @@ class Circuit {
 
   /**
    * @param {Property<CircuitElementViewType>} viewTypeProperty
-   * @param {Property<Boolean>} addRealisticBulbsProperty
+   * @param {Property<Boolean>} addRealBulbsProperty
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( viewTypeProperty, addRealisticBulbsProperty, tandem, options ) {
+  constructor( viewTypeProperty, addRealBulbsProperty, tandem, options ) {
     this.viewTypeProperty = viewTypeProperty;
-    this.addRealisticBulbsProperty = addRealisticBulbsProperty;
+    this.addRealBulbsProperty = addRealBulbsProperty;
 
     options = merge( { blackBoxStudy: false }, options );
     this.blackBoxStudy = options.blackBoxStudy;
@@ -386,14 +386,14 @@ class Circuit {
       tandem: tandem.createTandem( 'lightBulbGroup' )
     } );
 
-    this.realisticLightBulbGroup = new PhetioGroup(
+    this.realLightBulbGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => {
         return new LightBulb( startVertex, endVertex, CCKCConstants.DEFAULT_RESISTANCE, this.viewTypeProperty, tandem, {
-          realistic: true
+          real: true
         } );
       }, () => createVertices( 100 ), {
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
-        tandem: tandem.createTandem( 'realisticLightBulbGroup' )
+        tandem: tandem.createTandem( 'realLightBulbGroup' )
       } );
 
     this.groups = [
@@ -407,7 +407,7 @@ class Circuit {
       this.inductorGroup,
       this.switchGroup,
       this.lightBulbGroup,
-      this.realisticLightBulbGroup,
+      this.realLightBulbGroup,
       this.highResistanceLightBulbGroup,
       this.seriesAmmeterGroup
     ];

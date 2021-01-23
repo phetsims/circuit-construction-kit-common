@@ -31,7 +31,7 @@ class AdvancedAccordionBox extends CCKCAccordionBox {
   constructor( circuit, alignGroup, batteryResistanceControlString, tandem, options ) {
 
     options = merge( {
-      showRealisticBulbsCheckbox: true
+      showRealBulbsCheckbox: true
     }, options );
 
     const titleConfig = {
@@ -44,11 +44,11 @@ class AdvancedAccordionBox extends CCKCAccordionBox {
       new SourceResistanceControl( circuit.sourceResistanceProperty, alignGroup, batteryResistanceControlString, titleConfig, tandem.createTandem( 'sourceResistanceControl' ) )
     ];
 
-    if ( options.showRealisticBulbsCheckbox ) {
+    if ( options.showRealBulbsCheckbox ) {
       children.push(
         new VStrut( 20 ),
-        new CCKCCheckbox( new Text( circuitConstructionKitCommonStrings.addRealisticBulbs, titleConfig ), circuit.addRealisticBulbsProperty, {
-          tandem: tandem.createTandem( 'addRealisticBulbsCheckbox' )
+        new CCKCCheckbox( new Text( circuitConstructionKitCommonStrings.addRealBulbs, titleConfig ), circuit.addRealBulbsProperty, {
+          tandem: tandem.createTandem( 'addRealBulbsCheckbox' )
         } )
       );
     }

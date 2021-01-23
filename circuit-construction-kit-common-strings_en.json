@@ -5,8 +5,8 @@
   "schematicStandard": {
     "value": "Schematic Standard"
   },
-  "realisticBulb": {
-    "value": "Realistic Bulb"
+  "realBulb": {
+    "value": "Real Bulb"
   },
   "ieee": {
     "value": "IEEE"
@@ -98,8 +98,8 @@
   "lightBulb": {
     "value": "Light Bulb"
   },
-  "addRealisticBulbs": {
-    "value": "Add Realistic Bulbs"
+  "addRealBulbs": {
+    "value": "Add Real Bulbs"
   },
   "switch": {
     "value": "Switch"

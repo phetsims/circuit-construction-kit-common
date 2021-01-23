@@ -15,10 +15,10 @@ import Image from '../../../scenery/js/nodes/Image.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import backImage from '../../images/lightbulb-back_png.js';
 import highResistanceSocketImage from '../../images/lightbulb-front-high_png.js';
-import realisticSocketImage from '../../images/lightbulb-front-realistic_png.js';
+import realSocketImage from '../../images/lightbulb-front-real_png.js';
 import socketImage from '../../images/lightbulb-front_png.js';
 import lightBulbMiddleImage from '../../mipmaps/lightbulb-middle_png.js';
-import lightBulbMiddleRealisticImage from '../../mipmaps/lightbulb-middle-realistic_png.js';
+import lightBulbMiddleRealImage from '../../mipmaps/lightbulb-middle-real_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
@@ -38,17 +38,17 @@ class CustomLightBulbNode extends Node {
       baseOnly: false,
       highResistance: true,
       scale: CCKCConstants.BULB_SCALE,
-      realistic: false
+      real: false
     }, options );
 
     // @private (read-only) {boolean]
     const baseOnly = options.baseOnly;
 
     const selectedSocketImage = options.highResistance ? highResistanceSocketImage :
-                                options.realistic ? realisticSocketImage :
+                                options.real ? realSocketImage :
                                 socketImage;
 
-    const selectedMiddleImage = options.realistic ? lightBulbMiddleRealisticImage :
+    const selectedMiddleImage = options.real ? lightBulbMiddleRealImage :
                                 lightBulbMiddleImage;
 
     // @private {Image}
