@@ -8,6 +8,7 @@
 
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
+import dotRandom from '../../../dot/js/dotRandom.js';
 import merge from '../../../phet-core/js/merge.js';
 import KeyboardUtils from '../../../scenery/js/accessibility/KeyboardUtils.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
@@ -178,7 +179,7 @@ class VertexNode extends Node {
 
               // When fuzzing, don't click away from the circuit element so eagerly, so that fuzzing has more of a chance to
               // press the associated controls.
-              if ( phet.chipper.isFuzzEnabled() && phet.dot.dotRandom.nextDouble() < 0.99 ) {
+              if ( phet.chipper.isFuzzEnabled() && dotRandom.nextDouble() < 0.99 ) {
                 return;
               }
 

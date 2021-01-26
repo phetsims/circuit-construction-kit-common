@@ -7,6 +7,7 @@
  */
 
 import Emitter from '../../../axon/js/Emitter.js';
+import dotRandom from '../../../dot/js/dotRandom.js';
 import merge from '../../../phet-core/js/merge.js';
 import KeyboardUtils from '../../../scenery/js/accessibility/KeyboardUtils.js';
 import Node from '../../../scenery/js/nodes/Node.js';
@@ -234,7 +235,7 @@ class CircuitElementNode extends Node {
 
           // When fuzzing, don't click away from the circuit element so eagerly, so that fuzzing has more of a chance to
           // press the associated controls.
-          if ( phet.chipper.isFuzzEnabled() && phet.dot.dotRandom.nextDouble() < 0.99 ) {
+          if ( phet.chipper.isFuzzEnabled() && dotRandom.nextDouble() < 0.99 ) {
             return;
           }
 
