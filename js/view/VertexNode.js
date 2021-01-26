@@ -175,6 +175,13 @@ class VertexNode extends Node {
 
           const clickToDismissListener = {
             down: event => {
+
+              // When fuzzing, don't click away from the circuit element so eagerly, so that fuzzing has more of a chance to
+              // press the associated controls.
+              if ( phet.chipper.isFuzzEnabled() && phet.dot.dotRandom.nextDouble() < 0.99 ) {
+                return;
+              }
+
               if ( !_.includes( event.trail.nodes, this ) && !_.includes( event.trail.nodes, cutButton ) ) {
                 vertex.selectedProperty.set( false );
                 this.clearClickListeners();

@@ -232,6 +232,12 @@ class CircuitElementNode extends Node {
       const clickToDismissListener = {
         down: event => {
 
+          // When fuzzing, don't click away from the circuit element so eagerly, so that fuzzing has more of a chance to
+          // press the associated controls.
+          if ( phet.chipper.isFuzzEnabled() && phet.dot.dotRandom.nextDouble() < 0.99 ) {
+            return;
+          }
+
           // if the target was in a CircuitElementEditContainerNode, don't dismiss the event because the user was
           // dragging the slider or pressing the trash button or another control in that panel
           const trails = event.target.getTrails( node => {
