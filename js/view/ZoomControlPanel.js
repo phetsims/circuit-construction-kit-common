@@ -17,7 +17,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 // constants
 const ZOOMED_IN = 1;
 const ZOOMED_OUT = 0.5;
-const BUTTON_SPACING = 12;
+const BUTTON_SPACING = 20;
 
 class ZoomControlPanel extends MagnifyingGlassZoomButtonGroup {
 
@@ -32,6 +32,9 @@ class ZoomControlPanel extends MagnifyingGlassZoomButtonGroup {
       buttonOptions: {
         buttonAppearanceStrategy: RectangularButton.ThreeDAppearanceStrategy,
         baseColor: PhetColorScheme.BUTTON_YELLOW
+      },
+      magnifyingGlassNodeOptions: {
+        scale:0.7
       }
     }, options );
     super( selectedZoomProperty, options );

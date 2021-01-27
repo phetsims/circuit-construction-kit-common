@@ -33,10 +33,10 @@ class ViewRadioButtonGroup extends RectangularRadioButtonGroup {
   constructor( viewTypeProperty, tandem, options ) {
 
     options = merge( {
-      spacing: 4,
+      spacing: 20,
       orientation: 'horizontal',
-      buttonContentXMargin: 9,
-      buttonContentYMargin: 10,
+      buttonContentXMargin: 8,
+      buttonContentYMargin: 11,
       baseColor: CCKCConstants.PANEL_COLOR,
       deselectedButtonOpacity: 0.4,
       overButtonOpacity: 0.7,
