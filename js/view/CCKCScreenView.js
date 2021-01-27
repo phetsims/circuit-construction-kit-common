@@ -16,6 +16,7 @@ import PlayPauseButton from '../../../scenery-phet/js/buttons/PlayPauseButton.js
 import ResetAllButton from '../../../scenery-phet/js/buttons/ResetAllButton.js';
 import StopwatchNode from '../../../scenery-phet/js/StopwatchNode.js';
 import TimeControlNode from '../../../scenery-phet/js/TimeControlNode.js';
+import KeyboardUtils from '../../../scenery/js/accessibility/KeyboardUtils.js';
 import AlignBox from '../../../scenery/js/nodes/AlignBox.js';
 import AlignGroup from '../../../scenery/js/nodes/AlignGroup.js';
 import Node from '../../../scenery/js/nodes/Node.js';
@@ -56,6 +57,15 @@ const CONTROL_PANEL_ALIGN_GROUP = new AlignGroup( {
 
   // Elements should have the same widths but not constrained to have the same heights
   matchVertical: false
+} );
+
+// Support accessibility for deleting selected circuit elements, but don't support broader tab navigation until it
+// is complete
+document.addEventListener( 'keydown', event => {
+  const keyCode = event.keyCode || event.which;
+  if ( keyCode === KeyboardUtils.KEY_TAB ) {
+    event.preventDefault();
+  }
 } );
 
 class CCKCScreenView extends ScreenView {
