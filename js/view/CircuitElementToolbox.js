@@ -52,7 +52,6 @@ class CircuitElementToolbox extends HBox {
 
     // create the carousel
     const carousel = new Carousel( circuitElementToolNodes, options.carouselOptions );
-    console.log(CCKCConstants.CAROUSEL_SCALE);
     carousel.mutate( { scale: CCKCConstants.CAROUSEL_SCALE } );
 
     const pageControl = new PageControl( carousel.numberOfPages, carousel.pageNumberProperty, {
