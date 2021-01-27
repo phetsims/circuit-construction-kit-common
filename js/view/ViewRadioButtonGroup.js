@@ -36,7 +36,7 @@ class ViewRadioButtonGroup extends RectangularRadioButtonGroup {
       spacing: 4,
       orientation: 'horizontal',
       buttonContentXMargin: 9,
-      buttonContentYMargin: 5,
+      buttonContentYMargin: 10,
       baseColor: CCKCConstants.PANEL_COLOR,
       deselectedButtonOpacity: 0.4,
       overButtonOpacity: 0.7,
