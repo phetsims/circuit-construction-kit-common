@@ -503,7 +503,8 @@ class CircuitElementToolFactory {
                         circuitElement.batteryType === Battery.BatteryType.HIGH_VOLTAGE, position => {
         return this.circuit.highVoltageBatteryGroup.createNextElement( ...this.circuit.createVertexPairArray( position, SWITCH_LENGTH ) );
       }, {
-        tandem: tandem
+        tandem: tandem,
+        lifelikeIconHeight: 15
       } );
   }
 
