@@ -128,20 +128,21 @@ class CircuitElementToolFactory {
 
     options = merge( {
       tandem: Tandem.REQUIRED,
-      additionalProperty: new BooleanProperty( true )
+      additionalProperty: new BooleanProperty( true ),
+      lifelikeIconHeight: CCKCConstants.TOOLBOX_ICON_HEIGHT,
+      schematicIconHeight: CCKCConstants.TOOLBOX_ICON_HEIGHT
     }, options );
 
-    const wrap = node => {
-      node.mutate( { scale: 4 } );
-      return new Node( {
-        children: [ node ],
-        maxWidth: CCKCConstants.TOOLBOX_ICON_WIDTH,
-        maxHeight: CCKCConstants.TOOLBOX_ICON_HEIGHT
+    const wrap = ( node, height ) => {
+      const node1 = new Node( {
+        children: [ node ]
       } );
+      node1.mutate( { scale: height / node1.height } );
+      return node1;
     };
 
-    const lifelikeIcon = wrap( createIcon( options.tandem.createTandem( 'lifelikeIcon' ), LIFELIKE_PROPERTY ) );
-    const schematicIcon = wrap( createIcon( options.tandem.createTandem( 'schematicIcon' ), SCHEMATIC_PROPERTY ) );
+    const lifelikeIcon = wrap( createIcon( options.tandem.createTandem( 'lifelikeIcon' ), LIFELIKE_PROPERTY ), options.lifelikeIconHeight );
+    const schematicIcon = wrap( createIcon( options.tandem.createTandem( 'schematicIcon' ), SCHEMATIC_PROPERTY ), options.schematicIconHeight );
 
     const toggleNode = new ToggleNode( this.viewTypeProperty, [
       { value: CircuitElementViewType.LIFELIKE, node: lifelikeIcon },
@@ -188,7 +189,9 @@ class CircuitElementToolFactory {
       },
       circuitElement => circuitElement instanceof Wire,
       position => this.circuit.wireGroup.createNextElement( ...this.circuit.createVertexPairArray( position, WIRE_LENGTH ) ), {
-        tandem: tandem
+        tandem: tandem,
+        lifelikeIconHeight: 9,
+        schematicIconHeight: 2
       } );
   }
 
@@ -209,7 +212,8 @@ class CircuitElementToolFactory {
                         circuitElement.initialOrientation === 'right' &&
                         circuitElement.batteryType === Battery.BatteryType.NORMAL,
       position => this.circuit.batteryGroup.createNextElement( ...this.circuit.createVertexPairArray( position, BATTERY_LENGTH ) ), {
-        tandem: tandem
+        tandem: tandem,
+        lifelikeIconHeight: 15
       } );
   }
 
@@ -230,7 +234,9 @@ class CircuitElementToolFactory {
       ( tandem, viewTypeProperty ) => new ACVoltageNode( null, null, acSource, viewTypeProperty, tandem.createTandem( 'acSourceIcon' ), { isIcon: true, scale: 0.68 } ),
       circuitElement => circuitElement instanceof ACVoltage,
       position => this.circuit.acVoltageGroup.createNextElement( ...this.circuit.createVertexPairArray( position, AC_VOLTAGE_LENGTH ) ), {
-        tandem: tandem
+        tandem: tandem,
+        lifelikeIconHeight: 25,
+        schematicIconHeight: 25
       }
     );
   }
@@ -268,7 +274,8 @@ class CircuitElementToolFactory {
         return lightBulbGroup.createNextElement( vertexPair.startVertex, vertexPair.endVertex, CCKCConstants.DEFAULT_RESISTANCE );
       }, {
         tandem: tandem,
-        additionalProperty: addRealBulbsProperty || new BooleanProperty( true )
+        additionalProperty: addRealBulbsProperty || new BooleanProperty( true ),
+        schematicIconHeight: 25
       } );
   }
 
@@ -276,11 +283,17 @@ class CircuitElementToolFactory {
    * @param {number} count - the number that can be dragged out at once
    * @param {Resistor.ResistorType} resistorType
    * @param {Tandem} tandem
-   * @param {string} [labelString]
+   * @param {Object} [options]
    * @returns {CircuitElementToolNode}
    * @public
    */
-  createResistorToolNode( count, resistorType, tandem, labelString = resistorString ) {
+  createResistorToolNode( count, resistorType, tandem, options ) {
+    options = merge( {
+      lifelikeIconHeight: 12,
+      schematicIconHeight: 14,
+      labelString: resistorString
+    }, options );
+    const labelString = options.labelString;
 
     // Create the icon model without using the PhetioGroup, so it will not be PhET-iO instrumented.
     const resistorModel = new Resistor(
@@ -299,7 +312,9 @@ class CircuitElementToolFactory {
         const vertices = this.circuit.createVertexPairArray( position, resistorType.length );
         return this.circuit.resistorGroup.createNextElement( vertices[ 0 ], vertices[ 1 ], resistorType );
       }, {
-        tandem: tandem
+        tandem: tandem,
+        lifelikeIconHeight: options.lifelikeIconHeight,
+        schematicIconHeight: options.schematicIconHeight
       } );
   }
 
@@ -321,7 +336,9 @@ class CircuitElementToolFactory {
       } ),
       circuitElement => circuitElement instanceof Fuse,
       position => this.circuit.fuseGroup.createNextElement( ...this.circuit.createVertexPairArray( position, FUSE_LENGTH ) ), {
-        tandem: tandem
+        tandem: tandem,
+        lifelikeIconHeight: 15,
+        schematicIconHeight: 14
       }
     );
   }
@@ -367,7 +384,9 @@ class CircuitElementToolFactory {
       } ),
       circuitElement => circuitElement instanceof Inductor,
       position => this.circuit.inductorGroup.createNextElement( ...this.circuit.createVertexPairArray( position, CCKCConstants.INDUCTOR_LENGTH ) ), {
-        tandem: tandem
+        tandem: tandem,
+        lifelikeIconHeight: 20,
+        schematicIconHeight: 6
       } );
   }
 
@@ -389,7 +408,9 @@ class CircuitElementToolFactory {
         } ),
       circuitElement => circuitElement instanceof Switch,
       position => this.circuit.switchGroup.createNextElement( ...this.circuit.createVertexPairArray( position, SWITCH_LENGTH ) ), {
-        tandem: tandem
+        tandem: tandem,
+        lifelikeIconHeight: 22,
+        schematicIconHeight: 16
       } );
   }
 
@@ -400,42 +421,63 @@ class CircuitElementToolFactory {
    * @public
    */
   createPaperClipToolNode( count, tandem ) {
-    return this.createResistorToolNode( count, Resistor.ResistorType.PAPER_CLIP, tandem.createTandem( 'paperClipIcon' ), paperClipString );
+    return this.createResistorToolNode( count, Resistor.ResistorType.PAPER_CLIP, tandem.createTandem( 'paperClipIcon' ), {
+      labelString: paperClipString
+    } );
   }
 
   // @public - Same docs as for createPaperClipToolNode
   createCoinToolNode( count, tandem ) {
-    return this.createResistorToolNode( count, Resistor.ResistorType.COIN, tandem.createTandem( 'coinIcon' ), coinString );
+    return this.createResistorToolNode( count, Resistor.ResistorType.COIN, tandem.createTandem( 'coinIcon' ), {
+      labelString: coinString,
+      lifelikeIconHeight: 30
+    } );
   }
 
   // @public - Same docs as as for createPaperClipToolNode
   createDollarBillToolNode( count, tandem ) {
-    return this.createResistorToolNode( count, Resistor.ResistorType.DOLLAR_BILL, tandem.createTandem( 'dollarBillIcon' ), dollarBillString );
+    return this.createResistorToolNode( count, Resistor.ResistorType.DOLLAR_BILL, tandem.createTandem( 'dollarBillIcon' ), {
+      labelString: dollarBillString,
+      lifelikeIconHeight: 20
+    } );
   }
 
   // @public - Same docs as for createPaperClipToolNode
   createEraserToolNode( count, tandem ) {
-    return this.createResistorToolNode( count, Resistor.ResistorType.ERASER, tandem.createTandem( 'eraserIcon' ), eraserString );
+    return this.createResistorToolNode( count, Resistor.ResistorType.ERASER, tandem.createTandem( 'eraserIcon' ), {
+      labelString: eraserString
+    } );
   }
 
   // @public - Same docs as for createPaperClipToolNode
   createPencilToolNode( count, tandem ) {
-    return this.createResistorToolNode( count, Resistor.ResistorType.PENCIL, tandem.createTandem( 'pencilIcon' ), pencilString );
+    return this.createResistorToolNode( count, Resistor.ResistorType.PENCIL, tandem.createTandem( 'pencilIcon' ), {
+      labelString: pencilString,
+      lifelikeIconHeight: 12
+    } );
   }
 
   // @public - Same docs as for createPaperClipToolNode
   createHandToolNode( count, tandem ) {
-    return this.createResistorToolNode( count, Resistor.ResistorType.HAND, tandem.createTandem( 'handIcon' ), handString );
+    return this.createResistorToolNode( count, Resistor.ResistorType.HAND, tandem.createTandem( 'handIcon' ), {
+      labelString: handString,
+      lifelikeIconHeight: 30
+    } );
   }
 
   // @public - Same docs as for createPaperClipToolNode
   createDogToolNode( count, tandem ) {
-    return this.createResistorToolNode( count, Resistor.ResistorType.DOG, tandem.createTandem( 'dogIcon' ), dogString );
+    return this.createResistorToolNode( count, Resistor.ResistorType.DOG, tandem.createTandem( 'dogIcon' ), {
+      labelString: dogString,
+      lifelikeIconHeight: 30
+    } );
   }
 
   // @public - Same docs as for createPaperClipToolNode
   createHighResistanceResistorToolNode( count, tandem ) {
-    return this.createResistorToolNode( count, Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR, tandem.createTandem( 'highResistanceResistorIcon' ), resistorString );
+    return this.createResistorToolNode( count, Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR, tandem.createTandem( 'highResistanceResistorIcon' ), {
+      labelString: resistorString
+    } );
   }
 
   /**

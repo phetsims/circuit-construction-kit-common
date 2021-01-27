@@ -17,7 +17,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 // constants
 
 // This specifies the spacing between items and also the space before and after the first and last items
-const CAROUSEL_ITEM_SPACING = 6.5;
+const CAROUSEL_ITEM_SPACING = 11;
 
 class CircuitElementToolbox extends HBox {
 
