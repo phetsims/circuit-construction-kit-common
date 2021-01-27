@@ -12,6 +12,7 @@ import HBox from '../../../scenery/js/nodes/HBox.js';
 import Color from '../../../scenery/js/util/Color.js';
 import Carousel from '../../../sun/js/Carousel.js';
 import PageControl from '../../../sun/js/PageControl.js';
+import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 // constants
@@ -51,6 +52,8 @@ class CircuitElementToolbox extends HBox {
 
     // create the carousel
     const carousel = new Carousel( circuitElementToolNodes, options.carouselOptions );
+    console.log(CCKCConstants.CAROUSEL_SCALE);
+    carousel.mutate( { scale: CCKCConstants.CAROUSEL_SCALE } );
 
     const pageControl = new PageControl( carousel.numberOfPages, carousel.pageNumberProperty, {
       orientation: 'vertical',

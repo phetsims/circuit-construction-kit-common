@@ -195,6 +195,7 @@ class CCKCScreenView extends ScreenView {
         maxWidth: this.circuitElementToolbox.carousel.backgroundWidth
       }
     );
+    this.viewRadioButtonGroup.mutate( { scale: this.circuitElementToolbox.carousel.backgroundWidth / this.viewRadioButtonGroup.width * CCKCConstants.CAROUSEL_SCALE } );
 
     // @protected {DisplayOptionsPanel}
     this.displayOptionsPanel = new DisplayOptionsPanel(
@@ -282,8 +283,10 @@ class CCKCScreenView extends ScreenView {
 
     // Create the zoom control panel
     const zoomControlPanel = new ZoomControlPanel( model.selectedZoomProperty, {
-      maxWidth: this.circuitElementToolbox.carousel.backgroundWidth,
       tandem: tandem.createTandem( 'zoomControlPanel' )
+    } );
+    zoomControlPanel.mutate( {
+      scale: this.circuitElementToolbox.carousel.backgroundWidth / zoomControlPanel.width * CCKCConstants.CAROUSEL_SCALE
     } );
 
     // Add the optional Play/Pause button

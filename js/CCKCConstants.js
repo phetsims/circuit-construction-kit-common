@@ -15,6 +15,7 @@ import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
 
 // constants
 const FONT_SIZE = 14;
+const AC_CAROUSEL_SCALE=1;
 
 // constants
 const CCKCConstants = {
@@ -158,6 +159,11 @@ const CCKCConstants = {
 
   NUMBER_OF_TIME_DIVISIONS: 4,
   CHART_SERIES_COLOR: '#404041',
+
+  DC_CAROUSEL_SCALE: 1.35,
+
+  // Overridden in DC to make the carousel larger
+  CAROUSEL_SCALE: AC_CAROUSEL_SCALE,
 
   MAX_DT: 0.5 // see https://github.com/phetsims/circuit-construction-kit-common/issues/476 and https://github.com/phetsims/joist/issues/130
 };
