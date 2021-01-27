@@ -40,7 +40,7 @@ class CircuitElementToolbox extends HBox {
         spacing: CAROUSEL_ITEM_SPACING,
 
         // this is only the horizontal margin
-        margin: 15,
+        margin: 13,
 
         // Expand the touch area above the up button and below the down button
         buttonTouchAreaYDilation: 8,
