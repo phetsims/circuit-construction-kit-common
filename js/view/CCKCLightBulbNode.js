@@ -179,7 +179,7 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
 
     const schematicNode = new Path( ieeeShapeIcon, {
       stroke: Color.BLACK,
-      lineWidth: options.isIcon ? 2.2 : CCKCConstants.SCHEMATIC_LINE_WIDTH
+      lineWidth: options.isIcon ? 4 : CCKCConstants.SCHEMATIC_LINE_WIDTH
     } );
 
     if ( options.isIcon ) {
