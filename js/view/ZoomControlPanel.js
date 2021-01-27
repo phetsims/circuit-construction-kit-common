@@ -35,7 +35,9 @@ class ZoomControlPanel extends MagnifyingGlassZoomButtonGroup {
       },
       magnifyingGlassNodeOptions: {
         scale:0.7
-      }
+      },
+      touchAreaXDilation: 9,
+      touchAreaYDilation: 10
     }, options );
     super( selectedZoomProperty, options );
   }
