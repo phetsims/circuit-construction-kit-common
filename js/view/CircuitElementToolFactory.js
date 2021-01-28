@@ -445,7 +445,8 @@ class CircuitElementToolFactory {
   // @public - Same docs as for createPaperClipToolNode
   createEraserToolNode( count, tandem ) {
     return this.createResistorToolNode( count, Resistor.ResistorType.ERASER, tandem.createTandem( 'eraserIcon' ), {
-      labelString: eraserString
+      labelString: eraserString,
+      lifelikeIconHeight: 17
     } );
   }
 
