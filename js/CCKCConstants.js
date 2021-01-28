@@ -160,7 +160,7 @@ const CCKCConstants = {
   NUMBER_OF_TIME_DIVISIONS: 4,
   CHART_SERIES_COLOR: '#404041',
 
-  DC_CAROUSEL_SCALE: 1.35,
+  DC_CAROUSEL_SCALE: 1.2,
 
   // Overridden in DC to make the carousel larger
   CAROUSEL_SCALE: AC_CAROUSEL_SCALE,
