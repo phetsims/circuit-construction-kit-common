@@ -235,8 +235,8 @@ class CircuitElementToolFactory {
       circuitElement => circuitElement instanceof ACVoltage,
       position => this.circuit.acVoltageGroup.createNextElement( ...this.circuit.createVertexPairArray( position, AC_VOLTAGE_LENGTH ) ), {
         tandem: tandem,
-        lifelikeIconHeight: 25,
-        schematicIconHeight: 25
+        lifelikeIconHeight: 27,
+        schematicIconHeight: 27
       }
     );
   }
@@ -275,7 +275,7 @@ class CircuitElementToolFactory {
       }, {
         tandem: tandem,
         additionalProperty: addRealBulbsProperty || new BooleanProperty( true ),
-        schematicIconHeight: 25
+        schematicIconHeight: 27
       } );
   }
 
@@ -289,7 +289,7 @@ class CircuitElementToolFactory {
    */
   createResistorToolNode( count, resistorType, tandem, options ) {
     options = merge( {
-      lifelikeIconHeight: 12,
+      lifelikeIconHeight: 15,
       schematicIconHeight: 14,
       labelString: resistorString
     }, options );
@@ -361,7 +361,7 @@ class CircuitElementToolFactory {
       } ),
       circuitElement => circuitElement instanceof Capacitor,
       position => this.circuit.capacitorGroup.createNextElement( ...this.circuit.createVertexPairArray( position, CCKCConstants.CAPACITOR_LENGTH ) ), {
-        tandem: tandem
+        tandem: tandem,
       } );
   }
 
@@ -385,7 +385,7 @@ class CircuitElementToolFactory {
       circuitElement => circuitElement instanceof Inductor,
       position => this.circuit.inductorGroup.createNextElement( ...this.circuit.createVertexPairArray( position, CCKCConstants.INDUCTOR_LENGTH ) ), {
         tandem: tandem,
-        lifelikeIconHeight: 20,
+        lifelikeIconHeight: 22,
         schematicIconHeight: 6
       } );
   }
@@ -438,7 +438,7 @@ class CircuitElementToolFactory {
   createDollarBillToolNode( count, tandem ) {
     return this.createResistorToolNode( count, Resistor.ResistorType.DOLLAR_BILL, tandem.createTandem( 'dollarBillIcon' ), {
       labelString: dollarBillString,
-      lifelikeIconHeight: 20
+      lifelikeIconHeight: 22
     } );
   }
 
