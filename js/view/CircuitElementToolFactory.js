@@ -361,7 +361,7 @@ class CircuitElementToolFactory {
       } ),
       circuitElement => circuitElement instanceof Capacitor,
       position => this.circuit.capacitorGroup.createNextElement( ...this.circuit.createVertexPairArray( position, CCKCConstants.CAPACITOR_LENGTH ) ), {
-        tandem: tandem,
+        tandem: tandem
       } );
   }
 
