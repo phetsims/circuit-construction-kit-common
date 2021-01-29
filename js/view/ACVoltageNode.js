@@ -50,7 +50,7 @@ const createNode = schematic => new Node( {
     new Circle( CIRCLE_DIAMETER / 2, {
       stroke: 'black',
       fill: schematic ? null : 'white',
-      lineWidth: 4,
+      lineWidth: schematic ? 4 : 2,
       centerX: 0
     } ),
     sineCurvePath,
