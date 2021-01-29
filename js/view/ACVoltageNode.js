@@ -36,37 +36,39 @@ for ( let x = 0; x < Math.PI * 2; x += Math.PI / 2 / 100 ) {
 // Scale to fit the correct width
 const sineCurvePath = new Path( sineCurveShape, {
   stroke: 'black',
-  lineWidth: 2,
+  lineWidth: 4,
   centerX: 0
 } );
 
 const CIRCLE_DIAMETER = 54;
 const signSeparation = CIRCLE_DIAMETER * 0.32;
-const signScale = 0.8;
-const template = new Node( {
+const signScale = 1;
+
+const createNode = schematic => new Node( {
   x: CCKCConstants.AC_VOLTAGE_LENGTH / 2,
   children: [
     new Circle( CIRCLE_DIAMETER / 2, {
       stroke: 'black',
-      fill: 'white',
-      lineWidth: 2,
+      fill: schematic ? null : 'white',
+      lineWidth: 4,
       centerX: 0
     } ),
     sineCurvePath,
-    new PlusNode( {
-      size: new Dimension2( 10 * signScale, 2.5 * signScale ),
-      centerX: 0,
-      centerY: -signSeparation
-    } ),
-    new MinusNode( {
-      size: new Dimension2( 10 * signScale, 2.5 * signScale ),
-      centerX: 0,
-      centerY: signSeparation
-    } )
+    ...schematic ? [] :
+      [ new PlusNode( {
+        size: new Dimension2( 10 * signScale, 2.5 * signScale ),
+        centerX: 0,
+        centerY: -signSeparation
+      } ),
+        new MinusNode( {
+          size: new Dimension2( 10 * signScale, 2.5 * signScale ),
+          centerX: 0,
+          centerY: signSeparation
+        } ) ]
   ]
 } );
-const schematicNode = template.rasterized( { wrap: false, resolution: 2 } );
-const lifelikeNode = template.rasterized( { wrap: false, resolution: 2 } );
+const schematicNode = createNode( true ).rasterized( { wrap: false, resolution: 2 } );
+const lifelikeNode = createNode( false ).rasterized( { wrap: false, resolution: 2 } );
 
 schematicNode.centerY = 0;
 
