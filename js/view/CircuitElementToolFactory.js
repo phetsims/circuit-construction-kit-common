@@ -115,7 +115,7 @@ class CircuitElementToolFactory {
    * Utility function that creates a CircuitElementToolNode
    * @param {string} labelString
    * @param {number} count
-   * @param {function(Tandem,Property<CircuitElementViewType>):Node} createIcon
+   * @param {function(Tandem,Property.<CircuitElementViewType>):Node} createIcon
    * @param {function} predicate - CircuitElement => boolean, used to count circuit elements of that kind
    * @param {function} createElement - (Vector2) => CircuitElement Function that creates a CircuitElement at the given position
    *                                 - for most components it is the center of the component.  For Light Bulbs, it is
@@ -247,7 +247,7 @@ class CircuitElementToolFactory {
    * @param {PhetioGroup} lightBulbGroup
    * @param {string} string
    * @param {boolean} real
-   * @param {Property<Boolean>} addRealBulbsProperty
+   * @param {Property.<Boolean>} addRealBulbsProperty
    * @returns {CircuitElementToolNode}
    * @public
    */

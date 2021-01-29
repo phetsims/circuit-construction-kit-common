@@ -56,8 +56,8 @@ const trueFunction = _.constant( true ); // Lower cased so IDEA doesn't think it
 class Circuit {
 
   /**
-   * @param {Property<CircuitElementViewType>} viewTypeProperty
-   * @param {Property<Boolean>} addRealBulbsProperty
+   * @param {Property.<CircuitElementViewType>} viewTypeProperty
+   * @param {Property.<Boolean>} addRealBulbsProperty
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
