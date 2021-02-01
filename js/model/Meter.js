@@ -44,7 +44,7 @@ class Meter {
   }
 
   /**
-   * Resets the meter.  This is overriden by Ammeter and Voltmeter.
+   * Resets the meter.  This is overridden by Ammeter and Voltmeter.
    * @public
    */
   reset() {

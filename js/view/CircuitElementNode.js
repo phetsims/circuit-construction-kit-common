@@ -124,7 +124,7 @@ class CircuitElementNode extends Node {
   }
 
   /**
-   * When interactivity changes, update the opacity.  Overriden.
+   * When interactivity changes, update the opacity.  Overridden.
    * @public
    */
   updateOpacityOnInteractiveChange() {
