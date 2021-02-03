@@ -6,9 +6,9 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import dotRandom from '../../../dot/js/dotRandom.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import dotRandom from '../../../dot/js/dotRandom.js';
 import merge from '../../../phet-core/js/merge.js';
 import KeyboardUtils from '../../../scenery/js/accessibility/KeyboardUtils.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
@@ -261,10 +261,10 @@ class VertexNode extends Node {
    */
   keydownListener( event ) {
     const domEvent = event.domEvent;
-    const code = domEvent.keyCode || domEvent.which;
+    const key = domEvent.key.toLowerCase();
 
     // on delete or backspace, the focused Vertex should be cut
-    if ( code === KeyboardUtils.KEY_DELETE || code === KeyboardUtils.KEY_BACKSPACE ) {
+    if ( key === KeyboardUtils.KEY_DELETE || key === KeyboardUtils.KEY_BACKSPACE ) {
 
       // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
       // https://github.com/phetsims/circuit-construction-kit-common/issues/307

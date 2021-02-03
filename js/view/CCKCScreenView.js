@@ -62,8 +62,7 @@ const CONTROL_PANEL_ALIGN_GROUP = new AlignGroup( {
 // Support accessibility for deleting selected circuit elements, but don't support broader tab navigation until it
 // is complete
 document.addEventListener( 'keydown', event => {
-  const keyCode = event.keyCode || event.which;
-  if ( keyCode === KeyboardUtils.KEY_TAB ) {
+  if ( event.key.toLowerCase() === KeyboardUtils.KEY_TAB ) {
     event.preventDefault();
   }
 } );

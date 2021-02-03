@@ -56,7 +56,7 @@ class CircuitElementNode extends Node {
     // keyboard listener so that delete or backspace deletes the element - must be disposed
     const keyListener = {
       keydown: event => {
-        const code = event.domEvent.keyCode;
+        const code = event.domEvent.key.toLowerCase();
 
         // on delete or backspace, the focused circuit element should be deleted
         if ( code === KeyboardUtils.KEY_DELETE || code === KeyboardUtils.KEY_BACKSPACE ) {
