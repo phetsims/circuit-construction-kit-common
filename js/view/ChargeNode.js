@@ -30,7 +30,7 @@ const ELECTRON_CHARGE_NODE = new ElectronChargeNode( {
   scale: 0.78
 } ).rasterized( { wrap: false } );
 
-const ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.GLOBAL.createTandem( 'arrowNode' ) ).rasterized( { wrap: false } );
+const ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.GLOBAL_VIEW.createTandem( 'arrowNode' ) ).rasterized( { wrap: false } );
 
 // Below this amperage, no conventional current will be rendered.
 const CONVENTIONAL_CHARGE_THRESHOLD = 1E-6;
