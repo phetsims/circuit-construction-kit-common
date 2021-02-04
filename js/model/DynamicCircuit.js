@@ -238,7 +238,7 @@ class DynamicCircuit {
 class CircuitResult {
 
   /**
-   * @param {ResultSet<DynamicCircuit.DynamicState>} resultSet
+   * @param {ResultSet.<DynamicCircuit.DynamicState>} resultSet
    */
   constructor( resultSet ) {
     this.resultSet = resultSet;
