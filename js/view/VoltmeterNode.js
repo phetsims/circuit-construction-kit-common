@@ -272,7 +272,12 @@ class VoltmeterNode extends Node {
         targetNode: this
       } );
       options.visibleBoundsProperty.link( visibleBounds => {
-        this.dragHandler.dragBounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
+        const erodedBounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
+        this.dragHandler.dragBounds = erodedBounds;
+
+        voltmeter.redProbePositionProperty.set( erodedBounds.closestPointTo( voltmeter.redProbePositionProperty.value ) );
+        voltmeter.blackProbePositionProperty.set( erodedBounds.closestPointTo( voltmeter.blackProbePositionProperty.value ) );
+        voltmeter.bodyPositionProperty.set( erodedBounds.closestPointTo( voltmeter.bodyPositionProperty.value ) );
       } );
       bodyNode.addInputListener( this.dragHandler );
 
