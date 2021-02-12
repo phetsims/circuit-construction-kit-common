@@ -192,6 +192,8 @@ class AmmeterNode extends Node {
         const erodedDragBounds = visibleBounds.eroded( CCKCConstants.DRAG_BOUNDS_EROSION );
         this.dragHandler.dragBounds = erodedDragBounds;
         probeDragHandler.dragBounds = erodedDragBounds;
+        ammeter.bodyPositionProperty.value = erodedDragBounds.closestPointTo( ammeter.bodyPositionProperty.value );
+        ammeter.probePositionProperty.value = erodedDragBounds.closestPointTo( ammeter.probePositionProperty.value );
       } );
       this.probeNode.addInputListener( probeDragHandler );
 
