@@ -96,7 +96,7 @@ class ChargeNode extends Node {
 
       const opacity = Utils.linear( 0.015, CONVENTIONAL_CHARGE_THRESHOLD, 1, 0, Math.abs( charge.circuitElement.currentProperty.get() ) );
       const clampedOpacity = Utils.clamp( opacity, 0, 1 );
-      this.children[ 0 ].setImageOpacity( clampedOpacity );
+      this.setOpacity( clampedOpacity );
     }
     else {
 
