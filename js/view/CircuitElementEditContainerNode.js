@@ -234,7 +234,7 @@ class CircuitElementEditContainerNode extends Node {
               delta: NORMAL_TWEAKER_DELTA,
 
               sliderOptions: {
-                constrainValue: value => Utils.roundToInterval( value, NORMAL_SLIDER_KNOB_DELTA )
+                constrainValue: value => Utils.roundToInterval( value, 0.5 )
               }
             }
           );
