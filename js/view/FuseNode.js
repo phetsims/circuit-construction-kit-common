@@ -146,10 +146,11 @@ class FuseNode extends FixedCircuitElementNode {
       .lineToRelative( boxWidth - 2 * boxLength7th, 0 )
       .lineToRelative( 0, -boxHeight );
 
-    schematicTypeProperty.link( schematicType => {
+    const updateSchematicType = schematicType => {
       schematicNode.shape = schematicType === SchematicType.IEEE ? schematicShape :
                             fuseIEC;
-    } );
+    };
+    schematicTypeProperty.link( updateSchematicType );
 
     // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
     schematicNode.centerY = 0;
@@ -184,6 +185,7 @@ class FuseNode extends FixedCircuitElementNode {
       if ( !options.isIcon ) {
         this.fuse.isTrippedProperty.unlink( updateTripped );
       }
+      schematicTypeProperty.unlink( updateSchematicType );
     };
   }
 

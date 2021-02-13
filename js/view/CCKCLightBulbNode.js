@@ -186,14 +186,15 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
       schematicNode.center = lightBulbNode.center.plusXY( 0, 22 );
     }
 
-    schematicTypeProperty.link( schematicType => {
+    const updateSchematicType = schematicType => {
       if ( options.isIcon ) {
         schematicNode.shape = schematicType === SchematicType.IEEE ? ieeeShapeIcon : iecShapeIcon;
       }
       else {
         schematicNode.shape = schematicType === SchematicType.IEEE ? ieeeShapeWithLeads : iecShapeWithLeads;
       }
-    } );
+    };
+    schematicTypeProperty.link( updateSchematicType );
 
     // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
     if ( !options.isIcon ) {
@@ -249,6 +250,7 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
       circuitLayerNode && circuitLayerNode.removeChildFromBackground( this.rayNodeContainer );
       viewTypeProperty.unlink( viewListener );
       this.socketNode.dispose();
+      schematicTypeProperty.unlink( updateSchematicType );
     };
   }
 

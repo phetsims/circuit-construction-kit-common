@@ -188,10 +188,11 @@ class ResistorNode extends FixedCircuitElementNode {
       lineWidth: CCKCConstants.SCHEMATIC_LINE_WIDTH
     } );
 
-    schematicTypeProperty.link( schematicType => {
+    const updateSchematicType = schematicType => {
       schematicNode.shape = schematicType === SchematicType.IEEE ? ieeeSchematicShape :
                             iecSchematicShape;
-    } );
+    };
+    schematicTypeProperty.link( updateSchematicType );
 
     schematicNode.mouseArea = schematicNode.localBounds;
     schematicNode.touchArea = schematicNode.localBounds;
@@ -226,6 +227,7 @@ class ResistorNode extends FixedCircuitElementNode {
     this.disposeResistorNode = () => {
       updateColorBands && resistor.resistanceProperty.unlink( updateColorBands );
       lifelikeResistorImageNode.dispose();
+      schematicTypeProperty.unlink( updateSchematicType );
     };
   }
 
