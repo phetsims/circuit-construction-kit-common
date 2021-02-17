@@ -10,7 +10,6 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
 import merge from '../../../phet-core/js/merge.js';
-import Touch from '../../../scenery/js/input/Touch.js';
 import DragListener from '../../../scenery/js/listeners/DragListener.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import VBox from '../../../scenery/js/nodes/VBox.js';
@@ -65,7 +64,7 @@ class CircuitElementToolNode extends VBox {
 
       // Adjust for touch.  The object should appear centered on the mouse but vertically above the finger so the finger
       // doesn't obscure the object
-      viewPosition.y = viewPosition.y - ( event.pointer instanceof Touch ? 28 : 0 );
+      viewPosition.y = viewPosition.y - ( event.pointer.isTouchLike() ? 28 : 0 );
 
       // Create the new CircuitElement at the correct position
       const circuitElement = createElement( viewPosition, event );
