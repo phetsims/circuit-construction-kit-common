@@ -56,10 +56,9 @@ class CircuitElementNode extends Node {
     // keyboard listener so that delete or backspace deletes the element - must be disposed
     const keyListener = {
       keydown: event => {
-        const code = event.domEvent.key.toLowerCase();
 
         // on delete or backspace, the focused circuit element should be deleted
-        if ( code === KeyboardUtils.KEY_DELETE || code === KeyboardUtils.KEY_BACKSPACE ) {
+        if ( KeyboardUtils.isAnyKeyEvent( event.domEvent, [ KeyboardUtils.KEY_DELETE, KeyboardUtils.KEY_BACKSPACE ] ) ) {
 
           // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
           // https://github.com/phetsims/circuit-construction-kit-common/issues/307

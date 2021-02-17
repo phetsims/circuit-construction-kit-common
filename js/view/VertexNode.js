@@ -261,10 +261,9 @@ class VertexNode extends Node {
    */
   keydownListener( event ) {
     const domEvent = event.domEvent;
-    const key = domEvent.key.toLowerCase();
 
     // on delete or backspace, the focused Vertex should be cut
-    if ( key === KeyboardUtils.KEY_DELETE || key === KeyboardUtils.KEY_BACKSPACE ) {
+    if ( KeyboardUtils.isAnyKeyEvent( domEvent, [ KeyboardUtils.KEY_DELETE, KeyboardUtils.KEY_BACKSPACE ] ) ) {
 
       // prevent default so 'backspace' and 'delete' don't navigate back a page in Firefox, see
       // https://github.com/phetsims/circuit-construction-kit-common/issues/307
