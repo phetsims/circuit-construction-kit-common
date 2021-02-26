@@ -43,7 +43,7 @@ class ViewRadioButtonGroup extends RectangularRadioButtonGroup {
       cornerRadius: CCKCConstants.CORNER_RADIUS,
       tandem: tandem,
       touchAreaXDilation: 9,
-      touchAreaYDilation:10
+      touchAreaYDilation: 10
     }, options );
 
     // Create a battery which can be used in the views

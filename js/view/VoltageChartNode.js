@@ -36,7 +36,7 @@ class VoltageChartNode extends CCKCChartNode {
   constructor( circuitLayerNode, timeProperty, visibleBoundsProperty, options ) {
 
     options = merge( {
-      defaultZoomLevel: new Range(-10,10),
+      defaultZoomLevel: new Range( -10, 10 ),
       timeDivisions: CCKCConstants.NUMBER_OF_TIME_DIVISIONS,
       tandem: Tandem.OPTIONAL
     }, options );
