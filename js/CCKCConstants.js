@@ -15,7 +15,7 @@ import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
 
 // constants
 const FONT_SIZE = 14;
-const AC_CAROUSEL_SCALE=1;
+const AC_CAROUSEL_SCALE = 1;
 
 // constants
 const CCKCConstants = {

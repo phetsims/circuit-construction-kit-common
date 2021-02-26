@@ -34,7 +34,7 @@ class ZoomControlPanel extends MagnifyingGlassZoomButtonGroup {
         baseColor: PhetColorScheme.BUTTON_YELLOW
       },
       magnifyingGlassNodeOptions: {
-        scale:0.7
+        scale: 0.7
       },
       touchAreaXDilation: 9,
       touchAreaYDilation: 10
