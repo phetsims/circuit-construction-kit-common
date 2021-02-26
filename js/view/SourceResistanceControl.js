@@ -47,7 +47,7 @@ class SourceResistanceControl extends VBox {
       minorTickLength: CCKCConstants.MINOR_TICK_LENGTH,
 
       // Snap to the nearest whole number.
-      constrainValue: value => Utils.roundSymmetric( value ),
+      constrainValue: value => range.constrainValue( Utils.roundSymmetric( value ) ),
       tandem: tandem.createTandem( 'slider' )
     } );
     slider.addMajorTick( range.min, createLabel( StringUtils.fillIn( resistanceOhmsSymbolString, { resistance: Utils.toFixed( range.min, 0 ) } ), tandem.createTandem( 'minLabel' ) ) );

@@ -16,6 +16,7 @@ import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
 // constants
 const FONT_SIZE = 14;
 const AC_CAROUSEL_SCALE = 1;
+const MINIMUM_RESISTANCE = 1E-8;
 
 // constants
 const CCKCConstants = {
@@ -34,14 +35,14 @@ const CCKCConstants = {
   // The resistance of a default resistor, also used in icons
   DEFAULT_RESISTANCE: 10,
 
-  // The resistance of a default battery
-  DEFAULT_BATTERY_RESISTANCE: 0,
-
   // The default capacitance in farads
   DEFAULT_CAPACITANCE: 0.1,
 
+  // The resistance of a default battery
+  DEFAULT_BATTERY_RESISTANCE: MINIMUM_RESISTANCE,
+
   // The range of the battery resistance
-  BATTERY_RESISTANCE_RANGE: new Range( 0, 10 ),
+  BATTERY_RESISTANCE_RANGE: new Range( MINIMUM_RESISTANCE, 10 ),
 
   // Right side panel minWidth
   RIGHT_SIDE_PANEL_MIN_WIDTH: 190,
@@ -74,7 +75,7 @@ const CCKCConstants = {
   WIRE_CROSS_SECTIONAL_AREA: 5E-4, // meters squared
 
   // The lowest resistance a CircuitElement can have
-  MINIMUM_RESISTANCE: 1E-8,
+  MINIMUM_RESISTANCE: MINIMUM_RESISTANCE,
 
   // How far to erode the visible bounds for keeping the probes in bounds.
   DRAG_BOUNDS_EROSION: 20,
