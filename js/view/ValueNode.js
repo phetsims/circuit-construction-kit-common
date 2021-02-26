@@ -208,7 +208,7 @@ class ValueNode extends Panel {
 
     super( contentNode, {
       stroke: null,
-      fill: new Color( 255, 255, 255, 0.6 ),// put transparency in the color so that the children aren't transparent
+      fill: new Color( 255, 255, 255, 0.6 ), // put transparency in the color so that the children aren't transparent
       tandem: tandem,
       cornerRadius: 3,
       xMargin: 3,

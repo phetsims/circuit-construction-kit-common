@@ -160,7 +160,7 @@ class SeriesAmmeterNode extends FixedCircuitElementNode {
       seriesAmmeter,
       new Property( CircuitElementViewType.LIFELIKE ),
       lifelikeNode,
-      new Node( { children: [ lifelikeNode ] } ),// reuse lifelike view for the schematic view
+      new Node( { children: [ lifelikeNode ] } ), // reuse lifelike view for the schematic view
       tandem,
       options
     );
