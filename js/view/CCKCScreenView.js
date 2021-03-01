@@ -98,7 +98,7 @@ class CCKCScreenView extends ScreenView {
       hasACandDCVoltageSources: false // determines the string shown in the AdvancedAccordionBox
     }, options );
 
-    super();
+    super( { tandem: tandem } );
 
     // @public (read-only) {CircuitConstructionKitModel}
     this.model = model;
