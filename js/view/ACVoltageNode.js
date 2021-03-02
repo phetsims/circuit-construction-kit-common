@@ -43,6 +43,8 @@ const sineCurvePath = new Path( sineCurveShape, {
 const CIRCLE_DIAMETER = 54;
 const signSeparation = CIRCLE_DIAMETER * 0.32;
 const signScale = 1;
+const SCHEMATIC_LINE_WIDTH = 4;
+const LIFELIKE_LINE_WIDTH = 2;
 
 const createNode = schematic => new Node( {
   x: CCKCConstants.AC_VOLTAGE_LENGTH / 2,
@@ -50,7 +52,7 @@ const createNode = schematic => new Node( {
     new Circle( CIRCLE_DIAMETER / 2, {
       stroke: 'black',
       fill: schematic ? null : 'white',
-      lineWidth: schematic ? 4 : 2,
+      lineWidth: schematic ? SCHEMATIC_LINE_WIDTH : LIFELIKE_LINE_WIDTH,
       centerX: 0
     } ),
     sineCurvePath,
@@ -70,11 +72,12 @@ const createNode = schematic => new Node( {
 const schematicNode = createNode( true ).rasterized( { wrap: false, resolution: 2 } );
 const lifelikeNode = createNode( false ).rasterized( { wrap: false, resolution: 2 } );
 
-schematicNode.centerY = 0;
-
 // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
-schematicNode.mouseArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
-schematicNode.touchArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
+schematicNode.mouseArea = Shape.circle(
+  CCKCConstants.AC_VOLTAGE_LENGTH - SCHEMATIC_LINE_WIDTH * 1.5,
+  CCKCConstants.AC_VOLTAGE_LENGTH - SCHEMATIC_LINE_WIDTH * 1.5,
+  CIRCLE_DIAMETER );
+schematicNode.touchArea = schematicNode.mouseArea;
 
 class ACVoltageNode extends FixedCircuitElementNode {
 
