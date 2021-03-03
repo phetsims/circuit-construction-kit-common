@@ -487,9 +487,9 @@ class CircuitElementToolFactory {
   }
 
   // @public - Same docs as for createPaperClipToolNode
-  createHighResistanceResistorToolNode( count ) {
+  createHighResistanceResistorToolNode() {
     return this.createResistorToolNode( {
-      count: count,
+      count: 4,
       resistorType: Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR,
       tandemName: 'highResistanceResistorToolNode',
       labelString: resistorString
@@ -497,13 +497,11 @@ class CircuitElementToolFactory {
   }
 
   /**
-   * @param {number} count - the number that can be dragged out at once
-   * @param {Tandem} tandem
    * @returns {CircuitElementToolNode}
    * @public
    */
-  createHighVoltageBatteryToolNode( count, tandem ) {
-    return this.createCircuitElementToolNode( batteryString, count,
+  createHighVoltageBatteryToolNode() {
+    return this.createCircuitElementToolNode( batteryString, 4,
       ( tandem, viewTypeProperty ) => new BatteryNode( null, null,
         new Battery(
           new Vertex( Vector2.ZERO ),
@@ -519,20 +517,18 @@ class CircuitElementToolFactory {
                         circuitElement.batteryType === Battery.BatteryType.HIGH_VOLTAGE, position => {
         return this.circuit.highVoltageBatteryGroup.createNextElement( ...this.circuit.createVertexPairArray( position, SWITCH_LENGTH ) );
       }, {
-        tandem: tandem,
+        tandem: this.parentTandem.createTandem( 'highVoltageBatteryToolNode' ),
         lifelikeIconHeight: 15
       } );
   }
 
   /**
-   * @param {number} count - the number that can be dragged out at once
-   * @param {Tandem} tandem
    * @returns {CircuitElementToolNode}
    * @public
    */
-  createHighResistanceBulbToolNode( count, tandem ) {
+  createHighResistanceBulbToolNode() {
     const vertexPair = LightBulb.createVertexPair( Vector2.ZERO, this.circuit, true );
-    return this.createCircuitElementToolNode( lightBulbString, count,
+    return this.createCircuitElementToolNode( lightBulbString, 4,
       ( tandem, viewTypeProperty ) => new CCKCLightBulbNode(
         null,
         null,
@@ -556,7 +552,7 @@ class CircuitElementToolFactory {
         const vertexPair = LightBulb.createVertexPair( position, this.circuit, false );
         return this.circuit.highResistanceLightBulbGroup.createNextElement( vertexPair.startVertex, vertexPair.endVertex );
       }, {
-        tandem: tandem
+        tandem: this.parentTandem.createTandem( 'highResistanceBulbToolNode' )
       } );
   }
 }
