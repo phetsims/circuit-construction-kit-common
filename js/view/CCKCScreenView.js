@@ -82,7 +82,6 @@ class CCKCScreenView extends ScreenView {
       // When used as a scene, the reset all button is suppressed here, added in the screen so that it may reset all
       // scenes (including but not limited to this one).
       showResetAllButton: false,
-      toolboxOrientation: 'vertical',
 
       /* SEE ALSO OPTIONS IN CircuitElementToolbox*/
 
