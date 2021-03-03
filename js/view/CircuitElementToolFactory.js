@@ -79,12 +79,16 @@ class CircuitElementToolFactory {
    * @param {Property.<boolean>} showLabelsProperty
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {function} globalToCircuitLayerNodePoint Vector2=>Vector2 global point to coordinate frame of circuitLayerNode
+   * @param {Tandem} parentTandem - parent tandem for the created tool nodes
    */
-  constructor( circuit, showLabelsProperty, viewTypeProperty, globalToCircuitLayerNodePoint ) {
+  constructor( circuit, showLabelsProperty, viewTypeProperty, globalToCircuitLayerNodePoint, parentTandem ) {
     this.circuit = circuit;
     this.showLabelsProperty = showLabelsProperty;
     this.viewTypeProperty = viewTypeProperty;
     this.globalToCircuitLayerNodePoint = globalToCircuitLayerNodePoint;
+
+    // @private
+    this.parentTandem = parentTandem;
   }
 
   /**
@@ -171,13 +175,11 @@ class CircuitElementToolFactory {
   }
 
   /**
-   * @param {number} count - the number that can be dragged out at once
-   * @param {Tandem} tandem
    * @returns {CircuitElementToolNode}
    * @public
    */
-  createWireToolNode( count, tandem ) {
-    return this.createCircuitElementToolNode( wireString, count,
+  createWireToolNode() {
+    return this.createCircuitElementToolNode( wireString, CCKCConstants.NUMBER_OF_WIRES,
       ( tandem, viewTypeProperty ) => {
         return viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? new Image( wireIconImage, {
           tandem: tandem
@@ -189,7 +191,7 @@ class CircuitElementToolFactory {
       },
       circuitElement => circuitElement instanceof Wire,
       position => this.circuit.wireGroup.createNextElement( ...this.circuit.createVertexPairArray( position, WIRE_LENGTH ) ), {
-        tandem: tandem,
+        tandem: this.parentTandem.createTandem( 'wireToolNode' ),
         lifelikeIconHeight: 9,
         schematicIconHeight: 2
       } );
@@ -197,11 +199,10 @@ class CircuitElementToolFactory {
 
   /**
    * @param {number} count - the number that can be dragged out at once
-   * @param {Tandem} tandem
    * @returns {CircuitElementToolNode}
    * @public
    */
-  createRightBatteryToolNode( count, tandem ) {
+  createRightBatteryToolNode( count = 10 ) {
     const batteryModel = new Battery(
       new Vertex( Vector2.ZERO ), new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
       new Property( 0 ), Battery.BatteryType.NORMAL, Tandem.OPTIONAL
@@ -212,18 +213,17 @@ class CircuitElementToolFactory {
                         circuitElement.initialOrientation === 'right' &&
                         circuitElement.batteryType === Battery.BatteryType.NORMAL,
       position => this.circuit.batteryGroup.createNextElement( ...this.circuit.createVertexPairArray( position, BATTERY_LENGTH ) ), {
-        tandem: tandem,
+        tandem: this.parentTandem.createTandem( 'rightBatteryToolNode' ),
         lifelikeIconHeight: 15
       } );
   }
 
   /**
    * @param {number} count - the number that can be dragged out at once
-   * @param {Tandem} tandem
    * @returns {CircuitElementToolNode}
    * @public
    */
-  createACVoltageToolNode( count, tandem ) {
+  createACVoltageToolNode( count = 10 ) {
     const acSource = new ACVoltage(
       new Vertex( Vector2.ZERO ),
       new Vertex( new Vector2( AC_VOLTAGE_LENGTH, 0 ) ),
@@ -234,7 +234,7 @@ class CircuitElementToolFactory {
       ( tandem, viewTypeProperty ) => new ACVoltageNode( null, null, acSource, viewTypeProperty, tandem.createTandem( 'acSourceIcon' ), { isIcon: true, scale: 0.68 } ),
       circuitElement => circuitElement instanceof ACVoltage,
       position => this.circuit.acVoltageGroup.createNextElement( ...this.circuit.createVertexPairArray( position, AC_VOLTAGE_LENGTH ) ), {
-        tandem: tandem,
+        tandem: this.parentTandem.createTandem( 'acVoltageToolNode' ),
         lifelikeIconHeight: 27,
         schematicIconHeight: 27
       }
@@ -242,8 +242,6 @@ class CircuitElementToolFactory {
   }
 
   /**
-   * @param {number} count - the number that can be dragged out at once
-   * @param {Tandem} tandem
    * @param {PhetioGroup} lightBulbGroup
    * @param {string} string
    * @param {boolean} real
@@ -251,7 +249,7 @@ class CircuitElementToolFactory {
    * @returns {CircuitElementToolNode}
    * @public
    */
-  createLightBulbToolNode( count, tandem, lightBulbGroup = this.circuit.lightBulbGroup, string = lightBulbString, real = false, addRealBulbsProperty = null ) {
+  createLightBulbToolNode( lightBulbGroup = this.circuit.lightBulbGroup, string = lightBulbString, real = false, addRealBulbsProperty = null ) {
     const vertexPair = LightBulb.createVertexPair( Vector2.ZERO, this.circuit, true );
     const lightBulbModel = LightBulb.createAtPosition(
       vertexPair.startVertex,
@@ -264,7 +262,7 @@ class CircuitElementToolFactory {
         icon: true,
         real: real
       } );
-    return this.createCircuitElementToolNode( string, count,
+    return this.createCircuitElementToolNode( string, 10,
       ( tandem, viewTypeProperty ) => new CCKCLightBulbNode( null, null,
         lightBulbModel,
         new Property( true ), viewTypeProperty, tandem.createTandem( 'lightBulbIcon' ), { isIcon: true, scale: 0.85 } ),
@@ -273,27 +271,28 @@ class CircuitElementToolFactory {
         const vertexPair = LightBulb.createVertexPair( position, this.circuit );
         return lightBulbGroup.createNextElement( vertexPair.startVertex, vertexPair.endVertex, CCKCConstants.DEFAULT_RESISTANCE );
       }, {
-        tandem: tandem,
+        tandem: this.parentTandem.createTandem( 'lightBulbToolNode' ),
         additionalProperty: addRealBulbsProperty || new BooleanProperty( true ),
         schematicIconHeight: 27
       } );
   }
 
   /**
-   * @param {number} count - the number that can be dragged out at once
-   * @param {Resistor.ResistorType} resistorType
-   * @param {Tandem} tandem
    * @param {Object} [options]
    * @returns {CircuitElementToolNode}
    * @public
    */
-  createResistorToolNode( count, resistorType, tandem, options ) {
+  createResistorToolNode( options ) {
     options = merge( {
+      count: 10,
+      resistorType: Resistor.ResistorType.RESISTOR,
       lifelikeIconHeight: 15,
       schematicIconHeight: 14,
-      labelString: resistorString
+      labelString: resistorString,
+      tandemName: 'resistorToolNode'
     }, options );
     const labelString = options.labelString;
+    const resistorType = options.resistorType;
 
     // Create the icon model without using the PhetioGroup, so it will not be PhET-iO instrumented.
     const resistorModel = new Resistor(
@@ -303,7 +302,7 @@ class CircuitElementToolFactory {
       Tandem.OPTIONAL
     );
 
-    return this.createCircuitElementToolNode( labelString, count,
+    return this.createCircuitElementToolNode( labelString, options.count,
       ( tandem, viewTypeProperty ) => new ResistorNode( null, null, resistorModel, viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
         isIcon: true
       } ),
@@ -312,31 +311,29 @@ class CircuitElementToolFactory {
         const vertices = this.circuit.createVertexPairArray( position, resistorType.length );
         return this.circuit.resistorGroup.createNextElement( vertices[ 0 ], vertices[ 1 ], resistorType );
       }, {
-        tandem: tandem,
+        tandem: this.parentTandem.createTandem( options.tandemName ),
         lifelikeIconHeight: options.lifelikeIconHeight,
         schematicIconHeight: options.schematicIconHeight
       } );
   }
 
   /**
-   * @param {number} count - the number that can be dragged out at once
-   * @param {Tandem} tandem
    * @returns {CircuitElementToolNode}
    * @public
    */
-  createFuseToolNode( count, tandem ) {
+  createFuseToolNode() {
     const fuseModel = new Fuse(
       new Vertex( Vector2.ZERO ),
       new Vertex( new Vector2( CCKCConstants.RESISTOR_LENGTH, 0 ) ),
       Tandem.OPTIONAL
     );
-    return this.createCircuitElementToolNode( fuseString, count,
+    return this.createCircuitElementToolNode( fuseString, 10,
       ( tandem, viewTypeProperty ) => new FuseNode( null, null, fuseModel, viewTypeProperty, tandem.createTandem( 'resistorIcon' ), {
         isIcon: true
       } ),
       circuitElement => circuitElement instanceof Fuse,
       position => this.circuit.fuseGroup.createNextElement( ...this.circuit.createVertexPairArray( position, FUSE_LENGTH ) ), {
-        tandem: tandem,
+        tandem: this.parentTandem.createTandem( 'fuseToolNode' ),
         lifelikeIconHeight: 15,
         schematicIconHeight: 14
       }
@@ -345,11 +342,10 @@ class CircuitElementToolFactory {
 
   /**
    * @param {number} count - the number that can be dragged out at once
-   * @param {Tandem} tandem
    * @returns {CircuitElementToolNode}
    * @public
    */
-  createCapacitorToolNode( count, tandem ) {
+  createCapacitorToolNode( count = 10 ) {
     const capacitor = new Capacitor(
       new Vertex( Vector2.ZERO ),
       new Vertex( new Vector2( CCKCConstants.CAPACITOR_LENGTH, 0 ) ),
@@ -361,17 +357,16 @@ class CircuitElementToolFactory {
       } ),
       circuitElement => circuitElement instanceof Capacitor,
       position => this.circuit.capacitorGroup.createNextElement( ...this.circuit.createVertexPairArray( position, CCKCConstants.CAPACITOR_LENGTH ) ), {
-        tandem: tandem
+        tandem: this.parentTandem.createTandem( 'capacitorToolNode' )
       } );
   }
 
   /**
    * @param {number} count - the number that can be dragged out at once
-   * @param {Tandem} tandem
    * @returns {CircuitElementToolNode}
    * @public
    */
-  createInductorToolNode( count, tandem ) {
+  createInductorToolNode( count = 10 ) {
     const inductorModel = new Inductor(
       new Vertex( Vector2.ZERO ),
       new Vertex( new Vector2( CCKCConstants.INDUCTOR_LENGTH, 0 ) ),
@@ -384,20 +379,18 @@ class CircuitElementToolFactory {
       } ),
       circuitElement => circuitElement instanceof Inductor,
       position => this.circuit.inductorGroup.createNextElement( ...this.circuit.createVertexPairArray( position, CCKCConstants.INDUCTOR_LENGTH ) ), {
-        tandem: tandem,
+        tandem: this.parentTandem.createTandem( 'inductorToolNode' ),
         lifelikeIconHeight: 22,
         schematicIconHeight: 6
       } );
   }
 
   /**
-   * @param {number} count - the number that can be dragged out at once
-   * @param {Tandem} tandem
    * @returns {CircuitElementToolNode}
    * @public
    */
-  createSwitchToolNode( count, tandem ) {
-    return this.createCircuitElementToolNode( switchString, count,
+  createSwitchToolNode() {
+    return this.createCircuitElementToolNode( switchString, 5,
       ( tandem, viewTypeProperty ) => new SwitchNode( null, null,
         new Switch(
           new Vertex( Vector2.ZERO ),
@@ -408,75 +401,97 @@ class CircuitElementToolFactory {
         } ),
       circuitElement => circuitElement instanceof Switch,
       position => this.circuit.switchGroup.createNextElement( ...this.circuit.createVertexPairArray( position, SWITCH_LENGTH ) ), {
-        tandem: tandem,
+        tandem: this.parentTandem.createTandem( 'switchToolNode' ),
         lifelikeIconHeight: 22,
         schematicIconHeight: 16
       } );
   }
 
   /**
-   * @param {number} count - the number that can be dragged out at once
-   * @param {Tandem} tandem
    * @returns {CircuitElementToolNode}
    * @public
    */
-  createPaperClipToolNode( count, tandem ) {
-    return this.createResistorToolNode( count, Resistor.ResistorType.PAPER_CLIP, tandem.createTandem( 'paperClipIcon' ), {
+  createPaperClipToolNode() {
+    return this.createResistorToolNode( {
+      count: 1,
+      resistorType: Resistor.ResistorType.PAPER_CLIP,
+      tandemName: 'paperClipIcon',
       labelString: paperClipString
     } );
   }
 
   // @public - Same docs as for createPaperClipToolNode
-  createCoinToolNode( count, tandem ) {
-    return this.createResistorToolNode( count, Resistor.ResistorType.COIN, tandem.createTandem( 'coinIcon' ), {
+  createCoinToolNode( count ) {
+    return this.createResistorToolNode( {
+      count: count,
+      resistorType: Resistor.ResistorType.COIN,
+      tandemName: 'coinIcon',
       labelString: coinString,
       lifelikeIconHeight: 30
     } );
   }
 
   // @public - Same docs as as for createPaperClipToolNode
-  createDollarBillToolNode( count, tandem ) {
-    return this.createResistorToolNode( count, Resistor.ResistorType.DOLLAR_BILL, tandem.createTandem( 'dollarBillIcon' ), {
+  createDollarBillToolNode() {
+    return this.createResistorToolNode( {
+      count: 1,
+      resistorType: Resistor.ResistorType.DOLLAR_BILL,
+      tandemName: 'dollarBillToolNode',
       labelString: dollarBillString,
       lifelikeIconHeight: 22
     } );
   }
 
   // @public - Same docs as for createPaperClipToolNode
-  createEraserToolNode( count, tandem ) {
-    return this.createResistorToolNode( count, Resistor.ResistorType.ERASER, tandem.createTandem( 'eraserIcon' ), {
+  createEraserToolNode() {
+    return this.createResistorToolNode( {
+      count: 1,
+      resistorType: Resistor.ResistorType.ERASER,
+      tandemName: 'eraserToolNode',
       labelString: eraserString,
       lifelikeIconHeight: 17
     } );
   }
 
   // @public - Same docs as for createPaperClipToolNode
-  createPencilToolNode( count, tandem ) {
-    return this.createResistorToolNode( count, Resistor.ResistorType.PENCIL, tandem.createTandem( 'pencilIcon' ), {
+  createPencilToolNode( count ) {
+    return this.createResistorToolNode( {
+      count: count,
+      resistorType: Resistor.ResistorType.PENCIL,
+      tandemName: 'pencilToolNode',
       labelString: pencilString,
       lifelikeIconHeight: 12
     } );
   }
 
   // @public - Same docs as for createPaperClipToolNode
-  createHandToolNode( count, tandem ) {
-    return this.createResistorToolNode( count, Resistor.ResistorType.HAND, tandem.createTandem( 'handIcon' ), {
+  createHandToolNode( count ) {
+    return this.createResistorToolNode( {
+      count: count,
+      resistorType: Resistor.ResistorType.HAND,
+      tandemName: 'handToolNode',
       labelString: handString,
       lifelikeIconHeight: 30
     } );
   }
 
   // @public - Same docs as for createPaperClipToolNode
-  createDogToolNode( count, tandem ) {
-    return this.createResistorToolNode( count, Resistor.ResistorType.DOG, tandem.createTandem( 'dogIcon' ), {
+  createDogToolNode() {
+    return this.createResistorToolNode( {
+      count: 1,
+      resistorType: Resistor.ResistorType.DOG,
+      tandemName: 'dogToolNode',
       labelString: dogString,
       lifelikeIconHeight: 30
     } );
   }
 
   // @public - Same docs as for createPaperClipToolNode
-  createHighResistanceResistorToolNode( count, tandem ) {
-    return this.createResistorToolNode( count, Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR, tandem.createTandem( 'highResistanceResistorIcon' ), {
+  createHighResistanceResistorToolNode( count ) {
+    return this.createResistorToolNode( {
+      count: count,
+      resistorType: Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR,
+      tandemName: 'highResistanceResistorToolNode',
       labelString: resistorString
     } );
   }
@@ -498,7 +513,7 @@ class CircuitElementToolFactory {
           Tandem.OPTIONAL, {
             voltage: 1000
           }
-        ), viewTypeProperty, tandem.createTandem( 'highVoltageBatteryIcon' ), { isIcon: true } ),
+        ), viewTypeProperty, tandem.createTandem( 'highVoltageBatteryToolNode' ), { isIcon: true } ),
       circuitElement => circuitElement instanceof Battery &&
                         circuitElement.initialOrientation === 'right' &&
                         circuitElement.batteryType === Battery.BatteryType.HIGH_VOLTAGE, position => {
@@ -533,7 +548,7 @@ class CircuitElementToolFactory {
           } ),
         new Property( true ),
         viewTypeProperty,
-        tandem.createTandem( 'highResistanceLightBulbIcon' ), {
+        tandem.createTandem( 'highResistanceLightBulbToolNode' ), {
           isIcon: true
         } ),
       circuitElement => circuitElement instanceof LightBulb && circuitElement.highResistance,
