@@ -21,7 +21,8 @@ class CCKCOptionsDialogContent extends VBox {
     };
     const verticalAquaRadioButtonGroup = new VerticalAquaRadioButtonGroup( schematicTypeProperty, [
       { node: new Text( circuitConstructionKitCommonStrings.ieee, textOptions ), value: SchematicType.IEEE, tandemName: 'ieeeRadioButton' },
-      { node: new Text( circuitConstructionKitCommonStrings.iec, textOptions ), value: SchematicType.IEC, tandemName: 'iecRadioButton' }
+      { node: new Text( circuitConstructionKitCommonStrings.iec, textOptions ), value: SchematicType.IEC, tandemName: 'iecRadioButton' },
+      { node: new Text( circuitConstructionKitCommonStrings.british, textOptions ), value: SchematicType.BRITISH, tandemName: 'britishRadioButton' }
     ], {
       tandem: tandem.createTandem( 'schematicTypeRadioButtonGroup' ),
       radioButtonOptions: {

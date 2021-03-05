@@ -10,7 +10,9 @@ import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import SchematicType from './SchematicType.js';
 
-const schematicTypeProperty = new Property( CCKCQueryParameters.schematicStandard === 'iec' ? SchematicType.IEC : SchematicType.IEEE );
+const schematicTypeProperty = new Property( CCKCQueryParameters.schematicStandard === 'iec' ? SchematicType.IEC :
+                                            CCKCQueryParameters.schematicStandard === 'british' ? SchematicType.BRITISH :
+                                            SchematicType.IEEE );
 
 circuitConstructionKitCommon.register( 'schematicTypeProperty', schematicTypeProperty );
 export default schematicTypeProperty;

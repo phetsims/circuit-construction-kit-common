@@ -14,6 +14,9 @@
   "iec": {
     "value": "IEC"
   },
+  "british": {
+    "value": "British"
+  },
   "animationSpeedLimitReached": {
     "value": "Animation speed limit reached! Simulation speed reduced to {{percent}}% normal."
   },
