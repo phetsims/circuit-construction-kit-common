@@ -147,7 +147,7 @@ class FuseNode extends FixedCircuitElementNode {
       .lineToRelative( 0, -boxHeight );
 
     const updateSchematicType = schematicType => {
-      schematicNode.shape = schematicType === SchematicType.IEEE ? schematicShape :
+      schematicNode.shape = ( schematicType === SchematicType.IEEE || schematicType === SchematicType.BRITISH ) ? schematicShape :
                             fuseIEC;
     };
     schematicTypeProperty.link( updateSchematicType );

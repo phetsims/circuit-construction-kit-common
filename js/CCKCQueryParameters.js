@@ -50,7 +50,7 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
     public: true,
     type: 'string',
     defaultValue: 'ieee',
-    validValues: [ 'ieee', 'iec' ]
+    validValues: [ 'ieee', 'iec', 'british' ]
   },
 
   //------------------------------------------------------------------------------------------------------------------
