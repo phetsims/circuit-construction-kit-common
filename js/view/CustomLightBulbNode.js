@@ -17,8 +17,8 @@ import backImage from '../../images/lightbulb-back_png.js';
 import highResistanceSocketImage from '../../images/lightbulb-front-high_png.js';
 import realSocketImage from '../../images/lightbulb-front-real_png.js';
 import socketImage from '../../images/lightbulb-front_png.js';
-import lightBulbMiddleImage from '../../mipmaps/lightbulb-middle_png.js';
 import lightBulbMiddleRealImage from '../../mipmaps/lightbulb-middle-real_png.js';
+import lightBulbMiddleImage from '../../mipmaps/lightbulb-middle_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
@@ -133,6 +133,9 @@ class CustomLightBulbNode extends Node {
       .lineToRelative( -w * fractionHorizontalPadding, 0 )
       .lineTo( this.localBounds.minX, this.localBounds.minY );
     this.touchArea = this.mouseArea;
+
+    // Update this Node when it becomes visible.
+    this.visibleProperty.link( visible => visible && this.update() );
   }
 
   /**
@@ -165,20 +168,6 @@ class CustomLightBulbNode extends Node {
       }
       this.raysNode.setBrightness( brightness );
     }
-  }
-
-  /**
-   * @override update when this node becomes visible
-   * @param {boolean} visible
-   * @public
-   */
-  setVisible( visible ) {
-    const wasVisible = this.visible;
-    super.setVisible( visible );
-    if ( !wasVisible && visible ) {
-      this.update();
-    }
-    return this;
   }
 }
 
