@@ -179,22 +179,28 @@ class CircuitElementToolFactory {
    * @public
    */
   createWireToolNode() {
-    return this.createCircuitElementToolNode( wireString, CCKCConstants.NUMBER_OF_WIRES,
-      ( tandem, viewTypeProperty ) => {
-        return viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? new Image( wireIconImage, {
-          tandem: tandem
-        } ) : new Line( 0, 0, 120, 0, {
-          stroke: Color.BLACK,
-          lineWidth: 4.5, // match with other toolbox icons
-          tandem: tandem
+    if ( !this.wireToolNode ) {
+
+      // Cache a single instance to simplify PhET-iO
+      this.wireToolNode = this.createCircuitElementToolNode( wireString, CCKCConstants.NUMBER_OF_WIRES,
+        ( tandem, viewTypeProperty ) => {
+          return viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? new Image( wireIconImage, {
+            tandem: tandem
+          } ) : new Line( 0, 0, 120, 0, {
+            stroke: Color.BLACK,
+            lineWidth: 4.5, // match with other toolbox icons
+            tandem: tandem
+          } );
+        },
+        circuitElement => circuitElement instanceof Wire,
+        position => this.circuit.wireGroup.createNextElement( ...this.circuit.createVertexPairArray( position, WIRE_LENGTH ) ), {
+          tandem: this.parentTandem.createTandem( 'wireToolNode' ),
+          lifelikeIconHeight: 9,
+          schematicIconHeight: 2
         } );
-      },
-      circuitElement => circuitElement instanceof Wire,
-      position => this.circuit.wireGroup.createNextElement( ...this.circuit.createVertexPairArray( position, WIRE_LENGTH ) ), {
-        tandem: this.parentTandem.createTandem( 'wireToolNode' ),
-        lifelikeIconHeight: 9,
-        schematicIconHeight: 2
-      } );
+    }
+
+    return new Node( { children: [ this.wireToolNode ] } );
   }
 
   /**
@@ -246,10 +252,11 @@ class CircuitElementToolFactory {
    * @param {string} string
    * @param {boolean} real
    * @param {Property.<Boolean>} addRealBulbsProperty
+   * @param {string} tandemName
    * @returns {CircuitElementToolNode}
    * @public
    */
-  createLightBulbToolNode( lightBulbGroup = this.circuit.lightBulbGroup, string = lightBulbString, real = false, addRealBulbsProperty = null ) {
+  createLightBulbToolNode( lightBulbGroup = this.circuit.lightBulbGroup, string = lightBulbString, real = false, addRealBulbsProperty = null, tandemName = 'lightBulbToolNode' ) {
     const vertexPair = LightBulb.createVertexPair( Vector2.ZERO, this.circuit, true );
     const lightBulbModel = LightBulb.createAtPosition(
       vertexPair.startVertex,
@@ -265,13 +272,13 @@ class CircuitElementToolFactory {
     return this.createCircuitElementToolNode( string, 10,
       ( tandem, viewTypeProperty ) => new CCKCLightBulbNode( null, null,
         lightBulbModel,
-        new Property( true ), viewTypeProperty, tandem.createTandem( 'lightBulbIcon' ), { isIcon: true, scale: 0.85 } ),
+        new Property( true ), viewTypeProperty, Tandem.OPT_OUT, { isIcon: true, scale: 0.85 } ),
       circuitElement => circuitElement instanceof LightBulb && !circuitElement.highResistance,
       position => {
         const vertexPair = LightBulb.createVertexPair( position, this.circuit );
         return lightBulbGroup.createNextElement( vertexPair.startVertex, vertexPair.endVertex, CCKCConstants.DEFAULT_RESISTANCE );
       }, {
-        tandem: this.parentTandem.createTandem( 'lightBulbToolNode' ),
+        tandem: this.parentTandem.createTandem( tandemName ),
         additionalProperty: addRealBulbsProperty || new BooleanProperty( true ),
         schematicIconHeight: 27
       } );
