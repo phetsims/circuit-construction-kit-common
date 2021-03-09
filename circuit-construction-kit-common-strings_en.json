@@ -62,6 +62,9 @@
   "lots": {
     "value": "lots"
   },
+  "none": {
+    "value": "none"
+  },
   "phaseShift": {
     "value": "Phase Shift"
   },

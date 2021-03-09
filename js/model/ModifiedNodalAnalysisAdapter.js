@@ -47,6 +47,29 @@ class ResistiveBatteryAdapter extends DynamicCircuit.ResistiveBattery {
   }
 }
 
+// Wires are treated as 0-voltage batteries
+class WireAdapter extends DynamicCircuit.ResistiveBattery {
+  constructor( c, wire ) {
+    super(
+      c.vertexGroup.indexOf( wire.startVertexProperty.value ),
+      c.vertexGroup.indexOf( wire.endVertexProperty.value ),
+      0,
+      wire.resistanceProperty.value
+    );
+
+    // @public (read-only)
+    this.wire = wire;
+  }
+
+  /**
+   * @param circuitResult
+   * @public
+   */
+  applySolution( circuitResult ) {
+    this.wire.currentProperty.value = circuitResult.getTimeAverageCurrent( this );
+  }
+}
+
 class ResistorAdapter extends ModifiedNodalAnalysisCircuitElement {
 
   /**
@@ -151,9 +174,11 @@ class ModifiedNodalAnalysisAdapter {
         branch.passProperty.reset(); // also resets the internalResistance for the first pass computation
         resistiveBatteryAdapters.push( new ResistiveBatteryAdapter( circuit, branch ) );
       }
+      else if ( branch instanceof Wire ) {
+        resistiveBatteryAdapters.push( new WireAdapter( circuit, branch ) );
+      }
       else if ( branch instanceof Resistor ||
                 branch instanceof Fuse ||
-                branch instanceof Wire ||
                 branch instanceof LightBulb ||
                 branch instanceof SeriesAmmeter ||
 
@@ -192,9 +217,13 @@ class ModifiedNodalAnalysisAdapter {
 
     resistiveBatteryAdapters.forEach( batteryAdapter => {
       if ( Math.abs( circuitResult.getTimeAverageCurrent( batteryAdapter ) ) > CCKCQueryParameters.batteryCurrentThreshold ) {
-        batteryAdapter.battery.passProperty.value = 2;
-        batteryAdapter.resistance = batteryAdapter.battery.internalResistanceProperty.value;
-        needsHelp = true;
+
+        // Both batteries and wires are in the resistiveBatteryAdapters array
+        if ( batteryAdapter.battery ) {
+          batteryAdapter.battery.passProperty.value = 2;
+          batteryAdapter.resistance = batteryAdapter.battery.internalResistanceProperty.value;
+          needsHelp = true;
+        }
       }
     } );
 

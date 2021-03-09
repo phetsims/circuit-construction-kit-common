@@ -70,7 +70,7 @@ const CCKCConstants = {
   // R = rho * L / A.  Resistance = resistivity * Length / cross sectional area.
   // https://en.wikipedia.org/wiki/Electrical_resistivity_and_conductivity says copper has rho=1.68E-8 Ohm * m
   // According to http://www.sengpielaudio.com/calculator-cross-section.htm AWG Wire Gauge of 20 has 0.52mm^2 = 5.2e-7m^2
-  DEFAULT_RESISTIVITY: 1.68E-8, // Ohm * m
+  DEFAULT_RESISTIVITY: 0, // Ohm * m
 
   WIRE_CROSS_SECTIONAL_AREA: 5E-4, // meters squared
 
