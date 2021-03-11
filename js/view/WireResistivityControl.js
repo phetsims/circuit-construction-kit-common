@@ -16,14 +16,14 @@ import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommon
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 const lotsString = circuitConstructionKitCommonStrings.lots;
-const tinyString = circuitConstructionKitCommonStrings.none;
+const tinyString = circuitConstructionKitCommonStrings.tiny;
 const wireResistivityString = circuitConstructionKitCommonStrings.wireResistivity;
 
 // constants
 const TICK_LABEL_TEXT_OPTIONS = { fontSize: 12, maxWidth: 45 };
 
 // Chosen so that current through battery+long wire+long wire+resistor would match prior version, see https://github.com/phetsims/circuit-construction-kit-common/issues/553
-const MAX_RESISTIVITY = 1.68E-8 * 1000000;
+const MAX_RESISTIVITY = CCKCConstants.DEFAULT_RESISTIVITY * 1000000;
 
 class WireResistivityControl extends VBox {
 

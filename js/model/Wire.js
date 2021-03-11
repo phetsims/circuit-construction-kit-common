@@ -42,7 +42,7 @@ class Wire extends CircuitElement {
     this.wireStub = options.wireStub;
 
     // @public {NumberProperty} - the resistance of the Wire in ohms
-    this.resistanceProperty = new NumberProperty( 0 );
+    this.resistanceProperty = new NumberProperty( CCKCConstants.MINIMUM_RESISTANCE );
 
     // @public {Property.<number>} - the resistivity of the Wire in ohm-meters
     this.resistivityProperty = resistivityProperty;
@@ -91,7 +91,7 @@ class Wire extends CircuitElement {
       // R = rho * L / A.  Resistance = resistivity * Length / cross sectional area.
       const resistance = this.resistivityProperty.get() * modelLength / CCKCConstants.WIRE_CROSS_SECTIONAL_AREA;
 
-      const clampedResistance = Math.max( 0, resistance );
+      const clampedResistance = Math.max( CCKCConstants.MINIMUM_RESISTANCE, resistance );
       assert && assert( !isNaN( clampedResistance ), 'wire resistance should not be NaN' );
       this.resistanceProperty.set( clampedResistance );
 
