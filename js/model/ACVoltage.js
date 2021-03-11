@@ -54,7 +54,7 @@ class ACVoltage extends VoltageSource {
     this.phaseProperty = new NumberProperty( 0, {
       range: new Range( -180, 180 ),
       tandem: tandem.createTandem( 'phaseProperty' ),
-      units: 'degrees'
+      units: '\u00B0' // degrees
     } );
 
     // @private

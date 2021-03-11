@@ -27,7 +27,7 @@ class Voltmeter extends Meter {
     // @public {Property.<number|null>} the voltage the probe is reading (in volts) or null if unconnected
     this.voltageProperty = new Property( null, {
       tandem: tandem.createTandem( 'voltageProperty' ),
-      units: 'volts',
+      units: 'V',
       phetioType: Property.PropertyIO( NullableIO( NumberIO ) )
     } );
 

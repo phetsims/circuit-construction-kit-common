@@ -31,7 +31,7 @@ class Ammeter extends Meter {
     // display in the view.  Null means the ammeter is not on a wire.
     this.currentProperty = new Property( null, {
       tandem: tandem.createTandem( 'currentProperty' ),
-      units: 'amperes',
+      units: 'A',
       phetioType: Property.PropertyIO( NullableIO( NumberIO ) )
     } );
 
