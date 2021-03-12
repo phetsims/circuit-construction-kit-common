@@ -57,7 +57,7 @@ class PhaseShiftControl extends VBox {
     const numberSpinner = new NumberSpinner( acVoltage.phaseProperty, valueRangeProperty, merge( {}, spinnerOptions, {
       arrowsPosition: 'leftRight',
       numberDisplayOptions: {
-        valuePattern: '{{value}}' + MathSymbols.DEGREES // Does not require internationalization
+        valuePattern: `{{value}}${MathSymbols.DEGREES}` // Does not require internationalization
       },
       arrowsScale: 0.9,
       tandem: options.tandem.createTandem( 'numberSpinner' )

@@ -65,10 +65,10 @@ class ModifiedNodalAnalysisCircuit {
    */
   toString() {
     if ( assert ) { // stripped out for builds
-      return 'resistors:' + this.resistors.map( resistorToString ).join( ',' ) + ', ' +
-             'batteries: ' + this.batteries.map( batteryToString ).join( ',' ) + ', ' +
-             'currentSources: ' + this.currentSources.map( c => c.toString() )
-               .join( ',' );
+      return `resistors:${this.resistors.map( resistorToString ).join( ',' )}, ` +
+             `batteries: ${this.batteries.map( batteryToString ).join( ',' )}, ` +
+             `currentSources: ${this.currentSources.map( c => c.toString() )
+               .join( ',' )}`;
     }
   }
 
@@ -322,11 +322,11 @@ class ModifiedNodalAnalysisCircuit {
       equations[ i ].stamp( i, A, z, getIndex );
     }
     phet.log && phet.log( A.m, A.n );
-    phet.log && phet.log( 'Debugging circuit: ' + this.toString() );
+    phet.log && phet.log( `Debugging circuit: ${this.toString()}` );
     phet.log && phet.log( equations.join( '\n' ) );
-    phet.log && phet.log( 'A=\n' + A.toString() );
-    phet.log && phet.log( 'z=\n' + z.toString() );
-    phet.log && phet.log( 'unknowns=\n' + unknowns.map( u => u.toTermName() ).join( '\n' ) );
+    phet.log && phet.log( `A=\n${A.toString()}` );
+    phet.log && phet.log( `z=\n${z.toString()}` );
+    phet.log && phet.log( `unknowns=\n${unknowns.map( u => u.toTermName() ).join( '\n' )}` );
 
     // solve the linear matrix system for the unknowns
     let x;
@@ -343,7 +343,7 @@ class ModifiedNodalAnalysisCircuit {
 
     // The matrix should be square since it is an exact analytical solution, see https://github.com/phetsims/circuit-construction-kit-dc/issues/96
     assert && assert( A.m === A.n, 'Matrix should be square' );
-    phet.log && phet.log( 'x=\n' + x.toString() );
+    phet.log && phet.log( `x=\n${x.toString()}` );
 
     const voltageMap = {};
     for ( let i = 0; i < unknownVoltages.length; i++ ) {
@@ -386,7 +386,7 @@ const getIndexByEquals = ( array, element ) => {
  * @returns {string}
  */
 const resistorToString = resistor =>
-  'node' + resistor.nodeId0 + ' -> node' + resistor.nodeId1 + ' @ ' + resistor.value + ' Ohms';
+  `node${resistor.nodeId0} -> node${resistor.nodeId1} @ ${resistor.value} Ohms`;
 
 /**
  * For debugging, display a Battery as a string
@@ -394,7 +394,7 @@ const resistorToString = resistor =>
  * @returns {string}
  */
 const batteryToString = battery =>
-  'node' + battery.nodeId0 + ' -> node' + battery.nodeId1 + ' @ ' + battery.value + ' Volts';
+  `node${battery.nodeId0} -> node${battery.nodeId1} @ ${battery.value} Volts`;
 
 class Term {
 
@@ -419,7 +419,7 @@ class Term {
   toTermString() {
     const prefix = this.coefficient === 1 ? '' :
                    this.coefficient === -1 ? '-' :
-                   this.coefficient + '*';
+                   `${this.coefficient}*`;
     return prefix + this.variable.toTermName();
   }
 }
@@ -442,7 +442,7 @@ class UnknownCurrent {
    * @public
    */
   toTermName() {
-    return 'I' + this.element.nodeId0 + '_' + this.element.nodeId1;
+    return `I${this.element.nodeId0}_${this.element.nodeId1}`;
   }
 
   /**
@@ -473,7 +473,7 @@ class UnknownVoltage {
    * @public
    */
   toTermName() {
-    return 'V' + this.node;
+    return `V${this.node}`;
   }
 
   /**
@@ -537,7 +537,7 @@ class Equation {
     for ( let i = 0; i < this.terms.length; i++ ) {
       termList.push( this.terms[ i ].toTermString() );
     }
-    const result = '' + termList.join( '+' ) + '=' + this.value;
+    const result = `${termList.join( '+' )}=${this.value}`;
 
     // replace +- with -. For instance, x+-3 should just be x-3
     return result.replace( '\\+\\-', '\\-' );

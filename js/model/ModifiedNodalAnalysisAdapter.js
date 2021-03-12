@@ -172,7 +172,7 @@ class ModifiedNodalAnalysisAdapter {
         inductorAdapters.push( new InductorAdapter( circuit, branch ) );
       }
       else {
-        assert && assert( false, 'Type not found: ' + branch.constructor.name );
+        assert && assert( false, `Type not found: ${branch.constructor.name}` );
       }
     }
 

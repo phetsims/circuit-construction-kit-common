@@ -90,7 +90,7 @@ class VertexNode extends Node {
       vertex.voltageProperty.link( voltage => {
 
         // No need for i18n because this is for debugging only
-        const voltageText = Utils.toFixed( voltage, 3 ) + 'V';
+        const voltageText = `${Utils.toFixed( voltage, 3 )}V`;
         this.voltageReadoutText.setText( vertexDisplay === 'voltage' ? voltageText : vertex.index );
         this.updateReadoutTextPosition();
       } );

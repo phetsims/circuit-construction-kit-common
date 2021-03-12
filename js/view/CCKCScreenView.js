@@ -113,7 +113,7 @@ class CCKCScreenView extends ScreenView {
     );
 
     const voltmeterNodes = model.voltmeters.map( voltmeter => {
-      const voltmeterTandem = tandem.createTandem( 'voltmeterNode' + voltmeter.phetioIndex );
+      const voltmeterTandem = tandem.createTandem( `voltmeterNode${voltmeter.phetioIndex}` );
       const voltmeterNode = new VoltmeterNode( voltmeter, model, this.circuitLayerNode, voltmeterTandem, {
         showResultsProperty: model.isValueDepictionEnabledProperty,
         visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty
@@ -128,7 +128,7 @@ class CCKCScreenView extends ScreenView {
 
     const ammeterNodes = model.ammeters.map( ammeter => {
       const ammeterNode = new AmmeterNode( ammeter, this.circuitLayerNode, {
-        tandem: tandem.createTandem( 'ammeterNode' + ammeter.phetioIndex ), // TODO (phet-io): Group?
+        tandem: tandem.createTandem( `ammeterNode${ammeter.phetioIndex}` ), // TODO (phet-io): Group?
         showResultsProperty: model.isValueDepictionEnabledProperty,
         visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty,
         blackBoxStudy: options.blackBoxStudy

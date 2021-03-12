@@ -30,7 +30,7 @@ class Battery extends VoltageSource {
    * @param {Object} [options]
    */
   constructor( startVertex, endVertex, internalResistanceProperty, batteryType, tandem, options ) {
-    assert && assert( Battery.BatteryType.VALUES.indexOf( batteryType ) >= 0, 'invalid battery type: ' + batteryType );
+    assert && assert( Battery.BatteryType.VALUES.indexOf( batteryType ) >= 0, `invalid battery type: ${batteryType}` );
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
     options = merge( {
       initialOrientation: 'right',

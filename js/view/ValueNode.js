@@ -201,7 +201,7 @@ class ValueNode extends Panel {
       contentNode.maxWidth = 100;
     }
     else {
-      throw new Error( 'ValueNode cannot be shown for ' + circuitElement.constructor.name );
+      throw new Error( `ValueNode cannot be shown for ${circuitElement.constructor.name}` );
     }
 
     assert && assert( contentNode, 'Content node should be defined' );
