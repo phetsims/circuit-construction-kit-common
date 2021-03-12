@@ -45,7 +45,7 @@ const BLACK_LINE_NODE = new Line( 0, 0, WIRE_RASTER_LENGTH, 0, {
  */
 const createGradient = ( colorStops, colorStopPointMap ) => {
   const gradient = new LinearGradient( 0, -LIFELIKE_LINE_WIDTH / 2, 0, LIFELIKE_LINE_WIDTH / 2 );
-  colorStops.forEach( function( colorStop ) {
+  colorStops.forEach( colorStop => {
     gradient.addColorStop( colorStopPointMap( colorStop.point ), colorStop.color );
   } );
   return gradient;

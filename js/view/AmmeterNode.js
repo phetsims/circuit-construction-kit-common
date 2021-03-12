@@ -81,7 +81,7 @@ class AmmeterNode extends Node {
       }
     );
 
-    const currentReadoutProperty = new DerivedProperty( [ ammeter.currentProperty ], function( current ) {
+    const currentReadoutProperty = new DerivedProperty( [ ammeter.currentProperty ], ( current => {
 
       const max = options.blackBoxStudy ? 1E3 : 1E10;
       const maxString = options.blackBoxStudy ? '> 10^3' : '> 10^10';
@@ -90,7 +90,7 @@ class AmmeterNode extends Node {
       return current === null ? questionMarkString :
              Math.abs( current ) > max ? maxString :
              CCKCUtils.createCurrentReadout( current );
-    } );
+    } ) );
 
     const probeTextNode = new ProbeTextNode(
       currentReadoutProperty, options.showResultsProperty, currentString, tandem.createTandem( 'probeTextNode' ), {
