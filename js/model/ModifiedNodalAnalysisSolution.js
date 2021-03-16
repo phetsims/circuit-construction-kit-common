@@ -44,8 +44,8 @@ class ModifiedNodalAnalysisSolution {
         modifiedNodalAnalysisSolution.getNodeVoltage( key )
       );
       qassert && qassert.equal( closeEnough, true, `node voltages[${i}] should match. ${
-                                                   this.getNodeVoltage( key )}!==${
-                                                   modifiedNodalAnalysisSolution.getNodeVoltage( key )}` );
+        this.getNodeVoltage( key )}!==${
+        modifiedNodalAnalysisSolution.getNodeVoltage( key )}` );
 
       if ( !closeEnough ) {
         return false;
