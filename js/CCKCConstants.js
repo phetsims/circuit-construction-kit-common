@@ -39,10 +39,10 @@ const CCKCConstants = {
   DEFAULT_CAPACITANCE: 0.1,
 
   // The resistance of a default battery
-  DEFAULT_BATTERY_RESISTANCE: MINIMUM_RESISTANCE,
+  DEFAULT_BATTERY_RESISTANCE: CCKCQueryParameters.batteryMinimumResistance,
 
   // The range of the battery resistance
-  BATTERY_RESISTANCE_RANGE: new Range( MINIMUM_RESISTANCE, 10 ),
+  BATTERY_RESISTANCE_RANGE: new Range( CCKCQueryParameters.batteryMinimumResistance, 10 ),
 
   // Right side panel minWidth
   RIGHT_SIDE_PANEL_MIN_WIDTH: 190,
