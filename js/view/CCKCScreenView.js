@@ -397,7 +397,7 @@ class CCKCScreenView extends ScreenView {
     // @public - the StopwatchNode
     if ( options.showStopwatchCheckbox ) {
       const stopwatchNode = new StopwatchNode( model.stopwatch, {
-        visibleBoundsProperty: this.visibleBoundsProperty,
+        dragBoundsProperty: this.visibleBoundsProperty,
         right: controlPanelVBox.left - HORIZONTAL_MARGIN,
         numberDisplayOptions: {
           numberFormatter: StopwatchNode.createRichTextNumberFormatter( {
