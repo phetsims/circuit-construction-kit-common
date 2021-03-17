@@ -97,9 +97,14 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
     defaultValue: 2E-4
   },
 
-    batteryMinimumResistance: {
+  batteryMinimumResistance: {
     type: 'number',
     defaultValue: 1E-8
+  },
+
+  wireResistivity: {
+    type: 'number',
+    defaultValue: 1.68E-8
   }
 } );
 
