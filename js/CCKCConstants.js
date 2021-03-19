@@ -74,7 +74,10 @@ const CCKCConstants = {
 
   WIRE_CROSS_SECTIONAL_AREA: 5E-4, // meters squared
 
-  // The lowest resistance a CircuitElement can have
+  // Lowest resistance a wire can have
+  MINIMUM_WIRE_RESISTANCE: 1E-14,
+
+  // The lowest resistance other CircuitElements can have
   MINIMUM_RESISTANCE: MINIMUM_RESISTANCE,
 
   // How far to erode the visible bounds for keeping the probes in bounds.
