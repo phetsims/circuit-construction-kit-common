@@ -50,7 +50,7 @@ class SourceResistanceControl extends VBox {
       constrainValue: value => range.constrainValue( Utils.roundSymmetric( value ) ),
       tandem: tandem.createTandem( 'slider' )
     } );
-    slider.addMajorTick( range.min, createLabel( StringUtils.fillIn( resistanceOhmsSymbolString, { resistance: Utils.toFixed( range.min, 0 ) } ), tandem.createTandem( 'minLabel' ) ) );
+    slider.addMajorTick( range.min, createLabel( circuitConstructionKitCommonStrings.tiny, tandem.createTandem( 'tinyLabel' ) ) );
     slider.addMajorTick( midpoint );
     slider.addMajorTick( range.max, createLabel( StringUtils.fillIn( resistanceOhmsSymbolString, { resistance: Utils.toFixed( range.max, 0 ) } ), tandem.createTandem( 'maxLabel' ) ) );
 
