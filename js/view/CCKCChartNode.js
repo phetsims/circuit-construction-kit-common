@@ -11,15 +11,16 @@ import Emitter from '../../../axon/js/Emitter.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import CanvasLinePlot from '../../../bamboo/js/CanvasLinePlot.js';
 import ChartCanvasNode from '../../../bamboo/js/ChartCanvasNode.js';
-import Range from '../../../dot/js/Range.js';
-import Vector2 from '../../../dot/js/Vector2.js';
-import Vector2Property from '../../../dot/js/Vector2Property.js';
-import ChartTransform from '../../../bamboo/js/ChartTransform.js';
 import ChartRectangle from '../../../bamboo/js/ChartRectangle.js';
+import ChartTransform from '../../../bamboo/js/ChartTransform.js';
 import GridLineSet from '../../../bamboo/js/GridLineSet.js';
 import LabelSet from '../../../bamboo/js/LabelSet.js';
 import ScatterPlot from '../../../bamboo/js/ScatterPlot.js';
 import SpanNode from '../../../bamboo/js/SpanNode.js';
+import Range from '../../../dot/js/Range.js';
+import Utils from '../../../dot/js/Utils.js';
+import Vector2 from '../../../dot/js/Vector2.js';
+import Vector2Property from '../../../dot/js/Vector2Property.js';
 import merge from '../../../phet-core/js/merge.js';
 import Orientation from '../../../phet-core/js/Orientation.js';
 import MagnifyingGlassZoomButtonGroup from '../../../scenery-phet/js/MagnifyingGlassZoomButtonGroup.js';
@@ -32,8 +33,8 @@ import NodeProperty from '../../../scenery/js/util/NodeProperty.js';
 import ButtonNode from '../../../sun/js/buttons/ButtonNode.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
-import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import Meter from '../model/Meter.js';
 import CCKCProbeNode from './CCKCProbeNode.js';
 
@@ -171,7 +172,7 @@ class CCKCChartNode extends Node {
     const verticalLabelSet = new LabelSet( chartTransform, Orientation.VERTICAL, 1, {
       edge: 'min',
       extent: 1.5,
-      createLabel: value => new Text( value.toFixed( zoomLevelProperty.value === zoomRanges.length - 1 ? 1 : 0 ), {
+      createLabel: value => new Text( Utils.toFixed( value, zoomLevelProperty.value === zoomRanges.length - 1 ? 1 : 0 ), {
         fontSize: 10,
         fill: 'white'
       } )
