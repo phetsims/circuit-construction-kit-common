@@ -55,7 +55,7 @@ class SourceResistanceControl extends VBox {
     slider.addMajorTick( range.max, createLabel( StringUtils.fillIn( resistanceOhmsSymbolString, { resistance: Utils.toFixed( range.max, 0 ) } ), tandem.createTandem( 'maxLabel' ) ) );
 
     for ( let i = range.min + 1; i < range.max; i++ ) {
-      if ( i !== midpoint ) {
+      if ( Math.abs( i - midpoint ) > 1E-6 ) {
         slider.addMinorTick( i );
       }
     }
