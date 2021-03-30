@@ -6,10 +6,8 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import DerivedProperty from '../../../axon/js/DerivedProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import merge from '../../../phet-core/js/merge.js';
-import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import FixedCircuitElement from './FixedCircuitElement.js';
 
@@ -39,19 +37,8 @@ class VoltageSource extends FixedCircuitElement {
     // @public {NumberProperty} - the voltage of the battery in volts
     this.voltageProperty = new NumberProperty( options.voltage, options.voltagePropertyOptions );
 
-    // @public - keeps track of which solve iteration pass is in process, see https://github.com/phetsims/circuit-construction-kit-common/issues/245
-    this.passProperty = new NumberProperty( 1 );
-
     // @public {Property.<number>} the internal resistance of the battery
-    this.internalResistanceProperty = new DerivedProperty( [ this.voltageProperty, internalResistanceProperty, this.currentProperty, this.passProperty ],
-      ( voltage, internalResistance, current, pass ) => {
-
-        const result = pass === 2 ? CCKCQueryParameters.batteryInternalResistanceWhenCurrentThresholdExceededOffset +
-                                    CCKCQueryParameters.batteryInternalResistanceWhenCurrentThresholdExceededVoltageScaleFactor * Math.abs( voltage ) :
-                       internalResistance;
-        // console.log( `voltage: ${voltage}, internalResistance: ${internalResistance}, current: ${current}, pass: ${pass}, result: ${result}` );
-        return result;
-      } );
+    this.internalResistanceProperty = internalResistanceProperty;
 
     // @public (read-only) {string} - track which way the battery "button" (plus side) was facing the initial state so
     // the user can only create a certain number of "left" or "right" batteries from the toolbox.
