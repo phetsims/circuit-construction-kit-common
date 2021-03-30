@@ -148,7 +148,6 @@ class ModifiedNodalAnalysisAdapter {
     for ( let i = 0; i < circuit.circuitElements.length; i++ ) {
       const branch = circuit.circuitElements.get( i );
       if ( branch instanceof VoltageSource ) {
-        branch.passProperty.reset(); // also resets the internalResistance for the first pass computation
         resistiveBatteryAdapters.push( new ResistiveBatteryAdapter( circuit, branch ) );
       }
       else if ( branch instanceof Resistor ||
@@ -192,7 +191,6 @@ class ModifiedNodalAnalysisAdapter {
 
     resistiveBatteryAdapters.forEach( batteryAdapter => {
       if ( Math.abs( circuitResult.getTimeAverageCurrent( batteryAdapter ) ) > CCKCQueryParameters.batteryCurrentThreshold ) {
-        batteryAdapter.battery.passProperty.value = 2;
         batteryAdapter.resistance = batteryAdapter.battery.internalResistanceProperty.value;
         needsHelp = true;
       }

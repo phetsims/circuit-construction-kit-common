@@ -78,25 +78,6 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
     type: 'flag'
   },
 
-  // if any battery exceeds its current threshold, increase its resistance and run the solution again.
-  // see https://github.com/phetsims/circuit-construction-kit-common/issues/245
-  batteryCurrentThreshold: {
-    type: 'number',
-    defaultValue: 4000
-  },
-
-  // See previous comment
-  batteryInternalResistanceWhenCurrentThresholdExceededOffset: {
-    type: 'number',
-    defaultValue: 4E-5
-  },
-
-  // See previous comment
-  batteryInternalResistanceWhenCurrentThresholdExceededVoltageScaleFactor: {
-    type: 'number',
-    defaultValue: 2E-4
-  },
-
   batteryMinimumResistance: {
     type: 'number',
     defaultValue: 1E-8
