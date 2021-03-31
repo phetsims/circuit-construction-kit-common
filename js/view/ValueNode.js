@@ -20,6 +20,7 @@ import VBox from '../../../scenery/js/nodes/VBox.js';
 import Color from '../../../scenery/js/util/Color.js';
 import Panel from '../../../sun/js/Panel.js';
 import CCKCConstants from '../CCKCConstants.js';
+import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Capacitor from '../model/Capacitor.js';
@@ -97,8 +98,8 @@ class ValueNode extends Panel {
         } );
 
         // If the children should change, update them here
-        if ( lastInternalResistance === null || ( internalResistance === 0 || lastInternalResistance === 0 ) ) {
-          const desiredChildren = internalResistance > 0 ? [ voltageText, resistanceNode ] : [ voltageText ];
+        if ( lastInternalResistance === null || ( internalResistance <= CCKCQueryParameters.batteryMinimumResistance || lastInternalResistance <= CCKCQueryParameters.batteryMinimumResistance ) ) {
+          const desiredChildren = internalResistance > CCKCQueryParameters.batteryMinimumResistance ? [ voltageText, resistanceNode ] : [ voltageText ];
 
           // Only set children if changed
           if ( contentNode.getChildrenCount() !== desiredChildren.length ) {
