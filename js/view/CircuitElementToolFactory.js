@@ -130,6 +130,8 @@ class CircuitElementToolFactory {
    */
   createCircuitElementToolNode( labelString, count, createIcon, predicate, createElement, options ) {
 
+    assert && assert( Number.isInteger( count ), 'count should be an integer' );
+
     options = merge( {
       tandem: Tandem.REQUIRED,
       additionalProperty: new BooleanProperty( true ),
@@ -428,9 +430,9 @@ class CircuitElementToolFactory {
   }
 
   // @public - Same docs as for createPaperClipToolNode
-  createCoinToolNode( count ) {
+  createCoinToolNode() {
     return this.createResistorToolNode( {
-      count: count,
+      count: 1,
       resistorType: Resistor.ResistorType.COIN,
       tandemName: 'coinIcon',
       labelString: coinString,
@@ -461,9 +463,9 @@ class CircuitElementToolFactory {
   }
 
   // @public - Same docs as for createPaperClipToolNode
-  createPencilToolNode( count ) {
+  createPencilToolNode() {
     return this.createResistorToolNode( {
-      count: count,
+      count: 1,
       resistorType: Resistor.ResistorType.PENCIL,
       tandemName: 'pencilToolNode',
       labelString: pencilString,
@@ -472,9 +474,9 @@ class CircuitElementToolFactory {
   }
 
   // @public - Same docs as for createPaperClipToolNode
-  createHandToolNode( count ) {
+  createHandToolNode() {
     return this.createResistorToolNode( {
-      count: count,
+      count: 1,
       resistorType: Resistor.ResistorType.HAND,
       tandemName: 'handToolNode',
       labelString: handString,
