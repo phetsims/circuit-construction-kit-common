@@ -5,9 +5,13 @@ supplements the internal (source code) documentation, and (hopefully) provides i
 issues.  The audience for this document is software developers who are familiar with JavaScript and PhET simulation
 development (as described in [PhET Development Overview](https://github.com/phetsims/phet-info/blob/master/doc/phet-development-overview.md)).
 
-This repo is supposed to contain code that would be used in potentially any circuit construction kit offshoot.
-However, since we don't have designs for some of the sims (such as AC), it is kind of like a kitchen sink **or** a
-dedicated repo for the CCK-DC simulation.
+This repo contains code that is used in the following sims:
+
+* circuit-construction-kit-dc
+* circuit-construction-kit-dc-virtual-lab
+* circuit-construction-kit-ac
+* circuit-construction-kit-ac-virtual-lab
+* circuit-construction-kit-black-box-study
 
 First, read [model.md](https://github.com/phetsims/circuit-construction-kit-common/blob/master/doc/model.md), which
 provides a high-level description of the simulation model.
@@ -20,7 +24,7 @@ order:
 * CircuitElement - a model object that can participate in a circuit, such as a Wire, Resistor, Battery, etc.
 * FixedCircuitElement - a CircuitElement that cannot be stretched out, such as a Battery or Resistor.  The only
 stretchy element is a Wire, so every CircuitElement that is not a Wire is a FixedCircuitElement.
-* Vertex - the circuit is organized as a graph, where the edges are CircuitElements and the vertices are Vertex
+* Vertex - the circuit is organized as a graph, where the edges are CircuitElements, and the vertices are Vertex
 instances.  After the circuit is solved for unknown currents, a voltage is assigned to each Vertex.
 * Ammeter - this ammeter is a "non-contact" ammeter which can take readings of a current by measuring magnetic fields
 (without touching the circuit)
@@ -63,7 +67,7 @@ for details.
 * Each node defines its own lifelike and schematic nodes internally, so nothing needs to be disposed or re-created when
 the view type changes.  Hence the "lifelike/schematic" radio buttons are not treated like independent scenes, but
 rather a single view property.
-* Likewise ChargeNode can render positive or negative charges, though they are cleared and re-added when the charge view
+* Likewise, ChargeNode can render positive or negative charges, though they are cleared and re-added when the charge view
 is changed.
 * The CircuitElementNode subtypes like BatteryNode, ResistorNode, etc have the same signature because they are invoked
 dynamically from CircuitLayerNode.initializeCircuitElementType.

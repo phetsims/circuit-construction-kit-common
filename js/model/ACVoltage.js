@@ -75,6 +75,7 @@ class ACVoltage extends VoltageSource {
   /**
    * @param {number} time - total elapsed time
    * @param {number} dt - delta between last frame and current frame
+   * @param {Circuit} circuit
    * @public
    */
   step( time, dt, circuit ) {
