@@ -41,7 +41,7 @@ class DynamicCircuit {
 
     const companionBatteries = []; // {ModifiedNodalAnalysisCircuitElement[]}
     const companionResistors = []; // {ModifiedNodalAnalysisCircuitElement[]}
-    const currentCompanions = [];
+    const currentCompanions = []; // {ModifiedNodalAnalysisCircuitElement[]}
 
     // Node indices that have been used
     const usedNodes = [];
@@ -170,7 +170,7 @@ class DynamicCircuit {
 
   /**
    * @param {number} dt
-   * @returns MNAAdapter.CircuitResult
+   * @returns CircuitResult
    * @private
    */
   solveWithSubdivisions2( dt ) {
@@ -281,7 +281,7 @@ class CircuitResult {
   }
 
   /**
-   * @returns {DynamicCircuit.DynamicState}
+   * @returns {DynamicState}
    * @private
    */
   getFinalState() {

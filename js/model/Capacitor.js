@@ -1,7 +1,7 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
- * Model for a capacitor.
+ * Model for a capacitor, which stores charges on parallel plates.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -12,9 +12,6 @@ import merge from '../../../phet-core/js/merge.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import DynamicCircuitElement from './DynamicCircuitElement.js';
-
-// constants
-const CAPACITOR_LENGTH = CCKCConstants.CAPACITOR_LENGTH;
 
 class Capacitor extends DynamicCircuitElement {
 
@@ -27,10 +24,13 @@ class Capacitor extends DynamicCircuitElement {
   constructor( startVertex, endVertex, tandem, options ) {
     options = merge( {
       capacitance: CCKCConstants.DEFAULT_CAPACITANCE,
+
+      // The number of decimal places is only used in the view, but we define it in the model as a convenient way to
+      // associate the value with the component
       numberOfDecimalPlaces: 2
     }, options );
 
-    super( startVertex, endVertex, CAPACITOR_LENGTH, tandem, options );
+    super( startVertex, endVertex, CCKCConstants.CAPACITOR_LENGTH, tandem, options );
 
     // @public {Property.<number>} the capacitance in farads
     this.capacitanceProperty = new NumberProperty( options.capacitance, {
@@ -49,7 +49,7 @@ class Capacitor extends DynamicCircuitElement {
   }
 
   /**
-   * Get the properties so that the circuit can be solved when changed.
+   * Get the Properties that may change the circuit solution, so that the circuit can be re-solved when they change.
    * @override
    * @returns {Property.<*>[]}
    * @public

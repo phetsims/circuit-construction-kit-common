@@ -14,7 +14,8 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import VoltageSource from './VoltageSource.js';
 
 // constants
-const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
+
+// The maximum amplitude of the oscillating voltage
 const MAX_VOLTAGE = 120;
 
 class ACVoltage extends VoltageSource {
@@ -37,7 +38,7 @@ class ACVoltage extends VoltageSource {
         range: new Range( -MAX_VOLTAGE, MAX_VOLTAGE )
       }
     }, options );
-    super( startVertex, endVertex, internalResistanceProperty, BATTERY_LENGTH, tandem, options );
+    super( startVertex, endVertex, internalResistanceProperty, CCKCConstants.BATTERY_LENGTH, tandem, options );
 
     // @public {NumberProperty} - the maximum voltage, which can be controlled by the CircuitElementNumberControl
     this.maximumVoltageProperty = new NumberProperty( options.voltage, {
@@ -45,12 +46,14 @@ class ACVoltage extends VoltageSource {
       range: new Range( 0, MAX_VOLTAGE )
     } );
 
+
+    // @public {NumberProperty} - the frequency of oscillation in Hz
     this.frequencyProperty = new NumberProperty( 0.5, {
       tandem: tandem.createTandem( 'frequencyProperty' ),
       range: new Range( 0.1, 2.0 )
     } );
 
-    // @public (read-only)
+    // @public (read-only) - the phase in degrees
     this.phaseProperty = new NumberProperty( 0, {
       range: new Range( -180, 180 ),
       tandem: tandem.createTandem( 'phaseProperty' ),
