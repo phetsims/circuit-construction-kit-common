@@ -6,8 +6,10 @@ Wires and batteries are constrained to have nonzero resistance to avoid numerica
 be built without wires, hence this constraint guarantees that each loop will have at least some resistance and be
 solvable.
 
-Batteries can be ideal (no resistance) or have an internal resistance (in the 2nd screen of Circuit Construction Kit: DC).
+Batteries can be ideal (very low resistance) or have an internal resistance (in the 2nd screen of Circuit Construction Kit: DC).
 
-Resistors such as the dollar bill, eraser and dog have a resistance of 10^9 Ohms.
+Insulators such as the dollar bill, eraser and dog are modeled as having a very high resistance.
 
 The ammeters and voltmeter are ideal (no resistance).
+
+We use companion models for the nonlinear circuit elements such as Inductors and Capacitors, as described in DynamicCircuit.js
