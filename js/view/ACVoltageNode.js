@@ -46,6 +46,10 @@ const signScale = 1;
 const SCHEMATIC_LINE_WIDTH = 4;
 const LIFELIKE_LINE_WIDTH = 2;
 
+/**
+ * @param {boolean} schematic - whether to show the schematic (instead of lifelike) form
+ * @returns {Node}
+ */
 const createNode = schematic => new Node( {
   x: CCKCConstants.AC_VOLTAGE_LENGTH / 2,
   children: [

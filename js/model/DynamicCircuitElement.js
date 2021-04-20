@@ -10,6 +10,7 @@ import Emitter from '../../../axon/js/Emitter.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import FixedCircuitElement from './FixedCircuitElement.js';
 
+// @abstract, getCircuitProperties is implemented in the subclasses
 class DynamicCircuitElement extends FixedCircuitElement {
 
   /**

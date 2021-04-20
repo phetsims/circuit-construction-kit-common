@@ -2,12 +2,13 @@
 
 /**
  * Creates CircuitElementToolNodes that can be used to create CircuitElements from the toolbox.  Exists for the life of
- * the sim and hence does not require a dispose implementation.
+ * the sim and hence does not require disposal.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
+import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Vector2 from '../../../dot/js/Vector2.js';
@@ -235,7 +236,7 @@ class CircuitElementToolFactory {
     const acSource = new ACVoltage(
       new Vertex( Vector2.ZERO ),
       new Vertex( new Vector2( AC_VOLTAGE_LENGTH, 0 ) ),
-      new Property( 0 ),
+      new NumberProperty( 0 ),
       Tandem.OPTIONAL
     );
     return this.createCircuitElementToolNode( acSourceString, count,

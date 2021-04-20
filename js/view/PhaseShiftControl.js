@@ -19,8 +19,6 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import CircuitElementNumberControl from './CircuitElementNumberControl.js';
 
-const phaseShiftString = circuitConstructionKitCommonStrings.phaseShift;
-
 class PhaseShiftControl extends VBox {
 
   /**
@@ -49,7 +47,7 @@ class PhaseShiftControl extends VBox {
         }
       }
     };
-    const title = new Text( phaseShiftString, {
+    const title = new Text( circuitConstructionKitCommonStrings.phaseShift, {
       font: CCKCConstants.DEFAULT_FONT,
       maxWidth: CircuitElementNumberControl.NUMBER_CONTROL_ELEMENT_MAX_WIDTH
     } );

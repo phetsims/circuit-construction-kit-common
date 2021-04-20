@@ -235,7 +235,6 @@ class ModifiedNodalAnalysisAdapter {
       const branch = circuit.circuitElements.get( i );
       if ( branch instanceof Switch && !branch.closedProperty.value ) {
         branch.currentProperty.value = 0.0;
-        // sw.setVoltageDrop( 0.0 );
       }
     }
 

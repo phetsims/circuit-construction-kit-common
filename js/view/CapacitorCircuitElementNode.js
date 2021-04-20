@@ -269,12 +269,10 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
 }
 
 /**
- * Identifies the images used to render this node so they can be prepopulated in the WebGL sprite sheet.
+ * Identifies the images used to render this node so they can be pre-populated in the WebGL sprite sheet.
  * @public {Array.<Image>}
  */
-CapacitorCircuitElementNode.webglSpriteNodes = [
-  new Image( wireIconImage )
-];
+CapacitorCircuitElementNode.webglSpriteNodes = [ new Image( wireIconImage ) ];
 
 circuitConstructionKitCommon.register( 'CapacitorCircuitElementNode', CapacitorCircuitElementNode );
 export default CapacitorCircuitElementNode;

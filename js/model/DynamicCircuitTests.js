@@ -8,14 +8,10 @@
 
 
 // modules
-// const ModifiedNodalAnalysisCircuit = require( '/circuit-construction-kit-common/js/model/ModifiedNodalAnalysisCircuit' );
-// const ModifiedNodalAnalysisSolution = require( '/circuit-construction-kit-common/js/model/ModifiedNodalAnalysisSolution' );
 import DynamicCircuit from './DynamicCircuit.js';
 import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
 
 QUnit.module( 'DynamicCircuit' );
-
-// const approxEquals = ( a, b ) => Math.abs( a - b ) < 1E-6;
 
 const testVRCCircuit = ( v, r, c, assert ) => {
   const resistor = new ModifiedNodalAnalysisCircuitElement( 1, 2, null, r );
