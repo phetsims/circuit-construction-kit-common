@@ -70,6 +70,9 @@ class ModifiedNodalAnalysisCircuit {
              `currentSources: ${this.currentSources.map( c => c.toString() )
                .join( ',' )}`;
     }
+    else {
+      return 'toString() only defined when assertions are enabled';
+    }
   }
 
   /**
