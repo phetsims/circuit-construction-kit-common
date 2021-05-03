@@ -16,7 +16,7 @@ class ModifiedNodalAnalysisCircuitElement {
    * @param {number} nodeId1
    * @param {CircuitElement|null} circuitElement, null during qunit tests
    * @param {number} value - resistance for resistors, voltage for battery or current for current source
-   * @param {number|null} currentSolution
+   * @param {number|null} [currentSolution]
    */
   constructor( nodeId0, nodeId1, circuitElement, value, currentSolution = null ) {
     assert && assert( typeof nodeId0 === 'number' );

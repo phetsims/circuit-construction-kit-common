@@ -17,12 +17,15 @@ class CircuitLayerNodeDragListener extends DragListener {
    */
   constructor( circuitLayerNode, vertexGetters, options ) {
     super( options );
+
+    // @private
     this.circuitLayerNode = circuitLayerNode;
     this.vertexGetters = vertexGetters;
   }
 
   // @public
   // @override
+  //REVIEW: JSDoc for params, but also I don't know why we're overriding press, can we use canStartPress instead?
   press( event, targetNode, callback ) {
 
     const vertices = this.vertexGetters.map( vertexGetter => vertexGetter() );

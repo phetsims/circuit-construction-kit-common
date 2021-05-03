@@ -8,6 +8,7 @@
 
 import SoundClip from '../../../tambo/js/sound-generators/SoundClip.js';
 import soundManager from '../../../tambo/js/soundManager.js';
+//REVIEW: What is the convention for naming of these?
 import dogBarkSound from '../../sounds/dog-bark_mp3.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import BarkNode from './BarkNode.js';
@@ -29,6 +30,7 @@ class DogNode extends ResistorNode {
     const soundClip = new SoundClip( dogBarkSound );
     soundManager.addSoundGenerator( soundClip );
 
+    // @private
     this.barkNode = new BarkNode( {
       scale: 1.2
     } );

@@ -34,7 +34,7 @@ class CurrentChartNode extends CCKCChartNode {
 
     super( circuitLayerNode, timeProperty, visibleBoundsProperty, createObservableArray(), currentWithUnitsString, options );
 
-    // @private
+    // @private {CCKCProbeNode}
     this.probeNode1 = this.addProbeNode(
       CCKCConstants.CHART_SERIES_COLOR,
       CCKCConstants.CHART_SERIES_COLOR,

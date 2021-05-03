@@ -14,6 +14,9 @@ import SchematicType from './SchematicType.js';
 import schematicTypeProperty from './schematicTypeProperty.js';
 
 class CCKCOptionsDialogContent extends VBox {
+  /**
+   * @param {Tandem} tandem
+   */
   constructor( tandem ) {
 
     const textOptions = {
@@ -38,6 +41,7 @@ class CCKCOptionsDialogContent extends VBox {
         verticalAquaRadioButtonGroup ]
     } );
 
+    // @private {function}
     this.disposeCCKCOptionsDialogContent = () => {
       verticalAquaRadioButtonGroup.dispose();
     };

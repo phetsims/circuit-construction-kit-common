@@ -228,6 +228,7 @@ class CircuitElementEditContainerNode extends Node {
             circuit,
             selectedCircuitElement,
             Tandem.OPT_OUT, {
+              //REVIEW: I can't find where editableRange is used, can you point me to it?
               editableRange: selectedCircuitElement.currentRatingProperty.range,
 
               // For the tweakers
@@ -365,6 +366,9 @@ class CircuitElementEditContainerNode extends Node {
  * HBox with standardized options
  */
 class EditHBox extends HBox {
+  /**
+   * @param {Array.<Node>} children
+   */
   constructor( children ) {
     super( {
       spacing: 25,
@@ -378,6 +382,9 @@ class EditHBox extends HBox {
  * Panel to facilitate in visual layout of the controls.
  */
 class EditPanel extends Panel {
+  /**
+   * @param {Array.<Node>} children
+   */
   constructor( children ) {
     const hbox = new EditHBox( children );
     super( hbox, {

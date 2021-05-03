@@ -149,6 +149,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
       pickable: true // so that we can use hit detection for the voltmeter probes.
     };
     const leftSchematicPath = new Path( leftSchematicShape, schematicPathOptions );
+    // @private {Node} -
     const rightSchematicPath = new Path( rightSchematicShape, schematicPathOptions );
 
     // Wrap in another layer so it can be used for clipping
@@ -177,15 +178,17 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
     // @public (read-only) {Capacitor} - the Capacitor rendered by this Node
     this.capacitor = capacitor;
 
-    // @public (read-only) - for clipping in ChargeNode
+    // @public (read-only) {Node} - for clipping in ChargeNode
     this.capacitorCircuitElementLifelikeNode = lifelikeNode;
 
-    // @public (read-only) - for clipping in ChargeNode
+    // @public (read-only) {Node} - for clipping in ChargeNode
     this.capacitorCircuitElementSchematicNode = schematicNode;
 
-    // @private
+    // @private {Image}
     this.leftWireStub = leftWireStub;
     this.rightWireStub = rightWireStub;
+
+    // @private {Path}
     this.leftSchematicPath = leftSchematicPath;
     this.rightSchematicPath = rightSchematicPath;
 

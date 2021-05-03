@@ -102,7 +102,7 @@ class CCKCScreenView extends ScreenView {
     // @public (read-only) {CircuitConstructionKitModel}
     this.model = model;
 
-    // TODO (black-box-study): change background color to gray when isValueDepictionEnabledProperty goes false
+    // TODO (black-box-study): change background color to gray when isValueDepictionEnabledProperty goes false REVIEW: Does this need to be handled now?
 
     // @private - contains parts of the circuit that should be shown behind the controls
     this.circuitLayerNodeBackLayer = new Node();
@@ -128,7 +128,7 @@ class CCKCScreenView extends ScreenView {
 
     const ammeterNodes = model.ammeters.map( ammeter => {
       const ammeterNode = new AmmeterNode( ammeter, this.circuitLayerNode, {
-        tandem: tandem.createTandem( `ammeterNode${ammeter.phetioIndex}` ), // TODO (phet-io): Group?
+        tandem: tandem.createTandem( `ammeterNode${ammeter.phetioIndex}` ), // TODO (phet-io): Group? REVIEW: Does this need to be handled now?
         showResultsProperty: model.isValueDepictionEnabledProperty,
         visibleBoundsProperty: this.circuitLayerNode.visibleBoundsInCircuitCoordinateFrameProperty,
         blackBoxStudy: options.blackBoxStudy
@@ -141,7 +141,7 @@ class CCKCScreenView extends ScreenView {
       return ammeterNode;
     } );
 
-    // @private
+    // @private {Array.<CurrentChartNode>}
     this.chartNodes = [];
 
     // Optionally initialize the chart nodes
@@ -165,9 +165,12 @@ class CCKCScreenView extends ScreenView {
         currentChartNode.initializeBodyDragListener( this );
         return currentChartNode;
       };
+
+      // @private {CurrentChartNode}
       this.voltageChartNode1 = createVoltageChartNode( 'voltageChartNode1' );
       this.voltageChartNode2 = createVoltageChartNode( 'voltageChartNode2' );
 
+      // @private {CurrentChartNode}
       this.currentChartNode1 = createCurrentChartNode( 'currentChartNode1' );
       this.currentChartNode2 = createCurrentChartNode( 'currentChartNode2' );
 
@@ -217,6 +220,7 @@ class CCKCScreenView extends ScreenView {
       tandem.createTandem( 'displayOptionsPanel' )
     );
 
+    // @private {AdvancedAccordionBox}
     this.advancedAccordionBox = new AdvancedAccordionBox(
       model.circuit,
       CONTROL_PANEL_ALIGN_GROUP,
@@ -427,7 +431,12 @@ class CCKCScreenView extends ScreenView {
     model.stepEmitter.addListener( dt => this.stepOnce( dt ) );
   }
 
-  // @public - called from model steps
+  /**
+   * Called from model steps
+   * @public
+   *
+   * @param {number} dt
+   */
   stepOnce( dt ) {
 
     // If the step is large, it probably means that the screen was hidden for a while, so just ignore it.

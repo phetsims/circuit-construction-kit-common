@@ -143,17 +143,15 @@ class WireNode extends CircuitElementNode {
    */
   constructor( screenView, circuitLayerNode, wire, viewTypeProperty, tandem ) {
 
-    // @private
     const startCapParent = new Node( {
       children: [ lifelikeRoundedCapNormal ]
     } );
 
-    // @private
     const endCapParent = new Node( {
       children: [ lifelikeRoundedCapNormal ]
     } );
 
-    // @private {Node} - the node that shows the yellow highlight for the node when selected
+    // The node that shows the yellow highlight for the node when selected
     const highlightNode = new Path( null, {
       stroke: CCKCConstants.HIGHLIGHT_COLOR,
       lineWidth: CCKCConstants.HIGHLIGHT_LINE_WIDTH,
@@ -161,7 +159,7 @@ class WireNode extends CircuitElementNode {
       visible: false
     } );
 
-    // @private - the node that displays the main line (for both schematic and lifelike).  This does not include
+    // The node that displays the main line (for both schematic and lifelike).  This does not include
     // the rounded caps for the lifelike view
     const lineNode = new Node();
 
@@ -194,7 +192,7 @@ class WireNode extends CircuitElementNode {
     // @public (read-only) {Wire}
     this.wire = wire;
 
-    // @private
+    // @private {Node}
     this.startCapParent = startCapParent;
     this.endCapParent = endCapParent;
     this.lineNodeParent = lineNodeParent;
@@ -245,7 +243,7 @@ class WireNode extends CircuitElementNode {
 
     if ( screenView ) {
 
-      // Input listener for dragging the body of the wire, to translate it.
+      // @private - Input listener for dragging the body of the wire, to translate it.
       this.dragListener = new CircuitLayerNodeDragListener( circuitLayerNode, [
         () => wire.startVertexProperty.get(),
         () => wire.endVertexProperty.get()
@@ -300,9 +298,7 @@ class WireNode extends CircuitElementNode {
     };
     wire.connectedEmitter.addListener( moveToBack );
 
-    /**
-     * @private - dispose the wire node
-     */
+    // @private {function} - dispose the wire node
     this.disposeWireNode = () => {
       this.dragListener.interrupt();
 

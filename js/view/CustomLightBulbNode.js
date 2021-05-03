@@ -13,6 +13,7 @@ import merge from '../../../phet-core/js/merge.js';
 import LightRaysNode from '../../../scenery-phet/js/LightRaysNode.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import Node from '../../../scenery/js/nodes/Node.js';
+//REVIEW: Import names don't seem to be matching here
 import backImage from '../../images/lightbulb-back_png.js';
 import highResistanceSocketImage from '../../images/lightbulb-front-high_png.js';
 import realSocketImage from '../../images/lightbulb-front-real_png.js';
@@ -41,7 +42,6 @@ class CustomLightBulbNode extends Node {
       real: false
     }, options );
 
-    // @private (read-only) {boolean]
     const baseOnly = options.baseOnly;
 
     const selectedSocketImage = options.highResistance ? highResistanceSocketImage :
@@ -51,7 +51,6 @@ class CustomLightBulbNode extends Node {
     const selectedMiddleImage = options.real ? lightBulbMiddleRealImage :
                                 lightBulbMiddleImage;
 
-    // @private {Image}
     const backNode = new Image( options.baseOnly ? selectedSocketImage : backImage, {
       scale: BULB_IMAGE_SCALE,
       centerX: 0,
@@ -93,8 +92,13 @@ class CustomLightBulbNode extends Node {
 
     super( options );
 
+    // @private {boolean}
     this.baseOnly = baseOnly;
+
+    // @private {Image}
     this.backNode = backNode;
+
+    // @public {LightRaysNode|null}
     this.raysNode = raysNode;
 
     // @private {Property.<number>} - brightness of the bulb

@@ -43,7 +43,9 @@ class ZoomControlPanel extends MagnifyingGlassZoomButtonGroup {
   }
 }
 
+// @public {number}
 ZoomControlPanel.ZOOMED_OUT = ZOOMED_OUT;
 ZoomControlPanel.ZOOMED_IN = ZOOMED_IN;
+
 circuitConstructionKitCommon.register( 'ZoomControlPanel', ZoomControlPanel );
 export default ZoomControlPanel;

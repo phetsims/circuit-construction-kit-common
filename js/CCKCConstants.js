@@ -161,7 +161,9 @@ const CCKCConstants = {
   // Number of wires that can be dragged out of the toolbox
   NUMBER_OF_WIRES: CCKCQueryParameters.moreWires ? 50 : 25,
 
+  //REVIEW: Wasn't immediately clear what this constant describes, doc might help?
   NUMBER_OF_TIME_DIVISIONS: 4,
+
   CHART_SERIES_COLOR: '#404041',
 
   DC_CAROUSEL_SCALE: 1.2,

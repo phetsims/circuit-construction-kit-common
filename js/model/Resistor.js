@@ -99,7 +99,7 @@ class ResistorEnumValue {
    * @param {Range} resistanceRange - possible values for the resistance, in Ohms
    * @param {boolean} isMetallic - whether the item is metallic (non-insulated) and hence can have its value read at any point
    * @param {number} length
-   * @param {number} [verticalOffset=0]
+   * @param {number} [verticalOffset]
    */
   constructor( defaultResistance, resistanceRange, isMetallic, length, verticalOffset = 0 ) {
 
@@ -115,7 +115,7 @@ class ResistorEnumValue {
     // @public (read-only} {number} - in view coordinates
     this.length = length;
 
-    // @public (read-only) amount the view is shifted down in view coordinates
+    // @public (read-only) {number} - amount the view is shifted down in view coordinates
     this.verticalOffset = verticalOffset;
   }
 
@@ -124,16 +124,16 @@ class ResistorEnumValue {
    * @param {number} resistance
    * @param {boolean} isMetallic
    * @param {number} length
-   * @param {number} [verticalOffset=0]
+   * @param {number} [verticalOffset]
    * @returns {ResistorEnumValue}
-   * @private (only used in this file)
+   * @private
    */
   static fixed( resistance, isMetallic, length, verticalOffset = 0 ) {
     return new ResistorEnumValue( resistance, new Range( resistance, resistance ), isMetallic, length, verticalOffset );
   }
 }
 
-// Enumeration for the different resistor types.
+// @public {Enumeration} - Enumeration for the different resistor types.
 Resistor.ResistorType = Enumeration.byMap( {
   RESISTOR: new ResistorEnumValue( 10, new Range( 0, 120 ), false, CCKCConstants.RESISTOR_LENGTH ),
   HIGH_RESISTANCE_RESISTOR: new ResistorEnumValue( 1000, new Range( 100, 10000 ), false, CCKCConstants.RESISTOR_LENGTH ),
@@ -148,6 +148,7 @@ Resistor.ResistorType = Enumeration.byMap( {
   DOLLAR_BILL: ResistorEnumValue.fixed( 1000000000, false, CCKCConstants.DOLLAR_BILL_LENGTH )
 } );
 
+// @public {IOType}
 Resistor.ResistorIO = new IOType( 'ResistorIO', {
   valueType: Resistor,
   supertype: CircuitElement.CircuitElementIO,

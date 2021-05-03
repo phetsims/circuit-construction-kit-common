@@ -54,7 +54,7 @@ class ModifiedNodalAnalysisCircuit {
     // @public {number} - the number of nodes in the set
     this.nodeCount = _.size( this.nodeSet );
 
-    // {number[]} the node indices
+    // @private {number[]} the node indices
     this.nodes = _.values( this.nodeSet );
   }
 

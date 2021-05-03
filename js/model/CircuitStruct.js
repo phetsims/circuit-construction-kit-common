@@ -4,7 +4,7 @@
  * The CircuitStruct keeps track of the Circuit components but without wiring up listeners or solving physics.
  * It is necessary in order to keep track of black box state (user created circuit and black box circuit).
  *
- * TODO (black-box-study): Use new save/load feature instead
+ * TODO (black-box-study): Use new save/load feature instead REVIEW: TODO?
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -59,6 +59,7 @@ class CircuitStruct {
   /**
    * Gets all the circuit elements.
    * @returns {CircuitElement[]}
+   * @public REVIEW: This is the correct visibility?
    */
   get circuitElements() {
     return []
@@ -135,6 +136,7 @@ CircuitStruct.fromStateObject = ( circuit, circuitState, resistivityProperty, ta
   }
   for ( let i = 0; i < circuitState.switches.length; i++ ) {
     options = circuitState.switches[ i ].options || {};
+    //REVIEW: This constructor call looks incorrect, not sure how to handle
     circuitStruct.switches.push( new Switch(
       circuitStruct.vertices[ circuitState.switches[ i ].startVertex ],
       circuitStruct.vertices[ circuitState.switches[ i ].endVertex ],

@@ -57,7 +57,7 @@ class Wire extends CircuitElement {
     // @private {boolean} - batch changes so that the length doesn't change incrementally when individual vertices move
     this.wireDirty = true;
 
-    // When the vertex moves, updates the resistance and charge path length.
+    // @private {function} - When the vertex moves, updates the resistance and charge path length.
     this.markWireDirtyListener = this.markWireDirty.bind( this );
 
     this.vertexMovedEmitter.addListener( this.markWireDirtyListener );

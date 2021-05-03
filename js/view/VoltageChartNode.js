@@ -43,7 +43,7 @@ class VoltageChartNode extends CCKCChartNode {
 
     super( circuitLayerNode, timeProperty, visibleBoundsProperty, createObservableArray(), voltageWithUnitsString, options );
 
-    // @private
+    // @private {CCKCProbeNode}
     this.probeNode1 = this.addProbeNode( SERIES_1_COLOR, SERIES_1_COLOR, 5, 10, this.aboveBottomLeft1, options.tandem.createTandem( 'probeNode1' ) );
     this.probeNode2 = this.addProbeNode( SERIES_2_COLOR, SERIES_2_COLOR, 36, 54, this.aboveBottomLeft2, options.tandem.createTandem( 'probeNode2' ) );
 
@@ -66,7 +66,7 @@ class VoltageChartNode extends CCKCChartNode {
       const blackConnection = this.circuitLayerNode.getVoltageConnection( blackPoint );
       const voltage = this.circuitLayerNode.circuit.getVoltageBetweenConnections( redConnection, blackConnection );
 
-      this.series.push( voltage === null ? null : new Vector2( time, voltage || 0 ) );
+      this.series.push( voltage === null ? null : new Vector2( time, voltage || 0 ) ); //REVIEW: purpose of extra || guard?
 
       // For debugging, depict the points where the sampling happens
       if ( CCKCQueryParameters.showVoltmeterSamplePoints ) {

@@ -19,6 +19,7 @@ const CCKCUtils = {
   /**
    * Typically show 2 decimal places for current and voltage readouts in the play area, but if it is a smaller value,
    * below 0.02 and 0.001, then it should show 3 decimal places.
+   * @public
    * @param {number} value - the value to be formatted for display
    * @returns {number} - the number of decimal places to use for the display
    */
@@ -29,7 +30,7 @@ const CCKCUtils = {
 
   /**
    * Returns a string that adjusts its ampere value.
-   * @param current {number} - number of Amps
+   * @param {number} current - number of Amps
    * @returns {string}
    * @public
    */
@@ -43,7 +44,7 @@ const CCKCUtils = {
 
   /**
    * Returns a string that adjusts its voltage value.
-   * @param value {number} - voltage value in Volts
+   * @param {number} value - voltage value in Volts
    * @returns {string}
    * @public
    */
@@ -56,9 +57,9 @@ const CCKCUtils = {
   /**
    * Checks whether a child should be in the scene graph and adds/removes it as necessary.  This is to improve
    * performance so that the DOM only contains displayed items and doesn't try to update invisible ones.
-   * @param inSceneGraph {boolean} - should the child be shown in the scene graph
-   * @param parent {Node} - parent that contains the child in the scene graph
-   * @param child {Node} - child added/removed from scene graph
+   * @param {boolean} inSceneGraph - should the child be shown in the scene graph
+   * @param {Node} parent - parent that contains the child in the scene graph
+   * @param {Node} child - child added/removed from scene graph
    * @public
    */
   setInSceneGraph: function( inSceneGraph, parent, child ) {

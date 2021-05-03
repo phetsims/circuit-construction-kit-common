@@ -58,11 +58,12 @@ class CircuitElement extends PhetioObject {
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/244
     this.creationTime = phet.joist.elapsedTime;
 
-    // @public (read-only) flammable circuit elements can catch on fire
+    // @public (read-only) {boolean} flammable circuit elements can catch on fire
     this.isFlammable = options.isFlammable;
 
-    // @public (read-only) metallic circuit elements behave like exposed wires--sensor values can be read directly on the
-    // resistor. For instance, coins and paper clips and wires are metallic and can have their values read directly.
+    // @public (read-only) {boolean} metallic circuit elements behave like exposed wires--sensor values can be read
+    // directly on the resistor. For instance, coins and paper clips and wires are metallic and can have their values
+    // read directly.
     this.isMetallic = options.isMetallic;
 
     // @public (read-only) {boolean} - whether the size changes when changing from lifelike/schematic, used to determine
@@ -93,6 +94,7 @@ class CircuitElement extends PhetioObject {
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/508
     this.isInitialCurrentNegative = null;
 
+    // @private {Array.<{current:number, time:number}}
     this.dataSet = [];
 
     // @public (read-only) {BooleanProperty} - true if the CircuitElement can be edited and dragged
@@ -149,6 +151,7 @@ class CircuitElement extends PhetioObject {
     // length changes when switching between LIFELIKE |SCHEMATIC
     this.chargePathLength = chargePathLength;
 
+    // @public {boolean}
     // The ammeter update is called after items are disposed but before corresponding views are disposed, so we must
     // take care not to display current for any items that are pending deletion.
     // See https://github.com/phetsims/circuit-construction-kit-common/issues/418
@@ -194,7 +197,14 @@ class CircuitElement extends PhetioObject {
     this.voltageDifferenceProperty.set( this.computeVoltageDifference() );
   }
 
-  // @public
+  /**
+   * Steps forward in time REVIEW: This JSDoc typing is hopefully correct?
+   * @public
+   *
+   * @param {number} time
+   * @param {number} dt
+   * @param {Circuit} circuit
+   */
   step( time, dt, circuit ) {
 
     const current = this.currentProperty.value;
@@ -405,6 +415,7 @@ class CircuitElement extends PhetioObject {
   }
 }
 
+// @public {IOType}
 CircuitElement.CircuitElementIO = new IOType( 'CircuitElementIO', {
   valueType: CircuitElement,
   documentation: 'A Circuit Element, such as battery, resistor or wire',

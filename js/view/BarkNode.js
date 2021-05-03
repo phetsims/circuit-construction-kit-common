@@ -14,6 +14,9 @@ import Node from '../../../scenery/js/nodes/Node.js';
 
 class BarkNode extends Node {
 
+  /**
+   * @param {Object} [options]
+   */
   constructor( options ) {
     super();
     this.addChild( new FontAwesomeNode( 'comment', {

@@ -46,7 +46,7 @@ class FixedCircuitElementNode extends CircuitElementNode {
    *                            - left-center
    * @param {Node} schematicNode - the Node that will display the component. Origin must be left-center.
    * @param {Tandem} tandem
-   * @param options
+   * @param {Object} [options]
    */
   constructor( screenView, circuitLayerNode, circuitElement,
                viewTypeProperty, lifelikeNode, schematicNode, tandem, options ) {

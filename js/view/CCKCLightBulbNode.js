@@ -18,6 +18,8 @@ import Image from '../../../scenery/js/nodes/Image.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import Color from '../../../scenery/js/util/Color.js';
+//REVIEW: These names for the 4 images seem to not match with convention based on the file names
+//REVIEW: lightbulbMiddleHighImage, lightbulbMiddleRealImage, lightbulbFrontRealImage, lightbulbMiddleImage
 import lightBulbMiddleHighImage from '../../mipmaps/lightbulb-middle-high_png.js';
 import lightBulbMiddleRealImage from '../../mipmaps/lightbulb-middle-real_png.js';
 import realSocketImage from '../../images/lightbulb-front-real_png.js';
@@ -221,7 +223,7 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
     let viewListener = null;
     if ( circuitLayerNode ) {
 
-      // Render the socket node in the front
+      // @private - Render the socket node in the front
       this.socketNode = new LightBulbSocketNode(
         screenView,
         circuitLayerNode,
@@ -241,6 +243,7 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
       circuitLayerNode && circuitLayerNode.addChildToBackground( this.rayNodeContainer );
     }
 
+    // @private {function}
     this.disposeCircuitConstructionKitLightBulbNode = () => {
       updateBrightness.dispose();
       circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.removeChild( this.socketNode );

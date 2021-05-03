@@ -55,7 +55,7 @@ class CCKCChartNode extends Node {
    * @param {CircuitLayerNode} circuitLayerNode
    * @param {NumberProperty} timeProperty
    * @param {Property.<Bounds2>} visibleBoundsProperty
-   * @param {ObservableArrayDef} series
+   * @param {ObservableArrayDef.<Vector2|null>} series
    * @param {string} verticalAxisLabel
    * @param {Object} [options]
    */
@@ -72,9 +72,10 @@ class CCKCChartNode extends Node {
 
     super();
 
+    // @public {Meter} REVIEW: Missing phetioIndex required parameter
     this.meter = new Meter( options.tandem.createTandem( 'meter' ) );
 
-    // @protected
+    // @protected {ObservableArrayDef.<Vector2|null>} REVIEW: This type is correct, no? Spent a bit chasing down what it likely was
     this.series = series;
 
     // @private {CircuitLayerNode}
@@ -99,6 +100,7 @@ class CCKCChartNode extends Node {
     this.mutate( options );
 
     // @public - emits when the probes should be put in standard relative position to the body
+    //REVIEW: I see this called in subtypes after adding probes, could this be emitted then to obviate that need?
     this.alignProbesEmitter = new Emitter();
 
     // These do not need to be disposed because there is no connection to the "outside world"

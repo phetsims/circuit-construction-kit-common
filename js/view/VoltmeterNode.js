@@ -18,6 +18,7 @@ import Image from '../../../scenery/js/nodes/Image.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Color from '../../../scenery/js/util/Color.js';
+//REVIEW: Presumably should have *Image at the names of these imports
 import blackProbe from '../../mipmaps/probe-black_png.js';
 import redProbe from '../../mipmaps/probe-red_png.js';
 import voltmeterBodyImage from '../../mipmaps/voltmeter-body_png.js';
@@ -265,6 +266,7 @@ class VoltmeterNode extends Node {
         },
 
         // use this to do something every time drag is called, such as notify that a user has modified the position
+        //REVIEW: I don't understand this, I don't think it gets called AND it does nothing. What uses this option?
         onDrag: event => {},
 
         // adds support for zoomed coordinate frame, see
@@ -345,6 +347,7 @@ class VoltmeterNode extends Node {
   }
 }
 
+// @public {number}
 VoltmeterNode.PROBE_ANGLE = PROBE_ANGLE;
 
 circuitConstructionKitCommon.register( 'VoltmeterNode', VoltmeterNode );

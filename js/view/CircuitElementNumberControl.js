@@ -86,6 +86,7 @@ class CircuitElementNumberControl extends NumberControl {
   }
 }
 
+// @public {number}
 CircuitElementNumberControl.NUMBER_CONTROL_ELEMENT_MAX_WIDTH = NUMBER_CONTROL_ELEMENT_MAX_WIDTH;
 
 circuitConstructionKitCommon.register( 'CircuitElementNumberControl', CircuitElementNumberControl );

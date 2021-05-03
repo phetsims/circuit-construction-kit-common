@@ -26,6 +26,10 @@ import Wire from './Wire.js';
 const TIMESTEP_SUBDIVISIONS = new TimestepSubdivisions();
 
 class ResistiveBatteryAdapter extends DynamicCircuit.ResistiveBattery {
+  /**
+   * @param {Circuit} c REVIEW: correct typing?
+   * @param {Battery} battery
+   */
   constructor( c, battery ) {
     super(
       c.vertexGroup.indexOf( battery.startVertexProperty.value ),
@@ -39,7 +43,7 @@ class ResistiveBatteryAdapter extends DynamicCircuit.ResistiveBattery {
   }
 
   /**
-   * @param circuitResult
+   * @param {DynamicCircuit} circuitResult - REVIEW: correct type?
    * @public
    */
   applySolution( circuitResult ) {
@@ -60,11 +64,13 @@ class ResistorAdapter extends ModifiedNodalAnalysisCircuitElement {
       resistor,
       resistor.resistanceProperty.value
     );
+
+    // @private
     this.resistor = resistor;
   }
 
   /**
-   * @param circuitResult
+   * @param {DynamicCircuit} circuitResult - REVIEW: correct type?
    * @public
    */
   applySolution( circuitResult ) {

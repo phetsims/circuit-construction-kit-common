@@ -49,7 +49,7 @@ class Battery extends VoltageSource {
   }
 }
 
-// Enumeration for the different types of Battery, NORMAL or HIGH_VOLTAGE
+// @public {Enumeration} - Enumeration for the different types of Battery, NORMAL or HIGH_VOLTAGE
 Battery.BatteryType = Enumeration.byKeys( [ 'NORMAL', 'HIGH_VOLTAGE' ] );
 
 circuitConstructionKitCommon.register( 'Battery', Battery );

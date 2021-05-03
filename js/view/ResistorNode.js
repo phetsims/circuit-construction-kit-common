@@ -20,6 +20,7 @@ import eraserImage from '../../images/eraser_png.js';
 import handImage from '../../images/hand_png.js';
 import paperClipImage from '../../images/paper-clip_png.js';
 import pencilImage from '../../images/pencil_png.js';
+//REVIEW: Image import names dont' seem to match the expected names
 import highResistanceResistorImage from '../../images/resistor-high_png.js';
 import lifelikeResistorImage from '../../images/resistor_png.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -218,7 +219,7 @@ class ResistorNode extends FixedCircuitElementNode {
     // @public (read-only) {Resistor} the resistor depicted by this node
     this.resistor = resistor;
 
-    // @protected
+    // @protected {Image}
     this.lifelikeResistorImageNode = lifelikeResistorImageNode;
 
     /**

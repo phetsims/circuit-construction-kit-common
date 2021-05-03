@@ -1,13 +1,13 @@
 // Copyright 2020, University of Colorado Boulder
 
-import merge from '../../../phet-core/js/merge.js';
-import Checkbox from '../../../sun/js/Checkbox.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-
 /**
  * Checkbox styled for CCK
  * @author Sam Reid (PhET Interactive Simulations)
  */
+
+import merge from '../../../phet-core/js/merge.js';
+import Checkbox from '../../../sun/js/Checkbox.js';
+import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 // constants
 const BOX_WIDTH = 16;

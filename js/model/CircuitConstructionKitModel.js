@@ -49,7 +49,7 @@ class CircuitConstructionKitModel {
       tandem: tandem.createTandem( 'viewTypeProperty' )
     } );
 
-    // @public {Property.<Boolean>} - whether the carousel shows real bulbs
+    // @public {Property.<boolean>} - whether the carousel shows real bulbs
     this.addRealBulbsProperty = new BooleanProperty( CCKCQueryParameters.addRealBulbs, {
       tandem: tandem.createTandem( 'addRealBulbsProperty' )
     } );
@@ -89,7 +89,7 @@ class CircuitConstructionKitModel {
     // @public {Property.<number>} scaling applied to the circuit node so the user can zoom out and make larger circuits
     this.selectedZoomProperty = new NumberProperty( 1, {
       tandem: tandem.createTandem( 'selectedZoomProperty' ),
-      range: new Range( 0, 1 ) // TODO: This looks buggy
+      range: new Range( 0, 1 ) // TODO: This looks buggy REVIEW: oh?
     } );
 
     // @public (read-only) {Property.<number>} the animated value of the zoom level
@@ -105,7 +105,7 @@ class CircuitConstructionKitModel {
       } );
     } );
 
-    // True if the simulation is playing, controlled by the TimeControlNode
+    // @public (read-only) {Property.<number>} True if the simulation is playing, controlled by the TimeControlNode
     this.isPlayingProperty = new BooleanProperty( true, {
       tandem: tandem.createTandem( 'isPlayingProperty' ),
       phetioFeatured: true
@@ -128,6 +128,7 @@ class CircuitConstructionKitModel {
     // box study sim
     const modeChanging = false;
 
+    //REVIEW: fix now?
     // TODO (black-box-study): started/endedCallbacksForChangedEmitters don't exist anymore. Rewrite if commented back in.
     // this.modeProperty.startedCallbacksForChangedEmitter.addListener( function() {
     //   modeChanging = true;
@@ -137,7 +138,7 @@ class CircuitConstructionKitModel {
     // } );
     if ( CCKCQueryParameters.showDepictValuesToggleButton ) {
 
-      // TODO (black-box-study) fix this
+      // TODO (black-box-study) fix this REVIEW: fix now?
       const pause = () => {
         if ( !modeChanging ) {
           this.isValueDepictionEnabledProperty.value = false;
@@ -190,7 +191,7 @@ class CircuitConstructionKitModel {
       tandem: tandem.createTandem( 'stopwatch' )
     } );
 
-    // Indicates when the model has updated, some views need to update accordingly
+    // @public {Emitter.<number>} - Indicates when the model has updated, some views need to update accordingly
     this.stepEmitter = new Emitter( {
       parameters: [ { valueType: 'number' } ]
     } );
@@ -208,7 +209,7 @@ class CircuitConstructionKitModel {
 
   /**
    * Step forward one step, whether automatically or when the step button is pressed.
-   * @param dt
+   * @param {number} dt
    * @private
    */
   stepOnce( dt ) {

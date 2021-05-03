@@ -1,5 +1,7 @@
 // Copyright 2020, University of Colorado Boulder
 
+//REVIEW: Should have top-level comment and authors
+
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import Shape from '../../../../kite/js/Shape.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
@@ -16,6 +18,9 @@ const SCHEMATIC_WAVELENGTH = 54 * SCHEMATIC_SCALE;
 const LEAD_Y = -73;
 
 class CCKCDemoScreenView extends ScreenView {
+  /**
+   * @param {Object} [options]
+   */
   constructor( options ) {
     super( options );
 
@@ -217,6 +222,7 @@ class CCKCDemoScreenView extends ScreenView {
 
     const barkNode = new BarkNode( {
       center: this.layoutBounds.center.plusXY( 200, 0 ),
+      //REVIEW: Align option isn't being used here
       align: 'bottom',
       scale: 1.5
     } );

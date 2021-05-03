@@ -241,6 +241,7 @@ class CircuitResult {
    * @param {ResultSet.<DynamicCircuit.DynamicState>} resultSet
    */
   constructor( resultSet ) {
+    // @public
     this.resultSet = resultSet;
   }
 
@@ -322,20 +323,40 @@ class DynamicInductor {
 }
 
 class Capacitor extends ModifiedNodalAnalysisCircuitElement {
+  /**
+   * @param {number} node0
+   * @param {number} node1
+   * @param {number} capacitance
+   */
   constructor( node0, node1, capacitance ) {
     super( node0, node1, null, 0 );
+
+    // @public
     this.capacitance = capacitance;
   }
 }
 
 class Inductor extends ModifiedNodalAnalysisCircuitElement {
+  /**
+   * @param {number} node0
+   * @param {number} node1
+   * @param {number} inductance
+   */
   constructor( node0, node1, inductance ) {
     super( node0, node1, null, 0 );
+
+    // @public
     this.inductance = inductance;
   }
 }
 
 class ResistiveBattery extends ModifiedNodalAnalysisCircuitElement {
+  /**
+   * @param {number} node0
+   * @param {number} node1
+   * @param {number} voltage
+   * @param {number} resistance
+   */
   constructor( node0, node1, voltage, resistance ) {
     super( node0, node1, null, 0 );
 
@@ -368,6 +389,7 @@ class DynamicElementState {
    * @param {number} current - the conventional current as it moves from node 0 to node 1
    */
   constructor( voltage, current ) {
+    // @public
     this.voltage = voltage;
     this.current = current;
   }
@@ -429,6 +451,7 @@ class DynamicCircuitSolution {
    * @constructor
    */
   constructor( circuit, mnaSolution, currentCompanions ) {
+    // @public
     this.circuit = circuit;
     this.mnaSolution = mnaSolution;
     this.currentCompanions = currentCompanions;
@@ -479,6 +502,7 @@ class DynamicCircuitSolution {
   }
 }
 
+// @public
 DynamicCircuit.Capacitor = Capacitor;
 DynamicCircuit.Inductor = Inductor;
 DynamicCircuit.DynamicElementState = DynamicElementState;

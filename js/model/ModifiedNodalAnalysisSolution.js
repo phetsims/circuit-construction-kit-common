@@ -63,7 +63,7 @@ class ModifiedNodalAnalysisSolution {
 
   /**
    * For equality testing, make sure all of the specified elements and currents match ours
-   * @param modifiedNodalAnalysisSolution
+   * @param {ModifiedNodalAnalysisSolution} modifiedNodalAnalysisSolution
    * @private
    */
   hasAllCurrents( modifiedNodalAnalysisSolution ) {

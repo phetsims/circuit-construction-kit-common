@@ -56,12 +56,14 @@ class ChargeNode extends Node {
     // @public (read-only) {Charge} - the model depicted by this node
     this.charge = charge;
 
+    // @private
     this.outsideOfBlackBoxProperty = new BooleanProperty( false );
 
-    // Update the visibility accordingly.  A multilink will not work because the charge circuitElement changes.
+    // @private {function} - Update the visibility accordingly.  A multilink will not work because the charge
+    // circuitElement changes.
     this.updateVisibleListener = this.updateVisible.bind( this );
 
-    // When the model position changes, update the node position.
+    // @private {function} - When the model position changes, update the node position.
     this.updateTransformListener = () => this.updateTransform();
     charge.changedEmitter.addListener( this.updateTransformListener );
     charge.visibleProperty.link( this.updateVisibleListener );

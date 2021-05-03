@@ -45,18 +45,20 @@ class Vertex extends PhetioObject {
     // with ?vertexDisplay=index
     this.index = counter++;
 
-    // @public (read-only)
+    // @public (read-only) {Tandem}
     this.vertexTandem = options.tandem;
 
     // @public - position of the vertex
     this.positionProperty = new Vector2Property( position, {
       tandem: options.tandem && options.tandem.createTandem( 'positionProperty' ),
       useDeepEquality: true,
+      //REVIEW: This minifies to isValidValue:!1, is that really what we want? That breaks our typing
       isValidValue: assert && ( p => !isNaN( p.x ) && !isNaN( p.y ) )
     } );
 
     // @public - where the vertex would be if it hadn't snapped to a proposed connection
     this.unsnappedPositionProperty = new Vector2Property( position, {
+      //REVIEW: This minifies to isValidValue:!1, is that really what we want? That breaks our typing
       isValidValue: assert && ( p => !isNaN( p.x ) && !isNaN( p.y ) )
     } );
 
@@ -129,6 +131,7 @@ class Vertex extends PhetioObject {
   }
 }
 
+// @public {IOType}
 Vertex.VertexIO = new IOType( 'VertexIO', {
   valueType: Vertex,
   toStateObject: vertex => ( { position: Vector2.Vector2IO.toStateObject( vertex.positionProperty.value ) } ),

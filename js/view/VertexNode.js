@@ -208,7 +208,7 @@ class VertexNode extends Node {
     // Don't permit dragging by the scissors or highlight
     this.addInputListener( this.dragListener );
 
-    // Make sure the cut button remains in the visible screen bounds.
+    // @private {function} - Make sure the cut button remains in the visible screen bounds.
     this.updateVertexNodePositionListener = this.updateVertexNodePosition.bind( this );
     vertex.positionProperty.link( this.updateVertexNodePositionListener );
 
@@ -274,7 +274,7 @@ class VertexNode extends Node {
 
   /**
    * Update whether the vertex is shown as selected.
-   * @param selected
+   * @param {boolean} selected
    * @private
    */
   updateSelected( selected ) {
@@ -388,9 +388,9 @@ class VertexNode extends Node {
       this.dragListener.interrupt();
     }
   }
-
 }
 
+// @public {number}
 VertexNode.VERTEX_RADIUS = VERTEX_RADIUS;
 
 /**

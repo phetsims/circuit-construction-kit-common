@@ -72,6 +72,7 @@ class InductorNode extends FixedCircuitElementNode {
     const lifelikeBodyPath = new Path( lifelikeBodyShape, { fill: 'white', stroke: 'black' } );
 
     // The elliptical edge shown to the left of the main body.
+    //REVIEW: Shape.ellipse() might generally make these more concise?
     const lifelikeEndCapShape = new Shape()
       .ellipticalArc( 0, LIFELIKE_HEIGHT / 2, LIFELIKE_RADIUS_X, LIFELIKE_RADIUS_Y, 0, 0, Math.PI * 2, false )
       .close();
@@ -112,6 +113,7 @@ class InductorNode extends FixedCircuitElementNode {
 
         // Using a single path with fill+stroke leaves an artifact at the corners.  As a workaround, use two fills,
         // see https://github.com/phetsims/circuit-construction-kit-common/issues/537#issuecomment-558917786
+        //REVIEW: Thoughts on whether this should be an open scenery bug?
         const createPath = ( lineStyles, fill ) => new Path( pathShape.getStrokedShape( lineStyles ), { fill: fill } );
         children.push( createPath( LIFELIKE_PATH_OUTLINE_STYLES, 'black' ) );
         children.push( createPath( LIFELIKE_PATH_FILL_STYLES, '#dc9180' ) );

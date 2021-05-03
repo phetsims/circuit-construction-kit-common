@@ -83,6 +83,7 @@ class CircuitElementToolFactory {
    * @param {Tandem} parentTandem - parent tandem for the created tool nodes
    */
   constructor( circuit, showLabelsProperty, viewTypeProperty, globalToCircuitLayerNodePoint, parentTandem ) {
+    // @public
     this.circuit = circuit;
     this.showLabelsProperty = showLabelsProperty;
     this.viewTypeProperty = viewTypeProperty;
@@ -254,7 +255,7 @@ class CircuitElementToolFactory {
    * @param {PhetioGroup} lightBulbGroup
    * @param {string} string
    * @param {boolean} real
-   * @param {Property.<Boolean>} addRealBulbsProperty
+   * @param {Property.<boolean>} addRealBulbsProperty
    * @param {string} tandemName
    * @returns {CircuitElementToolNode}
    * @public

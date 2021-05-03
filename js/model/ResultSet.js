@@ -14,6 +14,7 @@ class ResultSet {
    * @param {Object[]} states
    */
   constructor( states ) {
+    // @public {Object[]}
     this.states = states;
   }
 
@@ -23,7 +24,7 @@ class ResultSet {
    * @returns {Object}
    * @public
    */
-  getFinalState() {return this.states[ this.states.length - 1 ].state;}
+  getFinalState() { return this.states[ this.states.length - 1 ].state; }
 
   /**
    * Returns the total amount of time elapsed over all the states.

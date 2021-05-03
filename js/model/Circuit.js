@@ -57,15 +57,19 @@ class Circuit {
 
   /**
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
-   * @param {Property.<Boolean>} addRealBulbsProperty
+   * @param {Property.<boolean>} addRealBulbsProperty
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
   constructor( viewTypeProperty, addRealBulbsProperty, tandem, options ) {
+
+    // @public
     this.viewTypeProperty = viewTypeProperty;
     this.addRealBulbsProperty = addRealBulbsProperty;
 
     options = merge( { blackBoxStudy: false }, options );
+
+    // @public {Object}
     this.blackBoxStudy = options.blackBoxStudy;
 
     // @public {NumberProperty} - All wires share the same resistivity, which is defined by
@@ -171,6 +175,7 @@ class Circuit {
       this.circuitChangedEmitter.emit();
     };
 
+    // @public {PhetioGroup}
     this.vertexGroup = new PhetioGroup( ( tandem, position ) => {
       return new Vertex( position, {
         tandem: tandem,
@@ -284,6 +289,7 @@ class Circuit {
       return [ new Vertex( startPosition ), new Vertex( startPosition.plusXY( length, 0 ) ) ];
     };
 
+    // @public {PhetioGroup}
     this.wireGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
       return new Wire( startVertex, endVertex, this.wireResistivityProperty, tandem );
     }, () => createVertices( WIRE_LENGTH ), {
@@ -291,6 +297,7 @@ class Circuit {
       tandem: tandem.createTandem( 'wireGroup' )
     } );
 
+    // @public {PhetioGroup}
     this.batteryGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
       return new Battery( startVertex, endVertex, this.sourceResistanceProperty, Battery.BatteryType.NORMAL,
         tandem );
@@ -299,6 +306,7 @@ class Circuit {
       tandem: tandem.createTandem( 'batteryGroup' )
     } );
 
+    // @public {PhetioGroup}
     this.highVoltageBatteryGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
       return new Battery( startVertex, endVertex, this.sourceResistanceProperty, Battery.BatteryType.HIGH_VOLTAGE,
         tandem, {
@@ -310,6 +318,7 @@ class Circuit {
       phetioDynamicElementName: 'battery'
     } );
 
+    // @public {PhetioGroup}
     this.acVoltageGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
       return new ACVoltage( startVertex, endVertex, this.sourceResistanceProperty, tandem );
     }, () => createVertices( CCKCConstants.AC_VOLTAGE_LENGTH ), {
@@ -317,6 +326,7 @@ class Circuit {
       tandem: tandem.createTandem( 'acVoltageGroup' )
     } );
 
+    // @public {PhetioGroup}
     this.resistorGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex, resistorType ) => resistorType === Resistor.ResistorType.DOG ?
                                                           new Dog( startVertex, endVertex, tandem ) :
@@ -330,6 +340,7 @@ class Circuit {
         tandem: tandem.createTandem( 'resistorGroup' )
       } );
 
+    // @public {PhetioGroup}
     this.fuseGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => new Fuse( startVertex, endVertex, tandem ),
       () => createVertices( CCKCConstants.FUSE_LENGTH ), {
@@ -337,7 +348,7 @@ class Circuit {
         tandem: tandem.createTandem( 'fuseGroup' )
       } );
 
-    // @public
+    // @public {PhetioGroup}
     this.seriesAmmeterGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => new SeriesAmmeter( startVertex, endVertex, tandem ),
       () => createVertices( CCKCConstants.SERIES_AMMETER_LENGTH ), {
@@ -345,7 +356,7 @@ class Circuit {
         tandem: tandem.createTandem( 'seriesAmmeterGroup' )
       } );
 
-    // @public
+    // @public {PhetioGroup}
     this.highResistanceLightBulbGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => {
         return LightBulb.createAtPosition( startVertex, endVertex, this, CCKCConstants.HIGH_RESISTANCE,
@@ -358,6 +369,7 @@ class Circuit {
         tandem: tandem.createTandem( 'highResistanceLightBulbGroup' )
       } );
 
+    // @public {PhetioGroup}
     this.capacitorGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => new Capacitor( startVertex, endVertex, tandem ),
       () => createVertices( CCKCConstants.CAPACITOR_LENGTH ), {
@@ -365,6 +377,7 @@ class Circuit {
         tandem: tandem.createTandem( 'capacitorGroup' )
       } );
 
+    // @public {PhetioGroup}
     this.inductorGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => new Inductor( startVertex, endVertex, tandem ),
       () => createVertices( CCKCConstants.INDUCTOR_LENGTH ), {
@@ -372,6 +385,7 @@ class Circuit {
         tandem: tandem.createTandem( 'inductorGroup' )
       } );
 
+    // @public {PhetioGroup}
     this.switchGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => new Switch( startVertex, endVertex, tandem ),
       () => createVertices( CCKCConstants.SWITCH_LENGTH ), {
@@ -379,6 +393,7 @@ class Circuit {
         tandem: tandem.createTandem( 'switchGroup' )
       } );
 
+    // @public {PhetioGroup}
     this.lightBulbGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
       return new LightBulb( startVertex, endVertex, CCKCConstants.DEFAULT_RESISTANCE, this.viewTypeProperty, tandem );
     }, () => createVertices( 100 ), {
@@ -386,6 +401,7 @@ class Circuit {
       tandem: tandem.createTandem( 'lightBulbGroup' )
     } );
 
+    // @public {PhetioGroup}
     this.realLightBulbGroup = new PhetioGroup(
       ( tandem, startVertex, endVertex ) => {
         return new LightBulb( startVertex, endVertex, CCKCConstants.DEFAULT_RESISTANCE, this.viewTypeProperty, tandem, {
@@ -396,6 +412,7 @@ class Circuit {
         tandem: tandem.createTandem( 'realLightBulbGroup' )
       } );
 
+    // @private {Array.<PhetioGroup>}
     this.groups = [
       this.wireGroup,
       this.batteryGroup,
@@ -1192,7 +1209,7 @@ class Circuit {
       return true;
     } );
 
-    // TODO (black-box-study): integrate rule (9) with the other rules above
+    // TODO (black-box-study): integrate rule (9) with the other rules above REVIEW..?
     // (9) When in Black Box "build" mode (i.e. building inside the black box), a vertex user cannot connect to
     // a black box interface vertex if its other vertices would be outside of the black box.  See #136
     if ( mode === Circuit.InteractionMode.TEST ) {
@@ -1331,7 +1348,7 @@ class Circuit {
   }
 }
 
-// Enumeration for the different types of interaction:
+// @public {Enumeration} - Enumeration for the different types of interaction:
 // EXPLORE (used for open-ended exploration)
 // TEST (when testing out a black box circuit)
 Circuit.InteractionMode = Enumeration.byKeys( [ 'EXPLORE', 'TEST' ] );

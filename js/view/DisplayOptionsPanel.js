@@ -161,7 +161,7 @@ class DisplayOptionsPanel extends CCKCPanel {
       stopwatchCheckbox.mouseArea = stopwatchCheckbox.touchArea;
     }
 
-    // @public (read-only) - So the stopwatch can be shown near the checkbox
+    // @public (read-only) {CCKCCheckbox|null} - So the stopwatch can be shown near the checkbox
     this.stopwatchCheckbox = stopwatchCheckbox;
   }
 }

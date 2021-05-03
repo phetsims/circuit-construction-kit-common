@@ -70,7 +70,7 @@ class LightBulb extends FixedCircuitElement {
 
     // @public (read-only) {boolean} - true if R is constant, false if R is a function of current
 
-    // Not an enum because in the future we may have a real high resistance bulb.
+    // @public {boolean} - Not an enum because in the future we may have a real high resistance bulb.
     this.real = options.real;
 
     // @public (read-only) {boolean} - true if the light bulb is a high resistance light bulb
@@ -232,6 +232,13 @@ LightBulb.createAtPosition = ( startVertex, endVertex, circuit, resistance, view
   return new LightBulb( startVertex, endVertex, resistance, viewTypeProperty, tandem, options );
 };
 
+/**
+ * @param {Vector2} position
+ * @param {Circuit} circuit
+ * @param {boolean|undefined} [icon] REVIEW: can we put a default value in of false?
+ * @returns {Object.<{startVertex:Vertex, endVertex:Vertex}>}
+ * @public
+ */
 LightBulb.createVertexPair = ( position, circuit, icon ) => {
 
   const translation = new Vector2( 19, 10 );

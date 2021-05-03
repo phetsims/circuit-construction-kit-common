@@ -28,7 +28,7 @@ class PhaseShiftControl extends VBox {
   constructor( acVoltage, options ) {
     options = merge( {}, options );
 
-    // const valueProperty = new Property( 0 );
+    // const valueProperty = new Property( 0 ); REVIEW: OK to remove dead code?
     const valueRangeProperty = new Property( new Range( -180, 180 ) );
     const enabledProperty = new BooleanProperty( true );
 
@@ -52,6 +52,7 @@ class PhaseShiftControl extends VBox {
       maxWidth: CircuitElementNumberControl.NUMBER_CONTROL_ELEMENT_MAX_WIDTH
     } );
 
+    //REVIEW: spinnerOptions is declared above, why the separation and separate merge here, they could be combined?
     const numberSpinner = new NumberSpinner( acVoltage.phaseProperty, valueRangeProperty, merge( {}, spinnerOptions, {
       arrowsPosition: 'leftRight',
       numberDisplayOptions: {
@@ -61,6 +62,7 @@ class PhaseShiftControl extends VBox {
       tandem: options.tandem.createTandem( 'numberSpinner' )
     } ) );
 
+    //REVIEW: This could be included in the merge above in the constructor?
     options = merge( {
       spacing: 7
     }, options );
