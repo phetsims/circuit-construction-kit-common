@@ -91,7 +91,7 @@ class CCKCChartNode extends Node {
     // supplemental nodes should not be children of the backgroundNode if they need to translate independently.
     this.backgroundNode = backgroundNode;
 
-    // @private {DragListener} - set in initializeBodyDragListener
+    // @private {DragListener|null} - set in initializeBodyDragListener
     this.backgroundDragListener = null;
 
     this.addChild( this.backgroundNode );

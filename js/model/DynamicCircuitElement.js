@@ -10,7 +10,7 @@ import Emitter from '../../../axon/js/Emitter.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import FixedCircuitElement from './FixedCircuitElement.js';
 
-// @abstract, getCircuitProperties is implemented in the subclasses
+// @abstract, getCircuitProperties is implemented in the subclasses REVIEW: This has logic, so does this comment mean only that one method is abstract?
 class DynamicCircuitElement extends FixedCircuitElement {
 
   /**
@@ -29,7 +29,8 @@ class DynamicCircuitElement extends FixedCircuitElement {
 
     // @public {number} - value of the current set and read by the modified nodal analysis.  This is an instantaneous
     // value based on the throughput computation at the final timestep, as opposed to the currentProperty.value which
-    // takes a time average across the values, so we can show transient spikes, see https://phet.unfuddle.com/a#/projects/9404/tickets/by_number/2270?cycle=true
+    // takes a time average across the values, so we can show transient spikes,
+    // see https://phet.unfuddle.com/a#/projects/9404/tickets/by_number/2270?cycle=true
     this.mnaCurrent = 0;
 
     // @public (listen-only)

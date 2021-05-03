@@ -21,6 +21,7 @@ const ERROR_THRESHOLD = 1E-5;
 class TimestepSubdivisions {
 
   /**
+   * REVIEW: JSDoc improvements, these clearly can't be any objects, and I don't see what the API is at first glance
    * @param {Object} originalState
    * @param {Object} steppable with update function
    * @param {number} dt

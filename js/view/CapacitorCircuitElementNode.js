@@ -85,6 +85,9 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
     const thickness = 0.01414213562373095;
     const plateBounds = new Bounds3( 0, 0, 0, thickness, CapacitorConstants.PLATE_HEIGHT, thickness );
     const plateSeparationProperty = new NumberProperty( 0.004 );
+
+    //REVIEW: Can we instead create a Capacitor? This is definitely a case where Typescript would be unhappy, and if
+    //REVIEW: this is needed, then it should be explicitly documented in CapacitorNode.
     const circuit = {
       maxPlateCharge: 2.6562e-12,
       capacitor: {
@@ -106,7 +109,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
       includeChargeNode: !options.isIcon
     } );
 
-    // q = CV
+    // q = CV REVIEW: can we inline this into the multilink?
     const voltageToPlateCharge = ( C, V ) => {
 
       let q = 2E-13 * C * V;
@@ -122,17 +125,20 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
       capacitor.voltageDifferenceProperty
     ], voltageToPlateCharge );
 
+    //REVIEW: why multiple mutates here, not putting it in the constructor?
     lifelikeNode.mutate( {
       scale: 0.45,
       rotation: -Math.PI / 2
     } );
 
+    //REVIEW: why multiple mutates here, not putting it in the constructor?
     lifelikeNode.mutate( {
       centerX: capacitor.distanceBetweenVertices / 2,
 
       // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
       centerY: 0
     } );
+    //REVIEW: can't we move the stub creation to here, so separate mutations aren't required?
     leftWireStub.mutate( {
       centerX: lifelikeNode.centerX,
       centerY: lifelikeNode.centerY
@@ -149,7 +155,6 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
       pickable: true // so that we can use hit detection for the voltmeter probes.
     };
     const leftSchematicPath = new Path( leftSchematicShape, schematicPathOptions );
-    // @private {Node} -
     const rightSchematicPath = new Path( rightSchematicShape, schematicPathOptions );
 
     // Wrap in another layer so it can be used for clipping

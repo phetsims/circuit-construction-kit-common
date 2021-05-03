@@ -56,6 +56,7 @@ class DynamicCircuit {
       usedNodes.push( inductorAdapter.dynamicCircuitInductor.nodeId1 );
     } );
 
+    // REVIEW: [ ...this.resistorAdapters, ...this.resistiveBatteryAdapters ].forEach( ... )
     [].concat( this.resistorAdapters, this.resistiveBatteryAdapters ).forEach( element => {
       usedNodes.push( element.nodeId0 );
       usedNodes.push( element.nodeId1 );
@@ -142,7 +143,7 @@ class DynamicCircuit {
     } );
 
     const newBatteryList = companionBatteries;
-    const newResistorList = [].concat( this.resistorAdapters, companionResistors );
+    const newResistorList = [].concat( this.resistorAdapters, companionResistors ); //REVIEW: [ ...this.resistorAdapters, ...companionResistors ]
     const newCurrentList = []; // Placeholder for if we add other circuit elements in the future
 
     const mnaCircuit = new ModifiedNodalAnalysisCircuit( newBatteryList, newResistorList, newCurrentList );
@@ -170,7 +171,7 @@ class DynamicCircuit {
 
   /**
    * @param {number} dt
-   * @returns CircuitResult
+   * @returns {CircuitResult}
    * @private
    */
   solveWithSubdivisions2( dt ) {
@@ -179,7 +180,7 @@ class DynamicCircuit {
 
   /**
    * @param {number} dt
-   * @returns DynamicCircuit
+   * @returns {DynamicCircuit}
    * @private
    */
   updateWithSubdivisions( dt ) {
@@ -188,7 +189,7 @@ class DynamicCircuit {
 
   /**
    * @param {number} dt
-   * @returns DynamicCircuitSolution
+   * @returns {DynamicCircuitSolution}
    * @public (unit-tests)
    */
   solveItWithSubdivisions( dt ) {
@@ -197,7 +198,7 @@ class DynamicCircuit {
 
   /**
    * @param {number} dt
-   * @returns DynamicCircuit
+   * @returns {DynamicCircuit}
    * @public
    */
   update( dt ) {
@@ -447,7 +448,7 @@ class DynamicCircuitSolution {
   /**
    * @param {DynamicCircuit} circuit
    * @param {ModifiedNodalAnalysisSolution} mnaSolution
-   * @param {Object[]} currentCompanions
+   * @param {Object[]} currentCompanions - REVIEW: doc element,getValueForSolution and types?
    * @constructor
    */
   constructor( circuit, mnaSolution, currentCompanions ) {
