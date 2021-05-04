@@ -79,8 +79,6 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
       // mark as pickable so we can perform hit testing with the voltmeter probes
       pickable: true
     };
-    const leftWireStub = new Image( wireIconImage, wireStubOptions );
-    const rightWireStub = new Image( wireIconImage, wireStubOptions );
 
     const thickness = 0.01414213562373095;
     const plateBounds = new Bounds3( 0, 0, 0, thickness, CapacitorConstants.PLATE_HEIGHT, thickness );
@@ -106,7 +104,11 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
     const lifelikeNode = new CapacitorNode( circuit, modelViewTransform, plateChargeVisibleProperty, electricFieldVisibleProperty, {
       tandem: Tandem.OPTIONAL,
       orientation: Orientation.HORIZONTAL, // so the "-" charges are upside-up in the default orientation
-      includeChargeNode: !options.isIcon
+      includeChargeNode: !options.isIcon,
+      scale: 0.45,
+      rotation: -Math.PI / 2,
+      centerX: capacitor.distanceBetweenVertices / 2,
+      centerY: 0 // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
     } );
 
     // q = CV
@@ -124,28 +126,14 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
       circuit.capacitor.plateChargeProperty.set( -q );
     } );
 
-    //REVIEW: why multiple mutates here, not putting it in the constructor?
-    lifelikeNode.mutate( {
-      scale: 0.45,
-      rotation: -Math.PI / 2
-    } );
-
-    //REVIEW: why multiple mutates here, not putting it in the constructor?
-    lifelikeNode.mutate( {
-      centerX: capacitor.distanceBetweenVertices / 2,
-
-      // Center vertically to match the FixedCircuitElementNode assumption that origin is center left
-      centerY: 0
-    } );
-    //REVIEW: can't we move the stub creation to here, so separate mutations aren't required?
-    leftWireStub.mutate( {
+    const leftWireStub = new Image( wireIconImage, merge( {
       centerX: lifelikeNode.centerX,
       centerY: lifelikeNode.centerY
-    } );
-    rightWireStub.mutate( {
+    }, wireStubOptions ) );
+    const rightWireStub = new Image( wireIconImage, merge( {
       centerX: lifelikeNode.centerX,
       centerY: lifelikeNode.centerY
-    } );
+    }, wireStubOptions ) );
 
     const schematicPathOptions = {
       stroke: Color.BLACK,

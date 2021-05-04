@@ -1,6 +1,10 @@
 // Copyright 2020, University of Colorado Boulder
 
-//REVIEW: Should have top-level comment and authors
+/**
+ * Demonstrates different circuit element shapes and nodes.
+ *
+ * @author Sam Reid (PhET Interactive Simulations)
+ */
 
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import Shape from '../../../../kite/js/Shape.js';
@@ -222,8 +226,6 @@ class CCKCDemoScreenView extends ScreenView {
 
     const barkNode = new BarkNode( {
       center: this.layoutBounds.center.plusXY( 200, 0 ),
-      //REVIEW: Align option isn't being used here
-      align: 'bottom',
       scale: 1.5
     } );
     this.addChild( barkNode );
