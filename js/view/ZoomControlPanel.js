@@ -22,7 +22,7 @@ const BUTTON_SPACING = 20;
 class ZoomControlPanel extends MagnifyingGlassZoomButtonGroup {
 
   /**
-   * @param {NumberProperty} selectedZoomProperty
+   * @param {NumberProperty} selectedZoomProperty REVIEW: code review doc recommends Property.<number> for Derived/Dynamic/Tiny compatibility
    * @param {Object} [options]
    */
   constructor( selectedZoomProperty, options ) {

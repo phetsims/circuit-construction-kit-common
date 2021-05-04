@@ -75,7 +75,7 @@ class CircuitStruct {
  * Create a CircuitStruct from a plain object for deserialization.
  * @param {Object} circuit
  * @param {Object} circuitState
- * @param {NumberProperty} resistivityProperty - shared value for resistivity across all of the wires
+ * @param {NumberProperty} resistivityProperty - shared value for resistivity across all of the wires REVIEW: code review doc recommends Property.<number> for Derived/Dynamic/Tiny compatibility
  * @param {Tandem} tandem
  * @param {Object} [options]
  * @returns {CircuitStruct}
@@ -107,7 +107,7 @@ CircuitStruct.fromStateObject = ( circuit, circuitState, resistivityProperty, ta
     circuitStruct.batteries.push( new Battery(
       circuitStruct.vertices[ circuitState.batteries[ i ].startVertex ],
       circuitStruct.vertices[ circuitState.batteries[ i ].endVertex ],
-      new Property( 0 ),
+      new Property( 0 ), //REVIEW: code-review checklist says this should be a NumberProperty?
       Battery.BatteryType.NORMAL, // TODO (black-box-study): save/restore battery type
       Tandem.OPT_OUT, {
         voltage: circuitState.batteries[ i ].voltage

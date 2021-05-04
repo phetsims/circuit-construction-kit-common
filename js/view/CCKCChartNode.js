@@ -53,7 +53,7 @@ class CCKCChartNode extends Node {
 
   /**
    * @param {CircuitLayerNode} circuitLayerNode
-   * @param {NumberProperty} timeProperty
+   * @param {NumberProperty} timeProperty REVIEW: code review doc recommends Property.<number> for Derived/Dynamic/Tiny compatibility
    * @param {Property.<Bounds2>} visibleBoundsProperty
    * @param {ObservableArrayDef.<Vector2|null>} series
    * @param {string} verticalAxisLabel

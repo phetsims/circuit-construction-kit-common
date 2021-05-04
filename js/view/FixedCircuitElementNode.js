@@ -25,7 +25,7 @@ import FixedCircuitElementHighlightNode from './FixedCircuitElementHighlightNode
 const matrix = new Matrix3();
 const rotationMatrix = new Matrix3();
 const FIRE_THRESHOLD = 15; // Beyond this number of amps, flammable CircuitElements catch on fire
-const ONE_AMP_PROPERTY = new Property( 1 ); // All batteries are flammable, so treat them as if they have nonzero resistance
+const ONE_AMP_PROPERTY = new Property( 1 ); // All batteries are flammable, so treat them as if they have nonzero resistance //REVIEW: code-review checklist says this should be a NumberProperty?
 
 /**
  * Determine whether fire should be shown on the circuit element.

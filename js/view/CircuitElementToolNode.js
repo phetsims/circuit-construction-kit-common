@@ -23,7 +23,7 @@ class CircuitElementToolNode extends VBox {
 
   /**
    * @param {string} labelText
-   * @param {BooleanProperty} showLabelsProperty
+   * @param {BooleanProperty} showLabelsProperty REVIEW: code review doc recommends Property.<boolean> for Derived/Dynamic/Tiny compatibility
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
    * @param {Circuit} circuit
    * @param {function} globalToCircuitLayerNodePoint Vector2=>Vector2 global point to coordinate frame of circuitLayerNode
