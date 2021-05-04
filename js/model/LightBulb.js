@@ -235,11 +235,11 @@ LightBulb.createAtPosition = ( startVertex, endVertex, circuit, resistance, view
 /**
  * @param {Vector2} position
  * @param {Circuit} circuit
- * @param {boolean|undefined} [icon] REVIEW: can we put a default value in of false?
+ * @param {boolean} icon=false
  * @returns {Object.<{startVertex:Vertex, endVertex:Vertex}>}
  * @public
  */
-LightBulb.createVertexPair = ( position, circuit, icon ) => {
+LightBulb.createVertexPair = ( position, circuit, icon = false ) => {
 
   const translation = new Vector2( 19, 10 );
 

@@ -198,7 +198,7 @@ class CircuitElement extends PhetioObject {
   }
 
   /**
-   * Steps forward in time REVIEW: This JSDoc typing is hopefully correct?
+   * Steps forward in time
    * @public
    *
    * @param {number} time

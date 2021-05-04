@@ -23,8 +23,6 @@ const testVRCCircuit = ( v, r, c, assert ) => {
   let dynamicCircuit = new DynamicCircuit( [ resistor ], [ battery ], [ capacitor ], [] );
 
   const dt = 1E-4;
-  //REVIEW: dead code removal around here ok?
-  // console.log( 'voltage\n' );
   for ( let i = 0; i < 1000; i++ ) {//takes 0.3 sec on my machine
     const t = i * dt;
 
@@ -32,9 +30,7 @@ const testVRCCircuit = ( v, r, c, assert ) => {
     const voltage = companionSolution.getVoltage( resistor );
     const desiredVoltageAtTPlusDT = -v * Math.exp( -( t + dt ) / r / c );
     const error = Math.abs( voltage - desiredVoltageAtTPlusDT );
-    // console.log( -voltage );
-    //REVIEW: Should this question be handled? Presumably it's acceptable?
-    assert.ok( error < 1E-6 ); //sample run indicates largest error is 1.5328E-7, is this acceptable?  See TestRCCircuit
+    assert.ok( error < 1E-6 ); // sample run indicates largest error is 1.5328E-7
     dynamicCircuit = dynamicCircuit.updateWithSubdivisions( dt );
   }
 };

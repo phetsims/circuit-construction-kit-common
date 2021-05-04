@@ -109,8 +109,11 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
       includeChargeNode: !options.isIcon
     } );
 
-    // q = CV REVIEW: can we inline this into the multilink?
-    const voltageToPlateCharge = ( C, V ) => {
+    // q = CV
+    const capacitanceVoltageListener = Property.multilink( [
+      capacitor.capacitanceProperty,
+      capacitor.voltageDifferenceProperty
+    ], ( C, V ) => {
 
       let q = 2E-13 * C * V;
 
@@ -119,11 +122,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
         q = 0;
       }
       circuit.capacitor.plateChargeProperty.set( -q );
-    };
-    const capacitanceVoltageListener = Property.multilink( [
-      capacitor.capacitanceProperty,
-      capacitor.voltageDifferenceProperty
-    ], voltageToPlateCharge );
+    } );
 
     //REVIEW: why multiple mutates here, not putting it in the constructor?
     lifelikeNode.mutate( {

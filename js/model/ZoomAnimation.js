@@ -21,7 +21,6 @@ class ZoomAnimation {
    * @param {function} zoomCallback
    */
   constructor( initialZoom, targetZoom, zoomCallback ) {
-    // REVIEW: These visibilities are correct that I added?
 
     // @private {Easing}
     this.easing = Easing.CUBIC_IN_OUT;

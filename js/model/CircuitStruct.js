@@ -59,7 +59,7 @@ class CircuitStruct {
   /**
    * Gets all the circuit elements.
    * @returns {CircuitElement[]}
-   * @public REVIEW: This is the correct visibility?
+   * @public
    */
   get circuitElements() {
     return []
@@ -136,11 +136,9 @@ CircuitStruct.fromStateObject = ( circuit, circuitState, resistivityProperty, ta
   }
   for ( let i = 0; i < circuitState.switches.length; i++ ) {
     options = circuitState.switches[ i ].options || {};
-    //REVIEW: This constructor call looks incorrect, not sure how to handle
     circuitStruct.switches.push( new Switch(
       circuitStruct.vertices[ circuitState.switches[ i ].startVertex ],
       circuitStruct.vertices[ circuitState.switches[ i ].endVertex ],
-      circuitState.wires[ i ].resistivity,
       Tandem.OPT_OUT,
       options
     ) );

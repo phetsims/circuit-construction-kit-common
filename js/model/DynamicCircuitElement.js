@@ -10,7 +10,8 @@ import Emitter from '../../../axon/js/Emitter.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import FixedCircuitElement from './FixedCircuitElement.js';
 
-// @abstract, getCircuitProperties is implemented in the subclasses REVIEW: This has logic, so does this comment mean only that one method is abstract?
+// This class should not be instantiated directly, instead subclasses should provide implementations for getCircuitProperties
+// and the subclasses should be used instead.
 class DynamicCircuitElement extends FixedCircuitElement {
 
   /**

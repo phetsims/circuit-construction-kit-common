@@ -18,12 +18,17 @@ const MIN_DT = 1E-5;
 //threshold for determining whether 2 states are similar enough; any error less than errorThreshold will be tolerated.
 const ERROR_THRESHOLD = 1E-5;
 
+/**
+ * @typedef Steppable
+ * @property update<T>(state:T,dt:number):T - immutable time integration from one state to the next by a time of dt
+ * @property distance<T>(state1:T,state2:T):number - determine how much two states differ
+ */
+
 class TimestepSubdivisions {
 
   /**
-   * REVIEW: JSDoc improvements, these clearly can't be any objects, and I don't see what the API is at first glance
    * @param {Object} originalState
-   * @param {Object} steppable with update function
+   * @param {Steppable} steppable with update function
    * @param {number} dt
    * @returns {ResultSet}
    * @public
@@ -54,7 +59,7 @@ class TimestepSubdivisions {
    * Recursively searches for a value of dt that has acceptable error, starting with the value dt
    *
    * @param {Object} state     the initial state
-   * @param {Object} steppable the update algorithm and distance metric
+   * @param {Steppable} steppable the update algorithm and distance metric
    * @param {number} dt        the initial value to use for dt
    * @returns {number} the selected timestep that has acceptable error or meets the minimum allowed
    * @private
@@ -73,7 +78,7 @@ class TimestepSubdivisions {
 
   /**
    * @param {Object} state
-   * @param {Object} steppable with update function
+   * @param {Steppable} steppable
    * @param {number} dt
    * @returns {boolean}
    * @private

@@ -56,8 +56,7 @@ class DynamicCircuit {
       usedNodes.push( inductorAdapter.dynamicCircuitInductor.nodeId1 );
     } );
 
-    // REVIEW: [ ...this.resistorAdapters, ...this.resistiveBatteryAdapters ].forEach( ... )
-    [].concat( this.resistorAdapters, this.resistiveBatteryAdapters ).forEach( element => {
+    [ ...this.resistorAdapters, ...this.resistiveBatteryAdapters ].forEach( element => {
       usedNodes.push( element.nodeId0 );
       usedNodes.push( element.nodeId1 );
     } );
@@ -143,7 +142,7 @@ class DynamicCircuit {
     } );
 
     const newBatteryList = companionBatteries;
-    const newResistorList = [].concat( this.resistorAdapters, companionResistors ); //REVIEW: [ ...this.resistorAdapters, ...companionResistors ]
+    const newResistorList = [ ...this.resistorAdapters, ...companionResistors ];
     const newCurrentList = []; // Placeholder for if we add other circuit elements in the future
 
     const mnaCircuit = new ModifiedNodalAnalysisCircuit( newBatteryList, newResistorList, newCurrentList );

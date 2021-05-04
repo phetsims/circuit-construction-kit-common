@@ -9,6 +9,7 @@
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Range from '../../../dot/js/Range.js';
 import merge from '../../../phet-core/js/merge.js';
+import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import VoltageSource from './VoltageSource.js';
@@ -57,7 +58,7 @@ class ACVoltage extends VoltageSource {
     this.phaseProperty = new NumberProperty( 0, {
       range: new Range( -180, 180 ),
       tandem: tandem.createTandem( 'phaseProperty' ),
-      units: '\u00B0' // degrees - REVIEW: MathSymbols.DEGREES preferred?
+      units: MathSymbols.DEGREES
     } );
 
     // @private

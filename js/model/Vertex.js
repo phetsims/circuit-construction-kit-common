@@ -52,14 +52,12 @@ class Vertex extends PhetioObject {
     this.positionProperty = new Vector2Property( position, {
       tandem: options.tandem && options.tandem.createTandem( 'positionProperty' ),
       useDeepEquality: true,
-      //REVIEW: This minifies to isValidValue:!1, is that really what we want? That breaks our typing
-      isValidValue: assert && ( p => !isNaN( p.x ) && !isNaN( p.y ) )
+      isValidValue: position => position.isFinite()
     } );
 
     // @public - where the vertex would be if it hadn't snapped to a proposed connection
     this.unsnappedPositionProperty = new Vector2Property( position, {
-      //REVIEW: This minifies to isValidValue:!1, is that really what we want? That breaks our typing
-      isValidValue: assert && ( p => !isNaN( p.x ) && !isNaN( p.y ) )
+      isValidValue: position => position.isFinite()
     } );
 
     // @public {NumberProperty} Relative voltage of the node, determined by Circuit.solve
