@@ -301,6 +301,7 @@ class WireNode extends CircuitElementNode {
     // @private {function} - dispose the wire node
     this.disposeWireNode = () => {
       this.dragListener.interrupt();
+      this.dragListener.dispose();
 
       wire.startVertexProperty.unlink( doUpdateTransform );
       wire.endVertexProperty.unlink( doUpdateTransform );

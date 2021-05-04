@@ -274,6 +274,7 @@ class FixedCircuitElementNode extends CircuitElementNode {
 
     // Interrupt the drag event if it was in progress
     this.dragListener && this.dragListener.interrupt();
+    this.dragListener && this.dragListener.dispose();
     this.circuitElement.vertexMovedEmitter.removeListener( this.markDirtyListener );
     this.updateHighlightVisibility && this.circuitLayerNode.circuit.selectedCircuitElementProperty.unlink( this.updateHighlightVisibility );
     this.circuitElement.connectedEmitter.removeListener( this.moveToFrontListener );

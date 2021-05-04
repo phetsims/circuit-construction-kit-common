@@ -34,6 +34,7 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
     defaultValue: true
   },
 
+  //REVIEW: Documentation for query parameters
   addRealBulbs: {
     type: 'flag',
     public: true
@@ -46,6 +47,7 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
     type: 'flag'
   },
 
+  //REVIEW: Documentation for query parameters
   schematicStandard: {
     public: true,
     type: 'string',
