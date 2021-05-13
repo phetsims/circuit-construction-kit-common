@@ -6,7 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Property from '../../../axon/js/Property.js';
+import NumberProperty from '../../../axon/js/NumberProperty.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import FixedCircuitElement from './FixedCircuitElement.js';
@@ -24,7 +24,7 @@ class SeriesAmmeter extends FixedCircuitElement {
 
     // @public (read-only) {Property.<number>} the resistance in ohms.  A constant, but modeled as a property for
     // uniformity with other resistive elements.
-    this.resistanceProperty = new Property( 0 ); //REVIEW: code-review checklist says this should be a NumberProperty?
+    this.resistanceProperty = new NumberProperty( 0 );
   }
 
   /**

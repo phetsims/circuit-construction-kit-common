@@ -7,6 +7,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
@@ -49,7 +50,7 @@ class ViewRadioButtonGroup extends RectangularRadioButtonGroup {
     // Create a battery which can be used in the views
     const startVertex = new Vertex( new Vector2( BATTERY_LENGTH / 2, 0 ) );
     const endVertex = new Vertex( new Vector2( -BATTERY_LENGTH / 2, 0 ) );
-    const battery = new Battery( endVertex, startVertex, new Property( 0 ), Battery.BatteryType.NORMAL, Tandem.OPTIONAL, { //REVIEW: code-review checklist says this should be a NumberProperty?
+    const battery = new Battery( endVertex, startVertex, new NumberProperty( 0 ), Battery.BatteryType.NORMAL, Tandem.OPTIONAL, {
       initialOrientation: 'left'
     } );
 

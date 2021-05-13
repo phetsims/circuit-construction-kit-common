@@ -215,7 +215,7 @@ class CircuitElementToolFactory {
   createRightBatteryToolNode( count = 10 ) {
     const batteryModel = new Battery(
       new Vertex( Vector2.ZERO ), new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
-      new Property( 0 ), Battery.BatteryType.NORMAL, Tandem.OPTIONAL //REVIEW: code-review checklist says this should be a NumberProperty?
+      new NumberProperty( 0 ), Battery.BatteryType.NORMAL, Tandem.OPTIONAL
     );
     return this.createCircuitElementToolNode( batteryString, count,
       ( tandem, viewTypeProperty ) => new BatteryNode( null, null, batteryModel, viewTypeProperty, tandem.createTandem( 'rightBatteryIcon' ), { isIcon: true } ),
@@ -277,8 +277,7 @@ class CircuitElementToolFactory {
     return this.createCircuitElementToolNode( string, 10,
       ( tandem, viewTypeProperty ) => new CCKCLightBulbNode( null, null,
         lightBulbModel,
-        //REVIEW: code-review checklist says this should be a BooleanProperty?
-        new Property( true ), viewTypeProperty, Tandem.OPT_OUT, { isIcon: true, scale: 0.85 } ),
+        new BooleanProperty( true ), viewTypeProperty, Tandem.OPT_OUT, { isIcon: true, scale: 0.85 } ),
       circuitElement => circuitElement instanceof LightBulb && !circuitElement.highResistance,
       position => {
         const vertexPair = LightBulb.createVertexPair( position, this.circuit );
@@ -519,7 +518,7 @@ class CircuitElementToolFactory {
         new Battery(
           new Vertex( Vector2.ZERO ),
           new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
-          new Property( 0 ), //REVIEW: code-review checklist says this should be a NumberProperty?
+          new NumberProperty( 0 ),
           Battery.BatteryType.HIGH_VOLTAGE,
           Tandem.OPTIONAL, {
             voltage: 1000
@@ -555,7 +554,7 @@ class CircuitElementToolFactory {
             highResistance: true,
             icon: true
           } ),
-        new Property( true ), //REVIEW: code-review checklist says this should be a BooleanProperty?
+        new BooleanProperty( true ),
         viewTypeProperty,
         tandem.createTandem( 'highResistanceLightBulbToolNode' ), {
           isIcon: true

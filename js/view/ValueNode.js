@@ -62,7 +62,7 @@ const infinitySpan = '<span style="font-size: 26px; font-family: serif;"><b>∞<
 class ValueNode extends Panel {
 
   /**
-   * @param {NumberProperty} sourceResistanceProperty - user-specified value for internal resistance for batteries REVIEW: code review doc recommends Property.<number> for Derived/Dynamic/Tiny compatibility
+   * @param {Property.<number>} sourceResistanceProperty - user-specified value for internal resistance for batteries
    * @param {CircuitElement} circuitElement
    * @param {Property.<boolean>} showValuesProperty
    * @param {Property.<CircuitElementViewType>} viewTypeProperty

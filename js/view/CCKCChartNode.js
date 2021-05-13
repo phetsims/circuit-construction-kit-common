@@ -53,7 +53,7 @@ class CCKCChartNode extends Node {
 
   /**
    * @param {CircuitLayerNode} circuitLayerNode
-   * @param {NumberProperty} timeProperty REVIEW: code review doc recommends Property.<number> for Derived/Dynamic/Tiny compatibility
+   * @param {Property.<number>} timeProperty
    * @param {Property.<Bounds2>} visibleBoundsProperty
    * @param {ObservableArrayDef.<Vector2|null>} series
    * @param {string} verticalAxisLabel
@@ -72,8 +72,8 @@ class CCKCChartNode extends Node {
 
     super();
 
-    // @public {Meter} REVIEW: Missing phetioIndex required parameter
-    this.meter = new Meter( options.tandem.createTandem( 'meter' ) );
+    // @public {Meter}
+    this.meter = new Meter( options.tandem.createTandem( 'meter' ), 0 );
 
     // @protected {ObservableArrayDef.<Vector2|null>} REVIEW: This type is correct, no? Spent a bit chasing down what it likely was
     this.series = series;

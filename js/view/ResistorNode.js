@@ -20,9 +20,8 @@ import eraserImage from '../../images/eraser_png.js';
 import handImage from '../../images/hand_png.js';
 import paperClipImage from '../../images/paper-clip_png.js';
 import pencilImage from '../../images/pencil_png.js';
-//REVIEW: Image import names dont' seem to match the expected names
-import highResistanceResistorImage from '../../images/resistor-high_png.js';
-import lifelikeResistorImage from '../../images/resistor_png.js';
+import resistorHighImage from '../../images/resistor-high_png.js';
+import resistorImage from '../../images/resistor_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Resistor from '../model/Resistor.js';
@@ -59,8 +58,8 @@ RESISTOR_IMAGE_MAP[ Resistor.ResistorType.PAPER_CLIP ] = paperClipImage;
 RESISTOR_IMAGE_MAP[ Resistor.ResistorType.PENCIL ] = pencilImage;
 RESISTOR_IMAGE_MAP[ Resistor.ResistorType.ERASER ] = eraserImage;
 RESISTOR_IMAGE_MAP[ Resistor.ResistorType.HAND ] = handImage;
-RESISTOR_IMAGE_MAP[ Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR ] = highResistanceResistorImage;
-RESISTOR_IMAGE_MAP[ Resistor.ResistorType.RESISTOR ] = lifelikeResistorImage;
+RESISTOR_IMAGE_MAP[ Resistor.ResistorType.HIGH_RESISTANCE_RESISTOR ] = resistorHighImage;
+RESISTOR_IMAGE_MAP[ Resistor.ResistorType.RESISTOR ] = resistorImage;
 RESISTOR_IMAGE_MAP[ Resistor.ResistorType.DOG ] = dogImage;
 RESISTOR_IMAGE_MAP[ Resistor.ResistorType.DOLLAR_BILL ] = dollarBillImage;
 
@@ -248,13 +247,13 @@ class ResistorNode extends FixedCircuitElementNode {
  * @public {Array.<Image>}
  */
 ResistorNode.webglSpriteNodes = [
-  new Image( lifelikeResistorImage ),
+  new Image( resistorImage ),
   new Image( paperClipImage ),
   new Image( coinImage ),
   new Image( pencilImage ),
   new Image( eraserImage ),
   new Image( handImage ),
-  new Image( highResistanceResistorImage ),
+  new Image( resistorHighImage ),
   new Image( dogImage ),
   new Image( dollarBillImage )
 ];

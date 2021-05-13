@@ -14,10 +14,10 @@ import LightRaysNode from '../../../scenery-phet/js/LightRaysNode.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 //REVIEW: Import names don't seem to be matching here
-import backImage from '../../images/lightbulb-back_png.js';
-import highResistanceSocketImage from '../../images/lightbulb-front-high_png.js';
-import realSocketImage from '../../images/lightbulb-front-real_png.js';
-import socketImage from '../../images/lightbulb-front_png.js';
+import lightBulbBackImage from '../../images/lightbulb-back_png.js';
+import lightBulbFrontHighImage from '../../images/lightbulb-front-high_png.js';
+import lightBulbFrontRealImage from '../../images/lightbulb-front-real_png.js';
+import lightBulbFrontImage from '../../images/lightbulb-front_png.js';
 import lightBulbMiddleRealImage from '../../mipmaps/lightbulb-middle-real_png.js';
 import lightBulbMiddleImage from '../../mipmaps/lightbulb-middle_png.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -44,14 +44,14 @@ class CustomLightBulbNode extends Node {
 
     const baseOnly = options.baseOnly;
 
-    const selectedSocketImage = options.highResistance ? highResistanceSocketImage :
-                                options.real ? realSocketImage :
-                                socketImage;
+    const selectedSocketImage = options.highResistance ? lightBulbFrontHighImage :
+                                options.real ? lightBulbFrontRealImage :
+                                lightBulbFrontImage;
 
     const selectedMiddleImage = options.real ? lightBulbMiddleRealImage :
                                 lightBulbMiddleImage;
 
-    const backNode = new Image( options.baseOnly ? selectedSocketImage : backImage, {
+    const backNode = new Image( options.baseOnly ? selectedSocketImage : lightBulbBackImage, {
       scale: BULB_IMAGE_SCALE,
       centerX: 0,
       bottom: 0,
@@ -180,10 +180,10 @@ class CustomLightBulbNode extends Node {
  * @public {Array.<Image>}
  */
 CustomLightBulbNode.webglSpriteNodes = [
-  new Image( backImage ),
+  new Image( lightBulbBackImage ),
   new Image( lightBulbMiddleImage ),
-  new Image( socketImage ),
-  new Image( highResistanceSocketImage ) ];
+  new Image( lightBulbFrontImage ),
+  new Image( lightBulbFrontHighImage ) ];
 
 circuitConstructionKitCommon.register( 'CustomLightBulbNode', CustomLightBulbNode );
 export default CustomLightBulbNode;

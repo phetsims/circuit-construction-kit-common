@@ -28,7 +28,6 @@ class PhaseShiftControl extends VBox {
   constructor( acVoltage, options ) {
     options = merge( {}, options );
 
-    // const valueProperty = new Property( 0 ); REVIEW: OK to remove dead code?
     const valueRangeProperty = new Property( new Range( -180, 180 ) );
     const enabledProperty = new BooleanProperty( true );
 

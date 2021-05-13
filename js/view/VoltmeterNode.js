@@ -18,9 +18,8 @@ import Image from '../../../scenery/js/nodes/Image.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../scenery/js/nodes/Rectangle.js';
 import Color from '../../../scenery/js/util/Color.js';
-//REVIEW: Presumably should have *Image at the names of these imports
-import blackProbe from '../../mipmaps/probe-black_png.js';
-import redProbe from '../../mipmaps/probe-red_png.js';
+import probeBlackImage from '../../mipmaps/probe-black_png.js';
+import probeRedImage from '../../mipmaps/probe-red_png.js';
 import voltmeterBodyImage from '../../mipmaps/voltmeter-body_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
@@ -74,7 +73,7 @@ class VoltmeterNode extends Node {
     const blackProbeNode = new Rectangle( -2, -2, 4, 4, { // the hit area
       fill: CCKCQueryParameters.showVoltmeterSamplePoints ? Color.BLACK : null,
       cursor: 'pointer',
-      children: [ new Image( blackProbe, {
+      children: [ new Image( probeBlackImage, {
         scale: PROBE_SCALE,
         rotation: PROBE_ANGLE,
 
@@ -88,7 +87,7 @@ class VoltmeterNode extends Node {
     const redProbeNode = new Rectangle( -2, -2, 4, 4, { // the hit area
       fill: CCKCQueryParameters.showVoltmeterSamplePoints ? Color.RED : null,
       cursor: 'pointer',
-      children: [ new Image( redProbe, {
+      children: [ new Image( probeRedImage, {
         scale: PROBE_SCALE,
         rotation: -PROBE_ANGLE,
 
@@ -260,14 +259,7 @@ class VoltmeterNode extends Node {
 
           // After dropping in the play area the probes move independently of the body
           voltmeter.draggingProbesWithBodyProperty.set( false );
-
-          // redProbeDragListener.constrainToBounds();
-          // blackProbeDragListener.constrainToBounds();
         },
-
-        // use this to do something every time drag is called, such as notify that a user has modified the position
-        //REVIEW: I don't understand this, I don't think it gets called AND it does nothing. What uses this option?
-        onDrag: event => {},
 
         // adds support for zoomed coordinate frame, see
         // https://github.com/phetsims/circuit-construction-kit-common/issues/301

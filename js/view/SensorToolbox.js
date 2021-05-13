@@ -95,8 +95,7 @@ class SensorToolbox extends CCKCPanel {
       } );
 
     // Draggable isIcon for the voltmeter
-    //REVIEW: Missing the required phetioIndex param
-    const voltmeter = new Voltmeter( Tandem.OPTIONAL );
+    const voltmeter = new Voltmeter( Tandem.OPTIONAL, 0 );
     const voltmeterNodeIcon = new VoltmeterNode( voltmeter, null, null, tandem.createTandem( 'voltmeterNodeIcon' ), {
       isIcon: true
     } );
@@ -108,8 +107,7 @@ class SensorToolbox extends CCKCPanel {
     voltmeterNodeIcon.addInputListener( createListenerMulti( voltmeterNodes, 'voltmeter' ) );
 
     // Icon for the ammeter
-    //REVIEW: Missing the required phetioIndex param
-    const ammeter = new Ammeter( tandem.createTandem( 'ammeterIconModel' ) );
+    const ammeter = new Ammeter( tandem.createTandem( 'ammeterIconModel' ), 0 );
     const ammeterToolNode = new AmmeterNode( ammeter, null, {
       isIcon: true,
       tandem: tandem.createTandem( 'ammeterToolNode' )
