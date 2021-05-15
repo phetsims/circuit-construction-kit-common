@@ -129,7 +129,6 @@ class CircuitConstructionKitModel {
     // box study sim
     const modeChanging = false;
 
-    //REVIEW: fix now?
     // TODO (black-box-study): started/endedCallbacksForChangedEmitters don't exist anymore. Rewrite if commented back in.
     // this.modeProperty.startedCallbacksForChangedEmitter.addListener( function() {
     //   modeChanging = true;
@@ -139,7 +138,7 @@ class CircuitConstructionKitModel {
     // } );
     if ( CCKCQueryParameters.showDepictValuesToggleButton ) {
 
-      // TODO (black-box-study) fix this REVIEW: fix now?
+      // TODO (black-box-study) fix this
       const pause = () => {
         if ( !modeChanging ) {
           this.isValueDepictionEnabledProperty.value = false;

@@ -102,7 +102,7 @@ class CCKCScreenView extends ScreenView {
     // @public (read-only) {CircuitConstructionKitModel}
     this.model = model;
 
-    // TODO (black-box-study): change background color to gray when isValueDepictionEnabledProperty goes false REVIEW: Does this need to be handled now?
+    // TODO (black-box-study): change background color to gray when isValueDepictionEnabledProperty goes false
 
     // @private - contains parts of the circuit that should be shown behind the controls
     this.circuitLayerNodeBackLayer = new Node();

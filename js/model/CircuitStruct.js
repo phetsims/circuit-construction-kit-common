@@ -4,7 +4,7 @@
  * The CircuitStruct keeps track of the Circuit components but without wiring up listeners or solving physics.
  * It is necessary in order to keep track of black box state (user created circuit and black box circuit).
  *
- * TODO (black-box-study): Use new save/load feature instead REVIEW: TODO?
+ * TODO (black-box-study): Use new save/load feature instead
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
