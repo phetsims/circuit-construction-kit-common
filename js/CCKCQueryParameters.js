@@ -15,7 +15,7 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
   // Public facing
   //------------------------------------------------------------------------------------------------------------------
 
-  // For Black Box Study & PhET-iO
+  // For Black Box Study & PhET-iO, selects whether to show electrons or conventional current
   currentType: {
     public: true,
     type: 'custom',
@@ -34,7 +34,7 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
     defaultValue: true
   },
 
-  //REVIEW: Documentation for query parameters
+  // Whether the carousel shows real (as opposed to just ideal) light bulbs
   addRealBulbs: {
     type: 'flag',
     public: true
@@ -47,7 +47,7 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
     type: 'flag'
   },
 
-  //REVIEW: Documentation for query parameters
+  // Determines which standard is used to display the schematics
   schematicStandard: {
     public: true,
     type: 'string',
