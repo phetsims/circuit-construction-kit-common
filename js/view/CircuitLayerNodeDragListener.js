@@ -24,6 +24,8 @@ class CircuitLayerNodeDragListener extends DragListener {
   }
 
   /**
+   * Overrides press to add a side effect to mutate Vertex.isDragging.  Cannot use canStartPress instead due to this side
+   * effect.
    * @param {SceneryEvent} event
    * @param {Node} [targetNode] - If provided, will take the place of the targetNode for this call. Useful for
    *                              forwarded presses.
@@ -32,7 +34,6 @@ class CircuitLayerNodeDragListener extends DragListener {
    * @public
    * @override
    */
-  //REVIEW: I don't know why we're overriding press, can we use canStartPress instead?
   press( event, targetNode, callback ) {
 
     const vertices = this.vertexGetters.map( vertexGetter => vertexGetter() );
