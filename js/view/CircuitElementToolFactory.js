@@ -219,7 +219,7 @@ class CircuitElementToolFactory {
     );
     return this.createCircuitElementToolNode( batteryString, count,
       ( tandem, viewTypeProperty ) => new BatteryNode( null, null, batteryModel, viewTypeProperty, tandem.createTandem( 'rightBatteryIcon' ), { isIcon: true } ),
-      //REVIEW: Would we be able to specify an enumeration in the model elements that specifies which tool it corresponds to, instead of using predicates?
+      //TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/703: Would we be able to specify an enumeration in the model elements that specifies which tool it corresponds to, instead of using predicates?
       circuitElement => circuitElement instanceof Battery &&
                         circuitElement.initialOrientation === 'right' &&
                         circuitElement.batteryType === Battery.BatteryType.NORMAL,
