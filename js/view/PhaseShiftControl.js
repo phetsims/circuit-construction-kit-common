@@ -46,8 +46,12 @@ class PhaseShiftControl extends VBox {
         minBackgroundWidth: 60,
         textOptions: {
           font: CCKCConstants.DEFAULT_FONT
-        }
-      }
+        },
+        valuePattern: `{{value}}${MathSymbols.DEGREES}` // Does not require internationalization
+      },
+      arrowsPosition: 'leftRight',
+      arrowsScale: 0.9,
+      tandem: options.tandem.createTandem( 'numberSpinner' )
     };
 
     const title = new Text( circuitConstructionKitCommonStrings.phaseShift, {
@@ -55,18 +59,8 @@ class PhaseShiftControl extends VBox {
       maxWidth: CircuitElementNumberControl.NUMBER_CONTROL_ELEMENT_MAX_WIDTH
     } );
 
-    //REVIEW: spinnerOptions is declared above, why the separation and separate merge here, they could be combined?
-    const numberSpinner = new NumberSpinner( acVoltage.phaseProperty, valueRangeProperty, merge( {}, spinnerOptions, {
-      arrowsPosition: 'leftRight',
-      numberDisplayOptions: {
-        valuePattern: `{{value}}${MathSymbols.DEGREES}` // Does not require internationalization
-      },
-      arrowsScale: 0.9,
-      tandem: options.tandem.createTandem( 'numberSpinner' )
-    } ) );
-
+    const numberSpinner = new NumberSpinner( acVoltage.phaseProperty, valueRangeProperty, spinnerOptions );
     options.children = [ title, numberSpinner ];
-
     super( options );
   }
 }
