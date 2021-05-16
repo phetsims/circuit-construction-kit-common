@@ -75,7 +75,7 @@ class CCKCChartNode extends Node {
     // @public {Meter}
     this.meter = new Meter( options.tandem.createTandem( 'meter' ), 0 );
 
-    // @protected {ObservableArrayDef.<Vector2|null>} REVIEW: This type is correct, no? Spent a bit chasing down what it likely was
+    // @protected {ObservableArrayDef.<Vector2|null>}
     this.series = series;
 
     // @private {CircuitLayerNode}

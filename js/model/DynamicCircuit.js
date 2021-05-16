@@ -447,7 +447,7 @@ class DynamicCircuitSolution {
   /**
    * @param {DynamicCircuit} circuit
    * @param {ModifiedNodalAnalysisSolution} mnaSolution
-   * @param {Object[]} currentCompanions - REVIEW: doc element,getValueForSolution and types?
+   * @param {{element:ModifiedNodalAnalysisCircuitElement,getValueForSolution(ModifiedNodalAnalysisSolution):number}[]} currentCompanions
    * @constructor
    */
   constructor( circuit, mnaSolution, currentCompanions ) {
