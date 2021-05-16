@@ -8,7 +8,7 @@
 
 import SoundClip from '../../../tambo/js/sound-generators/SoundClip.js';
 import soundManager from '../../../tambo/js/soundManager.js';
-//REVIEW: What is the convention for naming of these?
+//TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/702: What is the convention for naming of these?
 import dogBarkSound from '../../sounds/dog-bark_mp3.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import BarkNode from './BarkNode.js';
