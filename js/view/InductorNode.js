@@ -72,10 +72,7 @@ class InductorNode extends FixedCircuitElementNode {
     const lifelikeBodyPath = new Path( lifelikeBodyShape, { fill: 'white', stroke: 'black' } );
 
     // The elliptical edge shown to the left of the main body.
-    //REVIEW: Shape.ellipse() might generally make these more concise?
-    const lifelikeEndCapShape = new Shape()
-      .ellipticalArc( 0, LIFELIKE_HEIGHT / 2, LIFELIKE_RADIUS_X, LIFELIKE_RADIUS_Y, 0, 0, Math.PI * 2, false )
-      .close();
+    const lifelikeEndCapShape = Shape.ellipse( 0, LIFELIKE_HEIGHT / 2, LIFELIKE_RADIUS_X, LIFELIKE_RADIUS_Y, Math.PI * 2 );
     const lifelikeEndCapPath = new Path( lifelikeEndCapShape, {
       fill: '#c4c4c4',
       stroke: 'black'
