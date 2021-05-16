@@ -13,7 +13,6 @@ import merge from '../../../phet-core/js/merge.js';
 import LightRaysNode from '../../../scenery-phet/js/LightRaysNode.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import Node from '../../../scenery/js/nodes/Node.js';
-//REVIEW: Import names don't seem to be matching here
 import lightBulbBackImage from '../../images/lightbulb-back_png.js';
 import lightBulbFrontHighImage from '../../images/lightbulb-front-high_png.js';
 import lightBulbFrontRealImage from '../../images/lightbulb-front-real_png.js';
