@@ -23,9 +23,16 @@ class CircuitLayerNodeDragListener extends DragListener {
     this.vertexGetters = vertexGetters;
   }
 
-  // @public
-  // @override
-  //REVIEW: JSDoc for params, but also I don't know why we're overriding press, can we use canStartPress instead?
+  /**
+   * @param {SceneryEvent} event
+   * @param {Node} [targetNode] - If provided, will take the place of the targetNode for this call. Useful for
+   *                              forwarded presses.
+   * @param {function} [callback] - to be run at the end of the function, but only on success
+   * @returns {boolean}
+   * @public
+   * @override
+   */
+  //REVIEW: I don't know why we're overriding press, can we use canStartPress instead?
   press( event, targetNode, callback ) {
 
     const vertices = this.vertexGetters.map( vertexGetter => vertexGetter() );
