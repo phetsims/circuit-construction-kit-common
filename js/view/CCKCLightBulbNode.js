@@ -18,12 +18,10 @@ import Image from '../../../scenery/js/nodes/Image.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import Color from '../../../scenery/js/util/Color.js';
-
-// REVIEW: lightbulb is not a word?  Perhaps rename the images.
-import lightbulbMiddleHighImage from '../../mipmaps/lightbulb-middle-high_png.js';
-import lightbulbMiddleRealImage from '../../mipmaps/lightbulb-middle-real_png.js';
-import lightbulbFrontRealImage from '../../images/lightbulb-front-real_png.js';
-import lightbulbMiddleImage from '../../mipmaps/lightbulb-middle_png.js';
+import lightBulbMiddleHighImage from '../../mipmaps/lightbulb-middle-high_png.js';
+import lightBulbMiddleRealImage from '../../mipmaps/lightbulb-middle-real_png.js';
+import lightBulbFrontRealImage from '../../images/lightbulb-front-real_png.js';
+import lightBulbMiddleImage from '../../mipmaps/lightbulb-middle_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
@@ -95,13 +93,13 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
 
     // The isIcon must show the socket as well
     if ( options.isIcon ) {
-      lightBulbNode = new Image( lightBulb.highResistance ? lightbulbMiddleHighImage :
-                                 lightBulb.real ? lightbulbMiddleRealImage :
-                                 lightbulbMiddleImage, { scale: 0.37 } );
+      lightBulbNode = new Image( lightBulb.highResistance ? lightBulbMiddleHighImage :
+                                 lightBulb.real ? lightBulbMiddleRealImage :
+                                 lightBulbMiddleImage, { scale: 0.37 } );
 
       // tack on the socket
       if ( lightBulb.real ) {
-        lightBulbNode.addChild( new Image( lightbulbFrontRealImage ) );
+        lightBulbNode.addChild( new Image( lightBulbFrontRealImage ) );
       }
     }
 
