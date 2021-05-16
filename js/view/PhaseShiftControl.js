@@ -26,7 +26,10 @@ class PhaseShiftControl extends VBox {
    * @param {Object} [options]
    */
   constructor( acVoltage, options ) {
-    options = merge( {}, options );
+    options = merge( {
+      spacing: 7
+    }, options );
+    assert && assert( !options.children, 'children not supported' );
 
     const valueRangeProperty = new Property( new Range( -180, 180 ) );
     const enabledProperty = new BooleanProperty( true );
@@ -46,6 +49,7 @@ class PhaseShiftControl extends VBox {
         }
       }
     };
+
     const title = new Text( circuitConstructionKitCommonStrings.phaseShift, {
       font: CCKCConstants.DEFAULT_FONT,
       maxWidth: CircuitElementNumberControl.NUMBER_CONTROL_ELEMENT_MAX_WIDTH
@@ -61,12 +65,6 @@ class PhaseShiftControl extends VBox {
       tandem: options.tandem.createTandem( 'numberSpinner' )
     } ) );
 
-    //REVIEW: This could be included in the merge above in the constructor?
-    options = merge( {
-      spacing: 7
-    }, options );
-
-    assert && assert( !options.children, 'children not supported' );
     options.children = [ title, numberSpinner ];
 
     super( options );
