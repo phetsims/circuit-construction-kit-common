@@ -7,7 +7,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Range from '../../../dot/js/Range.js';
 import Utils from '../../../dot/js/Utils.js';
 import merge from '../../../phet-core/js/merge.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
@@ -228,8 +227,6 @@ class CircuitElementEditContainerNode extends Node {
             circuit,
             selectedCircuitElement,
             Tandem.OPT_OUT, {
-              //REVIEW: I can't find where editableRange is used, can you point me to it?
-              editableRange: selectedCircuitElement.currentRatingProperty.range,
 
               // For the tweakers
               delta: NORMAL_TWEAKER_DELTA,
@@ -280,8 +277,7 @@ class CircuitElementEditContainerNode extends Node {
               circuit,
               selectedCircuitElement,
               Tandem.OPT_OUT, {
-                delta: 0.1,
-                editableRange: new Range( 0.1, 2 )
+                delta: 0.1
               }
             ) ];
 
@@ -304,8 +300,7 @@ class CircuitElementEditContainerNode extends Node {
             circuit,
             selectedCircuitElement,
             Tandem.OPT_OUT, {
-              delta: 0.01,
-              editableRange: selectedCircuitElement.capacitanceProperty.range
+              delta: 0.01
             }
           );
 
@@ -325,9 +320,7 @@ class CircuitElementEditContainerNode extends Node {
             selectedCircuitElement.inductanceProperty,
             circuit,
             selectedCircuitElement,
-            Tandem.OPT_OUT, {
-              editableRange: selectedCircuitElement.inductanceProperty.range
-            }
+            Tandem.OPT_OUT
           );
           editNode = new EditPanel( [
               clearDynamicsButton,

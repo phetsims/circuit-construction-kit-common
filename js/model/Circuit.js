@@ -361,8 +361,7 @@ class Circuit {
       ( tandem, startVertex, endVertex ) => {
         return LightBulb.createAtPosition( startVertex, endVertex, this, CCKCConstants.HIGH_RESISTANCE,
           this.viewTypeProperty, tandem, {
-            highResistance: true,
-            editableRange: CCKCConstants.HIGH_RESISTANCE_RANGE
+            highResistance: true
           } );
       }, () => createVertices( 100 ), {
         phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),

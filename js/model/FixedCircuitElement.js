@@ -8,7 +8,6 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Range from '../../../dot/js/Range.js';
 import merge from '../../../phet-core/js/merge.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElement from './CircuitElement.js';
@@ -25,15 +24,11 @@ class FixedCircuitElement extends CircuitElement {
   constructor( startVertex, endVertex, chargePathLength, tandem, options ) {
 
     options = merge( {
-      editableRange: new Range( 0, 120 ),
       numberOfDecimalPlaces: 1
     }, options );
 
     // Super constructor
     super( startVertex, endVertex, chargePathLength, tandem, options );
-
-    // @public (read-only) {Range} - the range of values the CircuitElement can take
-    this.editableRange = options.editableRange;
 
     // @public (read-only) {number} - the number of decimal places to show in readouts and controls
     this.numberOfDecimalPlaces = options.numberOfDecimalPlaces;
