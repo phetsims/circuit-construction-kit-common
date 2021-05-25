@@ -1,4 +1,4 @@
-// Copyright 2016-2020, University of Colorado Boulder
+// Copyright 2016-2021, University of Colorado Boulder
 
 /**
  * Toolbox from which CircuitElements can be dragged or returned.  Exists for the life of the sim and hence does not

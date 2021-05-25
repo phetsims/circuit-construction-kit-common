@@ -1,4 +1,4 @@
-// Copyright 2018-2020, University of Colorado Boulder
+// Copyright 2018-2021, University of Colorado Boulder
 
 /**
  * Uses a cubic easing to interpolate the zoom. Forked and pruned from EaseAnimation.js which was unstable

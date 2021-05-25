@@ -1,4 +1,4 @@
-// Copyright 2020, University of Colorado Boulder
+// Copyright 2020-2021, University of Colorado Boulder
 
 /**
  * Controls for showing and changing the battery internal resistance.  Exists for the life of the sim and hence does not

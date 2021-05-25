@@ -1,4 +1,4 @@
-// Copyright 2019-2020, University of Colorado Boulder
+// Copyright 2019-2021, University of Colorado Boulder
 
 /**
  * TimestepSubdivisions updates a state over an interval dt by (potentially) subdividing it into smaller regions,

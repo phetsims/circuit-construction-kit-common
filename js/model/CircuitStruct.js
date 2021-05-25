@@ -1,4 +1,4 @@
-// Copyright 2016-2020, University of Colorado Boulder
+// Copyright 2016-2021, University of Colorado Boulder
 
 /**
  * The CircuitStruct keeps track of the Circuit components but without wiring up listeners or solving physics.

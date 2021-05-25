@@ -1,4 +1,4 @@
-// Copyright 2015-2020, University of Colorado Boulder
+// Copyright 2015-2021, University of Colorado Boulder
 
 /**
  * Base class for ACVoltage and Battery, which both supply a voltage across the Vertex instances.

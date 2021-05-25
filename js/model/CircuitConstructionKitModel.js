@@ -1,4 +1,4 @@
-// Copyright 2015-2020, University of Colorado Boulder
+// Copyright 2015-2021, University of Colorado Boulder
 
 /**
  * Contains circuit, voltmeter, ammeter and properties to indicate what mode the model is in. This exists for the life

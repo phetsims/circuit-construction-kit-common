@@ -1,4 +1,4 @@
-// Copyright 2015-2020, University of Colorado Boulder
+// Copyright 2015-2021, University of Colorado Boulder
 
 /**
  * A collection of circuit elements in the play area, not necessarily connected.  (For instance it could be 2 disjoint

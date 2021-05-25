@@ -1,4 +1,4 @@
-// Copyright 2016-2020, University of Colorado Boulder
+// Copyright 2016-2021, University of Colorado Boulder
 
 /**
  * This is the toolbox on the right hand side from which the voltmeter and ammeter can be dragged/dropped.  Exists for
