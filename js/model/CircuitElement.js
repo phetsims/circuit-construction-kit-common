@@ -17,6 +17,7 @@ import SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
 import CouldNotYetDeserializeError from '../../../tandem/js/CouldNotYetDeserializeError.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import IOType from '../../../tandem/js/types/IOType.js';
+import StringIO from '../../../tandem/js/types/StringIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 // variables
@@ -423,6 +424,10 @@ CircuitElement.CircuitElementIO = new IOType( 'CircuitElementIO', {
     startVertexID: circuitElement.startVertexProperty.value.tandem.phetioID,
     endVertexID: circuitElement.endVertexProperty.value.tandem.phetioID
   } ),
+  stateSchema: {
+    startVertexID: StringIO, // TODO: https://github.com/phetsims/phet-io/issues/1774 Should this be ReferenceIO?
+    endVertexID: StringIO
+  },
   stateToArgsForConstructor: stateObject => {
     if ( phet.phetio.phetioEngine.hasPhetioObject( stateObject.startVertexID ) &&
          phet.phetio.phetioEngine.hasPhetioObject( stateObject.endVertexID ) ) {

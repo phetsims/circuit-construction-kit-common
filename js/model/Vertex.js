@@ -133,7 +133,10 @@ class Vertex extends PhetioObject {
 Vertex.VertexIO = new IOType( 'VertexIO', {
   valueType: Vertex,
   toStateObject: vertex => ( { position: Vector2.Vector2IO.toStateObject( vertex.positionProperty.value ) } ),
-  stateToArgsForConstructor: stateObject => [ Vector2.Vector2IO.fromStateObject( stateObject.position ) ]
+  stateToArgsForConstructor: stateObject => [ Vector2.Vector2IO.fromStateObject( stateObject.position ) ],
+  stateSchema: {
+    position: Vector2.Vector2IO
+  }
 } );
 
 circuitConstructionKitCommon.register( 'Vertex', Vertex );

@@ -152,6 +152,9 @@ Resistor.ResistorType = Enumeration.byMap( {
 Resistor.ResistorIO = new IOType( 'ResistorIO', {
   valueType: Resistor,
   supertype: CircuitElement.CircuitElementIO,
+  stateSchema: {
+    resistorType: EnumerationIO( Resistor.ResistorType )
+  },
   toStateObject: resistor => {
     const stateObject = CircuitElement.CircuitElementIO.toStateObject( resistor );
     stateObject.resistorType = EnumerationIO( Resistor.ResistorType ).toStateObject( resistor.resistorType );
