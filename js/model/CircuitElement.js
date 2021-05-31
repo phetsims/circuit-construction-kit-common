@@ -425,7 +425,7 @@ CircuitElement.CircuitElementIO = new IOType( 'CircuitElementIO', {
     endVertexID: circuitElement.endVertexProperty.value.tandem.phetioID
   } ),
   stateSchema: {
-    startVertexID: StringIO, // TODO: https://github.com/phetsims/phet-io/issues/1774 Should this be ReferenceIO?
+    startVertexID: StringIO, // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/708 Should this be ReferenceIO?
     endVertexID: StringIO
   },
   stateToArgsForConstructor: stateObject => {
