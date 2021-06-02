@@ -137,7 +137,7 @@ class Circuit {
         circuitElement.lengthProperty.link( updateCharges );
         circuitElement.disposeEmitterCircuitElement.addListener( () => circuitElement.lengthProperty.unlink( updateCharges ) );
       }
-      console.log( 'bonjour' );
+      this.markDirty();
     } );
     this.circuitElements.addItemRemovedListener( circuitElement => {
 
