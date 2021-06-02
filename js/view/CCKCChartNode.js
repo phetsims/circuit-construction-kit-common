@@ -184,6 +184,8 @@ class CCKCChartNode extends Node {
       orientation: 'vertical',
       left: chartBackground.right + 2,
       top: chartBackground.top,
+      touchAreaXDilation: 6,
+      touchAreaYDilation: 6,
       magnifyingGlassNodeOptions: {
         glassRadius: 10,
         maxWidth: 15

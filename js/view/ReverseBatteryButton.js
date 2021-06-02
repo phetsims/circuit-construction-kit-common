@@ -36,6 +36,7 @@ class ReverseBatteryButton extends CCKCRoundPushButton {
                                   'M43.614,2.819v21.486H3.866V2.819H43.614z', { scale: 0.45, fill: Color.BLACK } );
 
     super( {
+        touchAreaDilation: 5, // radius dilation for touch area
         content: new VBox( {
           spacing: 3,
           children: [

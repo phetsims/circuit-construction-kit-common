@@ -22,6 +22,7 @@ class TrashButton extends CCKCRoundPushButton {
   constructor( circuit, tandem, options ) {
 
     super( merge( {
+      touchAreaDilation: 5, // radius dilation for touch area
       content: new FontAwesomeNode( 'trash', {
         scale: CCKCConstants.FONT_AWESOME_ICON_SCALE * 0.8
       } ),
