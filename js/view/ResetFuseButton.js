@@ -36,6 +36,7 @@ class ResetFuseButton extends CCKCRoundPushButton {
     } );
 
     super( {
+      touchAreaDilation: 5, // radius dilation for touch area
       content: icon,
       listener: () => {
         const fuse = circuit.selectedCircuitElementProperty.value;

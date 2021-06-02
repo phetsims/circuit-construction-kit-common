@@ -38,6 +38,7 @@ class ClearDynamicsButton extends CCKCRoundPushButton {
     } );
 
     super( {
+      touchAreaDilation: 5, // radius dilation for touch area
       content: new Node( {
         children: [
           icon,
