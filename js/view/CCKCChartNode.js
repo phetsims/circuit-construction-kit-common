@@ -49,6 +49,8 @@ const LABEL_FONT_SIZE = 14;
 const NORMAL_DISTANCE = 25;
 const WIRE_LINE_WIDTH = 3;
 
+const MAX_AXIS_LABEL_WIDTH = 120;
+
 class CCKCChartNode extends Node {
 
   /**
@@ -136,7 +138,8 @@ class CCKCChartNode extends Node {
     const horizontalAxisTitleNode = new Text( timeString, {
       fontSize: LABEL_FONT_SIZE,
       fill: AXIS_LABEL_FILL,
-      centerTop: chartBackground.centerBottom.plusXY( 0, 5 )
+      centerTop: chartBackground.centerBottom.plusXY( 0, 5 ),
+      maxWidth: MAX_AXIS_LABEL_WIDTH
     } );
     const scaleIndicatorText = new Text( oneSecondString, {
       fontSize: 11,
@@ -263,7 +266,13 @@ class CCKCChartNode extends Node {
       rotation: -Math.PI / 2,
       fontSize: LABEL_FONT_SIZE,
       fill: AXIS_LABEL_FILL,
-      rightCenter: verticalLabelSet.leftCenter.plusXY( -10, 0 )
+      rightCenter: verticalLabelSet.leftCenter.plusXY( -10, 0 ),
+      maxWidth: MAX_AXIS_LABEL_WIDTH
+    } );
+    const spanNode = new SpanNode( chartTransform, Orientation.HORIZONTAL, 1, scaleIndicatorText, {
+      color: 'white',
+      left: chartBackground.left,
+      top: chartBackground.bottom + 3
     } );
     const chartNode = new Node( {
       children: [
@@ -273,13 +282,15 @@ class CCKCChartNode extends Node {
         verticalAxisTitleNode,
         horizontalAxisTitleNode,
         verticalLabelSet,
-        new SpanNode( chartTransform, Orientation.HORIZONTAL, 1, scaleIndicatorText, {
-          color: 'white',
-          left: chartBackground.left,
-          top: chartBackground.bottom + 3
-        } )
+        spanNode
       ]
     } );
+
+    // Forbid overlap between the horizontal axis label and the span node
+    const padding = 5;
+    if ( horizontalAxisTitleNode.left < spanNode.right + padding ) {
+      horizontalAxisTitleNode.left = spanNode.right + padding;
+    }
 
     const shadedRectangle = new ShadedRectangle( chartNode.bounds.dilated( 7 ), {
       baseColor: '#327198'
