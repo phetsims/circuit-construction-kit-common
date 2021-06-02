@@ -527,6 +527,7 @@ class Equation {
       const term = this.terms[ i ];
       const index = getIndex( term.variable );
       a.set( row, index, term.coefficient + a.get( row, index ) );
+      assert && assert( !isNaN( term.coefficient + a.get( row, index ) ), 'term should be a number' );
     }
   }
 
