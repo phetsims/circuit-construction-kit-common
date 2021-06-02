@@ -43,9 +43,6 @@ class CurrentChartNode extends CCKCChartNode {
       this.aboveBottomLeft1,
       options.tandem.createTandem( 'probeNode' )
     );
-
-    // Align probes after positioning the body so icons will have the correct bounds
-    this.alignProbesEmitter.emit();
   }
 
   /**

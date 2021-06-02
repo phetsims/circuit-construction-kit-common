@@ -322,7 +322,7 @@ class CCKCChartNode extends Node {
       // Prevent the probes from going out of the visible bounds when tagging along with the dragged CCKCChartNode
       probeNode.translation = this.visibleBoundsProperty.value.closestPointTo( probeNode.translation );
     };
-    this.visibleProperty.lazyLink( alignProbes );
+    this.visibleProperty.link( alignProbes );
     this.alignProbesEmitter.addListener( alignProbes );
     return probeNode;
   }
