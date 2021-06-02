@@ -61,7 +61,7 @@ class VoltageSource extends FixedCircuitElement {
    * @public
    */
   getCircuitProperties() {
-    return [ this.voltageProperty ];
+    return [ this.voltageProperty, this.internalResistanceProperty ];
   }
 }
 

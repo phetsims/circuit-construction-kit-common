@@ -137,8 +137,7 @@ class Circuit {
         circuitElement.lengthProperty.link( updateCharges );
         circuitElement.disposeEmitterCircuitElement.addListener( () => circuitElement.lengthProperty.unlink( updateCharges ) );
       }
-
-      this.markDirty();
+      console.log( 'bonjour' );
     } );
     this.circuitElements.addItemRemovedListener( circuitElement => {
 
@@ -892,6 +891,7 @@ class Circuit {
    * @public
    */
   step( dt ) {
+    // debugger;
 
     // Invoke any scheduled actions
     this.stepActions.forEach( stepAction => stepAction() );

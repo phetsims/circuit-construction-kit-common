@@ -66,6 +66,16 @@ class ACVoltage extends VoltageSource {
   }
 
   /**
+   * Get the properties so that the circuit can be solved when changed.
+   * @override
+   * @returns {Property.<*>[]}
+   * @public
+   */
+  getCircuitProperties() {
+    return [ this.frequencyProperty, this.phaseProperty, this.maximumVoltageProperty, ...super.getCircuitProperties() ];
+  }
+
+  /**
    * Dispose of this and PhET-iO instrumented children, so they will be unregistered.
    * @public
    */
