@@ -13,12 +13,12 @@ import merge from '../../../phet-core/js/merge.js';
 import LightRaysNode from '../../../scenery-phet/js/LightRaysNode.js';
 import Image from '../../../scenery/js/nodes/Image.js';
 import Node from '../../../scenery/js/nodes/Node.js';
-import lightBulbBackImage from '../../images/lightbulb-back_png.js';
-import lightBulbFrontHighImage from '../../images/lightbulb-front-high_png.js';
-import lightBulbFrontRealImage from '../../images/lightbulb-front-real_png.js';
-import lightBulbFrontImage from '../../images/lightbulb-front_png.js';
-import lightBulbMiddleRealImage from '../../mipmaps/lightbulb-middle-real_png.js';
-import lightBulbMiddleImage from '../../mipmaps/lightbulb-middle_png.js';
+import lightBulbBackImage from '../../images/light-bulb-back_png.js';
+import lightBulbFrontHighImage from '../../images/light-bulb-front-high_png.js';
+import lightBulbFrontRealImage from '../../images/light-bulb-front-real_png.js';
+import lightBulbFrontImage from '../../images/light-bulb-front_png.js';
+import lightBulbMiddleRealImage from '../../mipmaps/light-bulb-middle-real_png.js';
+import lightBulbMiddleImage from '../../mipmaps/light-bulb-middle_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 

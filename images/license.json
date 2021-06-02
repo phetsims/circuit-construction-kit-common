@@ -79,7 +79,7 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Created by Cheryl McCutchan"
   },
-  "lightbulb-back.png": {
+  "light-bulb-back.png": {
     "text": [
       "Copyright 2016 University of Colorado Boulder"
     ],
@@ -87,7 +87,7 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Created by Amy Rouinfar"
   },
-  "lightbulb-front.png": {
+  "light-bulb-front.png": {
     "text": [
       "Copyright 2016 University of Colorado Boulder"
     ],
@@ -95,7 +95,7 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Created by Amy Rouinfar"
   },
-  "lightbulb-front-real.png": {
+  "light-bulb-front-real.png": {
     "text": [
       "Copyright 2020 University of Colorado Boulder"
     ],
@@ -103,7 +103,7 @@
     "license": "contact phethelp@colorado.edu",
     "notes": "Created by Amy Rouinfar"
   },
-  "lightbulb-front-high.png": {
+  "light-bulb-front-high.png": {
     "text": [
       "Copyright 2017 University of Colorado Boulder"
     ],
