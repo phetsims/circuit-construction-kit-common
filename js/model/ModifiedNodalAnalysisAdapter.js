@@ -148,6 +148,12 @@ class ModifiedNodalAnalysisAdapter {
    * @public
    */
   static solveModifiedNodalAnalysis( circuit, dt ) {
+
+    if ( assert ) {
+
+      // TODO: For tracking https://github.com/phetsims/circuit-construction-kit-common/issues/694
+      window.savedCircuit = circuit;
+    }
     const resistiveBatteryAdapters = [];
     const resistorAdapters = [];
     const capacitorAdapters = [];

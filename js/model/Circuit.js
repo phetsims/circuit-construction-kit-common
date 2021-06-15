@@ -1332,6 +1332,11 @@ class Circuit {
     }
   }
 
+  // @public - only works in unbuilt mode
+  toString() {
+    return this.circuitElements.map( c => c.constructor.name ).join( ', ' );
+  }
+
   /**
    * Reset the Circuit to its initial state.
    * @public
