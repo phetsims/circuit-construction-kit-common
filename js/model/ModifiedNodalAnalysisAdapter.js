@@ -157,6 +157,10 @@ class ModifiedNodalAnalysisAdapter {
       if ( branch instanceof VoltageSource ) {
         resistiveBatteryAdapters.push( new ResistiveBatteryAdapter( circuit, branch ) );
       }
+      else if ( branch instanceof Resistor && branch.resistorType.isInsulator ) {
+
+        // no element for an erase -- perfect insulator
+      }
       else if ( branch instanceof Resistor ||
                 branch instanceof Fuse ||
                 branch instanceof Wire ||

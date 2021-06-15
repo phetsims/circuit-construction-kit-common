@@ -97,11 +97,16 @@ class ResistorEnumValue {
   /**
    * @param {number} defaultResistance - default value for resistance, in Ohms
    * @param {Range} resistanceRange - possible values for the resistance, in Ohms
-   * @param {boolean} isMetallic - whether the item is metallic (non-insulated) and hence can have its value read at any point
    * @param {number} length
-   * @param {number} [verticalOffset]
+   * @param {Object} [options]
    */
-  constructor( defaultResistance, resistanceRange, isMetallic, length, verticalOffset = 0 ) {
+  constructor( defaultResistance, resistanceRange, length, options ) {
+
+    options = merge( {
+      verticalOffset: 0,
+      isMetallic: false, // whether the item is metallic (non-insulated) and hence can have its value read at any point
+      isInsulator: false
+    }, options );
 
     // @public (read-only) {number} - in Ohms
     this.defaultResistance = defaultResistance;
@@ -109,43 +114,45 @@ class ResistorEnumValue {
     // @public (read-only) {Range} - in Ohms
     this.range = resistanceRange;
 
-    // @public (read-only) {boolean}
-    this.isMetallic = isMetallic;
-
     // @public (read-only} {number} - in view coordinates
     this.length = length;
 
     // @public (read-only) {number} - amount the view is shifted down in view coordinates
-    this.verticalOffset = verticalOffset;
+    this.verticalOffset = options.verticalOffset;
+
+    // @public (read-only) {boolean}
+    this.isInsulator = options.isInsulator;
+
+    // @public (read-only) {boolean}
+    this.isMetallic = options.isMetallic;
   }
 
   /**
    * Convenience function for creating a fixed-resistance resistor, like a household item.
    * @param {number} resistance
-   * @param {boolean} isMetallic
    * @param {number} length
-   * @param {number} [verticalOffset]
+   * @param {Object} [options]
    * @returns {ResistorEnumValue}
-   * @private
+   * @public
    */
-  static fixed( resistance, isMetallic, length, verticalOffset = 0 ) {
-    return new ResistorEnumValue( resistance, new Range( resistance, resistance ), isMetallic, length, verticalOffset );
+  static fixed( resistance, length, options ) {
+    return new ResistorEnumValue( resistance, new Range( resistance, resistance ), length, options );
   }
 }
 
 // @public {Enumeration} - Enumeration for the different resistor types.
 Resistor.ResistorType = Enumeration.byMap( {
-  RESISTOR: new ResistorEnumValue( 10, new Range( 0, 120 ), false, CCKCConstants.RESISTOR_LENGTH ),
-  HIGH_RESISTANCE_RESISTOR: new ResistorEnumValue( 1000, new Range( 100, 10000 ), false, CCKCConstants.RESISTOR_LENGTH ),
-  COIN: ResistorEnumValue.fixed( 0, true, CCKCConstants.COIN_LENGTH ),
-  PAPER_CLIP: ResistorEnumValue.fixed( 0, true, CCKCConstants.PAPER_CLIP_LENGTH ),
-  PENCIL: ResistorEnumValue.fixed( 25, false, CCKCConstants.PENCIL_LENGTH ),
-  ERASER: ResistorEnumValue.fixed( 1000000000, false, CCKCConstants.ERASER_LENGTH ),
-  HAND: ResistorEnumValue.fixed( 100000, false, CCKCConstants.HAND_LENGTH, 15 ),
+  RESISTOR: new ResistorEnumValue( 10, new Range( 0, 120 ), CCKCConstants.RESISTOR_LENGTH ),
+  HIGH_RESISTANCE_RESISTOR: new ResistorEnumValue( 1000, new Range( 100, 10000 ), CCKCConstants.RESISTOR_LENGTH ),
+  COIN: ResistorEnumValue.fixed( 0, CCKCConstants.COIN_LENGTH, { isMetallic: true } ),
+  PAPER_CLIP: ResistorEnumValue.fixed( 0, CCKCConstants.PAPER_CLIP_LENGTH, { isMetallic: true } ),
+  PENCIL: ResistorEnumValue.fixed( 25, CCKCConstants.PENCIL_LENGTH ),
+  ERASER: ResistorEnumValue.fixed( 0, CCKCConstants.ERASER_LENGTH, { isInsulator: true } ),
+  HAND: ResistorEnumValue.fixed( 100000, CCKCConstants.HAND_LENGTH, { verticalOffset: 15 } ),
 
   // Adjust the dog so the charges travel along the tail/legs, see https://github.com/phetsims/circuit-construction-kit-common/issues/364
-  DOG: ResistorEnumValue.fixed( 100000, false, CCKCConstants.DOG_LENGTH, -40 ),
-  DOLLAR_BILL: ResistorEnumValue.fixed( 1000000000, false, CCKCConstants.DOLLAR_BILL_LENGTH )
+  DOG: ResistorEnumValue.fixed( 100000, CCKCConstants.DOG_LENGTH, { verticalOffset: -40 } ),
+  DOLLAR_BILL: ResistorEnumValue.fixed( 0, CCKCConstants.DOLLAR_BILL_LENGTH, { isInsulator: true } )
 } );
 
 // @public {IOType}
