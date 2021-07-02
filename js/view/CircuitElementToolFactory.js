@@ -122,7 +122,9 @@ class CircuitElementToolFactory {
    * @param {string} labelString
    * @param {number} count
    * @param {function(Tandem,Property.<CircuitElementViewType>):Node} createIcon
-   * @param {function} predicate - CircuitElement => boolean, used to count circuit elements of that kind
+   * @param {function} predicate - CircuitElement => boolean, used to count circuit elements of that kind.
+   *                             - NOTE: All of the predicates are intended to cover all circuit elements and be
+   *                             - mutually exclusive (so there is no double counting).  However, this is not enforced.
    * @param {function} createElement - (Vector2) => CircuitElement Function that creates a CircuitElement at the given position
    *                                 - for most components it is the center of the component.  For Light Bulbs, it is
    *                                 - in the center of the socket
