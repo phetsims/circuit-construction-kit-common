@@ -102,7 +102,6 @@ class CCKCChartNode extends Node {
     this.mutate( options );
 
     // @public - emits when the probes should be put in standard relative position to the body
-    // TODO https://github.com/phetsims/circuit-construction-kit-common/issues/701: I see this called in subtypes after adding probes, could this be emitted then to obviate that need?
     this.alignProbesEmitter = new Emitter();
 
     // These do not need to be disposed because there is no connection to the "outside world"
