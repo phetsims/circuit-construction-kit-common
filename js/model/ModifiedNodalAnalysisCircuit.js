@@ -352,7 +352,7 @@ class ModifiedNodalAnalysisCircuit {
     for ( let i = 0; i < unknownVoltages.length; i++ ) {
       const unknownVoltage = unknownVoltages[ i ];
       const rhs = x.get( getIndexByEquals( unknowns, unknownVoltage ), 0 );
-      assert && assert( !isNaN( rhs ), `the right-hand-side-value must be a number. Instead it was ${rhs}. circuit = ${window.savedCircuit ? window.savedCircuit.toString() : '???'}` );
+      assert && assert( !isNaN( rhs ), `the right-hand-side-value must be a number. Instead it was ${rhs}.` );
 
       voltageMap[ unknownVoltage.node ] = rhs;
     }
