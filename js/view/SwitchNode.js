@@ -212,6 +212,7 @@ class SwitchNode extends FixedCircuitElementNode {
       // (images) persist.
       lifelikeNode.dispose();
       schematicNode.dispose();
+      fireListener.dispose();
     };
   }
 
