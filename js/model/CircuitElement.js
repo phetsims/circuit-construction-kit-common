@@ -14,11 +14,11 @@ import Property from '../../../axon/js/Property.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
 import SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
-import CouldNotYetDeserializeError from '../../../tandem/js/CouldNotYetDeserializeError.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import IOType from '../../../tandem/js/types/IOType.js';
-import StringIO from '../../../tandem/js/types/StringIO.js';
+import ReferenceIO from '../../../tandem/js/types/ReferenceIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import Vertex from './Vertex.js';
 
 // variables
 let index = 0;
@@ -416,29 +416,25 @@ class CircuitElement extends PhetioObject {
   }
 }
 
+const VertexReferenceIO = ReferenceIO( Vertex.VertexIO );
+
 // @public {IOType}
 CircuitElement.CircuitElementIO = new IOType( 'CircuitElementIO', {
   valueType: CircuitElement,
   documentation: 'A Circuit Element, such as battery, resistor or wire',
   toStateObject: circuitElement => ( {
-    startVertexID: circuitElement.startVertexProperty.value.tandem.phetioID,
-    endVertexID: circuitElement.endVertexProperty.value.tandem.phetioID
+    startVertexID: VertexReferenceIO.toStateObject( circuitElement.startVertexProperty.value ),
+    endVertexID: VertexReferenceIO.toStateObject( circuitElement.endVertexProperty.value )
   } ),
   stateSchema: {
-    startVertexID: StringIO, // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/708 Should this be ReferenceIO?
-    endVertexID: StringIO
+    startVertexID: VertexReferenceIO,
+    endVertexID: VertexReferenceIO
   },
   stateToArgsForConstructor: stateObject => {
-    if ( phet.phetio.phetioEngine.hasPhetioObject( stateObject.startVertexID ) &&
-         phet.phetio.phetioEngine.hasPhetioObject( stateObject.endVertexID ) ) {
-      return [
-        phet.phetio.phetioEngine.getPhetioObject( stateObject.startVertexID ),
-        phet.phetio.phetioEngine.getPhetioObject( stateObject.endVertexID )
-      ];
-    }
-    else {
-      throw new CouldNotYetDeserializeError();
-    }
+    return [
+      VertexReferenceIO.fromStateObject( stateObject.startVertexID ),
+      VertexReferenceIO.fromStateObject( stateObject.endVertexID )
+    ];
   }
 } );
 
