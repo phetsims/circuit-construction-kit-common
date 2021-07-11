@@ -1,7 +1,7 @@
 // Copyright 2019-2021, University of Colorado Boulder
 
 /**
- * Provides simulation-specific values and customizations to display time-series data in a MeterBodyNode.
+ * Provides simulation-specific values and customizations to display time-series data in a chart.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -89,7 +89,7 @@ class CCKCChartNode extends Node {
     // @private
     this.visibleBoundsProperty = visibleBoundsProperty;
 
-    // @public (read-only) {Node} - shows the background for the MeterBodyNode.  Any attached probes or other
+    // @public (read-only) {Node} - shows the background for the chart.  Any attached probes or other
     // supplemental nodes should not be children of the backgroundNode if they need to translate independently.
     this.backgroundNode = backgroundNode;
 
@@ -349,7 +349,7 @@ class CCKCChartNode extends Node {
   }
 
   /**
-   * Gets the region of the background in global coordinates.  This can be used to determine if the MeterBodyNode
+   * Gets the region of the background in global coordinates.  This can be used to determine if the chart
    * should be dropped back in a toolbox.
    * @returns {Bounds2}
    * @public
@@ -360,7 +360,7 @@ class CCKCChartNode extends Node {
 
   /**
    * Forward an event from the toolbox to start dragging the node in the play area.  This triggers the probes (if any)
-   * to drag together with the MeterBodyNode.  This is accomplished by calling this.alignProbes() at each drag event.
+   * to drag together with the chart.  This is accomplished by calling this.alignProbes() at each drag event.
    * @param {Object} event
    * @public
    */
@@ -396,14 +396,14 @@ class CCKCChartNode extends Node {
         this.moveToFront();
         if ( this.meter.draggingProbesWithBodyProperty.value ) {
 
-          // Align the probes each time the MeterBodyNode translates, so they will stay in sync
+          // Align the probes each time the chart translates, so they will stay in sync
           this.alignProbesEmitter.emit();
         }
       },
       drag: () => {
         if ( this.meter.draggingProbesWithBodyProperty.value ) {
 
-          // Align the probes each time the MeterBodyNode translates, so they will stay in sync
+          // Align the probes each time the chart translates, so they will stay in sync
           this.alignProbesEmitter.emit();
         }
       },
