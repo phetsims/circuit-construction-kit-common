@@ -58,7 +58,7 @@ const CCKCConstants = {
   SLIDER_TRACK_SIZE: new Dimension2( 160, 5 ),
 
   // Uniform scaling for all font awesome node button icons
-  FONT_AWESOME_ICON_SCALE: 0.85,
+  FONT_AWESOME_ICON_SCALE: 0.07,
 
   // Color for selected objects (CircuitElement and Vertex)
   HIGHLIGHT_COLOR: new Color( 'yellow' ),

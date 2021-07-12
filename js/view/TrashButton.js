@@ -7,7 +7,8 @@
  */
 
 import merge from '../../../phet-core/js/merge.js';
-import FontAwesomeNode from '../../../sun/js/FontAwesomeNode.js';
+import Path from '../../../scenery/js/nodes/Path.js';
+import trashSolidShape from '../../../sherpa/js/fontawesome-5/trashSolidShape.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
@@ -23,7 +24,8 @@ class TrashButton extends CCKCRoundPushButton {
 
     super( merge( {
       touchAreaDilation: 5, // radius dilation for touch area
-      content: new FontAwesomeNode( 'trash', {
+      content: new Path( trashSolidShape, {
+        fill: 'black',
         scale: CCKCConstants.FONT_AWESOME_ICON_SCALE * 0.8
       } ),
       listener: () => {

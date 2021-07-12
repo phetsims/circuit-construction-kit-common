@@ -20,8 +20,9 @@ import Bounds2 from '../../../dot/js/Bounds2.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Node from '../../../scenery/js/nodes/Node.js';
+import Path from '../../../scenery/js/nodes/Path.js';
+import cutSolidShape from '../../../sherpa/js/fontawesome-5/cutSolidShape.js';
 import RoundPushButton from '../../../sun/js/buttons/RoundPushButton.js';
-import FontAwesomeNode from '../../../sun/js/FontAwesomeNode.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCUtils from '../CCKCUtils.js';
@@ -327,7 +328,8 @@ class CircuitLayerNode extends Node {
     // is allocated for all vertices (per screen) to use because it is too performance demanding to create these
     // dynamically when circuit elements are dragged from the toolbox.  Also, only one vertex can be selected at once
     // so there is only a need for one cut button.
-    const cutIcon = new FontAwesomeNode( 'cut', {
+    const cutIcon = new Path( cutSolidShape, {
+      fill: 'black',
       rotation: -Math.PI / 2, // scissors point up
       scale: CCKCConstants.FONT_AWESOME_ICON_SCALE
     } );
