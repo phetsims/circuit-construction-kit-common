@@ -8,7 +8,9 @@
 
 import Vector2 from '../../../dot/js/Vector2.js';
 import HBox from '../../../scenery/js/nodes/HBox.js';
-import FontAwesomeNode from '../../../sun/js/FontAwesomeNode.js';
+import Path from '../../../scenery/js/nodes/Path.js';
+import commentSolidShape from '../../../sherpa/js/fontawesome-5/commentSolidShape.js';
+import exclamationSolidShape from '../../../sherpa/js/fontawesome-5/exclamationSolidShape.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 
@@ -19,24 +21,27 @@ class BarkNode extends Node {
    */
   constructor( options ) {
     super();
-    this.addChild( new FontAwesomeNode( 'comment', {
+    this.addChild( new Path( commentSolidShape, {
       fill: 'white',
       stroke: 'black',
-      lineWidth: 1.5,
+      lineWidth: 1.5 * 15,
       scale: new Vector2( -1, 1 )
     } ) );
-    const mainScale = new Vector2( 1, 1 );
+    const mainScale = new Vector2( 0.9, 0.9 );
     const rotation = Math.PI * 2 / 20;
-    const a = new FontAwesomeNode( 'exclamation', {
+    const a = new Path( exclamationSolidShape, {
+      fill: 'black',
       scale: mainScale.timesScalar( 0.8 ),
       rotation: -rotation
     } );
 
-    const b = new FontAwesomeNode( 'exclamation', {
+    const b = new Path( exclamationSolidShape, {
+      fill: 'black',
       scale: mainScale
     } );
 
-    const c = new FontAwesomeNode( 'exclamation', {
+    const c = new Path( exclamationSolidShape, {
+      fill: 'black',
       scale: mainScale.timesScalar( 0.8 ),
       rotation: rotation
     } );
@@ -44,7 +49,7 @@ class BarkNode extends Node {
       scale: 0.5,
       children: [ a, b, c ],
       align: 'bottom',
-      spacing: 6,
+      spacing: 60,
       center: this.center.plusXY( 0, -3 )
     } ) );
 

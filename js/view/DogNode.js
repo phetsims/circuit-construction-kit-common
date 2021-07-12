@@ -32,7 +32,7 @@ class DogNode extends ResistorNode {
 
     // @private
     this.barkNode = new BarkNode( {
-      scale: 1.2
+      maxWidth: 60
     } );
     this.addChild( this.barkNode );
 
@@ -43,7 +43,7 @@ class DogNode extends ResistorNode {
         const angle = endPosition.minus( startPosition ).getAngle();
         const unitVector = endPosition.minus( startPosition ).normalized();
         const normalVector = unitVector.getPerpendicular();
-        const translation = startPosition.plus( normalVector.timesScalar( 55 ) ).plus( unitVector.timesScalar( 12 ) );
+        const translation = startPosition.plus( normalVector.timesScalar( 100 ) ).plus( unitVector.timesScalar( 12 ) );
 
         this.barkNode.setRotation( angle );
         this.barkNode.setTranslation( translation );

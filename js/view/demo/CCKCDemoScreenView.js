@@ -226,7 +226,7 @@ class CCKCDemoScreenView extends ScreenView {
 
     const barkNode = new BarkNode( {
       center: this.layoutBounds.center.plusXY( 200, 0 ),
-      scale: 1.5
+      maxWidth: 70
     } );
     this.addChild( barkNode );
   }
