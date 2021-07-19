@@ -38,8 +38,8 @@ class ReverseBatteryButton extends CCKCRoundPushButton {
 
     // Split the 2 arrow definitions
     const syncAltSolidStringParts = syncAltSolidString.split( 'M' );
-    const topShapeString = `M${syncAltSolidStringParts[ 0 ]}`;
-    const bottomShapeString = `M${syncAltSolidStringParts[ 1 ]}`;
+    const topShapeString = `M${syncAltSolidStringParts[ 1 ]}`;
+    const bottomShapeString = `M${syncAltSolidStringParts[ 2 ]}`;
 
     super( {
         touchAreaDilation: 5, // radius dilation for touch area
