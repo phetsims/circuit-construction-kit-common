@@ -21,10 +21,9 @@ import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
-import cutSolidShape from '../../../sherpa/js/fontawesome-5/cutSolidShape.js';
+import scissorsShape from '../../../sherpa/js/fontawesome-4/scissorsShape.js';
 import RoundPushButton from '../../../sun/js/buttons/RoundPushButton.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import CCKCConstants from '../CCKCConstants.js';
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ACVoltage from '../model/ACVoltage.js';
@@ -328,10 +327,10 @@ class CircuitLayerNode extends Node {
     // is allocated for all vertices (per screen) to use because it is too performance demanding to create these
     // dynamically when circuit elements are dragged from the toolbox.  Also, only one vertex can be selected at once
     // so there is only a need for one cut button.
-    const cutIcon = new Path( cutSolidShape, {
+    const cutIcon = new Path( scissorsShape, {
       fill: 'black',
       rotation: -Math.PI / 2, // scissors point up
-      scale: CCKCConstants.FONT_AWESOME_ICON_SCALE
+      maxWidth: 36
     } );
 
     // @public (read-only)
