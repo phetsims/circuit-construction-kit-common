@@ -10,6 +10,7 @@ import './model/DynamicCircuitTests.js';
 import './model/ModifiedNodalAnalysisCircuitTests.js';
 import './view/ResistorColorsTests.js';
 import qunitStart from '../../chipper/js/sim-tests/qunitStart.js';
+import './model/LUDecompositionDecimalTest.js';
 
 // Since our tests are loaded asynchronously, we must direct QUnit to begin the tests
 qunitStart();

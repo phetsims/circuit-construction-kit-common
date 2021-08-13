@@ -11,10 +11,16 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import LUDecompositionDecimal from '../../../dot/js/LUDecompositionDecimal.js';
 import Matrix from '../../../dot/js/Matrix.js';
 import arrayRemove from '../../../phet-core/js/arrayRemove.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ModifiedNodalAnalysisSolution from './ModifiedNodalAnalysisSolution.js';
+
+const LUDecimal = Decimal.clone( {
+  // precision: 16 // default precision for {number}
+  precision: 200
+} );
 
 class ModifiedNodalAnalysisCircuit {
 
@@ -334,7 +340,19 @@ class ModifiedNodalAnalysisCircuit {
     // solve the linear matrix system for the unknowns
     let x;
     try {
-      x = A.solve( z );
+      assert && assert( A.m === A.n, `the matrix should be square, instead it was ${A.m} x ${A.n}` );
+      x = new LUDecompositionDecimal( A, LUDecimal ).solve( z, LUDecimal );
+
+      // const x1 = A.inverse().times( z );
+      // console.log( 'x' )
+      // console.log( x.toString() );
+      // console.log( 'x1' )
+      // console.log( x1.toString() );
+      //
+      // const a1 = new LUDecompositionDecimal( A, LUDecimal ).solve( Matrix.identity( A.m, A.m ), LUDecimal );
+      // const x2 = a1.times( z );
+      // console.log( 'x2' );
+      // console.log( x2.toString() );
     }
     catch( e ) {
 
@@ -342,6 +360,8 @@ class ModifiedNodalAnalysisCircuit {
       // debugger yet to understand the cause.  Catch it and provide a solution of zeroes of the correct dimension
       // See https://github.com/phetsims/circuit-construction-kit-dc/issues/113
       x = new Matrix( A.n, 1 );
+
+      // console.log( 'Rank deficient matrix!' )
     }
 
     // The matrix should be square since it is an exact analytical solution, see https://github.com/phetsims/circuit-construction-kit-dc/issues/96

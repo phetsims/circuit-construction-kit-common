@@ -85,6 +85,10 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
     defaultValue: 1E-6
   },
 
+  fullPrecisionAmmeter: {
+    type: 'flag'
+  },
+
   wireResistivity: {
     type: 'number',
     defaultValue: 1E-12

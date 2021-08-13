@@ -8,6 +8,7 @@
 
 import Utils from '../../dot/js/Utils.js';
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
+import CCKCQueryParameters from './CCKCQueryParameters.js';
 import circuitConstructionKitCommonStrings from './circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
 
@@ -35,11 +36,16 @@ const CCKCUtils = {
    * @public
    */
   createCurrentReadout: function( current ) {
-    const absoluteCurrent = Math.abs( current );
-    const decimals = this.getNumberOfDecimalPoints( absoluteCurrent );
+    if ( CCKCQueryParameters.fullPrecisionAmmeter ) {
+      return current + '';
+    }
+    else {
+      const absoluteCurrent = Math.abs( current );
+      const decimals = this.getNumberOfDecimalPoints( absoluteCurrent );
 
-    // Show 3 decimal places so that current can still be seen with a glowing high-resistance bulb
-    return StringUtils.fillIn( currentUnitsString, { current: Utils.toFixed( absoluteCurrent, decimals ) } );
+      // Show 3 decimal places so that current can still be seen with a glowing high-resistance bulb
+      return StringUtils.fillIn( currentUnitsString, { current: Utils.toFixed( absoluteCurrent, decimals ) } );
+    }
   },
 
   /**
