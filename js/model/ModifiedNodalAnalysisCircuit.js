@@ -14,12 +14,13 @@
 import LUDecompositionDecimal from '../../../dot/js/LUDecompositionDecimal.js';
 import Matrix from '../../../dot/js/Matrix.js';
 import arrayRemove from '../../../phet-core/js/arrayRemove.js';
+import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ModifiedNodalAnalysisSolution from './ModifiedNodalAnalysisSolution.js';
 
 const LUDecimal = Decimal.clone( {
   // precision: 16 // default precision for {number}
-  precision: 200
+  precision: CCKCQueryParameters.precision
 } );
 
 class ModifiedNodalAnalysisCircuit {

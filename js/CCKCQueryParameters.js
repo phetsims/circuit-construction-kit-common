@@ -92,6 +92,12 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
   wireResistivity: {
     type: 'number',
     defaultValue: 1E-12
+  },
+
+  // Precision for the numerical matrix solution for the linear algebra step
+  precision: {
+    type: 'number',
+    defaultValue: 32
   }
 } );
 
