@@ -326,16 +326,16 @@ class ModifiedNodalAnalysisCircuit {
 
     // Prepare the A and z matrices for the linear system Ax=z
     const A = new Matrix( equations.length, this.getNumVars() );
+
+    // Must be a plain array
+    const entries = [];
+    A.entries.forEach( entry => entries.push( new LUDecimal( entry ) ) );
+    A.entries = entries;
+
     const z = new Matrix( equations.length, 1 );
     for ( let i = 0; i < equations.length; i++ ) {
       equations[ i ].stamp( i, A, z, getIndex );
     }
-    phet.log && phet.log( A.m, A.n );
-    phet.log && phet.log( `Debugging circuit: ${this.toString()}` );
-    phet.log && phet.log( equations.join( '\n' ) );
-    phet.log && phet.log( `A=\n${A.toString()}` );
-    phet.log && phet.log( `z=\n${z.toString()}` );
-    phet.log && phet.log( `unknowns=\n${unknowns.map( u => u.toTermName() ).join( '\n' )}` );
 
     // solve the linear matrix system for the unknowns
     let x;
@@ -366,7 +366,21 @@ class ModifiedNodalAnalysisCircuit {
 
     // The matrix should be square since it is an exact analytical solution, see https://github.com/phetsims/circuit-construction-kit-dc/issues/96
     assert && assert( A.m === A.n, 'Matrix should be square' );
-    phet.log && phet.log( `x=\n${x.toString()}` );
+
+    if ( phet.log ) {
+      console.log( `Debugging circuit: ${this.toString()}
+    equations:
+    ${equations.join( '\n' )}
+    
+    A=\n${A.toString()}
+    
+    z=\n${z.toString()}
+    
+    unknowns=\n${unknowns.map( u => u.toTermName() ).join( '\n' )}
+    
+    x=\n${x.toString()}
+    ` );
+    }
 
     const voltageMap = {};
     for ( let i = 0; i < unknownVoltages.length; i++ ) {
@@ -535,10 +549,10 @@ class Equation {
    * @param {number} row - the index of the row for this equation
    * @param {Matrix} a - the matrix of coefficients in Ax=z
    * @param {Matrix} z - the matrix on the right hand side in Ax=z
-   * @param {function} getIndex - (UnknownCurrent|UnknownVoltage) => number
+   * @param {function} getColumn - (UnknownCurrent|UnknownVoltage) => number
    * @public
    */
-  stamp( row, a, z, getIndex ) {
+  stamp( row, a, z, getColumn ) {
 
     // Set the equation's value into the solution matrix
     z.set( row, 0, this.value );
@@ -546,9 +560,9 @@ class Equation {
     // For each term, augment the coefficient matrix
     for ( let i = 0; i < this.terms.length; i++ ) {
       const term = this.terms[ i ];
-      const index = getIndex( term.variable );
-      a.set( row, index, term.coefficient + a.get( row, index ) );
-      assert && assert( !isNaN( term.coefficient + a.get( row, index ) ), 'term should be a number' );
+      const column = getColumn( term.variable );
+      assert && assert( !isNaN( term.coefficient ), 'coefficient should be a number' );
+      a.set( row, column, a.get( row, column ).plus( new LUDecimal( term.coefficient ) ) );
     }
   }
 
