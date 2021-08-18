@@ -232,9 +232,9 @@ class CircuitElement extends PhetioObject {
 
     // Take an initial current sign, but avoid measuring noise from the matrix solves in disconnected circuits
     if ( this.isInitialCurrentNegative === null ) {
-        this.isInitialCurrentNegative = current < -epsilon ? true :
-                                        current > epsilon ? false :
-                                        null;
+      this.isInitialCurrentNegative = current < -epsilon ? true :
+                                      current > epsilon ? false :
+                                      null;
     }
     else if ( isReadyToClear ) {
 
