@@ -225,14 +225,16 @@ class CircuitElement extends PhetioObject {
     assert && assert( dTime > 0, 'cannot divide by 0' );
     const slope = dCurrent / dTime;
 
+    // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/693 can this tolerance be reduced
+    // now that the solver is more accurate?
     const epsilon = 1E-6;
     const isReadyToClear = Math.abs( slope ) < epsilon && Math.abs( current ) < epsilon;
 
     // Take an initial current sign, but avoid measuring noise from the matrix solves in disconnected circuits
     if ( this.isInitialCurrentNegative === null ) {
-      this.isInitialCurrentNegative = current < -epsilon ? true :
-                                      current > epsilon ? false :
-                                      null;
+        this.isInitialCurrentNegative = current < -epsilon ? true :
+                                        current > epsilon ? false :
+                                        null;
     }
     else if ( isReadyToClear ) {
 
