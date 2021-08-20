@@ -225,13 +225,13 @@ class CCKCChartNode extends Node {
       }
       pen.update();
     };
-    // timeProperty.link( time => {
-    //
-    //   // Show 4 seconds, plus a lead time of 0.25 sec
-    //   chartTransform.setModelXRange( new Range( time - 4, time + 0.25 ) );
-    //   verticalGridLineSet.setLineDashOffset( time * chartTransform.modelToViewDelta( Orientation.HORIZONTAL, 1 ) );
-    //   updatePen();
-    // } );
+    timeProperty.link( time => {
+
+      // Show 4 seconds, plus a lead time of 0.25 sec
+      chartTransform.setModelXRange( new Range( time - 4, time + 0.25 ) );
+      verticalGridLineSet.setLineDashOffset( time * chartTransform.modelToViewDelta( Orientation.HORIZONTAL, 1 ) );
+      updatePen();
+    } );
 
     const linePlot = new ChartCanvasNode( chartTransform, [ new CanvasLinePlot( chartTransform, series, {
       stroke: '#717274',
