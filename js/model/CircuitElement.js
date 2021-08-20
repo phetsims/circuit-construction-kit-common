@@ -18,6 +18,7 @@ import PhetioObject from '../../../tandem/js/PhetioObject.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import ReferenceIO from '../../../tandem/js/types/ReferenceIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CurrentSense from '../model/CurrentSense.js';
 import Vertex from './Vertex.js';
 
 // variables
@@ -90,10 +91,10 @@ class CircuitElement extends PhetioObject {
       assert && assert( !isNaN( c ) );
     } );
 
-    // @public (read-only) {boolean|null} - in order to keep the current signs consistent throughout a circuit
+    // @public (read-only) {CurrentSense} - in order to keep the current signs consistent throughout a circuit
     // we assign the directionality based on the initial current direction, so the initial current is always positive.
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/508
-    this.isInitialCurrentNegative = null;
+    this.currentSense = CurrentSense.UNSPECIFIED;
 
     // @private {Array.<{current:number, time:number}}
     this.dataSet = [];
@@ -232,15 +233,15 @@ class CircuitElement extends PhetioObject {
     const isReadyToClear = Math.abs( slope ) < epsilon && Math.abs( current ) < epsilon;
 
     // Choose the directionality of the circuit element so that initial current is positive
-    if ( this.isInitialCurrentNegative === null ) {
-      this.isInitialCurrentNegative = current < -epsilon ? true :
-                                      current > epsilon ? false :
-                                      null;
+    if ( this.currentSense === null ) {
+      this.currentSense = current < -epsilon ? CurrentSense.FORWARD :
+                          current > epsilon ? CurrentSense.BACKWARD :
+                          CurrentSense.UNSPECIFIED;
     }
     else if ( isReadyToClear ) {
 
       // Reset directionality, and take new directionality when current flows again
-      this.isInitialCurrentNegative = null;
+      this.currentSense = CurrentSense.UNSPECIFIED;
     }
   }
 

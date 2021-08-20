@@ -29,6 +29,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ACVoltage from '../model/ACVoltage.js';
 import Battery from '../model/Battery.js';
 import Capacitor from '../model/Capacitor.js';
+import CurrentSense from '../model/CurrentSense.js';
 import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Dog from '../model/Dog.js';
 import FixedCircuitElement from '../model/FixedCircuitElement.js';
@@ -907,7 +908,7 @@ class CircuitLayerNode extends Node {
         // see https://github.com/phetsims/circuit-construction-kit-common/issues/418
         if ( !circuitElementNode.circuitElement.circuitElementDisposed && circuitElementNode.containsSensorPoint( globalPoint ) ) {
           let rawCurrent = circuitElementNode.circuitElement.currentProperty.get();
-          if ( circuitElementNode.circuitElement.isInitialCurrentNegative ) {
+          if ( circuitElementNode.circuitElement.currentSense === CurrentSense.BACKWARD ) {
             rawCurrent = -rawCurrent;
           }
           return rawCurrent;
