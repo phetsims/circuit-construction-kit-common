@@ -232,11 +232,41 @@ class CircuitElement extends PhetioObject {
     const epsilon = 1E-6;
     const isReadyToClear = Math.abs( slope ) < epsilon && Math.abs( current ) < epsilon;
 
-    // Choose the directionality of the circuit element so that initial current is positive
-    if ( this.currentSense === null ) {
-      this.currentSense = current < -epsilon ? CurrentSense.FORWARD :
-                          current > epsilon ? CurrentSense.BACKWARD :
-                          CurrentSense.UNSPECIFIED;
+    if ( this.currentSense === CurrentSense.UNSPECIFIED ) {
+
+      // If there are other circuit elements, match with them.
+      const otherCircuitElements = circuit.circuitElements.filter( c => c !== this && c.currentSense !== CurrentSense.UNSPECIFIED );
+      if ( otherCircuitElements.length === 0 ) {
+
+        // If this is the first circuit element, choose the current sense so the initial readout is positive
+        this.currentSense = current < -epsilon ? CurrentSense.BACKWARD :
+                            current > epsilon ? CurrentSense.FORWARD :
+                            CurrentSense.UNSPECIFIED;
+      }
+      else {
+
+        const rootElement = otherCircuitElements[ 0 ];
+
+        const desiredSign = rootElement.currentProperty.value >= 0 && CurrentSense.FORWARD ? 'positive' :
+                            rootElement.currentProperty.value >= 0 && CurrentSense.BACKWARD ? 'negative' :
+                            rootElement.currentProperty.value < 0 && CurrentSense.FORWARD ? 'negative' :
+                            rootElement.currentProperty.value < 0 && CurrentSense.BACKWARD ? 'positive' :
+                            'error';
+
+        assert && assert( desiredSign !== 'error' );
+        if ( desiredSign === 'positive' ) {
+          // If this is the first circuit element, choose the current sense so the initial readout is positive
+          this.currentSense = current < -epsilon ? CurrentSense.BACKWARD :
+                              current > epsilon ? CurrentSense.FORWARD :
+                              CurrentSense.UNSPECIFIED;
+        }
+        else {
+          // If this is the first circuit element, choose the current sense so the initial readout is positive
+          this.currentSense = current < -epsilon ? CurrentSense.FORWARD :
+                              current > epsilon ? CurrentSense.BACKWARD :
+                              CurrentSense.UNSPECIFIED;
+        }
+      }
     }
     else if ( isReadyToClear ) {
 
