@@ -24,6 +24,10 @@ import Vertex from './Vertex.js';
 // variables
 let index = 0;
 
+// TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/693 can this tolerance be reduced
+// now that the solver is more accurate?
+const SENSE_TOLERANCE = 1E-6;
+
 class CircuitElement extends PhetioObject {
 
   /**
@@ -227,10 +231,7 @@ class CircuitElement extends PhetioObject {
     const slope = dCurrent / dTime;
 
     // Avoid measuring noise from the matrix solves in disconnected circuits.
-    // TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/693 can this tolerance be reduced
-    // now that the solver is more accurate?
-    const epsilon = 1E-6;
-    const isReadyToClear = Math.abs( slope ) < epsilon && Math.abs( current ) < epsilon;
+    const isReadyToClear = Math.abs( slope ) < SENSE_TOLERANCE && Math.abs( current ) < SENSE_TOLERANCE;
 
     if ( this.currentSense === CurrentSense.UNSPECIFIED ) {
 
@@ -239,8 +240,8 @@ class CircuitElement extends PhetioObject {
       if ( otherCircuitElements.length === 0 ) {
 
         // If this is the first circuit element, choose the current sense so the initial readout is positive
-        this.currentSense = current < -epsilon ? CurrentSense.BACKWARD :
-                            current > epsilon ? CurrentSense.FORWARD :
+        this.currentSense = current < -SENSE_TOLERANCE ? CurrentSense.BACKWARD :
+                            current > SENSE_TOLERANCE ? CurrentSense.FORWARD :
                             CurrentSense.UNSPECIFIED;
       }
       else {
@@ -255,15 +256,13 @@ class CircuitElement extends PhetioObject {
 
         assert && assert( desiredSign !== 'error' );
         if ( desiredSign === 'positive' ) {
-          // If this is the first circuit element, choose the current sense so the initial readout is positive
-          this.currentSense = current < -epsilon ? CurrentSense.BACKWARD :
-                              current > epsilon ? CurrentSense.FORWARD :
+          this.currentSense = current < -SENSE_TOLERANCE ? CurrentSense.BACKWARD :
+                              current > SENSE_TOLERANCE ? CurrentSense.FORWARD :
                               CurrentSense.UNSPECIFIED;
         }
         else {
-          // If this is the first circuit element, choose the current sense so the initial readout is positive
-          this.currentSense = current < -epsilon ? CurrentSense.FORWARD :
-                              current > epsilon ? CurrentSense.BACKWARD :
+          this.currentSense = current < -SENSE_TOLERANCE ? CurrentSense.FORWARD :
+                              current > SENSE_TOLERANCE ? CurrentSense.BACKWARD :
                               CurrentSense.UNSPECIFIED;
         }
       }
