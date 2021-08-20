@@ -240,9 +240,7 @@ class CircuitElement extends PhetioObject {
       if ( otherCircuitElements.length === 0 ) {
 
         // If this is the first circuit element, choose the current sense so the initial readout is positive
-        this.currentSense = current < -SENSE_TOLERANCE ? CurrentSense.BACKWARD :
-                            current > SENSE_TOLERANCE ? CurrentSense.FORWARD :
-                            CurrentSense.UNSPECIFIED;
+        this.currentSense = getSenseForPositive( current );
       }
       else {
 
@@ -255,16 +253,9 @@ class CircuitElement extends PhetioObject {
                             'error';
 
         assert && assert( desiredSign !== 'error' );
-        if ( desiredSign === 'positive' ) {
-          this.currentSense = current < -SENSE_TOLERANCE ? CurrentSense.BACKWARD :
-                              current > SENSE_TOLERANCE ? CurrentSense.FORWARD :
-                              CurrentSense.UNSPECIFIED;
-        }
-        else {
-          this.currentSense = current < -SENSE_TOLERANCE ? CurrentSense.FORWARD :
-                              current > SENSE_TOLERANCE ? CurrentSense.BACKWARD :
-                              CurrentSense.UNSPECIFIED;
-        }
+        this.currentSense = desiredSign === 'positive' ?
+                            getSenseForPositive( current ) :
+                            getSenseForNegative( current );
       }
     }
     else if ( isReadyToClear ) {
@@ -470,6 +461,13 @@ CircuitElement.CircuitElementIO = new IOType( 'CircuitElementIO', {
     ];
   }
 } );
+
+const getSenseForPositive = current => current < -SENSE_TOLERANCE ? CurrentSense.BACKWARD :
+                                       current > SENSE_TOLERANCE ? CurrentSense.FORWARD :
+                                       CurrentSense.UNSPECIFIED;
+const getSenseForNegative = current => current < -SENSE_TOLERANCE ? CurrentSense.FORWARD :
+                                       current > SENSE_TOLERANCE ? CurrentSense.BACKWARD :
+                                       CurrentSense.UNSPECIFIED;
 
 circuitConstructionKitCommon.register( 'CircuitElement', CircuitElement );
 export default CircuitElement;
