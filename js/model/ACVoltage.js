@@ -96,7 +96,7 @@ class ACVoltage extends VoltageSource {
     super.step( time, dt, circuit );
     this.time = time;
     this.voltageProperty.set(
-      this.maximumVoltageProperty.value * Math.sin( 2 * Math.PI * this.frequencyProperty.value * time + this.phaseProperty.value * Math.PI / 180 )
+      -this.maximumVoltageProperty.value * Math.sin( 2 * Math.PI * this.frequencyProperty.value * time + this.phaseProperty.value * Math.PI / 180 )
     );
   }
 }
