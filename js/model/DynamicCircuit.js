@@ -8,6 +8,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ModifiedNodalAnalysisCircuit from './ModifiedNodalAnalysisCircuit.js';
 import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
@@ -90,10 +91,14 @@ class DynamicCircuit {
       assert && assert( capacitorAdapter.dynamicCircuitCapacitor.capacitance >= 0, 'capacitance should be non-negative' );
       assert && assert( dt >= 0, 'dt should be non-negative' );
 
-      const newNode = _.max( usedNodes ) + 1;
-      usedNodes.push( newNode );
+      const newNode1 = _.max( usedNodes ) + 1;
+      usedNodes.push( newNode1 );
+
+      const newNode2 = _.max( usedNodes ) + 1;
+      usedNodes.push( newNode2 );
 
       const companionResistance = dt / 2.0 / capacitorAdapter.dynamicCircuitCapacitor.capacitance;
+      const resistanceTerm = CCKCQueryParameters.capacitorResistance;
 
       // The capacitor is modeled as a battery in series with a resistor.  Hence the voltage drop across the capacitor
       // is equal to the voltage drop across the battery plus the voltage drop across the resistor.
@@ -102,10 +107,16 @@ class DynamicCircuit {
       // |V|=|IReq| and sign is unchanged since the conventional current flows from high to low voltage.
       const companionVoltage = capacitorAdapter.state.voltage - companionResistance * capacitorAdapter.state.current;
 
-      const battery = new ModifiedNodalAnalysisCircuitElement( capacitorAdapter.dynamicCircuitCapacitor.nodeId0, newNode, null, companionVoltage );
-      const resistor = new ModifiedNodalAnalysisCircuitElement( newNode, capacitorAdapter.dynamicCircuitCapacitor.nodeId1, null, companionResistance );
+      const battery = new ModifiedNodalAnalysisCircuitElement( capacitorAdapter.dynamicCircuitCapacitor.nodeId0, newNode1, null, companionVoltage );
+      const resistor = new ModifiedNodalAnalysisCircuitElement( newNode1, newNode2, null, companionResistance );
+      const resistor2 = new ModifiedNodalAnalysisCircuitElement( newNode2, capacitorAdapter.dynamicCircuitCapacitor.nodeId1, null, resistanceTerm );
+
       companionBatteries.push( battery );
       companionResistors.push( resistor );
+      companionResistors.push( resistor2 );
+
+      capacitorAdapter.capacitorVoltageNode0 = capacitorAdapter.dynamicCircuitCapacitor.nodeId0;
+      capacitorAdapter.capacitorVoltageNode1 = newNode2;
 
       // We need to be able to get the current for this component. In series, so the current is the same through both.
       currentCompanions.push( {
@@ -214,7 +225,7 @@ class DynamicCircuit {
   updateCircuit( solution ) {
     const updatedCapacitors = this.capacitorAdapters.map( capacitorAdapter => {
       const newState = new DynamicElementState(
-        solution.getNodeVoltage( capacitorAdapter.dynamicCircuitCapacitor.nodeId1 ) - solution.getNodeVoltage( capacitorAdapter.dynamicCircuitCapacitor.nodeId0 ),
+        solution.getNodeVoltage( capacitorAdapter.capacitorVoltageNode1 ) - solution.getNodeVoltage( capacitorAdapter.capacitorVoltageNode0 ),
         solution.getCurrent( capacitorAdapter )
       );
       return new DynamicCapacitor( capacitorAdapter.dynamicCircuitCapacitor, newState );
@@ -303,6 +314,10 @@ class DynamicCapacitor {
 
     // @public {DynamicElementState}
     this.state = state;
+
+    // @public placeholders for where to read the capacitor part of the voltage without the series resistor
+    this.capacitorVoltageNode0 = null;
+    this.capacitorVoltageNode1 = null;
   }
 }
 

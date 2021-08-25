@@ -72,10 +72,9 @@ class ModifiedNodalAnalysisCircuit {
    */
   toString() {
     if ( assert ) { // stripped out for builds
-      return `resistors:${this.resistors.map( resistorToString ).join( ',' )}, ` +
-             `batteries: ${this.batteries.map( batteryToString ).join( ',' )}, ` +
-             `currentSources: ${this.currentSources.map( c => c.toString() )
-               .join( ',' )}`;
+      return `resistors:\n${this.resistors.map( resistorToString ).join( '\n' )}\n` +
+             `batteries:\n${this.batteries.map( batteryToString ).join( '\n' )}\n` +
+             `currentSources:\n${this.currentSources.map( c => c.toString() ).join( '\n' )}`;
     }
     else {
       return 'toString() only defined when assertions are enabled';

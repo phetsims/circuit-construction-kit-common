@@ -85,6 +85,12 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
     defaultValue: 1E-6
   },
 
+  // Model capacitors with a series resistor to help linearize the problem
+  capacitorResistance: {
+    type: 'number',
+    defaultValue: 1E-6
+  },
+
   fullPrecisionAmmeter: {
     type: 'flag'
   },

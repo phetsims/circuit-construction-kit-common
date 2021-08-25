@@ -105,7 +105,8 @@ class CapacitorAdapter extends DynamicCircuit.DynamicCapacitor {
   applySolution( circuitResult ) {
     this.capacitor.currentProperty.value = circuitResult.getTimeAverageCurrent( this.dynamicCircuitCapacitor );
     this.capacitor.mnaCurrent = circuitResult.getInstantaneousCurrent( this.dynamicCircuitCapacitor );
-    this.capacitor.mnaVoltageDrop = circuitResult.getInstantaneousVoltage( this.dynamicCircuitCapacitor );
+    this.capacitor.mnaVoltageDrop = circuitResult.getFinalState().dynamicCircuitSolution.getNodeVoltage( this.capacitorVoltageNode1 )
+                                    - circuitResult.getFinalState().dynamicCircuitSolution.getNodeVoltage( this.capacitorVoltageNode0 );
     assert && assert( Math.abs( this.capacitor.mnaCurrent ) < 1E100, 'mnaCurrent out of range' );
     assert && assert( Math.abs( this.capacitor.mnaVoltageDrop ) < 1E100, 'mnaVoltageDrop out of range' );
   }
