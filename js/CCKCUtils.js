@@ -75,6 +75,22 @@ const CCKCUtils = {
     else if ( !inSceneGraph && parent.hasChild( child ) ) {
       parent.removeChild( child );
     }
+  },
+
+  /**
+   * Clamp the magnitude of a signed number to keep it in range.
+   * @param {number} value
+   * @param {number} magnitude
+   * @returns {number}
+   */
+  clampMagnitude( value, magnitude = 1E20 ) {
+    assert && assert( magnitude >= 0, 'magnitude should be non-negative' );
+    if ( Math.abs( value ) > magnitude ) {
+      return Math.sign( value ) * magnitude;
+    }
+    else {
+      return value;
+    }
   }
 };
 

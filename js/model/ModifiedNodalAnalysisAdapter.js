@@ -8,6 +8,7 @@
  */
 
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
+import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Capacitor from './Capacitor.js';
 import DynamicCircuit from './DynamicCircuit.js';
@@ -104,9 +105,11 @@ class CapacitorAdapter extends DynamicCircuit.DynamicCapacitor {
    */
   applySolution( circuitResult ) {
     this.capacitor.currentProperty.value = circuitResult.getTimeAverageCurrent( this.dynamicCircuitCapacitor );
-    this.capacitor.mnaCurrent = circuitResult.getInstantaneousCurrent( this.dynamicCircuitCapacitor );
-    this.capacitor.mnaVoltageDrop = circuitResult.getFinalState().dynamicCircuitSolution.getNodeVoltage( this.capacitorVoltageNode1 )
-                                    - circuitResult.getFinalState().dynamicCircuitSolution.getNodeVoltage( this.capacitorVoltageNode0 );
+    this.capacitor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrent( this.dynamicCircuitCapacitor ) );
+    this.capacitor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getFinalState().dynamicCircuitSolution.getNodeVoltage( this.capacitorVoltageNode1 )
+                                                              - circuitResult.getFinalState().dynamicCircuitSolution.getNodeVoltage( this.capacitorVoltageNode0 ) );
+
+
     assert && assert( Math.abs( this.capacitor.mnaCurrent ) < 1E100, 'mnaCurrent out of range' );
     assert && assert( Math.abs( this.capacitor.mnaVoltageDrop ) < 1E100, 'mnaVoltageDrop out of range' );
   }
@@ -137,8 +140,8 @@ class InductorAdapter extends DynamicCircuit.DynamicInductor {
    */
   applySolution( circuitResult ) {
     this.inductor.currentProperty.value = -circuitResult.getTimeAverageCurrent( this.dynamicCircuitInductor );
-    this.inductor.mnaCurrent = circuitResult.getInstantaneousCurrent( this.dynamicCircuitInductor );
-    this.inductor.mnaVoltageDrop = circuitResult.getInstantaneousVoltage( this.dynamicCircuitInductor );
+    this.inductor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrent( this.dynamicCircuitInductor ) );
+    this.inductor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousVoltage( this.dynamicCircuitInductor ) );
     assert && assert( Math.abs( this.inductor.mnaCurrent ) < 1E100, 'mnaCurrent out of range' );
     assert && assert( Math.abs( this.inductor.mnaVoltageDrop ) < 1E100, 'mnaVoltageDrop out of range' );
   }
