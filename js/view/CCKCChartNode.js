@@ -14,7 +14,7 @@ import ChartCanvasNode from '../../../bamboo/js/ChartCanvasNode.js';
 import ChartRectangle from '../../../bamboo/js/ChartRectangle.js';
 import ChartTransform from '../../../bamboo/js/ChartTransform.js';
 import CanvasGridLineSet from '../../../bamboo/js/CanvasGridLineSet.js';
-import LabelSet from '../../../bamboo/js/LabelSet.js';
+import TickLabelSet from '../../../bamboo/js/TickLabelSet.js';
 import ScatterPlot from '../../../bamboo/js/ScatterPlot.js';
 import SpanNode from '../../../bamboo/js/SpanNode.js';
 import Range from '../../../dot/js/Range.js';
@@ -172,7 +172,7 @@ class CCKCChartNode extends Node {
 
     const horizontalGridLineSet = new CanvasGridLineSet( chartTransform, Orientation.HORIZONTAL, 1, gridLineOptions );
     const verticalGridLineSet = new CanvasGridLineSet( chartTransform, Orientation.VERTICAL, 1, gridLineOptions );
-    const verticalLabelSet = new LabelSet( chartTransform, Orientation.VERTICAL, 1, {
+    const verticalLabelSet = new TickLabelSet( chartTransform, Orientation.VERTICAL, 1, {
       edge: 'min',
       extent: 1.5,
       createLabel: value => new Text( Utils.toFixed( value, zoomLevelProperty.value === zoomRanges.length - 1 ? 1 : 0 ), {
