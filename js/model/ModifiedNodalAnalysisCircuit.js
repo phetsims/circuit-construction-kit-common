@@ -12,9 +12,12 @@
  */
 
 import LUDecompositionDecimal from '../../../dot/js/LUDecompositionDecimal.js';
+import LUDecomposition from '../../../dot/js/LUDecomposition.js';
 import Matrix from '../../../dot/js/Matrix.js';
+import Utils from '../../../dot/js/Utils.js';
 import arrayRemove from '../../../phet-core/js/arrayRemove.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
+import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ModifiedNodalAnalysisSolution from './ModifiedNodalAnalysisSolution.js';
 
@@ -326,33 +329,38 @@ class ModifiedNodalAnalysisCircuit {
 
     // Prepare the A and z matrices for the linear system Ax=z
     const A = new Matrix( equations.length, this.getNumVars() );
-
-    // Must be a plain array
-    const entries = [];
-    A.entries.forEach( entry => entries.push( new LUDecimal( entry ) ) );
-    A.entries = entries;
-
     const z = new Matrix( equations.length, 1 );
-    for ( let i = 0; i < equations.length; i++ ) {
-      equations[ i ].stamp( i, A, z, getIndex );
-    }
 
     // solve the linear matrix system for the unknowns
     let x;
     assert && assert( A.m === A.n, `the matrix should be square, instead it was ${A.m} x ${A.n}` );
     try {
-      x = new LUDecompositionDecimal( A, LUDecimal ).solve( z, LUDecimal );
 
-      // const x1 = A.inverse().times( z );
-      // console.log( 'x' )
-      // console.log( x.toString() );
-      // console.log( 'x1' )
-      // console.log( x1.toString() );
-      //
-      // const a1 = new LUDecompositionDecimal( A, LUDecimal ).solve( Matrix.identity( A.m, A.m ), LUDecimal );
-      // const x2 = a1.times( z );
-      // console.log( 'x2' );
-      // console.log( x2.toString() );
+      CCKCUtils.incrementAccumulatedSteps();
+
+      // For the first several steps, use high precision
+      if ( CCKCUtils.getAccumulatedSteps() <= 10 ) {
+
+        // Must be a plain array, not an optimized number container
+        const entries = [];
+        A.entries.forEach( entry => entries.push( new LUDecimal( entry ) ) );
+        A.entries = entries;
+
+        for ( let i = 0; i < equations.length; i++ ) {
+          equations[ i ].stamp( i, A, z, getIndex, true );
+        }
+
+        x = new LUDecompositionDecimal( A, LUDecimal ).solve( z, LUDecimal );
+      }
+      else {
+
+        // if we have to run too many steps within a frame, then go to the high performance solver
+        for ( let i = 0; i < equations.length; i++ ) {
+          equations[ i ].stamp( i, A, z, getIndex, false );
+        }
+
+        x = new LUDecomposition( A ).solve( z );
+      }
     }
     catch( e ) {
 
@@ -360,25 +368,22 @@ class ModifiedNodalAnalysisCircuit {
       // debugger yet to understand the cause.  Catch it and provide a solution of zeroes of the correct dimension
       // See https://github.com/phetsims/circuit-construction-kit-dc/issues/113
       x = new Matrix( A.n, 1 );
-
-      // console.log( 'Rank deficient matrix!' )
     }
 
     // The matrix should be square since it is an exact analytical solution, see https://github.com/phetsims/circuit-construction-kit-dc/issues/96
     assert && assert( A.m === A.n, 'Matrix should be square' );
 
     if ( phet.log ) {
+      const conditionNumber = A.cond();
       console.log( `Debugging circuit: ${this.toString()}
     equations:
-    ${equations.join( '\n' )}
-    
-    A=\n${A.toString()}
-    
-    z=\n${z.toString()}
-    
-    unknowns=\n${unknowns.map( u => u.toTermName() ).join( '\n' )}
-    
-    x=\n${x.toString()}
+${equations.join( '\n' )}
+
+A.cond=1E${Utils.toFixed( Math.log10( conditionNumber ), 4 )} = ${Utils.toFixed( conditionNumber, 4 )}  
+A=\n${A.transpose().toString()}
+z=\n${z.transpose().toString()}
+unknowns=\n${unknowns.map( u => u.toTermName() ).join( ', ' )}
+x=\n${x.transpose().toString()}
     ` );
     }
 
@@ -550,9 +555,10 @@ class Equation {
    * @param {Matrix} a - the matrix of coefficients in Ax=z
    * @param {Matrix} z - the matrix on the right hand side in Ax=z
    * @param {function} getColumn - (UnknownCurrent|UnknownVoltage) => number
+   * @param isDecimal
    * @public
    */
-  stamp( row, a, z, getColumn ) {
+  stamp( row, a, z, getColumn, isDecimal = false ) {
 
     // Set the equation's value into the solution matrix
     z.set( row, 0, this.value );
@@ -562,7 +568,12 @@ class Equation {
       const term = this.terms[ i ];
       const column = getColumn( term.variable );
       assert && assert( !isNaN( term.coefficient ), 'coefficient should be a number' );
-      a.set( row, column, a.get( row, column ).plus( new LUDecimal( term.coefficient ) ) );
+      if ( isDecimal ) {
+        a.set( row, column, a.get( row, column ).plus( new LUDecimal( term.coefficient ) ) );
+      }
+      else {
+        a.set( row, column, term.coefficient + a.get( row, column ) );
+      }
     }
   }
 

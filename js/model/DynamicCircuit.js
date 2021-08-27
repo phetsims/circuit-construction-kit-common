@@ -9,6 +9,7 @@
  */
 
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
+import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ModifiedNodalAnalysisCircuit from './ModifiedNodalAnalysisCircuit.js';
 import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
@@ -169,6 +170,7 @@ class DynamicCircuit {
    * @public
    */
   solveWithSubdivisions( timestepSubdivisions, dt ) {
+    CCKCUtils.clearAccumulatedSteps();
     const steppable = {
       update: ( a, dt ) => a.update( dt ),
       distance: ( a, b ) => euclideanDistance( a.getCharacteristicArray(), b.getCharacteristicArray() )

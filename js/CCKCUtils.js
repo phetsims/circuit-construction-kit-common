@@ -15,7 +15,22 @@ import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
 const currentUnitsString = circuitConstructionKitCommonStrings.currentUnits;
 const voltageUnitsString = circuitConstructionKitCommonStrings.voltageUnits;
 
+// Number of accumulated solve steps within a single frame.  We use high precision for the first
+// several steps, then go to high performance for remaining steps.
+let accumulatedSteps = 0;
 const CCKCUtils = {
+
+  getAccumulatedSteps() {
+    return accumulatedSteps;
+  },
+
+  clearAccumulatedSteps() {
+    accumulatedSteps = 0;
+  },
+
+  incrementAccumulatedSteps() {
+    accumulatedSteps++;
+  },
 
   /**
    * Typically show 2 decimal places for current and voltage readouts in the play area, but if it is a smaller value,
