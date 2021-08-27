@@ -161,7 +161,7 @@ class CCKCChartNode extends Node {
       new Range( -0.4, 0.4 )
     ];
     const initialZoomIndex = zoomRanges.findIndex( e => e.equals( options.defaultZoomLevel ) );
-    const zoomLevelProperty = new NumberProperty( initialZoomIndex, { range: new Range( 0, zoomRanges.length - 1 ) } );
+    this.zoomLevelProperty = new NumberProperty( initialZoomIndex, { range: new Range( 0, zoomRanges.length - 1 ) } );
 
     const gridLineOptions = {
       stroke: 'lightGray',
@@ -175,13 +175,13 @@ class CCKCChartNode extends Node {
     const verticalLabelSet = new TickLabelSet( chartTransform, Orientation.VERTICAL, 1, {
       edge: 'min',
       extent: 1.5,
-      createLabel: value => new Text( Utils.toFixed( value, zoomLevelProperty.value === zoomRanges.length - 1 ? 1 : 0 ), {
+      createLabel: value => new Text( Utils.toFixed( value, this.zoomLevelProperty.value === zoomRanges.length - 1 ? 1 : 0 ), {
         fontSize: 10,
         fill: 'white'
       } )
     } );
 
-    const zoomButtonGroup = new MagnifyingGlassZoomButtonGroup( zoomLevelProperty, {
+    const zoomButtonGroup = new MagnifyingGlassZoomButtonGroup( this.zoomLevelProperty, {
       orientation: 'vertical',
       left: chartBackground.right + 2,
       top: chartBackground.top,
@@ -199,7 +199,7 @@ class CCKCChartNode extends Node {
         yMargin: 3
       }
     } );
-    zoomLevelProperty.link( zoomLevel => {
+    this.zoomLevelProperty.link( zoomLevel => {
       chartTransform.setModelYRange( zoomRanges[ zoomLevel ] );
       verticalGridLineSet.setSpacing( zoomRanges[ zoomLevel ].max / 2 );
       verticalLabelSet.setSpacing( zoomRanges[ zoomLevel ].max / 2 );
@@ -346,6 +346,7 @@ class CCKCChartNode extends Node {
   reset() {
     this.series.clear();
     this.meter.reset();
+    this.zoomLevelProperty.reset();
   }
 
   /**
