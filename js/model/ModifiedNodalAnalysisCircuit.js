@@ -339,8 +339,8 @@ class ModifiedNodalAnalysisCircuit {
 
     // solve the linear matrix system for the unknowns
     let x;
+    assert && assert( A.m === A.n, `the matrix should be square, instead it was ${A.m} x ${A.n}` );
     try {
-      assert && assert( A.m === A.n, `the matrix should be square, instead it was ${A.m} x ${A.n}` );
       x = new LUDecompositionDecimal( A, LUDecimal ).solve( z, LUDecimal );
 
       // const x1 = A.inverse().times( z );
