@@ -80,7 +80,7 @@ class LightBulb extends FixedCircuitElement {
     this.resistanceProperty = new NumberProperty( resistance, {
       tandem: tandem.createTandem( 'resistanceProperty' ),
       range: options.highResistance ? new Range( 100, 10000 ) :
-             options.real ? new Range( 0, 1E6 ) : // The non-ohmic bulb has its resistance computed in ModifiedNodalAnalysisAdapter.js
+             options.real ? new Range( 0, Number.MAX_VALUE ) : // The non-ohmic bulb has its resistance computed in ModifiedNodalAnalysisAdapter.js
              new Range( 0, 120 )
     } );
 
