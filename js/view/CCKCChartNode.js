@@ -415,7 +415,7 @@ class CCKCChartNode extends Node {
         // Drop in the toolbox if the center of the chart is within the sensor toolbox bounds
         if ( screenView.sensorToolbox.globalBounds.containsPoint( this.getBackgroundNodeGlobalBounds().center ) ) {
           this.alignProbesEmitter.emit();
-          this.meter.visibleProperty.value = false;
+          this.reset();
         }
 
         // Move probes to center line (if water side view model)
