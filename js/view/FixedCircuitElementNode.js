@@ -27,6 +27,7 @@ const matrix = new Matrix3();
 const rotationMatrix = new Matrix3();
 const FIRE_THRESHOLD = 15; // Beyond this number of amps, flammable CircuitElements catch on fire
 const ONE_AMP_PROPERTY = new NumberProperty( 1 ); // All batteries are flammable, so treat them as if they have nonzero resistance
+const HIGHLIGHT_PADDING = 10; // in view coordinates
 
 /**
  * Determine whether fire should be shown on the circuit element.
@@ -303,6 +304,15 @@ class FixedCircuitElementNode extends CircuitElementNode {
    */
   updateFireVisible( current, resistance, isValueDepictionEnabled ) {
     this.fireNode.visible = isFireShown( current, isValueDepictionEnabled ) && resistance >= 1E-8;
+  }
+
+  /**
+   * Gets the bounds for the highlight rectangle.
+   * @returns {Bounds2}
+   * @public
+   */
+  getHighlightBounds() {
+    return this.contentNode.localBounds.dilated( HIGHLIGHT_PADDING );
   }
 }
 

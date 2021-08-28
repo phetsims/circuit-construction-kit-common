@@ -11,7 +11,6 @@ import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 // constants
-const PADDING = 10; // in view coordinates
 const CORNER_RADIUS = 8; // in view coordinates
 
 class FixedCircuitElementHighlightNode extends Rectangle {
@@ -40,7 +39,7 @@ class FixedCircuitElementHighlightNode extends Rectangle {
   recomputeBounds( fixedCircuitElementNode ) {
 
     // This is called rarely and hence the extra allocation is OK
-    this.setRectBounds( fixedCircuitElementNode.contentNode.localBounds.dilated( PADDING ) );
+    this.setRectBounds( fixedCircuitElementNode.getHighlightBounds() );
   }
 }
 

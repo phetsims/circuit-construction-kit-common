@@ -262,6 +262,15 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
       return this.rightSchematicPath.containsPoint( this.rightSchematicPath.globalToParentPoint( globalPoint ) );
     }
   }
+
+  /**
+   * Gets the bounds for the highlight rectangle.
+   * @returns {Bounds2}
+   * @public
+   */
+  getHighlightBounds() {
+    return this.contentNode.localBounds.erodedX( 22 ).erodedY( 15 );
+  }
 }
 
 /**
