@@ -7,6 +7,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
@@ -64,7 +65,10 @@ class ResistorAdapter extends ModifiedNodalAnalysisCircuitElement {
       circuit.vertexGroup.indexOf( resistor.startVertexProperty.value ),
       circuit.vertexGroup.indexOf( resistor.endVertexProperty.value ),
       resistor,
-      resistor.resistanceProperty.value
+
+      // If a resistor goes to 0 resistance, then we cannot compute the current through as I=V/R.  Therefore,
+      // simulate a small amount of resistance.
+      resistor.resistanceProperty.value || CCKCConstants.MINIMUM_RESISTANCE
     );
 
     // @private
