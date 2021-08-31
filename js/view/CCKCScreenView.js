@@ -457,6 +457,12 @@ class CCKCScreenView extends ScreenView {
 
     // noting from the main step
     this.circuitLayerNode.step( dt );
+
+    // if the model is stepping, the charts will sample new values.  Otherwise, take a reading at the current point,
+    // for updating the pen location
+    if ( !this.model.isPlayingProperty.value ) {
+      this.chartNodes.forEach( chartNode => chartNode.sampleLatestValue() );
+    }
   }
 
   /**

@@ -214,7 +214,9 @@ class CCKCChartNode extends Node {
       stroke: '#717274',
       radius: 4
     } );
-    const updatePen = () => {
+
+    // @public
+    this.updatePen = () => {
       penData[ 0 ].x = timeProperty.value;
       const length = series.length;
       if ( length > 0 ) {
@@ -226,13 +228,14 @@ class CCKCChartNode extends Node {
       }
       pen.update();
     };
+
     timeProperty.link( time => {
 
       // Show 4 seconds, plus a lead time of 0.25 sec
       chartTransform.setModelXRange( new Range( time - 4, time + 0.25 ) );
       verticalGridLineSet.setLineDashOffset( time * chartTransform.modelToViewDelta( Orientation.HORIZONTAL, 1 ) );
       // horizontalGridLineSet.setLineDashOffset( -time * chartTransform.modelToViewDelta( Orientation.VERTICAL, 1 )/2 );
-      updatePen();
+      this.updatePen();
     } );
 
     const linePlot = new ChartCanvasNode( chartTransform, [
@@ -247,11 +250,11 @@ class CCKCChartNode extends Node {
 
     series.elementAddedEmitter.addListener( () => {
       linePlot.update();
-      updatePen();
+      this.updatePen();
     } );
     series.elementRemovedEmitter.addListener( () => {
       linePlot.update();
-      updatePen();
+      this.updatePen();
     } );
 
     // Anything you want clipped goes in here

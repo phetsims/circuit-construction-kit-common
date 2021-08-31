@@ -60,6 +60,18 @@ class CurrentChartNode extends CCKCChartNode {
         this.series.shift();
       }
     }
+    this.updatePen();
+    this.lastStepTime = time;
+  }
+
+  // @public
+  sampleLatestValue() {
+
+    this.series.pop();
+    const current = this.circuitLayerNode.getCurrent( this.probeNode1 );
+    this.series.push( current === null ? null : new Vector2( this.lastStepTime, current || 0 ) );
+
+    this.updatePen();
   }
 }
 

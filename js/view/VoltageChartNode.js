@@ -48,6 +48,18 @@ class VoltageChartNode extends CCKCChartNode {
     this.probeNode2 = this.addProbeNode( SERIES_2_COLOR, SERIES_2_COLOR, 36, 54, this.aboveBottomLeft2, options.tandem.createTandem( 'probeNode2' ) );
   }
 
+  // @private
+  sampleValue( time ) {
+    const redPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode1.translation ) );
+    const blackPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode2.translation ) );
+
+    const redConnection = this.circuitLayerNode.getVoltageConnection( redPoint );
+    const blackConnection = this.circuitLayerNode.getVoltageConnection( blackPoint );
+    const voltage = this.circuitLayerNode.circuit.getVoltageBetweenConnections( redConnection, blackConnection );
+
+    return voltage === null ? null : new Vector2( time, voltage );
+  }
+
   /**
    * Records data and displays it on the chart
    * @param {number} time - total elapsed time in seconds
@@ -56,14 +68,8 @@ class VoltageChartNode extends CCKCChartNode {
    */
   step( time, dt ) {
     if ( this.meter.visibleProperty.value ) {
-      const redPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode1.translation ) );
-      const blackPoint = this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode2.translation ) );
 
-      const redConnection = this.circuitLayerNode.getVoltageConnection( redPoint );
-      const blackConnection = this.circuitLayerNode.getVoltageConnection( blackPoint );
-      const voltage = this.circuitLayerNode.circuit.getVoltageBetweenConnections( redConnection, blackConnection );
-
-      this.series.push( voltage === null ? null : new Vector2( time, voltage ) );
+      this.series.push( this.sampleValue( time ) );
 
       // For debugging, depict the points where the sampling happens
       if ( CCKCQueryParameters.showVoltmeterSamplePoints ) {
@@ -71,7 +77,7 @@ class VoltageChartNode extends CCKCChartNode {
         // These get erased when changing between lifelike/schematic
         this.circuitLayerNode.addChild( new Rectangle( -1, -1, 2, 2, {
           fill: Color.BLACK,
-          translation: redPoint
+          translation: this.circuitLayerNode.globalToLocalPoint( this.localToGlobalPoint( this.probeNode1.translation ) )
         } ) );
       }
 
@@ -80,6 +86,19 @@ class VoltageChartNode extends CCKCChartNode {
         this.series.shift();
       }
     }
+    this.updatePen();
+    this.lastStepTime = time;
+  }
+
+  // @public
+  sampleLatestValue() {
+
+    this.series.pop();
+    const sampleValue1 = this.sampleValue( this.lastStepTime );
+    console.log( sampleValue1 );
+    this.series.push( sampleValue1 );
+
+    this.updatePen();
   }
 }
 
