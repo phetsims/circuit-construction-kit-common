@@ -94,9 +94,7 @@ class VoltageChartNode extends CCKCChartNode {
   sampleLatestValue() {
 
     this.series.pop();
-    const sampleValue1 = this.sampleValue( this.lastStepTime );
-    console.log( sampleValue1 );
-    this.series.push( sampleValue1 );
+    this.series.push( this.sampleValue( this.lastStepTime ) );
 
     this.updatePen();
   }
