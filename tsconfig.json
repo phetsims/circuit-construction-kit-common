@@ -1,0 +1,20 @@
+{
+  "extends": "../chipper/tsconfig-core.json",
+  "references": [
+    {
+      "path": "../chipper/tsconfig/twixt"
+    },
+    {
+      "path": "../chipper/tsconfig/griddle"
+    },
+    {
+      "path": "../chipper/tsconfig/joist"
+    }
+  ],
+  "include": [
+    "js/**/*",
+    "sounds/**/*",
+    "mipmaps/**/*",
+    "images/**/*"
+  ]
+}
