@@ -40,7 +40,7 @@ class TimestepSubdivisions {
     let attemptedDT = totalTime;
     while ( elapsedTime < totalTime ) {
 
-      const result = this.search( state, steppable, attemptedDT );
+      const result = this.search( state, steppable, attemptedDT, null );
       state = result.state;
       states.push( result );
       elapsedTime = elapsedTime + result.dt;
@@ -52,8 +52,8 @@ class TimestepSubdivisions {
         attemptedDT = totalTime - elapsedTime;
       }
     }
-    const dts = states.map( state => state.dt );
-    console.log( dts.length );
+    // const dts = states.map( state => state.dt );
+    // console.log( dts.length );
     return new ResultSet( states );
   }
 
@@ -63,10 +63,11 @@ class TimestepSubdivisions {
    * @param {Object} state     the initial state
    * @param {Steppable} steppable the update algorithm and distance metric
    * @param {number} dt        the initial value to use for dt
+   * @param {Object} halfStepState - efficiently reuse value from parent call, instead of recomputing it.
    * @returns {number} the selected timestep that has acceptable error or meets the minimum allowed
    * @private
    */
-  search( state, steppable, dt ) {
+  search( state, steppable, dt, halfStepState ) {
 
     // if dt is already too low, no need to do error checking
     if ( dt <= MIN_DT ) {
@@ -74,7 +75,8 @@ class TimestepSubdivisions {
     }
     else {
       const a = steppable.update( state, dt );
-      const b1 = steppable.update( state, dt / 2 );
+      console.log( !!halfStepState );
+      const b1 = halfStepState || steppable.update( state, dt / 2 );
       const b2 = steppable.update( b1, dt / 2 );
       const distance = steppable.distance( a, b2 );
       assert && assert( !isNaN( distance ), 'distance should be numeric' );
@@ -83,7 +85,7 @@ class TimestepSubdivisions {
         return { dt: dt, state: b2 }; // Use the more precise estimate
       }
       else {
-        return this.search( state, steppable, dt / 2 );
+        return this.search( state, steppable, dt / 2, b1 );
       }
     }
   }
