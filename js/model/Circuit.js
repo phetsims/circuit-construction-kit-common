@@ -1267,7 +1267,7 @@ class Circuit {
     const endVertex = circuitElement.endVertexProperty.value;
     circuitElement.startVertexProperty.value = endVertex;
     circuitElement.endVertexProperty.value = startVertex;
-    circuitElement.currentSense = CurrentSense.flip( circuitElement.currentSense );
+    circuitElement.currentSenseProperty.value = CurrentSense.flip( circuitElement.currentSenseProperty.value );
 
     // Layout the charges in the circuitElement but nowhere else, since that creates a discontinuity in the motion
     circuitElement.chargeLayoutDirty = true;

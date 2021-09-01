@@ -207,6 +207,16 @@ class ValueNode extends Panel {
 
     assert && assert( contentNode, 'Content node should be defined' );
 
+    if ( CCKCQueryParameters.showCurrents ) {
+      const text = new Text( '' );
+      Property.multilink( [ circuitElement.currentProperty, circuitElement.currentSenseProperty ], ( current, sense ) => {
+        text.text = sense.toString() + ', ' + current.toFixed( 4 );// eslint-disable-line
+      } );
+
+      contentNode = new VBox( { children: [ contentNode, text ] } );
+    }
+
+
     super( contentNode, {
       stroke: null,
       fill: new Color( 255, 255, 255, 0.6 ), // put transparency in the color so that the children aren't transparent

@@ -908,7 +908,7 @@ class CircuitLayerNode extends Node {
         // see https://github.com/phetsims/circuit-construction-kit-common/issues/418
         if ( !circuitElementNode.circuitElement.circuitElementDisposed && circuitElementNode.containsSensorPoint( globalPoint ) ) {
           let rawCurrent = circuitElementNode.circuitElement.currentProperty.get();
-          if ( circuitElementNode.circuitElement.currentSense === CurrentSense.BACKWARD ) {
+          if ( circuitElementNode.circuitElement.currentSenseProperty.value === CurrentSense.BACKWARD ) {
             rawCurrent = -rawCurrent;
           }
           return rawCurrent;

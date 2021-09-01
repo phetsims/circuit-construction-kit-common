@@ -98,7 +98,7 @@ class CircuitElement extends PhetioObject {
     // @public (read-only) {CurrentSense} - in order to keep the current signs consistent throughout a circuit
     // we assign the directionality based on the initial current direction, so the initial current is always positive.
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/508
-    this.currentSense = CurrentSense.UNSPECIFIED;
+    this.currentSenseProperty = new Property( CurrentSense.UNSPECIFIED );
 
     // @private {Array.<{current:number, time:number}}
     this.dataSet = [];
@@ -233,14 +233,14 @@ class CircuitElement extends PhetioObject {
     // Avoid measuring noise from the matrix solves in disconnected circuits.
     const isReadyToClear = Math.abs( slope ) < SENSE_TOLERANCE && Math.abs( current ) < SENSE_TOLERANCE;
 
-    if ( this.currentSense === CurrentSense.UNSPECIFIED ) {
+    if ( this.currentSenseProperty.value === CurrentSense.UNSPECIFIED ) {
 
       // If there are other circuit elements, match with them.
-      const otherCircuitElements = circuit.circuitElements.filter( c => c !== this && c.currentSense !== CurrentSense.UNSPECIFIED );
+      const otherCircuitElements = circuit.circuitElements.filter( c => c !== this && c.currentSenseProperty.value !== CurrentSense.UNSPECIFIED );
       if ( otherCircuitElements.length === 0 ) {
 
         // If this is the first circuit element, choose the current sense so the initial readout is positive
-        this.currentSense = getSenseForPositive( current );
+        this.currentSenseProperty.value = getSenseForPositive( current );
       }
       else {
 
@@ -253,15 +253,15 @@ class CircuitElement extends PhetioObject {
                             'error';
 
         assert && assert( desiredSign !== 'error' );
-        this.currentSense = desiredSign === 'positive' ?
-                            getSenseForPositive( current ) :
-                            getSenseForNegative( current );
+        this.currentSenseProperty.value = desiredSign === 'positive' ?
+                                          getSenseForPositive( current ) :
+                                          getSenseForNegative( current );
       }
     }
     else if ( isReadyToClear ) {
 
       // Reset directionality, and take new directionality when current flows again
-      this.currentSense = CurrentSense.UNSPECIFIED;
+      this.currentSenseProperty.value = CurrentSense.UNSPECIFIED;
     }
   }
 

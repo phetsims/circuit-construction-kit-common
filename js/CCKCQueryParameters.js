@@ -104,6 +104,11 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
   precision: {
     type: 'number',
     defaultValue: 32
+  },
+
+  // For debugging the current value and sense of FixedCircuitElement
+  showCurrents: {
+    type: 'flag'
   }
 } );
 
