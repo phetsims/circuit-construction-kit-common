@@ -75,7 +75,6 @@ class TimestepSubdivisions {
     }
     else {
       const a = steppable.update( state, dt );
-      console.log( !!halfStepState );
       const b1 = halfStepState || steppable.update( state, dt / 2 );
       const b2 = steppable.update( b1, dt / 2 );
       const distance = steppable.distance( a, b2 );
