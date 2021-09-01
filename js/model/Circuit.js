@@ -28,6 +28,7 @@ import Battery from './Battery.js';
 import Capacitor from './Capacitor.js';
 import Charge from './Charge.js';
 import ChargeAnimator from './ChargeAnimator.js';
+import CurrentSense from './CurrentSense.js';
 import CircuitElement from './CircuitElement.js';
 import CurrentType from './CurrentType.js';
 import Dog from './Dog.js';
@@ -1266,6 +1267,7 @@ class Circuit {
     const endVertex = circuitElement.endVertexProperty.value;
     circuitElement.startVertexProperty.value = endVertex;
     circuitElement.endVertexProperty.value = startVertex;
+    circuitElement.currentSense = CurrentSense.flip( circuitElement.currentSense );
 
     // Layout the charges in the circuitElement but nowhere else, since that creates a discontinuity in the motion
     circuitElement.chargeLayoutDirty = true;

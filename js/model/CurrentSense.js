@@ -11,6 +11,23 @@
 import Enumeration from '../../../phet-core/js/Enumeration.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
-const CurrentSense = Enumeration.byKeys( [ 'FORWARD', 'BACKWARD', 'UNSPECIFIED' ] );
+const CurrentSense = Enumeration.byKeys( [ 'FORWARD', 'BACKWARD', 'UNSPECIFIED' ], {
+  beforeFreeze: CurrentSense => {
+
+    /**
+     * Reverse the sense, forward and backwards swap.  Unspecified remains unspecified.
+     * @param {CurrentSense} currentSense
+     * @returns {CurrentSense}
+     * @static
+     * @public
+     */
+    CurrentSense.flip = currentSense => {
+      return currentSense === CurrentSense.FORWARD ? CurrentSense.BACKWARD :
+             currentSense === CurrentSense.BACKWARD ? CurrentSense.FORWARD :
+             CurrentSense.UNSPECIFIED;
+    };
+  }
+} );
+
 circuitConstructionKitCommon.register( 'CurrentSense', CurrentSense );
 export default CurrentSense;
