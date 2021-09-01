@@ -34,7 +34,7 @@ class ResultSet {
    */
   getTotalTime() {
     let sum = 0;
-    this.states.forEach( state => {sum += state.subdivisionDT;} );
+    this.states.forEach( state => {sum += state.dt;} );
     return sum;
   }
 }

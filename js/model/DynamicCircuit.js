@@ -268,7 +268,7 @@ class CircuitResult {
   getTimeAverageCurrent( element ) {
     let weightedSum = 0.0;
     this.resultSet.states.forEach( stateObject => {
-      weightedSum += stateObject.state.dynamicCircuitSolution.getCurrent( element ) * stateObject.subdivisionDT;
+      weightedSum += stateObject.state.dynamicCircuitSolution.getCurrent( element ) * stateObject.dt;
     } );
     const number = weightedSum / this.resultSet.getTotalTime();
     assert && assert( !isNaN( number ) );

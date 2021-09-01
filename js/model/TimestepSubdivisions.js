@@ -29,29 +29,31 @@ class TimestepSubdivisions {
   /**
    * @param {Object} originalState
    * @param {Steppable} steppable with update function
-   * @param {number} dt
+   * @param {number} totalTime
    * @returns {ResultSet}
    * @public
    */
-  stepInTimeWithHistory( originalState, steppable, dt ) {
+  stepInTimeWithHistory( originalState, steppable, totalTime ) {
     let state = originalState;
-    let elapsed = 0.0;
+    let elapsedTime = 0.0;
     const states = [];
-    while ( elapsed < dt ) {
+    let attemptedDT = totalTime;
+    while ( elapsedTime < totalTime ) {
 
-      //use the last obtained dt as a starting value, if possible
-      const seedValue = states.length > 0 ? states[ states.length - 1 ].subdivisionDT : dt;
+      const result = this.search( state, steppable, attemptedDT );
+      state = result.state;
+      states.push( result );
+      elapsedTime = elapsedTime + result.dt;
 
-      // try to increase first, in case higher dt has acceptable error, but don't try to double dt if it is first state
-      const startScale = states.length > 0 ? 2 : 1;
-      let subdivisionDT = this.getTimestep( state, steppable, seedValue * startScale );
-      if ( subdivisionDT + elapsed > dt ) {
-        subdivisionDT = dt - elapsed; // don't exceed max allowed dt
+      // If the system was highly nonlinear in one region, we may have had very small dt.  If the system is linear
+      // afterwards, allow the opportunity to increase dt accordingly.
+      attemptedDT = result.dt * 2;
+      if ( attemptedDT > totalTime - elapsedTime ) {
+        attemptedDT = totalTime - elapsedTime;
       }
-      state = steppable.update( state, subdivisionDT );
-      states.push( { subdivisionDT: subdivisionDT, state: state } );
-      elapsed = elapsed + subdivisionDT;
     }
+    // const dts = states.map( state => state.dt );
+    // console.log( dts.length, dts.join( ', ' ) );
     return new ResultSet( states );
   }
 
@@ -64,32 +66,26 @@ class TimestepSubdivisions {
    * @returns {number} the selected timestep that has acceptable error or meets the minimum allowed
    * @private
    */
-  getTimestep( state, steppable, dt ) {
-    if ( dt < MIN_DT ) {
-      return MIN_DT;
-    }
-    else if ( this.errorAcceptable( state, steppable, dt ) ) {
-      return dt;
+  search( state, steppable, dt ) {
+
+    // if dt is already too low, no need to do error checking
+    if ( dt <= MIN_DT ) {
+      return { dt: MIN_DT, state: steppable.update( state, MIN_DT ) };
     }
     else {
-      return this.getTimestep( state, steppable, dt / 2 );
+      const a = steppable.update( state, dt );
+      const b1 = steppable.update( state, dt / 2 );
+      const b2 = steppable.update( b1, dt / 2 );
+      const distance = steppable.distance( a, b2 );
+      assert && assert( !isNaN( distance ), 'distance should be numeric' );
+      const errorAcceptable = distance < ERROR_THRESHOLD;
+      if ( errorAcceptable ) {
+        return { dt: dt, state: b2 }; // Use the more precise estimate
+      }
+      else {
+        return this.search( state, steppable, dt / 2 );
+      }
     }
-  }
-
-  /**
-   * @param {Object} state
-   * @param {Steppable} steppable
-   * @param {number} dt
-   * @returns {boolean}
-   * @private
-   */
-  errorAcceptable( state, steppable, dt ) {
-    const a = steppable.update( state, dt );
-    const b1 = steppable.update( state, dt / 2 );
-    const b2 = steppable.update( b1, dt / 2 );
-    const distance = steppable.distance( a, b2 );
-    assert && assert( !isNaN( distance ), 'distance should be numeric' );
-    return distance < ERROR_THRESHOLD;
   }
 }
 
