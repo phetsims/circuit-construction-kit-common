@@ -2,13 +2,13 @@
   "extends": "../chipper/tsconfig-core.json",
   "references": [
     {
-      "path": "../chipper/tsconfig/twixt"
+      "path": "../twixt"
     },
     {
-      "path": "../chipper/tsconfig/griddle"
+      "path": "../griddle"
     },
     {
-      "path": "../chipper/tsconfig/joist"
+      "path": "../joist"
     }
   ],
   "include": [
