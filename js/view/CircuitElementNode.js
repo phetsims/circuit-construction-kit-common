@@ -219,7 +219,7 @@ class CircuitElementNode extends Node {
    */
   selectCircuitElementNodeWhenNear( circuitLayerNode, startPoint, latestPoint ) {
 
-    if ( latestPoint && latestPoint.distance( startPoint ) < CCKCConstants.TAP_THRESHOLD ) {
+    if ( !this.circuitElement.isDisposed && latestPoint && latestPoint.distance( startPoint ) < CCKCConstants.TAP_THRESHOLD ) {
 
       circuitLayerNode.circuit.selectedCircuitElementProperty.set( this.circuitElement );
 
