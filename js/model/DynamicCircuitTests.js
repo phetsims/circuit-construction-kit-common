@@ -11,6 +11,7 @@
 import DynamicCircuit from './DynamicCircuit.js';
 import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
 
+const ITERATIONS = 250;
 QUnit.module( 'DynamicCircuit' );
 
 const testVRCCircuit = ( v, r, c, assert ) => {
@@ -23,7 +24,7 @@ const testVRCCircuit = ( v, r, c, assert ) => {
   let dynamicCircuit = new DynamicCircuit( [ resistor ], [ battery ], [ capacitor ], [] );
 
   const dt = 1E-4;
-  for ( let i = 0; i < 1000; i++ ) {//takes 0.3 sec on my machine
+  for ( let i = 0; i < ITERATIONS; i++ ) {//takes 0.3 sec on my machine
     const t = i * dt;
 
     const companionSolution = dynamicCircuit.solveItWithSubdivisions( dt );
@@ -63,7 +64,7 @@ const testVRLCircuit = ( V, R, L, assert ) => {
   let circuit = new DynamicCircuit( [ resistor ], [ battery ], [], [ inductor ] );
 
   const dt = 1E-4;
-  for ( let i = 0; i < 1000; i++ ) {
+  for ( let i = 0; i < ITERATIONS; i++ ) {
     const t = i * dt;
     const solution = circuit.solveItWithSubdivisions( dt );
     const current = solution.getCurrent( resistor );
