@@ -60,4 +60,5 @@ class Capacitor extends DynamicCircuitElement {
 }
 
 circuitConstructionKitCommon.register( 'Capacitor', Capacitor );
+
 export default Capacitor;
