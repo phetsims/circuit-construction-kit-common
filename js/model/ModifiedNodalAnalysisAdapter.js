@@ -165,9 +165,16 @@ class ModifiedNodalAnalysisAdapter {
     const resistorAdapters = [];
     const capacitorAdapters = [];
     const inductorAdapters = [];
+
+    // Identify CircuitElements that are not in a loop with a voltage source. They will have their currents zeroed out.
+    const nonParticipants = [];
     for ( let i = 0; i < circuit.circuitElements.length; i++ ) {
       const branch = circuit.circuitElements.get( i );
-      if ( branch instanceof VoltageSource ) {
+
+      if ( !circuit.isInLoopWithVoltageSource( branch ) ) {
+        nonParticipants.push( branch );
+      }
+      else if ( branch instanceof VoltageSource ) {
         resistiveBatteryAdapters.push( new ResistiveBatteryAdapter( circuit, branch ) );
       }
       else if ( branch instanceof Resistor ||
@@ -251,12 +258,7 @@ class ModifiedNodalAnalysisAdapter {
     inductorAdapters.forEach( inductorAdapter => inductorAdapter.applySolution( circuitResult ) );
 
     // zero out currents on open branches
-    for ( let i = 0; i < circuit.circuitElements.length; i++ ) {
-      const branch = circuit.circuitElements.get( i );
-      if ( branch instanceof Switch && !branch.closedProperty.value ) {
-        branch.currentProperty.value = 0.0;
-      }
-    }
+    nonParticipants.forEach( circuitElement => circuitElement.currentProperty.set( 0 ) );
 
     // Apply the node voltages to the vertices
     circuit.vertexGroup.forEach( ( vertex, i ) => {

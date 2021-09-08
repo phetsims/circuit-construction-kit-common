@@ -26,6 +26,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ACVoltage from './ACVoltage.js';
 import Battery from './Battery.js';
 import Capacitor from './Capacitor.js';
+import VoltageSource from './VoltageSource.js';
 import Charge from './Charge.js';
 import ChargeAnimator from './ChargeAnimator.js';
 import CurrentSense from './CurrentSense.js';
@@ -1022,7 +1023,8 @@ class Circuit {
   }
 
   /**
-   * Find the subgraph where all vertices are connected, given the list of traversible circuit elements
+   * Find the subgraph where all vertices are connected, given the list of traversible circuit elements.
+   * See depthFirstSearch for a CircuitElement-oriented search.
    * @param {Vertex} vertex
    * @param {function} okToVisit - (startVertex:Vertex,circuitElement:CircuitElement,endVertex:Vertex)=>boolean, rule
    *                             - that determines which vertices are OK to visit
@@ -1066,6 +1068,96 @@ class Circuit {
       }
     }
     return _.uniq( fixedVertices );
+  }
+
+  /**
+   * PathElement is {startVertex:Vertex, circuitElement:CircuitElement, endVertex:Vertex}
+   * Path is [...PathElement].
+   * Depth-first search across circuit elements.
+   * See searchVertices for a Vertex-oriented search
+   *
+   * @param {PathElement[]} path
+   * @param {function(path:Path)} callback
+   * @private
+   */
+  depthFirstSearch( path, callback ) {
+
+    const lastPathElement = _.last( path );
+
+
+    this.circuitElements.filter( circuitElement => {
+
+      // Visit any adjacent Circuit Element that isn't already present in this Path
+      return !path.map( pathElement => pathElement.circuitElement ).includes( circuitElement ) &&
+
+             // And don't cross open switches
+             !( circuitElement instanceof Switch && !circuitElement.closedProperty.value );
+    } ).forEach( circuitElement => {
+
+      let newPathElement = null;
+      if ( circuitElement.startVertexProperty.value === lastPathElement.endVertex ) {
+
+        // Match forward
+        newPathElement = {
+          startVertex: circuitElement.startVertexProperty.value,
+          circuitElement: circuitElement,
+          endVertex: circuitElement.endVertexProperty.value
+        };
+      }
+      else if ( circuitElement.endVertexProperty.value === lastPathElement.endVertex ) {
+
+        // Match backwards
+        newPathElement = {
+          startVertex: circuitElement.endVertexProperty.value,
+          circuitElement: circuitElement,
+          endVertex: circuitElement.startVertexProperty.value
+        };
+      }
+      if ( newPathElement ) {
+        const newPath = [ ...path, newPathElement ];
+        callback( newPath );
+        this.depthFirstSearch( newPath, callback );
+      }
+    } );
+  }
+
+  /**
+   * Returns true if the circuit element is in a loop with a voltage source
+   * @param {CircuitElement} circuitElement
+   * @returns {boolean}
+   * @public
+   */
+  isInLoopWithVoltageSource( circuitElement ) {
+
+    // open switches are not in a loop
+    if ( circuitElement instanceof Switch && !circuitElement.closedProperty.value ) {
+      return false;
+    }
+
+    let foundLoop = false;
+    this.depthFirstSearch( [ {
+      startVertex: circuitElement.startVertexProperty.value,
+      circuitElement: circuitElement,
+      endVertex: circuitElement.endVertexProperty.value
+    } ], path => {
+      const firstPathElement = path[ 0 ];
+      const lastPathElement = _.last( path );
+
+      // Detect loops
+      if ( firstPathElement.startVertex === lastPathElement.endVertex ) {
+
+        // Make sure the loop contains a voltage source
+        foundLoop = foundLoop || path.map( pathElement => pathElement.circuitElement ).some( circuitElement => {
+          return circuitElement instanceof VoltageSource ||
+
+                 // Capacitors and Inductors are modeled as a time dependent voltage source + resistance
+                 circuitElement instanceof Capacitor ||
+                 circuitElement instanceof Inductor;
+        } );
+      }
+    } );
+
+    return foundLoop;
   }
 
   /**
