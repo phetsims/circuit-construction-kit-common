@@ -898,9 +898,6 @@ class Circuit {
     this.stepActions.forEach( stepAction => stepAction() );
     this.stepActions.length = 0;
 
-    // Move the charges
-    this.chargeAnimator.step( dt );
-
     // Move forward time
     this.timeProperty.value += dt;
 
@@ -931,6 +928,10 @@ class Circuit {
 
       this.circuitChangedEmitter.emit();
     }
+
+    // Move the charges.  Do this after the circuit has been solved so the conventional current will have the correct
+    // current values.
+    this.chargeAnimator.step( dt );
   }
 
   /**
