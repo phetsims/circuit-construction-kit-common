@@ -1151,8 +1151,11 @@ class Circuit {
           return circuitElement instanceof VoltageSource ||
 
                  // Capacitors and Inductors are modeled as a time dependent voltage source + resistance
-                 circuitElement instanceof Capacitor ||
-                 circuitElement instanceof Inductor;
+                 ( circuitElement instanceof DynamicCircuitElement &&
+
+                   // Both the voltage drop and current contribute to the companion model voltage
+                   ( circuitElement.mnaVoltageDrop !== 0 || circuitElement.mnaCurrent !== 0 )
+                 );
         } );
       }
     } );
