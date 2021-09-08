@@ -169,36 +169,36 @@ class ModifiedNodalAnalysisAdapter {
     // Identify CircuitElements that are not in a loop with a voltage source. They will have their currents zeroed out.
     const nonParticipants = [];
     for ( let i = 0; i < circuit.circuitElements.length; i++ ) {
-      const branch = circuit.circuitElements.get( i );
+      const circuitElement = circuit.circuitElements.get( i );
 
-      if ( !circuit.isInLoopWithVoltageSource( branch ) ) {
-        nonParticipants.push( branch );
+      if ( !circuit.isInLoopWithVoltageSource( circuitElement ) ) {
+        nonParticipants.push( circuitElement );
       }
-      else if ( branch instanceof VoltageSource ) {
-        resistiveBatteryAdapters.push( new ResistiveBatteryAdapter( circuit, branch ) );
+      else if ( circuitElement instanceof VoltageSource ) {
+        resistiveBatteryAdapters.push( new ResistiveBatteryAdapter( circuit, circuitElement ) );
       }
-      else if ( branch instanceof Resistor ||
-                branch instanceof Fuse ||
-                branch instanceof Wire ||
-                branch instanceof LightBulb ||
-                branch instanceof SeriesAmmeter ||
+      else if ( circuitElement instanceof Resistor ||
+                circuitElement instanceof Fuse ||
+                circuitElement instanceof Wire ||
+                circuitElement instanceof LightBulb ||
+                circuitElement instanceof SeriesAmmeter ||
 
                 // Since no closed circuit there; see below where current is zeroed out
-                ( branch instanceof Switch && branch.closedProperty.value ) ) {
-        resistorAdapters.push( new ResistorAdapter( circuit, branch ) );
+                ( circuitElement instanceof Switch && circuitElement.closedProperty.value ) ) {
+        resistorAdapters.push( new ResistorAdapter( circuit, circuitElement ) );
       }
-      else if ( branch instanceof Switch && !branch.closedProperty.value ) {
+      else if ( circuitElement instanceof Switch && !circuitElement.closedProperty.value ) {
 
         // no element for an open switch
       }
-      else if ( branch instanceof Capacitor ) {
-        capacitorAdapters.push( new CapacitorAdapter( circuit, branch ) );
+      else if ( circuitElement instanceof Capacitor ) {
+        capacitorAdapters.push( new CapacitorAdapter( circuit, circuitElement ) );
       }
-      else if ( branch instanceof Inductor ) {
-        inductorAdapters.push( new InductorAdapter( circuit, branch ) );
+      else if ( circuitElement instanceof Inductor ) {
+        inductorAdapters.push( new InductorAdapter( circuit, circuitElement ) );
       }
       else {
-        assert && assert( false, `Type not found: ${branch.constructor.name}` );
+        assert && assert( false, `Type not found: ${circuitElement.constructor.name}` );
       }
     }
 
