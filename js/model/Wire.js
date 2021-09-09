@@ -42,7 +42,7 @@ class Wire extends CircuitElement {
     this.wireStub = options.wireStub;
 
     // @public {NumberProperty} - the resistance of the Wire in ohms
-    this.resistanceProperty = new NumberProperty( CCKCConstants.MINIMUM_RESISTANCE );
+    this.resistanceProperty = new NumberProperty( CCKCConstants.MINIMUM_WIRE_RESISTANCE );
 
     if ( phet.chipper.queryParameters.dev ) {
       this.resistanceProperty.link( console.log );

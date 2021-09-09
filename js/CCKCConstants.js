@@ -16,7 +16,6 @@ import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
 // constants
 const FONT_SIZE = 14;
 const AC_CAROUSEL_SCALE = 1;
-const MINIMUM_RESISTANCE = 1E-8;
 
 // constants
 const CCKCConstants = {
@@ -77,8 +76,8 @@ const CCKCConstants = {
   // Lowest resistance a wire can have
   MINIMUM_WIRE_RESISTANCE: 1E-14,
 
-  // The lowest resistance other CircuitElements can have
-  MINIMUM_RESISTANCE: MINIMUM_RESISTANCE,
+  // The lowest resistance other CircuitElements can have. This is the resistance of a wire the same length as a resistor
+  MINIMUM_RESISTANCE: 1.1E-10,
 
   // How far to erode the visible bounds for keeping the probes in bounds.
   DRAG_BOUNDS_EROSION: 20,
