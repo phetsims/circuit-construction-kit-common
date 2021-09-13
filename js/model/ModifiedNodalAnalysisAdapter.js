@@ -275,8 +275,8 @@ class ModifiedNodalAnalysisAdapter {
 
     // compute voltages for open branches
     // for each connected component, start at a known voltage and depth first search the graph.
-    if ( participants.length > 0 ) {
-      const circuitElement = participants[ 0 ];
+
+    participants.forEach( circuitElement => {
       circuit.depthFirstSearch( [ {
         startVertex: circuitElement.startVertexProperty.value,
         circuitElement: circuitElement,
@@ -299,7 +299,7 @@ class ModifiedNodalAnalysisAdapter {
           }
         }
       } );
-    }
+    } );
   }
 }
 
