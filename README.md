@@ -2,7 +2,7 @@ Circuit Construction Kit
 ================
 
 "Circuit Construction Kit" is an educational simulation in HTML5, by <a href="https://phet.colorado.edu/" target="_blank">PhET Interactive Simulations</a>
-at the University of Colorado Boulder.
+at the University of Colorado Boulder.  This is the library that supports various related simulations.
 
 *This simulation is under development and has not been published.*
 
