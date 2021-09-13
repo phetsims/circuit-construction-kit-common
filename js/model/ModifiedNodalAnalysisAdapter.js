@@ -276,29 +276,66 @@ class ModifiedNodalAnalysisAdapter {
     // compute voltages for open branches
     // for each connected component, start at a known voltage and depth first search the graph.
 
-    participants.forEach( circuitElement => {
-      circuit.depthFirstSearch( [ {
+    const visited = [ ...participants ];
+
+    const visit = pathElement => {
+
+      const startVertex = pathElement.startVertex;
+      const circuitElement = pathElement.circuitElement;
+      const endVertex = pathElement.endVertex;
+
+      const sign = startVertex === circuitElement.startVertex ? -1 : +1;
+      // compute end voltage from start voltage
+      if ( circuitElement instanceof Resistor || circuitElement instanceof Wire || circuitElement instanceof LightBulb ||
+           ( circuitElement instanceof Switch && circuitElement.closedProperty.value ) || circuitElement instanceof Fuse ||
+           circuitElement instanceof SeriesAmmeter
+      ) {
+
+        // In the general case, we would need V=IR to compute the voltage drop, but we know the current across the
+        // participants is 0, so the voltage drop across them is also zero
+        endVertex.voltageProperty.value = startVertex.voltageProperty.value;
+      }
+      else if ( circuitElement instanceof VoltageSource ) {
+        endVertex.voltageProperty.value = startVertex.voltageProperty.value + sign * circuitElement.voltageProperty.value;
+      }
+      else if ( circuitElement instanceof Capacitor || circuitElement instanceof Inductor ) {
+        endVertex.voltageProperty.value = startVertex.voltageProperty.value + sign * circuitElement.mnaVoltageDrop;
+      }
+      else if ( circuitElement instanceof Switch && !circuitElement.closedProperty.value ) {
+        // do not continue
+      }
+      else {
+        assert && assert( false, 'unknown circuit element type: ' + circuitElement.constructor.name );
+      }
+    };
+
+    const search = circuitElement => {
+
+      const seed = {
         startVertex: circuitElement.startVertexProperty.value,
         circuitElement: circuitElement,
         endVertex: circuitElement.endVertexProperty.value
-      } ], path => {
+      };
+      visit( seed );
+      circuit.depthFirstSearch( [ seed ], path => {
 
         // if the last element in the path is a non-participant, compute its voltage from the prior element in the path
         const lastPathElement = _.last( path );
-        const startVertex = lastPathElement.startVertex;
-        const circuitElement = lastPathElement.circuitElement;
-        const endVertex = lastPathElement.endVertex;
+
+        visited.push( circuitElement );
+
         if ( nonParticipants.includes( circuitElement ) ) {
-
-          // compute end voltage from start voltage
-          if ( circuitElement instanceof Resistor || circuitElement instanceof Wire ) {
-
-            // In the general case, we would need V=IR to compute the voltage drop, but we know the current across the
-            // participants is 0, so the voltage drop across them is also zero
-            endVertex.voltageProperty.value = startVertex.voltageProperty.value;
-          }
+          visit( lastPathElement );
         }
       } );
+    };
+
+    participants.forEach( search );
+
+    circuit.circuitElements.forEach( circuitElement => {
+      if ( !visited.includes( circuitElement ) ) {
+        search( circuitElement );
+      }
     } );
   }
 }
