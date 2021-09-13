@@ -1084,7 +1084,6 @@ class Circuit {
 
     const lastPathElement = _.last( path );
 
-
     this.circuitElements.filter( circuitElement => {
 
       // Visit any adjacent Circuit Element that isn't already present in this Path

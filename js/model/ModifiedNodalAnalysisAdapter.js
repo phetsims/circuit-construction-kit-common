@@ -168,8 +168,13 @@ class ModifiedNodalAnalysisAdapter {
 
     // Identify CircuitElements that are not in a loop with a voltage source. They will have their currents zeroed out.
     const nonParticipants = [];
+    const participants = [];
     for ( let i = 0; i < circuit.circuitElements.length; i++ ) {
       const circuitElement = circuit.circuitElements.get( i );
+
+      if ( circuit.isInLoopWithVoltageSource( circuitElement ) ) {
+        participants.push( circuitElement );
+      }
 
       if ( !circuit.isInLoopWithVoltageSource( circuitElement ) ) {
         nonParticipants.push( circuitElement );
@@ -267,6 +272,34 @@ class ModifiedNodalAnalysisAdapter {
       // Unconnected vertices like those in the black box may not have an entry in the matrix, so mark them as zero.
       vertex.voltageProperty.set( v || 0 );
     } );
+
+    // compute voltages for open branches
+    // for each connected component, start at a known voltage and depth first search the graph.
+    if ( participants.length > 0 ) {
+      const circuitElement = participants[ 0 ];
+      circuit.depthFirstSearch( [ {
+        startVertex: circuitElement.startVertexProperty.value,
+        circuitElement: circuitElement,
+        endVertex: circuitElement.endVertexProperty.value
+      } ], path => {
+
+        // if the last element in the path is a non-participant, compute its voltage from the prior element in the path
+        const lastPathElement = _.last( path );
+        const startVertex = lastPathElement.startVertex;
+        const circuitElement = lastPathElement.circuitElement;
+        const endVertex = lastPathElement.endVertex;
+        if ( nonParticipants.includes( circuitElement ) ) {
+
+          // compute end voltage from start voltage
+          if ( circuitElement instanceof Resistor || circuitElement instanceof Wire ) {
+
+            // In the general case, we would need V=IR to compute the voltage drop, but we know the current across the
+            // participants is 0, so the voltage drop across them is also zero
+            endVertex.voltageProperty.value = startVertex.voltageProperty.value;
+          }
+        }
+      } );
+    }
   }
 }
 
