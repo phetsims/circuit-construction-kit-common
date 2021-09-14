@@ -299,7 +299,7 @@ class ModifiedNodalAnalysisAdapter {
         endVertex.voltageProperty.value = startVertex.voltageProperty.value + sign * circuitElement.voltageProperty.value;
       }
       else if ( circuitElement instanceof Capacitor || circuitElement instanceof Inductor ) {
-        endVertex.voltageProperty.value = startVertex.voltageProperty.value - sign * circuitElement.mnaVoltageDrop;
+        endVertex.voltageProperty.value = startVertex.voltageProperty.value + sign * circuitElement.mnaVoltageDrop;
       }
       else if ( circuitElement instanceof Switch && !circuitElement.closedProperty.value ) {
         // do not continue
