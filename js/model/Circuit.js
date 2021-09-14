@@ -1078,7 +1078,7 @@ class Circuit {
    *
    * @param {PathElement[]} path
    * @param {function(path:Path,newPathElement:PathElement)} callback
-   * @private
+   * @public
    */
   depthFirstSearch( path, callback ) {
 
