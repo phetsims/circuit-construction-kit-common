@@ -269,11 +269,11 @@ class ModifiedNodalAnalysisAdapter {
 
     // Apply the node voltages to the vertices
     circuit.vertexGroup.forEach( ( vertex, i ) => {
-      const v = circuitResult.resultSet.getFinalState().dynamicCircuitSolution.getNodeVoltage( i );
+      const voltage = circuitResult.resultSet.getFinalState().dynamicCircuitSolution.getNodeVoltage( i );
 
-      if ( typeof v === 'number' ) {
-        visitedVertices.push( v );
-        vertex.voltageProperty.set( v );
+      if ( typeof voltage === 'number' ) {
+        visitedVertices.push( vertex );
+        vertex.voltageProperty.set( voltage );
       }
       else {
 
@@ -293,7 +293,7 @@ class ModifiedNodalAnalysisAdapter {
 
       if ( !visitedVertices.includes( endVertex ) ) {
 
-        const sign = startVertex === circuitElement.startVertex ? 1 : -1;
+        const sign = startVertex === circuitElement.startVertexProperty.value ? 1 : -1;
 
         // compute end voltage from start voltage
         if ( circuitElement instanceof Resistor || circuitElement instanceof Wire || circuitElement instanceof LightBulb ||
