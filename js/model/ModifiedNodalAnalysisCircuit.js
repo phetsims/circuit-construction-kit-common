@@ -153,26 +153,26 @@ class ModifiedNodalAnalysisCircuit {
         nodeTerms.push( new Term( sign, new UnknownCurrent( battery ) ) );
       }
     }
-    let resistor;
 
-    // Each resistor with 0 resistance introduces an unknown current
+
     for ( let i = 0; i < this.resistors.length; i++ ) {
-      resistor = this.resistors[ i ];
+      const resistor = this.resistors[ i ];
 
-      // Treat resistors with R=0 as having unknown current and v1=v2
-      if ( resistor[ side ] === node && resistor.value === 0 ) {
-        nodeTerms.push( new Term( sign, new UnknownCurrent( resistor ) ) );
+      if ( resistor[ side ] === node ) {
+        if ( resistor.value === 0 ) {
+
+          // Each resistor with 0 resistance introduces an unknown current, and v1=v2
+          nodeTerms.push( new Term( sign, new UnknownCurrent( resistor ) ) );
+        }
+        else {
+
+          // Each resistor with nonzero resistance has unknown voltages
+          nodeTerms.push( new Term( -sign / resistor.value, new UnknownVoltage( resistor.nodeId1 ) ) );
+          nodeTerms.push( new Term( sign / resistor.value, new UnknownVoltage( resistor.nodeId0 ) ) );
+        }
       }
     }
 
-    // Each resistor with nonzero resistance has an unknown voltage
-    for ( let i = 0; i < this.resistors.length; i++ ) {
-      resistor = this.resistors[ i ];
-      if ( resistor[ side ] === node && resistor.value !== 0 ) {
-        nodeTerms.push( new Term( -sign / resistor.value, new UnknownVoltage( resistor.nodeId1 ) ) );
-        nodeTerms.push( new Term( sign / resistor.value, new UnknownVoltage( resistor.nodeId0 ) ) );
-      }
-    }
     return nodeTerms;
   }
 
