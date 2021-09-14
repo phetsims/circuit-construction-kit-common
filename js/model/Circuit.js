@@ -1077,7 +1077,7 @@ class Circuit {
    * See searchVertices for a Vertex-oriented search
    *
    * @param {PathElement[]} path
-   * @param {function(path:Path)} callback
+   * @param {function(path:Path,newPathElement:PathElement)} callback
    * @private
    */
   depthFirstSearch( path, callback ) {
@@ -1114,7 +1114,7 @@ class Circuit {
       }
       if ( newPathElement ) {
         const newPath = [ ...path, newPathElement ];
-        callback( newPath );
+        callback( newPath, newPathElement );
         this.depthFirstSearch( newPath, callback );
       }
     } );

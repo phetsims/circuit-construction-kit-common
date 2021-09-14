@@ -265,78 +265,75 @@ class ModifiedNodalAnalysisAdapter {
     // zero out currents on open branches
     nonParticipants.forEach( circuitElement => circuitElement.currentProperty.set( 0 ) );
 
+    const visitedVertices = [];
+
     // Apply the node voltages to the vertices
     circuit.vertexGroup.forEach( ( vertex, i ) => {
       const v = circuitResult.resultSet.getFinalState().dynamicCircuitSolution.getNodeVoltage( i );
 
-      // Unconnected vertices like those in the black box may not have an entry in the matrix, so mark them as zero.
-      vertex.voltageProperty.set( v || 0 );
+      if ( typeof v === 'number' ) {
+        visitedVertices.push( v );
+        vertex.voltageProperty.set( v );
+      }
+      else {
+
+        // Unconnected vertices like those in the black box may not have an entry in the matrix, so mark them as zero.
+        // Other vertices will be visited in the search below.
+        vertex.voltageProperty.set( 0 );
+      }
     } );
 
     // compute voltages for open branches
     // for each connected component, start at a known voltage and depth first search the graph.
-
-    const visited = [ ...participants ];
-
     const visit = pathElement => {
 
       const startVertex = pathElement.startVertex;
       const circuitElement = pathElement.circuitElement;
       const endVertex = pathElement.endVertex;
 
-      const sign = startVertex === circuitElement.startVertex ? -1 : +1;
-      // compute end voltage from start voltage
-      if ( circuitElement instanceof Resistor || circuitElement instanceof Wire || circuitElement instanceof LightBulb ||
-           ( circuitElement instanceof Switch && circuitElement.closedProperty.value ) || circuitElement instanceof Fuse ||
-           circuitElement instanceof SeriesAmmeter
-      ) {
+      if ( !visitedVertices.includes( endVertex ) ) {
 
-        // In the general case, we would need V=IR to compute the voltage drop, but we know the current across the
-        // non-participants is 0, so the voltage drop across them is also zero
-        endVertex.voltageProperty.value = startVertex.voltageProperty.value;
-      }
-      else if ( circuitElement instanceof VoltageSource ) {
-        endVertex.voltageProperty.value = startVertex.voltageProperty.value + sign * circuitElement.voltageProperty.value;
-      }
-      else if ( circuitElement instanceof Capacitor || circuitElement instanceof Inductor ) {
-        endVertex.voltageProperty.value = startVertex.voltageProperty.value + sign * circuitElement.mnaVoltageDrop;
-      }
-      else if ( circuitElement instanceof Switch && !circuitElement.closedProperty.value ) {
-        // do not continue
-      }
-      else {
-        assert && assert( false, 'unknown circuit element type: ' + circuitElement.constructor.name );
+        const sign = startVertex === circuitElement.startVertex ? 1 : -1;
+
+        // compute end voltage from start voltage
+        if ( circuitElement instanceof Resistor || circuitElement instanceof Wire || circuitElement instanceof LightBulb ||
+             ( circuitElement instanceof Switch && circuitElement.closedProperty.value ) || circuitElement instanceof Fuse ||
+             circuitElement instanceof SeriesAmmeter
+        ) {
+
+          // In the general case, we would need V=IR to compute the voltage drop, but we know the current across the
+          // non-participants is 0, so the voltage drop across them is also zero
+          endVertex.voltageProperty.value = startVertex.voltageProperty.value;
+          visitedVertices.push( endVertex );
+        }
+        else if ( circuitElement instanceof VoltageSource ) {
+          endVertex.voltageProperty.value = startVertex.voltageProperty.value + sign * circuitElement.voltageProperty.value;
+          visitedVertices.push( endVertex );
+        }
+        else if ( circuitElement instanceof Capacitor || circuitElement instanceof Inductor ) {
+          endVertex.voltageProperty.value = startVertex.voltageProperty.value + sign * circuitElement.mnaVoltageDrop;
+          visitedVertices.push( endVertex );
+        }
+        else if ( circuitElement instanceof Switch && !circuitElement.closedProperty.value ) {
+          // for an open switch, the node voltages are independent
+        }
+        else {
+          assert && assert( false, 'unknown circuit element type: ' + circuitElement.constructor.name );
+        }
       }
     };
 
-    const search = circuitElement => {
+    // If anything wasn't visited yet (if it is a different connected component), visit now
+    circuit.circuitElements.forEach( circuitElement => {
 
       const seed = {
         startVertex: circuitElement.startVertexProperty.value,
         circuitElement: circuitElement,
         endVertex: circuitElement.endVertexProperty.value
       };
+      visitedVertices.push( seed.startVertex );
       visit( seed );
-      circuit.depthFirstSearch( [ seed ], path => {
-
-        // if the last element in the path is a non-participant, compute its voltage from the prior element in the path
-        const lastPathElement = _.last( path );
-
-        visited.push( circuitElement );
-
-        if ( nonParticipants.includes( circuitElement ) ) {
-          visit( lastPathElement );
-        }
-      } );
-    };
-
-    participants.forEach( search );
-
-    // If anything wasn't visited yet (if it is a different connected component), visit now
-    circuit.circuitElements.forEach( circuitElement => {
-      if ( !visited.includes( circuitElement ) ) {
-        search( circuitElement );
-      }
+      circuit.depthFirstSearch( [ seed ], ( path, newPathElement ) => visit( newPathElement ) );
     } );
   }
 }
