@@ -292,7 +292,7 @@ class ModifiedNodalAnalysisAdapter {
       ) {
 
         // In the general case, we would need V=IR to compute the voltage drop, but we know the current across the
-        // participants is 0, so the voltage drop across them is also zero
+        // non-participants is 0, so the voltage drop across them is also zero
         endVertex.voltageProperty.value = startVertex.voltageProperty.value;
       }
       else if ( circuitElement instanceof VoltageSource ) {
