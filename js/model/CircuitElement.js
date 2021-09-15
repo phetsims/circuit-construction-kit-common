@@ -204,14 +204,12 @@ class CircuitElement extends PhetioObject {
   }
 
   /**
-   * Steps forward in time
-   * @public
-   *
+   * Update the value of currentSenseProperty, see its documentation for details.
    * @param {number} time
-   * @param {number} dt
    * @param {Circuit} circuit
+   * @public
    */
-  step( time, dt, circuit ) {
+  determineSense( time, circuit ) {
 
     const current = this.currentProperty.value;
 
@@ -263,6 +261,18 @@ class CircuitElement extends PhetioObject {
       // Reset directionality, and take new directionality when current flows again
       this.currentSenseProperty.value = CurrentSense.UNSPECIFIED;
     }
+  }
+
+  /**
+   * Steps forward in time
+   * @public
+   *
+   * @param {number} time
+   * @param {number} dt
+   * @param {Circuit} circuit
+   */
+  step( time, dt, circuit ) {
+    // no op
   }
 
   /**

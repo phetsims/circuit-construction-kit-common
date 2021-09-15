@@ -902,7 +902,6 @@ class Circuit {
     // Move forward time
     this.timeProperty.value += dt;
 
-    // Update the
     const stepElements = this.circuitElements.filter( element => element.step );
     const dynamicElements = this.circuitElements.filter( element => element instanceof DynamicCircuitElement );
     stepElements.forEach( element => element.step( this.timeProperty.value, dt, this ) );
@@ -929,6 +928,9 @@ class Circuit {
 
       this.circuitChangedEmitter.emit();
     }
+
+    // Update the sense of each CircuitElement after we determined the current values
+    stepElements.forEach( element => element.determineSense( this.timeProperty.value, this ) );
 
     // Move the charges.  Do this after the circuit has been solved so the conventional current will have the correct
     // current values.
