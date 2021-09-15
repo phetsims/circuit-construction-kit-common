@@ -24,10 +24,6 @@ import Vertex from './Vertex.js';
 // variables
 let index = 0;
 
-// TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/693 can this tolerance be reduced
-// now that the solver is more accurate?
-const SENSE_TOLERANCE = 1E-6;
-
 class CircuitElement extends PhetioObject {
 
   /**
@@ -99,9 +95,6 @@ class CircuitElement extends PhetioObject {
     // we assign the directionality based on the initial current direction, so the initial current is always positive.
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/508
     this.currentSenseProperty = new Property( CurrentSense.UNSPECIFIED );
-
-    // @private {Array.<{current:number, time:number}}
-    this.dataSet = [];
 
     // @public (read-only) {BooleanProperty} - true if the CircuitElement can be edited and dragged
     this.interactiveProperty = new BooleanProperty( options.interactive );
@@ -213,25 +206,15 @@ class CircuitElement extends PhetioObject {
 
     const current = this.currentProperty.value;
 
-    // Keep 2 data points to track the slope
-    this.dataSet.push( { current: current, time: time } );
-    while ( this.dataSet.length > 2 ) {
-      this.dataSet.shift();
+    // Disconnected circuits have a current of exactly 0, so we can use that to determine when to clear the sense
+    const isReadyToClear = current === 0;
+
+    if ( isReadyToClear ) {
+
+      // Reset directionality, and take new directionality when current flows again
+      this.currentSenseProperty.value = CurrentSense.UNSPECIFIED;
     }
-
-    if ( this.dataSet.length < 2 ) {
-      return;
-    }
-
-    const dCurrent = this.dataSet[ 1 ].current - this.dataSet[ 0 ].current;
-    const dTime = this.dataSet[ 1 ].time - this.dataSet[ 0 ].time;
-    assert && assert( dTime > 0, 'cannot divide by 0' );
-    const slope = dCurrent / dTime;
-
-    // Avoid measuring noise from the matrix solves in disconnected circuits.
-    const isReadyToClear = Math.abs( slope ) < SENSE_TOLERANCE && Math.abs( current ) < SENSE_TOLERANCE;
-
-    if ( this.currentSenseProperty.value === CurrentSense.UNSPECIFIED ) {
+    else if ( this.currentSenseProperty.value === CurrentSense.UNSPECIFIED ) {
 
       // If there are other circuit elements, match with them.
       const otherCircuitElements = circuit.circuitElements.filter( c => c !== this && c.currentSenseProperty.value !== CurrentSense.UNSPECIFIED );
@@ -255,11 +238,6 @@ class CircuitElement extends PhetioObject {
                                           getSenseForPositive( current ) :
                                           getSenseForNegative( current );
       }
-    }
-    else if ( isReadyToClear ) {
-
-      // Reset directionality, and take new directionality when current flows again
-      this.currentSenseProperty.value = CurrentSense.UNSPECIFIED;
     }
   }
 
@@ -472,11 +450,11 @@ CircuitElement.CircuitElementIO = new IOType( 'CircuitElementIO', {
   }
 } );
 
-const getSenseForPositive = current => current < -SENSE_TOLERANCE ? CurrentSense.BACKWARD :
-                                       current > SENSE_TOLERANCE ? CurrentSense.FORWARD :
+const getSenseForPositive = current => current < 0 ? CurrentSense.BACKWARD :
+                                       current > 0 ? CurrentSense.FORWARD :
                                        CurrentSense.UNSPECIFIED;
-const getSenseForNegative = current => current < -SENSE_TOLERANCE ? CurrentSense.FORWARD :
-                                       current > SENSE_TOLERANCE ? CurrentSense.BACKWARD :
+const getSenseForNegative = current => current < 0 ? CurrentSense.FORWARD :
+                                       current > 0 ? CurrentSense.BACKWARD :
                                        CurrentSense.UNSPECIFIED;
 
 circuitConstructionKitCommon.register( 'CircuitElement', CircuitElement );
