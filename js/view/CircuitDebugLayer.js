@@ -73,7 +73,7 @@ class CircuitDebugLayer extends Node {
       const textNode = new Text( circuitElement.currentProperty.value.toFixed( 2 ) ); //eslint-disable-line
       const panel = new Panel( textNode, {
         center: arrowNode.center,
-        fill: circuitElement.currentSenseProperty.value === CurrentSense.FORWARD ? 'red' :
+        fill: circuitElement.currentSenseProperty.value === CurrentSense.FORWARD ? 'green' :
               circuitElement.currentSenseProperty.value === CurrentSense.BACKWARD ? 'rgba(137, 196, 244, 1)' :
               'white'
       } );
