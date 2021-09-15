@@ -321,6 +321,38 @@ class ModifiedNodalAnalysisAdapter {
           assert && assert( false, 'unknown circuit element type: ' + circuitElement.constructor.name );
         }
       }
+
+      // Due to numerical floating point errors, current may not be exactly conserved.  But we don't want to show electrons
+      // moving in some part of a loop but not others, so we manually enforce current conservation at each vertex.
+
+      // the sum of currents flowing into the vertex should be 0
+      const neighbors = circuit.getNeighborCircuitElements( startVertex ).filter( c => participants.includes( c ) );
+      let sum = 0;
+      neighbors.forEach( neighbor => {
+        const sign = neighbor.startVertexProperty.value === startVertex ? +1 : -1;
+        const current = sign * neighbor.currentProperty.value;
+        sum += current;
+      } );
+      // const before = sum;
+
+      // divide the problem to all nonzero neighbors
+      const overflow = sum / neighbors.length;
+      neighbors.forEach( neighbor => {
+        const sign = neighbor.startVertexProperty.value === startVertex ? +1 : -1;
+        neighbor.currentProperty.value += -sign * overflow;
+      } );
+
+      sum = 0;
+      neighbors.forEach( neighbor => {
+        const sign = neighbor.startVertexProperty.value === startVertex ? +1 : -1;
+        const current = sign * neighbor.currentProperty.value;
+        sum += current;
+      } );
+      // console.log( 'after: ', startVertex.index, sum );
+      // if ( Math.abs( sum ) > 1E-15 ) {
+      //   console.log( 'before: ', startVertex.index, before );
+      //   console.log( 'after: ', startVertex.index, sum );
+      // }
     };
 
     // If anything wasn't visited yet (if it is a different connected component), visit now
