@@ -326,14 +326,21 @@ class ModifiedNodalAnalysisAdapter {
     // If anything wasn't visited yet (if it is a different connected component), visit now
     circuit.circuitElements.forEach( circuitElement => {
 
-      const seed = {
-        startVertex: circuitElement.startVertexProperty.value,
-        circuitElement: circuitElement,
-        endVertex: circuitElement.endVertexProperty.value
-      };
-      visitedVertices.push( seed.startVertex );
-      visit( seed );
-      circuit.depthFirstSearch( [ seed ], ( path, newPathElement ) => visit( newPathElement ) );
+      const seedVertex = circuitElement.startVertexProperty.value;
+      const neighbors = circuit.getNeighborCircuitElements( circuitElement.startVertexProperty.value );
+      const seeds = neighbors.map( neighbor => {
+        return {
+          startVertex: seedVertex,
+          circuitElement: neighbor,
+          endVertex: neighbor.getOppositeVertex( seedVertex )
+        };
+      } );
+
+      seeds.forEach( seed => {
+        visitedVertices.push( seed.startVertex );
+        visit( seed );
+        circuit.depthFirstSearch( [ seed ], ( path, newPathElement ) => visit( newPathElement ) );
+      } );
     } );
   }
 }
