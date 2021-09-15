@@ -24,6 +24,8 @@ import Path from '../../../scenery/js/nodes/Path.js';
 import scissorsShape from '../../../sherpa/js/fontawesome-4/scissorsShape.js';
 import RoundPushButton from '../../../sun/js/buttons/RoundPushButton.js';
 import Tandem from '../../../tandem/js/Tandem.js';
+import CCKCQueryParameters from '../CCKCQueryParameters.js';
+import CircuitDebugLayer from './CircuitDebugLayer.js';
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ACVoltage from '../model/ACVoltage.js';
@@ -401,6 +403,11 @@ class CircuitLayerNode extends Node {
 
     // When a charge is added, add the corresponding ChargeNode (removed it its dispose call)
     circuit.charges.addItemAddedListener( charge => this.chargeLayer.addChild( new ChargeNode( charge, this ) ) );
+
+    if ( CCKCQueryParameters.showCurrents ) {
+      this.circuitDebugLayer = new CircuitDebugLayer( this );
+      this.addChild( this.circuitDebugLayer );
+    }
   }
 
   /**
@@ -481,6 +488,8 @@ class CircuitLayerNode extends Node {
     // paint dirty fixed length circuit element nodes.  This batches changes instead of applying multiple changes
     // per frame
     this.circuit.circuitElements.forEach( circuitElement => this.getCircuitElementNode( circuitElement ).step() );
+
+    this.circuitDebugLayer && this.circuitDebugLayer.step();
   }
 
   /**
