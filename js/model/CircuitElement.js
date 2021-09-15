@@ -227,10 +227,10 @@ class CircuitElement extends PhetioObject {
 
         const rootElement = otherCircuitElements[ 0 ];
 
-        const desiredSign = rootElement.currentProperty.value >= 0 && CurrentSense.FORWARD ? 'positive' :
-                            rootElement.currentProperty.value >= 0 && CurrentSense.BACKWARD ? 'negative' :
-                            rootElement.currentProperty.value < 0 && CurrentSense.FORWARD ? 'negative' :
-                            rootElement.currentProperty.value < 0 && CurrentSense.BACKWARD ? 'positive' :
+        const desiredSign = rootElement.currentProperty.value >= 0 && rootElement.currentSenseProperty.value === CurrentSense.FORWARD ? 'positive' :
+                            rootElement.currentProperty.value >= 0 && rootElement.currentSenseProperty.value === CurrentSense.BACKWARD ? 'negative' :
+                            rootElement.currentProperty.value < 0 && rootElement.currentSenseProperty.value === CurrentSense.FORWARD ? 'negative' :
+                            rootElement.currentProperty.value < 0 && rootElement.currentSenseProperty.value === CurrentSense.BACKWARD ? 'positive' :
                             'error';
 
         assert && assert( desiredSign !== 'error' );
