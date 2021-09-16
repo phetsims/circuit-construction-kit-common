@@ -1085,14 +1085,16 @@ class Circuit {
   depthFirstSearch( path, callback ) {
 
     const lastPathElement = _.last( path );
+    const pathCircuitElements = path.map( pathElement => pathElement.circuitElement );
 
     this.circuitElements.filter( circuitElement => {
 
       // Visit any adjacent Circuit Element that isn't already present in this Path
-      return !path.map( pathElement => pathElement.circuitElement ).includes( circuitElement ) &&
+      return !pathCircuitElements.includes( circuitElement ) &&
 
              // And don't cross open switches
              !( circuitElement instanceof Switch && !circuitElement.closedProperty.value );
+
     } ).forEach( circuitElement => {
 
       let newPathElement = null;
