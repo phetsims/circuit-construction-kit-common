@@ -355,25 +355,36 @@ class ModifiedNodalAnalysisAdapter {
       // }
     };
 
-    // If anything wasn't visited yet (if it is a different connected component), visit now
-    circuit.circuitElements.forEach( circuitElement => {
+    // console.log( 'BEFORE' );
+    // circuit.checkCurrentConservation();
+    // console.log( '/BEFORE' );
 
-      const seedVertex = circuitElement.startVertexProperty.value;
-      const neighbors = circuit.getNeighborCircuitElements( circuitElement.startVertexProperty.value );
-      const seeds = neighbors.map( neighbor => {
-        return {
-          startVertex: seedVertex,
-          circuitElement: neighbor,
-          endVertex: neighbor.getOppositeVertex( seedVertex )
-        };
+    // Values zero out fast after a few iterations
+    for ( let i = 0; i < 3; i++ ) {
+      // If anything wasn't visited yet (if it is a different connected component), visit now
+      circuit.circuitElements.forEach( circuitElement => {
+
+        const seedVertex = circuitElement.startVertexProperty.value;
+        const neighbors = circuit.getNeighborCircuitElements( circuitElement.startVertexProperty.value );
+        const seeds = neighbors.map( neighbor => {
+          return {
+            startVertex: seedVertex,
+            circuitElement: neighbor,
+            endVertex: neighbor.getOppositeVertex( seedVertex )
+          };
+        } );
+
+        seeds.forEach( seed => {
+          visitedVertices.push( seed.startVertex );
+          visit( seed );
+          circuit.depthFirstSearch( [ seed ], ( path, newPathElement ) => visit( newPathElement ) );
+        } );
       } );
 
-      seeds.forEach( seed => {
-        visitedVertices.push( seed.startVertex );
-        visit( seed );
-        circuit.depthFirstSearch( [ seed ], ( path, newPathElement ) => visit( newPathElement ) );
-      } );
-    } );
+      // console.log( `AFTER${i}` );
+      // circuit.checkCurrentConservation();
+      // console.log( `/AFTER${i}` );
+    }
   }
 }
 

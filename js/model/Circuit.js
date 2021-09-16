@@ -1356,6 +1356,22 @@ class Circuit {
     return sorted[ 0 ];
   }
 
+  // @public
+  // A reporting tool to indicate whether current is conserved at each vertex
+  checkCurrentConservation() {
+    // the sum of currents flowing into the vertex should be 0
+    this.vertexGroup.forEach( vertex => {
+      const neighbors = this.getNeighborCircuitElements( vertex );
+      let sum = 0;
+      neighbors.forEach( neighbor => {
+        const sign = neighbor.startVertexProperty.value === vertex ? +1 : -1;
+        const current = sign * neighbor.currentProperty.value;
+        sum += current;
+      } );
+      console.log( `${vertex.index}: ${sum}` );
+    } );
+  }
+
   /**
    * Flip the given CircuitElement
    * @param {CircuitElement} circuitElement - the circuit element to flip
