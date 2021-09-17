@@ -26,7 +26,6 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ACVoltage from './ACVoltage.js';
 import Battery from './Battery.js';
 import Capacitor from './Capacitor.js';
-import VoltageSource from './VoltageSource.js';
 import Charge from './Charge.js';
 import ChargeAnimator from './ChargeAnimator.js';
 import CurrentSense from './CurrentSense.js';
@@ -1026,7 +1025,7 @@ class Circuit {
 
   /**
    * Find the subgraph where all vertices are connected, given the list of traversible circuit elements.
-   * See depthFirstSearch for a CircuitElement-oriented search.
+   * There are a few other ad-hoc graph searches around, such as isInLoop and in ModifiedNodalAnalysisAdapter
    * @param {Vertex} vertex
    * @param {function} okToVisit - (startVertex:Vertex,circuitElement:CircuitElement,endVertex:Vertex)=>boolean, rule
    *                             - that determines which vertices are OK to visit
@@ -1073,97 +1072,54 @@ class Circuit {
   }
 
   /**
-   * PathElement is {startVertex:Vertex, circuitElement:CircuitElement, endVertex:Vertex}
-   * Path is [...PathElement].
-   * Depth-first search across circuit elements.
-   * See searchVertices for a Vertex-oriented search
-   *
-   * @param {PathElement[]} path
-   * @param {function(path:Path,newPathElement:PathElement)} callback
-   * @public
-   */
-  depthFirstSearch( path, callback ) {
-
-    const lastPathElement = _.last( path );
-    const pathCircuitElements = path.map( pathElement => pathElement.circuitElement );
-
-    this.circuitElements.filter( circuitElement => {
-
-      // Visit any adjacent Circuit Element that isn't already present in this Path
-      return !pathCircuitElements.includes( circuitElement ) &&
-
-             // And don't cross open switches
-             !( circuitElement instanceof Switch && !circuitElement.closedProperty.value );
-
-    } ).forEach( circuitElement => {
-
-      let newPathElement = null;
-      if ( circuitElement.startVertexProperty.value === lastPathElement.endVertex ) {
-
-        // Match forward
-        newPathElement = {
-          startVertex: circuitElement.startVertexProperty.value,
-          circuitElement: circuitElement,
-          endVertex: circuitElement.endVertexProperty.value
-        };
-      }
-      else if ( circuitElement.endVertexProperty.value === lastPathElement.endVertex ) {
-
-        // Match backwards
-        newPathElement = {
-          startVertex: circuitElement.endVertexProperty.value,
-          circuitElement: circuitElement,
-          endVertex: circuitElement.startVertexProperty.value
-        };
-      }
-      if ( newPathElement ) {
-        const newPath = [ ...path, newPathElement ];
-        callback( newPath, newPathElement );
-        this.depthFirstSearch( newPath, callback );
-      }
-    } );
-  }
-
-  /**
    * Returns true if the circuit element is in a loop with a voltage source
    * @param {CircuitElement} circuitElement
    * @returns {boolean}
    * @public
    */
-  isInLoopWithVoltageSource( circuitElement ) {
+  isInLoop( circuitElement ) {
 
-    // open switches are not in a loop
-    if ( circuitElement instanceof Switch && !circuitElement.closedProperty.value ) {
-      return false;
-    }
+    // procedure DFS_iterative(G, v) is
+    // let S be a stack
+    // S.push(v)
+    // while S is not empty do
+    //   v = S.pop()
+    //   if v is not labeled as discovered then
+    //     label v as discovered
+    //     for all edges from v to w in G.adjacentEdges(v) do
+    //       S.push(w)
 
-    let foundLoop = false;
-    this.depthFirstSearch( [ {
-      startVertex: circuitElement.startVertexProperty.value,
-      circuitElement: circuitElement,
-      endVertex: circuitElement.endVertexProperty.value
-    } ], path => {
-      const firstPathElement = path[ 0 ];
-      const lastPathElement = _.last( path );
+    // Iterative (not recursive) depth first search, so we can bail on a hit, see https://en.wikipedia.org/wiki/Depth-first_search
+    const stack = [];
+    const visited = [];
+    stack.push( circuitElement.startVertexProperty.value );
+    while ( stack.length > 0 ) {
+      const vertex = stack.pop();
+      if ( !visited.includes( vertex ) ) {
+        visited.push( vertex );
 
-      // Detect loops
-      if ( firstPathElement.startVertex === lastPathElement.endVertex ) {
+        for ( let i = 0; i < this.circuitElements.length; i++ ) {
+          const neighbor = this.circuitElements[ i ];
 
-        // Make sure the loop contains a voltage source
-        foundLoop = foundLoop || path.map( pathElement => pathElement.circuitElement ).some( circuitElement => {
-          return circuitElement instanceof VoltageSource ||
+          if ( neighbor.containsVertex( vertex ) &&
 
-                 // Capacitors and Inductors are modeled as a time dependent voltage source + resistance
-                 ( circuitElement instanceof DynamicCircuitElement &&
+               // no shortcuts!
+               neighbor !== circuitElement &&
 
-                   // Both the voltage drop and current contribute to the companion model voltage
-                   ( circuitElement.mnaVoltageDrop !== 0 || circuitElement.mnaCurrent !== 0 )
-                 );
-        } );
+               // can't cross an open switch
+               !( neighbor instanceof Switch && !neighbor.closedProperty.value ) ) {
+            const opposite = neighbor.getOppositeVertex( vertex );
+            if ( opposite === circuitElement.endVertexProperty.value ) {
+
+              // Hooray, we found a loop!
+              return true;
+            }
+            stack.push( opposite );
+          }
+        }
       }
-    } );
-
-    return foundLoop;
+    }
+    return false;
   }
 
   /**

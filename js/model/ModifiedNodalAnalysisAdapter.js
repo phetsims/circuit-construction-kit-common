@@ -172,11 +172,12 @@ class ModifiedNodalAnalysisAdapter {
     for ( let i = 0; i < circuit.circuitElements.length; i++ ) {
       const circuitElement = circuit.circuitElements.get( i );
 
-      if ( circuit.isInLoopWithVoltageSource( circuitElement ) ) {
+      const inLoop = circuit.isInLoop( circuitElement );
+      if ( inLoop ) {
         participants.push( circuitElement );
       }
 
-      if ( !circuit.isInLoopWithVoltageSource( circuitElement ) ) {
+      if ( !inLoop ) {
         nonParticipants.push( circuitElement );
       }
       else if ( circuitElement instanceof VoltageSource ) {
@@ -203,7 +204,10 @@ class ModifiedNodalAnalysisAdapter {
         inductorAdapters.push( new InductorAdapter( circuit, circuitElement ) );
       }
       else {
-        assert && assert( false, `Type not found: ${circuitElement.constructor.name}` );
+        assert && assert( false, `
+      Type
+      not
+      found: ${circuitElement.constructor.name}` );
       }
     }
 

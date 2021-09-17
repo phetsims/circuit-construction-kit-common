@@ -426,6 +426,11 @@ class CircuitElement extends PhetioObject {
     const end = this.endVertexProperty.value.positionProperty.get();
     return start.average( end );
   }
+
+  // @public
+  toVertexString() {
+    return `${this.startVertexProperty.value.index} -> ${this.endVertexProperty.value.index}`;
+  }
 }
 
 const VertexReferenceIO = ReferenceIO( Vertex.VertexIO );
