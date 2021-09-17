@@ -265,14 +265,15 @@ class ModifiedNodalAnalysisAdapter {
     // zero out currents on open branches
     nonParticipants.forEach( circuitElement => circuitElement.currentProperty.set( 0 ) );
 
-    const visitedVertices = [];
+    const solvedVertices = [];
+    const unsolvedVertices = [];
 
     // Apply the node voltages to the vertices
     circuit.vertexGroup.forEach( ( vertex, i ) => {
       const voltage = circuitResult.resultSet.getFinalState().dynamicCircuitSolution.getNodeVoltage( i );
 
       if ( typeof voltage === 'number' ) {
-        visitedVertices.push( vertex );
+        solvedVertices.push( vertex );
         vertex.voltageProperty.set( voltage );
       }
       else {
@@ -280,18 +281,16 @@ class ModifiedNodalAnalysisAdapter {
         // Unconnected vertices like those in the black box may not have an entry in the matrix, so mark them as zero.
         // Other vertices will be visited in the search below.
         vertex.voltageProperty.set( 0 );
+        unsolvedVertices.push( vertex );
       }
     } );
 
     // compute voltages for open branches
     // for each connected component, start at a known voltage and depth first search the graph.
-    const visit = pathElement => {
+    const visit = ( startVertex, circuitElement, endVertex ) => {
 
-      const startVertex = pathElement.startVertex;
-      const circuitElement = pathElement.circuitElement;
-      const endVertex = pathElement.endVertex;
-
-      if ( !visitedVertices.includes( endVertex ) ) {
+      // If we already know the voltage from the matrix solution, skip it.
+      if ( !solvedVertices.includes( endVertex ) ) {
 
         const sign = startVertex === circuitElement.startVertexProperty.value ? 1 : -1;
 
@@ -304,15 +303,15 @@ class ModifiedNodalAnalysisAdapter {
           // In the general case, we would need V=IR to compute the voltage drop, but we know the current across the
           // non-participants is 0, so the voltage drop across them is also zero
           endVertex.voltageProperty.value = startVertex.voltageProperty.value;
-          visitedVertices.push( endVertex );
+          solvedVertices.push( endVertex );
         }
         else if ( circuitElement instanceof VoltageSource ) {
           endVertex.voltageProperty.value = startVertex.voltageProperty.value + sign * circuitElement.voltageProperty.value;
-          visitedVertices.push( endVertex );
+          solvedVertices.push( endVertex );
         }
         else if ( circuitElement instanceof Capacitor || circuitElement instanceof Inductor ) {
           endVertex.voltageProperty.value = startVertex.voltageProperty.value + sign * circuitElement.mnaVoltageDrop;
-          visitedVertices.push( endVertex );
+          solvedVertices.push( endVertex );
         }
         else if ( circuitElement instanceof Switch && !circuitElement.closedProperty.value ) {
           // for an open switch, the node voltages are independent
@@ -321,69 +320,36 @@ class ModifiedNodalAnalysisAdapter {
           assert && assert( false, 'unknown circuit element type: ' + circuitElement.constructor.name );
         }
       }
-
-      // Due to numerical floating point errors, current may not be exactly conserved.  But we don't want to show electrons
-      // moving in some part of a loop but not others, so we manually enforce current conservation at each vertex.
-
-      // the sum of currents flowing into the vertex should be 0
-      const neighbors = circuit.getNeighborCircuitElements( startVertex ).filter( c => participants.includes( c ) );
-      let sum = 0;
-      neighbors.forEach( neighbor => {
-        const sign = neighbor.startVertexProperty.value === startVertex ? +1 : -1;
-        const current = sign * neighbor.currentProperty.value;
-        sum += current;
-      } );
-      // const before = sum;
-
-      // divide the problem to all nonzero neighbors
-      const overflow = sum / neighbors.length;
-      neighbors.forEach( neighbor => {
-        const sign = neighbor.startVertexProperty.value === startVertex ? +1 : -1;
-        neighbor.currentProperty.value += -sign * overflow;
-      } );
-
-      sum = 0;
-      neighbors.forEach( neighbor => {
-        const sign = neighbor.startVertexProperty.value === startVertex ? +1 : -1;
-        const current = sign * neighbor.currentProperty.value;
-        sum += current;
-      } );
-      // console.log( 'after: ', startVertex.index, sum );
-      // if ( Math.abs( sum ) > 1E-15 ) {
-      //   console.log( 'before: ', startVertex.index, before );
-      //   console.log( 'after: ', startVertex.index, sum );
-      // }
     };
 
-    // console.log( 'BEFORE' );
-    // circuit.checkCurrentConservation();
-    // console.log( '/BEFORE' );
-
-    // Values zero out fast after a few iterations
-    for ( let i = 0; i < 3; i++ ) {
-      // If anything wasn't visited yet (if it is a different connected component), visit now
+    const visited = [];
+    const dfs = vertex => {
+      visited.push( vertex );
       circuit.circuitElements.forEach( circuitElement => {
-
-        const seedVertex = circuitElement.startVertexProperty.value;
-        const neighbors = circuit.getNeighborCircuitElements( circuitElement.startVertexProperty.value );
-        const seeds = neighbors.map( neighbor => {
-          return {
-            startVertex: seedVertex,
-            circuitElement: neighbor,
-            endVertex: neighbor.getOppositeVertex( seedVertex )
-          };
-        } );
-
-        seeds.forEach( seed => {
-          visitedVertices.push( seed.startVertex );
-          visit( seed );
-          circuit.depthFirstSearch( [ seed ], ( path, newPathElement ) => visit( newPathElement ) );
-        } );
+        if ( circuitElement.containsVertex( vertex ) ) {
+          const opposite = circuitElement.getOppositeVertex( vertex );
+          if ( !visited.includes( opposite ) && !( circuitElement instanceof Switch && !circuitElement.closedProperty.value ) ) {
+            visit( vertex, circuitElement, opposite );
+            dfs( opposite );
+          }
+        }
       } );
+    };
 
-      // console.log( `AFTER${i}` );
-      // circuit.checkCurrentConservation();
-      // console.log( `/AFTER${i}` );
+    // Start visiting from the solved vertices, since they have the ground truth.  Have to visit each to make sure
+    // we traveled to all disconnected components
+    const allVertices = [ ...solvedVertices, ...unsolvedVertices ];
+    allVertices.forEach( vertex => {
+      if ( !visited.includes( vertex ) ) {
+        dfs( vertex );
+      }
+    } );
+
+    // circuit.checkCurrentConservation( 'before' );
+    for ( let i = 0; i < 6; i++ ) {
+
+      circuit.ensureCurrentConservation( participants );
+      // circuit.checkCurrentConservation( 'after ' + i );
     }
   }
 }

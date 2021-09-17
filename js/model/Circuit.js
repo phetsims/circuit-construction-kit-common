@@ -1358,7 +1358,8 @@ class Circuit {
 
   // @public
   // A reporting tool to indicate whether current is conserved at each vertex
-  checkCurrentConservation() {
+  checkCurrentConservation( index ) {
+    console.log( '####### ' + index );
     // the sum of currents flowing into the vertex should be 0
     this.vertexGroup.forEach( vertex => {
       const neighbors = this.getNeighborCircuitElements( vertex );
@@ -1369,6 +1370,30 @@ class Circuit {
         sum += current;
       } );
       console.log( `${vertex.index}: ${sum}` );
+    } );
+  }
+
+  // @public
+  ensureCurrentConservation( participants ) {
+    this.vertexGroup.forEach( vertex => {
+      // Due to numerical floating point errors, current may not be exactly conserved.  But we don't want to show electrons
+      // moving in some part of a loop but not others, so we manually enforce current conservation at each vertex.
+
+      // the sum of currents flowing into the vertex should be 0
+      const neighbors = this.getNeighborCircuitElements( vertex ).filter( c => participants.includes( c ) );
+      let sum = 0;
+      neighbors.forEach( neighbor => {
+        const sign = neighbor.startVertexProperty.value === vertex ? +1 : -1;
+        const current = sign * neighbor.currentProperty.value;
+        sum += current;
+      } );
+
+      // divide the problem to all mutable (participant) neighbors
+      const overflow = sum / neighbors.length;
+      neighbors.forEach( neighbor => {
+        const sign = neighbor.startVertexProperty.value === vertex ? +1 : -1;
+        neighbor.currentProperty.value += -sign * overflow;
+      } );
     } );
   }
 
