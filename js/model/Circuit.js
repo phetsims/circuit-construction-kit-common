@@ -1329,28 +1329,35 @@ class Circuit {
     } );
   }
 
-  // @public
-  ensureCurrentConservation( participants ) {
-    this.vertexGroup.forEach( vertex => {
-      // Due to numerical floating point errors, current may not be exactly conserved.  But we don't want to show electrons
-      // moving in some part of a loop but not others, so we manually enforce current conservation at each vertex.
+  /**
+   * Due to numerical floating point errors, current may not be exactly conserved.  But we don't want to show electrons
+   * moving in some part of a loop but not others, so we manually enforce current conservation at each vertex.
+   * @param {Vertex} vertex
+   * @param {CircuitElement[]} locked
+   * @public
+   */
+  conserveCurrent( vertex, locked ) {
+    // the sum of currents flowing into the vertex should be 0
+    const neighbors = this.getNeighborCircuitElements( vertex );
+    let sum = 0;
+    neighbors.forEach( neighbor => {
+      const sign = neighbor.startVertexProperty.value === vertex ? +1 : -1;
+      const current = sign * neighbor.currentProperty.value;
+      sum += current;
+    } );
 
-      // the sum of currents flowing into the vertex should be 0
-      const neighbors = this.getNeighborCircuitElements( vertex ).filter( c => participants.includes( c ) );
-      let sum = 0;
-      neighbors.forEach( neighbor => {
-        const sign = neighbor.startVertexProperty.value === vertex ? +1 : -1;
-        const current = sign * neighbor.currentProperty.value;
-        sum += current;
-      } );
+    // If the amount of unconserved current is too high, then try to adjust other currents to compensate
+    if ( Math.abs( sum ) > 1E-10 ) {
 
-      // divide the problem to all mutable (participant) neighbors
-      const overflow = sum / neighbors.length;
-      neighbors.forEach( neighbor => {
+      // divide the problem to all mutable (participant), non-locked neighbors
+      const unlockedNeighbors = neighbors.filter( n => !locked.includes( n ) );
+      const overflow = sum / unlockedNeighbors.length;
+      unlockedNeighbors.forEach( neighbor => {
         const sign = neighbor.startVertexProperty.value === vertex ? +1 : -1;
         neighbor.currentProperty.value += -sign * overflow;
+        locked.push( neighbor );
       } );
-    } );
+    }
   }
 
   /**

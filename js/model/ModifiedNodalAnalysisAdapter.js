@@ -291,7 +291,7 @@ class ModifiedNodalAnalysisAdapter {
 
     // compute voltages for open branches
     // for each connected component, start at a known voltage and depth first search the graph.
-    const visit = ( startVertex, circuitElement, endVertex ) => {
+    const visitVoltage = ( startVertex, circuitElement, endVertex ) => {
 
       // If we already know the voltage from the matrix solution, skip it.
       if ( !solvedVertices.includes( endVertex ) ) {
@@ -327,14 +327,14 @@ class ModifiedNodalAnalysisAdapter {
     };
 
     const visited = [];
-    const dfs = vertex => {
+    const dfs = ( vertex, visit ) => {
       visited.push( vertex );
       circuit.circuitElements.forEach( circuitElement => {
         if ( circuitElement.containsVertex( vertex ) ) {
           const opposite = circuitElement.getOppositeVertex( vertex );
           if ( !visited.includes( opposite ) && !( circuitElement instanceof Switch && !circuitElement.closedProperty.value ) ) {
             visit( vertex, circuitElement, opposite );
-            dfs( opposite );
+            dfs( opposite, visit );
           }
         }
       } );
@@ -345,16 +345,17 @@ class ModifiedNodalAnalysisAdapter {
     const allVertices = [ ...solvedVertices, ...unsolvedVertices ];
     allVertices.forEach( vertex => {
       if ( !visited.includes( vertex ) ) {
-        dfs( vertex );
+        dfs( vertex, visitVoltage );
       }
     } );
 
+    // Depth first search across the circuit to ensure current conserved at each vertex
     // circuit.checkCurrentConservation( 'before' );
-    for ( let i = 0; i < 6; i++ ) {
-
-      circuit.ensureCurrentConservation( participants );
-      // circuit.checkCurrentConservation( 'after ' + i );
-    }
+    const locked = [ ...nonParticipants ];
+    const visitCurrent = vertex => circuit.conserveCurrent( vertex, locked );
+    visited.length = 0;
+    allVertices.forEach( vertex => dfs( vertex, visitCurrent ) );
+    // circuit.checkCurrentConservation( 'after' );
   }
 }
 
