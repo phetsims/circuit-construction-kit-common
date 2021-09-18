@@ -277,8 +277,8 @@ class ModifiedNodalAnalysisAdapter {
       const voltage = circuitResult.resultSet.getFinalState().dynamicCircuitSolution.getNodeVoltage( i );
 
       if ( typeof voltage === 'number' ) {
-        solvedVertices.push( vertex );
         vertex.voltageProperty.set( voltage );
+        solvedVertices.push( vertex );
       }
       else {
 

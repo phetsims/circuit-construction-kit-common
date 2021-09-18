@@ -61,13 +61,7 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
 
   // Show a readout for each vertex, for debugging the circuit physics
   vertexDisplay: {
-    type: 'string',
-    defaultValue: null,
-    validValues: [
-      null, // Show nothing
-      'voltage', // Show the voltage
-      'index' // Show the vertex index
-    ]
+    type: 'flag'
   },
 
   // Shows the play/pause button.  When the user changes something, the sim automatically pauses and hides indicators (like electrons and flame)

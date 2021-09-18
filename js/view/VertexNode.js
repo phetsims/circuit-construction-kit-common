@@ -72,13 +72,11 @@ class VertexNode extends Node {
     this.circuitLayerNode = circuitLayerNode;
 
     // Use a query parameter to turn on node voltage readouts for debugging only.
-    const vertexDisplay = CCKCQueryParameters.vertexDisplay;
-
     // @private {Text} display for debugging only
     this.voltageReadoutText = null;
-    if ( vertexDisplay ) {
+    if ( CCKCQueryParameters.vertexDisplay ) {
       this.voltageReadoutText = new Text( '', {
-        fontSize: 18,
+        fontSize: 14,
         pickable: false
       } );
 
@@ -91,7 +89,7 @@ class VertexNode extends Node {
 
         // No need for i18n because this is for debugging only
         const voltageText = `${Utils.toFixed( voltage, 3 )}V`;
-        this.voltageReadoutText.setText( vertexDisplay === 'voltage' ? voltageText : vertex.index );
+        this.voltageReadoutText.setText( `${vertex.index} @ ${voltageText}` );
         this.updateReadoutTextPosition();
       } );
     }
