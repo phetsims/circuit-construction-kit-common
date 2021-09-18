@@ -339,7 +339,7 @@ class ModifiedNodalAnalysisCircuit {
       CCKCUtils.incrementAccumulatedSteps();
 
       // For the first several steps, use high precision
-      if ( CCKCUtils.getAccumulatedSteps() <= 10 ) {
+      if ( CCKCUtils.getAccumulatedSteps() <= 3 ) {
 
         // Must be a plain array, not an optimized number container
         const entries = [];
