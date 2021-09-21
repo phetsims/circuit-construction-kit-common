@@ -41,7 +41,7 @@ class Vertex extends PhetioObject {
 
     super( options );
 
-    // @private {number} - Index counter for hashing in CircuitLayerNode.  Also useful for debugging and can be shown
+    // @public (readonly) {number} - Index counter for hashing in CircuitLayerNode.  Also useful for debugging and can be shown
     // with ?vertexDisplay=index
     this.index = counter++;
 

@@ -173,41 +173,41 @@ class ModifiedNodalAnalysisAdapter {
       const circuitElement = circuit.circuitElements.get( i );
 
       const inLoop = circuit.isInLoop( circuitElement );
+
       if ( inLoop ) {
         participants.push( circuitElement );
-      }
+        if ( circuitElement instanceof VoltageSource ) {
+          resistiveBatteryAdapters.push( new ResistiveBatteryAdapter( circuit, circuitElement ) );
+        }
+        else if ( circuitElement instanceof Resistor ||
+                  circuitElement instanceof Fuse ||
+                  circuitElement instanceof Wire ||
+                  circuitElement instanceof LightBulb ||
+                  circuitElement instanceof SeriesAmmeter ||
 
-      if ( !inLoop ) {
-        nonParticipants.push( circuitElement );
-      }
-      else if ( circuitElement instanceof VoltageSource ) {
-        resistiveBatteryAdapters.push( new ResistiveBatteryAdapter( circuit, circuitElement ) );
-      }
-      else if ( circuitElement instanceof Resistor ||
-                circuitElement instanceof Fuse ||
-                circuitElement instanceof Wire ||
-                circuitElement instanceof LightBulb ||
-                circuitElement instanceof SeriesAmmeter ||
+                  // Since no closed circuit there; see below where current is zeroed out
+                  ( circuitElement instanceof Switch && circuitElement.closedProperty.value ) ) {
+          resistorAdapters.push( new ResistorAdapter( circuit, circuitElement ) );
+        }
+        else if ( circuitElement instanceof Switch && !circuitElement.closedProperty.value ) {
 
-                // Since no closed circuit there; see below where current is zeroed out
-                ( circuitElement instanceof Switch && circuitElement.closedProperty.value ) ) {
-        resistorAdapters.push( new ResistorAdapter( circuit, circuitElement ) );
-      }
-      else if ( circuitElement instanceof Switch && !circuitElement.closedProperty.value ) {
-
-        // no element for an open switch
-      }
-      else if ( circuitElement instanceof Capacitor ) {
-        capacitorAdapters.push( new CapacitorAdapter( circuit, circuitElement ) );
-      }
-      else if ( circuitElement instanceof Inductor ) {
-        inductorAdapters.push( new InductorAdapter( circuit, circuitElement ) );
-      }
-      else {
-        assert && assert( false, `
+          // no element for an open switch
+        }
+        else if ( circuitElement instanceof Capacitor ) {
+          capacitorAdapters.push( new CapacitorAdapter( circuit, circuitElement ) );
+        }
+        else if ( circuitElement instanceof Inductor ) {
+          inductorAdapters.push( new InductorAdapter( circuit, circuitElement ) );
+        }
+        else {
+          assert && assert( false, `
       Type
       not
       found: ${circuitElement.constructor.name}` );
+        }
+      }
+      else {
+        nonParticipants.push( circuitElement );
       }
     }
 
@@ -276,6 +276,7 @@ class ModifiedNodalAnalysisAdapter {
     circuit.vertexGroup.forEach( ( vertex, i ) => {
       const voltage = circuitResult.resultSet.getFinalState().dynamicCircuitSolution.getNodeVoltage( i );
 
+      // console.log( `index ${i} corresponds to vertex ${vertex.index}` );
       if ( typeof voltage === 'number' ) {
         vertex.voltageProperty.set( voltage );
         solvedVertices.push( vertex );
