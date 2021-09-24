@@ -53,7 +53,6 @@ class ModifiedNodalAnalysisCircuit {
     // @public (read-only) {Object} - an object with index for all keys that have a node in the circuit, such as:
     // {0:0, 1:1, 2:2, 7:7}
     this.nodeSet = {};
-    console.log( this.nodeSet );
     for ( let k = 0; k < this.elements.length; k++ ) {
       const element = this.elements[ k ];
       assert && CCKCUtils.validateNodeIndex( element.nodeId0 );
