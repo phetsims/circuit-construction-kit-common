@@ -53,10 +53,11 @@ class ModifiedNodalAnalysisCircuit {
     // @public (read-only) {Object} - an object with index for all keys that have a node in the circuit, such as:
     // {0:0, 1:1, 2:2, 7:7}
     this.nodeSet = {};
+    console.log( this.nodeSet );
     for ( let k = 0; k < this.elements.length; k++ ) {
       const element = this.elements[ k ];
-      assert && assert( typeof ( element.nodeId0 ) === 'number', 'nodeID should be a number' );
-      assert && assert( typeof ( element.nodeId1 ) === 'number', 'nodeID should be a number' );
+      assert && CCKCUtils.validateNodeIndex( element.nodeId0 );
+      assert && CCKCUtils.validateNodeIndex( element.nodeId1 );
       this.nodeSet[ element.nodeId0 ] = element.nodeId0;
       this.nodeSet[ element.nodeId1 ] = element.nodeId1;
     }
@@ -143,7 +144,7 @@ class ModifiedNodalAnalysisCircuit {
    * @private
    */
   getCurrentTerms( node, side, sign ) {
-    assert && assert( typeof node === 'number', 'node should be a number' );
+    assert && CCKCUtils.validateNodeIndex( node );
     const nodeTerms = [];
 
     // Each battery introduces an unknown current through the battery
@@ -221,7 +222,7 @@ class ModifiedNodalAnalysisCircuit {
         const element = this.elements[ i ];
         if ( element.containsNodeId( nodeToVisit ) ) {
           const oppositeNode = element.getOppositeNode( nodeToVisit );
-          assert && assert( !isNaN( oppositeNode ) );
+          assert && CCKCUtils.validateNodeIndex( oppositeNode );
           if ( visited.indexOf( oppositeNode ) === -1 ) {
             toVisit.push( oppositeNode );
           }
@@ -504,7 +505,7 @@ class UnknownVoltage {
    * @param {number} node - the index of the node
    */
   constructor( node ) {
-    assert && assert( typeof node === 'number', 'nodes should be numbers' );
+    assert && CCKCUtils.validateNodeIndex( node );
 
     // @public (read-only) {number}
     this.node = node;

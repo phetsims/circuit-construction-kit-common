@@ -35,8 +35,8 @@ class ResistiveBatteryAdapter extends DynamicCircuit.ResistiveBattery {
    */
   constructor( circuit, battery ) {
     super(
-      circuit.vertexGroup.indexOf( battery.startVertexProperty.value ),
-      circuit.vertexGroup.indexOf( battery.endVertexProperty.value ),
+      battery.startVertexProperty.value.index,
+      battery.endVertexProperty.value.index,
       battery.voltageProperty.value,
       battery.internalResistanceProperty.value
     );
@@ -62,8 +62,8 @@ class ResistorAdapter extends ModifiedNodalAnalysisCircuitElement {
    */
   constructor( circuit, resistor ) {
     super(
-      circuit.vertexGroup.indexOf( resistor.startVertexProperty.value ),
-      circuit.vertexGroup.indexOf( resistor.endVertexProperty.value ),
+      resistor.startVertexProperty.value.index,
+      resistor.endVertexProperty.value.index,
       resistor,
 
       // If a resistor goes to 0 resistance, then we cannot compute the current through as I=V/R.  Therefore,
@@ -93,8 +93,8 @@ class CapacitorAdapter extends DynamicCircuit.DynamicCapacitor {
   constructor( circuit, capacitor ) {
 
     const dynamicCircuitCapacitor = new DynamicCircuit.Capacitor(
-      circuit.vertexGroup.indexOf( capacitor.startVertexProperty.value ),
-      circuit.vertexGroup.indexOf( capacitor.endVertexProperty.value ),
+      capacitor.startVertexProperty.value.index,
+      capacitor.endVertexProperty.value.index,
       capacitor.capacitanceProperty.value
     );
     super( dynamicCircuitCapacitor, new DynamicCircuit.DynamicElementState( capacitor.mnaVoltageDrop, capacitor.mnaCurrent ) );
@@ -127,8 +127,8 @@ class InductorAdapter extends DynamicCircuit.DynamicInductor {
    */
   constructor( circuit, inductor ) {
     const dynamicCircuitInductor = new DynamicCircuit.Inductor(
-      circuit.vertexGroup.indexOf( inductor.startVertexProperty.value ),
-      circuit.vertexGroup.indexOf( inductor.endVertexProperty.value ),
+      inductor.startVertexProperty.value.index,
+      inductor.endVertexProperty.value.index,
       inductor.inductanceProperty.value
     );
 
@@ -273,10 +273,9 @@ class ModifiedNodalAnalysisAdapter {
     const unsolvedVertices = [];
 
     // Apply the node voltages to the vertices
-    circuit.vertexGroup.forEach( ( vertex, i ) => {
-      const voltage = circuitResult.resultSet.getFinalState().dynamicCircuitSolution.getNodeVoltage( i );
+    circuit.vertexGroup.forEach( vertex => {
+      const voltage = circuitResult.resultSet.getFinalState().dynamicCircuitSolution.getNodeVoltage( vertex.index );
 
-      // console.log( `index ${i} corresponds to vertex ${vertex.index}` );
       if ( typeof voltage === 'number' ) {
         vertex.voltageProperty.set( voltage );
         solvedVertices.push( vertex );

@@ -47,27 +47,12 @@ class DynamicCircuit {
     const currentCompanions = []; // {ModifiedNodalAnalysisCircuitElement[]}
 
     // Node indices that have been used
-    const usedNodes = [];
-
-    this.capacitorAdapters.forEach( capacitorAdapter => {
-      usedNodes.push( capacitorAdapter.dynamicCircuitCapacitor.nodeId0 );
-      usedNodes.push( capacitorAdapter.dynamicCircuitCapacitor.nodeId1 );
-    } );
-
-    this.inductorAdapters.forEach( inductorAdapter => {
-      usedNodes.push( inductorAdapter.dynamicCircuitInductor.nodeId0 );
-      usedNodes.push( inductorAdapter.dynamicCircuitInductor.nodeId1 );
-    } );
-
-    [ ...this.resistorAdapters, ...this.resistiveBatteryAdapters ].forEach( element => {
-      usedNodes.push( element.nodeId0 );
-      usedNodes.push( element.nodeId1 );
-    } );
+    let syntheticNodeIndex = 0;
 
     // Each resistive battery is a resistor in series with a battery
     this.resistiveBatteryAdapters.forEach( resistiveBatteryAdapter => {
-      const newNode = _.max( usedNodes ) + 1;
-      usedNodes.push( newNode );
+      const newNode = 'syntheticNode' + syntheticNodeIndex;
+      syntheticNodeIndex++;
 
       const idealBattery = new ModifiedNodalAnalysisCircuitElement( resistiveBatteryAdapter.nodeId0, newNode, null, resistiveBatteryAdapter.voltage ); // final LinearCircuitSolver.Battery
       const idealResistor = new ModifiedNodalAnalysisCircuitElement( newNode, resistiveBatteryAdapter.nodeId1, null, resistiveBatteryAdapter.resistance ); // LinearCircuitSolver.Resistor
@@ -93,11 +78,10 @@ class DynamicCircuit {
       assert && assert( capacitorAdapter.dynamicCircuitCapacitor.capacitance >= 0, 'capacitance should be non-negative' );
       assert && assert( dt >= 0, 'dt should be non-negative' );
 
-      const newNode1 = _.max( usedNodes ) + 1;
-      usedNodes.push( newNode1 );
-
-      const newNode2 = _.max( usedNodes ) + 1;
-      usedNodes.push( newNode2 );
+      const newNode1 = 'syntheticNode' + syntheticNodeIndex;
+      syntheticNodeIndex++;
+      const newNode2 = 'syntheticNode' + syntheticNodeIndex;
+      syntheticNodeIndex++;
 
       const companionResistance = dt / 2.0 / capacitorAdapter.dynamicCircuitCapacitor.capacitance;
       const resistanceTerm = CCKCQueryParameters.capacitorResistance;
@@ -135,8 +119,8 @@ class DynamicCircuit {
       const inductor = inductorAdapter.dynamicCircuitInductor;
 
       // In series
-      const newNode = _.max( usedNodes ) + 1;
-      usedNodes.push( newNode );
+      const newNode = 'syntheticNode' + syntheticNodeIndex;
+      syntheticNodeIndex++;
 
       const companionResistance = 2 * inductor.inductance / dt;
       const companionVoltage = -inductorAdapter.state.voltage - companionResistance * inductorAdapter.state.current;

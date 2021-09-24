@@ -7,30 +7,29 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 class ModifiedNodalAnalysisCircuitElement {
 
   /**
-   * @param {number} nodeId0
-   * @param {number} nodeId1
+   * @param {number|string} nodeId0
+   * @param {number|string} nodeId1
    * @param {CircuitElement|null} circuitElement, null during qunit tests
    * @param {number} value - resistance for resistors, voltage for battery or current for current source
    * @param {number|null} [currentSolution]
    */
   constructor( nodeId0, nodeId1, circuitElement, value, currentSolution = null ) {
-    assert && assert( typeof nodeId0 === 'number' );
-    assert && assert( typeof nodeId1 === 'number' );
-    assert && assert( typeof value === 'number' );
+    assert && CCKCUtils.validateNodeIndex( nodeId0 );
+    assert && CCKCUtils.validateNodeIndex( nodeId1 );
 
-    assert && assert( !isNaN( nodeId0 ) );
-    assert && assert( !isNaN( nodeId1 ) );
+    assert && assert( typeof value === 'number' );
     assert && assert( !isNaN( value ) );
 
-    // @public (read-only) {number} index of the start node
+    // @public (read-only) {number|string} index of the start node
     this.nodeId0 = nodeId0;
 
-    // @public (read-only) {number} index of the end node
+    // @public (read-only) {number|string} index of the end node
     this.nodeId1 = nodeId1;
 
     // @public (read-only) {CircuitElement|null} index of the start node
