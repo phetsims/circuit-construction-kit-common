@@ -10,6 +10,7 @@ import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Range from '../../../dot/js/Range.js';
 import merge from '../../../phet-core/js/merge.js';
 import CCKCConstants from '../CCKCConstants.js';
+import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import DynamicCircuitElement from './DynamicCircuitElement.js';
 
@@ -34,7 +35,7 @@ class Inductor extends DynamicCircuitElement {
 
     // @public {Property.<number>} the inductance in Henries
     this.inductanceProperty = new NumberProperty( options.inductance, {
-      range: new Range( 10, 100 ),
+      range: new Range( CCKCQueryParameters.inductanceMin, CCKCQueryParameters.inductanceMax ),
       tandem: tandem.createTandem( 'inductanceProperty' )
     } );
   }

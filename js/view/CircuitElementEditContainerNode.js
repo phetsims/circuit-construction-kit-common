@@ -17,6 +17,7 @@ import Panel from '../../../sun/js/Panel.js';
 import SunConstants from '../../../sun/js/SunConstants.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
+import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import ACVoltage from '../model/ACVoltage.js';
@@ -320,7 +321,9 @@ class CircuitElementEditContainerNode extends Node {
             selectedCircuitElement.inductanceProperty,
             circuit,
             selectedCircuitElement,
-            Tandem.OPT_OUT
+            Tandem.OPT_OUT, {
+              delta: CCKCQueryParameters.inductanceStep
+            }
           );
           editNode = new EditPanel( [
               clearDynamicsButton,

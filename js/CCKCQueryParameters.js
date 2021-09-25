@@ -103,6 +103,19 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
   // For debugging the current value and sense of FixedCircuitElement
   showCurrents: {
     type: 'flag'
+  },
+
+  inductanceMin: {
+    type: 'number',
+    defaultValue: 10
+  },
+  inductanceMax: {
+    type: 'number',
+    defaultValue: 100
+  },
+  inductanceStep: {
+    type: 'number',
+    defaultValue: 1
   }
 } );
 
