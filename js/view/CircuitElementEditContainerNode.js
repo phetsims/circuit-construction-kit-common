@@ -322,7 +322,12 @@ class CircuitElementEditContainerNode extends Node {
             circuit,
             selectedCircuitElement,
             Tandem.OPT_OUT, {
-              delta: CCKCQueryParameters.inductanceStep
+              delta: CCKCQueryParameters.inductanceStep,
+
+              // For dragging the slider knob
+              sliderOptions: {
+                constrainValue: value => Utils.roundToInterval( value, CCKCQueryParameters.inductanceStep )
+              }
             }
           );
           editNode = new EditPanel( [

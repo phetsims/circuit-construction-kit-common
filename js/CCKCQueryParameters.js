@@ -116,6 +116,10 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
   inductanceStep: {
     type: 'number',
     defaultValue: 1
+  },
+  inductanceDefault: {
+    type: 'number',
+    defaultValue: 50
   }
 } );
 
