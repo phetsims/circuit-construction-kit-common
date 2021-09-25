@@ -150,7 +150,6 @@ class ValueNode extends Panel {
     else if ( circuitElement instanceof Inductor ) {
       contentNode = createText( tandem.createTandem( 'inductorText' ) );
 
-      // Items like the hand and dog and high resistance resistor shouldn't show ".0"
       const linkInductance = inductance => {
         contentNode.text = StringUtils.fillIn( inductanceHenriesSymbolString, {
           resistance: Utils.toFixed( inductance, circuitElement.numberOfDecimalPlaces )
