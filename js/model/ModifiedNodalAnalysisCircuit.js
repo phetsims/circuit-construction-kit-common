@@ -381,7 +381,11 @@ class ModifiedNodalAnalysisCircuit {
     for ( let i = 0; i < unknownVoltages.length; i++ ) {
       const unknownVoltage = unknownVoltages[ i ];
       const rhs = x.get( getIndexByEquals( unknowns, unknownVoltage ), 0 );
-      assert && assert( !isNaN( rhs ), `the right-hand-side-value must be a number. Instead it was ${rhs}. debug info=${getDebugInfo( this, A, z, equations, unknowns, x )}` );
+
+      // Guard assertion because it is expensive to compute the debug info.
+      if ( assert && !isNaN( rhs ) ) {
+        assert && assert( !isNaN( rhs ), `the right-hand-side-value must be a number. Instead it was ${rhs}. debug info=${getDebugInfo( this, A, z, equations, unknowns, x )}` );
+      }
 
       voltageMap[ unknownVoltage.node ] = rhs;
     }
