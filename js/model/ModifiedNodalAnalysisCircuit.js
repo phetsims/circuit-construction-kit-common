@@ -374,24 +374,14 @@ class ModifiedNodalAnalysisCircuit {
     assert && assert( A.m === A.n, 'Matrix should be square' );
 
     if ( phet.log ) {
-      const conditionNumber = A.cond();
-      console.log( `Debugging circuit: ${this.toString()}
-    equations:
-${equations.join( '\n' )}
-
-A.cond=1E${Utils.toFixed( Math.log10( conditionNumber ), 4 )} = ${Utils.toFixed( conditionNumber, 4 )}  
-A=\n${A.transpose().toString()}
-z=\n${z.transpose().toString()}
-unknowns=\n${unknowns.map( u => u.toTermName() ).join( ', ' )}
-x=\n${x.transpose().toString()}
-    ` );
+      console.log( getDebugInfo( this, A, z, equations, unknowns, x ) );
     }
 
     const voltageMap = {};
     for ( let i = 0; i < unknownVoltages.length; i++ ) {
       const unknownVoltage = unknownVoltages[ i ];
       const rhs = x.get( getIndexByEquals( unknowns, unknownVoltage ), 0 );
-      assert && assert( !isNaN( rhs ), `the right-hand-side-value must be a number. Instead it was ${rhs}.` );
+      assert && assert( !isNaN( rhs ), `the right-hand-side-value must be a number. Instead it was ${rhs}. debug info=${getDebugInfo( this, A, z, equations, unknowns, x )}` );
 
       voltageMap[ unknownVoltage.node ] = rhs;
     }
@@ -593,5 +583,22 @@ class Equation {
     return result.replace( '\\+\\-', '\\-' );
   }
 }
+
+const getDebugInfo = ( modifiedNodalAnalysisCircuit, A, z, equations, unknowns, x ) => {
+  const conditionNumber = A.cond();
+  const debugInfo = `Debugging circuit: ${modifiedNodalAnalysisCircuit.toString()}
+    equations:
+${equations.join( '\n' )}
+
+A.cond=1E${Utils.toFixed( Math.log10( conditionNumber ), 4 )} = ${Utils.toFixed( conditionNumber, 4 )}  
+A=\n${A.transpose().toString()}
+z=\n${z.transpose().toString()}
+unknowns=\n${unknowns.map( u => u.toTermName() ).join( ', ' )}
+x=\n${x.transpose().toString()}
+    `;
+
+  return debugInfo;
+};
+
 
 export default ModifiedNodalAnalysisCircuit;
