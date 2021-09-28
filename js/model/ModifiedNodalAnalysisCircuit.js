@@ -383,7 +383,7 @@ class ModifiedNodalAnalysisCircuit {
       const rhs = x.get( getIndexByEquals( unknowns, unknownVoltage ), 0 );
 
       // Guard assertion because it is expensive to compute the debug info.
-      if ( assert && !isNaN( rhs ) ) {
+      if ( assert && isNaN( rhs ) ) {
         assert && assert( !isNaN( rhs ), `the right-hand-side-value must be a number. Instead it was ${rhs}. debug info=${getDebugInfo( this, A, z, equations, unknowns, x )}` );
       }
 
