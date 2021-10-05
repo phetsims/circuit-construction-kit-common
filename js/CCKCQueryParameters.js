@@ -76,7 +76,7 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
 
   batteryMinimumResistance: {
     type: 'number',
-    defaultValue: 1E-6
+    defaultValue: 1E-4
   },
 
   // Model capacitors with a series resistor to help linearize the problem
@@ -91,7 +91,7 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
 
   wireResistivity: {
     type: 'number',
-    defaultValue: 1E-12
+    defaultValue: 1E-10
   },
 
   // Precision for the numerical matrix solution for the linear algebra step
