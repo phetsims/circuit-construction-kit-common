@@ -13,7 +13,7 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ResultSet from './ResultSet.js';
 
 // smallest possible time
-const MIN_DT = 1E-6;
+const MIN_DT = 1E-5;
 
 //threshold for determining whether 2 states are similar enough; any error less than errorThreshold will be tolerated.
 const ERROR_THRESHOLD = 1E-5;
