@@ -11,8 +11,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import LUDecompositionDecimal from '../../../dot/js/LUDecompositionDecimal.js';
-import LUDecomposition from '../../../dot/js/LUDecomposition.js';
+import QRDecomposition from '../../../dot/js/QRDecomposition.js';
 import Matrix from '../../../dot/js/Matrix.js';
 import Utils from '../../../dot/js/Utils.js';
 import arrayRemove from '../../../phet-core/js/arrayRemove.js';
@@ -139,12 +138,11 @@ class ModifiedNodalAnalysisCircuit {
    * @param {number} node - the node
    * @param {string} side - 'nodeId0' for outgoing current or 'nodeId1' for incoming current
    * @param {number} sign - 1 for incoming current and -1 for outgoing current
-   * @returns {Term[]}
+   * @param {Term[]} nodeTerms - to accumulate the result
    * @private
    */
-  getCurrentTerms( node, side, sign ) {
+  getCurrentTerms( node, side, sign, nodeTerms ) {
     assert && CCKCUtils.validateNodeIndex( node );
-    const nodeTerms = [];
 
     // Each battery introduces an unknown current through the battery
     for ( let i = 0; i < this.batteries.length; i++ ) {
@@ -153,7 +151,6 @@ class ModifiedNodalAnalysisCircuit {
         nodeTerms.push( new Term( sign, new UnknownCurrent( battery ) ) );
       }
     }
-
 
     for ( let i = 0; i < this.resistors.length; i++ ) {
       const resistor = this.resistors[ i ];
@@ -252,16 +249,11 @@ class ModifiedNodalAnalysisCircuit {
     const nodes = this.nodes;
     for ( let i = 0; i < nodes.length; i++ ) {
       const node = nodes[ i ];
+      const currentTerms = [];
 
-      // having charge conservation at each node is overconstraining and causes problems for QR.  In each connected
-      // circuit element, we must choose exactly one node at which to avoid the current conservation term.
-      if ( referenceNodeIds.indexOf( node ) === -1 ) {
-
-        const incomingCurrentTerms = this.getCurrentTerms( node, 'nodeId1', -1 );
-        const outgoingCurrentTerms = this.getCurrentTerms( node, 'nodeId0', +1 );
-        const currentConservationTerms = incomingCurrentTerms.concat( outgoingCurrentTerms );
-        equations.push( new Equation( this.getCurrentSourceTotal( node ), currentConservationTerms ) );
-      }
+      this.getCurrentTerms( node, 'nodeId1', -1, currentTerms );
+      this.getCurrentTerms( node, 'nodeId0', +1, currentTerms );
+      equations.push( new Equation( this.getCurrentSourceTotal( node ), currentTerms ) );
     }
 
     // For each battery, voltage drop is given
@@ -333,34 +325,16 @@ class ModifiedNodalAnalysisCircuit {
 
     // solve the linear matrix system for the unknowns
     let x;
-    assert && assert( A.m === A.n, `the matrix should be square, instead it was ${A.m} x ${A.n}` );
     try {
 
       CCKCUtils.incrementAccumulatedSteps();
 
-      // For the first several steps, use high precision
-      if ( CCKCUtils.getAccumulatedSteps() <= 3 ) {
-
-        // Must be a plain array, not an optimized number container
-        const entries = [];
-        A.entries.forEach( entry => entries.push( new LUDecimal( entry ) ) );
-        A.entries = entries;
-
-        for ( let i = 0; i < equations.length; i++ ) {
-          equations[ i ].stamp( i, A, z, getIndex, true );
-        }
-
-        x = new LUDecompositionDecimal( A, LUDecimal ).solve( z, LUDecimal );
+      // if we have to run too many steps within a frame, then go to the high performance solver
+      for ( let i = 0; i < equations.length; i++ ) {
+        equations[ i ].stamp( i, A, z, getIndex, false );
       }
-      else {
 
-        // if we have to run too many steps within a frame, then go to the high performance solver
-        for ( let i = 0; i < equations.length; i++ ) {
-          equations[ i ].stamp( i, A, z, getIndex, false );
-        }
-
-        x = new LUDecomposition( A ).solve( z );
-      }
+      x = new QRDecomposition( A ).solve( z );
     }
     catch( e ) {
 
@@ -369,9 +343,6 @@ class ModifiedNodalAnalysisCircuit {
       // See https://github.com/phetsims/circuit-construction-kit-dc/issues/113
       x = new Matrix( A.n, 1 );
     }
-
-    // The matrix should be square since it is an exact analytical solution, see https://github.com/phetsims/circuit-construction-kit-dc/issues/96
-    assert && assert( A.m === A.n, 'Matrix should be square' );
 
     if ( phet.log ) {
       console.log( getDebugInfo( this, A, z, equations, unknowns, x ) );
