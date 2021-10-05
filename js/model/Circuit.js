@@ -1079,6 +1079,14 @@ class Circuit {
    */
   isInLoop( circuitElement ) {
 
+    // Special case for when we are asking if an open Switch is in a loop.  Open switches
+    // cannot be in a loop since their vertices are not directly connected.  Note the search
+    // algorithm below gives the wrong answer because the start vertex and end vertex can be connected
+    // by other circuit elements.
+    if ( circuitElement instanceof Switch && !circuitElement.closedProperty.value ) {
+      return false;
+    }
+
     // procedure DFS_iterative(G, v) is
     // let S be a stack
     // S.push(v)
