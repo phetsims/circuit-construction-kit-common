@@ -28,7 +28,7 @@ class Inductor extends DynamicCircuitElement {
   constructor( startVertex, endVertex, tandem, options ) {
     options = merge( {
       inductance: CCKCQueryParameters.inductanceDefault,
-      numberOfDecimalPlaces: 0
+      numberOfDecimalPlaces: CCKCQueryParameters.inductorNumberDecimalPlaces
     }, options );
 
     super( startVertex, endVertex, INDUCTOR_LENGTH, tandem, options );

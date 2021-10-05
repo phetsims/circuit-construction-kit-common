@@ -120,6 +120,10 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
   inductanceDefault: {
     type: 'number',
     defaultValue: 50
+  },
+  inductorNumberDecimalPlaces: {
+    type: 'number',
+    defaultValue: 2
   }
 } );
 
