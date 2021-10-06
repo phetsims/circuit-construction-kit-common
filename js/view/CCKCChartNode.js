@@ -199,7 +199,8 @@ class CCKCChartNode extends Node {
         cornerRadius: 0,
         xMargin: 3,
         yMargin: 3
-      }
+      },
+      tandem: options.tandem.createTandem( 'zoomButtonGroup' )
     } );
     this.zoomLevelProperty.link( zoomLevel => {
       chartTransform.setModelYRange( zoomRanges[ zoomLevel ] );
