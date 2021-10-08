@@ -54,7 +54,7 @@ class TimestepSubdivisions {
       }
     }
     if ( phet.log ) {
-      console.log( 'stase per frame: ' + states.length );
+      console.log( 'states per frame: ' + states.length );
     }
     return new ResultSet( states );
   }

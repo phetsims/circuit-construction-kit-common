@@ -128,7 +128,7 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
 
   minDT: {
     type: 'number',
-    defaultValue: 1E-5
+    defaultValue: 1E-3
   }
 } );
 
