@@ -9,11 +9,12 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ResultSet from './ResultSet.js';
 
 // smallest possible time
-const MIN_DT = 1E-5;
+const MIN_DT = CCKCQueryParameters.minDT;
 
 //threshold for determining whether 2 states are similar enough; any error less than errorThreshold will be tolerated.
 const ERROR_THRESHOLD = 1E-5;
@@ -52,8 +53,9 @@ class TimestepSubdivisions {
         attemptedDT = totalTime - elapsedTime;
       }
     }
-    // const dts = states.map( state => state.dt );
-    // console.log( dts.length );
+    if ( phet.log ) {
+      console.log( 'stase per frame: ' + states.length );
+    }
     return new ResultSet( states );
   }
 

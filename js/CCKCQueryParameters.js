@@ -124,6 +124,11 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
   inductorNumberDecimalPlaces: {
     type: 'number',
     defaultValue: 2
+  },
+
+  minDT: {
+    type: 'number',
+    defaultValue: 1E-5
   }
 } );
 
