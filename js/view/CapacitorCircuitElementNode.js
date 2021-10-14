@@ -25,7 +25,6 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import wireIconImage from '../../images/wire-icon_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
 
 // constants
@@ -237,7 +236,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
    */
   frontSideContainsSensorPoint( globalPoint ) {
 
-    if ( this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ) {
+    if ( this.viewTypeProperty.value === 'lifelike' ) {
       return this.capacitorCircuitElementLifelikeNode.frontSideContainsSensorPoint( globalPoint ) ||
              this.leftWireStub.containsPoint( this.leftWireStub.globalToParentPoint( globalPoint ) );
     }
@@ -254,7 +253,7 @@ class CapacitorCircuitElementNode extends FixedCircuitElementNode {
    */
   backSideContainsSensorPoint( globalPoint ) {
 
-    if ( this.viewTypeProperty.value === CircuitElementViewType.LIFELIKE ) {
+    if ( this.viewTypeProperty.value === 'lifelike' ) {
       return this.capacitorCircuitElementLifelikeNode.backSideContainsSensorPoint( globalPoint ) ||
              this.rightWireStub.containsPoint( this.rightWireStub.globalToParentPoint( globalPoint ) );
     }

@@ -46,7 +46,7 @@ class VoltageSource extends FixedCircuitElement {
         tandem: tandem.createTandem( 'voltageProperty' )
       }
     }, options ) as VoltageSourceOptions;
-    super( startVertex, endVertex, length, tandem, options );
+    super( startVertex, endVertex, length, tandem, filledOptions );
 
     // @public {NumberProperty} - the voltage of the battery in volts
     this.voltageProperty = new NumberProperty( filledOptions.voltage, filledOptions.voltagePropertyOptions );

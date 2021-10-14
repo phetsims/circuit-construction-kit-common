@@ -24,7 +24,6 @@ import lightBulbFrontRealImage from '../../images/light-bulb-front-real_png.js';
 import lightBulbMiddleImage from '../../mipmaps/light-bulb-middle_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CustomLightBulbNode from './CustomLightBulbNode.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
 import LightBulbSocketNode from './LightBulbSocketNode.js';
@@ -231,7 +230,7 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
         options
       );
       viewListener = view => {
-        this.rayNodeContainer.visible = view === CircuitElementViewType.LIFELIKE;
+        this.rayNodeContainer.visible = view === 'lifelike';
       };
       viewTypeProperty.link( viewListener );
       circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.addChild( this.socketNode );

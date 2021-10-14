@@ -18,7 +18,6 @@ import Color from '../../../scenery/js/util/Color.js';
 import LinearGradient from '../../../scenery/js/util/LinearGradient.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import CircuitElementNode from './CircuitElementNode.js';
 import CircuitLayerNodeDragListener from './CircuitLayerNodeDragListener.js';
 
@@ -336,7 +335,7 @@ class WireNode extends CircuitElementNode {
    */
   updateRender() {
     const view = this.viewTypeProperty.value;
-    if ( view === CircuitElementViewType.LIFELIKE ) {
+    if ( view === 'lifelike' ) {
 
       // determine whether to use the forward or reverse gradient based on the angle
       const startPoint = this.wire.startPositionProperty.get();

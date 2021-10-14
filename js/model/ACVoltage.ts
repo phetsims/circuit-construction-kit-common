@@ -49,7 +49,7 @@ class ACVoltage extends VoltageSource {
         range: new Range( -MAX_VOLTAGE, MAX_VOLTAGE )
       }
     }, options ) as ACVoltageOptions;
-    super( startVertex, endVertex, internalResistanceProperty, CCKCConstants.BATTERY_LENGTH, tandem, options );
+    super( startVertex, endVertex, internalResistanceProperty, CCKCConstants.BATTERY_LENGTH, tandem, filledOptions );
 
     // @public {NumberProperty} - the maximum voltage, which can be controlled by the CircuitElementNumberControl
     this.maximumVoltageProperty = new NumberProperty( filledOptions.voltage, {

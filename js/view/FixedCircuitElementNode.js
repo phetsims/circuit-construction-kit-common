@@ -16,7 +16,6 @@ import Node from '../../../scenery/js/nodes/Node.js';
 import fireImage from '../../images/fire_png.js';
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Resistor from '../model/Resistor.js';
 import CircuitElementNode from './CircuitElementNode.js';
 import CircuitLayerNodeDragListener from './CircuitLayerNodeDragListener.js';
@@ -193,7 +192,7 @@ class FixedCircuitElementNode extends CircuitElementNode {
    * @private
    */
   setViewType( viewType ) {
-    this.contentNode.children = [ viewType === CircuitElementViewType.LIFELIKE ? this.lifelikeNode : this.schematicNode ];
+    this.contentNode.children = [ viewType === 'lifelike' ? this.lifelikeNode : this.schematicNode ];
 
     // Update the dimensions of the highlight.  For Switches, retain the original bounds (big enough to encapsulate
     // both schematic and lifelike open and closed).

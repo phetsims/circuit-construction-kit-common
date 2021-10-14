@@ -32,7 +32,6 @@ import ACVoltage from '../model/ACVoltage.js';
 import Battery from '../model/Battery.js';
 import Capacitor from '../model/Capacitor.js';
 import CurrentSense from '../model/CurrentSense.js';
-import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Dog from '../model/Dog.js';
 import FixedCircuitElement from '../model/FixedCircuitElement.js';
 import Fuse from '../model/Fuse.js';
@@ -228,7 +227,7 @@ class CircuitLayerNode extends Node {
     // choose layering for schematic vs lifelike.  HEADS UP, this means circuitLayerNode.addChild() will get overwritten
     // so all nodes must be added as children in the array above.
     screenView.model.viewTypeProperty.link( view => {
-      this.children = ( view === CircuitElementViewType.LIFELIKE ) ? lifelikeLayering : schematicLayering;
+      this.children = ( view === 'lifelike' ) ? lifelikeLayering : schematicLayering;
     } );
 
     // @public {Property.<Bounds2>} the visible bounds in the coordinate frame of the circuit.  Initialized with a

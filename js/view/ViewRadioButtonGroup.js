@@ -16,7 +16,6 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Battery from '../model/Battery.js';
-import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Vertex from '../model/Vertex.js';
 import BatteryNode from './BatteryNode.js';
 
@@ -65,14 +64,14 @@ class ViewRadioButtonGroup extends RectangularRadioButtonGroup {
       isIcon: true,
       scale: SCALE
     } );
-    const lifelikeIcon = createBatteryNode( CircuitElementViewType.LIFELIKE, tandem.createTandem( 'lifelikeIcon' ) );
-    const schematicIcon = createBatteryNode( CircuitElementViewType.SCHEMATIC, tandem.createTandem( 'schematicIcon' ) );
+    const lifelikeIcon = createBatteryNode( 'lifelike', tandem.createTandem( 'lifelikeIcon' ) );
+    const schematicIcon = createBatteryNode( 'schematic', tandem.createTandem( 'schematicIcon' ) );
     super( viewTypeProperty, [ {
-      value: CircuitElementViewType.LIFELIKE,
+      value: 'lifelike',
       node: lifelikeIcon,
       tandemName: 'lifelikeRadioButton'
     }, {
-      value: CircuitElementViewType.SCHEMATIC,
+      value: 'schematic',
       node: schematicIcon,
       tandemName: 'schematicRadioButton'
     } ], options );

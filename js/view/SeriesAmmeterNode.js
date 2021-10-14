@@ -17,7 +17,6 @@ import CCKCConstants from '../CCKCConstants.js';
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
 
 const currentString = circuitConstructionKitCommonStrings.current;
@@ -158,7 +157,7 @@ class SeriesAmmeterNode extends FixedCircuitElementNode {
       screenView,
       circuitLayerNode,
       seriesAmmeter,
-      new Property( CircuitElementViewType.LIFELIKE ),
+      new Property( 'lifelike' ),
       lifelikeNode,
       new Node( { children: [ lifelikeNode ] } ), // reuse lifelike view for the schematic view
       tandem,

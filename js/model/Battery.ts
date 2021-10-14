@@ -45,7 +45,7 @@ class Battery extends VoltageSource {
         range: batteryType === 'normal' ? new Range( 0, 120 ) : new Range( 100, 100000 )
       }
     }, options ) as BatteryOptions;
-    super( startVertex, endVertex, internalResistanceProperty, BATTERY_LENGTH, tandem, options );
+    super( startVertex, endVertex, internalResistanceProperty, BATTERY_LENGTH, tandem, filledOptions );
 
     // @public (read-only) {string} - track which way the battery "button" (plus side) was facing the initial state so
     // the user can only create a certain number of "left" or "right" batteries from the toolbox.

@@ -26,7 +26,6 @@ import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Ammeter from '../model/Ammeter.js';
-import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import SeriesAmmeter from '../model/SeriesAmmeter.js';
 import Vertex from '../model/Vertex.js';
 import Voltmeter from '../model/Voltmeter.js';
@@ -138,7 +137,7 @@ class SensorToolbox extends CCKCPanel {
     const seriesAmmeterToolNode = new CircuitElementToolNode(
       '',
       new BooleanProperty( false ),
-      new Property( CircuitElementViewType.SCHEMATIC ),
+      new Property( 'schematic' ),
       circuit,
       point => circuitLayerNode.globalToLocalPoint( point ),
       seriesAmmeterNodeIcon,

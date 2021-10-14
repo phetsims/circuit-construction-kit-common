@@ -15,7 +15,6 @@ import Node from '../../../scenery/js/nodes/Node.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Capacitor from '../model/Capacitor.js';
-import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import ConventionalCurrentArrowNode from './ConventionalCurrentArrowNode.js';
 
 // constants
@@ -115,7 +114,7 @@ class ChargeNode extends Node {
       // For unknown reasons, the x and y coordinates are swapped here.  The values were determined empirically.
       let globalClipShape = null;
 
-      const isLifelike = this.circuitLayerNode.model.viewTypeProperty.value === CircuitElementViewType.LIFELIKE;
+      const isLifelike = this.circuitLayerNode.model.viewTypeProperty.value === 'lifelike';
       if ( isLifelike ) {
 
         // For the lifelike view, we clip based on the pseudo-3d effect, so the charges come from "behind" the edge

@@ -26,7 +26,6 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ACVoltage from '../model/ACVoltage.js';
 import Battery from '../model/Battery.js';
 import Capacitor from '../model/Capacitor.js';
-import CircuitElementViewType from '../model/CircuitElementViewType.js';
 import Fuse from '../model/Fuse.js';
 import Inductor from '../model/Inductor.js';
 import LightBulb from '../model/LightBulb.js';
@@ -70,8 +69,8 @@ const SWITCH_LENGTH = CCKCConstants.SWITCH_LENGTH;
 
 // Separate icons are made for schematic/lifelike so they can be aligned
 const iconAlignGroup = new AlignGroup();
-const LIFELIKE_PROPERTY = new Property( CircuitElementViewType.LIFELIKE );
-const SCHEMATIC_PROPERTY = new Property( CircuitElementViewType.SCHEMATIC );
+const LIFELIKE_PROPERTY = new Property( 'lifelike' );
+const SCHEMATIC_PROPERTY = new Property( 'schematic' );
 
 class CircuitElementToolFactory {
 
@@ -155,13 +154,13 @@ class CircuitElementToolFactory {
     const schematicIcon = wrap( createIcon( options.tandem.createTandem( 'schematicIcon' ), SCHEMATIC_PROPERTY ), options.schematicIconHeight );
 
     const toggleNode = new ToggleNode( this.viewTypeProperty, [
-      { value: CircuitElementViewType.LIFELIKE, node: lifelikeIcon },
-      { value: CircuitElementViewType.SCHEMATIC, node: schematicIcon }
+      { value: 'lifelike', node: lifelikeIcon },
+      { value: 'schematic', node: schematicIcon }
     ] );
 
     this.viewTypeProperty.link( viewType => {
-      lifelikeIcon.visible = viewType === CircuitElementViewType.LIFELIKE;
-      schematicIcon.visible = viewType === CircuitElementViewType.SCHEMATIC;
+      lifelikeIcon.visible = viewType === 'lifelike';
+      schematicIcon.visible = viewType === 'schematic';
     } );
 
     return new CircuitElementToolNode(
@@ -190,7 +189,7 @@ class CircuitElementToolFactory {
       // Cache a single instance to simplify PhET-iO
       this.wireToolNode = this.createCircuitElementToolNode( wireString, CCKCConstants.NUMBER_OF_WIRES,
         ( tandem, viewTypeProperty ) => {
-          return viewTypeProperty.value === CircuitElementViewType.LIFELIKE ? new Image( wireIconImage, {
+          return viewTypeProperty.value === 'lifelike' ? new Image( wireIconImage, {
             tandem: tandem
           } ) : new Line( 0, 0, 120, 0, {
             stroke: Color.BLACK,

@@ -10,6 +10,7 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
+import Property from '../../../axon/js/Property.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Utils from '../../../dot/js/Utils.js';
 import merge from '../../../phet-core/js/merge.js';
@@ -21,7 +22,6 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ZoomControlPanel from '../view/ZoomControlPanel.js';
 import Ammeter from './Ammeter.js';
 import Circuit from './Circuit.js';
-import CircuitElementViewType from './CircuitElementViewType.js';
 import Voltmeter from './Voltmeter.js';
 import ZoomAnimation from './ZoomAnimation.js';
 
@@ -45,7 +45,7 @@ class CircuitConstructionKitModel {
     this.zoomAnimation = null;
 
     // @public {Property.<CircuitElementViewType>} - whether to show lifelike or schematic representations
-    this.viewTypeProperty = new EnumerationProperty( CircuitElementViewType, CircuitElementViewType.LIFELIKE, {
+    this.viewTypeProperty = new Property( 'lifelike', {
       tandem: tandem.createTandem( 'viewTypeProperty' )
     } );
 
