@@ -9,11 +9,18 @@
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Range from '../../../dot/js/Range.js';
 import merge from '../../../phet-core/js/merge.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import DynamicCircuitElement from './DynamicCircuitElement.js';
+import Vertex from './Vertex.js';
+
+type CapacitorOptions = {
+  capacitance: number
+}; // TODO: Extends DynamicCircuitElementOptions
 
 class Capacitor extends DynamicCircuitElement {
+  private readonly capacitanceProperty: NumberProperty;
 
   /**
    * @param {Vertex} startVertex
@@ -21,19 +28,19 @@ class Capacitor extends DynamicCircuitElement {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( startVertex, endVertex, tandem, options ) {
-    options = merge( {
+  constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, options?: CapacitorOptions ) {
+    const filledOptions = merge( {
       capacitance: CCKCConstants.DEFAULT_CAPACITANCE,
 
       // The number of decimal places is only used in the view, but we define it in the model as a convenient way to
       // associate the value with the component
       numberOfDecimalPlaces: 2
-    }, options );
+    }, options ) as CapacitorOptions;
 
-    super( startVertex, endVertex, CCKCConstants.CAPACITOR_LENGTH, tandem, options );
+    super( startVertex, endVertex, CCKCConstants.CAPACITOR_LENGTH, tandem, filledOptions );
 
     // @public {Property.<number>} the capacitance in farads
-    this.capacitanceProperty = new NumberProperty( options.capacitance, {
+    this.capacitanceProperty = new NumberProperty( filledOptions.capacitance, {
       range: new Range( 0.05, 0.20 ),
       tandem: tandem.createTandem( 'capacitanceProperty' )
     } );

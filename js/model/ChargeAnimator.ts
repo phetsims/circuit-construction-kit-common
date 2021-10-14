@@ -14,6 +14,10 @@ import RunningAverage from '../../../dot/js/RunningAverage.js';
 import Utils from '../../../dot/js/Utils.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitElement from './CircuitElement';
+import Charge from './Charge.js';
+import Circuit from './Circuit.js';
+import Vertex from './Vertex.js';
 
 // constants
 
@@ -33,23 +37,34 @@ const SPEED_SCALE = 25;
 // the highest allowable time step for integration
 const MAX_DT = 1 / 30;
 
+type CircuitElementPosition = {
+  circuitElement: CircuitElement,
+  distance: number,
+  distanceToClosestElectron: number
+};
+
 /**
  * Gets the absolute value of the current in a circuit element.
  * @param {CircuitElement} circuitElement
  * @returns {number}
  * @constructor
  */
-const CURRENT_MAGNITUDE = function( circuitElement ) {
+const CURRENT_MAGNITUDE = function( circuitElement: CircuitElement ) {
   return Math.abs( circuitElement.currentProperty.get() );
 };
 
 class ChargeAnimator {
+  charges: ObservableArray<Charge>;
+  circuit: Circuit;
+  scale: number;
+  timeScaleRunningAverage: RunningAverage;
+  timeScaleProperty: NumberProperty;
 
   /**
    * @param {Circuit} circuit
    * @constructor
    */
-  constructor( circuit ) {
+  constructor( circuit: Circuit ) {
 
     // @private (read-only) {ObservableArrayDef.<Charge>} - the Charge instances
     this.charges = circuit.charges;
@@ -82,7 +97,7 @@ class ChargeAnimator {
    * @param {number} dt - elapsed time in seconds
    * @public
    */
-  step( dt ) {
+  step( dt: number ) {
 
     if ( this.charges.length === 0 || this.circuit.circuitElements.length === 0 ) {
       return;
@@ -92,7 +107,8 @@ class ChargeAnimator {
     dt = Math.min( dt, MAX_DT );
 
     // Find the fastest current in any circuit element
-    const maxCurrentMagnitude = CURRENT_MAGNITUDE( _.maxBy( this.circuit.circuitElements, CURRENT_MAGNITUDE ) );
+    const maxCircuitElement = _.maxBy( this.circuit.circuitElements, CURRENT_MAGNITUDE ) as CircuitElement;
+    const maxCurrentMagnitude = CURRENT_MAGNITUDE( maxCircuitElement );
     assert && assert( maxCurrentMagnitude >= 0, 'max current should be positive' );
 
     const maxSpeed = maxCurrentMagnitude * SPEED_SCALE;
@@ -106,7 +122,7 @@ class ChargeAnimator {
     this.timeScaleProperty.set( averageScale );
 
     for ( let i = 0; i < this.charges.length; i++ ) {
-      const charge = this.charges.get( i );
+      const charge = this.charges[ i ];
 
       // Don't update charges in chargeLayoutDirty circuit elements, because they will get a relayout anyways
       if ( !charge.circuitElement.chargeLayoutDirty ) {
@@ -128,12 +144,12 @@ class ChargeAnimator {
    * @param {number} dt - the elapsed time in seconds
    * @private
    */
-  equalizeAll( dt ) {
+  equalizeAll( dt: number ) {
 
     // Update them in a stochastic order to avoid systematic sources of error building up.
     const indices = dotRandom.shuffle( _.range( this.charges.length ) );
     for ( let i = 0; i < this.charges.length; i++ ) {
-      const charge = this.charges.get( indices[ i ] );
+      const charge = this.charges[ indices[ i ] ];
 
       // No need to update charges in chargeLayoutDirty circuit elements, they will be replaced anyways.  Skipping
       // chargeLayoutDirty circuitElements improves performance.  Also, only update electrons in circuit elements
@@ -151,7 +167,7 @@ class ChargeAnimator {
    * @param {number} dt - seconds
    * @private
    */
-  equalizeCharge( charge, dt ) {
+  equalizeCharge( charge: Charge, dt: number ) {
 
     const circuitElementCharges = this.circuit.getChargesInCircuitElement( charge.circuitElement );
 
@@ -204,7 +220,7 @@ class ChargeAnimator {
    * @param {number} dt - elapsed time in seconds
    * @private
    */
-  propagate( charge, dt ) {
+  propagate( charge: Charge, dt: number ) {
     const chargePosition = charge.distance;
     assert && assert( _.isNumber( chargePosition ), 'distance along wire should be a number' );
     const current = charge.circuitElement.currentProperty.get() * charge.charge;
@@ -238,7 +254,7 @@ class ChargeAnimator {
         if ( circuitPositions.length > 0 ) {
 
           // choose the CircuitElement with the furthest away electron
-          const chosenCircuitPosition = _.maxBy( circuitPositions, 'distanceToClosestElectron' );
+          const chosenCircuitPosition = _.maxBy( circuitPositions, 'distanceToClosestElectron' ) as CircuitElementPosition;
           assert && assert( chosenCircuitPosition.distanceToClosestElectron >= 0, 'distanceToClosestElectron should be >=0' );
           charge.circuitElement = chosenCircuitPosition.circuitElement;
           charge.distance = chosenCircuitPosition.distance;
@@ -256,12 +272,12 @@ class ChargeAnimator {
    * @returns {Object[]}
    * @private
    */
-  getPositions( charge, overshoot, vertex, depth ) {
+  getPositions( charge: Charge, overshoot: number, vertex: Vertex, depth: number ) {
 
     const circuit = this.circuit;
 
     const adjacentCircuitElements = this.circuit.getNeighborCircuitElements( vertex );
-    const circuitPositions = [];
+    const circuitPositions: CircuitElementPosition[] = [];
 
     // Keep only those with outgoing current.
     for ( let i = 0; i < adjacentCircuitElements.length; i++ ) {
@@ -302,17 +318,20 @@ class ChargeAnimator {
 
           // find closest electron to the vertex
           if ( atStartOfNewCircuitElement ) {
-            distanceToClosestElectron = _.minBy( charges, 'distance' ).distance;
+            distanceToClosestElectron = ( _.minBy( charges, 'distance' ) as Charge ).distance;
           }
           else {
-            distanceToClosestElectron = circuitElement.chargePathLength - _.maxBy( charges, 'distance' ).distance;
+            distanceToClosestElectron = circuitElement.chargePathLength - ( _.maxBy( charges, 'distance' ) as Charge ).distance;
           }
 
-          circuitPositions.push( {
-            circuitElement: circuitElement,
-            distance: distance,
-            distanceToClosestElectron: distanceToClosestElectron
-          } );
+          assert && assert( typeof distance === 'number', 'distance should be a number' );
+          if ( typeof distance === 'number' ) {
+            circuitPositions.push( {
+              circuitElement: circuitElement,
+              distance: distance,
+              distanceToClosestElectron: distanceToClosestElectron
+            } );
+          }
         }
         else if ( depth < 20 ) {
 
@@ -322,13 +341,15 @@ class ChargeAnimator {
           if ( positions.length > 0 ) {
 
             // find the one with the closest electron
-            const nearest = _.minBy( positions, 'distanceToClosestElectron' );
-
-            circuitPositions.push( {
-              circuitElement: circuitElement,
-              distance: distance,
-              distanceToClosestElectron: nearest.distanceToClosestElectron + circuitElement.chargePathLength
-            } );
+            const nearest = _.minBy( positions, 'distanceToClosestElectron' ) as CircuitElementPosition;
+            assert && assert( typeof distance === 'number', 'distance should be a number' );
+            if ( typeof distance === 'number' ) {
+              circuitPositions.push( {
+                circuitElement: circuitElement,
+                distance: distance,
+                distanceToClosestElectron: nearest.distanceToClosestElectron + circuitElement.chargePathLength
+              } )
+            }
           }
         }
       }

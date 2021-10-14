@@ -7,10 +7,19 @@
  */
 
 import Emitter from '../../../axon/js/Emitter.js';
+import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitElement from './CircuitElement.js';
 
 class Charge {
+  readonly charge: number;
+  circuitElement: CircuitElement;
+  distance: number;
+  private readonly matrix: Matrix3;
+  private readonly visibleProperty: Property<boolean>;
+  private readonly changedEmitter: Emitter<unknown>;
+  private readonly disposeEmitterCharge: Emitter<unknown>;
 
   /**
    * @param {CircuitElement} circuitElement - the circuit element the charge is in.
@@ -18,7 +27,7 @@ class Charge {
    * @param {Property.<boolean>} visibleProperty - whether the charge should be shown.
    * @param {number} charge - +1 for conventional current and -1 for electrons
    */
-  constructor( circuitElement, distance, visibleProperty, charge ) {
+  constructor( circuitElement: CircuitElement, distance: number, visibleProperty: Property<boolean>, charge: number ) {
 
     assert && assert( charge === 1 || charge === -1, 'charge should be 1 or -1' );
 

@@ -10,18 +10,21 @@
 import Property from '../../../axon/js/Property.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import NullableIO from '../../../tandem/js/types/NullableIO.js';
 import NumberIO from '../../../tandem/js/types/NumberIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Meter from './Meter.js';
 
 class Ammeter extends Meter {
+  private readonly currentProperty: Property<null>;
+  private readonly probePositionProperty: Vector2Property;
 
   /**
    * @param {Tandem} tandem
    * @param {number} phetioIndex
    */
-  constructor( tandem, phetioIndex ) {
+  constructor( tandem: Tandem, phetioIndex: number ) {
     super( tandem, phetioIndex );
 
     // public (read-only) {number} - lightweight index for naming the tandem view correspondingly

@@ -16,6 +16,7 @@
     "sounds/**/*",
     "mipmaps/**/*",
     "images/**/*",
-    "../chipper/phet-types.d.ts"
+    "../chipper/phet-types.d.ts",
+    "../chipper/node_modules/@types/lodash/index.d.ts"
   ]
 }
