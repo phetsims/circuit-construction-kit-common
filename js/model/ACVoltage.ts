@@ -7,19 +7,29 @@
  */
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
+import Property from '../../../axon/js/Property.js';
 import Range from '../../../dot/js/Range.js';
 import merge from '../../../phet-core/js/merge.js';
 import MathSymbols from '../../../scenery-phet/js/MathSymbols.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import VoltageSource from './VoltageSource.js';
+import Circuit from './Circuit.js';
+import Vertex from './Vertex.js';
+import VoltageSource, {VoltageSourceOptions} from './VoltageSource.js';
 
 // constants
 
 // The maximum amplitude of the oscillating voltage
 const MAX_VOLTAGE = 120;
 
+type ACVoltageOptions = {} & VoltageSourceOptions;
+
 class ACVoltage extends VoltageSource {
+  private readonly maximumVoltageProperty: NumberProperty;
+  private readonly frequencyProperty: NumberProperty;
+  private readonly phaseProperty: NumberProperty;
+  private time: number;
 
   /**
    * @param {Vertex} startVertex - one of the battery vertices
@@ -28,9 +38,9 @@ class ACVoltage extends VoltageSource {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( startVertex, endVertex, internalResistanceProperty, tandem, options ) {
+  constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, tandem: Tandem, options?: Partial<ACVoltageOptions> ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
-    options = merge( {
+    const filledOptions = merge( {
       initialOrientation: 'right',
       voltage: 9.0,
       isFlammable: true,
@@ -38,15 +48,14 @@ class ACVoltage extends VoltageSource {
       voltagePropertyOptions: {
         range: new Range( -MAX_VOLTAGE, MAX_VOLTAGE )
       }
-    }, options );
+    }, options ) as ACVoltageOptions;
     super( startVertex, endVertex, internalResistanceProperty, CCKCConstants.BATTERY_LENGTH, tandem, options );
 
     // @public {NumberProperty} - the maximum voltage, which can be controlled by the CircuitElementNumberControl
-    this.maximumVoltageProperty = new NumberProperty( options.voltage, {
+    this.maximumVoltageProperty = new NumberProperty( filledOptions.voltage, {
       tandem: tandem.createTandem( 'maximumVoltageProperty' ),
       range: new Range( 0, MAX_VOLTAGE )
     } );
-
 
     // @public {NumberProperty} - the frequency of oscillation in Hz
     this.frequencyProperty = new NumberProperty( 0.5, {
@@ -92,7 +101,7 @@ class ACVoltage extends VoltageSource {
    * @param {Circuit} circuit
    * @public
    */
-  step( time, dt, circuit ) {
+  step( time:number, dt:number, circuit: Circuit ) {
     super.step( time, dt, circuit );
     this.time = time;
     this.voltageProperty.set(

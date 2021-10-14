@@ -23,9 +23,9 @@ type VoltageSourceOptions = {
 };
 
 class VoltageSource extends FixedCircuitElement {
-  voltageProperty: NumberProperty;
-  internalResistanceProperty: Property<number>;
-  initialOrientation: any;
+  protected readonly voltageProperty: NumberProperty;
+  private readonly internalResistanceProperty: Property<number>;
+  protected initialOrientation: string; // TODO: enum
 
   /**
    * @param {Vertex} startVertex - one of the battery vertices

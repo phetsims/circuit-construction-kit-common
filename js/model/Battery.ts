@@ -21,12 +21,10 @@ import {VoltageSourceOptions} from './VoltageSource.js';
 // constants
 const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
 
-type BatteryOptions = {
-  initialOrientation: string // TODO: enum
-} & VoltageSourceOptions;
+type BatteryOptions = {} & VoltageSourceOptions;
 
 class Battery extends VoltageSource {
-  batteryType: BatteryType;
+  private readonly batteryType: BatteryType;
 
   /**
    * @param {Vertex} startVertex - one of the battery vertices
@@ -38,7 +36,7 @@ class Battery extends VoltageSource {
    */
   constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, batteryType: BatteryType, tandem: Tandem, options?: Partial<BatteryOptions> ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
-    options = merge( {
+    const filledOptions = merge( {
       initialOrientation: 'right',
       voltage: 9.0,
       isFlammable: true,
@@ -46,12 +44,12 @@ class Battery extends VoltageSource {
       voltagePropertyOptions: {
         range: batteryType === 'normal' ? new Range( 0, 120 ) : new Range( 100, 100000 )
       }
-    }, options );
+    }, options ) as BatteryOptions;
     super( startVertex, endVertex, internalResistanceProperty, BATTERY_LENGTH, tandem, options );
 
     // @public (read-only) {string} - track which way the battery "button" (plus side) was facing the initial state so
     // the user can only create a certain number of "left" or "right" batteries from the toolbox.
-    this.initialOrientation = options.initialOrientation;
+    this.initialOrientation = filledOptions.initialOrientation;
 
     // @public (read-only) {BatteryType} - the type of the battery - NORMAL | HIGH_VOLTAGE
     this.batteryType = batteryType;
