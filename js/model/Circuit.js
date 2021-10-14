@@ -299,7 +299,7 @@ class Circuit {
 
     // @public {PhetioGroup}
     this.batteryGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
-      return new Battery( startVertex, endVertex, this.sourceResistanceProperty, Battery.BatteryType.NORMAL,
+      return new Battery( startVertex, endVertex, this.sourceResistanceProperty, 'normal',
         tandem );
     }, () => createVertices( BATTERY_LENGTH ), {
       phetioType: PhetioGroup.PhetioGroupIO( CircuitElement.CircuitElementIO ),
@@ -308,7 +308,7 @@ class Circuit {
 
     // @public {PhetioGroup}
     this.highVoltageBatteryGroup = new PhetioGroup( ( tandem, startVertex, endVertex ) => {
-      return new Battery( startVertex, endVertex, this.sourceResistanceProperty, Battery.BatteryType.HIGH_VOLTAGE,
+      return new Battery( startVertex, endVertex, this.sourceResistanceProperty, 'high-voltage',
         tandem, {
           voltage: 1000
         } );

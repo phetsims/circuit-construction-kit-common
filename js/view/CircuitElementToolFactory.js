@@ -217,14 +217,14 @@ class CircuitElementToolFactory {
   createRightBatteryToolNode( count = 10 ) {
     const batteryModel = new Battery(
       new Vertex( Vector2.ZERO ), new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
-      new NumberProperty( 0 ), Battery.BatteryType.NORMAL, Tandem.OPTIONAL
+      new NumberProperty( 0 ), 'normal', Tandem.OPTIONAL
     );
     return this.createCircuitElementToolNode( batteryString, count,
       ( tandem, viewTypeProperty ) => new BatteryNode( null, null, batteryModel, viewTypeProperty, tandem.createTandem( 'rightBatteryIcon' ), { isIcon: true } ),
       //TODO: https://github.com/phetsims/circuit-construction-kit-common/issues/703: Would we be able to specify an enumeration in the model elements that specifies which tool it corresponds to, instead of using predicates?
       circuitElement => circuitElement instanceof Battery &&
                         circuitElement.initialOrientation === 'right' &&
-                        circuitElement.batteryType === Battery.BatteryType.NORMAL,
+                        circuitElement.batteryType === 'normal',
       position => this.circuit.batteryGroup.createNextElement( ...this.circuit.createVertexPairArray( position, BATTERY_LENGTH ) ), {
         tandem: this.parentTandem.createTandem( 'rightBatteryToolNode' ),
         lifelikeIconHeight: 15
@@ -521,14 +521,14 @@ class CircuitElementToolFactory {
           new Vertex( Vector2.ZERO ),
           new Vertex( new Vector2( CCKCConstants.BATTERY_LENGTH, 0 ) ),
           new NumberProperty( 0 ),
-          Battery.BatteryType.HIGH_VOLTAGE,
+          'high-voltage',
           Tandem.OPTIONAL, {
             voltage: 1000
           }
         ), viewTypeProperty, tandem.createTandem( 'highVoltageBatteryToolNode' ), { isIcon: true } ),
       circuitElement => circuitElement instanceof Battery &&
                         circuitElement.initialOrientation === 'right' &&
-                        circuitElement.batteryType === Battery.BatteryType.HIGH_VOLTAGE, position => {
+                        circuitElement.batteryType === 'high-voltage', position => {
         return this.circuit.highVoltageBatteryGroup.createNextElement( ...this.circuit.createVertexPairArray( position, SWITCH_LENGTH ) );
       }, {
         tandem: this.parentTandem.createTandem( 'highVoltageBatteryToolNode' ),

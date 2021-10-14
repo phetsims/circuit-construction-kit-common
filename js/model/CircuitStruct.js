@@ -108,7 +108,7 @@ CircuitStruct.fromStateObject = ( circuit, circuitState, resistivityProperty, ta
       circuitStruct.vertices[ circuitState.batteries[ i ].startVertex ],
       circuitStruct.vertices[ circuitState.batteries[ i ].endVertex ],
       new NumberProperty( 0 ),
-      Battery.BatteryType.NORMAL, // TODO (black-box-study): save/restore battery type
+      'normal', // TODO (black-box-study): save/restore battery type
       Tandem.OPT_OUT, {
         voltage: circuitState.batteries[ i ].voltage
       }

@@ -6,36 +6,45 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import Property from '../../../axon/js/Property.js';
 import Range from '../../../dot/js/Range.js';
 import Enumeration from '../../../phet-core/js/Enumeration.js';
 import merge from '../../../phet-core/js/merge.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import BatteryType from './BatteryType.js';
+import Vertex from './Vertex.js';
 import VoltageSource from './VoltageSource.js';
+import {VoltageSourceOptions} from './VoltageSource.js';
 
 // constants
 const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
 
+type BatteryOptions = {
+  initialOrientation: string // TODO: enum
+} & VoltageSourceOptions;
+
 class Battery extends VoltageSource {
+  batteryType: BatteryType;
 
   /**
    * @param {Vertex} startVertex - one of the battery vertices
    * @param {Vertex} endVertex - the other battery vertex
    * @param {Property.<number>} internalResistanceProperty - the resistance of the battery
-   * @param {Battery.BatteryType} batteryType - NORMAL | HIGH_VOLTAGE
+   * @param {BatteryType} batteryType
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( startVertex, endVertex, internalResistanceProperty, batteryType, tandem, options ) {
-    assert && assert( Battery.BatteryType.VALUES.indexOf( batteryType ) >= 0, `invalid battery type: ${batteryType}` );
+  constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, batteryType: BatteryType, tandem: Tandem, options?: Partial<BatteryOptions> ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
     options = merge( {
       initialOrientation: 'right',
       voltage: 9.0,
       isFlammable: true,
-      numberOfDecimalPlaces: batteryType === Battery.BatteryType.NORMAL ? 1 : 0,
+      numberOfDecimalPlaces: batteryType === 'normal' ? 1 : 0,
       voltagePropertyOptions: {
-        range: batteryType === Battery.BatteryType.NORMAL ? new Range( 0, 120 ) : new Range( 100, 100000 )
+        range: batteryType === 'normal' ? new Range( 0, 120 ) : new Range( 100, 100000 )
       }
     }, options );
     super( startVertex, endVertex, internalResistanceProperty, BATTERY_LENGTH, tandem, options );
@@ -44,13 +53,10 @@ class Battery extends VoltageSource {
     // the user can only create a certain number of "left" or "right" batteries from the toolbox.
     this.initialOrientation = options.initialOrientation;
 
-    // @public (read-only) {Battery.BatteryType} - the type of the battery - NORMAL | HIGH_VOLTAGE
+    // @public (read-only) {BatteryType} - the type of the battery - NORMAL | HIGH_VOLTAGE
     this.batteryType = batteryType;
   }
 }
-
-// @public {Enumeration} - Enumeration for the different types of Battery, NORMAL or HIGH_VOLTAGE
-Battery.BatteryType = Enumeration.byKeys( [ 'NORMAL', 'HIGH_VOLTAGE' ] );
 
 circuitConstructionKitCommon.register( 'Battery', Battery );
 export default Battery;

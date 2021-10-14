@@ -180,7 +180,7 @@ class CircuitElementEditContainerNode extends Node {
           editNode = trashButton;
         }
         else if ( isBattery ) {
-          const knobDelta = selectedCircuitElement.batteryType === Battery.BatteryType.HIGH_VOLTAGE ?
+          const knobDelta = selectedCircuitElement.batteryType === 'high-voltage' ?
                             HIGH_SLIDER_KNOB_DELTA : NORMAL_SLIDER_KNOB_DELTA;
           const circuitElementEditNode = new CircuitElementNumberControl(
             voltageString,
@@ -195,7 +195,7 @@ class CircuitElementEditContainerNode extends Node {
             Tandem.OPT_OUT, {
 
               // For the tweakers
-              delta: selectedCircuitElement.batteryType === Battery.BatteryType.HIGH_VOLTAGE ? HIGH_TWEAKER_DELTA : NORMAL_TWEAKER_DELTA,
+              delta: selectedCircuitElement.batteryType === 'high-voltage' ? HIGH_TWEAKER_DELTA : NORMAL_TWEAKER_DELTA,
 
               // For dragging the slider knob
               sliderOptions: {

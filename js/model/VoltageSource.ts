@@ -7,11 +7,25 @@
  */
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
+import Property from '../../../axon/js/Property.js';
 import merge from '../../../phet-core/js/merge.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import FixedCircuitElement from './FixedCircuitElement.js';
+import Vertex from './Vertex.js';
+
+type VoltageSourceOptions = {
+  initialOrientation: string, // TODO: enum
+  voltage: number,
+  voltagePropertyOptions: {
+    tandem: Tandem
+  }
+};
 
 class VoltageSource extends FixedCircuitElement {
+  voltageProperty: NumberProperty;
+  internalResistanceProperty: Property<number>;
+  initialOrientation: any;
 
   /**
    * @param {Vertex} startVertex - one of the battery vertices
@@ -21,9 +35,9 @@ class VoltageSource extends FixedCircuitElement {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( startVertex, endVertex, internalResistanceProperty, length, tandem, options ) {
+  constructor( startVertex: Vertex, endVertex: Vertex, internalResistanceProperty: Property<number>, length: number, tandem: Tandem, options?: Partial<VoltageSourceOptions> ) {
     assert && assert( internalResistanceProperty, 'internalResistanceProperty should be defined' );
-    options = merge( {
+    const filledOptions = merge( {
       initialOrientation: 'right',
       voltage: 9.0,
       isFlammable: true,
@@ -31,18 +45,18 @@ class VoltageSource extends FixedCircuitElement {
       voltagePropertyOptions: {
         tandem: tandem.createTandem( 'voltageProperty' )
       }
-    }, options );
+    }, options ) as VoltageSourceOptions;
     super( startVertex, endVertex, length, tandem, options );
 
     // @public {NumberProperty} - the voltage of the battery in volts
-    this.voltageProperty = new NumberProperty( options.voltage, options.voltagePropertyOptions );
+    this.voltageProperty = new NumberProperty( filledOptions.voltage, filledOptions.voltagePropertyOptions );
 
     // @public {Property.<number>} the internal resistance of the battery
     this.internalResistanceProperty = internalResistanceProperty;
 
     // @public (read-only) {string} - track which way the battery "button" (plus side) was facing the initial state so
     // the user can only create a certain number of "left" or "right" batteries from the toolbox.
-    this.initialOrientation = options.initialOrientation;
+    this.initialOrientation = filledOptions.initialOrientation;
   }
 
   /**
@@ -66,4 +80,5 @@ class VoltageSource extends FixedCircuitElement {
 }
 
 circuitConstructionKitCommon.register( 'VoltageSource', VoltageSource );
+export {VoltageSourceOptions};
 export default VoltageSource;

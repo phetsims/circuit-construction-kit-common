@@ -16,7 +16,6 @@ import batteryHighImage from '../../images/battery-high_png.js';
 import batteryImage from '../../images/battery_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import Battery from '../model/Battery.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
 
 // constants
@@ -69,7 +68,7 @@ class BatteryNode extends FixedCircuitElementNode {
   constructor( screenView, circuitLayerNode, battery, viewTypeProperty, tandem, options ) {
 
     options = merge( { useHitTestForSensors: true }, options );
-    const lifelikeNode = new Image( battery.batteryType === Battery.BatteryType.NORMAL ? batteryImage : batteryHighImage );
+    const lifelikeNode = new Image( battery.batteryType === 'normal' ? batteryImage : batteryHighImage );
 
     lifelikeNode.mutate( {
       scale: battery.distanceBetweenVertices / lifelikeNode.width
