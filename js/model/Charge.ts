@@ -17,7 +17,7 @@ class Charge {
   circuitElement: CircuitElement;
   distance: number;
   private readonly matrix: Matrix3;
-  private readonly visibleProperty: Property<boolean>;
+  readonly visibleProperty: Property<boolean>;
   private readonly changedEmitter: Emitter<unknown>;
   private readonly disposeEmitterCharge: Emitter<unknown>;
 

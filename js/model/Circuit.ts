@@ -43,6 +43,11 @@ import SeriesAmmeter from './SeriesAmmeter.js';
 import Switch from './Switch.js';
 import Vertex from './Vertex.js';
 import Wire from './Wire.js';
+import CircuitElementViewType from './CircuitElementViewType.js';
+import Tandem from '../../../tandem/js/Tandem.js';
+import Action from '../../../axon/js/Action.js';
+import Bounds2 from '../../../dot/js/Bounds2.js';
+import VoltageConnection from './VoltageConnection';
 
 // constants
 const SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
@@ -54,7 +59,49 @@ const WIRE_LENGTH = CCKCConstants.WIRE_LENGTH;
 
 const trueFunction = _.constant( true ); // Lower cased so IDEA doesn't think it is a constructor
 
+type CircuitOptions = {
+  blackBoxStudy: boolean
+};
+
+type Edge = {
+  startVertex: Vertex, circuitElement: CircuitElement, endVertex: Vertex
+};
+
+type Pair = { v1: Vertex, v2: Vertex };
+
 class Circuit {
+  viewTypeProperty: Property<CircuitElementViewType>;
+  addRealBulbsProperty: Property<boolean>;
+  blackBoxStudy: boolean;
+  wireResistivityProperty: NumberProperty;
+  sourceResistanceProperty: NumberProperty;
+  circuitElements: ObservableArray<CircuitElement>;
+  charges: ObservableArray<Charge>;
+  showCurrentProperty: BooleanProperty;
+  currentTypeProperty: EnumerationProperty;
+  timeProperty: NumberProperty;
+  chargeAnimator: ChargeAnimator;
+  circuitChangedEmitter: Emitter<[]>;
+  vertexDroppedEmitter: Emitter<[ Vertex ]>;
+  componentEditedEmitter: Emitter<[]>;
+  vertexGroup: PhetioGroup<Vertex>;
+  selectedCircuitElementProperty: Property<CircuitElement | null>;
+  dirty: boolean;
+  stepActions: ( () => void )[];
+  wireGroup: PhetioGroup<Wire>;
+  batteryGroup: PhetioGroup<Battery>;
+  highVoltageBatteryGroup: PhetioGroup<Battery>;
+  acVoltageGroup: PhetioGroup<ACVoltage>;
+  resistorGroup: PhetioGroup<Resistor>;
+  fuseGroup: PhetioGroup<Fuse>;
+  seriesAmmeterGroup: PhetioGroup<SeriesAmmeter>;
+  highResistanceLightBulbGroup: PhetioGroup<LightBulb>
+  capacitorGroup: PhetioGroup<Capacitor>;
+  inductorGroup: PhetioGroup<Inductor>;
+  switchGroup: PhetioGroup<Switch>
+  lightBulbGroup: PhetioGroup<LightBulb>;
+  realLightBulbGroup: PhetioGroup<LightBulb>;
+  groups: PhetioGroup<CircuitElement>[];
 
   /**
    * @param {Property.<CircuitElementViewType>} viewTypeProperty
@@ -62,16 +109,16 @@ class Circuit {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( viewTypeProperty, addRealBulbsProperty, tandem, options ) {
+  constructor( viewTypeProperty: Property<CircuitElementViewType>, addRealBulbsProperty: Property<boolean>, tandem: Tandem, options?: Partial<CircuitOptions> ) {
 
     // @public
     this.viewTypeProperty = viewTypeProperty;
     this.addRealBulbsProperty = addRealBulbsProperty;
 
-    options = merge( { blackBoxStudy: false }, options );
+    const filledOptions = merge( { blackBoxStudy: false }, options ) as CircuitOptions;
 
     // @public {Object}
-    this.blackBoxStudy = options.blackBoxStudy;
+    this.blackBoxStudy = filledOptions.blackBoxStudy;
 
     // @public {NumberProperty} - All wires share the same resistivity, which is defined by
     // resistance = resistivity * length. On the Lab Screen, there is a wire resistivity control
@@ -195,7 +242,7 @@ class Circuit {
       assert && assert( filtered.length === 1, 'should only have one copy of each vertex' );
 
       // if one vertex becomes selected, deselect the other vertices and circuit elements
-      const vertexSelectedPropertyListener = selected => {
+      const vertexSelectedPropertyListener = ( selected: boolean ) => {
         if ( selected ) {
           this.vertexGroup.forEach( v => {
             if ( v !== vertex ) {
@@ -233,7 +280,7 @@ class Circuit {
       phetioType: Property.PropertyIO( NullableIO( ReferenceIO( CircuitElement.CircuitElementIO ) ) )
     } );
 
-    this.selectedCircuitElementProperty.link( selectedCircuitElement => {
+    this.selectedCircuitElementProperty.link( ( selectedCircuitElement: CircuitElement ) => {
 
       // When a circuit element is selected, deselect all the vertices
       if ( selectedCircuitElement ) {
@@ -253,7 +300,7 @@ class Circuit {
 
         // Also consider the vertex being dropped for comparison with neighbors
         neighbors.push( vertex );
-        const pairs = [];
+        const pairs: Pair[] = [];
         neighbors.forEach( neighbor => {
           this.vertexGroup.forEach( vertex => {
 
@@ -268,8 +315,8 @@ class Circuit {
         if ( pairs.length > 0 ) {
 
           // Find the closest pair
-          const distance = pair => pair.v2.unsnappedPositionProperty.get().distance( pair.v1.unsnappedPositionProperty.get() );
-          const minPair = _.minBy( pairs, distance );
+          const distance = ( pair: Pair ) => pair.v2.unsnappedPositionProperty.get().distance( pair.v1.unsnappedPositionProperty.get() );
+          const minPair = _.minBy( pairs, distance ) as Pair;
           const minDistance = distance( minPair );
 
           // If the pair is too close, then bump one vertex away from each other (but only if both are not user controlled)
@@ -284,7 +331,7 @@ class Circuit {
 
     // Create vertices for the API validated/baseline circuit elements.  These are not present in the vertexGroup and
     // hence not transmitted in the state.
-    const createVertices = length => {
+    const createVertices = ( length: number ) => {
       const startPosition = new Vector2( -1000, 0 );
       return [ new Vertex( startPosition ), new Vertex( startPosition.plusXY( length, 0 ) ) ];
     };
@@ -328,11 +375,14 @@ class Circuit {
 
     // @public {PhetioGroup}
     this.resistorGroup = new PhetioGroup(
+      // @ts-ignore
       ( tandem, startVertex, endVertex, resistorType ) => resistorType === Resistor.ResistorType.DOG ?
                                                           new Dog( startVertex, endVertex, tandem ) :
                                                           new Resistor( startVertex, endVertex, resistorType, tandem ),
       () => {
+        // @ts-ignore
         const argumentArray = createVertices( Resistor.ResistorType.RESISTOR.length );
+        // @ts-ignore
         argumentArray.push( Resistor.ResistorType.RESISTOR );
         return argumentArray;
       }, {
@@ -436,7 +486,7 @@ class Circuit {
    * @param {CircuitElement} circuitElement
    * @public
    */
-  disposeCircuitElement( circuitElement ) {
+  disposeCircuitElement( circuitElement: CircuitElement ) {
     this.circuitElements.remove( circuitElement );
 
     // Find the corresponding group that contains the circuitElement and dispose it.
@@ -450,7 +500,7 @@ class Circuit {
    * @returns {Vertex[]} with 2 elements
    * @private
    */
-  createVertexPairArray( position, length ) {
+  createVertexPairArray( position: Vector2, length: number ) {
     return [
       this.createVertex( position.plusXY( -length / 2, 0 ) ),
       this.createVertex( position.plusXY( length / 2, 0 ) )
@@ -463,7 +513,7 @@ class Circuit {
    * @returns {Vertex}
    * @private
    */
-  createVertex( position ) {
+  createVertex( position: Vector2 ) {
     return this.vertexGroup.createNextElement( position );
   }
 
@@ -473,7 +523,7 @@ class Circuit {
    * @param {Vertex} v2
    * @private
    */
-  moveVerticesApart( v1, v2 ) {
+  moveVerticesApart( v1: Vertex, v2: Vertex ) {
     const v1Neighbors = this.getNeighboringVertices( v1 );
     const v2Neighbors = this.getNeighboringVertices( v2 );
 
@@ -504,7 +554,7 @@ class Circuit {
    * @param {Vertex} pivotVertex - the vertex to rotate about
    * @private
    */
-  bumpAwaySingleVertex( vertex, pivotVertex ) {
+  bumpAwaySingleVertex( vertex: Vertex, pivotVertex: Vertex ) {
     const distance = vertex.positionProperty.value.distance( pivotVertex.positionProperty.value );
 
     // If the vertices are too close, they must be translated away
@@ -546,7 +596,7 @@ class Circuit {
    * @param {number} deltaAngle - angle in radians to rotate
    * @private
    */
-  rotateSingleVertexByAngle( vertex, pivotVertex, deltaAngle ) {
+  rotateSingleVertexByAngle( vertex: Vertex, pivotVertex: Vertex, deltaAngle: number ) {
     const position = vertex.positionProperty.get();
     const pivotPosition = pivotVertex.positionProperty.get();
 
@@ -564,7 +614,7 @@ class Circuit {
    * @returns {number} - distance to nearest other Vertex in view coordinates
    * @private
    */
-  closestDistanceToOtherVertex( vertex ) {
+  closestDistanceToOtherVertex( vertex: Vertex ) {
     let closestDistance = null;
     for ( let i = 0; i < this.vertexGroup.count; i++ ) {
       const v = this.vertexGroup.getElement( i );
@@ -602,7 +652,7 @@ class Circuit {
 
       // Dispose of elements
       while ( this.circuitElements.length > 0 ) {
-        const circuitElement = this.circuitElements.get( 0 );
+        const circuitElement = this.circuitElements[ 0 ];
         this.disposeCircuitElement( circuitElement );
         this.removeVertexIfOrphaned( circuitElement.startVertexProperty.value );
         this.removeVertexIfOrphaned( circuitElement.endVertexProperty.value );
@@ -616,7 +666,7 @@ class Circuit {
    * @param {Vertex} vertex - the vertex to be cut.
    * @public
    */
-  cutVertex( vertex ) {
+  cutVertex( vertex: Vertex ) {
 
     // Only permit cutting a non-dragged vertex, see https://github.com/phetsims/circuit-construction-kit-common/issues/414
     if ( vertex.isDragged ) {
@@ -668,7 +718,7 @@ class Circuit {
     }
 
     const separation = Math.PI * 2 / neighborCircuitElements.length;
-    let results = [];
+    let results: Vector2[] = []; // TODO: tuple?
 
     const centerAngle = _.sum( angles ) / angles.length;
 
@@ -715,7 +765,7 @@ class Circuit {
    * @param {Vector2} delta - the vector by which to move the vertex group
    * @private
    */
-  translateVertexGroup( mainVertex, delta ) {
+  translateVertexGroup( mainVertex: Vertex, delta: Vector2 ) {
     const vertexArray = this.findAllFixedVertices( mainVertex );
 
     for ( let j = 0; j < vertexArray.length; j++ ) {
@@ -734,7 +784,7 @@ class Circuit {
    * @returns {boolean}
    * @private
    */
-  hasFixedConnectionToBlackBoxInterfaceVertex( vertex ) {
+  hasFixedConnectionToBlackBoxInterfaceVertex( vertex: Vertex ) {
     const fixedVertices = this.findAllFixedVertices( vertex );
     return _.some( fixedVertices, fixedVertex => fixedVertex.blackBoxInterfaceProperty.get() );
   }
@@ -745,7 +795,7 @@ class Circuit {
    * @returns {boolean}
    * @public
    */
-  isSingle( circuitElement ) {
+  isSingle( circuitElement: CircuitElement ) {
     return this.getNeighborCircuitElements( circuitElement.startVertexProperty.get() ).length === 1 &&
            this.getNeighborCircuitElements( circuitElement.endVertexProperty.get() ).length === 1;
   }
@@ -755,7 +805,7 @@ class Circuit {
    * @param {Vertex} vertex
    * @private
    */
-  removeVertexIfOrphaned( vertex ) {
+  removeVertexIfOrphaned( vertex: Vertex ) {
     if (
       this.getNeighborCircuitElements( vertex ).length === 0 &&
       !vertex.blackBoxInterfaceProperty.get() &&
@@ -771,7 +821,7 @@ class Circuit {
    * @returns {CircuitElement[]}
    * @public
    */
-  getNeighborCircuitElements( vertex ) {
+  getNeighborCircuitElements( vertex: Vertex ) {
     return this.circuitElements.filter( circuitElement => circuitElement.containsVertex( vertex ) );
   }
 
@@ -781,7 +831,7 @@ class Circuit {
    * @returns {number}
    * @public
    */
-  countCircuitElements( vertex ) {
+  countCircuitElements( vertex: Vertex ) {
     return this.circuitElements.count( circuitElement => circuitElement.containsVertex( vertex ) );
   }
 
@@ -794,7 +844,7 @@ class Circuit {
    *
    * @public
    */
-  getVoltageBetweenConnections( redConnection, blackConnection, revealing ) {
+  getVoltageBetweenConnections( redConnection: VoltageConnection, blackConnection: VoltageConnection, revealing: boolean ) {
 
     if ( redConnection === null || blackConnection === null ) {
       return null;
@@ -827,12 +877,14 @@ class Circuit {
    * @returns {boolean}
    * @public
    */
-  areVerticesElectricallyConnected( vertex1, vertex2 ) {
+  areVerticesElectricallyConnected( vertex1: Vertex, vertex2: Vertex ) {
     const connectedVertices = this.searchVertices( vertex1, ( startVertex, circuitElement ) => {
 
         // If the circuit element has a closed property (like a Switch), it is only OK to traverse if the element is
         // closed.
+        // @ts-ignore
         if ( circuitElement.closedProperty ) {
+          // @ts-ignore
           return circuitElement.closedProperty.get();
         }
         else {
@@ -860,7 +912,7 @@ class Circuit {
    * @param {Vertex} oldVertex
    * @public
    */
-  connect( targetVertex, oldVertex ) {
+  connect( targetVertex: Vertex, oldVertex: Vertex ) {
     assert && assert( targetVertex.attachableProperty.get() && oldVertex.attachableProperty.get(),
       'both vertices should be attachable' );
 
@@ -891,8 +943,7 @@ class Circuit {
    * @param {number} dt - the elapsed time in seconds
    * @public
    */
-  step( dt ) {
-    // debugger;
+  step( dt: number ) {
 
     // Invoke any scheduled actions
     this.stepActions.forEach( stepAction => stepAction() );
@@ -910,10 +961,10 @@ class Circuit {
       this.dirty = false;
 
       // check the incoming and outgoing current to each inductor.  If it is all 0, then clear the inductor.
-      const inductors = this.circuitElements.filter( element => element instanceof Inductor );
-      inductors.forEach( inductor => {
+      const inductors = this.circuitElements.filter( element => element instanceof Inductor ) as Inductor[];
+      inductors.forEach( ( inductor: Inductor ) => {
 
-        const hasCurrent = vertex => {
+        const hasCurrent = ( vertex: Vertex ) => {
           const neighborsWithCurrent = this.getNeighborCircuitElements( vertex )
             .filter( neighbor => neighbor !== inductor )
             .filter( neighbor => Math.abs( neighbor.currentProperty.value ) > 1E-4 );
@@ -954,7 +1005,7 @@ class Circuit {
    * @returns {boolean}
    * @private
    */
-  isVertexAdjacent( a, b ) {
+  isVertexAdjacent( a: Vertex, b: Vertex ) {
 
     // A vertex cannot be adjacent to itself.
     if ( a === b ) {
@@ -971,7 +1022,7 @@ class Circuit {
    * @returns {Vertex[]}
    * @private
    */
-  getNeighborVerticesInGroup( vertex, circuitElements ) {
+  getNeighborVerticesInGroup( vertex: Vertex, circuitElements: CircuitElement[] ) {
     const neighbors = [];
     for ( let i = 0; i < circuitElements.length; i++ ) {
       const circuitElement = circuitElements[ i ];
@@ -988,7 +1039,7 @@ class Circuit {
    * @returns {Vertex[]}
    * @private
    */
-  getNeighboringVertices( vertex ) {
+  getNeighboringVertices( vertex: Vertex ) {
     const neighborCircuitElements = this.getNeighborCircuitElements( vertex );
     return this.getNeighborVerticesInGroup( vertex, neighborCircuitElements );
   }
@@ -998,7 +1049,7 @@ class Circuit {
    * @param {Vertex} vertex
    * @private
    */
-  markAllConnectedCircuitElementsDirty( vertex ) {
+  markAllConnectedCircuitElementsDirty( vertex: Vertex ) {
     const allConnectedVertices = this.findAllConnectedVertices( vertex );
 
     // This is called many times while dragging a wire vertex, so for loops (as opposed to functional style) are used
@@ -1019,7 +1070,7 @@ class Circuit {
    * @param {Vertex} vertex
    * @public
    */
-  findAllConnectedVertices( vertex ) {
+  findAllConnectedVertices( vertex: Vertex ) {
     return this.searchVertices( vertex, trueFunction );
   }
 
@@ -1032,15 +1083,15 @@ class Circuit {
    * @returns {Vertex[]}
    * @private
    */
-  searchVertices( vertex, okToVisit ) {
+  searchVertices( vertex: Vertex, okToVisit: ( a: Vertex, c: CircuitElement, b: Vertex ) => boolean ) {
 
     const fixedVertices = [];
-    const toVisit = [ vertex ];
+    const toVisit: Vertex[] = [ vertex ];
     const visited = [];
     while ( toVisit.length > 0 ) {
 
       // Find the neighbors joined by a FixedCircuitElement, not a stretchy Wire
-      const currentVertex = toVisit.pop();
+      const currentVertex = toVisit.pop() as Vertex;
 
       // If we haven't visited it before, then explore it
       if ( visited.indexOf( currentVertex ) < 0 ) {
@@ -1077,7 +1128,7 @@ class Circuit {
    * @returns {boolean}
    * @public
    */
-  isInLoop( circuitElement ) {
+  isInLoop( circuitElement: CircuitElement ) {
 
     // Special case for when we are asking if an open Switch is in a loop.  Open switches
     // cannot be in a loop since their vertices are not directly connected.  Note the search
@@ -1099,10 +1150,10 @@ class Circuit {
 
     // Iterative (not recursive) depth first search, so we can bail on a hit, see https://en.wikipedia.org/wiki/Depth-first_search
     const stack = [];
-    const visited = [];
+    const visited: Vertex[] = [];
     stack.push( circuitElement.startVertexProperty.value );
     while ( stack.length > 0 ) {
-      const vertex = stack.pop();
+      const vertex = stack.pop() as Vertex;
       if ( !visited.includes( vertex ) ) {
         visited.push( vertex );
 
@@ -1136,7 +1187,7 @@ class Circuit {
    * @returns {Charge[]}
    * @public
    */
-  getChargesInCircuitElement( circuitElement ) {
+  getChargesInCircuitElement( circuitElement: CircuitElement ) {
     return this.charges.filter( charge => charge.circuitElement === circuitElement );
   }
 
@@ -1148,8 +1199,8 @@ class Circuit {
    * @returns {Vertex[]}
    * @public
    */
-  findAllFixedVertices( vertex, okToVisit ) {
-    return this.searchVertices( vertex, ( startVertex, circuitElement, endVertex ) => {
+  findAllFixedVertices( vertex: Vertex, okToVisit: ( ( a: Vertex, c: CircuitElement, b: Vertex ) => boolean ) = e => true ) {
+    return this.searchVertices( vertex, ( startVertex: Vertex, circuitElement: CircuitElement, endVertex: Vertex ) => {
       if ( okToVisit ) {
         return circuitElement instanceof FixedCircuitElement && okToVisit( startVertex, circuitElement, endVertex );
       }
@@ -1178,9 +1229,9 @@ class Circuit {
    * @returns {Vertex|null} - the vertex it will be able to connect to, if dropped or null if no connection is available
    * @public
    */
-  getDropTarget( vertex, mode, blackBoxBounds ) {
+  getDropTarget( vertex: Vertex, mode: InteractionMode, blackBoxBounds: Bounds2 | undefined ) { // TODO Enum for InteractionMode
 
-    if ( mode === Circuit.InteractionMode.TEST ) {
+    if ( mode === 'test' ) {
       assert && assert( blackBoxBounds, 'bounds should be provided for build mode' );
     }
 
@@ -1275,26 +1326,27 @@ class Circuit {
     // TODO (black-box-study): integrate rule (9) with the other rules above
     // (9) When in Black Box "build" mode (i.e. building inside the black box), a vertex user cannot connect to
     // a black box interface vertex if its other vertices would be outside of the black box.  See #136
-    if ( mode === Circuit.InteractionMode.TEST ) {
+    if ( mode === 'test' ) {
+      const boxBounds = blackBoxBounds as Bounds2;
       const fixedVertices2 = this.findAllFixedVertices( vertex );
       candidateVertices = candidateVertices.filter( candidateVertex => {
 
         // Don't connect to vertices that might have sneaked outside of the black box, say by a rotation.
-        if ( !candidateVertex.blackBoxInterfaceProperty.get() && !blackBoxBounds.containsPoint( candidateVertex.positionProperty.get() ) ) {
+        if ( !candidateVertex.blackBoxInterfaceProperty.get() && !boxBounds.containsPoint( candidateVertex.positionProperty.get() ) ) {
           return false;
         }
 
         // How far the vertex would be moved if it joined to the candidate
         const delta = candidateVertex.positionProperty.get().minus( vertex.positionProperty.get() );
 
-        if ( candidateVertex.blackBoxInterfaceProperty.get() || blackBoxBounds.containsPoint( candidateVertex.positionProperty.get() ) ) {
+        if ( candidateVertex.blackBoxInterfaceProperty.get() || boxBounds.containsPoint( candidateVertex.positionProperty.get() ) ) {
           for ( let i = 0; i < fixedVertices2.length; i++ ) {
             const connectedVertex = fixedVertices2[ i ];
             if ( connectedVertex.blackBoxInterfaceProperty.get() ) {
 
               // OK for black box interface vertex to be slightly outside the box
             }
-            else if ( connectedVertex !== vertex && !blackBoxBounds.containsPoint( connectedVertex.positionProperty.get().plus( delta ) ) &&
+            else if ( connectedVertex !== vertex && !boxBounds.containsPoint( connectedVertex.positionProperty.get().plus( delta ) ) &&
 
                       // exempt wires connected outside of the black box, which are flagged as un-attachable in build mode, see #141
                       connectedVertex.attachableProperty.get() ) {
@@ -1309,6 +1361,7 @@ class Circuit {
       } );
 
       // a vertex must be attachable. Some black box vertices are not attachable, such as vertices hidden in the box
+      // @ts-ignore
       candidateVertices = candidateVertices.filter( candidateVertex => !candidateVertex.outerWireStub );
     }
     if ( candidateVertices.length === 0 ) { return null; }
@@ -1322,7 +1375,7 @@ class Circuit {
 
   // @public
   // A reporting tool to indicate whether current is conserved at each vertex
-  checkCurrentConservation( index ) {
+  checkCurrentConservation( index: number ) {
     console.log( '####### ' + index );
     // the sum of currents flowing into the vertex should be 0
     this.vertexGroup.forEach( vertex => {
@@ -1344,7 +1397,7 @@ class Circuit {
    * @param {CircuitElement[]} locked
    * @public
    */
-  conserveCurrent( vertex, locked ) {
+  conserveCurrent( vertex: Vertex, locked: CircuitElement[] ) {
     // the sum of currents flowing into the vertex should be 0
     const neighbors = this.getNeighborCircuitElements( vertex );
     let sum = 0;
@@ -1373,11 +1426,13 @@ class Circuit {
    * @param {CircuitElement} circuitElement - the circuit element to flip
    * @public
    */
-  flip( circuitElement ) {
+  flip( circuitElement: CircuitElement ) {
     const startVertex = circuitElement.startVertexProperty.value;
     const endVertex = circuitElement.endVertexProperty.value;
     circuitElement.startVertexProperty.value = endVertex;
     circuitElement.endVertexProperty.value = startVertex;
+
+    // @ts-ignore
     circuitElement.currentSenseProperty.value = CurrentSense.flip( circuitElement.currentSenseProperty.value );
 
     // Layout the charges in the circuitElement but nowhere else, since that creates a discontinuity in the motion
@@ -1391,7 +1446,7 @@ class Circuit {
    * @param {CircuitElement} circuitElement - the circuit element within which the charges will be updated
    * @public
    */
-  layoutCharges( circuitElement ) {
+  layoutCharges( circuitElement: CircuitElement ) {
 
     // Avoid unnecessary work to improve performance
     if ( circuitElement.chargeLayoutDirty ) {
@@ -1420,6 +1475,7 @@ class Circuit {
                                ( firstChargePosition + lastChargePosition ) / 2 :
                                i * spacing + offset;
 
+        // @ts-ignore
         const desiredCharge = this.currentTypeProperty.get() === CurrentType.ELECTRONS ? -1 : +1;
 
         if ( charges.length > 0 &&
@@ -1427,7 +1483,7 @@ class Circuit {
              charges[ 0 ].circuitElement === circuitElement &&
              charges[ 0 ].visibleProperty === this.showCurrentProperty ) {
 
-          const c = charges.shift(); // remove 1st element, since it's the charge we checked in the guard
+          const c = charges.shift() as Charge; // remove 1st element, since it's the charge we checked in the guard
           c.circuitElement = circuitElement;
           c.distance = chargePosition;
           c.updatePositionAndAngle();
@@ -1468,7 +1524,7 @@ class Circuit {
 // @public {Enumeration} - Enumeration for the different types of interaction:
 // EXPLORE (used for open-ended exploration)
 // TEST (when testing out a black box circuit)
-Circuit.InteractionMode = Enumeration.byKeys( [ 'EXPLORE', 'TEST' ] );
+type InteractionMode = 'explore' | 'test';
 
 circuitConstructionKitCommon.register( 'Circuit', Circuit );
 export default Circuit;

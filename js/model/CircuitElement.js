@@ -155,6 +155,7 @@ class CircuitElement extends PhetioObject {
     // take care not to display current for any items that are pending deletion.
     // See https://github.com/phetsims/circuit-construction-kit-common/issues/418
     this.circuitElementDisposed = false;
+    this.lengthProperty = undefined;
   }
 
   /**

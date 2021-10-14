@@ -9,7 +9,6 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
-import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import Property from '../../../axon/js/Property.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Utils from '../../../dot/js/Utils.js';
@@ -113,7 +112,7 @@ class CircuitConstructionKitModel {
     } );
 
     // @public {Property.<InteractionMode>} - whether the user is in the CircuitConstructionKitModel.InteractionMode.EXPLORE or CircuitConstructionKitModel.InteractionMode.TEST mode
-    this.modeProperty = new EnumerationProperty( Circuit.InteractionMode, Circuit.InteractionMode.EXPLORE, {
+    this.modeProperty = new Property( 'explore', {
       tandem: tandem.createTandem( 'modeProperty' )
     } );
 
