@@ -15,6 +15,7 @@
     "js/**/*",
     "sounds/**/*",
     "mipmaps/**/*",
-    "images/**/*"
+    "images/**/*",
+    "../chipper/phet-types.d.ts"
   ]
 }
