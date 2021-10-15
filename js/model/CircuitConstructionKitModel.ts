@@ -24,22 +24,47 @@ import Ammeter from './Ammeter.js';
 import Circuit from './Circuit.js';
 import Voltmeter from './Voltmeter.js';
 import ZoomAnimation from './ZoomAnimation.js';
+import Tandem from '../../../tandem/js/Tandem.js';
+import Bounds2 from '../../../dot/js/Bounds2.js';
+import CircuitElementViewType from './CircuitElementViewType.js';
+
+type CircuitConstructionKitModelOptions = {
+  blackBoxStudy: boolean,
+  revealing: boolean
+};
 
 class CircuitConstructionKitModel {
+  zoomAnimation: ZoomAnimation | null;
+  viewTypeProperty: Property<CircuitElementViewType>;
+  addRealBulbsProperty: BooleanProperty;
+  circuit: Circuit;
+  voltmeters: Voltmeter[];
+  ammeters: Ammeter[];
+  isValueDepictionEnabledProperty: BooleanProperty;
+  showLabelsProperty: BooleanProperty;
+  showValuesProperty: BooleanProperty;
+  selectedZoomProperty: NumberProperty;
+  currentZoomProperty: NumberProperty;
+  isPlayingProperty: BooleanProperty;
+  modeProperty: Property<string>;
+  revealingProperty: BooleanProperty;
+  blackBoxBounds: Bounds2 | null;
+  stopwatch: Stopwatch;
+  stepEmitter: Emitter<[ number ]>;
 
   /**
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( tandem, options ) {
+  constructor( tandem: Tandem, options?: Partial<CircuitConstructionKitModelOptions> ) {
 
-    options = merge( {
+    const filledOptions = merge( {
 
       // Determines whether electrons can be shown.  In black box, electrons can only be shown when the user reveals
       // the answer by pressing the reveal answer button.
       revealing: true,
       blackBoxStudy: false
-    }, options );
+    }, options ) as CircuitConstructionKitModelOptions
 
     // @private {ZoomAnimation|null} - animation for the zoom level or null if not animating
     this.zoomAnimation = null;
@@ -56,7 +81,7 @@ class CircuitConstructionKitModel {
     } );
 
     // @public (read-only) {Circuit} - contains CircuitElements, Vertices, etc.
-    this.circuit = new Circuit( this.viewTypeProperty, this.addRealBulbsProperty, tandem.createTandem( 'circuit' ), { blackBoxStudy: options.blackBoxStudy } );
+    this.circuit = new Circuit( this.viewTypeProperty, this.addRealBulbsProperty, tandem.createTandem( 'circuit' ), { blackBoxStudy: filledOptions.blackBoxStudy } );
 
     // @public (read-only) {Voltmeter[]} - created statically and indexed starting at 1 for human-readability for PhET-iO
     this.voltmeters = [
@@ -99,8 +124,8 @@ class CircuitConstructionKitModel {
       tandem: tandem.createTandem( 'currentZoomProperty' )
     } );
 
-    this.selectedZoomProperty.lazyLink( newValue => {
-      this.zoomAnimation = new ZoomAnimation( this.currentZoomProperty.get(), newValue, delta => {
+    this.selectedZoomProperty.lazyLink( ( newValue: number ) => {
+      this.zoomAnimation = new ZoomAnimation( this.currentZoomProperty.get(), newValue, ( delta: number ) => {
         const proposedZoomValue = this.currentZoomProperty.value + delta;
         const boundedValue = Utils.clamp( proposedZoomValue, ZoomControlPanel.ZOOMED_OUT, ZoomControlPanel.ZOOMED_IN );
         this.currentZoomProperty.value = boundedValue;
@@ -172,6 +197,8 @@ class CircuitConstructionKitModel {
 
       // First update the length of the light bulbs
       this.circuit.circuitElements.forEach( circuitElement => {
+
+        // @ts-ignore
         circuitElement.updatePathLength && circuitElement.updatePathLength();
       } );
 
@@ -180,7 +207,7 @@ class CircuitConstructionKitModel {
     } );
 
     // @public - true when the user is holding down the reveal button and the answer (inside the black box) is showing
-    this.revealingProperty = new BooleanProperty( options.revealing, {
+    this.revealingProperty = new BooleanProperty( filledOptions.revealing, {
       tandem: tandem.createTandem( 'revealingProperty' )
     } );
 
@@ -214,7 +241,7 @@ class CircuitConstructionKitModel {
    * @param {number} dt
    * @private
    */
-  stepOnce( dt ) {
+  stepOnce( dt: number ) {
 
     // Only move charges if the simulation is not paused.
     this.isValueDepictionEnabledProperty.value && this.circuit.step( dt );
@@ -227,7 +254,7 @@ class CircuitConstructionKitModel {
    * @param {number} dt - elapsed time in seconds
    * @public
    */
-  step( dt ) {
+  step( dt: number ) {
 
     // If the step is large, it probably means that the screen was hidden for a while, so just ignore it.
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/476
@@ -236,8 +263,8 @@ class CircuitConstructionKitModel {
     }
 
     if ( this.zoomAnimation ) {
-      const overflow = this.zoomAnimation.step( dt );
-      if ( overflow > 0 ) {
+      const animationRatio = this.zoomAnimation.step( dt );
+      if ( animationRatio >= 1 ) {
         this.zoomAnimation = null;
       }
     }

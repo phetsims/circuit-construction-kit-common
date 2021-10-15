@@ -48,6 +48,10 @@ class ZoomAnimation {
       this.ratio = newRatio;
       const ratioDelta = Easing.CUBIC_IN_OUT.value( newRatio ) - Easing.CUBIC_IN_OUT.value( oldRatio );
       this.zoomCallback( ratioDelta * this.totalDelta );
+      return newRatio;
+    }
+    else {
+      return oldRatio;
     }
   }
 }
