@@ -17,7 +17,6 @@ import AquaRadioButton from '../../../sun/js/AquaRadioButton.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CurrentType from '../model/CurrentType.js';
 import CCKCCheckbox from './CCKCCheckbox.js';
 import CCKCPanel from './CCKCPanel.js';
 import ConventionalCurrentArrowNode from './ConventionalCurrentArrowNode.js';
@@ -86,8 +85,8 @@ class DisplayOptionsPanel extends CCKCPanel {
       spacing: textIconSpacing
     } );
 
-    const electronsRadioButton = createRadioButton( CurrentType.ELECTRONS, electronsBox, tandem.createTandem( 'electronsRadioButton' ) );
-    const conventionalRadioButton = createRadioButton( CurrentType.CONVENTIONAL, conventionalBox, tandem.createTandem( 'conventionalRadioButton' ) );
+    const electronsRadioButton = createRadioButton( 'electrons', electronsBox, tandem.createTandem( 'electronsRadioButton' ) );
+    const conventionalRadioButton = createRadioButton( 'conventional', conventionalBox, tandem.createTandem( 'conventionalRadioButton' ) );
 
     // Gray out current view options when current is not selected.
     showCurrentProperty.linkAttribute( electronsRadioButton, 'enabled' );

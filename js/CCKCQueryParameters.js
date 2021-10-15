@@ -7,7 +7,6 @@
  */
 
 import circuitConstructionKitCommon from './circuitConstructionKitCommon.js';
-import CurrentType from './model/CurrentType.js';
 
 const CCKCQueryParameters = window.QueryStringMachine.getAll( {
 
@@ -19,11 +18,11 @@ const CCKCQueryParameters = window.QueryStringMachine.getAll( {
   currentType: {
     public: true,
     type: 'custom',
-    defaultValue: CurrentType.ELECTRONS,
-    validValues: CurrentType.VALUES,
+    defaultValue: 'electrons',
+    validValues: [ 'electrons', 'conventional' ], // TODO: duplicated
     parse: string =>
-      string === 'electrons' ? CurrentType.ELECTRONS :
-      string === 'conventional' ? CurrentType.CONVENTIONAL :
+      string === 'electrons' ? 'electrons' :  // TODO: this became odd after string literal union enum
+      string === 'conventional' ? 'conventional' :
       string // Will error out in validValues check
   },
 

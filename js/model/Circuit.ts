@@ -78,7 +78,7 @@ class Circuit {
   circuitElements: ObservableArray<CircuitElement>;
   charges: ObservableArray<Charge>;
   showCurrentProperty: BooleanProperty;
-  currentTypeProperty: EnumerationProperty;
+  currentTypeProperty: Property<CurrentType>;
   timeProperty: NumberProperty;
   chargeAnimator: ChargeAnimator;
   circuitChangedEmitter: Emitter<[]>;
@@ -144,7 +144,7 @@ class Circuit {
     this.charges = createObservableArray();
 
     // @public {Property.<CurrentType>} - whether to show charges or conventional current
-    this.currentTypeProperty = new EnumerationProperty( CurrentType, CCKCQueryParameters.currentType, {
+    this.currentTypeProperty = new Property( CCKCQueryParameters.currentType, {
       tandem: tandem.createTandem( 'currentTypeProperty' )
     } );
 
@@ -1480,7 +1480,7 @@ class Circuit {
                                i * spacing + offset;
 
         // @ts-ignore
-        const desiredCharge = this.currentTypeProperty.get() === CurrentType.ELECTRONS ? -1 : +1;
+        const desiredCharge = this.currentTypeProperty.get() === 'electrons' ? -1 : +1;
 
         if ( charges.length > 0 &&
              charges[ 0 ].charge === desiredCharge &&

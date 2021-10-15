@@ -11,6 +11,5 @@
 import Enumeration from '../../../phet-core/js/Enumeration.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
-const CurrentType = Enumeration.byKeys( [ 'ELECTRONS', 'CONVENTIONAL' ] );
-circuitConstructionKitCommon.register( 'CurrentType', CurrentType );
+type CurrentType = 'electrons' | 'conventional';
 export default CurrentType;
