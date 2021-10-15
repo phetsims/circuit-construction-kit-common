@@ -23,8 +23,8 @@ type VoltageSourceOptions = {
 };
 
 abstract class VoltageSource extends FixedCircuitElement {
-  protected readonly voltageProperty: NumberProperty;
-  private readonly internalResistanceProperty: Property<number>;
+  readonly voltageProperty: NumberProperty;
+  readonly internalResistanceProperty: Property<number>;
   protected initialOrientation: string; // TODO: enum
 
   /**

@@ -20,8 +20,17 @@ import DynamicState from './DynamicState.js';
 import DynamicElementState from './DynamicElementState.js';
 import DynamicInductor from './DynamicInductor.js';
 import DynamicCapacitor from './DynamicCapacitor.js';
+import ResistorAdapter from './ResistorAdapter.js';
+import ResistiveBatteryAdapter from './ResistiveBatteryAdapter.js';
+import CapacitorAdapter from './CapacitorAdapter.js';
+import InductorAdapter from './InductorAdapter.js';
+import ModifiedNodalAnalysisSolution from './ModifiedNodalAnalysisSolution';
 
 class DynamicCircuit {
+  resistorAdapters: ResistorAdapter[];
+  resistiveBatteryAdapters: ResistiveBatteryAdapter[];
+  capacitorAdapters: CapacitorAdapter[];
+  inductorAdapters: InductorAdapter[];
 
   /**
    * @param {ResistorAdapter[]} resistorAdapters
@@ -29,7 +38,7 @@ class DynamicCircuit {
    * @param {CapacitorAdapter[]} capacitorAdapters
    * @param {InductorAdapter[]} inductorAdapters
    */
-  constructor( resistorAdapters, resistiveBatteryAdapters, capacitorAdapters, inductorAdapters ) {
+  constructor( resistorAdapters: ResistorAdapter[], resistiveBatteryAdapters: ResistiveBatteryAdapter[], capacitorAdapters: CapacitorAdapter[], inductorAdapters: InductorAdapter[] ) {
 
     // @private
     this.resistorAdapters = resistorAdapters;
@@ -45,11 +54,11 @@ class DynamicCircuit {
    * @returns {DynamicCircuitSolution}
    * @public
    */
-  solvePropagate( dt ) {
+  solvePropagate( dt: number ) {
 
-    const companionBatteries = []; // {ModifiedNodalAnalysisCircuitElement[]}
-    const companionResistors = []; // {ModifiedNodalAnalysisCircuitElement[]}
-    const currentCompanions = []; // {ModifiedNodalAnalysisCircuitElement[]}
+    const companionBatteries: ModifiedNodalAnalysisCircuitElement[] = [];
+    const companionResistors: ModifiedNodalAnalysisCircuitElement[] = [];
+    const currentCompanions: { element: any, getValueForSolution: any }[] = [];
 
     // Node indices that have been used
     let syntheticNodeIndex = 0;
@@ -67,7 +76,7 @@ class DynamicCircuit {
       // We need to be able to get the current for this component
       currentCompanions.push( {
         element: resistiveBatteryAdapter,
-        getValueForSolution: solution => idealBattery.currentSolution
+        getValueForSolution: ( solution: ModifiedNodalAnalysisSolution ) => idealBattery.currentSolution
       } );
     } );
 
@@ -112,7 +121,7 @@ class DynamicCircuit {
       // We need to be able to get the current for this component. In series, so the current is the same through both.
       currentCompanions.push( {
         element: capacitorAdapter,
-        getValueForSolution: solution => solution.getCurrentForResistor( resistor )
+        getValueForSolution: ( solution: ModifiedNodalAnalysisSolution ) => solution.getCurrentForResistor( resistor )
       } );
     } );
 
@@ -139,13 +148,13 @@ class DynamicCircuit {
       // in series, so current is same through both companion components
       currentCompanions.push( {
         element: inductorAdapter,
-        getValueForSolution: solution => -solution.getCurrentForResistor( resistor )
+        getValueForSolution: ( solution: ModifiedNodalAnalysisSolution ) => -solution.getCurrentForResistor( resistor )
       } );
     } );
 
     const newBatteryList = companionBatteries;
     const newResistorList = [ ...this.resistorAdapters, ...companionResistors ];
-    const newCurrentList = []; // Placeholder for if we add other circuit elements in the future
+    const newCurrentList: ModifiedNodalAnalysisCircuitElement[] = []; // Placeholder for if we add other circuit elements in the future
 
     const mnaCircuit = new ModifiedNodalAnalysisCircuit( newBatteryList, newResistorList, newCurrentList );
 
@@ -159,11 +168,13 @@ class DynamicCircuit {
    * @returns {CircuitResult}
    * @public
    */
-  solveWithSubdivisions( timestepSubdivisions, dt ) {
+  solveWithSubdivisions( timestepSubdivisions: TimestepSubdivisions<DynamicState>, dt: number ) {
     CCKCUtils.clearAccumulatedSteps();
     const steppable = {
-      update: ( a, dt ) => a.update( dt ),
-      distance: ( a, b ) => euclideanDistance( a.getCharacteristicArray(), b.getCharacteristicArray() )
+
+      // TODO: types
+      update: ( a: { update: ( arg0: any ) => any; }, dt: any ) => a.update( dt ),
+      distance: ( a: { getCharacteristicArray: () => number[]; }, b: { getCharacteristicArray: () => number[]; } ) => euclideanDistance( a.getCharacteristicArray(), b.getCharacteristicArray() )
     };
 
     // Turning the error threshold too low here can fail the inductor tests in MNATestCase
@@ -176,7 +187,7 @@ class DynamicCircuit {
    * @returns {CircuitResult}
    * @private
    */
-  solveWithSubdivisions2( dt ) {
+  solveWithSubdivisions2( dt: number ) {
     return this.solveWithSubdivisions( new TimestepSubdivisions(), dt );
   }
 
@@ -185,7 +196,7 @@ class DynamicCircuit {
    * @returns {DynamicCircuit}
    * @private
    */
-  updateWithSubdivisions( dt ) {
+  updateWithSubdivisions( dt: number ) {
     return this.solveWithSubdivisions2( dt ).getFinalState().dynamicCircuit;
   }
 
@@ -194,7 +205,7 @@ class DynamicCircuit {
    * @returns {DynamicCircuitSolution}
    * @public (unit-tests)
    */
-  solveItWithSubdivisions( dt ) {
+  solveItWithSubdivisions( dt: number ) {
     return this.solveWithSubdivisions2( dt ).getFinalState().dynamicCircuitSolution;
   }
 
@@ -203,7 +214,7 @@ class DynamicCircuit {
    * @returns {DynamicCircuit}
    * @public
    */
-  update( dt ) {
+  update( dt: number ) {
     return this.updateCircuit( this.solvePropagate( dt ) );
   }
 
@@ -214,9 +225,10 @@ class DynamicCircuit {
    * @returns {DynamicCircuit}
    * @public
    */
-  updateCircuit( solution ) {
+  updateCircuit( solution: DynamicCircuitSolution ) {
     const updatedCapacitors = this.capacitorAdapters.map( capacitorAdapter => {
       const newState = new DynamicElementState(
+        // @ts-ignore
         solution.getNodeVoltage( capacitorAdapter.capacitorVoltageNode1 ) - solution.getNodeVoltage( capacitorAdapter.capacitorVoltageNode0 ),
         solution.getCurrent( capacitorAdapter )
       );
@@ -229,6 +241,8 @@ class DynamicCircuit {
       );
       return new DynamicInductor( inductorAdapter.dynamicCircuitInductor, newState );
     } );
+
+    // @ts-ignore
     return new DynamicCircuit( this.resistorAdapters, this.resistiveBatteryAdapters, updatedCapacitors, updatedInductors );
   }
 }
@@ -238,7 +252,7 @@ class DynamicCircuit {
  * @param {number[]} y
  * @returns {number}
  */
-const euclideanDistance = ( x, y ) => {
+const euclideanDistance = ( x: number[], y: number[] ) => {
   assert && assert( x.length === y.length, 'Vector length mismatch' );
   let sumSqDiffs = 0;
   for ( let i = 0; i < x.length; i++ ) {

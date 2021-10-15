@@ -16,5 +16,4 @@ class DynamicCircuitCapacitor extends ModifiedNodalAnalysisCircuitElement {
   }
 }
 
-export default DynamicCircuitCapacitor
-;
+export default DynamicCircuitCapacitor;

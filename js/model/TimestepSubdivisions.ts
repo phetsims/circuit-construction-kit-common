@@ -19,13 +19,18 @@ const MIN_DT = CCKCQueryParameters.minDT;
 //threshold for determining whether 2 states are similar enough; any error less than errorThreshold will be tolerated.
 const ERROR_THRESHOLD = 1E-5;
 
+type Steppable<T> = {
+  update: ( state: T, dt: number ) => T,
+  distance: ( a: T, b: T ) => number
+};
+
 /**
  * @typedef Steppable
  * @property update<T>(state:T,dt:number):T - immutable time integration from one state to the next by a time of dt
  * @property distance<T>(state1:T,state2:T):number - determine how much two states differ
  */
 
-class TimestepSubdivisions {
+class TimestepSubdivisions<T> {
 
   /**
    * @param {Object} originalState
@@ -34,10 +39,10 @@ class TimestepSubdivisions {
    * @returns {ResultSet}
    * @public
    */
-  stepInTimeWithHistory( originalState, steppable, totalTime ) {
+  stepInTimeWithHistory( originalState: T, steppable: Steppable<T>, totalTime: number ) {
     let state = originalState;
     let elapsedTime = 0.0;
-    const states = [];
+    const states: { dt: number, state: T }[] = [];
     let attemptedDT = totalTime;
     while ( elapsedTime < totalTime ) {
 
@@ -56,7 +61,7 @@ class TimestepSubdivisions {
     if ( phet.log ) {
       console.log( 'states per frame: ' + states.length );
     }
-    return new ResultSet( states );
+    return new ResultSet<T>( states );
   }
 
   /**
@@ -69,7 +74,7 @@ class TimestepSubdivisions {
    * @returns {number} the selected timestep that has acceptable error or meets the minimum allowed
    * @private
    */
-  search( state, steppable, dt, halfStepState ) {
+  search( state: T, steppable: Steppable<T>, dt: number, halfStepState: T | null ): { dt: number, state: T } {
 
     // if dt is already too low, no need to do error checking
     if ( dt <= MIN_DT ) {

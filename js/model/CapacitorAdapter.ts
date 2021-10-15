@@ -42,7 +42,9 @@ class CapacitorAdapter extends DynamicCapacitor {
       ( typeof this.capacitorVoltageNode0 === 'number' || typeof this.capacitorVoltageNode0 === 'string' ) &&
       ( typeof this.capacitorVoltageNode1 === 'number' || typeof this.capacitorVoltageNode1 === 'string' ) ) {
 
+      // @ts-ignore
       this.capacitor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getFinalState().dynamicCircuitSolution.getNodeVoltage( this.capacitorVoltageNode1 )
+                                                                // @ts-ignore
                                                                 - circuitResult.getFinalState().dynamicCircuitSolution.getNodeVoltage( this.capacitorVoltageNode0 ) );
     }
 

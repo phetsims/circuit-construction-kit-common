@@ -7,7 +7,8 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import CCKCConstants from '../CCKCConstants.js';
+import ResistiveBatteryAdapter from './ResistiveBatteryAdapter.js';
+import ResistorAdapter from './ResistorAdapter.js';
 import CapacitorAdapter from './CapacitorAdapter.js';
 import InductorAdapter from './InductorAdapter.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
@@ -17,74 +18,15 @@ import DynamicCircuit from './DynamicCircuit.js';
 import Fuse from './Fuse.js';
 import Inductor from './Inductor.js';
 import LightBulb from './LightBulb.js';
-import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
 import Resistor from './Resistor.js';
 import SeriesAmmeter from './SeriesAmmeter.js';
 import Switch from './Switch.js';
 import TimestepSubdivisions from './TimestepSubdivisions.js';
 import VoltageSource from './VoltageSource.js';
 import Wire from './Wire.js';
-import DynamicCircuitResistiveBattery from './DynamicCircuitResistiveBattery.js';
 
 // constants
 const TIMESTEP_SUBDIVISIONS = new TimestepSubdivisions();
-
-class ResistiveBatteryAdapter extends DynamicCircuitResistiveBattery {
-
-  /**
-   * @param {Circuit} circuit - the primary Circuit model instance, so we can look up Vertex indices
-   * @param {Battery} battery
-   */
-  constructor( circuit, battery ) {
-    super(
-      battery.startVertexProperty.value.index,
-      battery.endVertexProperty.value.index,
-      battery.voltageProperty.value,
-      battery.internalResistanceProperty.value
-    );
-
-    // @public (read-only)
-    this.battery = battery;
-  }
-
-  /**
-   * @param {CircuitResult} circuitResult
-   * @public
-   */
-  applySolution( circuitResult ) {
-    this.battery.currentProperty.value = circuitResult.getTimeAverageCurrent( this );
-  }
-}
-
-class ResistorAdapter extends ModifiedNodalAnalysisCircuitElement {
-
-  /**
-   * @param {Circuit} circuit
-   * @param {Resistor} resistor
-   */
-  constructor( circuit, resistor ) {
-    super(
-      resistor.startVertexProperty.value.index,
-      resistor.endVertexProperty.value.index,
-      resistor,
-
-      // If a resistor goes to 0 resistance, then we cannot compute the current through as I=V/R.  Therefore,
-      // simulate a small amount of resistance.
-      resistor.resistanceProperty.value || CCKCConstants.MINIMUM_RESISTANCE
-    );
-
-    // @private
-    this.resistor = resistor;
-  }
-
-  /**
-   * @param {CircuitResult} circuitResult
-   * @public
-   */
-  applySolution( circuitResult ) {
-    this.resistor.currentProperty.value = circuitResult.getTimeAverageCurrent( this );
-  }
-}
 
 class ModifiedNodalAnalysisAdapter {
 
