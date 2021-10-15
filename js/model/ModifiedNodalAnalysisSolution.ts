@@ -7,14 +7,19 @@
  */
 
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
+import CapacitorAdapter from './CapacitorAdapter.js';
+import InductorAdapter from './InductorAdapter.js';
 
 class ModifiedNodalAnalysisSolution {
+  nodeVoltages: any;
+  elements: ModifiedNodalAnalysisCircuitElement[];
 
   /**
    * @param {Object} nodeVoltages - see below
    * @param {ModifiedNodalAnalysisCircuitElement[]} elements
    */
-  constructor( nodeVoltages, elements ) {
+  constructor( nodeVoltages: any, elements: ModifiedNodalAnalysisCircuitElement[] ) {
 
     // @public (read-only) {Object} - the solved node voltages.
     // keys are {number} indicating the node id, values are {number} for the voltage at the node
@@ -32,7 +37,7 @@ class ModifiedNodalAnalysisSolution {
    * @returns {boolean}
    * @public
    */
-  approxEquals( modifiedNodalAnalysisSolution, qassert ) {
+  approxEquals( modifiedNodalAnalysisSolution: ModifiedNodalAnalysisSolution, qassert: Assert ) {
     const keys = _.keys( this.nodeVoltages );
     const otherKeys = _.keys( modifiedNodalAnalysisSolution.nodeVoltages );
     const keyDifference = _.difference( keys, otherKeys );
@@ -66,7 +71,7 @@ class ModifiedNodalAnalysisSolution {
    * @param {ModifiedNodalAnalysisSolution} modifiedNodalAnalysisSolution
    * @private
    */
-  hasAllCurrents( modifiedNodalAnalysisSolution ) {
+  hasAllCurrents( modifiedNodalAnalysisSolution: ModifiedNodalAnalysisSolution ) {
     for ( let i = 0; i < modifiedNodalAnalysisSolution.elements.length; i++ ) {
       const element = modifiedNodalAnalysisSolution.elements[ i ];
       if ( !this.hasMatchingElement( element ) ) {
@@ -82,9 +87,9 @@ class ModifiedNodalAnalysisSolution {
    * @returns {boolean}
    * @private
    */
-  hasMatchingElement( element ) {
+  hasMatchingElement( element: any ) {
     for ( let i = 0; i < this.elements.length; i++ ) {
-      const proposedElement = this.elements[ i ];
+      const proposedElement: any = this.elements[ i ];
       if ( proposedElement.nodeId0 === element.nodeId0 &&
            proposedElement.nodeId1 === element.nodeId1 &&
            NUMBER_APPROXIMATELY_EQUALS( proposedElement.currentSolution, element.currentSolution ) ) {
@@ -100,7 +105,7 @@ class ModifiedNodalAnalysisSolution {
    * @returns {number}
    * @public
    */
-  getCurrentForResistor( resistor ) {
+  getCurrentForResistor( resistor: any ) {
     assert && assert( resistor.value > 0, 'resistor must have resistance to use Ohms Law' );
 
     // To help understand the minus sign here:
@@ -118,7 +123,7 @@ class ModifiedNodalAnalysisSolution {
    * @returns {number} the voltage of the node
    * @public
    */
-  getNodeVoltage( nodeIndex ) {
+  getNodeVoltage( nodeIndex: number | string ) {
     return this.nodeVoltages[ nodeIndex ];
   }
 
@@ -128,7 +133,7 @@ class ModifiedNodalAnalysisSolution {
    * @returns {number} - the voltage
    * @private
    */
-  getVoltage( element ) {
+  getVoltage( element: ModifiedNodalAnalysisCircuitElement ) {
     return this.nodeVoltages[ element.nodeId1 ] - this.nodeVoltages[ element.nodeId0 ];
   }
 }
@@ -140,7 +145,7 @@ class ModifiedNodalAnalysisSolution {
  * @param {number} b - another number
  * @returns {boolean} true if the numbers are approximately equal
  */
-const NUMBER_APPROXIMATELY_EQUALS = ( a, b ) => Math.abs( a - b ) < 1E-6;
+const NUMBER_APPROXIMATELY_EQUALS = ( a: number, b: number ) => Math.abs( a - b ) < 1E-6;
 
 circuitConstructionKitCommon.register( 'ModifiedNodalAnalysisSolution', ModifiedNodalAnalysisSolution );
 export default ModifiedNodalAnalysisSolution;

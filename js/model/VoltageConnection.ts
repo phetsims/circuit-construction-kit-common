@@ -7,14 +7,17 @@
  */
 
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import Vertex from './Vertex.js';
 
 class VoltageConnection {
+  vertex: Vertex;
+  voltage: number;
 
   /**
    * @param {Vertex} vertex
    * @param {number} [voltage]
    */
-  constructor( vertex, voltage = vertex.voltageProperty.value ) {
+  constructor( vertex: Vertex, voltage: number = vertex.voltageProperty.value ) {
 
     // @public
     this.vertex = vertex;

@@ -11,6 +11,7 @@ import Matrix from '../../../dot/js/Matrix.js';
 
 QUnit.module( 'LUDecompositionDecimal' );
 
+// @ts-ignore
 const LUDecimal = Decimal.clone( {
   // precision: 16 // default precision for {number}
   precision: 100
@@ -18,7 +19,7 @@ const LUDecimal = Decimal.clone( {
 
 QUnit.test( 'test decomposition', assert => {
 
-  const stringToMatrix = string => {
+  const stringToMatrix = ( string: string ) => {
     const data = string.split( '\n' ).map( row => row.trim().split( ' ' ) );
     const m = data.length;
     const n = data[ 0 ].length;
@@ -48,6 +49,7 @@ QUnit.test( 'test decomposition', assert => {
   const x = matrix.solve( b );
   // console.log( x.toString() );
 
+  // @ts-ignore
   assert.ok( x.entries[ 0 ] === 0.02496337890625 );// wrong
 
   const x2 = new LUDecompositionDecimal( matrix, LUDecimal ).solve( b, LUDecimal );

@@ -8,18 +8,27 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
+import Matrix3 from '../../../dot/js/Matrix3.js';
 import Utils from '../../../dot/js/Utils.js';
 import merge from '../../../phet-core/js/merge.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import FixedCircuitElement from './FixedCircuitElement.js';
+import FixedCircuitElement, {FixedCircuitElementOptions} from './FixedCircuitElement.js';
+import Vertex from './Vertex.js';
 
 // constants
 const SWITCH_LENGTH = CCKCConstants.SWITCH_LENGTH;
 const SWITCH_START = CCKCConstants.SWITCH_START;
 const SWITCH_END = CCKCConstants.SWITCH_END;
 
+type SwitchOptions = {
+  closed: boolean,
+} & FixedCircuitElementOptions;
+
 class Switch extends FixedCircuitElement {
+  resistanceProperty: NumberProperty;
+  closedProperty: BooleanProperty;
 
   /**
    * @param {Vertex} startVertex
@@ -27,27 +36,27 @@ class Switch extends FixedCircuitElement {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( startVertex, endVertex, tandem, options ) {
+  constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, options?: Partial<SwitchOptions> ) {
 
-    options = merge( {
+    const filledOptions = merge( {
       closed: false,
 
       // Use the bounding box of the open lifelike switch to show bounds for all combinations of open/closed x lifelike/schematic
       // See https://github.com/phetsims/circuit-construction-kit-dc/issues/132
       isSizeChangedOnViewChange: false
-    }, options );
+    }, options ) as SwitchOptions;
 
-    super( startVertex, endVertex, SWITCH_LENGTH, tandem, options );
+    super( startVertex, endVertex, SWITCH_LENGTH, tandem, filledOptions );
 
     // @public (read-only) {NumberProperty} the resistance in ohms
     this.resistanceProperty = new NumberProperty( 0 );
 
     // @public (read-only) {BooleanProperty} whether the switch is closed (and current can flow through it)
-    this.closedProperty = new BooleanProperty( options.closed, {
+    this.closedProperty = new BooleanProperty( filledOptions.closed, {
       tandem: tandem.createTandem( 'closedProperty' )
     } );
 
-    this.closedProperty.link( closed => {
+    this.closedProperty.link( ( closed: boolean ) => {
       this.resistanceProperty.value = closed ? 0 : CCKCConstants.MAX_RESISTANCE;
     } );
   }
@@ -68,7 +77,7 @@ class Switch extends FixedCircuitElement {
    * @overrides
    * @public
    */
-  updateMatrixForPoint( distanceAlongWire, matrix ) {
+  updateMatrixForPoint( distanceAlongWire: number, matrix: Matrix3 ) {
 
     const startPosition = this.startPositionProperty.get();
     const endPosition = this.endPositionProperty.get();

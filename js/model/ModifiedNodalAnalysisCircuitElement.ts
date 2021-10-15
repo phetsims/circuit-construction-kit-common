@@ -9,8 +9,14 @@
 
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import CircuitElement from './CircuitElement.js';
 
 class ModifiedNodalAnalysisCircuitElement {
+  nodeId0: string | number;
+  nodeId1: string | number;
+  circuitElement: CircuitElement | null;
+  value: number;
+  currentSolution: number | null;
 
   /**
    * @param {number|string} nodeId0
@@ -19,7 +25,7 @@ class ModifiedNodalAnalysisCircuitElement {
    * @param {number} value - resistance for resistors, voltage for battery or current for current source
    * @param {number|null} [currentSolution]
    */
-  constructor( nodeId0, nodeId1, circuitElement, value, currentSolution = null ) {
+  constructor( nodeId0: string | number, nodeId1: string | number, circuitElement: CircuitElement | null, value: number, currentSolution: number | null = null ) {
     assert && CCKCUtils.validateNodeIndex( nodeId0 );
     assert && CCKCUtils.validateNodeIndex( nodeId1 );
 
@@ -49,7 +55,7 @@ class ModifiedNodalAnalysisCircuitElement {
    * @returns {ModifiedNodalAnalysisCircuitElement}
    * @public (unit-tests)
    */
-  withCurrentSolution( currentSolution ) {
+  withCurrentSolution( currentSolution: number ) {
     return new ModifiedNodalAnalysisCircuitElement( this.nodeId0, this.nodeId1, this.circuitElement, this.value, currentSolution );
   }
 
@@ -59,7 +65,7 @@ class ModifiedNodalAnalysisCircuitElement {
    * @returns {boolean}
    * @private
    */
-  containsNodeId( nodeId ) {
+  containsNodeId( nodeId: number ) {
     return this.nodeId0 === nodeId || this.nodeId1 === nodeId;
   }
 
@@ -68,7 +74,7 @@ class ModifiedNodalAnalysisCircuitElement {
    * @param {number} nodeId
    * @private
    */
-  getOppositeNode( nodeId ) {
+  getOppositeNode( nodeId: number ) {
     assert && assert( this.nodeId0 === nodeId || this.nodeId1 === nodeId );
     return this.nodeId0 === nodeId ? this.nodeId1 : this.nodeId0;
   }

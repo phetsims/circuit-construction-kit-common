@@ -8,9 +8,12 @@
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import merge from '../../../phet-core/js/merge.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitElement from './CircuitElement.js';
+import Circuit from './Circuit.js';
+import CircuitElement, {CircuitElementOptions} from './CircuitElement.js';
+import Vertex from './Vertex.js';
 
 // constants
 // Conversion factor between model=view coordinates and meters, in order to use resistivity to compute resistance.
@@ -18,7 +21,18 @@ import CircuitElement from './CircuitElement.js';
 // coordinates.
 const METERS_PER_VIEW_COORDINATE = 0.0005;
 
+type WireOptions = {
+  wireStub: boolean
+  isMetallic: boolean
+} & CircuitElementOptions;
+
 class Wire extends CircuitElement {
+  wireStub: boolean;
+  resistanceProperty: NumberProperty;
+  resistivityProperty: NumberProperty;
+  wireDirty: boolean;
+  markWireDirtyListener: () => void;
+  lengthProperty: NumberProperty;
 
   /**
    * @param {Vertex} startVertex
@@ -27,19 +41,19 @@ class Wire extends CircuitElement {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( startVertex, endVertex, resistivityProperty, tandem, options ) {
+  constructor( startVertex: Vertex, endVertex: Vertex, resistivityProperty: NumberProperty, tandem: Tandem, options?: Partial<WireOptions> ) {
     assert && assert( typeof resistivityProperty !== 'number', 'property should not be a number' );
     assert && assert( !startVertex.isDisposed, 'vertex should not be disposed' );
     assert && assert( !endVertex.isDisposed, 'vertex should not be disposed' );
-    options = merge( {
+    const filledOptions = merge( {
       wireStub: false,
       isMetallic: true
-    }, options );
+    }, options ) as WireOptions;
     const chargePathLength = startVertex.positionProperty.get().distance( endVertex.positionProperty.get() );
-    super( startVertex, endVertex, chargePathLength, tandem, options );
+    super( startVertex, endVertex, chargePathLength, tandem, filledOptions );
 
     // @public (read-only) {boolean} - if the wire is a small stub attached to the black box
-    this.wireStub = options.wireStub;
+    this.wireStub = filledOptions.wireStub;
 
     // @public {NumberProperty} - the resistance of the Wire in ohms
     this.resistanceProperty = new NumberProperty( CCKCConstants.MINIMUM_WIRE_RESISTANCE );
@@ -75,7 +89,7 @@ class Wire extends CircuitElement {
    * @param {Circuit} circuit
    * @public
    */
-  step( time, dt, circuit ) {
+  step( time: number, dt: number, circuit: Circuit ) {
     super.step( time, dt, circuit );
     this.update();
   }

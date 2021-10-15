@@ -7,11 +7,14 @@
  */
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import FixedCircuitElement from './FixedCircuitElement.js';
+import FixedCircuitElement, {FixedCircuitElementOptions} from './FixedCircuitElement.js';
+import Vertex from './Vertex.js';
 
 class SeriesAmmeter extends FixedCircuitElement {
+  resistanceProperty: NumberProperty;
 
   /**
    * @param {Vertex} startVertex
@@ -19,7 +22,7 @@ class SeriesAmmeter extends FixedCircuitElement {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( startVertex, endVertex, tandem, options ) {
+  constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, options?: Partial<FixedCircuitElementOptions> ) {
     super( startVertex, endVertex, CCKCConstants.SERIES_AMMETER_LENGTH, tandem, options );
 
     // @public (read-only) {Property.<number>} the resistance in ohms.  A constant, but modeled as a property for
