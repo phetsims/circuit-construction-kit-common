@@ -14,6 +14,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import BatteryType from './BatteryType.js';
+import Circuit from './Circuit.js';
 import Vertex from './Vertex.js';
 import VoltageSource from './VoltageSource.js';
 import {VoltageSourceOptions} from './VoltageSource.js';
@@ -53,6 +54,10 @@ class Battery extends VoltageSource {
 
     // @public (read-only) {BatteryType} - the type of the battery - NORMAL | HIGH_VOLTAGE
     this.batteryType = batteryType;
+  }
+
+  step( time: number, dt: number, circuit: Circuit ): void {
+    // nothing to do
   }
 }
 

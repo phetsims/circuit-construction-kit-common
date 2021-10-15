@@ -34,23 +34,23 @@ type CircuitConstructionKitModelOptions = {
 };
 
 class CircuitConstructionKitModel {
-  zoomAnimation: ZoomAnimation | null;
-  viewTypeProperty: Property<CircuitElementViewType>;
-  addRealBulbsProperty: BooleanProperty;
-  circuit: Circuit;
-  voltmeters: Voltmeter[];
-  ammeters: Ammeter[];
-  isValueDepictionEnabledProperty: BooleanProperty;
-  showLabelsProperty: BooleanProperty;
-  showValuesProperty: BooleanProperty;
-  selectedZoomProperty: NumberProperty;
-  currentZoomProperty: NumberProperty;
-  isPlayingProperty: BooleanProperty;
-  modeProperty: Property<string>;
-  revealingProperty: BooleanProperty;
-  blackBoxBounds: Bounds2 | null;
-  stopwatch: Stopwatch;
-  stepEmitter: Emitter<[ number ]>;
+  private zoomAnimation: ZoomAnimation | null;
+  private readonly viewTypeProperty: Property<CircuitElementViewType>;
+  private readonly addRealBulbsProperty: BooleanProperty;
+  private readonly circuit: Circuit;
+  private readonly voltmeters: Voltmeter[];
+  private readonly ammeters: Ammeter[];
+  private readonly isValueDepictionEnabledProperty: BooleanProperty;
+  private readonly showLabelsProperty: BooleanProperty;
+  private readonly showValuesProperty: BooleanProperty;
+  private readonly selectedZoomProperty: NumberProperty;
+  private readonly currentZoomProperty: NumberProperty;
+  private readonly isPlayingProperty: BooleanProperty;
+  private readonly modeProperty: Property<string>;
+  private readonly revealingProperty: BooleanProperty;
+  private readonly blackBoxBounds: Bounds2 | null;
+  private readonly stopwatch: Stopwatch;
+  private readonly stepEmitter: Emitter<[ number ]>;
 
   /**
    * @param {Tandem} tandem

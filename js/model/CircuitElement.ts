@@ -11,20 +11,61 @@ import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Property from '../../../axon/js/Property.js';
+import Matrix3 from '../../../dot/js/Matrix3.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
 import SceneryEvent from '../../../scenery/js/input/SceneryEvent.js';
 import PhetioObject from '../../../tandem/js/PhetioObject.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import ReferenceIO from '../../../tandem/js/types/ReferenceIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CurrentSense from '../model/CurrentSense.js';
+
+'forward'
+import Circuit from './Circuit.js';
 import Vertex from './Vertex.js';
 
 // variables
 let index = 0;
 
-class CircuitElement extends PhetioObject {
+type CircuitElementOptions = {
+  isFlammable: boolean,
+  isMetallic: boolean,
+  isSizeChangedOnViewChange: boolean,
+  canBeDroppedInToolbox: boolean,
+  isCurrentReentrant: boolean,
+  interactive: boolean,
+  insideTrueBlackBox: boolean
+};
+
+abstract class CircuitElement extends PhetioObject {
+  private readonly id: number;
+  private readonly creationTime: any;
+  private readonly isFlammable: any;
+  private readonly isMetallic: any;
+  private readonly isSizeChangedOnViewChange: any;
+  private readonly canBeDroppedInToolbox: any;
+  readonly startVertexProperty: Property<Vertex>;
+  readonly endVertexProperty: Property<Vertex>;
+  readonly currentProperty: NumberProperty;
+  private readonly currentSenseProperty: Property<any>;
+  readonly interactiveProperty: BooleanProperty;
+  private readonly insideTrueBlackBoxProperty: BooleanProperty;
+  chargeLayoutDirty: boolean;
+  readonly connectedEmitter: Emitter<unknown>;
+  private readonly vertexSelectedEmitter: Emitter<unknown>;
+  private readonly vertexMovedEmitter: Emitter<unknown>;
+  private readonly moveToFrontEmitter: Emitter<unknown>;
+  private readonly startDragEmitter: Emitter<unknown>;
+  readonly disposeEmitterCircuitElement: Emitter<unknown>;
+  private readonly vertexMovedListener: () => void;
+  private readonly linkVertexListener: ( newVertex: any, oldVertex: any ) => void;
+  private readonly voltageDifferenceProperty: NumberProperty;
+  private readonly vertexVoltageListener: () => Property<any>;
+  readonly chargePathLength: number;
+  private circuitElementDisposed: boolean;
+  static CircuitElementIO: IOType;
+  readonly lengthProperty: Property<number> | undefined;
 
   /**
    * @param {Vertex} startVertex
@@ -33,12 +74,12 @@ class CircuitElement extends PhetioObject {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( startVertex, endVertex, chargePathLength, tandem, options ) {
+  constructor( startVertex: Vertex, endVertex: Vertex, chargePathLength: number, tandem: Tandem, options?: Partial<CircuitElementOptions> ) {
     assert && assert( startVertex !== endVertex, 'startVertex cannot be the same as endVertex' );
     assert && assert( typeof chargePathLength === 'number', 'charge path length should be a number' );
     assert && assert( chargePathLength > 0, 'charge path length must be positive' );
 
-    options = merge( {
+    const filledOptions = merge( {
       canBeDroppedInToolbox: true, // In the CCK: Basics intro screen, CircuitElements can't be dropped into the toolbox
       interactive: true, // In CCK: Black Box Study, CircuitElements in the black box cannot be manipulated
       isSizeChangedOnViewChange: true,
@@ -49,9 +90,9 @@ class CircuitElement extends PhetioObject {
       isCurrentReentrant: false,
       phetioDynamicElement: true,
       phetioType: CircuitElement.CircuitElementIO
-    }, options );
+    }, options ) as CircuitElementOptions;
 
-    super( options );
+    super( filledOptions );
 
     // @public (read-only) {number} unique identifier for looking up corresponding views
     this.id = index++;
@@ -61,19 +102,19 @@ class CircuitElement extends PhetioObject {
     this.creationTime = phet.joist.elapsedTime;
 
     // @public (read-only) {boolean} flammable circuit elements can catch on fire
-    this.isFlammable = options.isFlammable;
+    this.isFlammable = filledOptions.isFlammable;
 
     // @public (read-only) {boolean} metallic circuit elements behave like exposed wires--sensor values can be read
     // directly on the resistor. For instance, coins and paper clips and wires are metallic and can have their values
     // read directly.
-    this.isMetallic = options.isMetallic;
+    this.isMetallic = filledOptions.isMetallic;
 
     // @public (read-only) {boolean} - whether the size changes when changing from lifelike/schematic, used to determine
     // whether the highlight region should be changed.  True for everything except the switch.
-    this.isSizeChangedOnViewChange = options.isSizeChangedOnViewChange;
+    this.isSizeChangedOnViewChange = filledOptions.isSizeChangedOnViewChange;
 
     // @public (read-only) {number} - whether it is possible to drop the CircuitElement in the toolbox
-    this.canBeDroppedInToolbox = options.canBeDroppedInToolbox;
+    this.canBeDroppedInToolbox = filledOptions.canBeDroppedInToolbox;
 
     // @public {Property.<Vertex>} - the Vertex at the origin of the CircuitElement, may change when CircuitElements are
     // connected
@@ -85,23 +126,23 @@ class CircuitElement extends PhetioObject {
 
     // @public {NumberProperty} - the flowing current, in amps.
     this.currentProperty = new NumberProperty( 0, {
-      reentrant: options.isCurrentReentrant
+      reentrant: filledOptions.isCurrentReentrant
     } );
-    this.currentProperty.link( c => {
-      assert && assert( !isNaN( c ) );
+    this.currentProperty.link( ( current: number ) => {
+      assert && assert( !isNaN( current ) );
     } );
 
-    // @public (read-only) {CurrentSense} - in order to keep the current signs consistent throughout a circuit
+    'forward'
     // we assign the directionality based on the initial current direction, so the initial current is always positive.
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/508
-    this.currentSenseProperty = new Property( CurrentSense.UNSPECIFIED );
+    this.currentSenseProperty = new Property( 'unspecified' );
 
     // @public (read-only) {BooleanProperty} - true if the CircuitElement can be edited and dragged
-    this.interactiveProperty = new BooleanProperty( options.interactive );
+    this.interactiveProperty = new BooleanProperty( filledOptions.interactive );
 
     // @public {BooleanProperty} - whether the circuit element is inside the true black box, not inside the user-created
     // black box, on the interface or outside of the black box
-    this.insideTrueBlackBoxProperty = new BooleanProperty( options.insideTrueBlackBox );
+    this.insideTrueBlackBoxProperty = new BooleanProperty( filledOptions.insideTrueBlackBox );
 
     // @public {boolean} - true if the charge layout must be updated (each element is visited every frame to check this)
     this.chargeLayoutDirty = true;
@@ -174,7 +215,7 @@ class CircuitElement extends PhetioObject {
    * @param {Vertex} oldVertex - the previous vertex
    * @private
    */
-  linkVertex( newVertex, oldVertex ) {
+  linkVertex( newVertex: Vertex, oldVertex: Vertex ) {
 
     // These guards prevent errors from the bad transient state caused by the Circuit.flip causing the same Vertex
     // to be both start and end at the same time.
@@ -203,7 +244,7 @@ class CircuitElement extends PhetioObject {
    * @param {Circuit} circuit
    * @public
    */
-  determineSense( time, circuit ) {
+  determineSense( time: number, circuit: Circuit ) {
 
     const current = this.currentProperty.value;
 
@@ -213,12 +254,12 @@ class CircuitElement extends PhetioObject {
     if ( isReadyToClear ) {
 
       // Reset directionality, and take new directionality when current flows again
-      this.currentSenseProperty.value = CurrentSense.UNSPECIFIED;
+      this.currentSenseProperty.value = 'unspecified';
     }
-    else if ( this.currentSenseProperty.value === CurrentSense.UNSPECIFIED ) {
+    else if ( this.currentSenseProperty.value === 'unspecified' ) {
 
       // If there are other circuit elements, match with them.
-      const otherCircuitElements = circuit.circuitElements.filter( c => c !== this && c.currentSenseProperty.value !== CurrentSense.UNSPECIFIED );
+      const otherCircuitElements = circuit.circuitElements.filter( c => c !== this && c.currentSenseProperty.value !== 'unspecified' );
       if ( otherCircuitElements.length === 0 ) {
 
         // If this is the first circuit element, choose the current sense so the initial readout is positive
@@ -228,10 +269,10 @@ class CircuitElement extends PhetioObject {
 
         const rootElement = otherCircuitElements[ 0 ];
 
-        const desiredSign = rootElement.currentProperty.value >= 0 && rootElement.currentSenseProperty.value === CurrentSense.FORWARD ? 'positive' :
-                            rootElement.currentProperty.value >= 0 && rootElement.currentSenseProperty.value === CurrentSense.BACKWARD ? 'negative' :
-                            rootElement.currentProperty.value < 0 && rootElement.currentSenseProperty.value === CurrentSense.FORWARD ? 'negative' :
-                            rootElement.currentProperty.value < 0 && rootElement.currentSenseProperty.value === CurrentSense.BACKWARD ? 'positive' :
+        const desiredSign = rootElement.currentProperty.value >= 0 && rootElement.currentSenseProperty.value === 'forward' ? 'positive' :
+                            rootElement.currentProperty.value >= 0 && rootElement.currentSenseProperty.value === 'backward' ? 'negative' :
+                            rootElement.currentProperty.value < 0 && rootElement.currentSenseProperty.value === 'forward' ? 'negative' :
+                            rootElement.currentProperty.value < 0 && rootElement.currentSenseProperty.value === 'backward' ? 'positive' :
                             'error';
 
         assert && assert( desiredSign !== 'error' );
@@ -250,8 +291,7 @@ class CircuitElement extends PhetioObject {
    * @param {number} dt
    * @param {Circuit} circuit
    */
-  step( time, dt, circuit ) {
-    // no op
+  step( time: number, dt: number, circuit: Circuit ) {
   }
 
   /**
@@ -327,7 +367,7 @@ class CircuitElement extends PhetioObject {
    * @param {Vertex} newVertex - the vertex which will take the place of oldVertex.
    * @public
    */
-  replaceVertex( oldVertex, newVertex ) {
+  replaceVertex( oldVertex: Vertex, newVertex: Vertex ) {
     const startVertex = this.startVertexProperty.get();
     const endVertex = this.endVertexProperty.get();
 
@@ -349,7 +389,7 @@ class CircuitElement extends PhetioObject {
    * @param {Vertex} vertex
    * @public
    */
-  getOppositeVertex( vertex ) {
+  getOppositeVertex( vertex: Vertex ) {
     assert && assert( this.containsVertex( vertex ), 'Missing vertex' );
     if ( this.startVertexProperty.get() === vertex ) {
       return this.endVertexProperty.get();
@@ -365,7 +405,7 @@ class CircuitElement extends PhetioObject {
    * @returns {boolean}
    * @public
    */
-  containsVertex( vertex ) {
+  containsVertex( vertex: Vertex ) {
     return this.startVertexProperty.get() === vertex || this.endVertexProperty.get() === vertex;
   }
 
@@ -376,7 +416,7 @@ class CircuitElement extends PhetioObject {
    * @returns {boolean}
    * @public
    */
-  containsBothVertices( vertex1, vertex2 ) {
+  containsBothVertices( vertex1: Vertex, vertex2: Vertex ) {
     return this.containsVertex( vertex1 ) && this.containsVertex( vertex2 );
   }
 
@@ -386,7 +426,7 @@ class CircuitElement extends PhetioObject {
    * @param {Matrix3} matrix to be updated with the position and angle, so that garbage isn't created each time
    * @public
    */
-  updateMatrixForPoint( distanceAlongWire, matrix ) {
+  updateMatrixForPoint( distanceAlongWire: number, matrix: Matrix3 ) {
     const startPosition = this.startPositionProperty.get();
     const endPosition = this.endPositionProperty.get();
     const translation = startPosition.blend( endPosition, distanceAlongWire / this.chargePathLength );
@@ -403,7 +443,7 @@ class CircuitElement extends PhetioObject {
    * @returns {boolean}
    * @public
    */
-  containsScalarPosition( scalarPosition ) {
+  containsScalarPosition( scalarPosition: number ) {
     return scalarPosition >= 0 && scalarPosition <= this.chargePathLength;
   }
 
@@ -413,9 +453,7 @@ class CircuitElement extends PhetioObject {
    * @returns {Property.<*>[]}
    * @public
    */
-  getCircuitProperties() {
-    assert && assert( false, 'getCircuitProperties must be implemented in subclass' );
-  }
+  abstract getCircuitProperties(): Property<any>[] // TODO: parameter
 
   /**
    * Get the midpoint between the vertices.  Used for dropping circuit elements into the toolbox.
@@ -440,7 +478,7 @@ const VertexReferenceIO = ReferenceIO( Vertex.VertexIO );
 CircuitElement.CircuitElementIO = new IOType( 'CircuitElementIO', {
   valueType: CircuitElement,
   documentation: 'A Circuit Element, such as battery, resistor or wire',
-  toStateObject: circuitElement => ( {
+  toStateObject: ( circuitElement: CircuitElement ) => ( {
     startVertexID: VertexReferenceIO.toStateObject( circuitElement.startVertexProperty.value ),
     endVertexID: VertexReferenceIO.toStateObject( circuitElement.endVertexProperty.value )
   } ),
@@ -448,20 +486,22 @@ CircuitElement.CircuitElementIO = new IOType( 'CircuitElementIO', {
     startVertexID: VertexReferenceIO,
     endVertexID: VertexReferenceIO
   },
-  stateToArgsForConstructor: stateObject => {
+  stateToArgsForConstructor: ( stateObject: object ) => {
     return [
+      // @ts-ignore
       VertexReferenceIO.fromStateObject( stateObject.startVertexID ),
+      // @ts-ignore
       VertexReferenceIO.fromStateObject( stateObject.endVertexID )
     ];
   }
 } );
 
-const getSenseForPositive = current => current < 0 ? CurrentSense.BACKWARD :
-                                       current > 0 ? CurrentSense.FORWARD :
-                                       CurrentSense.UNSPECIFIED;
-const getSenseForNegative = current => current < 0 ? CurrentSense.FORWARD :
-                                       current > 0 ? CurrentSense.BACKWARD :
-                                       CurrentSense.UNSPECIFIED;
+const getSenseForPositive = ( current: number ) => current < 0 ? 'backward' :
+                                                   current > 0 ? 'forward' :
+                                                   'unspecified';
+const getSenseForNegative = ( current: number ) => current < 0 ? 'forward' :
+                                                   current > 0 ? 'backward' :
+                                                   'unspecified';
 
 circuitConstructionKitCommon.register( 'CircuitElement', CircuitElement );
 export default CircuitElement;

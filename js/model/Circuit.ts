@@ -183,6 +183,8 @@ class Circuit {
       // For circuit elements that can change their length, make sure to update charges when the length changes.
       if ( circuitElement.lengthProperty ) {
         circuitElement.lengthProperty.link( updateCharges );
+
+        // @ts-ignore
         circuitElement.disposeEmitterCircuitElement.addListener( () => circuitElement.lengthProperty.unlink( updateCharges ) );
       }
       this.markDirty();
