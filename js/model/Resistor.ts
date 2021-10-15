@@ -131,7 +131,7 @@ class ResistorEnumValue {
    * @param {number} length
    * @param {number} [verticalOffset]
    */
-  constructor( defaultResistance: number, resistanceRange: Range, isMetallic: boolean, length: number, verticalOffset: number = 0 ) {
+  constructor( defaultResistance: number, resistanceRange: Range, isMetallic: boolean, length: number, verticalOffset = 0 ) {
 
     // @public (read-only) {number} - in Ohms
     this.defaultResistance = defaultResistance;
@@ -158,7 +158,7 @@ class ResistorEnumValue {
    * @returns {ResistorEnumValue}
    * @private
    */
-  static fixed( resistance: number, isMetallic: boolean, length: number, verticalOffset: number = 0 ) {
+  static fixed( resistance: number, isMetallic: boolean, length: number, verticalOffset = 0 ) {
     return new ResistorEnumValue( resistance, new Range( resistance, resistance ), isMetallic, length, verticalOffset );
   }
 }
