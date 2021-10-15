@@ -15,6 +15,7 @@ import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import Circuit from './Circuit.js';
 import CircuitElementViewType from './CircuitElementViewType.js';
 import FixedCircuitElement, {FixedCircuitElementOptions} from './FixedCircuitElement.js';
 import Vertex from './Vertex.js';
@@ -59,11 +60,11 @@ class LightBulb extends FixedCircuitElement {
   readonly real: boolean;
   private readonly highResistance: boolean;
   readonly resistanceProperty: NumberProperty;
-  private readonly vertexDelta: any;
+  private readonly vertexDelta: Vector2;
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
 
   // TODO: improve types
-  static createAtPosition: ( startVertex: any, endVertex: any, circuit: any, resistance: any, viewTypeProperty: any, tandem: any, options: any ) => LightBulb;
+  static createAtPosition: ( startVertex: Vertex, endVertex: Vertex, circuit: Circuit, resistance: number, viewTypeProperty: any, tandem: any, options: any ) => LightBulb;
   static createVertexPair: ( position: any, circuit: any, icon?: boolean ) => { startVertex: any; endVertex: any; };
 
   /**

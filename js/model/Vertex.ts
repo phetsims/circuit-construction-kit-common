@@ -30,7 +30,7 @@ type VertexOptions = {
 
 class Vertex extends PhetioObject {
   readonly index: number;
-  private readonly vertexTandem: any;
+  private readonly vertexTandem: Tandem;
   readonly positionProperty: Vector2Property;
   readonly unsnappedPositionProperty: Vector2Property;
   readonly voltageProperty: NumberProperty;
