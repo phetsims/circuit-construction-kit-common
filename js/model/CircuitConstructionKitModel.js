@@ -47,7 +47,7 @@ class CircuitConstructionKitModel {
     // @public {Property.<CircuitElementViewType>} - whether to show lifelike or schematic representations
     this.viewTypeProperty = new Property( 'lifelike', {
       tandem: tandem.createTandem( 'viewTypeProperty' ),
-      phetioType: Property.PropertyIO( StringIO )
+      phetioType: Property.PropertyIO( StringIO ) // TODO: Validvalues for studio?
     } );
 
     // @public {Property.<boolean>} - whether the carousel shows real bulbs
@@ -116,7 +116,7 @@ class CircuitConstructionKitModel {
     // @public {Property.<InteractionMode>} - whether the user is in the CircuitConstructionKitModel.InteractionMode.EXPLORE or CircuitConstructionKitModel.InteractionMode.TEST mode
     this.modeProperty = new Property( 'explore', {
       tandem: tandem.createTandem( 'modeProperty' ),
-      phetioType: Property.PropertyIO( StringIO )
+      phetioType: Property.PropertyIO( StringIO ) // TODO: validValues for studio?
     } );
 
     // When the user manipulates something, hide the readouts, see
