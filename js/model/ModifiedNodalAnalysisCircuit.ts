@@ -19,20 +19,29 @@ import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ModifiedNodalAnalysisSolution from './ModifiedNodalAnalysisSolution.js';
+import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
 
+// @ts-ignore
 const LUDecimal = Decimal.clone( {
   // precision: 16 // default precision for {number}
   precision: CCKCQueryParameters.precision
 } );
 
 class ModifiedNodalAnalysisCircuit {
+  batteries: ModifiedNodalAnalysisCircuitElement[];
+  resistors: ModifiedNodalAnalysisCircuitElement[];
+  currentSources: ModifiedNodalAnalysisCircuitElement[];
+  elements: ModifiedNodalAnalysisCircuitElement[];
+  nodeSet: { [ key: string | number ]: string | number }; // TODO: make these all string?
+  nodeCount: number;
+  nodes: ( string | number )[];
 
   /**
    * @param {ModifiedNodalAnalysisCircuitElement[]} batteries
    * @param {ModifiedNodalAnalysisCircuitElement[]} resistors
    * @param {ModifiedNodalAnalysisCircuitElement[]} currentSources
    */
-  constructor( batteries, resistors, currentSources ) {
+  constructor( batteries: ModifiedNodalAnalysisCircuitElement[], resistors: ModifiedNodalAnalysisCircuitElement[], currentSources: ModifiedNodalAnalysisCircuitElement[] ) {
     assert && assert( batteries, 'batteries should be defined' );
     assert && assert( resistors, 'resistors should be defined' );
     assert && assert( currentSources, 'currentSources should be defined' );
@@ -115,7 +124,7 @@ class ModifiedNodalAnalysisCircuit {
    * @returns {number}
    * @private
    */
-  getCurrentSourceTotal( nodeIndex ) {
+  getCurrentSourceTotal( nodeIndex: string | number ) {
     let currentSourceTotal = 0.0;
     for ( let i = 0; i < this.currentSources.length; i++ ) {
       const currentSource = this.currentSources[ i ];
@@ -141,12 +150,13 @@ class ModifiedNodalAnalysisCircuit {
    * @param {Term[]} nodeTerms - to accumulate the result
    * @private
    */
-  getCurrentTerms( node, side, sign, nodeTerms ) {
+  getCurrentTerms( node: string | number, side: string, sign: number, nodeTerms: Term[] ) {
     assert && CCKCUtils.validateNodeIndex( node );
 
     // Each battery introduces an unknown current through the battery
     for ( let i = 0; i < this.batteries.length; i++ ) {
       const battery = this.batteries[ i ];
+      // @ts-ignore
       if ( battery[ side ] === node ) {
         nodeTerms.push( new Term( sign, new UnknownCurrent( battery ) ) );
       }
@@ -155,6 +165,7 @@ class ModifiedNodalAnalysisCircuit {
     for ( let i = 0; i < this.resistors.length; i++ ) {
       const resistor = this.resistors[ i ];
 
+      // @ts-ignore
       if ( resistor[ side ] === node ) {
         if ( resistor.value === 0 ) {
 
@@ -205,14 +216,14 @@ class ModifiedNodalAnalysisCircuit {
    * @returns {number[]}
    * @private
    */
-  getConnectedNodeIds( node ) {
+  getConnectedNodeIds( node: string | number ) {
     assert && assert( typeof node === 'number', 'node should be a number' );
     const visited = [];
     const toVisit = [ node ];
 
     while ( toVisit.length > 0 ) {
 
-      const nodeToVisit = toVisit.shift();
+      const nodeToVisit = toVisit.shift() as ( number | string );
       visited.push( nodeToVisit );
       for ( let i = 0; i < this.elements.length; i++ ) {
         const element = this.elements[ i ];
@@ -249,7 +260,7 @@ class ModifiedNodalAnalysisCircuit {
     const nodes = this.nodes;
     for ( let i = 0; i < nodes.length; i++ ) {
       const node = nodes[ i ];
-      const currentTerms = [];
+      const currentTerms: Term[] = [];
 
       this.getCurrentTerms( node, 'nodeId1', -1, currentTerms );
       this.getCurrentTerms( node, 'nodeId0', +1, currentTerms );
@@ -285,7 +296,7 @@ class ModifiedNodalAnalysisCircuit {
    * @private
    */
   getUnknownCurrents() {
-    const unknownCurrents = [];
+    const unknownCurrents: UnknownCurrent[] = [];
 
     // Each battery has an unknown current
     for ( let i = 0; i < this.batteries.length; i++ ) {
@@ -310,10 +321,12 @@ class ModifiedNodalAnalysisCircuit {
     const equations = this.getEquations();
     const unknownCurrents = this.getUnknownCurrents();
     const unknownVoltages = this.nodes.map( node => new UnknownVoltage( node ) );
+
+    // @ts-ignore
     const unknowns = unknownCurrents.concat( unknownVoltages );
 
     // Gets the index of the specified unknown.
-    const getIndex = unknown => {
+    const getIndex = ( unknown: UnknownCurrent | UnknownVoltage ) => {
       const index = getIndexByEquals( unknowns, unknown );
       assert && assert( index >= 0, 'unknown was missing' );
       return index;
@@ -358,6 +371,7 @@ class ModifiedNodalAnalysisCircuit {
         assert && assert( !isNaN( rhs ), `the right-hand-side-value must be a number. Instead it was ${rhs}. debug info=${getDebugInfo( this, A, z, equations, unknowns, x )}` );
       }
 
+      // @ts-ignore
       voltageMap[ unknownVoltage.node ] = rhs;
     }
     for ( let i = 0; i < unknownCurrents.length; i++ ) {
@@ -379,7 +393,7 @@ circuitConstructionKitCommon.register( 'ModifiedNodalAnalysisCircuit', ModifiedN
  * @param {Object} element
  * @returns {number} the index or -1 if not found
  */
-const getIndexByEquals = ( array, element ) => {
+const getIndexByEquals = ( array: Array<any>, element: any ) => {
   for ( let i = 0; i < array.length; i++ ) {
     if ( array[ i ].equals( element ) ) {
       return i;
@@ -393,7 +407,7 @@ const getIndexByEquals = ( array, element ) => {
  * @param {Resistor} resistor
  * @returns {string}
  */
-const resistorToString = resistor =>
+const resistorToString = ( resistor: ModifiedNodalAnalysisCircuitElement ) =>
   `node${resistor.nodeId0} -> node${resistor.nodeId1} @ ${resistor.value} Ohms`;
 
 /**
@@ -401,16 +415,18 @@ const resistorToString = resistor =>
  * @param {Battery} battery
  * @returns {string}
  */
-const batteryToString = battery =>
+const batteryToString = ( battery: ModifiedNodalAnalysisCircuitElement ) =>
   `node${battery.nodeId0} -> node${battery.nodeId1} @ ${battery.value} Volts`;
 
 class Term {
+  coefficient: number;
+  variable: UnknownCurrent | UnknownVoltage;
 
   /**
    * @param {number} coefficient - the multiplier for this term
    * @param {UnknownCurrent|UnknownVoltage} variable - the variable for this term, like the x variable in 7x
    */
-  constructor( coefficient, variable ) {
+  constructor( coefficient: number, variable: UnknownCurrent | UnknownVoltage ) {
 
     // @public (read-only) {number} the coefficient for the term, like '7' in 7x
     this.coefficient = coefficient;
@@ -433,11 +449,12 @@ class Term {
 }
 
 class UnknownCurrent {
+  element: ModifiedNodalAnalysisCircuitElement;
 
   /**
    * @param {ModifiedNodalAnalysisCircuitElement} element
    */
-  constructor( element ) {
+  constructor( element: ModifiedNodalAnalysisCircuitElement ) {
     assert && assert( element, 'element should be defined' );
 
     // @public (read-only) {Object}
@@ -459,16 +476,18 @@ class UnknownCurrent {
    * @returns {boolean}
    * @public
    */
-  equals( other ) {
+  equals( other: UnknownCurrent ) {
     return other.element === this.element;
   }
 }
 
 class UnknownVoltage {
+  node: string | number;
+
   /**
    * @param {number} node - the index of the node
    */
-  constructor( node ) {
+  constructor( node: string | number ) {
     assert && CCKCUtils.validateNodeIndex( node );
 
     // @public (read-only) {number}
@@ -490,19 +509,21 @@ class UnknownVoltage {
    * @returns {boolean}
    * @public
    */
-  equals( other ) {
+  equals( other: UnknownVoltage ) {
     return other.node === this.node;
   }
 }
 
 class Equation {
+  value: number;
+  terms: Term[];
 
   /**
    * @param {number} value - the value on the right hand side of the equation, such as x+y=7
    * @param {Term[]} terms
    * @constructor
    */
-  constructor( value, terms ) {
+  constructor( value: number, terms: Term[] ) {
 
     assert && assert( !isNaN( value ) );
 
@@ -523,7 +544,7 @@ class Equation {
    * @param isDecimal
    * @public
    */
-  stamp( row, a, z, getColumn, isDecimal = false ) {
+  stamp( row: number, a: Matrix, z: Matrix, getColumn: { ( unknown: UnknownCurrent | UnknownVoltage ): number; ( arg0: UnknownCurrent | UnknownVoltage ): any; }, isDecimal = false ) {
 
     // Set the equation's value into the solution matrix
     z.set( row, 0, this.value );
@@ -534,6 +555,8 @@ class Equation {
       const column = getColumn( term.variable );
       assert && assert( !isNaN( term.coefficient ), 'coefficient should be a number' );
       if ( isDecimal ) {
+
+        // @ts-ignore
         a.set( row, column, a.get( row, column ).plus( new LUDecimal( term.coefficient ) ) );
       }
       else {
@@ -559,7 +582,7 @@ class Equation {
   }
 }
 
-const getDebugInfo = ( modifiedNodalAnalysisCircuit, A, z, equations, unknowns, x ) => {
+const getDebugInfo = ( modifiedNodalAnalysisCircuit: ModifiedNodalAnalysisCircuit, A: Matrix, z: Matrix, equations: Equation[], unknowns: ( UnknownCurrent | UnknownVoltage )[], x: Matrix ) => {
   const conditionNumber = A.cond();
   const debugInfo = `Debugging circuit: ${modifiedNodalAnalysisCircuit.toString()}
     equations:

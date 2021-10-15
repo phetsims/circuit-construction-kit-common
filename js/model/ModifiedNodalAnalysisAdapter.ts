@@ -24,9 +24,13 @@ import Switch from './Switch.js';
 import TimestepSubdivisions from './TimestepSubdivisions.js';
 import VoltageSource from './VoltageSource.js';
 import Wire from './Wire.js';
+import Circuit from './Circuit.js';
+import DynamicState from './DynamicState.js';
+import Vertex from './Vertex.js';
+import CircuitElement from './CircuitElement.js';
 
 // constants
-const TIMESTEP_SUBDIVISIONS = new TimestepSubdivisions();
+const TIMESTEP_SUBDIVISIONS = new TimestepSubdivisions<DynamicState>();
 
 class ModifiedNodalAnalysisAdapter {
 
@@ -36,7 +40,7 @@ class ModifiedNodalAnalysisAdapter {
    * @param {number} dt
    * @public
    */
-  static solveModifiedNodalAnalysis( circuit, dt ) {
+  static solveModifiedNodalAnalysis( circuit: Circuit, dt: number ) {
 
     const resistiveBatteryAdapters = [];
     const resistorAdapters = [];
@@ -47,7 +51,7 @@ class ModifiedNodalAnalysisAdapter {
     const nonParticipants = [];
     const participants = [];
     for ( let i = 0; i < circuit.circuitElements.length; i++ ) {
-      const circuitElement = circuit.circuitElements.get( i );
+      const circuitElement = circuit.circuitElements[ i ];
 
       const inLoop = circuit.isInLoop( circuitElement );
 
@@ -64,6 +68,8 @@ class ModifiedNodalAnalysisAdapter {
 
                   // Since no closed circuit there; see below where current is zeroed out
                   ( circuitElement instanceof Switch && circuitElement.closedProperty.value ) ) {
+
+          // @ts-ignore
           resistorAdapters.push( new ResistorAdapter( circuit, circuitElement ) );
         }
         else if ( circuitElement instanceof Switch && !circuitElement.closedProperty.value ) {
@@ -97,6 +103,8 @@ class ModifiedNodalAnalysisAdapter {
 
     resistorAdapters.forEach( resistorAdapter => {
       if ( resistorAdapter.circuitElement instanceof LightBulb && resistorAdapter.circuitElement.real ) {
+
+        // @ts-ignore
         resistorAdapter.resistance = 1.0;
         needsHelp = true;
       }
@@ -112,9 +120,11 @@ class ModifiedNodalAnalysisAdapter {
     resistorAdapters.forEach( resistorAdapter => {
       if ( resistorAdapter.circuitElement instanceof LightBulb && resistorAdapter.circuitElement.real ) {
 
-        const logWithBase = ( value, base ) => Math.log( value ) / Math.log( base );
+        const logWithBase = ( value: number, base: number ) => Math.log( value ) / Math.log( base );
 
+        // @ts-ignore
         const v0 = circuitResult.resultSet.getFinalState().dynamicCircuitSolution.getNodeVoltage( resistorAdapter.nodeId0 );
+        // @ts-ignore
         const v1 = circuitResult.resultSet.getFinalState().dynamicCircuitSolution.getNodeVoltage( resistorAdapter.nodeId1 );
         const V = Math.abs( v1 - v0 );
 
@@ -146,11 +156,12 @@ class ModifiedNodalAnalysisAdapter {
     // zero out currents on open branches
     nonParticipants.forEach( circuitElement => circuitElement.currentProperty.set( 0 ) );
 
-    const solvedVertices = [];
-    const unsolvedVertices = [];
+    const solvedVertices: Vertex[] = [];
+    const unsolvedVertices: Vertex[] = [];
 
     // Apply the node voltages to the vertices
     circuit.vertexGroup.forEach( vertex => {
+      // @ts-ignore
       const voltage = circuitResult.resultSet.getFinalState().dynamicCircuitSolution.getNodeVoltage( vertex.index );
 
       if ( typeof voltage === 'number' ) {
@@ -168,7 +179,7 @@ class ModifiedNodalAnalysisAdapter {
 
     // compute voltages for open branches
     // for each connected component, start at a known voltage and depth first search the graph.
-    const visitVoltage = ( startVertex, circuitElement, endVertex ) => {
+    const visitVoltage = ( startVertex: Vertex, circuitElement: CircuitElement, endVertex: Vertex ) => {
 
       // If we already know the voltage from the matrix solution, skip it.
       if ( !solvedVertices.includes( endVertex ) ) {
@@ -203,8 +214,8 @@ class ModifiedNodalAnalysisAdapter {
       }
     };
 
-    const visited = [];
-    const dfs = ( vertex, visit ) => {
+    const visited: Vertex[] = [];
+    const dfs = ( vertex: Vertex, visit: ( v: Vertex, circuitElement: CircuitElement, opposite: Vertex ) => void ) => {
       visited.push( vertex );
       circuit.circuitElements.forEach( circuitElement => {
         if ( circuitElement.containsVertex( vertex ) ) {
@@ -229,7 +240,7 @@ class ModifiedNodalAnalysisAdapter {
     // Depth first search across the circuit to ensure current conserved at each vertex
     // circuit.checkCurrentConservation( 'before' );
     const locked = [ ...nonParticipants ];
-    const visitCurrent = vertex => circuit.conserveCurrent( vertex, locked );
+    const visitCurrent = ( vertex: Vertex ) => circuit.conserveCurrent( vertex, locked );
     visited.length = 0;
     allVertices.forEach( vertex => dfs( vertex, visitCurrent ) );
     // circuit.checkCurrentConservation( 'after' );

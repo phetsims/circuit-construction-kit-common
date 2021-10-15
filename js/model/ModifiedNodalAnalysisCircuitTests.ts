@@ -12,7 +12,7 @@ import ModifiedNodalAnalysisSolution from './ModifiedNodalAnalysisSolution.js';
 
 QUnit.module( 'ModifiedNodalAnalysisCircuitTests' );
 
-const approxEquals = ( a, b ) => Math.abs( a - b ) < 1E-6;
+const approxEquals = ( a: number, b: number ) => Math.abs( a - b ) < 1E-6;
 
 QUnit.test( 'test_battery_resistor_circuit_should_have_correct_voltages_and_currents_for_a_simple_circuit',
   assert => {

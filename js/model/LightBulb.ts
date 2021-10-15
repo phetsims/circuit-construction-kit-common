@@ -7,12 +7,16 @@
  */
 
 import NumberProperty from '../../../axon/js/NumberProperty.js';
+import Property from '../../../axon/js/Property.js';
+import Matrix3 from '../../../dot/js/Matrix3.js';
 import Range from '../../../dot/js/Range.js';
 import Utils from '../../../dot/js/Utils.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import merge from '../../../phet-core/js/merge.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import FixedCircuitElement from './FixedCircuitElement.js';
+import CircuitElementViewType from './CircuitElementViewType.js';
+import FixedCircuitElement, {FixedCircuitElementOptions} from './FixedCircuitElement.js';
 import Vertex from './Vertex.js';
 
 // constants
@@ -46,7 +50,23 @@ const SCHEMATIC_SAMPLE_POINTS = [
   new Vector2( 0.89, 1.474 )                                            // bottom right
 ];
 
+type LightBulbOptions = {
+  highResistance: boolean
+  real: boolean
+} & FixedCircuitElementOptions;
+
 class LightBulb extends FixedCircuitElement {
+
+  // TODO: iterate through all model attributes and mark private readonly where possible
+  real: boolean;
+  highResistance: boolean;
+  resistanceProperty: NumberProperty;
+  vertexDelta: any;
+  viewTypeProperty: Property<CircuitElementViewType>;
+
+  // TODO: improve types
+  static createAtPosition: ( startVertex: any, endVertex: any, circuit: any, resistance: any, viewTypeProperty: any, tandem: any, options: any ) => LightBulb;
+  static createVertexPair: ( position: any, circuit: any, icon?: boolean ) => { startVertex: any; endVertex: any; };
 
   /**
    * @param {Vertex} startVertex - the side Vertex
@@ -56,30 +76,30 @@ class LightBulb extends FixedCircuitElement {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( startVertex, endVertex, resistance, viewTypeProperty, tandem, options ) {
-    options = merge( {
+  constructor( startVertex: Vertex, endVertex: Vertex, resistance: number, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: Partial<LightBulbOptions> ) {
+    const filledOptions = merge( {
       highResistance: false,
       real: false
-    }, options );
-    assert && assert( !options.hasOwnProperty( 'numberOfDecimalPlaces' ), 'supplied by LightBulb' );
-    options.numberOfDecimalPlaces = options.highResistance ? 0 : 1;
+    }, options ) as LightBulbOptions
+    assert && assert( !filledOptions.hasOwnProperty( 'numberOfDecimalPlaces' ), 'supplied by LightBulb' );
+    filledOptions.numberOfDecimalPlaces = filledOptions.highResistance ? 0 : 1;
 
     // getPathLength not available yet, so use a nonzero charge path length then override.
-    super( startVertex, endVertex, 1, tandem, options );
+    super( startVertex, endVertex, 1, tandem, filledOptions );
 
     // @public (read-only) {boolean} - true if R is constant, false if R is a function of current
 
     // @public {boolean} - Not an enum because in the future we may have a real high resistance bulb.
-    this.real = options.real;
+    this.real = filledOptions.real;
 
     // @public (read-only) {boolean} - true if the light bulb is a high resistance light bulb
-    this.highResistance = options.highResistance;
+    this.highResistance = filledOptions.highResistance;
 
     // @public {Property.<number>} - the resistance of the light bulb which can be edited with the UI
     this.resistanceProperty = new NumberProperty( resistance, {
       tandem: tandem.createTandem( 'resistanceProperty' ),
-      range: options.highResistance ? new Range( 100, 10000 ) :
-             options.real ? new Range( 0, Number.MAX_VALUE ) : // The non-ohmic bulb has its resistance computed in ModifiedNodalAnalysisAdapter.js
+      range: filledOptions.highResistance ? new Range( 100, 10000 ) :
+             filledOptions.real ? new Range( 0, Number.MAX_VALUE ) : // The non-ohmic bulb has its resistance computed in ModifiedNodalAnalysisAdapter.js
              new Range( 0, 120 )
     } );
 
@@ -146,7 +166,7 @@ class LightBulb extends FixedCircuitElement {
    * @returns {Vector2}
    * @private
    */
-  getFilamentPathPoint( index, origin, samplePoints ) {
+  getFilamentPathPoint( index: number, origin: Vector2, samplePoints: Vector2[] ) {
     const point = samplePoints[ index ];
 
     const startPoint = samplePoints[ 0 ];
@@ -176,7 +196,7 @@ class LightBulb extends FixedCircuitElement {
    * @override
    * @public
    */
-  updateMatrixForPoint( distanceAlongWire, matrix ) {
+  updateMatrixForPoint( distanceAlongWire: number, matrix: Matrix3 ) {
 
     super.updateMatrixForPoint( distanceAlongWire, matrix );
 

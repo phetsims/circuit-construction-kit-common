@@ -65,7 +65,7 @@ class ModifiedNodalAnalysisCircuitElement {
    * @returns {boolean}
    * @private
    */
-  containsNodeId( nodeId: number ) {
+  containsNodeId( nodeId: string | number ) {
     return this.nodeId0 === nodeId || this.nodeId1 === nodeId;
   }
 
@@ -74,7 +74,7 @@ class ModifiedNodalAnalysisCircuitElement {
    * @param {number} nodeId
    * @private
    */
-  getOppositeNode( nodeId: number ) {
+  getOppositeNode( nodeId: number | string ) {
     assert && assert( this.nodeId0 === nodeId || this.nodeId1 === nodeId );
     return this.nodeId0 === nodeId ? this.nodeId1 : this.nodeId0;
   }
