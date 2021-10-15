@@ -10,14 +10,20 @@
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import merge from '../../../phet-core/js/merge.js';
 import HBox from '../../../scenery/js/nodes/HBox.js';
+import Node from '../../../scenery/js/nodes/Node.js';
 import HStrut from '../../../scenery/js/nodes/HStrut.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import AccordionBox from '../../../sun/js/AccordionBox.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 // constants
 const BUTTON_MARGIN = 8;
+
+type CCKCAccordionBoxOptions = {
+  strutWidth: number
+};
 
 class CCKCAccordionBox extends AccordionBox {
 
@@ -27,7 +33,7 @@ class CCKCAccordionBox extends AccordionBox {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( content, title, tandem, options ) {
+  constructor( content: Node, title: string, tandem: Tandem, options?: Partial<CCKCAccordionBoxOptions> ) {
 
     options = options || {};
     super( content, merge( {
