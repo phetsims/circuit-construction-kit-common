@@ -504,4 +504,5 @@ const getSenseForNegative = ( current: number ) => current < 0 ? 'forward' :
                                                    'unspecified';
 
 circuitConstructionKitCommon.register( 'CircuitElement', CircuitElement );
+export {CircuitElementOptions};
 export default CircuitElement;

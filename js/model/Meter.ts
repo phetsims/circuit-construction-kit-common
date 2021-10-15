@@ -11,15 +11,21 @@ import Emitter from '../../../axon/js/Emitter.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
 import Vector2 from '../../../dot/js/Vector2.js';
 import Vector2Property from '../../../dot/js/Vector2Property.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 class Meter {
+  phetioIndex: number;
+  visibleProperty: BooleanProperty;
+  bodyPositionProperty: Vector2Property;
+  draggingProbesWithBodyProperty: BooleanProperty;
+  droppedEmitter: Emitter<[]>;
 
   /**
    * @param {Tandem} tandem
    * @param {number} phetioIndex - for assigning corresponding tandems
    */
-  constructor( tandem, phetioIndex ) {
+  constructor( tandem: Tandem, phetioIndex: number ) {
 
     // @public (read-only) {number}
     this.phetioIndex = phetioIndex;

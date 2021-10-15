@@ -9,10 +9,19 @@
  */
 
 import merge from '../../../phet-core/js/merge.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitElement from './CircuitElement.js';
+import CircuitElement, {CircuitElementOptions} from './CircuitElement.js';
+import Vertex from './Vertex.js';
 
-class FixedCircuitElement extends CircuitElement {
+type FixedCircuitElementOptions = {
+  numberOfDecimalPlaces: number
+} & CircuitElementOptions;
+
+abstract class FixedCircuitElement extends CircuitElement {
+  numberOfDecimalPlaces: number;
+  distanceBetweenVertices: number;
+  isFixedCircuitElement: boolean;
 
   /**
    * @param {Vertex} startVertex
@@ -21,17 +30,17 @@ class FixedCircuitElement extends CircuitElement {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( startVertex, endVertex, chargePathLength, tandem, options ) {
+  constructor( startVertex: Vertex, endVertex: Vertex, chargePathLength: number, tandem: Tandem, options?: Partial<FixedCircuitElementOptions> ) {
 
-    options = merge( {
+    const filledOptions = merge( {
       numberOfDecimalPlaces: 1
-    }, options );
+    }, options ) as FixedCircuitElementOptions;
 
     // Super constructor
-    super( startVertex, endVertex, chargePathLength, tandem, options );
+    super( startVertex, endVertex, chargePathLength, tandem, filledOptions );
 
     // @public (read-only) {number} - the number of decimal places to show in readouts and controls
-    this.numberOfDecimalPlaces = options.numberOfDecimalPlaces;
+    this.numberOfDecimalPlaces = filledOptions.numberOfDecimalPlaces;
 
     // @public (read-only) {number} The distance from one vertex to another (as the crow flies), used for rotation
     // about a vertex
@@ -43,4 +52,5 @@ class FixedCircuitElement extends CircuitElement {
 }
 
 circuitConstructionKitCommon.register( 'FixedCircuitElement', FixedCircuitElement );
+export {FixedCircuitElementOptions};
 export default FixedCircuitElement;

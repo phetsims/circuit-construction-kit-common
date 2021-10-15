@@ -17,6 +17,7 @@
     "mipmaps/**/*",
     "images/**/*",
     "../chipper/phet-types.d.ts",
-    "../chipper/node_modules/@types/lodash/index.d.ts"
+    "../chipper/node_modules/@types/lodash/index.d.ts",
+    "../chipper/node_modules/@types/qunit/index.d.ts"
   ]
 }

@@ -22,19 +22,22 @@ QUnit.module( 'DynamicCircuit' );
 const dt = 1 / 60;
 const errorThreshold = 1E-2;
 
-const testVRCCircuit = ( v, r, c, assert ) => {
+const testVRCCircuit = ( v: number, r: number, c: number, assert: Assert ) => {
   const resistor = new ModifiedNodalAnalysisCircuitElement( 1, 2, null, r );
   const battery = new DynamicCircuitResistiveBattery( 0, 1, v, 0 );
   const capacitor = new DynamicCapacitor(
     new DynamicCircuitCapacitor( 2, 0, c ),
     new DynamicElementState( 0.0, v / r )
   );
+
+  // @ts-ignore
   let dynamicCircuit = new DynamicCircuit( [ resistor ], [ battery ], [ capacitor ], [] );
 
   for ( let i = 0; i < ITERATIONS; i++ ) {//takes 0.3 sec on my machine
     const t = i * dt;
 
     const companionSolution = dynamicCircuit.solveItWithSubdivisions( dt );
+    // @ts-ignore
     const voltage = companionSolution.getVoltage( resistor );
     const desiredVoltageAtTPlusDT = -v * Math.exp( -( t + dt ) / r / c );
     const error = Math.abs( voltage - desiredVoltageAtTPlusDT );
@@ -64,16 +67,18 @@ QUnit.test( 'test RC Circuit should have voltage exponentially decay with T RC f
   testVRCCircuit( 3, 7, 100, assert );
 } );
 
-const testVRLCircuit = ( V, R, L, assert ) => {
+const testVRLCircuit = ( V: number, R: number, L: number, assert: Assert ) => {
   const resistor = new ModifiedNodalAnalysisCircuitElement( 1, 2, null, R );
   const battery = new DynamicCircuitResistiveBattery( 0, 1, V, 0 );
   const inductor = new DynamicInductor( new DynamicCircuitInductor( 2, 0, L ), new DynamicElementState( V, 0.0 ) );
+  // @ts-ignore
   let circuit = new DynamicCircuit( [ resistor ], [ battery ], [], [ inductor ] );
 
   // let x = '';
   for ( let i = 0; i < ITERATIONS; i++ ) {
     const t = i * dt;
     const solution = circuit.solveItWithSubdivisions( dt );
+    // @ts-ignore
     const current = solution.getCurrent( resistor );
     const expectedCurrent = V / R * ( 1 - Math.exp( -( t + dt ) * R / L ) );//positive, by definition of MNA.Battery
     const error = Math.abs( current - expectedCurrent );

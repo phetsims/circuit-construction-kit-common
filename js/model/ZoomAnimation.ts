@@ -15,12 +15,17 @@ const ZOOM_ANIMATION_TIME = 0.35; // seconds
 
 class ZoomAnimation {
 
+  easing: Easing;
+  ratio: number;
+  totalDelta: number;
+  zoomCallback: ( delta: number ) => void;
+
   /**
    * @param {number} initialZoom
    * @param {number} targetZoom
    * @param {function} zoomCallback
    */
-  constructor( initialZoom, targetZoom, zoomCallback ) {
+  constructor( initialZoom: number, targetZoom: number, zoomCallback: ( delta: number ) => void ) {
 
     // @private {Easing}
     this.easing = Easing.CUBIC_IN_OUT;
@@ -37,7 +42,7 @@ class ZoomAnimation {
    * @param {number} dt - elapsed time in seconds
    * @public
    */
-  step( dt ) {
+  step( dt: number ) {
     const oldRatio = this.ratio;
 
     if ( oldRatio < 1 ) {

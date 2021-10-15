@@ -11,7 +11,7 @@ import Property from '../../../axon/js/Property.js';
 import merge from '../../../phet-core/js/merge.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import FixedCircuitElement from './FixedCircuitElement.js';
+import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import Vertex from './Vertex.js';
 
 type VoltageSourceOptions = {
@@ -20,7 +20,7 @@ type VoltageSourceOptions = {
   voltagePropertyOptions: {
     tandem: Tandem
   }
-};
+} & FixedCircuitElementOptions;
 
 abstract class VoltageSource extends FixedCircuitElement {
   readonly voltageProperty: NumberProperty;

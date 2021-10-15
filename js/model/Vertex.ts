@@ -20,15 +20,38 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 // Index counter for debugging
 let counter = 0;
 
+type VertexOptions = {
+  draggable: boolean,
+  attachable: boolean,
+  interactive: boolean,
+  blackBoxInterface: boolean,
+  insideTrueBlackBox: boolean,
+} & PhetioObjectOptions;
+
 class Vertex extends PhetioObject {
+  index: number;
+  vertexTandem: any;
+  positionProperty: Vector2Property;
+  unsnappedPositionProperty: Vector2Property;
+  voltageProperty: NumberProperty;
+  selectedProperty: BooleanProperty;
+  draggableProperty: BooleanProperty;
+  interactiveProperty: BooleanProperty;
+  attachableProperty: BooleanProperty;
+  blackBoxInterfaceProperty: BooleanProperty;
+  insideTrueBlackBoxProperty: BooleanProperty;
+  relayerEmitter: Emitter<unknown>;
+  vertexSelectedPropertyListener: null;
+  isDragged: boolean;
+  static VertexIO: IOType;
 
   /**
    * @param {Vector2} position - position in view coordinates
    * @param {Object} [options]
    */
-  constructor( position, options ) {
+  constructor( position: Vector2, options?: Partial<VertexOptions> ) {
 
-    options = merge( {
+    const filledOptions = merge( {
       draggable: true, // whether the vertex can be dragged, false for Black Box elements
       attachable: true, // Black box interior elements cannot be connected while the box is closed
       interactive: true, // Black box interface vertices can be interactive (tap to select) without being draggable
@@ -37,32 +60,32 @@ class Vertex extends PhetioObject {
       tandem: Tandem.OPTIONAL, // Temporary vertices (for icons) should not be instrumented since they
       phetioDynamicElement: true
       // are more of an implementation detail rather than a feature
-    }, options );
+    }, options ) as VertexOptions;
 
-    super( options );
+    super( filledOptions );
 
     // @public (readonly) {number} - Index counter for hashing in CircuitLayerNode.  Also useful for debugging and can be shown
     // with ?vertexDisplay=index
     this.index = counter++;
 
     // @public (read-only) {Tandem}
-    this.vertexTandem = options.tandem;
+    this.vertexTandem = filledOptions.tandem;
 
     // @public - position of the vertex
     this.positionProperty = new Vector2Property( position, {
-      tandem: options.tandem && options.tandem.createTandem( 'positionProperty' ),
+      tandem: filledOptions.tandem && filledOptions.tandem.createTandem( 'positionProperty' ),
       useDeepEquality: true,
-      isValidValue: position => position.isFinite()
+      isValidValue: ( position: Vector2 ) => position.isFinite()
     } );
 
     // @public - where the vertex would be if it hadn't snapped to a proposed connection
     this.unsnappedPositionProperty = new Vector2Property( position, {
-      isValidValue: position => position.isFinite()
+      isValidValue: ( position: Vector2 ) => position.isFinite()
     } );
 
     // @public {NumberProperty} Relative voltage of the node, determined by Circuit.solve
     this.voltageProperty = new NumberProperty( 0, {
-      tandem: options.tandem && options.tandem.createTandem( 'voltageProperty' ),
+      tandem: filledOptions.tandem && filledOptions.tandem.createTandem( 'voltageProperty' ),
       units: 'V'
     } );
 
@@ -70,7 +93,7 @@ class Vertex extends PhetioObject {
     // 'cut' button. Multiple vertices can be selected on an iPad, unlike CircuitElements, which can only have one
     // vertex selected at a time.
     this.selectedProperty = new BooleanProperty( false, {
-      tandem: options.tandem && options.tandem.createTandem( 'selectedProperty' )
+      tandem: filledOptions.tandem && filledOptions.tandem.createTandem( 'selectedProperty' )
     } );
 
     // Some of the following properties overlap.  For example, if 'insideTrueBlackBox' is true, then the interactive
@@ -78,23 +101,23 @@ class Vertex extends PhetioObject {
 
     // @public {BooleanProperty} - Vertices on the black box interface persist between build/investigate, and cannot be
     // moved/deleted
-    this.draggableProperty = new BooleanProperty( options.draggable );
+    this.draggableProperty = new BooleanProperty( filledOptions.draggable );
 
     // @public {BooleanProperty} - Black box interface vertices can be interactive (tap to select) without being
     // draggable
-    this.interactiveProperty = new BooleanProperty( options.interactive );
+    this.interactiveProperty = new BooleanProperty( filledOptions.interactive );
 
     // @public {BooleanProperty} - whether the Vertex can be dragged or moved by dragging another part of the circuit
     // must be observable.  When two vertices are joined in Circuit.connect, non-interactivity propagates
-    this.attachableProperty = new BooleanProperty( options.attachable );
+    this.attachableProperty = new BooleanProperty( filledOptions.attachable );
 
     // @public (read-only) {BooleanProperty} - whether the vertex is on the edge of a black box.  This means it cannot
     // be deleted, but it can be attached to
-    this.blackBoxInterfaceProperty = new BooleanProperty( options.blackBoxInterface );
+    this.blackBoxInterfaceProperty = new BooleanProperty( filledOptions.blackBoxInterface );
 
     // @public {BooleanProperty} - whether the vertex is inside the true black box, not inside the
     // user-created black box, on the interface or outside of the black box
-    this.insideTrueBlackBoxProperty = new BooleanProperty( options.insideTrueBlackBox );
+    this.insideTrueBlackBoxProperty = new BooleanProperty( filledOptions.insideTrueBlackBox );
 
     // @public {Emitter} - indicate when the vertex has been moved to the front in z-ordering and layering in the
     // view must be updated
@@ -112,7 +135,7 @@ class Vertex extends PhetioObject {
    * @param {Vector2} position
    * @public
    */
-  setPosition( position ) {
+  setPosition( position: Vector2 ) {
     this.positionProperty.set( position );
     this.unsnappedPositionProperty.set( position );
   }
@@ -132,7 +155,9 @@ class Vertex extends PhetioObject {
 // @public {IOType}
 Vertex.VertexIO = new IOType( 'VertexIO', {
   valueType: Vertex,
-  toStateObject: vertex => ( { position: Vector2.Vector2IO.toStateObject( vertex.positionProperty.value ) } ),
+  toStateObject: ( vertex: Vertex ) => ( { position: Vector2.Vector2IO.toStateObject( vertex.positionProperty.value ) } ),
+
+  // @ts-ignore
   stateToArgsForConstructor: stateObject => [ Vector2.Vector2IO.fromStateObject( stateObject.position ) ],
   stateSchema: {
     position: Vector2.Vector2IO

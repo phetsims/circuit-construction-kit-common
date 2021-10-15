@@ -9,15 +9,22 @@
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Range from '../../../dot/js/Range.js';
 import merge from '../../../phet-core/js/merge.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import DynamicCircuitElement from './DynamicCircuitElement.js';
+import DynamicCircuitElement, {DynamicCircuitElementOptions} from './DynamicCircuitElement.js';
+import Vertex from './Vertex.js';
 
 // constants
 const INDUCTOR_LENGTH = CCKCConstants.INDUCTOR_LENGTH;
 
+type InductorOptions = {
+  inductance: number
+} & DynamicCircuitElementOptions;
+
 class Inductor extends DynamicCircuitElement {
+  inductanceProperty: NumberProperty;
 
   /**
    * @param {Vertex} startVertex
@@ -25,16 +32,16 @@ class Inductor extends DynamicCircuitElement {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( startVertex, endVertex, tandem, options ) {
-    options = merge( {
+  constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, options?: Partial<InductorOptions> ) {
+    const filledOptions = merge( {
       inductance: CCKCQueryParameters.inductanceDefault,
       numberOfDecimalPlaces: CCKCQueryParameters.inductorNumberDecimalPlaces
-    }, options );
+    }, options ) as InductorOptions;
 
-    super( startVertex, endVertex, INDUCTOR_LENGTH, tandem, options );
+    super( startVertex, endVertex, INDUCTOR_LENGTH, tandem, filledOptions );
 
     // @public {Property.<number>} the inductance in Henries
-    this.inductanceProperty = new NumberProperty( options.inductance, {
+    this.inductanceProperty = new NumberProperty( filledOptions.inductance, {
       range: new Range( CCKCQueryParameters.inductanceMin, CCKCQueryParameters.inductanceMax ),
       tandem: tandem.createTandem( 'inductanceProperty' )
     } );

@@ -7,12 +7,19 @@
  */
 
 import Emitter from '../../../axon/js/Emitter.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import FixedCircuitElement from './FixedCircuitElement.js';
+import FixedCircuitElement, {FixedCircuitElementOptions} from './FixedCircuitElement.js';
+import Vertex from './Vertex.js';
+
+type DynamicCircuitElementOptions = {} & FixedCircuitElementOptions;
 
 // This class should not be instantiated directly, instead subclasses should provide implementations for getCircuitProperties
 // and the subclasses should be used instead.
-class DynamicCircuitElement extends FixedCircuitElement {
+abstract class DynamicCircuitElement extends FixedCircuitElement {
+  mnaVoltageDrop: number;
+  mnaCurrent: number;
+  clearEmitter: Emitter<[]>;
 
   /**
    * @param {Vertex} startVertex
@@ -21,7 +28,9 @@ class DynamicCircuitElement extends FixedCircuitElement {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( startVertex, endVertex, length, tandem, options ) {
+
+  // @ts-ignore options
+  constructor( startVertex: Vertex, endVertex: Vertex, length: number, tandem: Tandem, options: object ) {
     super( startVertex, endVertex, length, tandem, options );
 
     // @public {number} - value of the voltage drop set and read by the modified nodal analysis.  This is in addition
@@ -60,4 +69,5 @@ class DynamicCircuitElement extends FixedCircuitElement {
 }
 
 circuitConstructionKitCommon.register( 'DynamicCircuitElement', DynamicCircuitElement );
+export {DynamicCircuitElementOptions};
 export default DynamicCircuitElement;

@@ -11,11 +11,23 @@ import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import Range from '../../../dot/js/Range.js';
 import merge from '../../../phet-core/js/merge.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import FixedCircuitElement from './FixedCircuitElement.js';
+import Circuit from './Circuit.js';
+import FixedCircuitElement, {FixedCircuitElementOptions} from './FixedCircuitElement.js';
+import Vertex from './Vertex.js';
+
+type FuseOptions = {
+  fuseLength: number
+  currentRating: number
+} & FixedCircuitElementOptions;
 
 class Fuse extends FixedCircuitElement {
+  currentRatingProperty: NumberProperty;
+  isTrippedProperty: BooleanProperty;
+  resistanceProperty: NumberProperty;
+  timeCurrentRatingExceeded: number;
 
   /**
    * @param {Vertex} startVertex
@@ -23,19 +35,19 @@ class Fuse extends FixedCircuitElement {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( startVertex, endVertex, tandem, options ) {
-    options = merge( {
+  constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, options?: Partial<FuseOptions> ) {
+    const filledOptions = merge( {
       resistance: CCKCConstants.MINIMUM_RESISTANCE,
       fuseLength: CCKCConstants.RESISTOR_LENGTH, // Same length as a resistor
       currentRating: 4, // Amps
       isCurrentReentrant: true, // Changing the current can trip a fuse, which changes the current
       numberOfDecimalPlaces: 1
-    }, options );
+    }, options ) as FuseOptions;
 
-    super( startVertex, endVertex, options.fuseLength, tandem, options );
+    super( startVertex, endVertex, filledOptions.fuseLength, tandem, filledOptions );
 
     // @public {Property.<number>} the current at which the fuse trips, in amps
-    this.currentRatingProperty = new NumberProperty( options.currentRating, {
+    this.currentRatingProperty = new NumberProperty( filledOptions.currentRating, {
       range: new Range( 0.5, 20 )
     } );
 
@@ -66,7 +78,7 @@ class Fuse extends FixedCircuitElement {
    * @param {Circuit} circuit
    * @public
    */
-  step( time, dt, circuit ) {
+  step( time: number, dt: number, circuit: Circuit ) {
     super.step( time, dt, circuit );
     // When the current exceeds the max, trip the fuse.  This cannot be modeled as a property link because it
     // creates a reentrant property loop which doesn't update the reset fuse button properly
