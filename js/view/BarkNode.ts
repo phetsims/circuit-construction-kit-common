@@ -19,7 +19,7 @@ class BarkNode extends Node {
   /**
    * @param {Object} [options]
    */
-  constructor( options ) {
+  constructor( options?: Partial<NodeOptions> ) {
     super();
     this.addChild( new Path( commentSolidShape, {
       fill: 'white',

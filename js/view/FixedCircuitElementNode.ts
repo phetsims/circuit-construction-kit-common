@@ -63,7 +63,7 @@ class FixedCircuitElementNode extends CircuitElementNode {
   markDirtyListener: () => void;
   moveToFrontListener: () => void;
   pickableListener: ( pickable: boolean | null ) => Node;
-  fixedCircuitElementNodePickable: boolean;
+  fixedCircuitElementNodePickable: boolean | null;
   dragListener: CircuitLayerNodeDragListener | null;
   static webglSpriteNodes: Image[];
   updateHighlightVisibility: ( ( circuitElement: CircuitElement | null ) => void ) | null;
