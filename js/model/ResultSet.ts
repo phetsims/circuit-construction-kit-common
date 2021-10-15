@@ -7,13 +7,22 @@
  */
 
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import DynamicCircuitSolution from './DynamicCircuitSolution.js';
 
-class ResultSet {
+type Element = {
+  state: {
+    dynamicCircuitSolution: DynamicCircuitSolution
+  }
+  dt: number
+};
+
+class ResultSet<T> {
+  readonly states: Element[];
 
   /**
    * @param {Object[]} states
    */
-  constructor( states ) {
+  constructor( states: Element[] ) {
     // @public {Object[]}
     this.states = states;
   }

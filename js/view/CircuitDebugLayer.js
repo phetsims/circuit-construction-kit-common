@@ -11,7 +11,6 @@ import Node from '../../../scenery/js/nodes/Node.js';
 import Text from '../../../scenery/js/nodes/Text.js';
 import Panel from '../../../sun/js/Panel.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CurrentSense from '../model/CurrentSense.js';
 
 class CircuitDebugLayer extends Node {
   constructor( circuitLayerNode ) {
@@ -73,8 +72,8 @@ class CircuitDebugLayer extends Node {
       const textNode = new Text( circuitElement.currentProperty.value ); //eslint-disable-line
       const panel = new Panel( textNode, {
         center: arrowNode.center,
-        fill: circuitElement.currentSenseProperty.value === CurrentSense.FORWARD ? 'green' :
-              circuitElement.currentSenseProperty.value === CurrentSense.BACKWARD ? 'rgba(137, 196, 244, 1)' :
+        fill: circuitElement.currentSenseProperty.value === 'forward' ? 'green' :
+              circuitElement.currentSenseProperty.value === 'backward' ? 'rgba(137, 196, 244, 1)' :
               'white'
       } );
       this.addChild( panel );

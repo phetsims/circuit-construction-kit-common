@@ -15,6 +15,11 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ModifiedNodalAnalysisCircuit from './ModifiedNodalAnalysisCircuit.js';
 import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
 import TimestepSubdivisions from './TimestepSubdivisions.js';
+import DynamicCircuitSolution from './DynamicCircuitSolution.js';
+import DynamicState from './DynamicState.js';
+import DynamicElementState from './DynamicElementState.js';
+import DynamicInductor from './DynamicInductor.js';
+import DynamicCapacitor from './DynamicCapacitor.js';
 
 class DynamicCircuit {
 
@@ -228,89 +233,6 @@ class DynamicCircuit {
   }
 }
 
-
-class DynamicCapacitor {
-
-  /**
-   * @param {DynamicCircuit.Capacitor} dynamicCircuitCapacitor
-   * @param {DynamicElementState} state
-   */
-  constructor( dynamicCircuitCapacitor, state ) {
-
-    // @public {DynamicCircuit.Capacitor}
-    this.dynamicCircuitCapacitor = dynamicCircuitCapacitor;
-
-    // @public {DynamicElementState}
-    this.state = state;
-
-    // @public placeholders for where to read the capacitor part of the voltage without the series resistor
-    this.capacitorVoltageNode0 = null;
-    this.capacitorVoltageNode1 = null;
-  }
-}
-
-class DynamicInductor {
-
-  /**
-   * @param {DynamicCircuit.Inductor} dynamicCircuitInductor
-   * @param {DynamicElementState} state
-   */
-  constructor( dynamicCircuitInductor, state ) {
-
-    // @public {Inductor}
-    this.dynamicCircuitInductor = dynamicCircuitInductor;
-
-    // @public {DynamicElementState}
-    this.state = state;
-  }
-}
-
-class Capacitor extends ModifiedNodalAnalysisCircuitElement {
-  /**
-   * @param {number} node0
-   * @param {number} node1
-   * @param {number} capacitance
-   */
-  constructor( node0, node1, capacitance ) {
-    super( node0, node1, null, 0 );
-
-    // @public
-    this.capacitance = capacitance;
-  }
-}
-
-class Inductor extends ModifiedNodalAnalysisCircuitElement {
-  /**
-   * @param {number} node0
-   * @param {number} node1
-   * @param {number} inductance
-   */
-  constructor( node0, node1, inductance ) {
-    super( node0, node1, null, 0 );
-
-    // @public
-    this.inductance = inductance;
-  }
-}
-
-class ResistiveBattery extends ModifiedNodalAnalysisCircuitElement {
-  /**
-   * @param {number} node0
-   * @param {number} node1
-   * @param {number} voltage
-   * @param {number} resistance
-   */
-  constructor( node0, node1, voltage, resistance ) {
-    super( node0, node1, null, 0 );
-
-    // @public
-    this.voltage = voltage;
-
-    // @public
-    this.resistance = resistance;
-  }
-}
-
 /**
  * @param {number[]} x
  * @param {number[]} y
@@ -324,134 +246,6 @@ const euclideanDistance = ( x, y ) => {
   }
   return Math.sqrt( sumSqDiffs );
 };
-
-class DynamicElementState {
-
-  /**
-   * @param {number} voltage - the voltage drop v1-v0
-   * @param {number} current - the conventional current as it moves from node 0 to node 1
-   */
-  constructor( voltage, current ) {
-    // @public
-    this.voltage = voltage;
-    this.current = current;
-  }
-}
-
-class DynamicState {
-
-  /**
-   * @param {DynamicCircuit} dynamicCircuit
-   * @param {DynamicCircuitSolution|null} dynamicCircuitSolution
-   */
-  constructor( dynamicCircuit, dynamicCircuitSolution ) {
-    assert && assert( dynamicCircuit, 'circuit should be defined' );
-
-    // @public (read-only)
-    this.dynamicCircuit = dynamicCircuit;
-
-    // @public (read-only)
-    this.dynamicCircuitSolution = dynamicCircuitSolution;
-  }
-
-  /**
-   * @param {number} dt
-   * @returns {DynamicState}
-   * @public
-   */
-  update( dt ) {
-    this.solution = this.dynamicCircuit.solvePropagate( dt );
-    const newCircuit = this.dynamicCircuit.updateCircuit( this.solution );
-    return new DynamicState( newCircuit, this.solution );
-  }
-
-  /**
-   * Returns an array of characteristic measurements from the solution, in order to determine whether more subdivisions
-   * are needed in the timestep.
-   * @returns {number[]}
-   * @public
-   */
-  getCharacteristicArray() {
-
-    // The solution has been applied to the this.dynamicCircuit, so we can read values from it
-    const currents = [];
-    for ( let i = 0; i < this.dynamicCircuit.capacitorAdapters.length; i++ ) {
-      currents.push( this.dynamicCircuit.capacitorAdapters[ i ].state.current );
-    }
-    for ( let i = 0; i < this.dynamicCircuit.inductorAdapters.length; i++ ) {
-      currents.push( this.dynamicCircuit.inductorAdapters[ i ].state.current );
-    }
-    return currents;
-  }
-}
-
-class DynamicCircuitSolution {
-
-  /**
-   * @param {DynamicCircuit} circuit
-   * @param {ModifiedNodalAnalysisSolution} mnaSolution
-   * @param {{element:ModifiedNodalAnalysisCircuitElement,getValueForSolution(ModifiedNodalAnalysisSolution):number}[]} currentCompanions
-   * @constructor
-   */
-  constructor( circuit, mnaSolution, currentCompanions ) {
-    // @public
-    this.circuit = circuit;
-    this.mnaSolution = mnaSolution;
-    this.currentCompanions = currentCompanions;
-  }
-
-  /**
-   * @param {number} nodeIndex - index
-   * @returns {number}
-   * @public
-   */
-  getNodeVoltage( nodeIndex ) {
-    return this.mnaSolution.getNodeVoltage( nodeIndex );
-  }
-
-  /**
-   * @param {ModifiedNodalAnalysisCircuitElement|CapacitorAdapter|InductorAdapter} element
-   * @returns {number}
-   * @public
-   */
-  getCurrent( element ) {
-
-    // For resistors with r>0, Ohm's Law gives the current.  For components with no resistance (like closed switch or
-    // 0-resistance battery), the current is given by the matrix solution.
-    if ( element.hasOwnProperty( 'currentSolution' ) && element.currentSolution !== null ) {
-      return element.currentSolution;
-    }
-
-    // Support
-    const companion = _.find( this.currentCompanions, c => c.element === element ||
-                                                           c.element.dynamicCircuitCapacitor === element ||
-                                                           c.element.dynamicCircuitInductor === element );
-
-    if ( companion ) {
-      return companion.getValueForSolution( this.mnaSolution );
-    }
-    else {
-      return this.mnaSolution.getCurrentForResistor( element );
-    }
-  }
-
-  /**
-   * @param {ModifiedNodalAnalysisCircuitElement} element
-   * @returns {number}
-   * @public
-   */
-  getVoltage( element ) {
-    return this.getNodeVoltage( element.nodeId1 ) - this.getNodeVoltage( element.nodeId0 );
-  }
-}
-
-// @public
-DynamicCircuit.Capacitor = Capacitor;
-DynamicCircuit.Inductor = Inductor;
-DynamicCircuit.DynamicElementState = DynamicElementState;
-DynamicCircuit.DynamicCapacitor = DynamicCapacitor;
-DynamicCircuit.DynamicInductor = DynamicInductor;
-DynamicCircuit.ResistiveBattery = ResistiveBattery;
 
 circuitConstructionKitCommon.register( 'DynamicCircuit', DynamicCircuit );
 export default DynamicCircuit;

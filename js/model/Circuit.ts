@@ -1434,8 +1434,10 @@ class Circuit {
     circuitElement.startVertexProperty.value = endVertex;
     circuitElement.endVertexProperty.value = startVertex;
 
-    // @ts-ignore
-    circuitElement.currentSenseProperty.value = CurrentSense.flip( circuitElement.currentSenseProperty.value );
+    const flipped = circuitElement.currentSenseProperty.value === 'forward' ? 'backward' :
+                    circuitElement.currentSenseProperty.value === 'backward' ? 'forward' :
+                    'unspecified';
+    circuitElement.currentSenseProperty.value = flipped;
 
     // Layout the charges in the circuitElement but nowhere else, since that creates a discontinuity in the motion
     circuitElement.chargeLayoutDirty = true;

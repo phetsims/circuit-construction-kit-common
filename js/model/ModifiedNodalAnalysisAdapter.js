@@ -8,8 +8,9 @@
  */
 
 import CCKCConstants from '../CCKCConstants.js';
+import CapacitorAdapter from './CapacitorAdapter.js';
+import InductorAdapter from './InductorAdapter.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
-import CCKCUtils from '../CCKCUtils.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Capacitor from './Capacitor.js';
 import DynamicCircuit from './DynamicCircuit.js';
@@ -23,11 +24,12 @@ import Switch from './Switch.js';
 import TimestepSubdivisions from './TimestepSubdivisions.js';
 import VoltageSource from './VoltageSource.js';
 import Wire from './Wire.js';
+import DynamicCircuitResistiveBattery from './DynamicCircuitResistiveBattery.js';
 
 // constants
 const TIMESTEP_SUBDIVISIONS = new TimestepSubdivisions();
 
-class ResistiveBatteryAdapter extends DynamicCircuit.ResistiveBattery {
+class ResistiveBatteryAdapter extends DynamicCircuitResistiveBattery {
 
   /**
    * @param {Circuit} circuit - the primary Circuit model instance, so we can look up Vertex indices
@@ -81,73 +83,6 @@ class ResistorAdapter extends ModifiedNodalAnalysisCircuitElement {
    */
   applySolution( circuitResult ) {
     this.resistor.currentProperty.value = circuitResult.getTimeAverageCurrent( this );
-  }
-}
-
-class CapacitorAdapter extends DynamicCircuit.DynamicCapacitor {
-
-  /**
-   * @param {Circuit} circuit
-   * @param {Capacitor} capacitor
-   */
-  constructor( circuit, capacitor ) {
-
-    const dynamicCircuitCapacitor = new DynamicCircuit.Capacitor(
-      capacitor.startVertexProperty.value.index,
-      capacitor.endVertexProperty.value.index,
-      capacitor.capacitanceProperty.value
-    );
-    super( dynamicCircuitCapacitor, new DynamicCircuit.DynamicElementState( capacitor.mnaVoltageDrop, capacitor.mnaCurrent ) );
-
-    // @private - alongside this.dynamicCircuitCapacitor assigned in the supertype
-    this.capacitor = capacitor;
-  }
-
-  /**
-   * @param {CircuitResult} circuitResult
-   * @public
-   */
-  applySolution( circuitResult ) {
-    this.capacitor.currentProperty.value = circuitResult.getTimeAverageCurrent( this.dynamicCircuitCapacitor );
-    this.capacitor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrent( this.dynamicCircuitCapacitor ) );
-    this.capacitor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getFinalState().dynamicCircuitSolution.getNodeVoltage( this.capacitorVoltageNode1 )
-                                                              - circuitResult.getFinalState().dynamicCircuitSolution.getNodeVoltage( this.capacitorVoltageNode0 ) );
-
-
-    assert && assert( Math.abs( this.capacitor.mnaCurrent ) < 1E100, 'mnaCurrent out of range' );
-    assert && assert( Math.abs( this.capacitor.mnaVoltageDrop ) < 1E100, 'mnaVoltageDrop out of range' );
-  }
-}
-
-class InductorAdapter extends DynamicCircuit.DynamicInductor {
-
-  /**
-   * @param {Circuit} circuit
-   * @param {Inductor} inductor
-   */
-  constructor( circuit, inductor ) {
-    const dynamicCircuitInductor = new DynamicCircuit.Inductor(
-      inductor.startVertexProperty.value.index,
-      inductor.endVertexProperty.value.index,
-      inductor.inductanceProperty.value
-    );
-
-    super( dynamicCircuitInductor, new DynamicCircuit.DynamicElementState( inductor.mnaVoltageDrop, inductor.mnaCurrent ) );
-
-    // @private - alongside this.dynamicCircuitInductor assigned in the supertype
-    this.inductor = inductor;
-  }
-
-  /**
-   * @param {CircuitResult} circuitResult
-   * @public
-   */
-  applySolution( circuitResult ) {
-    this.inductor.currentProperty.value = -circuitResult.getTimeAverageCurrent( this.dynamicCircuitInductor );
-    this.inductor.mnaCurrent = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousCurrent( this.dynamicCircuitInductor ) );
-    this.inductor.mnaVoltageDrop = CCKCUtils.clampMagnitude( circuitResult.getInstantaneousVoltage( this.dynamicCircuitInductor ) );
-    assert && assert( Math.abs( this.inductor.mnaCurrent ) < 1E100, 'mnaCurrent out of range' );
-    assert && assert( Math.abs( this.inductor.mnaVoltageDrop ) < 1E100, 'mnaVoltageDrop out of range' );
   }
 }
 

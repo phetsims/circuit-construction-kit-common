@@ -48,7 +48,7 @@ abstract class CircuitElement extends PhetioObject {
   readonly startVertexProperty: Property<Vertex>;
   readonly endVertexProperty: Property<Vertex>;
   readonly currentProperty: NumberProperty;
-  private readonly currentSenseProperty: Property<any>;
+  readonly currentSenseProperty: Property<any>;
   readonly interactiveProperty: BooleanProperty;
   private readonly insideTrueBlackBoxProperty: BooleanProperty;
   chargeLayoutDirty: boolean;

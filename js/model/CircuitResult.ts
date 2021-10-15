@@ -1,5 +1,10 @@
 // Copyright 2021, University of Colorado Boulder
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import ResultSet from './ResultSet.js';
+import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement';
+import DynamicState from './DynamicState.js';
+import CapacitorAdapter from './CapacitorAdapter.js';
+import InductorAdapter from './InductorAdapter.js';
 
 /**
  * This class represents the solution obtained by a timestep-subdivision-oriented MNA solve with companion models.
@@ -7,11 +12,12 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
  * dynamics (using instantaneous solutions) but also to show intermediate states (using the average results), see #2270.
  */
 class CircuitResult {
+  resultSet: ResultSet<DynamicState>;
 
   /**
    * @param {ResultSet.<DynamicCircuit.DynamicState>} resultSet
    */
-  constructor( resultSet ) {
+  constructor( resultSet: ResultSet<DynamicState> ) {
     // @public
     this.resultSet = resultSet;
   }
@@ -23,7 +29,7 @@ class CircuitResult {
    * @returns {number}
    * @public
    */
-  getTimeAverageCurrent( element ) {
+  getTimeAverageCurrent( element: ModifiedNodalAnalysisCircuitElement | CapacitorAdapter | InductorAdapter ) {
     let weightedSum = 0.0;
     this.resultSet.states.forEach( stateObject => {
       weightedSum += stateObject.state.dynamicCircuitSolution.getCurrent( element ) * stateObject.dt;
@@ -39,7 +45,7 @@ class CircuitResult {
    * @returns {number}
    * @public
    */
-  getInstantaneousCurrent( element ) {
+  getInstantaneousCurrent( element: ModifiedNodalAnalysisCircuitElement ) {
     return this.getFinalState().dynamicCircuitSolution.getCurrent( element );
   }
 
@@ -48,7 +54,7 @@ class CircuitResult {
    * @returns {number}
    * @public
    */
-  getInstantaneousVoltage( element ) {
+  getInstantaneousVoltage( element: ModifiedNodalAnalysisCircuitElement ) {
     return this.getFinalState().dynamicCircuitSolution.getVoltage( element );
   }
 

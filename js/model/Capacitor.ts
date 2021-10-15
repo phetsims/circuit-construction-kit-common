@@ -20,7 +20,7 @@ type CapacitorOptions = {
 }; // TODO: Extends DynamicCircuitElementOptions
 
 class Capacitor extends DynamicCircuitElement {
-  private readonly capacitanceProperty: NumberProperty;
+  readonly capacitanceProperty: NumberProperty;
 
   /**
    * @param {Vertex} startVertex
