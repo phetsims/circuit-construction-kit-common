@@ -12,13 +12,37 @@ import Range from '../../../dot/js/Range.js';
 import Enumeration from '../../../phet-core/js/Enumeration.js';
 import EnumerationIO from '../../../phet-core/js/EnumerationIO.js';
 import merge from '../../../phet-core/js/merge.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElement from './CircuitElement.js';
 import FixedCircuitElement from './FixedCircuitElement.js';
+import Vertex from './Vertex.js';
+
+type ResistorOptions = {
+  isMetallic: boolean,
+  resistorType: any
+};
+
+type ResistorEnumGroup = {
+  RESISTOR: ResistorEnumValue,
+  HIGH_RESISTANCE_RESISTOR: ResistorEnumValue,
+  COIN: ResistorEnumValue,
+  PAPER_CLIP: ResistorEnumValue,
+  PENCIL: ResistorEnumValue,
+  ERASER: ResistorEnumValue,
+  HAND: ResistorEnumValue,
+  DOG: ResistorEnumValue,
+  DOLLAR_BILL: ResistorEnumValue,
+};
 
 class Resistor extends FixedCircuitElement {
+  resistanceProperty: NumberProperty;
+  static ResistorIO: IOType;
+  static ResistorType: ResistorEnumGroup;
+  static Resistor: { [ key: string ]: ResistorEnumValue; };
+  resistorType: any;
 
   /**
    * @param {Vertex} startVertex
@@ -27,23 +51,24 @@ class Resistor extends FixedCircuitElement {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( startVertex, endVertex, resistorType, tandem, options ) {
-    options = merge( {
+  constructor( startVertex: Vertex, endVertex: Vertex, resistorType: any, tandem: Tandem, options?: Partial<ResistorOptions> ) {
+    const filledOptions = merge( {
       isFlammable: true, // All resistors are flammable except for the dog, which automatically disconnects at high current.
       phetioType: Resistor.ResistorIO,
       numberOfDecimalPlaces: resistorType === Resistor.ResistorType.RESISTOR ? 1 : 0
-    }, options );
+    }, options ) as ResistorOptions;
 
-    assert && assert( !options.hasOwnProperty( 'resistance' ), 'Resistance should be passed through resistorType' );
+    assert && assert( !filledOptions.hasOwnProperty( 'resistance' ), 'Resistance should be passed through resistorType' );
 
     // validate resistor type
+    // @ts-ignore
     validate( resistorType, { valueType: Resistor.ResistorType } );
 
     // @public (read-only)
-    assert && assert( !options.hasOwnProperty( 'isMetallic' ), 'isMetallic is given by the resistorType' );
-    options.isMetallic = resistorType.isMetallic;
+    assert && assert( !filledOptions.hasOwnProperty( 'isMetallic' ), 'isMetallic is given by the resistorType' );
+    filledOptions.isMetallic = resistorType.isMetallic;
 
-    super( startVertex, endVertex, resistorType.length, tandem, options );
+    super( startVertex, endVertex, resistorType.length, tandem, filledOptions );
 
     // @public (read-only) {Resistor.ResistorType} indicates one of ResistorType values
     this.resistorType = resistorType;
@@ -93,6 +118,11 @@ class Resistor extends FixedCircuitElement {
  * Values for the ResistorTypeEnum
  */
 class ResistorEnumValue {
+  defaultResistance: number;
+  range: Range;
+  isMetallic: boolean;
+  length: number;
+  verticalOffset: number;
 
   /**
    * @param {number} defaultResistance - default value for resistance, in Ohms
@@ -101,7 +131,7 @@ class ResistorEnumValue {
    * @param {number} length
    * @param {number} [verticalOffset]
    */
-  constructor( defaultResistance, resistanceRange, isMetallic, length, verticalOffset = 0 ) {
+  constructor( defaultResistance: number, resistanceRange: Range, isMetallic: boolean, length: number, verticalOffset: number = 0 ) {
 
     // @public (read-only) {number} - in Ohms
     this.defaultResistance = defaultResistance;
@@ -128,7 +158,7 @@ class ResistorEnumValue {
    * @returns {ResistorEnumValue}
    * @private
    */
-  static fixed( resistance, isMetallic, length, verticalOffset = 0 ) {
+  static fixed( resistance: number, isMetallic: boolean, length: number, verticalOffset: number = 0 ) {
     return new ResistorEnumValue( resistance, new Range( resistance, resistance ), isMetallic, length, verticalOffset );
   }
 }
@@ -146,26 +176,33 @@ Resistor.ResistorType = Enumeration.byMap( {
   // Adjust the dog so the charges travel along the tail/legs, see https://github.com/phetsims/circuit-construction-kit-common/issues/364
   DOG: ResistorEnumValue.fixed( 100000, false, CCKCConstants.DOG_LENGTH, -40 ),
   DOLLAR_BILL: ResistorEnumValue.fixed( 1000000000, false, CCKCConstants.DOLLAR_BILL_LENGTH )
-} );
+} ) as unknown as ResistorEnumGroup;
 
 // @public {IOType}
 Resistor.ResistorIO = new IOType( 'ResistorIO', {
   valueType: Resistor,
   supertype: CircuitElement.CircuitElementIO,
   stateSchema: {
+    // @ts-ignore
     resistorType: EnumerationIO( Resistor.ResistorType )
   },
-  toStateObject: resistor => {
+  toStateObject: ( resistor: Resistor ) => {
     const stateObject = CircuitElement.CircuitElementIO.toStateObject( resistor );
+
+    // @ts-ignore
     stateObject.resistorType = EnumerationIO( Resistor.ResistorType ).toStateObject( resistor.resistorType );
     return stateObject;
   },
+
+  // @ts-ignore
   stateToArgsForConstructor( stateObject ) {
     const args = CircuitElement.CircuitElementIO.stateToArgsForConstructor( stateObject );
+    // @ts-ignore
     args.push( EnumerationIO( Resistor.ResistorType ).fromStateObject( stateObject.resistorType ) );
     return args;
   }
 } );
 
 circuitConstructionKitCommon.register( 'Resistor', Resistor );
+export {ResistorOptions};
 export default Resistor;

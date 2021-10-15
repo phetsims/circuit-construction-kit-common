@@ -7,10 +7,16 @@
  */
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import Resistor from './Resistor.js';
+import Circuit from './Circuit.js';
+import Resistor, {ResistorOptions} from './Resistor.js';
+import Vertex from './Vertex.js';
 
 class Dog extends Resistor {
+  isBarkingProperty: BooleanProperty;
+  lastBarkTime: number;
+  triggerCount: number;
 
   /**
    * @param {Vertex} startVertex
@@ -18,7 +24,7 @@ class Dog extends Resistor {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( startVertex, endVertex, tandem, options ) {
+  constructor( startVertex: Vertex, endVertex: Vertex, tandem: Tandem, options?: ResistorOptions ) {
     super( startVertex, endVertex, Resistor.ResistorType.DOG, tandem, options );
 
     // @private - keep track of whether the dog is barking, so we can update the view accordingly
@@ -38,7 +44,7 @@ class Dog extends Resistor {
    * @param {Circuit} circuit
    * @public
    */
-  step( time, dt, circuit ) {
+  step( time: number, dt: number, circuit: Circuit ) {
     super.step( time, dt, circuit );
     const voltage = this.voltageDifferenceProperty.value;
 
