@@ -21,7 +21,6 @@ import IOType from '../../../tandem/js/types/IOType.js';
 import ReferenceIO from '../../../tandem/js/types/ReferenceIO.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
-'forward'
 import Circuit from './Circuit.js';
 import Vertex from './Vertex.js';
 
@@ -132,7 +131,6 @@ abstract class CircuitElement extends PhetioObject {
       assert && assert( !isNaN( current ) );
     } );
 
-    'forward'
     // we assign the directionality based on the initial current direction, so the initial current is always positive.
     // see https://github.com/phetsims/circuit-construction-kit-common/issues/508
     this.currentSenseProperty = new Property( 'unspecified' );
@@ -504,5 +502,5 @@ const getSenseForNegative = ( current: number ) => current < 0 ? 'forward' :
                                                    'unspecified';
 
 circuitConstructionKitCommon.register( 'CircuitElement', CircuitElement );
-export {CircuitElementOptions};
+export { CircuitElementOptions };
 export default CircuitElement;

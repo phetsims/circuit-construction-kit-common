@@ -17,7 +17,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from './Circuit.js';
 import CircuitElementViewType from './CircuitElementViewType.js';
-import FixedCircuitElement, {FixedCircuitElementOptions} from './FixedCircuitElement.js';
+import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import Vertex from './Vertex.js';
 
 // constants
@@ -79,7 +79,7 @@ class LightBulb extends FixedCircuitElement {
     const filledOptions = merge( {
       highResistance: false,
       real: false
-    }, options ) as LightBulbOptions
+    }, options ) as LightBulbOptions;
     assert && assert( !filledOptions.hasOwnProperty( 'numberOfDecimalPlaces' ), 'supplied by LightBulb' );
     filledOptions.numberOfDecimalPlaces = filledOptions.highResistance ? 0 : 1;
 

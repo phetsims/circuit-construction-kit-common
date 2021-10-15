@@ -38,7 +38,7 @@ type ResistorEnumGroup = {
 };
 
 class Resistor extends FixedCircuitElement {
-   readonly resistanceProperty: NumberProperty;
+  readonly resistanceProperty: NumberProperty;
   private readonly resistorType: any;
   static ResistorIO: IOType;
   static ResistorType: ResistorEnumGroup;
@@ -204,5 +204,5 @@ Resistor.ResistorIO = new IOType( 'ResistorIO', {
 } );
 
 circuitConstructionKitCommon.register( 'Resistor', Resistor );
-export {ResistorOptions};
+export { ResistorOptions };
 export default Resistor;

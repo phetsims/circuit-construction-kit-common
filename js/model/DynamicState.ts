@@ -1,5 +1,6 @@
-import DynamicCircuit from './DynamicCircuit';
-import DynamicCircuitSolution from './DynamicCircuitSolution';
+// Copyright 2016-2021, University of Colorado Boulder
+import DynamicCircuit from './DynamicCircuit.js';
+import DynamicCircuitSolution from './DynamicCircuitSolution.js';
 
 class DynamicState {
   readonly dynamicCircuit: DynamicCircuit;

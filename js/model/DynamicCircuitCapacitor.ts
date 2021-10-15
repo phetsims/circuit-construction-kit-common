@@ -1,3 +1,4 @@
+// Copyright 2016-2021, University of Colorado Boulder
 import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
 
 class DynamicCircuitCapacitor extends ModifiedNodalAnalysisCircuitElement {

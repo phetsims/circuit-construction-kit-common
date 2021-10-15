@@ -7,7 +7,6 @@
  */
 
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import DynamicCircuitSolution from './DynamicCircuitSolution.js';
 
 type Element<T> = {
   state: T

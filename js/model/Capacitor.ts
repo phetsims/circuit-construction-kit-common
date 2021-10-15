@@ -17,7 +17,7 @@ import Vertex from './Vertex.js';
 
 type CapacitorOptions = {
   capacitance: number
-}; // TODO: Extends DynamicCircuitElementOptions
+} // TODO: Extends DynamicCircuitElementOptions
 
 class Capacitor extends DynamicCircuitElement {
   readonly capacitanceProperty: NumberProperty;

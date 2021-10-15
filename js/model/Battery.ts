@@ -8,7 +8,6 @@
 
 import Property from '../../../axon/js/Property.js';
 import Range from '../../../dot/js/Range.js';
-import Enumeration from '../../../phet-core/js/Enumeration.js';
 import merge from '../../../phet-core/js/merge.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
@@ -17,7 +16,7 @@ import BatteryType from './BatteryType.js';
 import Circuit from './Circuit.js';
 import Vertex from './Vertex.js';
 import VoltageSource from './VoltageSource.js';
-import {VoltageSourceOptions} from './VoltageSource.js';
+import { VoltageSourceOptions } from './VoltageSource.js';
 
 // constants
 const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
@@ -56,6 +55,7 @@ class Battery extends VoltageSource {
     this.batteryType = batteryType;
   }
 
+  // @public
   step( time: number, dt: number, circuit: Circuit ): void {
     // nothing to do
   }

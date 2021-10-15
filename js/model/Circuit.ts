@@ -9,13 +9,11 @@
 
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Emitter from '../../../axon/js/Emitter.js';
-import EnumerationProperty from '../../../axon/js/EnumerationProperty.js';
 import NumberProperty from '../../../axon/js/NumberProperty.js';
 import createObservableArray from '../../../axon/js/createObservableArray.js';
 import Property from '../../../axon/js/Property.js';
 import dotRandom from '../../../dot/js/dotRandom.js';
 import Vector2 from '../../../dot/js/Vector2.js';
-import Enumeration from '../../../phet-core/js/Enumeration.js';
 import merge from '../../../phet-core/js/merge.js';
 import PhetioGroup from '../../../tandem/js/PhetioGroup.js';
 import NullableIO from '../../../tandem/js/types/NullableIO.js';
@@ -28,7 +26,6 @@ import Battery from './Battery.js';
 import Capacitor from './Capacitor.js';
 import Charge from './Charge.js';
 import ChargeAnimator from './ChargeAnimator.js';
-import CurrentSense from './CurrentSense.js';
 import CircuitElement from './CircuitElement.js';
 import CurrentType from './CurrentType.js';
 import Dog from './Dog.js';
@@ -45,9 +42,8 @@ import Vertex from './Vertex.js';
 import Wire from './Wire.js';
 import CircuitElementViewType from './CircuitElementViewType.js';
 import Tandem from '../../../tandem/js/Tandem.js';
-import Action from '../../../axon/js/Action.js';
 import Bounds2 from '../../../dot/js/Bounds2.js';
-import VoltageConnection from './VoltageConnection';
+import VoltageConnection from './VoltageConnection.js';
 
 // constants
 const SNAP_RADIUS = 30; // For two vertices to join together, they must be this close, in view coordinates
@@ -61,10 +57,6 @@ const trueFunction = _.constant( true ); // Lower cased so IDEA doesn't think it
 
 type CircuitOptions = {
   blackBoxStudy: boolean
-};
-
-type Edge = {
-  startVertex: Vertex, circuitElement: CircuitElement, endVertex: Vertex
 };
 
 type Pair = { v1: Vertex, v2: Vertex };

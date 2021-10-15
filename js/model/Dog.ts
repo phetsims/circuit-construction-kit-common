@@ -10,7 +10,7 @@ import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from './Circuit.js';
-import Resistor, {ResistorOptions} from './Resistor.js';
+import Resistor, { ResistorOptions } from './Resistor.js';
 import Vertex from './Vertex.js';
 
 class Dog extends Resistor {

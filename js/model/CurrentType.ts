@@ -8,8 +8,5 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Enumeration from '../../../phet-core/js/Enumeration.js';
-import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-
 type CurrentType = 'electrons' | 'conventional';
 export default CurrentType;

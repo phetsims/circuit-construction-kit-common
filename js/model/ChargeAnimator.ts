@@ -14,9 +14,9 @@ import RunningAverage from '../../../dot/js/RunningAverage.js';
 import Utils from '../../../dot/js/Utils.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitElement from './CircuitElement';
 import Charge from './Charge.js';
 import Circuit from './Circuit.js';
+import CircuitElement from './CircuitElement.js';
 import Vertex from './Vertex.js';
 
 // constants
@@ -348,7 +348,7 @@ class ChargeAnimator {
                 circuitElement: circuitElement,
                 distance: distance,
                 distanceToClosestElectron: nearest.distanceToClosestElectron + circuitElement.chargePathLength
-              } )
+              } );
             }
           }
         }

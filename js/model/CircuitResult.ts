@@ -1,7 +1,7 @@
 // Copyright 2021, University of Colorado Boulder
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ResultSet from './ResultSet.js';
-import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement';
+import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
 import DynamicState from './DynamicState.js';
 import CapacitorAdapter from './CapacitorAdapter.js';
 import InductorAdapter from './InductorAdapter.js';

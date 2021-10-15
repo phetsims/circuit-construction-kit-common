@@ -8,5 +8,5 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-type CircuitElementViewType = 'lifelike'|'schematic';
-export default CircuitElementViewType
+type CircuitElementViewType = 'lifelike' | 'schematic';
+export default CircuitElementViewType;

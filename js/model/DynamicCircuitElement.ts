@@ -9,7 +9,7 @@
 import Emitter from '../../../axon/js/Emitter.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import FixedCircuitElement, {FixedCircuitElementOptions} from './FixedCircuitElement.js';
+import FixedCircuitElement, { FixedCircuitElementOptions } from './FixedCircuitElement.js';
 import Vertex from './Vertex.js';
 
 type DynamicCircuitElementOptions = {} & FixedCircuitElementOptions;
@@ -69,5 +69,5 @@ abstract class DynamicCircuitElement extends FixedCircuitElement {
 }
 
 circuitConstructionKitCommon.register( 'DynamicCircuitElement', DynamicCircuitElement );
-export {DynamicCircuitElementOptions};
+export { DynamicCircuitElementOptions };
 export default DynamicCircuitElement;

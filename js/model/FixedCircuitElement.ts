@@ -11,7 +11,7 @@
 import merge from '../../../phet-core/js/merge.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CircuitElement, {CircuitElementOptions} from './CircuitElement.js';
+import CircuitElement, { CircuitElementOptions } from './CircuitElement.js';
 import Vertex from './Vertex.js';
 
 type FixedCircuitElementOptions = {
@@ -52,5 +52,5 @@ abstract class FixedCircuitElement extends CircuitElement {
 }
 
 circuitConstructionKitCommon.register( 'FixedCircuitElement', FixedCircuitElement );
-export {FixedCircuitElementOptions};
+export { FixedCircuitElementOptions };
 export default FixedCircuitElement;

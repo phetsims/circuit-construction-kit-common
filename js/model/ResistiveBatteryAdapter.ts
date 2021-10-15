@@ -1,11 +1,12 @@
+// Copyright 2016-2021, University of Colorado Boulder
+
 import DynamicCircuitResistiveBattery from './DynamicCircuitResistiveBattery.js';
 import Circuit from './Circuit.js';
-import Battery from './Battery.js';
 import CircuitResult from './CircuitResult.js';
 import VoltageSource from './VoltageSource.js';
 
 class ResistiveBatteryAdapter extends DynamicCircuitResistiveBattery {
-   readonly battery: VoltageSource;
+  readonly battery: VoltageSource;
 
   /**
    * @param {Circuit} circuit - the primary Circuit model instance, so we can look up Vertex indices

@@ -24,7 +24,7 @@ import ResistorAdapter from './ResistorAdapter.js';
 import ResistiveBatteryAdapter from './ResistiveBatteryAdapter.js';
 import CapacitorAdapter from './CapacitorAdapter.js';
 import InductorAdapter from './InductorAdapter.js';
-import ModifiedNodalAnalysisSolution from './ModifiedNodalAnalysisSolution';
+import ModifiedNodalAnalysisSolution from './ModifiedNodalAnalysisSolution.js';
 
 class DynamicCircuit {
   resistorAdapters: ResistorAdapter[];

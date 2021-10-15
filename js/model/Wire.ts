@@ -12,7 +12,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from './Circuit.js';
-import CircuitElement, {CircuitElementOptions} from './CircuitElement.js';
+import CircuitElement, { CircuitElementOptions } from './CircuitElement.js';
 import Vertex from './Vertex.js';
 
 // constants

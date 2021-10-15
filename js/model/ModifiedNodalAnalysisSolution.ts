@@ -8,8 +8,6 @@
 
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
-import CapacitorAdapter from './CapacitorAdapter.js';
-import InductorAdapter from './InductorAdapter.js';
 
 class ModifiedNodalAnalysisSolution {
   private readonly nodeVoltages: any;

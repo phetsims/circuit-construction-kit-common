@@ -64,7 +64,7 @@ class CircuitConstructionKitModel {
       // the answer by pressing the reveal answer button.
       revealing: true,
       blackBoxStudy: false
-    }, options ) as CircuitConstructionKitModelOptions
+    }, options ) as CircuitConstructionKitModelOptions;
 
     // @private {ZoomAnimation|null} - animation for the zoom level or null if not animating
     this.zoomAnimation = null;

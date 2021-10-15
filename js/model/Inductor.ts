@@ -13,7 +13,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import CCKCQueryParameters from '../CCKCQueryParameters.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import DynamicCircuitElement, {DynamicCircuitElementOptions} from './DynamicCircuitElement.js';
+import DynamicCircuitElement, { DynamicCircuitElementOptions } from './DynamicCircuitElement.js';
 import Vertex from './Vertex.js';
 
 // constants

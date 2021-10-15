@@ -80,5 +80,5 @@ abstract class VoltageSource extends FixedCircuitElement {
 }
 
 circuitConstructionKitCommon.register( 'VoltageSource', VoltageSource );
-export {VoltageSourceOptions};
+export { VoltageSourceOptions };
 export default VoltageSource;

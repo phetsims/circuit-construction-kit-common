@@ -1,5 +1,6 @@
-import DynamicCircuitInductor from "./DynamicCircuitInductor";
-import DynamicElementState from "./DynamicElementState";
+// Copyright 2016-2021, University of Colorado Boulder
+import DynamicCircuitInductor from './DynamicCircuitInductor.js';
+import DynamicElementState from './DynamicElementState.js';
 
 class DynamicInductor {
   readonly dynamicCircuitInductor: DynamicCircuitInductor;

@@ -16,7 +16,8 @@ import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Circuit from './Circuit.js';
 import Vertex from './Vertex.js';
-import VoltageSource, {VoltageSourceOptions} from './VoltageSource.js';
+import VoltageSource from './VoltageSource.js';
+import { VoltageSourceOptions } from './VoltageSource.js';
 
 // constants
 
@@ -101,7 +102,7 @@ class ACVoltage extends VoltageSource {
    * @param {Circuit} circuit
    * @public
    */
-  step( time:number, dt:number, circuit: Circuit ) {
+  step( time: number, dt: number, circuit: Circuit ) {
     super.step( time, dt, circuit );
     this.time = time;
     this.voltageProperty.set(

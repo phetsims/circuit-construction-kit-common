@@ -1,4 +1,4 @@
-import DynamicCircuit from './DynamicCircuit.js';
+// Copyright 2016-2021, University of Colorado Boulder
 import CCKCUtils from '../CCKCUtils.js';
 import Inductor from './Inductor.js';
 import Circuit from './Circuit.js';
