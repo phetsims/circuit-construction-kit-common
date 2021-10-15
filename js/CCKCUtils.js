@@ -7,6 +7,8 @@
  */
 
 import Utils from '../../dot/js/Utils.js';
+// TODO: enable lint on next line in TS
+import Node from '../../scenery/js/nodes/Node.js'; //eslint-disable-line
 import StringUtils from '../../phetcommon/js/util/StringUtils.js';
 import CCKCQueryParameters from './CCKCQueryParameters.js';
 import circuitConstructionKitCommonStrings from './circuitConstructionKitCommonStrings.js';

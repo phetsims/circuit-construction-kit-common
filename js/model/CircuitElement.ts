@@ -40,7 +40,7 @@ type CircuitElementOptions = {
 abstract class CircuitElement extends PhetioObject {
   private readonly id: number;
   private readonly creationTime: number;
-  private readonly isFlammable: boolean;
+  readonly isFlammable: boolean;
   private readonly isMetallic: boolean;
   private readonly isSizeChangedOnViewChange: boolean;
   private readonly canBeDroppedInToolbox: boolean;
@@ -52,7 +52,7 @@ abstract class CircuitElement extends PhetioObject {
   private readonly insideTrueBlackBoxProperty: BooleanProperty;
   chargeLayoutDirty: boolean;
   readonly connectedEmitter: Emitter<[]>;
-  private readonly vertexSelectedEmitter: Emitter<[]>;
+  readonly vertexSelectedEmitter: Emitter<[]>;
   readonly vertexMovedEmitter: Emitter<[]>;
   private readonly moveToFrontEmitter: Emitter<[]>;
   private readonly startDragEmitter: Emitter<[]>;

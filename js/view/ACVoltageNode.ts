@@ -6,6 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import Property from '../../../axon/js/Property.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import Shape from '../../../kite/js/Shape.js';
 import merge from '../../../phet-core/js/merge.js';
@@ -14,14 +15,18 @@ import PlusNode from '../../../scenery-phet/js/PlusNode.js';
 import Circle from '../../../scenery/js/nodes/Circle.js';
 import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import ACVoltage from '../model/ACVoltage.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
+import CCKCScreenView from './CCKCScreenView.js';
+import CircuitLayerNode from './CircuitLayerNode.js';
+import CircuitElementViewType from '../model/CircuitElementViewType.js';
 
 // constants
 const sineCurveShape = new Shape();
-const f = x => 9 * Math.sin( x );
+const f = ( x: number ) => 9 * Math.sin( x );
 
 for ( let x = 0; x < Math.PI * 2; x += Math.PI / 2 / 100 ) {
   const a = x * 5.5;
@@ -50,7 +55,7 @@ const LIFELIKE_LINE_WIDTH = 2;
  * @param {boolean} schematic - whether to show the schematic (instead of lifelike) form
  * @returns {Node}
  */
-const createNode = schematic => new Node( {
+const createNode = ( schematic: boolean ) => new Node( {
   x: CCKCConstants.AC_VOLTAGE_LENGTH / 2,
   children: [
     new Circle( CIRCLE_DIAMETER / 2, {
@@ -83,7 +88,10 @@ schematicNode.mouseArea = Shape.circle(
   CIRCLE_DIAMETER );
 schematicNode.touchArea = schematicNode.mouseArea;
 
+type ACVoltageNodeOptions = {}; // TODO & FixedCircuitElementNodeOptions
+
 class ACVoltageNode extends FixedCircuitElementNode {
+  private readonly acSource: ACVoltage;
 
   /**
    * @param {CCKCScreenView|null} screenView - main screen view, null for isIcon
@@ -93,7 +101,8 @@ class ACVoltageNode extends FixedCircuitElementNode {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( screenView, circuitLayerNode, acSource, viewTypeProperty, tandem, options ) {
+  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, acSource: ACVoltage,
+               viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: Partial<ACVoltageNodeOptions> ) {
     options = merge( {
       numberOfDecimalPlaces: 1,
       useHitTestForSensors: true
@@ -123,6 +132,7 @@ class ACVoltageNode extends FixedCircuitElementNode {
  * Identifies the images used to render this node so they can be pre-populated in the WebGL sprite sheet.
  * @public {Array.<Node>}
  */
+// @ts-ignore
 ACVoltageNode.webglSpriteNodes = [ schematicNode, lifelikeNode ];
 
 circuitConstructionKitCommon.register( 'ACVoltageNode', ACVoltageNode );
