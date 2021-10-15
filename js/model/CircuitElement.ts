@@ -52,12 +52,12 @@ abstract class CircuitElement extends PhetioObject {
   readonly interactiveProperty: BooleanProperty;
   private readonly insideTrueBlackBoxProperty: BooleanProperty;
   chargeLayoutDirty: boolean;
-  readonly connectedEmitter: Emitter<unknown>;
-  private readonly vertexSelectedEmitter: Emitter<unknown>;
-  readonly vertexMovedEmitter: Emitter<unknown>;
-  private readonly moveToFrontEmitter: Emitter<unknown>;
-  private readonly startDragEmitter: Emitter<unknown>;
-  readonly disposeEmitterCircuitElement: Emitter<unknown>;
+  readonly connectedEmitter: Emitter<[]>;
+  private readonly vertexSelectedEmitter: Emitter<[]>;
+  readonly vertexMovedEmitter: Emitter<[]>;
+  private readonly moveToFrontEmitter: Emitter<[]>;
+  private readonly startDragEmitter: Emitter<[]>;
+  readonly disposeEmitterCircuitElement: Emitter<[]>;
   private readonly vertexMovedListener: () => void;
   private readonly linkVertexListener: ( newVertex: Vertex, oldVertex: Vertex ) => void;
   protected readonly voltageDifferenceProperty: NumberProperty;
