@@ -23,7 +23,7 @@ const BUTTON_MARGIN = 8;
 
 type CCKCAccordionBoxOptions = {
   strutWidth: number
-};
+} & AccordionBoxOptions;
 
 class CCKCAccordionBox extends AccordionBox {
 
@@ -72,4 +72,5 @@ class CCKCAccordionBox extends AccordionBox {
 }
 
 circuitConstructionKitCommon.register( 'CCKCAccordionBox', CCKCAccordionBox );
+export { CCKCAccordionBoxOptions };
 export default CCKCAccordionBox;

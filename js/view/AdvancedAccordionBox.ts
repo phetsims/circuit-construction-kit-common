@@ -14,10 +14,17 @@ import VStrut from '../../../scenery/js/nodes/VStrut.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommonStrings from '../circuitConstructionKitCommonStrings.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
-import CCKCAccordionBox from './CCKCAccordionBox.js';
+import CCKCAccordionBox, { CCKCAccordionBoxOptions } from './CCKCAccordionBox.js';
 import CCKCCheckbox from './CCKCCheckbox.js';
 import SourceResistanceControl from './SourceResistanceControl.js';
 import WireResistivityControl from './WireResistivityControl.js';
+import Circuit from '../model/Circuit.js';
+import AlignGroup from '../../../scenery/js/nodes/AlignGroup.js';
+import Tandem from '../../../tandem/js/Tandem.js';
+
+type AdvancedAccordionBoxOptions = {
+  showRealBulbsCheckbox: boolean
+} & CCKCAccordionBoxOptions;
 
 class AdvancedAccordionBox extends CCKCAccordionBox {
 
@@ -28,7 +35,7 @@ class AdvancedAccordionBox extends CCKCAccordionBox {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( circuit, alignGroup, batteryResistanceControlString, tandem, options ) {
+  constructor( circuit: Circuit, alignGroup: AlignGroup, batteryResistanceControlString: string, tandem: Tandem, options?: Partial<AdvancedAccordionBoxOptions> ) {
 
     options = merge( {
       showRealBulbsCheckbox: true

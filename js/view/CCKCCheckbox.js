@@ -7,6 +7,8 @@
 
 import merge from '../../../phet-core/js/merge.js';
 import Checkbox from '../../../sun/js/Checkbox.js';
+// TODO: enable lint
+import Node from '../../../scenery/js/nodes/Node.js'; // eslint-disable-line
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 // constants

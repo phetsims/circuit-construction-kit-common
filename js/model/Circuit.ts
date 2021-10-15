@@ -63,10 +63,10 @@ type Pair = { v1: Vertex, v2: Vertex };
 
 class Circuit {
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
-  private readonly addRealBulbsProperty: Property<boolean>;
+  readonly addRealBulbsProperty: Property<boolean>;
   private readonly blackBoxStudy: boolean;
-  private readonly wireResistivityProperty: NumberProperty;
-  private readonly sourceResistanceProperty: NumberProperty;
+  readonly wireResistivityProperty: NumberProperty;
+  readonly sourceResistanceProperty: NumberProperty;
   readonly circuitElements: ObservableArray<CircuitElement>;
   readonly charges: ObservableArray<Charge>;
   private readonly showCurrentProperty: BooleanProperty;
