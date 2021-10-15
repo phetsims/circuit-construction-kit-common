@@ -7,9 +7,9 @@
 
 import merge from '../../../phet-core/js/merge.js';
 import Checkbox from '../../../sun/js/Checkbox.js';
-// TODO: enable lint
-import Node from '../../../scenery/js/nodes/Node.js'; // eslint-disable-line
+import Node from '../../../scenery/js/nodes/Node.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import Property from '../../../axon/js/Property.js';
 
 // constants
 const BOX_WIDTH = 16;
@@ -21,7 +21,7 @@ class CCKCCheckbox extends Checkbox {
    * @param {Property.<boolean>} property
    * @param {Object} [options]
    */
-  constructor( content, property, options ) {
+  constructor( content: Node, property: Property<boolean>, options?: Partial<CheckboxOptions> ) {
 
     options = merge( { boxWidth: BOX_WIDTH }, options );
     super( content, property, options );
