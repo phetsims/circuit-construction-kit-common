@@ -17,9 +17,9 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Meter from './Meter.js';
 
 class Voltmeter extends Meter {
-  voltageProperty: Property<null>;
-  redProbePositionProperty: Vector2Property;
-  blackProbePositionProperty: Vector2Property;
+  private readonly voltageProperty: Property<null>;
+  private readonly redProbePositionProperty: Vector2Property;
+  private readonly blackProbePositionProperty: Vector2Property;
 
   /**
    * @param {Tandem} tandem

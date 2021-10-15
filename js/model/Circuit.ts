@@ -70,38 +70,38 @@ type Edge = {
 type Pair = { v1: Vertex, v2: Vertex };
 
 class Circuit {
-  viewTypeProperty: Property<CircuitElementViewType>;
-  addRealBulbsProperty: Property<boolean>;
-  blackBoxStudy: boolean;
-  wireResistivityProperty: NumberProperty;
-  sourceResistanceProperty: NumberProperty;
-  circuitElements: ObservableArray<CircuitElement>;
-  charges: ObservableArray<Charge>;
-  showCurrentProperty: BooleanProperty;
-  currentTypeProperty: Property<CurrentType>;
-  timeProperty: NumberProperty;
-  chargeAnimator: ChargeAnimator;
-  circuitChangedEmitter: Emitter<[]>;
-  vertexDroppedEmitter: Emitter<[ Vertex ]>;
-  componentEditedEmitter: Emitter<[]>;
-  vertexGroup: PhetioGroup<Vertex>;
-  selectedCircuitElementProperty: Property<CircuitElement | null>;
+  private readonly viewTypeProperty: Property<CircuitElementViewType>;
+  private readonly addRealBulbsProperty: Property<boolean>;
+  private readonly blackBoxStudy: boolean;
+  private readonly wireResistivityProperty: NumberProperty;
+  private readonly sourceResistanceProperty: NumberProperty;
+  readonly circuitElements: ObservableArray<CircuitElement>;
+  readonly charges: ObservableArray<Charge>;
+  private readonly showCurrentProperty: BooleanProperty;
+  private readonly currentTypeProperty: Property<CurrentType>;
+  private readonly timeProperty: NumberProperty;
+  readonly chargeAnimator: ChargeAnimator;
+  private readonly circuitChangedEmitter: Emitter<[]>;
+  private readonly vertexDroppedEmitter: Emitter<[ Vertex ]>;
+  readonly componentEditedEmitter: Emitter<[]>;
+  readonly vertexGroup: PhetioGroup<Vertex>;
+  private readonly selectedCircuitElementProperty: Property<CircuitElement | null>;
   dirty: boolean;
-  stepActions: ( () => void )[];
-  wireGroup: PhetioGroup<Wire>;
-  batteryGroup: PhetioGroup<Battery>;
-  highVoltageBatteryGroup: PhetioGroup<Battery>;
-  acVoltageGroup: PhetioGroup<ACVoltage>;
-  resistorGroup: PhetioGroup<Resistor>;
-  fuseGroup: PhetioGroup<Fuse>;
-  seriesAmmeterGroup: PhetioGroup<SeriesAmmeter>;
-  highResistanceLightBulbGroup: PhetioGroup<LightBulb>
-  capacitorGroup: PhetioGroup<Capacitor>;
-  inductorGroup: PhetioGroup<Inductor>;
-  switchGroup: PhetioGroup<Switch>
-  lightBulbGroup: PhetioGroup<LightBulb>;
-  realLightBulbGroup: PhetioGroup<LightBulb>;
-  groups: PhetioGroup<CircuitElement>[];
+  private readonly stepActions: ( () => void )[];
+  private readonly wireGroup: PhetioGroup<Wire>;
+  private readonly batteryGroup: PhetioGroup<Battery>;
+  private readonly highVoltageBatteryGroup: PhetioGroup<Battery>;
+  private readonly acVoltageGroup: PhetioGroup<ACVoltage>;
+  private readonly resistorGroup: PhetioGroup<Resistor>;
+  private readonly fuseGroup: PhetioGroup<Fuse>;
+  private readonly seriesAmmeterGroup: PhetioGroup<SeriesAmmeter>;
+  private readonly highResistanceLightBulbGroup: PhetioGroup<LightBulb>
+  private readonly capacitorGroup: PhetioGroup<Capacitor>;
+  private readonly inductorGroup: PhetioGroup<Inductor>;
+  private readonly switchGroup: PhetioGroup<Switch>
+  private readonly lightBulbGroup: PhetioGroup<LightBulb>;
+  private readonly realLightBulbGroup: PhetioGroup<LightBulb>;
+  private readonly groups: PhetioGroup<CircuitElement>[];
 
   /**
    * @param {Property.<CircuitElementViewType>} viewTypeProperty

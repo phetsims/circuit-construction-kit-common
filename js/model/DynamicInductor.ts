@@ -2,8 +2,8 @@ import DynamicCircuitInductor from "./DynamicCircuitInductor";
 import DynamicElementState from "./DynamicElementState";
 
 class DynamicInductor {
-  dynamicCircuitInductor: DynamicCircuitInductor;
-  state: DynamicElementState;
+  readonly dynamicCircuitInductor: DynamicCircuitInductor;
+  readonly state: DynamicElementState;
 
   /**
    * @param {DynamicCircuitInductor} dynamicCircuitInductor

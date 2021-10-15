@@ -5,7 +5,7 @@ import Resistor from './Resistor.js';
 import CircuitResult from './CircuitResult.js';
 
 class ResistorAdapter extends ModifiedNodalAnalysisCircuitElement {
-  resistor: Resistor;
+  private readonly resistor: Resistor;
 
   /**
    * @param {Circuit} circuit

@@ -28,13 +28,13 @@ const LUDecimal = Decimal.clone( {
 } );
 
 class ModifiedNodalAnalysisCircuit {
-  batteries: ModifiedNodalAnalysisCircuitElement[];
-  resistors: ModifiedNodalAnalysisCircuitElement[];
-  currentSources: ModifiedNodalAnalysisCircuitElement[];
-  elements: ModifiedNodalAnalysisCircuitElement[];
-  nodeSet: { [ key: string | number ]: string | number }; // TODO: make these all string?
-  nodeCount: number;
-  nodes: ( string | number )[];
+  private readonly batteries: ModifiedNodalAnalysisCircuitElement[];
+  private readonly resistors: ModifiedNodalAnalysisCircuitElement[];
+  private readonly currentSources: ModifiedNodalAnalysisCircuitElement[];
+  private readonly elements: ModifiedNodalAnalysisCircuitElement[];
+  private readonly nodeSet: { [ key: string | number ]: string | number }; // TODO: make these all string?
+  private readonly nodeCount: number;
+  private readonly nodes: ( string | number )[];
 
   /**
    * @param {ModifiedNodalAnalysisCircuitElement[]} batteries

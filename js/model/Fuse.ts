@@ -24,10 +24,10 @@ type FuseOptions = {
 } & FixedCircuitElementOptions;
 
 class Fuse extends FixedCircuitElement {
-  currentRatingProperty: NumberProperty;
-  isTrippedProperty: BooleanProperty;
-  resistanceProperty: NumberProperty;
-  timeCurrentRatingExceeded: number;
+  private readonly currentRatingProperty: NumberProperty;
+  private readonly isTrippedProperty: BooleanProperty;
+  private readonly resistanceProperty: NumberProperty;
+  private timeCurrentRatingExceeded: number;
 
   /**
    * @param {Vertex} startVertex

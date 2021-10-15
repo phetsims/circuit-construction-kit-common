@@ -27,9 +27,6 @@ class Ammeter extends Meter {
   constructor( tandem: Tandem, phetioIndex: number ) {
     super( tandem, phetioIndex );
 
-    // public (read-only) {number} - lightweight index for naming the tandem view correspondingly
-    this.phetioIndex = phetioIndex;
-
     // @public {Property.<number|null>} the full-precision reading on the ammeter. It will be formatted for
     // display in the view.  Null means the ammeter is not on a wire.
     this.currentProperty = new Property( null, {

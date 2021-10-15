@@ -15,11 +15,11 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 
 class Meter {
-  phetioIndex: number;
-  visibleProperty: BooleanProperty;
-  bodyPositionProperty: Vector2Property;
-  draggingProbesWithBodyProperty: BooleanProperty;
-  droppedEmitter: Emitter<[]>;
+  private phetioIndex: number;
+  private readonly visibleProperty: BooleanProperty;
+  private readonly bodyPositionProperty: Vector2Property;
+  private readonly draggingProbesWithBodyProperty: BooleanProperty;
+  private readonly droppedEmitter: Emitter<[]>;
 
   /**
    * @param {Tandem} tandem

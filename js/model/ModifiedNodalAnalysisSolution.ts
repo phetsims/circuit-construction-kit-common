@@ -12,8 +12,8 @@ import CapacitorAdapter from './CapacitorAdapter.js';
 import InductorAdapter from './InductorAdapter.js';
 
 class ModifiedNodalAnalysisSolution {
-  nodeVoltages: any;
-  elements: ModifiedNodalAnalysisCircuitElement[];
+  private readonly nodeVoltages: any;
+  private readonly elements: ModifiedNodalAnalysisCircuitElement[];
 
   /**
    * @param {Object} nodeVoltages - see below

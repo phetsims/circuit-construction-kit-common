@@ -14,9 +14,9 @@ import Resistor, {ResistorOptions} from './Resistor.js';
 import Vertex from './Vertex.js';
 
 class Dog extends Resistor {
-  isBarkingProperty: BooleanProperty;
-  lastBarkTime: number;
-  triggerCount: number;
+  private readonly isBarkingProperty: BooleanProperty;
+  private lastBarkTime: number;
+  private triggerCount: number;
 
   /**
    * @param {Vertex} startVertex

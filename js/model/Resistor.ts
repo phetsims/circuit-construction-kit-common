@@ -38,11 +38,11 @@ type ResistorEnumGroup = {
 };
 
 class Resistor extends FixedCircuitElement {
-  resistanceProperty: NumberProperty;
+   readonly resistanceProperty: NumberProperty;
+  private readonly resistorType: any;
   static ResistorIO: IOType;
   static ResistorType: ResistorEnumGroup;
   static Resistor: { [ key: string ]: ResistorEnumValue; };
-  resistorType: any;
 
   /**
    * @param {Vertex} startVertex

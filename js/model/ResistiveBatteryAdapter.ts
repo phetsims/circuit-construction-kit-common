@@ -5,7 +5,7 @@ import CircuitResult from './CircuitResult.js';
 import VoltageSource from './VoltageSource.js';
 
 class ResistiveBatteryAdapter extends DynamicCircuitResistiveBattery {
-  battery: VoltageSource;
+   readonly battery: VoltageSource;
 
   /**
    * @param {Circuit} circuit - the primary Circuit model instance, so we can look up Vertex indices

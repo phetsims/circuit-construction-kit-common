@@ -27,8 +27,8 @@ type SwitchOptions = {
 } & FixedCircuitElementOptions;
 
 class Switch extends FixedCircuitElement {
-  resistanceProperty: NumberProperty;
-  closedProperty: BooleanProperty;
+  private readonly resistanceProperty: NumberProperty;
+  readonly closedProperty: BooleanProperty;
 
   /**
    * @param {Vertex} startVertex

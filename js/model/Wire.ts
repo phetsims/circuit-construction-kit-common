@@ -27,12 +27,12 @@ type WireOptions = {
 } & CircuitElementOptions;
 
 class Wire extends CircuitElement {
-  wireStub: boolean;
-  resistanceProperty: NumberProperty;
-  resistivityProperty: NumberProperty;
-  wireDirty: boolean;
-  markWireDirtyListener: () => void;
-  lengthProperty: NumberProperty;
+  private readonly wireStub: boolean;
+  private readonly resistanceProperty: NumberProperty;
+  private readonly resistivityProperty: NumberProperty;
+  private wireDirty: boolean;
+  private readonly markWireDirtyListener: () => void;
+  readonly lengthProperty: NumberProperty;
 
   /**
    * @param {Vertex} startVertex

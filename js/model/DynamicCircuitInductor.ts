@@ -1,7 +1,7 @@
 import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
 
 class DynamicCircuitInductor extends ModifiedNodalAnalysisCircuitElement {
-  inductance: number;
+  readonly inductance: number;
 
   /**
    * @param {number} node0

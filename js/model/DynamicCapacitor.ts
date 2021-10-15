@@ -2,8 +2,8 @@ import DynamicCircuitCapacitor from './DynamicCircuitCapacitor.js';
 import DynamicElementState from './DynamicElementState.js';
 
 class DynamicCapacitor {
-  dynamicCircuitCapacitor: DynamicCircuitCapacitor;
-  state: DynamicElementState;
+  readonly dynamicCircuitCapacitor: DynamicCircuitCapacitor;
+  readonly state: DynamicElementState;
   capacitorVoltageNode0: string | number | null;
   capacitorVoltageNode1: string | number | null;
 

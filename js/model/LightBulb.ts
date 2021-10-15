@@ -56,13 +56,11 @@ type LightBulbOptions = {
 } & FixedCircuitElementOptions;
 
 class LightBulb extends FixedCircuitElement {
-
-  // TODO: iterate through all model attributes and mark private readonly where possible
-  real: boolean;
-  highResistance: boolean;
-  resistanceProperty: NumberProperty;
-  vertexDelta: any;
-  viewTypeProperty: Property<CircuitElementViewType>;
+  readonly real: boolean;
+  private readonly highResistance: boolean;
+  readonly resistanceProperty: NumberProperty;
+  private readonly vertexDelta: any;
+  private readonly viewTypeProperty: Property<CircuitElementViewType>;
 
   // TODO: improve types
   static createAtPosition: ( startVertex: any, endVertex: any, circuit: any, resistance: any, viewTypeProperty: any, tandem: any, options: any ) => LightBulb;

@@ -54,11 +54,11 @@ const CURRENT_MAGNITUDE = function( circuitElement: CircuitElement ) {
 };
 
 class ChargeAnimator {
-  charges: ObservableArray<Charge>;
-  circuit: Circuit;
-  scale: number;
-  timeScaleRunningAverage: RunningAverage;
-  timeScaleProperty: NumberProperty;
+  private readonly charges: ObservableArray<Charge>;
+  private readonly circuit: Circuit;
+  private scale: number;
+  readonly timeScaleRunningAverage: RunningAverage;
+  private readonly timeScaleProperty: NumberProperty;
 
   /**
    * @param {Circuit} circuit

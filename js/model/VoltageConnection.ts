@@ -10,8 +10,8 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Vertex from './Vertex.js';
 
 class VoltageConnection {
-  vertex: Vertex;
-  voltage: number;
+  readonly vertex: Vertex;
+  readonly voltage: number;
 
   /**
    * @param {Vertex} vertex

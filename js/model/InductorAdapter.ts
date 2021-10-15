@@ -8,7 +8,7 @@ import DynamicInductor from './DynamicInductor.js';
 import DynamicCircuitInductor from './DynamicCircuitInductor.js';
 
 class InductorAdapter extends DynamicInductor {
-  inductor: Inductor;
+  private readonly inductor: Inductor;
 
   /**
    * @param {Circuit} circuit

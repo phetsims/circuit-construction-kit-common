@@ -8,7 +8,7 @@ import DynamicCapacitor from './DynamicCapacitor.js';
 import DynamicCircuitCapacitor from './DynamicCircuitCapacitor.js';
 
 class CapacitorAdapter extends DynamicCapacitor {
-  capacitor: Capacitor;
+  private readonly capacitor: Capacitor;
 
   /**
    * @param {Circuit} circuit

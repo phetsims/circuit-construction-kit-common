@@ -1,7 +1,7 @@
 import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
 
 class DynamicCircuitResistiveBattery extends ModifiedNodalAnalysisCircuitElement {
-  voltage: number;
+  readonly voltage: number;
   resistance: number;
 
   /**

@@ -15,10 +15,10 @@ const ZOOM_ANIMATION_TIME = 0.35; // seconds
 
 class ZoomAnimation {
 
-  easing: Easing;
-  ratio: number;
-  totalDelta: number;
-  zoomCallback: ( delta: number ) => void;
+  private readonly easing: Easing;
+  private ratio: number;
+  private readonly totalDelta: number;
+  private readonly zoomCallback: ( delta: number ) => void;
 
   /**
    * @param {number} initialZoom

@@ -1,7 +1,7 @@
 import ModifiedNodalAnalysisCircuitElement from './ModifiedNodalAnalysisCircuitElement.js';
 
 class DynamicCircuitCapacitor extends ModifiedNodalAnalysisCircuitElement {
-  capacitance: number;
+  readonly capacitance: number;
 
   /**
    * @param {number} node0

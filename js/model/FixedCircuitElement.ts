@@ -19,9 +19,9 @@ type FixedCircuitElementOptions = {
 } & CircuitElementOptions;
 
 abstract class FixedCircuitElement extends CircuitElement {
-  numberOfDecimalPlaces: number;
-  distanceBetweenVertices: number;
-  isFixedCircuitElement: boolean;
+  private readonly numberOfDecimalPlaces: number;
+  private readonly distanceBetweenVertices: number;
+  private readonly isFixedCircuitElement: boolean;
 
   /**
    * @param {Vertex} startVertex

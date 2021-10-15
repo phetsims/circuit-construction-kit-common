@@ -29,20 +29,20 @@ type VertexOptions = {
 } & PhetioObjectOptions;
 
 class Vertex extends PhetioObject {
-  index: number;
-  vertexTandem: any;
-  positionProperty: Vector2Property;
-  unsnappedPositionProperty: Vector2Property;
-  voltageProperty: NumberProperty;
-  selectedProperty: BooleanProperty;
-  draggableProperty: BooleanProperty;
-  interactiveProperty: BooleanProperty;
-  attachableProperty: BooleanProperty;
-  blackBoxInterfaceProperty: BooleanProperty;
-  insideTrueBlackBoxProperty: BooleanProperty;
-  relayerEmitter: Emitter<unknown>;
-  vertexSelectedPropertyListener: null;
-  isDragged: boolean;
+  readonly index: number;
+  private readonly vertexTandem: any;
+  readonly positionProperty: Vector2Property;
+  readonly unsnappedPositionProperty: Vector2Property;
+  readonly voltageProperty: NumberProperty;
+  readonly selectedProperty: BooleanProperty;
+  readonly draggableProperty: BooleanProperty;
+  private readonly interactiveProperty: BooleanProperty;
+  readonly attachableProperty: BooleanProperty;
+  readonly blackBoxInterfaceProperty: BooleanProperty;
+  readonly insideTrueBlackBoxProperty: BooleanProperty;
+  readonly relayerEmitter: Emitter<unknown>;
+  private readonly vertexSelectedPropertyListener: null;
+  readonly isDragged: boolean;
   static VertexIO: IOType;
 
   /**

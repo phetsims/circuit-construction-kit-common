@@ -24,7 +24,7 @@ type InductorOptions = {
 } & DynamicCircuitElementOptions;
 
 class Inductor extends DynamicCircuitElement {
-  inductanceProperty: NumberProperty;
+  readonly inductanceProperty: NumberProperty;
 
   /**
    * @param {Vertex} startVertex

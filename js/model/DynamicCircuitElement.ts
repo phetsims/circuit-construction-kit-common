@@ -19,7 +19,7 @@ type DynamicCircuitElementOptions = {} & FixedCircuitElementOptions;
 abstract class DynamicCircuitElement extends FixedCircuitElement {
   mnaVoltageDrop: number;
   mnaCurrent: number;
-  clearEmitter: Emitter<[]>;
+  readonly clearEmitter: Emitter<[]>;
 
   /**
    * @param {Vertex} startVertex

@@ -2,9 +2,9 @@ import DynamicCircuit from './DynamicCircuit';
 import DynamicCircuitSolution from './DynamicCircuitSolution';
 
 class DynamicState {
-  dynamicCircuit: DynamicCircuit;
-  dynamicCircuitSolution: DynamicCircuitSolution | null;
-  solution: DynamicCircuitSolution | null;
+  readonly dynamicCircuit: DynamicCircuit;
+  readonly dynamicCircuitSolution: DynamicCircuitSolution | null;
+  private solution: DynamicCircuitSolution | null;
 
   /**
    * @param {DynamicCircuit} dynamicCircuit

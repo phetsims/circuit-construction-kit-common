@@ -5,9 +5,9 @@ import CapacitorAdapter from './CapacitorAdapter.js';
 import InductorAdapter from './InductorAdapter.js';
 
 class DynamicCircuitSolution {
-  circuit: DynamicCircuit;
-  mnaSolution: ModifiedNodalAnalysisSolution;
-  currentCompanions: any;
+  private readonly circuit: DynamicCircuit;
+  private readonly mnaSolution: ModifiedNodalAnalysisSolution;
+  private readonly currentCompanions: any;
 
   /**
    * @param {DynamicCircuit} circuit

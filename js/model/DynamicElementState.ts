@@ -1,6 +1,6 @@
 class DynamicElementState {
-  voltage: number;
-  current: number;
+  readonly voltage: number;
+  readonly current: number;
 
   /**
    * @param {number} voltage - the voltage drop v1-v0

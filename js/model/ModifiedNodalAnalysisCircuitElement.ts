@@ -12,9 +12,9 @@ import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CircuitElement from './CircuitElement.js';
 
 class ModifiedNodalAnalysisCircuitElement {
-  nodeId0: string | number;
-  nodeId1: string | number;
-  circuitElement: CircuitElement | null;
+  readonly nodeId0: string | number;
+  readonly nodeId1: string | number;
+  readonly circuitElement: CircuitElement | null;
   value: number;
   currentSolution: number | null;
 
