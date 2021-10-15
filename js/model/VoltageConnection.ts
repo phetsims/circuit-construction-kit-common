@@ -1,4 +1,4 @@
-// Copyright 2019-2020, University of Colorado Boulder
+// Copyright 2019-2021, University of Colorado Boulder
 
 /**
  * Indicates a vertex and a voltage measurement at the given vertex.

@@ -1,4 +1,4 @@
-// Copyright 2017-2021, University of Colorado Boulder
+// Copyright 2021, University of Colorado Boulder
 
 /**
  * Enumeration for how to render the current: electrons or conventional (arrows).
