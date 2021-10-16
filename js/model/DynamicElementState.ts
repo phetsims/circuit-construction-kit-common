@@ -1,4 +1,4 @@
-// Copyright 2016-2021, University of Colorado Boulder
+// Copyright 2021, University of Colorado Boulder
 class DynamicElementState {
   readonly voltage: number;
   readonly current: number;
