@@ -206,7 +206,7 @@ class SeriesAmmeterNode extends FixedCircuitElementNode {
 
   /**
    * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
-   * @protected - CCKCLightBulbNode calls updateRender for its child socket node
+   * @public - CCKCLightBulbNode calls updateRender for its child socket node
    * @override
    */
   updateRender() {

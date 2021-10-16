@@ -25,10 +25,15 @@ import lightBulbMiddleImage from '../../mipmaps/light-bulb-middle_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CustomLightBulbNode from './CustomLightBulbNode.js';
-import FixedCircuitElementNode from './FixedCircuitElementNode.js';
+import FixedCircuitElementNode, { FixedCircuitElementNodeOptions } from './FixedCircuitElementNode.js';
 import LightBulbSocketNode from './LightBulbSocketNode.js';
 import SchematicType from './SchematicType.js';
 import schematicTypeProperty from './schematicTypeProperty.js';
+import CCKCScreenView from './CCKCScreenView.js';
+import CircuitLayerNode from './CircuitLayerNode.js';
+import LightBulb from '../model/LightBulb.js';
+import CircuitElementViewType from '../model/CircuitElementViewType.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 
 // constants
 const SCRATCH_MATRIX = new Matrix3();
@@ -45,7 +50,7 @@ const INNER_RADIUS = 5;
  * @param {number} power - the power through the light bulb
  * @returns {number}
  */
-const toBrightness = ( multiplier, power ) => {
+const toBrightness = ( multiplier: number, power: number ) => {
   const maximumBrightness = 1;
 
   // power at which the brightness becomes 1
@@ -54,6 +59,9 @@ const toBrightness = ( multiplier, power ) => {
 };
 
 class CCKCLightBulbNode extends FixedCircuitElementNode {
+  rayNodeContainer: Node;
+  disposeCircuitConstructionKitLightBulbNode: () => void;
+  socketNode: LightBulbSocketNode | null;
 
   /**
    * @param {CCKCScreenView|null} screenView - main screen view, null for icon
@@ -64,16 +72,16 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( screenView, circuitLayerNode, lightBulb,
-               showResultsProperty, viewTypeProperty, tandem, options ) {
-    options = merge( {
+  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, lightBulb: LightBulb,
+               showResultsProperty: Property<boolean>, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: Partial<FixedCircuitElementNodeOptions> ) {
+    let filledOptions = merge( {
       isIcon: false,
       useHitTestForSensors: true
-    }, options );
+    }, options ) as FixedCircuitElementNodeOptions;
     const brightnessProperty = new NumberProperty( 0 );
     const updateBrightness = Property.multilink(
       [ lightBulb.currentProperty, showResultsProperty, lightBulb.resistanceProperty ],
-      ( current, running, resistance ) => {
+      ( current: number, running: boolean, resistance: number ) => {
         const power = Math.abs( current * current * resistance );
 
         let brightness = toBrightness( 0.35, power );
@@ -86,30 +94,30 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
 
         brightnessProperty.value = Utils.clamp( brightness, 0, 1 );
       } );
-    let lightBulbNode = new CustomLightBulbNode( brightnessProperty, {
+    let lightBulbNode: Node = new CustomLightBulbNode( brightnessProperty, {
       real: lightBulb.real
     } );
 
     // The isIcon must show the socket as well
-    if ( options.isIcon ) {
+    if ( filledOptions.isIcon ) {
       lightBulbNode = new Image( lightBulb.highResistance ? lightBulbMiddleHighImage :
                                  lightBulb.real ? lightBulbMiddleRealImage :
-                                 lightBulbMiddleImage, { scale: 0.37 } );
+                                 lightBulbMiddleImage, { scale: 0.37 } ) as unknown as Node;
 
       // tack on the socket
       if ( lightBulb.real ) {
-        lightBulbNode.addChild( new Image( lightBulbFrontRealImage ) );
+        lightBulbNode.addChild( new Image( lightBulbFrontRealImage ) as unknown as Node );
       }
     }
 
-    // General options used throughout bulb node
-    options = merge( {
+    // General filledOptions used throughout bulb node
+    filledOptions = merge( {
 
       // Override the dimensions of the bulb node because the invisible rays contribute to the bounds. Used to set up
       // the highlight region.
       contentWidth: 3.6,
       contentHeight: 11
-    }, options );
+    }, filledOptions ) as FixedCircuitElementNodeOptions;
 
     // Schematic creation begins here.
     const endPosition = lightBulb.endPositionProperty.get();
@@ -124,7 +132,7 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
      * @param {Shape} shape
      * @returns Shape
      */
-    const addIEEESchematicCircle = shape => shape
+    const addIEEESchematicCircle = ( shape: Shape ) => shape
 
       // Outer circle
       .moveTo( 0, LEAD_Y )
@@ -139,7 +147,7 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
     const cosPi4 = Math.cos( Math.PI / 4 );
     const sinPi4 = Math.sin( Math.PI / 4 );
 
-    const addIECSchematicCircle = shape => shape
+    const addIECSchematicCircle = ( shape: Shape ) => shape
 
       .moveTo( 0, LEAD_Y )
 
@@ -161,7 +169,7 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
       .lineToRelative( -schematicCircleRadius * cosPi4, -schematicCircleRadius * sinPi4 )
       .lineToRelative( schematicCircleDiameter * cosPi4, schematicCircleDiameter * sinPi4 );
 
-    const addLeads = shape => shape
+    const addLeads = ( shape: Shape ) => shape
 
       // Left lead
       .moveTo( 0, 0 )
@@ -178,25 +186,29 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
 
     const schematicNode = new Path( ieeeShapeIcon, {
       stroke: Color.BLACK,
-      lineWidth: options.isIcon ? 4 : CCKCConstants.SCHEMATIC_LINE_WIDTH
+      lineWidth: filledOptions.isIcon ? 4 : CCKCConstants.SCHEMATIC_LINE_WIDTH
     } );
 
-    if ( options.isIcon ) {
+    if ( filledOptions.isIcon ) {
       schematicNode.center = lightBulbNode.center.plusXY( 0, 22 );
     }
 
+    // TODO: enum for SchematicType
+    // @ts-ignore
     const updateSchematicType = schematicType => {
-      if ( options.isIcon ) {
+      if ( filledOptions.isIcon ) {
+        // @ts-ignore
         schematicNode.shape = schematicType === SchematicType.IEEE ? ieeeShapeIcon : iecShapeIcon;
       }
       else {
+        // @ts-ignore
         schematicNode.shape = schematicType === SchematicType.IEEE ? ieeeShapeWithLeads : iecShapeWithLeads;
       }
     };
     schematicTypeProperty.link( updateSchematicType );
 
     // Expand the pointer areas with a defensive copy, see https://github.com/phetsims/circuit-construction-kit-common/issues/310
-    if ( !options.isIcon ) {
+    if ( !filledOptions.isIcon ) {
       schematicNode.mouseArea = schematicNode.bounds.dilated( 2 );
       schematicNode.touchArea = schematicNode.mouseArea;
     }
@@ -209,15 +221,17 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
       lightBulbNode,
       schematicNode,
       tandem,
-      options
+      filledOptions
     );
 
     // @private {Node} - node that contains the light rays so they can be easily positioned
     this.rayNodeContainer = new Node( {
+
+      // @ts-ignore
       children: lightBulbNode.raysNode ? [ lightBulbNode.raysNode ] : [] // keep centering and translation
     } );
 
-    let viewListener = null;
+    let viewListener: ( ( view: CircuitElementViewType ) => void ) | null = null;
     if ( circuitLayerNode ) {
 
       // @private - Render the socket node in the front
@@ -227,9 +241,9 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
         lightBulb,
         viewTypeProperty,
         tandem.createTandem( 'socketNode' ),
-        options
+        filledOptions
       );
-      viewListener = view => {
+      viewListener = ( view: CircuitElementViewType ) => {
         this.rayNodeContainer.visible = view === 'lifelike';
       };
       viewTypeProperty.link( viewListener );
@@ -239,18 +253,26 @@ class CCKCLightBulbNode extends FixedCircuitElementNode {
       // see https://github.com/phetsims/circuit-construction-kit-common/issues/161
       circuitLayerNode && circuitLayerNode.addChildToBackground( this.rayNodeContainer );
     }
+    else {
+      this.socketNode = null;
+    }
 
     // @private {function}
     this.disposeCircuitConstructionKitLightBulbNode = () => {
       updateBrightness.dispose();
-      circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.removeChild( this.socketNode );
+      if ( this.socketNode ) {
+        this.socketNode && circuitLayerNode && circuitLayerNode.lightBulbSocketLayer.removeChild( this.socketNode );
 
-      // Light rays are supposed to be behind everything else,
-      // see https://github.com/phetsims/circuit-construction-kit-common/issues/161
-      circuitLayerNode && circuitLayerNode.removeChildFromBackground( this.rayNodeContainer );
-      viewTypeProperty.unlink( viewListener );
-      this.socketNode.dispose();
-      schematicTypeProperty.unlink( updateSchematicType );
+        // Light rays are supposed to be behind everything else,
+        // see https://github.com/phetsims/circuit-construction-kit-common/issues/161
+        circuitLayerNode && circuitLayerNode.removeChildFromBackground( this.rayNodeContainer );
+        viewTypeProperty.unlink( viewListener );
+        this.socketNode.dispose();
+        schematicTypeProperty.unlink( updateSchematicType );
+      }
+      else {
+        assert && assert( false, 'socketNode should be defined' );
+      }
     };
   }
 

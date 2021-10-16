@@ -260,7 +260,7 @@ class FixedCircuitElementNode extends CircuitElementNode {
 
   /**
    * Multiple updates may happen per frame, they are batched and updated once in the view step to improve performance.
-   * @protected - CCKCLightBulbNode calls updateRender for its child socket node
+   * @public - CCKCLightBulbNode calls updateRender for its child socket node
    */
   updateRender() {
     const startPosition = this.circuitElement.startPositionProperty.get();
@@ -392,4 +392,5 @@ FixedCircuitElementNode.webglSpriteNodes = [
 ];
 
 circuitConstructionKitCommon.register( 'FixedCircuitElementNode', FixedCircuitElementNode );
+export { FixedCircuitElementNodeOptions };
 export default FixedCircuitElementNode;

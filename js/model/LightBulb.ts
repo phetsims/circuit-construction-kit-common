@@ -58,7 +58,7 @@ type LightBulbOptions = {
 
 class LightBulb extends FixedCircuitElement {
   readonly real: boolean;
-  private readonly highResistance: boolean;
+  readonly highResistance: boolean;
   readonly resistanceProperty: NumberProperty;
   private readonly vertexDelta: Vector2;
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
