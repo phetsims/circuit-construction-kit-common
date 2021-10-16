@@ -76,7 +76,7 @@ const RENDERER = 'svg';
 
 class CircuitLayerNode extends Node {
   private readonly viewTypeProperty: Property<CircuitElementViewType>;
-  private readonly model: CircuitConstructionKitModel;
+  readonly model: CircuitConstructionKitModel;
   private readonly visibleBoundsProperty: Property<any>;
   private readonly circuitLayerNodeBackLayer: Node;
   readonly highlightLayer: Node;

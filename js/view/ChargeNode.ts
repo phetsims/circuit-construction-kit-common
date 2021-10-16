@@ -15,7 +15,10 @@ import Node from '../../../scenery/js/nodes/Node.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Capacitor from '../model/Capacitor.js';
+import Charge from '../model/Charge.js';
+import CircuitLayerNode from './CircuitLayerNode.js';
 import ConventionalCurrentArrowNode from './ConventionalCurrentArrowNode.js';
+import CapacitorCircuitElementNode from './CapacitorCircuitElementNode.js';
 
 // constants
 const ELECTRON_CHARGE_NODE = new ElectronChargeNode( {
@@ -35,12 +38,18 @@ const ARROW_NODE = new ConventionalCurrentArrowNode( Tandem.GLOBAL_VIEW.createTa
 const CONVENTIONAL_CHARGE_THRESHOLD = 1E-6;
 
 class ChargeNode extends Node {
+  circuitLayerNode: CircuitLayerNode;
+  charge: Charge;
+  outsideOfBlackBoxProperty: BooleanProperty;
+  updateVisibleListener: () => void;
+  updateTransformListener: () => void;
+  static webglSpriteNodes: Node[];
 
   /**
    * @param {Charge} charge - the model element
    * @param {CircuitLayerNode} circuitLayerNode
    */
-  constructor( charge, circuitLayerNode ) {
+  constructor( charge: Charge, circuitLayerNode: CircuitLayerNode ) {
 
     const child = charge.charge > 0 ? ARROW_NODE : ELECTRON_CHARGE_NODE;
 
@@ -110,32 +119,35 @@ class ChargeNode extends Node {
     // In order to show that no actual charges transfer between the plates of a capacitor, we clip their rendering.
     if ( this.charge.circuitElement instanceof Capacitor ) {
       const capacitorCircuitElementNode = this.circuitLayerNode.getCircuitElementNode( this.charge.circuitElement );
+      assert && assert( capacitorCircuitElementNode instanceof CapacitorCircuitElementNode );
+      if ( capacitorCircuitElementNode instanceof CapacitorCircuitElementNode ) {
 
-      // For unknown reasons, the x and y coordinates are swapped here.  The values were determined empirically.
-      let globalClipShape = null;
+        // For unknown reasons, the x and y coordinates are swapped here.  The values were determined empirically.
+        let globalClipShape = null;
 
-      const isLifelike = this.circuitLayerNode.model.viewTypeProperty.value === 'lifelike';
-      if ( isLifelike ) {
+        const isLifelike = this.circuitLayerNode.model.viewTypeProperty.value === 'lifelike';
+        if ( isLifelike ) {
 
-        // For the lifelike view, we clip based on the pseudo-3d effect, so the charges come from "behind" the edge
-        // of the back plate and the "in front of" center of the front plate.
-        // Clip area must be synchronized with CapacitorCircuitElementNode.js
-        globalClipShape = this.charge.distance < this.charge.circuitElement.chargePathLength / 2 ?
-                          capacitorCircuitElementNode.capacitorCircuitElementLifelikeNode.getTopPlateClipShapeToGlobal() : // close half of the capacitor, clip at plate center
-                          capacitorCircuitElementNode.capacitorCircuitElementLifelikeNode.getBottomPlateClipShapeToGlobal(); // latter half of the capacitor, clip at plate edge
+          // For the lifelike view, we clip based on the pseudo-3d effect, so the charges come from "behind" the edge
+          // of the back plate and the "in front of" center of the front plate.
+          // Clip area must be synchronized with CapacitorCircuitElementNode.js
+          globalClipShape = this.charge.distance < this.charge.circuitElement.chargePathLength / 2 ?
+                            capacitorCircuitElementNode.capacitorCircuitElementLifelikeNode.getTopPlateClipShapeToGlobal() : // close half of the capacitor, clip at plate center
+                            capacitorCircuitElementNode.capacitorCircuitElementLifelikeNode.getBottomPlateClipShapeToGlobal(); // latter half of the capacitor, clip at plate edge
+        }
+        else {
+
+          // For the schematic view, we clip out the center between the plates.
+          // Tuned empirically based on metrics of the schematic shape.  If this is too fragile, the above approach can be used instead.
+          const localShape = this.charge.distance < this.charge.circuitElement.chargePathLength / 2 ?
+                             Shape.rect( -19.5, -50, 60, 100 ) : // latter half of the capacitor, clip when leaving the far plate.
+                             Shape.rect( 61.5, -50, 60, 100 ); // close half of the capacitor, clip when entering the plate
+
+          globalClipShape = localShape.transformed( capacitorCircuitElementNode.capacitorCircuitElementSchematicNode.getLocalToGlobalMatrix() );
+        }
+
+        this.clipArea = globalClipShape.transformed( this.getGlobalToLocalMatrix() );
       }
-      else {
-
-        // For the schematic view, we clip out the center between the plates.
-        // Tuned empirically based on metrics of the schematic shape.  If this is too fragile, the above approach can be used instead.
-        const localShape = this.charge.distance < this.charge.circuitElement.chargePathLength / 2 ?
-                           Shape.rect( -19.5, -50, 60, 100 ) : // latter half of the capacitor, clip when leaving the far plate.
-                           Shape.rect( 61.5, -50, 60, 100 ); // close half of the capacitor, clip when entering the plate
-
-        globalClipShape = localShape.transformed( capacitorCircuitElementNode.capacitorCircuitElementSchematicNode.getLocalToGlobalMatrix() );
-      }
-
-      this.clipArea = globalClipShape.transformed( this.getGlobalToLocalMatrix() );
     }
     else {
       this.clipArea = null;

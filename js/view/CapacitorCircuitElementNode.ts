@@ -65,8 +65,8 @@ rightSchematicShape = rightSchematicShape.transformed( Matrix3.scale( SCHEMATIC_
 
 class CapacitorCircuitElementNode extends FixedCircuitElementNode {
   private readonly capacitor: Capacitor;
-  private readonly capacitorCircuitElementLifelikeNode: CapacitorNode;
-  private readonly capacitorCircuitElementSchematicNode: Node;
+  readonly capacitorCircuitElementLifelikeNode: CapacitorNode;
+  readonly capacitorCircuitElementSchematicNode: Node;
   private readonly leftWireStub: Node;
   private readonly rightWireStub: Node;
   private readonly leftSchematicPath: Path;

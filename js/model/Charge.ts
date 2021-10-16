@@ -16,10 +16,10 @@ class Charge {
   readonly charge: number;
   circuitElement: CircuitElement;
   distance: number;
-  private readonly matrix: Matrix3;
+  readonly matrix: Matrix3;
   readonly visibleProperty: Property<boolean>;
-  private readonly changedEmitter: Emitter<[]>;
-  private readonly disposeEmitterCharge: Emitter<[]>;
+  readonly changedEmitter: Emitter<[]>;
+  readonly disposeEmitterCharge: Emitter<[]>;
 
   /**
    * @param {CircuitElement} circuitElement - the circuit element the charge is in.

@@ -49,7 +49,7 @@ abstract class CircuitElement extends PhetioObject {
   readonly currentProperty: NumberProperty;
   readonly currentSenseProperty: Property<any>;
   readonly interactiveProperty: BooleanProperty;
-  private readonly insideTrueBlackBoxProperty: BooleanProperty;
+  readonly insideTrueBlackBoxProperty: BooleanProperty;
   chargeLayoutDirty: boolean;
   readonly connectedEmitter: Emitter<[]>;
   readonly vertexSelectedEmitter: Emitter<[]>;
