@@ -16,9 +16,13 @@ import Color from '../../../scenery/js/util/Color.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import DynamicCircuitElement from '../model/DynamicCircuitElement.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
+import Circuit from '../model/Circuit.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 
 // constants
 const SCALE = 0.032;
+
+// @ts-ignore
 const SHAPE_MATRIX = Matrix3.createFromPool( SCALE, 0, 0, 0, -SCALE, 0, 0, 0, 1 ); // to create a unity-scale icon
 
 class ClearDynamicsButton extends CCKCRoundPushButton {
@@ -27,7 +31,7 @@ class ClearDynamicsButton extends CCKCRoundPushButton {
    * @param {Circuit} circuit
    * @param {Tandem} tandem
    */
-  constructor( circuit, tandem ) {
+  constructor( circuit: Circuit, tandem: Tandem ) {
 
     // This SVG data was exported from assets/flip_battery_icon.ai, which was created by @arouinfar.  Using illustrator,
     // save the AI file as SVG, then inspect the file to get the path declaration.

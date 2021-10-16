@@ -13,6 +13,8 @@ import syncAltSolidString from '../../../sherpa/js/fontawesome-5/syncAltSolidStr
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import Battery from '../model/Battery.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
+import Circuit from '../model/Circuit.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 
 // constants
 const ARROW_ICON_SCALE = 0.035;
@@ -23,7 +25,7 @@ class ReverseBatteryButton extends CCKCRoundPushButton {
    * @param {Circuit} circuit - the circuit that contains the battery
    * @param {Tandem} tandem
    */
-  constructor( circuit, tandem ) {
+  constructor( circuit: Circuit, tandem: Tandem ) {
 
     // This SVG data was exported from assets/flip_battery_icon.ai, which was created by @arouinfar.  Using illustrator,
     // save the AI file as SVG, then inspect the file to get the path declaration.
@@ -61,8 +63,13 @@ class ReverseBatteryButton extends CCKCRoundPushButton {
         } ),
         listener: () => {
           const battery = circuit.selectedCircuitElementProperty.value;
-          assert && assert( battery instanceof Battery );
-          circuit.flip( battery );
+
+          if ( battery instanceof Battery ) {
+            circuit.flip( battery );
+          }
+          else {
+            assert && assert( false, 'selected circuit element should have been a battery' );
+          }
         },
         tandem: tandem
       }

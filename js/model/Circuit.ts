@@ -77,7 +77,7 @@ class Circuit {
   readonly vertexDroppedEmitter: Emitter<[ Vertex ]>;
   readonly componentEditedEmitter: Emitter<[]>;
   readonly vertexGroup: PhetioGroup<Vertex>;
-  private readonly selectedCircuitElementProperty: Property<CircuitElement | null>;
+  readonly selectedCircuitElementProperty: Property<CircuitElement | null>;
   dirty: boolean;
   private readonly stepActions: ( () => void )[];
   private readonly wireGroup: PhetioGroup<Wire>;
