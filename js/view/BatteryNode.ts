@@ -6,17 +6,25 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import Property from '../../../axon/js/Property.js';
 import Matrix3 from '../../../dot/js/Matrix3.js';
 import Shape from '../../../kite/js/Shape.js';
 import merge from '../../../phet-core/js/merge.js';
 import Image from '../../../scenery/js/nodes/Image.js';
+import Node from '../../../scenery/js/nodes/Node.js';
 import Path from '../../../scenery/js/nodes/Path.js';
 import Color from '../../../scenery/js/util/Color.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 import batteryHighImage from '../../images/battery-high_png.js';
 import batteryImage from '../../images/battery_png.js';
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
+import Battery from '../model/Battery.js';
+import CircuitElementViewType from '../model/CircuitElementViewType.js';
+import CCKCScreenView from './CCKCScreenView.js';
+import CircuitLayerNode from './CircuitLayerNode.js';
 import FixedCircuitElementNode from './FixedCircuitElementNode.js';
+import { FixedCircuitElementOptions } from '../model/FixedCircuitElement.js';
 
 // constants
 // dimensions for schematic battery
@@ -56,6 +64,7 @@ schematicNode.mouseArea = schematicNode.bounds.shiftedY( schematicNode.height / 
 schematicNode.touchArea = schematicNode.bounds.shiftedY( schematicNode.height / 2 );
 
 class BatteryNode extends FixedCircuitElementNode {
+  private readonly battery: Battery;
 
   /**
    * @param {CCKCScreenView|null} screenView - main screen view, null for isIcon
@@ -65,10 +74,10 @@ class BatteryNode extends FixedCircuitElementNode {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( screenView, circuitLayerNode, battery, viewTypeProperty, tandem, options ) {
+  constructor( screenView: CCKCScreenView | null, circuitLayerNode: CircuitLayerNode | null, battery: Battery, viewTypeProperty: Property<CircuitElementViewType>, tandem: Tandem, options?: Partial<FixedCircuitElementOptions> ) {
 
     options = merge( { useHitTestForSensors: true }, options );
-    const lifelikeNode = new Image( battery.batteryType === 'normal' ? batteryImage : batteryHighImage );
+    const lifelikeNode = new Image( battery.batteryType === 'normal' ? batteryImage : batteryHighImage ) as unknown as Node;
 
     lifelikeNode.mutate( {
       scale: battery.distanceBetweenVertices / lifelikeNode.width
@@ -85,6 +94,8 @@ class BatteryNode extends FixedCircuitElementNode {
       lifelikeNode,
       schematicNode,
       tandem,
+
+      // @ts-ignore
       options
     );
 

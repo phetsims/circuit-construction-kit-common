@@ -24,7 +24,7 @@ const BATTERY_LENGTH = CCKCConstants.BATTERY_LENGTH;
 type BatteryOptions = {} & VoltageSourceOptions;
 
 class Battery extends VoltageSource {
-  private readonly batteryType: BatteryType;
+  readonly batteryType: BatteryType;
 
   /**
    * @param {Vertex} startVertex - one of the battery vertices

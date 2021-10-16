@@ -20,7 +20,7 @@ type FixedCircuitElementOptions = {
 
 abstract class FixedCircuitElement extends CircuitElement {
   private readonly numberOfDecimalPlaces: number;
-  private readonly distanceBetweenVertices: number;
+  readonly distanceBetweenVertices: number;
   private readonly isFixedCircuitElement: boolean;
 
   /**
