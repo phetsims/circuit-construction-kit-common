@@ -12,6 +12,8 @@ import trashAltRegularShape from '../../../sherpa/js/fontawesome-5/trashAltRegul
 import CCKCConstants from '../CCKCConstants.js';
 import circuitConstructionKitCommon from '../circuitConstructionKitCommon.js';
 import CCKCRoundPushButton from './CCKCRoundPushButton.js';
+import Circuit from '../model/Circuit.js';
+import Tandem from '../../../tandem/js/Tandem.js';
 
 class TrashButton extends CCKCRoundPushButton {
 
@@ -20,7 +22,7 @@ class TrashButton extends CCKCRoundPushButton {
    * @param {Tandem} tandem
    * @param {Object} [options]
    */
-  constructor( circuit, tandem, options ) {
+  constructor( circuit: Circuit, tandem: Tandem, options?: object ) {
 
     super( merge( {
       touchAreaDilation: 5, // radius dilation for touch area
